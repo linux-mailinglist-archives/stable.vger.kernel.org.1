@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-199609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31EF3CA01D9
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:49:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EAC4C9FC0E
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:59:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 196C330334E8
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:45:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2D3D830062C3
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:53:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40A8036CDFD;
-	Wed,  3 Dec 2025 16:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDC7733769B;
+	Wed,  3 Dec 2025 15:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QlfAXOPQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nW9+uOec"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE96636BCC5;
-	Wed,  3 Dec 2025 16:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2D63370F2;
+	Wed,  3 Dec 2025 15:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780357; cv=none; b=Ogw8saxVN/yTg4JJW2HO9sxCKJHi6GPeyhGZLZRd/Z4YpHUwLGPysJT8H/JGiz4Jw+IJOUV274XQ/zsXhSm+9/watOBQGOVSQmV9u6WPwQwErS/Xis1v8BjElBZT1ij3kmriNrypaGBC7kC7CEOnqdgSJW58yIMUGuiNlFBai88=
+	t=1764777231; cv=none; b=h/0vnePoy2jaVxUNdPWycK7YWKrFnRXb1TiOIsDC13hDy2B95qN5eTbD70mOx2gej/ci+1J/QQO7lLSg5Q+I4e78YcJUZWSDhzfQ9GqxWagCwjpvpoC3zX8Q6uekcxK9YbvMMfPUUGZRrXHNA/49OMzVbAm2po/M6NGj+bjjd4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780357; c=relaxed/simple;
-	bh=5YEkV8dPDa4AE4N2zNMoqLgcqFkOMJgPK0FkQaOiOXo=;
+	s=arc-20240116; t=1764777231; c=relaxed/simple;
+	bh=PAylfpklgSLNbsVJ5blf0/Dx6VtMn6LTnmNR0mCUa94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sJ3nsMJf/Kc3Cd9cnKwkP6yv/haKSEE871G3bwGd9oZenr4abHZEOgs/oquJtBIId+cx95YljIfhWPLo4g09XjSQfB9iKMr7jj1YNy6aEOgn+DZcK/pS+RpKa8U8zz8h5nGG5vharIWk3FSqbnI4J4cpLLasjspXYGg6mVWI+xo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QlfAXOPQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BA56C116B1;
-	Wed,  3 Dec 2025 16:45:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZPRDHMcifFM8Eehoj7EKs/gvLYrgJI6cALa2jA+4I+ARqeBztRVqJG1iWuWntqfxoQv9xPd2+X+++WH/zl8EaG0QN7ibdv+hYFaI4fW89IQRFlOhHjHcRVme/dsbPgVjHJBZF+WooIqi9UUe+bTPRwemji80AliIABuE26GrAes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nW9+uOec; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 939B6C2BCF4;
+	Wed,  3 Dec 2025 15:53:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780356;
-	bh=5YEkV8dPDa4AE4N2zNMoqLgcqFkOMJgPK0FkQaOiOXo=;
+	s=korg; t=1764777230;
+	bh=PAylfpklgSLNbsVJ5blf0/Dx6VtMn6LTnmNR0mCUa94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QlfAXOPQNb6qgRjI8vx6/GOmo/U7ISvNrALf27tG7ntg2tZEa5OfLEPWHJ3C8t2Os
-	 4Y0HF/m5S7MRY24PyGnlh8YdJnRR4QsVDnazI/Lgg5lztwW3HFbWOM8drZVGGQe/G3
-	 qhDwz9FJYTohyG66pZMn2qm1xKQwzMuhn9xfHP2s=
+	b=nW9+uOecfFkgS++fez1Ut23aQWJittmjR8wnDufNZ616iMn5CFtdyb1SSyskGiov5
+	 vtmVKFNo6c0i9fgdyjDs22FWcgsMHT1b87gOY0ZBYqXOQZUJs8nsLjmIPMOk7+1QMD
+	 oTCD+AZ/LXuUwtKNnTe2z44eZncvWjE1gd1YkOzk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 499/568] net: lan966x: Fix the initialization of taprio
+	stable <stable@kernel.org>,
+	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>
+Subject: [PATCH 6.17 123/146] xhci: dbgtty: fix device unregister
 Date: Wed,  3 Dec 2025 16:28:21 +0100
-Message-ID: <20251203152458.990976031@linuxfoundation.org>
+Message-ID: <20251203152350.963382060@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,61 +57,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
+From: Łukasz Bartosik <ukaszb@chromium.org>
 
-[ Upstream commit 9780f535f8e0f20b4632b5a173ead71aa8f095d2 ]
+commit 1f73b8b56cf35de29a433aee7bfff26cea98be3f upstream.
 
-To initialize the taprio block in lan966x, it is required to configure
-the register REVISIT_DLY. The purpose of this register is to set the
-delay before revisit the next gate and the value of this register depends
-on the system clock. The problem is that the we calculated wrong the value
-of the system clock period in picoseconds. The actual system clock is
-~165.617754MHZ and this correspond to a period of 6038 pico seconds and
-not 15125 as currently set.
+When DbC is disconnected then xhci_dbc_tty_unregister_device()
+is called. However if there is any user space process blocked
+on write to DbC terminal device then it will never be signalled
+and thus stay blocked indifinitely.
 
-Fixes: e462b2717380b4 ("net: lan966x: Add offload support for taprio")
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251121061411.810571-1-horatiu.vultur@microchip.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This fix adds a tty_vhangup() call in xhci_dbc_tty_unregister_device().
+The tty_vhangup() wakes up any blocked writers and causes subsequent
+write attempts to DbC terminal device to fail.
+
+Cc: stable <stable@kernel.org>
+Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
+Signed-off-by: Łukasz Bartosik <ukaszb@chromium.org>
+Link: https://patch.msgid.link/20251119212910.1245694-1-ukaszb@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/usb/host/xhci-dbgtty.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c b/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c
-index 0a0e233f36ab0..667f2651ee309 100644
---- a/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c
-+++ b/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c
-@@ -1,9 +1,12 @@
- // SPDX-License-Identifier: GPL-2.0+
+--- a/drivers/usb/host/xhci-dbgtty.c
++++ b/drivers/usb/host/xhci-dbgtty.c
+@@ -550,6 +550,12 @@ static void xhci_dbc_tty_unregister_devi
  
- #include <linux/ptp_classify.h>
-+#include <linux/units.h>
- 
- #include "lan966x_main.h"
- 
-+#define LAN9X66_CLOCK_RATE	165617754
+ 	if (!port->registered)
+ 		return;
++	/*
++	 * Hang up the TTY. This wakes up any blocked
++	 * writers and causes subsequent writes to fail.
++	 */
++	tty_vhangup(port->port.tty);
 +
- #define LAN966X_MAX_PTP_ID	512
- 
- /* Represents 1ppm adjustment in 2^59 format with 6.037735849ns as reference
-@@ -896,5 +899,5 @@ void lan966x_ptp_rxtstamp(struct lan966x *lan966x, struct sk_buff *skb,
- u32 lan966x_ptp_get_period_ps(void)
- {
- 	/* This represents the system clock period in picoseconds */
--	return 15125;
-+	return PICO / LAN9X66_CLOCK_RATE;
- }
--- 
-2.51.0
-
+ 	tty_unregister_device(dbc_tty_driver, port->minor);
+ 	xhci_dbc_tty_exit_port(port);
+ 	port->registered = false;
 
 
 
