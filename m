@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-198486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CC18C9FAF4
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:52:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 598D3CA0881
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:38:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BC0363007692
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:45:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 74991317664C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:18:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10C0930FF26;
-	Wed,  3 Dec 2025 15:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C14434A779;
+	Wed,  3 Dec 2025 16:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wtYzCl1n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2T5bDOSF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC43D30FC3A;
-	Wed,  3 Dec 2025 15:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2661534A3BC;
+	Wed,  3 Dec 2025 16:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776704; cv=none; b=TltIdx7J1ItM+2DVAt1Z+fe9qvfBtzHtvuq3ibcYkVI7ctsdWmOgwJv3rgzyMfWevfSovn/DD5P71Rj7NRj2lVonrlgZ6c24ZlDdbmjSldo0lRmCsSLRBP0dvn45ZKo5hxqUx/hGbpMX6C6IGz3hATOo+Um8FD/6rgENd+eVsH0=
+	t=1764778448; cv=none; b=Cf44g6s33phTF2r3TT/twhEO5dBVPMH5oQOT0TG1gTKAfM3YchrWvDWXfDzGN8hxGaJ7gNwOOkemZzovOM1jaGYHp30IAxHzBli6LIzibPkO3MbhzQn+AOwFoG2pG5yXTLadCwi0G1jBUH/0+gdZKkkHF4IjAI/vq6yGQJRSfrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776704; c=relaxed/simple;
-	bh=VYgisZ3wB4EZJ20LJtOAwzljpGhYCjhmKTHA4piY34s=;
+	s=arc-20240116; t=1764778448; c=relaxed/simple;
+	bh=nvF5tRz6cbZ6VKW1k0qYQfKCaUw4DljIwpwg4p71XvM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RPFzLk4gFDNy9V/kYoWJeDdEZg/LBNQfEfPBfiA5hJEGXowJTb8orPnd7C/XQdm7ZgbiIA22i3+Xw1YETVOxDd6hIALO3fMwIdsgK64QgfNNNIw87I/3k0zckh1bxvg5XAeyv2kSoVXnVCmVxRpB72sgbhW08KN84Wu2pUdTOuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wtYzCl1n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9B7BC4CEF5;
-	Wed,  3 Dec 2025 15:45:03 +0000 (UTC)
+	 MIME-Version; b=G0jF7eYLjRcwQpL0pzlCsDRQ9GKebfFIkAXwBRit98M6Tb2+1kEvZTi0UvjTAaLnP/9oIf6mUFg6lFopKN9Vyq9g5VGxDQAdu1R5gOdMCLC1/NwHzYAyUTl0yuXHdxqSwmOf/5LS1rFFEXbJ411NMuojrn41IOYev8dANt8NVn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2T5bDOSF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DC1CC4CEF5;
+	Wed,  3 Dec 2025 16:14:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776704;
-	bh=VYgisZ3wB4EZJ20LJtOAwzljpGhYCjhmKTHA4piY34s=;
+	s=korg; t=1764778448;
+	bh=nvF5tRz6cbZ6VKW1k0qYQfKCaUw4DljIwpwg4p71XvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wtYzCl1nx5xO0MeIEYJo7NRaZF/oiu3nzwYFAFeWZ891N62fCDe8td91JY2b6cmtZ
-	 03qXD1UaCxNmbSvHVKFJGlv5jP8CPWFgsjjFyHR+7iKI+nhhdtXvGHhVqrI5Ij6zf1
-	 IZT2uwa2diKGZLbdIye+bayok8RMQ5690Hh8uuJo=
+	b=2T5bDOSFDGmKzOQTO+iiZynQrdPmnRn6vYCNv1BMboCN1hF/K/gmUkS9BBKWynINz
+	 vkSDvp7HZYlwPMHiIxBOjaXm/BBu6z+Vqj+VX8hiyOieL1TMPK9MOGLNi56lN2xM/r
+	 f/cWQdKuuvcCZnR2IppcDNSfjFR4RMgf1zHVEvHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 262/300] mailbox: mailbox-test: Fix debugfs_create_dir error checking
+	Nathan Chancellor <nathan@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 316/392] net: qede: Initialize qede_ll_ops with designated initializer
 Date: Wed,  3 Dec 2025 16:27:46 +0100
-Message-ID: <20251203152410.343939781@linuxfoundation.org>
+Message-ID: <20251203152425.788765291@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +59,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 3acf1028f5003731977f750a7070f3321a9cb740 ]
+commit 6b3ab7f2cbfaeb6580709cd8ef4d72cfd01bfde4 upstream.
 
-The debugfs_create_dir() function returns ERR_PTR() on error, not NULL.
-The current null-check fails to catch errors.
+After a recent change [1] in clang's randstruct implementation to
+randomize structures that only contain function pointers, there is an
+error because qede_ll_ops get randomized but does not use a designated
+initializer for the first member:
 
-Use IS_ERR() to correctly check for errors.
+  drivers/net/ethernet/qlogic/qede/qede_main.c:206:2: error: a randomized struct can only be initialized with a designated initializer
+    206 |         {
+        |         ^
 
-Fixes: 8ea4484d0c2b ("mailbox: Add generic mechanism for testing Mailbox Controllers")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Explicitly initialize the common member using a designated initializer
+to fix the build.
+
+Cc: stable@vger.kernel.org
+Fixes: 035f7f87b729 ("randstruct: Enable Clang support")
+Link: https://github.com/llvm/llvm-project/commit/04364fb888eea6db9811510607bed4b200bcb082 [1]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://patch.msgid.link/20250507-qede-fix-clang-randstruct-v1-1-5ccc15626fba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mailbox/mailbox-test.c | 2 +-
+ drivers/net/ethernet/qlogic/qede/qede_main.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
-index abcee58e851c2..29c04157b5e88 100644
---- a/drivers/mailbox/mailbox-test.c
-+++ b/drivers/mailbox/mailbox-test.c
-@@ -267,7 +267,7 @@ static int mbox_test_add_debugfs(struct platform_device *pdev,
- 		return 0;
+--- a/drivers/net/ethernet/qlogic/qede/qede_main.c
++++ b/drivers/net/ethernet/qlogic/qede/qede_main.c
+@@ -194,7 +194,7 @@ static struct pci_driver qede_pci_driver
+ };
  
- 	tdev->root_debugfs_dir = debugfs_create_dir(dev_name(&pdev->dev), NULL);
--	if (!tdev->root_debugfs_dir) {
-+	if (IS_ERR(tdev->root_debugfs_dir)) {
- 		dev_err(&pdev->dev, "Failed to create Mailbox debugfs\n");
- 		return -EINVAL;
- 	}
--- 
-2.51.0
-
+ static struct qed_eth_cb_ops qede_ll_ops = {
+-	{
++	.common = {
+ #ifdef CONFIG_RFS_ACCEL
+ 		.arfs_filter_op = qede_arfs_filter_op,
+ #endif
 
 
 
