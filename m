@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-198658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D065CCA11DF
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:44:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16C7FCA0FC0
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:30:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BDD6C342A811
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:50:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5B062332A7E6
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:28:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7351233CEB6;
-	Wed,  3 Dec 2025 15:54:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 075DC3563C3;
+	Wed,  3 Dec 2025 16:44:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QzMMSa1s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jpGOoTgP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2528C33DEF0;
-	Wed,  3 Dec 2025 15:54:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6207341ACA;
+	Wed,  3 Dec 2025 16:44:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777263; cv=none; b=t5Bqw+SbdNJh5Iv6CbHAglP9f3Hq4g0NMImjuh2ZkLGbjp/9BGYCPEUmQG08wGKuEFdV/VpYqu2yMxBJBDgSAoIqxlsBFE6mN4vy7cfGHXIlL3YLFIiCLWAKqwVkJKezTgY41u8lKom4TvtzU5N1kiQag66lm3j2iRxFgJbJWo4=
+	t=1764780273; cv=none; b=D4tH9HUc8/kZK95l1HLDL/VczOPeCP5Iq3159Qr2tnkRN/4HfsDQGfm/pNH3j9zc727iEkACofSNjJJLN5m3a46SSesqaMA0Gm+1zXmPEA04iBIvxL/4T84Hmmdck5EeHWhkaPAijfO4y2+deRuqCRnjXWKhFpbEcJvWKb5FohI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777263; c=relaxed/simple;
-	bh=yI/v/Y3pUULelpioghK5UPh+md8XwDypHCIWq6i0/bA=;
+	s=arc-20240116; t=1764780273; c=relaxed/simple;
+	bh=2h1VqRc0Zq2SW6XYCuj6Y4MazwZcvuacSJ8FlkzyT3w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E4nFfGAN6Ng5Or58LxO609JD94e/LBm72oA0e+dY0wWwoSjv8DZ6R7qlHYDeOodr/rXamLPf8KPHXMP4zaN80aBXVpT8KcDTL8x0e7ockwDY6w71MextEyEbZYz4BR3Fkglna+2VQ5OIP30dF3eD3S2wfqQFGMw06rkX218JkAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QzMMSa1s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89402C19423;
-	Wed,  3 Dec 2025 15:54:22 +0000 (UTC)
+	 MIME-Version; b=JbDfPGZGYHZ1bJVB9Wp8WhcJmmpHb/vOq20w549VHsDq5S3m2MH7dOW7cjAdwEhyTVoj8YovvWk6BmoSz+K7yy/vy3iFd/5xH0oBUc4ZAodoBeXDg/YKA8p+nUy3QPaajvDHgKrO0Gca2+w+pibXjLJrVV6kuHDJoSo9IVVFebM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jpGOoTgP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26F10C4CEF5;
+	Wed,  3 Dec 2025 16:44:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777263;
-	bh=yI/v/Y3pUULelpioghK5UPh+md8XwDypHCIWq6i0/bA=;
+	s=korg; t=1764780273;
+	bh=2h1VqRc0Zq2SW6XYCuj6Y4MazwZcvuacSJ8FlkzyT3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QzMMSa1sPA0Vjcgw5U7/weV3OMtycoZJ67dRPCutA7DYSfyuOfySUZpubNmBgoixU
-	 p0+pWRmAl7Jdl9VWts8D2NGOSOYXDaH4J7jYPDUYtS4tyZT5ch+8RIbW1Gdk77q4hG
-	 0gHmAJ7L7CuLUgEQalXr0SZRzcKkTzMp2H6p+18w=
+	b=jpGOoTgPzD1BtHVntxhXA6bndl8zZBfeqf7ZQ0CM87f+raLPLlbnT1cx5Qdre6O6G
+	 4WFPpSEwKFsrr7Zh+z6u+9wDqoR3ipSj5F0Hg50STsU3r+U4uCbTzcR5vb0NDFlFhp
+	 q72IQIvJRCyTpOEyrP6oo5gciFrQgj/drMfztELo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Alex Hung <alex.hung@amd.com>
-Subject: [PATCH 6.17 131/146] drm/amd/display: Check NULL before accessing
-Date: Wed,  3 Dec 2025 16:28:29 +0100
-Message-ID: <20251203152351.266959523@linuxfoundation.org>
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Elliot Berman <quic_eberman@quicinc.com>,
+	Jassi Brar <jaswinder.singh@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 508/568] mailbox: pcc: Use mbox_bind_client
+Date: Wed,  3 Dec 2025 16:28:30 +0100
+Message-ID: <20251203152459.321014548@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +61,162 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Elliot Berman <quic_eberman@quicinc.com>
 
-commit 3ce62c189693e8ed7b3abe551802bbc67f3ace54 upstream.
+[ Upstream commit 76d4adacd52e78bea2e393081f2a5766261d1e3a ]
 
-[WHAT]
-IGT kms_cursor_legacy's long-nonblocking-modeset-vs-cursor-atomic
-fails with NULL pointer dereference. This can be reproduced with
-both an eDP panel and a DP monitors connected.
+Use generic mbox_bind_client() to bind omap mailbox channel to a client.
 
- BUG: kernel NULL pointer dereference, address: 0000000000000000
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 0 P4D 0
- Oops: Oops: 0000 [#1] SMP NOPTI
- CPU: 13 UID: 0 PID: 2960 Comm: kms_cursor_lega Not tainted
-6.16.0-99-custom #8 PREEMPT(voluntary)
- Hardware name: AMD ........
- RIP: 0010:dc_stream_get_scanoutpos+0x34/0x130 [amdgpu]
- Code: 57 4d 89 c7 41 56 49 89 ce 41 55 49 89 d5 41 54 49
- 89 fc 53 48 83 ec 18 48 8b 87 a0 64 00 00 48 89 75 d0 48 c7 c6 e0 41 30
- c2 <48> 8b 38 48 8b 9f 68 06 00 00 e8 8d d7 fd ff 31 c0 48 81 c3 e0 02
- RSP: 0018:ffffd0f3c2bd7608 EFLAGS: 00010292
- RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffd0f3c2bd7668
- RDX: ffffd0f3c2bd7664 RSI: ffffffffc23041e0 RDI: ffff8b32494b8000
- RBP: ffffd0f3c2bd7648 R08: ffffd0f3c2bd766c R09: ffffd0f3c2bd7760
- R10: ffffd0f3c2bd7820 R11: 0000000000000000 R12: ffff8b32494b8000
- R13: ffffd0f3c2bd7664 R14: ffffd0f3c2bd7668 R15: ffffd0f3c2bd766c
- FS:  000071f631b68700(0000) GS:ffff8b399f114000(0000)
-knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000000000000000 CR3: 00000001b8105000 CR4: 0000000000f50ef0
- PKRU: 55555554
- Call Trace:
- <TASK>
- dm_crtc_get_scanoutpos+0xd7/0x180 [amdgpu]
- amdgpu_display_get_crtc_scanoutpos+0x86/0x1c0 [amdgpu]
- ? __pfx_amdgpu_crtc_get_scanout_position+0x10/0x10[amdgpu]
- amdgpu_crtc_get_scanout_position+0x27/0x50 [amdgpu]
- drm_crtc_vblank_helper_get_vblank_timestamp_internal+0xf7/0x400
- drm_crtc_vblank_helper_get_vblank_timestamp+0x1c/0x30
- drm_crtc_get_last_vbltimestamp+0x55/0x90
- drm_crtc_next_vblank_start+0x45/0xa0
- drm_atomic_helper_wait_for_fences+0x81/0x1f0
- ...
+mbox_bind_client is identical to the replaced lines, except that it:
+ - Does the operation under con_mutex which prevents possible races in
+   removal path
+ - Sets TXDONE_BY_ACK if pcc uses TXDONE_BY_POLL and the client knows
+   when tx is done. TXDONE_BY_ACK is already set if there's no interrupt,
+   so this is not applicable.
+ - Calls chan->mbox->ops->startup. This is usecase for requesting irq:
+   move the devm_request_irq into the startup callback and unregister it
+   in the shutdown path.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 621e55f1919640acab25383362b96e65f2baea3c)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tested-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Elliot Berman <quic_eberman@quicinc.com>
+Signed-off-by: Jassi Brar <jaswinder.singh@linaro.org>
+Stable-dep-of: ff0e4d4c97c9 ("mailbox: pcc: don't zero error register")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc_stream.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/mailbox/pcc.c | 84 +++++++++++++++++++++++--------------------
+ 1 file changed, 45 insertions(+), 39 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
-@@ -705,9 +705,14 @@ bool dc_stream_get_scanoutpos(const stru
+diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
+index 105d46c9801ba..a44d4b3e5beb2 100644
+--- a/drivers/mailbox/pcc.c
++++ b/drivers/mailbox/pcc.c
+@@ -282,8 +282,7 @@ pcc_mbox_request_channel(struct mbox_client *cl, int subspace_id)
  {
- 	uint8_t i;
- 	bool ret = false;
--	struct dc  *dc = stream->ctx->dc;
--	struct resource_context *res_ctx =
--		&dc->current_state->res_ctx;
-+	struct dc  *dc;
-+	struct resource_context *res_ctx;
-+
-+	if (!stream->ctx)
-+		return false;
-+
-+	dc = stream->ctx->dc;
-+	res_ctx = &dc->current_state->res_ctx;
+ 	struct pcc_chan_info *pchan;
+ 	struct mbox_chan *chan;
+-	struct device *dev;
+-	unsigned long flags;
++	int rc;
  
- 	dc_exit_ips_for_hw_access(dc);
+ 	if (subspace_id < 0 || subspace_id >= pcc_chan_count)
+ 		return ERR_PTR(-ENOENT);
+@@ -294,32 +293,10 @@ pcc_mbox_request_channel(struct mbox_client *cl, int subspace_id)
+ 		pr_err("Channel not found for idx: %d\n", subspace_id);
+ 		return ERR_PTR(-EBUSY);
+ 	}
+-	dev = chan->mbox->dev;
  
+-	spin_lock_irqsave(&chan->lock, flags);
+-	chan->msg_free = 0;
+-	chan->msg_count = 0;
+-	chan->active_req = NULL;
+-	chan->cl = cl;
+-	init_completion(&chan->tx_complete);
+-
+-	if (chan->txdone_method == TXDONE_BY_POLL && cl->knows_txdone)
+-		chan->txdone_method = TXDONE_BY_ACK;
+-
+-	spin_unlock_irqrestore(&chan->lock, flags);
+-
+-	if (pchan->plat_irq > 0) {
+-		int rc;
+-
+-		rc = devm_request_irq(dev, pchan->plat_irq, pcc_mbox_irq, 0,
+-				      MBOX_IRQ_NAME, chan);
+-		if (unlikely(rc)) {
+-			dev_err(dev, "failed to register PCC interrupt %d\n",
+-				pchan->plat_irq);
+-			pcc_mbox_free_channel(&pchan->chan);
+-			return ERR_PTR(rc);
+-		}
+-	}
++	rc = mbox_bind_client(chan, cl);
++	if (rc)
++		return ERR_PTR(rc);
+ 
+ 	return &pchan->chan;
+ }
+@@ -333,23 +310,12 @@ EXPORT_SYMBOL_GPL(pcc_mbox_request_channel);
+  */
+ void pcc_mbox_free_channel(struct pcc_mbox_chan *pchan)
+ {
+-	struct pcc_chan_info *pchan_info = to_pcc_chan_info(pchan);
+ 	struct mbox_chan *chan = pchan->mchan;
+-	unsigned long flags;
+ 
+ 	if (!chan || !chan->cl)
+ 		return;
+ 
+-	if (pchan_info->plat_irq > 0)
+-		devm_free_irq(chan->mbox->dev, pchan_info->plat_irq, chan);
+-
+-	spin_lock_irqsave(&chan->lock, flags);
+-	chan->cl = NULL;
+-	chan->active_req = NULL;
+-	if (chan->txdone_method == TXDONE_BY_ACK)
+-		chan->txdone_method = TXDONE_BY_POLL;
+-
+-	spin_unlock_irqrestore(&chan->lock, flags);
++	mbox_free_channel(chan);
+ }
+ EXPORT_SYMBOL_GPL(pcc_mbox_free_channel);
+ 
+@@ -377,8 +343,48 @@ static int pcc_send_data(struct mbox_chan *chan, void *data)
+ 	return pcc_chan_reg_read_modify_write(&pchan->db);
+ }
+ 
++/**
++ * pcc_startup - Called from Mailbox Controller code. Used here
++ *		to request the interrupt.
++ * @chan: Pointer to Mailbox channel to startup.
++ *
++ * Return: Err if something failed else 0 for success.
++ */
++static int pcc_startup(struct mbox_chan *chan)
++{
++	struct pcc_chan_info *pchan = chan->con_priv;
++	int rc;
++
++	if (pchan->plat_irq > 0) {
++		rc = devm_request_irq(chan->mbox->dev, pchan->plat_irq, pcc_mbox_irq, 0,
++				      MBOX_IRQ_NAME, chan);
++		if (unlikely(rc)) {
++			dev_err(chan->mbox->dev, "failed to register PCC interrupt %d\n",
++				pchan->plat_irq);
++			return rc;
++		}
++	}
++
++	return 0;
++}
++
++/**
++ * pcc_shutdown - Called from Mailbox Controller code. Used here
++ *		to free the interrupt.
++ * @chan: Pointer to Mailbox channel to shutdown.
++ */
++static void pcc_shutdown(struct mbox_chan *chan)
++{
++	struct pcc_chan_info *pchan = chan->con_priv;
++
++	if (pchan->plat_irq > 0)
++		devm_free_irq(chan->mbox->dev, pchan->plat_irq, chan);
++}
++
+ static const struct mbox_chan_ops pcc_chan_ops = {
+ 	.send_data = pcc_send_data,
++	.startup = pcc_startup,
++	.shutdown = pcc_shutdown,
+ };
+ 
+ /**
+-- 
+2.51.0
+
 
 
 
