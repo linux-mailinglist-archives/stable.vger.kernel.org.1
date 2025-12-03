@@ -1,161 +1,207 @@
-Return-Path: <stable+bounces-199898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A305CA090B
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:41:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35E8CCA05F8
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:22:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7A96D300441C
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:41:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D0A2432B02EE
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:07:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A880233769B;
-	Wed,  3 Dec 2025 17:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6972434E749;
+	Wed,  3 Dec 2025 16:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b="RYh5JCth"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="HWntTxFG";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="luALAtNN";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="A9EmrxSR";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="TNorrLWd"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp126.iad3b.emailsrvr.com (smtp126.iad3b.emailsrvr.com [146.20.161.126])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C77C33B6CC
-	for <stable@vger.kernel.org>; Wed,  3 Dec 2025 17:41:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=146.20.161.126
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D31C634EF18
+	for <stable@vger.kernel.org>; Wed,  3 Dec 2025 16:25:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764783712; cv=none; b=CRXuDPqeDnIasYRjUUVwqno9CJqiAXymvOZrlME4gEdF7kBKNyc+wWTnaZhulaC4Q2tIf3h0rw1/EDicZEozmEaXy/45m1tqWF4p4iZOtaFtO0mRtVwaXq+AIaob+ttiY449/MnoXWRFD1RkjejZF3QMEWF+VzHPoRi26rwqM6I=
+	t=1764779129; cv=none; b=Fu5V/DYlHE+go0wx1bR/9ZQaf+kY+sM6MLqW5/9aUaOn+Ffw7LMELqLV5SzuHYWJUxvWnasfFCe29mlqbSuujht+G6ktj3yctcqSeBLHPeLDb8tOm6nTr0tNqXpTGeCmKvLazvcFjghm3PbRT/pTSzRb8bik1MBzZN1MSaJbJ98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764783712; c=relaxed/simple;
-	bh=WCav8nkVt90g2JQRZbYoi88Ep53HirQkcWsI+6DNw3E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mjZ6fzn81MygR5f1InKwianbyUFclliSnWj62Z+7+grObHTPo0+eM83jQ6Y3Up/RbUT/MJjF+Ey39hU+Fjfdmpa5sIlktK/3dunYADXkf641SAvTUYwioqo8Tgn5VzKEyn7JeVqh2KsbZWpv8ddso0MtL5CGCSMmrqWxY//M0V0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk; spf=pass smtp.mailfrom=mev.co.uk; dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b=RYh5JCth; arc=none smtp.client-ip=146.20.161.126
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mev.co.uk
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
-	s=20221208-6x11dpa4; t=1764779092;
-	bh=WCav8nkVt90g2JQRZbYoi88Ep53HirQkcWsI+6DNw3E=;
-	h=From:To:Subject:Date:From;
-	b=RYh5JCthTAfLdZaLSXSTZWR0rjhTY3wD50sp8nm04c4Xah5sHGmCxEWNnaBhYAl6U
-	 mP/rsIgXEfPmW1r070+Eg1bsFJZHr6VGaNRKUOExBwMFofa808V+cx6IV3vF0EGunf
-	 GrxyU/ndSrK9Qtm+SSJlimkxYGuP3KMePO6ydgBk=
-X-Auth-ID: abbotti@mev.co.uk
-Received: by smtp16.relay.iad3b.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id AAC5EC0202;
-	Wed,  3 Dec 2025 11:24:51 -0500 (EST)
-From: Ian Abbott <abbotti@mev.co.uk>
-To: linux-kernel@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ian Abbott <abbotti@mev.co.uk>,
-	H Hartley Sweeten <hsweeten@visionengravers.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] comedi: Fix getting range information for subdevices 16 to 255
-Date: Wed,  3 Dec 2025 16:24:38 +0000
-Message-ID: <20251203162438.176841-1-abbotti@mev.co.uk>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1764779129; c=relaxed/simple;
+	bh=kRtZt2+xC3jiWLOR6EQNf0RED6xeCCW7ZCYxEDIHAlA=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EhH3kBCgGJaWnuKMovhrApAOc0hY+CPFK4Jc48eT5GNMqRZzSaeNqxUDxHbDrQflTVvonPGHXoXyNQnEF2BkvY8OTFpkGq561piK7H7FX4cGMl6fKGSUw6aQhPlx0noLwMZ/pNfTIkhqzTgmNc1OFXq9mgDmOXnGTehNLP8eklI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=HWntTxFG; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=luALAtNN; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=A9EmrxSR; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=TNorrLWd; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 67D0B336F0;
+	Wed,  3 Dec 2025 16:25:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1764779122; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PJsGlmKUmNCUFu/ai9KmssCBkH1xCYbK1kcPiYz9Ml8=;
+	b=HWntTxFGofhEQeKmKiDhblxMDg1qeaZXqHkVCGopdv2qao8XsDGLGSM59UGzprOrPcfPtp
+	ZgmPmRr4vQixu4YniA43Bwld3uIoOGr/xd+1llJ/bncFbKKO7gUk0zAkNxhokAliDHYlog
+	A8noKM1QnuSNCRta4bCrSIY2d9rCglo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1764779122;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PJsGlmKUmNCUFu/ai9KmssCBkH1xCYbK1kcPiYz9Ml8=;
+	b=luALAtNNXLsDgw8GaFkeWjyvaFY00LTq+DPntledOnE6WsjDuSTd648VRzKISeiB9kKyiy
+	0Ua543DPbroAudBQ==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=A9EmrxSR;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=TNorrLWd
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1764779121; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PJsGlmKUmNCUFu/ai9KmssCBkH1xCYbK1kcPiYz9Ml8=;
+	b=A9EmrxSRswXd6sU8X399spT7Ejaq6QEMfh2yFpeWRP5EZT4Xd/K5IQOWyPF5ntwh5kmwm7
+	ykzsiu16PcIdV9E0AHeK5ELuknga2kdtrW3jSiu8eeno3HdFqHovg6ami4/koMDDaCZ0DX
+	rnV1HgcGuqzMCIgSvOpERnPbrY/Ruck=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1764779121;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PJsGlmKUmNCUFu/ai9KmssCBkH1xCYbK1kcPiYz9Ml8=;
+	b=TNorrLWd8OQIsJ6LqoX6gcW6q1krILp7sYg0eqLPJGVx0U3RldpXEk/bj00Sg1TPqCeNpI
+	DLsmcn8vA4GIjjAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 363073EA63;
+	Wed,  3 Dec 2025 16:25:21 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id onsIDHFkMGmfEQAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Wed, 03 Dec 2025 16:25:21 +0000
+Date: Wed, 03 Dec 2025 17:25:20 +0100
+Message-ID: <87ecpbsfbj.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org,
+	patches@lists.linux.dev,
+	syzbot+bfd77469c8966de076f7@syzkaller.appspotmail.com,
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: Re: [PATCH 5.15 276/392] ALSA: usb-audio: Fix potential overflow of PCM transfer buffer
+In-Reply-To: <20251203152424.319007924@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
+	<20251203152424.319007924@linuxfoundation.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.1 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Classification-ID: b9f2cd84-f0fb-458a-b437-5d246ca440aa-1-1
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Flag: NO
+X-Spam-Score: -2.01
+X-Rspamd-Queue-Id: 67D0B336F0
+X-Spamd-Result: default: False [-2.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_CONTAINS_FROM(1.00)[];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	ARC_NA(0.00)[];
+	TAGGED_RCPT(0.00)[bfd77469c8966de076f7];
+	RCVD_TLS_ALL(0.00)[];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,syzkaller.appspot.com:url,linuxfoundation.org:email,appspotmail.com:email,windriver.com:email,suse.de:mid,suse.de:dkim,suse.de:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Level: 
 
-The `COMEDI_RANGEINFO` ioctl does not work properly for subdevice
-indices above 15.  Currently, the only in-tree COMEDI drivers that
-support more than 16 subdevices are the "8255" driver and the
-"comedi_bond" driver.  Making the ioctl work for subdevice indices up to
-255 is achievable.  It needs minor changes to the handling of the
-`COMEDI_RANGEINFO` and `COMEDI_CHANINFO` ioctls that should be mostly
-harmless to user-space, apart from making them less broken.  Details
-follow...
+On Wed, 03 Dec 2025 16:27:06 +0100,
+Greg Kroah-Hartman wrote:
+> 
+> 5.15-stable review patch.  If anyone has any objections, please let me know.
+> 
+> ------------------
+> 
+> From: Takashi Iwai <tiwai@suse.de>
+> 
+> commit 05a1fc5efdd8560f34a3af39c9cf1e1526cc3ddf upstream.
+> 
+> The PCM stream data in USB-audio driver is transferred over USB URB
+> packet buffers, and each packet size is determined dynamically.  The
+> packet sizes are limited by some factors such as wMaxPacketSize USB
+> descriptor.  OTOH, in the current code, the actually used packet sizes
+> are determined only by the rate and the PPS, which may be bigger than
+> the size limit above.  This results in a buffer overflow, as reported
+> by syzbot.
+> 
+> Basically when the limit is smaller than the calculated packet size,
+> it implies that something is wrong, most likely a weird USB
+> descriptor.  So the best option would be just to return an error at
+> the parameter setup time before doing any further operations.
+> 
+> This patch introduces such a sanity check, and returns -EINVAL when
+> the packet size is greater than maxpacksize.  The comparison with
+> ep->packsize[1] alone should suffice since it's always equal or
+> greater than ep->packsize[0].
+> 
+> Reported-by: syzbot+bfd77469c8966de076f7@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=bfd77469c8966de076f7
+> Link: https://lore.kernel.org/690b6b46.050a0220.3d0d33.0054.GAE@google.com
+> Cc: Lizhi Xu <lizhi.xu@windriver.com>
+> Cc: <stable@vger.kernel.org>
+> Link: https://patch.msgid.link/20251109091211.12739-1-tiwai@suse.de
+> Signed-off-by: Takashi Iwai <tiwai@suse.de>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>  sound/usb/endpoint.c |    5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> --- a/sound/usb/endpoint.c
+> +++ b/sound/usb/endpoint.c
+> @@ -1374,6 +1374,11 @@ int snd_usb_endpoint_set_params(struct s
+>  	ep->sample_rem = ep->cur_rate % ep->pps;
+>  	ep->packsize[0] = ep->cur_rate / ep->pps;
+>  	ep->packsize[1] = (ep->cur_rate + (ep->pps - 1)) / ep->pps;
+> +	if (ep->packsize[1] > ep->maxpacksize) {
+> +		usb_audio_dbg(chip, "Too small maxpacksize %u for rate %u / pps %u\n",
+> +			      ep->maxpacksize, ep->cur_rate, ep->pps);
+> +		return -EINVAL;
+> +	}
+>  
+>  	/* calculate the frequency in 16.16 format */
+>  	ep->freqm = ep->freqn;
 
-The `COMEDI_RANGEINFO` ioctl command gets the list of supported ranges
-(usually with units of volts or milliamps) for a COMEDI subdevice or
-channel.  (Only some subdevices have per-channel range tables, indicated
-by the `SDF_RANGETYPE` flag in the subdevice information.)  It uses a
-`range_type` value and a user-space pointer, both supplied by
-user-space, but the `range_type` value should match what was obtained
-using the `COMEDI_CHANINFO` ioctl (if the subdevice has per-channel
-range tables)  or `COMEDI_SUBDINFO` ioctl (if the subdevice uses a
-single range table for all channels).  Bits 15 to 0 of the `range_type`
-value contain the length of the range table, which is the only part that
-user-space should care about (so it can use a suitably sized buffer to
-fetch the range table).  Bits 23 to 16 store the channel index, which is
-assumed to be no more than 255 if the subdevice has per-channel range
-tables, and is set to 0 if the subdevice has a single range table.  For
-`range_type` values produced by the `COMEDI_SUBDINFO` ioctl, bits 31 to
-24 contain the subdevice index, which is assumed to be no more than 255.
-But for `range_type` values produced by the `COMEDI_CHANINFO` ioctl,
-bits 27 to 24 contain the subdevice index, which is assumed to be no
-more than 15, and bits 31 to 28 contain the COMEDI device's minor device
-number for some unknown reason lost in the mists of time.  The
-`COMEDI_RANGEINFO` ioctl extract the length from bits 15 to 0 of the
-user-supplied `range_type` value, extracts the channel index from bits
-23 to 16 (only used if the subdevice has per-channel range tables),
-extracts the subdevice index from bits 27 to 24, and ignores bits 31 to
-28.  So for subdevice indices 16 to 255, the `COMEDI_SUBDINFO` or
-`COMEDI_CHANINFO` ioctl will report a `range_type` value that doesn't
-work with the `COMEDI_RANGEINFO` ioctl.  It will either get the range
-table for the subdevice index modulo 16, or will fail with `-EINVAL`.
+This backport requires a similar workaround done for 6.12.y for the
+unbalanced mutex lock, the downstream commit fdf0dc82eb60
+    ALSA: usb-audio: Fix missing unlock at error path of maxpacksize check
 
-To fix this, always use bits 31 to 24 of the `range_type` value to hold
-the subdevice index (assumed to be no more than 255).  This affects the
-`COMEDI_CHANINFO` and `COMEDI_RANGEINFO` ioctls.  There should not be
-anything in user-space that depends on the old, broken usage, although
-it may now see different values in bits 31 to 28 of the `range_type`
-values reported by the `COMEDI_CHANINFO` ioctl for subdevices that have
-per-channel subdevices.  User-space should not be trying to decode bits
-31 to 16 of the `range_type` values anyway.
+It seems that 5.10.y doesn't need the workaround as it has no mutex
+lock applied around it.
 
-Fixes: ed9eccbe8970 ("Staging: add comedi core")
-Cc: <stable@vger.kernel.org> #5.17+
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
----
-Backports needed for kernels prior to 5.17 due to .c and .h files moving
-to different parts of the tree.
----
- drivers/comedi/comedi_fops.c | 2 +-
- drivers/comedi/range.c       | 2 +-
- include/uapi/linux/comedi.h  | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/comedi/comedi_fops.c b/drivers/comedi/comedi_fops.c
-index 657c98cd723e..2c3eb9e89571 100644
---- a/drivers/comedi/comedi_fops.c
-+++ b/drivers/comedi/comedi_fops.c
-@@ -1155,7 +1155,7 @@ static int do_chaninfo_ioctl(struct comedi_device *dev,
- 		for (i = 0; i < s->n_chan; i++) {
- 			int x;
- 
--			x = (dev->minor << 28) | (it->subdev << 24) | (i << 16) |
-+			x = (it->subdev << 24) | (i << 16) |
- 			    (s->range_table_list[i]->length);
- 			if (put_user(x, it->rangelist + i))
- 				return -EFAULT;
-diff --git a/drivers/comedi/range.c b/drivers/comedi/range.c
-index 8f43cf88d784..5b8f662365e3 100644
---- a/drivers/comedi/range.c
-+++ b/drivers/comedi/range.c
-@@ -52,7 +52,7 @@ int do_rangeinfo_ioctl(struct comedi_device *dev,
- 	const struct comedi_lrange *lr;
- 	struct comedi_subdevice *s;
- 
--	subd = (it->range_type >> 24) & 0xf;
-+	subd = (it->range_type >> 24) & 0xff;
- 	chan = (it->range_type >> 16) & 0xff;
- 
- 	if (!dev->attached)
-diff --git a/include/uapi/linux/comedi.h b/include/uapi/linux/comedi.h
-index 7314e5ee0a1e..798ec9a39e12 100644
---- a/include/uapi/linux/comedi.h
-+++ b/include/uapi/linux/comedi.h
-@@ -640,7 +640,7 @@ struct comedi_chaninfo {
- 
- /**
-  * struct comedi_rangeinfo - used to retrieve the range table for a channel
-- * @range_type:		Encodes subdevice index (bits 27:24), channel index
-+ * @range_type:		Encodes subdevice index (bits 31:24), channel index
-  *			(bits 23:16) and range table length (bits 15:0).
-  * @range_ptr:		Pointer to array of @struct comedi_krange to be filled
-  *			in with the range table for the channel or subdevice.
--- 
-2.51.0
+thanks,
 
+Takashi
 
