@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-199490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDE5CCA0DF5
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:18:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16DCCCA1143
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:42:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3E6B63101FAE
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:15:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 62C7E32B2CCA
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:43:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DADD320A05;
-	Wed,  3 Dec 2025 16:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B59BA31283C;
+	Wed,  3 Dec 2025 16:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WC+9S9PJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NAFVtzxS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0801E31A077;
-	Wed,  3 Dec 2025 16:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 700363081DF;
+	Wed,  3 Dec 2025 16:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779973; cv=none; b=lU5bXq/qKkPqo0wKO3HYLwP7jGawK7HHTG1PfnBwnsg2zpcNPBeItJpk+vnhK/q1h9srZNX8nNC02UPsBqoqwuFGrAtWzqsTJ1+pRSCEMwWr76b7TuvlwLIUP1xGKtt/AjGsWo10YI4uxmNV9cpUI7+z5C4oIoji2jZ/LuzsLwg=
+	t=1764778189; cv=none; b=XxcoRQvaqaODI6s2nLrXDC+HQCr9yOd2jGUxTD/SanB/ClRyOGfoQohE3EVBHF6mR3au6sm26ZuqHU3FTMb5SOcQ/vcKOeKiQAZGIdYJdLq7gQMShGK6BsKXqOvcX94CA6toK8qXtQZO8KoDlvyDxr2X16ef6aDhn5vRx7cEoPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779973; c=relaxed/simple;
-	bh=cQsQ4pdj2UYj4/AzU9PrQhJgYLYhTT4653IpQBgFIGM=;
+	s=arc-20240116; t=1764778189; c=relaxed/simple;
+	bh=fwwxUPhe+hlrtOynBG0qI5xQfJybzoVlFQNhRrHr50o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sS0X/GIFegYQMlmts5KKrd7QwSdxh2SzF5vy1spb1CygNpCSUzOyXnXc3TC96fQQrkdIsbIOKOTlrGkhxJ40mReU+P+ALVif+Q4+Dv/TYqLp5s26yU7Ltvy9tTfyWSGkSlTZInCAMN4G3WhuAEJ+uLhdoGftwbzQUKwNuQai6yE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WC+9S9PJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EF35C4CEF5;
-	Wed,  3 Dec 2025 16:39:31 +0000 (UTC)
+	 MIME-Version; b=ilS6vXdbJJs+I5F9A81DsxHoX0b+9FDeoJMVOhuIpoKiuDJEoobXzdZ4+TshS2dRNNzcvdUjT91s6cHX99QoAJl53wp8vm4ejCGHP4ifanXpghI2ra18YO7PQkuh8xh0Zv4GykUK/nzMhK2Hq38iY3BDXvBCJI4Brvo/QaxSRAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NAFVtzxS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FACAC116B1;
+	Wed,  3 Dec 2025 16:09:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779972;
-	bh=cQsQ4pdj2UYj4/AzU9PrQhJgYLYhTT4653IpQBgFIGM=;
+	s=korg; t=1764778189;
+	bh=fwwxUPhe+hlrtOynBG0qI5xQfJybzoVlFQNhRrHr50o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WC+9S9PJ3MoZmiWmWRh2UtLgwhQ03GBXMWtRw2cNmVtllnDWXACnvTGWMTchDizD8
-	 83TBCTD7Nc3eUb5s1gj9mGwwL8ASdqkckr4XDW/BUEmSOMJRFSx5mlndM1OE2N0IIm
-	 2p6bWxOpc7UBjAZ3yaIJrVnQ3G4se9aYe/m664E0=
+	b=NAFVtzxSBONy+hz3G+TOksS9EGotp2N1Xi2mzrQDXYaU20r5BPdpGMGSmwK9C/iXU
+	 EYnQIcBm4cDEqKRVkW4my/rWV1WHhGJQSZyg68pYpWMhC4kZ1GlQR8Sjos7b0Ic3pr
+	 UtD6kjM3a6SPdDuVk7YTuA08fstLrH83ElYbEAYY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joao Martins <joao.m.martins@oracle.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	syzbot+093a8a8b859472e6c257@syzkaller.appspotmail.com,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 416/568] iommufd: Dont overflow during division for dirty tracking
-Date: Wed,  3 Dec 2025 16:26:58 +0100
-Message-ID: <20251203152455.930939575@linuxfoundation.org>
+Subject: [PATCH 5.15 269/392] netfilter: nf_tables: reject duplicate device on updates
+Date: Wed,  3 Dec 2025 16:26:59 +0100
+Message-ID: <20251203152424.063304207@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +60,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@ziepe.ca>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit cb30dfa75d55eced379a42fd67bd5fb7ec38555e ]
+commit cf5fb87fcdaaaafec55dcc0dc5a9e15ead343973 upstream.
 
-If pgshift is 63 then BITS_PER_TYPE(*bitmap->bitmap) * pgsize will overflow
-to 0 and this triggers divide by 0.
+A chain/flowtable update with duplicated devices in the same batch is
+possible. Unfortunately, netdev event path only removes the first
+device that is found, leaving unregistered the hook of the duplicated
+device.
 
-In this case the index should just be 0, so reorganize things to divide
-by shift and avoid hitting any overflows.
+Check if a duplicated device exists in the transaction batch, bail out
+with EEXIST in such case.
 
-Link: https://patch.msgid.link/r/0-v1-663679b57226+172-iommufd_dirty_div0_jgg@nvidia.com
-Cc: stable@vger.kernel.org
-Fixes: 58ccf0190d19 ("vfio: Add an IOVA bitmap support")
-Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
-Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reported-by: syzbot+093a8a8b859472e6c257@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=093a8a8b859472e6c257
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-[ drivers/iommu/iommufd/iova_bitmap.c => drivers/vfio/iova_bitmap.c ]
+WARNING is hit when unregistering the hook:
+
+ [49042.221275] WARNING: CPU: 4 PID: 8425 at net/netfilter/core.c:340 nf_hook_entry_head+0xaa/0x150
+ [49042.221375] CPU: 4 UID: 0 PID: 8425 Comm: nft Tainted: G S                  6.16.0+ #170 PREEMPT(full)
+ [...]
+ [49042.221382] RIP: 0010:nf_hook_entry_head+0xaa/0x150
+
+Fixes: 78d9f48f7f44 ("netfilter: nf_tables: add devices to existing flowtable")
+Fixes: b9703ed44ffb ("netfilter: nf_tables: support for adding new devices to an existing netdev chain")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vfio/iova_bitmap.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ net/netfilter/nf_tables_api.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
---- a/drivers/vfio/iova_bitmap.c
-+++ b/drivers/vfio/iova_bitmap.c
-@@ -126,9 +126,8 @@ struct iova_bitmap {
- static unsigned long iova_bitmap_offset_to_index(struct iova_bitmap *bitmap,
- 						 unsigned long iova)
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 33d03340d9fc8..91b012e476be6 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -7893,6 +7893,7 @@ static int nft_flowtable_update(struct nft_ctx *ctx, const struct nlmsghdr *nlh,
  {
--	unsigned long pgsize = 1UL << bitmap->mapped.pgshift;
--
--	return iova / (BITS_PER_TYPE(*bitmap->bitmap) * pgsize);
-+	return (iova >> bitmap->mapped.pgshift) /
-+	       BITS_PER_TYPE(*bitmap->bitmap);
- }
+ 	const struct nlattr * const *nla = ctx->nla;
+ 	struct nft_flowtable_hook flowtable_hook;
++	struct nftables_pernet *nft_net;
+ 	struct nft_hook *hook, *next;
+ 	struct nft_trans *trans;
+ 	bool unregister = false;
+@@ -7908,6 +7909,20 @@ static int nft_flowtable_update(struct nft_ctx *ctx, const struct nlmsghdr *nlh,
+ 		if (nft_hook_list_find(&flowtable->hook_list, hook)) {
+ 			list_del(&hook->list);
+ 			kfree(hook);
++			continue;
++		}
++
++		nft_net = nft_pernet(ctx->net);
++		list_for_each_entry(trans, &nft_net->commit_list, list) {
++			if (trans->msg_type != NFT_MSG_NEWFLOWTABLE ||
++			    trans->ctx.table != ctx->table ||
++			    !nft_trans_flowtable_update(trans))
++				continue;
++
++			if (nft_hook_list_find(&nft_trans_flowtable_hooks(trans), hook)) {
++				err = -EEXIST;
++				goto err_flowtable_update_hook;
++			}
+ 		}
+ 	}
  
- /*
+-- 
+2.51.0
+
 
 
 
