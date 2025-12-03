@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-199482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 491B3CA0F27
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:25:53 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 535B6CA0012
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:38:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ADC4B346F6AB
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:23:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A524C3034CE5
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:34:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1F783191B9;
-	Wed,  3 Dec 2025 16:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 468B230DEA5;
+	Wed,  3 Dec 2025 16:09:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2d6LjMDg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M0ue6Tuq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B7931283B;
-	Wed,  3 Dec 2025 16:39:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0188526B756;
+	Wed,  3 Dec 2025 16:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779946; cv=none; b=LDlz5XhlzNTZl/+W+oR1vBtikHuezM+cx/WDdH333hKG4t1pzSXNETLqQFVvLaFEEIVGtrW7VIlTWa1BU1oskoNMq/fsGgi9Po7LbTxfpFS/U9eDZUKbkUBpSPiO8xhQFRnCvlcgjuyqapHsSz1FgJ3q6BghtB8cZRkt//se2wM=
+	t=1764778160; cv=none; b=S9m7seDtzoCISe4dGgtwdyeto/QcN3YvvbGycGNRBWrufRUbz6yMDI7pog3QcKamGJt9xlF+aM3ciD6zUxdJYUCPv2FC/qccT1VDzegiIUMlJtPYJU/XR1MRzNydajVXs0ewaXUrDugjOVD3qqEPyRl2HJ2qilMwskK6uivSmx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779946; c=relaxed/simple;
-	bh=+4aGfc45N8eT4gjRM7X05XoSfw8oLWO189gUui9d+TI=;
+	s=arc-20240116; t=1764778160; c=relaxed/simple;
+	bh=MsxDUDxKxcRfoMJbs8RSTlfok9jjziOn6OtLPWlIpIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aR+ccttdwkmVensrGPmfgUyUb7UGrqQLxuYT5fWbAPK0XFHsYdKQgneHVD1zBfWBKV4Y8F5yd9aK4Iji9qeGnywyrM2uUgCJsNEwNoUlRiWwVYaKq2LKzBr0Ueh1jW5Ak4reaoMYdw2hmVWccCOeM8GgSPRhaaYfmSEN7tJcw3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2d6LjMDg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5534FC4CEF5;
-	Wed,  3 Dec 2025 16:39:04 +0000 (UTC)
+	 MIME-Version; b=R3B86d/Kl66drN2hRF3EkA21xcHsWn8hfW+69tX7FDfai9i7EmFb+Lo9gV/SELOPtbWmp9kkMGWXSLmyVQxUfLhpsoppsBXFqlSEhNhHy2ETR4/Z2SvJrrOoX3qTyeVXKgKKosHY3z5iXZbc9aH7mg2ji9D/MYrM598TpynYaL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M0ue6Tuq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF691C4CEF5;
+	Wed,  3 Dec 2025 16:09:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779944;
-	bh=+4aGfc45N8eT4gjRM7X05XoSfw8oLWO189gUui9d+TI=;
+	s=korg; t=1764778159;
+	bh=MsxDUDxKxcRfoMJbs8RSTlfok9jjziOn6OtLPWlIpIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2d6LjMDgsZEn48K1rZIHBETS37F1AsIVM4xCvDiCJh18SW5jXW7OeCd1lnk0F6+oR
-	 Ds8OgXm+gUX1S1+OkKlZATOfdLrRuN9WQ+ImfN59H5tqE3S+Yk+4QjH2wRnV3D2rYQ
-	 E5ZFwT0zJf7wrv9ZV2aupH55PfkVTKcVvhiqepkc=
+	b=M0ue6TuqhEFMBNtF00Tav7pBnaxA06FmLrKOvXc3dkRQajgOcRMI6plEyv4zpIXSp
+	 ChVV0BrLaMBhEiFvXy2DAurZQ9HiHF+oBRj3MPaHj5fIMnX6vRtHpy/O2wVqn/M+mx
+	 2dhEQguZ5UMJJ2eaxVFwg9kD8oqBJl+ysIOM3ncM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Dinh Nguyen <dinguyen@kernel.org>
-Subject: [PATCH 6.1 409/568] EDAC/altera: Handle OCRAM ECC enable after warm reset
+	Rohit Keshri <rkeshri@redhat.com>,
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Maaz Mombasawala <maaz.mombasawala@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 261/392] drm/vmwgfx: Validate command header size against SVGA_CMD_MAX_DATASIZE
 Date: Wed,  3 Dec 2025 16:26:51 +0100
-Message-ID: <20251203152455.667143420@linuxfoundation.org>
+Message-ID: <20251203152423.771956247@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-commit fd3ecda38fe0cb713d167b5477d25f6b350f0514 upstream.
+[ Upstream commit 32b415a9dc2c212e809b7ebc2b14bc3fbda2b9af ]
 
-The OCRAM ECC is always enabled either by the BootROM or by the Secure Device
-Manager (SDM) during a power-on reset on SoCFPGA.
+This data originates from userspace and is used in buffer offset
+calculations which could potentially overflow causing an out-of-bounds
+access.
 
-However, during a warm reset, the OCRAM content is retained to preserve data,
-while the control and status registers are reset to their default values. As
-a result, ECC must be explicitly re-enabled after a warm reset.
-
-Fixes: 17e47dc6db4f ("EDAC/altera: Add Stratix10 OCRAM ECC support")
-Signed-off-by: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Dinh Nguyen <dinguyen@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251111080801.1279401-1-niravkumarlaxmidas.rabara@altera.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8ce75f8ab904 ("drm/vmwgfx: Update device includes for DX device functionality")
+Reported-by: Rohit Keshri <rkeshri@redhat.com>
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Reviewed-by: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patch.msgid.link/20251021190128.13014-1-ian.forbes@broadcom.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/altera_edac.c |   18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/edac/altera_edac.c
-+++ b/drivers/edac/altera_edac.c
-@@ -1194,10 +1194,22 @@ altr_check_ocram_deps_init(struct altr_e
- 	if (ret)
- 		return ret;
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+index 7dd42c5a7fd62..fd7d6987f9134 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+@@ -3627,6 +3627,11 @@ static int vmw_cmd_check(struct vmw_private *dev_priv,
  
--	/* Verify OCRAM has been initialized */
-+	/*
-+	 * Verify that OCRAM has been initialized.
-+	 * During a warm reset, OCRAM contents are retained, but the control
-+	 * and status registers are reset to their default values. Therefore,
-+	 * ECC must be explicitly re-enabled in the control register.
-+	 * Error condition: if INITCOMPLETEA is clear and ECC_EN is already set.
-+	 */
- 	if (!ecc_test_bits(ALTR_A10_ECC_INITCOMPLETEA,
--			   (base + ALTR_A10_ECC_INITSTAT_OFST)))
--		return -ENODEV;
-+			   (base + ALTR_A10_ECC_INITSTAT_OFST))) {
-+		if (!ecc_test_bits(ALTR_A10_ECC_EN,
-+				   (base + ALTR_A10_ECC_CTRL_OFST)))
-+			ecc_set_bits(ALTR_A10_ECC_EN,
-+				     (base + ALTR_A10_ECC_CTRL_OFST));
-+		else
-+			return -ENODEV;
+ 
+ 	cmd_id = header->id;
++	if (header->size > SVGA_CMD_MAX_DATASIZE) {
++		VMW_DEBUG_USER("SVGA3D command: %d is too big.\n",
++			       cmd_id + SVGA_3D_CMD_BASE);
++		return -E2BIG;
 +	}
+ 	*size = header->size + sizeof(SVGA3dCmdHeader);
  
- 	/* Enable IRQ on Single Bit Error */
- 	writel(ALTR_A10_ECC_SERRINTEN, (base + ALTR_A10_ECC_ERRINTENS_OFST));
+ 	cmd_id -= SVGA_3D_CMD_BASE;
+-- 
+2.51.0
+
 
 
 
