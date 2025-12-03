@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-198587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 010ADCA09AC
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:45:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CFB0C9FABE
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:51:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6E65B3001821
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:45:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7DA8D303FE7F
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:43:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8187D32E68B;
-	Wed,  3 Dec 2025 15:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB565309EFF;
+	Wed,  3 Dec 2025 15:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LXOTUszV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZUfTcZsQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CC2932E13D;
-	Wed,  3 Dec 2025 15:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F473306D3D;
+	Wed,  3 Dec 2025 15:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777036; cv=none; b=UtSi4WF6NapK0R/J1UcR2ZXRES2wHEEKy3PtU6CjlzXEgerUM/xT3pKzCSa67r08Sa5x/fRu7wRxQvivcFdF/60fK1m/U2yDubDlvu6X/FYDmn23yvWpJAeBfoOX7J/E3RWMDT6GZP0uVivvcTz1AFIVVamRtnjbx3JSgSfW69M=
+	t=1764776621; cv=none; b=gYMVy7yEAcSP8uN7JdZTrCmH8jgPk57O8zsplAC+77mmDhKS3JHDILULDv40731PMUO80WDzhQR1Avqyu0zAm1KBSs1no3SjW3nKbH5iPl41B7OPJTf6+L4tkY+WUNSeLKTeKuhezO7VVaFmXbv9YQZywwLxELgOdSuvJQHE8ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777036; c=relaxed/simple;
-	bh=RJ1Vtdq1wRQLbbth7r0mewb2wNGIkF0qA7yoJF8Xwdc=;
+	s=arc-20240116; t=1764776621; c=relaxed/simple;
+	bh=eZA5XddNndUM2H95WC2a0fYw2K7+VTFNtxxKpo34pFY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=frPJEtTJDJOCIB4Owpf8KqcL69QuG3CHbDaA1TImE9rucAXchd95hi4/aDm0UJOUDbVKAxxZPQ1FW56ZRhwakdNQ2b4+g3KiCMp1/hIBGVfU0rH+cAYez8Onwp3bJps2w2dyzu63NheEgqAaxw2FjnkcbIWeT6iGB3nKYJB0pwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LXOTUszV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3826C4CEF5;
-	Wed,  3 Dec 2025 15:50:35 +0000 (UTC)
+	 MIME-Version; b=i/RmK52F1ZAgVqrsttdW70XxR7KyK1PW6Aee5rKjoAJ1shw1UqLh7j+J0a3hpZo0DDMuo0FDiiAYQAX/7A/+f2zhfa45QZu/ajqgK+Y1PFF06uAuL9IpQnEnKS7xrt2iu2jGhCLNmqo++M7yzaso7UhOT1mn1NV/srWMTMk0QIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZUfTcZsQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95AEDC4CEF5;
+	Wed,  3 Dec 2025 15:43:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777036;
-	bh=RJ1Vtdq1wRQLbbth7r0mewb2wNGIkF0qA7yoJF8Xwdc=;
+	s=korg; t=1764776621;
+	bh=eZA5XddNndUM2H95WC2a0fYw2K7+VTFNtxxKpo34pFY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LXOTUszVwwciptIR9yN9GL0C8hVKkREH/cNuwECTtR6eDwZbKahlD6kwPQXstHaE2
-	 cVXwexXyCKmazm4bfn96CW6EZq/R1G4/poTBJGDTRSN7omlDTdyltyNFZ7ULy4JGuX
-	 p98FtTpezqstyR7UWtG/tki7KFUu7yNhbZ2nCH0Y=
+	b=ZUfTcZsQqiTdY26YcUFNraEVG8mStqCXt1OibS1XKXZVQSFJ0WF9Qop9acaxP09+Q
+	 xQt9nEoMJN1eRmz6mvTTtVuMUhZepSoLnvvDN0JbJaOLKHq0iNDGpRh4gzfax1vphz
+	 A+vs2laKpFV+rOk5Vr5AV4tmDgUvAgSWhOXWNRz4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.17 062/146] iio: adc: stm32-dfsdm: fix st,adc-alt-channel property handling
+	Simon Horman <horms@kernel.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Nishanth Menon <nm@ti.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 236/300] net: ethernet: ti: netcp: Standardize knav_dma_open_channel to return NULL on error
 Date: Wed,  3 Dec 2025 16:27:20 +0100
-Message-ID: <20251203152348.736957192@linuxfoundation.org>
+Message-ID: <20251203152409.368736620@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,48 +60,174 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olivier Moysan <olivier.moysan@foss.st.com>
+From: Nishanth Menon <nm@ti.com>
 
-commit 8a6b7989ff0cd0a95c93be1927f2af7ad10f28de upstream.
+[ Upstream commit 90a88306eb874fe4bbdd860e6c9787f5bbc588b5 ]
 
-Initially st,adc-alt-channel property was defined as an enum in the DFSDM
-binding. The DFSDM binding has been changed to use the new IIO backend
-framework, along with the adoption of IIO generic channels.
-In this new binding st,adc-alt-channel is defined as a boolean property,
-but it is still handled has an enum in DFSDM driver.
-Fix st,adc-alt-channel property handling in DFSDM driver.
+Make knav_dma_open_channel consistently return NULL on error instead
+of ERR_PTR. Currently the header include/linux/soc/ti/knav_dma.h
+returns NULL when the driver is disabled, but the driver
+implementation does not even return NULL or ERR_PTR on failure,
+causing inconsistency in the users. This results in a crash in
+netcp_free_navigator_resources as followed (trimmed):
 
-Fixes: 3208fa0cd919 ("iio: adc: stm32-dfsdm: adopt generic channels bindings")
-Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Unhandled fault: alignment exception (0x221) at 0xfffffff2
+[fffffff2] *pgd=80000800207003, *pmd=82ffda003, *pte=00000000
+Internal error: : 221 [#1] SMP ARM
+Modules linked in:
+CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.17.0-rc7 #1 NONE
+Hardware name: Keystone
+PC is at knav_dma_close_channel+0x30/0x19c
+LR is at netcp_free_navigator_resources+0x2c/0x28c
+
+[... TRIM...]
+
+Call trace:
+ knav_dma_close_channel from netcp_free_navigator_resources+0x2c/0x28c
+ netcp_free_navigator_resources from netcp_ndo_open+0x430/0x46c
+ netcp_ndo_open from __dev_open+0x114/0x29c
+ __dev_open from __dev_change_flags+0x190/0x208
+ __dev_change_flags from netif_change_flags+0x1c/0x58
+ netif_change_flags from dev_change_flags+0x38/0xa0
+ dev_change_flags from ip_auto_config+0x2c4/0x11f0
+ ip_auto_config from do_one_initcall+0x58/0x200
+ do_one_initcall from kernel_init_freeable+0x1cc/0x238
+ kernel_init_freeable from kernel_init+0x1c/0x12c
+ kernel_init from ret_from_fork+0x14/0x38
+[... TRIM...]
+
+Standardize the error handling by making the function return NULL on
+all error conditions. The API is used in just the netcp_core.c so the
+impact is limited.
+
+Note, this change, in effect reverts commit 5b6cb43b4d62 ("net:
+ethernet: ti: netcp_core: return error while dma channel open issue"),
+but provides a less error prone implementation.
+
+Suggested-by: Simon Horman <horms@kernel.org>
+Suggested-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Nishanth Menon <nm@ti.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20251103162811.3730055-1-nm@ti.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/stm32-dfsdm-adc.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/ti/netcp_core.c | 10 +++++-----
+ drivers/soc/ti/knav_dma.c            | 14 +++++++-------
+ 2 files changed, 12 insertions(+), 12 deletions(-)
 
---- a/drivers/iio/adc/stm32-dfsdm-adc.c
-+++ b/drivers/iio/adc/stm32-dfsdm-adc.c
-@@ -725,9 +725,8 @@ static int stm32_dfsdm_generic_channel_p
+diff --git a/drivers/net/ethernet/ti/netcp_core.c b/drivers/net/ethernet/ti/netcp_core.c
+index f145abb77a497..77dd20431c447 100644
+--- a/drivers/net/ethernet/ti/netcp_core.c
++++ b/drivers/net/ethernet/ti/netcp_core.c
+@@ -1339,10 +1339,10 @@ int netcp_txpipe_open(struct netcp_tx_pipe *tx_pipe)
+ 
+ 	tx_pipe->dma_channel = knav_dma_open_channel(dev,
+ 				tx_pipe->dma_chan_name, &config);
+-	if (IS_ERR(tx_pipe->dma_channel)) {
++	if (!tx_pipe->dma_channel) {
+ 		dev_err(dev, "failed opening tx chan(%s)\n",
+ 			tx_pipe->dma_chan_name);
+-		ret = PTR_ERR(tx_pipe->dma_channel);
++		ret = -EINVAL;
+ 		goto err;
  	}
- 	df_ch->src = val;
  
--	ret = fwnode_property_read_u32(node, "st,adc-alt-channel", &df_ch->alt_si);
--	if (ret != -EINVAL)
--		df_ch->alt_si = 0;
-+	if (fwnode_property_present(node, "st,adc-alt-channel"))
-+		df_ch->alt_si = 1;
+@@ -1360,7 +1360,7 @@ int netcp_txpipe_open(struct netcp_tx_pipe *tx_pipe)
+ 	return 0;
  
- 	if (adc->dev_data->type == DFSDM_IIO) {
- 		backend = devm_iio_backend_fwnode_get(&indio_dev->dev, NULL, node);
+ err:
+-	if (!IS_ERR_OR_NULL(tx_pipe->dma_channel))
++	if (tx_pipe->dma_channel)
+ 		knav_dma_close_channel(tx_pipe->dma_channel);
+ 	tx_pipe->dma_channel = NULL;
+ 	return ret;
+@@ -1679,10 +1679,10 @@ static int netcp_setup_navigator_resources(struct net_device *ndev)
+ 
+ 	netcp->rx_channel = knav_dma_open_channel(netcp->netcp_device->device,
+ 					netcp->dma_chan_name, &config);
+-	if (IS_ERR(netcp->rx_channel)) {
++	if (!netcp->rx_channel) {
+ 		dev_err(netcp->ndev_dev, "failed opening rx chan(%s\n",
+ 			netcp->dma_chan_name);
+-		ret = PTR_ERR(netcp->rx_channel);
++		ret = -EINVAL;
+ 		goto fail;
+ 	}
+ 
+diff --git a/drivers/soc/ti/knav_dma.c b/drivers/soc/ti/knav_dma.c
+index 56597f6ea666a..a677e874de543 100644
+--- a/drivers/soc/ti/knav_dma.c
++++ b/drivers/soc/ti/knav_dma.c
+@@ -410,7 +410,7 @@ static int of_channel_match_helper(struct device_node *np, const char *name,
+  * @name:	slave channel name
+  * @config:	dma configuration parameters
+  *
+- * Returns pointer to appropriate DMA channel on success or error.
++ * Return: Pointer to appropriate DMA channel on success or NULL on error.
+  */
+ void *knav_dma_open_channel(struct device *dev, const char *name,
+ 					struct knav_dma_cfg *config)
+@@ -423,13 +423,13 @@ void *knav_dma_open_channel(struct device *dev, const char *name,
+ 
+ 	if (!kdev) {
+ 		pr_err("keystone-navigator-dma driver not registered\n");
+-		return (void *)-EINVAL;
++		return NULL;
+ 	}
+ 
+ 	chan_num = of_channel_match_helper(dev->of_node, name, &instance);
+ 	if (chan_num < 0) {
+ 		dev_err(kdev->dev, "No DMA instance with name %s\n", name);
+-		return (void *)-EINVAL;
++		return NULL;
+ 	}
+ 
+ 	dev_dbg(kdev->dev, "initializing %s channel %d from DMA %s\n",
+@@ -440,7 +440,7 @@ void *knav_dma_open_channel(struct device *dev, const char *name,
+ 	if (config->direction != DMA_MEM_TO_DEV &&
+ 	    config->direction != DMA_DEV_TO_MEM) {
+ 		dev_err(kdev->dev, "bad direction\n");
+-		return (void *)-EINVAL;
++		return NULL;
+ 	}
+ 
+ 	/* Look for correct dma instance */
+@@ -452,7 +452,7 @@ void *knav_dma_open_channel(struct device *dev, const char *name,
+ 	}
+ 	if (!found) {
+ 		dev_err(kdev->dev, "No DMA instance with name %s\n", instance);
+-		return (void *)-EINVAL;
++		return NULL;
+ 	}
+ 
+ 	/* Look for correct dma channel from dma instance */
+@@ -473,14 +473,14 @@ void *knav_dma_open_channel(struct device *dev, const char *name,
+ 	if (!found) {
+ 		dev_err(kdev->dev, "channel %d is not in DMA %s\n",
+ 				chan_num, instance);
+-		return (void *)-EINVAL;
++		return NULL;
+ 	}
+ 
+ 	if (atomic_read(&chan->ref_count) >= 1) {
+ 		if (!check_config(chan, config)) {
+ 			dev_err(kdev->dev, "channel %d config miss-match\n",
+ 				chan_num);
+-			return (void *)-EINVAL;
++			return NULL;
+ 		}
+ 	}
+ 
+-- 
+2.51.0
+
 
 
 
