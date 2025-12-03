@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-198676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FF8BCA0673
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:24:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78E5ECA0370
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:56:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D36DB3000B23
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:24:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D545C3009575
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:49:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B50F340293;
-	Wed,  3 Dec 2025 15:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5AFD34A76E;
+	Wed,  3 Dec 2025 16:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C1WZWXAy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tiinjY86"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44088340260;
-	Wed,  3 Dec 2025 15:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60928349B09;
+	Wed,  3 Dec 2025 16:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777323; cv=none; b=edMgiZdaiXY/Rjk3hAM9BeaGv4uuLonoDhjcsZxRNdDviW9BHpoI88EgYBvjbpuxroB2g0cavI+f0PPaEuWnasCiPNyhMP59QxIsTUk0u4V543ih2Wpjth2FLP67dbgM2TgdqY7mvJGVOUtHgsyVpezbJDFs0EJGskeasuPw1SY=
+	t=1764780584; cv=none; b=jtgHibda26zC5GVi5+iZBy+UVUZzxBmVAltPfINWucNLvur6WSbHpZwkka1tmeSdHG4nptLBHhkxHe9aLkVl4//YNF8FtsKGAIi9X2njdQFWkiKyk3b5ES4ommIxvYde9XrEHNOVqSgulY25lDXZqOGqIuMznMZ31KCgwZ9RRXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777323; c=relaxed/simple;
-	bh=oglL+AYZ68l5gsrkJWKvjjWh8xiJ+L8gdoXkH1JwOaw=;
+	s=arc-20240116; t=1764780584; c=relaxed/simple;
+	bh=WZ7UkCChsgizw0J3+OP+PFt7QVmB7ATKkuvWqKdmhpY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pwx94pm0jI//fPomHBd/epw0utXY7PHA0NlufwtV9sB53II9WOPqGgFoljxl4M0QjHqp7ogX9ov9OZwXDGGiuOfukSheUbOiV2eFyKlPiEy+zJuj5jRkbBdNdPAYQwR7SPSqhKjIeDBS7OYUmmW6x+hQXKvQqlbcR7sW955UPK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C1WZWXAy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B0B9C4CEF5;
-	Wed,  3 Dec 2025 15:55:22 +0000 (UTC)
+	 MIME-Version; b=nFhHBjP98pm8iACEnY3tOfoXj7KDzvIrRHYnEpea1qgenO4mYstC8k84nv9wnw9HkOFpDRyZBfNmfVPDtb79UPk3WIYmZ45bSfaOkwCebUauEko9gBvVciLlyUvxT4dmDjNNr6q+im43zo2Mu+GGkO6hzpxbb4VcxO6WxwiBOBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tiinjY86; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BCB0C4CEF5;
+	Wed,  3 Dec 2025 16:49:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777322;
-	bh=oglL+AYZ68l5gsrkJWKvjjWh8xiJ+L8gdoXkH1JwOaw=;
+	s=korg; t=1764780584;
+	bh=WZ7UkCChsgizw0J3+OP+PFt7QVmB7ATKkuvWqKdmhpY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C1WZWXAy0xxmHYrBXS7k8nhdbGzD5X3RqTob+kh9lHs7MAOVo+wb3IyR1KkR3QfXx
-	 NCoAJfm2D4/lwIRHqTZeeYcDf7DX+5kooPZuxNCvqdyuWD+uCRVCFL0xDF5lk2ziT2
-	 LlrrprqdnsgmUDwGkc4koDEwuT1vP9GQOfTVnHwI=
+	b=tiinjY86RuQd/VDNNP7OXPn6y9JITaig6FLX4HnK2ujBWkJFvfOE1vyRUKss/Ws+0
+	 1GJEKhCh9yOsWeUgKVVx762AdsDnqs1r/DsY8QDtEvDroQDUb53mHmV5YHUAFx3pGZ
+	 UYVxXYh4+E7mn6P5h108WUxOL/2yU16AJ/JZ4vjc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3a92d359bc2ec6255a33@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.17 106/146] mptcp: Initialise rcv_mss before calling tcp_send_active_reset() in mptcp_do_fastclose().
+	Chris Lu <chris.lu@mediatek.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 005/132] Bluetooth: btusb: mediatek: Fix kernel crash when releasing mtk iso interface
 Date: Wed,  3 Dec 2025 16:28:04 +0100
-Message-ID: <20251203152350.345342201@linuxfoundation.org>
+Message-ID: <20251203152343.490737104@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,95 +60,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Chris Lu <chris.lu@mediatek.com>
 
-commit f07f4ea53e22429c84b20832fa098b5ecc0d4e35 upstream.
+[ Upstream commit 4015b979767125cf8a2233a145a3b3af78bfd8fb ]
 
-syzbot reported divide-by-zero in __tcp_select_window() by
-MPTCP socket. [0]
+When performing reset tests and encountering abnormal card drop issues
+that lead to a kernel crash, it is necessary to perform a null check
+before releasing resources to avoid attempting to release a null pointer.
 
-We had a similar issue for the bare TCP and fixed in commit
-499350a5a6e7 ("tcp: initialize rcv_mss to TCP_MIN_MSS instead
-of 0").
+<4>[   29.158070] Hardware name: Google Quigon sku196612/196613 board (DT)
+<4>[   29.158076] Workqueue: hci0 hci_cmd_sync_work [bluetooth]
+<4>[   29.158154] pstate: 20400009 (nzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+<4>[   29.158162] pc : klist_remove+0x90/0x158
+<4>[   29.158174] lr : klist_remove+0x88/0x158
+<4>[   29.158180] sp : ffffffc0846b3c00
+<4>[   29.158185] pmr_save: 000000e0
+<4>[   29.158188] x29: ffffffc0846b3c30 x28: ffffff80cd31f880 x27: ffffff80c1bdc058
+<4>[   29.158199] x26: dead000000000100 x25: ffffffdbdc624ea3 x24: ffffff80c1bdc4c0
+<4>[   29.158209] x23: ffffffdbdc62a3e6 x22: ffffff80c6c07000 x21: ffffffdbdc829290
+<4>[   29.158219] x20: 0000000000000000 x19: ffffff80cd3e0648 x18: 000000031ec97781
+<4>[   29.158229] x17: ffffff80c1bdc4a8 x16: ffffffdc10576548 x15: ffffff80c1180428
+<4>[   29.158238] x14: 0000000000000000 x13: 000000000000e380 x12: 0000000000000018
+<4>[   29.158248] x11: ffffff80c2a7fd10 x10: 0000000000000000 x9 : 0000000100000000
+<4>[   29.158257] x8 : 0000000000000000 x7 : 7f7f7f7f7f7f7f7f x6 : 2d7223ff6364626d
+<4>[   29.158266] x5 : 0000008000000000 x4 : 0000000000000020 x3 : 2e7325006465636e
+<4>[   29.158275] x2 : ffffffdc11afeff8 x1 : 0000000000000000 x0 : ffffffdc11be4d0c
+<4>[   29.158285] Call trace:
+<4>[   29.158290]  klist_remove+0x90/0x158
+<4>[   29.158298]  device_release_driver_internal+0x20c/0x268
+<4>[   29.158308]  device_release_driver+0x1c/0x30
+<4>[   29.158316]  usb_driver_release_interface+0x70/0x88
+<4>[   29.158325]  btusb_mtk_release_iso_intf+0x68/0xd8 [btusb (HASH:e8b6 5)]
+<4>[   29.158347]  btusb_mtk_reset+0x5c/0x480 [btusb (HASH:e8b6 5)]
+<4>[   29.158361]  hci_cmd_sync_work+0x10c/0x188 [bluetooth (HASH:a4fa 6)]
+<4>[   29.158430]  process_scheduled_works+0x258/0x4e8
+<4>[   29.158441]  worker_thread+0x300/0x428
+<4>[   29.158448]  kthread+0x108/0x1d0
+<4>[   29.158455]  ret_from_fork+0x10/0x20
+<0>[   29.158467] Code: 91343000 940139d1 f9400268 927ff914 (f9401297)
+<4>[   29.158474] ---[ end trace 0000000000000000 ]---
+<0>[   29.167129] Kernel panic - not syncing: Oops: Fatal exception
+<2>[   29.167144] SMP: stopping secondary CPUs
+<4>[   29.167158] ------------[ cut here ]------------
 
-Let's apply the same fix to mptcp_do_fastclose().
-
-[0]:
-Oops: divide error: 0000 [#1] SMP KASAN PTI
-CPU: 0 UID: 0 PID: 6068 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
-RIP: 0010:__tcp_select_window+0x824/0x1320 net/ipv4/tcp_output.c:3336
-Code: ff ff ff 44 89 f1 d3 e0 89 c1 f7 d1 41 01 cc 41 21 c4 e9 a9 00 00 00 e8 ca 49 01 f8 e9 9c 00 00 00 e8 c0 49 01 f8 44 89 e0 99 <f7> 7c 24 1c 41 29 d4 48 bb 00 00 00 00 00 fc ff df e9 80 00 00 00
-RSP: 0018:ffffc90003017640 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffff88807b469e40
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: ffffc90003017730 R08: ffff888033268143 R09: 1ffff1100664d028
-R10: dffffc0000000000 R11: ffffed100664d029 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-FS:  000055557faa0500(0000) GS:ffff888126135000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f64a1912ff8 CR3: 0000000072122000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- tcp_select_window net/ipv4/tcp_output.c:281 [inline]
- __tcp_transmit_skb+0xbc7/0x3aa0 net/ipv4/tcp_output.c:1568
- tcp_transmit_skb net/ipv4/tcp_output.c:1649 [inline]
- tcp_send_active_reset+0x2d1/0x5b0 net/ipv4/tcp_output.c:3836
- mptcp_do_fastclose+0x27e/0x380 net/mptcp/protocol.c:2793
- mptcp_disconnect+0x238/0x710 net/mptcp/protocol.c:3253
- mptcp_sendmsg_fastopen+0x2f8/0x580 net/mptcp/protocol.c:1776
- mptcp_sendmsg+0x1774/0x1980 net/mptcp/protocol.c:1855
- sock_sendmsg_nosec net/socket.c:727 [inline]
- __sock_sendmsg+0xe5/0x270 net/socket.c:742
- __sys_sendto+0x3bd/0x520 net/socket.c:2244
- __do_sys_sendto net/socket.c:2251 [inline]
- __se_sys_sendto net/socket.c:2247 [inline]
- __x64_sys_sendto+0xde/0x100 net/socket.c:2247
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f66e998f749
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffff9acedb8 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
-RAX: ffffffffffffffda RBX: 00007f66e9be5fa0 RCX: 00007f66e998f749
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000003
-RBP: 00007ffff9acee10 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000001
-R13: 00007f66e9be5fa0 R14: 00007f66e9be5fa0 R15: 0000000000000006
- </TASK>
-
-Fixes: ae155060247b ("mptcp: fix duplicate reset on fastclose")
-Reported-by: syzbot+3a92d359bc2ec6255a33@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/69260882.a70a0220.d98e3.00b4.GAE@google.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251125195331.309558-1-kuniyu@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ceac1cb0259d ("Bluetooth: btusb: mediatek: add ISO data transmission functions")
+Signed-off-by: Chris Lu <chris.lu@mediatek.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/bluetooth/btusb.c        | 34 +++++++++++++++++++++++++-------
+ include/net/bluetooth/hci_core.h |  1 -
+ 2 files changed, 27 insertions(+), 8 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2770,6 +2770,12 @@ static void mptcp_do_fastclose(struct so
- 			goto unlock;
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index aedb478614000..b6c37e87c6a08 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -2704,9 +2704,16 @@ static int btusb_recv_event_realtek(struct hci_dev *hdev, struct sk_buff *skb)
  
- 		subflow->send_fastclose = 1;
+ static void btusb_mtk_claim_iso_intf(struct btusb_data *data)
+ {
+-	struct btmtk_data *btmtk_data = hci_get_priv(data->hdev);
++	struct btmtk_data *btmtk_data;
+ 	int err;
+ 
++	if (!data->hdev)
++		return;
 +
-+		/* Initialize rcv_mss to TCP_MIN_MSS to avoid division by 0
-+		 * issue in __tcp_select_window(), see tcp_disconnect().
-+		 */
-+		inet_csk(ssk)->icsk_ack.rcv_mss = TCP_MIN_MSS;
++	btmtk_data = hci_get_priv(data->hdev);
++	if (!btmtk_data)
++		return;
 +
- 		tcp_send_active_reset(ssk, ssk->sk_allocation,
- 				      SK_RST_REASON_TCP_ABORT_ON_CLOSE);
- unlock:
+ 	/*
+ 	 * The function usb_driver_claim_interface() is documented to need
+ 	 * locks held if it's not called from a probe routine. The code here
+@@ -2728,17 +2735,30 @@ static void btusb_mtk_claim_iso_intf(struct btusb_data *data)
+ 
+ static void btusb_mtk_release_iso_intf(struct hci_dev *hdev)
+ {
+-	struct btmtk_data *btmtk_data = hci_get_priv(hdev);
++	struct btmtk_data *btmtk_data;
++
++	if (!hdev)
++		return;
++
++	btmtk_data = hci_get_priv(hdev);
++	if (!btmtk_data)
++		return;
+ 
+ 	if (test_bit(BTMTK_ISOPKT_OVER_INTR, &btmtk_data->flags)) {
+ 		usb_kill_anchored_urbs(&btmtk_data->isopkt_anchor);
+ 		clear_bit(BTMTK_ISOPKT_RUNNING, &btmtk_data->flags);
+ 
+-		dev_kfree_skb_irq(btmtk_data->isopkt_skb);
+-		btmtk_data->isopkt_skb = NULL;
+-		usb_set_intfdata(btmtk_data->isopkt_intf, NULL);
+-		usb_driver_release_interface(&btusb_driver,
+-					     btmtk_data->isopkt_intf);
++		if (btmtk_data->isopkt_skb) {
++			dev_kfree_skb_irq(btmtk_data->isopkt_skb);
++			btmtk_data->isopkt_skb = NULL;
++		}
++
++		if (btmtk_data->isopkt_intf) {
++			usb_set_intfdata(btmtk_data->isopkt_intf, NULL);
++			usb_driver_release_interface(&btusb_driver,
++						     btmtk_data->isopkt_intf);
++			btmtk_data->isopkt_intf = NULL;
++		}
+ 	}
+ 
+ 	clear_bit(BTMTK_ISOPKT_OVER_INTR, &btmtk_data->flags);
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index 35b5f58b562cb..ba5d176069a69 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -732,7 +732,6 @@ struct hci_conn {
+ 
+ 	__u8		remote_cap;
+ 	__u8		remote_auth;
+-	__u8		remote_id;
+ 
+ 	unsigned int	sent;
+ 
+-- 
+2.51.0
+
 
 
 
