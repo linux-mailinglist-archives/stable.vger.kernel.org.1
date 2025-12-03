@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-198777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D99DCA069B
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:25:22 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C49BCA10A7
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:38:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A434E3134049
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:09:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BFD4030090A5
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:38:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95938349B03;
-	Wed,  3 Dec 2025 16:00:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3816364022;
+	Wed,  3 Dec 2025 16:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DIumkuPJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="niLAlkyB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51F2E349AFE;
-	Wed,  3 Dec 2025 16:00:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F0B7363C79;
+	Wed,  3 Dec 2025 16:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777650; cv=none; b=GsWEBpXy8lzXHYxsQ1rSAxIJQjUoG2KlhtBcrMXa6r4SXsqmrDWL6PGqQdGoGfopVUJIvUGp6EtED7RnmQY7IZF9g4LHq0gCPw/w3VndM4rrMJAZVLUP4yKxx5jf+UhKHK9FIFZGWvqbiGHAyLa8uIXRGGzRHYTfoqjmlRVowiA=
+	t=1764779421; cv=none; b=C3/SbF1ZQKuwicBAEOh/2SENmKLe+jGN8qbILvpdoxWfI/dGUlrJQZmrwalOni78UjdVpULJrvgHxglZgcQWQcfZX74I6BTAMVmF0F1R6alwbnBxeFqeNfflfRAikfLOCT1napzeJftkyMQt6JwcDik2/lffDpzs4IIfOBPS9g8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777650; c=relaxed/simple;
-	bh=pJEqITZGeDsJBtPbNfGs8XhRL5ZYK5Yd3s1ItrgeYJA=;
+	s=arc-20240116; t=1764779421; c=relaxed/simple;
+	bh=ozepmgtiaQ4KopdBsm2lwGpU5t0lUjsJm13IYNPDuL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F3EAUfbpfdL/d9w8BgDZc2a6wfic5xWURA41Rp/1rkIA+rTc+YBrc2IABVtN122HQN+oPXQTxa5Q/elfWHxFeO4ojYGEIH4b0xTYXMhwb1XEkqUD8vG6IaAmtHJO7TyzxRilRKsFKB/onyJP/q+7gfnhsMloaaS76dVkTLGwiaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DIumkuPJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3003C4CEF5;
-	Wed,  3 Dec 2025 16:00:49 +0000 (UTC)
+	 MIME-Version; b=hTPSouPlEpc2qWmBD+Z9AwxqJM1N6sDXL6KBh1K9C7fW1b0p9bitBN6QX4NdciMdl3uBqwv4AtdnmPI8J7eyUJ7NrCE73WCV+NBGxv7BXLtjBW0jsF5+dD07V5yDOTak7asstcInNuKEEymnC23PQw5AnmCZp4WyVBOKb/Um3Xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=niLAlkyB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3347C4CEF5;
+	Wed,  3 Dec 2025 16:30:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777650;
-	bh=pJEqITZGeDsJBtPbNfGs8XhRL5ZYK5Yd3s1ItrgeYJA=;
+	s=korg; t=1764779421;
+	bh=ozepmgtiaQ4KopdBsm2lwGpU5t0lUjsJm13IYNPDuL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DIumkuPJ/897RmQIQ5qs/FwqWQfmTzhy8LAH1NFsH8s3Zgw4VK/siV18p7K9/Z0R+
-	 CjzzHha8N85TMoRR7XZGe9t3pG3PlRjTY8R+IhY2PH38MLIJi3SHtOJRf9Zaiil4O/
-	 dpkbrwjPX0A+x6HtX2aBfKUljh4/IWys35Y8t3fg=
+	b=niLAlkyBbCfwQNNe5hh2EitKONsdJRt2X77h9bvfC+lhrvcLTsmYdKYFlxNqUCihc
+	 5EstqJYJIgT7gjA0mOkkYSuNeF70VvloGTNP0lA/wRS6noLijA4MgWWz+lrG7yQE40
+	 5VbK5DPboGdOht+tLBiVG6+ioFigPNJtc5noo0tA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wake Liu <wakel@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Brahmajit Das <listout@listout.xyz>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 096/392] selftests/net: Ensure assert() triggers in psock_tpacket.c
-Date: Wed,  3 Dec 2025 16:24:06 +0100
-Message-ID: <20251203152417.634809234@linuxfoundation.org>
+Subject: [PATCH 6.1 245/568] net: intel: fm10k: Fix parameter idx set but not used
+Date: Wed,  3 Dec 2025 16:24:07 +0100
+Message-ID: <20251203152449.692663073@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wake Liu <wakel@google.com>
+From: Brahmajit Das <listout@listout.xyz>
 
-[ Upstream commit bc4c0a48bdad7f225740b8e750fdc1da6d85e1eb ]
+[ Upstream commit 99e9c5ffbbee0f258a1da4eadf602b943f8c8300 ]
 
-The get_next_frame() function in psock_tpacket.c was missing a return
-statement in its default switch case, leading to a compiler warning.
+Variable idx is set in the loop, but is never used resulting in dead
+code. Building with GCC 16, which enables
+-Werror=unused-but-set-parameter= by default results in build error.
+This patch removes the idx parameter, since all the callers of the
+fm10k_unbind_hw_stats_q as 0 as idx anyways.
 
-This was caused by a `bug_on(1)` call, which is defined as an
-`assert()`, being compiled out because NDEBUG is defined during the
-build.
-
-Instead of adding a `return NULL;` which would silently hide the error
-and could lead to crashes later, this change restores the original
-author's intent. By adding `#undef NDEBUG` before including <assert.h>,
-we ensure the assertion is active and will cause the test to abort if
-this unreachable code is ever executed.
-
-Signed-off-by: Wake Liu <wakel@google.com>
-Link: https://patch.msgid.link/20250809062013.2407822-1-wakel@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Suggested-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Signed-off-by: Brahmajit Das <listout@listout.xyz>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/psock_tpacket.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/intel/fm10k/fm10k_common.c | 5 ++---
+ drivers/net/ethernet/intel/fm10k/fm10k_common.h | 2 +-
+ drivers/net/ethernet/intel/fm10k/fm10k_pf.c     | 2 +-
+ drivers/net/ethernet/intel/fm10k/fm10k_vf.c     | 2 +-
+ 4 files changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/net/psock_tpacket.c b/tools/testing/selftests/net/psock_tpacket.c
-index 93092d13b3c59..ca0d9a5a9e08c 100644
---- a/tools/testing/selftests/net/psock_tpacket.c
-+++ b/tools/testing/selftests/net/psock_tpacket.c
-@@ -22,6 +22,7 @@
-  *   - TPACKET_V3: RX_RING
-  */
+diff --git a/drivers/net/ethernet/intel/fm10k/fm10k_common.c b/drivers/net/ethernet/intel/fm10k/fm10k_common.c
+index f51a63fca513e..1f919a50c7653 100644
+--- a/drivers/net/ethernet/intel/fm10k/fm10k_common.c
++++ b/drivers/net/ethernet/intel/fm10k/fm10k_common.c
+@@ -447,17 +447,16 @@ void fm10k_update_hw_stats_q(struct fm10k_hw *hw, struct fm10k_hw_stats_q *q,
+ /**
+  *  fm10k_unbind_hw_stats_q - Unbind the queue counters from their queues
+  *  @q: pointer to the ring of hardware statistics queue
+- *  @idx: index pointing to the start of the ring iteration
+  *  @count: number of queues to iterate over
+  *
+  *  Function invalidates the index values for the queues so any updates that
+  *  may have happened are ignored and the base for the queue stats is reset.
+  **/
+-void fm10k_unbind_hw_stats_q(struct fm10k_hw_stats_q *q, u32 idx, u32 count)
++void fm10k_unbind_hw_stats_q(struct fm10k_hw_stats_q *q, u32 count)
+ {
+ 	u32 i;
  
-+#undef NDEBUG
- #include <stdio.h>
- #include <stdlib.h>
- #include <sys/types.h>
+-	for (i = 0; i < count; i++, idx++, q++) {
++	for (i = 0; i < count; i++, q++) {
+ 		q->rx_stats_idx = 0;
+ 		q->tx_stats_idx = 0;
+ 	}
+diff --git a/drivers/net/ethernet/intel/fm10k/fm10k_common.h b/drivers/net/ethernet/intel/fm10k/fm10k_common.h
+index 4c48fb73b3e78..13fca6a91a01b 100644
+--- a/drivers/net/ethernet/intel/fm10k/fm10k_common.h
++++ b/drivers/net/ethernet/intel/fm10k/fm10k_common.h
+@@ -43,6 +43,6 @@ u32 fm10k_read_hw_stats_32b(struct fm10k_hw *hw, u32 addr,
+ void fm10k_update_hw_stats_q(struct fm10k_hw *hw, struct fm10k_hw_stats_q *q,
+ 			     u32 idx, u32 count);
+ #define fm10k_unbind_hw_stats_32b(s) ((s)->base_h = 0)
+-void fm10k_unbind_hw_stats_q(struct fm10k_hw_stats_q *q, u32 idx, u32 count);
++void fm10k_unbind_hw_stats_q(struct fm10k_hw_stats_q *q, u32 count);
+ s32 fm10k_get_host_state_generic(struct fm10k_hw *hw, bool *host_ready);
+ #endif /* _FM10K_COMMON_H_ */
+diff --git a/drivers/net/ethernet/intel/fm10k/fm10k_pf.c b/drivers/net/ethernet/intel/fm10k/fm10k_pf.c
+index af1b0cde36703..8fb99fa7ae600 100644
+--- a/drivers/net/ethernet/intel/fm10k/fm10k_pf.c
++++ b/drivers/net/ethernet/intel/fm10k/fm10k_pf.c
+@@ -1509,7 +1509,7 @@ static void fm10k_rebind_hw_stats_pf(struct fm10k_hw *hw,
+ 	fm10k_unbind_hw_stats_32b(&stats->nodesc_drop);
+ 
+ 	/* Unbind Queue Statistics */
+-	fm10k_unbind_hw_stats_q(stats->q, 0, hw->mac.max_queues);
++	fm10k_unbind_hw_stats_q(stats->q, hw->mac.max_queues);
+ 
+ 	/* Reinitialize bases for all stats */
+ 	fm10k_update_hw_stats_pf(hw, stats);
+diff --git a/drivers/net/ethernet/intel/fm10k/fm10k_vf.c b/drivers/net/ethernet/intel/fm10k/fm10k_vf.c
+index dc8ccd378ec92..6a3aebd56e6c4 100644
+--- a/drivers/net/ethernet/intel/fm10k/fm10k_vf.c
++++ b/drivers/net/ethernet/intel/fm10k/fm10k_vf.c
+@@ -465,7 +465,7 @@ static void fm10k_rebind_hw_stats_vf(struct fm10k_hw *hw,
+ 				     struct fm10k_hw_stats *stats)
+ {
+ 	/* Unbind Queue Statistics */
+-	fm10k_unbind_hw_stats_q(stats->q, 0, hw->mac.max_queues);
++	fm10k_unbind_hw_stats_q(stats->q, hw->mac.max_queues);
+ 
+ 	/* Reinitialize bases for all stats */
+ 	fm10k_update_hw_stats_vf(hw, stats);
 -- 
 2.51.0
 
