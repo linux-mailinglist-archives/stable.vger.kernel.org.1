@@ -1,180 +1,341 @@
-Return-Path: <stable+bounces-199914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3701BCA189B
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 21:21:32 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3873CCA18EC
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 21:28:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A4FBF300C287
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 20:21:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B37D23007214
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 20:28:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4103F2BDC05;
-	Wed,  3 Dec 2025 20:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62764313E09;
+	Wed,  3 Dec 2025 20:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="gTjQbCba"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BoHeMvJ7"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12CBD3207;
-	Wed,  3 Dec 2025 20:21:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B896312810;
+	Wed,  3 Dec 2025 20:28:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764793287; cv=none; b=KUjDdjowYMfbqQ7A8s9Dm1CwSpPGI+bIgN84SR0CWdrh9OBouX0U33iv5eVODkl1NR9fjcanTAOUlo5p+/PHldWdUWqPpGImYg4j77yR/MDSA2lwXmewHX/sBn+6opi/SF/kaPFNeTo3vGjrLJiwl3svYQBd9tMjkniCer87mpU=
+	t=1764793723; cv=none; b=jsgsUAkZQjAVTVMHHzIjSnBdYT2PxiUc5G840QJeXCIkmYUx6AwIScXw0h4hLzqOwqpEs01x7ZuPPrnau4GT2a3GOAZL772ZEjVIy99Qn5VIvnIjz1SZOBch88vrfIFl2s6PEBkdgRgqUl2kjmg3rGr0/JUN/+nt4r0aek40ll0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764793287; c=relaxed/simple;
-	bh=vVsBaXkkDdZQwoeWoNamrpBsg++LCJ8SfRzlkysRvOA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tf/MfOH5IxjTiRlYDnMIpgiFGrgIc6xT3ZER7jCzf4am8517ANOrMalaZ3xPKyYb7djNkTtc3qGkN19i8hT7zRurtuxDI5B1HpZacktIx+gYajs6QTCAlCLXMrgm566STkK8qP1u+OqEq8lWLCZMi/FZvws0UtxxkVR9R+1/s9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=gTjQbCba; arc=none smtp.client-ip=212.227.17.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1764793279; x=1765398079; i=w_armin@gmx.de;
-	bh=cjzs+irbPEAqadvDriC5TjO4PwulR1K87siZn2fCkYA=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:
-	 MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=gTjQbCbatRw1rDL6NG2sCPLZ7q+pM8lRUNL4pDYbDkXv+RW6i+pQvGNCbqCdVK9b
-	 ioP9lF0ggAogyoGamh8pv0f2jeeAUDxrVCeuc82FAekbobYPL9qv7u4kCj7ym/pZE
-	 o5WLtbf0pc2N1cX4MMfSosZ+pMZbuo6KADl2WyJCtrdRiAY/yMwYCrlDJieFrFPAJ
-	 7rsUiEg1Pk919mrZEB8Vu1fuzMbICmc56U+NdiWtEz4hNk+kx3Zh5x45CR6zy8BXY
-	 Oe2spWHqIEvwI8CrfhjpFUFtuHErMdV3rk98Q4NJZUYaSXN0uenDo4aQ1Wdqv3bqd
-	 HjTAVMhMQlw+mICIRA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from mx-amd-b650.fritz.box ([93.202.247.91]) by mail.gmx.net
- (mrgmx105 [212.227.17.168]) with ESMTPSA (Nemesis) id
- 1M6UZl-1vOwKt2mE5-00H3ba; Wed, 03 Dec 2025 21:21:18 +0100
-From: Armin Wolf <W_Armin@gmx.de>
-To: pali@kernel.org,
-	linux@roeck-us.net
-Cc: linux-hwmon@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1764793723; c=relaxed/simple;
+	bh=EQjsHMGdKmIGw29kAODr0IsEEyMyRjBoCfAPrhdPGX4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=C6ZO/W1ZmVvukmFXyl4yooRnqlqfY3Q6tpyEek6mHd1jhUvwU2U26VbUeCVfOLrPczVm6dgJwmK6Sca/krckubN9MnQQ9WgVilHDIwkwbnl9nWcla2OOkdO6eJV+e1ckbGgs8RJeKoGT5RG9kEm2eaagN0wLS0Ix2y78TqpaXUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BoHeMvJ7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C3ECC4CEFB;
+	Wed,  3 Dec 2025 20:28:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764793723;
+	bh=EQjsHMGdKmIGw29kAODr0IsEEyMyRjBoCfAPrhdPGX4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=BoHeMvJ7GGbYld7icBuGMMrOQnl/FWElLBXfK9Z15B1o4sS8yYAoSQJ8rOL5rNDKv
+	 /ju+nMIgTnoF4+0Uadd4nraeFedjIA1Mei73PA8DL43arg3/ZQwTefCaf4Ja43MrE/
+	 v5ZcIV7bjnxC0jik9nmYXl0YJasD/vTNTTBiJLhHIOJHpv4K7KJ0pbJCEbvMPyN8ck
+	 Up3o8rdSaYMITC+CWHbMKwks7z72DLe1eYoWBbM2kE8r0+yXHSD1CILYR3g7uOYdYn
+	 gVv2zOtXQ51mYl4g+E29Fulq/HHle41uXwqu7giFy7svSOkJVAElaWZyyQnpTgcd+u
+	 t2uSuM0e7aSHg==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Subject: [PATCH] hwmon: (dell-smm): Fix off-by-one error in dell_smm_is_visible()
-Date: Wed,  3 Dec 2025 21:21:09 +0100
-Message-Id: <20251203202109.331528-1-W_Armin@gmx.de>
-X-Mailer: git-send-email 2.39.5
+Cc: Joanne Koong <joannelkoong@gmail.com>,
+	syzbot@syzkaller.appspotmail.com,
+	Brian Foster <bfoster@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	linux-xfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.18-6.6] iomap: adjust read range correctly for non-block-aligned positions
+Date: Wed,  3 Dec 2025 15:28:38 -0500
+Message-ID: <20251203202839.819850-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:3l5ZddInVt2iIZpGzoefq86Pg6S1/CXgMzlHeLM9slQLk0YvDOw
- H8aW/q7S9qxbMWPkzP0zhe8yl61utPhRaL3t19C/Jecj4ZpRWO+ls8NSLsNK6YPiaoZ5LVW
- ItgV/jbBKvvwnRJ7IhCufixuzb7w9aWR+coYb/Ji5kG4uggq+oVeo/gKzJx4rLv9/oyp0N6
- mQswurPdpddIn/ofIHgoA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:d5GNiS5lNE0=;uOKZXRiyrvYy1TNTGUF16pVENK3
- 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
- zJYxAlOWJiKnrbFudPitA+d4xfrDcJES7t591j
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.18
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-The documentation states that on machines supporting only global
-fan mode control, the pwmX_enable attributes should only be created
-for the first fan channel (pwm1_enable, aka channel 0).
+From: Joanne Koong <joannelkoong@gmail.com>
 
-Fix the off-by-one error caused by the fact that fan channels have
-a zero-based index.
+[ Upstream commit 7aa6bc3e8766990824f66ca76c19596ce10daf3e ]
 
-Cc: stable@vger.kernel.org
-Fixes: 1c1658058c99 ("hwmon: (dell-smm) Add support for automatic fan mode=
-")
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-=2D--
- drivers/hwmon/dell-smm-hwmon.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+iomap_adjust_read_range() assumes that the position and length passed in
+are block-aligned. This is not always the case however, as shown in the
+syzbot generated case for erofs. This causes too many bytes to be
+skipped for uptodate blocks, which results in returning the incorrect
+position and length to read in. If all the blocks are uptodate, this
+underflows length and returns a position beyond the folio.
 
-diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon=
-.c
-index 683baf361c4c..a34753fc2973 100644
-=2D-- a/drivers/hwmon/dell-smm-hwmon.c
-+++ b/drivers/hwmon/dell-smm-hwmon.c
-@@ -861,9 +861,9 @@ static umode_t dell_smm_is_visible(const void *drvdata=
-, enum hwmon_sensor_types
- 			if (auto_fan) {
- 				/*
- 				 * The setting affects all fans, so only create a
--				 * single attribute.
-+				 * single attribute for the first fan channel.
- 				 */
--				if (channel !=3D 1)
-+				if (channel !=3D 0)
- 					return 0;
-=20
- 				/*
-=2D-=20
-2.39.5
+Fix the calculation to also take into account the block offset when
+calculating how many bytes can be skipped for uptodate blocks.
+
+Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+Tested-by: syzbot@syzkaller.appspotmail.com
+Reviewed-by: Brian Foster <bfoster@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+
+LLM Generated explanations, may be completely bogus:
+
+Now I have all the information needed for a comprehensive analysis. Let
+me compile my findings.
+
+---
+
+## COMPREHENSIVE ANALYSIS: iomap_adjust_read_range() Bug Fix
+
+### 1. COMMIT MESSAGE ANALYSIS
+
+**Subject:** `iomap: adjust read range correctly for non-block-aligned
+positions`
+
+**Key Points from Message:**
+- The function `iomap_adjust_read_range()` **assumes block-aligned
+  positions**, but this assumption is violated
+- Bug was discovered via **syzbot testing with erofs** filesystem
+- Causes "too many bytes to be skipped for uptodate blocks"
+- Results in **incorrect position and length to read**
+- If all blocks are uptodate: **underflows length** and **returns
+  position beyond the folio**
+
+**Tags Analysis:**
+- ✅ `Tested-by: syzbot@syzkaller.appspotmail.com` - Automated testing
+  confirmed
+- ✅ `Reviewed-by: Brian Foster <bfoster@redhat.com>` - Red Hat
+  filesystem expert
+- ✅ `Reviewed-by: Christoph Hellwig <hch@lst.de>` - Major iomap author
+- ✅ `Signed-off-by: Christian Brauner <brauner@kernel.org>` - VFS
+  maintainer
+- ❌ **No `Cc: stable@vger.kernel.org`** tag
+- ❌ **No `Fixes:` tag** pointing to original buggy commit
+
+### 2. CODE CHANGE ANALYSIS
+
+**Bug Location:** `fs/iomap/buffered-io.c`, function
+`iomap_adjust_read_range()`
+
+**The Buggy Code (lines 246-253 before fix):**
+```c
+for (i = first; i <= last; i++) {
+    if (!ifs_block_is_uptodate(ifs, i))
+        break;
+    *pos += block_size;      // Bug: assumes pos is block-aligned
+    poff += block_size;
+    plen -= block_size;
+    first++;
+}
+```
+
+**Technical Root Cause:**
+When `*pos` has a sub-block offset (e.g., `pos = 512` in a 1024-byte
+block):
+- `first = poff >> block_bits` computes the block index correctly (block
+  0)
+- But the loop skips a full `block_size` per block, ignoring the offset
+
+**Example demonstrating the bug:**
+- Block size: 1024 bytes
+- Position: 512 (half-way into block 0)
+- Block 0 is uptodate
+
+**Old buggy calculation:**
+- Skip full 1024 bytes → `pos = 1536`, overshoots by 512 bytes
+- `plen -= 1024` → underflows if `plen < 1024`
+
+**Fixed calculation:**
+```c
+blocks_skipped = i - first;
+if (blocks_skipped) {
+    unsigned long block_offset = *pos & (block_size - 1);  // = 512
+    unsigned bytes_skipped =
+        (blocks_skipped << block_bits) - block_offset;      // = 1024 -
+512 = 512
+    *pos += bytes_skipped;   // Correct: pos = 1024
+    poff += bytes_skipped;
+    plen -= bytes_skipped;
+}
+```
+
+**Consequences of the Bug:**
+1. **Integer underflow**: `plen` becomes huge (wraps around as unsigned)
+2. **Position beyond folio**: `*pos` can point past the folio boundary
+3. **Incorrect read ranges**: Wrong data read, potential corruption
+4. **Potential crashes**: Invalid memory access from bad ranges
+
+### 3. CLASSIFICATION
+
+- **Type:** BUG FIX (arithmetic/logic error causing incorrect
+  calculations)
+- **NOT:** Feature addition, cleanup, or optimization
+- **Severity:** HIGH - affects filesystem data integrity
+- **Scope:** Core iomap buffered I/O infrastructure
+
+### 4. SCOPE AND RISK ASSESSMENT
+
+**Change Size:**
+- 13 insertions, 6 deletions
+- Single file: `fs/iomap/buffered-io.c`
+- Localized to one function
+
+**Risk Level:** LOW
+- Fix is mathematically straightforward
+- Does not change control flow significantly
+- Well-reviewed by iomap experts
+- Tested by syzbot
+
+**Affected Subsystem:** `fs/iomap/` - mature, widely-used infrastructure
+
+**Affected Filesystems:** Multiple major filesystems use iomap:
+- **XFS** - Primary enterprise Linux filesystem
+- **GFS2** - Cluster filesystem
+- **erofs** - Read-only filesystem (Android)
+- **zonefs** - Zoned storage filesystem
+- **fuse** - User-space filesystems
+
+### 5. USER IMPACT
+
+**Who is affected?**
+- ALL users of XFS, GFS2, erofs, zonefs, and fuse filesystems
+- Particularly affects systems with:
+  - Block sizes smaller than page size
+  - Partial folio reads/writes at non-block-aligned offsets
+
+**How severe?**
+- Can cause **incorrect data reads**
+- Potential **data corruption** in read paths
+- Possible **kernel crashes** from invalid memory access
+- **Data integrity** issues for critical filesystems
+
+**Triggered by:** syzbot (automated fuzzing) - confirms this is a real
+triggerable bug
+
+### 6. STABILITY INDICATORS
+
+- ✅ `Tested-by: syzbot` - Confirmed fix works
+- ✅ Two expert reviewers (Brian Foster, Christoph Hellwig)
+- ✅ Merged by VFS maintainer (Christian Brauner)
+- ⚠️ Relatively new commit (September 2025)
+
+### 7. DEPENDENCY CHECK
+
+**Bug Origin:** Commit `9dc55f1389f95` ("iomap: add support for sub-
+pagesize buffered I/O without buffer heads") from **v4.19-rc1** (2018)
+
+**Dependencies for backport:**
+- The fix is self-contained
+- May need minor adaptation for older kernels:
+  - v5.x: Uses `struct iomap_page` and pages (not folios)
+  - v6.x: Uses `struct iomap_folio_state` and folios
+- Core logic remains the same across versions
+
+**Related commits:**
+- `8e3c15ee0d292` - Minor loop syntax change (`for` → `while`), NOT a
+  dependency
+- `9d875e0eef8ec` - Related fix for unaligned END offsets (separate
+  issue)
+
+### 8. HISTORICAL CONTEXT
+
+The bug has existed for **~6 years** (since v4.19). It was latent
+because:
+- Most callers pass block-aligned positions
+- erofs triggered an edge case with non-aligned positions
+- syzbot's extensive testing exposed it
+
+The original code assumed callers would always pass block-aligned
+positions, which is a reasonable assumption violated in specific edge
+cases.
+
+---
+
+## BACKPORT RECOMMENDATION
+
+### Arguments FOR backporting:
+
+1. **Fixes a real bug** discovered by automated testing (syzbot)
+2. **Affects critical filesystems** (XFS, GFS2) used in production
+3. **Small, surgical fix** - 13 lines added, 6 removed
+4. **Low regression risk** - mathematically correct fix
+5. **Expert-reviewed** by iomap maintainers
+6. **Bug existed since v4.19** - all stable trees are affected
+7. **Can cause data integrity issues** - serious for a filesystem bug
+
+### Arguments AGAINST backporting:
+
+1. **No `Cc: stable` tag** - maintainers didn't explicitly request
+   backport
+2. **No `Fixes:` tag** - doesn't identify the buggy commit
+3. **Relatively new commit** - hasn't had extensive mainline testing yet
+4. **Needs adaptation** for older kernels (page vs folio APIs)
+
+### Conclusion:
+
+Despite the missing stable tags, this commit should be backported
+because:
+- It fixes a **real, triggerable bug** found by syzbot
+- The bug can cause **incorrect data reads and potential corruption**
+- It affects **major filesystems** (XFS, GFS2) used in production
+  environments
+- The fix is **small, contained, and well-reviewed**
+- The **risk of NOT fixing** (data corruption) outweighs the risk of the
+  fix (minimal)
+
+The absence of `Cc: stable` may be an oversight, as this clearly meets
+stable criteria.
+
+**YES**
+
+ fs/iomap/buffered-io.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
+
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index 8b847a1e27f13..1c95a0a7b302d 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -240,17 +240,24 @@ static void iomap_adjust_read_range(struct inode *inode, struct folio *folio,
+ 	 * to avoid reading in already uptodate ranges.
+ 	 */
+ 	if (ifs) {
+-		unsigned int i;
++		unsigned int i, blocks_skipped;
+ 
+ 		/* move forward for each leading block marked uptodate */
+-		for (i = first; i <= last; i++) {
++		for (i = first; i <= last; i++)
+ 			if (!ifs_block_is_uptodate(ifs, i))
+ 				break;
+-			*pos += block_size;
+-			poff += block_size;
+-			plen -= block_size;
+-			first++;
++
++		blocks_skipped = i - first;
++		if (blocks_skipped) {
++			unsigned long block_offset = *pos & (block_size - 1);
++			unsigned bytes_skipped =
++				(blocks_skipped << block_bits) - block_offset;
++
++			*pos += bytes_skipped;
++			poff += bytes_skipped;
++			plen -= bytes_skipped;
+ 		}
++		first = i;
+ 
+ 		/* truncate len if we find any trailing uptodate block(s) */
+ 		while (++i <= last) {
+-- 
+2.51.0
 
 
