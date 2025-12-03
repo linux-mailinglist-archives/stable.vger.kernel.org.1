@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29985CA02E9
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:53:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 781D8CA035E
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:55:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8B69D30281B2
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:48:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D74623032733
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:49:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A05436CDFF;
-	Wed,  3 Dec 2025 16:48:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C43534DB6E;
+	Wed,  3 Dec 2025 16:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GF6qKViB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JZzQSvZz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E7B36BCE0;
-	Wed,  3 Dec 2025 16:48:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1745234D3B6;
+	Wed,  3 Dec 2025 16:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780514; cv=none; b=Q/rR1rmc/ciAUqP2QzCq2JBO/5eEJHu791L3P8zPvtb2fG107WMjZnw00M50rGmT/USXkmnyYcu9KhiNLAEmu6AEzz2FAKMgO3WIm9bNFyYtPJHSc9G7+E+adH4WG/2ky+RYjV7c+nX+UhIuKaQXX65DyYJngIOHwrebUB1hxW4=
+	t=1764778388; cv=none; b=dBLs588lMt9z8IN3IwIdJ71xAuFFbv49DE6g7GeTTSgw2ZUduM/pabGdl+27tWCsq33QU2m4kb+CsqmxN3Y2DHoAgv9AmE0Sd79MI6+Rb2SbS/fffwYHyvQc8OtAZ2MNzE+NSlHjthzdEmIptlOm0rxkQym2Tr5ZjeTVDJ8FyxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780514; c=relaxed/simple;
-	bh=o5pEj82BwJ0hSdbCY1TQ8IlrFbOMgMbfGNK93zvh738=;
+	s=arc-20240116; t=1764778388; c=relaxed/simple;
+	bh=ekCxI3N9oIKallO78FI0BzgGLkHspg+Bwtn4QBUpt0I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H9lPucHOXmeHJDhA1Nyrq/k7/lMMXfnDyqOqgItcbPS9MCqDz1iIn3B7upkVHA5A6MhCPpk5EA/0vxVGDLVBEzTl+rv6VxosnK7YEP3kuqW+T/yXydSsWP5e0p7aeQ7mnhsxH4P1NALTfevkGreKIXaJ32tt2nKvulhF0AeG6bY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GF6qKViB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48F3FC4CEF5;
-	Wed,  3 Dec 2025 16:48:33 +0000 (UTC)
+	 MIME-Version; b=rF7ES3N138EpXx34t4pYVtcOOY63TSi5o1bB1nRD7BlcK8m++TI1HB5kT5v4VgTymD+WMkuMwsBZk10xM67QzqX0EmJJVbMKRGfpAN5k4nFIlilWTvRRoF9MypSrb3FMKCrwpVjEMa0GlWVLAIrC0z30H7bmeEpOHOLZG4CU/eI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JZzQSvZz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 566D9C4CEF5;
+	Wed,  3 Dec 2025 16:13:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780513;
-	bh=o5pEj82BwJ0hSdbCY1TQ8IlrFbOMgMbfGNK93zvh738=;
+	s=korg; t=1764778387;
+	bh=ekCxI3N9oIKallO78FI0BzgGLkHspg+Bwtn4QBUpt0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GF6qKViB8V+sp3aCyPAtxPt+UIiMmx7meMUkzFCjYUC8Gs8EsYwhtMC2dkdoBORg6
-	 vpkNwEog0lTQXVK57094IGmaU8EaLUwaZfKHEiTXHc89wLy+/5Uko/W127f8SsMYnN
-	 W5GvWMMI/Kyrz13mRX6kh4M+/i1bnVQrtxt5qyGw=
+	b=JZzQSvZz47f+I7jwKl3F3yCXRFDmBJ50blW3jzRbKGp+kpf+52e7CigFHNiMuU10b
+	 034ZH0gkeh1eBvJSYo4fJ94aAb4GHt7oOD3mWZb5j/zOehADn+tLTdZKDaVevtG2Oe
+	 Ao4eO0jIgWRoO8e8KkeFXLL/u8qv+PRHeZTufvC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seungjin Bae <eeodqql09@gmail.com>,
-	Jimmy Assarsson <extja@kvaser.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	kernel test robot <oliver.sang@intel.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Vlastimil Babka <vbabka@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 001/132] can: kvaser_usb: leaf: Fix potential infinite loop in command parsers
+Subject: [PATCH 5.15 330/392] mm/mempool: fix poisoning order>0 pages with HIGHMEM
 Date: Wed,  3 Dec 2025 16:28:00 +0100
-Message-ID: <20251203152343.344574964@linuxfoundation.org>
+Message-ID: <20251203152426.308728867@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +61,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Seungjin Bae <eeodqql09@gmail.com>
+From: Vlastimil Babka <vbabka@suse.cz>
 
-[ Upstream commit 0c73772cd2b8cc108d5f5334de89ad648d89b9ec ]
+[ Upstream commit ec33b59542d96830e3c89845ff833cf7b25ef172 ]
 
-The `kvaser_usb_leaf_wait_cmd()` and `kvaser_usb_leaf_read_bulk_callback`
-functions contain logic to zero-length commands. These commands are used
-to align data to the USB endpoint's wMaxPacketSize boundary.
+The kernel test has reported:
 
-The driver attempts to skip these placeholders by aligning the buffer
-position `pos` to the next packet boundary using `round_up()` function.
+  BUG: unable to handle page fault for address: fffba000
+  #PF: supervisor write access in kernel mode
+  #PF: error_code(0x0002) - not-present page
+  *pde = 03171067 *pte = 00000000
+  Oops: Oops: 0002 [#1]
+  CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Tainted: G                T   6.18.0-rc2-00031-gec7f31b2a2d3 #1 NONE  a1d066dfe789f54bc7645c7989957d2bdee593ca
+  Tainted: [T]=RANDSTRUCT
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+  EIP: memset (arch/x86/include/asm/string_32.h:168 arch/x86/lib/memcpy_32.c:17)
+  Code: a5 8b 4d f4 83 e1 03 74 02 f3 a4 83 c4 04 5e 5f 5d 2e e9 73 41 01 00 90 90 90 3e 8d 74 26 00 55 89 e5 57 56 89 c6 89 d0 89 f7 <f3> aa 89 f0 5e 5f 5d 2e e9 53 41 01 00 cc cc cc 55 89 e5 53 57 56
+  EAX: 0000006b EBX: 00000015 ECX: 001fefff EDX: 0000006b
+  ESI: fffb9000 EDI: fffba000 EBP: c611fbf0 ESP: c611fbe8
+  DS: 007b ES: 007b FS: 0000 GS: 0000 SS: 0068 EFLAGS: 00010287
+  CR0: 80050033 CR2: fffba000 CR3: 0316e000 CR4: 00040690
+  Call Trace:
+   poison_element (mm/mempool.c:83 mm/mempool.c:102)
+   mempool_init_node (mm/mempool.c:142 mm/mempool.c:226)
+   mempool_init_noprof (mm/mempool.c:250 (discriminator 1))
+   ? mempool_alloc_pages (mm/mempool.c:640)
+   bio_integrity_initfn (block/bio-integrity.c:483 (discriminator 8))
+   ? mempool_alloc_pages (mm/mempool.c:640)
+   do_one_initcall (init/main.c:1283)
 
-However, if zero-length command is found exactly on a packet boundary
-(i.e., `pos` is a multiple of wMaxPacketSize, including 0), `round_up`
-function will return the unchanged value of `pos`. This prevents `pos`
-to be increased, causing an infinite loop in the parsing logic.
+Christoph found out this is due to the poisoning code not dealing
+properly with CONFIG_HIGHMEM because only the first page is mapped but
+then the whole potentially high-order page is accessed.
 
-This patch fixes this in the function by using `pos + 1` instead.
-This ensures that even if `pos` is on a boundary, the calculation is
-based on `pos + 1`, forcing `round_up()` to always return the next
-aligned boundary.
+We could give up on HIGHMEM here, but it's straightforward to fix this
+with a loop that's mapping, poisoning or checking and unmapping
+individual pages.
 
-Fixes: 7259124eac7d ("can: kvaser_usb: Split driver into kvaser_usb_core.c and kvaser_usb_leaf.c")
-Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
-Reviewed-by: Jimmy Assarsson <extja@kvaser.com>
-Tested-by: Jimmy Assarsson <extja@kvaser.com>
-Link: https://patch.msgid.link/20251023162709.348240-1-eeodqql09@gmail.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202511111411.9ebfa1ba-lkp@intel.com
+Analyzed-by: Christoph Hellwig <hch@lst.de>
+Fixes: bdfedb76f4f5 ("mm, mempool: poison elements backed by slab allocator")
+Cc: stable@vger.kernel.org
+Tested-by: kernel test robot <oliver.sang@intel.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://patch.msgid.link/20251113-mempool-poison-v1-1-233b3ef984c3@suse.cz
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/mempool.c |   32 ++++++++++++++++++++++++++------
+ 1 file changed, 26 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c
-index 6b9122ab1464f..b7f6935686c96 100644
---- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c
-+++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c
-@@ -662,7 +662,7 @@ static int kvaser_usb_leaf_wait_cmd(const struct kvaser_usb *dev, u8 id,
- 			 * for further details.
- 			 */
- 			if (tmp->len == 0) {
--				pos = round_up(pos,
-+				pos = round_up(pos + 1,
- 					       le16_to_cpu
- 						(dev->bulk_in->wMaxPacketSize));
- 				continue;
-@@ -1672,7 +1672,7 @@ static void kvaser_usb_leaf_read_bulk_callback(struct kvaser_usb *dev,
- 		 * number of events in case of a heavy rx load on the bus.
- 		 */
- 		if (cmd->len == 0) {
--			pos = round_up(pos, le16_to_cpu
-+			pos = round_up(pos + 1, le16_to_cpu
- 						(dev->bulk_in->wMaxPacketSize));
- 			continue;
- 		}
--- 
-2.51.0
-
+--- a/mm/mempool.c
++++ b/mm/mempool.c
+@@ -63,10 +63,20 @@ static void check_element(mempool_t *poo
+ 	} else if (pool->free == mempool_free_pages) {
+ 		/* Mempools backed by page allocator */
+ 		int order = (int)(long)pool->pool_data;
+-		void *addr = kmap_local_page((struct page *)element);
+ 
+-		__check_element(pool, addr, 1UL << (PAGE_SHIFT + order));
+-		kunmap_local(addr);
++#ifdef CONFIG_HIGHMEM
++		for (int i = 0; i < (1 << order); i++) {
++			struct page *page = (struct page *)element;
++			void *addr = kmap_local_page(page + i);
++
++			__check_element(pool, addr, PAGE_SIZE);
++			kunmap_local(addr);
++		}
++#else
++		void *addr = page_address((struct page *)element);
++
++		__check_element(pool, addr, PAGE_SIZE << order);
++#endif
+ 	}
+ }
+ 
+@@ -86,10 +96,20 @@ static void poison_element(mempool_t *po
+ 	} else if (pool->alloc == mempool_alloc_pages) {
+ 		/* Mempools backed by page allocator */
+ 		int order = (int)(long)pool->pool_data;
+-		void *addr = kmap_local_page((struct page *)element);
+ 
+-		__poison_element(addr, 1UL << (PAGE_SHIFT + order));
+-		kunmap_local(addr);
++#ifdef CONFIG_HIGHMEM
++		for (int i = 0; i < (1 << order); i++) {
++			struct page *page = (struct page *)element;
++			void *addr = kmap_local_page(page + i);
++
++			__poison_element(addr, PAGE_SIZE);
++			kunmap_local(addr);
++		}
++#else
++		void *addr = page_address((struct page *)element);
++
++		__poison_element(addr, PAGE_SIZE << order);
++#endif
+ 	}
+ }
+ #else /* CONFIG_DEBUG_SLAB || CONFIG_SLUB_DEBUG_ON */
 
 
 
