@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-198681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA248CA090C
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:41:55 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77653C9FE3A
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:19:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 67364342A384
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:21:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5F2FA3024198
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:16:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0D9833FE11;
-	Wed,  3 Dec 2025 15:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E72EB354AE6;
+	Wed,  3 Dec 2025 16:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rU7g4jQj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dwy2ffE9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74DC63385A7;
-	Wed,  3 Dec 2025 15:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FD9B354AE1;
+	Wed,  3 Dec 2025 16:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777339; cv=none; b=mZcxZcPgs+sdsVmcRAGKe2XJyKDDbgmszbtIy9Y0sPiIEWp3gJF5vaByo/0iO0pPa3bdeDRbFSFcmhMMMOXs9u7r5QDZW/WkJWy1btMdTZCwkr6ZueuliWiEyuDI1QqlrQogZTfY7+x2pGgHRc5k02RCKr14Bj6PIutEgfTEXZc=
+	t=1764778520; cv=none; b=WyBiqKHWAtdaziC1Ddo+Pf7dgF8Rik1zju+RgBTUbrM3TMVwadUNHhxtuHSqzL6QYK4Sr9Oq45fz/EeNWkEDUF4nGoYF3u+qzOF715n0v9WOFu0PMVv7Qmunlq4/ahdSr/CoIqAcxOPI3HGOkPGheFr6jrborO6YYNte/zebvow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777339; c=relaxed/simple;
-	bh=Q1YsiGOpztF3PcmmTChpmADjp+QfgT4E7PnY3ZWtBeA=;
+	s=arc-20240116; t=1764778520; c=relaxed/simple;
+	bh=hUB0PJZnYL3IICuljlofiNBBa1xWYsh3Z+Nb9EWmagM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d+Dpo/TuV/57mB7iCfy2DPwto0O0o/C5uANNV4+WlkEfg8MgtbIYuTMvrfqHWND5h7DZKRtE5FMhPT416jB/YRBU3xXt2jJy0ph2ogba0jcvCxrnsMLJZ+Ac09DkcF2GcD5ucmWnePfC/cmCplo852Irgy3e+wWzHOUenTx/+nA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rU7g4jQj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E61AAC4CEF5;
-	Wed,  3 Dec 2025 15:55:38 +0000 (UTC)
+	 MIME-Version; b=uLyPuKkbYG2u0sRedge2ey7yATm6iJDDHl6kb++erGqm7LHEl+4GKnS9QGHGkQ2Ub/lstnAZlqDTOy2edi3ccn12n0xOJzA+Nh0Oo7khgnsQ+KrW+ozTuWEkN98PHOGwtKuU3sIZ9q6/3ReBp1m6IoNwEt9apLPbDGeAr4ecir4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dwy2ffE9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1464AC4CEF5;
+	Wed,  3 Dec 2025 16:15:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777339;
-	bh=Q1YsiGOpztF3PcmmTChpmADjp+QfgT4E7PnY3ZWtBeA=;
+	s=korg; t=1764778520;
+	bh=hUB0PJZnYL3IICuljlofiNBBa1xWYsh3Z+Nb9EWmagM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rU7g4jQjUpjz/PHivuQpdeOMVUL6EeBUEWBCUbBva9PqlwayAaSwtnRjegTjcgKCs
-	 cHxXW2LWQ11d0IHNnJH7FvJvJk/SGuRDsMlfFOF4B+Aizb01mLR2Vqe+CgAiSvNH5o
-	 uTy39BexEcrjZzKNnkyQIMT7lPbsm9t3ZYUn4pLc=
+	b=dwy2ffE9Ol7mLsEdkjQmlomCAX7ovssjm9pCzunaiFOZmWxz1KV+nElA0/dlwLYp6
+	 1DdelDao28hHsyk4IzxTQQh2JsHNvsZG/EzlSbAb3sfEhXWCf7/yztqefVqP1aWc9T
+	 Tgl8tHU0c5nndf3u46pRUwLYsdgv7EW0VO0ls1sw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Youngjun Park <youngjun.park@lge.com>,
-	Chris Li <chrisl@kernel.org>,
-	Barry Song <baohua@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <bhe@redhat.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 142/146] mm: swap: remove duplicate nr_swap_pages decrement in get_swap_page_of_type()
+	stable <stable@kernel.org>,
+	Yu Chen <chenyu45@xiaomi.com>,
+	Owen Gu <guhuinan@xiaomi.com>,
+	Oliver Neukum <oneukum@suse.com>
+Subject: [PATCH 5.15 370/392] usb: uas: fix urb unmapping issue when the uas device is remove during ongoing data transfer
 Date: Wed,  3 Dec 2025 16:28:40 +0100
-Message-ID: <20251203152351.670553767@linuxfoundation.org>
+Message-ID: <20251203152427.774395154@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,60 +61,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Youngjun Park <youngjun.park@lge.com>
+From: Owen Gu <guhuinan@xiaomi.com>
 
-[ Upstream commit f5e31a196edcd1f1bb44f26b6f9299b9a5b9b3c4 ]
+commit 26d56a9fcb2014b99e654127960aa0a48a391e3c upstream.
 
-After commit 4f78252da887, nr_swap_pages is decremented in
-swap_range_alloc(). Since cluster_alloc_swap_entry() calls
-swap_range_alloc() internally, the decrement in get_swap_page_of_type()
-causes double-decrementing.
+When a UAS device is unplugged during data transfer, there is
+a probability of a system panic occurring. The root cause is
+an access to an invalid memory address during URB callback handling.
+Specifically, this happens when the dma_direct_unmap_sg() function
+is called within the usb_hcd_unmap_urb_for_dma() interface, but the
+sg->dma_address field is 0 and the sg data structure has already been
+freed.
 
-As a representative userspace-visible runtime example of the impact,
-/proc/meminfo reports increasingly inaccurate SwapFree values.  The
-discrepancy grows with each swap allocation, and during hibernation
-when large amounts of memory are written to swap, the reported value
-can deviate significantly from actual available swap space, misleading
-users and monitoring tools.
+The SCSI driver sends transfer commands by invoking uas_queuecommand_lck()
+in uas.c, using the uas_submit_urbs() function to submit requests to USB.
+Within the uas_submit_urbs() implementation, three URBs (sense_urb,
+data_urb, and cmd_urb) are sequentially submitted. Device removal may
+occur at any point during uas_submit_urbs execution, which may result
+in URB submission failure. However, some URBs might have been successfully
+submitted before the failure, and uas_submit_urbs will return the -ENODEV
+error code in this case. The current error handling directly calls
+scsi_done(). In the SCSI driver, this eventually triggers scsi_complete()
+to invoke scsi_end_request() for releasing the sgtable. The successfully
+submitted URBs, when being unlinked to giveback, call
+usb_hcd_unmap_urb_for_dma() in hcd.c, leading to exceptions during sg
+unmapping operations since the sg data structure has already been freed.
 
-Remove the duplicate decrement.
+This patch modifies the error condition check in the uas_submit_urbs()
+function. When a UAS device is removed but one or more URBs have already
+been successfully submitted to USB, it avoids immediately invoking
+scsi_done() and save the cmnd to devinfo->cmnd array. If the successfully
+submitted URBs is completed before devinfo->resetting being set, then
+the scsi_done() function will be called within uas_try_complete() after
+all pending URB operations are finalized. Otherwise, the scsi_done()
+function will be called within uas_zap_pending(), which is executed after
+usb_kill_anchored_urbs().
 
-Link: https://lkml.kernel.org/r/20251102082456.79807-1-youngjun.park@lge.com
-Fixes: 4f78252da887 ("mm: swap: move nr_swap_pages counter decrement from folio_alloc_swap() to swap_range_alloc()")
-Signed-off-by: Youngjun Park <youngjun.park@lge.com>
-Acked-by: Chris Li <chrisl@kernel.org>
-Reviewed-by: Barry Song <baohua@kernel.org>
-Reviewed-by: Kairui Song <kasong@tencent.com>
-Acked-by: Nhat Pham <nphamcs@gmail.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Kemeng Shi <shikemeng@huaweicloud.com>
-Cc: <stable@vger.kernel.org> [6.17+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ adjusted context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The error handling only takes effect when uas_queuecommand_lck() calls
+uas_submit_urbs() and returns the error value -ENODEV . In this case,
+the device is disconnected, and the flow proceeds to uas_disconnect(),
+where uas_zap_pending() is invoked to call uas_try_complete().
+
+Fixes: eb2a86ae8c54 ("USB: UAS: fix disconnect by unplugging a hub")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Yu Chen <chenyu45@xiaomi.com>
+Signed-off-by: Owen Gu <guhuinan@xiaomi.com>
+Acked-by: Oliver Neukum <oneukum@suse.com>
+Link: https://patch.msgid.link/20251120123336.3328-1-guhuinan@xiaomi.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/swapfile.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/usb/storage/uas.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -1866,10 +1866,8 @@ swp_entry_t get_swap_page_of_type(int ty
- 	if (get_swap_device_info(si)) {
- 		if (si->flags & SWP_WRITEOK) {
- 			offset = cluster_alloc_swap_entry(si, 0, 1);
--			if (offset) {
-+			if (offset)
- 				entry = swp_entry(si->type, offset);
--				atomic_long_dec(&nr_swap_pages);
--			}
- 		}
- 		put_swap_device(si);
+--- a/drivers/usb/storage/uas.c
++++ b/drivers/usb/storage/uas.c
+@@ -698,6 +698,10 @@ static int uas_queuecommand_lck(struct s
+ 	 * of queueing, no matter how fatal the error
+ 	 */
+ 	if (err == -ENODEV) {
++		if (cmdinfo->state & (COMMAND_INFLIGHT | DATA_IN_URB_INFLIGHT |
++				DATA_OUT_URB_INFLIGHT))
++			goto out;
++
+ 		set_host_byte(cmnd, DID_NO_CONNECT);
+ 		scsi_done(cmnd);
+ 		goto zombie;
+@@ -711,6 +715,7 @@ static int uas_queuecommand_lck(struct s
+ 		uas_add_work(cmnd);
  	}
+ 
++out:
+ 	devinfo->cmnd[idx] = cmnd;
+ zombie:
+ 	spin_unlock_irqrestore(&devinfo->lock, flags);
 
 
 
