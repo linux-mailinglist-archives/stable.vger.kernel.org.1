@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-199611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3231CA0167
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:46:08 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB4ACC9FB3C
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:54:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C6CA23000930
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:46:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 64F8630052A3
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:54:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0656E393DD5;
-	Wed,  3 Dec 2025 16:46:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3D953376A3;
+	Wed,  3 Dec 2025 15:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M1cqq6rG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GSfBSgRA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC9436C0C1;
-	Wed,  3 Dec 2025 16:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09DDF338925;
+	Wed,  3 Dec 2025 15:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780363; cv=none; b=Rk6OK3Za7+mWPezjxh94pCWr0KyWiG+Sn2FvTKOMbNRSUp4xKcY2j12bVxYwwDd4fkGkb1WJOqUmvKjDOJzJeAHTTALn/BNeZ6LRGHWbyPRScLOIOUXU9OBv9PaOah9t8hqLB0EkDHH9BuBvrbi7fMUmYTIuF9nWTHv7fNm3Zio=
+	t=1764777237; cv=none; b=ffEYnwXqMBsege0Ik0Gh00+cRjpHhiY4KdlbFBmfYlwN3fcnO9BvvhAz4x2EqKGDREgLmBbDjkyg0UJ5XHfQED3WWgLdneyXIc01fx2ohu9TowDOIm+Doy9KnXEZgdOg+qCu588B//ozmQdsbsEDStGDAH1B9bcb2gygOcTTKvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780363; c=relaxed/simple;
-	bh=Rl0PrUreyVvIHp2JdWApMeIVIcM4xLYMDj3nXbYVCKw=;
+	s=arc-20240116; t=1764777237; c=relaxed/simple;
+	bh=Z4+WGiyrsGr2axSZp42kd2MFW37Das9524RfklnZ5y0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r2+qw8I+D5jHR19sJ+kQOqHzGQP3jpdk7LOxIfAxIzKXhdFMXTz+aeghEBdlb6J/1x7CZIKwlj4vHaoWsI5t2alUqPEehIwM0/1DdCMkQBhLzf5Lok4nXKvhDIrS9Qc6lcsaYvs5Bgf12W1+8ZLYxJKq8+Rd+tpDs00zZYAJkyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M1cqq6rG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FF8AC4CEF5;
-	Wed,  3 Dec 2025 16:46:02 +0000 (UTC)
+	 MIME-Version; b=q0yusl0+eG+aUeBHlSzImrZpyhhLyPVbUjb0xYOzUi6z8LfRWwMdGVQJgO6ZyGdEAAUiGwO6QFR0lqKFEYtNkZtjvsPoXrDNpOgz05iBEYKy0XG3LPC9bZKQm4rPp4z0U9Gn4WOwHR2FYb0UK0iIj19qtdkgrWwN1dK89K4R9ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GSfBSgRA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38C4EC32782;
+	Wed,  3 Dec 2025 15:53:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780363;
-	bh=Rl0PrUreyVvIHp2JdWApMeIVIcM4xLYMDj3nXbYVCKw=;
+	s=korg; t=1764777236;
+	bh=Z4+WGiyrsGr2axSZp42kd2MFW37Das9524RfklnZ5y0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M1cqq6rGqCh28YhmhTwi01onxxltt1q2uOK/B2clBUqR8csCFpSRVFNx3pNd5nt/k
-	 6Rzf8ltG3gOQvNzY7+jyYPTMJUEYulKai+dfHx/4fvVFOsRmwE1UzNv7mY/K/izEM6
-	 r+u86H+DAW7oXT9N1QWRbOes9bT5uDpcH4286KhU=
+	b=GSfBSgRAKkYqoT1sHb7+U1aD94VemU0lkkxXakeZZeK2Verxy81cfVr3axNCW6ekM
+	 0aALMISnBjuenZ7F4N0Qr8SkvcY5DVpZeR0198Pe4V14RU/cKrhfPg8ZZpTQ2i02Hy
+	 /pnkNeSxf4JCo6KnTJewkpQSqmDRW2zgu87fJsPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Kodanev <aleksei.kodanev@bell-sw.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 501/568] net: sxgbe: fix potential NULL dereference in sxgbe_rx()
+	Vanillan Wang <vanillanwang@163.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.17 125/146] USB: serial: option: add support for Rolling RW101R-GL
 Date: Wed,  3 Dec 2025 16:28:23 +0100
-Message-ID: <20251203152459.063528986@linuxfoundation.org>
+Message-ID: <20251203152351.035736036@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +59,162 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
+From: Vanillan Wang <vanillanwang@163.com>
 
-[ Upstream commit f5bce28f6b9125502abec4a67d68eabcd24b3b17 ]
+commit 523bf0a59e674b52e4b5607a2aba655fbfa20ff2 upstream.
 
-Currently, when skb is null, the driver prints an error and then
-dereferences skb on the next line.
+- VID:PID 33f8:0301, RW101R-GL for laptop debug M.2 cards (with MBIM
+  interface for Linux/Chrome OS)
 
-To fix this, let's add a 'break' after the error message to switch
-to sxgbe_rx_refill(), which is similar to the approach taken by the
-other drivers in this particular case, e.g. calxeda with xgmac_rx().
+  0x0301: mbim, pipe
 
-Found during a code review.
+T:  Bus=04 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=33f8 ProdID=0301 Rev=05.04
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=Rolling RW101R-GL Module
+S:  SerialNumber=3ec4efdf
+C:  #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
 
-Fixes: 1edb9ca69e8a ("net: sxgbe: add basic framework for Samsung 10Gb ethernet driver")
-Signed-off-by: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251121123834.97748-1-aleksei.kodanev@bell-sw.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+- VID:PID 33f8:01a8, RW101R-GL for laptop debug M.2 cards (with MBIM
+  interface for Linux/Chrome OS)
+
+  0x01a8: mbim, diag, AT, ADB, pipe1, pipe2
+
+T:  Bus=04 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=33f8 ProdID=01a8 Rev=05.04
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=Rolling RW101R-GL Module
+S:  SerialNumber=3ec4efdf
+C:  #Ifs= 7 Cfg#= 1 Atr=a0 MxPwr=896mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 6 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=88(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=89(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+
+- VID:PID 33f8:0302, RW101R-GL for laptop debug M.2 cards (with MBIM
+  interface for Linux/Chrome OS)
+
+  0x0302: mbim, pipe
+
+T:  Bus=03 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  6 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=33f8 ProdID=0302 Rev=05.04
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=Rolling RW101R-GL Module
+S:  SerialNumber=3ec4efdf
+C:  #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+
+- VID:PID 33f8:01a9, RW101R-GL for laptop debug M.2 cards (with MBIM
+  interface for Linux/Chrome OS)
+
+  0x01a9: mbim, diag, AT, ADB, pipe1, pipe2
+
+T:  Bus=03 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=33f8 ProdID=01a9 Rev=05.04
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=Rolling RW101R-GL Module
+S:  SerialNumber=3ec4efdf
+C:  #Ifs= 7 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 6 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=89(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+
+Signed-off-by: Vanillan Wang <vanillanwang@163.com>
+Cc: stable@vger.kernel.org
+[ johan: sort vendor entries, edit commit message slightly ]
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/samsung/sxgbe/sxgbe_main.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/serial/option.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/samsung/sxgbe/sxgbe_main.c b/drivers/net/ethernet/samsung/sxgbe/sxgbe_main.c
-index 9664f029fa161..f6f99712d562e 100644
---- a/drivers/net/ethernet/samsung/sxgbe/sxgbe_main.c
-+++ b/drivers/net/ethernet/samsung/sxgbe/sxgbe_main.c
-@@ -1521,8 +1521,10 @@ static int sxgbe_rx(struct sxgbe_priv_data *priv, int limit)
- 
- 		skb = priv->rxq[qnum]->rx_skbuff[entry];
- 
--		if (unlikely(!skb))
-+		if (unlikely(!skb)) {
- 			netdev_err(priv->dev, "rx descriptor is not consistent\n");
-+			break;
-+		}
- 
- 		prefetch(skb->data - NET_IP_ALIGN);
- 		priv->rxq[qnum]->rx_skbuff[entry] = NULL;
--- 
-2.51.0
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2424,12 +2424,18 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1406, 0xff) },			/* GosunCn GM500 ECM/NCM */
+ 	{ USB_DEVICE(0x33f8, 0x0104),						/* Rolling RW101-GL (laptop RMNET) */
+ 	  .driver_info = RSVD(4) | RSVD(5) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0115, 0xff),			/* Rolling RW135-GL (laptop MBIM) */
++	  .driver_info = RSVD(5) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a2, 0xff) },			/* Rolling RW101-GL (laptop MBIM) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a3, 0xff) },			/* Rolling RW101-GL (laptop MBIM) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a4, 0xff),			/* Rolling RW101-GL (laptop MBIM) */
+ 	  .driver_info = RSVD(4) },
+-	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0115, 0xff),			/* Rolling RW135-GL (laptop MBIM) */
+-	  .driver_info = RSVD(5) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a8, 0xff),			/* Rolling RW101R-GL (laptop MBIM) */
++	  .driver_info = RSVD(4) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a9, 0xff),			/* Rolling RW101R-GL (laptop MBIM) */
++	  .driver_info = RSVD(4) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0301, 0xff) },			/* Rolling RW101R-GL (laptop MBIM) */
++	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0302, 0xff) },			/* Rolling RW101R-GL (laptop MBIM) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0802, 0xff),			/* Rolling RW350-GL (laptop MBIM) */
+ 	  .driver_info = RSVD(5) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for Global */
 
 
 
