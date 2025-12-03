@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD9C2CA09EE
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:46:41 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDFE3C9FD07
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:07:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F2E2B301470B
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:45:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CDE0730000B9
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:07:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69BB9327C04;
-	Wed,  3 Dec 2025 15:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E90034F48B;
+	Wed,  3 Dec 2025 16:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9GqFapZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lhc9h9Dr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59D032779D;
-	Wed,  3 Dec 2025 15:49:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69F43148D4;
+	Wed,  3 Dec 2025 16:07:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776950; cv=none; b=EIc0ajnkLSC8matY4lIGDWZBJ+f2hOJkxyiTOoMOPDVMDZGhXYRqewVztp8I0p8qQWIiyOhHhWMEdO+EkCawg+EWeZBe4YyKpnx7Z1wUd/Rcs26j04I+8aKBgsn8RD7UzH+dd0qx/P4Xp9l/Sw2o7LE48keLe2OLChgSpnV5RK4=
+	t=1764778071; cv=none; b=pMtbfqc/q+1JgC+McE3WnySZ7O5A+96ZYOEt9V23fDtlQAGHxDCq2JLxTzj+iH+U0uUDEVXItA7TcvNkBliffTcYX2SoHkPIlvSyQXMpdIxrWCkOJSPOeTbvCGQFaPCV8Jdp1JG0OxdUlneFLR//G2LTBgDUGU2c3icAlHaI0U0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776950; c=relaxed/simple;
-	bh=aifbKhtlH/mFF2ENeacMc4iJZCmljjGuLwTUJrXLXp0=;
+	s=arc-20240116; t=1764778071; c=relaxed/simple;
+	bh=2g0IJmgk7j/sWPxZjKEbv9OXTTC2rj4pDeKs3DE6S9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KvYrgtmI4x5dA88ehRHjSJWMKafftS+YgLz6UFZwGv0zNG5XIod0zpDMJbHYMKcRYzSg/+EtdH8xXhPFXJppyck50gdx53YcNg389FJb6XEUdcorOpwC8H9DcCBsz7XCvEN3QNi27oA+8X2PmPbdH8r3/lWaqu+u/hiuOHRLVE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9GqFapZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39FE4C4CEF5;
-	Wed,  3 Dec 2025 15:49:10 +0000 (UTC)
+	 MIME-Version; b=fkoHWCVsOuR+W1s7b2P9LyIkNBb9lOqZOJeLBgNQPlx8lo9pYRKFXE25Dve05JnRqs3QFqVhmTci+IqSmpJEgWhh5M6GmK2+VOyPO6pIhtrSk46sQ7+ABigX8aTLJUQzDt9tELfEXo+CdU6tY4man2jiNiznb7Hypx7kPiHuxro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lhc9h9Dr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 326C3C4CEF5;
+	Wed,  3 Dec 2025 16:07:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776950;
-	bh=aifbKhtlH/mFF2ENeacMc4iJZCmljjGuLwTUJrXLXp0=;
+	s=korg; t=1764778070;
+	bh=2g0IJmgk7j/sWPxZjKEbv9OXTTC2rj4pDeKs3DE6S9c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R9GqFapZWrCiKPE1g8oTiW2QqAw2b+Nm5v/eY3MLf2OsK32cq5JWVM60jXesahquD
-	 4ytDi/EhPs9RmjpW/fmRW8V5qZ4OXnuh+13E47S3oDsdNeItfwhuvFIywhV5XpnDSd
-	 xUFuVxeK6qYaq9mpQs5QcEdHoxC9jMyWNIXj1IhU=
+	b=Lhc9h9DrhOspifwh2heM/6QmSZ0c/ZYa4ZhLaIzXpspQdHur2MR+gubEx+lmucBwl
+	 fY6COqKl04Bnh/OO7q6Argn+Ka+gOTcw9lex+NDPKISNjahrekEygPYmMlQChK0vpU
+	 +SsoSp2MjtdHeim+Y7EGQRanuy4CKzShV/x2ayaE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Lu <chris.lu@mediatek.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Joshua Watt <jpewhacker@gmail.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 005/146] Bluetooth: btusb: mediatek: Fix kernel crash when releasing mtk iso interface
+Subject: [PATCH 5.15 233/392] NFS4: Fix state renewals missing after boot
 Date: Wed,  3 Dec 2025 16:26:23 +0100
-Message-ID: <20251203152346.661300712@linuxfoundation.org>
+Message-ID: <20251203152422.754802996@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,133 +60,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Lu <chris.lu@mediatek.com>
+From: Joshua Watt <jpewhacker@gmail.com>
 
-[ Upstream commit 4015b979767125cf8a2233a145a3b3af78bfd8fb ]
+[ Upstream commit 9bb3baa9d1604cd20f49ae7dac9306b4037a0e7a ]
 
-When performing reset tests and encountering abnormal card drop issues
-that lead to a kernel crash, it is necessary to perform a null check
-before releasing resources to avoid attempting to release a null pointer.
+Since the last renewal time was initialized to 0 and jiffies start
+counting at -5 minutes, any clients connected in the first 5 minutes
+after a reboot would have their renewal timer set to a very long
+interval. If the connection was idle, this would result in the client
+state timing out on the server and the next call to the server would
+return NFS4ERR_BADSESSION.
 
-<4>[   29.158070] Hardware name: Google Quigon sku196612/196613 board (DT)
-<4>[   29.158076] Workqueue: hci0 hci_cmd_sync_work [bluetooth]
-<4>[   29.158154] pstate: 20400009 (nzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-<4>[   29.158162] pc : klist_remove+0x90/0x158
-<4>[   29.158174] lr : klist_remove+0x88/0x158
-<4>[   29.158180] sp : ffffffc0846b3c00
-<4>[   29.158185] pmr_save: 000000e0
-<4>[   29.158188] x29: ffffffc0846b3c30 x28: ffffff80cd31f880 x27: ffffff80c1bdc058
-<4>[   29.158199] x26: dead000000000100 x25: ffffffdbdc624ea3 x24: ffffff80c1bdc4c0
-<4>[   29.158209] x23: ffffffdbdc62a3e6 x22: ffffff80c6c07000 x21: ffffffdbdc829290
-<4>[   29.158219] x20: 0000000000000000 x19: ffffff80cd3e0648 x18: 000000031ec97781
-<4>[   29.158229] x17: ffffff80c1bdc4a8 x16: ffffffdc10576548 x15: ffffff80c1180428
-<4>[   29.158238] x14: 0000000000000000 x13: 000000000000e380 x12: 0000000000000018
-<4>[   29.158248] x11: ffffff80c2a7fd10 x10: 0000000000000000 x9 : 0000000100000000
-<4>[   29.158257] x8 : 0000000000000000 x7 : 7f7f7f7f7f7f7f7f x6 : 2d7223ff6364626d
-<4>[   29.158266] x5 : 0000008000000000 x4 : 0000000000000020 x3 : 2e7325006465636e
-<4>[   29.158275] x2 : ffffffdc11afeff8 x1 : 0000000000000000 x0 : ffffffdc11be4d0c
-<4>[   29.158285] Call trace:
-<4>[   29.158290]  klist_remove+0x90/0x158
-<4>[   29.158298]  device_release_driver_internal+0x20c/0x268
-<4>[   29.158308]  device_release_driver+0x1c/0x30
-<4>[   29.158316]  usb_driver_release_interface+0x70/0x88
-<4>[   29.158325]  btusb_mtk_release_iso_intf+0x68/0xd8 [btusb (HASH:e8b6 5)]
-<4>[   29.158347]  btusb_mtk_reset+0x5c/0x480 [btusb (HASH:e8b6 5)]
-<4>[   29.158361]  hci_cmd_sync_work+0x10c/0x188 [bluetooth (HASH:a4fa 6)]
-<4>[   29.158430]  process_scheduled_works+0x258/0x4e8
-<4>[   29.158441]  worker_thread+0x300/0x428
-<4>[   29.158448]  kthread+0x108/0x1d0
-<4>[   29.158455]  ret_from_fork+0x10/0x20
-<0>[   29.158467] Code: 91343000 940139d1 f9400268 927ff914 (f9401297)
-<4>[   29.158474] ---[ end trace 0000000000000000 ]---
-<0>[   29.167129] Kernel panic - not syncing: Oops: Fatal exception
-<2>[   29.167144] SMP: stopping secondary CPUs
-<4>[   29.167158] ------------[ cut here ]------------
+Fix this by initializing the last renewal time to the current jiffies
+instead of 0.
 
-Fixes: ceac1cb0259d ("Bluetooth: btusb: mediatek: add ISO data transmission functions")
-Signed-off-by: Chris Lu <chris.lu@mediatek.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Joshua Watt <jpewhacker@gmail.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c        | 34 +++++++++++++++++++++++++-------
- include/net/bluetooth/hci_core.h |  1 -
- 2 files changed, 27 insertions(+), 8 deletions(-)
+ fs/nfs/nfs4client.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index a722446ec73dd..202a845e0236f 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -2711,9 +2711,16 @@ static int btusb_recv_event_realtek(struct hci_dev *hdev, struct sk_buff *skb)
- 
- static void btusb_mtk_claim_iso_intf(struct btusb_data *data)
- {
--	struct btmtk_data *btmtk_data = hci_get_priv(data->hdev);
-+	struct btmtk_data *btmtk_data;
- 	int err;
- 
-+	if (!data->hdev)
-+		return;
-+
-+	btmtk_data = hci_get_priv(data->hdev);
-+	if (!btmtk_data)
-+		return;
-+
- 	/*
- 	 * The function usb_driver_claim_interface() is documented to need
- 	 * locks held if it's not called from a probe routine. The code here
-@@ -2735,17 +2742,30 @@ static void btusb_mtk_claim_iso_intf(struct btusb_data *data)
- 
- static void btusb_mtk_release_iso_intf(struct hci_dev *hdev)
- {
--	struct btmtk_data *btmtk_data = hci_get_priv(hdev);
-+	struct btmtk_data *btmtk_data;
-+
-+	if (!hdev)
-+		return;
-+
-+	btmtk_data = hci_get_priv(hdev);
-+	if (!btmtk_data)
-+		return;
- 
- 	if (test_bit(BTMTK_ISOPKT_OVER_INTR, &btmtk_data->flags)) {
- 		usb_kill_anchored_urbs(&btmtk_data->isopkt_anchor);
- 		clear_bit(BTMTK_ISOPKT_RUNNING, &btmtk_data->flags);
- 
--		dev_kfree_skb_irq(btmtk_data->isopkt_skb);
--		btmtk_data->isopkt_skb = NULL;
--		usb_set_intfdata(btmtk_data->isopkt_intf, NULL);
--		usb_driver_release_interface(&btusb_driver,
--					     btmtk_data->isopkt_intf);
-+		if (btmtk_data->isopkt_skb) {
-+			dev_kfree_skb_irq(btmtk_data->isopkt_skb);
-+			btmtk_data->isopkt_skb = NULL;
-+		}
-+
-+		if (btmtk_data->isopkt_intf) {
-+			usb_set_intfdata(btmtk_data->isopkt_intf, NULL);
-+			usb_driver_release_interface(&btusb_driver,
-+						     btmtk_data->isopkt_intf);
-+			btmtk_data->isopkt_intf = NULL;
-+		}
- 	}
- 
- 	clear_bit(BTMTK_ISOPKT_OVER_INTR, &btmtk_data->flags);
-diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
-index 8d78cb2b9f1ab..4ccb462a0a4b8 100644
---- a/include/net/bluetooth/hci_core.h
-+++ b/include/net/bluetooth/hci_core.h
-@@ -748,7 +748,6 @@ struct hci_conn {
- 
- 	__u8		remote_cap;
- 	__u8		remote_auth;
--	__u8		remote_id;
- 
- 	unsigned int	sent;
- 
+diff --git a/fs/nfs/nfs4client.c b/fs/nfs/nfs4client.c
+index 7e4b126e3061e..02082580d34eb 100644
+--- a/fs/nfs/nfs4client.c
++++ b/fs/nfs/nfs4client.c
+@@ -221,6 +221,7 @@ struct nfs_client *nfs4_alloc_client(const struct nfs_client_initdata *cl_init)
+ 	clp->cl_state = 1 << NFS4CLNT_LEASE_EXPIRED;
+ 	clp->cl_mvops = nfs_v4_minor_ops[cl_init->minorversion];
+ 	clp->cl_mig_gen = 1;
++	clp->cl_last_renewal = jiffies;
+ #if IS_ENABLED(CONFIG_NFS_V4_1)
+ 	init_waitqueue_head(&clp->cl_lock_waitq);
+ #endif
 -- 
 2.51.0
 
