@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-198379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B83BC9F99B
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:44:27 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EB66C9FD2E
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:08:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3A105304790E
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:39:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9562930014D4
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:08:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAD0330C373;
-	Wed,  3 Dec 2025 15:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB49434FF64;
+	Wed,  3 Dec 2025 16:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TWUGG3NC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OxXq/Rny"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8840C303C91;
-	Wed,  3 Dec 2025 15:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906BD34FF62;
+	Wed,  3 Dec 2025 16:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776346; cv=none; b=FZnYmjqdGpuqSCbuTY8IV5M2WRfLYVTzuXVn7M47RRWtwsdBiLnONftMm4UeLo0REEhurZfj3FNOkYPmVtgqDo+P2D1kcShHrM1h+VoUhpsmDuI4ocoxH6iyM2NQifUNoEg0j2dPrrOEkRb9zaAUA4pTER8HcT056CMuX1/XbF8=
+	t=1764778097; cv=none; b=kQ8xmFwG5jjzQA9/XUcF65vgq6t4TxQyPz1aOZHzzxkQzGHBkfsSBZGTH5BaFAD606iOOm0V3k/zctpCuIEwstQbFHU7NCz1qWxKhtj3sYQlQVlSqo+OZkcO3219sCXllSIPTUUYN5PB0hTMmM+yKJvE1N3h4KQqnhzJE5X4Bzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776346; c=relaxed/simple;
-	bh=w2uXhK7Lo2Wi3iqNMkOXbHkYJzZKuZOfc4C35pEywHw=;
+	s=arc-20240116; t=1764778097; c=relaxed/simple;
+	bh=vgpXBf5giiDLnhyPFU7DcnYlte+zXwVWcSX3RnEOMpU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OButc9Eu6V8oAJyC57eFfl4PWKYKr5g/Yo+G0Ksqo0D8VgNjLBac2wq/T2jULi9KfVrZMGWVBmJMwPxKZmEKLye9fRQ087bdVQVvOT7KBRitWD/VP2O7yWofhqxMyWQdAEStPvj+X75Fd9uJoUGuZcS/j341J8qP75nRvlPDBFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TWUGG3NC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB201C4CEF5;
-	Wed,  3 Dec 2025 15:39:05 +0000 (UTC)
+	 MIME-Version; b=WgsAxcKNPKl5t7iZAdGaYNQkH1bw/FEtAAISRRCDh8lMhRbicq8FuOeJMNQmTDAKf2Z5SKq/p/aoSCXm3isE+cVFC7LkzfSZ5d2xSJhi/QupoURivajH437rKGs0gqDWTXOa4iWigBGTP5gR4W6yErGYZ6NnKFMvrWL0X7aweo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OxXq/Rny; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E649C116B1;
+	Wed,  3 Dec 2025 16:08:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776346;
-	bh=w2uXhK7Lo2Wi3iqNMkOXbHkYJzZKuZOfc4C35pEywHw=;
+	s=korg; t=1764778097;
+	bh=vgpXBf5giiDLnhyPFU7DcnYlte+zXwVWcSX3RnEOMpU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TWUGG3NCguvhRXYoSHultw/7WuwH9xyF+TDhcClfkHBZ7qn2/c2Sv8Qe752lRKVF4
-	 Kmc9Jv2008UhKd1cHxKpcW9QoFlvCwJargttC9YudC7c6/4OemH7560Sja4xI0t/Hr
-	 Oj9WhJ9ldWMuFtbWOq9680u85qkP9DF10qUAjfzk=
+	b=OxXq/RnyjjFdIhQEtWkReOVSAkShryq1k1YF+EcKQOvRtZ8V2WQU9Usxm/Afpab2d
+	 PexpvDMe5jxdPZT+0IpY/UqqccZsHCuidPLYpaU8kRb6ReSweHzL2xBh+3nsMF8pUR
+	 02gzu6+P7GmKrW7+F/9Behl3QPjg1vXqF46o6Q/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Valerio Setti <vsetti@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Mark Brown <broonie@kernel.org>,
+	Willem de Bruijn <willemb@google.com>,
+	Anubhav Singh <anubhavsinggh@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 155/300] ASoC: meson: aiu-encoder-i2s: fix bit clock polarity
-Date: Wed,  3 Dec 2025 16:25:59 +0100
-Message-ID: <20251203152406.359508992@linuxfoundation.org>
+Subject: [PATCH 5.15 210/392] selftests/net: fix out-of-order delivery of FIN in gro:tcp test
+Date: Wed,  3 Dec 2025 16:26:00 +0100
+Message-ID: <20251203152421.800207540@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Valerio Setti <vsetti@baylibre.com>
+From: Anubhav Singh <anubhavsinggh@google.com>
 
-[ Upstream commit 4c4ed5e073a923fb3323022e1131cb51ad8df7a0 ]
+[ Upstream commit 02d064de05b1fcca769391fa82d205bed8bb9bf0 ]
 
-According to I2S specs audio data is sampled on the rising edge of the
-clock and it can change on the falling one. When operating in normal mode
-this SoC behaves the opposite so a clock polarity inversion is required
-in this case.
+Due to the gro_sender sending data packets and FIN packets
+in very quick succession, these are received almost simultaneously
+by the gro_receiver. FIN packets are sometimes processed before the
+data packets leading to intermittent (~1/100) test failures.
 
-This was tested on an OdroidC2 (Amlogic S905 SoC) board.
+This change adds a delay of 100ms before sending FIN packets
+in gro:tcp test to avoid the out-of-order delivery. The same
+mitigation already exists for the gro:ip test.
 
-Signed-off-by: Valerio Setti <vsetti@baylibre.com>
-Reviewed-by: Jerome Brunet <jbrunet@baylibre.com>
-Tested-by: Jerome Brunet <jbrunet@baylibre.com>
-Link: https://patch.msgid.link/20251007-fix-i2s-polarity-v1-1-86704d9cda10@baylibre.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 7d1575014a63 ("selftests/net: GRO coalesce test")
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: Anubhav Singh <anubhavsinggh@google.com>
+Link: https://patch.msgid.link/20251030062818.1562228-1-anubhavsinggh@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/meson/aiu-encoder-i2s.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ tools/testing/selftests/net/gro.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/sound/soc/meson/aiu-encoder-i2s.c b/sound/soc/meson/aiu-encoder-i2s.c
-index 67729de41a73e..a512cd49bc507 100644
---- a/sound/soc/meson/aiu-encoder-i2s.c
-+++ b/sound/soc/meson/aiu-encoder-i2s.c
-@@ -236,8 +236,12 @@ static int aiu_encoder_i2s_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
- 	    inv == SND_SOC_DAIFMT_IB_IF)
- 		val |= AIU_CLK_CTRL_LRCLK_INVERT;
+diff --git a/tools/testing/selftests/net/gro.c b/tools/testing/selftests/net/gro.c
+index cf37ce86b0fd0..687ab5e7cecf1 100644
+--- a/tools/testing/selftests/net/gro.c
++++ b/tools/testing/selftests/net/gro.c
+@@ -801,6 +801,7 @@ static void check_recv_pkts(int fd, int *correct_payload,
  
--	if (inv == SND_SOC_DAIFMT_IB_NF ||
--	    inv == SND_SOC_DAIFMT_IB_IF)
-+	/*
-+	 * The SoC changes data on the rising edge of the bitclock
-+	 * so an inversion of the bitclock is required in normal mode
-+	 */
-+	if (inv == SND_SOC_DAIFMT_NB_NF ||
-+	    inv == SND_SOC_DAIFMT_NB_IF)
- 		val |= AIU_CLK_CTRL_AOCLK_INVERT;
+ static void gro_sender(void)
+ {
++	const int fin_delay_us = 100 * 1000;
+ 	static char fin_pkt[MAX_HDR_LEN];
+ 	struct sockaddr_ll daddr = {};
+ 	int txfd = -1;
+@@ -844,15 +845,22 @@ static void gro_sender(void)
+ 		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
+ 	} else if (strcmp(testname, "tcp") == 0) {
+ 		send_changed_checksum(txfd, &daddr);
++		/* Adding sleep before sending FIN so that it is not
++		 * received prior to other packets.
++		 */
++		usleep(fin_delay_us);
+ 		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
  
- 	/* Signal skew */
-@@ -328,4 +332,3 @@ const struct snd_soc_dai_ops aiu_encoder_i2s_dai_ops = {
- 	.startup	= aiu_encoder_i2s_startup,
- 	.shutdown	= aiu_encoder_i2s_shutdown,
- };
--
+ 		send_changed_seq(txfd, &daddr);
++		usleep(fin_delay_us);
+ 		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
+ 
+ 		send_changed_ts(txfd, &daddr);
++		usleep(fin_delay_us);
+ 		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
+ 
+ 		send_diff_opt(txfd, &daddr);
++		usleep(fin_delay_us);
+ 		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
+ 	} else if (strcmp(testname, "ip") == 0) {
+ 		send_changed_ECN(txfd, &daddr);
 -- 
 2.51.0
 
