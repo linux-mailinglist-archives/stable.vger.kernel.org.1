@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-199633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AEA3CA025D
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:51:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DC27CA0D6F
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:14:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7DDAD3025334
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:47:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2AA50331E339
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:11:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C02035B156;
-	Wed,  3 Dec 2025 16:47:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D06C398FB9;
+	Wed,  3 Dec 2025 16:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oCwtNolz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xa+4PQhQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 073BB313546;
-	Wed,  3 Dec 2025 16:47:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB38398FA2;
+	Wed,  3 Dec 2025 16:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780438; cv=none; b=OLvYE5R4rEG0tCpegDwYqzW1jC0goh12nUWTVkKhmG2PmqoCiLaajA8ttLk+CAM877iSFe4/n2seDwmwkV63jxnb/aOtf3J28WlCRtJvXAUu0odHhhDZr9rB+THKEfJePNrxX/L5lZ8SIHId+zp2xlYvQ/3NKqdQ+iOd3o3wgmY=
+	t=1764781131; cv=none; b=Di6htvPukCLy/0+8yL574SM0C9YR+SKQHAzwqTJf8vzTfDE9q75OPUaEJ2tBTH0QWCo4aJouNYke2LU3xkTSOstDr5lMM7LPVdSifvUhL4w/CPdpnn24P0nGtZdJeBQCGKdZDmnkWa/AHpFa72FBPUCWU4CtTsfUsX1wpdnAjLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780438; c=relaxed/simple;
-	bh=N0DQ/kRue98muM6QcQOihXbQqnY/WX6C5bv4JpsDsEg=;
+	s=arc-20240116; t=1764781131; c=relaxed/simple;
+	bh=6HVgGwTPl78YhVItI8YKbS5u97jQX9nTd4so5fMBgq4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cU9lQ74XWTnQk61HoOOS1sU4K7T18XTI5ovzz69IUSGIqO0ALCJ0tGGmLlk+kl0QOJLzz/uLFSb457NLsmhhGj8BcSq1e20lJQZgGjgvsGWp8wE5iKWUsCytLZjRwNTaBtahMFDfh18LBljbgcfZEH9Rjvahr1JNqNGae1cb1cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oCwtNolz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EFB1C4CEF5;
-	Wed,  3 Dec 2025 16:47:17 +0000 (UTC)
+	 MIME-Version; b=dnbyCbVrn+LVBxA+WWoCl6JcLnjyIeXUGx31dIh6D0DC+FlY3LLbF4L9qnFaGuTvx8fIAFqoMAr7RcEZxthuaTXbH44teGwPYkUifcn04ab5PRT9wVW3d/ParrwxbC7qKuhYYnPRYAc78dAAiCWM9MZG4mfnqWaJ2mN1h9hfgVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xa+4PQhQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69C03C116B1;
+	Wed,  3 Dec 2025 16:58:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780437;
-	bh=N0DQ/kRue98muM6QcQOihXbQqnY/WX6C5bv4JpsDsEg=;
+	s=korg; t=1764781128;
+	bh=6HVgGwTPl78YhVItI8YKbS5u97jQX9nTd4so5fMBgq4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oCwtNolz0MV+PRWhRYoKGmHSihTcacke5Dm/DUToLdPYLj9sD8TsX5doeeOOiiIDx
-	 CFBsgnTbSLVtq6WLFWR/fXuDIhIr06e4+cys+aLKx5K48ufQRPwKKoaf377InaB+3H
-	 SOwEpdnvKKcswj1Fu8+60V5GdzZ95rSHSw6QiNSk=
+	b=Xa+4PQhQ0QRD1e57L2tlwWjun9fCqjljLPlIBXHxsKHLsk+q6ExGIGgyZd2S0pKc/
+	 5FnXaEwJyi2qxmGAUn3WYKLnymc6k1WLMO+3RbmlMyhpSRRcCthAsDqqppp89UBbRG
+	 VvyiAuCvfDfS3dG9m97m+9QQuCeDdS1sJemPodqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Hsu <andy_ya_hsu@wiwynn.com>,
-	ChiYuan Huang <cy_huang@richtek.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Jamie Iles <jamie.iles@oss.qualcomm.com>,
+	Punit Agrawal <punit.agrawal@oss.qualcomm.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 556/568] iio: adc: rtq6056: Correct the sign bit index
+Subject: [PATCH 6.6 25/93] mailbox: pcc: dont zero error register
 Date: Wed,  3 Dec 2025 16:29:18 +0100
-Message-ID: <20251203152501.072984150@linuxfoundation.org>
+Message-ID: <20251203152337.444163325@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
+References: <20251203152336.494201426@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ChiYuan Huang <cy_huang@richtek.com>
+From: Jamie Iles <jamie.iles@oss.qualcomm.com>
 
-[ Upstream commit 9b45744bf09fc2a3287e05287141d6e123c125a7 ]
+[ Upstream commit ff0e4d4c97c94af34cc9cad37b5a5cdbe597a3b0 ]
 
-The vshunt/current reported register is a signed 16bit integer. The
-sign bit index should be '15', not '16'.
+The error status mask for a type 3/4 subspace is used for reading the
+error status, and the bitwise inverse is used for clearing the error
+with the intent being to preserve any of the non-error bits.  However,
+we were previously applying the mask to extract the status and then
+applying the inverse to the result which ended up clearing all bits.
 
-Fixes: 4396f45d211b ("iio: adc: Add rtq6056 support")
-Reported-by: Andy Hsu <andy_ya_hsu@wiwynn.com>
-Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-[ adapted switch statement to existing if-else structure for sign_extend32() fix ]
+Instead, store the inverse mask in the preserve mask and then use that
+on the original value read from the error status so that only the error
+is cleared.
+
+Fixes: c45ded7e1135 ("mailbox: pcc: Add support for PCCT extended PCC subspaces(type 3/4)")
+Signed-off-by: Jamie Iles <jamie.iles@oss.qualcomm.com>
+Signed-off-by: Punit Agrawal <punit.agrawal@oss.qualcomm.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/rtq6056.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mailbox/pcc.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/iio/adc/rtq6056.c
-+++ b/drivers/iio/adc/rtq6056.c
-@@ -171,7 +171,7 @@ static int rtq6056_adc_read_channel(stru
- 	if (addr == RTQ6056_REG_BUSVOLT || addr == RTQ6056_REG_POWER)
- 		*val = regval;
- 	else
--		*val = sign_extend32(regval, 16);
-+		*val = sign_extend32(regval, 15);
+diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
+index bb977cf8ad423..2b7d0bc920726 100644
+--- a/drivers/mailbox/pcc.c
++++ b/drivers/mailbox/pcc.c
+@@ -278,9 +278,8 @@ static int pcc_mbox_error_check_and_clear(struct pcc_chan_info *pchan)
+ 	if (ret)
+ 		return ret;
  
- 	return IIO_VAL_INT;
- }
+-	val &= pchan->error.status_mask;
+-	if (val) {
+-		val &= ~pchan->error.status_mask;
++	if (val & pchan->error.status_mask) {
++		val &= pchan->error.preserve_mask;
+ 		pcc_chan_reg_write(&pchan->error, val);
+ 		return -EIO;
+ 	}
+@@ -673,7 +672,8 @@ static int pcc_parse_subspace_db_reg(struct pcc_chan_info *pchan,
+ 
+ 		ret = pcc_chan_reg_init(&pchan->error,
+ 					&pcct_ext->error_status_register,
+-					0, 0, pcct_ext->error_status_mask,
++					~pcct_ext->error_status_mask, 0,
++					pcct_ext->error_status_mask,
+ 					"Error Status");
+ 	}
+ 	return ret;
+-- 
+2.51.0
+
 
 
 
