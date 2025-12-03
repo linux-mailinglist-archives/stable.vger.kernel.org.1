@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-198562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3974CA1185
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:43:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31DC1C9FD22
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:08:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 07CB130028B7
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:43:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C138A3005A66
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:07:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42C4E32779D;
-	Wed,  3 Dec 2025 15:49:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED67834F484;
+	Wed,  3 Dec 2025 16:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="INHOefUr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dqV9OVWi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 000BD327213;
-	Wed,  3 Dec 2025 15:49:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7DFC31355B;
+	Wed,  3 Dec 2025 16:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776954; cv=none; b=U9zg/okHKInvm7nrhuwvEfJWoNrK2HM65x6UYfTu4eomTkvf8NXfHM32e3dt3EUTMonwLh67g6HX5Gfuoi6/TOEd0fSkK4sia3SBXHHxZdVcYEegTgC2ZE0odfBNPR0XSMtWlWNtuMW9cnk+FoO4DyuGr/wX41Hpwncagkh/WKs=
+	t=1764778074; cv=none; b=gaSVnFtqF8QNBalShm7BPvMxqSQSzcms8sHJNMsqHMPCT4Kqu25/2iyi4M0J0oGAsIk/HTDMBMHXWOqHF28wtkPts1KAulBSHmGCsfy/LRbKbbzQqBzREcerVbPf/tCwZ18Qcr9VSAs7TK+qlea+tJMQSFTl906sqZQstsCDLXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776954; c=relaxed/simple;
-	bh=SYaQpDevVexRqBDG7SiK8pKJcNQT4jsJfKNNntPNAnk=;
+	s=arc-20240116; t=1764778074; c=relaxed/simple;
+	bh=TgyV2b42wLPiEzrdSUWLNT5OUGzTC3kc3U36/aMkK34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FNVxp1BmwhxDLc4RYFmBQHKj//1Qnbw7hMTurPnzCQU+dy03fN/k/JQIwoY3D3HUx3XTKdld110OTRyJH9MeJ+aV2uMANYgWuTBHJDgjVXKWFSTYrjJIWHZ2a2iotW1wcDeMhTY9OWIYql0wXVcyIQCTnD8bir+Zkrpe8u3YUH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=INHOefUr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61B50C4CEF5;
-	Wed,  3 Dec 2025 15:49:13 +0000 (UTC)
+	 MIME-Version; b=fKihct50e7l2+hBRPHKWKPb7ByE1i7B2+Evf/c8/50RgQisLSI+gHNj4+0dUdR4KUcYCiyObwwye51fIfIMKAyP/Qj6Zv/lBSuiZ4jeQRu0B9f+yWH5WPr3pA9sFu9/53Ob2N0xaZjHIAyPgGNOuufl0S3M6WRRJJDgDpXC24D8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dqV9OVWi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB269C4CEF5;
+	Wed,  3 Dec 2025 16:07:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776953;
-	bh=SYaQpDevVexRqBDG7SiK8pKJcNQT4jsJfKNNntPNAnk=;
+	s=korg; t=1764778074;
+	bh=TgyV2b42wLPiEzrdSUWLNT5OUGzTC3kc3U36/aMkK34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=INHOefUrHqVF5wBuvOSTekmvx2vQ0SAafFCnIj4t3KR+nHIwqsCvY7dvsjMVh+g+U
-	 8O9jMcnmsy+3u9otE6SMkok+TugJKj+x9PAbtmcIpIPwvBTpyMlXVjmcjz2B+z/Jtg
-	 fxWEttv67DywV833BP9Xmwltw7/eDuwALPqaH4r0=
+	b=dqV9OVWiJSBuDA7b4gfrAMYzkDwY0iD3WQqM9SdQw8Qzk8uCNDGU/bMz/hrdnkFDj
+	 wkg/3Pd7k0X5Gx+DG4H9sn7REaxbBPJ7Tu5eARmtCLkVpX2XLeDp8WLfx1UEi0EpiM
+	 TRgB6+FYotheQXnLw8heZWe7SNI12otmpk3i7yMg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Tristan Lobb <tristan.lobb@it-lobb.de>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 006/146] Bluetooth: hci_core: Fix triggering cmd_timer for HCI_OP_NOP
+Subject: [PATCH 5.15 234/392] HID: quirks: avoid Cooler Master MM712 dongle wakeup bug
 Date: Wed,  3 Dec 2025 16:26:24 +0100
-Message-ID: <20251203152346.697975707@linuxfoundation.org>
+Message-ID: <20251203152422.790741255@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,87 +60,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Tristan Lobb <tristan.lobb@it-lobb.de>
 
-[ Upstream commit 275ddfeb3fdc274050c2173ffd985b1e80a9aa37 ]
+[ Upstream commit 0be4253bf878d9aaa2b96031ac8683fceeb81480 ]
 
-HCI_OP_NOP means no command was actually sent so there is no point in
-triggering cmd_timer which may cause a hdev->reset in the process since
-it is assumed that the controller is stuck processing a command.
+The Cooler Master Mice Dongle includes a vendor defined HID interface
+alongside its mouse interface. Not polling it will cause the mouse to
+stop responding to polls on any interface once woken up again after
+going into power saving mode.
 
-Fixes: e2d471b7806b ("Bluetooth: ISO: Fix not using SID from adv report")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Add the HID_QUIRK_ALWAYS_POLL quirk alongside the Cooler Master VID and
+the Dongle's PID.
+
+Signed-off-by: Tristan Lobb <tristan.lobb@it-lobb.de>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_core.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/hid/hid-ids.h    | 3 +++
+ drivers/hid/hid-quirks.c | 1 +
+ 2 files changed, 4 insertions(+)
 
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index 55e0722fd0662..72c7607aac209 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -4093,7 +4093,7 @@ static void hci_rx_work(struct work_struct *work)
- 	}
- }
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index bdad42f1e9f96..906e0c37a8e7e 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -304,6 +304,9 @@
+ #define USB_DEVICE_ID_CODEMERCS_IOW_FIRST	0x1500
+ #define USB_DEVICE_ID_CODEMERCS_IOW_LAST	0x15ff
  
--static void hci_send_cmd_sync(struct hci_dev *hdev, struct sk_buff *skb)
-+static int hci_send_cmd_sync(struct hci_dev *hdev, struct sk_buff *skb)
- {
- 	int err;
- 
-@@ -4105,16 +4105,19 @@ static void hci_send_cmd_sync(struct hci_dev *hdev, struct sk_buff *skb)
- 	if (!hdev->sent_cmd) {
- 		skb_queue_head(&hdev->cmd_q, skb);
- 		queue_work(hdev->workqueue, &hdev->cmd_work);
--		return;
-+		return -EINVAL;
- 	}
- 
- 	if (hci_skb_opcode(skb) != HCI_OP_NOP) {
- 		err = hci_send_frame(hdev, skb);
- 		if (err < 0) {
- 			hci_cmd_sync_cancel_sync(hdev, -err);
--			return;
-+			return err;
- 		}
- 		atomic_dec(&hdev->cmd_cnt);
-+	} else {
-+		err = -ENODATA;
-+		kfree_skb(skb);
- 	}
- 
- 	if (hdev->req_status == HCI_REQ_PEND &&
-@@ -4122,12 +4125,15 @@ static void hci_send_cmd_sync(struct hci_dev *hdev, struct sk_buff *skb)
- 		kfree_skb(hdev->req_skb);
- 		hdev->req_skb = skb_clone(hdev->sent_cmd, GFP_KERNEL);
- 	}
++#define USB_VENDOR_ID_COOLER_MASTER	0x2516
++#define USB_DEVICE_ID_COOLER_MASTER_MICE_DONGLE	0x01b7
 +
-+	return err;
- }
- 
- static void hci_cmd_work(struct work_struct *work)
- {
- 	struct hci_dev *hdev = container_of(work, struct hci_dev, cmd_work);
- 	struct sk_buff *skb;
-+	int err;
- 
- 	BT_DBG("%s cmd_cnt %d cmd queued %d", hdev->name,
- 	       atomic_read(&hdev->cmd_cnt), skb_queue_len(&hdev->cmd_q));
-@@ -4138,7 +4144,9 @@ static void hci_cmd_work(struct work_struct *work)
- 		if (!skb)
- 			return;
- 
--		hci_send_cmd_sync(hdev, skb);
-+		err = hci_send_cmd_sync(hdev, skb);
-+		if (err)
-+			return;
- 
- 		rcu_read_lock();
- 		if (test_bit(HCI_RESET, &hdev->flags) ||
+ #define USB_VENDOR_ID_CORSAIR		0x1b1c
+ #define USB_DEVICE_ID_CORSAIR_K90	0x1b02
+ #define USB_DEVICE_ID_CORSAIR_K70R      0x1b09
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index 72b7aebcc771f..3f83070349b82 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -57,6 +57,7 @@ static const struct hid_device_id hid_quirks[] = {
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CH, USB_DEVICE_ID_CH_FLIGHT_SIM_YOKE), HID_QUIRK_NOGET },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CH, USB_DEVICE_ID_CH_PRO_PEDALS), HID_QUIRK_NOGET },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CH, USB_DEVICE_ID_CH_PRO_THROTTLE), HID_QUIRK_NOGET },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_COOLER_MASTER, USB_DEVICE_ID_COOLER_MASTER_MICE_DONGLE), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CORSAIR, USB_DEVICE_ID_CORSAIR_K65RGB), HID_QUIRK_NO_INIT_REPORTS },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CORSAIR, USB_DEVICE_ID_CORSAIR_K65RGB_RAPIDFIRE), HID_QUIRK_NO_INIT_REPORTS | HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CORSAIR, USB_DEVICE_ID_CORSAIR_K70RGB), HID_QUIRK_NO_INIT_REPORTS },
 -- 
 2.51.0
 
