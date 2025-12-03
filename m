@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-199799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18B9ACA04B1
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:15:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B158DCA0212
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:50:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8013C30E9F49
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:02:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4360E300D49E
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:46:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 529203570B4;
-	Wed,  3 Dec 2025 16:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FF44376BCC;
+	Wed,  3 Dec 2025 16:46:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HGfkdMwu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qj8Fv74l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CFA03559EC;
-	Wed,  3 Dec 2025 16:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEFCF3074B3;
+	Wed,  3 Dec 2025 16:46:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780979; cv=none; b=LxZXW0y84b6xZ6FiivTKsvXwRGyxEnjVP2gN40iveCvSWV+dKCWSCp2Ie5yvqdwB+H74zEJCWo9QrEp6KbobYtxrMOAjNvmuhDSlMtkWKqD8OA8VEk/cJpHcoULlcDeWkxVvZT03KBtRZ/ghbJ9OsFhY6xjwik3hXxQia42oTX0=
+	t=1764780396; cv=none; b=P2XchlAakEg/0kqM1KQgpa7CkD+qDJnyjBsoifEGO/hCTN8LfWvFYex5GNBba7jiFK8T6/ns+BrOPyZn+ZwErzpxTIS31KHj9N68pVRla6biNV3bcIcGEaxvw9Kwp+zGRRTWihC3jtfahZH/CDnvXcowQPrTEYQ9RktlmVwV4UE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780979; c=relaxed/simple;
-	bh=GXUOi+ixZmJQyhow9zxRenGYvdShpdh9+C9DRPmIRYk=;
+	s=arc-20240116; t=1764780396; c=relaxed/simple;
+	bh=dTR7N+BS2p+GR9BK9nZgmYBxuLTjhg+hsdibaOPE5Ng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YVyayWaHxkJRpr65vcfjDS0QtTJQzkAe2AHWu1Mnmp9S1jtKVUOLtzvvvL1v4+EWn++bRUlEbiB4T9QZJy8OvXSrSoPY3peUhWPqn/AU5kzt1GdzMo2HROKRnSj/cK5/t2us/c0B7VAgg6WR74OTJV9wTofefB8GB3Vgic1Bgrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HGfkdMwu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6105FC16AAE;
-	Wed,  3 Dec 2025 16:56:18 +0000 (UTC)
+	 MIME-Version; b=eZCBleN2uK40z6xLpEQNmCmv9x+9QZZj9XNPJcshV5pAWHVGO0SN3uWBZVxux8hghHEqLM3kyahrpUyxD6YVbPWvT9C79BqxuO3DKTES3mYmzfGLsb7n1SGWSkX/K5Qj/OgAXnJOv30Lskgk9U/krh9blEWZreRcZIrsCXAutpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qj8Fv74l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A8BBC4CEF5;
+	Wed,  3 Dec 2025 16:46:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780978;
-	bh=GXUOi+ixZmJQyhow9zxRenGYvdShpdh9+C9DRPmIRYk=;
+	s=korg; t=1764780396;
+	bh=dTR7N+BS2p+GR9BK9nZgmYBxuLTjhg+hsdibaOPE5Ng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HGfkdMwuKDgawsfVtwyWtQfRgBFOgG7hS8kFlac7qk8hIeLfCZJukCDy4avfZDycV
-	 jjy/OScuegQsvW/XUQ0qyWTiHpwcBrucAP4MfmPvDEFz7syP5wx+UImUgiILkIFDO1
-	 k3m7idYISM15J+c6KIT9OxFgeXPGAX9zOH3MEExI=
+	b=qj8Fv74l4irXh0npUIkbiZbmxu2PNt9Zz/4nDcqOdgaSJA1S3OLMf39PmdetU7RBk
+	 AJqdyiq7EUcfJoScVhrGSmb7NPRos6rM76p0U2kQ/pGg9VUZw+csodKflQpTjfJaTd
+	 CoGbD3Gh9m5bEgFxg+R4FLsEfrULczNROS112PaQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 14/93] net: dsa: sja1105: simplify static configuration reload
+	Oleksandr Suvorov <cryosay@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.1 545/568] USB: serial: ftdi_sio: add support for u-blox EVK-M101
 Date: Wed,  3 Dec 2025 16:29:07 +0100
-Message-ID: <20251203152337.037302285@linuxfoundation.org>
+Message-ID: <20251203152500.672124327@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,164 +59,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+From: Oleksandr Suvorov <cryosay@gmail.com>
 
-[ Upstream commit a18891b55703a45b700618ef40edd5e9aaecc345 ]
+commit 2d8ab771d5316de64f3bb920b82575c58eb00b1b upstream.
 
-The static configuration reload saves the port speed in the static
-configuration tables by first converting it from the internal
-respresentation to the SPEED_xxx ethtool representation, and then
-converts it back to restore the setting. This is because
-sja1105_adjust_port_config() takes the speed as SPEED_xxx.
+The U-Blox EVK-M101 enumerates as 1546:0506 [1] with four FTDI interfaces:
+- EVK-M101 current sensors
+- EVK-M101 I2C
+- EVK-M101 UART
+- EVK-M101 port D
 
-However, this is unnecessarily complex. If we split
-sja1105_adjust_port_config() up, we can simply save and restore the
-mac[port].speed member in the static configuration tables.
+Only the third USB interface is a UART. This change lets ftdi_sio probe
+the VID/PID and registers only interface #3 as a TTY, leaving the rest
+available for other drivers.
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://patch.msgid.link/E1svfMa-005ZIX-If@rmk-PC.armlinux.org.uk
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: da62abaaa268 ("net: dsa: sja1105: fix SGMII linking at 10M or 100M but not passing traffic")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[1]
+usb 5-1.3: new high-speed USB device number 11 using xhci_hcd
+usb 5-1.3: New USB device found, idVendor=1546, idProduct=0506, bcdDevice= 8.00
+usb 5-1.3: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+usb 5-1.3: Product: EVK-M101
+usb 5-1.3: Manufacturer: u-blox AG
+
+Datasheet: https://content.u-blox.com/sites/default/files/documents/EVK-M10_UserGuide_UBX-21003949.pdf
+
+Signed-off-by: Oleksandr Suvorov <cryosay@gmail.com>
+Link: https://lore.kernel.org/20250926060235.3442748-1-cryosay@gmail.com/
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/sja1105/sja1105_main.c | 65 ++++++++++++++------------
- 1 file changed, 34 insertions(+), 31 deletions(-)
+ drivers/usb/serial/ftdi_sio.c     |    1 +
+ drivers/usb/serial/ftdi_sio_ids.h |    1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
-index 843e50b5a0ec5..0de73a6257f9a 100644
---- a/drivers/net/dsa/sja1105/sja1105_main.c
-+++ b/drivers/net/dsa/sja1105/sja1105_main.c
-@@ -1261,29 +1261,11 @@ static int sja1105_parse_dt(struct sja1105_private *priv)
- 	return rc;
- }
+--- a/drivers/usb/serial/ftdi_sio.c
++++ b/drivers/usb/serial/ftdi_sio.c
+@@ -1074,6 +1074,7 @@ static const struct usb_device_id id_tab
+ 	/* U-Blox devices */
+ 	{ USB_DEVICE(UBLOX_VID, UBLOX_C099F9P_ZED_PID) },
+ 	{ USB_DEVICE(UBLOX_VID, UBLOX_C099F9P_ODIN_PID) },
++	{ USB_DEVICE_INTERFACE_NUMBER(UBLOX_VID, UBLOX_EVK_M101_PID, 2) },
+ 	/* FreeCalypso USB adapters */
+ 	{ USB_DEVICE(FTDI_VID, FTDI_FALCONIA_JTAG_BUF_PID),
+ 		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+--- a/drivers/usb/serial/ftdi_sio_ids.h
++++ b/drivers/usb/serial/ftdi_sio_ids.h
+@@ -1614,6 +1614,7 @@
+ #define UBLOX_VID			0x1546
+ #define UBLOX_C099F9P_ZED_PID		0x0502
+ #define UBLOX_C099F9P_ODIN_PID		0x0503
++#define UBLOX_EVK_M101_PID		0x0506
  
--/* Convert link speed from SJA1105 to ethtool encoding */
--static int sja1105_port_speed_to_ethtool(struct sja1105_private *priv,
--					 u64 speed)
--{
--	if (speed == priv->info->port_speed[SJA1105_SPEED_10MBPS])
--		return SPEED_10;
--	if (speed == priv->info->port_speed[SJA1105_SPEED_100MBPS])
--		return SPEED_100;
--	if (speed == priv->info->port_speed[SJA1105_SPEED_1000MBPS])
--		return SPEED_1000;
--	if (speed == priv->info->port_speed[SJA1105_SPEED_2500MBPS])
--		return SPEED_2500;
--	return SPEED_UNKNOWN;
--}
--
--/* Set link speed in the MAC configuration for a specific port. */
--static int sja1105_adjust_port_config(struct sja1105_private *priv, int port,
--				      int speed_mbps)
-+static int sja1105_set_port_speed(struct sja1105_private *priv, int port,
-+				  int speed_mbps)
- {
- 	struct sja1105_mac_config_entry *mac;
--	struct device *dev = priv->ds->dev;
- 	u64 speed;
--	int rc;
- 
- 	/* On P/Q/R/S, one can read from the device via the MAC reconfiguration
- 	 * tables. On E/T, MAC reconfig tables are not readable, only writable.
-@@ -1317,7 +1299,7 @@ static int sja1105_adjust_port_config(struct sja1105_private *priv, int port,
- 		speed = priv->info->port_speed[SJA1105_SPEED_2500MBPS];
- 		break;
- 	default:
--		dev_err(dev, "Invalid speed %iMbps\n", speed_mbps);
-+		dev_err(priv->ds->dev, "Invalid speed %iMbps\n", speed_mbps);
- 		return -EINVAL;
- 	}
- 
-@@ -1329,11 +1311,31 @@ static int sja1105_adjust_port_config(struct sja1105_private *priv, int port,
- 	 * we need to configure the PCS only (if even that).
- 	 */
- 	if (priv->phy_mode[port] == PHY_INTERFACE_MODE_SGMII)
--		mac[port].speed = priv->info->port_speed[SJA1105_SPEED_1000MBPS];
-+		speed = priv->info->port_speed[SJA1105_SPEED_1000MBPS];
- 	else if (priv->phy_mode[port] == PHY_INTERFACE_MODE_2500BASEX)
--		mac[port].speed = priv->info->port_speed[SJA1105_SPEED_2500MBPS];
--	else
--		mac[port].speed = speed;
-+		speed = priv->info->port_speed[SJA1105_SPEED_2500MBPS];
-+
-+	mac[port].speed = speed;
-+
-+	return 0;
-+}
-+
-+/* Write the MAC Configuration Table entry and, if necessary, the CGU settings,
-+ * after a link speedchange for this port.
-+ */
-+static int sja1105_set_port_config(struct sja1105_private *priv, int port)
-+{
-+	struct sja1105_mac_config_entry *mac;
-+	struct device *dev = priv->ds->dev;
-+	int rc;
-+
-+	/* On P/Q/R/S, one can read from the device via the MAC reconfiguration
-+	 * tables. On E/T, MAC reconfig tables are not readable, only writable.
-+	 * We have to *know* what the MAC looks like.  For the sake of keeping
-+	 * the code common, we'll use the static configuration tables as a
-+	 * reasonable approximation for both E/T and P/Q/R/S.
-+	 */
-+	mac = priv->static_config.tables[BLK_IDX_MAC_CONFIG].entries;
- 
- 	/* Write to the dynamic reconfiguration tables */
- 	rc = sja1105_dynamic_config_write(priv, BLK_IDX_MAC_CONFIG, port,
-@@ -1383,7 +1385,8 @@ static void sja1105_mac_link_up(struct dsa_switch *ds, int port,
- {
- 	struct sja1105_private *priv = ds->priv;
- 
--	sja1105_adjust_port_config(priv, port, speed);
-+	if (!sja1105_set_port_speed(priv, port, speed))
-+		sja1105_set_port_config(priv, port);
- 
- 	sja1105_inhibit_tx(priv, BIT(port), false);
- }
-@@ -2284,8 +2287,8 @@ int sja1105_static_config_reload(struct sja1105_private *priv,
- {
- 	struct ptp_system_timestamp ptp_sts_before;
- 	struct ptp_system_timestamp ptp_sts_after;
--	int speed_mbps[SJA1105_MAX_NUM_PORTS];
- 	u16 bmcr[SJA1105_MAX_NUM_PORTS] = {0};
-+	u64 mac_speed[SJA1105_MAX_NUM_PORTS];
- 	struct sja1105_mac_config_entry *mac;
- 	struct dsa_switch *ds = priv->ds;
- 	s64 t1, t2, t3, t4;
-@@ -2298,14 +2301,13 @@ int sja1105_static_config_reload(struct sja1105_private *priv,
- 
- 	mac = priv->static_config.tables[BLK_IDX_MAC_CONFIG].entries;
- 
--	/* Back up the dynamic link speed changed by sja1105_adjust_port_config
-+	/* Back up the dynamic link speed changed by sja1105_set_port_speed()
- 	 * in order to temporarily restore it to SJA1105_SPEED_AUTO - which the
- 	 * switch wants to see in the static config in order to allow us to
- 	 * change it through the dynamic interface later.
- 	 */
- 	for (i = 0; i < ds->num_ports; i++) {
--		speed_mbps[i] = sja1105_port_speed_to_ethtool(priv,
--							      mac[i].speed);
-+		mac_speed[i] = mac[i].speed;
- 		mac[i].speed = priv->info->port_speed[SJA1105_SPEED_AUTO];
- 
- 		if (priv->xpcs[i])
-@@ -2368,7 +2370,8 @@ int sja1105_static_config_reload(struct sja1105_private *priv,
- 		struct dw_xpcs *xpcs = priv->xpcs[i];
- 		unsigned int neg_mode;
- 
--		rc = sja1105_adjust_port_config(priv, i, speed_mbps[i]);
-+		mac[i].speed = mac_speed[i];
-+		rc = sja1105_set_port_config(priv, i);
- 		if (rc < 0)
- 			goto out;
- 
--- 
-2.51.0
-
+ /*
+  * GMC devices
 
 
 
