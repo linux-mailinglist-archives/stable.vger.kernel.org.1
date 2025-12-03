@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-199343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0F0ACA14E0
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:13:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66143C9F8EA
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:41:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5F3C63281CA3
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:34:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F1A2D30198BB
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:36:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 985EB36A03D;
-	Wed,  3 Dec 2025 16:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A9A630FC30;
+	Wed,  3 Dec 2025 15:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ny95TE+J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cRRtyMaR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513B836A038;
-	Wed,  3 Dec 2025 16:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E88131328E;
+	Wed,  3 Dec 2025 15:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779483; cv=none; b=RCrQ5RzU3a2/K8MSuZ/HqmZ98PBkl1kDh5EMky0wcjNa8XUzJSAHpmFwLwtLxejUuj/Wr9ZAmKXz9F3VyTSGYVd2c1TVYg1RdKvpVZ0jf4RQLzwJb+3zoFXZrtLDjPgmrElv9ac8yzgjvQsxtXS9fcRAMWfdM5QuwkUqGAnPUG4=
+	t=1764776167; cv=none; b=PBzEoWa/TGmRfEii5qgRD78ArR28DWqdcd7m2GWzwQ7J+kFQDYyjKslDUHToyWmQYibEb7zCp6qzxfBUpaJ6sFVFHUkrJWzZVyld+xO7aQLabR4kxgiHZqr9e8n5AFX+aBGysk2QUOCGd/f+9kdf3s5nmaYYJEHL50StSqMlAKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779483; c=relaxed/simple;
-	bh=eTfRkl6qKUh/rZcwuccFe7PtYuaMReUrdtWai3KeOxc=;
+	s=arc-20240116; t=1764776167; c=relaxed/simple;
+	bh=IVhGL2lEFGvXAHh7BWJJGXseA+QGtr9PyWqP0sIFHgQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ttu/DHVrXrzfUBBZIlRsIaE+A3qegcQo5h33XCUDboEGPBcyp96Ja7M4C1rL1Y5pZaHuW1uCjDa+7jEJQBTFxNjqpEKxmOv7nXA5B2wrpKn83KY387Txur25KHRyjV6iDuaxoRaUv5ULzAfuTt44Jv5YiKFxeMqN9bHMpJnzZXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ny95TE+J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2963C4CEF5;
-	Wed,  3 Dec 2025 16:31:22 +0000 (UTC)
+	 MIME-Version; b=ISlpjohzaqreUh40qJD+KfZ3S/HOvC/zd5sUNm5+dCCyqWxPcqQ0W+/AtO9yCJQxJP+rWZUz0EsrDGPtCejl3lIv7y1Kdn4oNWLcdUjftGnQ13wM+3xTfA64H5Li5pMNumB2oETnmIQbrR4X93yTzo7Iop/9sU9TFGe3X1ITs+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cRRtyMaR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 563EDC4CEF5;
+	Wed,  3 Dec 2025 15:36:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779483;
-	bh=eTfRkl6qKUh/rZcwuccFe7PtYuaMReUrdtWai3KeOxc=;
+	s=korg; t=1764776166;
+	bh=IVhGL2lEFGvXAHh7BWJJGXseA+QGtr9PyWqP0sIFHgQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ny95TE+J0LpjcZHUq33QNKoaE/U4N7wv+IpNZtP+bpzW7K0mJgA+xtbO/UvdvNm7l
-	 fVFLiG8BzOkKtqBeqbjA3+fz6StikycQjizMDfwk6UXEqfNy4ZA3B7ZBdjOLwxIfOv
-	 kyVC1ZnEqQEDOOHgmoZEM0xGEUTr8QEPjToC4Qd8=
+	b=cRRtyMaRhGd/3hqQW4d84iPs29grKIDmnYf9hIUPHriPpcww0u65nhx0GBl/ZhrDd
+	 tdZW00OfTND9QtyQlSeD6mOVAlRSxcxu/d2MdGtJFjoj3lreoDVGn36ZYJp+t3bBav
+	 GcYQwb/lwa31rCv0hOfDgmecs4+EthytctzNmlwM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Marshall <hubcap@omnibond.com>,
-	Stanislav Fort of Aisle Research <stanislav.fort@aisle.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Asad Kamal <asad.kamal@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 270/568] orangefs: fix xattr related buffer overflow...
+Subject: [PATCH 5.10 068/300] drm/amd/pm: Use cached metrics data on arcturus
 Date: Wed,  3 Dec 2025 16:24:32 +0100
-Message-ID: <20251203152450.602500847@linuxfoundation.org>
+Message-ID: <20251203152403.141591941@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,87 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Marshall <hubcap@omnibond.com>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-[ Upstream commit 025e880759c279ec64d0f754fe65bf45961da864 ]
+[ Upstream commit 2f3b1ccf83be83a3330e38194ddfd1a91fec69be ]
 
-Willy Tarreau <w@1wt.eu> forwarded me a message from
-Disclosure <disclosure@aisle.com> with the following
-warning:
+Cached metrics data validity is 1ms on arcturus. It's not reasonable for
+any client to query gpu_metrics at a faster rate and constantly
+interrupt PMFW.
 
-> The helper `xattr_key()` uses the pointer variable in the loop condition
-> rather than dereferencing it. As `key` is incremented, it remains non-NULL
-> (until it runs into unmapped memory), so the loop does not terminate on
-> valid C strings and will walk memory indefinitely, consuming CPU or hanging
-> the thread.
-
-I easily reproduced this with setfattr and getfattr, causing a kernel
-oops, hung user processes and corrupted orangefs files. Disclosure
-sent along a diff (not a patch) with a suggested fix, which I based
-this patch on.
-
-After xattr_key started working right, xfstest generic/069 exposed an
-xattr related memory leak that lead to OOM. xattr_key returns
-a hashed key.  When adding xattrs to the orangefs xattr cache, orangefs
-used hash_add, a kernel hashing macro. hash_add also hashes the key using
-hash_log which resulted in additions to the xattr cache going to the wrong
-hash bucket. generic/069 tortures a single file and orangefs does a
-getattr for the xattr "security.capability" every time. Orangefs
-negative caches on xattrs which includes a kmalloc. Since adds to the
-xattr cache were going to the wrong bucket, every getattr for
-"security.capability" resulted in another kmalloc, none of which were
-ever freed.
-
-I changed the two uses of hash_add to hlist_add_head instead
-and the memory leak ceased and generic/069 quit throwing furniture.
-
-Signed-off-by: Mike Marshall <hubcap@omnibond.com>
-Reported-by: Stanislav Fort of Aisle Research <stanislav.fort@aisle.com>
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Asad Kamal <asad.kamal@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/orangefs/xattr.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/orangefs/xattr.c b/fs/orangefs/xattr.c
-index 9a5b757fbd2f6..2d2d16caf9190 100644
---- a/fs/orangefs/xattr.c
-+++ b/fs/orangefs/xattr.c
-@@ -54,7 +54,9 @@ static inline int convert_to_internal_xattr_flags(int setxattr_flags)
- static unsigned int xattr_key(const char *key)
- {
- 	unsigned int i = 0;
--	while (key)
-+	if (!key)
-+		return 0;
-+	while (*key)
- 		i += *key++;
- 	return i % 16;
- }
-@@ -175,8 +177,8 @@ ssize_t orangefs_inode_getxattr(struct inode *inode, const char *name,
- 				cx->length = -1;
- 				cx->timeout = jiffies +
- 				    orangefs_getattr_timeout_msecs*HZ/1000;
--				hash_add(orangefs_inode->xattr_cache, &cx->node,
--				    xattr_key(cx->key));
-+				hlist_add_head( &cx->node,
-+                                   &orangefs_inode->xattr_cache[xattr_key(cx->key)]);
- 			}
- 		}
- 		goto out_release_op;
-@@ -229,8 +231,8 @@ ssize_t orangefs_inode_getxattr(struct inode *inode, const char *name,
- 			memcpy(cx->val, buffer, length);
- 			cx->length = length;
- 			cx->timeout = jiffies + HZ;
--			hash_add(orangefs_inode->xattr_cache, &cx->node,
--			    xattr_key(cx->key));
-+			hlist_add_head(&cx->node,
-+				&orangefs_inode->xattr_cache[xattr_key(cx->key)]);
- 		}
- 	}
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c
+index 3a31058b029e3..729f6d60fac0a 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c
+@@ -2276,7 +2276,7 @@ static ssize_t arcturus_get_gpu_metrics(struct smu_context *smu,
+ 
+ 	ret = smu_cmn_get_metrics_table(smu,
+ 					&metrics,
+-					true);
++					false);
+ 	if (ret)
+ 		return ret;
  
 -- 
 2.51.0
