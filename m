@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-199298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D24DCA0134
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:45:04 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81298C9F83C
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:36:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D76DD304DF43
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:38:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 10429301556B
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:34:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DEBB334C33;
-	Wed,  3 Dec 2025 16:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7E7330C62A;
+	Wed,  3 Dec 2025 15:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2YvR4B0A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dmmKWUdi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E22C334C1A;
-	Wed,  3 Dec 2025 16:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D1130F535;
+	Wed,  3 Dec 2025 15:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779332; cv=none; b=UR6FCOHroLHO2A7QV1h8JCzCbc5wYaLZRJZNknhhOh2wslErAD/UkWJTfIi9KzkNkkqJRNwA7NQ65qUefZb5+QP2AmSp5kA+jeG2O5MSftCTOS9Ld1lcrBjlbF7axrS+4pfjlMxDgLOCsEdQ9yd9kO3FWqGuWwZR5pRvCCD67Dg=
+	t=1764776060; cv=none; b=Fk21uUX9HL4Arj7Sq5go+pJ8g0qK1wUxeOJGQ000tb17/F1617SQkaFTP8GnIy7dDrD26O4EPweUo5rr+2IsZHzWyB/1qld+Rw01ezIX4sXcZSk1UaFss5cNGbFZl5xwbLEereT8rxd5vbLycu5rNd9mZTgCcZRnSFQL9ajzBx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779332; c=relaxed/simple;
-	bh=DSLoEPUgpOT381LQZLpmzz56fvB0N86D5sphAHFfTo4=;
+	s=arc-20240116; t=1764776060; c=relaxed/simple;
+	bh=gsqPRCnbnpKkpkf/CYXL+p6FYzJoJ0J696RS3Bzqm8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SdXV4UqafScHPonrVLJpm1LhlZ42FjVVyI8O2zF0nkbQ4oQDeR2tgSs54YmJ4QuctZk7Wu79HFRck3UXWQrOgDvlIPWoL5Buk2HfwWPt0rwWvpEjn6d+tJhjnNulmyQVHCf/Ue3SDoNh0saKR9XlW2HMxcpy8UQh6tpDr0HSC0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2YvR4B0A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F110BC4CEF5;
-	Wed,  3 Dec 2025 16:28:51 +0000 (UTC)
+	 MIME-Version; b=V2nVivI0rZ8w+fgsNCuYYrOVDjhmv+d0neiAWulTpWKJgM4h+QjrJYdNbdmmr4NpP6CQ/aG3SDmS1wB8b6zyjhQ6D916em7KYf6SvCWokVOiUOYfbhmIo1gYbF2D0yMAnozf//e9lDJTHbMkjSdfjR5n76dDUTVWK7+MJahwr7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dmmKWUdi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B538AC4CEF5;
+	Wed,  3 Dec 2025 15:34:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779332;
-	bh=DSLoEPUgpOT381LQZLpmzz56fvB0N86D5sphAHFfTo4=;
+	s=korg; t=1764776060;
+	bh=gsqPRCnbnpKkpkf/CYXL+p6FYzJoJ0J696RS3Bzqm8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2YvR4B0A0KB2DJNmY/AlLt8dF/tEM+4AYsY0erUEZlZl/4G6xIsB+nJuTLGP92kjW
-	 sO1ZWjVieNdQZanORL1dkkXa+ARvbc1oPAc5mQB9u6lf1UU9lcLs52zU05pe2A3Age
-	 y70PwQNyWuIqk1/uvPBvgjcYAOh6h4x/NlKQ5fc8=
+	b=dmmKWUdi9rk2pTwA9M2BVCDmMeynqVnTgI30DjgQF3e/O9gdM5Tyb6naD7bs8rCWk
+	 aCbMgeqxgvPWeiGkgYQjCR23h3j0Vv1nduVUodhA3qCqEwElh5heFdjs1AeScKHsM8
+	 g49UaDufW7MonwucNM0068Rx6js01/o82YwkcFI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AceLan Kao <acelan.kao@canonical.com>,
-	Kai-Heng Feng <kaihengf@nvidia.com>,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	Denis Benato <benato.denis96@gmail.com>,
-	=?UTF-8?q?Merthan=20Karaka=C5=9F?= <m3rthn.k@gmail.com>,
-	Eric Naim <dnaim@cachyos.org>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 227/568] drm/amd: Avoid evicting resources at S5
+Subject: [PATCH 5.10 025/300] net: phy: dp83867: Disable EEE support as not implemented
 Date: Wed,  3 Dec 2025 16:23:49 +0100
-Message-ID: <20251203152449.036244947@linuxfoundation.org>
+Message-ID: <20251203152401.390045616@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +59,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello (AMD) <superm1@kernel.org>
+From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
 
-[ Upstream commit 531df041f2a5296174abd8292d298eb62fe1ea97 ]
+[ Upstream commit 84a905290cb4c3d9a71a9e3b2f2e02e031e7512f ]
 
-Normally resources are evicted on dGPUs at suspend or hibernate and
-on APUs at hibernate.  These steps are unnecessary when using the S4
-callbacks to put the system into S5.
+While the DP83867 PHYs report EEE capability through their feature
+registers, the actual hardware does not support EEE (see Links).
+When the connected MAC enables EEE, it causes link instability and
+communication failures.
 
-Cc: AceLan Kao <acelan.kao@canonical.com>
-Cc: Kai-Heng Feng <kaihengf@nvidia.com>
-Cc: Mark Pearson <mpearson-lenovo@squebb.ca>
-Cc: Denis Benato <benato.denis96@gmail.com>
-Cc: Merthan Karakaş <m3rthn.k@gmail.com>
-Tested-by: Eric Naim <dnaim@cachyos.org>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+The issue is reproducible with a iMX8MP and relevant stmmac ethernet port.
+Since the introduction of phylink-managed EEE support in the stmmac driver,
+EEE is now enabled by default, leading to issues on systems using the
+DP83867 PHY.
+
+Call phy_disable_eee during phy initialization to prevent EEE from being
+enabled on DP83867 PHYs.
+
+Link: https://e2e.ti.com/support/interface-group/interface/f/interface-forum/1445244/dp83867ir-dp83867-disable-eee-lpi
+Link: https://e2e.ti.com/support/interface-group/interface/f/interface-forum/658638/dp83867ir-eee-energy-efficient-ethernet
+Fixes: 2a10154abcb7 ("net: phy: dp83867: Add TI dp83867 phy")
+Cc: stable@vger.kernel.org
+Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20251023144857.529566-1-ghidoliemanuele@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ replaced phy_disable_eee() call with direct eee_broken_modes assignment ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/phy/dp83867.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 18a0802cb74dc..f18f165876043 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -4187,6 +4187,10 @@ static int amdgpu_device_evict_resources(struct amdgpu_device *adev)
- 	if ((adev->in_s3 || adev->in_s0ix) && (adev->flags & AMD_IS_APU))
- 		return 0;
+--- a/drivers/net/phy/dp83867.c
++++ b/drivers/net/phy/dp83867.c
+@@ -664,6 +664,12 @@ static int dp83867_config_init(struct ph
+ 			return ret;
+ 	}
  
-+	/* No need to evict when going to S5 through S4 callbacks */
-+	if (system_state == SYSTEM_POWER_OFF)
-+		return 0;
++	/* Although the DP83867 reports EEE capability through the
++	 * MDIO_PCS_EEE_ABLE and MDIO_AN_EEE_ADV registers, the feature
++	 * is not actually implemented in hardware.
++	 */
++	phydev->eee_broken_modes = MDIO_EEE_100TX | MDIO_EEE_1000T;
 +
- 	ret = amdgpu_ttm_evict_resources(adev, TTM_PL_VRAM);
- 	if (ret)
- 		DRM_WARN("evicting device resources failed\n");
--- 
-2.51.0
-
+ 	if (phy_interface_is_rgmii(phydev) ||
+ 	    phydev->interface == PHY_INTERFACE_MODE_SGMII) {
+ 		val = phy_read(phydev, MII_DP83867_PHYCTRL);
 
 
 
