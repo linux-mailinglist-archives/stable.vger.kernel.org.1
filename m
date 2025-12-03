@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-198312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54F81C9F8A8
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:39:12 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B66FECA13D0
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:04:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 77371300B917
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:35:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 12EE33016BAE
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:03:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 021E52FFF90;
-	Wed,  3 Dec 2025 15:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 686CF34D93D;
+	Wed,  3 Dec 2025 16:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s/pKZPge"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NL6l2hY0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC89F15ADB4;
-	Wed,  3 Dec 2025 15:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2183101DD;
+	Wed,  3 Dec 2025 16:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776130; cv=none; b=j3c/8arvvotN1BHaZ+EyzWnp7L4NOJ8LD1BY2ZLp74jCL8lL+LkGkFVL/xRuzVc/Luq38/KGEkIWinwRP9APfrTa7nI+LppEIVVbaxbwDhld1Y1xbMqmSD72MIMOVMdGFklUKYQvUib2gRsb6gXvVktOBZlCDbCQz936YxHmxQw=
+	t=1764777774; cv=none; b=KuE0WvPJDH6kZmZYSFbyfzI76wrP/cO10GmNK0QzcH+2NhMMhue/jFpv4l/rcro2XVYsu0aY40xq2qZrMA4+qYS9L2xVTRBjPl7lsQE2GBrYygW/YjXAqtm1QaUfvDZrMxA/Jg5NeBFPdBg+yb+Mijc8MIuhVIG0x5B8Zy2gb74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776130; c=relaxed/simple;
-	bh=38nnR76NnDoo5/EgCFXow6IrO2btVxUqlP9ojnYJH/k=;
+	s=arc-20240116; t=1764777774; c=relaxed/simple;
+	bh=0y8DBJWniQxXtYmgEN8yF1+BvUzSZnb8qqUk3MHehok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XoHjLpxgSlaNVgI1/VCqOOmN+V7I0QUA2Kk+vgciL/VqT6F0iAvLNIyPtrlAmHL3k3envVmFotPf2B4h3f/uIqyb6jcGmnbl1Alvz1FeO/5fot/J6gcwuKhQS/4+Ag9iIFpP2EnWHxeCUWueh/s9O0gHfJUzJPPW6X4N2BHtyJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s/pKZPge; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C01EBC4CEF5;
-	Wed,  3 Dec 2025 15:35:29 +0000 (UTC)
+	 MIME-Version; b=fFruXE+fLZ6pi6kSCzxhOAAHEN7k07Q2PQWBLIdMDdAwZBzTBRZrxv9sbN5SrrEHcvhJR+vrtmnTTU9qyvNZSnMRqtG2iO5s30E1qA/V2BrdTHqe8SdFuNL56pfjSbHDeHZ9SqEYIuVL9m84zfTUb5Ob/7dHUZrjgkiSzOHp57M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NL6l2hY0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A852C4CEF5;
+	Wed,  3 Dec 2025 16:02:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776130;
-	bh=38nnR76NnDoo5/EgCFXow6IrO2btVxUqlP9ojnYJH/k=;
+	s=korg; t=1764777773;
+	bh=0y8DBJWniQxXtYmgEN8yF1+BvUzSZnb8qqUk3MHehok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s/pKZPges9BAB4ZqpJgfP00uO68q7i0kvvBnpITc4+BpqZ2Pf2gS1QxkyzTjj8X0Y
-	 youmfLLs9xrBR5TyYEFBTgefHQsG6SPcJPxPXpruDMjC6lFr1cnkuk5weVvGiP1fxx
-	 Oel2GrhChZ+NnxhKDS8FzI5NYsmaEm9yrWoMFBHE=
+	b=NL6l2hY09UT8C5RfhkXEfpukt5JHzVK88MzMDtPRIUeBNwZw2WmUGg6D87bPz3k/C
+	 T4lV3Hr/pvH1XjnvT1sHNYv6ayRaGI+CFtu+GAfDIdd1FhanuwplVhS9sIreXTICWh
+	 8XQSy/mUsV+4+HVjS4MhejnlnRy6LanDYcdC81m4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sungho Kim <sungho.kim@furiosa.ai>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Michael Riesch <michael.riesch@collabora.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 089/300] PCI/P2PDMA: Fix incorrect pointer usage in devm_kfree() call
+Subject: [PATCH 5.15 143/392] phy: rockchip: phy-rockchip-inno-csidphy: allow writes to grf register 0
 Date: Wed,  3 Dec 2025 16:24:53 +0100
-Message-ID: <20251203152403.920309751@linuxfoundation.org>
+Message-ID: <20251203152419.349348482@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sungho Kim <sungho.kim@furiosa.ai>
+From: Michael Riesch <michael.riesch@collabora.com>
 
-[ Upstream commit 6238784e502b6a9fbeb3a6b77284b29baa4135cc ]
+[ Upstream commit 8c7c19466c854fa86b82d2148eaa9bf0e6531423 ]
 
-The error handling path in pci_p2pdma_add_resource() contains a bug in its
-`pgmap_free` label.
+The driver for the Rockchip MIPI CSI-2 DPHY uses GRF register offset
+value 0 to sort out undefined registers. However, the RK3588 CSIDPHY GRF
+this offset is perfectly fine (in fact, register 0 is the only one in
+this register file).
+Introduce a boolean variable to indicate valid registers and allow writes
+to register 0.
 
-Memory is allocated for the `p2p_pgmap` struct, and the pointer is stored
-in `p2p_pgmap`. However, the error path calls devm_kfree() with `pgmap`,
-which is a pointer to a member field within the `p2p_pgmap` struct, not the
-base pointer of the allocation.
-
-Correct the bug by passing the correct base pointer, `p2p_pgmap`, to
-devm_kfree().
-
-Signed-off-by: Sungho Kim <sungho.kim@furiosa.ai>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
-Link: https://patch.msgid.link/20250820105714.2939896-1-sungho.kim@furiosa.ai
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Michael Riesch <michael.riesch@collabora.com>
+Link: https://lore.kernel.org/r/20250616-rk3588-csi-dphy-v4-4-a4f340a7f0cf@collabora.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/p2pdma.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/phy/rockchip/phy-rockchip-inno-csidphy.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
-index f07c5dbc94e10..6c9dca2dd57e7 100644
---- a/drivers/pci/p2pdma.c
-+++ b/drivers/pci/p2pdma.c
-@@ -215,7 +215,7 @@ int pci_p2pdma_add_resource(struct pci_dev *pdev, int bar, size_t size,
- pages_free:
- 	devm_memunmap_pages(&pdev->dev, pgmap);
- pgmap_free:
--	devm_kfree(&pdev->dev, pgmap);
-+	devm_kfree(&pdev->dev, p2p_pgmap);
- 	return error;
+diff --git a/drivers/phy/rockchip/phy-rockchip-inno-csidphy.c b/drivers/phy/rockchip/phy-rockchip-inno-csidphy.c
+index ca13a604ab4ff..286b38cc6f442 100644
+--- a/drivers/phy/rockchip/phy-rockchip-inno-csidphy.c
++++ b/drivers/phy/rockchip/phy-rockchip-inno-csidphy.c
+@@ -82,10 +82,11 @@ struct dphy_reg {
+ 	u32 offset;
+ 	u32 mask;
+ 	u32 shift;
++	u8 valid;
+ };
+ 
+ #define PHY_REG(_offset, _width, _shift) \
+-	{ .offset = _offset, .mask = BIT(_width) - 1, .shift = _shift, }
++	{ .offset = _offset, .mask = BIT(_width) - 1, .shift = _shift, .valid = 1, }
+ 
+ static const struct dphy_reg rk1808_grf_dphy_regs[] = {
+ 	[GRF_DPHY_CSIPHY_FORCERXMODE] = PHY_REG(RK1808_GRF_PD_VI_CON_OFFSET, 4, 0),
+@@ -134,7 +135,7 @@ static inline void write_grf_reg(struct rockchip_inno_csidphy *priv,
+ 	const struct dphy_drv_data *drv_data = priv->drv_data;
+ 	const struct dphy_reg *reg = &drv_data->grf_regs[index];
+ 
+-	if (reg->offset)
++	if (reg->valid)
+ 		regmap_write(priv->grf, reg->offset,
+ 			     HIWORD_UPDATE(value, reg->mask, reg->shift));
  }
- EXPORT_SYMBOL_GPL(pci_p2pdma_add_resource);
 -- 
 2.51.0
 
