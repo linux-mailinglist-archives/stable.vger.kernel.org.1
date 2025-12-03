@@ -1,134 +1,198 @@
-Return-Path: <stable+bounces-198172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADE69C9E22D
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 09:06:47 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF1B9C9E2A4
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 09:14:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 599913493B3
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 08:06:47 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5FB2C4E1076
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 08:14:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D8C029E116;
-	Wed,  3 Dec 2025 08:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 895842BF013;
+	Wed,  3 Dec 2025 08:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Sv3g2qF1"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H8OGuvh4"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2A1F299AA3
-	for <stable@vger.kernel.org>; Wed,  3 Dec 2025 08:06:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362702BEFF8
+	for <stable@vger.kernel.org>; Wed,  3 Dec 2025 08:13:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764749205; cv=none; b=oZBwmv5FD6ZgH0e0ItbFI7/EX5d2h0vaMRyWaW1elEhCjwbdNicuNPdBIWoqcdgJDT3EEmQyzTbLqIfoOvT6LK69f8Mtgh87DzRk9Z35HovwU34ZMVy4oXARMTx5UrJF8lMLcI7mZWtg44A4stZFIE6aaT+v4hIINVhvQVf6w5I=
+	t=1764749632; cv=none; b=KW9snVkrE6Q7hQaVTsy1tt9FpOm8cGPDcZGTht5cO7RHzQ9o6HHQzYN9OHUtratDUlkZ7HJEebo7VzptBA78zL9Uft+Ap0/NDe4rL1pDpy+Lr8hiN8DuHj8E42V/6Dj5KwIKBF4KtxFEA9Nw1ScyQ3+jsdYwd2SSzZ7uXw/Zwf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764749205; c=relaxed/simple;
-	bh=lA/AvlnD4jIt+bo/o2HM5XqkFgspmdxesUJ/5D245ro=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IX/1g3FnNrsaTjtK5cK/cVJx08fmGf86AnprPzH5Vy1vVPa/D+4lWOlG8PdMXvB2BFSbUVp4Mj/rcKDRZEs1aOX1muEBdvlc/2NENc11dnXssWqYGHC3mVBhjElcwKXvUSSAwfaUSPgOrdUmMV6oxxGiSMN44XiXG7SYXidjufU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Sv3g2qF1; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764749202;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=T7ea7CjgqP5nfnCXT5mMuU8byi9zvzDvcLNxH8zi7UU=;
-	b=Sv3g2qF12OgKPyFtCqGQ1EkjXsDEeVbPvdvTEAzX9OTPYVPsj6gjSLX5UI9nQ1ctprZjkk
-	ivtDF9/GXq24REeDB0Y4zcedaLeoYi1fqi21t5zjuNKht4yHNLC9HGbha04DD8YYB0isvl
-	/cX72bje/S008QqeP/DfgNWR5VNCPK4=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-17-u3VEo25bMmeBBT0lp6zryQ-1; Wed,
- 03 Dec 2025 03:06:36 -0500
-X-MC-Unique: u3VEo25bMmeBBT0lp6zryQ-1
-X-Mimecast-MFC-AGG-ID: u3VEo25bMmeBBT0lp6zryQ_1764749195
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 527F81955E7F;
-	Wed,  3 Dec 2025 08:06:34 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.62])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1ADBE30001A5;
-	Wed,  3 Dec 2025 08:06:32 +0000 (UTC)
-Date: Wed, 3 Dec 2025 16:06:28 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Pingfan Liu <piliu@redhat.com>
-Cc: kexec@lists.infradead.org, linux-integrity@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Alexander Graf <graf@amazon.com>,
-	Steven Chen <chenste@linux.microsoft.com>, stable@vger.kernel.org
-Subject: Re: [PATCHv2 1/2] kernel/kexec: Change the prototype of
- kimage_map_segment()
-Message-ID: <aS/vhE9GMwauO0+d@MiWiFi-R3L-srv>
-References: <20251106065904.10772-1-piliu@redhat.com>
- <aSZTb1X26MjSZIzF@MiWiFi-R3L-srv>
- <CAF+s44S2_DG92dJAGX8GZdc-OgOz1a7E+ScbyOGcG85QayBS1w@mail.gmail.com>
+	s=arc-20240116; t=1764749632; c=relaxed/simple;
+	bh=EbSYU953RKjHW7wA5plT5zQZwU7gj4GUV/v9MPqxLeI=;
+	h=From:To:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Qp0BVzzd8n0oqMOulB8cCG1A+3BnAmEraLoc4tcARmyUCJNuV5JSGck8od61CGrdKdZh0IEs4q0i34186FVTsyBN85TYTyxEYVW2onWExREOv+jJBpY5fFOH30rPgchMh+glZgb8+gUHv+89Eja7XMb1dA7Ndda/bP4J0ObRILY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H8OGuvh4; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764749630; x=1796285630;
+  h=from:to:subject:in-reply-to:references:date:message-id:
+   mime-version;
+  bh=EbSYU953RKjHW7wA5plT5zQZwU7gj4GUV/v9MPqxLeI=;
+  b=H8OGuvh4kZwEQYecG1ulr5dETrZ1mOIh6+D1jai39eM7ZDheF8OYGbFJ
+   FCDXsqqhpb26XOZmLzP3n3WOK6Lcl+bg9VpZIYCuE7CtpgzgwDfy572/q
+   UBI6f98VP3N27Wcc1l/+J67jZJN4MDu0K/IadAO1IUfFFXSru6umSaFPg
+   LwMf64/9acaH0zXVaTj9lgpYGKGATRxndzMxTL21xCiNb9duCZjsw1mF9
+   tnUTXyV/Poy30lbk96XJWpq+MqlgEBflnHV7KLr/4JCctWG/hpjaH5Rgr
+   qAwBzVtYRLQSrzYNX0nalnrV9LVCyFcrgDRHdttoOf/ANyB7xsunP3Q0m
+   Q==;
+X-CSE-ConnectionGUID: kFBq3BHyTkWUTKpo0mNVLA==
+X-CSE-MsgGUID: +fM2ZKIzRVaomTG4okZmVw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="77416102"
+X-IronPort-AV: E=Sophos;i="6.20,245,1758610800"; 
+   d="scan'208";a="77416102"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2025 00:13:49 -0800
+X-CSE-ConnectionGUID: ixh40zUTSZS5MeE6+3KAsg==
+X-CSE-MsgGUID: WLU3ByICTXmrrhIGNiK7WQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,245,1758610800"; 
+   d="scan'208";a="193891482"
+Received: from ettammin-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.246.211])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2025 00:13:47 -0800
+From: Jani Nikula <jani.nikula@intel.com>
+To: imre.deak@intel.com, intel-gfx@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org, Mohammed Thasleem
+ <mohammed.thasleem@intel.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] drm/i915/dmc: fix an unlikely NULL pointer deference at
+ probe
+In-Reply-To: <aS9bj8RRYYc01Rzs@ideak-desk>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20251202183950.2450315-1-jani.nikula@intel.com>
+ <aS9ZGmXG_n0IXv-N@ideak-desk> <aS9bj8RRYYc01Rzs@ideak-desk>
+Date: Wed, 03 Dec 2025 10:13:44 +0200
+Message-ID: <43c4d7f0d9fe4ba6acac828306b41d612dd4f085@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAF+s44S2_DG92dJAGX8GZdc-OgOz1a7E+ScbyOGcG85QayBS1w@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Type: text/plain
 
-On 12/03/25 at 12:22pm, Pingfan Liu wrote:
-> Hi Baoquan,
-> 
-> On Wed, Nov 26, 2025 at 9:10 AM Baoquan He <bhe@redhat.com> wrote:
-> >
-> > Hi Pingfan,
-> >
-> > On 11/06/25 at 02:59pm, Pingfan Liu wrote:
-> > > The kexec segment index will be required to extract the corresponding
-> > > information for that segment in kimage_map_segment(). Additionally,
-> > > kexec_segment already holds the kexec relocation destination address and
-> > > size. Therefore, the prototype of kimage_map_segment() can be changed.
-> >
-> > Because no cover letter, I just reply here.
-> >
-> > I am testing code of (tag: next-20251125, next/master) on arm64 system.
-> > I saw your two patches are already in there. When I used kexec reboot
-> > as below, I still got the warning message during ima_kexec_post_load()
-> > invocation.
-> >
-> > ====================
-> > kexec -d -l /boot/vmlinuz-6.18.0-rc7-next-20251125 --initrd /boot/initramfs-6.18.0-rc7-next-20251125.img --reuse-cmdline
-> > ====================
-> >
-> 
-> "I have used the Fedora 42 server and its config file to reproduce the
-> issue you reported here. However, I cannot reproduce it with my patch.
-> Instead, if I revert my patch, I can see the warning again.
-> 
-> I suspect that you observed the warning thrown by the original Fedora
-> 42 kernel instead of mine.
-> 
-> You need to kexec-reboot into vmlinuz-6.18.0-rc7-next-20251125, and at
-> that point, try 'kexec -d -l /boot/vmlinuz-6.18.0-rc7-next-20251125
-> --initrd /boot/initramfs-6.18.0-rc7-next-20251125.img
-> --reuse-cmdline'.
-> 
-> If this is a false alarm, I will rewrite the commit log and send out v3.
+On Tue, 02 Dec 2025, Imre Deak <imre.deak@intel.com> wrote:
+> On Tue, Dec 02, 2025 at 11:24:42PM +0200, Imre Deak wrote:
+>> On Tue, Dec 02, 2025 at 08:39:50PM +0200, Jani Nikula wrote:
+>> > intel_dmc_update_dc6_allowed_count() oopses when DMC hasn't been
+>> > initialized, and dmc is thus NULL.
+>> > 
+>> > That would be the case when the call path is
+>> > intel_power_domains_init_hw() -> {skl,bxt,icl}_display_core_init() ->
+>> > gen9_set_dc_state() -> intel_dmc_update_dc6_allowed_count(), as
+>> > intel_power_domains_init_hw() is called *before* intel_dmc_init().
+>> > 
+>> > However, gen9_set_dc_state() calls intel_dmc_update_dc6_allowed_count()
+>> > conditionally, depending on the current and target DC states. At probe,
+>> > the target is disabled, but if DC6 is enabled, the function is called,
+>> > and an oops follows. Apparently it's quite unlikely that DC6 is enabled
+>> > at probe, as we haven't seen this failure mode before.
+>> > 
+>> > Add NULL checks and switch the dmc->display references to just display.
+>> > 
+>> > Fixes: 88c1f9a4d36d ("drm/i915/dmc: Create debugfs entry for dc6 counter")
+>> > Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>
+>> > Cc: Imre Deak <imre.deak@intel.com>
+>> > Cc: <stable@vger.kernel.org> # v6.16+
+>> > Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+>> > 
+>> > ---
+>> > 
+>> > Rare case, but this may also throw off the rc6 counting in debugfs when
+>> > it does happen.
+>> 
+>> Yes, I missed the case where the driver is being loaded while DC6 is
+>> enabled, this is what happens for the reporter:
+>> 
+>> i915 0000:00:04.0: [drm] *ERROR* DC state mismatch (0x0 -> 0x2)
+>> 
+>> That's odd, as DC6 requires the DMC firmware, which - if it's indeed
+>> loaded by BIOS for instance - will be overwritten by the driver, not a
+>> well specified sequence (even though the driver is trying to handle it
+>> correctly by disabling any active firmware handler).
+>> 
+>> But as you pointed out this would also throw off the cooked-up DC6
+>> counter tracking,
+>
+> Actually the patch would keep the counter working, as the counter
+> wouldn't be updated in the dmc==NULL case. However I still think the
+> correct fix would be to check the correct DC state, which from the POV
+> of the counter tracking is the driver's version of the state, not the HW
+> state.
 
-Thanks for checking, Pingfan. I am not quite sure if I did wrong
-operation on the machine. Since you are testing the same machine and the
-same linux-next code, and it still can'e be reproduced, it should be
-from my mistake. Then please go ahead posting v3.
+One thing I failed to mention is that this happens in a KASAN run in
+QEMU. So I'm kind of not surprised we haven't hit this before. And it
+impacts the deductions about the DC state.
 
-Thanks
-Baoquan
+I'm not quite sure what exactly you're suggesting, maybe a draft patch
+would communicate the idea better than plain English? ;)
 
+Anyway, I think "not oopsing" is a lot better than "inaccurate DC
+counters in debugfs".
+
+BR,
+Jani.
+
+
+>
+>> so could instead the counter update depend on the
+>> driver's DC state instead of the HW state? I.e. set
+>> gen9_set_dc_state()/dc6_was_enabled,
+>> intel_dmc_get_dc6_allowed_count()/dc6_enable if power_domains->dc_state
+>> says that DC6 was indeed enabled by the driver (instead of checking the
+>> HW state).
+>> 
+>> That would fix the reporter's oops when calling
+>> intel_dmc_update_dc6_allowed_count(start_tracking=false), by not calling
+>> it if the driver hasn't actually enabled DC6 and it would also keep the
+>> DC6 counter tracking correct.
+>> 
+>> intel_dmc_update_dc6_allowed_count(start_tracking=true) would be also
+>> guaranteed to be called only once the firmware is loaded, as until that
+>> point enabling DC6 is blocked (by holding a reference on the DC_off
+>> power well).
+>> 
+>> > ---
+>> >  drivers/gpu/drm/i915/display/intel_dmc.c | 6 +++---
+>> >  1 file changed, 3 insertions(+), 3 deletions(-)
+>> > 
+>> > diff --git a/drivers/gpu/drm/i915/display/intel_dmc.c b/drivers/gpu/drm/i915/display/intel_dmc.c
+>> > index 2fb6fec6dc99..169bbbc91f6d 100644
+>> > --- a/drivers/gpu/drm/i915/display/intel_dmc.c
+>> > +++ b/drivers/gpu/drm/i915/display/intel_dmc.c
+>> > @@ -1570,10 +1570,10 @@ void intel_dmc_update_dc6_allowed_count(struct intel_display *display,
+>> >  	struct intel_dmc *dmc = display_to_dmc(display);
+>> >  	u32 dc5_cur_count;
+>> >  
+>> > -	if (DISPLAY_VER(dmc->display) < 14)
+>> > +	if (!dmc || DISPLAY_VER(display) < 14)
+>> >  		return;
+>> >  
+>> > -	dc5_cur_count = intel_de_read(dmc->display, DG1_DMC_DEBUG_DC5_COUNT);
+>> > +	dc5_cur_count = intel_de_read(display, DG1_DMC_DEBUG_DC5_COUNT);
+>> >  
+>> >  	if (!start_tracking)
+>> >  		dmc->dc6_allowed.count += dc5_cur_count - dmc->dc6_allowed.dc5_start;
+>> > @@ -1587,7 +1587,7 @@ static bool intel_dmc_get_dc6_allowed_count(struct intel_display *display, u32 *
+>> >  	struct intel_dmc *dmc = display_to_dmc(display);
+>> >  	bool dc6_enabled;
+>> >  
+>> > -	if (DISPLAY_VER(display) < 14)
+>> > +	if (!dmc || DISPLAY_VER(display) < 14)
+>> >  		return false;
+>> >  
+>> >  	mutex_lock(&power_domains->lock);
+>> > -- 
+>> > 2.47.3
+>> > 
+
+-- 
+Jani Nikula, Intel
 
