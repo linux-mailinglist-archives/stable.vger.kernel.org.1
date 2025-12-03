@@ -1,57 +1,53 @@
-Return-Path: <stable+bounces-198306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A461FC9F899
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:38:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB0E0CA0CF1
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:11:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 75258300B146
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:35:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CA8F630B230B
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:07:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCE2F3101DD;
-	Wed,  3 Dec 2025 15:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0455B34DCFE;
+	Wed,  3 Dec 2025 16:04:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f+C2SgK3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dHzm0KDe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91F6B244665;
-	Wed,  3 Dec 2025 15:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B363034DCF5;
+	Wed,  3 Dec 2025 16:04:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776110; cv=none; b=ADO1qpKESWaxJeNmXKBSx32QH75qIazoO77RQcDpsob3ORZh+cal/CozVVWxlu4gjAf712ANrvTrDGDGiX/t5YwGSBKUFt5sC+Z/Y+NoH7aSrwqgkgpKDpDaiiYKcpd+fMBFNXz+njhTAQ1xERiKdIHdPD7D7TgzxLckvSO264s=
+	t=1764777863; cv=none; b=EEp62o4pxThbD3+X54+KGxbpXELlrcJQvXQ9ZRTWrbdjXJEdd7F+nuGLbUj0zupLMEmBL7qFP2vxp1S7k22FH1Kcfzay2ISjOEDfcsJmSIyH+s5mjTefUk+NgRkk0J4KvGDJ/9WeLx/QMSr8oLs1tft1ukIJUgDOd/qrHiAVlBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776110; c=relaxed/simple;
-	bh=nSrqHJzvFEVreGab573qZBD786I05VPsdjLOjqQcHz0=;
+	s=arc-20240116; t=1764777863; c=relaxed/simple;
+	bh=QHzneY7e1xpTx4KhLDxIJuggfx8fZlhUuHCjVojyqV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MDXMyIg90gJPHMUmmQzegSnEmC+y4b0kmykDZB/6FWJQIE/XrmDWZP7f9hCuwh/FoCxo6IG9S29LEOYypqIVkZD7ULQObCRcUh7DRc+Wt7dvgPjPwQHzoxlhNjIaHz4YSbMw4Pl2aRubPMwr1ov6hZ2hBXFx6NwBCSNgm91821k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f+C2SgK3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0B5CC4CEF5;
-	Wed,  3 Dec 2025 15:35:09 +0000 (UTC)
+	 MIME-Version; b=K52mC3m/pbRsQWJOfcKqBLmX5D1mwvVWHyZ5Xen25QxbM9KrozMwZCAtY4yGNNcf4RATDJ1eSunxYNWnrQet+04KbeWt/VnxqsuYdI4rBRal206Z3tYn6z+5VXcomgAT52U92KqgNO6/2vnXA3htTlUnF1CZDmod+mwaVb9Ih40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dHzm0KDe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD3A2C4CEF5;
+	Wed,  3 Dec 2025 16:04:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776110;
-	bh=nSrqHJzvFEVreGab573qZBD786I05VPsdjLOjqQcHz0=;
+	s=korg; t=1764777862;
+	bh=QHzneY7e1xpTx4KhLDxIJuggfx8fZlhUuHCjVojyqV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f+C2SgK3bUdRStj/pkaLIZiJ7LJtZDx5dSfx6ykTA9oi7q2rWurCs8ZhMoMA6n3wB
-	 ma2lYthM9HT7Xjf8OoTik5PANYb917CKX+QWBDSDDkWypuvuQJsbC12NlHUxLKlplD
-	 lTLPxJbODaOUmAY7cFD7lxR3ZXHxNvdRXx75z154=
+	b=dHzm0KDeiyir5nP0dw8/S+d3rvYXDCzncmpHUfETi6Gju8O+SK/uyjwzZNHZFhL8l
+	 xHQYQIn2JdKcUu2QJbizuqz1ktI9LUg1/EzYDiXVk5zPlv57y31StxwzM0O6f+7kzJ
+	 /TDmV+u8+Kd8El6uFlUhLq2UzA9nUyTx1bR/001k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	linux-arm-msm@vger.kernel.org,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	William Wu <william.wu@rock-chips.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 083/300] drm/bridge: display-connector: dont set OP_DETECT for DisplayPorts
+Subject: [PATCH 5.15 137/392] usb: gadget: f_hid: Fix zero length packet transfer
 Date: Wed,  3 Dec 2025 16:24:47 +0100
-Message-ID: <20251203152403.700340085@linuxfoundation.org>
+Message-ID: <20251203152419.130758777@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +59,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: William Wu <william.wu@rock-chips.com>
 
-[ Upstream commit cb640b2ca54617f4a9d4d6efd5ff2afd6be11f19 ]
+[ Upstream commit ed6f727c575b1eb8136e744acfd5e7306c9548f6 ]
 
-Detecting the monitor for DisplayPort targets is more complicated than
-just reading the HPD pin level: it requires reading the DPCD in order to
-check what kind of device is attached to the port and whether there is
-an actual display attached.
+Set the hid req->zero flag of ep0/in_ep to true by default,
+then the UDC drivers can transfer a zero length packet at
+the end if the hid transfer with size divisible to EPs max
+packet size according to the USB 2.0 spec.
 
-In order to let DRM framework handle such configurations, disable
-DRM_BRIDGE_OP_DETECT for dp-connector devices, letting the actual DP
-driver perform detection. This still keeps DRM_BRIDGE_OP_HPD enabled, so
-it is valid for the bridge to report HPD events.
-
-Currently inside the kernel there are only two targets which list
-hpd-gpios for dp-connector devices: arm64/qcom/qcs6490-rb3gen2 and
-arm64/qcom/sa8295p-adp. Both should be fine with this change.
-
-Cc: Bjorn Andersson <andersson@kernel.org>
-Cc: Konrad Dybcio <konradybcio@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org
-Acked-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Link: https://lore.kernel.org/r/20250802-dp-conn-no-detect-v1-1-2748c2b946da@oss.qualcomm.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: William Wu <william.wu@rock-chips.com>
+Link: https://lore.kernel.org/r/1756204087-26111-1-git-send-email-william.wu@rock-chips.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/display-connector.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/gadget/function/f_hid.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/display-connector.c b/drivers/gpu/drm/bridge/display-connector.c
-index 544a47335cac4..d34120eb5e674 100644
---- a/drivers/gpu/drm/bridge/display-connector.c
-+++ b/drivers/gpu/drm/bridge/display-connector.c
-@@ -229,7 +229,8 @@ static int display_connector_probe(struct platform_device *pdev)
- 	if (conn->bridge.ddc)
- 		conn->bridge.ops |= DRM_BRIDGE_OP_EDID
- 				 |  DRM_BRIDGE_OP_DETECT;
--	if (conn->hpd_gpio)
-+	/* Detecting the monitor requires reading DPCD */
-+	if (conn->hpd_gpio && type != DRM_MODE_CONNECTOR_DisplayPort)
- 		conn->bridge.ops |= DRM_BRIDGE_OP_DETECT;
- 	if (conn->hpd_irq >= 0)
- 		conn->bridge.ops |= DRM_BRIDGE_OP_HPD;
+diff --git a/drivers/usb/gadget/function/f_hid.c b/drivers/usb/gadget/function/f_hid.c
+index b0efaab8678bd..1293bc9157087 100644
+--- a/drivers/usb/gadget/function/f_hid.c
++++ b/drivers/usb/gadget/function/f_hid.c
+@@ -490,7 +490,7 @@ static ssize_t f_hidg_write(struct file *file, const char __user *buffer,
+ 	}
+ 
+ 	req->status   = 0;
+-	req->zero     = 0;
++	req->zero     = 1;
+ 	req->length   = count;
+ 	req->complete = f_hidg_req_complete;
+ 	req->context  = hidg;
+@@ -761,7 +761,7 @@ static int hidg_setup(struct usb_function *f,
+ 	return -EOPNOTSUPP;
+ 
+ respond:
+-	req->zero = 0;
++	req->zero = 1;
+ 	req->length = length;
+ 	status = usb_ep_queue(cdev->gadget->ep0, req, GFP_ATOMIC);
+ 	if (status < 0)
 -- 
 2.51.0
 
