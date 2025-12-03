@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-199471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8A63CA00F2
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:43:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FC0FCA1753
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:48:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1391A30062D9
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:38:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 49FE53009118
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:48:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64F7335C18F;
-	Wed,  3 Dec 2025 16:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEE3C3074BA;
+	Wed,  3 Dec 2025 16:08:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ynKPauet"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WKkzxg/K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F29E35BDDF;
-	Wed,  3 Dec 2025 16:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6C125D1E9;
+	Wed,  3 Dec 2025 16:08:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779908; cv=none; b=aUXZ6cvrTs3Gw4ZJndZUgWvmxrW93Bjo3Ulc2aZR1zWDRekWtUNbf2ydFhpn+pabj3FMmc7zrPJ3wHyQwmjCAEWVl1K5QnMX5eKpRoVYzA7cXabv6ShhPUQ1skZXQKcRQHfKLtud025xr0Pi9/w+GvdSZgdjJLw4U9gjffb2ZAs=
+	t=1764778124; cv=none; b=t417xl03H26eDCTjTXg8f8kiiIqJgQomS2x0heiD4ZEBKOVm5+4pzlDiRIdeTtEs3eyfrUFVByiJk+V/LnaCF3w22sDWhIIy6eGeRQO35Y8PceOcEmGlYNIXhT0n6YHFhCUL6zZed57WHqFf9C6AYSMA444ztFiHmVP7dLAIK7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779908; c=relaxed/simple;
-	bh=2dg+v68oLsc4MwxciPdZKf4DM+qsNi3fL18j1us0krE=;
+	s=arc-20240116; t=1764778124; c=relaxed/simple;
+	bh=HcX4sbH48mnTWRdoN7xgXV+PL2kuFDYGZ1F0yxzh6vE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t3ZUSpV9L2u2DL4ve6odHq+3mXuXCNyPbX/sb16oru2+OXr9FB9Uv5IGjo+l8iFH+LLjr2XfGl9jH+QFZI5PxpdcbLFJ/xIomFPzmOhSBSA2l0apn1WOFGHWQyXiA4q3chUMccsBK8xS3UQGCnyvK1pzjVA/ZasMXW5DSaOuogM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ynKPauet; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74E61C4CEF5;
-	Wed,  3 Dec 2025 16:38:27 +0000 (UTC)
+	 MIME-Version; b=FDeuF4z/U66x1LxXO+isl85P75F5vjmeUK08+dA0V9rJ+O+eMNldDxehZOT5LzbQUbe8+88B8cfeXG2p5IsahuqxdKAvh32uEHzkafZoiBohhbnqVdpG4F6GeV3c2mfsKjbwQjUMMkxAiCmjrQwFYGwmblyxA9Z3942X9wspEeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WKkzxg/K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A3F8C4CEF5;
+	Wed,  3 Dec 2025 16:08:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779907;
-	bh=2dg+v68oLsc4MwxciPdZKf4DM+qsNi3fL18j1us0krE=;
+	s=korg; t=1764778123;
+	bh=HcX4sbH48mnTWRdoN7xgXV+PL2kuFDYGZ1F0yxzh6vE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ynKPauetDxO7i37mZTVsiquS16/Scg5WX9/9/TUYvId550mKmMt69bkQ4Q240Dq6v
-	 8UtYrcAVpt8ZmQOo5oCk+tWAwT8fEAfB5V6sK88JLrBsTwPLHrW+a1pneKif8gHea2
-	 0OajqqQMcoJmSTpyFm6CezySDhyU+pWzpzzBKX38=
+	b=WKkzxg/KG9uYwWkHgGLjf3xDGO8Lvt232eEyx7cpyIEByCuPWTON1q7Ddxfhr2jT5
+	 0aHRp3LpmQmXSice1X75fQ457HfTS0UNqrIERdva14ju+lMWIDOaRWbvK4OAZCWSXG
+	 l69u7XTUbjhfUOTXXok/3/5tBejAhw7LaokS9SEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nate Karstens <nate.karstens@garmin.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 399/568] strparser: Fix signed/unsigned mismatch bug
+	syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com,
+	Ranganath V N <vnranganath.20@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 251/392] net: sched: act_connmark: initialize struct tc_ife to fix kernel leak
 Date: Wed,  3 Dec 2025 16:26:41 +0100
-Message-ID: <20251203152455.305766913@linuxfoundation.org>
+Message-ID: <20251203152423.406763042@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nate Karstens <nate.karstens@garmin.com>
+From: Ranganath V N <vnranganath.20@gmail.com>
 
-commit 4da4e4bde1c453ac5cc2dce5def81d504ae257ee upstream.
+[ Upstream commit 62b656e43eaeae445a39cd8021a4f47065af4389 ]
 
-The `len` member of the sk_buff is an unsigned int. This is cast to
-`ssize_t` (a signed type) for the first sk_buff in the comparison,
-but not the second sk_buff. On 32-bit systems, this can result in
-an integer underflow for certain values because unsigned arithmetic
-is being used.
+In tcf_connmark_dump(), the variable 'opt' was partially initialized using a
+designatied initializer. While the padding bytes are reamined
+uninitialized. nla_put() copies the entire structure into a
+netlink message, these uninitialized bytes leaked to userspace.
 
-This appears to be an oversight: if the intention was to use unsigned
-arithmetic, then the first cast would have been omitted. The change
-ensures both len values are cast to `ssize_t`.
+Initialize the structure with memset before assigning its fields
+to ensure all members and padding are cleared prior to beign copied.
 
-The underflow causes an issue with ktls when multiple TLS PDUs are
-included in a single TCP segment. The mainline kernel does not use
-strparser for ktls anymore, but this is still useful for other
-features that still use strparser, and for backporting.
-
-Signed-off-by: Nate Karstens <nate.karstens@garmin.com>
-Cc: stable@vger.kernel.org
-Fixes: 43a0c6751a32 ("strparser: Stream parser for messages")
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/20251106222835.1871628-1-nate.karstens@garmin.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0c85cae3350b7d486aee
+Tested-by: syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com
+Fixes: 22a5dc0e5e3e ("net: sched: Introduce connmark action")
+Signed-off-by: Ranganath V N <vnranganath.20@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20251109091336.9277-2-vnranganath.20@gmail.com
+Acked-by: Cong Wang <xiyou.wangcong@gmail.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/strparser/strparser.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sched/act_connmark.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
---- a/net/strparser/strparser.c
-+++ b/net/strparser/strparser.c
-@@ -238,7 +238,7 @@ static int __strp_recv(read_descriptor_t
- 				strp_parser_err(strp, -EMSGSIZE, desc);
- 				break;
- 			} else if (len <= (ssize_t)head->len -
--					  skb->len - stm->strp.offset) {
-+					  (ssize_t)skb->len - stm->strp.offset) {
- 				/* Length must be into new skb (and also
- 				 * greater than zero)
- 				 */
+diff --git a/net/sched/act_connmark.c b/net/sched/act_connmark.c
+index 79cfe51a09e74..4d75d2ae0d8ce 100644
+--- a/net/sched/act_connmark.c
++++ b/net/sched/act_connmark.c
+@@ -190,13 +190,15 @@ static inline int tcf_connmark_dump(struct sk_buff *skb, struct tc_action *a,
+ 	const struct tcf_connmark_info *ci = to_connmark(a);
+ 	unsigned char *b = skb_tail_pointer(skb);
+ 	const struct tcf_connmark_parms *parms;
+-	struct tc_connmark opt = {
+-		.index   = ci->tcf_index,
+-		.refcnt  = refcount_read(&ci->tcf_refcnt) - ref,
+-		.bindcnt = atomic_read(&ci->tcf_bindcnt) - bind,
+-	};
++	struct tc_connmark opt;
+ 	struct tcf_t t;
+ 
++	memset(&opt, 0, sizeof(opt));
++
++	opt.index   = ci->tcf_index;
++	opt.refcnt  = refcount_read(&ci->tcf_refcnt) - ref;
++	opt.bindcnt = atomic_read(&ci->tcf_bindcnt) - bind;
++
+ 	rcu_read_lock();
+ 	parms = rcu_dereference(ci->parms);
+ 
+-- 
+2.51.0
+
 
 
 
