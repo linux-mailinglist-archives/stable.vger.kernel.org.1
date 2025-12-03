@@ -1,117 +1,139 @@
-Return-Path: <stable+bounces-199887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 417B2CA07BB
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:31:59 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A9DAC9F85D
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:37:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 31A2031F1BEB
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:14:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 095DA30007A9
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:37:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCF9E3624D9;
-	Wed,  3 Dec 2025 17:00:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BFBRitmC"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 562D0313E3B;
+	Wed,  3 Dec 2025 15:37:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com [209.85.161.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA793624BA;
-	Wed,  3 Dec 2025 17:00:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0876A3148C1
+	for <stable@vger.kernel.org>; Wed,  3 Dec 2025 15:37:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764781255; cv=none; b=VYhq4oeSTpWIIeTpVXuXuSeedvJOy7wep66hnNZL1TlU1i2WKXQQCILLjqtAlsYG8PNHbvTiAfn4t8Mnb/H7Wy5mk0AyYTJgmSR9+/bDDiAx0I++e2i4jYeaB+4ERjLiLS8gh/ZiALbz2nc3CC7+VtIHP8SRvf4PgLIzWE/yjp4=
+	t=1764776261; cv=none; b=RZSQOh/PA7FyOQqSfo2pIpXnfDTca422rCW1Af3319yuw798uGrBMPl27COCNP6jjqvaHCa2dWY6j6oURsHb3tGibUyiSwvLgdnGzY5DACEnEeAqLzuPJLkJVFjd3UIRICJqlNQrkiHKgDxTkDtBHm3ukKLlb3R0Elp3px14u8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764781255; c=relaxed/simple;
-	bh=fQi+K4M2tFEp4RQAHn+0ez3BEDsnqP7pApL96Z9bYBs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E6c3gDhpLltkz8FtMFgkplCep9M+ssjE+h4kmXwjAZVuH2DXgWpxYFKqib28qoXsVLIG3OLNdwExgE/HYji238dFLXgEAtEn8A9tOkL85fv4ab1+hiEWluR/nPzoNTLwwuWCV4A0EkTMFjV/9EcifWmcuA82i38JDOZz2rjhIIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BFBRitmC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1FEDC4CEF5;
-	Wed,  3 Dec 2025 17:00:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764781255;
-	bh=fQi+K4M2tFEp4RQAHn+0ez3BEDsnqP7pApL96Z9bYBs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BFBRitmCuADJfibMN3M0M+PVINTyQSQvK/JYuqA74iaI6emQ4bYndOBjfV9+ynMVw
-	 TxP3TLyvELpsYCI4daLua7L73eLwiHM/8wDdGcQNsl4zPnvvgSnA/EFKgDbGOVKq5q
-	 iYmnIDcczELmNlM5BFfurUDU4vWn3/gWBw+Agz3A=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	syzbot+b63d677d63bcac06cf90@syzkaller.appspotmail.com,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Wenshan Lan <jetlan9@163.com>
-Subject: [PATCH 6.6 93/93] HID: core: Harden s32ton() against conversion to 0 bits
-Date: Wed,  3 Dec 2025 16:30:26 +0100
-Message-ID: <20251203152340.001378871@linuxfoundation.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1764776261; c=relaxed/simple;
+	bh=URwIkXoJGIhaf6h4erzozKo5YdtNlIml7iZ5wYMoZNY=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=XD3eR+lGanPEOhfJ8SKhE/axNgZrpzxyFowxNHDTKvI96NYkQ0ZaUIHzveYZ1rDCweHBth4KoL3kE2WJAtdINZzyS49mNSNEodFHNvxioa0DEultYErffkt3fMkXE1Mj2uSxP6r2Q1V8ttFX2XMEdIjIV8EqfXvTUNHySHrrIUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f69.google.com with SMTP id 006d021491bc7-6574f0d2537so3098755eaf.1
+        for <stable@vger.kernel.org>; Wed, 03 Dec 2025 07:37:38 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764776258; x=1765381058;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/elcimwPgXstgKnTlIN9KfZhixTnvPoLHjpdzZzVoOY=;
+        b=Hsj9FJVezLm1StpGHEkK8yHUoXEWzFJz0MId5+T5MsYTg94S4wOpdnwvBnUZaKMclQ
+         9oww1BvtdSfCWjvBetLIrLxHnkJXz5j5l32bfFzduLO69qpm2GFJnFIRB1+Y/iUfj0lI
+         8gKvTbEVvCxairlLUiTlWIxtbEK9pjEALrG4HLdDT0FLo4TY5RVVY2csx9XJsx5Iy8j0
+         ulDDsJUernKCkDeo+RDMB1fnT7+tIwESuXZu7d8X8/fC9gzEATOQYthKyPK2LadFI9wg
+         Bn2j7SZIqPtVvTeYxjbI5K2IikZ9l3sEPqd+7EACSDbLGCgrzXGVsToUS+3xHfQ44eri
+         AkcQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWsRH5pUTL9WOAbZJD9vSjZG0PCOAzWZtTnPvJM4ZaiqpWnE6rIcbuTi8mbK2J/gOGESJoSZhQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YywVMrIIRRdiAuFRgn/7UHUPfJtGWEQs5Ps6r/ZxSrmVFv1V7O2
+	bxDvOzj6NE1mDseQp+0tK5W+BGiv3Cd2ioBA8jjCLRAe5FDgeQfJ53vUQueQIhl8Lgbqp42wlLQ
+	WLArBFrg77QY4or8dL11nOELHnweQZnFs+aRfTcS0gF3FPWR9n5L/QpFX6Mc=
+X-Google-Smtp-Source: AGHT+IF/HJsWGbBN8Hj0XK2wsI5QnGAyQ231nFm6XhVliXXmKL+EBsLT0hjyi+becUo9ruJxPN0hqSM6G8/bFhVyeFdh1xNyhduY
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6808:2209:b0:451:4d82:b6e1 with SMTP id
+ 5614622812f47-4536e3ae6a6mr1322895b6e.13.1764776258114; Wed, 03 Dec 2025
+ 07:37:38 -0800 (PST)
+Date: Wed, 03 Dec 2025 07:37:38 -0800
+In-Reply-To: <20251203152405.317330579@linuxfoundation.org>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69305942.a70a0220.2ea503.00d1.GAE@google.com>
+Subject: Re: [PATCH 5.10 127/300] jfs: fix uninitialized waitqueue in
+ transaction manager
+From: syzbot <syzbot@syzkaller.appspotmail.com>
+To: gregkh@linuxfoundation.org
+Cc: dave.kleikamp@oracle.com, gregkh@linuxfoundation.org, 
+	patches@lists.linux.dev, sashal@kernel.org, ssrane_b23@ee.vjti.ac.in, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+> 5.10-stable review patch.  If anyone has any objections, please let me know.
+>
+> ------------------
+>
+> From: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
+>
+> [ Upstream commit 300b072df72694ea330c4c673c035253e07827b8 ]
+>
+> The transaction manager initialization in txInit() was not properly
+> initializing TxBlock[0].waitor waitqueue, causing a crash when
+> txEnd(0) is called on read-only filesystems.
+>
+> When a filesystem is mounted read-only, txBegin() returns tid=0 to
+> indicate no transaction. However, txEnd(0) still gets called and
+> tries to access TxBlock[0].waitor via tid_to_tblock(0), but this
+> waitqueue was never initialized because the initialization loop
+> started at index 1 instead of 0.
+>
+> This causes a 'non-static key' lockdep warning and system crash:
+>   INFO: trying to register non-static key in txEnd
+>
+> Fix by ensuring all transaction blocks including TxBlock[0] have
+> their waitqueues properly initialized during txInit().
+>
+> Reported-by: syzbot+c4f3462d8b2ad7977bea@syzkaller.appspotmail.com
+>
+> Signed-off-by: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
+> Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  fs/jfs/jfs_txnmgr.c | 9 +++++----
+>  1 file changed, 5 insertions(+), 4 deletions(-)
+>
+> diff --git a/fs/jfs/jfs_txnmgr.c b/fs/jfs/jfs_txnmgr.c
+> index 6f6a5b9203d3f..97a2eb0f0b75d 100644
+> --- a/fs/jfs/jfs_txnmgr.c
+> +++ b/fs/jfs/jfs_txnmgr.c
+> @@ -272,14 +272,15 @@ int txInit(void)
+>  	if (TxBlock == NULL)
+>  		return -ENOMEM;
+>  
+> -	for (k = 1; k < nTxBlock - 1; k++) {
+> -		TxBlock[k].next = k + 1;
+> +	for (k = 0; k < nTxBlock; k++) {
+>  		init_waitqueue_head(&TxBlock[k].gcwait);
+>  		init_waitqueue_head(&TxBlock[k].waitor);
+>  	}
+> +
+> +	for (k = 1; k < nTxBlock - 1; k++) {
+> +		TxBlock[k].next = k + 1;
+> +	}
+>  	TxBlock[k].next = 0;
+> -	init_waitqueue_head(&TxBlock[k].gcwait);
+> -	init_waitqueue_head(&TxBlock[k].waitor);
+>  
+>  	TxAnchor.freetid = 1;
+>  	init_waitqueue_head(&TxAnchor.freewait);
+> -- 
+> 2.51.0
+>
+>
+>
 
-------------------
-
-From: Alan Stern <stern@rowland.harvard.edu>
-
-[ Upstream commit a6b87bfc2ab5bccb7ad953693c85d9062aef3fdd ]
-
-Testing by the syzbot fuzzer showed that the HID core gets a
-shift-out-of-bounds exception when it tries to convert a 32-bit
-quantity to a 0-bit quantity.  Ideally this should never occur, but
-there are buggy devices and some might have a report field with size
-set to zero; we shouldn't reject the report or the device just because
-of that.
-
-Instead, harden the s32ton() routine so that it returns a reasonable
-result instead of crashing when it is called with the number of bits
-set to 0 -- the same as what snto32() does.
-
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Reported-by: syzbot+b63d677d63bcac06cf90@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-usb/68753a08.050a0220.33d347.0008.GAE@google.com/
-Tested-by: syzbot+b63d677d63bcac06cf90@syzkaller.appspotmail.com
-Fixes: dde5845a529f ("[PATCH] Generic HID layer - code split")
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/613a66cd-4309-4bce-a4f7-2905f9bce0c9@rowland.harvard.edu
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-[ s32ton() was moved by c653ffc28340 ("HID: stop exporting hid_snto32()").
-  Minor context change fixed. ]
-Signed-off-by: Wenshan Lan <jetlan9@163.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/hid/hid-core.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
---- a/drivers/hid/hid-core.c
-+++ b/drivers/hid/hid-core.c
-@@ -1351,7 +1351,12 @@ EXPORT_SYMBOL_GPL(hid_snto32);
- 
- static u32 s32ton(__s32 value, unsigned n)
- {
--	s32 a = value >> (n - 1);
-+	s32 a;
-+
-+	if (!value || !n)
-+		return 0;
-+
-+	a = value >> (n - 1);
- 	if (a && a != -1)
- 		return value < 0 ? 1 << (n - 1) : (1 << (n - 1)) - 1;
- 	return value & ((1 << n) - 1);
-
+I see the command but can't find the corresponding bug.
+The email is sent to  syzbot+HASH@syzkaller.appspotmail.com address
+but the HASH does not correspond to any known bug.
+Please double check the address.
 
 
