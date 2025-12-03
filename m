@@ -1,57 +1,53 @@
-Return-Path: <stable+bounces-198451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12B48C9F947
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:43:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC969CA01F7
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:49:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 08AA130005AF
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:43:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B27AB3072C26
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:42:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B3C93176E1;
-	Wed,  3 Dec 2025 15:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A97835BDB8;
+	Wed,  3 Dec 2025 16:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qTuYsCUC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dvVLQz7m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8E53168E8;
-	Wed,  3 Dec 2025 15:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D1F35BDB9;
+	Wed,  3 Dec 2025 16:41:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776587; cv=none; b=aZXufq8Kmv4wAv91qpGQURjiOx06b0QJ0OS1VSN2NhnGSi4edsWT2wKqGjwHcDqVUL9bI7WDJMae+XoBcuNlbvB9C0Bk0SwJMWUCcX7XZ+lEWtQVSg8jL3314B5LbjpCAjVaqkh6UPv8unQ7c+ee4MIdgiibbzB01p+UEeymVg8=
+	t=1764780120; cv=none; b=SBb3Kcpj43FKWEGVutrqDPj/XWvFMskrnY4yP7SdjQGtYP4KsWJG/IqKMlkFDwu6GYf8PO0wq98qj/tbvvvumEZc0XhO9hU1+8lMTEX4/rrgS6+X2G7v54WWUA+t0QA9/tPsubkJOBAFFB919aO+6nMt6YEm1VSYEQvSjmXNPBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776587; c=relaxed/simple;
-	bh=piU/H6sYVLsvdFMVDoMYhQW33BU/hFppCznMRlbp8DI=;
+	s=arc-20240116; t=1764780120; c=relaxed/simple;
+	bh=77JRD8mF3R0KfzRbaMegHwkJgVdVnyC2SjsvkuNmGhQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WufUCOgmrgzGC+hkFlQxdO6+LtADFALmKqK9XkSgLE/5a9P4v/Knt+McffzGHeXI2IW/ss5pI1GUBvxG4RbUtk0pEyupfLB30VQq7+boL4OjgD3FTK+zHzdyjBAaLQ9vvPTXc8rQVnJBtti+IRMAxkp7CbfONc9PHJjgsELcl/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qTuYsCUC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59E40C4CEF5;
-	Wed,  3 Dec 2025 15:43:06 +0000 (UTC)
+	 MIME-Version; b=T2ppnUjpc76ELcppj5M5feyX1CJKZd7SnN1uiIVKMxaKeVv0CN9yAWicMjT9LuYqzHxwAV0Sg8I59DUtU9QgOae+zDu9T/11+DHkJPml63VpjIomWzndA6lrK5H527SR8fOqTWNrR6zLPIgDVV5bglUeP/3PnLvwK3rg/cmIAok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dvVLQz7m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 302DEC4CEF5;
+	Wed,  3 Dec 2025 16:41:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776586;
-	bh=piU/H6sYVLsvdFMVDoMYhQW33BU/hFppCznMRlbp8DI=;
+	s=korg; t=1764780119;
+	bh=77JRD8mF3R0KfzRbaMegHwkJgVdVnyC2SjsvkuNmGhQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qTuYsCUC8mpV2oVyF8BFoZ6Od/RCaDXiZTgVMKuyUfS2MfCveNYIsh36AtE2Lq6h2
-	 GlA6FHJb2BwX+y1hYgvcQ/iDL2Efon/5eJSUNP/EF81FSgyZ7QHZ9u8VlWwmTsHlYG
-	 L+0iifcXbyHsXtf62EpO6fnEI/gTbnMsjSTDTfTg=
+	b=dvVLQz7mnNXaObXapFlouiiAR80QQsdXmcK2m/3Ys2KgFb+NktmTAVIM2uELRtg2h
+	 lSYZUnE280VZPPZg6RcK4fjiRhGC6MD48zQXE/6+1eqo1CzQaEkI0j/45Yg0pv8bma
+	 hxbdUTmYyD+JtVJ3PrhEGFZF7Y+rmWL6iunCXI6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junvy Yang <zhuque@tencent.com>,
-	Ilya Maximets <i.maximets@ovn.org>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Aaron Conole <aconole@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 227/300] net: openvswitch: remove never-working support for setting nsh fields
+	Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.1 429/568] mtd: rawnand: cadence: fix DMA device NULL pointer dereference
 Date: Wed,  3 Dec 2025 16:27:11 +0100
-Message-ID: <20251203152409.035013936@linuxfoundation.org>
+Message-ID: <20251203152456.407410297@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,315 +59,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Maximets <i.maximets@ovn.org>
+From: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
 
-[ Upstream commit dfe28c4167a9259fc0c372d9f9473e1ac95cff67 ]
+commit 5c56bf214af85ca042bf97f8584aab2151035840 upstream.
 
-The validation of the set(nsh(...)) action is completely wrong.
-It runs through the nsh_key_put_from_nlattr() function that is the
-same function that validates NSH keys for the flow match and the
-push_nsh() action.  However, the set(nsh(...)) has a very different
-memory layout.  Nested attributes in there are doubled in size in
-case of the masked set().  That makes proper validation impossible.
+The DMA device pointer `dma_dev` was being dereferenced before ensuring
+that `cdns_ctrl->dmac` is properly initialized.
 
-There is also confusion in the code between the 'masked' flag, that
-says that the nested attributes are doubled in size containing both
-the value and the mask, and the 'is_mask' that says that the value
-we're parsing is the mask.  This is causing kernel crash on trying to
-write into mask part of the match with SW_FLOW_KEY_PUT() during
-validation, while validate_nsh() doesn't allocate any memory for it:
+Move the assignment of `dma_dev` after successfully acquiring the DMA
+channel to ensure the pointer is valid before use.
 
-  BUG: kernel NULL pointer dereference, address: 0000000000000018
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 1c2383067 P4D 1c2383067 PUD 20b703067 PMD 0
-  Oops: Oops: 0000 [#1] SMP NOPTI
-  CPU: 8 UID: 0 Kdump: loaded Not tainted 6.17.0-rc4+ #107 PREEMPT(voluntary)
-  RIP: 0010:nsh_key_put_from_nlattr+0x19d/0x610 [openvswitch]
-  Call Trace:
-   <TASK>
-   validate_nsh+0x60/0x90 [openvswitch]
-   validate_set.constprop.0+0x270/0x3c0 [openvswitch]
-   __ovs_nla_copy_actions+0x477/0x860 [openvswitch]
-   ovs_nla_copy_actions+0x8d/0x100 [openvswitch]
-   ovs_packet_cmd_execute+0x1cc/0x310 [openvswitch]
-   genl_family_rcv_msg_doit+0xdb/0x130
-   genl_family_rcv_msg+0x14b/0x220
-   genl_rcv_msg+0x47/0xa0
-   netlink_rcv_skb+0x53/0x100
-   genl_rcv+0x24/0x40
-   netlink_unicast+0x280/0x3b0
-   netlink_sendmsg+0x1f7/0x430
-   ____sys_sendmsg+0x36b/0x3a0
-   ___sys_sendmsg+0x87/0xd0
-   __sys_sendmsg+0x6d/0xd0
-   do_syscall_64+0x7b/0x2c0
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-The third issue with this process is that while trying to convert
-the non-masked set into masked one, validate_set() copies and doubles
-the size of the OVS_KEY_ATTR_NSH as if it didn't have any nested
-attributes.  It should be copying each nested attribute and doubling
-them in size independently.  And the process must be properly reversed
-during the conversion back from masked to a non-masked variant during
-the flow dump.
-
-In the end, the only two outcomes of trying to use this action are
-either validation failure or a kernel crash.  And if somehow someone
-manages to install a flow with such an action, it will most definitely
-not do what it is supposed to, since all the keys and the masks are
-mixed up.
-
-Fixing all the issues is a complex task as it requires re-writing
-most of the validation code.
-
-Given that and the fact that this functionality never worked since
-introduction, let's just remove it altogether.  It's better to
-re-introduce it later with a proper implementation instead of trying
-to fix it in stable releases.
-
-Fixes: b2d0f5d5dc53 ("openvswitch: enable NSH support")
-Reported-by: Junvy Yang <zhuque@tencent.com>
-Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
-Acked-by: Eelco Chaudron <echaudro@redhat.com>
-Reviewed-by: Aaron Conole <aconole@redhat.com>
-Link: https://patch.msgid.link/20251112112246.95064-1-i.maximets@ovn.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d76d22b5096c ("mtd: rawnand: cadence: use dma_map_resource for sdma address")
+Cc: stable@vger.kernel.org
+Signed-off-by: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/openvswitch/actions.c      | 68 +---------------------------------
- net/openvswitch/flow_netlink.c | 64 ++++----------------------------
- net/openvswitch/flow_netlink.h |  2 -
- 3 files changed, 9 insertions(+), 125 deletions(-)
+ drivers/mtd/nand/raw/cadence-nand-controller.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
-index c3ca4ae11c09f..3b3cc6ea274f8 100644
---- a/net/openvswitch/actions.c
-+++ b/net/openvswitch/actions.c
-@@ -594,69 +594,6 @@ static int set_ipv6(struct sk_buff *skb, struct sw_flow_key *flow_key,
- 	return 0;
- }
- 
--static int set_nsh(struct sk_buff *skb, struct sw_flow_key *flow_key,
--		   const struct nlattr *a)
--{
--	struct nshhdr *nh;
--	size_t length;
--	int err;
--	u8 flags;
--	u8 ttl;
--	int i;
--
--	struct ovs_key_nsh key;
--	struct ovs_key_nsh mask;
--
--	err = nsh_key_from_nlattr(a, &key, &mask);
--	if (err)
--		return err;
--
--	/* Make sure the NSH base header is there */
--	if (!pskb_may_pull(skb, skb_network_offset(skb) + NSH_BASE_HDR_LEN))
--		return -ENOMEM;
--
--	nh = nsh_hdr(skb);
--	length = nsh_hdr_len(nh);
--
--	/* Make sure the whole NSH header is there */
--	err = skb_ensure_writable(skb, skb_network_offset(skb) +
--				       length);
--	if (unlikely(err))
--		return err;
--
--	nh = nsh_hdr(skb);
--	skb_postpull_rcsum(skb, nh, length);
--	flags = nsh_get_flags(nh);
--	flags = OVS_MASKED(flags, key.base.flags, mask.base.flags);
--	flow_key->nsh.base.flags = flags;
--	ttl = nsh_get_ttl(nh);
--	ttl = OVS_MASKED(ttl, key.base.ttl, mask.base.ttl);
--	flow_key->nsh.base.ttl = ttl;
--	nsh_set_flags_and_ttl(nh, flags, ttl);
--	nh->path_hdr = OVS_MASKED(nh->path_hdr, key.base.path_hdr,
--				  mask.base.path_hdr);
--	flow_key->nsh.base.path_hdr = nh->path_hdr;
--	switch (nh->mdtype) {
--	case NSH_M_TYPE1:
--		for (i = 0; i < NSH_MD1_CONTEXT_SIZE; i++) {
--			nh->md1.context[i] =
--			    OVS_MASKED(nh->md1.context[i], key.context[i],
--				       mask.context[i]);
--		}
--		memcpy(flow_key->nsh.context, nh->md1.context,
--		       sizeof(nh->md1.context));
--		break;
--	case NSH_M_TYPE2:
--		memset(flow_key->nsh.context, 0,
--		       sizeof(flow_key->nsh.context));
--		break;
--	default:
--		return -EINVAL;
--	}
--	skb_postpush_rcsum(skb, nh, length);
--	return 0;
--}
--
- /* Must follow skb_ensure_writable() since that can move the skb data. */
- static void set_tp_port(struct sk_buff *skb, __be16 *port,
- 			__be16 new_port, __sum16 *check)
-@@ -1123,10 +1060,6 @@ static int execute_masked_set_action(struct sk_buff *skb,
- 				   get_mask(a, struct ovs_key_ethernet *));
- 		break;
- 
--	case OVS_KEY_ATTR_NSH:
--		err = set_nsh(skb, flow_key, a);
--		break;
--
- 	case OVS_KEY_ATTR_IPV4:
- 		err = set_ipv4(skb, flow_key, nla_data(a),
- 			       get_mask(a, struct ovs_key_ipv4 *));
-@@ -1163,6 +1096,7 @@ static int execute_masked_set_action(struct sk_buff *skb,
- 	case OVS_KEY_ATTR_CT_LABELS:
- 	case OVS_KEY_ATTR_CT_ORIG_TUPLE_IPV4:
- 	case OVS_KEY_ATTR_CT_ORIG_TUPLE_IPV6:
-+	case OVS_KEY_ATTR_NSH:
- 		err = -EINVAL;
- 		break;
- 	}
-diff --git a/net/openvswitch/flow_netlink.c b/net/openvswitch/flow_netlink.c
-index 3f8f43dbf44fc..a70a87a4392ab 100644
---- a/net/openvswitch/flow_netlink.c
-+++ b/net/openvswitch/flow_netlink.c
-@@ -1280,6 +1280,11 @@ static int metadata_from_nlattrs(struct net *net, struct sw_flow_match *match,
- 	return 0;
- }
- 
-+/*
-+ * Constructs NSH header 'nh' from attributes of OVS_ACTION_ATTR_PUSH_NSH,
-+ * where 'nh' points to a memory block of 'size' bytes.  It's assumed that
-+ * attributes were previously validated with validate_push_nsh().
-+ */
- int nsh_hdr_from_nlattr(const struct nlattr *attr,
- 			struct nshhdr *nh, size_t size)
+--- a/drivers/mtd/nand/raw/cadence-nand-controller.c
++++ b/drivers/mtd/nand/raw/cadence-nand-controller.c
+@@ -2830,7 +2830,7 @@ cadence_nand_irq_cleanup(int irqnum, str
+ static int cadence_nand_init(struct cdns_nand_ctrl *cdns_ctrl)
  {
-@@ -1289,8 +1294,6 @@ int nsh_hdr_from_nlattr(const struct nlattr *attr,
- 	u8 ttl = 0;
- 	int mdlen = 0;
+ 	dma_cap_mask_t mask;
+-	struct dma_device *dma_dev = cdns_ctrl->dmac->device;
++	struct dma_device *dma_dev;
+ 	int ret;
  
--	/* validate_nsh has check this, so we needn't do duplicate check here
--	 */
- 	if (size < NSH_BASE_HDR_LEN)
- 		return -ENOBUFS;
- 
-@@ -1334,46 +1337,6 @@ int nsh_hdr_from_nlattr(const struct nlattr *attr,
- 	return 0;
- }
- 
--int nsh_key_from_nlattr(const struct nlattr *attr,
--			struct ovs_key_nsh *nsh, struct ovs_key_nsh *nsh_mask)
--{
--	struct nlattr *a;
--	int rem;
--
--	/* validate_nsh has check this, so we needn't do duplicate check here
--	 */
--	nla_for_each_nested(a, attr, rem) {
--		int type = nla_type(a);
--
--		switch (type) {
--		case OVS_NSH_KEY_ATTR_BASE: {
--			const struct ovs_nsh_key_base *base = nla_data(a);
--			const struct ovs_nsh_key_base *base_mask = base + 1;
--
--			nsh->base = *base;
--			nsh_mask->base = *base_mask;
--			break;
--		}
--		case OVS_NSH_KEY_ATTR_MD1: {
--			const struct ovs_nsh_key_md1 *md1 = nla_data(a);
--			const struct ovs_nsh_key_md1 *md1_mask = md1 + 1;
--
--			memcpy(nsh->context, md1->context, sizeof(*md1));
--			memcpy(nsh_mask->context, md1_mask->context,
--			       sizeof(*md1_mask));
--			break;
--		}
--		case OVS_NSH_KEY_ATTR_MD2:
--			/* Not supported yet */
--			return -ENOTSUPP;
--		default:
--			return -EINVAL;
--		}
--	}
--
--	return 0;
--}
--
- static int nsh_key_put_from_nlattr(const struct nlattr *attr,
- 				   struct sw_flow_match *match, bool is_mask,
- 				   bool is_push_nsh, bool log)
-@@ -2797,17 +2760,13 @@ static int validate_and_copy_set_tun(const struct nlattr *attr,
- 	return err;
- }
- 
--static bool validate_nsh(const struct nlattr *attr, bool is_mask,
--			 bool is_push_nsh, bool log)
-+static bool validate_push_nsh(const struct nlattr *attr, bool log)
- {
- 	struct sw_flow_match match;
- 	struct sw_flow_key key;
--	int ret = 0;
- 
- 	ovs_match_init(&match, &key, true, NULL);
--	ret = nsh_key_put_from_nlattr(attr, &match, is_mask,
--				      is_push_nsh, log);
--	return !ret;
-+	return !nsh_key_put_from_nlattr(attr, &match, false, true, log);
- }
- 
- /* Return false if there are any non-masked bits set.
-@@ -2955,13 +2914,6 @@ static int validate_set(const struct nlattr *a,
- 
- 		break;
- 
--	case OVS_KEY_ATTR_NSH:
--		if (eth_type != htons(ETH_P_NSH))
--			return -EINVAL;
--		if (!validate_nsh(nla_data(a), masked, false, log))
--			return -EINVAL;
--		break;
--
- 	default:
- 		return -EINVAL;
+ 	cdns_ctrl->cdma_desc = dma_alloc_coherent(cdns_ctrl->dev,
+@@ -2874,6 +2874,7 @@ static int cadence_nand_init(struct cdns
+ 		}
  	}
-@@ -3368,7 +3320,7 @@ static int __ovs_nla_copy_actions(struct net *net, const struct nlattr *attr,
- 					return -EINVAL;
- 			}
- 			mac_proto = MAC_PROTO_NONE;
--			if (!validate_nsh(nla_data(a), false, true, true))
-+			if (!validate_push_nsh(nla_data(a), log))
- 				return -EINVAL;
- 			break;
  
-diff --git a/net/openvswitch/flow_netlink.h b/net/openvswitch/flow_netlink.h
-index fe7f77fc5f189..ff8cdecbe3465 100644
---- a/net/openvswitch/flow_netlink.h
-+++ b/net/openvswitch/flow_netlink.h
-@@ -65,8 +65,6 @@ int ovs_nla_put_actions(const struct nlattr *attr,
- void ovs_nla_free_flow_actions(struct sw_flow_actions *);
- void ovs_nla_free_flow_actions_rcu(struct sw_flow_actions *);
- 
--int nsh_key_from_nlattr(const struct nlattr *attr, struct ovs_key_nsh *nsh,
--			struct ovs_key_nsh *nsh_mask);
- int nsh_hdr_from_nlattr(const struct nlattr *attr, struct nshhdr *nh,
- 			size_t size);
- 
--- 
-2.51.0
-
++	dma_dev = cdns_ctrl->dmac->device;
+ 	cdns_ctrl->io.iova_dma = dma_map_resource(dma_dev->dev, cdns_ctrl->io.dma,
+ 						  cdns_ctrl->io.size,
+ 						  DMA_BIDIRECTIONAL, 0);
 
 
 
