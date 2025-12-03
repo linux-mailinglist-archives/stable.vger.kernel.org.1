@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-199401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8BBACA027C
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:52:00 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B049C9F863
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:37:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BFE8430443CD
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:44:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 75F6E3000943
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:37:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B63B6337BBC;
-	Wed,  3 Dec 2025 16:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5FC6314A74;
+	Wed,  3 Dec 2025 15:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cd5g1Kmx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GxV6lr6z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49323336EF9;
-	Wed,  3 Dec 2025 16:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F5A309EFF;
+	Wed,  3 Dec 2025 15:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779678; cv=none; b=Ky3P/SK0oVuh7aLGC7Yga7BcGfG8Zfl/BzWXeKkhK5RAWO2XOxkF+kcCnHHq7IhCcJuA5fyS7Bn44S+m8ypq3tcA8IP4uSXRL6E8q1tq/XHEkg1uSA3MaDZO7OkovvPlwxDFYAbSkmUYdSkSzjN1J7YdSTBuMsri1Fd9d+Ih2Rw=
+	t=1764776260; cv=none; b=h1FkBJKlixreXdDJtr7pYQuu2M5De+yYOW41rVBMJF0qCPX1k4CHhNQY6WKM9H6gomNLLgSMArvqpMhnclWMLHigUmaC7rTVDj57rXA5kK/S4BhZextiIed71ayh56FC/HZG0mSPvuKmyaK6cKHLzXdcHSYhE0e/SsDNXvHC2Ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779678; c=relaxed/simple;
-	bh=q8eRlUtbxGsWg1g9in4zzyZsCFLdeSbh6Zwduc02o8E=;
+	s=arc-20240116; t=1764776260; c=relaxed/simple;
+	bh=+GBFxvLFlNDR23dcMYDLQEnQZtNZn+v19SL9eUN/8eA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k6PM9MTfJ6RFnL/VwXLz7GCOq0aI2YIpeaPuwMn7TIGuzF61rRo00wTAg+XdSCxYrfEN5765zd6ZF0N3EbfjPJO1NTNQZuiQAArshorLMZeuBI1JxHmzh9AelSEY0Syfq/aK77CWT0hMuHf1hlqAji8qNLIxJcm4MP5OxDRzhmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cd5g1Kmx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9FA8C16AAE;
-	Wed,  3 Dec 2025 16:34:37 +0000 (UTC)
+	 MIME-Version; b=ch+bp/0OsQFfoMftxI4Hkqd5dZRRrmApaDSREzwXQjALk5wF1UhY6KUhbgWdgkL8ZlIz3tVAHcQjdEkNEYVFYUofXha4W2VgTEeS8VZ+amrE3Wbgdpe+d7CD9hqD+eccF7QLnPm9oAjGUrS9Dc6CyRTRSTUuAKOz4kEXy63mUlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GxV6lr6z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0C2EC116B1;
+	Wed,  3 Dec 2025 15:37:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779678;
-	bh=q8eRlUtbxGsWg1g9in4zzyZsCFLdeSbh6Zwduc02o8E=;
+	s=korg; t=1764776260;
+	bh=+GBFxvLFlNDR23dcMYDLQEnQZtNZn+v19SL9eUN/8eA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cd5g1KmxWxQtI8BEK7TKiYbZJdfi2E8Q9+zerwRcp5j8oMzr2zfuKV3AAKYk8dMLH
-	 p4yl2xqk0FUgT4BRdqHZgCVifxF6SKv1PSfyRKdbpEWe+50Ogy9OuIB9qiPYwtGcn9
-	 AeJJiaOFtcmU/fZF//DWGcob15aTz99WKXa5b7Jg=
+	b=GxV6lr6zMBdScVP0OkQ/gDSOaaYXvp+BNP/Ng7nrZqKXO2q2KQ3nimIUlVka/83qn
+	 HnjAvtPjetrSaA5MbA4Bzen+k6oCGBs9STI2ssEp9v+Evyua9+/2Ohm7G+2YVX292o
+	 9/7Vw3OPgf9e8Q26gGMqKj5FVBkb3l13+hnGjpgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 329/568] scsi: ufs: ufs-pci: Fix S0ix/S3 for Intel controllers
-Date: Wed,  3 Dec 2025 16:25:31 +0100
-Message-ID: <20251203152452.759510750@linuxfoundation.org>
+	Alexey Klimov <alexey.klimov@linaro.org>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 128/300] wifi: ath10k: Fix connection after GTK rekeying
+Date: Wed,  3 Dec 2025 16:25:32 +0100
+Message-ID: <20251203152405.353280118@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,143 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Loic Poulain <loic.poulain@oss.qualcomm.com>
 
-commit bb44826c3bdbf1fa3957008a04908f45e5666463 upstream.
+[ Upstream commit 487e8a8c3421df0af3707e54c7e069f1d89cbda7 ]
 
-Intel platforms with UFS, can support Suspend-to-Idle (S0ix) and
-Suspend-to-RAM (S3).  For S0ix the link state should be HIBERNATE.  For
-S3, state is lost, so the link state must be OFF.  Driver policy,
-expressed by spm_lvl, can be 3 (link HIBERNATE, device SLEEP) for S0ix
-but must be changed to 5 (link OFF, device POWEROFF) for S3.
+It appears that not all hardware/firmware implementations support
+group key deletion correctly, which can lead to connection hangs
+and deauthentication following GTK rekeying (delete and install).
 
-Fix support for S0ix/S3 by switching spm_lvl as needed.  During suspend
-->prepare(), if the suspend target state is not Suspend-to-Idle, ensure
-the spm_lvl is at least 5 to ensure that resume will be possible from
-deep sleep states.  During suspend ->complete(), restore the spm_lvl to
-its original value that is suitable for S0ix.
+To avoid this issue, instead of attempting to delete the key using
+the special WMI_CIPHER_NONE value, we now replace the key with an
+invalid (random) value.
 
-This fix is first needed in Intel Alder Lake based controllers.
+This behavior has been observed with WCN39xx chipsets.
 
-Fixes: 7dc9fb47bc9a ("scsi: ufs: ufs-pci: Add support for Intel ADL")
-Cc: stable@vger.kernel.org
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20251024085918.31825-2-adrian.hunter@intel.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tested-on: WCN3990 hw1.0 WLAN.HL.3.3.7.c2-00931-QCAHLSWMTPLZ-1
+Reported-by: Alexey Klimov <alexey.klimov@linaro.org>
+Closes: https://lore.kernel.org/all/DAWJQ2NIKY28.1XOG35E4A682G@linaro.org
+Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Tested-by: Alexey Klimov <alexey.klimov@linaro.org> # QRB2210 RB1
+Link: https://patch.msgid.link/20250902143225.837487-1-loic.poulain@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufshcd-pci.c |   67 ++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 65 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath10k/mac.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
---- a/drivers/ufs/host/ufshcd-pci.c
-+++ b/drivers/ufs/host/ufshcd-pci.c
-@@ -15,6 +15,7 @@
- #include <linux/pci.h>
- #include <linux/pm_runtime.h>
- #include <linux/pm_qos.h>
-+#include <linux/suspend.h>
- #include <linux/debugfs.h>
- #include <linux/uuid.h>
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+index 5dd0239e9d51b..3a708b3c9d4ec 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -13,6 +13,7 @@
  #include <linux/acpi.h>
-@@ -34,6 +35,7 @@ struct intel_host {
- 	u32		dsm_fns;
- 	u32		active_ltr;
- 	u32		idle_ltr;
-+	int		saved_spm_lvl;
- 	struct dentry	*debugfs_root;
- 	struct gpio_desc *reset_gpio;
- };
-@@ -375,6 +377,7 @@ static int ufs_intel_common_init(struct
- 	host = devm_kzalloc(hba->dev, sizeof(*host), GFP_KERNEL);
- 	if (!host)
- 		return -ENOMEM;
-+	host->saved_spm_lvl = -1;
- 	ufshcd_set_variant(hba, host);
- 	intel_dsm_init(host, hba->dev);
- 	if (INTEL_DSM_SUPPORTED(host, RESET)) {
-@@ -542,6 +545,66 @@ static int ufshcd_pci_restore(struct dev
+ #include <linux/of.h>
+ #include <linux/bitfield.h>
++#include <linux/random.h>
  
- 	return ufshcd_system_resume(dev);
- }
-+
-+static int ufs_intel_suspend_prepare(struct device *dev)
-+{
-+	struct ufs_hba *hba = dev_get_drvdata(dev);
-+	struct intel_host *host = ufshcd_get_variant(hba);
-+	int err;
-+
-+	/*
-+	 * Only s2idle (S0ix) retains link state.  Force power-off
-+	 * (UFS_PM_LVL_5) for any other case.
-+	 */
-+	if (pm_suspend_target_state != PM_SUSPEND_TO_IDLE && hba->spm_lvl < UFS_PM_LVL_5) {
-+		host->saved_spm_lvl = hba->spm_lvl;
-+		hba->spm_lvl = UFS_PM_LVL_5;
-+	}
-+
-+	err = ufshcd_suspend_prepare(dev);
-+
-+	if (err < 0 && host->saved_spm_lvl != -1) {
-+		hba->spm_lvl = host->saved_spm_lvl;
-+		host->saved_spm_lvl = -1;
-+	}
-+
-+	return err;
-+}
-+
-+static void ufs_intel_resume_complete(struct device *dev)
-+{
-+	struct ufs_hba *hba = dev_get_drvdata(dev);
-+	struct intel_host *host = ufshcd_get_variant(hba);
-+
-+	ufshcd_resume_complete(dev);
-+
-+	if (host->saved_spm_lvl != -1) {
-+		hba->spm_lvl = host->saved_spm_lvl;
-+		host->saved_spm_lvl = -1;
-+	}
-+}
-+
-+static int ufshcd_pci_suspend_prepare(struct device *dev)
-+{
-+	struct ufs_hba *hba = dev_get_drvdata(dev);
-+
-+	if (!strcmp(hba->vops->name, "intel-pci"))
-+		return ufs_intel_suspend_prepare(dev);
-+
-+	return ufshcd_suspend_prepare(dev);
-+}
-+
-+static void ufshcd_pci_resume_complete(struct device *dev)
-+{
-+	struct ufs_hba *hba = dev_get_drvdata(dev);
-+
-+	if (!strcmp(hba->vops->name, "intel-pci")) {
-+		ufs_intel_resume_complete(dev);
-+		return;
-+	}
-+
-+	ufshcd_resume_complete(dev);
-+}
- #endif
+ #include "hif.h"
+ #include "core.h"
+@@ -275,8 +276,15 @@ static int ath10k_send_key(struct ath10k_vif *arvif,
+ 		key->flags |= IEEE80211_KEY_FLAG_GENERATE_IV;
  
- /**
-@@ -633,8 +696,8 @@ static const struct dev_pm_ops ufshcd_pc
- 	.thaw		= ufshcd_system_resume,
- 	.poweroff	= ufshcd_system_suspend,
- 	.restore	= ufshcd_pci_restore,
--	.prepare	= ufshcd_suspend_prepare,
--	.complete	= ufshcd_resume_complete,
-+	.prepare	= ufshcd_pci_suspend_prepare,
-+	.complete	= ufshcd_pci_resume_complete,
- #endif
- };
+ 	if (cmd == DISABLE_KEY) {
+-		arg.key_cipher = ar->wmi_key_cipher[WMI_CIPHER_NONE];
+-		arg.key_data = NULL;
++		if (flags & WMI_KEY_GROUP) {
++			/* Not all hardware handles group-key deletion operation
++			 * correctly. Replace the key with a junk value to invalidate it.
++			 */
++			get_random_bytes(key->key, key->keylen);
++		} else {
++			arg.key_cipher = ar->wmi_key_cipher[WMI_CIPHER_NONE];
++			arg.key_data = NULL;
++		}
+ 	}
  
+ 	return ath10k_wmi_vdev_install_key(arvif->ar, &arg);
+-- 
+2.51.0
+
 
 
 
