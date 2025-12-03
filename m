@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-199791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B0C3CA0C2B
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:06:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE08CCA0529
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:17:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1535930DCB20
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:02:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4F040312FD0C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:04:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B7D8352F86;
-	Wed,  3 Dec 2025 16:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD071393DF5;
+	Wed,  3 Dec 2025 16:58:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xw9H+f1l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vj10Bk1b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF4D354AC6;
-	Wed,  3 Dec 2025 16:55:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0AB3393DE4;
+	Wed,  3 Dec 2025 16:58:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780953; cv=none; b=PlR2nrNOT9o6Eshz89ekj4ta8zj05/XBMVvCuhpJw4lbN1srNz/thvrCiFr0j/uSDhCOTJRAUuwH/4ukNYYCf1+QOPm8cFptjdkrUDjMCc0LC9c/1QNkdu1Fb6LqI8S8ASkrHIHEhVPEJCDtUUb5K0p8tkgg5RRFAQaNx2urILM=
+	t=1764781085; cv=none; b=baJ6J1E4E0DmDIj9qV8REmGLcOg/3kz509fM/jgjyG/Lpjohg+mr18YgYRTd6ovj1ztj4W2tQiLVnZ7niLTwmSV6NQKXmfvsro/y2F6ecgwH7adPQkBcrQLzzAHwIFQbrIgkRuvG0QmmQE6md7axbE4rKXIM+OI84tMpp7na1zQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780953; c=relaxed/simple;
-	bh=Jo/FjSZd+PE0S6ph+TlOAFLB6F/1iNLEMkBh6Db5Zt0=;
+	s=arc-20240116; t=1764781085; c=relaxed/simple;
+	bh=GJW8+UDEr/UnqtoF1amwcfecoKbJkDvZ7xDzTzsws1Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KEKqg4GBozFLoau7wFvkHT5fKcSDkMHS7W/wy5nHf+BEJvHoMtqCUbi15s65DuwpCj16kuuSMc9+vfq4qq3EQWjYLtwcKhOCqqFIPaDXAf7xLUItQsGQ9nJ2sXPwD4rKcudl+8O1SvUnfli2Nvt8/RnDNCj2Htk7OuH9qisSm+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xw9H+f1l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40F7FC4CEF5;
-	Wed,  3 Dec 2025 16:55:51 +0000 (UTC)
+	 MIME-Version; b=iVbB3P1fbDx0oh2FmfKOmTzDJ9LEajUEJb82JiKitdp6pPDQiNV+7rmWFzzFz/WEbwuxsh2n4eUoCsWegFLp3gt/3YeTt8rRWBZZ/LR5qW49TxfKwDyN69vWAhBG6ea0fLBVs29UA7SddRNoAy70As5R81vGKulsfgbi1UWg2kA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vj10Bk1b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E94EC4CEF5;
+	Wed,  3 Dec 2025 16:58:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780951;
-	bh=Jo/FjSZd+PE0S6ph+TlOAFLB6F/1iNLEMkBh6Db5Zt0=;
+	s=korg; t=1764781085;
+	bh=GJW8+UDEr/UnqtoF1amwcfecoKbJkDvZ7xDzTzsws1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xw9H+f1lXQBJ55+PZb6ngUgHEwvbSiKVyU0hm8fUQfF11qExlmsEAfHGWzOe+mkxK
-	 uL419ZhJhvs4622koI4VegQixy0FeVtz28TIYuTsldvdH6cy0kO3+DQUp1xdNFw0tG
-	 vXgRjFAVr3VSSTcUA689VCinCp4owY+FVZMb6spA=
+	b=vj10Bk1bAhhIZRjBXQiz6S9BnMxdS2U3+Eg0YvJj1hcOWtwqBVyXAcSQpDnihUZMG
+	 nJcch2660fPD2hn9mw1nDcm+Z/BayG6/q7iEFWd7yynIJ+HL1vYpidpUcXeylCNENK
+	 h9Jv8guETorwwREdJxPhzL//1nH4ogc7GXpCBH/8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.12 098/132] xhci: fix stale flag preventig URBs after link state error is cleared
+	Gui-Dong Han <hanguidong02@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 44/93] atm/fore200e: Fix possible data race in fore200e_open()
 Date: Wed,  3 Dec 2025 16:29:37 +0100
-Message-ID: <20251203152346.917986901@linuxfoundation.org>
+Message-ID: <20251203152338.150102760@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
+References: <20251203152336.494201426@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,109 +60,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Gui-Dong Han <hanguidong02@gmail.com>
 
-commit b69dfcab6894b1fed5362a364411502a7469fce3 upstream.
+commit 82fca3d8a4a34667f01ec2351a607135249c9cff upstream.
 
-A usb device caught behind a link in ss.Inactive error state needs to
-be reset to recover. A VDEV_PORT_ERROR flag is used to track this state,
-preventing new transfers from being queued until error is cleared.
+Protect access to fore200e->available_cell_rate with rate_mtx lock in the
+error handling path of fore200e_open() to prevent a data race.
 
-This flag may be left uncleared if link goes to error state between two
-resets, and print the following message:
+The field fore200e->available_cell_rate is a shared resource used to track
+available bandwidth. It is concurrently accessed by fore200e_open(),
+fore200e_close(), and fore200e_change_qos().
 
-"xhci_hcd 0000:00:14.0: Can't queue urb, port error, link inactive"
+In fore200e_open(), the lock rate_mtx is correctly held when subtracting
+vcc->qos.txtp.max_pcr from available_cell_rate to reserve bandwidth.
+However, if the subsequent call to fore200e_activate_vcin() fails, the
+function restores the reserved bandwidth by adding back to
+available_cell_rate without holding the lock.
 
-Fix setting and clearing the flag.
+This introduces a race condition because available_cell_rate is a global
+device resource shared across all VCCs. If the error path in
+fore200e_open() executes concurrently with operations like
+fore200e_close() or fore200e_change_qos() on other VCCs, a
+read-modify-write race occurs.
 
-The flag is cleared after hub driver has successfully reset the device
-when hcd->reset_device is called. xhci-hcd issues an internal "reset
-device" command in this callback, and clear all flags once the command
-completes successfully.
+Specifically, the error path reads the rate without the lock. If another
+CPU acquires the lock and modifies the rate (e.g., releasing bandwidth in
+fore200e_close()) between this read and the subsequent write, the error
+path will overwrite the concurrent update with a stale value. This results
+in incorrect bandwidth accounting.
 
-This command may complete with a context state error if slot was recently
-reset and is already in the defauilt state. This is treated as a success
-but flag was left uncleared.
-
-The link state field is also unreliable if port is currently in reset,
-so don't set the flag in active reset cases.
-Also clear the flag immediately when link is no longer in ss.Inactive
-state and port event handler detects a completed reset.
-
-This issue was discovered while debugging kernel bugzilla issue 220491.
-It is likely one small part of the problem, causing some of the failures,
-but root cause remains unknown
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220491
-Fixes: b8c3b718087b ("usb: xhci: Don't try to recover an endpoint if port is in error state.")
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://patch.msgid.link/20251107162819.1362579-2-mathias.nyman@linux.intel.com
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251120120657.2462194-1-hanguidong02@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-ring.c |   15 ++++++++++-----
- drivers/usb/host/xhci.c      |    1 +
- 2 files changed, 11 insertions(+), 5 deletions(-)
+ drivers/atm/fore200e.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -1950,6 +1950,7 @@ static void xhci_cavium_reset_phy_quirk(
+--- a/drivers/atm/fore200e.c
++++ b/drivers/atm/fore200e.c
+@@ -1377,7 +1377,9 @@ fore200e_open(struct atm_vcc *vcc)
  
- static void handle_port_status(struct xhci_hcd *xhci, union xhci_trb *event)
- {
-+	struct xhci_virt_device *vdev = NULL;
- 	struct usb_hcd *hcd;
- 	u32 port_id;
- 	u32 portsc, cmd_reg;
-@@ -1981,6 +1982,9 @@ static void handle_port_status(struct xh
- 		goto cleanup;
- 	}
+ 	vcc->dev_data = NULL;
  
-+	if (port->slot_id)
-+		vdev = xhci->devs[port->slot_id];
-+
- 	/* We might get interrupts after shared_hcd is removed */
- 	if (port->rhub == &xhci->usb3_rhub && xhci->shared_hcd == NULL) {
- 		xhci_dbg(xhci, "ignore port event for removed USB3 hcd\n");
-@@ -2003,10 +2007,11 @@ static void handle_port_status(struct xh
- 		usb_hcd_resume_root_hub(hcd);
- 	}
++	mutex_lock(&fore200e->rate_mtx);
+ 	fore200e->available_cell_rate += vcc->qos.txtp.max_pcr;
++	mutex_unlock(&fore200e->rate_mtx);
  
--	if (hcd->speed >= HCD_USB3 &&
--	    (portsc & PORT_PLS_MASK) == XDEV_INACTIVE) {
--		if (port->slot_id && xhci->devs[port->slot_id])
--			xhci->devs[port->slot_id]->flags |= VDEV_PORT_ERROR;
-+	if (vdev && (portsc & PORT_PLS_MASK) == XDEV_INACTIVE) {
-+		if (!(portsc & PORT_RESET))
-+			vdev->flags |= VDEV_PORT_ERROR;
-+	} else if (vdev && portsc & PORT_RC) {
-+		vdev->flags &= ~VDEV_PORT_ERROR;
- 	}
- 
- 	if ((portsc & PORT_PLC) && (portsc & PORT_PLS_MASK) == XDEV_RESUME) {
-@@ -2064,7 +2069,7 @@ static void handle_port_status(struct xh
- 		 * so the roothub behavior is consistent with external
- 		 * USB 3.0 hub behavior.
- 		 */
--		if (port->slot_id && xhci->devs[port->slot_id])
-+		if (vdev)
- 			xhci_ring_device(xhci, port->slot_id);
- 		if (bus_state->port_remote_wakeup & (1 << hcd_portnum)) {
- 			xhci_test_and_clear_bit(xhci, port, PORT_PLC);
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -3818,6 +3818,7 @@ static int xhci_discover_or_reset_device
- 				xhci_get_slot_state(xhci, virt_dev->out_ctx));
- 		xhci_dbg(xhci, "Not freeing device rings.\n");
- 		/* Don't treat this as an error.  May change my mind later. */
-+		virt_dev->flags = 0;
- 		ret = 0;
- 		goto command_cleanup;
- 	case COMP_SUCCESS:
+ 	kfree(fore200e_vcc);
+ 	return -EINVAL;
 
 
 
