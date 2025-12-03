@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0FA3CA0A42
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:48:57 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE2AEC9F9E2
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:45:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BFEA831B8CE1
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:27:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EE8863001526
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:45:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9A343314CD;
-	Wed,  3 Dec 2025 15:52:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C0B6313285;
+	Wed,  3 Dec 2025 15:45:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TApmiGX8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d2GP7rui"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97D1C3314C4;
-	Wed,  3 Dec 2025 15:52:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE99931326B;
+	Wed,  3 Dec 2025 15:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777150; cv=none; b=qWf/cJQm8zRPbF7U2YYGplKCmVNwk1+50CXA5Hf+qIJ2W/H0g3brJODtyHxVRXRmuElu+zRnHakonir1+QUeYUbF4Gcc8GNIzm8dT4mfDbcsZ4BS69Z5bhGhpO7WU7GdcPi5BAi/h6xrtSCRoVSOoSva9vToIOloY1oV2GRwKck=
+	t=1764776737; cv=none; b=axCmhQnc2aqTsUBwsZhlMV+ocYpNnb0J/2IXLFzxf8dOu7nRsOAEnRlBBy5JyqPJLt24iJB4fIasMoAstlMEMMjaExUxOODABHjxUtVdHWJOfW2Vt/rP15JbnbnFqmiNbKQ4Q6Y6X3h0UGJArk0OtZWei8FTngNqQPCcynkf8v4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777150; c=relaxed/simple;
-	bh=77GfZBLXmPAmrlxPUvNLiGoB1RknwuqwA6zOk5R2j/Q=;
+	s=arc-20240116; t=1764776737; c=relaxed/simple;
+	bh=uWCjLRdP9a0Nn0KI8UnBGqxHUbleALFOJloPhtzvTMg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qaBodyrUoFj8YlADjcwGwMGToJLikrfmXxaRJswDOMzxouCJelJAXBUoY+pOn0ME5ynxfi2Ljh2QRKssTQDwOd81ypG0JWyMMg/hnDjmhbqJCJ/kZLC8t4zJ+nxbaNQG4qqrCkN83UFSGDO/Vipl3OCrm/cf5tLA4M1dJTcrI+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TApmiGX8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0368AC116C6;
-	Wed,  3 Dec 2025 15:52:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=txssYVOu7R+eZPeFJZ67j7v0qs9hI2TSEYvbGs/PqlDl/0bGcRMBPMM4IpM8Au7Faw+hYyM0HBIx1M1VupXjoPJO1Rhurm5NGa/Y5RZD2RnBxgHWOBdfb5iujw+B5VVPFcvf2NuOv5rppnYBJlgaoEhOv0tINPrSrowz1WarbqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d2GP7rui; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39DC7C4CEF5;
+	Wed,  3 Dec 2025 15:45:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777150;
-	bh=77GfZBLXmPAmrlxPUvNLiGoB1RknwuqwA6zOk5R2j/Q=;
+	s=korg; t=1764776737;
+	bh=uWCjLRdP9a0Nn0KI8UnBGqxHUbleALFOJloPhtzvTMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TApmiGX86BMfLkgzr/OxYwlAVRm4eo2rIH11Yaf6Bn5ZVc8YxCCsrsGeXPAhvEmie
-	 TYfO+NmjNOhMNqvUiw2YLyem5sBdQUAvjZmIi9ft9IFyzzKaa8VluON/sIYPtQ42ME
-	 RmVFyNiUrnF0+w7diRunSlkBYGOoX2kPHmNorK0k=
+	b=d2GP7rui13U4XI1B8JQ2rZBFFIpoS3yLevkqH+/L7a1wGyPcyFfN3vMrhaOpDFrvm
+	 TngvOVa0EHIEZiGtKtuzqVXJMwwifhaKBM3Qq5B2+gFdmuMei+G/d40ayAQ7Z/GrgU
+	 7mY2iMmX9zCROtG1+MHlas+UwbWfdR6jYWnSoqzo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yoon Dong Min <dm.youn@telechips.com>,
-	ChiYuan Huang <cy_huang@richtek.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.17 097/146] regulator: rtq2208: Correct buck group2 phase mapping logic
+	=?UTF-8?q?Thomas=20M=C3=BChlbacher?= <tmuehlbacher@posteo.net>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 5.10 271/300] can: sun4i_can: sun4i_can_interrupt(): fix max irq loop handling
 Date: Wed,  3 Dec 2025 16:27:55 +0100
-Message-ID: <20251203152350.010613317@linuxfoundation.org>
+Message-ID: <20251203152410.673171765@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,53 +58,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ChiYuan Huang <cy_huang@richtek.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-commit 45cc214152bc1f6b1cc135532cd7cdbe08716aaf upstream.
+commit 76544beea7cfe5bcce6d60f53811657b88ec8be1 upstream.
 
-Correct buck group2 H and F mapping logic.
+Reading the interrupt register `SUN4I_REG_INT_ADDR` causes all of its bits
+to be reset. If we ever reach the condition of handling more than
+`SUN4I_CAN_MAX_IRQ` IRQs, we will have read the register and reset all its
+bits but without actually handling the interrupt inside of the loop body.
 
+This may, among other issues, cause us to never `netif_wake_queue()` again
+after a transmission interrupt.
+
+Fixes: 0738eff14d81 ("can: Allwinner A10/A20 CAN Controller support - Kernel module")
 Cc: stable@vger.kernel.org
-Reported-by: Yoon Dong Min <dm.youn@telechips.com>
-Fixes: 1742e7e978ba ("regulator: rtq2208: Fix incorrect buck converter phase mapping")
-Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
-Link: https://patch.msgid.link/8527ae02a72b754d89b7580a5fe7474d6f80f5c3.1764209258.git.cy_huang@richtek.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Co-developed-by: Thomas Mühlbacher <tmuehlbacher@posteo.net>
+Signed-off-by: Thomas Mühlbacher <tmuehlbacher@posteo.net>
+Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+Link: https://patch.msgid.link/20251116-sun4i-fix-loop-v1-1-3d76d3f81950@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/regulator/rtq2208-regulator.c | 4 ++--
+ drivers/net/can/sun4i_can.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/regulator/rtq2208-regulator.c b/drivers/regulator/rtq2208-regulator.c
-index 9cde7181b0f0..4a174e27c579 100644
---- a/drivers/regulator/rtq2208-regulator.c
-+++ b/drivers/regulator/rtq2208-regulator.c
-@@ -543,14 +543,14 @@ static int rtq2208_regulator_check(struct device *dev, int *num, int *regulator_
+--- a/drivers/net/can/sun4i_can.c
++++ b/drivers/net/can/sun4i_can.c
+@@ -644,8 +644,8 @@ static irqreturn_t sun4i_can_interrupt(i
+ 	u8 isrc, status;
+ 	int n = 0;
  
- 	switch (FIELD_GET(RTQ2208_MASK_BUCKPH_GROUP2, buck_phase)) {
- 	case 2:
--		rtq2208_used_table[RTQ2208_BUCK_F] = true;
-+		rtq2208_used_table[RTQ2208_BUCK_H] = true;
- 		fallthrough;
- 	case 1:
- 		rtq2208_used_table[RTQ2208_BUCK_E] = true;
- 		fallthrough;
- 	case 0:
- 	case 3:
--		rtq2208_used_table[RTQ2208_BUCK_H] = true;
-+		rtq2208_used_table[RTQ2208_BUCK_F] = true;
- 		fallthrough;
- 	default:
- 		rtq2208_used_table[RTQ2208_BUCK_G] = true;
--- 
-2.52.0
-
+-	while ((isrc = readl(priv->base + SUN4I_REG_INT_ADDR)) &&
+-	       (n < SUN4I_CAN_MAX_IRQ)) {
++	while ((n < SUN4I_CAN_MAX_IRQ) &&
++	       (isrc = readl(priv->base + SUN4I_REG_INT_ADDR))) {
+ 		n++;
+ 		status = readl(priv->base + SUN4I_REG_STA_ADDR);
+ 
 
 
 
