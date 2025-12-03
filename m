@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-198886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 257AAC9FCCE
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:06:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 175BFCA006F
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:39:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2186E30024F4
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:06:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 96626300E825
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:36:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6244313558;
-	Wed,  3 Dec 2025 16:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 200443596FA;
+	Wed,  3 Dec 2025 16:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sHCoAc3K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tLtzOZjp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73BA82F0699;
-	Wed,  3 Dec 2025 16:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D04AF35BDC0;
+	Wed,  3 Dec 2025 16:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777994; cv=none; b=qWhgbAGMJGbg0ZINjY2kyV1MTMnEpkO9NmJaS05IwKG+Ft4XFl1FeOSgyKmvkCw0Oq38vb2T4Yh99MagG9dwuEwBSgEint9iNWtn44dzUNGEHjsm0ptBBcvT4qwM833x6MwBzw0xeGuU1VHwDahb331e4rAxm9ofuzuwL8gexqM=
+	t=1764779778; cv=none; b=Zhevv2/mn2au2kAosmw7cCwt9u84Jg7ySC4krD40FGY3pbTW88CGghM4SPP1RfOe7E4Ipj7Tz880mOls74De+itPV/JB3yycAF+MCertfYpees7qrIgblzyJj9rMJlqJ9aBUJ6egqRsz72smisu+l4hWsZ4m+NYmI7JE3+Vsfsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777994; c=relaxed/simple;
-	bh=/aP8qpbULmqma0ttyoH14cZ6KuVKogizyu8O/bR/S7U=;
+	s=arc-20240116; t=1764779778; c=relaxed/simple;
+	bh=gd5dO5wz9yMYhsPkm/ReYEjql/7slNy83PaYGepAmbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BturMCcCFRn18u8oHVqDrk1E51YINGTy9eDXL8LtkGA5HzLE6i0e2Ptatl77l5MME0WiQ5hfG1vjI2GaL0Syr6RSRec4T3qS3p9Ofgw/9QnuOMBjSjvmgoa5YETtMEiBvgA/yuTr/MfXEZ0vARIPzNa0QYuMfJ2/IC80FSu9p5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sHCoAc3K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1689C116B1;
-	Wed,  3 Dec 2025 16:06:33 +0000 (UTC)
+	 MIME-Version; b=sxQiaGmoI4UUZfSmdMExZ3J5xaPyT1oGShzqhVxiP6aBBAF44KoRZJ4/dEpxxCPGYs4Jfm3KNC7XYywBUhrS6guJHR9eT8rnwDol4CKQUQgY5oeMmRNJUSU/bxL4EPNwI09HTrIL3nsnsGFD/aB2lGHu9cg1Xy58CpYVgDXWzFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tLtzOZjp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D117C4CEF5;
+	Wed,  3 Dec 2025 16:36:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777994;
-	bh=/aP8qpbULmqma0ttyoH14cZ6KuVKogizyu8O/bR/S7U=;
+	s=korg; t=1764779778;
+	bh=gd5dO5wz9yMYhsPkm/ReYEjql/7slNy83PaYGepAmbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sHCoAc3Kg3J3uAQ4s9zykczj2SyvAcNZPEyzrDKWMtKuSALnl17C+Iej/JtMCfMGX
-	 89wC7ebP6GG3l1OxFlrlvl5sucaVgOH5e3YHLwL7qZ0oQK+deGjUMLMYaEp4htk06R
-	 YCuYJTCIPD3uhjxfes/O4tYdbpm5n+rxDLJoC2oI=
+	b=tLtzOZjp5n0qlo9wf+Cyrr2vQ7hguhgav+aJs1Rs8gyI6UaKDSH+c+HleIAQUoW8K
+	 /UABJH+8cMdsuOrZYfN532gNPbKliONw8ok4xcGWgkooXcq5hk3roLy2LF5F8MvnOX
+	 Ox8SHbdMnpo/Be0HPR6LM0uxbY+Xe8jR4h0HyA6I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+48b0652a95834717f190@syzkaller.appspotmail.com,
-	Helge Deller <deller@gmx.de>,
-	Albin Babu Varghese <albinbabuvarghese20@gmail.com>,
+	Pauli Virtanen <pav@iki.fi>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 203/392] fbdev: Add bounds checking in bit_putcs to fix vmalloc-out-of-bounds
+Subject: [PATCH 6.1 351/568] Bluetooth: MGMT: cancel mesh send timer when hdev removed
 Date: Wed,  3 Dec 2025 16:25:53 +0100
-Message-ID: <20251203152421.544582662@linuxfoundation.org>
+Message-ID: <20251203152453.560912955@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +60,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Albin Babu Varghese <albinbabuvarghese20@gmail.com>
+From: Pauli Virtanen <pav@iki.fi>
 
-[ Upstream commit 3637d34b35b287ab830e66048841ace404382b67 ]
+[ Upstream commit 55fb52ffdd62850d667ebed842815e072d3c9961 ]
 
-Add bounds checking to prevent writes past framebuffer boundaries when
-rendering text near screen edges. Return early if the Y position is off-screen
-and clip image height to screen boundary. Break from the rendering loop if the
-X position is off-screen. When clipping image width to fit the screen, update
-the character count to match the clipped width to prevent buffer size
-mismatches.
+mesh_send_done timer is not canceled when hdev is removed, which causes
+crash if the timer triggers after hdev is gone.
 
-Without the character count update, bit_putcs_aligned and bit_putcs_unaligned
-receive mismatched parameters where the buffer is allocated for the clipped
-width but cnt reflects the original larger count, causing out-of-bounds writes.
+Cancel the timer when MGMT removes the hdev, like other MGMT timers.
 
-Reported-by: syzbot+48b0652a95834717f190@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=48b0652a95834717f190
-Suggested-by: Helge Deller <deller@gmx.de>
-Tested-by: syzbot+48b0652a95834717f190@syzkaller.appspotmail.com
-Signed-off-by: Albin Babu Varghese <albinbabuvarghese20@gmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Should fix the BUG: sporadically seen by BlueZ test bot
+(in "Mesh - Send cancel - 1" test).
+
+Log:
+------
+BUG: KASAN: slab-use-after-free in run_timer_softirq+0x76b/0x7d0
+...
+Freed by task 36:
+ kasan_save_stack+0x24/0x50
+ kasan_save_track+0x14/0x30
+ __kasan_save_free_info+0x3a/0x60
+ __kasan_slab_free+0x43/0x70
+ kfree+0x103/0x500
+ device_release+0x9a/0x210
+ kobject_put+0x100/0x1e0
+ vhci_release+0x18b/0x240
+------
+
+Fixes: b338d91703fa ("Bluetooth: Implement support for Mesh")
+Link: https://lore.kernel.org/linux-bluetooth/67364c09.0c0a0220.113cba.39ff@mx.google.com/
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/bitblit.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ net/bluetooth/mgmt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/video/fbdev/core/bitblit.c b/drivers/video/fbdev/core/bitblit.c
-index a4b4e1ec702e5..8563264d11fac 100644
---- a/drivers/video/fbdev/core/bitblit.c
-+++ b/drivers/video/fbdev/core/bitblit.c
-@@ -168,6 +168,11 @@ static void bit_putcs(struct vc_data *vc, struct fb_info *info,
- 	image.height = vc->vc_font.height;
- 	image.depth = 1;
+diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+index 9bd4d5bc84db1..b89c3fc364b83 100644
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -9501,6 +9501,7 @@ void mgmt_index_removed(struct hci_dev *hdev)
+ 	cancel_delayed_work_sync(&hdev->discov_off);
+ 	cancel_delayed_work_sync(&hdev->service_cache);
+ 	cancel_delayed_work_sync(&hdev->rpa_expired);
++	cancel_delayed_work_sync(&hdev->mesh_send_done);
+ }
  
-+	if (image.dy >= info->var.yres)
-+		return;
-+
-+	image.height = min(image.height, info->var.yres - image.dy);
-+
- 	if (attribute) {
- 		buf = kmalloc(cellsize, GFP_ATOMIC);
- 		if (!buf)
-@@ -181,6 +186,18 @@ static void bit_putcs(struct vc_data *vc, struct fb_info *info,
- 			cnt = count;
- 
- 		image.width = vc->vc_font.width * cnt;
-+
-+		if (image.dx >= info->var.xres)
-+			break;
-+
-+		if (image.dx + image.width > info->var.xres) {
-+			image.width = info->var.xres - image.dx;
-+			cnt = image.width / vc->vc_font.width;
-+			if (cnt == 0)
-+				break;
-+			image.width = cnt * vc->vc_font.width;
-+		}
-+
- 		pitch = DIV_ROUND_UP(image.width, 8) + scan_align;
- 		pitch &= ~scan_align;
- 		size = pitch * image.height + buf_align;
+ void mgmt_power_on(struct hci_dev *hdev, int err)
 -- 
 2.51.0
 
