@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74DC1C9FDA0
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:15:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FA25C9FA82
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:49:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5BEF230562E7
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:07:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A04AC304C5E5
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:42:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94F834F484;
-	Wed,  3 Dec 2025 16:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8BCD315D51;
+	Wed,  3 Dec 2025 15:42:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jA9Z2wKf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o1NrItgb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983D631355B;
-	Wed,  3 Dec 2025 16:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9526C315D47;
+	Wed,  3 Dec 2025 15:42:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778032; cv=none; b=HgzHc+TAEgbU1YroaHOikowZPg+3Yn+QiUhJY9B2Ml43wd/73VOLv4VLlQDmipOA7HmxOyARJdmjQeCcR4o6EkBYCCMQtwDBZngXQVwvv0biGaZP1NovA4GDLRYaIAxch40CYsAEjtFJrNCMKeYvWuT+tWv0BDK8IjrfA4Z5Dl8=
+	t=1764776531; cv=none; b=rCe5ML/1iVxLlZYxnBslzTrIAOwh+5WonObZSndhbTvOZLGr875rXe7lMmvhPZ4Qe8gkGufF7sH/PDPG+L9bCWZMz3lJ6NuktxdOhwt8D9YHLVwTVel4WnHZms+to+V4mis/KkLeMD5XNl2bUv+/3KOK8GRT2Wi7+VWZQXnmUhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778032; c=relaxed/simple;
-	bh=MPPkYaihi0nYClkSqZPBnBHhxa2BJV9WrDyEdzwO4L8=;
+	s=arc-20240116; t=1764776531; c=relaxed/simple;
+	bh=9EsmEcOmkMKes6HKHi55lz/txN8t73sCgE+kRcXGcYM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iZy2taS5p27cWvUs07bMWArmmJe5wRQO8kbfcWM24wO4GhwMExVS2l90kqp1czb3A7U5cAj5bAxr+V7UXhM0aElbk5Ie28FOqLqUDz56cw6jI3xCkFPN3B+mGnm2nYPo0PZAy1i9A9m+0PpB5LxCG/nfPL/6eedSB2Iz2IWsv2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jA9Z2wKf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 247FFC4CEF5;
-	Wed,  3 Dec 2025 16:07:11 +0000 (UTC)
+	 MIME-Version; b=izH0JIXAM5Au3VwFqBjZauJFhbqEep8Q38zEpVAzm9wciAtYAuDd5B0vIC2AgSysoBEhoQjuODtaEbUtvIVX/KkpgpNGuXUwwmv1rVzRHHsqOnKLrwVogdqUTCY68PDJTHMXikG822fflUd+01khEs6Df0vxnJbO8n9EBnTznVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o1NrItgb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95D29C4CEF5;
+	Wed,  3 Dec 2025 15:42:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778032;
-	bh=MPPkYaihi0nYClkSqZPBnBHhxa2BJV9WrDyEdzwO4L8=;
+	s=korg; t=1764776531;
+	bh=9EsmEcOmkMKes6HKHi55lz/txN8t73sCgE+kRcXGcYM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jA9Z2wKfvWoIzwLRKJh7OIJG2fNjpNX/d6mGdjhZWLYWnmGymewCfHllNIpjsOFAd
-	 gqbhnjsk5KZq8kVIuPg5NoDBcHN7D1Mk/0DIRJit0Y1QAxcMELzQtATcjIR5ut6+GV
-	 aKuWXtq3ojbr/Fx9adO5mmyck2OTiuefO5upPS9A=
+	b=o1NrItgbOJkjjvIXAoxJAiucDpALdheYGcgHPNobJu74ODqFjjonRPdEz2vBRiB9V
+	 7CkVedfcIoAKGyU+y+nVucmhAokkiRb9CLLdC0DL39yLjlmpwwwUFrJJVdk2nHJXd7
+	 pImcA4Ss+7vQPkVTewTtApibip0iUk4ek4z20Br8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qendrim Maxhuni <qendrim.maxhuni@garderos.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Stefan Wiehler <stefan.wiehler@nokia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 222/392] net: usb: qmi_wwan: initialize MAC header offset in qmimux_rx_fixup
+Subject: [PATCH 5.10 168/300] sctp: Hold sock lock while iterating over address list
 Date: Wed,  3 Dec 2025 16:26:12 +0100
-Message-ID: <20251203152422.355096392@linuxfoundation.org>
+Message-ID: <20251203152406.844665359@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,72 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qendrim Maxhuni <qendrim.maxhuni@garderos.com>
+From: Stefan Wiehler <stefan.wiehler@nokia.com>
 
-[ Upstream commit e120f46768d98151ece8756ebd688b0e43dc8b29 ]
+[ Upstream commit f1fc201148c7e684c10a72b6a3375597f28d1ef6 ]
 
-Raw IP packets have no MAC header, leaving skb->mac_header uninitialized.
-This can trigger kernel panics on ARM64 when xfrm or other subsystems
-access the offset due to strict alignment checks.
+Move address list traversal in inet_assoc_attr_size() under the sock
+lock to avoid holding the RCU read lock.
 
-Initialize the MAC header to prevent such crashes.
-
-This can trigger kernel panics on ARM when running IPsec over the
-qmimux0 interface.
-
-Example trace:
-
-    Internal error: Oops: 000000009600004f [#1] SMP
-    CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.12.34-gbe78e49cb433 #1
-    Hardware name: LS1028A RDB Board (DT)
-    pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-    pc : xfrm_input+0xde8/0x1318
-    lr : xfrm_input+0x61c/0x1318
-    sp : ffff800080003b20
-    Call trace:
-     xfrm_input+0xde8/0x1318
-     xfrm6_rcv+0x38/0x44
-     xfrm6_esp_rcv+0x48/0xa8
-     ip6_protocol_deliver_rcu+0x94/0x4b0
-     ip6_input_finish+0x44/0x70
-     ip6_input+0x44/0xc0
-     ipv6_rcv+0x6c/0x114
-     __netif_receive_skb_one_core+0x5c/0x8c
-     __netif_receive_skb+0x18/0x60
-     process_backlog+0x78/0x17c
-     __napi_poll+0x38/0x180
-     net_rx_action+0x168/0x2f0
-
-Fixes: c6adf77953bc ("net: usb: qmi_wwan: add qmap mux protocol support")
-Signed-off-by: Qendrim Maxhuni <qendrim.maxhuni@garderos.com>
-Link: https://patch.msgid.link/20251029075744.105113-1-qendrim.maxhuni@garderos.com
+Suggested-by: Xin Long <lucien.xin@gmail.com>
+Fixes: 8f840e47f190 ("sctp: add the sctp_diag.c file")
+Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/20251028161506.3294376-4-stefan.wiehler@nokia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/qmi_wwan.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ net/sctp/diag.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index f574de58c1996..bd6d8c2b7e5d9 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -192,6 +192,12 @@ static int qmimux_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
- 			return 0;
- 		skbn->dev = net;
+diff --git a/net/sctp/diag.c b/net/sctp/diag.c
+index 3631a32d96b07..2cf5ee7a698e2 100644
+--- a/net/sctp/diag.c
++++ b/net/sctp/diag.c
+@@ -230,14 +230,15 @@ struct sctp_comm_param {
+ 	bool net_admin;
+ };
  
-+	       /* Raw IP packets don't have a MAC header, but other subsystems
-+		* (like xfrm) may still access MAC header offsets, so they must
-+		* be initialized.
-+		*/
-+		skb_reset_mac_header(skbn);
+-static size_t inet_assoc_attr_size(struct sctp_association *asoc)
++static size_t inet_assoc_attr_size(struct sock *sk,
++				   struct sctp_association *asoc)
+ {
+ 	int addrlen = sizeof(struct sockaddr_storage);
+ 	int addrcnt = 0;
+ 	struct sctp_sockaddr_entry *laddr;
+ 
+ 	list_for_each_entry_rcu(laddr, &asoc->base.bind_addr.address_list,
+-				list)
++				list, lockdep_sock_is_held(sk))
+ 		addrcnt++;
+ 
+ 	return	  nla_total_size(sizeof(struct sctp_info))
+@@ -263,11 +264,14 @@ static int sctp_sock_dump_one(struct sctp_endpoint *ep, struct sctp_transport *t
+ 	if (err)
+ 		return err;
+ 
+-	rep = nlmsg_new(inet_assoc_attr_size(assoc), GFP_KERNEL);
+-	if (!rep)
++	lock_sock(sk);
 +
- 		switch (skb->data[offset + qmimux_hdr_sz] & 0xf0) {
- 		case 0x40:
- 			skbn->protocol = htons(ETH_P_IP);
++	rep = nlmsg_new(inet_assoc_attr_size(sk, assoc), GFP_KERNEL);
++	if (!rep) {
++		release_sock(sk);
+ 		return -ENOMEM;
++	}
+ 
+-	lock_sock(sk);
+ 	if (ep != assoc->ep) {
+ 		err = -EAGAIN;
+ 		goto out;
 -- 
 2.51.0
 
