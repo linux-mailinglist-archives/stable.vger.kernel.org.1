@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A125CA0282
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:52:06 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6946BCA175C
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:48:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 29483300F9FB
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:47:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BDA84300A359
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:48:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98C3C36BCDB;
-	Wed,  3 Dec 2025 16:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A1B0352FAD;
+	Wed,  3 Dec 2025 16:16:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gGNWieuT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kBNVg5nV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5373F313546;
-	Wed,  3 Dec 2025 16:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362FD347BBE;
+	Wed,  3 Dec 2025 16:16:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780469; cv=none; b=gVTjN5IiVaTJc3ynV6p9bCvO0a0Q1mpNuCO364XJiv8eBQvwBSQHO0tDKg2196VD0y2cH6kHUO6i1MSHqAp5SVZ7W0Bzt2G2uGwXXwMk5qjQzbijr1k24QwOLbCddu6F8KcwfxNgXNY4MuMIMw13hZ6jeQHcPDg6t+kI+dcVloM=
+	t=1764778605; cv=none; b=tb/F0HBJyahtSkYfvL4Pe4lVTmhZyU12n278e3MvDO5uTXJhLHZVI4wrkZevQnbBKVWQasSgkTuxyA91X6lZ9tE7O8DAweUZDB7n4WszsnZX4hcGGYFIwITJ1jQXfvAmXykqIBBy0bHmYLlgppCwTDGSc+L03yFywRL3tFgEonU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780469; c=relaxed/simple;
-	bh=qSmbpj04eBVGCKu56ibAquSUSYN6TTQrETnphBqTRn4=;
+	s=arc-20240116; t=1764778605; c=relaxed/simple;
+	bh=i8g3ov+VyAtNtGWjK8Z1faa7C/LoUX3MTR540BjgpqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ghnQeB+X2lXyCgYxKNnox9aGD28wF68Nu+chY2ClTLkSKC7xlnkIyibckdNBMBZUl3MCriUzvtlBpYgCGNAD5NMvKMhbv6XeJ+hR9rGC27nw7YPCbQqBFtKN6X4FRPvFRHDbzCne0zvR1sQ+hzvUU39sASxmjcaJy80NHAz1bxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gGNWieuT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA80C4CEF5;
-	Wed,  3 Dec 2025 16:47:48 +0000 (UTC)
+	 MIME-Version; b=Qgv9MffAAkQZ/y43yYf83EqiITgLMf/WuyeE80LRHChmFDCByEcvd5cKRfOJq8xmEhugWoUycJZQ5kfXsajg1ENB/vP1wFcH4FxmPFsICylQBD0v4QEpC2d3klxCbWCNVJtXUv0CPMdyKtSaqMHTyu804Mg+teZYvOBOPrm9BQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kBNVg5nV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABBF1C4CEF5;
+	Wed,  3 Dec 2025 16:16:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780469;
-	bh=qSmbpj04eBVGCKu56ibAquSUSYN6TTQrETnphBqTRn4=;
+	s=korg; t=1764778605;
+	bh=i8g3ov+VyAtNtGWjK8Z1faa7C/LoUX3MTR540BjgpqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gGNWieuTP6xEzzfpRYNV9uxzttbZzw5/o6CVrn72BUCbUf+0OeZyr8yP6Kra0mH6M
-	 PVr3UbybZzWayJLhKLm61vtP4SgKuDwOg3QE8OOPPLUbTTCgdz2SmVKCpp/g0x8Dut
-	 eZCUy6rMxRgsqUJQHVanJTPU58SVOgtU3c1bP02M=
+	b=kBNVg5nV6iEGs+xB3dQC24aYCdFEYzwUPZppDidOqZ4ba2yByT6CfN/s0V3igrzGA
+	 VDn0nui4G6+ygWNvaiNCB+FIT1KJoRV1ibWcJhZRvQ3/IyNkkQ/jEK/72MTDPSDpkl
+	 4SYA0jy6DMFbwse9umk3tT5nHYawhUc0kzzB+oDY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ang Tien Sung <tiensung.ang@altera.com>,
-	Khairul Anuar Romli <khairul.anuar.romli@altera.com>,
-	Dinh Nguyen <dinguyen@kernel.org>
-Subject: [PATCH 6.1 533/568] firmware: stratix10-svc: fix bug in saving controller data
+	stable <stable@kernel.org>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 385/392] usb: renesas_usbhs: Fix synchronous external abort on unbind
 Date: Wed,  3 Dec 2025 16:28:55 +0100
-Message-ID: <20251203152500.234821207@linuxfoundation.org>
+Message-ID: <20251203152428.362925972@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,74 +60,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit d0fcf70c680e4d1669fcb3a8632f41400b9a73c2 upstream.
+[ Upstream commit eb9ac779830b2235847b72cb15cf07c7e3333c5e ]
 
-Fix the incorrect usage of platform_set_drvdata and dev_set_drvdata. They
-both are of the same data and overrides each other. This resulted in the
-rmmod of the svc driver to fail and throw a kernel panic for kthread_stop
-and fifo free.
+A synchronous external abort occurs on the Renesas RZ/G3S SoC if unbind is
+executed after the configuration sequence described above:
 
-Fixes: b5dc75c915cd ("firmware: stratix10-svc: extend svc to support new RSU features")
-Cc: stable@vger.kernel.org # 6.6+
-Signed-off-by: Ang Tien Sung <tiensung.ang@altera.com>
-Signed-off-by: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
-Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
+modprobe usb_f_ecm
+modprobe libcomposite
+modprobe configfs
+cd /sys/kernel/config/usb_gadget
+mkdir -p g1
+cd g1
+echo "0x1d6b" > idVendor
+echo "0x0104" > idProduct
+mkdir -p strings/0x409
+echo "0123456789" > strings/0x409/serialnumber
+echo "Renesas." > strings/0x409/manufacturer
+echo "Ethernet Gadget" > strings/0x409/product
+mkdir -p functions/ecm.usb0
+mkdir -p configs/c.1
+mkdir -p configs/c.1/strings/0x409
+echo "ECM" > configs/c.1/strings/0x409/configuration
+
+if [ ! -L configs/c.1/ecm.usb0 ]; then
+        ln -s functions/ecm.usb0 configs/c.1
+fi
+
+echo 11e20000.usb > UDC
+echo 11e20000.usb > /sys/bus/platform/drivers/renesas_usbhs/unbind
+
+The displayed trace is as follows:
+
+ Internal error: synchronous external abort: 0000000096000010 [#1] SMP
+ CPU: 0 UID: 0 PID: 188 Comm: sh Tainted: G M 6.17.0-rc7-next-20250922-00010-g41050493b2bd #55 PREEMPT
+ Tainted: [M]=MACHINE_CHECK
+ Hardware name: Renesas SMARC EVK version 2 based on r9a08g045s33 (DT)
+ pstate: 604000c5 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+ pc : usbhs_sys_function_pullup+0x10/0x40 [renesas_usbhs]
+ lr : usbhsg_update_pullup+0x3c/0x68 [renesas_usbhs]
+ sp : ffff8000838b3920
+ x29: ffff8000838b3920 x28: ffff00000d585780 x27: 0000000000000000
+ x26: 0000000000000000 x25: 0000000000000000 x24: ffff00000c3e3810
+ x23: ffff00000d5e5c80 x22: ffff00000d5e5d40 x21: 0000000000000000
+ x20: 0000000000000000 x19: ffff00000d5e5c80 x18: 0000000000000020
+ x17: 2e30303230316531 x16: 312d7968703a7968 x15: 3d454d414e5f4344
+ x14: 000000000000002c x13: 0000000000000000 x12: 0000000000000000
+ x11: ffff00000f358f38 x10: ffff00000f358db0 x9 : ffff00000b41f418
+ x8 : 0101010101010101 x7 : 7f7f7f7f7f7f7f7f x6 : fefefeff6364626d
+ x5 : 8080808000000000 x4 : 000000004b5ccb9d x3 : 0000000000000000
+ x2 : 0000000000000000 x1 : ffff800083790000 x0 : ffff00000d5e5c80
+ Call trace:
+ usbhs_sys_function_pullup+0x10/0x40 [renesas_usbhs] (P)
+ usbhsg_pullup+0x4c/0x7c [renesas_usbhs]
+ usb_gadget_disconnect_locked+0x48/0xd4
+ gadget_unbind_driver+0x44/0x114
+ device_remove+0x4c/0x80
+ device_release_driver_internal+0x1c8/0x224
+ device_release_driver+0x18/0x24
+ bus_remove_device+0xcc/0x10c
+ device_del+0x14c/0x404
+ usb_del_gadget+0x88/0xc0
+ usb_del_gadget_udc+0x18/0x30
+ usbhs_mod_gadget_remove+0x24/0x44 [renesas_usbhs]
+ usbhs_mod_remove+0x20/0x30 [renesas_usbhs]
+ usbhs_remove+0x98/0xdc [renesas_usbhs]
+ platform_remove+0x20/0x30
+ device_remove+0x4c/0x80
+ device_release_driver_internal+0x1c8/0x224
+ device_driver_detach+0x18/0x24
+ unbind_store+0xb4/0xb8
+ drv_attr_store+0x24/0x38
+ sysfs_kf_write+0x7c/0x94
+ kernfs_fop_write_iter+0x128/0x1b8
+ vfs_write+0x2ac/0x350
+ ksys_write+0x68/0xfc
+ __arm64_sys_write+0x1c/0x28
+ invoke_syscall+0x48/0x110
+ el0_svc_common.constprop.0+0xc0/0xe0
+ do_el0_svc+0x1c/0x28
+ el0_svc+0x34/0xf0
+ el0t_64_sync_handler+0xa0/0xe4
+ el0t_64_sync+0x198/0x19c
+ Code: 7100003f 1a9f07e1 531c6c22 f9400001 (79400021)
+ ---[ end trace 0000000000000000 ]---
+ note: sh[188] exited with irqs disabled
+ note: sh[188] exited with preempt_count 1
+
+The issue occurs because usbhs_sys_function_pullup(), which accesses the IP
+registers, is executed after the USBHS clocks have been disabled. The
+problem is reproducible on the Renesas RZ/G3S SoC starting with the
+addition of module stop in the clock enable/disable APIs. With module stop
+functionality enabled, a bus error is expected if a master accesses a
+module whose clock has been stopped and module stop activated.
+
+Disable the IP clocks at the end of remove.
+
+Cc: stable <stable@kernel.org>
+Fixes: f1407d5c6624 ("usb: renesas_usbhs: Add Renesas USBHS common code")
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://patch.msgid.link/20251027140741.557198-1-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/stratix10-svc.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/usb/renesas_usbhs/common.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/drivers/firmware/stratix10-svc.c
-+++ b/drivers/firmware/stratix10-svc.c
-@@ -133,6 +133,7 @@ struct stratix10_svc_data {
-  * @complete_status: state for completion
-  * @svc_fifo_lock: protect access to service message data queue
-  * @invoke_fn: function to issue secure monitor call or hypervisor call
-+ * @svc: manages the list of client svc drivers
-  *
-  * This struct is used to create communication channels for service clients, to
-  * handle secure monitor or hypervisor call.
-@@ -149,6 +150,7 @@ struct stratix10_svc_controller {
- 	struct completion complete_status;
- 	spinlock_t svc_fifo_lock;
- 	svc_invoke_fn *invoke_fn;
-+	struct stratix10_svc *svc;
- };
+--- a/drivers/usb/renesas_usbhs/common.c
++++ b/drivers/usb/renesas_usbhs/common.c
+@@ -802,18 +802,18 @@ static void usbhs_remove(struct platform
  
- /**
-@@ -1191,6 +1193,7 @@ static int stratix10_svc_drv_probe(struc
- 		ret = -ENOMEM;
- 		goto err_free_kfifo;
- 	}
-+	controller->svc = svc;
+ 	flush_delayed_work(&priv->notify_hotplug_work);
  
- 	svc->stratix10_svc_rsu = platform_device_alloc(STRATIX10_RSU, 0);
- 	if (!svc->stratix10_svc_rsu) {
-@@ -1218,8 +1221,6 @@ static int stratix10_svc_drv_probe(struc
- 		goto err_unregister_dev;
- 	}
- 
--	dev_set_drvdata(dev, svc);
+-	/* power off */
+-	if (!usbhs_get_dparam(priv, runtime_pwctrl))
+-		usbhsc_power_ctrl(priv, 0);
 -
- 	pr_info("Intel Service Layer Driver Initialized\n");
+-	pm_runtime_disable(&pdev->dev);
+-
+ 	usbhs_platform_call(priv, hardware_exit, pdev);
+-	usbhsc_clk_put(priv);
+ 	reset_control_assert(priv->rsts);
+ 	usbhs_mod_remove(priv);
+ 	usbhs_fifo_remove(priv);
+ 	usbhs_pipe_remove(priv);
++
++	/* power off */
++	if (!usbhs_get_dparam(priv, runtime_pwctrl))
++		usbhsc_power_ctrl(priv, 0);
++
++	usbhsc_clk_put(priv);
++	pm_runtime_disable(&pdev->dev);
+ }
  
- 	return 0;
-@@ -1235,8 +1236,8 @@ err_destroy_pool:
- 
- static int stratix10_svc_drv_remove(struct platform_device *pdev)
- {
--	struct stratix10_svc *svc = dev_get_drvdata(&pdev->dev);
- 	struct stratix10_svc_controller *ctrl = platform_get_drvdata(pdev);
-+	struct stratix10_svc *svc = ctrl->svc;
- 
- 	platform_device_unregister(svc->intel_svc_fcs);
- 	platform_device_unregister(svc->stratix10_svc_rsu);
+ static __maybe_unused int usbhsc_suspend(struct device *dev)
 
 
 
