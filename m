@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-199405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74A34CA0D64
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:14:03 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C917CC9F86C
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:37:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9359731B46A2
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:10:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 427053000963
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:37:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A8B3341ACC;
-	Wed,  3 Dec 2025 16:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75902314A99;
+	Wed,  3 Dec 2025 15:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fKN075vv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cbq9cEpg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C05341666;
-	Wed,  3 Dec 2025 16:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DDBC314A64;
+	Wed,  3 Dec 2025 15:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779692; cv=none; b=ZY4FjF6WB0d/AUiCEKNcut59OB4Z3xXlYtqX7zGlIxLHYMsS9N5iPSvnIHoQFfcef+TakFuiz3XLILNe+/XzQHDyI2RoHvlVvix4jevE2Hx7oXVAUzVcXDNFmJbSx+9vYymMCzSkvIB/szIRemkMNxm5ahOJrkpYwJKRT0ZNJTg=
+	t=1764776270; cv=none; b=bhYDs1cXgI1rtd4PB4s675iAx2pghjkcsJ6hXNBFe/Qs5eTMwlhigN+hIsEBCcyfmniGxF8I3zfp84/VKhMFwyJmDHspykEpoSkNU2SfoLb3UGrN2J93uJ/Xauom2Ccx1nRmme8nnDB094ZXz4ReVvz6kX3Z9B4RuZgbn67B+uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779692; c=relaxed/simple;
-	bh=HJChpx3QfakNN2EKI5FEPenqqBbFxXeCex3UMZjqxiU=;
+	s=arc-20240116; t=1764776270; c=relaxed/simple;
+	bh=g2r0VXFmH8F5z39gZXZ3e1/XERIBkEXvOXLvo9SpFMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A1Cn2G62Mg9Ej3lQ+ICTS3ch6KUBVlaVLDCisS6k98+9q0m6wtZJz2HFykdIh/yFUwrP1LyV5MUgNdJ4LIKgQTdeINyczwgvlSLGxL+ZgsoU8xcWSRm9W+CfP/KSc3+uRpxvNrk6tYYE8QzN/zNlSusAzeN6OoDqb7K+yfloXmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fKN075vv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95E62C4CEF5;
-	Wed,  3 Dec 2025 16:34:51 +0000 (UTC)
+	 MIME-Version; b=X7hjpwu3DACT+rx4Cr6CXHYw4VaJNU+g3IQ5J1jIh1Sgpy+cVjiOI5bYX797q5oB5tfc2O0TEkaLbdLkpvBdpY80G9JBwpmCeuRsL9IPNLSC1Nm6Zj+qda4CuNa4YzXdlvsQbskxQGMHDLsHxm6g3vduiCOmH24lF/tKv8P/ofQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cbq9cEpg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BD39C4CEF5;
+	Wed,  3 Dec 2025 15:37:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779692;
-	bh=HJChpx3QfakNN2EKI5FEPenqqBbFxXeCex3UMZjqxiU=;
+	s=korg; t=1764776270;
+	bh=g2r0VXFmH8F5z39gZXZ3e1/XERIBkEXvOXLvo9SpFMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fKN075vv7B1kyJh7olC2/xC+ZmOJxaLxWrjtTYbGgPAMAGxzdvuLRQEx3WzZW2Ob5
-	 9rlMviFfu+Djx7fZ7/fe/f9obYqgYAg0t5FG5a/rySBq6aGeZ8hVlYnfXIUDwaP3iD
-	 yJNdrN5P+QtJlNFzvHbWLe4SSgj/57R5ihdGr4rM=
+	b=Cbq9cEpgc+GXMHfqxu3QIA0E5pVfmFL7p8FMOGm5hIUuWJcW9fzdGLKrSH4mhTdcr
+	 T2OOTq3ZjyxPx9ktVsx44SFdWnsmsGyaSkMZJtYrS/edm51H2r+yQPIVWRQ05cuqa5
+	 guyshPk/h3FNPkW+u2CcwC2K+NQSa2pHBpczw+ZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
-	Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
-	Krzysztof Karas <krzysztof.karas@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Chen Wang <unicorn_wang@outlook.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 333/568] drm/i915: Avoid lock inversion when pinning to GGTT on CHV/BXT+VTD
+Subject: [PATCH 5.10 131/300] PCI: cadence: Check for the existence of cdns_pcie::ops before using it
 Date: Wed,  3 Dec 2025 16:25:35 +0100
-Message-ID: <20251203152452.906049373@linuxfoundation.org>
+Message-ID: <20251203152405.464861821@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,278 +60,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+From: Chen Wang <unicorn_wang@outlook.com>
 
-[ Upstream commit 84bbe327a5cbb060f3321c9d9d4d53936fc1ef9b ]
+[ Upstream commit 49a6c160ad4812476f8ae1a8f4ed6d15adfa6c09 ]
 
-On completion of i915_vma_pin_ww(), a synchronous variant of
-dma_fence_work_commit() is called.  When pinning a VMA to GGTT address
-space on a Cherry View family processor, or on a Broxton generation SoC
-with VTD enabled, i.e., when stop_machine() is then called from
-intel_ggtt_bind_vma(), that can potentially lead to lock inversion among
-reservation_ww and cpu_hotplug locks.
+cdns_pcie::ops might not be populated by all the Cadence glue drivers. This
+is going to be true for the upcoming Sophgo platform which doesn't set the
+ops.
 
-[86.861179] ======================================================
-[86.861193] WARNING: possible circular locking dependency detected
-[86.861209] 6.15.0-rc5-CI_DRM_16515-gca0305cadc2d+ #1 Tainted: G     U
-[86.861226] ------------------------------------------------------
-[86.861238] i915_module_loa/1432 is trying to acquire lock:
-[86.861252] ffffffff83489090 (cpu_hotplug_lock){++++}-{0:0}, at: stop_machine+0x1c/0x50
-[86.861290]
-but task is already holding lock:
-[86.861303] ffffc90002e0b4c8 (reservation_ww_class_mutex){+.+.}-{3:3}, at: i915_vma_pin.constprop.0+0x39/0x1d0 [i915]
-[86.862233]
-which lock already depends on the new lock.
-[86.862251]
-the existing dependency chain (in reverse order) is:
-[86.862265]
--> #5 (reservation_ww_class_mutex){+.+.}-{3:3}:
-[86.862292]        dma_resv_lockdep+0x19a/0x390
-[86.862315]        do_one_initcall+0x60/0x3f0
-[86.862334]        kernel_init_freeable+0x3cd/0x680
-[86.862353]        kernel_init+0x1b/0x200
-[86.862369]        ret_from_fork+0x47/0x70
-[86.862383]        ret_from_fork_asm+0x1a/0x30
-[86.862399]
--> #4 (reservation_ww_class_acquire){+.+.}-{0:0}:
-[86.862425]        dma_resv_lockdep+0x178/0x390
-[86.862440]        do_one_initcall+0x60/0x3f0
-[86.862454]        kernel_init_freeable+0x3cd/0x680
-[86.862470]        kernel_init+0x1b/0x200
-[86.862482]        ret_from_fork+0x47/0x70
-[86.862495]        ret_from_fork_asm+0x1a/0x30
-[86.862509]
--> #3 (&mm->mmap_lock){++++}-{3:3}:
-[86.862531]        down_read_killable+0x46/0x1e0
-[86.862546]        lock_mm_and_find_vma+0xa2/0x280
-[86.862561]        do_user_addr_fault+0x266/0x8e0
-[86.862578]        exc_page_fault+0x8a/0x2f0
-[86.862593]        asm_exc_page_fault+0x27/0x30
-[86.862607]        filldir64+0xeb/0x180
-[86.862620]        kernfs_fop_readdir+0x118/0x480
-[86.862635]        iterate_dir+0xcf/0x2b0
-[86.862648]        __x64_sys_getdents64+0x84/0x140
-[86.862661]        x64_sys_call+0x1058/0x2660
-[86.862675]        do_syscall_64+0x91/0xe90
-[86.862689]        entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[86.862703]
--> #2 (&root->kernfs_rwsem){++++}-{3:3}:
-[86.862725]        down_write+0x3e/0xf0
-[86.862738]        kernfs_add_one+0x30/0x3c0
-[86.862751]        kernfs_create_dir_ns+0x53/0xb0
-[86.862765]        internal_create_group+0x134/0x4c0
-[86.862779]        sysfs_create_group+0x13/0x20
-[86.862792]        topology_add_dev+0x1d/0x30
-[86.862806]        cpuhp_invoke_callback+0x4b5/0x850
-[86.862822]        cpuhp_issue_call+0xbf/0x1f0
-[86.862836]        __cpuhp_setup_state_cpuslocked+0x111/0x320
-[86.862852]        __cpuhp_setup_state+0xb0/0x220
-[86.862866]        topology_sysfs_init+0x30/0x50
-[86.862879]        do_one_initcall+0x60/0x3f0
-[86.862893]        kernel_init_freeable+0x3cd/0x680
-[86.862908]        kernel_init+0x1b/0x200
-[86.862921]        ret_from_fork+0x47/0x70
-[86.862934]        ret_from_fork_asm+0x1a/0x30
-[86.862947]
--> #1 (cpuhp_state_mutex){+.+.}-{3:3}:
-[86.862969]        __mutex_lock+0xaa/0xed0
-[86.862982]        mutex_lock_nested+0x1b/0x30
-[86.862995]        __cpuhp_setup_state_cpuslocked+0x67/0x320
-[86.863012]        __cpuhp_setup_state+0xb0/0x220
-[86.863026]        page_alloc_init_cpuhp+0x2d/0x60
-[86.863041]        mm_core_init+0x22/0x2d0
-[86.863054]        start_kernel+0x576/0xbd0
-[86.863068]        x86_64_start_reservations+0x18/0x30
-[86.863084]        x86_64_start_kernel+0xbf/0x110
-[86.863098]        common_startup_64+0x13e/0x141
-[86.863114]
--> #0 (cpu_hotplug_lock){++++}-{0:0}:
-[86.863135]        __lock_acquire+0x1635/0x2810
-[86.863152]        lock_acquire+0xc4/0x2f0
-[86.863166]        cpus_read_lock+0x41/0x100
-[86.863180]        stop_machine+0x1c/0x50
-[86.863194]        bxt_vtd_ggtt_insert_entries__BKL+0x3b/0x60 [i915]
-[86.863987]        intel_ggtt_bind_vma+0x43/0x70 [i915]
-[86.864735]        __vma_bind+0x55/0x70 [i915]
-[86.865510]        fence_work+0x26/0xa0 [i915]
-[86.866248]        fence_notify+0xa1/0x140 [i915]
-[86.866983]        __i915_sw_fence_complete+0x8f/0x270 [i915]
-[86.867719]        i915_sw_fence_commit+0x39/0x60 [i915]
-[86.868453]        i915_vma_pin_ww+0x462/0x1360 [i915]
-[86.869228]        i915_vma_pin.constprop.0+0x133/0x1d0 [i915]
-[86.870001]        initial_plane_vma+0x307/0x840 [i915]
-[86.870774]        intel_initial_plane_config+0x33f/0x670 [i915]
-[86.871546]        intel_display_driver_probe_nogem+0x1c6/0x260 [i915]
-[86.872330]        i915_driver_probe+0x7fa/0xe80 [i915]
-[86.873057]        i915_pci_probe+0xe6/0x220 [i915]
-[86.873782]        local_pci_probe+0x47/0xb0
-[86.873802]        pci_device_probe+0xf3/0x260
-[86.873817]        really_probe+0xf1/0x3c0
-[86.873833]        __driver_probe_device+0x8c/0x180
-[86.873848]        driver_probe_device+0x24/0xd0
-[86.873862]        __driver_attach+0x10f/0x220
-[86.873876]        bus_for_each_dev+0x7f/0xe0
-[86.873892]        driver_attach+0x1e/0x30
-[86.873904]        bus_add_driver+0x151/0x290
-[86.873917]        driver_register+0x5e/0x130
-[86.873931]        __pci_register_driver+0x7d/0x90
-[86.873945]        i915_pci_register_driver+0x23/0x30 [i915]
-[86.874678]        i915_init+0x37/0x120 [i915]
-[86.875347]        do_one_initcall+0x60/0x3f0
-[86.875369]        do_init_module+0x97/0x2a0
-[86.875385]        load_module+0x2c54/0x2d80
-[86.875398]        init_module_from_file+0x96/0xe0
-[86.875413]        idempotent_init_module+0x117/0x330
-[86.875426]        __x64_sys_finit_module+0x77/0x100
-[86.875440]        x64_sys_call+0x24de/0x2660
-[86.875454]        do_syscall_64+0x91/0xe90
-[86.875470]        entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[86.875486]
-other info that might help us debug this:
-[86.875502] Chain exists of:
-  cpu_hotplug_lock --> reservation_ww_class_acquire --> reservation_ww_class_mutex
-[86.875539]  Possible unsafe locking scenario:
-[86.875552]        CPU0                    CPU1
-[86.875563]        ----                    ----
-[86.875573]   lock(reservation_ww_class_mutex);
-[86.875588]                                lock(reservation_ww_class_acquire);
-[86.875606]                                lock(reservation_ww_class_mutex);
-[86.875624]   rlock(cpu_hotplug_lock);
-[86.875637]
- *** DEADLOCK ***
-[86.875650] 3 locks held by i915_module_loa/1432:
-[86.875663]  #0: ffff888101f5c1b0 (&dev->mutex){....}-{3:3}, at: __driver_attach+0x104/0x220
-[86.875699]  #1: ffffc90002e0b4a0 (reservation_ww_class_acquire){+.+.}-{0:0}, at: i915_vma_pin.constprop.0+0x39/0x1d0 [i915]
-[86.876512]  #2: ffffc90002e0b4c8 (reservation_ww_class_mutex){+.+.}-{3:3}, at: i915_vma_pin.constprop.0+0x39/0x1d0 [i915]
-[86.877305]
-stack backtrace:
-[86.877326] CPU: 0 UID: 0 PID: 1432 Comm: i915_module_loa Tainted: G     U              6.15.0-rc5-CI_DRM_16515-gca0305cadc2d+ #1 PREEMPT(voluntary)
-[86.877334] Tainted: [U]=USER
-[86.877336] Hardware name:  /NUC5CPYB, BIOS PYBSWCEL.86A.0079.2020.0420.1316 04/20/2020
-[86.877339] Call Trace:
-[86.877344]  <TASK>
-[86.877353]  dump_stack_lvl+0x91/0xf0
-[86.877364]  dump_stack+0x10/0x20
-[86.877369]  print_circular_bug+0x285/0x360
-[86.877379]  check_noncircular+0x135/0x150
-[86.877390]  __lock_acquire+0x1635/0x2810
-[86.877403]  lock_acquire+0xc4/0x2f0
-[86.877408]  ? stop_machine+0x1c/0x50
-[86.877422]  ? __pfx_bxt_vtd_ggtt_insert_entries__cb+0x10/0x10 [i915]
-[86.878173]  cpus_read_lock+0x41/0x100
-[86.878182]  ? stop_machine+0x1c/0x50
-[86.878191]  ? __pfx_bxt_vtd_ggtt_insert_entries__cb+0x10/0x10 [i915]
-[86.878916]  stop_machine+0x1c/0x50
-[86.878927]  bxt_vtd_ggtt_insert_entries__BKL+0x3b/0x60 [i915]
-[86.879652]  intel_ggtt_bind_vma+0x43/0x70 [i915]
-[86.880375]  __vma_bind+0x55/0x70 [i915]
-[86.881133]  fence_work+0x26/0xa0 [i915]
-[86.881851]  fence_notify+0xa1/0x140 [i915]
-[86.882566]  __i915_sw_fence_complete+0x8f/0x270 [i915]
-[86.883286]  i915_sw_fence_commit+0x39/0x60 [i915]
-[86.884003]  i915_vma_pin_ww+0x462/0x1360 [i915]
-[86.884756]  ? i915_vma_pin.constprop.0+0x6c/0x1d0 [i915]
-[86.885513]  i915_vma_pin.constprop.0+0x133/0x1d0 [i915]
-[86.886281]  initial_plane_vma+0x307/0x840 [i915]
-[86.887049]  intel_initial_plane_config+0x33f/0x670 [i915]
-[86.887819]  intel_display_driver_probe_nogem+0x1c6/0x260 [i915]
-[86.888587]  i915_driver_probe+0x7fa/0xe80 [i915]
-[86.889293]  ? mutex_unlock+0x12/0x20
-[86.889301]  ? drm_privacy_screen_get+0x171/0x190
-[86.889308]  ? acpi_dev_found+0x66/0x80
-[86.889321]  i915_pci_probe+0xe6/0x220 [i915]
-[86.890038]  local_pci_probe+0x47/0xb0
-[86.890049]  pci_device_probe+0xf3/0x260
-[86.890058]  really_probe+0xf1/0x3c0
-[86.890067]  __driver_probe_device+0x8c/0x180
-[86.890072]  driver_probe_device+0x24/0xd0
-[86.890078]  __driver_attach+0x10f/0x220
-[86.890083]  ? __pfx___driver_attach+0x10/0x10
-[86.890088]  bus_for_each_dev+0x7f/0xe0
-[86.890097]  driver_attach+0x1e/0x30
-[86.890101]  bus_add_driver+0x151/0x290
-[86.890107]  driver_register+0x5e/0x130
-[86.890113]  __pci_register_driver+0x7d/0x90
-[86.890119]  i915_pci_register_driver+0x23/0x30 [i915]
-[86.890833]  i915_init+0x37/0x120 [i915]
-[86.891482]  ? __pfx_i915_init+0x10/0x10 [i915]
-[86.892135]  do_one_initcall+0x60/0x3f0
-[86.892145]  ? __kmalloc_cache_noprof+0x33f/0x470
-[86.892157]  do_init_module+0x97/0x2a0
-[86.892164]  load_module+0x2c54/0x2d80
-[86.892168]  ? __kernel_read+0x15c/0x300
-[86.892185]  ? kernel_read_file+0x2b1/0x320
-[86.892195]  init_module_from_file+0x96/0xe0
-[86.892199]  ? init_module_from_file+0x96/0xe0
-[86.892211]  idempotent_init_module+0x117/0x330
-[86.892224]  __x64_sys_finit_module+0x77/0x100
-[86.892230]  x64_sys_call+0x24de/0x2660
-[86.892236]  do_syscall_64+0x91/0xe90
-[86.892243]  ? irqentry_exit+0x77/0xb0
-[86.892249]  ? sysvec_apic_timer_interrupt+0x57/0xc0
-[86.892256]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[86.892261] RIP: 0033:0x7303e1b2725d
-[86.892271] Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 8b bb 0d 00 f7 d8 64 89 01 48
-[86.892276] RSP: 002b:00007ffddd1fdb38 EFLAGS: 00000246 ORIG_RAX: 0000000000000139
-[86.892281] RAX: ffffffffffffffda RBX: 00005d771d88fd90 RCX: 00007303e1b2725d
-[86.892285] RDX: 0000000000000000 RSI: 00005d771d893aa0 RDI: 000000000000000c
-[86.892287] RBP: 00007ffddd1fdbf0 R08: 0000000000000040 R09: 00007ffddd1fdb80
-[86.892289] R10: 00007303e1c03b20 R11: 0000000000000246 R12: 00005d771d893aa0
-[86.892292] R13: 0000000000000000 R14: 00005d771d88f0d0 R15: 00005d771d895710
-[86.892304]  </TASK>
+Hence, add a check to prevent NULL pointer dereference.
 
-Call asynchronous variant of dma_fence_work_commit() in that case.
-
-v3: Provide more verbose in-line comment (Andi),
-  - mention target environments in commit message.
-
-Fixes: 7d1c2618eac59 ("drm/i915: Take reservation lock around i915_vma_pin.")
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14985
-Cc: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Reviewed-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
-Acked-by: Andi Shyti <andi.shyti@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://lore.kernel.org/r/20251023082925.351307-6-janusz.krzysztofik@linux.intel.com
-(cherry picked from commit 648ef1324add1c2e2b6041cdf0b28d31fbca5f13)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Chen Wang <unicorn_wang@outlook.com>
+[mani: reworded subject and description]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Link: https://patch.msgid.link/35182ee1d972dfcd093a964e11205efcebbdc044.1757643388.git.unicorn_wang@outlook.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/i915_vma.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ drivers/pci/controller/cadence/pcie-cadence-host.c | 2 +-
+ drivers/pci/controller/cadence/pcie-cadence.c      | 4 ++--
+ drivers/pci/controller/cadence/pcie-cadence.h      | 6 +++---
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_vma.c b/drivers/gpu/drm/i915/i915_vma.c
-index 58a03da16a10f..7601e74a96de4 100644
---- a/drivers/gpu/drm/i915/i915_vma.c
-+++ b/drivers/gpu/drm/i915/i915_vma.c
-@@ -1548,8 +1548,20 @@ int i915_vma_pin_ww(struct i915_vma *vma, struct i915_gem_ww_ctx *ww,
- err_vma_res:
- 	i915_vma_resource_free(vma_res);
- err_fence:
--	if (work)
--		dma_fence_work_commit_imm(&work->base);
-+	if (work) {
-+		/*
-+		 * When pinning VMA to GGTT on CHV or BXT with VTD enabled,
-+		 * commit VMA binding asynchronously to avoid risk of lock
-+		 * inversion among reservation_ww locks held here and
-+		 * cpu_hotplug_lock acquired from stop_machine(), which we
-+		 * wrap around GGTT updates when running in those environments.
-+		 */
-+		if (i915_vma_is_ggtt(vma) &&
-+		    intel_vm_no_concurrent_access_wa(vma->vm->i915))
-+			dma_fence_work_commit(&work->base);
-+		else
-+			dma_fence_work_commit_imm(&work->base);
-+	}
- err_rpm:
- 	intel_runtime_pm_put(&vma->vm->i915->runtime_pm, wakeref);
+diff --git a/drivers/pci/controller/cadence/pcie-cadence-host.c b/drivers/pci/controller/cadence/pcie-cadence-host.c
+index c29176bdecd19..28e1497a4fc40 100644
+--- a/drivers/pci/controller/cadence/pcie-cadence-host.c
++++ b/drivers/pci/controller/cadence/pcie-cadence-host.c
+@@ -444,7 +444,7 @@ static int cdns_pcie_host_init_address_translation(struct cdns_pcie_rc *rc)
+ 	cdns_pcie_writel(pcie, CDNS_PCIE_AT_OB_REGION_PCI_ADDR1(0), addr1);
+ 	cdns_pcie_writel(pcie, CDNS_PCIE_AT_OB_REGION_DESC1(0), desc1);
  
+-	if (pcie->ops->cpu_addr_fixup)
++	if (pcie->ops && pcie->ops->cpu_addr_fixup)
+ 		cpu_addr = pcie->ops->cpu_addr_fixup(pcie, cpu_addr);
+ 
+ 	addr0 = CDNS_PCIE_AT_OB_REGION_CPU_ADDR0_NBITS(12) |
+diff --git a/drivers/pci/controller/cadence/pcie-cadence.c b/drivers/pci/controller/cadence/pcie-cadence.c
+index 52767f26048fd..7b4d403569ecd 100644
+--- a/drivers/pci/controller/cadence/pcie-cadence.c
++++ b/drivers/pci/controller/cadence/pcie-cadence.c
+@@ -89,7 +89,7 @@ void cdns_pcie_set_outbound_region(struct cdns_pcie *pcie, u8 busnr, u8 fn,
+ 	cdns_pcie_writel(pcie, CDNS_PCIE_AT_OB_REGION_DESC1(r), desc1);
+ 
+ 	/* Set the CPU address */
+-	if (pcie->ops->cpu_addr_fixup)
++	if (pcie->ops && pcie->ops->cpu_addr_fixup)
+ 		cpu_addr = pcie->ops->cpu_addr_fixup(pcie, cpu_addr);
+ 
+ 	addr0 = CDNS_PCIE_AT_OB_REGION_CPU_ADDR0_NBITS(nbits) |
+@@ -119,7 +119,7 @@ void cdns_pcie_set_outbound_region_for_normal_msg(struct cdns_pcie *pcie,
+ 	}
+ 
+ 	/* Set the CPU address */
+-	if (pcie->ops->cpu_addr_fixup)
++	if (pcie->ops && pcie->ops->cpu_addr_fixup)
+ 		cpu_addr = pcie->ops->cpu_addr_fixup(pcie, cpu_addr);
+ 
+ 	addr0 = CDNS_PCIE_AT_OB_REGION_CPU_ADDR0_NBITS(17) |
+diff --git a/drivers/pci/controller/cadence/pcie-cadence.h b/drivers/pci/controller/cadence/pcie-cadence.h
+index 3139ea9f02c89..f01f683d1cb95 100644
+--- a/drivers/pci/controller/cadence/pcie-cadence.h
++++ b/drivers/pci/controller/cadence/pcie-cadence.h
+@@ -471,7 +471,7 @@ static inline u32 cdns_pcie_ep_fn_readl(struct cdns_pcie *pcie, u8 fn, u32 reg)
+ 
+ static inline int cdns_pcie_start_link(struct cdns_pcie *pcie)
+ {
+-	if (pcie->ops->start_link)
++	if (pcie->ops && pcie->ops->start_link)
+ 		return pcie->ops->start_link(pcie);
+ 
+ 	return 0;
+@@ -479,13 +479,13 @@ static inline int cdns_pcie_start_link(struct cdns_pcie *pcie)
+ 
+ static inline void cdns_pcie_stop_link(struct cdns_pcie *pcie)
+ {
+-	if (pcie->ops->stop_link)
++	if (pcie->ops && pcie->ops->stop_link)
+ 		pcie->ops->stop_link(pcie);
+ }
+ 
+ static inline bool cdns_pcie_link_up(struct cdns_pcie *pcie)
+ {
+-	if (pcie->ops->link_up)
++	if (pcie->ops && pcie->ops->link_up)
+ 		return pcie->ops->link_up(pcie);
+ 
+ 	return true;
 -- 
 2.51.0
 
