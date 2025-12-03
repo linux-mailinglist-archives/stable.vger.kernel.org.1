@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-199535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC969CA01F7
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:49:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1518ACA05CD
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:21:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B27AB3072C26
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:42:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8A5B83097BA9
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:07:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A97835BDB8;
-	Wed,  3 Dec 2025 16:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F58C348447;
+	Wed,  3 Dec 2025 16:12:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dvVLQz7m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yMHjPQfH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D1F35BDB9;
-	Wed,  3 Dec 2025 16:41:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5C8348440;
+	Wed,  3 Dec 2025 16:12:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780120; cv=none; b=SBb3Kcpj43FKWEGVutrqDPj/XWvFMskrnY4yP7SdjQGtYP4KsWJG/IqKMlkFDwu6GYf8PO0wq98qj/tbvvvumEZc0XhO9hU1+8lMTEX4/rrgS6+X2G7v54WWUA+t0QA9/tPsubkJOBAFFB919aO+6nMt6YEm1VSYEQvSjmXNPBE=
+	t=1764778334; cv=none; b=p5lqSwNmMTqdq7sbBj81PWPBBPY/mhkJanq9zgWC9XPiXeiL5v15eAkERZW3xLzk3jnBqge1Krs6bd7gMQna3RNGM1wHIyemZBTOu7ZbqxlVILnaWUGNyu44RwSWkc7+hnzB1KYc8jnrlA5+tNe3xvelXwrRD54/kRhOjFKzedQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780120; c=relaxed/simple;
-	bh=77JRD8mF3R0KfzRbaMegHwkJgVdVnyC2SjsvkuNmGhQ=;
+	s=arc-20240116; t=1764778334; c=relaxed/simple;
+	bh=PMea5S1fHPbFIiJp7TCc5QTncc1kAuoUXASEaiKqJDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T2ppnUjpc76ELcppj5M5feyX1CJKZd7SnN1uiIVKMxaKeVv0CN9yAWicMjT9LuYqzHxwAV0Sg8I59DUtU9QgOae+zDu9T/11+DHkJPml63VpjIomWzndA6lrK5H527SR8fOqTWNrR6zLPIgDVV5bglUeP/3PnLvwK3rg/cmIAok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dvVLQz7m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 302DEC4CEF5;
-	Wed,  3 Dec 2025 16:41:59 +0000 (UTC)
+	 MIME-Version; b=XnvN++hTUN/39knDuYU93COwUMzea7Y8nybyoFIJ9bOdoUFa7Q06J3pT+jxLuIBYLOuoXx8TbM3nn49zvXTo3HYqrpqVtPw9sVCcfsn/qrSeIuFDjyApbMBUsoAhV2solBdajg005lJ3wqVbwJco6oIbopqX4Co/8Jau9WTw364=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yMHjPQfH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5ABEC4CEF5;
+	Wed,  3 Dec 2025 16:12:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780119;
-	bh=77JRD8mF3R0KfzRbaMegHwkJgVdVnyC2SjsvkuNmGhQ=;
+	s=korg; t=1764778334;
+	bh=PMea5S1fHPbFIiJp7TCc5QTncc1kAuoUXASEaiKqJDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dvVLQz7mnNXaObXapFlouiiAR80QQsdXmcK2m/3Ys2KgFb+NktmTAVIM2uELRtg2h
-	 lSYZUnE280VZPPZg6RcK4fjiRhGC6MD48zQXE/6+1eqo1CzQaEkI0j/45Yg0pv8bma
-	 hxbdUTmYyD+JtVJ3PrhEGFZF7Y+rmWL6iunCXI6U=
+	b=yMHjPQfHmrMuwi7aiKNECaaBB5SrVcKqIML2mjeK7l6KaK7B6yR37iwi2yMddSpwm
+	 U6YVIpg4hrxiylTn/oImPECGBrNmNRzh6uzRKD+qQGOUctyySptKnw+xlaR/zZd+V5
+	 ug9AYoz/pxpdGBjUYBXTqCKW86aWZqGse7+9/1VU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.1 429/568] mtd: rawnand: cadence: fix DMA device NULL pointer dereference
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Pedro Tammela <pctammela@mojatatu.com>,
+	Simon Horman <simon.horman@corigine.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.15 281/392] net/sched: act_connmark: handle errno on tcf_idr_check_alloc
 Date: Wed,  3 Dec 2025 16:27:11 +0100
-Message-ID: <20251203152456.407410297@linuxfoundation.org>
+Message-ID: <20251203152424.499966704@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,48 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
+From: Pedro Tammela <pctammela@mojatatu.com>
 
-commit 5c56bf214af85ca042bf97f8584aab2151035840 upstream.
+commit fb07390463c95e6eef254044d6dde050bfb9807a upstream.
 
-The DMA device pointer `dma_dev` was being dereferenced before ensuring
-that `cdns_ctrl->dmac` is properly initialized.
+Smatch reports that 'ci' can be used uninitialized.
+The current code ignores errno coming from tcf_idr_check_alloc, which
+will lead to the incorrect usage of 'ci'. Handle the errno as it should.
 
-Move the assignment of `dma_dev` after successfully acquiring the DMA
-channel to ensure the pointer is valid before use.
-
-Fixes: d76d22b5096c ("mtd: rawnand: cadence: use dma_map_resource for sdma address")
-Cc: stable@vger.kernel.org
-Signed-off-by: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Fixes: 288864effe33 ("net/sched: act_connmark: transition to percpu stats and rcu")
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/cadence-nand-controller.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/sched/act_connmark.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/mtd/nand/raw/cadence-nand-controller.c
-+++ b/drivers/mtd/nand/raw/cadence-nand-controller.c
-@@ -2830,7 +2830,7 @@ cadence_nand_irq_cleanup(int irqnum, str
- static int cadence_nand_init(struct cdns_nand_ctrl *cdns_ctrl)
- {
- 	dma_cap_mask_t mask;
--	struct dma_device *dma_dev = cdns_ctrl->dmac->device;
-+	struct dma_device *dma_dev;
- 	int ret;
+--- a/net/sched/act_connmark.c
++++ b/net/sched/act_connmark.c
+@@ -156,6 +156,9 @@ static int tcf_connmark_init(struct net
+ 		nparms->zone = parm->zone;
  
- 	cdns_ctrl->cdma_desc = dma_alloc_coherent(cdns_ctrl->dev,
-@@ -2874,6 +2874,7 @@ static int cadence_nand_init(struct cdns
- 		}
+ 		ret = 0;
++	} else {
++		err = ret;
++		goto out_free;
  	}
  
-+	dma_dev = cdns_ctrl->dmac->device;
- 	cdns_ctrl->io.iova_dma = dma_map_resource(dma_dev->dev, cdns_ctrl->io.dma,
- 						  cdns_ctrl->io.size,
- 						  DMA_BIDIRECTIONAL, 0);
+ 	err = tcf_action_check_ctrlact(parm->action, tp, &goto_ch, extack);
 
 
 
