@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F8E8CA13B1
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:03:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FD98C9F767
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:31:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D67EC3005524
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:03:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 037EA30014EB
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:31:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDAF7349AED;
-	Wed,  3 Dec 2025 16:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 444152FD660;
+	Wed,  3 Dec 2025 15:31:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1QLrv0Ln"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u6r4gBx6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9B6834887C;
-	Wed,  3 Dec 2025 16:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E5530C358;
+	Wed,  3 Dec 2025 15:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777643; cv=none; b=RstarkRtPrATT+ld899JG4Pjg9QVG6OWVsq3aWTlQybOPHNIeAp1sJ/2dhudRpXhvU40wzwHqm6n2n1jdPUR7Y+ToeDH2OQHP4yagQiiqgEQFE03v9WtNA2KlQbM7w1aLHmM2kRxSnK+9lQEqa7RkE+1u3wOkczRi1bbrfk0ItY=
+	t=1764775875; cv=none; b=rlVWNNt7NNX/U21biG2bwz+A4Kh6rsT1wuZA45W/lnsc2JrK0OnkzTfOOGje2Vef7o28uOzFoxu2sUoREd5tFoSiesWt3Efg6ySM0MJjDCverRon8RPyJwExHY7RV5TRVsZSXZQU0ccXPBYUFyzGH05a6Sl38SW+8Yi7wbQ8clM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777643; c=relaxed/simple;
-	bh=8zx+6R2jXTEwa1b2tZjkZKMFhinGVR4rwGv2Xo/KONo=;
+	s=arc-20240116; t=1764775875; c=relaxed/simple;
+	bh=N05xtMzIr49yucFi/zAppDKOGsVFOwceRTTK6mr7G+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UvcOiu9eDVNjWggn6k0CEBoWrJGrE2XVEHDFbbkELyxA75NYwAI6mvN8RZz4lA5kdvXe6fCo2AzLjpjTCwwU8gInDXQA7yMrxGJLZ2XViyX+GIwG+j2X29V1MrOnfD+ASTtSjbjlDTETTsJurXAykqQQol7KtGvx1Coj1IE/fyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1QLrv0Ln; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10684C116C6;
-	Wed,  3 Dec 2025 16:00:42 +0000 (UTC)
+	 MIME-Version; b=KbvqqEsOAY75DONJ3/EetfkVf1kN7LCjK54v4de9GXXUevM328N2QQGLi6OOGdkFF1/feRfFJaCswBznDoBJv7FK3HgxcCpaIzhCboZSJRHd+6oxfc3DPAzk+PhpUnCm+uNJk9EdD3ykMz6M1xGuurVzb8uvJR5gg6OVYDwejm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u6r4gBx6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B962DC116C6;
+	Wed,  3 Dec 2025 15:31:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777643;
-	bh=8zx+6R2jXTEwa1b2tZjkZKMFhinGVR4rwGv2Xo/KONo=;
+	s=korg; t=1764775875;
+	bh=N05xtMzIr49yucFi/zAppDKOGsVFOwceRTTK6mr7G+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1QLrv0LnBrgrR692uhaUp0Ke4oPZ8pGrtP7hgqXh9c8jV3PeVz9owf+UNzWZCrwmb
-	 YDBPq3sQpjj6B1ZN9Uv0fQzsn8Hj1V6of8rgH8GKb0z3nwL9Wp3DKdSQh5YbMVFGDm
-	 7Pj3dKXDzr6tzq1qB4BgN9BdJxk6KD4iLVL97DTo=
+	b=u6r4gBx68xORxwGfuUNWsqckUZaeGl/QHwKKqR0JGRKMix9lHPODY/payfLqk9iUm
+	 0Td1dfAfetUHi3sLbpRlyi8L3oTL8S6ldpvUkY0ye+dN8+bRbGSNYVQ+hFVXy3W0+K
+	 pBoj9pGeNZVyNwTRPaZYWMhcfSyOg9nOESz2bu0g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuande Chen <chuachen@cisco.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 068/392] hwmon: (sbtsi_temp) AMD CPU extended temperature range support
+Subject: [PATCH 5.10 014/300] wifi: ath10k: Fix memory leak on unsupported WMI command
 Date: Wed,  3 Dec 2025 16:23:38 +0100
-Message-ID: <20251203152416.611236748@linuxfoundation.org>
+Message-ID: <20251203152400.986109663@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,142 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuande Chen <chuachen@cisco.com>
+From: Loic Poulain <loic.poulain@oss.qualcomm.com>
 
-[ Upstream commit d9d61f1da35038793156c04bb13f0a1350709121 ]
+[ Upstream commit 2e9c1da4ee9d0acfca2e0a3d78f3d8cb5802da1b ]
 
-Many AMD CPUs can support this feature now. We would get a wrong CPU DIE
-temperature if don't consider this. In low-temperature environments,
-the CPU die temperature can drop below zero. So many platforms would like
-to make extended temperature range as their default configuration.
-Default temperature range (0C to 255.875C).
-Extended temperature range (-49C to +206.875C).
-Ref Doc: AMD V3000 PPR (Doc ID #56558).
+ath10k_wmi_cmd_send takes ownership of the passed buffer (skb) and has the
+responsibility to release it in case of error. This patch fixes missing
+free in case of early error due to unhandled WMI command ID.
 
-Signed-off-by: Chuande Chen <chuachen@cisco.com>
-Link: https://lore.kernel.org/r/20250814053940.96764-1-chenchuande@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Tested-on: WCN3990 hw1.0 WLAN.HL.3.3.7.c2-00931-QCAHLSWMTPLZ-1
+
+Fixes: 553215592f14 ("ath10k: warn if give WMI command is not supported")
+Suggested-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250926195656.187970-1-loic.poulain@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/sbtsi_temp.c | 46 +++++++++++++++++++++++++-------------
- 1 file changed, 31 insertions(+), 15 deletions(-)
+ drivers/net/wireless/ath/ath10k/wmi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hwmon/sbtsi_temp.c b/drivers/hwmon/sbtsi_temp.c
-index e35357c48b8e6..b2ef2ada4bfe2 100644
---- a/drivers/hwmon/sbtsi_temp.c
-+++ b/drivers/hwmon/sbtsi_temp.c
-@@ -15,6 +15,7 @@
- #include <linux/mutex.h>
- #include <linux/of_device.h>
- #include <linux/of.h>
-+#include <linux/bitfield.h>
- 
- /*
-  * SB-TSI registers only support SMBus byte data access. "_INT" registers are
-@@ -30,8 +31,22 @@
- #define SBTSI_REG_TEMP_HIGH_DEC		0x13 /* RW */
- #define SBTSI_REG_TEMP_LOW_DEC		0x14 /* RW */
- 
-+/*
-+ * Bit for reporting value with temperature measurement range.
-+ * bit == 0: Use default temperature range (0C to 255.875C).
-+ * bit == 1: Use extended temperature range (-49C to +206.875C).
-+ */
-+#define SBTSI_CONFIG_EXT_RANGE_SHIFT	2
-+/*
-+ * ReadOrder bit specifies the reading order of integer and decimal part of
-+ * CPU temperature for atomic reads. If bit == 0, reading integer part triggers
-+ * latching of the decimal part, so integer part should be read first.
-+ * If bit == 1, read order should be reversed.
-+ */
- #define SBTSI_CONFIG_READ_ORDER_SHIFT	5
- 
-+#define SBTSI_TEMP_EXT_RANGE_ADJ	49000
-+
- #define SBTSI_TEMP_MIN	0
- #define SBTSI_TEMP_MAX	255875
- 
-@@ -39,6 +54,8 @@
- struct sbtsi_data {
- 	struct i2c_client *client;
- 	struct mutex lock;
-+	bool ext_range_mode;
-+	bool read_order;
- };
- 
- /*
-@@ -75,23 +92,11 @@ static int sbtsi_read(struct device *dev, enum hwmon_sensor_types type,
- {
- 	struct sbtsi_data *data = dev_get_drvdata(dev);
- 	s32 temp_int, temp_dec;
--	int err;
- 
- 	switch (attr) {
- 	case hwmon_temp_input:
--		/*
--		 * ReadOrder bit specifies the reading order of integer and
--		 * decimal part of CPU temp for atomic reads. If bit == 0,
--		 * reading integer part triggers latching of the decimal part,
--		 * so integer part should be read first. If bit == 1, read
--		 * order should be reversed.
--		 */
--		err = i2c_smbus_read_byte_data(data->client, SBTSI_REG_CONFIG);
--		if (err < 0)
--			return err;
--
- 		mutex_lock(&data->lock);
--		if (err & BIT(SBTSI_CONFIG_READ_ORDER_SHIFT)) {
-+		if (data->read_order) {
- 			temp_dec = i2c_smbus_read_byte_data(data->client, SBTSI_REG_TEMP_DEC);
- 			temp_int = i2c_smbus_read_byte_data(data->client, SBTSI_REG_TEMP_INT);
- 		} else {
-@@ -123,6 +128,8 @@ static int sbtsi_read(struct device *dev, enum hwmon_sensor_types type,
- 		return temp_dec;
- 
- 	*val = sbtsi_reg_to_mc(temp_int, temp_dec);
-+	if (data->ext_range_mode)
-+		*val -= SBTSI_TEMP_EXT_RANGE_ADJ;
- 
- 	return 0;
- }
-@@ -147,6 +154,8 @@ static int sbtsi_write(struct device *dev, enum hwmon_sensor_types type,
- 		return -EINVAL;
+diff --git a/drivers/net/wireless/ath/ath10k/wmi.c b/drivers/net/wireless/ath/ath10k/wmi.c
+index c9a74f3e2e601..6293dbc32bde4 100644
+--- a/drivers/net/wireless/ath/ath10k/wmi.c
++++ b/drivers/net/wireless/ath/ath10k/wmi.c
+@@ -1936,6 +1936,7 @@ int ath10k_wmi_cmd_send(struct ath10k *ar, struct sk_buff *skb, u32 cmd_id)
+ 	if (cmd_id == WMI_CMD_UNSUPPORTED) {
+ 		ath10k_warn(ar, "wmi command %d is not supported by firmware\n",
+ 			    cmd_id);
++		dev_kfree_skb_any(skb);
+ 		return ret;
  	}
  
-+	if (data->ext_range_mode)
-+		val += SBTSI_TEMP_EXT_RANGE_ADJ;
- 	val = clamp_val(val, SBTSI_TEMP_MIN, SBTSI_TEMP_MAX);
- 	sbtsi_mc_to_reg(val, &temp_int, &temp_dec);
- 
-@@ -205,6 +214,7 @@ static int sbtsi_probe(struct i2c_client *client,
- 	struct device *dev = &client->dev;
- 	struct device *hwmon_dev;
- 	struct sbtsi_data *data;
-+	int err;
- 
- 	data = devm_kzalloc(dev, sizeof(struct sbtsi_data), GFP_KERNEL);
- 	if (!data)
-@@ -213,8 +223,14 @@ static int sbtsi_probe(struct i2c_client *client,
- 	data->client = client;
- 	mutex_init(&data->lock);
- 
--	hwmon_dev = devm_hwmon_device_register_with_info(dev, client->name, data, &sbtsi_chip_info,
--							 NULL);
-+	err = i2c_smbus_read_byte_data(data->client, SBTSI_REG_CONFIG);
-+	if (err < 0)
-+		return err;
-+	data->ext_range_mode = FIELD_GET(BIT(SBTSI_CONFIG_EXT_RANGE_SHIFT), err);
-+	data->read_order = FIELD_GET(BIT(SBTSI_CONFIG_READ_ORDER_SHIFT), err);
-+
-+	hwmon_dev = devm_hwmon_device_register_with_info(dev, client->name, data,
-+							 &sbtsi_chip_info, NULL);
- 
- 	return PTR_ERR_OR_ZERO(hwmon_dev);
- }
 -- 
 2.51.0
 
