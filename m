@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16DCCCA1143
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:42:14 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D214CA11DC
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:44:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 62C7E32B2CCA
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:43:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D5D1730022DA
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:44:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B59BA31283C;
-	Wed,  3 Dec 2025 16:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09ACB32ED45;
+	Wed,  3 Dec 2025 15:51:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NAFVtzxS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z51IqZZX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 700363081DF;
-	Wed,  3 Dec 2025 16:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B018932ED3E;
+	Wed,  3 Dec 2025 15:51:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778189; cv=none; b=XxcoRQvaqaODI6s2nLrXDC+HQCr9yOd2jGUxTD/SanB/ClRyOGfoQohE3EVBHF6mR3au6sm26ZuqHU3FTMb5SOcQ/vcKOeKiQAZGIdYJdLq7gQMShGK6BsKXqOvcX94CA6toK8qXtQZO8KoDlvyDxr2X16ef6aDhn5vRx7cEoPw=
+	t=1764777075; cv=none; b=hmiz+JA0frcGR3HwYGtKXcA7HEHBzFVtW734qcCh98Ri1cxhYNq4q/2QxU/qfj7uKqjSTwTb6Rf21F/cRQT2T1iFPaqBPmUEqL3G70p2+pBIrF3LBsjsbyruXeWFIDje+pkCkEV5XDCkoLof6K8jStxE+umDGfZGaxVwGrNgqGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778189; c=relaxed/simple;
-	bh=fwwxUPhe+hlrtOynBG0qI5xQfJybzoVlFQNhRrHr50o=;
+	s=arc-20240116; t=1764777075; c=relaxed/simple;
+	bh=B4hW8L2r0Go6X28jKDqJQbynGHxA1vdp9N/1rUtsT1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ilS6vXdbJJs+I5F9A81DsxHoX0b+9FDeoJMVOhuIpoKiuDJEoobXzdZ4+TshS2dRNNzcvdUjT91s6cHX99QoAJl53wp8vm4ejCGHP4ifanXpghI2ra18YO7PQkuh8xh0Zv4GykUK/nzMhK2Hq38iY3BDXvBCJI4Brvo/QaxSRAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NAFVtzxS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FACAC116B1;
-	Wed,  3 Dec 2025 16:09:48 +0000 (UTC)
+	 MIME-Version; b=bp7qIsCI/dSwR0Q7ydismzXPSLOBwlrS2BPy+pNsY2cq4ufTxmS6SiMTAB3yVn0zqLVrD6f8PKwwggRO6461ItR24vqmf28xqNqqu1xY44uKEYZtB1F26481beZM01wpJVxmVTxe8KhSsyMxXQalzoRj/XWujgpV5+AVh0Bt1QY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z51IqZZX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12098C4CEF5;
+	Wed,  3 Dec 2025 15:51:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778189;
-	bh=fwwxUPhe+hlrtOynBG0qI5xQfJybzoVlFQNhRrHr50o=;
+	s=korg; t=1764777075;
+	bh=B4hW8L2r0Go6X28jKDqJQbynGHxA1vdp9N/1rUtsT1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NAFVtzxSBONy+hz3G+TOksS9EGotp2N1Xi2mzrQDXYaU20r5BPdpGMGSmwK9C/iXU
-	 EYnQIcBm4cDEqKRVkW4my/rWV1WHhGJQSZyg68pYpWMhC4kZ1GlQR8Sjos7b0Ic3pr
-	 UtD6kjM3a6SPdDuVk7YTuA08fstLrH83ElYbEAYY=
+	b=z51IqZZX6uobgPhyLNhXAfRO8VwzRfA5shQC3jurJt1Luz6MU6J5pwOSt4AKNfrsK
+	 hWllD4M5PO6JXga/joGCYagIdHaT4DCgJUCRJNeyL7pWVkp23RbevEvXmHec3InzWe
+	 X4IaPz6DZzLdaP4wRKVGsxUrius79cXEvYKUPiRQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
+	Andrei Vagin <avagin@google.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 269/392] netfilter: nf_tables: reject duplicate device on updates
+Subject: [PATCH 6.17 041/146] fs/namespace: fix reference leak in grab_requested_mnt_ns
 Date: Wed,  3 Dec 2025 16:26:59 +0100
-Message-ID: <20251203152424.063304207@linuxfoundation.org>
+Message-ID: <20251203152347.978252785@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,70 +60,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Andrei Vagin <avagin@google.com>
 
-commit cf5fb87fcdaaaafec55dcc0dc5a9e15ead343973 upstream.
+[ Upstream commit 7b6dcd9bfd869eee7693e45b1817dac8c56e5f86 ]
 
-A chain/flowtable update with duplicated devices in the same batch is
-possible. Unfortunately, netdev event path only removes the first
-device that is found, leaving unregistered the hook of the duplicated
-device.
+lookup_mnt_ns() already takes a reference on mnt_ns.
+grab_requested_mnt_ns() doesn't need to take an extra reference.
 
-Check if a duplicated device exists in the transaction batch, bail out
-with EEXIST in such case.
-
-WARNING is hit when unregistering the hook:
-
- [49042.221275] WARNING: CPU: 4 PID: 8425 at net/netfilter/core.c:340 nf_hook_entry_head+0xaa/0x150
- [49042.221375] CPU: 4 UID: 0 PID: 8425 Comm: nft Tainted: G S                  6.16.0+ #170 PREEMPT(full)
- [...]
- [49042.221382] RIP: 0010:nf_hook_entry_head+0xaa/0x150
-
-Fixes: 78d9f48f7f44 ("netfilter: nf_tables: add devices to existing flowtable")
-Fixes: b9703ed44ffb ("netfilter: nf_tables: support for adding new devices to an existing netdev chain")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: 78f0e33cd6c93 ("fs/namespace: correctly handle errors returned by grab_requested_mnt_ns")
+Signed-off-by: Andrei Vagin <avagin@google.com>
+Link: https://patch.msgid.link/20251122071953.3053755-1-avagin@google.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ fs/namespace.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 33d03340d9fc8..91b012e476be6 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -7893,6 +7893,7 @@ static int nft_flowtable_update(struct nft_ctx *ctx, const struct nlmsghdr *nlh,
- {
- 	const struct nlattr * const *nla = ctx->nla;
- 	struct nft_flowtable_hook flowtable_hook;
-+	struct nftables_pernet *nft_net;
- 	struct nft_hook *hook, *next;
- 	struct nft_trans *trans;
- 	bool unregister = false;
-@@ -7908,6 +7909,20 @@ static int nft_flowtable_update(struct nft_ctx *ctx, const struct nlmsghdr *nlh,
- 		if (nft_hook_list_find(&flowtable->hook_list, hook)) {
- 			list_del(&hook->list);
- 			kfree(hook);
-+			continue;
-+		}
-+
-+		nft_net = nft_pernet(ctx->net);
-+		list_for_each_entry(trans, &nft_net->commit_list, list) {
-+			if (trans->msg_type != NFT_MSG_NEWFLOWTABLE ||
-+			    trans->ctx.table != ctx->table ||
-+			    !nft_trans_flowtable_update(trans))
-+				continue;
-+
-+			if (nft_hook_list_find(&nft_trans_flowtable_hooks(trans), hook)) {
-+				err = -EEXIST;
-+				goto err_flowtable_update_hook;
-+			}
- 		}
+diff --git a/fs/namespace.c b/fs/namespace.c
+index fd988bc759bd3..e059c2c9867f0 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -5901,6 +5901,8 @@ static struct mnt_namespace *grab_requested_mnt_ns(const struct mnt_id_req *kreq
+ 
+ 	if (kreq->mnt_ns_id) {
+ 		mnt_ns = lookup_mnt_ns(kreq->mnt_ns_id);
++		if (!mnt_ns)
++			return ERR_PTR(-ENOENT);
+ 	} else if (kreq->mnt_ns_fd) {
+ 		struct ns_common *ns;
+ 
+@@ -5916,13 +5918,12 @@ static struct mnt_namespace *grab_requested_mnt_ns(const struct mnt_id_req *kreq
+ 			return ERR_PTR(-EINVAL);
+ 
+ 		mnt_ns = to_mnt_ns(ns);
++		refcount_inc(&mnt_ns->passive);
+ 	} else {
+ 		mnt_ns = current->nsproxy->mnt_ns;
++		refcount_inc(&mnt_ns->passive);
  	}
+-	if (!mnt_ns)
+-		return ERR_PTR(-ENOENT);
+ 
+-	refcount_inc(&mnt_ns->passive);
+ 	return mnt_ns;
+ }
  
 -- 
 2.51.0
