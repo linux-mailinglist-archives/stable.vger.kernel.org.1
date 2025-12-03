@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89DEBCA014D
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:45:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65C88CA0B23
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:58:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A112C3000905
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:45:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3AE1230542C6
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:53:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3905B369222;
-	Wed,  3 Dec 2025 16:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D47635BDAE;
+	Wed,  3 Dec 2025 16:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eIUrV5U8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M7XBbRpX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90158139579;
-	Wed,  3 Dec 2025 16:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E6634DCD6;
+	Wed,  3 Dec 2025 16:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780343; cv=none; b=nTBOOpzx51urzz7UJIW+f9NyIaamPYQ9YeHMhJv9C/MxdaEPTXI6L7f4jkBiUxQn/c5ze6bYLCgloq11adij3YyrsKE+OYq3u6h7+ezOuQTNbspD0zQdK12RJiUgjnj0xFMy8SHMQKsbdVlgpZujvqU4HgueMOzdEBvmM9/cu5I=
+	t=1764780659; cv=none; b=mm+7NSYoydZTCaMS52A6IZI4u4kOI1Hqkh0ZNYbwTEH9JA0AHgDnu93yDYyIgUEIzqd7r/tlLbx+qo+S9os5tudc+7vPV0Xo3ebS1miMAhf7omVKScXEqOfjfRXY0b2msA0aWz9WPQlfcOkuI2029/rim5czYS/srsuktaxi/Sk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780343; c=relaxed/simple;
-	bh=erbCkasglCB/dV5XxvJ5JZ59T7SqeDlhMgZgcHWadB8=;
+	s=arc-20240116; t=1764780659; c=relaxed/simple;
+	bh=RuzhchP8PSMYK+O9FJAEL2jCM3KCV/I7i97oJfw+qcw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CDtVgAtaxUBB6PK4mzjqresPX/Gs/68lEn75nBaMGg0hM58Ej9aJIcJ+qO4CmrwsYo+EHzGvR0nr1hburvM8sItUUBoUcrFZZ2Jqkm/m1mTVS8EgfFRI00SKj4ajVwiOVqTWUIjY7bSMVt3D74NSdbxRuKS8z8Vpg+jurjd9i+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eIUrV5U8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8806C116B1;
-	Wed,  3 Dec 2025 16:45:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=h8UK/yMX+ffVb7VLdes2+YONXDeTNKr+U72gZ7UJbN3Ifb87Ijjajg8lXK91HRjhDcx/xRMT8wybOE2JRf2GrZkThmF+Ji0v6ku8x+pku00p+H9feNPDaz1TqxtArpuUZM28E3krEiPpdC/R1yFQ0PFr9TRQFcKIBMM4PVF1JVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M7XBbRpX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71686C116C6;
+	Wed,  3 Dec 2025 16:50:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780343;
-	bh=erbCkasglCB/dV5XxvJ5JZ59T7SqeDlhMgZgcHWadB8=;
+	s=korg; t=1764780658;
+	bh=RuzhchP8PSMYK+O9FJAEL2jCM3KCV/I7i97oJfw+qcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eIUrV5U8E29mJV7wcXEKPEXiWq3hAXw7AkLWZ5aBsOKnWR/ReClS00fhB2VTj43ym
-	 QdEEXGJ41ojqBvc4tAbYJI4QO+Gpi937eXU4o88Ci9sxpwchuq6LWXxhrUti1RXcsR
-	 yOkKQRwuS57wjZFYP5dy3FaKZl+Qo/5hYK+SDxDs=
+	b=M7XBbRpXFwDbYvwCwLswBdYQK18JDpojhY6WyrwLYjFA3FQ09x6bePuRRzml61IQT
+	 ysIofAzJo1bJkdn5qryqLp6exItCn1Kl5Vr3O5AazC3SrwJzQdQfIR3i1Q1q/jIsYm
+	 9FcgAXh2wOj3m2agmb+6fYOv9oSu4Y3BDDmextC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20M=C3=BChlbacher?= <tmuehlbacher@posteo.net>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.1 527/568] can: sun4i_can: sun4i_can_interrupt(): fix max irq loop handling
-Date: Wed,  3 Dec 2025 16:28:49 +0100
-Message-ID: <20251203152500.016255387@linuxfoundation.org>
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.12 051/132] iio: buffer-dma: support getting the DMA channel
+Date: Wed,  3 Dec 2025 16:28:50 +0100
+Message-ID: <20251203152345.187147467@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,57 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Nuno Sá <nuno.sa@analog.com>
 
-commit 76544beea7cfe5bcce6d60f53811657b88ec8be1 upstream.
+commit f9c198c3ccaf90a1a265fb2ffa8d4b093c3b0784 upstream.
 
-Reading the interrupt register `SUN4I_REG_INT_ADDR` causes all of its bits
-to be reset. If we ever reach the condition of handling more than
-`SUN4I_CAN_MAX_IRQ` IRQs, we will have read the register and reset all its
-bits but without actually handling the interrupt inside of the loop body.
+Implement the .get_dma_dev() callback for DMA buffers by returning the
+device that owns the DMA channel. This allows the core DMABUF
+infrastructure to properly map DMA buffers using the correct device,
+avoiding the need for bounce buffers on systems where memory is mapped
+above the 32-bit range.
 
-This may, among other issues, cause us to never `netif_wake_queue()` again
-after a transmission interrupt.
+The function returns the DMA queue's device, which is the actual device
+responsible for DMA operations in buffer-dma implementations.
 
-Fixes: 0738eff14d81 ("can: Allwinner A10/A20 CAN Controller support - Kernel module")
 Cc: stable@vger.kernel.org
-Co-developed-by: Thomas Mühlbacher <tmuehlbacher@posteo.net>
-Signed-off-by: Thomas Mühlbacher <tmuehlbacher@posteo.net>
-Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Link: https://patch.msgid.link/20251116-sun4i-fix-loop-v1-1-3d76d3f81950@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Signed-off-by: Nuno Sá <nuno.sa@analog.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/sun4i_can.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/buffer/industrialio-buffer-dma.c |    6 ++++++
+ include/linux/iio/buffer-dma.h               |    1 +
+ 2 files changed, 7 insertions(+)
 
---- a/drivers/net/can/sun4i_can.c
-+++ b/drivers/net/can/sun4i_can.c
-@@ -658,8 +658,8 @@ static irqreturn_t sun4i_can_interrupt(i
- 	u8 isrc, status;
- 	int n = 0;
+--- a/drivers/iio/buffer/industrialio-buffer-dma.c
++++ b/drivers/iio/buffer/industrialio-buffer-dma.c
+@@ -786,6 +786,12 @@ out_end_signalling:
+ }
+ EXPORT_SYMBOL_NS_GPL(iio_dma_buffer_enqueue_dmabuf, IIO_DMA_BUFFER);
  
--	while ((isrc = readl(priv->base + SUN4I_REG_INT_ADDR)) &&
--	       (n < SUN4I_CAN_MAX_IRQ)) {
-+	while ((n < SUN4I_CAN_MAX_IRQ) &&
-+	       (isrc = readl(priv->base + SUN4I_REG_INT_ADDR))) {
- 		n++;
- 		status = readl(priv->base + SUN4I_REG_STA_ADDR);
++struct device *iio_dma_buffer_get_dma_dev(struct iio_buffer *buffer)
++{
++	return iio_buffer_to_queue(buffer)->dev;
++}
++EXPORT_SYMBOL_NS_GPL(iio_dma_buffer_get_dma_dev, IIO_DMA_BUFFER);
++
+ void iio_dma_buffer_lock_queue(struct iio_buffer *buffer)
+ {
+ 	struct iio_dma_buffer_queue *queue = iio_buffer_to_queue(buffer);
+--- a/include/linux/iio/buffer-dma.h
++++ b/include/linux/iio/buffer-dma.h
+@@ -174,5 +174,6 @@ int iio_dma_buffer_enqueue_dmabuf(struct
+ 				  size_t size, bool cyclic);
+ void iio_dma_buffer_lock_queue(struct iio_buffer *buffer);
+ void iio_dma_buffer_unlock_queue(struct iio_buffer *buffer);
++struct device *iio_dma_buffer_get_dma_dev(struct iio_buffer *buffer);
  
+ #endif
 
 
 
