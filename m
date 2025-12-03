@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-198990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1518ACA05CD
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:21:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1980BC9FD49
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:09:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8A5B83097BA9
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:07:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2EA05300263E
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:58:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F58C348447;
-	Wed,  3 Dec 2025 16:12:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B48B732C93A;
+	Wed,  3 Dec 2025 15:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yMHjPQfH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OA27BXtF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5C8348440;
-	Wed,  3 Dec 2025 16:12:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7020532C92E;
+	Wed,  3 Dec 2025 15:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778334; cv=none; b=p5lqSwNmMTqdq7sbBj81PWPBBPY/mhkJanq9zgWC9XPiXeiL5v15eAkERZW3xLzk3jnBqge1Krs6bd7gMQna3RNGM1wHIyemZBTOu7ZbqxlVILnaWUGNyu44RwSWkc7+hnzB1KYc8jnrlA5+tNe3xvelXwrRD54/kRhOjFKzedQ=
+	t=1764777002; cv=none; b=GYbqBdPuUByQQBn/1gELfjyaF/3HQd2LukL0Qe/gVKFU76/sf/Qvv0BusV0tNAboJhY87SZmopZYDmp9MfGcFe0rWvWYteirQuNm/HNDunv4ZxUZl6SollwXgxNXBiE35yXykio5Ep4WDy1f1zadIXv4PnqlaQv6DpsgPeoRbek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778334; c=relaxed/simple;
-	bh=PMea5S1fHPbFIiJp7TCc5QTncc1kAuoUXASEaiKqJDg=;
+	s=arc-20240116; t=1764777002; c=relaxed/simple;
+	bh=qUYJhZUTn0TS/gfg721Roo2MO1xzQS5W+DOa7yUMEKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XnvN++hTUN/39knDuYU93COwUMzea7Y8nybyoFIJ9bOdoUFa7Q06J3pT+jxLuIBYLOuoXx8TbM3nn49zvXTo3HYqrpqVtPw9sVCcfsn/qrSeIuFDjyApbMBUsoAhV2solBdajg005lJ3wqVbwJco6oIbopqX4Co/8Jau9WTw364=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yMHjPQfH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5ABEC4CEF5;
-	Wed,  3 Dec 2025 16:12:13 +0000 (UTC)
+	 MIME-Version; b=P4e9KMZMELOUXW5yw4YqyAywS0mIdoqRA3X7pHXu7GciaoldOsVpepYAtr9nvMW7mH19V2MuwBXyovAN+VDX4fhd+1tytUuODd+JE2M9IQRX6fjYAk6oqFv5bMIyl/5tQJjBuOGmX0bFGC4SQpXfL15Gv/KB7GG8WUnRCn7PxVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OA27BXtF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0BEDC4CEF5;
+	Wed,  3 Dec 2025 15:50:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778334;
-	bh=PMea5S1fHPbFIiJp7TCc5QTncc1kAuoUXASEaiKqJDg=;
+	s=korg; t=1764777002;
+	bh=qUYJhZUTn0TS/gfg721Roo2MO1xzQS5W+DOa7yUMEKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yMHjPQfHmrMuwi7aiKNECaaBB5SrVcKqIML2mjeK7l6KaK7B6yR37iwi2yMddSpwm
-	 U6YVIpg4hrxiylTn/oImPECGBrNmNRzh6uzRKD+qQGOUctyySptKnw+xlaR/zZd+V5
-	 ug9AYoz/pxpdGBjUYBXTqCKW86aWZqGse7+9/1VU=
+	b=OA27BXtFtfeovM2roGR/KtEFY/KkqViB02hHC17ubifmXrKK8lA8IV5WcZbhnBf5r
+	 WJgCUcY6tRuogy4S+0O2OPlMMh0OpdePxIihtIm342QaJevG3h0LVxmNygv+/yADIH
+	 9NwnD88ympfuAzM8BwZXobhbB7QaUG2FYBLJXPqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Pedro Tammela <pctammela@mojatatu.com>,
-	Simon Horman <simon.horman@corigine.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.15 281/392] net/sched: act_connmark: handle errno on tcf_idr_check_alloc
+	Song Liu <song@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.17 053/146] Revert "perf/x86: Always store regs->ip in perf_callchain_kernel()"
 Date: Wed,  3 Dec 2025 16:27:11 +0100
-Message-ID: <20251203152424.499966704@linuxfoundation.org>
+Message-ID: <20251203152348.413119701@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +61,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pedro Tammela <pctammela@mojatatu.com>
+From: Jiri Olsa <jolsa@kernel.org>
 
-commit fb07390463c95e6eef254044d6dde050bfb9807a upstream.
+commit 6d08340d1e354787d6c65a8c3cdd4d41ffb8a5ed upstream.
 
-Smatch reports that 'ci' can be used uninitialized.
-The current code ignores errno coming from tcf_idr_check_alloc, which
-will lead to the incorrect usage of 'ci'. Handle the errno as it should.
+This reverts commit 83f44ae0f8afcc9da659799db8693f74847e66b3.
 
-Fixes: 288864effe33 ("net/sched: act_connmark: transition to percpu stats and rcu")
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Currently we store initial stacktrace entry twice for non-HW ot_regs, which
+means callers that fail perf_hw_regs(regs) condition in perf_callchain_kernel.
+
+It's easy to reproduce this bpftrace:
+
+  # bpftrace -e 'tracepoint:sched:sched_process_exec { print(kstack()); }'
+  Attaching 1 probe...
+
+        bprm_execve+1767
+        bprm_execve+1767
+        do_execveat_common.isra.0+425
+        __x64_sys_execve+56
+        do_syscall_64+133
+        entry_SYSCALL_64_after_hwframe+118
+
+When perf_callchain_kernel calls unwind_start with first_frame, AFAICS
+we do not skip regs->ip, but it's added as part of the unwind process.
+Hence reverting the extra perf_callchain_store for non-hw regs leg.
+
+I was not able to bisect this, so I'm not really sure why this was needed
+in v5.2 and why it's not working anymore, but I could see double entries
+as far as v5.10.
+
+I did the test for both ORC and framepointer unwind with and without the
+this fix and except for the initial entry the stacktraces are the same.
+
+Acked-by: Song Liu <song@kernel.org>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/r/20251104215405.168643-2-jolsa@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/act_connmark.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/events/core.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/net/sched/act_connmark.c
-+++ b/net/sched/act_connmark.c
-@@ -156,6 +156,9 @@ static int tcf_connmark_init(struct net
- 		nparms->zone = parm->zone;
- 
- 		ret = 0;
-+	} else {
-+		err = ret;
-+		goto out_free;
+--- a/arch/x86/events/core.c
++++ b/arch/x86/events/core.c
+@@ -2787,13 +2787,13 @@ perf_callchain_kernel(struct perf_callch
+ 		return;
  	}
  
- 	err = tcf_action_check_ctrlact(parm->action, tp, &goto_ch, extack);
+-	if (perf_callchain_store(entry, regs->ip))
+-		return;
+-
+-	if (perf_hw_regs(regs))
++	if (perf_hw_regs(regs)) {
++		if (perf_callchain_store(entry, regs->ip))
++			return;
+ 		unwind_start(&state, current, regs, NULL);
+-	else
++	} else {
+ 		unwind_start(&state, current, NULL, (void *)regs->sp);
++	}
+ 
+ 	for (; !unwind_done(&state); unwind_next_frame(&state)) {
+ 		addr = unwind_get_return_address(&state);
 
 
 
