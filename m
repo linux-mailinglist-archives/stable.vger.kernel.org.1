@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-198259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BBD3C9F824
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:36:28 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6515FCA0B9B
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:00:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5598C3023548
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:32:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 95996301FA45
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:59:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB98330EF88;
-	Wed,  3 Dec 2025 15:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C1D6346761;
+	Wed,  3 Dec 2025 16:00:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ebG+7izH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0gc17o5e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744DB309F01;
-	Wed,  3 Dec 2025 15:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC375345CD7;
+	Wed,  3 Dec 2025 16:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764775953; cv=none; b=GuK2Tk+/i9VXT0TgqwErv+i3orXZnzPMsUymyM/6Da1rMI2x3CDd0zGupZeAgB7GcXQSVPWLn0fSZyNckSWUbvaDfcaOaz3D9+daoP406ghoI10ksZzLTLF4QaMk/x1PB0i/LzPlxBKPooVcyGw/k6wcFbM5V20fgo5dGZMdVuI=
+	t=1764777614; cv=none; b=NHHeukDpziuk7ouR4nt3IJDLD24d0wudf+iACcGrVn+HeTJadSrhJIgOxnLas3nz/N9MuyNJRGvgUqla4HD208rdhR6Hk+wicUUX5VeQLnw9EGBnbvr5Z3aVR6qrAg7HKULfGYS8Yyi8zB+g6rfcqtyo69wg3ST4KR9RGUHb7/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764775953; c=relaxed/simple;
-	bh=WYF27qSygnLaUKoqrbCcib89IAHdLhFfVTxp7f8Ph74=;
+	s=arc-20240116; t=1764777614; c=relaxed/simple;
+	bh=+hbiw1VwnxS5ZsR02pUYq07nk0lxEIIPlpAideG/5Y4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JlLoEXg9QHkJt74sLxy7CZYqmRrE3GBeE4c3oLPw8MA5Xfd1g1EmKydcXAehlyN2qs7XSJ9z8NMQe+iPSV1AoHBpyxB+EW4iYxoYNTN4p5CajiITeN1Lvm5xe2+0vzC30Pp9IKMmcj+lcqujk+e4OHmerSuCpKgjqmbIaGfEr3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ebG+7izH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 990CFC116B1;
-	Wed,  3 Dec 2025 15:32:31 +0000 (UTC)
+	 MIME-Version; b=sk1H5vVFi46dBStsaRuw9dclnn2b3Y9az+BsSWEsksgQKWT7Tumq0p6P9wi31X7rvsM9C2ZYDFXge3JvvVG8Q3nrJ3nQSeso/an1VdDzayhGOv4MYRo2GwSAtOYTWeORiRD6clj9AMMNUjyk/BUnPzHk0VXZWEkNS5xvmHzfwVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0gc17o5e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37E2FC116C6;
+	Wed,  3 Dec 2025 16:00:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764775952;
-	bh=WYF27qSygnLaUKoqrbCcib89IAHdLhFfVTxp7f8Ph74=;
+	s=korg; t=1764777614;
+	bh=+hbiw1VwnxS5ZsR02pUYq07nk0lxEIIPlpAideG/5Y4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ebG+7izHV5i2Zl2ayyX4sSZAt94aFcxHBpBl9GBhRHCB8Aaq4m1q8qHmMlyJuXfpH
-	 R6XIt4jhWMHVizhrrfQZuZHZujROeowOECxTDJE9O11ZuUeX5oJebtRXxcvpwM2WqI
-	 3F1g7dQjqkgK2WpZXyHHBdReZEVQETy0IYcILrSA=
+	b=0gc17o5eTzQLFtCSUGPgTrEnfXqvJHIOWx832xpIu1sOZfnjaV3vabTtIsYSof1/M
+	 qDG/y97kPoYkI3YGTHabas+7dPY0mfEHjNWjx/ocKTTVAANfBSZGjzFgc0dQ2ZdAz2
+	 TFUl4TeQf2R7HVbbTuwIei3EDGfcHDst+hWK1Em0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Asad Kamal <asad.kamal@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 037/300] block: make REQ_OP_ZONE_OPEN a write operation
+Subject: [PATCH 5.15 091/392] drm/amd/pm: Use cached metrics data on arcturus
 Date: Wed,  3 Dec 2025 16:24:01 +0100
-Message-ID: <20251203152401.840520554@linuxfoundation.org>
+Message-ID: <20251203152417.453137010@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-[ Upstream commit 19de03b312d69a7e9bacb51c806c6e3f4207376c ]
+[ Upstream commit 2f3b1ccf83be83a3330e38194ddfd1a91fec69be ]
 
-A REQ_OP_OPEN_ZONE request changes the condition of a sequential zone of
-a zoned block device to the explicitly open condition
-(BLK_ZONE_COND_EXP_OPEN). As such, it should be considered a write
-operation.
+Cached metrics data validity is 1ms on arcturus. It's not reasonable for
+any client to query gpu_metrics at a faster rate and constantly
+interrupt PMFW.
 
-Change this operation code to be an odd number to reflect this. The
-following operation numbers are changed to keep the numbering compact.
-
-No problems were reported without this change as this operation has no
-data. However, this unifies the zone operation to reflect that they
-modify the device state and also allows strengthening checks in the
-block layer, e.g. checking if this operation is not issued against a
-read-only device.
-
-Fixes: 6c1b1da58f8c ("block: add zone open, close and finish operations")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-[ relocated REQ_OP_ZONE_APPEND from 15 to 21 to resolve numbering conflict ]
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Asad Kamal <asad.kamal@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/blk_types.h |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/blk_types.h
-+++ b/include/linux/blk_types.h
-@@ -349,17 +349,17 @@ enum req_opf {
- 	/* write the zero filled sector many times */
- 	REQ_OP_WRITE_ZEROES	= 9,
- 	/* Open a zone */
--	REQ_OP_ZONE_OPEN	= 10,
-+	REQ_OP_ZONE_OPEN	= 11,
- 	/* Close a zone */
--	REQ_OP_ZONE_CLOSE	= 11,
-+	REQ_OP_ZONE_CLOSE	= 13,
- 	/* Transition a zone to full */
--	REQ_OP_ZONE_FINISH	= 13,
--	/* write data at the current zone write pointer */
--	REQ_OP_ZONE_APPEND	= 15,
-+	REQ_OP_ZONE_FINISH	= 15,
- 	/* reset a zone write pointer */
- 	REQ_OP_ZONE_RESET	= 17,
- 	/* reset all the zone present on the device */
- 	REQ_OP_ZONE_RESET_ALL	= 19,
-+	/* write data at the current zone write pointer */
-+	REQ_OP_ZONE_APPEND	= 21,
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c
+index a6df00aa5767a..da032700cb985 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c
+@@ -2346,7 +2346,7 @@ static ssize_t arcturus_get_gpu_metrics(struct smu_context *smu,
  
- 	/* SCSI passthrough using struct scsi_request */
- 	REQ_OP_SCSI_IN		= 32,
+ 	ret = smu_cmn_get_metrics_table(smu,
+ 					&metrics,
+-					true);
++					false);
+ 	if (ret)
+ 		return ret;
+ 
+-- 
+2.51.0
+
 
 
 
