@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4338FC9FFC7
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:35:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4DE2C9F932
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:42:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 03900300BA0A
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:33:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 69C813038999
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:37:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8009B3AA199;
-	Wed,  3 Dec 2025 16:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ACA1313E3B;
+	Wed,  3 Dec 2025 15:37:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PEQVDb7x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W4EQI3jZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395393AA195;
-	Wed,  3 Dec 2025 16:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBE1B3148A3;
+	Wed,  3 Dec 2025 15:37:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779589; cv=none; b=IXzGo99Sb1nxYNDGu6X4mPmuJlQGF8CiYhua9jYKijrLYv1nNI4h4HHNjl3ALw4lXt/CtI/s3LnRRnDS2qL4SEn4ISrDQcf/hk0iN7F3D8yg3p66TOjrWOeWO0yeRWuMip3lIcGlURtw7lFCpsGPXCUPvU8TiyciQe4DZVzJRCQ=
+	t=1764776273; cv=none; b=SvLBhwPX/vIfrfqbszcCeIUCTZHDKmdI0K3zshwqnh4/yX+5PtIZGJrFrB2QOJ0gpPa8wEXayjlI0fQkn6/S4pjnxVeOhjnNrUUvqk1Xy6L8Vjt3b3lRPbpVs9y4yekXkwAOVXhtl3Vmu5iE1zrUxVxki6tdTxzdDp1sr3RGMFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779589; c=relaxed/simple;
-	bh=FtynW9dmMuf6cmG3h2/LUOyJ89pP2oUzL13vCgPks00=;
+	s=arc-20240116; t=1764776273; c=relaxed/simple;
+	bh=tgsqtQTPf8KjIWs7usKt5c/nVUx8FaGYCJu5Pe6mjF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MX08u+9vrbl3JCRQIbb0pFmpikIKUJpyMXbhINmU98IXhKXC7sJsH81FuJwfojpo2is163x9PVtjfHmtannNd3UB9ouF57tB0+iAlMPVyz9LdKGFYS5YDVZMsIghD8b6rFR65WKbAosl5apvdJCcUBMw0kOeHp9/r6zajoVfsvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PEQVDb7x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94790C116B1;
-	Wed,  3 Dec 2025 16:33:08 +0000 (UTC)
+	 MIME-Version; b=VXRJUfI0SS0LcLEhtfmj9CcUrbqksTG5mav0uyb9WGFtcSJHahxGpmz9EqrJcMz7GduBXvEDUurNlL2q+QIJwniMqLxQCcurkahqPdfkA9+R5sBbeZBgg08uptjbJjk8+zA79m/y1bfqS940OILBdsjLdfKZyzxoyySPZTgxoX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W4EQI3jZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4105C4CEF5;
+	Wed,  3 Dec 2025 15:37:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779589;
-	bh=FtynW9dmMuf6cmG3h2/LUOyJ89pP2oUzL13vCgPks00=;
+	s=korg; t=1764776273;
+	bh=tgsqtQTPf8KjIWs7usKt5c/nVUx8FaGYCJu5Pe6mjF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PEQVDb7xKf+t/Dg60dkZClRMq47KtDnuFKyFI334+T1RO8C+A17Hl0Y9pM+beL7Ax
-	 q71peLTU9YSpnQT2TLvjR/BR3VPcm/Mx+Hc6JlXOav1tHU/CwUw3rqAh6DF4KvJt2E
-	 UtU477mnkfCSljMHa0Ms/bYpee3xUu0elH0W1i6I=
+	b=W4EQI3jZoTfw1BZKSv0CfSq9A84LCfeHd25e7UoStMui310f0mRPkAZTa3Dnf6nIo
+	 bx1JgiOZgX6oQuvGO/EHY4dMxa18w0I3OFXBvAI22xYSA+MqQuHOVDBwH0IJIt81nI
+	 gnZCpdVnaYkYCeD+bShdHwreTBymqrfkM+jsqbBE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Thomas Andreatta <thomas.andreatta2000@gmail.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 302/568] ALSA: hda/realtek: Audio disappears on HP 15-fc000 after warm boot again
+Subject: [PATCH 5.10 100/300] dmaengine: sh: setup_xref error handling
 Date: Wed,  3 Dec 2025 16:25:04 +0100
-Message-ID: <20251203152451.767848548@linuxfoundation.org>
+Message-ID: <20251203152404.329361249@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,75 +60,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Thomas Andreatta <thomasandreatta2000@gmail.com>
 
-[ Upstream commit f4b3cef55f5f96fdb4e7f9ca90b7d6213689faeb ]
+[ Upstream commit d9a3e9929452780df16f3414f0d59b5f69d058cf ]
 
-There was a similar bug in the past (Bug 217440), which was fixed for
-this laptop.
-The same issue is occurring again as of kernel v.6.12.2. The symptoms
-are very similar - initially audio works but after a warm reboot, the
-audio completely disappears until the computer is powered off (there
-is no audio output at all).
+This patch modifies the type of setup_xref from void to int and handles
+errors since the function can fail.
 
-The issue is also related by caused by a different change now. By
-bisecting different kernel versions, I found that reverting
-cc3d0b5dd989 in patch_realtek.c[*] restores the sound and it works
-fine after the reboot.
+`setup_xref` now returns the (eventual) error from
+`dmae_set_dmars`|`dmae_set_chcr`, while `shdma_tx_submit` handles the
+result, removing the chunks from the queue and marking PM as idle in
+case of an error.
 
-[*] https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/sound/pci/hda/patch_realtek.c?h=v6.12.2&id=4ed7f16070a8475c088ff423b2eb11ba15eb89b6
-
-[ patch description reformatted by tiwai ]
-
-Fixes: cc3d0b5dd989 ("ALSA: hda/realtek: Update ALC256 depop procedure")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220109
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Link: https://lore.kernel.org/5317ca723c82447a938414fcca85cbf5@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Thomas Andreatta <thomas.andreatta2000@gmail.com>
+Link: https://lore.kernel.org/r/20250827152442.90962-1-thomas.andreatta2000@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ drivers/dma/sh/shdma-base.c | 25 +++++++++++++++++++------
+ drivers/dma/sh/shdmac.c     | 17 +++++++++++++----
+ include/linux/shdma-base.h  |  2 +-
+ 3 files changed, 33 insertions(+), 11 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index fcc22aa991748..ccbdb01ab6ece 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -3641,6 +3641,15 @@ static void alc256_shutup(struct hda_codec *codec)
- 		hp_pin = 0x21;
- 
- 	alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x1); /* Low power */
+diff --git a/drivers/dma/sh/shdma-base.c b/drivers/dma/sh/shdma-base.c
+index 7f72b3f4cd1ae..e1b8808f2a984 100644
+--- a/drivers/dma/sh/shdma-base.c
++++ b/drivers/dma/sh/shdma-base.c
+@@ -129,12 +129,25 @@ static dma_cookie_t shdma_tx_submit(struct dma_async_tx_descriptor *tx)
+ 			const struct shdma_ops *ops = sdev->ops;
+ 			dev_dbg(schan->dev, "Bring up channel %d\n",
+ 				schan->id);
+-			/*
+-			 * TODO: .xfer_setup() might fail on some platforms.
+-			 * Make it int then, on error remove chunks from the
+-			 * queue again
+-			 */
+-			ops->setup_xfer(schan, schan->slave_id);
 +
-+	/* 3k pull low control for Headset jack. */
-+	/* NOTE: call this before clearing the pin, otherwise codec stalls */
-+	/* If disable 3k pulldown control for alc257, the Mic detection will not work correctly
-+	 * when booting with headset plugged. So skip setting it for the codec alc257
-+	 */
-+	if (spec->en_3kpull_low)
-+		alc_update_coef_idx(codec, 0x46, 0, 3 << 12);
++			ret = ops->setup_xfer(schan, schan->slave_id);
++			if (ret < 0) {
++				dev_err(schan->dev, "setup_xfer failed: %d\n", ret);
 +
- 	hp_pin_sense = snd_hda_jack_detect(codec, hp_pin);
++				/* Remove chunks from the queue and mark them as idle */
++				list_for_each_entry_safe(chunk, c, &schan->ld_queue, node) {
++					if (chunk->cookie == cookie) {
++						chunk->mark = DESC_IDLE;
++						list_move(&chunk->node, &schan->ld_free);
++					}
++				}
++
++				schan->pm_state = SHDMA_PM_ESTABLISHED;
++				ret = pm_runtime_put(schan->dev);
++
++				spin_unlock_irq(&schan->chan_lock);
++				return ret;
++			}
  
- 	if (hp_pin_sense) {
-@@ -3651,14 +3660,6 @@ static void alc256_shutup(struct hda_codec *codec)
+ 			if (schan->pm_state == SHDMA_PM_PENDING)
+ 				shdma_chan_xfer_ld_queue(schan);
+diff --git a/drivers/dma/sh/shdmac.c b/drivers/dma/sh/shdmac.c
+index 5aafe548ca5f3..2b9774ae7fd32 100644
+--- a/drivers/dma/sh/shdmac.c
++++ b/drivers/dma/sh/shdmac.c
+@@ -301,21 +301,30 @@ static bool sh_dmae_channel_busy(struct shdma_chan *schan)
+ 	return dmae_is_busy(sh_chan);
+ }
  
- 		msleep(75);
+-static void sh_dmae_setup_xfer(struct shdma_chan *schan,
+-			       int slave_id)
++static int sh_dmae_setup_xfer(struct shdma_chan *schan, int slave_id)
+ {
+ 	struct sh_dmae_chan *sh_chan = container_of(schan, struct sh_dmae_chan,
+ 						    shdma_chan);
  
--	/* 3k pull low control for Headset jack. */
--	/* NOTE: call this before clearing the pin, otherwise codec stalls */
--	/* If disable 3k pulldown control for alc257, the Mic detection will not work correctly
--	 * when booting with headset plugged. So skip setting it for the codec alc257
--	 */
--		if (spec->en_3kpull_low)
--			alc_update_coef_idx(codec, 0x46, 0, 3 << 12);
--
- 		if (!spec->no_shutup_pins)
- 			snd_hda_codec_write(codec, hp_pin, 0,
- 				    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
++	int ret = 0;
+ 	if (slave_id >= 0) {
+ 		const struct sh_dmae_slave_config *cfg =
+ 			sh_chan->config;
+ 
+-		dmae_set_dmars(sh_chan, cfg->mid_rid);
+-		dmae_set_chcr(sh_chan, cfg->chcr);
++		ret = dmae_set_dmars(sh_chan, cfg->mid_rid);
++		if (ret < 0)
++			goto END;
++
++		ret = dmae_set_chcr(sh_chan, cfg->chcr);
++		if (ret < 0)
++			goto END;
++
+ 	} else {
+ 		dmae_init(sh_chan);
+ 	}
++
++END:
++	return ret;
+ }
+ 
+ /*
+diff --git a/include/linux/shdma-base.h b/include/linux/shdma-base.h
+index 6dfd05ef5c2d9..03ba4dab2ef73 100644
+--- a/include/linux/shdma-base.h
++++ b/include/linux/shdma-base.h
+@@ -96,7 +96,7 @@ struct shdma_ops {
+ 	int (*desc_setup)(struct shdma_chan *, struct shdma_desc *,
+ 			  dma_addr_t, dma_addr_t, size_t *);
+ 	int (*set_slave)(struct shdma_chan *, int, dma_addr_t, bool);
+-	void (*setup_xfer)(struct shdma_chan *, int);
++	int (*setup_xfer)(struct shdma_chan *, int);
+ 	void (*start_xfer)(struct shdma_chan *, struct shdma_desc *);
+ 	struct shdma_desc *(*embedded_desc)(void *, int);
+ 	bool (*chan_irq)(struct shdma_chan *, int);
 -- 
 2.51.0
 
