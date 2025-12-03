@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-198578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5529BCA10CE
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:39:46 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4678DCA0655
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:24:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0BCFE33E2673
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:44:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 43DFE3004D35
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:24:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1863B32D0C4;
-	Wed,  3 Dec 2025 15:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D0CF3164AA;
+	Wed,  3 Dec 2025 16:39:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k7upv4aI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="duZnd7sJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FC132C94C;
-	Wed,  3 Dec 2025 15:50:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A2363164D0;
+	Wed,  3 Dec 2025 16:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777005; cv=none; b=O74IJ8b/h3j+CjHvPtHVUok6sZ3zWAJrEvFkud3hUO+P7IBujJtuGdlDDZ5Pnlyu41nIE0s+GAcxm+rBkS1lRPrf+VdsL58S/qdAUKZSRQ50FezffWQxgZMOeLxCV7rzVt3TndR4VBR3gcOibA12jNZ0+xk6jPBFm3rdTvcUX+U=
+	t=1764779959; cv=none; b=tKnIe/dYdbjkz6vwb3Arl3bMMqJsda2/QpmX11CD4NhJYzVjd+8A9AtHRb3TULFTQwJ99pKHpwzEUKYKxr2p5Q+YnvdSfWU76Rrww/K3Afr+5HSLnokGnwXZTCg/uZtYvT9bEx/kJZzIep6ExBHg0TOGFgYMSyxh1W9BE2P7s/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777005; c=relaxed/simple;
-	bh=BpUpDgwBS9GDImFe9QJALAG2uDFIMf0nhUhG/vohyXc=;
+	s=arc-20240116; t=1764779959; c=relaxed/simple;
+	bh=Syh1M6dps5uPFlOKQLAHuihooVn/rYA3lIgwiKs+9N8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IT/gFeHVdbE44AbJvj8agAsE7JyA3WP48scDHeSviA4n/7q9KDqZKMbXtEa+XdoeXPC1vB6udjeRWBevi07kb+pCzY6Zznpy9LsY9gGFVpzYzDE5AtXwPGf+WAdYbsy0AxaXvz5vhp5naTDxG4DROUuA8G5YBeAwg7gfWOqgbEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k7upv4aI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E39D1C4CEF5;
-	Wed,  3 Dec 2025 15:50:04 +0000 (UTC)
+	 MIME-Version; b=kZDpam0jfI1pLWCjIbRvK2BESM9QC9SD2DQgRJJNuzebzJPx3vvaFFCv5wOQRKB1NSjzUBzvjTjR7wso8JSofTxS7j6NNwd6c9+aeIA4uZyUaEWn8WbQqvrknrOMiGluO6BxeOqYt/c2sF4iHgCyXtSl/P/4vukrcjFE3I8jdYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=duZnd7sJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45A00C4CEF5;
+	Wed,  3 Dec 2025 16:39:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777005;
-	bh=BpUpDgwBS9GDImFe9QJALAG2uDFIMf0nhUhG/vohyXc=;
+	s=korg; t=1764779958;
+	bh=Syh1M6dps5uPFlOKQLAHuihooVn/rYA3lIgwiKs+9N8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k7upv4aIwMD/7qwmBZI4w4K15yxLdg83cbFgI4Ft8d927tQtKzdxycpiK+9Uiov+I
-	 gEwQ4hvIju99ZVozZwn/N3N5QOS0Ermu5DgHQ2HMAfHNFfUpsL4IegchUTl7WGccem
-	 72e8yVFGcH4FzQe6lK+5gY14Etf87ONXoJqvLaSc=
+	b=duZnd7sJCj029dUxnB/L0WD0ZXoc4SvNmJ0IZQDrOJUX0SfeLxXlaIc3lPMvwtEhg
+	 e2GYl1IlPbz8H6CWxNbmj1ylFttZvTOlF4o524S4dAMySgdfC3zERqNJ8FS78ayYgu
+	 RDdQSYcEG0vXHjqSfbCKqO3TsRn/rNrgLCK/Ny44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+	Bui Quang Minh <minhquangbui99@gmail.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Lei Yang <leiyang@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 036/146] mailbox: mailbox-test: Fix debugfs_create_dir error checking
-Date: Wed,  3 Dec 2025 16:26:54 +0100
-Message-ID: <20251203152347.795815257@linuxfoundation.org>
+Subject: [PATCH 6.1 413/568] virtio-net: fix received length check in big packets
+Date: Wed,  3 Dec 2025 16:26:55 +0100
+Message-ID: <20251203152455.818643972@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Bui Quang Minh <minhquangbui99@gmail.com>
 
-[ Upstream commit 3acf1028f5003731977f750a7070f3321a9cb740 ]
+[ Upstream commit 0c716703965ffc5ef4311b65cb5d84a703784717 ]
 
-The debugfs_create_dir() function returns ERR_PTR() on error, not NULL.
-The current null-check fails to catch errors.
+Since commit 4959aebba8c0 ("virtio-net: use mtu size as buffer length
+for big packets"), when guest gso is off, the allocated size for big
+packets is not MAX_SKB_FRAGS * PAGE_SIZE anymore but depends on
+negotiated MTU. The number of allocated frags for big packets is stored
+in vi->big_packets_num_skbfrags.
 
-Use IS_ERR() to correctly check for errors.
+Because the host announced buffer length can be malicious (e.g. the host
+vhost_net driver's get_rx_bufs is modified to announce incorrect
+length), we need a check in virtio_net receive path. Currently, the
+check is not adapted to the new change which can lead to NULL page
+pointer dereference in the below while loop when receiving length that
+is larger than the allocated one.
 
-Fixes: 8ea4484d0c2b ("mailbox: Add generic mechanism for testing Mailbox Controllers")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+This commit fixes the received length check corresponding to the new
+change.
+
+Fixes: 4959aebba8c0 ("virtio-net: use mtu size as buffer length for big packets")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Tested-by: Lei Yang <leiyang@redhat.com>
+Link: https://patch.msgid.link/20251030144438.7582-1-minhquangbui99@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ adapted page_to_skb() call ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mailbox/mailbox-test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/virtio_net.c |   26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
-index c9dd8c42c0cdf..3a28ab5c42e57 100644
---- a/drivers/mailbox/mailbox-test.c
-+++ b/drivers/mailbox/mailbox-test.c
-@@ -268,7 +268,7 @@ static int mbox_test_add_debugfs(struct platform_device *pdev,
- 		return 0;
- 
- 	tdev->root_debugfs_dir = debugfs_create_dir(dev_name(&pdev->dev), NULL);
--	if (!tdev->root_debugfs_dir) {
-+	if (IS_ERR(tdev->root_debugfs_dir)) {
- 		dev_err(&pdev->dev, "Failed to create Mailbox debugfs\n");
- 		return -EINVAL;
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -542,17 +542,6 @@ static struct sk_buff *page_to_skb(struc
+ 		goto ok;
  	}
--- 
-2.51.0
-
+ 
+-	/*
+-	 * Verify that we can indeed put this data into a skb.
+-	 * This is here to handle cases when the device erroneously
+-	 * tries to receive more than is possible. This is usually
+-	 * the case of a broken device.
+-	 */
+-	if (unlikely(len > MAX_SKB_FRAGS * PAGE_SIZE)) {
+-		net_dbg_ratelimited("%s: too much data\n", skb->dev->name);
+-		dev_kfree_skb(skb);
+-		return NULL;
+-	}
+ 	BUG_ON(offset >= PAGE_SIZE);
+ 	while (len) {
+ 		unsigned int frag_size = min((unsigned)PAGE_SIZE - offset, len);
+@@ -955,8 +944,19 @@ static struct sk_buff *receive_big(struc
+ 				   struct virtnet_rq_stats *stats)
+ {
+ 	struct page *page = buf;
+-	struct sk_buff *skb =
+-		page_to_skb(vi, rq, page, 0, len, PAGE_SIZE, true, 0, 0);
++	struct sk_buff *skb;
++
++	/* Make sure that len does not exceed the size allocated in
++	 * add_recvbuf_big.
++	 */
++	if (unlikely(len > (vi->big_packets_num_skbfrags + 1) * PAGE_SIZE)) {
++		pr_debug("%s: rx error: len %u exceeds allocated size %lu\n",
++			 dev->name, len,
++			 (vi->big_packets_num_skbfrags + 1) * PAGE_SIZE);
++		goto err;
++	}
++
++	skb = page_to_skb(vi, rq, page, 0, len, PAGE_SIZE, true, 0, 0);
+ 
+ 	stats->bytes += len - vi->hdr_len;
+ 	if (unlikely(!skb))
 
 
 
