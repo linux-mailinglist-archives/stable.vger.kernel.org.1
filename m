@@ -1,79 +1,54 @@
-Return-Path: <stable+bounces-198920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11439C9FE34
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:19:16 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 467D2C9F96E
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:43:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1AA033077E57
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:08:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4BDDB303FA50
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:38:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4D9C34FF49;
-	Wed,  3 Dec 2025 16:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 136CF314B69;
+	Wed,  3 Dec 2025 15:38:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="idWiNWhB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kf6Un2F/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F5BE34F49C;
-	Wed,  3 Dec 2025 16:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA8D230FC1C;
+	Wed,  3 Dec 2025 15:38:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778104; cv=none; b=i/POsD0yLZs0yamCcrO+XiySBkHwK46BHXIAzfHRKm1qdnHIp+djS5lHcAEUuG8VmjO64/2wUpoo2S63RF5XTuZifs6iKqVfm+RH2G14X1qsIzBEBlFm6/VrxGjCt82jddVCSs02HBOjSlRmOin4xQg7TcrXbqB8uT1Sw0qQeCo=
+	t=1764776320; cv=none; b=BJLxW+XACyIq8V/Qm0CVZPVkx43FwOPbsYeeoF/UZEmpGbRRyz0E6jpT7wJqtv6efNVgBeshdPUneR77Jr60/7wOXL02900BV9JHNxx+hgSWP+LcBx56348Jz+0GuQ221iR2DF/9iADtpXADGQNiV7R28IMhXFB0O/vXcMxAdOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778104; c=relaxed/simple;
-	bh=GoUahgCZ2pC+WPHgw+sPS5D9SJ6RyDJtiRPS9xWl5Gg=;
+	s=arc-20240116; t=1764776320; c=relaxed/simple;
+	bh=ukPDtM3v+k1rmtB4KdoDi+PND/LhgcvKs0zV7Tf0OZs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H4F2DCjRa/obuLLPsLkTE0RR36ZRLRPGfo2zyyjcqSaOqWNoYHMNvrgc1YYE3oNOLRGMTSppmZzVasD5HvwU1e6eDwqKVqn8FTQupGj18J6JqJ0zdYGmGvWMy4UvJwdRfw5R6xAGX60TyURyfW2Ne+vaAxnlyuRDnzP32BSCPfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=idWiNWhB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CAA6C4CEF5;
-	Wed,  3 Dec 2025 16:08:23 +0000 (UTC)
+	 MIME-Version; b=gyeNXViQQ3RPekzTv2oT9XBW3k7FG226vCiOn2iVEwe5grZ5Bpukv+7acvFakH8NAKoayPykswx4mIFj7tNjCYLV+4gsKmU1+n8iXioHx2PPucAXqPW9JH1bo3sN8X+EPJYmQvwJt33nTt+4PyF3W+F2+QTTi+idKAuHCXjCA04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kf6Un2F/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AB3DC4CEF5;
+	Wed,  3 Dec 2025 15:38:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778104;
-	bh=GoUahgCZ2pC+WPHgw+sPS5D9SJ6RyDJtiRPS9xWl5Gg=;
+	s=korg; t=1764776320;
+	bh=ukPDtM3v+k1rmtB4KdoDi+PND/LhgcvKs0zV7Tf0OZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=idWiNWhBaNhxktytq1xN5dUY7Hbc7HfNpDWaZpWPZztSVNkFmUCHA0c4Bj5gAZCcN
-	 Q/KiKQ+mxVPsAEPz5TjDM27mq9lvTt4CPZL34p6cvim0td/vFdKGCC1QZWME6zEgCO
-	 fPJx4EVYY7k1YZa2Ll1GrnzL4ZrMi9fRWVugV1aU=
+	b=kf6Un2F/LMJzBQAQsFdZC8YYfuIJ3TC9dVK9osduqRT/H51iRUF1o82r72eFTvI3B
+	 3CnaT0wAbN6Owd6k6qhjfihgZt1U0OI9zH2d44YK10DAtWtVKK+SdG9e3v8hCGt5Aa
+	 xAKyy3QC5toQoVChaiNw9PyMormfTOWD/XoErLhM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	=?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Darren Hart <dvhart@infradead.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Jonas Gottlieb <jonas.gottlieb@stackit.cloud>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Maurice Lambert <mauricelambert434@gmail.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Petr Machata <petrm@nvidia.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Yuyang Huang <yuyanghuang@google.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 202/392] tools bitmap: Add missing asm-generic/bitsperlong.h include
+Subject: [PATCH 5.10 148/300] um: Fix help message for ssl-non-raw
 Date: Wed,  3 Dec 2025 16:25:52 +0100
-Message-ID: <20251203152421.507110253@linuxfoundation.org>
+Message-ID: <20251203152406.100921875@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -83,68 +58,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit f38ce0209ab4553906b44bd1159e35c740a84161 ]
+[ Upstream commit 725e9d81868fcedaeef775948e699955b01631ae ]
 
-small_const_nbits is defined in asm-generic/bitsperlong.h which
-bitmap.h uses but doesn't include causing build failures in some build
-systems. Add the missing #include.
+Add the missing option name in the help message. Additionally,
+switch to __uml_help(), because this is a global option rather
+than a per-channel option.
 
-Note the bitmap.h in tools has diverged from that of the kernel, so no
-changes are made there.
-
-Signed-off-by: Ian Rogers <irogers@google.com>
-Acked-by: Yury Norov <yury.norov@gmail.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: André Almeida <andrealmeid@igalia.com>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Darren Hart <dvhart@infradead.org>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Davidlohr Bueso <dave@stgolabs.net>
-Cc: Ido Schimmel <idosch@nvidia.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: Jason Xing <kerneljasonxing@gmail.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Jonas Gottlieb <jonas.gottlieb@stackit.cloud>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Maurice Lambert <mauricelambert434@gmail.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Petr Machata <petrm@nvidia.com>
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Yuyang Huang <yuyanghuang@google.com>
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/include/linux/bitmap.h | 1 +
- 1 file changed, 1 insertion(+)
+ arch/um/drivers/ssl.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/tools/include/linux/bitmap.h b/tools/include/linux/bitmap.h
-index a83ffdf1e2117..e65a7e84c7541 100644
---- a/tools/include/linux/bitmap.h
-+++ b/tools/include/linux/bitmap.h
-@@ -3,6 +3,7 @@
- #define _PERF_BITOPS_H
- 
- #include <string.h>
-+#include <asm-generic/bitsperlong.h>
- #include <linux/align.h>
- #include <linux/bitops.h>
- #include <stdlib.h>
+diff --git a/arch/um/drivers/ssl.c b/arch/um/drivers/ssl.c
+index 6476b28d7c5ec..63da74e3f2776 100644
+--- a/arch/um/drivers/ssl.c
++++ b/arch/um/drivers/ssl.c
+@@ -202,4 +202,7 @@ static int ssl_non_raw_setup(char *str)
+ 	return 1;
+ }
+ __setup("ssl-non-raw", ssl_non_raw_setup);
+-__channel_help(ssl_non_raw_setup, "set serial lines to non-raw mode");
++__uml_help(ssl_non_raw_setup,
++"ssl-non-raw\n"
++"    Set serial lines to non-raw mode.\n\n"
++);
 -- 
 2.51.0
 
