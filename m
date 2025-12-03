@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 484B0CA0F8D
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:29:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60363CA0E7C
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:21:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4C7C231BCE91
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:27:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 66B4533C7DC1
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:18:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCA73363C60;
-	Wed,  3 Dec 2025 16:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8532E3624A4;
+	Wed,  3 Dec 2025 16:52:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sN38wBhR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BswQRcVJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8444B3557F5;
-	Wed,  3 Dec 2025 16:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41D0F34F492;
+	Wed,  3 Dec 2025 16:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764781036; cv=none; b=asr7H3DcD0hpBL5SsDtdvHeNjAV/taSgaaDkqpN5HGtuyT81oWNGRxuQUXUK/m/yJlPwBH5bKOtMgpabVuhveC68vBpdwMqrOR/XkyxqdqALPMgbMIos3bKH2cQsXRRFCeFCL4DEkPinEgyvVEPfeLF+yioBMMxGF4OOthfAnw0=
+	t=1764780770; cv=none; b=MOSKxDuUIYSgBaNM4nLtFNCAOGzuQ5BEX/vJxWAytGE9JnUlE2rQd69nYh+Fs5YxXCVK5dIdZYn5MkDV7qbbroJ0Ibo/HkWflzqy2V62FGEK1tFxJd6yrmfP4CH+gO4exR37EWnDZJOgJ1SrFK4dQ7r/9BLLv2/Cpb48lh9AHH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764781036; c=relaxed/simple;
-	bh=9eg8OXx5k/eNTU2hf74JMDzBntQGgRsqAs1d/4IDNhg=;
+	s=arc-20240116; t=1764780770; c=relaxed/simple;
+	bh=ln6o8Q4SguIAz7CK36hZar5UyIzjFdh0m87wKOyvS3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WdZy6jIj1s/mG60W2vbwio8aKszwnRkR4ScYpcoQw5aGHsWdHmgGVH7Z7bHeRmr+brUE9NXyYBiaSUOa7FlM5drVFw5vXesmAD10lDbEG/jUkuADYE3RnQL9kZBDF6ozePIbelEKC9HnpRTZcVyLXIz/Cd6IiaD7RjLrIEJ69dE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sN38wBhR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07A93C4CEF5;
-	Wed,  3 Dec 2025 16:57:15 +0000 (UTC)
+	 MIME-Version; b=fWe4lRKRJikiBD5JzuKLbYewV1GYwqfGDllVmURwMfAZRFB8m00rnQszlBw00+/YpFatXjeoGlvjpXd4WY8GULBf4kGbQ04O3q4FJJdKlx+S4+OrHL+oCZKPLNVMTVX6jYR57REqZeAQB10PkQKbX8hUoORlaV0fg/zYz6gccXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BswQRcVJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 640F4C4CEF5;
+	Wed,  3 Dec 2025 16:52:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764781036;
-	bh=9eg8OXx5k/eNTU2hf74JMDzBntQGgRsqAs1d/4IDNhg=;
+	s=korg; t=1764780768;
+	bh=ln6o8Q4SguIAz7CK36hZar5UyIzjFdh0m87wKOyvS3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sN38wBhRnQbC7AQkU4vWxGRmoxW/iuOpQ0ekBfad3Hc1e1zDlxz9N5GlAXjaYlyVN
-	 nb2ueu6qN9pGXsyRk1xbaAqbVUX47/y21xfK0plthiNXVYP26fzwAwVkFOKgggIOgH
-	 LrXgxSqRsGwAC0uJJ3GRUuQFA3nueLSYJzq6SrPI=
+	b=BswQRcVJE/byBkeUmaUL89ysCC6C8w2VkFdLRywAZzqws8u6hr7jCXy4ylFvuAzuh
+	 L/0uF/qYyWO1qJcz2KAVU1a3PZVnJVEhfjkXFKhKVZP0mrF+LueXbYntD8Q5ayqQPF
+	 6AG0NuQMEAIc3w9N7u6CPq1v2Duj/XdHVFu08e+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 30/93] spi: spi-mem: Add a new controller capability
+	Filip Pokryvka <fpokryvk@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 084/132] mptcp: clear scheduled subflows on retransmit
 Date: Wed,  3 Dec 2025 16:29:23 +0100
-Message-ID: <20251203152337.630454626@linuxfoundation.org>
+Message-ID: <20251203152346.406433891@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +61,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 1248c9b8d54120950fda10fbeb98fb8932b4d45c ]
+commit 27fd02860164bfa78cec2640dfad630d832e302c upstream.
 
-There are spi devices with multiple frequency limitations depending on
-the invoked command. We probably do not want to afford running at the
-lowest supported frequency all the time, so if we want to get the most
-of our hardware, we need to allow per-operation frequency limitations.
+When __mptcp_retrans() kicks-in, it schedules one or more subflows for
+retransmission, but such subflows could be actually left alone if there
+is no more data to retransmit and/or in case of concurrent fallback.
 
-Among all the SPI memory controllers, I believe all are capable of
-changing the spi frequency on the fly. Some of the drivers do not make
-any frequency setup though. And some others will derive a per chip
-prescaler value which will be used forever.
+Scheduled subflows could be processed much later in time, i.e. when new
+data will be transmitted, leading to bad subflow selection.
 
-Actually changing the frequency on the fly is something new in Linux, so
-we need to carefully flag the drivers which do and do not support it. A
-controller capability is created for that, and the presence for this
-capability will always be checked before accepting such pattern.
+Explicitly clear all scheduled subflows before leaving the
+retransmission function.
 
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Link: https://patch.msgid.link/20241224-winbond-6-11-rc1-quad-support-v2-2-ad218dbc406f@bootlin.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 40ad64ac25bb ("spi: nxp-fspi: Propagate fwnode in ACPI case as well")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ee2708aedad0 ("mptcp: use get_retrans wrapper")
+Cc: stable@vger.kernel.org
+Reported-by: Filip Pokryvka <fpokryvk@redhat.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251125-net-mptcp-clear-sched-rtx-v1-1-1cea4ad2165f@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-mem.c       | 6 ++++++
- include/linux/spi/spi-mem.h | 2 ++
- 2 files changed, 8 insertions(+)
+ net/mptcp/protocol.c |   13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-index b73a659e268d6..c581aa5fbf7cf 100644
---- a/drivers/spi/spi-mem.c
-+++ b/drivers/spi/spi-mem.c
-@@ -191,6 +191,12 @@ bool spi_mem_default_supports_op(struct spi_mem *mem,
- 	    op->max_freq < mem->spi->controller->min_speed_hz)
- 		return false;
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2721,7 +2721,7 @@ static void __mptcp_retrans(struct sock
+ 		}
  
-+	if (op->max_freq &&
-+	    op->max_freq < mem->spi->max_speed_hz) {
-+		if (!spi_mem_controller_is_capable(ctlr, per_op_freq))
-+			return false;
-+	}
+ 		if (!mptcp_send_head(sk))
+-			return;
++			goto clear_scheduled;
+ 
+ 		goto reset_timer;
+ 	}
+@@ -2752,7 +2752,7 @@ static void __mptcp_retrans(struct sock
+ 			if (__mptcp_check_fallback(msk)) {
+ 				spin_unlock_bh(&msk->fallback_lock);
+ 				release_sock(ssk);
+-				return;
++				goto clear_scheduled;
+ 			}
+ 
+ 			while (info.sent < info.limit) {
+@@ -2784,6 +2784,15 @@ reset_timer:
+ 
+ 	if (!mptcp_rtx_timer_pending(sk))
+ 		mptcp_reset_rtx_timer(sk);
 +
- 	return spi_mem_check_buswidth(mem, op);
++clear_scheduled:
++	/* If no rtx data was available or in case of fallback, there
++	 * could be left-over scheduled subflows; clear them all
++	 * or later xmit could use bad ones
++	 */
++	mptcp_for_each_subflow(msk, subflow)
++		if (READ_ONCE(subflow->scheduled))
++			mptcp_subflow_set_scheduled(subflow, false);
  }
- EXPORT_SYMBOL_GPL(spi_mem_default_supports_op);
-diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
-index cceebf8c78ba9..6bd0b548bd1e9 100644
---- a/include/linux/spi/spi-mem.h
-+++ b/include/linux/spi/spi-mem.h
-@@ -309,11 +309,13 @@ struct spi_controller_mem_ops {
-  * @ecc: Supports operations with error correction
-  * @swap16: Supports swapping bytes on a 16 bit boundary when configured in
-  *	    Octal DTR
-+ * @per_op_freq: Supports per operation frequency switching
-  */
- struct spi_controller_mem_caps {
- 	bool dtr;
- 	bool ecc;
- 	bool swap16;
-+	bool per_op_freq;
- };
  
- #define spi_mem_controller_is_capable(ctlr, cap)	\
--- 
-2.51.0
-
+ /* schedule the timeout timer for the relevant event: either close timeout
 
 
 
