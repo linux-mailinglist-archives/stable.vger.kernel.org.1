@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EA50CA0D15
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:12:14 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 261CBCA0622
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:23:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 044B732D4873
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:08:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 006CF3001529
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:23:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47A7F364EB1;
-	Wed,  3 Dec 2025 16:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D6C9339B4D;
+	Wed,  3 Dec 2025 15:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZkVouKS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2SJrnDfd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02C45364EAA;
-	Wed,  3 Dec 2025 16:45:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE8723385BC;
+	Wed,  3 Dec 2025 15:55:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780314; cv=none; b=HcjtoQNd1GhHm2BhMk2tlH4fTnXk2+kElOwV3qKs7peu19kTTn9CrJb67pYjYfI7mq2cYWvzISScnn1mKGX/IceEbX0mUpmpiGl6NQUQHJiS4LUzjGbyN/95OFoYz2NXSan9UiHll2Bxv/Sf80TPfvkyd81+9QBnpI6rCZ6uOr4=
+	t=1764777330; cv=none; b=sReV+jlK7s616KLi+2EL/OoJrmLlZhoru/CjkBCkErE+y9MH3PL9VGpJfRWu7hnNTD98rQ/a52XL7e48vOlUrwj8EJXTTxpBL3ElWmHNvPUDIW8glPCc4iIgKbFygm1TP51g9jeS83+thDnXFOSSGn6f/52ZQ/RGrd+GT4M/fsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780314; c=relaxed/simple;
-	bh=PCu0P2WUt0kswlqDf8FXhJGSCHie6qbeYBB16rk0vX4=;
+	s=arc-20240116; t=1764777330; c=relaxed/simple;
+	bh=FA1hRlmo8CCbPLSrhUo9U050PhZrJx5XyQIOWlDuOIY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DnJwxWx240l/SD3iVvR/6otUd0W4W9Z3dNTMv5SSd2JYXTDkGvh0WX+EBEcmNens2n28RcU6StjxISnX6jpFcpEr52TlFYSEml8Ss5WHURET4KH7ychwTlY8ovB9Fvmi6GGZLu9oHS5nWE4RiQ5qSLZZKDCpvzPReV5LXmh9qf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZkVouKS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15C73C4CEF5;
-	Wed,  3 Dec 2025 16:45:12 +0000 (UTC)
+	 MIME-Version; b=T/JGQVfyEgzalU/hdaEGEpCBO32ttcg3pe0ZWv605FKkE2TctzXrxoTWDLJb4e9Z3Tw2z70qTSEpAfsmWpEIn5ntJydjm/zEob0WA7MgVDXxcci7hGcXXXQBGcOPUGodOYNRBdz8+phzhQUOO8nr99Dm648N9EBntLW4K9Vxxg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2SJrnDfd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FC9FC4CEF5;
+	Wed,  3 Dec 2025 15:55:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780313;
-	bh=PCu0P2WUt0kswlqDf8FXhJGSCHie6qbeYBB16rk0vX4=;
+	s=korg; t=1764777329;
+	bh=FA1hRlmo8CCbPLSrhUo9U050PhZrJx5XyQIOWlDuOIY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AZkVouKSQ7IvDfkYpMhwzCyNVdA7MoOvhoDBaZ8+sjACEhIOmB0fNRoI/Z7cwXHhX
-	 nOj1VrVQtWNzfnevuul4NSpsfGWV4Y9yInGyEsZwRjCqHBSUpw3UMgCrAZpoWiDCK5
-	 nj82sFJJiu7Jp5LzGTLAcRI6mYM18Aa0/Ik4t1e0=
+	b=2SJrnDfdDlYddxGeQ3o6foNz7NTRsB+qucyGjPpNVVsRhZ3rNgG5BbSXQ+s4x8UnA
+	 lgAkpx1LPG1jXQsCcIdGqAmio21hw7SJkUcYpq96/KcwNCQJFwWLBswX4xQjyPVaVH
+	 +nUFjWtb4PtuZI7B+2U2NyD0fUUwq93RG5su8QJc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 519/568] iio: accel: bmc150: Fix irq assumption regression
-Date: Wed,  3 Dec 2025 16:28:41 +0100
-Message-ID: <20251203152459.722350278@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Jimmy Hu <hhhuuu@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 144/146] usb: gadget: udc: fix use-after-free in usb_gadget_state_work
+Date: Wed,  3 Dec 2025 16:28:42 +0100
+Message-ID: <20251203152351.745214496@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,83 +58,120 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Jimmy Hu <hhhuuu@google.com>
 
-commit 3aa385a9c75c09b59dcab2ff76423439d23673ab upstream.
+[ Upstream commit baeb66fbd4201d1c4325074e78b1f557dff89b5b ]
 
-The code in bmc150-accel-core.c unconditionally calls
-bmc150_accel_set_interrupt() in the iio_buffer_setup_ops,
-such as on the runtime PM resume path giving a kernel
-splat like this if the device has no interrupts:
+A race condition during gadget teardown can lead to a use-after-free
+in usb_gadget_state_work(), as reported by KASAN:
 
-Unable to handle kernel NULL pointer dereference at virtual
-  address 00000001 when read
+  BUG: KASAN: invalid-access in sysfs_notify+0x2c/0xd0
+  Workqueue: events usb_gadget_state_work
 
-PC is at bmc150_accel_set_interrupt+0x98/0x194
-LR is at __pm_runtime_resume+0x5c/0x64
-(...)
-Call trace:
-bmc150_accel_set_interrupt from bmc150_accel_buffer_postenable+0x40/0x108
-bmc150_accel_buffer_postenable from __iio_update_buffers+0xbe0/0xcbc
-__iio_update_buffers from enable_store+0x84/0xc8
-enable_store from kernfs_fop_write_iter+0x154/0x1b4
+The fundamental race occurs because a concurrent event (e.g., an
+interrupt) can call usb_gadget_set_state() and schedule gadget->work
+at any time during the cleanup process in usb_del_gadget().
 
-This bug seems to have been in the driver since the beginning,
-but it only manifests recently, I do not know why.
+Commit 399a45e5237c ("usb: gadget: core: flush gadget workqueue after
+device removal") attempted to fix this by moving flush_work() to after
+device_del(). However, this does not fully solve the race, as a new
+work item can still be scheduled *after* flush_work() completes but
+before the gadget's memory is freed, leading to the same use-after-free.
 
-Store the IRQ number in the state struct, as this is a common
-pattern in other drivers, then use this to determine if we have
-IRQ support or not.
+This patch fixes the race condition robustly by introducing a 'teardown'
+flag and a 'state_lock' spinlock to the usb_gadget struct. The flag is
+set during cleanup in usb_del_gadget() *before* calling flush_work() to
+prevent any new work from being scheduled once cleanup has commenced.
+The scheduling site, usb_gadget_set_state(), now checks this flag under
+the lock before queueing the work, thus safely closing the race window.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 5702f75375aa9 ("usb: gadget: udc-core: move sysfs_notify() to a workqueue")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Jimmy Hu <hhhuuu@google.com>
+Link: https://patch.msgid.link/20251023054945.233861-1-hhhuuu@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/accel/bmc150-accel-core.c |    5 +++++
- drivers/iio/accel/bmc150-accel.h      |    1 +
- 2 files changed, 6 insertions(+)
+ drivers/usb/gadget/udc/core.c |   17 ++++++++++++++++-
+ include/linux/usb/gadget.h    |    5 +++++
+ 2 files changed, 21 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/accel/bmc150-accel-core.c
-+++ b/drivers/iio/accel/bmc150-accel-core.c
-@@ -569,6 +569,10 @@ static int bmc150_accel_set_interrupt(st
- 	const struct bmc150_accel_interrupt_info *info = intr->info;
- 	int ret;
- 
-+	/* We do not always have an IRQ */
-+	if (data->irq <= 0)
-+		return 0;
+--- a/drivers/usb/gadget/udc/core.c
++++ b/drivers/usb/gadget/udc/core.c
+@@ -1126,8 +1126,13 @@ static void usb_gadget_state_work(struct
+ void usb_gadget_set_state(struct usb_gadget *gadget,
+ 		enum usb_device_state state)
+ {
++	unsigned long flags;
 +
- 	if (state) {
- 		if (atomic_inc_return(&intr->users) > 1)
- 			return 0;
-@@ -1756,6 +1760,7 @@ int bmc150_accel_core_probe(struct devic
- 	}
++	spin_lock_irqsave(&gadget->state_lock, flags);
+ 	gadget->state = state;
+-	schedule_work(&gadget->work);
++	if (!gadget->teardown)
++		schedule_work(&gadget->work);
++	spin_unlock_irqrestore(&gadget->state_lock, flags);
+ 	trace_usb_gadget_set_state(gadget, 0);
+ }
+ EXPORT_SYMBOL_GPL(usb_gadget_set_state);
+@@ -1361,6 +1366,8 @@ static void usb_udc_nop_release(struct d
+ void usb_initialize_gadget(struct device *parent, struct usb_gadget *gadget,
+ 		void (*release)(struct device *dev))
+ {
++	spin_lock_init(&gadget->state_lock);
++	gadget->teardown = false;
+ 	INIT_WORK(&gadget->work, usb_gadget_state_work);
+ 	gadget->dev.parent = parent;
  
- 	if (irq > 0) {
-+		data->irq = irq;
- 		ret = devm_request_threaded_irq(dev, irq,
- 						bmc150_accel_irq_handler,
- 						bmc150_accel_irq_thread_handler,
---- a/drivers/iio/accel/bmc150-accel.h
-+++ b/drivers/iio/accel/bmc150-accel.h
-@@ -57,6 +57,7 @@ enum bmc150_accel_trigger_id {
+@@ -1535,6 +1542,7 @@ EXPORT_SYMBOL_GPL(usb_add_gadget_udc);
+ void usb_del_gadget(struct usb_gadget *gadget)
+ {
+ 	struct usb_udc *udc = gadget->udc;
++	unsigned long flags;
  
- struct bmc150_accel_data {
- 	struct regmap *regmap;
-+	int irq;
- 	struct regulator_bulk_data regulators[2];
- 	struct bmc150_accel_interrupt interrupts[BMC150_ACCEL_INTERRUPTS];
- 	struct bmc150_accel_trigger triggers[BMC150_ACCEL_TRIGGERS];
+ 	if (!udc)
+ 		return;
+@@ -1548,6 +1556,13 @@ void usb_del_gadget(struct usb_gadget *g
+ 	kobject_uevent(&udc->dev.kobj, KOBJ_REMOVE);
+ 	sysfs_remove_link(&udc->dev.kobj, "gadget");
+ 	device_del(&gadget->dev);
++	/*
++	 * Set the teardown flag before flushing the work to prevent new work
++	 * from being scheduled while we are cleaning up.
++	 */
++	spin_lock_irqsave(&gadget->state_lock, flags);
++	gadget->teardown = true;
++	spin_unlock_irqrestore(&gadget->state_lock, flags);
+ 	flush_work(&gadget->work);
+ 	ida_free(&gadget_id_numbers, gadget->id_number);
+ 	cancel_work_sync(&udc->vbus_work);
+--- a/include/linux/usb/gadget.h
++++ b/include/linux/usb/gadget.h
+@@ -376,6 +376,9 @@ struct usb_gadget_ops {
+  *	can handle. The UDC must support this and all slower speeds and lower
+  *	number of lanes.
+  * @state: the state we are now (attached, suspended, configured, etc)
++ * @state_lock: Spinlock protecting the `state` and `teardown` members.
++ * @teardown: True if the device is undergoing teardown, used to prevent
++ *	new work from being scheduled during cleanup.
+  * @name: Identifies the controller hardware type.  Used in diagnostics
+  *	and sometimes configuration.
+  * @dev: Driver model state for this abstract device.
+@@ -451,6 +454,8 @@ struct usb_gadget {
+ 	enum usb_ssp_rate		max_ssp_rate;
+ 
+ 	enum usb_device_state		state;
++	spinlock_t			state_lock;
++	bool				teardown;
+ 	const char			*name;
+ 	struct device			dev;
+ 	unsigned			isoch_delay;
 
 
 
