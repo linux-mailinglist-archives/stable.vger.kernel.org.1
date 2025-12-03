@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D9BDCA0658
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:24:14 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBC4EC9F79A
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:32:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 34638301176C
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:09:02 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CFC2F30039F7
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:32:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A16435F8B6;
-	Wed,  3 Dec 2025 16:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0068F30AAD0;
+	Wed,  3 Dec 2025 15:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FmWYBng3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HCL+x3bS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F29E33E37D;
-	Wed,  3 Dec 2025 16:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C164630EF76;
+	Wed,  3 Dec 2025 15:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779267; cv=none; b=WmmUzORqkwfST7GAKka28EmbTXSGMqs3AXovb4nTAR5CFbTJiEQJO1DYJwhAs7u1qxcDi7nGyCXUZhHN9kQd+RafYXCDQE0AfGglijkAKaSezfKRyjkID6hi+IGLCn0OWjNu8JUBxrySP2zwJCL1foaKZMUW512U1LbXmH5RCQ8=
+	t=1764775918; cv=none; b=AAy7zBlNtaAX+XKkTFDU87UJVM5EqbsinBPtpOLJowTdYjce/FdAgh9DZ/A2dwx+KsfVDLkNW6UpcWlOXq3HDIhwIsEm/OVytplA2yXSpz7Ikt+xg0gHrZYc0CGGI3GrpjKRnJeHZVCk0hE09EFLCzNg3IfaBe4WAyL0czx/mk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779267; c=relaxed/simple;
-	bh=8xrwT4TnMO/MUdPsRQh7+5RGmM7QBDW3Qelqa/6WbkE=;
+	s=arc-20240116; t=1764775918; c=relaxed/simple;
+	bh=uh9f0c1TyYWMEjoe7qpoVs4LwHp98qtZWLFZl86ylRs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ctk6mp4I/dwYsMWYqeB27Ozc+dm8a1aH42m7dS53b6zo7wC1FKU46nNOczUZwcL8Q9c/r4ZvpPHHhRGRCN1k3W58r1BwOaNH4mbx+lmbxkQCv95wXtiirNVUw2l6WwhXP6Gz3KXVXyC1exFjJ7QsZ/PW0X4Fwz7uQ8cwNQoNZ4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FmWYBng3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73E6FC4CEF5;
-	Wed,  3 Dec 2025 16:27:46 +0000 (UTC)
+	 MIME-Version; b=s9a8JFibah0b25qvHft2XYx8w4IQHpBsuIQvVIfzPINhEY2WWEIe1OhO64l0jgi68q3Zra79WLRHaZeKMCjoD20/1xtNNya7gZD1foqCsDm45cughSgehI4q6365vk7KhEg1kNzyBH+1AUtYDRLKmuED5dss9JfNaRBdHRHoMUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HCL+x3bS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85A44C4CEF5;
+	Wed,  3 Dec 2025 15:31:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779266;
-	bh=8xrwT4TnMO/MUdPsRQh7+5RGmM7QBDW3Qelqa/6WbkE=;
+	s=korg; t=1764775917;
+	bh=uh9f0c1TyYWMEjoe7qpoVs4LwHp98qtZWLFZl86ylRs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FmWYBng3suO3v4jAeOjJ4T8kHdd8MOX8/G8BodbJaMxeN6qbCm6ya8pLosnQMCyQG
-	 G0W5poZr95dAcC9hAem7toTye/frCLaPJvWBpE0ZSpvys0A+hBuLzDngXoW+BGXhyv
-	 +BunPs5NXGYMiuSXGSsEObFAEa4Qi5wgGas8hRHI=
+	b=HCL+x3bSQloUy49RuCof+/ydBvpWViv9+Clx0CETcGbUnhp39/Qp6ziispmZoFd52
+	 lIg/AbOq4rCwqiWcjJejcGJl3flPXlRTpe6hYY2MYsZzvFCYW39MM9ObBeN1wc/RPk
+	 MtgpFYSJNcw09OvMP1I6fwAwl88g7aRZfcM1qPlU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 205/568] media: i2c: og01a1b: Specify monochrome media bus format instead of Bayer
-Date: Wed,  3 Dec 2025 16:23:27 +0100
-Message-ID: <20251203152448.234405731@linuxfoundation.org>
+Subject: [PATCH 5.10 004/300] btrfs: use smp_mb__after_atomic() when forcing COW in create_pending_snapshot()
+Date: Wed,  3 Dec 2025 16:23:28 +0100
+Message-ID: <20251203152400.621967942@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +60,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit bfbd5aa5347fbd11ade188b316b800bfb27d9e22 ]
+[ Upstream commit 45c222468d33202c07c41c113301a4b9c8451b8f ]
 
-The OmniVision OG01A1B image sensor is a monochrome sensor, it supports
-8-bit and 10-bit RAW output formats only.
+After setting the BTRFS_ROOT_FORCE_COW flag on the root we are doing a
+full write barrier, smp_wmb(), but we don't need to, all we need is a
+smp_mb__after_atomic().  The use of the smp_wmb() is from the old days
+when we didn't use a bit and used instead an int field in the root to
+signal if cow is forced. After the int field was changed to a bit in
+the root's state (flags field), we forgot to update the memory barrier
+in create_pending_snapshot() to smp_mb__after_atomic(), but we did the
+change in commit_fs_roots() after clearing BTRFS_ROOT_FORCE_COW. That
+happened in commit 27cdeb7096b8 ("Btrfs: use bitfield instead of integer
+data type for the some variants in btrfs_root"). On the reader side, in
+should_cow_block(), we also use the counterpart smp_mb__before_atomic()
+which generates further confusion.
 
-That said the planar greyscale Y8/Y10 media formats are more appropriate
-for the sensor instead of the originally and arbitrary selected SGRBG one,
-since there is no red, green or blue color components.
+So change the smp_wmb() to smp_mb__after_atomic(). In fact we don't
+even need any barrier at all since create_pending_snapshot() is called
+in the critical section of a transaction commit and therefore no one
+can concurrently join/attach the transaction, or start a new one, until
+the transaction is unblocked. By the time someone starts a new transaction
+and enters should_cow_block(), a lot of implicit memory barriers already
+took place by having acquired several locks such as fs_info->trans_lock
+and extent buffer locks on the root node at least. Nevertlheless, for
+consistency use smp_mb__after_atomic() after setting the force cow bit
+in create_pending_snapshot().
 
-Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/og01a1b.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/btrfs/transaction.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/i2c/og01a1b.c b/drivers/media/i2c/og01a1b.c
-index 35663c10fcd9f..0ceb46d947a16 100644
---- a/drivers/media/i2c/og01a1b.c
-+++ b/drivers/media/i2c/og01a1b.c
-@@ -676,7 +676,7 @@ static void og01a1b_update_pad_format(const struct og01a1b_mode *mode,
- {
- 	fmt->width = mode->width;
- 	fmt->height = mode->height;
--	fmt->code = MEDIA_BUS_FMT_SGRBG10_1X10;
-+	fmt->code = MEDIA_BUS_FMT_Y10_1X10;
- 	fmt->field = V4L2_FIELD_NONE;
- }
+diff --git a/fs/btrfs/transaction.c b/fs/btrfs/transaction.c
+index f68cfcc1f8300..d558f354b8b82 100644
+--- a/fs/btrfs/transaction.c
++++ b/fs/btrfs/transaction.c
+@@ -1660,7 +1660,7 @@ static noinline int create_pending_snapshot(struct btrfs_trans_handle *trans,
+ 	}
+ 	/* see comments in should_cow_block() */
+ 	set_bit(BTRFS_ROOT_FORCE_COW, &root->state);
+-	smp_wmb();
++	smp_mb__after_atomic();
  
-@@ -867,7 +867,7 @@ static int og01a1b_enum_mbus_code(struct v4l2_subdev *sd,
- 	if (code->index > 0)
- 		return -EINVAL;
- 
--	code->code = MEDIA_BUS_FMT_SGRBG10_1X10;
-+	code->code = MEDIA_BUS_FMT_Y10_1X10;
- 
- 	return 0;
- }
-@@ -879,7 +879,7 @@ static int og01a1b_enum_frame_size(struct v4l2_subdev *sd,
- 	if (fse->index >= ARRAY_SIZE(supported_modes))
- 		return -EINVAL;
- 
--	if (fse->code != MEDIA_BUS_FMT_SGRBG10_1X10)
-+	if (fse->code != MEDIA_BUS_FMT_Y10_1X10)
- 		return -EINVAL;
- 
- 	fse->min_width = supported_modes[fse->index].width;
+ 	btrfs_set_root_node(new_root_item, tmp);
+ 	/* record when the snapshot was created in key.offset */
 -- 
 2.51.0
 
