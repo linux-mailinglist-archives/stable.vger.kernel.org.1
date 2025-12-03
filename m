@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-199536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EAB8CA02AC
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:52:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6273AC9FA9F
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:50:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F31C63073E27
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:42:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1968B3007C68
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:43:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3501335C18F;
-	Wed,  3 Dec 2025 16:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 868B73176EE;
+	Wed,  3 Dec 2025 15:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MAaBLspU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AA2UIcse"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD47835BDB4;
-	Wed,  3 Dec 2025 16:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426B3316184;
+	Wed,  3 Dec 2025 15:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780123; cv=none; b=DQyJzpSEU0s6azjIo6kiGahOdt9Lr0p0KHAAvIQQazSGJxI5PrNMEO26JBtUr8U2RnpuaFIFL+hr2irff+ScOHmDbxBRgOthA1yXsAr66vyc0vasc66Tgt+EeGSCgwMTHm94RXIj3gxE7IVonmM7oxXNSJITS1VVjord8Dd2i5s=
+	t=1764776590; cv=none; b=muSoU+hsKg0sDnxsxbHkPDPtc3l8e2tLkPFuPR28fZhqG2Qwov/co5TvsM3iCYAH/MzkBUeC8FVWBuoF6NrrI5xTaqyCFCEmflknZglvW+WFfWtcdJaPb7zI2ifQ5Hg/dImSlEOJHu+8B0ahagmOZnbrGJRsfr229pIzCeYbULE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780123; c=relaxed/simple;
-	bh=WhY7CBnZjYt09WFMw+lNzb0XTWJTaC+aKhXZKz0+XT8=;
+	s=arc-20240116; t=1764776590; c=relaxed/simple;
+	bh=r8czQAAq2tW03GMzoyhNzYG9PDgLTqUKNp/pV+3vmE0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bG8/soy50Kt0Q5hMeh4Bwn3oVmgPyZloriU05ha+M2HcWbghTkeS8q+/V+30iPVKDJM+nEUBRlSghEL4hXlOKQp7pzIPDykw60GEr+rms7n2T7CjsX2cMYaPoxQRwcOMUBnMJc+JI1KM5FMTxZ4BHZdn/yi+hL1rgLOg/oBfwxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MAaBLspU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 217BAC4CEF5;
-	Wed,  3 Dec 2025 16:42:01 +0000 (UTC)
+	 MIME-Version; b=uJNYE1egf6EpI3rm+IuVL6n+rZ5ICDpadYs90AL23JxsV2N9s+u0N5LdDKmQl6SlAMUwI/OleKD9JPjNn3ZTbGtAlpXrto+7p1xWKTyOiciFjRFbIMOxiVjymXYk3Ru1sUvD5mKrYhAj3OqtTVKAx3jC1v/Tx29Uxq+Ye5Tvpig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AA2UIcse; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3BE8C4CEF5;
+	Wed,  3 Dec 2025 15:43:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780122;
-	bh=WhY7CBnZjYt09WFMw+lNzb0XTWJTaC+aKhXZKz0+XT8=;
+	s=korg; t=1764776590;
+	bh=r8czQAAq2tW03GMzoyhNzYG9PDgLTqUKNp/pV+3vmE0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MAaBLspUjTQ+VLkvWCPvXjewzIUi21PxneBySmznnqgk+UW6jp7ZNSLm1XI3A9EdD
-	 aMES6rFnFnN1RAGRXzGD+lJUz8jv7DAYHDJDEPGA9qUJGNhYolLAXB29aT6f0DNScU
-	 3gmB9PlJXZDDgBN0XBC9837DbG0S5R+RcMqf5Qv8=
+	b=AA2UIcsew4t+su10cVk+yqQpwFDecl8cFwwN/akrCSzIQGoBoOCslUnilxwoSZZpQ
+	 aU8tB8KIuPo7isZofp6EDTAGS0M4TFcd6mmC5UXdilGZrpDjQKFCkUrG1ja5+E8C0B
+	 7791t4M/KJPwYdqemWZ6PJ/BpMAmGgkMLUoDS1rA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.1 430/568] mtdchar: fix integer overflow in read/write ioctls
+	Aswin Karuvally <aswin@linux.ibm.com>,
+	Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 228/300] s390/ctcm: Fix double-kfree
 Date: Wed,  3 Dec 2025 16:27:12 +0100
-Message-ID: <20251203152456.443761474@linuxfoundation.org>
+Message-ID: <20251203152409.073265690@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,67 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>
 
-commit e4185bed738da755b191aa3f2e16e8b48450e1b8 upstream.
+[ Upstream commit da02a1824884d6c84c5e5b5ac373b0c9e3288ec2 ]
 
-The "req.start" and "req.len" variables are u64 values that come from the
-user at the start of the function.  We mask away the high 32 bits of
-"req.len" so that's capped at U32_MAX but the "req.start" variable can go
-up to U64_MAX which means that the addition can still integer overflow.
+The function 'mpc_rcvd_sweep_req(mpcginfo)' is called conditionally
+from function 'ctcmpc_unpack_skb'. It frees passed mpcginfo.
+After that a call to function 'kfree' in function 'ctcmpc_unpack_skb'
+frees it again.
 
-Use check_add_overflow() to fix this bug.
+Remove 'kfree' call in function 'mpc_rcvd_sweep_req(mpcginfo)'.
 
-Fixes: 095bb6e44eb1 ("mtdchar: add MEMREAD ioctl")
-Fixes: 6420ac0af95d ("mtdchar: prevent unbounded allocation in MEMWRITE ioctl")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Bug detected by the clang static analyzer.
+
+Fixes: 0c0b20587b9f25a2 ("s390/ctcm: fix potential memory leak")
+Reviewed-by: Aswin Karuvally <aswin@linux.ibm.com>
+Signed-off-by: Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>
+Signed-off-by: Aswin Karuvally <aswin@linux.ibm.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251112182724.1109474-1-aswin@linux.ibm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/mtdchar.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/s390/net/ctcm_mpc.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/mtd/mtdchar.c
-+++ b/drivers/mtd/mtdchar.c
-@@ -599,6 +599,7 @@ mtdchar_write_ioctl(struct mtd_info *mtd
- 	uint8_t *datbuf = NULL, *oobbuf = NULL;
- 	size_t datbuf_len, oobbuf_len;
- 	int ret = 0;
-+	u64 end;
+diff --git a/drivers/s390/net/ctcm_mpc.c b/drivers/s390/net/ctcm_mpc.c
+index 20a6097e1b204..4e6f340d09261 100644
+--- a/drivers/s390/net/ctcm_mpc.c
++++ b/drivers/s390/net/ctcm_mpc.c
+@@ -712,7 +712,6 @@ static void mpc_rcvd_sweep_req(struct mpcg_info *mpcginfo)
  
- 	if (copy_from_user(&req, argp, sizeof(req)))
- 		return -EFAULT;
-@@ -618,7 +619,7 @@ mtdchar_write_ioctl(struct mtd_info *mtd
- 	req.len &= 0xffffffff;
- 	req.ooblen &= 0xffffffff;
+ 	grp->sweep_req_pend_num--;
+ 	ctcmpc_send_sweep_resp(ch);
+-	kfree(mpcginfo);
+ 	return;
+ }
  
--	if (req.start + req.len > mtd->size)
-+	if (check_add_overflow(req.start, req.len, &end) || end > mtd->size)
- 		return -EINVAL;
- 
- 	datbuf_len = min_t(size_t, req.len, mtd->erasesize);
-@@ -698,6 +699,7 @@ mtdchar_read_ioctl(struct mtd_info *mtd,
- 	size_t datbuf_len, oobbuf_len;
- 	size_t orig_len, orig_ooblen;
- 	int ret = 0;
-+	u64 end;
- 
- 	if (copy_from_user(&req, argp, sizeof(req)))
- 		return -EFAULT;
-@@ -724,7 +726,7 @@ mtdchar_read_ioctl(struct mtd_info *mtd,
- 	req.len &= 0xffffffff;
- 	req.ooblen &= 0xffffffff;
- 
--	if (req.start + req.len > mtd->size) {
-+	if (check_add_overflow(req.start, req.len, &end) || end > mtd->size) {
- 		ret = -EINVAL;
- 		goto out;
- 	}
+-- 
+2.51.0
+
 
 
 
