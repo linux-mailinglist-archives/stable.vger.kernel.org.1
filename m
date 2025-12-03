@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-198592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31534CA15AF
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:23:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03ED8CA0E3D
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:19:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1D4893029C68
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:53:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0BB7232A95CC
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:16:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F43332E737;
-	Wed,  3 Dec 2025 15:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A2A835A94B;
+	Wed,  3 Dec 2025 16:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OMFQLieR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M3IxpqMC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB9432E692;
-	Wed,  3 Dec 2025 15:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D717735A940;
+	Wed,  3 Dec 2025 16:41:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777052; cv=none; b=QOsuSLhBE76w0SL0lT3UtJ2lCQ/g1xxzjDRJ0n9fRKcsHtcfQ1X2G8/PgukMGI+K1PuqSv0OKHDZ+swCXGdt0nDfAvfX/dJhTD+S/qlYEfUENM/pLJipJbwECN8p5mYwTFE0+Ee6Q0jItQXRrrJssehCV8V0Roig5K/j4R1W+d8=
+	t=1764780060; cv=none; b=V8I2OPiwuciqDTx7SqUXEzooFcthHPHs0lcWnYrUSHpniQefPpiiNEj/6JFvSZva6oR0NxByulIyB01tx1Wy+BmenL+NafqXrD8BHj3yAJTKxKh80eEnaHUJ//Rke9Jnxd72GVgRxr531iyto8TTOI4J8fFYfZhfutKQ88TMHdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777052; c=relaxed/simple;
-	bh=hyGgJ+8kTwEsuHBwCPoUyjZnjvRg8fdxUk3hPSdrYPM=;
+	s=arc-20240116; t=1764780060; c=relaxed/simple;
+	bh=fss6q06xY/fteH91S10K8WtvyKpiuuYec7KruOb1qvA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pd4yZBa2LivtLAGN3decS4HC0ROipfUPo/T80eePqz77s8SFqMiq0W+ZzC+rDafJJaf2hK5Kt2WT4E6glrHgiyKuN9Mnl7h9Am0B83b7lsVDM57NIZt7IcAcosS9QaT1cZQeDnILgZa8ujBOhtZhk3MkBXdSSR+n3+SPIyD5Y2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OMFQLieR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62DAAC4CEF5;
-	Wed,  3 Dec 2025 15:50:51 +0000 (UTC)
+	 MIME-Version; b=n8pEq5DMYI4pC4uZZw0GiJERCTJbCXeKrwZDpTUhUXA4MddeP6Cz6EHCoZ2lF6BD6j+OeiGRYb3C7Ev16Xmtg9jd1MB7ZG/DS0BnQiUf46km0Rw3b8OjiugMI9vPhbpdTSdpCxBKEFVnGYuG6hfaVLnjopkCU3dzbURan1W1/9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M3IxpqMC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4022C4CEF5;
+	Wed,  3 Dec 2025 16:40:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777052;
-	bh=hyGgJ+8kTwEsuHBwCPoUyjZnjvRg8fdxUk3hPSdrYPM=;
+	s=korg; t=1764780060;
+	bh=fss6q06xY/fteH91S10K8WtvyKpiuuYec7KruOb1qvA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OMFQLieRHqOyTT/Sn0B8T/25Uh589s1Wc5g/XpqQD4RAJYp81Gt1RjQNnINEgH6tE
-	 RRx+m4bx9AHb3HW1TOAU5nXgEMNq8ExFd9LysRbd0FPFr32hinRwD2rc2UoBmV4Akf
-	 KlL1Uo49KnkcKdlO1D8Kwce4mnmy4nH9EDGFuamw=
+	b=M3IxpqMC+qGsWfPiSgI/9iXhz9jDzhBSrjc1seLGoLFJ6huGoEvKTa0qNvLM7F8K0
+	 fyE9+tAvc6WWxQT5MepAEzxDF/HL7UjKUFm4kcaimxDmQy/ZKP9+yxIfjMSQZSeA1i
+	 ZW8/0ZQrZ1Ra8szhqEQn26bSzNHMWk3CGRWUIgrM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.17 066/146] iio: adc: ad7124: fix temperature channel
-Date: Wed,  3 Dec 2025 16:27:24 +0100
-Message-ID: <20251203152348.882862864@linuxfoundation.org>
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.1 443/568] LoongArch: Dont panic if no valid cache info for PCI
+Date: Wed,  3 Dec 2025 16:27:25 +0100
+Message-ID: <20251203152456.923637505@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,70 +57,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit e2cc390a6629c76924a2740c54b144b9b28fca59 upstream.
+commit a6b533adfc05ba15360631e019d3e18275080275 upstream.
 
-Fix temperature channel not working due to gain and offset not being
-initialized.  For channels other than the voltage ones calibration is
-skipped (which is OK).  However that results in the calibration register
-values tracked in st->channels[i].cfg all being zero.  These zeros are
-later written to hardware before a measurement is made which caused the
-raw temperature readings to be always 8388608 (0x800000).
+If there is no valid cache info detected (may happen in virtual machine)
+for pci_dfl_cache_line_size, kernel shouldn't panic. Because in the PCI
+core it will be evaluated to (L1_CACHE_BYTES >> 2).
 
-To fix it, we just make sure the gain and offset values are set to the
-default values and still return early without doing an internal
-calibration.
-
-While here, add a comment explaining why we don't bother calibrating
-the temperature channel.
-
-Fixes: 47036a03a303 ("iio: adc: ad7124: Implement internal calibration at probe time")
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ad7124.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ arch/loongarch/pci/pci.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/iio/adc/ad7124.c
-+++ b/drivers/iio/adc/ad7124.c
-@@ -1196,10 +1196,6 @@ static int __ad7124_calibrate_all(struct
- 	int ret, i;
+--- a/arch/loongarch/pci/pci.c
++++ b/arch/loongarch/pci/pci.c
+@@ -51,11 +51,11 @@ static int __init pcibios_init(void)
+ 	 */
+ 	lsize = cpu_last_level_cache_line_size();
  
- 	for (i = 0; i < st->num_channels; i++) {
--
--		if (indio_dev->channels[i].type != IIO_VOLTAGE)
--			continue;
--
- 		/*
- 		 * For calibration the OFFSET register should hold its reset default
- 		 * value. For the GAIN register there is no such requirement but
-@@ -1210,6 +1206,14 @@ static int __ad7124_calibrate_all(struct
- 		st->channels[i].cfg.calibration_gain = st->gain_default;
+-	BUG_ON(!lsize);
++	if (lsize) {
++		pci_dfl_cache_line_size = lsize >> 2;
  
- 		/*
-+		 * Only the main voltage input channels are important enough
-+		 * to be automatically calibrated here. For everything else,
-+		 * just use the default values set above.
-+		 */
-+		if (indio_dev->channels[i].type != IIO_VOLTAGE)
-+			continue;
-+
-+		/*
- 		 * Full-scale calibration isn't supported at gain 1, so skip in
- 		 * that case. Note that untypically full-scale calibration has
- 		 * to happen before zero-scale calibration. This only applies to
+-	pci_dfl_cache_line_size = lsize >> 2;
+-
+-	pr_debug("PCI: pci_cache_line_size set to %d bytes\n", lsize);
++		pr_debug("PCI: pci_cache_line_size set to %d bytes\n", lsize);
++	}
+ 
+ 	return 0;
+ }
 
 
 
