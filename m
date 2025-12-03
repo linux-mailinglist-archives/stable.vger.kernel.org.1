@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-198876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A453C9FCB6
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:06:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81050C9F965
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:43:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A7CF630019CA
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:06:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6ED763011A71
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:38:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A1A534F484;
-	Wed,  3 Dec 2025 16:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33716314A9B;
+	Wed,  3 Dec 2025 15:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DFinWtYf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BizK3KhK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16BFA313546;
-	Wed,  3 Dec 2025 16:06:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D906D303A3D;
+	Wed,  3 Dec 2025 15:38:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777962; cv=none; b=A1E+L3jeL4YGwNWXaHp8/na13aZqdL3XeC0aFAw0e/GYCs1JVoLb1crP+807xzXK/01jFXSco7kD3HIDNQqpEN7TicVwdZ8fN7wmXeKf9eQbbu3O2rmp/i3j0bZr1mVKftIJLqbkLiFSyAFlZEp7s3aj92AqVYhO4/Mt8FHuEWY=
+	t=1764776313; cv=none; b=nzPDt5oVxu6VSGcl72wz0rDQ+HfXvTPetSJ72UhPQa9L6BK/WXOI+DuCEydSVcXRr3A8OtsQKXhMXKkziu/UrnMjONyu20tp+kbnc+gzXXxFYXJTSTfgR1VzvLZtj1uUIKBV+bCiAbbhkk5JZ04X5tUG2/jvqG5t5eQTBibaBZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777962; c=relaxed/simple;
-	bh=J9WcuXdTX/fQwOgQ7D1HDy83+VFALy/92eumpBwuWSw=;
+	s=arc-20240116; t=1764776313; c=relaxed/simple;
+	bh=2ubJzb9iMfUUONfnPqWGz4Pg+nxDlSNcoar1JzGCdUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MewBlHiTDBGIgvXO68EEIOyqDg48gTYmSXR+wW9LmYs08G95/8VFc8Dp6Wyc2GRW6qUD6j1PX4QofdVwDjJDB0e6Mfea+DIkZslrSEVjRQSepvRrSZKslBE+ivXMkQ79bgORw26qU7H42QBMHPtSm5RdgPkEoW8Be/0QHPGMbkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DFinWtYf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25126C116B1;
-	Wed,  3 Dec 2025 16:06:00 +0000 (UTC)
+	 MIME-Version; b=q0jnhPD8rQQWOMgLuNWAA5bLnzrQEn9REk/SQb5yU5Bps95Hw0/pTYLxpIGVVt93IQq60XBI9PhZclVUE/P/76tB76mc929uumouaLD3FT7WrVlYox4OGQjYWT7xUlfkhKKs9fywMp9k6UaobN63xGbfgJPMOl7OqaBe/z/NCoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BizK3KhK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47373C4CEF5;
+	Wed,  3 Dec 2025 15:38:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777961;
-	bh=J9WcuXdTX/fQwOgQ7D1HDy83+VFALy/92eumpBwuWSw=;
+	s=korg; t=1764776313;
+	bh=2ubJzb9iMfUUONfnPqWGz4Pg+nxDlSNcoar1JzGCdUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DFinWtYfrlHtlwZszmoxeD1320++I1SbB7CCmx7czINgIJgQC9gevOx4AhhRJRNP9
-	 05qncCnkoGOXu5alv6FJhz4rm5bdSRNjWOF44jGDJykcxgu3x403QPRfzGtmH2zGBx
-	 ZChqarKZeknZGtGt4OUlZWBJxQWXW1gfm58nfpyU=
+	b=BizK3KhKX24PUZSnsMlu+mld4C0BcGQYl0GsNuk1LxCx1eBH6OjCMtJl6e+m+bLve
+	 TyjPvn70vXl356EMtQ9hXTlmUoRfEVIS5cWlWHvggm3JbLYhi6tT5Mr6JDyRplgqKL
+	 odvkuloW7xl28x1FtJ0ON6yFRgAqqhjjTDjmkRKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Aaron Kling <webgeek1234@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	austinchang <austinchang@synology.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 199/392] cpufreq: tegra186: Initialize all cores to max frequencies
-Date: Wed,  3 Dec 2025 16:25:49 +0100
-Message-ID: <20251203152421.398470330@linuxfoundation.org>
+Subject: [PATCH 5.10 146/300] btrfs: mark dirty extent range for out of bound prealloc extents
+Date: Wed,  3 Dec 2025 16:25:50 +0100
+Message-ID: <20251203152406.026996360@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,104 +61,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaron Kling <webgeek1234@gmail.com>
+From: austinchang <austinchang@synology.com>
 
-[ Upstream commit ba6018929165fc914c665f071f8e8cdbac844a49 ]
+[ Upstream commit 3b1a4a59a2086badab391687a6a0b86e03048393 ]
 
-During initialization, the EDVD_COREx_VOLT_FREQ registers for some cores
-are still at reset values and not reflecting the actual frequency. This
-causes get calls to fail. Set all cores to their respective max
-frequency during probe to initialize the registers to working values.
+In btrfs_fallocate(), when the allocated range overlaps with a prealloc
+extent and the extent starts after i_size, the range doesn't get marked
+dirty in file_extent_tree. This results in persisting an incorrect
+disk_i_size for the inode when not using the no-holes feature.
 
-Suggested-by: Mikko Perttunen <mperttunen@nvidia.com>
-Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
-Reviewed-by: Mikko Perttunen <mperttunen@nvidia.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+This is reproducible since commit 41a2ee75aab0 ("btrfs: introduce
+per-inode file extent tree"), then became hidden since commit 3d7db6e8bd22
+("btrfs: don't allocate file extent tree for non regular files") and then
+visible again after commit 8679d2687c35 ("btrfs: initialize
+inode::file_extent_tree after i_mode has been set"), which fixes the
+previous commit.
+
+The following reproducer triggers the problem:
+
+$ cat test.sh
+
+MNT=/mnt/test
+DEV=/dev/vdb
+
+mkdir -p $MNT
+
+mkfs.btrfs -f -O ^no-holes $DEV
+mount $DEV $MNT
+
+touch $MNT/file1
+fallocate -n -o 1M -l 2M $MNT/file1
+
+umount $MNT
+mount $DEV $MNT
+
+len=$((1 * 1024 * 1024))
+
+fallocate -o 1M -l $len $MNT/file1
+
+du --bytes $MNT/file1
+
+umount $MNT
+mount $DEV $MNT
+
+du --bytes $MNT/file1
+
+umount $MNT
+
+Running the reproducer gives the following result:
+
+$ ./test.sh
+(...)
+2097152 /mnt/test/file1
+1048576 /mnt/test/file1
+
+The difference is exactly 1048576 as we assigned.
+
+Fix by adding a call to btrfs_inode_set_file_extent_range() in
+btrfs_fallocate_update_isize().
+
+Fixes: 41a2ee75aab0 ("btrfs: introduce per-inode file extent tree")
+Signed-off-by: austinchang <austinchang@synology.com>
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/tegra186-cpufreq.c | 27 +++++++++++++++++++++------
- 1 file changed, 21 insertions(+), 6 deletions(-)
+ fs/btrfs/file.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/cpufreq/tegra186-cpufreq.c b/drivers/cpufreq/tegra186-cpufreq.c
-index af7edddaa84e4..cf37d2db1a899 100644
---- a/drivers/cpufreq/tegra186-cpufreq.c
-+++ b/drivers/cpufreq/tegra186-cpufreq.c
-@@ -132,13 +132,14 @@ static struct cpufreq_driver tegra186_cpufreq_driver = {
- 
- static struct cpufreq_frequency_table *init_vhint_table(
- 	struct platform_device *pdev, struct tegra_bpmp *bpmp,
--	struct tegra186_cpufreq_cluster *cluster, unsigned int cluster_id)
-+	struct tegra186_cpufreq_cluster *cluster, unsigned int cluster_id,
-+	int *num_rates)
+diff --git a/fs/btrfs/file.c b/fs/btrfs/file.c
+index 53a3c32a0f8ce..38a293a9d0644 100644
+--- a/fs/btrfs/file.c
++++ b/fs/btrfs/file.c
+@@ -3049,12 +3049,22 @@ static int btrfs_fallocate_update_isize(struct inode *inode,
  {
- 	struct cpufreq_frequency_table *table;
- 	struct mrq_cpu_vhint_request req;
- 	struct tegra_bpmp_message msg;
- 	struct cpu_vhint_data *data;
--	int err, i, j, num_rates = 0;
-+	int err, i, j;
- 	dma_addr_t phys;
- 	void *virt;
+ 	struct btrfs_trans_handle *trans;
+ 	struct btrfs_root *root = BTRFS_I(inode)->root;
++	u64 range_start;
++	u64 range_end;
+ 	int ret;
+ 	int ret2;
  
-@@ -164,6 +165,7 @@ static struct cpufreq_frequency_table *init_vhint_table(
- 		goto free;
- 	}
+ 	if (mode & FALLOC_FL_KEEP_SIZE || end <= i_size_read(inode))
+ 		return 0;
  
-+	*num_rates = 0;
- 	for (i = data->vfloor; i <= data->vceil; i++) {
- 		u16 ndiv = data->ndiv[i];
- 
-@@ -174,10 +176,10 @@ static struct cpufreq_frequency_table *init_vhint_table(
- 		if (i > 0 && ndiv == data->ndiv[i - 1])
- 			continue;
- 
--		num_rates++;
-+		(*num_rates)++;
- 	}
- 
--	table = devm_kcalloc(&pdev->dev, num_rates + 1, sizeof(*table),
-+	table = devm_kcalloc(&pdev->dev, *num_rates + 1, sizeof(*table),
- 			     GFP_KERNEL);
- 	if (!table) {
- 		table = ERR_PTR(-ENOMEM);
-@@ -219,7 +221,9 @@ static int tegra186_cpufreq_probe(struct platform_device *pdev)
- {
- 	struct tegra186_cpufreq_data *data;
- 	struct tegra_bpmp *bpmp;
--	unsigned int i = 0, err;
-+	unsigned int i = 0, err, edvd_offset;
-+	int num_rates = 0;
-+	u32 edvd_val, cpu;
- 
- 	data = devm_kzalloc(&pdev->dev, sizeof(*data), GFP_KERNEL);
- 	if (!data)
-@@ -245,10 +249,21 @@ static int tegra186_cpufreq_probe(struct platform_device *pdev)
- 	for (i = 0; i < TEGRA186_NUM_CLUSTERS; i++) {
- 		struct tegra186_cpufreq_cluster *cluster = &data->clusters[i];
- 
--		cluster->table = init_vhint_table(pdev, bpmp, cluster, i);
-+		cluster->table = init_vhint_table(pdev, bpmp, cluster, i, &num_rates);
- 		if (IS_ERR(cluster->table)) {
- 			err = PTR_ERR(cluster->table);
- 			goto put_bpmp;
-+		} else if (!num_rates) {
-+			err = -EINVAL;
-+			goto put_bpmp;
-+		}
++	range_start = round_down(i_size_read(inode), root->fs_info->sectorsize);
++	range_end = round_up(end, root->fs_info->sectorsize);
 +
-+		for (cpu = 0; cpu < ARRAY_SIZE(tegra186_cpus); cpu++) {
-+			if (data->cpus[cpu].bpmp_cluster_id == i) {
-+				edvd_val = cluster->table[num_rates - 1].driver_data;
-+				edvd_offset = data->cpus[cpu].edvd_offset;
-+				writel(edvd_val, data->regs + edvd_offset);
-+			}
- 		}
- 	}
- 
++	ret = btrfs_inode_set_file_extent_range(BTRFS_I(inode), range_start,
++						range_end - range_start);
++	if (ret)
++		return ret;
++
+ 	trans = btrfs_start_transaction(root, 1);
+ 	if (IS_ERR(trans))
+ 		return PTR_ERR(trans);
 -- 
 2.51.0
 
