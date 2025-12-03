@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-199640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37DE1CA0285
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:52:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EBC2CA0B29
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:58:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DA4C33013546
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:47:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E284830DAEC5
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:53:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8FCA35B156;
-	Wed,  3 Dec 2025 16:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E4B7376BDF;
+	Wed,  3 Dec 2025 16:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pgU6bA5o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZntwKKnR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C9E313546;
-	Wed,  3 Dec 2025 16:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395FA376BCA;
+	Wed,  3 Dec 2025 16:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780468; cv=none; b=S6WEkmx+BYO7wywqsI725LZ8ld8v3bkZApkSIRK9Dzi1OW8dRqfdWcA003rSsWIxuyMTRnHowinkr8RA7yHmvy3vKPQreJbHaMawkQ4w/OeORk/pHOANasnfIYERZ3nq2cpGjdul6dXDNZ5mWgmrVMK7f5n4PQVGP1wzPqqJGqQ=
+	t=1764780672; cv=none; b=cVTHMiZ1pmxjKGmGKrOLQJUJVtV8BkPaME3Lcr5/L1l3PDnzm3QpTzi4iHHx4G4puVzFSPOw1ucH2MTJMbJrJHUPGv8dbNvNdDnviORLnqfbkZYH1wPqRa6aafCSy9Z+wuGzMN848tR5LvQbY9Fv8F5SaYXRYYaxySNsIxuE/p0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780468; c=relaxed/simple;
-	bh=RvOFww6i/DplSnjYwp661U9uDldJ8+q87feZw52aqO0=;
+	s=arc-20240116; t=1764780672; c=relaxed/simple;
+	bh=pNJUQroWTctubOOY/cGl4Z9yy2NPOqJXFXNiGrIx3Vg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AxUEAaH+RIVerkCFJ5K8aD/hCxUI55I+bSFmq37K1ZdIX1gLVtZRoUYIpr4pTUUOTANsbU4HH2ElnM4SHPmY/nbT9Xb1U/x+oXdsDZqEcL9AKrN7++bt0QUqV01C/+IgPSth9VRllLPbposkvxNwyUcW6RVqYGoVhEqn75R7f58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pgU6bA5o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9764BC4CEF5;
-	Wed,  3 Dec 2025 16:47:45 +0000 (UTC)
+	 MIME-Version; b=lmDX1dlWlX5iq4P4xFs80OANmorV+fQhxnZDigffr0Ma26FdyL00UpmwzmxMInBa3sBCJ8SGu1huwQWA79N3SJjTB0ssyqys3ah6/B8h9JdZf8k9d9S+LJWxsfpMlppfkfcbkFpLxZD67jWqLapsrqsw2I4qA8n3oVQRB3ZuPKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZntwKKnR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9333DC4CEF5;
+	Wed,  3 Dec 2025 16:51:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780466;
-	bh=RvOFww6i/DplSnjYwp661U9uDldJ8+q87feZw52aqO0=;
+	s=korg; t=1764780672;
+	bh=pNJUQroWTctubOOY/cGl4Z9yy2NPOqJXFXNiGrIx3Vg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pgU6bA5osoAyyFVNDbnKW79ZqhqUOgrrwPbIntw5yW3KAZbCjN4PaiPj3uoKOFTR8
-	 C7XFf5Tlidw4j2atXkQKjeoqAEIZnCqfJwppe2dxp8u9/5UTQjDF7pFFmlka8gColb
-	 r29Vfb1+Yz8vh904umkCetexOzXB/brPD7y0/jfM=
+	b=ZntwKKnRDSYzVnO/Vqg5fcx5pekuMeb9xRG72se0eQgen3jS1HvU+w4RJrpVzz/Yj
+	 bupVJfelIexpz4o31/ljLFHLIFvg7/xlRZHQjc7ashbHXGsYIvxKJB36dGjhmVFzW8
+	 6IFxT2m7HxV8lXp/vgAZ960aKX58SHsr4Tf1ZVbE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Subject: [PATCH 6.1 532/568] slimbus: ngd: Fix reference count leak in qcom_slim_ngd_notify_slaves
+	Chris Lesiak <chris.lesiak@licorbio.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.12 055/132] iio: humditiy: hdc3020: fix units for thresholds and hysteresis
 Date: Wed,  3 Dec 2025 16:28:54 +0100
-Message-ID: <20251203152500.198925658@linuxfoundation.org>
+Message-ID: <20251203152345.335989249@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +62,222 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
 
-commit 96cf8500934e0ce2a6c486f1dbc3b1fff12f7a5e upstream.
+commit cb372b4f46d4285e5d2c07ba734374151b8e34e7 upstream.
 
-The function qcom_slim_ngd_notify_slaves() calls of_slim_get_device() which
-internally uses device_find_child() to obtain a device reference.
-According to the device_find_child() documentation,
-the caller must drop the reference with put_device() after use.
+According to the ABI the units after application of scale and offset are
+milli degree celsius for temperature thresholds and milli percent for
+relative humidity thresholds. Currently the resulting units are degree
+celsius for temperature thresholds and hysteresis and percent for relative
+humidity thresholds and hysteresis. Change scale factor to fix this issue.
 
-Found via static analysis and this is similar to commit 4e65bda8273c
-("ASoC: wcd934x: fix error handling in wcd934x_codec_parse_data()")
-
-Fixes: 917809e2280b ("slimbus: ngd: Add qcom SLIMBus NGD driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251027060601.33228-1-linmq006@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3ad0e7e5f0cb ("iio: humidity: hdc3020: add threshold events support")
+Reported-by: Chris Lesiak <chris.lesiak@licorbio.com>
+Reviewed-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Signed-off-by: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/slimbus/qcom-ngd-ctrl.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/iio/humidity/hdc3020.c | 69 ++++++++++++++++++++--------------
+ 1 file changed, 41 insertions(+), 28 deletions(-)
 
---- a/drivers/slimbus/qcom-ngd-ctrl.c
-+++ b/drivers/slimbus/qcom-ngd-ctrl.c
-@@ -1164,6 +1164,7 @@ static void qcom_slim_ngd_notify_slaves(
+diff --git a/drivers/iio/humidity/hdc3020.c b/drivers/iio/humidity/hdc3020.c
+index 8aa567d9aded..78b2c171c8da 100644
+--- a/drivers/iio/humidity/hdc3020.c
++++ b/drivers/iio/humidity/hdc3020.c
+@@ -72,6 +72,9 @@
+ #define HDC3020_MAX_TEMP_HYST_MICRO	164748607
+ #define HDC3020_MAX_HUM_MICRO		99220264
  
- 		if (slim_get_logical_addr(sbdev))
- 			dev_err(ctrl->dev, "Failed to get logical address\n");
-+		put_device(&sbdev->dev);
- 	}
++/* Divide 65535 from the datasheet by 5 to avoid overflows */
++#define HDC3020_THRESH_FRACTION		(65535 / 5)
++
+ struct hdc3020_data {
+ 	struct i2c_client *client;
+ 	struct gpio_desc *reset_gpio;
+@@ -376,15 +379,18 @@ static int hdc3020_thresh_get_temp(u16 thresh)
+ 	int temp;
+ 
+ 	/*
+-	 * Get the temperature threshold from 9 LSBs, shift them to get
+-	 * the truncated temperature threshold representation and
+-	 * calculate the threshold according to the formula in the
+-	 * datasheet. Result is degree celsius scaled by 65535.
++	 * Get the temperature threshold from 9 LSBs, shift them to get the
++	 * truncated temperature threshold representation and calculate the
++	 * threshold according to the explicit formula in the datasheet:
++	 * T(C) = -45 + (175 * temp) / 65535.
++	 * Additionally scale by HDC3020_THRESH_FRACTION to avoid precision loss
++	 * when calculating threshold and hysteresis values. Result is degree
++	 * celsius scaled by HDC3020_THRESH_FRACTION.
+ 	 */
+ 	temp = FIELD_GET(HDC3020_THRESH_TEMP_MASK, thresh) <<
+ 	       HDC3020_THRESH_TEMP_TRUNC_SHIFT;
+ 
+-	return -2949075 + (175 * temp);
++	return -2949075 / 5 + (175 / 5 * temp);
  }
  
+ static int hdc3020_thresh_get_hum(u16 thresh)
+@@ -394,13 +400,16 @@ static int hdc3020_thresh_get_hum(u16 thresh)
+ 	/*
+ 	 * Get the humidity threshold from 7 MSBs, shift them to get the
+ 	 * truncated humidity threshold representation and calculate the
+-	 * threshold according to the formula in the datasheet. Result is
+-	 * percent scaled by 65535.
++	 * threshold according to the explicit formula in the datasheet:
++	 * RH(%) = 100 * hum / 65535.
++	 * Additionally scale by HDC3020_THRESH_FRACTION to avoid precision loss
++	 * when calculating threshold and hysteresis values. Result is percent
++	 * scaled by HDC3020_THRESH_FRACTION.
+ 	 */
+ 	hum = FIELD_GET(HDC3020_THRESH_HUM_MASK, thresh) <<
+ 	      HDC3020_THRESH_HUM_TRUNC_SHIFT;
+ 
+-	return hum * 100;
++	return hum * 100 / 5;
+ }
+ 
+ static u16 hdc3020_thresh_set_temp(int s_temp, u16 curr_thresh)
+@@ -455,8 +464,8 @@ int hdc3020_thresh_clr(s64 s_thresh, s64 s_hyst, enum iio_event_direction dir)
+ 	else
+ 		s_clr = s_thresh + s_hyst;
+ 
+-	/* Divide by 65535 to get units of micro */
+-	return div_s64(s_clr, 65535);
++	/* Divide by HDC3020_THRESH_FRACTION to get units of micro */
++	return div_s64(s_clr, HDC3020_THRESH_FRACTION);
+ }
+ 
+ static int _hdc3020_write_thresh(struct hdc3020_data *data, u16 reg, u16 val)
+@@ -507,7 +516,7 @@ static int hdc3020_write_thresh(struct iio_dev *indio_dev,
+ 
+ 	clr = ret;
+ 	/* Scale value to include decimal part into calculations */
+-	s_val = (val < 0) ? (val * 1000000 - val2) : (val * 1000000 + val2);
++	s_val = (val < 0) ? (val * 1000 - val2) : (val * 1000 + val2);
+ 	switch (chan->type) {
+ 	case IIO_TEMP:
+ 		switch (info) {
+@@ -523,7 +532,8 @@ static int hdc3020_write_thresh(struct iio_dev *indio_dev,
+ 			/* Calculate old hysteresis */
+ 			s_thresh = (s64)hdc3020_thresh_get_temp(thresh) * 1000000;
+ 			s_clr = (s64)hdc3020_thresh_get_temp(clr) * 1000000;
+-			s_hyst = div_s64(abs(s_thresh - s_clr), 65535);
++			s_hyst = div_s64(abs(s_thresh - s_clr),
++					 HDC3020_THRESH_FRACTION);
+ 			/* Set new threshold */
+ 			thresh = reg_val;
+ 			/* Set old hysteresis */
+@@ -532,16 +542,17 @@ static int hdc3020_write_thresh(struct iio_dev *indio_dev,
+ 		case IIO_EV_INFO_HYSTERESIS:
+ 			/*
+ 			 * Function hdc3020_thresh_get_temp returns temperature
+-			 * in degree celsius scaled by 65535. Scale by 1000000
+-			 * to be able to subtract scaled hysteresis value.
++			 * in degree celsius scaled by HDC3020_THRESH_FRACTION.
++			 * Scale by 1000000 to be able to subtract scaled
++			 * hysteresis value.
+ 			 */
+ 			s_thresh = (s64)hdc3020_thresh_get_temp(thresh) * 1000000;
+ 			/*
+ 			 * Units of s_val are in micro degree celsius, scale by
+-			 * 65535 to get same units as s_thresh.
++			 * HDC3020_THRESH_FRACTION to get same units as s_thresh.
+ 			 */
+ 			s_val = min(abs(s_val), HDC3020_MAX_TEMP_HYST_MICRO);
+-			s_hyst = (s64)s_val * 65535;
++			s_hyst = (s64)s_val * HDC3020_THRESH_FRACTION;
+ 			s_clr = hdc3020_thresh_clr(s_thresh, s_hyst, dir);
+ 			s_clr = max(s_clr, HDC3020_MIN_TEMP_MICRO);
+ 			s_clr = min(s_clr, HDC3020_MAX_TEMP_MICRO);
+@@ -565,7 +576,8 @@ static int hdc3020_write_thresh(struct iio_dev *indio_dev,
+ 			/* Calculate old hysteresis */
+ 			s_thresh = (s64)hdc3020_thresh_get_hum(thresh) * 1000000;
+ 			s_clr = (s64)hdc3020_thresh_get_hum(clr) * 1000000;
+-			s_hyst = div_s64(abs(s_thresh - s_clr), 65535);
++			s_hyst = div_s64(abs(s_thresh - s_clr),
++					 HDC3020_THRESH_FRACTION);
+ 			/* Set new threshold */
+ 			thresh = reg_val;
+ 			/* Try to set old hysteresis */
+@@ -574,15 +586,16 @@ static int hdc3020_write_thresh(struct iio_dev *indio_dev,
+ 		case IIO_EV_INFO_HYSTERESIS:
+ 			/*
+ 			 * Function hdc3020_thresh_get_hum returns relative
+-			 * humidity in percent scaled by 65535. Scale by 1000000
+-			 * to be able to subtract scaled hysteresis value.
++			 * humidity in percent scaled by HDC3020_THRESH_FRACTION.
++			 * Scale by 1000000 to be able to subtract scaled
++			 * hysteresis value.
+ 			 */
+ 			s_thresh = (s64)hdc3020_thresh_get_hum(thresh) * 1000000;
+ 			/*
+-			 * Units of s_val are in micro percent, scale by 65535
+-			 * to get same units as s_thresh.
++			 * Units of s_val are in micro percent, scale by
++			 * HDC3020_THRESH_FRACTION to get same units as s_thresh.
+ 			 */
+-			s_hyst = (s64)s_val * 65535;
++			s_hyst = (s64)s_val * HDC3020_THRESH_FRACTION;
+ 			s_clr = hdc3020_thresh_clr(s_thresh, s_hyst, dir);
+ 			s_clr = max(s_clr, 0);
+ 			s_clr = min(s_clr, HDC3020_MAX_HUM_MICRO);
+@@ -630,7 +643,7 @@ static int hdc3020_read_thresh(struct iio_dev *indio_dev,
+ 		thresh = hdc3020_thresh_get_temp(ret);
+ 		switch (info) {
+ 		case IIO_EV_INFO_VALUE:
+-			*val = thresh;
++			*val = thresh * MILLI;
+ 			break;
+ 		case IIO_EV_INFO_HYSTERESIS:
+ 			ret = hdc3020_read_be16(data, reg_clr);
+@@ -638,18 +651,18 @@ static int hdc3020_read_thresh(struct iio_dev *indio_dev,
+ 				return ret;
+ 
+ 			clr = hdc3020_thresh_get_temp(ret);
+-			*val = abs(thresh - clr);
++			*val = abs(thresh - clr) * MILLI;
+ 			break;
+ 		default:
+ 			return -EOPNOTSUPP;
+ 		}
+-		*val2 = 65535;
++		*val2 = HDC3020_THRESH_FRACTION;
+ 		return IIO_VAL_FRACTIONAL;
+ 	case IIO_HUMIDITYRELATIVE:
+ 		thresh = hdc3020_thresh_get_hum(ret);
+ 		switch (info) {
+ 		case IIO_EV_INFO_VALUE:
+-			*val = thresh;
++			*val = thresh * MILLI;
+ 			break;
+ 		case IIO_EV_INFO_HYSTERESIS:
+ 			ret = hdc3020_read_be16(data, reg_clr);
+@@ -657,12 +670,12 @@ static int hdc3020_read_thresh(struct iio_dev *indio_dev,
+ 				return ret;
+ 
+ 			clr = hdc3020_thresh_get_hum(ret);
+-			*val = abs(thresh - clr);
++			*val = abs(thresh - clr) * MILLI;
+ 			break;
+ 		default:
+ 			return -EOPNOTSUPP;
+ 		}
+-		*val2 = 65535;
++		*val2 = HDC3020_THRESH_FRACTION;
+ 		return IIO_VAL_FRACTIONAL;
+ 	default:
+ 		return -EOPNOTSUPP;
+-- 
+2.52.0
+
 
 
 
