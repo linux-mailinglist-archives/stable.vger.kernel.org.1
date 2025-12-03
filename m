@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-199257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D9A3CA116C
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:43:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B171CA0967
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:44:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B7F283000B74
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:43:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A25C632D9E1C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:23:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DE5C35CB96;
-	Wed,  3 Dec 2025 16:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 600FB34250E;
+	Wed,  3 Dec 2025 15:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EBB05fvf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="he0aUnHT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C9635CB78;
-	Wed,  3 Dec 2025 16:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F59342146;
+	Wed,  3 Dec 2025 15:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779202; cv=none; b=F26fL3i6yiK3sTzGO9LBQPTSch1JhidUWw8KncedeEUB2J3U+hvBD/5k9TtAuialLo3Sqsxmc6FtX+3PdoAQ3Mvrx/0G6PEwuwKC4cYeaBWFh06VirJ+esW2TJkfH7MTgEOxsUuMLQtlhG1rJ0AswVfxLgC7t4GlMxrKjRwyAWc=
+	t=1764777440; cv=none; b=D026eVQiQB4bHLZTlcNB/BHLEfwKpESpSi1hCKyumq62fjdPtVzyOXfaN6zneZh78rN/qORrqB4O782smFh+0kz2LqO3LJgS0DrQ+CMoeEXHOP+/22ydcPytnLrl/y9WO8o6SUPt3ukOIdNEE/nIWOeiN8B4INGuLm+31qyZCqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779202; c=relaxed/simple;
-	bh=8fXt2rgsW1IxFju5F5qJ52YXNVwe6wxFBVyyV8ZvJtM=;
+	s=arc-20240116; t=1764777440; c=relaxed/simple;
+	bh=2UFYytGWtNTPf4Ic18WDJunAuZHKSxi6LuPDGcYFogw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KxIFDVOVZ+dZKftn9zjnTWx1G5a+FXvzwvsXheRkX6QqB+AEC7ywlpK+ztiwOShaBA//4/vV7wTwM/vV95Q+bn7yi4A+fNtZHoZ1cHvbJ+cqObtHz5fw0/7Isf3/voBxIuGP1YcTCbhLtuq/JsT44g/6a9Ntl8hzFPoWZlOveK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EBB05fvf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ECF5C4CEF5;
-	Wed,  3 Dec 2025 16:26:41 +0000 (UTC)
+	 MIME-Version; b=nFxTrh3wngU83omPVLcNclOrIU3Wa1bHnGYLS42+kt6JdpS4SxbPaZON+CbeWXh61VjDL2t14M2kdH8+FoI6cAWML+gsgxwKm9wqmmHqbqBGD6491Fsqe8CiIF6lb/aIACMRNd1JjasBCLY4sLEVVQkhDpIAIyGwziJB9Ofs88s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=he0aUnHT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6369FC4CEF5;
+	Wed,  3 Dec 2025 15:57:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779202;
-	bh=8fXt2rgsW1IxFju5F5qJ52YXNVwe6wxFBVyyV8ZvJtM=;
+	s=korg; t=1764777439;
+	bh=2UFYytGWtNTPf4Ic18WDJunAuZHKSxi6LuPDGcYFogw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EBB05fvfE+Wq28cSZ5j3iZfrladQfiRJikfcRzp13EM44raU9/6rhlMX5GrVgd11j
-	 4Y8euJmOeki8D/IUBCVyxc4SAE8IDoG326gOwhuqoGdoo9uiFnp7S3+TArOLE5qFiK
-	 zgertDvQpQBdv+38UXZslt2YMjNzJ8vFd/X4OU2c=
+	b=he0aUnHTn7oBf6VMcszp5fZXmcUVCGAFs0dqZEnoLsY3S2El20BaKyCNkAQjFxX67
+	 AQBtPgS90BWCTVz/ZlARXUpqkCPvVQFpcWmQzbwZEgRYLxrebNe1B0B1ilDSl+MBnh
+	 LtsGCxkilqIQB149PnltLdWjYR0fu/sEf3aacBZc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 186/568] drm/msm/dsi/phy: Toggle back buffer resync after preparing PLL
+Subject: [PATCH 5.15 038/392] net: phy: dp83867: Disable EEE support as not implemented
 Date: Wed,  3 Dec 2025 16:23:08 +0100
-Message-ID: <20251203152447.538856583@linuxfoundation.org>
+Message-ID: <20251203152415.507418793@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
 
-[ Upstream commit b63f008f395ca5f6bc89123db97440bdc19981c4 ]
+[ Upstream commit 84a905290cb4c3d9a71a9e3b2f2e02e031e7512f ]
 
-According to Hardware Programming Guide for DSI PHY, the retime buffer
-resync should be done after PLL clock users (byte_clk and intf_byte_clk)
-are enabled.  Downstream also does it as part of configuring the PLL.
+While the DP83867 PHYs report EEE capability through their feature
+registers, the actual hardware does not support EEE (see Links).
+When the connected MAC enables EEE, it causes link instability and
+communication failures.
 
-Driver was only turning off the resync FIFO buffer, but never bringing it
-on again.
+The issue is reproducible with a iMX8MP and relevant stmmac ethernet port.
+Since the introduction of phylink-managed EEE support in the stmmac driver,
+EEE is now enabled by default, leading to issues on systems using the
+DP83867 PHY.
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/657823/
-Link: https://lore.kernel.org/r/20250610-b4-sm8750-display-v6-6-ee633e3ddbff@linaro.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Call phy_disable_eee during phy initialization to prevent EEE from being
+enabled on DP83867 PHYs.
+
+Link: https://e2e.ti.com/support/interface-group/interface/f/interface-forum/1445244/dp83867ir-dp83867-disable-eee-lpi
+Link: https://e2e.ti.com/support/interface-group/interface/f/interface-forum/658638/dp83867ir-eee-energy-efficient-ethernet
+Fixes: 2a10154abcb7 ("net: phy: dp83867: Add TI dp83867 phy")
+Cc: stable@vger.kernel.org
+Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20251023144857.529566-1-ghidoliemanuele@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ replaced phy_disable_eee() call with direct eee_broken_modes assignment ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/phy/dp83867.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
-index 9e7fa7d88ead2..9f2806b9e1740 100644
---- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
-+++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
-@@ -400,6 +400,10 @@ static int dsi_pll_7nm_vco_prepare(struct clk_hw *hw)
- 	if (pll_7nm->slave)
- 		dsi_pll_enable_global_clk(pll_7nm->slave);
+--- a/drivers/net/phy/dp83867.c
++++ b/drivers/net/phy/dp83867.c
+@@ -674,6 +674,12 @@ static int dp83867_config_init(struct ph
+ 			return ret;
+ 	}
  
-+	writel(0x1, pll_7nm->phy->base + REG_DSI_7nm_PHY_CMN_RBUF_CTRL);
-+	if (pll_7nm->slave)
-+		writel(0x1, pll_7nm->slave->phy->base + REG_DSI_7nm_PHY_CMN_RBUF_CTRL);
++	/* Although the DP83867 reports EEE capability through the
++	 * MDIO_PCS_EEE_ABLE and MDIO_AN_EEE_ADV registers, the feature
++	 * is not actually implemented in hardware.
++	 */
++	phydev->eee_broken_modes = MDIO_EEE_100TX | MDIO_EEE_1000T;
 +
- error:
- 	return rc;
- }
--- 
-2.51.0
-
+ 	if (phy_interface_is_rgmii(phydev) ||
+ 	    phydev->interface == PHY_INTERFACE_MODE_SGMII) {
+ 		val = phy_read(phydev, MII_DP83867_PHYCTRL);
 
 
 
