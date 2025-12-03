@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-198690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE47DCA0F3C
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:26:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A312CA0604
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:22:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A94DD347ABF9
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:24:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 876AC32B3F60
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:07:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 737863375CB;
-	Wed,  3 Dec 2025 15:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F32735771F;
+	Wed,  3 Dec 2025 16:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ccQnD6va"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ENYS7+FK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A8D6338597;
-	Wed,  3 Dec 2025 15:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 260D83570CC;
+	Wed,  3 Dec 2025 16:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777371; cv=none; b=fgRY1/hZP7QsPF9greo9pQBcKb9aa8Ko+IrrWhz+RllInwowVbo3wbLnmjhYP7MkvieV7PjCKyyZvQd/UeobEK41T88K7xT46x7GUPeUxSuJBvqrBTvUZrO9K8V3STLO2pu3VpEkv8xV4kDZyY+HngeC1E+PtveOQBrR7JYLUgM=
+	t=1764779139; cv=none; b=eS9GAgkeC1i6K5HP1UDzGTSiVZVXAnVXCWUs8IykpjVvb0kV1dL99j5fW2hRoJjhQTPBTEaoyEhUat2jHExj1ZpKcnpRg87MBS2Fn51GiisC8lMTQYAKaxwuJDm+gnfBbysUINklWxcPP4sMUIQCkNI07QBYPvM5e4O2s7iVe6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777371; c=relaxed/simple;
-	bh=jsx11yXBmPsIQUCh0CtIaT2KJp2yvrR4VXVSoumsmHI=;
+	s=arc-20240116; t=1764779139; c=relaxed/simple;
+	bh=Wf6l3xJbHA4p49zQlbo+LfnY4UnmOHpNp8GWcNjQcGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dwbToVwh8+0jvCsk+uWowf3TS9nS+0p1YDiAAn0avbO1j+1Iv7mr3dSfSG1UwJpPnzR7PQIKp4pqvNW6Z8yZh256uet/3NibEgYJrmdlwcU2PaQSfIeC4ojeJ5f7NoBic5R30rzOJcDZ10lQaKBeMgXxIZC339jAoRHAiZ9ZGj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ccQnD6va; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDA12C4CEF5;
-	Wed,  3 Dec 2025 15:56:09 +0000 (UTC)
+	 MIME-Version; b=ppEbirk5R50LTfqOrkLZPt4CovGnRb9lt1VQxmoiCJrHEcbgOAgeaCitOFLhE+T4u9vTUpNC86JYa2V7inCA3r18A0fIJ2YDVjX6x9FQ5RGh/FlGOm4zwWnTSFv5226n8cZY3arjTfJjLL+TlyGqwyiye5FzC/0JOEhqPWa82NM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ENYS7+FK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 832A4C4CEF5;
+	Wed,  3 Dec 2025 16:25:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777370;
-	bh=jsx11yXBmPsIQUCh0CtIaT2KJp2yvrR4VXVSoumsmHI=;
+	s=korg; t=1764779139;
+	bh=Wf6l3xJbHA4p49zQlbo+LfnY4UnmOHpNp8GWcNjQcGU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ccQnD6va3HtJCk6zQ30LxJqh4cEyzFZGzBT2nVxO6DIjEjWzLHaeFLb7tzFcQc313
-	 EjhtJn+wnyB95gsVz+b3i9oarfFyROy6B5LhpdSPx3+OF7MuhGg4UnZgF1Ot1uWDYZ
-	 cKmxJdtlggr96qiu/gFR7nySXoglNpxnrj+qZyS0=
+	b=ENYS7+FKdNpQLiXh8b6KyM7NIIv9Dfirgcw0/YYahKn/yNwDaMOLWw2PF8EPlA4e4
+	 IyLCHcuVUBwzSu9/b6qbSc8UzSJfzdyk1hwPnkcVav3yJpvWiwWvd+UVBT9LoZaJVV
+	 8rhf/gX64hMO5warP484qJuE1uOXdf6uOzg1LByY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 017/392] drm/msm/a6xx: Fix GMU firmware parser
-Date: Wed,  3 Dec 2025 16:22:47 +0100
-Message-ID: <20251203152414.737764728@linuxfoundation.org>
+Subject: [PATCH 6.1 166/568] ALSA: usb-audio: Add validation of UAC2/UAC3 effect units
+Date: Wed,  3 Dec 2025 16:22:48 +0100
+Message-ID: <20251203152446.803714587@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +59,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit b4789aac9d3441d9f830f0a4022d8dc122d6cab3 ]
+[ Upstream commit 2aec0b6a6b5395bca7d6fde9c7e9dc391d329698 ]
 
-Current parser logic for GMU firmware assumes a dword aligned payload
-size for every block. This is not true for all GMU firmwares. So, fix
-this by using correct 'size' value in the calculation for the offset
-for the next block's header.
+Just add fixed struct size validations for UAC2 and UAC3 effect
+units.  The descriptor has a variable-length array, so it should be
+validated with a proper function later once when the unit is really
+parsed and used by the driver (currently only referred partially for
+the input terminal parsing).
 
-Fixes: c6ed04f856a4 ("drm/msm/a6xx: A640/A650 GMU firmware path")
-Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
-Acked-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/674040/
-Message-ID: <20250911-assorted-sept-1-v2-2-a8bf1ee20792@oss.qualcomm.com>
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250821151751.12100-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gmu.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ sound/usb/validate.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-index 9215322fc915d..8fa2b9e051002 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-@@ -685,6 +685,9 @@ static bool fw_block_mem(struct a6xx_gmu_bo *bo, const struct block_header *blk)
- 	return true;
- }
- 
-+#define NEXT_BLK(blk) \
-+	((const struct block_header *)((const char *)(blk) + sizeof(*(blk)) + (blk)->size))
-+
- static int a6xx_gmu_fw_load(struct a6xx_gmu *gmu)
- {
- 	struct a6xx_gpu *a6xx_gpu = container_of(gmu, struct a6xx_gpu, gmu);
-@@ -715,7 +718,7 @@ static int a6xx_gmu_fw_load(struct a6xx_gmu *gmu)
- 
- 	for (blk = (const struct block_header *) fw_image->data;
- 	     (const u8*) blk < fw_image->data + fw_image->size;
--	     blk = (const struct block_header *) &blk->data[blk->size >> 2]) {
-+	     blk = NEXT_BLK(blk)) {
- 		if (blk->size == 0)
- 			continue;
- 
+diff --git a/sound/usb/validate.c b/sound/usb/validate.c
+index a0d55b77c9941..4bb4893f6e74f 100644
+--- a/sound/usb/validate.c
++++ b/sound/usb/validate.c
+@@ -266,7 +266,11 @@ static const struct usb_desc_validator audio_validators[] = {
+ 	FUNC(UAC_VERSION_2, UAC_MIXER_UNIT, validate_mixer_unit),
+ 	FUNC(UAC_VERSION_2, UAC_SELECTOR_UNIT, validate_selector_unit),
+ 	FUNC(UAC_VERSION_2, UAC_FEATURE_UNIT, validate_uac2_feature_unit),
+-	/* UAC_VERSION_2, UAC2_EFFECT_UNIT: not implemented yet */
++	/* just a stop-gap, it should be a proper function for the array
++	 * once if the unit is really parsed/used
++	 */
++	FIXED(UAC_VERSION_2, UAC2_EFFECT_UNIT,
++	      struct uac2_effect_unit_descriptor),
+ 	FUNC(UAC_VERSION_2, UAC2_PROCESSING_UNIT_V2, validate_processing_unit),
+ 	FUNC(UAC_VERSION_2, UAC2_EXTENSION_UNIT_V2, validate_processing_unit),
+ 	FIXED(UAC_VERSION_2, UAC2_CLOCK_SOURCE,
+@@ -286,7 +290,8 @@ static const struct usb_desc_validator audio_validators[] = {
+ 	FUNC(UAC_VERSION_3, UAC3_MIXER_UNIT, validate_mixer_unit),
+ 	FUNC(UAC_VERSION_3, UAC3_SELECTOR_UNIT, validate_selector_unit),
+ 	FUNC(UAC_VERSION_3, UAC3_FEATURE_UNIT, validate_uac3_feature_unit),
+-	/*  UAC_VERSION_3, UAC3_EFFECT_UNIT: not implemented yet */
++	FIXED(UAC_VERSION_3, UAC3_EFFECT_UNIT,
++	      struct uac2_effect_unit_descriptor), /* sharing the same struct */
+ 	FUNC(UAC_VERSION_3, UAC3_PROCESSING_UNIT, validate_processing_unit),
+ 	FUNC(UAC_VERSION_3, UAC3_EXTENSION_UNIT, validate_processing_unit),
+ 	FIXED(UAC_VERSION_3, UAC3_CLOCK_SOURCE,
 -- 
 2.51.0
 
