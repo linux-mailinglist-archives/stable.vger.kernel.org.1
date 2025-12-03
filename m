@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-199506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99B1FCA0DDD
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:17:19 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50B23CA0191
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:47:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7326030DD950
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:14:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0B7E23068D26
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:39:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E8933469E7;
-	Wed,  3 Dec 2025 16:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4664A32D7DA;
+	Wed,  3 Dec 2025 15:50:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2pAenoaH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FrWd6Bhy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC5CF34677A;
-	Wed,  3 Dec 2025 16:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0338732C92E;
+	Wed,  3 Dec 2025 15:50:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780023; cv=none; b=KYbQR2s4GIwX7NRcXUD9QjwO7XmlyjbwNvpHrQuzb3H8LXp4wMuzxWs+RoncAn96F81qZDUWQsMVQgc/C4WEfKXnysTciufPsmZehOECqrrojMbl7nTRCv4lnEaqTgqSgq6rhP9Lhaw5P/h7Dw8epghsdH7/mhYJcnE9IMiD//k=
+	t=1764777019; cv=none; b=Z5/4FlRd988z/sjDTCZlnloTrs0WRY1pcwqhnqXOhL08GU+RpFK0Y/K6DgCQRNqF2HODVdW9IAHRjlowTGlai2z7m7HXBvVnm5E11cUv5CuHycpVbr5ZzC4IlMfIWhel9oELCM3ENJTOEfS3SOeYx6EzrMZj45vTyh36H/ntYn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780023; c=relaxed/simple;
-	bh=hY9bpA6Na7jhxE4+D0qWptcqsYmEqHNQQWoHv2SGadY=;
+	s=arc-20240116; t=1764777019; c=relaxed/simple;
+	bh=c4hNJ4QgEi1e8LYYWn+AEGf/F7PSx0YEnvu8nJoZXOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kUJu7K3LH6PLGAKBMreFoqSFJc8yU2Te5AgpS9lwJ9XgJXetarE1npeoJY93Lf4D1IqSiNuwnrJ9yW2yzdw4/Z76KhhbPgxa5eo2l9SX5d/wFfj3Rwx/B5yccCY2r7jdYe5aAXkVzLud5IJEdWdWIEJD+Gj6mRvNlefqlDe+xa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2pAenoaH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA427C4CEF5;
-	Wed,  3 Dec 2025 16:40:22 +0000 (UTC)
+	 MIME-Version; b=Rts+VhZbZ3mxUGdu7hRMrwcocrBq/Ng1gecY3/BsleQKBdOmudrY2LsEIjFMEE8/fEeSXptS7P/O1PXJxAi7tLRpRIKDrzGYZLG0xSoOGz0hNSRWrmcoHpsK1+CTdT/Hl+HlPJFNh/h2l9umeR+KEoCF4cw20hFE3m6Hj6BJ0EM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FrWd6Bhy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68BFAC4CEF5;
+	Wed,  3 Dec 2025 15:50:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780023;
-	bh=hY9bpA6Na7jhxE4+D0qWptcqsYmEqHNQQWoHv2SGadY=;
+	s=korg; t=1764777018;
+	bh=c4hNJ4QgEi1e8LYYWn+AEGf/F7PSx0YEnvu8nJoZXOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2pAenoaHhF49uTAu66GJc9ZcDtXhjYsSGLNnz+izS594IMWDGtz2ShVrZZOx3by3i
-	 Wew4Xr7EQQo3ig3wSkH4ckjUs9+kX7lhRaPZodfjQj9CoW5wBSNoJ5fA9WATK6yGZY
-	 ndJi7Kdf5fjhAG4Hk7RfzYuQuySRfMQnaE/N3NLg=
+	b=FrWd6BhyC4Zei8F4/mglBFgVZGSnOjXAO2zisrV+gYDGt4ayi8puaVBSLxdmGJJwz
+	 k9J/0mhe2VvpgukdbHG5Z68adLdWt2Eq9AndqoC6lQgUQtVBsTBC/yCxo8zZxWstjR
+	 b4gKvp0Yj7lBjHJi5Ca+1uQB8JcNrO71if7TSaws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yihang Li <liyihang9@h-partners.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 6.1 433/568] ata: libata-scsi: Add missing scsi_device_put() in ata_scsi_dev_rescan()
+	Chris Lesiak <chris.lesiak@licorbio.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.17 057/146] iio: humditiy: hdc3020: fix units for temperature and humidity measurement
 Date: Wed,  3 Dec 2025 16:27:15 +0100
-Message-ID: <20251203152456.555923247@linuxfoundation.org>
+Message-ID: <20251203152348.557167346@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yihang Li <liyihang9@h-partners.com>
+From: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
 
-commit b32cc17d607e8ae7af037303fe101368cb4dc44c upstream.
+commit 7b8dc11c0a830caa0d890c603d597161c6c26095 upstream.
 
-Call scsi_device_put() in ata_scsi_dev_rescan() if the device or its
-queue are not running.
+According to the ABI the units after application of scale and offset are
+milli degrees for temperature measurements and milli percent for relative
+humidity measurements. Currently the resulting units are degree celsius for
+temperature measurements and percent for relative humidity measurements.
+Change scale factor to fix this issue.
 
-Fixes: 0c76106cb975 ("scsi: sd: Fix TCG OPAL unlock on system resume")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yihang Li <liyihang9@h-partners.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Fixes: c9180b8e39be ("iio: humidity: Add driver for ti HDC302x humidity sensors")
+Reported-by: Chris Lesiak <chris.lesiak@licorbio.com>
+Suggested-by: Chris Lesiak <chris.lesiak@licorbio.com>
+Reviewed-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Signed-off-by: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-scsi.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/iio/humidity/hdc3020.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -4683,8 +4683,10 @@ void ata_scsi_dev_rescan(struct work_str
- 			spin_unlock_irqrestore(ap->lock, flags);
- 			if (do_resume) {
- 				ret = scsi_resume_device(sdev);
--				if (ret == -EWOULDBLOCK)
-+				if (ret == -EWOULDBLOCK) {
-+					scsi_device_put(sdev);
- 					goto unlock_scan;
-+				}
- 				dev->flags &= ~ATA_DFLAG_RESUMING;
- 			}
- 			ret = scsi_rescan_device(sdev);
+--- a/drivers/iio/humidity/hdc3020.c
++++ b/drivers/iio/humidity/hdc3020.c
+@@ -301,9 +301,9 @@ static int hdc3020_read_raw(struct iio_d
+ 	case IIO_CHAN_INFO_SCALE:
+ 		*val2 = 65536;
+ 		if (chan->type == IIO_TEMP)
+-			*val = 175;
++			*val = 175 * MILLI;
+ 		else
+-			*val = 100;
++			*val = 100 * MILLI;
+ 		return IIO_VAL_FRACTIONAL;
+ 
+ 	case IIO_CHAN_INFO_OFFSET:
 
 
 
