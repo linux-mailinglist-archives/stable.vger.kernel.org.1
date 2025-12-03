@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0C7FCA0072
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:39:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6FFBC9FCD7
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:06:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BF61B302B31F
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:36:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D615330022AA
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:06:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0658C3596FA;
-	Wed,  3 Dec 2025 16:36:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92FE131355B;
+	Wed,  3 Dec 2025 16:06:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ONtI4RRE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J/gzXW/7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B448B35BDD6;
-	Wed,  3 Dec 2025 16:36:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D68B313E03;
+	Wed,  3 Dec 2025 16:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779782; cv=none; b=piQAN4l1Tzlm0F6T2gt2EnnKU3Uie7+7TQmbNwd+ZxhIioPrCYIOVYpjNenFGZOiDjty/FkACxO/taOxuUwpEesRT1sqT1w9cwTlu6wBi4jEKFSAIYzipDjz09I4xadhdoq+BVKPbYRzqDsxQMNk22mqQg/y8anb3RzguNI3/kU=
+	t=1764777998; cv=none; b=b6yCYiCfOEBvN/62QjdltWUvgQflBPaCIrFMR+pn0ubrDiOVUznAc9JMFZJ++5YpRuztQdb+nxuvFGPEWiN7paW1dTHzM+lMeudHAxF03oqySoBkNwvOFUKSdRZYo2mCLzmlwQ3U9UEwireOzsuTfHw5xMeiq6W3EhVcAAufX1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779782; c=relaxed/simple;
-	bh=CZrNPmct2ogEErAnea+NpStMZfDqUuDFYws0Z4YcMMk=;
+	s=arc-20240116; t=1764777998; c=relaxed/simple;
+	bh=XONGgOhfbwFMAJXbFP7rLNOYi3O8jFtJHyi7QAkR2+Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=efWShMfBYl4Z/3iJAjwss/m+CAX4CiKfsaOg6OT+nIhVZa8SUq2CsErhZio3XKCpj0pRKupyT+2mZKsd6Ol9zd2QIEyH9gCu3aprkE44+W367TRV4NsJOLRiqBxeC0kFnsKSlFhn9QN/c3pREwLvaPP3kGsrvqjKCv0r9/kyXAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ONtI4RRE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7EFAC4CEF5;
-	Wed,  3 Dec 2025 16:36:21 +0000 (UTC)
+	 MIME-Version; b=Grjzov5BNcKg0S8QI+v1r/9lkV7orFZM4rLusy36AO5BBtjyuz2SkaJSGXrkvgWYqbMkWXNR8z5owuVDy/lh8EylcbywesO5ww6sZTSoAdyS3sq/9HtQJ+BXZpGc0J4EYcgdL+goa+CpVwYUAGsk+hkPtASaaMSwPYWKDhXxjS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J/gzXW/7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48815C116B1;
+	Wed,  3 Dec 2025 16:06:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779782;
-	bh=CZrNPmct2ogEErAnea+NpStMZfDqUuDFYws0Z4YcMMk=;
+	s=korg; t=1764777997;
+	bh=XONGgOhfbwFMAJXbFP7rLNOYi3O8jFtJHyi7QAkR2+Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ONtI4RRE9gYbG2+ulCtXF67LoBVULY7RJA+d8tlzvDdKPXvr8wv3VadthUdXaxCzD
-	 I0+s/dsWJ2gKp+bzIGXaxoC+9oh7QqPNtJCFnTBVFbtUFpPnhenxanYQjqF0b0ydt3
-	 svt5ncarjGdfWjwe9KyVlY2HSngGcLM7ya+Zyuzc=
+	b=J/gzXW/7t8HXbwojqoB1+jzB0Mcb/QkbB9NTPEHYRL9GtAUhk+a44uhX2t+dC7vVg
+	 3WFSemxBpoujhpJmPlO4LkJf3zN5IhbwuJN6wgcFGAqMkbdcxLgfwYZQqcq4Y28xu0
+	 yR4c1mFlJ+Tz4Rr9tZY4XA5KQ3uYuh9qiXBi3AHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Anubhav Singh <anubhavsinggh@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 360/568] wifi: mac80211: skip rate verification for not captured PSDUs
+Subject: [PATCH 5.15 212/392] selftests/net: use destination options instead of hop-by-hop
 Date: Wed,  3 Dec 2025 16:26:02 +0100
-Message-ID: <20251203152453.887720695@linuxfoundation.org>
+Message-ID: <20251203152421.872685755@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Anubhav Singh <anubhavsinggh@google.com>
 
-[ Upstream commit 7fe0d21f5633af8c3fab9f0ef0706c6156623484 ]
+[ Upstream commit f8e8486702abb05b8c734093aab1606af0eac068 ]
 
-If for example the sniffer did not follow any AIDs in an MU frame, then
-some of the information may not be filled in or is even expected to be
-invalid. As an example, in that case it is expected that Nss is zero.
+The GRO self-test, gro.c, currently constructs IPv6 packets containing a
+Hop-by-Hop Options header (IPPROTO_HOPOPTS) to ensure the GRO path
+correctly handles IPv6 extension headers.
 
-Fixes: 2ff5e52e7836 ("radiotap: add 0-length PSDU "not captured" type")
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20251110142554.83a2858ee15b.I9f78ce7984872f474722f9278691ae16378f0a3e@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+However, network elements may be configured to drop packets with the
+Hop-by-Hop Options header (HBH). This causes the self-test to fail
+in environments where such network elements are present.
+
+To improve the robustness and reliability of this test in diverse
+network environments, switch from using IPPROTO_HOPOPTS to
+IPPROTO_DSTOPTS (Destination Options).
+
+The Destination Options header is less likely to be dropped by
+intermediate routers and still serves the core purpose of the test:
+validating GRO's handling of an IPv6 extension header. This change
+ensures the test can execute successfully without being incorrectly
+failed by network policies outside the kernel's control.
+
+Fixes: 7d1575014a63 ("selftests/net: GRO coalesce test")
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: Anubhav Singh <anubhavsinggh@google.com>
+Link: https://patch.msgid.link/20251030060436.1556664-1-anubhavsinggh@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/rx.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ tools/testing/selftests/net/gro.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 776f9fcf05abe..1cd75c200cfe6 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -5228,10 +5228,14 @@ void ieee80211_rx_list(struct ieee80211_hw *hw, struct ieee80211_sta *pubsta,
- 	if (WARN_ON(!local->started))
- 		goto drop;
+diff --git a/tools/testing/selftests/net/gro.c b/tools/testing/selftests/net/gro.c
+index a6cf29c2c9318..e220b6f12336e 100644
+--- a/tools/testing/selftests/net/gro.c
++++ b/tools/testing/selftests/net/gro.c
+@@ -622,11 +622,11 @@ static void send_ipv6_exthdr(int fd, struct sockaddr_ll *daddr, char *ext_data1,
+ 	static char exthdr_pck[sizeof(buf) + MIN_EXTHDR_SIZE];
  
--	if (likely(!(status->flag & RX_FLAG_FAILED_PLCP_CRC))) {
-+	if (likely(!(status->flag & RX_FLAG_FAILED_PLCP_CRC) &&
-+		   !(status->flag & RX_FLAG_NO_PSDU &&
-+		     status->zero_length_psdu_type ==
-+		     IEEE80211_RADIOTAP_ZERO_LEN_PSDU_NOT_CAPTURED))) {
- 		/*
--		 * Validate the rate, unless a PLCP error means that
--		 * we probably can't have a valid rate here anyway.
-+		 * Validate the rate, unless there was a PLCP error which may
-+		 * have an invalid rate or the PSDU was not capture and may be
-+		 * missing rate information.
- 		 */
+ 	create_packet(buf, 0, 0, PAYLOAD_LEN, 0);
+-	add_ipv6_exthdr(buf, exthdr_pck, IPPROTO_HOPOPTS, ext_data1);
++	add_ipv6_exthdr(buf, exthdr_pck, IPPROTO_DSTOPTS, ext_data1);
+ 	write_packet(fd, exthdr_pck, total_hdr_len + PAYLOAD_LEN + MIN_EXTHDR_SIZE, daddr);
  
- 		switch (status->encoding) {
+ 	create_packet(buf, PAYLOAD_LEN * 1, 0, PAYLOAD_LEN, 0);
+-	add_ipv6_exthdr(buf, exthdr_pck, IPPROTO_HOPOPTS, ext_data2);
++	add_ipv6_exthdr(buf, exthdr_pck, IPPROTO_DSTOPTS, ext_data2);
+ 	write_packet(fd, exthdr_pck, total_hdr_len + PAYLOAD_LEN + MIN_EXTHDR_SIZE, daddr);
+ }
+ 
 -- 
 2.51.0
 
