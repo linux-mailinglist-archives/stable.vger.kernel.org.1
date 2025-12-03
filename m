@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B5C0CA0E4C
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:20:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1077CCA04AE
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:14:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B756332ABA54
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:16:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E08C830E51C2
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:02:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09F743AA1AE;
-	Wed,  3 Dec 2025 16:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3FB43563DA;
+	Wed,  3 Dec 2025 16:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="imhWkmNp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Leka/U9P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1BAD3624A4;
-	Wed,  3 Dec 2025 16:52:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2F9B33A6EC;
+	Wed,  3 Dec 2025 16:56:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780759; cv=none; b=KsK+WkYRvkO9W7OSjWYo+3fLKD9Nrps6TPyLLvXtPuEAkPPUxaY1nvs6dW89/vIDn7dvj1p84YxpNj8lK/Gaq0DiVCHbO/ts3bP+c9FkkWD1qB2J06nhl05Q9YQZAlpnId8cIHnQKAcZwQzIMt6xwxheOJNRG61i1CEd7t52LOo=
+	t=1764780968; cv=none; b=qKHwtwTNQLEQVbOIZSSjPApndHEZokJZXYARsh7LmkHFVy+hgNBWNCoat+QnVerSIxnyCX0AjnK2hgfIUZXJR0wIc5JdYqFbsPhh0I2EvgDlcHPkfAw8sy0qSt3r0T5vNs3OtaLfEGrXyLywrETxGUH740JuB35ulLmFj07RWM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780759; c=relaxed/simple;
-	bh=T/nQUIYnU7LFnUI09xtxulyMyLNZA9FtRRJF6fb5KOg=;
+	s=arc-20240116; t=1764780968; c=relaxed/simple;
+	bh=qw97Go1N8RIUUSz/5I/tICF5PaUPBWPI9wO5B8HmeBU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Em05ZgZi+CpwBjp597lr4OhAuU0Lo/YkF5oSYt3mOVx5Nb/FckmNXw3cNy8eGI1BbJeqwHbtY5ul1sAWZXUT/nb83loN4K+leWAeirJQ2yE46BTjKsBCv1raCD0989d4HnU1/iCP0+AVPYPqd402q0Jbemr9oraYVRod+c5M4E8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=imhWkmNp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2576CC4CEF5;
-	Wed,  3 Dec 2025 16:52:38 +0000 (UTC)
+	 MIME-Version; b=tdf55u07pVMjRPUSi/U0NY3owElQoxmCQTuWkR/hKRrFdtGglgH45oPho9CSGUydcCyoJCSWoPBUCbHoChVL2qhAvMaR9R+uVvQJEGF8Fq5OW6AEIPFkKHrMMD3Ya0lTuMTsDo4HN+Bda9vs/CcOxgAOkFSQQiVMEXYdxyxaGmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Leka/U9P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8CE3C4CEF5;
+	Wed,  3 Dec 2025 16:56:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780759;
-	bh=T/nQUIYnU7LFnUI09xtxulyMyLNZA9FtRRJF6fb5KOg=;
+	s=korg; t=1764780968;
+	bh=qw97Go1N8RIUUSz/5I/tICF5PaUPBWPI9wO5B8HmeBU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=imhWkmNpwGMQ98vBYCnnAYfx22jwVko/76P7O3TV+3ugEsE286XtpqPuZ6K07RLI+
-	 Js3WS89Z3c2xLM1ZUuRGzjmjqczcNc9cZuBQWn9AimIj+Pl6SV3hKwte960tsW10Na
-	 01G0Bx2Nd9IOWwiG4coUr+3paUAoJE9/S+3NHKmI=
+	b=Leka/U9Po6fnpOvoGPdXN2SBeLkdpeCnOb3pqvSNP0zto/wz51A28MKDt4DNVK5IM
+	 gkglfFIwJrMyb0n/97EWeidH6l6uAfamfmtZcRP6MdNWvkQTIELJOlOWErboub1fB+
+	 f6WsWs+7wCyzM2VH4oEU8PpBvpB2lGkTSoJivg6w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	Klara Modin <klarasmodin@gmail.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.12 064/132] MIPS: mm: kmalloc tlb_vpn array to avoid stack overflow
-Date: Wed,  3 Dec 2025 16:29:03 +0100
-Message-ID: <20251203152345.668510869@linuxfoundation.org>
+	Danielle Costantino <dcostantino@meta.com>,
+	Gal Pressman <gal@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 11/93] net/mlx5e: Fix validation logic in rate limiting
+Date: Wed,  3 Dec 2025 16:29:04 +0100
+Message-ID: <20251203152336.925273297@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
+References: <20251203152336.494201426@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+From: Danielle Costantino <dcostantino@meta.com>
 
-commit 841ecc979b18d3227fad5e2d6a1e6f92688776b5 upstream.
+[ Upstream commit d2099d9f16dbfa1c5266d4230ff7860047bb0b68 ]
 
-Owing to Config4.MMUSizeExt and VTLB/FTLB MMU features later MIPSr2+
-cores can have more than 64 TLB entries.  Therefore allocate an array
-for uniquification instead of placing too an small array on the stack.
+The rate limiting validation condition currently checks the output
+variable max_bw_value[i] instead of the input value
+maxrate->tc_maxrate[i]. This causes the validation to compare an
+uninitialized or stale value rather than the actual requested rate.
 
-Fixes: 35ad7e181541 ("MIPS: mm: tlb-r4k: Uniquify TLB entries on init")
-Co-developed-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Cc: stable@vger.kernel.org # v6.17+: 9f048fa48740: MIPS: mm: Prevent a TLB shutdown on initial uniquification
-Cc: stable@vger.kernel.org # v6.17+
-Tested-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Tested-by: Klara Modin <klarasmodin@gmail.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The condition should check the input rate to properly validate against
+the upper limit:
+
+    } else if (maxrate->tc_maxrate[i] <= upper_limit_gbps) {
+
+This aligns with the pattern used in the first branch, which correctly
+checks maxrate->tc_maxrate[i] against upper_limit_mbps.
+
+The current implementation can lead to unreliable validation behavior:
+
+- For rates between 25.5 Gbps and 255 Gbps, if max_bw_value[i] is 0
+  from initialization, the GBPS path may be taken regardless of whether
+  the actual rate is within bounds
+
+- When processing multiple TCs (i > 0), max_bw_value[i] contains the
+  value computed for the previous TC, affecting the validation logic
+
+- The overflow check for rates exceeding 255 Gbps may not trigger
+  consistently depending on previous array values
+
+This patch ensures the validation correctly examines the requested rate
+value for proper bounds checking.
+
+Fixes: 43b27d1bd88a ("net/mlx5e: Fix wraparound in rate limiting for values above 255 Gbps")
+Signed-off-by: Danielle Costantino <dcostantino@meta.com>
+Reviewed-by: Gal Pressman <gal@nvidia.com>
+Link: https://patch.msgid.link/20251124180043.2314428-1-dcostantino@meta.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/mm/tlb-r4k.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
-index 3facf7cc6c7d..44a662536148 100644
---- a/arch/mips/mm/tlb-r4k.c
-+++ b/arch/mips/mm/tlb-r4k.c
-@@ -12,6 +12,7 @@
- #include <linux/init.h>
- #include <linux/sched.h>
- #include <linux/smp.h>
-+#include <linux/memblock.h>
- #include <linux/mm.h>
- #include <linux/hugetlb.h>
- #include <linux/export.h>
-@@ -522,17 +523,26 @@ static int r4k_vpn_cmp(const void *a, const void *b)
-  * Initialise all TLB entries with unique values that do not clash with
-  * what we have been handed over and what we'll be using ourselves.
-  */
--static void r4k_tlb_uniquify(void)
-+static void __ref r4k_tlb_uniquify(void)
- {
--	unsigned long tlb_vpns[1 << MIPS_CONF1_TLBS_SIZE];
- 	int tlbsize = current_cpu_data.tlbsize;
-+	bool use_slab = slab_is_available();
- 	int start = num_wired_entries();
-+	phys_addr_t tlb_vpn_size;
-+	unsigned long *tlb_vpns;
- 	unsigned long vpn_mask;
- 	int cnt, ent, idx, i;
- 
- 	vpn_mask = GENMASK(cpu_vmbits - 1, 13);
- 	vpn_mask |= IS_ENABLED(CONFIG_64BIT) ? 3ULL << 62 : 1 << 31;
- 
-+	tlb_vpn_size = tlbsize * sizeof(*tlb_vpns);
-+	tlb_vpns = (use_slab ?
-+		    kmalloc(tlb_vpn_size, GFP_KERNEL) :
-+		    memblock_alloc_raw(tlb_vpn_size, sizeof(*tlb_vpns)));
-+	if (WARN_ON(!tlb_vpns))
-+		return; /* Pray local_flush_tlb_all() is good enough. */
-+
- 	htw_stop();
- 
- 	for (i = start, cnt = 0; i < tlbsize; i++, cnt++) {
-@@ -585,6 +595,10 @@ static void r4k_tlb_uniquify(void)
- 	tlbw_use_hazard();
- 	htw_start();
- 	flush_micro_tlb();
-+	if (use_slab)
-+		kfree(tlb_vpns);
-+	else
-+		memblock_free(tlb_vpns, tlb_vpn_size);
- }
- 
- /*
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
+index 29e633e6dd3f0..e29a8ed7e7ac1 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
+@@ -619,7 +619,7 @@ static int mlx5e_dcbnl_ieee_setmaxrate(struct net_device *netdev,
+ 						  MLX5E_100MB);
+ 			max_bw_value[i] = max_bw_value[i] ? max_bw_value[i] : 1;
+ 			max_bw_unit[i]  = MLX5_100_MBPS_UNIT;
+-		} else if (max_bw_value[i] <= upper_limit_gbps) {
++		} else if (maxrate->tc_maxrate[i] <= upper_limit_gbps) {
+ 			max_bw_value[i] = div_u64(maxrate->tc_maxrate[i],
+ 						  MLX5E_1GB);
+ 			max_bw_unit[i]  = MLX5_GBPS_UNIT;
 -- 
-2.52.0
+2.51.0
 
 
 
