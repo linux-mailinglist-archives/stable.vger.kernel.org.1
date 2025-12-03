@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-198671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1546CA0AA2
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:50:39 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3442CA02FB
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:54:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1E2A6333400A
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:29:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1C4A030542D0
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:43:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3096E33C194;
-	Wed,  3 Dec 2025 15:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC0D6362130;
+	Wed,  3 Dec 2025 16:43:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cyWKMeIN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JuW7uOXX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E15CA33A037;
-	Wed,  3 Dec 2025 15:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6B3362123;
+	Wed,  3 Dec 2025 16:43:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777307; cv=none; b=MPnlbIW1N/z6apQYfgoBKKwfFZpJ+NaZfFffEBFJZHmYwPEJTXELYY03657VqKYk4vaoTgc8NLAdwoYE4zkPFLvkQ7+alWVhtCFg4d7fuJ+oYBIkthlEpVcLHIxvn1eex0s5WS7pOYhZrQLaYZJVCAD0Np7Qp3DE3d0JGzH3BTo=
+	t=1764780209; cv=none; b=PqkHqOqbZR4E6T1EOyRete7BYNmqG1mhVu9pOMcm+p/sDWIXXXPEC2E4RhD2nMR3OzpV6Gj87KLCi9yxx3VV+sJrdlvsNSu4/+8IME8fdoh8wEoQGqUEkWDsl+WVZDfhULmzpNZwCsp/bxu1TzBqjzf9IEPsfsyilxuuXiCgOa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777307; c=relaxed/simple;
-	bh=lQO1+qjrpSm0TjzoLmMAAMFfJsQpHrIPi3dJxEru6pE=;
+	s=arc-20240116; t=1764780209; c=relaxed/simple;
+	bh=BJOPCHC8VWyVMsMgBY99bZuIWvmad6NBcgsIwgt0UK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Upf5cQPO25kWenlKTVbBl+THXv6TE7uxLMJR39LsRBnjX6LNC/Ax4fUeaDkgMpciuTm5eFpV3sNurOaImgTPYnJSaNA5fltsfXDJpbghiRL9Kt5h9AUnBd4SIU8/HSWuqtU60FgVxWIuFjajaozIZ20u4PF2YoLQwhLj+zQ5YuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cyWKMeIN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16D42C4CEF5;
-	Wed,  3 Dec 2025 15:55:05 +0000 (UTC)
+	 MIME-Version; b=o5wAzTKKAm0dHBSC9S43juIvXsENYd0DmdMqiDJaR10s3eFQgI6+9TBsfTxwqtDIv7xG9Q/9n32B+Gy5S/ufuDoSaiF/G0nRpV8m3KUSEBfBq/Wb3hrXjIv+kAnjCV9gRlUb+BK4yCaKSMeTzu8r+z1SOUAAsE2ZTuUcsQ7l1cQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JuW7uOXX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF48CC116C6;
+	Wed,  3 Dec 2025 16:43:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777306;
-	bh=lQO1+qjrpSm0TjzoLmMAAMFfJsQpHrIPi3dJxEru6pE=;
+	s=korg; t=1764780209;
+	bh=BJOPCHC8VWyVMsMgBY99bZuIWvmad6NBcgsIwgt0UK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cyWKMeIN70u+6eSRywul/Zu7sCbGgUz+a3hPn/6bgHcq4yLr9O8aezZ7rdJGdq0sY
-	 do6Xd5CDyUj5Sd7MO4jKmA7LpybH1TYIPPO1EM6VB8DwIymDGUF6T/8XHcZizDvJgW
-	 lLn32j1NMb45xZm0NqLWT+OhEne5OA0vLkK8SJco=
+	b=JuW7uOXXUnK9C/cvwRBIn2N93MKhdrO1dn0WbwQKlLrwB3vraKehJqIWZpZCqKWGo
+	 HBxmN3LQyZqfk+4olakkTc304dOBGFomGn6MNJTfBxSxlJ0QzY1vjNwTHe+bTQ7/7J
+	 VU5w/3ylGtYzvaAgfOZEx6pZyLLKG1Mcrig5dCEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Kuen-Han Tsai <khtsai@google.com>
-Subject: [PATCH 6.17 111/146] usb: gadget: f_eem: Fix memory leak in eem_unwrap
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 487/568] selftests: mptcp: connect: fix fallback note due to OoO
 Date: Wed,  3 Dec 2025 16:28:09 +0100
-Message-ID: <20251203152350.528329835@linuxfoundation.org>
+Message-ID: <20251203152458.542605477@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,76 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-commit e4f5ce990818d37930cd9fb0be29eee0553c59d9 upstream.
+[ Upstream commit 63c643aa7b7287fdbb0167063785f89ece3f000f ]
 
-The existing code did not handle the failure case of usb_ep_queue in the
-command path, potentially leading to memory leaks.
+The "fallback due to TCP OoO" was never printed because the stat_ooo_now
+variable was checked twice: once in the parent if-statement, and one in
+the child one. The second condition was then always true then, and the
+'else' branch was never taken.
 
-Improve error handling to free all allocated resources on usb_ep_queue
-failure. This patch continues to use goto logic for error handling, as the
-existing error handling is complex and not easily adaptable to auto-cleanup
-helpers.
+The idea is that when there are more ACK + MP_CAPABLE than expected, the
+test either fails if there was no out of order packets, or a notice is
+printed.
 
-kmemleak results:
-  unreferenced object 0xffffff895a512300 (size 240):
-    backtrace:
-      slab_post_alloc_hook+0xbc/0x3a4
-      kmem_cache_alloc+0x1b4/0x358
-      skb_clone+0x90/0xd8
-      eem_unwrap+0x1cc/0x36c
-  unreferenced object 0xffffff8a157f4000 (size 256):
-    backtrace:
-      slab_post_alloc_hook+0xbc/0x3a4
-      __kmem_cache_alloc_node+0x1b4/0x2dc
-      kmalloc_trace+0x48/0x140
-      dwc3_gadget_ep_alloc_request+0x58/0x11c
-      usb_ep_alloc_request+0x40/0xe4
-      eem_unwrap+0x204/0x36c
-  unreferenced object 0xffffff8aadbaac00 (size 128):
-    backtrace:
-      slab_post_alloc_hook+0xbc/0x3a4
-      __kmem_cache_alloc_node+0x1b4/0x2dc
-      __kmalloc+0x64/0x1a8
-      eem_unwrap+0x218/0x36c
-  unreferenced object 0xffffff89ccef3500 (size 64):
-    backtrace:
-      slab_post_alloc_hook+0xbc/0x3a4
-      __kmem_cache_alloc_node+0x1b4/0x2dc
-      kmalloc_trace+0x48/0x140
-      eem_unwrap+0x238/0x36c
-
-Fixes: 4249d6fbc10f ("usb: gadget: eem: fix echo command packet response issue")
-Cc: stable@kernel.org
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://patch.msgid.link/20251103121814.1559719-1-khtsai@google.com
+Fixes: 69ca3d29a755 ("mptcp: update selftest for fallback due to OoO")
+Cc: stable@vger.kernel.org
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251110-net-mptcp-sft-join-unstable-v1-1-a4332c714e10@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Different operators used ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_eem.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/mptcp/mptcp_connect.sh |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/function/f_eem.c
-+++ b/drivers/usb/gadget/function/f_eem.c
-@@ -477,8 +477,13 @@ static int eem_unwrap(struct gether *por
- 				req->complete = eem_cmd_complete;
- 				req->zero = 1;
- 				req->context = ctx;
--				if (usb_ep_queue(port->in_ep, req, GFP_ATOMIC))
-+				if (usb_ep_queue(port->in_ep, req, GFP_ATOMIC)) {
- 					DBG(cdev, "echo response queue fail\n");
-+					kfree(ctx);
-+					kfree(req->buf);
-+					usb_ep_free_request(ep, req);
-+					dev_kfree_skb_any(skb2);
-+				}
- 				break;
- 
- 			case 1:  /* echo response */
+--- a/tools/testing/selftests/net/mptcp/mptcp_connect.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect.sh
+@@ -523,7 +523,7 @@ do_transfer()
+ 			"${stat_synrx_now_l}" "${expect_synrx}" 1>&2
+ 		retc=1
+ 	fi
+-	if [ ${stat_ackrx_now_l} -lt ${expect_ackrx} -a ${stat_ooo_now} -eq 0 ]; then
++	if [ ${stat_ackrx_now_l} -lt ${expect_ackrx} ]; then
+ 		if [ ${stat_ooo_now} -eq 0 ]; then
+ 			printf "[ FAIL ] lower MPC ACK rx (%d) than expected (%d)\n" \
+ 				"${stat_ackrx_now_l}" "${expect_ackrx}" 1>&2
 
 
 
