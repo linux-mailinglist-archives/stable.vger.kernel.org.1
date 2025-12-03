@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-199448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8682ACA009F
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:41:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C033EC9FA8B
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:49:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 98A603021DF8
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:37:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BF972306457D
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:41:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8254A35C184;
-	Wed,  3 Dec 2025 16:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E968E2FC010;
+	Wed,  3 Dec 2025 15:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RpX4zzdl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NCtXF/MO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DD4335BDDB;
-	Wed,  3 Dec 2025 16:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9003A31354A;
+	Wed,  3 Dec 2025 15:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779834; cv=none; b=UxnBKF1XGcISD9ZKWtuYQ/701LbSICnYKeA4vowhViNgJcdRpG1t6KFLw6vnGyTMUDa33iD6qDXhpzIYW7hNIUP/5qWMAIN9xdytYTIyIuqDN56ZseFAYfenmngvKiCxrKAsqcOsSATcxlTusoW0GgFLqg6Z56jct65TF/da+hk=
+	t=1764776514; cv=none; b=eS8tDFPmov6sE7fgLI/OCD9eTxKGG+sQU7X1djTcEzrKuNAVC24HIacXn+LPSmjgGtuF+q/wA4XVe0v0w+hk7wa8aXX+Zal5Zs+xQ9h/5tO5kWHVTNUMvDdVXeu5my5BlTNKYr1FNxDVVyWvA6u4XYhHDB4sFDXyG8mT5s/x05g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779834; c=relaxed/simple;
-	bh=D81D334A6Yc7JJ8+tXFnYxp2JPkqSbtXDi0aY+LBqVk=;
+	s=arc-20240116; t=1764776514; c=relaxed/simple;
+	bh=zan1xZbjMJed59HePQyBs6VLfXxpsvJQz+o7026tpps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fVkuGY8iWWjlKun1oxBi0YeJqxYRaYi7zVvXbNEIqwQ1gsnUA/S+d0EUaBthoXGNlG4pD4hwnxWSP2siQG8W8B4E9ZMs0Vr17yG/j3WQQPQWm/A3vFoD1bhnn98FCuvx6Gt8kTzSftkKWIrWil/b2DalFRMto/A9JKV/bIvnPH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RpX4zzdl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A0AC4CEF5;
-	Wed,  3 Dec 2025 16:37:13 +0000 (UTC)
+	 MIME-Version; b=oZrj9QJNQOmZRVpWQVvGgYYtN8QsdKhSQcbReCjDT3Gc0BLkyg3btkOK4ulBfQDACWrPmGcpdTl5AXfA79SV48JlQHq4ffZuTWjzusT2nDm32beVXHeIrjZSMu23fHrC0wDph343W5DoBVlPeoh8MKPsFRxFJVD0rWR4IsHeehk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NCtXF/MO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1247C4CEF5;
+	Wed,  3 Dec 2025 15:41:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779834;
-	bh=D81D334A6Yc7JJ8+tXFnYxp2JPkqSbtXDi0aY+LBqVk=;
+	s=korg; t=1764776514;
+	bh=zan1xZbjMJed59HePQyBs6VLfXxpsvJQz+o7026tpps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RpX4zzdlZe86DQYxYKb4Io7dot/lbkxlUTM3SxnTteLXEBgXHOzzzDAGI5nhSLZ3L
-	 mZ1TH1kei0jsaJf3u1LkEyymtYVJX1X4wicov5YYEUNYAR6cjP2uyy5k4wYprG6B5e
-	 301K4RiXyh77cAkgAvaclgsf18sFTgMEE3nh/mH4=
+	b=NCtXF/MOKHO3SITzHQeP3KtPOzKfOOrfH/0yJeyGmoDwr71JhiuUia0dC5dnV3S0d
+	 A2SCH0UbhMQ/G6YWR/4SSAPrS5xs/TbaB0dc2AWeRmMVMrYJbgU3QeUEBZQWBNsa4K
+	 IfYXLUNPMlipxvuQ06fPHCxRZWiS9Rgfmeh3hysM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Felix Maurer <fmaurer@redhat.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Nathan Chancellor <nathan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 375/568] hsr: Fix supervision frame sending on HSRv0
+Subject: [PATCH 5.10 173/300] compiler_types: Move unused static inline functions warning to W=2
 Date: Wed,  3 Dec 2025 16:26:17 +0100
-Message-ID: <20251203152454.432273941@linuxfoundation.org>
+Message-ID: <20251203152407.030104046@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Maurer <fmaurer@redhat.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 96a3a03abf3d8cc38cd9cb0d280235fbcf7c3f7f ]
+[ Upstream commit 9818af18db4bfefd320d0fef41390a616365e6f7 ]
 
-On HSRv0, no supervision frames were sent. The supervison frames were
-generated successfully, but failed the check for a sufficiently long mac
-header, i.e., at least sizeof(struct hsr_ethhdr), in hsr_fill_frame_info()
-because the mac header only contained the ethernet header.
+Per Nathan, clang catches unused "static inline" functions in C files
+since commit 6863f5643dd7 ("kbuild: allow Clang to find unused static
+inline functions for W=1 build").
 
-Fix this by including the HSR header in the mac header when generating HSR
-supervision frames. Note that the mac header now also includes the TLV
-fields. This matches how we set the headers on rx and also the size of
-struct hsrv0_ethhdr_sp.
+Linus said:
 
-Reported-by: Hangbin Liu <liuhangbin@gmail.com>
-Closes: https://lore.kernel.org/netdev/aMONxDXkzBZZRfE5@fedora/
-Fixes: 9cfb5e7f0ded ("net: hsr: fix hsr_init_sk() vs network/transport headers.")
-Signed-off-by: Felix Maurer <fmaurer@redhat.com>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Tested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://patch.msgid.link/4354114fea9a642fe71f49aeeb6c6159d1d61840.1762876095.git.fmaurer@redhat.com
-Tested-by: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+> So I entirely ignore W=1 issues, because I think so many of the extra
+> warnings are bogus.
+>
+> But if this one in particular is causing more problems than most -
+> some teams do seem to use W=1 as part of their test builds - it's fine
+> to send me a patch that just moves bad warnings to W=2.
+>
+> And if anybody uses W=2 for their test builds, that's THEIR problem..
+
+Here is the change to bump the warning from W=1 to W=2.
+
+Fixes: 6863f5643dd7 ("kbuild: allow Clang to find unused static inline functions for W=1 build")
+Signed-off-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/20251106105000.2103276-1-andriy.shevchenko@linux.intel.com
+[nathan: Adjust comment as well]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/hsr/hsr_device.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/linux/compiler_types.h | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
-index 0b23d52b8d87a..81eaae4c19da1 100644
---- a/net/hsr/hsr_device.c
-+++ b/net/hsr/hsr_device.c
-@@ -313,6 +313,9 @@ static void send_hsr_supervision_frame(struct hsr_port *master,
- 	}
- 
- 	hsr_stag = skb_put(skb, sizeof(struct hsr_sup_tag));
-+	skb_set_network_header(skb, ETH_HLEN + HSR_HLEN);
-+	skb_reset_mac_len(skb);
-+
- 	set_hsr_stag_path(hsr_stag, (hsr->prot_version ? 0x0 : 0xf));
- 	set_hsr_stag_HSR_ver(hsr_stag, hsr->prot_version);
- 
+diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
+index eb2bda017ccb7..9cecd02c1280a 100644
+--- a/include/linux/compiler_types.h
++++ b/include/linux/compiler_types.h
+@@ -158,10 +158,9 @@ struct ftrace_likely_data {
+ /*
+  * GCC does not warn about unused static inline functions for -Wunused-function.
+  * Suppress the warning in clang as well by using __maybe_unused, but enable it
+- * for W=1 build. This will allow clang to find unused functions. Remove the
+- * __inline_maybe_unused entirely after fixing most of -Wunused-function warnings.
++ * for W=2 build. This will allow clang to find unused functions.
+  */
+-#ifdef KBUILD_EXTRA_WARN1
++#ifdef KBUILD_EXTRA_WARN2
+ #define __inline_maybe_unused
+ #else
+ #define __inline_maybe_unused __maybe_unused
 -- 
 2.51.0
 
