@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-198675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA520CA0F42
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:26:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0E35CA0FF9
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:31:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9335D34836FB
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:24:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C816B333B091
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:30:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1550233FE33;
-	Wed,  3 Dec 2025 15:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04AC4347FD9;
+	Wed,  3 Dec 2025 16:13:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fdFpk70v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mM7USTdU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F94933FE27;
-	Wed,  3 Dec 2025 15:55:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B43B2347BDB;
+	Wed,  3 Dec 2025 16:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777319; cv=none; b=IbPIvQgnzttmUBCkaBnc45pGMd47rKObCs0jHCFUOR8nU8SYA+ulpJlX1c1CLRxlhEcgzNIFTE6fQUm/tItcwke8WrqUSkzdJwN9oPK/0VnbFpuVbQ7am+6PdD6ZhQ5xRPczMdtiCJnGhek033eE+6uM0BolU6g2M95zPXanAnA=
+	t=1764778434; cv=none; b=BHnaP84BoxT1sv8jruH/mWJQIXIzd2tbFvXo2q6eqOa2wSBNXdS5VQCECL2sBcajq66pN/oi1SaXQjm/750XQc6hSSoQHNh1403lBZdl+dLDBoKeGoNvv2pXsaSEW5RCncCFLXNF/P+BJkKJzsDGPS969N5ZsYR7L5JZovMx2MA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777319; c=relaxed/simple;
-	bh=xJTP6zkJDvF+Lx4u+iVesrAvCoVQffyTlIj3LScdApk=;
+	s=arc-20240116; t=1764778434; c=relaxed/simple;
+	bh=V68IN+jwCFelQuRdygHVO9yemFp+cdTBmsSnMw6nFCw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s9QsBnVdtD3ZmRc1KUelVvIYPmycs1ERtQl88FKnlhWYkuqYHEFmSi6LgOu6rnyzUN0Eqr3P1w5Km6+W99wXshIBOSjwstpS+BVsXQMoqxTIyAFKdb+lugy1f+jwA3bKqf3kpbHDmJsSMdv1G1XcJPFt57/vD58cc045p5U/hO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fdFpk70v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0666C19423;
-	Wed,  3 Dec 2025 15:55:18 +0000 (UTC)
+	 MIME-Version; b=vC8r4oAGPDVPMsr94msrACSD563pV4Zm2aaexcpMjUxZzFRKues/XnYHTLur3p08UpbfobxezlkUT2cWjVcl1SCIyW0f0VBGsnJaKKDSSjFGvfg4hHGfwKzfzZTHUj9nY62Ysm5btpjafJLkEuaZqRlXP0Mwc9qO9fPxdfBQkDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mM7USTdU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0B8EC4CEF5;
+	Wed,  3 Dec 2025 16:13:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777319;
-	bh=xJTP6zkJDvF+Lx4u+iVesrAvCoVQffyTlIj3LScdApk=;
+	s=korg; t=1764778434;
+	bh=V68IN+jwCFelQuRdygHVO9yemFp+cdTBmsSnMw6nFCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fdFpk70vygjZN869bzgg/gXUuTO4Koh0svWFbZsgVSAdw86tXN4tZesmwaXTbRLJX
-	 xqttFsT7GQ3c8PlGMRFxl4wVmkWiDzqvgAB8O1ZKP7sFbwh6BAUgdENgkTe62Teo4o
-	 gP4lbdfO7LmkObwUIEyGvYjN+hPN9AR3RJLTaQcQ=
+	b=mM7USTdUc3l+ghcRJfLnXrDJnEb36u0gBwdLoKOUxIIB28JwRC/Cwt0ipg5J0lnWX
+	 xF9I6Ag3hMx1pHshKgiuNG73kI6HiTOebthckA9vZv1tlGI2pbINgy9b4uWTV3EGrR
+	 rZ555r3oL7DLpZPyEqnfgPqzOlv51yKUJLuYzjJU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tianchu Chen <flynnnchen@tencent.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.17 115/146] usb: storage: sddr55: Reject out-of-bound new_pba
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 343/392] net: dsa: sja1105: Convert to mdiobus_c45_read
 Date: Wed,  3 Dec 2025 16:28:13 +0100
-Message-ID: <20251203152350.673719391@linuxfoundation.org>
+Message-ID: <20251203152426.791150045@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,47 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tianchu Chen <flynnnchen@tencent.com>
+From: Andrew Lunn <andrew@lunn.ch>
 
-commit b59d4fda7e7d0aff1043a7f742487cb829f5aac1 upstream.
+[ Upstream commit 639e4b93ab68f5f5fc4734c766124ca96c167f14 ]
 
-Discovered by Atuin - Automated Vulnerability Discovery Engine.
+Stop using the helpers to construct a special phy address which
+indicates C45. Instead use the C45 accessors, which will call the
+busses C45 specific read/write API.
 
-new_pba comes from the status packet returned after each write.
-A bogus device could report values beyond the block count derived
-from info->capacity, letting the driver walk off the end of
-pba_to_lba[] and corrupt heap memory.
-
-Reject PBAs that exceed the computed block count and fail the
-transfer so we avoid touching out-of-range mapping entries.
-
-Signed-off-by: Tianchu Chen <flynnnchen@tencent.com>
-Cc: stable <stable@kernel.org>
-Link: https://patch.msgid.link/B2DC73A3EE1E3A1D+202511161322001664687@tencent.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: da62abaaa268 ("net: dsa: sja1105: fix SGMII linking at 10M or 100M but not passing traffic")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/storage/sddr55.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/dsa/sja1105/sja1105_main.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/storage/sddr55.c
-+++ b/drivers/usb/storage/sddr55.c
-@@ -469,6 +469,12 @@ static int sddr55_write_data(struct us_d
- 		new_pba = (status[3] + (status[4] << 8) + (status[5] << 16))
- 						  >> info->blockshift;
+diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
+index ec1c0ad591184..5c37478a7e822 100644
+--- a/drivers/net/dsa/sja1105/sja1105_main.c
++++ b/drivers/net/dsa/sja1105/sja1105_main.c
+@@ -2180,14 +2180,13 @@ int sja1105_static_config_reload(struct sja1105_private *priv,
+ 	 * change it through the dynamic interface later.
+ 	 */
+ 	for (i = 0; i < ds->num_ports; i++) {
+-		u32 reg_addr = mdiobus_c45_addr(MDIO_MMD_VEND2, MDIO_CTRL1);
+-
+ 		speed_mbps[i] = sja1105_port_speed_to_ethtool(priv,
+ 							      mac[i].speed);
+ 		mac[i].speed = priv->info->port_speed[SJA1105_SPEED_AUTO];
  
-+		/* check if device-reported new_pba is out of range */
-+		if (new_pba >= (info->capacity >> (info->blockshift + info->pageshift))) {
-+			result = USB_STOR_TRANSPORT_FAILED;
-+			goto leave;
-+		}
-+
- 		/* check status for error */
- 		if (status[0] == 0xff && status[1] == 0x4) {
- 			info->pba_to_lba[new_pba] = BAD_BLOCK;
+ 		if (priv->xpcs[i])
+-			bmcr[i] = mdiobus_read(priv->mdio_pcs, i, reg_addr);
++			bmcr[i] = mdiobus_c45_read(priv->mdio_pcs, i,
++						   MDIO_MMD_VEND2, MDIO_CTRL1);
+ 	}
+ 
+ 	/* No PTP operations can run right now */
+-- 
+2.51.0
+
 
 
 
