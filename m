@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-198812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9733ACA0BCB
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:02:18 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0041CA0BBF
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:02:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5F7763026F89
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:00:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 330CE30249A0
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:59:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7735A34D4E1;
-	Wed,  3 Dec 2025 16:02:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99D6434DB71;
+	Wed,  3 Dec 2025 16:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PUztl51F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MdgTihN4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 349F634D4DC;
-	Wed,  3 Dec 2025 16:02:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BF4134DB6F;
+	Wed,  3 Dec 2025 16:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777760; cv=none; b=n4omzIbx3MMjZ8uFPTZZRBltlFlDLhUOR9tpU0bjJl9HDsQC5+/6ygAMoFW/ZMhSVBtruztfvy6rUW3lRh0NBXb51GyRBV1n0iMSC1jQOL/8ceIGMSF4zKDM1VbvCZ8P0bpGC6WgxmXPMZ1iHE98PlLALSnzS5GWeCJTapCU2jU=
+	t=1764777796; cv=none; b=nlGa3awid31tKu+m88Q9QDCktUAcMWGBVg9zndJ0Q66PCWpDxrAi8//0FoZzV7erYpSVFysBXVdzawjeXEPrZQLfgmgs4/1qd6Zus0bY5MVr+qAxYfBAahvjWz+s5DfO2m2LBMP/IJqkSaeitfSiZ0lOYVw6GeqvIANV14X5tPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777760; c=relaxed/simple;
-	bh=hsGBtzFcXF5feSV50KKYHjEJCJgxvuvDBKQ0sUj6f64=;
+	s=arc-20240116; t=1764777796; c=relaxed/simple;
+	bh=HCVI0LDa8fzHPbNHNXb9RZB/W8kdN6FhNk7SDx5Hr7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zo9ErrVHix3bk6aWiPG7icwo/BDZn6CZLV5SwLVIyy0m/BBWW5bBpUY5bzVC0z0WXfE+z4R/Ru9YAb6eK/2/cQUPTWtxc+Ya8Rrl5Jc52q0t2/uwMIs6EkCrcnYzkSeeCA9dzzuhAPoIVVIbd785ngF/u8Im6Bi13CM5nnLTB6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PUztl51F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A02B1C4CEF5;
-	Wed,  3 Dec 2025 16:02:39 +0000 (UTC)
+	 MIME-Version; b=BvGGku/AwuqV4hYwzZ8Qm1LJfRJE3rcgaxIODWS8pXxRX7hNLnoza6+wPk9RPh7Je7XSk/CzmZwX36mO0HvJ6SA4ziwIjg+N5RGOvT1WT52vK/EKceebc9r0/yx5uDG+SP0FwVpnZ7SUYqtznWMSb4xPHCNQIwL5FNiIrzy6hHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MdgTihN4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCF65C4CEF5;
+	Wed,  3 Dec 2025 16:03:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777760;
-	bh=hsGBtzFcXF5feSV50KKYHjEJCJgxvuvDBKQ0sUj6f64=;
+	s=korg; t=1764777796;
+	bh=HCVI0LDa8fzHPbNHNXb9RZB/W8kdN6FhNk7SDx5Hr7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PUztl51FKlaHfp8RizH8HzkxnYUiV+uDXDzGOwufEUYx9vx27mTQmO0Ufmq9R7IuC
-	 ba5Vn/aRslbndXgepBTQE5w+F87XA9WRAUIhC7PqQO/YQLtynDtJ8o0UuqxtSGuSXY
-	 FOjtSR/ssTGOZ9RhPD5mj0pwnOXlZCuCL9sl2/40=
+	b=MdgTihN4fw1oCDWKSsUZu8YLwFisULxvOte3bDKwVndtEnXCEmmFgUhl79/rsJ360
+	 dBLW92kA6oAoYOs084qnj/XLv+fet8ubAOxA0s/PgFdPgwXkxdCGEKfvWhpDYFYJYw
+	 HOk2UvRH9Wo154Ngx7czg0BjL3EF0cLdctIURKS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Yue Haibing <yuehaibing@huawei.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 131/392] drm/msm/dsi/phy_7nm: Fix missing initial VCO rate
-Date: Wed,  3 Dec 2025 16:24:41 +0100
-Message-ID: <20251203152418.913147283@linuxfoundation.org>
+Subject: [PATCH 5.15 132/392] ipv6: Add sanity checks on ipv6_devconf.rpl_seg_enabled
+Date: Wed,  3 Dec 2025 16:24:42 +0100
+Message-ID: <20251203152418.949215421@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
 References: <20251203152414.082328008@linuxfoundation.org>
@@ -64,52 +64,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Yue Haibing <yuehaibing@huawei.com>
 
-[ Upstream commit 5ddcb0cb9d10e6e70a68e0cb8f0b8e3a7eb8ccaf ]
+[ Upstream commit 3d95261eeb74958cd496e1875684827dc5d028cc ]
 
-Driver unconditionally saves current state on first init in
-dsi_pll_7nm_init(), but does not save the VCO rate, only some of the
-divider registers.  The state is then restored during probe/enable via
-msm_dsi_phy_enable() -> msm_dsi_phy_pll_restore_state() ->
-dsi_7nm_pll_restore_state().
+In ipv6_rpl_srh_rcv() we use min(net->ipv6.devconf_all->rpl_seg_enabled,
+idev->cnf.rpl_seg_enabled) is intended to return 0 when either value is
+zero, but if one of the values is negative it will in fact return non-zero.
 
-Restoring calls dsi_pll_7nm_vco_set_rate() with
-pll_7nm->vco_current_rate=0, which basically overwrites existing rate of
-VCO and messes with clock hierarchy, by setting frequency to 0 to clock
-tree.  This makes anyway little sense - VCO rate was not saved, so
-should not be restored.
-
-If PLL was not configured configure it to minimum rate to avoid glitches
-and configuring entire in clock hierarchy to 0 Hz.
-
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/657827/
-Link: https://lore.kernel.org/r/20250610-b4-sm8750-display-v6-9-ee633e3ddbff@linaro.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+Link: https://patch.msgid.link/20250901123726.1972881-3-yuehaibing@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ net/ipv6/addrconf.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
-index 10d5b9cf98df5..a5f51534e6e96 100644
---- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
-+++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
-@@ -760,6 +760,12 @@ static int dsi_pll_7nm_init(struct msm_dsi_phy *phy)
- 
- 	/* TODO: Remove this when we have proper display handover support */
- 	msm_dsi_phy_pll_save_state(phy);
-+	/*
-+	 * Store also proper vco_current_rate, because its value will be used in
-+	 * dsi_7nm_pll_restore_state().
-+	 */
-+	if (!dsi_pll_7nm_vco_recalc_rate(&pll_7nm->clk_hw, VCO_REF_CLK_RATE))
-+		pll_7nm->vco_current_rate = pll_7nm->phy->cfg->min_pll_rate;
- 
- 	return 0;
- }
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index 43df9ad96e39d..68038aa522db0 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -7041,7 +7041,9 @@ static const struct ctl_table addrconf_sysctl[] = {
+ 		.data		= &ipv6_devconf.rpl_seg_enabled,
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+-		.proc_handler	= proc_dointvec,
++		.proc_handler   = proc_dointvec_minmax,
++		.extra1         = SYSCTL_ZERO,
++		.extra2         = SYSCTL_ONE,
+ 	},
+ 	{
+ 		.procname	= "ioam6_enabled",
 -- 
 2.51.0
 
