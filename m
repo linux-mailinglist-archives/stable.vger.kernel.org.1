@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 728D1CA0FEB
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:31:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70B8BC9F935
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:42:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0949A3337A03
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:29:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7C18730038F4
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:37:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A0F30DD14;
-	Wed,  3 Dec 2025 16:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 018D0314A99;
+	Wed,  3 Dec 2025 15:37:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1+nYPk2b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t0Zoq7B+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D467D30ACEE;
-	Wed,  3 Dec 2025 16:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1331314A78;
+	Wed,  3 Dec 2025 15:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777814; cv=none; b=iwJ3zr8b4wbcXoP2QNvXOQA9Je3t+wjvsKIju5qMA9c51qL0Qiu8tjgZks26hOPiZ8sR+Sd/VL/y93Bo3b2FpWZzeZU5dx/OMw7/X19qWqjgMT0sQmoOIUqgTQtdMjfr3WrIx2t2YhFs4MZnyS3kjSttQcMjJAy0tGtb/H/dfIo=
+	t=1764776276; cv=none; b=G+9Ok9qBV0lyXYxTnyHppx1fb4djDAyVISaF7o56D2RGvCQ4cj7Me/Kki9LzjsytCkotcHBl/u+Q0WXNFYds8KyErO3ukr0ebYHPVwlSAAfi4GD87JKumZTgov6HBzsfcxKFfg+JWUDnjamCX+evMxdStsxzQOhNUOz38mj+DUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777814; c=relaxed/simple;
-	bh=tgrkkC1v9SKJHbmBQ+rAtEfJbDe021JSPJ2w/NeeB6k=;
+	s=arc-20240116; t=1764776276; c=relaxed/simple;
+	bh=C9TnJozgwQZNBPLvDseVt/VmR8k+gqASbfaUmJcZuKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=He7eZer9Jyv9DzYv7CdxMHvKcodzNwAMjUsJ8EzyvRiYe8hTaORinKokbz0JNrtfqtBya8ZY28Oy/dQZSWz2nZxnUx0Hhzp1B/PRTqo94ZkenDeygsn0rZLmswM7VKYJ112VRPYBpJ44andrm38FGL6BBtS7mYqkvRvRQmpNT0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1+nYPk2b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4822EC4CEF5;
-	Wed,  3 Dec 2025 16:03:34 +0000 (UTC)
+	 MIME-Version; b=EJkqXzZE4MUgoRHI+4atTWe8Q9a2xmiqk+dGwT22VBjxCKGotLzmSuDhgyqCIwrDck5pcDzcH5hNEH4MRh9Xei/QD245zIOieC7BauXH6MZ0QlyeLD/4YrB5Oe0KYh9yzAURkHaesfVY0KBKBUx5xZBzxTr1pXayE7fcc5+oie4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t0Zoq7B+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5DC2C4CEF5;
+	Wed,  3 Dec 2025 15:37:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777814;
-	bh=tgrkkC1v9SKJHbmBQ+rAtEfJbDe021JSPJ2w/NeeB6k=;
+	s=korg; t=1764776276;
+	bh=C9TnJozgwQZNBPLvDseVt/VmR8k+gqASbfaUmJcZuKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1+nYPk2bkOygIm/Pl2ju1JSfzdhGiN3Yhiys4O7HguqbSrBsKK539o7QDaKYJPhPu
-	 In0GkP83bLt2baw6e44YYspv6E4/xgg9f+2Vhmlr/gVCe0vMgNxdfOyNMOAgKAqogi
-	 nPuLwA0FNSTjF9jU2ULNVbrqFG6LwstJXzhbelt8=
+	b=t0Zoq7B+5VjveAwVluKVrwM8fdLuY6pt7RF3eLXCURxwFD1KdEMxXD5F3TSbvwVgD
+	 89x2g9NBohKYUwBpmjNIl936BFXvfEnmWwZclzuvbFdmjG7W2vYybVXXB6ASu0TGAi
+	 gKRlFWS4XBd6QqjXUzbayalof+5RXfGly8L8BVww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mina Almasry <almasrymina@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Rosen Penev <rosenp@gmail.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 155/392] page_pool: always add GFP_NOWARN for ATOMIC allocations
+Subject: [PATCH 5.10 101/300] dmaengine: mv_xor: match alloc_wc and free_wc
 Date: Wed,  3 Dec 2025 16:25:05 +0100
-Message-ID: <20251203152419.785234134@linuxfoundation.org>
+Message-ID: <20251203152404.366462049@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +60,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Rosen Penev <rosenp@gmail.com>
 
-[ Upstream commit f3b52167a0cb23b27414452fbc1278da2ee884fc ]
+[ Upstream commit a33e3b667d2f004fdfae6b442bd4676f6c510abb ]
 
-Driver authors often forget to add GFP_NOWARN for page allocation
-from the datapath. This is annoying to users as OOMs are a fact
-of life, and we pretty much expect network Rx to hit page allocation
-failures during OOM. Make page pool add GFP_NOWARN for ATOMIC allocations
-by default.
+dma_alloc_wc is used but not dma_free_wc.
 
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-Link: https://patch.msgid.link/20250912161703.361272-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Link: https://lore.kernel.org/r/20250821220942.10578-1-rosenp@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/page_pool.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/dma/mv_xor.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index 416be038e1cae..813d15a5593c6 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -283,6 +283,12 @@ static struct page *__page_pool_alloc_pages_slow(struct page_pool *pool,
- 	struct page *page;
- 	int i, nr_pages;
+diff --git a/drivers/dma/mv_xor.c b/drivers/dma/mv_xor.c
+index 94a12f3267c14..8224d52d16901 100644
+--- a/drivers/dma/mv_xor.c
++++ b/drivers/dma/mv_xor.c
+@@ -1013,7 +1013,7 @@ static int mv_xor_channel_remove(struct mv_xor_chan *mv_chan)
  
-+	/* Unconditionally set NOWARN if allocating from NAPI.
-+	 * Drivers forget to set it, and OOM reports on packet Rx are useless.
-+	 */
-+	if ((gfp & GFP_ATOMIC) == GFP_ATOMIC)
-+		gfp |= __GFP_NOWARN;
-+
- 	/* Don't support bulk alloc for high-order pages */
- 	if (unlikely(pp_order))
- 		return __page_pool_alloc_page_order(pool, gfp);
+ 	dma_async_device_unregister(&mv_chan->dmadev);
+ 
+-	dma_free_coherent(dev, MV_XOR_POOL_SIZE,
++	dma_free_wc(dev, MV_XOR_POOL_SIZE,
+ 			  mv_chan->dma_desc_pool_virt, mv_chan->dma_desc_pool);
+ 	dma_unmap_single(dev, mv_chan->dummy_src_addr,
+ 			 MV_XOR_MIN_BYTE_COUNT, DMA_FROM_DEVICE);
+@@ -1163,7 +1163,7 @@ mv_xor_channel_add(struct mv_xor_device *xordev,
+ err_free_irq:
+ 	free_irq(mv_chan->irq, mv_chan);
+ err_free_dma:
+-	dma_free_coherent(&pdev->dev, MV_XOR_POOL_SIZE,
++	dma_free_wc(&pdev->dev, MV_XOR_POOL_SIZE,
+ 			  mv_chan->dma_desc_pool_virt, mv_chan->dma_desc_pool);
+ err_unmap_dst:
+ 	dma_unmap_single(dma_dev->dev, mv_chan->dummy_dst_addr,
 -- 
 2.51.0
 
