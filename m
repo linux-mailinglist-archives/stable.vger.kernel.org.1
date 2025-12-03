@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-198235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 954E6C9F7FD
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:35:04 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7BD4CA10FE
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:40:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F2EF9300378C
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:31:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 03CA3300EDCE
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:39:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C53A930BF66;
-	Wed,  3 Dec 2025 15:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D26535B123;
+	Wed,  3 Dec 2025 16:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GEI4Dud1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eAHBQpbE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C10630ACF4;
-	Wed,  3 Dec 2025 15:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED6835A94D;
+	Wed,  3 Dec 2025 16:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764775872; cv=none; b=bFJInVRFU9+tZ/00Yb2XKjbefFe/227rz3gc3jQ75o39JDOs7j+jZUzq61bBZjgVF5E5maI/1DPTd7WCQcMD11BaseVqsAfwLOn1+Jn2DWS+FtrIQ99LFHber9U67sxI5WuJI7SOeSu3ZW0Axw0g4BY+8/DEONPWXzkYs/O54CI=
+	t=1764779407; cv=none; b=IGH9lrEUYlyhtyzbX1bXDVkpTex4XqUfe7bhTHSSdgTQnwoo9jlX1qaW25zeURsXQq8QHXtEjSctbAvkwfh1xQVjaVuEpPfCUcut0PFsQ+jdgftlCPVbN60lWAVLUWPFbbN1jS+QJlFUTsLgEM8JGbuWGyKZko5AR5Ed357ljdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764775872; c=relaxed/simple;
-	bh=nw6FMW4+qZvESZ/pCcNnkqNsfw2SfwDgCIUby3R/IOw=;
+	s=arc-20240116; t=1764779407; c=relaxed/simple;
+	bh=0BC8lmV6gOoOZ7i9g71dCKnzIqIGDhNJzWjEmFh+X3Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=as5nZZQgWYXGI+1K3QQ+o29IzZDa1c7XH4YTn4dlo2Qy/X5sojRpH4Zkm6xOdIxFmsuZR/zBxt1WCU4QiqshpFxoGuAeohridBuWM5A0d3tUyzbck0kcqvmuW9Fewj2CdmoHnoFhRvAQRmeJSOqxHRtI5uv12OnkZdS37wE/N8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GEI4Dud1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80C78C4CEF5;
-	Wed,  3 Dec 2025 15:31:11 +0000 (UTC)
+	 MIME-Version; b=aRcOhqMIkfP+WPGHQpRjJmiVRMVrQAQhcvbW27KA0mRHh+qAYZRZh6t10NZ6zsOiYGlUhBdlTGlgKePzYDuQBdSmn9vYgMoRXBfvGat7wVOlMH0OLgp/3ojRb2cg8xZwg+ciPst9a//BFWM3sGqfugKeC7Vv+zqnpe4QFRvRCHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eAHBQpbE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA43DC4CEF5;
+	Wed,  3 Dec 2025 16:30:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764775872;
-	bh=nw6FMW4+qZvESZ/pCcNnkqNsfw2SfwDgCIUby3R/IOw=;
+	s=korg; t=1764779407;
+	bh=0BC8lmV6gOoOZ7i9g71dCKnzIqIGDhNJzWjEmFh+X3Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GEI4Dud14Okf6oeVIi9DwyRE/dqQdVu/FJzgMGRaD+GDaaY0B+b/VELmQAWDzKj91
-	 XBgzojsLpOM4DpvY9JKNoQKqiMRmb8eEMa0X65JW1HPUxwkvM0n9/7QIW9R3x+lqNw
-	 PZ6Fan2MlQK8wRJ5ip7BD7f7+C67G8ieocG1v/88=
+	b=eAHBQpbEysYxxZ/iu11Y46gImfNY6leo0suaAfUDm5Km+EwZItMYhgqwgwaRb4ruv
+	 p0MXTsXnEVoJcwPHqwis/Rl4P52TUM8NKIYq6k/A57fAWSsgxyfIWCYLz7BcwxV7Fb
+	 bk6aBRAgE5rLjtH4RkTSPf6kBNvlU9HN5QU7Iir0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stable@vger.kernel.org,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.10 013/300] ASoC: qdsp6: q6asm: do not sleep while atomic
+	Petr Machata <petrm@nvidia.com>,
+	David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 215/568] selftests: traceroute: Use require_command()
 Date: Wed,  3 Dec 2025 16:23:37 +0100
-Message-ID: <20251203152400.949724126@linuxfoundation.org>
+Message-ID: <20251203152448.598142616@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit fdbb53d318aa94a094434e5f226617f0eb1e8f22 upstream.
+[ Upstream commit 47efbac9b768553331b9459743a29861e0acd797 ]
 
-For some reason we ended up kfree between spinlock lock and unlock,
-which can sleep.
+Use require_command() so that the test will return SKIP (4) when a
+required command is not present.
 
-move the kfree out of spinlock section.
+Before:
 
-Fixes: a2a5d30218fd ("ASoC: qdsp6: q6asm: Add support to memory map and unmap")
-Cc: Stable@vger.kernel.org
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251017085307.4325-2-srinivas.kandagatla@oss.qualcomm.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ # ./traceroute.sh
+ SKIP: Could not run IPV6 test without traceroute6
+ SKIP: Could not run IPV4 test without traceroute
+ $ echo $?
+ 0
+
+After:
+
+ # ./traceroute.sh
+ TEST: traceroute6 not installed                                    [SKIP]
+ $ echo $?
+ 4
+
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20250908073238.119240-6-idosch@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/qcom/qdsp6/q6asm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/net/traceroute.sh | 13 +++----------
+ 1 file changed, 3 insertions(+), 10 deletions(-)
 
---- a/sound/soc/qcom/qdsp6/q6asm.c
-+++ b/sound/soc/qcom/qdsp6/q6asm.c
-@@ -376,9 +376,9 @@ static void q6asm_audio_client_free_buf(
+diff --git a/tools/testing/selftests/net/traceroute.sh b/tools/testing/selftests/net/traceroute.sh
+index de9ca97abc306..9cb5e96e64333 100755
+--- a/tools/testing/selftests/net/traceroute.sh
++++ b/tools/testing/selftests/net/traceroute.sh
+@@ -209,11 +209,6 @@ setup_traceroute6()
  
- 	spin_lock_irqsave(&ac->lock, flags);
- 	port->num_periods = 0;
-+	spin_unlock_irqrestore(&ac->lock, flags);
- 	kfree(port->buf);
- 	port->buf = NULL;
--	spin_unlock_irqrestore(&ac->lock, flags);
- }
+ run_traceroute6()
+ {
+-	if [ ! -x "$(command -v traceroute6)" ]; then
+-		echo "SKIP: Could not run IPV6 test without traceroute6"
+-		return
+-	fi
+-
+ 	setup_traceroute6
  
- /**
+ 	# traceroute6 host-2 from host-1 (expects 2000:102::2)
+@@ -278,11 +273,6 @@ setup_traceroute()
+ 
+ run_traceroute()
+ {
+-	if [ ! -x "$(command -v traceroute)" ]; then
+-		echo "SKIP: Could not run IPV4 test without traceroute"
+-		return
+-	fi
+-
+ 	setup_traceroute
+ 
+ 	# traceroute host-2 from host-1 (expects 1.0.1.1). Takes a while.
+@@ -316,6 +306,9 @@ do
+ 	esac
+ done
+ 
++require_command traceroute6
++require_command traceroute
++
+ run_tests
+ 
+ printf "\nTests passed: %3d\n" ${nsuccess}
+-- 
+2.51.0
+
 
 
 
