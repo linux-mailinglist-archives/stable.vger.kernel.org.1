@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADCC2CA04E6
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:16:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 083A2CA0866
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:37:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 634433065028
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:03:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1427C33C5A5E
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:18:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6AFE364EB0;
-	Wed,  3 Dec 2025 16:57:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 837263AA1B4;
+	Wed,  3 Dec 2025 16:52:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PKq2bH73"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZF9QDi7+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712E7364EA6;
-	Wed,  3 Dec 2025 16:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F03234F492;
+	Wed,  3 Dec 2025 16:52:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764781040; cv=none; b=IMfnPda+PP+4uLVFGL8gcWyT+2ednL/X/cUbmQvd8vv4MUGVutvRjTwjJrrLx3cDkV8IjQ16izYpJAhgN3BFkYxTp3t9AiFDsoKkt/NHsuIBHWgMkEXot32kjHX9zDmqwJNVxs0/8N4z7Sq4cx8PaS8L/hE2shZVFaD2NII5vuk=
+	t=1764780772; cv=none; b=rRahCGe7NOPyiSpD5faAIeqgoCvKqS4hPJkckTfwSQFbDtXYxpAfY2X/S8OT8t7o4LV/cs/45F0NNsOoHX8Spkcq1m561SgNVwHcypZKjfRAFYFkp07UDRYCrnxubcsjNXb+/yrFCkhlMe3yHsFszHkA12gZ9bAZtB5UACq7TNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764781040; c=relaxed/simple;
-	bh=TyIuTT79uLMlcVRqHf/py2GH62sfXlyukGHfd+W7Dr4=;
+	s=arc-20240116; t=1764780772; c=relaxed/simple;
+	bh=M3SO5curmb3Dzj+vjCCqvHw1tLDIDLwax8dlP9zhIvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pRrBJJPAO7TO/69wLoreJWG/uDVtsI61S1ZTQpFUoLcjU4TiY8mu3EKnegqf4qgwQpYRgRLjQKX1XF7qVSh+iWIe5laH1hUlbZGgDUQMH2xsyayaFDEFDLpDenfOcA2d+zhlBXoafTwSM4sUiQ2jyiWLtkMP+bUO0UbUSvJpdC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PKq2bH73; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35075C4CEF5;
-	Wed,  3 Dec 2025 16:57:19 +0000 (UTC)
+	 MIME-Version; b=geM7MzdkU1qVmGJdN1UbXAGCVmeKq3oa0AVKYsv94TKHggs5gRcWDZMLKDmJS61ggpmxgDWlEgZswhqsbh0jnMwHtkqoFwUKGH6ynoW0IdsHZbdzqrEi4R2g1P43AejiYnsE6q9PFtUAhS+wa7J5N8pqvYR3lLBFYq6dF942HAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZF9QDi7+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EE39C4CEF5;
+	Wed,  3 Dec 2025 16:52:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764781039;
-	bh=TyIuTT79uLMlcVRqHf/py2GH62sfXlyukGHfd+W7Dr4=;
+	s=korg; t=1764780772;
+	bh=M3SO5curmb3Dzj+vjCCqvHw1tLDIDLwax8dlP9zhIvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PKq2bH73vjw7xIa8gqd33hZmN6MNg3FzS6w0N0LZRTIa0UVs8PqZAA2gtv37knLdr
-	 KkvB2YS4wAmeTDYe2iK2GGAthOvXNYRPzfksek3/yknqjZOITPPCHWzvseHDtBSFmj
-	 +N9q9OJY6fdVAVwumnNufKeL3ZPRu068UGR/Su7E=
+	b=ZF9QDi7+6LQ1UU0868gcabU82dbP86il3tBAwSiLX4hC+0EIIph0BA+74uqKtRnE3
+	 2sboXKvNKwgw3K0LZv1+ilitDgyVN4G9ZwrhcF6AwAjEQZTtxb/yvd9K9ETPXqStUI
+	 SHw6uFjUu7EGaXg7Ekhv3jJIcTVmiiMqtxUluCmg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 31/93] spi: nxp-fspi: Support per spi-mem operation frequency switches
+	syzbot+3a92d359bc2ec6255a33@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.12 085/132] mptcp: Initialise rcv_mss before calling tcp_send_active_reset() in mptcp_do_fastclose().
 Date: Wed,  3 Dec 2025 16:29:24 +0100
-Message-ID: <20251203152337.668290192@linuxfoundation.org>
+Message-ID: <20251203152346.443025986@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +61,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 26851cf65ffca2d3a8d529a125e54cf0084d69e7 ]
+commit f07f4ea53e22429c84b20832fa098b5ecc0d4e35 upstream.
 
-Every ->exec_op() call correctly configures the spi bus speed to the
-maximum allowed frequency for the memory using the constant spi default
-parameter. Since we can now have per-operation constraints, let's use
-the value that comes from the spi-mem operation structure instead. In
-case there is no specific limitation for this operation, the default spi
-device value will be given anyway.
+syzbot reported divide-by-zero in __tcp_select_window() by
+MPTCP socket. [0]
 
-The per-operation frequency capability is thus advertised to the spi-mem
-core.
+We had a similar issue for the bare TCP and fixed in commit
+499350a5a6e7 ("tcp: initialize rcv_mss to TCP_MIN_MSS instead
+of 0").
 
-Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://patch.msgid.link/20241224-winbond-6-11-rc1-quad-support-v2-12-ad218dbc406f@bootlin.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 40ad64ac25bb ("spi: nxp-fspi: Propagate fwnode in ACPI case as well")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Let's apply the same fix to mptcp_do_fastclose().
+
+[0]:
+Oops: divide error: 0000 [#1] SMP KASAN PTI
+CPU: 0 UID: 0 PID: 6068 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
+RIP: 0010:__tcp_select_window+0x824/0x1320 net/ipv4/tcp_output.c:3336
+Code: ff ff ff 44 89 f1 d3 e0 89 c1 f7 d1 41 01 cc 41 21 c4 e9 a9 00 00 00 e8 ca 49 01 f8 e9 9c 00 00 00 e8 c0 49 01 f8 44 89 e0 99 <f7> 7c 24 1c 41 29 d4 48 bb 00 00 00 00 00 fc ff df e9 80 00 00 00
+RSP: 0018:ffffc90003017640 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffff88807b469e40
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: ffffc90003017730 R08: ffff888033268143 R09: 1ffff1100664d028
+R10: dffffc0000000000 R11: ffffed100664d029 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+FS:  000055557faa0500(0000) GS:ffff888126135000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f64a1912ff8 CR3: 0000000072122000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ tcp_select_window net/ipv4/tcp_output.c:281 [inline]
+ __tcp_transmit_skb+0xbc7/0x3aa0 net/ipv4/tcp_output.c:1568
+ tcp_transmit_skb net/ipv4/tcp_output.c:1649 [inline]
+ tcp_send_active_reset+0x2d1/0x5b0 net/ipv4/tcp_output.c:3836
+ mptcp_do_fastclose+0x27e/0x380 net/mptcp/protocol.c:2793
+ mptcp_disconnect+0x238/0x710 net/mptcp/protocol.c:3253
+ mptcp_sendmsg_fastopen+0x2f8/0x580 net/mptcp/protocol.c:1776
+ mptcp_sendmsg+0x1774/0x1980 net/mptcp/protocol.c:1855
+ sock_sendmsg_nosec net/socket.c:727 [inline]
+ __sock_sendmsg+0xe5/0x270 net/socket.c:742
+ __sys_sendto+0x3bd/0x520 net/socket.c:2244
+ __do_sys_sendto net/socket.c:2251 [inline]
+ __se_sys_sendto net/socket.c:2247 [inline]
+ __x64_sys_sendto+0xde/0x100 net/socket.c:2247
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f66e998f749
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffff9acedb8 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 00007f66e9be5fa0 RCX: 00007f66e998f749
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000003
+RBP: 00007ffff9acee10 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000001
+R13: 00007f66e9be5fa0 R14: 00007f66e9be5fa0 R15: 0000000000000006
+ </TASK>
+
+Fixes: ae155060247b ("mptcp: fix duplicate reset on fastclose")
+Reported-by: syzbot+3a92d359bc2ec6255a33@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/69260882.a70a0220.d98e3.00b4.GAE@google.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251125195331.309558-1-kuniyu@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-nxp-fspi.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ net/mptcp/protocol.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-index 731504ec7ef8b..5d631f8c593e3 100644
---- a/drivers/spi/spi-nxp-fspi.c
-+++ b/drivers/spi/spi-nxp-fspi.c
-@@ -711,9 +711,10 @@ static void nxp_fspi_dll_calibration(struct nxp_fspi *f)
-  * Value for rest of the CS FLSHxxCR0 register would be zero.
-  *
-  */
--static void nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi)
-+static void nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi,
-+				const struct spi_mem_op *op)
- {
--	unsigned long rate = spi->max_speed_hz;
-+	unsigned long rate = op->max_freq;
- 	int ret;
- 	uint64_t size_kb;
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2854,6 +2854,12 @@ static void mptcp_do_fastclose(struct so
+ 			goto unlock;
  
-@@ -938,7 +939,7 @@ static int nxp_fspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 				   FSPI_STS0_ARB_IDLE, 1, POLL_TOUT, true);
- 	WARN_ON(err);
- 
--	nxp_fspi_select_mem(f, mem->spi);
-+	nxp_fspi_select_mem(f, mem->spi, op);
- 
- 	nxp_fspi_prepare_lut(f, op);
- 	/*
-@@ -1156,6 +1157,10 @@ static const struct spi_controller_mem_ops nxp_fspi_mem_ops = {
- 	.get_name = nxp_fspi_get_name,
- };
- 
-+static const struct spi_controller_mem_caps nxp_fspi_mem_caps = {
-+	.per_op_freq = true,
-+};
+ 		subflow->send_fastclose = 1;
 +
- static int nxp_fspi_probe(struct platform_device *pdev)
- {
- 	struct spi_controller *ctlr;
-@@ -1253,6 +1258,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
- 	ctlr->bus_num = -1;
- 	ctlr->num_chipselect = NXP_FSPI_MAX_CHIPSELECT;
- 	ctlr->mem_ops = &nxp_fspi_mem_ops;
-+	ctlr->mem_caps = &nxp_fspi_mem_caps;
- 
- 	nxp_fspi_default_setup(f);
- 
--- 
-2.51.0
-
++		/* Initialize rcv_mss to TCP_MIN_MSS to avoid division by 0
++		 * issue in __tcp_select_window(), see tcp_disconnect().
++		 */
++		inet_csk(ssk)->icsk_ack.rcv_mss = TCP_MIN_MSS;
++
+ 		tcp_send_active_reset(ssk, ssk->sk_allocation,
+ 				      SK_RST_REASON_TCP_ABORT_ON_CLOSE);
+ unlock:
 
 
 
