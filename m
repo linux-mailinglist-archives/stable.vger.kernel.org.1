@@ -1,156 +1,112 @@
-Return-Path: <stable+bounces-198219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0257C9F27A
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 14:36:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0A82C9F2D5
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 14:47:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 248494E1395
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 13:36:43 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AC4E14E36B2
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 13:46:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DEF32FB973;
-	Wed,  3 Dec 2025 13:36:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB24E2FC873;
+	Wed,  3 Dec 2025 13:46:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="V/jLlF1E";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Gverl2jn"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="PbnNmrsN"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB1D2FB624
-	for <stable@vger.kernel.org>; Wed,  3 Dec 2025 13:36:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D064E2FBE09
+	for <stable@vger.kernel.org>; Wed,  3 Dec 2025 13:46:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764768999; cv=none; b=cjGS7vUXrk/BSRw37GtXv7fVczSoXdcXNzNn6BXUb4Ibb+dX2u0hYf1s4Es9lEXuj5L7b2dl/HloEQO+DXqrFFOeqTFI4HLKxEJCEpqLQx7TrRblIuX6GXlLfwSZ5u+i04FVQuCUg2X8I+N9TvS8VUcj3WoyPflYLNgWz/LUkqg=
+	t=1764769589; cv=none; b=XZ+Zi8ZOgzx5GGwB4exCBQely+pBk23u8kwFoFMDFtwtiwPTK5JMCLGKg6annDS8U+qHEixRU/u8FRiuvwAd94Ov8G7AIEbXGPcfqDGb2Xl6GQZvrEKjclP/f5KgdJS7GnMf8bGW7CBTbe2Or6P5w3ElAvd6MJFH/tfkxg7KtGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764768999; c=relaxed/simple;
-	bh=6jCCBaNZJU5WxSb9K5Eund10EdCdaWra6lb6uoba4PA=;
+	s=arc-20240116; t=1764769589; c=relaxed/simple;
+	bh=QoyOKOGalJTETaQ2d7JCV5VAbOwBVt88lEVeNz5ZVvQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=q64Ny+fQh977RTuBgAgQjU8m6zk9q7DaaTQWE0+ZVzTg9voOFBzzKqvxbLgplGcZvMN8ibv2IQ68R2DMjS89eirYv6DF2Et6BFuSyipLnzUC6V4sMd7zl2k4KyZAemeXmsP19fXfImgNZV1WnFluZ4Ycd9Jb3xG5ZjrudHOPLVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=V/jLlF1E; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Gverl2jn; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764768996;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6jCCBaNZJU5WxSb9K5Eund10EdCdaWra6lb6uoba4PA=;
-	b=V/jLlF1EutYnsXGaRnskAClmDYHsiw7ybuH2CajAIesVQ3eE4gF4AvYODfXyU3PLthdeJI
-	zW3RDybEKBCCMKUgEsnwtS/vIz2Bf8j/sAihKNSLtTMOtmepjUltcVRzITQe2KC3K2JY53
-	OQJkIFQJQEe/Ju4TW6MzBQRPwGcUIBA=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-414-uh-Gop6eOVCpGnfRnyuSPw-1; Wed, 03 Dec 2025 08:36:34 -0500
-X-MC-Unique: uh-Gop6eOVCpGnfRnyuSPw-1
-X-Mimecast-MFC-AGG-ID: uh-Gop6eOVCpGnfRnyuSPw_1764768994
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-42b366a76ffso4325455f8f.1
-        for <stable@vger.kernel.org>; Wed, 03 Dec 2025 05:36:34 -0800 (PST)
+	 To:Cc:Content-Type; b=GtPtqLjG58pYgkdj9hECdCpjDpKCsZz4/YO+qfGkKdZC24XkEALnNbxfS2O9+HagOONW3+atnIoMrtWi2davNTBjPOJiHZR6DeiTOs6ORgDk/nI24cdrBOotDIRb8QdQknhVlFKoFlNMu4uiPVXmUB+MzU3SPhf3810CIdU/OjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=PbnNmrsN; arc=none smtp.client-ip=209.85.167.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-594285c6509so7895648e87.0
+        for <stable@vger.kernel.org>; Wed, 03 Dec 2025 05:46:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1764768994; x=1765373794; darn=vger.kernel.org;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1764769586; x=1765374386; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6jCCBaNZJU5WxSb9K5Eund10EdCdaWra6lb6uoba4PA=;
-        b=Gverl2jn1ZYmTqzxT4Hy5t09TL+08ourBTKJspStC6/6c9BXLVWcBkDA8WcOTck+VS
-         OPzF3LM3fu4eRhzRS88iK3GfvhW7CN/iNBThTXgzfEfvPqwsORhdHj5bb80pnRn/HXbm
-         J2vOIyaA5onxo99DSCF2w3B0566NvIYhG80/Xwodi+jsJzT+gGSZt7z026d/ilrZzEEz
-         2NPInZLU9pl3QXHv76VgTPdrz+E04kzZWcMEVXUI1PCKx2+RUG6r21CWGdXJhx9E7Jc8
-         5Y52dpGQS3Jk5lPOYcldSA6GJiuvTFYjCqq/TauLc65HNnfe8rsbdUV0lW0dZ5NCz5Qe
-         4h9Q==
+        bh=QoyOKOGalJTETaQ2d7JCV5VAbOwBVt88lEVeNz5ZVvQ=;
+        b=PbnNmrsNOslJ49ITClxL1X4z5uTa9RuNu7VzpCwlbdWPui65Gq62LsA5xjQL1G+/h5
+         xbxUEd8TTtcOW/df0nkASEvM1x7zg7CSNxFi7YLyxCVrU22AN8N5eFbRxCKtHI3gRtz7
+         75zzgAe7Xy6e7zInt4nIfz3ODWUv8T/t5Htu3kjf4gSerEnAfYAS7Jag4IIQWqRD/v/i
+         CauN5HXA4IzyWNI5G7BkI8rspdzPfZXGeQ/bsFOBy8RsuaG5vDjiiESUI+UrFY1geY2K
+         dyQj3IvLjeZnYHmcGx56ldAMUuMaQQXTPJnLirnHypSiqS7aD15s9OuCQHoOTI6M+Uv7
+         Hf7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764768994; x=1765373794;
+        d=1e100.net; s=20230601; t=1764769586; x=1765374386;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=6jCCBaNZJU5WxSb9K5Eund10EdCdaWra6lb6uoba4PA=;
-        b=ix+NHDOQrFt7ZmZMZ0LOpKpN6n25e2FXbs4B5J4TJyihHcDEQuIGs+mWH3Sem2iB6q
-         nV7CRGX+czr/UH8jVblt8SiECw7/4rLr881UsanlW8+9vhU7mEqt/QR/05yj16OqjPqN
-         PZZEp9gcYmlPOyKMh5UhhLMN5oLfamVIAR6ki03FgHrzUgIRCBxAI9VSnmnFTKP8byEt
-         qq8tVnLOh87iiJpSmOKPcZ0LmWsVYsQTir3J2/oYu41f5I+WOOdkCj4hiheViyVeRnas
-         u/hVgtgshGWu7LO8f7GaIojXbi/2ESIybYuvIomb2IFrHuQX2aNu8DnWU8lrLU38skEn
-         Jvmw==
-X-Forwarded-Encrypted: i=1; AJvYcCWa02k+kmApUw8TE4sAmiFfUTc+in4eizKcB8IsNBmqAZWxOPRnuCX0EQeJa0tTKbGTlw/RF5k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxIq5IGPodvaWizTsWcLBuRqUHhi+n7b7rwb+9bm/O8e6gGP+BZ
-	4QN0jgxHTbhzqNrkV9xaXhNFG4EJsHV7Gge0mtI/7e+Xl9Gk1+T5NcQ5oSbD7lxQV3zvbB4+MKo
-	mnjuB7t2hX3frJVjIMrpXagijToDTA+oUiA7VMcpPfAxpLn9CJSGnYz1JXwxsLIf/G3wORtZZAK
-	F/eSzzIJurl/jlgJZDszSS2T3FiSoP5V0k
-X-Gm-Gg: ASbGncvxCPFwxSdFsdyqKRIdOH72p84X9pE7vbb3EaRHY90QgfdlDSLcamv0Tc2ydGM
-	oHRRAXHGodmxlNgYkdJaYINRpuK+IECBCvpV6ptxh5RjIHbN7ZHaIPL23BsaFQyyebD92MaoA8p
-	/z6SwEB6qOmA9DwSjg5PeY5Fo3PQJyZZLkUdOBMpUEGyl5RPht3H1vt9uEcAwP4FmPIj+13rtR5
-	Q1+blICXb2FX5i3YFCqjCwi+ztSmQJpQKUeli0/pehtLVkEtSZNhDUDNuo8p2hHir4l0f4=
-X-Received: by 2002:a5d:5d0a:0:b0:429:d350:8012 with SMTP id ffacd0b85a97d-42f73169a67mr2814256f8f.8.1764768993641;
-        Wed, 03 Dec 2025 05:36:33 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH8ul8k/QcqGB6AdGCUOW+7jMqU4BwLqiakTBoBLT38ncgaRO04/ix8YjYWh8dhqvS4idTCs8JS4yFlZQecDrg=
-X-Received: by 2002:a5d:5d0a:0:b0:429:d350:8012 with SMTP id
- ffacd0b85a97d-42f73169a67mr2814237f8f.8.1764768993244; Wed, 03 Dec 2025
- 05:36:33 -0800 (PST)
+        bh=QoyOKOGalJTETaQ2d7JCV5VAbOwBVt88lEVeNz5ZVvQ=;
+        b=oWLY6DxEgEkGIilak2Toxw6wrEFZ1EliuJZb/OYRF71gpgi0E7DBWKVYWjghvvG6hv
+         6/WNr9BvWdTrSn3YlTfac8lfSlaQHpWiDJg3P3aYSM9RQ6RT0ieBYP7TDfxU8XtDomAp
+         UVX+UM95xPgl6hPgvlMlE1ckaHoqFxEa8t3KscMvfhKWDkaFEKSkU3szXEnX0rPfZHw5
+         Okf5v0HUZzxDXHHDxmVqwX4ekOaQJl1IE62vL8ji/T2Ufp43IMS66wF/5Xj6/v592n9E
+         Ux4m+b2kKDJKfSRDEfg84zEwakxlfafBp1coyimUonIXYpgFo9XlhWNyGVDA7tT6EL7D
+         RIwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX3qH7kvESKuJgOsOLGMtafjHmBM2gRzvDIeh9hnHlABAudp8wBTgW3g8kabkMtcAb33lEJdoc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGURFs4nzLwWd2gEkQUKcGkKEcWtAmgmoZZda7MIz2EL9Lz/nL
+	b62Rhy4Yz69oOFnqDhmMLs05yMIMLDKvbHb6MlpcVhQ1Sl4cBQRswJsFORwBWY/TQ7mWJ4om2aL
+	1xhdfd1ZxAZSsQdJ0q6JRaxlEYxEq9fCRMCJ/DXaa8g==
+X-Gm-Gg: ASbGncszMVa5Ij189d2nSLeLXfgi5mZjTY2KpFtQ8Tq9DEA5eqsLYcyzWXZzt3rqa3B
+	h4OHWxm+2v+oeoGRPQ+xJ8c5HwumcJfyWIXGXSX30jlH1QQJpQjqa15Dym8oeE+khSxXM+fYcmB
+	/BZJcWSCFL/bQWXzsByRVjVF1CNtDJL/6qARE+E+kKsLIImy5v6bqZZv6LTx9vXf9+FF4H3n9if
+	nn9mrD1oAjqL8PKDxtxd5Q3D1qPlc2DwMFqeVtdSu8z+YpvzWClyYPH0PB0fLJHEPwm7dptSHXj
+	8eiCdGzdjTBiWZrfEy8+S9P8eA==
+X-Google-Smtp-Source: AGHT+IHFFPvlS+xnRg7LmRyAPE0Xg830mIDL8NqOuo2+jEik5URdIxtITO0Sj0/I9E3gV0KOpOR5xUo7sSaBPCH/Rcs=
+X-Received: by 2002:a05:6512:31c6:b0:595:840c:cdd0 with SMTP id
+ 2adb3069b0e04-597d3f0180fmr914852e87.2.1764769585729; Wed, 03 Dec 2025
+ 05:46:25 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251125180557.2022311-1-khushit.shah@nutanix.com>
- <6353f43f3493b436064068e6a7f55543a2cd7ae1.camel@infradead.org>
- <A922DCC2-4CB4-4DE8-82FA-95B502B3FCD4@nutanix.com> <118998075677b696104dcbbcda8d51ab7f1ffdfd.camel@infradead.org>
- <aS8I6T3WtM1pvPNl@google.com> <68ad817529c6661085ff0524472933ba9f69fd47.camel@infradead.org>
- <aS8Vhb66UViQmY_Q@google.com> <352e189ec40fae044206b48ca6e68d77df7dced1.camel@intel.com>
- <d3b8fd036f05e9819f654c18853ff79a255c919d.camel@infradead.org>
- <CABgObfa3wNsQBjAwWuBhWQbw4FuO7TGePuNzfqAYS1CzRFP6DQ@mail.gmail.com> <176b8e96123231baf0f18009d27e82688eac1ead.camel@infradead.org>
-In-Reply-To: <176b8e96123231baf0f18009d27e82688eac1ead.camel@infradead.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Wed, 3 Dec 2025 14:36:20 +0100
-X-Gm-Features: AWmQ_bmtt9FZ_Em_B7VTNu8aJ2Uz-w6j7YUQER24ocYeyFkXtE--_jdNiDzPFZ8
-Message-ID: <CABgObfbSWZUMS8cMvYQE9FpeWjk=Lam+A_ysQvaJqL5LQ4fYag@mail.gmail.com>
-Subject: Re: [PATCH v3] KVM: x86: Add x2APIC "features" to control EOI
- broadcast suppression
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: "Huang, Kai" <kai.huang@intel.com>, "seanjc@google.com" <seanjc@google.com>, 
-	"shaju.abraham@nutanix.com" <shaju.abraham@nutanix.com>, 
-	"khushit.shah@nutanix.com" <khushit.shah@nutanix.com>, "x86@kernel.org" <x86@kernel.org>, "bp@alien8.de" <bp@alien8.de>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, "hpa@zytor.com" <hpa@zytor.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"Kohler, Jon" <jon@nutanix.com>, "tglx@linutronix.de" <tglx@linutronix.de>
+References: <20251203020342.2564767-1-guanwentao@uniontech.com>
+In-Reply-To: <20251203020342.2564767-1-guanwentao@uniontech.com>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Wed, 3 Dec 2025 14:46:14 +0100
+X-Gm-Features: AWmQ_bn8QlZhzSleILOTocoDoJsUikGtnai0FTYZncK91TZ-8PG9NeCR042vE3U
+Message-ID: <CAMRc=Md7njO_3zrmkrSsYav-xokLix6=NwaVYbm59APwFS-Lgg@mail.gmail.com>
+Subject: Re: [PATCH] gpio: regmap: Fix gpio_remap_register
+To: Wentao Guan <guanwentao@uniontech.com>
+Cc: andy@kernel.org, mathieu.dubois-briand@bootlin.com, 
+	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	zhanjun@uniontech.com, niecheng1@uniontech.com, stable@vger.kernel.org, 
+	WangYuli <wangyl5933@chinaunicom.cn>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Dec 3, 2025 at 2:32=E2=80=AFPM David Woodhouse <dwmw2@infradead.org=
-> wrote:
-> > That would make it impossible to use the fixed implementation on the
-> > local APIC side, without changing the way the IOAPIC appears to the
-> > guest.
+On Wed, Dec 3, 2025 at 3:05=E2=80=AFAM Wentao Guan <guanwentao@uniontech.co=
+m> wrote:
 >
-> Yes, but remember that "the fixed implementation on the local APIC
-> side" means precisely that it's fixed to *not* broadcast the EOI. Which
-> means you absolutely *need* to have an I/O APIC capable of receiving
-> the explicit directed EOI, or the EOI will never happen at all.
+> Because gpiochip_add_data successfully done, use
+> err_remove_gpiochip instead of err_free_bitmap to free
+> such as gdev,descs..
 >
-> Which is why it probably makes sense to drop the 'version_id' field
-> from the struct where I'd added it, and just make the code report a
-> hard-coded version based on suppress_eoi_broadcast being enabled:
->
-> (kvm->arch.suppress_eoi_broadcast =3D=3D KVM_SUPPRESS_EOI_ENABLED) ? 0x20=
-: 0x11
->
-> So yes, it's a guest-visible change, but only if the VMM explicitly
-> *asks* for the broadcast suppression feature to work, in which case
-> it's *necessary* anyway.
+> Fixes: 553b75d4bfe9 ("gpio: regmap: Allow to allocate regmap-irq device")
+> CC: stable@vger.kernel.org
+> Co-developed-by: WangYuli <wangyl5933@chinaunicom.cn>
+> Signed-off-by: WangYuli <wangyl5933@chinaunicom.cn>
+> Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+> ---
 
-I see what you mean and I guess you're right... "Setting X will cause
-the in-kernel IOAPIC to report version 0x20" is as obscure as it gets,
-but then so is "Setting X will break guests unless you tell in-kernel
-IOAPIC to report version 0x20".
+Please use get_maintainers.pl - you have not put neither Linus nor I
+in the Cc list.
 
-So this is good, but the docs need to say clearly that this should
-only be set if either full in-kernel irqchip is in use or, for split
-irqchip, if the userspace IOAPIC implements directed EOI correctly.
-
-Paolo
-
+Bart
 
