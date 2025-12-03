@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-198611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6334CA140E
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:06:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CC18C9FAF4
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:52:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B351F32FC1FB
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:44:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BC0363007692
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:45:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD13C32FA2B;
-	Wed,  3 Dec 2025 15:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10C0930FF26;
+	Wed,  3 Dec 2025 15:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SxHmw/tI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wtYzCl1n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6770C32FA22;
-	Wed,  3 Dec 2025 15:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC43D30FC3A;
+	Wed,  3 Dec 2025 15:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777115; cv=none; b=C7RCdJOKvwaZPlQTBJQC3lD18Ztzj5+BA1Xt2yxy5T6Hzk8NiL5nMSD4hHmWV4mE5E5exWqaR31F08kkozjcjrebjqb5P6wUmOJU6kIprvOWhke8N33RE8hHQf2wBaeuEdohXKW54BAsDjyaFicX398zTosVN/Ktmt5vyVuCTjo=
+	t=1764776704; cv=none; b=TltIdx7J1ItM+2DVAt1Z+fe9qvfBtzHtvuq3ibcYkVI7ctsdWmOgwJv3rgzyMfWevfSovn/DD5P71Rj7NRj2lVonrlgZ6c24ZlDdbmjSldo0lRmCsSLRBP0dvn45ZKo5hxqUx/hGbpMX6C6IGz3hATOo+Um8FD/6rgENd+eVsH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777115; c=relaxed/simple;
-	bh=yUrDpJ3xJHwet2Z+ktijDb7TjhruVSTF1HHzUvFZ9V8=;
+	s=arc-20240116; t=1764776704; c=relaxed/simple;
+	bh=VYgisZ3wB4EZJ20LJtOAwzljpGhYCjhmKTHA4piY34s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n4lxBz5sfos9Ow1IY4uZ4mUREihxORUT53IyDXz/48i+ye2Z2JmZgO6LJiilmLNTbFJ7pILcLy803C2YmFHvJOJEw0oxp/kEZ43ul54ec/MGKXETyN19OxHoaQ7bD7GPDHsDSO8iJzOeRlbc2jbPgVy233bVpHUu+kerJDevnpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SxHmw/tI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C558C4CEF5;
-	Wed,  3 Dec 2025 15:51:54 +0000 (UTC)
+	 MIME-Version; b=RPFzLk4gFDNy9V/kYoWJeDdEZg/LBNQfEfPBfiA5hJEGXowJTb8orPnd7C/XQdm7ZgbiIA22i3+Xw1YETVOxDd6hIALO3fMwIdsgK64QgfNNNIw87I/3k0zckh1bxvg5XAeyv2kSoVXnVCmVxRpB72sgbhW08KN84Wu2pUdTOuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wtYzCl1n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9B7BC4CEF5;
+	Wed,  3 Dec 2025 15:45:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777115;
-	bh=yUrDpJ3xJHwet2Z+ktijDb7TjhruVSTF1HHzUvFZ9V8=;
+	s=korg; t=1764776704;
+	bh=VYgisZ3wB4EZJ20LJtOAwzljpGhYCjhmKTHA4piY34s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SxHmw/tIgTOMUtnWoCiWmE21smCojFXo1c1Clo5QZeIBotT4WFC9K/NXaPrZdwG4r
-	 Pr+0nrSyhO4AyH/e3Ph+h0QlNNr0xQohL76y6rL41g4496umOxrkqIln/SawjMb6kX
-	 dw09hIoL5aHiYMVkGIKjDtj/ew/kzYGMXklU5EWw=
+	b=wtYzCl1nx5xO0MeIEYJo7NRaZF/oiu3nzwYFAFeWZ891N62fCDe8td91JY2b6cmtZ
+	 03qXD1UaCxNmbSvHVKFJGlv5jP8CPWFgsjjFyHR+7iKI+nhhdtXvGHhVqrI5Ij6zf1
+	 IZT2uwa2diKGZLbdIye+bayok8RMQ5690Hh8uuJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dharma Balasubiramani <dharma.b@microchip.com>,
-	Kamel Bouhara <kamel.bouhara@bootlin.com>,
-	=?UTF-8?q?Bence=20Cs=C3=B3k=C3=A1s?= <bence98@sch.bme.hu>,
-	William Breathitt Gray <wbg@kernel.org>
-Subject: [PATCH 6.17 087/146] counter: microchip-tcb-capture: Allow shared IRQ for multi-channel TCBs
-Date: Wed,  3 Dec 2025 16:27:45 +0100
-Message-ID: <20251203152349.645832421@linuxfoundation.org>
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 262/300] mailbox: mailbox-test: Fix debugfs_create_dir error checking
+Date: Wed,  3 Dec 2025 16:27:46 +0100
+Message-ID: <20251203152410.343939781@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,53 +58,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dharma Balasubiramani <dharma.b@microchip.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-commit 109ff654934a4752f8875ded672efd1fbfe4d31d upstream.
+[ Upstream commit 3acf1028f5003731977f750a7070f3321a9cb740 ]
 
-Mark the interrupt as IRQF_SHARED to permit multiple counter channels to
-share the same TCB IRQ line.
+The debugfs_create_dir() function returns ERR_PTR() on error, not NULL.
+The current null-check fails to catch errors.
 
-Each Timer/Counter Block (TCB) instance shares a single IRQ line among its
-three internal channels. When multiple counter channels (e.g., counter@0
-and counter@1) within the same TCB are enabled, the second call to
-devm_request_irq() fails because the IRQ line is already requested by the
-first channel.
+Use IS_ERR() to correctly check for errors.
 
-Cc: stable@vger.kernel.org
-Fixes: e5d581396821 ("counter: microchip-tcb-capture: Add IRQ handling")
-Signed-off-by: Dharma Balasubiramani <dharma.b@microchip.com>
-Reviewed-by: Kamel Bouhara <kamel.bouhara@bootlin.com>
-Reviewed-by: Bence Csókás <bence98@sch.bme.hu>
-Link: https://lore.kernel.org/r/20251006-microchip-tcb-v1-1-09c19181bb4a@microchip.com
-Signed-off-by: William Breathitt Gray <wbg@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8ea4484d0c2b ("mailbox: Add generic mechanism for testing Mailbox Controllers")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/counter/microchip-tcb-capture.c | 2 +-
+ drivers/mailbox/mailbox-test.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/counter/microchip-tcb-capture.c b/drivers/counter/microchip-tcb-capture.c
-index 1a299d1f350b..19d457ae4c3b 100644
---- a/drivers/counter/microchip-tcb-capture.c
-+++ b/drivers/counter/microchip-tcb-capture.c
-@@ -451,7 +451,7 @@ static void mchp_tc_irq_remove(void *ptr)
- static int mchp_tc_irq_enable(struct counter_device *const counter, int irq)
- {
- 	struct mchp_tc_data *const priv = counter_priv(counter);
--	int ret = devm_request_irq(counter->parent, irq, mchp_tc_isr, 0,
-+	int ret = devm_request_irq(counter->parent, irq, mchp_tc_isr, IRQF_SHARED,
- 				   dev_name(counter->parent), counter);
+diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
+index abcee58e851c2..29c04157b5e88 100644
+--- a/drivers/mailbox/mailbox-test.c
++++ b/drivers/mailbox/mailbox-test.c
+@@ -267,7 +267,7 @@ static int mbox_test_add_debugfs(struct platform_device *pdev,
+ 		return 0;
  
- 	if (ret < 0)
+ 	tdev->root_debugfs_dir = debugfs_create_dir(dev_name(&pdev->dev), NULL);
+-	if (!tdev->root_debugfs_dir) {
++	if (IS_ERR(tdev->root_debugfs_dir)) {
+ 		dev_err(&pdev->dev, "Failed to create Mailbox debugfs\n");
+ 		return -EINVAL;
+ 	}
 -- 
-2.52.0
+2.51.0
 
 
 
