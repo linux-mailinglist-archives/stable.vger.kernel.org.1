@@ -1,54 +1,63 @@
-Return-Path: <stable+bounces-198525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4D92C9FA55
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:48:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5696CCA10B9
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:39:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E0AD73001967
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:48:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 466A5300A9CD
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:39:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B20FC314A99;
-	Wed,  3 Dec 2025 15:47:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 212293321C8;
+	Wed,  3 Dec 2025 15:52:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="frxUg8ZT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JwogGWjf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 626943148B9;
-	Wed,  3 Dec 2025 15:47:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0921331A75;
+	Wed,  3 Dec 2025 15:52:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776834; cv=none; b=Wvnz685zH9PolRd1+imxKIrJWhcPgc/Vr53wF9ND0RkApgeK/QyXQWXuSmvT7LoerRML/EVK+C8V+iZzFj+LOexRCMcR05IxfJUaNUEVzom00fuGZJuEbhpcAlSUZI5lEfA50zBeL5i7Ye/ovkddelZB86deqY2B3FHENIcKKDw=
+	t=1764777171; cv=none; b=ETfWyJMo1UOv0zLplNR2ED6aeVtbRqOi/FbU371gx6Dnp/VPlPBj3zSwKIcLfp930n0cQTz32YxUz3elTTKNd3psBRSiGycoEmWP73Kd3cwBCQYDxv8WgjLEX0W9KhTmpOIEZc80BxphR38ghGyU3KaYugyEo/GQhI/PinYd++Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776834; c=relaxed/simple;
-	bh=Xecv7HMkwsvasjHJUR499MsP2FTeJ7oIdB4lvxoas68=;
+	s=arc-20240116; t=1764777171; c=relaxed/simple;
+	bh=lfetsaWgFhcNeGt1Ms8W2Ie4lSVmig2ELXZPzhrVgg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W71cwPtk4AWp26bdIBEyyZf+5H5bbyGatFv4dnXjfIcJ8LPYnkzYYXrFJUFyYpzgxZS0Sem/d3HrPbgJpBH3qv1B1H4coG4+RLTi25MU8O95BUFpV5sVqw3Sly9scZ74FyIIclRmzJT3B6iv9yk6Pe4HmSXDm2cyFwnhQcT36I4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=frxUg8ZT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCCCCC4CEF5;
-	Wed,  3 Dec 2025 15:47:13 +0000 (UTC)
+	 MIME-Version; b=pRZcQzUlqEsMamMueJdmlRvw+wbs4mY3p2aICkUDXVbjAoyIC02gz0VN1J5yr1ITyFqrKp5HWaSx8+f+z8BGAGGGib95O1KmvLCf1A4qahd9/et83IzFnxKF0sK1TmHoeHpFUQWr87/o7zAD38GkaaUINb5lNqK/r9hlbPmZI1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JwogGWjf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F24EC4CEF5;
+	Wed,  3 Dec 2025 15:52:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776834;
-	bh=Xecv7HMkwsvasjHJUR499MsP2FTeJ7oIdB4lvxoas68=;
+	s=korg; t=1764777171;
+	bh=lfetsaWgFhcNeGt1Ms8W2Ie4lSVmig2ELXZPzhrVgg4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=frxUg8ZTBFIoHVTqx2txsp7ddz/EAzxrbp4QZO5FlnaGi6oh0i9XXq6J025HYKDU1
-	 dieJPaaucfvE8FGELzyJj+Mcj5xRciAXuO3vkqxf90nh+M6zqcryiOf1ohEeocia8M
-	 VPykrPBE9nC0oF8k4xojksPptNWdlGOeVIXHdK0o=
+	b=JwogGWjf9JxdK+hbdf/RQVj+IA7N+hBF7f8KVivfKHdl0yTLCuFIZ3TvQECMHQcJd
+	 hiP2TkDN17zWj0840xyGo9mSFFOdrfdbxxS9Xhf3/xyPS0w2u7ZaNMqyamTvvkEzqY
+	 b4WCPEYb7qwBF7bhiSedhQ67VkClpmNCrzwhLm04=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Gromm <christian.gromm@microchip.com>,
-	Victoria Votokina <Victoria.Votokina@kaspersky.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.10 277/300] most: usb: fix double free on late probe failure
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	syzbot+f64019ba229e3a5c411b@syzkaller.appspotmail.com,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@redhat.com>,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Dave Airlie <airlied@redhat.com>,
+	Gerd Hoffmann <kraxel@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Hellwig <hch@lst.de>
+Subject: [PATCH 6.17 103/146] mm/memfd: fix information leak in hugetlb folios
 Date: Wed,  3 Dec 2025 16:28:01 +0100
-Message-ID: <20251203152410.891315855@linuxfoundation.org>
+Message-ID: <20251203152350.234730002@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,83 +69,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-commit baadf2a5c26e802a46573eaad331b427b49aaa36 upstream.
+commit de8798965fd0d9a6c47fc2ac57767ec32de12b49 upstream.
 
-The MOST subsystem has a non-standard registration function which frees
-the interface on registration failures and on deregistration.
+When allocating hugetlb folios for memfd, three initialization steps are
+missing:
 
-This unsurprisingly leads to bugs in the MOST drivers, and a couple of
-recent changes turned a reference underflow and use-after-free in the
-USB driver into several double free and a use-after-free on late probe
-failures.
+1. Folios are not zeroed, leading to kernel memory disclosure to userspace
+2. Folios are not marked uptodate before adding to page cache
+3. hugetlb_fault_mutex is not taken before hugetlb_add_to_page_cache()
 
-Fixes: 723de0f9171e ("staging: most: remove device from interface structure")
-Fixes: 4b1270902609 ("most: usb: Fix use-after-free in hdm_disconnect")
-Fixes: a8cc9e5fcb0e ("most: usb: hdm_probe: Fix calling put_device() before device initialization")
-Cc: stable@vger.kernel.org
-Cc: Christian Gromm <christian.gromm@microchip.com>
-Cc: Victoria Votokina <Victoria.Votokina@kaspersky.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20251029093029.28922-1-johan@kernel.org
+The memfd allocation path bypasses the normal page fault handler
+(hugetlb_no_page) which would handle all of these initialization steps.
+This is problematic especially for udmabuf use cases where folios are
+pinned and directly accessed by userspace via DMA.
+
+Fix by matching the initialization pattern used in hugetlb_no_page():
+- Zero the folio using folio_zero_user() which is optimized for huge pages
+- Mark it uptodate with folio_mark_uptodate()
+- Take hugetlb_fault_mutex before adding to page cache to prevent races
+
+The folio_zero_user() change also fixes a potential security issue where
+uninitialized kernel memory could be disclosed to userspace through read()
+or mmap() operations on the memfd.
+
+Link: https://lkml.kernel.org/r/20251112145034.2320452-1-kartikey406@gmail.com
+Fixes: 89c1905d9c14 ("mm/gup: introduce memfd_pin_folios() for pinning memfd folios")
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Reported-by: syzbot+f64019ba229e3a5c411b@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/all/20251112031631.2315651-1-kartikey406@gmail.com/ [v1]
+Closes: https://syzkaller.appspot.com/bug?extid=f64019ba229e3a5c411b
+Suggested-by: Oscar Salvador <osalvador@suse.de>
+Suggested-by: David Hildenbrand <david@redhat.com>
+Tested-by: syzbot+f64019ba229e3a5c411b@syzkaller.appspotmail.com
+Acked-by: Oscar Salvador <osalvador@suse.de>
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Acked-by: Hugh Dickins <hughd@google.com>
+Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com> (v2)
+Cc: Christoph Hellwig <hch@lst.de> (v6)
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/most/most_usb.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ mm/memfd.c |   27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/drivers/most/most_usb.c b/drivers/most/most_usb.c
-index 10064d7b7249..41ee169f80c5 100644
---- a/drivers/most/most_usb.c
-+++ b/drivers/most/most_usb.c
-@@ -1058,7 +1058,7 @@ hdm_probe(struct usb_interface *interface, const struct usb_device_id *id)
- 
- 	ret = most_register_interface(&mdev->iface);
- 	if (ret)
--		goto err_free_busy_urbs;
-+		return ret;
- 
- 	mutex_lock(&mdev->io_mutex);
- 	if (le16_to_cpu(usb_dev->descriptor.idProduct) == USB_DEV_ID_OS81118 ||
-@@ -1068,8 +1068,7 @@ hdm_probe(struct usb_interface *interface, const struct usb_device_id *id)
- 		if (!mdev->dci) {
- 			mutex_unlock(&mdev->io_mutex);
- 			most_deregister_interface(&mdev->iface);
--			ret = -ENOMEM;
--			goto err_free_busy_urbs;
-+			return -ENOMEM;
- 		}
- 
- 		mdev->dci->dev.init_name = "dci";
-@@ -1078,18 +1077,15 @@ hdm_probe(struct usb_interface *interface, const struct usb_device_id *id)
- 		mdev->dci->dev.release = release_dci;
- 		if (device_register(&mdev->dci->dev)) {
- 			mutex_unlock(&mdev->io_mutex);
-+			put_device(&mdev->dci->dev);
- 			most_deregister_interface(&mdev->iface);
--			ret = -ENOMEM;
--			goto err_free_dci;
-+			return -ENOMEM;
- 		}
- 		mdev->dci->usb_device = mdev->usb_device;
- 	}
- 	mutex_unlock(&mdev->io_mutex);
- 	return 0;
--err_free_dci:
--	put_device(&mdev->dci->dev);
--err_free_busy_urbs:
--	kfree(mdev->busy_urbs);
+--- a/mm/memfd.c
++++ b/mm/memfd.c
+@@ -96,9 +96,36 @@ struct folio *memfd_alloc_folio(struct f
+ 						    NULL,
+ 						    gfp_mask);
+ 		if (folio) {
++			u32 hash;
 +
- err_free_ep_address:
- 	kfree(mdev->ep_address);
- err_free_cap:
--- 
-2.52.0
-
++			/*
++			 * Zero the folio to prevent information leaks to userspace.
++			 * Use folio_zero_user() which is optimized for huge/gigantic
++			 * pages. Pass 0 as addr_hint since this is not a faulting path
++			 *  and we don't have a user virtual address yet.
++			 */
++			folio_zero_user(folio, 0);
++
++			/*
++			 * Mark the folio uptodate before adding to page cache,
++			 * as required by filemap.c and other hugetlb paths.
++			 */
++			__folio_mark_uptodate(folio);
++
++			/*
++			 * Serialize hugepage allocation and instantiation to prevent
++			 * races with concurrent allocations, as required by all other
++			 * callers of hugetlb_add_to_page_cache().
++			 */
++			hash = hugetlb_fault_mutex_hash(memfd->f_mapping, idx);
++			mutex_lock(&hugetlb_fault_mutex_table[hash]);
++
+ 			err = hugetlb_add_to_page_cache(folio,
+ 							memfd->f_mapping,
+ 							idx);
++
++			mutex_unlock(&hugetlb_fault_mutex_table[hash]);
++
+ 			if (err) {
+ 				folio_put(folio);
+ 				goto err_unresv;
 
 
 
