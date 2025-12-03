@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0174DCA004B
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:39:06 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8281BC9F95A
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:43:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 45D6930081B6
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:33:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 31354304399D
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:37:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2C823AA19A;
-	Wed,  3 Dec 2025 16:33:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74663313558;
+	Wed,  3 Dec 2025 15:36:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oC97QnvN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I+iuTCsT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8856E3AA196;
-	Wed,  3 Dec 2025 16:33:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 314B3304BC2;
+	Wed,  3 Dec 2025 15:36:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779582; cv=none; b=mLybv7ssV8tsyN++P4hXn06JXn6a/dAkNAfP2ZQXM4xo1EV47c2zd7kxU1OHANVHfrt7Lb3n+PJoj+fP+a/Cj5SPt8n3LshTNVEhq5U8sZ1CYkeDKN7+sGAwUC4Pp1UVYwMaNl5Iavm7TKwLe6GjNBccWVxUxHM262QMlYl3gyk=
+	t=1764776216; cv=none; b=khRqpvDNdFUu5P5bit/8vKl99rMjE5j9LDNFhqxDQxA6HkF4X0EaObU1P9E9Hc7xRPi/TZjRrNMVGCeqrx9fjxUI0RIsKDCqBiQcQw9+BxH2MyCJnYrFts3UTAJQpK3t1QO0t/Q2rBIkujja4HcgCYGs+WPQVw7I31eUeRioVpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779582; c=relaxed/simple;
-	bh=Ni5CDvub3hp4YP09K+9OEOsC74ouwrJSmrTdSE6AWSk=;
+	s=arc-20240116; t=1764776216; c=relaxed/simple;
+	bh=8G8GIbq+2Eg8clqYlkRM9rRXiAx62DhgsOIpn6kNIAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g4S5WA42CmJTUyr9LxmN3baVVfd1+Hy5Ud1c1HC9HkN6Z429xxkBo0amqyoNNLl/KmA6Ebu93MC4MMeBmHt7hU7RhKvmY/kavvr6XGI7OsQGR23/RNlCRYFXCf8ZCOS608N12TxL6TwTnEvA4+qxdD6LLzA81jSdp2A0VERlcPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oC97QnvN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8D2DC4CEF5;
-	Wed,  3 Dec 2025 16:33:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NLs7zThwGl5W07zd+MQOO/i8gqIj0kyA1MbNTF+adM/4wI8jJveT3uDFD/P8aCte2nZvSQI8yhAyqnMP+aohOhMxi9wMNPL+0oXNNwGldzW32M0CYq2ZdmVUPiN28bK71FqVCHZFhyvD9P3lXlICHwERy2nvPj0vFf7BfSQWm4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I+iuTCsT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95A01C4CEF5;
+	Wed,  3 Dec 2025 15:36:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779582;
-	bh=Ni5CDvub3hp4YP09K+9OEOsC74ouwrJSmrTdSE6AWSk=;
+	s=korg; t=1764776216;
+	bh=8G8GIbq+2Eg8clqYlkRM9rRXiAx62DhgsOIpn6kNIAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oC97QnvNdLccdE+LSgNPsSmSgZyfAe9CPaql9Dp9/JB3mYjCP93zihrp4+WqKJSi+
-	 NAo5qi4FsGDk0ZQmQHMwF1GZHzGd95LH34DiTn4WC0XA/ElVHWhgEh66+1yZikhzwL
-	 jQeHYsTZebYApA3p+PnLtekOmxewbzzzsVVUmdjc=
+	b=I+iuTCsTskoPHsq6Yc3rwB/1CeiiBR5WfUVPsOPEUl12hacsbSRophB3Lj6NWz+JO
+	 dflbTK+GpY4/ugAfNFWQ97yn5vqidqGZsMSInCsZp6lAhNQ5dNf9xU1qzEkLaGWtEc
+	 6mkHTjJ6m8u7McTI4hcNP5nKBOerboGfazLe8Ekk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Valerio Setti <vsetti@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Mark Brown <broonie@kernel.org>,
+	Aleksander Jan Bajkowski <olek2@wp.pl>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 300/568] ASoC: meson: aiu-encoder-i2s: fix bit clock polarity
+Subject: [PATCH 5.10 098/300] mips: lantiq: xway: sysctrl: rename stp clock
 Date: Wed,  3 Dec 2025 16:25:02 +0100
-Message-ID: <20251203152451.694777635@linuxfoundation.org>
+Message-ID: <20251203152404.254563590@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,57 +58,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Valerio Setti <vsetti@baylibre.com>
+From: Aleksander Jan Bajkowski <olek2@wp.pl>
 
-[ Upstream commit 4c4ed5e073a923fb3323022e1131cb51ad8df7a0 ]
+[ Upstream commit b0d04fe6a633ada2c7bc1b5ddd011cbd85961868 ]
 
-According to I2S specs audio data is sampled on the rising edge of the
-clock and it can change on the falling one. When operating in normal mode
-this SoC behaves the opposite so a clock polarity inversion is required
-in this case.
+Bindig requires a node name matching ‘^gpio@[0-9a-f]+$’. This patch
+changes the clock name from “stp” to “gpio”.
 
-This was tested on an OdroidC2 (Amlogic S905 SoC) board.
-
-Signed-off-by: Valerio Setti <vsetti@baylibre.com>
-Reviewed-by: Jerome Brunet <jbrunet@baylibre.com>
-Tested-by: Jerome Brunet <jbrunet@baylibre.com>
-Link: https://patch.msgid.link/20251007-fix-i2s-polarity-v1-1-86704d9cda10@baylibre.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/meson/aiu-encoder-i2s.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ arch/mips/lantiq/xway/sysctrl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/meson/aiu-encoder-i2s.c b/sound/soc/meson/aiu-encoder-i2s.c
-index a0dd914c8ed13..3b4061508c180 100644
---- a/sound/soc/meson/aiu-encoder-i2s.c
-+++ b/sound/soc/meson/aiu-encoder-i2s.c
-@@ -236,8 +236,12 @@ static int aiu_encoder_i2s_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
- 	    inv == SND_SOC_DAIFMT_IB_IF)
- 		val |= AIU_CLK_CTRL_LRCLK_INVERT;
- 
--	if (inv == SND_SOC_DAIFMT_IB_NF ||
--	    inv == SND_SOC_DAIFMT_IB_IF)
-+	/*
-+	 * The SoC changes data on the rising edge of the bitclock
-+	 * so an inversion of the bitclock is required in normal mode
-+	 */
-+	if (inv == SND_SOC_DAIFMT_NB_NF ||
-+	    inv == SND_SOC_DAIFMT_NB_IF)
- 		val |= AIU_CLK_CTRL_AOCLK_INVERT;
- 
- 	/* Signal skew */
-@@ -328,4 +332,3 @@ const struct snd_soc_dai_ops aiu_encoder_i2s_dai_ops = {
- 	.startup	= aiu_encoder_i2s_startup,
- 	.shutdown	= aiu_encoder_i2s_shutdown,
- };
--
+diff --git a/arch/mips/lantiq/xway/sysctrl.c b/arch/mips/lantiq/xway/sysctrl.c
+index 084f6caba5f23..96a62b42e2971 100644
+--- a/arch/mips/lantiq/xway/sysctrl.c
++++ b/arch/mips/lantiq/xway/sysctrl.c
+@@ -463,7 +463,7 @@ void __init ltq_soc_init(void)
+ 	/* add our generic xway clocks */
+ 	clkdev_add_pmu("10000000.fpi", NULL, 0, 0, PMU_FPI);
+ 	clkdev_add_pmu("1e100a00.gptu", NULL, 1, 0, PMU_GPT);
+-	clkdev_add_pmu("1e100bb0.stp", NULL, 1, 0, PMU_STP);
++	clkdev_add_pmu("1e100bb0.gpio", NULL, 1, 0, PMU_STP);
+ 	clkdev_add_pmu("1e100c00.serial", NULL, 0, 0, PMU_ASC1);
+ 	clkdev_add_pmu("1e104100.dma", NULL, 1, 0, PMU_DMA);
+ 	clkdev_add_pmu("1e100800.spi", NULL, 1, 0, PMU_SPI);
 -- 
 2.51.0
 
