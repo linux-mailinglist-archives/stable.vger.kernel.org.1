@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-198444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E794CA0EA9
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:23:17 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46C3ACA09E2
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:46:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 40E0F3295010
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:20:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D47D830133D0
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:44:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1848316189;
-	Wed,  3 Dec 2025 15:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18A9132937B;
+	Wed,  3 Dec 2025 15:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bl634wdV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p5GP6ark"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D5B5316183;
-	Wed,  3 Dec 2025 15:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB475328B65;
+	Wed,  3 Dec 2025 15:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776562; cv=none; b=qJyQvnEzMLgvvpAbGkCDatWDVIddmisSxd1UX31wiFHy2F+shTamB7LTXeyUiXFT3vlKzN7CR57DVB9805eO1IczF2LAaoYWxYfv00PCDahIvERey0upHamQa5YSvlB8faU2M/Ub7gr7v5YWH/hef/WFnusBBnZtg+uhjyYtl2s=
+	t=1764776983; cv=none; b=AHLiKLRcf2EFqAfKs25CMehYsQXxwprYAjJn2ntljeEFOWxzFnk4RTUGXQ40Tnj73DhUPAZvbwiGgt2QsCgor1s7VdY6NF9pF5YDznfJB1pDiy3nG3b7jx/ZrzYxzaTV25Jky3I3hNdZxXiEeToQ2g1c3S9BjrKhAZf26Vxd62c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776562; c=relaxed/simple;
-	bh=vYnkUcNgpn7Pfq6TNhyUU9w1VGjKCsB2OEpv4/lcl8g=;
+	s=arc-20240116; t=1764776983; c=relaxed/simple;
+	bh=t4pjJU9EwdedkfKNxndNUKxbmLeWXTbGDvGNN9bzMg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CNyts7bc4SPb8tOHKgRhEPZQKNVpi9RspVo3kEMxOtxGWwkMnZcLodA2UfzzoY7NtEhSqFaIzJ/QhHS/WFEm2uXpEhavUI+OjF8tkrUBX3dbBbU8qboIUrLADHbfjAjWTv4L6B9/iOnPfQIFpK9jK8xlfXaCe/k0qC5HaTTzDWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bl634wdV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1AB5C4CEF5;
-	Wed,  3 Dec 2025 15:42:41 +0000 (UTC)
+	 MIME-Version; b=ldFjtqs3E6HtOxVBHDCMysuLKkki9wEGrUt301kO2AzFJaUHshmmfPD27D7mOZ51wBJhMY8n3UqcZwNCY2w5Pz8phdtVH65d7AsN/TsGr3SfLvu7U6e+A6CYl5SPMSKKvm29Db0A7rUUMzN0VmkYh0A2+zacQiP8SBTAxafXJnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p5GP6ark; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA83EC4CEF5;
+	Wed,  3 Dec 2025 15:49:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776562;
-	bh=vYnkUcNgpn7Pfq6TNhyUU9w1VGjKCsB2OEpv4/lcl8g=;
+	s=korg; t=1764776983;
+	bh=t4pjJU9EwdedkfKNxndNUKxbmLeWXTbGDvGNN9bzMg4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bl634wdV84MgVzSVmREll4WDlIWsDYJy7JT/hh/dKphlFLLHg/K+SEAdws8lnEUfZ
-	 C1AZWv2K9XaBp8osX5Z04xcisB0jQ7uILlWv3SUr7kr4IW/B0nXvJKd4NZ458P8208
-	 rZnJmPYExuHY2kyExdTnHlNsNDnkmL4I6tcu7Lno=
+	b=p5GP6arkp/fqjru+lUXajShVxk7/y2ybCdTY9EKr7F+2Oc4GLzKL14L/Gdd2CCtFo
+	 2sZhZJN5CraaqvrfpQB0FUoSKLA0w1Ii4NeOWNNiw0aMcrNnIq1r8A2Ja3x/nuGpbi
+	 PzwQyiCokyfTKyNOU1a3IxZW0hHEIbCECvgfcdxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marco Patalano <mpatalan@redhat.com>,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Ewan D. Milne" <emilne@redhat.com>,
-	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 5.10 221/300] nvme: nvme-fc: Ensure ->ioerr_work is cancelled in nvme_fc_delete_ctrl()
+	Haibo Chen <haibo.chen@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 047/146] spi: spi-nxp-fspi: Add OCT-DTR mode support
 Date: Wed,  3 Dec 2025 16:27:05 +0100
-Message-ID: <20251203152408.811051269@linuxfoundation.org>
+Message-ID: <20251203152348.195895937@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,95 +61,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ewan D. Milne <emilne@redhat.com>
+From: Haibo Chen <haibo.chen@nxp.com>
 
-commit 0a2c5495b6d1ecb0fa18ef6631450f391a888256 upstream.
+[ Upstream commit 0f67557763accbdd56681f17ed5350735198c57b ]
 
-nvme_fc_delete_assocation() waits for pending I/O to complete before
-returning, and an error can cause ->ioerr_work to be queued after
-cancel_work_sync() had been called.  Move the call to cancel_work_sync() to
-be after nvme_fc_delete_association() to ensure ->ioerr_work is not running
-when the nvme_fc_ctrl object is freed.  Otherwise the following can occur:
+Add OCT-DTR mode support in default, since flexspi do not supports
+swapping bytes on a 16 bit boundary in OCT-DTR mode, so mark swap16
+as false.
 
-[ 1135.911754] list_del corruption, ff2d24c8093f31f8->next is NULL
-[ 1135.917705] ------------[ cut here ]------------
-[ 1135.922336] kernel BUG at lib/list_debug.c:52!
-[ 1135.926784] Oops: invalid opcode: 0000 [#1] SMP NOPTI
-[ 1135.931851] CPU: 48 UID: 0 PID: 726 Comm: kworker/u449:23 Kdump: loaded Not tainted 6.12.0 #1 PREEMPT(voluntary)
-[ 1135.943490] Hardware name: Dell Inc. PowerEdge R660/0HGTK9, BIOS 2.5.4 01/16/2025
-[ 1135.950969] Workqueue:  0x0 (nvme-wq)
-[ 1135.954673] RIP: 0010:__list_del_entry_valid_or_report.cold+0xf/0x6f
-[ 1135.961041] Code: c7 c7 98 68 72 94 e8 26 45 fe ff 0f 0b 48 c7 c7 70 68 72 94 e8 18 45 fe ff 0f 0b 48 89 fe 48 c7 c7 80 69 72 94 e8 07 45 fe ff <0f> 0b 48 89 d1 48 c7 c7 a0 6a 72 94 48 89 c2 e8 f3 44 fe ff 0f 0b
-[ 1135.979788] RSP: 0018:ff579b19482d3e50 EFLAGS: 00010046
-[ 1135.985015] RAX: 0000000000000033 RBX: ff2d24c8093f31f0 RCX: 0000000000000000
-[ 1135.992148] RDX: 0000000000000000 RSI: ff2d24d6bfa1d0c0 RDI: ff2d24d6bfa1d0c0
-[ 1135.999278] RBP: ff2d24c8093f31f8 R08: 0000000000000000 R09: ffffffff951e2b08
-[ 1136.006413] R10: ffffffff95122ac8 R11: 0000000000000003 R12: ff2d24c78697c100
-[ 1136.013546] R13: fffffffffffffff8 R14: 0000000000000000 R15: ff2d24c78697c0c0
-[ 1136.020677] FS:  0000000000000000(0000) GS:ff2d24d6bfa00000(0000) knlGS:0000000000000000
-[ 1136.028765] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 1136.034510] CR2: 00007fd207f90b80 CR3: 000000163ea22003 CR4: 0000000000f73ef0
-[ 1136.041641] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[ 1136.048776] DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7: 0000000000000400
-[ 1136.055910] PKRU: 55555554
-[ 1136.058623] Call Trace:
-[ 1136.061074]  <TASK>
-[ 1136.063179]  ? show_trace_log_lvl+0x1b0/0x2f0
-[ 1136.067540]  ? show_trace_log_lvl+0x1b0/0x2f0
-[ 1136.071898]  ? move_linked_works+0x4a/0xa0
-[ 1136.075998]  ? __list_del_entry_valid_or_report.cold+0xf/0x6f
-[ 1136.081744]  ? __die_body.cold+0x8/0x12
-[ 1136.085584]  ? die+0x2e/0x50
-[ 1136.088469]  ? do_trap+0xca/0x110
-[ 1136.091789]  ? do_error_trap+0x65/0x80
-[ 1136.095543]  ? __list_del_entry_valid_or_report.cold+0xf/0x6f
-[ 1136.101289]  ? exc_invalid_op+0x50/0x70
-[ 1136.105127]  ? __list_del_entry_valid_or_report.cold+0xf/0x6f
-[ 1136.110874]  ? asm_exc_invalid_op+0x1a/0x20
-[ 1136.115059]  ? __list_del_entry_valid_or_report.cold+0xf/0x6f
-[ 1136.120806]  move_linked_works+0x4a/0xa0
-[ 1136.124733]  worker_thread+0x216/0x3a0
-[ 1136.128485]  ? __pfx_worker_thread+0x10/0x10
-[ 1136.132758]  kthread+0xfa/0x240
-[ 1136.135904]  ? __pfx_kthread+0x10/0x10
-[ 1136.139657]  ret_from_fork+0x31/0x50
-[ 1136.143236]  ? __pfx_kthread+0x10/0x10
-[ 1136.146988]  ret_from_fork_asm+0x1a/0x30
-[ 1136.150915]  </TASK>
+lx2160a do not support DQS, so add a quirk to disable DTR mode for this
+platform.
 
-Fixes: 19fce0470f05 ("nvme-fc: avoid calling _nvme_fc_abort_outstanding_ios from interrupt context")
-Cc: stable@vger.kernel.org
-Tested-by: Marco Patalano <mpatalan@redhat.com>
-Reviewed-by: Justin Tee <justin.tee@broadcom.com>
-Signed-off-by: Ewan D. Milne <emilne@redhat.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20250917-flexspi-ddr-v2-5-bb9fe2a01889@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 40ad64ac25bb ("spi: nxp-fspi: Propagate fwnode in ACPI case as well")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/fc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-nxp-fspi.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
---- a/drivers/nvme/host/fc.c
-+++ b/drivers/nvme/host/fc.c
-@@ -3257,7 +3257,6 @@ nvme_fc_delete_ctrl(struct nvme_ctrl *nc
- {
- 	struct nvme_fc_ctrl *ctrl = to_fc_ctrl(nctrl);
+diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+index ab13f11242c3c..fcf10be66d391 100644
+--- a/drivers/spi/spi-nxp-fspi.c
++++ b/drivers/spi/spi-nxp-fspi.c
+@@ -330,6 +330,8 @@
  
--	cancel_work_sync(&ctrl->ioerr_work);
- 	cancel_delayed_work_sync(&ctrl->connect_work);
- 	/*
- 	 * kill the association on the link side.  this will block
-@@ -3321,6 +3320,7 @@ nvme_fc_reset_ctrl_work(struct work_stru
+ /* Access flash memory using IP bus only */
+ #define FSPI_QUIRK_USE_IP_ONLY	BIT(0)
++/* Disable DTR */
++#define FSPI_QUIRK_DISABLE_DTR	BIT(1)
  
- 	/* will block will waiting for io to terminate */
- 	nvme_fc_delete_association(ctrl);
-+	cancel_work_sync(&ctrl->ioerr_work);
+ struct nxp_fspi_devtype_data {
+ 	unsigned int rxfifo;
+@@ -344,7 +346,7 @@ static struct nxp_fspi_devtype_data lx2160a_data = {
+ 	.rxfifo = SZ_512,       /* (64  * 64 bits)  */
+ 	.txfifo = SZ_1K,        /* (128 * 64 bits)  */
+ 	.ahb_buf_size = SZ_2K,  /* (256 * 64 bits)  */
+-	.quirks = 0,
++	.quirks = FSPI_QUIRK_DISABLE_DTR,
+ 	.lut_num = 32,
+ 	.little_endian = true,  /* little-endian    */
+ };
+@@ -1236,6 +1238,13 @@ static const struct spi_controller_mem_ops nxp_fspi_mem_ops = {
+ };
  
- 	if (!nvme_change_ctrl_state(&ctrl->ctrl, NVME_CTRL_CONNECTING))
- 		dev_err(ctrl->ctrl.device,
+ static const struct spi_controller_mem_caps nxp_fspi_mem_caps = {
++	.dtr = true,
++	.swap16 = false,
++	.per_op_freq = true,
++};
++
++static const struct spi_controller_mem_caps nxp_fspi_mem_caps_disable_dtr = {
++	.dtr = false,
+ 	.per_op_freq = true,
+ };
+ 
+@@ -1351,7 +1360,12 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+ 	ctlr->bus_num = -1;
+ 	ctlr->num_chipselect = NXP_FSPI_MAX_CHIPSELECT;
+ 	ctlr->mem_ops = &nxp_fspi_mem_ops;
+-	ctlr->mem_caps = &nxp_fspi_mem_caps;
++
++	if (f->devtype_data->quirks & FSPI_QUIRK_DISABLE_DTR)
++		ctlr->mem_caps = &nxp_fspi_mem_caps_disable_dtr;
++	else
++		ctlr->mem_caps = &nxp_fspi_mem_caps;
++
+ 	ctlr->dev.of_node = np;
+ 
+ 	ret = devm_add_action_or_reset(dev, nxp_fspi_cleanup, f);
+-- 
+2.51.0
+
 
 
 
