@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-198391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44672C9F8C0
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:39:49 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A787C9FCE9
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:07:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 241A33001529
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:39:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 06F6430006FB
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:07:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13AB5303C91;
-	Wed,  3 Dec 2025 15:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91BD631355B;
+	Wed,  3 Dec 2025 16:07:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJDajl6g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QhzORMS8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C251025BEE5;
-	Wed,  3 Dec 2025 15:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4F82F0699;
+	Wed,  3 Dec 2025 16:07:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776386; cv=none; b=CmnF6EC8CjurxDarAeMeQfFcot4Ciz6gPUrPvmBH6Zun+S00cgIXVC8S7fnDyZE0Hh4stvSFZdxik9Wwg9jlW9D93GG3kKuW0Oeql36Jr6lYPzIsxkuzto2ZN8CYSIVe0j9ij7zSpDkUvymkOsbIahTKcWcji5uwfzrWNmkxgmY=
+	t=1764778023; cv=none; b=kQqlPyLc7EuMm1LGvtRgCEqnlS5CoH7D87hti+Y7GBVO2uQ5e24ZG7S5cf4qukPxl13nWVcCXzAhYEAoNWE1uuCWP5313SsFYe3F44ovNkj7PTUXSv4rDBMmOIxRHbx+puG/7JKNmfPpS3qQteaDLZKdMeV+Z8pMnACXkP3lneU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776386; c=relaxed/simple;
-	bh=vyeJTlh4dPlIPI6Ret//IOE+Dv3hmMgTOIuJcvM2rQg=;
+	s=arc-20240116; t=1764778023; c=relaxed/simple;
+	bh=oTMljmk8E7C6yjGk+Glq6su4wktt/zHVPVZiR1SC1IE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kDm6NqkAA/FOgdfKEUOTNXWBikYdqa7JY03o8+AfrHypban7qwLp9UErn8hJzsExej3ry5kcJhe5WuPLcQDEm1HXZzWjPX2FbzNxUPNCem26ycSGfy93KjmboDYE8NTlCbQwwb2j6HOSQOVLSlO0AOH0V0abXdaOpwPnqRSutl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJDajl6g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3055EC4CEF5;
-	Wed,  3 Dec 2025 15:39:45 +0000 (UTC)
+	 MIME-Version; b=q0XPxDjpVmjvPpwq/IJVp0Yrhvmdp4E/AMbZoEEXHxQRJBxNNqhsjzjA3UUu7yK97Xjhiq1rT8s6V0nPy1G2IxzJL2yBlpBpiZs1sHO1eWqt28wGOtI+NDMiYlT6stB+oM2vnVbIl6dT455Ar7fIlkQYlqn/GRrPWBGqaEUz07I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QhzORMS8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6304C4CEF5;
+	Wed,  3 Dec 2025 16:07:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776386;
-	bh=vyeJTlh4dPlIPI6Ret//IOE+Dv3hmMgTOIuJcvM2rQg=;
+	s=korg; t=1764778023;
+	bh=oTMljmk8E7C6yjGk+Glq6su4wktt/zHVPVZiR1SC1IE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oJDajl6gkzWO6yMuTFsEsqA0S6Z3/FnXiDzHyN+2pKgzVD0f+zF5pPMGyhnE3XLgQ
-	 o35AUhir2MjWS4Hmv9oHiy32hujAUePFereRm45lkF+F8gaTZU4OwphOBb6TVgHV2G
-	 aTnMGDKqIEbweM8QjH8KB2AAssHDCgyAwrAQ9TIA=
+	b=QhzORMS8hCTCVve24sH61bGXDaNMudtxRrYbw/QY5Rtka6cvJRIoGyzIKIiTcAwJN
+	 N5TqvXI0KzlFDaRmk8+dPOQ8+APqC3uQ7I+OE66BS7e+lmZZR0LhpggI9rlOk7i1Q0
+	 ETAjNIcryRqWkEnYcjzj6JPbGpoBA6oz8yIOALuQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yajun Deng <yajun.deng@linux.dev>,
-	David Ahern <dsahern@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Stefan Wiehler <stefan.wiehler@nokia.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 166/300] net: Use nlmsg_unicast() instead of netlink_unicast()
+Subject: [PATCH 5.15 220/392] sctp: Prevent TOCTOU out-of-bounds write
 Date: Wed,  3 Dec 2025 16:26:10 +0100
-Message-ID: <20251203152406.768990877@linuxfoundation.org>
+Message-ID: <20251203152422.280760280@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,163 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yajun Deng <yajun.deng@linux.dev>
+From: Stefan Wiehler <stefan.wiehler@nokia.com>
 
-[ Upstream commit 01757f536ac825e3614d583fee9acb48c64ed084 ]
+[ Upstream commit 95aef86ab231f047bb8085c70666059b58f53c09 ]
 
-It has 'if (err >0 )' statement in nlmsg_unicast(), so use nlmsg_unicast()
-instead of netlink_unicast(), this looks more concise.
+For the following path not holding the sock lock,
 
-v2: remove the change in netfilter.
+  sctp_diag_dump() -> sctp_for_each_endpoint() -> sctp_ep_dump()
 
-Signed-off-by: Yajun Deng <yajun.deng@linux.dev>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: f1fc201148c7 ("sctp: Hold sock lock while iterating over address list")
+make sure not to exceed bounds in case the address list has grown
+between buffer allocation (time-of-check) and write (time-of-use).
+
+Suggested-by: Kuniyuki Iwashima <kuniyu@google.com>
+Fixes: 8f840e47f190 ("sctp: add the sctp_diag.c file")
+Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/20251028161506.3294376-3-stefan.wiehler@nokia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/fib_frontend.c  | 2 +-
- net/ipv4/inet_diag.c     | 5 +----
- net/ipv4/raw_diag.c      | 7 ++-----
- net/ipv4/udp_diag.c      | 6 ++----
- net/mptcp/mptcp_diag.c   | 6 ++----
- net/netlink/af_netlink.c | 2 +-
- net/sctp/diag.c          | 6 ++----
- net/unix/diag.c          | 6 ++----
- 8 files changed, 13 insertions(+), 27 deletions(-)
+ net/sctp/diag.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/ipv4/fib_frontend.c b/net/ipv4/fib_frontend.c
-index f902cd8cb852b..e35e7793c0e47 100644
---- a/net/ipv4/fib_frontend.c
-+++ b/net/ipv4/fib_frontend.c
-@@ -1400,7 +1400,7 @@ static void nl_fib_input(struct sk_buff *skb)
- 	portid = NETLINK_CB(skb).portid;      /* netlink portid */
- 	NETLINK_CB(skb).portid = 0;        /* from kernel */
- 	NETLINK_CB(skb).dst_group = 0;  /* unicast */
--	netlink_unicast(net->ipv4.fibnl, skb, portid, MSG_DONTWAIT);
-+	nlmsg_unicast(net->ipv4.fibnl, skb, portid);
- }
- 
- static int __net_init nl_fib_lookup_init(struct net *net)
-diff --git a/net/ipv4/inet_diag.c b/net/ipv4/inet_diag.c
-index b9df76f6571cd..611f45da24f82 100644
---- a/net/ipv4/inet_diag.c
-+++ b/net/ipv4/inet_diag.c
-@@ -572,10 +572,7 @@ int inet_diag_dump_one_icsk(struct inet_hashinfo *hashinfo,
- 		nlmsg_free(rep);
- 		goto out;
- 	}
--	err = netlink_unicast(net->diag_nlsk, rep, NETLINK_CB(in_skb).portid,
--			      MSG_DONTWAIT);
--	if (err > 0)
--		err = 0;
-+	err = nlmsg_unicast(net->diag_nlsk, rep, NETLINK_CB(in_skb).portid);
- 
- out:
- 	if (sk)
-diff --git a/net/ipv4/raw_diag.c b/net/ipv4/raw_diag.c
-index 1b5b8af27aafa..ccacbde30a2c5 100644
---- a/net/ipv4/raw_diag.c
-+++ b/net/ipv4/raw_diag.c
-@@ -119,11 +119,8 @@ static int raw_diag_dump_one(struct netlink_callback *cb,
- 		return err;
- 	}
- 
--	err = netlink_unicast(net->diag_nlsk, rep,
--			      NETLINK_CB(in_skb).portid,
--			      MSG_DONTWAIT);
--	if (err > 0)
--		err = 0;
-+	err = nlmsg_unicast(net->diag_nlsk, rep, NETLINK_CB(in_skb).portid);
-+
- 	return err;
- }
- 
-diff --git a/net/ipv4/udp_diag.c b/net/ipv4/udp_diag.c
-index 1dbece34496e5..ed69d1edfd099 100644
---- a/net/ipv4/udp_diag.c
-+++ b/net/ipv4/udp_diag.c
-@@ -77,10 +77,8 @@ static int udp_dump_one(struct udp_table *tbl,
- 		kfree_skb(rep);
- 		goto out;
- 	}
--	err = netlink_unicast(net->diag_nlsk, rep, NETLINK_CB(in_skb).portid,
--			      MSG_DONTWAIT);
--	if (err > 0)
--		err = 0;
-+	err = nlmsg_unicast(net->diag_nlsk, rep, NETLINK_CB(in_skb).portid);
-+
- out:
- 	if (sk)
- 		sock_put(sk);
-diff --git a/net/mptcp/mptcp_diag.c b/net/mptcp/mptcp_diag.c
-index f1af3f44875ed..7f900b58c71da 100644
---- a/net/mptcp/mptcp_diag.c
-+++ b/net/mptcp/mptcp_diag.c
-@@ -57,10 +57,8 @@ static int mptcp_diag_dump_one(struct netlink_callback *cb,
- 		kfree_skb(rep);
- 		goto out;
- 	}
--	err = netlink_unicast(net->diag_nlsk, rep, NETLINK_CB(in_skb).portid,
--			      MSG_DONTWAIT);
--	if (err > 0)
--		err = 0;
-+	err = nlmsg_unicast(net->diag_nlsk, rep, NETLINK_CB(in_skb).portid);
-+
- out:
- 	sock_put(sk);
- 
-diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-index 552682a5ff243..42b7b8574f099 100644
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -2470,7 +2470,7 @@ void netlink_ack(struct sk_buff *in_skb, struct nlmsghdr *nlh, int err,
- 
- 	nlmsg_end(skb, rep);
- 
--	netlink_unicast(in_skb->sk, skb, NETLINK_CB(in_skb).portid, MSG_DONTWAIT);
-+	nlmsg_unicast(in_skb->sk, skb, NETLINK_CB(in_skb).portid);
- }
- EXPORT_SYMBOL(netlink_ack);
- 
 diff --git a/net/sctp/diag.c b/net/sctp/diag.c
-index da00a31e167d7..b1e672227924a 100644
+index 31cf52026202b..3631a32d96b07 100644
 --- a/net/sctp/diag.c
 +++ b/net/sctp/diag.c
-@@ -288,10 +288,8 @@ static int sctp_tsp_dump_one(struct sctp_transport *tsp, void *p)
- 		goto out;
- 	}
- 
--	err = netlink_unicast(net->diag_nlsk, rep, NETLINK_CB(in_skb).portid,
--			      MSG_DONTWAIT);
--	if (err > 0)
--		err = 0;
-+	err = nlmsg_unicast(net->diag_nlsk, rep, NETLINK_CB(in_skb).portid);
+@@ -88,6 +88,9 @@ static int inet_diag_msg_sctpladdrs_fill(struct sk_buff *skb,
+ 		memcpy(info, &laddr->a, sizeof(laddr->a));
+ 		memset(info + sizeof(laddr->a), 0, addrlen - sizeof(laddr->a));
+ 		info += addrlen;
 +
- out:
- 	return err;
- }
-diff --git a/net/unix/diag.c b/net/unix/diag.c
-index 7066a36234106..486276a1782ed 100644
---- a/net/unix/diag.c
-+++ b/net/unix/diag.c
-@@ -299,10 +299,8 @@ static int unix_diag_get_exact(struct sk_buff *in_skb,
- 
- 		goto again;
++		if (!--addrcnt)
++			break;
  	}
--	err = netlink_unicast(net->diag_nlsk, rep, NETLINK_CB(in_skb).portid,
--			      MSG_DONTWAIT);
--	if (err > 0)
--		err = 0;
-+	err = nlmsg_unicast(net->diag_nlsk, rep, NETLINK_CB(in_skb).portid);
-+
- out:
- 	if (sk)
- 		sock_put(sk);
+ 	rcu_read_unlock();
+ 
 -- 
 2.51.0
 
