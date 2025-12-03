@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0118CA0EB8
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:23:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFC71CA01DC
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:49:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 79BC0329B6F3
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:21:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B100430056C1
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:46:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02B6B352947;
-	Wed,  3 Dec 2025 16:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67EC8376BCD;
+	Wed,  3 Dec 2025 16:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MqT8WrFe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dyOW/IiD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D052D5412;
-	Wed,  3 Dec 2025 16:16:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B055F36C0DF;
+	Wed,  3 Dec 2025 16:46:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778562; cv=none; b=swqTW0TALV0WTQt2LVxxxnCfqEwHJKS/Q8aYVvto1poT4jbieI2JqqhsvGZqJ8CaKAaFSnrHXjAGi0UIR3BeeRiMtT+b6W9UUErpRyYfD0QFm54Fb9eYPsVhlfVijtxpwbG9vr3JAexwnWmpuRywSQmd7Up7kMVamY7bKj27p70=
+	t=1764780360; cv=none; b=JDf8Njf6nfD4jcbVM60ZRIJhUIMSwevVgV1kU3sNS/m6aULWw+mbmLchYV+kgJCChf9JYv9wTwxwB5cJcqWt1km0leJ6RpCXU+4lLVEvYgt7QeNqT+XsnVtAUdMClCMrL7hShCD3kf2AUQEuZLyqSeKOxOx+yUH4YLctGuDA6Lc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778562; c=relaxed/simple;
-	bh=JQsNU53MhKtG78vxrPYFurcgMZNDMCYnjaF6TUEXJ00=;
+	s=arc-20240116; t=1764780360; c=relaxed/simple;
+	bh=KjgSRN8bVYPzcpZNJQ6Otd65ZyqbnEPY+0tOZPC1hqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Lmpnu+JUbrJhvKTLOqs9tkoyt5ijbZzS2E6YsElmsXfV9VtzzuQLJgl0nbJgKAQ+Hid8yxhYW7cn3VXgA0dFS4pUtravHygSX46Peb70Jjxxcvb8icP5b4By1EvCHoOAXgPXx+yZcT2nd19UpY4gBkDqLcOi1C1V+3pZq0p4eMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MqT8WrFe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22049C116C6;
-	Wed,  3 Dec 2025 16:16:01 +0000 (UTC)
+	 MIME-Version; b=BGWBnOSa8j0wJ0za/fQNPsFZyahCWmGko2sCE+4npVNAwe1gmGMI8YHUV6+qQW8tZS+1v5oY+c7mpvKez+zYZLe63Qf/0bH1m200bL/vXm77oC8K3qsDqLy1JiKO0IYzfR6buvDkhB/htxwgcT7DQQRjgUiLt+XtUUIXXoVPPXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dyOW/IiD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A959CC116B1;
+	Wed,  3 Dec 2025 16:45:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778562;
-	bh=JQsNU53MhKtG78vxrPYFurcgMZNDMCYnjaF6TUEXJ00=;
+	s=korg; t=1764780360;
+	bh=KjgSRN8bVYPzcpZNJQ6Otd65ZyqbnEPY+0tOZPC1hqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MqT8WrFeXLZa4Fph4zPqY+8hLneAxuPT+TC7iMZZujekRZTtKGy/FHWDSABDiOVna
-	 aFONViogpmJc5XKZMCkSj0aODf50tqRqAjiMEcNIJxVOu0Bm4RU4OFEnZxF7PrMqN1
-	 bvvjW4UidQ4iFQYhl3LvUVaWZVclnLWmDl9QO420=
+	b=dyOW/IiDJGmaJK09LJ0/lspK39rO2kQYyNTirxjw8JkRdHvBdJKljKuntcW2FORoO
+	 bWlVvw7lFAbNrEiQsYUxBEum5rZ6fri1zvltRnkhwN/RWrlAsMAdObcm8LvGUQZvw9
+	 mvR93wkhNuQYSf/0xpk+3Hsod1qZo0Ac30dZrQ/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 351/392] iio:common:ssp_sensors: Fix an error handling path ssp_probe()
-Date: Wed,  3 Dec 2025 16:28:21 +0100
-Message-ID: <20251203152427.082465155@linuxfoundation.org>
+	Danielle Costantino <dcostantino@meta.com>,
+	Gal Pressman <gal@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 500/568] net/mlx5e: Fix validation logic in rate limiting
+Date: Wed,  3 Dec 2025 16:28:22 +0100
+Message-ID: <20251203152459.027220079@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,51 +59,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Danielle Costantino <dcostantino@meta.com>
 
-commit 21553258b94861a73d7f2cf15469d69240e1170d upstream.
+[ Upstream commit d2099d9f16dbfa1c5266d4230ff7860047bb0b68 ]
 
-If an error occurs after a successful mfd_add_devices() call, it should be
-undone by a corresponding mfd_remove_devices() call, as already done in the
-remove function.
+The rate limiting validation condition currently checks the output
+variable max_bw_value[i] instead of the input value
+maxrate->tc_maxrate[i]. This causes the validation to compare an
+uninitialized or stale value rather than the actual requested rate.
 
-Fixes: 50dd64d57eee ("iio: common: ssp_sensors: Add sensorhub driver")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The condition should check the input rate to properly validate against
+the upper limit:
+
+    } else if (maxrate->tc_maxrate[i] <= upper_limit_gbps) {
+
+This aligns with the pattern used in the first branch, which correctly
+checks maxrate->tc_maxrate[i] against upper_limit_mbps.
+
+The current implementation can lead to unreliable validation behavior:
+
+- For rates between 25.5 Gbps and 255 Gbps, if max_bw_value[i] is 0
+  from initialization, the GBPS path may be taken regardless of whether
+  the actual rate is within bounds
+
+- When processing multiple TCs (i > 0), max_bw_value[i] contains the
+  value computed for the previous TC, affecting the validation logic
+
+- The overflow check for rates exceeding 255 Gbps may not trigger
+  consistently depending on previous array values
+
+This patch ensures the validation correctly examines the requested rate
+value for proper bounds checking.
+
+Fixes: 43b27d1bd88a ("net/mlx5e: Fix wraparound in rate limiting for values above 255 Gbps")
+Signed-off-by: Danielle Costantino <dcostantino@meta.com>
+Reviewed-by: Gal Pressman <gal@nvidia.com>
+Link: https://patch.msgid.link/20251124180043.2314428-1-dcostantino@meta.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/common/ssp_sensors/ssp_dev.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/common/ssp_sensors/ssp_dev.c
-+++ b/drivers/iio/common/ssp_sensors/ssp_dev.c
-@@ -515,7 +515,7 @@ static int ssp_probe(struct spi_device *
- 	ret = spi_setup(spi);
- 	if (ret < 0) {
- 		dev_err(&spi->dev, "Failed to setup spi\n");
--		return ret;
-+		goto err_setup_spi;
- 	}
- 
- 	data->fw_dl_state = SSP_FW_DL_STATE_NONE;
-@@ -580,6 +580,8 @@ err_read_reg:
- err_setup_irq:
- 	mutex_destroy(&data->pending_lock);
- 	mutex_destroy(&data->comm_lock);
-+err_setup_spi:
-+	mfd_remove_devices(&spi->dev);
- 
- 	dev_err(&spi->dev, "Probe failed!\n");
- 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
+index 29e633e6dd3f0..e29a8ed7e7ac1 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
+@@ -619,7 +619,7 @@ static int mlx5e_dcbnl_ieee_setmaxrate(struct net_device *netdev,
+ 						  MLX5E_100MB);
+ 			max_bw_value[i] = max_bw_value[i] ? max_bw_value[i] : 1;
+ 			max_bw_unit[i]  = MLX5_100_MBPS_UNIT;
+-		} else if (max_bw_value[i] <= upper_limit_gbps) {
++		} else if (maxrate->tc_maxrate[i] <= upper_limit_gbps) {
+ 			max_bw_value[i] = div_u64(maxrate->tc_maxrate[i],
+ 						  MLX5E_1GB);
+ 			max_bw_unit[i]  = MLX5_GBPS_UNIT;
+-- 
+2.51.0
+
 
 
 
