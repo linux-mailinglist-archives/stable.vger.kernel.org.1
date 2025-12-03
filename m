@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87DD1CA03F8
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:03:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27571CA0AB7
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:51:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1A831311AC0A
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:54:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 52E573514FF4
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:30:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 942083A1CE4;
-	Wed,  3 Dec 2025 16:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34359357A51;
+	Wed,  3 Dec 2025 16:44:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ftQl69P4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XlvrxzGN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B44E3612F3;
-	Wed,  3 Dec 2025 16:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E60B93587BE;
+	Wed,  3 Dec 2025 16:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780712; cv=none; b=Y7OrEUIOovu5EUT+UEfEAg1vDWLlhVao5KDYZSPSBZTsjpiaOEPa4ND96DWQYHhrRnOBZGtU5SLXLuh387CsuuaNSTublct9aS4/qdYJnml94n5CY7uZN1N9oRB1gjXahU94Dw1O7PzbFqqgevThfyPclQNsHC6RU80mmp3PtGs=
+	t=1764780291; cv=none; b=WchCprrswcimrqOko6TLF27WWPU5v/cgB7nE64rer5TBv0vq3NiBuXpVPj2e/HzcUToXyohEWohCw3vRSeqDw//fwWkcfVIQBAjJZWOfxuzwtD8Ka/ukgz14sIJdU5AXFq4LPZ6p+lagl+AU3NaHBypOyiuxkc0qnGVXZUxY/5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780712; c=relaxed/simple;
-	bh=MdiKa1MEcwOt7AXO2wDl9dqxqj3kEE/CENsYj6lAOuE=;
+	s=arc-20240116; t=1764780291; c=relaxed/simple;
+	bh=sSXlo851qADlsNwYNW48W0JNviXT1mfAuw4REouo7BA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L+gTA+/qTDKUz/EKzJDbxDyGKziAMAsd74FsBMtFdMjw8dAxDoLWncutpHJjMFdaFc5cDrbgcDYbQOpeEYmRmrkQoLhGWRlh3dUjNul8tr4JCNhT6zN8RgS6bHaQ07U3Ygw7pJqQbQOaSk3dDc/iec4Pfm8NMPSNtIFj8dU2h8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ftQl69P4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5984C4CEF5;
-	Wed,  3 Dec 2025 16:51:51 +0000 (UTC)
+	 MIME-Version; b=D1bSjdZo/F4KvlSGneeqyJNES4+GeD82hjl5iF5hWe4lh/oF6ipw6sklwfoOdOP8YASun3sWlYC9uidYpLxu4wkt747nlTTf2XwbbhRq7dNR/WhTvwKDCP7j1F2EsdWdWisFgvOdt/NZLNbhnbGxEZqtHRDWnSGM69QS8JnDNI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XlvrxzGN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD69C4CEF5;
+	Wed,  3 Dec 2025 16:44:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780712;
-	bh=MdiKa1MEcwOt7AXO2wDl9dqxqj3kEE/CENsYj6lAOuE=;
+	s=korg; t=1764780290;
+	bh=sSXlo851qADlsNwYNW48W0JNviXT1mfAuw4REouo7BA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ftQl69P42slmzfUxmV+0tkTBeuuaeg3gEM7dRrv98E5mnfMgyYbO4u2J8PMQh806P
-	 tH+EXz6bjuX3r9obdxNmv7HPFJpYorDU37crHJD/nqpDEZMJ5U8vy90UTh+0i3XOpa
-	 qjtUb1I5Idw/ForpWDCYYiuAFZAl0Ni++zG8996A=
+	b=XlvrxzGNirIpYBudHG7HIVjYQZ3oK57NvA2WCaoe+EZBe8vDadUeCmoRhcvyjdfRR
+	 MXTTPy5faXrCSr5IuZ+MkMJGDzVbo9pHB3Cw7Xg4d1IE3V1VYbldbTall8ZD0WBY9s
+	 Yll9g7L2CcvkX3bS8sXZ8rC4G3KsPnizNr50MLzE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason-JH Lin <jason-jh.lin@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Adam Young <admiyo@os.amperecomputing.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
 	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 035/132] mailbox: mtk-cmdq: Refine DMA address handling for the command buffer
+Subject: [PATCH 6.1 512/568] mailbox: pcc: Check before sending MCTP PCC response ACK
 Date: Wed,  3 Dec 2025 16:28:34 +0100
-Message-ID: <20251203152344.597854349@linuxfoundation.org>
+Message-ID: <20251203152459.465981560@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,171 +61,169 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason-JH Lin <jason-jh.lin@mediatek.com>
+From: Adam Young <admiyo@os.amperecomputing.com>
 
-[ Upstream commit a195c7ccfb7a21b8118139835e25936ec8722596 ]
+[ Upstream commit 7f9e19f207be0c534d517d65e01417ba968cdd34 ]
 
-GCE can only fetch the command buffer address from a 32-bit register.
-Some SoCs support a 35-bit command buffer address for GCE, which
-requires a right shift of 3 bits before setting the address into
-the 32-bit register. A comment has been added to the header of
-cmdq_get_shift_pa() to explain this requirement.
+Type 4 PCC channels have an option to send back a response
+to the platform when they are done processing the request.
+The flag to indicate whether or not to respond is inside
+the message body, and thus is not available to the pcc
+mailbox.
 
-To prevent the GCE command buffer address from being DMA mapped beyond
-its supported bit range, the DMA bit mask for the device is set during
-initialization.
+If the flag is not set, still set command completion
+bit after processing message.
 
-Additionally, to ensure the correct shift is applied when setting or
-reading the register that stores the GCE command buffer address,
-new APIs, cmdq_convert_gce_addr() and cmdq_revert_gce_addr(), have
-been introduced for consistent operations on this register.
+In order to read the flag, this patch maps the shared
+buffer to virtual memory. To avoid duplication of mapping
+the shared buffer is then made available to be used by
+the driver that uses the mailbox.
 
-The variable type for the command buffer address has been standardized
-to dma_addr_t to prevent handling issues caused by type mismatches.
-
-Fixes: 0858fde496f8 ("mailbox: cmdq: variablize address shift in platform")
-Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Adam Young <admiyo@os.amperecomputing.com>
+Cc: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Stable-dep-of: ff0e4d4c97c9 ("mailbox: pcc: don't zero error register")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/mtk-cmdq-mailbox.c       | 45 ++++++++++++++++--------
- include/linux/mailbox/mtk-cmdq-mailbox.h | 10 ++++++
- 2 files changed, 41 insertions(+), 14 deletions(-)
+ drivers/mailbox/pcc.c | 61 +++++++++++++++++++++++++++++++++++++------
+ include/acpi/pcc.h    |  7 +++++
+ 2 files changed, 60 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/mailbox/mtk-cmdq-mailbox.c b/drivers/mailbox/mtk-cmdq-mailbox.c
-index 38ab35157c85f..80a10361492b0 100644
---- a/drivers/mailbox/mtk-cmdq-mailbox.c
-+++ b/drivers/mailbox/mtk-cmdq-mailbox.c
-@@ -92,6 +92,18 @@ struct gce_plat {
- 	u32 gce_num;
- };
+diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
+index 94885e411085a..82102a4c5d688 100644
+--- a/drivers/mailbox/pcc.c
++++ b/drivers/mailbox/pcc.c
+@@ -269,6 +269,35 @@ static bool pcc_mbox_cmd_complete_check(struct pcc_chan_info *pchan)
+ 	return !!val;
+ }
  
-+static inline u32 cmdq_convert_gce_addr(dma_addr_t addr, const struct gce_plat *pdata)
++static void check_and_ack(struct pcc_chan_info *pchan, struct mbox_chan *chan)
 +{
-+	/* Convert DMA addr (PA or IOVA) to GCE readable addr */
-+	return addr >> pdata->shift;
++	struct acpi_pcct_ext_pcc_shared_memory pcc_hdr;
++
++	if (pchan->type != ACPI_PCCT_TYPE_EXT_PCC_SLAVE_SUBSPACE)
++		return;
++	/* If the memory region has not been mapped, we cannot
++	 * determine if we need to send the message, but we still
++	 * need to set the cmd_update flag before returning.
++	 */
++	if (pchan->chan.shmem == NULL) {
++		pcc_chan_reg_read_modify_write(&pchan->cmd_update);
++		return;
++	}
++	memcpy_fromio(&pcc_hdr, pchan->chan.shmem,
++		      sizeof(struct acpi_pcct_ext_pcc_shared_memory));
++	/*
++	 * The PCC slave subspace channel needs to set the command complete bit
++	 * after processing message. If the PCC_ACK_FLAG is set, it should also
++	 * ring the doorbell.
++	 *
++	 * The PCC master subspace channel clears chan_in_use to free channel.
++	 */
++	if (le32_to_cpup(&pcc_hdr.flags) & PCC_ACK_FLAG_MASK)
++		pcc_send_data(chan, NULL);
++	else
++		pcc_chan_reg_read_modify_write(&pchan->cmd_update);
 +}
 +
-+static inline dma_addr_t cmdq_revert_gce_addr(u32 addr, const struct gce_plat *pdata)
-+{
-+	/* Revert GCE readable addr to DMA addr (PA or IOVA) */
-+	return (dma_addr_t)addr << pdata->shift;
-+}
-+
- u8 cmdq_get_shift_pa(struct mbox_chan *chan)
+ /**
+  * pcc_mbox_irq - PCC mailbox interrupt handler
+  * @irq:	interrupt number
+@@ -306,14 +335,7 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
+ 
+ 	mbox_chan_received_data(chan, NULL);
+ 
+-	/*
+-	 * The PCC slave subspace channel needs to set the command complete bit
+-	 * and ring doorbell after processing message.
+-	 *
+-	 * The PCC master subspace channel clears chan_in_use to free channel.
+-	 */
+-	if (pchan->type == ACPI_PCCT_TYPE_EXT_PCC_SLAVE_SUBSPACE)
+-		pcc_send_data(chan, NULL);
++	check_and_ack(pchan, chan);
+ 	pchan->chan_in_use = false;
+ 
+ 	return IRQ_HANDLED;
+@@ -365,14 +387,37 @@ EXPORT_SYMBOL_GPL(pcc_mbox_request_channel);
+ void pcc_mbox_free_channel(struct pcc_mbox_chan *pchan)
  {
- 	struct cmdq *cmdq = container_of(chan->mbox, struct cmdq, mbox);
-@@ -188,13 +200,12 @@ static void cmdq_task_insert_into_thread(struct cmdq_task *task)
- 	struct cmdq_task *prev_task = list_last_entry(
- 			&thread->task_busy_list, typeof(*task), list_entry);
- 	u64 *prev_task_base = prev_task->pkt->va_base;
-+	u32 gce_addr = cmdq_convert_gce_addr(task->pa_base, task->cmdq->pdata);
+ 	struct mbox_chan *chan = pchan->mchan;
++	struct pcc_chan_info *pchan_info;
++	struct pcc_mbox_chan *pcc_mbox_chan;
  
- 	/* let previous task jump to this task */
- 	dma_sync_single_for_cpu(dev, prev_task->pa_base,
- 				prev_task->pkt->cmd_buf_size, DMA_TO_DEVICE);
--	prev_task_base[CMDQ_NUM_CMD(prev_task->pkt) - 1] =
--		(u64)CMDQ_JUMP_BY_PA << 32 |
--		(task->pa_base >> task->cmdq->pdata->shift);
-+	prev_task_base[CMDQ_NUM_CMD(prev_task->pkt) - 1] = (u64)CMDQ_JUMP_BY_PA << 32 | gce_addr;
- 	dma_sync_single_for_device(dev, prev_task->pa_base,
- 				   prev_task->pkt->cmd_buf_size, DMA_TO_DEVICE);
- 
-@@ -237,7 +248,8 @@ static void cmdq_thread_irq_handler(struct cmdq *cmdq,
- 				    struct cmdq_thread *thread)
- {
- 	struct cmdq_task *task, *tmp, *curr_task = NULL;
--	u32 curr_pa, irq_flag, task_end_pa;
-+	u32 irq_flag, gce_addr;
-+	dma_addr_t curr_pa, task_end_pa;
- 	bool err;
- 
- 	irq_flag = readl(thread->base + CMDQ_THR_IRQ_STATUS);
-@@ -259,7 +271,8 @@ static void cmdq_thread_irq_handler(struct cmdq *cmdq,
- 	else
+ 	if (!chan || !chan->cl)
  		return;
++	pchan_info = chan->con_priv;
++	pcc_mbox_chan = &pchan_info->chan;
++	if (pcc_mbox_chan->shmem) {
++		iounmap(pcc_mbox_chan->shmem);
++		pcc_mbox_chan->shmem = NULL;
++	}
  
--	curr_pa = readl(thread->base + CMDQ_THR_CURR_ADDR) << cmdq->pdata->shift;
-+	gce_addr = readl(thread->base + CMDQ_THR_CURR_ADDR);
-+	curr_pa = cmdq_revert_gce_addr(gce_addr, cmdq->pdata);
+ 	mbox_free_channel(chan);
+ }
+ EXPORT_SYMBOL_GPL(pcc_mbox_free_channel);
  
- 	list_for_each_entry_safe(task, tmp, &thread->task_busy_list,
- 				 list_entry) {
-@@ -378,7 +391,8 @@ static int cmdq_mbox_send_data(struct mbox_chan *chan, void *data)
- 	struct cmdq_thread *thread = (struct cmdq_thread *)chan->con_priv;
- 	struct cmdq *cmdq = dev_get_drvdata(chan->mbox->dev);
- 	struct cmdq_task *task;
--	unsigned long curr_pa, end_pa;
-+	u32 gce_addr;
-+	dma_addr_t curr_pa, end_pa;
- 
- 	/* Client should not flush new tasks if suspended. */
- 	WARN_ON(cmdq->suspended);
-@@ -402,20 +416,20 @@ static int cmdq_mbox_send_data(struct mbox_chan *chan, void *data)
- 		 */
- 		WARN_ON(cmdq_thread_reset(cmdq, thread) < 0);
- 
--		writel(task->pa_base >> cmdq->pdata->shift,
--		       thread->base + CMDQ_THR_CURR_ADDR);
--		writel((task->pa_base + pkt->cmd_buf_size) >> cmdq->pdata->shift,
--		       thread->base + CMDQ_THR_END_ADDR);
-+		gce_addr = cmdq_convert_gce_addr(task->pa_base, cmdq->pdata);
-+		writel(gce_addr, thread->base + CMDQ_THR_CURR_ADDR);
-+		gce_addr = cmdq_convert_gce_addr(task->pa_base + pkt->cmd_buf_size, cmdq->pdata);
-+		writel(gce_addr, thread->base + CMDQ_THR_END_ADDR);
- 
- 		writel(thread->priority, thread->base + CMDQ_THR_PRIORITY);
- 		writel(CMDQ_THR_IRQ_EN, thread->base + CMDQ_THR_IRQ_ENABLE);
- 		writel(CMDQ_THR_ENABLED, thread->base + CMDQ_THR_ENABLE_TASK);
- 	} else {
- 		WARN_ON(cmdq_thread_suspend(cmdq, thread) < 0);
--		curr_pa = readl(thread->base + CMDQ_THR_CURR_ADDR) <<
--			cmdq->pdata->shift;
--		end_pa = readl(thread->base + CMDQ_THR_END_ADDR) <<
--			cmdq->pdata->shift;
-+		gce_addr = readl(thread->base + CMDQ_THR_CURR_ADDR);
-+		curr_pa = cmdq_revert_gce_addr(gce_addr, cmdq->pdata);
-+		gce_addr = readl(thread->base + CMDQ_THR_END_ADDR);
-+		end_pa = cmdq_revert_gce_addr(gce_addr, cmdq->pdata);
- 		/* check boundary */
- 		if (curr_pa == end_pa - CMDQ_INST_SIZE ||
- 		    curr_pa == end_pa) {
-@@ -646,6 +660,9 @@ static int cmdq_probe(struct platform_device *pdev)
- 	if (err)
- 		return err;
- 
-+	dma_set_coherent_mask(dev,
-+			      DMA_BIT_MASK(sizeof(u32) * BITS_PER_BYTE + cmdq->pdata->shift));
++int pcc_mbox_ioremap(struct mbox_chan *chan)
++{
++	struct pcc_chan_info *pchan_info;
++	struct pcc_mbox_chan *pcc_mbox_chan;
 +
- 	cmdq->mbox.dev = dev;
- 	cmdq->mbox.chans = devm_kcalloc(dev, cmdq->pdata->thread_nr,
- 					sizeof(*cmdq->mbox.chans), GFP_KERNEL);
-diff --git a/include/linux/mailbox/mtk-cmdq-mailbox.h b/include/linux/mailbox/mtk-cmdq-mailbox.h
-index a8f0070c7aa98..9914dcd33e2d9 100644
---- a/include/linux/mailbox/mtk-cmdq-mailbox.h
-+++ b/include/linux/mailbox/mtk-cmdq-mailbox.h
-@@ -78,6 +78,16 @@ struct cmdq_pkt {
- 	void			*cl;
- };
++	if (!chan || !chan->cl)
++		return -1;
++	pchan_info = chan->con_priv;
++	pcc_mbox_chan = &pchan_info->chan;
++	pcc_mbox_chan->shmem = ioremap(pcc_mbox_chan->shmem_base_addr,
++				       pcc_mbox_chan->shmem_size);
++	return 0;
++}
++EXPORT_SYMBOL_GPL(pcc_mbox_ioremap);
++
+ /**
+  * pcc_send_data - Called from Mailbox Controller code. Used
+  *		here only to ring the channel doorbell. The PCC client
+diff --git a/include/acpi/pcc.h b/include/acpi/pcc.h
+index 9b373d172a776..699c1a37b8e78 100644
+--- a/include/acpi/pcc.h
++++ b/include/acpi/pcc.h
+@@ -12,6 +12,7 @@
+ struct pcc_mbox_chan {
+ 	struct mbox_chan *mchan;
+ 	u64 shmem_base_addr;
++	void __iomem *shmem;
+ 	u64 shmem_size;
+ 	u32 latency;
+ 	u32 max_access_rate;
+@@ -31,11 +32,13 @@ struct pcc_mbox_chan {
+ #define PCC_CMD_COMPLETION_NOTIFY	BIT(0)
  
-+/**
-+ * cmdq_get_shift_pa() - get the shift bits of physical address
-+ * @chan: mailbox channel
-+ *
-+ * GCE can only fetch the command buffer address from a 32-bit register.
-+ * Some SOCs support more than 32-bit command buffer address for GCE, which
-+ * requires some shift bits to make the address fit into the 32-bit register.
-+ *
-+ * Return: the shift bits of physical address
-+ */
- u8 cmdq_get_shift_pa(struct mbox_chan *chan);
+ #define MAX_PCC_SUBSPACES	256
++#define PCC_ACK_FLAG_MASK	0x1
  
- #endif /* __MTK_CMDQ_MAILBOX_H__ */
+ #ifdef CONFIG_PCC
+ extern struct pcc_mbox_chan *
+ pcc_mbox_request_channel(struct mbox_client *cl, int subspace_id);
+ extern void pcc_mbox_free_channel(struct pcc_mbox_chan *chan);
++extern int pcc_mbox_ioremap(struct mbox_chan *chan);
+ #else
+ static inline struct pcc_mbox_chan *
+ pcc_mbox_request_channel(struct mbox_client *cl, int subspace_id)
+@@ -43,6 +46,10 @@ pcc_mbox_request_channel(struct mbox_client *cl, int subspace_id)
+ 	return ERR_PTR(-ENODEV);
+ }
+ static inline void pcc_mbox_free_channel(struct pcc_mbox_chan *chan) { }
++static inline int pcc_mbox_ioremap(struct mbox_chan *chan)
++{
++	return 0;
++};
+ #endif
+ 
+ #endif /* _PCC_H */
 -- 
 2.51.0
 
