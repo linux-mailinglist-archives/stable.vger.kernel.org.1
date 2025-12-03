@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-198355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8DDDC9F867
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:37:48 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8111AC9FCA4
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:05:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 26256300097C
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:37:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7439C3003FB7
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:05:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58725309EFF;
-	Wed,  3 Dec 2025 15:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1349534F494;
+	Wed,  3 Dec 2025 16:05:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YLA4gJAa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JSDF7QWO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1529F3148A3;
-	Wed,  3 Dec 2025 15:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C46BD34F489;
+	Wed,  3 Dec 2025 16:05:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776267; cv=none; b=oXsJXO3t8vj5wl7K0zJLBuNbDOjnBVxosa6LnmeUfjfW+N++qUeblhpC8cpDX75edCf6FktgDW0zYXGAnb/H3Ei3x5ZdkmJbb7Ax1N+luVr60h0ky2T6cQ7yMtVwW+CblPvmz0cusBREqzjEkWwZ7F8BoHvT3HQcdSMsxD8FV/g=
+	t=1764777907; cv=none; b=d3XQTJ3UA0cLSzn5tzH2fh/LLFnrdSKpzj8BDb2sEyM5FSv7wenr1Zdaaa3HOb6ese4lR/dgjjOS+irwOEqPTp3xX/JXkRZWQ/dEGGH7UqJhG6H3e48ejECLc0jjY26rEqYxNYPTRtkAWWXhumoKrqnuN3YzBkHYTq9rYMpm5hA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776267; c=relaxed/simple;
-	bh=6P+avpMFobyxws9xNzSR8ItuBGlcA/Bo+LDUgleAy/c=;
+	s=arc-20240116; t=1764777907; c=relaxed/simple;
+	bh=8yN1dEloPiX2awuDjA0r/zVpsENF4MzM2UhwFn2ObpQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TpOkrblG5d96Gvqj0K3LSC+iI8yVxZ35GFJ5KAsj37Q0nQRYe6dWZsAu6/qsE1UTZqjx7VepuF149LSKZCnYcBkSHm5K4u3j82braHOn3d+p+Fh8fwFVHlEQiNWReMyKXQpG85+dpyRCEjwx2CkTBkRHaRSjCsVRe+5Tad/remk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YLA4gJAa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 852BEC4CEF5;
-	Wed,  3 Dec 2025 15:37:46 +0000 (UTC)
+	 MIME-Version; b=YNOV+wg4ttONAehKogLjYKRJPqVQC9LnaFUm1D16nUueQejbl/nywKGMpwJ2bX6W3YT5y6eo9MG4OQsfvWCfkU6be4hRGPaUA0Bv2UMF3adaZsnlWFD/fGazScRQQrf076G9/yBZA3sp9OB+XvAZdx5LTllLvzXZYNO6vGvaxa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JSDF7QWO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46797C4CEF5;
+	Wed,  3 Dec 2025 16:05:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776267;
-	bh=6P+avpMFobyxws9xNzSR8ItuBGlcA/Bo+LDUgleAy/c=;
+	s=korg; t=1764777907;
+	bh=8yN1dEloPiX2awuDjA0r/zVpsENF4MzM2UhwFn2ObpQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YLA4gJAaaJ1dQkpMd+8/7KYSixAsIwvoR53l//ZkJbIxCo3HI/4cDlknoNbmvxfO9
-	 +r88qpJOtovbRxZ7aKEXHXgFm9nhjwxB1au8nvwXnhZddD0snUSqEu0c0v3+shRSHt
-	 DfWCLSC2rdurUZZNI7AXo41t+8fqVbvX3t5aECmE=
+	b=JSDF7QWOJCWTaKty4PqCneb/k/qS+eH3pDrpIcrtVqbCcTM/9IU5UOknx2KDv8pVK
+	 SnJfQXfb7d7+3msuz6cS3fR65cZghm8dk1WRG07KoeiAFAtPkQPK9jdIWpUY5aE9mC
+	 o0G69RHkIz5dcfBdXV9TsE5ME9tgvM5j18BcreVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ChunHao Lin <hau@realtek.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Mike Marshall <hubcap@omnibond.com>,
+	Stanislav Fort of Aisle Research <stanislav.fort@aisle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 130/300] r8169: set EEE speed down ratio to 1
-Date: Wed,  3 Dec 2025 16:25:34 +0100
-Message-ID: <20251203152405.428348495@linuxfoundation.org>
+Subject: [PATCH 5.15 185/392] orangefs: fix xattr related buffer overflow...
+Date: Wed,  3 Dec 2025 16:25:35 +0100
+Message-ID: <20251203152420.887969528@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +60,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ChunHao Lin <hau@realtek.com>
+From: Mike Marshall <hubcap@omnibond.com>
 
-[ Upstream commit bf7154ffb1c65a201906296a9d3eb22e9daa5ffc ]
+[ Upstream commit 025e880759c279ec64d0f754fe65bf45961da864 ]
 
-EEE speed down means speed down MAC MCU clock. It is not from spec.
-It is kind of Realtek specific power saving feature. But enable it
-may cause some issues, like packet drop or interrupt loss. Different
-hardware may have different issues.
+Willy Tarreau <w@1wt.eu> forwarded me a message from
+Disclosure <disclosure@aisle.com> with the following
+warning:
 
-EEE speed down ratio (mac ocp 0xe056[7:4]) is used to set EEE speed
-down rate. The larger this value is, the more power can save. But it
-actually save less power then we expected. And, as mentioned above,
-will impact compatibility. So set it to 1 (mac ocp 0xe056[7:4] = 0)
-, which means not to speed down, to improve compatibility.
+> The helper `xattr_key()` uses the pointer variable in the loop condition
+> rather than dereferencing it. As `key` is incremented, it remains non-NULL
+> (until it runs into unmapped memory), so the loop does not terminate on
+> valid C strings and will walk memory indefinitely, consuming CPU or hanging
+> the thread.
 
-Signed-off-by: ChunHao Lin <hau@realtek.com>
-Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
-Link: https://patch.msgid.link/20250918023425.3463-1-hau@realtek.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+I easily reproduced this with setfattr and getfattr, causing a kernel
+oops, hung user processes and corrupted orangefs files. Disclosure
+sent along a diff (not a patch) with a suggested fix, which I based
+this patch on.
+
+After xattr_key started working right, xfstest generic/069 exposed an
+xattr related memory leak that lead to OOM. xattr_key returns
+a hashed key.  When adding xattrs to the orangefs xattr cache, orangefs
+used hash_add, a kernel hashing macro. hash_add also hashes the key using
+hash_log which resulted in additions to the xattr cache going to the wrong
+hash bucket. generic/069 tortures a single file and orangefs does a
+getattr for the xattr "security.capability" every time. Orangefs
+negative caches on xattrs which includes a kmalloc. Since adds to the
+xattr cache were going to the wrong bucket, every getattr for
+"security.capability" resulted in another kmalloc, none of which were
+ever freed.
+
+I changed the two uses of hash_add to hlist_add_head instead
+and the memory leak ceased and generic/069 quit throwing furniture.
+
+Signed-off-by: Mike Marshall <hubcap@omnibond.com>
+Reported-by: Stanislav Fort of Aisle Research <stanislav.fort@aisle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/orangefs/xattr.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index 9fb8fdd5b2619..fc3e42c1ee0d9 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -3278,7 +3278,7 @@ static void rtl_hw_start_8168h_1(struct rtl8169_private *tp)
- 		r8168_mac_ocp_modify(tp, 0xd412, 0x0fff, sw_cnt_1ms_ini);
+diff --git a/fs/orangefs/xattr.c b/fs/orangefs/xattr.c
+index 9a5b757fbd2f6..2d2d16caf9190 100644
+--- a/fs/orangefs/xattr.c
++++ b/fs/orangefs/xattr.c
+@@ -54,7 +54,9 @@ static inline int convert_to_internal_xattr_flags(int setxattr_flags)
+ static unsigned int xattr_key(const char *key)
+ {
+ 	unsigned int i = 0;
+-	while (key)
++	if (!key)
++		return 0;
++	while (*key)
+ 		i += *key++;
+ 	return i % 16;
+ }
+@@ -175,8 +177,8 @@ ssize_t orangefs_inode_getxattr(struct inode *inode, const char *name,
+ 				cx->length = -1;
+ 				cx->timeout = jiffies +
+ 				    orangefs_getattr_timeout_msecs*HZ/1000;
+-				hash_add(orangefs_inode->xattr_cache, &cx->node,
+-				    xattr_key(cx->key));
++				hlist_add_head( &cx->node,
++                                   &orangefs_inode->xattr_cache[xattr_key(cx->key)]);
+ 			}
+ 		}
+ 		goto out_release_op;
+@@ -229,8 +231,8 @@ ssize_t orangefs_inode_getxattr(struct inode *inode, const char *name,
+ 			memcpy(cx->val, buffer, length);
+ 			cx->length = length;
+ 			cx->timeout = jiffies + HZ;
+-			hash_add(orangefs_inode->xattr_cache, &cx->node,
+-			    xattr_key(cx->key));
++			hlist_add_head(&cx->node,
++				&orangefs_inode->xattr_cache[xattr_key(cx->key)]);
+ 		}
  	}
  
--	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0070);
-+	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0000);
- 	r8168_mac_ocp_modify(tp, 0xe052, 0x6000, 0x8008);
- 	r8168_mac_ocp_modify(tp, 0xe0d6, 0x01ff, 0x017f);
- 	r8168_mac_ocp_modify(tp, 0xd420, 0x0fff, 0x047f);
-@@ -3433,7 +3433,7 @@ static void rtl_hw_start_8117(struct rtl8169_private *tp)
- 		r8168_mac_ocp_modify(tp, 0xd412, 0x0fff, sw_cnt_1ms_ini);
- 	}
- 
--	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0070);
-+	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0000);
- 	r8168_mac_ocp_write(tp, 0xea80, 0x0003);
- 	r8168_mac_ocp_modify(tp, 0xe052, 0x0000, 0x0009);
- 	r8168_mac_ocp_modify(tp, 0xd420, 0x0fff, 0x047f);
-@@ -3628,7 +3628,7 @@ static void rtl_hw_start_8125_common(struct rtl8169_private *tp)
- 	r8168_mac_ocp_modify(tp, 0xc0b4, 0x0000, 0x000c);
- 	r8168_mac_ocp_modify(tp, 0xeb6a, 0x00ff, 0x0033);
- 	r8168_mac_ocp_modify(tp, 0xeb50, 0x03e0, 0x0040);
--	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0030);
-+	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0000);
- 	r8168_mac_ocp_modify(tp, 0xe040, 0x1000, 0x0000);
- 	r8168_mac_ocp_modify(tp, 0xea1c, 0x0003, 0x0001);
- 	r8168_mac_ocp_modify(tp, 0xe0c0, 0x4f0f, 0x4403);
 -- 
 2.51.0
 
