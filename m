@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-199729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D62ACCA0B7A
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:00:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 340FECA0254
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:51:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C55623030D8E
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:55:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 34F633018950
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:47:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8E2E3612FB;
-	Wed,  3 Dec 2025 16:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D8793624AE;
+	Wed,  3 Dec 2025 16:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="enHY7OHx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F0T8azY/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84A47368287;
-	Wed,  3 Dec 2025 16:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBC6D3148CD;
+	Wed,  3 Dec 2025 16:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780746; cv=none; b=aqNjzYounBNmKODnr/r8Bvz6XUTHm/miRapTHUCmYF8JsMRQernuFDQFJCwHYqYW1X4H2RIalNGLKJagxhZluySKStvp+amAjITKUpRbFch8vaOT7vQ5xObIrc86uM0Swe9B081w3j7ZqgYcbrdPEqd8/9FwjGcJtyUjCFmRAOE=
+	t=1764780434; cv=none; b=pgna03reqen/neH+yP73ebvDgiJegP0TLQccsKjaRbLBQNex64s5PE0/Jlkp7XIkBnsEI6Zd0ARzG6A3bH1aaqSqxrysC4qpCgrDSOKjEq/af/O2fhDWenjL1fUiED25W1ztyOTcP/BL/pZZ7GOX+3h4IaH0A8AeoCtYqeJbqpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780746; c=relaxed/simple;
-	bh=AR91oNyG20ZSEIVrfSSwwL2Q9uamStP8V1VFTLuB1RQ=;
+	s=arc-20240116; t=1764780434; c=relaxed/simple;
+	bh=iY/0VOi1psxUpgiUdjtUZqRf9LoxV+Abwb2Y6ylRPh4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nCfBwHSVRokQZSgJnD30hnmkyP0fz/N1kaW189hhq0TcpvJwaKKzH5yXXce00SULu1n4nQjUwHMbsB3hJBgUZnkVTrV4xfz9UOtKDkj0Y/DQjy4i0XjerCMEisg45vQsaZtjuyBwIF02ekFOyUGPcE70aZmWC8F4GPG32GplYtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=enHY7OHx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2B2DC116C6;
-	Wed,  3 Dec 2025 16:52:25 +0000 (UTC)
+	 MIME-Version; b=WOZLYgVTRNnFArSH5LUwjG86qljK6o/tXoDGhEIa3eS3B5bxjp8drqQnSvO43W6n/F3xMk7JYV7AmocodEsBfaGvfUhOMdbP2g1yL6rs54WR629J/6Y13G2s5N6Iaik8m/g/bYvA77W3akurxHsD4zDCzpDsZL0OXbT4fZtYlfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F0T8azY/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BB95C4CEF5;
+	Wed,  3 Dec 2025 16:47:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780746;
-	bh=AR91oNyG20ZSEIVrfSSwwL2Q9uamStP8V1VFTLuB1RQ=;
+	s=korg; t=1764780434;
+	bh=iY/0VOi1psxUpgiUdjtUZqRf9LoxV+Abwb2Y6ylRPh4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=enHY7OHxh7jiD23N0ZdIm/sCXdWCh1nymjpOP2HYZzMarKt/QZO9292g8n+ujMegR
-	 ttir0bqUm6AozGGXzRu4EwgZW0BLhxJr/s/6uVMjXPy92pRObaGBJpKy9gCRW6X6nq
-	 kvqdO4n51w0bqA50DgauE9GzMc/iqgcqeUx+N2hE=
+	b=F0T8azY/rMTyBQQgO/10FY/IoJF8WiWI+S3EjjdNUd7SIUPoskzqfEEtF2sXkZubf
+	 dAthS0ehnzfoAjG2FJZlBqL16eW6B+KEt3604w8nFbnd8lUJSOVLYQssYfCDEtupSy
+	 wpKwQoQ6c2NyCyWgTEuLu16yGz6+kdcm7imm4kn0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.12 078/132] thunderbolt: Add support for Intel Wildcat Lake
+	stable <stable@kernel.org>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 555/568] usb: renesas_usbhs: Fix synchronous external abort on unbind
 Date: Wed,  3 Dec 2025 16:29:17 +0100
-Message-ID: <20251203152346.183132539@linuxfoundation.org>
+Message-ID: <20251203152501.037026921@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,48 +60,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit 3575254546a27210a4b661ea37fbbfb836c0815d upstream.
+[ Upstream commit eb9ac779830b2235847b72cb15cf07c7e3333c5e ]
 
-Intel Wildcat Lake derives its Thunderbolt/USB4 controller from Lunar
-Lake platform. Add Wildcat Lake PCI ID to the driver list of supported
-devices.
+A synchronous external abort occurs on the Renesas RZ/G3S SoC if unbind is
+executed after the configuration sequence described above:
 
-Signed-off-by: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+modprobe usb_f_ecm
+modprobe libcomposite
+modprobe configfs
+cd /sys/kernel/config/usb_gadget
+mkdir -p g1
+cd g1
+echo "0x1d6b" > idVendor
+echo "0x0104" > idProduct
+mkdir -p strings/0x409
+echo "0123456789" > strings/0x409/serialnumber
+echo "Renesas." > strings/0x409/manufacturer
+echo "Ethernet Gadget" > strings/0x409/product
+mkdir -p functions/ecm.usb0
+mkdir -p configs/c.1
+mkdir -p configs/c.1/strings/0x409
+echo "ECM" > configs/c.1/strings/0x409/configuration
+
+if [ ! -L configs/c.1/ecm.usb0 ]; then
+        ln -s functions/ecm.usb0 configs/c.1
+fi
+
+echo 11e20000.usb > UDC
+echo 11e20000.usb > /sys/bus/platform/drivers/renesas_usbhs/unbind
+
+The displayed trace is as follows:
+
+ Internal error: synchronous external abort: 0000000096000010 [#1] SMP
+ CPU: 0 UID: 0 PID: 188 Comm: sh Tainted: G M 6.17.0-rc7-next-20250922-00010-g41050493b2bd #55 PREEMPT
+ Tainted: [M]=MACHINE_CHECK
+ Hardware name: Renesas SMARC EVK version 2 based on r9a08g045s33 (DT)
+ pstate: 604000c5 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+ pc : usbhs_sys_function_pullup+0x10/0x40 [renesas_usbhs]
+ lr : usbhsg_update_pullup+0x3c/0x68 [renesas_usbhs]
+ sp : ffff8000838b3920
+ x29: ffff8000838b3920 x28: ffff00000d585780 x27: 0000000000000000
+ x26: 0000000000000000 x25: 0000000000000000 x24: ffff00000c3e3810
+ x23: ffff00000d5e5c80 x22: ffff00000d5e5d40 x21: 0000000000000000
+ x20: 0000000000000000 x19: ffff00000d5e5c80 x18: 0000000000000020
+ x17: 2e30303230316531 x16: 312d7968703a7968 x15: 3d454d414e5f4344
+ x14: 000000000000002c x13: 0000000000000000 x12: 0000000000000000
+ x11: ffff00000f358f38 x10: ffff00000f358db0 x9 : ffff00000b41f418
+ x8 : 0101010101010101 x7 : 7f7f7f7f7f7f7f7f x6 : fefefeff6364626d
+ x5 : 8080808000000000 x4 : 000000004b5ccb9d x3 : 0000000000000000
+ x2 : 0000000000000000 x1 : ffff800083790000 x0 : ffff00000d5e5c80
+ Call trace:
+ usbhs_sys_function_pullup+0x10/0x40 [renesas_usbhs] (P)
+ usbhsg_pullup+0x4c/0x7c [renesas_usbhs]
+ usb_gadget_disconnect_locked+0x48/0xd4
+ gadget_unbind_driver+0x44/0x114
+ device_remove+0x4c/0x80
+ device_release_driver_internal+0x1c8/0x224
+ device_release_driver+0x18/0x24
+ bus_remove_device+0xcc/0x10c
+ device_del+0x14c/0x404
+ usb_del_gadget+0x88/0xc0
+ usb_del_gadget_udc+0x18/0x30
+ usbhs_mod_gadget_remove+0x24/0x44 [renesas_usbhs]
+ usbhs_mod_remove+0x20/0x30 [renesas_usbhs]
+ usbhs_remove+0x98/0xdc [renesas_usbhs]
+ platform_remove+0x20/0x30
+ device_remove+0x4c/0x80
+ device_release_driver_internal+0x1c8/0x224
+ device_driver_detach+0x18/0x24
+ unbind_store+0xb4/0xb8
+ drv_attr_store+0x24/0x38
+ sysfs_kf_write+0x7c/0x94
+ kernfs_fop_write_iter+0x128/0x1b8
+ vfs_write+0x2ac/0x350
+ ksys_write+0x68/0xfc
+ __arm64_sys_write+0x1c/0x28
+ invoke_syscall+0x48/0x110
+ el0_svc_common.constprop.0+0xc0/0xe0
+ do_el0_svc+0x1c/0x28
+ el0_svc+0x34/0xf0
+ el0t_64_sync_handler+0xa0/0xe4
+ el0t_64_sync+0x198/0x19c
+ Code: 7100003f 1a9f07e1 531c6c22 f9400001 (79400021)
+ ---[ end trace 0000000000000000 ]---
+ note: sh[188] exited with irqs disabled
+ note: sh[188] exited with preempt_count 1
+
+The issue occurs because usbhs_sys_function_pullup(), which accesses the IP
+registers, is executed after the USBHS clocks have been disabled. The
+problem is reproducible on the Renesas RZ/G3S SoC starting with the
+addition of module stop in the clock enable/disable APIs. With module stop
+functionality enabled, a bus error is expected if a master accesses a
+module whose clock has been stopped and module stop activated.
+
+Disable the IP clocks at the end of remove.
+
+Cc: stable <stable@kernel.org>
+Fixes: f1407d5c6624 ("usb: renesas_usbhs: Add Renesas USBHS common code")
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://patch.msgid.link/20251027140741.557198-1-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/nhi.c |    2 ++
- drivers/thunderbolt/nhi.h |    1 +
- 2 files changed, 3 insertions(+)
+ drivers/usb/renesas_usbhs/common.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/drivers/thunderbolt/nhi.c
-+++ b/drivers/thunderbolt/nhi.c
-@@ -1528,6 +1528,8 @@ static struct pci_device_id nhi_ids[] =
- 	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_PTL_P_NHI1),
- 	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
-+	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_WCL_NHI0),
-+	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_80G_NHI) },
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_40G_NHI) },
+--- a/drivers/usb/renesas_usbhs/common.c
++++ b/drivers/usb/renesas_usbhs/common.c
+@@ -798,18 +798,18 @@ static void usbhs_remove(struct platform
  
---- a/drivers/thunderbolt/nhi.h
-+++ b/drivers/thunderbolt/nhi.h
-@@ -75,6 +75,7 @@ extern const struct tb_nhi_ops icl_nhi_o
- #define PCI_DEVICE_ID_INTEL_TITAN_RIDGE_DD_BRIDGE	0x15ef
- #define PCI_DEVICE_ID_INTEL_ADL_NHI0			0x463e
- #define PCI_DEVICE_ID_INTEL_ADL_NHI1			0x466d
-+#define PCI_DEVICE_ID_INTEL_WCL_NHI0			0x4d33
- #define PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_80G_NHI	0x5781
- #define PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_40G_NHI	0x5784
- #define PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HUB_80G_BRIDGE 0x5786
+ 	flush_delayed_work(&priv->notify_hotplug_work);
+ 
+-	/* power off */
+-	if (!usbhs_get_dparam(priv, runtime_pwctrl))
+-		usbhsc_power_ctrl(priv, 0);
+-
+-	pm_runtime_disable(&pdev->dev);
+-
+ 	usbhs_platform_call(priv, hardware_exit, pdev);
+-	usbhsc_clk_put(priv);
+ 	reset_control_assert(priv->rsts);
+ 	usbhs_mod_remove(priv);
+ 	usbhs_fifo_remove(priv);
+ 	usbhs_pipe_remove(priv);
++
++	/* power off */
++	if (!usbhs_get_dparam(priv, runtime_pwctrl))
++		usbhsc_power_ctrl(priv, 0);
++
++	usbhsc_clk_put(priv);
++	pm_runtime_disable(&pdev->dev);
+ }
+ 
+ static __maybe_unused int usbhsc_suspend(struct device *dev)
 
 
 
