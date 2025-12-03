@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-198924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3693CC9FE40
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:19:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B29EC9FA7C
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:48:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 66A76309042D
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:09:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B6A78303E037
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:41:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFBED34FF4B;
-	Wed,  3 Dec 2025 16:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6682B30BF52;
+	Wed,  3 Dec 2025 15:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q41PNVae"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y33aEl4S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA2E62F0699;
-	Wed,  3 Dec 2025 16:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04AD425BEE5;
+	Wed,  3 Dec 2025 15:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778117; cv=none; b=BQ9+svLNzzryBc+qjJI9ZLBn/op3naKQf+BCZUWQeBUXdUHIuTc4xTgHMqYmtD+RH3V/FuY8QhMrLRrazbEZrSaJhkWPiSqlESXeFRRIDcjRB01VzeT3o23klDxM2sFDg7CW3QcZzNq/gLYJHAQNJsJAiHLVusgwZRLDwdlnH2o=
+	t=1764776481; cv=none; b=Gnh+1VgbI8/T523SbqsgcIfulSg7wJmme0m/MacsowvqFenE23lkkQ54s2KZ07Y+xTObydamm95bEDuzfy1s+ZOQbGrrjKrE/XW42DdErTkliqT2xdSIi+uDrGuFhyk2LmCOUn5yOTPOGLo+8a0dY5bbKExns+NBmi8XcUwC2/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778117; c=relaxed/simple;
-	bh=32KMyEv4lXRCV/7N45ky1uPcjck+xoNW15IYyQnvzTk=;
+	s=arc-20240116; t=1764776481; c=relaxed/simple;
+	bh=r/ylaEfih19tEja713RcDp0snWaqsF8QzYrp5jXNxyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WiGDq0WYuEzeSzX5EhLOs2xLfE+c7dBj+vcCh3GNKHv9EsfOa2RXdJr2teixHMKZF4kavNSziaGjgqo2C6u7os1t/JdV4BNtYILt6IrL0BN5R6eYLDketgXyz833NTk/Hj2NdFQyrQeC0E+Tr77sdx72+cy3iRBEjN9YeCWWc5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q41PNVae; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21895C4CEF5;
-	Wed,  3 Dec 2025 16:08:36 +0000 (UTC)
+	 MIME-Version; b=jQNHVyDRZ1TbcARcOOaeoNrV35kHSdYibdM36it0iUI54XdBcL/eiUFTRkb5QrFs9iK2zmjbWtDruc6eKAQdc6dVZIb4y/q2zYlfFws4I8Eqgz8DP3aZWPZ7qnkqp0PAzLSxj+EIKgViIXngDc2m3hiKjU+0l/xqbq+9lTQ8zeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y33aEl4S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D34DC4CEF5;
+	Wed,  3 Dec 2025 15:41:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778117;
-	bh=32KMyEv4lXRCV/7N45ky1uPcjck+xoNW15IYyQnvzTk=;
+	s=korg; t=1764776480;
+	bh=r/ylaEfih19tEja713RcDp0snWaqsF8QzYrp5jXNxyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q41PNVaebgNqFFlfLWtsd4Hni1XFV5daU/GCf1DA/TAcEv0DgRI0LgtVVuynnIIdi
-	 cTtlh3k32bJO/IcsIbS9E+9yBygG54wo0+b9pvU/bI6zb4mqwXg2gF9GYfpcMu2VFS
-	 DED0XGTq/V2mEDQ7ukMnMMT7Swh6JMlTVInDvCvM=
+	b=Y33aEl4SURAPx6M3nelamgW3IckJi8KJqBiEk5UGfb8mUrEGSlt9XhygUAIYaWgAH
+	 Cf7KTZyZTcku6XJyrURFhcJVUrg8kmKocFMWdq6x7olYH+FyMJsVYCpfHKjPZd4LJv
+	 dxa0ouBhMt/k+6L9fPnMZQlbRWKmBRVKYu4zp5AI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Pedro Tammela <pctammela@mojatatu.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Chris Morgan <macromorgan@hotmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 249/392] net/sched: act_connmark: transition to percpu stats and rcu
+Subject: [PATCH 5.10 195/300] regulator: fixed: use dev_err_probe for register
 Date: Wed,  3 Dec 2025 16:26:39 +0100
-Message-ID: <20251203152423.334057109@linuxfoundation.org>
+Message-ID: <20251203152407.850150729@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,278 +60,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pedro Tammela <pctammela@mojatatu.com>
+From: Chris Morgan <macromorgan@hotmail.com>
 
-[ Upstream commit 288864effe33885988d53faf7830b35cb9a84c7a ]
+[ Upstream commit d0f95e6496a974a890df5eda65ffaee66ab0dc73 ]
 
-The tc action act_connmark was using shared stats and taking the per
-action lock in the datapath. Improve it by using percpu stats and rcu.
+Instead of returning error directly, use dev_err_probe. This avoids
+messages in the dmesg log for devices which will be probed again later.
 
-perf before:
-- 13.55% tcf_connmark_act
-   - 81.18% _raw_spin_lock
-       80.46% native_queued_spin_lock_slowpath
-
-perf after:
-- 2.85% tcf_connmark_act
-
-tdc results:
-1..15
-ok 1 2002 - Add valid connmark action with defaults
-ok 2 56a5 - Add valid connmark action with control pass
-ok 3 7c66 - Add valid connmark action with control drop
-ok 4 a913 - Add valid connmark action with control pipe
-ok 5 bdd8 - Add valid connmark action with control reclassify
-ok 6 b8be - Add valid connmark action with control continue
-ok 7 d8a6 - Add valid connmark action with control jump
-ok 8 aae8 - Add valid connmark action with zone argument
-ok 9 2f0b - Add valid connmark action with invalid zone argument
-ok 10 9305 - Add connmark action with unsupported argument
-ok 11 71ca - Add valid connmark action and replace it
-ok 12 5f8f - Add valid connmark action with cookie
-ok 13 c506 - Replace connmark with invalid goto chain control
-ok 14 6571 - Delete connmark action with valid index
-ok 15 3426 - Delete connmark action with invalid index
-
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 62b656e43eae ("net: sched: act_connmark: initialize struct tc_ife to fix kernel leak")
+Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
+Link: https://lore.kernel.org/r/20210721165716.19915-1-macroalpha82@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 636f4618b1cd ("regulator: fixed: fix GPIO descriptor leak on register failure")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/tc_act/tc_connmark.h |   9 ++-
- net/sched/act_connmark.c         | 107 ++++++++++++++++++++-----------
- 2 files changed, 75 insertions(+), 41 deletions(-)
+ drivers/regulator/fixed.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/tc_act/tc_connmark.h b/include/net/tc_act/tc_connmark.h
-index 1f4cb477bb5d6..e8dd77a967480 100644
---- a/include/net/tc_act/tc_connmark.h
-+++ b/include/net/tc_act/tc_connmark.h
-@@ -4,10 +4,15 @@
- 
- #include <net/act_api.h>
- 
--struct tcf_connmark_info {
--	struct tc_action common;
-+struct tcf_connmark_parms {
- 	struct net *net;
- 	u16 zone;
-+	struct rcu_head rcu;
-+};
-+
-+struct tcf_connmark_info {
-+	struct tc_action common;
-+	struct tcf_connmark_parms __rcu *parms;
- };
- 
- #define to_connmark(a) ((struct tcf_connmark_info *)a)
-diff --git a/net/sched/act_connmark.c b/net/sched/act_connmark.c
-index d41002e4613ff..418d60435b9d4 100644
---- a/net/sched/act_connmark.c
-+++ b/net/sched/act_connmark.c
-@@ -34,13 +34,15 @@ static int tcf_connmark_act(struct sk_buff *skb, const struct tc_action *a,
- 	struct nf_conntrack_tuple tuple;
- 	enum ip_conntrack_info ctinfo;
- 	struct tcf_connmark_info *ca = to_connmark(a);
-+	struct tcf_connmark_parms *parms;
- 	struct nf_conntrack_zone zone;
- 	struct nf_conn *c;
- 	int proto;
- 
--	spin_lock(&ca->tcf_lock);
- 	tcf_lastuse_update(&ca->tcf_tm);
--	bstats_update(&ca->tcf_bstats, skb);
-+	tcf_action_update_bstats(&ca->common, skb);
-+
-+	parms = rcu_dereference_bh(ca->parms);
- 
- 	switch (skb_protocol(skb, true)) {
- 	case htons(ETH_P_IP):
-@@ -62,31 +64,29 @@ static int tcf_connmark_act(struct sk_buff *skb, const struct tc_action *a,
- 	c = nf_ct_get(skb, &ctinfo);
- 	if (c) {
- 		skb->mark = READ_ONCE(c->mark);
--		/* using overlimits stats to count how many packets marked */
--		ca->tcf_qstats.overlimits++;
--		goto out;
-+		goto count;
+diff --git a/drivers/regulator/fixed.c b/drivers/regulator/fixed.c
+index 4acfff1908072..49e162b3cf42d 100644
+--- a/drivers/regulator/fixed.c
++++ b/drivers/regulator/fixed.c
+@@ -238,8 +238,9 @@ static int reg_fixed_voltage_probe(struct platform_device *pdev)
+ 	drvdata->dev = devm_regulator_register(&pdev->dev, &drvdata->desc,
+ 					       &cfg);
+ 	if (IS_ERR(drvdata->dev)) {
+-		ret = PTR_ERR(drvdata->dev);
+-		dev_err(&pdev->dev, "Failed to register regulator: %d\n", ret);
++		ret = dev_err_probe(&pdev->dev, PTR_ERR(drvdata->dev),
++				    "Failed to register regulator: %ld\n",
++				    PTR_ERR(drvdata->dev));
+ 		return ret;
  	}
- 
--	if (!nf_ct_get_tuplepr(skb, skb_network_offset(skb),
--			       proto, ca->net, &tuple))
-+	if (!nf_ct_get_tuplepr(skb, skb_network_offset(skb), proto, parms->net,
-+			       &tuple))
- 		goto out;
- 
--	zone.id = ca->zone;
-+	zone.id = parms->zone;
- 	zone.dir = NF_CT_DEFAULT_ZONE_DIR;
- 
--	thash = nf_conntrack_find_get(ca->net, &zone, &tuple);
-+	thash = nf_conntrack_find_get(parms->net, &zone, &tuple);
- 	if (!thash)
- 		goto out;
- 
- 	c = nf_ct_tuplehash_to_ctrack(thash);
--	/* using overlimits stats to count how many packets marked */
--	ca->tcf_qstats.overlimits++;
- 	skb->mark = READ_ONCE(c->mark);
- 	nf_ct_put(c);
- 
-+count:
-+	/* using overlimits stats to count how many packets marked */
-+	tcf_action_inc_overlimit_qstats(&ca->common);
- out:
--	spin_unlock(&ca->tcf_lock);
--	return ca->tcf_action;
-+	return READ_ONCE(ca->tcf_action);
- }
- 
- static const struct nla_policy connmark_policy[TCA_CONNMARK_MAX + 1] = {
-@@ -99,6 +99,7 @@ static int tcf_connmark_init(struct net *net, struct nlattr *nla,
- 			     struct netlink_ext_ack *extack)
- {
- 	struct tc_action_net *tn = net_generic(net, act_connmark_ops.net_id);
-+	struct tcf_connmark_parms *nparms, *oparms;
- 	struct nlattr *tb[TCA_CONNMARK_MAX + 1];
- 	bool bind = flags & TCA_ACT_FLAGS_BIND;
- 	struct tcf_chain *goto_ch = NULL;
-@@ -118,52 +119,66 @@ static int tcf_connmark_init(struct net *net, struct nlattr *nla,
- 	if (!tb[TCA_CONNMARK_PARMS])
- 		return -EINVAL;
- 
-+	nparms = kzalloc(sizeof(*nparms), GFP_KERNEL);
-+	if (!nparms)
-+		return -ENOMEM;
-+
- 	parm = nla_data(tb[TCA_CONNMARK_PARMS]);
- 	index = parm->index;
- 	ret = tcf_idr_check_alloc(tn, &index, a, bind);
- 	if (!ret) {
--		ret = tcf_idr_create(tn, index, est, a,
--				     &act_connmark_ops, bind, false, flags);
-+		ret = tcf_idr_create_from_flags(tn, index, est, a,
-+						&act_connmark_ops, bind, flags);
- 		if (ret) {
- 			tcf_idr_cleanup(tn, index);
--			return ret;
-+			err = ret;
-+			goto out_free;
- 		}
- 
- 		ci = to_connmark(*a);
--		err = tcf_action_check_ctrlact(parm->action, tp, &goto_ch,
--					       extack);
--		if (err < 0)
--			goto release_idr;
--		tcf_action_set_ctrlact(*a, parm->action, goto_ch);
--		ci->net = net;
--		ci->zone = parm->zone;
-+
-+		nparms->net = net;
-+		nparms->zone = parm->zone;
- 
- 		ret = ACT_P_CREATED;
- 	} else if (ret > 0) {
- 		ci = to_connmark(*a);
--		if (bind)
--			return 0;
--		if (!(flags & TCA_ACT_FLAGS_REPLACE)) {
--			tcf_idr_release(*a, bind);
--			return -EEXIST;
-+		if (bind) {
-+			err = 0;
-+			goto out_free;
- 		}
--		err = tcf_action_check_ctrlact(parm->action, tp, &goto_ch,
--					       extack);
--		if (err < 0)
-+		if (!(flags & TCA_ACT_FLAGS_REPLACE)) {
-+			err = -EEXIST;
- 			goto release_idr;
--		/* replacing action and zone */
--		spin_lock_bh(&ci->tcf_lock);
--		goto_ch = tcf_action_set_ctrlact(*a, parm->action, goto_ch);
--		ci->zone = parm->zone;
--		spin_unlock_bh(&ci->tcf_lock);
--		if (goto_ch)
--			tcf_chain_put_by_act(goto_ch);
-+		}
-+
-+		nparms->net = rtnl_dereference(ci->parms)->net;
-+		nparms->zone = parm->zone;
-+
- 		ret = 0;
- 	}
- 
-+	err = tcf_action_check_ctrlact(parm->action, tp, &goto_ch, extack);
-+	if (err < 0)
-+		goto release_idr;
-+
-+	spin_lock_bh(&ci->tcf_lock);
-+	goto_ch = tcf_action_set_ctrlact(*a, parm->action, goto_ch);
-+	oparms = rcu_replace_pointer(ci->parms, nparms, lockdep_is_held(&ci->tcf_lock));
-+	spin_unlock_bh(&ci->tcf_lock);
-+
-+	if (goto_ch)
-+		tcf_chain_put_by_act(goto_ch);
-+
-+	if (oparms)
-+		kfree_rcu(oparms, rcu);
-+
- 	return ret;
-+
- release_idr:
- 	tcf_idr_release(*a, bind);
-+out_free:
-+	kfree(nparms);
- 	return err;
- }
- 
-@@ -177,11 +192,14 @@ static inline int tcf_connmark_dump(struct sk_buff *skb, struct tc_action *a,
- 		.refcnt  = refcount_read(&ci->tcf_refcnt) - ref,
- 		.bindcnt = atomic_read(&ci->tcf_bindcnt) - bind,
- 	};
-+	struct tcf_connmark_parms *parms;
- 	struct tcf_t t;
- 
- 	spin_lock_bh(&ci->tcf_lock);
-+	parms = rcu_dereference_protected(ci->parms, lockdep_is_held(&ci->tcf_lock));
-+
- 	opt.action = ci->tcf_action;
--	opt.zone = ci->zone;
-+	opt.zone = parms->zone;
- 	if (nla_put(skb, TCA_CONNMARK_PARMS, sizeof(opt), &opt))
- 		goto nla_put_failure;
- 
-@@ -199,6 +217,16 @@ static inline int tcf_connmark_dump(struct sk_buff *skb, struct tc_action *a,
- 	return -1;
- }
- 
-+static void tcf_connmark_cleanup(struct tc_action *a)
-+{
-+	struct tcf_connmark_info *ci = to_connmark(a);
-+	struct tcf_connmark_parms *parms;
-+
-+	parms = rcu_dereference_protected(ci->parms, 1);
-+	if (parms)
-+		kfree_rcu(parms, rcu);
-+}
-+
- static struct tc_action_ops act_connmark_ops = {
- 	.kind		=	"connmark",
- 	.id		=	TCA_ID_CONNMARK,
-@@ -206,6 +234,7 @@ static struct tc_action_ops act_connmark_ops = {
- 	.act		=	tcf_connmark_act,
- 	.dump		=	tcf_connmark_dump,
- 	.init		=	tcf_connmark_init,
-+	.cleanup	=	tcf_connmark_cleanup,
- 	.size		=	sizeof(struct tcf_connmark_info),
- };
  
 -- 
 2.51.0
