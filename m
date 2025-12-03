@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D0F5CA02F2
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:53:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDCE6CA0981
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:44:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 65196309549D
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:43:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3A42B3481049
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:24:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11CF7361DBD;
-	Wed,  3 Dec 2025 16:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19F8633F37B;
+	Wed,  3 Dec 2025 15:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="trh/eaKE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YuuM0oGq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE92361DB3;
-	Wed,  3 Dec 2025 16:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79D933A70C;
+	Wed,  3 Dec 2025 15:55:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780202; cv=none; b=kjahjPZ0QhxhoZuSjxgOhTHY7KZ1wJAx167uLgk/l8Mqxo2IczBDDhmIxVvbT3m0OaCFFBvIuoLsqvwgScyTBPCNJ5vXkFZVlsJSrhWS3Zit/kRqE7aNXNEuo2UdggN8rPHrKjU/zvF50SCAxuEBGS2EOlfZxIJgLxmfQnBwKLw=
+	t=1764777303; cv=none; b=r+25eLDOLic389+T8gdJcgH0vZZDiI092xCE4Ha4ByNhei5tJgrDcCk3hOwdwYQCBhrADBOxr3MrGkafGvLC4vPIRPfOvFaTEwGORPljOnKPymDGnHmQrGSdNcm20eiNg3H0sQOkDC0ISka+nQcOuZe952zkdLFb29oBXrHoYQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780202; c=relaxed/simple;
-	bh=WuTiAFzJcQnLKWBEbuU6pKIIcB0+w8ISD7n3ZBnGs4I=;
+	s=arc-20240116; t=1764777303; c=relaxed/simple;
+	bh=azq08zlVVcYdUklBf9kmh7yVe3MNpy0VXuqOeTBXy9Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hdT0rwxV8H3t54l3GRlq8/t+FvVObeKIjJ0v/BQWz5AArMRUALqADpZEo/LJdDNSmHpSxJJ4qbn26crymgubUtRPwarAkX8FSrNY1R8HLqhLtt6gd803juqOPWVuj4fuKVLQu/UZQ/Su3kC4Yj+anEnbytUe+vx6rfDUiYFdxDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=trh/eaKE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D792C16AAE;
-	Wed,  3 Dec 2025 16:43:21 +0000 (UTC)
+	 MIME-Version; b=GP3oFDPw7EE72IPmDrz9O0t5wZRQCN4VxEf8PcVPUpiziRiEmmqdM2f7+au1Fyg5/SaPDL3Wu3GyG+oLPFvmIQtIwTFXbSAs/jbEj+dyTjozsmNWr5Ez7kHGGPVKX6H7DIpWitMfve8jPAxS9a0iyVqBPve5UBYALK5PC1AJvrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YuuM0oGq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 166E7C4CEF5;
+	Wed,  3 Dec 2025 15:55:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780202;
-	bh=WuTiAFzJcQnLKWBEbuU6pKIIcB0+w8ISD7n3ZBnGs4I=;
+	s=korg; t=1764777303;
+	bh=azq08zlVVcYdUklBf9kmh7yVe3MNpy0VXuqOeTBXy9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=trh/eaKEXrm/L6wXNpLU8W2bG5cFyluAsuXRVypZx2HMBUi6QuQhY6o7F1pvytlTo
-	 QsQlHRNPNgbWwwuA0v0iCe/37nGSFI0tWpkkXY6vvaGJVOf4NZaiNz1/h9Ng9O+q9S
-	 EgU0aoY5L91mabomTU/EtsYeNKSbnGxv/o+uS29g=
+	b=YuuM0oGqq8fdR1MokDI583ANa3CIrY93LDZ+/CENubY3VitG9UOpkAQQUnNsibmlv
+	 VIHEcckxdHd8eKleS9IGUtn0EOhCucEzb+3Afh25y04XJw04lsyRTEKv1q7vWFMIXV
+	 zleiybjcDA99PBr0sjQUIB6DN9iu+hHssiPrc6Kw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 486/568] selftests: mptcp: join: rm: set backup flag
+	stable <stable@kernel.org>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	Peter Chen <peter.chen@kernel.org>
+Subject: [PATCH 6.17 110/146] usb: cdns3: Fix double resource release in cdns3_pci_probe
 Date: Wed,  3 Dec 2025 16:28:08 +0100
-Message-ID: <20251203152458.504041253@linuxfoundation.org>
+Message-ID: <20251203152350.492593194@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,172 +60,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-[ Upstream commit aea73bae662a0e184393d6d7d0feb18d2577b9b9 ]
+commit 1ec39d2cd88dac2e7cdbac248762f1f057971c5d upstream.
 
-Some of these 'remove' tests rarely fail because a subflow has been
-reset instead of cleanly removed. This can happen when one extra subflow
-which has never carried data is being closed (FIN) on one side, while
-the other is sending data for the first time.
+The driver uses pcim_enable_device() to enable the PCI device,
+the device will be automatically disabled on driver detach through
+the managed device framework. The manual pci_disable_device() calls
+in the error paths are therefore redundant and should be removed.
 
-To avoid such subflows to be used right at the end, the backup flag has
-been added. With that, data will be only carried on the initial subflow.
+Found via static anlaysis and this is similar to commit 99ca0b57e49f
+("thermal: intel: int340x: processor: Fix warning during module unload").
 
-Fixes: d2c4333a801c ("selftests: mptcp: add testcases for removing addrs")
-Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251110-net-mptcp-sft-join-unstable-v1-2-a4332c714e10@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://patch.msgid.link/20251026090859.33107-1-linmq006@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |   54 ++++++++++++------------
- 1 file changed, 27 insertions(+), 27 deletions(-)
+ drivers/usb/cdns3/cdns3-pci-wrap.c |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -2332,7 +2332,7 @@ remove_tests()
- 	if reset "remove single subflow"; then
- 		pm_nl_set_limits $ns1 0 1
- 		pm_nl_set_limits $ns2 0 1
--		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow
-+		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow,backup
- 		run_tests $ns1 $ns2 10.0.1.1 0 0 -1 slow
- 		chk_join_nr 1 1 1
- 		chk_rm_nr 1 1
-@@ -2343,8 +2343,8 @@ remove_tests()
- 	if reset "remove multiple subflows"; then
- 		pm_nl_set_limits $ns1 0 2
- 		pm_nl_set_limits $ns2 0 2
--		pm_nl_add_endpoint $ns2 10.0.2.2 flags subflow
--		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow
-+		pm_nl_add_endpoint $ns2 10.0.2.2 flags subflow,backup
-+		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow,backup
- 		run_tests $ns1 $ns2 10.0.1.1 0 0 -2 slow
- 		chk_join_nr 2 2 2
- 		chk_rm_nr 2 2
-@@ -2354,7 +2354,7 @@ remove_tests()
- 	# single address, remove
- 	if reset "remove single address"; then
- 		pm_nl_set_limits $ns1 0 1
--		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup
- 		pm_nl_set_limits $ns2 1 1
- 		run_tests $ns1 $ns2 10.0.1.1 0 -1 0 slow
- 		chk_join_nr 1 1 1
-@@ -2366,9 +2366,9 @@ remove_tests()
- 	# subflow and signal, remove
- 	if reset "remove subflow and signal"; then
- 		pm_nl_set_limits $ns1 0 2
--		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup
- 		pm_nl_set_limits $ns2 1 2
--		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow
-+		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow,backup
- 		run_tests $ns1 $ns2 10.0.1.1 0 -1 -1 slow
- 		chk_join_nr 2 2 2
- 		chk_add_nr 1 1
-@@ -2379,10 +2379,10 @@ remove_tests()
- 	# subflows and signal, remove
- 	if reset "remove subflows and signal"; then
- 		pm_nl_set_limits $ns1 0 3
--		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup
- 		pm_nl_set_limits $ns2 1 3
--		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow
--		pm_nl_add_endpoint $ns2 10.0.4.2 flags subflow
-+		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow,backup
-+		pm_nl_add_endpoint $ns2 10.0.4.2 flags subflow,backup
- 		run_tests $ns1 $ns2 10.0.1.1 0 -1 -2 speed_10
- 		chk_join_nr 3 3 3
- 		chk_add_nr 1 1
-@@ -2393,9 +2393,9 @@ remove_tests()
- 	# addresses remove
- 	if reset "remove addresses"; then
- 		pm_nl_set_limits $ns1 3 3
--		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal id 250
--		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal
--		pm_nl_add_endpoint $ns1 10.0.4.1 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup id 250
-+		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal,backup
-+		pm_nl_add_endpoint $ns1 10.0.4.1 flags signal,backup
- 		pm_nl_set_limits $ns2 3 3
- 		run_tests $ns1 $ns2 10.0.1.1 0 -3 0 speed_10
- 		chk_join_nr 3 3 3
-@@ -2407,10 +2407,10 @@ remove_tests()
- 	# invalid addresses remove
- 	if reset "remove invalid addresses"; then
- 		pm_nl_set_limits $ns1 3 3
--		pm_nl_add_endpoint $ns1 10.0.12.1 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.12.1 flags signal,backup
- 		# broadcast IP: no packet for this address will be received on ns1
--		pm_nl_add_endpoint $ns1 224.0.0.1 flags signal
--		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal
-+		pm_nl_add_endpoint $ns1 224.0.0.1 flags signal,backup
-+		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal,backup
- 		pm_nl_set_limits $ns2 2 2
- 		run_tests $ns1 $ns2 10.0.1.1 0 -3 0 speed_10
- 		chk_join_nr 1 1 1
-@@ -2422,10 +2422,10 @@ remove_tests()
- 	# subflows and signal, flush
- 	if reset "flush subflows and signal"; then
- 		pm_nl_set_limits $ns1 0 3
--		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup
- 		pm_nl_set_limits $ns2 1 3
--		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow
--		pm_nl_add_endpoint $ns2 10.0.4.2 flags subflow
-+		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow,backup
-+		pm_nl_add_endpoint $ns2 10.0.4.2 flags subflow,backup
- 		run_tests $ns1 $ns2 10.0.1.1 0 -8 -8 slow
- 		chk_join_nr 3 3 3
- 		chk_add_nr 1 1
-@@ -2437,9 +2437,9 @@ remove_tests()
- 	if reset "flush subflows"; then
- 		pm_nl_set_limits $ns1 3 3
- 		pm_nl_set_limits $ns2 3 3
--		pm_nl_add_endpoint $ns2 10.0.2.2 flags subflow id 150
--		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow
--		pm_nl_add_endpoint $ns2 10.0.4.2 flags subflow
-+		pm_nl_add_endpoint $ns2 10.0.2.2 flags subflow,backup id 150
-+		pm_nl_add_endpoint $ns2 10.0.3.2 flags subflow,backup
-+		pm_nl_add_endpoint $ns2 10.0.4.2 flags subflow,backup
- 		run_tests $ns1 $ns2 10.0.1.1 0 -8 -8 slow
- 		chk_join_nr 3 3 3
+--- a/drivers/usb/cdns3/cdns3-pci-wrap.c
++++ b/drivers/usb/cdns3/cdns3-pci-wrap.c
+@@ -98,10 +98,8 @@ static int cdns3_pci_probe(struct pci_de
+ 		wrap = pci_get_drvdata(func);
+ 	} else {
+ 		wrap = kzalloc(sizeof(*wrap), GFP_KERNEL);
+-		if (!wrap) {
+-			pci_disable_device(pdev);
++		if (!wrap)
+ 			return -ENOMEM;
+-		}
+ 	}
  
-@@ -2454,9 +2454,9 @@ remove_tests()
- 	# addresses flush
- 	if reset "flush addresses"; then
- 		pm_nl_set_limits $ns1 3 3
--		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal id 250
--		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal
--		pm_nl_add_endpoint $ns1 10.0.4.1 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,backup id 250
-+		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal,backup
-+		pm_nl_add_endpoint $ns1 10.0.4.1 flags signal,backup
- 		pm_nl_set_limits $ns2 3 3
- 		run_tests $ns1 $ns2 10.0.1.1 0 -8 -8 slow
- 		chk_join_nr 3 3 3
-@@ -2468,9 +2468,9 @@ remove_tests()
- 	# invalid addresses flush
- 	if reset "flush invalid addresses"; then
- 		pm_nl_set_limits $ns1 3 3
--		pm_nl_add_endpoint $ns1 10.0.12.1 flags signal
--		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal
--		pm_nl_add_endpoint $ns1 10.0.14.1 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.12.1 flags signal,backup
-+		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal,backup
-+		pm_nl_add_endpoint $ns1 10.0.14.1 flags signal,backup
- 		pm_nl_set_limits $ns2 3 3
- 		run_tests $ns1 $ns2 10.0.1.1 0 -8 0 slow
- 		chk_join_nr 1 1 1
+ 	res = wrap->dev_res;
+@@ -160,7 +158,6 @@ static int cdns3_pci_probe(struct pci_de
+ 		/* register platform device */
+ 		wrap->plat_dev = platform_device_register_full(&plat_info);
+ 		if (IS_ERR(wrap->plat_dev)) {
+-			pci_disable_device(pdev);
+ 			err = PTR_ERR(wrap->plat_dev);
+ 			kfree(wrap);
+ 			return err;
 
 
 
