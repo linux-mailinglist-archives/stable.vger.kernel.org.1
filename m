@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-199878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAAE5CA07A0
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:31:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B974DCA0958
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:43:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 54DCD31DC818
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:13:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6AE4D30F6ABE
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:23:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E90E357A29;
-	Wed,  3 Dec 2025 17:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1EC2345CCE;
+	Wed,  3 Dec 2025 16:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y8E228O3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vKV65iXS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5989935770E;
-	Wed,  3 Dec 2025 17:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58A71345CD8;
+	Wed,  3 Dec 2025 16:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764781229; cv=none; b=BYHNrM4SDC6DfSb7uTFYWGYl3osHm5jgpJoJZpLyt3vthmTS4j8IqNNae+7oUpPhLjuc+9fpHD5aXbp3t4234e7yx/TXQ9kW1YslP2hgqo+zzmvsbBt7jAGExH/KgtnSg/0/l+oghN+RKeAy37Ps48iAyG9nf4CRZ5mEWKfm5t4=
+	t=1764780863; cv=none; b=HjPIPa2mgM/+3eejlb7yhtOAlnCk5mTtgReVrtgLt7H+lPnCCrglFIa12dkwzO9yMrlYo4PIy5ZfkRrnKwe46LN4qISq1vGzHu3NRLrBh3+nGrqWM6vjYBBPp15bCNu+Z4waS92GARmHJ+Hn3gqdrYopsi5CSyTBspw7jCV3KKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764781229; c=relaxed/simple;
-	bh=IS6pAFabvGuOAuOnL9LTwt9NVvkUDnCjUeKyEh/McKs=;
+	s=arc-20240116; t=1764780863; c=relaxed/simple;
+	bh=oTG3hJ/sp8YtwaHfqJnyFF6eSHoHurzi3sL6EsDH/Tc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FlqwidbghYtO4LUSFOQNj+2RiV7Pw/SUu2ZOONGerQhl70rH7Wlxs6UTbMUu29r+50JkRGNueVAEGMrXr2UMTxT1Q85/VeiUrMETmlJm9BKDleB/G1ZNUy1mdI2PWBVbxS4A0OE8ZG/QkvXE0LDW7e16hlBQ8uqJ6V07cENKlj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y8E228O3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFBBFC116B1;
-	Wed,  3 Dec 2025 17:00:28 +0000 (UTC)
+	 MIME-Version; b=nd2G6JiY1TTAU78htefA8GrEuTcLyk+dD3okO/ypk2/0chgTAt6nlUoTPyqx9x2VClj8XsMN2GKlYDgcREaNqpvHR7GWQwhqRv93reLzLulZrxdbuKbjyB7riBv02F3J+Wzp0ZknHOoH1ED5WQt83Ft//llcryxHse/wZFk808g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vKV65iXS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F12FC4CEF5;
+	Wed,  3 Dec 2025 16:54:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764781229;
-	bh=IS6pAFabvGuOAuOnL9LTwt9NVvkUDnCjUeKyEh/McKs=;
+	s=korg; t=1764780862;
+	bh=oTG3hJ/sp8YtwaHfqJnyFF6eSHoHurzi3sL6EsDH/Tc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y8E228O3kpN3Qf5LlE3qE4mJJmM4IYOy6lcvqJC6Z71vPPk4/WcfeaiZ/Q/Lw4kEw
-	 yjNFA/QhpGyI5N+dJVsCSIxZND71tmlZXykfG/rtQ+g802uWFXdAp7PRI8E+JOXpk9
-	 G8rJsKur2dXaQN9N0/YEd8cIK5IeGeI8p3AW4TNo=
+	b=vKV65iXS2C4m+iFBSo1uTNThcymiC27tvylBAluiYakpMLDDQhLtFtzPKYAMFpJ3/
+	 6PSMPshWrmN/KwCWWViM1BesBqU6xF63e12zVQwBicuo//B+AY7PwCO8mikfvRtg68
+	 WgMbopCZiEW4hSNldzuGJXfRAik+zoiCgdu6YMWM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Subject: [PATCH 6.6 59/93] usb: renesas_usbhs: Fix synchronous external abort on unbind
+	ziming zhang <ezrakiez@gmail.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 6.12 113/132] libceph: replace BUG_ON with bounds check for map->max_osd
 Date: Wed,  3 Dec 2025 16:29:52 +0100
-Message-ID: <20251203152338.704893028@linuxfoundation.org>
+Message-ID: <20251203152347.467591027@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,144 +59,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: ziming zhang <ezrakiez@gmail.com>
 
-commit eb9ac779830b2235847b72cb15cf07c7e3333c5e upstream.
+commit ec3797f043756a94ea2d0f106022e14ac4946c02 upstream.
 
-A synchronous external abort occurs on the Renesas RZ/G3S SoC if unbind is
-executed after the configuration sequence described above:
+OSD indexes come from untrusted network packets. Boundary checks are
+added to validate these against map->max_osd.
 
-modprobe usb_f_ecm
-modprobe libcomposite
-modprobe configfs
-cd /sys/kernel/config/usb_gadget
-mkdir -p g1
-cd g1
-echo "0x1d6b" > idVendor
-echo "0x0104" > idProduct
-mkdir -p strings/0x409
-echo "0123456789" > strings/0x409/serialnumber
-echo "Renesas." > strings/0x409/manufacturer
-echo "Ethernet Gadget" > strings/0x409/product
-mkdir -p functions/ecm.usb0
-mkdir -p configs/c.1
-mkdir -p configs/c.1/strings/0x409
-echo "ECM" > configs/c.1/strings/0x409/configuration
+[ idryomov: drop BUG_ON in ceph_get_primary_affinity(), minor cosmetic
+  edits ]
 
-if [ ! -L configs/c.1/ecm.usb0 ]; then
-        ln -s functions/ecm.usb0 configs/c.1
-fi
-
-echo 11e20000.usb > UDC
-echo 11e20000.usb > /sys/bus/platform/drivers/renesas_usbhs/unbind
-
-The displayed trace is as follows:
-
- Internal error: synchronous external abort: 0000000096000010 [#1] SMP
- CPU: 0 UID: 0 PID: 188 Comm: sh Tainted: G M 6.17.0-rc7-next-20250922-00010-g41050493b2bd #55 PREEMPT
- Tainted: [M]=MACHINE_CHECK
- Hardware name: Renesas SMARC EVK version 2 based on r9a08g045s33 (DT)
- pstate: 604000c5 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
- pc : usbhs_sys_function_pullup+0x10/0x40 [renesas_usbhs]
- lr : usbhsg_update_pullup+0x3c/0x68 [renesas_usbhs]
- sp : ffff8000838b3920
- x29: ffff8000838b3920 x28: ffff00000d585780 x27: 0000000000000000
- x26: 0000000000000000 x25: 0000000000000000 x24: ffff00000c3e3810
- x23: ffff00000d5e5c80 x22: ffff00000d5e5d40 x21: 0000000000000000
- x20: 0000000000000000 x19: ffff00000d5e5c80 x18: 0000000000000020
- x17: 2e30303230316531 x16: 312d7968703a7968 x15: 3d454d414e5f4344
- x14: 000000000000002c x13: 0000000000000000 x12: 0000000000000000
- x11: ffff00000f358f38 x10: ffff00000f358db0 x9 : ffff00000b41f418
- x8 : 0101010101010101 x7 : 7f7f7f7f7f7f7f7f x6 : fefefeff6364626d
- x5 : 8080808000000000 x4 : 000000004b5ccb9d x3 : 0000000000000000
- x2 : 0000000000000000 x1 : ffff800083790000 x0 : ffff00000d5e5c80
- Call trace:
- usbhs_sys_function_pullup+0x10/0x40 [renesas_usbhs] (P)
- usbhsg_pullup+0x4c/0x7c [renesas_usbhs]
- usb_gadget_disconnect_locked+0x48/0xd4
- gadget_unbind_driver+0x44/0x114
- device_remove+0x4c/0x80
- device_release_driver_internal+0x1c8/0x224
- device_release_driver+0x18/0x24
- bus_remove_device+0xcc/0x10c
- device_del+0x14c/0x404
- usb_del_gadget+0x88/0xc0
- usb_del_gadget_udc+0x18/0x30
- usbhs_mod_gadget_remove+0x24/0x44 [renesas_usbhs]
- usbhs_mod_remove+0x20/0x30 [renesas_usbhs]
- usbhs_remove+0x98/0xdc [renesas_usbhs]
- platform_remove+0x20/0x30
- device_remove+0x4c/0x80
- device_release_driver_internal+0x1c8/0x224
- device_driver_detach+0x18/0x24
- unbind_store+0xb4/0xb8
- drv_attr_store+0x24/0x38
- sysfs_kf_write+0x7c/0x94
- kernfs_fop_write_iter+0x128/0x1b8
- vfs_write+0x2ac/0x350
- ksys_write+0x68/0xfc
- __arm64_sys_write+0x1c/0x28
- invoke_syscall+0x48/0x110
- el0_svc_common.constprop.0+0xc0/0xe0
- do_el0_svc+0x1c/0x28
- el0_svc+0x34/0xf0
- el0t_64_sync_handler+0xa0/0xe4
- el0t_64_sync+0x198/0x19c
- Code: 7100003f 1a9f07e1 531c6c22 f9400001 (79400021)
- ---[ end trace 0000000000000000 ]---
- note: sh[188] exited with irqs disabled
- note: sh[188] exited with preempt_count 1
-
-The issue occurs because usbhs_sys_function_pullup(), which accesses the IP
-registers, is executed after the USBHS clocks have been disabled. The
-problem is reproducible on the Renesas RZ/G3S SoC starting with the
-addition of module stop in the clock enable/disable APIs. With module stop
-functionality enabled, a bus error is expected if a master accesses a
-module whose clock has been stopped and module stop activated.
-
-Disable the IP clocks at the end of remove.
-
-Cc: stable <stable@kernel.org>
-Fixes: f1407d5c6624 ("usb: renesas_usbhs: Add Renesas USBHS common code")
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://patch.msgid.link/20251027140741.557198-1-claudiu.beznea.uj@bp.renesas.com
+Cc: stable@vger.kernel.org
+Signed-off-by: ziming zhang <ezrakiez@gmail.com>
+Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/renesas_usbhs/common.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ net/ceph/osdmap.c |   18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
---- a/drivers/usb/renesas_usbhs/common.c
-+++ b/drivers/usb/renesas_usbhs/common.c
-@@ -798,18 +798,18 @@ static void usbhs_remove(struct platform
+--- a/net/ceph/osdmap.c
++++ b/net/ceph/osdmap.c
+@@ -1504,8 +1504,6 @@ static int decode_new_primary_temp(void
  
- 	flush_delayed_work(&priv->notify_hotplug_work);
- 
--	/* power off */
--	if (!usbhs_get_dparam(priv, runtime_pwctrl))
--		usbhsc_power_ctrl(priv, 0);
+ u32 ceph_get_primary_affinity(struct ceph_osdmap *map, int osd)
+ {
+-	BUG_ON(osd >= map->max_osd);
 -
--	pm_runtime_disable(&pdev->dev);
--
- 	usbhs_platform_call(priv, hardware_exit, pdev);
--	usbhsc_clk_put(priv);
- 	reset_control_assert(priv->rsts);
- 	usbhs_mod_remove(priv);
- 	usbhs_fifo_remove(priv);
- 	usbhs_pipe_remove(priv);
-+
-+	/* power off */
-+	if (!usbhs_get_dparam(priv, runtime_pwctrl))
-+		usbhsc_power_ctrl(priv, 0);
-+
-+	usbhsc_clk_put(priv);
-+	pm_runtime_disable(&pdev->dev);
- }
+ 	if (!map->osd_primary_affinity)
+ 		return CEPH_OSD_DEFAULT_PRIMARY_AFFINITY;
  
- static __maybe_unused int usbhsc_suspend(struct device *dev)
+@@ -1514,8 +1512,6 @@ u32 ceph_get_primary_affinity(struct cep
+ 
+ static int set_primary_affinity(struct ceph_osdmap *map, int osd, u32 aff)
+ {
+-	BUG_ON(osd >= map->max_osd);
+-
+ 	if (!map->osd_primary_affinity) {
+ 		int i;
+ 
+@@ -1577,6 +1573,8 @@ static int decode_new_primary_affinity(v
+ 
+ 		ceph_decode_32_safe(p, end, osd, e_inval);
+ 		ceph_decode_32_safe(p, end, aff, e_inval);
++		if (osd >= map->max_osd)
++			goto e_inval;
+ 
+ 		ret = set_primary_affinity(map, osd, aff);
+ 		if (ret)
+@@ -1879,7 +1877,9 @@ static int decode_new_up_state_weight(vo
+ 		ceph_decode_need(p, end, 2*sizeof(u32), e_inval);
+ 		osd = ceph_decode_32(p);
+ 		w = ceph_decode_32(p);
+-		BUG_ON(osd >= map->max_osd);
++		if (osd >= map->max_osd)
++			goto e_inval;
++
+ 		osdmap_info(map, "osd%d weight 0x%x %s\n", osd, w,
+ 			    w == CEPH_OSD_IN ? "(in)" :
+ 			    (w == CEPH_OSD_OUT ? "(out)" : ""));
+@@ -1905,13 +1905,15 @@ static int decode_new_up_state_weight(vo
+ 		u32 xorstate;
+ 
+ 		osd = ceph_decode_32(p);
++		if (osd >= map->max_osd)
++			goto e_inval;
++
+ 		if (struct_v >= 5)
+ 			xorstate = ceph_decode_32(p);
+ 		else
+ 			xorstate = ceph_decode_8(p);
+ 		if (xorstate == 0)
+ 			xorstate = CEPH_OSD_UP;
+-		BUG_ON(osd >= map->max_osd);
+ 		if ((map->osd_state[osd] & CEPH_OSD_UP) &&
+ 		    (xorstate & CEPH_OSD_UP))
+ 			osdmap_info(map, "osd%d down\n", osd);
+@@ -1937,7 +1939,9 @@ static int decode_new_up_state_weight(vo
+ 		struct ceph_entity_addr addr;
+ 
+ 		osd = ceph_decode_32(p);
+-		BUG_ON(osd >= map->max_osd);
++		if (osd >= map->max_osd)
++			goto e_inval;
++
+ 		if (struct_v >= 7)
+ 			ret = ceph_decode_entity_addrvec(p, end, msgr2, &addr);
+ 		else
 
 
 
