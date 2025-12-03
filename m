@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-198980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59872CA0EC1
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:23:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C145CA01D3
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:49:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 54CC93005AB4
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:23:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 90DCF3014713
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:41:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 923063469FE;
-	Wed,  3 Dec 2025 16:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B44735BDBE;
+	Wed,  3 Dec 2025 16:41:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1GK2hGEZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Au8iz8Fs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504C93469EF;
-	Wed,  3 Dec 2025 16:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA697340279;
+	Wed,  3 Dec 2025 16:41:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778302; cv=none; b=TdfoXfgqV2hxwaTzny+41xT56YUE+j/TYtC8qHxRKtvJxPurXEQfsiI8hbPwKrk7ZnPwQQ74xfjhTmgHb6gtyfA/4Qjl3VLlQhAzJXqhbpGX323FXVVFl8okxZ7XqD3fQ4a6dTQ6YzWa8R6pAmbxCJWwZf9Pi/P1HHr5600i/Gw=
+	t=1764780087; cv=none; b=ldHUdqdI+oYU3ckUzHTMQG1qwqcG12pdfmNx047tNU/nRnkq/Olrt7rv85f56uN4ZmxANPLfx1ANGJBTliU2j775LjgtjZs019fNHuVZuoTg93QvpqrkRVzg8HjEcYDQn9KfVJdhwRdEOcL/sdLgUkg9EafiaCL1NvgIaAW3/ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778302; c=relaxed/simple;
-	bh=K/rQe8sZgQDRZgTfz4gdyBhsRnCRiemLV8W1oPnUNCE=;
+	s=arc-20240116; t=1764780087; c=relaxed/simple;
+	bh=SFq9jhx/KernNknCZME5Gj+giMds1Gd86A4vPiozTZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I0g6hjLgs3/Y/pOZJwuqIwLH1/0gr+hkL/e/oSNgXYIgeCesHan6UvKSV+HortHRzQKWibIoQUouIHj6N8qEjbwvEjTy9SLj1jXUGg+JGcnRz7oz4IF9w6S3tGyHUPtZz71dXMFTOM0j+lELYzauhQwbLQoAOnJodcejcXVIArU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1GK2hGEZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC135C4CEF5;
-	Wed,  3 Dec 2025 16:11:41 +0000 (UTC)
+	 MIME-Version; b=aLxiKHzwuglJ/oqgfhPd4L47ThouxOFGCYU1A+5zW6IDI/NVY4bM27wvCtX4aIKg+fH45X78kuR9UfORLWynYzoeGjbzpTflDXpPzBpbioZldF2h5tcla77dS1Z61DLX6ql1l2mG1TlKtIfswIKPy2QpVk70NVlZINj6sq5mFYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Au8iz8Fs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 304F5C4CEF5;
+	Wed,  3 Dec 2025 16:41:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778302;
-	bh=K/rQe8sZgQDRZgTfz4gdyBhsRnCRiemLV8W1oPnUNCE=;
+	s=korg; t=1764780087;
+	bh=SFq9jhx/KernNknCZME5Gj+giMds1Gd86A4vPiozTZ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1GK2hGEZpkWsLBRc0oxDZ3rVE0HNqVCOyhYstxYcTELEFbb8m6FrHEB9KuRYZ8dIS
-	 hKZXE/3VJH7ktIolQWl+bPrgd9XdHD41QTunvWPkIZW1M9uBwIr6pfOmz4pRNDj0as
-	 uUSN7WxWbG3bvlkPEGW9dwCtVDMQwBZ2J63zx+20=
+	b=Au8iz8FsCNzYj+b6HTDQodV8bd2IEIitM0mgyU45+enUH+LaIX1m5VC39EVCfm+eF
+	 ns05FqkrAXPLx//fsV9HL0v+UHcI6foAawqwz278aJdmpNxxzMN3ucRseOo41+fkyC
+	 M7ecIZLXJzHqNI1d2DvyIQnkNfWUbCEghBS9/GIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edoardo Canepa <edoardo.canepa@canonical.com>,
-	Po-Hsu Lin <po-hsu.lin@canonical.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jianbo Liu <jianbol@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 303/392] selftests: net: use BASH for bareudp testing
+Subject: [PATCH 6.1 451/568] xfrm: Determine inner GSO type from packet inner protocol
 Date: Wed,  3 Dec 2025 16:27:33 +0100
-Message-ID: <20251203152425.315943367@linuxfoundation.org>
+Message-ID: <20251203152457.224842330@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Po-Hsu Lin <po-hsu.lin@canonical.com>
+From: Jianbo Liu <jianbol@nvidia.com>
 
-[ Upstream commit 9311e9540a8b406d9f028aa87fb072a3819d4c82 ]
+[ Upstream commit 61fafbee6cfed283c02a320896089f658fa67e56 ]
 
-In bareudp.sh, this script uses /bin/sh and it will load another lib.sh
-BASH script at the very beginning.
+The GSO segmentation functions for ESP tunnel mode
+(xfrm4_tunnel_gso_segment and xfrm6_tunnel_gso_segment) were
+determining the inner packet's L2 protocol type by checking the static
+x->inner_mode.family field from the xfrm state.
 
-But on some operating systems like Ubuntu, /bin/sh is actually pointed to
-DASH, thus it will try to run BASH commands with DASH and consequently
-leads to syntax issues:
-  # ./bareudp.sh: 4: ./lib.sh: Bad substitution
-  # ./bareudp.sh: 5: ./lib.sh: source: not found
-  # ./bareudp.sh: 24: ./lib.sh: Syntax error: "(" unexpected
+This is unreliable. In tunnel mode, the state's actual inner family
+could be defined by x->inner_mode.family or by
+x->inner_mode_iaf.family. Checking only the former can lead to a
+mismatch with the actual packet being processed, causing GSO to create
+segments with the wrong L2 header type.
 
-Fix this by explicitly using BASH for bareudp.sh. This fixes test
-execution failures on systems where /bin/sh is not BASH.
+This patch fixes the bug by deriving the inner mode directly from the
+packet's inner protocol stored in XFRM_MODE_SKB_CB(skb)->protocol.
 
-Reported-by: Edoardo Canepa <edoardo.canepa@canonical.com>
-Link: https://bugs.launchpad.net/bugs/2129812
-Signed-off-by: Po-Hsu Lin <po-hsu.lin@canonical.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Link: https://patch.msgid.link/20251027095710.2036108-2-po-hsu.lin@canonical.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Instead of replicating the code, this patch modifies the
+xfrm_ip2inner_mode helper function. It now correctly returns
+&x->inner_mode if the selector family (x->sel.family) is already
+specified, thereby handling both specific and AF_UNSPEC cases
+appropriately.
+
+With this change, ESP GSO can use xfrm_ip2inner_mode to get the
+correct inner mode. It doesn't affect existing callers, as the updated
+logic now mirrors the checks they were already performing externally.
+
+Fixes: 26dbd66eab80 ("esp: choose the correct inner protocol for GSO on inter address family tunnels")
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/bareudp.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/xfrm.h      | 3 ++-
+ net/ipv4/esp4_offload.c | 6 ++++--
+ net/ipv6/esp6_offload.c | 6 ++++--
+ 3 files changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/net/bareudp.sh b/tools/testing/selftests/net/bareudp.sh
-index f366cadbc5e86..ff4308b48e65d 100755
---- a/tools/testing/selftests/net/bareudp.sh
-+++ b/tools/testing/selftests/net/bareudp.sh
-@@ -1,4 +1,4 @@
--#!/bin/sh
-+#!/bin/bash
- # SPDX-License-Identifier: GPL-2.0
+diff --git a/include/net/xfrm.h b/include/net/xfrm.h
+index 64911162ab5f4..ac5db167370c9 100644
+--- a/include/net/xfrm.h
++++ b/include/net/xfrm.h
+@@ -446,7 +446,8 @@ static inline int xfrm_af2proto(unsigned int family)
  
- # Test various bareudp tunnel configurations.
+ static inline const struct xfrm_mode *xfrm_ip2inner_mode(struct xfrm_state *x, int ipproto)
+ {
+-	if ((ipproto == IPPROTO_IPIP && x->props.family == AF_INET) ||
++	if ((x->sel.family != AF_UNSPEC) ||
++	    (ipproto == IPPROTO_IPIP && x->props.family == AF_INET) ||
+ 	    (ipproto == IPPROTO_IPV6 && x->props.family == AF_INET6))
+ 		return &x->inner_mode;
+ 	else
+diff --git a/net/ipv4/esp4_offload.c b/net/ipv4/esp4_offload.c
+index ee848be59e65a..cbfc8b5b15bd2 100644
+--- a/net/ipv4/esp4_offload.c
++++ b/net/ipv4/esp4_offload.c
+@@ -110,8 +110,10 @@ static struct sk_buff *xfrm4_tunnel_gso_segment(struct xfrm_state *x,
+ 						struct sk_buff *skb,
+ 						netdev_features_t features)
+ {
+-	__be16 type = x->inner_mode.family == AF_INET6 ? htons(ETH_P_IPV6)
+-						       : htons(ETH_P_IP);
++	const struct xfrm_mode *inner_mode = xfrm_ip2inner_mode(x,
++					XFRM_MODE_SKB_CB(skb)->protocol);
++	__be16 type = inner_mode->family == AF_INET6 ? htons(ETH_P_IPV6)
++						     : htons(ETH_P_IP);
+ 
+ 	return skb_eth_gso_segment(skb, features, type);
+ }
+diff --git a/net/ipv6/esp6_offload.c b/net/ipv6/esp6_offload.c
+index fc6a5be732634..65d628e500059 100644
+--- a/net/ipv6/esp6_offload.c
++++ b/net/ipv6/esp6_offload.c
+@@ -145,8 +145,10 @@ static struct sk_buff *xfrm6_tunnel_gso_segment(struct xfrm_state *x,
+ 						struct sk_buff *skb,
+ 						netdev_features_t features)
+ {
+-	__be16 type = x->inner_mode.family == AF_INET ? htons(ETH_P_IP)
+-						      : htons(ETH_P_IPV6);
++	const struct xfrm_mode *inner_mode = xfrm_ip2inner_mode(x,
++					XFRM_MODE_SKB_CB(skb)->protocol);
++	__be16 type = inner_mode->family == AF_INET ? htons(ETH_P_IP)
++						    : htons(ETH_P_IPV6);
+ 
+ 	return skb_eth_gso_segment(skb, features, type);
+ }
 -- 
 2.51.0
 
