@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-198733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C995C9FC14
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:59:21 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 338E9CA0183
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:46:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5FB6D300701D
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:58:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A4A0D306676E
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:39:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0E873451D1;
-	Wed,  3 Dec 2025 15:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ED5735FF4C;
+	Wed,  3 Dec 2025 16:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WosGoDR2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r++VNwZI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6231B3451B4;
-	Wed,  3 Dec 2025 15:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2218E309DCC;
+	Wed,  3 Dec 2025 16:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777506; cv=none; b=IyLOvQmsxHdnVbJ9HzFuxmU1aJeHc+2cXjxSUYpifKqXSIBeXQABdy46NL+5tnJPtBkoaOU4CUI6Q2wplz+yM7R3c3IVqaaVi/i7WqY6BA1enbfxjPl7T5s+pkfmf3wVDWkj2dfnykDpQ5lk4Hu6Qv5B/7w4mvC8CIcvJ7sXmDU=
+	t=1764779274; cv=none; b=opzErPsc5gB93ueziPlcmLz+LzIAgQlMAGhJ2CdEDW52lnqQv5hPpPrLhuhQyYoadFv/FlFo2t0hfwc+fRh3zeHr6v3QRp8z5Uo1rzZSLU/JiilEFo8W8RyR50THvb4jiis0KEGGXzRwTgrG5QBSOrisf4c6rthyErKtLlBeEj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777506; c=relaxed/simple;
-	bh=9CJd6JsUM+v+N7mHRCUEm4O6TxZ4NdAo0g6H99jIhOQ=;
+	s=arc-20240116; t=1764779274; c=relaxed/simple;
+	bh=XsMw2TWScK3XnOljjzwiEGqHPgEAO6dPh8eCV/IT0H8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nQQk0IUPvVy+pyrr96uaxBwNAbiLJkmBPDx8kptBmgIFBi5vkh2D7Yp+CAzoG0W+KYC0BIJGAfQ+78l/bwT9V7CdYaJgKCB36Yk3mUA497L+I+8u6aQRvG/glCCDZrkcxWbESVPfy6gqMKJC8tFSjsgxhQWJseV1c8HuGI78QrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WosGoDR2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8055C4CEF5;
-	Wed,  3 Dec 2025 15:58:24 +0000 (UTC)
+	 MIME-Version; b=AyANmM6hyzcwHyBRm14ElRDmMZsPjNFwob8MJT/JcHIpHEIj8r4mW3+O2tksGo+qiQA8EIruY6GjwdlPNp/JNhWlA6G091T5B3aa1xGsGnEjwD7y8cULKr7ZXsOYXg98y+0cVGVFlPshB+eXyt0AnxBEHO6Atfvlj49Rl1DpV+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r++VNwZI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF407C4CEF5;
+	Wed,  3 Dec 2025 16:27:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777505;
-	bh=9CJd6JsUM+v+N7mHRCUEm4O6TxZ4NdAo0g6H99jIhOQ=;
+	s=korg; t=1764779273;
+	bh=XsMw2TWScK3XnOljjzwiEGqHPgEAO6dPh8eCV/IT0H8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WosGoDR2UM0+BYm+qt/pg5GH2blNGvZQnkdZJi1rPR+LMvpk1S8gX5SuPMaUIJ4Bm
-	 SS3OOjWTGKgqGO6JYb4C1aSz/ldeFFoSK+KkduszSJlIOz/6L5ExLnAV1yZSdO0Zy1
-	 m1TWvHMe/Sd1N0/kktnlLSI4BK5jID4ErK9+eRmA=
+	b=r++VNwZIJSlh/gAjuIxeriEx+cO2lyFA1B179MkwYaUpQ6f4zYx24CftujVz3QO+m
+	 580IYL3mHwYaxBVmCP+LvAW5jre0jpAtdQSB/aKU+qDfpLixHrLQWg6XxyAATvRv13
+	 FR4IkgbfAp2r6rPS1A73S14kfemN0NoSU04m1Jd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chi Zhang <chizhang@asrmicro.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Rohan G Thomas <rohan.g.thomas@altera.com>,
+	Matthew Gerlach <matthew.gerlach@altera.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 058/392] pinctrl: single: fix bias pull up/down handling in pin_config_set
-Date: Wed,  3 Dec 2025 16:23:28 +0100
-Message-ID: <20251203152416.249657279@linuxfoundation.org>
+Subject: [PATCH 6.1 207/568] net: phy: marvell: Fix 88e1510 downshift counter errata
+Date: Wed,  3 Dec 2025 16:23:29 +0100
+Message-ID: <20251203152448.306740648@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chi Zhang <chizhang@asrmicro.com>
+From: Rohan G Thomas <rohan.g.thomas@altera.com>
 
-[ Upstream commit 236152dd9b1675a35eee912e79e6c57ca6b6732f ]
+[ Upstream commit deb105f49879dd50d595f7f55207d6e74dec34e6 ]
 
-In the pin_config_set function, when handling PIN_CONFIG_BIAS_PULL_DOWN or
-PIN_CONFIG_BIAS_PULL_UP, the function calls pcs_pinconf_clear_bias()
-which writes the register. However, the subsequent operations continue
-using the stale 'data' value from before the register write, effectively
-causing the bias clear operation to be overwritten and not take effect.
+The 88e1510 PHY has an erratum where the phy downshift counter is not
+cleared after phy being suspended(BMCR_PDOWN set) and then later
+resumed(BMCR_PDOWN cleared). This can cause the gigabit link to
+intermittently downshift to a lower speed.
 
-Fix this by reading the 'data' value from the register after calling
-pcs_pinconf_clear_bias().
+Disabling and re-enabling the downshift feature clears the counter,
+allowing the PHY to retry gigabit link negotiation up to the programmed
+retry count times before downshifting. This behavior has been observed
+on copper links.
 
-This bug seems to have existed when this code was first merged in commit
-9dddb4df90d1 ("pinctrl: single: support generic pinconf").
-
-Signed-off-by: Chi Zhang <chizhang@asrmicro.com>
-Link: https://lore.kernel.org/20250807062038.13610-1-chizhang@asrmicro.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
+Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250906-marvell_fix-v2-1-f6efb286937f@altera.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-single.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/phy/marvell.c | 39 ++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 38 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
-index 28f3fabc72e30..a72911e8ea82d 100644
---- a/drivers/pinctrl/pinctrl-single.c
-+++ b/drivers/pinctrl/pinctrl-single.c
-@@ -588,8 +588,10 @@ static int pcs_pinconf_set(struct pinctrl_dev *pctldev,
- 				break;
- 			case PIN_CONFIG_BIAS_PULL_DOWN:
- 			case PIN_CONFIG_BIAS_PULL_UP:
--				if (arg)
-+				if (arg) {
- 					pcs_pinconf_clear_bias(pctldev, pin);
-+					data = pcs->read(pcs->base + offset);
-+				}
- 				fallthrough;
- 			case PIN_CONFIG_INPUT_SCHMITT_ENABLE:
- 				data &= ~func->conf[i].mask;
+diff --git a/drivers/net/phy/marvell.c b/drivers/net/phy/marvell.c
+index 0d706ee266afd..339285690dd4c 100644
+--- a/drivers/net/phy/marvell.c
++++ b/drivers/net/phy/marvell.c
+@@ -1798,6 +1798,43 @@ static int marvell_resume(struct phy_device *phydev)
+ 	return err;
+ }
+ 
++/* m88e1510_resume
++ *
++ * The 88e1510 PHY has an erratum where the phy downshift counter is not cleared
++ * after phy being suspended(BMCR_PDOWN set) and then later resumed(BMCR_PDOWN
++ * cleared). This can cause the link to intermittently downshift to a lower speed.
++ *
++ * Disabling and re-enabling the downshift feature clears the counter, allowing
++ * the PHY to retry gigabit link negotiation up to the programmed retry count
++ * before downshifting. This behavior has been observed on copper links.
++ */
++static int m88e1510_resume(struct phy_device *phydev)
++{
++	int err;
++	u8 cnt = 0;
++
++	err = marvell_resume(phydev);
++	if (err < 0)
++		return err;
++
++	/* read downshift counter value */
++	err = m88e1011_get_downshift(phydev, &cnt);
++	if (err < 0)
++		return err;
++
++	if (cnt) {
++		/* downshift disabled */
++		err = m88e1011_set_downshift(phydev, 0);
++		if (err < 0)
++			return err;
++
++		/* downshift enabled, with previous counter value */
++		err = m88e1011_set_downshift(phydev, cnt);
++	}
++
++	return err;
++}
++
+ static int marvell_aneg_done(struct phy_device *phydev)
+ {
+ 	int retval = phy_read(phydev, MII_M1011_PHY_STATUS);
+@@ -3174,7 +3211,7 @@ static struct phy_driver marvell_drivers[] = {
+ 		.handle_interrupt = marvell_handle_interrupt,
+ 		.get_wol = m88e1318_get_wol,
+ 		.set_wol = m88e1318_set_wol,
+-		.resume = marvell_resume,
++		.resume = m88e1510_resume,
+ 		.suspend = marvell_suspend,
+ 		.read_page = marvell_read_page,
+ 		.write_page = marvell_write_page,
 -- 
 2.51.0
 
