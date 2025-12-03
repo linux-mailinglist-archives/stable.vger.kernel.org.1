@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-199430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A56ACA006C
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:39:44 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7736EC9F94D
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:43:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D639930253FD
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:36:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A9A2E3042857
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:37:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90B763596F4;
-	Wed,  3 Dec 2025 16:36:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B27A3148CD;
+	Wed,  3 Dec 2025 15:36:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jytTTFKY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wy4XaQND"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC873596EF;
-	Wed,  3 Dec 2025 16:36:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 114653093DF;
+	Wed,  3 Dec 2025 15:36:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779775; cv=none; b=rG7r3dcikf9jeU6iOGxOdRk6e7AujBOT8PdOAnGw9fUYul8As8Y7p6pfrAZ2sBrsH0060DlUn30iA2Pdcn9JmMY10q8XR26pDpYEP3f9MDqW8GwQuJACi77jpd5F9p6u+ceEiP6Ogj7Bl2qOT7qaBly3M0WH1tiEag8+ytAZWMc=
+	t=1764776206; cv=none; b=kOUwXkGrK3Ln9/XAQ2ynJzN/klA6JN+nns0vLusqYgsF9DyNEBpKt6mztQvTFioKpHcUwr+YE44FbRK3pjwM/3CWPEwH4gB1rLIDozduAA/pJEiS87V2MAaf26zUPz+a4FnLlImZBRSK/CBT36cyyVqRvZ+0GhCS3od3gwdw38Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779775; c=relaxed/simple;
-	bh=GJtcrO3KQFnM7HhKcZOWHqXEoaHfT9QaMjOgddIyqTc=;
+	s=arc-20240116; t=1764776206; c=relaxed/simple;
+	bh=DxJAxVoG9c11FCqunaY1OqBT98JPbn18sJdTc3t0aZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GrI0I6w/xuy9zZfl8rkyZxIkcV3qQwWmNU9erKlHkst/p8pzl4rVuE3uS1wak+yyGm2dg7pxgX8KyLe/mBgag0cI9Ok+PQK8uwO22f8bETolrPbR4I30OxdvFz3tjkHvr8qpJKnoiROpP0ggfab3TM2ckRu0+6A8Dy+57fXFf2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jytTTFKY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B863AC4CEF5;
-	Wed,  3 Dec 2025 16:36:14 +0000 (UTC)
+	 MIME-Version; b=Z7quT5jFF1GIByuhjChDkiPEPPd8Wo9joRzAAqwbqARyK/sZWo8qgK0etL8n8sj03OMQpKyhbbK1fZSiOQPBwZZ+csbYsAzYbd/JHnsf9bDNdV3OSs0AUAyBSzP/VojTJgFwq/4Uv8RL4C1egk1gehqYVyDRcoy7FUHR0SzXq0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wy4XaQND; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74258C4CEF5;
+	Wed,  3 Dec 2025 15:36:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779775;
-	bh=GJtcrO3KQFnM7HhKcZOWHqXEoaHfT9QaMjOgddIyqTc=;
+	s=korg; t=1764776205;
+	bh=DxJAxVoG9c11FCqunaY1OqBT98JPbn18sJdTc3t0aZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jytTTFKYi26iaeCWIup7O6fY86hmVXCakVRNvrPJDb3Y6bYB3f/h3osBaodsNmi6i
-	 9omPAYK5KHZ3QNEArc76Huu9vEV1rsiNSsUSDK3GK+oJEzbGHwMMLG+DujjkkqSS4p
-	 DnOmKkF4EE8cgVoVdkPRn+PZaOZN56Sqra04xxQM=
+	b=Wy4XaQNDTfW+ajmoFkkLpRcq5Z28Ucio1KBWUXQlHM6CZPHkzFa8TagEmodtru5Il
+	 3z8QFI/E4XvUayZ6yX+CikPsJWm7TMLu40wjDNolsyg2k5BXUSGSwKueYld4ptOs7f
+	 72bDWnvQCavgyCBe4H4dBqb0GYmdwV1thcgX1y7Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wiehler <stefan.wiehler@nokia.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Petr Machata <petrm@nvidia.com>,
+	David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 315/568] sctp: Hold RCU read lock while iterating over address list
+Subject: [PATCH 5.10 113/300] selftests: traceroute: Use require_command()
 Date: Wed,  3 Dec 2025 16:25:17 +0100
-Message-ID: <20251203152452.250561404@linuxfoundation.org>
+Message-ID: <20251203152404.807048007@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,106 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wiehler <stefan.wiehler@nokia.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 38f50242bf0f237cdc262308d624d333286ec3c5 ]
+[ Upstream commit 47efbac9b768553331b9459743a29861e0acd797 ]
 
-With CONFIG_PROVE_RCU_LIST=y and by executing
+Use require_command() so that the test will return SKIP (4) when a
+required command is not present.
 
-  $ netcat -l --sctp &
-  $ netcat --sctp localhost &
-  $ ss --sctp
+Before:
 
-one can trigger the following Lockdep-RCU splat(s):
+ # ./traceroute.sh
+ SKIP: Could not run IPV6 test without traceroute6
+ SKIP: Could not run IPV4 test without traceroute
+ $ echo $?
+ 0
 
-  WARNING: suspicious RCU usage
-  6.18.0-rc1-00093-g7f864458e9a6 #5 Not tainted
-  -----------------------------
-  net/sctp/diag.c:76 RCU-list traversed in non-reader section!!
+After:
 
-  other info that might help us debug this:
+ # ./traceroute.sh
+ TEST: traceroute6 not installed                                    [SKIP]
+ $ echo $?
+ 4
 
-  rcu_scheduler_active = 2, debug_locks = 1
-  2 locks held by ss/215:
-   #0: ffff9c740828bec0 (nlk_cb_mutex-SOCK_DIAG){+.+.}-{4:4}, at: __netlink_dump_start+0x84/0x2b0
-   #1: ffff9c7401d72cd0 (sk_lock-AF_INET6){+.+.}-{0:0}, at: sctp_sock_dump+0x38/0x200
-
-  stack backtrace:
-  CPU: 0 UID: 0 PID: 215 Comm: ss Not tainted 6.18.0-rc1-00093-g7f864458e9a6 #5 PREEMPT(voluntary)
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x5d/0x90
-   lockdep_rcu_suspicious.cold+0x4e/0xa3
-   inet_sctp_diag_fill.isra.0+0x4b1/0x5d0
-   sctp_sock_dump+0x131/0x200
-   sctp_transport_traverse_process+0x170/0x1b0
-   ? __pfx_sctp_sock_filter+0x10/0x10
-   ? __pfx_sctp_sock_dump+0x10/0x10
-   sctp_diag_dump+0x103/0x140
-   __inet_diag_dump+0x70/0xb0
-   netlink_dump+0x148/0x490
-   __netlink_dump_start+0x1f3/0x2b0
-   inet_diag_handler_cmd+0xcd/0x100
-   ? __pfx_inet_diag_dump_start+0x10/0x10
-   ? __pfx_inet_diag_dump+0x10/0x10
-   ? __pfx_inet_diag_dump_done+0x10/0x10
-   sock_diag_rcv_msg+0x18e/0x320
-   ? __pfx_sock_diag_rcv_msg+0x10/0x10
-   netlink_rcv_skb+0x4d/0x100
-   netlink_unicast+0x1d7/0x2b0
-   netlink_sendmsg+0x203/0x450
-   ____sys_sendmsg+0x30c/0x340
-   ___sys_sendmsg+0x94/0xf0
-   __sys_sendmsg+0x83/0xf0
-   do_syscall_64+0xbb/0x390
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-   ...
-   </TASK>
-
-Fixes: 8f840e47f190 ("sctp: add the sctp_diag.c file")
-Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/20251028161506.3294376-2-stefan.wiehler@nokia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20250908073238.119240-6-idosch@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/diag.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tools/testing/selftests/net/traceroute.sh | 13 +++----------
+ 1 file changed, 3 insertions(+), 10 deletions(-)
 
-diff --git a/net/sctp/diag.c b/net/sctp/diag.c
-index b0ce1080842d4..31cf52026202b 100644
---- a/net/sctp/diag.c
-+++ b/net/sctp/diag.c
-@@ -73,19 +73,23 @@ static int inet_diag_msg_sctpladdrs_fill(struct sk_buff *skb,
- 	struct nlattr *attr;
- 	void *info = NULL;
+diff --git a/tools/testing/selftests/net/traceroute.sh b/tools/testing/selftests/net/traceroute.sh
+index de9ca97abc306..9cb5e96e64333 100755
+--- a/tools/testing/selftests/net/traceroute.sh
++++ b/tools/testing/selftests/net/traceroute.sh
+@@ -209,11 +209,6 @@ setup_traceroute6()
  
-+	rcu_read_lock();
- 	list_for_each_entry_rcu(laddr, address_list, list)
- 		addrcnt++;
-+	rcu_read_unlock();
+ run_traceroute6()
+ {
+-	if [ ! -x "$(command -v traceroute6)" ]; then
+-		echo "SKIP: Could not run IPV6 test without traceroute6"
+-		return
+-	fi
+-
+ 	setup_traceroute6
  
- 	attr = nla_reserve(skb, INET_DIAG_LOCALS, addrlen * addrcnt);
- 	if (!attr)
- 		return -EMSGSIZE;
+ 	# traceroute6 host-2 from host-1 (expects 2000:102::2)
+@@ -278,11 +273,6 @@ setup_traceroute()
  
- 	info = nla_data(attr);
-+	rcu_read_lock();
- 	list_for_each_entry_rcu(laddr, address_list, list) {
- 		memcpy(info, &laddr->a, sizeof(laddr->a));
- 		memset(info + sizeof(laddr->a), 0, addrlen - sizeof(laddr->a));
- 		info += addrlen;
- 	}
-+	rcu_read_unlock();
+ run_traceroute()
+ {
+-	if [ ! -x "$(command -v traceroute)" ]; then
+-		echo "SKIP: Could not run IPV4 test without traceroute"
+-		return
+-	fi
+-
+ 	setup_traceroute
  
- 	return 0;
- }
+ 	# traceroute host-2 from host-1 (expects 1.0.1.1). Takes a while.
+@@ -316,6 +306,9 @@ do
+ 	esac
+ done
+ 
++require_command traceroute6
++require_command traceroute
++
+ run_tests
+ 
+ printf "\nTests passed: %3d\n" ${nsuccess}
 -- 
 2.51.0
 
