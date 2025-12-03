@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-198822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12B3BCA0BA4
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:01:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1D44C9F8D8
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:40:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D0BEB3011B33
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:59:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A382D3014D80
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:36:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AB7334DB63;
-	Wed,  3 Dec 2025 16:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EF853128C6;
+	Wed,  3 Dec 2025 15:35:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0B52GSvU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bzXUdl6+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA8B63128B9;
-	Wed,  3 Dec 2025 16:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAF3F3090C6;
+	Wed,  3 Dec 2025 15:35:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777792; cv=none; b=h+Q47wPIG7gDEBrqLD1LHqzLUx6eIklrIEpqZyMI/YIrHcy1WusNNECGBxGD6Cy3sMUDVfUKNkH1hITrvR7FUWAlARphqkYvYrfb6j/UYATl22Vnx/7KNBH6nH0R6h+XyNUKq91FeJoQr5ZI5t+DMUEndE7+y8mpqqACKy+P9zU=
+	t=1764776153; cv=none; b=ZqjV3TVrObYGJe+nXkwHZ0xFqY6RmQ1yY704xLj2znnlfVErpd9bbC1YbGLU3Ck1aesr81a7aJB3zU4nFLpOuR39z2gmX2HdV3JLndWqaH5cmuTtXaMSVc+/CFhE/BFdoBiQqyQix5HqdjS194WmWaU9EKVX4dq+E4ETAmT8mw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777792; c=relaxed/simple;
-	bh=x09c32tY8egCDKVljZjs8cYS2an2M8sDl8nv3bzHriE=;
+	s=arc-20240116; t=1764776153; c=relaxed/simple;
+	bh=2/bMq2ETbTyl2xGre8AZ65yZquJcfM9q8uiVZp1mAr4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e+f4GCxAbdD9CN8IaQ3iB5LlPQJ1s6Flj6VcOeNX60HJwGPuVecfjpNRSprOa4n0sakQnZjDLzFR8He3cLco/LcuEB7Osy+3aJZnJ/scsEqjYsqW8E79tU2+r1ICSR/8r0Qamzp/ANmAQ94ruSSqglYs55vyXrUJuz9GtjItqsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0B52GSvU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E7B1C4CEF5;
-	Wed,  3 Dec 2025 16:03:11 +0000 (UTC)
+	 MIME-Version; b=Br0qaohC3ZJ0d7/oP1zYW07V+SVtbBSmMqgVWU/SPcMF4NfLTVuUnsa6lnBrzErB82CrNdyghLWKIbH2MBgSOx5W6PhunDj2AggJe1hE6/fHs5DzsIZG55NkJXiVxaW51OLqP855DmGfIHnogyL/c065BvQsWI0JvYBhszKQY98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bzXUdl6+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 260F5C4CEF5;
+	Wed,  3 Dec 2025 15:35:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777792;
-	bh=x09c32tY8egCDKVljZjs8cYS2an2M8sDl8nv3bzHriE=;
+	s=korg; t=1764776153;
+	bh=2/bMq2ETbTyl2xGre8AZ65yZquJcfM9q8uiVZp1mAr4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0B52GSvUjeB1T+6KZkWz6BVz9VTa+Fw5CUu1eXID/0UeDgd/srK/RnjsxsoUO099I
-	 NzPlhJi9Ax1269mGTIHRPqbgqitdo66bA5xbbzpuAlMl1a8pj0zuJve5lxFKt11wi7
-	 gem53n2FG51PSaa+RCxyfbwOl1rMZetWLN5iBrfw=
+	b=bzXUdl6+A0k0CUXSnkgLTLqk44j1nlHQ1LHxBESu4oAJ/q05oH+sssePSwhc1bNSp
+	 rm2xfsNpXEiS9kjFsYztxJhWYxfQQcxugPiZ2IdHEmFTIhzJCxqq6CT8bBKA+SyYEg
+	 Y2Jb40zaTVG5LuMvJNkP4UWjIU7dKNNOmx1HAezQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Ahern <dsahern@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Chelsy Ratnawat <chelsyratnawat2001@gmail.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 149/392] selftests: Disable dad for ipv6 in fcnal-test.sh
+Subject: [PATCH 5.10 095/300] media: fix uninitialized symbol warnings
 Date: Wed,  3 Dec 2025 16:24:59 +0100
-Message-ID: <20251203152419.567336912@linuxfoundation.org>
+Message-ID: <20251203152404.143835612@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +60,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Ahern <dsahern@kernel.org>
+From: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
 
-[ Upstream commit 53d591730ea34f97a82f7ec6e7c987ca6e34dc21 ]
+[ Upstream commit b4c441310c3baaa7c39a5457e305ca93c7a0400d ]
 
-Constrained test environment; duplicate address detection is not needed
-and causes races so disable it.
+Initialize variables to fix these smatch warnings
+drivers/media/i2c/ir-kbd-i2c.c:339 ir_key_poll() error: uninitialized
+symbol 'protocol'.
+drivers/media/i2c/ir-kbd-i2c.c:339 ir_key_poll() error: uninitialized
+symbol 'scancode'.
+drivers/media/i2c/ir-kbd-i2c.c:339 ir_key_poll() error: uninitialized
+symbol 'toggle'.
+drivers/media/tuners/xc4000.c:1102 xc_debug_dump() error: uninitialized
+symbol 'adc_envelope'.
+drivers/media/tuners/xc4000.c:1108 xc_debug_dump() error: uninitialized
+symbol 'lock_status'.
+drivers/media/tuners/xc4000.c:1123 xc_debug_dump() error: uninitialized
+symbol 'frame_lines'.
+drivers/media/tuners/xc4000.c:1127 xc_debug_dump() error: uninitialized
+symbol 'quality'.
+drivers/media/tuners/xc5000.c:645 xc_debug_dump() error: uninitialized
+symbol 'adc_envelope'.
+drivers/media/tuners/xc5000.c:651 xc_debug_dump() error: uninitialized
+symbol 'lock_status'.
+drivers/media/tuners/xc5000.c:665 xc_debug_dump() error: uninitialized
+symbol 'frame_lines'.
+drivers/media/tuners/xc5000.c:668 xc_debug_dump() error: uninitialized
+symbol 'quality'.
+drivers/media/tuners/xc5000.c:671 xc_debug_dump() error: uninitialized
+symbol 'snr'.
+drivers/media/tuners/xc5000.c:674 xc_debug_dump() error: uninitialized
+symbol 'totalgain'.
 
-Signed-off-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250910025828.38900-1-dsahern@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+[hverkuil: dropped ' = 0' from rc in ir-kbd-i2c.c, not needed]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/fcnal-test.sh | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/media/i2c/ir-kbd-i2c.c |  6 +++---
+ drivers/media/tuners/xc4000.c  |  8 ++++----
+ drivers/media/tuners/xc5000.c  | 12 ++++++------
+ 3 files changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/tools/testing/selftests/net/fcnal-test.sh b/tools/testing/selftests/net/fcnal-test.sh
-index bed85001da735..0e43b9e95f4dd 100755
---- a/tools/testing/selftests/net/fcnal-test.sh
-+++ b/tools/testing/selftests/net/fcnal-test.sh
-@@ -409,6 +409,8 @@ create_ns()
- 	ip netns exec ${ns} sysctl -qw net.ipv6.conf.all.keep_addr_on_down=1
- 	ip netns exec ${ns} sysctl -qw net.ipv6.conf.all.forwarding=1
- 	ip netns exec ${ns} sysctl -qw net.ipv6.conf.default.forwarding=1
-+	ip netns exec ${ns} sysctl -qw net.ipv6.conf.default.accept_dad=0
-+	ip netns exec ${ns} sysctl -qw net.ipv6.conf.all.accept_dad=0
- }
+diff --git a/drivers/media/i2c/ir-kbd-i2c.c b/drivers/media/i2c/ir-kbd-i2c.c
+index 56674173524fd..0c1c54b5a6f5e 100644
+--- a/drivers/media/i2c/ir-kbd-i2c.c
++++ b/drivers/media/i2c/ir-kbd-i2c.c
+@@ -284,9 +284,9 @@ static int get_key_avermedia_cardbus(struct IR_i2c *ir, enum rc_proto *protocol,
  
- # create veth pair to connect namespaces and apply addresses.
+ static int ir_key_poll(struct IR_i2c *ir)
+ {
+-	enum rc_proto protocol;
+-	u32 scancode;
+-	u8 toggle;
++	enum rc_proto protocol = 0;
++	u32 scancode = 0;
++	u8 toggle = 0;
+ 	int rc;
+ 
+ 	dev_dbg(&ir->rc->dev, "%s\n", __func__);
+diff --git a/drivers/media/tuners/xc4000.c b/drivers/media/tuners/xc4000.c
+index 849df4d1c573c..c8aa193e04e71 100644
+--- a/drivers/media/tuners/xc4000.c
++++ b/drivers/media/tuners/xc4000.c
+@@ -1089,12 +1089,12 @@ static int check_firmware(struct dvb_frontend *fe, unsigned int type,
+ 
+ static void xc_debug_dump(struct xc4000_priv *priv)
+ {
+-	u16	adc_envelope;
++	u16	adc_envelope = 0;
+ 	u32	freq_error_hz = 0;
+-	u16	lock_status;
++	u16	lock_status = 0;
+ 	u32	hsync_freq_hz = 0;
+-	u16	frame_lines;
+-	u16	quality;
++	u16	frame_lines = 0;
++	u16	quality = 0;
+ 	u16	signal = 0;
+ 	u16	noise = 0;
+ 	u8	hw_majorversion = 0, hw_minorversion = 0;
+diff --git a/drivers/media/tuners/xc5000.c b/drivers/media/tuners/xc5000.c
+index ec9a3cd4784e1..a28481edd22ed 100644
+--- a/drivers/media/tuners/xc5000.c
++++ b/drivers/media/tuners/xc5000.c
+@@ -622,14 +622,14 @@ static int xc5000_fwupload(struct dvb_frontend *fe,
+ 
+ static void xc_debug_dump(struct xc5000_priv *priv)
+ {
+-	u16 adc_envelope;
++	u16 adc_envelope = 0;
+ 	u32 freq_error_hz = 0;
+-	u16 lock_status;
++	u16 lock_status = 0;
+ 	u32 hsync_freq_hz = 0;
+-	u16 frame_lines;
+-	u16 quality;
+-	u16 snr;
+-	u16 totalgain;
++	u16 frame_lines = 0;
++	u16 quality = 0;
++	u16 snr = 0;
++	u16 totalgain = 0;
+ 	u8 hw_majorversion = 0, hw_minorversion = 0;
+ 	u8 fw_majorversion = 0, fw_minorversion = 0;
+ 	u16 fw_buildversion = 0;
 -- 
 2.51.0
 
