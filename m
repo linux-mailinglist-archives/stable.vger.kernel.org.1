@@ -1,52 +1,57 @@
-Return-Path: <stable+bounces-198647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1596C9FBF6
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:58:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C99D0C9FBC6
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:57:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AE5BC3002626
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:53:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E5E2F3022A83
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:47:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDC2931B832;
-	Wed,  3 Dec 2025 15:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1D1B31B138;
+	Wed,  3 Dec 2025 15:46:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GMbtMoJS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IQ91VnxP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 862CB31A7F1;
-	Wed,  3 Dec 2025 15:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4757631AF37;
+	Wed,  3 Dec 2025 15:46:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777223; cv=none; b=j+2PqAis4MQuZ/fNmjQkDDnK2xN9dNWeI2u0+0KN1D4nOgC2SlGnXs2PwXiPpQ1YbUbOkYYiHjOyvBWL8PUcvCcZzneHL/R0RiyXXFdA6u/DIHElioRd0JEeTwmIjkcQn3y5RrkuuEuEqvF5n2onPWGr72llIY8wpltHsg7AWfg=
+	t=1764776815; cv=none; b=YptgXBOEr14idAAhAftpE+vqaxXyXPW2oJsz37kZ93BaXpWAFwZn/9euO+Pf8suJAHc8nOIR1494SgmSKZ9hfAgoTG2ybXTilGywu9XIoQG6YL5Y9HhjioQZpqONmJtPuV4Y4lBPSGQ7zggUZ9sV1GwIn7vnYFFl326D/YM8tw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777223; c=relaxed/simple;
-	bh=0tEoipaoI7q/1ylKZCH2S5Ra3/kuW4m4lqEWuKlT3go=;
+	s=arc-20240116; t=1764776815; c=relaxed/simple;
+	bh=h78f4/1wWurx3KWWUGu1zdJGGNEcGQ78WqqD2ZVn6Ko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FTkkMp3j1PR1LGOq0of9J89zaDAOUBoTrJucVdc3GowXflBgvBVRGVuS1TfW3cpvouiCd5/e7a0Zuq5v5HE2R0flelXO59MBjp1UEhpiAYJ0Z6/Th+jh0pPQg1r6Z+bO3Bf7WK3s3lmBOgqOLxKwWTeucA94hjfITN/4wdWuiYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GMbtMoJS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3594C116C6;
-	Wed,  3 Dec 2025 15:53:42 +0000 (UTC)
+	 MIME-Version; b=Rv3PcDSmJlmOs5i5cxq4TexGaM0OZk9GLoszynWuBDJo3SxlJha9FBX+N/BYY/jeyFoqt1vV640fP8arEpSLB5cd0Fx5PFVwQhZ4S/GM1Pe05PxJHM4hnkxt75Gg5luoWUFOBzhKGNYWYsFA7CYUPztefNF8He2x0wAIVFUF9Fg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IQ91VnxP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C356C4CEF5;
+	Wed,  3 Dec 2025 15:46:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777223;
-	bh=0tEoipaoI7q/1ylKZCH2S5Ra3/kuW4m4lqEWuKlT3go=;
+	s=korg; t=1764776815;
+	bh=h78f4/1wWurx3KWWUGu1zdJGGNEcGQ78WqqD2ZVn6Ko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GMbtMoJSJTHJM1m/SLNO+6DP6gCFnmVc6UBeKd3rEFM+qFfXuKbq82Yl0u0UBixhY
-	 z+3g4EwD0sHWTwZtZGx+55lPZKQYDY6Nc9R9ihBohiPQJODAMT2vFOoF1Cb4pRh7CE
-	 6MnrxBGCE+4oTSIZwxs6T9//XF7YJ6+/pmbu002E=
+	b=IQ91VnxPWcOFxCGnPMYB/2zecLHylAzokq2Fc7h9PkubFsUidayj3WwpKKSiZQnr2
+	 44rbM/sV+FX/2a1gyv2tGNNW1t6jSXALasZJsEaqk/rCS0PpG38/+HLAfN798aIz1h
+	 eph5c8J1Fdefz8aNDkYkjEHUDkzlrI/LXhWQUse4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.17 121/146] xhci: fix stale flag preventig URBs after link state error is cleared
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	David Howells <dhowells@redhat.com>,
+	Jay Shin <jaeshin@redhat.com>,
+	linux-cifs@vger.kernel.org,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 295/300] smb: client: fix memory leak in cifs_construct_tcon()
 Date: Wed,  3 Dec 2025 16:28:19 +0100
-Message-ID: <20251203152350.891194194@linuxfoundation.org>
+Message-ID: <20251203152411.551744751@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,109 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Paulo Alcantara <pc@manguebit.org>
 
-commit b69dfcab6894b1fed5362a364411502a7469fce3 upstream.
+[ Upstream commit 3184b6a5a24ec9ee74087b2a550476f386df7dc2 ]
 
-A usb device caught behind a link in ss.Inactive error state needs to
-be reset to recover. A VDEV_PORT_ERROR flag is used to track this state,
-preventing new transfers from being queued until error is cleared.
+When having a multiuser mount with domain= specified and using
+cifscreds, cifs_set_cifscreds() will end up setting @ctx->domainname,
+so it needs to be freed before leaving cifs_construct_tcon().
 
-This flag may be left uncleared if link goes to error state between two
-resets, and print the following message:
+This fixes the following memory leak reported by kmemleak:
 
-"xhci_hcd 0000:00:14.0: Can't queue urb, port error, link inactive"
+  mount.cifs //srv/share /mnt -o domain=ZELDA,multiuser,...
+  su - testuser
+  cifscreds add -d ZELDA -u testuser
+  ...
+  ls /mnt/1
+  ...
+  umount /mnt
+  echo scan > /sys/kernel/debug/kmemleak
+  cat /sys/kernel/debug/kmemleak
+  unreferenced object 0xffff8881203c3f08 (size 8):
+    comm "ls", pid 5060, jiffies 4307222943
+    hex dump (first 8 bytes):
+      5a 45 4c 44 41 00 cc cc                          ZELDA...
+    backtrace (crc d109a8cf):
+      __kmalloc_node_track_caller_noprof+0x572/0x710
+      kstrdup+0x3a/0x70
+      cifs_sb_tlink+0x1209/0x1770 [cifs]
+      cifs_get_fattr+0xe1/0xf50 [cifs]
+      cifs_get_inode_info+0xb5/0x240 [cifs]
+      cifs_revalidate_dentry_attr+0x2d1/0x470 [cifs]
+      cifs_getattr+0x28e/0x450 [cifs]
+      vfs_getattr_nosec+0x126/0x180
+      vfs_statx+0xf6/0x220
+      do_statx+0xab/0x110
+      __x64_sys_statx+0xd5/0x130
+      do_syscall_64+0xbb/0x380
+      entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Fix setting and clearing the flag.
-
-The flag is cleared after hub driver has successfully reset the device
-when hcd->reset_device is called. xhci-hcd issues an internal "reset
-device" command in this callback, and clear all flags once the command
-completes successfully.
-
-This command may complete with a context state error if slot was recently
-reset and is already in the defauilt state. This is treated as a success
-but flag was left uncleared.
-
-The link state field is also unreliable if port is currently in reset,
-so don't set the flag in active reset cases.
-Also clear the flag immediately when link is no longer in ss.Inactive
-state and port event handler detects a completed reset.
-
-This issue was discovered while debugging kernel bugzilla issue 220491.
-It is likely one small part of the problem, causing some of the failures,
-but root cause remains unknown
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220491
-Fixes: b8c3b718087b ("usb: xhci: Don't try to recover an endpoint if port is in error state.")
+Fixes: f2aee329a68f ("cifs: set domainName when a domain-key is used in multiuser")
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Reviewed-by: David Howells <dhowells@redhat.com>
+Cc: Jay Shin <jaeshin@redhat.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://patch.msgid.link/20251107162819.1362579-2-mathias.nyman@linux.intel.com
+Cc: linux-cifs@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ Different path + ctx -> vol_info ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-ring.c |   15 ++++++++++-----
- drivers/usb/host/xhci.c      |    1 +
- 2 files changed, 11 insertions(+), 5 deletions(-)
+ fs/cifs/connect.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -1984,6 +1984,7 @@ static void xhci_cavium_reset_phy_quirk(
+--- a/fs/cifs/connect.c
++++ b/fs/cifs/connect.c
+@@ -5162,6 +5162,7 @@ cifs_construct_tcon(struct cifs_sb_info
  
- static void handle_port_status(struct xhci_hcd *xhci, union xhci_trb *event)
- {
-+	struct xhci_virt_device *vdev = NULL;
- 	struct usb_hcd *hcd;
- 	u32 port_id;
- 	u32 portsc, cmd_reg;
-@@ -2015,6 +2016,9 @@ static void handle_port_status(struct xh
- 		goto cleanup;
- 	}
+ out:
+ 	kfree(vol_info->username);
++	kfree(vol_info->domainname);
+ 	kfree_sensitive(vol_info->password);
+ 	kfree(vol_info);
  
-+	if (port->slot_id)
-+		vdev = xhci->devs[port->slot_id];
-+
- 	/* We might get interrupts after shared_hcd is removed */
- 	if (port->rhub == &xhci->usb3_rhub && xhci->shared_hcd == NULL) {
- 		xhci_dbg(xhci, "ignore port event for removed USB3 hcd\n");
-@@ -2037,10 +2041,11 @@ static void handle_port_status(struct xh
- 		usb_hcd_resume_root_hub(hcd);
- 	}
- 
--	if (hcd->speed >= HCD_USB3 &&
--	    (portsc & PORT_PLS_MASK) == XDEV_INACTIVE) {
--		if (port->slot_id && xhci->devs[port->slot_id])
--			xhci->devs[port->slot_id]->flags |= VDEV_PORT_ERROR;
-+	if (vdev && (portsc & PORT_PLS_MASK) == XDEV_INACTIVE) {
-+		if (!(portsc & PORT_RESET))
-+			vdev->flags |= VDEV_PORT_ERROR;
-+	} else if (vdev && portsc & PORT_RC) {
-+		vdev->flags &= ~VDEV_PORT_ERROR;
- 	}
- 
- 	if ((portsc & PORT_PLC) && (portsc & PORT_PLS_MASK) == XDEV_RESUME) {
-@@ -2098,7 +2103,7 @@ static void handle_port_status(struct xh
- 		 * so the roothub behavior is consistent with external
- 		 * USB 3.0 hub behavior.
- 		 */
--		if (port->slot_id && xhci->devs[port->slot_id])
-+		if (vdev)
- 			xhci_ring_device(xhci, port->slot_id);
- 		if (bus_state->port_remote_wakeup & (1 << hcd_portnum)) {
- 			xhci_test_and_clear_bit(xhci, port, PORT_PLC);
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -3993,6 +3993,7 @@ static int xhci_discover_or_reset_device
- 				xhci_get_slot_state(xhci, virt_dev->out_ctx));
- 		xhci_dbg(xhci, "Not freeing device rings.\n");
- 		/* Don't treat this as an error.  May change my mind later. */
-+		virt_dev->flags = 0;
- 		ret = 0;
- 		goto command_cleanup;
- 	case COMP_SUCCESS:
 
 
 
