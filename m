@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D9AECA0664
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:24:22 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0958CA0B68
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:59:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 30FD43096CE7
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:09:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5C623301473C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:58:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82D3335FF45;
-	Wed,  3 Dec 2025 16:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 481D3338F4D;
+	Wed,  3 Dec 2025 15:56:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t2rK5cp+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UzuZBNjR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39EA335FF77;
-	Wed,  3 Dec 2025 16:28:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02BD1338F5B;
+	Wed,  3 Dec 2025 15:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779297; cv=none; b=GOaqfNJT5jpVe3KT6qUdkOSnZn1if5XqODaXBwgmnIIATXvv10ei7p7ZLZvrVBzJ0//XHEyNv6YOkdkjx0dKXe01n4PaOVltHWpHhQ+3GqWIKDOLBuoNtVYkv+3JakW5VKLiMaHeQp6itvzqMCYeqZ++NlR2f3TyBcHW0ygBPVY=
+	t=1764777419; cv=none; b=K7oK4a/nFjEtrfR7H9G6kAWjqfs6OIHfVwVK4zKhXIz7nB2Kbw63D/mqzMOoRVDYZuUJGReuNL0MBaP1Q4nTG6s/dlSIRktU5F8wFs21bagCfI+H7jiswsG3eFaPN7qOVe3g9XsLaP4+JM0OdqUHF5IcG5LXhtZ253+Y1ESFqzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779297; c=relaxed/simple;
-	bh=VNUKTO3Um/pMyvqGrhZeif4DzRbFjZUe7/C97Nyumz4=;
+	s=arc-20240116; t=1764777419; c=relaxed/simple;
+	bh=SpdkcNkmL9FpTUlEhCXynXSVQYbB3kcL4IxXPinSoj4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NZbtgQtTIZkuN5WXDo1ulqrWNF+b31iiBjLZOvQN//ZnB1/qcBFy4idms3+BsFOgq/p6qvbM9gJHIPc+CEod9Uwud0IvGTn4GEyK0qaxOrI8ep0pV4XTm5LnkYwtncens49IcBqVKa1l1OfAKDHMADWSh6S5tZVErER0/Yijo4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t2rK5cp+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EAD0C4CEF5;
-	Wed,  3 Dec 2025 16:28:15 +0000 (UTC)
+	 MIME-Version; b=HCcvcoYewpA4c3XIpJuFoFk83Y1p/+NISTiQEmLpvhz86kgKI8Y7tzGq/5UvOWt9S39V2f8ROMUtDSR0dAD3ma6bahrqv/lyQrY9V9DtmrpftXuI9vGZaxoZs6PTElkkNLrijoAyhIuDXzgX6HQl1TmB4+DBx4Z9S53tD+/nvyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UzuZBNjR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ED6EC4AF09;
+	Wed,  3 Dec 2025 15:56:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779296;
-	bh=VNUKTO3Um/pMyvqGrhZeif4DzRbFjZUe7/C97Nyumz4=;
+	s=korg; t=1764777418;
+	bh=SpdkcNkmL9FpTUlEhCXynXSVQYbB3kcL4IxXPinSoj4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t2rK5cp+j0Z43lhADVJDTUOxRyhYhdJMutX6VcCs7nlzRBZzbw2zlp6tUIEvuHkyF
-	 uFfJyBEU6inM2Xw+KMkfgfhEjtmo0sShTSuyaVqW04LWnvSJ9QjRSWnePNdWjN8nGw
-	 y5RS5Y10YhyM9v9RguR44zekBGpUAanpBXf9qZmE=
+	b=UzuZBNjRjJPcplInfNCN9flenvfAtkbcLe6tjdG4y2xAWPT/yJaR2W2CA0wgQII0g
+	 AKbAEQ9GiyE+Z5zxvkS1Jhq9K2htecmsLL8DwrehV0P9OlHXvoUg6PAI8LjfocNjR8
+	 5l/m8I+v2zGTsPgv8r7vTQT8Gqf4i8M3D5lmshbY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Huang <jinhuieric.huang@amd.com>,
-	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Sam Sun <samsun1006219@gmail.com>,
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 172/568] drm/amdkfd: fix vram allocation failure for a special case
+Subject: [PATCH 5.15 024/392] usbnet: Prevents free active kevent
 Date: Wed,  3 Dec 2025 16:22:54 +0100
-Message-ID: <20251203152447.032603267@linuxfoundation.org>
+Message-ID: <20251203152414.992425704@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Huang <jinhuieric.huang@amd.com>
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-[ Upstream commit 93aa919ca05bec544b17ee9a1bfe394ce6c94bd8 ]
+[ Upstream commit 420c84c330d1688b8c764479e5738bbdbf0a33de ]
 
-When it only allocates vram without va, which is 0, and a
-SVM range allocated stays in this range, the vram allocation
-returns failure. It should be skipped for this case from
-SVM usage check.
+The root cause of this issue are:
+1. When probing the usbnet device, executing usbnet_link_change(dev, 0, 0);
+put the kevent work in global workqueue. However, the kevent has not yet
+been scheduled when the usbnet device is unregistered. Therefore, executing
+free_netdev() results in the "free active object (kevent)" error reported
+here.
 
-Signed-off-by: Eric Huang <jinhuieric.huang@amd.com>
-Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+2. Another factor is that when calling usbnet_disconnect()->unregister_netdev(),
+if the usbnet device is up, ndo_stop() is executed to cancel the kevent.
+However, because the device is not up, ndo_stop() is not executed.
+
+The solution to this problem is to cancel the kevent before executing
+free_netdev().
+
+Fixes: a69e617e533e ("usbnet: Fix linkwatch use-after-free on disconnect")
+Reported-by: Sam Sun <samsun1006219@gmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=8bfd7bcc98f7300afb84
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Link: https://patch.msgid.link/20251022024007.1831898-1-lizhi.xu@windriver.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_chardev.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/usb/usbnet.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-index c1cb91a79b796..890c2befe7dce 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-@@ -1067,7 +1067,12 @@ static int kfd_ioctl_alloc_memory_of_gpu(struct file *filep,
- 	svm_range_list_lock_and_flush_work(&p->svms, current->mm);
- 	mutex_lock(&p->svms.lock);
- 	mmap_write_unlock(current->mm);
--	if (interval_tree_iter_first(&p->svms.objects,
+diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+index 21f5fdbce0747..aceec2381e802 100644
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -1648,6 +1648,8 @@ void usbnet_disconnect (struct usb_interface *intf)
+ 	net = dev->net;
+ 	unregister_netdev (net);
+ 
++	cancel_work_sync(&dev->kevent);
 +
-+	/* Skip a special case that allocates VRAM without VA,
-+	 * VA will be invalid of 0.
-+	 */
-+	if (!(!args->va_addr && (flags & KFD_IOC_ALLOC_MEM_FLAGS_VRAM)) &&
-+	    interval_tree_iter_first(&p->svms.objects,
- 				     args->va_addr >> PAGE_SHIFT,
- 				     (args->va_addr + args->size - 1) >> PAGE_SHIFT)) {
- 		pr_err("Address: 0x%llx already allocated by SVM\n",
+ 	while ((urb = usb_get_from_anchor(&dev->deferred))) {
+ 		dev_kfree_skb(urb->context);
+ 		kfree(urb->sg);
 -- 
 2.51.0
 
