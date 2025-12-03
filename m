@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3200DCA0B11
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:57:49 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5326FCA05B0
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:21:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C64C9304F65D
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:53:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1E6213006442
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:21:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 701013587BD;
-	Wed,  3 Dec 2025 16:50:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 573332777FD;
+	Wed,  3 Dec 2025 16:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jMfjkbqE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aYXEvy4+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D4453587BC;
-	Wed,  3 Dec 2025 16:50:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F123659F5;
+	Wed,  3 Dec 2025 16:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780629; cv=none; b=g803rM7uLMtohHsHvDlZyz0o03Bxf0lb6RdVSjIIvIu/xXXe4kGmZzIM6sSgm6sXSyguY+hE8uGzGzdW0nQKQXlPwlerTdQq/Hg9UYABtqKQ47597R7dTnRILjXAhRX9rlU1RWu0fRPqiJhOghmGV/SLyQRf6JdNuKef7Jj7JwY=
+	t=1764780317; cv=none; b=RMzw1sswSoGPOEe7SyFCFr+9maIViv1TdBnVLxTryMzQSwdK9BZBY/6VkHSPkoaowPKP4r0ctDzOBMygaI/07AVKjK8BmANCAGXZfGiZe2+sTCUD8eecoGZlz8FMMuCFAM5pYvqVUQFzM1axGPN8P3SdXExxtmKc7BSeXia8ImU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780629; c=relaxed/simple;
-	bh=jbpyUE3Pts0l88R57613wQaQ8x2bTjR3+H1+aSVXgns=;
+	s=arc-20240116; t=1764780317; c=relaxed/simple;
+	bh=0hE67D3Ccrs05VykXXxxi/X2UnK6sskbCo1EgoJzZBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U2IQ9ZDHFGDVpYxA0e9kQ9OvIYgs4W5uGdsqtwmcEwW9DHza18qRk2oQs9yksCHmFlujecFUL/5YuHx/Pyn3DG85qLOCze/fyA5jBsBvRwxHTLGk4rh2gmFQffCuGhZcoNPlFxYvwXYQu+fYMc7Cveq9DSF2pHcKBYZyt5WPDGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jMfjkbqE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF35C4CEF5;
-	Wed,  3 Dec 2025 16:50:28 +0000 (UTC)
+	 MIME-Version; b=jBpAmDLXMqipeLQdzag8i6ZD/xZNXhLZFXWp1R0ITvsVyzQVTVdNbJLCmYPweWJjGx1EGBAYKJHt1F8N+OH5/8RaZ+HwPqc19h1Rxl92NhCQbHfUMmmzOOGUZL+QajFBK6t4aZ0fTYBn12shsAcrpzSwtpMTgi9hdzPIT0uL1RE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aYXEvy4+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 744F4C4CEF5;
+	Wed,  3 Dec 2025 16:45:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780629;
-	bh=jbpyUE3Pts0l88R57613wQaQ8x2bTjR3+H1+aSVXgns=;
+	s=korg; t=1764780316;
+	bh=0hE67D3Ccrs05VykXXxxi/X2UnK6sskbCo1EgoJzZBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jMfjkbqE6FmRtzeoCl5gl6s9BK8yafl0yvNmsXD97y1zUjVlvocmO+ysfcws9nnd8
-	 0owaCdye/KHsIPmz8a4LaGBbfDrTbHksUHrthiU5RVG3cj2Hs8AGlvkfsxMggMAUfi
-	 /KLzBoWD1kYZ+tJgLn7bXT86Wc+muDv3A7b9EHxs=
+	b=aYXEvy4+zdPX3kE4BLnvlOFyodIpKYShGgVi7XY5vfgEV+vSWSNGWfJq7PVGfvuh3
+	 47b2t2lZxpgs0ccSTByEgRGs25GfTRwXvoJBbCtn1RIwMU7sViUVwDX9MM92F43ElN
+	 z6FQ5ASbi01OUX1yA3s6qRrFPZ2oRCOIRadI5SfU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 043/132] spi: spi-mem: Add a new controller capability
+	Valek Andrej <andrej.v@skyrain.eu>,
+	Kessler Markus <markus.kessler@hilti.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 520/568] iio: accel: fix ADXL355 startup race condition
 Date: Wed,  3 Dec 2025 16:28:42 +0100
-Message-ID: <20251203152344.891280482@linuxfoundation.org>
+Message-ID: <20251203152459.758173219@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +61,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Valek Andrej <andrej.v@skyrain.eu>
 
-[ Upstream commit 1248c9b8d54120950fda10fbeb98fb8932b4d45c ]
+commit c92c1bc408e9e11ae3c7011b062fdd74c09283a3 upstream.
 
-There are spi devices with multiple frequency limitations depending on
-the invoked command. We probably do not want to afford running at the
-lowest supported frequency all the time, so if we want to get the most
-of our hardware, we need to allow per-operation frequency limitations.
+There is an race-condition where device is not full working after SW reset.
+Therefore it's necessary to wait some time after reset and verify shadow
+registers values by reading and comparing the values before/after reset.
+This mechanism is described in datasheet at least from revision D.
 
-Among all the SPI memory controllers, I believe all are capable of
-changing the spi frequency on the fly. Some of the drivers do not make
-any frequency setup though. And some others will derive a per chip
-prescaler value which will be used forever.
-
-Actually changing the frequency on the fly is something new in Linux, so
-we need to carefully flag the drivers which do and do not support it. A
-controller capability is created for that, and the presence for this
-capability will always be checked before accepting such pattern.
-
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Link: https://patch.msgid.link/20241224-winbond-6-11-rc1-quad-support-v2-2-ad218dbc406f@bootlin.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 40ad64ac25bb ("spi: nxp-fspi: Propagate fwnode in ACPI case as well")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 12ed27863ea3 ("iio: accel: Add driver support for ADXL355")
+Signed-off-by: Valek Andrej <andrej.v@skyrain.eu>
+Signed-off-by: Kessler Markus <markus.kessler@hilti.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-mem.c       | 6 ++++++
- include/linux/spi/spi-mem.h | 2 ++
- 2 files changed, 8 insertions(+)
+ drivers/iio/accel/adxl355_core.c |   44 ++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 39 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-index 12299ce89a1cc..96374afd0193c 100644
---- a/drivers/spi/spi-mem.c
-+++ b/drivers/spi/spi-mem.c
-@@ -191,6 +191,12 @@ bool spi_mem_default_supports_op(struct spi_mem *mem,
- 	    op->max_freq < mem->spi->controller->min_speed_hz)
- 		return false;
+--- a/drivers/iio/accel/adxl355_core.c
++++ b/drivers/iio/accel/adxl355_core.c
+@@ -56,6 +56,8 @@
+ #define  ADXL355_POWER_CTL_DRDY_MSK	BIT(2)
+ #define ADXL355_SELF_TEST_REG		0x2E
+ #define ADXL355_RESET_REG		0x2F
++#define ADXL355_BASE_ADDR_SHADOW_REG	0x50
++#define ADXL355_SHADOW_REG_COUNT	5
  
-+	if (op->max_freq &&
-+	    op->max_freq < mem->spi->max_speed_hz) {
-+		if (!spi_mem_controller_is_capable(ctlr, per_op_freq))
-+			return false;
-+	}
+ #define ADXL355_DEVID_AD_VAL		0xAD
+ #define ADXL355_DEVID_MST_VAL		0x1D
+@@ -238,7 +240,12 @@ static void adxl355_fill_3db_frequency_t
+ static int adxl355_setup(struct adxl355_data *data)
+ {
+ 	unsigned int regval;
++	int retries = 5; /* the number is chosen based on empirical reasons */
+ 	int ret;
++	u8 *shadow_regs __free(kfree) = kzalloc(ADXL355_SHADOW_REG_COUNT, GFP_KERNEL);
 +
- 	return spi_mem_check_buswidth(mem, op);
- }
- EXPORT_SYMBOL_GPL(spi_mem_default_supports_op);
-diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
-index 84ec524987921..c7a7719c26484 100644
---- a/include/linux/spi/spi-mem.h
-+++ b/include/linux/spi/spi-mem.h
-@@ -311,11 +311,13 @@ struct spi_controller_mem_ops {
-  * @ecc: Supports operations with error correction
-  * @swap16: Supports swapping bytes on a 16 bit boundary when configured in
-  *	    Octal DTR
-+ * @per_op_freq: Supports per operation frequency switching
-  */
- struct spi_controller_mem_caps {
- 	bool dtr;
- 	bool ecc;
- 	bool swap16;
-+	bool per_op_freq;
- };
++	if (!shadow_regs)
++		return -ENOMEM;
  
- #define spi_mem_controller_is_capable(ctlr, cap)	\
--- 
-2.51.0
-
+ 	ret = regmap_read(data->regmap, ADXL355_DEVID_AD_REG, &regval);
+ 	if (ret)
+@@ -267,14 +274,41 @@ static int adxl355_setup(struct adxl355_
+ 		return -ENODEV;
+ 	}
+ 
+-	/*
+-	 * Perform a software reset to make sure the device is in a consistent
+-	 * state after start-up.
+-	 */
+-	ret = regmap_write(data->regmap, ADXL355_RESET_REG, ADXL355_RESET_CODE);
++	/* Read shadow registers to be compared after reset */
++	ret = regmap_bulk_read(data->regmap,
++			       ADXL355_BASE_ADDR_SHADOW_REG,
++			       shadow_regs, ADXL355_SHADOW_REG_COUNT);
+ 	if (ret)
+ 		return ret;
+ 
++	do {
++		if (--retries == 0) {
++			dev_err(data->dev, "Shadow registers mismatch\n");
++			return -EIO;
++		}
++
++		/*
++		 * Perform a software reset to make sure the device is in a consistent
++		 * state after start-up.
++		 */
++		ret = regmap_write(data->regmap, ADXL355_RESET_REG,
++				   ADXL355_RESET_CODE);
++		if (ret)
++			return ret;
++
++		/* Wait at least 5ms after software reset */
++		usleep_range(5000, 10000);
++
++		/* Read shadow registers for comparison */
++		ret = regmap_bulk_read(data->regmap,
++				       ADXL355_BASE_ADDR_SHADOW_REG,
++				       data->buffer.buf,
++				       ADXL355_SHADOW_REG_COUNT);
++		if (ret)
++			return ret;
++	} while (memcmp(shadow_regs, data->buffer.buf,
++			ADXL355_SHADOW_REG_COUNT));
++
+ 	ret = regmap_update_bits(data->regmap, ADXL355_POWER_CTL_REG,
+ 				 ADXL355_POWER_CTL_DRDY_MSK,
+ 				 FIELD_PREP(ADXL355_POWER_CTL_DRDY_MSK, 1));
 
 
 
