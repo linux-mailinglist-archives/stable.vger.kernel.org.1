@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-199009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57037CA1177
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:43:44 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33C2CCA0242
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:51:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 03E0E3007DAF
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:43:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6A82930336D1
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:43:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43D7834FF6B;
-	Wed,  3 Dec 2025 16:13:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F09C93612EB;
+	Wed,  3 Dec 2025 16:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GT7Qmskn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fyYUS5fH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED89B34FF65;
-	Wed,  3 Dec 2025 16:13:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0888635FF54;
+	Wed,  3 Dec 2025 16:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778398; cv=none; b=MxblwNiEn1E5Ha6ArogXNS/qwaD+F6n9rK+cquNNT1E1+i5lr79s58VeHLVpVxBRdZUs/JRupcGlJ0O1L60rogUccBxFzdmHHuArH0RjzjKvA6Ll3LLGIbCfpY3bPHmMGNfuqJubzMTITr2FKyN0JzF8OJZziTWUZ2UbuqILwlA=
+	t=1764780190; cv=none; b=PsXfkutCdGcKdXU2z2+me5h4shR4N49AwZp/KMtNdonyiMFXGPel8OY1iNLEa2Ju0WpHnY9knffnbF9eFXzbPQZqiczWMxAl8ddzTKVk1zTGub7hitJ6C391xX52hzgzExDmiGPJ6Y2mMs3ijWglaANzXV/kz1/RiYDkMJShQO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778398; c=relaxed/simple;
-	bh=c0Sjob0XG8+n93jF7evkiKHh9jSeaM3UTC//QZNi9Y0=;
+	s=arc-20240116; t=1764780190; c=relaxed/simple;
+	bh=fmIvxhgBiPlovCiTpTCTM1JhZ1p0unSHscrO0p9XAhA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rmt/TN9bu4d8wKp+/CyfFsQKVUeg2Bit38bz6YKd4beq8JoLRqHZZc3Qx5N3VSevjNalsyI5O1PAyrzeuIs4GRPXk2KUhsiPookdC6HFawaK/R9vuYtQP1PZh73oF1UAzTGIxThplfnbVqgiA8C6ig47XphmemuEP9r6dQjacxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GT7Qmskn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B2B8C4CEF5;
-	Wed,  3 Dec 2025 16:13:17 +0000 (UTC)
+	 MIME-Version; b=kDSKE39YRzsDP7PppmEiUQJferwkHkfdsBjghSSZhz/uPGyF2XkI2NPYKNFhgo7x2iNDHc+SJpaFTnADcN2FnoP91sVkfmFQD4xZu+tTbJBHsfp3YQNmWaOGUQjajx3Lci03uZeOvwXcqTKCTohM2f3yScoQD+83D5G1BqhgxjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fyYUS5fH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C27C5C4CEF5;
+	Wed,  3 Dec 2025 16:43:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778397;
-	bh=c0Sjob0XG8+n93jF7evkiKHh9jSeaM3UTC//QZNi9Y0=;
+	s=korg; t=1764780189;
+	bh=fmIvxhgBiPlovCiTpTCTM1JhZ1p0unSHscrO0p9XAhA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GT7QmsknKQ0keO056bGGZR0gPF0hu6/HdZ1M/AAEZUcbN+CQ1z0YoDW+p0uinKMQA
-	 u7/quWlfxsh3CLWz3uu9cfZ5n6Zl3LyGf3irrBtAOnMGIUDGetViLmf2gWqKJefwtp
-	 /6PgGnMfK1BTzJQO/AmPJak9OKrxaBWjv5Fe3bHg=
+	b=fyYUS5fHt2FR8xiHFdn1+TvXsyLrlfQGI/L0VqKMpPL97ZhxlNe/TBP2o5RfNU/5I
+	 bT4SzWX0rEowiKDzKKfaC46hcTkJWswxRpEXDXYkDXpFHdMF75r9cV7J9SCnibxz4j
+	 xPBduqoFCGRNo2S6ofQBvQZ+e9gd1Rk/nx/PXpOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+2a6fbf0f0530375968df@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	kernel test robot <oliver.sang@intel.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Vlastimil Babka <vbabka@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 333/392] mptcp: fix a race in mptcp_pm_del_add_timer()
-Date: Wed,  3 Dec 2025 16:28:03 +0100
-Message-ID: <20251203152426.423540238@linuxfoundation.org>
+Subject: [PATCH 6.1 482/568] mm/mempool: fix poisoning order>0 pages with HIGHMEM
+Date: Wed,  3 Dec 2025 16:28:04 +0100
+Message-ID: <20251203152458.353959394@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,201 +61,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Vlastimil Babka <vbabka@suse.cz>
 
-[ Upstream commit 426358d9be7ce3518966422f87b96f1bad27295f ]
+[ Upstream commit ec33b59542d96830e3c89845ff833cf7b25ef172 ]
 
-mptcp_pm_del_add_timer() can call sk_stop_timer_sync(sk, &entry->add_timer)
-while another might have free entry already, as reported by syzbot.
+The kernel test has reported:
 
-Add RCU protection to fix this issue.
+  BUG: unable to handle page fault for address: fffba000
+  #PF: supervisor write access in kernel mode
+  #PF: error_code(0x0002) - not-present page
+  *pde = 03171067 *pte = 00000000
+  Oops: Oops: 0002 [#1]
+  CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Tainted: G                T   6.18.0-rc2-00031-gec7f31b2a2d3 #1 NONE  a1d066dfe789f54bc7645c7989957d2bdee593ca
+  Tainted: [T]=RANDSTRUCT
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+  EIP: memset (arch/x86/include/asm/string_32.h:168 arch/x86/lib/memcpy_32.c:17)
+  Code: a5 8b 4d f4 83 e1 03 74 02 f3 a4 83 c4 04 5e 5f 5d 2e e9 73 41 01 00 90 90 90 3e 8d 74 26 00 55 89 e5 57 56 89 c6 89 d0 89 f7 <f3> aa 89 f0 5e 5f 5d 2e e9 53 41 01 00 cc cc cc 55 89 e5 53 57 56
+  EAX: 0000006b EBX: 00000015 ECX: 001fefff EDX: 0000006b
+  ESI: fffb9000 EDI: fffba000 EBP: c611fbf0 ESP: c611fbe8
+  DS: 007b ES: 007b FS: 0000 GS: 0000 SS: 0068 EFLAGS: 00010287
+  CR0: 80050033 CR2: fffba000 CR3: 0316e000 CR4: 00040690
+  Call Trace:
+   poison_element (mm/mempool.c:83 mm/mempool.c:102)
+   mempool_init_node (mm/mempool.c:142 mm/mempool.c:226)
+   mempool_init_noprof (mm/mempool.c:250 (discriminator 1))
+   ? mempool_alloc_pages (mm/mempool.c:640)
+   bio_integrity_initfn (block/bio-integrity.c:483 (discriminator 8))
+   ? mempool_alloc_pages (mm/mempool.c:640)
+   do_one_initcall (init/main.c:1283)
 
-Also change confusing add_timer variable with stop_timer boolean.
+Christoph found out this is due to the poisoning code not dealing
+properly with CONFIG_HIGHMEM because only the first page is mapped but
+then the whole potentially high-order page is accessed.
 
-syzbot report:
+We could give up on HIGHMEM here, but it's straightforward to fix this
+with a loop that's mapping, poisoning or checking and unmapping
+individual pages.
 
-BUG: KASAN: slab-use-after-free in __timer_delete_sync+0x372/0x3f0 kernel/time/timer.c:1616
-Read of size 4 at addr ffff8880311e4150 by task kworker/1:1/44
-
-CPU: 1 UID: 0 PID: 44 Comm: kworker/1:1 Not tainted syzkaller #0 PREEMPT_{RT,(full)}
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/02/2025
-Workqueue: events mptcp_worker
-Call Trace:
- <TASK>
-  dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
-  print_address_description mm/kasan/report.c:378 [inline]
-  print_report+0xca/0x240 mm/kasan/report.c:482
-  kasan_report+0x118/0x150 mm/kasan/report.c:595
-  __timer_delete_sync+0x372/0x3f0 kernel/time/timer.c:1616
-  sk_stop_timer_sync+0x1b/0x90 net/core/sock.c:3631
-  mptcp_pm_del_add_timer+0x283/0x310 net/mptcp/pm.c:362
-  mptcp_incoming_options+0x1357/0x1f60 net/mptcp/options.c:1174
-  tcp_data_queue+0xca/0x6450 net/ipv4/tcp_input.c:5361
-  tcp_rcv_established+0x1335/0x2670 net/ipv4/tcp_input.c:6441
-  tcp_v4_do_rcv+0x98b/0xbf0 net/ipv4/tcp_ipv4.c:1931
-  tcp_v4_rcv+0x252a/0x2dc0 net/ipv4/tcp_ipv4.c:2374
-  ip_protocol_deliver_rcu+0x221/0x440 net/ipv4/ip_input.c:205
-  ip_local_deliver_finish+0x3bb/0x6f0 net/ipv4/ip_input.c:239
-  NF_HOOK+0x30c/0x3a0 include/linux/netfilter.h:318
-  NF_HOOK+0x30c/0x3a0 include/linux/netfilter.h:318
-  __netif_receive_skb_one_core net/core/dev.c:6079 [inline]
-  __netif_receive_skb+0x143/0x380 net/core/dev.c:6192
-  process_backlog+0x31e/0x900 net/core/dev.c:6544
-  __napi_poll+0xb6/0x540 net/core/dev.c:7594
-  napi_poll net/core/dev.c:7657 [inline]
-  net_rx_action+0x5f7/0xda0 net/core/dev.c:7784
-  handle_softirqs+0x22f/0x710 kernel/softirq.c:622
-  __do_softirq kernel/softirq.c:656 [inline]
-  __local_bh_enable_ip+0x1a0/0x2e0 kernel/softirq.c:302
-  mptcp_pm_send_ack net/mptcp/pm.c:210 [inline]
- mptcp_pm_addr_send_ack+0x41f/0x500 net/mptcp/pm.c:-1
-  mptcp_pm_worker+0x174/0x320 net/mptcp/pm.c:1002
-  mptcp_worker+0xd5/0x1170 net/mptcp/protocol.c:2762
-  process_one_work kernel/workqueue.c:3263 [inline]
-  process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3346
-  worker_thread+0x8a0/0xda0 kernel/workqueue.c:3427
-  kthread+0x711/0x8a0 kernel/kthread.c:463
-  ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-
-Allocated by task 44:
-  kasan_save_stack mm/kasan/common.c:56 [inline]
-  kasan_save_track+0x3e/0x80 mm/kasan/common.c:77
-  poison_kmalloc_redzone mm/kasan/common.c:400 [inline]
-  __kasan_kmalloc+0x93/0xb0 mm/kasan/common.c:417
-  kasan_kmalloc include/linux/kasan.h:262 [inline]
-  __kmalloc_cache_noprof+0x1ef/0x6c0 mm/slub.c:5748
-  kmalloc_noprof include/linux/slab.h:957 [inline]
-  mptcp_pm_alloc_anno_list+0x104/0x460 net/mptcp/pm.c:385
-  mptcp_pm_create_subflow_or_signal_addr+0xf9d/0x1360 net/mptcp/pm_kernel.c:355
-  mptcp_pm_nl_fully_established net/mptcp/pm_kernel.c:409 [inline]
-  __mptcp_pm_kernel_worker+0x417/0x1ef0 net/mptcp/pm_kernel.c:1529
-  mptcp_pm_worker+0x1ee/0x320 net/mptcp/pm.c:1008
-  mptcp_worker+0xd5/0x1170 net/mptcp/protocol.c:2762
-  process_one_work kernel/workqueue.c:3263 [inline]
-  process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3346
-  worker_thread+0x8a0/0xda0 kernel/workqueue.c:3427
-  kthread+0x711/0x8a0 kernel/kthread.c:463
-  ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
-Freed by task 6630:
-  kasan_save_stack mm/kasan/common.c:56 [inline]
-  kasan_save_track+0x3e/0x80 mm/kasan/common.c:77
-  __kasan_save_free_info+0x46/0x50 mm/kasan/generic.c:587
-  kasan_save_free_info mm/kasan/kasan.h:406 [inline]
-  poison_slab_object mm/kasan/common.c:252 [inline]
-  __kasan_slab_free+0x5c/0x80 mm/kasan/common.c:284
-  kasan_slab_free include/linux/kasan.h:234 [inline]
-  slab_free_hook mm/slub.c:2523 [inline]
-  slab_free mm/slub.c:6611 [inline]
-  kfree+0x197/0x950 mm/slub.c:6818
-  mptcp_remove_anno_list_by_saddr+0x2d/0x40 net/mptcp/pm.c:158
-  mptcp_pm_flush_addrs_and_subflows net/mptcp/pm_kernel.c:1209 [inline]
-  mptcp_nl_flush_addrs_list net/mptcp/pm_kernel.c:1240 [inline]
-  mptcp_pm_nl_flush_addrs_doit+0x593/0xbb0 net/mptcp/pm_kernel.c:1281
-  genl_family_rcv_msg_doit+0x215/0x300 net/netlink/genetlink.c:1115
-  genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
-  genl_rcv_msg+0x60e/0x790 net/netlink/genetlink.c:1210
-  netlink_rcv_skb+0x208/0x470 net/netlink/af_netlink.c:2552
-  genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
-  netlink_unicast_kernel net/netlink/af_netlink.c:1320 [inline]
-  netlink_unicast+0x846/0xa10 net/netlink/af_netlink.c:1346
-  netlink_sendmsg+0x805/0xb30 net/netlink/af_netlink.c:1896
-  sock_sendmsg_nosec net/socket.c:727 [inline]
-  __sock_sendmsg+0x21c/0x270 net/socket.c:742
-  ____sys_sendmsg+0x508/0x820 net/socket.c:2630
-  ___sys_sendmsg+0x21f/0x2a0 net/socket.c:2684
-  __sys_sendmsg net/socket.c:2716 [inline]
-  __do_sys_sendmsg net/socket.c:2721 [inline]
-  __se_sys_sendmsg net/socket.c:2719 [inline]
-  __x64_sys_sendmsg+0x1a1/0x260 net/socket.c:2719
-  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-  do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202511111411.9ebfa1ba-lkp@intel.com
+Analyzed-by: Christoph Hellwig <hch@lst.de>
+Fixes: bdfedb76f4f5 ("mm, mempool: poison elements backed by slab allocator")
 Cc: stable@vger.kernel.org
-Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
-Reported-by: syzbot+2a6fbf0f0530375968df@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/691ad3c3.a70a0220.f6df1.0004.GAE@google.com
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Geliang Tang <geliang@kernel.org>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251117100745.1913963-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ applied changes to pm_netlink.c instead of pm.c ]
+Tested-by: kernel test robot <oliver.sang@intel.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://patch.msgid.link/20251113-mempool-poison-v1-1-233b3ef984c3@suse.cz
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_netlink.c |   20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ mm/mempool.c |   32 ++++++++++++++++++++++++++------
+ 1 file changed, 26 insertions(+), 6 deletions(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -36,6 +36,7 @@ struct mptcp_pm_add_entry {
- 	struct timer_list	add_timer;
- 	struct mptcp_sock	*sock;
- 	u8			retrans_times;
-+	struct rcu_head		rcu;
- };
+--- a/mm/mempool.c
++++ b/mm/mempool.c
+@@ -62,10 +62,20 @@ static void check_element(mempool_t *poo
+ 	} else if (pool->free == mempool_free_pages) {
+ 		/* Mempools backed by page allocator */
+ 		int order = (int)(long)pool->pool_data;
+-		void *addr = kmap_local_page((struct page *)element);
  
- /* max value of mptcp_addr_info.id */
-@@ -366,22 +367,27 @@ mptcp_pm_del_add_timer(struct mptcp_sock
- {
- 	struct mptcp_pm_add_entry *entry;
- 	struct sock *sk = (struct sock *)msk;
--	struct timer_list *add_timer = NULL;
-+	bool stop_timer = false;
+-		__check_element(pool, addr, 1UL << (PAGE_SHIFT + order));
+-		kunmap_local(addr);
++#ifdef CONFIG_HIGHMEM
++		for (int i = 0; i < (1 << order); i++) {
++			struct page *page = (struct page *)element;
++			void *addr = kmap_local_page(page + i);
 +
-+	rcu_read_lock();
- 
- 	spin_lock_bh(&msk->pm.lock);
- 	entry = mptcp_lookup_anno_list_by_saddr(msk, addr);
- 	if (entry && (!check_id || entry->addr.id == addr->id)) {
- 		entry->retrans_times = ADD_ADDR_RETRANS_MAX;
--		add_timer = &entry->add_timer;
-+		stop_timer = true;
- 	}
- 	if (!check_id && entry)
- 		list_del(&entry->list);
- 	spin_unlock_bh(&msk->pm.lock);
- 
--	/* no lock, because sk_stop_timer_sync() is calling del_timer_sync() */
--	if (add_timer)
--		sk_stop_timer_sync(sk, add_timer);
-+	/* Note: entry might have been removed by another thread.
-+	 * We hold rcu_read_lock() to ensure it is not freed under us.
-+	 */
-+	if (stop_timer)
-+		sk_stop_timer_sync(sk, &entry->add_timer);
- 
-+	rcu_read_unlock();
- 	return entry;
- }
- 
-@@ -430,7 +436,7 @@ void mptcp_pm_free_anno_list(struct mptc
- 
- 	list_for_each_entry_safe(entry, tmp, &free_list, list) {
- 		sk_stop_timer_sync(sk, &entry->add_timer);
--		kfree(entry);
-+		kfree_rcu(entry, rcu);
++			__check_element(pool, addr, PAGE_SIZE);
++			kunmap_local(addr);
++		}
++#else
++		void *addr = page_address((struct page *)element);
++
++		__check_element(pool, addr, PAGE_SIZE << order);
++#endif
  	}
  }
  
-@@ -1425,7 +1431,7 @@ static bool remove_anno_list_by_saddr(st
+@@ -85,10 +95,20 @@ static void poison_element(mempool_t *po
+ 	} else if (pool->alloc == mempool_alloc_pages) {
+ 		/* Mempools backed by page allocator */
+ 		int order = (int)(long)pool->pool_data;
+-		void *addr = kmap_local_page((struct page *)element);
  
- 	entry = mptcp_pm_del_add_timer(msk, addr, false);
- 	if (entry) {
--		kfree(entry);
-+		kfree_rcu(entry, rcu);
- 		return true;
+-		__poison_element(addr, 1UL << (PAGE_SHIFT + order));
+-		kunmap_local(addr);
++#ifdef CONFIG_HIGHMEM
++		for (int i = 0; i < (1 << order); i++) {
++			struct page *page = (struct page *)element;
++			void *addr = kmap_local_page(page + i);
++
++			__poison_element(addr, PAGE_SIZE);
++			kunmap_local(addr);
++		}
++#else
++		void *addr = page_address((struct page *)element);
++
++		__poison_element(addr, PAGE_SIZE << order);
++#endif
  	}
- 
+ }
+ #else /* CONFIG_DEBUG_SLAB || CONFIG_SLUB_DEBUG_ON */
 
 
 
