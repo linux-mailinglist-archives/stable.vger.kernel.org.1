@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-198918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EB66C9FD2E
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:08:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77EDBC9F99E
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:44:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9562930014D4
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:08:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 66381301765F
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:39:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB49434FF64;
-	Wed,  3 Dec 2025 16:08:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33570303A3D;
+	Wed,  3 Dec 2025 15:39:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OxXq/Rny"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xIhikIVd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906BD34FF62;
-	Wed,  3 Dec 2025 16:08:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5196303C91;
+	Wed,  3 Dec 2025 15:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778097; cv=none; b=kQ8xmFwG5jjzQA9/XUcF65vgq6t4TxQyPz1aOZHzzxkQzGHBkfsSBZGTH5BaFAD606iOOm0V3k/zctpCuIEwstQbFHU7NCz1qWxKhtj3sYQlQVlSqo+OZkcO3219sCXllSIPTUUYN5PB0hTMmM+yKJvE1N3h4KQqnhzJE5X4Bzg=
+	t=1764776350; cv=none; b=LKc0zsJkLS7EG5ZqL+M+7UgKMuBbq4ANEyLwps2Dfukhqf08nS26L64Be1Dhq8ICfJTZPoE6MYxLqq7AgW8VDMqn5RbwHDDK3putqgMKbl8NPW7am8HEVzB/fK9FxT4rODKNtysbJQ93YQftghLlV7M4mUq2zj9iGgoDzE1EJQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778097; c=relaxed/simple;
-	bh=vgpXBf5giiDLnhyPFU7DcnYlte+zXwVWcSX3RnEOMpU=;
+	s=arc-20240116; t=1764776350; c=relaxed/simple;
+	bh=VeYYyj6gRHBy9urlgqmLi8spTG2hRmC87yDKDgjULBg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WgsAxcKNPKl5t7iZAdGaYNQkH1bw/FEtAAISRRCDh8lMhRbicq8FuOeJMNQmTDAKf2Z5SKq/p/aoSCXm3isE+cVFC7LkzfSZ5d2xSJhi/QupoURivajH437rKGs0gqDWTXOa4iWigBGTP5gR4W6yErGYZ6NnKFMvrWL0X7aweo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OxXq/Rny; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E649C116B1;
-	Wed,  3 Dec 2025 16:08:16 +0000 (UTC)
+	 MIME-Version; b=fRY74Pai3ocPvAdLQ11SNxwWJ2/qywswtH5AN5crQ5G/S6KWXL7RMAOKBH+VzZmMRFMQw0Arq1mUJ4CvTUgD/b3YSATHDxmPQTTSmlHIBg89j4g6HqmtuZZDQnwGwcnK+GZOLmH+mTPpmgUVooNOG/y4aqHB9rB93KU9P3FuOTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xIhikIVd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54FC2C4CEF5;
+	Wed,  3 Dec 2025 15:39:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778097;
-	bh=vgpXBf5giiDLnhyPFU7DcnYlte+zXwVWcSX3RnEOMpU=;
+	s=korg; t=1764776349;
+	bh=VeYYyj6gRHBy9urlgqmLi8spTG2hRmC87yDKDgjULBg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OxXq/RnyjjFdIhQEtWkReOVSAkShryq1k1YF+EcKQOvRtZ8V2WQU9Usxm/Afpab2d
-	 PexpvDMe5jxdPZT+0IpY/UqqccZsHCuidPLYpaU8kRb6ReSweHzL2xBh+3nsMF8pUR
-	 02gzu6+P7GmKrW7+F/9Behl3QPjg1vXqF46o6Q/Y=
+	b=xIhikIVd9i8VLBEbTgHwHzUnxQZxJ3Ank4bJZzugfqZ/pMF60waNpMWLePEl872aN
+	 sdzDcTVm0o5NHgSCe05/Ln914sm4Zew8gmK5+Nmp2G2KzOClzG/rS52wAcetb9ADYz
+	 tAjFHN5y4V12ONMOUr+Ep/2OIIuZBh9z77BMLYXE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Willem de Bruijn <willemb@google.com>,
-	Anubhav Singh <anubhavsinggh@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Alex Markuze <amarkuze@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 210/392] selftests/net: fix out-of-order delivery of FIN in gro:tcp test
+Subject: [PATCH 5.10 156/300] ceph: add checking of wait_for_completion_killable() return value
 Date: Wed,  3 Dec 2025 16:26:00 +0100
-Message-ID: <20251203152421.800207540@linuxfoundation.org>
+Message-ID: <20251203152406.397438748@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anubhav Singh <anubhavsinggh@google.com>
+From: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
 
-[ Upstream commit 02d064de05b1fcca769391fa82d205bed8bb9bf0 ]
+[ Upstream commit b7ed1e29cfe773d648ca09895b92856bd3a2092d ]
 
-Due to the gro_sender sending data packets and FIN packets
-in very quick succession, these are received almost simultaneously
-by the gro_receiver. FIN packets are sometimes processed before the
-data packets leading to intermittent (~1/100) test failures.
+The Coverity Scan service has detected the calling of
+wait_for_completion_killable() without checking the return
+value in ceph_lock_wait_for_completion() [1]. The CID 1636232
+defect contains explanation: "If the function returns an error
+value, the error value may be mistaken for a normal value.
+In ceph_lock_wait_for_completion(): Value returned from
+a function is not checked for errors before being used. (CWE-252)".
 
-This change adds a delay of 100ms before sending FIN packets
-in gro:tcp test to avoid the out-of-order delivery. The same
-mitigation already exists for the gro:ip test.
+The patch adds the checking of wait_for_completion_killable()
+return value and return the error code from
+ceph_lock_wait_for_completion().
 
-Fixes: 7d1575014a63 ("selftests/net: GRO coalesce test")
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: Anubhav Singh <anubhavsinggh@google.com>
-Link: https://patch.msgid.link/20251030062818.1562228-1-anubhavsinggh@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[1] https://scan5.scan.coverity.com/#/project-view/64304/10063?selectedIssue=1636232
+
+Signed-off-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Reviewed-by: Alex Markuze <amarkuze@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/gro.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/ceph/locks.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/gro.c b/tools/testing/selftests/net/gro.c
-index cf37ce86b0fd0..687ab5e7cecf1 100644
---- a/tools/testing/selftests/net/gro.c
-+++ b/tools/testing/selftests/net/gro.c
-@@ -801,6 +801,7 @@ static void check_recv_pkts(int fd, int *correct_payload,
+diff --git a/fs/ceph/locks.c b/fs/ceph/locks.c
+index 674d6ea89f717..642582a642a3a 100644
+--- a/fs/ceph/locks.c
++++ b/fs/ceph/locks.c
+@@ -202,7 +202,10 @@ static int ceph_lock_wait_for_completion(struct ceph_mds_client *mdsc,
+ 	if (err && err != -ERESTARTSYS)
+ 		return err;
  
- static void gro_sender(void)
- {
-+	const int fin_delay_us = 100 * 1000;
- 	static char fin_pkt[MAX_HDR_LEN];
- 	struct sockaddr_ll daddr = {};
- 	int txfd = -1;
-@@ -844,15 +845,22 @@ static void gro_sender(void)
- 		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
- 	} else if (strcmp(testname, "tcp") == 0) {
- 		send_changed_checksum(txfd, &daddr);
-+		/* Adding sleep before sending FIN so that it is not
-+		 * received prior to other packets.
-+		 */
-+		usleep(fin_delay_us);
- 		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
+-	wait_for_completion_killable(&req->r_safe_completion);
++	err = wait_for_completion_killable(&req->r_safe_completion);
++	if (err)
++		return err;
++
+ 	return 0;
+ }
  
- 		send_changed_seq(txfd, &daddr);
-+		usleep(fin_delay_us);
- 		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
- 
- 		send_changed_ts(txfd, &daddr);
-+		usleep(fin_delay_us);
- 		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
- 
- 		send_diff_opt(txfd, &daddr);
-+		usleep(fin_delay_us);
- 		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
- 	} else if (strcmp(testname, "ip") == 0) {
- 		send_changed_ECN(txfd, &daddr);
 -- 
 2.51.0
 
