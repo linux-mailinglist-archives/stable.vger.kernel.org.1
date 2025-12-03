@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-198872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D9C6C9FD85
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:14:01 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A283C9F956
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:43:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B17653047449
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:05:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A9C4930435E0
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:37:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82D5F34F488;
-	Wed,  3 Dec 2025 16:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 329C4313523;
+	Wed,  3 Dec 2025 15:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kz358T9n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vWuVGkFn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E521303A28;
-	Wed,  3 Dec 2025 16:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E23D6304BC2;
+	Wed,  3 Dec 2025 15:36:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777949; cv=none; b=Sy8lPDh+ZK4vVzk1WL7b2q8oS3Pgx/JqjCPFzhb1Fho7Ze/qhDz5b5WJsVUGXbSoiGm/Dfq8za7tqai1eTY0X2Qj+yGxRr2GwaLzeLE3tURhPewDqBIlNbPu6TztS0zA1z56k5v+oZucZV04hmbjXUgVrPLXM+YBbVo7eaMUH4Q=
+	t=1764776213; cv=none; b=HkbiLZOlMqP/WPgSKneOTRh7kBmyLkBziNwP/Ev7wHkNnIRnQNMJk3Vz6yB7q5rOXc/HXIhskqPR0naPK0gepylMl86m5dyNd8NGoZy5FOurfErM6vWulWVFVNSSMvTyLARHkahjDH2uz0QMLkUoBgQ1ToHaB9a+qYwe3tBYyts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777949; c=relaxed/simple;
-	bh=CjX3aGpVCDhmAzi8YhGSRskYhNWREVkn8rkZMiOTz/8=;
+	s=arc-20240116; t=1764776213; c=relaxed/simple;
+	bh=1xO0ggLUYr0EYcVOby4DEr4K5qnGqWlFW1mC0sswOKQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V4V62LNO5Kpv5r44HdfZk3dk5dJGuBt/7m7yJ80t42Lp5cSkx/THjiaw4AuCeAhWnmJ7f5iI67yMLecBEQrkDwE8pndAgzoIzX9SFwPhhMjXGfpwHFnSRdEJbdpxr1bzIYMRAXs0mC6vKZ5EgVKD2l4HAHH45FOSHxZTChJt2qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kz358T9n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D50FC4CEF5;
-	Wed,  3 Dec 2025 16:05:48 +0000 (UTC)
+	 MIME-Version; b=WQvW/ZWdypK8n5QozQawwZ77srg8UxKir09/u5QllbXbBu1UmxgymkHswHpQDyiW2XuskO8uE3sGe3qn6tvweKVdAyeE1AlQRFZVgaBKRHNgNo5wDlbMJ7hqS3i2H2VRzzhHXd+FOg5F0/d2y4ayoer8Gez5jvFX0nPKbvzpVYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vWuVGkFn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E44EC4CEF5;
+	Wed,  3 Dec 2025 15:36:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777949;
-	bh=CjX3aGpVCDhmAzi8YhGSRskYhNWREVkn8rkZMiOTz/8=;
+	s=korg; t=1764776212;
+	bh=1xO0ggLUYr0EYcVOby4DEr4K5qnGqWlFW1mC0sswOKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kz358T9nhCFRR9QyLAKreYzRko3isLMxdnyicQSbRsJURdh8Bman0Sc8RxqpCq/gi
-	 /zhsYsSv8GK1NJzk+vzWcLEWMZ9MBtTYoL3u5PZOh3OdYwWunO7W0EDPvQ7By6j2wj
-	 snu1ZanS/00N9G0RTTsFcp9Lem+GeYF6Kf6s0hIU=
+	b=vWuVGkFnAVRpemzFIOiTj96yhujzOx908O8WYsz+Vcrko+7zAh3mkI9WYcAH59jQ1
+	 7zgaUYqJIz2SI3UYdNVejJR6R3+HJq8dyQ2ME8+r2Q1Ov5LZYP+ykhxpF4saT90ND3
+	 8OuQj6E+5rB9HCcxxNmUC0AILhp61fEVGohjfmTs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Brahmajit Das <listout@listout.xyz>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	David Ahern <dsahern@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 169/392] net: intel: fm10k: Fix parameter idx set but not used
+Subject: [PATCH 5.10 115/300] selftests: Disable dad for ipv6 in fcnal-test.sh
 Date: Wed,  3 Dec 2025 16:25:19 +0100
-Message-ID: <20251203152420.297457584@linuxfoundation.org>
+Message-ID: <20251203152404.879885489@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,94 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brahmajit Das <listout@listout.xyz>
+From: David Ahern <dsahern@kernel.org>
 
-[ Upstream commit 99e9c5ffbbee0f258a1da4eadf602b943f8c8300 ]
+[ Upstream commit 53d591730ea34f97a82f7ec6e7c987ca6e34dc21 ]
 
-Variable idx is set in the loop, but is never used resulting in dead
-code. Building with GCC 16, which enables
--Werror=unused-but-set-parameter= by default results in build error.
-This patch removes the idx parameter, since all the callers of the
-fm10k_unbind_hw_stats_q as 0 as idx anyways.
+Constrained test environment; duplicate address detection is not needed
+and causes races so disable it.
 
-Suggested-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Signed-off-by: Brahmajit Das <listout@listout.xyz>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250910025828.38900-1-dsahern@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/fm10k/fm10k_common.c | 5 ++---
- drivers/net/ethernet/intel/fm10k/fm10k_common.h | 2 +-
- drivers/net/ethernet/intel/fm10k/fm10k_pf.c     | 2 +-
- drivers/net/ethernet/intel/fm10k/fm10k_vf.c     | 2 +-
- 4 files changed, 5 insertions(+), 6 deletions(-)
+ tools/testing/selftests/net/fcnal-test.sh | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/fm10k/fm10k_common.c b/drivers/net/ethernet/intel/fm10k/fm10k_common.c
-index f51a63fca513e..1f919a50c7653 100644
---- a/drivers/net/ethernet/intel/fm10k/fm10k_common.c
-+++ b/drivers/net/ethernet/intel/fm10k/fm10k_common.c
-@@ -447,17 +447,16 @@ void fm10k_update_hw_stats_q(struct fm10k_hw *hw, struct fm10k_hw_stats_q *q,
- /**
-  *  fm10k_unbind_hw_stats_q - Unbind the queue counters from their queues
-  *  @q: pointer to the ring of hardware statistics queue
-- *  @idx: index pointing to the start of the ring iteration
-  *  @count: number of queues to iterate over
-  *
-  *  Function invalidates the index values for the queues so any updates that
-  *  may have happened are ignored and the base for the queue stats is reset.
-  **/
--void fm10k_unbind_hw_stats_q(struct fm10k_hw_stats_q *q, u32 idx, u32 count)
-+void fm10k_unbind_hw_stats_q(struct fm10k_hw_stats_q *q, u32 count)
- {
- 	u32 i;
+diff --git a/tools/testing/selftests/net/fcnal-test.sh b/tools/testing/selftests/net/fcnal-test.sh
+index acffe0029fdd1..806c409de124e 100755
+--- a/tools/testing/selftests/net/fcnal-test.sh
++++ b/tools/testing/selftests/net/fcnal-test.sh
+@@ -400,6 +400,8 @@ create_ns()
+ 	ip netns exec ${ns} sysctl -qw net.ipv6.conf.all.keep_addr_on_down=1
+ 	ip netns exec ${ns} sysctl -qw net.ipv6.conf.all.forwarding=1
+ 	ip netns exec ${ns} sysctl -qw net.ipv6.conf.default.forwarding=1
++	ip netns exec ${ns} sysctl -qw net.ipv6.conf.default.accept_dad=0
++	ip netns exec ${ns} sysctl -qw net.ipv6.conf.all.accept_dad=0
+ }
  
--	for (i = 0; i < count; i++, idx++, q++) {
-+	for (i = 0; i < count; i++, q++) {
- 		q->rx_stats_idx = 0;
- 		q->tx_stats_idx = 0;
- 	}
-diff --git a/drivers/net/ethernet/intel/fm10k/fm10k_common.h b/drivers/net/ethernet/intel/fm10k/fm10k_common.h
-index 4c48fb73b3e78..13fca6a91a01b 100644
---- a/drivers/net/ethernet/intel/fm10k/fm10k_common.h
-+++ b/drivers/net/ethernet/intel/fm10k/fm10k_common.h
-@@ -43,6 +43,6 @@ u32 fm10k_read_hw_stats_32b(struct fm10k_hw *hw, u32 addr,
- void fm10k_update_hw_stats_q(struct fm10k_hw *hw, struct fm10k_hw_stats_q *q,
- 			     u32 idx, u32 count);
- #define fm10k_unbind_hw_stats_32b(s) ((s)->base_h = 0)
--void fm10k_unbind_hw_stats_q(struct fm10k_hw_stats_q *q, u32 idx, u32 count);
-+void fm10k_unbind_hw_stats_q(struct fm10k_hw_stats_q *q, u32 count);
- s32 fm10k_get_host_state_generic(struct fm10k_hw *hw, bool *host_ready);
- #endif /* _FM10K_COMMON_H_ */
-diff --git a/drivers/net/ethernet/intel/fm10k/fm10k_pf.c b/drivers/net/ethernet/intel/fm10k/fm10k_pf.c
-index af1b0cde36703..8fb99fa7ae600 100644
---- a/drivers/net/ethernet/intel/fm10k/fm10k_pf.c
-+++ b/drivers/net/ethernet/intel/fm10k/fm10k_pf.c
-@@ -1509,7 +1509,7 @@ static void fm10k_rebind_hw_stats_pf(struct fm10k_hw *hw,
- 	fm10k_unbind_hw_stats_32b(&stats->nodesc_drop);
- 
- 	/* Unbind Queue Statistics */
--	fm10k_unbind_hw_stats_q(stats->q, 0, hw->mac.max_queues);
-+	fm10k_unbind_hw_stats_q(stats->q, hw->mac.max_queues);
- 
- 	/* Reinitialize bases for all stats */
- 	fm10k_update_hw_stats_pf(hw, stats);
-diff --git a/drivers/net/ethernet/intel/fm10k/fm10k_vf.c b/drivers/net/ethernet/intel/fm10k/fm10k_vf.c
-index dc8ccd378ec92..6a3aebd56e6c4 100644
---- a/drivers/net/ethernet/intel/fm10k/fm10k_vf.c
-+++ b/drivers/net/ethernet/intel/fm10k/fm10k_vf.c
-@@ -465,7 +465,7 @@ static void fm10k_rebind_hw_stats_vf(struct fm10k_hw *hw,
- 				     struct fm10k_hw_stats *stats)
- {
- 	/* Unbind Queue Statistics */
--	fm10k_unbind_hw_stats_q(stats->q, 0, hw->mac.max_queues);
-+	fm10k_unbind_hw_stats_q(stats->q, hw->mac.max_queues);
- 
- 	/* Reinitialize bases for all stats */
- 	fm10k_update_hw_stats_vf(hw, stats);
+ # create veth pair to connect namespaces and apply addresses.
 -- 
 2.51.0
 
