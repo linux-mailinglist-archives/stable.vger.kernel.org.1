@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-198883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C94D2C9FCC8
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:06:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D671CC9F992
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:44:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C06C83001FFF
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:06:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0F2D73007CAC
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:43:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3453034DCE3;
-	Wed,  3 Dec 2025 16:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E18E6313E2D;
+	Wed,  3 Dec 2025 15:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="awF8dsOL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JGxIjJRZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD4022F0699;
-	Wed,  3 Dec 2025 16:06:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BFA7313538;
+	Wed,  3 Dec 2025 15:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777986; cv=none; b=uR5pTBT1OCzXEUQ4BoQugB98LTf9k40ax6rOs2DfYzCXODnj4Mxi7fiEC/Zo4TcmqIys39hlnT0Mhh66QK5Idr2PuLsUwXEXGYua0ipfihC/hXt4WVelp8d8LZx/EP4/+xBQgXfp++zUJ/dYIRHK9pxVlJFqmoINF9bjmZuUT5Q=
+	t=1764776232; cv=none; b=nsAGVK4Im7+NItXif3qJ2t0f4FzfSjtZGNtu0zPU8b23fl5//M26FNNZmiU8awftLXRPvmaxKAe3xux7ataPpeAfcRWTM4XfXdytdeObnb5txwPOGstqu7RTAvAKyZXrnQEDJwZso6hLH75ji7YF9p7JVxvY2XEJMqdVK9R8mOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777986; c=relaxed/simple;
-	bh=6RrupVN9P89tCnRXACMhYDiiA+OtOlXq4EkwCBCyGAs=;
+	s=arc-20240116; t=1764776232; c=relaxed/simple;
+	bh=K/pnlAbI45SqbXM8YUVdLiMw6bj+RhLxaAviVyHsl98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qTFuT/4MtzCKF3m3ns8qKrQBvADN1yCGGBoTPdyNQFZ2OBPxS2xRBA+OS7BRO2E2aZ2meDrLqMgQvyVBY2xyQaFNBei7+LowojP9IHavP+zHGFaCjZgviP6uc6zHBK5XGuUNtXg+qY8g0M7DxJ7LOUEuPeHwdZgnjL1ZyVmUy40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=awF8dsOL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1230EC4CEF5;
-	Wed,  3 Dec 2025 16:06:23 +0000 (UTC)
+	 MIME-Version; b=cmBsZQqwTB5EOznFZObHoOPvNW4jYoREgzaDLf92LJnmLc9s7fBoAu60N0FUpl2BQ65aJdJJSW5crdTUVqtCCeOt8i7sLOi9E3Nq1O1L674gWOe0PkMjMSqSnnT/J5HPd8r0dOhrS8CPXJK68cmgc5vB/MfYHX840VwPbLOAfz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JGxIjJRZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F30A3C4CEF5;
+	Wed,  3 Dec 2025 15:37:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777984;
-	bh=6RrupVN9P89tCnRXACMhYDiiA+OtOlXq4EkwCBCyGAs=;
+	s=korg; t=1764776232;
+	bh=K/pnlAbI45SqbXM8YUVdLiMw6bj+RhLxaAviVyHsl98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=awF8dsOLDJdILQXmctZBAZ+tjAm7Eie/pw/QKiZQSFOHHVoQcLNyJJHVY3uehdKgb
-	 DyiwwflxPK1pfs3thUVsYPct07TqZ+O5vh2hdw89sUc0Sh4Lx046SrXFnsQvC3Cq0O
-	 lUy0UB0TrJEApILXc5NkHLXhQuCRzpTZuyDxHFkA=
+	b=JGxIjJRZltVqWNY08q94cayDgMaZDqPaj2VHs/YebIemPf9Trv4FCfEqHPCBa7TDd
+	 p0Z+sUmXUwYdZkMAHTeBGq4iLEgdIzaS4bsVLKR5T78hwu/WHU6Tm8c/hpDvNSibaM
+	 Gnuz47DcvJLn41tGO0atCrMGsuaybtIzpXhhrdzc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Nai-Chen Cheng <bleach1827@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 174/392] NFSv4: handle ERR_GRACE on delegation recalls
+Subject: [PATCH 5.10 120/300] selftests/Makefile: include $(INSTALL_DEP_TARGETS) in clean target to clean net/lib dependency
 Date: Wed,  3 Dec 2025 16:25:24 +0100
-Message-ID: <20251203152420.480736117@linuxfoundation.org>
+Message-ID: <20251203152405.062951873@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Kornievskaia <okorniev@redhat.com>
+From: Nai-Chen Cheng <bleach1827@gmail.com>
 
-[ Upstream commit be390f95242785adbf37d7b8a5101dd2f2ba891b ]
+[ Upstream commit d3f7457da7b9527a06dbcbfaf666aa51ac2eeb53 ]
 
-RFC7530 states that clients should be prepared for the return of
-NFS4ERR_GRACE errors for non-reclaim lock and I/O requests.
+The selftests 'make clean' does not clean the net/lib because it only
+processes $(TARGETS) and ignores $(INSTALL_DEP_TARGETS). This leaves
+compiled objects in net/lib after cleaning, requiring manual cleanup.
 
-Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Include $(INSTALL_DEP_TARGETS) in clean target to ensure net/lib
+dependency is properly cleaned.
+
+Signed-off-by: Nai-Chen Cheng <bleach1827@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Simon Horman <horms@kernel.org> # build-tested
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Link: https://patch.msgid.link/20250910-selftests-makefile-clean-v1-1-29e7f496cd87@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4proc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index a98b10c85b700..1c62c4314173e 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -7613,10 +7613,10 @@ int nfs4_lock_delegation_recall(struct file_lock *fl, struct nfs4_state *state,
- 		return err;
- 	do {
- 		err = _nfs4_do_setlk(state, F_SETLK, fl, NFS_LOCK_NEW);
--		if (err != -NFS4ERR_DELAY)
-+		if (err != -NFS4ERR_DELAY && err != -NFS4ERR_GRACE)
- 			break;
- 		ssleep(1);
--	} while (err == -NFS4ERR_DELAY);
-+	} while (err == -NFS4ERR_DELAY || err == -NFSERR_GRACE);
- 	return nfs4_handle_delegation_recall_error(server, state, stateid, fl, err);
- }
+diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
+index db1e24d7155fa..1d33d2d298dfc 100644
+--- a/tools/testing/selftests/Makefile
++++ b/tools/testing/selftests/Makefile
+@@ -257,7 +257,7 @@ gen_tar: install
+ 	@echo "Created ${TAR_PATH}"
  
+ clean:
+-	@for TARGET in $(TARGETS); do \
++	@for TARGET in $(TARGETS) $(INSTALL_DEP_TARGETS); do \
+ 		BUILD_TARGET=$$BUILD/$$TARGET;	\
+ 		$(MAKE) OUTPUT=$$BUILD_TARGET -C $$TARGET clean;\
+ 	done;
 -- 
 2.51.0
 
