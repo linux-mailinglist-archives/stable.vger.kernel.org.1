@@ -1,54 +1,110 @@
-Return-Path: <stable+bounces-198191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F350FC9EDA2
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 12:35:55 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7A61C9EDFF
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 12:43:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7F1B3A6060
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 11:35:54 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 643844E495C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 11:43:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D2442F3C39;
-	Wed,  3 Dec 2025 11:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5EB82F1FEA;
+	Wed,  3 Dec 2025 11:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="X4ntlmj7"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="F29uoVtw"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f228.google.com (mail-qk1-f228.google.com [209.85.222.228])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85EC9278161
-	for <stable@vger.kernel.org>; Wed,  3 Dec 2025 11:35:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 138C22F5A02
+	for <stable@vger.kernel.org>; Wed,  3 Dec 2025 11:43:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.228
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764761751; cv=none; b=N6HNo5P1uEBqzsK2RXlcs+PzUUemNX/5FJbMXID9ls49fyKdKAd2zEYuQ1sxU8ghGmqQ3kTDWBMJCNGrCkq/vY+rLpD8eo20OBjaD6Lf/M17UxaA34HjLJrZ4r11ii1576UACjOB1imI4NvYEB23fFtnDVxafp+7VGLr7gnEh5o=
+	t=1764762207; cv=none; b=J31pwNPRaeUFiPkk4/wl3oUUEfg6uQI8s53I/Ffm49HF1rSGLT4lBOkf+hDRW3/LMS5+LSFEgiF6ORvfBvKNIBiI46zXFSB21g3hPBaggJHg0oGlBM3RP7425/fDnWQZoZUsQjUKeR2U1HibyjcXYF8uwPHE2o/PtxwEMAxm3mE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764761751; c=relaxed/simple;
-	bh=ihDwiZJdkab5PrrlCLCTIEN7z83GYgkXdV1/u9FcJDA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kK8JAJZUFmncAywVtXlTFd6PYUYFmsJUQmBopPWoWsLC3q/uRLq8AoB5/MD292xjNXNjMuUMSXEcMlkiMQwM8MYnD9routtC16PSLP6GRS49Ri629uP+yoT7qByKuP5w4m0swXgw+ZL+apCxvJ1CsL4WyIci1FWkgbAf4uqs8xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=X4ntlmj7; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=y7
-	CgB7qJpEzR/35qS0l7nMX4H1RxSNftD60L8UtGQxQ=; b=X4ntlmj7kk9KojYU1W
-	r81bIRwWSGGVoFSZXcYrqU8IYTkd2HwUZWzcfqV6NMrCelavoR8+QrSbupWsKFOH
-	iuk9X7dlJZ9G2zNt04vnwGaYQUx+eRCOY3TCb+thBjEnuePo+EF5D9t96PcQbZwG
-	XAvvbmqfDVPtdVpZUhRalwESU=
-Received: from ubuntu24.. (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id PCgvCgCXAt4DHjBp5cdYFw--.28792S4;
-	Wed, 03 Dec 2025 19:25:01 +0800 (CST)
-From: jetlan9@163.com
-To: stable@vger.kernel.org
-Cc: Alan Stern <stern@rowland.harvard.edu>,
-	syzbot+b63d677d63bcac06cf90@syzkaller.appspotmail.com,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Wenshan Lan <jetlan9@163.com>
-Subject: [PATCH 6.1.y] HID: core: Harden s32ton() against conversion to 0 bits
-Date: Wed,  3 Dec 2025 11:24:50 +0000
-Message-ID: <20251203112450.4314-1-jetlan9@163.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1764762207; c=relaxed/simple;
+	bh=jHvcw93pij0zT9T64vqa15EoUwp17wtdheQYlCkPZdk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=oV46m7FcN/hvZpokJBDZuBcYckiob3AZTmPMwo8NGdW00BtsNkaP3BM5VamflcmNaHNFD3997ahJohJosG2EdZblmMNeP5DZJRMG0nwTuDyRxihPM49GMSHt01UvxPDlaYC32w058gI+B6oyKQdGenZAw+SApZWmNTEV4isuzzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=F29uoVtw; arc=none smtp.client-ip=209.85.222.228
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-qk1-f228.google.com with SMTP id af79cd13be357-8b22624bcdaso759442085a.3
+        for <stable@vger.kernel.org>; Wed, 03 Dec 2025 03:43:25 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764762205; x=1765367005;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xfKxGcIt7PpDGlUMG/YhMtCzZ0SJhEy//FNn25168d8=;
+        b=KGPft3k8Ehs/7WGRKR/qJlJXozV+IdHTb7ohtDSuWy28ftdOlfW4u5ulMFfIaK0NJR
+         vY1XRb1fItIc0NzN7f3LrbG0HZOB/Gg85LQn8EdYpiCxUPKwU054L4eOoX8G2IKNPf0+
+         gORuZC4ObrN6e6uk4tnQdyDUIdHm7OYCQR++H5yhNfS4Um5VsXVvE3FQ5CrOerg+s9wF
+         C3JE4yfmLvpc+Ji75PSC0SmFyKeEy/QU+G5k53Xzd36wmnpWb9i3LLPoLAMCBJRGcPwt
+         J9jZZ9AJ6+5P+YeLglOqJ8u6884dqdxmDwdg1Cc5vRzBfSF+MCSXTuChJ3mMFKnuVQbf
+         02+g==
+X-Gm-Message-State: AOJu0Yyc4+v8vmsNwqxqFyaTevi6rZbpz8CklY8NFbhWuapy+f2+x/ma
+	bepuadPTBo12EqR4FChybUuEVgJafNBPI3MF+o36+lWkaqB6XY+QoW4O6Hjjd3AFf8sB4+hooPk
+	6jNwJnHmlnByePH+SaIDgbANBe8QP3nTdNwdouor9n/Y8UrKaPMroRZBA56g6P6a496TVbDXxnv
+	0awnul+rP6Sft5DP9qzui2snI4myaH0IqbjX6PumJ6lmtJImXF9roEOEmzTZJttP1aC9zAWnKlT
+	Pf7SLK1UI4=
+X-Gm-Gg: ASbGnctlNh98Rbck//yVVp0yEeMeMSAIEOmp8B4Oed3ATf0TgGk+DXiJgtHC44Yiczg
+	pm1GV6YVjTtUtN0BsupMzFEI/hCyT5KcT+JPTuiJKpziPVjXV5etXJXJis/KZ7ozDaXyqvTmTA6
+	Bgkcolsg1XYwH3Wh58x3dCu3ESdRtUGRPY5qURZho4NUeCxVAdeJm0y04/08w6x5u1iDXIeMhEe
+	vk7jePVbDxzOg8W3+PCYYt12mTcyiCRrj0G94O2XOpJHtiBGteGPAnGo75fFBUhqtgYfSzYJslf
+	gIWjmfiGMDIg1RUnPDALIsvsJo28f5/rfI2Ba0AFeArLZDqLNC1apxO6LqflF137NEFFZNez22z
+	P6vls2KHRjxJF1PwTiD6I+nZUYG9mtSYCQTYZRRyty9kwOTahCZnEv/ARsWRvClwHEJpHOQYJVB
+	wNeGEzQ0L2K9Tb4BFD1pTH+bHYg4w9jYawWiHJNVOrWQpf
+X-Google-Smtp-Source: AGHT+IFVPDvJwqRZytMgpxUtOEACaU8KNroStYTObnuCd4or+1ErrFSdBUr067chp6kAV60TsJCno5y6SO0c
+X-Received: by 2002:a05:620a:4094:b0:815:630d:2cbd with SMTP id af79cd13be357-8b5e47d32e4mr237971985a.34.1764762204955;
+        Wed, 03 Dec 2025 03:43:24 -0800 (PST)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-117.dlp.protect.broadcom.com. [144.49.247.117])
+        by smtp-relay.gmail.com with ESMTPS id 6a1803df08f44-886524c9db2sm25249016d6.12.2025.12.03.03.43.24
+        for <stable@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 03 Dec 2025 03:43:24 -0800 (PST)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8b22ab98226so1923813485a.2
+        for <stable@vger.kernel.org>; Wed, 03 Dec 2025 03:43:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1764762204; x=1765367004; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xfKxGcIt7PpDGlUMG/YhMtCzZ0SJhEy//FNn25168d8=;
+        b=F29uoVtwFhVoBVgII1+/c89WtTo6Gk1tfsKbmVpAZXrEN1eDOTaOjMdrCLo5vKmeD9
+         sBzn04Gxntg1hEv+/gseInvYI6BjIz36+kgRBumbO0kWGcTeY7rmfsZLOVy6srCLAJaB
+         I9MF2YjgzYgezv7/vU4AlC8KWtJ+rC3JW0oCk=
+X-Received: by 2002:a05:620a:4728:b0:8b2:eea5:3311 with SMTP id af79cd13be357-8b5e47d1cf2mr251570385a.26.1764762204256;
+        Wed, 03 Dec 2025 03:43:24 -0800 (PST)
+X-Received: by 2002:a05:620a:4728:b0:8b2:eea5:3311 with SMTP id af79cd13be357-8b5e47d1cf2mr251567285a.26.1764762203820;
+        Wed, 03 Dec 2025 03:43:23 -0800 (PST)
+Received: from photon-dev-haas.. ([192.19.161.250])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b52a1b65bbsm1284727985a.33.2025.12.03.03.43.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Dec 2025 03:43:23 -0800 (PST)
+From: Ajay Kaher <ajay.kaher@broadcom.com>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: mingo@redhat.com,
+	peterz@infradead.org,
+	juri.lelli@redhat.com,
+	vincent.guittot@linaro.org,
+	dietmar.eggemann@arm.com,
+	rostedt@goodmis.org,
+	bsegall@google.com,
+	mgorman@suse.de,
+	vschneid@redhat.com,
+	linux-kernel@vger.kernel.org,
+	ajay.kaher@broadcom.com,
+	alexey.makhalov@broadcom.com,
+	yin.ding@broadcom.com,
+	tapas.kundu@broadcom.com
+Subject: [PATCH v6.1 0/4] sched: The newidle balance regression
+Date: Wed,  3 Dec 2025 11:25:48 +0000
+Message-Id: <20251203112552.1738424-1-ajay.kaher@broadcom.com>
+X-Mailer: git-send-email 2.40.4
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,62 +112,26 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PCgvCgCXAt4DHjBp5cdYFw--.28792S4
-X-Coremail-Antispam: 1Uf129KBjvJXoW7tFyfKrW5Wr45KFWDZr4Dtwb_yoW8Cw45pF
-	s8Jrs0krWUKFn2k39FgryUuryruas5GFyxWFWDWw1rZF4rGFnxJr9avr42qr4UurWkKayY
-	yFyIqF95Ga13Z37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRoUD9UUUUU=
-X-CM-SenderInfo: xmhwztjqz6il2tof0z/1tbiOgcZyGkwFWbQIAAAs2
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-From: Alan Stern <stern@rowland.harvard.edu>
+This series is to backport following patches for v6.1:
+link: https://lore.kernel.org/lkml/20251107160645.929564468@infradead.org/
 
-[ Upstream commit a6b87bfc2ab5bccb7ad953693c85d9062aef3fdd ]
+Peter Zijlstra (4):
+  sched/fair: Revert max_newidle_lb_cost bump
+  sched/fair: Small cleanup to sched_balance_newidle()
+  sched/fair: Small cleanup to update_newidle_cost()
+  sched/fair: Proportional newidle balance
 
-Testing by the syzbot fuzzer showed that the HID core gets a
-shift-out-of-bounds exception when it tries to convert a 32-bit
-quantity to a 0-bit quantity.  Ideally this should never occur, but
-there are buggy devices and some might have a report field with size
-set to zero; we shouldn't reject the report or the device just because
-of that.
+ include/linux/sched/topology.h |  3 ++
+ kernel/sched/core.c            |  3 ++
+ kernel/sched/fair.c            | 75 +++++++++++++++++++++++-----------
+ kernel/sched/features.h        |  5 +++
+ kernel/sched/sched.h           |  7 ++++
+ kernel/sched/topology.c        |  6 +++
+ 6 files changed, 75 insertions(+), 24 deletions(-)
 
-Instead, harden the s32ton() routine so that it returns a reasonable
-result instead of crashing when it is called with the number of bits
-set to 0 -- the same as what snto32() does.
-
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Reported-by: syzbot+b63d677d63bcac06cf90@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-usb/68753a08.050a0220.33d347.0008.GAE@google.com/
-Tested-by: syzbot+b63d677d63bcac06cf90@syzkaller.appspotmail.com
-Fixes: dde5845a529f ("[PATCH] Generic HID layer - code split")
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/613a66cd-4309-4bce-a4f7-2905f9bce0c9@rowland.harvard.edu
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-[ s32ton() was moved by c653ffc28340 ("HID: stop exporting hid_snto32()").
-  Minor context change fixed. ]
-Signed-off-by: Wenshan Lan <jetlan9@163.com>
----
- drivers/hid/hid-core.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
-index ed65523d77c2..c8cca0c7ec67 100644
---- a/drivers/hid/hid-core.c
-+++ b/drivers/hid/hid-core.c
-@@ -1354,7 +1354,12 @@ EXPORT_SYMBOL_GPL(hid_snto32);
- 
- static u32 s32ton(__s32 value, unsigned n)
- {
--	s32 a = value >> (n - 1);
-+	s32 a;
-+	if (!value || !n)
-+		return 0;
-+
-+	a = value >> (n - 1);
-+
- 	if (a && a != -1)
- 		return value < 0 ? 1 << (n - 1) : (1 << (n - 1)) - 1;
- 	return value & ((1 << n) - 1);
 -- 
-2.43.0
+2.40.4
 
 
