@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-198445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5602ACA17DE
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:54:06 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84987CA01A3
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:47:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6F9DF3069C92
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:48:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7E65B3029A3E
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:39:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2E6B31619A;
-	Wed,  3 Dec 2025 15:42:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DA1C329C7E;
+	Wed,  3 Dec 2025 15:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j1AqKeMQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="edOqgkHW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD04F316198;
-	Wed,  3 Dec 2025 15:42:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02367329C6A;
+	Wed,  3 Dec 2025 15:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776566; cv=none; b=CiwQoTx4ZRUPMAFGZnY5C2Q4dLq6uJJGrD2gzuR7GkntEdypvcdWvuPhlgOUtxJMu4wcKlFLiNAcFcT013UDFCnllFrz1gmWL84woKkIdbnseu6VEzy6neD7oqA0iuYMBkTANAxU5MUKftT7FFxSBC1qDK1UO0Fe52GQ1cTX/Cw=
+	t=1764776987; cv=none; b=c78dcTE1Yp3kOgaPlI+IfkeGjVDNn1Ys9MKfw28ZY27fI530FLkzqkoNl3eZ24KRs9UeZE9o5UUkjb1bDMxoQeH041UpbZorCUkvUYzPu8G3JJFJwxK1M21Vrej4WkCFeJ8DqB+PYwrU+/NjTjtVGZx6QkVZTo8+jV4HAta78Gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776566; c=relaxed/simple;
-	bh=Y13Tt4z3tHgdmUUWVcBO+2oNJev/+f/ZBSph70q/0Sg=;
+	s=arc-20240116; t=1764776987; c=relaxed/simple;
+	bh=v++SD5BVDK2m22Ie9wLoTS8D9HK2Xc8aOgyPYk58Tvs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gZP7i9GQU1JsTrQI3vr6DeOqcjIE8NG5TpHGQjvmQ2sHHzd62AkQIFyED/ulSRe+9eGjr3C6mmT1v1LSCgujwH2fF31ChY1pYe/hKgu4orB4PYDkmobG0kWTtB7puTiNdmVhbZ55xm7eAFL2uAqQ9WpfgDEv9rakaJpFX1flAzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j1AqKeMQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D9D0C4CEF5;
-	Wed,  3 Dec 2025 15:42:45 +0000 (UTC)
+	 MIME-Version; b=RdHf9YTXXqEHgJGK6fWZTJbi7KZKPE5TeNGJGhwkdo2Nnw6wUqsV7oR6WDXsZaLXLInFwJRgAMB44PFG7rPEU9/ic3nfZIwWV7k334ofMVrm+2YMglkGN9E4ChiTUY+uGcBUv5Kj0lmKUBdluoJ4aWL7LzuKONPU1zzOGgd1LaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=edOqgkHW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A792C116B1;
+	Wed,  3 Dec 2025 15:49:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776566;
-	bh=Y13Tt4z3tHgdmUUWVcBO+2oNJev/+f/ZBSph70q/0Sg=;
+	s=korg; t=1764776986;
+	bh=v++SD5BVDK2m22Ie9wLoTS8D9HK2Xc8aOgyPYk58Tvs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j1AqKeMQ3eiphtry37OFGj+k8Jo6f3esBKe7ozuOWpLBoc+B2cn6LaJXETaJMJPEX
-	 91EWpT5BxPeAlB6zVUYifs+Ib2KI6+GMIJmZ7QOc21PUuazyLmSvfAejU1xt5QdL9m
-	 P/uu9TX5OKyImpTtYM+luJ/SpJ7CFI0agCUX/2OQ=
+	b=edOqgkHWvptuJiMZhU1Si/99x9svK97RqeNysoOjVJ8UBK3ry9dCXNeXRWjQs0WOw
+	 qhoEVMcZta0KifUte/XpUHpRFhpGdhduFiofuq8wISHIBzWP3RKEKZ4Qrc2gEBxCWL
+	 wBe+wdOwRNmSm44pw0k784/b+amYLu8XCO9TjLiQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c01f8e6e73f20459912e@syzkaller.appspotmail.com,
-	Hannes Reinecke <hare@suse.de>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.10 222/300] scsi: sg: Do not sleep in atomic context
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 048/146] spi: nxp-fspi: Propagate fwnode in ACPI case as well
 Date: Wed,  3 Dec 2025 16:27:06 +0100
-Message-ID: <20251203152408.847778442@linuxfoundation.org>
+Message-ID: <20251203152348.231540168@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +61,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 90449f2d1e1f020835cba5417234636937dd657e upstream.
+[ Upstream commit 40ad64ac25bb736740f895d99a4aebbda9b80991 ]
 
-sg_finish_rem_req() calls blk_rq_unmap_user(). The latter function may
-sleep. Hence, call sg_finish_rem_req() with interrupts enabled instead
-of disabled.
+Propagate fwnode of the ACPI device to the SPI controller Linux device.
+Currently only OF case propagates fwnode to the controller.
 
-Reported-by: syzbot+c01f8e6e73f20459912e@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-scsi/691560c4.a70a0220.3124cb.001a.GAE@google.com/
-Cc: Hannes Reinecke <hare@suse.de>
-Cc: stable@vger.kernel.org
-Fixes: 97d27b0dd015 ("scsi: sg: close race condition in sg_remove_sfp_usercontext()")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20251113181643.1108973-1-bvanassche@acm.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+While at it, replace several calls to dev_fwnode() with a single one
+cached in a local variable, and unify checks for fwnode type by using
+is_*_node() APIs.
+
+Fixes: 55ab8487e01d ("spi: spi-nxp-fspi: Add ACPI support")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
+Link: https://patch.msgid.link/20251126202501.2319679-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/sg.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/spi/spi-nxp-fspi.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/scsi/sg.c
-+++ b/drivers/scsi/sg.c
-@@ -2235,9 +2235,17 @@ sg_remove_sfp_usercontext(struct work_st
- 	write_lock_irqsave(&sfp->rq_list_lock, iflags);
- 	while (!list_empty(&sfp->rq_list)) {
- 		srp = list_first_entry(&sfp->rq_list, Sg_request, entry);
--		sg_finish_rem_req(srp);
- 		list_del(&srp->entry);
-+		write_unlock_irqrestore(&sfp->rq_list_lock, iflags);
-+
-+		sg_finish_rem_req(srp);
-+		/*
-+		 * sg_rq_end_io() uses srp->parentfp. Hence, only clear
-+		 * srp->parentfp after blk_mq_free_request() has been called.
-+		 */
- 		srp->parentfp = NULL;
-+
-+		write_lock_irqsave(&sfp->rq_list_lock, iflags);
- 	}
- 	write_unlock_irqrestore(&sfp->rq_list_lock, iflags);
+diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+index fcf10be66d391..f96638cae1d94 100644
+--- a/drivers/spi/spi-nxp-fspi.c
++++ b/drivers/spi/spi-nxp-fspi.c
+@@ -1270,7 +1270,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+ {
+ 	struct spi_controller *ctlr;
+ 	struct device *dev = &pdev->dev;
+-	struct device_node *np = dev->of_node;
++	struct fwnode_handle *fwnode = dev_fwnode(dev);
+ 	struct resource *res;
+ 	struct nxp_fspi *f;
+ 	int ret, irq;
+@@ -1292,7 +1292,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, f);
  
+ 	/* find the resources - configuration register address space */
+-	if (is_acpi_node(dev_fwnode(f->dev)))
++	if (is_acpi_node(fwnode))
+ 		f->iobase = devm_platform_ioremap_resource(pdev, 0);
+ 	else
+ 		f->iobase = devm_platform_ioremap_resource_byname(pdev, "fspi_base");
+@@ -1300,7 +1300,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+ 		return PTR_ERR(f->iobase);
+ 
+ 	/* find the resources - controller memory mapped space */
+-	if (is_acpi_node(dev_fwnode(f->dev)))
++	if (is_acpi_node(fwnode))
+ 		res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
+ 	else
+ 		res = platform_get_resource_byname(pdev,
+@@ -1313,7 +1313,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+ 	f->memmap_phy_size = resource_size(res);
+ 
+ 	/* find the clocks */
+-	if (dev_of_node(&pdev->dev)) {
++	if (is_of_node(fwnode)) {
+ 		f->clk_en = devm_clk_get(dev, "fspi_en");
+ 		if (IS_ERR(f->clk_en))
+ 			return PTR_ERR(f->clk_en);
+@@ -1366,7 +1366,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+ 	else
+ 		ctlr->mem_caps = &nxp_fspi_mem_caps;
+ 
+-	ctlr->dev.of_node = np;
++	device_set_node(&ctlr->dev, fwnode);
+ 
+ 	ret = devm_add_action_or_reset(dev, nxp_fspi_cleanup, f);
+ 	if (ret)
+-- 
+2.51.0
+
 
 
 
