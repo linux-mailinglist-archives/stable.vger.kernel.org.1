@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FFF3CA063A
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:23:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45CEBCA0952
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:43:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9976B32CEE8D
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:08:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 79132319C05A
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:23:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81DCE346783;
-	Wed,  3 Dec 2025 16:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EFE133ADA5;
+	Wed,  3 Dec 2025 15:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F9mc/RtK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VWf5HcOi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE1334679C;
-	Wed,  3 Dec 2025 16:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574AF33A015;
+	Wed,  3 Dec 2025 15:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779108; cv=none; b=n5wuL7xS5P74BEdNzUec49FLMP0Lteo6bmulD5HjE/5re/36LUX73+25S+tGHwtXO8j1PHaYpGOZImZjnYHtl0wKojVewXL1d59rhocQE4hdxfYPP7d8qh6i0ok4EBCvYH2msKAGGeWBrHgT3EAs6CGlKIOMBRYmjdSVNoi6RXA=
+	t=1764777412; cv=none; b=qjsjnzEKGI5gGYm/VkLnEmT7vsCQmh9tdRURke8I5jI9706GwOJ88gLb5l+8Q1+oHG54f+Luexs4mQzhQzGvUjVfLdLIHNnRu4QP31sc5021FMAJRbPHDy65Mb1An2UwuUVhAKUp77CevhcwR8vwE+4xARoaF2G2xngua2Kj/3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779108; c=relaxed/simple;
-	bh=uuTgAnOn4YhTIHqp2wx/IkN6gw2OQRP+Ynp5t52lgcU=;
+	s=arc-20240116; t=1764777412; c=relaxed/simple;
+	bh=o/y/q1bmDMdElG58VhujslrlALzQmSNwmQ2RkOcp+7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m77eOJNIoK0IpAFvLD5GcZAjBLLtGum7K1CSnHkt+3Vczj8MRnXHpS1M9RLQe0Ni9D/p5rdUqgO9gVWtUV7MnWf8VUFp1SsEe08nm9EOcsCG29PBmmsAjzAA1wUylA/BLLThLOe8vXqCEOXJwMubJOfiOaZ3pPWS6A+1Gf9zBhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F9mc/RtK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B641EC4CEF5;
-	Wed,  3 Dec 2025 16:25:07 +0000 (UTC)
+	 MIME-Version; b=cdXEZyYkmKQBz/Qq2nyehJFheaJLSSRQwtRZKJI/u8CZ5ELDFaB4j/yrf2NkQHjQV9Ngrra+0gaI9pI+jZXZ2okgDcxzmSESZoweqw66HuaTG8yMEZRXUKTnxPhvYwDcxg8Ns6fpugOXInSJSNlg3RRbx4aDQUqLGRqnEwcJNKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VWf5HcOi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC8C6C4CEF5;
+	Wed,  3 Dec 2025 15:56:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779108;
-	bh=uuTgAnOn4YhTIHqp2wx/IkN6gw2OQRP+Ynp5t52lgcU=;
+	s=korg; t=1764777412;
+	bh=o/y/q1bmDMdElG58VhujslrlALzQmSNwmQ2RkOcp+7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F9mc/RtKwZH22hRD6kgtwpUlLw7y4YkA3ATm4Y2QzuivM9tqlpz3ZAhOVEWIO6r2d
-	 tlGLkqVFbcpvJDCtTrOuP5pX/VZ8u57x/u5UtHYpYkhgwk/m/R8R1Arj5RvmBt3eg7
-	 pLvWTe7eKNZ/vS7INEu4cWzp5Zox88N2pMczisRI=
+	b=VWf5HcOiaIpfpThIu0qb8HAO+iRytBAJjqOg/CzUngH433VqelNgMrBR5AI1fAaGg
+	 0OqP6Q1adMq7O/4zujYliDWbHNReMdHeGGygKSO3sy2G53ZZ4DjEoGTTU0SHwcgdCp
+	 btDgEX/pa0q7f8MQq9R7nruiwl3GIXE30G/Qdw5Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+01b0667934cdceb4451c@syzkaller.appspotmail.com,
-	Charalampos Mitrodimas <charmitro@posteo.net>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 157/568] net: ipv6: fix field-spanning memcpy warning in AH output
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Hans de Goede <hansg@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.15 009/392] ACPI: video: Fix use-after-free in acpi_video_switch_brightness()
 Date: Wed,  3 Dec 2025 16:22:39 +0100
-Message-ID: <20251203152446.475978950@linuxfoundation.org>
+Message-ID: <20251203152414.444482663@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,122 +60,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charalampos Mitrodimas <charmitro@posteo.net>
+From: Yuhao Jiang <danisjiang@gmail.com>
 
-[ Upstream commit 2327a3d6f65ce2fe2634546dde4a25ef52296fec ]
+commit 8f067aa59430266386b83c18b983ca583faa6a11 upstream.
 
-Fix field-spanning memcpy warnings in ah6_output() and
-ah6_output_done() where extension headers are copied to/from IPv6
-address fields, triggering fortify-string warnings about writes beyond
-the 16-byte address fields.
+The switch_brightness_work delayed work accesses device->brightness
+and device->backlight, freed by acpi_video_dev_unregister_backlight()
+during device removal.
 
-  memcpy: detected field-spanning write (size 40) of single field "&top_iph->saddr" at net/ipv6/ah6.c:439 (size 16)
-  WARNING: CPU: 0 PID: 8838 at net/ipv6/ah6.c:439 ah6_output+0xe7e/0x14e0 net/ipv6/ah6.c:439
+If the work executes after acpi_video_bus_unregister_backlight()
+frees these resources, it causes a use-after-free when
+acpi_video_switch_brightness() dereferences device->brightness or
+device->backlight.
 
-The warnings are false positives as the extension headers are
-intentionally placed after the IPv6 header in memory. Fix by properly
-copying addresses and extension headers separately, and introduce
-helper functions to avoid code duplication.
+Fix this by calling cancel_delayed_work_sync() for each device's
+switch_brightness_work in acpi_video_bus_remove_notify_handler()
+after removing the notify handler that queues the work. This ensures
+the work completes before the memory is freed.
 
-Reported-by: syzbot+01b0667934cdceb4451c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=01b0667934cdceb4451c
-Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8ab58e8e7e097 ("ACPI / video: Fix backlight taking 2 steps on a brightness up/down keypress")
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Yuhao Jiang <danisjiang@gmail.com>
+Reviewed-by: Hans de Goede <hansg@kernel.org>
+[ rjw: Changelog edit ]
+Link: https://patch.msgid.link/20251022200704.2655507-1-danisjiang@gmail.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ah6.c | 50 +++++++++++++++++++++++++++++++-------------------
- 1 file changed, 31 insertions(+), 19 deletions(-)
+ drivers/acpi/acpi_video.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv6/ah6.c b/net/ipv6/ah6.c
-index 5228d27162893..151d8d98d0463 100644
---- a/net/ipv6/ah6.c
-+++ b/net/ipv6/ah6.c
-@@ -46,6 +46,34 @@ struct ah_skb_cb {
+--- a/drivers/acpi/acpi_video.c
++++ b/drivers/acpi/acpi_video.c
+@@ -2034,8 +2034,10 @@ static void acpi_video_bus_remove_notify
+ 	struct acpi_video_device *dev;
  
- #define AH_SKB_CB(__skb) ((struct ah_skb_cb *)&((__skb)->cb[0]))
+ 	mutex_lock(&video->device_list_lock);
+-	list_for_each_entry(dev, &video->video_device_list, entry)
++	list_for_each_entry(dev, &video->video_device_list, entry) {
+ 		acpi_video_dev_remove_notify_handler(dev);
++		cancel_delayed_work_sync(&dev->switch_brightness_work);
++	}
+ 	mutex_unlock(&video->device_list_lock);
  
-+/* Helper to save IPv6 addresses and extension headers to temporary storage */
-+static inline void ah6_save_hdrs(struct tmp_ext *iph_ext,
-+				 struct ipv6hdr *top_iph, int extlen)
-+{
-+	if (!extlen)
-+		return;
-+
-+#if IS_ENABLED(CONFIG_IPV6_MIP6)
-+	iph_ext->saddr = top_iph->saddr;
-+#endif
-+	iph_ext->daddr = top_iph->daddr;
-+	memcpy(&iph_ext->hdrs, top_iph + 1, extlen - sizeof(*iph_ext));
-+}
-+
-+/* Helper to restore IPv6 addresses and extension headers from temporary storage */
-+static inline void ah6_restore_hdrs(struct ipv6hdr *top_iph,
-+				    struct tmp_ext *iph_ext, int extlen)
-+{
-+	if (!extlen)
-+		return;
-+
-+#if IS_ENABLED(CONFIG_IPV6_MIP6)
-+	top_iph->saddr = iph_ext->saddr;
-+#endif
-+	top_iph->daddr = iph_ext->daddr;
-+	memcpy(top_iph + 1, &iph_ext->hdrs, extlen - sizeof(*iph_ext));
-+}
-+
- static void *ah_alloc_tmp(struct crypto_ahash *ahash, int nfrags,
- 			  unsigned int size)
- {
-@@ -304,13 +332,7 @@ static void ah6_output_done(struct crypto_async_request *base, int err)
- 	memcpy(ah->auth_data, icv, ahp->icv_trunc_len);
- 	memcpy(top_iph, iph_base, IPV6HDR_BASELEN);
- 
--	if (extlen) {
--#if IS_ENABLED(CONFIG_IPV6_MIP6)
--		memcpy(&top_iph->saddr, iph_ext, extlen);
--#else
--		memcpy(&top_iph->daddr, iph_ext, extlen);
--#endif
--	}
-+	ah6_restore_hdrs(top_iph, iph_ext, extlen);
- 
- 	kfree(AH_SKB_CB(skb)->tmp);
- 	xfrm_output_resume(skb->sk, skb, err);
-@@ -381,12 +403,8 @@ static int ah6_output(struct xfrm_state *x, struct sk_buff *skb)
- 	 */
- 	memcpy(iph_base, top_iph, IPV6HDR_BASELEN);
- 
-+	ah6_save_hdrs(iph_ext, top_iph, extlen);
- 	if (extlen) {
--#if IS_ENABLED(CONFIG_IPV6_MIP6)
--		memcpy(iph_ext, &top_iph->saddr, extlen);
--#else
--		memcpy(iph_ext, &top_iph->daddr, extlen);
--#endif
- 		err = ipv6_clear_mutable_options(top_iph,
- 						 extlen - sizeof(*iph_ext) +
- 						 sizeof(*top_iph),
-@@ -437,13 +455,7 @@ static int ah6_output(struct xfrm_state *x, struct sk_buff *skb)
- 	memcpy(ah->auth_data, icv, ahp->icv_trunc_len);
- 	memcpy(top_iph, iph_base, IPV6HDR_BASELEN);
- 
--	if (extlen) {
--#if IS_ENABLED(CONFIG_IPV6_MIP6)
--		memcpy(&top_iph->saddr, iph_ext, extlen);
--#else
--		memcpy(&top_iph->daddr, iph_ext, extlen);
--#endif
--	}
-+	ah6_restore_hdrs(top_iph, iph_ext, extlen);
- 
- out_free:
- 	kfree(iph_base);
--- 
-2.51.0
-
+ 	acpi_video_bus_stop_devices(video);
 
 
 
