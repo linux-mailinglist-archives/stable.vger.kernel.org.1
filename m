@@ -1,54 +1,59 @@
-Return-Path: <stable+bounces-198987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59456CA1230
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:46:43 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5D68CA12D2
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:54:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EEC0D31B5A81
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:48:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D8087300E83D
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:53:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0078E347BBD;
-	Wed,  3 Dec 2025 16:12:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC58B32BF25;
+	Wed,  3 Dec 2025 15:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cNLLUiXC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SyY83qXJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0060346FC8;
-	Wed,  3 Dec 2025 16:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6570C32B9B3;
+	Wed,  3 Dec 2025 15:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778324; cv=none; b=jxviOqqbJbVH5/HY4DllbVvpZlGuFqhqsOBd0uVGwytnMb7nQmESupV97EGwvmqfAymVX+4aGas4gwaPa3BIP7sk9H5ddqvpEJFU3XLhdmSYlp0fYmYOlSlINMdwWysMfb74SHV2X5Fen7upI6Q5Tx12g2umPTo42vQ0Iz7l5S0=
+	t=1764776993; cv=none; b=GGrklp0yNoUM0dPDMbwwmV0kuhmrq1+i/GQrT3wLpGJ3eCBU+a6bAclHQZ4PnVzytKqV4ke5sGDjVbCMZX3uGKSIwrHx0jH0V0gNFJ+0CJk7z1KjX9FcConjxx2axXmQ/YtoHswdenPTf+4oRSjKcGjKx8lIT/qyZiBszKw15jw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778324; c=relaxed/simple;
-	bh=4GFr5Wgtt/QYjDHD9vZ6z3ilRbBg+PKhdMJevVbVdD4=;
+	s=arc-20240116; t=1764776993; c=relaxed/simple;
+	bh=jO8uzi3Si5l3LVhDdcaywLi3ykfjTVkA16+VrEW12OA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UGT30m19dffolbYro5Z6pyEtLRRj9MRseTLFU72N02Kd9wjPQyCX6gKQV1cSBst3SlSgYxDVaRWojyP86Mlt4OUvbKK0owJ0aDGx/372TTcw0OTmmm0OvFY9h/Do43oPMRBUioaSobJTyztvkwaOVs1k7XCliMbFzJK8tTOxJtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cNLLUiXC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2465EC4CEF5;
-	Wed,  3 Dec 2025 16:12:03 +0000 (UTC)
+	 MIME-Version; b=tWXHm4dd4gnRCKNjZpullJa33lcG+ufkyCt1vUwvtB8zfhbdBRgt2nmCrnMFQcfCEfdQRyQn/+e66a1ycXCL69Zb83dN3PnsYODT+Cifpxo8WJmOfwY3/rouqO1SSLfac/pp3L81MLn2U6RwDbyQxizO/9/sv7Q623spxTri+io=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SyY83qXJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C951CC116B1;
+	Wed,  3 Dec 2025 15:49:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778324;
-	bh=4GFr5Wgtt/QYjDHD9vZ6z3ilRbBg+PKhdMJevVbVdD4=;
+	s=korg; t=1764776993;
+	bh=jO8uzi3Si5l3LVhDdcaywLi3ykfjTVkA16+VrEW12OA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cNLLUiXChMZKzw00b4Tz0V4iXXlXASasml3UouV+Z75Y5F+FQIAopDiBILAAaC51Q
-	 kQKloj6klp+0fw1+RkWBf3WyRwpfHo2PTO8AnZI8W/fQCBXl1cBmKIVF+YONLwkJEI
-	 q+9TuRAI7PGtZnUwg4tmgCdY9y2d/a0/R63fBPBA=
+	b=SyY83qXJps64oZUFTd01h3BdLWBuTuZa4pA5aOJ+h1CAxyPSKzYNLC7vfPxiQ2ri1
+	 tma9cxML9+/bZ0nkOvgaciTXJVp4Rcf0k1H8mCKHs11FnrsfVVAkQ8V0qTS1Geufuv
+	 4izpuBszKWKSl4K6e5x0NLJJFQPw/FPNZFhkWz7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Dinh Nguyen <dinguyen@kernel.org>
-Subject: [PATCH 5.15 278/392] EDAC/altera: Handle OCRAM ECC enable after warm reset
+	Paulo Alcantra <pc@manguebit.org>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	syzbot+41c68824eefb67cdf00c@syzkaller.appspotmail.com,
+	linux-afs@lists.infradead.org,
+	linux-fsdevel@vger.kernel.org,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 050/146] afs: Fix uninit var in afs_alloc_anon_key()
 Date: Wed,  3 Dec 2025 16:27:08 +0100
-Message-ID: <20251203152424.392631391@linuxfoundation.org>
+Message-ID: <20251203152348.302980110@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +65,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
+From: David Howells <dhowells@redhat.com>
 
-commit fd3ecda38fe0cb713d167b5477d25f6b350f0514 upstream.
+[ Upstream commit 19eef1d98eeda3745df35839190b7d4a4adea656 ]
 
-The OCRAM ECC is always enabled either by the BootROM or by the Secure Device
-Manager (SDM) during a power-on reset on SoCFPGA.
+Fix an uninitialised variable (key) in afs_alloc_anon_key() by setting it
+to cell->anonymous_key.  Without this change, the error check may return a
+false failure with a bad error number.
 
-However, during a warm reset, the OCRAM content is retained to preserve data,
-while the control and status registers are reset to their default values. As
-a result, ECC must be explicitly re-enabled after a warm reset.
+Most of the time this is unlikely to happen because the first encounter
+with afs_alloc_anon_key() will usually be from (auto)mount, for which all
+subsequent operations must wait - apart from other (auto)mounts.  Once the
+call->anonymous_key is allocated, all further calls to afs_request_key()
+will skip the call to afs_alloc_anon_key() for that cell.
 
-Fixes: 17e47dc6db4f ("EDAC/altera: Add Stratix10 OCRAM ECC support")
-Signed-off-by: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Dinh Nguyen <dinguyen@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251111080801.1279401-1-niravkumarlaxmidas.rabara@altera.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d27c71257825 ("afs: Fix delayed allocation of a cell's anonymous key")
+Reported-by: Paulo Alcantra <pc@manguebit.org>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Paulo Alcantara <pc@manguebit.org>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: syzbot+41c68824eefb67cdf00c@syzkaller.appspotmail.com
+cc: linux-afs@lists.infradead.org
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/altera_edac.c |   18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ fs/afs/security.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/edac/altera_edac.c
-+++ b/drivers/edac/altera_edac.c
-@@ -1156,10 +1156,22 @@ altr_check_ocram_deps_init(struct altr_e
- 	if (ret)
- 		return ret;
+diff --git a/fs/afs/security.c b/fs/afs/security.c
+index ff8830e6982fb..55ddce94af031 100644
+--- a/fs/afs/security.c
++++ b/fs/afs/security.c
+@@ -26,7 +26,8 @@ static int afs_alloc_anon_key(struct afs_cell *cell)
+ 	struct key *key;
  
--	/* Verify OCRAM has been initialized */
-+	/*
-+	 * Verify that OCRAM has been initialized.
-+	 * During a warm reset, OCRAM contents are retained, but the control
-+	 * and status registers are reset to their default values. Therefore,
-+	 * ECC must be explicitly re-enabled in the control register.
-+	 * Error condition: if INITCOMPLETEA is clear and ECC_EN is already set.
-+	 */
- 	if (!ecc_test_bits(ALTR_A10_ECC_INITCOMPLETEA,
--			   (base + ALTR_A10_ECC_INITSTAT_OFST)))
--		return -ENODEV;
-+			   (base + ALTR_A10_ECC_INITSTAT_OFST))) {
-+		if (!ecc_test_bits(ALTR_A10_ECC_EN,
-+				   (base + ALTR_A10_ECC_CTRL_OFST)))
-+			ecc_set_bits(ALTR_A10_ECC_EN,
-+				     (base + ALTR_A10_ECC_CTRL_OFST));
-+		else
-+			return -ENODEV;
-+	}
- 
- 	/* Enable IRQ on Single Bit Error */
- 	writel(ALTR_A10_ECC_SERRINTEN, (base + ALTR_A10_ECC_ERRINTENS_OFST));
+ 	mutex_lock(&afs_key_lock);
+-	if (!cell->anonymous_key) {
++	key = cell->anonymous_key;
++	if (!key) {
+ 		key = rxrpc_get_null_key(cell->key_desc);
+ 		if (!IS_ERR(key))
+ 			cell->anonymous_key = key;
+-- 
+2.51.0
+
 
 
 
