@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4B75C9FC23
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:59:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0103ACA0D06
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:11:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8C6D53006D81
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:58:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BF4D232B70CB
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:07:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B4E3451A9;
-	Wed,  3 Dec 2025 15:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61D863002B4;
+	Wed,  3 Dec 2025 16:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PqLKGKEf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LWf8r8X5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51AB53446A8;
-	Wed,  3 Dec 2025 15:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EEAD3590D6;
+	Wed,  3 Dec 2025 16:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777511; cv=none; b=PFqPi1/JPUqpBnC5Z82X1rTu0lm4T5NVy+T/Uk3sHcttSDpGKAJfR2PZLrPmFefKLooA2LDhWon28x2eZY6GJyLwT19FBFBk5kn7yD/PxMIvFkZ5eHvoYvgTV9zCcL79pCP2vynWy3EfsIuJJBjPNYpHkK5k6SMFXDX1lfGitaI=
+	t=1764779277; cv=none; b=FdFeg3fRBF4LnnbwRCQLBiPqs7VNwfES1WEa1zAd9f3G11ZJrHiZcxk136jUClmXcu0sfhRsYTHhZ8i8weyMQezAhpaVVVtUcn1kzRZ72rsqNswW7WoVcMzjDdjHY8ndZuTr23CLhFbqYpsfpcbe1PPsnhLoyfqAIM4WJBoVGqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777511; c=relaxed/simple;
-	bh=+2ci2gkjj0xY13dRgzMaUxG76h3xCRif9WqnbCCl2mM=;
+	s=arc-20240116; t=1764779277; c=relaxed/simple;
+	bh=7ybhnwe6sIMyWh4o6r8gwAw7yLqnakfG97PGhZu+z8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g/UdnUEJFW2YBqLUHisds90F5Ko2TBaOMGvwHWJc8nWoaFR8dTf+BMmqmDId8oElRbXmoMnaO+mbyMA80ab2RoDYPCdbJQBY1M+j5ugaLkM54+wGklXwsA0hOYq/UKnYHnRBlJGQ9cWwF/ZG2MS7Ifupn0fI7xHdfTIFWR4s1tA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PqLKGKEf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7B27C4CEF5;
-	Wed,  3 Dec 2025 15:58:30 +0000 (UTC)
+	 MIME-Version; b=Jytlam4OGTMCnTGXffjB9J7lSPAWXiAMlsKiGcY0Eu+vrsfwBDHInG4Zgq0SyRbOgxyUMCuLDhWUcT2weuYKVeNsVB8xyb+RsboqVHvXPSdh0i8cs5LEBSOqhn/k5nJFg5FLOuT4FsEhRBu2e+bsU6tzQRe/6JW9VoGs7t8xiIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LWf8r8X5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0D5EC4CEF5;
+	Wed,  3 Dec 2025 16:27:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777511;
-	bh=+2ci2gkjj0xY13dRgzMaUxG76h3xCRif9WqnbCCl2mM=;
+	s=korg; t=1764779276;
+	bh=7ybhnwe6sIMyWh4o6r8gwAw7yLqnakfG97PGhZu+z8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PqLKGKEfMLZVQTjyROcD0XsRixB7XGj1hAoDYLo1VaI/DNLq6mLb/bWD7oy/r7Ov2
-	 inKZJLlKokmjcd9QqEZCVEzEHMxsraT2ub5ZLinZzY18OiUpX9bI756Q5LHrk2AkyJ
-	 VJ/9P/A3j2nspfrvtNq0Mj9tkGH0If87hTKLmpa8=
+	b=LWf8r8X5YEhV9fCgLI0atoIfR96aRDDAs14lub1IABFF4xWmxXT0O1PK70rXCwAmf
+	 xRp9yGLLcKA/huuwHVl+uOzihMyDXyDC/nL2w40vMGu+xzHYiV6TVOLmsUGQN2rEFy
+	 GdKDXDJTMTGq3QH2GiepJU/Ej7dPrnhs3rGUrKrs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Smith <itistotalbotnet@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Aleksander Jan Bajkowski <olek2@wp.pl>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 028/392] drm/amd/pm/powerplay/smumgr: Fix PCIeBootLinkLevel value on Fiji
+Subject: [PATCH 6.1 176/568] mips: lantiq: danube: add missing properties to cpu node
 Date: Wed,  3 Dec 2025 16:22:58 +0100
-Message-ID: <20251203152415.136090472@linuxfoundation.org>
+Message-ID: <20251203152447.177387272@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +60,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Smith <itistotalbotnet@gmail.com>
+From: Aleksander Jan Bajkowski <olek2@wp.pl>
 
-[ Upstream commit 07a13f913c291d6ec72ee4fc848d13ecfdc0e705 ]
+[ Upstream commit e8dee66c37085dc9858eb8608bc783c2900e50e7 ]
 
-Previously this was initialized with zero which represented PCIe Gen
-1.0 instead of using the
-maximum value from the speed table which is the behaviour of all other
-smumgr implementations.
+This fixes the following warnings:
+arch/mips/boot/dts/lantiq/danube_easy50712.dtb: cpus: '#address-cells' is a required property
+	from schema $id: http://devicetree.org/schemas/cpus.yaml#
+arch/mips/boot/dts/lantiq/danube_easy50712.dtb: cpus: '#size-cells' is a required property
+	from schema $id: http://devicetree.org/schemas/cpus.yaml#
+arch/mips/boot/dts/lantiq/danube_easy50712.dtb: cpu@0 (mips,mips24Kc): 'reg' is a required property
+	from schema $id: http://devicetree.org/schemas/mips/cpus.yaml#
 
-Fixes: 18edef19ea44 ("drm/amd/powerplay: implement fw image related smu interface for Fiji.")
-Signed-off-by: John Smith <itistotalbotnet@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit c52238c9fb414555c68340cd80e487d982c1921c)
+Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/smumgr/fiji_smumgr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/boot/dts/lantiq/danube.dtsi | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/smumgr/fiji_smumgr.c b/drivers/gpu/drm/amd/pm/powerplay/smumgr/fiji_smumgr.c
-index 02c094a06605d..50deb4ce767ee 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/fiji_smumgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/fiji_smumgr.c
-@@ -2024,7 +2024,7 @@ static int fiji_init_smc_table(struct pp_hwmgr *hwmgr)
- 	table->VoltageResponseTime = 0;
- 	table->PhaseResponseTime = 0;
- 	table->MemoryThermThrottleEnable = 1;
--	table->PCIeBootLinkLevel = 0;      /* 0:Gen1 1:Gen2 2:Gen3*/
-+	table->PCIeBootLinkLevel = (uint8_t) (data->dpm_table.pcie_speed_table.count);
- 	table->PCIeGenInterval = 1;
- 	table->VRConfig = 0;
+diff --git a/arch/mips/boot/dts/lantiq/danube.dtsi b/arch/mips/boot/dts/lantiq/danube.dtsi
+index 510be63c8bdf1..ff6ff9568e1bc 100644
+--- a/arch/mips/boot/dts/lantiq/danube.dtsi
++++ b/arch/mips/boot/dts/lantiq/danube.dtsi
+@@ -5,8 +5,12 @@
+ 	compatible = "lantiq,xway", "lantiq,danube";
+ 
+ 	cpus {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
+ 		cpu@0 {
+ 			compatible = "mips,mips24Kc";
++			reg = <0>;
+ 		};
+ 	};
  
 -- 
 2.51.0
