@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51C05C9FD0D
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:08:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D9BDCA0658
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:24:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BFC99301B81C
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:58:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 34638301176C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:09:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC14634405B;
-	Wed,  3 Dec 2025 15:58:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A16435F8B6;
+	Wed,  3 Dec 2025 16:27:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eu38BtKc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FmWYBng3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BE933451BF;
-	Wed,  3 Dec 2025 15:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F29E33E37D;
+	Wed,  3 Dec 2025 16:27:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777502; cv=none; b=Gjv5kbFTT3Nii4vcWp8YfP1ryGnHS4bnQDBFJ75kQbsUrjZsKFG9iB12IV20PQNHovVqkjr4jR7D6BEU0pRgNLTEBTnc0O0jwIHhio26KKPRM2dpsaV3kooy6aSJRpVC+VIZdTNUPYgUm7QsWI5eXEgkYfRdaG01OxES4sY7I3g=
+	t=1764779267; cv=none; b=WmmUzORqkwfST7GAKka28EmbTXSGMqs3AXovb4nTAR5CFbTJiEQJO1DYJwhAs7u1qxcDi7nGyCXUZhHN9kQd+RafYXCDQE0AfGglijkAKaSezfKRyjkID6hi+IGLCn0OWjNu8JUBxrySP2zwJCL1foaKZMUW512U1LbXmH5RCQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777502; c=relaxed/simple;
-	bh=BgGljCg7AamPtZi7F699RHbhzWUqO2s7iIZAlrQmJEo=;
+	s=arc-20240116; t=1764779267; c=relaxed/simple;
+	bh=8xrwT4TnMO/MUdPsRQh7+5RGmM7QBDW3Qelqa/6WbkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SJAKBA+stpdI8n3o32VCGzNo+Xr5lUciq5Abewqmw1Rz6gPiCQm2knGrKFDpDAt4v6leipqTV7qVf3BU0tBeHJ4IVxnSQJi1J5CQgpAq7+2d/0dpFSHMLBDwPNG8JufluvuiorK7XVijdv/9U2mQeWIitRvb8nVSs0SV4Xoi4hU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eu38BtKc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C719C4CEF5;
-	Wed,  3 Dec 2025 15:58:21 +0000 (UTC)
+	 MIME-Version; b=ctk6mp4I/dwYsMWYqeB27Ozc+dm8a1aH42m7dS53b6zo7wC1FKU46nNOczUZwcL8Q9c/r4ZvpPHHhRGRCN1k3W58r1BwOaNH4mbx+lmbxkQCv95wXtiirNVUw2l6WwhXP6Gz3KXVXyC1exFjJ7QsZ/PW0X4Fwz7uQ8cwNQoNZ4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FmWYBng3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73E6FC4CEF5;
+	Wed,  3 Dec 2025 16:27:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777502;
-	bh=BgGljCg7AamPtZi7F699RHbhzWUqO2s7iIZAlrQmJEo=;
+	s=korg; t=1764779266;
+	bh=8xrwT4TnMO/MUdPsRQh7+5RGmM7QBDW3Qelqa/6WbkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Eu38BtKciBRCAh5WrHjK1nK2ySHxNh7ve5A3K7o5pUrPisoPHHKb7e7P5wHMC4K6h
-	 5DNndSqLVRltFU+GVWHahNDHWn8YAr/2r+dd6HGPrzEQ7Jfo4EwmXkGO6Z0iwOMFlP
-	 7ic0Ka55pUQl2GwCJJLTSUBXh7nMVYxQiqKCeUH8=
+	b=FmWYBng3suO3v4jAeOjJ4T8kHdd8MOX8/G8BodbJaMxeN6qbCm6ya8pLosnQMCyQG
+	 G0W5poZr95dAcC9hAem7toTye/frCLaPJvWBpE0ZSpvys0A+hBuLzDngXoW+BGXhyv
+	 +BunPs5NXGYMiuSXGSsEObFAEa4Qi5wgGas8hRHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 057/392] bpf: Dont use %pK through printk
+Subject: [PATCH 6.1 205/568] media: i2c: og01a1b: Specify monochrome media bus format instead of Bayer
 Date: Wed,  3 Dec 2025 16:23:27 +0100
-Message-ID: <20251203152416.211236217@linuxfoundation.org>
+Message-ID: <20251203152448.234405731@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,49 +59,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 
-[ Upstream commit 2caa6b88e0ba0231fb4ff0ba8e73cedd5fb81fc8 ]
+[ Upstream commit bfbd5aa5347fbd11ade188b316b800bfb27d9e22 ]
 
-In the past %pK was preferable to %p as it would not leak raw pointer
-values into the kernel log.
-Since commit ad67b74d2469 ("printk: hash addresses printed with %p")
-the regular %p has been improved to avoid this issue.
-Furthermore, restricted pointers ("%pK") were never meant to be used
-through printk(). They can still unintentionally leak raw pointers or
-acquire sleeping locks in atomic contexts.
+The OmniVision OG01A1B image sensor is a monochrome sensor, it supports
+8-bit and 10-bit RAW output formats only.
 
-Switch to the regular pointer formatting which is safer and
-easier to reason about.
+That said the planar greyscale Y8/Y10 media formats are more appropriate
+for the sensor instead of the originally and arbitrary selected SGRBG one,
+since there is no red, green or blue color components.
 
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250811-restricted-pointers-bpf-v1-1-a1d7cc3cb9e7@linutronix.de
+Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/filter.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/i2c/og01a1b.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/filter.h b/include/linux/filter.h
-index 7d8294d0d7173..dc49c8eb00fd6 100644
---- a/include/linux/filter.h
-+++ b/include/linux/filter.h
-@@ -1090,7 +1090,7 @@ void bpf_jit_prog_release_other(struct bpf_prog *fp, struct bpf_prog *fp_other);
- static inline void bpf_jit_dump(unsigned int flen, unsigned int proglen,
- 				u32 pass, void *image)
+diff --git a/drivers/media/i2c/og01a1b.c b/drivers/media/i2c/og01a1b.c
+index 35663c10fcd9f..0ceb46d947a16 100644
+--- a/drivers/media/i2c/og01a1b.c
++++ b/drivers/media/i2c/og01a1b.c
+@@ -676,7 +676,7 @@ static void og01a1b_update_pad_format(const struct og01a1b_mode *mode,
  {
--	pr_err("flen=%u proglen=%u pass=%u image=%pK from=%s pid=%d\n", flen,
-+	pr_err("flen=%u proglen=%u pass=%u image=%p from=%s pid=%d\n", flen,
- 	       proglen, pass, image, current->comm, task_pid_nr(current));
+ 	fmt->width = mode->width;
+ 	fmt->height = mode->height;
+-	fmt->code = MEDIA_BUS_FMT_SGRBG10_1X10;
++	fmt->code = MEDIA_BUS_FMT_Y10_1X10;
+ 	fmt->field = V4L2_FIELD_NONE;
+ }
  
- 	if (image)
+@@ -867,7 +867,7 @@ static int og01a1b_enum_mbus_code(struct v4l2_subdev *sd,
+ 	if (code->index > 0)
+ 		return -EINVAL;
+ 
+-	code->code = MEDIA_BUS_FMT_SGRBG10_1X10;
++	code->code = MEDIA_BUS_FMT_Y10_1X10;
+ 
+ 	return 0;
+ }
+@@ -879,7 +879,7 @@ static int og01a1b_enum_frame_size(struct v4l2_subdev *sd,
+ 	if (fse->index >= ARRAY_SIZE(supported_modes))
+ 		return -EINVAL;
+ 
+-	if (fse->code != MEDIA_BUS_FMT_SGRBG10_1X10)
++	if (fse->code != MEDIA_BUS_FMT_Y10_1X10)
+ 		return -EINVAL;
+ 
+ 	fse->min_width = supported_modes[fse->index].width;
 -- 
 2.51.0
 
