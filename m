@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-198600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DD86C9FFF7
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:36:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F40D7CA07F4
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:34:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7530E3019865
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:33:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9BE6731024BB
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:15:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDCA332ED4D;
-	Wed,  3 Dec 2025 15:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4825E331A73;
+	Wed,  3 Dec 2025 16:39:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2j48DCak"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NJTMrTYv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D80F32ED3D;
-	Wed,  3 Dec 2025 15:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4DAE32F764;
+	Wed,  3 Dec 2025 16:39:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777079; cv=none; b=oJ1LJBv1rX6qL8DlMHLKc1BzXHLAEfcxE0aEabJegMMChym2FN+/y56ioHnjx9/+z1l5UDwlmM1QMM6MJ9JiHH6HycuiyyMMMk/9cz0Xggg+X75rXddez7RW/Gx2N2yEpVrXjfxCdZ7HG6l6kyCeRaaLZgJbJsHug400Q9Z8kcs=
+	t=1764779983; cv=none; b=SnHC6SAYY2yICQsJPZhjLehgBhwiDQcOxTY4A3VLw6sz0GKaZGPJuD/xLfo0urfsPe2HKf7OTjaTIAqxc6Uawus7OmOYUkemthXF6Ppj3GzSac5QNURiXBKgfkSF7l00P3rssdoTjrGqCHdvx2EpDenllE2vgbiHTGwy1Z0XNpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777079; c=relaxed/simple;
-	bh=Yl5XeYdV3eN7Y2DQLTchrMk4rI1ml5pt28GEPcHEoY8=;
+	s=arc-20240116; t=1764779983; c=relaxed/simple;
+	bh=ZPVTNvjmsWbDi5eaZ9NeVaqpxr68y1Fu9QhYvsTySSQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mg6o8A43K2yAOH0V2t+pVxv5j/5XbJOgDr8QuFAkQsQOZf7oHebcx9ue2HFDVasOrZ2KzsLCd58AXdT9vOg37N+AEnqrQhxYr3jD5caeMV8KdzKZyRbKxO2VMh2OVU7MiFIHEM6f1/8Tc+hWL1jQT3oeQSrpBA5JpJDGqcdMoXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2j48DCak; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5C7BC4CEF5;
-	Wed,  3 Dec 2025 15:51:18 +0000 (UTC)
+	 MIME-Version; b=lupIr2LUkAui3AfChIxJxUVm7o4cjBiwjjnq6fDsL4qmUTIbyy9jLCFIhrxF8TRpwuNOvP74XVfrBWKRvpeCpQ1yJF/oo9Cqhh6BGTPE5TcoTrM2UzistyOOuAGlQnYR7pzTlK4mlL8nHwIUWUfQxY2UOdk+ZSEPcwU+q99xiIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NJTMrTYv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53C4DC4CEF5;
+	Wed,  3 Dec 2025 16:39:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777079;
-	bh=Yl5XeYdV3eN7Y2DQLTchrMk4rI1ml5pt28GEPcHEoY8=;
+	s=korg; t=1764779982;
+	bh=ZPVTNvjmsWbDi5eaZ9NeVaqpxr68y1Fu9QhYvsTySSQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2j48DCak8AcJRi8P9T5yvCARXwr1t8N14zu2Qc4ex8ApRE6ZNl6lXugYm0Hpyj1jF
-	 M/EjYdgux7Jjha+NPCGxHZkLc6jB9B7KnULbgrLSKGE+qlPCldeeuXrLaZGKfQ2tcI
-	 35LZfnU4FDbfknIrMxT2PIwiGqAtlDv4B4lEKvSA=
+	b=NJTMrTYvU/+0pGwfZGzAZ2nEaeD5XhHJtOJIprlP0ZxaXTSO2dYRKIuzOudcZ1s6F
+	 hwpPA6cuE1OuvqzXJhE82CH3Dayq6Y7QT4xShxPu53bzFKyYzhkf8YGzHSF4hTQXZU
+	 NOsk0ZyD6+yLvUVWvIv4R367UZOIEDaB28YpPDq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+41c68824eefb67cdf00c@syzkaller.appspotmail.com,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
-	linux-fsdevel@vger.kernel.org,
+	Nam Cao <namcao@linutronix.de>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Valentin Schneider <vschneid@redhat.com>,
 	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 042/146] afs: Fix delayed allocation of a cells anonymous key
-Date: Wed,  3 Dec 2025 16:27:00 +0100
-Message-ID: <20251203152348.014826110@linuxfoundation.org>
+	Florian Bezdeka <florian.bezdeka@siemens.com>
+Subject: [PATCH 6.1 419/568] eventpoll: Replace rwlock with spinlock
+Date: Wed,  3 Dec 2025 16:27:01 +0100
+Message-ID: <20251203152456.042492592@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,247 +63,395 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Nam Cao <namcao@linutronix.de>
 
-[ Upstream commit d27c71257825dced46104eefe42e4d9964bd032e ]
+[ Upstream commit 0c43094f8cc9d3d99d835c0ac9c4fe1ccc62babd ]
 
-The allocation of a cell's anonymous key is done in a background thread
-along with other cell setup such as doing a DNS upcall.  In the reported
-bug, this is triggered by afs_parse_source() parsing the device name given
-to mount() and calling afs_lookup_cell() with the name of the cell.
+The ready event list of an epoll object is protected by read-write
+semaphore:
 
-The normal key lookup then tries to use the key description on the
-anonymous authentication key as the reference for request_key() - but it
-may not yet be set and so an oops can happen.
+  - The consumer (waiter) acquires the write lock and takes items.
+  - the producer (waker) takes the read lock and adds items.
 
-This has been made more likely to happen by the fix for dynamic lookup
-failure.
+The point of this design is enabling epoll to scale well with large number
+of producers, as multiple producers can hold the read lock at the same
+time.
 
-Fix this by firstly allocating a reference name and attaching it to the
-afs_cell record when the record is created.  It can share the memory
-allocation with the cell name (unfortunately it can't just overlap the cell
-name by prepending it with "afs@" as the cell name already has a '.'
-prepended for other purposes).  This reference name is then passed to
-request_key().
+Unfortunately, this implementation may cause scheduling priority inversion
+problem. Suppose the consumer has higher scheduling priority than the
+producer. The consumer needs to acquire the write lock, but may be blocked
+by the producer holding the read lock. Since read-write semaphore does not
+support priority-boosting for the readers (even with CONFIG_PREEMPT_RT=y),
+we have a case of priority inversion: a higher priority consumer is blocked
+by a lower priority producer. This problem was reported in [1].
 
-Secondly, the anon key is now allocated on demand at the point a key is
-requested in afs_request_key() if it is not already allocated.  A mutex is
-used to prevent multiple allocation for a cell.
+Furthermore, this could also cause stall problem, as described in [2].
 
-Thirdly, make afs_request_key_rcu() return NULL if the anonymous key isn't
-yet allocated (if we need it) and then the caller can return -ECHILD to
-drop out of RCU-mode and afs_request_key() can be called.
+Fix this problem by replacing rwlock with spinlock.
 
-Note that the anonymous key is kind of necessary to make the key lookup
-cache work as that doesn't currently cache a negative lookup, but it's
-probably worth some investigation to see if NULL can be used instead.
+This reduces the event bandwidth, as the producers now have to contend with
+each other for the spinlock. According to the benchmark from
+https://github.com/rouming/test-tools/blob/master/stress-epoll.c:
 
-Fixes: 330e2c514823 ("afs: Fix dynamic lookup to fail on cell lookup failure")
-Reported-by: syzbot+41c68824eefb67cdf00c@syzkaller.appspotmail.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/800328.1764325145@warthog.procyon.org.uk
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-cc: linux-fsdevel@vger.kernel.org
+    On 12 x86 CPUs:
+                  Before     After        Diff
+        threads  events/ms  events/ms
+              8       7162       4956     -31%
+             16       8733       5383     -38%
+             32       7968       5572     -30%
+             64      10652       5739     -46%
+            128      11236       5931     -47%
+
+    On 4 riscv CPUs:
+                  Before     After        Diff
+        threads  events/ms  events/ms
+              8       2958       2833      -4%
+             16       3323       3097      -7%
+             32       3451       3240      -6%
+             64       3554       3178     -11%
+            128       3601       3235     -10%
+
+Although the numbers look bad, it should be noted that this benchmark
+creates multiple threads who do nothing except constantly generating new
+epoll events, thus contention on the spinlock is high. For real workload,
+the event rate is likely much lower, and the performance drop is not as
+bad.
+
+Using another benchmark (perf bench epoll wait) where spinlock contention
+is lower, improvement is even observed on x86:
+
+    On 12 x86 CPUs:
+        Before: Averaged 110279 operations/sec (+- 1.09%), total secs = 8
+        After:  Averaged 114577 operations/sec (+- 2.25%), total secs = 8
+
+    On 4 riscv CPUs:
+        Before: Averaged 175767 operations/sec (+- 0.62%), total secs = 8
+        After:  Averaged 167396 operations/sec (+- 0.23%), total secs = 8
+
+In conclusion, no one is likely to be upset over this change. After all,
+spinlock was used originally for years, and the commit which converted to
+rwlock didn't mention a real workload, just that the benchmark numbers are
+nice.
+
+This patch is not exactly the revert of commit a218cc491420 ("epoll: use
+rwlock in order to reduce ep_poll_callback() contention"), because git
+revert conflicts in some places which are not obvious on the resolution.
+This patch is intended to be backported, therefore go with the obvious
+approach:
+
+  - Replace rwlock_t with spinlock_t one to one
+
+  - Delete list_add_tail_lockless() and chain_epi_lockless(). These were
+    introduced to allow producers to concurrently add items to the list.
+    But now that spinlock no longer allows producers to touch the event
+    list concurrently, these two functions are not necessary anymore.
+
+Fixes: a218cc491420 ("epoll: use rwlock in order to reduce ep_poll_callback() contention")
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Link: https://lore.kernel.org/ec92458ea357ec503c737ead0f10b2c6e4c37d47.1752581388.git.namcao@linutronix.de
+Tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Cc: stable@vger.kernel.org
+Reported-by: Frederic Weisbecker <frederic@kernel.org>
+Closes: https://lore.kernel.org/linux-rt-users/20210825132754.GA895675@lothringen/ [1]
+Reported-by: Valentin Schneider <vschneid@redhat.com>
+Closes: https://lore.kernel.org/linux-rt-users/xhsmhttqvnall.mognet@vschneid.remote.csb/ [2]
 Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Florian Bezdeka <florian.bezdeka@siemens.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/afs/cell.c     | 43 ++++++++----------------------------------
- fs/afs/internal.h |  1 +
- fs/afs/security.c | 48 +++++++++++++++++++++++++++++++++++++++--------
- 3 files changed, 49 insertions(+), 43 deletions(-)
+ fs/eventpoll.c |  139 ++++++++++-----------------------------------------------
+ 1 file changed, 26 insertions(+), 113 deletions(-)
 
-diff --git a/fs/afs/cell.c b/fs/afs/cell.c
-index d9b6fa1088b7b..71c10a05cebe5 100644
---- a/fs/afs/cell.c
-+++ b/fs/afs/cell.c
-@@ -140,7 +140,9 @@ static struct afs_cell *afs_alloc_cell(struct afs_net *net,
- 		return ERR_PTR(-ENOMEM);
- 	}
+--- a/fs/eventpoll.c
++++ b/fs/eventpoll.c
+@@ -45,10 +45,10 @@
+  *
+  * 1) epmutex (mutex)
+  * 2) ep->mtx (mutex)
+- * 3) ep->lock (rwlock)
++ * 3) ep->lock (spinlock)
+  *
+  * The acquire order is the one listed above, from 1 to 3.
+- * We need a rwlock (ep->lock) because we manipulate objects
++ * We need a spinlock (ep->lock) because we manipulate objects
+  * from inside the poll callback, that might be triggered from
+  * a wake_up() that in turn might be called from IRQ context.
+  * So we can't sleep inside the poll callback and hence we need
+@@ -193,7 +193,7 @@ struct eventpoll {
+ 	struct list_head rdllist;
  
--	cell->name = kmalloc(1 + namelen + 1, GFP_KERNEL);
-+	/* Allocate the cell name and the key name in one go. */
-+	cell->name = kmalloc(1 + namelen + 1 +
-+			     4 + namelen + 1, GFP_KERNEL);
- 	if (!cell->name) {
- 		kfree(cell);
- 		return ERR_PTR(-ENOMEM);
-@@ -151,7 +153,11 @@ static struct afs_cell *afs_alloc_cell(struct afs_net *net,
- 	cell->name_len = namelen;
- 	for (i = 0; i < namelen; i++)
- 		cell->name[i] = tolower(name[i]);
--	cell->name[i] = 0;
-+	cell->name[i++] = 0;
-+
-+	cell->key_desc = cell->name + i;
-+	memcpy(cell->key_desc, "afs@", 4);
-+	memcpy(cell->key_desc + 4, cell->name, cell->name_len + 1);
+ 	/* Lock which protects rdllist and ovflist */
+-	rwlock_t lock;
++	spinlock_t lock;
  
- 	cell->net = net;
- 	refcount_set(&cell->ref, 1);
-@@ -710,33 +716,6 @@ void afs_set_cell_timer(struct afs_cell *cell, unsigned int delay_secs)
- 	timer_reduce(&cell->management_timer, jiffies + delay_secs * HZ);
+ 	/* RB tree root used to store monitored fd structs */
+ 	struct rb_root_cached rbr;
+@@ -621,10 +621,10 @@ static void ep_start_scan(struct eventpo
+ 	 * in a lockless way.
+ 	 */
+ 	lockdep_assert_irqs_enabled();
+-	write_lock_irq(&ep->lock);
++	spin_lock_irq(&ep->lock);
+ 	list_splice_init(&ep->rdllist, txlist);
+ 	WRITE_ONCE(ep->ovflist, NULL);
+-	write_unlock_irq(&ep->lock);
++	spin_unlock_irq(&ep->lock);
  }
  
--/*
-- * Allocate a key to use as a placeholder for anonymous user security.
+ static void ep_done_scan(struct eventpoll *ep,
+@@ -632,7 +632,7 @@ static void ep_done_scan(struct eventpol
+ {
+ 	struct epitem *epi, *nepi;
+ 
+-	write_lock_irq(&ep->lock);
++	spin_lock_irq(&ep->lock);
+ 	/*
+ 	 * During the time we spent inside the "sproc" callback, some
+ 	 * other events might have been queued by the poll callback.
+@@ -673,7 +673,7 @@ static void ep_done_scan(struct eventpol
+ 			wake_up(&ep->wq);
+ 	}
+ 
+-	write_unlock_irq(&ep->lock);
++	spin_unlock_irq(&ep->lock);
+ }
+ 
+ static void epi_rcu_free(struct rcu_head *head)
+@@ -719,10 +719,10 @@ static int ep_remove(struct eventpoll *e
+ 
+ 	rb_erase_cached(&epi->rbn, &ep->rbr);
+ 
+-	write_lock_irq(&ep->lock);
++	spin_lock_irq(&ep->lock);
+ 	if (ep_is_linked(epi))
+ 		list_del_init(&epi->rdllink);
+-	write_unlock_irq(&ep->lock);
++	spin_unlock_irq(&ep->lock);
+ 
+ 	wakeup_source_unregister(ep_wakeup_source(epi));
+ 	/*
+@@ -986,7 +986,7 @@ static int ep_alloc(struct eventpoll **p
+ 		goto free_uid;
+ 
+ 	mutex_init(&ep->mtx);
+-	rwlock_init(&ep->lock);
++	spin_lock_init(&ep->lock);
+ 	init_waitqueue_head(&ep->wq);
+ 	init_waitqueue_head(&ep->poll_wait);
+ 	INIT_LIST_HEAD(&ep->rdllist);
+@@ -1077,99 +1077,9 @@ struct file *get_epoll_tfile_raw_ptr(str
+ #endif /* CONFIG_KCMP */
+ 
+ /*
+- * Adds a new entry to the tail of the list in a lockless way, i.e.
+- * multiple CPUs are allowed to call this function concurrently.
+- *
+- * Beware: it is necessary to prevent any other modifications of the
+- *         existing list until all changes are completed, in other words
+- *         concurrent list_add_tail_lockless() calls should be protected
+- *         with a read lock, where write lock acts as a barrier which
+- *         makes sure all list_add_tail_lockless() calls are fully
+- *         completed.
+- *
+- *        Also an element can be locklessly added to the list only in one
+- *        direction i.e. either to the tail or to the head, otherwise
+- *        concurrent access will corrupt the list.
+- *
+- * Return: %false if element has been already added to the list, %true
+- * otherwise.
 - */
--static int afs_alloc_anon_key(struct afs_cell *cell)
+-static inline bool list_add_tail_lockless(struct list_head *new,
+-					  struct list_head *head)
 -{
--	struct key *key;
--	char keyname[4 + AFS_MAXCELLNAME + 1], *cp, *dp;
+-	struct list_head *prev;
 -
--	/* Create a key to represent an anonymous user. */
--	memcpy(keyname, "afs@", 4);
--	dp = keyname + 4;
--	cp = cell->name;
--	do {
--		*dp++ = tolower(*cp);
--	} while (*cp++);
+-	/*
+-	 * This is simple 'new->next = head' operation, but cmpxchg()
+-	 * is used in order to detect that same element has been just
+-	 * added to the list from another CPU: the winner observes
+-	 * new->next == new.
+-	 */
+-	if (!try_cmpxchg(&new->next, &new, head))
+-		return false;
 -
--	key = rxrpc_get_null_key(keyname);
--	if (IS_ERR(key))
--		return PTR_ERR(key);
+-	/*
+-	 * Initially ->next of a new element must be updated with the head
+-	 * (we are inserting to the tail) and only then pointers are atomically
+-	 * exchanged.  XCHG guarantees memory ordering, thus ->next should be
+-	 * updated before pointers are actually swapped and pointers are
+-	 * swapped before prev->next is updated.
+-	 */
 -
--	cell->anonymous_key = key;
+-	prev = xchg(&head->prev, new);
 -
--	_debug("anon key %p{%x}",
--	       cell->anonymous_key, key_serial(cell->anonymous_key));
--	return 0;
+-	/*
+-	 * It is safe to modify prev->next and new->prev, because a new element
+-	 * is added only to the tail and new->next is updated before XCHG.
+-	 */
+-
+-	prev->next = new;
+-	new->prev = prev;
+-
+-	return true;
 -}
 -
- /*
-  * Activate a cell.
-  */
-@@ -746,12 +725,6 @@ static int afs_activate_cell(struct afs_net *net, struct afs_cell *cell)
- 	struct afs_cell *pcell;
- 	int ret;
- 
--	if (!cell->anonymous_key) {
--		ret = afs_alloc_anon_key(cell);
--		if (ret < 0)
--			return ret;
--	}
+-/*
+- * Chains a new epi entry to the tail of the ep->ovflist in a lockless way,
+- * i.e. multiple CPUs are allowed to call this function concurrently.
+- *
+- * Return: %false if epi element has been already chained, %true otherwise.
+- */
+-static inline bool chain_epi_lockless(struct epitem *epi)
+-{
+-	struct eventpoll *ep = epi->ep;
 -
- 	ret = afs_proc_cell_setup(cell);
- 	if (ret < 0)
- 		return ret;
-diff --git a/fs/afs/internal.h b/fs/afs/internal.h
-index 87828d685293f..470e6eef8bd49 100644
---- a/fs/afs/internal.h
-+++ b/fs/afs/internal.h
-@@ -413,6 +413,7 @@ struct afs_cell {
- 
- 	u8			name_len;	/* Length of name */
- 	char			*name;		/* Cell name, case-flattened and NUL-padded */
-+	char			*key_desc;	/* Authentication key description */
- };
- 
- /*
-diff --git a/fs/afs/security.c b/fs/afs/security.c
-index 6a7744c9e2a2d..ff8830e6982fb 100644
---- a/fs/afs/security.c
-+++ b/fs/afs/security.c
-@@ -16,6 +16,30 @@
- 
- static DEFINE_HASHTABLE(afs_permits_cache, 10);
- static DEFINE_SPINLOCK(afs_permits_lock);
-+static DEFINE_MUTEX(afs_key_lock);
-+
-+/*
-+ * Allocate a key to use as a placeholder for anonymous user security.
-+ */
-+static int afs_alloc_anon_key(struct afs_cell *cell)
-+{
-+	struct key *key;
-+
-+	mutex_lock(&afs_key_lock);
-+	if (!cell->anonymous_key) {
-+		key = rxrpc_get_null_key(cell->key_desc);
-+		if (!IS_ERR(key))
-+			cell->anonymous_key = key;
-+	}
-+	mutex_unlock(&afs_key_lock);
-+
-+	if (IS_ERR(key))
-+		return PTR_ERR(key);
-+
-+	_debug("anon key %p{%x}",
-+	       cell->anonymous_key, key_serial(cell->anonymous_key));
-+	return 0;
-+}
- 
- /*
-  * get a key
-@@ -23,11 +47,12 @@ static DEFINE_SPINLOCK(afs_permits_lock);
- struct key *afs_request_key(struct afs_cell *cell)
+-	/* Fast preliminary check */
+-	if (epi->next != EP_UNACTIVE_PTR)
+-		return false;
+-
+-	/* Check that the same epi has not been just chained from another CPU */
+-	if (cmpxchg(&epi->next, EP_UNACTIVE_PTR, NULL) != EP_UNACTIVE_PTR)
+-		return false;
+-
+-	/* Atomically exchange tail */
+-	epi->next = xchg(&ep->ovflist, epi);
+-
+-	return true;
+-}
+-
+-/*
+  * This is the callback that is passed to the wait queue wakeup
+  * mechanism. It is called by the stored file descriptors when they
+  * have events to report.
+- *
+- * This callback takes a read lock in order not to contend with concurrent
+- * events from another file descriptor, thus all modifications to ->rdllist
+- * or ->ovflist are lockless.  Read lock is paired with the write lock from
+- * ep_scan_ready_list(), which stops all list modifications and guarantees
+- * that lists state is seen correctly.
+- *
+- * Another thing worth to mention is that ep_poll_callback() can be called
+- * concurrently for the same @epi from different CPUs if poll table was inited
+- * with several wait queues entries.  Plural wakeup from different CPUs of a
+- * single wait queue is serialized by wq.lock, but the case when multiple wait
+- * queues are used should be detected accordingly.  This is detected using
+- * cmpxchg() operation.
+  */
+ static int ep_poll_callback(wait_queue_entry_t *wait, unsigned mode, int sync, void *key)
  {
- 	struct key *key;
-+	int ret;
+@@ -1180,7 +1090,7 @@ static int ep_poll_callback(wait_queue_e
+ 	unsigned long flags;
+ 	int ewake = 0;
  
--	_enter("{%x}", key_serial(cell->anonymous_key));
-+	_enter("{%s}", cell->key_desc);
+-	read_lock_irqsave(&ep->lock, flags);
++	spin_lock_irqsave(&ep->lock, flags);
  
--	_debug("key %s", cell->anonymous_key->description);
--	key = request_key_net(&key_type_rxrpc, cell->anonymous_key->description,
-+	_debug("key %s", cell->key_desc);
-+	key = request_key_net(&key_type_rxrpc, cell->key_desc,
- 			      cell->net->net, NULL);
- 	if (IS_ERR(key)) {
- 		if (PTR_ERR(key) != -ENOKEY) {
-@@ -35,6 +60,12 @@ struct key *afs_request_key(struct afs_cell *cell)
- 			return key;
- 		}
+ 	ep_set_busy_poll_napi_id(epi);
  
-+		if (!cell->anonymous_key) {
-+			ret = afs_alloc_anon_key(cell);
-+			if (ret < 0)
-+				return ERR_PTR(ret);
+@@ -1209,12 +1119,15 @@ static int ep_poll_callback(wait_queue_e
+ 	 * chained in ep->ovflist and requeued later on.
+ 	 */
+ 	if (READ_ONCE(ep->ovflist) != EP_UNACTIVE_PTR) {
+-		if (chain_epi_lockless(epi))
++		if (epi->next == EP_UNACTIVE_PTR) {
++			epi->next = READ_ONCE(ep->ovflist);
++			WRITE_ONCE(ep->ovflist, epi);
+ 			ep_pm_stay_awake_rcu(epi);
 +		}
-+
- 		/* act as anonymous user */
- 		_leave(" = {%x} [anon]", key_serial(cell->anonymous_key));
- 		return key_get(cell->anonymous_key);
-@@ -52,11 +83,10 @@ struct key *afs_request_key_rcu(struct afs_cell *cell)
- {
- 	struct key *key;
+ 	} else if (!ep_is_linked(epi)) {
+ 		/* In the usual case, add event to ready list. */
+-		if (list_add_tail_lockless(&epi->rdllink, &ep->rdllist))
+-			ep_pm_stay_awake_rcu(epi);
++		list_add_tail(&epi->rdllink, &ep->rdllist);
++		ep_pm_stay_awake_rcu(epi);
+ 	}
  
--	_enter("{%x}", key_serial(cell->anonymous_key));
-+	_enter("{%s}", cell->key_desc);
+ 	/*
+@@ -1247,7 +1160,7 @@ static int ep_poll_callback(wait_queue_e
+ 		pwake++;
  
--	_debug("key %s", cell->anonymous_key->description);
--	key = request_key_net_rcu(&key_type_rxrpc,
--				  cell->anonymous_key->description,
-+	_debug("key %s", cell->key_desc);
-+	key = request_key_net_rcu(&key_type_rxrpc, cell->key_desc,
- 				  cell->net->net);
- 	if (IS_ERR(key)) {
- 		if (PTR_ERR(key) != -ENOKEY) {
-@@ -65,6 +95,8 @@ struct key *afs_request_key_rcu(struct afs_cell *cell)
+ out_unlock:
+-	read_unlock_irqrestore(&ep->lock, flags);
++	spin_unlock_irqrestore(&ep->lock, flags);
+ 
+ 	/* We have to call this outside the lock */
+ 	if (pwake)
+@@ -1576,7 +1489,7 @@ static int ep_insert(struct eventpoll *e
+ 	}
+ 
+ 	/* We have to drop the new item inside our item list to keep track of it */
+-	write_lock_irq(&ep->lock);
++	spin_lock_irq(&ep->lock);
+ 
+ 	/* record NAPI ID of new item if present */
+ 	ep_set_busy_poll_napi_id(epi);
+@@ -1593,7 +1506,7 @@ static int ep_insert(struct eventpoll *e
+ 			pwake++;
+ 	}
+ 
+-	write_unlock_irq(&ep->lock);
++	spin_unlock_irq(&ep->lock);
+ 
+ 	/* We have to call this outside the lock */
+ 	if (pwake)
+@@ -1657,7 +1570,7 @@ static int ep_modify(struct eventpoll *e
+ 	 * list, push it inside.
+ 	 */
+ 	if (ep_item_poll(epi, &pt, 1)) {
+-		write_lock_irq(&ep->lock);
++		spin_lock_irq(&ep->lock);
+ 		if (!ep_is_linked(epi)) {
+ 			list_add_tail(&epi->rdllink, &ep->rdllist);
+ 			ep_pm_stay_awake(epi);
+@@ -1668,7 +1581,7 @@ static int ep_modify(struct eventpoll *e
+ 			if (waitqueue_active(&ep->poll_wait))
+ 				pwake++;
  		}
+-		write_unlock_irq(&ep->lock);
++		spin_unlock_irq(&ep->lock);
+ 	}
  
- 		/* act as anonymous user */
-+		if (!cell->anonymous_key)
-+			return NULL; /* Need to allocate */
- 		_leave(" = {%x} [anon]", key_serial(cell->anonymous_key));
- 		return key_get(cell->anonymous_key);
- 	} else {
-@@ -408,7 +440,7 @@ int afs_permission(struct mnt_idmap *idmap, struct inode *inode,
+ 	/* We have to call this outside the lock */
+@@ -1901,7 +1814,7 @@ static int ep_poll(struct eventpoll *ep,
+ 		init_wait(&wait);
+ 		wait.func = ep_autoremove_wake_function;
  
- 	if (mask & MAY_NOT_BLOCK) {
- 		key = afs_request_key_rcu(vnode->volume->cell);
--		if (IS_ERR(key))
-+		if (IS_ERR_OR_NULL(key))
- 			return -ECHILD;
+-		write_lock_irq(&ep->lock);
++		spin_lock_irq(&ep->lock);
+ 		/*
+ 		 * Barrierless variant, waitqueue_active() is called under
+ 		 * the same lock on wakeup ep_poll_callback() side, so it
+@@ -1920,7 +1833,7 @@ static int ep_poll(struct eventpoll *ep,
+ 		if (!eavail)
+ 			__add_wait_queue_exclusive(&ep->wq, &wait);
  
- 		ret = -ECHILD;
--- 
-2.51.0
-
+-		write_unlock_irq(&ep->lock);
++		spin_unlock_irq(&ep->lock);
+ 
+ 		if (!eavail)
+ 			timed_out = !schedule_hrtimeout_range(to, slack,
+@@ -1935,7 +1848,7 @@ static int ep_poll(struct eventpoll *ep,
+ 		eavail = 1;
+ 
+ 		if (!list_empty_careful(&wait.entry)) {
+-			write_lock_irq(&ep->lock);
++			spin_lock_irq(&ep->lock);
+ 			/*
+ 			 * If the thread timed out and is not on the wait queue,
+ 			 * it means that the thread was woken up after its
+@@ -1946,7 +1859,7 @@ static int ep_poll(struct eventpoll *ep,
+ 			if (timed_out)
+ 				eavail = list_empty(&wait.entry);
+ 			__remove_wait_queue(&ep->wq, &wait);
+-			write_unlock_irq(&ep->lock);
++			spin_unlock_irq(&ep->lock);
+ 		}
+ 	}
+ }
 
 
 
