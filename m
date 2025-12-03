@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-198541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2247DCA0EC4
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:23:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E094BC9FA49
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:47:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 50B3D341B25F
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:21:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C9F3C30334C7
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:41:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EAE731A06F;
-	Wed,  3 Dec 2025 15:48:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A21130AD06;
+	Wed,  3 Dec 2025 15:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n6BDmRTI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yGd+AS+1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24291313E3D;
-	Wed,  3 Dec 2025 15:48:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55646DDAB;
+	Wed,  3 Dec 2025 15:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776886; cv=none; b=bOtRxHsMQY9MR/4q6gpfV1PI1S0OhyFhSdHWrElOAO5j/AA/dfHj25rlYRaJ5j96w9u2/ZZNrO5Pee4MnWUjYIx09V8fPUz5LQgGXu8ftcHditaurCf3tCM9S4yVZ8WnrKCHVbwlj/ftBQuFwb/Q8NQU0OqJzwKHNYy7K5eqDdU=
+	t=1764776466; cv=none; b=Rbb5FPq0Dqkqn9Ty5rewWyF1hyx2K2BBSOej+gi/x9Q8Ke7mZKNvGRAXZSxvjw+9Ah5pAvLEMevf6A7sQbB43M44HTLQTq8aPuh8hsqYwnpUbXMTsqlN6oh5LKXhgclPnvnn6N1enk5D4peUUUu5zqxAtmuUSHlYo/odXB5lMc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776886; c=relaxed/simple;
-	bh=xI/QPtfoX4SBYeQscD+2JpInZQpaq38uLOFZRA6xPSc=;
+	s=arc-20240116; t=1764776466; c=relaxed/simple;
+	bh=zRsGMuV3DLypxIHsfOs6whScbo5ZeNuuYuaR7rdrrcs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=drzM50kRWfXRPFP2zjJCj7TcGtCaCFuaoL+uqJUbBT3lCLcM7vQY8WhIJ8+/94nAK0IErwdAxisqG0wgxMAIv7u75yq85fG5opHg/WV38CkNzltbsSugQAaXL89cRpK+qescDSH3C5yRblfEzx/7ZSwEyXi4o7mQuGBT1sb7Ryg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n6BDmRTI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BC80C4CEF5;
-	Wed,  3 Dec 2025 15:48:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=s5+ydBNVJPgDL1D+/6WVlFLks+0tMolQDradreVH6AFsgP8fl1cPM1QRzJ3kHVQgBlGR16EcU0KAYr7Y82jizvkjDsSXruZIfpoi5dUQBksF4OnTgaj1/fQA4LVD4bftUzjayLw05lpX3b16jXVp3/lfCoIo8iNY3lnEM/Fn/As=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yGd+AS+1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8B89C4CEF5;
+	Wed,  3 Dec 2025 15:41:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776886;
-	bh=xI/QPtfoX4SBYeQscD+2JpInZQpaq38uLOFZRA6xPSc=;
+	s=korg; t=1764776466;
+	bh=zRsGMuV3DLypxIHsfOs6whScbo5ZeNuuYuaR7rdrrcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n6BDmRTIQ1ZvGqYonGw97uvUH0vWFpMLW7o7qSeFMbPcgE0X71GM6mk0RyEjpLDOZ
-	 ar6ZrKPdWK5i24KwP2zmbldECc0G89y8UUF+ZPSgOdWg1sxYHaVLmT792CKofNs5Zz
-	 nozjXP0GhuLU5FfwCXVuNVUCxN/UAT66y9fFeyns=
+	b=yGd+AS+1eAH+1x4zkWwl7Z7LjMDCbXc3t3tm1Ybu1E9nsgMqgIZCdIUEmAMWDSuGl
+	 3g75+VkHPPIBNMH3yeSd4dpLLibBeDNzZzWmvRyyLBYTBO8K2lpJT5D1X3y2R+BbOm
+	 VNzDdgHBZaUkvChawQVd/71LZrBcMSp6qEQekZ70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ashutosh Dixit <ashutosh.dixit@intel.com>,
-	Harish Chegondi <harish.chegondi@intel.com>,
-	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Eric Dumazet <edumazet@google.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 017/146] drm/xe: Fix conversion from clock ticks to milliseconds
+Subject: [PATCH 5.10 191/300] net_sched: limit try_bulk_dequeue_skb() batches
 Date: Wed,  3 Dec 2025 16:26:35 +0100
-Message-ID: <20251203152347.099285517@linuxfoundation.org>
+Message-ID: <20251203152407.701952862@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,58 +60,145 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harish Chegondi <harish.chegondi@intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 7276878b069c57d9a9cca5db01d2f7a427b73456 ]
+[ Upstream commit 0345552a653ce5542affeb69ac5aa52177a5199b ]
 
-When tick counts are large and multiplication by MSEC_PER_SEC is larger
-than 64 bits, the conversion from clock ticks to milliseconds can go bad.
+After commit 100dfa74cad9 ("inet: dev_queue_xmit() llist adoption")
+I started seeing many qdisc requeues on IDPF under high TX workload.
 
-Use mul_u64_u32_div() instead.
+$ tc -s qd sh dev eth1 handle 1: ; sleep 1; tc -s qd sh dev eth1 handle 1:
+qdisc mq 1: root
+ Sent 43534617319319 bytes 268186451819 pkt (dropped 0, overlimits 0 requeues 3532840114)
+ backlog 1056Kb 6675p requeues 3532840114
+qdisc mq 1: root
+ Sent 43554665866695 bytes 268309964788 pkt (dropped 0, overlimits 0 requeues 3537737653)
+ backlog 781164b 4822p requeues 3537737653
 
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Signed-off-by: Harish Chegondi <harish.chegondi@intel.com>
-Suggested-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Fixes: 49cc215aad7f ("drm/xe: Add xe_gt_clock_interval_to_ms helper")
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Link: https://patch.msgid.link/1562f1b62d5be3fbaee100f09107f3cc49e40dd1.1763408584.git.harish.chegondi@intel.com
-(cherry picked from commit 96b93ac214f9dd66294d975d86c5dee256faef91)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+This is caused by try_bulk_dequeue_skb() being only limited by BQL budget.
+
+perf record -C120-239 -e qdisc:qdisc_dequeue sleep 1 ; perf script
+...
+ netperf 75332 [146]  2711.138269: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1292 skbaddr=0xff378005a1e9f200
+ netperf 75332 [146]  2711.138953: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1213 skbaddr=0xff378004d607a500
+ netperf 75330 [144]  2711.139631: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1233 skbaddr=0xff3780046be20100
+ netperf 75333 [147]  2711.140356: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1093 skbaddr=0xff37800514845b00
+ netperf 75337 [151]  2711.141037: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1353 skbaddr=0xff37800460753300
+ netperf 75337 [151]  2711.141877: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1367 skbaddr=0xff378004e72c7b00
+ netperf 75330 [144]  2711.142643: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1202 skbaddr=0xff3780045bd60000
+...
+
+This is bad because :
+
+1) Large batches hold one victim cpu for a very long time.
+
+2) Driver often hit their own TX ring limit (all slots are used).
+
+3) We call dev_requeue_skb()
+
+4) Requeues are using a FIFO (q->gso_skb), breaking qdisc ability to
+   implement FQ or priority scheduling.
+
+5) dequeue_skb() gets packets from q->gso_skb one skb at a time
+   with no xmit_more support. This is causing many spinlock games
+   between the qdisc and the device driver.
+
+Requeues were supposed to be very rare, lets keep them this way.
+
+Limit batch sizes to /proc/sys/net/core/dev_weight (default 64) as
+__qdisc_run() was designed to use.
+
+Fixes: 5772e9a3463b ("qdisc: bulk dequeue support for qdiscs with TCQ_F_ONETXQUEUE")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
+Link: https://patch.msgid.link/20251109161215.2574081-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_gt_clock.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ net/sched/sch_generic.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_gt_clock.c b/drivers/gpu/drm/xe/xe_gt_clock.c
-index 4f011d1573c65..f65d1edd05671 100644
---- a/drivers/gpu/drm/xe/xe_gt_clock.c
-+++ b/drivers/gpu/drm/xe/xe_gt_clock.c
-@@ -93,11 +93,6 @@ int xe_gt_clock_init(struct xe_gt *gt)
- 	return 0;
+diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
+index ecdd9e83f2f49..243a1d6b349c7 100644
+--- a/net/sched/sch_generic.c
++++ b/net/sched/sch_generic.c
+@@ -172,9 +172,10 @@ static inline void dev_requeue_skb(struct sk_buff *skb, struct Qdisc *q)
+ static void try_bulk_dequeue_skb(struct Qdisc *q,
+ 				 struct sk_buff *skb,
+ 				 const struct netdev_queue *txq,
+-				 int *packets)
++				 int *packets, int budget)
+ {
+ 	int bytelimit = qdisc_avail_bulklimit(txq) - skb->len;
++	int cnt = 0;
+ 
+ 	while (bytelimit > 0) {
+ 		struct sk_buff *nskb = q->dequeue(q);
+@@ -185,8 +186,10 @@ static void try_bulk_dequeue_skb(struct Qdisc *q,
+ 		bytelimit -= nskb->len; /* covers GSO len */
+ 		skb->next = nskb;
+ 		skb = nskb;
+-		(*packets)++; /* GSO counts as one pkt */
++		if (++cnt >= budget)
++			break;
+ 	}
++	(*packets) += cnt;
+ 	skb_mark_not_on_list(skb);
  }
  
--static u64 div_u64_roundup(u64 n, u32 d)
--{
--	return div_u64(n + d - 1, d);
--}
--
- /**
-  * xe_gt_clock_interval_to_ms - Convert sampled GT clock ticks to msec
-  *
-@@ -108,5 +103,5 @@ static u64 div_u64_roundup(u64 n, u32 d)
+@@ -220,7 +223,7 @@ static void try_bulk_dequeue_skb_slow(struct Qdisc *q,
+  * A requeued skb (via q->gso_skb) can also be a SKB list.
   */
- u64 xe_gt_clock_interval_to_ms(struct xe_gt *gt, u64 count)
+ static struct sk_buff *dequeue_skb(struct Qdisc *q, bool *validate,
+-				   int *packets)
++				   int *packets, int budget)
  {
--	return div_u64_roundup(count * MSEC_PER_SEC, gt->info.reference_clock);
-+	return mul_u64_u32_div(count, MSEC_PER_SEC, gt->info.reference_clock);
- }
+ 	const struct netdev_queue *txq = q->dev_queue;
+ 	struct sk_buff *skb = NULL;
+@@ -287,7 +290,7 @@ static struct sk_buff *dequeue_skb(struct Qdisc *q, bool *validate,
+ 	if (skb) {
+ bulk:
+ 		if (qdisc_may_bulk(q))
+-			try_bulk_dequeue_skb(q, skb, txq, packets);
++			try_bulk_dequeue_skb(q, skb, txq, packets, budget);
+ 		else
+ 			try_bulk_dequeue_skb_slow(q, skb, packets);
+ 	}
+@@ -379,7 +382,7 @@ bool sch_direct_xmit(struct sk_buff *skb, struct Qdisc *q,
+  *				>0 - queue is not empty.
+  *
+  */
+-static inline bool qdisc_restart(struct Qdisc *q, int *packets)
++static inline bool qdisc_restart(struct Qdisc *q, int *packets, int budget)
+ {
+ 	spinlock_t *root_lock = NULL;
+ 	struct netdev_queue *txq;
+@@ -388,7 +391,7 @@ static inline bool qdisc_restart(struct Qdisc *q, int *packets)
+ 	bool validate;
+ 
+ 	/* Dequeue packet */
+-	skb = dequeue_skb(q, &validate, packets);
++	skb = dequeue_skb(q, &validate, packets, budget);
+ 	if (unlikely(!skb))
+ 		return false;
+ 
+@@ -406,7 +409,7 @@ void __qdisc_run(struct Qdisc *q)
+ 	int quota = READ_ONCE(dev_tx_weight);
+ 	int packets;
+ 
+-	while (qdisc_restart(q, &packets)) {
++	while (qdisc_restart(q, &packets, quota)) {
+ 		quota -= packets;
+ 		if (quota <= 0) {
+ 			__netif_schedule(q);
 -- 
 2.51.0
 
