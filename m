@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-198874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A49DCC9FD8B
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:14:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D322C9F953
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:43:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 47E743048D5F
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:05:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7C270300F8A9
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:38:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A34A034F484;
-	Wed,  3 Dec 2025 16:05:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A43B314A80;
+	Wed,  3 Dec 2025 15:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XQOMBWj+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yqxm+/7J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F55D313558;
-	Wed,  3 Dec 2025 16:05:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5699F3148A3;
+	Wed,  3 Dec 2025 15:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777955; cv=none; b=Dpw7AfleoVSE9gc8XQ0sCf2u4GNEw1SjKc/qqnAiOcuzfVBqtmVaDI9/tJZNIwTbfz+vof/kJ1ydpTYG7TsEtr2Nt1lt+1hdPDXFB5KvzPdCDDOthsn61Hc7s0btJEDCg/ywxQuSq/FxJZwURmF7AcvSKpkNFl31awK3DCZJpGQ=
+	t=1764776303; cv=none; b=EPJJD5eQ78M9bl2lLzUo0DaEPE0dF6zyvx72W/L9uoCTUtZMlsnxLPCC+I3Ca45/b9ee095alYk8UoerpcRCY0qGJiL8s6UGI37ijt5NmkSioed6gUyV6+TvS2wT9MU0q/erJjhWbKfisDdX8OFIhGp9IGiQxICz+PWmg+tTsQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777955; c=relaxed/simple;
-	bh=m4+MhPOGGAFRfTd8dlWFTXwhLmgTNbJbj+VgpgnFfuk=;
+	s=arc-20240116; t=1764776303; c=relaxed/simple;
+	bh=WvKZCaBvG39H2XfU2PO7MX03W1eqQ49MhKmCTSALtMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bAb5xYevtPXsHxvoTE6cbM5ttKcWBkn4302GoKIJ8wDgUgYCz3p1IJ3aCvs7p/XVc+tCq/LQozkNjPyXuv6KqpdLWwJKvAsBAoEAr7RbQqLmVmu3shus9B5HYPuRRlm+fPfA1stDkO0/YmLInb2AKFGLR4WXdJqqpZ6FHSWJDa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XQOMBWj+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0192C4CEF5;
-	Wed,  3 Dec 2025 16:05:54 +0000 (UTC)
+	 MIME-Version; b=YG0XSTV8hJi1aAAZPacWw0iFsg2HchReO0hfhKzV2MG11FpItW7rTlX8zssEMnBVvVhacOeFYTKC63JVQ67sZJrcxGwFiN8tKtiearKmBCb3l1QVxWPecQHWygBjyvyyAwIdu0C3bU71qeV42deHZqzqE2XZkOO89nZBVCxr6Hc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yqxm+/7J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2A3EC4CEF5;
+	Wed,  3 Dec 2025 15:38:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777955;
-	bh=m4+MhPOGGAFRfTd8dlWFTXwhLmgTNbJbj+VgpgnFfuk=;
+	s=korg; t=1764776303;
+	bh=WvKZCaBvG39H2XfU2PO7MX03W1eqQ49MhKmCTSALtMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XQOMBWj+xc2OlpADLbHLoKqtllIXG7l1qDj2QONHXve/ni+whF1GhDeYXpZDKJMD9
-	 2znQXwbc11oRubACo3ZlVegV5Gwwp05IVUlNIJAekjeu0bVIB2RhX0Hd6KB6QPCjti
-	 YNLGlMFLeWMN8e+UXCyBn5j1Lgnac+N2KdFDJbQk=
+	b=Yqxm+/7JMZfrt3jfbpAoGv5EyC7imfK7D4CsVypWi85OaedGUZ3/ucxOm7wzRbb3M
+	 JE+8NNvCatYZdfWFNzqqhpUhkANoGvkQmAvS3chduYVjp3i3SBAbMLAzyAj4H8iVuK
+	 Ndy+sLrquRTdBS6pW5G8+RCyM6NRK09WlPHio/Ck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthias Schiffer <matthias.schiffer@tq-group.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 197/392] clk: ti: am33xx: keep WKUP_DEBUGSS_CLKCTRL enabled
+Subject: [PATCH 5.10 143/300] page_pool: Clamp pool size to max 16K pages
 Date: Wed,  3 Dec 2025 16:25:47 +0100
-Message-ID: <20251203152421.324123318@linuxfoundation.org>
+Message-ID: <20251203152405.915266540@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthias Schiffer <matthias.schiffer@tq-group.com>
+From: Dragos Tatulea <dtatulea@nvidia.com>
 
-[ Upstream commit 1e0d75258bd09323cb452655549e03975992b29e ]
+[ Upstream commit a1b501a8c6a87c9265fd03bd004035199e2e8128 ]
 
-As described in AM335x Errata Advisory 1.0.42, WKUP_DEBUGSS_CLKCTRL
-can't be disabled - the clock module will just be stuck in transitioning
-state forever, resulting in the following warning message after the wait
-loop times out:
+page_pool_init() returns E2BIG when the page_pool size goes above 32K
+pages. As some drivers are configuring the page_pool size according to
+the MTU and ring size, there are cases where this limit is exceeded and
+the queue creation fails.
 
-    l3-aon-clkctrl:0000:0: failed to disable
+The page_pool size doesn't have to cover a full queue, especially for
+larger ring size. So clamp the size instead of returning an error. Do
+this in the core to avoid having each driver do the clamping.
 
-Just add the clock to enable_init_clks, so no attempt is made to disable
-it.
+The current limit was deemed to high [1] so it was reduced to 16K to avoid
+page waste.
 
-Signed-off-by: Matthias Schiffer <matthias.schiffer@tq-group.com>
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Acked-by: Kevin Hilman <khilman@baylibre.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+[1] https://lore.kernel.org/all/1758532715-820422-3-git-send-email-tariqt@nvidia.com/
+
+Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20250926131605.2276734-2-dtatulea@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/ti/clk-33xx.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/core/page_pool.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/clk/ti/clk-33xx.c b/drivers/clk/ti/clk-33xx.c
-index f2c22120aaa75..37bb20e92f787 100644
---- a/drivers/clk/ti/clk-33xx.c
-+++ b/drivers/clk/ti/clk-33xx.c
-@@ -266,6 +266,8 @@ static const char *enable_init_clks[] = {
- 	"dpll_ddr_m2_ck",
- 	"dpll_mpu_m2_ck",
- 	"l3_gclk",
-+	/* WKUP_DEBUGSS_CLKCTRL - disable fails, AM335x Errata Advisory 1.0.42 */
-+	"l3-aon-clkctrl:0000:0",
- 	/* AM3_L3_L3_MAIN_CLKCTRL, needed during suspend */
- 	"l3-clkctrl:00bc:0",
- 	"l4hs_gclk",
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index a11809b3149b4..15ad99330bb9b 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -33,11 +33,7 @@ static int page_pool_init(struct page_pool *pool,
+ 		return -EINVAL;
+ 
+ 	if (pool->p.pool_size)
+-		ring_qsize = pool->p.pool_size;
+-
+-	/* Sanity limit mem that can be pinned down */
+-	if (ring_qsize > 32768)
+-		return -E2BIG;
++		ring_qsize = min(pool->p.pool_size, 16384);
+ 
+ 	/* DMA direction is either DMA_FROM_DEVICE or DMA_BIDIRECTIONAL.
+ 	 * DMA_BIDIRECTIONAL is for allowing page used for DMA sending,
 -- 
 2.51.0
 
