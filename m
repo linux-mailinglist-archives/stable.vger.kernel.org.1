@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BD2ECA0CD0
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:10:23 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53302C9F791
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:32:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B8770328533C
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:06:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BFB873003988
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:31:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA16A35F8B8;
-	Wed,  3 Dec 2025 16:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AE8F30F811;
+	Wed,  3 Dec 2025 15:31:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="reY+Z53H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="he0R8+i0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1A933B974;
-	Wed,  3 Dec 2025 16:27:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B6930F552;
+	Wed,  3 Dec 2025 15:31:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779264; cv=none; b=b13sGNNemP+4VK29M+fnt0MhzcsTZknwJsvznl55kkp/Uy7mlYPT3ag52Hs4LcN/92mO/tR9R6nkBniKVVuTsd3SjT1f2FkgHgAsLc2y8U5Lcb6QEx384isNUckd4DsXCnRR0VtFBSTcaMqnFMM60yrYH8JzIEGhp9oAZTRZ+UE=
+	t=1764775915; cv=none; b=Zr6cQBmlhqyJrlLFkyjqbOFcGGEmzgiCyOxuCqW/+up4ZIbr0WfPrx57/Jc2hMikmzK8CuZNVnSpfmcKXO2mXGxNMzGYCsddYC6qbJkmOEcY0z/801CIUE7LdaRIRdKmvl8WWYwOvSGsLHPQqZFzhRZPfHlVKFs/vertO68D3tA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779264; c=relaxed/simple;
-	bh=BHaDXYVQX/SEGzZfdkIUd+LbTR22LgMSVQs30p58OGk=;
+	s=arc-20240116; t=1764775915; c=relaxed/simple;
+	bh=0eznp9j2jri5r3xhNQCfDKuUccv1n7fxmUKwV2tTRcE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r5Vb/e6sXNy+Prx7Pj9ccuCiS9rVNNC8DBD7oYaL4BUC6DwySIStlBNvqRgLdhj331E1vywT8NYSncxxz7bRDg5X671y8TXO8D6qtWC7AeqD8dILu06nfc1W7VwQkf/ts/vKTZWJGTzsheVJzCKt8uRZwG+P/o6V//anK37Si9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=reY+Z53H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 830DCC4CEF5;
-	Wed,  3 Dec 2025 16:27:43 +0000 (UTC)
+	 MIME-Version; b=CR1hpiJQwlo0JqoHQ6qkwiRGqIRPidEVYvbdoaxyuIoLgzN3kFnrMlE8ZN0oOws2vrXC55U4yPNn913YPsKnT1F+alBQ7Mc9N+vLcqMBdZJ9XilgVka2PxhCuroCPv5m0bQ+oXIJLTgvktctd0QgKRr2ZjX7vRENTAAdW84Ll+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=he0R8+i0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8821BC4CEF5;
+	Wed,  3 Dec 2025 15:31:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779263;
-	bh=BHaDXYVQX/SEGzZfdkIUd+LbTR22LgMSVQs30p58OGk=;
+	s=korg; t=1764775914;
+	bh=0eznp9j2jri5r3xhNQCfDKuUccv1n7fxmUKwV2tTRcE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=reY+Z53H23Ff/RSMPa2n2Zis7uWhg7Mu+DYVyMi+H5SWBd640G4hLuq1R/6jPF1im
-	 OStlXNV8dVQ/qh9kCG5TCVcEs/0ftSaMmAAlmAVOLiWQ6DiTruOQyrXcaHG+mpOWSC
-	 BWrEmeNMb7ijsYbeU5eFD5so6BLuzNHEH50JC3+Y=
+	b=he0R8+i0huy2XaByc0f4vd37V00hfiZkXS669mar8eN+698xc4gmzRCuSwiWRxSdw
+	 jIuZfgIlDTdEZeb6byZTNRdFV/Oc3U2sZ/HqZ2/opQjSRiFhrzD92fW695y6oEIuwl
+	 0gMboMpkKUZdY6/mGc00Z9p4PWh0jma06nQDPmlI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antonino Maniscalco <antomani103@gmail.com>,
-	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 204/568] drm/msm: make sure to not queue up recovery more than once
-Date: Wed,  3 Dec 2025 16:23:26 +0100
-Message-ID: <20251203152448.197633905@linuxfoundation.org>
+Subject: [PATCH 5.10 003/300] btrfs: always drop log root tree reference in btrfs_replay_log()
+Date: Wed,  3 Dec 2025 16:23:27 +0100
+Message-ID: <20251203152400.584563083@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +60,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antonino Maniscalco <antomani103@gmail.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 10fb1b2fcaee5545a5e54db1ed4d7b15c2db50c8 ]
+[ Upstream commit 2f5b8095ea47b142c56c09755a8b1e14145a2d30 ]
 
-If two fault IRQs arrive in short succession recovery work will be
-queued up twice.
+Currently we have this odd behaviour:
 
-When recovery runs a second time it may end up killing an unrelated
-context.
+1) At btrfs_replay_log() we drop the reference of the log root tree if
+   the call to btrfs_recover_log_trees() failed;
 
-Prevent this by masking off interrupts when triggering recovery.
+2) But if the call to btrfs_recover_log_trees() did not fail, we don't
+   drop the reference in btrfs_replay_log() - we expect that
+   btrfs_recover_log_trees() does it in case it returns success.
 
-Signed-off-by: Antonino Maniscalco <antomani103@gmail.com>
-Reviewed-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/670023/
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Let's simplify this and make btrfs_replay_log() always drop the reference
+on the log root tree, not only this simplifies code as it's what makes
+sense since it's btrfs_replay_log() who grabbed the reference in the first
+place.
+
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gpu.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/btrfs/disk-io.c  | 2 +-
+ fs/btrfs/tree-log.c | 1 -
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-index cdb4665b953c8..e06204e00e935 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-@@ -1507,6 +1507,9 @@ static void a6xx_fault_detect_irq(struct msm_gpu *gpu)
- 	/* Turn off the hangcheck timer to keep it from bothering us */
- 	del_timer(&gpu->hangcheck_timer);
+diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
+index 91475cb7d568b..29f0ba4adfbce 100644
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -2309,10 +2309,10 @@ static int btrfs_replay_log(struct btrfs_fs_info *fs_info,
+ 	}
+ 	/* returns with log_tree_root freed on success */
+ 	ret = btrfs_recover_log_trees(log_tree_root);
++	btrfs_put_root(log_tree_root);
+ 	if (ret) {
+ 		btrfs_handle_fs_error(fs_info, ret,
+ 				      "Failed to recover log tree");
+-		btrfs_put_root(log_tree_root);
+ 		return ret;
+ 	}
  
-+	/* Turn off interrupts to avoid triggering recovery again */
-+	gpu_write(gpu, REG_A6XX_RBBM_INT_0_MASK, 0);
-+
- 	kthread_queue_work(gpu->worker, &gpu->recover_work);
- }
+diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
+index 6d715bb773643..cdb5a2770faf3 100644
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -6432,7 +6432,6 @@ int btrfs_recover_log_trees(struct btrfs_root *log_root_tree)
  
+ 	log_root_tree->log_root = NULL;
+ 	clear_bit(BTRFS_FS_LOG_RECOVERING, &fs_info->flags);
+-	btrfs_put_root(log_root_tree);
+ 
+ 	return 0;
+ error:
 -- 
 2.51.0
 
