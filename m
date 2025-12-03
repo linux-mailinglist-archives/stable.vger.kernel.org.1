@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2B0FCA0104
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:43:50 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE92BC9FF1F
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:26:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0EADD3001807
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:43:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E5A70301C674
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:24:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 619A9361DA3;
-	Wed,  3 Dec 2025 16:43:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C8D1314A80;
+	Wed,  3 Dec 2025 16:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EoeQkJU6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jopHt+XZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECEFD361DD5;
-	Wed,  3 Dec 2025 16:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D17531329E;
+	Wed,  3 Dec 2025 16:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780206; cv=none; b=Yzl8/R0kMbUMdfLO9URU+3JnmHExdh/CLgzM+MUmMk4BHGIwSjFlT8PwOzpy/mRphK7dBNZdWjCRBcdjqnivH54FcOj25g359DqfpaM5wRgsNGz/amVxZ0Yq7al5KnimorJsRlSSE3FhbV4H1AKi5oJDY56wcnVHjMW3FiH+oaQ=
+	t=1764778418; cv=none; b=bDUjHCt17XNhIwtqtzFEuhELuv+sqyh9SZmdwGdhcnuBjNMKhU+yb2SdyZTCWUMUbntJSitXYNtdjE6JjcZ6Vb8U2x5RwznfEUACIh4S0qNKaH0y8T4C+O9XkVsRj+7B55rbjNLn5nmsfWgBrMf7pEoeaW+ZwnmuPiAbH4a2e0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780206; c=relaxed/simple;
-	bh=5vsKu53yTSlOgzBHQZ7+vF4ZkC3rXixf2LSC/zuOX2o=;
+	s=arc-20240116; t=1764778418; c=relaxed/simple;
+	bh=WhG/tf0BhPkdhlq9abE/XsvScMN51/fNufBfjGVG+xw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OfvG4+vi0AvDsM/R50jXABhwR6UQF7KOS7zygrs0bVla42hgYopWjy21EbDDIylWstXnaeOlZmJXmxRjkY3w6YVBVXNWCDx3B7TLIxnAd6El8Pzdy2BthhW/uEcWif8YRIg5U6tbuxKXUm4XO80MSOgLKjptNyYQ5tKbWUCxMX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EoeQkJU6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7138FC116B1;
-	Wed,  3 Dec 2025 16:43:25 +0000 (UTC)
+	 MIME-Version; b=AGCUIR3WZMGI499NYwn90HA8Iyye86i4tG1nqqqlG12HIGbx7YY0fv9BebY6NMkymce2qDAd+UY9dORdu0EraBFjYKdMgXQ5xipbDazfBFWeSqmEiL4Ox4oNIRvE+qyCL+GisVqaQBG9SZr2ZMuNY7Nl+2C9zL3g2E8c01zOyUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jopHt+XZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FFCAC4CEF5;
+	Wed,  3 Dec 2025 16:13:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780205;
-	bh=5vsKu53yTSlOgzBHQZ7+vF4ZkC3rXixf2LSC/zuOX2o=;
+	s=korg; t=1764778417;
+	bh=WhG/tf0BhPkdhlq9abE/XsvScMN51/fNufBfjGVG+xw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EoeQkJU6dN2VXQ3DKJHwdntphTWc65HhTNJQp4Nj0bTwyULbN1qZtc6db3wKzK6J9
-	 Hl/C5whkrv0Kv+Esu8jb6Ul/nPDC6npGQs8DBAsRBq4mmb4J52Veu28rpagc2uj+zO
-	 Zy4kdVGI+k8w754+z8VKIu+2u9ZwFnvlbgsKkVIs=
+	b=jopHt+XZpl4RAUWZHS0CTM38aqFuUUqXM7alC20t4/DuNh16tv8ckZCoV/1uoL9bm
+	 JZnBjOoKM4i/FPGG58Ug7hEhdMyHmJF0TF/gJ9M6/ZxE0yf5MAZLAPRCvjQp9LRs0W
+	 C8Hj+Vrw6lZYtgBNV8ZjXvCAOnoZtcw7baksdbHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 460/568] platform/x86/intel/speed_select_if: Convert PCIBIOS_* return codes to errnos
+	Long Li <longli@microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Naman Jain <namjain@linux.microsoft.com>
+Subject: [PATCH 5.15 312/392] uio_hv_generic: Set event for all channels on the device
 Date: Wed,  3 Dec 2025 16:27:42 +0100
-Message-ID: <20251203152457.552746292@linuxfoundation.org>
+Message-ID: <20251203152425.641968255@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,57 +59,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Long Li <longli@microsoft.com>
 
-[ Upstream commit d8bb447efc5622577994287dc77c684fa8840b30 ]
+commit d062463edf1770427dc2d637df4088df4835aa47 upstream.
 
-isst_if_probe() uses pci_read_config_dword() that returns PCIBIOS_*
-codes. The return code is returned from the probe function as is but
-probe functions should return normal errnos. A proper implementation
-can be found in drivers/leds/leds-ss4200.c.
+Hyper-V may offer a non latency sensitive device with subchannels without
+monitor bit enabled. The decision is entirely on the Hyper-V host not
+configurable within guest.
 
-Convert PCIBIOS_* return codes using pcibios_err_to_errno() into
-normal errno before returning.
+When a device has subchannels, also signal events for the subchannel
+if its monitor bit is disabled.
 
-Fixes: d3a23584294c ("platform/x86: ISST: Add Intel Speed Select mmio interface")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Link: https://patch.msgid.link/20251117033354.132-1-vulab@iscas.ac.cn
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch also removes the memory barrier when monitor bit is enabled
+as it is not necessary. The memory barrier is only needed between
+setting up interrupt mask and calling vmbus_set_event() when monitor
+bit is disabled.
+
+Signed-off-by: Long Li <longli@microsoft.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Link: https://lore.kernel.org/r/1741644721-20389-1-git-send-email-longli@linuxonhyperv.com
+Fixes: b15b7d2a1b09 ("uio_hv_generic: Let userspace take care of interrupt mask")
+Closes: https://bugs.debian.org/1120602
+Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/intel/speed_select_if/isst_if_mmio.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/uio/uio_hv_generic.c |   21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/platform/x86/intel/speed_select_if/isst_if_mmio.c b/drivers/platform/x86/intel/speed_select_if/isst_if_mmio.c
-index ff49025ec0856..bb38e5f021a80 100644
---- a/drivers/platform/x86/intel/speed_select_if/isst_if_mmio.c
-+++ b/drivers/platform/x86/intel/speed_select_if/isst_if_mmio.c
-@@ -106,11 +106,11 @@ static int isst_if_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+--- a/drivers/uio/uio_hv_generic.c
++++ b/drivers/uio/uio_hv_generic.c
+@@ -80,9 +80,15 @@ hv_uio_irqcontrol(struct uio_info *info,
+ {
+ 	struct hv_uio_private_data *pdata = info->priv;
+ 	struct hv_device *dev = pdata->device;
++	struct vmbus_channel *primary, *sc;
  
- 	ret = pci_read_config_dword(pdev, 0xD0, &mmio_base);
- 	if (ret)
--		return ret;
-+		return pcibios_err_to_errno(ret);
+-	dev->channel->inbound.ring_buffer->interrupt_mask = !irq_state;
+-	virt_mb();
++	primary = dev->channel;
++	primary->inbound.ring_buffer->interrupt_mask = !irq_state;
++
++	mutex_lock(&vmbus_connection.channel_mutex);
++	list_for_each_entry(sc, &primary->sc_list, sc_list)
++		sc->inbound.ring_buffer->interrupt_mask = !irq_state;
++	mutex_unlock(&vmbus_connection.channel_mutex);
  
- 	ret = pci_read_config_dword(pdev, 0xFC, &pcu_base);
- 	if (ret)
--		return ret;
-+		return pcibios_err_to_errno(ret);
+ 	return 0;
+ }
+@@ -93,11 +99,18 @@ hv_uio_irqcontrol(struct uio_info *info,
+ static void hv_uio_channel_cb(void *context)
+ {
+ 	struct vmbus_channel *chan = context;
+-	struct hv_device *hv_dev = chan->device_obj;
+-	struct hv_uio_private_data *pdata = hv_get_drvdata(hv_dev);
++	struct hv_device *hv_dev;
++	struct hv_uio_private_data *pdata;
  
- 	pcu_base &= GENMASK(10, 0);
- 	base_addr = (u64)mmio_base << 23 | (u64) pcu_base << 12;
--- 
-2.51.0
-
+ 	virt_mb();
+ 
++	/*
++	 * The callback may come from a subchannel, in which case look
++	 * for the hv device in the primary channel
++	 */
++	hv_dev = chan->primary_channel ?
++		 chan->primary_channel->device_obj : chan->device_obj;
++	pdata = hv_get_drvdata(hv_dev);
+ 	uio_event_notify(&pdata->info);
+ }
+ 
 
 
 
