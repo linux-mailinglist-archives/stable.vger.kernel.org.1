@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-198409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D93BC9FA38
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:47:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84C89CA0DEF
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:18:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 96B0C30145BD
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:40:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4B54A3101FB5
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:15:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E4C30AD1A;
-	Wed,  3 Dec 2025 15:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4214A3148B1;
+	Wed,  3 Dec 2025 16:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NZdXi16d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r5zUYgV1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F2523081AF;
-	Wed,  3 Dec 2025 15:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 608823191B9;
+	Wed,  3 Dec 2025 16:38:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776447; cv=none; b=uq08Z4nh8/scGZWYwzWLhxYJChWTef2hkcG4WHJRCXDmg+gEaibH7X1f5ZgcIiPGfZDx/qEGhNtaTZLaCQQEDL2kte1vIAKr3Vw03+x3R1VhIQZnN3xCesWBZFHwBHnEnOP9ZT70QKT+S1V+soRLXV/3yFdDYO3qJIb+GnIiD9Y=
+	t=1764779932; cv=none; b=mRLT3+H5VQvc1Fb7ed65r8ANr7rzvYKORTDFysSU6LXfuuZr8PAawCWsJpTVbRsSvdybClGoIpWPYE80y7u380OA/DB1aVCaDSEvHmfXqGqSnxYqfclOzZta1a2mkG0x3SHWp7X8X3fyRi9wO18Yflp6lRJUvku09Fe4kJO2/Zw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776447; c=relaxed/simple;
-	bh=aZTNB4uN1FZTvF+odpv5bvczAu6NzRKNV5y6Puk+s34=;
+	s=arc-20240116; t=1764779932; c=relaxed/simple;
+	bh=s43Sxmhc/g8fMBiYmtuA+KjCJ3L0XdkRuodBG8b7TwA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I+X+myDmzRK+8f4gi4ZyL8ABJSWfVpkSxK5OpPNX1YgjYjgGLn1u799SmRlkcN2mgJjjPZAeZBzfgu9Noi8uoHtRGqTLe8oW+Xi6q82W77ckSaH5qrhbpKWRX6+Y7kWtEtHNyOJPTqDnuxVsj0gxsao+JhylQQKUkHopejFX31Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NZdXi16d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E220C4CEF5;
-	Wed,  3 Dec 2025 15:40:46 +0000 (UTC)
+	 MIME-Version; b=fue6Z98Ujk8Y8CqyJ3K9z884szjgImPSl64pVJNQD6EvPOHZ9W9Qz/S45mvBkdkR+hyZSY4rAG06IzvYKO6Dm9aagYgKyJyYwIaSxZdsiaF8BXcwMIVAsEHSykMSkzdChjzbDeZ3Kv6U38S6jJNngNi6+nYmMDI/+s3Yvm1s30I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r5zUYgV1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 081D3C4CEF5;
+	Wed,  3 Dec 2025 16:38:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776447;
-	bh=aZTNB4uN1FZTvF+odpv5bvczAu6NzRKNV5y6Puk+s34=;
+	s=korg; t=1764779931;
+	bh=s43Sxmhc/g8fMBiYmtuA+KjCJ3L0XdkRuodBG8b7TwA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NZdXi16ds21j2X2SgtnPYkvf9BWvsJig7EU5zB/lixbk6GFDpjb5TAXsyUMo/JFgq
-	 ehyxLCE446onwIHso9RBizBMWqyvf7m0zI7WOxdQ5kH+iZvMMXXtOO+E9o0Bedf+Nc
-	 XnAER7tLRgnLdbfllwMpcd8gWpbeTdLtckFYSNSc=
+	b=r5zUYgV1k1ch04jNS+V2v8irS9vBtf7vKu9RvwOTFpyX02+JeWWv2scR7VJEwBrgC
+	 rBE3NkFnE+maicJmXbr77Zmjoso6sukkgdBCcwaF0axGj8M8iUWtD0+MwXb+YTOojy
+	 wajNVTiXjzrOjnRXfWJNBMIcpyKPeQNzsEgq86oQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Buday Csaba <buday.csaba@prolan.hu>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Lingutla Chandrasekhar <clingutla@codeaurora.org>,
+	"J. Avila" <elavila@google.com>,
+	John Stultz <jstultz@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sumanth Gavini <sumanth.gavini@yahoo.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 186/300] net: mdio: fix resource leak in mdiobus_register_device()
+Subject: [PATCH 6.1 388/568] softirq: Add trace points for tasklet entry/exit
 Date: Wed,  3 Dec 2025 16:26:30 +0100
-Message-ID: <20251203152407.518369992@linuxfoundation.org>
+Message-ID: <20251203152454.902912380@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +64,153 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Buday Csaba <buday.csaba@prolan.hu>
+From: Sumanth Gavini <sumanth.gavini@yahoo.com>
 
-[ Upstream commit e6ca8f533ed41129fcf052297718f417f021cc7d ]
+commit f4bf3ca2e5cba655824b6e0893a98dfb33ed24e5 upstream.
 
-Fix a possible leak in mdiobus_register_device() when both a
-reset-gpio and a reset-controller are present.
-Clean up the already claimed reset-gpio, when the registration of
-the reset-controller fails, so when an error code is returned, the
-device retains its state before the registration attempt.
+Tasklets are supposed to finish their work quickly and should not block the
+current running process, but it is not guaranteed that they do so.
 
-Link: https://lore.kernel.org/all/20251106144603.39053c81@kernel.org/
-Fixes: 71dd6c0dff51 ("net: phy: add support for reset-controller")
-Signed-off-by: Buday Csaba <buday.csaba@prolan.hu>
-Link: https://patch.msgid.link/4b419377f8dd7d2f63f919d0f74a336c734f8fff.1762584481.git.buday.csaba@prolan.hu
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Currently softirq_entry/exit can be used to analyse the total tasklets
+execution time, but that's not helpful to track individual tasklets
+execution time. That makes it hard to identify tasklet functions, which
+take more time than expected.
+
+Add tasklet_entry/exit trace point support to track individual tasklet
+execution.
+
+Trivial usage example:
+   # echo 1 > /sys/kernel/debug/tracing/events/irq/tasklet_entry/enable
+   # echo 1 > /sys/kernel/debug/tracing/events/irq/tasklet_exit/enable
+   # cat /sys/kernel/debug/tracing/trace
+ # tracer: nop
+ #
+ # entries-in-buffer/entries-written: 4/4   #P:4
+ #
+ #                                _-----=> irqs-off/BH-disabled
+ #                               / _----=> need-resched
+ #                              | / _---=> hardirq/softirq
+ #                              || / _--=> preempt-depth
+ #                              ||| / _-=> migrate-disable
+ #                              |||| /     delay
+ #           TASK-PID     CPU#  |||||  TIMESTAMP  FUNCTION
+ #              | |         |   |||||     |         |
+           <idle>-0       [003] ..s1.   314.011428: tasklet_entry: tasklet=0xffffa01ef8db2740 function=tcp_tasklet_func
+           <idle>-0       [003] ..s1.   314.011432: tasklet_exit: tasklet=0xffffa01ef8db2740 function=tcp_tasklet_func
+           <idle>-0       [003] ..s1.   314.017369: tasklet_entry: tasklet=0xffffa01ef8db2740 function=tcp_tasklet_func
+           <idle>-0       [003] ..s1.   314.017371: tasklet_exit: tasklet=0xffffa01ef8db2740 function=tcp_tasklet_func
+
+Signed-off-by: Lingutla Chandrasekhar <clingutla@codeaurora.org>
+Signed-off-by: J. Avila <elavila@google.com>
+Signed-off-by: John Stultz <jstultz@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Link: https://lore.kernel.org/r/20230407230526.1685443-1-jstultz@google.com
+
+[elavila: Port to android-mainline]
+[jstultz: Rebased to upstream, cut unused trace points, added
+ comments for the tracepoints, reworded commit]
+
+The intention is to keep the stable branch in sync with upstream fixes
+and improve observability without introducing new functionality.
+
+Signed-off-by: Sumanth Gavini <sumanth.gavini@yahoo.com>
+
+Changes in V2:
+- No code changes
+- Link to V1: https://lore.kernel.org/all/20250812161755.609600-1-sumanth.gavini@yahoo.com/
+- Updated the comment msg before the signed-off-by
+
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/mdio_bus.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ include/trace/events/irq.h | 47 ++++++++++++++++++++++++++++++++++++++
+ kernel/softirq.c           |  9 ++++++--
+ 2 files changed, 54 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
-index d15deb3281edb..d7a65a5c855e5 100644
---- a/drivers/net/phy/mdio_bus.c
-+++ b/drivers/net/phy/mdio_bus.c
-@@ -80,8 +80,11 @@ int mdiobus_register_device(struct mdio_device *mdiodev)
- 			return err;
+diff --git a/include/trace/events/irq.h b/include/trace/events/irq.h
+index eeceafaaea4c1..a07b4607b6635 100644
+--- a/include/trace/events/irq.h
++++ b/include/trace/events/irq.h
+@@ -160,6 +160,53 @@ DEFINE_EVENT(softirq, softirq_raise,
+ 	TP_ARGS(vec_nr)
+ );
  
- 		err = mdiobus_register_reset(mdiodev);
--		if (err)
-+		if (err) {
-+			gpiod_put(mdiodev->reset_gpio);
-+			mdiodev->reset_gpio = NULL;
- 			return err;
-+		}
++DECLARE_EVENT_CLASS(tasklet,
++
++	TP_PROTO(struct tasklet_struct *t, void *func),
++
++	TP_ARGS(t, func),
++
++	TP_STRUCT__entry(
++		__field(	void *,	tasklet)
++		__field(	void *,	func)
++	),
++
++	TP_fast_assign(
++		__entry->tasklet = t;
++		__entry->func = func;
++	),
++
++	TP_printk("tasklet=%ps function=%ps", __entry->tasklet, __entry->func)
++);
++
++/**
++ * tasklet_entry - called immediately before the tasklet is run
++ * @t: tasklet pointer
++ * @func: tasklet callback or function being run
++ *
++ * Used to find individual tasklet execution time
++ */
++DEFINE_EVENT(tasklet, tasklet_entry,
++
++	TP_PROTO(struct tasklet_struct *t, void *func),
++
++	TP_ARGS(t, func)
++);
++
++/**
++ * tasklet_exit - called immediately after the tasklet is run
++ * @t: tasklet pointer
++ * @func: tasklet callback or function being run
++ *
++ * Used to find individual tasklet execution time
++ */
++DEFINE_EVENT(tasklet, tasklet_exit,
++
++	TP_PROTO(struct tasklet_struct *t, void *func),
++
++	TP_ARGS(t, func)
++);
++
+ #endif /*  _TRACE_IRQ_H */
  
- 		/* Assert the reset signal */
- 		mdio_device_reset(mdiodev, 1);
+ /* This part must be outside protection */
+diff --git a/kernel/softirq.c b/kernel/softirq.c
+index 9ab5ca399a990..fadc6bbda27b1 100644
+--- a/kernel/softirq.c
++++ b/kernel/softirq.c
+@@ -822,10 +822,15 @@ static void tasklet_action_common(struct softirq_action *a,
+ 		if (tasklet_trylock(t)) {
+ 			if (!atomic_read(&t->count)) {
+ 				if (tasklet_clear_sched(t)) {
+-					if (t->use_callback)
++					if (t->use_callback) {
++						trace_tasklet_entry(t, t->callback);
+ 						t->callback(t);
+-					else
++						trace_tasklet_exit(t, t->callback);
++					} else {
++						trace_tasklet_entry(t, t->func);
+ 						t->func(t->data);
++						trace_tasklet_exit(t, t->func);
++					}
+ 				}
+ 				tasklet_unlock(t);
+ 				continue;
 -- 
 2.51.0
 
