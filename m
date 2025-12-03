@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-199024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 598D3CA0881
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:38:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ED32CA0A30
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:48:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 74991317664C
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:18:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AB481315EEBC
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:27:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C14434A779;
-	Wed,  3 Dec 2025 16:14:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBC1034DCF2;
+	Wed,  3 Dec 2025 16:43:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2T5bDOSF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aoWDhJId"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2661534A3BC;
-	Wed,  3 Dec 2025 16:14:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C9A34BA50;
+	Wed,  3 Dec 2025 16:43:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778448; cv=none; b=Cf44g6s33phTF2r3TT/twhEO5dBVPMH5oQOT0TG1gTKAfM3YchrWvDWXfDzGN8hxGaJ7gNwOOkemZzovOM1jaGYHp30IAxHzBli6LIzibPkO3MbhzQn+AOwFoG2pG5yXTLadCwi0G1jBUH/0+gdZKkkHF4IjAI/vq6yGQJRSfrE=
+	t=1764780236; cv=none; b=qFryn/g4+OTj/CKBIzVI0I0xLedTDAjJ1ZTIrTah3aRch8RtfuC0+OTOmr3D0aaEv8Rw77TeyvmaRvudyN1ZP9O5BzpfwzeV/6/S8TGZe/FF4TA5uBe2MAfXeS1SQExuDYR0dIzZIl4tIvx4jwHUUQHfBupw7av4rhtmREaZsKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778448; c=relaxed/simple;
-	bh=nvF5tRz6cbZ6VKW1k0qYQfKCaUw4DljIwpwg4p71XvM=;
+	s=arc-20240116; t=1764780236; c=relaxed/simple;
+	bh=wBt4C7eAH8/NoNwXmTb1Uvh5fOPwKoweOoOl/Kx1SWY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G0jF7eYLjRcwQpL0pzlCsDRQ9GKebfFIkAXwBRit98M6Tb2+1kEvZTi0UvjTAaLnP/9oIf6mUFg6lFopKN9Vyq9g5VGxDQAdu1R5gOdMCLC1/NwHzYAyUTl0yuXHdxqSwmOf/5LS1rFFEXbJ411NMuojrn41IOYev8dANt8NVn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2T5bDOSF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DC1CC4CEF5;
-	Wed,  3 Dec 2025 16:14:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=vAOh0VY9//dIMfzSrrETB4o1Mnyx+TR5uazQmhG6pj6JRVXwERPdT4AclcqbyLCUPYUuH44LAAGKkZKwlChuuWqp5GJvrVqAyB8MDARCSsrMviAOcQqznPDpg6vdi9pu8vq/T9tpy03rNJE8fogpt2rxqEdwHpPx/SAyFaiMCDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aoWDhJId; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFB61C4CEF5;
+	Wed,  3 Dec 2025 16:43:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778448;
-	bh=nvF5tRz6cbZ6VKW1k0qYQfKCaUw4DljIwpwg4p71XvM=;
+	s=korg; t=1764780236;
+	bh=wBt4C7eAH8/NoNwXmTb1Uvh5fOPwKoweOoOl/Kx1SWY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2T5bDOSFDGmKzOQTO+iiZynQrdPmnRn6vYCNv1BMboCN1hF/K/gmUkS9BBKWynINz
-	 vkSDvp7HZYlwPMHiIxBOjaXm/BBu6z+Vqj+VX8hiyOieL1TMPK9MOGLNi56lN2xM/r
-	 f/cWQdKuuvcCZnR2IppcDNSfjFR4RMgf1zHVEvHg=
+	b=aoWDhJIdVpQ/nvVNmTmHUylW3UTp75yJILkHUrLYRWYEDx6vXz5G2E8yByiRvy65U
+	 KIv07tX2wQKnRskAQl2Ng3uQQB31tqd0WqLnAxkqwqAse3FoEm8fRB1+g7ike4G/Mq
+	 evj+XM8rGNN/HZ1BHopSuxv1icF849ur9N7Km+WY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 316/392] net: qede: Initialize qede_ll_ops with designated initializer
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 464/568] bcma: dont register devices disabled in OF
 Date: Wed,  3 Dec 2025 16:27:46 +0100
-Message-ID: <20251203152425.788765291@linuxfoundation.org>
+Message-ID: <20251203152457.698226521@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,50 +59,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-commit 6b3ab7f2cbfaeb6580709cd8ef4d72cfd01bfde4 upstream.
+[ Upstream commit a2a69add80411dd295c9088c1bcf925b1f4e53d7 ]
 
-After a recent change [1] in clang's randstruct implementation to
-randomize structures that only contain function pointers, there is an
-error because qede_ll_ops get randomized but does not use a designated
-initializer for the first member:
+Some bus devices can be marked as disabled for specific SoCs or models.
+Those should not be registered to avoid probing them.
 
-  drivers/net/ethernet/qlogic/qede/qede_main.c:206:2: error: a randomized struct can only be initialized with a designated initializer
-    206 |         {
-        |         ^
-
-Explicitly initialize the common member using a designated initializer
-to fix the build.
-
-Cc: stable@vger.kernel.org
-Fixes: 035f7f87b729 ("randstruct: Enable Clang support")
-Link: https://github.com/llvm/llvm-project/commit/04364fb888eea6db9811510607bed4b200bcb082 [1]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://patch.msgid.link/20250507-qede-fix-clang-randstruct-v1-1-5ccc15626fba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20251003125126.27950-1-zajec5@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qlogic/qede/qede_main.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/bcma/main.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/net/ethernet/qlogic/qede/qede_main.c
-+++ b/drivers/net/ethernet/qlogic/qede/qede_main.c
-@@ -194,7 +194,7 @@ static struct pci_driver qede_pci_driver
- };
+diff --git a/drivers/bcma/main.c b/drivers/bcma/main.c
+index 44392b624b200..11fbae15a7884 100644
+--- a/drivers/bcma/main.c
++++ b/drivers/bcma/main.c
+@@ -293,6 +293,8 @@ static int bcma_register_devices(struct bcma_bus *bus)
+ 	int err;
  
- static struct qed_eth_cb_ops qede_ll_ops = {
--	{
-+	.common = {
- #ifdef CONFIG_RFS_ACCEL
- 		.arfs_filter_op = qede_arfs_filter_op,
- #endif
+ 	list_for_each_entry(core, &bus->cores, list) {
++		struct device_node *np;
++
+ 		/* We support that core ourselves */
+ 		switch (core->id.id) {
+ 		case BCMA_CORE_4706_CHIPCOMMON:
+@@ -310,6 +312,10 @@ static int bcma_register_devices(struct bcma_bus *bus)
+ 		if (bcma_is_core_needed_early(core->id.id))
+ 			continue;
+ 
++		np = core->dev.of_node;
++		if (np && !of_device_is_available(np))
++			continue;
++
+ 		/* Only first GMAC core on BCM4706 is connected and working */
+ 		if (core->id.id == BCMA_CORE_4706_MAC_GBIT &&
+ 		    core->core_unit > 0)
+-- 
+2.51.0
+
 
 
 
