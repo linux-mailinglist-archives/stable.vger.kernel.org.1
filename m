@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-199678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78E5ECA0370
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:56:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B930DCA06AF
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:25:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D545C3009575
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:49:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8CC4631A81B7
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:09:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5AFD34A76E;
-	Wed,  3 Dec 2025 16:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99A8734FF72;
+	Wed,  3 Dec 2025 16:13:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tiinjY86"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UjzSKIuC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60928349B09;
-	Wed,  3 Dec 2025 16:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53DCA34FF78;
+	Wed,  3 Dec 2025 16:13:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780584; cv=none; b=jtgHibda26zC5GVi5+iZBy+UVUZzxBmVAltPfINWucNLvur6WSbHpZwkka1tmeSdHG4nptLBHhkxHe9aLkVl4//YNF8FtsKGAIi9X2njdQFWkiKyk3b5ES4ommIxvYde9XrEHNOVqSgulY25lDXZqOGqIuMznMZ31KCgwZ9RRXk=
+	t=1764778401; cv=none; b=SKahjAn/pxRQgWoBiUcIz80vDywu5o0+jzg4l5MI4rcGcM8OFf3JPFgW+SLHcsmlecFjrJMh8Zues1I2YXPEbMbGOazilJhFckTZiaS+Awh/w8fqAkjcWZB9P4eXPAfgpKCLDU+5YvGZrmZMT6IVo0MeCH7cbr1R5Z4EV7Db3Rs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780584; c=relaxed/simple;
-	bh=WZ7UkCChsgizw0J3+OP+PFt7QVmB7ATKkuvWqKdmhpY=;
+	s=arc-20240116; t=1764778401; c=relaxed/simple;
+	bh=oz+tYdN8rQBBJKEArczBmEft8AYakY6u+9f9lvOHi2I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nFhHBjP98pm8iACEnY3tOfoXj7KDzvIrRHYnEpea1qgenO4mYstC8k84nv9wnw9HkOFpDRyZBfNmfVPDtb79UPk3WIYmZ45bSfaOkwCebUauEko9gBvVciLlyUvxT4dmDjNNr6q+im43zo2Mu+GGkO6hzpxbb4VcxO6WxwiBOBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tiinjY86; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BCB0C4CEF5;
-	Wed,  3 Dec 2025 16:49:43 +0000 (UTC)
+	 MIME-Version; b=PNxc5lCd9wd8GG3eP2XDF8ejnicyOm+jGcQ0eEsXZpDGOgOZXuK7bnJlz7wTtwy1W0ag9OONLoEEUPrj2rvUHQjVX3X1z7ResHRdTyhfTyZ6vtZQ8DjhAlS2QmMZmIGspbcJqFuhU6TtvmrT7pkrJuNgkC/C/W5zzbqoqqPvbk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UjzSKIuC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5B31C4CEF5;
+	Wed,  3 Dec 2025 16:13:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780584;
-	bh=WZ7UkCChsgizw0J3+OP+PFt7QVmB7ATKkuvWqKdmhpY=;
+	s=korg; t=1764778401;
+	bh=oz+tYdN8rQBBJKEArczBmEft8AYakY6u+9f9lvOHi2I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tiinjY86RuQd/VDNNP7OXPn6y9JITaig6FLX4HnK2ujBWkJFvfOE1vyRUKss/Ws+0
-	 1GJEKhCh9yOsWeUgKVVx762AdsDnqs1r/DsY8QDtEvDroQDUb53mHmV5YHUAFx3pGZ
-	 UYVxXYh4+E7mn6P5h108WUxOL/2yU16AJ/JZ4vjc=
+	b=UjzSKIuC3KoRINc0bPAXrYb71HlDuJf87x2R+nmtTXtknEQuBhJ39k5JNGNGznEdX
+	 12x4XHDhO5Yon+iourP7E0TkMKjk9BXCctnQA1zfa99Y6WnZs/yrL1ruGX0XYwslEL
+	 drdbtj8oXrosSnvDCBM3mlIK7jASaGJFinuJi9ec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Lu <chris.lu@mediatek.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 005/132] Bluetooth: btusb: mediatek: Fix kernel crash when releasing mtk iso interface
+Subject: [PATCH 5.15 334/392] mptcp: do not fallback when OoO is present
 Date: Wed,  3 Dec 2025 16:28:04 +0100
-Message-ID: <20251203152343.490737104@linuxfoundation.org>
+Message-ID: <20251203152426.461230465@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,136 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Lu <chris.lu@mediatek.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 4015b979767125cf8a2233a145a3b3af78bfd8fb ]
+[ Upstream commit 1bba3f219c5e8c29e63afa3c1fc24f875ebec119 ]
 
-When performing reset tests and encountering abnormal card drop issues
-that lead to a kernel crash, it is necessary to perform a null check
-before releasing resources to avoid attempting to release a null pointer.
+In case of DSS corruption, the MPTCP protocol tries to avoid the subflow
+reset if fallback is possible. Such corruptions happen in the receive
+path; to ensure fallback is possible the stack additionally needs to
+check for OoO data, otherwise the fallback will break the data stream.
 
-<4>[   29.158070] Hardware name: Google Quigon sku196612/196613 board (DT)
-<4>[   29.158076] Workqueue: hci0 hci_cmd_sync_work [bluetooth]
-<4>[   29.158154] pstate: 20400009 (nzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-<4>[   29.158162] pc : klist_remove+0x90/0x158
-<4>[   29.158174] lr : klist_remove+0x88/0x158
-<4>[   29.158180] sp : ffffffc0846b3c00
-<4>[   29.158185] pmr_save: 000000e0
-<4>[   29.158188] x29: ffffffc0846b3c30 x28: ffffff80cd31f880 x27: ffffff80c1bdc058
-<4>[   29.158199] x26: dead000000000100 x25: ffffffdbdc624ea3 x24: ffffff80c1bdc4c0
-<4>[   29.158209] x23: ffffffdbdc62a3e6 x22: ffffff80c6c07000 x21: ffffffdbdc829290
-<4>[   29.158219] x20: 0000000000000000 x19: ffffff80cd3e0648 x18: 000000031ec97781
-<4>[   29.158229] x17: ffffff80c1bdc4a8 x16: ffffffdc10576548 x15: ffffff80c1180428
-<4>[   29.158238] x14: 0000000000000000 x13: 000000000000e380 x12: 0000000000000018
-<4>[   29.158248] x11: ffffff80c2a7fd10 x10: 0000000000000000 x9 : 0000000100000000
-<4>[   29.158257] x8 : 0000000000000000 x7 : 7f7f7f7f7f7f7f7f x6 : 2d7223ff6364626d
-<4>[   29.158266] x5 : 0000008000000000 x4 : 0000000000000020 x3 : 2e7325006465636e
-<4>[   29.158275] x2 : ffffffdc11afeff8 x1 : 0000000000000000 x0 : ffffffdc11be4d0c
-<4>[   29.158285] Call trace:
-<4>[   29.158290]  klist_remove+0x90/0x158
-<4>[   29.158298]  device_release_driver_internal+0x20c/0x268
-<4>[   29.158308]  device_release_driver+0x1c/0x30
-<4>[   29.158316]  usb_driver_release_interface+0x70/0x88
-<4>[   29.158325]  btusb_mtk_release_iso_intf+0x68/0xd8 [btusb (HASH:e8b6 5)]
-<4>[   29.158347]  btusb_mtk_reset+0x5c/0x480 [btusb (HASH:e8b6 5)]
-<4>[   29.158361]  hci_cmd_sync_work+0x10c/0x188 [bluetooth (HASH:a4fa 6)]
-<4>[   29.158430]  process_scheduled_works+0x258/0x4e8
-<4>[   29.158441]  worker_thread+0x300/0x428
-<4>[   29.158448]  kthread+0x108/0x1d0
-<4>[   29.158455]  ret_from_fork+0x10/0x20
-<0>[   29.158467] Code: 91343000 940139d1 f9400268 927ff914 (f9401297)
-<4>[   29.158474] ---[ end trace 0000000000000000 ]---
-<0>[   29.167129] Kernel panic - not syncing: Oops: Fatal exception
-<2>[   29.167144] SMP: stopping secondary CPUs
-<4>[   29.167158] ------------[ cut here ]------------
-
-Fixes: ceac1cb0259d ("Bluetooth: btusb: mediatek: add ISO data transmission functions")
-Signed-off-by: Chris Lu <chris.lu@mediatek.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: e32d262c89e2 ("mptcp: handle consistently DSS corruption")
+Cc: stable@vger.kernel.org
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/598
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-4-806d3781c95f@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ patch mptcp_dss_corruption() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btusb.c        | 34 +++++++++++++++++++++++++-------
- include/net/bluetooth/hci_core.h |  1 -
- 2 files changed, 27 insertions(+), 8 deletions(-)
+ net/mptcp/protocol.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index aedb478614000..b6c37e87c6a08 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -2704,9 +2704,16 @@ static int btusb_recv_event_realtek(struct hci_dev *hdev, struct sk_buff *skb)
- 
- static void btusb_mtk_claim_iso_intf(struct btusb_data *data)
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -573,6 +573,15 @@ static bool mptcp_check_data_fin(struct
+ static void mptcp_dss_corruption(struct mptcp_sock *msk, struct sock *ssk)
  {
--	struct btmtk_data *btmtk_data = hci_get_priv(data->hdev);
-+	struct btmtk_data *btmtk_data;
- 	int err;
- 
-+	if (!data->hdev)
-+		return;
-+
-+	btmtk_data = hci_get_priv(data->hdev);
-+	if (!btmtk_data)
-+		return;
-+
- 	/*
- 	 * The function usb_driver_claim_interface() is documented to need
- 	 * locks held if it's not called from a probe routine. The code here
-@@ -2728,17 +2735,30 @@ static void btusb_mtk_claim_iso_intf(struct btusb_data *data)
- 
- static void btusb_mtk_release_iso_intf(struct hci_dev *hdev)
- {
--	struct btmtk_data *btmtk_data = hci_get_priv(hdev);
-+	struct btmtk_data *btmtk_data;
-+
-+	if (!hdev)
-+		return;
-+
-+	btmtk_data = hci_get_priv(hdev);
-+	if (!btmtk_data)
-+		return;
- 
- 	if (test_bit(BTMTK_ISOPKT_OVER_INTR, &btmtk_data->flags)) {
- 		usb_kill_anchored_urbs(&btmtk_data->isopkt_anchor);
- 		clear_bit(BTMTK_ISOPKT_RUNNING, &btmtk_data->flags);
- 
--		dev_kfree_skb_irq(btmtk_data->isopkt_skb);
--		btmtk_data->isopkt_skb = NULL;
--		usb_set_intfdata(btmtk_data->isopkt_intf, NULL);
--		usb_driver_release_interface(&btusb_driver,
--					     btmtk_data->isopkt_intf);
-+		if (btmtk_data->isopkt_skb) {
-+			dev_kfree_skb_irq(btmtk_data->isopkt_skb);
-+			btmtk_data->isopkt_skb = NULL;
+ 	if (READ_ONCE(msk->allow_infinite_fallback)) {
++		/* The caller possibly is not holding the msk socket lock, but
++		 * in the fallback case only the current subflow is touching
++		 * the OoO queue.
++		 */
++		if (!RB_EMPTY_ROOT(&msk->out_of_order_queue)) {
++			MPTCP_INC_STATS(sock_net(ssk), MPTCP_MIB_DSSCORRUPTIONRESET);
++			mptcp_subflow_reset(ssk);
++			return;
 +		}
-+
-+		if (btmtk_data->isopkt_intf) {
-+			usb_set_intfdata(btmtk_data->isopkt_intf, NULL);
-+			usb_driver_release_interface(&btusb_driver,
-+						     btmtk_data->isopkt_intf);
-+			btmtk_data->isopkt_intf = NULL;
-+		}
- 	}
- 
- 	clear_bit(BTMTK_ISOPKT_OVER_INTR, &btmtk_data->flags);
-diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
-index 35b5f58b562cb..ba5d176069a69 100644
---- a/include/net/bluetooth/hci_core.h
-+++ b/include/net/bluetooth/hci_core.h
-@@ -732,7 +732,6 @@ struct hci_conn {
- 
- 	__u8		remote_cap;
- 	__u8		remote_auth;
--	__u8		remote_id;
- 
- 	unsigned int	sent;
- 
--- 
-2.51.0
-
+ 		MPTCP_INC_STATS(sock_net(ssk),
+ 				MPTCP_MIB_DSSCORRUPTIONFALLBACK);
+ 		mptcp_do_fallback(ssk);
 
 
 
