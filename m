@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-199207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB069CA1763
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:48:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CB74CA0D33
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:13:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EF670300908D
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:48:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9B67932F5312
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:09:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6819E33AD9F;
-	Wed,  3 Dec 2025 16:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 926E135CB81;
+	Wed,  3 Dec 2025 16:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KrRDHHu3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2s9u6uCJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2465A33893A;
-	Wed,  3 Dec 2025 16:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 442C435CB7D;
+	Wed,  3 Dec 2025 16:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779042; cv=none; b=UR8nNkSpdye2McOyegWKNl2J7cb7ZbUkfWfCcDiWAo3DRxkDBtgFRuiWP5vJdcBtzdgk0FFZSMUhhPQvzmSsC259qx+7v1uu58dwXsR0Zb7wPci2TI9RNwq8CjKS/bOwcAjc98eUvcqabkKw3J3sfUA96YMqaJtBimWAOa4UGhA=
+	t=1764779182; cv=none; b=HoNH/K5tMnGov++0Uln9FnMCW6MGbsktcR13wunFmR6S3OaM/W4h2S45e46TXhH15iHEv6fElomsBQvaLYwgVu9up9Z8sje6O74phbT5qI8FeJT2czOKkDMX4IF7won6jOq5yTmp6phlaqjZuLeS+saEOfOulicnmNrosdmwWXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779042; c=relaxed/simple;
-	bh=Ncf4ej33ejgnSZVx87zUbZcURVoHo7T2gw6sTmxZGPQ=;
+	s=arc-20240116; t=1764779182; c=relaxed/simple;
+	bh=P2pQh9dBbm4W0NBUuhceoEcLBbZvrryrF5+6T7Vtc9s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JBS05aNxPAJJ+l+D/8F+0WhCgiqEz80bRfps63UH12Ax4gYpJOe6eDmeaIxrMxpETuupzzrmpGK4KNu6vL5jPcYRQm+/K5kzTDUWoK1R6rPnOjFpv6MsiTAMyw7hEzmGpMRIq9mXtMe+3gEAAOLrgGFOmQKVnZZZjn0fc3BxDV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KrRDHHu3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BB05C116B1;
-	Wed,  3 Dec 2025 16:24:00 +0000 (UTC)
+	 MIME-Version; b=joFTmnH6VT0V87uYZ5PaL09g1AoZCI72gdHYFlgzQicviBwwMzt+eE0Rv7RGwM6HIP4Ef9d3uj6LsryX+6yhXvAVI8HKYtPlxRsbYCaKB8/qUAefiZ/fzg9wO/3wheVq6SRfMueU2hMVPbjKhGx8QugPGFPcoSQ5afrbRCnFt4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2s9u6uCJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4A10C4CEF5;
+	Wed,  3 Dec 2025 16:26:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779041;
-	bh=Ncf4ej33ejgnSZVx87zUbZcURVoHo7T2gw6sTmxZGPQ=;
+	s=korg; t=1764779182;
+	bh=P2pQh9dBbm4W0NBUuhceoEcLBbZvrryrF5+6T7Vtc9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KrRDHHu3LsnGC2Nk0N9GKgAX4BTeoYOuN0M66xPMjwkKxu9go6FJVA4DlfuFNgL81
-	 toLrZ/Exs8mn5FG5FFbcZY52yNxh27uDt76b06eJUXPQ/2dqJowqLApWOda4pvNuG0
-	 w0jJTNAXdmH/ZNi8hunquiNrMDQv1OUVYrfL1deU=
+	b=2s9u6uCJjbpVYbXa9TxkSJLLN2ki4ICjPtfY2uh/W++mGMv7WJ0zlT+igbyr4bqP+
+	 xH3XMLFYlhYTcIEunEj4+KlWhf/te5XH0ctg8gzxQcDuHDWZMRASkt6w99OY0MnmCS
+	 J2W0QHfod/qjX8eoq0O5TAr9lFoZxrHFOVdHYjtI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sathishkumar S <sathishkumar.sundararaju@amd.com>,
-	Leo Liu <leo.liu@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Seyediman Seyedarab <ImanDevel@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 136/568] drm/amdgpu/jpeg: Hold pg_lock before jpeg poweroff
-Date: Wed,  3 Dec 2025 16:22:18 +0100
-Message-ID: <20251203152445.707672305@linuxfoundation.org>
+Subject: [PATCH 6.1 137/568] drm/nouveau: replace snprintf() with scnprintf() in nvkm_snprintbf()
+Date: Wed,  3 Dec 2025 16:22:19 +0100
+Message-ID: <20251203152445.743713875@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
 References: <20251203152440.645416925@linuxfoundation.org>
@@ -65,40 +64,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sathishkumar S <sathishkumar.sundararaju@amd.com>
+From: Seyediman Seyedarab <imandevel@gmail.com>
 
-[ Upstream commit 0e7581eda8c76d1ca4cf519631a4d4eb9f82b94c ]
+[ Upstream commit 6510b62fe9303aaf48ff136ff69186bcfc32172d ]
 
-Acquire jpeg_pg_lock before changes to jpeg power state
-and release it after power off from idle work handler.
+snprintf() returns the number of characters that *would* have been
+written, which can overestimate how much you actually wrote to the
+buffer in case of truncation. That leads to 'data += this' advancing
+the pointer past the end of the buffer and size going negative.
 
-Signed-off-by: Sathishkumar S <sathishkumar.sundararaju@amd.com>
-Reviewed-by: Leo Liu <leo.liu@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Switching to scnprintf() prevents potential buffer overflows and ensures
+consistent behavior when building the output string.
+
+Signed-off-by: Seyediman Seyedarab <ImanDevel@gmail.com>
+Link: https://lore.kernel.org/r/20250724195913.60742-1-ImanDevel@gmail.com
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_jpeg.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/nouveau/nvkm/core/enum.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_jpeg.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_jpeg.c
-index 518eb0e40d32f..d5ae89876a061 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_jpeg.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_jpeg.c
-@@ -85,10 +85,12 @@ static void amdgpu_jpeg_idle_work_handler(struct work_struct *work)
- 		fences += amdgpu_fence_count_emitted(&adev->jpeg.inst[i].ring_dec);
- 	}
- 
--	if (!fences && !atomic_read(&adev->jpeg.total_submission_cnt))
-+	if (!fences && !atomic_read(&adev->jpeg.total_submission_cnt)) {
-+		mutex_lock(&adev->jpeg.jpeg_pg_lock);
- 		amdgpu_device_ip_set_powergating_state(adev, AMD_IP_BLOCK_TYPE_JPEG,
- 						       AMD_PG_STATE_GATE);
--	else
-+		mutex_unlock(&adev->jpeg.jpeg_pg_lock);
-+	} else
- 		schedule_delayed_work(&adev->jpeg.idle_work, JPEG_IDLE_TIMEOUT);
- }
- 
+diff --git a/drivers/gpu/drm/nouveau/nvkm/core/enum.c b/drivers/gpu/drm/nouveau/nvkm/core/enum.c
+index b9581feb24ccb..a23b40b27b81b 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/core/enum.c
++++ b/drivers/gpu/drm/nouveau/nvkm/core/enum.c
+@@ -44,7 +44,7 @@ nvkm_snprintbf(char *data, int size, const struct nvkm_bitfield *bf, u32 value)
+ 	bool space = false;
+ 	while (size >= 1 && bf->name) {
+ 		if (value & bf->mask) {
+-			int this = snprintf(data, size, "%s%s",
++			int this = scnprintf(data, size, "%s%s",
+ 					    space ? " " : "", bf->name);
+ 			size -= this;
+ 			data += this;
 -- 
 2.51.0
 
