@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 691EDCA0358
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:55:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3B73CA1438
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:07:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1FD43307EAAC
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:49:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E73BA3011FA3
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:44:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5148C35B15A;
-	Wed,  3 Dec 2025 16:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D48F032E752;
+	Wed,  3 Dec 2025 15:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CUw0wxbg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dFIWvhuK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A71235A957;
-	Wed,  3 Dec 2025 16:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FB0E32E733;
+	Wed,  3 Dec 2025 15:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780064; cv=none; b=qLL5X/rJPZx0nSeJikz3eRCC6GB1pd3tmPg4fV65tq3gYnyw6aNDycXxHFBKzPdvSva4lKsg/n/ZesTqs6XT3lJbsPy/jG303WTgYKlwp3i2HJUghw0qw2moSppa4MrA41UjRQVVVb2bpDyxJIeqXXfqRXbBGHXukxKujpeKBYA=
+	t=1764777058; cv=none; b=Z/i+yin8vuhFCJjY4OYjdx1NnfDjrqRlNZ2SkjfqSfJnHA8OHHTK0oEjmxCYuRpm74U1AYdrwNqZNzGxshiEyppmaL/2jmwE3yalZG7e/kv9I+UZc1hrQNeFAgiQyoQnmM5XXAla5Rdwz0eOPixJS3DUWOhPYsh+XwUnrTloEVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780064; c=relaxed/simple;
-	bh=P0mmfrR0EkVZSLAp3GFc0i6ibJ3NLEAiSX7vG8wPUP0=;
+	s=arc-20240116; t=1764777058; c=relaxed/simple;
+	bh=lMC84jf8NWiusOuDx0mJjTC7YuRdzXHI7kFoj7RUU4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DPiA3jgHluM7s21OrL8YWUcWAE6juIllEwRaa8fryBzpDeB3WZG+bIrTvSj+jQDxmjZ3TIBKIPyW4hQkt9TROF4N2E40F7xkSJxdzTn9XlEwjxhCudeacAzGZS25C7jj1yoJNYh6cEmQnccX/SeRYerM9jQ617g3dBfvpl3aL+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CUw0wxbg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D145C4CEF5;
-	Wed,  3 Dec 2025 16:41:03 +0000 (UTC)
+	 MIME-Version; b=DILdEKRY8C0uegvqpLTKhwmOtKx9Bx91+4RzR/WmH8iNw1Ap2RKz0yQ59L8uQpglvb2iLZaB1qWQ0TTC2SSxsibjQ/0+e3dTvS8qKdmZSu/RmKUfxJTNh26lAQ4scwcU3m/4U2WqJ5Vzqe0zWkZIOkKaulPZ/usTZCICLav+Pbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dFIWvhuK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFBF2C4CEF5;
+	Wed,  3 Dec 2025 15:50:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780063;
-	bh=P0mmfrR0EkVZSLAp3GFc0i6ibJ3NLEAiSX7vG8wPUP0=;
+	s=korg; t=1764777058;
+	bh=lMC84jf8NWiusOuDx0mJjTC7YuRdzXHI7kFoj7RUU4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CUw0wxbgW+K7tAw7YbuTyp+ERM0NXBDP+Wfnv0RnL+tnuv20slhbMxSSnYGoRItud
-	 9gLK+2ne5YkJ5Dkr3XWoRSJy9web+QgG3PNUwxnGCDE2gfo63L8MTy0C3wRK8x6+aE
-	 z10RmCQs2YDtR0KycY1iLQyMYC/cPKmNPnQFFSQI=
+	b=dFIWvhuKP0i7I0tQQbBRMS18fVz5nSKQ9TgdNJNArXOx5iTQS4cAmvgkO/78cjnjI
+	 NwlekLeZftka4XLAZqCFuWwCwuXaVBdmrnzCFiP/33qXNjSRYif5l8X6BvYRejeNBw
+	 PE/VYX8/dAs2LruCOlpRQ78qg+lWKvsq8eNrhFNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+355158e7e301548a1424@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 444/568] mptcp: fix race condition in mptcp_schedule_work()
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.17 068/146] iio: adc: ad7380: fix SPI offload trigger rate
 Date: Wed,  3 Dec 2025 16:27:26 +0100
-Message-ID: <20251203152456.962176679@linuxfoundation.org>
+Message-ID: <20251203152348.955655246@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,101 +60,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: David Lechner <dlechner@baylibre.com>
 
-commit 035bca3f017ee9dea3a5a756e77a6f7138cc6eea upstream.
+commit 632757312d7eb320b66ca60e0cfe098ec53cee08 upstream.
 
-syzbot reported use-after-free in mptcp_schedule_work() [1]
+Add a special case to double the SPI offload trigger rate when all
+channels of a single-ended chip are enabled in a buffered read.
 
-Issue here is that mptcp_schedule_work() schedules a work,
-then gets a refcount on sk->sk_refcnt if the work was scheduled.
-This refcount will be released by mptcp_worker().
+The single-ended chips in the AD738x family can only do simultaneous
+sampling of half their channels and have a multiplexer to allow reading
+the other half. To comply with the IIO definition of sampling_frequency,
+we need to trigger twice as often when the sequencer is enabled to so
+that both banks can be read in a single sample period.
 
-[A] if (schedule_work(...)) {
-[B]     sock_hold(sk);
-        return true;
-    }
-
-Problem is that mptcp_worker() can run immediately and complete before [B]
-
-We need instead :
-
-    sock_hold(sk);
-    if (schedule_work(...))
-        return true;
-    sock_put(sk);
-
-[1]
-refcount_t: addition on 0; use-after-free.
- WARNING: CPU: 1 PID: 29 at lib/refcount.c:25 refcount_warn_saturate+0xfa/0x1d0 lib/refcount.c:25
-Call Trace:
- <TASK>
- __refcount_add include/linux/refcount.h:-1 [inline]
-  __refcount_inc include/linux/refcount.h:366 [inline]
-  refcount_inc include/linux/refcount.h:383 [inline]
-  sock_hold include/net/sock.h:816 [inline]
-  mptcp_schedule_work+0x164/0x1a0 net/mptcp/protocol.c:943
-  mptcp_tout_timer+0x21/0xa0 net/mptcp/protocol.c:2316
-  call_timer_fn+0x17e/0x5f0 kernel/time/timer.c:1747
-  expire_timers kernel/time/timer.c:1798 [inline]
-  __run_timers kernel/time/timer.c:2372 [inline]
-  __run_timer_base+0x648/0x970 kernel/time/timer.c:2384
-  run_timer_base kernel/time/timer.c:2393 [inline]
-  run_timer_softirq+0xb7/0x180 kernel/time/timer.c:2403
-  handle_softirqs+0x22f/0x710 kernel/softirq.c:622
-  __do_softirq kernel/softirq.c:656 [inline]
-  run_ktimerd+0xcf/0x190 kernel/softirq.c:1138
-  smpboot_thread_fn+0x542/0xa60 kernel/smpboot.c:160
-  kthread+0x711/0x8a0 kernel/kthread.c:463
-  ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
-Cc: stable@vger.kernel.org
-Fixes: 3b1d6210a957 ("mptcp: implement and use MPTCP-level retransmission")
-Reported-by: syzbot+355158e7e301548a1424@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6915b46f.050a0220.3565dc.0028.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251113103924.3737425-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: bbeaec81a03e ("iio: ad7380: add support for SPI offload")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |   19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ drivers/iio/adc/ad7380.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -966,14 +966,19 @@ static void mptcp_reset_rtx_timer(struct
+--- a/drivers/iio/adc/ad7380.c
++++ b/drivers/iio/adc/ad7380.c
+@@ -1227,6 +1227,14 @@ static int ad7380_offload_buffer_postena
+ 	if (ret)
+ 		return ret;
  
- bool mptcp_schedule_work(struct sock *sk)
- {
--	if (inet_sk_state_load(sk) != TCP_CLOSE &&
--	    schedule_work(&mptcp_sk(sk)->work)) {
--		/* each subflow already holds a reference to the sk, and the
--		 * workqueue is invoked by a subflow, so sk can't go away here.
--		 */
--		sock_hold(sk);
-+	if (inet_sk_state_load(sk) == TCP_CLOSE)
-+		return false;
-+
-+	/* Get a reference on this socket, mptcp_worker() will release it.
-+	 * As mptcp_worker() might complete before us, we can not avoid
-+	 * a sock_hold()/sock_put() if schedule_work() returns false.
++	/*
++	 * When the sequencer is required to read all channels, we need to
++	 * trigger twice per sample period in order to read one complete set
++	 * of samples.
 +	 */
-+	sock_hold(sk);
++	if (st->seq)
++		config.periodic.frequency_hz *= 2;
 +
-+	if (schedule_work(&mptcp_sk(sk)->work))
- 		return true;
--	}
-+
-+	sock_put(sk);
- 	return false;
- }
- 
+ 	ret = spi_offload_trigger_enable(st->offload, st->offload_trigger, &config);
+ 	if (ret)
+ 		spi_unoptimize_message(&st->offload_msg);
 
 
 
