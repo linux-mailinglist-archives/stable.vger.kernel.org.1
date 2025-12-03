@@ -1,51 +1,50 @@
-Return-Path: <stable+bounces-199118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58002CA0A84
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:49:45 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34193CA0269
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:51:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 444D83325761
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:28:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C47C9309A5A7
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:44:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE8F034CFBE;
-	Wed,  3 Dec 2025 16:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B977D34CFCC;
+	Wed,  3 Dec 2025 16:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C+8TbF90"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O/bxUXF0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D1134C98C;
-	Wed,  3 Dec 2025 16:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C23634CFAC;
+	Wed,  3 Dec 2025 16:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778752; cv=none; b=kyWAoLZXyNZyvoKn/6SLbkXgRQmdgg/P7LUc7EdanJmz/FLaz7LFfqOBtX2IPOYZ4KIYKr5WWoXhRvcF7N4ggs89weLhuYSftwGjxv1a8L6BKKyDRaxM/xllNMKN4SM2RvhNaM5t/S6yAlEbsaQv4KmtwF9TRnmsGUWgbl1DhBg=
+	t=1764778760; cv=none; b=EWOtq4tv7eEQDpUWyW5Rnvljff3RrQx/yzOtl6ProROA59i1n88YqYIYaOw3h436+hMH8Yrlg+EHbETR2ZTBZKG5W8+FQdaLn/F8KG7Pxcc/b5olUKc7uG0uZfrAYjcwQ+QwjAbu6Oe8w2AxYwISr2wsQmEdktFCuneOFJxDE8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778752; c=relaxed/simple;
-	bh=erdCZpDEStRbglVQqnrePC6uUHnA0SdlSO/jnbwwGB4=;
+	s=arc-20240116; t=1764778760; c=relaxed/simple;
+	bh=TGPKAyrGweRfreWa9DvlSnAy25J1YSVTvOGuCQlMN1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AphgclkD3QH7Lz7irgfdJ5EH8CRrzRZPe1qvlOwEvdCSODtDHhdXdCMw6GB77m5RAI+Y7r3AbrkO0AzS2EJEqjhTNwJUxNnjdE2Hw19GDSYYJy3LNrQRg2r+Cd0qFolc+W1fIAXlVsyLGpAcaO9b2AMcsJU8IC7eEpCVfzlePz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C+8TbF90; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15571C4CEF5;
-	Wed,  3 Dec 2025 16:19:11 +0000 (UTC)
+	 MIME-Version; b=L+FsmA6UyoWbKqBX8zOgFfH1qGuTopgLXTRBqrZ+3WXBDIbM+CNFFQq9prPYcTr93rlocRgTLb97iRnqobimjQGSYejdwcljuM9tBdh1nKiTq4r3zWEQqmonisfRyVe1RhEPBoRQeeGEll6aZyRJ9sk502c6pw2+5vCxOYKzqAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/bxUXF0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 837EFC4CEF5;
+	Wed,  3 Dec 2025 16:19:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778752;
-	bh=erdCZpDEStRbglVQqnrePC6uUHnA0SdlSO/jnbwwGB4=;
+	s=korg; t=1764778759;
+	bh=TGPKAyrGweRfreWa9DvlSnAy25J1YSVTvOGuCQlMN1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C+8TbF90EENvbR/1BhpYz/9lfShy0bNCSsf8jsEnUlwRJALutQ1AQTUCtsd/mG2vd
-	 zlYffvPbdgzti/7LxAUPbk0X6x8k3DZ/lX6hn4y5fwrJjlAdRf63A6MMQuFbK6eZse
-	 DNAheP4+a+di2ox84bySnn5L/jVX4zA9Zxu8Um2c=
+	b=O/bxUXF0oX1owO/JtNrGvwheyjavpD9alG1b1e5g+becqwEe1rBcGSub6DDLxtHTd
+	 V+5fNCLqCyYqoZrZ10Ae1bztS3wJkEM9SrQ+F7q3/aa1oDY7ff/ouiyHhO1iRXILWx
+	 F34IO6gOW+cJboG4FqMe6jwrrkKzmsx0Ox5otD60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudia Draghicescu <claudia.rosu@nxp.com>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 049/568] Bluetooth: ISO: Add support for periodic adv reports processing
-Date: Wed,  3 Dec 2025 16:20:51 +0100
-Message-ID: <20251203152442.487101350@linuxfoundation.org>
+Subject: [PATCH 6.1 050/568] Bluetooth: ISO: Fix another instance of dst_type handling
+Date: Wed,  3 Dec 2025 16:20:52 +0100
+Message-ID: <20251203152442.523893636@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
 References: <20251203152440.645416925@linuxfoundation.org>
@@ -64,162 +63,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Claudia Draghicescu <claudia.rosu@nxp.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 9c0826310bfb784c9bac7d1d9454e304185446c5 ]
+[ Upstream commit c403da5e98b04a2aec9cfb25cbeeb28d7ce29975 ]
 
-In the case of a Periodic Synchronized Receiver,
-the PA report received from a Broadcaster contains the BASE,
-which has information about codec and other parameters of a BIG.
-This isnformation is stored and the application can retrieve it
-using getsockopt(BT_ISO_BASE).
+Socket dst_type cannot be directly assigned to hci_conn->type since
+there domain is different which may lead to the wrong address type being
+used.
 
-Signed-off-by: Claudia Draghicescu <claudia.rosu@nxp.com>
+Fixes: 6a5ad251b7cd ("Bluetooth: ISO: Fix possible circular locking dependency")
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Stable-dep-of: c403da5e98b0 ("Bluetooth: ISO: Fix another instance of dst_type handling")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/hci.h | 11 +++++++++++
- net/bluetooth/hci_event.c   | 23 +++++++++++++++++++++++
- net/bluetooth/iso.c         | 28 +++++++++++++++++++++++++++-
- 3 files changed, 61 insertions(+), 1 deletion(-)
+ net/bluetooth/iso.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
-index 1a20fb1fa157b..018fc64329fc6 100644
---- a/include/net/bluetooth/hci.h
-+++ b/include/net/bluetooth/hci.h
-@@ -2768,6 +2768,17 @@ struct hci_ev_le_enh_conn_complete {
- 	__u8      clk_accurancy;
- } __packed;
- 
-+#define HCI_EV_LE_PER_ADV_REPORT    0x0f
-+struct hci_ev_le_per_adv_report {
-+	__le16	 sync_handle;
-+	__u8	 tx_power;
-+	__u8	 rssi;
-+	__u8	 cte_type;
-+	__u8	 data_status;
-+	__u8     length;
-+	__u8     data[];
-+} __packed;
-+
- #define HCI_EV_LE_EXT_ADV_SET_TERM	0x12
- struct hci_evt_le_ext_adv_set_term {
- 	__u8	status;
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index e1f1be4dfe97a..e516b169b12fb 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -6469,6 +6469,24 @@ static void hci_le_pa_sync_estabilished_evt(struct hci_dev *hdev, void *data,
- 	hci_dev_unlock(hdev);
- }
- 
-+static void hci_le_per_adv_report_evt(struct hci_dev *hdev, void *data,
-+				      struct sk_buff *skb)
-+{
-+	struct hci_ev_le_per_adv_report *ev = data;
-+	int mask = hdev->link_mode;
-+	__u8 flags = 0;
-+
-+	bt_dev_dbg(hdev, "sync_handle 0x%4.4x", le16_to_cpu(ev->sync_handle));
-+
-+	hci_dev_lock(hdev);
-+
-+	mask |= hci_proto_connect_ind(hdev, BDADDR_ANY, ISO_LINK, &flags);
-+	if (!(mask & HCI_LM_ACCEPT))
-+		hci_le_pa_term_sync(hdev, ev->sync_handle);
-+
-+	hci_dev_unlock(hdev);
-+}
-+
- static void hci_le_remote_feat_complete_evt(struct hci_dev *hdev, void *data,
- 					    struct sk_buff *skb)
- {
-@@ -7002,6 +7020,11 @@ static const struct hci_le_ev {
- 	HCI_LE_EV(HCI_EV_LE_PA_SYNC_ESTABLISHED,
- 		  hci_le_pa_sync_estabilished_evt,
- 		  sizeof(struct hci_ev_le_pa_sync_established)),
-+	/* [0x0f = HCI_EV_LE_PER_ADV_REPORT] */
-+	HCI_LE_EV_VL(HCI_EV_LE_PER_ADV_REPORT,
-+				 hci_le_per_adv_report_evt,
-+				 sizeof(struct hci_ev_le_per_adv_report),
-+				 HCI_MAX_EVENT_SIZE),
- 	/* [0x12 = HCI_EV_LE_EXT_ADV_SET_TERM] */
- 	HCI_LE_EV(HCI_EV_LE_EXT_ADV_SET_TERM, hci_le_ext_adv_term_evt,
- 		  sizeof(struct hci_evt_le_ext_adv_set_term)),
 diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
-index c542497f040cc..bf7692e15deef 100644
+index bf7692e15deef..7d521ffc66767 100644
 --- a/net/bluetooth/iso.c
 +++ b/net/bluetooth/iso.c
-@@ -1314,7 +1314,8 @@ static int iso_sock_getsockopt(struct socket *sock, int level, int optname,
- 		break;
- 
- 	case BT_ISO_BASE:
--		if (sk->sk_state == BT_CONNECTED) {
-+		if (sk->sk_state == BT_CONNECTED &&
-+		    !bacmp(&iso_pi(sk)->dst, BDADDR_ANY)) {
- 			base_len = iso_pi(sk)->conn->hcon->le_per_adv_data_len;
- 			base = iso_pi(sk)->conn->hcon->le_per_adv_data;
- 		} else {
-@@ -1487,6 +1488,9 @@ static void iso_conn_ready(struct iso_conn *conn)
+@@ -1487,7 +1487,13 @@ static void iso_conn_ready(struct iso_conn *conn)
+ 		}
  
  		bacpy(&iso_pi(sk)->dst, &hcon->dst);
- 		iso_pi(sk)->dst_type = hcon->dst_type;
-+		iso_pi(sk)->sync_handle = iso_pi(parent)->sync_handle;
-+		memcpy(iso_pi(sk)->base, iso_pi(parent)->base, iso_pi(parent)->base_len);
-+		iso_pi(sk)->base_len = iso_pi(parent)->base_len;
- 
- 		hci_conn_hold(hcon);
- 		iso_chan_add(conn, sk, parent);
-@@ -1517,12 +1521,20 @@ static bool iso_match_sync_handle(struct sock *sk, void *data)
- 	return le16_to_cpu(ev->sync_handle) == iso_pi(sk)->sync_handle;
- }
- 
-+static bool iso_match_sync_handle_pa_report(struct sock *sk, void *data)
-+{
-+	struct hci_ev_le_per_adv_report *ev = data;
+-		iso_pi(sk)->dst_type = hcon->dst_type;
 +
-+	return le16_to_cpu(ev->sync_handle) == iso_pi(sk)->sync_handle;
-+}
++		/* Convert from HCI to three-value type */
++		if (hcon->dst_type == ADDR_LE_DEV_PUBLIC)
++			iso_pi(sk)->dst_type = BDADDR_LE_PUBLIC;
++		else
++			iso_pi(sk)->dst_type = BDADDR_LE_RANDOM;
 +
- /* ----- ISO interface with lower layer (HCI) ----- */
- 
- int iso_connect_ind(struct hci_dev *hdev, bdaddr_t *bdaddr, __u8 *flags)
- {
- 	struct hci_ev_le_pa_sync_established *ev1;
- 	struct hci_evt_le_big_info_adv_report *ev2;
-+	struct hci_ev_le_per_adv_report *ev3;
- 	struct sock *sk;
- 	int lm = 0;
- 
-@@ -1538,6 +1550,9 @@ int iso_connect_ind(struct hci_dev *hdev, bdaddr_t *bdaddr, __u8 *flags)
- 	 * 2. HCI_EVT_LE_BIG_INFO_ADV_REPORT: When connect_ind is triggered by a
- 	 * a BIG Info it attempts to check if there any listening socket with
- 	 * the same sync_handle and if it does then attempt to create a sync.
-+	 * 3. HCI_EV_LE_PER_ADV_REPORT: When a PA report is received, it is stored
-+	 * in iso_pi(sk)->base so it can be passed up to user, in the case of a
-+	 * broadcast sink.
- 	 */
- 	ev1 = hci_recv_event_data(hdev, HCI_EV_LE_PA_SYNC_ESTABLISHED);
- 	if (ev1) {
-@@ -1570,6 +1585,17 @@ int iso_connect_ind(struct hci_dev *hdev, bdaddr_t *bdaddr, __u8 *flags)
- 				sk = NULL;
- 			}
- 		}
-+	}
-+
-+	ev3 = hci_recv_event_data(hdev, HCI_EV_LE_PER_ADV_REPORT);
-+	if (ev3) {
-+		sk = iso_get_sock_listen(&hdev->bdaddr, bdaddr,
-+					 iso_match_sync_handle_pa_report, ev3);
-+
-+		if (sk) {
-+			memcpy(iso_pi(sk)->base, ev3->data, ev3->length);
-+			iso_pi(sk)->base_len = ev3->length;
-+		}
- 	} else {
- 		sk = iso_get_sock_listen(&hdev->bdaddr, BDADDR_ANY, NULL, NULL);
- 	}
+ 		iso_pi(sk)->sync_handle = iso_pi(parent)->sync_handle;
+ 		memcpy(iso_pi(sk)->base, iso_pi(parent)->base, iso_pi(parent)->base_len);
+ 		iso_pi(sk)->base_len = iso_pi(parent)->base_len;
 -- 
 2.51.0
 
