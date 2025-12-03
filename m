@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-198908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3A0CC9FD13
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:08:05 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9456CA00AF
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:41:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 53CC93001BC1
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:07:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DB13B3028C2C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:37:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66778313E03;
-	Wed,  3 Dec 2025 16:07:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3504E35C18A;
+	Wed,  3 Dec 2025 16:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vv0ouKRs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EeC9omBO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23480313546;
-	Wed,  3 Dec 2025 16:07:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F5D35BDDB;
+	Wed,  3 Dec 2025 16:37:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778064; cv=none; b=GB9YDFRhcx4ry2P9meE9TIMDwjdAg4s2ghMW4W3139ORo99ydCSCUFUPvdA6Vps2097rrg5CxAqd1ZMTbCvW7jGxgQywy1cx0OpL0OyP92iplnrx9Sci95KQH3qJIivinGsDpXMMz81UwkFBiKsZgzEsO2Phw8WU70fVT9WQT3M=
+	t=1764779850; cv=none; b=Pke3c+5nDimAEyCQwTEwD6ZT3yjeoDUPqy5wmtk45KiBH8FaquOI4asMsRhfyege5G9F46lwON6bV+c/S8iOfKM8Pb5Clj5r1Lr6rDKWJCuzLFiqvS6NbH7j0cD9K5tRKq9wH4uWfOCbZZLxJQ3agQauAzkH4hugotbmsQLp+Vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778064; c=relaxed/simple;
-	bh=md7O2iDK5uqo0/EMO+bRcghytxMk01PGg8LU27gsBJE=;
+	s=arc-20240116; t=1764779850; c=relaxed/simple;
+	bh=EZlFj3InNuLfg+0RrRWorUUFP17ayXh7niEbYvBUvbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g5kuFnKtFt3ebMRM+EGPIWHqryYOH5a0kgww3E8MVLIiD+es1AIL+E9aday0KId0IvjsSg9PTpKojT+iya81JcKk6FHtmDYpMJRrWnnrRLK+l2KAd0zY39CciFAoUan4G5klseCkV2eFyQuISxapGtVzg3xXX52+b3FMgV8byuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vv0ouKRs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C878C4CEF5;
-	Wed,  3 Dec 2025 16:07:43 +0000 (UTC)
+	 MIME-Version; b=nwU474cFqlxa/rZ4H4eLFDIybBwLPGkwstphTPVjIseSXKOc5T+2W+gRj2Oo+XVlNjz8alBt7+Yu/KPHrTmekm31I/BsqQFg22t8u6jJAMtNvkXNa3h3q1vUer2XrII2H3YqfzMvvDwj3qDlSBqREWO369eyoww6kf5/MyklpNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EeC9omBO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25F78C116C6;
+	Wed,  3 Dec 2025 16:37:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778064;
-	bh=md7O2iDK5uqo0/EMO+bRcghytxMk01PGg8LU27gsBJE=;
+	s=korg; t=1764779849;
+	bh=EZlFj3InNuLfg+0RrRWorUUFP17ayXh7niEbYvBUvbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vv0ouKRs9vgtN4zhfB4TExWr3T8BbhhXMjckhklHy89xQiym+DD/++UetFJ5Agefl
-	 Z1NJsd4UD8ACuX4qayUR7NrrPgPoYFi0z2XotuQCWv4WARPwKASIJyryUBOcYrhnQC
-	 jvKG13z+zMOwTxHFmRiE5zbupKuZ+VrwCgGrNXwY=
+	b=EeC9omBO71Q/L/46ej2ukhR8KHEypqlLmTUv6FhqLgA3cdxRqIiYlfjJuvD4oWZrk
+	 EHbtJqMyBiq7t7+wSvT0usr2nGNnqoR4dt6lV06/7wZLerDXZPriGQeVpFpcJOqaTv
+	 N/lj7JL8Om/4XDl9+XJAi8CETQDntIkxtskXuhCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Alex Markuze <amarkuze@redhat.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Pauli Virtanen <pav@iki.fi>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 205/392] ceph: add checking of wait_for_completion_killable() return value
+Subject: [PATCH 6.1 353/568] Bluetooth: 6lowpan: reset link-local header on ipv6 recv path
 Date: Wed,  3 Dec 2025 16:25:55 +0100
-Message-ID: <20251203152421.617954270@linuxfoundation.org>
+Message-ID: <20251203152453.634372416@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+From: Pauli Virtanen <pav@iki.fi>
 
-[ Upstream commit b7ed1e29cfe773d648ca09895b92856bd3a2092d ]
+[ Upstream commit 3b78f50918276ab28fb22eac9aa49401ac436a3b ]
 
-The Coverity Scan service has detected the calling of
-wait_for_completion_killable() without checking the return
-value in ceph_lock_wait_for_completion() [1]. The CID 1636232
-defect contains explanation: "If the function returns an error
-value, the error value may be mistaken for a normal value.
-In ceph_lock_wait_for_completion(): Value returned from
-a function is not checked for errors before being used. (CWE-252)".
+Bluetooth 6lowpan.c netdev has header_ops, so it must set link-local
+header for RX skb, otherwise things crash, eg. with AF_PACKET SOCK_RAW
 
-The patch adds the checking of wait_for_completion_killable()
-return value and return the error code from
-ceph_lock_wait_for_completion().
+Add missing skb_reset_mac_header() for uncompressed ipv6 RX path.
 
-[1] https://scan5.scan.coverity.com/#/project-view/64304/10063?selectedIssue=1636232
+For the compressed one, it is done in lowpan_header_decompress().
 
-Signed-off-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Reviewed-by: Alex Markuze <amarkuze@redhat.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Log: (BlueZ 6lowpan-tester Client Recv Raw - Success)
+------
+kernel BUG at net/core/skbuff.c:212!
+Call Trace:
+<IRQ>
+...
+packet_rcv (net/packet/af_packet.c:2152)
+...
+<TASK>
+__local_bh_enable_ip (kernel/softirq.c:407)
+netif_rx (net/core/dev.c:5648)
+chan_recv_cb (net/bluetooth/6lowpan.c:294 net/bluetooth/6lowpan.c:359)
+------
+
+Fixes: 18722c247023 ("Bluetooth: Enable 6LoWPAN support for BT LE devices")
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/locks.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/bluetooth/6lowpan.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/ceph/locks.c b/fs/ceph/locks.c
-index 3e3b8be76b21e..38974c54240d6 100644
---- a/fs/ceph/locks.c
-+++ b/fs/ceph/locks.c
-@@ -202,7 +202,10 @@ static int ceph_lock_wait_for_completion(struct ceph_mds_client *mdsc,
- 	if (err && err != -ERESTARTSYS)
- 		return err;
+diff --git a/net/bluetooth/6lowpan.c b/net/bluetooth/6lowpan.c
+index db119071a0ea0..003c8ae104f29 100644
+--- a/net/bluetooth/6lowpan.c
++++ b/net/bluetooth/6lowpan.c
+@@ -288,6 +288,7 @@ static int recv_pkt(struct sk_buff *skb, struct net_device *dev,
+ 		local_skb->pkt_type = PACKET_HOST;
+ 		local_skb->dev = dev;
  
--	wait_for_completion_killable(&req->r_safe_completion);
-+	err = wait_for_completion_killable(&req->r_safe_completion);
-+	if (err)
-+		return err;
-+
- 	return 0;
- }
++		skb_reset_mac_header(local_skb);
+ 		skb_set_transport_header(local_skb, sizeof(struct ipv6hdr));
  
+ 		if (give_skb_to_upper(local_skb, dev) != NET_RX_SUCCESS) {
 -- 
 2.51.0
 
