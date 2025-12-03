@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 352B0CA0875
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:38:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93DA4CA0968
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:44:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 06C5033CF696
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:18:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E934E346E874
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:23:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 824FE30E0F6;
-	Wed,  3 Dec 2025 16:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A97EC321442;
+	Wed,  3 Dec 2025 16:39:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qqZ4qi3+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ed9cVt/R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D29630CDB1;
-	Wed,  3 Dec 2025 16:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F8526CE39;
+	Wed,  3 Dec 2025 16:39:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778166; cv=none; b=pemxyWAYd5Lpc9ZKrnha7DGxYY0el/XjqGqDlu5NtDeCljStCI2YYRdJ3csYxWxjvDp6T0HLS4kDYKD0TXrn5NItrKpgaBWB9cfAgsUfcbbMkzkXDs7LihA18KLpUlv4nhKs7fiJc0f/cxHxMRxF+ikq/J1sRWg/zhqEeiFMrpA=
+	t=1764779955; cv=none; b=lvdXrNbiJ95bqn8S9qmC4gR9uIeN53NLyEKtRQmoxKafqL/mYLVakd7i+kaLryDEWoE2UkZVAO5OPYmLc3JKrSr/NFtCZQvnZA/yr+iUmN0MJraaWWZ+1laOwpLzO+d6UNtkyKO5MM6ryI/JgoBZUzSKBC3nIW1Csjsu/JQJqIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778166; c=relaxed/simple;
-	bh=OywTpRZJ32oqjklvRqQXgNR+6tEHfKsWjUqwF/MAi/U=;
+	s=arc-20240116; t=1764779955; c=relaxed/simple;
+	bh=B4vooNdUtFa9Li0hUoq0NZ6kS2ttN9lNs/rJlomyZLM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oDsZGkWvWjzE5/X6sVF6e+rz6Ry/e+iure2vVjEJ+zK0+yGHCoEcGulQ938rLVsR3KVMNLFTjPEf56KPsJn9N3E1MdhJdy2GLhyPUoqbvypZ1L/XPBLHjtZ96/9hv2wxXz7p7IpkDOC4v7lrEh+qnmu0Gk09fZLoartITDibAsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qqZ4qi3+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E62DC4CEF5;
-	Wed,  3 Dec 2025 16:09:25 +0000 (UTC)
+	 MIME-Version; b=Q5vOL0ifchvxlGSwQOnU0efXiBB5zof2nOExD4dWmOYuBS86oKUIOVKggM2JztiAhRVOdpSpY/lqlzDCvlHwIrQ1e6nTJDMUC7W9Y/FbX/ckDrUdRENGK8DgtllX6OMqQxg3olbufyJfUCIPXagJcS7fO8YjBALAclUYg2X4dSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ed9cVt/R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C41C1C16AAE;
+	Wed,  3 Dec 2025 16:39:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778165;
-	bh=OywTpRZJ32oqjklvRqQXgNR+6tEHfKsWjUqwF/MAi/U=;
+	s=korg; t=1764779955;
+	bh=B4vooNdUtFa9Li0hUoq0NZ6kS2ttN9lNs/rJlomyZLM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qqZ4qi3+//4UepumCxSYeO79/Hz+Et3p446AggILaOjNHwbSH/gChNGdhHTbZhDAl
-	 58a+boloDTUkS/OXNdOC3lzaqwovzzN1oqIHWOCi/lbc6LpXzKl61F0GDFBOFxhyvq
-	 WnLvurQlPieNrqx1QO5R8fs7BgZlD0oaT1rdffPg=
+	b=ed9cVt/RtVEtOXcmgStGuPT/oBFUora+z5LUXqGo/jzU+VcFwkw5VpEj6BSvfnBO4
+	 yBbkhKGtjPKFclhomJ5lCjnHvIu6siG5p0g6GZPbnpJpTXtOAylGtyj/LS/gcEjpaR
+	 LUoDEFak0T6iL0aa+JNel4YH3ad3uyBJyMZIjR/8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haein Lee <lhi0729@kaist.ac.kr>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 263/392] ALSA: usb-audio: Fix NULL pointer dereference in snd_usb_mixer_controls_badd
-Date: Wed,  3 Dec 2025 16:26:53 +0100
-Message-ID: <20251203152423.844550681@linuxfoundation.org>
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 412/568] selftests: mptcp: connect: trunc: read all recv data
+Date: Wed,  3 Dec 2025 16:26:54 +0100
+Message-ID: <20251203152455.779475113@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +60,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haein Lee <lhi0729@kaist.ac.kr>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 632108ec072ad64c8c83db6e16a7efee29ebfb74 ]
+commit ee79980f7a428ec299f6261bea4c1084dcbc9631 upstream.
 
-In snd_usb_create_streams(), for UAC version 3 devices, the Interface
-Association Descriptor (IAD) is retrieved via usb_ifnum_to_if(). If this
-call fails, a fallback routine attempts to obtain the IAD from the next
-interface and sets a BADD profile. However, snd_usb_mixer_controls_badd()
-assumes that the IAD retrieved from usb_ifnum_to_if() is always valid,
-without performing a NULL check. This can lead to a NULL pointer
-dereference when usb_ifnum_to_if() fails to find the interface descriptor.
+MPTCP Join "fastclose server" selftest is sometimes failing because the
+client output file doesn't have the expected size, e.g. 296B instead of
+1024B.
 
-This patch adds a NULL pointer check after calling usb_ifnum_to_if() in
-snd_usb_mixer_controls_badd() to prevent the dereference.
+When looking at a packet trace when this happens, the server sent the
+expected 1024B in two parts -- 100B, then 924B -- then the MP_FASTCLOSE.
+It is then strange to see the client only receiving 296B, which would
+mean it only got a part of the second packet. The problem is then not on
+the networking side, but rather on the data reception side.
 
-This issue was discovered by syzkaller, which triggered the bug by sending
-a crafted USB device descriptor.
+When mptcp_connect is launched with '-f -1', it means the connection
+might stop before having sent everything, because a reset has been
+received. When this happens, the program was directly stopped. But it is
+also possible there are still some data to read, simply because the
+previous 'read' step was done with a buffer smaller than the pending
+data, see do_rnd_read(). In this case, it is important to read what's
+left in the kernel buffers before stopping without error like before.
 
-Fixes: 17156f23e93c ("ALSA: usb: add UAC3 BADD profiles support")
-Signed-off-by: Haein Lee <lhi0729@kaist.ac.kr>
-Link: https://patch.msgid.link/vwhzmoba9j2f.vwhzmob9u9e2.g6@dooray.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+SIGPIPE is now ignored, not to quit the app before having read
+everything.
+
+Fixes: 6bf41020b72b ("selftests: mptcp: update and extend fastclose test-cases")
+Cc: stable@vger.kernel.org
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251110-net-mptcp-sft-join-unstable-v1-5-a4332c714e10@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/testing/selftests/net/mptcp/mptcp_connect.c |   18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
-index 5163d5e7682e7..de80240d9ed58 100644
---- a/sound/usb/mixer.c
-+++ b/sound/usb/mixer.c
-@@ -3071,6 +3071,8 @@ static int snd_usb_mixer_controls_badd(struct usb_mixer_interface *mixer,
- 	int i;
+--- a/tools/testing/selftests/net/mptcp/mptcp_connect.c
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect.c
+@@ -655,8 +655,14 @@ static int copyfd_io_poll(int infd, int
  
- 	assoc = usb_ifnum_to_if(dev, ctrlif)->intf_assoc;
-+	if (!assoc)
-+		return -EINVAL;
+ 				bw = do_rnd_write(peerfd, wbuf + woff, wlen);
+ 				if (bw < 0) {
+-					if (cfg_rcv_trunc)
+-						return 0;
++					/* expected reset, continue to read */
++					if (cfg_rcv_trunc &&
++					    (errno == ECONNRESET ||
++					     errno == EPIPE)) {
++						fds.events &= ~POLLOUT;
++						continue;
++					}
++
+ 					perror("write");
+ 					return 111;
+ 				}
+@@ -682,8 +688,10 @@ static int copyfd_io_poll(int infd, int
+ 		}
  
- 	/* Detect BADD capture/playback channels from AS EP descriptors */
- 	for (i = 0; i < assoc->bInterfaceCount; i++) {
--- 
-2.51.0
-
+ 		if (fds.revents & (POLLERR | POLLNVAL)) {
+-			if (cfg_rcv_trunc)
+-				return 0;
++			if (cfg_rcv_trunc) {
++				fds.events &= ~(POLLERR | POLLNVAL);
++				continue;
++			}
+ 			fprintf(stderr, "Unexpected revents: "
+ 				"POLLERR/POLLNVAL(%x)\n", fds.revents);
+ 			return 5;
+@@ -1332,7 +1340,7 @@ static void parse_opts(int argc, char **
+ 			 */
+ 			if (cfg_truncate < 0) {
+ 				cfg_rcv_trunc = true;
+-				signal(SIGPIPE, handle_signal);
++				signal(SIGPIPE, SIG_IGN);
+ 			}
+ 			break;
+ 		case 'j':
 
 
 
