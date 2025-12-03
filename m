@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADE74CA0A4E
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:49:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85509C9FC8F
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:04:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 93DCE331B6A7
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:28:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A30A93062E17
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:56:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2341C355803;
-	Wed,  3 Dec 2025 16:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F63633ADA2;
+	Wed,  3 Dec 2025 15:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uRl20XS3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dVbXQa9N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D31355800;
-	Wed,  3 Dec 2025 16:44:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3335631ED8D;
+	Wed,  3 Dec 2025 15:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780256; cv=none; b=uii8HEqs4XbOd5Sif5R4PqpUHykBDix91k64MGhHx3CYMU1EmW1+VP58kkPeProz3xdZxXfqK+gN24H8pVAG8cWdcLxwqIl/DQmZXpINQgTtt2oycc0ypy/bQ/7KMx4a+VllS6F10z0ScuitRr1syZy7LhHXb6qYY6pdYxNexaw=
+	t=1764777248; cv=none; b=ai+WEFI8Mmsbm3rbyNT89RPla0rPK7pWEMqh4JXRn0OtfBtGmuVqDTLqVAyA/FROTPJu6/t4o2oy4E9Cw5JevFFiDuY7upkIpqcTyyq8r5kI45KS58qUyudJ0wObLBDrqY1vofGyfcxVHhkT2+9STbHBHSIYDQCPMSYXAQHuGN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780256; c=relaxed/simple;
-	bh=AZQZxZ3fyIcu1VrOV9BiE3TIqvVmia/fY03gAj5Fovo=;
+	s=arc-20240116; t=1764777248; c=relaxed/simple;
+	bh=dfPx3cIQEFqlR4iRW5NvppB6Ff2CWkYi9kBXcWgz1Hk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MXiVsAoy80QRGxawPRqtmZiAScdZXOBMnEg7F8KY+RR6mqU+y2Tl3fJatRJKtl3eTN8ICx0vpBpgw7yOSy5hPc4YJ2iKES1q2h3NEJOdZORc5Qf0EmN2RMBj/tJdGUUymRb4PPeOVKn4rz6D2pQrA5c80xcsPT/hkFafo+VEOz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uRl20XS3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42AD3C4CEF5;
-	Wed,  3 Dec 2025 16:44:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Z8Z/G3YdQasUTe2K2kjce3TTr6nBZblpmHPcpPLAkOy/pjpONWJ5EwDlXwIvwMvExCNXEn/E21oW1kFoh7RWvsAKGuPKBq2+AzL/MJBuKCR4iHySl7/K+Knj38zeUq0dZRI3oxjkhwezsnrLffyNL56NUKarTGcKq/dtVw2e3Oo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dVbXQa9N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65A23C2BCB9;
+	Wed,  3 Dec 2025 15:54:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780256;
-	bh=AZQZxZ3fyIcu1VrOV9BiE3TIqvVmia/fY03gAj5Fovo=;
+	s=korg; t=1764777247;
+	bh=dfPx3cIQEFqlR4iRW5NvppB6Ff2CWkYi9kBXcWgz1Hk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uRl20XS3RATceklPE4wNkeCK5voCmNyZdgGrIhLA/U04Ud3o3m97cAWZ75xq42uhL
-	 SGBv9rDisGowS5x2Rtvan2krA+oZGn8259/VKumozVW8xoQP4KfiFchfXZB8dhDNrl
-	 hUDvy0YSBMxxb6bj5IufwUC26tuSel7DGZk9N6HU=
+	b=dVbXQa9NpIT0ev1DG1+DaKeb2epNyWR5L50YFXn0fhDOtfW1TyIRgG3SxMmkkbuve
+	 QVdP59xCd5pzwoE8r6nTbpoRjnpr9rLHXuTNnfT5HEDKKjhHoPD9cQTsyI/rxKkBFY
+	 W8rkDwd78Z+K/QO+zeDY6b67byyBB3QpwqUu/mpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 503/568] net: dsa: sja1105: simplify static configuration reload
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.17 127/146] drm/i915/psr: Reject async flips when selective fetch is enabled
 Date: Wed,  3 Dec 2025 16:28:25 +0100
-Message-ID: <20251203152459.135974362@linuxfoundation.org>
+Message-ID: <20251203152351.108995964@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,166 +58,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit a18891b55703a45b700618ef40edd5e9aaecc345 ]
+commit 7c373b3bd03c77fe8f6ea206ed49375eb4d43d13 upstream.
 
-The static configuration reload saves the port speed in the static
-configuration tables by first converting it from the internal
-respresentation to the SPEED_xxx ethtool representation, and then
-converts it back to restore the setting. This is because
-sja1105_adjust_port_config() takes the speed as SPEED_xxx.
+The selective fetch code doesn't handle asycn flips correctly.
+There is a nonsense check for async flips in
+intel_psr2_sel_fetch_config_valid() but that only gets called
+for modesets/fastsets and thus does nothing for async flips.
 
-However, this is unnecessarily complex. If we split
-sja1105_adjust_port_config() up, we can simply save and restore the
-mac[port].speed member in the static configuration tables.
+Currently intel_async_flip_check_hw() is very unhappy as the
+selective fetch code pulls in planes that are not even async
+flips capable.
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://patch.msgid.link/E1svfMa-005ZIX-If@rmk-PC.armlinux.org.uk
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: da62abaaa268 ("net: dsa: sja1105: fix SGMII linking at 10M or 100M but not passing traffic")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reject async flips when selective fetch is enabled, until
+someone fixes this properly (ie. disable selective fetch while
+async flips are being issued).
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patch.msgid.link/20251105171015.22234-1-ville.syrjala@linux.intel.com
+Reviewed-by: Jouni Högander <jouni.hogander@intel.com>
+(cherry picked from commit a5f0cc8e0cd4007370af6985cb152001310cf20c)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/sja1105/sja1105_main.c | 65 ++++++++++++++------------
- 1 file changed, 34 insertions(+), 31 deletions(-)
+ drivers/gpu/drm/i915/display/intel_display.c |    8 ++++++++
+ drivers/gpu/drm/i915/display/intel_psr.c     |    6 ------
+ 2 files changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
-index d51d982c4bc01..8350696bdda5b 100644
---- a/drivers/net/dsa/sja1105/sja1105_main.c
-+++ b/drivers/net/dsa/sja1105/sja1105_main.c
-@@ -1262,29 +1262,11 @@ static int sja1105_parse_dt(struct sja1105_private *priv)
- 	return rc;
- }
- 
--/* Convert link speed from SJA1105 to ethtool encoding */
--static int sja1105_port_speed_to_ethtool(struct sja1105_private *priv,
--					 u64 speed)
--{
--	if (speed == priv->info->port_speed[SJA1105_SPEED_10MBPS])
--		return SPEED_10;
--	if (speed == priv->info->port_speed[SJA1105_SPEED_100MBPS])
--		return SPEED_100;
--	if (speed == priv->info->port_speed[SJA1105_SPEED_1000MBPS])
--		return SPEED_1000;
--	if (speed == priv->info->port_speed[SJA1105_SPEED_2500MBPS])
--		return SPEED_2500;
--	return SPEED_UNKNOWN;
--}
--
--/* Set link speed in the MAC configuration for a specific port. */
--static int sja1105_adjust_port_config(struct sja1105_private *priv, int port,
--				      int speed_mbps)
-+static int sja1105_set_port_speed(struct sja1105_private *priv, int port,
-+				  int speed_mbps)
- {
- 	struct sja1105_mac_config_entry *mac;
--	struct device *dev = priv->ds->dev;
- 	u64 speed;
--	int rc;
- 
- 	/* On P/Q/R/S, one can read from the device via the MAC reconfiguration
- 	 * tables. On E/T, MAC reconfig tables are not readable, only writable.
-@@ -1318,7 +1300,7 @@ static int sja1105_adjust_port_config(struct sja1105_private *priv, int port,
- 		speed = priv->info->port_speed[SJA1105_SPEED_2500MBPS];
- 		break;
- 	default:
--		dev_err(dev, "Invalid speed %iMbps\n", speed_mbps);
-+		dev_err(priv->ds->dev, "Invalid speed %iMbps\n", speed_mbps);
+--- a/drivers/gpu/drm/i915/display/intel_display.c
++++ b/drivers/gpu/drm/i915/display/intel_display.c
+@@ -5958,6 +5958,14 @@ static int intel_async_flip_check_uapi(s
  		return -EINVAL;
  	}
  
-@@ -1330,11 +1312,31 @@ static int sja1105_adjust_port_config(struct sja1105_private *priv, int port,
- 	 * we need to configure the PCS only (if even that).
- 	 */
- 	if (priv->phy_mode[port] == PHY_INTERFACE_MODE_SGMII)
--		mac[port].speed = priv->info->port_speed[SJA1105_SPEED_1000MBPS];
-+		speed = priv->info->port_speed[SJA1105_SPEED_1000MBPS];
- 	else if (priv->phy_mode[port] == PHY_INTERFACE_MODE_2500BASEX)
--		mac[port].speed = priv->info->port_speed[SJA1105_SPEED_2500MBPS];
--	else
--		mac[port].speed = speed;
-+		speed = priv->info->port_speed[SJA1105_SPEED_2500MBPS];
++	/* FIXME: selective fetch should be disabled for async flips */
++	if (new_crtc_state->enable_psr2_sel_fetch) {
++		drm_dbg_kms(display->drm,
++			    "[CRTC:%d:%s] async flip disallowed with PSR2 selective fetch\n",
++			    crtc->base.base.id, crtc->base.name);
++		return -EINVAL;
++	}
 +
-+	mac[port].speed = speed;
-+
-+	return 0;
-+}
-+
-+/* Write the MAC Configuration Table entry and, if necessary, the CGU settings,
-+ * after a link speedchange for this port.
-+ */
-+static int sja1105_set_port_config(struct sja1105_private *priv, int port)
-+{
-+	struct sja1105_mac_config_entry *mac;
-+	struct device *dev = priv->ds->dev;
-+	int rc;
-+
-+	/* On P/Q/R/S, one can read from the device via the MAC reconfiguration
-+	 * tables. On E/T, MAC reconfig tables are not readable, only writable.
-+	 * We have to *know* what the MAC looks like.  For the sake of keeping
-+	 * the code common, we'll use the static configuration tables as a
-+	 * reasonable approximation for both E/T and P/Q/R/S.
-+	 */
-+	mac = priv->static_config.tables[BLK_IDX_MAC_CONFIG].entries;
+ 	for_each_oldnew_intel_plane_in_state(state, plane, old_plane_state,
+ 					     new_plane_state, i) {
+ 		if (plane->pipe != crtc->pipe)
+--- a/drivers/gpu/drm/i915/display/intel_psr.c
++++ b/drivers/gpu/drm/i915/display/intel_psr.c
+@@ -1274,12 +1274,6 @@ static bool intel_psr2_sel_fetch_config_
+ 		return false;
+ 	}
  
- 	/* Write to the dynamic reconfiguration tables */
- 	rc = sja1105_dynamic_config_write(priv, BLK_IDX_MAC_CONFIG, port,
-@@ -1384,7 +1386,8 @@ static void sja1105_mac_link_up(struct dsa_switch *ds, int port,
- {
- 	struct sja1105_private *priv = ds->priv;
- 
--	sja1105_adjust_port_config(priv, port, speed);
-+	if (!sja1105_set_port_speed(priv, port, speed))
-+		sja1105_set_port_config(priv, port);
- 
- 	sja1105_inhibit_tx(priv, BIT(port), false);
+-	if (crtc_state->uapi.async_flip) {
+-		drm_dbg_kms(display->drm,
+-			    "PSR2 sel fetch not enabled, async flip enabled\n");
+-		return false;
+-	}
+-
+ 	return crtc_state->enable_psr2_sel_fetch = true;
  }
-@@ -2291,8 +2294,8 @@ int sja1105_static_config_reload(struct sja1105_private *priv,
- {
- 	struct ptp_system_timestamp ptp_sts_before;
- 	struct ptp_system_timestamp ptp_sts_after;
--	int speed_mbps[SJA1105_MAX_NUM_PORTS];
- 	u16 bmcr[SJA1105_MAX_NUM_PORTS] = {0};
-+	u64 mac_speed[SJA1105_MAX_NUM_PORTS];
- 	struct sja1105_mac_config_entry *mac;
- 	struct dsa_switch *ds = priv->ds;
- 	s64 t1, t2, t3, t4;
-@@ -2305,14 +2308,13 @@ int sja1105_static_config_reload(struct sja1105_private *priv,
  
- 	mac = priv->static_config.tables[BLK_IDX_MAC_CONFIG].entries;
- 
--	/* Back up the dynamic link speed changed by sja1105_adjust_port_config
-+	/* Back up the dynamic link speed changed by sja1105_set_port_speed()
- 	 * in order to temporarily restore it to SJA1105_SPEED_AUTO - which the
- 	 * switch wants to see in the static config in order to allow us to
- 	 * change it through the dynamic interface later.
- 	 */
- 	for (i = 0; i < ds->num_ports; i++) {
--		speed_mbps[i] = sja1105_port_speed_to_ethtool(priv,
--							      mac[i].speed);
-+		mac_speed[i] = mac[i].speed;
- 		mac[i].speed = priv->info->port_speed[SJA1105_SPEED_AUTO];
- 
- 		if (priv->xpcs[i])
-@@ -2375,7 +2377,8 @@ int sja1105_static_config_reload(struct sja1105_private *priv,
- 		struct dw_xpcs *xpcs = priv->xpcs[i];
- 		unsigned int mode;
- 
--		rc = sja1105_adjust_port_config(priv, i, speed_mbps[i]);
-+		mac[i].speed = mac_speed[i];
-+		rc = sja1105_set_port_config(priv, i);
- 		if (rc < 0)
- 			goto out;
- 
--- 
-2.51.0
-
 
 
 
