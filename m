@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-199394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDABFCA0CEE
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:11:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88BB3C9F8AB
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:39:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EA86D32A35F8
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:07:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 86A9D3005E99
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:35:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 020F031961F;
-	Wed,  3 Dec 2025 16:34:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F17F3115BC;
+	Wed,  3 Dec 2025 15:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ikwZ0bx6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mdI0iKnd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01A92FD1D7;
-	Wed,  3 Dec 2025 16:34:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6BE3090C6;
+	Wed,  3 Dec 2025 15:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779654; cv=none; b=LCHDx/CPQUi+IagkkLXk1hWzCBneqz61GL8Q/rsYT1Lqa5X16kuvKNxfOePxbJEd8huT8TQPWBkbzcs3vGfk6AV5HQHdhzGBgDepUv9U3WmwCJ18Fti5VS5u5pOtWgK8I/llOPcbmRAUgEEubpEJHgrfoK7ilVNqI8UcSzNpRTw=
+	t=1764776120; cv=none; b=ICIR3DsFjDpmDqEStesR/2Y2HssypukJZeyDUI4soZ0fxLzWirCwEsLR3uIrZ9y1Q0BXVwMdxNzfdJC7Wf8xVoZu4vznPKYOpSyJ4dKdhpCv0ELW/GNy6K71KQJ9hppZs6P8aNBBtVAv0WO4CjHRNGOEEZ9F/LgV+eH+va5+ASA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779654; c=relaxed/simple;
-	bh=PMlCkI4BVoXQ7adJhRwZ902Ap1pDfqzRTgU3OOGX+Cw=;
+	s=arc-20240116; t=1764776120; c=relaxed/simple;
+	bh=+Q9apZVoiILT+L4kyl66HJxlW/ZLOImi2OZXfND2ZxU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bjxaF1xpJPbqRVMNUHkJzuGmjzlowQz5L6F0w5qOFrJAkVPOp00nZ0NWmj8M0o98ACgttX7yCiinDv8BiuIJ9g+cv5/pH0JaH0LKkH/iMfAN1g9mEvFuBxlQgbFq8ImnZMcmCO+Mboh2mz+gqfS+dDAns7dQ+yOudRFxFdVGN1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ikwZ0bx6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6C6DC4CEF5;
-	Wed,  3 Dec 2025 16:34:13 +0000 (UTC)
+	 MIME-Version; b=P/JBleL66dlOTpdfzb2w3OUtyodaxxjenNAeLsnL+gfxrLRjmWQFhcJdDvIQ6zmSvmoKsH9bpFbAxaqy0hQcWVV88QFYYeik6l5TjBBSSXzFEac2/SdlOT39I0OrfZhy8MiGSQBpCvczT92LSPNRzZFYL5E64m8eNj69PB/tfdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mdI0iKnd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 860E3C4CEF5;
+	Wed,  3 Dec 2025 15:35:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779654;
-	bh=PMlCkI4BVoXQ7adJhRwZ902Ap1pDfqzRTgU3OOGX+Cw=;
+	s=korg; t=1764776120;
+	bh=+Q9apZVoiILT+L4kyl66HJxlW/ZLOImi2OZXfND2ZxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ikwZ0bx6cv6N9ZgsSgSoY28oHFDsc8ban2NJuvQJv0EeuMtD4YntlkwOo1frdTtpi
-	 50r5hgg4F9Vqtmrb8BNgVt8t8gBF7s+t/ofIJ1yXXRURuWPgWougAsG/pUTHLBWAtN
-	 50S9iRzNTaFEHNTNSLyGw1XCXEZ4pPP7ihGeAEOU=
+	b=mdI0iKndCLMmmicOqTfg0rqFgudJGjX9+xQQvF9MsvT0m9Erx94etZxNQDbZe1XbS
+	 13XK1T5qRsIhZaPXxekFnd+2us0bPckifsEuJZbvj3PveznCItlfOqlNjbTLGZV6ym
+	 G7KjmEJsuPnJpEExbopod/2TU/ixOfpJlzBqhi6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthias Schiffer <matthias.schiffer@tq-group.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	Zijun Hu <zijun.hu@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 288/568] clk: ti: am33xx: keep WKUP_DEBUGSS_CLKCTRL enabled
+Subject: [PATCH 5.10 086/300] char: misc: Does not request module for miscdevice with dynamic minor
 Date: Wed,  3 Dec 2025 16:24:50 +0100
-Message-ID: <20251203152451.252812129@linuxfoundation.org>
+Message-ID: <20251203152403.810360777@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +60,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthias Schiffer <matthias.schiffer@tq-group.com>
+From: Zijun Hu <zijun.hu@oss.qualcomm.com>
 
-[ Upstream commit 1e0d75258bd09323cb452655549e03975992b29e ]
+[ Upstream commit 1ba0fb42aa6a5f072b1b8c0b0520b32ad4ef4b45 ]
 
-As described in AM335x Errata Advisory 1.0.42, WKUP_DEBUGSS_CLKCTRL
-can't be disabled - the clock module will just be stuck in transitioning
-state forever, resulting in the following warning message after the wait
-loop times out:
+misc_open() may request module for miscdevice with dynamic minor, which
+is meaningless since:
 
-    l3-aon-clkctrl:0000:0: failed to disable
+- The dynamic minor allocated is unknown in advance without registering
+  miscdevice firstly.
+- Macro MODULE_ALIAS_MISCDEV() is not applicable for dynamic minor.
 
-Just add the clock to enable_init_clks, so no attempt is made to disable
-it.
+Fix by only requesting module for miscdevice with fixed minor.
 
-Signed-off-by: Matthias Schiffer <matthias.schiffer@tq-group.com>
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Acked-by: Kevin Hilman <khilman@baylibre.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Acked-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Signed-off-by: Zijun Hu <zijun.hu@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250714-rfc_miscdev-v6-6-2ed949665bde@oss.qualcomm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/ti/clk-33xx.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/char/misc.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/ti/clk-33xx.c b/drivers/clk/ti/clk-33xx.c
-index 85c50ea39e6da..9269e6a0db6a4 100644
---- a/drivers/clk/ti/clk-33xx.c
-+++ b/drivers/clk/ti/clk-33xx.c
-@@ -258,6 +258,8 @@ static const char *enable_init_clks[] = {
- 	"dpll_ddr_m2_ck",
- 	"dpll_mpu_m2_ck",
- 	"l3_gclk",
-+	/* WKUP_DEBUGSS_CLKCTRL - disable fails, AM335x Errata Advisory 1.0.42 */
-+	"l3-aon-clkctrl:0000:0",
- 	/* AM3_L3_L3_MAIN_CLKCTRL, needed during suspend */
- 	"l3-clkctrl:00bc:0",
- 	"l4hs_gclk",
+diff --git a/drivers/char/misc.c b/drivers/char/misc.c
+index f6a147427029a..cbe86a1f2244b 100644
+--- a/drivers/char/misc.c
++++ b/drivers/char/misc.c
+@@ -113,7 +113,8 @@ static int misc_open(struct inode *inode, struct file *file)
+ 		}
+ 	}
+ 
+-	if (!new_fops) {
++	/* Only request module for fixed minor code */
++	if (!new_fops && minor < MISC_DYNAMIC_MINOR) {
+ 		mutex_unlock(&misc_mtx);
+ 		request_module("char-major-%d-%d", MISC_MAJOR, minor);
+ 		mutex_lock(&misc_mtx);
+@@ -124,10 +125,11 @@ static int misc_open(struct inode *inode, struct file *file)
+ 				break;
+ 			}
+ 		}
+-		if (!new_fops)
+-			goto fail;
+ 	}
+ 
++	if (!new_fops)
++		goto fail;
++
+ 	/*
+ 	 * Place the miscdevice in the file's
+ 	 * private_data so it can be used by the
 -- 
 2.51.0
 
