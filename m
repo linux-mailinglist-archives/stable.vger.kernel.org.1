@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51C06CA176B
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:49:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7B7DC9FAF1
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:52:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6A86B300252D
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:48:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ADA44301D596
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:45:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34EBE34A767;
-	Wed,  3 Dec 2025 16:14:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7566F30FC30;
+	Wed,  3 Dec 2025 15:45:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jd4zY8e9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LWp6NckA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA22034A3DA;
-	Wed,  3 Dec 2025 16:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3047330BB9B;
+	Wed,  3 Dec 2025 15:45:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778445; cv=none; b=e1cfWmHx2OxQqbttzbP23eib8LltorSdxCt0AuyweAFisc+IBQRGVhA8TncN0k0I6+bmfmK6ndTHbEkOMqVjlSNxpDOww/QBI5KUPTL+C9hzPoEnH/pJobpixYR9RTagqD3kUpqvDp3NVYDAdQpo6zbGR4j2eYUsVBUf+LY2BRc=
+	t=1764776701; cv=none; b=DMbPr22+Zh/Hx1bgGmj29e0jp1muFDg3z+7/R2NQ1tz07Pvp4csv6Aym8AfMTo03Tc6ci7zra4Q2sYx3Y51vQfjyEPA5UrTP1KOqawUKtYdyTS5EQrU+G5xSmOjIV6MOcH9rWZ4/H5MHwmmVqOUenAbhu3XVG8Uc/7y48XrWh3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778445; c=relaxed/simple;
-	bh=F6/YicAmkBpAsV7D2HGvM25gmpnvkhRMoNazlzBoDus=;
+	s=arc-20240116; t=1764776701; c=relaxed/simple;
+	bh=OvDW097t92DQ8FU+P3tFn4j19bP5aTck3+JZMD8EL2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hVvMLDqe0Bygelok0i8oXDi+mQapwALi47vGzxQSk0J8YwKTY4wrgZNEfF7rwDaGEQaJyvThqY/TcTE++IfKvBGT12z4M/e9ogIO9gk8Jvso5d+u1BUzG+MyaUpEEFYXXhB25LyM9v9WXAMKzUUUg7IqpJFGk0rVq5lME58pDyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jd4zY8e9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 420AAC4CEF5;
-	Wed,  3 Dec 2025 16:14:03 +0000 (UTC)
+	 MIME-Version; b=lFTNtwQ2Kaq4KuuQ2WhosE+bxdRGKZtdIZBf0DbGH64N9zvhiFstgsYm359L9g2zfR4ZaO1rTdGf1tkuoT1bO0C7mHarJdbchP8H5k6uVE0mDJJ3FG1vYIgMY727Pe6txjL3xsrdF/n0uXCGs1kxT3yxY1ViTYyR5pW25/IfsmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LWp6NckA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CA07C116B1;
+	Wed,  3 Dec 2025 15:44:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778444;
-	bh=F6/YicAmkBpAsV7D2HGvM25gmpnvkhRMoNazlzBoDus=;
+	s=korg; t=1764776701;
+	bh=OvDW097t92DQ8FU+P3tFn4j19bP5aTck3+JZMD8EL2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jd4zY8e9S/77Z74c9N55oybxz0LmxZf2ihT/7HIrfE/opcfw6nntzcGMTNq/HjV3o
-	 6Cr8FZAegNJT8G3pJqVNb7necRBvQinDWuH833pYOyYV5DMQZMZ29VwbG74PpxK+WQ
-	 REoKQlPHErRbdT8JI1uhUm6lCs41Kz3Jg7rbbwVA=
+	b=LWp6NckAoLqmTV6ZZxM7SmtrMxYxtbj0aCLVui7F9pqWbmq3BVChtwSt5v8WLe9ao
+	 5bbpreMXf4jo3J8dLV1Ifc+ruSyfO6A4Q6vDkVEM5uFgEFW+15D2h94dpaaXYyic7e
+	 8QZGYDji9YetcNwkR0yjjRv0vi/ZtjOGsctpnwdE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Omar Sandoval <osandov@fb.com>,
-	David Sterba <dsterba@suse.com>,
-	Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
-Subject: [PATCH 5.15 315/392] btrfs: fix crash on racing fsync and size-extending write into prealloc
+	Jiefeng Zhang <jiefeng.z.zhang@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 261/300] net: atlantic: fix fragment overflow handling in RX path
 Date: Wed,  3 Dec 2025 16:27:45 +0100
-Message-ID: <20251203152425.750570877@linuxfoundation.org>
+Message-ID: <20251203152410.306960598@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,224 +60,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Omar Sandoval <osandov@fb.com>
+From: Jiefeng Zhang <jiefeng.z.zhang@gmail.com>
 
-commit 9d274c19a71b3a276949933859610721a453946b upstream.
+[ Upstream commit 5ffcb7b890f61541201461580bb6622ace405aec ]
 
-We have been seeing crashes on duplicate keys in
-btrfs_set_item_key_safe():
+The atlantic driver can receive packets with more than MAX_SKB_FRAGS (17)
+fragments when handling large multi-descriptor packets. This causes an
+out-of-bounds write in skb_add_rx_frag_netmem() leading to kernel panic.
 
-  BTRFS critical (device vdb): slot 4 key (450 108 8192) new key (450 108 8192)
-  ------------[ cut here ]------------
-  kernel BUG at fs/btrfs/ctree.c:2620!
-  invalid opcode: 0000 [#1] PREEMPT SMP PTI
-  CPU: 0 PID: 3139 Comm: xfs_io Kdump: loaded Not tainted 6.9.0 #6
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-2.fc40 04/01/2014
-  RIP: 0010:btrfs_set_item_key_safe+0x11f/0x290 [btrfs]
+The issue occurs because the driver doesn't check the total number of
+fragments before calling skb_add_rx_frag(). When a packet requires more
+than MAX_SKB_FRAGS fragments, the fragment index exceeds the array bounds.
 
-With the following stack trace:
+Fix by assuming there will be an extra frag if buff->len > AQ_CFG_RX_HDR_SIZE,
+then all fragments are accounted for. And reusing the existing check to
+prevent the overflow earlier in the code path.
 
-  #0  btrfs_set_item_key_safe (fs/btrfs/ctree.c:2620:4)
-  #1  btrfs_drop_extents (fs/btrfs/file.c:411:4)
-  #2  log_one_extent (fs/btrfs/tree-log.c:4732:9)
-  #3  btrfs_log_changed_extents (fs/btrfs/tree-log.c:4955:9)
-  #4  btrfs_log_inode (fs/btrfs/tree-log.c:6626:9)
-  #5  btrfs_log_inode_parent (fs/btrfs/tree-log.c:7070:8)
-  #6  btrfs_log_dentry_safe (fs/btrfs/tree-log.c:7171:8)
-  #7  btrfs_sync_file (fs/btrfs/file.c:1933:8)
-  #8  vfs_fsync_range (fs/sync.c:188:9)
-  #9  vfs_fsync (fs/sync.c:202:9)
-  #10 do_fsync (fs/sync.c:212:9)
-  #11 __do_sys_fdatasync (fs/sync.c:225:9)
-  #12 __se_sys_fdatasync (fs/sync.c:223:1)
-  #13 __x64_sys_fdatasync (fs/sync.c:223:1)
-  #14 do_syscall_x64 (arch/x86/entry/common.c:52:14)
-  #15 do_syscall_64 (arch/x86/entry/common.c:83:7)
-  #16 entry_SYSCALL_64+0xaf/0x14c (arch/x86/entry/entry_64.S:121)
+This crash occurred in production with an Aquantia AQC113 10G NIC.
 
-So we're logging a changed extent from fsync, which is splitting an
-extent in the log tree. But this split part already exists in the tree,
-triggering the BUG().
+Stack trace from production environment:
+```
+RIP: 0010:skb_add_rx_frag_netmem+0x29/0xd0
+Code: 90 f3 0f 1e fa 0f 1f 44 00 00 48 89 f8 41 89
+ca 48 89 d7 48 63 ce 8b 90 c0 00 00 00 48 c1 e1 04 48 01 ca 48 03 90
+c8 00 00 00 <48> 89 7a 30 44 89 52 3c 44 89 42 38 40 f6 c7 01 75 74 48
+89 fa 83
+RSP: 0018:ffffa9bec02a8d50 EFLAGS: 00010287
+RAX: ffff925b22e80a00 RBX: ffff925ad38d2700 RCX:
+fffffffe0a0c8000
+RDX: ffff9258ea95bac0 RSI: ffff925ae0a0c800 RDI:
+0000000000037a40
+RBP: 0000000000000024 R08: 0000000000000000 R09:
+0000000000000021
+R10: 0000000000000848 R11: 0000000000000000 R12:
+ffffa9bec02a8e24
+R13: ffff925ad8615570 R14: 0000000000000000 R15:
+ffff925b22e80a00
+FS: 0000000000000000(0000)
+GS:ffff925e47880000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffff9258ea95baf0 CR3: 0000000166022004 CR4:
+0000000000f72ef0
+PKRU: 55555554
+Call Trace:
+<IRQ>
+aq_ring_rx_clean+0x175/0xe60 [atlantic]
+? aq_ring_rx_clean+0x14d/0xe60 [atlantic]
+? aq_ring_tx_clean+0xdf/0x190 [atlantic]
+? kmem_cache_free+0x348/0x450
+? aq_vec_poll+0x81/0x1d0 [atlantic]
+? __napi_poll+0x28/0x1c0
+? net_rx_action+0x337/0x420
+```
 
-This is the state of the log tree at the time of the crash, dumped with
-drgn (https://github.com/osandov/drgn/blob/main/contrib/btrfs_tree.py)
-to get more details than btrfs_print_leaf() gives us:
+Fixes: 6aecbba12b5c ("net: atlantic: add check for MAX_SKB_FRAGS")
+Changes in v4:
+- Add Fixes: tag to satisfy patch validation requirements.
 
-  >>> print_extent_buffer(prog.crashed_thread().stack_trace()[0]["eb"])
-  leaf 33439744 level 0 items 72 generation 9 owner 18446744073709551610
-  leaf 33439744 flags 0x100000000000000
-  fs uuid e5bd3946-400c-4223-8923-190ef1f18677
-  chunk uuid d58cb17e-6d02-494a-829a-18b7d8a399da
-          item 0 key (450 INODE_ITEM 0) itemoff 16123 itemsize 160
-                  generation 7 transid 9 size 8192 nbytes 8473563889606862198
-                  block group 0 mode 100600 links 1 uid 0 gid 0 rdev 0
-                  sequence 204 flags 0x10(PREALLOC)
-                  atime 1716417703.220000000 (2024-05-22 15:41:43)
-                  ctime 1716417704.983333333 (2024-05-22 15:41:44)
-                  mtime 1716417704.983333333 (2024-05-22 15:41:44)
-                  otime 17592186044416.000000000 (559444-03-08 01:40:16)
-          item 1 key (450 INODE_REF 256) itemoff 16110 itemsize 13
-                  index 195 namelen 3 name: 193
-          item 2 key (450 XATTR_ITEM 1640047104) itemoff 16073 itemsize 37
-                  location key (0 UNKNOWN.0 0) type XATTR
-                  transid 7 data_len 1 name_len 6
-                  name: user.a
-                  data a
-          item 3 key (450 EXTENT_DATA 0) itemoff 16020 itemsize 53
-                  generation 9 type 1 (regular)
-                  extent data disk byte 303144960 nr 12288
-                  extent data offset 0 nr 4096 ram 12288
-                  extent compression 0 (none)
-          item 4 key (450 EXTENT_DATA 4096) itemoff 15967 itemsize 53
-                  generation 9 type 2 (prealloc)
-                  prealloc data disk byte 303144960 nr 12288
-                  prealloc data offset 4096 nr 8192
-          item 5 key (450 EXTENT_DATA 8192) itemoff 15914 itemsize 53
-                  generation 9 type 2 (prealloc)
-                  prealloc data disk byte 303144960 nr 12288
-                  prealloc data offset 8192 nr 4096
-  ...
+Changes in v3:
+- Fix by assuming there will be an extra frag if buff->len > AQ_CFG_RX_HDR_SIZE,
+  then all fragments are accounted for.
 
-So the real problem happened earlier: notice that items 4 (4k-12k) and 5
-(8k-12k) overlap. Both are prealloc extents. Item 4 straddles i_size and
-item 5 starts at i_size.
-
-Here is the state of the filesystem tree at the time of the crash:
-
-  >>> root = prog.crashed_thread().stack_trace()[2]["inode"].root
-  >>> ret, nodes, slots = btrfs_search_slot(root, BtrfsKey(450, 0, 0))
-  >>> print_extent_buffer(nodes[0])
-  leaf 30425088 level 0 items 184 generation 9 owner 5
-  leaf 30425088 flags 0x100000000000000
-  fs uuid e5bd3946-400c-4223-8923-190ef1f18677
-  chunk uuid d58cb17e-6d02-494a-829a-18b7d8a399da
-  	...
-          item 179 key (450 INODE_ITEM 0) itemoff 4907 itemsize 160
-                  generation 7 transid 7 size 4096 nbytes 12288
-                  block group 0 mode 100600 links 1 uid 0 gid 0 rdev 0
-                  sequence 6 flags 0x10(PREALLOC)
-                  atime 1716417703.220000000 (2024-05-22 15:41:43)
-                  ctime 1716417703.220000000 (2024-05-22 15:41:43)
-                  mtime 1716417703.220000000 (2024-05-22 15:41:43)
-                  otime 1716417703.220000000 (2024-05-22 15:41:43)
-          item 180 key (450 INODE_REF 256) itemoff 4894 itemsize 13
-                  index 195 namelen 3 name: 193
-          item 181 key (450 XATTR_ITEM 1640047104) itemoff 4857 itemsize 37
-                  location key (0 UNKNOWN.0 0) type XATTR
-                  transid 7 data_len 1 name_len 6
-                  name: user.a
-                  data a
-          item 182 key (450 EXTENT_DATA 0) itemoff 4804 itemsize 53
-                  generation 9 type 1 (regular)
-                  extent data disk byte 303144960 nr 12288
-                  extent data offset 0 nr 8192 ram 12288
-                  extent compression 0 (none)
-          item 183 key (450 EXTENT_DATA 8192) itemoff 4751 itemsize 53
-                  generation 9 type 2 (prealloc)
-                  prealloc data disk byte 303144960 nr 12288
-                  prealloc data offset 8192 nr 4096
-
-Item 5 in the log tree corresponds to item 183 in the filesystem tree,
-but nothing matches item 4. Furthermore, item 183 is the last item in
-the leaf.
-
-btrfs_log_prealloc_extents() is responsible for logging prealloc extents
-beyond i_size. It first truncates any previously logged prealloc extents
-that start beyond i_size. Then, it walks the filesystem tree and copies
-the prealloc extent items to the log tree.
-
-If it hits the end of a leaf, then it calls btrfs_next_leaf(), which
-unlocks the tree and does another search. However, while the filesystem
-tree is unlocked, an ordered extent completion may modify the tree. In
-particular, it may insert an extent item that overlaps with an extent
-item that was already copied to the log tree.
-
-This may manifest in several ways depending on the exact scenario,
-including an EEXIST error that is silently translated to a full sync,
-overlapping items in the log tree, or this crash. This particular crash
-is triggered by the following sequence of events:
-
-- Initially, the file has i_size=4k, a regular extent from 0-4k, and a
-  prealloc extent beyond i_size from 4k-12k. The prealloc extent item is
-  the last item in its B-tree leaf.
-- The file is fsync'd, which copies its inode item and both extent items
-  to the log tree.
-- An xattr is set on the file, which sets the
-  BTRFS_INODE_COPY_EVERYTHING flag.
-- The range 4k-8k in the file is written using direct I/O. i_size is
-  extended to 8k, but the ordered extent is still in flight.
-- The file is fsync'd. Since BTRFS_INODE_COPY_EVERYTHING is set, this
-  calls copy_inode_items_to_log(), which calls
-  btrfs_log_prealloc_extents().
-- btrfs_log_prealloc_extents() finds the 4k-12k prealloc extent in the
-  filesystem tree. Since it starts before i_size, it skips it. Since it
-  is the last item in its B-tree leaf, it calls btrfs_next_leaf().
-- btrfs_next_leaf() unlocks the path.
-- The ordered extent completion runs, which converts the 4k-8k part of
-  the prealloc extent to written and inserts the remaining prealloc part
-  from 8k-12k.
-- btrfs_next_leaf() does a search and finds the new prealloc extent
-  8k-12k.
-- btrfs_log_prealloc_extents() copies the 8k-12k prealloc extent into
-  the log tree. Note that it overlaps with the 4k-12k prealloc extent
-  that was copied to the log tree by the first fsync.
-- fsync calls btrfs_log_changed_extents(), which tries to log the 4k-8k
-  extent that was written.
-- This tries to drop the range 4k-8k in the log tree, which requires
-  adjusting the start of the 4k-12k prealloc extent in the log tree to
-  8k.
-- btrfs_set_item_key_safe() sees that there is already an extent
-  starting at 8k in the log tree and calls BUG().
-
-Fix this by detecting when we're about to insert an overlapping file
-extent item in the log tree and truncating the part that would overlap.
-
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Omar Sandoval <osandov@fb.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jiefeng Zhang <jiefeng.z.zhang@gmail.com>
+Link: https://patch.msgid.link/20251126032249.69358-1-jiefeng.z.zhang@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/tree-log.c |   17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/aquantia/atlantic/aq_ring.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -4558,18 +4558,23 @@ static int btrfs_log_prealloc_extents(st
- 			path->slots[0]++;
- 			continue;
- 		}
--		if (!dropped_extents) {
--			/*
--			 * Avoid logging extent items logged in past fsync calls
--			 * and leading to duplicate keys in the log tree.
--			 */
-+		/*
-+		 * Avoid overlapping items in the log tree. The first time we
-+		 * get here, get rid of everything from a past fsync. After
-+		 * that, if the current extent starts before the end of the last
-+		 * extent we copied, truncate the last one. This can happen if
-+		 * an ordered extent completion modifies the subvolume tree
-+		 * while btrfs_next_leaf() has the tree unlocked.
-+		 */
-+		if (!dropped_extents || key.offset < truncate_offset) {
- 			ret = truncate_inode_items(trans, root->log_root, inode,
--						   truncate_offset,
-+						   min(key.offset, truncate_offset),
- 						   BTRFS_EXTENT_DATA_KEY);
- 			if (ret)
- 				goto out;
- 			dropped_extents = true;
- 		}
-+		truncate_offset = btrfs_file_extent_end(path);
- 		if (ins_nr == 0)
- 			start_slot = slot;
- 		ins_nr++;
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_ring.c b/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
+index 98e8997f80366..5a85999987b51 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
+@@ -363,6 +363,11 @@ int aq_ring_rx_clean(struct aq_ring_s *self,
+ 
+ 		if (!buff->is_eop) {
+ 			unsigned int frag_cnt = 0U;
++
++			/* There will be an extra fragment */
++			if (buff->len > AQ_CFG_RX_HDR_SIZE)
++				frag_cnt++;
++
+ 			buff_ = buff;
+ 			do {
+ 				bool is_rsc_completed = true;
+-- 
+2.51.0
+
 
 
 
