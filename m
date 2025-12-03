@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-199610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFC71CA01DC
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:49:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F708C9FC35
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:59:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B100430056C1
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:46:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2E80A300E7B5
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:54:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67EC8376BCD;
-	Wed,  3 Dec 2025 16:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 240033385B3;
+	Wed,  3 Dec 2025 15:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dyOW/IiD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="szrCfmvd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B055F36C0DF;
-	Wed,  3 Dec 2025 16:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F9E338586;
+	Wed,  3 Dec 2025 15:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780360; cv=none; b=JDf8Njf6nfD4jcbVM60ZRIJhUIMSwevVgV1kU3sNS/m6aULWw+mbmLchYV+kgJCChf9JYv9wTwxwB5cJcqWt1km0leJ6RpCXU+4lLVEvYgt7QeNqT+XsnVtAUdMClCMrL7hShCD3kf2AUQEuZLyqSeKOxOx+yUH4YLctGuDA6Lc=
+	t=1764777234; cv=none; b=SWmdgzAMBdrmkPiZ2E31kFB+ibP3ZxDXMB+IZdZC4WeXK68V+PkbS3UYVuTpcz+Whkkovml1qWhhWhaJPBwRasV3nDcnqI9IYlX5KH6SN9ONrFaaQFB0TUAZtgwoAxt6i6qLM880CEgCKTU61hpZjxlwXD1PtW6rlEjPMuUDNYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780360; c=relaxed/simple;
-	bh=KjgSRN8bVYPzcpZNJQ6Otd65ZyqbnEPY+0tOZPC1hqs=;
+	s=arc-20240116; t=1764777234; c=relaxed/simple;
+	bh=2MTQDVshKgY10qlFd/EGDTxILRBlkH0R/vv1DMiitBo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BGWBnOSa8j0wJ0za/fQNPsFZyahCWmGko2sCE+4npVNAwe1gmGMI8YHUV6+qQW8tZS+1v5oY+c7mpvKez+zYZLe63Qf/0bH1m200bL/vXm77oC8K3qsDqLy1JiKO0IYzfR6buvDkhB/htxwgcT7DQQRjgUiLt+XtUUIXXoVPPXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dyOW/IiD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A959CC116B1;
-	Wed,  3 Dec 2025 16:45:59 +0000 (UTC)
+	 MIME-Version; b=kduAPet05itMqVh+ZjXfPVbo3qmD3Wxyv++NVJ9fp4W37OUexa9sn58JBC8kIjBVtp/N0D7zeOSblc5NS0mpwianr0Q5e3UcaD+eH1TY8piL5FG2/kXgYKKlYkZYjacwZwa8vhIw/N9atcIEadVHkACh62i4DccwMhLqCMbEXyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=szrCfmvd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFFB1C4AF09;
+	Wed,  3 Dec 2025 15:53:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780360;
-	bh=KjgSRN8bVYPzcpZNJQ6Otd65ZyqbnEPY+0tOZPC1hqs=;
+	s=korg; t=1764777233;
+	bh=2MTQDVshKgY10qlFd/EGDTxILRBlkH0R/vv1DMiitBo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dyOW/IiDJGmaJK09LJ0/lspK39rO2kQYyNTirxjw8JkRdHvBdJKljKuntcW2FORoO
-	 bWlVvw7lFAbNrEiQsYUxBEum5rZ6fri1zvltRnkhwN/RWrlAsMAdObcm8LvGUQZvw9
-	 mvR93wkhNuQYSf/0xpk+3Hsod1qZo0Ac30dZrQ/Y=
+	b=szrCfmvdOys2krr4E3di6kxHX7T2n+voAj75SpBavPtgV/OVVWU9/x+ShVwPhpcVJ
+	 Vk4Um0jrL5YDVQDKClAq424VDXvmlBiGd1GozZoF7zaWIVBVwlGslgyZsMGgm4Yyd5
+	 0l065i0K5CbSw97s9BC15FPxIor9WziAmRgjMsio=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danielle Costantino <dcostantino@meta.com>,
-	Gal Pressman <gal@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 500/568] net/mlx5e: Fix validation logic in rate limiting
+	Oleksandr Suvorov <cryosay@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.17 124/146] USB: serial: ftdi_sio: add support for u-blox EVK-M101
 Date: Wed,  3 Dec 2025 16:28:22 +0100
-Message-ID: <20251203152459.027220079@linuxfoundation.org>
+Message-ID: <20251203152350.998914952@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +59,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danielle Costantino <dcostantino@meta.com>
+From: Oleksandr Suvorov <cryosay@gmail.com>
 
-[ Upstream commit d2099d9f16dbfa1c5266d4230ff7860047bb0b68 ]
+commit 2d8ab771d5316de64f3bb920b82575c58eb00b1b upstream.
 
-The rate limiting validation condition currently checks the output
-variable max_bw_value[i] instead of the input value
-maxrate->tc_maxrate[i]. This causes the validation to compare an
-uninitialized or stale value rather than the actual requested rate.
+The U-Blox EVK-M101 enumerates as 1546:0506 [1] with four FTDI interfaces:
+- EVK-M101 current sensors
+- EVK-M101 I2C
+- EVK-M101 UART
+- EVK-M101 port D
 
-The condition should check the input rate to properly validate against
-the upper limit:
+Only the third USB interface is a UART. This change lets ftdi_sio probe
+the VID/PID and registers only interface #3 as a TTY, leaving the rest
+available for other drivers.
 
-    } else if (maxrate->tc_maxrate[i] <= upper_limit_gbps) {
+[1]
+usb 5-1.3: new high-speed USB device number 11 using xhci_hcd
+usb 5-1.3: New USB device found, idVendor=1546, idProduct=0506, bcdDevice= 8.00
+usb 5-1.3: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+usb 5-1.3: Product: EVK-M101
+usb 5-1.3: Manufacturer: u-blox AG
 
-This aligns with the pattern used in the first branch, which correctly
-checks maxrate->tc_maxrate[i] against upper_limit_mbps.
+Datasheet: https://content.u-blox.com/sites/default/files/documents/EVK-M10_UserGuide_UBX-21003949.pdf
 
-The current implementation can lead to unreliable validation behavior:
-
-- For rates between 25.5 Gbps and 255 Gbps, if max_bw_value[i] is 0
-  from initialization, the GBPS path may be taken regardless of whether
-  the actual rate is within bounds
-
-- When processing multiple TCs (i > 0), max_bw_value[i] contains the
-  value computed for the previous TC, affecting the validation logic
-
-- The overflow check for rates exceeding 255 Gbps may not trigger
-  consistently depending on previous array values
-
-This patch ensures the validation correctly examines the requested rate
-value for proper bounds checking.
-
-Fixes: 43b27d1bd88a ("net/mlx5e: Fix wraparound in rate limiting for values above 255 Gbps")
-Signed-off-by: Danielle Costantino <dcostantino@meta.com>
-Reviewed-by: Gal Pressman <gal@nvidia.com>
-Link: https://patch.msgid.link/20251124180043.2314428-1-dcostantino@meta.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Oleksandr Suvorov <cryosay@gmail.com>
+Link: https://lore.kernel.org/20250926060235.3442748-1-cryosay@gmail.com/
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/serial/ftdi_sio.c     |    1 +
+ drivers/usb/serial/ftdi_sio_ids.h |    1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-index 29e633e6dd3f0..e29a8ed7e7ac1 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-@@ -619,7 +619,7 @@ static int mlx5e_dcbnl_ieee_setmaxrate(struct net_device *netdev,
- 						  MLX5E_100MB);
- 			max_bw_value[i] = max_bw_value[i] ? max_bw_value[i] : 1;
- 			max_bw_unit[i]  = MLX5_100_MBPS_UNIT;
--		} else if (max_bw_value[i] <= upper_limit_gbps) {
-+		} else if (maxrate->tc_maxrate[i] <= upper_limit_gbps) {
- 			max_bw_value[i] = div_u64(maxrate->tc_maxrate[i],
- 						  MLX5E_1GB);
- 			max_bw_unit[i]  = MLX5_GBPS_UNIT;
--- 
-2.51.0
-
+--- a/drivers/usb/serial/ftdi_sio.c
++++ b/drivers/usb/serial/ftdi_sio.c
+@@ -1074,6 +1074,7 @@ static const struct usb_device_id id_tab
+ 	/* U-Blox devices */
+ 	{ USB_DEVICE(UBLOX_VID, UBLOX_C099F9P_ZED_PID) },
+ 	{ USB_DEVICE(UBLOX_VID, UBLOX_C099F9P_ODIN_PID) },
++	{ USB_DEVICE_INTERFACE_NUMBER(UBLOX_VID, UBLOX_EVK_M101_PID, 2) },
+ 	/* FreeCalypso USB adapters */
+ 	{ USB_DEVICE(FTDI_VID, FTDI_FALCONIA_JTAG_BUF_PID),
+ 		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+--- a/drivers/usb/serial/ftdi_sio_ids.h
++++ b/drivers/usb/serial/ftdi_sio_ids.h
+@@ -1614,6 +1614,7 @@
+ #define UBLOX_VID			0x1546
+ #define UBLOX_C099F9P_ZED_PID		0x0502
+ #define UBLOX_C099F9P_ODIN_PID		0x0503
++#define UBLOX_EVK_M101_PID		0x0506
+ 
+ /*
+  * GMC devices
 
 
 
