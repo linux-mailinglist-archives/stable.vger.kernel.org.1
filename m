@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-198577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1980BC9FD49
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:09:28 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EAB8CA02AC
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:52:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2EA05300263E
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:58:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F31C63073E27
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:42:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B48B732C93A;
-	Wed,  3 Dec 2025 15:50:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3501335C18F;
+	Wed,  3 Dec 2025 16:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OA27BXtF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MAaBLspU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7020532C92E;
-	Wed,  3 Dec 2025 15:50:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD47835BDB4;
+	Wed,  3 Dec 2025 16:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777002; cv=none; b=GYbqBdPuUByQQBn/1gELfjyaF/3HQd2LukL0Qe/gVKFU76/sf/Qvv0BusV0tNAboJhY87SZmopZYDmp9MfGcFe0rWvWYteirQuNm/HNDunv4ZxUZl6SollwXgxNXBiE35yXykio5Ep4WDy1f1zadIXv4PnqlaQv6DpsgPeoRbek=
+	t=1764780123; cv=none; b=DQyJzpSEU0s6azjIo6kiGahOdt9Lr0p0KHAAvIQQazSGJxI5PrNMEO26JBtUr8U2RnpuaFIFL+hr2irff+ScOHmDbxBRgOthA1yXsAr66vyc0vasc66Tgt+EeGSCgwMTHm94RXIj3gxE7IVonmM7oxXNSJITS1VVjord8Dd2i5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777002; c=relaxed/simple;
-	bh=qUYJhZUTn0TS/gfg721Roo2MO1xzQS5W+DOa7yUMEKM=;
+	s=arc-20240116; t=1764780123; c=relaxed/simple;
+	bh=WhY7CBnZjYt09WFMw+lNzb0XTWJTaC+aKhXZKz0+XT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P4e9KMZMELOUXW5yw4YqyAywS0mIdoqRA3X7pHXu7GciaoldOsVpepYAtr9nvMW7mH19V2MuwBXyovAN+VDX4fhd+1tytUuODd+JE2M9IQRX6fjYAk6oqFv5bMIyl/5tQJjBuOGmX0bFGC4SQpXfL15Gv/KB7GG8WUnRCn7PxVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OA27BXtF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0BEDC4CEF5;
-	Wed,  3 Dec 2025 15:50:01 +0000 (UTC)
+	 MIME-Version; b=bG8/soy50Kt0Q5hMeh4Bwn3oVmgPyZloriU05ha+M2HcWbghTkeS8q+/V+30iPVKDJM+nEUBRlSghEL4hXlOKQp7pzIPDykw60GEr+rms7n2T7CjsX2cMYaPoxQRwcOMUBnMJc+JI1KM5FMTxZ4BHZdn/yi+hL1rgLOg/oBfwxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MAaBLspU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 217BAC4CEF5;
+	Wed,  3 Dec 2025 16:42:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777002;
-	bh=qUYJhZUTn0TS/gfg721Roo2MO1xzQS5W+DOa7yUMEKM=;
+	s=korg; t=1764780122;
+	bh=WhY7CBnZjYt09WFMw+lNzb0XTWJTaC+aKhXZKz0+XT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OA27BXtFtfeovM2roGR/KtEFY/KkqViB02hHC17ubifmXrKK8lA8IV5WcZbhnBf5r
-	 WJgCUcY6tRuogy4S+0O2OPlMMh0OpdePxIihtIm342QaJevG3h0LVxmNygv+/yADIH
-	 9NwnD88ympfuAzM8BwZXobhbB7QaUG2FYBLJXPqQ=
+	b=MAaBLspUjTQ+VLkvWCPvXjewzIUi21PxneBySmznnqgk+UW6jp7ZNSLm1XI3A9EdD
+	 aMES6rFnFnN1RAGRXzGD+lJUz8jv7DAYHDJDEPGA9qUJGNhYolLAXB29aT6f0DNScU
+	 3gmB9PlJXZDDgBN0XBC9837DbG0S5R+RcMqf5Qv8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Song Liu <song@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.17 053/146] Revert "perf/x86: Always store regs->ip in perf_callchain_kernel()"
-Date: Wed,  3 Dec 2025 16:27:11 +0100
-Message-ID: <20251203152348.413119701@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.1 430/568] mtdchar: fix integer overflow in read/write ioctls
+Date: Wed,  3 Dec 2025 16:27:12 +0100
+Message-ID: <20251203152456.443761474@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +59,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 6d08340d1e354787d6c65a8c3cdd4d41ffb8a5ed upstream.
+commit e4185bed738da755b191aa3f2e16e8b48450e1b8 upstream.
 
-This reverts commit 83f44ae0f8afcc9da659799db8693f74847e66b3.
+The "req.start" and "req.len" variables are u64 values that come from the
+user at the start of the function.  We mask away the high 32 bits of
+"req.len" so that's capped at U32_MAX but the "req.start" variable can go
+up to U64_MAX which means that the addition can still integer overflow.
 
-Currently we store initial stacktrace entry twice for non-HW ot_regs, which
-means callers that fail perf_hw_regs(regs) condition in perf_callchain_kernel.
+Use check_add_overflow() to fix this bug.
 
-It's easy to reproduce this bpftrace:
-
-  # bpftrace -e 'tracepoint:sched:sched_process_exec { print(kstack()); }'
-  Attaching 1 probe...
-
-        bprm_execve+1767
-        bprm_execve+1767
-        do_execveat_common.isra.0+425
-        __x64_sys_execve+56
-        do_syscall_64+133
-        entry_SYSCALL_64_after_hwframe+118
-
-When perf_callchain_kernel calls unwind_start with first_frame, AFAICS
-we do not skip regs->ip, but it's added as part of the unwind process.
-Hence reverting the extra perf_callchain_store for non-hw regs leg.
-
-I was not able to bisect this, so I'm not really sure why this was needed
-in v5.2 and why it's not working anymore, but I could see double entries
-as far as v5.10.
-
-I did the test for both ORC and framepointer unwind with and without the
-this fix and except for the initial entry the stacktraces are the same.
-
-Acked-by: Song Liu <song@kernel.org>
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/r/20251104215405.168643-2-jolsa@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 095bb6e44eb1 ("mtdchar: add MEMREAD ioctl")
+Fixes: 6420ac0af95d ("mtdchar: prevent unbounded allocation in MEMWRITE ioctl")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/core.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/mtd/mtdchar.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -2787,13 +2787,13 @@ perf_callchain_kernel(struct perf_callch
- 		return;
+--- a/drivers/mtd/mtdchar.c
++++ b/drivers/mtd/mtdchar.c
+@@ -599,6 +599,7 @@ mtdchar_write_ioctl(struct mtd_info *mtd
+ 	uint8_t *datbuf = NULL, *oobbuf = NULL;
+ 	size_t datbuf_len, oobbuf_len;
+ 	int ret = 0;
++	u64 end;
+ 
+ 	if (copy_from_user(&req, argp, sizeof(req)))
+ 		return -EFAULT;
+@@ -618,7 +619,7 @@ mtdchar_write_ioctl(struct mtd_info *mtd
+ 	req.len &= 0xffffffff;
+ 	req.ooblen &= 0xffffffff;
+ 
+-	if (req.start + req.len > mtd->size)
++	if (check_add_overflow(req.start, req.len, &end) || end > mtd->size)
+ 		return -EINVAL;
+ 
+ 	datbuf_len = min_t(size_t, req.len, mtd->erasesize);
+@@ -698,6 +699,7 @@ mtdchar_read_ioctl(struct mtd_info *mtd,
+ 	size_t datbuf_len, oobbuf_len;
+ 	size_t orig_len, orig_ooblen;
+ 	int ret = 0;
++	u64 end;
+ 
+ 	if (copy_from_user(&req, argp, sizeof(req)))
+ 		return -EFAULT;
+@@ -724,7 +726,7 @@ mtdchar_read_ioctl(struct mtd_info *mtd,
+ 	req.len &= 0xffffffff;
+ 	req.ooblen &= 0xffffffff;
+ 
+-	if (req.start + req.len > mtd->size) {
++	if (check_add_overflow(req.start, req.len, &end) || end > mtd->size) {
+ 		ret = -EINVAL;
+ 		goto out;
  	}
- 
--	if (perf_callchain_store(entry, regs->ip))
--		return;
--
--	if (perf_hw_regs(regs))
-+	if (perf_hw_regs(regs)) {
-+		if (perf_callchain_store(entry, regs->ip))
-+			return;
- 		unwind_start(&state, current, regs, NULL);
--	else
-+	} else {
- 		unwind_start(&state, current, NULL, (void *)regs->sp);
-+	}
- 
- 	for (; !unwind_done(&state); unwind_next_frame(&state)) {
- 		addr = unwind_get_return_address(&state);
 
 
 
