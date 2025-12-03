@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-199265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A074CA0691
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:25:17 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EAB6C9FBD2
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:57:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8173B32F26EA
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:09:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9C82D30012E7
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:57:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 970C935E54A;
-	Wed,  3 Dec 2025 16:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A279343D62;
+	Wed,  3 Dec 2025 15:57:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sQGTxv71"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YbAefqgX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C6C35E535;
-	Wed,  3 Dec 2025 16:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E84453431FD;
+	Wed,  3 Dec 2025 15:57:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779228; cv=none; b=jIi2iHuDUeh5gMTiA9/PGq6qwqLyQXZund2XWlvj4oOxr3bbwx8YJNQE4N/n58d/EDyCO4ihFZBqpHb3YPuAtgI0WFoQJGdnduRHC24mzNC71IY8BrUzmCG2wA4x7iozEbkzisHq09pZgq6V/8pzFSDJBnkUchjXmy1D/9cg6E0=
+	t=1764777467; cv=none; b=sG4MLEUEPhBTMn+0ISTOIo92epch+bDflyPATkVf+sXYcuXOFV3YG6elFIFRRTvwtJlSPWzapFam3bSkfHDRnCDeHvgr/PsdKwaG5281IpH5JmKy8J4GD+d/AwQy3v3ch0zOZWDQZcCuVf1cj3tYZ9HbNqeoWCyVMr5d4GV0NqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779228; c=relaxed/simple;
-	bh=99f3Ujs9UJkv1G2+3Gr8Jn0MFG7K3QEDdfuPCYojXy8=;
+	s=arc-20240116; t=1764777467; c=relaxed/simple;
+	bh=MLVJiyaABtRXa0HSLH62aNSk+WwCDERQZMTpbE269Rc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q7T7Voqtf9Xhkp0ZGg5V5vW/cnVRM2bNPSTB2ApdGDdSx9YF2MXEHgWA9utx2LVIlerMYj5RMBx+jZSdSj7nYthK5J1vCiPf0JehNo2fISNdXlFwWsexafhoApT7Y6HK7o0D1yMK3SoFqnI16sNG8A5B5kUc5db/mvV9Stfh76c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sQGTxv71; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 186B0C4CEF5;
-	Wed,  3 Dec 2025 16:27:05 +0000 (UTC)
+	 MIME-Version; b=aorTJ1lTaG5ry5VOIiXvLQSl3sEGHvT/R2n9Sbbcitq9MuhZYeFprXcuTOBLVYY+WcYPEZgGDfdhO1ZEsVejzgyjh6NnvCT+ait37jb6ASprrOIvKGiYKq81sNi6v3fE5WjZVGmDWgKZ/UY1njF44yTg7Gd8hPBkcwOls21BRj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YbAefqgX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EF47C4CEF5;
+	Wed,  3 Dec 2025 15:57:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779226;
-	bh=99f3Ujs9UJkv1G2+3Gr8Jn0MFG7K3QEDdfuPCYojXy8=;
+	s=korg; t=1764777466;
+	bh=MLVJiyaABtRXa0HSLH62aNSk+WwCDERQZMTpbE269Rc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sQGTxv71nH6qLRiY7E41mTmT4NY/1QJ/hY/t2iXVsA75vRpwZmPcLm3y6yiu9NSHt
-	 CJVtY1/lRcu8aBDrk0Ef/fe1Xu5D7Ji3FpIkfUV081pwT7mMk5LEMbi2VIkljD1+Ka
-	 sfUJ9+/b4F94nmz/L2eSl570I44tbdpjjVcXm7no=
+	b=YbAefqgXPLwxv2IvKfSpSzbYmd9/Vp/fEWPr29NUoLNT0hkgWiLwZUPwyU2QL0Kkc
+	 VDK/JlmANseedjO47lAQSFHuH72vemBtYaxlAG582fTVoowqVZbr0N3MhwIfDcmshj
+	 7vEQOYSqbXd/ZjZpnBWDDF641NqjK043WFqJ5v0Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 193/568] media: adv7180: Only validate format in querystd
-Date: Wed,  3 Dec 2025 16:23:15 +0100
-Message-ID: <20251203152447.794220142@linuxfoundation.org>
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	"H. Peter Anvin (Intel)" <hpa@zytor.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 5.15 046/392] x86/boot: Compile boot code with -std=gnu11 too
+Date: Wed,  3 Dec 2025 16:23:16 +0100
+Message-ID: <20251203152415.803979516@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,90 +62,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+From: Alexey Dobriyan <adobriyan@gmail.com>
 
-[ Upstream commit 91c5d7c849273d14bc4bae1b92666bdb5409294a ]
+commit b3bee1e7c3f2b1b77182302c7b2131c804175870 upstream.
 
-The .querystd callback should not program the device with the detected
-standard, it should only report the standard to user-space. User-space
-may then use .s_std to set the standard, if it wants to use it.
+Use -std=gnu11 for consistency with main kernel code.
 
-All that is required of .querystd is to setup the auto detection of
-standards and report its findings.
+It doesn't seem to change anything in vmlinux.
 
-While at it add some documentation on why this can't happen while
-streaming and improve the error handling using a scoped guard.
+Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+Link: https://lore.kernel.org/r/2058761e-12a4-4b2f-9690-3c3c1c9902a5@p183
+[ This kernel version doesn't build with GCC 15:
+    In file included from include/uapi/linux/posix_types.h:5,
+                     from include/uapi/linux/types.h:14,
+                     from include/linux/types.h:6,
+                     from arch/x86/realmode/rm/wakeup.h:11,
+                     from arch/x86/realmode/rm/wakemain.c:2:
+    include/linux/stddef.h:11:9: error: cannot use keyword 'false' as enumeration constant
+       11 |         false   = 0,
+          |         ^~~~~
+    include/linux/stddef.h:11:9: note: 'false' is a keyword with '-std=c23' onwards
+    include/linux/types.h:30:33: error: 'bool' cannot be defined via 'typedef'
+       30 | typedef _Bool                   bool;
+          |                                 ^~~~
+    include/linux/types.h:30:33: note: 'bool' is a keyword with '-std=c23' onwards
+    include/linux/types.h:30:1: warning: useless type name in empty declaration
+       30 | typedef _Bool                   bool;
+          | ^~~~~~~
 
-Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  The fix is similar to commit ee2ab467bddf ("x86/boot: Use '-std=gnu11'
+  to fix build with GCC 15") which has been backported to this kernel.
+
+  Note: In < 5.18 version, -std=gnu89 is used instead of -std=gnu11, see
+  commit e8c07082a810 ("Kbuild: move to -std=gnu11"). I suggest not to
+  modify that in this commit here as all the other similar fixes to
+  support GCC 15 set -std=gnu11. This can be done in a dedicated commit
+  if needed. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/adv7180.c | 37 ++++++++++++++++---------------------
- 1 file changed, 16 insertions(+), 21 deletions(-)
+ arch/x86/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/i2c/adv7180.c b/drivers/media/i2c/adv7180.c
-index 74356ea06deee..5d10edcfcc3b5 100644
---- a/drivers/media/i2c/adv7180.c
-+++ b/drivers/media/i2c/adv7180.c
-@@ -356,32 +356,27 @@ static inline struct adv7180_state *to_state(struct v4l2_subdev *sd)
- static int adv7180_querystd(struct v4l2_subdev *sd, v4l2_std_id *std)
- {
- 	struct adv7180_state *state = to_state(sd);
--	int err = mutex_lock_interruptible(&state->mutex);
--	if (err)
--		return err;
--
--	if (state->streaming) {
--		err = -EBUSY;
--		goto unlock;
--	}
-+	int ret;
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -24,7 +24,7 @@ endif
  
--	err = adv7180_set_video_standard(state,
--			ADV7180_STD_AD_PAL_BG_NTSC_J_SECAM);
--	if (err)
--		goto unlock;
-+	guard(mutex)(&state->mutex);
- 
--	msleep(100);
--	__adv7180_status(state, NULL, std);
-+	/*
-+	 * We can't sample the standard if the device is streaming as that would
-+	 * interfere with the capture session as the VID_SEL reg is touched.
-+	 */
-+	if (state->streaming)
-+		return -EBUSY;
- 
--	err = v4l2_std_to_adv7180(state->curr_norm);
--	if (err < 0)
--		goto unlock;
-+	/* Set the standard to autodetect PAL B/G/H/I/D, NTSC J or SECAM */
-+	ret = adv7180_set_video_standard(state,
-+					 ADV7180_STD_AD_PAL_BG_NTSC_J_SECAM);
-+	if (ret)
-+		return ret;
- 
--	err = adv7180_set_video_standard(state, err);
-+	/* Allow some time for the autodetection to run. */
-+	msleep(100);
- 
--unlock:
--	mutex_unlock(&state->mutex);
--	return err;
-+	return __adv7180_status(state, NULL, std);
- }
- 
- static int adv7180_s_routing(struct v4l2_subdev *sd, u32 input,
--- 
-2.51.0
-
+ # How to compile the 16-bit code.  Note we always compile for -march=i386;
+ # that way we can complain to the user if the CPU is insufficient.
+-REALMODE_CFLAGS	:= -m16 -g -Os -DDISABLE_BRANCH_PROFILING -D__DISABLE_EXPORTS \
++REALMODE_CFLAGS	:= -std=gnu11 -m16 -g -Os -DDISABLE_BRANCH_PROFILING -D__DISABLE_EXPORTS \
+ 		   -Wall -Wstrict-prototypes -march=i386 -mregparm=3 \
+ 		   -fno-strict-aliasing -fomit-frame-pointer -fno-pic \
+ 		   -mno-mmx -mno-sse $(call cc-option,-fcf-protection=none)
 
 
 
