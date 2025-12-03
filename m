@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-199359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 587C2CA000C
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:37:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D99DCA069B
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:25:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7AB303042198
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:32:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A434E3134049
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:09:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 133363A1CE0;
-	Wed,  3 Dec 2025 16:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95938349B03;
+	Wed,  3 Dec 2025 16:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PJ7oqxsl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DIumkuPJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0102393DFD;
-	Wed,  3 Dec 2025 16:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51F2E349AFE;
+	Wed,  3 Dec 2025 16:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779536; cv=none; b=rTSzoQMHhldu9Mc3D6/By/3oAhiMFYaJP9wAOwOJOBZV0Q+bPWCpSG1Djkp9EQih1VMyJVnCwTYMu+IPQz2e2FMD4mA5FWM2zhIV7YhN5zUmwq/GgLvDguBWmlTGRXrYu7QSf4JbTZkpfjXl2z6YklcFNmVNnOXElvM571Kg7tk=
+	t=1764777650; cv=none; b=GsWEBpXy8lzXHYxsQ1rSAxIJQjUoG2KlhtBcrMXa6r4SXsqmrDWL6PGqQdGoGfopVUJIvUGp6EtED7RnmQY7IZF9g4LHq0gCPw/w3VndM4rrMJAZVLUP4yKxx5jf+UhKHK9FIFZGWvqbiGHAyLa8uIXRGGzRHYTfoqjmlRVowiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779536; c=relaxed/simple;
-	bh=JMpPyGLHjURfT44ZFMZW+DbUoy6OXSHDCfs7XeD+ov0=;
+	s=arc-20240116; t=1764777650; c=relaxed/simple;
+	bh=pJEqITZGeDsJBtPbNfGs8XhRL5ZYK5Yd3s1ItrgeYJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WbDX1zQNL+N1797IXBf4gXcJzLTt17UOCMn/Bo81+OjtgJuFMNt6gwXk99vxNAxxF3uzXFxR9qhpCkaHzsgd5fWaa54ZsLo6SZw1CLpVIcvZbVmJAdSGkt204MPmnVt8RvG6vw6ExOqLBf0ZFzYFcm6LnboRq6nsM5LHYatFppk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PJ7oqxsl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDEF8C4CEF5;
-	Wed,  3 Dec 2025 16:32:15 +0000 (UTC)
+	 MIME-Version; b=F3EAUfbpfdL/d9w8BgDZc2a6wfic5xWURA41Rp/1rkIA+rTc+YBrc2IABVtN122HQN+oPXQTxa5Q/elfWHxFeO4ojYGEIH4b0xTYXMhwb1XEkqUD8vG6IaAmtHJO7TyzxRilRKsFKB/onyJP/q+7gfnhsMloaaS76dVkTLGwiaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DIumkuPJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3003C4CEF5;
+	Wed,  3 Dec 2025 16:00:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779536;
-	bh=JMpPyGLHjURfT44ZFMZW+DbUoy6OXSHDCfs7XeD+ov0=;
+	s=korg; t=1764777650;
+	bh=pJEqITZGeDsJBtPbNfGs8XhRL5ZYK5Yd3s1ItrgeYJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PJ7oqxslJTmnLffjZQ6rNclWiVtu3UIDSq+L1eMzIhjn6uFdbMkLX4vB/doSYfxQJ
-	 M5f2Ib5Bs++qUihHco7kmpHlDWbyYikOFJuLbQxGelUCoPxVKljmE6OgKD0N+cRlxM
-	 JDoMmSrCahbygjwPuTmN89N2WJ2G6hFgfCmZeIRY=
+	b=DIumkuPJ/897RmQIQ5qs/FwqWQfmTzhy8LAH1NFsH8s3Zgw4VK/siV18p7K9/Z0R+
+	 CjzzHha8N85TMoRR7XZGe9t3pG3PlRjTY8R+IhY2PH38MLIJi3SHtOJRf9Zaiil4O/
+	 dpkbrwjPX0A+x6HtX2aBfKUljh4/IWys35Y8t3fg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Wake Liu <wakel@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 244/568] wifi: ath10k: Fix connection after GTK rekeying
+Subject: [PATCH 5.15 096/392] selftests/net: Ensure assert() triggers in psock_tpacket.c
 Date: Wed,  3 Dec 2025 16:24:06 +0100
-Message-ID: <20251203152449.655084933@linuxfoundation.org>
+Message-ID: <20251203152417.634809234@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Loic Poulain <loic.poulain@oss.qualcomm.com>
+From: Wake Liu <wakel@google.com>
 
-[ Upstream commit 487e8a8c3421df0af3707e54c7e069f1d89cbda7 ]
+[ Upstream commit bc4c0a48bdad7f225740b8e750fdc1da6d85e1eb ]
 
-It appears that not all hardware/firmware implementations support
-group key deletion correctly, which can lead to connection hangs
-and deauthentication following GTK rekeying (delete and install).
+The get_next_frame() function in psock_tpacket.c was missing a return
+statement in its default switch case, leading to a compiler warning.
 
-To avoid this issue, instead of attempting to delete the key using
-the special WMI_CIPHER_NONE value, we now replace the key with an
-invalid (random) value.
+This was caused by a `bug_on(1)` call, which is defined as an
+`assert()`, being compiled out because NDEBUG is defined during the
+build.
 
-This behavior has been observed with WCN39xx chipsets.
+Instead of adding a `return NULL;` which would silently hide the error
+and could lead to crashes later, this change restores the original
+author's intent. By adding `#undef NDEBUG` before including <assert.h>,
+we ensure the assertion is active and will cause the test to abort if
+this unreachable code is ever executed.
 
-Tested-on: WCN3990 hw1.0 WLAN.HL.3.3.7.c2-00931-QCAHLSWMTPLZ-1
-Reported-by: Alexey Klimov <alexey.klimov@linaro.org>
-Closes: https://lore.kernel.org/all/DAWJQ2NIKY28.1XOG35E4A682G@linaro.org
-Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Tested-by: Alexey Klimov <alexey.klimov@linaro.org> # QRB2210 RB1
-Link: https://patch.msgid.link/20250902143225.837487-1-loic.poulain@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Wake Liu <wakel@google.com>
+Link: https://patch.msgid.link/20250809062013.2407822-1-wakel@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/mac.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ tools/testing/selftests/net/psock_tpacket.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index 184c722255c65..0c37b18e2ecfc 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -13,6 +13,7 @@
- #include <linux/acpi.h>
- #include <linux/of.h>
- #include <linux/bitfield.h>
-+#include <linux/random.h>
+diff --git a/tools/testing/selftests/net/psock_tpacket.c b/tools/testing/selftests/net/psock_tpacket.c
+index 93092d13b3c59..ca0d9a5a9e08c 100644
+--- a/tools/testing/selftests/net/psock_tpacket.c
++++ b/tools/testing/selftests/net/psock_tpacket.c
+@@ -22,6 +22,7 @@
+  *   - TPACKET_V3: RX_RING
+  */
  
- #include "hif.h"
- #include "core.h"
-@@ -286,8 +287,15 @@ static int ath10k_send_key(struct ath10k_vif *arvif,
- 		key->flags |= IEEE80211_KEY_FLAG_GENERATE_IV;
- 
- 	if (cmd == DISABLE_KEY) {
--		arg.key_cipher = ar->wmi_key_cipher[WMI_CIPHER_NONE];
--		arg.key_data = NULL;
-+		if (flags & WMI_KEY_GROUP) {
-+			/* Not all hardware handles group-key deletion operation
-+			 * correctly. Replace the key with a junk value to invalidate it.
-+			 */
-+			get_random_bytes(key->key, key->keylen);
-+		} else {
-+			arg.key_cipher = ar->wmi_key_cipher[WMI_CIPHER_NONE];
-+			arg.key_data = NULL;
-+		}
- 	}
- 
- 	return ath10k_wmi_vdev_install_key(arvif->ar, &arg);
++#undef NDEBUG
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <sys/types.h>
 -- 
 2.51.0
 
