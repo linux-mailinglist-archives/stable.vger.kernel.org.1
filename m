@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-198720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EAB6C9FBD2
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:57:50 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FBD2CA0113
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:44:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9C82D30012E7
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:57:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 68EFC3045144
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:38:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A279343D62;
-	Wed,  3 Dec 2025 15:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA31D35E54C;
+	Wed,  3 Dec 2025 16:27:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YbAefqgX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rgNbcW5X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E84453431FD;
-	Wed,  3 Dec 2025 15:57:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76A5B35E533;
+	Wed,  3 Dec 2025 16:27:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777467; cv=none; b=sG4MLEUEPhBTMn+0ISTOIo92epch+bDflyPATkVf+sXYcuXOFV3YG6elFIFRRTvwtJlSPWzapFam3bSkfHDRnCDeHvgr/PsdKwaG5281IpH5JmKy8J4GD+d/AwQy3v3ch0zOZWDQZcCuVf1cj3tYZ9HbNqeoWCyVMr5d4GV0NqQ=
+	t=1764779230; cv=none; b=MFcRzU82qEgPyueP1wmV+KrT9dLl03jSr258e0na23YFt7KLFJgOsuVyqym3FGXbv4bfi1oo4YyVshB+cv0+S+8xCi1HFrOmXKex8R8hqzeg55iCvO0zzAHPAcB8qezoUEc+dNA8fg11tYSRh5q6jg8xZxpQCNKeuEeRdgP1tog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777467; c=relaxed/simple;
-	bh=MLVJiyaABtRXa0HSLH62aNSk+WwCDERQZMTpbE269Rc=;
+	s=arc-20240116; t=1764779230; c=relaxed/simple;
+	bh=yczbnw6GLYbC44TmxzyGwMNp9Ki4slutU+7A+3XtSAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aorTJ1lTaG5ry5VOIiXvLQSl3sEGHvT/R2n9Sbbcitq9MuhZYeFprXcuTOBLVYY+WcYPEZgGDfdhO1ZEsVejzgyjh6NnvCT+ait37jb6ASprrOIvKGiYKq81sNi6v3fE5WjZVGmDWgKZ/UY1njF44yTg7Gd8hPBkcwOls21BRj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YbAefqgX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EF47C4CEF5;
-	Wed,  3 Dec 2025 15:57:45 +0000 (UTC)
+	 MIME-Version; b=Q+GITomD3amXSBa74ZIMg0Nvr7HgXWaVHWwK/GSO07pijDC9zSuC10Cae+v4pQ7Kprv2UBLxItvQPFpvDu6mncehl3SOOUb+Z0y2pjrd7+ihE00GyVQQQxe+pDOkaD4LH/pQI0pqJWbTyh/3afB+4p6+Xo+qbVlzvm29dv7HXQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rgNbcW5X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75054C4CEF5;
+	Wed,  3 Dec 2025 16:27:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777466;
-	bh=MLVJiyaABtRXa0HSLH62aNSk+WwCDERQZMTpbE269Rc=;
+	s=korg; t=1764779229;
+	bh=yczbnw6GLYbC44TmxzyGwMNp9Ki4slutU+7A+3XtSAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YbAefqgXPLwxv2IvKfSpSzbYmd9/Vp/fEWPr29NUoLNT0hkgWiLwZUPwyU2QL0Kkc
-	 VDK/JlmANseedjO47lAQSFHuH72vemBtYaxlAG582fTVoowqVZbr0N3MhwIfDcmshj
-	 7vEQOYSqbXd/ZjZpnBWDDF641NqjK043WFqJ5v0Y=
+	b=rgNbcW5X84qjIHf5j0fYI35Tnn6CsDgBdHC2v9k5GvUE+hZLyhxq5oAyQOPbz0jVp
+	 ShwyJW3B5SJRd5wtw25B790SBtfLlO8Ad/cm3UHTUHSk0vc+e3ZYvP4ICKm5BxjL4O
+	 kglpLGGeZUpJAebx2dNu7cuD944F6rV6PK7KnrFM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	"H. Peter Anvin (Intel)" <hpa@zytor.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 5.15 046/392] x86/boot: Compile boot code with -std=gnu11 too
+	Paul Kocialkowski <paulk@sys-base.io>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 194/568] media: verisilicon: Explicitly disable selection api ioctls for decoders
 Date: Wed,  3 Dec 2025 16:23:16 +0100
-Message-ID: <20251203152415.803979516@linuxfoundation.org>
+Message-ID: <20251203152447.831041006@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Dobriyan <adobriyan@gmail.com>
+From: Paul Kocialkowski <paulk@sys-base.io>
 
-commit b3bee1e7c3f2b1b77182302c7b2131c804175870 upstream.
+[ Upstream commit 73d50aa92f28ee8414fbfde011974fce970b82cc ]
 
-Use -std=gnu11 for consistency with main kernel code.
+Call the dedicated v4l2_disable_ioctl helper instead of manually
+checking whether the current context is an encoder for the selection
+api ioctls.
 
-It doesn't seem to change anything in vmlinux.
-
-Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: H. Peter Anvin (Intel) <hpa@zytor.com>
-Link: https://lore.kernel.org/r/2058761e-12a4-4b2f-9690-3c3c1c9902a5@p183
-[ This kernel version doesn't build with GCC 15:
-    In file included from include/uapi/linux/posix_types.h:5,
-                     from include/uapi/linux/types.h:14,
-                     from include/linux/types.h:6,
-                     from arch/x86/realmode/rm/wakeup.h:11,
-                     from arch/x86/realmode/rm/wakemain.c:2:
-    include/linux/stddef.h:11:9: error: cannot use keyword 'false' as enumeration constant
-       11 |         false   = 0,
-          |         ^~~~~
-    include/linux/stddef.h:11:9: note: 'false' is a keyword with '-std=c23' onwards
-    include/linux/types.h:30:33: error: 'bool' cannot be defined via 'typedef'
-       30 | typedef _Bool                   bool;
-          |                                 ^~~~
-    include/linux/types.h:30:33: note: 'bool' is a keyword with '-std=c23' onwards
-    include/linux/types.h:30:1: warning: useless type name in empty declaration
-       30 | typedef _Bool                   bool;
-          | ^~~~~~~
-
-  The fix is similar to commit ee2ab467bddf ("x86/boot: Use '-std=gnu11'
-  to fix build with GCC 15") which has been backported to this kernel.
-
-  Note: In < 5.18 version, -std=gnu89 is used instead of -std=gnu11, see
-  commit e8c07082a810 ("Kbuild: move to -std=gnu11"). I suggest not to
-  modify that in this commit here as all the other similar fixes to
-  support GCC 15 set -std=gnu11. This can be done in a dedicated commit
-  if needed. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Paul Kocialkowski <paulk@sys-base.io>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/verisilicon/hantro_drv.c  | 2 ++
+ drivers/media/platform/verisilicon/hantro_v4l2.c | 6 ++----
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/x86/Makefile
-+++ b/arch/x86/Makefile
-@@ -24,7 +24,7 @@ endif
+diff --git a/drivers/media/platform/verisilicon/hantro_drv.c b/drivers/media/platform/verisilicon/hantro_drv.c
+index 69a2442f31223..a35b6ae62d585 100644
+--- a/drivers/media/platform/verisilicon/hantro_drv.c
++++ b/drivers/media/platform/verisilicon/hantro_drv.c
+@@ -819,6 +819,8 @@ static int hantro_add_func(struct hantro_dev *vpu, unsigned int funcid)
+ 		vpu->decoder = func;
+ 		v4l2_disable_ioctl(vfd, VIDIOC_TRY_ENCODER_CMD);
+ 		v4l2_disable_ioctl(vfd, VIDIOC_ENCODER_CMD);
++		v4l2_disable_ioctl(vfd, VIDIOC_G_SELECTION);
++		v4l2_disable_ioctl(vfd, VIDIOC_S_SELECTION);
+ 	}
  
- # How to compile the 16-bit code.  Note we always compile for -march=i386;
- # that way we can complain to the user if the CPU is insufficient.
--REALMODE_CFLAGS	:= -m16 -g -Os -DDISABLE_BRANCH_PROFILING -D__DISABLE_EXPORTS \
-+REALMODE_CFLAGS	:= -std=gnu11 -m16 -g -Os -DDISABLE_BRANCH_PROFILING -D__DISABLE_EXPORTS \
- 		   -Wall -Wstrict-prototypes -march=i386 -mregparm=3 \
- 		   -fno-strict-aliasing -fomit-frame-pointer -fno-pic \
- 		   -mno-mmx -mno-sse $(call cc-option,-fcf-protection=none)
+ 	video_set_drvdata(vfd, vpu);
+diff --git a/drivers/media/platform/verisilicon/hantro_v4l2.c b/drivers/media/platform/verisilicon/hantro_v4l2.c
+index b2da48936e3f1..31ae6750321c4 100644
+--- a/drivers/media/platform/verisilicon/hantro_v4l2.c
++++ b/drivers/media/platform/verisilicon/hantro_v4l2.c
+@@ -629,8 +629,7 @@ static int vidioc_g_selection(struct file *file, void *priv,
+ 	struct hantro_ctx *ctx = fh_to_ctx(priv);
+ 
+ 	/* Crop only supported on source. */
+-	if (!ctx->is_encoder ||
+-	    sel->type != V4L2_BUF_TYPE_VIDEO_OUTPUT)
++	if (sel->type != V4L2_BUF_TYPE_VIDEO_OUTPUT)
+ 		return -EINVAL;
+ 
+ 	switch (sel->target) {
+@@ -662,8 +661,7 @@ static int vidioc_s_selection(struct file *file, void *priv,
+ 	struct vb2_queue *vq;
+ 
+ 	/* Crop only supported on source. */
+-	if (!ctx->is_encoder ||
+-	    sel->type != V4L2_BUF_TYPE_VIDEO_OUTPUT)
++	if (sel->type != V4L2_BUF_TYPE_VIDEO_OUTPUT)
+ 		return -EINVAL;
+ 
+ 	/* Change not allowed if the queue is streaming. */
+-- 
+2.51.0
+
 
 
 
