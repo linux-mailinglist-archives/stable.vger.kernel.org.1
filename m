@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 151D3CA02EC
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:53:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 180EECA08AE
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:39:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4A2AF30377A6
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:43:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 81709300FA37
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:38:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF41C3148CD;
-	Wed,  3 Dec 2025 16:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F34234403D;
+	Wed,  3 Dec 2025 16:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NpTtQg05"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="saTlTIdQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75BB030DEC4;
-	Wed,  3 Dec 2025 16:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019E034403A;
+	Wed,  3 Dec 2025 16:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779626; cv=none; b=JLbAFjfXdlZNDvfl2M1vcE4O9YNtLHoS6yUeyBhkLLRSB7WbwlIVVrp85k7Zj14ZmW4NJstK4R1bG6wh5GhpAUAMmTLr8Eo8fJM7LIPBY9at0z5MkniMU+9DpwZv+yLP0MEDLjR8HyQW7wcc3ZXF3mONP85TyIySD8vDI9Tssqo=
+	t=1764777850; cv=none; b=lsQW135QUrwNtw0fILX2Lpwwsgh7+OwruIcBjV4Xzqg/litI8Xf9aGw0cLQ31H8x+ZbLb2wCM7kqQfMd61GR8z+VnmwNiOylfl6ZKaE3kmw1gu51JMSBOhJ7JYoruEi052QW0g3EwDutkcGRLLqrKVsmvy8JpZERmYIWGCxBVbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779626; c=relaxed/simple;
-	bh=XxVmpzUlB5fuGervVhGyhoYF35grvSpY0Jx68Z/cfFQ=;
+	s=arc-20240116; t=1764777850; c=relaxed/simple;
+	bh=6JFvmtVkGEjjYfG2f/ZoUvREeYYnfCX8c4SrdeDrUEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mTyEsk7KCletexZrNPCtWTigd+abz3eEJyC9ulpiDc/qAe7IOMgUBFnva00AHJyKxLpKjn4pYNcxTaosCXpNJsPBgl8btfWukv0aobyJc0HiwDLGKYeDEF1nAFC4XWnKEyaKh6iLW/ujMwUU6JGKD6td9rbc7RMoI2cFTqz42vQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NpTtQg05; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D58C7C116B1;
-	Wed,  3 Dec 2025 16:33:45 +0000 (UTC)
+	 MIME-Version; b=NAiBToySQbCBqtdVXy3dWEd477OYfoR4Q2PeBC+QeA9Tqu2YlC/EvEryokAjG+39DMrp1uNG3AdCj/k//zLnmjKNQpHgXZ5ANythA1i98h4FbHMg59+nTDJcINXWToMUgFooHMn/jVtVuhGMwHRT1idsUVtuZL+Tt9GnVV2/dB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=saTlTIdQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65AA8C4CEF5;
+	Wed,  3 Dec 2025 16:04:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779626;
-	bh=XxVmpzUlB5fuGervVhGyhoYF35grvSpY0Jx68Z/cfFQ=;
+	s=korg; t=1764777849;
+	bh=6JFvmtVkGEjjYfG2f/ZoUvREeYYnfCX8c4SrdeDrUEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NpTtQg05jEzhhvmVfXokV6IHmQpRcpkEFb4ddQNXmBTsSbDHgKFq24e5XJQzH/fR8
-	 Th15FPGqeQbb2RLOKn5Grhp+yFSeBL/rg79+lPF7JGjVg1uv9sUqwjHbD2ED0kKbJM
-	 8WMZD1r3y+xUpClV4ITiAVr5k4z3HsQ9USWHF6ks=
+	b=saTlTIdQJPFptHU1m4dSakSk8pqxLwlfcUQd5C3s5flEmlG9gV/0qmz+NZdpwhQcL
+	 3xDEqQ0P6y3PGSoKnJgBkMdzhmSUApSF9boJu+U1W809WdsIpFmD+BI1y6ufHk2JAI
+	 au1uZSXe6am8IBix696K+kTM6iIX8ZYTle/pEBUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+c4f3462d8b2ad7977bea@syzkaller.appspotmail.com,
+	Shaurya Rane <ssrane_b23@ee.vjti.ac.in>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 312/568] net: dsa: b53: fix resetting speed and pause on forced link
-Date: Wed,  3 Dec 2025 16:25:14 +0100
-Message-ID: <20251203152452.140905775@linuxfoundation.org>
+Subject: [PATCH 5.15 165/392] jfs: fix uninitialized waitqueue in transaction manager
+Date: Wed,  3 Dec 2025 16:25:15 +0100
+Message-ID: <20251203152420.150891955@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
 
-[ Upstream commit b6a8a5477fe9bd6be2b594a88f82f8bba41e6d54 ]
+[ Upstream commit 300b072df72694ea330c4c673c035253e07827b8 ]
 
-There is no guarantee that the port state override registers have their
-default values, as not all switches support being reset via register or
-have a reset GPIO.
+The transaction manager initialization in txInit() was not properly
+initializing TxBlock[0].waitor waitqueue, causing a crash when
+txEnd(0) is called on read-only filesystems.
 
-So when forcing port config, we need to make sure to clear all fields,
-which we currently do not do for the speed and flow control
-configuration. This can cause flow control stay enabled, or in the case
-of speed becoming an illegal value, e.g. configured for 1G (0x2), then
-setting 100M (0x1), results in 0x3 which is invalid.
+When a filesystem is mounted read-only, txBegin() returns tid=0 to
+indicate no transaction. However, txEnd(0) still gets called and
+tries to access TxBlock[0].waitor via tid_to_tblock(0), but this
+waitqueue was never initialized because the initialization loop
+started at index 1 instead of 0.
 
-For PORT_OVERRIDE_SPEED_2000M we need to make sure to only clear it on
-supported chips, as the bit can have different meanings on other chips,
-e.g. for BCM5389 this controls scanning PHYs for link/speed
-configuration.
+This causes a 'non-static key' lockdep warning and system crash:
+  INFO: trying to register non-static key in txEnd
 
-Fixes: 5e004460f874 ("net: dsa: b53: Add helper to set link parameters")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20251101132807.50419-2-jonas.gorski@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix by ensuring all transaction blocks including TxBlock[0] have
+their waitqueues properly initialized during txInit().
+
+Reported-by: syzbot+c4f3462d8b2ad7977bea@syzkaller.appspotmail.com
+
+Signed-off-by: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ fs/jfs/jfs_txnmgr.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index b0e283bc3efbc..d5a1d26e8e3de 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -1215,6 +1215,10 @@ static void b53_force_port_config(struct b53_device *dev, int port,
- 	else
- 		reg &= ~PORT_OVERRIDE_FULL_DUPLEX;
+diff --git a/fs/jfs/jfs_txnmgr.c b/fs/jfs/jfs_txnmgr.c
+index 3a547e0b934f2..d322a22477e49 100644
+--- a/fs/jfs/jfs_txnmgr.c
++++ b/fs/jfs/jfs_txnmgr.c
+@@ -272,14 +272,15 @@ int txInit(void)
+ 	if (TxBlock == NULL)
+ 		return -ENOMEM;
  
-+	reg &= ~(0x3 << GMII_PO_SPEED_S);
-+	if (is5301x(dev) || is58xx(dev))
-+		reg &= ~PORT_OVERRIDE_SPEED_2000M;
-+
- 	switch (speed) {
- 	case 2000:
- 		reg |= PORT_OVERRIDE_SPEED_2000M;
-@@ -1233,6 +1237,11 @@ static void b53_force_port_config(struct b53_device *dev, int port,
- 		return;
+-	for (k = 1; k < nTxBlock - 1; k++) {
+-		TxBlock[k].next = k + 1;
++	for (k = 0; k < nTxBlock; k++) {
+ 		init_waitqueue_head(&TxBlock[k].gcwait);
+ 		init_waitqueue_head(&TxBlock[k].waitor);
  	}
- 
-+	if (is5325(dev))
-+		reg &= ~PORT_OVERRIDE_LP_FLOW_25;
-+	else
-+		reg &= ~(PORT_OVERRIDE_RX_FLOW | PORT_OVERRIDE_TX_FLOW);
 +
- 	if (rx_pause) {
- 		if (is5325(dev))
- 			reg |= PORT_OVERRIDE_LP_FLOW_25;
++	for (k = 1; k < nTxBlock - 1; k++) {
++		TxBlock[k].next = k + 1;
++	}
+ 	TxBlock[k].next = 0;
+-	init_waitqueue_head(&TxBlock[k].gcwait);
+-	init_waitqueue_head(&TxBlock[k].waitor);
+ 
+ 	TxAnchor.freetid = 1;
+ 	init_waitqueue_head(&TxAnchor.freewait);
 -- 
 2.51.0
 
