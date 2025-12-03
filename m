@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7D4DCA1020
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:33:51 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99B22CA1468
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:08:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 99DDF3001BE3
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:33:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 982A930047B6
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:08:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF1FE36B059;
-	Wed,  3 Dec 2025 16:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17F2434C808;
+	Wed,  3 Dec 2025 16:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="naoxgZNp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gT9UpKwR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD3336B055;
-	Wed,  3 Dec 2025 16:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79CA34C137;
+	Wed,  3 Dec 2025 16:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779486; cv=none; b=auiSABhF5hCx0GnNmWgCfD3DCxwIFgRW76rKyKzQ8Jbu1yL47W+wZwPjRXceTV9OkqxfSiHf3JQXf/eUDV9vjZM7UdEyVyZgEp6eE0bx+7j499n1zns95NX/TUATqB5Qkfq+ZNIhGI3drHLduA8GynaI8wnuWc6YSSrkULT4/HM=
+	t=1764777714; cv=none; b=oJTebh5yCuIENzLupJaEwa1yL7rnPnvv5gyc3BomdOzw31XPXRi/UqdDXJgoThBTWa6XPQUFREc6kNaqvH0WD5bS6YQwK3fPw7JZZKnJJxQyOENl3NwWIAZYS0Wo7Mn3aRkRSF0N36mtUZ8JK1cW6/js/O9MmEw+5NxZj933Lrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779486; c=relaxed/simple;
-	bh=41qAnP7CPhwXwcOEqoG4PnhGFsp1y9XiX1XPgA+4o48=;
+	s=arc-20240116; t=1764777714; c=relaxed/simple;
+	bh=6mtGF67V1S0g/D8jXWuRGStYaAULneKRdT9vGdARZJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ub1o5jA2ipte5jdXwisr1eJw2bcHZWhIZk+bAgKa5/199Mxka1sd+Uqq5vdzjQvgNSaCszr7geM3PeAIG3xjwGX0dXYRRSjelgVQRuIZ3Aa4PgKrhvgc8uTFc6AxdYXqTDo6tHpzj83W2EfQdkO/oXRZmwtez3FR6oycDNP8yDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=naoxgZNp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 185DCC4CEF5;
-	Wed,  3 Dec 2025 16:31:25 +0000 (UTC)
+	 MIME-Version; b=tFsV8wdipMQ3PzxHmY52PT2gPX79Dp/NItb59/TrM27VckMamW9061sapQgYi8X+WdIG51Hk4f72Zxqr3soUNSaYyveGLA0RnMe5GgtpMKWb03z8VPsUBOM9vcfLFPolBzV5sxOkNZARSGEogBr+CDjyZLws5oDtZa4CIBQjb7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gT9UpKwR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55312C4CEF5;
+	Wed,  3 Dec 2025 16:01:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779486;
-	bh=41qAnP7CPhwXwcOEqoG4PnhGFsp1y9XiX1XPgA+4o48=;
+	s=korg; t=1764777714;
+	bh=6mtGF67V1S0g/D8jXWuRGStYaAULneKRdT9vGdARZJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=naoxgZNpajcSqQ8hT585eGPC8p0sTRPOqyk9hLScFm8yUD84Hsp8rKSe/GgC4x86V
-	 FMJLBpOkjbr2bLxu7IuKhkrYVcKv7Z0MNMLl8QmYLRtNuAJtNXqcXEV94ygi73qFpb
-	 HUCDrZEvLwdFywUWki9rRhSwxEFn9vOYx4vzogkE=
+	b=gT9UpKwRlrHudQirkCvFuvQUM/934UQ+h8WBFXqWc7uGaXWbRO0A4FiF7jze8HQTM
+	 OapKJ/FFmyq/tq3F7JkVkiSz+jlKCFgtBsDnaNV3fPAGlQTAPUpUAAAnbQ1RAGTgZ+
+	 pcM3U3BVM9vD1ZTcsodtZJHPiXT3TL4HKpwiNjhw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Riabchun <ferr.lambarginio@gmail.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Aleksander Jan Bajkowski <olek2@wp.pl>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 271/568] ftrace: Fix softlockup in ftrace_module_enable
+Subject: [PATCH 5.15 123/392] mips: lantiq: danube: add missing device_type in pci node
 Date: Wed,  3 Dec 2025 16:24:33 +0100
-Message-ID: <20251203152450.638283269@linuxfoundation.org>
+Message-ID: <20251203152418.619231452@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +60,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Riabchun <ferr.lambarginio@gmail.com>
+From: Aleksander Jan Bajkowski <olek2@wp.pl>
 
-[ Upstream commit 4099b98203d6b33d990586542fa5beee408032a3 ]
+[ Upstream commit d66949a1875352d2ddd52b144333288952a9e36f ]
 
-A soft lockup was observed when loading amdgpu module.
-If a module has a lot of tracable functions, multiple calls
-to kallsyms_lookup can spend too much time in RCU critical
-section and with disabled preemption, causing kernel panic.
-This is the same issue that was fixed in
-commit d0b24b4e91fc ("ftrace: Prevent RCU stall on PREEMPT_VOLUNTARY
-kernels") and commit 42ea22e754ba ("ftrace: Add cond_resched() to
-ftrace_graph_set_hash()").
+This fixes the following warning:
+arch/mips/boot/dts/lantiq/danube_easy50712.dtb: pci@e105400 (lantiq,pci-xway): 'device_type' is a required property
+	from schema $id: http://devicetree.org/schemas/pci/pci-bus-common.yaml#
 
-Fix it the same way by adding cond_resched() in ftrace_module_enable.
-
-Link: https://lore.kernel.org/aMQD9_lxYmphT-up@vova-pc
-Signed-off-by: Vladimir Riabchun <ferr.lambarginio@gmail.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ftrace.c | 2 ++
+ arch/mips/boot/dts/lantiq/danube.dtsi | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
-index cebed90b2e16f..a46e2f32ee5fc 100644
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -7065,6 +7065,8 @@ void ftrace_module_enable(struct module *mod)
- 		    !within_module_init(rec->ip, mod))
- 			break;
- 
-+		cond_resched();
+diff --git a/arch/mips/boot/dts/lantiq/danube.dtsi b/arch/mips/boot/dts/lantiq/danube.dtsi
+index ff6ff9568e1bc..1a5f4faa0831f 100644
+--- a/arch/mips/boot/dts/lantiq/danube.dtsi
++++ b/arch/mips/boot/dts/lantiq/danube.dtsi
+@@ -105,6 +105,8 @@
+ 				  0x1000000 0 0x00000000 0xae00000 0 0x200000>; /* io space */
+ 			reg = <0x7000000 0x8000		/* config space */
+ 				0xe105400 0x400>;	/* pci bridge */
 +
- 		/* Weak functions should still be ignored */
- 		if (!test_for_valid_rec(rec)) {
- 			/* Clear all other flags. Should not be enabled anyway */
++			device_type = "pci";
+ 		};
+ 	};
+ };
 -- 
 2.51.0
 
