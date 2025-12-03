@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B21CCA012E
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:44:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE47DCA0F3C
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:26:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AECAC300AC48
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:38:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A94DD347ABF9
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:24:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AE313559DC;
-	Wed,  3 Dec 2025 16:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 737863375CB;
+	Wed,  3 Dec 2025 15:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aA3Sk626"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ccQnD6va"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C663559D0;
-	Wed,  3 Dec 2025 16:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A8D6338597;
+	Wed,  3 Dec 2025 15:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779136; cv=none; b=q30Vszkd8G6I5aNHPFvl3pPFLocVilWI8CCUivC2B9Gwqxk1cHWPlgjztBmA9p1yQjGbfKqWJn0wmq4YH1/TGy1dm8/keHKZQotNazCbE1nc3rEOZpP9f6kFK89iJ5KtdC76Yl5eHBBKjzZZiN3229oDdvDN5ip7VB1RXV3inOU=
+	t=1764777371; cv=none; b=fgRY1/hZP7QsPF9greo9pQBcKb9aa8Ko+IrrWhz+RllInwowVbo3wbLnmjhYP7MkvieV7PjCKyyZvQd/UeobEK41T88K7xT46x7GUPeUxSuJBvqrBTvUZrO9K8V3STLO2pu3VpEkv8xV4kDZyY+HngeC1E+PtveOQBrR7JYLUgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779136; c=relaxed/simple;
-	bh=geNFQxD6hC24fuLSssbNcbPnnOa9jkqkO/3RpxHTFvA=;
+	s=arc-20240116; t=1764777371; c=relaxed/simple;
+	bh=jsx11yXBmPsIQUCh0CtIaT2KJp2yvrR4VXVSoumsmHI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RNM9wZ5yzA4BzK1GksSacO0GStYF8LMFrfMcsW6N75Es0Ix/klX3F2UuwnnmNQsWlpyunBothmPambPumvKxU16fzaTF1XiQRoTf7iLGau9djJSk68/mtUYjXXYYqUi7r2ueKxWWHcli9me4OZnJkE4yvuI7rAdGRepVuUKhpGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aA3Sk626; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 283C6C4CEF5;
-	Wed,  3 Dec 2025 16:25:34 +0000 (UTC)
+	 MIME-Version; b=dwbToVwh8+0jvCsk+uWowf3TS9nS+0p1YDiAAn0avbO1j+1Iv7mr3dSfSG1UwJpPnzR7PQIKp4pqvNW6Z8yZh256uet/3NibEgYJrmdlwcU2PaQSfIeC4ojeJ5f7NoBic5R30rzOJcDZ10lQaKBeMgXxIZC339jAoRHAiZ9ZGj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ccQnD6va; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDA12C4CEF5;
+	Wed,  3 Dec 2025 15:56:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779135;
-	bh=geNFQxD6hC24fuLSssbNcbPnnOa9jkqkO/3RpxHTFvA=;
+	s=korg; t=1764777370;
+	bh=jsx11yXBmPsIQUCh0CtIaT2KJp2yvrR4VXVSoumsmHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aA3Sk626ss4iK301kYHPctvk/uQtpMNoXwGfM2bopIVqEIOWEoKYkXVe+joa1ins+
-	 msLNDZBjnDIBz6MLq4Ai2LqvJCOV1xLdNUuev1/AYWMRdhPw9Bkwhb2/HKC3nG/WnY
-	 Ls+BQM+8jPNmee6E55pWdEw9oxreVV1r117X4aQM=
+	b=ccQnD6va3HtJCk6zQ30LxJqh4cEyzFZGzBT2nVxO6DIjEjWzLHaeFLb7tzFcQc313
+	 EjhtJn+wnyB95gsVz+b3i9oarfFyROy6B5LhpdSPx3+OF7MuhGg4UnZgF1Ot1uWDYZ
+	 cKmxJdtlggr96qiu/gFR7nySXoglNpxnrj+qZyS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sungho Kim <sungho.kim@furiosa.ai>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
+	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 165/568] PCI/P2PDMA: Fix incorrect pointer usage in devm_kfree() call
+Subject: [PATCH 5.15 017/392] drm/msm/a6xx: Fix GMU firmware parser
 Date: Wed,  3 Dec 2025 16:22:47 +0100
-Message-ID: <20251203152446.766192726@linuxfoundation.org>
+Message-ID: <20251203152414.737764728@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sungho Kim <sungho.kim@furiosa.ai>
+From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
 
-[ Upstream commit 6238784e502b6a9fbeb3a6b77284b29baa4135cc ]
+[ Upstream commit b4789aac9d3441d9f830f0a4022d8dc122d6cab3 ]
 
-The error handling path in pci_p2pdma_add_resource() contains a bug in its
-`pgmap_free` label.
+Current parser logic for GMU firmware assumes a dword aligned payload
+size for every block. This is not true for all GMU firmwares. So, fix
+this by using correct 'size' value in the calculation for the offset
+for the next block's header.
 
-Memory is allocated for the `p2p_pgmap` struct, and the pointer is stored
-in `p2p_pgmap`. However, the error path calls devm_kfree() with `pgmap`,
-which is a pointer to a member field within the `p2p_pgmap` struct, not the
-base pointer of the allocation.
-
-Correct the bug by passing the correct base pointer, `p2p_pgmap`, to
-devm_kfree().
-
-Signed-off-by: Sungho Kim <sungho.kim@furiosa.ai>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
-Link: https://patch.msgid.link/20250820105714.2939896-1-sungho.kim@furiosa.ai
+Fixes: c6ed04f856a4 ("drm/msm/a6xx: A640/A650 GMU firmware path")
+Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+Acked-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/674040/
+Message-ID: <20250911-assorted-sept-1-v2-2-a8bf1ee20792@oss.qualcomm.com>
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/p2pdma.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/msm/adreno/a6xx_gmu.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
-index 88dc66ee1c467..d5e38c6a812f0 100644
---- a/drivers/pci/p2pdma.c
-+++ b/drivers/pci/p2pdma.c
-@@ -225,7 +225,7 @@ int pci_p2pdma_add_resource(struct pci_dev *pdev, int bar, size_t size,
- pages_free:
- 	devm_memunmap_pages(&pdev->dev, pgmap);
- pgmap_free:
--	devm_kfree(&pdev->dev, pgmap);
-+	devm_kfree(&pdev->dev, p2p_pgmap);
- 	return error;
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+index 9215322fc915d..8fa2b9e051002 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+@@ -685,6 +685,9 @@ static bool fw_block_mem(struct a6xx_gmu_bo *bo, const struct block_header *blk)
+ 	return true;
  }
- EXPORT_SYMBOL_GPL(pci_p2pdma_add_resource);
+ 
++#define NEXT_BLK(blk) \
++	((const struct block_header *)((const char *)(blk) + sizeof(*(blk)) + (blk)->size))
++
+ static int a6xx_gmu_fw_load(struct a6xx_gmu *gmu)
+ {
+ 	struct a6xx_gpu *a6xx_gpu = container_of(gmu, struct a6xx_gpu, gmu);
+@@ -715,7 +718,7 @@ static int a6xx_gmu_fw_load(struct a6xx_gmu *gmu)
+ 
+ 	for (blk = (const struct block_header *) fw_image->data;
+ 	     (const u8*) blk < fw_image->data + fw_image->size;
+-	     blk = (const struct block_header *) &blk->data[blk->size >> 2]) {
++	     blk = NEXT_BLK(blk)) {
+ 		if (blk->size == 0)
+ 			continue;
+ 
 -- 
 2.51.0
 
