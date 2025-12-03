@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-198336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEAB2C9F95F
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:43:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC501C9FD76
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:13:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 59AFF3043F43
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:37:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AEE07303E01F
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:05:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A32F3093DF;
-	Wed,  3 Dec 2025 15:36:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D37B34F484;
+	Wed,  3 Dec 2025 16:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GJvNiHbx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EEvZwKMn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4BA312810;
-	Wed,  3 Dec 2025 15:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F0F34F494;
+	Wed,  3 Dec 2025 16:05:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776210; cv=none; b=trdtIpSQNxhdTk03lIQmVeOCUhRiL1nkrmMX8elL7l48DQQQZHW39YgDxKIJezOwj0qaA+UXHm+LkjIMhv4QwpKAStLv3mjGel7L3oyvai1Iqjf9FoJxr3MKQR5eAk5t12bdP6EQOzIZoKeSbfXtIx4VcLRDhBctgYsCjuTNKbU=
+	t=1764777910; cv=none; b=EpJ1yahzRwziesQPz5qGT9hZV0zeTZ5TLOZZehFOelbmb0kjIkXfWcaeptxMvKTyBnBZaiWbGifFAsgXTrECFK6dEHy6EqUEQJqH4B9twgQ7uRe8AZOPWpt7MeqkNUzqHpU7lmBP7CHIRT2p+py5boABj5ka1idQI0k15iPlMT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776210; c=relaxed/simple;
-	bh=CGbuOZaVa/D2I78xTLje7HoM+gAlZWcnIlYREnfm2ZE=;
+	s=arc-20240116; t=1764777910; c=relaxed/simple;
+	bh=RD1L+1qjiHajI4J2ehKhB8uJmiwTpEcX9Gzdkqayu+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I73+/iB3YxFYJa6bG1SaxOqXXnHvsNrk53k5g8kKXtu2YVDcSU97GN2TobBrYimFLZBOstXLVURuNOTwSYgX4kR7sj9r94NutN+doxQDOE9sUPoBqqFou18I6/LYC4OCi9r+lSC83IpbP5D3fiHW4FrGKRr+0X5HDfn9xmfncVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GJvNiHbx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23DFCC4CEF5;
-	Wed,  3 Dec 2025 15:36:48 +0000 (UTC)
+	 MIME-Version; b=QpoSm3Mr7XxEI7mYox6JTTUjwlrY5toTct0IOsvUbC5+b4GnTd33entF3Yt5IEI5Wf4otcMTjCbYg3EMZOGzB21sl92YYfdDTBsIA4svwhT/sn0P6ATFaz7Y3aNN35SGlngVpFEf65gGNw8XD0QC2twAlyCtiB6gB/aGFfAV4CE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EEvZwKMn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B177C4CEF5;
+	Wed,  3 Dec 2025 16:05:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776209;
-	bh=CGbuOZaVa/D2I78xTLje7HoM+gAlZWcnIlYREnfm2ZE=;
+	s=korg; t=1764777910;
+	bh=RD1L+1qjiHajI4J2ehKhB8uJmiwTpEcX9Gzdkqayu+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GJvNiHbxro65XSuViRn0JUXeiSalDbKgxh7PUSHoUI5KqhhEi0Az3rRY+nhUeFSRz
-	 d4wc9xTq/pFr0YYY+XTEt25HqeUaN6DyK8rf1Tak407v5oIkGl4cHUDwUdLmHupVWb
-	 KtiYIRumIqkLlfYuNQOkuj2kcqCyCmDin+pYntWg=
+	b=EEvZwKMnQulj20zyU0+lCG8KZbzUkGrhqK0F1TgLWK6UGl/nydr/txXLZfYRDXNwN
+	 gHy7s2HdcT8rAI3PFDYcyC7DgM5D8xRe6VLnBkhCuzpOWmYngA77npsgynqRiHD2j1
+	 lZhkInPaaMTMrOOwUc3SNiBXV6Wx5QCiRgdcSW/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li RongQing <lirongqing@baidu.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Wangyang Guo <wangyang.guo@intel.com>,
+	Alexey Klimov <alexey.klimov@linaro.org>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 114/300] x86/kvm: Prefer native qspinlock for dedicated vCPUs irrespective of PV_UNHALT
+Subject: [PATCH 5.15 168/392] wifi: ath10k: Fix connection after GTK rekeying
 Date: Wed,  3 Dec 2025 16:25:18 +0100
-Message-ID: <20251203152404.843911850@linuxfoundation.org>
+Message-ID: <20251203152420.260160044@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li RongQing <lirongqing@baidu.com>
+From: Loic Poulain <loic.poulain@oss.qualcomm.com>
 
-[ Upstream commit 960550503965094b0babd7e8c83ec66c8a763b0b ]
+[ Upstream commit 487e8a8c3421df0af3707e54c7e069f1d89cbda7 ]
 
-The commit b2798ba0b876 ("KVM: X86: Choose qspinlock when dedicated
-physical CPUs are available") states that when PV_DEDICATED=1
-(vCPU has dedicated pCPU), qspinlock should be preferred regardless of
-PV_UNHALT.  However, the current implementation doesn't reflect this: when
-PV_UNHALT=0, we still use virt_spin_lock() even with dedicated pCPUs.
+It appears that not all hardware/firmware implementations support
+group key deletion correctly, which can lead to connection hangs
+and deauthentication following GTK rekeying (delete and install).
 
-This is suboptimal because:
-1. Native qspinlocks should outperform virt_spin_lock() for dedicated
-   vCPUs irrespective of HALT exiting
-2. virt_spin_lock() should only be preferred when vCPUs may be preempted
-   (non-dedicated case)
+To avoid this issue, instead of attempting to delete the key using
+the special WMI_CIPHER_NONE value, we now replace the key with an
+invalid (random) value.
 
-So reorder the PV spinlock checks to:
-1. First handle dedicated pCPU case (disable virt_spin_lock_key)
-2. Second check single CPU, and nopvspin configuration
-3. Only then check PV_UNHALT support
+This behavior has been observed with WCN39xx chipsets.
 
-This ensures we always use native qspinlock for dedicated vCPUs, delivering
-pretty performance gains at high contention levels.
-
-Signed-off-by: Li RongQing <lirongqing@baidu.com>
-Reviewed-by: Sean Christopherson <seanjc@google.com>
-Tested-by: Wangyang Guo <wangyang.guo@intel.com>
-Link: https://lore.kernel.org/r/20250722110005.4988-1-lirongqing@baidu.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Tested-on: WCN3990 hw1.0 WLAN.HL.3.3.7.c2-00931-QCAHLSWMTPLZ-1
+Reported-by: Alexey Klimov <alexey.klimov@linaro.org>
+Closes: https://lore.kernel.org/all/DAWJQ2NIKY28.1XOG35E4A682G@linaro.org
+Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Tested-by: Alexey Klimov <alexey.klimov@linaro.org> # QRB2210 RB1
+Link: https://patch.msgid.link/20250902143225.837487-1-loic.poulain@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/kvm.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ drivers/net/wireless/ath/ath10k/mac.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
-index fe9babe94861f..d7d2eb79120d6 100644
---- a/arch/x86/kernel/kvm.c
-+++ b/arch/x86/kernel/kvm.c
-@@ -964,16 +964,6 @@ ASM_RET
-  */
- void __init kvm_spinlock_init(void)
- {
--	/*
--	 * In case host doesn't support KVM_FEATURE_PV_UNHALT there is still an
--	 * advantage of keeping virt_spin_lock_key enabled: virt_spin_lock() is
--	 * preferred over native qspinlock when vCPU is preempted.
--	 */
--	if (!kvm_para_has_feature(KVM_FEATURE_PV_UNHALT)) {
--		pr_info("PV spinlocks disabled, no host support\n");
--		return;
--	}
--
- 	/*
- 	 * Disable PV spinlocks and use native qspinlock when dedicated pCPUs
- 	 * are available.
-@@ -993,6 +983,16 @@ void __init kvm_spinlock_init(void)
- 		goto out;
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+index 2b4c694b0fbbe..d90909ffa6780 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -13,6 +13,7 @@
+ #include <linux/acpi.h>
+ #include <linux/of.h>
+ #include <linux/bitfield.h>
++#include <linux/random.h>
+ 
+ #include "hif.h"
+ #include "core.h"
+@@ -286,8 +287,15 @@ static int ath10k_send_key(struct ath10k_vif *arvif,
+ 		key->flags |= IEEE80211_KEY_FLAG_GENERATE_IV;
+ 
+ 	if (cmd == DISABLE_KEY) {
+-		arg.key_cipher = ar->wmi_key_cipher[WMI_CIPHER_NONE];
+-		arg.key_data = NULL;
++		if (flags & WMI_KEY_GROUP) {
++			/* Not all hardware handles group-key deletion operation
++			 * correctly. Replace the key with a junk value to invalidate it.
++			 */
++			get_random_bytes(key->key, key->keylen);
++		} else {
++			arg.key_cipher = ar->wmi_key_cipher[WMI_CIPHER_NONE];
++			arg.key_data = NULL;
++		}
  	}
  
-+	/*
-+	 * In case host doesn't support KVM_FEATURE_PV_UNHALT there is still an
-+	 * advantage of keeping virt_spin_lock_key enabled: virt_spin_lock() is
-+	 * preferred over native qspinlock when vCPU is preempted.
-+	 */
-+	if (!kvm_para_has_feature(KVM_FEATURE_PV_UNHALT)) {
-+		pr_info("PV spinlocks disabled, no host support\n");
-+		return;
-+	}
-+
- 	pr_info("PV spinlocks enabled\n");
- 
- 	__pv_init_lock_hash();
+ 	return ath10k_wmi_vdev_install_key(arvif->ar, &arg);
 -- 
 2.51.0
 
