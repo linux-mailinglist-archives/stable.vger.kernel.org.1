@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-199304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E77ECA17B6
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:53:05 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61D34C9F7D9
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:34:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E0929305D41F
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:48:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 41C633001518
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:34:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFED4345CC6;
-	Wed,  3 Dec 2025 16:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D16E430DECE;
+	Wed,  3 Dec 2025 15:34:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0HZrKyK9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nEDfYTPb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C54A345CB5;
-	Wed,  3 Dec 2025 16:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86C4430E839;
+	Wed,  3 Dec 2025 15:34:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779352; cv=none; b=uEG/gFcHkOwZWGYwBpRWTVUTaa12Xf3BLsj6mMO6KE3Zs5zfJixi+fvybSBYEaU4c5nErZZT4sve9Nmqds8H2g3OGfPKADF/R1OY41s+ZkQxqRVPyxQwVQZZDNqa/fKhinpFTod1k75YRf30iDC5yOCqBOXUpdIg3rOhJDHhifM=
+	t=1764776042; cv=none; b=DB/oxq856O0K/QAKZYWRwQaytHwlUAG17LUs6Jo++LDCGKgEu50lcv+A+JrWwv2xKEVbURhk3Qq64eZouWfyR2oKf02QcUXuJQsKEz1R+15XjhxPP/dk7LWUixLvmh/iLXscH7guBZT8+1VrOQe4IVAuqrnBzHjsIXNNGbC00F4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779352; c=relaxed/simple;
-	bh=W1UnaT3rHPX2XBd0lqeRtRpHO4o2nKZb2yOl6ply6Gw=;
+	s=arc-20240116; t=1764776042; c=relaxed/simple;
+	bh=40lIErxWgsRUkzyYuRNpWzlm3EkuNKHID/Efi/CN60I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sNDXqn+Sf0rJr+ph7QhILSbCwRMB5oRkOWqEbQTuqS/yGzop2bmQwAlRyRYb/tKZmhr4f40k4gYWnuT6ghbsSGAf36SgM1XhL1MFcCzCQnWWSUyRkqZkUt4Gs+YksdgjfrFSKVkfKhSC5j0CCSiOLiii7wKNEqncgCaLfAMwGq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0HZrKyK9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEC94C116C6;
-	Wed,  3 Dec 2025 16:29:11 +0000 (UTC)
+	 MIME-Version; b=B8KAig7CkxeNyRMZcvnAdphX6ptA+INTIgkes/ORQbcw44BsdMCSoBFeQPuGdRV9zUG4eb5j1hxM7K8keJhNCo1T6g0Pf7J4CHWeqxcZq7kOOp96ksIHbAduDqPQwL9E2uuwMQ1QmK+Z8s159e3z9dPj3tZLfaQeTkpjfFfO+Dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nEDfYTPb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5E03C4CEF5;
+	Wed,  3 Dec 2025 15:34:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779352;
-	bh=W1UnaT3rHPX2XBd0lqeRtRpHO4o2nKZb2yOl6ply6Gw=;
+	s=korg; t=1764776042;
+	bh=40lIErxWgsRUkzyYuRNpWzlm3EkuNKHID/Efi/CN60I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0HZrKyK9Li8ividpFyUU/PVdHaZyGNyMdCJdjWuRZMO3rKsQWPKvOPUmcLfhwESNP
-	 8Xq9vN/DX3wirA1rW2CqeywvPtE4NylWfIgeSuaBVrvX4LaNmoi2BNhD9mkm4NEVxh
-	 jLApCd6zlaFj6Q68/cAi0HW1MR3nZDF4iqOIr0NY=
+	b=nEDfYTPbOyYDfJZHBXS95DHHYjoSqAQII7HtZlTGx8JqxkFzMjr/2LFfLGP793jJe
+	 b/QLbuUUQ8w6h3dWzKYspU3PpggyCqzq2U7V1p8sW9yVjIidfopyFfPlOivR9/LB6E
+	 oUXpMq4b2az7FpQ3i+jnM1ED8j+7TSlRu1nXIFWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 232/568] scsi: lpfc: Check return status of lpfc_reset_flush_io_context during TGT_RESET
+Subject: [PATCH 5.10 030/300] serial: 8250_dw: Use devm_add_action_or_reset()
 Date: Wed,  3 Dec 2025 16:23:54 +0100
-Message-ID: <20251203152449.219971824@linuxfoundation.org>
+Message-ID: <20251203152401.577982174@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,70 +59,145 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit f408dde2468b3957e92b25e7438f74c8e9fb9e73 ]
+[ Upstream commit 295b09128d12fb1a7a67f771cc0ae0df869eafaf ]
 
-If lpfc_reset_flush_io_context fails to execute, then the wrong return
-status code may be passed back to upper layers when issuing a target
-reset TMF command.  Fix by checking the return status from
-lpfc_reset_flush_io_context() first in order to properly return FAILED
-or FAST_IO_FAIL.
+Slightly simplify ->probe() and drop a few goto labels by using
+devm_add_action_or_reset() for clock and reset cleanup.
 
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Message-ID: <20250915180811.137530-7-justintee8345@gmail.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20220509172129.37770-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: daeb4037adf7 ("serial: 8250_dw: handle reset control deassert error")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/lpfc/lpfc_scsi.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/tty/serial/8250/8250_dw.c |   63 ++++++++++++++++++--------------------
+ 1 file changed, 31 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_scsi.c b/drivers/scsi/lpfc/lpfc_scsi.c
-index 6d4777a5f3d42..d09a8d583ba3c 100644
---- a/drivers/scsi/lpfc/lpfc_scsi.c
-+++ b/drivers/scsi/lpfc/lpfc_scsi.c
-@@ -5928,7 +5928,7 @@ lpfc_chk_tgt_mapped(struct lpfc_vport *vport, struct fc_rport *rport)
- /**
-  * lpfc_reset_flush_io_context -
-  * @vport: The virtual port (scsi_host) for the flush context
-- * @tgt_id: If aborting by Target contect - specifies the target id
-+ * @tgt_id: If aborting by Target context - specifies the target id
-  * @lun_id: If aborting by Lun context - specifies the lun id
-  * @context: specifies the context level to flush at.
-  *
-@@ -6102,8 +6102,14 @@ lpfc_target_reset_handler(struct scsi_cmnd *cmnd)
- 			pnode->nlp_fcp_info &= ~NLP_FCP_2_DEVICE;
- 			spin_unlock_irqrestore(&pnode->lock, flags);
- 		}
--		lpfc_reset_flush_io_context(vport, tgt_id, lun_id,
--					  LPFC_CTX_TGT);
-+		status = lpfc_reset_flush_io_context(vport, tgt_id, lun_id,
-+						     LPFC_CTX_TGT);
-+		if (status != SUCCESS) {
-+			lpfc_printf_vlog(vport, KERN_ERR, LOG_FCP,
-+					 "0726 Target Reset flush status x%x\n",
-+					 status);
-+			return status;
-+		}
- 		return FAST_IO_FAIL;
+--- a/drivers/tty/serial/8250/8250_dw.c
++++ b/drivers/tty/serial/8250/8250_dw.c
+@@ -438,6 +438,16 @@ static void dw8250_quirks(struct uart_po
+ 	}
+ }
+ 
++static void dw8250_clk_disable_unprepare(void *data)
++{
++	clk_disable_unprepare(data);
++}
++
++static void dw8250_reset_control_assert(void *data)
++{
++	reset_control_assert(data);
++}
++
+ static int dw8250_probe(struct platform_device *pdev)
+ {
+ 	struct uart_8250_port uart = {}, *up = &uart;
+@@ -539,35 +549,43 @@ static int dw8250_probe(struct platform_
+ 	if (err)
+ 		dev_warn(dev, "could not enable optional baudclk: %d\n", err);
+ 
++	err = devm_add_action_or_reset(dev, dw8250_clk_disable_unprepare, data->clk);
++	if (err)
++		return err;
++
+ 	if (data->clk)
+ 		p->uartclk = clk_get_rate(data->clk);
+ 
+ 	/* If no clock rate is defined, fail. */
+ 	if (!p->uartclk) {
+ 		dev_err(dev, "clock rate not defined\n");
+-		err = -EINVAL;
+-		goto err_clk;
++		return -EINVAL;
  	}
  
-@@ -6199,7 +6205,7 @@ lpfc_host_reset_handler(struct scsi_cmnd *cmnd)
- 	int rc, ret = SUCCESS;
+ 	data->pclk = devm_clk_get_optional(dev, "apb_pclk");
+-	if (IS_ERR(data->pclk)) {
+-		err = PTR_ERR(data->pclk);
+-		goto err_clk;
+-	}
++	if (IS_ERR(data->pclk))
++		return PTR_ERR(data->pclk);
  
- 	lpfc_printf_vlog(vport, KERN_ERR, LOG_FCP,
--			 "3172 SCSI layer issued Host Reset Data:\n");
-+			 "3172 SCSI layer issued Host Reset\n");
+ 	err = clk_prepare_enable(data->pclk);
+ 	if (err) {
+ 		dev_err(dev, "could not enable apb_pclk\n");
+-		goto err_clk;
++		return err;
+ 	}
  
- 	lpfc_offline_prep(phba, LPFC_MBX_WAIT);
- 	lpfc_offline(phba);
--- 
-2.51.0
-
++	err = devm_add_action_or_reset(dev, dw8250_clk_disable_unprepare, data->pclk);
++	if (err)
++		return err;
++
+ 	data->rst = devm_reset_control_get_optional_exclusive(dev, NULL);
+-	if (IS_ERR(data->rst)) {
+-		err = PTR_ERR(data->rst);
+-		goto err_pclk;
+-	}
++	if (IS_ERR(data->rst))
++		return PTR_ERR(data->rst);
++
+ 	reset_control_deassert(data->rst);
+ 
++	err = devm_add_action_or_reset(dev, dw8250_reset_control_assert, data->rst);
++	if (err)
++		return err;
++
+ 	dw8250_quirks(p, data);
+ 
+ 	/* If the Busy Functionality is not implemented, don't handle it */
+@@ -585,10 +603,8 @@ static int dw8250_probe(struct platform_
+ 	}
+ 
+ 	data->data.line = serial8250_register_8250_port(up);
+-	if (data->data.line < 0) {
+-		err = data->data.line;
+-		goto err_reset;
+-	}
++	if (data->data.line < 0)
++		return data->data.line;
+ 
+ 	/*
+ 	 * Some platforms may provide a reference clock shared between several
+@@ -609,17 +625,6 @@ static int dw8250_probe(struct platform_
+ 	pm_runtime_enable(dev);
+ 
+ 	return 0;
+-
+-err_reset:
+-	reset_control_assert(data->rst);
+-
+-err_pclk:
+-	clk_disable_unprepare(data->pclk);
+-
+-err_clk:
+-	clk_disable_unprepare(data->clk);
+-
+-	return err;
+ }
+ 
+ static int dw8250_remove(struct platform_device *pdev)
+@@ -637,12 +642,6 @@ static int dw8250_remove(struct platform
+ 
+ 	serial8250_unregister_port(data->data.line);
+ 
+-	reset_control_assert(data->rst);
+-
+-	clk_disable_unprepare(data->pclk);
+-
+-	clk_disable_unprepare(data->clk);
+-
+ 	pm_runtime_disable(dev);
+ 	pm_runtime_put_noidle(dev);
+ 
 
 
 
