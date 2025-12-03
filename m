@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-199843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3411CA071B
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:28:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AEA3CA025D
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:51:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0BA3B331CAD2
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:11:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7DDAD3025334
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:47:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA891398F85;
-	Wed,  3 Dec 2025 16:58:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C02035B156;
+	Wed,  3 Dec 2025 16:47:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KzbBmOeK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oCwtNolz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0B53398F82;
-	Wed,  3 Dec 2025 16:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 073BB313546;
+	Wed,  3 Dec 2025 16:47:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764781129; cv=none; b=PbCjTCzlQw3SKdO+Q4GnQpdfYF3cAw85FTDHcmQhWoCeV68wyISHnS68LPxcZDZLEqpgcn3XDM/L8MEYPhMqObAxPzgGDMU9VXPqhMGye99le95sjVZfbFjlnQU7Jsp0QWwHYMUZvIGfmeMALa+z8avexpLbcZHK8QWJJMioCYk=
+	t=1764780438; cv=none; b=OLvYE5R4rEG0tCpegDwYqzW1jC0goh12nUWTVkKhmG2PmqoCiLaajA8ttLk+CAM877iSFe4/n2seDwmwkV63jxnb/aOtf3J28WlCRtJvXAUu0odHhhDZr9rB+THKEfJePNrxX/L5lZ8SIHId+zp2xlYvQ/3NKqdQ+iOd3o3wgmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764781129; c=relaxed/simple;
-	bh=7+SznoJJKR/EDtTdfWIeU2+jZge+h6i4MdLVeI/3OUU=;
+	s=arc-20240116; t=1764780438; c=relaxed/simple;
+	bh=N0DQ/kRue98muM6QcQOihXbQqnY/WX6C5bv4JpsDsEg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nj5ibeNPBQL+16WmQNi1YPMIXv9GpfZiBeD3lF+kTzk/2yva6LHVFVCYZtnz/BT8Zgj3+McsvgKURuxdSiifjU28VuPdNq1ZZhijG7P2mUl/vghriZZoXnT7S7jfIsnWzJq2H52MVrjnOiRpAv13OtqDXat4qCqiKOLeha4mLHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KzbBmOeK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70BDAC4CEF5;
-	Wed,  3 Dec 2025 16:58:45 +0000 (UTC)
+	 MIME-Version; b=cU9lQ74XWTnQk61HoOOS1sU4K7T18XTI5ovzz69IUSGIqO0ALCJ0tGGmLlk+kl0QOJLzz/uLFSb457NLsmhhGj8BcSq1e20lJQZgGjgvsGWp8wE5iKWUsCytLZjRwNTaBtahMFDfh18LBljbgcfZEH9Rjvahr1JNqNGae1cb1cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oCwtNolz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EFB1C4CEF5;
+	Wed,  3 Dec 2025 16:47:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764781125;
-	bh=7+SznoJJKR/EDtTdfWIeU2+jZge+h6i4MdLVeI/3OUU=;
+	s=korg; t=1764780437;
+	bh=N0DQ/kRue98muM6QcQOihXbQqnY/WX6C5bv4JpsDsEg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KzbBmOeKgJZE2FWtAi4lGTREDLZIYKLkxVA3fzA9bbhAJEODayHuHW2J0qwpmHgqw
-	 qDy0nIMSLJUQXdBO2LnU40u4pbJV0nmOmdj6RJcH/RYCNIGq+rdReAK8CrNYAKBZcw
-	 G7/U58PO/e4HDUgEXv/D+uekCxQKUCwJr3vNWKS0=
+	b=oCwtNolz0MV+PRWhRYoKGmHSihTcacke5Dm/DUToLdPYLj9sD8TsX5doeeOOiiIDx
+	 CFBsgnTbSLVtq6WLFWR/fXuDIhIr06e4+cys+aLKx5K48ufQRPwKKoaf377InaB+3H
+	 SOwEpdnvKKcswj1Fu8+60V5GdzZ95rSHSw6QiNSk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huisong Li <lihuisong@huawei.com>,
-	Adam Young <admiyo@os.amperecomputing.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+	Andy Hsu <andy_ya_hsu@wiwynn.com>,
+	ChiYuan Huang <cy_huang@richtek.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 24/93] mailbox: pcc: Refactor error handling in irq handler into separate function
-Date: Wed,  3 Dec 2025 16:29:17 +0100
-Message-ID: <20251203152337.407003666@linuxfoundation.org>
+Subject: [PATCH 6.1 556/568] iio: adc: rtq6056: Correct the sign bit index
+Date: Wed,  3 Dec 2025 16:29:18 +0100
+Message-ID: <20251203152501.072984150@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sudeep Holla <sudeep.holla@arm.com>
+From: ChiYuan Huang <cy_huang@richtek.com>
 
-[ Upstream commit 3a675f50415b95f2ae10bfd932e2154ba1a08ee7 ]
+[ Upstream commit 9b45744bf09fc2a3287e05287141d6e123c125a7 ]
 
-The existing error handling logic in pcc_mbox_irq() is intermixed with the
-main flow of the function. The command complete check and the complete
-complete update/acknowledgment are nicely factored into separate functions.
+The vshunt/current reported register is a signed 16bit integer. The
+sign bit index should be '15', not '16'.
 
-Moves error detection and clearing logic into a separate function called:
-pcc_mbox_error_check_and_clear() by extracting error-handling logic from
-pcc_mbox_irq().
-
-This ensures error checking and clearing are handled separately and it
-improves maintainability by keeping the IRQ handler focused on processing
-events.
-
-Acked-by: Huisong Li <lihuisong@huawei.com>
-Tested-by: Huisong Li <lihuisong@huawei.com>
-Tested-by: Adam Young <admiyo@os.amperecomputing.com>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
-Stable-dep-of: ff0e4d4c97c9 ("mailbox: pcc: don't zero error register")
+Fixes: 4396f45d211b ("iio: adc: Add rtq6056 support")
+Reported-by: Andy Hsu <andy_ya_hsu@wiwynn.com>
+Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+[ adapted switch statement to existing if-else structure for sign_extend32() fix ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mailbox/pcc.c | 30 ++++++++++++++++++++----------
- 1 file changed, 20 insertions(+), 10 deletions(-)
+ drivers/iio/adc/rtq6056.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-index 49254d99a8ad6..bb977cf8ad423 100644
---- a/drivers/mailbox/pcc.c
-+++ b/drivers/mailbox/pcc.c
-@@ -269,6 +269,25 @@ static bool pcc_mbox_cmd_complete_check(struct pcc_chan_info *pchan)
- 	return !!val;
+--- a/drivers/iio/adc/rtq6056.c
++++ b/drivers/iio/adc/rtq6056.c
+@@ -171,7 +171,7 @@ static int rtq6056_adc_read_channel(stru
+ 	if (addr == RTQ6056_REG_BUSVOLT || addr == RTQ6056_REG_POWER)
+ 		*val = regval;
+ 	else
+-		*val = sign_extend32(regval, 16);
++		*val = sign_extend32(regval, 15);
+ 
+ 	return IIO_VAL_INT;
  }
- 
-+static int pcc_mbox_error_check_and_clear(struct pcc_chan_info *pchan)
-+{
-+	u64 val;
-+	int ret;
-+
-+	ret = pcc_chan_reg_read(&pchan->error, &val);
-+	if (ret)
-+		return ret;
-+
-+	val &= pchan->error.status_mask;
-+	if (val) {
-+		val &= ~pchan->error.status_mask;
-+		pcc_chan_reg_write(&pchan->error, val);
-+		return -EIO;
-+	}
-+
-+	return 0;
-+}
-+
- static void check_and_ack(struct pcc_chan_info *pchan, struct mbox_chan *chan)
- {
- 	struct acpi_pcct_ext_pcc_shared_memory pcc_hdr;
-@@ -309,8 +328,6 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
- {
- 	struct pcc_chan_info *pchan;
- 	struct mbox_chan *chan = p;
--	u64 val;
--	int ret;
- 
- 	pchan = chan->con_priv;
- 
-@@ -324,15 +341,8 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
- 	if (!pcc_mbox_cmd_complete_check(pchan))
- 		return IRQ_NONE;
- 
--	ret = pcc_chan_reg_read(&pchan->error, &val);
--	if (ret)
-+	if (pcc_mbox_error_check_and_clear(pchan))
- 		return IRQ_NONE;
--	val &= pchan->error.status_mask;
--	if (val) {
--		val &= ~pchan->error.status_mask;
--		pcc_chan_reg_write(&pchan->error, val);
--		return IRQ_NONE;
--	}
- 
- 	/*
- 	 * Clear this flag after updating interrupt ack register and just
--- 
-2.51.0
-
 
 
 
