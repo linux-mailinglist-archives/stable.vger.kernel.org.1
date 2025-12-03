@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE76CCA03BF
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:01:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FC82CA08C0
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:40:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BD7763084796
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:53:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B34753404944
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:20:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BBB13596E2;
-	Wed,  3 Dec 2025 16:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F17A366DCA;
+	Wed,  3 Dec 2025 16:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cNttH100"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="erecfZsg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15CB53590C6;
-	Wed,  3 Dec 2025 16:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C671366DC1;
+	Wed,  3 Dec 2025 16:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780636; cv=none; b=HuVIryTBJTqgFVARa6pFAzT2PEZN2XpZVJAeDlocOLLfKkSZk8kULPWnh+0GB2erUw+Fc1zSbY6W8Ri2XCT+5UmyynoJ+0+BYGqCjZjTjCeq8r7AFZj8TJLggcR5+gYMapJyDLB4+YpCmWtpYlClXlwWKs1gsVan/OPE8yKmSOo=
+	t=1764780327; cv=none; b=ppHRJb6qHyAT23hGnwS1snDKwyGalCKM/xb6OXblxwzzXvaQ1FU3ZHUcSzO4aviaAb3P4PzhGAZhUoqrcBqjUKVNnwXh9ntyWufr/UdZQp5tqn6C2/lDkdcbmHB9HtNm6BEk5/g1Lgxa2KJq7gWzukFU1ilYb7ghOw/fGA7SID0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780636; c=relaxed/simple;
-	bh=tbXkoSmuFXenXMNRVpZpviERKUEaRu6IS1wCXrd1TiA=;
+	s=arc-20240116; t=1764780327; c=relaxed/simple;
+	bh=SBBjAy6s4pHWBGu5ClvkQXre7kfbF5oMy3Px0fxOCHk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JrcJv0lwvAGOXHnzzQdsveioIdUSrPsGVNBKGXpSjekG0PTStAB+ifOi+g4E5dpBKsv4gqO7xMcrzRP9RzmOWgbB8sAvTfDKRNquekkB4RUJjb9WQGZC/90IfFq4IgiB1M02zLV47JlFMTPkVBXMqhyPSXcPk4Om6J/d1az5/ac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cNttH100; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 878ABC4CEF5;
-	Wed,  3 Dec 2025 16:50:35 +0000 (UTC)
+	 MIME-Version; b=OW59mXcSVxvdR9Kuei0ihPeBeYwM2FUk18xeLaP/Kopy7oUL68li6erK2k+9Nlo8cbaEB7CmtCfTAu0Aaw9y6QLEAKcILTYMSXR8sI6CgcOoVHo/jOvJIWBAXoXdHUUpke3bfnLDV6c7vVcC6XIw2POd18oklRD62QdrwR2V+eY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=erecfZsg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67D60C4CEF5;
+	Wed,  3 Dec 2025 16:45:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780635;
-	bh=tbXkoSmuFXenXMNRVpZpviERKUEaRu6IS1wCXrd1TiA=;
+	s=korg; t=1764780326;
+	bh=SBBjAy6s4pHWBGu5ClvkQXre7kfbF5oMy3Px0fxOCHk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cNttH100fvITGmRFbil2kshXGuZLjFMTJQgiW39i4Kn0GmiO64uQiOSyH6h4GTRzk
-	 FwI6w0cgrFRR4Hlv92hVLWK54D6jruewyNGmsGREoIXEY+Wtd9Z8iJTy871FEGFHrX
-	 4cP5KQChbE/QqgL3nmK09z2q2dasjIhCBHGg1Ng8=
+	b=erecfZsgGvs2T09WlQVIXUolRxEXzR1JbW4h4uN23nd2gvItuAD06o6nFzdVMoGKP
+	 Qd5CGwcdu6uiQquNqZNlfULyS6mGWvc2KO5lqsjgE8m77rI0gUycMeQxWafYb9TrbU
+	 Cw8HkPxrFDTVrtkVfyJP2SBfre9oG39iONzHBxIQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 045/132] spi: spi-nxp-fspi: remove the goto in probe
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.1 522/568] MIPS: mm: Prevent a TLB shutdown on initial uniquification
 Date: Wed,  3 Dec 2025 16:28:44 +0100
-Message-ID: <20251203152344.964863209@linuxfoundation.org>
+Message-ID: <20251203152459.830748214@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,184 +60,179 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haibo Chen <haibo.chen@nxp.com>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-[ Upstream commit 48900813abd2730a35c6e3afd1609bafac5271cc ]
+commit 9f048fa487409e364cf866c957cf0b0d782ca5a3 upstream.
 
-Remove all the goto in probe to simplify the driver.
+Depending on the particular CPU implementation a TLB shutdown may occur
+if multiple matching entries are detected upon the execution of a TLBP
+or the TLBWI/TLBWR instructions.  Given that we don't know what entries
+we have been handed we need to be very careful with the initial TLB
+setup and avoid all these instructions.
 
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-Link: https://patch.msgid.link/20250428-flexspipatch-v3-1-61d5e8f591bc@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 40ad64ac25bb ("spi: nxp-fspi: Propagate fwnode in ACPI case as well")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Therefore read all the TLB entries one by one with the TLBR instruction,
+bypassing the content addressing logic, and truncate any large pages in
+place so as to avoid a case in the second step where an incoming entry
+for a large page at a lower address overlaps with a replacement entry
+chosen at another index.  Then preinitialize the TLB using addresses
+outside our usual unique range and avoiding clashes with any entries
+received, before making the usual call to local_flush_tlb_all().
+
+This fixes (at least) R4x00 cores if TLBP hits multiple matching TLB
+entries (SGI IP22 PROM for examples sets up all TLBs to the same virtual
+address).
+
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Fixes: 35ad7e181541 ("MIPS: mm: tlb-r4k: Uniquify TLB entries on init")
+Cc: stable@vger.kernel.org
+Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Tested-by: Jiaxun Yang <jiaxun.yang@flygoat.com> # Boston I6400, M5150 sim
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-nxp-fspi.c | 87 ++++++++++++--------------------------
- 1 file changed, 27 insertions(+), 60 deletions(-)
+ arch/mips/mm/tlb-r4k.c |  102 ++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 64 insertions(+), 38 deletions(-)
 
-diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-index 78afef8851fc9..825b2a36377c2 100644
---- a/drivers/spi/spi-nxp-fspi.c
-+++ b/drivers/spi/spi-nxp-fspi.c
-@@ -1167,10 +1167,10 @@ static int nxp_fspi_probe(struct platform_device *pdev)
- 	struct device_node *np = dev->of_node;
- 	struct resource *res;
- 	struct nxp_fspi *f;
--	int ret;
-+	int ret, irq;
- 	u32 reg;
+--- a/arch/mips/mm/tlb-r4k.c
++++ b/arch/mips/mm/tlb-r4k.c
+@@ -15,6 +15,7 @@
+ #include <linux/mm.h>
+ #include <linux/hugetlb.h>
+ #include <linux/export.h>
++#include <linux/sort.h>
  
--	ctlr = spi_alloc_host(&pdev->dev, sizeof(*f));
-+	ctlr = devm_spi_alloc_host(&pdev->dev, sizeof(*f));
- 	if (!ctlr)
- 		return -ENOMEM;
+ #include <asm/cpu.h>
+ #include <asm/cpu-type.h>
+@@ -498,55 +499,79 @@ static int __init set_ntlb(char *str)
  
-@@ -1180,10 +1180,8 @@ static int nxp_fspi_probe(struct platform_device *pdev)
- 	f = spi_controller_get_devdata(ctlr);
- 	f->dev = dev;
- 	f->devtype_data = (struct nxp_fspi_devtype_data *)device_get_match_data(dev);
--	if (!f->devtype_data) {
--		ret = -ENODEV;
--		goto err_put_ctrl;
--	}
-+	if (!f->devtype_data)
-+		return -ENODEV;
+ __setup("ntlb=", set_ntlb);
  
- 	platform_set_drvdata(pdev, f);
+-/* Initialise all TLB entries with unique values */
++
++/* Comparison function for EntryHi VPN fields.  */
++static int r4k_vpn_cmp(const void *a, const void *b)
++{
++	long v = *(unsigned long *)a - *(unsigned long *)b;
++	int s = sizeof(long) > sizeof(int) ? sizeof(long) * 8 - 1: 0;
++	return s ? (v != 0) | v >> s : v;
++}
++
++/*
++ * Initialise all TLB entries with unique values that do not clash with
++ * what we have been handed over and what we'll be using ourselves.
++ */
+ static void r4k_tlb_uniquify(void)
+ {
+-	int entry = num_wired_entries();
++	unsigned long tlb_vpns[1 << MIPS_CONF1_TLBS_SIZE];
++	int tlbsize = current_cpu_data.tlbsize;
++	int start = num_wired_entries();
++	unsigned long vpn_mask;
++	int cnt, ent, idx, i;
++
++	vpn_mask = GENMASK(cpu_vmbits - 1, 13);
++	vpn_mask |= IS_ENABLED(CONFIG_64BIT) ? 3ULL << 62 : 1 << 31;
  
-@@ -1192,11 +1190,8 @@ static int nxp_fspi_probe(struct platform_device *pdev)
- 		f->iobase = devm_platform_ioremap_resource(pdev, 0);
- 	else
- 		f->iobase = devm_platform_ioremap_resource_byname(pdev, "fspi_base");
+ 	htw_stop();
+-	write_c0_entrylo0(0);
+-	write_c0_entrylo1(0);
+ 
+-	while (entry < current_cpu_data.tlbsize) {
+-		unsigned long asid_mask = cpu_asid_mask(&current_cpu_data);
+-		unsigned long asid = 0;
+-		int idx;
++	for (i = start, cnt = 0; i < tlbsize; i++, cnt++) {
++		unsigned long vpn;
+ 
+-		/* Skip wired MMID to make ginvt_mmid work */
+-		if (cpu_has_mmid)
+-			asid = MMID_KERNEL_WIRED + 1;
++		write_c0_index(i);
++		mtc0_tlbr_hazard();
++		tlb_read();
++		tlb_read_hazard();
++		vpn = read_c0_entryhi();
++		vpn &= vpn_mask & PAGE_MASK;
++		tlb_vpns[cnt] = vpn;
+ 
+-		/* Check for match before using UNIQUE_ENTRYHI */
+-		do {
+-			if (cpu_has_mmid) {
+-				write_c0_memorymapid(asid);
+-				write_c0_entryhi(UNIQUE_ENTRYHI(entry));
+-			} else {
+-				write_c0_entryhi(UNIQUE_ENTRYHI(entry) | asid);
+-			}
+-			mtc0_tlbw_hazard();
+-			tlb_probe();
+-			tlb_probe_hazard();
+-			idx = read_c0_index();
+-			/* No match or match is on current entry */
+-			if (idx < 0 || idx == entry)
+-				break;
+-			/*
+-			 * If we hit a match, we need to try again with
+-			 * a different ASID.
+-			 */
+-			asid++;
+-		} while (asid < asid_mask);
 -
--	if (IS_ERR(f->iobase)) {
--		ret = PTR_ERR(f->iobase);
--		goto err_put_ctrl;
--	}
-+	if (IS_ERR(f->iobase))
-+		return PTR_ERR(f->iobase);
- 
- 	/* find the resources - controller memory mapped space */
- 	if (is_acpi_node(dev_fwnode(f->dev)))
-@@ -1204,11 +1199,8 @@ static int nxp_fspi_probe(struct platform_device *pdev)
- 	else
- 		res = platform_get_resource_byname(pdev,
- 				IORESOURCE_MEM, "fspi_mmap");
+-		if (idx >= 0 && idx != entry)
+-			panic("Unable to uniquify TLB entry %d", idx);
 -
--	if (!res) {
--		ret = -ENODEV;
--		goto err_put_ctrl;
--	}
-+	if (!res)
-+		return -ENODEV;
- 
- 	/* assign memory mapped starting address and mapped size. */
- 	f->memmap_phy = res->start;
-@@ -1217,69 +1209,46 @@ static int nxp_fspi_probe(struct platform_device *pdev)
- 	/* find the clocks */
- 	if (dev_of_node(&pdev->dev)) {
- 		f->clk_en = devm_clk_get(dev, "fspi_en");
--		if (IS_ERR(f->clk_en)) {
--			ret = PTR_ERR(f->clk_en);
--			goto err_put_ctrl;
--		}
-+		if (IS_ERR(f->clk_en))
-+			return PTR_ERR(f->clk_en);
- 
- 		f->clk = devm_clk_get(dev, "fspi");
--		if (IS_ERR(f->clk)) {
--			ret = PTR_ERR(f->clk);
--			goto err_put_ctrl;
--		}
--
--		ret = nxp_fspi_clk_prep_enable(f);
--		if (ret) {
--			dev_err(dev, "can not enable the clock\n");
--			goto err_put_ctrl;
--		}
-+		if (IS_ERR(f->clk))
-+			return PTR_ERR(f->clk);
+-		write_c0_index(entry);
++		/* Prevent any large pages from overlapping regular ones.  */
++		write_c0_pagemask(read_c0_pagemask() & PM_DEFAULT_MASK);
+ 		mtc0_tlbw_hazard();
+ 		tlb_write_indexed();
+-		entry++;
++		tlbw_use_hazard();
  	}
  
-+	/* find the irq */
-+	irq = platform_get_irq(pdev, 0);
-+	if (irq < 0)
-+		return dev_err_probe(dev, irq, "Failed to get irq source");
++	sort(tlb_vpns, cnt, sizeof(tlb_vpns[0]), r4k_vpn_cmp, NULL);
 +
-+	ret = nxp_fspi_clk_prep_enable(f);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Can't enable the clock\n");
++	write_c0_pagemask(PM_DEFAULT_MASK);
++	write_c0_entrylo0(0);
++	write_c0_entrylo1(0);
 +
- 	/* Clear potential interrupts */
- 	reg = fspi_readl(f, f->iobase + FSPI_INTR);
- 	if (reg)
- 		fspi_writel(f, reg, f->iobase + FSPI_INTR);
++	idx = 0;
++	ent = tlbsize;
++	for (i = start; i < tlbsize; i++)
++		while (1) {
++			unsigned long entryhi, vpn;
++
++			entryhi = UNIQUE_ENTRYHI(ent);
++			vpn = entryhi & vpn_mask & PAGE_MASK;
++
++			if (idx >= cnt || vpn < tlb_vpns[idx]) {
++				write_c0_entryhi(entryhi);
++				write_c0_index(i);
++				mtc0_tlbw_hazard();
++				tlb_write_indexed();
++				ent++;
++				break;
++			} else if (vpn == tlb_vpns[idx]) {
++				ent++;
++			} else {
++				idx++;
++			}
++		}
++
+ 	tlbw_use_hazard();
+ 	htw_start();
+ 	flush_micro_tlb();
+@@ -592,6 +617,7 @@ static void r4k_tlb_configure(void)
  
--	/* find the irq */
--	ret = platform_get_irq(pdev, 0);
--	if (ret < 0)
--		goto err_disable_clk;
-+	nxp_fspi_default_setup(f);
+ 	/* From this point on the ARC firmware is dead.	 */
+ 	r4k_tlb_uniquify();
++	local_flush_tlb_all();
  
--	ret = devm_request_irq(dev, ret,
-+	ret = devm_request_irq(dev, irq,
- 			nxp_fspi_irq_handler, 0, pdev->name, f);
- 	if (ret) {
--		dev_err(dev, "failed to request irq: %d\n", ret);
--		goto err_disable_clk;
-+		nxp_fspi_clk_disable_unprep(f);
-+		return dev_err_probe(dev, ret, "Failed to request irq\n");
- 	}
- 
--	mutex_init(&f->lock);
-+	devm_mutex_init(dev, &f->lock);
- 
- 	ctlr->bus_num = -1;
- 	ctlr->num_chipselect = NXP_FSPI_MAX_CHIPSELECT;
- 	ctlr->mem_ops = &nxp_fspi_mem_ops;
- 	ctlr->mem_caps = &nxp_fspi_mem_caps;
--
--	nxp_fspi_default_setup(f);
--
- 	ctlr->dev.of_node = np;
- 
--	ret = devm_spi_register_controller(&pdev->dev, ctlr);
--	if (ret)
--		goto err_destroy_mutex;
--
--	return 0;
--
--err_destroy_mutex:
--	mutex_destroy(&f->lock);
--
--err_disable_clk:
--	nxp_fspi_clk_disable_unprep(f);
--
--err_put_ctrl:
--	spi_controller_put(ctlr);
--
--	dev_err(dev, "NXP FSPI probe failed\n");
--	return ret;
-+	return devm_spi_register_controller(&pdev->dev, ctlr);
+ 	/* Did I tell you that ARC SUCKS?  */
  }
- 
- static void nxp_fspi_remove(struct platform_device *pdev)
-@@ -1291,8 +1260,6 @@ static void nxp_fspi_remove(struct platform_device *pdev)
- 
- 	nxp_fspi_clk_disable_unprep(f);
- 
--	mutex_destroy(&f->lock);
--
- 	if (f->ahb_addr)
- 		iounmap(f->ahb_addr);
- }
--- 
-2.51.0
-
 
 
 
