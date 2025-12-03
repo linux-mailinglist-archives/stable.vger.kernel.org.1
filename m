@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-199485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93DA4CA0968
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:44:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB33AC9FAC7
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:51:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E934E346E874
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:23:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BA9853001578
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:44:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A97EC321442;
-	Wed,  3 Dec 2025 16:39:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20B9E3090F7;
+	Wed,  3 Dec 2025 15:44:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ed9cVt/R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MGD8v9Pp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F8526CE39;
-	Wed,  3 Dec 2025 16:39:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF81030276F;
+	Wed,  3 Dec 2025 15:44:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779955; cv=none; b=lvdXrNbiJ95bqn8S9qmC4gR9uIeN53NLyEKtRQmoxKafqL/mYLVakd7i+kaLryDEWoE2UkZVAO5OPYmLc3JKrSr/NFtCZQvnZA/yr+iUmN0MJraaWWZ+1laOwpLzO+d6UNtkyKO5MM6ryI/JgoBZUzSKBC3nIW1Csjsu/JQJqIs=
+	t=1764776640; cv=none; b=CTF6dcAWkYnH7pTL+5VcIuqvjob+cpimykhPZojZv08nHlAkauCYIhafSmipdxzmQylsuXYwR96RI/eJiCUgQLHpsjdc+IVyaUN4tmgTd7tcxKt8Wflr6vicDrnNl26Kl4vAUmyuZhlf+jO2DicdylBaCFFSSSAZKhHncJyJmvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779955; c=relaxed/simple;
-	bh=B4vooNdUtFa9Li0hUoq0NZ6kS2ttN9lNs/rJlomyZLM=;
+	s=arc-20240116; t=1764776640; c=relaxed/simple;
+	bh=84UlCPryjHd2SUeixbbuOiaU07ZYyAMaoQ2xb+R5bZg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q5vOL0ifchvxlGSwQOnU0efXiBB5zof2nOExD4dWmOYuBS86oKUIOVKggM2JztiAhRVOdpSpY/lqlzDCvlHwIrQ1e6nTJDMUC7W9Y/FbX/ckDrUdRENGK8DgtllX6OMqQxg3olbufyJfUCIPXagJcS7fO8YjBALAclUYg2X4dSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ed9cVt/R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C41C1C16AAE;
-	Wed,  3 Dec 2025 16:39:14 +0000 (UTC)
+	 MIME-Version; b=aURNbayrkCGAZevZjmjKNVufzDxckWD/PukLhDZdiHQQ1HqyhQkKoLYa02PWUpbNwl0Imegn5tmyQkykcgyFzxIrPsiAocyrJAuZt9ETjAv981HMzxAu2FAYkp4IfsnvwFJ0T/BU8M1vzpZ50KyaBi8QRGm6RPsYEVTVSyvO0Rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MGD8v9Pp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C85AC4CEF5;
+	Wed,  3 Dec 2025 15:43:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779955;
-	bh=B4vooNdUtFa9Li0hUoq0NZ6kS2ttN9lNs/rJlomyZLM=;
+	s=korg; t=1764776640;
+	bh=84UlCPryjHd2SUeixbbuOiaU07ZYyAMaoQ2xb+R5bZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ed9cVt/RtVEtOXcmgStGuPT/oBFUora+z5LUXqGo/jzU+VcFwkw5VpEj6BSvfnBO4
-	 yBbkhKGtjPKFclhomJ5lCjnHvIu6siG5p0g6GZPbnpJpTXtOAylGtyj/LS/gcEjpaR
-	 LUoDEFak0T6iL0aa+JNel4YH3ad3uyBJyMZIjR/8=
+	b=MGD8v9PpJBNYPY71+1+WHHIKbPX84jh9lEcczWfW5wWLO6PBzWWoZlvgqq0Sw4I6F
+	 E1aCMNRCLeuNMLPVkXbyE3Oe4HaOcUS+0jYepg8c6p7t0iNIjxCaDTKLWrWRVmdYzG
+	 pxpioUB+TnRe244TVNgMV7vcXrEnDTAQiNs3q7LA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 412/568] selftests: mptcp: connect: trunc: read all recv data
+	Wei Yang <albinwyang@tencent.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	wangzijie <wangzijie1@honor.com>,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 210/300] fs/proc: fix uaf in proc_readdir_de()
 Date: Wed,  3 Dec 2025 16:26:54 +0100
-Message-ID: <20251203152455.779475113@linuxfoundation.org>
+Message-ID: <20251203152408.402658046@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,87 +63,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Wei Yang <albinwyang@tencent.com>
 
-commit ee79980f7a428ec299f6261bea4c1084dcbc9631 upstream.
+commit 895b4c0c79b092d732544011c3cecaf7322c36a1 upstream.
 
-MPTCP Join "fastclose server" selftest is sometimes failing because the
-client output file doesn't have the expected size, e.g. 296B instead of
-1024B.
+Pde is erased from subdir rbtree through rb_erase(), but not set the node
+to EMPTY, which may result in uaf access.  We should use RB_CLEAR_NODE()
+set the erased node to EMPTY, then pde_subdir_next() will return NULL to
+avoid uaf access.
 
-When looking at a packet trace when this happens, the server sent the
-expected 1024B in two parts -- 100B, then 924B -- then the MP_FASTCLOSE.
-It is then strange to see the client only receiving 296B, which would
-mean it only got a part of the second packet. The problem is then not on
-the networking side, but rather on the data reception side.
+We found an uaf issue while using stress-ng testing, need to run testcase
+getdent and tun in the same time.  The steps of the issue is as follows:
 
-When mptcp_connect is launched with '-f -1', it means the connection
-might stop before having sent everything, because a reset has been
-received. When this happens, the program was directly stopped. But it is
-also possible there are still some data to read, simply because the
-previous 'read' step was done with a buffer smaller than the pending
-data, see do_rnd_read(). In this case, it is important to read what's
-left in the kernel buffers before stopping without error like before.
+1) use getdent to traverse dir /proc/pid/net/dev_snmp6/, and current
+   pde is tun3;
 
-SIGPIPE is now ignored, not to quit the app before having read
-everything.
+2) in the [time windows] unregister netdevice tun3 and tun2, and erase
+   them from rbtree.  erase tun3 first, and then erase tun2.  the
+   pde(tun2) will be released to slab;
 
-Fixes: 6bf41020b72b ("selftests: mptcp: update and extend fastclose test-cases")
-Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251110-net-mptcp-sft-join-unstable-v1-5-a4332c714e10@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+3) continue to getdent process, then pde_subdir_next() will return
+   pde(tun2) which is released, it will case uaf access.
+
+CPU 0                                      |    CPU 1
+-------------------------------------------------------------------------
+traverse dir /proc/pid/net/dev_snmp6/      |   unregister_netdevice(tun->dev)   //tun3 tun2
+sys_getdents64()                           |
+  iterate_dir()                            |
+    proc_readdir()                         |
+      proc_readdir_de()                    |     snmp6_unregister_dev()
+        pde_get(de);                       |       proc_remove()
+        read_unlock(&proc_subdir_lock);    |         remove_proc_subtree()
+                                           |           write_lock(&proc_subdir_lock);
+        [time window]                      |           rb_erase(&root->subdir_node, &parent->subdir);
+                                           |           write_unlock(&proc_subdir_lock);
+        read_lock(&proc_subdir_lock);      |
+        next = pde_subdir_next(de);        |
+        pde_put(de);                       |
+        de = next;    //UAF                |
+
+rbtree of dev_snmp6
+                        |
+                    pde(tun3)
+                     /    \
+                  NULL  pde(tun2)
+
+Link: https://lkml.kernel.org/r/20251025024233.158363-1-albin_yang@163.com
+Signed-off-by: Wei Yang <albinwyang@tencent.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: wangzijie <wangzijie1@honor.com>
+Cc: Alexey Dobriyan <adobriyan@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_connect.c |   18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ fs/proc/generic.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_connect.c
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect.c
-@@ -655,8 +655,14 @@ static int copyfd_io_poll(int infd, int
+--- a/fs/proc/generic.c
++++ b/fs/proc/generic.c
+@@ -693,6 +693,12 @@ void pde_put(struct proc_dir_entry *pde)
+ 	}
+ }
  
- 				bw = do_rnd_write(peerfd, wbuf + woff, wlen);
- 				if (bw < 0) {
--					if (cfg_rcv_trunc)
--						return 0;
-+					/* expected reset, continue to read */
-+					if (cfg_rcv_trunc &&
-+					    (errno == ECONNRESET ||
-+					     errno == EPIPE)) {
-+						fds.events &= ~POLLOUT;
-+						continue;
-+					}
++static void pde_erase(struct proc_dir_entry *pde, struct proc_dir_entry *parent)
++{
++	rb_erase(&pde->subdir_node, &parent->subdir);
++	RB_CLEAR_NODE(&pde->subdir_node);
++}
 +
- 					perror("write");
- 					return 111;
- 				}
-@@ -682,8 +688,10 @@ static int copyfd_io_poll(int infd, int
+ /*
+  * Remove a /proc entry and free it if it's not currently in use.
+  */
+@@ -715,7 +721,7 @@ void remove_proc_entry(const char *name,
+ 			WARN(1, "removing permanent /proc entry '%s'", de->name);
+ 			de = NULL;
+ 		} else {
+-			rb_erase(&de->subdir_node, &parent->subdir);
++			pde_erase(de, parent);
+ 			if (S_ISDIR(de->mode))
+ 				parent->nlink--;
  		}
+@@ -759,7 +765,7 @@ int remove_proc_subtree(const char *name
+ 			root->parent->name, root->name);
+ 		return -EINVAL;
+ 	}
+-	rb_erase(&root->subdir_node, &parent->subdir);
++	pde_erase(root, parent);
  
- 		if (fds.revents & (POLLERR | POLLNVAL)) {
--			if (cfg_rcv_trunc)
--				return 0;
-+			if (cfg_rcv_trunc) {
-+				fds.events &= ~(POLLERR | POLLNVAL);
-+				continue;
-+			}
- 			fprintf(stderr, "Unexpected revents: "
- 				"POLLERR/POLLNVAL(%x)\n", fds.revents);
- 			return 5;
-@@ -1332,7 +1340,7 @@ static void parse_opts(int argc, char **
- 			 */
- 			if (cfg_truncate < 0) {
- 				cfg_rcv_trunc = true;
--				signal(SIGPIPE, handle_signal);
-+				signal(SIGPIPE, SIG_IGN);
+ 	de = root;
+ 	while (1) {
+@@ -771,7 +777,7 @@ int remove_proc_subtree(const char *name
+ 					next->parent->name, next->name);
+ 				return -EINVAL;
  			}
- 			break;
- 		case 'j':
+-			rb_erase(&next->subdir_node, &de->subdir);
++			pde_erase(next, de);
+ 			de = next;
+ 			continue;
+ 		}
 
 
 
