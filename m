@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFB2EC9F96B
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:43:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 154E1CA06A3
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:25:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 27E66303EF6A
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:38:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 720AC32F7E60
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:09:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED462314A7D;
-	Wed,  3 Dec 2025 15:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 951EA3570D4;
+	Wed,  3 Dec 2025 16:35:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dj0NbDRB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z7knAPUt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 930AF314A80;
-	Wed,  3 Dec 2025 15:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52C1F3570DC;
+	Wed,  3 Dec 2025 16:35:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776317; cv=none; b=Z2nAYYpRef+iHE8b4tXeFKyuc4iHhIYSs+ox1NYjZBI8bkfXfoTkYKK4Mls4C3Gm9+U1UMqq4yP1eOUNJ2R0Lg0d5U3jAO1JX1MtpI9csOIBisVTcOi1WD52CYozwP+7VWhFs5diIcGjjrbNOcFCzow3fQQH4U3H77HcV7Y8huQ=
+	t=1764779752; cv=none; b=FV1WIWtyOzX1yCES9WllEGsuPEygthXfJqRbPza8QGu5jLcXmouW3gSgRMQtPjNT++n2qSQp//QnvZuDfK9fpyiwD1wjA83wi0PdgSpl95G5IZew98ZFzXXlYc9lQTQTdLP/eyfGHiVWKOx/Bn4qaSbY7BMrfH2vFJvVG/kZolA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776317; c=relaxed/simple;
-	bh=6eBfr+jhhWpwshEiuubEJ9ISNEbWuD728cL3lfOrWHk=;
+	s=arc-20240116; t=1764779752; c=relaxed/simple;
+	bh=lPFgs6eLo6bTO4Sq1WeeS+TQjV2nAOoGb5MiYLrzR38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VILDTi9tePM5p45aL1tEt4a6fKM7UkPKFearYJbKVQDRk2GfuI9two+ntkHRGOor3BBp40KmqjdU3yahQBIAFQufwdBZBuLV4mL4SKi9nUFNsSr3PV5u1kiM1fDwBXf1zgcmicS5OllIBT672+VpUEX+Vx96fI32UpURqPq6Wzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dj0NbDRB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3BD7C4CEF5;
-	Wed,  3 Dec 2025 15:38:36 +0000 (UTC)
+	 MIME-Version; b=p3osM4bR0qf6QDmDppWveuyzxmwozu4Ukd4N8/bUlpw0BTDWpy+v02EYBsY4z8BYq+2YtGWEjxYbUVjhq3LMrWD1ynqrM4apV39tzbcfgGL2muN6McrkDkoL/qMAhhyElxGLLHlkNepf8X64BaEPLLwgXheHfjBZbq5Gzw8ipr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z7knAPUt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8733C4CEF5;
+	Wed,  3 Dec 2025 16:35:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776317;
-	bh=6eBfr+jhhWpwshEiuubEJ9ISNEbWuD728cL3lfOrWHk=;
+	s=korg; t=1764779752;
+	bh=lPFgs6eLo6bTO4Sq1WeeS+TQjV2nAOoGb5MiYLrzR38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dj0NbDRBzhiA+2xvjV3Tl3KX7/RYRuxauc+KWJ2czJLa+CzBVjxh7xlt04dbSuc+p
-	 8GZwdGAHljzIzcPy8RBvaznpoZmh+arifR9MWXwLkjFWXyT4+H/DVDBDMlNz4oXA0U
-	 Cab0wDi2CtJpjyezlFRO0tyRX8FmvmrgqUP5W8SA=
+	b=z7knAPUtzk4a2jVJ88tWGccWdIwgFyd7+zRf//QBasiyKqRzdF6os6HNghLTF36Jo
+	 UPppj3TYVbmOh/lR1gHgX9h5A2dfsLX5huBWi4e4pIXuWiD8n2TkxSUzPI6gp6+oyW
+	 3As18vji7GGfsLIvr4yMpY3dEKAwkHipx3akpelk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yikang Yue <yikangy2@illinois.edu>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 147/300] fs/hpfs: Fix error code for new_inode() failure in mkdir/create/mknod/symlink
+Subject: [PATCH 6.1 349/568] selftests: net: local_termination: Wait for interfaces to come up
 Date: Wed,  3 Dec 2025 16:25:51 +0100
-Message-ID: <20251203152406.063984762@linuxfoundation.org>
+Message-ID: <20251203152453.487194056@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,98 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yikang Yue <yikangy2@illinois.edu>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-[ Upstream commit 32058c38d3b79a28963a59ac0353644dc24775cd ]
+[ Upstream commit 57531b3416448d1ced36a2a974a4085ec43d57b0 ]
 
-The function call new_inode() is a primitive for allocating an inode in memory,
-rather than planning disk space for it. Therefore, -ENOMEM should be returned
-as the error code rather than -ENOSPC.
+It seems that most of the tests prepare the interfaces once before the test
+run (setup_prepare()), rely on setup_wait() to wait for link and only then
+run the test(s).
 
-To be specific, new_inode()'s call path looks like this:
-new_inode
-  new_inode_pseudo
-    alloc_inode
-      ops->alloc_inode (hpfs_alloc_inode)
-        alloc_inode_sb
-          kmem_cache_alloc_lru
+local_termination brings the physical interfaces down and up during test
+run but never wait for them to come up. If the auto-negotiation takes
+some seconds, first test packets are being lost, which leads to
+false-negative test results.
 
-Therefore, the failure of new_inode() indicates a memory presure issue (-ENOMEM),
-not a lack of disk space. However, the current implementation of
-hpfs_mkdir/create/mknod/symlink incorrectly returns -ENOSPC when new_inode() fails.
-This patch fix this by set err to -ENOMEM before the goto statement.
+Use setup_wait() in run_test() to make sure auto-negotiation has been
+completed after all simple_if_init() calls on physical interfaces and test
+packets will not be lost because of the race against link establishment.
 
-BTW, we also noticed that other nested calls within these four functions,
-like hpfs_alloc_f/dnode and hpfs_add_dirent, might also fail due to memory presure.
-But similarly, only -ENOSPC is returned. Addressing these will involve code
-modifications in other functions, and we plan to submit dedicated patches for these
-issues in the future. For this patch, we focus on new_inode().
-
-Signed-off-by: Yikang Yue <yikangy2@illinois.edu>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: 90b9566aa5cd3f ("selftests: forwarding: add a test for local_termination.sh")
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Link: https://patch.msgid.link/20251106161213.459501-1-alexander.sverdlin@siemens.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hpfs/namei.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ tools/testing/selftests/net/forwarding/local_termination.sh | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/hpfs/namei.c b/fs/hpfs/namei.c
-index 1aee39160ac5b..bc1309ef4cfa5 100644
---- a/fs/hpfs/namei.c
-+++ b/fs/hpfs/namei.c
-@@ -52,8 +52,10 @@ static int hpfs_mkdir(struct inode *dir, struct dentry *dentry, umode_t mode)
- 	dee.fnode = cpu_to_le32(fno);
- 	dee.creation_date = dee.write_date = dee.read_date = cpu_to_le32(local_get_seconds(dir->i_sb));
- 	result = new_inode(dir->i_sb);
--	if (!result)
-+	if (!result) {
-+		err = -ENOMEM;
- 		goto bail2;
-+	}
- 	hpfs_init_inode(result);
- 	result->i_ino = fno;
- 	hpfs_i(result)->i_parent_dir = dir->i_ino;
-@@ -154,9 +156,10 @@ static int hpfs_create(struct inode *dir, struct dentry *dentry, umode_t mode, b
- 	dee.creation_date = dee.write_date = dee.read_date = cpu_to_le32(local_get_seconds(dir->i_sb));
+diff --git a/tools/testing/selftests/net/forwarding/local_termination.sh b/tools/testing/selftests/net/forwarding/local_termination.sh
+index 9b5a63519b949..6cde61f10fd0e 100755
+--- a/tools/testing/selftests/net/forwarding/local_termination.sh
++++ b/tools/testing/selftests/net/forwarding/local_termination.sh
+@@ -108,6 +108,8 @@ run_test()
+ 	local smac=$(mac_get $h1)
+ 	local rcv_dmac=$(mac_get $rcv_if_name)
  
- 	result = new_inode(dir->i_sb);
--	if (!result)
-+	if (!result) {
-+		err = -ENOMEM;
- 		goto bail1;
--	
-+	}
- 	hpfs_init_inode(result);
- 	result->i_ino = fno;
- 	result->i_mode |= S_IFREG;
-@@ -241,9 +244,10 @@ static int hpfs_mknod(struct inode *dir, struct dentry *dentry, umode_t mode, de
- 	dee.creation_date = dee.write_date = dee.read_date = cpu_to_le32(local_get_seconds(dir->i_sb));
++	setup_wait
++
+ 	tcpdump_start $rcv_if_name
  
- 	result = new_inode(dir->i_sb);
--	if (!result)
-+	if (!result) {
-+		err = -ENOMEM;
- 		goto bail1;
--
-+	}
- 	hpfs_init_inode(result);
- 	result->i_ino = fno;
- 	hpfs_i(result)->i_parent_dir = dir->i_ino;
-@@ -317,8 +321,10 @@ static int hpfs_symlink(struct inode *dir, struct dentry *dentry, const char *sy
- 	dee.creation_date = dee.write_date = dee.read_date = cpu_to_le32(local_get_seconds(dir->i_sb));
- 
- 	result = new_inode(dir->i_sb);
--	if (!result)
-+	if (!result) {
-+		err = -ENOMEM;
- 		goto bail1;
-+	}
- 	result->i_ino = fno;
- 	hpfs_init_inode(result);
- 	hpfs_i(result)->i_parent_dir = dir->i_ino;
+ 	mc_route_prepare $h1
 -- 
 2.51.0
 
