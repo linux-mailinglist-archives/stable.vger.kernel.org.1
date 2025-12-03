@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-198315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D433C9F815
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:35:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDE27CA0033
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:38:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C281B3000786
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:35:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6C9F3304C28F
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:32:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1707B3101DD;
-	Wed,  3 Dec 2025 15:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C2D2376BEA;
+	Wed,  3 Dec 2025 16:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jsSk/Yzp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jSZp6Pfc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4B2230FC30;
-	Wed,  3 Dec 2025 15:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B779C393DDB;
+	Wed,  3 Dec 2025 16:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776139; cv=none; b=IbXspnCy6Od9RhGsz2r2l8srMR/UtKkhCuCCSWiKuzAV29vZowAbDOztzJB3U0y6TLkEFc58XArnvV26SDgpSE7ExL4x0eGQddhQnTdNKKvpCG1+256MolYfzb1tqnNKVHD7jF1VUTc9e7uBAbOH5u8l//vQeNPPBVyZvzjEF0k=
+	t=1764779555; cv=none; b=jctf/41AQUnwRoN5OjGi6dzIuhuKdCL4loefsjJeoN3WOLzaJzFFsmJWNnfeV/Fy1yUFmjxaQGFpMkOVDIUkjdtOnbO+j0eDeyvgdm9g7kqfHlZLcsSscmh/6rRglIwZzzw6RE4VXTxb+174jSP4Ora3baduQdTAkHWHG7y27BA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776139; c=relaxed/simple;
-	bh=pTGCTSNInxJkjOw1dGGyk2KOP2yB92y5daEXKjpBDuw=;
+	s=arc-20240116; t=1764779555; c=relaxed/simple;
+	bh=HF1zRSGMbYarJqBwoTV+khtecDE2uEuJ9AZLqV/yMf8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LaGMmRazJXodvHqWEe0U5ZatGehF/k26+3Ju9Kvcb7UpslXPITEkKgfFcHZ59pF3hFzkjhULittz74l3X0ob9CI7U2r6+1F9gN2YSptPxq8rX+HFuYqH8gsRUVmkrtpcOMBFjFFVAKtj68urWaKta1d85eldNOuTaKfOZZ0ma9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jsSk/Yzp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4398FC4CEF5;
-	Wed,  3 Dec 2025 15:35:39 +0000 (UTC)
+	 MIME-Version; b=c6LaIj8FFOe0497Ob23GkpeNNww0JgyBDhvVLdz/lZqFEsKDZzxD4KlKCBDm92vZcQbbJLFCsVhtD7DQ4lIWt0NxLf8/Nhh8G9sgh9sYR8W65alN/HNNWFF55FuZazyTUKoero7EedOoRBQHJNjlLIwc/kudi4iQw2YnqaFBVmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jSZp6Pfc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD05C4CEF5;
+	Wed,  3 Dec 2025 16:32:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776139;
-	bh=pTGCTSNInxJkjOw1dGGyk2KOP2yB92y5daEXKjpBDuw=;
+	s=korg; t=1764779555;
+	bh=HF1zRSGMbYarJqBwoTV+khtecDE2uEuJ9AZLqV/yMf8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jsSk/YzpFWe8jkmSp4vb9xN59feeWvrzGz8/s5UWtQNXbNjLv8cjWcJrQUAC6FmKw
-	 7Ze1dQJVQASNrFvWkEUTfmYZnsyUae+VF0t9i1bZicGTbdBiZpCDYvd6KAgzFbNNmY
-	 Cb6cNIf02s2zHWDLX4n7vOgLuCyC1ugOI3RVqpRY=
+	b=jSZp6PfcpoM+9725ztb6MIR2oyC8spY5XWQk4oGbFEHjkmQayp9xjSqx5OWwYB4FS
+	 mTZN8bCW4nQl3lXznYv6UV3xP344pGB/dh+dkoLv9WMOOaNetw9Hn0oUP2J8oVpSz8
+	 ViPTZUSuf6Qb8NErLGyJqqL1K4R82MeVF6FT0p9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ujwal Kundur <ujwal.kundur@gmail.com>,
-	Allison Henderson <allison.henderson@oracle.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Hoyoung Seo <hy50.seo@samsung.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 091/300] rds: Fix endianness annotation for RDS_MPATH_HASH
+Subject: [PATCH 6.1 293/568] scsi: ufs: core: Include UTP error in INT_FATAL_ERRORS
 Date: Wed,  3 Dec 2025 16:24:55 +0100
-Message-ID: <20251203152403.994907401@linuxfoundation.org>
+Message-ID: <20251203152451.434230500@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +61,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ujwal Kundur <ujwal.kundur@gmail.com>
+From: Hoyoung Seo <hy50.seo@samsung.com>
 
-[ Upstream commit 77907a068717fbefb25faf01fecca553aca6ccaa ]
+[ Upstream commit 558ae4579810fa0fef011944230c65a6f3087f85 ]
 
-jhash_1word accepts host endian inputs while rs_bound_port is a be16
-value (sockaddr_in6.sin6_port). Use ntohs() for consistency.
+When a UTP error occurs in isolation, UFS is not currently recoverable.
+This is because the UTP error is not considered fatal in the error
+handling code, leading to either an I/O timeout or an OCS error.
 
-Flagged by Sparse.
+Add the UTP error flag to INT_FATAL_ERRORS so the controller will be
+reset in this situation.
 
-Signed-off-by: Ujwal Kundur <ujwal.kundur@gmail.com>
-Reviewed-by: Allison Henderson <allison.henderson@oracle.com>
-Link: https://patch.msgid.link/20250820175550.498-4-ujwal.kundur@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+  sd 0:0:0:0: [sda] tag#38 UNKNOWN(0x2003) Result: hostbyte=0x07
+  driverbyte=DRIVER_OK cmd_age=0s
+  sd 0:0:0:0: [sda] tag#38 CDB: opcode=0x28 28 00 00 51 24 e2 00 00 08 00
+  I/O error, dev sda, sector 42542864 op 0x0:(READ) flags 0x80700 phys_seg
+  8 prio class 2
+  OCS error from controller = 9 for tag 39
+  pa_err[1] = 0x80000010 at 2667224756 us
+  pa_err: total cnt=2
+  dl_err[0] = 0x80000002 at 2667148060 us
+  dl_err[1] = 0x80002000 at 2667282844 us
+  No record of nl_err
+  No record of tl_err
+  No record of dme_err
+  No record of auto_hibern8_err
+  fatal_err[0] = 0x804 at 2667282836 us
+
+  ---------------------------------------------------
+  		REGISTER
+  ---------------------------------------------------
+                             NAME	      OFFSET	         VALUE
+                      STD HCI SFR	  0xfffffff0	           0x0
+                             AHIT	        0x18	         0x814
+                 INTERRUPT STATUS	        0x20	        0x1000
+                 INTERRUPT ENABLE	        0x24	       0x70ef5
+
+[mkp: commit desc]
+
+Signed-off-by: Hoyoung Seo <hy50.seo@samsung.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Message-Id: <20250930061428.617955-1-hy50.seo@samsung.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rds/rds.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/ufs/ufshci.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/rds/rds.h b/net/rds/rds.h
-index d35d1fc398076..1257867e85e4e 100644
---- a/net/rds/rds.h
-+++ b/net/rds/rds.h
-@@ -93,7 +93,7 @@ enum {
+diff --git a/include/ufs/ufshci.h b/include/ufs/ufshci.h
+index f525566a0864d..6e80ed46e44ae 100644
+--- a/include/ufs/ufshci.h
++++ b/include/ufs/ufshci.h
+@@ -123,6 +123,7 @@ static inline u32 ufshci_version(u32 major, u32 minor)
+ #define UTP_TASK_REQ_COMPL			0x200
+ #define UIC_COMMAND_COMPL			0x400
+ #define DEVICE_FATAL_ERROR			0x800
++#define UTP_ERROR				0x1000
+ #define CONTROLLER_FATAL_ERROR			0x10000
+ #define SYSTEM_BUS_FATAL_ERROR			0x20000
+ #define CRYPTO_ENGINE_FATAL_ERROR		0x40000
+@@ -141,7 +142,8 @@ static inline u32 ufshci_version(u32 major, u32 minor)
+ 				CONTROLLER_FATAL_ERROR |\
+ 				SYSTEM_BUS_FATAL_ERROR |\
+ 				CRYPTO_ENGINE_FATAL_ERROR |\
+-				UIC_LINK_LOST)
++				UIC_LINK_LOST |\
++				UTP_ERROR)
  
- /* Max number of multipaths per RDS connection. Must be a power of 2 */
- #define	RDS_MPATH_WORKERS	8
--#define	RDS_MPATH_HASH(rs, n) (jhash_1word((rs)->rs_bound_port, \
-+#define	RDS_MPATH_HASH(rs, n) (jhash_1word(ntohs((rs)->rs_bound_port), \
- 			       (rs)->rs_hash_initval) & ((n) - 1))
- 
- #define IS_CANONICAL(laddr, faddr) (htonl(laddr) < htonl(faddr))
+ /* HCS - Host Controller Status 30h */
+ #define DEVICE_PRESENT				0x1
 -- 
 2.51.0
 
