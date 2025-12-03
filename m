@@ -1,50 +1,52 @@
-Return-Path: <stable+bounces-198313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1472DC9F8B4
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:39:44 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D433C9F815
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:35:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7A981300724C
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:35:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C281B3000786
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:35:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16AE73090C6;
-	Wed,  3 Dec 2025 15:35:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1707B3101DD;
+	Wed,  3 Dec 2025 15:35:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RYFBBOE8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jsSk/Yzp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C734B301700;
-	Wed,  3 Dec 2025 15:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4B2230FC30;
+	Wed,  3 Dec 2025 15:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776133; cv=none; b=VBYsDM4G3riA5buR2muQ1FOSeTAU/lkNiBX7uUfsm3C0tpYP8dg3f76BCnFDY/5/fc+nHvph6ypCy2KT9Yv7YLXO2AXpWPMxusu45EHqnEtNOHHd8NS8RmomyLvqu1ZsKXfYncI0foGwWU/6BmJFJzy8PosHSiYyFEM9NWz5L+8=
+	t=1764776139; cv=none; b=IbXspnCy6Od9RhGsz2r2l8srMR/UtKkhCuCCSWiKuzAV29vZowAbDOztzJB3U0y6TLkEFc58XArnvV26SDgpSE7ExL4x0eGQddhQnTdNKKvpCG1+256MolYfzb1tqnNKVHD7jF1VUTc9e7uBAbOH5u8l//vQeNPPBVyZvzjEF0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776133; c=relaxed/simple;
-	bh=RICmmYjKuybs419OkruZgfVryTPeH6nCqi+8zy5x+W4=;
+	s=arc-20240116; t=1764776139; c=relaxed/simple;
+	bh=pTGCTSNInxJkjOw1dGGyk2KOP2yB92y5daEXKjpBDuw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oSmk8zUJg0FR92L61T/pCsHYVvJy1tp2Evx60F1Lc629Qw9HXoEaGsEfSj+Am3M12r3ltl+IfF4bQTfZcyJuNAOiK8KtMQyOQ5sVVY/UsvDv55hfpn4IXGLsaK2JdTRWe+/5Z4bxsJRDmjjZK3hNU8KjWb73ySB+1HsoBANDDZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RYFBBOE8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2CD8C4CEF5;
-	Wed,  3 Dec 2025 15:35:32 +0000 (UTC)
+	 MIME-Version; b=LaGMmRazJXodvHqWEe0U5ZatGehF/k26+3Ju9Kvcb7UpslXPITEkKgfFcHZ59pF3hFzkjhULittz74l3X0ob9CI7U2r6+1F9gN2YSptPxq8rX+HFuYqH8gsRUVmkrtpcOMBFjFFVAKtj68urWaKta1d85eldNOuTaKfOZZ0ma9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jsSk/Yzp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4398FC4CEF5;
+	Wed,  3 Dec 2025 15:35:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776133;
-	bh=RICmmYjKuybs419OkruZgfVryTPeH6nCqi+8zy5x+W4=;
+	s=korg; t=1764776139;
+	bh=pTGCTSNInxJkjOw1dGGyk2KOP2yB92y5daEXKjpBDuw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RYFBBOE8UwGS0G8vgo3E87Hk7ciGgNjvMIe1IQ7evYC7H7A8CQ7pf3wZ9TvqSMwGy
-	 lvif/eSzfkBS+QGgCPB3JuO1l07q8wKSZJgrxP+ZiWebR3xbRq6zsSTsMqGLsq+qP8
-	 1BXmfFfrL45sffqgCgWhwHUjKCXetR29hR555BlE=
+	b=jsSk/YzpFWe8jkmSp4vb9xN59feeWvrzGz8/s5UWtQNXbNjLv8cjWcJrQUAC6FmKw
+	 7Ze1dQJVQASNrFvWkEUTfmYZnsyUae+VF0t9i1bZicGTbdBiZpCDYvd6KAgzFbNNmY
+	 Cb6cNIf02s2zHWDLX4n7vOgLuCyC1ugOI3RVqpRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Ujwal Kundur <ujwal.kundur@gmail.com>,
+	Allison Henderson <allison.henderson@oracle.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 090/300] ALSA: usb-audio: Add validation of UAC2/UAC3 effect units
-Date: Wed,  3 Dec 2025 16:24:54 +0100
-Message-ID: <20251203152403.957531231@linuxfoundation.org>
+Subject: [PATCH 5.10 091/300] rds: Fix endianness annotation for RDS_MPATH_HASH
+Date: Wed,  3 Dec 2025 16:24:55 +0100
+Message-ID: <20251203152403.994907401@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
 References: <20251203152400.447697997@linuxfoundation.org>
@@ -63,50 +65,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Ujwal Kundur <ujwal.kundur@gmail.com>
 
-[ Upstream commit 2aec0b6a6b5395bca7d6fde9c7e9dc391d329698 ]
+[ Upstream commit 77907a068717fbefb25faf01fecca553aca6ccaa ]
 
-Just add fixed struct size validations for UAC2 and UAC3 effect
-units.  The descriptor has a variable-length array, so it should be
-validated with a proper function later once when the unit is really
-parsed and used by the driver (currently only referred partially for
-the input terminal parsing).
+jhash_1word accepts host endian inputs while rs_bound_port is a be16
+value (sockaddr_in6.sin6_port). Use ntohs() for consistency.
 
-Link: https://patch.msgid.link/20250821151751.12100-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Flagged by Sparse.
+
+Signed-off-by: Ujwal Kundur <ujwal.kundur@gmail.com>
+Reviewed-by: Allison Henderson <allison.henderson@oracle.com>
+Link: https://patch.msgid.link/20250820175550.498-4-ujwal.kundur@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/validate.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ net/rds/rds.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/usb/validate.c b/sound/usb/validate.c
-index a0d55b77c9941..4bb4893f6e74f 100644
---- a/sound/usb/validate.c
-+++ b/sound/usb/validate.c
-@@ -266,7 +266,11 @@ static const struct usb_desc_validator audio_validators[] = {
- 	FUNC(UAC_VERSION_2, UAC_MIXER_UNIT, validate_mixer_unit),
- 	FUNC(UAC_VERSION_2, UAC_SELECTOR_UNIT, validate_selector_unit),
- 	FUNC(UAC_VERSION_2, UAC_FEATURE_UNIT, validate_uac2_feature_unit),
--	/* UAC_VERSION_2, UAC2_EFFECT_UNIT: not implemented yet */
-+	/* just a stop-gap, it should be a proper function for the array
-+	 * once if the unit is really parsed/used
-+	 */
-+	FIXED(UAC_VERSION_2, UAC2_EFFECT_UNIT,
-+	      struct uac2_effect_unit_descriptor),
- 	FUNC(UAC_VERSION_2, UAC2_PROCESSING_UNIT_V2, validate_processing_unit),
- 	FUNC(UAC_VERSION_2, UAC2_EXTENSION_UNIT_V2, validate_processing_unit),
- 	FIXED(UAC_VERSION_2, UAC2_CLOCK_SOURCE,
-@@ -286,7 +290,8 @@ static const struct usb_desc_validator audio_validators[] = {
- 	FUNC(UAC_VERSION_3, UAC3_MIXER_UNIT, validate_mixer_unit),
- 	FUNC(UAC_VERSION_3, UAC3_SELECTOR_UNIT, validate_selector_unit),
- 	FUNC(UAC_VERSION_3, UAC3_FEATURE_UNIT, validate_uac3_feature_unit),
--	/*  UAC_VERSION_3, UAC3_EFFECT_UNIT: not implemented yet */
-+	FIXED(UAC_VERSION_3, UAC3_EFFECT_UNIT,
-+	      struct uac2_effect_unit_descriptor), /* sharing the same struct */
- 	FUNC(UAC_VERSION_3, UAC3_PROCESSING_UNIT, validate_processing_unit),
- 	FUNC(UAC_VERSION_3, UAC3_EXTENSION_UNIT, validate_processing_unit),
- 	FIXED(UAC_VERSION_3, UAC3_CLOCK_SOURCE,
+diff --git a/net/rds/rds.h b/net/rds/rds.h
+index d35d1fc398076..1257867e85e4e 100644
+--- a/net/rds/rds.h
++++ b/net/rds/rds.h
+@@ -93,7 +93,7 @@ enum {
+ 
+ /* Max number of multipaths per RDS connection. Must be a power of 2 */
+ #define	RDS_MPATH_WORKERS	8
+-#define	RDS_MPATH_HASH(rs, n) (jhash_1word((rs)->rs_bound_port, \
++#define	RDS_MPATH_HASH(rs, n) (jhash_1word(ntohs((rs)->rs_bound_port), \
+ 			       (rs)->rs_hash_initval) & ((n) - 1))
+ 
+ #define IS_CANONICAL(laddr, faddr) (htonl(laddr) < htonl(faddr))
 -- 
 2.51.0
 
