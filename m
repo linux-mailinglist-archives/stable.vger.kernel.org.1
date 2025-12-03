@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-198721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07BA0C9FBD8
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:57:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53E17CA0592
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:20:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 764743000B3B
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:57:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7B23D3058A5C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:06:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 361C2343D6E;
-	Wed,  3 Dec 2025 15:57:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E31D035E53E;
+	Wed,  3 Dec 2025 16:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uwIQ9yvZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EUyZtlbT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0CC434321C;
-	Wed,  3 Dec 2025 15:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B3C35E523;
+	Wed,  3 Dec 2025 16:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777470; cv=none; b=nj8XAIEo/cCTRLHeHN7a7gj4PnKeSiOlYduK8fNjWzyygVCFLHpJiAi/7gf6e8zEmy9V5ViWqfkxcJzbT0yUKJkTVDg9nHikMA9OKl4/IgM3kv2TYvzDL78kSSLs9Pn3m1Qr9w0grdncS3UQig0t50KRU1XyudNhhjIpnG9MOjg=
+	t=1764779233; cv=none; b=VPAQqXbaxo3RnjvSzsGT6OUVsX6Mi0iZ0//Dcu2vCQOE0iZ8HxVvXKqUXCbL1ZhwsIWNrHn3eOy0jFYshKa95mkd504Go/BUWZyQ0U5HzYr7CW4zieFLGBZVU4ixaGi+/uzwj3oDmX7AjcZj8K58aQNdh5yZzeieAsNfyoQMPec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777470; c=relaxed/simple;
-	bh=SBdQEKr4Xqzkxu9vl1t5OfYdRasHW2ck+Ixq8XV0dko=;
+	s=arc-20240116; t=1764779233; c=relaxed/simple;
+	bh=wneHHsXu1XVwgEbXkDcXBLBAEY9rZ0/HuVXjVStNW4w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CBRmd7B4RIXCc17GqV1nr0DaemW61svTDWv3TGnV3Nt6mQ7RGphq0dG9cN/bPE7oJCZc/T7aTw6IjTbZdXpcfOZJ+7FpPUsnkT45prGLvM692beI2tgWYgs1aDbOyKRoFpAY0/wkfQIUFZ0AaMA87KCmQEJGXZW4pqus95IQcBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uwIQ9yvZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 633F2C4CEF5;
-	Wed,  3 Dec 2025 15:57:49 +0000 (UTC)
+	 MIME-Version; b=U2q9tZDOsdAMvcdEKyCOmQ1h9dHqfDe+ZCWlYdWS2xw2esHig2KEQ1yHnN8sz9QoeZvNwERIQmvSSpqsFFORGxjauYRUsOTdqkrgRJQ8OfxkqdvfmnPI4ysKBCCR3pJtEjnicBNfWhq2kTrhzri4rpJt5aAUTmMEVvPbH5TS52Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EUyZtlbT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E85CC4CEF5;
+	Wed,  3 Dec 2025 16:27:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777469;
-	bh=SBdQEKr4Xqzkxu9vl1t5OfYdRasHW2ck+Ixq8XV0dko=;
+	s=korg; t=1764779233;
+	bh=wneHHsXu1XVwgEbXkDcXBLBAEY9rZ0/HuVXjVStNW4w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uwIQ9yvZW8DolnfoIFGyecOlEww2TnhwIrsL+9F1abC/9DoruO+x0d0WDJAwsqECs
-	 2DChggO/UjSaqGZseUYQ6t2c8OyaCJrF0NF2MJgac+as2oCYTT6pOxf6Ly138R3W8x
-	 ZpeS+BPQo9SxG/ngLUi/Hiyr1RV2xQLEJYk7KDSU=
+	b=EUyZtlbTZZbGis/uoi2gv3evu2mZ0GCK+L4NFKJR9m5j9UiXRW6b2gQjuL/rudB8W
+	 OcXNd7yXmalLeVUIzYV6Z0Bk5kP+AsPPj4ZB/c/pvVxRJd5wngJy/OKlCynPgEYNpE
+	 CQof7OByWxOQOk0Re4g3uob0+NnlWZ4mGiOLAMtA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 5.15 047/392] arch: back to -std=gnu89 in < v5.18
+	Guoli An <anguoli@uniontech.com>,
+	Cryolitia PukNgae <cryolitia@uniontech.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 195/568] ALSA: usb-audio: apply quirk for MOONDROP Quark2
 Date: Wed,  3 Dec 2025 16:23:17 +0100
-Message-ID: <20251203152415.842177300@linuxfoundation.org>
+Message-ID: <20251203152447.867809202@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,113 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Cryolitia PukNgae <cryolitia@uniontech.com>
 
-Recent fixes have been backported to < v5.18 to fix build issues with
-GCC 5.15. They all force -std=gnu11 in the CFLAGS, "because [the kernel]
-requests the gnu11 standard via '-std=' in the main Makefile".
+[ Upstream commit a73349c5dd27bc544b048e2e2c8ef6394f05b793 ]
 
-This is true for >= 5.18 versions, but not before. This switch to
--std=gnu11 has been done in commit e8c07082a810 ("Kbuild: move to
--std=gnu11").
+It reports a MIN value -15360 for volume control, but will mute when
+setting it less than -14208
 
-For a question of uniformity, force -std=gnu89, similar to what is done
-in the main Makefile.
-
-Note: the fixes tags below refers to upstream commits, but this fix is
-only for kernels not having commit e8c07082a810 ("Kbuild: move to
--std=gnu11").
-
-Fixes: 7cbb015e2d3d ("parisc: fix building with gcc-15")
-Fixes: 3b8b80e99376 ("s390: Add '-std=gnu11' to decompressor and purgatory CFLAGS")
-Fixes: b3bee1e7c3f2 ("x86/boot: Compile boot code with -std=gnu11 too")
-Fixes: ee2ab467bddf ("x86/boot: Use '-std=gnu11' to fix build with GCC 15")
-Fixes: 8ba14d9f490a ("efi: libstub: Use '-std=gnu11' to fix build with GCC 15")
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Alexey Dobriyan <adobriyan@gmail.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tested-by: Guoli An <anguoli@uniontech.com>
+Signed-off-by: Cryolitia PukNgae <cryolitia@uniontech.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250903-sound-v1-4-d4ca777b8512@uniontech.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/boot/compressed/Makefile  |    2 +-
- arch/s390/Makefile                    |    2 +-
- arch/s390/purgatory/Makefile          |    2 +-
- arch/x86/Makefile                     |    2 +-
- arch/x86/boot/compressed/Makefile     |    2 +-
- drivers/firmware/efi/libstub/Makefile |    2 +-
- 6 files changed, 6 insertions(+), 6 deletions(-)
+ sound/usb/mixer.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/arch/parisc/boot/compressed/Makefile
-+++ b/arch/parisc/boot/compressed/Makefile
-@@ -22,7 +22,7 @@ KBUILD_CFLAGS += -fno-PIE -mno-space-reg
- ifndef CONFIG_64BIT
- KBUILD_CFLAGS += -mfast-indirect-calls
- endif
--KBUILD_CFLAGS += -std=gnu11
-+KBUILD_CFLAGS += -std=gnu89
+diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
+index 4cded91d22a8d..d258c7324fcc7 100644
+--- a/sound/usb/mixer.c
++++ b/sound/usb/mixer.c
+@@ -1191,6 +1191,13 @@ static void volume_control_quirks(struct usb_mixer_elem_info *cval,
+ 			cval->res = 1;
+ 		}
+ 		break;
++	case USB_ID(0x3302, 0x12db): /* MOONDROP Quark2 */
++		if (!strcmp(kctl->id.name, "PCM Playback Volume")) {
++			usb_audio_info(chip,
++				"set volume quirk for MOONDROP Quark2\n");
++			cval->min = -14208; /* Mute under it */
++		}
++		break;
+ 	}
+ }
  
- OBJECTS += $(obj)/head.o $(obj)/real2.o $(obj)/firmware.o $(obj)/misc.o $(obj)/piggy.o
- 
---- a/arch/s390/Makefile
-+++ b/arch/s390/Makefile
-@@ -23,7 +23,7 @@ endif
- aflags_dwarf	:= -Wa,-gdwarf-2
- KBUILD_AFLAGS_DECOMPRESSOR := $(CLANG_FLAGS) -m64 -D__ASSEMBLY__
- KBUILD_AFLAGS_DECOMPRESSOR += $(if $(CONFIG_DEBUG_INFO),$(aflags_dwarf))
--KBUILD_CFLAGS_DECOMPRESSOR := $(CLANG_FLAGS) -m64 -O2 -std=gnu11
-+KBUILD_CFLAGS_DECOMPRESSOR := $(CLANG_FLAGS) -m64 -O2 -std=gnu89
- KBUILD_CFLAGS_DECOMPRESSOR += -DDISABLE_BRANCH_PROFILING -D__NO_FORTIFY
- KBUILD_CFLAGS_DECOMPRESSOR += -fno-delete-null-pointer-checks -msoft-float -mbackchain
- KBUILD_CFLAGS_DECOMPRESSOR += -fno-asynchronous-unwind-tables
---- a/arch/s390/purgatory/Makefile
-+++ b/arch/s390/purgatory/Makefile
-@@ -21,7 +21,7 @@ UBSAN_SANITIZE := n
- KASAN_SANITIZE := n
- KCSAN_SANITIZE := n
- 
--KBUILD_CFLAGS := -std=gnu11 -fno-strict-aliasing -Wall -Wstrict-prototypes
-+KBUILD_CFLAGS := -std=gnu89 -fno-strict-aliasing -Wall -Wstrict-prototypes
- KBUILD_CFLAGS += -Wno-pointer-sign -Wno-sign-compare
- KBUILD_CFLAGS += -fno-zero-initialized-in-bss -fno-builtin -ffreestanding
- KBUILD_CFLAGS += -c -MD -Os -m64 -msoft-float -fno-common
---- a/arch/x86/Makefile
-+++ b/arch/x86/Makefile
-@@ -24,7 +24,7 @@ endif
- 
- # How to compile the 16-bit code.  Note we always compile for -march=i386;
- # that way we can complain to the user if the CPU is insufficient.
--REALMODE_CFLAGS	:= -std=gnu11 -m16 -g -Os -DDISABLE_BRANCH_PROFILING -D__DISABLE_EXPORTS \
-+REALMODE_CFLAGS	:= -std=gnu89 -m16 -g -Os -DDISABLE_BRANCH_PROFILING -D__DISABLE_EXPORTS \
- 		   -Wall -Wstrict-prototypes -march=i386 -mregparm=3 \
- 		   -fno-strict-aliasing -fomit-frame-pointer -fno-pic \
- 		   -mno-mmx -mno-sse $(call cc-option,-fcf-protection=none)
---- a/arch/x86/boot/compressed/Makefile
-+++ b/arch/x86/boot/compressed/Makefile
-@@ -33,7 +33,7 @@ targets := vmlinux vmlinux.bin vmlinux.b
- # avoid errors with '-march=i386', and future flags may depend on the target to
- # be valid.
- KBUILD_CFLAGS := -m$(BITS) -O2 $(CLANG_FLAGS)
--KBUILD_CFLAGS += -std=gnu11
-+KBUILD_CFLAGS += -std=gnu89
- KBUILD_CFLAGS += -fno-strict-aliasing -fPIE
- KBUILD_CFLAGS += -Wundef
- KBUILD_CFLAGS += -DDISABLE_BRANCH_PROFILING
---- a/drivers/firmware/efi/libstub/Makefile
-+++ b/drivers/firmware/efi/libstub/Makefile
-@@ -7,7 +7,7 @@
- #
- cflags-$(CONFIG_X86_32)		:= -march=i386
- cflags-$(CONFIG_X86_64)		:= -mcmodel=small
--cflags-$(CONFIG_X86)		+= -m$(BITS) -D__KERNEL__ -std=gnu11 \
-+cflags-$(CONFIG_X86)		+= -m$(BITS) -D__KERNEL__ -std=gnu89 \
- 				   -fPIC -fno-strict-aliasing -mno-red-zone \
- 				   -mno-mmx -mno-sse -fshort-wchar \
- 				   -Wno-pointer-sign \
+-- 
+2.51.0
+
 
 
 
