@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DF39CA0A3C
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:48:54 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99457CA0700
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:27:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C85343009967
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:48:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B850330014CF
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:27:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 106E734DB4D;
-	Wed,  3 Dec 2025 16:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E936F3321A7;
+	Wed,  3 Dec 2025 15:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T0RGL/bd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q+7j8CVH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2AA834DB48;
-	Wed,  3 Dec 2025 16:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A619D3321A3;
+	Wed,  3 Dec 2025 15:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778384; cv=none; b=rgHSIorIL/XDJc+k3VI+8d/umv5clBNQR2fbQ7EAC/B2b8u35wEXgTXEiBT8ugis7Y+FS71Cf1NpRxS0D6OBoJUaYk+rQq32p16owQmDQ2OpoNQGXZfqfKgBEE8iXvPL5kNSFzjHNNX1JDsrLqId8f0VFA/1FQATsKgn1Sm8/A8=
+	t=1764777165; cv=none; b=V4xrZ1W3bb3CzZesO9P0219QWd8dw+pP2PglhPqjxyx1CanpVFfbE3IDtbtQsNrf33IskZLT295lJQYdDWfoZrKFF2WTnLKhX40LqSuzrNnip+CYcEbxvQenhONwmDQwpkQU10/6nHqTi2kezDc1O2i/ErCBr47VJagLPSp6ndA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778384; c=relaxed/simple;
-	bh=icws8GIuwDLKahsggebXcojELyfG3xXb7ZX2015Pkec=;
+	s=arc-20240116; t=1764777165; c=relaxed/simple;
+	bh=OXvk9n0L3KAFyWc9WPkyIzpn/LE4Ia4wLctogkoQvRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bn/NPqNmrlCprnY5uqZxppKfzxjPgHsjU3XXdNB92TDUEKQ1tXPoUp/LB5gq2M6lkWHNzllbNrZCxxX2z+Kg1rzvGVLntHZfwrA3x9QNRRE/tIZQKqBtjVom4lCSzAcOliBF7IEz5Q7Ms4aMbJcexolbqmlAmzQaHE1NQcyRiiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T0RGL/bd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28587C116B1;
-	Wed,  3 Dec 2025 16:13:03 +0000 (UTC)
+	 MIME-Version; b=YI7fi3QBRcdZ+vLcKU3d07gayr8jpxhU2OVqGPA1kP5Bg6EAE1IlsSAbkOribX1CaZqleZav0J8pjcZI8BuYBfeJQZ6Qb9Zt6G8FjYyXkn4QcYEBhuFwn61/05GD3K0oUl605H1E58Gg82vPz4lAgzclasI/WLactj/X0t/BX6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q+7j8CVH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A3AC4CEF5;
+	Wed,  3 Dec 2025 15:52:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778384;
-	bh=icws8GIuwDLKahsggebXcojELyfG3xXb7ZX2015Pkec=;
+	s=korg; t=1764777165;
+	bh=OXvk9n0L3KAFyWc9WPkyIzpn/LE4Ia4wLctogkoQvRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T0RGL/bd1uck+KJoKEMxNENcLU/TjY1IiOfihcn7PogsN4E8QjDKWQ6aV5vKQacuY
-	 Osaf0t7CvuNzbBPxzIsJ2aoR/maKKKMVmjs0g3FSX41Q2R0bBRHLeORjT9gwpwHg3W
-	 OWVuNKFua8sd8g/a1ii5bNJxS+luZJbx01ScE/nw=
+	b=Q+7j8CVHViFgPDRQglMKMHnt2mDmgaMAHbIS+xwijL+yUw39uwGh8aKUcN0naEEfg
+	 yXT996XehMBa4erLRebzqcmPny5rrpiVWg4Z+n3jxDYnoe/UqzVu3oF3qtjKI4VLrP
+	 uK9aJxIYNsorM/6I+BVRcyJnUXiTM9yT7Cxu7C60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Fabio M. De Francesco" <fabio.maria.de.francesco@linux.intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 329/392] mm/mempool: replace kmap_atomic() with kmap_local_page()
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: [PATCH 6.17 101/146] iommufd/driver: Fix counter initialization for counted_by annotation
 Date: Wed,  3 Dec 2025 16:27:59 +0100
-Message-ID: <20251203152426.271725935@linuxfoundation.org>
+Message-ID: <20251203152350.156911806@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Fabio M. De Francesco" <fabio.maria.de.francesco@linux.intel.com>
+From: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-[ Upstream commit f2bcc99a5e901a13b754648d1dbab60f4adf9375 ]
+commit ac84ff453305d12bc799074a9f9af30ff97fff70 upstream.
 
-kmap_atomic() has been deprecated in favor of kmap_local_page().
+One of the requirements for counted_by annotations is that the counter
+member must be initialized before the first reference to the
+flexible-array member.
 
-Therefore, replace kmap_atomic() with kmap_local_page().
+Move the vevent->data_len = data_len; initialization to before the
+first access to flexible array vevent->event_data.
 
-kmap_atomic() is implemented like a kmap_local_page() which also disables
-page-faults and preemption (the latter only in !PREEMPT_RT kernels).  The
-kernel virtual addresses returned by these two API are only valid in the
-context of the callers (i.e., they cannot be handed to other threads).
-
-With kmap_local_page() the mappings are per thread and CPU local like in
-kmap_atomic(); however, they can handle page-faults and can be called from
-any context (including interrupts).  The tasks that call kmap_local_page()
-can be preempted and, when they are scheduled to run again, the kernel
-virtual addresses are restored and are still valid.
-
-The code blocks between the mappings and un-mappings don't rely on the
-above-mentioned side effects of kmap_atomic(), so that mere replacements
-of the old API with the new one is all that they require (i.e., there is
-no need to explicitly call pagefault_disable() and/or preempt_disable()).
-
-Link: https://lkml.kernel.org/r/20231120142640.7077-1-fabio.maria.de.francesco@linux.intel.com
-Signed-off-by: Fabio M. De Francesco <fabio.maria.de.francesco@linux.intel.com>
-Cc: Ira Weiny <ira.weiny@intel.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: ec33b59542d9 ("mm/mempool: fix poisoning order>0 pages with HIGHMEM")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://patch.msgid.link/r/aRL7ZFFqM5bRTd2D@kspp
+Cc: stable@vger.kernel.org
+Fixes: e8e1ef9b77a7 ("iommufd/viommu: Add iommufd_viommu_report_event helper")
+Signed-off-by: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/mempool.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/iommu/iommufd/driver.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/mempool.c
-+++ b/mm/mempool.c
-@@ -63,10 +63,10 @@ static void check_element(mempool_t *poo
- 	} else if (pool->free == mempool_free_pages) {
- 		/* Mempools backed by page allocator */
- 		int order = (int)(long)pool->pool_data;
--		void *addr = kmap_atomic((struct page *)element);
-+		void *addr = kmap_local_page((struct page *)element);
- 
- 		__check_element(pool, addr, 1UL << (PAGE_SHIFT + order));
--		kunmap_atomic(addr);
-+		kunmap_local(addr);
+diff --git a/drivers/iommu/iommufd/driver.c b/drivers/iommu/iommufd/driver.c
+index 6f1010da221c..21d4a35538f6 100644
+--- a/drivers/iommu/iommufd/driver.c
++++ b/drivers/iommu/iommufd/driver.c
+@@ -161,8 +161,8 @@ int iommufd_viommu_report_event(struct iommufd_viommu *viommu,
+ 		vevent = &veventq->lost_events_header;
+ 		goto out_set_header;
  	}
- }
+-	memcpy(vevent->event_data, event_data, data_len);
+ 	vevent->data_len = data_len;
++	memcpy(vevent->event_data, event_data, data_len);
+ 	veventq->num_events++;
  
-@@ -86,10 +86,10 @@ static void poison_element(mempool_t *po
- 	} else if (pool->alloc == mempool_alloc_pages) {
- 		/* Mempools backed by page allocator */
- 		int order = (int)(long)pool->pool_data;
--		void *addr = kmap_atomic((struct page *)element);
-+		void *addr = kmap_local_page((struct page *)element);
- 
- 		__poison_element(addr, 1UL << (PAGE_SHIFT + order));
--		kunmap_atomic(addr);
-+		kunmap_local(addr);
- 	}
- }
- #else /* CONFIG_DEBUG_SLAB || CONFIG_SLUB_DEBUG_ON */
+ out_set_header:
+-- 
+2.52.0
+
 
 
 
