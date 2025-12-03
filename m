@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFFCDCA10C3
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:39:39 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E924CA097F
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:44:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D98F533F032E
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:45:14 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C335330014CA
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:44:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0056532C333;
-	Wed,  3 Dec 2025 15:49:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA21347BD4;
+	Wed,  3 Dec 2025 16:12:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z5TnSzV6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DnNsaJ1b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B03EB32C327;
-	Wed,  3 Dec 2025 15:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2592F347BC6;
+	Wed,  3 Dec 2025 16:12:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776996; cv=none; b=eM7Ym1NnRvkUCmp0q+Ek5aeynQIjDoW5C7LJU1of38ypJbo384x0DN3c2uA7ob650bfpqsn+7RbuNii5PByfyhKCqKAZDYITtAc0BCF6HDlKJ2tV+P71umMaowFds8nZ5B/gJ34GW1rqAWClfT9Chl8ukMauPbYyam8lUgxKL6M=
+	t=1764778328; cv=none; b=DZXX45ASYFp1pghPgIt38C8IyIIU9cI0kaXxK49JpRZNEs78EbY8estHPINpFMQrpv/+BfPGG66d1scC3MAw6bx9V8TV4M0sLma6dsQH51a7DxfKvVNfa0YNTcfoxdYVT+xBWMMfScAYlFLXVhKo8c9d/kH7pYyYKCPTFgAMDLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776996; c=relaxed/simple;
-	bh=LvL7+i1TfD+WpM/3BkeadnxSCAuBBjVYasfcF6gOR+8=;
+	s=arc-20240116; t=1764778328; c=relaxed/simple;
+	bh=yyrdTa/NQhJlt7VDjij8D+/coQEZsQVilbSnMIgFeB0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KLjGWx2UEoZd5wpuWMHd+iAd6hKgWY/WPsRnC6Ct0j+BaY9pmoPU5HAZEaVUBnXJyE3QdEI0jSuECFDtdcS0gDOCON1GqcQfXQ/jm6HvdQgztqiw3QnK6q9SUd79vtUICDdAbM+SrWSMcsFd1AgAf3WFf3LR5Jn5tWOM8FGa1n0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z5TnSzV6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D69FC4CEF5;
-	Wed,  3 Dec 2025 15:49:55 +0000 (UTC)
+	 MIME-Version; b=n4O/FogFEEVxyjDTrsZk69h5jawnngwCAMLUXyhE2azXpDme1MZ0TEVWaio8HEdsZKy+EXntnbwBfFc0sbJNyPbhOJOpU6HCThrXmGSZ10VoZz2xjioBNxT075RkpCejZglKWim7rVQiOHOHjOIYZQ5shOn62IBfkr9jOyKIeGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DnNsaJ1b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8518DC4CEF5;
+	Wed,  3 Dec 2025 16:12:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776996;
-	bh=LvL7+i1TfD+WpM/3BkeadnxSCAuBBjVYasfcF6gOR+8=;
+	s=korg; t=1764778328;
+	bh=yyrdTa/NQhJlt7VDjij8D+/coQEZsQVilbSnMIgFeB0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z5TnSzV6kGUMQm3Y5J00wofheNNo5Nswe43IpSXnlYPNnjnEUqE66Z0n0nCKvaknN
-	 EZhM/pDUiJa3qPazu9qOjKntEHKPG5YXegVWMUjfYD4/mht/g1YNRyMfRrc3OImGbh
-	 Tmf2RQiVnxc98uN4fwDnRSxMCitJbJ6pxsaF3NKA=
+	b=DnNsaJ1bb6iYaQP0AUwmRxU5wkx/Tkm2ya9TqBZuGT08172Qwfm7RsZ5XdwUMXAyA
+	 /sbnNnOt/KdTP9piVe8jly3LYO6hb+W8BsqC5bm3m++FvNIvvbN3jCfom7dbCwRHR+
+	 Qva5S7VoT0ltJ+v38VnF53x3D/CtPM7aarKPaeVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Malaya Kumar Rout <mrout@redhat.com>
-Subject: [PATCH 6.17 051/146] timekeeping: Fix error code in tk_aux_sysfs_init()
+	Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Dinh Nguyen <dinguyen@kernel.org>
+Subject: [PATCH 5.15 279/392] EDAC/altera: Use INTTEST register for Ethernet and USB SBE injection
 Date: Wed,  3 Dec 2025 16:27:09 +0100
-Message-ID: <20251203152348.339798323@linuxfoundation.org>
+Message-ID: <20251203152424.428045155@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +60,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
 
-commit c7418164b463056bf4327b6a2abe638b78250f13 upstream.
+commit 281326be67252ac5794d1383f67526606b1d6b13 upstream.
 
-If kobject_create_and_add() fails on the first iteration, then the error
-code is set to -ENOMEM which is correct. But if it fails in subsequent
-iterations then "ret" is zero, which means success, but it should be
--ENOMEM.
+The current single-bit error injection mechanism flips bits directly in ECC RAM
+by performing write and read operations. When the ECC RAM is actively used by
+the Ethernet or USB controller, this approach sometimes trigger a false
+double-bit error.
 
-Set the error code to -ENOMEM correctly.
+Switch both Ethernet and USB EDAC devices to use the INTTEST register
+(altr_edac_a10_device_inject_fops) for single-bit error injection, similar to
+the existing double-bit error injection method.
 
-Fixes: 7b5ab04f035f ("timekeeping: Fix resource leak in tk_aux_sysfs_init() error paths")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Malaya Kumar Rout <mrout@redhat.com>
-Link: https://patch.msgid.link/aSW1R8q5zoY_DgQE@stanley.mountain
+Fixes: 064acbd4f4ab ("EDAC, altera: Add Stratix10 peripheral support")
+Signed-off-by: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Dinh Nguyen <dinguyen@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251111081333.1279635-1-niravkumarlaxmidas.rabara@altera.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/timekeeping.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/edac/altera_edac.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
-index 08e0943b54da..4790da895203 100644
---- a/kernel/time/timekeeping.c
-+++ b/kernel/time/timekeeping.c
-@@ -3073,8 +3073,10 @@ static int __init tk_aux_sysfs_init(void)
- 		char id[2] = { [0] = '0' + i, };
- 		struct kobject *clk = kobject_create_and_add(id, auxo);
+--- a/drivers/edac/altera_edac.c
++++ b/drivers/edac/altera_edac.c
+@@ -1341,7 +1341,7 @@ static const struct edac_device_prv_data
+ 	.ue_set_mask = ALTR_A10_ECC_TDERRA,
+ 	.set_err_ofst = ALTR_A10_ECC_INTTEST_OFST,
+ 	.ecc_irq_handler = altr_edac_a10_ecc_irq,
+-	.inject_fops = &altr_edac_a10_device_inject2_fops,
++	.inject_fops = &altr_edac_a10_device_inject_fops,
+ };
  
--		if (!clk)
-+		if (!clk) {
-+			ret = -ENOMEM;
- 			goto err_clean;
-+		}
+ #endif	/* CONFIG_EDAC_ALTERA_ETHERNET */
+@@ -1431,7 +1431,7 @@ static const struct edac_device_prv_data
+ 	.ue_set_mask = ALTR_A10_ECC_TDERRA,
+ 	.set_err_ofst = ALTR_A10_ECC_INTTEST_OFST,
+ 	.ecc_irq_handler = altr_edac_a10_ecc_irq,
+-	.inject_fops = &altr_edac_a10_device_inject2_fops,
++	.inject_fops = &altr_edac_a10_device_inject_fops,
+ };
  
- 		ret = sysfs_create_group(clk, &aux_clock_enable_attr_group);
- 		if (ret)
--- 
-2.52.0
-
+ #endif	/* CONFIG_EDAC_ALTERA_USB */
 
 
 
