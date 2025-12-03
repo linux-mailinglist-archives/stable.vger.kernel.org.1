@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-198669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB068CA0EFB
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:25:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE0EACA0F9C
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:29:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D74883452D53
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:23:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C086A331EAB3
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:28:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0231433A716;
-	Wed,  3 Dec 2025 15:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CF8B362136;
+	Wed,  3 Dec 2025 16:45:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hEtcM11v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nJX6vlk8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B60303A35;
-	Wed,  3 Dec 2025 15:55:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEAD3362121;
+	Wed,  3 Dec 2025 16:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777300; cv=none; b=BHOhLkc+erin92UQkujEQtnE69FIXaWVSXzrYyHvOAaOY7KfBlYVtC91NqLDqjWmxi3mAQel44JgZF6Si1+HoHzZ87D/q8lwPiWwQYOiW8eFJgKK/FvjEykXQWsO//xAvBB45mtnCkoVSHSGbaZPHsVrJb0WNuHeLSoWV2oNXqk=
+	t=1764780306; cv=none; b=aPzzR0Rm7Jdk63GSBuxcCTV9hD+iOk+e2/8eMsfExA0RaqHqU4t7qKXLNf+k0PIitB3p7Dv0b5OViejxt4v9h7tYiLs7p9P2R/C95dK4+glMbL98ZfeIW7mGcqpa20S6tYfpC+9hfbhJobJvDnz2KI1gWl99GLqSAMQDOCJo6NM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777300; c=relaxed/simple;
-	bh=dnUDpSqZI5GnYCmHRMx48IHqxos56f+lle9cA+m0cQk=;
+	s=arc-20240116; t=1764780306; c=relaxed/simple;
+	bh=xOXsogycBy+7XI6HoZFR/hniF4s7ftA8WJnR3ymMTJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VrFcV/MIJIrMt1AXalxe+uDMJytrNqqLbRwpzi76e5x+3DxhoH5xO+r/q7gdvnLL1XB4NPrInSPR7Ft+191IDzPhvyRm93kZJOf+hCAdzb7LnbpsQ+hwhg3G8MryCUPb0FHr70LyV7QjN6ipYgW7Y+iJhjIQVXhQiidMKSRn7tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hEtcM11v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA834C116B1;
-	Wed,  3 Dec 2025 15:54:59 +0000 (UTC)
+	 MIME-Version; b=G6EE9gXaq3j6vUpLmPs6juIRy68xMh0PSdHUG5R6chHCcvk+WfMVmO/x6CniHJmEp8IPw+45uspIuMU1Cf3i7+vSqfs/GEAYvDxSCr/Ed1UV8eHH0U4+8cBA2msFWhWR4pukKN7lKnfodfctAEL5wFJuELoEU9EFuFnhqruugJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nJX6vlk8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AC85C4CEF5;
+	Wed,  3 Dec 2025 16:45:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777300;
-	bh=dnUDpSqZI5GnYCmHRMx48IHqxos56f+lle9cA+m0cQk=;
+	s=korg; t=1764780306;
+	bh=xOXsogycBy+7XI6HoZFR/hniF4s7ftA8WJnR3ymMTJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hEtcM11v77gtdRhRtCp7lsdj/fPXnivlMQt6FbE+D0awBXrjjWpv8f5V5OFwlKbGu
-	 +1toBi36wnoSv3iCUvVDj4ZhQysemAXaUV8l4FTE2YrUSywgwnWIPq/L2JZcan4onF
-	 jX0YR3ca5vrFaehm3W+9w7SfJFaLPVB1v3IuckxY=
+	b=nJX6vlk8utaU5NdDyr1Z2bRy7DLhtdOciA/fVW9HxfVaHtCxXK4Z5vJbMgkJzzRRV
+	 Gqi9/FcYc6kViSzFt6PY7uhZjgguvVgaMkRxe6WV1+Nc2NuKuJ5vciMynkITkCdvjy
+	 VY5L6olfuGvlDAXrW+Myc7up0V3BiwZftXA+xpOM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ziming zhang <ezrakiez@gmail.com>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.17 141/146] libceph: replace BUG_ON with bounds check for map->max_osd
+	Francesco Lavra <flavra@baylibre.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 517/568] iio: imu: st_lsm6dsx: fix array size for st_lsm6dsx_settings fields
 Date: Wed,  3 Dec 2025 16:28:39 +0100
-Message-ID: <20251203152351.634340039@linuxfoundation.org>
+Message-ID: <20251203152459.650457599@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,97 +61,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ziming zhang <ezrakiez@gmail.com>
+From: Francesco Lavra <flavra@baylibre.com>
 
-commit ec3797f043756a94ea2d0f106022e14ac4946c02 upstream.
+commit 3af0c1fb1cdc351b64ff1a4bc06d491490c1f10a upstream.
 
-OSD indexes come from untrusted network packets. Boundary checks are
-added to validate these against map->max_osd.
+The `decimator` and `batch` fields of struct st_lsm6dsx_settings
+are arrays indexed by sensor type, not by sensor hardware
+identifier; moreover, the `batch` field is only used for the
+accelerometer and gyroscope.
+Change the array size for `decimator` from ST_LSM6DSX_MAX_ID to
+ST_LSM6DSX_ID_MAX, and change the array size for `batch` from
+ST_LSM6DSX_MAX_ID to 2; move the enum st_lsm6dsx_sensor_id
+definition so that the ST_LSM6DSX_ID_MAX value is usable within
+the struct st_lsm6dsx_settings definition.
 
-[ idryomov: drop BUG_ON in ceph_get_primary_affinity(), minor cosmetic
-  edits ]
-
-Cc: stable@vger.kernel.org
-Signed-off-by: ziming zhang <ezrakiez@gmail.com>
-Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Fixes: 801a6e0af0c6c ("iio: imu: st_lsm6dsx: add support to LSM6DSO")
+Signed-off-by: Francesco Lavra <flavra@baylibre.com>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ceph/osdmap.c |   18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h |   22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
---- a/net/ceph/osdmap.c
-+++ b/net/ceph/osdmap.c
-@@ -1504,8 +1504,6 @@ static int decode_new_primary_temp(void
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+@@ -232,6 +232,15 @@ struct st_lsm6dsx_event_settings {
+ 	u8 wakeup_src_x_mask;
+ };
  
- u32 ceph_get_primary_affinity(struct ceph_osdmap *map, int osd)
- {
--	BUG_ON(osd >= map->max_osd);
++enum st_lsm6dsx_sensor_id {
++	ST_LSM6DSX_ID_GYRO,
++	ST_LSM6DSX_ID_ACC,
++	ST_LSM6DSX_ID_EXT0,
++	ST_LSM6DSX_ID_EXT1,
++	ST_LSM6DSX_ID_EXT2,
++	ST_LSM6DSX_ID_MAX
++};
++
+ enum st_lsm6dsx_ext_sensor_id {
+ 	ST_LSM6DSX_ID_MAGN,
+ };
+@@ -315,23 +324,14 @@ struct st_lsm6dsx_settings {
+ 	struct st_lsm6dsx_reg drdy_mask;
+ 	struct st_lsm6dsx_odr_table_entry odr_table[2];
+ 	struct st_lsm6dsx_fs_table_entry fs_table[2];
+-	struct st_lsm6dsx_reg decimator[ST_LSM6DSX_MAX_ID];
+-	struct st_lsm6dsx_reg batch[ST_LSM6DSX_MAX_ID];
++	struct st_lsm6dsx_reg decimator[ST_LSM6DSX_ID_MAX];
++	struct st_lsm6dsx_reg batch[2];
+ 	struct st_lsm6dsx_fifo_ops fifo_ops;
+ 	struct st_lsm6dsx_hw_ts_settings ts_settings;
+ 	struct st_lsm6dsx_shub_settings shub_settings;
+ 	struct st_lsm6dsx_event_settings event_settings;
+ };
+ 
+-enum st_lsm6dsx_sensor_id {
+-	ST_LSM6DSX_ID_GYRO,
+-	ST_LSM6DSX_ID_ACC,
+-	ST_LSM6DSX_ID_EXT0,
+-	ST_LSM6DSX_ID_EXT1,
+-	ST_LSM6DSX_ID_EXT2,
+-	ST_LSM6DSX_ID_MAX,
+-};
 -
- 	if (!map->osd_primary_affinity)
- 		return CEPH_OSD_DEFAULT_PRIMARY_AFFINITY;
- 
-@@ -1514,8 +1512,6 @@ u32 ceph_get_primary_affinity(struct cep
- 
- static int set_primary_affinity(struct ceph_osdmap *map, int osd, u32 aff)
- {
--	BUG_ON(osd >= map->max_osd);
--
- 	if (!map->osd_primary_affinity) {
- 		int i;
- 
-@@ -1577,6 +1573,8 @@ static int decode_new_primary_affinity(v
- 
- 		ceph_decode_32_safe(p, end, osd, e_inval);
- 		ceph_decode_32_safe(p, end, aff, e_inval);
-+		if (osd >= map->max_osd)
-+			goto e_inval;
- 
- 		ret = set_primary_affinity(map, osd, aff);
- 		if (ret)
-@@ -1879,7 +1877,9 @@ static int decode_new_up_state_weight(vo
- 		ceph_decode_need(p, end, 2*sizeof(u32), e_inval);
- 		osd = ceph_decode_32(p);
- 		w = ceph_decode_32(p);
--		BUG_ON(osd >= map->max_osd);
-+		if (osd >= map->max_osd)
-+			goto e_inval;
-+
- 		osdmap_info(map, "osd%d weight 0x%x %s\n", osd, w,
- 			    w == CEPH_OSD_IN ? "(in)" :
- 			    (w == CEPH_OSD_OUT ? "(out)" : ""));
-@@ -1905,13 +1905,15 @@ static int decode_new_up_state_weight(vo
- 		u32 xorstate;
- 
- 		osd = ceph_decode_32(p);
-+		if (osd >= map->max_osd)
-+			goto e_inval;
-+
- 		if (struct_v >= 5)
- 			xorstate = ceph_decode_32(p);
- 		else
- 			xorstate = ceph_decode_8(p);
- 		if (xorstate == 0)
- 			xorstate = CEPH_OSD_UP;
--		BUG_ON(osd >= map->max_osd);
- 		if ((map->osd_state[osd] & CEPH_OSD_UP) &&
- 		    (xorstate & CEPH_OSD_UP))
- 			osdmap_info(map, "osd%d down\n", osd);
-@@ -1937,7 +1939,9 @@ static int decode_new_up_state_weight(vo
- 		struct ceph_entity_addr addr;
- 
- 		osd = ceph_decode_32(p);
--		BUG_ON(osd >= map->max_osd);
-+		if (osd >= map->max_osd)
-+			goto e_inval;
-+
- 		if (struct_v >= 7)
- 			ret = ceph_decode_entity_addrvec(p, end, msgr2, &addr);
- 		else
+ enum st_lsm6dsx_fifo_mode {
+ 	ST_LSM6DSX_FIFO_BYPASS = 0x0,
+ 	ST_LSM6DSX_FIFO_CONT = 0x6,
 
 
 
