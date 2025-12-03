@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97416CA12C9
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:53:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5E92CA083F
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:36:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A504730080D7
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:53:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E2BD832C12C0
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:17:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 998A732ED37;
-	Wed,  3 Dec 2025 15:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 723FD312816;
+	Wed,  3 Dec 2025 16:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jQLblGjB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fYpZXts4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5599432E755;
-	Wed,  3 Dec 2025 15:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BD453126C1;
+	Wed,  3 Dec 2025 16:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777072; cv=none; b=k1crg+vW6coWLOXmayPL49kyOEBO9pY1O6QJcixtWLdOUPFy8Za8CEilubQIZL4H+hp/1S4D3uK1W0U/nXXIIkbUx08CwTDiguIGANYSDgkPpABFeibAWKPQBcR0EwZX+FdpjV7V9EjpIgWthn3NR1Nyh5BdRTwfld7N02sFcNU=
+	t=1764778186; cv=none; b=HcWEk53b5+yEYkP4Xc4cK50/7optlhJUbmbrwlw+j1jV5DwW/ccsLsGyNcilKouFY5kpJP1+z2KYTOYfiqC0zfatX0Ma1nMOE5MB8ctxPQ++sIO/fh8RFzdv+PFM5MWGMz/STjIaiFfva6BJliEhQ4EO7y8baq4ImTTexjUE7N4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777072; c=relaxed/simple;
-	bh=rYrSznrpTxNa6531TsPz8i9wggolnLqkrSTx5cSi9uo=;
+	s=arc-20240116; t=1764778186; c=relaxed/simple;
+	bh=IyQQkJRxNgcuX4IXR3uM6COKwV3BrSpGdwtNLZnRLH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XV4gwXvpNGWM3Um5P6/QnV/wu/qQMlC0Rf6lEjdq9wO9Db+Xk8qUK2kPih+ftjIEnXvegoUyiAUhPq+O7Il95spSLvhSEnL0/m3LeZjSqKRttwVa4fc0PXZgIREw0q3G7ktlp2f8gK9pe1ETlN2tiNOetNEFrusbgOK/ZKZQD/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jQLblGjB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C955EC4CEF5;
-	Wed,  3 Dec 2025 15:51:11 +0000 (UTC)
+	 MIME-Version; b=TU0WQjbb18NLmFdRzCS9HHjgve8xCSQOktlqxNuhU2WdFcCyW1uaDo+KtwLrFHyDpqo2cIprWOFfkZHmU5XLgr9sbJdl0kQcsVlJVHaufoZleP9nX+vKNQTB0gsT3csIG1aBNGqd/PgS7hEdKMEwrELTn/Fd09yDHdURIbLa9l0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fYpZXts4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 476C9C116B1;
+	Wed,  3 Dec 2025 16:09:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777072;
-	bh=rYrSznrpTxNa6531TsPz8i9wggolnLqkrSTx5cSi9uo=;
+	s=korg; t=1764778185;
+	bh=IyQQkJRxNgcuX4IXR3uM6COKwV3BrSpGdwtNLZnRLH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jQLblGjBHU77hd7i0QlmRdFrxekB0276fSl3QOhL0Rs5/gLfMKu+9lqjh/X3UBaAm
-	 7YWw95SlMhiRdnWo9uTabhrqT57hl5VvURvBbKiMyO6613yuJRKhFr7dO3vHBinSz8
-	 kPNuKnSd1+ka7X00hbhwEo9kkTguYBL8gRALXvEY=
+	b=fYpZXts4Bj9n5BGRz0mhJY6HkUULuqg9ilx2OCivxj3RfsaPVEAqX4mE7BABK+fYT
+	 ecvF/UTsZ9NMGKA5WSRx9FDvdWdXOQZ6vCbV5VT27GO84KwbXzwGcHuuLCxWKzEADE
+	 XEyAAl8LtLILmyBJCzXND6mLV5uMFbEWwqMU5Pow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anurag Dutta <a-dutta@ti.com>,
-	Mark Brown <broonie@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 040/146] spi: spi-cadence-quadspi: Enable pm runtime earlier to avoid imbalance
+Subject: [PATCH 5.15 268/392] mtd: onenand: Pass correct pointer to IRQ handler
 Date: Wed,  3 Dec 2025 16:26:58 +0100
-Message-ID: <20251203152347.942739962@linuxfoundation.org>
+Message-ID: <20251203152424.026830710@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +60,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anurag Dutta <a-dutta@ti.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit f1eb4e792bb1ee3dcdffa66f8a83a4867cda2dd3 ]
+[ Upstream commit 97315e7c901a1de60e8ca9b11e0e96d0f9253e18 ]
 
-The "probe_setup_failed" label calls pm_runtime_disable(), but
-pm_runtime_enable() was placed after a possible jump to this label.
-When cqspi_setup_flash() fails, control jumps to the label without
-pm_runtime_enable() being called, leading to unbalanced PM runtime
-reference counting.
+This was supposed to pass "onenand" instead of "&onenand" with the
+ampersand.  Passing a random stack address which will be gone when the
+function ends makes no sense.  However the good thing is that the pointer
+is never used, so this doesn't cause a problem at run time.
 
-Move pm_runtime_enable() and associated calls above the first
-possible branch to "probe_setup_failed" to ensure balanced
-enable/disable calls across all error paths.
-
-Fixes: 30dbc1c8d50f ("spi: cadence-qspi: defer runtime support on socfpga if reset bit is enabled")
-Signed-off-by: Anurag Dutta <a-dutta@ti.com>
-Link: https://patch.msgid.link/20251105161146.2019090-2-a-dutta@ti.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: e23abf4b7743 ("mtd: OneNAND: S5PC110: Implement DMA interrupt method")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-cadence-quadspi.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/mtd/nand/onenand/onenand_samsung.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index d7720931403c2..4a5a83dc8fe37 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -1981,6 +1981,13 @@ static int cqspi_probe(struct platform_device *pdev)
- 	cqspi->current_cs = -1;
- 	cqspi->sclk = 0;
- 
-+	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
-+		pm_runtime_enable(dev);
-+		pm_runtime_set_autosuspend_delay(dev, CQSPI_AUTOSUSPEND_TIMEOUT);
-+		pm_runtime_use_autosuspend(dev);
-+		pm_runtime_get_noresume(dev);
-+	}
-+
- 	ret = cqspi_setup_flash(cqspi);
- 	if (ret) {
- 		dev_err(dev, "failed to setup flash parameters %d\n", ret);
-@@ -1998,13 +2005,6 @@ static int cqspi_probe(struct platform_device *pdev)
- 			goto probe_dma_failed;
- 	}
- 
--	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
--		pm_runtime_enable(dev);
--		pm_runtime_set_autosuspend_delay(dev, CQSPI_AUTOSUSPEND_TIMEOUT);
--		pm_runtime_use_autosuspend(dev);
--		pm_runtime_get_noresume(dev);
--	}
--
- 	ret = spi_register_controller(host);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to register SPI ctlr %d\n", ret);
+diff --git a/drivers/mtd/nand/onenand/onenand_samsung.c b/drivers/mtd/nand/onenand/onenand_samsung.c
+index b64895573515e..48608632280c5 100644
+--- a/drivers/mtd/nand/onenand/onenand_samsung.c
++++ b/drivers/mtd/nand/onenand/onenand_samsung.c
+@@ -909,7 +909,7 @@ static int s3c_onenand_probe(struct platform_device *pdev)
+ 			err = devm_request_irq(&pdev->dev, r->start,
+ 					       s5pc110_onenand_irq,
+ 					       IRQF_SHARED, "onenand",
+-					       &onenand);
++					       onenand);
+ 			if (err) {
+ 				dev_err(&pdev->dev, "failed to get irq\n");
+ 				return err;
 -- 
 2.51.0
 
