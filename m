@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-199495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4531CA0E82
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:21:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E695ECA0E73
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:20:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DCED433CEB14
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:18:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9208D33AD891
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:17:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83B7A3328E0;
-	Wed,  3 Dec 2025 16:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F03932572C;
+	Wed,  3 Dec 2025 16:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e22rne/O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AhPCREga"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 353783314CC;
-	Wed,  3 Dec 2025 16:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 201B02FB63A;
+	Wed,  3 Dec 2025 16:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779986; cv=none; b=Z4neI+H12B4H9kZ2O09hNeUp3oAWzSXgHRQ9qHqC9gbYZk4SJtR7RGcjtvzIBCsPjWI8FRHDnWWnlW4g0t2ytS8qPmMn3epcCEhxIr4lo0jiNiweQNBJmugkSmE9OW1C8+5GbNtwzN+qPxLYxeDNQstONwaNF5QbP8kv0JV9xZI=
+	t=1764778199; cv=none; b=SjWOGi7wa+i4FRKtbCQJ3Qaxa5q+CdDTeMNnTevbB/ZXm5HbOee/uy3xJEp1oukitALCan1mlf0ihAqRC1wydgQw8NPjX0mELqIIMB7Zoav890vY5D4LZqao9Qo64fMdXlJbsoquP/h+Ua3sfCyT/X4EKSe2mbV2Wtog/zsyR9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779986; c=relaxed/simple;
-	bh=Z+ROD/hnEEPooyt9HN1DScvJvCK/jTjHhXXRaiNq+Vw=;
+	s=arc-20240116; t=1764778199; c=relaxed/simple;
+	bh=DsvOM8grsm3CB0tDT+kaTj3a2uAdb3gzX0QLqZzMrXM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OBm7faWYM3Lqnl4JFPyRvvkphs/SYvvMNB52/TrpfG1Wig2weit0RA++s4dVOQ2OFL71fiuEW0xv0IBtGSIFnehNFgMjyQcLokPQYPXjWFKzSArLLZ2CNnS2tuZoE+KZblULBpwnrs38kfw5MTmy57eaB9IzlgP7bwdLtvO85fk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e22rne/O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98DB4C4CEF5;
-	Wed,  3 Dec 2025 16:39:45 +0000 (UTC)
+	 MIME-Version; b=n08rjOV2pWDQNK6Pui1QfyIfTasWPm4ATX4pw+QRXNM2K+DTP6BJeCOqszTWKzVM8KNUUdOrvgFIwTI4x/YKJhzHkBEcKn67mgNGQwCxWUXNi+cHaUmEAUQjTsS7QCijNhvaIChQ+Nl0Z9nJQEmwcEI0uD4+8Tgy43ISD8qjQRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AhPCREga; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66FB6C116B1;
+	Wed,  3 Dec 2025 16:09:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779986;
-	bh=Z+ROD/hnEEPooyt9HN1DScvJvCK/jTjHhXXRaiNq+Vw=;
+	s=korg; t=1764778199;
+	bh=DsvOM8grsm3CB0tDT+kaTj3a2uAdb3gzX0QLqZzMrXM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e22rne/Ov2fAhxWWWWechOIe645kNo8B3P+AbLQVfNz8+RPfH0LoZtmFdUROePSnX
-	 c9pqVi+gNXGrcMOzpvYwkpm3rwAvjNogy9FOnnjppRkslZ9iRm2ECXbFpUyzUTzhBn
-	 f+9O5XA+is5J/Mk6A7/lK516amu4Z7osDlQjTASY=
+	b=AhPCREgaKK2a6USq1qRaZc0no/6hWb3e1626ab+z5zYYCfShx7jotIgzlqGq6xpYw
+	 221rF9hQuEJAVc1Q8E/4tBQVTYTBk88Y0vGWz1wYmwCcTfHun+yTJcYnRnsijgiiUK
+	 p+nvK3Kweih0CZ/yrh5HgcYpf/T65aA702OS1qMo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Hocko <mhocko@suse.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Dennis Zhou <dennis@kernel.org>,
-	Filipe David Manana <fdmanana@suse.com>,
-	Tejun Heo <tj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	chenxin <chenxinxin@xiaomi.com>
-Subject: [PATCH 6.1 420/568] mm, percpu: do not consider sleepable allocations atomic
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 272/392] gcov: add support for GCC 15
 Date: Wed,  3 Dec 2025 16:27:02 +0100
-Message-ID: <20251203152456.080345390@linuxfoundation.org>
+Message-ID: <20251203152424.173219151@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,90 +60,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Hocko <mhocko@suse.com>
+From: Peter Oberparleiter <oberpar@linux.ibm.com>
 
-[ Upstream commit 9a5b183941b52f84c0f9e5f27ce44e99318c9e0f ]
+commit ec4d11fc4b2dd4a2fa8c9d801ee9753b74623554 upstream.
 
-28307d938fb2 ("percpu: make pcpu_alloc() aware of current gfp context")
-has fixed a reclaim recursion for scoped GFP_NOFS context.  It has done
-that by avoiding taking pcpu_alloc_mutex.  This is a correct solution as
-the worker context with full GFP_KERNEL allocation/reclaim power and which
-is using the same lock cannot block the NOFS pcpu_alloc caller.
+Using gcov on kernels compiled with GCC 15 results in truncated 16-byte
+long .gcda files with no usable data.  To fix this, update GCOV_COUNTERS
+to match the value defined by GCC 15.
 
-On the other hand this is a very conservative approach that could lead to
-failures because pcpu_alloc lockless implementation is quite limited.
+Tested with GCC 14.3.0 and GCC 15.2.0.
 
-We have a bug report about premature failures when scsi array of 193
-devices is scanned.  Sometimes (not consistently) the scanning aborts
-because the iscsid daemon fails to create the queue for a random scsi
-device during the scan.  iscsid itself is running with PR_SET_IO_FLUSHER
-set so all allocations from this process context are GFP_NOIO.  This in
-turn makes any pcpu_alloc lockless (without pcpu_alloc_mutex) which leads
-to pre-mature failures.
-
-It has turned out that iscsid has worked around this by dropping
-PR_SET_IO_FLUSHER (https://github.com/open-iscsi/open-iscsi/pull/382) when
-scanning host.  But we can do better in this case on the kernel side and
-use pcpu_alloc_mutex for NOIO resp.  NOFS constrained allocation scopes
-too.  We just need the WQ worker to never trigger IO/FS reclaim.  Achieve
-that by enforcing scoped GFP_NOIO for the whole execution of
-pcpu_balance_workfn (this will imply NOFS constrain as well).  This will
-remove the dependency chain and preserve the full allocation power of the
-pcpu_alloc call.
-
-While at it make is_atomic really test for blockable allocations.
-
-Link: https://lkml.kernel.org/r/20250206122633.167896-1-mhocko@kernel.org
-Fixes: 28307d938fb2 ("percpu: make pcpu_alloc() aware of current gfp context")
-Signed-off-by: Michal Hocko <mhocko@suse.com>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Dennis Zhou <dennis@kernel.org>
-Cc: Filipe David Manana <fdmanana@suse.com>
-Cc: Tejun Heo <tj@kernel.org>
+Link: https://lkml.kernel.org/r/20251028115125.1319410-1-oberpar@linux.ibm.com
+Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Reported-by: Matthieu Baerts <matttbe@kernel.org>
+Closes: https://github.com/linux-test-project/lcov/issues/445
+Tested-by: Matthieu Baerts <matttbe@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: chenxin <chenxinxin@xiaomi.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/percpu.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ kernel/gcov/gcc_4_7.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/mm/percpu.c
-+++ b/mm/percpu.c
-@@ -1737,7 +1737,7 @@ static void __percpu *pcpu_alloc(size_t
- 	gfp = current_gfp_context(gfp);
- 	/* whitelisted flags that can be passed to the backing allocators */
- 	pcpu_gfp = gfp & (GFP_KERNEL | __GFP_NORETRY | __GFP_NOWARN);
--	is_atomic = (gfp & GFP_KERNEL) != GFP_KERNEL;
-+	is_atomic = !gfpflags_allow_blocking(gfp);
- 	do_warn = !(gfp & __GFP_NOWARN);
+--- a/kernel/gcov/gcc_4_7.c
++++ b/kernel/gcov/gcc_4_7.c
+@@ -18,7 +18,9 @@
+ #include <linux/mm.h>
+ #include "gcov.h"
  
- 	/*
-@@ -2237,7 +2237,12 @@ static void pcpu_balance_workfn(struct w
- 	 * to grow other chunks.  This then gives pcpu_reclaim_populated() time
- 	 * to move fully free chunks to the active list to be freed if
- 	 * appropriate.
-+	 *
-+	 * Enforce GFP_NOIO allocations because we have pcpu_alloc users
-+	 * constrained to GFP_NOIO/NOFS contexts and they could form lock
-+	 * dependency through pcpu_alloc_mutex
- 	 */
-+	unsigned int flags = memalloc_noio_save();
- 	mutex_lock(&pcpu_alloc_mutex);
- 	spin_lock_irq(&pcpu_lock);
- 
-@@ -2248,6 +2253,7 @@ static void pcpu_balance_workfn(struct w
- 
- 	spin_unlock_irq(&pcpu_lock);
- 	mutex_unlock(&pcpu_alloc_mutex);
-+	memalloc_noio_restore(flags);
- }
- 
- /**
+-#if (__GNUC__ >= 14)
++#if (__GNUC__ >= 15)
++#define GCOV_COUNTERS			10
++#elif (__GNUC__ >= 14)
+ #define GCOV_COUNTERS			9
+ #elif (__GNUC__ >= 10)
+ #define GCOV_COUNTERS			8
 
 
 
