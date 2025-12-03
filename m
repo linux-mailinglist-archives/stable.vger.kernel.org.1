@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0629ECA00E6
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:43:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BCA2C9F9AA
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:44:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E39F030303FE
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:38:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EF30C300451A
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:39:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B52E35C195;
-	Wed,  3 Dec 2025 16:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC1FA30B520;
+	Wed,  3 Dec 2025 15:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hmMPvz17"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m6omVpob"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5424635C18F;
-	Wed,  3 Dec 2025 16:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B4C30AD06;
+	Wed,  3 Dec 2025 15:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779887; cv=none; b=so1+nApSdp2ZMZE02aR/3lycV8QKfuueFIH84LNnssHBv1j+yuDnSQ1ELgd6NlUtHJBi7j94nwyJXxMPDIn7hJ1VK0WcwtkV+xR7WRfg8q/TJzGIvbLMOxGJbKpA7y2s5OnjIiUWgGw5GZ8r2DILEcI8mkGYjKcpQdYMJQygJQo=
+	t=1764776356; cv=none; b=ogvP7s3RXU9qaUKYaPwBrhKzqKNBiXpWSq55DCz6vKKIb39+jhax+4Q2QZReaetMDwYdrQuevwsZHJt6mDvZ9YW3MheCarTl9goIvbFcG5cck1J13P8Aa70VtPHWR4a7ZZnpHJsalu+NE4fx3A0/jLAbiWfATo5C7ptwKyTAJBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779887; c=relaxed/simple;
-	bh=8uvtF99crffY8s+kHDSIbpxoxztnNhTSRuol6qJZ4lM=;
+	s=arc-20240116; t=1764776356; c=relaxed/simple;
+	bh=9LaLU9P4Q80+RXqlm7BTBprqzP0opA2K8PhSsQ3lZyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xvp/xqCjscB/LaxVdGcfvaqwWCLW2Y1y8NVRVQB3bMtPjmAmoqH5I0gn0Ez1md3LpZGQJ585aDidkBy1+RAwoE+5DueIZZRhv9G3GuASJorAiF+77CJ7EG8BtWOy9VfLQ20KJs92Lj2xzpu9crFqwPc3iFtp4Mjizx5ngclsi2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hmMPvz17; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC3F7C4CEF5;
-	Wed,  3 Dec 2025 16:38:06 +0000 (UTC)
+	 MIME-Version; b=dYtguQiQQJ9YQ2p+oICNUaglHRTKBCBsfysSz7hiCjkijI4P3aezWwZvoaHXRaCroDakuyumg2P4l91rarxsFARWJD2Is9niuNn8wRAjf48kBvtgsQAhpjuV90gDkSZKAWo2iiAXVyoNYXblfy4rqeNIuCuodw3fKr1LCI3svMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m6omVpob; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE6F5C4CEF5;
+	Wed,  3 Dec 2025 15:39:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779887;
-	bh=8uvtF99crffY8s+kHDSIbpxoxztnNhTSRuol6qJZ4lM=;
+	s=korg; t=1764776356;
+	bh=9LaLU9P4Q80+RXqlm7BTBprqzP0opA2K8PhSsQ3lZyI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hmMPvz17BfM6ZWun5vnrh4D2l3ZkV8KvV46FZn5ZJut0GEF7qmoGJZPcT16Z635So
-	 3ZHbWhPgWQHEG+xnKIj1l1TIwCJqslZ/AX+8l6ysSwVUaBn0Rc6PiCvAo/mrbveg2r
-	 yMlgGVEwWUdeEpw3wte8BWCoaiiGNvxZjyYfpz1k=
+	b=m6omVpob1ADtPm+SUGa90UZLw0AcJl9+Qw4AiwtAtJJdXEuvPWV3+b2dnYW4l/W23
+	 LVobj4bgAUYjYmyR1B+faouNYEzbePFz+iGFA5Lks1yO3gC83DH3F2bpf44Qs3FQOO
+	 BXRArkfTGXqljgN3JMgFwblMQiH6nzYXNHT8+IAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Buday Csaba <buday.csaba@prolan.hu>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Josephine Pfeiffer <hi@josie.lol>,
+	Paul Walmsley <pjw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 359/568] net: mdio: fix resource leak in mdiobus_register_device()
-Date: Wed,  3 Dec 2025 16:26:01 +0100
-Message-ID: <20251203152453.851298238@linuxfoundation.org>
+Subject: [PATCH 5.10 158/300] riscv: ptdump: use seq_puts() in pt_dump_seq_puts() macro
+Date: Wed,  3 Dec 2025 16:26:02 +0100
+Message-ID: <20251203152406.471428022@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +60,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Buday Csaba <buday.csaba@prolan.hu>
+From: Josephine Pfeiffer <hi@josie.lol>
 
-[ Upstream commit e6ca8f533ed41129fcf052297718f417f021cc7d ]
+[ Upstream commit a74f038fa50e0d33b740f44f862fe856f16de6a8 ]
 
-Fix a possible leak in mdiobus_register_device() when both a
-reset-gpio and a reset-controller are present.
-Clean up the already claimed reset-gpio, when the registration of
-the reset-controller fails, so when an error code is returned, the
-device retains its state before the registration attempt.
+The pt_dump_seq_puts() macro incorrectly uses seq_printf() instead of
+seq_puts(). This is both a performance issue and conceptually wrong,
+as the macro name suggests plain string output (puts) but the
+implementation uses formatted output (printf).
 
-Link: https://lore.kernel.org/all/20251106144603.39053c81@kernel.org/
-Fixes: 71dd6c0dff51 ("net: phy: add support for reset-controller")
-Signed-off-by: Buday Csaba <buday.csaba@prolan.hu>
-Link: https://patch.msgid.link/4b419377f8dd7d2f63f919d0f74a336c734f8fff.1762584481.git.buday.csaba@prolan.hu
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The macro is used in ptdump.c:301 to output a newline character. Using
+seq_printf() adds unnecessary overhead for format string parsing when
+outputting this constant string.
+
+This bug was introduced in commit 59c4da8640cc ("riscv: Add support to
+dump the kernel page tables") in 2020, which copied the implementation
+pattern from other architectures that had the same bug.
+
+Fixes: 59c4da8640cc ("riscv: Add support to dump the kernel page tables")
+Signed-off-by: Josephine Pfeiffer <hi@josie.lol>
+Link: https://lore.kernel.org/r/20251018170451.3355496-1-hi@josie.lol
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/mdio_bus.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/riscv/mm/ptdump.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
-index 7a2dce8d12433..726799b1e7faf 100644
---- a/drivers/net/phy/mdio_bus.c
-+++ b/drivers/net/phy/mdio_bus.c
-@@ -80,8 +80,11 @@ int mdiobus_register_device(struct mdio_device *mdiodev)
- 			return err;
+diff --git a/arch/riscv/mm/ptdump.c b/arch/riscv/mm/ptdump.c
+index ace74dec7492c..dddb1932ba8b6 100644
+--- a/arch/riscv/mm/ptdump.c
++++ b/arch/riscv/mm/ptdump.c
+@@ -22,7 +22,7 @@
+ #define pt_dump_seq_puts(m, fmt)	\
+ ({					\
+ 	if (m)				\
+-		seq_printf(m, fmt);	\
++		seq_puts(m, fmt);	\
+ })
  
- 		err = mdiobus_register_reset(mdiodev);
--		if (err)
-+		if (err) {
-+			gpiod_put(mdiodev->reset_gpio);
-+			mdiodev->reset_gpio = NULL;
- 			return err;
-+		}
- 
- 		/* Assert the reset signal */
- 		mdio_device_reset(mdiodev, 1);
+ /*
 -- 
 2.51.0
 
