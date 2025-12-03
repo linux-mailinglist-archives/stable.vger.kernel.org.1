@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-198329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06836C9F8F9
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:41:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71ED9CA056B
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:18:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 761D53028F46
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:37:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 20B23307DF07
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:05:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5554313E32;
-	Wed,  3 Dec 2025 15:36:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C9BD342529;
+	Wed,  3 Dec 2025 16:03:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BO15ppkL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W6kR5vXP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 604DD306D3D;
-	Wed,  3 Dec 2025 15:36:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 070B334216B;
+	Wed,  3 Dec 2025 16:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776186; cv=none; b=Qo4zUku2Z22Ktkr8+1cRLhj8vWXTBc034ekAle99cOvLgYHHGUVUrCiGdWRKkbeExa3lLiOSqSvhhAkzMkBeGV24EnmeBQH5iwqfxmDKD/9yUioV1iizMLdOWX+yea0qAKybImGSH3WAout+/bBRHEA3dOViU3K2CLX0+W3yMZk=
+	t=1764777838; cv=none; b=LSkOGvUJYm/vsxQISl20L8sWOkN25sSTq40z9SK1aotIx+QPYt2SEabhRPTv7Z7MGPZzQfY4Be8kNTl944KakC7iwNoFWqvEDboLj+OdJGYEAD/oKZWGe+WgWBFa0ehfA2JtQxQlMLwLMfe4MDAXYovInajd9zr6fhcU6UTl7y4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776186; c=relaxed/simple;
-	bh=+TmqS4yQsEcRMvZrf86ooHWy631Roft9HRVfjb++FxQ=;
+	s=arc-20240116; t=1764777838; c=relaxed/simple;
+	bh=EdqbA/OSWt0DUMFb8lN08MsiAo8gy9ozy22phykx4bo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a13/l78a1d7eIy9u6sgEKXJekVsVxum0SSs7SghfC2zKS9fVMo4nlUqOReC3QF4NbenKKfBclCe9lss7DrZUEg392Jin7BQWcYpWWUf0d0aYrvShRobR2bjlqFUGEXqbYbgOBengFSkNnGiw8WPtV8d7SfmXG4JJtRlfTm+dyFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BO15ppkL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4BCCC4CEF5;
-	Wed,  3 Dec 2025 15:36:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BRKOJI5rZOLMWHCxv41zUC4dBnrSZbUcl+LJ1hjWfxGuE/yH+rwath5rt5Upqqs/eicetxoAhOcRRLHybyCGGBJAk8M4+ba5fz7d3nFBZ2LTRMwNL/hysAFBoYyT+IYoo2G+r1uyn+J50PZTXq+6gype72cRdy+KzujbV04Zv/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W6kR5vXP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38C32C4CEF5;
+	Wed,  3 Dec 2025 16:03:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776186;
-	bh=+TmqS4yQsEcRMvZrf86ooHWy631Roft9HRVfjb++FxQ=;
+	s=korg; t=1764777837;
+	bh=EdqbA/OSWt0DUMFb8lN08MsiAo8gy9ozy22phykx4bo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BO15ppkLe1ZPT21nVzkhNz69Sn6jV2lemdOpTY5XNQ5fXSEUVOxWMyvbquJOgQIba
-	 CN3Qya+WePE5VVSqcQIUICBpw0cA2+UZEwDF7snReS7cmbQk/xb2GOmrPPEy50xQSc
-	 LhIuj5D3tffB1NiCsKOl3otT0gNM71EOgowa1+pU=
+	b=W6kR5vXP1dtnsSk92gElRY49XsTMXjag18W8pOe+l++ZbAI5fEk6W2+h57xxBUbAz
+	 WOc6BI3J0/mC+ZzJ7UWhXok0piUqn+WvX80smav5fSTkP+e2Dkq5zcpxF1nVHzPwYE
+	 BJqm8Hj7xT+ZKW0WdMEOrydTUP0axzMWkd6N8aPg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Sairaj Kodilkar <sarunkod@amd.com>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
+	Forest Crossman <cyrozap@gmail.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 107/300] iommu/amd: Skip enabling command/event buffers for kdump
+Subject: [PATCH 5.15 161/392] usb: mon: Increase BUFF_MAX to 64 MiB to support multi-MB URBs
 Date: Wed,  3 Dec 2025 16:25:11 +0100
-Message-ID: <20251203152404.587364809@linuxfoundation.org>
+Message-ID: <20251203152420.004209158@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,83 +58,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ashish Kalra <ashish.kalra@amd.com>
+From: Forest Crossman <cyrozap@gmail.com>
 
-[ Upstream commit 9be15fbfc6c5c89c22cf6e209f66ea43ee0e58bb ]
+[ Upstream commit 368ed48a5ef52e384f54d5809f0a0b79ac567479 ]
 
-After a panic if SNP is enabled in the previous kernel then the kdump
-kernel boots with IOMMU SNP enforcement still enabled.
+The usbmon binary interface currently truncates captures of large
+transfers from higher-speed USB devices. Because a single event capture
+is limited to one-fifth of the total buffer size, the current maximum
+size of a captured URB is around 240 KiB. This is insufficient when
+capturing traffic from modern devices that use transfers of several
+hundred kilobytes or more, as truncated URBs can make it impossible for
+user-space USB analysis tools like Wireshark to properly defragment and
+reassemble higher-level protocol packets in the captured data.
 
-IOMMU command buffers and event buffer registers remain locked and
-exclusive to the previous kernel. Attempts to enable command and event
-buffers in the kdump kernel will fail, as hardware ignores writes to
-the locked MMIO registers as per AMD IOMMU spec Section 2.12.2.1.
+The root cause of this issue is the 1200 KiB BUFF_MAX limit, which has
+not been changed since the binary interface was introduced in 2006.
 
-Skip enabling command buffers and event buffers for kdump boot as they
-are already enabled in the previous kernel.
+To resolve this issue, this patch increases BUFF_MAX to 64 MiB. The
+original comment for BUFF_MAX based the limit's calculation on a
+saturated 480 Mbit/s bus. Applying the same logic to a modern USB 3.2
+Gen 2×2 20 Gbit/s bus (~2500 MB/s over a 20ms window) indicates the
+buffer should be at least 50 MB. The new limit of 64 MiB covers that,
+plus a little extra for any overhead.
 
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Tested-by: Sairaj Kodilkar <sarunkod@amd.com>
-Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-Link: https://lore.kernel.org/r/576445eb4f168b467b0fc789079b650ca7c5b037.1756157913.git.ashish.kalra@amd.com
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+With this change, both users and developers should now be able to debug
+and reverse engineer modern USB devices even when running unmodified
+distro kernels.
+
+Please note that this change does not affect the default buffer size. A
+larger buffer is only allocated when a user explicitly requests it via
+the MON_IOCT_RING_SIZE ioctl, so the change to the maximum buffer size
+should not unduly increase memory usage for users that don't
+deliberately request a larger buffer.
+
+Link: https://lore.kernel.org/CAO3ALPzdUkmMr0YMrODLeDSLZqNCkWcAP8NumuPHLjNJ8wC1kQ@mail.gmail.com
+Signed-off-by: Forest Crossman <cyrozap@gmail.com>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/CAO3ALPxU5RzcoueC454L=WZ1qGMfAcnxm+T+p+9D8O9mcrUbCQ@mail.gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/init.c | 28 +++++++++++++++++++---------
- 1 file changed, 19 insertions(+), 9 deletions(-)
+ drivers/usb/mon/mon_bin.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
-index 1ba6adb5b9124..8ac0ac915efd3 100644
---- a/drivers/iommu/amd/init.c
-+++ b/drivers/iommu/amd/init.c
-@@ -697,11 +697,16 @@ static void iommu_enable_command_buffer(struct amd_iommu *iommu)
+diff --git a/drivers/usb/mon/mon_bin.c b/drivers/usb/mon/mon_bin.c
+index 35483217b1f6c..93998d328d9aa 100644
+--- a/drivers/usb/mon/mon_bin.c
++++ b/drivers/usb/mon/mon_bin.c
+@@ -68,18 +68,20 @@
+  * The magic limit was calculated so that it allows the monitoring
+  * application to pick data once in two ticks. This way, another application,
+  * which presumably drives the bus, gets to hog CPU, yet we collect our data.
+- * If HZ is 100, a 480 mbit/s bus drives 614 KB every jiffy. USB has an
+- * enormous overhead built into the bus protocol, so we need about 1000 KB.
++ *
++ * Originally, for a 480 Mbit/s bus this required a buffer of about 1 MB. For
++ * modern 20 Gbps buses, this value increases to over 50 MB. The maximum
++ * buffer size is set to 64 MiB to accommodate this.
+  *
+  * This is still too much for most cases, where we just snoop a few
+  * descriptor fetches for enumeration. So, the default is a "reasonable"
+- * amount for systems with HZ=250 and incomplete bus saturation.
++ * amount for typical, low-throughput use cases.
+  *
+  * XXX What about multi-megabyte URBs which take minutes to transfer?
+  */
+-#define BUFF_MAX  CHUNK_ALIGN(1200*1024)
+-#define BUFF_DFL   CHUNK_ALIGN(300*1024)
+-#define BUFF_MIN     CHUNK_ALIGN(8*1024)
++#define BUFF_MAX  CHUNK_ALIGN(64*1024*1024)
++#define BUFF_DFL      CHUNK_ALIGN(300*1024)
++#define BUFF_MIN        CHUNK_ALIGN(8*1024)
  
- 	BUG_ON(iommu->cmd_buf == NULL);
- 
--	entry = iommu_virt_to_phys(iommu->cmd_buf);
--	entry |= MMIO_CMD_SIZE_512;
--
--	memcpy_toio(iommu->mmio_base + MMIO_CMD_BUF_OFFSET,
--		    &entry, sizeof(entry));
-+	if (!is_kdump_kernel()) {
-+		/*
-+		 * Command buffer is re-used for kdump kernel and setting
-+		 * of MMIO register is not required.
-+		 */
-+		entry = iommu_virt_to_phys(iommu->cmd_buf);
-+		entry |= MMIO_CMD_SIZE_512;
-+		memcpy_toio(iommu->mmio_base + MMIO_CMD_BUF_OFFSET,
-+			    &entry, sizeof(entry));
-+	}
- 
- 	amd_iommu_reset_cmd_buffer(iommu);
- }
-@@ -750,10 +755,15 @@ static void iommu_enable_event_buffer(struct amd_iommu *iommu)
- 
- 	BUG_ON(iommu->evt_buf == NULL);
- 
--	entry = iommu_virt_to_phys(iommu->evt_buf) | EVT_LEN_MASK;
--
--	memcpy_toio(iommu->mmio_base + MMIO_EVT_BUF_OFFSET,
--		    &entry, sizeof(entry));
-+	if (!is_kdump_kernel()) {
-+		/*
-+		 * Event buffer is re-used for kdump kernel and setting
-+		 * of MMIO register is not required.
-+		 */
-+		entry = iommu_virt_to_phys(iommu->evt_buf) | EVT_LEN_MASK;
-+		memcpy_toio(iommu->mmio_base + MMIO_EVT_BUF_OFFSET,
-+			    &entry, sizeof(entry));
-+	}
- 
- 	/* set head and tail to zero manually */
- 	writel(0x00, iommu->mmio_base + MMIO_EVT_HEAD_OFFSET);
+ /*
+  * The per-event API header (2 per URB).
 -- 
 2.51.0
 
