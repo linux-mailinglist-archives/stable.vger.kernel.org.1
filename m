@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-198926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FC0FCA1753
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:48:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94F8AC9FA70
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:48:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 49FE53009118
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:48:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E855B303D31B
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:41:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEE3C3074BA;
-	Wed,  3 Dec 2025 16:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA19130AACE;
+	Wed,  3 Dec 2025 15:41:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WKkzxg/K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lBeHnhXc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6C125D1E9;
-	Wed,  3 Dec 2025 16:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6769DDDAB;
+	Wed,  3 Dec 2025 15:41:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778124; cv=none; b=t417xl03H26eDCTjTXg8f8kiiIqJgQomS2x0heiD4ZEBKOVm5+4pzlDiRIdeTtEs3eyfrUFVByiJk+V/LnaCF3w22sDWhIIy6eGeRQO35Y8PceOcEmGlYNIXhT0n6YHFhCUL6zZed57WHqFf9C6AYSMA444ztFiHmVP7dLAIK7Y=
+	t=1764776495; cv=none; b=A3hbC50lJFAfMDaBmJyL15dqzIXK/fjMQuZQhH6EnV8F2SXeKEdWvhhAWqidY8GUe1+bRcbFwlxdUIpqNb7+MvfKGZfbiv/rVZ/ROaxZL9R+fvnhmhj0RfkPfagAxc13kKJvRd+BiING8fl4UbxyQWneyVY6X0wX2+lREweJDtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778124; c=relaxed/simple;
-	bh=HcX4sbH48mnTWRdoN7xgXV+PL2kuFDYGZ1F0yxzh6vE=;
+	s=arc-20240116; t=1764776495; c=relaxed/simple;
+	bh=3kjUvPTyBE2Rf0L8niTtEU0PxSmPlGoObF2/tK9knYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FDeuF4z/U66x1LxXO+isl85P75F5vjmeUK08+dA0V9rJ+O+eMNldDxehZOT5LzbQUbe8+88B8cfeXG2p5IsahuqxdKAvh32uEHzkafZoiBohhbnqVdpG4F6GeV3c2mfsKjbwQjUMMkxAiCmjrQwFYGwmblyxA9Z3942X9wspEeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WKkzxg/K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A3F8C4CEF5;
-	Wed,  3 Dec 2025 16:08:43 +0000 (UTC)
+	 MIME-Version; b=Wz3DsPnhKJqGxhGfUp4SqQ7SRdry9iBxLZBXGSGH5lpZbY4182jKziXYCcnY6Tf34mn9LxDbdtyxtueKbIsEOCGV3ZRbgHWO/7uWLFb6ofzV/wj8zqdKn5ugJLIh9+3IF86gjwtwWUzkhX0ZVqnvL2TJDTijIxLFnn+iNyWoWt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lBeHnhXc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAD46C4CEF5;
+	Wed,  3 Dec 2025 15:41:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778123;
-	bh=HcX4sbH48mnTWRdoN7xgXV+PL2kuFDYGZ1F0yxzh6vE=;
+	s=korg; t=1764776495;
+	bh=3kjUvPTyBE2Rf0L8niTtEU0PxSmPlGoObF2/tK9knYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WKkzxg/KG9uYwWkHgGLjf3xDGO8Lvt232eEyx7cpyIEByCuPWTON1q7Ddxfhr2jT5
-	 0aHRp3LpmQmXSice1X75fQ457HfTS0UNqrIERdva14ju+lMWIDOaRWbvK4OAZCWSXG
-	 l69u7XTUbjhfUOTXXok/3/5tBejAhw7LaokS9SEc=
+	b=lBeHnhXcahj9ub4bp78UmCLCoskoWzlM+U0sEasXmwmVM0Zhnm/56g8AfrBaZkc0E
+	 gxTJNWYZyH22Do1jDH57DggW7nmIP9W9PpDvOj29/RR3p8Utoiv3rXKeH5PRMHs/F7
+	 s4+zK0ThBu+qsAR/SXSxCSoj7hmnLCI1gjyumaeE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com,
-	Ranganath V N <vnranganath.20@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Rohit Keshri <rkeshri@redhat.com>,
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Maaz Mombasawala <maaz.mombasawala@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 251/392] net: sched: act_connmark: initialize struct tc_ife to fix kernel leak
-Date: Wed,  3 Dec 2025 16:26:41 +0100
-Message-ID: <20251203152423.406763042@linuxfoundation.org>
+Subject: [PATCH 5.10 198/300] drm/vmwgfx: Validate command header size against SVGA_CMD_MAX_DATASIZE
+Date: Wed,  3 Dec 2025 16:26:42 +0100
+Message-ID: <20251203152407.960633068@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ranganath V N <vnranganath.20@gmail.com>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-[ Upstream commit 62b656e43eaeae445a39cd8021a4f47065af4389 ]
+[ Upstream commit 32b415a9dc2c212e809b7ebc2b14bc3fbda2b9af ]
 
-In tcf_connmark_dump(), the variable 'opt' was partially initialized using a
-designatied initializer. While the padding bytes are reamined
-uninitialized. nla_put() copies the entire structure into a
-netlink message, these uninitialized bytes leaked to userspace.
+This data originates from userspace and is used in buffer offset
+calculations which could potentially overflow causing an out-of-bounds
+access.
 
-Initialize the structure with memset before assigning its fields
-to ensure all members and padding are cleared prior to beign copied.
-
-Reported-by: syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=0c85cae3350b7d486aee
-Tested-by: syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com
-Fixes: 22a5dc0e5e3e ("net: sched: Introduce connmark action")
-Signed-off-by: Ranganath V N <vnranganath.20@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20251109091336.9277-2-vnranganath.20@gmail.com
-Acked-by: Cong Wang <xiyou.wangcong@gmail.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 8ce75f8ab904 ("drm/vmwgfx: Update device includes for DX device functionality")
+Reported-by: Rohit Keshri <rkeshri@redhat.com>
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Reviewed-by: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patch.msgid.link/20251021190128.13014-1-ian.forbes@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/act_connmark.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/sched/act_connmark.c b/net/sched/act_connmark.c
-index 79cfe51a09e74..4d75d2ae0d8ce 100644
---- a/net/sched/act_connmark.c
-+++ b/net/sched/act_connmark.c
-@@ -190,13 +190,15 @@ static inline int tcf_connmark_dump(struct sk_buff *skb, struct tc_action *a,
- 	const struct tcf_connmark_info *ci = to_connmark(a);
- 	unsigned char *b = skb_tail_pointer(skb);
- 	const struct tcf_connmark_parms *parms;
--	struct tc_connmark opt = {
--		.index   = ci->tcf_index,
--		.refcnt  = refcount_read(&ci->tcf_refcnt) - ref,
--		.bindcnt = atomic_read(&ci->tcf_bindcnt) - bind,
--	};
-+	struct tc_connmark opt;
- 	struct tcf_t t;
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+index 987633c6c49f4..17d7f172a9e0f 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+@@ -3622,6 +3622,11 @@ static int vmw_cmd_check(struct vmw_private *dev_priv,
  
-+	memset(&opt, 0, sizeof(opt));
-+
-+	opt.index   = ci->tcf_index;
-+	opt.refcnt  = refcount_read(&ci->tcf_refcnt) - ref;
-+	opt.bindcnt = atomic_read(&ci->tcf_bindcnt) - bind;
-+
- 	rcu_read_lock();
- 	parms = rcu_dereference(ci->parms);
  
+ 	cmd_id = header->id;
++	if (header->size > SVGA_CMD_MAX_DATASIZE) {
++		VMW_DEBUG_USER("SVGA3D command: %d is too big.\n",
++			       cmd_id + SVGA_3D_CMD_BASE);
++		return -E2BIG;
++	}
+ 	*size = header->size + sizeof(SVGA3dCmdHeader);
+ 
+ 	cmd_id -= SVGA_3D_CMD_BASE;
 -- 
 2.51.0
 
