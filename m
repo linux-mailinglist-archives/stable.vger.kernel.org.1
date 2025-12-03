@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-199552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CAD3CA02DA
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:53:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29985CA02E9
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:53:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 05FC8302E2B0
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:42:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8B69D30281B2
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:48:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B570D35CBCB;
-	Wed,  3 Dec 2025 16:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A05436CDFF;
+	Wed,  3 Dec 2025 16:48:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GGaxnKk9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GF6qKViB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70DF035BDBF;
-	Wed,  3 Dec 2025 16:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E7B36BCE0;
+	Wed,  3 Dec 2025 16:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780175; cv=none; b=NR7fhxXfdrva3EuvS6SxmDGwEVnKLlUoZCWyWCVKysVRt8pVE/9QncXX4jWyYaplt/qNNGbebMkEAM0UZGuy9igUQdEYMtNKUQQ+QwCW23dvrbwsUV8nD8fK/I+JBJooi3K2dd7qNaMy/EDrr9IfQtHn+OA5nuA5R2iuWakeATo=
+	t=1764780514; cv=none; b=Q/rR1rmc/ciAUqP2QzCq2JBO/5eEJHu791L3P8zPvtb2fG107WMjZnw00M50rGmT/USXkmnyYcu9KhiNLAEmu6AEzz2FAKMgO3WIm9bNFyYtPJHSc9G7+E+adH4WG/2ky+RYjV7c+nX+UhIuKaQXX65DyYJngIOHwrebUB1hxW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780175; c=relaxed/simple;
-	bh=woYfBkg+20k7izFpJpzhuDDeNIobMLWLOSbVKIXE8wQ=;
+	s=arc-20240116; t=1764780514; c=relaxed/simple;
+	bh=o5pEj82BwJ0hSdbCY1TQ8IlrFbOMgMbfGNK93zvh738=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oZq9fMmfR8c+syCzF6yM3WIQMjSpDITTwAhT+IufU7aVznKj+XmSAwFfdtdunZ5GTh3XvQnUeZXhx+e5T0O1Nk6gGqixw8GKQYL7xTWWAHB+wS3WJsj2Wo6rgSLSFBjcyj2JwZst3CYJhNSrEooAipdrPr5Z25s3XyJRe+fkaZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GGaxnKk9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB213C4CEF5;
-	Wed,  3 Dec 2025 16:42:54 +0000 (UTC)
+	 MIME-Version; b=H9lPucHOXmeHJDhA1Nyrq/k7/lMMXfnDyqOqgItcbPS9MCqDz1iIn3B7upkVHA5A6MhCPpk5EA/0vxVGDLVBEzTl+rv6VxosnK7YEP3kuqW+T/yXydSsWP5e0p7aeQ7mnhsxH4P1NALTfevkGreKIXaJ32tt2nKvulhF0AeG6bY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GF6qKViB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48F3FC4CEF5;
+	Wed,  3 Dec 2025 16:48:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780175;
-	bh=woYfBkg+20k7izFpJpzhuDDeNIobMLWLOSbVKIXE8wQ=;
+	s=korg; t=1764780513;
+	bh=o5pEj82BwJ0hSdbCY1TQ8IlrFbOMgMbfGNK93zvh738=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GGaxnKk9UDt3bdqbiVm1M2Rnu0Zp4TJvNjdAeRetvirNEcor7nVJsC7mhUEfH+AWI
-	 ow+DnVZ8nxHzrdepOsRDcX+zTXrybP26B4uwFCDOE4OIrKOxI6qJBwndWEj/hF4l+d
-	 nhF+ZcoXcSuqnzlyIOkRBOo9/6KDjuHOOVkeWaic=
+	b=GF6qKViB8V+sp3aCyPAtxPt+UIiMmx7meMUkzFCjYUC8Gs8EsYwhtMC2dkdoBORg6
+	 vpkNwEog0lTQXVK57094IGmaU8EaLUwaZfKHEiTXHc89wLy+/5Uko/W127f8SsMYnN
+	 W5GvWMMI/Kyrz13mRX6kh4M+/i1bnVQrtxt5qyGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Kaiser <martin@kaiser.cx>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 478/568] maple_tree: fix tracepoint string pointers
+	Seungjin Bae <eeodqql09@gmail.com>,
+	Jimmy Assarsson <extja@kvaser.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 001/132] can: kvaser_usb: leaf: Fix potential infinite loop in command parsers
 Date: Wed,  3 Dec 2025 16:28:00 +0100
-Message-ID: <20251203152458.204986976@linuxfoundation.org>
+Message-ID: <20251203152343.344574964@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,179 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Kaiser <martin@kaiser.cx>
+From: Seungjin Bae <eeodqql09@gmail.com>
 
-commit 91a54090026f84ceffaa12ac53c99b9f162946f6 upstream.
+[ Upstream commit 0c73772cd2b8cc108d5f5334de89ad648d89b9ec ]
 
-maple_tree tracepoints contain pointers to function names. Such a pointer
-is saved when a tracepoint logs an event. There's no guarantee that it's
-still valid when the event is parsed later and the pointer is dereferenced.
+The `kvaser_usb_leaf_wait_cmd()` and `kvaser_usb_leaf_read_bulk_callback`
+functions contain logic to zero-length commands. These commands are used
+to align data to the USB endpoint's wMaxPacketSize boundary.
 
-The kernel warns about these unsafe pointers.
+The driver attempts to skip these placeholders by aligning the buffer
+position `pos` to the next packet boundary using `round_up()` function.
 
-	event 'ma_read' has unsafe pointer field 'fn'
-	WARNING: kernel/trace/trace.c:3779 at ignore_event+0x1da/0x1e4
+However, if zero-length command is found exactly on a packet boundary
+(i.e., `pos` is a multiple of wMaxPacketSize, including 0), `round_up`
+function will return the unchanged value of `pos`. This prevents `pos`
+to be increased, causing an infinite loop in the parsing logic.
 
-Mark the function names as tracepoint_string() to fix the events.
+This patch fixes this in the function by using `pos + 1` instead.
+This ensures that even if `pos` is on a boundary, the calculation is
+based on `pos + 1`, forcing `round_up()` to always return the next
+aligned boundary.
 
-One case that doesn't work without my patch would be trace-cmd record
-to save the binary ringbuffer and trace-cmd report to parse it in
-userspace.  The address of __func__ can't be dereferenced from
-userspace but tracepoint_string will add an entry to
-/sys/kernel/tracing/printk_formats
-
-Link: https://lkml.kernel.org/r/20251030155537.87972-1-martin@kaiser.cx
-Fixes: 54a611b60590 ("Maple Tree: add new data structure")
-Signed-off-by: Martin Kaiser <martin@kaiser.cx>
-Acked-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7259124eac7d ("can: kvaser_usb: Split driver into kvaser_usb_core.c and kvaser_usb_leaf.c")
+Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
+Reviewed-by: Jimmy Assarsson <extja@kvaser.com>
+Tested-by: Jimmy Assarsson <extja@kvaser.com>
+Link: https://patch.msgid.link/20251023162709.348240-1-eeodqql09@gmail.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/maple_tree.c |   30 ++++++++++++++++--------------
- 1 file changed, 16 insertions(+), 14 deletions(-)
+ drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/lib/maple_tree.c
-+++ b/lib/maple_tree.c
-@@ -62,6 +62,8 @@
- #define CREATE_TRACE_POINTS
- #include <trace/events/maple_tree.h>
- 
-+#define TP_FCT tracepoint_string(__func__)
-+
- #define MA_ROOT_PARENT 1
- 
- /*
-@@ -3165,7 +3167,7 @@ static inline int mas_rebalance(struct m
- 	MA_STATE(l_mas, mas->tree, mas->index, mas->last);
- 	MA_STATE(r_mas, mas->tree, mas->index, mas->last);
- 
--	trace_ma_op(__func__, mas);
-+	trace_ma_op(TP_FCT, mas);
- 
- 	/*
- 	 * Rebalancing occurs if a node is insufficient.  Data is rebalanced
-@@ -3542,7 +3544,7 @@ static int mas_split(struct ma_state *ma
- 	MA_STATE(prev_r_mas, mas->tree, mas->index, mas->last);
- 	MA_TOPIARY(mat, mas->tree);
- 
--	trace_ma_op(__func__, mas);
-+	trace_ma_op(TP_FCT, mas);
- 	mas->depth = mas_mt_height(mas);
- 	/* Allocation failures will happen early. */
- 	mas_node_count(mas, 1 + mas->depth * 2);
-@@ -3786,7 +3788,7 @@ static bool mas_is_span_wr(struct ma_wr_
- 			return false;
- 	}
- 
--	trace_ma_write(__func__, wr_mas->mas, piv, entry);
-+	trace_ma_write(TP_FCT, wr_mas->mas, piv, entry);
- 
- 	return true;
- }
-@@ -4035,7 +4037,7 @@ static inline int mas_wr_spanning_store(
- 	 * of data may happen.
- 	 */
- 	mas = wr_mas->mas;
--	trace_ma_op(__func__, mas);
-+	trace_ma_op(TP_FCT, mas);
- 
- 	if (unlikely(!mas->index && mas->last == ULONG_MAX))
- 		return mas_new_root(mas, wr_mas->entry);
-@@ -4221,7 +4223,7 @@ done:
- 	} else {
- 		memcpy(wr_mas->node, newnode, sizeof(struct maple_node));
- 	}
--	trace_ma_write(__func__, mas, 0, wr_mas->entry);
-+	trace_ma_write(TP_FCT, mas, 0, wr_mas->entry);
- 	mas_update_gap(mas);
- 	return true;
- }
-@@ -4276,7 +4278,7 @@ static inline bool mas_wr_slot_store(str
- 	mas->offset++; /* Keep mas accurate. */
- 
- done:
--	trace_ma_write(__func__, mas, 0, wr_mas->entry);
-+	trace_ma_write(TP_FCT, mas, 0, wr_mas->entry);
- 	mas_update_gap(mas);
- 	return true;
- }
-@@ -4377,7 +4379,7 @@ static void mas_wr_bnode(struct ma_wr_st
- {
- 	struct maple_big_node b_node;
- 
--	trace_ma_write(__func__, wr_mas->mas, 0, wr_mas->entry);
-+	trace_ma_write(TP_FCT, wr_mas->mas, 0, wr_mas->entry);
- 	memset(&b_node, 0, sizeof(struct maple_big_node));
- 	mas_store_b_node(wr_mas, &b_node, wr_mas->offset_end);
- 	mas_commit_b_node(wr_mas, &b_node, wr_mas->node_end);
-@@ -5722,7 +5724,7 @@ void *mas_store(struct ma_state *mas, vo
- {
- 	MA_WR_STATE(wr_mas, mas, entry);
- 
--	trace_ma_write(__func__, mas, 0, entry);
-+	trace_ma_write(TP_FCT, mas, 0, entry);
- #ifdef CONFIG_DEBUG_MAPLE_TREE
- 	if (mas->index > mas->last)
- 		pr_err("Error %lu > %lu %p\n", mas->index, mas->last, entry);
-@@ -5760,7 +5762,7 @@ int mas_store_gfp(struct ma_state *mas,
- 	MA_WR_STATE(wr_mas, mas, entry);
- 
- 	mas_wr_store_setup(&wr_mas);
--	trace_ma_write(__func__, mas, 0, entry);
-+	trace_ma_write(TP_FCT, mas, 0, entry);
- retry:
- 	mas_wr_store_entry(&wr_mas);
- 	if (unlikely(mas_nomem(mas, gfp)))
-@@ -5784,7 +5786,7 @@ void mas_store_prealloc(struct ma_state
- 	MA_WR_STATE(wr_mas, mas, entry);
- 
- 	mas_wr_store_setup(&wr_mas);
--	trace_ma_write(__func__, mas, 0, entry);
-+	trace_ma_write(TP_FCT, mas, 0, entry);
- 	mas_wr_store_entry(&wr_mas);
- 	BUG_ON(mas_is_err(mas));
- 	mas_destroy(mas);
-@@ -6249,7 +6251,7 @@ void *mtree_load(struct maple_tree *mt,
- 	MA_STATE(mas, mt, index, index);
- 	void *entry;
- 
--	trace_ma_read(__func__, &mas);
-+	trace_ma_read(TP_FCT, &mas);
- 	rcu_read_lock();
- retry:
- 	entry = mas_start(&mas);
-@@ -6292,7 +6294,7 @@ int mtree_store_range(struct maple_tree
- 	MA_STATE(mas, mt, index, last);
- 	MA_WR_STATE(wr_mas, &mas, entry);
- 
--	trace_ma_write(__func__, &mas, 0, entry);
-+	trace_ma_write(TP_FCT, &mas, 0, entry);
- 	if (WARN_ON_ONCE(xa_is_advanced(entry)))
- 		return -EINVAL;
- 
-@@ -6467,7 +6469,7 @@ void *mtree_erase(struct maple_tree *mt,
- 	void *entry = NULL;
- 
- 	MA_STATE(mas, mt, index, index);
--	trace_ma_op(__func__, &mas);
-+	trace_ma_op(TP_FCT, &mas);
- 
- 	mtree_lock(mt);
- 	entry = mas_erase(&mas);
-@@ -6527,7 +6529,7 @@ void *mt_find(struct maple_tree *mt, uns
- 	unsigned long copy = *index;
- #endif
- 
--	trace_ma_read(__func__, &mas);
-+	trace_ma_read(TP_FCT, &mas);
- 
- 	if ((*index) > max)
- 		return NULL;
+diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c
+index 6b9122ab1464f..b7f6935686c96 100644
+--- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c
++++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c
+@@ -662,7 +662,7 @@ static int kvaser_usb_leaf_wait_cmd(const struct kvaser_usb *dev, u8 id,
+ 			 * for further details.
+ 			 */
+ 			if (tmp->len == 0) {
+-				pos = round_up(pos,
++				pos = round_up(pos + 1,
+ 					       le16_to_cpu
+ 						(dev->bulk_in->wMaxPacketSize));
+ 				continue;
+@@ -1672,7 +1672,7 @@ static void kvaser_usb_leaf_read_bulk_callback(struct kvaser_usb *dev,
+ 		 * number of events in case of a heavy rx load on the bus.
+ 		 */
+ 		if (cmd->len == 0) {
+-			pos = round_up(pos, le16_to_cpu
++			pos = round_up(pos + 1, le16_to_cpu
+ 						(dev->bulk_in->wMaxPacketSize));
+ 			continue;
+ 		}
+-- 
+2.51.0
+
 
 
 
