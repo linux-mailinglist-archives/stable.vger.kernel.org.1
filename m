@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66B7ECA14E6
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:13:47 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7813BC9F845
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:37:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4AB983287173
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:35:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EAF2F3016765
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:34:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE61C36BCD8;
-	Wed,  3 Dec 2025 16:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8694D30C61E;
+	Wed,  3 Dec 2025 15:34:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s9IbZzqb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SMHqS8T6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 447E336BCC0;
-	Wed,  3 Dec 2025 16:31:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 401162FF179;
+	Wed,  3 Dec 2025 15:34:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779490; cv=none; b=Tez63l/nl8hucG+XZX1Rcd78xOl/GNc1oShuluC1dntQ4oe23n8XwsVoss1voC5+GfjezsnMKV82epLJLJOVrCnhOXmPIvGeUE3sTL1ANNoWdSUG5Ysjvt5rFj8bIzAO4qamOpJ3fFTaaHdZBtHOrdjX4znEM2eMdRBks36CrME=
+	t=1764776067; cv=none; b=lJdsCGP4KJzSYluSCDpCsoQlRBQClIWtgFNeXcqd96Qb3z8HfU0N2hJmGsEgvRtfxKKbShvt+3h+5JB147PrsKeit3+pwen14CZReFQVPxfvc0eP9LHWmGNFvtV9jZ6ap2ObHpgs3+3U0aviBfwTBvQhidKdGwxrPb2021E9JZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779490; c=relaxed/simple;
-	bh=ffQ6JKNL93DklYpV4DVYrXT9xOCVSt+Aa8kh0/fxK5c=;
+	s=arc-20240116; t=1764776067; c=relaxed/simple;
+	bh=lWyabRdBtirziIhAXMB1gKopmNW9k4EJWWTzW/YY1E0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ip9VcuRsHfgRc6xd+oXN3r8YCDTNtQ1m8K2Ieb5i3wSrPnwbKJmU1S+vpBeva1zvdfy11qUkVtnwhAT9jM91GXnw0VM1mFELBVfpvEqmYLg2RaQ7r+Ep/0XsfJ1yFXj57K8bMRVk54a3CM11kaydDxA66I0q3PtGVFFV4wJTmXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s9IbZzqb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 900E4C4CEF5;
-	Wed,  3 Dec 2025 16:31:29 +0000 (UTC)
+	 MIME-Version; b=V+zNQAUzX2LhN0fIKgUxtJ27nXocPjDYO3wYBXb9ecI7ervdy4yKaALBle2UTgGsXgVrgf2FWAxDucQKfyfOIeJVXJmzUO6ZLEbKsVfwPLcu+PudwpRMm0IATdbTh+g8COYafSgVvJOe3rCeaydsTxMIuX2HP1sooBk/rxNxT+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SMHqS8T6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EFEFC4CEF5;
+	Wed,  3 Dec 2025 15:34:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779490;
-	bh=ffQ6JKNL93DklYpV4DVYrXT9xOCVSt+Aa8kh0/fxK5c=;
+	s=korg; t=1764776067;
+	bh=lWyabRdBtirziIhAXMB1gKopmNW9k4EJWWTzW/YY1E0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s9IbZzqbrDd2FXKINNXyj4M/kcSfMKaEvIasJ022LZ+L7ym6lXTiTtk9Al5rXW9X/
-	 8UXo6AVrjs4pyGv05nQB7QA/NJZEQCddVAvJaSHFaYV8yjw2nnery2ZLP/n1gjRFKA
-	 VSozCo7ky4w+vR7uP4k69jABp3EKnq0jna+BTrEY=
+	b=SMHqS8T62bXeaQHoB0wHiNyzedUgIsC4Mq/EuOlkkUkGZ9KQTpBQzBkKlwSluGng8
+	 6FDfVg7e3GzhNh3Tg7xYeuls3cSyYaA0APge1SZ9VTFxGGBe+uADaF63609oZqwENu
+	 /X3qsrG+eERPD+HSKMeA/6P7qXDEFysgXOFe6fv0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Marcos Del Sol Vives <marcos@orca.pet>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 272/568] ksmbd: use sock_create_kern interface to create kernel socket
-Date: Wed,  3 Dec 2025 16:24:34 +0100
-Message-ID: <20251203152450.674477017@linuxfoundation.org>
+Subject: [PATCH 5.10 071/300] PCI: Disable MSI on RDC PCI to PCIe bridges
+Date: Wed,  3 Dec 2025 16:24:35 +0100
+Message-ID: <20251203152403.252371119@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +60,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Marcos Del Sol Vives <marcos@orca.pet>
 
-[ Upstream commit 3677ca67b9791481af16d86e47c3c7d1f2442f95 ]
+[ Upstream commit ebc7086b39e5e4f3d3ca82caaea20538c9b62d42 ]
 
-we should use sock_create_kern() if the socket resides in kernel space.
+RDC PCI to PCIe bridges, present on Vortex86DX3 and Vortex86EX2 SoCs, do
+not support MSIs. If enabled, interrupts generated by PCIe devices never
+reach the processor.
 
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+I have contacted the manufacturer (DM&P) and they confirmed that PCI MSIs
+need to be disabled for them.
+
+Signed-off-by: Marcos Del Sol Vives <marcos@orca.pet>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Link: https://patch.msgid.link/20250705233209.721507-1-marcos@orca.pet
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/transport_tcp.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/pci/quirks.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/smb/server/transport_tcp.c b/fs/smb/server/transport_tcp.c
-index f07b9e147fe2d..e0719b70c96f8 100644
---- a/fs/smb/server/transport_tcp.c
-+++ b/fs/smb/server/transport_tcp.c
-@@ -469,12 +469,13 @@ static int create_socket(struct interface *iface)
- 	struct socket *ksmbd_socket;
- 	bool ipv4 = false;
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index 7d9f048ed18f8..ac355ae17bfee 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -2554,6 +2554,7 @@ static void quirk_disable_msi(struct pci_dev *dev)
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_8131_BRIDGE, quirk_disable_msi);
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_VIA, 0xa238, quirk_disable_msi);
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x5a3f, quirk_disable_msi);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_RDC, 0x1031, quirk_disable_msi);
  
--	ret = sock_create(PF_INET6, SOCK_STREAM, IPPROTO_TCP, &ksmbd_socket);
-+	ret = sock_create_kern(current->nsproxy->net_ns, PF_INET6, SOCK_STREAM,
-+			IPPROTO_TCP, &ksmbd_socket);
- 	if (ret) {
- 		if (ret != -EAFNOSUPPORT)
- 			pr_err("Can't create socket for ipv6, fallback to ipv4: %d\n", ret);
--		ret = sock_create(PF_INET, SOCK_STREAM, IPPROTO_TCP,
--				  &ksmbd_socket);
-+		ret = sock_create_kern(current->nsproxy->net_ns, PF_INET,
-+				SOCK_STREAM, IPPROTO_TCP, &ksmbd_socket);
- 		if (ret) {
- 			pr_err("Can't create socket for ipv4: %d\n", ret);
- 			goto out_clear;
+ /*
+  * The APC bridge device in AMD 780 family northbridges has some random
 -- 
 2.51.0
 
