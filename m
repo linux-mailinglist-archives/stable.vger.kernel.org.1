@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-198591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ECBCCA09B5
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:45:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5552CC9FAD3
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:52:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D7A9430014E1
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:45:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3C9C83002D15
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:44:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36B8C32E72B;
-	Wed,  3 Dec 2025 15:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFB51309EFF;
+	Wed,  3 Dec 2025 15:44:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rTyOdenj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m4ipM/cn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9EDC32E692;
-	Wed,  3 Dec 2025 15:50:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB8D830276F;
+	Wed,  3 Dec 2025 15:44:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777049; cv=none; b=dlw6EbpkVRsuu83TxOMzihFSw36lVsOU6yeg2EnA+RBQoyv5dNyEdilClhQuiZDSYSO81xfSlIuF1evPtMi1EjFSOnXFQRxIJlqoT5/+bZCUAhwdUWGKrcMJe90B9yCaSV2OWKvAH6XqZqglvIU3JSuqBDx23gdn8IZHhNxGPz0=
+	t=1764776654; cv=none; b=n6sGS3WvCI9Xbqc4CXmlAUysCCUb+YkRf3ZcypS+BJknnvGmbbmFEXfglZ3aLl8QeQQHgo1cGAJIKQXYUl2nDwzOZBLGklnccNRPUgaIeHo193xtYUx60VYu4ZRwbgmLJAPD3Wx3c76t84P9F3URXkxWnN7V3ZFffC98ui0e82U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777049; c=relaxed/simple;
-	bh=T1RAPbXc8NDWwUv19/TcjkK9ek+GMMiI6YYsRxkPvN0=;
+	s=arc-20240116; t=1764776654; c=relaxed/simple;
+	bh=n52nT0oB8+gzPqbtHzKPYOv0fkxIvMC0YzLZwLfMUtA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KXdk2+rV3xYUzVdODrRQgiwymIxulzUKY6i5Oc9PNEJm4cepoKj9so4QciwpiUQZUK6DWEG0mhvJLqZYZXKDKpM1ZysfpJm6GKL1X4T+jrujq9vDO9tVlthi1/qe5sL0E3AxnNuDBj6oVVIfhgLc74dDRykYbKEgYrHnysDTJCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rTyOdenj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01A83C4CEF5;
-	Wed,  3 Dec 2025 15:50:47 +0000 (UTC)
+	 MIME-Version; b=oNrjxSyPoZ9pSFGWalXzYEil8FDmxy8oqQIQaEMB0FGibPIM99PYHvtZ6NWk623g56zkLG3LprMxdTUEsD1WbcwqhixGBWI3HMYUuCYhdNnAr1FtCpiPP6UTlOgWMYINIflGplf2yXAsZHLyzWeIciCQ//toNjNWYpNCMotLW+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m4ipM/cn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 005BDC4CEF5;
+	Wed,  3 Dec 2025 15:44:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777048;
-	bh=T1RAPbXc8NDWwUv19/TcjkK9ek+GMMiI6YYsRxkPvN0=;
+	s=korg; t=1764776654;
+	bh=n52nT0oB8+gzPqbtHzKPYOv0fkxIvMC0YzLZwLfMUtA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rTyOdenjEknS9nOvXgtRaVYLhhWDMXH6ZA5+Skgi1+/B48Al8//0uVZ/y9uDdSwkX
-	 qsWZaL7sUuCZsAzRA7cQlxvsVQpyt4ojeEYe9k3Z4Bsocjt8nfi/hrXgWzNSD7DRGC
-	 QBtYZ8/rTbqW4kjgFp/cowIqaUXqnpqdH6f6BMXY=
+	b=m4ipM/cnMDR2r2k+EeRugKUMQ3q0R+y1KPg/V0UuHSekoJeyxLp3oUqxYRfq+qCGI
+	 Js3VFkDIEof7fGNqPc3jJeb7qCO1wEWAMxA+82/yCIrJiD1Z5BaAAL54aPXqZxHZm/
+	 SiQ6nCjizVsM04vYP74zuRPqZ4Ueajb7O08fTXBY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.17 065/146] iio: adc: ad4030: Fix _scale value for common-mode channels
-Date: Wed,  3 Dec 2025 16:27:23 +0100
-Message-ID: <20251203152348.846935015@linuxfoundation.org>
+	"Ahmed, Aaron" <aarnahmd@amazon.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>
+Subject: [PATCH 5.10 240/300] Revert "NFS: Dont set NFS_INO_REVAL_PAGECACHE in the inode cache validity"
+Date: Wed,  3 Dec 2025 16:27:24 +0100
+Message-ID: <20251203152409.516297001@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +59,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcelo Schmitt <marcelo.schmitt@analog.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-commit ffc74ad539136ae9e16f7b5f2e4582e88018cd49 upstream.
+This reverts commit 36a9346c225270262d9f34e66c91aa1723fa903f.
 
-Previously, the driver always used the amount of precision bits of
-differential input channels to provide the scale to mV. Though,
-differential and common-mode voltage channels have different amount of
-precision bits and the correct number of precision bits must be considered
-to get to a proper mV scale factor for each one. Use channel specific
-number of precision bits to provide the correct scale value for each
-channel.
+The above commit was incorrectly labelled as a dependency for commit
+b01f21cacde9 ("NFS: Fix the setting of capabilities when automounting a
+new filesystem")
+A revert is needed, since the incorrectly applied commit depends upon a
+series of other patches that were merged into Linux 5.13, but have not
+been applied to the 5.10 stable series.
 
-Fixes: de67f28abe58 ("iio: adc: ad4030: check scan_type for error")
-Fixes: 949abd1ca5a4 ("iio: adc: ad4030: add averaging support")
-Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reported-by: "Ahmed, Aaron" <aarnahmd@amazon.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ad4030.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/inode.c    |    6 ++++--
+ fs/nfs/nfs4proc.c |    1 +
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/adc/ad4030.c
-+++ b/drivers/iio/adc/ad4030.c
-@@ -385,7 +385,7 @@ static int ad4030_get_chan_scale(struct
- 	struct ad4030_state *st = iio_priv(indio_dev);
- 	const struct iio_scan_type *scan_type;
+--- a/fs/nfs/inode.c
++++ b/fs/nfs/inode.c
+@@ -217,12 +217,11 @@ static void nfs_set_cache_invalid(struct
+ 			flags &= ~NFS_INO_INVALID_OTHER;
+ 		flags &= ~(NFS_INO_INVALID_CHANGE
+ 				| NFS_INO_INVALID_SIZE
++				| NFS_INO_REVAL_PAGECACHE
+ 				| NFS_INO_INVALID_XATTR);
+ 	} else if (flags & NFS_INO_REVAL_PAGECACHE)
+ 		flags |= NFS_INO_INVALID_CHANGE | NFS_INO_INVALID_SIZE;
  
--	scan_type = iio_get_current_scan_type(indio_dev, st->chip->channels);
-+	scan_type = iio_get_current_scan_type(indio_dev, chan);
- 	if (IS_ERR(scan_type))
- 		return PTR_ERR(scan_type);
+-	flags &= ~NFS_INO_REVAL_PAGECACHE;
+-
+ 	if (!nfs_has_xattr_cache(nfsi))
+ 		flags &= ~NFS_INO_INVALID_XATTR;
+ 	if (inode->i_mapping->nrpages == 0)
+@@ -1901,6 +1900,7 @@ static int nfs_update_inode(struct inode
+ 	nfsi->cache_validity &= ~(NFS_INO_INVALID_ATTR
+ 			| NFS_INO_INVALID_ATIME
+ 			| NFS_INO_REVAL_FORCED
++			| NFS_INO_REVAL_PAGECACHE
+ 			| NFS_INO_INVALID_BLOCKS);
  
+ 	/* Do atomic weak cache consistency updates */
+@@ -1942,6 +1942,7 @@ static int nfs_update_inode(struct inode
+ 	} else {
+ 		nfsi->cache_validity |= save_cache_validity &
+ 				(NFS_INO_INVALID_CHANGE
++				| NFS_INO_REVAL_PAGECACHE
+ 				| NFS_INO_REVAL_FORCED);
+ 		cache_revalidated = false;
+ 	}
+@@ -1987,6 +1988,7 @@ static int nfs_update_inode(struct inode
+ 	} else {
+ 		nfsi->cache_validity |= save_cache_validity &
+ 				(NFS_INO_INVALID_SIZE
++				| NFS_INO_REVAL_PAGECACHE
+ 				| NFS_INO_REVAL_FORCED);
+ 		cache_revalidated = false;
+ 	}
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -1212,6 +1212,7 @@ nfs4_update_changeattr_locked(struct ino
+ 		| cache_validity;
+ 
+ 	if (cinfo->atomic && cinfo->before == inode_peek_iversion_raw(inode)) {
++		nfsi->cache_validity &= ~NFS_INO_REVAL_PAGECACHE;
+ 		nfsi->attrtimeo_timestamp = jiffies;
+ 	} else {
+ 		if (S_ISDIR(inode->i_mode)) {
 
 
 
