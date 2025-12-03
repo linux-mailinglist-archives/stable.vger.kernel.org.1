@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 146FDC9FFC4
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:35:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12EE9C9F926
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:42:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9C7B0302E943
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:33:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 703373035D2B
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:37:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AC903AA1A4;
-	Wed,  3 Dec 2025 16:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34F4724BD03;
+	Wed,  3 Dec 2025 15:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TUos6Hs5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c2xKV2bt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA6743AA1A2;
-	Wed,  3 Dec 2025 16:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4D2313E3B;
+	Wed,  3 Dec 2025 15:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779585; cv=none; b=ehwYpVUjLuFB2mvIAfqczNOn1Lu1jFhGWWG1fCz2Tn/Q7IwsNl30WRCHYxsWsH+6x9WdIPvXlT+bxWd1I+//NsglldIjTPYKvNJYblFGShk0JSqYd1Wub0w09ejSde+6xpi8hBiVLoyeRgQSjT0QUBv+B1HMiG7iYNzN4iIObh0=
+	t=1764776251; cv=none; b=Y8DP5rm1RJNgj4Y1fQ5uCBS5DJnS7PMWMWzqcJ6dA3CB5mTl6SVQ0IZQj5dRVt4ohkUp/xa81m8vAlvBsuVso5EBEQJFgb3qCPfxI6XYZg9cMYyLIDlvyqGdpyCCfkELGMWwjVqGVeJhOBW/Ufh2Cp/VQ2Yn1zga01k9b3h3DTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779585; c=relaxed/simple;
-	bh=ZWvZqTeuyHqyedB//DcMDFVtOTMmCY5573u8MZjq2sQ=;
+	s=arc-20240116; t=1764776251; c=relaxed/simple;
+	bh=+CMzH91dEfo3ValNiNOwbcucJUMFsiz39MZar8G1dUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rGcIeSFO9hJ21e3DVMa6bzEB1AzBVP3dtWE9D8tnRVySe43elYWupgwxeDNt5zyojJUC2nldUKnjKmAxs0n0A28sQiFiZNEHRPRbkUqN8i5+KvOnUpv8FiX4R+yN9v8aygDuA8pWfMzd9ikcuS3re1xcEC8/G/FP7qYiVqb4AFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TUos6Hs5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D686C4CEF5;
-	Wed,  3 Dec 2025 16:33:05 +0000 (UTC)
+	 MIME-Version; b=D9G4Rsd7u8bPMvxyb7osbNvpmGCu4QZzFhFhGv1wu3btCcJBkBvkGeqBIugjXJeyfA5DTFb0NeJxu2oJfpxle3wu0s5CikDsuf/Ctppcvc68mX+Ftw2iXzd+KSDoSYBUTopZArA+E7G2ttmwNlmfR26QeZ7HwLCrAZwCshygxGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c2xKV2bt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50DA9C4CEF5;
+	Wed,  3 Dec 2025 15:37:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779585;
-	bh=ZWvZqTeuyHqyedB//DcMDFVtOTMmCY5573u8MZjq2sQ=;
+	s=korg; t=1764776250;
+	bh=+CMzH91dEfo3ValNiNOwbcucJUMFsiz39MZar8G1dUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TUos6Hs5IBb3PwiZiupW7eE//4Lq35qh8eT8eRcgt8A4T8mlHu+s15+hMYe6aZJW+
-	 JiobAKyVvfqgHP7i5hc5bSgQDTKU5083tggLbd+/fwySMWdEjKMQ42pVBJmOuzXMB4
-	 G5hprPBNHFrUMd3C5rA4qQSCWnnn4ATmJt3t5D8g=
+	b=c2xKV2btfIZx344CcubQCtb5vRnrMjUt1XqaUjve4FQ1qmlFH1oUPi5S48+l5C0HB
+	 G57zwtV/cfDnoxRQ4S1zalJSNyqUtDB98jMkBW5f/sbCgYgeCGwhF352RsKiYQNbkv
+	 hTArJ0V2/9jeBuoQ1FZyW/JD0dnkLBS+7Q3a/14o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Alex Markuze <amarkuze@redhat.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
+	Qianfeng Rong <rongqianfeng@vivo.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 301/568] ceph: add checking of wait_for_completion_killable() return value
+Subject: [PATCH 5.10 099/300] scsi: pm8001: Use int instead of u32 to store error codes
 Date: Wed,  3 Dec 2025 16:25:03 +0100
-Message-ID: <20251203152451.730991674@linuxfoundation.org>
+Message-ID: <20251203152404.292230608@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +60,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+From: Qianfeng Rong <rongqianfeng@vivo.com>
 
-[ Upstream commit b7ed1e29cfe773d648ca09895b92856bd3a2092d ]
+[ Upstream commit bee3554d1a4efbce91d6eca732f41b97272213a5 ]
 
-The Coverity Scan service has detected the calling of
-wait_for_completion_killable() without checking the return
-value in ceph_lock_wait_for_completion() [1]. The CID 1636232
-defect contains explanation: "If the function returns an error
-value, the error value may be mistaken for a normal value.
-In ceph_lock_wait_for_completion(): Value returned from
-a function is not checked for errors before being used. (CWE-252)".
+Use int instead of u32 for 'ret' variable to store negative error codes
+returned by PM8001_CHIP_DISP->set_nvmd_req().
 
-The patch adds the checking of wait_for_completion_killable()
-return value and return the error code from
-ceph_lock_wait_for_completion().
-
-[1] https://scan5.scan.coverity.com/#/project-view/64304/10063?selectedIssue=1636232
-
-Signed-off-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Reviewed-by: Alex Markuze <amarkuze@redhat.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
+Link: https://lore.kernel.org/r/20250826093242.230344-1-rongqianfeng@vivo.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/locks.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/scsi/pm8001/pm8001_ctl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ceph/locks.c b/fs/ceph/locks.c
-index b191426bf880c..3da9e53f80918 100644
---- a/fs/ceph/locks.c
-+++ b/fs/ceph/locks.c
-@@ -202,7 +202,10 @@ static int ceph_lock_wait_for_completion(struct ceph_mds_client *mdsc,
- 	if (err && err != -ERESTARTSYS)
- 		return err;
+diff --git a/drivers/scsi/pm8001/pm8001_ctl.c b/drivers/scsi/pm8001/pm8001_ctl.c
+index 9c117e4e7f5bb..d5d5965fa7a0e 100644
+--- a/drivers/scsi/pm8001/pm8001_ctl.c
++++ b/drivers/scsi/pm8001/pm8001_ctl.c
+@@ -683,7 +683,7 @@ static int pm8001_set_nvmd(struct pm8001_hba_info *pm8001_ha)
+ 	struct pm8001_ioctl_payload	*payload;
+ 	DECLARE_COMPLETION_ONSTACK(completion);
+ 	u8		*ioctlbuffer;
+-	u32		ret;
++	int		ret;
+ 	u32		length = 1024 * 5 + sizeof(*payload) - 1;
  
--	wait_for_completion_killable(&req->r_safe_completion);
-+	err = wait_for_completion_killable(&req->r_safe_completion);
-+	if (err)
-+		return err;
-+
- 	return 0;
- }
- 
+ 	if (pm8001_ha->fw_image->size > 4096) {
 -- 
 2.51.0
 
