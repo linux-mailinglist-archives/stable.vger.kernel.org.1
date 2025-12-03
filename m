@@ -1,55 +1,63 @@
-Return-Path: <stable+bounces-199637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 899A4CA026F
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:51:50 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89E59CA050E
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:17:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B054530124E0
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:47:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8998730052FB
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:17:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DA7A35B156;
-	Wed,  3 Dec 2025 16:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 687C73AA1AC;
+	Wed,  3 Dec 2025 16:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dAnCwhLq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ke3ryLQp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C21313546;
-	Wed,  3 Dec 2025 16:47:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24749368287;
+	Wed,  3 Dec 2025 16:52:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780451; cv=none; b=ADRw40lE5bhAODgrMQ+j6AfGOld/1/yYvDZ8bigjkiparI6ZJzBivMNXQ5Kn2GJSevQ7h9RYL5WAOoOeidjgzP5eP2b06GZqgi+Famk75u3btMkDKVb03giH4modaSi1HAEc7ZL62W4eknLx50Jdyq+BjUYFeWZMZhv68g9phro=
+	t=1764780763; cv=none; b=RNnXfYecUIHg7fsRb9g1didi3rRRSnD1G95FXEg/Sxgo5ic/mmKfw/nb8tEjwh3zlBsth+Z5sBxBgPTAh5YzCiUUGYyw+XDHsE3SELdupUU7qgSceb5FtIsxGxb9O9gddZ6K9zIQO+uL5om42NcppNtSVz6T7iOOdQTcmiTMYtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780451; c=relaxed/simple;
-	bh=qx1nChWIlWLx1bdxH3rB1p3HaO0il9VgFW20qO7m5lI=;
+	s=arc-20240116; t=1764780763; c=relaxed/simple;
+	bh=sZM6BBW01MED9VPcrT5uDa2sL12YSOHQj8iYvVut6ZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UVfUCKuMbOxNL6rDBvQOuBDly8Et2lSiijlvKxkTEWdgS2jL/9wjVxXvjV11n7bQNXEoLlj93jTSitEWSnAUTfpUAWCdFp40GQttNvsPnLQVZq0f+ydqPoJZYWU4klfqr6QPMfATun2azL75JgDwXMEMD/KYZv2LZeTNwIgihPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dAnCwhLq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D77EC4CEF5;
-	Wed,  3 Dec 2025 16:47:30 +0000 (UTC)
+	 MIME-Version; b=FaOUHEc12bN0f0v/vKlqD4JCYpGfeWt4aJuaGN8nmJGp7Of3T3oB1O0Kz8yVrYxiBXWIBCNFUSISx/A6JFfC7Hb2i7HREbLUXbeDUti/FX/qTgFfT2d2ayR42AenIfBMZTrNnhz3RJlPxai6fgn3dF09nYCACMd9jRxNudDlv8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ke3ryLQp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F87EC4CEF5;
+	Wed,  3 Dec 2025 16:52:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780450;
-	bh=qx1nChWIlWLx1bdxH3rB1p3HaO0il9VgFW20qO7m5lI=;
+	s=korg; t=1764780762;
+	bh=sZM6BBW01MED9VPcrT5uDa2sL12YSOHQj8iYvVut6ZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dAnCwhLqS8PVWvnjVBXiysnX3MXbyFjC8+E7RNXtOTsAemoOWz5wCs+Bcg1AV+4PY
-	 olF+dJ/d2tDJZM//oJKlR50nNZF5Hk1N8ZRVs58GJoH2nBWbQFcslEm5r0hV4Kup6g
-	 YK3o3gNUWzaaPryoJz2LD1cjs1NuUqxAG7lE3QsQ=
+	b=ke3ryLQpOIw+yUhqUPjjEMim4I3570Ewejvc050ifnPMXo0Imhl/zf6nR5P1g8ZPB
+	 84wAu4Wbl9L/g3fjFWGf8NtMCqYHHi37L/qgt4I/MXfMhFXddt+FFZozE0EspUTAq+
+	 Dfo79ll7JSqG6qsAdk9q7j54H94w/KfOgpbnlr5E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 559/568] mptcp: fix duplicate reset on fastclose
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	syzbot+f64019ba229e3a5c411b@syzkaller.appspotmail.com,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@redhat.com>,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Dave Airlie <airlied@redhat.com>,
+	Gerd Hoffmann <kraxel@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Hellwig <hch@lst.de>
+Subject: [PATCH 6.12 082/132] mm/memfd: fix information leak in hugetlb folios
 Date: Wed,  3 Dec 2025 16:29:21 +0100
-Message-ID: <20251203152501.185702729@linuxfoundation.org>
+Message-ID: <20251203152346.331538323@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,121 +69,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-commit ae155060247be8dcae3802a95bd1bdf93ab3215d upstream.
+commit de8798965fd0d9a6c47fc2ac57767ec32de12b49 upstream.
 
-The CI reports sporadic failures of the fastclose self-tests. The root
-cause is a duplicate reset, not carrying the relevant MPTCP option.
-In the failing scenario the bad reset is received by the peer before
-the fastclose one, preventing the reception of the latter.
+When allocating hugetlb folios for memfd, three initialization steps are
+missing:
 
-Indeed there is window of opportunity at fastclose time for the
-following race:
+1. Folios are not zeroed, leading to kernel memory disclosure to userspace
+2. Folios are not marked uptodate before adding to page cache
+3. hugetlb_fault_mutex is not taken before hugetlb_add_to_page_cache()
 
-  mptcp_do_fastclose
-    __mptcp_close_ssk
-      __tcp_close()
-        tcp_set_state() [1]
-        tcp_send_active_reset() [2]
+The memfd allocation path bypasses the normal page fault handler
+(hugetlb_no_page) which would handle all of these initialization steps.
+This is problematic especially for udmabuf use cases where folios are
+pinned and directly accessed by userspace via DMA.
 
-After [1] the stack will send reset to in-flight data reaching the now
-closed port. Such reset may race with [2].
+Fix by matching the initialization pattern used in hugetlb_no_page():
+- Zero the folio using folio_zero_user() which is optimized for huge pages
+- Mark it uptodate with folio_mark_uptodate()
+- Take hugetlb_fault_mutex before adding to page cache to prevent races
 
-Address the issue explicitly sending a single reset on fastclose before
-explicitly moving the subflow to close status.
+The folio_zero_user() change also fixes a potential security issue where
+uninitialized kernel memory could be disclosed to userspace through read()
+or mmap() operations on the memfd.
 
-Fixes: d21f83485518 ("mptcp: use fastclose on more edge scenarios")
-Cc: stable@vger.kernel.org
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/596
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-6-806d3781c95f@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflicts in protocol.c, because commit bbd49d114d57 ("mptcp:
-  consolidate transition to TCP_CLOSE in mptcp_do_fastclose()") is not
-  in this version. It introduced a new line in the context. The same
-  modification can still be applied.
-  Also, tcp_send_active_reset() doesn't take a 3rd argument
-  (sk_rst_reason) in this version, see commit 5691276b39da ("rstreason:
-  prepare for active reset"). This argument is only helpful for tracing,
-  it is fine to drop it. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://lkml.kernel.org/r/20251112145034.2320452-1-kartikey406@gmail.com
+Fixes: 89c1905d9c14 ("mm/gup: introduce memfd_pin_folios() for pinning memfd folios")
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Reported-by: syzbot+f64019ba229e3a5c411b@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/all/20251112031631.2315651-1-kartikey406@gmail.com/ [v1]
+Closes: https://syzkaller.appspot.com/bug?extid=f64019ba229e3a5c411b
+Suggested-by: Oscar Salvador <osalvador@suse.de>
+Suggested-by: David Hildenbrand <david@redhat.com>
+Tested-by: syzbot+f64019ba229e3a5c411b@syzkaller.appspotmail.com
+Acked-by: Oscar Salvador <osalvador@suse.de>
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Acked-by: Hugh Dickins <hughd@google.com>
+Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com> (v2)
+Cc: Christoph Hellwig <hch@lst.de> (v6)
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |   34 +++++++++++++++++++++-------------
- 1 file changed, 21 insertions(+), 13 deletions(-)
+ mm/memfd.c |   27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2440,7 +2440,6 @@ bool __mptcp_retransmit_pending_data(str
- 
- /* flags for __mptcp_close_ssk() */
- #define MPTCP_CF_PUSH		BIT(1)
--#define MPTCP_CF_FASTCLOSE	BIT(2)
- 
- /* be sure to send a reset only if the caller asked for it, also
-  * clean completely the subflow status when the subflow reaches
-@@ -2451,7 +2450,7 @@ static void __mptcp_subflow_disconnect(s
- 				       unsigned int flags)
- {
- 	if (((1 << ssk->sk_state) & (TCPF_CLOSE | TCPF_LISTEN)) ||
--	    (flags & MPTCP_CF_FASTCLOSE)) {
-+	    subflow->send_fastclose) {
- 		/* The MPTCP code never wait on the subflow sockets, TCP-level
- 		 * disconnect should never fail
- 		 */
-@@ -2498,14 +2497,8 @@ static void __mptcp_close_ssk(struct soc
- 
- 	lock_sock_nested(ssk, SINGLE_DEPTH_NESTING);
- 
--	if ((flags & MPTCP_CF_FASTCLOSE) && !__mptcp_check_fallback(msk)) {
--		/* be sure to force the tcp_close path
--		 * to generate the egress reset
--		 */
--		ssk->sk_lingertime = 0;
--		sock_set_flag(ssk, SOCK_LINGER);
--		subflow->send_fastclose = 1;
--	}
-+	if (subflow->send_fastclose && ssk->sk_state != TCP_CLOSE)
-+		tcp_set_state(ssk, TCP_CLOSE);
- 
- 	need_push = (flags & MPTCP_CF_PUSH) && __mptcp_retransmit_pending_data(sk);
- 	if (!dispose_it) {
-@@ -2794,9 +2787,24 @@ static void mptcp_do_fastclose(struct so
- 	struct mptcp_subflow_context *subflow, *tmp;
- 	struct mptcp_sock *msk = mptcp_sk(sk);
- 
--	mptcp_for_each_subflow_safe(msk, subflow, tmp)
--		__mptcp_close_ssk(sk, mptcp_subflow_tcp_sock(subflow),
--				  subflow, MPTCP_CF_FASTCLOSE);
-+	/* Explicitly send the fastclose reset as need */
-+	if (__mptcp_check_fallback(msk))
-+		return;
+--- a/mm/memfd.c
++++ b/mm/memfd.c
+@@ -90,9 +90,36 @@ struct folio *memfd_alloc_folio(struct f
+ 						    NULL,
+ 						    gfp_mask);
+ 		if (folio) {
++			u32 hash;
 +
-+	mptcp_for_each_subflow_safe(msk, subflow, tmp) {
-+		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
++			/*
++			 * Zero the folio to prevent information leaks to userspace.
++			 * Use folio_zero_user() which is optimized for huge/gigantic
++			 * pages. Pass 0 as addr_hint since this is not a faulting path
++			 *  and we don't have a user virtual address yet.
++			 */
++			folio_zero_user(folio, 0);
 +
-+		lock_sock(ssk);
++			/*
++			 * Mark the folio uptodate before adding to page cache,
++			 * as required by filemap.c and other hugetlb paths.
++			 */
++			__folio_mark_uptodate(folio);
 +
-+		/* Some subflow socket states don't allow/need a reset.*/
-+		if ((1 << ssk->sk_state) & (TCPF_LISTEN | TCPF_CLOSE))
-+			goto unlock;
++			/*
++			 * Serialize hugepage allocation and instantiation to prevent
++			 * races with concurrent allocations, as required by all other
++			 * callers of hugetlb_add_to_page_cache().
++			 */
++			hash = hugetlb_fault_mutex_hash(memfd->f_mapping, idx);
++			mutex_lock(&hugetlb_fault_mutex_table[hash]);
 +
-+		subflow->send_fastclose = 1;
-+		tcp_send_active_reset(ssk, ssk->sk_allocation);
-+unlock:
-+		release_sock(ssk);
-+	}
- }
- 
- static void mptcp_worker(struct work_struct *work)
+ 			err = hugetlb_add_to_page_cache(folio,
+ 							memfd->f_mapping,
+ 							idx);
++
++			mutex_unlock(&hugetlb_fault_mutex_table[hash]);
++
+ 			if (err) {
+ 				folio_put(folio);
+ 				return ERR_PTR(err);
 
 
 
