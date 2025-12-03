@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-199744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D796CA0E85
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:21:40 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C550CA01BB
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:48:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 317A333D0C19
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:18:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 60AE630006FD
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:48:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D63939A264;
-	Wed,  3 Dec 2025 16:53:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A7703624AE;
+	Wed,  3 Dec 2025 16:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G0Wl003y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0uRUXMR3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4DF639A255;
-	Wed,  3 Dec 2025 16:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D3F376BCC;
+	Wed,  3 Dec 2025 16:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780793; cv=none; b=TpCFwRKtBWY4uxVGT7VCKawk2+DOQeBAdGEPd1lK7cHD1cNUmT4bb3V/XLLvnTCtTQCqe0H4JWOnaCPqsJzFve1cA7i0DRrBTHfjh/aPVt77aySITgVn3MdxyltKmeGcmlZCFLp+78Swc/V02QvMGjsK3B2Ywv+9s8GmfXB0ADg=
+	t=1764780507; cv=none; b=Rl5I6MnwCAXq7rLUvmErE2FajV2GA1VNnXYjU4NN3IwId9Vo+y+Qi5SgBJpTOlJqPyq6NoGQPicL3jHRasK+pyz8i/iiqJ+z+iCHCyFbBEWFrQ+ZtqvUbsFAdkrv2IbRcJjv8OI7m1Xxm9zlhCDd8s/nZYh+9t6sUpMISSmaQj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780793; c=relaxed/simple;
-	bh=Mi7LQQieqok57JGGj2rPySdvsaTtVdfG6mxgkfJhniw=;
+	s=arc-20240116; t=1764780507; c=relaxed/simple;
+	bh=FCvoBqRWDm7u4KVA6H82r/WWxo/Fs5MrneDMG13HemI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G2lRU9vl9L7MgJCBU8/a7CgiSWi4tp3yWBszBxj0oYYccQ1JGNpJTp/X4g3hH+tMIjfU+mJp3/2VmgMVCNsxRms33QZ9hhrAB+ORMNROZZ1FImM8YaAtrLEeB5cucVcEFEIcovsAQlIL/1jY1AecSYUNOyq5nd332jkfkUmn0t8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G0Wl003y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52514C116C6;
-	Wed,  3 Dec 2025 16:53:12 +0000 (UTC)
+	 MIME-Version; b=RU1FXXwHBpu0BA1bniCwSjR99vU1IpUuFn95llrAo+RlBg5isFQyNtOO6qxM6kgdg/HYm6EOQm9SRxCy0wIVfIw4x8/Hc+D/4t0IKBgce0LrTMmakNj4X0X4JqMDcTyFzCqQhPrseG7dTfxDYbc7mcX5vYETVauRZb4bxsiflwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0uRUXMR3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3669C116C6;
+	Wed,  3 Dec 2025 16:48:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780792;
-	bh=Mi7LQQieqok57JGGj2rPySdvsaTtVdfG6mxgkfJhniw=;
+	s=korg; t=1764780507;
+	bh=FCvoBqRWDm7u4KVA6H82r/WWxo/Fs5MrneDMG13HemI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G0Wl003y1a2wDIAOTPknQbDbOPkzYSawLBvaRhBQEwykBUXP3l7W7Bj9xHMPNjP2d
-	 rJNKcTZkX2jO8N58iZTwITd7R7fSaeeCqHyinC0mdKni7tZpfazAtTqW/UfZqa7B+6
-	 LRG9CRd8wJf+93vIynP3uOAGqB8O7uti1DJgtX+k=
+	b=0uRUXMR3KKWQ9T3MPwtxer9VzWV8QvtQN4wgHbAHVxdel168vX09HoTSQ7Naxap6k
+	 Nc1On1RJBmYZnbJ0DOJa8KqByIqB2i7aH3RYCLz3wUsAH3VY9dJeHxnABCK4XcTD7m
+	 gKWGxH44Pig0C8jzTgwQbu9c6U1eVeFoGOixO7ww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Desnes Nunes <desnesn@redhat.com>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 6.12 091/132] usb: storage: Fix memory leak in USB bulk transport
+	Alan Stern <stern@rowland.harvard.edu>,
+	syzbot+b63d677d63bcac06cf90@syzkaller.appspotmail.com,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Wenshan Lan <jetlan9@163.com>
+Subject: [PATCH 6.1 568/568] HID: core: Harden s32ton() against conversion to 0 bits
 Date: Wed,  3 Dec 2025 16:29:30 +0100
-Message-ID: <20251203152346.662082137@linuxfoundation.org>
+Message-ID: <20251203152501.554151430@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,67 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Desnes Nunes <desnesn@redhat.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-commit 41e99fe2005182139b1058db71f0d241f8f0078c upstream.
+[ Upstream commit a6b87bfc2ab5bccb7ad953693c85d9062aef3fdd ]
 
-A kernel memory leak was identified by the 'ioctl_sg01' test from Linux
-Test Project (LTP). The following bytes were mainly observed: 0x53425355.
+Testing by the syzbot fuzzer showed that the HID core gets a
+shift-out-of-bounds exception when it tries to convert a 32-bit
+quantity to a 0-bit quantity.  Ideally this should never occur, but
+there are buggy devices and some might have a report field with size
+set to zero; we shouldn't reject the report or the device just because
+of that.
 
-When USB storage devices incorrectly skip the data phase with status data,
-the code extracts/validates the CSW from the sg buffer, but fails to clear
-it afterwards. This leaves status protocol data in srb's transfer buffer,
-such as the US_BULK_CS_SIGN 'USBS' signature observed here. Thus, this can
-lead to USB protocols leaks to user space through SCSI generic (/dev/sg*)
-interfaces, such as the one seen here when the LTP test requested 512 KiB.
+Instead, harden the s32ton() routine so that it returns a reasonable
+result instead of crashing when it is called with the number of bits
+set to 0 -- the same as what snto32() does.
 
-Fix the leak by zeroing the CSW data in srb's transfer buffer immediately
-after the validation of devices that skip data phase.
-
-Note: Differently from CVE-2018-1000204, which fixed a big leak by zero-
-ing pages at allocation time, this leak occurs after allocation, when USB
-protocol data is written to already-allocated sg pages.
-
-Fixes: a45b599ad808 ("scsi: sg: allocate with __GFP_ZERO in sg_build_indirect()")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Desnes Nunes <desnesn@redhat.com>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://patch.msgid.link/20251031043436.55929-1-desnesn@redhat.com
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Reported-by: syzbot+b63d677d63bcac06cf90@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-usb/68753a08.050a0220.33d347.0008.GAE@google.com/
+Tested-by: syzbot+b63d677d63bcac06cf90@syzkaller.appspotmail.com
+Fixes: dde5845a529f ("[PATCH] Generic HID layer - code split")
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/613a66cd-4309-4bce-a4f7-2905f9bce0c9@rowland.harvard.edu
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+[ s32ton() was moved by c653ffc28340 ("HID: stop exporting hid_snto32()").
+  Minor context change fixed. ]
+Signed-off-by: Wenshan Lan <jetlan9@163.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/transport.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/hid/hid-core.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/storage/transport.c
-+++ b/drivers/usb/storage/transport.c
-@@ -1204,7 +1204,23 @@ int usb_stor_Bulk_transport(struct scsi_
- 						US_BULK_CS_WRAP_LEN &&
- 					bcs->Signature ==
- 						cpu_to_le32(US_BULK_CS_SIGN)) {
-+				unsigned char buf[US_BULK_CS_WRAP_LEN];
+--- a/drivers/hid/hid-core.c
++++ b/drivers/hid/hid-core.c
+@@ -1354,7 +1354,12 @@ EXPORT_SYMBOL_GPL(hid_snto32);
+ 
+ static u32 s32ton(__s32 value, unsigned n)
+ {
+-	s32 a = value >> (n - 1);
++	s32 a;
++	if (!value || !n)
++		return 0;
 +
- 				usb_stor_dbg(us, "Device skipped data phase\n");
++	a = value >> (n - 1);
 +
-+				/*
-+				 * Devices skipping data phase might leave CSW data in srb's
-+				 * transfer buffer. Zero it to prevent USB protocol leakage.
-+				 */
-+				sg = NULL;
-+				offset = 0;
-+				memset(buf, 0, sizeof(buf));
-+				if (usb_stor_access_xfer_buf(buf,
-+						US_BULK_CS_WRAP_LEN, srb, &sg,
-+						&offset, TO_XFER_BUF) !=
-+							US_BULK_CS_WRAP_LEN)
-+					usb_stor_dbg(us, "Failed to clear CSW data\n");
-+
- 				scsi_set_resid(srb, transfer_length);
- 				goto skipped_data_phase;
- 			}
+ 	if (a && a != -1)
+ 		return value < 0 ? 1 << (n - 1) : (1 << (n - 1)) - 1;
+ 	return value & ((1 << n) - 1);
 
 
 
