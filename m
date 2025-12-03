@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-198595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4366CA1444
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:07:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BC1ACA057D
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:19:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 27FBE32E9EDD
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:43:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 20FF4317EB55
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:05:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C97E632E757;
-	Wed,  3 Dec 2025 15:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DB0F35BDAD;
+	Wed,  3 Dec 2025 16:41:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zP4psUNm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cbf7SvJW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8559C32E755;
-	Wed,  3 Dec 2025 15:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53F635BDA7;
+	Wed,  3 Dec 2025 16:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777061; cv=none; b=JMHbXOJrrvZ2IBLzlv3RIR51/3FM4Oq6hImtgpjxB0Uoy89h647s3TVdVmIJwQBD9v6VkiCEY/qzrE3eN7hqZVhq7ABeaNYB1KHDtLLELE/J7GuaBt7Kp0zdDBXrEzih9/pjv63vpEV0PfIbx0VFrrtA/msiSGDmNxLMP707keQ=
+	t=1764780070; cv=none; b=eXAtq++IuplLywRbYtI7dHCyZyQf2JWeCBMUKXskOMMl3XwnpvRqV12eZdADhkcC7KdqfI0bcM7He1UnGYj/u8gSVtNXEq6LCMs0vJERSBh6kvl82I/FEo2mR8CNiay8uSO2OeigAAignZKied64ea6TbIMyFiB8Nxel7hLCFKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777061; c=relaxed/simple;
-	bh=+BhPiWak2vFgolUsIr8akPEejOUklIVhLm7Hw9j6LBA=;
+	s=arc-20240116; t=1764780070; c=relaxed/simple;
+	bh=UEeU+rr3w2fjrz1F0cjDrEboZPRw/clA7iPyjuh3TNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NPwp38vUuXdjhhVO7t0BL4CYHhzVO1RIagz4GBmFdNCdH+oVT3vjXxyISdMfCeYpDh5VPl28yn6sr9Xwv0oyi4hTG68lM/FBeuSHchyUTjaYASdQ/T2CazlaoF4syZ8/xLipN0GwdQ1hVHf59Phfy6lBJkT+cdpBbLe3agDX0so=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zP4psUNm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1E34C4CEF5;
-	Wed,  3 Dec 2025 15:51:00 +0000 (UTC)
+	 MIME-Version; b=kFw5x+7sXvnBQ8iHVfw/V+N0NyIYruf6lUPXNmo0lW8osuQcVGSjPuFU6fWNOre2qkqzM4EcN2JCofNiZVNnO8jNZfdQQnGwkIco5vmJZ6cwSPBAnxIxAtLdm5rsQLEy3gHFTt+rVDz/f/Z8yBYRWGVe4oeqThE/Z4TX0xkypGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cbf7SvJW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F030C4CEF5;
+	Wed,  3 Dec 2025 16:41:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777061;
-	bh=+BhPiWak2vFgolUsIr8akPEejOUklIVhLm7Hw9j6LBA=;
+	s=korg; t=1764780070;
+	bh=UEeU+rr3w2fjrz1F0cjDrEboZPRw/clA7iPyjuh3TNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zP4psUNmfdmQGnWdMr5ddK6Gdi4v+xP9k9yl54dJOo72c5l0YMqmHCIU15+5kkJLk
-	 uxJXF5Fu+wW6kAskpSPBHPb3y0/bqv9HkweJy1/JvPP/QWbOyonYJ6GHuxCR3IG0Zv
-	 0h/kuTtJ03oL/26DxJYL95Vu3mlSP9awnW7QKxI4=
+	b=Cbf7SvJWEVFxeMXXb/wiGq5Com9MVrBGN9J/rBLTDcWXAZnSeVYVOzpTe8bv+hyIY
+	 JqVlfiFY6KQXzMiAhYwsAkq7bpsfCQl956FC5SzPsVx9HqGBaVadMURIJwS+nf+n54
+	 1yyluubQ/1DHIDrNzYdEclrJhmJpevg646WNJ86Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Hsu <andy_ya_hsu@wiwynn.com>,
-	ChiYuan Huang <cy_huang@richtek.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.17 069/146] iio: adc: rtq6056: Correct the sign bit index
-Date: Wed,  3 Dec 2025 16:27:27 +0100
-Message-ID: <20251203152348.991820924@linuxfoundation.org>
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 446/568] mptcp: fix premature close in case of fallback
+Date: Wed,  3 Dec 2025 16:27:28 +0100
+Message-ID: <20251203152457.043466871@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +60,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ChiYuan Huang <cy_huang@richtek.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit 9b45744bf09fc2a3287e05287141d6e123c125a7 upstream.
+commit 17393fa7b7086664be519e7230cb6ed7ec7d9462 upstream.
 
-The vshunt/current reported register is a signed 16bit integer. The
-sign bit index should be '15', not '16'.
+I'm observing very frequent self-tests failures in case of fallback when
+running on a CONFIG_PREEMPT kernel.
 
-Fixes: 4396f45d211b ("iio: adc: Add rtq6056 support")
-Reported-by: Andy Hsu <andy_ya_hsu@wiwynn.com>
-Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+The root cause is that subflow_sched_work_if_closed() closes any subflow
+as soon as it is half-closed and has no incoming data pending.
+
+That works well for regular subflows - MPTCP needs bi-directional
+connectivity to operate on a given subflow - but for fallback socket is
+race prone.
+
+When TCP peer closes the connection before the MPTCP one,
+subflow_sched_work_if_closed() will schedule the MPTCP worker to
+gracefully close the subflow, and shortly after will do another schedule
+to inject and process a dummy incoming DATA_FIN.
+
+On CONFIG_PREEMPT kernel, the MPTCP worker can kick-in and close the
+fallback subflow before subflow_sched_work_if_closed() is able to create
+the dummy DATA_FIN, unexpectedly interrupting the transfer.
+
+Address the issue explicitly avoiding closing fallback subflows on when
+the peer is only half-closed.
+
+Note that, when the subflow is able to create the DATA_FIN before the
+worker invocation, the worker will change the msk state before trying to
+close the subflow and will skip the latter operation as the msk will not
+match anymore the precondition in __mptcp_close_subflow().
+
+Fixes: f09b0ad55a11 ("mptcp: close subflow when receiving TCP+FIN")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-3-806d3781c95f@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/rtq6056.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mptcp/protocol.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/adc/rtq6056.c
-+++ b/drivers/iio/adc/rtq6056.c
-@@ -300,7 +300,7 @@ static int rtq6056_adc_read_channel(stru
- 		return IIO_VAL_INT;
- 	case RTQ6056_REG_SHUNTVOLT:
- 	case RTQ6056_REG_CURRENT:
--		*val = sign_extend32(regval, 16);
-+		*val = sign_extend32(regval, 15);
- 		return IIO_VAL_INT;
- 	default:
- 		return -EINVAL;
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2598,7 +2598,8 @@ static void __mptcp_close_subflow(struct
+ 
+ 		if (ssk_state != TCP_CLOSE &&
+ 		    (ssk_state != TCP_CLOSE_WAIT ||
+-		     inet_sk_state_load(sk) != TCP_ESTABLISHED))
++		     inet_sk_state_load(sk) != TCP_ESTABLISHED ||
++		     __mptcp_check_fallback(msk)))
+ 			continue;
+ 
+ 		/* 'subflow_data_ready' will re-sched once rx queue is empty */
 
 
 
