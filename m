@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-199299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C1AECA0131
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:45:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44D7DC9FD4C
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:09:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4F5C1304D40E
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:38:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 259A530022AE
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:09:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 588DC332907;
-	Wed,  3 Dec 2025 16:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B82203328F6;
+	Wed,  3 Dec 2025 16:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZQwDltNq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lgM0wpm+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13D02321442;
-	Wed,  3 Dec 2025 16:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C2C333290B;
+	Wed,  3 Dec 2025 16:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779336; cv=none; b=B3Qb9dxZKJiqHUBRAFp1wTp/zJUaUvKMkkCg0fTDZWLH0iR7/5BRt1xPwHts4Yd20chgcf2fIaaxSFgsVwB/bcfsPRyaLzWCHD3MakjvWU7+Eu9632Yo2+nHFCsEJJfnSI802l2uUoN0mFuDH0mujGWyIWuW954SYUazC0oD7/I=
+	t=1764777604; cv=none; b=QLIsJjNHN4NsTScRUKmDGmVg9H8YrHCy3T5Hbiyco9eUBBHS5ow5UPenlsU4JezfZ4wgngI5Imga4UxaD6SgJA6HObBhEXEkLmrbWopbbzAb8PrSMcN5K5Xz4DZlGaWfTIGNYFGdj9xu06GwZ6O3JabMl0XQrwyU2aJmj6Evfsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779336; c=relaxed/simple;
-	bh=KbZX+9XMuKDoCG8jWmFZcJYTuPcnO5wcHz2gEwJew8c=;
+	s=arc-20240116; t=1764777604; c=relaxed/simple;
+	bh=bVtIn84pceT1PG1uXCndLgM1Isu824vh8/yTS0dQyyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O6aIUa16tHCaoHVntCGfQhhVq5RMKNrMuvYKkCZVWfBcpKQL65IEoB//m/q1+XIMqFkrkrpwwHERcDKs9/THO3tp4GnBBkGYzuPAbEgmjfbIonkmaTvtZaIWYrYQnpbMy2AamLdfcwzAH9MeoWTLkiRqcYA73WxZqLUoHscGH+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZQwDltNq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BFCEC4CEF5;
-	Wed,  3 Dec 2025 16:28:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=I8PWs1ARLdOMWpKjNk2MQgZ9oxClGXqy4wVqISNJj5dggoMdRSEfu/1ekyvFfe/qVDFkyB21WpE5B8ITdVR09sodnjJ+vfF5O8Gge2mL36mbpQsCmYJSjvleeEHuxgx+ePMBLq2JOHU5fy0/CmI0XsAS7nAE7r6KgDJoJUPlQ2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lgM0wpm+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAE71C116B1;
+	Wed,  3 Dec 2025 16:00:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779335;
-	bh=KbZX+9XMuKDoCG8jWmFZcJYTuPcnO5wcHz2gEwJew8c=;
+	s=korg; t=1764777604;
+	bh=bVtIn84pceT1PG1uXCndLgM1Isu824vh8/yTS0dQyyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZQwDltNqBPZjaXkVvMlFDP++TzV+HveraBQJgyEZbI2KZgWr0DyrDSnrZwV/7Z7Av
-	 5B0W1TgVmTYww/rwf/YAxPHTmmYBc7e2gcJw9z9MbekjQmUpQYtSu8pdbJlqi229sS
-	 co1m3ffQophFUejJRpE4x26d2FbnOkRvGgaiXVUQ=
+	b=lgM0wpm+ycmuCTBe9tbEaL6E+x3K9wt7U3gRqPsoVUkHy7WMD1juqwoPyADABbXVx
+	 JlzRnGG3Ub4WRBBhtVpi3dQc0FG4TxAEizxcd17sDloyc+dddOyvudirNUkSN65XiL
+	 nSoF615nNu3ausO9lGa0/w7BG5UcvQcp4S7W+2j0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Udit Kumar <u-kumar1@ti.com>,
-	Devarsh Thakkar <devarsht@ti.com>,
-	Harikrishna Shenoy <h-shenoy@ti.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 210/568] phy: cadence: cdns-dphy: Enable lower resolutions in dphy
+Subject: [PATCH 5.15 062/392] selftests/bpf: Fix bpf_prog_detach2 usage in test_lirc_mode2
 Date: Wed,  3 Dec 2025 16:23:32 +0100
-Message-ID: <20251203152448.415523243@linuxfoundation.org>
+Message-ID: <20251203152416.393893264@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +58,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harikrishna Shenoy <h-shenoy@ti.com>
+From: Ricardo B. Marlière <rbm@suse.com>
 
-[ Upstream commit 43bd2c44515f8ee5c019ce6e6583f5640387a41b ]
+[ Upstream commit 98857d111c53954aa038fcbc4cf48873e4240f7c ]
 
-Enable support for data lane rates between 80-160 Mbps cdns dphy
-as mentioned in TRM [0] by setting the pll_opdiv field to 16.
-This change enables lower resolutions like 640x480 at 60Hz.
+Commit e9fc3ce99b34 ("libbpf: Streamline error reporting for high-level
+APIs") redefined the way that bpf_prog_detach2() returns. Therefore, adapt
+the usage in test_lirc_mode2_user.c.
 
-[0]: https://www.ti.com/lit/zip/spruil1
-(Table 12-552. DPHY_TX_PLL_CTRL Register Field Descriptions)
-
-Reviewed-by: Udit Kumar <u-kumar1@ti.com>
-Reviewed-by: Devarsh Thakkar <devarsht@ti.com>
-Signed-off-by: Harikrishna Shenoy <h-shenoy@ti.com>
-Link: https://lore.kernel.org/r/20250807052002.717807-1-h-shenoy@ti.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20250828-selftests-bpf-v1-1-c7811cd8b98c@suse.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/cadence/cdns-dphy.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/testing/selftests/bpf/test_lirc_mode2_user.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/phy/cadence/cdns-dphy.c b/drivers/phy/cadence/cdns-dphy.c
-index d65a7aeefe792..565f281b36eaf 100644
---- a/drivers/phy/cadence/cdns-dphy.c
-+++ b/drivers/phy/cadence/cdns-dphy.c
-@@ -146,7 +146,7 @@ static int cdns_dsi_get_dphy_pll_cfg(struct cdns_dphy *dphy,
+diff --git a/tools/testing/selftests/bpf/test_lirc_mode2_user.c b/tools/testing/selftests/bpf/test_lirc_mode2_user.c
+index fb5fd6841ef39..d63878bc2d5f9 100644
+--- a/tools/testing/selftests/bpf/test_lirc_mode2_user.c
++++ b/tools/testing/selftests/bpf/test_lirc_mode2_user.c
+@@ -73,7 +73,7 @@ int main(int argc, char **argv)
  
- 	dlane_bps = opts->hs_clk_rate;
- 
--	if (dlane_bps > 2500000000UL || dlane_bps < 160000000UL)
-+	if (dlane_bps > 2500000000UL || dlane_bps < 80000000UL)
- 		return -EINVAL;
- 	else if (dlane_bps >= 1250000000)
- 		cfg->pll_opdiv = 1;
-@@ -156,6 +156,8 @@ static int cdns_dsi_get_dphy_pll_cfg(struct cdns_dphy *dphy,
- 		cfg->pll_opdiv = 4;
- 	else if (dlane_bps >= 160000000)
- 		cfg->pll_opdiv = 8;
-+	else if (dlane_bps >= 80000000)
-+		cfg->pll_opdiv = 16;
- 
- 	cfg->pll_fbdiv = DIV_ROUND_UP_ULL(dlane_bps * 2 * cfg->pll_opdiv *
- 					  cfg->pll_ipdiv,
+ 	/* Let's try detach it before it was ever attached */
+ 	ret = bpf_prog_detach2(progfd, lircfd, BPF_LIRC_MODE2);
+-	if (ret != -1 || errno != ENOENT) {
++	if (ret != -ENOENT) {
+ 		printf("bpf_prog_detach2 not attached should fail: %m\n");
+ 		return 1;
+ 	}
 -- 
 2.51.0
 
