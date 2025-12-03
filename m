@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46F80CA0907
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:41:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 675B2CA0725
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:28:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1A07432A907D
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:21:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9904B331DB86
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:11:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFE0E39A26E;
-	Wed,  3 Dec 2025 16:53:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67D13398F8B;
+	Wed,  3 Dec 2025 16:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WlT5ilsh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qs94F5d7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8487139A27A;
-	Wed,  3 Dec 2025 16:53:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E485398F9B;
+	Wed,  3 Dec 2025 16:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780836; cv=none; b=O5rvE2Za5tTTYOX7S4csuTOjpG0Slgv7K4cQl6w1roum3Fu+K6QNqphCMJE466XYrfb1RJ72ZZF+t/f3KaLszddYKQU97BXAZdn3tQ2Zd/WPWPT87aaYB6tMI0kh/reW5SWdLCig1HcmhtsGJS2DXoT5EyADUZViSCg0ZLg8ZUI=
+	t=1764781135; cv=none; b=vE20okiWeGKRTsK1tTKpaNdk2gnZEQ4jggbpM9Q6vwdEFHO7OnWHZ2WF08KgsqpWtxEGnMLDkH8s7f9l2S+3SL39Tf9XU1YS5li47cDwY17gKi24Rx0B1akyJ5FQFiqkb/V9uVyNw/y/EqMLNadEVhkjt2QejbqcRKgoEb6Kd8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780836; c=relaxed/simple;
-	bh=4FlbixaNZ8VT1NLsQ87YjTAGRMvrd595FP/k8Z2P25k=;
+	s=arc-20240116; t=1764781135; c=relaxed/simple;
+	bh=l5E5WdZNG9BR3ZMrpej7gLujfYobZxy5xH4P1afD4+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q+3L+JESavLpRPD3zO4VOAb3WAoKq3wmhEdiAq1gUDGew9zng+l5Z+GegCcx5QcQfJlUNjdyIWDQTeXwnd6C1xirVNZn70RcvkEHbTmmBwoL2V7BfgHVV5TMlYVF+AVirjuiDBscGIb0DfTi31ZcOPFxo9AkVGDVMvuyGn/HFgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WlT5ilsh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A79A7C4CEF5;
-	Wed,  3 Dec 2025 16:53:55 +0000 (UTC)
+	 MIME-Version; b=XXtQ9iVgZoglIlKC3TnNOhwjeQxhL/EFvKYuFfUXEyD9fsvuk1I4/V+aDWYBByl0UvNeuqx8Lg9xD8TmXYR9cdRt1mjmmkk3oDAI5zbibrB1BTlbe9qoygfaYX7xSt9WL0kbutvgYIjbFMRDhq+wqXAAuhXrw+9ETbAL6ikktlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qs94F5d7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28842C4CEF5;
+	Wed,  3 Dec 2025 16:58:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780836;
-	bh=4FlbixaNZ8VT1NLsQ87YjTAGRMvrd595FP/k8Z2P25k=;
+	s=korg; t=1764781134;
+	bh=l5E5WdZNG9BR3ZMrpej7gLujfYobZxy5xH4P1afD4+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WlT5ilshin/nOxmIDM5wxyPHrc+8ZSJyziV6qntoQ7cYjbaMVkvU1ZDUVzchtKFoO
-	 9xdBUKYJ+6897Q5nodMNH4t5YE7nZvpPPUoc1ueCYyoZIaXb0a0HXy2Z7VQaaMCajY
-	 xjyDIhWyfw5+HJXEbGsN7nxk0FIx6oTnmeGG6usA=
+	b=qs94F5d7qqaopSFZNLBu2w041JV/5odD7N0VkJQxoi9yrOn+hN5jYlErsIK9+Q5Nb
+	 vO9jfB2Iu8KIH428wWfbDj1CWzXjgWcm+c8UopTWObMOMNKqFZQLsdAC/upi8VPyxc
+	 UhqqH14qhieRLjDXRMZkBrCRWhgXqzeHeWnz6BsQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	IncogCyberpunk <incogcyberpunk@proton.me>,
-	Douglas Anderson <dianders@chromium.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.12 071/132] Bluetooth: btusb: mediatek: Avoid btusb_mtk_claim_iso_intf() NULL deref
+	Wei Fang <wei.fang@nxp.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 17/93] net: fec: cancel perout_timer when PEROUT is disabled
 Date: Wed,  3 Dec 2025 16:29:10 +0100
-Message-ID: <20251203152345.925501626@linuxfoundation.org>
+Message-ID: <20251203152337.148279531@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
+References: <20251203152336.494201426@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Wei Fang <wei.fang@nxp.com>
 
-commit c884a0b27b4586e607431d86a1aa0bb4fb39169c upstream.
+[ Upstream commit 50caa744689e505414673c20359b04aa918439e3 ]
 
-In btusb_mtk_setup(), we set `btmtk_data->isopkt_intf` to:
-  usb_ifnum_to_if(data->udev, MTK_ISO_IFNUM)
+The PEROUT allows the user to set a specified future time to output the
+periodic signal. If the future time is far from the current time, the FEC
+driver will use hrtimer to configure PEROUT one second before the future
+time. However, the hrtimer will not be canceled if the PEROUT is disabled
+before the hrtimer expires. So the PEROUT will be configured when the
+hrtimer expires, which is not as expected. Therefore, cancel the hrtimer
+in fec_ptp_pps_disable() to fix this issue.
 
-That function can return NULL in some cases. Even when it returns
-NULL, though, we still go on to call btusb_mtk_claim_iso_intf().
-
-As of commit e9087e828827 ("Bluetooth: btusb: mediatek: Add locks for
-usb_driver_claim_interface()"), calling btusb_mtk_claim_iso_intf()
-when `btmtk_data->isopkt_intf` is NULL will cause a crash because
-we'll end up passing a bad pointer to device_lock(). Prior to that
-commit we'd pass the NULL pointer directly to
-usb_driver_claim_interface() which would detect it and return an
-error, which was handled.
-
-Resolve the crash in btusb_mtk_claim_iso_intf() by adding a NULL check
-at the start of the function. This makes the code handle a NULL
-`btmtk_data->isopkt_intf` the same way it did before the problematic
-commit (just with a slight change to the error message printed).
-
-Reported-by: IncogCyberpunk <incogcyberpunk@proton.me>
-Closes: http://lore.kernel.org/r/a380d061-479e-4713-bddd-1d6571ca7e86@leemhuis.info
-Fixes: e9087e828827 ("Bluetooth: btusb: mediatek: Add locks for usb_driver_claim_interface()")
-Cc: stable@vger.kernel.org
-Tested-by: IncogCyberpunk <incogcyberpunk@proton.me>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 350749b909bf ("net: fec: Add support for periodic output signal of PPS")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Link: https://patch.msgid.link/20251125085210.1094306-2-wei.fang@nxp.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/ethernet/freescale/fec_ptp.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -2714,6 +2714,11 @@ static void btusb_mtk_claim_iso_intf(str
- 	if (!btmtk_data)
- 		return;
+diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
+index 7f6b574320716..cb3f05da3eee6 100644
+--- a/drivers/net/ethernet/freescale/fec_ptp.c
++++ b/drivers/net/ethernet/freescale/fec_ptp.c
+@@ -498,6 +498,8 @@ static int fec_ptp_pps_disable(struct fec_enet_private *fep, uint channel)
+ {
+ 	unsigned long flags;
  
-+	if (!btmtk_data->isopkt_intf) {
-+		bt_dev_err(data->hdev, "Can't claim NULL iso interface");
-+		return;
-+	}
++	hrtimer_cancel(&fep->perout_timer);
 +
- 	/*
- 	 * The function usb_driver_claim_interface() is documented to need
- 	 * locks held if it's not called from a probe routine. The code here
+ 	spin_lock_irqsave(&fep->tmreg_lock, flags);
+ 	writel(0, fep->hwp + FEC_TCSR(channel));
+ 	spin_unlock_irqrestore(&fep->tmreg_lock, flags);
+-- 
+2.51.0
+
 
 
 
