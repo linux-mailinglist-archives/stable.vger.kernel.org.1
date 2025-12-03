@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-198437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB926CA0F93
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:29:23 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97416CA12C9
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:53:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 60F2431BC24A
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:28:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A504730080D7
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:53:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E49333164AF;
-	Wed,  3 Dec 2025 15:42:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 998A732ED37;
+	Wed,  3 Dec 2025 15:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uCz3J7FV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jQLblGjB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99194315D47;
-	Wed,  3 Dec 2025 15:42:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5599432E755;
+	Wed,  3 Dec 2025 15:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776540; cv=none; b=uhzeAz7pxXeAZxY4pioUV/YsZiUOrw6m7XaCt/ny9t0HONdEbiV9iWiMm0h5nWm3hMCV6D/l//yKwWpCPbe5VSCjBcn2b4wRxUogV5qxe4sdLj730k4ZTTSBGKBlRp4/iN9VDWNlVMv0oSl6vSIBcqCu+hWSSCBlgyZmh3Xs/ko=
+	t=1764777072; cv=none; b=k1crg+vW6coWLOXmayPL49kyOEBO9pY1O6QJcixtWLdOUPFy8Za8CEilubQIZL4H+hp/1S4D3uK1W0U/nXXIIkbUx08CwTDiguIGANYSDgkPpABFeibAWKPQBcR0EwZX+FdpjV7V9EjpIgWthn3NR1Nyh5BdRTwfld7N02sFcNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776540; c=relaxed/simple;
-	bh=c6loRs6ghDAjkC7FUGtRARzOiZ3UZDCgMMNrzUT3Lgg=;
+	s=arc-20240116; t=1764777072; c=relaxed/simple;
+	bh=rYrSznrpTxNa6531TsPz8i9wggolnLqkrSTx5cSi9uo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FZ2nhI3s44ivohWdEc8pUxpiZsNP/dz9WhaOGP3zrcqvUqYpefl+wQztHKBUhpabzAWqDQfJOWuHf4O1+0I9o2P3qb5nll9NVrg6kjgxx9jVHQ3i5JdX71m4oCM2/G+ibMDE4y+PwnFqw6V8JuhbUccjswJtk2+Jksygmy0fHzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uCz3J7FV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05243C4CEF5;
-	Wed,  3 Dec 2025 15:42:19 +0000 (UTC)
+	 MIME-Version; b=XV4gwXvpNGWM3Um5P6/QnV/wu/qQMlC0Rf6lEjdq9wO9Db+Xk8qUK2kPih+ftjIEnXvegoUyiAUhPq+O7Il95spSLvhSEnL0/m3LeZjSqKRttwVa4fc0PXZgIREw0q3G7ktlp2f8gK9pe1ETlN2tiNOetNEFrusbgOK/ZKZQD/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jQLblGjB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C955EC4CEF5;
+	Wed,  3 Dec 2025 15:51:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776540;
-	bh=c6loRs6ghDAjkC7FUGtRARzOiZ3UZDCgMMNrzUT3Lgg=;
+	s=korg; t=1764777072;
+	bh=rYrSznrpTxNa6531TsPz8i9wggolnLqkrSTx5cSi9uo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uCz3J7FVSRUsvGXDPte+fYmw3oqBFq+jGIXebeb8skNlSDmQgV+IKDH4IhZ6ESao8
-	 uj1clDhUOSKGW+XBlXGCOC+8LwLX7clWNeR1zdqmad5PmMmxnNq5x4bg6SmoN9PK09
-	 WlMWdjErZ0J9HM27Dn/k4paiatmkLYUN5F8KMO30=
+	b=jQLblGjBHU77hd7i0QlmRdFrxekB0276fSl3QOhL0Rs5/gLfMKu+9lqjh/X3UBaAm
+	 7YWw95SlMhiRdnWo9uTabhrqT57hl5VvURvBbKiMyO6613yuJRKhFr7dO3vHBinSz8
+	 kPNuKnSd1+ka7X00hbhwEo9kkTguYBL8gRALXvEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 214/300] isdn: mISDN: hfcsusb: fix memory leak in hfcsusb_probe()
+	Anurag Dutta <a-dutta@ti.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 040/146] spi: spi-cadence-quadspi: Enable pm runtime earlier to avoid imbalance
 Date: Wed,  3 Dec 2025 16:26:58 +0100
-Message-ID: <20251203152408.550506936@linuxfoundation.org>
+Message-ID: <20251203152347.942739962@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,80 +60,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+From: Anurag Dutta <a-dutta@ti.com>
 
-commit 3f978e3f1570155a1327ffa25f60968bc7b9398f upstream.
+[ Upstream commit f1eb4e792bb1ee3dcdffa66f8a83a4867cda2dd3 ]
 
-In hfcsusb_probe(), the memory allocated for ctrl_urb gets leaked when
-setup_instance() fails with an error code. Fix that by freeing the urb
-before freeing the hw structure. Also change the error paths to use the
-goto ladder style.
+The "probe_setup_failed" label calls pm_runtime_disable(), but
+pm_runtime_enable() was placed after a possible jump to this label.
+When cqspi_setup_flash() fails, control jumps to the label without
+pm_runtime_enable() being called, leading to unbalanced PM runtime
+reference counting.
 
-Compile tested only. Issue found using a prototype static analysis tool.
+Move pm_runtime_enable() and associated calls above the first
+possible branch to "probe_setup_failed" to ensure balanced
+enable/disable calls across all error paths.
 
-Fixes: 69f52adb2d53 ("mISDN: Add HFC USB driver")
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-Link: https://patch.msgid.link/20251030042524.194812-1-nihaal@cse.iitm.ac.in
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 30dbc1c8d50f ("spi: cadence-qspi: defer runtime support on socfpga if reset bit is enabled")
+Signed-off-by: Anurag Dutta <a-dutta@ti.com>
+Link: https://patch.msgid.link/20251105161146.2019090-2-a-dutta@ti.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/isdn/hardware/mISDN/hfcsusb.c |   18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ drivers/spi/spi-cadence-quadspi.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/drivers/isdn/hardware/mISDN/hfcsusb.c
-+++ b/drivers/isdn/hardware/mISDN/hfcsusb.c
-@@ -1903,13 +1903,13 @@ out:
- 	mISDN_freebchannel(&hw->bch[1]);
- 	mISDN_freebchannel(&hw->bch[0]);
- 	mISDN_freedchannel(&hw->dch);
--	kfree(hw);
- 	return err;
- }
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index d7720931403c2..4a5a83dc8fe37 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -1981,6 +1981,13 @@ static int cqspi_probe(struct platform_device *pdev)
+ 	cqspi->current_cs = -1;
+ 	cqspi->sclk = 0;
  
- static int
- hfcsusb_probe(struct usb_interface *intf, const struct usb_device_id *id)
- {
-+	int err;
- 	struct hfcsusb			*hw;
- 	struct usb_device		*dev = interface_to_usbdev(intf);
- 	struct usb_host_interface	*iface = intf->cur_altsetting;
-@@ -2100,20 +2100,28 @@ hfcsusb_probe(struct usb_interface *intf
- 	if (!hw->ctrl_urb) {
- 		pr_warn("%s: No memory for control urb\n",
- 			driver_info->vend_name);
--		kfree(hw);
--		return -ENOMEM;
-+		err = -ENOMEM;
-+		goto err_free_hw;
++	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
++		pm_runtime_enable(dev);
++		pm_runtime_set_autosuspend_delay(dev, CQSPI_AUTOSUSPEND_TIMEOUT);
++		pm_runtime_use_autosuspend(dev);
++		pm_runtime_get_noresume(dev);
++	}
++
+ 	ret = cqspi_setup_flash(cqspi);
+ 	if (ret) {
+ 		dev_err(dev, "failed to setup flash parameters %d\n", ret);
+@@ -1998,13 +2005,6 @@ static int cqspi_probe(struct platform_device *pdev)
+ 			goto probe_dma_failed;
  	}
  
- 	pr_info("%s: %s: detected \"%s\" (%s, if=%d alt=%d)\n",
- 		hw->name, __func__, driver_info->vend_name,
- 		conf_str[small_match], ifnum, alt_used);
- 
--	if (setup_instance(hw, dev->dev.parent))
--		return -EIO;
-+	if (setup_instance(hw, dev->dev.parent)) {
-+		err = -EIO;
-+		goto err_free_urb;
-+	}
- 
- 	hw->intf = intf;
- 	usb_set_intfdata(hw->intf, hw);
- 	return 0;
-+
-+err_free_urb:
-+	usb_free_urb(hw->ctrl_urb);
-+err_free_hw:
-+	kfree(hw);
-+	return err;
- }
- 
- /* function called when an active device is removed */
+-	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
+-		pm_runtime_enable(dev);
+-		pm_runtime_set_autosuspend_delay(dev, CQSPI_AUTOSUSPEND_TIMEOUT);
+-		pm_runtime_use_autosuspend(dev);
+-		pm_runtime_get_noresume(dev);
+-	}
+-
+ 	ret = spi_register_controller(host);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to register SPI ctlr %d\n", ret);
+-- 
+2.51.0
+
 
 
 
