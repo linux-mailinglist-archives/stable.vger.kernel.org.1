@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-199588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5B5DCA08C9
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:40:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DAAECA1795
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:52:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5BEE2329502D
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:20:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6B9F9304A120
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:48:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBFFA357A2C;
-	Wed,  3 Dec 2025 16:44:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33A73336ED4;
+	Wed,  3 Dec 2025 15:53:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cx8nb4Md"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WW89LbSc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76F3034CFB4;
-	Wed,  3 Dec 2025 16:44:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBCBF336ECA;
+	Wed,  3 Dec 2025 15:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780287; cv=none; b=Mi7/sZo+uou6SrAjIoCWza63gLEzGe5c29s500EmY6mGHJC9vp1dUDI6udc2PoZl00IlddP+IvbkqGA6hoAdIFnTlrzHo2IqTM65317qX+4Xr9BWF4p+u7cfG4NVp/SbUkLMQi+cd5axDhPfzIXgTuhnbBcT6e9aSW0EPav9TTo=
+	t=1764777214; cv=none; b=Wfw7+SGH/chxby2E4MR40V54qMEjgtcC366mxN54BhrVEVwpZqSMwKZrhai07wBWIF/6Ysd0aQuxn96eFZ2Rn+J51SYplKgMGUvevLWuRNgt3CTYck6fcJGGgmI9KBhAj/yeO2rV33yUhGwYf3J4gbwNjeE3mkpjyjvzX9ZHhBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780287; c=relaxed/simple;
-	bh=L4LycI8eBVhc49C5W0xmErJLM/9jNGOfOVdivWCV0Og=;
+	s=arc-20240116; t=1764777214; c=relaxed/simple;
+	bh=vYybLirJY3WMjvRnKNz6Y703LuP0YysJD2b7p7jODP0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L0aXO5+iSQvwfLNrYzxa9aFcl23x5Jkd/2rcAM7hn7GeBkwCVmXNnTUp1x7JGyB9Cp25yMiZqWPwCGFoksG8ZrJzOeDx9119h6DUfOzzsx1AkvuyMsJPDmRd966ou8JUuXJMSJQW9nA2X6p+z/JWomiPx5G2jDCoEOa/pJZjI9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cx8nb4Md; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D73E1C4CEF5;
-	Wed,  3 Dec 2025 16:44:46 +0000 (UTC)
+	 MIME-Version; b=BWIMsdgIAGvjXbxQhUfjjly4CFbN6+6dTKUcHPE3uCf3JqXAhvOucBUJzzO/75N2xa8YXihfcdzQxHHj0dZP6vILD2bcXRy3ejBu6/5LaRi7D3jPt74DBxx524NKJriKGrrM7QXxxTDMjolDVbsvo56JdO8+r67jNTEIYIHI7pY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WW89LbSc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C0EEC4CEF5;
+	Wed,  3 Dec 2025 15:53:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780287;
-	bh=L4LycI8eBVhc49C5W0xmErJLM/9jNGOfOVdivWCV0Og=;
+	s=korg; t=1764777213;
+	bh=vYybLirJY3WMjvRnKNz6Y703LuP0YysJD2b7p7jODP0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cx8nb4MdkOc51jblXVF7P5/617pqmT4OTlysPpcmQwHk07OyQTq9Nzc33pA8zh4wi
-	 JcTuSJOh/mh/1STuiCd9W74Zz1fPLQKAJoImYmIkRqmQfCcN0rF5WUlWBfC81rP5o3
-	 OBcb8qKSnKFkKBJOjwCNLcaGaZCSujeos0ZISACM=
+	b=WW89LbScfne8Bh6beg7mwbG3c3ApVTHqFa8tdlzjLhqy222SzAHQZVs4Dib+mhVnF
+	 NYqm7zwBZZguDcZZUja2/VDDtYZUmtNHVyb3f5+5L5bvAxuHymUqRdlqqz6uW9vVkj
+	 tg70hjJMZGRor4py7VW95poyb4P//xca75ZDNgDw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 494/568] can: gs_usb: gs_usb_xmit_callback(): fix handling of failed transmitted URBs
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	stable <stable@kernel.org>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.17 118/146] usb: dwc3: pci: add support for the Intel Nova Lake -S
 Date: Wed,  3 Dec 2025 16:28:16 +0100
-Message-ID: <20251203152458.808462268@linuxfoundation.org>
+Message-ID: <20251203152350.782048555@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,64 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-[ Upstream commit 516a0cd1c03fa266bb67dd87940a209fd4e53ce7 ]
+commit c57ce99ec6cb55b53910b6b3d7437f80159ff9d8 upstream.
 
-The driver lacks the cleanup of failed transfers of URBs. This reduces the
-number of available URBs per error by 1. This leads to reduced performance
-and ultimately to a complete stop of the transmission.
+This patch adds the necessary PCI ID for Intel Nova Lake -S
+devices.
 
-If the sending of a bulk URB fails do proper cleanup:
-- increase netdev stats
-- mark the echo_sbk as free
-- free the driver's context and do accounting
-- wake the send queue
-
-Closes: https://github.com/candle-usb/candleLight_fw/issues/187
-Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
-Link: https://patch.msgid.link/20251114-gs_usb-fix-usb-callbacks-v1-1-a29b42eacada@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Cc: stable <stable@kernel.org>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://patch.msgid.link/20251106115926.2317877-1-heikki.krogerus@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/usb/gs_usb.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ drivers/usb/dwc3/dwc3-pci.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
-index 2cacea6b00f80..7fe9d497491d1 100644
---- a/drivers/net/can/usb/gs_usb.c
-+++ b/drivers/net/can/usb/gs_usb.c
-@@ -707,8 +707,21 @@ static void gs_usb_xmit_callback(struct urb *urb)
- 	struct gs_can *dev = txc->dev;
- 	struct net_device *netdev = dev->netdev;
- 
--	if (urb->status)
--		netdev_info(netdev, "usb xmit fail %u\n", txc->echo_id);
-+	if (!urb->status)
-+		return;
-+
-+	if (urb->status != -ESHUTDOWN && net_ratelimit())
-+		netdev_info(netdev, "failed to xmit URB %u: %pe\n",
-+			    txc->echo_id, ERR_PTR(urb->status));
-+
-+	netdev->stats.tx_dropped++;
-+	netdev->stats.tx_errors++;
-+
-+	can_free_echo_skb(netdev, txc->echo_id, NULL);
-+	gs_free_tx_context(txc);
-+	atomic_dec(&dev->active_tx_urbs);
-+
-+	netif_wake_queue(netdev);
- }
- 
- static netdev_tx_t gs_can_start_xmit(struct sk_buff *skb,
--- 
-2.51.0
-
+--- a/drivers/usb/dwc3/dwc3-pci.c
++++ b/drivers/usb/dwc3/dwc3-pci.c
+@@ -53,6 +53,7 @@
+ #define PCI_DEVICE_ID_INTEL_MTLP		0x7ec1
+ #define PCI_DEVICE_ID_INTEL_MTLS		0x7f6f
+ #define PCI_DEVICE_ID_INTEL_MTL			0x7e7e
++#define PCI_DEVICE_ID_INTEL_NVLS_PCH		0x6e6f
+ #define PCI_DEVICE_ID_INTEL_ARLH_PCH		0x777e
+ #define PCI_DEVICE_ID_INTEL_TGL			0x9a15
+ #define PCI_DEVICE_ID_INTEL_PTLH		0xe332
+@@ -443,6 +444,7 @@ static const struct pci_device_id dwc3_p
+ 	{ PCI_DEVICE_DATA(INTEL, MTLM, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, MTLP, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, MTL, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, NVLS_PCH, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, MTLS, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, ARLH_PCH, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, TGL, &dwc3_pci_intel_swnode) },
 
 
 
