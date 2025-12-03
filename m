@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-199309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87CF7CA111C
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:40:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A82FDC9FE1C
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:18:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1F36E300BDA2
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:40:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5958C309AA7D
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:09:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31A9934845C;
-	Wed,  3 Dec 2025 16:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6582335BAA;
+	Wed,  3 Dec 2025 16:00:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ymdfhkY0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XCYgVnwK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC8F1346E50;
-	Wed,  3 Dec 2025 16:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A08A3358D4;
+	Wed,  3 Dec 2025 16:00:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779370; cv=none; b=DtS0SA2FgCR/xjKZe+DknUCVp6GrAzyvcwnBAj4Nq2UhXNLliBqQEossgwC6qsZK7RbyktSkyEf7FDpUHegnIstuPZ/xxPUYMun0H87zYBTM+76tXUJTCyd5EI9ECbzl4LFCIy4e/dklXy12+zjeP1XiwzbZOpT3NqojDdEtEY8=
+	t=1764777608; cv=none; b=loirRsar0YYNYHSDb3sHnDFx4z+A327fcsI10aV4cPf1yTz2IHhyubZ6zRES4Hq56gscG5E/TRT46KmprMeVe3z2nsqbCNd3JNNNQI4tCHVYTFWRHfF7Sc3h8s+QHOaxFd9XLC/+PBPHwHIoqML9bRD9cO08kUXxxx6YVrIwn6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779370; c=relaxed/simple;
-	bh=q0ATraZIk0BqHNBmERNZHHdL2DOpEbyHXaHMn3OFFsE=;
+	s=arc-20240116; t=1764777608; c=relaxed/simple;
+	bh=XyF75HFKVKA6G4H2p2be99Jg7WgFetwvxOl7EQNrwhY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D+DgAFKOnbNpZhS24XAcCGzyoe/EsfbQKEwqWboLCGUzr06a2sF+13nLhJF/Ph23ASo9ZvuaKwXPZs52yrFSZFBWBsTcz91t3k7AlHEr5I+92yuUAjWt5Dh5I5E4O42lV4dKsEx7Hv+BYRCB6e5mahdnANBuhQDrK5ZG2CxykyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ymdfhkY0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBF33C4CEF5;
-	Wed,  3 Dec 2025 16:29:28 +0000 (UTC)
+	 MIME-Version; b=sLAYuItw3jY7egsEe6Cm+SrHUZOsOhLlGzrcSN0QuRNnm2FUePC5zyj2QRSIu9+DovsJw/zWCYhle7YqQb8X5OG9ncOVFeOvidp/B00qdy8VE0BTpmUpcP0GYuke2TdxngivQahSIL2mJw7FxHi4cqviACdKHTQJIB5OI6dUwN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XCYgVnwK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85114C4CEF5;
+	Wed,  3 Dec 2025 16:00:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779369;
-	bh=q0ATraZIk0BqHNBmERNZHHdL2DOpEbyHXaHMn3OFFsE=;
+	s=korg; t=1764777608;
+	bh=XyF75HFKVKA6G4H2p2be99Jg7WgFetwvxOl7EQNrwhY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ymdfhkY0sIDTMYIpnhI+al26RbP6iCGMK61g0BoageSM03/e5DEKP60ljMwBvQ9kV
-	 F3nsKVz2YSIhesJRwu1VyR1qYXrhnjBZFVOxCtnF2dZBeZ9fzssc0bfmwQ2PZHbAwX
-	 M2iu9fbr1NCrnGkwd5956No8LVJMYmt8/PPfnkrI=
+	b=XCYgVnwKPfe3oHlgM6qvpAoS8k/kSzTmuJIZpmQdDnghVt2/oNdlh2uG4V1BrnZhe
+	 RxdblvsJZ8YRMjWwnhsZswTCQM8hdsZRcbOT2tuBwgAWyjEXUgtuIAbwoY2n2kldKa
+	 p7X9s8nx88CfbgbmWhxp/Ba8eRhGyjyyvLEOFhhE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>,
+	Jens Kehne <jens.kehne@agilent.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 237/568] usb: xhci: plat: Facilitate using autosuspend for xhci plat devices
+Subject: [PATCH 5.15 089/392] mfd: da9063: Split chip variant reading in two bus transactions
 Date: Wed,  3 Dec 2025 16:23:59 +0100
-Message-ID: <20251203152449.402394258@linuxfoundation.org>
+Message-ID: <20251203152417.379489153@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,42 +60,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
+From: Jens Kehne <jens.kehne@agilent.com>
 
-[ Upstream commit 41cf11946b9076383a2222bbf1ef57d64d033f66 ]
+[ Upstream commit 9ac4890ac39352ccea132109e32911495574c3ec ]
 
-Allow autosuspend to be used by xhci plat device. For Qualcomm SoCs,
-when in host mode, it is intended that the controller goes to suspend
-state to save power and wait for interrupts from connected peripheral
-to wake it up. This is particularly used in cases where a HID or Audio
-device is connected. In such scenarios, the usb controller can enter
-auto suspend and resume action after getting interrupts from the
-connected device.
+We observed the initial probe of the da9063 failing in
+da9063_get_device_type in about 30% of boots on a Xilinx ZynqMP based
+board. The problem originates in da9063_i2c_blockreg_read, which uses
+a single bus transaction to turn the register page and then read a
+register. On the bus, this should translate to a write to register 0,
+followed by a read to the target register, separated by a repeated
+start. However, we found that after the write to register 0, the
+controller sometimes continues directly with the register address of
+the read request, without sending the chip address or a repeated start
+in between, which makes the read request invalid.
 
-Signed-off-by: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250916120436.3617598-1-krishna.kurapati@oss.qualcomm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To fix this, separate turning the page and reading the register into
+two separate transactions. This brings the initialization code in line
+with the rest of the driver, which uses register maps (which to my
+knowledge do not use repeated starts after turning the page). This has
+been included in our kernel for several months and was recently
+included in a shipped product. For us, it reliably fixes the issue,
+and we have not observed any new issues.
+
+While the underlying problem is probably with the i2c controller or
+its driver, I still propose a change here in the interest of
+robustness: First, I'm not sure this issue can be fixed on the
+controller side, since there are other issues related to repeated
+start which can't (AR# 60695, AR# 61664). Second, similar problems
+might exist with other controllers.
+
+Signed-off-by: Jens Kehne <jens.kehne@agilent.com>
+Link: https://lore.kernel.org/r/20250804133754.3496718-1-jens.kehne@agilent.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-plat.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/mfd/da9063-i2c.c | 27 +++++++++++++++++++++------
+ 1 file changed, 21 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-plat.c b/drivers/usb/host/xhci-plat.c
-index 7ec4c38c3ceec..fe799abf252b3 100644
---- a/drivers/usb/host/xhci-plat.c
-+++ b/drivers/usb/host/xhci-plat.c
-@@ -224,6 +224,7 @@ static int xhci_plat_probe(struct platform_device *pdev)
- 		return ret;
+diff --git a/drivers/mfd/da9063-i2c.c b/drivers/mfd/da9063-i2c.c
+index 4b7f707b7952c..be7c2229d5510 100644
+--- a/drivers/mfd/da9063-i2c.c
++++ b/drivers/mfd/da9063-i2c.c
+@@ -37,9 +37,13 @@ enum da9063_page_sel_buf_fmt {
+ 	DA9063_PAGE_SEL_BUF_SIZE,
+ };
  
- 	pm_runtime_set_active(&pdev->dev);
-+	pm_runtime_use_autosuspend(&pdev->dev);
- 	pm_runtime_enable(&pdev->dev);
- 	pm_runtime_get_noresume(&pdev->dev);
++enum da9063_page_sel_msgs {
++	DA9063_PAGE_SEL_MSG = 0,
++	DA9063_PAGE_SEL_CNT,
++};
++
+ enum da9063_paged_read_msgs {
+-	DA9063_PAGED_READ_MSG_PAGE_SEL = 0,
+-	DA9063_PAGED_READ_MSG_REG_SEL,
++	DA9063_PAGED_READ_MSG_REG_SEL = 0,
+ 	DA9063_PAGED_READ_MSG_DATA,
+ 	DA9063_PAGED_READ_MSG_CNT,
+ };
+@@ -65,10 +69,21 @@ static int da9063_i2c_blockreg_read(struct i2c_client *client, u16 addr,
+ 		(page_num << DA9063_I2C_PAGE_SEL_SHIFT) & DA9063_REG_PAGE_MASK;
  
+ 	/* Write reg address, page selection */
+-	xfer[DA9063_PAGED_READ_MSG_PAGE_SEL].addr = client->addr;
+-	xfer[DA9063_PAGED_READ_MSG_PAGE_SEL].flags = 0;
+-	xfer[DA9063_PAGED_READ_MSG_PAGE_SEL].len = DA9063_PAGE_SEL_BUF_SIZE;
+-	xfer[DA9063_PAGED_READ_MSG_PAGE_SEL].buf = page_sel_buf;
++	xfer[DA9063_PAGE_SEL_MSG].addr = client->addr;
++	xfer[DA9063_PAGE_SEL_MSG].flags = 0;
++	xfer[DA9063_PAGE_SEL_MSG].len = DA9063_PAGE_SEL_BUF_SIZE;
++	xfer[DA9063_PAGE_SEL_MSG].buf = page_sel_buf;
++
++	ret = i2c_transfer(client->adapter, xfer, DA9063_PAGE_SEL_CNT);
++	if (ret < 0) {
++		dev_err(&client->dev, "Page switch failed: %d\n", ret);
++		return ret;
++	}
++
++	if (ret != DA9063_PAGE_SEL_CNT) {
++		dev_err(&client->dev, "Page switch failed to complete\n");
++		return -EIO;
++	}
+ 
+ 	/* Select register address */
+ 	xfer[DA9063_PAGED_READ_MSG_REG_SEL].addr = client->addr;
 -- 
 2.51.0
 
