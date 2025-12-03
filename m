@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-198404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00170C9FA1C
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:46:42 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09831CA00B7
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:42:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6403E302E05C
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:40:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 458E8302D64D
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:37:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 369F6303C91;
-	Wed,  3 Dec 2025 15:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C409635C18A;
+	Wed,  3 Dec 2025 16:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tgQpG0pE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LFEvJ+b6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E86C8DDAB;
-	Wed,  3 Dec 2025 15:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7741C35BDDB;
+	Wed,  3 Dec 2025 16:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776431; cv=none; b=IWOPsAYthVtPn6I4Nq6BG5ffgXTMJFCnYKMcIBycUvPuAA6somxBrcYSctzclBcnuqDzF9qPG92vLJPf/BerzRE+v7wgnj+t9D3cVHOdmetEJ0ljaEt+kh+ftzmaU4KdDNreSg9LyclvFelIwIEDg7BufUA1GDL9EcY/h8vJ9ms=
+	t=1764779862; cv=none; b=T9vygariALHvN8cFAqKddfAZh1YpwDn89uSyhgRANc1f3dTN8S8NxRwQHFbUOwefeEujMkg0/TBift1IbrJRx1gXWvkHx42W5jGS9QZigQQgTYKmXw0mZ/GxAlcH7AZ0SMuHVTkJwyuptFeo7ZylwyL8cFwvrSHu9RopJM4mj90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776431; c=relaxed/simple;
-	bh=T5Zszy90TyCp4WBM8czdVlBpoLjBWNSN3AVrhgCeFjg=;
+	s=arc-20240116; t=1764779862; c=relaxed/simple;
+	bh=q2q76y3OcMEVPtyLSE9a/eTMfJL6z06jiWIyhpktGnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y/Dzf9BfF7CIOlwt2CyAKB1o6atMDrTVSypvS9kTVfVnTmnzlpxBoJbaK947RkmYaML8n1owcWg+M88NcMRuNl0g+DzE+Pv4K/FJa72A1CJHY3IPlYelrxUU4ruT/Wsds0GmgfD+yG5OyreSiJUnf/rQ0r44PPpa6BALn374p4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tgQpG0pE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55C58C4CEF5;
-	Wed,  3 Dec 2025 15:40:30 +0000 (UTC)
+	 MIME-Version; b=MSZAJMo+jAbAJLSoyq0obVcNBrhkWugijrI/cA+1Q8EowpbiDYsVdQga7MdeWk8snquvAcse4gz941L07e77+/aU3f+fnzcDMAZG/NdY7i20Yvru75myB2Gt4kRTcjAUdxRIjWFs9s8fjA3gOZ2f7UTCGt5HStt7fWQnE+Naw4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LFEvJ+b6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2644C4CEF5;
+	Wed,  3 Dec 2025 16:37:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776430;
-	bh=T5Zszy90TyCp4WBM8czdVlBpoLjBWNSN3AVrhgCeFjg=;
+	s=korg; t=1764779862;
+	bh=q2q76y3OcMEVPtyLSE9a/eTMfJL6z06jiWIyhpktGnw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tgQpG0pEEzFD/UrYxkLyvMiCY9btCOYbDxv3m/Me9NYyiIkp5qxxuy8jecJqJ2BaU
-	 yIG75huumq6XC+Cm47p0SvjXoOkcGxzKLiOYX0xLJ6MTz21P1urDb8v98d7GTZCqrF
-	 CXqTmVaE9LwWECp77+EbTwOYSKSB42eeDEKbT+Xs=
+	b=LFEvJ+b6wVFDTXnwUxflDS6wdH/VkC/Xo4pzCIhyWHVmic5PzkFjG6gAzFVPVu55Q
+	 scb7m5RmtCuiWv/zrIQlUPmlvPYEoW8fLoudJkfvru0CJLzrqCN9Ia+pW8d6KZ4Feh
+	 MoUEia+ZPqSag5DMFkkm32cGVOSJCrxrvC94GcDI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Pauli Virtanen <pav@iki.fi>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 181/300] Bluetooth: 6lowpan: fix BDADDR_LE vs ADDR_LE_DEV address type confusion
+Subject: [PATCH 6.1 383/568] ASoC: codecs: va-macro: fix resource leak in probe error path
 Date: Wed,  3 Dec 2025 16:26:25 +0100
-Message-ID: <20251203152407.333416591@linuxfoundation.org>
+Message-ID: <20251203152454.722921362@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,104 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pauli Virtanen <pav@iki.fi>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit b454505bf57a2e4f5d49951d4deb03730a9348d9 ]
+[ Upstream commit 3dc8c73365d3ca25c99e7e1a0f493039d7291df5 ]
 
-Bluetooth 6lowpan.c confuses BDADDR_LE and ADDR_LE_DEV address types,
-e.g. debugfs "connect" command takes the former, and "disconnect" and
-"connect" to already connected device take the latter.  This is due to
-using same value both for l2cap_chan_connect and hci_conn_hash_lookup_le
-which take different dst_type values.
+In the commit referenced by the Fixes tag, clk_hw_get_clk()
+was added in va_macro_probe() to get the fsgen clock,
+but forgot to add the corresponding clk_put() in va_macro_remove().
+This leads to a clock reference leak when the driver is unloaded.
 
-Fix address type passed to hci_conn_hash_lookup_le().
+Switch to devm_clk_hw_get_clk() to automatically manage the
+clock resource.
 
-Retain the debugfs API difference between "connect" and "disconnect"
-commands since it's been like this since 2015 and nobody apparently
-complained.
-
-Fixes: f5ad4ffceba0 ("Bluetooth: 6lowpan: Use hci_conn_hash_lookup_le() when possible")
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 30097967e056 ("ASoC: codecs: va-macro: use fsgen as clock")
+Suggested-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251106143114.729-1-vulab@iscas.ac.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/6lowpan.c | 28 ++++++++++++++++++++++++----
- 1 file changed, 24 insertions(+), 4 deletions(-)
+ sound/soc/codecs/lpass-va-macro.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/6lowpan.c b/net/bluetooth/6lowpan.c
-index 32dc74115dcbc..d035bb927aec2 100644
---- a/net/bluetooth/6lowpan.c
-+++ b/net/bluetooth/6lowpan.c
-@@ -994,10 +994,11 @@ static struct l2cap_chan *bt_6lowpan_listen(void)
- }
+diff --git a/sound/soc/codecs/lpass-va-macro.c b/sound/soc/codecs/lpass-va-macro.c
+index 1623ba78ddb3d..1f6e27d6a2276 100644
+--- a/sound/soc/codecs/lpass-va-macro.c
++++ b/sound/soc/codecs/lpass-va-macro.c
+@@ -1554,7 +1554,7 @@ static int va_macro_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto err_clkout;
  
- static int get_l2cap_conn(char *buf, bdaddr_t *addr, u8 *addr_type,
--			  struct l2cap_conn **conn)
-+			  struct l2cap_conn **conn, bool disconnect)
- {
- 	struct hci_conn *hcon;
- 	struct hci_dev *hdev;
-+	int le_addr_type;
- 	int n;
- 
- 	n = sscanf(buf, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx %hhu",
-@@ -1008,13 +1009,32 @@ static int get_l2cap_conn(char *buf, bdaddr_t *addr, u8 *addr_type,
- 	if (n < 7)
- 		return -EINVAL;
- 
-+	if (disconnect) {
-+		/* The "disconnect" debugfs command has used different address
-+		 * type constants than "connect" since 2015. Let's retain that
-+		 * for now even though it's obviously buggy...
-+		 */
-+		*addr_type += 1;
-+	}
-+
-+	switch (*addr_type) {
-+	case BDADDR_LE_PUBLIC:
-+		le_addr_type = ADDR_LE_DEV_PUBLIC;
-+		break;
-+	case BDADDR_LE_RANDOM:
-+		le_addr_type = ADDR_LE_DEV_RANDOM;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
- 	/* The LE_PUBLIC address type is ignored because of BDADDR_ANY */
- 	hdev = hci_get_route(addr, BDADDR_ANY, BDADDR_LE_PUBLIC);
- 	if (!hdev)
- 		return -ENOENT;
- 
- 	hci_dev_lock(hdev);
--	hcon = hci_conn_hash_lookup_le(hdev, addr, *addr_type);
-+	hcon = hci_conn_hash_lookup_le(hdev, addr, le_addr_type);
- 	hci_dev_unlock(hdev);
- 	hci_dev_put(hdev);
- 
-@@ -1141,7 +1161,7 @@ static ssize_t lowpan_control_write(struct file *fp,
- 	buf[buf_size] = '\0';
- 
- 	if (memcmp(buf, "connect ", 8) == 0) {
--		ret = get_l2cap_conn(&buf[8], &addr, &addr_type, &conn);
-+		ret = get_l2cap_conn(&buf[8], &addr, &addr_type, &conn, false);
- 		if (ret == -EINVAL)
- 			return ret;
- 
-@@ -1178,7 +1198,7 @@ static ssize_t lowpan_control_write(struct file *fp,
- 	}
- 
- 	if (memcmp(buf, "disconnect ", 11) == 0) {
--		ret = get_l2cap_conn(&buf[11], &addr, &addr_type, &conn);
-+		ret = get_l2cap_conn(&buf[11], &addr, &addr_type, &conn, true);
- 		if (ret < 0)
- 			return ret;
- 
+-	va->fsgen = clk_hw_get_clk(&va->hw, "fsgen");
++	va->fsgen = devm_clk_hw_get_clk(dev, &va->hw, "fsgen");
+ 	if (IS_ERR(va->fsgen)) {
+ 		ret = PTR_ERR(va->fsgen);
+ 		goto err_clkout;
 -- 
 2.51.0
 
