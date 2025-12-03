@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-198955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5052ECA0E4F
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:20:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2AE3CA0E68
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:20:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5E24E32B8CDA
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:16:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DA66532CDCA4
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:17:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0635832E139;
-	Wed,  3 Dec 2025 16:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F083E34104C;
+	Wed,  3 Dec 2025 16:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NupmvJC5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AEjdQYun"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335C732D420;
-	Wed,  3 Dec 2025 16:10:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C3A734028B;
+	Wed,  3 Dec 2025 16:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778219; cv=none; b=eh79o505e2dXXVA5SzMSbYJfgQaIboLtjuCK1pY6OzCpB4dc3wb0DmBwX0eJoeBL2WlajtZ2UYq25cHI+EimTILDkKxOnUi0hrrX9Nh2QWa2tGXS6i8cLTtYxhG/XfXMnQm0bTyoZOX3O0VcGuYfQxfoKK+Vr4DavJji0NUo1P4=
+	t=1764780007; cv=none; b=Ghh/ejO6yFc5IDPn5sWHG2E0rIwFy2OUFuUHRGbfn9ndu38DRwIxFnNiTvj0hA3oXfY0QRhkOxb2aBN7pDv6XeJFOl6Y1BRoJTV8ZbUjfQCCBa2BF52/7EJlqj5C97RzkKyuY+bVjh51tx4bnGdKfiZXx/N9V4yUH4MGENLKaZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778219; c=relaxed/simple;
-	bh=NMUDsXWQ13qIJq2GYf7L/cZmic924kQ/1OEhqnMI+YE=;
+	s=arc-20240116; t=1764780007; c=relaxed/simple;
+	bh=mZCW1EAFqlZIHkeOO0xJ6sp/6qGBw/QGIL0scApWHrg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j27ivSN2sYHYDBps5Zy3cvC0xo6fgj/AT8oOxeircvf4GoWQJCHGPmeyzlIaBYAEwWLkjf6TZfxS+4Eh0hLggQEFLGvLw/3YgMjSCIYq8HbjT2cmFEIZ1aPLDZjFNWJ9FV4KLLJ7teIMAFdXKwZ01ULp4S6kgFqTa5ZK6xaxr4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NupmvJC5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A391C116C6;
-	Wed,  3 Dec 2025 16:10:17 +0000 (UTC)
+	 MIME-Version; b=pOjdY7KNqA44wX3XoVc5XdniNV9CV+oyjAEhp4D0FVcSHeCWZ0ssrxElcW9QMt7oGjssjM0y/o1PdBPPIKE5Rqc/mfTJU34VUA1IsZrEJhDMMqgTGbjJok0k3oGQ/qmPg5Sv/2ixH6jzVInZ6zCq9bABnHBulbis72DIkH6PZ6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AEjdQYun; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8471C4CEF5;
+	Wed,  3 Dec 2025 16:40:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778218;
-	bh=NMUDsXWQ13qIJq2GYf7L/cZmic924kQ/1OEhqnMI+YE=;
+	s=korg; t=1764780006;
+	bh=mZCW1EAFqlZIHkeOO0xJ6sp/6qGBw/QGIL0scApWHrg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NupmvJC56Bgjng5c8MkRBScjqxacZ6J9qfnfZyBhRy/2BsfPknXw3kRCVdDgzL0RS
-	 unQTy7Ah3sQv7RN1Vt5ihbjx64y5iwXZCjpJxvd+yNdJk9jyswHYbQ4cGjc6olkQpU
-	 Gj52Ry0kSTiwXchRIAhh6jqUfvOv5aejw5W80RKQ=
+	b=AEjdQYunEA4YAIYNmvCJLvyyPBkslkDtlXe0O8KUrxaOHWwh8lt9mRAqE7CTm9auT
+	 g48hbrqMbOPoCHJ0rmILkc+OC6N32GYR80HNGfD6erZvBHbZGXdvONX1qMiyZs4+Gt
+	 fLaM9GstMdrPfti7YYgv69o1FrS4eE22VpWHO/eI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 246/392] wifi: mac80211: skip rate verification for not captured PSDUs
+Subject: [PATCH 6.1 394/568] netfilter: nf_tables: reject duplicate device on updates
 Date: Wed,  3 Dec 2025 16:26:36 +0100
-Message-ID: <20251203152423.224714721@linuxfoundation.org>
+Message-ID: <20251203152455.122223967@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +60,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 7fe0d21f5633af8c3fab9f0ef0706c6156623484 ]
+commit cf5fb87fcdaaaafec55dcc0dc5a9e15ead343973 upstream.
 
-If for example the sniffer did not follow any AIDs in an MU frame, then
-some of the information may not be filled in or is even expected to be
-invalid. As an example, in that case it is expected that Nss is zero.
+A chain/flowtable update with duplicated devices in the same batch is
+possible. Unfortunately, netdev event path only removes the first
+device that is found, leaving unregistered the hook of the duplicated
+device.
 
-Fixes: 2ff5e52e7836 ("radiotap: add 0-length PSDU "not captured" type")
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20251110142554.83a2858ee15b.I9f78ce7984872f474722f9278691ae16378f0a3e@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Check if a duplicated device exists in the transaction batch, bail out
+with EEXIST in such case.
+
+WARNING is hit when unregistering the hook:
+
+ [49042.221275] WARNING: CPU: 4 PID: 8425 at net/netfilter/core.c:340 nf_hook_entry_head+0xaa/0x150
+ [49042.221375] CPU: 4 UID: 0 PID: 8425 Comm: nft Tainted: G S                  6.16.0+ #170 PREEMPT(full)
+ [...]
+ [49042.221382] RIP: 0010:nf_hook_entry_head+0xaa/0x150
+
+Fixes: 78d9f48f7f44 ("netfilter: nf_tables: add devices to existing flowtable")
+Fixes: b9703ed44ffb ("netfilter: nf_tables: support for adding new devices to an existing netdev chain")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/rx.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ net/netfilter/nf_tables_api.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 6c160ff2aab90..aa3442761ad05 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -4911,10 +4911,14 @@ void ieee80211_rx_list(struct ieee80211_hw *hw, struct ieee80211_sta *pubsta,
- 	if (WARN_ON(!local->started))
- 		goto drop;
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index df83224bef06c..b278f493cc93c 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -8078,6 +8078,7 @@ static int nft_flowtable_update(struct nft_ctx *ctx, const struct nlmsghdr *nlh,
+ {
+ 	const struct nlattr * const *nla = ctx->nla;
+ 	struct nft_flowtable_hook flowtable_hook;
++	struct nftables_pernet *nft_net;
+ 	struct nft_hook *hook, *next;
+ 	struct nft_trans *trans;
+ 	bool unregister = false;
+@@ -8093,6 +8094,20 @@ static int nft_flowtable_update(struct nft_ctx *ctx, const struct nlmsghdr *nlh,
+ 		if (nft_hook_list_find(&flowtable->hook_list, hook)) {
+ 			list_del(&hook->list);
+ 			kfree(hook);
++			continue;
++		}
++
++		nft_net = nft_pernet(ctx->net);
++		list_for_each_entry(trans, &nft_net->commit_list, list) {
++			if (trans->msg_type != NFT_MSG_NEWFLOWTABLE ||
++			    trans->ctx.table != ctx->table ||
++			    !nft_trans_flowtable_update(trans))
++				continue;
++
++			if (nft_hook_list_find(&nft_trans_flowtable_hooks(trans), hook)) {
++				err = -EEXIST;
++				goto err_flowtable_update_hook;
++			}
+ 		}
+ 	}
  
--	if (likely(!(status->flag & RX_FLAG_FAILED_PLCP_CRC))) {
-+	if (likely(!(status->flag & RX_FLAG_FAILED_PLCP_CRC) &&
-+		   !(status->flag & RX_FLAG_NO_PSDU &&
-+		     status->zero_length_psdu_type ==
-+		     IEEE80211_RADIOTAP_ZERO_LEN_PSDU_NOT_CAPTURED))) {
- 		/*
--		 * Validate the rate, unless a PLCP error means that
--		 * we probably can't have a valid rate here anyway.
-+		 * Validate the rate, unless there was a PLCP error which may
-+		 * have an invalid rate or the PSDU was not capture and may be
-+		 * missing rate information.
- 		 */
- 
- 		switch (status->encoding) {
 -- 
 2.51.0
 
