@@ -1,57 +1,53 @@
-Return-Path: <stable+bounces-199813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAE13CA04DD
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:16:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32762CA089C
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:38:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 780863236100
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:03:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 310A333D56E7
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:18:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 994843624CE;
-	Wed,  3 Dec 2025 16:57:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FDCB3AA1B3;
+	Wed,  3 Dec 2025 16:52:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="se6424l0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IrkC0XUn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD4034F499;
-	Wed,  3 Dec 2025 16:57:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5953AA195;
+	Wed,  3 Dec 2025 16:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764781030; cv=none; b=GHzqYEQYSLVAuVn4r5DsSR40awmXSa8JN8fh2BLmnCOdu4YE3giN7AWoFrAXFlEr+6nmUE04Pxxjxl4ZzpToYJju8ckGeHTQ1x7gVUuhkuXkWOhOoEnTNNFI9hTDX77lwyb4u5I31XVaO186wrDuJgpLJN2btbwABBMm7zUTBJ0=
+	t=1764780767; cv=none; b=FpOegx1RyVGzIfqDumyo/0M2u6dpzSq59JVPqHkpru8A5zaFzTI2VOmJHjGk+6MDOOgmdPa01w05TUsFsFs8w39gfc2RyceLNMDUtBWBURHQT0GedZMnfYQ4DWqtQP8obVS3qZ8njIgKw68+QOeuOWCbPpNp/BxQri7OIbCL0l4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764781030; c=relaxed/simple;
-	bh=/xCY9Rm9DX2/b6GVQkxVK2LV8FKXQZtKlj7byBhwLp8=;
+	s=arc-20240116; t=1764780767; c=relaxed/simple;
+	bh=r2YzppF9gcafCK5CcMPjs9JWlPjiwqmFNO7gti5/lLY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lKIH+dF/2D30EIPEe9p77kAoH75hrPn7rgBeqhdWghtkSws9NPv3BqzrYsSPGjXxtc+3bYg7eVPnNPNYUYMF8fa+22VwS2e4GguBVuiqYKdKt3jsXQxeJnvQfpQyQ5lLgxhectrmbYlf4IVv7/QbUF0+pZh57a/1G4pIbItJpb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=se6424l0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C26A5C116C6;
-	Wed,  3 Dec 2025 16:57:09 +0000 (UTC)
+	 MIME-Version; b=UEYuSc8ZQ03KLo5gqV03DtyJRFN8TD6WKF5wpiTUWfSkCba3dG5s8dCFWRohACB7JW83wOVeHhZZfX2wCLW41A1Yr/Ln9KRBm0VsbSn5VjpRfavKgstYOd/vwk/nbf3dYx0KkQ1iiF1cfCUdspUrR4Vd9LlbjrHMnN5CxZ/ehoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IrkC0XUn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6494AC4CEF5;
+	Wed,  3 Dec 2025 16:52:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764781030;
-	bh=/xCY9Rm9DX2/b6GVQkxVK2LV8FKXQZtKlj7byBhwLp8=;
+	s=korg; t=1764780765;
+	bh=r2YzppF9gcafCK5CcMPjs9JWlPjiwqmFNO7gti5/lLY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=se6424l0T3bXuMUmOSqHN6EfCxwlbsvlwtFiwPXcXD7bVish7LURX7oPN8RaEIrVp
-	 dXk8fjMGRiiaA/9ui/ObhUDhIOexVf3wRhNiJ5sAJz3CmeoAMK+y5dis/068wg4OCG
-	 nt0t2KRnxE40SeutuDQNsQf7aHDjMcpBembVqhJ4=
+	b=IrkC0XUn5OyjLNSq/ZvC1Mpn7sTJP4vLEwxGfxM8+zcTQHl8oLfvPVXy39s+7gD/9
+	 j4WHPbsEqDstFnmQOroeSkR1/K21G3Ajuh/iUBUYQ5RN0mops07NXyQ6IQyi87oAZT
+	 VatSpW0yiSgI2h5nyDEpQzRLn1ftIyAshV6YBPZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Walle <mwalle@kernel.org>,
-	JaimeLiao <jaimeliao@mxic.com.tw>,
-	AlvinZhou <alvinzhou@mxic.com.tw>,
-	Mark Brown <broonie@kernel.org>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 28/93] spi: spi-mem: Allow specifying the byte order in Octal DTR mode
-Date: Wed,  3 Dec 2025 16:29:21 +0100
-Message-ID: <20251203152337.557395455@linuxfoundation.org>
+	Jisheng Zhang <jszhang@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.12 083/132] mmc: sdhci-of-dwcmshc: Promote the th1520 reset handling to ip level
+Date: Wed,  3 Dec 2025 16:29:22 +0100
+Message-ID: <20251203152346.369768607@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +59,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
+From: Jisheng Zhang <jszhang@kernel.org>
 
-[ Upstream commit 030ace430afcf847f537227afceb22dfe8fb8fc8 ]
+commit 747528729c9b6733839f9c95f300d5bef95ee52c upstream.
 
-There are NOR flashes (Macronix) that swap the bytes on a 16-bit
-boundary when configured in Octal DTR mode. The byte order of
-16-bit words is swapped when read or written in Octal Double
-Transfer Rate (DTR) mode compared to Single Transfer Rate (STR)
-modes. If one writes D0 D1 D2 D3 bytes using 1-1-1 mode, and uses
-8D-8D-8D SPI mode for reading, it will read back D1 D0 D3 D2.
-Swapping the bytes may introduce some endianness problems. It can
-affect the boot sequence if the entire boot sequence is not handled
-in either 8D-8D-8D mode or 1-1-1 mode. Therefore, it is necessary
-to swap the bytes back to ensure the same byte order as in STR modes.
-Fortunately there are controllers that could swap the bytes back at
-runtime, addressing the flash's endianness requirements. Provide a
-way for the upper layers to specify the byte order in Octal DTR mode.
+Commit 27e8fe0da3b7 ("mmc: sdhci-of-dwcmshc: Prevent stale command
+interrupt handling") clears pending interrupts when resetting
+host->pending_reset to ensure no pending stale interrupts after
+sdhci_threaded_irq restores interrupts. But this fix is only added for
+th1520 platforms, in fact per my test, this issue exists on all
+dwcmshc users, such as cv1800b, sg2002, and synaptics platforms.
 
-Merge Tudor's patch and add modifications for suiting newer version
-of Linux kernel.
+So promote the above reset handling from th1520 to ip level. And keep
+reset handling on rk, sg2042 and bf3 as is, until it's confirmed that
+the same issue exists on these platforms too.
 
-Suggested-by: Michael Walle <mwalle@kernel.org>
-Signed-off-by: JaimeLiao <jaimeliao@mxic.com.tw>
-Signed-off-by: AlvinZhou <alvinzhou@mxic.com.tw>
-Acked-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20240926141956.2386374-3-alvinzhou.tw@gmail.com
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Stable-dep-of: 40ad64ac25bb ("spi: nxp-fspi: Propagate fwnode in ACPI case as well")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 017199c2849c ("mmc: sdhci-of-dwcmshc: Add support for Sophgo CV1800B and SG2002")
+Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-mem.c       | 3 +++
- include/linux/spi/spi-mem.h | 8 +++++++-
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ drivers/mmc/host/sdhci-of-dwcmshc.c |   29 +++++++++++++++++------------
+ 1 file changed, 17 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-index edd7430d4c052..84b250703e138 100644
---- a/drivers/spi/spi-mem.c
-+++ b/drivers/spi/spi-mem.c
-@@ -172,6 +172,9 @@ bool spi_mem_default_supports_op(struct spi_mem *mem,
- 		if (!spi_mem_controller_is_capable(ctlr, dtr))
- 			return false;
+--- a/drivers/mmc/host/sdhci-of-dwcmshc.c
++++ b/drivers/mmc/host/sdhci-of-dwcmshc.c
+@@ -289,6 +289,19 @@ static void dwcmshc_adma_write_desc(stru
+ 	sdhci_adma_write_desc(host, desc, addr, len, cmd);
+ }
  
-+		if (op->data.swap16 && !spi_mem_controller_is_capable(ctlr, swap16))
-+			return false;
++static void dwcmshc_reset(struct sdhci_host *host, u8 mask)
++{
++	sdhci_reset(host, mask);
 +
- 		if (op->cmd.nbytes != 2)
- 			return false;
- 	} else {
-diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
-index 6b0a7dc48a4b7..eed6e016d69cc 100644
---- a/include/linux/spi/spi-mem.h
-+++ b/include/linux/spi/spi-mem.h
-@@ -90,6 +90,8 @@ enum spi_mem_data_dir {
-  * @data.buswidth: number of IO lanes used to send/receive the data
-  * @data.dtr: whether the data should be sent in DTR mode or not
-  * @data.ecc: whether error correction is required or not
-+ * @data.swap16: whether the byte order of 16-bit words is swapped when read
-+ *		 or written in Octal DTR mode compared to STR mode.
-  * @data.dir: direction of the transfer
-  * @data.nbytes: number of data bytes to send/receive. Can be zero if the
-  *		 operation does not involve transferring data
-@@ -124,7 +126,8 @@ struct spi_mem_op {
- 		u8 buswidth;
- 		u8 dtr : 1;
- 		u8 ecc : 1;
--		u8 __pad : 6;
-+		u8 swap16 : 1;
-+		u8 __pad : 5;
- 		enum spi_mem_data_dir dir;
- 		unsigned int nbytes;
- 		union {
-@@ -295,10 +298,13 @@ struct spi_controller_mem_ops {
-  * struct spi_controller_mem_caps - SPI memory controller capabilities
-  * @dtr: Supports DTR operations
-  * @ecc: Supports operations with error correction
-+ * @swap16: Supports swapping bytes on a 16 bit boundary when configured in
-+ *	    Octal DTR
-  */
- struct spi_controller_mem_caps {
- 	bool dtr;
- 	bool ecc;
-+	bool swap16;
- };
++	/* The dwcmshc does not comply with the SDHCI specification
++	 * regarding the "Software Reset for CMD line should clear 'Command
++	 * Complete' in the Normal Interrupt Status Register." Clear the bit
++	 * here to compensate for this quirk.
++	 */
++	if (mask & SDHCI_RESET_CMD)
++		sdhci_writel(host, SDHCI_INT_RESPONSE, SDHCI_INT_STATUS);
++}
++
+ static unsigned int dwcmshc_get_max_clock(struct sdhci_host *host)
+ {
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+@@ -874,15 +887,7 @@ static void th1520_sdhci_reset(struct sd
+ 	struct dwcmshc_priv *priv = sdhci_pltfm_priv(pltfm_host);
+ 	u16 ctrl_2;
  
- #define spi_mem_controller_is_capable(ctlr, cap)	\
--- 
-2.51.0
-
+-	sdhci_reset(host, mask);
+-
+-	/* The T-Head 1520 SoC does not comply with the SDHCI specification
+-	 * regarding the "Software Reset for CMD line should clear 'Command
+-	 * Complete' in the Normal Interrupt Status Register." Clear the bit
+-	 * here to compensate for this quirk.
+-	 */
+-	if (mask & SDHCI_RESET_CMD)
+-		sdhci_writel(host, SDHCI_INT_RESPONSE, SDHCI_INT_STATUS);
++	dwcmshc_reset(host, mask);
+ 
+ 	if (priv->flags & FLAG_IO_FIXED_1V8) {
+ 		ctrl_2 = sdhci_readw(host, SDHCI_HOST_CONTROL2);
+@@ -928,7 +933,7 @@ static void cv18xx_sdhci_reset(struct sd
+ 	struct dwcmshc_priv *priv = sdhci_pltfm_priv(pltfm_host);
+ 	u32 val, emmc_caps = MMC_CAP2_NO_SD | MMC_CAP2_NO_SDIO;
+ 
+-	sdhci_reset(host, mask);
++	dwcmshc_reset(host, mask);
+ 
+ 	if ((host->mmc->caps2 & emmc_caps) == emmc_caps) {
+ 		val = sdhci_readl(host, priv->vendor_specific_area1 + CV18XX_SDHCI_MSHC_CTRL);
+@@ -1000,7 +1005,7 @@ static void cv18xx_sdhci_post_tuning(str
+ 	val |= SDHCI_INT_DATA_AVAIL;
+ 	sdhci_writel(host, val, SDHCI_INT_STATUS);
+ 
+-	sdhci_reset(host, SDHCI_RESET_CMD | SDHCI_RESET_DATA);
++	dwcmshc_reset(host, SDHCI_RESET_CMD | SDHCI_RESET_DATA);
+ }
+ 
+ static int cv18xx_sdhci_execute_tuning(struct sdhci_host *host, u32 opcode)
+@@ -1142,7 +1147,7 @@ static const struct sdhci_ops sdhci_dwcm
+ 	.set_bus_width		= sdhci_set_bus_width,
+ 	.set_uhs_signaling	= dwcmshc_set_uhs_signaling,
+ 	.get_max_clock		= dwcmshc_get_max_clock,
+-	.reset			= sdhci_reset,
++	.reset			= dwcmshc_reset,
+ 	.adma_write_desc	= dwcmshc_adma_write_desc,
+ 	.irq			= dwcmshc_cqe_irq_handler,
+ };
 
 
 
