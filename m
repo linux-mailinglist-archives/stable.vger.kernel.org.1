@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-198722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19274C9FBDB
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:57:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 074F5CA05BA
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:21:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 86AE43000B3D
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:57:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 45F8F31919D3
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:07:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 233BA343D79;
-	Wed,  3 Dec 2025 15:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C65B35E550;
+	Wed,  3 Dec 2025 16:27:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SQ6XD6m+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bc5XuRMZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33CE343D75;
-	Wed,  3 Dec 2025 15:57:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD8A35E556;
+	Wed,  3 Dec 2025 16:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777472; cv=none; b=XCTX6Ctj0+793ARXNiECu5SjBUx4I3JhB53qfOrlQt2IrNAyYT/VmNaXUph1hpgHvZxx3y+Mn/+DVgxPJq+2IKXgsxE/WvMTu0zQ4PlLqv7stE/L3gUts7fm+8E/aFBVV6sSSArO74YvZFaEhMuzKmqaRjyQ+vNSN8Y2azbKKJc=
+	t=1764779239; cv=none; b=bo2Z+u+jNEEzkZptmaQ0lpJRKa8c3JepLW6RM5QjJ608zJ4tyiJrGitF7yTg7uZuczcGw+w/oaFxW/CoSJaFbq1aZwlUrwo4AN1FPo8On9YhTypTaowLE36Y9EqLsv1V/Fh10JHkGUJiDRO89bOt8mVcuOMKZRyRsuZP88o1T5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777472; c=relaxed/simple;
-	bh=aYwsdc2uGxdVQkvFRScPMT9KlBmPWnPVa2PwKk0REso=;
+	s=arc-20240116; t=1764779239; c=relaxed/simple;
+	bh=N+/TWSQ1vVzpe0M8wFxmkDUXIBPJwzhaL/kal3pPUoE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=harqZdI7VtyMIpi5iBl/i+oFsmqyiX1YJzNJx4zDCTt4obG2oBLSa41gNp8cLR63NBzgMya784jPkxDqDdGRtP2rVuAfyXp5m14jB+kZmdiX2dEkmZgfWVn/qglIgg45jUBaeee+jCSZ/VvDai+uxptuV3fSXaYkxv5fEW/PzZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SQ6XD6m+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4208BC4CEF5;
-	Wed,  3 Dec 2025 15:57:52 +0000 (UTC)
+	 MIME-Version; b=N4mbvNle3SpmBzMDFqC+dTmFgBFvGFEjU1WO/ayv1Tc6zSEWfzes9s5obzvQkQdhB6ClRgb4C+85vMRnhjElvGVhryfPsabfjHnAU6bXkem73bq6P8N3r6ts0heQY5hs9cnd6eupskGfMtK2ygLxRFgXLrbal+EaHP4CYDtBhog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bc5XuRMZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05FC0C4CEF5;
+	Wed,  3 Dec 2025 16:27:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777472;
-	bh=aYwsdc2uGxdVQkvFRScPMT9KlBmPWnPVa2PwKk0REso=;
+	s=korg; t=1764779239;
+	bh=N+/TWSQ1vVzpe0M8wFxmkDUXIBPJwzhaL/kal3pPUoE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SQ6XD6m+vbWOHVC4x1pZuR4fA8u5D8xum7oszsaWiymrf56Y1+2vYbUB+GcX5tPVj
-	 k0329Pp571OAUxum2F+yIVby5MmOa4JXqJetx2FKzkju3qyxID9qyMCrhNk84ppHlt
-	 4YikdDzwJ0xqSfcc9L/s8k766/PdZEygE374FHMU=
+	b=bc5XuRMZgBNE1gW2DpGDTqhiNu0XeeEgDXu7ZIitf5xjb7qkF7y4PQFBjn7x6cBCt
+	 HW721HNrwZXXMsF4BfyVueTK2SlA8QqfVfeL1AulNk0nS7/jESEWCNu8BTGdLMWOlZ
+	 /KLpjXqIZw0CoMQNSf357xTz5GUvQ0hHh42k19Kw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Akira Yokosawa <akiyks@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Federico Vaga <federico.vaga@vaga.pv.it>,
-	Alex Shi <alexs@kernel.org>,
-	Hu Haowen <src.res@email.cn>,
-	Tsugikazu Shibata <shibata@linuxfoundation.org>,
-	Jonathan Corbet <corbet@lwn.net>
-Subject: [PATCH 5.15 048/392] Revert "docs/process/howto: Replace C89 with C11"
-Date: Wed,  3 Dec 2025 16:23:18 +0100
-Message-ID: <20251203152415.879652479@linuxfoundation.org>
+	Colin Foster <colin.foster@in-advantage.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 197/568] smsc911x: add second read of EEPROM mac when possible corruption seen
+Date: Wed,  3 Dec 2025 16:23:19 +0100
+Message-ID: <20251203152447.941981728@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,110 +58,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Colin Foster <colin.foster@in-advantage.com>
 
-This reverts commit dc52117cd797f71f9686fa0cec91509eb7a9623d which is
-commit 2f3f53d62307262f0086804ea7cea99b0e085450 upstream.
+[ Upstream commit 69777753a8919b0b8313c856e707e1d1fe5ced85 ]
 
-In this kernel version, C89 is still the default ISO standard.
+When the EEPROM MAC is read by way of ADDRH, it can return all 0s the
+first time. Subsequent reads succeed.
 
-The reverted commit was fixing commit e8c07082a810 ("Kbuild: move to
--std=gnu11"), introduced in v5.18, and not backported to older versions.
-It was then not supported to be backported to v5.15. It can then safely
-be reverted.
+This is fully reproduceable on the Phytec PCM049 SOM.
 
-Fixes: 2f3f53d62307 ("docs/process/howto: Replace C89 with C11")
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Cc: Akira Yokosawa <akiyks@gmail.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Federico Vaga <federico.vaga@vaga.pv.it>
-Cc: Alex Shi <alexs@kernel.org>
-Cc: Hu Haowen <src.res@email.cn>
-Cc: Tsugikazu Shibata <shibata@linuxfoundation.org>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Re-read the ADDRH when this behaviour is observed, in an attempt to
+correctly apply the EEPROM MAC address.
+
+Signed-off-by: Colin Foster <colin.foster@in-advantage.com>
+Link: https://patch.msgid.link/20250903132610.966787-1-colin.foster@in-advantage.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/process/howto.rst                    |    2 +-
- Documentation/translations/it_IT/process/howto.rst |    2 +-
- Documentation/translations/ja_JP/howto.rst         |    2 +-
- Documentation/translations/ko_KR/howto.rst         |    2 +-
- Documentation/translations/zh_CN/process/howto.rst |    2 +-
- Documentation/translations/zh_TW/process/howto.rst |    2 +-
- 6 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/smsc/smsc911x.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/Documentation/process/howto.rst
-+++ b/Documentation/process/howto.rst
-@@ -36,7 +36,7 @@ experience, the following books are good
-  - "C:  A Reference Manual" by Harbison and Steele [Prentice Hall]
+diff --git a/drivers/net/ethernet/smsc/smsc911x.c b/drivers/net/ethernet/smsc/smsc911x.c
+index a690d139e1770..a1bb16ba36595 100644
+--- a/drivers/net/ethernet/smsc/smsc911x.c
++++ b/drivers/net/ethernet/smsc/smsc911x.c
+@@ -2165,10 +2165,20 @@ static const struct net_device_ops smsc911x_netdev_ops = {
+ static void smsc911x_read_mac_address(struct net_device *dev)
+ {
+ 	struct smsc911x_data *pdata = netdev_priv(dev);
+-	u32 mac_high16 = smsc911x_mac_read(pdata, ADDRH);
+-	u32 mac_low32 = smsc911x_mac_read(pdata, ADDRL);
++	u32 mac_high16, mac_low32;
+ 	u8 addr[ETH_ALEN];
  
- The kernel is written using GNU C and the GNU toolchain.  While it
--adheres to the ISO C11 standard, it uses a number of extensions that are
-+adheres to the ISO C89 standard, it uses a number of extensions that are
- not featured in the standard.  The kernel is a freestanding C
- environment, with no reliance on the standard C library, so some
- portions of the C standard are not supported.  Arbitrary long long
---- a/Documentation/translations/it_IT/process/howto.rst
-+++ b/Documentation/translations/it_IT/process/howto.rst
-@@ -44,7 +44,7 @@ altro, utili riferimenti:
- - "C:  A Reference Manual" di Harbison and Steele [Prentice Hall]
- 
- Il kernel è stato scritto usando GNU C e la toolchain GNU.
--Sebbene si attenga allo standard ISO C11, esso utilizza una serie di
-+Sebbene si attenga allo standard ISO C89, esso utilizza una serie di
- estensioni che non sono previste in questo standard. Il kernel è un
- ambiente C indipendente, che non ha alcuna dipendenza dalle librerie
- C standard, così alcune parti del C standard non sono supportate.
---- a/Documentation/translations/ja_JP/howto.rst
-+++ b/Documentation/translations/ja_JP/howto.rst
-@@ -65,7 +65,7 @@ Linux カーネル開発のやり方
-  - 『新・詳説 C 言語 H&S リファレンス』 (サミュエル P ハービソン/ガイ L スティール共著 斉藤 信男監訳)[ソフトバンク]
- 
- カーネルは GNU C と GNU ツールチェインを使って書かれています。カーネル
--は ISO C11 仕様に準拠して書く一方で、標準には無い言語拡張を多く使って
-+は ISO C89 仕様に準拠して書く一方で、標準には無い言語拡張を多く使って
- います。カーネルは標準 C ライブラリに依存しない、C 言語非依存環境です。
- そのため、C の標準の中で使えないものもあります。特に任意の long long
- の除算や浮動小数点は使えません。カーネルがツールチェインや C 言語拡張
---- a/Documentation/translations/ko_KR/howto.rst
-+++ b/Documentation/translations/ko_KR/howto.rst
-@@ -62,7 +62,7 @@ Documentation/process/howto.rst
-  - "Practical C Programming" by Steve Oualline [O'Reilly]
-  - "C:  A Reference Manual" by Harbison and Steele [Prentice Hall]
- 
--커널은 GNU C와 GNU 툴체인을 사용하여 작성되었다. 이 툴들은 ISO C11 표준을
-+커널은 GNU C와 GNU 툴체인을 사용하여 작성되었다. 이 툴들은 ISO C89 표준을
- 따르는 반면 표준에 있지 않은 많은 확장기능도 가지고 있다. 커널은 표준 C
- 라이브러리와는 관계없이 freestanding C 환경이어서 C 표준의 일부는
- 지원되지 않는다. 임의의 long long 나누기나 floating point는 지원되지 않는다.
---- a/Documentation/translations/zh_CN/process/howto.rst
-+++ b/Documentation/translations/zh_CN/process/howto.rst
-@@ -45,7 +45,7 @@ Linux内核大部分是由C语言写成�
-  - "C:  A Reference Manual" by Harbison and Steele [Prentice Hall]
-    《C语言参考手册（原书第5版）》（邱仲潘 等译）[机械工业出版社]
- 
--Linux内核使用GNU C和GNU工具链开发。虽然它遵循ISO C11标准，但也用到了一些
-+Linux内核使用GNU C和GNU工具链开发。虽然它遵循ISO C89标准，但也用到了一些
- 标准中没有定义的扩展。内核是自给自足的C环境，不依赖于标准C库的支持，所以
- 并不支持C标准中的部分定义。比如long long类型的大数除法和浮点运算就不允许
- 使用。有时候确实很难弄清楚内核对工具链的要求和它所使用的扩展，不幸的是目
---- a/Documentation/translations/zh_TW/process/howto.rst
-+++ b/Documentation/translations/zh_TW/process/howto.rst
-@@ -48,7 +48,7 @@ Linux內核大部分是由C語言寫成�
-  - "C:  A Reference Manual" by Harbison and Steele [Prentice Hall]
-    《C語言參考手冊（原書第5版）》（邱仲潘 等譯）[機械工業出版社]
- 
--Linux內核使用GNU C和GNU工具鏈開發。雖然它遵循ISO C11標準，但也用到了一些
-+Linux內核使用GNU C和GNU工具鏈開發。雖然它遵循ISO C89標準，但也用到了一些
- 標準中沒有定義的擴展。內核是自給自足的C環境，不依賴於標準C庫的支持，所以
- 並不支持C標準中的部分定義。比如long long類型的大數除法和浮點運算就不允許
- 使用。有時候確實很難弄清楚內核對工具鏈的要求和它所使用的擴展，不幸的是目
++	mac_high16 = smsc911x_mac_read(pdata, ADDRH);
++	mac_low32 = smsc911x_mac_read(pdata, ADDRL);
++
++	/* The first mac_read in some setups can incorrectly read 0. Re-read it
++	 * to get the full MAC if this is observed.
++	 */
++	if (mac_high16 == 0) {
++		SMSC_TRACE(pdata, probe, "Re-read MAC ADDRH\n");
++		mac_high16 = smsc911x_mac_read(pdata, ADDRH);
++	}
++
+ 	addr[0] = (u8)(mac_low32);
+ 	addr[1] = (u8)(mac_low32 >> 8);
+ 	addr[2] = (u8)(mac_low32 >> 16);
+-- 
+2.51.0
+
 
 
 
