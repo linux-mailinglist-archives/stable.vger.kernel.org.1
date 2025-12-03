@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DF77CA0854
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:37:05 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ECBCCA09B5
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:45:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 52A8B33B8DF3
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:17:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D7A9430014E1
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:45:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EC2933508F;
-	Wed,  3 Dec 2025 16:11:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36B8C32E72B;
+	Wed,  3 Dec 2025 15:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TPhVFp2c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rTyOdenj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF33B335067;
-	Wed,  3 Dec 2025 16:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9EDC32E692;
+	Wed,  3 Dec 2025 15:50:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778265; cv=none; b=pfVcGU7pCDFzVT7sQ3GtVj01ZPOcpw2Qq06i4pCdhh9CgWO6zg5bQy0RbfperdDSN3NYLjL9rdcSDPhWjMkb/0/Obw8O9cu29IdcHWngEqYZ5fPYkTKi+Z7Gp4arrvSnc/pX0fzhg8bRXV5rmuaLCrErwuEi0WTIH2JX3+ypuRM=
+	t=1764777049; cv=none; b=dlw6EbpkVRsuu83TxOMzihFSw36lVsOU6yeg2EnA+RBQoyv5dNyEdilClhQuiZDSYSO81xfSlIuF1evPtMi1EjFSOnXFQRxIJlqoT5/+bZCUAhwdUWGKrcMJe90B9yCaSV2OWKvAH6XqZqglvIU3JSuqBDx23gdn8IZHhNxGPz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778265; c=relaxed/simple;
-	bh=7Rarqk5Zto9gXmY6PXYhQ6jX7q5nMFOXZLiOjIwHycE=;
+	s=arc-20240116; t=1764777049; c=relaxed/simple;
+	bh=T1RAPbXc8NDWwUv19/TcjkK9ek+GMMiI6YYsRxkPvN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KG0SwZu9lyDhoPZcR1uQEaJJt4+w44roeILpFhsNhfnOHs+6EOZXObGBzp1GhQ5jZBCRqtkF283b16QtfD8VIzDEpxQDHP2MIHMzDu5yja5R6eqEhd5VVa7Nq6vxTjVi/sYppDbHGGfBgc48c3/ci2Qi5kha/kNDOUm5N6K1tis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TPhVFp2c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17CCEC4CEF5;
-	Wed,  3 Dec 2025 16:11:04 +0000 (UTC)
+	 MIME-Version; b=KXdk2+rV3xYUzVdODrRQgiwymIxulzUKY6i5Oc9PNEJm4cepoKj9so4QciwpiUQZUK6DWEG0mhvJLqZYZXKDKpM1ZysfpJm6GKL1X4T+jrujq9vDO9tVlthi1/qe5sL0E3AxnNuDBj6oVVIfhgLc74dDRykYbKEgYrHnysDTJCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rTyOdenj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01A83C4CEF5;
+	Wed,  3 Dec 2025 15:50:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778265;
-	bh=7Rarqk5Zto9gXmY6PXYhQ6jX7q5nMFOXZLiOjIwHycE=;
+	s=korg; t=1764777048;
+	bh=T1RAPbXc8NDWwUv19/TcjkK9ek+GMMiI6YYsRxkPvN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TPhVFp2cCHFR7NUg5Lk6WbiUt2RfzkbqIlfj83uluL08mOJc2h9rnyMPB/9FtDLGs
-	 2v+Ean9n17nCAaCf1E/7OPLd6G3DOOsrPczlDAKeb+2Isz32FwgjdJoQrpXFtnio/Y
-	 FLRcFYzWyHAt8LPXrfx2uLhNA1TZBh9v209jbK1w=
+	b=rTyOdenjEknS9nOvXgtRaVYLhhWDMXH6ZA5+Skgi1+/B48Al8//0uVZ/y9uDdSwkX
+	 qsWZaL7sUuCZsAzRA7cQlxvsVQpyt4ojeEYe9k3Z4Bsocjt8nfi/hrXgWzNSD7DRGC
+	 QBtYZ8/rTbqW4kjgFp/cowIqaUXqnpqdH6f6BMXY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>
-Subject: [PATCH 5.15 293/392] drm/tegra: dc: Fix reference leak in tegra_dc_couple()
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.17 065/146] iio: adc: ad4030: Fix _scale value for common-mode channels
 Date: Wed,  3 Dec 2025 16:27:23 +0100
-Message-ID: <20251203152424.938787435@linuxfoundation.org>
+Message-ID: <20251203152348.846935015@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Marcelo Schmitt <marcelo.schmitt@analog.com>
 
-commit 4c5376b4b143c4834ebd392aef2215847752b16a upstream.
+commit ffc74ad539136ae9e16f7b5f2e4582e88018cd49 upstream.
 
-driver_find_device() calls get_device() to increment the reference
-count once a matching device is found, but there is no put_device() to
-balance the reference count. To avoid reference count leakage, add
-put_device() to decrease the reference count.
+Previously, the driver always used the amount of precision bits of
+differential input channels to provide the scale to mV. Though,
+differential and common-mode voltage channels have different amount of
+precision bits and the correct number of precision bits must be considered
+to get to a proper mV scale factor for each one. Use channel specific
+number of precision bits to provide the correct scale value for each
+channel.
 
-Found by code review.
-
-Cc: stable@vger.kernel.org
-Fixes: a31500fe7055 ("drm/tegra: dc: Restore coupling of display controllers")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Acked-by: Mikko Perttunen <mperttunen@nvidia.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Link: https://patch.msgid.link/20251022114720.24937-1-make24@iscas.ac.cn
+Fixes: de67f28abe58 ("iio: adc: ad4030: check scan_type for error")
+Fixes: 949abd1ca5a4 ("iio: adc: ad4030: add averaging support")
+Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tegra/dc.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/iio/adc/ad4030.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/tegra/dc.c
-+++ b/drivers/gpu/drm/tegra/dc.c
-@@ -2982,6 +2982,7 @@ static int tegra_dc_couple(struct tegra_
- 		dc->client.parent = &parent->client;
+--- a/drivers/iio/adc/ad4030.c
++++ b/drivers/iio/adc/ad4030.c
+@@ -385,7 +385,7 @@ static int ad4030_get_chan_scale(struct
+ 	struct ad4030_state *st = iio_priv(indio_dev);
+ 	const struct iio_scan_type *scan_type;
  
- 		dev_dbg(dc->dev, "coupled to %s\n", dev_name(companion));
-+		put_device(companion);
- 	}
+-	scan_type = iio_get_current_scan_type(indio_dev, st->chip->channels);
++	scan_type = iio_get_current_scan_type(indio_dev, chan);
+ 	if (IS_ERR(scan_type))
+ 		return PTR_ERR(scan_type);
  
- 	return 0;
 
 
 
