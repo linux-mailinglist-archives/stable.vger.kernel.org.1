@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-198352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B049C9F863
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:37:48 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46532C9FC9B
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:05:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 75F6E3000943
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:37:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 434543003056
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:04:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5FC6314A74;
-	Wed,  3 Dec 2025 15:37:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D2A934F47C;
+	Wed,  3 Dec 2025 16:04:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GxV6lr6z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zgldRni5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F5A309EFF;
-	Wed,  3 Dec 2025 15:37:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A6C34F27B;
+	Wed,  3 Dec 2025 16:04:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776260; cv=none; b=h1FkBJKlixreXdDJtr7pYQuu2M5De+yYOW41rVBMJF0qCPX1k4CHhNQY6WKM9H6gomNLLgSMArvqpMhnclWMLHigUmaC7rTVDj57rXA5kK/S4BhZextiIed71ayh56FC/HZG0mSPvuKmyaK6cKHLzXdcHSYhE0e/SsDNXvHC2Ps=
+	t=1764777898; cv=none; b=P+THRUZQrVkbIIfukOrcX58s2NB8iG+xbPXbG7vdg6tmLuyJ9MZXVqtHw99po/hzlkWhL6VYpAFl2NiA69skMCsMAVIjdD9bN3TCTFmJpr1JvxMiPox5RM2OMpEWHcZ7OK8WTBptymVjK4ij4wDlHhFgIBMhUnupcaz/gIFPg10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776260; c=relaxed/simple;
-	bh=+GBFxvLFlNDR23dcMYDLQEnQZtNZn+v19SL9eUN/8eA=;
+	s=arc-20240116; t=1764777898; c=relaxed/simple;
+	bh=hh5n/u6k3mZZXFKahGgEVSUI8WfwwDCvKsJtFOvzKQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ch+bp/0OsQFfoMftxI4Hkqd5dZRRrmApaDSREzwXQjALk5wF1UhY6KUhbgWdgkL8ZlIz3tVAHcQjdEkNEYVFYUofXha4W2VgTEeS8VZ+amrE3Wbgdpe+d7CD9hqD+eccF7QLnPm9oAjGUrS9Dc6CyRTRSTUuAKOz4kEXy63mUlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GxV6lr6z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0C2EC116B1;
-	Wed,  3 Dec 2025 15:37:39 +0000 (UTC)
+	 MIME-Version; b=q44RjiSvetD9RYWRYi+QYyITgbfIjVe2AndprDT1pHMdll3vXHmO8gnI56q8zfP8ssggYOjr4wdVqzX+1wqpWGu5R8Ve4XVLcrHL7w1zk1OC7Ko7Vi1lZGBKHkqh+hCEFPpJvNTubMBKnTwGt4b2Y+VJsFxxLpXDmUt7jyme0Ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zgldRni5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88424C4CEF5;
+	Wed,  3 Dec 2025 16:04:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776260;
-	bh=+GBFxvLFlNDR23dcMYDLQEnQZtNZn+v19SL9eUN/8eA=;
+	s=korg; t=1764777898;
+	bh=hh5n/u6k3mZZXFKahGgEVSUI8WfwwDCvKsJtFOvzKQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GxV6lr6zMBdScVP0OkQ/gDSOaaYXvp+BNP/Ng7nrZqKXO2q2KQ3nimIUlVka/83qn
-	 HnjAvtPjetrSaA5MbA4Bzen+k6oCGBs9STI2ssEp9v+Evyua9+/2Ohm7G+2YVX292o
-	 9/7Vw3OPgf9e8Q26gGMqKj5FVBkb3l13+hnGjpgY=
+	b=zgldRni5P0fMTkCk+WTTAXQIVrJQarzI8LKHsmCtEDnPl5lRzI/X4dZSLF0jDkv0e
+	 X4sxk/uZdCnoIwicIsej7p1yN6sCsMpO5UidmqZWxU8XMYIVsH1Ddh6S6TQHByHyZF
+	 SVZRu2F9qFD9xuLHTxwUQ7LLaDEJadvIWOwXZvUU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 128/300] wifi: ath10k: Fix connection after GTK rekeying
+Subject: [PATCH 5.15 182/392] ALSA: usb-audio: add mono main switch to Presonus S1824c
 Date: Wed,  3 Dec 2025 16:25:32 +0100
-Message-ID: <20251203152405.353280118@linuxfoundation.org>
+Message-ID: <20251203152420.778766279@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +60,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Loic Poulain <loic.poulain@oss.qualcomm.com>
+From: Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>
 
-[ Upstream commit 487e8a8c3421df0af3707e54c7e069f1d89cbda7 ]
+[ Upstream commit 659169c4eb21f8d9646044a4f4e1bc314f6f9d0c ]
 
-It appears that not all hardware/firmware implementations support
-group key deletion correctly, which can lead to connection hangs
-and deauthentication following GTK rekeying (delete and install).
+The 1824c does not have the A/B switch that the 1810c has,
+but instead it has a mono main switch that sums the two
+main output channels to mono.
 
-To avoid this issue, instead of attempting to delete the key using
-the special WMI_CIPHER_NONE value, we now replace the key with an
-invalid (random) value.
-
-This behavior has been observed with WCN39xx chipsets.
-
-Tested-on: WCN3990 hw1.0 WLAN.HL.3.3.7.c2-00931-QCAHLSWMTPLZ-1
-Reported-by: Alexey Klimov <alexey.klimov@linaro.org>
-Closes: https://lore.kernel.org/all/DAWJQ2NIKY28.1XOG35E4A682G@linaro.org
-Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Tested-by: Alexey Klimov <alexey.klimov@linaro.org> # QRB2210 RB1
-Link: https://patch.msgid.link/20250902143225.837487-1-loic.poulain@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/mac.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ sound/usb/mixer_s1810c.c | 26 +++++++++++++++++++++++---
+ 1 file changed, 23 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index 5dd0239e9d51b..3a708b3c9d4ec 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -13,6 +13,7 @@
- #include <linux/acpi.h>
- #include <linux/of.h>
- #include <linux/bitfield.h>
-+#include <linux/random.h>
+diff --git a/sound/usb/mixer_s1810c.c b/sound/usb/mixer_s1810c.c
+index 38e56ad857243..881cc5998bf91 100644
+--- a/sound/usb/mixer_s1810c.c
++++ b/sound/usb/mixer_s1810c.c
+@@ -93,6 +93,7 @@ struct s1810c_ctl_packet {
  
- #include "hif.h"
- #include "core.h"
-@@ -275,8 +276,15 @@ static int ath10k_send_key(struct ath10k_vif *arvif,
- 		key->flags |= IEEE80211_KEY_FLAG_GENERATE_IV;
+ #define SC1810C_CTL_LINE_SW	0
+ #define SC1810C_CTL_MUTE_SW	1
++#define SC1824C_CTL_MONO_SW	2
+ #define SC1810C_CTL_AB_SW	3
+ #define SC1810C_CTL_48V_SW	4
  
- 	if (cmd == DISABLE_KEY) {
--		arg.key_cipher = ar->wmi_key_cipher[WMI_CIPHER_NONE];
--		arg.key_data = NULL;
-+		if (flags & WMI_KEY_GROUP) {
-+			/* Not all hardware handles group-key deletion operation
-+			 * correctly. Replace the key with a junk value to invalidate it.
-+			 */
-+			get_random_bytes(key->key, key->keylen);
-+		} else {
-+			arg.key_cipher = ar->wmi_key_cipher[WMI_CIPHER_NONE];
-+			arg.key_data = NULL;
-+		}
- 	}
+@@ -123,6 +124,7 @@ struct s1810c_state_packet {
+ #define SC1810C_STATE_48V_SW	58
+ #define SC1810C_STATE_LINE_SW	59
+ #define SC1810C_STATE_MUTE_SW	60
++#define SC1824C_STATE_MONO_SW	61
+ #define SC1810C_STATE_AB_SW	62
  
- 	return ath10k_wmi_vdev_install_key(arvif->ar, &arg);
+ struct s1810_mixer_state {
+@@ -502,6 +504,15 @@ static const struct snd_kcontrol_new snd_s1810c_mute_sw = {
+ 	.private_value = (SC1810C_STATE_MUTE_SW | SC1810C_CTL_MUTE_SW << 8)
+ };
+ 
++static const struct snd_kcontrol_new snd_s1824c_mono_sw = {
++	.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
++	.name = "Mono Main Out Switch",
++	.info = snd_ctl_boolean_mono_info,
++	.get = snd_s1810c_switch_get,
++	.put = snd_s1810c_switch_set,
++	.private_value = (SC1824C_STATE_MONO_SW | SC1824C_CTL_MONO_SW << 8)
++};
++
+ static const struct snd_kcontrol_new snd_s1810c_48v_sw = {
+ 	.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
+ 	.name = "48V Phantom Power On Mic Inputs Switch",
+@@ -588,8 +599,17 @@ int snd_sc1810_init_mixer(struct usb_mixer_interface *mixer)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	ret = snd_s1810c_switch_init(mixer, &snd_s1810c_ab_sw);
+-	if (ret < 0)
+-		return ret;
++	// The 1824c has a Mono Main switch instead of a
++	// A/B select switch.
++	if (mixer->chip->usb_id == USB_ID(0x194f, 0x010d)) {
++		ret = snd_s1810c_switch_init(mixer, &snd_s1824c_mono_sw);
++		if (ret < 0)
++			return ret;
++	} else if (mixer->chip->usb_id == USB_ID(0x194f, 0x010c)) {
++		ret = snd_s1810c_switch_init(mixer, &snd_s1810c_ab_sw);
++		if (ret < 0)
++			return ret;
++	}
++
+ 	return ret;
+ }
 -- 
 2.51.0
 
