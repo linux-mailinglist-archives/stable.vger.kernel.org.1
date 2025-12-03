@@ -1,51 +1,53 @@
-Return-Path: <stable+bounces-198374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73FA9C9F986
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:44:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7DFBC9F98C
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:44:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3D6FA307A9FE
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:38:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4AC4A3045A42
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:38:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1D8931354A;
-	Wed,  3 Dec 2025 15:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B99430C373;
+	Wed,  3 Dec 2025 15:38:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="unjbJrvC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bDloKEuW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE7D303A3D;
-	Wed,  3 Dec 2025 15:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB3A0303C91;
+	Wed,  3 Dec 2025 15:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776330; cv=none; b=P6s+ssJmdGHM2IHN+3bZP6G1XOw603sw1wBZFYar1HgD3k6sH0bVnpXNpDzSo8XEUOlN8YfveNBt2Fslp25Sdt8Unu0i3+ZNkMsSLvcCk74HLauBre9yv569rA+x2hr2HuCgJUpXZPysUWpVf10HUNApmhgM3k8uI11qrpSmEnw=
+	t=1764776336; cv=none; b=RDhM2sEum0rzhvawFIdFyWx3lnh4G34M6OkFp3+FBhw9OA6CvU0vpN1jVNGhgkRW9F8VkqWnS2y37itSVDQ9HF/Uebsl6ooiKK5HRzjGdpjHDDukwtMvDhN/nXnBHuZ8mymnWaaDJYPIiCdmEcYYWdCU0veR48C/O7oRTIRuuuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776330; c=relaxed/simple;
-	bh=wv9Mqq1Ljp54ZCB+o+xCIm9wxkY4BFsQnlLyj2ueupA=;
+	s=arc-20240116; t=1764776336; c=relaxed/simple;
+	bh=Z8yTAIrLSDaEFx1JISnMlpzErO0k0IYK2qgyKI4cCgs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ABeMVaI93cRngW4znVT+12KSZnG5zcPcOgKMS2z2JZvqZqGacvAi96eeDbGcSQdLeSe1wHakSXGSgTPvF0nvrWhKxWW5XgTo2s47S46GltinYnPd//VcXBtm1lBzPNnwQ2iutnTfS0RebpVZ+N4gbwb/z1+XctP2yoB2uFsNxJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=unjbJrvC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08618C4CEF5;
-	Wed,  3 Dec 2025 15:38:49 +0000 (UTC)
+	 MIME-Version; b=Bh26KBPUT0aAwOdBTKjMKW9yHaBNeQTwl0Zhhkj91ceZr5MRZyO339N/pOhQnOiyJaCQcEFd5pP//BeDbnr+auPEjHBWKRdMA7g3W+JFeNRAit/wgev6AYgHcQQ1Hzy6SvwAmZ5k/N+StNbB7FKH6MgLZAO4NyTxObikqfx2oXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bDloKEuW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44AD0C4CEF5;
+	Wed,  3 Dec 2025 15:38:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776330;
-	bh=wv9Mqq1Ljp54ZCB+o+xCIm9wxkY4BFsQnlLyj2ueupA=;
+	s=korg; t=1764776336;
+	bh=Z8yTAIrLSDaEFx1JISnMlpzErO0k0IYK2qgyKI4cCgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=unjbJrvC6z/e7aipWu0YNxCYxpq11Hik48vzrDG9XhP7ZtF1n/qKC2iOuRbJwWdXA
-	 AtXbuvFLAbCCZvCjKpMc+PHBD/dp6iEg+Ko82Zahx9auzH/c4bQGtqrxDEYzdQnYtw
-	 tlASPKOKhYtfpsUlmN+6UoP6g/qLpdxJKWbObtiM=
+	b=bDloKEuWJGWCywPV8S22N9a4LoYdA8xU1tzQvQwnT1eAouir0J0xtgaVajq2nSugX
+	 Ce3KRt2My8+47Nle279L1V1pxNZTNY/iWdBWbrT4qdoV9rZaXoi/IwgW9Z4yWEFpd7
+	 T+moUdNp2Wv7JzYvMrurNBYp4B3ZjRTnXejyQr30=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Randall P. Embry" <rpembry@gmail.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 151/300] 9p: sysfs_init: dont hardcode error to ENOMEM
-Date: Wed,  3 Dec 2025 16:25:55 +0100
-Message-ID: <20251203152406.211410624@linuxfoundation.org>
+Subject: [PATCH 5.10 152/300] ACPI: property: Return present device nodes only on fwnode interface
+Date: Wed,  3 Dec 2025 16:25:56 +0100
+Message-ID: <20251203152406.247484553@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
 References: <20251203152400.447697997@linuxfoundation.org>
@@ -64,44 +66,73 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Randall P. Embry <rpembry@gmail.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit 528f218b31aac4bbfc58914d43766a22ab545d48 ]
+[ Upstream commit d9f866b2bb3eec38b3734f1fed325ec7c55ccdfa ]
 
-v9fs_sysfs_init() always returned -ENOMEM on failure;
-return the actual sysfs_create_group() error instead.
+fwnode_graph_get_next_subnode() may return fwnode backed by ACPI
+device nodes and there has been no check these devices are present
+in the system, unlike there has been on fwnode OF backend.
 
-Signed-off-by: Randall P. Embry <rpembry@gmail.com>
-Message-ID: <20250926-v9fs_misc-v1-3-a8b3907fc04d@codewreck.org>
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+In order to provide consistent behaviour towards callers,
+add a check for device presence by introducing
+a new function acpi_get_next_present_subnode(), used as the
+get_next_child_node() fwnode operation that also checks device
+node presence.
+
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Link: https://patch.msgid.link/20251001102636.1272722-2-sakari.ailus@linux.intel.com
+[ rjw: Kerneldoc comment and changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/9p/v9fs.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/acpi/property.c | 24 +++++++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
 
-diff --git a/fs/9p/v9fs.c b/fs/9p/v9fs.c
-index b304e070139ca..1dd8a735bf7f6 100644
---- a/fs/9p/v9fs.c
-+++ b/fs/9p/v9fs.c
-@@ -594,13 +594,16 @@ static struct attribute_group v9fs_attr_group = {
+diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+index cf872dc5b07a6..821150dcb9762 100644
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -1107,6 +1107,28 @@ struct fwnode_handle *acpi_get_next_subnode(const struct fwnode_handle *fwnode,
+ 	return NULL;
+ }
  
- static int __init v9fs_sysfs_init(void)
- {
-+	int ret;
++/*
++ * acpi_get_next_present_subnode - Return the next present child node handle
++ * @fwnode: Firmware node to find the next child node for.
++ * @child: Handle to one of the device's child nodes or a null handle.
++ *
++ * Like acpi_get_next_subnode(), but the device nodes returned by
++ * acpi_get_next_present_subnode() are guaranteed to be present.
++ *
++ * Returns: The fwnode handle of the next present sub-node.
++ */
++static struct fwnode_handle *
++acpi_get_next_present_subnode(const struct fwnode_handle *fwnode,
++			      struct fwnode_handle *child)
++{
++	do {
++		child = acpi_get_next_subnode(fwnode, child);
++	} while (is_acpi_device_node(child) &&
++		 !acpi_device_is_present(to_acpi_device_node(child)));
 +
- 	v9fs_kobj = kobject_create_and_add("9p", fs_kobj);
- 	if (!v9fs_kobj)
- 		return -ENOMEM;
- 
--	if (sysfs_create_group(v9fs_kobj, &v9fs_attr_group)) {
-+	ret = sysfs_create_group(v9fs_kobj, &v9fs_attr_group);
-+	if (ret) {
- 		kobject_put(v9fs_kobj);
--		return -ENOMEM;
-+		return ret;
- 	}
- 
- 	return 0;
++	return child;
++}
++
+ /**
+  * acpi_node_get_parent - Return parent fwnode of this fwnode
+  * @fwnode: Firmware node whose parent to get
+@@ -1421,7 +1443,7 @@ acpi_fwnode_device_get_match_data(const struct fwnode_handle *fwnode,
+ 		.property_read_string_array =				\
+ 			acpi_fwnode_property_read_string_array,		\
+ 		.get_parent = acpi_node_get_parent,			\
+-		.get_next_child_node = acpi_get_next_subnode,		\
++		.get_next_child_node = acpi_get_next_present_subnode,	\
+ 		.get_named_child_node = acpi_fwnode_get_named_child_node, \
+ 		.get_name = acpi_fwnode_get_name,			\
+ 		.get_name_prefix = acpi_fwnode_get_name_prefix,		\
 -- 
 2.51.0
 
