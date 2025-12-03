@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02BCBCA01A0
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:47:41 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D783CC9FDF2
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:17:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 427563009420
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:45:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A03A43001DF4
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:16:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73E8C368274;
-	Wed,  3 Dec 2025 16:45:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85DEA352922;
+	Wed,  3 Dec 2025 16:15:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ox61Z1dJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mCHWdEyg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0E136826D;
-	Wed,  3 Dec 2025 16:45:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36F78350A29;
+	Wed,  3 Dec 2025 16:15:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780330; cv=none; b=RUfd0cXQ6Nn8mRvnHr4kM86IshMzCr8KKzyV+AP2eqKiKzEi0nDdYAuH6XT9+31urFF4c+xT8nZSNRNwEcZ8OOJ7yrB3tZYdLFyOrv+8oNbEYfdLoyAIH9KAjrcT58KHMYgUpiq3P6wLJJW1NBFqKMpgLFfUCDjeLmt8b4VKatM=
+	t=1764778543; cv=none; b=XbgVGLirp2i5jcrY4N0dN7yERtBPD3G5wd4/FkqdQ6BLDqqIE6e3hyxhQsdGMbeBfqJHnyIEdJxjGtXMjwbMrZCZHjNkBgV4AuypUqjyzaWVDIyTqgAlW5UwJwagUrvcKhhfSa7LM/JdgnyGeGxAijl8RKVnCrrbNOjiuB7kR2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780330; c=relaxed/simple;
-	bh=/oBdTLIXiqWLmEkbV4CSW2jWKULrG6WBCfwHzLCT1Zk=;
+	s=arc-20240116; t=1764778543; c=relaxed/simple;
+	bh=wMsCtLZhvPWvnRuEKBm8DgYDJ5gXEauIpTM5bOTdC9Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s+XTU27lMj74fb0LYWJTiYydY/oLRjCASVbRZ18yEpdddpIq+112Y10jgfAeW+3xcwsZLDn1D3iFTB4LFZ7802aCWHFreWDNytakzxO3wMazLdo1IFxFtB3RSr0KIm7aWBBSxmbM3urq9JjtQO/AgBm4ppL86C06enLr+ZjVQhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ox61Z1dJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A784CC4CEF5;
-	Wed,  3 Dec 2025 16:45:29 +0000 (UTC)
+	 MIME-Version; b=BkBGF3/iU135Hbf3Agl1bmkpCHb+DhohuhyHoCuipScRowNNeE0WVg/Xto+zOVkEmMTqX1RhawB5y4Kbo8va2nmEMncpYXXzZgdhkdSoNLViozL1yMQ1SK3BTQSrPOEHHLXkegJngHwQs9wW/hBqh0Ao21l/yN2ohqCexPPu6tA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mCHWdEyg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5639C4CEF5;
+	Wed,  3 Dec 2025 16:15:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780330;
-	bh=/oBdTLIXiqWLmEkbV4CSW2jWKULrG6WBCfwHzLCT1Zk=;
+	s=korg; t=1764778543;
+	bh=wMsCtLZhvPWvnRuEKBm8DgYDJ5gXEauIpTM5bOTdC9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ox61Z1dJEqPE3g3yUHE+lmG1zfeFZ3lD/V1TV/TSvKtUJYPlEMO+RlUgixIPaDBTo
-	 5Nu8mZswfeOLZ6FQDwi9AdrkiOAS9/lbIh3MCH1NYsF+bwyC6+oPbx6gnxwU5Fgh/r
-	 eOOISAMiNNZIAY+TrNUOkoKEimwJ1C7OnJXTD3Kk=
+	b=mCHWdEygHlY29lIuETS/4floCI16imhJKb9jz5zz+6m3X/lrkaLaQblN99sRj+nou
+	 nuj+8drdm9nMkEvOnvsXjeWjUP1Ad1p/53hMROfnhD1vJ4Qhl79TCrB3XI/G7L3gF4
+	 FZ+6lTbklVBElJfX8wZm8c6WbL4Ngcvc9vmdGAAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	Klara Modin <klarasmodin@gmail.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.1 523/568] MIPS: mm: kmalloc tlb_vpn array to avoid stack overflow
-Date: Wed,  3 Dec 2025 16:28:45 +0100
-Message-ID: <20251203152459.867813267@linuxfoundation.org>
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Alex Hung <alex.hung@amd.com>
+Subject: [PATCH 5.15 376/392] drm/amd/display: Check NULL before accessing
+Date: Wed,  3 Dec 2025 16:28:46 +0100
+Message-ID: <20251203152427.991648320@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,81 +61,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+From: Alex Hung <alex.hung@amd.com>
 
-commit 841ecc979b18d3227fad5e2d6a1e6f92688776b5 upstream.
+commit 3ce62c189693e8ed7b3abe551802bbc67f3ace54 upstream.
 
-Owing to Config4.MMUSizeExt and VTLB/FTLB MMU features later MIPSr2+
-cores can have more than 64 TLB entries.  Therefore allocate an array
-for uniquification instead of placing too an small array on the stack.
+[WHAT]
+IGT kms_cursor_legacy's long-nonblocking-modeset-vs-cursor-atomic
+fails with NULL pointer dereference. This can be reproduced with
+both an eDP panel and a DP monitors connected.
 
-Fixes: 35ad7e181541 ("MIPS: mm: tlb-r4k: Uniquify TLB entries on init")
-Co-developed-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Cc: stable@vger.kernel.org # v6.17+: 9f048fa48740: MIPS: mm: Prevent a TLB shutdown on initial uniquification
-Cc: stable@vger.kernel.org # v6.17+
-Tested-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Tested-by: Klara Modin <klarasmodin@gmail.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+ BUG: kernel NULL pointer dereference, address: 0000000000000000
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ PGD 0 P4D 0
+ Oops: Oops: 0000 [#1] SMP NOPTI
+ CPU: 13 UID: 0 PID: 2960 Comm: kms_cursor_lega Not tainted
+6.16.0-99-custom #8 PREEMPT(voluntary)
+ Hardware name: AMD ........
+ RIP: 0010:dc_stream_get_scanoutpos+0x34/0x130 [amdgpu]
+ Code: 57 4d 89 c7 41 56 49 89 ce 41 55 49 89 d5 41 54 49
+ 89 fc 53 48 83 ec 18 48 8b 87 a0 64 00 00 48 89 75 d0 48 c7 c6 e0 41 30
+ c2 <48> 8b 38 48 8b 9f 68 06 00 00 e8 8d d7 fd ff 31 c0 48 81 c3 e0 02
+ RSP: 0018:ffffd0f3c2bd7608 EFLAGS: 00010292
+ RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffd0f3c2bd7668
+ RDX: ffffd0f3c2bd7664 RSI: ffffffffc23041e0 RDI: ffff8b32494b8000
+ RBP: ffffd0f3c2bd7648 R08: ffffd0f3c2bd766c R09: ffffd0f3c2bd7760
+ R10: ffffd0f3c2bd7820 R11: 0000000000000000 R12: ffff8b32494b8000
+ R13: ffffd0f3c2bd7664 R14: ffffd0f3c2bd7668 R15: ffffd0f3c2bd766c
+ FS:  000071f631b68700(0000) GS:ffff8b399f114000(0000)
+knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 0000000000000000 CR3: 00000001b8105000 CR4: 0000000000f50ef0
+ PKRU: 55555554
+ Call Trace:
+ <TASK>
+ dm_crtc_get_scanoutpos+0xd7/0x180 [amdgpu]
+ amdgpu_display_get_crtc_scanoutpos+0x86/0x1c0 [amdgpu]
+ ? __pfx_amdgpu_crtc_get_scanout_position+0x10/0x10[amdgpu]
+ amdgpu_crtc_get_scanout_position+0x27/0x50 [amdgpu]
+ drm_crtc_vblank_helper_get_vblank_timestamp_internal+0xf7/0x400
+ drm_crtc_vblank_helper_get_vblank_timestamp+0x1c/0x30
+ drm_crtc_get_last_vbltimestamp+0x55/0x90
+ drm_crtc_next_vblank_start+0x45/0xa0
+ drm_atomic_helper_wait_for_fences+0x81/0x1f0
+ ...
+
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 621e55f1919640acab25383362b96e65f2baea3c)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/mm/tlb-r4k.c |   18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/core/dc_stream.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/arch/mips/mm/tlb-r4k.c
-+++ b/arch/mips/mm/tlb-r4k.c
-@@ -12,6 +12,7 @@
- #include <linux/init.h>
- #include <linux/sched.h>
- #include <linux/smp.h>
-+#include <linux/memblock.h>
- #include <linux/mm.h>
- #include <linux/hugetlb.h>
- #include <linux/export.h>
-@@ -512,17 +513,26 @@ static int r4k_vpn_cmp(const void *a, co
-  * Initialise all TLB entries with unique values that do not clash with
-  * what we have been handed over and what we'll be using ourselves.
-  */
--static void r4k_tlb_uniquify(void)
-+static void __ref r4k_tlb_uniquify(void)
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
+@@ -614,9 +614,14 @@ bool dc_stream_get_scanoutpos(const stru
  {
--	unsigned long tlb_vpns[1 << MIPS_CONF1_TLBS_SIZE];
- 	int tlbsize = current_cpu_data.tlbsize;
-+	bool use_slab = slab_is_available();
- 	int start = num_wired_entries();
-+	phys_addr_t tlb_vpn_size;
-+	unsigned long *tlb_vpns;
- 	unsigned long vpn_mask;
- 	int cnt, ent, idx, i;
- 
- 	vpn_mask = GENMASK(cpu_vmbits - 1, 13);
- 	vpn_mask |= IS_ENABLED(CONFIG_64BIT) ? 3ULL << 62 : 1 << 31;
- 
-+	tlb_vpn_size = tlbsize * sizeof(*tlb_vpns);
-+	tlb_vpns = (use_slab ?
-+		    kmalloc(tlb_vpn_size, GFP_KERNEL) :
-+		    memblock_alloc_raw(tlb_vpn_size, sizeof(*tlb_vpns)));
-+	if (WARN_ON(!tlb_vpns))
-+		return; /* Pray local_flush_tlb_all() is good enough. */
+ 	uint8_t i;
+ 	bool ret = false;
+-	struct dc  *dc = stream->ctx->dc;
+-	struct resource_context *res_ctx =
+-		&dc->current_state->res_ctx;
++	struct dc  *dc;
++	struct resource_context *res_ctx;
 +
- 	htw_stop();
++	if (!stream->ctx)
++		return false;
++
++	dc = stream->ctx->dc;
++	res_ctx = &dc->current_state->res_ctx;
  
- 	for (i = start, cnt = 0; i < tlbsize; i++, cnt++) {
-@@ -575,6 +585,10 @@ static void r4k_tlb_uniquify(void)
- 	tlbw_use_hazard();
- 	htw_start();
- 	flush_micro_tlb();
-+	if (use_slab)
-+		kfree(tlb_vpns);
-+	else
-+		memblock_free(tlb_vpns, tlb_vpn_size);
- }
- 
- /*
+ 	for (i = 0; i < MAX_PIPES; i++) {
+ 		struct timing_generator *tg = res_ctx->pipe_ctx[i].stream_res.tg;
 
 
 
