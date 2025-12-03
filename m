@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B2C3CA11F4
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:44:46 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 385A2CA13B4
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:04:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E37E13002516
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:44:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E80B93003397
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:03:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC38D369996;
-	Wed,  3 Dec 2025 16:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01E5F34BA42;
+	Wed,  3 Dec 2025 16:01:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k/ksSYQ0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vfPmWlsp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64645369993;
-	Wed,  3 Dec 2025 16:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0D3B34BA34;
+	Wed,  3 Dec 2025 16:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779465; cv=none; b=cexN0nunRx9Hd12r52PJeo6eI/tU4aueAk4RnlPzN/PQ2nBLPzveoCYbDHUXAneh3RVgER0ZYvmFk+TeZv5f8cbe+5fm3Rz+JW/m/NCFqvqITWN5VrDvyB6XtWRZDR6EFWx0ZIarLhIq1OhBYIv04atVGENqe5PIgbt/jr+Qmbo=
+	t=1764777699; cv=none; b=OHcH3tbmWvsR4LV27eDqqjx6021OYpIgVKx1pPjRyl4jAQiglvPygYaO9QTfJWqsnSTPm8qGD9BJ/wcpbTwjoZzj9ZGdykQTCNI48j269eIwQgO207sGHtuaRvztBrAef4c3iGiFAtFw03HzON5f4KYkqorvd0phKJdTD5UbjUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779465; c=relaxed/simple;
-	bh=FbmdB5F6cEPS1eAOuqK2Va3Y+YtG1LabIn/lkLDkQ3E=;
+	s=arc-20240116; t=1764777699; c=relaxed/simple;
+	bh=1X/SOPXglaMExbzHOHtuCwi9KIS7tM4yH/YG4KCycT0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ej2sUmWc882Jtwckr9eTwboXiPAzCC9DtJvzxCHoW+ZNnyDmTg2ASn0dWNwLSs2Pt55HooEjvTxugR1b0ubyl8vl1nK20NIELEnre+BOptsJ6XVyaJNNLuIp7PZJLfTU+37Nn1WFUCglm+iTAqpk+Vlm70/0eaFwcr/jfjH7R0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k/ksSYQ0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2586C4CEF5;
-	Wed,  3 Dec 2025 16:31:04 +0000 (UTC)
+	 MIME-Version; b=WwV+yffFCgaqBBe8GRj1MvKynjaMTQgLL/EEVq0QiTmQAK/WdzW/K9MmkNCA2Be4455+D+UyQqyj+MI99erMIRoHRGu6pOHPwv03VYgSL6j6nlllIRBILKxLxdsu3MqH3Eg59ocABImYz+A4KnN5vxqVGj4jSvPtQZz8XOTh2ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vfPmWlsp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD662C4CEF5;
+	Wed,  3 Dec 2025 16:01:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779465;
-	bh=FbmdB5F6cEPS1eAOuqK2Va3Y+YtG1LabIn/lkLDkQ3E=;
+	s=korg; t=1764777699;
+	bh=1X/SOPXglaMExbzHOHtuCwi9KIS7tM4yH/YG4KCycT0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k/ksSYQ0nqae2MGNckizQWuHGLeMCxMUQYnBs55ipXrgblGgx4h/hB0IupiS/ZWRD
-	 AG6dm1ill4iBKkj4hbTWzsaPlCdtrt62hy5QxJt4Zb/3vtpmOPGtqo4HcNhy49OFg3
-	 z0jJBf/qC1uIraGduQ2JwbyHtEUNZNRVJMsbD2A0=
+	b=vfPmWlspRT1ZQeuwyG6CHgHkbB4kF2uw1WEh6XtH60nKIwoOV2xgBurlzdBLBBa5z
+	 edwdpB26zPq0w3RR0hkToZUhwy2mjYykXwjIOb+Yl4Xed2iEGiqGwCfyEPaSDkQdeD
+	 eScCj+vIiyWuITQEOgRgSOe39XnZZw2uqDZ0VkrY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4ed6852d4da4606c93da@syzkaller.appspotmail.com,
-	Ivan Pravdin <ipravdin.official@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Francisco Gutierrez <frankramirez@google.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 265/568] Bluetooth: bcsp: receive data only if registered
-Date: Wed,  3 Dec 2025 16:24:27 +0100
-Message-ID: <20251203152450.423404313@linuxfoundation.org>
+Subject: [PATCH 5.15 118/392] scsi: pm80xx: Fix race condition caused by static variables
+Date: Wed,  3 Dec 2025 16:24:28 +0100
+Message-ID: <20251203152418.438103215@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +60,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Pravdin <ipravdin.official@gmail.com>
+From: Francisco Gutierrez <frankramirez@google.com>
 
-[ Upstream commit ca94b2b036c22556c3a66f1b80f490882deef7a6 ]
+[ Upstream commit d6477ee38ccfbeaed885733c13f41d9076e2f94a ]
 
-Currently, bcsp_recv() can be called even when the BCSP protocol has not
-been registered. This leads to a NULL pointer dereference, as shown in
-the following stack trace:
+Eliminate the use of static variables within the log pull implementation
+to resolve a race condition and prevent data gaps when pulling logs from
+multiple controllers in parallel, ensuring each operation is properly
+isolated.
 
-    KASAN: null-ptr-deref in range [0x0000000000000108-0x000000000000010f]
-    RIP: 0010:bcsp_recv+0x13d/0x1740 drivers/bluetooth/hci_bcsp.c:590
-    Call Trace:
-     <TASK>
-     hci_uart_tty_receive+0x194/0x220 drivers/bluetooth/hci_ldisc.c:627
-     tiocsti+0x23c/0x2c0 drivers/tty/tty_io.c:2290
-     tty_ioctl+0x626/0xde0 drivers/tty/tty_io.c:2706
-     vfs_ioctl fs/ioctl.c:51 [inline]
-     __do_sys_ioctl fs/ioctl.c:907 [inline]
-     __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:893
-     do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-     do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
-     entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-To prevent this, ensure that the HCI_UART_REGISTERED flag is set before
-processing received data. If the protocol is not registered, return
--EUNATCH.
-
-Reported-by: syzbot+4ed6852d4da4606c93da@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=4ed6852d4da4606c93da
-Tested-by: syzbot+4ed6852d4da4606c93da@syzkaller.appspotmail.com
-Signed-off-by: Ivan Pravdin <ipravdin.official@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Francisco Gutierrez <frankramirez@google.com>
+Link: https://lore.kernel.org/r/20250723183543.1443301-1-frankramirez@google.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/hci_bcsp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/scsi/pm8001/pm8001_ctl.c  | 22 ++++++++++++----------
+ drivers/scsi/pm8001/pm8001_init.c |  1 +
+ drivers/scsi/pm8001/pm8001_sas.h  |  4 ++++
+ 3 files changed, 17 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/bluetooth/hci_bcsp.c b/drivers/bluetooth/hci_bcsp.c
-index 8055f63603f45..8ff69111ceede 100644
---- a/drivers/bluetooth/hci_bcsp.c
-+++ b/drivers/bluetooth/hci_bcsp.c
-@@ -582,6 +582,9 @@ static int bcsp_recv(struct hci_uart *hu, const void *data, int count)
- 	struct bcsp_struct *bcsp = hu->priv;
- 	const unsigned char *ptr;
+diff --git a/drivers/scsi/pm8001/pm8001_ctl.c b/drivers/scsi/pm8001/pm8001_ctl.c
+index ec05c42e8ee6c..e2ff42e16f94b 100644
+--- a/drivers/scsi/pm8001/pm8001_ctl.c
++++ b/drivers/scsi/pm8001/pm8001_ctl.c
+@@ -536,23 +536,25 @@ static ssize_t pm8001_ctl_iop_log_show(struct device *cdev,
+ 	char *str = buf;
+ 	u32 read_size =
+ 		pm8001_ha->main_cfg_tbl.pm80xx_tbl.event_log_size / 1024;
+-	static u32 start, end, count;
+ 	u32 max_read_times = 32;
+ 	u32 max_count = (read_size * 1024) / (max_read_times * 4);
+ 	u32 *temp = (u32 *)pm8001_ha->memoryMap.region[IOP].virt_ptr;
  
-+	if (!test_bit(HCI_UART_REGISTERED, &hu->flags))
-+		return -EUNATCH;
+-	if ((count % max_count) == 0) {
+-		start = 0;
+-		end = max_read_times;
+-		count = 0;
++	mutex_lock(&pm8001_ha->iop_log_lock);
 +
- 	BT_DBG("hu %p count %d rx_state %d rx_count %ld",
- 	       hu, count, bcsp->rx_state, bcsp->rx_count);
++	if ((pm8001_ha->iop_log_count % max_count) == 0) {
++		pm8001_ha->iop_log_start = 0;
++		pm8001_ha->iop_log_end = max_read_times;
++		pm8001_ha->iop_log_count = 0;
+ 	} else {
+-		start = end;
+-		end = end + max_read_times;
++		pm8001_ha->iop_log_start = pm8001_ha->iop_log_end;
++		pm8001_ha->iop_log_end = pm8001_ha->iop_log_end + max_read_times;
+ 	}
  
+-	for (; start < end; start++)
+-		str += sprintf(str, "%08x ", *(temp+start));
+-	count++;
++	for (; pm8001_ha->iop_log_start < pm8001_ha->iop_log_end; pm8001_ha->iop_log_start++)
++		str += sprintf(str, "%08x ", *(temp+pm8001_ha->iop_log_start));
++	pm8001_ha->iop_log_count++;
++	mutex_unlock(&pm8001_ha->iop_log_lock);
+ 	return str - buf;
+ }
+ static DEVICE_ATTR(iop_log, S_IRUGO, pm8001_ctl_iop_log_show, NULL);
+diff --git a/drivers/scsi/pm8001/pm8001_init.c b/drivers/scsi/pm8001/pm8001_init.c
+index 0659ee9aafce7..f1a6922bed5d5 100644
+--- a/drivers/scsi/pm8001/pm8001_init.c
++++ b/drivers/scsi/pm8001/pm8001_init.c
+@@ -510,6 +510,7 @@ static struct pm8001_hba_info *pm8001_pci_alloc(struct pci_dev *pdev,
+ 	pm8001_ha->id = pm8001_id++;
+ 	pm8001_ha->logging_level = logging_level;
+ 	pm8001_ha->non_fatal_count = 0;
++	mutex_init(&pm8001_ha->iop_log_lock);
+ 	if (link_rate >= 1 && link_rate <= 15)
+ 		pm8001_ha->link_rate = (link_rate << 8);
+ 	else {
+diff --git a/drivers/scsi/pm8001/pm8001_sas.h b/drivers/scsi/pm8001/pm8001_sas.h
+index 75864b47921aa..afa81a362a11c 100644
+--- a/drivers/scsi/pm8001/pm8001_sas.h
++++ b/drivers/scsi/pm8001/pm8001_sas.h
+@@ -538,6 +538,10 @@ struct pm8001_hba_info {
+ 	u32 ci_offset;
+ 	u32 pi_offset;
+ 	u32 max_memcnt;
++	u32 iop_log_start;
++	u32 iop_log_end;
++	u32 iop_log_count;
++	struct mutex iop_log_lock;
+ };
+ 
+ struct pm8001_work {
 -- 
 2.51.0
 
