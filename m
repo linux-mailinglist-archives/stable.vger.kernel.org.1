@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-198705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0958CA0B68
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:59:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A189CA0EF8
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:24:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5C623301473C
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:58:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BDC023448670
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:22:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 481D3338F4D;
-	Wed,  3 Dec 2025 15:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2002F342CBF;
+	Wed,  3 Dec 2025 15:57:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UzuZBNjR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BfGK626R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02BD1338F5B;
-	Wed,  3 Dec 2025 15:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C70342537;
+	Wed,  3 Dec 2025 15:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777419; cv=none; b=K7oK4a/nFjEtrfR7H9G6kAWjqfs6OIHfVwVK4zKhXIz7nB2Kbw63D/mqzMOoRVDYZuUJGReuNL0MBaP1Q4nTG6s/dlSIRktU5F8wFs21bagCfI+H7jiswsG3eFaPN7qOVe3g9XsLaP4+JM0OdqUHF5IcG5LXhtZ253+Y1ESFqzg=
+	t=1764777454; cv=none; b=SO51D98B/+VAwAMoxWADWpSBxTRD9n5Q8gAb6oSzDct9K2IGM+uwoiJ3YvYAt0zDyIW5uyK3vHAqCIefNFdIJha1SJJ0/P60r40p1+CNgjU1v+z10HcDF/XqVRB4BAfI4LKLds+eYnhTD5Zr8vTwKjL37voMl/UDciQCN19BEq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777419; c=relaxed/simple;
-	bh=SpdkcNkmL9FpTUlEhCXynXSVQYbB3kcL4IxXPinSoj4=;
+	s=arc-20240116; t=1764777454; c=relaxed/simple;
+	bh=s1SUotEdHhSAlFRxLIhoGDzJy6iNH9ZSQM78/wF8F9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HCcvcoYewpA4c3XIpJuFoFk83Y1p/+NISTiQEmLpvhz86kgKI8Y7tzGq/5UvOWt9S39V2f8ROMUtDSR0dAD3ma6bahrqv/lyQrY9V9DtmrpftXuI9vGZaxoZs6PTElkkNLrijoAyhIuDXzgX6HQl1TmB4+DBx4Z9S53tD+/nvyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UzuZBNjR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ED6EC4AF09;
-	Wed,  3 Dec 2025 15:56:58 +0000 (UTC)
+	 MIME-Version; b=I4jUxF0vhx9Y0dJtJUH0cvXIw7gsFUkdqGtt71cWpu5fZWAMWS1hBMB8xWDfUZF0iurkfAGF/gyu4jHLtB11ceCGm93cYqXwADu5VAX3Xh0SdPmT3kHgr88ZXKt9rc4LQTK2PBIEmroFMd3VdouGDzJApVeFH5QXxq2NT2WINWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BfGK626R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5181DC4CEF5;
+	Wed,  3 Dec 2025 15:57:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777418;
-	bh=SpdkcNkmL9FpTUlEhCXynXSVQYbB3kcL4IxXPinSoj4=;
+	s=korg; t=1764777454;
+	bh=s1SUotEdHhSAlFRxLIhoGDzJy6iNH9ZSQM78/wF8F9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UzuZBNjRjJPcplInfNCN9flenvfAtkbcLe6tjdG4y2xAWPT/yJaR2W2CA0wgQII0g
-	 AKbAEQ9GiyE+Z5zxvkS1Jhq9K2htecmsLL8DwrehV0P9OlHXvoUg6PAI8LjfocNjR8
-	 5l/m8I+v2zGTsPgv8r7vTQT8Gqf4i8M3D5lmshbY=
+	b=BfGK626R3LSCWuB7S1ikczysZejfL7IQsX9q3uIJp00LOdLenUczS0kbSp6/vn/K3
+	 1Qlscew/NX/Pwf+7mBlQVg1/xdptESnCffYz5k0wwr2ZPnbd8c3W1z3wkdtV4kHIaA
+	 YyqT8DrUAXMC59li8frqelIsZ2r2MMDvD5QlJZjQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Sun <samsun1006219@gmail.com>,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Tomeu Vizoso <tomeu@tomeuvizoso.net>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Christian Gmeiner <cgmeiner@igalia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 024/392] usbnet: Prevents free active kevent
-Date: Wed,  3 Dec 2025 16:22:54 +0100
-Message-ID: <20251203152414.992425704@linuxfoundation.org>
+Subject: [PATCH 5.15 025/392] drm/etnaviv: fix flush sequence logic
+Date: Wed,  3 Dec 2025 16:22:55 +0100
+Message-ID: <20251203152415.028250424@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
 References: <20251203152414.082328008@linuxfoundation.org>
@@ -65,48 +65,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Lizhi Xu <lizhi.xu@windriver.com>
+From: Tomeu Vizoso <tomeu@tomeuvizoso.net>
 
-[ Upstream commit 420c84c330d1688b8c764479e5738bbdbf0a33de ]
+[ Upstream commit a042beac6e6f8ac1e923784cfff98b47cbabb185 ]
 
-The root cause of this issue are:
-1. When probing the usbnet device, executing usbnet_link_change(dev, 0, 0);
-put the kevent work in global workqueue. However, the kevent has not yet
-been scheduled when the usbnet device is unregistered. Therefore, executing
-free_netdev() results in the "free active object (kevent)" error reported
-here.
+The current logic uses the flush sequence from the current address
+space. This is harmless when deducing the flush requirements for the
+current submit, as either the incoming address space is the same one
+as the currently active one or we switch context, in which case the
+flush is unconditional.
 
-2. Another factor is that when calling usbnet_disconnect()->unregister_netdev(),
-if the usbnet device is up, ndo_stop() is executed to cancel the kevent.
-However, because the device is not up, ndo_stop() is not executed.
+However, this sequence is also stored as the current flush sequence
+of the GPU. If we switch context the stored flush sequence will no
+longer belong to the currently active address space. This incoherency
+can then cause missed flushes, resulting in translation errors.
 
-The solution to this problem is to cancel the kevent before executing
-free_netdev().
-
-Fixes: a69e617e533e ("usbnet: Fix linkwatch use-after-free on disconnect")
-Reported-by: Sam Sun <samsun1006219@gmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=8bfd7bcc98f7300afb84
-Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
-Link: https://patch.msgid.link/20251022024007.1831898-1-lizhi.xu@windriver.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 27b67278e007 ("drm/etnaviv: rework MMU handling")
+Signed-off-by: Tomeu Vizoso <tomeu@tomeuvizoso.net>
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Reviewed-by: Christian Gmeiner <cgmeiner@igalia.com>
+Link: https://lore.kernel.org/r/20251021093723.3887980-1-l.stach@pengutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/usbnet.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/etnaviv/etnaviv_buffer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index 21f5fdbce0747..aceec2381e802 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -1648,6 +1648,8 @@ void usbnet_disconnect (struct usb_interface *intf)
- 	net = dev->net;
- 	unregister_netdev (net);
- 
-+	cancel_work_sync(&dev->kevent);
-+
- 	while ((urb = usb_get_from_anchor(&dev->deferred))) {
- 		dev_kfree_skb(urb->context);
- 		kfree(urb->sg);
+diff --git a/drivers/gpu/drm/etnaviv/etnaviv_buffer.c b/drivers/gpu/drm/etnaviv/etnaviv_buffer.c
+index 982174af74b1e..7d897aafb2a6a 100644
+--- a/drivers/gpu/drm/etnaviv/etnaviv_buffer.c
++++ b/drivers/gpu/drm/etnaviv/etnaviv_buffer.c
+@@ -346,7 +346,7 @@ void etnaviv_buffer_queue(struct etnaviv_gpu *gpu, u32 exec_state,
+ 	u32 link_target, link_dwords;
+ 	bool switch_context = gpu->exec_state != exec_state;
+ 	bool switch_mmu_context = gpu->mmu_context != mmu_context;
+-	unsigned int new_flush_seq = READ_ONCE(gpu->mmu_context->flush_seq);
++	unsigned int new_flush_seq = READ_ONCE(mmu_context->flush_seq);
+ 	bool need_flush = switch_mmu_context || gpu->flush_seq != new_flush_seq;
+ 	bool has_blt = !!(gpu->identity.minor_features5 &
+ 			  chipMinorFeatures5_BLT_ENGINE);
 -- 
 2.51.0
 
