@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-199000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E2F8CA0305
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:54:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0FA3CA0A42
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:48:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B90583062E32
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:48:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BFEA831B8CE1
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:27:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B494334C9BF;
-	Wed,  3 Dec 2025 16:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9A343314CD;
+	Wed,  3 Dec 2025 15:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="alYMx6s7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TApmiGX8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 705D734C9A9;
-	Wed,  3 Dec 2025 16:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97D1C3314C4;
+	Wed,  3 Dec 2025 15:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778367; cv=none; b=nmph7pyNFI/AyxVfHGdYEWQ+rsQYlEGCHF8npD5i3fJIGSAkRrK9npRM76nd57rWkId800zJ3pWgAgmzmuvKAEvjygTjuKEUsvLNSeXVPMBp/diOzbvzCFdTtP7XCAwnMTur77fAuEiwcU+Vw6V99kgssnBx+b7aPseN3PYGJ6Y=
+	t=1764777150; cv=none; b=qWf/cJQm8zRPbF7U2YYGplKCmVNwk1+50CXA5Hf+qIJ2W/H0g3brJODtyHxVRXRmuElu+zRnHakonir1+QUeYUbF4Gcc8GNIzm8dT4mfDbcsZ4BS69Z5bhGhpO7WU7GdcPi5BAi/h6xrtSCRoVSOoSva9vToIOloY1oV2GRwKck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778367; c=relaxed/simple;
-	bh=3jxQnItibsHOaqHkVmspt5gwX+tX556zXKtg9HT3xkc=;
+	s=arc-20240116; t=1764777150; c=relaxed/simple;
+	bh=77GfZBLXmPAmrlxPUvNLiGoB1RknwuqwA6zOk5R2j/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J374cIZnpsM1Tz2hA/7oedXrN5eCAfMkAgxxB2K4MP17xOFYo4tzdWjZpwONlVCbdBwihg+89gfncYcb5T/nkdwfTLZtjGiRVAMK9elesbJ08v6y5rVcWqgnIYraoZay/+72tm6aecY5AtfQwJ0IMy0nr1M3z2yAaVrwc8UV1XY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=alYMx6s7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E121DC116B1;
-	Wed,  3 Dec 2025 16:12:46 +0000 (UTC)
+	 MIME-Version; b=qaBodyrUoFj8YlADjcwGwMGToJLikrfmXxaRJswDOMzxouCJelJAXBUoY+pOn0ME5ynxfi2Ljh2QRKssTQDwOd81ypG0JWyMMg/hnDjmhbqJCJ/kZLC8t4zJ+nxbaNQG4qqrCkN83UFSGDO/Vipl3OCrm/cf5tLA4M1dJTcrI+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TApmiGX8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0368AC116C6;
+	Wed,  3 Dec 2025 15:52:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778367;
-	bh=3jxQnItibsHOaqHkVmspt5gwX+tX556zXKtg9HT3xkc=;
+	s=korg; t=1764777150;
+	bh=77GfZBLXmPAmrlxPUvNLiGoB1RknwuqwA6zOk5R2j/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=alYMx6s7GWrq6/WI+YkCU461wiQ3sSs0GKE/xp0/bPSOv/HnGqGb0KpkqDiLkAYSh
-	 qm0XBTTF6C26oNgrTjfsO6P+HPvHmQ7nKhVT0fZxqlJPEj6RGgZYjDDnt4jqFlRzrA
-	 3FsW/7Hxw3sEm1p+ZZgTvUMS42tMu9BlGdi7dkvo=
+	b=TApmiGX86BMfLkgzr/OxYwlAVRm4eo2rIH11Yaf6Bn5ZVc8YxCCsrsGeXPAhvEmie
+	 TYfO+NmjNOhMNqvUiw2YLyem5sBdQUAvjZmIi9ft9IFyzzKaa8VluON/sIYPtQ42ME
+	 RmVFyNiUrnF0+w7diRunSlkBYGOoX2kPHmNorK0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ville Syrjala <syrjala@sci.fi>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Henk Vergonet <Henk.Vergonet@gmail.com>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 325/392] Input: remove third argument of usb_maxpacket()
+	Yoon Dong Min <dm.youn@telechips.com>,
+	ChiYuan Huang <cy_huang@richtek.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.17 097/146] regulator: rtq2208: Correct buck group2 phase mapping logic
 Date: Wed,  3 Dec 2025 16:27:55 +0100
-Message-ID: <20251203152426.121943509@linuxfoundation.org>
+Message-ID: <20251203152350.010613317@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,108 +60,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+From: ChiYuan Huang <cy_huang@richtek.com>
 
-[ Upstream commit 948bf187694fc1f4c20cf972fa18b1a6fb3d7603 ]
+commit 45cc214152bc1f6b1cc135532cd7cdbe08716aaf upstream.
 
-The third argument of usb_maxpacket(): in_out has been deprecated
-because it could be derived from the second argument (e.g. using
-usb_pipeout(pipe)).
+Correct buck group2 H and F mapping logic.
 
-N.B. function usb_maxpacket() was made variadic to accommodate the
-transition from the old prototype with three arguments to the new one
-with only two arguments (so that no renaming is needed). The variadic
-argument is to be removed once all users of usb_maxpacket() get
-migrated.
-
-CC: Ville Syrjala <syrjala@sci.fi>
-CC: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-CC: Henk Vergonet <Henk.Vergonet@gmail.com>
-Signed-off-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://lore.kernel.org/r/20220317035514.6378-4-mailhol.vincent@wanadoo.fr
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 69aeb5073123 ("Input: pegasus-notetaker - fix potential out-of-bounds access")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: Yoon Dong Min <dm.youn@telechips.com>
+Fixes: 1742e7e978ba ("regulator: rtq2208: Fix incorrect buck converter phase mapping")
+Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
+Link: https://patch.msgid.link/8527ae02a72b754d89b7580a5fe7474d6f80f5c3.1764209258.git.cy_huang@richtek.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/misc/ati_remote2.c         |    2 +-
- drivers/input/misc/cm109.c               |    2 +-
- drivers/input/misc/powermate.c           |    2 +-
- drivers/input/misc/yealink.c             |    2 +-
- drivers/input/tablet/acecad.c            |    2 +-
- drivers/input/tablet/pegasus_notetaker.c |    2 +-
- 6 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/regulator/rtq2208-regulator.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/input/misc/ati_remote2.c
-+++ b/drivers/input/misc/ati_remote2.c
-@@ -639,7 +639,7 @@ static int ati_remote2_urb_init(struct a
- 			return -ENOMEM;
+diff --git a/drivers/regulator/rtq2208-regulator.c b/drivers/regulator/rtq2208-regulator.c
+index 9cde7181b0f0..4a174e27c579 100644
+--- a/drivers/regulator/rtq2208-regulator.c
++++ b/drivers/regulator/rtq2208-regulator.c
+@@ -543,14 +543,14 @@ static int rtq2208_regulator_check(struct device *dev, int *num, int *regulator_
  
- 		pipe = usb_rcvintpipe(udev, ar2->ep[i]->bEndpointAddress);
--		maxp = usb_maxpacket(udev, pipe, usb_pipeout(pipe));
-+		maxp = usb_maxpacket(udev, pipe);
- 		maxp = maxp > 4 ? 4 : maxp;
- 
- 		usb_fill_int_urb(ar2->urb[i], udev, pipe, ar2->buf[i], maxp,
---- a/drivers/input/misc/cm109.c
-+++ b/drivers/input/misc/cm109.c
-@@ -745,7 +745,7 @@ static int cm109_usb_probe(struct usb_in
- 
- 	/* get a handle to the interrupt data pipe */
- 	pipe = usb_rcvintpipe(udev, endpoint->bEndpointAddress);
--	ret = usb_maxpacket(udev, pipe, usb_pipeout(pipe));
-+	ret = usb_maxpacket(udev, pipe);
- 	if (ret != USB_PKT_LEN)
- 		dev_err(&intf->dev, "invalid payload size %d, expected %d\n",
- 			ret, USB_PKT_LEN);
---- a/drivers/input/misc/powermate.c
-+++ b/drivers/input/misc/powermate.c
-@@ -374,7 +374,7 @@ static int powermate_probe(struct usb_in
- 
- 	/* get a handle to the interrupt data pipe */
- 	pipe = usb_rcvintpipe(udev, endpoint->bEndpointAddress);
--	maxp = usb_maxpacket(udev, pipe, usb_pipeout(pipe));
-+	maxp = usb_maxpacket(udev, pipe);
- 
- 	if (maxp < POWERMATE_PAYLOAD_SIZE_MIN || maxp > POWERMATE_PAYLOAD_SIZE_MAX) {
- 		printk(KERN_WARNING "powermate: Expected payload of %d--%d bytes, found %d bytes!\n",
---- a/drivers/input/misc/yealink.c
-+++ b/drivers/input/misc/yealink.c
-@@ -905,7 +905,7 @@ static int usb_probe(struct usb_interfac
- 
- 	/* get a handle to the interrupt data pipe */
- 	pipe = usb_rcvintpipe(udev, endpoint->bEndpointAddress);
--	ret = usb_maxpacket(udev, pipe, usb_pipeout(pipe));
-+	ret = usb_maxpacket(udev, pipe);
- 	if (ret != USB_PKT_LEN)
- 		dev_err(&intf->dev, "invalid payload size %d, expected %zd\n",
- 			ret, USB_PKT_LEN);
---- a/drivers/input/tablet/acecad.c
-+++ b/drivers/input/tablet/acecad.c
-@@ -130,7 +130,7 @@ static int usb_acecad_probe(struct usb_i
- 		return -ENODEV;
- 
- 	pipe = usb_rcvintpipe(dev, endpoint->bEndpointAddress);
--	maxp = usb_maxpacket(dev, pipe, usb_pipeout(pipe));
-+	maxp = usb_maxpacket(dev, pipe);
- 
- 	acecad = kzalloc(sizeof(struct usb_acecad), GFP_KERNEL);
- 	input_dev = input_allocate_device();
---- a/drivers/input/tablet/pegasus_notetaker.c
-+++ b/drivers/input/tablet/pegasus_notetaker.c
-@@ -296,7 +296,7 @@ static int pegasus_probe(struct usb_inte
- 	pegasus->intf = intf;
- 
- 	pipe = usb_rcvintpipe(dev, endpoint->bEndpointAddress);
--	pegasus->data_len = usb_maxpacket(dev, pipe, usb_pipeout(pipe));
-+	pegasus->data_len = usb_maxpacket(dev, pipe);
- 
- 	pegasus->data = usb_alloc_coherent(dev, pegasus->data_len, GFP_KERNEL,
- 					   &pegasus->data_dma);
+ 	switch (FIELD_GET(RTQ2208_MASK_BUCKPH_GROUP2, buck_phase)) {
+ 	case 2:
+-		rtq2208_used_table[RTQ2208_BUCK_F] = true;
++		rtq2208_used_table[RTQ2208_BUCK_H] = true;
+ 		fallthrough;
+ 	case 1:
+ 		rtq2208_used_table[RTQ2208_BUCK_E] = true;
+ 		fallthrough;
+ 	case 0:
+ 	case 3:
+-		rtq2208_used_table[RTQ2208_BUCK_H] = true;
++		rtq2208_used_table[RTQ2208_BUCK_F] = true;
+ 		fallthrough;
+ 	default:
+ 		rtq2208_used_table[RTQ2208_BUCK_G] = true;
+-- 
+2.52.0
+
 
 
 
