@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-199864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B36BCA076A
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:30:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8976DCA0C31
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:06:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 03CCD304D9F6
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:13:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E790E30562E1
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:02:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7D1C32ED39;
-	Wed,  3 Dec 2025 16:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7864B35502B;
+	Wed,  3 Dec 2025 16:56:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rbbhajks"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nQKAkWWf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A996346E40;
-	Wed,  3 Dec 2025 16:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E18E34C9AD;
+	Wed,  3 Dec 2025 16:55:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764781188; cv=none; b=e5OfMzJeGJex20iO7DBUkECPDpt26Z1aVldZGL/TczGz51N3gSY3hLNH/uRhrs/PVoUt4dSzDWN4/XsX7yc9+53V5np9ZmYs3+3Tq/igJBgvhZ450+NpDAs1yUT/5DwiPT0o7S0eAUr6G4E+YvK2FHL2OdfMNSP/6IlP3RfeoyI=
+	t=1764780958; cv=none; b=ktUWNi0PdgJqV4wQdgHfKjyhQWnosoEBKytHBz/CZ8GUYKmPd5GIVezb+c/nIRfdrCgcm9Tpv2eHcZBljoZkLEm0792WTjx1to4Zomrk8/H3zevgl16pyTv9tjZbneDvqV9z12tn6yRW+Ta5yxbmJYtG5Z0b0OyiTROSS1ZwBno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764781188; c=relaxed/simple;
-	bh=96ZCG2WWITPp4QwlkXftSrLvXHEIz7q+pR6SAhxu344=;
+	s=arc-20240116; t=1764780958; c=relaxed/simple;
+	bh=7t1XKad4hU28wLDFuXc96PezO8msIg8rrozf/nXyXes=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NuugKsHKRjevGmQI5Yo+vE/FYk+tkdX5sOGEWMoumZO3M4SPIVwJMDx0Z03+gju3e6p41621a0HtB0ml4JvM//I5W+/gbK9Aw4v8kdH87MBDu+86hzENxBv31NSK3zu/Ocrl5pcddM5IT7yga6lC3/lDZoL347vTQNmq7H3KqR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rbbhajks; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3221C4CEF5;
-	Wed,  3 Dec 2025 16:59:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CP+IRXaBVm2STAAjhNWq7ufOD3dsR5BqMR5R8uHx9qGg41yF7PSbGdK4XD0N2hQJlOAMrX60+bbo7CxlelaBCnNc+UfgdlqRsG4dPdJXAkQecXb3QK/EWSxtzCyN1DJkHK1c8njTGqawowce/Bc6FUizSEwURmrjHhcWq9vh3Us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nQKAkWWf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 877DEC4CEF5;
+	Wed,  3 Dec 2025 16:55:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764781188;
-	bh=96ZCG2WWITPp4QwlkXftSrLvXHEIz7q+pR6SAhxu344=;
+	s=korg; t=1764780958;
+	bh=7t1XKad4hU28wLDFuXc96PezO8msIg8rrozf/nXyXes=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rbbhajks4Sz/2W32C01KtzhX3z1Zc7WCJ7UUG07NvJmjlMtCsU4T7klzzU/0t964k
-	 Oe3tw4gF6q0WKYrFm7CceTXAief5gcrHRchFfRbOZMvgtUOI/zfidf8jDEwM9cHi5v
-	 7saT8+WJNvATztJOXKJ7qrOJTdu57bsg4oNyiebc=
+	b=nQKAkWWfNdxJtMe9d6w9R/vNW2qRnJ1TkqkC+45EHFcUTPda66SsRF4mrVNON1Oyf
+	 Wx+J/X3zFhAlguktkl2LInfCb/IWP2gTqH5HSalvBGtTiG5k4qHj2kK8wDDPvCCXx7
+	 e47Y/fitoUB/LijkH2roztaqYyAvsHobMYkoyg6M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ziming zhang <ezrakiez@gmail.com>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.6 77/93] libceph: replace BUG_ON with bounds check for map->max_osd
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	"H. Nikolaus Schaller" <hns@goldelico.com>
+Subject: [PATCH 6.12 131/132] drm/i915/dp: Initialize the source OUI write timestamp always
 Date: Wed,  3 Dec 2025 16:30:10 +0100
-Message-ID: <20251203152339.367567993@linuxfoundation.org>
+Message-ID: <20251203152348.167446045@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,99 +58,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ziming zhang <ezrakiez@gmail.com>
+From: Imre Deak <imre.deak@intel.com>
 
-commit ec3797f043756a94ea2d0f106022e14ac4946c02 upstream.
+commit 5861258c4e6a829a10200b41ba3fb4d7d1a4054f upstream.
 
-OSD indexes come from untrusted network packets. Boundary checks are
-added to validate these against map->max_osd.
+If the source OUI DPCD register value matches the expected Intel OUI
+value, the write timestamp doesn't get updated leaving it at the 0
+initial value if the OUI wasn't written before. This can lead to an
+incorrect wait duration in intel_dp_wait_source_oui(), since jiffies is
+not inited to 0 in general (on a 32 bit system INITIAL_JIFFIES is set to
+5 minutes ahead of wrap-around). Fix this by intializing the write
+timestamp in the above case as well.
 
-[ idryomov: drop BUG_ON in ceph_get_primary_affinity(), minor cosmetic
-  edits ]
-
-Cc: stable@vger.kernel.org
-Signed-off-by: ziming zhang <ezrakiez@gmail.com>
-Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241025160259.3088727-4-imre.deak@intel.com
+Cc: "H. Nikolaus Schaller" <hns@goldelico.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ceph/osdmap.c |   18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/i915/display/intel_dp.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/net/ceph/osdmap.c
-+++ b/net/ceph/osdmap.c
-@@ -1504,8 +1504,6 @@ static int decode_new_primary_temp(void
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -3383,8 +3383,11 @@ intel_edp_init_source_oui(struct intel_d
+ 		if (drm_dp_dpcd_read(&intel_dp->aux, DP_SOURCE_OUI, buf, sizeof(buf)) < 0)
+ 			drm_err(&i915->drm, "Failed to read source OUI\n");
  
- u32 ceph_get_primary_affinity(struct ceph_osdmap *map, int osd)
- {
--	BUG_ON(osd >= map->max_osd);
--
- 	if (!map->osd_primary_affinity)
- 		return CEPH_OSD_DEFAULT_PRIMARY_AFFINITY;
+-		if (memcmp(oui, buf, sizeof(oui)) == 0)
++		if (memcmp(oui, buf, sizeof(oui)) == 0) {
++			/* Assume the OUI was written now. */
++			intel_dp->last_oui_write = jiffies;
+ 			return;
++		}
+ 	}
  
-@@ -1514,8 +1512,6 @@ u32 ceph_get_primary_affinity(struct cep
- 
- static int set_primary_affinity(struct ceph_osdmap *map, int osd, u32 aff)
- {
--	BUG_ON(osd >= map->max_osd);
--
- 	if (!map->osd_primary_affinity) {
- 		int i;
- 
-@@ -1577,6 +1573,8 @@ static int decode_new_primary_affinity(v
- 
- 		ceph_decode_32_safe(p, end, osd, e_inval);
- 		ceph_decode_32_safe(p, end, aff, e_inval);
-+		if (osd >= map->max_osd)
-+			goto e_inval;
- 
- 		ret = set_primary_affinity(map, osd, aff);
- 		if (ret)
-@@ -1879,7 +1877,9 @@ static int decode_new_up_state_weight(vo
- 		ceph_decode_need(p, end, 2*sizeof(u32), e_inval);
- 		osd = ceph_decode_32(p);
- 		w = ceph_decode_32(p);
--		BUG_ON(osd >= map->max_osd);
-+		if (osd >= map->max_osd)
-+			goto e_inval;
-+
- 		osdmap_info(map, "osd%d weight 0x%x %s\n", osd, w,
- 			    w == CEPH_OSD_IN ? "(in)" :
- 			    (w == CEPH_OSD_OUT ? "(out)" : ""));
-@@ -1905,13 +1905,15 @@ static int decode_new_up_state_weight(vo
- 		u32 xorstate;
- 
- 		osd = ceph_decode_32(p);
-+		if (osd >= map->max_osd)
-+			goto e_inval;
-+
- 		if (struct_v >= 5)
- 			xorstate = ceph_decode_32(p);
- 		else
- 			xorstate = ceph_decode_8(p);
- 		if (xorstate == 0)
- 			xorstate = CEPH_OSD_UP;
--		BUG_ON(osd >= map->max_osd);
- 		if ((map->osd_state[osd] & CEPH_OSD_UP) &&
- 		    (xorstate & CEPH_OSD_UP))
- 			osdmap_info(map, "osd%d down\n", osd);
-@@ -1937,7 +1939,9 @@ static int decode_new_up_state_weight(vo
- 		struct ceph_entity_addr addr;
- 
- 		osd = ceph_decode_32(p);
--		BUG_ON(osd >= map->max_osd);
-+		if (osd >= map->max_osd)
-+			goto e_inval;
-+
- 		if (struct_v >= 7)
- 			ret = ceph_decode_entity_addrvec(p, end, msgr2, &addr);
- 		else
+ 	if (drm_dp_dpcd_write(&intel_dp->aux, DP_SOURCE_OUI, oui, sizeof(oui)) < 0)
 
 
 
