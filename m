@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-199019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24C79C9FECA
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:24:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA520CA0F42
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:26:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3765930056E3
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:24:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9335D34836FB
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:24:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6F15344029;
-	Wed,  3 Dec 2025 16:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1550233FE33;
+	Wed,  3 Dec 2025 15:55:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bB5Ii+Qu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fdFpk70v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F52A343D62;
-	Wed,  3 Dec 2025 16:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F94933FE27;
+	Wed,  3 Dec 2025 15:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778431; cv=none; b=lnLKXk41g9fgB9OTZn1YMrONj1Pu2GaQ6hZPhzuMtdjBYNy6/VqY9s0qoWXIGR4wMaknC1qAP4SgTcI/IadVR+NyOxHN5Ckn9sqqeFfUvRkPvGm2vniKbgB/86MQRHNUf5rtBJoAIGGfLhiLLp8CT5hziOwTk97XeEuiLlOqqcU=
+	t=1764777319; cv=none; b=IbPIvQgnzttmUBCkaBnc45pGMd47rKObCs0jHCFUOR8nU8SYA+ulpJlX1c1CLRxlhEcgzNIFTE6fQUm/tItcwke8WrqUSkzdJwN9oPK/0VnbFpuVbQ7am+6PdD6ZhQ5xRPczMdtiCJnGhek033eE+6uM0BolU6g2M95zPXanAnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778431; c=relaxed/simple;
-	bh=HbbMgggzUOR3biRo3EkbXmW0YF9mo6f9tLugQjBzGq4=;
+	s=arc-20240116; t=1764777319; c=relaxed/simple;
+	bh=xJTP6zkJDvF+Lx4u+iVesrAvCoVQffyTlIj3LScdApk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nCDJrB+V26Z+6sWtfg0C1Im/5hqHvoCMsUm25vqyTJsvo08s1ymo3OSg7v1HQHdDzbvpzYpnbl1XyaBRp/VpV5o1beav/T9R46Kofey6ftwwlUxLBOM9KkzfxT8WmfHqV9OpFNZwujdg5plEsREiNE/CihSGFy5fIU/I7Q9D6tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bB5Ii+Qu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D06C0C4CEF5;
-	Wed,  3 Dec 2025 16:13:50 +0000 (UTC)
+	 MIME-Version; b=s9QsBnVdtD3ZmRc1KUelVvIYPmycs1ERtQl88FKnlhWYkuqYHEFmSi6LgOu6rnyzUN0Eqr3P1w5Km6+W99wXshIBOSjwstpS+BVsXQMoqxTIyAFKdb+lugy1f+jwA3bKqf3kpbHDmJsSMdv1G1XcJPFt57/vD58cc045p5U/hO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fdFpk70v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0666C19423;
+	Wed,  3 Dec 2025 15:55:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778431;
-	bh=HbbMgggzUOR3biRo3EkbXmW0YF9mo6f9tLugQjBzGq4=;
+	s=korg; t=1764777319;
+	bh=xJTP6zkJDvF+Lx4u+iVesrAvCoVQffyTlIj3LScdApk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bB5Ii+QuBRbZQNLITDLN54g9cQ2C1ynDC/Ovorf7o/lMYuhYGkMZE3/m07KERGfxU
-	 Ux9MRpLyuVRHXhWnUgqxuSpBJ5QdnBGo3HNEm8g1Znqt0zyJP+CtEsC6ikYp2hnosb
-	 puGrDfYA0dw1UUvCI5o+nEt5giOFdxusx5ur0/rI=
+	b=fdFpk70vygjZN869bzgg/gXUuTO4Koh0svWFbZsgVSAdw86tXN4tZesmwaXTbRLJX
+	 xqttFsT7GQ3c8PlGMRFxl4wVmkWiDzqvgAB8O1ZKP7sFbwh6BAUgdENgkTe62Teo4o
+	 gP4lbdfO7LmkObwUIEyGvYjN+hPN9AR3RJLTaQcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Kodanev <aleksei.kodanev@bell-sw.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 342/392] net: sxgbe: fix potential NULL dereference in sxgbe_rx()
-Date: Wed,  3 Dec 2025 16:28:12 +0100
-Message-ID: <20251203152426.754461111@linuxfoundation.org>
+	Tianchu Chen <flynnnchen@tencent.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.17 115/146] usb: storage: sddr55: Reject out-of-bound new_pba
+Date: Wed,  3 Dec 2025 16:28:13 +0100
+Message-ID: <20251203152350.673719391@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +59,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
+From: Tianchu Chen <flynnnchen@tencent.com>
 
-[ Upstream commit f5bce28f6b9125502abec4a67d68eabcd24b3b17 ]
+commit b59d4fda7e7d0aff1043a7f742487cb829f5aac1 upstream.
 
-Currently, when skb is null, the driver prints an error and then
-dereferences skb on the next line.
+Discovered by Atuin - Automated Vulnerability Discovery Engine.
 
-To fix this, let's add a 'break' after the error message to switch
-to sxgbe_rx_refill(), which is similar to the approach taken by the
-other drivers in this particular case, e.g. calxeda with xgmac_rx().
+new_pba comes from the status packet returned after each write.
+A bogus device could report values beyond the block count derived
+from info->capacity, letting the driver walk off the end of
+pba_to_lba[] and corrupt heap memory.
 
-Found during a code review.
+Reject PBAs that exceed the computed block count and fail the
+transfer so we avoid touching out-of-range mapping entries.
 
-Fixes: 1edb9ca69e8a ("net: sxgbe: add basic framework for Samsung 10Gb ethernet driver")
-Signed-off-by: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251121123834.97748-1-aleksei.kodanev@bell-sw.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Tianchu Chen <flynnnchen@tencent.com>
+Cc: stable <stable@kernel.org>
+Link: https://patch.msgid.link/B2DC73A3EE1E3A1D+202511161322001664687@tencent.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/samsung/sxgbe/sxgbe_main.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/storage/sddr55.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/samsung/sxgbe/sxgbe_main.c b/drivers/net/ethernet/samsung/sxgbe/sxgbe_main.c
-index 1b415fe6f9b9f..1fe687b594f9d 100644
---- a/drivers/net/ethernet/samsung/sxgbe/sxgbe_main.c
-+++ b/drivers/net/ethernet/samsung/sxgbe/sxgbe_main.c
-@@ -1518,8 +1518,10 @@ static int sxgbe_rx(struct sxgbe_priv_data *priv, int limit)
+--- a/drivers/usb/storage/sddr55.c
++++ b/drivers/usb/storage/sddr55.c
+@@ -469,6 +469,12 @@ static int sddr55_write_data(struct us_d
+ 		new_pba = (status[3] + (status[4] << 8) + (status[5] << 16))
+ 						  >> info->blockshift;
  
- 		skb = priv->rxq[qnum]->rx_skbuff[entry];
- 
--		if (unlikely(!skb))
-+		if (unlikely(!skb)) {
- 			netdev_err(priv->dev, "rx descriptor is not consistent\n");
-+			break;
++		/* check if device-reported new_pba is out of range */
++		if (new_pba >= (info->capacity >> (info->blockshift + info->pageshift))) {
++			result = USB_STOR_TRANSPORT_FAILED;
++			goto leave;
 +		}
- 
- 		prefetch(skb->data - NET_IP_ALIGN);
- 		priv->rxq[qnum]->rx_skbuff[entry] = NULL;
--- 
-2.51.0
-
++
+ 		/* check status for error */
+ 		if (status[0] == 0xff && status[1] == 0x4) {
+ 			info->pba_to_lba[new_pba] = BAD_BLOCK;
 
 
 
