@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BFA0CA11F8
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:44:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40E98CA09E8
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:46:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 16BDE300A9EE
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:44:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D7B5434B47E5
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:25:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABA4B361DD4;
-	Wed,  3 Dec 2025 16:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31CB3311C19;
+	Wed,  3 Dec 2025 15:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UX5katz2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FFwoI5+B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60CC6361DCC;
-	Wed,  3 Dec 2025 16:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD2F320CA7;
+	Wed,  3 Dec 2025 15:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779414; cv=none; b=ZqgP/YZ8kpTzJNXw7lXSg96VunGrnA4NPpvm7VH9qdxvtPsjebfb/csrTYu1NHqWN2hAonM1+CiD2LKZpga091Ba3BhD1IW2IDVZjF5vLNdcvtHJSpnfsSOGsMqVWFbQRqft2F0DjwjXL+Bv6B1Vz+vyh+15Yx9CDV1FqL4ispQ=
+	t=1764777537; cv=none; b=eeLUC+w3ZDcS7qBwFTYXLvXsqzu/IsCZTwl1WcfvBPEYxdxi9otW2zkqGUNJT8va0i249EOIgQ3NSMYYpqpdjSn5QNCXttvMmXZWeyWZ9zY73YwapP2/QJh7VXdBLfpcT6250eXgAmSHxwf6fuwvBygKkVvVuioxiuWWgfpuUIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779414; c=relaxed/simple;
-	bh=IbvrOp4Dl2GYsKQ/0hHdSJcsPaMAwB41HOIDhW6v/u0=;
+	s=arc-20240116; t=1764777537; c=relaxed/simple;
+	bh=hZbVfbzHLcvTkMBluuSWhyQb+XiVG9RVH2058vP7i8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RaOsJ4U00AavnIUohakmkOZeuUq9BkdmB0kEQyRb6XTiVNDKlRq/8g2DjiKOad0t7TFtDqKPbiUm2W89t8eNO7FSAAAhH7Y7ckFEKmHwAKE9P8sKOKO9Ny0j8KYvQfrz/sKi1ribo33iipmlcfCjygbiKB7WTsRABJRv8OjZaps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UX5katz2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4B3BC4CEF5;
-	Wed,  3 Dec 2025 16:30:13 +0000 (UTC)
+	 MIME-Version; b=kI3BJ31WO0a+11wswLTJUDwGv53oH77V9ROybVFDT1dh6rHDu3hPunVuh4Pdpphkcvnba0YsQgwqT1XKsnAMd1xBjkEAJliNIX22XK9JhMK2swfbq1w95878GHU6usw3RqAz1UFv4cGjOwsSmo3BkL0ehFbeOwrhG14vKckwNG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FFwoI5+B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBD66C4CEF5;
+	Wed,  3 Dec 2025 15:58:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779414;
-	bh=IbvrOp4Dl2GYsKQ/0hHdSJcsPaMAwB41HOIDhW6v/u0=;
+	s=korg; t=1764777536;
+	bh=hZbVfbzHLcvTkMBluuSWhyQb+XiVG9RVH2058vP7i8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UX5katz2SmDfGzPz+eCThdxuT6mq8nTpuiSojfLD2HgsZjcYlJKB/316xRLsHiAlB
-	 1pfnOv57BPGSKFmGbCs3NNPt3yz9dktOc7+xCsJs0uLBNKCsjfcUGbAAf7Y7c16Or8
-	 GkYG4X639raKNybCuBVJ044HJMrRvQ9Laey4MBWQ=
+	b=FFwoI5+BIUllOZcONuH14zFgVUg784f5P4KV8rT12Qu3OjsIjme8A629mkjwgXysd
+	 17F0Q4dvwhru3cSd1kWKbFsvkAh5peMDVI6U3CG/hq4ZlMV57JmFarPUEdLQ/K/JHY
+	 5xkskGj8njgEMCjURl/hiMla2bvxsI4R8PJ+MkuQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li RongQing <lirongqing@baidu.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Wangyang Guo <wangyang.guo@intel.com>,
+	Svyatoslav Ryhel <clamor95@gmail.com>,
+	Mikko Perttunen <mperttunen@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 217/568] x86/kvm: Prefer native qspinlock for dedicated vCPUs irrespective of PV_UNHALT
-Date: Wed,  3 Dec 2025 16:23:39 +0100
-Message-ID: <20251203152448.670239345@linuxfoundation.org>
+Subject: [PATCH 5.15 070/392] soc/tegra: fuse: Add Tegra114 nvmem cells and fuse lookups
+Date: Wed,  3 Dec 2025 16:23:40 +0100
+Message-ID: <20251203152416.683316197@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +61,165 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li RongQing <lirongqing@baidu.com>
+From: Svyatoslav Ryhel <clamor95@gmail.com>
 
-[ Upstream commit 960550503965094b0babd7e8c83ec66c8a763b0b ]
+[ Upstream commit b9c01adedf38c69abb725a60a05305ef70dbce03 ]
 
-The commit b2798ba0b876 ("KVM: X86: Choose qspinlock when dedicated
-physical CPUs are available") states that when PV_DEDICATED=1
-(vCPU has dedicated pCPU), qspinlock should be preferred regardless of
-PV_UNHALT.  However, the current implementation doesn't reflect this: when
-PV_UNHALT=0, we still use virt_spin_lock() even with dedicated pCPUs.
+Add missing Tegra114 nvmem cells and fuse lookups which were added for
+Tegra124+ but omitted for Tegra114.
 
-This is suboptimal because:
-1. Native qspinlocks should outperform virt_spin_lock() for dedicated
-   vCPUs irrespective of HALT exiting
-2. virt_spin_lock() should only be preferred when vCPUs may be preempted
-   (non-dedicated case)
-
-So reorder the PV spinlock checks to:
-1. First handle dedicated pCPU case (disable virt_spin_lock_key)
-2. Second check single CPU, and nopvspin configuration
-3. Only then check PV_UNHALT support
-
-This ensures we always use native qspinlock for dedicated vCPUs, delivering
-pretty performance gains at high contention levels.
-
-Signed-off-by: Li RongQing <lirongqing@baidu.com>
-Reviewed-by: Sean Christopherson <seanjc@google.com>
-Tested-by: Wangyang Guo <wangyang.guo@intel.com>
-Link: https://lore.kernel.org/r/20250722110005.4988-1-lirongqing@baidu.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
+Reviewed-by: Mikko Perttunen <mperttunen@nvidia.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/kvm.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ drivers/soc/tegra/fuse/fuse-tegra30.c | 122 ++++++++++++++++++++++++++
+ 1 file changed, 122 insertions(+)
 
-diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
-index 796e2f9e87619..99e0768ccaae7 100644
---- a/arch/x86/kernel/kvm.c
-+++ b/arch/x86/kernel/kvm.c
-@@ -1072,16 +1072,6 @@ static void kvm_wait(u8 *ptr, u8 val)
-  */
- void __init kvm_spinlock_init(void)
- {
--	/*
--	 * In case host doesn't support KVM_FEATURE_PV_UNHALT there is still an
--	 * advantage of keeping virt_spin_lock_key enabled: virt_spin_lock() is
--	 * preferred over native qspinlock when vCPU is preempted.
--	 */
--	if (!kvm_para_has_feature(KVM_FEATURE_PV_UNHALT)) {
--		pr_info("PV spinlocks disabled, no host support\n");
--		return;
--	}
--
- 	/*
- 	 * Disable PV spinlocks and use native qspinlock when dedicated pCPUs
- 	 * are available.
-@@ -1101,6 +1091,16 @@ void __init kvm_spinlock_init(void)
- 		goto out;
- 	}
+diff --git a/drivers/soc/tegra/fuse/fuse-tegra30.c b/drivers/soc/tegra/fuse/fuse-tegra30.c
+index b071d433d74f8..bfc8d39ae9efd 100644
+--- a/drivers/soc/tegra/fuse/fuse-tegra30.c
++++ b/drivers/soc/tegra/fuse/fuse-tegra30.c
+@@ -117,6 +117,124 @@ const struct tegra_fuse_soc tegra30_fuse_soc = {
+ #endif
  
-+	/*
-+	 * In case host doesn't support KVM_FEATURE_PV_UNHALT there is still an
-+	 * advantage of keeping virt_spin_lock_key enabled: virt_spin_lock() is
-+	 * preferred over native qspinlock when vCPU is preempted.
-+	 */
-+	if (!kvm_para_has_feature(KVM_FEATURE_PV_UNHALT)) {
-+		pr_info("PV spinlocks disabled, no host support\n");
-+		return;
-+	}
+ #ifdef CONFIG_ARCH_TEGRA_114_SOC
++static const struct nvmem_cell_info tegra114_fuse_cells[] = {
++	{
++		.name = "tsensor-cpu1",
++		.offset = 0x084,
++		.bytes = 4,
++		.bit_offset = 0,
++		.nbits = 32,
++	}, {
++		.name = "tsensor-cpu2",
++		.offset = 0x088,
++		.bytes = 4,
++		.bit_offset = 0,
++		.nbits = 32,
++	}, {
++		.name = "tsensor-common",
++		.offset = 0x08c,
++		.bytes = 4,
++		.bit_offset = 0,
++		.nbits = 32,
++	}, {
++		.name = "tsensor-cpu0",
++		.offset = 0x098,
++		.bytes = 4,
++		.bit_offset = 0,
++		.nbits = 32,
++	}, {
++		.name = "xusb-pad-calibration",
++		.offset = 0x0f0,
++		.bytes = 4,
++		.bit_offset = 0,
++		.nbits = 32,
++	}, {
++		.name = "tsensor-cpu3",
++		.offset = 0x12c,
++		.bytes = 4,
++		.bit_offset = 0,
++		.nbits = 32,
++	}, {
++		.name = "tsensor-gpu",
++		.offset = 0x154,
++		.bytes = 4,
++		.bit_offset = 0,
++		.nbits = 32,
++	}, {
++		.name = "tsensor-mem0",
++		.offset = 0x158,
++		.bytes = 4,
++		.bit_offset = 0,
++		.nbits = 32,
++	}, {
++		.name = "tsensor-mem1",
++		.offset = 0x15c,
++		.bytes = 4,
++		.bit_offset = 0,
++		.nbits = 32,
++	}, {
++		.name = "tsensor-pllx",
++		.offset = 0x160,
++		.bytes = 4,
++		.bit_offset = 0,
++		.nbits = 32,
++	},
++};
 +
- 	pr_info("PV spinlocks enabled\n");
- 
- 	__pv_init_lock_hash();
++static const struct nvmem_cell_lookup tegra114_fuse_lookups[] = {
++	{
++		.nvmem_name = "fuse",
++		.cell_name = "xusb-pad-calibration",
++		.dev_id = "7009f000.padctl",
++		.con_id = "calibration",
++	}, {
++		.nvmem_name = "fuse",
++		.cell_name = "tsensor-common",
++		.dev_id = "700e2000.thermal-sensor",
++		.con_id = "common",
++	}, {
++		.nvmem_name = "fuse",
++		.cell_name = "tsensor-cpu0",
++		.dev_id = "700e2000.thermal-sensor",
++		.con_id = "cpu0",
++	}, {
++		.nvmem_name = "fuse",
++		.cell_name = "tsensor-cpu1",
++		.dev_id = "700e2000.thermal-sensor",
++		.con_id = "cpu1",
++	}, {
++		.nvmem_name = "fuse",
++		.cell_name = "tsensor-cpu2",
++		.dev_id = "700e2000.thermal-sensor",
++		.con_id = "cpu2",
++	}, {
++		.nvmem_name = "fuse",
++		.cell_name = "tsensor-cpu3",
++		.dev_id = "700e2000.thermal-sensor",
++		.con_id = "cpu3",
++	}, {
++		.nvmem_name = "fuse",
++		.cell_name = "tsensor-mem0",
++		.dev_id = "700e2000.thermal-sensor",
++		.con_id = "mem0",
++	}, {
++		.nvmem_name = "fuse",
++		.cell_name = "tsensor-mem1",
++		.dev_id = "700e2000.thermal-sensor",
++		.con_id = "mem1",
++	}, {
++		.nvmem_name = "fuse",
++		.cell_name = "tsensor-gpu",
++		.dev_id = "700e2000.thermal-sensor",
++		.con_id = "gpu",
++	}, {
++		.nvmem_name = "fuse",
++		.cell_name = "tsensor-pllx",
++		.dev_id = "700e2000.thermal-sensor",
++		.con_id = "pllx",
++	},
++};
++
+ static const struct tegra_fuse_info tegra114_fuse_info = {
+ 	.read = tegra30_fuse_read,
+ 	.size = 0x2a0,
+@@ -127,6 +245,10 @@ const struct tegra_fuse_soc tegra114_fuse_soc = {
+ 	.init = tegra30_fuse_init,
+ 	.speedo_init = tegra114_init_speedo_data,
+ 	.info = &tegra114_fuse_info,
++	.lookups = tegra114_fuse_lookups,
++	.num_lookups = ARRAY_SIZE(tegra114_fuse_lookups),
++	.cells = tegra114_fuse_cells,
++	.num_cells = ARRAY_SIZE(tegra114_fuse_cells),
+ 	.soc_attr_group = &tegra_soc_attr_group,
+ 	.clk_suspend_on = false,
+ };
 -- 
 2.51.0
 
