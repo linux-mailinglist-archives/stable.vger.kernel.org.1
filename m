@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-198856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD73EC9FD6D
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:12:53 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8BBACA027C
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:52:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D03E43039E89
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:04:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BFE8430443CD
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:44:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22DEF34F478;
-	Wed,  3 Dec 2025 16:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B63B6337BBC;
+	Wed,  3 Dec 2025 16:34:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rh24qaTb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cd5g1Kmx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1FC134F250;
-	Wed,  3 Dec 2025 16:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49323336EF9;
+	Wed,  3 Dec 2025 16:34:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777894; cv=none; b=PBDPSsBMqN9BadCIq1F6vhyDdhcQBB0nvak+0pb/3XblDv1/v0FsVhRTvnaigzD5Udcbfb5QFk5zQQ34auBSi+lBlt4l4fYAQtpYAopsJPtjfeATOO/qaJl6uFcMDcdnJ35XnHKwJW1LZeKxq8u1VkNP6lORcUknilktUoWDhZ4=
+	t=1764779678; cv=none; b=Ky3P/SK0oVuh7aLGC7Yga7BcGfG8Zfl/BzWXeKkhK5RAWO2XOxkF+kcCnHHq7IhCcJuA5fyS7Bn44S+m8ypq3tcA8IP4uSXRL6E8q1tq/XHEkg1uSA3MaDZO7OkovvPlwxDFYAbSkmUYdSkSzjN1J7YdSTBuMsri1Fd9d+Ih2Rw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777894; c=relaxed/simple;
-	bh=F4Ry7r+m/4PCtYFgLJ/oMF3mXz1S8ybzYhzx2jJvyOQ=;
+	s=arc-20240116; t=1764779678; c=relaxed/simple;
+	bh=q8eRlUtbxGsWg1g9in4zzyZsCFLdeSbh6Zwduc02o8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hUaMXu4Hn/LvBvJuiQB16aIj52alnudTRBpBI4R/Hi11xGxBjAExVUE1dYPc41Mc9LLHUzDzo4XcfTNe6LmR67yh/L7od1737yog5btfTuS51SIsWf2IeqfjU7j21traQEWyZZS54a5t6niMfybhrkQmgZfTZpvRWgVBqTZeJCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rh24qaTb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C2C5C4CEF5;
-	Wed,  3 Dec 2025 16:04:54 +0000 (UTC)
+	 MIME-Version; b=k6PM9MTfJ6RFnL/VwXLz7GCOq0aI2YIpeaPuwMn7TIGuzF61rRo00wTAg+XdSCxYrfEN5765zd6ZF0N3EbfjPJO1NTNQZuiQAArshorLMZeuBI1JxHmzh9AelSEY0Syfq/aK77CWT0hMuHf1hlqAji8qNLIxJcm4MP5OxDRzhmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cd5g1Kmx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9FA8C16AAE;
+	Wed,  3 Dec 2025 16:34:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777894;
-	bh=F4Ry7r+m/4PCtYFgLJ/oMF3mXz1S8ybzYhzx2jJvyOQ=;
+	s=korg; t=1764779678;
+	bh=q8eRlUtbxGsWg1g9in4zzyZsCFLdeSbh6Zwduc02o8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rh24qaTbWaounQvA1Bo3xGRExxeUg9qLOfni5Onsl2ZYphKCNuqp7P5mP8fHkBWTC
-	 L0Lhf/jibvtOT/SjrYoYsS8AICJnxv7I7NKcNQEswhcOI8F2hGJKORfDFahT8Qc4E2
-	 rCX/T8jfOofwRX7DdvBml5b9kay9hacsxTKVYmv4=
+	b=cd5g1KmxWxQtI8BEK7TKiYbZJdfi2E8Q9+zerwRcp5j8oMzr2zfuKV3AAKYk8dMLH
+	 p4yl2xqk0FUgT4BRdqHZgCVifxF6SKv1PSfyRKdbpEWe+50Ogy9OuIB9qiPYwtGcn9
+	 AeJJiaOFtcmU/fZF//DWGcob15aTz99WKXa5b7Jg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4ed6852d4da4606c93da@syzkaller.appspotmail.com,
-	Ivan Pravdin <ipravdin.official@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 181/392] Bluetooth: bcsp: receive data only if registered
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 329/568] scsi: ufs: ufs-pci: Fix S0ix/S3 for Intel controllers
 Date: Wed,  3 Dec 2025 16:25:31 +0100
-Message-ID: <20251203152420.742483702@linuxfoundation.org>
+Message-ID: <20251203152452.759510750@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +60,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Pravdin <ipravdin.official@gmail.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit ca94b2b036c22556c3a66f1b80f490882deef7a6 ]
+commit bb44826c3bdbf1fa3957008a04908f45e5666463 upstream.
 
-Currently, bcsp_recv() can be called even when the BCSP protocol has not
-been registered. This leads to a NULL pointer dereference, as shown in
-the following stack trace:
+Intel platforms with UFS, can support Suspend-to-Idle (S0ix) and
+Suspend-to-RAM (S3).  For S0ix the link state should be HIBERNATE.  For
+S3, state is lost, so the link state must be OFF.  Driver policy,
+expressed by spm_lvl, can be 3 (link HIBERNATE, device SLEEP) for S0ix
+but must be changed to 5 (link OFF, device POWEROFF) for S3.
 
-    KASAN: null-ptr-deref in range [0x0000000000000108-0x000000000000010f]
-    RIP: 0010:bcsp_recv+0x13d/0x1740 drivers/bluetooth/hci_bcsp.c:590
-    Call Trace:
-     <TASK>
-     hci_uart_tty_receive+0x194/0x220 drivers/bluetooth/hci_ldisc.c:627
-     tiocsti+0x23c/0x2c0 drivers/tty/tty_io.c:2290
-     tty_ioctl+0x626/0xde0 drivers/tty/tty_io.c:2706
-     vfs_ioctl fs/ioctl.c:51 [inline]
-     __do_sys_ioctl fs/ioctl.c:907 [inline]
-     __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:893
-     do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-     do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
-     entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Fix support for S0ix/S3 by switching spm_lvl as needed.  During suspend
+->prepare(), if the suspend target state is not Suspend-to-Idle, ensure
+the spm_lvl is at least 5 to ensure that resume will be possible from
+deep sleep states.  During suspend ->complete(), restore the spm_lvl to
+its original value that is suitable for S0ix.
 
-To prevent this, ensure that the HCI_UART_REGISTERED flag is set before
-processing received data. If the protocol is not registered, return
--EUNATCH.
+This fix is first needed in Intel Alder Lake based controllers.
 
-Reported-by: syzbot+4ed6852d4da4606c93da@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=4ed6852d4da4606c93da
-Tested-by: syzbot+4ed6852d4da4606c93da@syzkaller.appspotmail.com
-Signed-off-by: Ivan Pravdin <ipravdin.official@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7dc9fb47bc9a ("scsi: ufs: ufs-pci: Add support for Intel ADL")
+Cc: stable@vger.kernel.org
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20251024085918.31825-2-adrian.hunter@intel.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/hci_bcsp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/ufs/host/ufshcd-pci.c |   67 ++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 65 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/bluetooth/hci_bcsp.c b/drivers/bluetooth/hci_bcsp.c
-index 8055f63603f45..8ff69111ceede 100644
---- a/drivers/bluetooth/hci_bcsp.c
-+++ b/drivers/bluetooth/hci_bcsp.c
-@@ -582,6 +582,9 @@ static int bcsp_recv(struct hci_uart *hu, const void *data, int count)
- 	struct bcsp_struct *bcsp = hu->priv;
- 	const unsigned char *ptr;
+--- a/drivers/ufs/host/ufshcd-pci.c
++++ b/drivers/ufs/host/ufshcd-pci.c
+@@ -15,6 +15,7 @@
+ #include <linux/pci.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/pm_qos.h>
++#include <linux/suspend.h>
+ #include <linux/debugfs.h>
+ #include <linux/uuid.h>
+ #include <linux/acpi.h>
+@@ -34,6 +35,7 @@ struct intel_host {
+ 	u32		dsm_fns;
+ 	u32		active_ltr;
+ 	u32		idle_ltr;
++	int		saved_spm_lvl;
+ 	struct dentry	*debugfs_root;
+ 	struct gpio_desc *reset_gpio;
+ };
+@@ -375,6 +377,7 @@ static int ufs_intel_common_init(struct
+ 	host = devm_kzalloc(hba->dev, sizeof(*host), GFP_KERNEL);
+ 	if (!host)
+ 		return -ENOMEM;
++	host->saved_spm_lvl = -1;
+ 	ufshcd_set_variant(hba, host);
+ 	intel_dsm_init(host, hba->dev);
+ 	if (INTEL_DSM_SUPPORTED(host, RESET)) {
+@@ -542,6 +545,66 @@ static int ufshcd_pci_restore(struct dev
  
-+	if (!test_bit(HCI_UART_REGISTERED, &hu->flags))
-+		return -EUNATCH;
+ 	return ufshcd_system_resume(dev);
+ }
 +
- 	BT_DBG("hu %p count %d rx_state %d rx_count %ld",
- 	       hu, count, bcsp->rx_state, bcsp->rx_count);
++static int ufs_intel_suspend_prepare(struct device *dev)
++{
++	struct ufs_hba *hba = dev_get_drvdata(dev);
++	struct intel_host *host = ufshcd_get_variant(hba);
++	int err;
++
++	/*
++	 * Only s2idle (S0ix) retains link state.  Force power-off
++	 * (UFS_PM_LVL_5) for any other case.
++	 */
++	if (pm_suspend_target_state != PM_SUSPEND_TO_IDLE && hba->spm_lvl < UFS_PM_LVL_5) {
++		host->saved_spm_lvl = hba->spm_lvl;
++		hba->spm_lvl = UFS_PM_LVL_5;
++	}
++
++	err = ufshcd_suspend_prepare(dev);
++
++	if (err < 0 && host->saved_spm_lvl != -1) {
++		hba->spm_lvl = host->saved_spm_lvl;
++		host->saved_spm_lvl = -1;
++	}
++
++	return err;
++}
++
++static void ufs_intel_resume_complete(struct device *dev)
++{
++	struct ufs_hba *hba = dev_get_drvdata(dev);
++	struct intel_host *host = ufshcd_get_variant(hba);
++
++	ufshcd_resume_complete(dev);
++
++	if (host->saved_spm_lvl != -1) {
++		hba->spm_lvl = host->saved_spm_lvl;
++		host->saved_spm_lvl = -1;
++	}
++}
++
++static int ufshcd_pci_suspend_prepare(struct device *dev)
++{
++	struct ufs_hba *hba = dev_get_drvdata(dev);
++
++	if (!strcmp(hba->vops->name, "intel-pci"))
++		return ufs_intel_suspend_prepare(dev);
++
++	return ufshcd_suspend_prepare(dev);
++}
++
++static void ufshcd_pci_resume_complete(struct device *dev)
++{
++	struct ufs_hba *hba = dev_get_drvdata(dev);
++
++	if (!strcmp(hba->vops->name, "intel-pci")) {
++		ufs_intel_resume_complete(dev);
++		return;
++	}
++
++	ufshcd_resume_complete(dev);
++}
+ #endif
  
--- 
-2.51.0
-
+ /**
+@@ -633,8 +696,8 @@ static const struct dev_pm_ops ufshcd_pc
+ 	.thaw		= ufshcd_system_resume,
+ 	.poweroff	= ufshcd_system_suspend,
+ 	.restore	= ufshcd_pci_restore,
+-	.prepare	= ufshcd_suspend_prepare,
+-	.complete	= ufshcd_resume_complete,
++	.prepare	= ufshcd_pci_suspend_prepare,
++	.complete	= ufshcd_pci_resume_complete,
+ #endif
+ };
+ 
 
 
 
