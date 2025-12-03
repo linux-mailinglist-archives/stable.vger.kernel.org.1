@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E57E1C9FA6A
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:48:41 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49206C9FCF2
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:07:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 368533027DA6
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:41:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 06BA73001E19
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:07:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F02A30F939;
-	Wed,  3 Dec 2025 15:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B83A340D82;
+	Wed,  3 Dec 2025 16:07:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M9unPSrO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fU1PYHMI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB6025BEE5;
-	Wed,  3 Dec 2025 15:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5893B313546;
+	Wed,  3 Dec 2025 16:07:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776492; cv=none; b=Gpe1laBD1cAPpAnGpBqhf5zXJfFz7xn1yc44SaJieiTfNoYzhTngX4WaEDbBHUS6lQARu5U/c679Rp/ixBa2MBThDtHOhzmHpS7Fj7N4kFsiS6ArTTlp1gplFROY+orq4Df83zGOGhJ+rEGjPky9j4xXCTW/LZGHwByN24VT8o4=
+	t=1764778042; cv=none; b=BjhZgyhXALcf/Q1kd6X6KSjn+sVBSH2wWqH8NQeqhp3cY5aaN3ijRROZXaZDoSkSCsodD5+IRbSMn99fMeUyvDCT8tYWBRbBD5Fc1YXnyJZutlzlkN6Y8xvWOEx/FTlAKQgU/xAs8WVG4AQW2jDTt5snuFfAB+Wuk0oYON5Ru0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776492; c=relaxed/simple;
-	bh=/azFzmgr4ZxnudEHjR36kE6frYb2AukRtX3yNeeQwRI=;
+	s=arc-20240116; t=1764778042; c=relaxed/simple;
+	bh=M556w7GiREA2SfvuQKhHu99pvVl7kpEgydm0dSOUpDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qV/O6OOf8Q8jIsmwhIED7DFGylw3yCegnCanYnWoAAIfP+Hu6Q2XhtOI8EPyDWCUWBMpoc55xjaFTlwLdgBEKo1AMO4KgsQgx2vPjm8pgqEkVhKrjwoz+FrSNwS4ALeAr5PFZ6xE1C7BnqDeM5eqRP0PjeK6tzGI1TcTLlfT4WQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M9unPSrO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D676C4CEF5;
-	Wed,  3 Dec 2025 15:41:31 +0000 (UTC)
+	 MIME-Version; b=rLYMiWD3M1hGOzPLDlWuuJxYNOU3RhMSv6XCfLM8RERCHcXej+5M6Kj1URKqjAFq2Sg1Cd6JdEhBqtAmHCSYHpaH199Z2f1SiG/Iyi0cHsRS4CTIKU3scxVUenNKWqTl5mAUU54zCJtklM15NErAkodGJdon+ke7UTgP/OT7BSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fU1PYHMI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BCE5C4CEF5;
+	Wed,  3 Dec 2025 16:07:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776491;
-	bh=/azFzmgr4ZxnudEHjR36kE6frYb2AukRtX3yNeeQwRI=;
+	s=korg; t=1764778042;
+	bh=M556w7GiREA2SfvuQKhHu99pvVl7kpEgydm0dSOUpDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M9unPSrOWGashod+D+sw8VvbvI3pTdjGtZ65MFMjfsiLIb9RYhXkZMgtESwCFnstv
-	 263q9JA2+AftwISIKoNCp2IgbT6yRr/Pj/nK44NhGDlwBzPybp8TCAy2Vp/s+705pR
-	 Nw9U0Wk0p/q/4zIytoP/jAj4ctzhEWF56QC7dc1w=
+	b=fU1PYHMIm9niCE7HFXO6CT9bzo34cMc+hZJk0H7PwmNYPA3uNEdUq9eqooN38dOnI
+	 Z0QCd4XI33WJxjQYL4iksvCkSOjfXxnyCSi+tmlgfEGbCjH1hoQZIY0G2HRNUHBW6E
+	 Ly5jmeRl9yYoyrEjx1Tapr+OUoXyGnvVF/aq14KU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 5.10 171/300] lib/crypto: curve25519-hacl64: Fix older clang KASAN workaround for GCC
+	Zilin Guan <zilin@seu.edu.cn>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 225/392] tracing: Fix memory leaks in create_field_var()
 Date: Wed,  3 Dec 2025 16:26:15 +0100
-Message-ID: <20251203152406.954660762@linuxfoundation.org>
+Message-ID: <20251203152422.464323212@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +60,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-commit 2b81082ad37cc3f28355fb73a6a69b91ff7dbf20 upstream.
+[ Upstream commit 80f0d631dcc76ee1b7755bfca1d8417d91d71414 ]
 
-Commit 2f13daee2a72 ("lib/crypto/curve25519-hacl64: Disable KASAN with
-clang-17 and older") inadvertently disabled KASAN in curve25519-hacl64.o
-for GCC unconditionally because clang-min-version will always evaluate
-to nothing for GCC. Add a check for CONFIG_CC_IS_CLANG to avoid applying
-the workaround for GCC, which is only needed for clang-17 and older.
+The function create_field_var() allocates memory for 'val' through
+create_hist_field() inside parse_atom(), and for 'var' through
+create_var(), which in turn allocates var->type and var->var.name
+internally. Simply calling kfree() to release these structures will
+result in memory leaks.
 
-Cc: stable@vger.kernel.org
-Fixes: 2f13daee2a72 ("lib/crypto/curve25519-hacl64: Disable KASAN with clang-17 and older")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://lore.kernel.org/r/20251103-curve25519-hacl64-fix-kasan-workaround-v2-1-ab581cbd8035@kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Use destroy_hist_field() to properly free 'val', and explicitly release
+the memory of var->type and var->var.name before freeing 'var' itself.
+
+Link: https://patch.msgid.link/20251106120132.3639920-1-zilin@seu.edu.cn
+Fixes: 02205a6752f22 ("tracing: Add support for 'field variables'")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/crypto/Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/trace_events_hist.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/lib/crypto/Makefile
-+++ b/lib/crypto/Makefile
-@@ -23,7 +23,7 @@ libcurve25519-generic-y				:= curve25519
- libcurve25519-generic-$(CONFIG_ARCH_SUPPORTS_INT128)	:= curve25519-hacl64.o
- libcurve25519-generic-y				+= curve25519-generic.o
- # clang versions prior to 18 may blow out the stack with KASAN
--ifeq ($(call clang-min-version, 180000),)
-+ifeq ($(CONFIG_CC_IS_CLANG)_$(call clang-min-version, 180000),y_)
- KASAN_SANITIZE_curve25519-hacl64.o := n
- endif
+diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
+index e7799814a3c8a..8795913425416 100644
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -2798,14 +2798,16 @@ static struct field_var *create_field_var(struct hist_trigger_data *hist_data,
+ 	var = create_var(hist_data, file, field_name, val->size, val->type);
+ 	if (IS_ERR(var)) {
+ 		hist_err(tr, HIST_ERR_VAR_CREATE_FIND_FAIL, errpos(field_name));
+-		kfree(val);
++		destroy_hist_field(val, 0);
+ 		ret = PTR_ERR(var);
+ 		goto err;
+ 	}
  
+ 	field_var = kzalloc(sizeof(struct field_var), GFP_KERNEL);
+ 	if (!field_var) {
+-		kfree(val);
++		destroy_hist_field(val, 0);
++		kfree_const(var->type);
++		kfree(var->var.name);
+ 		kfree(var);
+ 		ret =  -ENOMEM;
+ 		goto err;
+-- 
+2.51.0
+
 
 
 
