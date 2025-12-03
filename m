@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-198623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2FCACA0EBE
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:23:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0467C9FB7B
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:55:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 31F1D31919E8
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:21:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EC06330213DE
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:45:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 412EF331A4F;
-	Wed,  3 Dec 2025 15:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8F6B31352F;
+	Wed,  3 Dec 2025 15:45:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TQR4KRor"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UEqYTlNi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1F56331A46;
-	Wed,  3 Dec 2025 15:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744D631328E;
+	Wed,  3 Dec 2025 15:45:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777154; cv=none; b=Mjzp3hEbLfwbxSfDC6lYx9tbILBI1DXiygYIe5wvaDFtqbLaWgSnPbbxOlL/sxoSLA9ogefxV+HPZimBUVo/5I5+yPr5VXHCo5hlDASzkqaYYXKrD2lsDc9Eg6f5DeGavNt5Z5gGEi3kxaZc6o64S/z+7EpZ5dyyETR23+P59yM=
+	t=1764776741; cv=none; b=sta9ca/Px+Df/M3XRyU0pEN/sbxfc/1VRIQEJvLV3tsxrjBDQXipYHgmETrl5nAXjfpucZrqfoh0sd5NMEevu5zzxe5Jv0gI/yQx6MAK8EagaZY7Xrf2VXL4ayxe9Evl17j6CFv4+3q4AqLSLhN8FEuhSf7mzMkMmQ88lN/EIw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777154; c=relaxed/simple;
-	bh=+8ldBo0trxHNPrLEVrTM2kMAKBb7RQIuifWqyUTCl70=;
+	s=arc-20240116; t=1764776741; c=relaxed/simple;
+	bh=Kyr+TQyb4Bdf72YPxiPRcz0g23djHJ0oVYNBaa0DTls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KhJC9A+e78Uw1PLYTVON+VkHKWKIU52Ay0KBJ5Kry1EUFL3J2CH6GMoTUTJMLX7oskxjUx415KprpvVbGL0FhCafC/hh399caVK9CxB616uUNhWH30t9IF8QuXdN+2u3U9W0VUO9ZMdjtn2wAXDcLyipiD2cZ2ksjTdugMWdOPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TQR4KRor; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D577C4CEF5;
-	Wed,  3 Dec 2025 15:52:33 +0000 (UTC)
+	 MIME-Version; b=N0rSW9iK5L01uwJyLn9vYq62S3y8omRsBf8qXwqgNIS3Cu/FXY/H5WW7AExrnXZgEsxKDRqVqA3s8Jo8tk53FLR2MKTtc804qsfkEwvjQ7uLHeAiuDJ1DOQlu+8UbQLecaT6kfua72dPkTKiOHWvhS54S5M0NTf6rZi2p133FF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UEqYTlNi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B270AC4CEF5;
+	Wed,  3 Dec 2025 15:45:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777153;
-	bh=+8ldBo0trxHNPrLEVrTM2kMAKBb7RQIuifWqyUTCl70=;
+	s=korg; t=1764776741;
+	bh=Kyr+TQyb4Bdf72YPxiPRcz0g23djHJ0oVYNBaa0DTls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TQR4KRorlkMO25GgC2IxDh3ToJIvMlnfJpl4RpEFjVoZRv4BW+udrsMxTOviMrUXf
-	 d0+Lo3uZl76xRIPwazWhv6/p/T+6VRe6U/TN+f1oNucuRN6RYTv5e+6BPxLpsQBq7H
-	 GeA448EajIhTchrxXCaa4zQlb5JyepW81lfl/yDY=
+	b=UEqYTlNi0+VqXirEXq+H9j6EnFhbRsDOkMfvAIloh+3MYTjUUctSPiWs3vYUJBMJN
+	 pKPttUDTYydzSGBFCJ3RKFDb51TFDsv9FV9JihiaRaDc73c/aHKtDhqh+Ve7LmiJBv
+	 ISz2Dh+cwd/52RvGrPSiwIemMfxOGyTGyHub/C0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yoon Dong Min <dm.youn@telechips.com>,
-	ChiYuan Huang <cy_huang@richtek.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.17 098/146] regulator: rtq2208: Correct LDO2 logic judgment bits
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH 5.10 272/300] dm-verity: fix unreliable memory allocation
 Date: Wed,  3 Dec 2025 16:27:56 +0100
-Message-ID: <20251203152350.046969212@linuxfoundation.org>
+Message-ID: <20251203152410.709121085@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +59,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ChiYuan Huang <cy_huang@richtek.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit 8684229e19c4185d53d6fb7004d733907c865a91 upstream.
+commit fe680d8c747f4e676ac835c8c7fb0f287cd98758 upstream.
 
-The LDO2 judgement bit position should be 7, not 6.
+GFP_NOWAIT allocation may fail anytime. It needs to be changed to
+GFP_NOIO. There's no need to handle an error because mempool_alloc with
+GFP_NOIO can't fail.
 
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Cc: stable@vger.kernel.org
-Reported-by: Yoon Dong Min <dm.youn@telechips.com>
-Fixes: b65439d90150 ("regulator: rtq2208: Fix the LDO DVS capability")
-Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
-Link: https://patch.msgid.link/faadb009f84b88bfcabe39fc5009c7357b00bbe2.1764209258.git.cy_huang@richtek.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Eric Biggers <ebiggers@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/regulator/rtq2208-regulator.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/dm-verity-fec.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/regulator/rtq2208-regulator.c b/drivers/regulator/rtq2208-regulator.c
-index 4a174e27c579..f669a562f036 100644
---- a/drivers/regulator/rtq2208-regulator.c
-+++ b/drivers/regulator/rtq2208-regulator.c
-@@ -53,7 +53,7 @@
- #define RTQ2208_MASK_BUCKPH_GROUP1		GENMASK(6, 4)
- #define RTQ2208_MASK_BUCKPH_GROUP2		GENMASK(2, 0)
- #define RTQ2208_MASK_LDO2_OPT0			BIT(7)
--#define RTQ2208_MASK_LDO2_OPT1			BIT(6)
-+#define RTQ2208_MASK_LDO2_OPT1			BIT(7)
- #define RTQ2208_MASK_LDO1_FIXED			BIT(6)
+--- a/drivers/md/dm-verity-fec.c
++++ b/drivers/md/dm-verity-fec.c
+@@ -314,11 +314,7 @@ static int fec_alloc_bufs(struct dm_veri
+ 		if (fio->bufs[n])
+ 			continue;
  
- /* Size */
--- 
-2.52.0
-
+-		fio->bufs[n] = mempool_alloc(&v->fec->prealloc_pool, GFP_NOWAIT);
+-		if (unlikely(!fio->bufs[n])) {
+-			DMERR("failed to allocate FEC buffer");
+-			return -ENOMEM;
+-		}
++		fio->bufs[n] = mempool_alloc(&v->fec->prealloc_pool, GFP_NOIO);
+ 	}
+ 
+ 	/* try to allocate the maximum number of buffers */
 
 
 
