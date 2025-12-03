@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53302C9F791
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:32:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51C05C9FD0D
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:08:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BFB873003988
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:31:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BFC99301B81C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:58:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AE8F30F811;
-	Wed,  3 Dec 2025 15:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC14634405B;
+	Wed,  3 Dec 2025 15:58:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="he0R8+i0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eu38BtKc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B6930F552;
-	Wed,  3 Dec 2025 15:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BE933451BF;
+	Wed,  3 Dec 2025 15:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764775915; cv=none; b=Zr6cQBmlhqyJrlLFkyjqbOFcGGEmzgiCyOxuCqW/+up4ZIbr0WfPrx57/Jc2hMikmzK8CuZNVnSpfmcKXO2mXGxNMzGYCsddYC6qbJkmOEcY0z/801CIUE7LdaRIRdKmvl8WWYwOvSGsLHPQqZFzhRZPfHlVKFs/vertO68D3tA=
+	t=1764777502; cv=none; b=Gjv5kbFTT3Nii4vcWp8YfP1ryGnHS4bnQDBFJ75kQbsUrjZsKFG9iB12IV20PQNHovVqkjr4jR7D6BEU0pRgNLTEBTnc0O0jwIHhio26KKPRM2dpsaV3kooy6aSJRpVC+VIZdTNUPYgUm7QsWI5eXEgkYfRdaG01OxES4sY7I3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764775915; c=relaxed/simple;
-	bh=0eznp9j2jri5r3xhNQCfDKuUccv1n7fxmUKwV2tTRcE=;
+	s=arc-20240116; t=1764777502; c=relaxed/simple;
+	bh=BgGljCg7AamPtZi7F699RHbhzWUqO2s7iIZAlrQmJEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CR1hpiJQwlo0JqoHQ6qkwiRGqIRPidEVYvbdoaxyuIoLgzN3kFnrMlE8ZN0oOws2vrXC55U4yPNn913YPsKnT1F+alBQ7Mc9N+vLcqMBdZJ9XilgVka2PxhCuroCPv5m0bQ+oXIJLTgvktctd0QgKRr2ZjX7vRENTAAdW84Ll+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=he0R8+i0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8821BC4CEF5;
-	Wed,  3 Dec 2025 15:31:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SJAKBA+stpdI8n3o32VCGzNo+Xr5lUciq5Abewqmw1Rz6gPiCQm2knGrKFDpDAt4v6leipqTV7qVf3BU0tBeHJ4IVxnSQJi1J5CQgpAq7+2d/0dpFSHMLBDwPNG8JufluvuiorK7XVijdv/9U2mQeWIitRvb8nVSs0SV4Xoi4hU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eu38BtKc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C719C4CEF5;
+	Wed,  3 Dec 2025 15:58:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764775914;
-	bh=0eznp9j2jri5r3xhNQCfDKuUccv1n7fxmUKwV2tTRcE=;
+	s=korg; t=1764777502;
+	bh=BgGljCg7AamPtZi7F699RHbhzWUqO2s7iIZAlrQmJEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=he0R8+i0huy2XaByc0f4vd37V00hfiZkXS669mar8eN+698xc4gmzRCuSwiWRxSdw
-	 jIuZfgIlDTdEZeb6byZTNRdFV/Oc3U2sZ/HqZ2/opQjSRiFhrzD92fW695y6oEIuwl
-	 0gMboMpkKUZdY6/mGc00Z9p4PWh0jma06nQDPmlI=
+	b=Eu38BtKciBRCAh5WrHjK1nK2ySHxNh7ve5A3K7o5pUrPisoPHHKb7e7P5wHMC4K6h
+	 5DNndSqLVRltFU+GVWHahNDHWn8YAr/2r+dd6HGPrzEQ7Jfo4EwmXkGO6Z0iwOMFlP
+	 7ic0Ka55pUQl2GwCJJLTSUBXh7nMVYxQiqKCeUH8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 003/300] btrfs: always drop log root tree reference in btrfs_replay_log()
+Subject: [PATCH 5.15 057/392] bpf: Dont use %pK through printk
 Date: Wed,  3 Dec 2025 16:23:27 +0100
-Message-ID: <20251203152400.584563083@linuxfoundation.org>
+Message-ID: <20251203152416.211236217@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,67 +58,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit 2f5b8095ea47b142c56c09755a8b1e14145a2d30 ]
+[ Upstream commit 2caa6b88e0ba0231fb4ff0ba8e73cedd5fb81fc8 ]
 
-Currently we have this odd behaviour:
+In the past %pK was preferable to %p as it would not leak raw pointer
+values into the kernel log.
+Since commit ad67b74d2469 ("printk: hash addresses printed with %p")
+the regular %p has been improved to avoid this issue.
+Furthermore, restricted pointers ("%pK") were never meant to be used
+through printk(). They can still unintentionally leak raw pointers or
+acquire sleeping locks in atomic contexts.
 
-1) At btrfs_replay_log() we drop the reference of the log root tree if
-   the call to btrfs_recover_log_trees() failed;
+Switch to the regular pointer formatting which is safer and
+easier to reason about.
 
-2) But if the call to btrfs_recover_log_trees() did not fail, we don't
-   drop the reference in btrfs_replay_log() - we expect that
-   btrfs_recover_log_trees() does it in case it returns success.
-
-Let's simplify this and make btrfs_replay_log() always drop the reference
-on the log root tree, not only this simplifies code as it's what makes
-sense since it's btrfs_replay_log() who grabbed the reference in the first
-place.
-
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20250811-restricted-pointers-bpf-v1-1-a1d7cc3cb9e7@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/disk-io.c  | 2 +-
- fs/btrfs/tree-log.c | 1 -
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ include/linux/filter.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-index 91475cb7d568b..29f0ba4adfbce 100644
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -2309,10 +2309,10 @@ static int btrfs_replay_log(struct btrfs_fs_info *fs_info,
- 	}
- 	/* returns with log_tree_root freed on success */
- 	ret = btrfs_recover_log_trees(log_tree_root);
-+	btrfs_put_root(log_tree_root);
- 	if (ret) {
- 		btrfs_handle_fs_error(fs_info, ret,
- 				      "Failed to recover log tree");
--		btrfs_put_root(log_tree_root);
- 		return ret;
- 	}
+diff --git a/include/linux/filter.h b/include/linux/filter.h
+index 7d8294d0d7173..dc49c8eb00fd6 100644
+--- a/include/linux/filter.h
++++ b/include/linux/filter.h
+@@ -1090,7 +1090,7 @@ void bpf_jit_prog_release_other(struct bpf_prog *fp, struct bpf_prog *fp_other);
+ static inline void bpf_jit_dump(unsigned int flen, unsigned int proglen,
+ 				u32 pass, void *image)
+ {
+-	pr_err("flen=%u proglen=%u pass=%u image=%pK from=%s pid=%d\n", flen,
++	pr_err("flen=%u proglen=%u pass=%u image=%p from=%s pid=%d\n", flen,
+ 	       proglen, pass, image, current->comm, task_pid_nr(current));
  
-diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
-index 6d715bb773643..cdb5a2770faf3 100644
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -6432,7 +6432,6 @@ int btrfs_recover_log_trees(struct btrfs_root *log_root_tree)
- 
- 	log_root_tree->log_root = NULL;
- 	clear_bit(BTRFS_FS_LOG_RECOVERING, &fs_info->flags);
--	btrfs_put_root(log_root_tree);
- 
- 	return 0;
- error:
+ 	if (image)
 -- 
 2.51.0
 
