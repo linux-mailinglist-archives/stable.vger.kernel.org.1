@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBC4EC9F79A
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:32:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BC3FCA067A
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:24:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CFC2F30039F7
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:32:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 796713129CD9
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:09:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0068F30AAD0;
-	Wed,  3 Dec 2025 15:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9288F35F8BF;
+	Wed,  3 Dec 2025 16:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HCL+x3bS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PtwfeJre"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C164630EF76;
-	Wed,  3 Dec 2025 15:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD0435E551;
+	Wed,  3 Dec 2025 16:27:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764775918; cv=none; b=AAy7zBlNtaAX+XKkTFDU87UJVM5EqbsinBPtpOLJowTdYjce/FdAgh9DZ/A2dwx+KsfVDLkNW6UpcWlOXq3HDIhwIsEm/OVytplA2yXSpz7Ikt+xg0gHrZYc0CGGI3GrpjKRnJeHZVCk0hE09EFLCzNg3IfaBe4WAyL0czx/mk0=
+	t=1764779270; cv=none; b=JVrD/R/PLdl74UDSEQ50jnbbx5vdiZYJunXaxwpruObrI0lrtiw7zUSXI8FzeszwFvp76xoW1T/yY8N4aj8ZnDh4xlmWltKCxqD+Ffu2gMtNf9xu0SJc9TMz4+OmXQrHbCCERKiMy9s0whEdWPAxtRTsN5b8xH3U0TYiohM9cN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764775918; c=relaxed/simple;
-	bh=uh9f0c1TyYWMEjoe7qpoVs4LwHp98qtZWLFZl86ylRs=;
+	s=arc-20240116; t=1764779270; c=relaxed/simple;
+	bh=CwgyjHJdgxJjLFdmUhgvSOrPPg2xwVfhvEBlWwEQDbo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s9a8JFibah0b25qvHft2XYx8w4IQHpBsuIQvVIfzPINhEY2WWEIe1OhO64l0jgi68q3Zra79WLRHaZeKMCjoD20/1xtNNya7gZD1foqCsDm45cughSgehI4q6365vk7KhEg1kNzyBH+1AUtYDRLKmuED5dss9JfNaRBdHRHoMUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HCL+x3bS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85A44C4CEF5;
-	Wed,  3 Dec 2025 15:31:57 +0000 (UTC)
+	 MIME-Version; b=tqQvMkmy5u6vt0bKv/DMJs/ooSzfsSvbPhgNAADqIGbaQuVtt/v+wbFRTHRLz6ndNxE7SJNfEgzQDRd+zMpSqg0Pg7AVo6zkQhNfk0wC2UaadG+CFzGv/2GlsnwQ0cVjviMDvfG3MU2Ks+o94qhsMRkX2g1nm37f9tAaUEq6krA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PtwfeJre; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7A4DC4CEF5;
+	Wed,  3 Dec 2025 16:27:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764775917;
-	bh=uh9f0c1TyYWMEjoe7qpoVs4LwHp98qtZWLFZl86ylRs=;
+	s=korg; t=1764779270;
+	bh=CwgyjHJdgxJjLFdmUhgvSOrPPg2xwVfhvEBlWwEQDbo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HCL+x3bSQloUy49RuCof+/ydBvpWViv9+Clx0CETcGbUnhp39/Qp6ziispmZoFd52
-	 lIg/AbOq4rCwqiWcjJejcGJl3flPXlRTpe6hYY2MYsZzvFCYW39MM9ObBeN1wc/RPk
-	 MtgpFYSJNcw09OvMP1I6fwAwl88g7aRZfcM1qPlU=
+	b=PtwfeJrerxQTGhGi6x/b99gYpyw9io1HN7lAQ1VHqnejWeykcIlEFTIRNlKCpeTJ4
+	 a2Y+/YqflMxdyAuRNtWdIcTU+pcbmnXat+SCAaPbjZy6n23RMIvQiebHj4WU+aV0eI
+	 CRO4EwOl1hA3VSTXpK7/fBpqC8TG4hTCBoaKffsA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Peter Wang <peter.wang@mediatek.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 004/300] btrfs: use smp_mb__after_atomic() when forcing COW in create_pending_snapshot()
+Subject: [PATCH 6.1 206/568] scsi: ufs: host: mediatek: Enhance recovery on resume failure
 Date: Wed,  3 Dec 2025 16:23:28 +0100
-Message-ID: <20251203152400.621967942@linuxfoundation.org>
+Message-ID: <20251203152448.270480720@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +60,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Peter Wang <peter.wang@mediatek.com>
 
-[ Upstream commit 45c222468d33202c07c41c113301a4b9c8451b8f ]
+[ Upstream commit 15ef3f5aa822f32524cba1463422a2c9372443f0 ]
 
-After setting the BTRFS_ROOT_FORCE_COW flag on the root we are doing a
-full write barrier, smp_wmb(), but we don't need to, all we need is a
-smp_mb__after_atomic().  The use of the smp_wmb() is from the old days
-when we didn't use a bit and used instead an int field in the root to
-signal if cow is forced. After the int field was changed to a bit in
-the root's state (flags field), we forgot to update the memory barrier
-in create_pending_snapshot() to smp_mb__after_atomic(), but we did the
-change in commit_fs_roots() after clearing BTRFS_ROOT_FORCE_COW. That
-happened in commit 27cdeb7096b8 ("Btrfs: use bitfield instead of integer
-data type for the some variants in btrfs_root"). On the reader side, in
-should_cow_block(), we also use the counterpart smp_mb__before_atomic()
-which generates further confusion.
+Improve the recovery process for failed resume operations. Log the
+device's power status and return 0 if both resume and recovery fail to
+prevent I/O hang.
 
-So change the smp_wmb() to smp_mb__after_atomic(). In fact we don't
-even need any barrier at all since create_pending_snapshot() is called
-in the critical section of a transaction commit and therefore no one
-can concurrently join/attach the transaction, or start a new one, until
-the transaction is unblocked. By the time someone starts a new transaction
-and enters should_cow_block(), a lot of implicit memory barriers already
-took place by having acquired several locks such as fs_info->trans_lock
-and extent buffer locks on the root node at least. Nevertlheless, for
-consistency use smp_mb__after_atomic() after setting the force cow bit
-in create_pending_snapshot().
-
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Peter Wang <peter.wang@mediatek.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/transaction.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ufs/host/ufs-mediatek.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/transaction.c b/fs/btrfs/transaction.c
-index f68cfcc1f8300..d558f354b8b82 100644
---- a/fs/btrfs/transaction.c
-+++ b/fs/btrfs/transaction.c
-@@ -1660,7 +1660,7 @@ static noinline int create_pending_snapshot(struct btrfs_trans_handle *trans,
+diff --git a/drivers/ufs/host/ufs-mediatek.c b/drivers/ufs/host/ufs-mediatek.c
+index 1c6348ee58092..3dbcb30e610fc 100644
+--- a/drivers/ufs/host/ufs-mediatek.c
++++ b/drivers/ufs/host/ufs-mediatek.c
+@@ -1359,8 +1359,21 @@ static int ufs_mtk_resume(struct ufs_hba *hba, enum ufs_pm_op pm_op)
  	}
- 	/* see comments in should_cow_block() */
- 	set_bit(BTRFS_ROOT_FORCE_COW, &root->state);
--	smp_wmb();
-+	smp_mb__after_atomic();
  
- 	btrfs_set_root_node(new_root_item, tmp);
- 	/* record when the snapshot was created in key.offset */
+ 	return 0;
++
+ fail:
+-	return ufshcd_link_recovery(hba);
++	/*
++	 * Check if the platform (parent) device has resumed, and ensure that
++	 * power, clock, and MTCMOS are all turned on.
++	 */
++	err = ufshcd_link_recovery(hba);
++	if (err) {
++		dev_err(hba->dev, "Device PM: req=%d, status:%d, err:%d\n",
++			hba->dev->power.request,
++			hba->dev->power.runtime_status,
++			hba->dev->power.runtime_error);
++	}
++
++	return 0; /* Cannot return a failure, otherwise, the I/O will hang. */
+ }
+ 
+ static void ufs_mtk_dbg_register_dump(struct ufs_hba *hba)
 -- 
 2.51.0
 
