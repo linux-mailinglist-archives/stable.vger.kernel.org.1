@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-199591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64EB2CA0A45
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:48:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A66FECA0397
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:58:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 58C27331BB64
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:27:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2969E30124F8
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:50:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E4D53502B1;
-	Wed,  3 Dec 2025 16:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC5E934C811;
+	Wed,  3 Dec 2025 16:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x8UYDy0P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oT2s1I3i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBCE931D38F;
-	Wed,  3 Dec 2025 16:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6187934E74B;
+	Wed,  3 Dec 2025 16:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780297; cv=none; b=L3L/5hEdL4EKDcSsB4wsCpUKsaWHfOwiMTwiaxfj9Fa4L/y/erBe4+PpdPxwc2bUw2Od+n9HoHXNdvSn+Owi/M/lEDHf59s7Pf6F8pPp8icl1Zadr8n0V26N1BhvzItm5iqaCqOTfmmTRYg6yirMVCZQExtFZvbPwi4W4kqKgfE=
+	t=1764780608; cv=none; b=FK7eVKplo9a+81rq0Am5zAljp289H70LZkkD7HJL1/D7zc9n5MUwuTcTbSvfxUv2doDAxNXNAi8yG4cMs2lMfZ4KV6f60NAY2cNVs53SG/U0bG0epPjNg875aenlxy6xY3VPIqaxvWliBoJyKa0NKixQYylXavSfOcyyteFq0ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780297; c=relaxed/simple;
-	bh=kv8lLp+0MfiS8LmmbXdVW5ZquUA03phRf8PbXmkM4y4=;
+	s=arc-20240116; t=1764780608; c=relaxed/simple;
+	bh=yyRvzzfc1EHqfWPs9VPrn9bSIzdoX452680qPSW+j9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pnS9+wC8tFZWQFVp3af/PSTCK8CyR3ZRHLhs2veylwSTy0TFKlEvnaNjabZdO1Ct2Ks7MnNypxVKA/AAou+vqbR6D+SBBq6k/ro0X/HLI9Rgtq2WYchHIrw/eoebKpzryWS53I17/w2ZN6PLhYwWXDUwJxACyZIyWRxF2RAPjh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x8UYDy0P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A557C4CEF5;
-	Wed,  3 Dec 2025 16:44:56 +0000 (UTC)
+	 MIME-Version; b=YuXRMkK7fg7NqdjaXdqY+KoVECmrn6xcI3gZI2FixUoV8I12eLEkMEW77+9gK9rt1XdB10DIEcKAPC/7dyr/FCPtWyGNx1U9TfBwa3rmV6N/BCusCiTgeDaNqdPdliRCrNe1MY4ot1IS4UiXAU6vlPbyVS+gvabgmLfSk/kIL2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oT2s1I3i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5980C4CEF5;
+	Wed,  3 Dec 2025 16:50:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780296;
-	bh=kv8lLp+0MfiS8LmmbXdVW5ZquUA03phRf8PbXmkM4y4=;
+	s=korg; t=1764780608;
+	bh=yyRvzzfc1EHqfWPs9VPrn9bSIzdoX452680qPSW+j9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x8UYDy0PQ04OuDuI8gVV1O2W1wFdR4w+P9Sjtsg3K/2Zn8CE8g7jfBRJ9XBsfZycQ
-	 gyf8YnAQKoKCGj8ozH5Mc+A9HE1FCv5y7bXJIgkjModcA19h71GhOth+Y3LUZU6BkV
-	 WeqGv/jLy8hi+OhcRyJW1VI5r49ohtqcP1f6p2PM=
+	b=oT2s1I3iph0XJlQvNyxUAEhFNgEiGGdYbMtAU9LExJu5BIllAn+1vbcgIUaZoIA6+
+	 K03NHF30lJa7FdFFjFMUGJwnu8I4dfnakQwfAyXaNpSDLR+4lF6j8d7pOKC3uc6r4T
+	 H/pPl39Mo5iORWz0+csoQb5xw1/HLjpOa5PMRggg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -44,12 +44,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Punit Agrawal <punit.agrawal@oss.qualcomm.com>,
 	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 514/568] mailbox: pcc: dont zero error register
+Subject: [PATCH 6.12 037/132] mailbox: pcc: dont zero error register
 Date: Wed,  3 Dec 2025 16:28:36 +0100
-Message-ID: <20251203152459.540710841@linuxfoundation.org>
+Message-ID: <20251203152344.670316234@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -89,7 +89,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-index 94e99b87496d2..0729988467554 100644
+index bb977cf8ad423..2b7d0bc920726 100644
 --- a/drivers/mailbox/pcc.c
 +++ b/drivers/mailbox/pcc.c
 @@ -278,9 +278,8 @@ static int pcc_mbox_error_check_and_clear(struct pcc_chan_info *pchan)
@@ -104,7 +104,7 @@ index 94e99b87496d2..0729988467554 100644
  		pcc_chan_reg_write(&pchan->error, val);
  		return -EIO;
  	}
-@@ -662,7 +661,8 @@ static int pcc_parse_subspace_db_reg(struct pcc_chan_info *pchan,
+@@ -673,7 +672,8 @@ static int pcc_parse_subspace_db_reg(struct pcc_chan_info *pchan,
  
  		ret = pcc_chan_reg_init(&pchan->error,
  					&pcct_ext->error_status_register,
