@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-199501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2AE3CA0E68
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:20:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7C8FCA0934
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:43:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DA66532CDCA4
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:17:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 179423450C29
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:23:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F083E34104C;
-	Wed,  3 Dec 2025 16:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C10B316184;
+	Wed,  3 Dec 2025 15:48:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AEjdQYun"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0piUJyIE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C3A734028B;
-	Wed,  3 Dec 2025 16:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC458305067;
+	Wed,  3 Dec 2025 15:48:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780007; cv=none; b=Ghh/ejO6yFc5IDPn5sWHG2E0rIwFy2OUFuUHRGbfn9ndu38DRwIxFnNiTvj0hA3oXfY0QRhkOxb2aBN7pDv6XeJFOl6Y1BRoJTV8ZbUjfQCCBa2BF52/7EJlqj5C97RzkKyuY+bVjh51tx4bnGdKfiZXx/N9V4yUH4MGENLKaZo=
+	t=1764776892; cv=none; b=axE4wieMp0ymEvjaPkM8fLOwyoBqzeMnFef5myFKcNVQ18cCjRqhHfET5PqbKGrSr5/4f3guapaAVLiBSrSBBoSSJvJC+pLspzD6xKzhMjqwd0JLibWNyo6VabMlb0HjLJUqodgW5cfjltGvA9StkDr0Ec+STW11wUc8HrcxkI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780007; c=relaxed/simple;
-	bh=mZCW1EAFqlZIHkeOO0xJ6sp/6qGBw/QGIL0scApWHrg=;
+	s=arc-20240116; t=1764776892; c=relaxed/simple;
+	bh=Fxa8b6rNORJVHDLLRA7frv1Ew4YnFghOf8RO0qa05VI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pOjdY7KNqA44wX3XoVc5XdniNV9CV+oyjAEhp4D0FVcSHeCWZ0ssrxElcW9QMt7oGjssjM0y/o1PdBPPIKE5Rqc/mfTJU34VUA1IsZrEJhDMMqgTGbjJok0k3oGQ/qmPg5Sv/2ixH6jzVInZ6zCq9bABnHBulbis72DIkH6PZ6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AEjdQYun; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8471C4CEF5;
-	Wed,  3 Dec 2025 16:40:05 +0000 (UTC)
+	 MIME-Version; b=MBG8YD2wLWM6IdUDGhxh+wcUOXujSWMv9k0a7phCgKX+OfKyblaDgenMQamG3j8m21w79A+aJPqg9gmsR7mIk8DpdHAanWIf3vQDc1BoNazK0E4qI/ckR9F+S+MusfMJjHteGZannrAYDm9HteU9deXKfJwn8gdwzZ0+mv5+97E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0piUJyIE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ABF2C4CEF5;
+	Wed,  3 Dec 2025 15:48:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780006;
-	bh=mZCW1EAFqlZIHkeOO0xJ6sp/6qGBw/QGIL0scApWHrg=;
+	s=korg; t=1764776892;
+	bh=Fxa8b6rNORJVHDLLRA7frv1Ew4YnFghOf8RO0qa05VI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AEjdQYunEA4YAIYNmvCJLvyyPBkslkDtlXe0O8KUrxaOHWwh8lt9mRAqE7CTm9auT
-	 g48hbrqMbOPoCHJ0rmILkc+OC6N32GYR80HNGfD6erZvBHbZGXdvONX1qMiyZs4+Gt
-	 fLaM9GstMdrPfti7YYgv69o1FrS4eE22VpWHO/eI=
+	b=0piUJyIEG4rRS4rPRIYM5oiZarDA7/yAMYpS0vUlMIBo7G0MX8l/Fllb6/belnHTY
+	 S5vKycta21eRiMfBuLJTdWCJto8KCSY96WD4Su7lA7rH1t/tzzqYsbeFtK4dkXVl7v
+	 d0RT3Q61wzs2pC5G8K29KxPSTAIEVUgX9Lg+WuSs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
+	syzbot+a2a3b519de727b0f7903@syzkaller.appspotmail.com,
+	"Nikola Z. Ivanov" <zlatistiv@gmail.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 394/568] netfilter: nf_tables: reject duplicate device on updates
-Date: Wed,  3 Dec 2025 16:26:36 +0100
-Message-ID: <20251203152455.122223967@linuxfoundation.org>
+Subject: [PATCH 6.17 019/146] team: Move team device type change at the end of team_port_add
+Date: Wed,  3 Dec 2025 16:26:37 +0100
+Message-ID: <20251203152347.171981200@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,70 +62,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Nikola Z. Ivanov <zlatistiv@gmail.com>
 
-commit cf5fb87fcdaaaafec55dcc0dc5a9e15ead343973 upstream.
+[ Upstream commit 0ae9cfc454ea5ead5f3ddbdfe2e70270d8e2c8ef ]
 
-A chain/flowtable update with duplicated devices in the same batch is
-possible. Unfortunately, netdev event path only removes the first
-device that is found, leaving unregistered the hook of the duplicated
-device.
+Attempting to add a port device that is already up will expectedly fail,
+but not before modifying the team device header_ops.
 
-Check if a duplicated device exists in the transaction batch, bail out
-with EEXIST in such case.
+In the case of the syzbot reproducer the gre0 device is
+already in state UP when it attempts to add it as a
+port device of team0, this fails but before that
+header_ops->create of team0 is changed from eth_header to ipgre_header
+in the call to team_dev_type_check_change.
 
-WARNING is hit when unregistering the hook:
+Later when we end up in ipgre_header() struct ip_tunnel* points to nonsense
+as the private data of the device still holds a struct team.
 
- [49042.221275] WARNING: CPU: 4 PID: 8425 at net/netfilter/core.c:340 nf_hook_entry_head+0xaa/0x150
- [49042.221375] CPU: 4 UID: 0 PID: 8425 Comm: nft Tainted: G S                  6.16.0+ #170 PREEMPT(full)
- [...]
- [49042.221382] RIP: 0010:nf_hook_entry_head+0xaa/0x150
+Example sequence of iproute2 commands to reproduce the hang/BUG():
+ip link add dev team0 type team
+ip link add dev gre0 type gre
+ip link set dev gre0 up
+ip link set dev gre0 master team0
+ip link set dev team0 up
+ping -I team0 1.1.1.1
 
-Fixes: 78d9f48f7f44 ("netfilter: nf_tables: add devices to existing flowtable")
-Fixes: b9703ed44ffb ("netfilter: nf_tables: support for adding new devices to an existing netdev chain")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Move team_dev_type_check_change down where all other checks have passed
+as it changes the dev type with no way to restore it in case
+one of the checks that follow it fail.
+
+Also make sure to preserve the origial mtu assignment:
+  - If port_dev is not the same type as dev, dev takes mtu from port_dev
+  - If port_dev is the same type as dev, port_dev takes mtu from dev
+
+This is done by adding a conditional before the call to dev_set_mtu
+to prevent it from assigning port_dev->mtu = dev->mtu and instead
+letting team_dev_type_check_change assign dev->mtu = port_dev->mtu.
+The conditional is needed because the patch moves the call to
+team_dev_type_check_change past dev_set_mtu.
+
+Testing:
+  - team device driver in-tree selftests
+  - Add/remove various devices as slaves of team device
+  - syzbot
+
+Reported-by: syzbot+a2a3b519de727b0f7903@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=a2a3b519de727b0f7903
+Fixes: 1d76efe1577b ("team: add support for non-ethernet devices")
+Signed-off-by: Nikola Z. Ivanov <zlatistiv@gmail.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://patch.msgid.link/20251122002027.695151-1-zlatistiv@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/net/team/team_core.c | 23 +++++++++++++++--------
+ 1 file changed, 15 insertions(+), 8 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index df83224bef06c..b278f493cc93c 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -8078,6 +8078,7 @@ static int nft_flowtable_update(struct nft_ctx *ctx, const struct nlmsghdr *nlh,
- {
- 	const struct nlattr * const *nla = ctx->nla;
- 	struct nft_flowtable_hook flowtable_hook;
-+	struct nftables_pernet *nft_net;
- 	struct nft_hook *hook, *next;
- 	struct nft_trans *trans;
- 	bool unregister = false;
-@@ -8093,6 +8094,20 @@ static int nft_flowtable_update(struct nft_ctx *ctx, const struct nlmsghdr *nlh,
- 		if (nft_hook_list_find(&flowtable->hook_list, hook)) {
- 			list_del(&hook->list);
- 			kfree(hook);
-+			continue;
+diff --git a/drivers/net/team/team_core.c b/drivers/net/team/team_core.c
+index 17f07eb0ee52a..25562b17debe1 100644
+--- a/drivers/net/team/team_core.c
++++ b/drivers/net/team/team_core.c
+@@ -1191,10 +1191,6 @@ static int team_port_add(struct team *team, struct net_device *port_dev,
+ 		return -EPERM;
+ 	}
+ 
+-	err = team_dev_type_check_change(dev, port_dev);
+-	if (err)
+-		return err;
+-
+ 	if (port_dev->flags & IFF_UP) {
+ 		NL_SET_ERR_MSG(extack, "Device is up. Set it down before adding it as a team port");
+ 		netdev_err(dev, "Device %s is up. Set it down before adding it as a team port\n",
+@@ -1212,10 +1208,16 @@ static int team_port_add(struct team *team, struct net_device *port_dev,
+ 	INIT_LIST_HEAD(&port->qom_list);
+ 
+ 	port->orig.mtu = port_dev->mtu;
+-	err = dev_set_mtu(port_dev, dev->mtu);
+-	if (err) {
+-		netdev_dbg(dev, "Error %d calling dev_set_mtu\n", err);
+-		goto err_set_mtu;
++	/*
++	 * MTU assignment will be handled in team_dev_type_check_change
++	 * if dev and port_dev are of different types
++	 */
++	if (dev->type == port_dev->type) {
++		err = dev_set_mtu(port_dev, dev->mtu);
++		if (err) {
++			netdev_dbg(dev, "Error %d calling dev_set_mtu\n", err);
++			goto err_set_mtu;
 +		}
-+
-+		nft_net = nft_pernet(ctx->net);
-+		list_for_each_entry(trans, &nft_net->commit_list, list) {
-+			if (trans->msg_type != NFT_MSG_NEWFLOWTABLE ||
-+			    trans->ctx.table != ctx->table ||
-+			    !nft_trans_flowtable_update(trans))
-+				continue;
-+
-+			if (nft_hook_list_find(&nft_trans_flowtable_hooks(trans), hook)) {
-+				err = -EEXIST;
-+				goto err_flowtable_update_hook;
-+			}
+ 	}
+ 
+ 	memcpy(port->orig.dev_addr, port_dev->dev_addr, port_dev->addr_len);
+@@ -1290,6 +1292,10 @@ static int team_port_add(struct team *team, struct net_device *port_dev,
  		}
  	}
+ 
++	err = team_dev_type_check_change(dev, port_dev);
++	if (err)
++		goto err_set_dev_type;
++
+ 	if (dev->flags & IFF_UP) {
+ 		netif_addr_lock_bh(dev);
+ 		dev_uc_sync_multiple(port_dev, dev);
+@@ -1308,6 +1314,7 @@ static int team_port_add(struct team *team, struct net_device *port_dev,
+ 
+ 	return 0;
+ 
++err_set_dev_type:
+ err_set_slave_promisc:
+ 	__team_option_inst_del_port(team, port);
  
 -- 
 2.51.0
