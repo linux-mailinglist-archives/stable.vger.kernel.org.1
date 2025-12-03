@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 011ABCA10AD
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:39:02 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1413C9F7A9
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:32:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5075B30080E5
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:38:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 30C3430021F7
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:32:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB121348465;
-	Wed,  3 Dec 2025 16:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B68C630C63C;
+	Wed,  3 Dec 2025 15:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UWbmD95u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lWBXQV8Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D3C346E50;
-	Wed,  3 Dec 2025 16:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C241A2C25;
+	Wed,  3 Dec 2025 15:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779372; cv=none; b=OMu7wEuEn6e0cyADIzpoFNSpm7Tem1BFI+laxhvS/HM05bK4uI+1ZIAb5huPSkDFC56q9XspiTazuwG/9yikyTVnAVK9Qft6vI5e/KfOIRIZtbLtSTaYPbfg6Jd70Eyh6P9tCEAzX8reP9Q1D1cS2sKgOVhPIXt0c0yx3xb7Sps=
+	t=1764775935; cv=none; b=FtgXXDbbNR9gcq4TketseGs/1YpobAGaxFTb/8EFkKtQZ7uhFV4S01hgwRRmyPAmez0+gqP7wvbEFtBKRDW6gXZnP/O4bVqZdkUhMs2z+m/KB9VqdZH21Ez5MVhWxuEedI8nfJyBFhgR8VkQ/xTaLfAN/RPr7izvjqAS/bN7qBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779372; c=relaxed/simple;
-	bh=0UR2sq0I0Yf9vR+Gcwu2QZc3R4l9e9AW4sG9mrJeqJo=;
+	s=arc-20240116; t=1764775935; c=relaxed/simple;
+	bh=HzNnBdbsEXxJaoMs0pe2bVlWW4Bjs5NgVU24+P5Er/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=shoZ9J3NWf4AQvLSH23TWiQOvdgWO1OeKw9WSGWWsihFqgtGH+o1GK7SV1NdQ/K9x3Bo6Wh0JtQ8hPsxwy9Lgq959Do2b6dJVumZvkZf2EluS2OMT2t1YCk0vVn6gfqHb61UDz6YSRNw8TtCu5DLeFZQoac9MFZ31webo7fWIQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UWbmD95u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11709C4CEF5;
-	Wed,  3 Dec 2025 16:29:31 +0000 (UTC)
+	 MIME-Version; b=jcPqPpHU/xwdWfceX0KjtpyCbOa4Mzn1XG9evJDVDH4lZnW2EvL462Gb+CkRXKKaNSLGtnTXzIkyPBetTfV/B4/fad8ueDscpvG1Mz+effeV+kDcGcvjzCUoNRB8t4Mbvg0HJGneqVjPOTro3O8ecjOtxgtIeMF96qoLIBp17tQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lWBXQV8Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C3E3C4CEF5;
+	Wed,  3 Dec 2025 15:32:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779372;
-	bh=0UR2sq0I0Yf9vR+Gcwu2QZc3R4l9e9AW4sG9mrJeqJo=;
+	s=korg; t=1764775935;
+	bh=HzNnBdbsEXxJaoMs0pe2bVlWW4Bjs5NgVU24+P5Er/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UWbmD95umsj9oex5xIUeyKQ81Xy7yReJJN/KBndT5tb7nTpkgNR7iu71/doCLwZ/k
-	 XBwHDAm9vTjWBXTzePAh0/y0Njkf7rr5SdOX11xK4r5FjErninIUQUF9Kx/5l/tMcM
-	 Ghip/t0wjZeRjaBBit0JSiNRDr7odGnJhcs+u+4c=
+	b=lWBXQV8YPDYTZgAKxFeOJ7OMw3fRxtPZNbheNXmOZUIxcc051DRVqqodG7oblgPQ5
+	 ZTbDPlyblxbthYXsYdbC0S0QbxzZXMC30pnofseJLMjO1a7fXJY7VPX3COk2gJTYTn
+	 kcXYRFvVHOEx3zs+/af1f95AjdYAjm9wxtreZmL4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Michael Riesch <michael.riesch@collabora.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 211/568] phy: rockchip: phy-rockchip-inno-csidphy: allow writes to grf register 0
+	syzbot+793cf822d213be1a74f2@syzkaller.appspotmail.com,
+	Junjie Cao <junjie.cao@intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.10 009/300] fbdev: bitblit: bound-check glyph index in bit_putcs*
 Date: Wed,  3 Dec 2025 16:23:33 +0100
-Message-ID: <20251203152448.450941406@linuxfoundation.org>
+Message-ID: <20251203152400.804269401@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +61,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Riesch <michael.riesch@collabora.com>
+From: Junjie Cao <junjie.cao@intel.com>
 
-[ Upstream commit 8c7c19466c854fa86b82d2148eaa9bf0e6531423 ]
+commit 18c4ef4e765a798b47980555ed665d78b71aeadf upstream.
 
-The driver for the Rockchip MIPI CSI-2 DPHY uses GRF register offset
-value 0 to sort out undefined registers. However, the RK3588 CSIDPHY GRF
-this offset is perfectly fine (in fact, register 0 is the only one in
-this register file).
-Introduce a boolean variable to indicate valid registers and allow writes
-to register 0.
+bit_putcs_aligned()/unaligned() derived the glyph pointer from the
+character value masked by 0xff/0x1ff, which may exceed the actual font's
+glyph count and read past the end of the built-in font array.
+Clamp the index to the actual glyph count before computing the address.
 
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Michael Riesch <michael.riesch@collabora.com>
-Link: https://lore.kernel.org/r/20250616-rk3588-csi-dphy-v4-4-a4f340a7f0cf@collabora.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This fixes a global out-of-bounds read reported by syzbot.
+
+Reported-by: syzbot+793cf822d213be1a74f2@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=793cf822d213be1a74f2
+Tested-by: syzbot+793cf822d213be1a74f2@syzkaller.appspotmail.com
+Signed-off-by: Junjie Cao <junjie.cao@intel.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/rockchip/phy-rockchip-inno-csidphy.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/core/bitblit.c |   16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/phy/rockchip/phy-rockchip-inno-csidphy.c b/drivers/phy/rockchip/phy-rockchip-inno-csidphy.c
-index 75f948bdea6a1..20737a0400f5c 100644
---- a/drivers/phy/rockchip/phy-rockchip-inno-csidphy.c
-+++ b/drivers/phy/rockchip/phy-rockchip-inno-csidphy.c
-@@ -87,10 +87,11 @@ struct dphy_reg {
- 	u32 offset;
- 	u32 mask;
- 	u32 shift;
-+	u8 valid;
- };
+--- a/drivers/video/fbdev/core/bitblit.c
++++ b/drivers/video/fbdev/core/bitblit.c
+@@ -79,12 +79,16 @@ static inline void bit_putcs_aligned(str
+ 				     struct fb_image *image, u8 *buf, u8 *dst)
+ {
+ 	u16 charmask = vc->vc_hi_font_mask ? 0x1ff : 0xff;
++	unsigned int charcnt = vc->vc_font.charcount;
+ 	u32 idx = vc->vc_font.width >> 3;
+ 	u8 *src;
  
- #define PHY_REG(_offset, _width, _shift) \
--	{ .offset = _offset, .mask = BIT(_width) - 1, .shift = _shift, }
-+	{ .offset = _offset, .mask = BIT(_width) - 1, .shift = _shift, .valid = 1, }
+ 	while (cnt--) {
+-		src = vc->vc_font.data + (scr_readw(s++)&
+-					  charmask)*cellsize;
++		u16 ch = scr_readw(s++) & charmask;
++
++		if (ch >= charcnt)
++			ch = 0;
++		src = vc->vc_font.data + (unsigned int)ch * cellsize;
  
- static const struct dphy_reg rk1808_grf_dphy_regs[] = {
- 	[GRF_DPHY_CSIPHY_FORCERXMODE] = PHY_REG(RK1808_GRF_PD_VI_CON_OFFSET, 4, 0),
-@@ -145,7 +146,7 @@ static inline void write_grf_reg(struct rockchip_inno_csidphy *priv,
- 	const struct dphy_drv_data *drv_data = priv->drv_data;
- 	const struct dphy_reg *reg = &drv_data->grf_regs[index];
+ 		if (attr) {
+ 			update_attr(buf, src, attr, vc);
+@@ -112,14 +116,18 @@ static inline void bit_putcs_unaligned(s
+ 				       u8 *dst)
+ {
+ 	u16 charmask = vc->vc_hi_font_mask ? 0x1ff : 0xff;
++	unsigned int charcnt = vc->vc_font.charcount;
+ 	u32 shift_low = 0, mod = vc->vc_font.width % 8;
+ 	u32 shift_high = 8;
+ 	u32 idx = vc->vc_font.width >> 3;
+ 	u8 *src;
  
--	if (reg->offset)
-+	if (reg->valid)
- 		regmap_write(priv->grf, reg->offset,
- 			     HIWORD_UPDATE(value, reg->mask, reg->shift));
- }
--- 
-2.51.0
-
+ 	while (cnt--) {
+-		src = vc->vc_font.data + (scr_readw(s++)&
+-					  charmask)*cellsize;
++		u16 ch = scr_readw(s++) & charmask;
++
++		if (ch >= charcnt)
++			ch = 0;
++		src = vc->vc_font.data + (unsigned int)ch * cellsize;
+ 
+ 		if (attr) {
+ 			update_attr(buf, src, attr, vc);
 
 
 
