@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-198794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB937CA06CA
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:26:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97C05C9F8E7
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:41:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9087F3307C2A
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:10:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9D67A301898E
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:36:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE23C34C12B;
-	Wed,  3 Dec 2025 16:01:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8A1B3128CD;
+	Wed,  3 Dec 2025 15:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IIH3xqL4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="akz8TQth"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69F4F34BA44;
-	Wed,  3 Dec 2025 16:01:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 749BD3128BC;
+	Wed,  3 Dec 2025 15:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777705; cv=none; b=T03Y4WyXTIriENxgUVneVVPP8X1gJVjj6GBVGjaRpoQkuH83+RSBowhpG14iVLV8mKjgbQ4qBzxlnv/R7UPIgCIM6yxz39Q4VE0RVGFlesmr38pMdireSZwuF3X4ZIDYmThmZWW3G474w3gQbFmg2+K4ZA3tninIF48zNCwKzts=
+	t=1764776162; cv=none; b=DpMR/CJhOplORgBf7Wl47QcHJRFFaE0z7ErPB7FCNBQtm1YVoSnRge+fHDnJCuSFjs3Y2qX4nBIPUcUNCXe/jIH5r7wZBZ55Udvadl19A71B9Dgtzd/RaJXyJZBdcvgSkbsVfSvFqgiJeFvGDx7umeht9V1DJ3fpnHvP/IX+tQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777705; c=relaxed/simple;
-	bh=hRVEmG8t4SjnPKUuEuYOJCs9WwSxa5K4vh1XlEAGki8=;
+	s=arc-20240116; t=1764776162; c=relaxed/simple;
+	bh=VlkVFWdQBwOQ6Edrk/3Dkti+YAZ7+7aeevlJ07ODSRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QAGKAbioxYQO2x5M6DxYdXABjOeZdmlBtDBnfeDpPxPxTOJ6PusvJAqIB7DwyvP49PY9I9XE21ZTSTXq0r/VPJQiIcxkUf2Hww2lKDKzu+dTX2l8fgO6XcpcKH6HvHB7QJxavX7SU0nwLp2PeAEUFPi1RFDoxnP2rVDpN9qmPIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IIH3xqL4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D236AC4CEF5;
-	Wed,  3 Dec 2025 16:01:44 +0000 (UTC)
+	 MIME-Version; b=shi19hjEnrWgUv8OsV2fHTssMfqtE38fhpIEucSorVoBaTTW3f6ireOFVZrFgIhkT2SePfvZajythK2rVB+zbyq3P4ucAfQXQJFqHzVhu+arwrOKblv/O6N3101LuiL01gyHH49CEIqbzMQtxvesMP/VGZYjdXBuXZEXRE2Q2JQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=akz8TQth; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EB5FC4CEF5;
+	Wed,  3 Dec 2025 15:35:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777705;
-	bh=hRVEmG8t4SjnPKUuEuYOJCs9WwSxa5K4vh1XlEAGki8=;
+	s=korg; t=1764776160;
+	bh=VlkVFWdQBwOQ6Edrk/3Dkti+YAZ7+7aeevlJ07ODSRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IIH3xqL4SwQP2Cad6jcHCTw+XNYbvVBIZk8bTbDyK7Nc4K3cd4AqWc4mXXnJeUbOB
-	 KS6+PFPcet6SzgoXC2fDi91ETxsI49ntTNSRnv0zKXzPhNoqUqsoUHVWXZU4A0JCow
-	 ReTdxZ/cO7Jo/19VkVTa2+urOdeMq9fKhglOxGIE=
+	b=akz8TQthngZIa1O7mO3on61wmMYCu/YPICuD50KVX6iVk/ZfmbYlEzT1xwvEMBxGv
+	 M1B9hb51LVhYT4OxcnRI/MroPY4IN+56FOCus65iC0xzQ8BvCjH+RcX4aGoKt+KvHY
+	 35lht18vfsUkarahR+XWS9Dvi34eoFbCA+zTM7ls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amber Lin <Amber.Lin@amd.com>,
-	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 120/392] drm/amdkfd: Tie UNMAP_LATENCY to queue_preemption
+Subject: [PATCH 5.10 066/300] mfd: madera: Work around false-positive -Wininitialized warning
 Date: Wed,  3 Dec 2025 16:24:30 +0100
-Message-ID: <20251203152418.510065493@linuxfoundation.org>
+Message-ID: <20251203152403.068688439@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amber Lin <Amber.Lin@amd.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit f3820e9d356132e18405cd7606e22dc87ccfa6d1 ]
+[ Upstream commit 364752aa0c6ab0a06a2d5bfdb362c1ca407f1a30 ]
 
-When KFD asks CP to preempt queues, other than preempt CP queues, CP
-also requests SDMA to preempt SDMA queues with UNMAP_LATENCY timeout.
-Currently queue_preemption_timeout_ms is 9000 ms by default but can be
-configured via module parameter. KFD_UNMAP_LATENCY_MS is hard coded as
-4000 ms though. This patch ties KFD_UNMAP_LATENCY_MS to
-queue_preemption_timeout_ms so in a slow system such as emulator, both
-CP and SDMA slowness are taken into account.
+clang-21 warns about one uninitialized variable getting dereferenced
+in madera_dev_init:
 
-Signed-off-by: Amber Lin <Amber.Lin@amd.com>
-Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+drivers/mfd/madera-core.c:739:10: error: variable 'mfd_devs' is uninitialized when used here [-Werror,-Wuninitialized]
+  739 |                               mfd_devs, n_devs,
+      |                               ^~~~~~~~
+drivers/mfd/madera-core.c:459:33: note: initialize the variable 'mfd_devs' to silence this warning
+  459 |         const struct mfd_cell *mfd_devs;
+      |                                        ^
+      |                                         = NULL
+
+The code is actually correct here because n_devs is only nonzero
+when mfd_devs is a valid pointer, but this is impossible for the
+compiler to see reliably.
+
+Change the logic to check for the pointer as well, to make this easier
+for the compiler to follow.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20250807071932.4085458-1-arnd@kernel.org
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_priv.h | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/mfd/madera-core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_priv.h b/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
-index 47ec820cae72b..2cf71155a7184 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
-@@ -109,7 +109,14 @@
+diff --git a/drivers/mfd/madera-core.c b/drivers/mfd/madera-core.c
+index 4ed6ad8ce0020..e3b7048de0c66 100644
+--- a/drivers/mfd/madera-core.c
++++ b/drivers/mfd/madera-core.c
+@@ -436,7 +436,7 @@ int madera_dev_init(struct madera *madera)
+ 	struct device *dev = madera->dev;
+ 	unsigned int hwid;
+ 	int (*patch_fn)(struct madera *) = NULL;
+-	const struct mfd_cell *mfd_devs;
++	const struct mfd_cell *mfd_devs = NULL;
+ 	int n_devs = 0;
+ 	int i, ret;
  
- #define KFD_KERNEL_QUEUE_SIZE 2048
+@@ -642,7 +642,7 @@ int madera_dev_init(struct madera *madera)
+ 		goto err_reset;
+ 	}
  
--#define KFD_UNMAP_LATENCY_MS	(4000)
-+/*  KFD_UNMAP_LATENCY_MS is the timeout CP waiting for SDMA preemption. One XCC
-+ *  can be associated to 2 SDMA engines. queue_preemption_timeout_ms is the time
-+ *  driver waiting for CP returning the UNMAP_QUEUE fence. Thus the math is
-+ *  queue_preemption_timeout_ms = sdma_preemption_time * 2 + cp workload
-+ *  The format here makes CP workload 10% of total timeout
-+ */
-+#define KFD_UNMAP_LATENCY_MS	\
-+	((queue_preemption_timeout_ms - queue_preemption_timeout_ms / 10) >> 1)
- 
- /*
-  * 512 = 0x200
+-	if (!n_devs) {
++	if (!n_devs || !mfd_devs) {
+ 		dev_err(madera->dev, "Device ID 0x%x not a %s\n", hwid,
+ 			madera->type_name);
+ 		ret = -ENODEV;
 -- 
 2.51.0
 
