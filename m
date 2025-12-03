@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2F40C9F9DA
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:45:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74DC1C9FDA0
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:15:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 42380301FF50
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:39:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5BEF230562E7
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:07:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D16E303A3D;
-	Wed,  3 Dec 2025 15:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94F834F484;
+	Wed,  3 Dec 2025 16:07:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZD+lQUgs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jA9Z2wKf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47C2CDDAB;
-	Wed,  3 Dec 2025 15:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983D631355B;
+	Wed,  3 Dec 2025 16:07:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776390; cv=none; b=EUC1k4waXeY+lkthm7RbJ+tNvCU3CONM1WFEN9V+cVfvTy/Su5miXpVt1rxtoVEjk659PItitILcs1XkccTyl3seKN4wLehvN+h86HQ+tofz1XXWZt2l9zntJmyUMNtN41edWzYLjaOO7pRtStSUjh8DEZh4FIUI5AC9EUBZvA8=
+	t=1764778032; cv=none; b=HgzHc+TAEgbU1YroaHOikowZPg+3Yn+QiUhJY9B2Ml43wd/73VOLv4VLlQDmipOA7HmxOyARJdmjQeCcR4o6EkBYCCMQtwDBZngXQVwvv0biGaZP1NovA4GDLRYaIAxch40CYsAEjtFJrNCMKeYvWuT+tWv0BDK8IjrfA4Z5Dl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776390; c=relaxed/simple;
-	bh=2ox2KsSstZM80+PSzc2Czy34YubrG5JiHSjT/QFL4Mw=;
+	s=arc-20240116; t=1764778032; c=relaxed/simple;
+	bh=MPPkYaihi0nYClkSqZPBnBHhxa2BJV9WrDyEdzwO4L8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yw+2JQZXOr7X166FCVRj5w+L8aWtRQwLCsZUy5d1XO7JHmchJitgK6XMoZ5QB8f9qk+N5DqSJxwwd2G/z6hOOH+R+Hv1IhckczuznoiPMnBamp7lX9eL/flGscNtS4zkgKw/zXK3b4TpfJvMERg2dmDMt9ALoyh2admUVa9ukKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZD+lQUgs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA993C4CEF5;
-	Wed,  3 Dec 2025 15:39:49 +0000 (UTC)
+	 MIME-Version; b=iZy2taS5p27cWvUs07bMWArmmJe5wRQO8kbfcWM24wO4GhwMExVS2l90kqp1czb3A7U5cAj5bAxr+V7UXhM0aElbk5Ie28FOqLqUDz56cw6jI3xCkFPN3B+mGnm2nYPo0PZAy1i9A9m+0PpB5LxCG/nfPL/6eedSB2Iz2IWsv2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jA9Z2wKf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 247FFC4CEF5;
+	Wed,  3 Dec 2025 16:07:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776390;
-	bh=2ox2KsSstZM80+PSzc2Czy34YubrG5JiHSjT/QFL4Mw=;
+	s=korg; t=1764778032;
+	bh=MPPkYaihi0nYClkSqZPBnBHhxa2BJV9WrDyEdzwO4L8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZD+lQUgsbzewLRuFG+QBSAIAl4IAOhbETnikUTut8lLEzIPVPEs+5zmjpPYdDAQTE
-	 zTEnAwiSCcfxcWE4j8/prZeKLpkca6pXa75OU0yF78cB07Y1PzQuHaGIfunX6eO1+G
-	 r1X3zllMgwl03CYceydoFwN5gYBJm3GeKNTTZmPg=
+	b=jA9Z2wKfvWoIzwLRKJh7OIJG2fNjpNX/d6mGdjhZWLYWnmGymewCfHllNIpjsOFAd
+	 gqbhnjsk5KZq8kVIuPg5NoDBcHN7D1Mk/0DIRJit0Y1QAxcMELzQtATcjIR5ut6+GV
+	 aKuWXtq3ojbr/Fx9adO5mmyck2OTiuefO5upPS9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xin Long <lucien.xin@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Qendrim Maxhuni <qendrim.maxhuni@garderos.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 167/300] sctp: hold endpoint before calling cb in sctp_transport_lookup_process
-Date: Wed,  3 Dec 2025 16:26:11 +0100
-Message-ID: <20251203152406.806474776@linuxfoundation.org>
+Subject: [PATCH 5.15 222/392] net: usb: qmi_wwan: initialize MAC header offset in qmimux_rx_fixup
+Date: Wed,  3 Dec 2025 16:26:12 +0100
+Message-ID: <20251203152422.355096392@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,183 +60,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Qendrim Maxhuni <qendrim.maxhuni@garderos.com>
 
-[ Upstream commit f9d31c4cf4c11ff10317f038b9c6f7c3bda6cdd4 ]
+[ Upstream commit e120f46768d98151ece8756ebd688b0e43dc8b29 ]
 
-The same fix in commit 5ec7d18d1813 ("sctp: use call_rcu to free endpoint")
-is also needed for dumping one asoc and sock after the lookup.
+Raw IP packets have no MAC header, leaving skb->mac_header uninitialized.
+This can trigger kernel panics on ARM64 when xfrm or other subsystems
+access the offset due to strict alignment checks.
 
-Fixes: 86fdb3448cc1 ("sctp: ensure ep is not destroyed before doing the dump")
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: f1fc201148c7 ("sctp: Hold sock lock while iterating over address list")
+Initialize the MAC header to prevent such crashes.
+
+This can trigger kernel panics on ARM when running IPsec over the
+qmimux0 interface.
+
+Example trace:
+
+    Internal error: Oops: 000000009600004f [#1] SMP
+    CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.12.34-gbe78e49cb433 #1
+    Hardware name: LS1028A RDB Board (DT)
+    pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+    pc : xfrm_input+0xde8/0x1318
+    lr : xfrm_input+0x61c/0x1318
+    sp : ffff800080003b20
+    Call trace:
+     xfrm_input+0xde8/0x1318
+     xfrm6_rcv+0x38/0x44
+     xfrm6_esp_rcv+0x48/0xa8
+     ip6_protocol_deliver_rcu+0x94/0x4b0
+     ip6_input_finish+0x44/0x70
+     ip6_input+0x44/0xc0
+     ipv6_rcv+0x6c/0x114
+     __netif_receive_skb_one_core+0x5c/0x8c
+     __netif_receive_skb+0x18/0x60
+     process_backlog+0x78/0x17c
+     __napi_poll+0x38/0x180
+     net_rx_action+0x168/0x2f0
+
+Fixes: c6adf77953bc ("net: usb: qmi_wwan: add qmap mux protocol support")
+Signed-off-by: Qendrim Maxhuni <qendrim.maxhuni@garderos.com>
+Link: https://patch.msgid.link/20251029075744.105113-1-qendrim.maxhuni@garderos.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/sctp/sctp.h |  3 +--
- net/sctp/diag.c         | 46 +++++++++++++++++++----------------------
- net/sctp/socket.c       | 22 +++++++++++++-------
- 3 files changed, 37 insertions(+), 34 deletions(-)
+ drivers/net/usb/qmi_wwan.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/include/net/sctp/sctp.h b/include/net/sctp/sctp.h
-index 6d89a7f3f6a4c..775fde82c6576 100644
---- a/include/net/sctp/sctp.h
-+++ b/include/net/sctp/sctp.h
-@@ -110,8 +110,7 @@ struct sctp_transport *sctp_transport_get_next(struct net *net,
- 			struct rhashtable_iter *iter);
- struct sctp_transport *sctp_transport_get_idx(struct net *net,
- 			struct rhashtable_iter *iter, int pos);
--int sctp_transport_lookup_process(int (*cb)(struct sctp_transport *, void *),
--				  struct net *net,
-+int sctp_transport_lookup_process(sctp_callback_t cb, struct net *net,
- 				  const union sctp_addr *laddr,
- 				  const union sctp_addr *paddr, void *p);
- int sctp_transport_traverse_process(sctp_callback_t cb, sctp_callback_t cb_done,
-diff --git a/net/sctp/diag.c b/net/sctp/diag.c
-index b1e672227924a..3631a32d96b07 100644
---- a/net/sctp/diag.c
-+++ b/net/sctp/diag.c
-@@ -249,48 +249,44 @@ static size_t inet_assoc_attr_size(struct sctp_association *asoc)
- 		+ 64;
- }
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index f574de58c1996..bd6d8c2b7e5d9 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -192,6 +192,12 @@ static int qmimux_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
+ 			return 0;
+ 		skbn->dev = net;
  
--static int sctp_tsp_dump_one(struct sctp_transport *tsp, void *p)
-+static int sctp_sock_dump_one(struct sctp_endpoint *ep, struct sctp_transport *tsp, void *p)
- {
- 	struct sctp_association *assoc = tsp->asoc;
--	struct sock *sk = tsp->asoc->base.sk;
- 	struct sctp_comm_param *commp = p;
--	struct sk_buff *in_skb = commp->skb;
-+	struct sock *sk = ep->base.sk;
- 	const struct inet_diag_req_v2 *req = commp->r;
--	const struct nlmsghdr *nlh = commp->nlh;
--	struct net *net = sock_net(in_skb->sk);
-+	struct sk_buff *skb = commp->skb;
- 	struct sk_buff *rep;
- 	int err;
- 
- 	err = sock_diag_check_cookie(sk, req->id.idiag_cookie);
- 	if (err)
--		goto out;
-+		return err;
- 
--	err = -ENOMEM;
- 	rep = nlmsg_new(inet_assoc_attr_size(assoc), GFP_KERNEL);
- 	if (!rep)
--		goto out;
-+		return -ENOMEM;
- 
- 	lock_sock(sk);
--	if (sk != assoc->base.sk) {
--		release_sock(sk);
--		sk = assoc->base.sk;
--		lock_sock(sk);
-+	if (ep != assoc->ep) {
-+		err = -EAGAIN;
-+		goto out;
- 	}
--	err = inet_sctp_diag_fill(sk, assoc, rep, req,
--				  sk_user_ns(NETLINK_CB(in_skb).sk),
--				  NETLINK_CB(in_skb).portid,
--				  nlh->nlmsg_seq, 0, nlh,
--				  commp->net_admin);
--	release_sock(sk);
++	       /* Raw IP packets don't have a MAC header, but other subsystems
++		* (like xfrm) may still access MAC header offsets, so they must
++		* be initialized.
++		*/
++		skb_reset_mac_header(skbn);
 +
-+	err = inet_sctp_diag_fill(sk, assoc, rep, req, sk_user_ns(NETLINK_CB(skb).sk),
-+				  NETLINK_CB(skb).portid, commp->nlh->nlmsg_seq, 0,
-+				  commp->nlh, commp->net_admin);
- 	if (err < 0) {
- 		WARN_ON(err == -EMSGSIZE);
--		kfree_skb(rep);
- 		goto out;
- 	}
-+	release_sock(sk);
- 
--	err = nlmsg_unicast(net->diag_nlsk, rep, NETLINK_CB(in_skb).portid);
-+	return nlmsg_unicast(sock_net(skb->sk)->diag_nlsk, rep, NETLINK_CB(skb).portid);
- 
- out:
-+	release_sock(sk);
-+	kfree_skb(rep);
- 	return err;
- }
- 
-@@ -431,15 +427,15 @@ static void sctp_diag_get_info(struct sock *sk, struct inet_diag_msg *r,
- static int sctp_diag_dump_one(struct netlink_callback *cb,
- 			      const struct inet_diag_req_v2 *req)
- {
--	struct sk_buff *in_skb = cb->skb;
--	struct net *net = sock_net(in_skb->sk);
-+	struct sk_buff *skb = cb->skb;
-+	struct net *net = sock_net(skb->sk);
- 	const struct nlmsghdr *nlh = cb->nlh;
- 	union sctp_addr laddr, paddr;
- 	struct sctp_comm_param commp = {
--		.skb = in_skb,
-+		.skb = skb,
- 		.r = req,
- 		.nlh = nlh,
--		.net_admin = netlink_net_capable(in_skb, CAP_NET_ADMIN),
-+		.net_admin = netlink_net_capable(skb, CAP_NET_ADMIN),
- 	};
- 
- 	if (req->sdiag_family == AF_INET) {
-@@ -462,7 +458,7 @@ static int sctp_diag_dump_one(struct netlink_callback *cb,
- 		paddr.v6.sin6_family = AF_INET6;
- 	}
- 
--	return sctp_transport_lookup_process(sctp_tsp_dump_one,
-+	return sctp_transport_lookup_process(sctp_sock_dump_one,
- 					     net, &laddr, &paddr, &commp);
- }
- 
-diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-index 8fe09f962957f..5ea0bad561a18 100644
---- a/net/sctp/socket.c
-+++ b/net/sctp/socket.c
-@@ -5212,23 +5212,31 @@ int sctp_for_each_endpoint(int (*cb)(struct sctp_endpoint *, void *),
- }
- EXPORT_SYMBOL_GPL(sctp_for_each_endpoint);
- 
--int sctp_transport_lookup_process(int (*cb)(struct sctp_transport *, void *),
--				  struct net *net,
-+int sctp_transport_lookup_process(sctp_callback_t cb, struct net *net,
- 				  const union sctp_addr *laddr,
- 				  const union sctp_addr *paddr, void *p)
- {
- 	struct sctp_transport *transport;
--	int err;
-+	struct sctp_endpoint *ep;
-+	int err = -ENOENT;
- 
- 	rcu_read_lock();
- 	transport = sctp_addrs_lookup_transport(net, laddr, paddr);
-+	if (!transport) {
-+		rcu_read_unlock();
-+		return err;
-+	}
-+	ep = transport->asoc->ep;
-+	if (!sctp_endpoint_hold(ep)) { /* asoc can be peeled off */
-+		sctp_transport_put(transport);
-+		rcu_read_unlock();
-+		return err;
-+	}
- 	rcu_read_unlock();
--	if (!transport)
--		return -ENOENT;
- 
--	err = cb(transport, p);
-+	err = cb(ep, transport, p);
-+	sctp_endpoint_put(ep);
- 	sctp_transport_put(transport);
--
- 	return err;
- }
- EXPORT_SYMBOL_GPL(sctp_transport_lookup_process);
+ 		switch (skb->data[offset + qmimux_hdr_sz] & 0xf0) {
+ 		case 0x40:
+ 			skbn->protocol = htons(ETH_P_IP);
 -- 
 2.51.0
 
