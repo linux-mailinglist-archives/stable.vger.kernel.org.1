@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-199833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DB87CA0C70
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:08:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A705CA023F
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:50:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7BAE1324EE35
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:04:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2FEE3303A1A7
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:47:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BC233A1CFE;
-	Wed,  3 Dec 2025 16:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C762936CDFD;
+	Wed,  3 Dec 2025 16:47:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kgo0eBZk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iMmevt/9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 525A03A1CE2;
-	Wed,  3 Dec 2025 16:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8283835B14C;
+	Wed,  3 Dec 2025 16:47:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764781095; cv=none; b=FwOPnE+3DbALm+d4pK6UaeldZC+h2ViXOXY36nu29f/Fc8KIeupCSRVjqCo1DTBxj3qu8yQEUMYRGSy6GZ829PqFNZGBWxOpPB/TAeUnpqpVXiqN0QzYDy4/N3LTw+W2PGpQCqcof1D4BA7pZZ8p7EOyBULWXkl03a8HL8dJT0k=
+	t=1764780421; cv=none; b=UzmH+9+os/sGvQlVmY2EyW6MeVxs2aqr2QEcA3Sx3vunvy+2nEMyVe1cb+kJoz3mpiDWZceVRXxhOSsXs68QZTCldANKATaeevOe/Fkap6QvU5WHbNDw4L6tStFxV6SsJSrNIrdaB8Fn2Hfk1q8FK75nZ9cgMJvc6om6JGxx57U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764781095; c=relaxed/simple;
-	bh=QnadCWP0xw/9iILmHkE6eYbIRn4DL7/4ExjtyrqtLSI=;
+	s=arc-20240116; t=1764780421; c=relaxed/simple;
+	bh=QqhbQzIkBgcjhyNjic50VxwD1lK6X3e1ZZgcKqj6XTA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZPHF8wS02FL/ER43z1rNJdzjuXyzRS74rVLp7A6mljZAcYck4ZVZCkeWS0ry+zdUKS/enAudsYFaydPv2M9avU5R/NvqrwEmcfVg5Bq4ilznHSSganUB3MdQ3qo+biaYQlfxLfyUDsp7ER1w2P6rCpVYxMN8wg2MJyKR/Pgj7U8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kgo0eBZk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B49D7C4CEF5;
-	Wed,  3 Dec 2025 16:58:14 +0000 (UTC)
+	 MIME-Version; b=kLw15RaOx/5UBFgJRNmfgcSHKU/SIw9CQx3jwdutRPInb4/uFkAP2C1tAPRmRiKKEyqvEodds0OGJwfr3mpEoWSGIcCMi3ssiZzVbLGXCDt96nemjvwhFHmzqI2vXbU8SMWKrJGuZotEP9unRP3BJB7XIoAy1JN7SfSJwwhpN8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iMmevt/9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EF56C4CEF5;
+	Wed,  3 Dec 2025 16:47:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764781095;
-	bh=QnadCWP0xw/9iILmHkE6eYbIRn4DL7/4ExjtyrqtLSI=;
+	s=korg; t=1764780421;
+	bh=QqhbQzIkBgcjhyNjic50VxwD1lK6X3e1ZZgcKqj6XTA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kgo0eBZkwSDJmaIWAG4/pRIPNtoWMsJyUgYhoV3UVc/Oyt1PqAo4Gi5sTdHl+Wljt
-	 n4HkRwy1xvWLz8QZnS860QYbBlFw9uTmRCr4bdMwcPv76OVv03UZQzw63inZks0se1
-	 YkSRvWWaBdARf+OiDRPiVAwWdji0pjmtVA1utVNw=
+	b=iMmevt/9N1dFIyCiE3+5+Ug+Y1/uCGUCUYU8dnk3lXqJOLzj5DX1to9ha50G3+rsP
+	 zDDem+GGuXSjsgukFAnn6p7Az/ZlOniJ7UjN6v5MPltoz9/QytTrT8ItMrUHEFUEor
+	 RpMynhgGLRd7IpdY8D1xPaHyhsbD6rocGK/A06TU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 20/93] net: fec: do not register PPS event for PEROUT
+	ziming zhang <ezrakiez@gmail.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 6.1 551/568] libceph: prevent potential out-of-bounds writes in handle_auth_session_key()
 Date: Wed,  3 Dec 2025 16:29:13 +0100
-Message-ID: <20251203152337.258927319@linuxfoundation.org>
+Message-ID: <20251203152500.891279004@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +59,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: ziming zhang <ezrakiez@gmail.com>
 
-[ Upstream commit 9a060d0fac9e75524f72864adec6d8cdb70a5bca ]
+commit 7fce830ecd0a0256590ee37eb65a39cbad3d64fc upstream.
 
-There are currently two situations that can trigger the PTP interrupt,
-one is the PPS event, the other is the PEROUT event. However, the irq
-handler fec_pps_interrupt() does not check the irq event type and
-directly registers a PPS event into the system, but the event may be
-a PEROUT event. This is incorrect because PEROUT is an output signal,
-while PPS is the input of the kernel PPS system. Therefore, add a check
-for the event type, if pps_enable is true, it means that the current
-event is a PPS event, and then the PPS event is registered.
+The len field originates from untrusted network packets. Boundary
+checks have been added to prevent potential out-of-bounds writes when
+decrypting the connection secret or processing service tickets.
 
-Fixes: 350749b909bf ("net: fec: Add support for periodic output signal of PPS")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Link: https://patch.msgid.link/20251125085210.1094306-5-wei.fang@nxp.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ idryomov: changelog ]
+
+Cc: stable@vger.kernel.org
+Signed-off-by: ziming zhang <ezrakiez@gmail.com>
+Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/fec_ptp.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/ceph/auth_x.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-index beb1d98fa741a..4bb894b5afcb9 100644
---- a/drivers/net/ethernet/freescale/fec_ptp.c
-+++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -719,8 +719,11 @@ static irqreturn_t fec_pps_interrupt(int irq, void *dev_id)
- 		fep->next_counter = (fep->next_counter + fep->reload_period) &
- 				fep->cc.mask;
+--- a/net/ceph/auth_x.c
++++ b/net/ceph/auth_x.c
+@@ -631,6 +631,7 @@ static int handle_auth_session_key(struc
  
--		event.type = PTP_CLOCK_PPS;
--		ptp_clock_event(fep->ptp_clock, &event);
-+		if (fep->pps_enable) {
-+			event.type = PTP_CLOCK_PPS;
-+			ptp_clock_event(fep->ptp_clock, &event);
-+		}
-+
- 		return IRQ_HANDLED;
- 	}
+ 	/* connection secret */
+ 	ceph_decode_32_safe(p, end, len, e_inval);
++	ceph_decode_need(p, end, len, e_inval);
+ 	dout("%s connection secret blob len %d\n", __func__, len);
+ 	if (len > 0) {
+ 		dp = *p + ceph_x_encrypt_offset();
+@@ -648,6 +649,7 @@ static int handle_auth_session_key(struc
  
--- 
-2.51.0
-
+ 	/* service tickets */
+ 	ceph_decode_32_safe(p, end, len, e_inval);
++	ceph_decode_need(p, end, len, e_inval);
+ 	dout("%s service tickets blob len %d\n", __func__, len);
+ 	if (len > 0) {
+ 		ret = ceph_x_proc_ticket_reply(ac, &th->session_key,
 
 
 
