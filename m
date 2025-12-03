@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-199480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA509CA0E7F
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:21:24 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AD28CA099A
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:45:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 37DC433CCDF5
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:18:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9994E3000B3A
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:45:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82174325496;
-	Wed,  3 Dec 2025 16:38:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BA4932573E;
+	Wed,  3 Dec 2025 15:48:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rygPpAQ9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2N6sPznz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 814C731354A;
-	Wed,  3 Dec 2025 16:38:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD6E032571C;
+	Wed,  3 Dec 2025 15:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779938; cv=none; b=D+bRAJnkVWV4S0QrV+eqeTF7iNjo76cBW/zqQhFKCLg1E/aWMjPXjytwtesPYZgF0dr0fwtHgi6hBAGbqG4oT8lFUUTw1Ht/LGRBZzFdBoCtSXqdJAwa0yTZKYn+V9BW0Jd2HgkefuAQZZQMY++BuJoYRJI+NPk+RirNkJ3KFxk=
+	t=1764776937; cv=none; b=cyGCHJcVR5/FMNkDmFQj+bupXNJIvxbRtqiP9yqsrbgfTj8mLdJGwr5qMaj/N3J3OUwkFxQP4mSYm55fiN2UyFf5hmEbucHHEXpXf2QkiR1h7FFASpgTKSAOcZLdvuH7xNxrovffe+grVL51YCnbtMRqCg5iM9RmdsZKza84tsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779938; c=relaxed/simple;
-	bh=gkVfl1Bx4oUg8QPRGC1gQzwDMW2ge7X8wSPz+RvrtoE=;
+	s=arc-20240116; t=1764776937; c=relaxed/simple;
+	bh=/kejqO0JdP+TbbpKf/rwInw8JbMQdU9NUCVjjB6ccRU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iJTgIQ1UvE9IaFjk6SfGz/BCx8hg3X8hERzSOJg2w3Zao6EU/6EDmLykKv5pjvp3QMoSiXpBxfv5Dr/vHSYEF9QZtnbo4hW/8r9DymWo6w3JlAsTLpYjxUTet80u47puEjvNdX2xJLcoK57T4l8/DZMRG08iRTUaFkr4Q7C+AA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rygPpAQ9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92570C4CEF5;
-	Wed,  3 Dec 2025 16:38:57 +0000 (UTC)
+	 MIME-Version; b=ZsZoich6S5DUygpScRxqSCEmvtSX5Igs/yXgOQ9+mn4B+gbAzyQ22sRdjJaCVee2wfwBILVLofaecbD5NcvpWvBpfuBIY+IBd8k4GebFUaNQyHdo76L9qf07nbvL0TXG0iJNBv62vO6Qhq/yhXSLOGtLqoK+1/bDOqoEW/ot4Vc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2N6sPznz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF73CC4CEF5;
+	Wed,  3 Dec 2025 15:48:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779938;
-	bh=gkVfl1Bx4oUg8QPRGC1gQzwDMW2ge7X8wSPz+RvrtoE=;
+	s=korg; t=1764776937;
+	bh=/kejqO0JdP+TbbpKf/rwInw8JbMQdU9NUCVjjB6ccRU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rygPpAQ9lZgwgnucdTZl5GXU21tV5mJ27qGt1GCORVBPOIZjRLoz/cqIwJU/A7FHO
-	 nH+0C+Fn+yKdRJoY3fa38DNvhYIgP9+/1SWFcTmPOdUCJV0/7arqoYB3OHMX/22j8R
-	 XH6vj2ildpWsWr/amJ5Qrfs7lGQVucw1/N3sgD+0=
+	b=2N6sPznzlSNAyhSA9BI2NRLrhawAZ6wsnBIwqXfDv8vu3Tg1EoFF4ziKXjX8eXGk8
+	 0YiNU+iC1nL+PIkISoqRGkx6Ti/ox7pxOjewp7xC5M5wfki5kkKnLKwV95eSPyT+jy
+	 f4XlOyPCfE41yVGNwYgQ4boNZllD9FNbQpqGV8/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hansg@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.1 407/568] spi: Try to get ACPI GPIO IRQ earlier
+	Wei Fang <wei.fang@nxp.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 031/146] net: fec: do not update PEROUT if it is enabled
 Date: Wed,  3 Dec 2025 16:26:49 +0100
-Message-ID: <20251203152455.593585131@linuxfoundation.org>
+Message-ID: <20251203152347.612899443@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,60 +60,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hansg@kernel.org>
+From: Wei Fang <wei.fang@nxp.com>
 
-commit 3cd2018e15b3d66d2187d92867e265f45ad79e6f upstream.
+[ Upstream commit e97faa0c20ea8840f45569ba434e30538fff8fc9 ]
 
-Since commit d24cfee7f63d ("spi: Fix acpi deferred irq probe"), the
-acpi_dev_gpio_irq_get() call gets delayed till spi_probe() is called
-on the SPI device.
+If the previously set PEROUT is already active, updating it will cause
+the new PEROUT to start immediately instead of at the specified time.
+This is because fep->reload_period is updated whithout check whether
+the PEROUT is enabled, and the old PEROUT is not disabled. Therefore,
+the pulse period will be updated immediately in the pulse interrupt
+handler fec_pps_interrupt().
 
-If there is no driver for the SPI device then the move to spi_probe()
-results in acpi_dev_gpio_irq_get() never getting called. This may
-cause problems by leaving the GPIO pin floating because this call is
-responsible for setting up the GPIO pin direction and/or bias according
-to the values from the ACPI tables.
+Currently, the driver does not support directly updating PEROUT and it
+will make the logic be more complicated. To fix the current issue, add
+a check before enabling the PEROUT, the driver will return an error if
+PEROUT is enabled. If users wants to update a new PEROUT, they should
+disable the old PEROUT first.
 
-Re-add the removed acpi_dev_gpio_irq_get() in acpi_register_spi_device()
-to ensure the GPIO pin is always correctly setup, while keeping the
-acpi_dev_gpio_irq_get() call added to spi_probe() to deal with
--EPROBE_DEFER returns caused by the GPIO controller not having a driver
-yet.
-
-Link: https://bbs.archlinux.org/viewtopic.php?id=302348
-Fixes: d24cfee7f63d ("spi: Fix acpi deferred irq probe")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Link: https://patch.msgid.link/20251102190921.30068-1-hansg@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 350749b909bf ("net: fec: Add support for periodic output signal of PPS")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Link: https://patch.msgid.link/20251125085210.1094306-3-wei.fang@nxp.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/ethernet/freescale/fec.h     |  1 +
+ drivers/net/ethernet/freescale/fec_ptp.c | 43 ++++++++++++++++++------
+ 2 files changed, 34 insertions(+), 10 deletions(-)
 
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2707,6 +2707,16 @@ static acpi_status acpi_register_spi_dev
- 	acpi_set_modalias(adev, acpi_device_hid(adev), spi->modalias,
- 			  sizeof(spi->modalias));
+diff --git a/drivers/net/ethernet/freescale/fec.h b/drivers/net/ethernet/freescale/fec.h
+index 5c8fdcef759ba..2601e0b074dd6 100644
+--- a/drivers/net/ethernet/freescale/fec.h
++++ b/drivers/net/ethernet/freescale/fec.h
+@@ -680,6 +680,7 @@ struct fec_enet_private {
+ 	unsigned int reload_period;
+ 	int pps_enable;
+ 	unsigned int next_counter;
++	bool perout_enable;
+ 	struct hrtimer perout_timer;
+ 	u64 perout_stime;
  
-+	/*
-+	 * This gets re-tried in spi_probe() for -EPROBE_DEFER handling in case
-+	 * the GPIO controller does not have a driver yet. This needs to be done
-+	 * here too, because this call sets the GPIO direction and/or bias.
-+	 * Setting these needs to be done even if there is no driver, in which
-+	 * case spi_probe() will never get called.
-+	 */
-+	if (spi->irq < 0)
-+		spi->irq = acpi_dev_gpio_irq_get(adev, 0);
+diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
+index 7a5367ea94101..f31b1626c12f7 100644
+--- a/drivers/net/ethernet/freescale/fec_ptp.c
++++ b/drivers/net/ethernet/freescale/fec_ptp.c
+@@ -243,6 +243,7 @@ static int fec_ptp_pps_perout(struct fec_enet_private *fep)
+ 	 * the FEC_TCCR register in time and missed the start time.
+ 	 */
+ 	if (fep->perout_stime < curr_time + 100 * NSEC_PER_MSEC) {
++		fep->perout_enable = false;
+ 		dev_err(&fep->pdev->dev, "Current time is too close to the start time!\n");
+ 		spin_unlock_irqrestore(&fep->tmreg_lock, flags);
+ 		return -1;
+@@ -500,6 +501,7 @@ static int fec_ptp_pps_disable(struct fec_enet_private *fep, uint channel)
+ 	hrtimer_cancel(&fep->perout_timer);
+ 
+ 	spin_lock_irqsave(&fep->tmreg_lock, flags);
++	fep->perout_enable = false;
+ 	writel(0, fep->hwp + FEC_TCSR(channel));
+ 	spin_unlock_irqrestore(&fep->tmreg_lock, flags);
+ 
+@@ -531,6 +533,8 @@ static int fec_ptp_enable(struct ptp_clock_info *ptp,
+ 
+ 		return ret;
+ 	} else if (rq->type == PTP_CLK_REQ_PEROUT) {
++		u32 reload_period;
 +
- 	acpi_device_set_enumerated(adev);
+ 		/* Reject requests with unsupported flags */
+ 		if (rq->perout.flags)
+ 			return -EOPNOTSUPP;
+@@ -550,12 +554,14 @@ static int fec_ptp_enable(struct ptp_clock_info *ptp,
+ 			return -EOPNOTSUPP;
+ 		}
  
- 	adev->power.flags.ignore_parent = true;
+-		fep->reload_period = div_u64(period_ns, 2);
+-		if (on && fep->reload_period) {
++		reload_period = div_u64(period_ns, 2);
++		if (on && reload_period) {
++			u64 perout_stime;
++
+ 			/* Convert 1588 timestamp to ns*/
+ 			start_time.tv_sec = rq->perout.start.sec;
+ 			start_time.tv_nsec = rq->perout.start.nsec;
+-			fep->perout_stime = timespec64_to_ns(&start_time);
++			perout_stime = timespec64_to_ns(&start_time);
+ 
+ 			mutex_lock(&fep->ptp_clk_mutex);
+ 			if (!fep->ptp_clk_on) {
+@@ -564,18 +570,35 @@ static int fec_ptp_enable(struct ptp_clock_info *ptp,
+ 				return -EOPNOTSUPP;
+ 			}
+ 			spin_lock_irqsave(&fep->tmreg_lock, flags);
++
++			if (fep->perout_enable) {
++				dev_err(&fep->pdev->dev,
++					"PEROUT has been enabled\n");
++				ret = -EBUSY;
++				goto unlock;
++			}
++
+ 			/* Read current timestamp */
+ 			curr_time = timecounter_read(&fep->tc);
+-			spin_unlock_irqrestore(&fep->tmreg_lock, flags);
+-			mutex_unlock(&fep->ptp_clk_mutex);
++			if (perout_stime <= curr_time) {
++				dev_err(&fep->pdev->dev,
++					"Start time must be greater than current time\n");
++				ret = -EINVAL;
++				goto unlock;
++			}
+ 
+ 			/* Calculate time difference */
+-			delta = fep->perout_stime - curr_time;
++			delta = perout_stime - curr_time;
++			fep->reload_period = reload_period;
++			fep->perout_stime = perout_stime;
++			fep->perout_enable = true;
+ 
+-			if (fep->perout_stime <= curr_time) {
+-				dev_err(&fep->pdev->dev, "Start time must larger than current time!\n");
+-				return -EINVAL;
+-			}
++unlock:
++			spin_unlock_irqrestore(&fep->tmreg_lock, flags);
++			mutex_unlock(&fep->ptp_clk_mutex);
++
++			if (ret)
++				return ret;
+ 
+ 			/* Because the timer counter of FEC only has 31-bits, correspondingly,
+ 			 * the time comparison register FEC_TCCR also only low 31 bits can be
+-- 
+2.51.0
+
 
 
 
