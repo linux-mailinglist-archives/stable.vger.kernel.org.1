@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-199414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1130CA0CAF
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:09:54 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9CE4C9FCB3
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:05:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 32E37309C2D8
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:05:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 350063001BE1
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:05:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C87FC355810;
-	Wed,  3 Dec 2025 16:35:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3FEE313546;
+	Wed,  3 Dec 2025 16:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PTGGkNPl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g4ap9zUQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84931352FBB;
-	Wed,  3 Dec 2025 16:35:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E58331355B;
+	Wed,  3 Dec 2025 16:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779722; cv=none; b=J4WXllM15d8yv1WJ/fHCiQZryQNtQug3LoyTrvpD9TfBLVKsDHLPh9r5/e65mx6SZ1qcIbWdNLK4NGswf2Y8NZHG6MI4Pk/qppBGym/Ydj4rDG8KKQty/WAgV7MMjyidVS6lajkOyf2ENFU0vy9Ewb/YRE+Ol3rQ4xReEGRa6S8=
+	t=1764777942; cv=none; b=hwV3tzX5HgCfHAXhax6g/PQ+GdBrYHxSrG4Thr0c6H+nM37xKjkzpeVUr8xcEo5bu/pL94OsSHLcRoyS3Hp0OaLB8YzgK4ePXbpFWkob80ylcw54hBbE5VYlQHm9Q/7XjGxvxHKHmy33mP2uLATQVWZqtjGbCvo0zKi8kFc2sQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779722; c=relaxed/simple;
-	bh=BbevHUn2fCDgvPtPXTZPw1xw6ftRt4NcgHqRHAnB8Vk=;
+	s=arc-20240116; t=1764777942; c=relaxed/simple;
+	bh=0NkvnHbMiSHxeDgF2Lyw5V4VVLo5m1Ao/gpjO33dMj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ObB3M4PROLbBrbRb9fASOheVXVse6XU9n7C/bBr7BhnGSekPqs0VfIRGA02CMp8PSFhc4CxHX6P80fV3WKfEwQZ/cPtjYoWI1Yv14Nf2TjTd5CxYnoMChd6mmvaoYx1B6ZLjL+nFrd8nhcIA6vA9tKIiotwxs+jGHAg8zFdPIyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PTGGkNPl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5BEFC4CEF5;
-	Wed,  3 Dec 2025 16:35:21 +0000 (UTC)
+	 MIME-Version; b=YtY7Bk92ZVxzFKGz58tEXDS5cwC71OBF7d1maRXRq97TFy89hYn1LghQ/jh0PdEgr24Tae/MVt8IRYfFWjINn5aSvPNZloca2/Ue5EQEtB2mTap8aOn71x80h95nYddZ5xUCzrYxtxHm+uugB36Rb0a4geJVrRa4uLHmV/bzl0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g4ap9zUQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBEF1C116B1;
+	Wed,  3 Dec 2025 16:05:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779722;
-	bh=BbevHUn2fCDgvPtPXTZPw1xw6ftRt4NcgHqRHAnB8Vk=;
+	s=korg; t=1764777942;
+	bh=0NkvnHbMiSHxeDgF2Lyw5V4VVLo5m1Ao/gpjO33dMj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PTGGkNPljQrEor/fFM2eOxo9/aIlDGuVlT/eIXj5zEHNGXlzJoJLvKlcImc96C/KS
-	 6YHxsk6iYsY26pt3qqlykokYa01+bjSVMEFY6Zn91S8UFyanhLE2s9GaqLKj3IBjyT
-	 sfVllVVOo+5yKuUMhRfUdSt5NqeEVJ7YnFcj/TrU=
+	b=g4ap9zUQvjnE+PagFk9p0pewlN9ooCcuBT+3MdWVAHk1psw5fTxz9Iv85sVTC+MZz
+	 POZw15HBE8vdyaX6GKbsu3vnUOKlfVlYXwHoWLRU27uNGxjybgjLBD1VaL6b6IEOIy
+	 d8e9HDnH7GIux7J6QpYM4fIe4orpC0PwIpocYbs8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Watt <jpewhacker@gmail.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Josua Mayer <josua@solid-run.com>,
+	Bruno Thomsen <bruno.thomsen@gmail.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 341/568] NFS4: Fix state renewals missing after boot
-Date: Wed,  3 Dec 2025 16:25:43 +0100
-Message-ID: <20251203152453.196173498@linuxfoundation.org>
+Subject: [PATCH 5.15 194/392] rtc: pcf2127: clear minute/second interrupt
+Date: Wed,  3 Dec 2025 16:25:44 +0100
+Message-ID: <20251203152421.213681608@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +61,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Watt <jpewhacker@gmail.com>
+From: Josua Mayer <josua@solid-run.com>
 
-[ Upstream commit 9bb3baa9d1604cd20f49ae7dac9306b4037a0e7a ]
+[ Upstream commit a6f1a4f05970664004a9370459c6799c1b2f2dcf ]
 
-Since the last renewal time was initialized to 0 and jiffies start
-counting at -5 minutes, any clients connected in the first 5 minutes
-after a reboot would have their renewal timer set to a very long
-interval. If the connection was idle, this would result in the client
-state timing out on the server and the next call to the server would
-return NFS4ERR_BADSESSION.
+PCF2127 can generate interrupt every full second or minute configured
+from control and status register 1, bits MI (1) and SI (0).
 
-Fix this by initializing the last renewal time to the current jiffies
-instead of 0.
+On interrupt control register 2 bit MSF (7) is set and must be cleared
+to continue normal operation.
 
-Signed-off-by: Joshua Watt <jpewhacker@gmail.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+While the driver never enables this interrupt on its own, users or
+firmware may do so - e.g. as an easy way to test the interrupt.
+
+Add preprocessor definition for MSF bit and include it in the irq
+bitmask to ensure minute and second interrupts are cleared when fired.
+
+This fixes an issue where the rtc enters a test mode and becomes
+unresponsive after a second interrupt has fired and is not cleared in
+time. In this state register writes to control registers have no
+effect and the interrupt line is kept asserted [1]:
+
+[1] userspace commands to put rtc into unresponsive state:
+$ i2cget -f -y 2 0x51 0x00
+0x04
+$ i2cset -f -y 2 0x51 0x00 0x05 # set bit 0 SI
+$ i2cget -f -y 2 0x51 0x00
+0x84 # bit 8 EXT_TEST set
+$ i2cset -f -y 2 0x51 0x00 0x05 # try overwrite control register
+$ i2cget -f -y 2 0x51 0x00
+0x84 # no change
+
+Signed-off-by: Josua Mayer <josua@solid-run.com>
+Reviewed-by: Bruno Thomsen <bruno.thomsen@gmail.com>
+Link: https://lore.kernel.org/r/20250825-rtc-irq-v1-1-0133319406a7@solid-run.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4client.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/rtc/rtc-pcf2127.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfs/nfs4client.c b/fs/nfs/nfs4client.c
-index 6b14e4af25d37..4cb405e343b83 100644
---- a/fs/nfs/nfs4client.c
-+++ b/fs/nfs/nfs4client.c
-@@ -221,6 +221,7 @@ struct nfs_client *nfs4_alloc_client(const struct nfs_client_initdata *cl_init)
- 	clp->cl_state = 1 << NFS4CLNT_LEASE_EXPIRED;
- 	clp->cl_mvops = nfs_v4_minor_ops[cl_init->minorversion];
- 	clp->cl_mig_gen = 1;
-+	clp->cl_last_renewal = jiffies;
- #if IS_ENABLED(CONFIG_NFS_V4_1)
- 	init_waitqueue_head(&clp->cl_lock_waitq);
- #endif
+diff --git a/drivers/rtc/rtc-pcf2127.c b/drivers/rtc/rtc-pcf2127.c
+index 43f8011070952..f12d854d67b5e 100644
+--- a/drivers/rtc/rtc-pcf2127.c
++++ b/drivers/rtc/rtc-pcf2127.c
+@@ -35,6 +35,7 @@
+ #define PCF2127_BIT_CTRL2_AF			BIT(4)
+ #define PCF2127_BIT_CTRL2_TSF2			BIT(5)
+ #define PCF2127_BIT_CTRL2_WDTF			BIT(6)
++#define PCF2127_BIT_CTRL2_MSF			BIT(7)
+ /* Control register 3 */
+ #define PCF2127_REG_CTRL3		0x02
+ #define PCF2127_BIT_CTRL3_BLIE			BIT(0)
+@@ -99,7 +100,8 @@
+ #define PCF2127_CTRL2_IRQ_MASK ( \
+ 		PCF2127_BIT_CTRL2_AF | \
+ 		PCF2127_BIT_CTRL2_WDTF | \
+-		PCF2127_BIT_CTRL2_TSF2)
++		PCF2127_BIT_CTRL2_TSF2 | \
++		PCF2127_BIT_CTRL2_MSF)
+ 
+ struct pcf2127 {
+ 	struct rtc_device *rtc;
 -- 
 2.51.0
 
