@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D5A7CA0E64
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:20:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AF3DCA084E
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:36:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6C8B832CA7D6
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:17:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 10414339B87C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:17:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60EC6345CC9;
-	Wed,  3 Dec 2025 16:40:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7031032D0DC;
+	Wed,  3 Dec 2025 16:10:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KHkBL3CA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xje1v5Ax"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B188345CB1;
-	Wed,  3 Dec 2025 16:40:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB5832C323;
+	Wed,  3 Dec 2025 16:10:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780020; cv=none; b=XNiHUt31JG8+duW6vKkESEaTdBW3Y3/HsneAd8wzWl4/wOmu5/eKPXzSZcS9KMTedZIy91oRfh4E1onpDSYcTCTx07K+dLnQkdnspqxq5HqEAGJuB5p31t/rGGpPe3MwhACTD3vp1qT8ajqy1gcSxD6QcVSUJRCzdkF8kE06ayE=
+	t=1764778232; cv=none; b=TckGHS26cHCbuTN803iGNB/rEGgUGgklr1Asy/XOZnLMc9XKPSToNTzRjdV62eCaQbCari91Rg1LprlUTQZEG6Il/8hMiLgM0YWbxcrFvmywwXqj68q8BYcRw3XP6IZOaCdJjflzCsCEPkSl2JI9tS9fEJpR8mp5/+yCm5UHzzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780020; c=relaxed/simple;
-	bh=akWpeLf2YEY6uvBYdLV9MpeTkU8MDLFC+kGYBXOpugI=;
+	s=arc-20240116; t=1764778232; c=relaxed/simple;
+	bh=6Ip/ZlKcANsA6pjogT9jq7P3JIzgxB0YC6BbxAiyv9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jf1szDFZsEtcT5UlZ0qx+8i1wEb1BinPJBjIfRGPalKu6SZ2HKCw/svjfSbn/a1WhVLtltLqqW6WBKcJXOqc+HURIo6D3D/FwrcaqEb9zs9R4NuZLQJijQWA/5Hocdhmwr98neTdV9k8QLWu2HLCQsM/cKI5/4WShzYwd6gxMJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KHkBL3CA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 823D1C4CEF5;
-	Wed,  3 Dec 2025 16:40:19 +0000 (UTC)
+	 MIME-Version; b=MrBa/f8bDmMmxKFWXYnSEs5Qs3/24EYx/jRv+pv5pqEOe3SROfIpVKICGL6KswVsMf63oFmOcX08agsqT/sldfTLPM2/eSaU9grCq9yZiLBilIdojWV0F73i7frh3S51Z4Ru2EKPB9I9Bu+hInUkBj+THT9jE76izxRTASNFXmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xje1v5Ax; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74001C4CEF5;
+	Wed,  3 Dec 2025 16:10:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780020;
-	bh=akWpeLf2YEY6uvBYdLV9MpeTkU8MDLFC+kGYBXOpugI=;
+	s=korg; t=1764778231;
+	bh=6Ip/ZlKcANsA6pjogT9jq7P3JIzgxB0YC6BbxAiyv9c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KHkBL3CAqCpiyWJaPtsNW0joha4pUkaPR3p1iLBCdhf1j64pE+7U85Z8JwGBENQTl
-	 G1+KDVcwyap5nK4GkarLqDuN7GbfCQUwQBCpWflgOV0af1f7pC2y+UjfYKQps1fXG1
-	 FjseTP6qnRhrF+kSDNQYYNL+0WUSopVCu6CFW54Y=
+	b=Xje1v5Ax6d1l8sof/D3Vxr2mjftYrfbWo+QvkGVzos4SvjGxgkeDG88yeqvT6MmA6
+	 e21b8FQ/TbSXUNMEthMSEj0VN5XsLv86JE3Qled+tird5b/z6UO4tYETsYa+zI1RBr
+	 jkEq3VjolDHWWAUr2BkNxYlUEUC4HLBWnZijXQ8Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Subject: [PATCH 6.1 432/568] mptcp: Disallow MPTCP subflows from sockmap
+	Christoph Hellwig <hch@lst.de>,
+	Yongpeng Yang <yangyongpeng@xiaomi.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.15 284/392] exfat: check return value of sb_min_blocksize in exfat_read_boot_sector
 Date: Wed,  3 Dec 2025 16:27:14 +0100
-Message-ID: <20251203152456.519364651@linuxfoundation.org>
+Message-ID: <20251203152424.609325661@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,85 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Yongpeng Yang <yangyongpeng@xiaomi.com>
 
-commit fbade4bd08ba52cbc74a71c4e86e736f059f99f7 upstream.
+commit f2c1f631630e01821fe4c3fdf6077bc7a8284f82 upstream.
 
-The sockmap feature allows bpf syscall from userspace, or based on bpf
-sockops, replacing the sk_prot of sockets during protocol stack processing
-with sockmap's custom read/write interfaces.
-'''
-tcp_rcv_state_process()
-  subflow_syn_recv_sock()
-    tcp_init_transfer(BPF_SOCK_OPS_PASSIVE_ESTABLISHED_CB)
-      bpf_skops_established       <== sockops
-        bpf_sock_map_update(sk)   <== call bpf helper
-          tcp_bpf_update_proto()  <== update sk_prot
-'''
-Consider two scenarios:
+sb_min_blocksize() may return 0. Check its return value to avoid
+accessing the filesystem super block when sb->s_blocksize is 0.
 
-1. When the server has MPTCP enabled and the client also requests MPTCP,
-   the sk passed to the BPF program is a subflow sk. Since subflows only
-   handle partial data, replacing their sk_prot is meaningless and will
-   cause traffic disruption.
-
-2. When the server has MPTCP enabled but the client sends a TCP SYN
-   without MPTCP, subflow_syn_recv_sock() performs a fallback on the
-   subflow, replacing the subflow sk's sk_prot with the native sk_prot.
-   '''
-   subflow_ulp_fallback()
-    subflow_drop_ctx()
-      mptcp_subflow_ops_undo_override()
-   '''
-   Subsequently, accept::mptcp_stream_accept::mptcp_fallback_tcp_ops()
-   converts the subflow to plain TCP.
-
-For the first case, we should prevent it from being combined with sockmap
-by setting sk_prot->psock_update_sk_prot to NULL, which will be blocked by
-sockmap's own flow.
-
-For the second case, since subflow_syn_recv_sock() has already restored
-sk_prot to native tcp_prot/tcpv6_prot, no further action is needed.
-
-Fixes: cec37a6e41aa ("mptcp: Handle MP_CAPABLE options for outgoing connections")
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20251111060307.194196-2-jiayuan.chen@linux.dev
+Cc: stable@vger.kernel.org # v6.15
+Fixes: 719c1e1829166d ("exfat: add super block operations")
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
+Link: https://patch.msgid.link/20251104125009.2111925-3-yangyongpeng.storage@gmail.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/subflow.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/exfat/super.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -1997,6 +1997,10 @@ void __init mptcp_subflow_init(void)
- 	tcp_prot_override = tcp_prot;
- 	tcp_prot_override.release_cb = tcp_release_cb_override;
- 	tcp_prot_override.diag_destroy = tcp_abort_override;
-+#ifdef CONFIG_BPF_SYSCALL
-+	/* Disable sockmap processing for subflows */
-+	tcp_prot_override.psock_update_sk_prot = NULL;
-+#endif
+--- a/fs/exfat/super.c
++++ b/fs/exfat/super.c
+@@ -416,7 +416,10 @@ static int exfat_read_boot_sector(struct
+ 	struct exfat_sb_info *sbi = EXFAT_SB(sb);
  
- #if IS_ENABLED(CONFIG_MPTCP_IPV6)
- 	/* In struct mptcp_subflow_request_sock, we assume the TCP request sock
-@@ -2033,6 +2037,10 @@ void __init mptcp_subflow_init(void)
- 	tcpv6_prot_override = tcpv6_prot;
- 	tcpv6_prot_override.release_cb = tcp_release_cb_override;
- 	tcpv6_prot_override.diag_destroy = tcp_abort_override;
-+#ifdef CONFIG_BPF_SYSCALL
-+	/* Disable sockmap processing for subflows */
-+	tcpv6_prot_override.psock_update_sk_prot = NULL;
-+#endif
- #endif
+ 	/* set block size to read super block */
+-	sb_min_blocksize(sb, 512);
++	if (!sb_min_blocksize(sb, 512)) {
++		exfat_err(sb, "unable to set blocksize");
++		return -EINVAL;
++	}
  
- 	mptcp_diag_subflow_init(&subflow_ulp_ops);
+ 	/* read boot sector */
+ 	sbi->boot_bh = sb_bread(sb, 0);
 
 
 
