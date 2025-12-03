@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21B2AC9F9A1
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:44:35 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A27F7C9FD37
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:08:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A06893002D1B
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:39:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C900730047BF
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:08:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7394B30F93B;
-	Wed,  3 Dec 2025 15:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3592434F484;
+	Wed,  3 Dec 2025 16:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fhHQru6j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KlCiEYm9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30BC630B520;
-	Wed,  3 Dec 2025 15:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E683A32E13E;
+	Wed,  3 Dec 2025 16:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776353; cv=none; b=dFTULJYWQl4+Patks+8OKTFVbziLZhKhRjSn/KdJnMbENlTSnU1CGRBKzl7ex9TFTqb0yG+5Mf+s7VsXUaz/KYyOI2dZSxR18GoR5m1XkjiErj/o0kdyFcYGRuJv1TNVlIbVV1DExHW4jKlVYhRr6MDk/cV16vLMU19asAwWtQA=
+	t=1764778101; cv=none; b=HeQeVe/6KrpTA8FN1DOYwDjCPRmiDxDlInkUJ0lZzYGlrL06Bs2zNeYxXTPn0u1e/MggKgB1YUE0xV6s9GXZWEDuK3dCYOd18Txd0QYV5bFPraLEPK8tDloV1DZyFb0DU4A8gOyhlgy/u2MrbOYV57LhPx7smKEmY1HS8gUWWY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776353; c=relaxed/simple;
-	bh=DywWd+Nc4yoVd2fLiVoo83IzEfN0SF87j3nlI6KvpOQ=;
+	s=arc-20240116; t=1764778101; c=relaxed/simple;
+	bh=jINz+BTwM+hiXB7ZM/gtb+k26Eg8vVJfNalI6kH4pbg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZDf2EFSuq6WUhXqY71C6iS6ggbG1XHAUr5fi/Zp18iZlUgogAvLpEyG37s8vNXQO0bX1kPfTpihy3stJYtbRatXGt8GifuX3q7d4UVM7Y1bEwRTIxRjmzheX3KWLoiOtWyI2oUXCi4JWrtEmbXblF/QWzAGQeu6U2DfhC5uadQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fhHQru6j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94A6FC4CEF5;
-	Wed,  3 Dec 2025 15:39:12 +0000 (UTC)
+	 MIME-Version; b=SPe2BSIA0K1G657Ab2+BKuAxVNtBQmoRH5kqTlxTiVzkRdvarkvxoCvJ9gDDmdqXrRacwK+rxrWO/etaiWop6jvaZTDaRaXwWAcpC+trjIh/QJwAOga1KSClqdN1ZPW+hefRORwyN/KSEP/194UgJ5mX7lYZAMXtXRiOqF2DG1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KlCiEYm9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CBE5C4CEF5;
+	Wed,  3 Dec 2025 16:08:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776353;
-	bh=DywWd+Nc4yoVd2fLiVoo83IzEfN0SF87j3nlI6KvpOQ=;
+	s=korg; t=1764778100;
+	bh=jINz+BTwM+hiXB7ZM/gtb+k26Eg8vVJfNalI6kH4pbg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fhHQru6jCiY4gacZUJ/87d/+nB3PJEBcbOtpyaVKyTPQmZXcyqDqwiDP+ziB0L5NW
-	 s3oD3PoykX+BDCJIoNd90wGitOx+im+tUUdk856J4CzZZErWSR+Sulw6ggCvrlJmET
-	 lk+Zmc1Lyvkbs91DT4L4pdUltbriP61O0FI6D1Pc=
+	b=KlCiEYm9NV20ab+X6Bq3KvO+G81bIpEl5t8A185ypVHoUjZ4+2/EJX6Je1tXCswHk
+	 rDCCu/xVyt/QBmlxMIOndiGy5onvGQGwx9Mrhy3/IB36DYraE/zs+Azf+4APk2KA46
+	 /aj8fFIesCxp3B9yf+pealygzFS2148WBqZQ3HA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Richard Gobert <richardbgobert@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 157/300] ALSA: hda/realtek: Audio disappears on HP 15-fc000 after warm boot again
+Subject: [PATCH 5.15 211/392] selftests/net: fix GRO coalesce test and add ext header coalesce tests
 Date: Wed,  3 Dec 2025 16:26:01 +0100
-Message-ID: <20251203152406.433752455@linuxfoundation.org>
+Message-ID: <20251203152421.836141469@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,75 +61,201 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Richard Gobert <richardbgobert@gmail.com>
 
-[ Upstream commit f4b3cef55f5f96fdb4e7f9ca90b7d6213689faeb ]
+[ Upstream commit 4e321d590cec6053cb3c566413794706035ee638 ]
 
-There was a similar bug in the past (Bug 217440), which was fixed for
-this laptop.
-The same issue is occurring again as of kernel v.6.12.2. The symptoms
-are very similar - initially audio works but after a warm reboot, the
-audio completely disappears until the computer is powered off (there
-is no audio output at all).
+Currently there is no test which checks that IPv6 extension header packets
+successfully coalesce. This commit adds a test, which verifies two IPv6
+packets with HBH extension headers do coalesce, and another test which
+checks that packets with different extension header data do not coalesce
+in GRO.
 
-The issue is also related by caused by a different change now. By
-bisecting different kernel versions, I found that reverting
-cc3d0b5dd989 in patch_realtek.c[*] restores the sound and it works
-fine after the reboot.
+I changed the receive socket filter to accept a packet with one extension
+header. This change exposed a bug in the fragment test -- the old BPF did
+not accept the fragment packet. I updated correct_num_packets in the
+fragment test accordingly.
 
-[*] https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/sound/pci/hda/patch_realtek.c?h=v6.12.2&id=4ed7f16070a8475c088ff423b2eb11ba15eb89b6
-
-[ patch description reformatted by tiwai ]
-
-Fixes: cc3d0b5dd989 ("ALSA: hda/realtek: Update ALC256 depop procedure")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220109
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Link: https://lore.kernel.org/5317ca723c82447a938414fcca85cbf5@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Richard Gobert <richardbgobert@gmail.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://lore.kernel.org/r/69282fed-2415-47e8-b3d3-34939ec3eb56@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: f8e8486702ab ("selftests/net: use destination options instead of hop-by-hop")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ tools/testing/selftests/net/gro.c | 93 +++++++++++++++++++++++++++++--
+ 1 file changed, 87 insertions(+), 6 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 84dde97424080..a9c71f38710ed 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -3637,6 +3637,15 @@ static void alc256_shutup(struct hda_codec *codec)
- 		hp_pin = 0x21;
- 
- 	alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x1); /* Low power */
+diff --git a/tools/testing/selftests/net/gro.c b/tools/testing/selftests/net/gro.c
+index 687ab5e7cecf1..a6cf29c2c9318 100644
+--- a/tools/testing/selftests/net/gro.c
++++ b/tools/testing/selftests/net/gro.c
+@@ -74,6 +74,12 @@
+ #define MAX_PAYLOAD (IP_MAXPACKET - sizeof(struct tcphdr) - sizeof(struct ipv6hdr))
+ #define NUM_LARGE_PKT (MAX_PAYLOAD / MSS)
+ #define MAX_HDR_LEN (ETH_HLEN + sizeof(struct ipv6hdr) + sizeof(struct tcphdr))
++#define MIN_EXTHDR_SIZE 8
++#define EXT_PAYLOAD_1 "\x00\x00\x00\x00\x00\x00"
++#define EXT_PAYLOAD_2 "\x11\x11\x11\x11\x11\x11"
 +
-+	/* 3k pull low control for Headset jack. */
-+	/* NOTE: call this before clearing the pin, otherwise codec stalls */
-+	/* If disable 3k pulldown control for alc257, the Mic detection will not work correctly
-+	 * when booting with headset plugged. So skip setting it for the codec alc257
++#define ipv6_optlen(p)  (((p)->hdrlen+1) << 3) /* calculate IPv6 extension header len */
++#define BUILD_BUG_ON(condition) ((void)sizeof(char[1 - 2*!!(condition)]))
+ 
+ static int proto = -1;
+ static uint8_t src_mac[ETH_ALEN], dst_mac[ETH_ALEN];
+@@ -103,7 +109,7 @@ static void setup_sock_filter(int fd)
+ 	const int dport_off = tcp_offset + offsetof(struct tcphdr, dest);
+ 	const int ethproto_off = offsetof(struct ethhdr, h_proto);
+ 	int optlen = 0;
+-	int ipproto_off;
++	int ipproto_off, opt_ipproto_off;
+ 	int next_off;
+ 
+ 	if (proto == PF_INET)
+@@ -115,14 +121,30 @@ static void setup_sock_filter(int fd)
+ 	if (strcmp(testname, "ip") == 0) {
+ 		if (proto == PF_INET)
+ 			optlen = sizeof(struct ip_timestamp);
+-		else
+-			optlen = sizeof(struct ip6_frag);
++		else {
++			BUILD_BUG_ON(sizeof(struct ip6_hbh) > MIN_EXTHDR_SIZE);
++			BUILD_BUG_ON(sizeof(struct ip6_dest) > MIN_EXTHDR_SIZE);
++			BUILD_BUG_ON(sizeof(struct ip6_frag) > MIN_EXTHDR_SIZE);
++
++			/* same size for HBH and Fragment extension header types */
++			optlen = MIN_EXTHDR_SIZE;
++			opt_ipproto_off = ETH_HLEN + sizeof(struct ipv6hdr)
++				+ offsetof(struct ip6_ext, ip6e_nxt);
++		}
+ 	}
+ 
++	/* this filter validates the following:
++	 *	- packet is IPv4/IPv6 according to the running test.
++	 *	- packet is TCP. Also handles the case of one extension header and then TCP.
++	 *	- checks the packet tcp dport equals to DPORT. Also handles the case of one
++	 *	  extension header and then TCP.
 +	 */
-+	if (spec->en_3kpull_low)
-+		alc_update_coef_idx(codec, 0x46, 0, 3 << 12);
+ 	struct sock_filter filter[] = {
+ 			BPF_STMT(BPF_LD  + BPF_H   + BPF_ABS, ethproto_off),
+-			BPF_JUMP(BPF_JMP + BPF_JEQ + BPF_K, ntohs(ethhdr_proto), 0, 7),
++			BPF_JUMP(BPF_JMP + BPF_JEQ + BPF_K, ntohs(ethhdr_proto), 0, 9),
+ 			BPF_STMT(BPF_LD  + BPF_B   + BPF_ABS, ipproto_off),
++			BPF_JUMP(BPF_JMP + BPF_JEQ + BPF_K, IPPROTO_TCP, 2, 0),
++			BPF_STMT(BPF_LD  + BPF_B   + BPF_ABS, opt_ipproto_off),
+ 			BPF_JUMP(BPF_JMP + BPF_JEQ + BPF_K, IPPROTO_TCP, 0, 5),
+ 			BPF_STMT(BPF_LD  + BPF_H   + BPF_ABS, dport_off),
+ 			BPF_JUMP(BPF_JMP + BPF_JEQ + BPF_K, DPORT, 2, 0),
+@@ -575,6 +597,39 @@ static void add_ipv4_ts_option(void *buf, void *optpkt)
+ 	iph->check = checksum_fold(iph, sizeof(struct iphdr) + optlen, 0);
+ }
+ 
++static void add_ipv6_exthdr(void *buf, void *optpkt, __u8 exthdr_type, char *ext_payload)
++{
++	struct ipv6_opt_hdr *exthdr = (struct ipv6_opt_hdr *)(optpkt + tcp_offset);
++	struct ipv6hdr *iph = (struct ipv6hdr *)(optpkt + ETH_HLEN);
++	char *exthdr_payload_start = (char *)(exthdr + 1);
 +
- 	hp_pin_sense = snd_hda_jack_detect(codec, hp_pin);
- 
- 	if (hp_pin_sense) {
-@@ -3647,14 +3656,6 @@ static void alc256_shutup(struct hda_codec *codec)
- 
- 		msleep(75);
- 
--	/* 3k pull low control for Headset jack. */
--	/* NOTE: call this before clearing the pin, otherwise codec stalls */
--	/* If disable 3k pulldown control for alc257, the Mic detection will not work correctly
--	 * when booting with headset plugged. So skip setting it for the codec alc257
--	 */
--		if (spec->en_3kpull_low)
--			alc_update_coef_idx(codec, 0x46, 0, 3 << 12);
++	exthdr->hdrlen = 0;
++	exthdr->nexthdr = IPPROTO_TCP;
++
++	memcpy(exthdr_payload_start, ext_payload, MIN_EXTHDR_SIZE - sizeof(*exthdr));
++
++	memcpy(optpkt, buf, tcp_offset);
++	memcpy(optpkt + tcp_offset + MIN_EXTHDR_SIZE, buf + tcp_offset,
++		sizeof(struct tcphdr) + PAYLOAD_LEN);
++
++	iph->nexthdr = exthdr_type;
++	iph->payload_len = htons(ntohs(iph->payload_len) + MIN_EXTHDR_SIZE);
++}
++
++static void send_ipv6_exthdr(int fd, struct sockaddr_ll *daddr, char *ext_data1, char *ext_data2)
++{
++	static char buf[MAX_HDR_LEN + PAYLOAD_LEN];
++	static char exthdr_pck[sizeof(buf) + MIN_EXTHDR_SIZE];
++
++	create_packet(buf, 0, 0, PAYLOAD_LEN, 0);
++	add_ipv6_exthdr(buf, exthdr_pck, IPPROTO_HOPOPTS, ext_data1);
++	write_packet(fd, exthdr_pck, total_hdr_len + PAYLOAD_LEN + MIN_EXTHDR_SIZE, daddr);
++
++	create_packet(buf, PAYLOAD_LEN * 1, 0, PAYLOAD_LEN, 0);
++	add_ipv6_exthdr(buf, exthdr_pck, IPPROTO_HOPOPTS, ext_data2);
++	write_packet(fd, exthdr_pck, total_hdr_len + PAYLOAD_LEN + MIN_EXTHDR_SIZE, daddr);
++}
++
+ /* IPv4 options shouldn't coalesce */
+ static void send_ip_options(int fd, struct sockaddr_ll *daddr)
+ {
+@@ -696,7 +751,7 @@ static void send_fragment6(int fd, struct sockaddr_ll *daddr)
+ 		create_packet(buf, PAYLOAD_LEN * i, 0, PAYLOAD_LEN, 0);
+ 		write_packet(fd, buf, bufpkt_len, daddr);
+ 	}
 -
- 		if (!spec->no_shutup_pins)
- 			snd_hda_codec_write(codec, hp_pin, 0,
- 				    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
++	sleep(1);
+ 	create_packet(buf, PAYLOAD_LEN * 2, 0, PAYLOAD_LEN, 0);
+ 	memset(extpkt, 0, extpkt_len);
+ 
+@@ -759,6 +814,7 @@ static void check_recv_pkts(int fd, int *correct_payload,
+ 	vlog("}, Total %d packets\nReceived {", correct_num_pkts);
+ 
+ 	while (1) {
++		ip_ext_len = 0;
+ 		pkt_size = recv(fd, buffer, IP_MAXPACKET + ETH_HLEN + 1, 0);
+ 		if (pkt_size < 0)
+ 			error(1, errno, "could not receive");
+@@ -766,7 +822,7 @@ static void check_recv_pkts(int fd, int *correct_payload,
+ 		if (iph->version == 4)
+ 			ip_ext_len = (iph->ihl - 5) * 4;
+ 		else if (ip6h->version == 6 && ip6h->nexthdr != IPPROTO_TCP)
+-			ip_ext_len = sizeof(struct ip6_frag);
++			ip_ext_len = MIN_EXTHDR_SIZE;
+ 
+ 		tcph = (struct tcphdr *)(buffer + tcp_offset + ip_ext_len);
+ 
+@@ -887,7 +943,21 @@ static void gro_sender(void)
+ 			sleep(1);
+ 			write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
+ 		} else if (proto == PF_INET6) {
++			sleep(1);
+ 			send_fragment6(txfd, &daddr);
++			sleep(1);
++			write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
++
++			sleep(1);
++			/* send IPv6 packets with ext header with same payload */
++			send_ipv6_exthdr(txfd, &daddr, EXT_PAYLOAD_1, EXT_PAYLOAD_1);
++			sleep(1);
++			write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
++
++			sleep(1);
++			/* send IPv6 packets with ext header with different payload */
++			send_ipv6_exthdr(txfd, &daddr, EXT_PAYLOAD_1, EXT_PAYLOAD_2);
++			sleep(1);
+ 			write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
+ 		}
+ 	} else if (strcmp(testname, "large") == 0) {
+@@ -1004,6 +1074,17 @@ static void gro_receiver(void)
+ 			 */
+ 			printf("fragmented ip6 doesn't coalesce: ");
+ 			correct_payload[0] = PAYLOAD_LEN * 2;
++			correct_payload[1] = PAYLOAD_LEN;
++			correct_payload[2] = PAYLOAD_LEN;
++			check_recv_pkts(rxfd, correct_payload, 3);
++
++			printf("ipv6 with ext header does coalesce: ");
++			correct_payload[0] = PAYLOAD_LEN * 2;
++			check_recv_pkts(rxfd, correct_payload, 1);
++
++			printf("ipv6 with ext header with different payloads doesn't coalesce: ");
++			correct_payload[0] = PAYLOAD_LEN;
++			correct_payload[1] = PAYLOAD_LEN;
+ 			check_recv_pkts(rxfd, correct_payload, 2);
+ 		}
+ 	} else if (strcmp(testname, "large") == 0) {
 -- 
 2.51.0
 
