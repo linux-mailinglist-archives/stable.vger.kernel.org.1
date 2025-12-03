@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-199521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDB6DCA0845
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:36:20 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A22A4C9FA07
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:46:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0E0D832C253A
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:17:12 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0735D30014E2
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:45:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71C2135BDA0;
-	Wed,  3 Dec 2025 16:41:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D29D9312810;
+	Wed,  3 Dec 2025 15:45:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y8oXWP9x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RKxlxr92"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A61E340279;
-	Wed,  3 Dec 2025 16:41:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 892FB31329C;
+	Wed,  3 Dec 2025 15:45:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780074; cv=none; b=Q2InVwjq81K0mfYXSf7is3YkYSz7e2LxYf5teDcURHSfjYNy+EiM17FBsV9KquhyRaJyK3PAjUFrZoVIwtAnHlCM/TCOoJyf9w4eN+UivbUVPzIfEB+pazKtbNNsDK1NcpglpATFjk+Vum1kjhgTdTsHaSR3zBRMlVWWouIVOd8=
+	t=1764776754; cv=none; b=pYgLL8mAdvKQwNqqC/2cMp4dMbQtzBUUeBrhU87RfZDWD5qvbbCVv/NxK+kbTbqdG22WEtW73FBV0aG0NFnZxxw1HUu4jreA5eeiTzT4hdd0hCnDHaFDoUjEptycAOZI0buaklBoC21Q5L7wuGZD86DfLOFfjGfbgiRHKxhnfXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780074; c=relaxed/simple;
-	bh=5Qy8cIt3zUCvvM1FbZGtDrs7zVNg8Zmuw9CQsl6OB4o=;
+	s=arc-20240116; t=1764776754; c=relaxed/simple;
+	bh=aymxE2+/DwZSiEIqsgepuNx9AeQWKaLwYdtFo9Xtcao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=huO+pVFPwRfyTx6WB0IQGfDQGTkTnVJFCZUUzBy8a+Ay5+cuQ7FRXQnGF6JW6DKoCKN+UX6HBtSncYkCCqXRNBEP3lJgdow9ugXV56jscliNyNjFAUE0Iv+fxJ+OW3a+fUBIaPuMirsa22PW7nAVOKXmgLeW7cu9FDBk6Foi8VM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y8oXWP9x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E5E2C4CEF5;
-	Wed,  3 Dec 2025 16:41:13 +0000 (UTC)
+	 MIME-Version; b=oui4I0harUO2mMtvRt7UxlXaJ3JPE/xzgKEU8Z5ianisd1UMdkTUKBWuUcpJppWFnRTO8lB0OOP5usRNHtTv1+g4fwgnIkyaBj5lQSFiwwjs3QpAT60HICb5qqM/3VlWnQRF7BraFT+PVYU0EA8CftWj6f7Fa2EoDaZWyEFdwew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RKxlxr92; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E75F2C4CEF5;
+	Wed,  3 Dec 2025 15:45:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780074;
-	bh=5Qy8cIt3zUCvvM1FbZGtDrs7zVNg8Zmuw9CQsl6OB4o=;
+	s=korg; t=1764776754;
+	bh=aymxE2+/DwZSiEIqsgepuNx9AeQWKaLwYdtFo9Xtcao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y8oXWP9xprW4mmu9dhHgzWrKAIrJmJ5PK2dqqIPrKWrnERPswaJIxldqX6fo2Ndk5
-	 lZ+5j0vI4ouseuWIkgyLkGy69hH1QWsJB+zyvukghPDfDe1jyginon5hdZRcG8A0iS
-	 XSTNj7iMGzbt0gD5ko8hRwY4DuN2N4hQEEKXgwGQ=
+	b=RKxlxr929InLMjCLveMl/BxQKx1+zk9ZLxB6jgmhv7fTVun550LBSv740cLL65GTu
+	 QSIluHLU6p/rQs2wci8+Lz8pxOnE8xy6LGNNkIG7zv1teVFx70OpKbR1u7hngSNx7J
+	 0KU5ceEBpcG053kL/chrfpvRuXJIyfzIYUzmuwWE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 447/568] mptcp: avoid unneeded subflow-level drops
+	Ilia Baryshnikov <qwelias@gmail.com>,
+	Hannes Reinecke <hare@suse.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 245/300] ata: libata-scsi: Fix system suspend for a security locked drive
 Date: Wed,  3 Dec 2025 16:27:29 +0100
-Message-ID: <20251203152457.080635804@linuxfoundation.org>
+Message-ID: <20251203152409.706014279@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,121 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-commit 4f102d747cadd8f595f2b25882eed9bec1675fb1 upstream.
+[ Upstream commit b11890683380a36b8488229f818d5e76e8204587 ]
 
-The rcv window is shared among all the subflows. Currently, MPTCP sync
-the TCP-level rcv window with the MPTCP one at tcp_transmit_skb() time.
+Commit cf3fc037623c ("ata: libata-scsi: Fix ata_to_sense_error() status
+handling") fixed ata_to_sense_error() to properly generate sense key
+ABORTED COMMAND (without any additional sense code), instead of the
+previous bogus sense key ILLEGAL REQUEST with the additional sense code
+UNALIGNED WRITE COMMAND, for a failed command.
 
-The above means that incoming data may sporadically observe outdated
-TCP-level rcv window and being wrongly dropped by TCP.
+However, this broke suspend for Security locked drives (drives that have
+Security enabled, and have not been Security unlocked by boot firmware).
 
-Address the issue checking for the edge condition before queuing the
-data at TCP level, and eventually syncing the rcv window as needed.
+The reason for this is that the SCSI disk driver, for the Synchronize
+Cache command only, treats any sense data with sense key ILLEGAL REQUEST
+as a successful command (regardless of ASC / ASCQ).
 
-Note that the issue is actually present from the very first MPTCP
-implementation, but backports older than the blamed commit below will
-range from impossible to useless.
+After commit cf3fc037623c ("ata: libata-scsi: Fix ata_to_sense_error()
+status handling") the code that treats any sense data with sense key
+ILLEGAL REQUEST as a successful command is no longer applicable, so the
+command fails, which causes the system suspend to be aborted:
 
-Before:
+  sd 1:0:0:0: PM: dpm_run_callback(): scsi_bus_suspend returns -5
+  sd 1:0:0:0: PM: failed to suspend async: error -5
+  PM: Some devices failed to suspend, or early wake event detected
 
-  $ nstat -n; sleep 1; nstat -z TcpExtBeyondWindow
-  TcpExtBeyondWindow              14                 0.0
+To make suspend work once again, for a Security locked device only,
+return sense data LOGICAL UNIT ACCESS NOT AUTHORIZED, the actual sense
+data which a real SCSI device would have returned if locked.
+The SCSI disk driver treats this sense data as a successful command.
 
-After:
-
-  $ nstat -n; sleep 1; nstat -z TcpExtBeyondWindow
-  TcpExtBeyondWindow              0                  0.0
-
-Fixes: fa3fe2b15031 ("mptcp: track window announced to peer")
 Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-2-806d3781c95f@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Ilia Baryshnikov <qwelias@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220704
+Fixes: cf3fc037623c ("ata: libata-scsi: Fix ata_to_sense_error() status handling")
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/options.c  |   31 +++++++++++++++++++++++++++++++
- net/mptcp/protocol.h |    1 +
- 2 files changed, 32 insertions(+)
+ drivers/ata/libata-scsi.c |    8 ++++++++
+ include/linux/ata.h       |    1 +
+ 2 files changed, 9 insertions(+)
 
---- a/net/mptcp/options.c
-+++ b/net/mptcp/options.c
-@@ -1028,6 +1028,31 @@ u64 __mptcp_expand_seq(u64 old_seq, u64
- 	return cur_seq;
- }
- 
-+static void rwin_update(struct mptcp_sock *msk, struct sock *ssk,
-+			struct sk_buff *skb)
-+{
-+	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(ssk);
-+	struct tcp_sock *tp = tcp_sk(ssk);
-+	u64 mptcp_rcv_wnd;
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -961,6 +961,14 @@ static void ata_gen_ata_sense(struct ata
+ 		ata_scsi_set_sense(dev, cmd, NOT_READY, 0x04, 0x21);
+ 		return;
+ 	}
 +
-+	/* Avoid touching extra cachelines if TCP is going to accept this
-+	 * skb without filling the TCP-level window even with a possibly
-+	 * outdated mptcp-level rwin.
-+	 */
-+	if (!skb->len || skb->len < tcp_receive_window(tp))
++	if (ata_id_is_locked(dev->id)) {
++		/* Security locked */
++		/* LOGICAL UNIT ACCESS NOT AUTHORIZED */
++		ata_scsi_set_sense(dev, cmd, DATA_PROTECT, 0x74, 0x71);
 +		return;
++	}
 +
-+	mptcp_rcv_wnd = atomic64_read(&msk->rcv_wnd_sent);
-+	if (!after64(mptcp_rcv_wnd, subflow->rcv_wnd_sent))
-+		return;
-+
-+	/* Some other subflow grew the mptcp-level rwin since rcv_wup,
-+	 * resync.
-+	 */
-+	tp->rcv_wnd += mptcp_rcv_wnd - subflow->rcv_wnd_sent;
-+	subflow->rcv_wnd_sent = mptcp_rcv_wnd;
-+}
-+
- static void ack_update_msk(struct mptcp_sock *msk,
- 			   struct sock *ssk,
- 			   struct mptcp_options_received *mp_opt)
-@@ -1188,6 +1213,7 @@ bool mptcp_incoming_options(struct sock
+ 	/* Use ata_to_sense_error() to map status register bits
+ 	 * onto sense key, asc & ascq.
  	 */
- 	if (mp_opt.use_ack)
- 		ack_update_msk(msk, sk, &mp_opt);
-+	rwin_update(msk, sk, skb);
- 
- 	/* Zero-data-length packets are dropped by the caller and not
- 	 * propagated to the MPTCP layer, so the skb extension does not
-@@ -1274,6 +1300,10 @@ static void mptcp_set_rwin(struct tcp_so
- 
- 	if (rcv_wnd_new != rcv_wnd_old) {
- raise_win:
-+		/* The msk-level rcv wnd is after the tcp level one,
-+		 * sync the latter.
-+		 */
-+		rcv_wnd_new = rcv_wnd_old;
- 		win = rcv_wnd_old - ack_seq;
- 		tp->rcv_wnd = min_t(u64, win, U32_MAX);
- 		new_win = tp->rcv_wnd;
-@@ -1297,6 +1327,7 @@ raise_win:
- 
- update_wspace:
- 	WRITE_ONCE(msk->old_wspace, tp->rcv_wnd);
-+	subflow->rcv_wnd_sent = rcv_wnd_new;
- }
- 
- static void mptcp_track_rwin(struct tcp_sock *tp)
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -458,6 +458,7 @@ struct mptcp_subflow_context {
- 	u64	remote_key;
- 	u64	idsn;
- 	u64	map_seq;
-+	u64	rcv_wnd_sent;
- 	u32	snd_isn;
- 	u32	token;
- 	u32	rel_write_seq;
+--- a/include/linux/ata.h
++++ b/include/linux/ata.h
+@@ -557,6 +557,7 @@ struct ata_bmdma_prd {
+ #define ata_id_has_ncq(id)	((id)[ATA_ID_SATA_CAPABILITY] & (1 << 8))
+ #define ata_id_queue_depth(id)	(((id)[ATA_ID_QUEUE_DEPTH] & 0x1f) + 1)
+ #define ata_id_removable(id)	((id)[ATA_ID_CONFIG] & (1 << 7))
++#define ata_id_is_locked(id)	(((id)[ATA_ID_DLF] & 0x7) == 0x7)
+ #define ata_id_has_atapi_AN(id)	\
+ 	((((id)[ATA_ID_SATA_CAPABILITY] != 0x0000) && \
+ 	  ((id)[ATA_ID_SATA_CAPABILITY] != 0xffff)) && \
 
 
 
