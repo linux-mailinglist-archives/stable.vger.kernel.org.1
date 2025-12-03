@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDE27CA0033
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:38:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19721CA15D7
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:26:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6C9F3304C28F
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:32:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 37BCB30AE0B2
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:03:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C2D2376BEA;
-	Wed,  3 Dec 2025 16:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6933A34DB51;
+	Wed,  3 Dec 2025 16:03:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jSZp6Pfc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tqEXAYcY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B779C393DDB;
-	Wed,  3 Dec 2025 16:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B50303A11;
+	Wed,  3 Dec 2025 16:03:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779555; cv=none; b=jctf/41AQUnwRoN5OjGi6dzIuhuKdCL4loefsjJeoN3WOLzaJzFFsmJWNnfeV/Fy1yUFmjxaQGFpMkOVDIUkjdtOnbO+j0eDeyvgdm9g7kqfHlZLcsSscmh/6rRglIwZzzw6RE4VXTxb+174jSP4Ora3baduQdTAkHWHG7y27BA=
+	t=1764777780; cv=none; b=KAVUzWPWrc5+ldg3SPShu9iKmR8h4fbvNo5R9NheMmlkMkfEMrPkiWDBgKIR8sKU79/UYPhymmZIsM4qc6gOAGRiTj2nWUR19Vi3Pr1rEZs5J7jBlqA5aZl2hItf3PgZsyhQ1nmqgfNzW+Y5l5W5s/i32ZcP39+JvggjUJni49I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779555; c=relaxed/simple;
-	bh=HF1zRSGMbYarJqBwoTV+khtecDE2uEuJ9AZLqV/yMf8=;
+	s=arc-20240116; t=1764777780; c=relaxed/simple;
+	bh=W247V04tnVUsEK8D1Z9vWE/6NTEbA/gYeSMmB0jrjAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c6LaIj8FFOe0497Ob23GkpeNNww0JgyBDhvVLdz/lZqFEsKDZzxD4KlKCBDm92vZcQbbJLFCsVhtD7DQ4lIWt0NxLf8/Nhh8G9sgh9sYR8W65alN/HNNWFF55FuZazyTUKoero7EedOoRBQHJNjlLIwc/kudi4iQw2YnqaFBVmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jSZp6Pfc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD05C4CEF5;
-	Wed,  3 Dec 2025 16:32:35 +0000 (UTC)
+	 MIME-Version; b=UW+Glds2UvNLM0vso+lndbY5Og7cE6XcQ62hhAb5PsjQQf39ipjJhco+rVSAIxgQjy7X2Cy7RkirFxO59nR7DcPr+XclO2yfSQLU17/GXKYmc/0zIYifyNL738nzsK1poY38/zskGiOpX9HyNozJdSVp1zT+9P6x66fpnJVa1Dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tqEXAYcY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6E6DC4CEF5;
+	Wed,  3 Dec 2025 16:02:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779555;
-	bh=HF1zRSGMbYarJqBwoTV+khtecDE2uEuJ9AZLqV/yMf8=;
+	s=korg; t=1764777780;
+	bh=W247V04tnVUsEK8D1Z9vWE/6NTEbA/gYeSMmB0jrjAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jSZp6PfcpoM+9725ztb6MIR2oyC8spY5XWQk4oGbFEHjkmQayp9xjSqx5OWwYB4FS
-	 mTZN8bCW4nQl3lXznYv6UV3xP344pGB/dh+dkoLv9WMOOaNetw9Hn0oUP2J8oVpSz8
-	 ViPTZUSuf6Qb8NErLGyJqqL1K4R82MeVF6FT0p9Y=
+	b=tqEXAYcYMHiRcZtWhwYBBMipibmht/F5vUk3hWQbTY/Ei+OONGq0qw47VoXBE9M80
+	 QgX0leCCI6Za+shMRS+YLr6BoweK9ve0dHDSV3AhWpRTVKBGZbfRDLp2sibTXfSAU0
+	 9l+wBUuLOUyiv9ORbxAyvDmpTREAO+yjyAJy/j/8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hoyoung Seo <hy50.seo@samsung.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Qianfeng Rong <rongqianfeng@vivo.com>,
+	Sean Young <sean@mess.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 293/568] scsi: ufs: core: Include UTP error in INT_FATAL_ERRORS
+Subject: [PATCH 5.15 145/392] media: redrat3: use int type to store negative error codes
 Date: Wed,  3 Dec 2025 16:24:55 +0100
-Message-ID: <20251203152451.434230500@linuxfoundation.org>
+Message-ID: <20251203152419.420789724@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hoyoung Seo <hy50.seo@samsung.com>
+From: Qianfeng Rong <rongqianfeng@vivo.com>
 
-[ Upstream commit 558ae4579810fa0fef011944230c65a6f3087f85 ]
+[ Upstream commit ecba852dc9f4993f4f894ea1f352564560e19a3e ]
 
-When a UTP error occurs in isolation, UFS is not currently recoverable.
-This is because the UTP error is not considered fatal in the error
-handling code, leading to either an I/O timeout or an OCS error.
+Change "ret" from u8 to int type in redrat3_enable_detector() to store
+negative error codes or zero returned by redrat3_send_cmd() and
+usb_submit_urb() - this better aligns with the coding standards and
+maintains code consistency.
 
-Add the UTP error flag to INT_FATAL_ERRORS so the controller will be
-reset in this situation.
+No effect on runtime.
 
-  sd 0:0:0:0: [sda] tag#38 UNKNOWN(0x2003) Result: hostbyte=0x07
-  driverbyte=DRIVER_OK cmd_age=0s
-  sd 0:0:0:0: [sda] tag#38 CDB: opcode=0x28 28 00 00 51 24 e2 00 00 08 00
-  I/O error, dev sda, sector 42542864 op 0x0:(READ) flags 0x80700 phys_seg
-  8 prio class 2
-  OCS error from controller = 9 for tag 39
-  pa_err[1] = 0x80000010 at 2667224756 us
-  pa_err: total cnt=2
-  dl_err[0] = 0x80000002 at 2667148060 us
-  dl_err[1] = 0x80002000 at 2667282844 us
-  No record of nl_err
-  No record of tl_err
-  No record of dme_err
-  No record of auto_hibern8_err
-  fatal_err[0] = 0x804 at 2667282836 us
-
-  ---------------------------------------------------
-  		REGISTER
-  ---------------------------------------------------
-                             NAME	      OFFSET	         VALUE
-                      STD HCI SFR	  0xfffffff0	           0x0
-                             AHIT	        0x18	         0x814
-                 INTERRUPT STATUS	        0x20	        0x1000
-                 INTERRUPT ENABLE	        0x24	       0x70ef5
-
-[mkp: commit desc]
-
-Signed-off-by: Hoyoung Seo <hy50.seo@samsung.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Message-Id: <20250930061428.617955-1-hy50.seo@samsung.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/ufs/ufshci.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/media/rc/redrat3.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/ufs/ufshci.h b/include/ufs/ufshci.h
-index f525566a0864d..6e80ed46e44ae 100644
---- a/include/ufs/ufshci.h
-+++ b/include/ufs/ufshci.h
-@@ -123,6 +123,7 @@ static inline u32 ufshci_version(u32 major, u32 minor)
- #define UTP_TASK_REQ_COMPL			0x200
- #define UIC_COMMAND_COMPL			0x400
- #define DEVICE_FATAL_ERROR			0x800
-+#define UTP_ERROR				0x1000
- #define CONTROLLER_FATAL_ERROR			0x10000
- #define SYSTEM_BUS_FATAL_ERROR			0x20000
- #define CRYPTO_ENGINE_FATAL_ERROR		0x40000
-@@ -141,7 +142,8 @@ static inline u32 ufshci_version(u32 major, u32 minor)
- 				CONTROLLER_FATAL_ERROR |\
- 				SYSTEM_BUS_FATAL_ERROR |\
- 				CRYPTO_ENGINE_FATAL_ERROR |\
--				UIC_LINK_LOST)
-+				UIC_LINK_LOST |\
-+				UTP_ERROR)
+diff --git a/drivers/media/rc/redrat3.c b/drivers/media/rc/redrat3.c
+index cb22316b3f002..6d70b49b524e5 100644
+--- a/drivers/media/rc/redrat3.c
++++ b/drivers/media/rc/redrat3.c
+@@ -422,7 +422,7 @@ static int redrat3_send_cmd(int cmd, struct redrat3_dev *rr3)
+ static int redrat3_enable_detector(struct redrat3_dev *rr3)
+ {
+ 	struct device *dev = rr3->dev;
+-	u8 ret;
++	int ret;
  
- /* HCS - Host Controller Status 30h */
- #define DEVICE_PRESENT				0x1
+ 	ret = redrat3_send_cmd(RR3_RC_DET_ENABLE, rr3);
+ 	if (ret != 0)
 -- 
 2.51.0
 
