@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B1C5CA03D1
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:01:52 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89DEBCA014D
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:45:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6E3D9309D94D
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:53:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A112C3000905
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:45:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B78D3502AC;
-	Wed,  3 Dec 2025 16:50:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3905B369222;
+	Wed,  3 Dec 2025 16:45:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qmZL5pNu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eIUrV5U8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5BD34D4EE;
-	Wed,  3 Dec 2025 16:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90158139579;
+	Wed,  3 Dec 2025 16:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780656; cv=none; b=IwYQJET+Vqxr+flQfGdKwSwqyv3rrQBv0XBeflcf3Q340ibdpWqE34hy3KLtkg+Mfn5sZcEsbQLkU1s1DuJuPwnJGv17s/sFoFQXs+bTQ2iYWACA5AgSlP58Za7lQg9JSdg5X3wQtWX3KfYFdfk3HOAG8ceZe9VGyG1eQQUdvOA=
+	t=1764780343; cv=none; b=nTBOOpzx51urzz7UJIW+f9NyIaamPYQ9YeHMhJv9C/MxdaEPTXI6L7f4jkBiUxQn/c5ze6bYLCgloq11adij3YyrsKE+OYq3u6h7+ezOuQTNbspD0zQdK12RJiUgjnj0xFMy8SHMQKsbdVlgpZujvqU4HgueMOzdEBvmM9/cu5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780656; c=relaxed/simple;
-	bh=xgPYjzNwmgWBqk0dOrJIk9M0FSoM3JsQG6ZEFpoKOtA=;
+	s=arc-20240116; t=1764780343; c=relaxed/simple;
+	bh=erbCkasglCB/dV5XxvJ5JZ59T7SqeDlhMgZgcHWadB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SJbl4XY+Dh0dG60GfHNH8yXk4ZGvLVz35aNBfR+0eh9RxbKk/PHFRFmH7U3A0cxK7NkZuMLoOEnOyefajAwzxMbG+eglqvP2H+OfXnI6s0bICMo/gHnk4emcrvIgW9VUXoQQ/NQ4EEwPm9DpvoFfqXKe918sjygmG8aPVzWrHlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qmZL5pNu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C7A3C4CEF5;
-	Wed,  3 Dec 2025 16:50:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CDtVgAtaxUBB6PK4mzjqresPX/Gs/68lEn75nBaMGg0hM58Ej9aJIcJ+qO4CmrwsYo+EHzGvR0nr1hburvM8sItUUBoUcrFZZ2Jqkm/m1mTVS8EgfFRI00SKj4ajVwiOVqTWUIjY7bSMVt3D74NSdbxRuKS8z8Vpg+jurjd9i+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eIUrV5U8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8806C116B1;
+	Wed,  3 Dec 2025 16:45:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780655;
-	bh=xgPYjzNwmgWBqk0dOrJIk9M0FSoM3JsQG6ZEFpoKOtA=;
+	s=korg; t=1764780343;
+	bh=erbCkasglCB/dV5XxvJ5JZ59T7SqeDlhMgZgcHWadB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qmZL5pNuohDz/upSveYyl+z3BDaNoLzzlxV3jd3ANKvAbRguqWIbQ0UWNHgFUOqF9
-	 +z1BpStF/QrYqMIWKUsxvjCmvXWCMiJHYsTm7lOoGM+tq6b72vhzxMiWho07NVJSmh
-	 pl6KQZbAHdDE+Vb0hhyE83f22w8XkGFUp40hZ1Ts=
+	b=eIUrV5U8E29mJV7wcXEKPEXiWq3hAXw7AkLWZ5aBsOKnWR/ReClS00fhB2VTj43ym
+	 QdEEXGJ41ojqBvc4tAbYJI4QO+Gpi937eXU4o88Ci9sxpwchuq6LWXxhrUti1RXcsR
+	 yOkKQRwuS57wjZFYP5dy3FaKZl+Qo/5hYK+SDxDs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Song Liu <song@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.12 050/132] Revert "perf/x86: Always store regs->ip in perf_callchain_kernel()"
+	=?UTF-8?q?Thomas=20M=C3=BChlbacher?= <tmuehlbacher@posteo.net>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.1 527/568] can: sun4i_can: sun4i_can_interrupt(): fix max irq loop handling
 Date: Wed,  3 Dec 2025 16:28:49 +0100
-Message-ID: <20251203152345.147842842@linuxfoundation.org>
+Message-ID: <20251203152500.016255387@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,75 +58,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-commit 6d08340d1e354787d6c65a8c3cdd4d41ffb8a5ed upstream.
+commit 76544beea7cfe5bcce6d60f53811657b88ec8be1 upstream.
 
-This reverts commit 83f44ae0f8afcc9da659799db8693f74847e66b3.
+Reading the interrupt register `SUN4I_REG_INT_ADDR` causes all of its bits
+to be reset. If we ever reach the condition of handling more than
+`SUN4I_CAN_MAX_IRQ` IRQs, we will have read the register and reset all its
+bits but without actually handling the interrupt inside of the loop body.
 
-Currently we store initial stacktrace entry twice for non-HW ot_regs, which
-means callers that fail perf_hw_regs(regs) condition in perf_callchain_kernel.
+This may, among other issues, cause us to never `netif_wake_queue()` again
+after a transmission interrupt.
 
-It's easy to reproduce this bpftrace:
-
-  # bpftrace -e 'tracepoint:sched:sched_process_exec { print(kstack()); }'
-  Attaching 1 probe...
-
-        bprm_execve+1767
-        bprm_execve+1767
-        do_execveat_common.isra.0+425
-        __x64_sys_execve+56
-        do_syscall_64+133
-        entry_SYSCALL_64_after_hwframe+118
-
-When perf_callchain_kernel calls unwind_start with first_frame, AFAICS
-we do not skip regs->ip, but it's added as part of the unwind process.
-Hence reverting the extra perf_callchain_store for non-hw regs leg.
-
-I was not able to bisect this, so I'm not really sure why this was needed
-in v5.2 and why it's not working anymore, but I could see double entries
-as far as v5.10.
-
-I did the test for both ORC and framepointer unwind with and without the
-this fix and except for the initial entry the stacktraces are the same.
-
-Acked-by: Song Liu <song@kernel.org>
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/r/20251104215405.168643-2-jolsa@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 0738eff14d81 ("can: Allwinner A10/A20 CAN Controller support - Kernel module")
+Cc: stable@vger.kernel.org
+Co-developed-by: Thomas Mühlbacher <tmuehlbacher@posteo.net>
+Signed-off-by: Thomas Mühlbacher <tmuehlbacher@posteo.net>
+Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+Link: https://patch.msgid.link/20251116-sun4i-fix-loop-v1-1-3d76d3f81950@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/core.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/can/sun4i_can.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -2769,13 +2769,13 @@ perf_callchain_kernel(struct perf_callch
- 		return;
- 	}
+--- a/drivers/net/can/sun4i_can.c
++++ b/drivers/net/can/sun4i_can.c
+@@ -658,8 +658,8 @@ static irqreturn_t sun4i_can_interrupt(i
+ 	u8 isrc, status;
+ 	int n = 0;
  
--	if (perf_callchain_store(entry, regs->ip))
--		return;
--
--	if (perf_hw_regs(regs))
-+	if (perf_hw_regs(regs)) {
-+		if (perf_callchain_store(entry, regs->ip))
-+			return;
- 		unwind_start(&state, current, regs, NULL);
--	else
-+	} else {
- 		unwind_start(&state, current, NULL, (void *)regs->sp);
-+	}
+-	while ((isrc = readl(priv->base + SUN4I_REG_INT_ADDR)) &&
+-	       (n < SUN4I_CAN_MAX_IRQ)) {
++	while ((n < SUN4I_CAN_MAX_IRQ) &&
++	       (isrc = readl(priv->base + SUN4I_REG_INT_ADDR))) {
+ 		n++;
+ 		status = readl(priv->base + SUN4I_REG_STA_ADDR);
  
- 	for (; !unwind_done(&state); unwind_next_frame(&state)) {
- 		addr = unwind_get_return_address(&state);
 
 
 
