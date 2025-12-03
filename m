@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-199026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72C5BCA17E9
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:54:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83D82CA0AC4
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:51:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4D633306E024
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:48:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 18B28333F64B
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:30:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 194CB34A788;
-	Wed,  3 Dec 2025 16:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7BA1350D5D;
+	Wed,  3 Dec 2025 16:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vnFd4n/G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s8vEIRDH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C32F434A3BC;
-	Wed,  3 Dec 2025 16:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634C734C830;
+	Wed,  3 Dec 2025 16:44:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778454; cv=none; b=s4NF+NjHg8HGFI1842M8IipaEvPOnWWXybMk+Izb3RphyuU67aLVQFS2lORyhg18s8bSX/77okjA5QJLat3BgOYcsf7PYyp0I8lqpKFFSGfHwYZspvaiOtlGDjJAd1ehm9B2wI3l8s/4hZ958tpsrHX5jfOvqDXCKYN6sOrQYBk=
+	t=1764780244; cv=none; b=RpUt7H855hoNNJvVDbcDs5LKK8TbFjimAJbdxsfab0IqPhW1SzQPlsovvd/TtJ0OodnL6tFzgxICO60jaj3nS4HMpZ9BB9QJ38CNnHzIMzRB68WCf2dd3p+22NEqNSTroJJfDc3EvilneMHjCoVtjXbo8qqmLdEgcaEOvz49rBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778454; c=relaxed/simple;
-	bh=Og1ykeIFP4sKskX61HLXzr0/7hOrFbipzc4i6S1U32M=;
+	s=arc-20240116; t=1764780244; c=relaxed/simple;
+	bh=N3xxXNzM8mb7CBng+nPPHjPue2rrjIjE9+pTy3EdwRA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mc8DcT8ZwYWwrZ7phoT+dluQp1YHuhSPWoooThB514Wqs52kSF+AaaJW4QUGWQeInXkgOoNYl2tkKPlL9gl+U//bct3bjIVRDsd6j6Rcs0/q05MoKIfD+TGWNpXpa2RqL+ypf3uRiJqCJx6+r58hez98RxKIfWR3yTkti2KmBeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vnFd4n/G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B23FC4CEF5;
-	Wed,  3 Dec 2025 16:14:14 +0000 (UTC)
+	 MIME-Version; b=IYSGkqtYSVk4UJcGrFoJFwOWpInZpTvXqcWXd6ffOuBgPfoHEveevZjWVrvGmQI/wTVGAY/FYAB7RUiHrKxl0s7eErO3aiS9qEE+toYWSj8gp732cBXLhozln0fUiFd02+VDVwGp1h7QmHApkzCG5/ho1mI+/66PmXauPXqn5ko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s8vEIRDH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ACB8C4CEF5;
+	Wed,  3 Dec 2025 16:44:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778454;
-	bh=Og1ykeIFP4sKskX61HLXzr0/7hOrFbipzc4i6S1U32M=;
+	s=korg; t=1764780242;
+	bh=N3xxXNzM8mb7CBng+nPPHjPue2rrjIjE9+pTy3EdwRA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vnFd4n/GTc+UK7icvhQWLG8iEW5M3eqaviL3w2qhROADst7cP3aW6UqFqVyjnKR7p
-	 X30erakMM/Eqs5svdsCIyL2INlGz9mh01pPC3Q46r6u+kI29eztljdwvs7x5qBmgCq
-	 X7BjXiLb9/gFGfLHMe6vCKrsv7Kcq4tDxgWOC6ac=
+	b=s8vEIRDHepwnpawii8G/F/SQRTReF5lXFI2l3zvde/gmpG63mBVdjbK727wDADkqE
+	 B8ttWG/DXPkv18o+gglEObtlDsJYJxi9aVUvKS/04V7e64pgIEqmoDkwkeUQybpQfb
+	 DyJpoZ/FrWnrvLgbINlb+21lZvHslUJ3+jgy+1lM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jay Vosburgh <jv@jvosburgh.net>,
-	Breno Leitao <leitao@debian.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 318/392] net: netpoll: fix incorrect refcount handling causing incorrect cleanup
+Subject: [PATCH 6.1 466/568] scsi: core: Fix a regression triggered by scsi_host_busy()
 Date: Wed,  3 Dec 2025 16:27:48 +0100
-Message-ID: <20251203152425.861478644@linuxfoundation.org>
+Message-ID: <20251203152457.769929771@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 49c8d2c1f94cc2f4d1a108530d7ba52614b874c2 ]
+[ Upstream commit a0b7780602b1b196f47e527fec82166a7e67c4d0 ]
 
-commit efa95b01da18 ("netpoll: fix use after free") incorrectly
-ignored the refcount and prematurely set dev->npinfo to NULL during
-netpoll cleanup, leading to improper behavior and memory leaks.
+Commit 995412e23bb2 ("blk-mq: Replace tags->lock with SRCU for tag
+iterators") introduced the following regression:
 
-Scenario causing lack of proper cleanup:
+Call trace:
+ __srcu_read_lock+0x30/0x80 (P)
+ blk_mq_tagset_busy_iter+0x44/0x300
+ scsi_host_busy+0x38/0x70
+ ufshcd_print_host_state+0x34/0x1bc
+ ufshcd_link_startup.constprop.0+0xe4/0x2e0
+ ufshcd_init+0x944/0xf80
+ ufshcd_pltfrm_init+0x504/0x820
+ ufs_rockchip_probe+0x2c/0x88
+ platform_probe+0x5c/0xa4
+ really_probe+0xc0/0x38c
+ __driver_probe_device+0x7c/0x150
+ driver_probe_device+0x40/0x120
+ __driver_attach+0xc8/0x1e0
+ bus_for_each_dev+0x7c/0xdc
+ driver_attach+0x24/0x30
+ bus_add_driver+0x110/0x230
+ driver_register+0x68/0x130
+ __platform_driver_register+0x20/0x2c
+ ufs_rockchip_pltform_init+0x1c/0x28
+ do_one_initcall+0x60/0x1e0
+ kernel_init_freeable+0x248/0x2c4
+ kernel_init+0x20/0x140
+ ret_from_fork+0x10/0x20
 
-1) A netpoll is associated with a NIC (e.g., eth0) and netdev->npinfo is
-   allocated, and refcnt = 1
-   - Keep in mind that npinfo is shared among all netpoll instances. In
-     this case, there is just one.
+Fix this regression by making scsi_host_busy() check whether the SCSI
+host tag set has already been initialized. tag_set->ops is set by
+scsi_mq_setup_tags() just before blk_mq_alloc_tag_set() is called. This
+fix is based on the assumption that scsi_host_busy() and
+scsi_mq_setup_tags() calls are serialized. This is the case in the UFS
+driver.
 
-2) Another netpoll is also associated with the same NIC and
-   npinfo->refcnt += 1.
-   - Now dev->npinfo->refcnt = 2;
-   - There is just one npinfo associated to the netdev.
-
-3) When the first netpolls goes to clean up:
-   - The first cleanup succeeds and clears np->dev->npinfo, ignoring
-     refcnt.
-     - It basically calls `RCU_INIT_POINTER(np->dev->npinfo, NULL);`
-   - Set dev->npinfo = NULL, without proper cleanup
-   - No ->ndo_netpoll_cleanup() is either called
-
-4) Now the second target tries to clean up
-   - The second cleanup fails because np->dev->npinfo is already NULL.
-     * In this case, ops->ndo_netpoll_cleanup() was never called, and
-       the skb pool is not cleaned as well (for the second netpoll
-       instance)
-  - This leaks npinfo and skbpool skbs, which is clearly reported by
-    kmemleak.
-
-Revert commit efa95b01da18 ("netpoll: fix use after free") and adds
-clarifying comments emphasizing that npinfo cleanup should only happen
-once the refcount reaches zero, ensuring stable and correct netpoll
-behavior.
-
-Cc: <stable@vger.kernel.org> # 3.17.x
-Cc: Jay Vosburgh <jv@jvosburgh.net>
-Fixes: efa95b01da18 ("netpoll: fix use after free")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251107-netconsole_torture-v10-1-749227b55f63@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Adjust context ]
+Reported-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Closes: https://lore.kernel.org/linux-block/pnezafputodmqlpumwfbn644ohjybouveehcjhz2hmhtcf2rka@sdhoiivync4y/
+Cc: Ming Lei <ming.lei@redhat.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Tested-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Link: https://patch.msgid.link/20251007214800.1678255-1-bvanassche@acm.org
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/netpoll.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/scsi/hosts.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -851,6 +851,10 @@ void __netpoll_cleanup(struct netpoll *n
+diff --git a/drivers/scsi/hosts.c b/drivers/scsi/hosts.c
+index c785493b105c0..28cf473fcf96d 100644
+--- a/drivers/scsi/hosts.c
++++ b/drivers/scsi/hosts.c
+@@ -600,8 +600,9 @@ int scsi_host_busy(struct Scsi_Host *shost)
+ {
+ 	int cnt = 0;
  
- 	synchronize_srcu(&netpoll_srcu);
- 
-+	/* At this point, there is a single npinfo instance per netdevice, and
-+	 * its refcnt tracks how many netpoll structures are linked to it. We
-+	 * only perform npinfo cleanup when the refcnt decrements to zero.
-+	 */
- 	if (refcount_dec_and_test(&npinfo->refcnt)) {
- 		const struct net_device_ops *ops;
- 
-@@ -860,8 +864,7 @@ void __netpoll_cleanup(struct netpoll *n
- 
- 		RCU_INIT_POINTER(np->dev->npinfo, NULL);
- 		call_rcu(&npinfo->rcu, rcu_cleanup_netpoll_info);
--	} else
--		RCU_INIT_POINTER(np->dev->npinfo, NULL);
-+	}
+-	blk_mq_tagset_busy_iter(&shost->tag_set,
+-				scsi_host_check_in_flight, &cnt);
++	if (shost->tag_set.ops)
++		blk_mq_tagset_busy_iter(&shost->tag_set,
++					scsi_host_check_in_flight, &cnt);
+ 	return cnt;
  }
- EXPORT_SYMBOL_GPL(__netpoll_cleanup);
- 
+ EXPORT_SYMBOL(scsi_host_busy);
+-- 
+2.51.0
+
 
 
 
