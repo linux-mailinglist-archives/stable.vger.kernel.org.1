@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C66DCA04F2
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:16:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC088CA0DEC
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:18:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A78F2312FE20
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:03:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D1DE430FC0F1
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:15:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 602AB3624C9;
-	Wed,  3 Dec 2025 16:57:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F25C3AA1B8;
+	Wed,  3 Dec 2025 16:52:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yk9yk4wT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WjLYb4Xc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50AB0365A0B;
-	Wed,  3 Dec 2025 16:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17AA234CFC2;
+	Wed,  3 Dec 2025 16:52:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764781047; cv=none; b=toMgMlp5FnyCRtwp+O2hu/dd3/Kc7mZ66aLhsE/bBbM5AzaU274tc5lFLkdbzilV3KpFZQHEJoJbRRCYp8j7YRI7wUcuOvB5mXNxNx31K+0pml9lGzSJ4/1j1yk5F6I5KMa5h3A4NuW334X/abB9/97LL23S8SV+lvhGP5q+3PQ=
+	t=1764780779; cv=none; b=V4Cq96QpW2/fcR6nwoOkBfwRVxrXDkPoyxSwkQtedTlSVz/5Z1Q++Jt/ZYvDWz98rfzXAgXeZh/bSdMLT/CpTiuOVH+ptncK1tYTG4tTup8Ua6pBbqed0vxgvWpgaou2nyElADmxO2DHQwirKg5T7g+5Oo4hsJ3OLeJKnT5Mxsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764781047; c=relaxed/simple;
-	bh=g2auZI9AnfEQc2s8TtDez6GZ8+DSTMfYWeti3CliWS0=;
+	s=arc-20240116; t=1764780779; c=relaxed/simple;
+	bh=F/NplFP2+BUPKhiyrN7BOrayz41zJFL3kt9nyU4Zm3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bNGr9oBnIMzF+JtERCx4JtYKQDzU/HzkSthyHX8fozDR87REq05mLOmHKfJiKUd5jYpehrz+Ew0/etMiIQtqJA10EjLjqm/DuH83EOHrxd/rAlfc1x55Ww0VeQ6UMiKzHF7m3x9IYofzKU9YCfV2qR7bXF4szyAvDTrKC5Y6hXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yk9yk4wT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0573AC4CEF5;
-	Wed,  3 Dec 2025 16:57:25 +0000 (UTC)
+	 MIME-Version; b=JDpXuFIlcRSGGN6WEmgBqkELuRV0XELLnjjbAm5xta0ofhBlrEbJLt+mZo3Qnt9E8ID8c7g+6c8Z+BWma79nP9Y3dSxelOZFRZdECtJCzK/Jtzpdf8Z/KaWF0qJvPahURNZLq/Dweg/79ol9qPv3gGhhsL/VLnX5A34VO9fZYEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WjLYb4Xc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B5D7C4CEF5;
+	Wed,  3 Dec 2025 16:52:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764781046;
-	bh=g2auZI9AnfEQc2s8TtDez6GZ8+DSTMfYWeti3CliWS0=;
+	s=korg; t=1764780779;
+	bh=F/NplFP2+BUPKhiyrN7BOrayz41zJFL3kt9nyU4Zm3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yk9yk4wTAbmQ2k4wIXtySJqsjhWYXzsdPuFYXQkE9Z/z/b2O0Im2EFGxOUSolYtnB
-	 UQo3NAJ3Uyaa4EL9nnKZ8iOyHL++rDfuWYqw4NSfPxllGGS6/5+iKHNy/9FIeMGCD7
-	 iuUshchKPZRgUOIFjoA35cEszJKC9WlBIMBRDnYQ=
+	b=WjLYb4XcnZAn/wCNbpigGVA7Z22m9q5wxNRMv2dc6dC4G88myxUK0T0W3WMMMTaGE
+	 rF9Wl+dBkkK2FOna1GXCivEngSg/1Y22bPhPL7TUHt6p60WcmZktiHgiUQP39aPY6w
+	 s8LRhXqNSIeM2mymZ7ydf8BeiOVw/7F182wiKYt8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hang Zhou <929513338@qq.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 33/93] spi: bcm63xx: fix premature CS deassertion on RX-only transactions
+	Christian Gromm <christian.gromm@microchip.com>,
+	Victoria Votokina <Victoria.Votokina@kaspersky.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.12 087/132] most: usb: fix double free on late probe failure
 Date: Wed,  3 Dec 2025 16:29:26 +0100
-Message-ID: <20251203152337.740848256@linuxfoundation.org>
+Message-ID: <20251203152346.515168742@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,73 +60,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hang Zhou <929513338@qq.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit fd9862f726aedbc2f29a29916cabed7bcf5cadb6 ]
+commit baadf2a5c26e802a46573eaad331b427b49aaa36 upstream.
 
-On BCM6358 (and also observed on BCM6368) the controller appears to
-only generate as many SPI clocks as bytes that have been written into
-the TX FIFO. For RX-only transfers the driver programs the transfer
-length in SPI_MSG_CTL but does not write anything into the FIFO, so
-chip select is deasserted early and the RX transfer segment is never
-fully clocked in.
+The MOST subsystem has a non-standard registration function which frees
+the interface on registration failures and on deregistration.
 
-A concrete failing case is a three-transfer MAC address read from
-SPI-NOR:
-  - TX 0x03 (read command)
-  - TX 3-byte address
-  - RX 6 bytes (MAC)
+This unsurprisingly leads to bugs in the MOST drivers, and a couple of
+recent changes turned a reference underflow and use-after-free in the
+USB driver into several double free and a use-after-free on late probe
+failures.
 
-In contrast, a two-transfer JEDEC-ID read (0x9f + 6-byte RX) works
-because the driver uses prepend_len and writes dummy bytes into the
-TX FIFO for the RX part.
-
-Fix this by writing 0xff dummy bytes into the TX FIFO for RX-only
-segments so that the number of bytes written to the FIFO matches the
-total message length seen by the controller.
-
-Fixes: b17de076062a ("spi/bcm63xx: work around inability to keep CS up")
-
-Signed-off-by: Hang Zhou <929513338@qq.com>
-Link: https://patch.msgid.link/tencent_7AC88FCB3076489A4A7E6C2163DF1ACF8D06@qq.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 723de0f9171e ("staging: most: remove device from interface structure")
+Fixes: 4b1270902609 ("most: usb: Fix use-after-free in hdm_disconnect")
+Fixes: a8cc9e5fcb0e ("most: usb: hdm_probe: Fix calling put_device() before device initialization")
+Cc: stable@vger.kernel.org
+Cc: Christian Gromm <christian.gromm@microchip.com>
+Cc: Victoria Votokina <Victoria.Votokina@kaspersky.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20251029093029.28922-1-johan@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-bcm63xx.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/most/most_usb.c |   14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index a95badb7b7114..ba66fe9f1f543 100644
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -247,6 +247,20 @@ static int bcm63xx_txrx_bufs(struct spi_device *spi, struct spi_transfer *first,
+--- a/drivers/most/most_usb.c
++++ b/drivers/most/most_usb.c
+@@ -1058,7 +1058,7 @@ hdm_probe(struct usb_interface *interfac
  
- 		if (t->rx_buf) {
- 			do_rx = true;
+ 	ret = most_register_interface(&mdev->iface);
+ 	if (ret)
+-		goto err_free_busy_urbs;
++		return ret;
+ 
+ 	mutex_lock(&mdev->io_mutex);
+ 	if (le16_to_cpu(usb_dev->descriptor.idProduct) == USB_DEV_ID_OS81118 ||
+@@ -1068,8 +1068,7 @@ hdm_probe(struct usb_interface *interfac
+ 		if (!mdev->dci) {
+ 			mutex_unlock(&mdev->io_mutex);
+ 			most_deregister_interface(&mdev->iface);
+-			ret = -ENOMEM;
+-			goto err_free_busy_urbs;
++			return -ENOMEM;
+ 		}
+ 
+ 		mdev->dci->dev.init_name = "dci";
+@@ -1078,18 +1077,15 @@ hdm_probe(struct usb_interface *interfac
+ 		mdev->dci->dev.release = release_dci;
+ 		if (device_register(&mdev->dci->dev)) {
+ 			mutex_unlock(&mdev->io_mutex);
++			put_device(&mdev->dci->dev);
+ 			most_deregister_interface(&mdev->iface);
+-			ret = -ENOMEM;
+-			goto err_free_dci;
++			return -ENOMEM;
+ 		}
+ 		mdev->dci->usb_device = mdev->usb_device;
+ 	}
+ 	mutex_unlock(&mdev->io_mutex);
+ 	return 0;
+-err_free_dci:
+-	put_device(&mdev->dci->dev);
+-err_free_busy_urbs:
+-	kfree(mdev->busy_urbs);
 +
-+			/*
-+			 * In certain hardware implementations, there appears to be a
-+			 * hidden accumulator that tracks the number of bytes written into
-+			 * the hardware FIFO, and this accumulator overrides the length in
-+			 * the SPI_MSG_CTL register.
-+			 *
-+			 * Therefore, for read-only transfers, we need to write some dummy
-+			 * value into the FIFO to keep the accumulator tracking the correct
-+			 * length.
-+			 */
-+			if (!t->tx_buf)
-+				memset_io(bs->tx_io + len, 0xFF, t->len);
-+
- 			/* prepend is half-duplex write only */
- 			if (t == first)
- 				prepend_len = 0;
--- 
-2.51.0
-
+ err_free_ep_address:
+ 	kfree(mdev->ep_address);
+ err_free_cap:
 
 
 
