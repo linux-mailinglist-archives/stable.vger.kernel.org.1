@@ -1,146 +1,309 @@
-Return-Path: <stable+bounces-198176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFAB7C9E50A
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 09:55:53 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C6FDC9E534
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 09:57:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADAC83A4442
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 08:55:52 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 92F92348ADA
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 08:57:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C18B42D7384;
-	Wed,  3 Dec 2025 08:55:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39DA02BF015;
+	Wed,  3 Dec 2025 08:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="nL/66nl6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YKRODfUr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com [209.85.222.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DD122BE621
-	for <stable@vger.kernel.org>; Wed,  3 Dec 2025 08:55:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64AB22BEFE1
+	for <stable@vger.kernel.org>; Wed,  3 Dec 2025 08:57:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764752142; cv=none; b=siabYdzIFdyIsdSfuLEcgzGub0MeArzMz1QbV1R0KiO08Ef/OtKxEPulWGCNDN3kVorHjJ7pGMBEznr2zKYIr/Gjgac+hKqfPCCoc9XOK3oTVGzk/RkZHuBO9vlgZ0laQB1bhpbpGUriwNobC/6Da6xu8giS6smYKXV+y7+WGm0=
+	t=1764752245; cv=none; b=ZcrtTj/cmvEifpW/2+C3FPAefM7xwIP6vrb1xrtfXqbQaY02scJNjQ+7ulfXI3g+6nahHVoK7zBGsVP/mF0HVIISFIn0rA9c2E3NMcMWjIxDFWev2qETStuu1S8RYQ6BQ3sQm8BOQPU8gNTgGsJjrfi8xcNtRD0BzVfoZMYkNOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764752142; c=relaxed/simple;
-	bh=KRjf6rI6QeytErOhTZc6Hqc8yif5VI8/8ZIpds2a6M4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=RBHMUo2DiO9sFYephoPIhm0VH8FODB2MIX4gh1PCwL0d6sRwlYchLQqsvovSrMFKjkjXYuFZ5+rByVaqbsT7cWrZFaidKHi4STd+NCyuFARPBxgALrTSm5xnb79wyAnbZd54BZpZGNzud3oqLlplaaPZ2FJf06IFKlcDsdbDdBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=nL/66nl6; arc=none smtp.client-ip=209.85.167.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5942b58ac81so3741695e87.2
-        for <stable@vger.kernel.org>; Wed, 03 Dec 2025 00:55:40 -0800 (PST)
+	s=arc-20240116; t=1764752245; c=relaxed/simple;
+	bh=eHRpdG5z2aga+e1mfof6RZCnYmRMfjkDnwPbzUWOQuY=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=JYIa4JssVTN2KvXZ3ZdfzJGFOBxeZCEoDSjEsQDqKsIKzXBXchBNQxa24khCJiIHN1DkZbCD8QV9KqHaOtUooYvO5ayMZkACkuNjaNiPv8ke4PczCPxthLqstjB0UH2fydcavB4MXJqMYpSu+ddCRYG7TDwrxGFttSUyiLEWbLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YKRODfUr; arc=none smtp.client-ip=209.85.222.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-935356590ddso1739729241.1
+        for <stable@vger.kernel.org>; Wed, 03 Dec 2025 00:57:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1764752138; x=1765356938; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=woHXwxvxfwFTv0q/SqwVCTAjIUDR9jdYwm8dKIe3Yl4=;
-        b=nL/66nl6Eo1iAwyzy1bN5vCPXgxbn5AKL0d+N0TobH598vXYk/lCGHpXemuKlCiRVE
-         Oym1V5T1VktChhfnfNAgk/IXDJel76XomfDUGu9xGbe2sb/XomFsKBKackAnwiZDvTw4
-         Pjp2mbX+I3wsoBlwVUAliWFfO/rFKKfttW6Do=
+        d=gmail.com; s=20230601; t=1764752242; x=1765357042; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=VVI08zhNBg01YgaJjiGFtDd7DGJdSheO60VhOBD7FrI=;
+        b=YKRODfUrliAZrb1tsiz62HrMfcgT+G8D9syPXCD8PJYn11nhNOCD2NnrnXV2KunhQQ
+         6gOBXxUEmx5nCykKwps30mQTWbHN97cz0Yek6Hfsln0tGfREa/VHANFX8Q9k8RGpr2lE
+         A0aCysIiyvSaPhnEUCbayW2yx1+iZGiD2TXAYvqQkdTp7LaxcClkfhI3/cjrk34w3/CC
+         e0g+7BdY/yFAYrZrdez1itPVp5cueREHeHY8rWestfSeGlc4bRFgZYmz0YJMU9dPfel9
+         NLdGs2O0x7JHnwfx6q0X4Tth4pVrGuxQkMEvzn0Tos4TS02KtM6l0WgZmj5UaLL7olEs
+         X+jQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764752138; x=1765356938;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=woHXwxvxfwFTv0q/SqwVCTAjIUDR9jdYwm8dKIe3Yl4=;
-        b=rlTmLfTeEpy6yzg3Y0W69YHDdmGtysK5i4c4QGgpuXmSX2GvszjD1y88tPHGaCKYWp
-         R9lyFS5RaD6r3+KyCQ75JTpiGmDz9gkYkiTgPUEt8ThKykHtCI+LqmH+/ThuS18HMpas
-         5RLbnYSFvMoPmUxlHSXFR6V5ewS4jegw0w5PIzRX6PBk0j3UyteONBHuT0qg4mZQDowb
-         wufHuoIpeeGBRX3EFtGXoGUkE8U4Za+5rTNdit8bRJqLofhAOMS/h96TPVfE/dGpprim
-         8BjUo2pA1RKjWDQNaQLaL8tOAhb2+OHBuLCfNv+3En2+lM+j9FXZmOFh5hh4vUfrSr7l
-         UA2A==
-X-Forwarded-Encrypted: i=1; AJvYcCVwYWWH7G9OIdjCdksPieP0dqHY6EP9BG630iK9anFlkaEFxRpK+j+T8uul/My5IoqD3uokNjA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy6SSc/mFop4AoRYPP4q+b0ak0zrHXfg0VjbXnzEPf8RghjWxgR
-	3PBZ1dh+OGg8FYZx2P5MSm9lnnfQhZIanyja8IvCoaE1M3lHPb+GKiJ7tef7HFHkUQ==
-X-Gm-Gg: ASbGnctv14D4yM9mvp3t/SpsDt40nptzAMDAcD1YCys7VD2cZkzvFpvUat1erLBevTC
-	DvCcN0q7M9pVqsD6brMp6kfQaIepCLjp8lBiK9Hnt5v1uj55aHaHz2b+n7uBgs1T3R3LaAY/gQU
-	2Vs4Fdiw9IF3JTSDJubIZDuR26uR8LJlR37G4z3lsc0kyOf7KWVj2SvjrpYXrgQvs0QV2N02E2g
-	8e0amVaq4+4BBnj1gZ4VJECur/C7gZXAOUOZsdM1vm4KLpD75NZBB5jt8yVy1Z8uO5zFQ4RlJjI
-	HwlxQYoTD+Zjs/jPTpWXqf/bcA6Tgs/YIGjekMoRdIajnAHMr91nHFLLclkZY5Q+fyK64Mo5PT/
-	FIy1VEQHxTem0pSI1uT4Li9JFMZO6UO2yFtaYFy1u45yv5Q/apvXzx3xkPzuocDX9GBI4KU8/r6
-	imeHbnUj7QHK7H1BHp5ATxIhj07opcuttJKeqkBjID2khAcqu1tHgvODtrnUGAawtvsQKv49djE
-	ncESTOWFy7vnkFFB1g=
-X-Google-Smtp-Source: AGHT+IFTKSoVv7lOSXtd9iPwhZeRSNLFxYSPOIOsHgyo/230WEcBofLQ8T4STXRlBe4/0ZQCEDG4nw==
-X-Received: by 2002:a05:6512:b8c:b0:577:2d9:59f1 with SMTP id 2adb3069b0e04-597d3f37650mr683682e87.19.1764752138351;
-        Wed, 03 Dec 2025 00:55:38 -0800 (PST)
-Received: from ribalda.c.googlers.com (165.173.228.35.bc.googleusercontent.com. [35.228.173.165])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-596bfa43f3esm5315377e87.47.2025.12.03.00.55.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Dec 2025 00:55:37 -0800 (PST)
-From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Wed, 03 Dec 2025 08:55:34 +0000
-Subject: [PATCH 1/3] media: uapi: c3-isp: Fix documentation warning
+        d=1e100.net; s=20230601; t=1764752242; x=1765357042;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=VVI08zhNBg01YgaJjiGFtDd7DGJdSheO60VhOBD7FrI=;
+        b=xRwN18eGifLNSvChsDyFGexgyzy1JqLu7NCPAKOjUoF0sgCEr3wHnUQ00lbpSx3qYK
+         3rFv0xWzT7VFjxBAkqxXq5o3f8GMHIEv+z+no1jRuwub1aVBVVopC/xZ4G/FFaQCflPx
+         fTCUwSIgi7YsIRZsHileYwheyJ2fDFbs7FCIVZl5oT9PjaLvyWEB5Fq7SUZ+yBSg1yFq
+         dm2/Y/Wn3JOthtMH9NhCY9P6sJsS9TXjxAef3onqMvyMozR4F7EMIhnu+VCm7p9UlZLA
+         9qBuhP44LRGP7bV3lxDJpg5Jif8QDdzDN8tNcpW281Z70yNXD0ALjakAy/Tf+aNqLRm9
+         +/kA==
+X-Forwarded-Encrypted: i=1; AJvYcCVt7KLiQk4jYTDYVcrOmK1Ga/dx+kcBCwfiEKWhN6Mg1nR1BROawxEh4Wr9DkE2vDyJTtF9hKo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxVSn6SGaqDs3qq+1eo0pL4P6V5NiWjkbw3LTPYecFQ+6b+XY7u
+	vCRdvm6mrBprIEv+YlhSHDu28L3IXPzX0WKkL+AbuXI9rpG7ChjOyFIXCR+bCY6iZyd5l2q3E7N
+	/fH5cm0XFRtV3lJwaQMPVrx/LipOnJAY=
+X-Gm-Gg: ASbGncteshPo4zxdISTLMcsIK4wjLS/Jix8jQYRYDwsX2R8ZO8TU7LARrDcxCNY5W+s
+	ydX/coaxWBm/4F24qj1nqj/QKuem72x8QfDoChFdDVrC+6DJrr5L/MI8K4fX28BXj3+ccy4RKte
+	YxMe/i/yqxtxCLsD4QjzhfDOYRXWGRWwcw5ukL9cs8QDhvhPrxHP+dQPoayIwwph91dmRSZpmUe
+	tOzYXgkG8/uKqNfecaXA4FHHdqPWBk2nl7iy4+l8CWsYQ3kQGZUyo/tLNxtwGGs81JQNQtV
+X-Google-Smtp-Source: AGHT+IFqR1RlOPr0NrhhNnNT/JROqcmAinCel3zu7vS1LcXenQhfgtjPJarMmUKBgftae+FRX85qaxsmm2cZ79jyma4=
+X-Received: by 2002:a05:6102:3ece:b0:5de:694:15e0 with SMTP id
+ ada2fe7eead31-5e48e53389dmr343758137.45.1764752242159; Wed, 03 Dec 2025
+ 00:57:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251203-warnings-6-19-v1-1-25308e136bca@chromium.org>
-References: <20251203-warnings-6-19-v1-0-25308e136bca@chromium.org>
-In-Reply-To: <20251203-warnings-6-19-v1-0-25308e136bca@chromium.org>
-To: Keke Li <keke.li@amlogic.com>, 
- Jacopo Mondi <jacopo.mondi@ideasonboard.com>, 
- Daniel Scally <dan.scally@ideasonboard.com>, 
- Hans Verkuil <hverkuil+cisco@kernel.org>, 
- Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, 
- Vikash Garodia <vikash.garodia@oss.qualcomm.com>, 
- Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>, 
- Abhinav Kumar <abhinav.kumar@linux.dev>, Bryan O'Donoghue <bod@kernel.org>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>, 
- linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, Ricardo Ribalda <ribalda@chromium.org>, 
- Stephen Rothwell <sfr@canb.auug.org.au>, stable@vger.kernel.org
-X-Mailer: b4 0.14.2
+From: Minseong Kim <ii4gsp@gmail.com>
+Date: Wed, 3 Dec 2025 17:57:11 +0900
+X-Gm-Features: AWmQ_blcJNIZtmzzxkMd8_nlhTZCYk284PzT8yaXGT5sjpokvcLllbLVfYps7ys
+Message-ID: <CAKrymDR1X3XTX_1ZW3XXXnuYH+kzsnv7Av5uivzR1sto+5BFQg@mail.gmail.com>
+Subject: [PATCH net] atm: mpoa: Fix UAF on qos_head list in procfs
+To: netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
+	Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+The global QoS list 'qos_head' in net/atm/mpc.c is accessed from the
+/proc/net/atm/mpc procfs interface without proper synchronization. The
+read-side seq_file show path (mpc_show() -> atm_mpoa_disp_qos()) walks
+qos_head without any lock, while the write-side path
+(proc_mpc_write() -> parse_qos() -> atm_mpoa_delete_qos()) can unlink and
+kfree() entries immediately. Concurrent read/write therefore leads to a
+use-after-free.
 
-Building htmldocs generates a warning:
+This risk is already called out in-tree:
+  /* this is buggered - we need locking for qos_head */
 
-WARNING: include/uapi/linux/media/amlogic/c3-isp-config.h:199
-error: Cannot parse struct or union!
+Fix this by adding a mutex to protect all qos_head list operations.
+A mutex is used (instead of a spinlock) because atm_mpoa_disp_qos()
+invokes seq_printf(), which may sleep.
 
-Which correctly highlights that the c3_isp_params_block_header symbol
-is wrongly documented as a struct while it's a plain #define instead.
+The fix:
+  - Adds qos_mutex protecting qos_head
+  - Introduces __atm_mpoa_search_qos() requiring the mutex
+  - Serializes add/search/delete/show/cleanup on qos_head
+  - Re-checks qos_head under lock in add path to avoid duplicates under
+    concurrent additions
+  - Uses a single-exit pattern in delete for clarity
 
-Fix this by removing the 'struct' identifier from the documentation of
-the c3_isp_params_block_header symbol.
+Note: atm_mpoa_search_qos() still returns an unprotected pointer; callers
+must ensure the entry is not freed while using it, or hold qos_mutex.
 
-[ribalda: Add Closes:]
-
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Closes: https://lore.kernel.org/all/20251127131425.4b5b6644@canb.auug.org.au/
-Fixes: 45662082855c ("media: uapi: Convert Amlogic C3 to V4L2 extensible params")
+Reported-by: Minseong Kim <ii4gsp@gmail.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Minseong Kim <ii4gsp@gmail.com>
 ---
- include/uapi/linux/media/amlogic/c3-isp-config.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/atm/mpc.c | 60 ++++++++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 40 insertions(+), 20 deletions(-)
 
-diff --git a/include/uapi/linux/media/amlogic/c3-isp-config.h b/include/uapi/linux/media/amlogic/c3-isp-config.h
-index 0a3c1cc55ccbbad12f18037d65f32ec9ca1a4ec0..92db5dcdda181cb31665e230cc56b443fa37a0be 100644
---- a/include/uapi/linux/media/amlogic/c3-isp-config.h
-+++ b/include/uapi/linux/media/amlogic/c3-isp-config.h
-@@ -186,7 +186,7 @@ enum c3_isp_params_block_type {
- #define C3_ISP_PARAMS_BLOCK_FL_ENABLE	V4L2_ISP_PARAMS_FL_BLOCK_ENABLE
- 
- /**
-- * struct c3_isp_params_block_header - C3 ISP parameter block header
-+ * c3_isp_params_block_header - C3 ISP parameter block header
-  *
-  * This structure represents the common part of all the ISP configuration
-  * blocks and is identical to :c:type:`v4l2_isp_params_block_header`.
+diff --git a/net/atm/mpc.c b/net/atm/mpc.c
+index 324e3ab96bb393..12da0269275c54 100644
+--- a/net/atm/mpc.c
++++ b/net/atm/mpc.c
+@@ -123,6 +123,7 @@ static struct llc_snap_hdr llc_snap_mpoa_data_tagged = {
 
--- 
-2.52.0.158.g65b55ccf14-goog
+ struct mpoa_client *mpcs = NULL; /* FIXME */
+ static struct atm_mpoa_qos *qos_head = NULL;
++static DEFINE_MUTEX(qos_mutex); /* Protect qos_head list */
+ static DEFINE_TIMER(mpc_timer, mpc_cache_check);
 
+@@ -175,23 +176,45 @@ static struct mpoa_client
+*find_mpc_by_lec(struct net_device *dev)
+ /*
+  * Functions for managing QoS list
+  */
+
++/*
++ * Search for a QoS entry. Caller must hold qos_mutex.
++ * Returns pointer to entry if found, NULL otherwise.
++ */
++static struct atm_mpoa_qos *__atm_mpoa_search_qos(__be32 dst_ip)
++{
++ struct atm_mpoa_qos *qos = qos_head;
++
++ while (qos) {
++ if (qos->ipaddr == dst_ip)
++ return qos;
++ qos = qos->next;
++ }
++ return NULL;
++}
++
++/*
++ * Search for a QoS entry.
++ * WARNING: The returned pointer is not protected. The caller must ensure
++ * that the entry is not freed while using it, or hold qos_mutex during use.
++ */
+ struct atm_mpoa_qos *atm_mpoa_search_qos(__be32 dst_ip)
+ {
+  struct atm_mpoa_qos *qos;
+
+- qos = qos_head;
+- while (qos) {
+- if (qos->ipaddr == dst_ip)
+- break;
+- qos = qos->next;
+- }
++ mutex_lock(&qos_mutex);
++ qos = __atm_mpoa_search_qos(dst_ip);
++ mutex_unlock(&qos_mutex);
+
+  return qos;
+ }
+
+ /*
+  * Overwrites the old entry or makes a new one.
+  */
+ struct atm_mpoa_qos *atm_mpoa_add_qos(__be32 dst_ip, struct atm_qos *qos)
+ {
+  struct atm_mpoa_qos *entry;
++ struct atm_mpoa_qos *new;
+
+- entry = atm_mpoa_search_qos(dst_ip);
+- if (entry != NULL) {
++ /* Fast path: update existing entry */
++ mutex_lock(&qos_mutex);
++ entry = __atm_mpoa_search_qos(dst_ip);
++ if (entry) {
+  entry->qos = *qos;
++ mutex_unlock(&qos_mutex);
+  return entry;
+  }
++ mutex_unlock(&qos_mutex);
+
+- entry = kmalloc(sizeof(struct atm_mpoa_qos), GFP_KERNEL);
+- if (entry == NULL) {
++ /* Allocate outside lock */
++ new = kmalloc(sizeof(*new), GFP_KERNEL);
++ if (!new) {
+  pr_info("mpoa: out of memory\n");
+- return entry;
++ return NULL;
+  }
+
+- entry->ipaddr = dst_ip;
+- entry->qos = *qos;
++ new->ipaddr = dst_ip;
++ new->qos = *qos;
+
++ /* Re-check under lock to avoid duplicates */
+  mutex_lock(&qos_mutex);
+- entry->next = qos_head;
+- qos_head = entry;
++ entry = __atm_mpoa_search_qos(dst_ip);
++ if (entry) {
++ entry->qos = *qos;
++ mutex_unlock(&qos_mutex);
++ kfree(new);
++ return entry;
++ }
++
++ new->next = qos_head;
++ qos_head = new;
+  mutex_unlock(&qos_mutex);
+
+- return entry;
++ return new;
+ }
+
+ /*
+  * Returns 0 for failure, 1 for success
+  */
+ int atm_mpoa_delete_qos(struct atm_mpoa_qos *entry)
+ {
+  struct atm_mpoa_qos *curr;
++ int ret = 0;
+
+  if (entry == NULL)
+  return 0;
+
++ mutex_lock(&qos_mutex);
++
+  if (entry == qos_head) {
+  qos_head = qos_head->next;
+- kfree(entry);
+- return 1;
++ ret = 1;
++ goto out_free;
+  }
+
+  curr = qos_head;
+  while (curr != NULL) {
+  if (curr->next == entry) {
+  curr->next = entry->next;
+- kfree(entry);
+- return 1;
++ ret = 1;
++ goto out_free;
+  }
+  curr = curr->next;
+  }
+
+- return 0;
++out:
++ mutex_unlock(&qos_mutex);
++ return ret;
++
++out_free:
++ mutex_unlock(&qos_mutex);
++ kfree(entry);
++ return ret;
+ }
+
+ /* this is buggered - we need locking for qos_head */
+ void atm_mpoa_disp_qos(struct seq_file *m)
+ {
+  struct atm_mpoa_qos *qos;
+
+  seq_printf(m, "QoS entries for shortcuts:\n");
+  seq_printf(m, "IP address\n  TX:max_pcr pcr     min_pcr max_cdv
+max_sdu\n  RX:max_pcr pcr     min_pcr max_cdv max_sdu\n");
+
++ mutex_lock(&qos_mutex);
+  qos = qos_head;
+  while (qos != NULL) {
+  seq_printf(m, "%pI4\n     %-7d %-7d %-7d %-7d %-7d\n     %-7d %-7d
+%-7d %-7d %-7d\n",
+@@ -250,6 +273,7 @@ void atm_mpoa_disp_qos(struct seq_file *m)
+     qos->qos.rxtp.max_cdv,
+     qos->qos.rxtp.max_sdu);
+  qos = qos->next;
+  }
++ mutex_unlock(&qos_mutex);
+ }
+
+ static struct net_device *find_lec_by_itfnum(int itf)
+@@ -1524,8 +1548,10 @@ static void __exit atm_mpoa_cleanup(void)
+  mpc = tmp;
+  }
+
++ mutex_lock(&qos_mutex);
+  qos = qos_head;
+  qos_head = NULL;
++ mutex_unlock(&qos_mutex);
+  while (qos != NULL) {
+  nextqos = qos->next;
+  dprintk("freeing qos entry %p\n", qos);
+--
 
