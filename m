@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-198271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52B15C9F836
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:36:52 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54B08CA13BA
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:04:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AECA43007B44
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:34:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1D59E3005C7A
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:03:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B129930AAD0;
-	Wed,  3 Dec 2025 15:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A66934D39F;
+	Wed,  3 Dec 2025 16:02:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xLxwJWDs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a/83n1cH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CFEE308F2C;
-	Wed,  3 Dec 2025 15:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 247AE34D398;
+	Wed,  3 Dec 2025 16:02:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764775993; cv=none; b=KOiqrorBao6UpCJSUbUl4T1oMi/zhA70anZnAn0Vfdk9SiWG7aK6Zhj4jglHAqi2fcdBjp8Pn03k5GkDSLTW8GbJZXqgP3L7OtPASIeRUZmD2+5tSOCgmBItr+x5cOrv77PDXGsQyVw/OXARF2x7UHiOLFOxG1eVcSqKfKwb67U=
+	t=1764777748; cv=none; b=crPqy5Kn9eQ2yWNHeHakN4wJiP2CMO2tQzRYhpcmXqBgO1igzDdiPdqduYfwhMM5qXxKcLH6fud0jqLtBxVJko3hxiHg/eY05klqIb/dQ0FbRyTRNQi/ylfMHjfOSCr0yNv8D3qGcGzhU3SWsun8nJxxcrvkOZOlqnyQrtbyHNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764775993; c=relaxed/simple;
-	bh=GsK0f0gO4OPAcra/REnJkf4eYaPABkll/waTlWIwmtQ=;
+	s=arc-20240116; t=1764777748; c=relaxed/simple;
+	bh=ub61WnPxIRJXVut/vTJGQcG9QMrFEG/DLjXIu3arw74=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VlIrULlT3tdnZynSTfjVIPmUK6X+/+bkUzLyTiiuWJcs88ALLmyH3/ayqd8xMEkIInDuKA4b3iNXVfie36snmZVe46QBJqhjG7XqZwvx1fjykvbUcm9ze2YK67a+pzA5Z0G3C25yyoM6YooVVJdcp0qorrzrhwXecLtymT3jfcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xLxwJWDs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8531EC4CEF5;
-	Wed,  3 Dec 2025 15:33:11 +0000 (UTC)
+	 MIME-Version; b=lSuyXMGHVYwBkFQ921Q/SFH14E4RKfv07GkV/+14d0zZMHYJHQ1iBCQT1IRy39/XjYVKBBYkFNl2QM5MBhEB2Vngc6z0dJEv1p1MezQHRdldRYE7niqZdZ9Rvr/ejoT0ZydCe1ZZnbZqN32Wpyd/QbJEQP9eh77xzlc3g1zjPfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a/83n1cH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 967AAC116B1;
+	Wed,  3 Dec 2025 16:02:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764775992;
-	bh=GsK0f0gO4OPAcra/REnJkf4eYaPABkll/waTlWIwmtQ=;
+	s=korg; t=1764777748;
+	bh=ub61WnPxIRJXVut/vTJGQcG9QMrFEG/DLjXIu3arw74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xLxwJWDstmmffjX3sA+pvQx5kIYcpw6retQ+5epzymn7UXovb6zXYo8deDqTHKRYh
-	 EBGTMxq/2BfWBzemopuoIDcG2jZeRQEdZ0NAN7qZCuTNeYq9u0jUvRL6qvLUNYCsZ7
-	 yu9AQkpvZeXc0BfNPk8Z93kdRrJ3NYlRXaX4Izh4=
+	b=a/83n1cHZUIHavSn2wExaQc+kFfFQYRwXxtJ+BDUkB2XodwX0RBAzwBQGrmeyCMlb
+	 Sh6kR4gDJlr/nX9CcZTZkZCaOq6y0XF4tx9EPnh5SNLdMpMTATNHi6SnS1pPGMJAhd
+	 qXyywhnf19GsYPne9ejVbRMLa0Nx8PvMCAO+QPV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Kees Cook <kees@kernel.org>,
-	Vineet Gupta <vgupta@kernel.org>,
-	"Yury Norov (NVIDIA)" <yury.norov@gmail.com>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 048/300] arc: Fix __fls() const-foldability via __builtin_clzl()
+Subject: [PATCH 5.15 102/392] net: stmmac: Check stmmac_hw_setup() in stmmac_resume()
 Date: Wed,  3 Dec 2025 16:24:12 +0100
-Message-ID: <20251203152402.395722063@linuxfoundation.org>
+Message-ID: <20251203152417.852982573@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-[ Upstream commit a3fecb9160482367365cc384c59dd220b162b066 ]
+[ Upstream commit 6896c2449a1858acb643014894d01b3a1223d4e5 ]
 
-While tracking down a problem where constant expressions used by
-BUILD_BUG_ON() suddenly stopped working[1], we found that an added static
-initializer was convincing the compiler that it couldn't track the state
-of the prior statically initialized value. Tracing this down found that
-ffs() was used in the initializer macro, but since it wasn't marked with
-__attribute__const__, the compiler had to assume the function might
-change variable states as a side-effect (which is not true for ffs(),
-which provides deterministic math results).
+stmmac_hw_setup() may return 0 on success and an appropriate negative
+integer as defined in errno.h file on failure, just check it and then
+return early if failed in stmmac_resume().
 
-For arc architecture with CONFIG_ISA_ARCV2=y, the __fls() function
-uses __builtin_arc_fls() which lacks GCC's const attribute, preventing
-compile-time constant folding, and KUnit testing of ffs/fls fails on
-arc[3]. A patch[2] to GCC to solve this has been sent.
-
-Add a fix for this by handling compile-time constants with the standard
-__builtin_clzl() builtin (which has const attribute) while preserving
-the optimized arc-specific builtin for runtime cases. This has the added
-benefit of skipping runtime calculation of compile-time constant values.
-Even with the GCC bug fixed (which is about "attribute const") this is a
-good change to avoid needless runtime costs, and should be done
-regardless of the state of GCC's bug.
-
-Build tested ARCH=arc allyesconfig with GCC arc-linux 15.2.0.
-
-Link: https://github.com/KSPP/linux/issues/364 [1]
-Link: https://gcc.gnu.org/pipermail/gcc-patches/2025-August/693273.html
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202508031025.doWxtzzc-lkp@intel.com/ [3]
-Signed-off-by: Kees Cook <kees@kernel.org>
-Acked-by: Vineet Gupta <vgupta@kernel.org>
-Signed-off-by: Yury Norov (NVIDIA) <yury.norov@gmail.com>
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
+Link: https://patch.msgid.link/20250811073506.27513-2-yangtiezhu@loongson.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arc/include/asm/bitops.h | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arc/include/asm/bitops.h b/arch/arc/include/asm/bitops.h
-index fb98440c0bd4c..325512148c7b8 100644
---- a/arch/arc/include/asm/bitops.h
-+++ b/arch/arc/include/asm/bitops.h
-@@ -315,6 +315,8 @@ static inline __attribute__ ((const)) int fls(unsigned long x)
-  */
- static inline __attribute__ ((const)) int __fls(unsigned long x)
- {
-+	if (__builtin_constant_p(x))
-+		return x ? BITS_PER_LONG - 1 - __builtin_clzl(x) : 0;
- 	/* FLS insn has exactly same semantics as the API */
- 	return	__builtin_arc_fls(x);
- }
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 21cc8cd9e023a..973c60e013344 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -7487,7 +7487,14 @@ int stmmac_resume(struct device *dev)
+ 	stmmac_free_tx_skbufs(priv);
+ 	stmmac_clear_descriptors(priv);
+ 
+-	stmmac_hw_setup(ndev, false);
++	ret = stmmac_hw_setup(ndev, false);
++	if (ret < 0) {
++		netdev_err(priv->dev, "%s: Hw setup failed\n", __func__);
++		mutex_unlock(&priv->lock);
++		rtnl_unlock();
++		return ret;
++	}
++
+ 	stmmac_init_coalesce(priv);
+ 	stmmac_set_rx_mode(ndev);
+ 
 -- 
 2.51.0
 
