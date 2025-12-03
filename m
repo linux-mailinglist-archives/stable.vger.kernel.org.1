@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-199550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0319CA00E0
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:42:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6BF2CA1420
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:07:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BAF4B30006F6
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:42:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A338432F5B19
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:44:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3D9E35CBA2;
-	Wed,  3 Dec 2025 16:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31FA532FA02;
+	Wed,  3 Dec 2025 15:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mA2AdImp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cKsIQSaD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2F135C1AC;
-	Wed,  3 Dec 2025 16:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35B332F77C;
+	Wed,  3 Dec 2025 15:51:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780168; cv=none; b=cEMvVZryDOpDft6jr3geyNaaylRvAO8hD+vfAsnrwf1/WsdKV90wayyli5YxrFGYiLFc9ch2qQwgWhgg+YcHKbHzaa2SundGXaDa1ISxeb7fWkCke1+eyJ7JjmYfy/AV2/y5HQ6GFf/Qncmp79epayTuP/s9+DsncxLppD5ni1o=
+	t=1764777102; cv=none; b=Z+L53yRbIISba+Ohknc5V4DuKxHeJQokvtUhTi0x2D0yMLMwkuhGR0LEqqGaTrZpD2Z4nnETx3Eph0VkWU5w83CGUab81hhGCfzX1Yhmd9uwRzYT9wCbRG1pXknO0bV/aC5+eDHbv0Tg6x4vdPjejczHfh8xptFENV8O+t2zdtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780168; c=relaxed/simple;
-	bh=7nkiVVuXJ2DArrl6U8URNFuQ0BEhVZVIHTdaWMZNM14=;
+	s=arc-20240116; t=1764777102; c=relaxed/simple;
+	bh=3Wzc6B7/4Ho/O0y9sMSe8LxdTlHUNXqSjCOVPT2Uy1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rsUfATY7YPHcCNJCb3/o0lo0dXE3ovLyQ6NCMAZGaYYCY+96SLtE/OIC4KelguIrvMA8tNYrtdwd7bPJM5Om3TnuisWVQwcQ0SFGkyT4tXxAE2n1A57uTE0VIeQTYFpKAZ21SJ9VRjveBpB4mDL+N8+bZ3eW7iIj3T5MVJUhiVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mA2AdImp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD9AC4CEF5;
-	Wed,  3 Dec 2025 16:42:48 +0000 (UTC)
+	 MIME-Version; b=OVvvrE7yQtb9iWp9AYGUGt4Pq3jj2jOmDuIE+g/xbi3pwGsR+B6wwEBsR4Fi4RcVtuAJpwQnAIFBh+ZK2PvJcphwQ3yqp9h5+Z3cXkYggTw0kT3tpWcci/da9Yq2PelQ4VbKTGXThexDTpaKCWe6S2bXaQhvRM06UQ/cXun5KwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cKsIQSaD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D0ADC4CEF5;
+	Wed,  3 Dec 2025 15:51:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780168;
-	bh=7nkiVVuXJ2DArrl6U8URNFuQ0BEhVZVIHTdaWMZNM14=;
+	s=korg; t=1764777101;
+	bh=3Wzc6B7/4Ho/O0y9sMSe8LxdTlHUNXqSjCOVPT2Uy1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mA2AdImp7QnmwmndG1EWRDChKWV0aoto0xfhqFbPQ5RoTSJ17ZyH4OsAVSSAct7H0
-	 7SIT0D2ZpouFZD6Wbaz7NSzANOjdIwNXqXOalea+f27IzIfW3dv1bVEcEoc5cu9TdM
-	 8CNCRq4HLCoEYrFAe6y0yaPf5BmxsQwhYdKChCZU=
+	b=cKsIQSaDzRZ9wFbad1CTzj/3Mc53ALJIQfGplMPHN4EKCCPrIFGnw45PsuW/x4ltv
+	 m41NirIRHhGGLM4JOSlYLDNfeFi6qUUaCL+HxOPI/iXTxXKKM+gUvc+M2av+xzFIJI
+	 C8p2m72XZyxn3q9H3oG+UEbfcxMzXM0YUhstQ3PA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aswin Karuvally <aswin@linux.ibm.com>,
-	Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 459/568] s390/ctcm: Fix double-kfree
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.17 083/146] can: rcar_canfd: Fix CAN-FD mode as default
 Date: Wed,  3 Dec 2025 16:27:41 +0100
-Message-ID: <20251203152457.516391485@linuxfoundation.org>
+Message-ID: <20251203152349.500654114@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +59,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit da02a1824884d6c84c5e5b5ac373b0c9e3288ec2 ]
+commit 6d849ff573722afcf5508d2800017bdd40f27eb9 upstream.
 
-The function 'mpc_rcvd_sweep_req(mpcginfo)' is called conditionally
-from function 'ctcmpc_unpack_skb'. It frees passed mpcginfo.
-After that a call to function 'kfree' in function 'ctcmpc_unpack_skb'
-frees it again.
+The commit 5cff263606a1 ("can: rcar_canfd: Fix controller mode setting")
+has aligned with the flow mentioned in the hardware manual for all SoCs
+except R-Car Gen3 and RZ/G2L SoCs. On R-Car Gen4 and RZ/G3E SoCs, due to
+the wrong logic in the commit[1] sets the default mode to FD-Only mode
+instead of CAN-FD mode.
 
-Remove 'kfree' call in function 'mpc_rcvd_sweep_req(mpcginfo)'.
+This patch sets the CAN-FD mode as the default for all SoCs by dropping
+the rcar_canfd_set_mode() as some SoC requires mode setting in global
+reset mode, and the rest of the SoCs in channel reset mode and update the
+rcar_canfd_reset_controller() to take care of these constraints. Moreover,
+the RZ/G3E and R-Car Gen4 SoCs support 3 modes compared to 2 modes on the
+R-Car Gen3. Use inverted logic in rcar_canfd_reset_controller() to
+simplify the code later to support FD-only mode.
 
-Bug detected by the clang static analyzer.
+[1]
+commit 45721c406dcf ("can: rcar_canfd: Add support for r8a779a0 SoC")
 
-Fixes: 0c0b20587b9f25a2 ("s390/ctcm: fix potential memory leak")
-Reviewed-by: Aswin Karuvally <aswin@linux.ibm.com>
-Signed-off-by: Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>
-Signed-off-by: Aswin Karuvally <aswin@linux.ibm.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251112182724.1109474-1-aswin@linux.ibm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5cff263606a1 ("can: rcar_canfd: Fix controller mode setting")
+Cc: stable@vger.kernel.org
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Link: https://patch.msgid.link/20251118123926.193445-1-biju.das.jz@bp.renesas.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/net/ctcm_mpc.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/can/rcar/rcar_canfd.c |   53 ++++++++++++++++++++++----------------
+ 1 file changed, 31 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/s390/net/ctcm_mpc.c b/drivers/s390/net/ctcm_mpc.c
-index 8ac213a551418..55216d2fbea0b 100644
---- a/drivers/s390/net/ctcm_mpc.c
-+++ b/drivers/s390/net/ctcm_mpc.c
-@@ -698,7 +698,6 @@ static void mpc_rcvd_sweep_req(struct mpcg_info *mpcginfo)
- 
- 	grp->sweep_req_pend_num--;
- 	ctcmpc_send_sweep_resp(ch);
--	kfree(mpcginfo);
- 	return;
+--- a/drivers/net/can/rcar/rcar_canfd.c
++++ b/drivers/net/can/rcar/rcar_canfd.c
+@@ -726,6 +726,11 @@ static void rcar_canfd_set_bit_reg(void
+ 	rcar_canfd_update(val, val, addr);
  }
  
--- 
-2.51.0
-
++static void rcar_canfd_clear_bit_reg(void __iomem *addr, u32 val)
++{
++	rcar_canfd_update(val, 0, addr);
++}
++
+ static void rcar_canfd_update_bit_reg(void __iomem *addr, u32 mask, u32 val)
+ {
+ 	rcar_canfd_update(mask, val, addr);
+@@ -772,25 +777,6 @@ static void rcar_canfd_set_rnc(struct rc
+ 	rcar_canfd_set_bit(gpriv->base, RCANFD_GAFLCFG(w), rnc);
+ }
+ 
+-static void rcar_canfd_set_mode(struct rcar_canfd_global *gpriv)
+-{
+-	if (gpriv->info->ch_interface_mode) {
+-		u32 ch, val = gpriv->fdmode ? RCANFD_GEN4_FDCFG_FDOE
+-					    : RCANFD_GEN4_FDCFG_CLOE;
+-
+-		for_each_set_bit(ch, &gpriv->channels_mask,
+-				 gpriv->info->max_channels)
+-			rcar_canfd_set_bit_reg(&gpriv->fcbase[ch].cfdcfg, val);
+-	} else {
+-		if (gpriv->fdmode)
+-			rcar_canfd_set_bit(gpriv->base, RCANFD_GRMCFG,
+-					   RCANFD_GRMCFG_RCMC);
+-		else
+-			rcar_canfd_clear_bit(gpriv->base, RCANFD_GRMCFG,
+-					     RCANFD_GRMCFG_RCMC);
+-	}
+-}
+-
+ static int rcar_canfd_reset_controller(struct rcar_canfd_global *gpriv)
+ {
+ 	struct device *dev = &gpriv->pdev->dev;
+@@ -823,6 +809,16 @@ static int rcar_canfd_reset_controller(s
+ 	/* Reset Global error flags */
+ 	rcar_canfd_write(gpriv->base, RCANFD_GERFL, 0x0);
+ 
++	/* Set the controller into appropriate mode */
++	if (!gpriv->info->ch_interface_mode) {
++		if (gpriv->fdmode)
++			rcar_canfd_set_bit(gpriv->base, RCANFD_GRMCFG,
++					   RCANFD_GRMCFG_RCMC);
++		else
++			rcar_canfd_clear_bit(gpriv->base, RCANFD_GRMCFG,
++					     RCANFD_GRMCFG_RCMC);
++	}
++
+ 	/* Transition all Channels to reset mode */
+ 	for_each_set_bit(ch, &gpriv->channels_mask, gpriv->info->max_channels) {
+ 		rcar_canfd_clear_bit(gpriv->base,
+@@ -840,10 +836,23 @@ static int rcar_canfd_reset_controller(s
+ 			dev_dbg(dev, "channel %u reset failed\n", ch);
+ 			return err;
+ 		}
+-	}
+ 
+-	/* Set the controller into appropriate mode */
+-	rcar_canfd_set_mode(gpriv);
++		/* Set the controller into appropriate mode */
++		if (gpriv->info->ch_interface_mode) {
++			/* Do not set CLOE and FDOE simultaneously */
++			if (!gpriv->fdmode) {
++				rcar_canfd_clear_bit_reg(&gpriv->fcbase[ch].cfdcfg,
++							 RCANFD_GEN4_FDCFG_FDOE);
++				rcar_canfd_set_bit_reg(&gpriv->fcbase[ch].cfdcfg,
++						       RCANFD_GEN4_FDCFG_CLOE);
++			} else {
++				rcar_canfd_clear_bit_reg(&gpriv->fcbase[ch].cfdcfg,
++							 RCANFD_GEN4_FDCFG_FDOE);
++				rcar_canfd_clear_bit_reg(&gpriv->fcbase[ch].cfdcfg,
++							 RCANFD_GEN4_FDCFG_CLOE);
++			}
++		}
++	}
+ 
+ 	return 0;
+ }
 
 
 
