@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-198788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DB44CA06D0
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:27:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ACE4CA1341
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:59:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3EA9E330DE96
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:10:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 01D7F330E1E5
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:45:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7254534B1B8;
-	Wed,  3 Dec 2025 16:01:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F108C36923B;
+	Wed,  3 Dec 2025 16:30:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vX9M5gUu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ayysNl7B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A3F34B1B0;
-	Wed,  3 Dec 2025 16:01:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BDFA369234;
+	Wed,  3 Dec 2025 16:30:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777687; cv=none; b=FmNMswfoNsLa/yRghlxB2UpF7JKVULfGRo+9u2+918j3IB7zbDY4rOhfuUaYT41TDiH1Wx1+n4X3GphMT4EYawgPRIiKR1y9JbrPoR9vGxCEGDCNsxriCGY1BwHdv7YeHHRidvEV2MV87VD5VsYLf0jaXrLYDn8rJvK0Mlc6aFY=
+	t=1764779458; cv=none; b=E8aWnyhgMgxTp4L0bWCKTGkc6CYa0smoHmf0X4DYNPt79O/WY//spD8EKYzHnP0gVQqBB1aZhwfB11MaYtQnM+V0GU6n0JaV21zTDOkSTU3WaHtv/w3RnFWYwGwtLVFf5zP4AzH4ZIAUsVVg7YVxs5W412AxmoufvYLZcRA1EM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777687; c=relaxed/simple;
-	bh=k21pjHh+SZOom5ij6K1L7WC8NrdUm5i+ZswtDIQq4d4=;
+	s=arc-20240116; t=1764779458; c=relaxed/simple;
+	bh=E64nmcPe8jcABOSYIMY1V8RS9FnoVku4COi0GFf3PSQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hpk1YSNHGVYimy6MYAZG379i3QRggV/X8UmIMGMaXubM1vG1sTAhMupgXbAfim7m0LIa4hRJnapRbvH/wh2QpiR8tpfRW1IlfnFNKmjQBRGaRz6rvi2UgmpfTi+FRevdZIwrdZYvbmcGdFoYjF5rwRGGKc8y5y3N8sx+P6e0TJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vX9M5gUu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 706D8C4CEF5;
-	Wed,  3 Dec 2025 16:01:26 +0000 (UTC)
+	 MIME-Version; b=jzJLDhchnXIpeVpyE5CnbaGaBWuA2pIMbWYzYrIRYr3moO9CKdj0ewMDztOErr3ghvtUMefVEe4/MGms5y0c/b4TVXRvzVCSxC2xc5WPwuyZYItB2+Whsbdm01x71rgBIXG8MNSvhPw7azdWnkSTZT4LaJUSqpx5PcKG7Om76uY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ayysNl7B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A15BC4CEF5;
+	Wed,  3 Dec 2025 16:30:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777686;
-	bh=k21pjHh+SZOom5ij6K1L7WC8NrdUm5i+ZswtDIQq4d4=;
+	s=korg; t=1764779458;
+	bh=E64nmcPe8jcABOSYIMY1V8RS9FnoVku4COi0GFf3PSQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vX9M5gUuGfDxbo3tFlQGLSPv/w7xuRkw8J1JcGqA5nQxFEf1WH56YLSfOqF0Y3k+L
-	 cWcZOLgSPiKpC40BPu6EuZD+1qou9bR7x0pxYpvRpEWGbH0pfQq6EllLp136eAeZx7
-	 BrvCD3ncnZAsOGDGn1lPYca4jls0YqKW/p4GVy5Q=
+	b=ayysNl7BJawjoZLoZ/9gFpc0RKtowzp5nbVCXMGJNglECluIDnEE3shqojoeaOS21
+	 +EUmFr3um5htVtZktx9RzJeptTC/izSv9zhxkCOMty5pjbF8GNy6p5FaQ/dtAIhaiD
+	 VedGhgdy1Q3laI6wJQ5Pdun5yTcCqj3WSrCJczmw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geoffrey McRae <geoffrey.mcrae@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
+	ChunHao Lin <hau@realtek.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 097/392] drm/amdkfd: return -ENOTTY for unsupported IOCTLs
-Date: Wed,  3 Dec 2025 16:24:07 +0100
-Message-ID: <20251203152417.670279437@linuxfoundation.org>
+Subject: [PATCH 6.1 246/568] r8169: set EEE speed down ratio to 1
+Date: Wed,  3 Dec 2025 16:24:08 +0100
+Message-ID: <20251203152449.729166370@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geoffrey McRae <geoffrey.mcrae@amd.com>
+From: ChunHao Lin <hau@realtek.com>
 
-[ Upstream commit 57af162bfc8c05332a28c4d458d246cc46d2746d ]
+[ Upstream commit bf7154ffb1c65a201906296a9d3eb22e9daa5ffc ]
 
-Some kfd ioctls may not be available depending on the kernel version the
-user is running, as such we need to report -ENOTTY so userland can
-determine the cause of the ioctl failure.
+EEE speed down means speed down MAC MCU clock. It is not from spec.
+It is kind of Realtek specific power saving feature. But enable it
+may cause some issues, like packet drop or interrupt loss. Different
+hardware may have different issues.
 
-Signed-off-by: Geoffrey McRae <geoffrey.mcrae@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+EEE speed down ratio (mac ocp 0xe056[7:4]) is used to set EEE speed
+down rate. The larger this value is, the more power can save. But it
+actually save less power then we expected. And, as mentioned above,
+will impact compatibility. So set it to 1 (mac ocp 0xe056[7:4] = 0)
+, which means not to speed down, to improve compatibility.
+
+Signed-off-by: ChunHao Lin <hau@realtek.com>
+Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://patch.msgid.link/20250918023425.3463-1-hau@realtek.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_chardev.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-index 7b2111be3019a..4f60ba2db1811 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-@@ -1947,8 +1947,10 @@ static long kfd_ioctl(struct file *filep, unsigned int cmd, unsigned long arg)
- 	unsigned int usize, asize;
- 	int retcode = -EINVAL;
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index 6879660e44fad..29f4695606ca1 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -3354,7 +3354,7 @@ static void rtl_hw_start_8168h_1(struct rtl8169_private *tp)
+ 		r8168_mac_ocp_modify(tp, 0xd412, 0x0fff, sw_cnt_1ms_ini);
+ 	}
  
--	if (nr >= AMDKFD_CORE_IOCTL_COUNT)
-+	if (nr >= AMDKFD_CORE_IOCTL_COUNT) {
-+		retcode = -ENOTTY;
- 		goto err_i1;
-+	}
+-	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0070);
++	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0000);
+ 	r8168_mac_ocp_modify(tp, 0xe052, 0x6000, 0x8008);
+ 	r8168_mac_ocp_modify(tp, 0xe0d6, 0x01ff, 0x017f);
+ 	r8168_mac_ocp_modify(tp, 0xd420, 0x0fff, 0x047f);
+@@ -3468,7 +3468,7 @@ static void rtl_hw_start_8117(struct rtl8169_private *tp)
+ 		r8168_mac_ocp_modify(tp, 0xd412, 0x0fff, sw_cnt_1ms_ini);
+ 	}
  
- 	if ((nr >= AMDKFD_COMMAND_START) && (nr < AMDKFD_COMMAND_END)) {
- 		u32 amdkfd_size;
-@@ -1961,8 +1963,10 @@ static long kfd_ioctl(struct file *filep, unsigned int cmd, unsigned long arg)
- 			asize = amdkfd_size;
- 
- 		cmd = ioctl->cmd;
--	} else
-+	} else {
-+		retcode = -ENOTTY;
- 		goto err_i1;
-+	}
- 
- 	dev_dbg(kfd_device, "ioctl cmd 0x%x (#0x%x), arg 0x%lx\n", cmd, nr, arg);
- 
+-	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0070);
++	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0000);
+ 	r8168_mac_ocp_write(tp, 0xea80, 0x0003);
+ 	r8168_mac_ocp_modify(tp, 0xe052, 0x0000, 0x0009);
+ 	r8168_mac_ocp_modify(tp, 0xd420, 0x0fff, 0x047f);
+@@ -3666,7 +3666,7 @@ static void rtl_hw_start_8125_common(struct rtl8169_private *tp)
+ 	r8168_mac_ocp_modify(tp, 0xc0b4, 0x0000, 0x000c);
+ 	r8168_mac_ocp_modify(tp, 0xeb6a, 0x00ff, 0x0033);
+ 	r8168_mac_ocp_modify(tp, 0xeb50, 0x03e0, 0x0040);
+-	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0030);
++	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0000);
+ 	r8168_mac_ocp_modify(tp, 0xe040, 0x1000, 0x0000);
+ 	r8168_mac_ocp_modify(tp, 0xea1c, 0x0003, 0x0001);
+ 	r8168_mac_ocp_modify(tp, 0xe0c0, 0x4f0f, 0x4403);
 -- 
 2.51.0
 
