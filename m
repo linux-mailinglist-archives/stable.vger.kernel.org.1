@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-198423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94F8AC9FA70
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:48:44 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD03FCA0535
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:17:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E855B303D31B
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:41:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CC75D30052DA
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:17:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA19130AACE;
-	Wed,  3 Dec 2025 15:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B1A82FD1A1;
+	Wed,  3 Dec 2025 16:08:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lBeHnhXc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1AFU70M0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6769DDDAB;
-	Wed,  3 Dec 2025 15:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E37125D1E9;
+	Wed,  3 Dec 2025 16:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776495; cv=none; b=A3hbC50lJFAfMDaBmJyL15dqzIXK/fjMQuZQhH6EnV8F2SXeKEdWvhhAWqidY8GUe1+bRcbFwlxdUIpqNb7+MvfKGZfbiv/rVZ/ROaxZL9R+fvnhmhj0RfkPfagAxc13kKJvRd+BiING8fl4UbxyQWneyVY6X0wX2+lREweJDtc=
+	t=1764778127; cv=none; b=i8IQQl52bHO7BolQUTVc4aS6Pc7vMb5gLKLowquaqjF+D87UmBa9RY4ItTM0rxKGEVw4dde0Dm3Icvt1USCxdU5GyVRwT1k80h39jnF8iHsffXyJaA5IB3IC7iLBI1W35hIUg2SdRuR/AQyrcm2rdGmXG6V9w7gwctJPke96l84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776495; c=relaxed/simple;
-	bh=3kjUvPTyBE2Rf0L8niTtEU0PxSmPlGoObF2/tK9knYU=;
+	s=arc-20240116; t=1764778127; c=relaxed/simple;
+	bh=dtpQ4v5kT7Sw70ouOqk0UGhCE2vXlyqEVQmEC8NnBM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wz3DsPnhKJqGxhGfUp4SqQ7SRdry9iBxLZBXGSGH5lpZbY4182jKziXYCcnY6Tf34mn9LxDbdtyxtueKbIsEOCGV3ZRbgHWO/7uWLFb6ofzV/wj8zqdKn5ugJLIh9+3IF86gjwtwWUzkhX0ZVqnvL2TJDTijIxLFnn+iNyWoWt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lBeHnhXc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAD46C4CEF5;
-	Wed,  3 Dec 2025 15:41:34 +0000 (UTC)
+	 MIME-Version; b=NZnpNu3FM1KP8yKU+8MzTBUMNlTO1g23S9zWbtAYbx6Bj2bKIzUyHatU/adceab/hpsG3Pfi5pDez/MSqYULNLrEMS9OKp0OmXEBvLemPm4+Dk1cgVKgZSM+T0CTJm/Gxch/xxbMAuLuFKpdQjTieRy1DjqW0079HydC8KrFyt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1AFU70M0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31F5BC4CEF5;
+	Wed,  3 Dec 2025 16:08:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776495;
-	bh=3kjUvPTyBE2Rf0L8niTtEU0PxSmPlGoObF2/tK9knYU=;
+	s=korg; t=1764778126;
+	bh=dtpQ4v5kT7Sw70ouOqk0UGhCE2vXlyqEVQmEC8NnBM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lBeHnhXcahj9ub4bp78UmCLCoskoWzlM+U0sEasXmwmVM0Zhnm/56g8AfrBaZkc0E
-	 gxTJNWYZyH22Do1jDH57DggW7nmIP9W9PpDvOj29/RR3p8Utoiv3rXKeH5PRMHs/F7
-	 s4+zK0ThBu+qsAR/SXSxCSoj7hmnLCI1gjyumaeE=
+	b=1AFU70M0AN+rHvT5n+mh867hbV7w9nQA4MUscFGJCllY4/Y9gQl9YGr/9zn1n4PUo
+	 IxjRglnnTsAE1mHlfYhDdXYR4DCaV0gV1vzZQh5+SGom/g5V40MCbn7+UDj9OYSrGK
+	 j9WOwt+wUtSUas0uBgnE097Q8G3e2KtfvSbf7aJk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rohit Keshri <rkeshri@redhat.com>,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	Maaz Mombasawala <maaz.mombasawala@broadcom.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
+	syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com,
+	Ranganath V N <vnranganath.20@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 198/300] drm/vmwgfx: Validate command header size against SVGA_CMD_MAX_DATASIZE
+Subject: [PATCH 5.15 252/392] net: sched: act_ife: initialize struct tc_ife to fix KMSAN kernel-infoleak
 Date: Wed,  3 Dec 2025 16:26:42 +0100
-Message-ID: <20251203152407.960633068@linuxfoundation.org>
+Message-ID: <20251203152423.442633493@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Forbes <ian.forbes@broadcom.com>
+From: Ranganath V N <vnranganath.20@gmail.com>
 
-[ Upstream commit 32b415a9dc2c212e809b7ebc2b14bc3fbda2b9af ]
+[ Upstream commit ce50039be49eea9b4cd8873ca6eccded1b4a130a ]
 
-This data originates from userspace and is used in buffer offset
-calculations which could potentially overflow causing an out-of-bounds
-access.
+Fix a KMSAN kernel-infoleak detected  by the syzbot .
 
-Fixes: 8ce75f8ab904 ("drm/vmwgfx: Update device includes for DX device functionality")
-Reported-by: Rohit Keshri <rkeshri@redhat.com>
-Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
-Reviewed-by: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patch.msgid.link/20251021190128.13014-1-ian.forbes@broadcom.com
+[net?] KMSAN: kernel-infoleak in __skb_datagram_iter
+
+In tcf_ife_dump(), the variable 'opt' was partially initialized using a
+designatied initializer. While the padding bytes are reamined
+uninitialized. nla_put() copies the entire structure into a
+netlink message, these uninitialized bytes leaked to userspace.
+
+Initialize the structure with memset before assigning its fields
+to ensure all members and padding are cleared prior to beign copied.
+
+This change silences the KMSAN report and prevents potential information
+leaks from the kernel memory.
+
+This fix has been tested and validated by syzbot. This patch closes the
+bug reported at the following syzkaller link and ensures no infoleak.
+
+Reported-by: syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0c85cae3350b7d486aee
+Tested-by: syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com
+Fixes: ef6980b6becb ("introduce IFE action")
+Signed-off-by: Ranganath V N <vnranganath.20@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20251109091336.9277-3-vnranganath.20@gmail.com
+Acked-by: Cong Wang <xiyou.wangcong@gmail.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/sched/act_ife.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-index 987633c6c49f4..17d7f172a9e0f 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-@@ -3622,6 +3622,11 @@ static int vmw_cmd_check(struct vmw_private *dev_priv,
+diff --git a/net/sched/act_ife.c b/net/sched/act_ife.c
+index ca53783ea0c4d..a8a5dbd7221b0 100644
+--- a/net/sched/act_ife.c
++++ b/net/sched/act_ife.c
+@@ -643,13 +643,15 @@ static int tcf_ife_dump(struct sk_buff *skb, struct tc_action *a, int bind,
+ 	unsigned char *b = skb_tail_pointer(skb);
+ 	struct tcf_ife_info *ife = to_ife(a);
+ 	struct tcf_ife_params *p;
+-	struct tc_ife opt = {
+-		.index = ife->tcf_index,
+-		.refcnt = refcount_read(&ife->tcf_refcnt) - ref,
+-		.bindcnt = atomic_read(&ife->tcf_bindcnt) - bind,
+-	};
++	struct tc_ife opt;
+ 	struct tcf_t t;
  
- 
- 	cmd_id = header->id;
-+	if (header->size > SVGA_CMD_MAX_DATASIZE) {
-+		VMW_DEBUG_USER("SVGA3D command: %d is too big.\n",
-+			       cmd_id + SVGA_3D_CMD_BASE);
-+		return -E2BIG;
-+	}
- 	*size = header->size + sizeof(SVGA3dCmdHeader);
- 
- 	cmd_id -= SVGA_3D_CMD_BASE;
++	memset(&opt, 0, sizeof(opt));
++
++	opt.index = ife->tcf_index,
++	opt.refcnt = refcount_read(&ife->tcf_refcnt) - ref,
++	opt.bindcnt = atomic_read(&ife->tcf_bindcnt) - bind,
++
+ 	spin_lock_bh(&ife->tcf_lock);
+ 	opt.action = ife->tcf_action;
+ 	p = rcu_dereference_protected(ife->params,
 -- 
 2.51.0
 
