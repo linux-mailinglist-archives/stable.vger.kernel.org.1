@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26766CA1534
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:18:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AE19C9F866
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:37:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AD236325224C
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:39:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 50B4C30393FC
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:34:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E51B346774;
-	Wed,  3 Dec 2025 16:29:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E5D330C62A;
+	Wed,  3 Dec 2025 15:34:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gMpYVW1V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eJQTesQE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE727345CDF;
-	Wed,  3 Dec 2025 16:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF8E256C9E;
+	Wed,  3 Dec 2025 15:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779359; cv=none; b=bBcTeHFtq3ywXuDN8BNwo6+mEsCy3qSNPFRgCilsfiffG0yvwBpoN9ESHNGV8dB81jg37RWpC5dhyyvaiQQoP4O1+JNtG9RDTJxNUFC4BokIAmPqr/e4LEoW7HbOwHWyEPqP/bfhEBJWnDDg/fN9Pk9lJl+QzRLU6Q+pjSTu3tQ=
+	t=1764776049; cv=none; b=UmD1zKTSZU3NBcNQu2Tltx/bNcrG6yZiT8mUbAB9yCP7ofDh7tuuA/4jOc7Cc+cT+YMK3PNvVNAbCes2v/kDOZLqDdZN04j0LQWCWm+6Cf+2S5sNkaBmVWm+xfYzgZS6FsXZZVErkiQA+2TDFYdQrObOc3Yho1xTKRziBSoD8j4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779359; c=relaxed/simple;
-	bh=36L7497Yr4JWjkyOuTv23TowsnivOn0r3OKLo+tP+CM=;
+	s=arc-20240116; t=1764776049; c=relaxed/simple;
+	bh=LWBhH7xTKQHfHJxBXNB+G/PX6mfJdGoRRfIVmud5qHk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=toMIpUff3xLpyCSYxY2k2ZnORz9LVZf+gMP8s0cPS6WgoKj39vDXUOnIBrGBgPAF2EUxt65x+DN5HOFSu1zZkOlu0eTSmzqKoAzDn5lR9mUebztz97u4E2TwjLL1bhy2WZcihOfWuIL7djmNlX2GEtSgj3IvOaIV0S8zF8LPYhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gMpYVW1V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA2F5C4CEF5;
-	Wed,  3 Dec 2025 16:29:18 +0000 (UTC)
+	 MIME-Version; b=EuWGSa0pGOP80pZDCAliJQc5BIoafVQGhgjuBuU8Q3VN2mrIYBxTJptIRqu9GR2Tn/qtNjU7wjVOlRsAk/D9v4TVQNTHg2Jng3d7+FKtoGk2WZCt6UYHRGJMaJs2XRLn5l1XyVb9OMyxOR/IEhHu01KrcqESALa0/xGN2R4lrUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eJQTesQE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C77C4CEF5;
+	Wed,  3 Dec 2025 15:34:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779359;
-	bh=36L7497Yr4JWjkyOuTv23TowsnivOn0r3OKLo+tP+CM=;
+	s=korg; t=1764776049;
+	bh=LWBhH7xTKQHfHJxBXNB+G/PX6mfJdGoRRfIVmud5qHk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gMpYVW1V4CjyTb4ozsnQldqs4XZgn++CrZLXsZtVKfnLuQtOhejeTjepu31Li2rJ2
-	 cf3xy+e+z/blg/OcW8L01a8Y1TjdWAb+mx6yyZxwpZUXEBFCXKO2YDSVS4+x22Fi2g
-	 0Qfb6BkNX/CDorLnv4vHHUZB7K3GiI2/E/R3pmgo=
+	b=eJQTesQEacUlq4ePABE0F5KmtIc52W7ngNN/EEsQGlxXHRngQAYQep49el+pEY7qL
+	 r1S6yQXMBlhJmmrHA5NLVmMzNKdm58wLXat91nmXPbaXdn2TgDVUpkJhq620250Go3
+	 G7J2mZRemFLBSTTho+QucP0zAP77V8v+4Di3GhKI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 234/568] scsi: lpfc: Define size of debugfs entry for xri rebalancing
+	Babu Moger <babu.moger@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Reinette Chatre <reinette.chatre@intel.com>
+Subject: [PATCH 5.10 032/300] x86/resctrl: Fix miscount of bandwidth event when reactivating previously unavailable RMID
 Date: Wed,  3 Dec 2025 16:23:56 +0100
-Message-ID: <20251203152449.292492350@linuxfoundation.org>
+Message-ID: <20251203152401.650662598@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +60,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Babu Moger <babu.moger@amd.com>
 
-[ Upstream commit 5de09770b1c0e229d2cec93e7f634fcdc87c9bc8 ]
+[ Upstream commit 15292f1b4c55a3a7c940dbcb6cb8793871ed3d92 ]
 
-To assist in debugging lpfc_xri_rebalancing driver parameter, a debugfs
-entry is used.  The debugfs file operations for xri rebalancing have
-been previously implemented, but lack definition for its information
-buffer size.  Similar to other pre-existing debugfs entry buffers,
-define LPFC_HDWQINFO_SIZE as 8192 bytes.
+Users can create as many monitoring groups as the number of RMIDs supported
+by the hardware. However, on AMD systems, only a limited number of RMIDs
+are guaranteed to be actively tracked by the hardware. RMIDs that exceed
+this limit are placed in an "Unavailable" state.
 
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Message-ID: <20250915180811.137530-9-justintee8345@gmail.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When a bandwidth counter is read for such an RMID, the hardware sets
+MSR_IA32_QM_CTR.Unavailable (bit 62). When such an RMID starts being tracked
+again the hardware counter is reset to zero. MSR_IA32_QM_CTR.Unavailable
+remains set on first read after tracking re-starts and is clear on all
+subsequent reads as long as the RMID is tracked.
+
+resctrl miscounts the bandwidth events after an RMID transitions from the
+"Unavailable" state back to being tracked. This happens because when the
+hardware starts counting again after resetting the counter to zero, resctrl
+in turn compares the new count against the counter value stored from the
+previous time the RMID was tracked.
+
+This results in resctrl computing an event value that is either undercounting
+(when new counter is more than stored counter) or a mistaken overflow (when
+new counter is less than stored counter).
+
+Reset the stored value (arch_mbm_state::prev_msr) of MSR_IA32_QM_CTR to
+zero whenever the RMID is in the "Unavailable" state to ensure accurate
+counting after the RMID resets to zero when it starts to be tracked again.
+
+Example scenario that results in mistaken overflow
+==================================================
+1. The resctrl filesystem is mounted, and a task is assigned to a
+   monitoring group.
+
+   $mount -t resctrl resctrl /sys/fs/resctrl
+   $mkdir /sys/fs/resctrl/mon_groups/test1/
+   $echo 1234 > /sys/fs/resctrl/mon_groups/test1/tasks
+
+   $cat /sys/fs/resctrl/mon_groups/test1/mon_data/mon_L3_*/mbm_total_bytes
+   21323            <- Total bytes on domain 0
+   "Unavailable"    <- Total bytes on domain 1
+
+   Task is running on domain 0. Counter on domain 1 is "Unavailable".
+
+2. The task runs on domain 0 for a while and then moves to domain 1. The
+   counter starts incrementing on domain 1.
+
+   $cat /sys/fs/resctrl/mon_groups/test1/mon_data/mon_L3_*/mbm_total_bytes
+   7345357          <- Total bytes on domain 0
+   4545             <- Total bytes on domain 1
+
+3. At some point, the RMID in domain 0 transitions to the "Unavailable"
+   state because the task is no longer executing in that domain.
+
+   $cat /sys/fs/resctrl/mon_groups/test1/mon_data/mon_L3_*/mbm_total_bytes
+   "Unavailable"    <- Total bytes on domain 0
+   434341           <- Total bytes on domain 1
+
+4.  Since the task continues to migrate between domains, it may eventually
+    return to domain 0.
+
+    $cat /sys/fs/resctrl/mon_groups/test1/mon_data/mon_L3_*/mbm_total_bytes
+    17592178699059  <- Overflow on domain 0
+    3232332         <- Total bytes on domain 1
+
+In this case, the RMID on domain 0 transitions from "Unavailable" state to
+active state. The hardware sets MSR_IA32_QM_CTR.Unavailable (bit 62) when
+the counter is read and begins tracking the RMID counting from 0.
+
+Subsequent reads succeed but return a value smaller than the previously
+saved MSR value (7345357). Consequently, the resctrl's overflow logic is
+triggered, it compares the previous value (7345357) with the new, smaller
+value and incorrectly interprets this as a counter overflow, adding a large
+delta.
+
+In reality, this is a false positive: the counter did not overflow but was
+simply reset when the RMID transitioned from "Unavailable" back to active
+state.
+
+Here is the text from APM [1] available from [2].
+
+"In PQOS Version 2.0 or higher, the MBM hardware will set the U bit on the
+first QM_CTR read when it begins tracking an RMID that it was not
+previously tracking. The U bit will be zero for all subsequent reads from
+that RMID while it is still tracked by the hardware. Therefore, a QM_CTR
+read with the U bit set when that RMID is in use by a processor can be
+considered 0 when calculating the difference with a subsequent read."
+
+[1] AMD64 Architecture Programmer's Manual Volume 2: System Programming
+    Publication # 24593 Revision 3.41 section 19.3.3 Monitoring L3 Memory
+    Bandwidth (MBM).
+
+  [ bp: Split commit message into smaller paragraph chunks for better
+    consumption. ]
+
+Fixes: 4d05bf71f157d ("x86/resctrl: Introduce AMD QOS feature")
+Signed-off-by: Babu Moger <babu.moger@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Tested-by: Reinette Chatre <reinette.chatre@intel.com>
+Cc: stable@vger.kernel.org # needs adjustments for <= v6.17
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=206537 # [2]
+(cherry picked from commit 15292f1b4c55a3a7c940dbcb6cb8793871ed3d92)
+[babu.moger@amd.com: Needed backport for v5.10 stable]
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/lpfc/lpfc_debugfs.h | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/kernel/cpu/resctrl/monitor.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_debugfs.h b/drivers/scsi/lpfc/lpfc_debugfs.h
-index 8d2e8d05bbc05..52b14671eaa94 100644
---- a/drivers/scsi/lpfc/lpfc_debugfs.h
-+++ b/drivers/scsi/lpfc/lpfc_debugfs.h
-@@ -44,6 +44,9 @@
- /* hbqinfo output buffer size */
- #define LPFC_HBQINFO_SIZE 8192
+--- a/arch/x86/kernel/cpu/resctrl/monitor.c
++++ b/arch/x86/kernel/cpu/resctrl/monitor.c
+@@ -224,11 +224,19 @@ static u64 mbm_overflow_count(u64 prev_m
  
-+/* hdwqinfo output buffer size */
-+#define LPFC_HDWQINFO_SIZE 8192
-+
- /* nvmestat output buffer size */
- #define LPFC_NVMESTAT_SIZE 8192
- #define LPFC_IOKTIME_SIZE 8192
--- 
-2.51.0
-
+ static u64 __mon_event_count(u32 rmid, struct rmid_read *rr)
+ {
+-	struct mbm_state *m;
++	struct mbm_state *m = NULL;
+ 	u64 chunks, tval;
+ 
+ 	tval = __rmid_read(rmid, rr->evtid);
+ 	if (tval & (RMID_VAL_ERROR | RMID_VAL_UNAVAIL)) {
++		if (tval & RMID_VAL_UNAVAIL) {
++			if (rr->evtid == QOS_L3_MBM_TOTAL_EVENT_ID)
++				m = &rr->d->mbm_total[rmid];
++			else if (rr->evtid == QOS_L3_MBM_LOCAL_EVENT_ID)
++				m = &rr->d->mbm_local[rmid];
++			if (m)
++				m->prev_msr = 0;
++		}
+ 		return tval;
+ 	}
+ 	switch (rr->evtid) {
 
 
 
