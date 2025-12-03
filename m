@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4DE2C9F932
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:42:47 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C76BEC9FFCA
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:35:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 69C813038999
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:37:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 542CD3030D67
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:33:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ACA1313E3B;
-	Wed,  3 Dec 2025 15:37:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D32433AA196;
+	Wed,  3 Dec 2025 16:33:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W4EQI3jZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UdkR6m+F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBE1B3148A3;
-	Wed,  3 Dec 2025 15:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9AF35F8AF;
+	Wed,  3 Dec 2025 16:33:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776273; cv=none; b=SvLBhwPX/vIfrfqbszcCeIUCTZHDKmdI0K3zshwqnh4/yX+5PtIZGJrFrB2QOJ0gpPa8wEXayjlI0fQkn6/S4pjnxVeOhjnNrUUvqk1Xy6L8Vjt3b3lRPbpVs9y4yekXkwAOVXhtl3Vmu5iE1zrUxVxki6tdTxzdDp1sr3RGMFE=
+	t=1764779592; cv=none; b=A74ZfB5C0+lRlbCVQTsbaGTT91/aNF2gj1VSLr9HVWii3IjnfWxM7MyRaq18mSZXq36hZWRNjTm1xqaBI7EIv7rV3JNwiE0KvBpENlF581ulCTmYAJS5xkuQirEplbFX2WPscMqADcje7KKfyS2G8o5sy9uYAidRo9fDKiRN+CY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776273; c=relaxed/simple;
-	bh=tgsqtQTPf8KjIWs7usKt5c/nVUx8FaGYCJu5Pe6mjF8=;
+	s=arc-20240116; t=1764779592; c=relaxed/simple;
+	bh=F+GyuzvVAwSXHF6+Yim2wXKuQFvT1s4OY9YLlfxA38A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VXRJUfI0SS0LcLEhtfmj9CcUrbqksTG5mav0uyb9WGFtcSJHahxGpmz9EqrJcMz7GduBXvEDUurNlL2q+QIJwniMqLxQCcurkahqPdfkA9+R5sBbeZBgg08uptjbJjk8+zA79m/y1bfqS940OILBdsjLdfKZyzxoyySPZTgxoX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W4EQI3jZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4105C4CEF5;
-	Wed,  3 Dec 2025 15:37:52 +0000 (UTC)
+	 MIME-Version; b=cfnjQnJ6AEpzvjrdv2aakV/ZAd8BmXeEbpCKSoynpOdvPolUpixnkiMiZ2/pi5kh775F3/eHZqzqvfiW32Z/arAiiybAfsknf/lHzdPtbys7044LmhCMACzB+Yj0mvTDanFaUNfPQCMR/XmOK0UXmcRJaGe6lDXXzpecYmXKjOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UdkR6m+F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE536C4CEF5;
+	Wed,  3 Dec 2025 16:33:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776273;
-	bh=tgsqtQTPf8KjIWs7usKt5c/nVUx8FaGYCJu5Pe6mjF8=;
+	s=korg; t=1764779592;
+	bh=F+GyuzvVAwSXHF6+Yim2wXKuQFvT1s4OY9YLlfxA38A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W4EQI3jZoTfw1BZKSv0CfSq9A84LCfeHd25e7UoStMui310f0mRPkAZTa3Dnf6nIo
-	 bx1JgiOZgX6oQuvGO/EHY4dMxa18w0I3OFXBvAI22xYSA+MqQuHOVDBwH0IJIt81nI
-	 gnZCpdVnaYkYCeD+bShdHwreTBymqrfkM+jsqbBE=
+	b=UdkR6m+FBwzJ52UZIWkXUpspvND7mXMcekpo1TmsnmgniPm5JKQlrzVgK1GEHx/tF
+	 JdgLOTteHRwIU+xjbE5xlqXjB6qY0XBkbNd71fzgUHsYKPjsTl2Ee/91iTV76CuU/r
+	 E+jFQmll6aDet5ay1G2gVERtQLCfCMoYUnUxRBWU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Andreatta <thomas.andreatta2000@gmail.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 100/300] dmaengine: sh: setup_xref error handling
-Date: Wed,  3 Dec 2025 16:25:04 +0100
-Message-ID: <20251203152404.329361249@linuxfoundation.org>
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: [PATCH 6.1 303/568] Revert "wifi: ath10k: avoid unnecessary wait for service ready message"
+Date: Wed,  3 Dec 2025 16:25:05 +0100
+Message-ID: <20251203152451.804035637@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,123 +60,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Andreatta <thomasandreatta2000@gmail.com>
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 
-[ Upstream commit d9a3e9929452780df16f3414f0d59b5f69d058cf ]
+commit 2469bb6a6af944755a7d7daf66be90f3b8decbf9 upstream.
 
-This patch modifies the type of setup_xref from void to int and handles
-errors since the function can fail.
+This reverts commit 51a73f1b2e56b0324b4a3bb8cebc4221b5be4c7a.
 
-`setup_xref` now returns the (eventual) error from
-`dmae_set_dmars`|`dmae_set_chcr`, while `shdma_tx_submit` handles the
-result, removing the chunks from the queue and marking PM as idle in
-case of an error.
+Although this commit benefits QCA6174, it breaks QCA988x and
+QCA9984 [1][2]. Since it is not likely to root cause/fix this
+issue in a short time, revert it to get those chips back.
 
-Signed-off-by: Thomas Andreatta <thomas.andreatta2000@gmail.com>
-Link: https://lore.kernel.org/r/20250827152442.90962-1-thomas.andreatta2000@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Compile tested only.
+
+Fixes: 51a73f1b2e56 ("wifi: ath10k: avoid unnecessary wait for service ready message")
+Link: https://lore.kernel.org/ath10k/6d41bc00602c33ffbf68781f563ff2e6c6915a3e.camel@gmail.com # [1]
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220671 # [2]
+Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251027-ath10k-revert-polling-first-change-v1-1-89aaf3bcbfa1@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/sh/shdma-base.c | 25 +++++++++++++++++++------
- drivers/dma/sh/shdmac.c     | 17 +++++++++++++----
- include/linux/shdma-base.h  |  2 +-
- 3 files changed, 33 insertions(+), 11 deletions(-)
+ drivers/net/wireless/ath/ath10k/wmi.c |   39 +++++++++++++++++-----------------
+ 1 file changed, 20 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/dma/sh/shdma-base.c b/drivers/dma/sh/shdma-base.c
-index 7f72b3f4cd1ae..e1b8808f2a984 100644
---- a/drivers/dma/sh/shdma-base.c
-+++ b/drivers/dma/sh/shdma-base.c
-@@ -129,12 +129,25 @@ static dma_cookie_t shdma_tx_submit(struct dma_async_tx_descriptor *tx)
- 			const struct shdma_ops *ops = sdev->ops;
- 			dev_dbg(schan->dev, "Bring up channel %d\n",
- 				schan->id);
--			/*
--			 * TODO: .xfer_setup() might fail on some platforms.
--			 * Make it int then, on error remove chunks from the
--			 * queue again
--			 */
--			ops->setup_xfer(schan, schan->slave_id);
-+
-+			ret = ops->setup_xfer(schan, schan->slave_id);
-+			if (ret < 0) {
-+				dev_err(schan->dev, "setup_xfer failed: %d\n", ret);
-+
-+				/* Remove chunks from the queue and mark them as idle */
-+				list_for_each_entry_safe(chunk, c, &schan->ld_queue, node) {
-+					if (chunk->cookie == cookie) {
-+						chunk->mark = DESC_IDLE;
-+						list_move(&chunk->node, &schan->ld_free);
-+					}
-+				}
-+
-+				schan->pm_state = SHDMA_PM_ESTABLISHED;
-+				ret = pm_runtime_put(schan->dev);
-+
-+				spin_unlock_irq(&schan->chan_lock);
-+				return ret;
-+			}
+--- a/drivers/net/wireless/ath/ath10k/wmi.c
++++ b/drivers/net/wireless/ath/ath10k/wmi.c
+@@ -1762,32 +1762,33 @@ void ath10k_wmi_put_wmi_channel(struct a
  
- 			if (schan->pm_state == SHDMA_PM_PENDING)
- 				shdma_chan_xfer_ld_queue(schan);
-diff --git a/drivers/dma/sh/shdmac.c b/drivers/dma/sh/shdmac.c
-index 5aafe548ca5f3..2b9774ae7fd32 100644
---- a/drivers/dma/sh/shdmac.c
-+++ b/drivers/dma/sh/shdmac.c
-@@ -301,21 +301,30 @@ static bool sh_dmae_channel_busy(struct shdma_chan *schan)
- 	return dmae_is_busy(sh_chan);
- }
- 
--static void sh_dmae_setup_xfer(struct shdma_chan *schan,
--			       int slave_id)
-+static int sh_dmae_setup_xfer(struct shdma_chan *schan, int slave_id)
+ int ath10k_wmi_wait_for_service_ready(struct ath10k *ar)
  {
- 	struct sh_dmae_chan *sh_chan = container_of(schan, struct sh_dmae_chan,
- 						    shdma_chan);
+-	unsigned long timeout = jiffies + WMI_SERVICE_READY_TIMEOUT_HZ;
+ 	unsigned long time_left, i;
  
-+	int ret = 0;
- 	if (slave_id >= 0) {
- 		const struct sh_dmae_slave_config *cfg =
- 			sh_chan->config;
+-	/* Sometimes the PCI HIF doesn't receive interrupt
+-	 * for the service ready message even if the buffer
+-	 * was completed. PCIe sniffer shows that it's
+-	 * because the corresponding CE ring doesn't fires
+-	 * it. Workaround here by polling CE rings. Since
+-	 * the message could arrive at any time, continue
+-	 * polling until timeout.
+-	 */
+-	do {
++	time_left = wait_for_completion_timeout(&ar->wmi.service_ready,
++						WMI_SERVICE_READY_TIMEOUT_HZ);
++	if (!time_left) {
++		/* Sometimes the PCI HIF doesn't receive interrupt
++		 * for the service ready message even if the buffer
++		 * was completed. PCIe sniffer shows that it's
++		 * because the corresponding CE ring doesn't fires
++		 * it. Workaround here by polling CE rings once.
++		 */
++		ath10k_warn(ar, "failed to receive service ready completion, polling..\n");
++
+ 		for (i = 0; i < CE_COUNT; i++)
+ 			ath10k_hif_send_complete_check(ar, i, 1);
  
--		dmae_set_dmars(sh_chan, cfg->mid_rid);
--		dmae_set_chcr(sh_chan, cfg->chcr);
-+		ret = dmae_set_dmars(sh_chan, cfg->mid_rid);
-+		if (ret < 0)
-+			goto END;
+-		/* The 100 ms granularity is a tradeoff considering scheduler
+-		 * overhead and response latency
+-		 */
+ 		time_left = wait_for_completion_timeout(&ar->wmi.service_ready,
+-							msecs_to_jiffies(100));
+-		if (time_left)
+-			return 0;
+-	} while (time_before(jiffies, timeout));
++							WMI_SERVICE_READY_TIMEOUT_HZ);
++		if (!time_left) {
++			ath10k_warn(ar, "polling timed out\n");
++			return -ETIMEDOUT;
++		}
 +
-+		ret = dmae_set_chcr(sh_chan, cfg->chcr);
-+		if (ret < 0)
-+			goto END;
-+
- 	} else {
- 		dmae_init(sh_chan);
- 	}
-+
-+END:
-+	return ret;
++		ath10k_warn(ar, "service ready completion received, continuing normally\n");
++	}
+ 
+-	ath10k_warn(ar, "failed to receive service ready completion\n");
+-	return -ETIMEDOUT;
++	return 0;
  }
  
- /*
-diff --git a/include/linux/shdma-base.h b/include/linux/shdma-base.h
-index 6dfd05ef5c2d9..03ba4dab2ef73 100644
---- a/include/linux/shdma-base.h
-+++ b/include/linux/shdma-base.h
-@@ -96,7 +96,7 @@ struct shdma_ops {
- 	int (*desc_setup)(struct shdma_chan *, struct shdma_desc *,
- 			  dma_addr_t, dma_addr_t, size_t *);
- 	int (*set_slave)(struct shdma_chan *, int, dma_addr_t, bool);
--	void (*setup_xfer)(struct shdma_chan *, int);
-+	int (*setup_xfer)(struct shdma_chan *, int);
- 	void (*start_xfer)(struct shdma_chan *, struct shdma_desc *);
- 	struct shdma_desc *(*embedded_desc)(void *, int);
- 	bool (*chan_irq)(struct shdma_chan *, int);
--- 
-2.51.0
-
+ int ath10k_wmi_wait_for_unified_ready(struct ath10k *ar)
 
 
 
