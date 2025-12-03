@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9A75CA054D
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:18:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D36FCA04D7
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:15:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A47BF30001A5
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:18:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 52E78305E73D
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:03:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D01B3AA1AB;
-	Wed,  3 Dec 2025 16:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CB02362138;
+	Wed,  3 Dec 2025 16:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GGWW9qPm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JxfKzmLW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481C03AA195;
-	Wed,  3 Dec 2025 16:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128473624A9;
+	Wed,  3 Dec 2025 16:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780756; cv=none; b=dKVsdMBaa8l1hkSrJ5YiNV4wcovTEZUjTuF8EyYbpiv2UR2H4jVXOT9OwkhDRHlQp044/PGYIpB/Ssr0xgqImdfCBAXa1o4RT4ZPUHkE+YsUDDUWPlUpJeTyuhpRYDgCm4kbK+NY7QDgVgWJLJY5F94BEbDVg48v4hA+t9A6I+A=
+	t=1764781027; cv=none; b=Q7/GWJu2CL9jzPIqoqayL+mi8CwJN2zW5CMgtdHWpYZO0RL8/ZnhcPpZ617Loh2yRns/0LcbC/TlgX6uX2U/2ob7/tPpAsvtnCnd+ukVuarAYeiUzSDrx+qiHSd34+0lI1nEZo2MGWpbTubBUsuAsOfCTzoVs5aF8rmSM+8Sd24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780756; c=relaxed/simple;
-	bh=mpGWUpNh88z+DxMansY8IA9IYMC7mbD5LzXpxqXgvRs=;
+	s=arc-20240116; t=1764781027; c=relaxed/simple;
+	bh=xHi34vRyJ8HhZfccKP6aVA8E0/mrZQAQ/MyFQ02kF0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mHnXghywSLZyhtMaD/maDgO8o9O/xUoaJ9Qn49jpUcsKklmpOmjk88OMPFHvEThvHxMeaJ3W8hVTz7tT5/YAncFfrESTEWvxwEmg8lEnyE5ChKiIvvCrYSgTzWRwKmQZqmS2FOjXQtnviVHsdiaIFPsVgiMwWIt+mEoCeZp9h8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GGWW9qPm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF18CC4CEF5;
-	Wed,  3 Dec 2025 16:52:35 +0000 (UTC)
+	 MIME-Version; b=LDihsgBICCmwVOE3eaPwzI0TrsOcuyCCBCJvGDrs9F/VOA6IM3mp1JipZm5v8HpY4W/I2QJ7rGFQYToehQZ8fni08czFqsV2KN3sYX9hFYk7H9u47MHwzMl8yGjhrnrhdGkghfnWJRRCpyNIO5rH+aY+58Kwg/r0cBFxBZ9HdiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JxfKzmLW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52056C4CEF5;
+	Wed,  3 Dec 2025 16:57:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780756;
-	bh=mpGWUpNh88z+DxMansY8IA9IYMC7mbD5LzXpxqXgvRs=;
+	s=korg; t=1764781026;
+	bh=xHi34vRyJ8HhZfccKP6aVA8E0/mrZQAQ/MyFQ02kF0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GGWW9qPmBAuyI38skYS+1fzLshK6GKTLXWQ3eqycUZEYbrQ+2HmKXK9hje9zsboAl
-	 uZSH67bcSgK7hj/7cVzFcAUnT2QiRc2Ih/P6pej1hAtIyPt0UkTbRRL23riGtSNeGh
-	 h+6BfpjQ+fWOqXgmKBMqcTdrR5yPZJd0onyS/dI8=
+	b=JxfKzmLW8pL1ZsiHGeOJdjCT9Kl9M6nhFkzLOAQ1hqkVOOCZn3toepkQ+E1mZIDEj
+	 9WmrljBpwR3PMHOtCd8pvQB1wngEl3XUhnwv4JXYy4Q4OaZnGbgnTcOnmZz0/pSwJo
+	 WGDL9S4+oFeXqfhQ8tZOK+lnOiwm9JLMA8/1P6dI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ang Tien Sung <tiensung.ang@altera.com>,
-	Khairul Anuar Romli <khairul.anuar.romli@altera.com>,
-	Dinh Nguyen <dinguyen@kernel.org>
-Subject: [PATCH 6.12 081/132] firmware: stratix10-svc: fix bug in saving controller data
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 27/93] spi: amlogic-spifc-a1: Handle devm_pm_runtime_enable() errors
 Date: Wed,  3 Dec 2025 16:29:20 +0100
-Message-ID: <20251203152346.293417090@linuxfoundation.org>
+Message-ID: <20251203152337.520292195@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
+References: <20251203152336.494201426@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,74 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-commit d0fcf70c680e4d1669fcb3a8632f41400b9a73c2 upstream.
+[ Upstream commit a90903c2a3c38bce475f46ea3f93dbf6a9971553 ]
 
-Fix the incorrect usage of platform_set_drvdata and dev_set_drvdata. They
-both are of the same data and overrides each other. This resulted in the
-rmmod of the svc driver to fail and throw a kernel panic for kthread_stop
-and fifo free.
+devm_pm_runtime_enable() can fail due to memory allocation. The current
+code ignores its return value, potentially causing runtime PM operations
+to fail silently after autosuspend configuration.
 
-Fixes: b5dc75c915cd ("firmware: stratix10-svc: extend svc to support new RSU features")
-Cc: stable@vger.kernel.org # 6.6+
-Signed-off-by: Ang Tien Sung <tiensung.ang@altera.com>
-Signed-off-by: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
-Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Check the return value of devm_pm_runtime_enable() and return on failure.
+
+Fixes: 909fac05b926 ("spi: add support for Amlogic A1 SPI Flash Controller")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20251124015852.937-1-vulab@iscas.ac.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/stratix10-svc.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/spi/spi-amlogic-spifc-a1.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/firmware/stratix10-svc.c
-+++ b/drivers/firmware/stratix10-svc.c
-@@ -134,6 +134,7 @@ struct stratix10_svc_data {
-  * @complete_status: state for completion
-  * @svc_fifo_lock: protect access to service message data queue
-  * @invoke_fn: function to issue secure monitor call or hypervisor call
-+ * @svc: manages the list of client svc drivers
-  *
-  * This struct is used to create communication channels for service clients, to
-  * handle secure monitor or hypervisor call.
-@@ -150,6 +151,7 @@ struct stratix10_svc_controller {
- 	struct completion complete_status;
- 	spinlock_t svc_fifo_lock;
- 	svc_invoke_fn *invoke_fn;
-+	struct stratix10_svc *svc;
- };
+diff --git a/drivers/spi/spi-amlogic-spifc-a1.c b/drivers/spi/spi-amlogic-spifc-a1.c
+index fadf6667cd51c..b430bca4f8bce 100644
+--- a/drivers/spi/spi-amlogic-spifc-a1.c
++++ b/drivers/spi/spi-amlogic-spifc-a1.c
+@@ -349,7 +349,9 @@ static int amlogic_spifc_a1_probe(struct platform_device *pdev)
  
- /**
-@@ -1209,6 +1211,7 @@ static int stratix10_svc_drv_probe(struc
- 		ret = -ENOMEM;
- 		goto err_free_kfifo;
- 	}
-+	controller->svc = svc;
+ 	pm_runtime_set_autosuspend_delay(spifc->dev, 500);
+ 	pm_runtime_use_autosuspend(spifc->dev);
+-	devm_pm_runtime_enable(spifc->dev);
++	ret = devm_pm_runtime_enable(spifc->dev);
++	if (ret)
++		return ret;
  
- 	svc->stratix10_svc_rsu = platform_device_alloc(STRATIX10_RSU, 0);
- 	if (!svc->stratix10_svc_rsu) {
-@@ -1240,8 +1243,6 @@ static int stratix10_svc_drv_probe(struc
- 	if (ret)
- 		goto err_unregister_fcs_dev;
- 
--	dev_set_drvdata(dev, svc);
--
- 	pr_info("Intel Service Layer Driver Initialized\n");
- 
- 	return 0;
-@@ -1259,8 +1260,8 @@ err_destroy_pool:
- 
- static void stratix10_svc_drv_remove(struct platform_device *pdev)
- {
--	struct stratix10_svc *svc = dev_get_drvdata(&pdev->dev);
- 	struct stratix10_svc_controller *ctrl = platform_get_drvdata(pdev);
-+	struct stratix10_svc *svc = ctrl->svc;
- 
- 	of_platform_depopulate(ctrl->dev);
- 
+ 	ctrl->num_chipselect = 1;
+ 	ctrl->dev.of_node = pdev->dev.of_node;
+-- 
+2.51.0
+
 
 
 
