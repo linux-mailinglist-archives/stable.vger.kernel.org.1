@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-198815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ADF0CA0B86
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:00:18 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54F81C9F8A8
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:39:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DB245300251D
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:59:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 77371300B917
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:35:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DE6634D927;
-	Wed,  3 Dec 2025 16:02:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 021E52FFF90;
+	Wed,  3 Dec 2025 15:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zdgDQzI6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s/pKZPge"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE13234D921;
-	Wed,  3 Dec 2025 16:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC89F15ADB4;
+	Wed,  3 Dec 2025 15:35:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777770; cv=none; b=CCZrDizQnemN2psEF2qqHqm/SmmUq3B+YnwAOwFYwqI2KfedrKEspMSgzghRqu1MFT8hdNQwpVHHKoGSZ82DfjZgB0u04fgUspVCXhaO3KWcq3W4yim83JY/5W2fWW8D66QECVhtPLRlqClW14g1g2nPWyNSsfo7QPoS2J5+4Aw=
+	t=1764776130; cv=none; b=j3c/8arvvotN1BHaZ+EyzWnp7L4NOJ8LD1BY2ZLp74jCL8lL+LkGkFVL/xRuzVc/Luq38/KGEkIWinwRP9APfrTa7nI+LppEIVVbaxbwDhld1Y1xbMqmSD72MIMOVMdGFklUKYQvUib2gRsb6gXvVktOBZlCDbCQz936YxHmxQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777770; c=relaxed/simple;
-	bh=1AJtyCdb4Yf8fV22PilM2EFGie2MAlxJkvj/1/intgo=;
+	s=arc-20240116; t=1764776130; c=relaxed/simple;
+	bh=38nnR76NnDoo5/EgCFXow6IrO2btVxUqlP9ojnYJH/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cM/x0h/tJHhLKSUDWa2vs8bN/zb1lvYpQ8MSzr61JGMrAqMYilRS14gri8XertWQtpDc6WcahSAIFhiwepjEAgFnYZXHaDoPRFFqdAANzCUMybAZFQIhPCZGUZkagsUO52C+t5uAUZIpaLzeumjgk04mRN9laU2L+peGgUNguUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zdgDQzI6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EE11C16AAE;
-	Wed,  3 Dec 2025 16:02:50 +0000 (UTC)
+	 MIME-Version; b=XoHjLpxgSlaNVgI1/VCqOOmN+V7I0QUA2Kk+vgciL/VqT6F0iAvLNIyPtrlAmHL3k3envVmFotPf2B4h3f/uIqyb6jcGmnbl1Alvz1FeO/5fot/J6gcwuKhQS/4+Ag9iIFpP2EnWHxeCUWueh/s9O0gHfJUzJPPW6X4N2BHtyJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s/pKZPge; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C01EBC4CEF5;
+	Wed,  3 Dec 2025 15:35:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777770;
-	bh=1AJtyCdb4Yf8fV22PilM2EFGie2MAlxJkvj/1/intgo=;
+	s=korg; t=1764776130;
+	bh=38nnR76NnDoo5/EgCFXow6IrO2btVxUqlP9ojnYJH/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zdgDQzI60BQSQeW2sdhdnKRfHGNPS88zdEA/oCbSvUoaKmbumouoItnUZB0ty0GKG
-	 saodF0KcVDGE13JPlbLyVYjzrSjpgnap+mznlpqIEhacpOk1ZYrt+xkd3UVZvnLJim
-	 hOynlqQxR11Jaal9z2TsojsTEeRp5PILiKg0+J3w=
+	b=s/pKZPges9BAB4ZqpJgfP00uO68q7i0kvvBnpITc4+BpqZ2Pf2gS1QxkyzTjj8X0Y
+	 youmfLLs9xrBR5TyYEFBTgefHQsG6SPcJPxPXpruDMjC6lFr1cnkuk5weVvGiP1fxx
+	 Oel2GrhChZ+NnxhKDS8FzI5NYsmaEm9yrWoMFBHE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Udit Kumar <u-kumar1@ti.com>,
-	Devarsh Thakkar <devarsht@ti.com>,
-	Harikrishna Shenoy <h-shenoy@ti.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Sungho Kim <sungho.kim@furiosa.ai>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 142/392] phy: cadence: cdns-dphy: Enable lower resolutions in dphy
-Date: Wed,  3 Dec 2025 16:24:52 +0100
-Message-ID: <20251203152419.311907233@linuxfoundation.org>
+Subject: [PATCH 5.10 089/300] PCI/P2PDMA: Fix incorrect pointer usage in devm_kfree() call
+Date: Wed,  3 Dec 2025 16:24:53 +0100
+Message-ID: <20251203152403.920309751@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harikrishna Shenoy <h-shenoy@ti.com>
+From: Sungho Kim <sungho.kim@furiosa.ai>
 
-[ Upstream commit 43bd2c44515f8ee5c019ce6e6583f5640387a41b ]
+[ Upstream commit 6238784e502b6a9fbeb3a6b77284b29baa4135cc ]
 
-Enable support for data lane rates between 80-160 Mbps cdns dphy
-as mentioned in TRM [0] by setting the pll_opdiv field to 16.
-This change enables lower resolutions like 640x480 at 60Hz.
+The error handling path in pci_p2pdma_add_resource() contains a bug in its
+`pgmap_free` label.
 
-[0]: https://www.ti.com/lit/zip/spruil1
-(Table 12-552. DPHY_TX_PLL_CTRL Register Field Descriptions)
+Memory is allocated for the `p2p_pgmap` struct, and the pointer is stored
+in `p2p_pgmap`. However, the error path calls devm_kfree() with `pgmap`,
+which is a pointer to a member field within the `p2p_pgmap` struct, not the
+base pointer of the allocation.
 
-Reviewed-by: Udit Kumar <u-kumar1@ti.com>
-Reviewed-by: Devarsh Thakkar <devarsht@ti.com>
-Signed-off-by: Harikrishna Shenoy <h-shenoy@ti.com>
-Link: https://lore.kernel.org/r/20250807052002.717807-1-h-shenoy@ti.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Correct the bug by passing the correct base pointer, `p2p_pgmap`, to
+devm_kfree().
+
+Signed-off-by: Sungho Kim <sungho.kim@furiosa.ai>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
+Link: https://patch.msgid.link/20250820105714.2939896-1-sungho.kim@furiosa.ai
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/cadence/cdns-dphy.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/pci/p2pdma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/phy/cadence/cdns-dphy.c b/drivers/phy/cadence/cdns-dphy.c
-index ba042e39cfaf4..9a54c2750d87c 100644
---- a/drivers/phy/cadence/cdns-dphy.c
-+++ b/drivers/phy/cadence/cdns-dphy.c
-@@ -115,7 +115,7 @@ static int cdns_dsi_get_dphy_pll_cfg(struct cdns_dphy *dphy,
- 
- 	dlane_bps = opts->hs_clk_rate;
- 
--	if (dlane_bps > 2500000000UL || dlane_bps < 160000000UL)
-+	if (dlane_bps > 2500000000UL || dlane_bps < 80000000UL)
- 		return -EINVAL;
- 	else if (dlane_bps >= 1250000000)
- 		cfg->pll_opdiv = 1;
-@@ -125,6 +125,8 @@ static int cdns_dsi_get_dphy_pll_cfg(struct cdns_dphy *dphy,
- 		cfg->pll_opdiv = 4;
- 	else if (dlane_bps >= 160000000)
- 		cfg->pll_opdiv = 8;
-+	else if (dlane_bps >= 80000000)
-+		cfg->pll_opdiv = 16;
- 
- 	cfg->pll_fbdiv = DIV_ROUND_UP_ULL(dlane_bps * 2 * cfg->pll_opdiv *
- 					  cfg->pll_ipdiv,
+diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
+index f07c5dbc94e10..6c9dca2dd57e7 100644
+--- a/drivers/pci/p2pdma.c
++++ b/drivers/pci/p2pdma.c
+@@ -215,7 +215,7 @@ int pci_p2pdma_add_resource(struct pci_dev *pdev, int bar, size_t size,
+ pages_free:
+ 	devm_memunmap_pages(&pdev->dev, pgmap);
+ pgmap_free:
+-	devm_kfree(&pdev->dev, pgmap);
++	devm_kfree(&pdev->dev, p2p_pgmap);
+ 	return error;
+ }
+ EXPORT_SYMBOL_GPL(pci_p2pdma_add_resource);
 -- 
 2.51.0
 
