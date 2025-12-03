@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-198985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AFCFCA0A27
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:48:45 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC8B2C9F9A4
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:44:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 891CF3000B5C
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:48:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 390FA3000780
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:44:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03B91347BA1;
-	Wed,  3 Dec 2025 16:11:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A0803093D2;
+	Wed,  3 Dec 2025 15:44:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xs/ZJ9Z1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TjaGSDaM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2E7F346FC8;
-	Wed,  3 Dec 2025 16:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA0EC3074A0;
+	Wed,  3 Dec 2025 15:44:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778318; cv=none; b=oj051N+/7t5glEaAHvAvq81ov5Q2xK1FcjheX0E+EJHCkDybP+Twy7jPnk010v6T7c9za4Flx8pjKMDkqvZG3L1ZOvOdQ8mW1cx1YqOTIqlkbVSynoM6d7GrB/kb2UNd/E/ixlM1H5u2sm5FYRJROj+rufPPZUXV1nZPO8FKnAE=
+	t=1764776674; cv=none; b=ht/lsZ6b/KYdVjqGm7f8DT8GOUoeFlsWsqsVApFqziTKVDSTmgnc29+sXREXwuSeP+fv1QJUgYZTcVET6m0ASQmOgzmJKNzcF9nbZwYSnpW8NQABwh7x0yobTqhGBJY6MmeMI+1Os+AXedVENue5mZvqbVl58qAPxqJ05OEvzH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778318; c=relaxed/simple;
-	bh=vugptuwN6hgMpZykDvRNimLvAohhBS4YiFYmKuV8cgQ=;
+	s=arc-20240116; t=1764776674; c=relaxed/simple;
+	bh=dr41HTht+XeQ/pYYkNEs/+zLt2fd5aMj082QBjhQYXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VQOb4R8Eh8VzXtMveVuB5VpYOcki1qM4MXeyXIR5y+Et1eivSuY6grTYxGEKjWdpSTvH4QzTqJ3yRDcybXazv7Bg0F2mNzSp/oj8edume7ziRQqbkFANV+lxBA+l1r58OMmXBuA0YijNd37+CVbk58fH0cGHg2CzRaq/2momdW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xs/ZJ9Z1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFC39C4CEF5;
-	Wed,  3 Dec 2025 16:11:57 +0000 (UTC)
+	 MIME-Version; b=qJf5982+CsYDvWluqbtoZn+f3rgb5tfvp3e2VU1XO2pP5fob/vCyEF5NCzTdcCzMM1GA2c4KBvOc1aWogWXeVL2qz8rNYqWBUcKzUG4gSdRW+/f5NEadtFyNjnxeUrLOVfUdFmpXbKjwlGAz4pZ0TdmOuuw32KnVUs2GVjZj7uk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TjaGSDaM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEAB8C4CEF5;
+	Wed,  3 Dec 2025 15:44:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778318;
-	bh=vugptuwN6hgMpZykDvRNimLvAohhBS4YiFYmKuV8cgQ=;
+	s=korg; t=1764776674;
+	bh=dr41HTht+XeQ/pYYkNEs/+zLt2fd5aMj082QBjhQYXs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xs/ZJ9Z1gz6HzW1iqzHGJ6uBy96AgFLbZGE+42o34EBhMdtmlNjoYxq6FtTfXnN8m
-	 OTOcbQ3PSCaB3xOU/JSo5UIJNOQwmAbYqE+ObR1RBrt451XFxIeC1wPVoL0rEsKkOG
-	 XvPP/LKGRi4dONMleHW53XLIZfTbUXcqN13SRPoE=
+	b=TjaGSDaMHAfgQZHfF6ZlWn+DkYjGe7l3T6Ci08d5A7o2OIaXGaP7bq6/pb2JQamc8
+	 QR4ZdltP+frhO04AanHn5qkmf1SJuYolifZcLtdmX7age4UHxcRH0ai/YDdFMfJrN4
+	 f/Jj2rKdeYq9pbprx2svguPqzsH6M2uonPFG4Vcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lance Yang <lance.yang@linux.dev>,
-	Google Big Sleep <big-sleep-vuln-reports@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Ville Syrjala <syrjala@sci.fi>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Henk Vergonet <Henk.Vergonet@gmail.com>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 308/392] mm/secretmem: fix use-after-free race in fault handler
+Subject: [PATCH 5.10 254/300] Input: remove third argument of usb_maxpacket()
 Date: Wed,  3 Dec 2025 16:27:38 +0100
-Message-ID: <20251203152425.495815843@linuxfoundation.org>
+Message-ID: <20251203152410.047260399@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,74 +62,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lance Yang <lance.yang@linux.dev>
+From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
 
-[ Upstream commit 6f86d0534fddfbd08687fa0f01479d4226bc3c3d ]
+[ Upstream commit 948bf187694fc1f4c20cf972fa18b1a6fb3d7603 ]
 
-When a page fault occurs in a secret memory file created with
-`memfd_secret(2)`, the kernel will allocate a new page for it, mark the
-underlying page as not-present in the direct map, and add it to the file
-mapping.
+The third argument of usb_maxpacket(): in_out has been deprecated
+because it could be derived from the second argument (e.g. using
+usb_pipeout(pipe)).
 
-If two tasks cause a fault in the same page concurrently, both could end
-up allocating a page and removing the page from the direct map, but only
-one would succeed in adding the page to the file mapping.  The task that
-failed undoes the effects of its attempt by (a) freeing the page again
-and (b) putting the page back into the direct map.  However, by doing
-these two operations in this order, the page becomes available to the
-allocator again before it is placed back in the direct mapping.
+N.B. function usb_maxpacket() was made variadic to accommodate the
+transition from the old prototype with three arguments to the new one
+with only two arguments (so that no renaming is needed). The variadic
+argument is to be removed once all users of usb_maxpacket() get
+migrated.
 
-If another task attempts to allocate the page between (a) and (b), and the
-kernel tries to access it via the direct map, it would result in a
-supervisor not-present page fault.
-
-Fix the ordering to restore the direct map before the page is freed.
-
-Link: https://lkml.kernel.org/r/20251031120955.92116-1-lance.yang@linux.dev
-Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
-Reported-by: Google Big Sleep <big-sleep-vuln-reports@google.com>
-Closes: https://lore.kernel.org/linux-mm/CAEXGt5QeDpiHTu3K9tvjUTPqo+d-=wuCNYPa+6sWKrdQJ-ATdg@mail.gmail.com/
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 6f86d0534fddfbd08687fa0f01479d4226bc3c3d)
-[rppt: replaced folio with page in the patch and in the changelog]
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+CC: Ville Syrjala <syrjala@sci.fi>
+CC: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+CC: Henk Vergonet <Henk.Vergonet@gmail.com>
+Signed-off-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Link: https://lore.kernel.org/r/20220317035514.6378-4-mailhol.vincent@wanadoo.fr
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 69aeb5073123 ("Input: pegasus-notetaker - fix potential out-of-bounds access")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/secretmem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/input/misc/ati_remote2.c         |    2 +-
+ drivers/input/misc/cm109.c               |    2 +-
+ drivers/input/misc/powermate.c           |    2 +-
+ drivers/input/misc/yealink.c             |    2 +-
+ drivers/input/tablet/acecad.c            |    2 +-
+ drivers/input/tablet/pegasus_notetaker.c |    2 +-
+ 6 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/mm/secretmem.c b/mm/secretmem.c
-index 624663a948083..0c86133ad33fe 100644
---- a/mm/secretmem.c
-+++ b/mm/secretmem.c
-@@ -82,13 +82,13 @@ static vm_fault_t secretmem_fault(struct vm_fault *vmf)
- 		__SetPageUptodate(page);
- 		err = add_to_page_cache_lru(page, mapping, offset, gfp);
- 		if (unlikely(err)) {
--			put_page(page);
- 			/*
- 			 * If a split of large page was required, it
- 			 * already happened when we marked the page invalid
- 			 * which guarantees that this call won't fail
- 			 */
- 			set_direct_map_default_noflush(page);
-+			put_page(page);
- 			if (err == -EEXIST)
- 				goto retry;
+--- a/drivers/input/misc/ati_remote2.c
++++ b/drivers/input/misc/ati_remote2.c
+@@ -639,7 +639,7 @@ static int ati_remote2_urb_init(struct a
+ 			return -ENOMEM;
  
--- 
-2.51.0
-
+ 		pipe = usb_rcvintpipe(udev, ar2->ep[i]->bEndpointAddress);
+-		maxp = usb_maxpacket(udev, pipe, usb_pipeout(pipe));
++		maxp = usb_maxpacket(udev, pipe);
+ 		maxp = maxp > 4 ? 4 : maxp;
+ 
+ 		usb_fill_int_urb(ar2->urb[i], udev, pipe, ar2->buf[i], maxp,
+--- a/drivers/input/misc/cm109.c
++++ b/drivers/input/misc/cm109.c
+@@ -745,7 +745,7 @@ static int cm109_usb_probe(struct usb_in
+ 
+ 	/* get a handle to the interrupt data pipe */
+ 	pipe = usb_rcvintpipe(udev, endpoint->bEndpointAddress);
+-	ret = usb_maxpacket(udev, pipe, usb_pipeout(pipe));
++	ret = usb_maxpacket(udev, pipe);
+ 	if (ret != USB_PKT_LEN)
+ 		dev_err(&intf->dev, "invalid payload size %d, expected %d\n",
+ 			ret, USB_PKT_LEN);
+--- a/drivers/input/misc/powermate.c
++++ b/drivers/input/misc/powermate.c
+@@ -374,7 +374,7 @@ static int powermate_probe(struct usb_in
+ 
+ 	/* get a handle to the interrupt data pipe */
+ 	pipe = usb_rcvintpipe(udev, endpoint->bEndpointAddress);
+-	maxp = usb_maxpacket(udev, pipe, usb_pipeout(pipe));
++	maxp = usb_maxpacket(udev, pipe);
+ 
+ 	if (maxp < POWERMATE_PAYLOAD_SIZE_MIN || maxp > POWERMATE_PAYLOAD_SIZE_MAX) {
+ 		printk(KERN_WARNING "powermate: Expected payload of %d--%d bytes, found %d bytes!\n",
+--- a/drivers/input/misc/yealink.c
++++ b/drivers/input/misc/yealink.c
+@@ -905,7 +905,7 @@ static int usb_probe(struct usb_interfac
+ 
+ 	/* get a handle to the interrupt data pipe */
+ 	pipe = usb_rcvintpipe(udev, endpoint->bEndpointAddress);
+-	ret = usb_maxpacket(udev, pipe, usb_pipeout(pipe));
++	ret = usb_maxpacket(udev, pipe);
+ 	if (ret != USB_PKT_LEN)
+ 		dev_err(&intf->dev, "invalid payload size %d, expected %zd\n",
+ 			ret, USB_PKT_LEN);
+--- a/drivers/input/tablet/acecad.c
++++ b/drivers/input/tablet/acecad.c
+@@ -130,7 +130,7 @@ static int usb_acecad_probe(struct usb_i
+ 		return -ENODEV;
+ 
+ 	pipe = usb_rcvintpipe(dev, endpoint->bEndpointAddress);
+-	maxp = usb_maxpacket(dev, pipe, usb_pipeout(pipe));
++	maxp = usb_maxpacket(dev, pipe);
+ 
+ 	acecad = kzalloc(sizeof(struct usb_acecad), GFP_KERNEL);
+ 	input_dev = input_allocate_device();
+--- a/drivers/input/tablet/pegasus_notetaker.c
++++ b/drivers/input/tablet/pegasus_notetaker.c
+@@ -296,7 +296,7 @@ static int pegasus_probe(struct usb_inte
+ 	pegasus->intf = intf;
+ 
+ 	pipe = usb_rcvintpipe(dev, endpoint->bEndpointAddress);
+-	pegasus->data_len = usb_maxpacket(dev, pipe, usb_pipeout(pipe));
++	pegasus->data_len = usb_maxpacket(dev, pipe);
+ 
+ 	pegasus->data = usb_alloc_coherent(dev, pegasus->data_len, GFP_KERNEL,
+ 					   &pegasus->data_dma);
 
 
 
