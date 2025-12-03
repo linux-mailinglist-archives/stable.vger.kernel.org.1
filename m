@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-199284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CC82CA0116
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:44:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71318C9FE46
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:19:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D07A2304552B
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:38:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 817A13098196
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:09:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3A29306D48;
-	Wed,  3 Dec 2025 16:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDCA830E835;
+	Wed,  3 Dec 2025 15:58:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s/Vi8Yli"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1oWGxXIW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED28835FF4E;
-	Wed,  3 Dec 2025 16:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B12A431354A;
+	Wed,  3 Dec 2025 15:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779287; cv=none; b=cmlKAJA83wIj5hNsiGu0OI29CpopTDimdOvsCFKXKctkqxTljo/Z7nR2Pf7+RbhPHfx/gx6QwafrfOsMeVePQlrRgbfuXlHTGyB+CB0aFOKeBcfP3trYqM4Fq+p2wVNqWJu7Wz9oh8LjmInuEuDn/tj49G8CYWc1ObWkeWCTPsg=
+	t=1764777521; cv=none; b=lv3jGJKDY4BbnZr4N6idwME27gcStzvxyskufO89fKVuDnVrJwCGMbTlstzFANCcwh/g/cu9VupapwBDu15pymWIx2FiymsSdQiEN7ZSRPfSter0ymMz7ky06igv/VMS1vUPi5QTAc+0VFcrp0OxJIfaNDz8/2Pllwloj63YhYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779287; c=relaxed/simple;
-	bh=8ksrxM0X2EwX/ADCXavUfqQduh4CVbOmGBDM7s+Z1bk=;
+	s=arc-20240116; t=1764777521; c=relaxed/simple;
+	bh=KKcORY67KM5zpClatcxtUKmpHQJkrvPqsVAZn5whZN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=obr4SUfnucrfeM5V2sxuEFZdbUDS1f79lca7fIM61MbOiIJJpV0nFFO6r8LSdqtkaVsSlcI+FaESszWRaWQHGioKgvn4nkobhzGqQyL9yLgHbTwX1ptG7isXLyttl5/VzSl7AmS4jo5k9ntZMrRiJkOKvpTkPDqzcDpMcKgeYM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s/Vi8Yli; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D607C4CEF5;
-	Wed,  3 Dec 2025 16:28:05 +0000 (UTC)
+	 MIME-Version; b=RV19rzfAzHgAk1zzpu3qjyzGp1Tr++MSMfvZXYUnV21M8MI85SIE13XtS++S2qtJDdZpla/g6UcgBhmZFZfL1fGJ9iA/8cIo31UlcICzkB5D874pXEiRj3lSuQSrzRzOegRANnsOzC9UXbCtg1UpPKUxBXbyHibz4JOG8Wpq0h8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1oWGxXIW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 312E1C4CEF5;
+	Wed,  3 Dec 2025 15:58:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779286;
-	bh=8ksrxM0X2EwX/ADCXavUfqQduh4CVbOmGBDM7s+Z1bk=;
+	s=korg; t=1764777520;
+	bh=KKcORY67KM5zpClatcxtUKmpHQJkrvPqsVAZn5whZN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s/Vi8YliRVbAXC/8BLvIJWwmyh4iOpDd12oCaLV9+Z2+ccS790NU7DpJz0WEKIiUo
-	 /9SbsNodqeyE61rrPBR8O9hxHubgYiqKuGHT3kvOGWI7WuJG6BVVWSIw/7CmDBQ42F
-	 GsIyDAgVc2cnCylVfAuzAEPx2lnvcZ2eiHV++m18=
+	b=1oWGxXIWopWs2S7occSMGJPn9HfRO/YQYQlPIF2JaV6ovqLcv8+cAHxqNwcBg1IFJ
+	 K/iqIr327W4xr2k1AyKLIW6AkFdFhFs0oTRhyRHJfK8bSzFHigzSj9Qsu3v0wfdXPq
+	 ctAoeln7YEGP2Wvc/rDEEOGzFSSXRMcVzZaSS91A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksander Jan Bajkowski <olek2@wp.pl>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 179/568] mips: lantiq: xway: sysctrl: rename stp clock
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Ma Ke <make24@iscas.ac.cn>,
+	Steev Klimaszewski <steev@kali.org>,
+	Srinivas Kandagatla <srini@kernel.org>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Alexey Klimov <alexey.klimov@linaro.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.15 031/392] regmap: slimbus: fix bus_context pointer in regmap init calls
 Date: Wed,  3 Dec 2025 16:23:01 +0100
-Message-ID: <20251203152447.285929249@linuxfoundation.org>
+Message-ID: <20251203152415.246063205@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,43 +62,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksander Jan Bajkowski <olek2@wp.pl>
+From: Alexey Klimov <alexey.klimov@linaro.org>
 
-[ Upstream commit b0d04fe6a633ada2c7bc1b5ddd011cbd85961868 ]
+commit 434f7349a1f00618a620b316f091bd13a12bc8d2 upstream.
 
-Bindig requires a node name matching ‘^gpio@[0-9a-f]+$’. This patch
-changes the clock name from “stp” to “gpio”.
+Commit 4e65bda8273c ("ASoC: wcd934x: fix error handling in
+wcd934x_codec_parse_data()") revealed the problem in the slimbus regmap.
+That commit breaks audio playback, for instance, on sdm845 Thundercomm
+Dragonboard 845c board:
 
-Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ Unable to handle kernel paging request at virtual address ffff8000847cbad4
+ ...
+ CPU: 5 UID: 0 PID: 776 Comm: aplay Not tainted 6.18.0-rc1-00028-g7ea30958b305 #11 PREEMPT
+ Hardware name: Thundercomm Dragonboard 845c (DT)
+ ...
+ Call trace:
+  slim_xfer_msg+0x24/0x1ac [slimbus] (P)
+  slim_read+0x48/0x74 [slimbus]
+  regmap_slimbus_read+0x18/0x24 [regmap_slimbus]
+  _regmap_raw_read+0xe8/0x174
+  _regmap_bus_read+0x44/0x80
+  _regmap_read+0x60/0xd8
+  _regmap_update_bits+0xf4/0x140
+  _regmap_select_page+0xa8/0x124
+  _regmap_raw_write_impl+0x3b8/0x65c
+  _regmap_bus_raw_write+0x60/0x80
+  _regmap_write+0x58/0xc0
+  regmap_write+0x4c/0x80
+  wcd934x_hw_params+0x494/0x8b8 [snd_soc_wcd934x]
+  snd_soc_dai_hw_params+0x3c/0x7c [snd_soc_core]
+  __soc_pcm_hw_params+0x22c/0x634 [snd_soc_core]
+  dpcm_be_dai_hw_params+0x1d4/0x38c [snd_soc_core]
+  dpcm_fe_dai_hw_params+0x9c/0x17c [snd_soc_core]
+  snd_pcm_hw_params+0x124/0x464 [snd_pcm]
+  snd_pcm_common_ioctl+0x110c/0x1820 [snd_pcm]
+  snd_pcm_ioctl+0x34/0x4c [snd_pcm]
+  __arm64_sys_ioctl+0xac/0x104
+  invoke_syscall+0x48/0x104
+  el0_svc_common.constprop.0+0x40/0xe0
+  do_el0_svc+0x1c/0x28
+  el0_svc+0x34/0xec
+  el0t_64_sync_handler+0xa0/0xf0
+  el0t_64_sync+0x198/0x19c
+
+The __devm_regmap_init_slimbus() started to be used instead of
+__regmap_init_slimbus() after the commit mentioned above and turns out
+the incorrect bus_context pointer (3rd argument) was used in
+__devm_regmap_init_slimbus(). It should be just "slimbus" (which is equal
+to &slimbus->dev). Correct it. The wcd934x codec seems to be the only or
+the first user of devm_regmap_init_slimbus() but we should fix it till
+the point where __devm_regmap_init_slimbus() was introduced therefore
+two "Fixes" tags.
+
+While at this, also correct the same argument in __regmap_init_slimbus().
+
+Fixes: 4e65bda8273c ("ASoC: wcd934x: fix error handling in wcd934x_codec_parse_data()")
+Fixes: 7d6f7fb053ad ("regmap: add SLIMbus support")
+Cc: stable@vger.kernel.org
+Cc: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: Ma Ke <make24@iscas.ac.cn>
+Cc: Steev Klimaszewski <steev@kali.org>
+Cc: Srinivas Kandagatla <srini@kernel.org>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251022201013.1740211-1-alexey.klimov@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/lantiq/xway/sysctrl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/base/regmap/regmap-slimbus.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/lantiq/xway/sysctrl.c b/arch/mips/lantiq/xway/sysctrl.c
-index edf914393ad96..bcda4fa9fc87c 100644
---- a/arch/mips/lantiq/xway/sysctrl.c
-+++ b/arch/mips/lantiq/xway/sysctrl.c
-@@ -467,7 +467,7 @@ void __init ltq_soc_init(void)
- 	/* add our generic xway clocks */
- 	clkdev_add_pmu("10000000.fpi", NULL, 0, 0, PMU_FPI);
- 	clkdev_add_pmu("1e100a00.gptu", NULL, 1, 0, PMU_GPT);
--	clkdev_add_pmu("1e100bb0.stp", NULL, 1, 0, PMU_STP);
-+	clkdev_add_pmu("1e100bb0.gpio", NULL, 1, 0, PMU_STP);
- 	clkdev_add_pmu("1e100c00.serial", NULL, 0, 0, PMU_ASC1);
- 	clkdev_add_pmu("1e104100.dma", NULL, 1, 0, PMU_DMA);
- 	clkdev_add_pmu("1e100800.spi", NULL, 1, 0, PMU_SPI);
--- 
-2.51.0
-
+--- a/drivers/base/regmap/regmap-slimbus.c
++++ b/drivers/base/regmap/regmap-slimbus.c
+@@ -48,8 +48,7 @@ struct regmap *__regmap_init_slimbus(str
+ 	if (IS_ERR(bus))
+ 		return ERR_CAST(bus);
+ 
+-	return __regmap_init(&slimbus->dev, bus, &slimbus->dev, config,
+-			     lock_key, lock_name);
++	return __regmap_init(&slimbus->dev, bus, slimbus, config, lock_key, lock_name);
+ }
+ EXPORT_SYMBOL_GPL(__regmap_init_slimbus);
+ 
+@@ -63,8 +62,7 @@ struct regmap *__devm_regmap_init_slimbu
+ 	if (IS_ERR(bus))
+ 		return ERR_CAST(bus);
+ 
+-	return __devm_regmap_init(&slimbus->dev, bus, &slimbus, config,
+-				  lock_key, lock_name);
++	return __devm_regmap_init(&slimbus->dev, bus, slimbus, config, lock_key, lock_name);
+ }
+ EXPORT_SYMBOL_GPL(__devm_regmap_init_slimbus);
+ 
 
 
 
