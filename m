@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFFDBC9F90C
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:42:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66B7ECA14E6
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:13:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 61A6F30071E8
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:36:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4AB983287173
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:35:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD8573128BF;
-	Wed,  3 Dec 2025 15:36:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE61C36BCD8;
+	Wed,  3 Dec 2025 16:31:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YtnZL/Zz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s9IbZzqb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92529313271;
-	Wed,  3 Dec 2025 15:36:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 447E336BCC0;
+	Wed,  3 Dec 2025 16:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776173; cv=none; b=oDLkx+DnFOpYtQfdtQbbuTHcohVI+KdIfHZT/hk1Ma+y8k+78vyWV1/JwLHc9a1ywKVMJBP6HtA1PeMGngs6/B4ovB7B1/IPfWQTOydMuI1mOKi72kMHAzfBgwdJe6f36Kg6cVCvtxZ/evYU367+4e9iqkI+OKWRHZgpe1DhtoI=
+	t=1764779490; cv=none; b=Tez63l/nl8hucG+XZX1Rcd78xOl/GNc1oShuluC1dntQ4oe23n8XwsVoss1voC5+GfjezsnMKV82epLJLJOVrCnhOXmPIvGeUE3sTL1ANNoWdSUG5Ysjvt5rFj8bIzAO4qamOpJ3fFTaaHdZBtHOrdjX4znEM2eMdRBks36CrME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776173; c=relaxed/simple;
-	bh=t+FwBxn4EQfgWcfmS6OYrh7ywagWTfmSgjbVTtot7pM=;
+	s=arc-20240116; t=1764779490; c=relaxed/simple;
+	bh=ffQ6JKNL93DklYpV4DVYrXT9xOCVSt+Aa8kh0/fxK5c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QziuzPdD3z9Q/Kej93uTEe+PFeqqyLGYIHXAGUFtjmWr9Bmb+caNGtRM3r8z17oUbwsgSyv46+msjiSis/H95jiaDlgUlXSjn0uBWnYxFykkA7HL1yRvoAvcbnayfXiicpPcSbBNKaB6lhK263fXuiBaqiuJE0vsptxz8D32vO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YtnZL/Zz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14D1EC4CEF5;
-	Wed,  3 Dec 2025 15:36:12 +0000 (UTC)
+	 MIME-Version; b=Ip9VcuRsHfgRc6xd+oXN3r8YCDTNtQ1m8K2Ieb5i3wSrPnwbKJmU1S+vpBeva1zvdfy11qUkVtnwhAT9jM91GXnw0VM1mFELBVfpvEqmYLg2RaQ7r+Ep/0XsfJ1yFXj57K8bMRVk54a3CM11kaydDxA66I0q3PtGVFFV4wJTmXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s9IbZzqb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 900E4C4CEF5;
+	Wed,  3 Dec 2025 16:31:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776173;
-	bh=t+FwBxn4EQfgWcfmS6OYrh7ywagWTfmSgjbVTtot7pM=;
+	s=korg; t=1764779490;
+	bh=ffQ6JKNL93DklYpV4DVYrXT9xOCVSt+Aa8kh0/fxK5c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YtnZL/ZzYzbOfGocsa0dcDdFLLFcQ9MN/vkEHvK4SLEFZACX6f84GTgTucj6yfc9l
-	 jAt3dcD8CYn3ZibEoWUVJ9dt3MmoQHcoEk7vSKTWi44dv4zrxox1oPf8s4ug0K2uha
-	 t369bRdu8CZTyFJCTKMt47JxqdOnVgtONbZV22hM=
+	b=s9IbZzqbrDd2FXKINNXyj4M/kcSfMKaEvIasJ022LZ+L7ym6lXTiTtk9Al5rXW9X/
+	 8UXo6AVrjs4pyGv05nQB7QA/NJZEQCddVAvJaSHFaYV8yjw2nnery2ZLP/n1gjRFKA
+	 VSozCo7ky4w+vR7uP4k69jABp3EKnq0jna+BTrEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seyediman Seyedarab <ImanDevel@gmail.com>,
-	Danilo Krummrich <dakr@kernel.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 070/300] drm/nouveau: replace snprintf() with scnprintf() in nvkm_snprintbf()
+Subject: [PATCH 6.1 272/568] ksmbd: use sock_create_kern interface to create kernel socket
 Date: Wed,  3 Dec 2025 16:24:34 +0100
-Message-ID: <20251203152403.214620382@linuxfoundation.org>
+Message-ID: <20251203152450.674477017@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Seyediman Seyedarab <imandevel@gmail.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 6510b62fe9303aaf48ff136ff69186bcfc32172d ]
+[ Upstream commit 3677ca67b9791481af16d86e47c3c7d1f2442f95 ]
 
-snprintf() returns the number of characters that *would* have been
-written, which can overestimate how much you actually wrote to the
-buffer in case of truncation. That leads to 'data += this' advancing
-the pointer past the end of the buffer and size going negative.
+we should use sock_create_kern() if the socket resides in kernel space.
 
-Switching to scnprintf() prevents potential buffer overflows and ensures
-consistent behavior when building the output string.
-
-Signed-off-by: Seyediman Seyedarab <ImanDevel@gmail.com>
-Link: https://lore.kernel.org/r/20250724195913.60742-1-ImanDevel@gmail.com
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nvkm/core/enum.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/transport_tcp.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nvkm/core/enum.c b/drivers/gpu/drm/nouveau/nvkm/core/enum.c
-index b9581feb24ccb..a23b40b27b81b 100644
---- a/drivers/gpu/drm/nouveau/nvkm/core/enum.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/core/enum.c
-@@ -44,7 +44,7 @@ nvkm_snprintbf(char *data, int size, const struct nvkm_bitfield *bf, u32 value)
- 	bool space = false;
- 	while (size >= 1 && bf->name) {
- 		if (value & bf->mask) {
--			int this = snprintf(data, size, "%s%s",
-+			int this = scnprintf(data, size, "%s%s",
- 					    space ? " " : "", bf->name);
- 			size -= this;
- 			data += this;
+diff --git a/fs/smb/server/transport_tcp.c b/fs/smb/server/transport_tcp.c
+index f07b9e147fe2d..e0719b70c96f8 100644
+--- a/fs/smb/server/transport_tcp.c
++++ b/fs/smb/server/transport_tcp.c
+@@ -469,12 +469,13 @@ static int create_socket(struct interface *iface)
+ 	struct socket *ksmbd_socket;
+ 	bool ipv4 = false;
+ 
+-	ret = sock_create(PF_INET6, SOCK_STREAM, IPPROTO_TCP, &ksmbd_socket);
++	ret = sock_create_kern(current->nsproxy->net_ns, PF_INET6, SOCK_STREAM,
++			IPPROTO_TCP, &ksmbd_socket);
+ 	if (ret) {
+ 		if (ret != -EAFNOSUPPORT)
+ 			pr_err("Can't create socket for ipv6, fallback to ipv4: %d\n", ret);
+-		ret = sock_create(PF_INET, SOCK_STREAM, IPPROTO_TCP,
+-				  &ksmbd_socket);
++		ret = sock_create_kern(current->nsproxy->net_ns, PF_INET,
++				SOCK_STREAM, IPPROTO_TCP, &ksmbd_socket);
+ 		if (ret) {
+ 			pr_err("Can't create socket for ipv4: %d\n", ret);
+ 			goto out_clear;
 -- 
 2.51.0
 
