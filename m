@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-198300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9D31C9F8A2
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:38:58 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 634A1C9FF9D
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:34:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 30D793046381
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:34:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C79143002D78
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:32:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A9C3244665;
-	Wed,  3 Dec 2025 15:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 089873A1CE9;
+	Wed,  3 Dec 2025 16:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BZ3JKJvy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Axb5/nDS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F348530F535;
-	Wed,  3 Dec 2025 15:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62B53A1CE6;
+	Wed,  3 Dec 2025 16:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776091; cv=none; b=Wgj+saYP3DpXEjzhPuUzlkR73FhiheSRSKBkgzOzDiM41Fta+VRxgN5BpRRjvEEdNjpKmiV9IyhuBV2c9GA1qPK13ghykKd04ccoC4xKzPdyJh4Nsk/SKfpDa776SZkpYMyZ5rgCok6ClnGwLHBRETzOs+FZ/JHivHcqqkWEiO0=
+	t=1764779539; cv=none; b=NCFEA/JGnW51gnZs1toocHqGLhg0L9en1sFhMvXkQiDdUXKy34Ag+ASgiv4LAFi6582MC7GlL3mKxuL4IAVaBRInxSv5vXN+mt4UAwE9bKLI+353LhpV8RFU6o60NA+3uG1rgfrvoK2LXK7BJPIMPWdZ9eRxiQmA5isQLZPojHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776091; c=relaxed/simple;
-	bh=ibqH2NtZDA6cL7Rycm7psrmLqF2SrtWvnVvNdSGms8Y=;
+	s=arc-20240116; t=1764779539; c=relaxed/simple;
+	bh=UvEO3afFOHzezUTpghc9LqdwIg+ZvJ/lN9e+OFyUXrA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qqQe1FvyG5zGn6qbopwZgJTDZdZDcuPoUE0JpEiTztCabTZ6d8smm6gqowB1gFz9kzuinGxT7mT0vpxV5ffm5o1j5w9w/amenqaiOQfcE7Kth7kkvds6/Ko2Km1H0yJDPOc7Xm8Y3mP37/vtl5c38xjNqrs7HENdfCblay32a0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BZ3JKJvy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8F25C4CEF5;
-	Wed,  3 Dec 2025 15:34:49 +0000 (UTC)
+	 MIME-Version; b=AzZbMIdoMuP7PZ0zjQb4Az6vzNnTaUsyvBb8fJ6dBzRkAnU0vac4oKX5Bi5W5RR50RBy97bxwHdU595HGH0XiVBaKyza9agLdKlj9LkHv6g7/ezK5gqjbQIeTqj5Asl8zFx2Q01bVO1g32Y5WjKo7KzaRlt842ZkDdseI+Q9CwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Axb5/nDS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 237F6C4CEF5;
+	Wed,  3 Dec 2025 16:32:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776090;
-	bh=ibqH2NtZDA6cL7Rycm7psrmLqF2SrtWvnVvNdSGms8Y=;
+	s=korg; t=1764779539;
+	bh=UvEO3afFOHzezUTpghc9LqdwIg+ZvJ/lN9e+OFyUXrA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BZ3JKJvyuqiUww0UyShvZd2KU7CV13FQwC7IGEy9zE6SycWLyJcxCkF3VNKtrIqDB
-	 IFqdoUUSW1f/asmr/rg4CPELm8NDNs0dAsV489EjZW+FzyKajTVkrfMHrNnvb2TRtz
-	 q0Zu1oUafOwwgcTWkhyQiIsgZSRwc6n5b/s9DgXg=
+	b=Axb5/nDShzjqBT5GB3NFjYsqin32LRO6yFKGNF4VDtmHdtU5bWGebmwSNWkTKEwZA
+	 s5sOBMyn5rzHnKJ70A+13LR9a9kUOzaUXZ2DFsEZuBV8wvzaI9tpF+GGu/IJ2eQ4JC
+	 MH5QdEVUx6xFCBGfjnm+pcKq9M/DlPx77sJCiczE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Jakub Kicinski <kuba@kernel.org>,
+	austinchang <austinchang@synology.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 078/300] net: stmmac: Check stmmac_hw_setup() in stmmac_resume()
+Subject: [PATCH 6.1 280/568] btrfs: mark dirty extent range for out of bound prealloc extents
 Date: Wed,  3 Dec 2025 16:24:42 +0100
-Message-ID: <20251203152403.514814699@linuxfoundation.org>
+Message-ID: <20251203152450.962859953@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +61,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: austinchang <austinchang@synology.com>
 
-[ Upstream commit 6896c2449a1858acb643014894d01b3a1223d4e5 ]
+[ Upstream commit 3b1a4a59a2086badab391687a6a0b86e03048393 ]
 
-stmmac_hw_setup() may return 0 on success and an appropriate negative
-integer as defined in errno.h file on failure, just check it and then
-return early if failed in stmmac_resume().
+In btrfs_fallocate(), when the allocated range overlaps with a prealloc
+extent and the extent starts after i_size, the range doesn't get marked
+dirty in file_extent_tree. This results in persisting an incorrect
+disk_i_size for the inode when not using the no-holes feature.
 
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
-Link: https://patch.msgid.link/20250811073506.27513-2-yangtiezhu@loongson.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This is reproducible since commit 41a2ee75aab0 ("btrfs: introduce
+per-inode file extent tree"), then became hidden since commit 3d7db6e8bd22
+("btrfs: don't allocate file extent tree for non regular files") and then
+visible again after commit 8679d2687c35 ("btrfs: initialize
+inode::file_extent_tree after i_mode has been set"), which fixes the
+previous commit.
+
+The following reproducer triggers the problem:
+
+$ cat test.sh
+
+MNT=/mnt/test
+DEV=/dev/vdb
+
+mkdir -p $MNT
+
+mkfs.btrfs -f -O ^no-holes $DEV
+mount $DEV $MNT
+
+touch $MNT/file1
+fallocate -n -o 1M -l 2M $MNT/file1
+
+umount $MNT
+mount $DEV $MNT
+
+len=$((1 * 1024 * 1024))
+
+fallocate -o 1M -l $len $MNT/file1
+
+du --bytes $MNT/file1
+
+umount $MNT
+mount $DEV $MNT
+
+du --bytes $MNT/file1
+
+umount $MNT
+
+Running the reproducer gives the following result:
+
+$ ./test.sh
+(...)
+2097152 /mnt/test/file1
+1048576 /mnt/test/file1
+
+The difference is exactly 1048576 as we assigned.
+
+Fix by adding a call to btrfs_inode_set_file_extent_range() in
+btrfs_fallocate_update_isize().
+
+Fixes: 41a2ee75aab0 ("btrfs: introduce per-inode file extent tree")
+Signed-off-by: austinchang <austinchang@synology.com>
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ fs/btrfs/file.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index e6fa2782d28f2..ac278d81f1614 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -5415,7 +5415,14 @@ int stmmac_resume(struct device *dev)
- 	stmmac_free_tx_skbufs(priv);
- 	stmmac_clear_descriptors(priv);
+diff --git a/fs/btrfs/file.c b/fs/btrfs/file.c
+index 3814f09dc4ae0..b670d5d72a382 100644
+--- a/fs/btrfs/file.c
++++ b/fs/btrfs/file.c
+@@ -2828,12 +2828,22 @@ static int btrfs_fallocate_update_isize(struct inode *inode,
+ {
+ 	struct btrfs_trans_handle *trans;
+ 	struct btrfs_root *root = BTRFS_I(inode)->root;
++	u64 range_start;
++	u64 range_end;
+ 	int ret;
+ 	int ret2;
  
--	stmmac_hw_setup(ndev, false);
-+	ret = stmmac_hw_setup(ndev, false);
-+	if (ret < 0) {
-+		netdev_err(priv->dev, "%s: Hw setup failed\n", __func__);
-+		mutex_unlock(&priv->lock);
-+		rtnl_unlock();
-+		return ret;
-+	}
+ 	if (mode & FALLOC_FL_KEEP_SIZE || end <= i_size_read(inode))
+ 		return 0;
+ 
++	range_start = round_down(i_size_read(inode), root->fs_info->sectorsize);
++	range_end = round_up(end, root->fs_info->sectorsize);
 +
- 	stmmac_init_coalesce(priv);
- 	stmmac_set_rx_mode(ndev);
- 
++	ret = btrfs_inode_set_file_extent_range(BTRFS_I(inode), range_start,
++						range_end - range_start);
++	if (ret)
++		return ret;
++
+ 	trans = btrfs_start_transaction(root, 1);
+ 	if (IS_ERR(trans))
+ 		return PTR_ERR(trans);
 -- 
 2.51.0
 
