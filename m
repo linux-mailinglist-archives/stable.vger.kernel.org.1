@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-199660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A182CA0C55
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:08:14 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9705DC9FA13
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:46:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CCBC9314EAB6
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:04:14 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 23E74300019A
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:46:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 454DC301700;
-	Wed,  3 Dec 2025 16:48:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85FA03148B5;
+	Wed,  3 Dec 2025 15:46:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iv8v1/VM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mXgTWY9b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE692FBDFF;
-	Wed,  3 Dec 2025 16:48:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21C231329C;
+	Wed,  3 Dec 2025 15:46:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780527; cv=none; b=ATRNCmBTlDZBG+aeIlQWCy+v7u8GQPpIcf+3YpNPnuKlMTjbFnSVauXsTE/xll1iO+lRnfLv7KqN1FktCCfJY82PJddgUhvJttrE4Ag1E87fsFuGZLOzeFBcU63lx0VuBwIHZRQeUDC3+FbaYhnlo4eQoGmZyPyhTqSmPNpvA8g=
+	t=1764776788; cv=none; b=D9kF5R4uqjwSmOmhfLa9OJ98mLU/nxhfPlAA+zEzT1Ic4B8X3ZefgMTlu/esAMtHWK8cJXnU5zxa4ZASxX3L6ZHWmW9mTqUDPyA5nqPLDrh4A3fva8VZEO4jcqv46b9X/64eMc/ek81lZ19HoWU6YTn8XHNE7bp+iHeM4MSV1Is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780527; c=relaxed/simple;
-	bh=t/yPiyA8vhBVIoiBf47kU9oGQcn8gCZjpzMyo9TpTCE=;
+	s=arc-20240116; t=1764776788; c=relaxed/simple;
+	bh=YHXseSTYY2cvLWNbJxDWhazBWEbIw7Ula/AXEJC6+Kg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NO6oRYkXA09bk+m1T0azIFMOP7cO4mU3osSUGbMQrS2Z+z7mvQ+1hyUoSgE470dkmAixpM7xTxxsvZi8wWYoVsnl/JA9aW8mFLGJvQiYozZT88oKDgvDYu1qQHpNVoUp3+8Q29ioYIna6fl4OCxHQ/Yo+0xERFAGH00LlOy8aKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iv8v1/VM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 604D9C4CEF5;
-	Wed,  3 Dec 2025 16:48:46 +0000 (UTC)
+	 MIME-Version; b=GrSgJF1A3mWP3R6rrEkIkqeJ9OMb2jo4V4XeidLVH5atxDPqqEV0RoPKOXEDriiZW0OeQnNtbMW6RL3n/Y53BCltJBm7vxMhCnN9oIMA8XxzBbEJjCtrpPhqED5MEkkRAMCfGENKPbRrdyjURuYYQxWB+Roe4Cy8AQLPpt5cpdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mXgTWY9b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA38DC4CEF5;
+	Wed,  3 Dec 2025 15:46:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780526;
-	bh=t/yPiyA8vhBVIoiBf47kU9oGQcn8gCZjpzMyo9TpTCE=;
+	s=korg; t=1764776787;
+	bh=YHXseSTYY2cvLWNbJxDWhazBWEbIw7Ula/AXEJC6+Kg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iv8v1/VMGq5tD1bLE+HxYrdjHO9JZQrzY9Ia732xiBNyQvTStoXOfo62kEC1wPPsE
-	 6WlkRP5QUh4DXy8zy+jsvOrrYiTlg67Vs01WWdMF3mPSNZAKhCFwuYjwHMwp+fOYdx
-	 cZA7p/XVuEJOh6+71Wi9ZtH+q9v/KHg2QWtbdp4E=
+	b=mXgTWY9bzbEKull/JXCOCEc9Ql5upg5GcoqW3L1xpvQ0HnjXSnthEpRRZOHkc/6tR
+	 7DR6crU7CEUgqGgmnaeciyWnvAO2NzgzhQk+Liuy3ts30QbxuBBmQmhAkltAazlOfp
+	 9w3yngKjqvxlJ8WE5cklN8jWxQCuyVyX7c7z7Y1A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 013/132] veth: reduce XDP no_direct return section to fix race
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Alex Hung <alex.hung@amd.com>
+Subject: [PATCH 5.10 288/300] drm/amd/display: Check NULL before accessing
 Date: Wed,  3 Dec 2025 16:28:12 +0100
-Message-ID: <20251203152343.786872948@linuxfoundation.org>
+Message-ID: <20251203152411.292214540@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,75 +61,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesper Dangaard Brouer <hawk@kernel.org>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit a14602fcae17a3f1cb8a8521bedf31728f9e7e39 ]
+commit 3ce62c189693e8ed7b3abe551802bbc67f3ace54 upstream.
 
-As explain in commit fa349e396e48 ("veth: Fix race with AF_XDP exposing
-old or uninitialized descriptors") for veth there is a chance after
-napi_complete_done() that another CPU can manage start another NAPI
-instance running veth_pool(). For NAPI this is correctly handled as the
-napi_schedule_prep() check will prevent multiple instances from getting
-scheduled, but for the remaining code in veth_pool() this can run
-concurrent with the newly started NAPI instance.
+[WHAT]
+IGT kms_cursor_legacy's long-nonblocking-modeset-vs-cursor-atomic
+fails with NULL pointer dereference. This can be reproduced with
+both an eDP panel and a DP monitors connected.
 
-The problem/race is that xdp_clear_return_frame_no_direct() isn't
-designed to be nested.
+ BUG: kernel NULL pointer dereference, address: 0000000000000000
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ PGD 0 P4D 0
+ Oops: Oops: 0000 [#1] SMP NOPTI
+ CPU: 13 UID: 0 PID: 2960 Comm: kms_cursor_lega Not tainted
+6.16.0-99-custom #8 PREEMPT(voluntary)
+ Hardware name: AMD ........
+ RIP: 0010:dc_stream_get_scanoutpos+0x34/0x130 [amdgpu]
+ Code: 57 4d 89 c7 41 56 49 89 ce 41 55 49 89 d5 41 54 49
+ 89 fc 53 48 83 ec 18 48 8b 87 a0 64 00 00 48 89 75 d0 48 c7 c6 e0 41 30
+ c2 <48> 8b 38 48 8b 9f 68 06 00 00 e8 8d d7 fd ff 31 c0 48 81 c3 e0 02
+ RSP: 0018:ffffd0f3c2bd7608 EFLAGS: 00010292
+ RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffd0f3c2bd7668
+ RDX: ffffd0f3c2bd7664 RSI: ffffffffc23041e0 RDI: ffff8b32494b8000
+ RBP: ffffd0f3c2bd7648 R08: ffffd0f3c2bd766c R09: ffffd0f3c2bd7760
+ R10: ffffd0f3c2bd7820 R11: 0000000000000000 R12: ffff8b32494b8000
+ R13: ffffd0f3c2bd7664 R14: ffffd0f3c2bd7668 R15: ffffd0f3c2bd766c
+ FS:  000071f631b68700(0000) GS:ffff8b399f114000(0000)
+knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 0000000000000000 CR3: 00000001b8105000 CR4: 0000000000f50ef0
+ PKRU: 55555554
+ Call Trace:
+ <TASK>
+ dm_crtc_get_scanoutpos+0xd7/0x180 [amdgpu]
+ amdgpu_display_get_crtc_scanoutpos+0x86/0x1c0 [amdgpu]
+ ? __pfx_amdgpu_crtc_get_scanout_position+0x10/0x10[amdgpu]
+ amdgpu_crtc_get_scanout_position+0x27/0x50 [amdgpu]
+ drm_crtc_vblank_helper_get_vblank_timestamp_internal+0xf7/0x400
+ drm_crtc_vblank_helper_get_vblank_timestamp+0x1c/0x30
+ drm_crtc_get_last_vbltimestamp+0x55/0x90
+ drm_crtc_next_vblank_start+0x45/0xa0
+ drm_atomic_helper_wait_for_fences+0x81/0x1f0
+ ...
 
-Prior to commit 401cb7dae813 ("net: Reference bpf_redirect_info via
-task_struct on PREEMPT_RT.") the temporary BPF net context
-bpf_redirect_info was stored per CPU, where this wasn't an issue. Since
-this commit the BPF context is stored in 'current' task_struct. When
-running veth in threaded-NAPI mode, then the kthread becomes the storage
-area. Now a race exists between two concurrent veth_pool() function calls
-one exiting NAPI and one running new NAPI, both using the same BPF net
-context.
-
-Race is when another CPU gets within the xdp_set_return_frame_no_direct()
-section before exiting veth_pool() calls the clear-function
-xdp_clear_return_frame_no_direct().
-
-Fixes: 401cb7dae8130 ("net: Reference bpf_redirect_info via task_struct on PREEMPT_RT.")
-Signed-off-by: Jesper Dangaard Brouer <hawk@kernel.org>
-Link: https://patch.msgid.link/176356963888.337072.4805242001928705046.stgit@firesoul
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 621e55f1919640acab25383362b96e65f2baea3c)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/veth.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/display/dc/core/dc_stream.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/veth.c b/drivers/net/veth.c
-index 0f37e056b3dd7..4ff0d4232914f 100644
---- a/drivers/net/veth.c
-+++ b/drivers/net/veth.c
-@@ -975,6 +975,9 @@ static int veth_poll(struct napi_struct *napi, int budget)
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
+@@ -586,9 +586,14 @@ bool dc_stream_get_scanoutpos(const stru
+ {
+ 	uint8_t i;
+ 	bool ret = false;
+-	struct dc  *dc = stream->ctx->dc;
+-	struct resource_context *res_ctx =
+-		&dc->current_state->res_ctx;
++	struct dc  *dc;
++	struct resource_context *res_ctx;
++
++	if (!stream->ctx)
++		return false;
++
++	dc = stream->ctx->dc;
++	res_ctx = &dc->current_state->res_ctx;
  
- 	if (stats.xdp_redirect > 0)
- 		xdp_do_flush();
-+	if (stats.xdp_tx > 0)
-+		veth_xdp_flush(rq, &bq);
-+	xdp_clear_return_frame_no_direct();
- 
- 	if (done < budget && napi_complete_done(napi, done)) {
- 		/* Write rx_notify_masked before reading ptr_ring */
-@@ -987,10 +990,6 @@ static int veth_poll(struct napi_struct *napi, int budget)
- 		}
- 	}
- 
--	if (stats.xdp_tx > 0)
--		veth_xdp_flush(rq, &bq);
--	xdp_clear_return_frame_no_direct();
--
- 	/* Release backpressure per NAPI poll */
- 	smp_rmb(); /* Paired with netif_tx_stop_queue set_bit */
- 	if (peer_txq && netif_tx_queue_stopped(peer_txq)) {
--- 
-2.51.0
-
+ 	for (i = 0; i < MAX_PIPES; i++) {
+ 		struct timing_generator *tg = res_ctx->pipe_ctx[i].stream_res.tg;
 
 
 
