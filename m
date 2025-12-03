@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-198931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1ADCCA0A21
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:48:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49441CA0194
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:47:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 57F6B30019D4
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:48:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EBD12302378F
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:44:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 574DB304BDE;
-	Wed,  3 Dec 2025 16:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCBAF3168FD;
+	Wed,  3 Dec 2025 15:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TEwNpqbc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0GGnp5c9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C1722EDD7A;
-	Wed,  3 Dec 2025 16:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EA36314B78;
+	Wed,  3 Dec 2025 15:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778140; cv=none; b=XoWVe6jSZTevs6yXIU53FbGU9s3B/UywhY1eqnMKPf1ygQW9GWGZcBGjsLAVFrxVnj9i8da5pc9oCBlQx6BhlBSmeqeWJUgd3aRkSgloTmbk+4qAWqonQmmaOREazQNdQUEb0LrtZxnaB3g3BslyykmtJHGY4LT3EGhwQOr3Ps8=
+	t=1764776924; cv=none; b=L0jP3jSSyWw1jqXAV3ZugDaA3xVYytgr83VCY31ObrwwGyobWuO/Sxh49y7jxdcG16YmIffzJr/deDlKVFtTGuAlJzVh+4tHgokCFEN64uyH9usOS8D90VbwomRZHood85/VPMO/XgDezoE1XGksVNdSvpribkVfjBShmWG30WM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778140; c=relaxed/simple;
-	bh=m3urx/id/4/R+zG56DrFyLjPxmNYFCUe+AwSncgcmxY=;
+	s=arc-20240116; t=1764776924; c=relaxed/simple;
+	bh=BM6bTuKyiUPnreCMxn53VHdGx+X9XGCFWpT0pj6fEAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kWVYmTWU74+6U7p4GPeKlQIBAJU8JqaWaeeKzEGfkvNdcTpVkURiUcvWW21fDHlqxCX5TnNUau0OPZKPZ3SvZ1rr9N6crnoZyOE64d/WYxSWEttwF23nXxajywEQO2oI/82KoKuTP4yoIESm0LLf90EWycmlWuKtsX49OTrb3aU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TEwNpqbc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C7E2C4CEF5;
-	Wed,  3 Dec 2025 16:08:59 +0000 (UTC)
+	 MIME-Version; b=gMbo8VjcfCseENWAiAu5KNyAFaSSPeVb8FANn1tvPxqS56F22dT+rEbbnvQkIlYPcDYd3kQ1iaZpc09FuGS3V19sqXj61MzU66iCV+4Dp5pvuSYsfmW0gKVXC+FtLkI/pU9veQc+M1zEhjnHXNAICDKnY7Iza/GlFGg84AOAnqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0GGnp5c9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 952A8C4CEF5;
+	Wed,  3 Dec 2025 15:48:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778139;
-	bh=m3urx/id/4/R+zG56DrFyLjPxmNYFCUe+AwSncgcmxY=;
+	s=korg; t=1764776924;
+	bh=BM6bTuKyiUPnreCMxn53VHdGx+X9XGCFWpT0pj6fEAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TEwNpqbchzuS/L5AjPOUlSK8EAv4GNmfItiukY78ATpjKL4Z1nrbBbFcHDJ6aBfF+
-	 h7DUh/PaoQ+jkDsJxo1Fgwyc8upOKbqVQaXmclAf/ciDq2MeMEE0SPrznCPbxeKco8
-	 oVLeo+L+pDSB4mVCmptkK8JxN1Vim+8p4LhpUHAw=
+	b=0GGnp5c95GdK/ikZTWBxD6/x8igHL/YueUOAB78CNm9+OHJMjC31ZXB9cmbRKC0bX
+	 aot0I9vuntyuwVXtkNjBNvBja5PTtTibRNqh7V0E2rpNn8uYNFlAyCN56hK/kbi+Wh
+	 SqWRr2qwrT+5S6XXESQCk6eFtOUixHbccn3c9HR4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Felix Maurer <fmaurer@redhat.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jiefeng Zhang <jiefeng.z.zhang@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 256/392] hsr: Fix supervision frame sending on HSRv0
+Subject: [PATCH 6.17 028/146] net: atlantic: fix fragment overflow handling in RX path
 Date: Wed,  3 Dec 2025 16:26:46 +0100
-Message-ID: <20251203152423.589481109@linuxfoundation.org>
+Message-ID: <20251203152347.498398932@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +60,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Maurer <fmaurer@redhat.com>
+From: Jiefeng Zhang <jiefeng.z.zhang@gmail.com>
 
-[ Upstream commit 96a3a03abf3d8cc38cd9cb0d280235fbcf7c3f7f ]
+[ Upstream commit 5ffcb7b890f61541201461580bb6622ace405aec ]
 
-On HSRv0, no supervision frames were sent. The supervison frames were
-generated successfully, but failed the check for a sufficiently long mac
-header, i.e., at least sizeof(struct hsr_ethhdr), in hsr_fill_frame_info()
-because the mac header only contained the ethernet header.
+The atlantic driver can receive packets with more than MAX_SKB_FRAGS (17)
+fragments when handling large multi-descriptor packets. This causes an
+out-of-bounds write in skb_add_rx_frag_netmem() leading to kernel panic.
 
-Fix this by including the HSR header in the mac header when generating HSR
-supervision frames. Note that the mac header now also includes the TLV
-fields. This matches how we set the headers on rx and also the size of
-struct hsrv0_ethhdr_sp.
+The issue occurs because the driver doesn't check the total number of
+fragments before calling skb_add_rx_frag(). When a packet requires more
+than MAX_SKB_FRAGS fragments, the fragment index exceeds the array bounds.
 
-Reported-by: Hangbin Liu <liuhangbin@gmail.com>
-Closes: https://lore.kernel.org/netdev/aMONxDXkzBZZRfE5@fedora/
-Fixes: 9cfb5e7f0ded ("net: hsr: fix hsr_init_sk() vs network/transport headers.")
-Signed-off-by: Felix Maurer <fmaurer@redhat.com>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Tested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://patch.msgid.link/4354114fea9a642fe71f49aeeb6c6159d1d61840.1762876095.git.fmaurer@redhat.com
-Tested-by: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fix by assuming there will be an extra frag if buff->len > AQ_CFG_RX_HDR_SIZE,
+then all fragments are accounted for. And reusing the existing check to
+prevent the overflow earlier in the code path.
+
+This crash occurred in production with an Aquantia AQC113 10G NIC.
+
+Stack trace from production environment:
+```
+RIP: 0010:skb_add_rx_frag_netmem+0x29/0xd0
+Code: 90 f3 0f 1e fa 0f 1f 44 00 00 48 89 f8 41 89
+ca 48 89 d7 48 63 ce 8b 90 c0 00 00 00 48 c1 e1 04 48 01 ca 48 03 90
+c8 00 00 00 <48> 89 7a 30 44 89 52 3c 44 89 42 38 40 f6 c7 01 75 74 48
+89 fa 83
+RSP: 0018:ffffa9bec02a8d50 EFLAGS: 00010287
+RAX: ffff925b22e80a00 RBX: ffff925ad38d2700 RCX:
+fffffffe0a0c8000
+RDX: ffff9258ea95bac0 RSI: ffff925ae0a0c800 RDI:
+0000000000037a40
+RBP: 0000000000000024 R08: 0000000000000000 R09:
+0000000000000021
+R10: 0000000000000848 R11: 0000000000000000 R12:
+ffffa9bec02a8e24
+R13: ffff925ad8615570 R14: 0000000000000000 R15:
+ffff925b22e80a00
+FS: 0000000000000000(0000)
+GS:ffff925e47880000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffff9258ea95baf0 CR3: 0000000166022004 CR4:
+0000000000f72ef0
+PKRU: 55555554
+Call Trace:
+<IRQ>
+aq_ring_rx_clean+0x175/0xe60 [atlantic]
+? aq_ring_rx_clean+0x14d/0xe60 [atlantic]
+? aq_ring_tx_clean+0xdf/0x190 [atlantic]
+? kmem_cache_free+0x348/0x450
+? aq_vec_poll+0x81/0x1d0 [atlantic]
+? __napi_poll+0x28/0x1c0
+? net_rx_action+0x337/0x420
+```
+
+Fixes: 6aecbba12b5c ("net: atlantic: add check for MAX_SKB_FRAGS")
+Changes in v4:
+- Add Fixes: tag to satisfy patch validation requirements.
+
+Changes in v3:
+- Fix by assuming there will be an extra frag if buff->len > AQ_CFG_RX_HDR_SIZE,
+  then all fragments are accounted for.
+
+Signed-off-by: Jiefeng Zhang <jiefeng.z.zhang@gmail.com>
+Link: https://patch.msgid.link/20251126032249.69358-1-jiefeng.z.zhang@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/hsr/hsr_device.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/aquantia/atlantic/aq_ring.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
-index 503f2064e7323..85537b245aaeb 100644
---- a/net/hsr/hsr_device.c
-+++ b/net/hsr/hsr_device.c
-@@ -316,6 +316,9 @@ static void send_hsr_supervision_frame(struct hsr_port *master,
- 	}
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_ring.c b/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
+index f21de0c21e524..d23d23bed39fe 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
+@@ -547,6 +547,11 @@ static int __aq_ring_rx_clean(struct aq_ring_s *self, struct napi_struct *napi,
  
- 	hsr_stag = skb_put(skb, sizeof(struct hsr_sup_tag));
-+	skb_set_network_header(skb, ETH_HLEN + HSR_HLEN);
-+	skb_reset_mac_len(skb);
+ 		if (!buff->is_eop) {
+ 			unsigned int frag_cnt = 0U;
 +
- 	set_hsr_stag_path(hsr_stag, (hsr->prot_version ? 0x0 : 0xf));
- 	set_hsr_stag_HSR_ver(hsr_stag, hsr->prot_version);
- 
++			/* There will be an extra fragment */
++			if (buff->len > AQ_CFG_RX_HDR_SIZE)
++				frag_cnt++;
++
+ 			buff_ = buff;
+ 			do {
+ 				bool is_rsc_completed = true;
 -- 
 2.51.0
 
