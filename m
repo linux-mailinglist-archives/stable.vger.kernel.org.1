@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-199531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D36C6CA01E8
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:49:38 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AFCFCA0A27
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:48:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DE1F53071591
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:41:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 891CF3000B5C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:48:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F32435BDDF;
-	Wed,  3 Dec 2025 16:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03B91347BA1;
+	Wed,  3 Dec 2025 16:11:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pqDUvmBA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xs/ZJ9Z1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8FC35A957;
-	Wed,  3 Dec 2025 16:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2E7F346FC8;
+	Wed,  3 Dec 2025 16:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780107; cv=none; b=QBxYAtxMnnurhaYegVXUJu/fpq3kl6tWdtxseTuJgoIM68HohU2KrYD22tVhFj/fndi3mUnmvm+Nc1+iwWwF8rkcyxsPFCrO774tCaQtWYxiUrdat+KNwJp+1UFFvDfjbaT9JYCT34iAxdK8XC1sr0VCETSfB4S/dKgsyTBUoAQ=
+	t=1764778318; cv=none; b=oj051N+/7t5glEaAHvAvq81ov5Q2xK1FcjheX0E+EJHCkDybP+Twy7jPnk010v6T7c9za4Flx8pjKMDkqvZG3L1ZOvOdQ8mW1cx1YqOTIqlkbVSynoM6d7GrB/kb2UNd/E/ixlM1H5u2sm5FYRJROj+rufPPZUXV1nZPO8FKnAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780107; c=relaxed/simple;
-	bh=1DmaTgZ093tIJcndwQYg0IvzDSHdhn9nmBdflZ9YQ3s=;
+	s=arc-20240116; t=1764778318; c=relaxed/simple;
+	bh=vugptuwN6hgMpZykDvRNimLvAohhBS4YiFYmKuV8cgQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PUs+0dPNj06+dLNE4ze5q6eIIrUfru4x0JL9RKnD3u4DmoKzX0AfrJisZazQsYCMtKn+K5ZcvT5mXL+aLxSmy+LPRGx5056WB64suiYK5GlY4R5TnDen3Av8tCX/C32Na9Id/MB3nRPbIHSNPrUwUF16jJUIQA6hxnXs7dV43tE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pqDUvmBA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3C3FC4CEF5;
-	Wed,  3 Dec 2025 16:41:46 +0000 (UTC)
+	 MIME-Version; b=VQOb4R8Eh8VzXtMveVuB5VpYOcki1qM4MXeyXIR5y+Et1eivSuY6grTYxGEKjWdpSTvH4QzTqJ3yRDcybXazv7Bg0F2mNzSp/oj8edume7ziRQqbkFANV+lxBA+l1r58OMmXBuA0YijNd37+CVbk58fH0cGHg2CzRaq/2momdW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xs/ZJ9Z1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFC39C4CEF5;
+	Wed,  3 Dec 2025 16:11:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780107;
-	bh=1DmaTgZ093tIJcndwQYg0IvzDSHdhn9nmBdflZ9YQ3s=;
+	s=korg; t=1764778318;
+	bh=vugptuwN6hgMpZykDvRNimLvAohhBS4YiFYmKuV8cgQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pqDUvmBAREBwoCE4W0FsxYp2Wgfc/EBn8FltkL1lKDsYXpNZzx/CBYcd9uLemv+Kz
-	 lSzeE0CpsVnLOQuLsY5SC1TfPb40q0zk65GV/ZNZetYDKSymlf7xInLlM8tyADiZom
-	 YqoVlS97xId4zomXyq7irViJ812YXndeyAmfOp2M=
+	b=Xs/ZJ9Z1gz6HzW1iqzHGJ6uBy96AgFLbZGE+42o34EBhMdtmlNjoYxq6FtTfXnN8m
+	 OTOcbQ3PSCaB3xOU/JSo5UIJNOQwmAbYqE+ObR1RBrt451XFxIeC1wPVoL0rEsKkOG
+	 XvPP/LKGRi4dONMleHW53XLIZfTbUXcqN13SRPoE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Google Big Sleep <big-sleep-vuln-reports@google.com>,
+	David Hildenbrand <david@redhat.com>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 456/568] net: mlxsw: linecards: fix missing error check in mlxsw_linecard_devlink_info_get()
+Subject: [PATCH 5.15 308/392] mm/secretmem: fix use-after-free race in fault handler
 Date: Wed,  3 Dec 2025 16:27:38 +0100
-Message-ID: <20251203152457.407023904@linuxfoundation.org>
+Message-ID: <20251203152425.495815843@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +65,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
+From: Lance Yang <lance.yang@linux.dev>
 
-[ Upstream commit b0c959fec18f4595a6a6317ffc30615cfa37bf69 ]
+[ Upstream commit 6f86d0534fddfbd08687fa0f01479d4226bc3c3d ]
 
-The call to devlink_info_version_fixed_put() in
-mlxsw_linecard_devlink_info_get() did not check for errors,
-although it is checked everywhere in the code.
+When a page fault occurs in a secret memory file created with
+`memfd_secret(2)`, the kernel will allocate a new page for it, mark the
+underlying page as not-present in the direct map, and add it to the file
+mapping.
 
-Add missed 'err' check to the mlxsw_linecard_devlink_info_get()
+If two tasks cause a fault in the same page concurrently, both could end
+up allocating a page and removing the page from the direct map, but only
+one would succeed in adding the page to the file mapping.  The task that
+failed undoes the effects of its attempt by (a) freeing the page again
+and (b) putting the page back into the direct map.  However, by doing
+these two operations in this order, the page becomes available to the
+allocator again before it is placed back in the direct mapping.
 
-Fixes: 3fc0c51905fb ("mlxsw: core_linecards: Expose device PSID over device info")
-Signed-off-by: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20251113161922.813828-1-Pavel.Zhigulin@kaspersky.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+If another task attempts to allocate the page between (a) and (b), and the
+kernel tries to access it via the direct map, it would result in a
+supervisor not-present page fault.
+
+Fix the ordering to restore the direct map before the page is freed.
+
+Link: https://lkml.kernel.org/r/20251031120955.92116-1-lance.yang@linux.dev
+Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
+Signed-off-by: Lance Yang <lance.yang@linux.dev>
+Reported-by: Google Big Sleep <big-sleep-vuln-reports@google.com>
+Closes: https://lore.kernel.org/linux-mm/CAEXGt5QeDpiHTu3K9tvjUTPqo+d-=wuCNYPa+6sWKrdQJ-ATdg@mail.gmail.com/
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit 6f86d0534fddfbd08687fa0f01479d4226bc3c3d)
+[rppt: replaced folio with page in the patch and in the changelog]
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/core_linecards.c | 2 ++
- 1 file changed, 2 insertions(+)
+ mm/secretmem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/core_linecards.c b/drivers/net/ethernet/mellanox/mlxsw/core_linecards.c
-index 99196333d1324..525973da7abc9 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/core_linecards.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/core_linecards.c
-@@ -601,6 +601,8 @@ int mlxsw_linecard_devlink_info_get(struct mlxsw_linecard *linecard,
- 		err = devlink_info_version_fixed_put(req,
- 						     DEVLINK_INFO_VERSION_GENERIC_FW_PSID,
- 						     info->psid);
-+		if (err)
-+			goto unlock;
+diff --git a/mm/secretmem.c b/mm/secretmem.c
+index 624663a948083..0c86133ad33fe 100644
+--- a/mm/secretmem.c
++++ b/mm/secretmem.c
+@@ -82,13 +82,13 @@ static vm_fault_t secretmem_fault(struct vm_fault *vmf)
+ 		__SetPageUptodate(page);
+ 		err = add_to_page_cache_lru(page, mapping, offset, gfp);
+ 		if (unlikely(err)) {
+-			put_page(page);
+ 			/*
+ 			 * If a split of large page was required, it
+ 			 * already happened when we marked the page invalid
+ 			 * which guarantees that this call won't fail
+ 			 */
+ 			set_direct_map_default_noflush(page);
++			put_page(page);
+ 			if (err == -EEXIST)
+ 				goto retry;
  
- 		sprintf(buf, "%u.%u.%u", info->fw_major, info->fw_minor,
- 			info->fw_sub_minor);
 -- 
 2.51.0
 
