@@ -1,141 +1,115 @@
-Return-Path: <stable+bounces-199741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0345CA0DF2
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:18:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3953FCA0C67
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:08:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7DA7B3393A0D
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:15:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A0F00316FD2F
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:04:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 400FD3DAC02;
-	Wed,  3 Dec 2025 16:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10A283A1CFA;
+	Wed,  3 Dec 2025 16:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="gBsPK19W"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D4EfOPyJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D2134D918;
-	Wed,  3 Dec 2025 16:53:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE8543A1CE5;
+	Wed,  3 Dec 2025 16:58:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780784; cv=none; b=HeCtNC09z9CbahNU13dO/5d1CaI6xjDGr/pWHnRukc2C62FyYA3T6BwxBhmN5c9MEhomDf2KXMoI8iC39Tm9+VObWWuBKcRUNX/Ss4+8mbKFX2kSrU+S+QmrCuNT1yGztPOYo2Z04dz1rOjzm38KS5Ih0YKOgUxsug2so+O8XEg=
+	t=1764781095; cv=none; b=NvndLQnP0LTypbikRgd7ucVrEGoiqrJlw6DwrWVLrNfWrr2ll91f/nl38f3FnuhCtt/xURUOlFIwbSfAxX51otBomPfM1tgprLqKUnnYEF34yYfYzKf1jVFpkPqi0IPO9Sb1/XChYidEpHflaHZf/bGAyNKsUB9U4PboASwIdZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780784; c=relaxed/simple;
-	bh=FIFbqvMB7ef1KEgrb9JAMcMLZXdvb9ba5w8PnnDmQSA=;
+	s=arc-20240116; t=1764781095; c=relaxed/simple;
+	bh=BKBmICu+aoF5QSf9WzxXEkCdJD7gvJb6hcltDbFFiZw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nklaT81UG+WJB8NliTIaE2qRXQNPi9vU0Ey+MWfuAO4r6NnjI5WbQXe6E5x0jFPP4kwDL6ABvTiUbyiUPM5j3eiIo0mrWcp9tBz6hM5ZP8QunQr59mZPaBLnvtsewShPrDF0JkRF4ybjoE2E5/EDt1sTIGVjSHntR6Af54bm7Dc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=gBsPK19W; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 61389103ABB61;
-	Wed,  3 Dec 2025 17:52:56 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1764780778; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=bup90Alh7SdqXckKvIL+2t0OH+vX20/yZvBw1FTUgbE=;
-	b=gBsPK19WdKuDhjJ0rsjMmq8/jVyBSr7CZUxxqAZGOQqd11r05gmN74zd3uRi914BIAXjch
-	FQyMScHEdUM1twCbQ2yaMekGHf0i7+gP+pOmBahvLQeOB4RTquIG0Y2LQg1KnY0A0hWbHK
-	or8ui06so1BAKBiCbnky0v6H0DS35IWWRQdPJT+CKGhB30B5IzGPVqYUDGiZ/x+v1izK7Q
-	6Pvg4kQ3pSp34OmcU9M2OnDF+c7hZmvASzmkDIhOu0jAUk85M3L66Ti6FtnFy/jPQK2NSM
-	OS8jzIQ2tjJJ0/uEB+zK67NhOPXC37DKix7JskhG3m7ESDKf3/mXkQK6su+G5Q==
-Date: Wed, 3 Dec 2025 17:52:51 +0100
-From: Pavel Machek <pavel@denx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
-	sr@sladewatkins.com
-Subject: Re: [PATCH 6.1 000/568] 6.1.159-rc1 review
-Message-ID: <aTBq47Q45543E6j2@duo.ucw.cz>
-References: <20251203152440.645416925@linuxfoundation.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=TXj46Gp15xZVzowHWGCP4T7oGVM9K79JzqtxNgWEksRZAFGWQwiFOhqYobZd76vc6j6Pv8TvbMQFCjqaR9sVHY9ecKB0hfxZq50h1ZXVokyPD9It4JYjCK5MmlUzSbqlkZ4PKY9qm+MlBk6U4u/0MC2/lOpVHHDhIlm5gMaKoAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D4EfOPyJ; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764781093; x=1796317093;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=BKBmICu+aoF5QSf9WzxXEkCdJD7gvJb6hcltDbFFiZw=;
+  b=D4EfOPyJkywhKrHp+RVL1DqsgCfrGjXF4S06pp0rqQlDFQ605hgBPF/G
+   VMMEHpoTrNYWPByA7Cz7Li2A3bLEQ1RRRb2gj4uRh/INltGbbn46zPotY
+   TxVEU3eP/9iUKE+IvBYPosfOUq7P20Wk6SpztIWWdsQxfxZ8YtvZV+CJN
+   4KW67cg/6J7/iTLXk6q5M+kNKukRt1RsiHTIGD2paZ9ZtIlPfaE4Cf/a8
+   GbfqPCDznJHt0g1tj7RkQhnyC5id8lqx9yCG0eEXcGOz7pllUaNFOrkf/
+   PeAb7fwdLkaAcwOPFrF7dJXyzoJwbILLEMEwB+eSpTUxINxMUpkFuahvz
+   w==;
+X-CSE-ConnectionGUID: W+WlqAg2T1eyZMxVCXO1UQ==
+X-CSE-MsgGUID: iFKB1Vz8RHWASEJKQf7PNg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="77463158"
+X-IronPort-AV: E=Sophos;i="6.20,246,1758610800"; 
+   d="scan'208";a="77463158"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2025 08:58:11 -0800
+X-CSE-ConnectionGUID: mo53Gx0+QJeXIIDNsjiKGw==
+X-CSE-MsgGUID: 0FON3fS7SZGFhkgIe07W5Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,246,1758610800"; 
+   d="scan'208";a="195542453"
+Received: from dhhellew-desk2.ger.corp.intel.com (HELO localhost) ([10.245.245.81])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2025 08:58:09 -0800
+Date: Wed, 3 Dec 2025 18:58:06 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Wentao Guan <guanwentao@uniontech.com>
+Cc: brgl <brgl@kernel.org>,
+	"mathieu.dubois-briand" <mathieu.dubois-briand@bootlin.com>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	linux-gpio <linux-gpio@vger.kernel.org>,
+	linux-kernel <linux-kernel@vger.kernel.org>,
+	=?utf-8?B?5Y2g5L+K?= <zhanjun@uniontech.com>,
+	=?utf-8?B?6IGC6K+a?= <niecheng1@uniontech.com>,
+	stable <stable@vger.kernel.org>,
+	WangYuli <wangyl5933@chinaunicom.cn>
+Subject: Re: [PATCH v2] gpio: regmap: Fix memleak in gpio_remap_register
+Message-ID: <aTBsHvvpw-avP93a@smile.fi.intel.com>
+References: <20251203141557.2652348-1-guanwentao@uniontech.com>
+ <aTBOSfH9KyI0epZB@smile.fi.intel.com>
+ <tencent_7AA5492F0C3086555B6EF720@qq.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="I81sU3lDOpubUmQf"
-Content-Disposition: inline
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-X-Last-TLS-Session-Version: TLSv1.3
-
-
---I81sU3lDOpubUmQf
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <tencent_7AA5492F0C3086555B6EF720@qq.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Hi!
+On Wed, Dec 03, 2025 at 11:12:39PM +0800, Wentao Guan wrote:
+> Hello Andy:
+> 
+> I did not found ae495810cffe ,thought it is that:
+> Fixes: 00aaae60faf5 ("gpio: regmap: add the .fixed_direction_output configuration parameter"),
 
-> This is the start of the stable review cycle for the 6.1.159 release.
-> There are 568 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
 
-We have similar situation to 5.10 here:
+> I will add it to v3.
 
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/jobs/123097=
-17631
+No, please don't. This is wrong.
 
-drivers/soc/tegra/fuse/fuse-tegra30.c:250:10: error: 'const struct tegra_fu=
-se_soc' has no member named 'cells'
-2898
-  250 |         .cells =3D tegra114_fuse_cells,
-2899
-      |          ^~~~~
-2900
-drivers/soc/tegra/fuse/fuse-tegra30.c:250:18: error: initialization of 'con=
-st struct attribute_group *' from incompatible pointer type 'const struct n=
-vmem_cell_info *' [-Werror=3Dincompatible-pointer-types]
-2901
-  250 |         .cells =3D tegra114_fuse_cells,
-2902
-      |                  ^~~~~~~~~~~~~~~~~~~
-2903
-drivers/soc/tegra/fuse/fuse-tegra30.c:250:18: note: (near initialization fo=
-r 'tegra114_fuse_soc.soc_attr_group')
-2904
-drivers/soc/tegra/fuse/fuse-tegra30.c:251:10: error: 'const struct tegra_fu=
-se_soc' has no member named 'num_cells'
-2905
-  251 |         .num_cells =3D ARRAY_SIZE(tegra114_fuse_cells),
-2906
-      |          ^~~~~~~~~
-2907
-cc1: some warnings being treated as errors
-2908
-make[5]: *** [scripts/Makefile.build:250: drivers/soc/tegra/fuse/fuse-tegra=
-30.o] Error 1
-2909
-make[4]: *** [scripts/Makefile.build:503: drivers/soc/tegra/fuse] Error 2
-2910
-make[3]: *** [scripts/Makefile.build:503: drivers/soc/tegra] Error 2
-2911
-make[2]: *** [scripts/Makefile.build:503: drivers/soc] Error 2
-2912
-make[2]: *** Waiting for unfinished jobs....
+$ git tag --contains ae495810cffe
+next-20251022
+...
 
-Best regards,
-									Pavel
---=20
-In cooperation with DENX Software Engineering GmbH, HRB 165235 Munich,
-Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+$ git branch -a --contains ae495810cffe | grep gpio
+  remotes/brgl/gpio/for-current
+  remotes/brgl/gpio/for-next
 
---I81sU3lDOpubUmQf
-Content-Type: application/pgp-signature; name="signature.asc"
+So it will be part of v6.19-rc1, which means your patch should be based
+on that three.
 
------BEGIN PGP SIGNATURE-----
+-- 
+With Best Regards,
+Andy Shevchenko
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaTBq4wAKCRAw5/Bqldv6
-8gPtAKCqxU0vnhDgWBM6eazxhwR89d9bPACgoqnEX9g7tIKJx6moiJlu5AbR5mc=
-=A29j
------END PGP SIGNATURE-----
 
---I81sU3lDOpubUmQf--
 
