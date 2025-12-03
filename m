@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66B84CA034F
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:55:35 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50E3ACA09BB
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:45:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 730C33078E94
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:49:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 476D730017D7
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:45:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50CEA34FF59;
-	Wed,  3 Dec 2025 16:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DBEA32E721;
+	Wed,  3 Dec 2025 15:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bFdJCIIG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WnsvOsaj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A1E934F48F;
-	Wed,  3 Dec 2025 16:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED14A32E6B7;
+	Wed,  3 Dec 2025 15:50:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780047; cv=none; b=F4DuRsTHImxideTElYK2IrxDm/2MCXYHBBiYhen35nQsNrNrGSxWpsvzibTe2ZUEDATVN8Bfqvb0xnZa3BaJmrz1OYvaZ1fkqrdH4U1kpS09A8F6IA+cmFGwgtmgZ1Jcxh19XRAKVxTLgjKBzb1qHeaYeofCBSvU2Sj7iTjnbqQ=
+	t=1764777045; cv=none; b=ihWtz+yDbTSEu+AQdLqJBwkxTj7brdLR8Wrv/2TYuGzZZPVO34R7fYvq3Y+hZHsQ79S03z2YjD33J/5NhuZS+pbyAvXPffeoNs6rexaN4vJ3cwohQk9+HLGs67QBMvFweu5aHzj6fi8lG7e5TzhWwNNlvZQvman6AU0MsV41t68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780047; c=relaxed/simple;
-	bh=lLjooOKzKUgID5LEYGptglRdVBqT58O4YJTO72CEC6I=;
+	s=arc-20240116; t=1764777045; c=relaxed/simple;
+	bh=eSdAtt/WIIiI41iDRaRV+fCINE3T7/QCb43lzjf1HXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ejAHwZLVszMhSNoQSnS4L8buEV85cV4z/033OuVvw3YEXk8I9N0gbvCZLdqVjErWywiL9UoopTr+oRXnF6eTkhI2adigxwY/e48QDEC2GxYcIpbzEXsEei8oClotOw6yCxSrp0ch5iW4JZTt8C1rdTHKXYjWCzOTeOoIJdaLRvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bFdJCIIG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FDB2C4CEF5;
-	Wed,  3 Dec 2025 16:40:46 +0000 (UTC)
+	 MIME-Version; b=UEn6lbvyUL+uReAZJCsfbIqc1Mo8A5TjKsDnOI8y8xrBt87UuaWTScswrztskoLy6B2C4BZkvGPDtX5mJhJMDwt+lwwm3MfeM31tOWLid6CY2wICvTyks0F8OAjFGuByVBZVwYC/YGgOVmxfrTXOroxfj3ABlb+UddgYZ1Pp0aQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WnsvOsaj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ED50C4CEF5;
+	Wed,  3 Dec 2025 15:50:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780046;
-	bh=lLjooOKzKUgID5LEYGptglRdVBqT58O4YJTO72CEC6I=;
+	s=korg; t=1764777044;
+	bh=eSdAtt/WIIiI41iDRaRV+fCINE3T7/QCb43lzjf1HXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bFdJCIIG7bbvCTjkcaCC9zYhTGPmUstpl3vuoldKTM1igzyLSNhxDJ79Wwzootx2N
-	 qu57KRQmEbs3yUnQdBAZkJ/0ttBR/o+A45S6p+65U65/YrlSOIxpXoNvcaCA1DdP9l
-	 sD8Ddq7Qrbsx6Tl8GplpU1irmW4jBNz8s1TzH5cw=
+	b=WnsvOsaj0JcXDdiyP2delobTNqLs8dGttg7ht5P9Lxy9XXWmAnfRNvidehoMsrotb
+	 5ItuW72htCVKi/Eo/rxf+KXEGtxLbrg4ooyXXnm2xPCTrCCGHpfZVO44kZ0GJxQZ+l
+	 9nQ4EOefOC4wKIilLGeBm0Ox4EPih3LfGFce1iEQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c01f8e6e73f20459912e@syzkaller.appspotmail.com,
-	Hannes Reinecke <hare@suse.de>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 440/568] scsi: sg: Do not sleep in atomic context
+	Valek Andrej <andrej.v@skyrain.eu>,
+	Kessler Markus <markus.kessler@hilti.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.17 064/146] iio: accel: fix ADXL355 startup race condition
 Date: Wed,  3 Dec 2025 16:27:22 +0100
-Message-ID: <20251203152456.811044164@linuxfoundation.org>
+Message-ID: <20251203152348.810257310@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +61,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Valek Andrej <andrej.v@skyrain.eu>
 
-commit 90449f2d1e1f020835cba5417234636937dd657e upstream.
+commit c92c1bc408e9e11ae3c7011b062fdd74c09283a3 upstream.
 
-sg_finish_rem_req() calls blk_rq_unmap_user(). The latter function may
-sleep. Hence, call sg_finish_rem_req() with interrupts enabled instead
-of disabled.
+There is an race-condition where device is not full working after SW reset.
+Therefore it's necessary to wait some time after reset and verify shadow
+registers values by reading and comparing the values before/after reset.
+This mechanism is described in datasheet at least from revision D.
 
-Reported-by: syzbot+c01f8e6e73f20459912e@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-scsi/691560c4.a70a0220.3124cb.001a.GAE@google.com/
-Cc: Hannes Reinecke <hare@suse.de>
-Cc: stable@vger.kernel.org
-Fixes: 97d27b0dd015 ("scsi: sg: close race condition in sg_remove_sfp_usercontext()")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20251113181643.1108973-1-bvanassche@acm.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 12ed27863ea3 ("iio: accel: Add driver support for ADXL355")
+Signed-off-by: Valek Andrej <andrej.v@skyrain.eu>
+Signed-off-by: Kessler Markus <markus.kessler@hilti.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/sg.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/iio/accel/adxl355_core.c |   44 ++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 39 insertions(+), 5 deletions(-)
 
---- a/drivers/scsi/sg.c
-+++ b/drivers/scsi/sg.c
-@@ -2204,9 +2204,17 @@ sg_remove_sfp_usercontext(struct work_st
- 	write_lock_irqsave(&sfp->rq_list_lock, iflags);
- 	while (!list_empty(&sfp->rq_list)) {
- 		srp = list_first_entry(&sfp->rq_list, Sg_request, entry);
--		sg_finish_rem_req(srp);
- 		list_del(&srp->entry);
-+		write_unlock_irqrestore(&sfp->rq_list_lock, iflags);
-+
-+		sg_finish_rem_req(srp);
-+		/*
-+		 * sg_rq_end_io() uses srp->parentfp. Hence, only clear
-+		 * srp->parentfp after blk_mq_free_request() has been called.
-+		 */
- 		srp->parentfp = NULL;
-+
-+		write_lock_irqsave(&sfp->rq_list_lock, iflags);
- 	}
- 	write_unlock_irqrestore(&sfp->rq_list_lock, iflags);
+--- a/drivers/iio/accel/adxl355_core.c
++++ b/drivers/iio/accel/adxl355_core.c
+@@ -56,6 +56,8 @@
+ #define  ADXL355_POWER_CTL_DRDY_MSK	BIT(2)
+ #define ADXL355_SELF_TEST_REG		0x2E
+ #define ADXL355_RESET_REG		0x2F
++#define ADXL355_BASE_ADDR_SHADOW_REG	0x50
++#define ADXL355_SHADOW_REG_COUNT	5
  
+ #define ADXL355_DEVID_AD_VAL		0xAD
+ #define ADXL355_DEVID_MST_VAL		0x1D
+@@ -294,7 +296,12 @@ static void adxl355_fill_3db_frequency_t
+ static int adxl355_setup(struct adxl355_data *data)
+ {
+ 	unsigned int regval;
++	int retries = 5; /* the number is chosen based on empirical reasons */
+ 	int ret;
++	u8 *shadow_regs __free(kfree) = kzalloc(ADXL355_SHADOW_REG_COUNT, GFP_KERNEL);
++
++	if (!shadow_regs)
++		return -ENOMEM;
+ 
+ 	ret = regmap_read(data->regmap, ADXL355_DEVID_AD_REG, &regval);
+ 	if (ret)
+@@ -321,14 +328,41 @@ static int adxl355_setup(struct adxl355_
+ 	if (regval != ADXL355_PARTID_VAL)
+ 		dev_warn(data->dev, "Invalid DEV ID 0x%02x\n", regval);
+ 
+-	/*
+-	 * Perform a software reset to make sure the device is in a consistent
+-	 * state after start-up.
+-	 */
+-	ret = regmap_write(data->regmap, ADXL355_RESET_REG, ADXL355_RESET_CODE);
++	/* Read shadow registers to be compared after reset */
++	ret = regmap_bulk_read(data->regmap,
++			       ADXL355_BASE_ADDR_SHADOW_REG,
++			       shadow_regs, ADXL355_SHADOW_REG_COUNT);
+ 	if (ret)
+ 		return ret;
+ 
++	do {
++		if (--retries == 0) {
++			dev_err(data->dev, "Shadow registers mismatch\n");
++			return -EIO;
++		}
++
++		/*
++		 * Perform a software reset to make sure the device is in a consistent
++		 * state after start-up.
++		 */
++		ret = regmap_write(data->regmap, ADXL355_RESET_REG,
++				   ADXL355_RESET_CODE);
++		if (ret)
++			return ret;
++
++		/* Wait at least 5ms after software reset */
++		usleep_range(5000, 10000);
++
++		/* Read shadow registers for comparison */
++		ret = regmap_bulk_read(data->regmap,
++				       ADXL355_BASE_ADDR_SHADOW_REG,
++				       data->buffer.buf,
++				       ADXL355_SHADOW_REG_COUNT);
++		if (ret)
++			return ret;
++	} while (memcmp(shadow_regs, data->buffer.buf,
++			ADXL355_SHADOW_REG_COUNT));
++
+ 	ret = regmap_update_bits(data->regmap, ADXL355_POWER_CTL_REG,
+ 				 ADXL355_POWER_CTL_DRDY_MSK,
+ 				 FIELD_PREP(ADXL355_POWER_CTL_DRDY_MSK, 1));
 
 
 
