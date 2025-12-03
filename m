@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 435F2C9FC44
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:59:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A27ECA0851
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:36:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 23CBA300A83F
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:58:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 468CA33B6A4D
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:17:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9185325496;
-	Wed,  3 Dec 2025 15:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C3903002B6;
+	Wed,  3 Dec 2025 16:09:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rmTdtGEU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T7QqU1rg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66338322DC1;
-	Wed,  3 Dec 2025 15:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F61258CD9;
+	Wed,  3 Dec 2025 16:09:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776934; cv=none; b=KvGIMnKvcRg0zX/u7ldwA7RJvXqHvxKeiI6In08VowZ4w4ucEQ7hjps7ozD6/svfP9h6Gr0IlHxdVDA0T+dkCdTCiwo1balfzCLo8u8d9IlF29PMy9M50fj8OF48rLOAaPAXmPzYYVDdum71hEBEYa7yi0GGZyJFXHuILW90/Fg=
+	t=1764778153; cv=none; b=bDU2tztLxJce7wyhMA3ILqVJ8TcxVUNtwweWbzg4cHZhzpGP70glrtyZ4KFl5fS1jUcQzV+1xAVKKCGRM4LX2024/GfO+SNcA57cfFqJqcfbrnZqZYKPzeGCHFLh/9nkdXXhf+5V0fl0/TSTcJgeGzed7Cnwt3Hm/UMjmb4Im8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776934; c=relaxed/simple;
-	bh=AjoLlZSoTVgDACbFArqUhx5sp52D4JGntT4T4REfv5k=;
+	s=arc-20240116; t=1764778153; c=relaxed/simple;
+	bh=OMcFbTEdJ0pRtDrK7IKwSVaW0VhsYiUNEOyOd7Q1gkk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n6oqmR+CiUP3ZIerwiQuKMxBkxELMuOlbZoBw9pK7/JTo8QcLq8oXJurFeptCKhjatEAjZlUHU2sEArInKex1/XquO0KbmQe9WirktEZz5nry0kzY7m9dOp59ujlwmXJjQtTyeln6GpbxqQHOgHK/pqWiStbqT+2yc7Mn8aAbg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rmTdtGEU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85212C4CEF5;
-	Wed,  3 Dec 2025 15:48:53 +0000 (UTC)
+	 MIME-Version; b=H3/pWeeDfSFke8WOztDMx/n47cKL007IzD6N+KqLsyfTwqSFxnTNlEv8rpJk5iXNy8NqLFfSpwCB/6WwmNgGKG+9U/hIXMiWNk8VPnlYXxR1oypfy1m9GtRndDvT1z0VIcPe3iRopnxStmfUX+lr9K7hvPmIzE5a0HAQIoD2qxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T7QqU1rg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49049C4CEF5;
+	Wed,  3 Dec 2025 16:09:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776934;
-	bh=AjoLlZSoTVgDACbFArqUhx5sp52D4JGntT4T4REfv5k=;
+	s=korg; t=1764778152;
+	bh=OMcFbTEdJ0pRtDrK7IKwSVaW0VhsYiUNEOyOd7Q1gkk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rmTdtGEUGsZdR4O99+7sYCWMRNkgJISOU3fRh5nvlqg6U/IJjdWH0W8BtTV56TqYY
-	 rVoTnK6nw9Z2ggRCSWuZOuWt4Q800lFfLC1GWZD+L1i5NC8KpVxRi9BwLmRMw8Kuw6
-	 wISKWWXJzPruXWG2T5Q3RGmKWgcHncceZAzpvIy8=
+	b=T7QqU1rgayZ6dSKov/534qGzFiRrOqfBxZKBPi9fxFOBb6EZT9Hlnakg37K73TI/N
+	 9wpONH1EJSYshvgMET81AhGl6hU3m3CM5iy2AszbSqJ6fCniB6NKcXfsf08dVVhG6Y
+	 vrcUkB+bMxjpt8kJjgwghASvJvvT7UCC9Ib1uCWM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 030/146] net: fec: cancel perout_timer when PEROUT is disabled
-Date: Wed,  3 Dec 2025 16:26:48 +0100
-Message-ID: <20251203152347.576513408@linuxfoundation.org>
+Subject: [PATCH 5.15 259/392] regulator: fixed: fix GPIO descriptor leak on register failure
+Date: Wed,  3 Dec 2025 16:26:49 +0100
+Message-ID: <20251203152423.698938076@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 50caa744689e505414673c20359b04aa918439e3 ]
+[ Upstream commit 636f4618b1cd96f6b5a2b8c7c4f665c8533ecf13 ]
 
-The PEROUT allows the user to set a specified future time to output the
-periodic signal. If the future time is far from the current time, the FEC
-driver will use hrtimer to configure PEROUT one second before the future
-time. However, the hrtimer will not be canceled if the PEROUT is disabled
-before the hrtimer expires. So the PEROUT will be configured when the
-hrtimer expires, which is not as expected. Therefore, cancel the hrtimer
-in fec_ptp_pps_disable() to fix this issue.
+In the commit referenced by the Fixes tag,
+devm_gpiod_get_optional() was replaced by manual
+GPIO management, relying on the regulator core to release the
+GPIO descriptor. However, this approach does not account for the
+error path: when regulator registration fails, the core never
+takes over the GPIO, resulting in a resource leak.
 
-Fixes: 350749b909bf ("net: fec: Add support for periodic output signal of PPS")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Link: https://patch.msgid.link/20251125085210.1094306-2-wei.fang@nxp.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Add gpiod_put() before returning on regulator registration failure.
+
+Fixes: 5e6f3ae5c13b ("regulator: fixed: Let core handle GPIO descriptor")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20251028172828.625-1-vulab@iscas.ac.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_ptp.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/regulator/fixed.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-index fa88b47d526c0..7a5367ea94101 100644
---- a/drivers/net/ethernet/freescale/fec_ptp.c
-+++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -497,6 +497,8 @@ static int fec_ptp_pps_disable(struct fec_enet_private *fep, uint channel)
- {
- 	unsigned long flags;
+diff --git a/drivers/regulator/fixed.c b/drivers/regulator/fixed.c
+index fb163458337fc..adc21b1bad94b 100644
+--- a/drivers/regulator/fixed.c
++++ b/drivers/regulator/fixed.c
+@@ -290,6 +290,7 @@ static int reg_fixed_voltage_probe(struct platform_device *pdev)
+ 		ret = dev_err_probe(&pdev->dev, PTR_ERR(drvdata->dev),
+ 				    "Failed to register regulator: %ld\n",
+ 				    PTR_ERR(drvdata->dev));
++		gpiod_put(cfg.ena_gpiod);
+ 		return ret;
+ 	}
  
-+	hrtimer_cancel(&fep->perout_timer);
-+
- 	spin_lock_irqsave(&fep->tmreg_lock, flags);
- 	writel(0, fep->hwp + FEC_TCSR(channel));
- 	spin_unlock_irqrestore(&fep->tmreg_lock, flags);
 -- 
 2.51.0
 
