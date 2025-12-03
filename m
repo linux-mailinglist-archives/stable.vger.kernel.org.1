@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-198462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3573BC9F9AB
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:44:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0F60CA1114
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:40:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 54909300A6FA
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:43:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D54D333BE0B6
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:44:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F15432FFF95;
-	Wed,  3 Dec 2025 15:43:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2525D3321C3;
+	Wed,  3 Dec 2025 16:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R6kNPGOk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N9LV2mKl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCE7230F929;
-	Wed,  3 Dec 2025 15:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD044331A46;
+	Wed,  3 Dec 2025 16:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776625; cv=none; b=Ey1/CGJGKgf7mnYIs4laRsrYe4a4EIVVWwj5cv151PD65o4wFXEyXG6M5dRC74CLwgVtIljw1Eki4T2od3qcfJ/0mGH9GO3cAftSMhXaumsd+kQG3elx2u1GBGs/PzOvH4xbRja40b9JPGpaaNBiJoI9lkQ53p9T3hWPWKfP+5k=
+	t=1764778255; cv=none; b=CMnJ12WQV9UwU5jA0NryTj0z+sfPRpTkghgEEDJ6vKL0UXlwusmnQ+Q/zvjfn2e+9QHnqjq9dWROYb8CJG9tcTePUqFy+NEER4KIAVuYwqauYS/SqK0wq7l4k+BurKOGbRsV3inW6p9H+uEyeJdqOJdMZ0BztGnbBTM7rWkCqYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776625; c=relaxed/simple;
-	bh=lfE0T+ij7kZFVuSF9+2XFg551vlY6vLN6WfF1UBb4FQ=;
+	s=arc-20240116; t=1764778255; c=relaxed/simple;
+	bh=ahLUm/9QJDlZj16zGuKss1ZTjNDWdoocGAwgq34Pdz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e+P5mn3xeiw7jesgzJKlOOiLDl4pJJDiW8c6ZVZRMYoBVbVCWc7wap/raqL/Hq5nVoc2ZTxPaa4H8fvJMx1kBDG51Gp43PBrpDqxbLbo9nCPyCK4T6NMYKueNlvswaCkxQtlrDhDasEZprA6ZaVY8MSk0DkjFWQsjxVL3X05Gwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R6kNPGOk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7309C4CEF5;
-	Wed,  3 Dec 2025 15:43:43 +0000 (UTC)
+	 MIME-Version; b=C7j+/pvStluTcyDb35i2dXuMNRzRqJ5OhxIIb4lHvqldJo2bwelFvHbFZXXAaXG7UXjMSSZeng50AMfEeKq7u9/8tXS8u9O4B4cgb7D9wIksBjI1jRJicVkLko0ZrP21F7VElyC9lAPh69SBAUg+jQSw3UrIjTsEqmGnPB7E5jQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N9LV2mKl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AD63C4CEF5;
+	Wed,  3 Dec 2025 16:10:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776624;
-	bh=lfE0T+ij7kZFVuSF9+2XFg551vlY6vLN6WfF1UBb4FQ=;
+	s=korg; t=1764778255;
+	bh=ahLUm/9QJDlZj16zGuKss1ZTjNDWdoocGAwgq34Pdz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R6kNPGOkLbC6qFiR3qt3WKkIE6AMzr1Ee4uzapm2SwpWoIw1IYfiw/WX7BIf5Am8/
-	 jWmg0OzYHDs26d5cb2xo2ZZzqnKv7TNAO1ROgrMeN+dbC3TZ+Tr2ZtBICiwH7DfTbH
-	 H0uymddcsizt8+xvlB9e1lCYgtnrvuYbyQmA8x0w=
+	b=N9LV2mKlA8SBICFmmTxb8yYJ/oBV0T4TEt8javKvW2WYEFGY7VXx3Bd3Uh9p0qVp+
+	 fXln0xMu32EQB/MpN3kOc0q746ksewlIEeCcAILMeXGv3QIHv1Bkri9hgJ/DJHAC46
+	 e9bZej2vVrNUMvIV/8FHgAcNAmkAaNIunZMbduyE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <longli@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Naman Jain <namjain@linux.microsoft.com>
-Subject: [PATCH 5.10 237/300] uio_hv_generic: Set event for all channels on the device
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 5.15 291/392] MIPS: Malta: Fix !EVA SOC-it PCI MMIO
 Date: Wed,  3 Dec 2025 16:27:21 +0100
-Message-ID: <20251203152409.405589383@linuxfoundation.org>
+Message-ID: <20251203152424.865648485@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +59,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <longli@microsoft.com>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-commit d062463edf1770427dc2d637df4088df4835aa47 upstream.
+commit ebd729fef31620e0bf74cbf8a4c7fda73a2a4e7e upstream.
 
-Hyper-V may offer a non latency sensitive device with subchannels without
-monitor bit enabled. The decision is entirely on the Hyper-V host not
-configurable within guest.
+Fix a regression that has caused accesses to the PCI MMIO window to
+complete unclaimed in non-EVA configurations with the SOC-it family of
+system controllers, preventing PCI devices from working that use MMIO.
 
-When a device has subchannels, also signal events for the subchannel
-if its monitor bit is disabled.
+In the non-EVA case PHYS_OFFSET is set to 0, meaning that PCI_BAR0 is
+set with an empty mask (and PCI_HEAD4 matches addresses starting from 0
+accordingly).  Consequently all addresses are matched for incoming DMA
+accesses from PCI.  This seems to confuse the system controller's logic
+and outgoing bus cycles targeting the PCI MMIO window seem not to make
+it to the intended devices.
 
-This patch also removes the memory barrier when monitor bit is enabled
-as it is not necessary. The memory barrier is only needed between
-setting up interrupt mask and calling vmbus_set_event() when monitor
-bit is disabled.
+This happens as well when a wider mask is used with PCI_BAR0, such as
+0x80000000 or 0xe0000000, that makes addresses match that overlap with
+the PCI MMIO window, which starts at 0x10000000 in our configuration.
 
-Signed-off-by: Long Li <longli@microsoft.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Link: https://lore.kernel.org/r/1741644721-20389-1-git-send-email-longli@linuxonhyperv.com
-Fixes: b15b7d2a1b09 ("uio_hv_generic: Let userspace take care of interrupt mask")
-Closes: https://bugs.debian.org/1120602
-Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+Set the mask in PCI_BAR0 to 0xf0000000 for non-EVA then, covering the
+non-EVA maximum 256 MiB of RAM, which is what YAMON does and which used
+to work correctly up to the offending commit.  Set PCI_P2SCMSKL to match
+PCI_BAR0 as required by the system controller's specification, and match
+PCI_P2SCMAPL to PCI_HEAD4 for identity mapping.
+
+Verified with:
+
+Core board type/revision =      0x0d (Core74K) / 0x01
+System controller/revision =    MIPS SOC-it 101 OCP / 1.3   SDR-FW-4:1
+Processor Company ID/options =  0x01 (MIPS Technologies, Inc.) / 0x1c
+Processor ID/revision =         0x97 (MIPS 74Kf) / 0x4c
+
+for non-EVA and with:
+
+Core board type/revision =      0x0c (CoreFPGA-5) / 0x00
+System controller/revision =    MIPS ROC-it2 / 0.0   FW-1:1 (CLK_unknown) GIC
+Processor Company ID/options =  0x01 (MIPS Technologies, Inc.) / 0x00
+Processor ID/revision =         0xa0 (MIPS interAptiv UP) / 0x20
+
+for EVA/non-EVA, fixing:
+
+defxx 0000:00:12.0: assign IRQ: got 10
+defxx: v1.12 2021/03/10  Lawrence V. Stefani and others
+0000:00:12.0: Could not read adapter factory MAC address!
+
+vs:
+
+defxx 0000:00:12.0: assign IRQ: got 10
+defxx: v1.12 2021/03/10  Lawrence V. Stefani and others
+0000:00:12.0: DEFPA at MMIO addr = 0x10142000, IRQ = 10, Hardware addr = 00-00-f8-xx-xx-xx
+0000:00:12.0: registered as fddi0
+
+for non-EVA and causing no change for EVA.
+
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Fixes: 422dd256642b ("MIPS: Malta: Allow PCI devices DMA to lower 2GB physical")
+Cc: stable@vger.kernel.org # v4.9+
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/uio/uio_hv_generic.c |   21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+ arch/mips/mti-malta/malta-init.c |   20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
---- a/drivers/uio/uio_hv_generic.c
-+++ b/drivers/uio/uio_hv_generic.c
-@@ -80,9 +80,15 @@ hv_uio_irqcontrol(struct uio_info *info,
- {
- 	struct hv_uio_private_data *pdata = info->priv;
- 	struct hv_device *dev = pdata->device;
-+	struct vmbus_channel *primary, *sc;
+--- a/arch/mips/mti-malta/malta-init.c
++++ b/arch/mips/mti-malta/malta-init.c
+@@ -241,16 +241,22 @@ mips_pci_controller:
+ #endif
  
--	dev->channel->inbound.ring_buffer->interrupt_mask = !irq_state;
--	virt_mb();
-+	primary = dev->channel;
-+	primary->inbound.ring_buffer->interrupt_mask = !irq_state;
-+
-+	mutex_lock(&vmbus_connection.channel_mutex);
-+	list_for_each_entry(sc, &primary->sc_list, sc_list)
-+		sc->inbound.ring_buffer->interrupt_mask = !irq_state;
-+	mutex_unlock(&vmbus_connection.channel_mutex);
+ 		/*
+-		 * Setup the Malta max (2GB) memory for PCI DMA in host bridge
+-		 * in transparent addressing mode.
++		 * Set up memory mapping in host bridge for PCI DMA masters,
++		 * in transparent addressing mode.  For EVA use the Malta
++		 * maximum of 2 GiB memory in the alias space at 0x80000000
++		 * as per PHYS_OFFSET.  Otherwise use 256 MiB of memory in
++		 * the regular space, avoiding mapping the PCI MMIO window
++		 * for DMA as it seems to confuse the system controller's
++		 * logic, causing PCI MMIO to stop working.
+ 		 */
+-		mask = PHYS_OFFSET | PCI_BASE_ADDRESS_MEM_PREFETCH;
+-		MSC_WRITE(MSC01_PCI_BAR0, mask);
+-		MSC_WRITE(MSC01_PCI_HEAD4, mask);
++		mask = PHYS_OFFSET ? PHYS_OFFSET : 0xf0000000;
++		MSC_WRITE(MSC01_PCI_BAR0,
++			  mask | PCI_BASE_ADDRESS_MEM_PREFETCH);
++		MSC_WRITE(MSC01_PCI_HEAD4,
++			  PHYS_OFFSET | PCI_BASE_ADDRESS_MEM_PREFETCH);
  
- 	return 0;
- }
-@@ -93,11 +99,18 @@ hv_uio_irqcontrol(struct uio_info *info,
- static void hv_uio_channel_cb(void *context)
- {
- 	struct vmbus_channel *chan = context;
--	struct hv_device *hv_dev = chan->device_obj;
--	struct hv_uio_private_data *pdata = hv_get_drvdata(hv_dev);
-+	struct hv_device *hv_dev;
-+	struct hv_uio_private_data *pdata;
+-		mask &= MSC01_PCI_BAR0_SIZE_MSK;
+ 		MSC_WRITE(MSC01_PCI_P2SCMSKL, mask);
+-		MSC_WRITE(MSC01_PCI_P2SCMAPL, mask);
++		MSC_WRITE(MSC01_PCI_P2SCMAPL, PHYS_OFFSET);
  
- 	virt_mb();
- 
-+	/*
-+	 * The callback may come from a subchannel, in which case look
-+	 * for the hv device in the primary channel
-+	 */
-+	hv_dev = chan->primary_channel ?
-+		 chan->primary_channel->device_obj : chan->device_obj;
-+	pdata = hv_get_drvdata(hv_dev);
- 	uio_event_notify(&pdata->info);
- }
- 
+ 		/* Don't handle target retries indefinitely.  */
+ 		if ((data & MSC01_PCI_CFG_MAXRTRY_MSK) ==
 
 
 
