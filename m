@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-199475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8253ECA0E1F
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:19:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AA44CA0C73
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:08:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C5A513133AB1
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:16:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5797B3006995
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:08:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DACA025EFBE;
-	Wed,  3 Dec 2025 16:38:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF0A314A74;
+	Wed,  3 Dec 2025 15:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ltt7kGJr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uBQ4QlmN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040F926ED3B;
-	Wed,  3 Dec 2025 16:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4823E314B7C;
+	Wed,  3 Dec 2025 15:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779922; cv=none; b=SD8xiRgxy53crZMAWtLpzHgFZxm4f9lB7G1OCDiXQFLo+6lI1pYCLx0zcvg/wiE60sYFKsWxv5aKy4FLJlqiV8+77PpERUO9RLQGHmjDFR48wQvUafH84XNSrmFD4K0XZCTCiDN5ex5UEfUT7UATkRjcRKdjmYPwqNhw4zS4Ltk=
+	t=1764776921; cv=none; b=NNcl38/E8KK6GtuIFjk3sWMS3MhVKS+T45TOLieCzpxwgaBVkRDK6jj/bYDWRAOYerebasJUGs1E2eSId2OXfkPAihspKSq67MvIEAlp6joO2RkMy9zenVysiWv7HBw3inf/9tI8Bhd//bFA4933eTPicsjCNCalB/g3YYurf/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779922; c=relaxed/simple;
-	bh=KIu0pIja8dfV34IlIEikEroEwO3E5+wPU1FfXi1QPi4=;
+	s=arc-20240116; t=1764776921; c=relaxed/simple;
+	bh=Jg2t8fWCelmUYRKrXDN49NfJWac2v8L1Be2NjY8xLV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FHtRoUsPI3rAZw5HA5GNLIz7dXsHEsHRIjtpioARA2orkmXd+dI2Axed9riIn7keuVNKzZyPhSx1sIwFrTGXaKZu3+IO8N94+oHuRk7BJ2WkOboGm0apZYFWhZADgP47WnhIL4/ITkBY1BbtwBel32MPGr6INSFD4UCpGy63fM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ltt7kGJr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18306C4CEF5;
-	Wed,  3 Dec 2025 16:38:40 +0000 (UTC)
+	 MIME-Version; b=u1qft2EZV5BMeaB4p9SwTocJt5e2KJoKfztOY1ALVi/XRZmNQGOShP0i0hDx/0CulUaHUN3mSpno+5PzBEkmpI7cEB3JKY0UcqM6XhsQYchkqs2UDNwrMExpegS1K2THkmngs281koZQcssTYpX0iCBaQ9Xfcv1i3Ju6Lu1IqMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uBQ4QlmN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ABD5C4CEF5;
+	Wed,  3 Dec 2025 15:48:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779921;
-	bh=KIu0pIja8dfV34IlIEikEroEwO3E5+wPU1FfXi1QPi4=;
+	s=korg; t=1764776920;
+	bh=Jg2t8fWCelmUYRKrXDN49NfJWac2v8L1Be2NjY8xLV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ltt7kGJrUOsstlqQQ/pg6ObAD7U/r9YqpW+2PHpaveisZ39c5v+LeJ4nm0R5V2E2o
-	 1TDRsiZI8WGSDtw4TQ52LT+x1Gl6X97awpnTEVmvt0NmuSYu3KMLXmkfuSH5re1zs4
-	 VHMEg8RpKFtceXp2JWnhy5K7AarOFvlX/FR/fNYs=
+	b=uBQ4QlmNUccVZci61rw0kn1HIslGxvQK7Qd52JKTdC7qfALuQrTvop0hUk8n1idNB
+	 /K5REGNzkDTpfVFnbZ9b4GTs8CFfZhkb770sxtOJ9J77f2KMmLeReInBQWXq3wt95E
+	 6Oj9cgV0WtEfV1paQu4Z49Eu6Anfkx3GQ6AkJIk0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.1 403/568] wifi: mac80211: reject address change while connecting
+	Mohsin Bashir <mohsin.bashr@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 027/146] eth: fbnic: Fix counter roll-over issue
 Date: Wed,  3 Dec 2025 16:26:45 +0100
-Message-ID: <20251203152455.449614832@linuxfoundation.org>
+Message-ID: <20251203152347.462053636@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,65 +60,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Mohsin Bashir <mohsin.bashr@gmail.com>
 
-commit a9da90e618cd0669a22bcc06a96209db5dd96e9b upstream.
+[ Upstream commit 6d66e093e0740d39a36ef742c60eec247df26f41 ]
 
-While connecting, the MAC address can already no longer be
-changed. The change is already rejected if netif_carrier_ok(),
-but of course that's not true yet while connecting. Check for
-auth_data or assoc_data, so the MAC address cannot be changed.
+Fix a potential counter roll-over issue in fbnic_mbx_alloc_rx_msgs()
+when calculating descriptor slots. The issue occurs when head - tail
+results in a large positive value (unsigned) and the compiler interprets
+head - tail - 1 as a signed value.
 
-Also more comprehensively check that there are no stations on
-the interface being changed - if any peer station is added it
-will know about our address already, so we cannot change it.
+Since FBNIC_IPC_MBX_DESC_LEN is a power of two, use a masking operation,
+which is a common way of avoiding this problem when dealing with these
+sort of ring space calculations.
 
-Cc: stable@vger.kernel.org
-Fixes: 3c06e91b40db ("wifi: mac80211: Support POWERED_ADDR_CHANGE feature")
-Link: https://patch.msgid.link/20251105154119.f9f6c1df81bb.I9bb3760ede650fb96588be0d09a5a7bdec21b217@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: da3cde08209e ("eth: fbnic: Add FW communication mechanism")
+Signed-off-by: Mohsin Bashir <mohsin.bashr@gmail.com>
+Link: https://patch.msgid.link/20251125211704.3222413-1-mohsin.bashr@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/iface.c |   14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/meta/fbnic/fbnic_fw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -216,6 +216,10 @@ static int ieee80211_can_powered_addr_ch
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
+index 0c55be7d25476..acc1ad91b0c3a 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
+@@ -201,7 +201,7 @@ static int fbnic_mbx_alloc_rx_msgs(struct fbnic_dev *fbd)
+ 		return -ENODEV;
  
- 	mutex_lock(&local->mtx);
+ 	/* Fill all but 1 unused descriptors in the Rx queue. */
+-	count = (head - tail - 1) % FBNIC_IPC_MBX_DESC_LEN;
++	count = (head - tail - 1) & (FBNIC_IPC_MBX_DESC_LEN - 1);
+ 	while (!err && count--) {
+ 		struct fbnic_tlv_msg *msg;
  
-+	/* if any stations are set known (so they know this vif too), reject */
-+	if (sta_info_get_by_idx(sdata, 0))
-+		return -EBUSY;
-+
- 	/* First check no ROC work is happening on this iface */
- 	list_for_each_entry(roc, &local->roc_list, list) {
- 		if (roc->sdata != sdata)
-@@ -235,12 +239,16 @@ static int ieee80211_can_powered_addr_ch
- 			ret = -EBUSY;
- 	}
- 
-+	/*
-+	 * More interface types could be added here but changing the
-+	 * address while powered makes the most sense in client modes.
-+	 */
- 	switch (sdata->vif.type) {
- 	case NL80211_IFTYPE_STATION:
- 	case NL80211_IFTYPE_P2P_CLIENT:
--		/* More interface types could be added here but changing the
--		 * address while powered makes the most sense in client modes.
--		 */
-+		/* refuse while connecting */
-+		if (sdata->u.mgd.auth_data || sdata->u.mgd.assoc_data)
-+			return -EBUSY;
- 		break;
- 	default:
- 		ret = -EOPNOTSUPP;
+-- 
+2.51.0
+
 
 
 
