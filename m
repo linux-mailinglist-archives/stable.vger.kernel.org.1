@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-199051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3EF5C9FE43
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:19:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE76CCA03BF
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:01:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 659783007D8B
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:16:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BD7763084796
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:53:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FA71350A0D;
-	Wed,  3 Dec 2025 16:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BBB13596E2;
+	Wed,  3 Dec 2025 16:50:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1arZ/rXp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cNttH100"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B2A92FB987;
-	Wed,  3 Dec 2025 16:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15CB53590C6;
+	Wed,  3 Dec 2025 16:50:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778537; cv=none; b=WFC2ocU1qTO1Fb0IdbhAqD+V9JkxcdsAu2HcsMSiWT2TboMnIXr1ZPYJ82PPAMJBkku1xaXGG/13qArf/fRCDGOxWo8VUvQd0kVo+aFhvMre8jwEzeMwDNeEL6FqVePm895OgK0k9yPtb4OOiZw7fSd7OncESvuQhLhCNxkq61I=
+	t=1764780636; cv=none; b=HuVIryTBJTqgFVARa6pFAzT2PEZN2XpZVJAeDlocOLLfKkSZk8kULPWnh+0GB2erUw+Fc1zSbY6W8Ri2XCT+5UmyynoJ+0+BYGqCjZjTjCeq8r7AFZj8TJLggcR5+gYMapJyDLB4+YpCmWtpYlClXlwWKs1gsVan/OPE8yKmSOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778537; c=relaxed/simple;
-	bh=J427z+7zQ2ehVr+FophJEhMiM9xoGd0woEmhttPoB+w=;
+	s=arc-20240116; t=1764780636; c=relaxed/simple;
+	bh=tbXkoSmuFXenXMNRVpZpviERKUEaRu6IS1wCXrd1TiA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OLXKaSK4CdNiFFW8AXRrCuJtF6ddjVyJIXCjQl38SVCjVzpmLe9tsoFXL+Q+xF5UeqQ9SRisIKJnbSmODSEzGZCrF9Vp9ZK1vcNUFeJ+lE5I1YbjHpH6WfC+eXs+EKpt4SPV2Rzd9p0rGBkIZuvJrMGGKV0skRE4MqegF/3BK3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1arZ/rXp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68FF8C116B1;
-	Wed,  3 Dec 2025 16:15:36 +0000 (UTC)
+	 MIME-Version; b=JrcJv0lwvAGOXHnzzQdsveioIdUSrPsGVNBKGXpSjekG0PTStAB+ifOi+g4E5dpBKsv4gqO7xMcrzRP9RzmOWgbB8sAvTfDKRNquekkB4RUJjb9WQGZC/90IfFq4IgiB1M02zLV47JlFMTPkVBXMqhyPSXcPk4Om6J/d1az5/ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cNttH100; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 878ABC4CEF5;
+	Wed,  3 Dec 2025 16:50:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778536;
-	bh=J427z+7zQ2ehVr+FophJEhMiM9xoGd0woEmhttPoB+w=;
+	s=korg; t=1764780635;
+	bh=tbXkoSmuFXenXMNRVpZpviERKUEaRu6IS1wCXrd1TiA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1arZ/rXp+SYKDmw80FtPbK5a0LrqBHr753W07HG32XuKvaSIJ37RmICJ0RXWTVcCN
-	 M0DCIlgPGVelgvcbNcm1fACdvR2EGTQCHu7n5v5t+bIhzTDkQM+hlt8Eb2u7k3bnu5
-	 c5COvmVmuNuBjmissNMvgku8OILMx226iCVH1eRw=
+	b=cNttH100fvITGmRFbil2kshXGuZLjFMTJQgiW39i4Kn0GmiO64uQiOSyH6h4GTRzk
+	 FwI6w0cgrFRR4Hlv92hVLWK54D6jruewyNGmsGREoIXEY+Wtd9Z8iJTy871FEGFHrX
+	 4cP5KQChbE/QqgL3nmK09z2q2dasjIhCBHGg1Ng8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vanillan Wang <vanillanwang@163.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.15 374/392] USB: serial: option: add support for Rolling RW101R-GL
+	Haibo Chen <haibo.chen@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 045/132] spi: spi-nxp-fspi: remove the goto in probe
 Date: Wed,  3 Dec 2025 16:28:44 +0100
-Message-ID: <20251203152427.918497250@linuxfoundation.org>
+Message-ID: <20251203152344.964863209@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,162 +60,184 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vanillan Wang <vanillanwang@163.com>
+From: Haibo Chen <haibo.chen@nxp.com>
 
-commit 523bf0a59e674b52e4b5607a2aba655fbfa20ff2 upstream.
+[ Upstream commit 48900813abd2730a35c6e3afd1609bafac5271cc ]
 
-- VID:PID 33f8:0301, RW101R-GL for laptop debug M.2 cards (with MBIM
-  interface for Linux/Chrome OS)
+Remove all the goto in probe to simplify the driver.
 
-  0x0301: mbim, pipe
-
-T:  Bus=04 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=33f8 ProdID=0301 Rev=05.04
-S:  Manufacturer=Rolling Wireless S.a.r.l.
-S:  Product=Rolling RW101R-GL Module
-S:  SerialNumber=3ec4efdf
-C:  #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-
-- VID:PID 33f8:01a8, RW101R-GL for laptop debug M.2 cards (with MBIM
-  interface for Linux/Chrome OS)
-
-  0x01a8: mbim, diag, AT, ADB, pipe1, pipe2
-
-T:  Bus=04 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=33f8 ProdID=01a8 Rev=05.04
-S:  Manufacturer=Rolling Wireless S.a.r.l.
-S:  Product=Rolling RW101R-GL Module
-S:  SerialNumber=3ec4efdf
-C:  #Ifs= 7 Cfg#= 1 Atr=a0 MxPwr=896mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 6 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
-E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=88(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=89(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-
-- VID:PID 33f8:0302, RW101R-GL for laptop debug M.2 cards (with MBIM
-  interface for Linux/Chrome OS)
-
-  0x0302: mbim, pipe
-
-T:  Bus=03 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  6 Spd=480 MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=33f8 ProdID=0302 Rev=05.04
-S:  Manufacturer=Rolling Wireless S.a.r.l.
-S:  Product=Rolling RW101R-GL Module
-S:  SerialNumber=3ec4efdf
-C:  #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-
-- VID:PID 33f8:01a9, RW101R-GL for laptop debug M.2 cards (with MBIM
-  interface for Linux/Chrome OS)
-
-  0x01a9: mbim, diag, AT, ADB, pipe1, pipe2
-
-T:  Bus=03 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=480 MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=33f8 ProdID=01a9 Rev=05.04
-S:  Manufacturer=Rolling Wireless S.a.r.l.
-S:  Product=Rolling RW101R-GL Module
-S:  SerialNumber=3ec4efdf
-C:  #Ifs= 7 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 6 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=89(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-
-Signed-off-by: Vanillan Wang <vanillanwang@163.com>
-Cc: stable@vger.kernel.org
-[ johan: sort vendor entries, edit commit message slightly ]
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+Link: https://patch.msgid.link/20250428-flexspipatch-v3-1-61d5e8f591bc@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 40ad64ac25bb ("spi: nxp-fspi: Propagate fwnode in ACPI case as well")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/spi/spi-nxp-fspi.c | 87 ++++++++++++--------------------------
+ 1 file changed, 27 insertions(+), 60 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2424,12 +2424,18 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1406, 0xff) },			/* GosunCn GM500 ECM/NCM */
- 	{ USB_DEVICE(0x33f8, 0x0104),						/* Rolling RW101-GL (laptop RMNET) */
- 	  .driver_info = RSVD(4) | RSVD(5) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0115, 0xff),			/* Rolling RW135-GL (laptop MBIM) */
-+	  .driver_info = RSVD(5) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a2, 0xff) },			/* Rolling RW101-GL (laptop MBIM) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a3, 0xff) },			/* Rolling RW101-GL (laptop MBIM) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a4, 0xff),			/* Rolling RW101-GL (laptop MBIM) */
- 	  .driver_info = RSVD(4) },
--	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0115, 0xff),			/* Rolling RW135-GL (laptop MBIM) */
--	  .driver_info = RSVD(5) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a8, 0xff),			/* Rolling RW101R-GL (laptop MBIM) */
-+	  .driver_info = RSVD(4) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x01a9, 0xff),			/* Rolling RW101R-GL (laptop MBIM) */
-+	  .driver_info = RSVD(4) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0301, 0xff) },			/* Rolling RW101R-GL (laptop MBIM) */
-+	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0302, 0xff) },			/* Rolling RW101R-GL (laptop MBIM) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0802, 0xff),			/* Rolling RW350-GL (laptop MBIM) */
- 	  .driver_info = RSVD(5) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for Global */
+diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+index 78afef8851fc9..825b2a36377c2 100644
+--- a/drivers/spi/spi-nxp-fspi.c
++++ b/drivers/spi/spi-nxp-fspi.c
+@@ -1167,10 +1167,10 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+ 	struct device_node *np = dev->of_node;
+ 	struct resource *res;
+ 	struct nxp_fspi *f;
+-	int ret;
++	int ret, irq;
+ 	u32 reg;
+ 
+-	ctlr = spi_alloc_host(&pdev->dev, sizeof(*f));
++	ctlr = devm_spi_alloc_host(&pdev->dev, sizeof(*f));
+ 	if (!ctlr)
+ 		return -ENOMEM;
+ 
+@@ -1180,10 +1180,8 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+ 	f = spi_controller_get_devdata(ctlr);
+ 	f->dev = dev;
+ 	f->devtype_data = (struct nxp_fspi_devtype_data *)device_get_match_data(dev);
+-	if (!f->devtype_data) {
+-		ret = -ENODEV;
+-		goto err_put_ctrl;
+-	}
++	if (!f->devtype_data)
++		return -ENODEV;
+ 
+ 	platform_set_drvdata(pdev, f);
+ 
+@@ -1192,11 +1190,8 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+ 		f->iobase = devm_platform_ioremap_resource(pdev, 0);
+ 	else
+ 		f->iobase = devm_platform_ioremap_resource_byname(pdev, "fspi_base");
+-
+-	if (IS_ERR(f->iobase)) {
+-		ret = PTR_ERR(f->iobase);
+-		goto err_put_ctrl;
+-	}
++	if (IS_ERR(f->iobase))
++		return PTR_ERR(f->iobase);
+ 
+ 	/* find the resources - controller memory mapped space */
+ 	if (is_acpi_node(dev_fwnode(f->dev)))
+@@ -1204,11 +1199,8 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+ 	else
+ 		res = platform_get_resource_byname(pdev,
+ 				IORESOURCE_MEM, "fspi_mmap");
+-
+-	if (!res) {
+-		ret = -ENODEV;
+-		goto err_put_ctrl;
+-	}
++	if (!res)
++		return -ENODEV;
+ 
+ 	/* assign memory mapped starting address and mapped size. */
+ 	f->memmap_phy = res->start;
+@@ -1217,69 +1209,46 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+ 	/* find the clocks */
+ 	if (dev_of_node(&pdev->dev)) {
+ 		f->clk_en = devm_clk_get(dev, "fspi_en");
+-		if (IS_ERR(f->clk_en)) {
+-			ret = PTR_ERR(f->clk_en);
+-			goto err_put_ctrl;
+-		}
++		if (IS_ERR(f->clk_en))
++			return PTR_ERR(f->clk_en);
+ 
+ 		f->clk = devm_clk_get(dev, "fspi");
+-		if (IS_ERR(f->clk)) {
+-			ret = PTR_ERR(f->clk);
+-			goto err_put_ctrl;
+-		}
+-
+-		ret = nxp_fspi_clk_prep_enable(f);
+-		if (ret) {
+-			dev_err(dev, "can not enable the clock\n");
+-			goto err_put_ctrl;
+-		}
++		if (IS_ERR(f->clk))
++			return PTR_ERR(f->clk);
+ 	}
+ 
++	/* find the irq */
++	irq = platform_get_irq(pdev, 0);
++	if (irq < 0)
++		return dev_err_probe(dev, irq, "Failed to get irq source");
++
++	ret = nxp_fspi_clk_prep_enable(f);
++	if (ret)
++		return dev_err_probe(dev, ret, "Can't enable the clock\n");
++
+ 	/* Clear potential interrupts */
+ 	reg = fspi_readl(f, f->iobase + FSPI_INTR);
+ 	if (reg)
+ 		fspi_writel(f, reg, f->iobase + FSPI_INTR);
+ 
+-	/* find the irq */
+-	ret = platform_get_irq(pdev, 0);
+-	if (ret < 0)
+-		goto err_disable_clk;
++	nxp_fspi_default_setup(f);
+ 
+-	ret = devm_request_irq(dev, ret,
++	ret = devm_request_irq(dev, irq,
+ 			nxp_fspi_irq_handler, 0, pdev->name, f);
+ 	if (ret) {
+-		dev_err(dev, "failed to request irq: %d\n", ret);
+-		goto err_disable_clk;
++		nxp_fspi_clk_disable_unprep(f);
++		return dev_err_probe(dev, ret, "Failed to request irq\n");
+ 	}
+ 
+-	mutex_init(&f->lock);
++	devm_mutex_init(dev, &f->lock);
+ 
+ 	ctlr->bus_num = -1;
+ 	ctlr->num_chipselect = NXP_FSPI_MAX_CHIPSELECT;
+ 	ctlr->mem_ops = &nxp_fspi_mem_ops;
+ 	ctlr->mem_caps = &nxp_fspi_mem_caps;
+-
+-	nxp_fspi_default_setup(f);
+-
+ 	ctlr->dev.of_node = np;
+ 
+-	ret = devm_spi_register_controller(&pdev->dev, ctlr);
+-	if (ret)
+-		goto err_destroy_mutex;
+-
+-	return 0;
+-
+-err_destroy_mutex:
+-	mutex_destroy(&f->lock);
+-
+-err_disable_clk:
+-	nxp_fspi_clk_disable_unprep(f);
+-
+-err_put_ctrl:
+-	spi_controller_put(ctlr);
+-
+-	dev_err(dev, "NXP FSPI probe failed\n");
+-	return ret;
++	return devm_spi_register_controller(&pdev->dev, ctlr);
+ }
+ 
+ static void nxp_fspi_remove(struct platform_device *pdev)
+@@ -1291,8 +1260,6 @@ static void nxp_fspi_remove(struct platform_device *pdev)
+ 
+ 	nxp_fspi_clk_disable_unprep(f);
+ 
+-	mutex_destroy(&f->lock);
+-
+ 	if (f->ahb_addr)
+ 		iounmap(f->ahb_addr);
+ }
+-- 
+2.51.0
+
 
 
 
