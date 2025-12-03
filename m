@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-198978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CCECCA085A
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:37:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CD31CA1344
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:59:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0030233BD591
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:17:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5DAFC330C25E
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:45:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18952346768;
-	Wed,  3 Dec 2025 16:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D285334C1C;
+	Wed,  3 Dec 2025 15:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T0tzUkK/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wa49rrW1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C897A346762;
-	Wed,  3 Dec 2025 16:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B773346BF;
+	Wed,  3 Dec 2025 15:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778295; cv=none; b=KKX+tqDRQEtPKbqa+hHGmqdCbnQi2RG7J5VmUAVnguwGlJhqSQG5rClql8mzYWtAwX5v+bjz0M2UWuY154iFY4TtxURnZ3g+eu1Rj3AOSDxFcw0Aai0/r/c96ptKLJdExUX0ORQsuiuIS3ciu6HR3S4UqmdKP/bLxpz47NBZFSo=
+	t=1764777185; cv=none; b=Z82UtmLSm/WhPUd8RW5Da9eiIH4aQhT+jMuCk9sB+j7I9NpYH7IU7vnzoO6PPwaolWHKbesR6SHwYh3Pa0+vBLi/GU6o1Ul+r1xXjRYGGRSKKp404YwrWfHVZZjMWEJrpIo7EoYqyJTn/eQiTdbvS3r6VMg2lzoEc68u7MWTsdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778295; c=relaxed/simple;
-	bh=dGV4MBQ3lrIXMZOkVZtiuW7jNWwhpNvaGh44VfgNP5U=;
+	s=arc-20240116; t=1764777185; c=relaxed/simple;
+	bh=IUIWCAkgasHRunhCFdFK+M+9uterBT/Nb4bQo9BJPdI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B1KI63V5Ax5SsJviOI3TdDK/1YOTAv+7Y0LX5p5gPsHAEohW00nbT2RJkR0W6OX7hcAfrvARNqzrJ/1xmKDY5MAkoBry+JZDbkz/5y26mnYIMA9axMNdTewfAc7c3omPiIPPVcr8xuYQOW23gDjw5enuMAt0SAUBRACeh4/pL+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T0tzUkK/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5A8EC4CEF5;
-	Wed,  3 Dec 2025 16:11:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=e4SDk1ACq84JeLGfOiHUCiMc9GsvhO0ptaX6PwuJgBmZh1Rh/RxVZ2s21ESDW739R6oyWAPealN13ugB15Q/ax8bAA5C2G4o43V35Le4N8IIZcmpJrH8fFYoJcN60fWVKMg0TGrAmICAAwn7+sxr0KB+Jw+R3JXp02LPUoWnsmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wa49rrW1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A665C4CEF5;
+	Wed,  3 Dec 2025 15:53:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778295;
-	bh=dGV4MBQ3lrIXMZOkVZtiuW7jNWwhpNvaGh44VfgNP5U=;
+	s=korg; t=1764777185;
+	bh=IUIWCAkgasHRunhCFdFK+M+9uterBT/Nb4bQo9BJPdI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T0tzUkK/nENlui7Rvlhu5ud9AscazyO2dymew4beCthfJ5aRFPqgx2dXONbggmv2S
-	 Cg1iY2cogwfkYe8QbY3+ISbPafxLl+3mkUo4L22LSm4YIk4xnhVAQ8NLhXt9H7VKOP
-	 bHynDfJzjNM4c4yVhCXFWYdC4ktFPHzmDXCSsGLw=
+	b=Wa49rrW1rJnsdPEpg9v98bXWLe9+kB6vLpZgnEVMjnRfLQW7akqPbFvJE8zDkLEWg
+	 K99teDRtwVB4SOK9d5zaKYZYapMeemv9yvAXhgG8+jgdLM7GWXp0pYAhoiDQzjVY7y
+	 PM/Lry6/phUCHLTO/Qb2tRu0p9TtcPsGggA1Gsgo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 302/392] scsi: core: Fix a regression triggered by scsi_host_busy()
-Date: Wed,  3 Dec 2025 16:27:32 +0100
-Message-ID: <20251203152425.280017967@linuxfoundation.org>
+	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
+	sstable@vger.kernel.org,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.17 075/146] ALSA: hda/cirrus fix cs420x MacPro 6,1 inverted jack detection
+Date: Wed,  3 Dec 2025 16:27:33 +0100
+Message-ID: <20251203152349.210283280@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +58,39 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: René Rebe <rene@exactco.de>
 
-[ Upstream commit a0b7780602b1b196f47e527fec82166a7e67c4d0 ]
+commit 5719a189c9345977c16f10874fd5102f70094d8f upstream.
 
-Commit 995412e23bb2 ("blk-mq: Replace tags->lock with SRCU for tag
-iterators") introduced the following regression:
+Turns out the Apple MacPro 6,1 trashcan also needs the inverted jack
+detection like Mac mini patched, too.
 
-Call trace:
- __srcu_read_lock+0x30/0x80 (P)
- blk_mq_tagset_busy_iter+0x44/0x300
- scsi_host_busy+0x38/0x70
- ufshcd_print_host_state+0x34/0x1bc
- ufshcd_link_startup.constprop.0+0xe4/0x2e0
- ufshcd_init+0x944/0xf80
- ufshcd_pltfrm_init+0x504/0x820
- ufs_rockchip_probe+0x2c/0x88
- platform_probe+0x5c/0xa4
- really_probe+0xc0/0x38c
- __driver_probe_device+0x7c/0x150
- driver_probe_device+0x40/0x120
- __driver_attach+0xc8/0x1e0
- bus_for_each_dev+0x7c/0xdc
- driver_attach+0x24/0x30
- bus_add_driver+0x110/0x230
- driver_register+0x68/0x130
- __platform_driver_register+0x20/0x2c
- ufs_rockchip_pltform_init+0x1c/0x28
- do_one_initcall+0x60/0x1e0
- kernel_init_freeable+0x248/0x2c4
- kernel_init+0x20/0x140
- ret_from_fork+0x10/0x20
-
-Fix this regression by making scsi_host_busy() check whether the SCSI
-host tag set has already been initialized. tag_set->ops is set by
-scsi_mq_setup_tags() just before blk_mq_alloc_tag_set() is called. This
-fix is based on the assumption that scsi_host_busy() and
-scsi_mq_setup_tags() calls are serialized. This is the case in the UFS
-driver.
-
-Reported-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Closes: https://lore.kernel.org/linux-block/pnezafputodmqlpumwfbn644ohjybouveehcjhz2hmhtcf2rka@sdhoiivync4y/
-Cc: Ming Lei <ming.lei@redhat.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Tested-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Link: https://patch.msgid.link/20251007214800.1678255-1-bvanassche@acm.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: René Rebe <rene@exactco.de>
+Cc: <sstable@vger.kernel.org>
+Link: https://patch.msgid.link/20251117.182351.1595411649664739497.rene@exactco.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/hosts.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ sound/hda/codecs/cirrus/cs420x.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/scsi/hosts.c b/drivers/scsi/hosts.c
-index eb3e8b41adb10..cf842c97639a7 100644
---- a/drivers/scsi/hosts.c
-+++ b/drivers/scsi/hosts.c
-@@ -594,8 +594,9 @@ int scsi_host_busy(struct Scsi_Host *shost)
- {
- 	int cnt = 0;
- 
--	blk_mq_tagset_busy_iter(&shost->tag_set,
--				scsi_host_check_in_flight, &cnt);
-+	if (shost->tag_set.ops)
-+		blk_mq_tagset_busy_iter(&shost->tag_set,
-+					scsi_host_check_in_flight, &cnt);
- 	return cnt;
- }
- EXPORT_SYMBOL(scsi_host_busy);
--- 
-2.51.0
-
+--- a/sound/hda/codecs/cirrus/cs420x.c
++++ b/sound/hda/codecs/cirrus/cs420x.c
+@@ -585,6 +585,7 @@ static const struct hda_quirk cs4208_mac
+ 	SND_PCI_QUIRK(0x106b, 0x6c00, "MacMini 7,1", CS4208_MACMINI),
+ 	SND_PCI_QUIRK(0x106b, 0x7100, "MacBookAir 6,1", CS4208_MBA6),
+ 	SND_PCI_QUIRK(0x106b, 0x7200, "MacBookAir 6,2", CS4208_MBA6),
++	SND_PCI_QUIRK(0x106b, 0x7800, "MacPro 6,1", CS4208_MACMINI),
+ 	SND_PCI_QUIRK(0x106b, 0x7b00, "MacBookPro 12,1", CS4208_MBP11),
+ 	{} /* terminator */
+ };
 
 
 
