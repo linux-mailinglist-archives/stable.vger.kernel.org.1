@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 261CBCA0622
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:23:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3200DCA0B11
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:57:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 006CF3001529
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:23:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C64C9304F65D
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:53:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D6C9339B4D;
-	Wed,  3 Dec 2025 15:55:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 701013587BD;
+	Wed,  3 Dec 2025 16:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2SJrnDfd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jMfjkbqE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE8723385BC;
-	Wed,  3 Dec 2025 15:55:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D4453587BC;
+	Wed,  3 Dec 2025 16:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777330; cv=none; b=sReV+jlK7s616KLi+2EL/OoJrmLlZhoru/CjkBCkErE+y9MH3PL9VGpJfRWu7hnNTD98rQ/a52XL7e48vOlUrwj8EJXTTxpBL3ElWmHNvPUDIW8glPCc4iIgKbFygm1TP51g9jeS83+thDnXFOSSGn6f/52ZQ/RGrd+GT4M/fsI=
+	t=1764780629; cv=none; b=g803rM7uLMtohHsHvDlZyz0o03Bxf0lb6RdVSjIIvIu/xXXe4kGmZzIM6sSgm6sXSyguY+hE8uGzGzdW0nQKQXlPwlerTdQq/Hg9UYABtqKQ47597R7dTnRILjXAhRX9rlU1RWu0fRPqiJhOghmGV/SLyQRf6JdNuKef7Jj7JwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777330; c=relaxed/simple;
-	bh=FA1hRlmo8CCbPLSrhUo9U050PhZrJx5XyQIOWlDuOIY=;
+	s=arc-20240116; t=1764780629; c=relaxed/simple;
+	bh=jbpyUE3Pts0l88R57613wQaQ8x2bTjR3+H1+aSVXgns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T/JGQVfyEgzalU/hdaEGEpCBO32ttcg3pe0ZWv605FKkE2TctzXrxoTWDLJb4e9Z3Tw2z70qTSEpAfsmWpEIn5ntJydjm/zEob0WA7MgVDXxcci7hGcXXXQBGcOPUGodOYNRBdz8+phzhQUOO8nr99Dm648N9EBntLW4K9Vxxg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2SJrnDfd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FC9FC4CEF5;
-	Wed,  3 Dec 2025 15:55:29 +0000 (UTC)
+	 MIME-Version; b=U2IQ9ZDHFGDVpYxA0e9kQ9OvIYgs4W5uGdsqtwmcEwW9DHza18qRk2oQs9yksCHmFlujecFUL/5YuHx/Pyn3DG85qLOCze/fyA5jBsBvRwxHTLGk4rh2gmFQffCuGhZcoNPlFxYvwXYQu+fYMc7Cveq9DSF2pHcKBYZyt5WPDGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jMfjkbqE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF35C4CEF5;
+	Wed,  3 Dec 2025 16:50:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777329;
-	bh=FA1hRlmo8CCbPLSrhUo9U050PhZrJx5XyQIOWlDuOIY=;
+	s=korg; t=1764780629;
+	bh=jbpyUE3Pts0l88R57613wQaQ8x2bTjR3+H1+aSVXgns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2SJrnDfdDlYddxGeQ3o6foNz7NTRsB+qucyGjPpNVVsRhZ3rNgG5BbSXQ+s4x8UnA
-	 lgAkpx1LPG1jXQsCcIdGqAmio21hw7SJkUcYpq96/KcwNCQJFwWLBswX4xQjyPVaVH
-	 +nUFjWtb4PtuZI7B+2U2NyD0fUUwq93RG5su8QJc=
+	b=jMfjkbqE6FmRtzeoCl5gl6s9BK8yafl0yvNmsXD97y1zUjVlvocmO+ysfcws9nnd8
+	 0owaCdye/KHsIPmz8a4LaGBbfDrTbHksUHrthiU5RVG3cj2Hs8AGlvkfsxMggMAUfi
+	 /KLzBoWD1kYZ+tJgLn7bXT86Wc+muDv3A7b9EHxs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Jimmy Hu <hhhuuu@google.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 144/146] usb: gadget: udc: fix use-after-free in usb_gadget_state_work
+Subject: [PATCH 6.12 043/132] spi: spi-mem: Add a new controller capability
 Date: Wed,  3 Dec 2025 16:28:42 +0100
-Message-ID: <20251203152351.745214496@linuxfoundation.org>
+Message-ID: <20251203152344.891280482@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,118 +61,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jimmy Hu <hhhuuu@google.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-[ Upstream commit baeb66fbd4201d1c4325074e78b1f557dff89b5b ]
+[ Upstream commit 1248c9b8d54120950fda10fbeb98fb8932b4d45c ]
 
-A race condition during gadget teardown can lead to a use-after-free
-in usb_gadget_state_work(), as reported by KASAN:
+There are spi devices with multiple frequency limitations depending on
+the invoked command. We probably do not want to afford running at the
+lowest supported frequency all the time, so if we want to get the most
+of our hardware, we need to allow per-operation frequency limitations.
 
-  BUG: KASAN: invalid-access in sysfs_notify+0x2c/0xd0
-  Workqueue: events usb_gadget_state_work
+Among all the SPI memory controllers, I believe all are capable of
+changing the spi frequency on the fly. Some of the drivers do not make
+any frequency setup though. And some others will derive a per chip
+prescaler value which will be used forever.
 
-The fundamental race occurs because a concurrent event (e.g., an
-interrupt) can call usb_gadget_set_state() and schedule gadget->work
-at any time during the cleanup process in usb_del_gadget().
+Actually changing the frequency on the fly is something new in Linux, so
+we need to carefully flag the drivers which do and do not support it. A
+controller capability is created for that, and the presence for this
+capability will always be checked before accepting such pattern.
 
-Commit 399a45e5237c ("usb: gadget: core: flush gadget workqueue after
-device removal") attempted to fix this by moving flush_work() to after
-device_del(). However, this does not fully solve the race, as a new
-work item can still be scheduled *after* flush_work() completes but
-before the gadget's memory is freed, leading to the same use-after-free.
-
-This patch fixes the race condition robustly by introducing a 'teardown'
-flag and a 'state_lock' spinlock to the usb_gadget struct. The flag is
-set during cleanup in usb_del_gadget() *before* calling flush_work() to
-prevent any new work from being scheduled once cleanup has commenced.
-The scheduling site, usb_gadget_set_state(), now checks this flag under
-the lock before queueing the work, thus safely closing the race window.
-
-Fixes: 5702f75375aa9 ("usb: gadget: udc-core: move sysfs_notify() to a workqueue")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Jimmy Hu <hhhuuu@google.com>
-Link: https://patch.msgid.link/20251023054945.233861-1-hhhuuu@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Link: https://patch.msgid.link/20241224-winbond-6-11-rc1-quad-support-v2-2-ad218dbc406f@bootlin.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 40ad64ac25bb ("spi: nxp-fspi: Propagate fwnode in ACPI case as well")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/udc/core.c |   17 ++++++++++++++++-
- include/linux/usb/gadget.h    |    5 +++++
- 2 files changed, 21 insertions(+), 1 deletion(-)
+ drivers/spi/spi-mem.c       | 6 ++++++
+ include/linux/spi/spi-mem.h | 2 ++
+ 2 files changed, 8 insertions(+)
 
---- a/drivers/usb/gadget/udc/core.c
-+++ b/drivers/usb/gadget/udc/core.c
-@@ -1126,8 +1126,13 @@ static void usb_gadget_state_work(struct
- void usb_gadget_set_state(struct usb_gadget *gadget,
- 		enum usb_device_state state)
- {
-+	unsigned long flags;
+diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+index 12299ce89a1cc..96374afd0193c 100644
+--- a/drivers/spi/spi-mem.c
++++ b/drivers/spi/spi-mem.c
+@@ -191,6 +191,12 @@ bool spi_mem_default_supports_op(struct spi_mem *mem,
+ 	    op->max_freq < mem->spi->controller->min_speed_hz)
+ 		return false;
+ 
++	if (op->max_freq &&
++	    op->max_freq < mem->spi->max_speed_hz) {
++		if (!spi_mem_controller_is_capable(ctlr, per_op_freq))
++			return false;
++	}
 +
-+	spin_lock_irqsave(&gadget->state_lock, flags);
- 	gadget->state = state;
--	schedule_work(&gadget->work);
-+	if (!gadget->teardown)
-+		schedule_work(&gadget->work);
-+	spin_unlock_irqrestore(&gadget->state_lock, flags);
- 	trace_usb_gadget_set_state(gadget, 0);
+ 	return spi_mem_check_buswidth(mem, op);
  }
- EXPORT_SYMBOL_GPL(usb_gadget_set_state);
-@@ -1361,6 +1366,8 @@ static void usb_udc_nop_release(struct d
- void usb_initialize_gadget(struct device *parent, struct usb_gadget *gadget,
- 		void (*release)(struct device *dev))
- {
-+	spin_lock_init(&gadget->state_lock);
-+	gadget->teardown = false;
- 	INIT_WORK(&gadget->work, usb_gadget_state_work);
- 	gadget->dev.parent = parent;
+ EXPORT_SYMBOL_GPL(spi_mem_default_supports_op);
+diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
+index 84ec524987921..c7a7719c26484 100644
+--- a/include/linux/spi/spi-mem.h
++++ b/include/linux/spi/spi-mem.h
+@@ -311,11 +311,13 @@ struct spi_controller_mem_ops {
+  * @ecc: Supports operations with error correction
+  * @swap16: Supports swapping bytes on a 16 bit boundary when configured in
+  *	    Octal DTR
++ * @per_op_freq: Supports per operation frequency switching
+  */
+ struct spi_controller_mem_caps {
+ 	bool dtr;
+ 	bool ecc;
+ 	bool swap16;
++	bool per_op_freq;
+ };
  
-@@ -1535,6 +1542,7 @@ EXPORT_SYMBOL_GPL(usb_add_gadget_udc);
- void usb_del_gadget(struct usb_gadget *gadget)
- {
- 	struct usb_udc *udc = gadget->udc;
-+	unsigned long flags;
- 
- 	if (!udc)
- 		return;
-@@ -1548,6 +1556,13 @@ void usb_del_gadget(struct usb_gadget *g
- 	kobject_uevent(&udc->dev.kobj, KOBJ_REMOVE);
- 	sysfs_remove_link(&udc->dev.kobj, "gadget");
- 	device_del(&gadget->dev);
-+	/*
-+	 * Set the teardown flag before flushing the work to prevent new work
-+	 * from being scheduled while we are cleaning up.
-+	 */
-+	spin_lock_irqsave(&gadget->state_lock, flags);
-+	gadget->teardown = true;
-+	spin_unlock_irqrestore(&gadget->state_lock, flags);
- 	flush_work(&gadget->work);
- 	ida_free(&gadget_id_numbers, gadget->id_number);
- 	cancel_work_sync(&udc->vbus_work);
---- a/include/linux/usb/gadget.h
-+++ b/include/linux/usb/gadget.h
-@@ -376,6 +376,9 @@ struct usb_gadget_ops {
-  *	can handle. The UDC must support this and all slower speeds and lower
-  *	number of lanes.
-  * @state: the state we are now (attached, suspended, configured, etc)
-+ * @state_lock: Spinlock protecting the `state` and `teardown` members.
-+ * @teardown: True if the device is undergoing teardown, used to prevent
-+ *	new work from being scheduled during cleanup.
-  * @name: Identifies the controller hardware type.  Used in diagnostics
-  *	and sometimes configuration.
-  * @dev: Driver model state for this abstract device.
-@@ -451,6 +454,8 @@ struct usb_gadget {
- 	enum usb_ssp_rate		max_ssp_rate;
- 
- 	enum usb_device_state		state;
-+	spinlock_t			state_lock;
-+	bool				teardown;
- 	const char			*name;
- 	struct device			dev;
- 	unsigned			isoch_delay;
+ #define spi_mem_controller_is_capable(ctlr, cap)	\
+-- 
+2.51.0
+
 
 
 
