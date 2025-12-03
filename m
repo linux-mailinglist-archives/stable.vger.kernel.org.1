@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77653C9FE3A
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:19:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2439CA038B
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:58:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5F2FA3024198
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:16:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5F0993025099
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:52:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E72EB354AE6;
-	Wed,  3 Dec 2025 16:15:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C28F357A33;
+	Wed,  3 Dec 2025 16:50:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dwy2ffE9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QuJQ2+Za"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FD9B354AE1;
-	Wed,  3 Dec 2025 16:15:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1DFE357A24;
+	Wed,  3 Dec 2025 16:50:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778520; cv=none; b=WyBiqKHWAtdaziC1Ddo+Pf7dgF8Rik1zju+RgBTUbrM3TMVwadUNHhxtuHSqzL6QYK4Sr9Oq45fz/EeNWkEDUF4nGoYF3u+qzOF715n0v9WOFu0PMVv7Qmunlq4/ahdSr/CoIqAcxOPI3HGOkPGheFr6jrborO6YYNte/zebvow=
+	t=1764780626; cv=none; b=WvwC+8QCHDh+0+fOvvzzt0gf6x0kUjgvNj6T10xqq6OAvplD/+dzZPrVQ8M2brXy7cbnbdjimErPQhlTZBowpa/6lD39OLcBdniUW2iLpU2OtlF77Yc1jWVRGgqtdTEnTCcrPL4E88hDhKRXN2cQr5hJ6QQGVgYU1ggevQEli6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778520; c=relaxed/simple;
-	bh=hUB0PJZnYL3IICuljlofiNBBa1xWYsh3Z+Nb9EWmagM=;
+	s=arc-20240116; t=1764780626; c=relaxed/simple;
+	bh=btvOm48iiBV32iWFgrm1/dpur2Yhvu9vWk5YC88wCxM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uLyPuKkbYG2u0sRedge2ey7yATm6iJDDHl6kb++erGqm7LHEl+4GKnS9QGHGkQ2Ub/lstnAZlqDTOy2edi3ccn12n0xOJzA+Nh0Oo7khgnsQ+KrW+ozTuWEkN98PHOGwtKuU3sIZ9q6/3ReBp1m6IoNwEt9apLPbDGeAr4ecir4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dwy2ffE9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1464AC4CEF5;
-	Wed,  3 Dec 2025 16:15:19 +0000 (UTC)
+	 MIME-Version; b=UsgUQgiZ8nlPRw+avOHERhz47IW2ccKIOKBz9dZJvDSet16jZlcOvnnPOivQJ6w+b+l60wu2kXiLNmcXA5JbsR0PC9RGHn8aKvjlFupJOO0oZhPff7J7IvDEC/PSXyscdJBegmQPHRL6FGydgXNESDDF3PylGLtpvhPCQv0Fz4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QuJQ2+Za; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DD96C4CEF5;
+	Wed,  3 Dec 2025 16:50:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778520;
-	bh=hUB0PJZnYL3IICuljlofiNBBa1xWYsh3Z+Nb9EWmagM=;
+	s=korg; t=1764780625;
+	bh=btvOm48iiBV32iWFgrm1/dpur2Yhvu9vWk5YC88wCxM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dwy2ffE9Ol7mLsEdkjQmlomCAX7ovssjm9pCzunaiFOZmWxz1KV+nElA0/dlwLYp6
-	 1DdelDao28hHsyk4IzxTQQh2JsHNvsZG/EzlSbAb3sfEhXWCf7/yztqefVqP1aWc9T
-	 Tgl8tHU0c5nndf3u46pRUwLYsdgv7EW0VO0ls1sw=
+	b=QuJQ2+ZaUpio00dTeM+rv5WJ+GNzn0iObE2I/YG/s3oC2GVDFXY0bNkM2o+FxsTdJ
+	 q+VKb33MMwb0Jqi9l0m51CgZXFDrAWsznoFmE1vlsxjP63KF0R818F1caug6jds6QU
+	 7/LKAaXWMrJN69tFZtmwgHMmDZMyjClC0FH7y9sQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Yu Chen <chenyu45@xiaomi.com>,
-	Owen Gu <guhuinan@xiaomi.com>,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 5.15 370/392] usb: uas: fix urb unmapping issue when the uas device is remove during ongoing data transfer
-Date: Wed,  3 Dec 2025 16:28:40 +0100
-Message-ID: <20251203152427.774395154@linuxfoundation.org>
+	Pratyush Yadav <pratyush@kernel.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 042/132] spi: spi-mem: Extend spi-mem operations with a per-operation maximum frequency
+Date: Wed,  3 Dec 2025 16:28:41 +0100
+Message-ID: <20251203152344.854513198@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,83 +61,225 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Owen Gu <guhuinan@xiaomi.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-commit 26d56a9fcb2014b99e654127960aa0a48a391e3c upstream.
+[ Upstream commit 0fefeade90e74bc8f40ab0e460f483565c492e28 ]
 
-When a UAS device is unplugged during data transfer, there is
-a probability of a system panic occurring. The root cause is
-an access to an invalid memory address during URB callback handling.
-Specifically, this happens when the dma_direct_unmap_sg() function
-is called within the usb_hcd_unmap_urb_for_dma() interface, but the
-sg->dma_address field is 0 and the sg data structure has already been
-freed.
+In the spi subsystem, the bus frequency is derived as follows:
+- the controller may expose a minimum and maximum operating frequency
+- the hardware description, through the spi peripheral properties,
+  advise what is the maximum acceptable frequency from a device/wiring
+  point of view.
+Transfers must be observed at a frequency which fits both (so in
+practice, the lowest maximum).
 
-The SCSI driver sends transfer commands by invoking uas_queuecommand_lck()
-in uas.c, using the uas_submit_urbs() function to submit requests to USB.
-Within the uas_submit_urbs() implementation, three URBs (sense_urb,
-data_urb, and cmd_urb) are sequentially submitted. Device removal may
-occur at any point during uas_submit_urbs execution, which may result
-in URB submission failure. However, some URBs might have been successfully
-submitted before the failure, and uas_submit_urbs will return the -ENODEV
-error code in this case. The current error handling directly calls
-scsi_done(). In the SCSI driver, this eventually triggers scsi_complete()
-to invoke scsi_end_request() for releasing the sgtable. The successfully
-submitted URBs, when being unlinked to giveback, call
-usb_hcd_unmap_urb_for_dma() in hcd.c, leading to exceptions during sg
-unmapping operations since the sg data structure has already been freed.
+Actually, this second point mixes two information and already takes the
+lowest frequency among:
+- what the spi device is capable of (what is written in the component
+  datasheet)
+- what the wiring allows (electromagnetic sensibility, crossovers,
+  terminations, antenna effect, etc).
 
-This patch modifies the error condition check in the uas_submit_urbs()
-function. When a UAS device is removed but one or more URBs have already
-been successfully submitted to USB, it avoids immediately invoking
-scsi_done() and save the cmnd to devinfo->cmnd array. If the successfully
-submitted URBs is completed before devinfo->resetting being set, then
-the scsi_done() function will be called within uas_try_complete() after
-all pending URB operations are finalized. Otherwise, the scsi_done()
-function will be called within uas_zap_pending(), which is executed after
-usb_kill_anchored_urbs().
+This logic works until spi devices are no longer capable of sustaining
+their highest frequency regardless of the operation. Spi memories are
+typically subject to such variation. Some devices are capable of
+spitting their internally stored data (essentially in read mode) at a
+very fast rate, typically up to 166MHz on Winbond SPI-NAND chips, using
+"fast" commands. However, some of the low-end operations, such as
+regular page read-from-cache commands, are more limited and can only be
+executed at 54MHz at most. This is currently a problem in the SPI-NAND
+subsystem. Another situation, even if not yet supported, will be with
+DTR commands, when the data is latched on both edges of the clock. The
+same chips as mentioned previously are in this case limited to
+80MHz. Yet another example might be continuous reads, which, under
+certain circumstances, can also run at most at 104 or 120MHz.
 
-The error handling only takes effect when uas_queuecommand_lck() calls
-uas_submit_urbs() and returns the error value -ENODEV . In this case,
-the device is disconnected, and the flow proceeds to uas_disconnect(),
-where uas_zap_pending() is invoked to call uas_try_complete().
+As a matter of fact, the "one frequency per chip" policy is outdated and
+more fine grain configuration is needed: we need to allow per-operation
+frequency limitations. So far, all datasheets I encountered advertise a
+maximum default frequency, which need to be lowered for certain specific
+operations. So based on the current infrastructure, we can still expect
+firmware (device trees in general) to continued advertising the same
+maximum speed which is a mix between the PCB limitations and the chip
+maximum capability, and expect per-operation lower frequencies when this
+is relevant.
 
-Fixes: eb2a86ae8c54 ("USB: UAS: fix disconnect by unplugging a hub")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Yu Chen <chenyu45@xiaomi.com>
-Signed-off-by: Owen Gu <guhuinan@xiaomi.com>
-Acked-by: Oliver Neukum <oneukum@suse.com>
-Link: https://patch.msgid.link/20251120123336.3328-1-guhuinan@xiaomi.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add a `struct spi_mem_op` member to carry this information. Not
+providing this field explicitly from upper layers means that there is no
+further constraint and the default spi device maximum speed will be
+carried instead. The SPI_MEM_OP() macro is also expanded with an
+optional frequency argument, because virtually all operations can be
+subject to such a limitation, and this will allow for a smooth and
+discrete transition.
+
+For controller drivers which do not implement the spi-mem interface, the
+per-transfer speed is also set acordingly to a lower (than the maximum
+default) speed when relevant.
+
+Acked-by: Pratyush Yadav <pratyush@kernel.org>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://patch.msgid.link/20241224-winbond-6-11-rc1-quad-support-v2-1-ad218dbc406f@bootlin.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 40ad64ac25bb ("spi: nxp-fspi: Propagate fwnode in ACPI case as well")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/storage/uas.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/mtd/nand/spi/core.c |  2 ++
+ drivers/spi/spi-mem.c       | 28 ++++++++++++++++++++++++++++
+ include/linux/spi/spi-mem.h | 12 +++++++++++-
+ 3 files changed, 41 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/storage/uas.c
-+++ b/drivers/usb/storage/uas.c
-@@ -698,6 +698,10 @@ static int uas_queuecommand_lck(struct s
- 	 * of queueing, no matter how fatal the error
- 	 */
- 	if (err == -ENODEV) {
-+		if (cmdinfo->state & (COMMAND_INFLIGHT | DATA_IN_URB_INFLIGHT |
-+				DATA_OUT_URB_INFLIGHT))
-+			goto out;
+diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
+index c523a1a22c2b0..57b8807b19482 100644
+--- a/drivers/mtd/nand/spi/core.c
++++ b/drivers/mtd/nand/spi/core.c
+@@ -1217,6 +1217,8 @@ spinand_select_op_variant(struct spinand_device *spinand,
+ 			if (ret)
+ 				break;
+ 
++			spi_mem_adjust_op_freq(spinand->spimem, &op);
 +
- 		set_host_byte(cmnd, DID_NO_CONNECT);
- 		scsi_done(cmnd);
- 		goto zombie;
-@@ -711,6 +715,7 @@ static int uas_queuecommand_lck(struct s
- 		uas_add_work(cmnd);
+ 			if (!spi_mem_supports_op(spinand->spimem, &op))
+ 				break;
+ 
+diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+index abc6792e738c7..12299ce89a1cc 100644
+--- a/drivers/spi/spi-mem.c
++++ b/drivers/spi/spi-mem.c
+@@ -187,6 +187,10 @@ bool spi_mem_default_supports_op(struct spi_mem *mem,
+ 			return false;
  	}
  
-+out:
- 	devinfo->cmnd[idx] = cmnd;
- zombie:
- 	spin_unlock_irqrestore(&devinfo->lock, flags);
++	if (op->max_freq && mem->spi->controller->min_speed_hz &&
++	    op->max_freq < mem->spi->controller->min_speed_hz)
++		return false;
++
+ 	return spi_mem_check_buswidth(mem, op);
+ }
+ EXPORT_SYMBOL_GPL(spi_mem_default_supports_op);
+@@ -364,6 +368,9 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 	u8 *tmpbuf;
+ 	int ret;
+ 
++	/* Make sure the operation frequency is correct before going futher */
++	spi_mem_adjust_op_freq(mem, (struct spi_mem_op *)op);
++
+ 	ret = spi_mem_check_op(op);
+ 	if (ret)
+ 		return ret;
+@@ -410,6 +417,7 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 	xfers[xferpos].tx_buf = tmpbuf;
+ 	xfers[xferpos].len = op->cmd.nbytes;
+ 	xfers[xferpos].tx_nbits = op->cmd.buswidth;
++	xfers[xferpos].speed_hz = op->max_freq;
+ 	spi_message_add_tail(&xfers[xferpos], &msg);
+ 	xferpos++;
+ 	totalxferlen++;
+@@ -424,6 +432,7 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 		xfers[xferpos].tx_buf = tmpbuf + 1;
+ 		xfers[xferpos].len = op->addr.nbytes;
+ 		xfers[xferpos].tx_nbits = op->addr.buswidth;
++		xfers[xferpos].speed_hz = op->max_freq;
+ 		spi_message_add_tail(&xfers[xferpos], &msg);
+ 		xferpos++;
+ 		totalxferlen += op->addr.nbytes;
+@@ -435,6 +444,7 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 		xfers[xferpos].len = op->dummy.nbytes;
+ 		xfers[xferpos].tx_nbits = op->dummy.buswidth;
+ 		xfers[xferpos].dummy_data = 1;
++		xfers[xferpos].speed_hz = op->max_freq;
+ 		spi_message_add_tail(&xfers[xferpos], &msg);
+ 		xferpos++;
+ 		totalxferlen += op->dummy.nbytes;
+@@ -450,6 +460,7 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 		}
+ 
+ 		xfers[xferpos].len = op->data.nbytes;
++		xfers[xferpos].speed_hz = op->max_freq;
+ 		spi_message_add_tail(&xfers[xferpos], &msg);
+ 		xferpos++;
+ 		totalxferlen += op->data.nbytes;
+@@ -528,6 +539,23 @@ int spi_mem_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
+ }
+ EXPORT_SYMBOL_GPL(spi_mem_adjust_op_size);
+ 
++/**
++ * spi_mem_adjust_op_freq() - Adjust the frequency of a SPI mem operation to
++ *			      match controller, PCB and chip limitations
++ * @mem: the SPI memory
++ * @op: the operation to adjust
++ *
++ * Some chips have per-op frequency limitations and must adapt the maximum
++ * speed. This function allows SPI mem drivers to set @op->max_freq to the
++ * maximum supported value.
++ */
++void spi_mem_adjust_op_freq(struct spi_mem *mem, struct spi_mem_op *op)
++{
++	if (!op->max_freq || op->max_freq > mem->spi->max_speed_hz)
++		op->max_freq = mem->spi->max_speed_hz;
++}
++EXPORT_SYMBOL_GPL(spi_mem_adjust_op_freq);
++
+ static ssize_t spi_mem_no_dirmap_read(struct spi_mem_dirmap_desc *desc,
+ 				      u64 offs, size_t len, void *buf)
+ {
+diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
+index c46d2b8029be5..84ec524987921 100644
+--- a/include/linux/spi/spi-mem.h
++++ b/include/linux/spi/spi-mem.h
+@@ -68,6 +68,9 @@ enum spi_mem_data_dir {
+ 	SPI_MEM_DATA_OUT,
+ };
+ 
++#define SPI_MEM_OP_MAX_FREQ(__freq)				\
++	.max_freq = __freq
++
+ /**
+  * struct spi_mem_op - describes a SPI memory operation
+  * @cmd.nbytes: number of opcode bytes (only 1 or 2 are valid). The opcode is
+@@ -97,6 +100,9 @@ enum spi_mem_data_dir {
+  *		 operation does not involve transferring data
+  * @data.buf.in: input buffer (must be DMA-able)
+  * @data.buf.out: output buffer (must be DMA-able)
++ * @max_freq: frequency limitation wrt this operation. 0 means there is no
++ *	      specific constraint and the highest achievable frequency can be
++ *	      attempted.
+  */
+ struct spi_mem_op {
+ 	struct {
+@@ -135,14 +141,17 @@ struct spi_mem_op {
+ 			const void *out;
+ 		} buf;
+ 	} data;
++
++	unsigned int max_freq;
+ };
+ 
+-#define SPI_MEM_OP(__cmd, __addr, __dummy, __data)		\
++#define SPI_MEM_OP(__cmd, __addr, __dummy, __data, ...)		\
+ 	{							\
+ 		.cmd = __cmd,					\
+ 		.addr = __addr,					\
+ 		.dummy = __dummy,				\
+ 		.data = __data,					\
++		__VA_ARGS__					\
+ 	}
+ 
+ /**
+@@ -371,6 +380,7 @@ bool spi_mem_default_supports_op(struct spi_mem *mem,
+ #endif /* CONFIG_SPI_MEM */
+ 
+ int spi_mem_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op);
++void spi_mem_adjust_op_freq(struct spi_mem *mem, struct spi_mem_op *op);
+ 
+ bool spi_mem_supports_op(struct spi_mem *mem,
+ 			 const struct spi_mem_op *op);
+-- 
+2.51.0
+
 
 
 
