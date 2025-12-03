@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-199853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58825CA0D81
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:15:08 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A135ECA074F
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:29:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 983C930C1598
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:12:14 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 64F62300092A
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:28:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DB58336EF9;
-	Wed,  3 Dec 2025 16:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79A03349B09;
+	Wed,  3 Dec 2025 16:54:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fkqMMANZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z4bdam1A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CCD7398FAF;
-	Wed,  3 Dec 2025 16:59:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EFAA346FBE;
+	Wed,  3 Dec 2025 16:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764781156; cv=none; b=c0wI/41vn9uOeo6uEs6Q/4A6spXyr+ca3a6abSHV4c/IEha/o47kTZLmjtRi6X0sn5Rjr/SUSvAKd9QutlS+SOYktoAP6TrOS7D350hGcClUKX0ai5k5SHU5RNu+mUsMG2vabi4GeWNeHALEh1JajyIu+SGPZ/E7ZA2yONF3wZs=
+	t=1764780896; cv=none; b=aC3o6sWzeTHkl0EX6fNMCY598+JIuPXJ9SD6Gk5Yqc2NoGnU43vjuNsX+MtEDyHTAi33g6MMvPMiuY7+AFKLiZgYSFDujpRDPgkLTQyfRTerKauIafxyuHq3BuZSh/38gT6oR9fz5XFd2ovdca955pAvvRGua17dyqzOD57l0Y4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764781156; c=relaxed/simple;
-	bh=Ai63TbRXqwuOTRI2gjdG/fnaggeMhn5zzI1j+d3PM2I=;
+	s=arc-20240116; t=1764780896; c=relaxed/simple;
+	bh=+yX0p1Bbs5ubaVEVkZYf+aIiArWI/Gq5opyNBLmqKcI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UkuLjTpRCyEGqcPUbaHj/nLB6r3pe3wzESlCpqDOIcevcIJ1G1mUej6Tn3EqAbP1LamY8/tBSpnDMwryVQneuCOELJmL24CDBpPjG2L3NvYGN2qKRYN+pB4t1nK14i9cQ45Bsj1vnnM6eCob93AfUvp93bRu45sLuJaT3S/aSWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fkqMMANZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85C0DC4CEF5;
-	Wed,  3 Dec 2025 16:59:15 +0000 (UTC)
+	 MIME-Version; b=mP4XKjvZf27ubHD+m+O3tufrbZ8+5fDciy6fyJxG3mUN+QvXUO+9hPd07FLW7yV0ZVRi8Uz6ebvHjR6PvoEBOfFAElCezrdILQHOOaViGUUJSb3WsldDZd8E1IdWFqRIUnJkXtm+GGb1rCGgv9FeIXkyMII1i4wUAMzyb6Kmayc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z4bdam1A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55419C4CEF5;
+	Wed,  3 Dec 2025 16:54:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764781155;
-	bh=Ai63TbRXqwuOTRI2gjdG/fnaggeMhn5zzI1j+d3PM2I=;
+	s=korg; t=1764780895;
+	bh=+yX0p1Bbs5ubaVEVkZYf+aIiArWI/Gq5opyNBLmqKcI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fkqMMANZRGx/1nWyl6BYCO/3n8woI4kc/AP1UPFF0Erff6EkDJAjGq9kBs32vji78
-	 ln8uu9vVlu5Q0UrjnnOETS6+XKKHlDzmt1cFdHEJMmLfOhszr5SbI+dcHGcwU51gkg
-	 rrW1p6oXXEc/b8V0pKUtZYUFiufqW43zf7612wbc=
+	b=Z4bdam1Ao4Boi/rXTBun0s0JtgUax+gHaV+NQmt3M4yRDGUZKJzr1dRUThAek0g2w
+	 qa2vvaz/jy4XyX3b4jLJ1PRgEJAgBddREmtE/tWf7Yg4XC88kYTvfF/Ary9bQhDcQT
+	 3slnMg/uv5M+iP+GAhIniL969UT/MJIuYgc9YSo8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.6 67/93] xhci: dbgtty: Fix data corruption when transmitting data form DbC to host
+	Yosry Ahmed <yosry.ahmed@linux.dev>
+Subject: [PATCH 6.12 121/132] KVM: SVM: Introduce svm_recalc_lbr_msr_intercepts()
 Date: Wed,  3 Dec 2025 16:30:00 +0100
-Message-ID: <20251203152339.002531791@linuxfoundation.org>
+Message-ID: <20251203152347.796828790@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,129 +56,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
 
-commit f6bb3b67be9af0cfb90075c60850b6af5338a508 upstream.
+Introduce a helper updating the intercepts for LBR MSRs, similar to the
+one introduced upstream by commit 160f143cc131 ("KVM: SVM: Manually
+recalc all MSR intercepts on userspace MSR filter change"). The main
+difference is that this version uses set_msr_interception(), which has
+inverted polarity compared to svm_set_intercept_for_msr().
 
-Data read from a DbC device may be corrupted due to a race between
-ongoing write and write request completion handler both queuing new
-transfer blocks (TRBs) if there are remining data in the kfifo.
+This is intended to simplify incoming backports. No functional changes
+intended.
 
-TRBs may be in incorrct order compared to the data in the kfifo.
-
-Driver fails to keep lock between reading data from kfifo into a
-dbc request buffer, and queuing the request to the transfer ring.
-
-This allows completed request to re-queue itself in the middle of
-an ongoing transfer loop, forcing itself between a kfifo read and
-request TRB write of another request
-
-cpu0					cpu1 (re-queue completed req2)
-
-lock(port_lock)
-dbc_start_tx()
-kfifo_out(fifo, req1->buffer)
-unlock(port_lock)
-					lock(port_lock)
-					dbc_write_complete(req2)
-					dbc_start_tx()
-      					kfifo_out(fifo, req2->buffer)
-					unlock(port_lock)
-					lock(port_lock)
-					req2->trb = ring->enqueue;
-					ring->enqueue++
-					unlock(port_lock)
-lock(port_lock)
-req1->trb = ring->enqueue;
-ring->enqueue++
-unlock(port_lock)
-
-In the above scenario a kfifo containing "12345678" would read "1234" to
-req1 and "5678" to req2, but req2 is queued before req1 leading to
-data being transmitted as "56781234"
-
-Solve this by adding a flag that prevents starting a new tx if we
-are already mid dbc_start_tx() during the unlocked part.
-
-The already running dbc_do_start_tx() will make sure the newly completed
-request gets re-queued as it is added to the request write_pool while
-holding the lock.
-
-Cc: stable@vger.kernel.org
-Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
-Tested-by: Łukasz Bartosik <ukaszb@chromium.org>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://patch.msgid.link/20251107162819.1362579-3-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-dbgcap.h |    1 +
- drivers/usb/host/xhci-dbgtty.c |   17 ++++++++++++++++-
- 2 files changed, 17 insertions(+), 1 deletion(-)
+ arch/x86/kvm/svm/svm.c |   32 +++++++++++++++++++++-----------
+ 1 file changed, 21 insertions(+), 11 deletions(-)
 
---- a/drivers/usb/host/xhci-dbgcap.h
-+++ b/drivers/usb/host/xhci-dbgcap.h
-@@ -113,6 +113,7 @@ struct dbc_port {
- 	unsigned int			tx_boundary;
- 
- 	bool				registered;
-+	bool				tx_running;
- };
- 
- struct dbc_driver {
---- a/drivers/usb/host/xhci-dbgtty.c
-+++ b/drivers/usb/host/xhci-dbgtty.c
-@@ -47,7 +47,7 @@ dbc_kfifo_to_req(struct dbc_port *port,
- 	return len;
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -995,18 +995,31 @@ void svm_copy_lbrs(struct vmcb *to_vmcb,
+ 	vmcb_mark_dirty(to_vmcb, VMCB_LBR);
  }
  
--static int dbc_start_tx(struct dbc_port *port)
-+static int dbc_do_start_tx(struct dbc_port *port)
- 	__releases(&port->port_lock)
- 	__acquires(&port->port_lock)
+-void svm_enable_lbrv(struct kvm_vcpu *vcpu)
++static void svm_recalc_lbr_msr_intercepts(struct kvm_vcpu *vcpu)
  {
-@@ -57,6 +57,8 @@ static int dbc_start_tx(struct dbc_port
- 	bool			do_tty_wake = false;
- 	struct list_head	*pool = &port->write_pool;
+ 	struct vcpu_svm *svm = to_svm(vcpu);
++	bool intercept = !(svm->vmcb->control.virt_ext & LBR_CTL_ENABLE_MASK);
  
-+	port->tx_running = true;
-+
- 	while (!list_empty(pool)) {
- 		req = list_entry(pool->next, struct dbc_request, list_pool);
- 		len = dbc_kfifo_to_req(port, req->buf);
-@@ -77,12 +79,25 @@ static int dbc_start_tx(struct dbc_port
- 		}
- 	}
+-	svm->vmcb->control.virt_ext |= LBR_CTL_ENABLE_MASK;
+-	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTBRANCHFROMIP, 1, 1);
+-	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTBRANCHTOIP, 1, 1);
+-	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTINTFROMIP, 1, 1);
+-	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTINTTOIP, 1, 1);
++	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTBRANCHFROMIP,
++			     !intercept, !intercept);
++	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTBRANCHTOIP,
++			     !intercept, !intercept);
++	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTINTFROMIP,
++			     !intercept, !intercept);
++	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTINTTOIP,
++			     !intercept, !intercept);
  
-+	port->tx_running = false;
-+
- 	if (do_tty_wake && port->port.tty)
- 		tty_wakeup(port->port.tty);
- 
- 	return status;
- }
- 
-+/* must be called with port->port_lock held */
-+static int dbc_start_tx(struct dbc_port *port)
-+{
-+	lockdep_assert_held(&port->port_lock);
-+
-+	if (port->tx_running)
-+		return -EBUSY;
-+
-+	return dbc_do_start_tx(port);
+ 	if (sev_es_guest(vcpu->kvm))
+-		set_msr_interception(vcpu, svm->msrpm, MSR_IA32_DEBUGCTLMSR, 1, 1);
++		set_msr_interception(vcpu, svm->msrpm, MSR_IA32_DEBUGCTLMSR,
++				     !intercept, !intercept);
 +}
 +
- static void dbc_start_rx(struct dbc_port *port)
- 	__releases(&port->port_lock)
- 	__acquires(&port->port_lock)
++void svm_enable_lbrv(struct kvm_vcpu *vcpu)
++{
++	struct vcpu_svm *svm = to_svm(vcpu);
++
++	svm->vmcb->control.virt_ext |= LBR_CTL_ENABLE_MASK;
++	svm_recalc_lbr_msr_intercepts(vcpu);
+ 
+ 	/* Move the LBR msrs to the vmcb02 so that the guest can see them. */
+ 	if (is_guest_mode(vcpu))
+@@ -1020,10 +1033,7 @@ static void svm_disable_lbrv(struct kvm_
+ 	KVM_BUG_ON(sev_es_guest(vcpu->kvm), vcpu->kvm);
+ 
+ 	svm->vmcb->control.virt_ext &= ~LBR_CTL_ENABLE_MASK;
+-	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTBRANCHFROMIP, 0, 0);
+-	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTBRANCHTOIP, 0, 0);
+-	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTINTFROMIP, 0, 0);
+-	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTINTTOIP, 0, 0);
++	svm_recalc_lbr_msr_intercepts(vcpu);
+ 
+ 	/*
+ 	 * Move the LBR msrs back to the vmcb01 to avoid copying them
 
 
 
