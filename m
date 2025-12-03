@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C550CA01BB
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:48:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D176CA050B
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:17:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 60AE630006FD
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:48:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 93B573243213
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:04:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A7703624AE;
-	Wed,  3 Dec 2025 16:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51BE236CE03;
+	Wed,  3 Dec 2025 16:57:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0uRUXMR3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cltWGkPE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D3F376BCC;
-	Wed,  3 Dec 2025 16:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED911B983F;
+	Wed,  3 Dec 2025 16:57:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780507; cv=none; b=Rl5I6MnwCAXq7rLUvmErE2FajV2GA1VNnXYjU4NN3IwId9Vo+y+Qi5SgBJpTOlJqPyq6NoGQPicL3jHRasK+pyz8i/iiqJ+z+iCHCyFbBEWFrQ+ZtqvUbsFAdkrv2IbRcJjv8OI7m1Xxm9zlhCDd8s/nZYh+9t6sUpMISSmaQj4=
+	t=1764781066; cv=none; b=IYKEpyYMGVJMmnUx9LEP1D7nKjx+JYpVxrhsD+Gdhdra3WEqmxTNuwWdYuv/u14qk0VRVQkhGbhPXotiGm2R3uQwlKEqTagoIOefmG2e+UznL6IWT0OvzfCRs3wIqRn9boEeA4QXjV/bx07xzu/taU12M8Obagyrpy9VsWhZmqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780507; c=relaxed/simple;
-	bh=FCvoBqRWDm7u4KVA6H82r/WWxo/Fs5MrneDMG13HemI=;
+	s=arc-20240116; t=1764781066; c=relaxed/simple;
+	bh=Ht7TjHEzENDiwRJgCuEt7rahK0/8iL64pGwai0FVVis=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RU1FXXwHBpu0BA1bniCwSjR99vU1IpUuFn95llrAo+RlBg5isFQyNtOO6qxM6kgdg/HYm6EOQm9SRxCy0wIVfIw4x8/Hc+D/4t0IKBgce0LrTMmakNj4X0X4JqMDcTyFzCqQhPrseG7dTfxDYbc7mcX5vYETVauRZb4bxsiflwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0uRUXMR3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3669C116C6;
-	Wed,  3 Dec 2025 16:48:26 +0000 (UTC)
+	 MIME-Version; b=uz5B5vddzBfOOSJKe9ZtbxF+xFWcQGc+fm1nZj8o8LmIiXXVcV7OSK2DZIuS+cYUWRmboqdY+4J/mfwrjJeQobUvCUvljLWE5qsQF58DWlQhr9V8bC7ER5xPlApPC7ksOHraIAJlTYJjV0AlnwvWXIBWRzmrR4eVftFThymYNy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cltWGkPE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D933C4CEF5;
+	Wed,  3 Dec 2025 16:57:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780507;
-	bh=FCvoBqRWDm7u4KVA6H82r/WWxo/Fs5MrneDMG13HemI=;
+	s=korg; t=1764781065;
+	bh=Ht7TjHEzENDiwRJgCuEt7rahK0/8iL64pGwai0FVVis=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0uRUXMR3KKWQ9T3MPwtxer9VzWV8QvtQN4wgHbAHVxdel168vX09HoTSQ7Naxap6k
-	 Nc1On1RJBmYZnbJ0DOJa8KqByIqB2i7aH3RYCLz3wUsAH3VY9dJeHxnABCK4XcTD7m
-	 gKWGxH44Pig0C8jzTgwQbu9c6U1eVeFoGOixO7ww=
+	b=cltWGkPEVqiEwOdiXtNlsj39l/z+EOFEnrrJ88XF2uOB+nQQmWcDfbU0Eo7elMFoZ
+	 zXcN/UpoHiiNNuPOvvhqxLeKR4JykjY81cqErzJfEObi5kaztcVleJUAwYFsB2cZXo
+	 dHkRAvkOG43cqGkXyGHPKfpR7Y52Egza+osrXR5Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	syzbot+b63d677d63bcac06cf90@syzkaller.appspotmail.com,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Wenshan Lan <jetlan9@163.com>
-Subject: [PATCH 6.1 568/568] HID: core: Harden s32ton() against conversion to 0 bits
-Date: Wed,  3 Dec 2025 16:29:30 +0100
-Message-ID: <20251203152501.554151430@linuxfoundation.org>
+	Valek Andrej <andrej.v@skyrain.eu>,
+	Kessler Markus <markus.kessler@hilti.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 38/93] iio: accel: fix ADXL355 startup race condition
+Date: Wed,  3 Dec 2025 16:29:31 +0100
+Message-ID: <20251203152337.927139815@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
+References: <20251203152336.494201426@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +61,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Valek Andrej <andrej.v@skyrain.eu>
 
-[ Upstream commit a6b87bfc2ab5bccb7ad953693c85d9062aef3fdd ]
+commit c92c1bc408e9e11ae3c7011b062fdd74c09283a3 upstream.
 
-Testing by the syzbot fuzzer showed that the HID core gets a
-shift-out-of-bounds exception when it tries to convert a 32-bit
-quantity to a 0-bit quantity.  Ideally this should never occur, but
-there are buggy devices and some might have a report field with size
-set to zero; we shouldn't reject the report or the device just because
-of that.
+There is an race-condition where device is not full working after SW reset.
+Therefore it's necessary to wait some time after reset and verify shadow
+registers values by reading and comparing the values before/after reset.
+This mechanism is described in datasheet at least from revision D.
 
-Instead, harden the s32ton() routine so that it returns a reasonable
-result instead of crashing when it is called with the number of bits
-set to 0 -- the same as what snto32() does.
-
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Reported-by: syzbot+b63d677d63bcac06cf90@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-usb/68753a08.050a0220.33d347.0008.GAE@google.com/
-Tested-by: syzbot+b63d677d63bcac06cf90@syzkaller.appspotmail.com
-Fixes: dde5845a529f ("[PATCH] Generic HID layer - code split")
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/613a66cd-4309-4bce-a4f7-2905f9bce0c9@rowland.harvard.edu
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-[ s32ton() was moved by c653ffc28340 ("HID: stop exporting hid_snto32()").
-  Minor context change fixed. ]
-Signed-off-by: Wenshan Lan <jetlan9@163.com>
+Fixes: 12ed27863ea3 ("iio: accel: Add driver support for ADXL355")
+Signed-off-by: Valek Andrej <andrej.v@skyrain.eu>
+Signed-off-by: Kessler Markus <markus.kessler@hilti.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-core.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/iio/accel/adxl355_core.c |   44 ++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 39 insertions(+), 5 deletions(-)
 
---- a/drivers/hid/hid-core.c
-+++ b/drivers/hid/hid-core.c
-@@ -1354,7 +1354,12 @@ EXPORT_SYMBOL_GPL(hid_snto32);
+--- a/drivers/iio/accel/adxl355_core.c
++++ b/drivers/iio/accel/adxl355_core.c
+@@ -56,6 +56,8 @@
+ #define  ADXL355_POWER_CTL_DRDY_MSK	BIT(2)
+ #define ADXL355_SELF_TEST_REG		0x2E
+ #define ADXL355_RESET_REG		0x2F
++#define ADXL355_BASE_ADDR_SHADOW_REG	0x50
++#define ADXL355_SHADOW_REG_COUNT	5
  
- static u32 s32ton(__s32 value, unsigned n)
+ #define ADXL355_DEVID_AD_VAL		0xAD
+ #define ADXL355_DEVID_MST_VAL		0x1D
+@@ -294,7 +296,12 @@ static void adxl355_fill_3db_frequency_t
+ static int adxl355_setup(struct adxl355_data *data)
  {
--	s32 a = value >> (n - 1);
-+	s32 a;
-+	if (!value || !n)
-+		return 0;
+ 	unsigned int regval;
++	int retries = 5; /* the number is chosen based on empirical reasons */
+ 	int ret;
++	u8 *shadow_regs __free(kfree) = kzalloc(ADXL355_SHADOW_REG_COUNT, GFP_KERNEL);
 +
-+	a = value >> (n - 1);
++	if (!shadow_regs)
++		return -ENOMEM;
+ 
+ 	ret = regmap_read(data->regmap, ADXL355_DEVID_AD_REG, &regval);
+ 	if (ret)
+@@ -321,14 +328,41 @@ static int adxl355_setup(struct adxl355_
+ 	if (regval != ADXL355_PARTID_VAL)
+ 		dev_warn(data->dev, "Invalid DEV ID 0x%02x\n", regval);
+ 
+-	/*
+-	 * Perform a software reset to make sure the device is in a consistent
+-	 * state after start-up.
+-	 */
+-	ret = regmap_write(data->regmap, ADXL355_RESET_REG, ADXL355_RESET_CODE);
++	/* Read shadow registers to be compared after reset */
++	ret = regmap_bulk_read(data->regmap,
++			       ADXL355_BASE_ADDR_SHADOW_REG,
++			       shadow_regs, ADXL355_SHADOW_REG_COUNT);
+ 	if (ret)
+ 		return ret;
+ 
++	do {
++		if (--retries == 0) {
++			dev_err(data->dev, "Shadow registers mismatch\n");
++			return -EIO;
++		}
 +
- 	if (a && a != -1)
- 		return value < 0 ? 1 << (n - 1) : (1 << (n - 1)) - 1;
- 	return value & ((1 << n) - 1);
++		/*
++		 * Perform a software reset to make sure the device is in a consistent
++		 * state after start-up.
++		 */
++		ret = regmap_write(data->regmap, ADXL355_RESET_REG,
++				   ADXL355_RESET_CODE);
++		if (ret)
++			return ret;
++
++		/* Wait at least 5ms after software reset */
++		usleep_range(5000, 10000);
++
++		/* Read shadow registers for comparison */
++		ret = regmap_bulk_read(data->regmap,
++				       ADXL355_BASE_ADDR_SHADOW_REG,
++				       data->buffer.buf,
++				       ADXL355_SHADOW_REG_COUNT);
++		if (ret)
++			return ret;
++	} while (memcmp(shadow_regs, data->buffer.buf,
++			ADXL355_SHADOW_REG_COUNT));
++
+ 	ret = regmap_update_bits(data->regmap, ADXL355_POWER_CTL_REG,
+ 				 ADXL355_POWER_CTL_DRDY_MSK,
+ 				 FIELD_PREP(ADXL355_POWER_CTL_DRDY_MSK, 1));
 
 
 
