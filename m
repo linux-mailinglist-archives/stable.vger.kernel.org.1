@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-199255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1D8DCA05B9
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:21:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCFCECA0F5D
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:27:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C46C231919E4
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:07:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3E55234B3989
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:25:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 097E535CB88;
-	Wed,  3 Dec 2025 16:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FC3434214F;
+	Wed,  3 Dec 2025 15:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YeVomeqX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tQaDpnfs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7A7D35CB78;
-	Wed,  3 Dec 2025 16:26:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6DE4341ADD;
+	Wed,  3 Dec 2025 15:57:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779195; cv=none; b=jX76JHptsdoWvpKWyL3lDz16E/AwoFh6XfzeaxDBwWL6m139sV4s73DE2DAay/q7P0TX1/vGRQFoqeY7DGgOZBptIW3UjTEKa/bswPjRJ6VneqeJNlvjyDglMFTrT9rli9L3p62bJ0Y3ph3/HgCzZk5QhE1jT4K+o8Nb96Mq3/0=
+	t=1764777437; cv=none; b=h6lIUG3y40Jw4cXFlcnrgExBCTvGwbqcpG/EuB6TBvP0WtEcqrKHlpLmUQmZ62Z8ahZvGAsF6GAAJUp+Pzp9Ow5M9aNfb1+ryTDOdvwWboH9o8JKzcdgdCqIA6Ocj3MnuBszVHlZOcYJ7FXOcbUDL1jWQP/2IV2as/xbraxUiz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779195; c=relaxed/simple;
-	bh=XHaS1WipkPGEDbnXMqkdBpoSugvDKdM3jHK6Xk1mVmQ=;
+	s=arc-20240116; t=1764777437; c=relaxed/simple;
+	bh=izblh1Jj3jrfHuU1dY+M6gKmoYbO/D+QZ995O2PcDtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kitZ/MA6/8iTVnFPf1qrAdAfQtrDfRD3vjIWgUhL7PxGjL6ty1/3ItGJvMuKWsglSKYQhfSZCqhDUEApphD36u1n3A2Dy1g/NQpCoFBEH33lDSQj4GQs0jLJj4NLq3soU9tbrU0cjSywUx2+gi2dl9TMW7YsfvwOgJr9dehUcRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YeVomeqX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 150DDC4CEF5;
-	Wed,  3 Dec 2025 16:26:34 +0000 (UTC)
+	 MIME-Version; b=WRXOwsKHOYPr/92t3wqxDwEoK8iERCyZhyCm8bc+CwEdAb/sMCRyYGo3yc5/v38RZMVOsaAaCk+uyKTGC9QPDGajG32fcx47HrdAbrDH294E7IuCl1LvkifszRZHgVYp2sgQ20/hds1/WNaXV5nheBPI/daFMCy9bHot+YHASe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tQaDpnfs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 623A5C4CEF5;
+	Wed,  3 Dec 2025 15:57:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779195;
-	bh=XHaS1WipkPGEDbnXMqkdBpoSugvDKdM3jHK6Xk1mVmQ=;
+	s=korg; t=1764777436;
+	bh=izblh1Jj3jrfHuU1dY+M6gKmoYbO/D+QZ995O2PcDtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YeVomeqXmbX+9pHHKsnQW3VmQBXehDbe1NfnzbGRBB89wz0v1fBtlkVDUt1HKuZiF
-	 O+vc47iEnUKR8cXG5afFxCoS5MUOdr/DE+ISPOptZbgewZs333AMgNxxgX3qg0oke4
-	 raDSCfu7ktXerTESy9NujwiJuPNEjSMOrBVr2248=
+	b=tQaDpnfs6AbAnap9UP2A0VrkkbDweS0dSKrVuJXp1YJPZfPK5NT0/k4tbJ/BFLEt3
+	 SxIAMlD7FZIKVAI4gCKJNNVTwr7RinySDx0BwT1P9p9krLiELqyL5aws6ZbZHLMQyy
+	 oF7XXKJopunoWxmXWiDwvSQERTz8gFbpBW7/XtNE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rosen Penev <rosenp@gmail.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 184/568] dmaengine: mv_xor: match alloc_wc and free_wc
-Date: Wed,  3 Dec 2025 16:23:06 +0100
-Message-ID: <20251203152447.465606360@linuxfoundation.org>
+	Runcheng Lu <runcheng.lu@hpmicro.com>,
+	Vincent Mailhol <mailhol@kernel.org>,
+	Celeste Liu <uwu@coelacanthus.name>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 5.15 037/392] can: gs_usb: increase max interface to U8_MAX
+Date: Wed,  3 Dec 2025 16:23:07 +0100
+Message-ID: <20251203152415.469373908@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +61,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rosen Penev <rosenp@gmail.com>
+From: Celeste Liu <uwu@coelacanthus.name>
 
-[ Upstream commit a33e3b667d2f004fdfae6b442bd4676f6c510abb ]
+commit 2a27f6a8fb5722223d526843040f747e9b0e8060 upstream
 
-dma_alloc_wc is used but not dma_free_wc.
+This issue was found by Runcheng Lu when develop HSCanT USB to CAN FD
+converter[1]. The original developers may have only 3 interfaces
+device to test so they write 3 here and wait for future change.
 
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
-Link: https://lore.kernel.org/r/20250821220942.10578-1-rosenp@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+During the HSCanT development, we actually used 4 interfaces, so the
+limitation of 3 is not enough now. But just increase one is not
+future-proofed. Since the channel index type in gs_host_frame is u8,
+just make canch[] become a flexible array with a u8 index, so it
+naturally constraint by U8_MAX and avoid statically allocate 256
+pointer for every gs_usb device.
+
+[1]: https://github.com/cherry-embedded/HSCanT-hardware
+
+Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
+Reported-by: Runcheng Lu <runcheng.lu@hpmicro.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Vincent Mailhol <mailhol@kernel.org>
+Signed-off-by: Celeste Liu <uwu@coelacanthus.name>
+Link: https://patch.msgid.link/20250930-gs-usb-max-if-v5-1-863330bf6666@coelacanthus.name
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/mv_xor.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/can/usb/gs_usb.c |   23 +++++++++++------------
+ 1 file changed, 11 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/dma/mv_xor.c b/drivers/dma/mv_xor.c
-index ca0ba1d462832..8b215cbca1186 100644
---- a/drivers/dma/mv_xor.c
-+++ b/drivers/dma/mv_xor.c
-@@ -1013,7 +1013,7 @@ static int mv_xor_channel_remove(struct mv_xor_chan *mv_chan)
+--- a/drivers/net/can/usb/gs_usb.c
++++ b/drivers/net/can/usb/gs_usb.c
+@@ -157,10 +157,6 @@ struct gs_host_frame {
+ #define GS_MAX_TX_URBS 10
+ /* Only launch a max of GS_MAX_RX_URBS usb requests at a time. */
+ #define GS_MAX_RX_URBS 30
+-/* Maximum number of interfaces the driver supports per device.
+- * Current hardware only supports 2 interfaces. The future may vary.
+- */
+-#define GS_MAX_INTF 2
  
- 	dma_async_device_unregister(&mv_chan->dmadev);
+ struct gs_tx_context {
+ 	struct gs_can *dev;
+@@ -191,10 +187,11 @@ struct gs_can {
  
--	dma_free_coherent(dev, MV_XOR_POOL_SIZE,
-+	dma_free_wc(dev, MV_XOR_POOL_SIZE,
- 			  mv_chan->dma_desc_pool_virt, mv_chan->dma_desc_pool);
- 	dma_unmap_single(dev, mv_chan->dummy_src_addr,
- 			 MV_XOR_MIN_BYTE_COUNT, DMA_FROM_DEVICE);
-@@ -1163,7 +1163,7 @@ mv_xor_channel_add(struct mv_xor_device *xordev,
- err_free_irq:
- 	free_irq(mv_chan->irq, mv_chan);
- err_free_dma:
--	dma_free_coherent(&pdev->dev, MV_XOR_POOL_SIZE,
-+	dma_free_wc(&pdev->dev, MV_XOR_POOL_SIZE,
- 			  mv_chan->dma_desc_pool_virt, mv_chan->dma_desc_pool);
- err_unmap_dst:
- 	dma_unmap_single(dma_dev->dev, mv_chan->dummy_dst_addr,
--- 
-2.51.0
-
+ /* usb interface struct */
+ struct gs_usb {
+-	struct gs_can *canch[GS_MAX_INTF];
+ 	struct usb_anchor rx_submitted;
+ 	struct usb_device *udev;
+ 	u8 active_channels;
++	u8 channel_cnt;
++	struct gs_can *canch[];
+ };
+ 
+ /* 'allocate' a tx context.
+@@ -322,7 +319,7 @@ static void gs_usb_receive_bulk_callback
+ 	}
+ 
+ 	/* device reports out of range channel id */
+-	if (hf->channel >= GS_MAX_INTF)
++	if (hf->channel >= usbcan->channel_cnt)
+ 		goto device_detach;
+ 
+ 	dev = usbcan->canch[hf->channel];
+@@ -410,7 +407,7 @@ static void gs_usb_receive_bulk_callback
+ 	/* USB failure take down all interfaces */
+ 	if (rc == -ENODEV) {
+  device_detach:
+-		for (rc = 0; rc < GS_MAX_INTF; rc++) {
++		for (rc = 0; rc < usbcan->channel_cnt; rc++) {
+ 			if (usbcan->canch[rc])
+ 				netif_device_detach(usbcan->canch[rc]->netdev);
+ 		}
+@@ -993,20 +990,22 @@ static int gs_usb_probe(struct usb_inter
+ 	icount = dconf->icount + 1;
+ 	dev_info(&intf->dev, "Configuring for %d interfaces\n", icount);
+ 
+-	if (icount > GS_MAX_INTF) {
++	if (icount > type_max(typeof(dev->channel_cnt))) {
+ 		dev_err(&intf->dev,
+-			"Driver cannot handle more that %d CAN interfaces\n",
+-			GS_MAX_INTF);
++			"Driver cannot handle more that %u CAN interfaces\n",
++			type_max(typeof(dev->channel_cnt)));
+ 		kfree(dconf);
+ 		return -EINVAL;
+ 	}
+ 
+-	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
++	dev = kzalloc(struct_size(dev, canch, icount), GFP_KERNEL);
+ 	if (!dev) {
+ 		kfree(dconf);
+ 		return -ENOMEM;
+ 	}
+ 
++	dev->channel_cnt = icount;
++
+ 	init_usb_anchor(&dev->rx_submitted);
+ 
+ 	usb_set_intfdata(intf, dev);
+@@ -1047,7 +1046,7 @@ static void gs_usb_disconnect(struct usb
+ 		return;
+ 	}
+ 
+-	for (i = 0; i < GS_MAX_INTF; i++)
++	for (i = 0; i < dev->channel_cnt; i++)
+ 		if (dev->canch[i])
+ 			gs_destroy_candev(dev->canch[i]);
+ 
 
 
 
