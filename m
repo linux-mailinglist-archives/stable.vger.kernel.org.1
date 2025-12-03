@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-198912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE1C4C9FDB2
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:16:12 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFE2FCA00C5
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:42:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 838E03061152
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:07:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 483953016F89
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:37:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51D7134F492;
-	Wed,  3 Dec 2025 16:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 938E035C190;
+	Wed,  3 Dec 2025 16:37:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qvVihqoV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o0lFQtYD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C38A313546;
-	Wed,  3 Dec 2025 16:07:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4470735BDDB;
+	Wed,  3 Dec 2025 16:37:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778078; cv=none; b=UAzeZISHSnRh194RW7AnnMLEboYV3zOpzwErENr1g8+S/1UtS9h0CF6H5v9FtUogvzu2tWpe7yUk7khCdyo793nflGQ8hhXR5n8Ox7F2TOJKCCfv78W/28Pm/LGuKxN0O9KpEfFivTk1RfKTkip87YQJcouVF2/kjCIgr9LijSI=
+	t=1764779865; cv=none; b=jGMa7TCNWWeBSKwBXEbH4n6CAd3mKBuPkaIzEMnPitHBb9tzCEfCLoigcxlEKpz+ZnYUKOfWZEMjjRiEMotFMnBxeuYcwUOAh6XnEok34glK0vKl3IGTOsFYvJ0S3QNnMo3Dh3+4Ktd5jHeImWjD6L5CIWnRZIhlfdwPfeEEq+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778078; c=relaxed/simple;
-	bh=/9V2S2TPmGDtJHr/i+HxKUQZQbFrB1qwf63gQJk5r5w=;
+	s=arc-20240116; t=1764779865; c=relaxed/simple;
+	bh=DrRNDl2Qcrfbr96v1/A0sq8BxEgTMA56xYV5ITNMANQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E0GKCZGD7IumLmHnBwkBDXi2SOLI4cbO081LCfAQMk7x0zRvk0yi+182jQJEUgRYCFuw5auKgfxY6yN7BzPhJUERoUuaQNlI/e7FqLylEpyXCL9vx1pLfNrTogS5GbjCnlmNR63deiRRpSjP0QjHeUIjpzCQKQ/J/XaWiqlPoGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qvVihqoV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38C11C4CEF5;
-	Wed,  3 Dec 2025 16:07:57 +0000 (UTC)
+	 MIME-Version; b=c//bWCW2otrJv5ucfhi5QQ4D73rTfWRjUDq5fQZK9G+Xc2y7MKKm4k9gWtsfh5LdeQF3MMEukiSQiMCNANvj/W3Nlyr251JYOHgTe/uvXa7fLHGmbyBdiSr2WEgH3/Eek8uj25JOprvS3RCIwhzQ6/il841JydQIg8oB3KsFz/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o0lFQtYD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1E04C4CEF5;
+	Wed,  3 Dec 2025 16:37:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778077;
-	bh=/9V2S2TPmGDtJHr/i+HxKUQZQbFrB1qwf63gQJk5r5w=;
+	s=korg; t=1764779865;
+	bh=DrRNDl2Qcrfbr96v1/A0sq8BxEgTMA56xYV5ITNMANQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qvVihqoV0NbEc/Qk0+BnCaP09l/6hKlJv6Utev79HDf5tkiM50wxVnGIILBIay/Cb
-	 xeP5YT+JrnIXpPCVmlbJPYrKB09192QH9/Q/oOkYVwRLgsByxkNQBkfiFnm3vnXQ7R
-	 H3WA6UPoP0f/MgcoR1y91GqB8qlQLkNSeoTvyzHs=
+	b=o0lFQtYDllFP3h12ACYBFT1N2PFDtfDaK/EtwozBVJjCtiKVCIC13Dy0zyAKDxNMO
+	 dT4oCojmtn21+NyPrpNaQfx8NEzVIpIuLF7h+zioLmigyLV9XHc3qh8J62Zs2SrORA
+	 l+rcI3DHTuTF90gWywlhnm9pl2E35yRkjBzfOKTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Scott Mayhew <smayhew@redhat.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Rohit Keshri <rkeshri@redhat.com>,
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Maaz Mombasawala <maaz.mombasawala@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 235/392] NFS: check if suid/sgid was cleared after a write as needed
-Date: Wed,  3 Dec 2025 16:26:25 +0100
-Message-ID: <20251203152422.826787784@linuxfoundation.org>
+Subject: [PATCH 6.1 384/568] drm/vmwgfx: Validate command header size against SVGA_CMD_MAX_DATASIZE
+Date: Wed,  3 Dec 2025 16:26:26 +0100
+Message-ID: <20251203152454.758959021@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Scott Mayhew <smayhew@redhat.com>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-[ Upstream commit 9ff022f3820a31507cb93be6661bf5f3ca0609a4 ]
+[ Upstream commit 32b415a9dc2c212e809b7ebc2b14bc3fbda2b9af ]
 
-I noticed xfstests generic/193 and generic/355 started failing against
-knfsd after commit e7a8ebc305f2 ("NFSD: Offer write delegation for OPEN
-with OPEN4_SHARE_ACCESS_WRITE").
+This data originates from userspace and is used in buffer offset
+calculations which could potentially overflow causing an out-of-bounds
+access.
 
-I ran those same tests against ONTAP (which has had write delegation
-support for a lot longer than knfsd) and they fail there too... so
-while it's a new failure against knfsd, it isn't an entirely new
-failure.
-
-Add the NFS_INO_REVAL_FORCED flag so that the presence of a delegation
-doesn't keep the inode from being revalidated to fetch the updated mode.
-
-Signed-off-by: Scott Mayhew <smayhew@redhat.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Fixes: 8ce75f8ab904 ("drm/vmwgfx: Update device includes for DX device functionality")
+Reported-by: Rohit Keshri <rkeshri@redhat.com>
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Reviewed-by: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patch.msgid.link/20251021190128.13014-1-ian.forbes@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/write.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/nfs/write.c b/fs/nfs/write.c
-index 9323631f4889c..914a2d7a09742 100644
---- a/fs/nfs/write.c
-+++ b/fs/nfs/write.c
-@@ -1619,7 +1619,8 @@ static int nfs_writeback_done(struct rpc_task *task,
- 	/* Deal with the suid/sgid bit corner case */
- 	if (nfs_should_remove_suid(inode)) {
- 		spin_lock(&inode->i_lock);
--		nfs_set_cache_invalid(inode, NFS_INO_INVALID_MODE);
-+		nfs_set_cache_invalid(inode, NFS_INO_INVALID_MODE
-+				| NFS_INO_REVAL_FORCED);
- 		spin_unlock(&inode->i_lock);
- 	}
- 	return 0;
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+index 0d12d6af67c09..247ef293bf845 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+@@ -3669,6 +3669,11 @@ static int vmw_cmd_check(struct vmw_private *dev_priv,
+ 
+ 
+ 	cmd_id = header->id;
++	if (header->size > SVGA_CMD_MAX_DATASIZE) {
++		VMW_DEBUG_USER("SVGA3D command: %d is too big.\n",
++			       cmd_id + SVGA_3D_CMD_BASE);
++		return -E2BIG;
++	}
+ 	*size = header->size + sizeof(SVGA3dCmdHeader);
+ 
+ 	cmd_id -= SVGA_3D_CMD_BASE;
 -- 
 2.51.0
 
