@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-198703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45CEBCA0952
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:43:53 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB7A0CA05CB
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:21:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 79132319C05A
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:23:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CB95830065AC
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:21:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EFE133ADA5;
-	Wed,  3 Dec 2025 15:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4894D340282;
+	Wed,  3 Dec 2025 15:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VWf5HcOi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pFFKCJtD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574AF33A015;
-	Wed,  3 Dec 2025 15:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F121433A6E8;
+	Wed,  3 Dec 2025 15:55:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777412; cv=none; b=qjsjnzEKGI5gGYm/VkLnEmT7vsCQmh9tdRURke8I5jI9706GwOJ88gLb5l+8Q1+oHG54f+Luexs4mQzhQzGvUjVfLdLIHNnRu4QP31sc5021FMAJRbPHDy65Mb1An2UwuUVhAKUp77CevhcwR8vwE+4xARoaF2G2xngua2Kj/3s=
+	t=1764777346; cv=none; b=sfdHFyMaiidn6ayHkauiy4Fo64iboHGHgmsWCOdF5Z27imNU9hpEInnDTi8b/yQkStXDSod93qfY54rOl2QTLOI7diwO8QU4y4YdCoXTsPyu1F6v3JCINV3zI4nn7myAIRY0U/B3Hru7ekweiX5IWyWQZ1Neti44QmzZhlgAmho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777412; c=relaxed/simple;
-	bh=o/y/q1bmDMdElG58VhujslrlALzQmSNwmQ2RkOcp+7M=;
+	s=arc-20240116; t=1764777346; c=relaxed/simple;
+	bh=/2gn0NXoyI4sAPoW8NPF4LAcXGyO6kqCRzouv2T1tGM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cdXEZyYkmKQBz/Qq2nyehJFheaJLSSRQwtRZKJI/u8CZ5ELDFaB4j/yrf2NkQHjQV9Ngrra+0gaI9pI+jZXZ2okgDcxzmSESZoweqw66HuaTG8yMEZRXUKTnxPhvYwDcxg8Ns6fpugOXInSJSNlg3RRbx4aDQUqLGRqnEwcJNKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VWf5HcOi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC8C6C4CEF5;
-	Wed,  3 Dec 2025 15:56:51 +0000 (UTC)
+	 MIME-Version; b=Fh/hjN6F/iRs8N2Tr/CbTGZdOUHHzG8kmTY4Zz/6ahGtNOXznZnzyHnaXnBLtO9I3Dpfm7J4Ol03rZ8KBxLOPCutiRGBAXZ791OgUKcPJtT2IJiAwYOh7updMJe/46n07P9TYUC6fFJfatXaaFP33juh6wqa9CKh/BsNNxq/wpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pFFKCJtD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4980CC4CEF5;
+	Wed,  3 Dec 2025 15:55:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777412;
-	bh=o/y/q1bmDMdElG58VhujslrlALzQmSNwmQ2RkOcp+7M=;
+	s=korg; t=1764777345;
+	bh=/2gn0NXoyI4sAPoW8NPF4LAcXGyO6kqCRzouv2T1tGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VWf5HcOiaIpfpThIu0qb8HAO+iRytBAJjqOg/CzUngH433VqelNgMrBR5AI1fAaGg
-	 0OqP6Q1adMq7O/4zujYliDWbHNReMdHeGGygKSO3sy2G53ZZ4DjEoGTTU0SHwcgdCp
-	 btDgEX/pa0q7f8MQq9R7nruiwl3GIXE30G/Qdw5Y=
+	b=pFFKCJtDjs7dfLu1i2b0oeS1/F04UlSW/NpiscJLDuR6/dU3uImkCXhgrooMqSZom
+	 vCPZcUxVAUXn+UIOaZJZfg+N6W2qtdJGGxs59xtRjxqBnRmpFKtNUHW6ANDKTxZuMP
+	 D/d8bAaZJEBJMRxt4wI4SSgMpCdZpNThvGx+AErU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Hans de Goede <hansg@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.15 009/392] ACPI: video: Fix use-after-free in acpi_video_switch_brightness()
-Date: Wed,  3 Dec 2025 16:22:39 +0100
-Message-ID: <20251203152414.444482663@linuxfoundation.org>
+	syzbot+793cf822d213be1a74f2@syzkaller.appspotmail.com,
+	Junjie Cao <junjie.cao@intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.15 010/392] fbdev: bitblit: bound-check glyph index in bit_putcs*
+Date: Wed,  3 Dec 2025 16:22:40 +0100
+Message-ID: <20251203152414.482572908@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
 References: <20251203152414.082328008@linuxfoundation.org>
@@ -64,50 +65,71 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yuhao Jiang <danisjiang@gmail.com>
+From: Junjie Cao <junjie.cao@intel.com>
 
-commit 8f067aa59430266386b83c18b983ca583faa6a11 upstream.
+commit 18c4ef4e765a798b47980555ed665d78b71aeadf upstream.
 
-The switch_brightness_work delayed work accesses device->brightness
-and device->backlight, freed by acpi_video_dev_unregister_backlight()
-during device removal.
+bit_putcs_aligned()/unaligned() derived the glyph pointer from the
+character value masked by 0xff/0x1ff, which may exceed the actual font's
+glyph count and read past the end of the built-in font array.
+Clamp the index to the actual glyph count before computing the address.
 
-If the work executes after acpi_video_bus_unregister_backlight()
-frees these resources, it causes a use-after-free when
-acpi_video_switch_brightness() dereferences device->brightness or
-device->backlight.
+This fixes a global out-of-bounds read reported by syzbot.
 
-Fix this by calling cancel_delayed_work_sync() for each device's
-switch_brightness_work in acpi_video_bus_remove_notify_handler()
-after removing the notify handler that queues the work. This ensures
-the work completes before the memory is freed.
-
-Fixes: 8ab58e8e7e097 ("ACPI / video: Fix backlight taking 2 steps on a brightness up/down keypress")
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Yuhao Jiang <danisjiang@gmail.com>
-Reviewed-by: Hans de Goede <hansg@kernel.org>
-[ rjw: Changelog edit ]
-Link: https://patch.msgid.link/20251022200704.2655507-1-danisjiang@gmail.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reported-by: syzbot+793cf822d213be1a74f2@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=793cf822d213be1a74f2
+Tested-by: syzbot+793cf822d213be1a74f2@syzkaller.appspotmail.com
+Signed-off-by: Junjie Cao <junjie.cao@intel.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/acpi_video.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/video/fbdev/core/bitblit.c |   16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
---- a/drivers/acpi/acpi_video.c
-+++ b/drivers/acpi/acpi_video.c
-@@ -2034,8 +2034,10 @@ static void acpi_video_bus_remove_notify
- 	struct acpi_video_device *dev;
+--- a/drivers/video/fbdev/core/bitblit.c
++++ b/drivers/video/fbdev/core/bitblit.c
+@@ -79,12 +79,16 @@ static inline void bit_putcs_aligned(str
+ 				     struct fb_image *image, u8 *buf, u8 *dst)
+ {
+ 	u16 charmask = vc->vc_hi_font_mask ? 0x1ff : 0xff;
++	unsigned int charcnt = vc->vc_font.charcount;
+ 	u32 idx = vc->vc_font.width >> 3;
+ 	u8 *src;
  
- 	mutex_lock(&video->device_list_lock);
--	list_for_each_entry(dev, &video->video_device_list, entry)
-+	list_for_each_entry(dev, &video->video_device_list, entry) {
- 		acpi_video_dev_remove_notify_handler(dev);
-+		cancel_delayed_work_sync(&dev->switch_brightness_work);
-+	}
- 	mutex_unlock(&video->device_list_lock);
+ 	while (cnt--) {
+-		src = vc->vc_font.data + (scr_readw(s++)&
+-					  charmask)*cellsize;
++		u16 ch = scr_readw(s++) & charmask;
++
++		if (ch >= charcnt)
++			ch = 0;
++		src = vc->vc_font.data + (unsigned int)ch * cellsize;
  
- 	acpi_video_bus_stop_devices(video);
+ 		if (attr) {
+ 			update_attr(buf, src, attr, vc);
+@@ -112,14 +116,18 @@ static inline void bit_putcs_unaligned(s
+ 				       u8 *dst)
+ {
+ 	u16 charmask = vc->vc_hi_font_mask ? 0x1ff : 0xff;
++	unsigned int charcnt = vc->vc_font.charcount;
+ 	u32 shift_low = 0, mod = vc->vc_font.width % 8;
+ 	u32 shift_high = 8;
+ 	u32 idx = vc->vc_font.width >> 3;
+ 	u8 *src;
+ 
+ 	while (cnt--) {
+-		src = vc->vc_font.data + (scr_readw(s++)&
+-					  charmask)*cellsize;
++		u16 ch = scr_readw(s++) & charmask;
++
++		if (ch >= charcnt)
++			ch = 0;
++		src = vc->vc_font.data + (unsigned int)ch * cellsize;
+ 
+ 		if (attr) {
+ 			update_attr(buf, src, attr, vc);
 
 
 
