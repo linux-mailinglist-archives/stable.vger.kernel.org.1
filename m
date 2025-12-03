@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-198565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD18FCA1113
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:40:40 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CE3ACA0984
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:45:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9731733BBD5E
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:44:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1765D300DB89
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:43:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF39A32824E;
-	Wed,  3 Dec 2025 15:49:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4593932E13D;
+	Wed,  3 Dec 2025 16:10:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JpsraCda"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="spwwI6q+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B3CA327BF9;
-	Wed,  3 Dec 2025 15:49:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D31132B99F;
+	Wed,  3 Dec 2025 16:10:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776963; cv=none; b=tbueaxqdJL1nFjLJ8X0Z38pZfUU6Us/BfM+ihAm1udjo8krEir9Mw0T8SOY/aAO93j0T6u1uHa0BuInBs09f8xve/lEotYiM2GM7InHKi+1Sw03GhubGUtuIbK4k7IEJP+PnR1771D6oPoSYP+wJZM6F0r1eBc2cyFqhYmP73qk=
+	t=1764778222; cv=none; b=ehDYT1bySLkqNJ0YjkJL6r/KPJSgkILDLSngIUpeVioggPInUQcjjXnUhKK355SK/5A1hIqITk/dTFCdAUevP/JLt23T5B90Ca3gypk9SRUAGkbqBDxr5L/PBTl1VvohJpgzxpBBxm6nWMwOwP3OpbzKGCOSrUfAysNk9ymrQh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776963; c=relaxed/simple;
-	bh=sjEW/uTYLHu+N/RySBp/WppbiauEUDtXquJ2ezd7erE=;
+	s=arc-20240116; t=1764778222; c=relaxed/simple;
+	bh=IIiHJEfwog4+3a8x08KaKkOXeiNxsAWy+rJtl2SBCGg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eiPerseUFZk0Go6oXTMDWrMSOixnpNhA+t2ciGE31BudroTLYo14y24j4BVVqjzBbm1EswcB6hErxh5OoePMmimce5HnzDoD0GG2cGNG7TKifMQZ857iixGGthhY5bbCzJK+k0K9CWw8Zmzoz91sGBZU44YdHTWrkX88i5CQIBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JpsraCda; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB27BC116C6;
-	Wed,  3 Dec 2025 15:49:22 +0000 (UTC)
+	 MIME-Version; b=iKsJVzvOX4HKTsmjbnqQFKZsrj47XDeY/uqS0l/NI0MDuJl6tNkMLDFiYx86hhHdzK4OxFUZ37j8K//g1q1/zw01H9mOawWA1292NPPDTbI8C4oRJoR4F1y9C7kJysjPxlk1kSNXwLPtHdG7erfot6dKGB+bkQ/8yvWAq7k2zYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=spwwI6q+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7029FC4CEF5;
+	Wed,  3 Dec 2025 16:10:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776963;
-	bh=sjEW/uTYLHu+N/RySBp/WppbiauEUDtXquJ2ezd7erE=;
+	s=korg; t=1764778221;
+	bh=IIiHJEfwog4+3a8x08KaKkOXeiNxsAWy+rJtl2SBCGg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JpsraCdauca/vKn87dyRScFnXrdkMBgpp/I8r2AJ/AaSnEIFcRD2NDIe2t4TlAEdq
-	 iLb1//nFgX1UjIE4h8xkFr5VZTbQQ1Gbii8VhOFA5g6MrXdc7FVcg38DnsfXsQGbpF
-	 MYxJF/LO+42d8Nc59yyAa9gN6nt20ulaZQWuec+0=
+	b=spwwI6q+giQ4mqNEbOPVaRylMKm3Sute6J2FGwQ3rWm0fM92Z2oK1AAiOJHCC5wzQ
+	 /j7CYSX2ebKV2CEFmamb6Zy7V/5Y21OfWyHejGT1Nf/dKzBzKMF4UYsHeW1gcSH2tB
+	 NM2LIFixWE1KBjWzImi7CTNMn1a5xlsykoIim/7c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 009/146] Bluetooth: SMP: Fix not generating mackey and ltk when repairing
+Subject: [PATCH 5.15 237/392] net: fec: correct rx_bytes statistic for the case SHIFT16 is set
 Date: Wed,  3 Dec 2025 16:26:27 +0100
-Message-ID: <20251203152346.806052433@linuxfoundation.org>
+Message-ID: <20251203152422.898551335@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,89 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Wei Fang <wei.fang@nxp.com>
 
-[ Upstream commit 545d7827b2cd5de5eb85580cebeda6b35b3ff443 ]
+[ Upstream commit ad17e7e92a7c52ce70bb764813fcf99464f96903 ]
 
-The change eed467b517e8 ("Bluetooth: fix passkey uninitialized when used")
-introduced a goto that bypasses the creation of temporary mackey and ltk
-which are later used by the likes of DHKey Check step.
+Two additional bytes in front of each frame received into the RX FIFO if
+SHIFT16 is set, so we need to subtract the extra two bytes from pkt_len
+to correct the statistic of rx_bytes.
 
-Later ffee202a78c2 ("Bluetooth: Always request for user confirmation for
-Just Works (LE SC)") which means confirm_hint is always set in case
-JUST_WORKS so the branch checking for an existing LTK becomes pointless
-as confirm_hint will always be set, so this just merge both cases of
-malicious or legitimate devices to be confirmed before continuing with the
-pairing procedure.
-
-Link: https://github.com/bluez/bluez/issues/1622
-Fixes: eed467b517e8 ("Bluetooth: fix passkey uninitialized when used")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 3ac72b7b63d5 ("net: fec: align IP header in hardware")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20251106021421.2096585-1-wei.fang@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/smp.c | 31 +++++++------------------------
- 1 file changed, 7 insertions(+), 24 deletions(-)
+ drivers/net/ethernet/freescale/fec_main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/bluetooth/smp.c b/net/bluetooth/smp.c
-index 45512b2ba951c..3a1ce04a7a536 100644
---- a/net/bluetooth/smp.c
-+++ b/net/bluetooth/smp.c
-@@ -2136,7 +2136,7 @@ static u8 smp_cmd_pairing_random(struct l2cap_conn *conn, struct sk_buff *skb)
- 	struct smp_chan *smp = chan->data;
- 	struct hci_conn *hcon = conn->hcon;
- 	u8 *pkax, *pkbx, *na, *nb, confirm_hint;
--	u32 passkey;
-+	u32 passkey = 0;
- 	int err;
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index d457af64f8357..263e3755f5c3a 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -1566,6 +1566,8 @@ fec_enet_rx_queue(struct net_device *ndev, int budget, u16 queue_id)
+ 		ndev->stats.rx_packets++;
+ 		pkt_len = fec16_to_cpu(bdp->cbd_datlen);
+ 		ndev->stats.rx_bytes += pkt_len;
++		if (fep->quirks & FEC_QUIRK_HAS_RACC)
++			ndev->stats.rx_bytes -= 2;
  
- 	bt_dev_dbg(hcon->hdev, "conn %p", conn);
-@@ -2188,24 +2188,6 @@ static u8 smp_cmd_pairing_random(struct l2cap_conn *conn, struct sk_buff *skb)
- 		smp_send_cmd(conn, SMP_CMD_PAIRING_RANDOM, sizeof(smp->prnd),
- 			     smp->prnd);
- 		SMP_ALLOW_CMD(smp, SMP_CMD_DHKEY_CHECK);
--
--		/* Only Just-Works pairing requires extra checks */
--		if (smp->method != JUST_WORKS)
--			goto mackey_and_ltk;
--
--		/* If there already exists long term key in local host, leave
--		 * the decision to user space since the remote device could
--		 * be legitimate or malicious.
--		 */
--		if (hci_find_ltk(hcon->hdev, &hcon->dst, hcon->dst_type,
--				 hcon->role)) {
--			/* Set passkey to 0. The value can be any number since
--			 * it'll be ignored anyway.
--			 */
--			passkey = 0;
--			confirm_hint = 1;
--			goto confirm;
--		}
- 	}
- 
- mackey_and_ltk:
-@@ -2226,11 +2208,12 @@ static u8 smp_cmd_pairing_random(struct l2cap_conn *conn, struct sk_buff *skb)
- 	if (err)
- 		return SMP_UNSPECIFIED;
- 
--	confirm_hint = 0;
--
--confirm:
--	if (smp->method == JUST_WORKS)
--		confirm_hint = 1;
-+	/* Always require user confirmation for Just-Works pairing to prevent
-+	 * impersonation attacks, or in case of a legitimate device that is
-+	 * repairing use the confirmation as acknowledgment to proceed with the
-+	 * creation of new keys.
-+	 */
-+	confirm_hint = smp->method == JUST_WORKS ? 1 : 0;
- 
- 	err = mgmt_user_confirm_request(hcon->hdev, &hcon->dst, hcon->type,
- 					hcon->dst_type, passkey, confirm_hint);
+ 		index = fec_enet_get_bd_index(bdp, &rxq->bd);
+ 		skb = rxq->rx_skbuff[index];
 -- 
 2.51.0
 
