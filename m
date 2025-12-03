@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-198636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0308CA1424
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:07:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE329C9FADC
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:52:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BA83431C0286
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:44:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1B4053017642
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:44:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 050FF33506A;
-	Wed,  3 Dec 2025 15:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8659030BB9B;
+	Wed,  3 Dec 2025 15:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dd9N9RSC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pH/MLKTB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B51E6334C36;
-	Wed,  3 Dec 2025 15:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42828307AD9;
+	Wed,  3 Dec 2025 15:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777194; cv=none; b=hm7LaCq2+C9Yz/q9jITDSTqStoGQVU6fajVRSL1w32TORG+Tl5lL//eDkfIfKQvfWzfDE/GEPv7RRnsDQDIpdeeD8/fJ6KpNWDyz6GjpgNHjEJJ5+yerLJJyDpcORbau1XaA7YdamcN7R4WINeC0msD429CHIaQv95RFchIONv8=
+	t=1764776668; cv=none; b=HjUQi0WRuD+HrLhz8ZgTvjDxRHzDi3wXWLsGLQwhziHwWFtUbKI3t8bBygiziBACmhFw/D9GYnbAO1/nxBmOvPLQKWQUkNNS84o/Fsj8uS6nm03DgyDgEeRl5CN3s8HEDnqbR9Z0iG7hFXhwXzsAvtyG3rRZi7wq3M8cTxR9y0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777194; c=relaxed/simple;
-	bh=IaCOAt3isRXwvGDlscJFu1osfagcG2hnXzdwTdBehwc=;
+	s=arc-20240116; t=1764776668; c=relaxed/simple;
+	bh=g2SSj6ebSggiQV5jcl+gR6k8H3hhz4DqEmr5G49ojX0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LpYwvOGPXah7OXRWM3Kjc7z3m3mt/IVDq27+11MPegCRv3ebrY3kkaon37CGP3vW2AGorL3pxj4o7g3BhFjnkAsGC80r/vYbvvgiRXwImFkZhsBwXH7t1VR0svQGLVzdPNYYsbzOFk9PGmkVDEnRRB8QToWIcpqxTonjQk9JWnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dd9N9RSC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21401C4CEF5;
-	Wed,  3 Dec 2025 15:53:13 +0000 (UTC)
+	 MIME-Version; b=VRy5nXJw2os8Shgk3Wu8by4B97N0tev2s4p94CGq1Ejx/X3VnIxhl4K3qt33uvls7BJgGxDO9h9qBS2e1G0p3cZGPyYGaDugwOe3NxU4MpujeHQZ78/NchVEuo0kSJyuNa4i/oj3qk86y4HQKmL77tvSyE2bGEYWMWTFgd/oO0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pH/MLKTB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 481A5C4CEF5;
+	Wed,  3 Dec 2025 15:44:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777194;
-	bh=IaCOAt3isRXwvGDlscJFu1osfagcG2hnXzdwTdBehwc=;
+	s=korg; t=1764776667;
+	bh=g2SSj6ebSggiQV5jcl+gR6k8H3hhz4DqEmr5G49ojX0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dd9N9RSCDBvCnkAHL+mGxRGj6+PGgkLYhQEvFjBgj6P9Yicc/YSwFILtryJ69u1Oz
-	 de86rfiaLQaPCvMgsWyZ73lEXRHbfX5z2k3JcsecOKa6OnHaZStV9o9JmlNEGFMZc7
-	 7yauKDN2TK0nqY5qFN5j2Az+BeS3Gjz7tI3AF0yA=
+	b=pH/MLKTBqbqsZ/zut3/VF32uwBqxfjhzzkxziKo3P0f6pGaiqmg9uZkQJteEnJgyJ
+	 rHOKyul/Y8ukkmxYEWQh/EFzieZtpgFLA8qDIZ1H6Eg/7JvD/NBhMQiGcyXvmY3o2y
+	 sTgiNiksBDy9oFX0W/wE/gluU3pbWy2P9NZLZIxU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.17 078/146] arm64: dts: imx8dxl: Correct pcie-ep interrupt number
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 252/300] mptcp: do not fallback when OoO is present
 Date: Wed,  3 Dec 2025 16:27:36 +0100
-Message-ID: <20251203152349.318699823@linuxfoundation.org>
+Message-ID: <20251203152409.972318212@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,41 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit f10a788e4b6a0ebe8629177894ca779b2dc6203d upstream.
+[ Upstream commit 1bba3f219c5e8c29e63afa3c1fc24f875ebec119 ]
 
-Correct i.MX8DXL's pcie-ep interrupt number.
+In case of DSS corruption, the MPTCP protocol tries to avoid the subflow
+reset if fallback is possible. Such corruptions happen in the receive
+path; to ensure fallback is possible the stack additionally needs to
+check for OoO data, otherwise the fallback will break the data stream.
 
-Fixes: d03743c5659a9 ("arm64: dts: imx8q: add PCIe EP for i.MX8QM and i.MX8QXP")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Fixes: e32d262c89e2 ("mptcp: handle consistently DSS corruption")
 Cc: stable@vger.kernel.org
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/598
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-4-806d3781c95f@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ patch mptcp_dss_corruption() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx8dxl-ss-hsio.dtsi | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/mptcp/protocol.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8dxl-ss-hsio.dtsi b/arch/arm64/boot/dts/freescale/imx8dxl-ss-hsio.dtsi
-index ec466e4d7df5..5c0d09c5c086 100644
---- a/arch/arm64/boot/dts/freescale/imx8dxl-ss-hsio.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8dxl-ss-hsio.dtsi
-@@ -54,3 +54,8 @@ pcie0_ep: pcie-ep@5f010000 {
- 		interrupt-names = "dma";
- 	};
- };
-+
-+&pcieb_ep {
-+	interrupts = <GIC_SPI 46 IRQ_TYPE_LEVEL_HIGH>;
-+	interrupt-names = "dma";
-+};
--- 
-2.52.0
-
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -477,6 +477,15 @@ static void mptcp_check_data_fin(struct
+ static void mptcp_dss_corruption(struct mptcp_sock *msk, struct sock *ssk)
+ {
+ 	if (READ_ONCE(msk->allow_infinite_fallback)) {
++		/* The caller possibly is not holding the msk socket lock, but
++		 * in the fallback case only the current subflow is touching
++		 * the OoO queue.
++		 */
++		if (!RB_EMPTY_ROOT(&msk->out_of_order_queue)) {
++			MPTCP_INC_STATS(sock_net(ssk), MPTCP_MIB_DSSCORRUPTIONRESET);
++			mptcp_subflow_reset(ssk);
++			return;
++		}
+ 		MPTCP_INC_STATS(sock_net(ssk),
+ 				MPTCP_MIB_DSSCORRUPTIONFALLBACK);
+ 		mptcp_do_fallback(ssk);
 
 
 
