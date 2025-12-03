@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-198909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2C89C9FD19
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:08:11 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02C3BCA0009
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:37:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DB6D23002512
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:07:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 719EE300094B
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:37:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A7B834F484;
-	Wed,  3 Dec 2025 16:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D97735C185;
+	Wed,  3 Dec 2025 16:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0LfIi/Wh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A4Z6Foqh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54F173074B3;
-	Wed,  3 Dec 2025 16:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD2C83596FA;
+	Wed,  3 Dec 2025 16:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778067; cv=none; b=beyskZCeJ9Zab1vw2WWFkVVpL5TXYb0MlKzpxK8zvb9lORMPy9z9VfrOqqz2NFlczGspSXLOYYOarMCow/RDCQk7ApVWvzSRfXWqOlmDiQFZCbQa4SvR5ytM4WS4azrp+MSnUw9MYMIUE9qvRFqDhpsQgd3oBxTDDd5o6jVKsVA=
+	t=1764779852; cv=none; b=hPrOmDifkVQOTY7+HwqRjxhpKbUvfhnklEBLayVfmpNhyA/aEX/c+g9zmdY16niDzXoZblAzwkn1QZzFvDUtByr0nsy0npf+BWkRWNWxwbaW0VdKX/HV9QABFc24KYIyWQxlI/gC7Nt2WBD61dgJmxXsln1pXoah14rZcVD7pqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778067; c=relaxed/simple;
-	bh=HU5/UI1DtFdQR1a2RIq8JGD7d9bojZoxCKsSSt5Bg6w=;
+	s=arc-20240116; t=1764779852; c=relaxed/simple;
+	bh=Kdgqn2spV+yEMPGnku/amilGEdfeeXGeG0CFYpxqp6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pzy5amxU2LOBch87pudrFIRJHw6cdfjYestYc0+dthHGh0wa6dq0PsJ0nh7GTcLAi3W8SQWemHfxSp2dybBrFxUXgUzcJM3zkMIYlhJVruU+ZOwkOW4T5+EFR5xvvVDNzvjO+5Lj9zjdCqNuj/MQgIw+jcsoUT0Yf6YRZVE576k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0LfIi/Wh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACEF1C4CEF5;
-	Wed,  3 Dec 2025 16:07:46 +0000 (UTC)
+	 MIME-Version; b=XBT7uxjjuQgFhVsW0VA7hd8sirc5OFxYJ7q2aP4nzhiP+VtY/wVhjA99Bzny4C/5u7A8YovL6ZIm3rWkkTcIRB0jPj+XSpEw/pHnodm6qy30wLy72ZaASaYEgCKmUqGX9mfWZSNj4IUSOEQuj5TwJvs9ock0l2/COG6IzqSJoa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A4Z6Foqh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 459C5C4CEF5;
+	Wed,  3 Dec 2025 16:37:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778067;
-	bh=HU5/UI1DtFdQR1a2RIq8JGD7d9bojZoxCKsSSt5Bg6w=;
+	s=korg; t=1764779852;
+	bh=Kdgqn2spV+yEMPGnku/amilGEdfeeXGeG0CFYpxqp6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0LfIi/WhLOa/Gv5CcczZAd7tAHd3o5Eb6wdZqVI/+U+skKi3GZtCJza03AS4+zkDe
-	 oKaMdjAWMdjRQAR7LDU33rWDsPVu2kA7KOrh1gJ6hBInTocyVQIgkjtudIKtdvfNj3
-	 pHYvHz+cBGWnQe9TsiPaWsg4L16dF9KhJXkamX0I=
+	b=A4Z6FoqhjsXGnNtA2fPYEzcauslj3/MkD4MoNKMjHIj6uO6XKLNoEv6jxgg9jy8TK
+	 YMl56sXHxIeCp9yvRjWW2TSGGq/WSctsoP8a/cZ2SmQb2vr8ajUKhRZ8LrW9eodCVz
+	 g7IFOZNt+prIjUvZxOcmkMtZ1RHfM+74Zy6sdoC0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danil Skrebenkov <danil.skrebenkov@cloudbear.ru>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Paul Walmsley <pjw@kernel.org>,
+	Wu Zongyong <wuzongyong@linux.alibaba.com>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 232/392] RISC-V: clear hot-unplugged cores from all task mm_cpumasks to avoid rfence errors
+Subject: [PATCH 6.1 380/568] acpi,srat: Fix incorrect device handle check for Generic Initiator
 Date: Wed,  3 Dec 2025 16:26:22 +0100
-Message-ID: <20251203152422.718637808@linuxfoundation.org>
+Message-ID: <20251203152454.614745214@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danil Skrebenkov <danil.skrebenkov@cloudbear.ru>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
 
-[ Upstream commit ae9e9f3d67dcef7582a4524047b01e33c5185ddb ]
+[ Upstream commit 7c3643f204edf1c5edb12b36b34838683ee5f8dc ]
 
-openSBI v1.7 adds harts checks for ipi operations. Especially it
-adds comparison between hmask passed as an argument from linux
-and mask of online harts (from openSBI side). If they don't
-fit each other the error occurs.
+The Generic Initiator Affinity Structure in SRAT table uses device
+handle type field to indicate the device type. According to ACPI
+specification, the device handle type value of 1 represents PCI device,
+not 0.
 
-When cpu is offline, cpu_online_mask is explicitly cleared in
-__cpu_disable. However, there is no explicit clearing of
-mm_cpumask. mm_cpumask is used for rfence operations that
-call openSBI RFENCE extension which uses ipi to remote harts.
-If hart is offline there may be error if mask of linux is not
-as mask of online harts in openSBI.
-
-this patch adds explicit clearing of mm_cpumask for offline hart.
-
-Signed-off-by: Danil Skrebenkov <danil.skrebenkov@cloudbear.ru>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Link: https://lore.kernel.org/r/20250919132849.31676-1-danil.skrebenkov@cloudbear.ru
-[pjw@kernel.org: rewrote subject line for clarity]
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
+Fixes: 894c26a1c274 ("ACPI: Support Generic Initiator only domains")
+Reported-by: Wu Zongyong <wuzongyong@linux.alibaba.com>
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Link: https://patch.msgid.link/20250913023224.39281-1-xueshuai@linux.alibaba.com
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/cpu-hotplug.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/acpi/numa/srat.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/riscv/kernel/cpu-hotplug.c b/arch/riscv/kernel/cpu-hotplug.c
-index 28a3fa6e67d79..25659db3b1a43 100644
---- a/arch/riscv/kernel/cpu-hotplug.c
-+++ b/arch/riscv/kernel/cpu-hotplug.c
-@@ -67,6 +67,7 @@ void __cpu_die(unsigned int cpu)
- 	}
- 	pr_notice("CPU%u: off\n", cpu);
+diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
+index a44c0761fd1c0..848942bf883cb 100644
+--- a/drivers/acpi/numa/srat.c
++++ b/drivers/acpi/numa/srat.c
+@@ -140,7 +140,7 @@ acpi_table_print_srat_entry(struct acpi_subtable_header *header)
+ 		struct acpi_srat_generic_affinity *p =
+ 			(struct acpi_srat_generic_affinity *)header;
  
-+	clear_tasks_mm_cpumask(cpu);
- 	/* Verify from the firmware if the cpu is really stopped*/
- 	if (cpu_ops[cpu]->cpu_is_stopped)
- 		ret = cpu_ops[cpu]->cpu_is_stopped(cpu);
+-		if (p->device_handle_type == 0) {
++		if (p->device_handle_type == 1) {
+ 			/*
+ 			 * For pci devices this may be the only place they
+ 			 * are assigned a proximity domain
 -- 
 2.51.0
 
