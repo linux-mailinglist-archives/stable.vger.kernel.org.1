@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-199307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E24ECCA10ED
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:40:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C44ACA0640
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:23:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6C5393008572
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:39:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B249C319BD9B
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:08:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65C57346A14;
-	Wed,  3 Dec 2025 16:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86F1D331A64;
+	Wed,  3 Dec 2025 16:00:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ls6lZS3T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WSRFjLgZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2171D346A0D;
-	Wed,  3 Dec 2025 16:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2A6331A5F;
+	Wed,  3 Dec 2025 16:00:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779363; cv=none; b=aBVULsc3Y4DazfrDtCDTcALeRjyOCsK6Z3IBH38v6W0TAOtAMI5IglzxzeHRH0R+5zs5uOzWHeuSWFfy0s1Gqea+1TyVqvM6hF0QpC+2cJmevVjE/IfjoXb78Q5YK03XqUstmAZKOzjgidBPtJY+rqLX2GtQPBPocTMXthagI3o=
+	t=1764777600; cv=none; b=EwgClta5mu6DGGTLUgs05pmYQ0aX9FfrQsbGJHsSjqCK5xSdUPi4sfAxBfxmWOO4S18138MFs/aLrNHmDvr4U5QkGBZKyxYD9zH83U/UJ7W4HyuIRyqP+dTfvuiBSrhQz6FhXEQo+NLVVD0fc3O+c7k3WfPy8rYezX/NKNgKYd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779363; c=relaxed/simple;
-	bh=PnvPypbMy8fijhr/3blDO0zLw3BGeoVgs/kZHYaOOMQ=;
+	s=arc-20240116; t=1764777600; c=relaxed/simple;
+	bh=1b4Mi8qZZ/4UcGN8dc++SCAT6HC0tuxfwGHYTeb86aE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UUA/GimI3L76dCJ1XQ642HO4dmaGo72weBBhq9m6CY/8Xbm44FH5TMomVCwIuqGD8AWnkPIwJaFgHUPE7Sbkv3SEYZVirFO99r6ub/CjXapeq80kdw5jMwuZHhnbAz4jgECAUYkD5OytDuHdOODqxVAHLT1nqwH2YFUMb91/YvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ls6lZS3T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EBE0C4CEF5;
-	Wed,  3 Dec 2025 16:29:21 +0000 (UTC)
+	 MIME-Version; b=Vdhl99z54jWsvlgILXsjMkt/2DUTm0+3IzuW2s37yr7JiqDsWCdpvpyY28NMnQYwfFyeoD0opuZCjfpPMDWjlLD/qWvT7PenCM78RnNsNnQW7ga6yM+iq5u3qOGk4NQpmK5IYyr35+jJroX2fwE948XGSbCzrsmjSVpOe/dGOxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WSRFjLgZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 835E0C4CEF5;
+	Wed,  3 Dec 2025 15:59:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779362;
-	bh=PnvPypbMy8fijhr/3blDO0zLw3BGeoVgs/kZHYaOOMQ=;
+	s=korg; t=1764777599;
+	bh=1b4Mi8qZZ/4UcGN8dc++SCAT6HC0tuxfwGHYTeb86aE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ls6lZS3TodWXsxbV4Cafss5up2P9vygn00RmyaO+39FDxDdiO6g18iCmOCpszlvxf
-	 8YccIMl/tpvcTbo+Bkx2Gsumn2o8ozaoIBBwVgUavX/0ADzzFFGMPCrGP6WR+/wbAJ
-	 qT7FiY1rTUrxAradJQ8xswRN2ROQCQ2iPyN7vtvU=
+	b=WSRFjLgZPjSmX/R1ILO7w9j4CqSe4ucrtldo5DfypxlE3zLSHwbIova+hT/xkyBWP
+	 PoUSlgXoCiDHNxUg37AzqNYkjgPkuNUnryFXEGJT2r1C5zx2AMH1tUXEi45PiNtxn7
+	 7Bb9jYD+BXMR399ECcY7EhoTe7x8dHTx/eugEcWY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neil@brown.name>,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 235/568] allow finish_no_open(file, ERR_PTR(-E...))
-Date: Wed,  3 Dec 2025 16:23:57 +0100
-Message-ID: <20251203152449.329354124@linuxfoundation.org>
+Subject: [PATCH 5.15 088/392] mfd: madera: Work around false-positive -Wininitialized warning
+Date: Wed,  3 Dec 2025 16:23:58 +0100
+Message-ID: <20251203152417.341199970@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit fe91e078b60d1beabf5cef4a37c848457a6d2dfb ]
+[ Upstream commit 364752aa0c6ab0a06a2d5bfdb362c1ca407f1a30 ]
 
-... allowing any ->lookup() return value to be passed to it.
+clang-21 warns about one uninitialized variable getting dereferenced
+in madera_dev_init:
 
-Reviewed-by: NeilBrown <neil@brown.name>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+drivers/mfd/madera-core.c:739:10: error: variable 'mfd_devs' is uninitialized when used here [-Werror,-Wuninitialized]
+  739 |                               mfd_devs, n_devs,
+      |                               ^~~~~~~~
+drivers/mfd/madera-core.c:459:33: note: initialize the variable 'mfd_devs' to silence this warning
+  459 |         const struct mfd_cell *mfd_devs;
+      |                                        ^
+      |                                         = NULL
+
+The code is actually correct here because n_devs is only nonzero
+when mfd_devs is a valid pointer, but this is impossible for the
+compiler to see reliably.
+
+Change the logic to check for the pointer as well, to make this easier
+for the compiler to follow.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20250807071932.4085458-1-arnd@kernel.org
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/open.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/mfd/madera-core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/open.c b/fs/open.c
-index 2f88454887986..85466cd40c407 100644
---- a/fs/open.c
-+++ b/fs/open.c
-@@ -978,18 +978,20 @@ EXPORT_SYMBOL(finish_open);
-  * finish_no_open - finish ->atomic_open() without opening the file
-  *
-  * @file: file pointer
-- * @dentry: dentry or NULL (as returned from ->lookup())
-+ * @dentry: dentry, ERR_PTR(-E...) or NULL (as returned from ->lookup())
-  *
-- * This can be used to set the result of a successful lookup in ->atomic_open().
-+ * This can be used to set the result of a lookup in ->atomic_open().
-  *
-  * NB: unlike finish_open() this function does consume the dentry reference and
-  * the caller need not dput() it.
-  *
-- * Returns "0" which must be the return value of ->atomic_open() after having
-- * called this function.
-+ * Returns 0 or -E..., which must be the return value of ->atomic_open() after
-+ * having called this function.
-  */
- int finish_no_open(struct file *file, struct dentry *dentry)
- {
-+	if (IS_ERR(dentry))
-+		return PTR_ERR(dentry);
- 	file->f_path.dentry = dentry;
- 	return 0;
- }
+diff --git a/drivers/mfd/madera-core.c b/drivers/mfd/madera-core.c
+index a2abc0094def7..87797d77c9f0c 100644
+--- a/drivers/mfd/madera-core.c
++++ b/drivers/mfd/madera-core.c
+@@ -457,7 +457,7 @@ int madera_dev_init(struct madera *madera)
+ 	struct device *dev = madera->dev;
+ 	unsigned int hwid;
+ 	int (*patch_fn)(struct madera *) = NULL;
+-	const struct mfd_cell *mfd_devs;
++	const struct mfd_cell *mfd_devs = NULL;
+ 	int n_devs = 0;
+ 	int i, ret;
+ 
+@@ -671,7 +671,7 @@ int madera_dev_init(struct madera *madera)
+ 		goto err_reset;
+ 	}
+ 
+-	if (!n_devs) {
++	if (!n_devs || !mfd_devs) {
+ 		dev_err(madera->dev, "Device ID 0x%x not a %s\n", hwid,
+ 			madera->type_name);
+ 		ret = -ENODEV;
 -- 
 2.51.0
 
