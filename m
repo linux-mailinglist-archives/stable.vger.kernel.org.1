@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-198951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54315CA084B
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:36:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94C12C9FA40
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:47:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7E1763247195
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:17:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D018A3031360
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:41:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98441329E69;
-	Wed,  3 Dec 2025 16:10:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B3A8303A3D;
+	Wed,  3 Dec 2025 15:40:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uRvI7V7c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G6ZhPK0M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535C2328623;
-	Wed,  3 Dec 2025 16:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F43DDAB;
+	Wed,  3 Dec 2025 15:40:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778207; cv=none; b=Ojs9q2ZvqcEomy9ag0s4F6jr2ah9LoZi9yJ2vpWOeRjgAJTDjg7cM1qyHXUQTrvWzb/SLNs4O4aw8jhYHYfVDMW8D9IxbPQ2oxW4Hi2HV6si+AwvpTh4Cwhdpdjzw/ZF3QlueqKC+fi8smygD/F/Eb9dedUih6INRFmzu2MgVzw=
+	t=1764776457; cv=none; b=J4KU/X+1BaRNsD+dOpXf4vLxicoLievgMobW6jxSpyafGVZ2044cjEdhALYIyawmwGb46csTx2Bqr4v1MD6wvueo66WFUePKTGR3RxGL/pdCI0EPS/SXLKE35kDnYBRm3nb2l5PHdM8APV4c8HQWwj2YvSpvysrkfVk/jw+knOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778207; c=relaxed/simple;
-	bh=r2adOIODv89GoYW5mdkssJDn6snWoa81mhFVD1/fdmA=;
+	s=arc-20240116; t=1764776457; c=relaxed/simple;
+	bh=rmm+wyVyxDIS3bhx/s3jGsd3db0LfiLR0zphv+wZGBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XfW3rmPuqggkvdbwiWzVO/09xENtsWO0w1PKULEvoB5eMz76NV47eet1kbwI8YDq/C2NYpELuw2SCD5qxhkz9It0UC2GB2s/5t/1Q2uXxzE94XUe4FF/HhlAk+PCjDDG70fXmS+YzdAWL3bvtPptP8ZTbRG6B5pjDgXTCKWs5tI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uRvI7V7c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 410F6C4CEF5;
-	Wed,  3 Dec 2025 16:10:04 +0000 (UTC)
+	 MIME-Version; b=gR6NaD8ZwYubsE/4C3ymuIHRU0A0NSYnedNq75deJJG6MtvUgKbBGDS5Nu5e2GXmjSxYoRq56paww3mYSsoX1h0+K45Zzx4eTzX3tymK3tfjpPSVh5c606wQ308qD3rjqZUgX/kLD7mymUeEAVsG7r2vFuy/OqBkYDwsFsDGU38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G6ZhPK0M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9837EC4CEF5;
+	Wed,  3 Dec 2025 15:40:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778205;
-	bh=r2adOIODv89GoYW5mdkssJDn6snWoa81mhFVD1/fdmA=;
+	s=korg; t=1764776457;
+	bh=rmm+wyVyxDIS3bhx/s3jGsd3db0LfiLR0zphv+wZGBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uRvI7V7clgyPV/UHonHjzG232TgWliAy2ANQCXMM91Ml8lwFxbPS2alG9aBUP5nNO
-	 30RQPfa7Y46eenY+AcDyzzltfAPDv99otNaPKTLQZTi3EgGMYMH77M01eJXrc4SN3W
-	 ImSSVn/KUZw5RW83Lx9dNcAnqgrIJzS4krDw7k6s=
+	b=G6ZhPK0MDtwjfZzKmYzPVLMTHL8liIbFZpwQSrCSfWis92F+jTgc2yKH1IGbVAP5o
+	 T8z72/7T/o3iPcdJ+yTcdxp5nwgY5f/tsFK/ztirILWGW1U8mH10V/4r30reHybAMU
+	 p3p+q2///RQVn5ohmc+cxFoWt/PBvkh8N36i9dD8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f8c46c8b2b7f6e076e99@syzkaller.appspotmail.com,
+	syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com,
+	Ranganath V N <vnranganath.20@gmail.com>,
 	Eric Dumazet <edumazet@google.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 242/392] sctp: prevent possible shift-out-of-bounds in sctp_transport_update_rto
+Subject: [PATCH 5.10 188/300] net: sched: act_ife: initialize struct tc_ife to fix KMSAN kernel-infoleak
 Date: Wed,  3 Dec 2025 16:26:32 +0100
-Message-ID: <20251203152423.080795524@linuxfoundation.org>
+Message-ID: <20251203152407.592079128@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ranganath V N <vnranganath.20@gmail.com>
 
-[ Upstream commit 1534ff77757e44bcc4b98d0196bc5c0052fce5fa ]
+[ Upstream commit ce50039be49eea9b4cd8873ca6eccded1b4a130a ]
 
-syzbot reported a possible shift-out-of-bounds [1]
+Fix a KMSAN kernel-infoleak detected  by the syzbot .
 
-Blamed commit added rto_alpha_max and rto_beta_max set to 1000.
+[net?] KMSAN: kernel-infoleak in __skb_datagram_iter
 
-It is unclear if some sctp users are setting very large rto_alpha
-and/or rto_beta.
+In tcf_ife_dump(), the variable 'opt' was partially initialized using a
+designatied initializer. While the padding bytes are reamined
+uninitialized. nla_put() copies the entire structure into a
+netlink message, these uninitialized bytes leaked to userspace.
 
-In order to prevent user regression, perform the test at run time.
+Initialize the structure with memset before assigning its fields
+to ensure all members and padding are cleared prior to beign copied.
 
-Also add READ_ONCE() annotations as sysctl values can change under us.
+This change silences the KMSAN report and prevents potential information
+leaks from the kernel memory.
 
-[1]
+This fix has been tested and validated by syzbot. This patch closes the
+bug reported at the following syzkaller link and ensures no infoleak.
 
-UBSAN: shift-out-of-bounds in net/sctp/transport.c:509:41
-shift exponent 64 is too large for 32-bit type 'unsigned int'
-CPU: 0 UID: 0 PID: 16704 Comm: syz.2.2320 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/02/2025
-Call Trace:
- <TASK>
-  __dump_stack lib/dump_stack.c:94 [inline]
-  dump_stack_lvl+0x16c/0x1f0 lib/dump_stack.c:120
-  ubsan_epilogue lib/ubsan.c:233 [inline]
-  __ubsan_handle_shift_out_of_bounds+0x27f/0x420 lib/ubsan.c:494
-  sctp_transport_update_rto.cold+0x1c/0x34b net/sctp/transport.c:509
-  sctp_check_transmitted+0x11c4/0x1c30 net/sctp/outqueue.c:1502
-  sctp_outq_sack+0x4ef/0x1b20 net/sctp/outqueue.c:1338
-  sctp_cmd_process_sack net/sctp/sm_sideeffect.c:840 [inline]
-  sctp_cmd_interpreter net/sctp/sm_sideeffect.c:1372 [inline]
-
-Fixes: b58537a1f562 ("net: sctp: fix permissions for rto_alpha and rto_beta knobs")
-Reported-by: syzbot+f8c46c8b2b7f6e076e99@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/690c81ae.050a0220.3d0d33.014e.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/20251106111054.3288127-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0c85cae3350b7d486aee
+Tested-by: syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com
+Fixes: ef6980b6becb ("introduce IFE action")
+Signed-off-by: Ranganath V N <vnranganath.20@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20251109091336.9277-3-vnranganath.20@gmail.com
+Acked-by: Cong Wang <xiyou.wangcong@gmail.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/transport.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ net/sched/act_ife.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/net/sctp/transport.c b/net/sctp/transport.c
-index 687e6a43d049d..d279dda07b1ba 100644
---- a/net/sctp/transport.c
-+++ b/net/sctp/transport.c
-@@ -501,6 +501,7 @@ void sctp_transport_update_rto(struct sctp_transport *tp, __u32 rtt)
+diff --git a/net/sched/act_ife.c b/net/sched/act_ife.c
+index 99548b2a1bc83..892d4824d81d5 100644
+--- a/net/sched/act_ife.c
++++ b/net/sched/act_ife.c
+@@ -643,13 +643,15 @@ static int tcf_ife_dump(struct sk_buff *skb, struct tc_action *a, int bind,
+ 	unsigned char *b = skb_tail_pointer(skb);
+ 	struct tcf_ife_info *ife = to_ife(a);
+ 	struct tcf_ife_params *p;
+-	struct tc_ife opt = {
+-		.index = ife->tcf_index,
+-		.refcnt = refcount_read(&ife->tcf_refcnt) - ref,
+-		.bindcnt = atomic_read(&ife->tcf_bindcnt) - bind,
+-	};
++	struct tc_ife opt;
+ 	struct tcf_t t;
  
- 	if (tp->rttvar || tp->srtt) {
- 		struct net *net = tp->asoc->base.net;
-+		unsigned int rto_beta, rto_alpha;
- 		/* 6.3.1 C3) When a new RTT measurement R' is made, set
- 		 * RTTVAR <- (1 - RTO.Beta) * RTTVAR + RTO.Beta * |SRTT - R'|
- 		 * SRTT <- (1 - RTO.Alpha) * SRTT + RTO.Alpha * R'
-@@ -512,10 +513,14 @@ void sctp_transport_update_rto(struct sctp_transport *tp, __u32 rtt)
- 		 * For example, assuming the default value of RTO.Alpha of
- 		 * 1/8, rto_alpha would be expressed as 3.
- 		 */
--		tp->rttvar = tp->rttvar - (tp->rttvar >> net->sctp.rto_beta)
--			+ (((__u32)abs((__s64)tp->srtt - (__s64)rtt)) >> net->sctp.rto_beta);
--		tp->srtt = tp->srtt - (tp->srtt >> net->sctp.rto_alpha)
--			+ (rtt >> net->sctp.rto_alpha);
-+		rto_beta = READ_ONCE(net->sctp.rto_beta);
-+		if (rto_beta < 32)
-+			tp->rttvar = tp->rttvar - (tp->rttvar >> rto_beta)
-+				+ (((__u32)abs((__s64)tp->srtt - (__s64)rtt)) >> rto_beta);
-+		rto_alpha = READ_ONCE(net->sctp.rto_alpha);
-+		if (rto_alpha < 32)
-+			tp->srtt = tp->srtt - (tp->srtt >> rto_alpha)
-+				+ (rtt >> rto_alpha);
- 	} else {
- 		/* 6.3.1 C2) When the first RTT measurement R is made, set
- 		 * SRTT <- R, RTTVAR <- R/2.
++	memset(&opt, 0, sizeof(opt));
++
++	opt.index = ife->tcf_index,
++	opt.refcnt = refcount_read(&ife->tcf_refcnt) - ref,
++	opt.bindcnt = atomic_read(&ife->tcf_bindcnt) - bind,
++
+ 	spin_lock_bh(&ife->tcf_lock);
+ 	opt.action = ife->tcf_action;
+ 	p = rcu_dereference_protected(ife->params,
 -- 
 2.51.0
 
