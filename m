@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-199025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09B04CA17E6
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:54:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4E31CA1459
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:08:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CEA8A306BE78
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:48:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8D08932D957A
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:43:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10FDD34A77E;
-	Wed,  3 Dec 2025 16:14:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2955B32FA36;
+	Wed,  3 Dec 2025 15:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WCgJJivT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IECcEOua"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFEEF34A3BC;
-	Wed,  3 Dec 2025 16:14:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B3632FA07;
+	Wed,  3 Dec 2025 15:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778451; cv=none; b=QcHCNpRUSxnRNQ6mYSHbtBHHoxhTSWAn8Hv0vYqSzbHmJBPOqSvmek811cjKAWumt/s7+TMIFLmGzoSJ5MzVWvuMKi6kxyV3blQMM8kZssj14cj2nT/CkUVxm0ez4qS1GbdvBBEizwdsSY6fnRjyFhUWLvzlaeVAP/5a5BSy9sE=
+	t=1764777121; cv=none; b=dpfkhhOWFc0Dn85GNFOyf1ttD5Tmp5GhH81gHow6Z/ngFy4Ht782nsqljISXTCrs0DYi9RMk2uJvjOJVezJTl13cURMbfLWQIfAky2ILxKwBmzJx7qvJL0EDIsTDt/8FN3If6gl2WS9SUXuZPnppZePWhqUCkjhkRsni/Tfmc2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778451; c=relaxed/simple;
-	bh=lcBh9Vcpq5qMBGIXsQz/SxXjgLC97Sn6pIjsDCHByF4=;
+	s=arc-20240116; t=1764777121; c=relaxed/simple;
+	bh=sewMsT8afD43yHMPyaC2SV2OYXP/YRTZtLdoCQcoWSc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lNZGMerRWMQSMify+SVF+jufB/i+GDON8BWkaRCxBmspaxkIJXh/AenNVdAw+YE8mbiRri5Gh17Op1CUgQkV8A1vtzSLnESHnxUqXacS9+DD3LDyXlqV1fC2j73LOMMDBs0Nr1WiL4YTL9KRYFXbyjauPB0djmAb0pet0UOlhDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WCgJJivT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3149C4CEF5;
-	Wed,  3 Dec 2025 16:14:10 +0000 (UTC)
+	 MIME-Version; b=e9DShdXVbRmDB1xgAzCLfSKYA3mFvSS22+7n5TQk6YxD4xNkaerpbm7QYZpj/Yu6UZ761xfUFqN5YwQZvZGraR2XLcbIFxitPxUi+Z9iU7tqrwKV3AkkZyod1/S3Bzk4r9q5xr+Uog6S+2Xyha8SpePv7fgO494qSDqhzQ0OOsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IECcEOua; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2129EC4CEF5;
+	Wed,  3 Dec 2025 15:52:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778451;
-	bh=lcBh9Vcpq5qMBGIXsQz/SxXjgLC97Sn6pIjsDCHByF4=;
+	s=korg; t=1764777121;
+	bh=sewMsT8afD43yHMPyaC2SV2OYXP/YRTZtLdoCQcoWSc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WCgJJivTGqX9K37nfg0kh1hLD6m4//58gSHk5zu61UEisnhwZhOzINKM42tow83nl
-	 nGyzZcH4fgNSjjkAcUOqE2HKbKFkRXuqGnMwn6Xd6LPzjpYCF8YtD3aQwjxAcIqGCZ
-	 XTtl9rsSkWZJ96I9nrlmq6XY0EjaHCPonbArG4GY=
+	b=IECcEOua/wYBXy9q9H7vUs0MylZqAmza65o1kjGp4le1iylr2Z8igJ5vJF9xr+fkI
+	 Wxqc5JJlG9Etx9addTkgDibSzVZQULY9Jxue2KXGI49IsAJvX9Q2lOtb83rfJbaMtl
+	 6ND41s8YqOe1A2FNp8n1mw+wyIQPzyO2u8v26E+g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Alexey Charkov <alchark@gmail.com>,
-	Hugh Cole-Baker <sigmaris@gmail.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 317/392] mmc: sdhci-of-dwcmshc: Change DLL_STRBIN_TAPNUM_DEFAULT to 0x4
+	stable <stable@kernel.org>,
+	Jamie Iles <jamie.iles@oss.qualcomm.com>,
+	Punit Agrawal <punit.agrawal@oss.qualcomm.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.17 089/146] drivers/usb/dwc3: fix PCI parent check
 Date: Wed,  3 Dec 2025 16:27:47 +0100
-Message-ID: <20251203152425.825121868@linuxfoundation.org>
+Message-ID: <20251203152349.717779739@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shawn Lin <shawn.lin@rock-chips.com>
+From: Jamie Iles <jamie.iles@oss.qualcomm.com>
 
-[ Upstream commit a28352cf2d2f8380e7aca8cb61682396dca7a991 ]
+commit 40f8d17eed7533ed2bbb5e3cc680049b19411b2e upstream.
 
-strbin signal delay under 0x8 configuration is not stable after massive
-test. The recommandation of it should be 0x4.
+The sysdev_is_parent check was being used to infer PCI devices that have
+the DMA mask set from the PCI capabilities, but sysdev_is_parent is also
+used for non-PCI ACPI devices in which case the DMA mask would be the
+bus default or as set by the _DMA method.
 
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-Tested-by: Alexey Charkov <alchark@gmail.com>
-Tested-by: Hugh Cole-Baker <sigmaris@gmail.com>
-Fixes: 08f3dff799d4 ("mmc: sdhci-of-dwcmshc: add rockchip platform support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Without this fix the DMA mask would default to 32-bits and so allocation
+would fail if there was no DRAM below 4GB.
+
+Fixes: 47ce45906ca9 ("usb: dwc3: leave default DMA for PCI devices")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Jamie Iles <jamie.iles@oss.qualcomm.com>
+Signed-off-by: Punit Agrawal <punit.agrawal@oss.qualcomm.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://patch.msgid.link/20251107104437.1602509-1-punit.agrawal@oss.qualcomm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci-of-dwcmshc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/dwc3/core.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/mmc/host/sdhci-of-dwcmshc.c
-+++ b/drivers/mmc/host/sdhci-of-dwcmshc.c
-@@ -49,7 +49,7 @@
- #define DWCMSHC_EMMC_DLL_INC		8
- #define DWCMSHC_EMMC_DLL_DLYENA		BIT(27)
- #define DLL_TXCLK_TAPNUM_DEFAULT	0x8
--#define DLL_STRBIN_TAPNUM_DEFAULT	0x8
-+#define DLL_STRBIN_TAPNUM_DEFAULT	0x4
- #define DLL_TXCLK_TAPNUM_FROM_SW	BIT(24)
- #define DLL_RXCLK_NO_INVERTER		1
- #define DLL_RXCLK_INVERTER		0
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -25,6 +25,7 @@
+ #include <linux/of.h>
+ #include <linux/of_graph.h>
+ #include <linux/acpi.h>
++#include <linux/pci.h>
+ #include <linux/pinctrl/consumer.h>
+ #include <linux/pinctrl/devinfo.h>
+ #include <linux/reset.h>
+@@ -2240,7 +2241,7 @@ int dwc3_core_probe(const struct dwc3_pr
+ 	dev_set_drvdata(dev, dwc);
+ 	dwc3_cache_hwparams(dwc);
+ 
+-	if (!dwc->sysdev_is_parent &&
++	if (!dev_is_pci(dwc->sysdev) &&
+ 	    DWC3_GHWPARAMS0_AWIDTH(dwc->hwparams.hwparams0) == 64) {
+ 		ret = dma_set_mask_and_coherent(dwc->sysdev, DMA_BIT_MASK(64));
+ 		if (ret)
 
 
 
