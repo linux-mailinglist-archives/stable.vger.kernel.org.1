@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-199417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7318ECA0272
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:51:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55894C9FD88
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:14:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0C270309E124
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:44:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F35FC3047939
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:05:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B449E3563D2;
-	Wed,  3 Dec 2025 16:35:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C19F634DCE3;
+	Wed,  3 Dec 2025 16:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xFq34tY2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IhOlFpux"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC2F3559D9;
-	Wed,  3 Dec 2025 16:35:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF73303A28;
+	Wed,  3 Dec 2025 16:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779732; cv=none; b=JuuqdJPtDVJ3s2WfqSTtTZidimv78CBXOquvZStLHmE8bJWGkFgcIcywOJaD6il8s1qKFmtNsAzS2iVjUZqLaWo2c+sYvHDyaeVhMqHPuNPpsTziYv9yfmZ+TG8xGtFIq1SUCDgOLUdebpfvzUTvMfxrk8vEEge09EklIjm/LQE=
+	t=1764777952; cv=none; b=Qokcnsaxi1Zxwf1uJxKc/8UedJs5xoA/gNn07g0zMt4KMZjfU/7xUqtKPDJI1JOK06Iwez5BQ/092DOQGwbVYY9VG82jsa7GY7JmGrMksBw6WE46xTZ3/6pMd14rO5719WfBuvVH4V5evn4QdO9gf1tnQGnPExKYtAdJDiQMPxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779732; c=relaxed/simple;
-	bh=MkAJkwrYFu6k7xETgwdVe/uGoZU62egl0VMIanBoxNY=;
+	s=arc-20240116; t=1764777952; c=relaxed/simple;
+	bh=Ei2l36Wq9BD/HFPStXUOxlWa8Bg/alQobCroVNQDKNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ub633xpUB0SCypMJARNLC4g9rrdxLdsvDVmGRMeDrFInFeRjToEt0vSid3wqNnMiqFYLUUbFw0tGIiwfcvopuCzk1kNvkvTibYStoaBbGBw/D6oOApp3OAeDDcNEHeAAzSXlP2slcq8G3IaQhRpeKQGMLeZgcpdGMN8aub4jbco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xFq34tY2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E387DC4CEF5;
-	Wed,  3 Dec 2025 16:35:31 +0000 (UTC)
+	 MIME-Version; b=tZ3t02NYaQG+EAkHi5yor3JGboqdAS5wdYCbtG7OzojK7K1wAel2D59IecDYtfY/6qeLobfCKrGa4Z/pTEkd5WGhchD2qsHXy18s0rF6hQ3oY9JXPWRHELmYeuryxeZsy8UeMIk8a0QA/j7BAWwWzoQQT9I5Hm/bTqh7SEZIHXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IhOlFpux; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0E64C4CEF5;
+	Wed,  3 Dec 2025 16:05:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779732;
-	bh=MkAJkwrYFu6k7xETgwdVe/uGoZU62egl0VMIanBoxNY=;
+	s=korg; t=1764777952;
+	bh=Ei2l36Wq9BD/HFPStXUOxlWa8Bg/alQobCroVNQDKNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xFq34tY21306u9sn9Gt7MwKKAZ4xu84D0JWptEd71bj3R54onb3Afnv87gauDyOQo
-	 MktBTpU9WspB8fmddgFq7M6qy9MhGvoH16+hrnOzFlOYSbueK7arKpwmJdjC/+aPhw
-	 T+OJ1swzrpThlzCdVf2L9sRbC7umcZ00dnOl2gK4=
+	b=IhOlFpuxuficMzV6bdqSIC6sZNWOPCs6Lf0yA3QUVJ21vYKN+BBMinhtfVpLcjsWf
+	 lxkOsyaLnSQ+Sq4GRF1umSxDMjsUBQ46u7WwoDX0fnY+BvYa9vXmtKu+p8VOalWiiy
+	 44Nro7q3YIry1TYj8Tq3+naYOjptwXFqEfARIbhk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ChenXiaoSong <chenxiaosong@kylinos.cn>,
-	ZhangGuoDong <zhangguodong@kylinos.cn>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Ryan Wanner <Ryan.Wanner@microchip.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 344/568] smb/server: fix possible memory leak in smb2_read()
+Subject: [PATCH 5.15 196/392] clk: at91: clk-master: Add check for divide by 3
 Date: Wed,  3 Dec 2025 16:25:46 +0100
-Message-ID: <20251203152453.304303526@linuxfoundation.org>
+Message-ID: <20251203152421.285590977@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +60,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ZhangGuoDong <zhangguodong@kylinos.cn>
+From: Ryan Wanner <Ryan.Wanner@microchip.com>
 
-[ Upstream commit 6fced056d2cc8d01b326e6fcfabaacb9850b71a4 ]
+[ Upstream commit e0237f5635727d64635ec6665e1de9f4cacce35c ]
 
-Memory leak occurs when ksmbd_vfs_read() fails.
-Fix this by adding the missing kvfree().
+A potential divider for the master clock is div/3. The register
+configuration for div/3 is MASTER_PRES_MAX. The current bit shifting
+method does not work for this case. Checking for MASTER_PRES_MAX will
+ensure the correct decimal value is stored in the system.
 
-Co-developed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Signed-off-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Signed-off-by: ZhangGuoDong <zhangguodong@kylinos.cn>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Ryan Wanner <Ryan.Wanner@microchip.com>
+Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/clk/at91/clk-master.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index d2dca5d2f17cb..173135f6f7dbf 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -6405,6 +6405,7 @@ int smb2_read(struct ksmbd_work *work)
+diff --git a/drivers/clk/at91/clk-master.c b/drivers/clk/at91/clk-master.c
+index 04d0dd8385945..3f4a071e4dab4 100644
+--- a/drivers/clk/at91/clk-master.c
++++ b/drivers/clk/at91/clk-master.c
+@@ -437,6 +437,9 @@ clk_sama7g5_master_recalc_rate(struct clk_hw *hw,
+ {
+ 	struct clk_master *master = to_clk_master(hw);
  
- 	nbytes = ksmbd_vfs_read(work, fp, length, &offset, aux_payload_buf);
- 	if (nbytes < 0) {
-+		kvfree(aux_payload_buf);
- 		err = nbytes;
- 		goto out;
- 	}
++	if (master->div == MASTER_PRES_MAX)
++		return DIV_ROUND_CLOSEST_ULL(parent_rate, 3);
++
+ 	return DIV_ROUND_CLOSEST_ULL(parent_rate, (1 << master->div));
+ }
+ 
 -- 
 2.51.0
 
