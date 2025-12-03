@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-198303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC7E5C9F8A5
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:39:02 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A793CA13D8
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:04:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1D5EC3002D08
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:35:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4FA773016EE2
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:03:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A63E230F925;
-	Wed,  3 Dec 2025 15:35:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 662EE34B67F;
+	Wed,  3 Dec 2025 16:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7jeHgH9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xeBdIn3T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6C7306D49;
-	Wed,  3 Dec 2025 15:35:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23CAF34B43D;
+	Wed,  3 Dec 2025 16:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776100; cv=none; b=tzzTn84kTuyXhHF+7zfPxIYFKYV3JkObrsoo59nNEdx/to7uCMpLjec3DSBhRHDN9hhDGXFqcc/E0gDqJZLNNyJdBK1bL3qifGgpBjPAvG6eOm0ns8r/QbsgAl7WQHmsmnfNPQdQ1s0VCs41r9xpJe4gfYNbVHytsDwXH4Q7WeM=
+	t=1764777696; cv=none; b=K3n3XUrvjPy9ydMPJT53JcSwbupTOhe6nixA+5rO/ZHK8NFVTo2fQQB/OMn3w3uTyldgrvIQ2LQAnKcY+6R9gH0J8QWzjJ/gPnhdAFaNEE0fbLCz9gU9+enRNOkpIfsF6YGRQBWAeW9WWwZmbtNN6j7qG32tdGR8kKNlPI5LZI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776100; c=relaxed/simple;
-	bh=r4t3bFpHEJQlkj0tZDU8+rciJFa83vGurEQX34xRrpc=;
+	s=arc-20240116; t=1764777696; c=relaxed/simple;
+	bh=AjK02SNPxPTagaMjXuL+iY05FGYrkJlg92etNeTRcYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MFiG0UQxCX9cqzZ0aNfR98z/Nf8urC53Bq+/ll4jOxK58DzskUOUNabeLJI27tNyAeFKejShwnmRSfxtpH5YErSg7GsuFFPJqD6sTiBUOuN7qezAzFcxPev6NsaxdszhIfd7mb1uCH0qIGirP+brCtxY6sp74/Ec06WH2zr1fIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J7jeHgH9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEE1EC4CEF5;
-	Wed,  3 Dec 2025 15:34:59 +0000 (UTC)
+	 MIME-Version; b=pmqjDiy+jIw59zrFQDaJLnMRdEWCrUidDi8jcNjaR3GVbEfKGkIIMBd6DAMLk//wAYIXVg2uQLSOPvUtqZo90vicvqK16n90YKJ85m0f1HzQ29U1fnKEXmQN55Dx24YiiP/BjJUMweYRqs0YM9efMIFe8kZXdpBZe1y5grrq5bQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xeBdIn3T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 954A9C4CEF5;
+	Wed,  3 Dec 2025 16:01:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776100;
-	bh=r4t3bFpHEJQlkj0tZDU8+rciJFa83vGurEQX34xRrpc=;
+	s=korg; t=1764777696;
+	bh=AjK02SNPxPTagaMjXuL+iY05FGYrkJlg92etNeTRcYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J7jeHgH9IvqapiI6ueVvlLO5l0EptPdssuZTgnVF22UD9GeUDrfdHK+H5IE/BWplP
-	 sY/LYoaWuqZKNgTLoj44IMotrnkopv6I1C8iX2Cn/S6cZPDfqmh9mFSuSv53meu9Cq
-	 fDtAzhrZlFY55TwHJFAVxN6tStYrh26HwCzoivtU=
+	b=xeBdIn3TZ/DrsYWBkkCGe3NH2QZq8AxmMnNyjcmchHiXNlbXbIbv3oHC/UNLAQEvo
+	 GeAAbd/yyrFGNKxs4QN5gNYLhbKE0cTGRdLB/Xo+jHae0LjHh+vU3MAkUxVysIXQ6G
+	 PKPCP4IHJkF7CddtAgzLg9CFuSpxzPPH7n60I+ww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Len Brown <len.brown@intel.com>,
+	Chandrakanth Patil <chandrakanth.patil@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 063/300] tools/power x86_energy_perf_policy: Prefer driver HWP limits
+Subject: [PATCH 5.15 117/392] scsi: mpi3mr: Fix controller init failure on fault during queue creation
 Date: Wed,  3 Dec 2025 16:24:27 +0100
-Message-ID: <20251203152402.956046435@linuxfoundation.org>
+Message-ID: <20251203152418.401830138@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,77 +60,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Len Brown <len.brown@intel.com>
+From: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
 
-[ Upstream commit 2734fdbc9bb8a3aeb309ba0d62212d7f53f30bc7 ]
+[ Upstream commit 829fa1582b6ff607b0e2fe41ba1c45c77f686618 ]
 
-When we are successful in using cpufreq min/max limits,
-skip setting the raw MSR limits entirely.
+Firmware can enter a transient fault while creating operational queues.
+The driver fails the load immediately.
 
-This is necessary to avoid undoing any modification that
-the cpufreq driver makes to our sysfs request.
+Add a retry loop that checks controller status and history bit after
+queue creation. If either indicates a fault, retry init up to a set
+limit before failing.
 
-eg. intel_pstate may take our request for a limit
-that is valid according to HWP.CAP.MIN/MAX and clip
-it to be within the range available in PLATFORM_INFO.
-
-Signed-off-by: Len Brown <len.brown@intel.com>
+Signed-off-by: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
+Link: https://lore.kernel.org/r/20250820084138.228471-3-chandrakanth.patil@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../x86_energy_perf_policy/x86_energy_perf_policy.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/scsi/mpi3mr/mpi3mr_fw.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
-index 5c93546fc689b..702b5882cfce4 100644
---- a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
-+++ b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
-@@ -62,6 +62,7 @@ unsigned char turbo_update_value;
- unsigned char update_hwp_epp;
- unsigned char update_hwp_min;
- unsigned char update_hwp_max;
-+unsigned char hwp_limits_done_via_sysfs;
- unsigned char update_hwp_desired;
- unsigned char update_hwp_window;
- unsigned char update_hwp_use_pkg;
-@@ -862,8 +863,10 @@ int ratio_2_sysfs_khz(int ratio)
- }
- /*
-  * If HWP is enabled and cpufreq sysfs attribtes are present,
-- * then update sysfs, so that it will not become
-- * stale when we write to MSRs.
-+ * then update via sysfs. The intel_pstate driver may modify (clip)
-+ * this request, say, when HWP_CAP is outside of PLATFORM_INFO limits,
-+ * and the driver-chosen value takes precidence.
-+ *
-  * (intel_pstate's max_perf_pct and min_perf_pct will follow cpufreq,
-  *  so we don't have to touch that.)
-  */
-@@ -918,6 +921,8 @@ int update_sysfs(int cpu)
- 	if (update_hwp_max)
- 		update_cpufreq_scaling_freq(1, cpu, req_update.hwp_max);
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_fw.c b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+index 356e0b99a12fc..939c3509b316a 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+@@ -1770,6 +1770,8 @@ static int mpi3mr_create_op_queues(struct mpi3mr_ioc *mrioc)
+ {
+ 	int retval = 0;
+ 	u16 num_queues = 0, i = 0, msix_count_op_q = 1;
++	u32 ioc_status;
++	enum mpi3mr_iocstate ioc_state;
  
-+	hwp_limits_done_via_sysfs = 1;
-+
- 	return 0;
- }
- 
-@@ -996,10 +1001,10 @@ int update_hwp_request(int cpu)
- 	if (debug)
- 		print_hwp_request(cpu, &req, "old: ");
- 
--	if (update_hwp_min)
-+	if (update_hwp_min && !hwp_limits_done_via_sysfs)
- 		req.hwp_min = req_update.hwp_min;
- 
--	if (update_hwp_max)
-+	if (update_hwp_max && !hwp_limits_done_via_sysfs)
- 		req.hwp_max = req_update.hwp_max;
- 
- 	if (update_hwp_desired)
+ 	num_queues = min_t(int, mrioc->facts.max_op_reply_q,
+ 	    mrioc->facts.max_op_req_q);
+@@ -1820,6 +1822,14 @@ static int mpi3mr_create_op_queues(struct mpi3mr_ioc *mrioc)
+ 		retval = -1;
+ 		goto out_failed;
+ 	}
++	ioc_status = readl(&mrioc->sysif_regs->ioc_status);
++	ioc_state = mpi3mr_get_iocstate(mrioc);
++	if ((ioc_status & MPI3_SYSIF_IOC_STATUS_RESET_HISTORY) ||
++	    ioc_state != MRIOC_STATE_READY) {
++		mpi3mr_print_fault_info(mrioc);
++		retval = -1;
++		goto out_failed;
++	}
+ 	mrioc->num_op_reply_q = mrioc->num_op_req_q = i;
+ 	ioc_info(mrioc, "Successfully created %d Operational Q pairs\n",
+ 	    mrioc->num_op_reply_q);
 -- 
 2.51.0
 
