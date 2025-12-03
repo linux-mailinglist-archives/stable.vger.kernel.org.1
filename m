@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C77D9C9F779
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:31:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BD2ECA0CD0
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:10:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DA6D330014C3
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:31:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B8770328533C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:06:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2618A30ACE5;
-	Wed,  3 Dec 2025 15:31:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA16A35F8B8;
+	Wed,  3 Dec 2025 16:27:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V7Q1ZI2F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="reY+Z53H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2013030DEA9;
-	Wed,  3 Dec 2025 15:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1A933B974;
+	Wed,  3 Dec 2025 16:27:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764775896; cv=none; b=sj54nMLE4j5WCuaU2KitRjzMDQ0JdPcpog89N/BiXc/J6W7eDCV4hnaeKYz2bDqqZA/IFVIWCoL/wNxIKnmif/8Ra/6XwPsZSObWW6KQBuviK44aun4mmAO90FwBdmA1Njkk8GvObb+Fwaa9UWqQXsNd4mYfa7m/cpwxPv5ZdYs=
+	t=1764779264; cv=none; b=b13sGNNemP+4VK29M+fnt0MhzcsTZknwJsvznl55kkp/Uy7mlYPT3ag52Hs4LcN/92mO/tR9R6nkBniKVVuTsd3SjT1f2FkgHgAsLc2y8U5Lcb6QEx384isNUckd4DsXCnRR0VtFBSTcaMqnFMM60yrYH8JzIEGhp9oAZTRZ+UE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764775896; c=relaxed/simple;
-	bh=4E5QnOOtwJLYn+0riezjBQgvtHRauGGVc+Pu8MP9wsE=;
+	s=arc-20240116; t=1764779264; c=relaxed/simple;
+	bh=BHaDXYVQX/SEGzZfdkIUd+LbTR22LgMSVQs30p58OGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UjiDKEDxSMIunfb6UNVPMdKb9HezdFUyY8vyILu0llZ/2TuIo7Kt+Y1eSVVIjhFz8r6ZtZUJR2709UklAs17wHuRovYp1yQZcI2nheR+Rsw5yg3SXNMdS1yTOosqIQAZ0xJgxi+27gV+ZkFFDnSyKRZ7wOLxrMBB5Za5l2tuTjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V7Q1ZI2F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 187CDC4CEF5;
-	Wed,  3 Dec 2025 15:31:34 +0000 (UTC)
+	 MIME-Version; b=r5Vb/e6sXNy+Prx7Pj9ccuCiS9rVNNC8DBD7oYaL4BUC6DwySIStlBNvqRgLdhj331E1vywT8NYSncxxz7bRDg5X671y8TXO8D6qtWC7AeqD8dILu06nfc1W7VwQkf/ts/vKTZWJGTzsheVJzCKt8uRZwG+P/o6V//anK37Si9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=reY+Z53H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 830DCC4CEF5;
+	Wed,  3 Dec 2025 16:27:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764775895;
-	bh=4E5QnOOtwJLYn+0riezjBQgvtHRauGGVc+Pu8MP9wsE=;
+	s=korg; t=1764779263;
+	bh=BHaDXYVQX/SEGzZfdkIUd+LbTR22LgMSVQs30p58OGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V7Q1ZI2FImtaqowhgT/Z3RY7VhMLonvXMs2v3GzxViszI9RuVBHJUJmtMpy2mf+KZ
-	 anEcwREtoJcYdatwz+n3J+Zdrf2edpVb9HCn+ZnaYQARBhHUwy2gj5E/jbvc+xOb+B
-	 /Pmnaz0FemeaclbvnqOpbV/wT+VfiuqRrmGHL5RA=
+	b=reY+Z53H23Ff/RSMPa2n2Zis7uWhg7Mu+DYVyMi+H5SWBd640G4hLuq1R/6jPF1im
+	 OStlXNV8dVQ/qh9kCG5TCVcEs/0ftSaMmAAlmAVOLiWQ6DiTruOQyrXcaHG+mpOWSC
+	 BWrEmeNMb7ijsYbeU5eFD5so6BLuzNHEH50JC3+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Kaplan <david.kaplan@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Antonino Maniscalco <antomani103@gmail.com>,
+	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 002/300] x86/bugs: Fix reporting of LFENCE retpoline
+Subject: [PATCH 6.1 204/568] drm/msm: make sure to not queue up recovery more than once
 Date: Wed,  3 Dec 2025 16:23:26 +0100
-Message-ID: <20251203152400.546012062@linuxfoundation.org>
+Message-ID: <20251203152448.197633905@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Kaplan <david.kaplan@amd.com>
+From: Antonino Maniscalco <antomani103@gmail.com>
 
-[ Upstream commit d1cc1baef67ac6c09b74629ca053bf3fb812f7dc ]
+[ Upstream commit 10fb1b2fcaee5545a5e54db1ed4d7b15c2db50c8 ]
 
-The LFENCE retpoline mitigation is not secure but the kernel prints
-inconsistent messages about this fact.  The dmesg log says 'Mitigation:
-LFENCE', implying the system is mitigated.  But sysfs reports 'Vulnerable:
-LFENCE' implying the system (correctly) is not mitigated.
+If two fault IRQs arrive in short succession recovery work will be
+queued up twice.
 
-Fix this by printing a consistent 'Vulnerable: LFENCE' string everywhere
-when this mitigation is selected.
+When recovery runs a second time it may end up killing an unrelated
+context.
 
-Signed-off-by: David Kaplan <david.kaplan@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/20250915134706.3201818-1-david.kaplan@amd.com
+Prevent this by masking off interrupts when triggering recovery.
+
+Signed-off-by: Antonino Maniscalco <antomani103@gmail.com>
+Reviewed-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/670023/
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/bugs.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/gpu/drm/msm/adreno/a6xx_gpu.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 8794e3f4974b3..57ba697e29180 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1508,7 +1508,7 @@ spectre_v2_user_select_mitigation(void)
- static const char * const spectre_v2_strings[] = {
- 	[SPECTRE_V2_NONE]			= "Vulnerable",
- 	[SPECTRE_V2_RETPOLINE]			= "Mitigation: Retpolines",
--	[SPECTRE_V2_LFENCE]			= "Mitigation: LFENCE",
-+	[SPECTRE_V2_LFENCE]			= "Vulnerable: LFENCE",
- 	[SPECTRE_V2_EIBRS]			= "Mitigation: Enhanced / Automatic IBRS",
- 	[SPECTRE_V2_EIBRS_LFENCE]		= "Mitigation: Enhanced / Automatic IBRS + LFENCE",
- 	[SPECTRE_V2_EIBRS_RETPOLINE]		= "Mitigation: Enhanced / Automatic IBRS + Retpolines",
-@@ -3011,9 +3011,6 @@ static char *pbrsb_eibrs_state(void)
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+index cdb4665b953c8..e06204e00e935 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+@@ -1507,6 +1507,9 @@ static void a6xx_fault_detect_irq(struct msm_gpu *gpu)
+ 	/* Turn off the hangcheck timer to keep it from bothering us */
+ 	del_timer(&gpu->hangcheck_timer);
  
- static ssize_t spectre_v2_show_state(char *buf)
- {
--	if (spectre_v2_enabled == SPECTRE_V2_LFENCE)
--		return sysfs_emit(buf, "Vulnerable: LFENCE\n");
--
- 	if (spectre_v2_enabled == SPECTRE_V2_EIBRS && unprivileged_ebpf_enabled())
- 		return sysfs_emit(buf, "Vulnerable: eIBRS with unprivileged eBPF\n");
++	/* Turn off interrupts to avoid triggering recovery again */
++	gpu_write(gpu, REG_A6XX_RBBM_INT_0_MASK, 0);
++
+ 	kthread_queue_work(gpu->worker, &gpu->recover_work);
+ }
  
 -- 
 2.51.0
