@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-199616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D355FCA01FD
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:49:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB368CA04AD
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:14:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 99097300B821
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:46:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E65C330E3C6A
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:02:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6849F36C593;
-	Wed,  3 Dec 2025 16:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5F453557EB;
+	Wed,  3 Dec 2025 16:56:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="isb9YfSv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vzke32kq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2565B3624AE;
-	Wed,  3 Dec 2025 16:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FFFA350285;
+	Wed,  3 Dec 2025 16:56:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780380; cv=none; b=O5TJZJdiYt+XzGTqnQqfne2sYA2npnZQR79/jHz4emEv6DY7B5vdVn875MZMLpi1woqbPAJKKuasU9EiwiTpuDqSirEU+ntmOvf+QM0VQ++1YVIFv432J46kayGDSAh4EYaszQfW79SGtFoTLel5ZTi9copwFsX0eFsFVNuLxYE=
+	t=1764780965; cv=none; b=JDB9jPdlXdrvjUqjV00GYkczm4uxXjBbBjbUClrgLTiJEz+s61zGgX51kIdvYmW3lIjBvie+gQ8SbX+iLppkh6sFGj5E42cTf45APTKbZWUdNxlpfjpbMmcsZfV6CpgmpTIK36NeE7armIdki7q0W0hM1pZd2IrFCi0U7EGLtYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780380; c=relaxed/simple;
-	bh=3dDbR14MelWx93tZxulYwPM5P0k9VBudHuuk+vOIUcY=;
+	s=arc-20240116; t=1764780965; c=relaxed/simple;
+	bh=1WxeUsn5KHfiiGS05As/8pKsHvzMHZ1LkzwG1lcxUJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nk/WeDO8I1yUvJetefR6/X4dxt4C/EPseVrmi4VOUUYAqRo/3y2vFQ7uPLK1ppa2Mw0wwvJNHdS1bhPINH/fnjT7mGEci5I/utTN0LPshff7YXy+q9znYbQK2tgdP65MSj+HVtoa+WY5HRj+FXPXDAvyB+MY8LXzRpZxos75Bmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=isb9YfSv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA4BC4CEF5;
-	Wed,  3 Dec 2025 16:46:19 +0000 (UTC)
+	 MIME-Version; b=tJZe7q1rCeF9cXG7oepd4UQt4s8z6HA2sgsLT15k9rlyO4Junoj9OVeSV2XT7ThmRAwBENwM70H7/2bO7Xjhprs+otnr43uiTNXd9uhMT6MIwxfDCNy7LToJf34K9nsjrEa9CD4sYKymCN2+3Ml97lIq4qKNrUjqDxEgnrMbWFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vzke32kq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4136FC4CEF5;
+	Wed,  3 Dec 2025 16:56:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780379;
-	bh=3dDbR14MelWx93tZxulYwPM5P0k9VBudHuuk+vOIUcY=;
+	s=korg; t=1764780964;
+	bh=1WxeUsn5KHfiiGS05As/8pKsHvzMHZ1LkzwG1lcxUJc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=isb9YfSvAboI+tlnD+eDKPw++65s5JQl4b1yi6nercrMgExfk5hvBVc1IMZ6F+oq2
-	 xmfQWye+3k0IXLUOE1Eh9rFf9tLelqlRjkwMSLQXgXsl9ZoHrzi+dBhD7AuP3Q5E8l
-	 U9Zab0P95C608CWGQw2WUkkwsBwS5NMSxRJy57HY=
+	b=Vzke32kqDbPRWAJg/MmGF6l/3qWfzMUFnvSJfL72zw+8JyO3ucFd0jK1LJEh1/4yc
+	 A0PqZL3XslKgB0a74GqDwXQCtgtnQi0dhCg98sgATA6A5niE92gqrO34tHY51mqaG/
+	 GCZ5oWcxoG50MRNbhB9wnEojTkcg6hBP0iUan0l0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tianchu Chen <flynnnchen@tencent.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.1 540/568] usb: storage: sddr55: Reject out-of-bound new_pba
-Date: Wed,  3 Dec 2025 16:29:02 +0100
-Message-ID: <20251203152500.490192872@linuxfoundation.org>
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 10/93] net: lan966x: Fix the initialization of taprio
+Date: Wed,  3 Dec 2025 16:29:03 +0100
+Message-ID: <20251203152336.888262696@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
+References: <20251203152336.494201426@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,47 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tianchu Chen <flynnnchen@tencent.com>
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
 
-commit b59d4fda7e7d0aff1043a7f742487cb829f5aac1 upstream.
+[ Upstream commit 9780f535f8e0f20b4632b5a173ead71aa8f095d2 ]
 
-Discovered by Atuin - Automated Vulnerability Discovery Engine.
+To initialize the taprio block in lan966x, it is required to configure
+the register REVISIT_DLY. The purpose of this register is to set the
+delay before revisit the next gate and the value of this register depends
+on the system clock. The problem is that the we calculated wrong the value
+of the system clock period in picoseconds. The actual system clock is
+~165.617754MHZ and this correspond to a period of 6038 pico seconds and
+not 15125 as currently set.
 
-new_pba comes from the status packet returned after each write.
-A bogus device could report values beyond the block count derived
-from info->capacity, letting the driver walk off the end of
-pba_to_lba[] and corrupt heap memory.
-
-Reject PBAs that exceed the computed block count and fail the
-transfer so we avoid touching out-of-range mapping entries.
-
-Signed-off-by: Tianchu Chen <flynnnchen@tencent.com>
-Cc: stable <stable@kernel.org>
-Link: https://patch.msgid.link/B2DC73A3EE1E3A1D+202511161322001664687@tencent.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e462b2717380b4 ("net: lan966x: Add offload support for taprio")
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251121061411.810571-1-horatiu.vultur@microchip.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/storage/sddr55.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/storage/sddr55.c
-+++ b/drivers/usb/storage/sddr55.c
-@@ -469,6 +469,12 @@ static int sddr55_write_data(struct us_d
- 		new_pba = (status[3] + (status[4] << 8) + (status[5] << 16))
- 						  >> info->blockshift;
+diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c b/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c
+index 87e5e81d40dc6..84f5b4410e48e 100644
+--- a/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c
++++ b/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c
+@@ -1,11 +1,14 @@
+ // SPDX-License-Identifier: GPL-2.0+
  
-+		/* check if device-reported new_pba is out of range */
-+		if (new_pba >= (info->capacity >> (info->blockshift + info->pageshift))) {
-+			result = USB_STOR_TRANSPORT_FAILED;
-+			goto leave;
-+		}
+ #include <linux/ptp_classify.h>
++#include <linux/units.h>
+ 
+ #include "lan966x_main.h"
+ #include "vcap_api.h"
+ #include "vcap_api_client.h"
+ 
++#define LAN9X66_CLOCK_RATE	165617754
 +
- 		/* check status for error */
- 		if (status[0] == 0xff && status[1] == 0x4) {
- 			info->pba_to_lba[new_pba] = BAD_BLOCK;
+ #define LAN966X_MAX_PTP_ID	512
+ 
+ /* Represents 1ppm adjustment in 2^59 format with 6.037735849ns as reference
+@@ -1132,5 +1135,5 @@ void lan966x_ptp_rxtstamp(struct lan966x *lan966x, struct sk_buff *skb,
+ u32 lan966x_ptp_get_period_ps(void)
+ {
+ 	/* This represents the system clock period in picoseconds */
+-	return 15125;
++	return PICO / LAN9X66_CLOCK_RATE;
+ }
+-- 
+2.51.0
+
 
 
 
