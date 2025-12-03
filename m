@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3662CA0679
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:24:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7DA7C9FBCF
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:57:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AE37F32EDA68
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:09:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D96723039749
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:48:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CC75345CAB;
-	Wed,  3 Dec 2025 16:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82ECD318133;
+	Wed,  3 Dec 2025 15:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2jZYRdQd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ayf+bKU2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3784D33F8AE;
-	Wed,  3 Dec 2025 16:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A6C3148D5;
+	Wed,  3 Dec 2025 15:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780571; cv=none; b=KZ8j6lsmQhLDkf6Jfbds/u7zQBHXaC2q+K8gajj+Gi7pasVtDApJQTGYhjIgLFvyBrdgHd7ki0yfDgIaQfZwQH+a1LbFNo/cAGi5iMiTxxN05iW0F0CePwVlfF8XQd+gjN7UDJRr+qrujGdBAjk/JVf7a3RRjbxqu/0flwgPxHI=
+	t=1764776831; cv=none; b=UcgkV7y7BufcEkzHr6rEWQkfA7jBBrBpqtgrd07npZl1x72LSHywx73VxBrG1n1QrjANlviODQ5GOqWb+Mg4msEAiIr9xKjeFVLLPCOinQAbG09+Fg+fM3bv9UjiscivhjVnxjV+YO3SoBRW6Pnb5i7k9AlfXLkNdhF60YQdBLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780571; c=relaxed/simple;
-	bh=LnQNTYkUxgcqY31g69P04jPVlUlyihX8VfJB6ZCKyK0=;
+	s=arc-20240116; t=1764776831; c=relaxed/simple;
+	bh=W2BFbYmqUGwN/RxUwEX7PHvKxfPt4HTGsetWX+C5Yk4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pj1TmZfiF0CkmGlBhSWtnprxK60rUkroDiuOjhA352oJ2WPCgTctSJD0UkMdBbSuoF3djJvrqKKBaKYhJwe6G8Ya7BrlR718WXglrgOZ5KpZYgxhTDTkNrqvCT3LNT9SDLfqk9ww9IH8LNLhPb9X/Lt+5VrnuDEgbpqMD0cTouY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2jZYRdQd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3315C4CEF5;
-	Wed,  3 Dec 2025 16:49:30 +0000 (UTC)
+	 MIME-Version; b=W/tbzDT+cdEO/ouI8xfolnRk1gP+tluAY2Z1KiVrjSvxiCwokgfAe4hBN/r3dZYI1xwhdwOHgECaIJWRZeEq1NamBjdKsQoJb6p5joSTTceIxungxzPkOZ8O4U80HnIi19H3oVlbABipqnLd7/HXJVAYL3ThEWOn6EosRKGndAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ayf+bKU2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9753C4CEF5;
+	Wed,  3 Dec 2025 15:47:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780571;
-	bh=LnQNTYkUxgcqY31g69P04jPVlUlyihX8VfJB6ZCKyK0=;
+	s=korg; t=1764776831;
+	bh=W2BFbYmqUGwN/RxUwEX7PHvKxfPt4HTGsetWX+C5Yk4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2jZYRdQdTD+sof4ODtgRP/Y7OkZ8lhf3ZY6V0+1Ik3cASmKCflerYpiKiEe9GU3uB
-	 0IZEwprRZ1CPkjalufhv6xQ7ixmXlL2hF86cTQK3pv4KyW9S5wJt3NJYUkfpWhJqes
-	 HghNB3duVMLQdu1XETS8u1QQ9AWGn7RF6686iyqE=
+	b=ayf+bKU2zcPRGLmxp3xMmbkb8NeQYxZhdH8m/Ptjl8NmE4hJcqUXTgMNMTPuNjt1T
+	 Nwdgq9gF92yWT0lvnOVXxRtRtesDl3zWoJ30eSDUbM8fUoTgHKSeYbq4ZdIEyoxe8H
+	 /7peO5xSKW8SGV4hQSmRdzU1+jiYSjEaNMPGNqbo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 025/132] net: dsa: sja1105: fix SGMII linking at 10M or 100M but not passing traffic
+	Florian Westphal <fw@strlen.de>,
+	Stefano Brivio <sbrivio@redhat.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.10 300/300] netfilter: nf_set_pipapo_avx2: fix initial map fill
 Date: Wed,  3 Dec 2025 16:28:24 +0100
-Message-ID: <20251203152344.232856316@linuxfoundation.org>
+Message-ID: <20251203152411.737298627@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,77 +60,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit da62abaaa268357b1aa66b372ace562189a05df1 ]
+commit ea77c397bff8b6d59f6d83dae1425b08f465e8b5 upstream.
 
-When using the SGMII PCS as a fixed-link chip-to-chip connection, it is
-easy to miss the fact that traffic passes only at 1G, since that's what
-any normal such connection would use.
+If the first field doesn't cover the entire start map, then we must zero
+out the remainder, else we leak those bits into the next match round map.
 
-When using the SGMII PCS connected towards an on-board PHY or an SFP
-module, it is immediately noticeable that when the link resolves to a
-speed other than 1G, traffic from the MAC fails to pass: TX counters
-increase, but nothing gets decoded by the other end, and no local RX
-counters increase either.
+The early fix was incomplete and did only fix up the generic C
+implementation.
 
-Artificially lowering a fixed-link rate to speed = <100> makes us able
-to see the same issue as in the case of having an SGMII PHY.
+A followup patch adds a test case to nft_concat_range.sh.
 
-Some debugging shows that the XPCS configuration is A-OK, but that the
-MAC Configuration Table entry for the port has the SPEED bits still set
-to 1000Mbps, due to a special condition in the driver. Deleting that
-condition, and letting the resolved link speed be programmed directly
-into the MAC speed field, results in a functional link at all 3 speeds.
-
-This piece of evidence, based on testing on both generations with SGMII
-support (SJA1105S and SJA1110A) directly contradicts the statement from
-the blamed commit that "the MAC is fixed at 1 Gbps and we need to
-configure the PCS only (if even that)". Worse, that statement is not
-backed by any documentation, and no one from NXP knows what it might
-refer to.
-
-I am unable to recall sufficient context regarding my testing from March
-2020 to understand what led me to draw such a braindead and factually
-incorrect conclusion. Yet, there is nothing of value regarding forcing
-the MAC speed, either for SGMII or 2500Base-X (introduced at a later
-stage), so remove all such logic.
-
-Fixes: ffe10e679cec ("net: dsa: sja1105: Add support for the SGMII port")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20251122111324.136761-1-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 791a615b7ad2 ("netfilter: nf_set_pipapo: fix initial map fill")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/sja1105/sja1105_main.c | 7 -------
- 1 file changed, 7 deletions(-)
+ net/netfilter/nft_set_pipapo_avx2.c |   21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
-index f3bb49a9e63c0..a078653531b51 100644
---- a/drivers/net/dsa/sja1105/sja1105_main.c
-+++ b/drivers/net/dsa/sja1105/sja1105_main.c
-@@ -1303,14 +1303,7 @@ static int sja1105_set_port_speed(struct sja1105_private *priv, int port,
- 	 * table, since this will be used for the clocking setup, and we no
- 	 * longer need to store it in the static config (already told hardware
- 	 * we want auto during upload phase).
--	 * Actually for the SGMII port, the MAC is fixed at 1 Gbps and
--	 * we need to configure the PCS only (if even that).
- 	 */
--	if (priv->phy_mode[port] == PHY_INTERFACE_MODE_SGMII)
--		speed = priv->info->port_speed[SJA1105_SPEED_1000MBPS];
--	else if (priv->phy_mode[port] == PHY_INTERFACE_MODE_2500BASEX)
--		speed = priv->info->port_speed[SJA1105_SPEED_2500MBPS];
--
- 	mac[port].speed = speed;
+--- a/net/netfilter/nft_set_pipapo_avx2.c
++++ b/net/netfilter/nft_set_pipapo_avx2.c
+@@ -1106,6 +1106,25 @@ bool nft_pipapo_avx2_estimate(const stru
+ }
  
- 	return 0;
--- 
-2.51.0
-
+ /**
++ * pipapo_resmap_init_avx2() - Initialise result map before first use
++ * @m:		Matching data, including mapping table
++ * @res_map:	Result map
++ *
++ * Like pipapo_resmap_init() but do not set start map bits covered by the first field.
++ */
++static inline void pipapo_resmap_init_avx2(const struct nft_pipapo_match *m, unsigned long *res_map)
++{
++	const struct nft_pipapo_field *f = m->f;
++	int i;
++
++	/* Starting map doesn't need to be set to all-ones for this implementation,
++	 * but we do need to zero the remaining bits, if any.
++	 */
++	for (i = f->bsize; i < m->bsize_max; i++)
++		res_map[i] = 0ul;
++}
++
++/**
+  * nft_pipapo_avx2_lookup() - Lookup function for AVX2 implementation
+  * @net:	Network namespace
+  * @set:	nftables API set representation
+@@ -1158,7 +1177,7 @@ bool nft_pipapo_avx2_lookup(const struct
+ 	res  = scratch->map + (map_index ? m->bsize_max : 0);
+ 	fill = scratch->map + (map_index ? 0 : m->bsize_max);
+ 
+-	/* Starting map doesn't need to be set for this implementation */
++	pipapo_resmap_init_avx2(m, res);
+ 
+ 	nft_pipapo_avx2_prepare();
+ 
 
 
 
