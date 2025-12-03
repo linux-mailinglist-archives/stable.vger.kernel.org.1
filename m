@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-198403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4023FC9FA1F
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:46:45 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3974CA1185
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:43:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6F3943009550
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:40:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 07CB130028B7
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:43:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA26D30AD06;
-	Wed,  3 Dec 2025 15:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42C4E32779D;
+	Wed,  3 Dec 2025 15:49:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S5hwlQcT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="INHOefUr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8765F25BEE5;
-	Wed,  3 Dec 2025 15:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 000BD327213;
+	Wed,  3 Dec 2025 15:49:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776427; cv=none; b=AXvkZ6O/42FLNsMQRK0UiV5TGr4D3vfprclLwFpMQofXTd1z1YuR69rrSJpQi+lg5KwXNwwModW994BbZu9ClwfgW1Zy+L+pZ9k/QnzExiHT9DQJd1r+aCDELe9posqzmd7Dgg/ZsikDW4FAzI242IPJfmLz/SJLrUrSVRVCz50=
+	t=1764776954; cv=none; b=U9zg/okHKInvm7nrhuwvEfJWoNrK2HM65x6UYfTu4eomTkvf8NXfHM32e3dt3EUTMonwLh67g6HX5Gfuoi6/TOEd0fSkK4sia3SBXHHxZdVcYEegTgC2ZE0odfBNPR0XSMtWlWNtuMW9cnk+FoO4DyuGr/wX41Hpwncagkh/WKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776427; c=relaxed/simple;
-	bh=668ZlH4eIW7ct00rsrBkQd6eNoBB5C7tIiYwvG7C+NY=;
+	s=arc-20240116; t=1764776954; c=relaxed/simple;
+	bh=SYaQpDevVexRqBDG7SiK8pKJcNQT4jsJfKNNntPNAnk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PCDvVq3IpF4lBi7We1WxFAv4K/qAsM1rNMzT7zDX1682RMxy6SfGoWXT415y06Adn4by6Gmeec6bxxSd6b81Gxazij2XvfY58RJX/lQdMSDR9e/RwZPQlmV5O/zBPioZnkKV2GVn6MTMpUg+rXu7BoKZZ51Uc3d4g9KGqYWNhWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S5hwlQcT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9640C4CEF5;
-	Wed,  3 Dec 2025 15:40:26 +0000 (UTC)
+	 MIME-Version; b=FNVxp1BmwhxDLc4RYFmBQHKj//1Qnbw7hMTurPnzCQU+dy03fN/k/JQIwoY3D3HUx3XTKdld110OTRyJH9MeJ+aV2uMANYgWuTBHJDgjVXKWFSTYrjJIWHZ2a2iotW1wcDeMhTY9OWIYql0wXVcyIQCTnD8bir+Zkrpe8u3YUH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=INHOefUr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61B50C4CEF5;
+	Wed,  3 Dec 2025 15:49:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776427;
-	bh=668ZlH4eIW7ct00rsrBkQd6eNoBB5C7tIiYwvG7C+NY=;
+	s=korg; t=1764776953;
+	bh=SYaQpDevVexRqBDG7SiK8pKJcNQT4jsJfKNNntPNAnk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S5hwlQcT8exl6ZPdKNCocpLR50gWLCjVjVUoUNJQsgU4Z0c/d177jn0WqkSTNB9i/
-	 SNk6PlomkXnOBUMyn2xTERtsOmryRUYBgYgxYyG76dmF/2mXb6puFP13mfn7C+sR0e
-	 WX4fPlad1CrCvJZzVBj0bOnuqf1ziflXWyo18/Vk=
+	b=INHOefUrHqVF5wBuvOSTekmvx2vQ0SAafFCnIj4t3KR+nHIwqsCvY7dvsjMVh+g+U
+	 8O9jMcnmsy+3u9otE6SMkok+TugJKj+x9PAbtmcIpIPwvBTpyMlXVjmcjz2B+z/Jtg
+	 fxWEttv67DywV833BP9Xmwltw7/eDuwALPqaH4r0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Pauli Virtanen <pav@iki.fi>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 180/300] Bluetooth: 6lowpan: reset link-local header on ipv6 recv path
+Subject: [PATCH 6.17 006/146] Bluetooth: hci_core: Fix triggering cmd_timer for HCI_OP_NOP
 Date: Wed,  3 Dec 2025 16:26:24 +0100
-Message-ID: <20251203152407.296077202@linuxfoundation.org>
+Message-ID: <20251203152346.697975707@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +59,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pauli Virtanen <pav@iki.fi>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 3b78f50918276ab28fb22eac9aa49401ac436a3b ]
+[ Upstream commit 275ddfeb3fdc274050c2173ffd985b1e80a9aa37 ]
 
-Bluetooth 6lowpan.c netdev has header_ops, so it must set link-local
-header for RX skb, otherwise things crash, eg. with AF_PACKET SOCK_RAW
+HCI_OP_NOP means no command was actually sent so there is no point in
+triggering cmd_timer which may cause a hdev->reset in the process since
+it is assumed that the controller is stuck processing a command.
 
-Add missing skb_reset_mac_header() for uncompressed ipv6 RX path.
-
-For the compressed one, it is done in lowpan_header_decompress().
-
-Log: (BlueZ 6lowpan-tester Client Recv Raw - Success)
-------
-kernel BUG at net/core/skbuff.c:212!
-Call Trace:
-<IRQ>
-...
-packet_rcv (net/packet/af_packet.c:2152)
-...
-<TASK>
-__local_bh_enable_ip (kernel/softirq.c:407)
-netif_rx (net/core/dev.c:5648)
-chan_recv_cb (net/bluetooth/6lowpan.c:294 net/bluetooth/6lowpan.c:359)
-------
-
-Fixes: 18722c247023 ("Bluetooth: Enable 6LoWPAN support for BT LE devices")
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Fixes: e2d471b7806b ("Bluetooth: ISO: Fix not using SID from adv report")
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/6lowpan.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/bluetooth/hci_core.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/net/bluetooth/6lowpan.c b/net/bluetooth/6lowpan.c
-index 7e698b0ac7bc7..32dc74115dcbc 100644
---- a/net/bluetooth/6lowpan.c
-+++ b/net/bluetooth/6lowpan.c
-@@ -317,6 +317,7 @@ static int recv_pkt(struct sk_buff *skb, struct net_device *dev,
- 		local_skb->pkt_type = PACKET_HOST;
- 		local_skb->dev = dev;
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index 55e0722fd0662..72c7607aac209 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -4093,7 +4093,7 @@ static void hci_rx_work(struct work_struct *work)
+ 	}
+ }
  
-+		skb_reset_mac_header(local_skb);
- 		skb_set_transport_header(local_skb, sizeof(struct ipv6hdr));
+-static void hci_send_cmd_sync(struct hci_dev *hdev, struct sk_buff *skb)
++static int hci_send_cmd_sync(struct hci_dev *hdev, struct sk_buff *skb)
+ {
+ 	int err;
  
- 		if (give_skb_to_upper(local_skb, dev) != NET_RX_SUCCESS) {
+@@ -4105,16 +4105,19 @@ static void hci_send_cmd_sync(struct hci_dev *hdev, struct sk_buff *skb)
+ 	if (!hdev->sent_cmd) {
+ 		skb_queue_head(&hdev->cmd_q, skb);
+ 		queue_work(hdev->workqueue, &hdev->cmd_work);
+-		return;
++		return -EINVAL;
+ 	}
+ 
+ 	if (hci_skb_opcode(skb) != HCI_OP_NOP) {
+ 		err = hci_send_frame(hdev, skb);
+ 		if (err < 0) {
+ 			hci_cmd_sync_cancel_sync(hdev, -err);
+-			return;
++			return err;
+ 		}
+ 		atomic_dec(&hdev->cmd_cnt);
++	} else {
++		err = -ENODATA;
++		kfree_skb(skb);
+ 	}
+ 
+ 	if (hdev->req_status == HCI_REQ_PEND &&
+@@ -4122,12 +4125,15 @@ static void hci_send_cmd_sync(struct hci_dev *hdev, struct sk_buff *skb)
+ 		kfree_skb(hdev->req_skb);
+ 		hdev->req_skb = skb_clone(hdev->sent_cmd, GFP_KERNEL);
+ 	}
++
++	return err;
+ }
+ 
+ static void hci_cmd_work(struct work_struct *work)
+ {
+ 	struct hci_dev *hdev = container_of(work, struct hci_dev, cmd_work);
+ 	struct sk_buff *skb;
++	int err;
+ 
+ 	BT_DBG("%s cmd_cnt %d cmd queued %d", hdev->name,
+ 	       atomic_read(&hdev->cmd_cnt), skb_queue_len(&hdev->cmd_q));
+@@ -4138,7 +4144,9 @@ static void hci_cmd_work(struct work_struct *work)
+ 		if (!skb)
+ 			return;
+ 
+-		hci_send_cmd_sync(hdev, skb);
++		err = hci_send_cmd_sync(hdev, skb);
++		if (err)
++			return;
+ 
+ 		rcu_read_lock();
+ 		if (test_bit(HCI_RESET, &hdev->flags) ||
 -- 
 2.51.0
 
