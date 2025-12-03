@@ -1,54 +1,70 @@
-Return-Path: <stable+bounces-198506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9641FC9FA0D
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:46:25 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D1EFCA00DD
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:42:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 13EEB30022B5
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:46:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DBC613000B16
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:42:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7876C313E23;
-	Wed,  3 Dec 2025 15:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31D0F35CBCF;
+	Wed,  3 Dec 2025 16:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zaTmayi+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dlvOrhLA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B2A313E00;
-	Wed,  3 Dec 2025 15:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D362935C1AC;
+	Wed,  3 Dec 2025 16:42:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776771; cv=none; b=CqGSZvHSgBjWnFptcb0URqSIcEyJixyuCk3PbYI9Lohc+NGdSWUmaiM+7b3s7cpXW0DX7UMkJaJQixa0IiYwjHLnnLSEO5iTHu+3orO9gSMrAkpr4e69QNCN5wSgHyjKyPc3Jh7vsXflquyLlqN66uOSA381KkYDNXuVKpSBnPQ=
+	t=1764780171; cv=none; b=qcgG4oj/U9KTEUmMBnd2/SahWo2pWW1oF7QEmhkV5ClXV/EGUQcIWo3Olgl4V+2d/7UpzkuF1/DJAatVA07Z3oJZ9IYgOhnzWP+/o/NMDX94tclpE755jz1ikFBBJy5F7Cc4CPtToSOjoLI0AuDqT4XllZzpvehzayECYYype/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776771; c=relaxed/simple;
-	bh=KakpE9ql+E08l1BOhbRQZrp2qjsr04ga2hDCTH55b1g=;
+	s=arc-20240116; t=1764780171; c=relaxed/simple;
+	bh=YmYsFe2iR77h19deN6yP7qUybRE2TCQLksCxk7HTKYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KlMB90WEimsuvZmrrLKWsW18T0Fz3q06xxeu2DxlOEzmVCPrjiGPDYcKnQ7DOjB2G6XGBwoW+CxLZRvPw1/gL3mpW9VAh5FxXNiK9KFT2+nQdP3TIFAA8rKutRtxoHO/2DTvJwSU28z4IquGdi8rnIYBM9FhXdEDYl4SpPtOIXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zaTmayi+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96791C4CEF5;
-	Wed,  3 Dec 2025 15:46:10 +0000 (UTC)
+	 MIME-Version; b=fqC6BZp6hbYdBUYxLB+6kgyJLw8Rl4ZhQhpxw1vrpJpeEuVdzpavhP9K2TegCFqYGVkrLMiF2RoJ//4V1jhenL8By1welQ6kbPEm5osLdTAntyBqLTnw74ed5VxPJb8baWu26C+WXfCsrm+IS5GH2e+RJQClSQcrxsXFjglKkLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dlvOrhLA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D679C4CEF5;
+	Wed,  3 Dec 2025 16:42:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776771;
-	bh=KakpE9ql+E08l1BOhbRQZrp2qjsr04ga2hDCTH55b1g=;
+	s=korg; t=1764780171;
+	bh=YmYsFe2iR77h19deN6yP7qUybRE2TCQLksCxk7HTKYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zaTmayi++XuvzSDZMDBJcdjxtRk+z017qwfrbToEZaVQZTcQyQzha4Uuix1tns+E0
-	 bWMRJAm7/7FBoZo5HMJrFZQSUywDyCM/MfogjxkxIDqP2hxUPKygl6BykdZSCONvhW
-	 xga+9PihY665jR80UFcmCUTm9oL8opB8WWTmqzsU=
+	b=dlvOrhLAjfr3YZJidA6NtKPwlaSpzy+Ugy8H3pdzJIS8xdbrXuXZEX95R1Uu40JsY
+	 ALawcZY1aS82sRHPZo5pXgZfAUEykm8j7ysoaeKGx+3Am8fnUmGLL/ypR7jmzCcEJp
+	 6W3rBfGpVU6U0wgNBVWIRG/k6Va5TYbjKNuZkIa4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ang Tien Sung <tiensung.ang@altera.com>,
-	Khairul Anuar Romli <khairul.anuar.romli@altera.com>,
-	Dinh Nguyen <dinguyen@kernel.org>
-Subject: [PATCH 5.10 275/300] firmware: stratix10-svc: fix bug in saving controller data
+	Kiryl Shutsemau <kas@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Christian Brauner <brauner@kernel.org>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Dave Chinner <david@fromorbit.com>,
+	David Hildenbrand <david@redhat.com>,
+	Hugh Dickins <hughd@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Rik van Riel <riel@surriel.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 477/568] mm/truncate: unmap large folio on split failure
 Date: Wed,  3 Dec 2025 16:27:59 +0100
-Message-ID: <20251203152410.817393010@linuxfoundation.org>
+Message-ID: <20251203152458.168531709@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,74 +76,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
+From: Kiryl Shutsemau <kas@kernel.org>
 
-commit d0fcf70c680e4d1669fcb3a8632f41400b9a73c2 upstream.
+commit fa04f5b60fda62c98a53a60de3a1e763f11feb41 upstream.
 
-Fix the incorrect usage of platform_set_drvdata and dev_set_drvdata. They
-both are of the same data and overrides each other. This resulted in the
-rmmod of the svc driver to fail and throw a kernel panic for kthread_stop
-and fifo free.
+Accesses within VMA, but beyond i_size rounded up to PAGE_SIZE are
+supposed to generate SIGBUS.
 
-Fixes: b5dc75c915cd ("firmware: stratix10-svc: extend svc to support new RSU features")
-Cc: stable@vger.kernel.org # 6.6+
-Signed-off-by: Ang Tien Sung <tiensung.ang@altera.com>
-Signed-off-by: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
-Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
+This behavior might not be respected on truncation.
+
+During truncation, the kernel splits a large folio in order to reclaim
+memory.  As a side effect, it unmaps the folio and destroys PMD mappings
+of the folio.  The folio will be refaulted as PTEs and SIGBUS semantics
+are preserved.
+
+However, if the split fails, PMD mappings are preserved and the user will
+not receive SIGBUS on any accesses within the PMD.
+
+Unmap the folio on split failure.  It will lead to refault as PTEs and
+preserve SIGBUS semantics.
+
+Make an exception for shmem/tmpfs that for long time intentionally mapped
+with PMDs across i_size.
+
+Link: https://lkml.kernel.org/r/20251027115636.82382-3-kirill@shutemov.name
+Fixes: b9a8a4195c7d ("truncate,shmem: Handle truncates that split large folios")
+Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: "Darrick J. Wong" <djwong@kernel.org>
+Cc: Dave Chinner <david@fromorbit.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/stratix10-svc.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ mm/truncate.c |   27 ++++++++++++++++++++++++++-
+ 1 file changed, 26 insertions(+), 1 deletion(-)
 
---- a/drivers/firmware/stratix10-svc.c
-+++ b/drivers/firmware/stratix10-svc.c
-@@ -127,6 +127,7 @@ struct stratix10_svc_data {
-  * @complete_status: state for completion
-  * @svc_fifo_lock: protect access to service message data queue
-  * @invoke_fn: function to issue secure monitor call or hypervisor call
-+ * @svc: manages the list of client svc drivers
-  *
-  * This struct is used to create communication channels for service clients, to
-  * handle secure monitor or hypervisor call.
-@@ -143,6 +144,7 @@ struct stratix10_svc_controller {
- 	struct completion complete_status;
- 	spinlock_t svc_fifo_lock;
- 	svc_invoke_fn *invoke_fn;
-+	struct stratix10_svc *svc;
- };
- 
- /**
-@@ -1038,6 +1040,7 @@ static int stratix10_svc_drv_probe(struc
- 		ret = -ENOMEM;
- 		goto err_free_kfifo;
- 	}
-+	controller->svc = svc;
- 
- 	svc->stratix10_svc_rsu = platform_device_alloc(STRATIX10_RSU, 0);
- 	if (!svc->stratix10_svc_rsu) {
-@@ -1050,8 +1053,6 @@ static int stratix10_svc_drv_probe(struc
- 	if (ret)
- 		goto err_put_device;
- 
--	dev_set_drvdata(dev, svc);
--
- 	pr_info("Intel Service Layer Driver Initialized\n");
- 
+--- a/mm/truncate.c
++++ b/mm/truncate.c
+@@ -196,6 +196,31 @@ int truncate_inode_folio(struct address_
  	return 0;
-@@ -1065,8 +1066,8 @@ err_free_kfifo:
+ }
  
- static int stratix10_svc_drv_remove(struct platform_device *pdev)
- {
--	struct stratix10_svc *svc = dev_get_drvdata(&pdev->dev);
- 	struct stratix10_svc_controller *ctrl = platform_get_drvdata(pdev);
-+	struct stratix10_svc *svc = ctrl->svc;
- 
- 	platform_device_unregister(svc->stratix10_svc_rsu);
- 
++static int try_folio_split_or_unmap(struct folio *folio)
++{
++	enum ttu_flags ttu_flags =
++		TTU_SYNC |
++		TTU_SPLIT_HUGE_PMD |
++		TTU_IGNORE_MLOCK;
++	int ret;
++
++	ret = split_folio(folio);
++
++	/*
++	 * If the split fails, unmap the folio, so it will be refaulted
++	 * with PTEs to respect SIGBUS semantics.
++	 *
++	 * Make an exception for shmem/tmpfs that for long time
++	 * intentionally mapped with PMDs across i_size.
++	 */
++	if (ret && !shmem_mapping(folio->mapping)) {
++		try_to_unmap(folio, ttu_flags);
++		WARN_ON(folio_mapped(folio));
++	}
++
++	return ret;
++}
++
+ /*
+  * Handle partial folios.  The folio may be entirely within the
+  * range if a split has raced with us.  If not, we zero the part of the
+@@ -239,7 +264,7 @@ bool truncate_inode_partial_folio(struct
+ 		folio_invalidate(folio, offset, length);
+ 	if (!folio_test_large(folio))
+ 		return true;
+-	if (split_folio(folio) == 0)
++	if (try_folio_split_or_unmap(folio) == 0)
+ 		return true;
+ 	if (folio_test_dirty(folio))
+ 		return false;
 
 
 
