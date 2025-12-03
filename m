@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-198516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF3AAC9FA4C
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:47:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E652CA0EAC
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:23:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 70A1E30022BB
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:47:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2D37632931EF
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:20:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BD6D313E3D;
-	Wed,  3 Dec 2025 15:46:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F932366DAF;
+	Wed,  3 Dec 2025 16:45:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fSXBvdP+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VEeLwl/d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15A993191D0;
-	Wed,  3 Dec 2025 15:46:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE37B2F7ADF;
+	Wed,  3 Dec 2025 16:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776804; cv=none; b=RYRspEjB5nT4Up2ZCbDr2OyuGuvfrvVXTYebXvVdSRFKlnPzVoC1tknjpCqFFQyXobzzH0OYoXB+/HEFlcAXKRxxR8bjrtzn6nkaPvBDW5hIo+4LeOWSFQsgjTFQxUjLu/EGw9OWWK4uJr/npX+Ci9ohAvPLOMwDbsGcH9CtO5Y=
+	t=1764780324; cv=none; b=V0r7h9KO2FgDY05Vdx27KNTgY+O+O6ALNisrcrfwrmdJcF6w8KuG6WReOYV7PUCywpuQMqWMPmbQJ1niyeiX4md2HugQh1w65t5fa5//m1O93MEVIGHnuiWt2ShzC6howWka+17w6KkXZ/vp90d9gGIxc9hrmronZNM7D8qUfOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776804; c=relaxed/simple;
-	bh=DL07vahdGHCGyfQLjropEHQ7nBl+JZRIuflhGzB0ofo=;
+	s=arc-20240116; t=1764780324; c=relaxed/simple;
+	bh=rU0bQKg7HhRWfgYcjt+d/j+m67Zu/zb9U8mAg+Mvn/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tfcmD6II3fXPqVsXhR4ggSQ+KkLK0ajbnFGGUNMNl0r5gwnR0RPR38NFwR6IhcDXq/3lUYsh7L1UumDqUU3I+0GSUDNT6a+WWhyml7IObwWJYElDVErdXqVXysUCtVZa8RKGfczcIuRRog5acrIFivhBOCyOXqxUkERodY7gL8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fSXBvdP+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 805EAC4CEF5;
-	Wed,  3 Dec 2025 15:46:43 +0000 (UTC)
+	 MIME-Version; b=nm+2LxuCI6HdqmI63Amo406p2UX8slrJIp9pQcp9pTyL63axjJwwE9UUQpjch0W8/dfqceShV2KBeaQy17p8BwMHEeM90ZRchHrqeRcaTTDgKTNajs3pPq8xQLmMqHnBJKGSaKqdmYtnaEKyIgnpi1MGcVuKOORErYcwao/ZeWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VEeLwl/d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE506C4CEF5;
+	Wed,  3 Dec 2025 16:45:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776803;
-	bh=DL07vahdGHCGyfQLjropEHQ7nBl+JZRIuflhGzB0ofo=;
+	s=korg; t=1764780323;
+	bh=rU0bQKg7HhRWfgYcjt+d/j+m67Zu/zb9U8mAg+Mvn/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fSXBvdP+G5dWbj/DpvIEJy+uvAoMHt6OXZmaxi7hKad7ii1H45pN5LteUmLYiV//I
-	 g9FiDpO47jeHANdwjhdlJH/KdwJOqhZQwvW3RBSirFLORlSi89BG7dQ8nAKoF6b2XL
-	 3X8KCOhHAKCI6rR2Qv5qkCtpJEsfTsygdreGuUXM=
+	b=VEeLwl/d2wn4y329W+bMRGOiYYRct/DRIGDzOPS2M2BHGVfK4GsuhU0olAdV34Hkm
+	 wCbsW5QOhJh0MqxMg2UKcG0gybGMxgPpMUi34WO30nUzWSaPWrOdD2pu0AHc2Xs3hu
+	 WdACq563Cj/ojbURz0ndYoc1z3TM9UIKH6TVXnPk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Pylypiv <ipylypiv@google.com>,
-	Terrence Adams <tadamsjr@google.com>,
-	Jack Wang <jinpu.wang@ionos.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Nazar Kalashnikov <sivartiwe@gmail.com>
-Subject: [PATCH 5.10 293/300] scsi: pm80xx: Set phy->enable_completion only when we
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 495/568] can: gs_usb: gs_usb_receive_bulk_callback(): check actual_length before accessing header
 Date: Wed,  3 Dec 2025 16:28:17 +0100
-Message-ID: <20251203152411.476516015@linuxfoundation.org>
+Message-ID: <20251203152458.845320922@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +59,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Igor Pylypiv <ipylypiv@google.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit e4f949ef1516c0d74745ee54a0f4882c1f6c7aea ]
+[ Upstream commit 6fe9f3279f7d2518439a7962c5870c6e9ecbadcf ]
 
-pm8001_phy_control() populates the enable_completion pointer with a stack
-address, sends a PHY_LINK_RESET / PHY_HARD_RESET, waits 300 ms, and
-returns. The problem arises when a phy control response comes late.  After
-300 ms the pm8001_phy_control() function returns and the passed
-enable_completion stack address is no longer valid. Late phy control
-response invokes complete() on a dangling enable_completion pointer which
-leads to a kernel crash.
+The driver expects to receive a struct gs_host_frame in
+gs_usb_receive_bulk_callback().
 
-Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
-Signed-off-by: Terrence Adams <tadamsjr@google.com>
-Link: https://lore.kernel.org/r/20240627155924.2361370-2-tadamsjr@google.com
-Acked-by: Jack Wang <jinpu.wang@ionos.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Nazar Kalashnikov <sivartiwe@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Use struct_group to describe the header of the struct gs_host_frame and
+check that we have at least received the header before accessing any
+members of it.
+
+To resubmit the URB, do not dereference the pointer chain
+"dev->parent->hf_size_rx" but use "parent->hf_size_rx" instead. Since
+"urb->context" contains "parent", it is always defined, while "dev" is not
+defined if the URB it too short.
+
+Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
+Link: https://patch.msgid.link/20251114-gs_usb-fix-usb-callbacks-v1-2-a29b42eacada@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-Backport fix for CVE-2024-47666
- drivers/scsi/pm8001/pm8001_sas.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/can/usb/gs_usb.c | 26 +++++++++++++++++++-------
+ 1 file changed, 19 insertions(+), 7 deletions(-)
 
---- a/drivers/scsi/pm8001/pm8001_sas.c
-+++ b/drivers/scsi/pm8001/pm8001_sas.c
-@@ -163,7 +163,6 @@ int pm8001_phy_control(struct asd_sas_ph
- 	unsigned long flags;
- 	pm8001_ha = sas_phy->ha->lldd_ha;
- 	phy = &pm8001_ha->phy[phy_id];
--	pm8001_ha->phy[phy_id].enable_completion = &completion;
- 	switch (func) {
- 	case PHY_FUNC_SET_LINK_RATE:
- 		rates = funcdata;
-@@ -176,6 +175,7 @@ int pm8001_phy_control(struct asd_sas_ph
- 				rates->maximum_linkrate;
- 		}
- 		if (pm8001_ha->phy[phy_id].phy_state ==  PHY_LINK_DISABLE) {
-+			pm8001_ha->phy[phy_id].enable_completion = &completion;
- 			PM8001_CHIP_DISP->phy_start_req(pm8001_ha, phy_id);
- 			wait_for_completion(&completion);
- 		}
-@@ -184,6 +184,7 @@ int pm8001_phy_control(struct asd_sas_ph
- 		break;
- 	case PHY_FUNC_HARD_RESET:
- 		if (pm8001_ha->phy[phy_id].phy_state == PHY_LINK_DISABLE) {
-+			pm8001_ha->phy[phy_id].enable_completion = &completion;
- 			PM8001_CHIP_DISP->phy_start_req(pm8001_ha, phy_id);
- 			wait_for_completion(&completion);
- 		}
-@@ -192,6 +193,7 @@ int pm8001_phy_control(struct asd_sas_ph
- 		break;
- 	case PHY_FUNC_LINK_RESET:
- 		if (pm8001_ha->phy[phy_id].phy_state == PHY_LINK_DISABLE) {
-+			pm8001_ha->phy[phy_id].enable_completion = &completion;
- 			PM8001_CHIP_DISP->phy_start_req(pm8001_ha, phy_id);
- 			wait_for_completion(&completion);
- 		}
+diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
+index 7fe9d497491d1..5d0cee57ab970 100644
+--- a/drivers/net/can/usb/gs_usb.c
++++ b/drivers/net/can/usb/gs_usb.c
+@@ -252,13 +252,15 @@ struct canfd_quirk {
+ } __packed;
+ 
+ struct gs_host_frame {
+-	u32 echo_id;
+-	__le32 can_id;
++	struct_group(header,
++		u32 echo_id;
++		__le32 can_id;
+ 
+-	u8 can_dlc;
+-	u8 channel;
+-	u8 flags;
+-	u8 reserved;
++		u8 can_dlc;
++		u8 channel;
++		u8 flags;
++		u8 reserved;
++	);
+ 
+ 	union {
+ 		DECLARE_FLEX_ARRAY(struct classic_can, classic_can);
+@@ -528,6 +530,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+ 	int rc;
+ 	struct net_device_stats *stats;
+ 	struct gs_host_frame *hf = urb->transfer_buffer;
++	unsigned int minimum_length;
+ 	struct gs_tx_context *txc;
+ 	struct can_frame *cf;
+ 	struct canfd_frame *cfd;
+@@ -546,6 +549,15 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+ 		return;
+ 	}
+ 
++	minimum_length = sizeof(hf->header);
++	if (urb->actual_length < minimum_length) {
++		dev_err_ratelimited(&parent->udev->dev,
++				    "short read (actual_length=%u, minimum_length=%u)\n",
++				    urb->actual_length, minimum_length);
++
++		goto resubmit_urb;
++	}
++
+ 	/* device reports out of range channel id */
+ 	if (hf->channel >= parent->channel_cnt)
+ 		goto device_detach;
+@@ -642,7 +654,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+ resubmit_urb:
+ 	usb_fill_bulk_urb(urb, parent->udev,
+ 			  parent->pipe_in,
+-			  hf, dev->parent->hf_size_rx,
++			  hf, parent->hf_size_rx,
+ 			  gs_usb_receive_bulk_callback, parent);
+ 
+ 	rc = usb_submit_urb(urb, GFP_ATOMIC);
+-- 
+2.51.0
+
 
 
 
