@@ -1,96 +1,200 @@
-Return-Path: <stable+bounces-199921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B3CDCA194C
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 21:43:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D16FCA1949
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 21:41:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 033AA3007CBB
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 20:43:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 05E78300DA60
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 20:41:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DCF22C0271;
-	Wed,  3 Dec 2025 20:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C7462C0268;
+	Wed,  3 Dec 2025 20:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=achill.org header.i=@achill.org header.b="LqIjUueb"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="kyarLYQh"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout02.platinum-mail.de (mx02.platinum-mail.de [89.58.18.167])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012013.outbound.protection.outlook.com [52.101.66.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A75242BEFF1
-	for <stable@vger.kernel.org>; Wed,  3 Dec 2025 20:43:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.18.167
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764794603; cv=none; b=N6wRVzsA3OqP/WfvylX6bgOX1WCpclYfEpF/BnL1R4xdlxuOdUKKY4gqVDcxsMWf9Y8Uim0Z0DtmmMe9sI0wr/tyjjioJHlXDHKHe5TAvCJ7UKKpOkhTsdVAlNTldsak+1IRkDjKE1iOzCZ2r1vsp5ieRgFKfTYYcLbN/PnAS9A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764794603; c=relaxed/simple;
-	bh=uChY98SMxaqGwShhbtHMgtlQwE+YpKuZEtJ8qwM1jhU=;
-	h=Mime-Version:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:Content-Type; b=iVWJGTIfi0KRe5g6R+t4DuBa0GhmElusvZoI7qE8ajs52KOANKaUno9BxkzYFopCqXiOvBGpu23hcLyRat2TAU//7LlhumJ3ZoZRMBFqTmMZdzT7jrITZqqVQkLD5X4NuO6kxO4DJbCAX57j1eMfX1hYSoB/gIWfaVlBQBdz9v4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=achill.org; spf=pass smtp.mailfrom=achill.org; dkim=pass (2048-bit key) header.d=achill.org header.i=@achill.org header.b=LqIjUueb; arc=none smtp.client-ip=89.58.18.167
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=achill.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=achill.org
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mailout02.platinum-mail.de (Mail Service) with ESMTPS id BF2479A293D
-	for <stable@vger.kernel.org>; Wed,  3 Dec 2025 20:36:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; d=achill.org; s=mail; c=relaxed/simple;
-	t=1764794207; h=date:message-id:subject:from:to;
-	bh=uChY98SMxaqGwShhbtHMgtlQwE+YpKuZEtJ8qwM1jhU=;
-	b=LqIjUuebDig0OumYSnwuRfpFqxvZMekbJDygxYAe+pJZ0cN9u6UVOfwizkizRiDqCb5I7tWFhim
-	B/VBZdkylOM5An992p7T+MvkB/FWL885iaFsmgD8ztdPP+4LFBMRL3P1M5b762Epf7xntT8n7cso2
-	5iT4TedksSYahqiXwN+2mTA7oipUuo1QBUG/LPLc1CFr5Tb02oTrqicoB9b8xdTEWRfWDjpOkQZuQ
-	vF56gHfyv4Z3jplHyFWln7+Q6kuCKCKFnYVnbOqnHk/BDgcCBXKYoW3QJheStRKhWlwIDHemJeAVD
-	hKG8e35BA9ZTZOmNwqsG/IzP78V0nj/ZquWg==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 540592AD2C;
+	Wed,  3 Dec 2025 20:41:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764794468; cv=fail; b=ljm91qBJdeSOK+Bkj+oyeYeWSxgW7Txeqpj9vBdduroINitvEQcjhgJ4irpEMwFsBKpJ9dHvKz5IzaIX8RT3ys841RS06+T/tMuRPHz0pL/oFB5g8E3Yd1tJrlZbujTIzqm0vKktwpalpQzgeTCST3gmLSuIjaMt+1yx+0nYhkc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764794468; c=relaxed/simple;
+	bh=lBiCRyD7NNEIwbH6rVrHuDE4QMLjz1ho9bq1qJUUlWI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=JfrErqlB6+4Q2s91YycKS8UJPMoS2Yn0j68PlW56k+/UoS6x0oVX3YKiAYNwHX4tdbQIckTmc3nFJblgDH8ceQr5lsZqjssdifEp3YkrhS4YS+zsnyD3AK/QcSKIPcDaO8jRfjG/o/TpnxNt50E0B0SOj5Lz5tIDq4iXNhA2fGc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=kyarLYQh; arc=fail smtp.client-ip=52.101.66.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mAlF05vQLCubyppPbFpFvYhP8XBb9PPbt3FQc2l37t4Zbi0OdO/KC1hbgYJym5g7Y8JvEljMioeemFdHxHfdZq0ggzxlodyMTYEZntW0Gc6twJKeiK4FfUZug2Au4DrdakmokklTIxpJKVnuXFmIszaC1IGDuZ+g7J9OqqFNf1UWUG0vghXxCy0doEktX/B1pXxlvccjH0d74Cp0g9fno+2TlEx6kNYYuyXNGFCQBxBxdJ1761i2co2uK1UzR2/YCIiyt+WXMEhXe4v2pwLhlB4XpqDorTvrZaY3TjeLHBdNktBMA7gx2rmabHYf6Gz/9kvWOHnUQJ3sTnr6Eu2h3g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qT9DrGPJIeWCpJ4+G/HiBVqmeDgsASWSbEQOf6wyXD0=;
+ b=n7zP5vfIqE4QAw2hXGXK4tM/wfolYOtsUri+DYQwJfFnLciXgv0O71TbKwKMQ43A2mdfIUSAgV9JVmUQTanwtYCAwL1zkTK2xCsGAh46/aCg7GLikp97lreXV7CoR5N8NPdGRmbY7jKs1Dwl+STyMU4UYbv3va2tMzJ6Tzh9+z/8pf3VgRYUl24KwE7yaOFCGU2Sg73emDB2Fl6e+SugNSFi4iVNq5kEu7TEtdTadYses+HeHksDHyBSb/9kU6SchCmUS9TRgXGEeqgRoW2I7Itc6May4Fr3nUkOsaiK7K77d4PaCRAVufzIeICTEIPO3894MUxuhR7Lr4TKn2GYzA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qT9DrGPJIeWCpJ4+G/HiBVqmeDgsASWSbEQOf6wyXD0=;
+ b=kyarLYQh27kVkZlmZ6x7XZmNIThWH/4eoWjITj58jemXXdIb1tgv1wouv3G8gYnsKT+uSmGPV1kW5bvDRDEpgXKuw+poz/oGDM65/aj6CRh+apq68GMD7yANW4vfi5xL9rhlFwd63tApcU/1ZDrz8Ux3Q+Hf0GR6mrVQnroKiGwjZ6G8eWao8K75bGXwDiW/y2AvaIbp9lA0TnoIHBFNTNT5w6gV8ENyXtMgUPtLyvXxjPzt2YsUvMTaaz9oKzgFaDZm3tUL7EBVXcH5yXdJfUMeRepMSJ1rABPi4yZVemb7Tgkqe2Peutw43RXZD9xBgn6VamLNlsMgXDLFGivTGA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU2PR04MB8951.eurprd04.prod.outlook.com (2603:10a6:10:2e2::22)
+ by DU2PR04MB8949.eurprd04.prod.outlook.com (2603:10a6:10:2e0::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Wed, 3 Dec
+ 2025 20:41:00 +0000
+Received: from DU2PR04MB8951.eurprd04.prod.outlook.com
+ ([fe80::753c:468d:266:196]) by DU2PR04MB8951.eurprd04.prod.outlook.com
+ ([fe80::753c:468d:266:196%4]) with mapi id 15.20.9366.012; Wed, 3 Dec 2025
+ 20:41:00 +0000
+Date: Wed, 3 Dec 2025 15:40:53 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+Cc: Jingoo Han <jingoohan1@gmail.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	macro@orcam.me.uk, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] PCI: dwc: Correct iATU index increment for MSG TLP
+ region
+Message-ID: <aTCgVd3xzIQlW27Q@lizhi-Precision-Tower-5810>
+References: <20251203-ecam_io_fix-v1-0-5cc3d3769c18@oss.qualcomm.com>
+ <20251203-ecam_io_fix-v1-1-5cc3d3769c18@oss.qualcomm.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251203-ecam_io_fix-v1-1-5cc3d3769c18@oss.qualcomm.com>
+X-ClientProxiedBy: BYAPR01CA0058.prod.exchangelabs.com (2603:10b6:a03:94::35)
+ To DU2PR04MB8951.eurprd04.prod.outlook.com (2603:10a6:10:2e2::22)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 03 Dec 2025 21:36:45 +0100
-Message-Id: <DEOVC1VVO6NU.1DAURHNHDPIPX@achill.org>
-Cc: <patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
- <torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
- <linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
- <lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
- <f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <rwarsow@gmx.de>,
- <conor@kernel.org>, <hargar@microsoft.com>, <broonie@kernel.org>,
- <achill@achill.org>, <sr@sladewatkins.com>
-Subject: Re: [PATCH 6.17 000/146] 6.17.11-rc1 review
-From: "Achill Gilgenast" <achill@achill.org>
-To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- <stable@vger.kernel.org>
-X-Greeting: Hi mom! Look, I'm in somebodys mail client!
-X-Mailer: aerc 0.21.0
-References: <20251203152346.456176474@linuxfoundation.org>
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-Content-Type: text/plain; charset=utf-8
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8951:EE_|DU2PR04MB8949:EE_
+X-MS-Office365-Filtering-Correlation-Id: b80943d0-90b4-4403-fcd5-08de32ac4509
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|19092799006|52116014|376014|366016|1800799024|38350700014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?vJCRNW4V0Rng81H/KQBUiRuUs8qKJ0zYJRnYn0opjcnyXlUSbFbqdmpW+wtm?=
+ =?us-ascii?Q?6GInKFbQVp+uBWzfat4LellpjNYTJrJJxBc4Zf74wcEy3DzaEc+x2JYVP5x5?=
+ =?us-ascii?Q?jHeLnPOlFiyzzARH0dGRdvJWiy2Qxdvg/8TzjBn39qJv72auPg5wX2MZ9U8a?=
+ =?us-ascii?Q?uILnowqJInOv5f69fAVoAE9sH5pBtR2Ez9sn/+J5e2PG8kmGHKDYEInhxvJH?=
+ =?us-ascii?Q?IKM22Ya4PAIGN69pC7ooTpwqiDleMLAKUBDEEybxYgXyq0woIvhGOFpwDxz0?=
+ =?us-ascii?Q?0S6DIY6iot3FAzVofpSjLxADBjW9GbSrTSl/9IMTv8xt5e+FeZF9sr6F/APl?=
+ =?us-ascii?Q?9YbHo2BarwZvzRWSHFl9QvjWiY1wxY7E2FXddAFtuSL0DT01kjdmHkoaujZ8?=
+ =?us-ascii?Q?AeTmal/nEdlrq6+qg/RaE/pow8kJn1GmOsXbRwaNah2JsaNxhFrqY6ULp3qF?=
+ =?us-ascii?Q?mDcwdZfH0zrw7h0K+F2uGS14zUg72BON5FTUK4hl0mwc9GD3FQJWSY+hS3dB?=
+ =?us-ascii?Q?nPCMuNVfOGCEXDIBRApk0abUC/oEIQF8BGOvA54t6kRZM/KVLXHTyq4fMzBj?=
+ =?us-ascii?Q?u8MJbs+jKAtJscfAE6Ehd96TzpmBybanvH7gHPbVObUUOfbbAcbP3EwxbC/s?=
+ =?us-ascii?Q?vlW7bsvgMkn91Nn5SlIr4NevKTSlwFgCWtTPGm1jEuUhxqUKhQHlGonnnOcT?=
+ =?us-ascii?Q?t75nt64wj0W9rLsrK2THI20G61CuAYZtmf6bi9sWcxRcJVAD+8mT9jAd0SgZ?=
+ =?us-ascii?Q?6Ltlj1fS3czKdtNGdlluNNCpQ2ttjFVhb+LrK2x5fTwFPhtg1Qg4Ij05eyBD?=
+ =?us-ascii?Q?sERNzqU3THR5gWc4RkCHqfdlSjM1+Zp172sUwEGJH0dDHTZr9of3aU3CrA9H?=
+ =?us-ascii?Q?WJKfLBzhSQkLEZDnVyg2Df6Jila9DEZWwRXcQfRQ/d1Ofvb6uQUfmPJGIs59?=
+ =?us-ascii?Q?+3wFQI5cvtY89rzFYbmQ3jPP/5yItn1EFKSAxqNRYWrxdZPw75NtDKzFJE2Y?=
+ =?us-ascii?Q?AbXlbzOBRHnSgbg50tLR+osAqAqwdwDTdbJlcDMHYgHsGHKhO0GTprDylTSa?=
+ =?us-ascii?Q?LB6RVvxz98qwa8UGXmobTdthN5GwMZHqvLWGu/fCxALpuvIzwknVifjK1TTg?=
+ =?us-ascii?Q?pFVRKC1cTHx1TX8G68PUp9bBL2VBfErVPwTVSAVBrRXbsVuRyzDv1Pb+5+kZ?=
+ =?us-ascii?Q?IGwk5zYEedDOm+Q8DJAcQkxlw8w6JkaV1MUcUOPyngBlv/XxGzOCuyVi/+LZ?=
+ =?us-ascii?Q?IIPg236R5jSraUSXF8mQOAxcquIk1DiCd3a4vkDEA3E7qsI+L5dbODWKYkqs?=
+ =?us-ascii?Q?eTQSK13a0MrK37tpQ9UpqkwO63NEzCK57E0aa6VCFHQnvuh+1nzpDAMg5V7f?=
+ =?us-ascii?Q?aKmoRvp5UCqpc00OlgKiTmCD2AJBrNTxyU887GwdZPmCZIETSKJ6S7t7eRFM?=
+ =?us-ascii?Q?MNMdUV6VdIzkVjRyO25xE5u/akLI9pBRnxEgR+jUVYyVH8mGH6UfZkQoOkxD?=
+ =?us-ascii?Q?2DCAWXDCYRuFa6Fhk1w9q+SYW6ihATfL+Pxl?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8951.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(19092799006)(52116014)(376014)(366016)(1800799024)(38350700014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?BSpBpYoGvfRRWPtbKzuaQOqdANQ1SSM+TY0TSG0a5FvwW1A5eymOsxU/YdPq?=
+ =?us-ascii?Q?mf6kWcij2H+f1qoQd3uQhoQW2obKiYdf3U9M8C81kx1lx2L9ry7oLcGrKDGH?=
+ =?us-ascii?Q?pWfnF6hyXb0ixJsA2hetYOZC52+cB5U6/DgAAyjdJUkLY4iYghPissHbCRAq?=
+ =?us-ascii?Q?Xs/Tmp5mJGAN5li1kyR6Z2Fr0h19OyiGV3CRXk7HdstDNUP7pI+EF9akSQPt?=
+ =?us-ascii?Q?gpISPdDz149o3M0+wi4uvGF/nDnlUb2qXl9haqHhR9JiwOHiAbUw2w5T078b?=
+ =?us-ascii?Q?24haDqshAKKe2rz+BWeB/4NO0D+MKlV6GCpjQ96rOyChlIS9Z7IcwllmKncP?=
+ =?us-ascii?Q?yEETzQuBSbdBbqO7GkGcmw9ZnmNAqFCNgOKrdFc4+Z4QQWxeV534TYMcNZP9?=
+ =?us-ascii?Q?juegRqdp8s2YA1W9YDVtcRGVhRpjvPQFYuMumYvWCa3rkPh+UgX5uk0sBQVv?=
+ =?us-ascii?Q?PYtxtNAxi7VXuL+WhF2hwfQXZVO4/YjuBeO5ANxZJAU7oYETvJaWi9BMwIAy?=
+ =?us-ascii?Q?C2jnsmrqFBW6tKxHLPdu/kLMlaa15MkiNVy/VXfTrfyH/KyQe1ZKJ+Vd88R/?=
+ =?us-ascii?Q?HEIRcRvEnw8Wa/r0h/cuRtE8XmZeId7kgviKv7m4bdTtJ6HQbkDW3/9v9FmN?=
+ =?us-ascii?Q?2PITXscEubE7PmdmMuuatF/qYNLp7xMenkiKUPrAJ7VS23pNnXbz2Zil4pug?=
+ =?us-ascii?Q?q5O+iGy56X6iq3GIpvnifo+6icwEuXNT9K3lrT4+SQrpHb3wr5Xts+NLVHW/?=
+ =?us-ascii?Q?b21ODwWsm/M1de7rQPIkvqW1CxZ96f0w38JHbw/ocjrXa1PMnygX6zhjEIhL?=
+ =?us-ascii?Q?hrdCXMqvHwfZ3yXSAW00a5PXdsm/kVm5bHOB2lUjqDimPGw3ZCxRe8Z2tX4m?=
+ =?us-ascii?Q?VCKc9+GKCA3TIZebmBHMo/o0gLnJDlA1YRSUYlE/qSpTqJPHeCjsEKjQXLCS?=
+ =?us-ascii?Q?39b2Utl/Yem5b+y4Yp9qiyHvNxWLZMim7KiFTtaiz5xsQSsTbwXzgKbRvfKu?=
+ =?us-ascii?Q?QxwrELLSwMpgiYiPBb0dES4bi/G0MvAt6LRfJgCOozPKflcaJZkFnfVwVqY9?=
+ =?us-ascii?Q?if60XjC4XuAsmXTcwdI0bwX5QTPCckoCiaPvNCwiRpKcuJsWZUZ/sWQEQj7x?=
+ =?us-ascii?Q?dmjwu+logH5N1sVQros7S98vKI/q+yl96x3jT9K5ZSvm0S7hXrb9br7+01WH?=
+ =?us-ascii?Q?AodFxvuJI9DI55CxktVDr3TKgRtKCxtfbm1QbGzj2YCEiUOAYOT3WkYyq0nA?=
+ =?us-ascii?Q?kG4hcRkRhpF46dr6xi9caHuP8t79m8EB38saqgvvPJiDkW+bqLfoBK01oC7n?=
+ =?us-ascii?Q?UYdfMObxE21jfYYB/f2piwzGNEz5T36Iiu7OL54Ud6DorhI5db4k/hNkTXu9?=
+ =?us-ascii?Q?snlLNm7jP9VQjHcmrFRqeDvk2hnxBzmnFlpsMkcBYXPwwIQCRlryZGGKjDYi?=
+ =?us-ascii?Q?V8eG3yYVCVixFYbLaWL7BHxV1LiPTxZQmrefNnRYbkiVnzB+foF2YdULnYRo?=
+ =?us-ascii?Q?m735BAMAOscNESWpFvUB4d4Rv3cBwdUUR/MkU56rILdG8D37ET2PElDFBQsa?=
+ =?us-ascii?Q?uk6zFF/aExtxUuYrIh4O7y2VGLLlTbOmG/RKUUqa?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b80943d0-90b4-4403-fcd5-08de32ac4509
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8951.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Dec 2025 20:41:00.8341
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1a2aVCsjoSztBrGKIlpUIxqZPoGCLFmttyop2wPJv92Ug/A7v4dYQX2HzNr4pMA08jHZCdkvCikElJnEwibynw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8949
 
-On Wed Dec 3, 2025 at 4:26 PM CET, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.17.11 release.
-> There are 146 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Wed, Dec 03, 2025 at 11:50:14AM +0530, Krishna Chaitanya Chundru wrote:
+> Commit e1a4ec1a9520 ("PCI: dwc: Add generic MSG TLP support for sending
+> PME_Turn_Off when system suspend") introduced a mechanism to reserve an
+> iATU window for MSG TLP transactions. However, the code incorrectly
+> assigned pp->msg_atu_index = i without incrementing i first, causing
+> the MSG TLP region to reuse the last configured outbound window instead
+> of the next available one. This can cause issue with IO transfers as
+> this can over write iATU configured for IO memory.
 >
-> Responses should be made by Fri, 05 Dec 2025 15:23:16 +0000.
-> Anything received after that time might be too late.
+> Fix this by incrementing i before assigning it to msg_atu_index so
+> that the MSG TLP region uses a dedicated iATU entry.
 >
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.17.11=
--rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git=
- linux-6.17.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+> Fixes: e1a4ec1a9520 ("PCI: dwc: Add generic MSG TLP support for sending PME_Turn_Off when system suspend")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
 
-Thanks! Builded on all Alpine architectures & boot-tested on x86_64.
+Thank you fix it.
 
-Tested-By: Achill Gilgenast <achill@achill.org>=
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  drivers/pci/controller/dwc/pcie-designware-host.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
+> index e92513c5bda51bde3a7157033ddbd73afa370d78..4fb6331fbc2b322c1a1b6a8e4fe08f92e170da19 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware-host.c
+> +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+> @@ -942,7 +942,7 @@ static int dw_pcie_iatu_setup(struct dw_pcie_rp *pp)
+>  		dev_warn(pci->dev, "Ranges exceed outbound iATU size (%d)\n",
+>  			 pci->num_ob_windows);
+>
+> -	pp->msg_atu_index = i;
+> +	pp->msg_atu_index = ++i;
+>
+>  	i = 0;
+>  	resource_list_for_each_entry(entry, &pp->bridge->dma_ranges) {
+>
+> --
+> 2.34.1
+>
 
