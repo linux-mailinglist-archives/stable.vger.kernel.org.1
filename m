@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09F99CA11A0
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:44:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE189C9FBBD
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:57:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A96603007685
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:43:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CCBDD301A1F4
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:47:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61A65336EE2;
-	Wed,  3 Dec 2025 15:53:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21A4D3191CA;
+	Wed,  3 Dec 2025 15:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F6lEm61q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l7qMo71M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB9430C61A;
-	Wed,  3 Dec 2025 15:53:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D17573148AF;
+	Wed,  3 Dec 2025 15:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777217; cv=none; b=EhXPhm/mdlpYLQdt/tDfVVOrMWUExZ04eMZP9ni6oSs19oe0zNQ7UR4TfmxFpKBd7sytv1YA5V2uLk20846DoNvCVd7ifbrDSlF7wof3/OOaq6DVimCDfWRk9tsoQiIw43L5D6FXgU6t14W/he7o6ITi/UKZNDRITDp5G1l54Tw=
+	t=1764776810; cv=none; b=AQHYuPLCYYEjB8Y5lx2R2MOKbqpbTdsoNflfXo25i9EF1aLYZP0oMledZo/JkEQI1MrILYmBR52jKBzFzGEPQweeCtWQa8mxcvEuvSRLxUbkmzXnhszlHPb2b2PeCuHw/oBURp5SKI1SgFQ0yBgFmhuleg/XyJ3uW3V9NrE0Tas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777217; c=relaxed/simple;
-	bh=i/L9Bj2ziNimxsWzX6/UZem59RAtqa+/dJOIU8S6YQ8=;
+	s=arc-20240116; t=1764776810; c=relaxed/simple;
+	bh=5VA79EA1upzJTys9movM1EJDJQEGoUdp+xk+8p4D/VY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U+rJQv21Gq0wVgfjCScVK4G2N5U38Vr7c+0CAbppOm8aTBSsnDLaUpmaNR29a4IWt6V21y9fAPTyFF8p6RfNPUQzCPg+kErBkrABqN4VAq+UixoMspfqwTAVvmK74bU7Q27V3E9Fm/MXj9zfYBnpiekH/MBM1wT+12ZIiJmlupo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F6lEm61q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D2CCC4CEF5;
-	Wed,  3 Dec 2025 15:53:36 +0000 (UTC)
+	 MIME-Version; b=GVN5XYJJ3YeuzvN8fA6zkxhYwetKfy8xeHeZfWg6xRo6CwnpOh/Xythmp5P267Z3zAIsaZRNWfQxOAEVkWZAdnTjLujYpkso/NaFXJK4NFWmGRCXnjfgTOtUvDkGwqPlN39WAWyFtAHR2c1zn76dRQFLXz+2ODEg5WKeddFKH5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l7qMo71M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53730C4CEF5;
+	Wed,  3 Dec 2025 15:46:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777217;
-	bh=i/L9Bj2ziNimxsWzX6/UZem59RAtqa+/dJOIU8S6YQ8=;
+	s=korg; t=1764776810;
+	bh=5VA79EA1upzJTys9movM1EJDJQEGoUdp+xk+8p4D/VY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F6lEm61q1bjHV7QdcQ7OCUjm4LPXlQGWbGd1GVYPAFM9FVhUSjiiZlD9WSEFtQWNQ
-	 iSjSlQX9rvoliXcltAytY5MoSDnlojJeCnkK9eyObZo9IFQOBkJBC7/HUzQmJnVwt6
-	 G/v+KdwoMOD8D2sSP0U3yiGjMQvN3jJYtvT24fb0=
+	b=l7qMo71MX+MCCcz/faW9oE9swrEKW47pehqQMkXRN6rSLrVNtt0zyT1htXVl3R0o4
+	 uxWNGqAPDDk7jO2vRWOzLobuCQuDKEAALxDVQkNudDp+keFETThtkpM/W8FQjSqRDP
+	 QQLX54AU1w0IAGlxjraaVYFb1wbOHII3mpedzIi0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	stable <stable@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.17 119/146] usb: dwc3: pci: Sort out the Intel device IDs
-Date: Wed,  3 Dec 2025 16:28:17 +0100
-Message-ID: <20251203152350.818599970@linuxfoundation.org>
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH 5.10 294/300] mptcp: Fix proto fallback detection with BPF
+Date: Wed,  3 Dec 2025 16:28:18 +0100
+Message-ID: <20251203152411.514223462@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,156 +61,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-commit 46b28d2fbd13148981d91246bc0e13f4fc055987 upstream.
+commit c77b3b79a92e3345aa1ee296180d1af4e7031f8f upstream.
 
-The PCI device IDs were organised based on the Intel
-architecture generation in most cases, but not with every
-ID. That left the device ID table with no real order.
-Sorting the table based on the device ID.
+The sockmap feature allows bpf syscall from userspace, or based
+on bpf sockops, replacing the sk_prot of sockets during protocol stack
+processing with sockmap's custom read/write interfaces.
+'''
+tcp_rcv_state_process()
+  syn_recv_sock()/subflow_syn_recv_sock()
+    tcp_init_transfer(BPF_SOCK_OPS_PASSIVE_ESTABLISHED_CB)
+      bpf_skops_established       <== sockops
+        bpf_sock_map_update(sk)   <== call bpf helper
+          tcp_bpf_update_proto()  <== update sk_prot
+'''
 
-Suggested-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Cc: stable <stable@kernel.org>
-Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://patch.msgid.link/20251107121548.2702900-1-heikki.krogerus@linux.intel.com
+When the server has MPTCP enabled but the client sends a TCP SYN
+without MPTCP, subflow_syn_recv_sock() performs a fallback on the
+subflow, replacing the subflow sk's sk_prot with the native sk_prot.
+'''
+subflow_syn_recv_sock()
+  subflow_ulp_fallback()
+    subflow_drop_ctx()
+      mptcp_subflow_ops_undo_override()
+'''
+
+Then, this subflow can be normally used by sockmap, which replaces the
+native sk_prot with sockmap's custom sk_prot. The issue occurs when the
+user executes accept::mptcp_stream_accept::mptcp_fallback_tcp_ops().
+Here, it uses sk->sk_prot to compare with the native sk_prot, but this
+is incorrect when sockmap is used, as we may incorrectly set
+sk->sk_socket->ops.
+
+This fix uses the more generic sk_family for the comparison instead.
+
+Additionally, this also prevents a WARNING from occurring:
+
+result from ./scripts/decode_stacktrace.sh:
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 337 at net/mptcp/protocol.c:68 mptcp_stream_accept \
+(net/mptcp/protocol.c:4005)
+Modules linked in:
+...
+
+PKRU: 55555554
+Call Trace:
+<TASK>
+do_accept (net/socket.c:1989)
+__sys_accept4 (net/socket.c:2028 net/socket.c:2057)
+__x64_sys_accept (net/socket.c:2067)
+x64_sys_call (arch/x86/entry/syscall_64.c:41)
+do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
+entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+RIP: 0033:0x7f87ac92b83d
+
+---[ end trace 0000000000000000 ]---
+
+Fixes: 0b4f33def7bb ("mptcp: fix tcp fallback crash")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20251111060307.194196-3-jiayuan.chen@linux.dev
+[ Conflicts in protocol.c, because commit 8e2b8a9fa512 ("mptcp: don't
+  overwrite sock_ops in mptcp_is_tcpsk()") is not in this version. It
+  changes the logic on how and where the sock_ops is overridden in case
+  of passive fallback. To fix this, mptcp_is_tcpsk() is modified to use
+  the family, but first, a check of the protocol is required to continue
+  returning 'false' in case of MPTCP socket. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/dwc3-pci.c |   82 ++++++++++++++++++++++----------------------
- 1 file changed, 41 insertions(+), 41 deletions(-)
+ net/mptcp/protocol.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/dwc3/dwc3-pci.c
-+++ b/drivers/usb/dwc3/dwc3-pci.c
-@@ -21,41 +21,41 @@
- #include <linux/acpi.h>
- #include <linux/delay.h>
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -56,8 +56,13 @@ static struct socket *__mptcp_nmpc_socke
+ static bool mptcp_is_tcpsk(struct sock *sk)
+ {
+ 	struct socket *sock = sk->sk_socket;
++	unsigned short family;
  
-+#define PCI_DEVICE_ID_INTEL_CMLLP		0x02ee
-+#define PCI_DEVICE_ID_INTEL_CMLH		0x06ee
-+#define PCI_DEVICE_ID_INTEL_BXT			0x0aaa
- #define PCI_DEVICE_ID_INTEL_BYT			0x0f37
- #define PCI_DEVICE_ID_INTEL_MRFLD		0x119e
--#define PCI_DEVICE_ID_INTEL_BSW			0x22b7
--#define PCI_DEVICE_ID_INTEL_SPTLP		0x9d30
--#define PCI_DEVICE_ID_INTEL_SPTH		0xa130
--#define PCI_DEVICE_ID_INTEL_BXT			0x0aaa
- #define PCI_DEVICE_ID_INTEL_BXT_M		0x1aaa
--#define PCI_DEVICE_ID_INTEL_APL			0x5aaa
--#define PCI_DEVICE_ID_INTEL_KBP			0xa2b0
--#define PCI_DEVICE_ID_INTEL_CMLLP		0x02ee
--#define PCI_DEVICE_ID_INTEL_CMLH		0x06ee
-+#define PCI_DEVICE_ID_INTEL_BSW			0x22b7
- #define PCI_DEVICE_ID_INTEL_GLK			0x31aa
--#define PCI_DEVICE_ID_INTEL_CNPLP		0x9dee
--#define PCI_DEVICE_ID_INTEL_CNPH		0xa36e
--#define PCI_DEVICE_ID_INTEL_CNPV		0xa3b0
- #define PCI_DEVICE_ID_INTEL_ICLLP		0x34ee
--#define PCI_DEVICE_ID_INTEL_EHL			0x4b7e
--#define PCI_DEVICE_ID_INTEL_TGPLP		0xa0ee
- #define PCI_DEVICE_ID_INTEL_TGPH		0x43ee
--#define PCI_DEVICE_ID_INTEL_JSP			0x4dee
--#define PCI_DEVICE_ID_INTEL_WCL			0x4d7e
- #define PCI_DEVICE_ID_INTEL_ADL			0x460e
--#define PCI_DEVICE_ID_INTEL_ADL_PCH		0x51ee
- #define PCI_DEVICE_ID_INTEL_ADLN		0x465e
-+#define PCI_DEVICE_ID_INTEL_EHL			0x4b7e
-+#define PCI_DEVICE_ID_INTEL_WCL			0x4d7e
-+#define PCI_DEVICE_ID_INTEL_JSP			0x4dee
-+#define PCI_DEVICE_ID_INTEL_ADL_PCH		0x51ee
- #define PCI_DEVICE_ID_INTEL_ADLN_PCH		0x54ee
--#define PCI_DEVICE_ID_INTEL_ADLS		0x7ae1
--#define PCI_DEVICE_ID_INTEL_RPL			0xa70e
-+#define PCI_DEVICE_ID_INTEL_APL			0x5aaa
-+#define PCI_DEVICE_ID_INTEL_NVLS_PCH		0x6e6f
-+#define PCI_DEVICE_ID_INTEL_ARLH_PCH		0x777e
- #define PCI_DEVICE_ID_INTEL_RPLS		0x7a61
-+#define PCI_DEVICE_ID_INTEL_MTL			0x7e7e
-+#define PCI_DEVICE_ID_INTEL_ADLS		0x7ae1
- #define PCI_DEVICE_ID_INTEL_MTLM		0x7eb1
- #define PCI_DEVICE_ID_INTEL_MTLP		0x7ec1
- #define PCI_DEVICE_ID_INTEL_MTLS		0x7f6f
--#define PCI_DEVICE_ID_INTEL_MTL			0x7e7e
--#define PCI_DEVICE_ID_INTEL_NVLS_PCH		0x6e6f
--#define PCI_DEVICE_ID_INTEL_ARLH_PCH		0x777e
- #define PCI_DEVICE_ID_INTEL_TGL			0x9a15
-+#define PCI_DEVICE_ID_INTEL_SPTLP		0x9d30
-+#define PCI_DEVICE_ID_INTEL_CNPLP		0x9dee
-+#define PCI_DEVICE_ID_INTEL_TGPLP		0xa0ee
-+#define PCI_DEVICE_ID_INTEL_SPTH		0xa130
-+#define PCI_DEVICE_ID_INTEL_KBP			0xa2b0
-+#define PCI_DEVICE_ID_INTEL_CNPH		0xa36e
-+#define PCI_DEVICE_ID_INTEL_CNPV		0xa3b0
-+#define PCI_DEVICE_ID_INTEL_RPL			0xa70e
- #define PCI_DEVICE_ID_INTEL_PTLH		0xe332
- #define PCI_DEVICE_ID_INTEL_PTLH_PCH		0xe37e
- #define PCI_DEVICE_ID_INTEL_PTLU		0xe432
-@@ -413,41 +413,41 @@ static void dwc3_pci_remove(struct pci_d
- }
- 
- static const struct pci_device_id dwc3_pci_id_table[] = {
--	{ PCI_DEVICE_DATA(INTEL, BSW, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, BYT, &dwc3_pci_intel_byt_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, MRFLD, &dwc3_pci_intel_mrfld_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, CMLLP, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, CMLH, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, SPTLP, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, SPTH, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, BXT, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, BYT, &dwc3_pci_intel_byt_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, MRFLD, &dwc3_pci_intel_mrfld_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, BXT_M, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, APL, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, KBP, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, BSW, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, GLK, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, CNPLP, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, CNPH, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, CNPV, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, ICLLP, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, EHL, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, TGPLP, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, TGPH, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, JSP, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, WCL, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, ADL, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, ADL_PCH, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, ADLN, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, EHL, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, WCL, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, JSP, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, ADL_PCH, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, ADLN_PCH, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, ADLS, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, RPL, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, APL, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, NVLS_PCH, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, ARLH_PCH, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, RPLS, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, MTL, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, ADLS, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, MTLM, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, MTLP, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, MTL, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, NVLS_PCH, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, MTLS, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, ARLH_PCH, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, TGL, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, SPTLP, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, CNPLP, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, TGPLP, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, SPTH, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, KBP, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, CNPH, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, CNPV, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, RPL, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, PTLH, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, PTLH_PCH, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, PTLU, &dwc3_pci_intel_swnode) },
+-	if (unlikely(sk->sk_prot == &tcp_prot)) {
++	if (likely(sk->sk_protocol == IPPROTO_MPTCP))
++		return false;
++
++	family = READ_ONCE(sk->sk_family);
++	if (unlikely(family == AF_INET)) {
+ 		/* we are being invoked after mptcp_accept() has
+ 		 * accepted a non-mp-capable flow: sk is a tcp_sk,
+ 		 * not an mptcp one.
+@@ -68,7 +73,7 @@ static bool mptcp_is_tcpsk(struct sock *
+ 		sock->ops = &inet_stream_ops;
+ 		return true;
+ #if IS_ENABLED(CONFIG_MPTCP_IPV6)
+-	} else if (unlikely(sk->sk_prot == &tcpv6_prot)) {
++	} else if (unlikely(family == AF_INET6)) {
+ 		sock->ops = &inet6_stream_ops;
+ 		return true;
+ #endif
 
 
 
