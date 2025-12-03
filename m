@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-199217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21835CA077F
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:30:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F3FDC9FE05
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:17:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 195903002A51
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:30:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D61103085ECA
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:09:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72A9031A805;
-	Wed,  3 Dec 2025 16:24:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFD9333FE0E;
+	Wed,  3 Dec 2025 15:55:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Psauy/0L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fzAXLLgV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51DF33081D8;
-	Wed,  3 Dec 2025 16:24:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE6033A6F7;
+	Wed,  3 Dec 2025 15:55:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779076; cv=none; b=g7PCN3nTUvakCvIjzW5NBwiXcsJjq4RH5VgagOtn+P0iOj/ULibeJA2u1uTeSPk3mTOrn9IpGYUWan6ZiOqP1W5LdjtEeN+y32WlbjTO2kdb277wEjWLV06MFIZwP/DgZzPBpcQv9y6Xkzg9WQ/pncdyrRFINaE/lzldAuhkyKM=
+	t=1764777342; cv=none; b=mnjAXlpEwGyefLW9dVbAqOb5QDJYbdz7cNcz7sAKPCSy4yBpatZyToxMHx+BeNjozjKOAnVsADjnhblRgjl3kd3QOuG5kMMdgCTfornqLSV6Uj4fC12FtMdo9raXRi8yM03Qf2Cf5saMfHAC+KQQ+YYaJrTt7SQr2F7JNfQIrJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779076; c=relaxed/simple;
-	bh=57pg+cVFmB3oybu/MC/P8UMppW2NklP6cUCgyi5t3SQ=;
+	s=arc-20240116; t=1764777342; c=relaxed/simple;
+	bh=mT85Zfc4c7HNn0Dr9Sbr4y5jvfpm9R9mQY9F9eCDxds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aCbiV+WTk+0mMV/QCj0v2fEWDqpiL8pfdr92ADezLxXVTdFCZ8qsIA2wA8W6lsQse/gMJancDd1cYZoirWtTILeBDPnPfT6lAX8G/5SEtVELJZJb6LZJPN69nX6Fyfry/EEVS3xGgylq31OD04YeDLq/G84EHu34xjQYke+zvE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Psauy/0L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9156C4CEF5;
-	Wed,  3 Dec 2025 16:24:34 +0000 (UTC)
+	 MIME-Version; b=EgIOI6NgY73wbV5GZsQ/NBFOwsopSJUUIWa1paG6nUAW+JwQLpTD0JjWaDPY+RBF2t1YtzUwnDHXut4sb++PVc03h5sCGfFvOtCjTqDSwDjQpnyrDcq6jurlntNGXMDrvT1gVFnDN7pHocGSRJljM8J8XNs2e8RJZngYtG/fMMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fzAXLLgV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFFBFC4CEF5;
+	Wed,  3 Dec 2025 15:55:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779075;
-	bh=57pg+cVFmB3oybu/MC/P8UMppW2NklP6cUCgyi5t3SQ=;
+	s=korg; t=1764777342;
+	bh=mT85Zfc4c7HNn0Dr9Sbr4y5jvfpm9R9mQY9F9eCDxds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Psauy/0Lxz0fA6gt8owfbDGxK2lhuFm51MnZwpjZaeBGDoKLqU6wvQO3ziCX4rqei
-	 O2kwh0WW4VvmhCUi4HIID2GNptnzwSZTDiTragOnMxaHapq/hxfzI/X+ga/JyBXuNc
-	 EnPoR9sdb27vEzNmtbnCBNHVYUEOQj5cbtjkMs8U=
+	b=fzAXLLgVI5aNTfnF6LI/k277OViQQMg1l1hLwfkS0x/wEYsaWnnTRA1b+bMJE3jBb
+	 AB1xrKq7GHwu2OQiJ3oP4Pc5Vm13gfn+9QuDpwOnIVCyKvepK//ju57NJul5T4d/Yh
+	 0qQuF7BEHcRq9rSEFxXbK69jIGSubu/J8qODhJ2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 148/568] net: stmmac: Check stmmac_hw_setup() in stmmac_resume()
-Date: Wed,  3 Dec 2025 16:22:30 +0100
-Message-ID: <20251203152446.149689214@linuxfoundation.org>
+	Xiang Mei <xmei5@asu.edu>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.15 001/392] net/sched: sch_qfq: Fix null-deref in agg_dequeue
+Date: Wed,  3 Dec 2025 16:22:31 +0100
+Message-ID: <20251203152414.144165487@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +60,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Xiang Mei <xmei5@asu.edu>
 
-[ Upstream commit 6896c2449a1858acb643014894d01b3a1223d4e5 ]
+commit dd831ac8221e691e9e918585b1003c7071df0379 upstream.
 
-stmmac_hw_setup() may return 0 on success and an appropriate negative
-integer as defined in errno.h file on failure, just check it and then
-return early if failed in stmmac_resume().
+To prevent a potential crash in agg_dequeue (net/sched/sch_qfq.c)
+when cl->qdisc->ops->peek(cl->qdisc) returns NULL, we check the return
+value before using it, similar to the existing approach in sch_hfsc.c.
 
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
-Link: https://patch.msgid.link/20250811073506.27513-2-yangtiezhu@loongson.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To avoid code duplication, the following changes are made:
+
+1. Changed qdisc_warn_nonwc(include/net/pkt_sched.h) into a static
+inline function.
+
+2. Moved qdisc_peek_len from net/sched/sch_hfsc.c to
+include/net/pkt_sched.h so that sch_qfq can reuse it.
+
+3. Applied qdisc_peek_len in agg_dequeue to avoid crashing.
+
+Signed-off-by: Xiang Mei <xmei5@asu.edu>
+Reviewed-by: Cong Wang <xiyou.wangcong@gmail.com>
+Link: https://patch.msgid.link/20250705212143.3982664-1-xmei5@asu.edu
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ include/net/pkt_sched.h |   25 ++++++++++++++++++++++++-
+ net/sched/sch_api.c     |   10 ----------
+ net/sched/sch_hfsc.c    |   16 ----------------
+ net/sched/sch_qfq.c     |    2 +-
+ 4 files changed, 25 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index be84aed471603..03fbb611b2a67 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -7589,7 +7589,14 @@ int stmmac_resume(struct device *dev)
- 	stmmac_free_tx_skbufs(priv);
- 	stmmac_clear_descriptors(priv, &priv->dma_conf);
+--- a/include/net/pkt_sched.h
++++ b/include/net/pkt_sched.h
+@@ -119,7 +119,6 @@ struct qdisc_rate_table *qdisc_get_rtab(
+ 					struct netlink_ext_ack *extack);
+ void qdisc_put_rtab(struct qdisc_rate_table *tab);
+ void qdisc_put_stab(struct qdisc_size_table *tab);
+-void qdisc_warn_nonwc(const char *txt, struct Qdisc *qdisc);
+ bool sch_direct_xmit(struct sk_buff *skb, struct Qdisc *q,
+ 		     struct net_device *dev, struct netdev_queue *txq,
+ 		     spinlock_t *root_lock, bool validate);
+@@ -213,4 +212,28 @@ static inline struct tc_skb_cb *tc_skb_c
+ 	return cb;
+ }
  
--	stmmac_hw_setup(ndev, false);
-+	ret = stmmac_hw_setup(ndev, false);
-+	if (ret < 0) {
-+		netdev_err(priv->dev, "%s: Hw setup failed\n", __func__);
-+		mutex_unlock(&priv->lock);
-+		rtnl_unlock();
-+		return ret;
++static inline void qdisc_warn_nonwc(const char *txt, struct Qdisc *qdisc)
++{
++	if (!(qdisc->flags & TCQ_F_WARN_NONWC)) {
++		pr_warn("%s: %s qdisc %X: is non-work-conserving?\n",
++			txt, qdisc->ops->id, qdisc->handle >> 16);
++		qdisc->flags |= TCQ_F_WARN_NONWC;
 +	}
++}
 +
- 	stmmac_init_coalesce(priv);
- 	stmmac_set_rx_mode(ndev);
++static inline unsigned int qdisc_peek_len(struct Qdisc *sch)
++{
++	struct sk_buff *skb;
++	unsigned int len;
++
++	skb = sch->ops->peek(sch);
++	if (unlikely(skb == NULL)) {
++		qdisc_warn_nonwc("qdisc_peek_len", sch);
++		return 0;
++	}
++	len = qdisc_pkt_len(skb);
++
++	return len;
++}
++
+ #endif
+--- a/net/sched/sch_api.c
++++ b/net/sched/sch_api.c
+@@ -595,16 +595,6 @@ out:
+ 	qdisc_skb_cb(skb)->pkt_len = pkt_len;
+ }
  
--- 
-2.51.0
-
+-void qdisc_warn_nonwc(const char *txt, struct Qdisc *qdisc)
+-{
+-	if (!(qdisc->flags & TCQ_F_WARN_NONWC)) {
+-		pr_warn("%s: %s qdisc %X: is non-work-conserving?\n",
+-			txt, qdisc->ops->id, qdisc->handle >> 16);
+-		qdisc->flags |= TCQ_F_WARN_NONWC;
+-	}
+-}
+-EXPORT_SYMBOL(qdisc_warn_nonwc);
+-
+ static enum hrtimer_restart qdisc_watchdog(struct hrtimer *timer)
+ {
+ 	struct qdisc_watchdog *wd = container_of(timer, struct qdisc_watchdog,
+--- a/net/sched/sch_hfsc.c
++++ b/net/sched/sch_hfsc.c
+@@ -836,22 +836,6 @@ update_vf(struct hfsc_class *cl, unsigne
+ 	}
+ }
+ 
+-static unsigned int
+-qdisc_peek_len(struct Qdisc *sch)
+-{
+-	struct sk_buff *skb;
+-	unsigned int len;
+-
+-	skb = sch->ops->peek(sch);
+-	if (unlikely(skb == NULL)) {
+-		qdisc_warn_nonwc("qdisc_peek_len", sch);
+-		return 0;
+-	}
+-	len = qdisc_pkt_len(skb);
+-
+-	return len;
+-}
+-
+ static void
+ hfsc_adjust_levels(struct hfsc_class *cl)
+ {
+--- a/net/sched/sch_qfq.c
++++ b/net/sched/sch_qfq.c
+@@ -1008,7 +1008,7 @@ static struct sk_buff *agg_dequeue(struc
+ 
+ 	if (cl->qdisc->q.qlen == 0) /* no more packets, remove from list */
+ 		list_del_init(&cl->alist);
+-	else if (cl->deficit < qdisc_pkt_len(cl->qdisc->ops->peek(cl->qdisc))) {
++	else if (cl->deficit < qdisc_peek_len(cl->qdisc)) {
+ 		cl->deficit += agg->lmax;
+ 		list_move_tail(&cl->alist, &agg->active);
+ 	}
 
 
 
