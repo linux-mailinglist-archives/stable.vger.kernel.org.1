@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-198932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 507ACCA0872
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:38:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1375BCA08E4
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:41:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 24CE933CF015
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:18:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8BC95341A00F
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:21:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BF942EDD7A;
-	Wed,  3 Dec 2025 16:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65E5B319860;
+	Wed,  3 Dec 2025 15:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UodJoh5G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LcJyLRdz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2244E238C1B;
-	Wed,  3 Dec 2025 16:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22FBE31960B;
+	Wed,  3 Dec 2025 15:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778143; cv=none; b=dv2KxsoL0YKiqmOv1m71wZG6/d94GwzJSHnWaBNZuL++7fzzSy1McgxZsOcbXTFVlezIefSR02+wqh9hYOGyC8on4Zpg/wK9iAOuL/W+TGK9AXIDztkphslXDDalQw5lKJxBqIh0ypCnv7Y1g6VR0t7e1hoAGPPBgT54NgsOvMA=
+	t=1764776867; cv=none; b=mLcZMkCcl3Bp/SdOKTV76zx98wnvDTlyu1iEzTFoMAtaGihdQbGgUxwu3sOHM7inV19rOVHPll1UVm7+0Z3LnBgv3WCjGZJLyg1uZAXmTWhMJZyE5GJQMRR2wgxu9KZl7f9ta0JkhTOXhuPimxcFV4Bd7Wv4p5aYyNvOU/UfDcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778143; c=relaxed/simple;
-	bh=aW6V3cG3E0UwKVqEl6eaCLIxBU+g54wU36pCcaYGuq0=;
+	s=arc-20240116; t=1764776867; c=relaxed/simple;
+	bh=QimqsfUzCweCEqCq9rhLXicdPISupUGqItdAZAIGcg0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f86Zmpl4aIllC3iz3GIUAWjdeQxTkurGOm8HcOxail+ChiPhplRcbJuj4x2RAa53UET9jj+MagiYlBoJUyrcPFTXgbgfn+UITkuulNXUiHm7s87gjTbZbMiYaJ0JcNgrBcAkRGePW2XBQWKjLHReakT056qM5FcPaE20VBh+1/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UodJoh5G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ED14C4CEF5;
-	Wed,  3 Dec 2025 16:09:02 +0000 (UTC)
+	 MIME-Version; b=QbPo04JTkZ1AVpIGrltVhDoKxf/4ANJH8k9ORJDDx6b2dFuOMa0KznIa5Bqp3nn3tRLL7K67GMhl3m7JyHMzdOKxqjgssl2pX/oI3OvKB3VBxEraRJHDN9OOVcqe+7GJt0+PgP7Kui0ajV844SXFrt/TUkaViMtG4APuqmI0Uao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LcJyLRdz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89498C4CEF5;
+	Wed,  3 Dec 2025 15:47:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778142;
-	bh=aW6V3cG3E0UwKVqEl6eaCLIxBU+g54wU36pCcaYGuq0=;
+	s=korg; t=1764776867;
+	bh=QimqsfUzCweCEqCq9rhLXicdPISupUGqItdAZAIGcg0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UodJoh5G1icnf9kQmabdc2GJ+Lp4Fjz8mj2wlF//NXzcyZQSv9dGwUF4jK/n4R903
-	 6fYi8+Nr92RUif5FJtoWA2iSmgSk9q3CnN5iMHjkHwqYe9KR/SxuuzY1QOO5+E+nwX
-	 Qwj/JqFzvR4+KE93QQ4t4YokwI/Fi0mW6pLYzu8o=
+	b=LcJyLRdz5DhIVOAF0wAdiZRHRJQigYkhqqq98B+52JYXOReR+6SDx5Dn4ssrZetKl
+	 UQUcaGohAGQsqF19YTXVlxmwE31er3FyehiuN2gbdOpYNiCMwiBIk/0S2PF3IuIpJs
+	 PIKvQCirlcyRxafyIIDbFERHvVNnOE4hOL6zfEVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Pauli Virtanen <pav@iki.fi>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Devarsh Thakkar <devarsht@ti.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 239/392] Bluetooth: 6lowpan: reset link-local header on ipv6 recv path
+Subject: [PATCH 6.17 011/146] drm/bridge: sii902x: Fix HDMI detection with DRM_BRIDGE_ATTACH_NO_CONNECTOR
 Date: Wed,  3 Dec 2025 16:26:29 +0100
-Message-ID: <20251203152422.970249825@linuxfoundation.org>
+Message-ID: <20251203152346.878014361@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +61,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pauli Virtanen <pav@iki.fi>
+From: Devarsh Thakkar <devarsht@ti.com>
 
-[ Upstream commit 3b78f50918276ab28fb22eac9aa49401ac436a3b ]
+[ Upstream commit d6732ef4ab252e5753be7acad87b0a91cfd06953 ]
 
-Bluetooth 6lowpan.c netdev has header_ops, so it must set link-local
-header for RX skb, otherwise things crash, eg. with AF_PACKET SOCK_RAW
+The sii902x driver was caching HDMI detection state in a sink_is_hdmi field
+and checking it in mode_set() to determine whether to set HDMI or DVI
+output mode. This approach had two problems:
 
-Add missing skb_reset_mac_header() for uncompressed ipv6 RX path.
+1. With DRM_BRIDGE_ATTACH_NO_CONNECTOR (used by modern display drivers like
+TIDSS), the bridge's get_modes() is never called. Instead, the
+drm_bridge_connector helper calls the bridge's edid_read() and updates the
+connector itself. This meant sink_is_hdmi was never populated, causing the
+driver to default to DVI mode and breaking HDMI audio.
 
-For the compressed one, it is done in lowpan_header_decompress().
+2. The mode_set() callback doesn't receive atomic state or connector
+pointer, making it impossible to check connector->display_info.is_hdmi
+directly at that point.
 
-Log: (BlueZ 6lowpan-tester Client Recv Raw - Success)
-------
-kernel BUG at net/core/skbuff.c:212!
-Call Trace:
-<IRQ>
-...
-packet_rcv (net/packet/af_packet.c:2152)
-...
-<TASK>
-__local_bh_enable_ip (kernel/softirq.c:407)
-netif_rx (net/core/dev.c:5648)
-chan_recv_cb (net/bluetooth/6lowpan.c:294 net/bluetooth/6lowpan.c:359)
-------
+Fix this by moving the HDMI vs DVI decision from mode_set() to
+atomic_enable(), where we can access the connector via
+drm_atomic_get_new_connector_for_encoder(). This works for both connector
+models:
 
-Fixes: 18722c247023 ("Bluetooth: Enable 6LoWPAN support for BT LE devices")
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+- With DRM_BRIDGE_ATTACH_NO_CONNECTOR: Returns the drm_bridge_connector
+  created by the display driver, which has already been updated by the
+helper's call to drm_edid_connector_update()
+
+- Without DRM_BRIDGE_ATTACH_NO_CONNECTOR (legacy): Returns the connector
+  embedded in sii902x struct, which gets updated by the bridge's own
+get_modes()
+
+Fixes: 3de47e1309c2 ("drm/bridge: sii902x: use display info is_hdmi")
+Signed-off-by: Devarsh Thakkar <devarsht@ti.com>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patch.msgid.link/20251030151635.3019864-1-devarsht@ti.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/6lowpan.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/bridge/sii902x.c | 20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/net/bluetooth/6lowpan.c b/net/bluetooth/6lowpan.c
-index c4a1b478cf3e9..cfe3753a6f160 100644
---- a/net/bluetooth/6lowpan.c
-+++ b/net/bluetooth/6lowpan.c
-@@ -288,6 +288,7 @@ static int recv_pkt(struct sk_buff *skb, struct net_device *dev,
- 		local_skb->pkt_type = PACKET_HOST;
- 		local_skb->dev = dev;
+diff --git a/drivers/gpu/drm/bridge/sii902x.c b/drivers/gpu/drm/bridge/sii902x.c
+index d537b1d036fb0..1f0aba28ad1e1 100644
+--- a/drivers/gpu/drm/bridge/sii902x.c
++++ b/drivers/gpu/drm/bridge/sii902x.c
+@@ -179,7 +179,6 @@ struct sii902x {
+ 	struct drm_connector connector;
+ 	struct gpio_desc *reset_gpio;
+ 	struct i2c_mux_core *i2cmux;
+-	bool sink_is_hdmi;
+ 	u32 bus_width;
  
-+		skb_reset_mac_header(local_skb);
- 		skb_set_transport_header(local_skb, sizeof(struct ipv6hdr));
+ 	/*
+@@ -315,8 +314,6 @@ static int sii902x_get_modes(struct drm_connector *connector)
+ 		drm_edid_free(drm_edid);
+ 	}
  
- 		if (give_skb_to_upper(local_skb, dev) != NET_RX_SUCCESS) {
+-	sii902x->sink_is_hdmi = connector->display_info.is_hdmi;
+-
+ 	return num;
+ }
+ 
+@@ -342,9 +339,17 @@ static void sii902x_bridge_atomic_enable(struct drm_bridge *bridge,
+ 					 struct drm_atomic_state *state)
+ {
+ 	struct sii902x *sii902x = bridge_to_sii902x(bridge);
++	struct drm_connector *connector;
++	u8 output_mode = SII902X_SYS_CTRL_OUTPUT_DVI;
++
++	connector = drm_atomic_get_new_connector_for_encoder(state, bridge->encoder);
++	if (connector && connector->display_info.is_hdmi)
++		output_mode = SII902X_SYS_CTRL_OUTPUT_HDMI;
+ 
+ 	mutex_lock(&sii902x->mutex);
+ 
++	regmap_update_bits(sii902x->regmap, SII902X_SYS_CTRL_DATA,
++			   SII902X_SYS_CTRL_OUTPUT_MODE, output_mode);
+ 	regmap_update_bits(sii902x->regmap, SII902X_PWR_STATE_CTRL,
+ 			   SII902X_AVI_POWER_STATE_MSK,
+ 			   SII902X_AVI_POWER_STATE_D(0));
+@@ -359,16 +364,12 @@ static void sii902x_bridge_mode_set(struct drm_bridge *bridge,
+ 				    const struct drm_display_mode *adj)
+ {
+ 	struct sii902x *sii902x = bridge_to_sii902x(bridge);
+-	u8 output_mode = SII902X_SYS_CTRL_OUTPUT_DVI;
+ 	struct regmap *regmap = sii902x->regmap;
+ 	u8 buf[HDMI_INFOFRAME_SIZE(AVI)];
+ 	struct hdmi_avi_infoframe frame;
+ 	u16 pixel_clock_10kHz = adj->clock / 10;
+ 	int ret;
+ 
+-	if (sii902x->sink_is_hdmi)
+-		output_mode = SII902X_SYS_CTRL_OUTPUT_HDMI;
+-
+ 	buf[0] = pixel_clock_10kHz & 0xff;
+ 	buf[1] = pixel_clock_10kHz >> 8;
+ 	buf[2] = drm_mode_vrefresh(adj);
+@@ -384,11 +385,6 @@ static void sii902x_bridge_mode_set(struct drm_bridge *bridge,
+ 
+ 	mutex_lock(&sii902x->mutex);
+ 
+-	ret = regmap_update_bits(sii902x->regmap, SII902X_SYS_CTRL_DATA,
+-				 SII902X_SYS_CTRL_OUTPUT_MODE, output_mode);
+-	if (ret)
+-		goto out;
+-
+ 	ret = regmap_bulk_write(regmap, SII902X_TPI_VIDEO_DATA, buf, 10);
+ 	if (ret)
+ 		goto out;
 -- 
 2.51.0
 
