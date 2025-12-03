@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-199439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2CD7CA0081
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:40:34 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76670C9FCE6
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:07:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 22C2030136FB
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:36:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6D6E23002283
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:07:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AC9635C18F;
-	Wed,  3 Dec 2025 16:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C6DA313546;
+	Wed,  3 Dec 2025 16:07:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pfshkn35"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EjD2HmkA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D61BC35C18A;
-	Wed,  3 Dec 2025 16:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBDA3313558;
+	Wed,  3 Dec 2025 16:06:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779805; cv=none; b=WjMVcRYOMkfJO01+FFOwh8IcjI0JoeRKZBG7F8ZaZZKPxDuRilChxjzatPymBNwX0kqyWGIUGOG7UECBkFXRbwJpvtJfh1qsauh94/rHPPT5BHiIzBLsWU6M5kUwWOQ2PX5NCVe6UM2nzDGbGp2LLlip13xDqS4j/GS+yO1a0tc=
+	t=1764778020; cv=none; b=JandbcJhLJimw+h3lxsrczaG25isLPmjqQ8YBhDEt7/6S4bhQ1065UX1eRSaCO1f3GqU9Vp++tXCPm3ONNCGd0QVuN8odnuXD7ppeyJM6Epbpq2KtL7teXgKxsSaHe0gu/ME56qxND7u2VcMO8DAHVHHnZs/daRmWsbFCOKZOf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779805; c=relaxed/simple;
-	bh=7dqg+gK80b2uZ4YANs0J4zAbuGFIyteM84y4b2K2aCE=;
+	s=arc-20240116; t=1764778020; c=relaxed/simple;
+	bh=qREnZIAWDczKQNWFYnEYzHhWy7gwbnVHXrU6sCZFQ5g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VACE76XoLX/riwit5RFKKk4JqKMm6B6mYp7wikrUZYX3VPnWycpy6faHXWqoeg2OJJFZOh0CujDU/dOS3jUBYwFQnNaINr6OfZMXCAj3Nq1PWvbok9xmEEBXGC22g+fktyxXHg+mC7pzN+7L/u1pOw+GE+b3UWp0zrXW3G8xcxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pfshkn35; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44664C4CEF5;
-	Wed,  3 Dec 2025 16:36:45 +0000 (UTC)
+	 MIME-Version; b=kNektLxa+1RvGr0NqFsRPuy0igHj5Zng5fuIGEbflDdztONOssKuE0FAjIRSaDzMX6mPRRsxg8dzuzYodMS0/+HojZMXD3CZZBAQeyiuuxh0P56GxvVO50MQHCIu6jxErvR4cK6GfWLv4+o28hoeMRsBLnMDwOzT+TAv87A6jOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EjD2HmkA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 580C9C4CEF5;
+	Wed,  3 Dec 2025 16:06:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779805;
-	bh=7dqg+gK80b2uZ4YANs0J4zAbuGFIyteM84y4b2K2aCE=;
+	s=korg; t=1764778019;
+	bh=qREnZIAWDczKQNWFYnEYzHhWy7gwbnVHXrU6sCZFQ5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pfshkn35Opr5tsvWLW3Ru2DlNjnNNgHPx6fe1uv3txrEMueEuvDREDYy/sQHLJ4n4
-	 RyLgvSxZWOoxdyzM2+76xHujgm5tgFB7Z+xegtBeE4lzyy5l01M0KfOu8/T74RFg+m
-	 SNCAdWwmGpiqa5Xn3nObx3bdHmQsvv6xo8oUoN6U=
+	b=EjD2HmkA3N8gqyfDKNeRS9jInj1lGyQs9zjomGCMQx0SNkq+tXNG8a6QkFe4I8hYq
+	 8k/iJU0Qygh9VrQ9Fw0CEnnBVeXckaYzKn7IWmZUghJa8whys4NlwmIF+PVnkdI3gN
+	 V8Viyhu6/MnvC/yfKO4lFHnf8HZB07h26wNkVsc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gal Pressman <gal@nvidia.com>,
-	Nimrod Oren <noren@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Stefan Wiehler <stefan.wiehler@nokia.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 367/568] net/mlx5e: Fix wraparound in rate limiting for values above 255 Gbps
+Subject: [PATCH 5.15 219/392] sctp: Hold RCU read lock while iterating over address list
 Date: Wed,  3 Dec 2025 16:26:09 +0100
-Message-ID: <20251203152454.140294239@linuxfoundation.org>
+Message-ID: <20251203152422.241998651@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +62,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gal Pressman <gal@nvidia.com>
+From: Stefan Wiehler <stefan.wiehler@nokia.com>
 
-[ Upstream commit 43b27d1bd88a4bce34ec2437d103acfae9655f9e ]
+[ Upstream commit 38f50242bf0f237cdc262308d624d333286ec3c5 ]
 
-Add validation to reject rates exceeding 255 Gbps that would overflow
-the 8 bits max bandwidth field.
+With CONFIG_PROVE_RCU_LIST=y and by executing
 
-Fixes: d8880795dabf ("net/mlx5e: Implement DCBNL IEEE max rate")
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Reviewed-by: Nimrod Oren <noren@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1762681073-1084058-5-git-send-email-tariqt@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+  $ netcat -l --sctp &
+  $ netcat --sctp localhost &
+  $ ss --sctp
+
+one can trigger the following Lockdep-RCU splat(s):
+
+  WARNING: suspicious RCU usage
+  6.18.0-rc1-00093-g7f864458e9a6 #5 Not tainted
+  -----------------------------
+  net/sctp/diag.c:76 RCU-list traversed in non-reader section!!
+
+  other info that might help us debug this:
+
+  rcu_scheduler_active = 2, debug_locks = 1
+  2 locks held by ss/215:
+   #0: ffff9c740828bec0 (nlk_cb_mutex-SOCK_DIAG){+.+.}-{4:4}, at: __netlink_dump_start+0x84/0x2b0
+   #1: ffff9c7401d72cd0 (sk_lock-AF_INET6){+.+.}-{0:0}, at: sctp_sock_dump+0x38/0x200
+
+  stack backtrace:
+  CPU: 0 UID: 0 PID: 215 Comm: ss Not tainted 6.18.0-rc1-00093-g7f864458e9a6 #5 PREEMPT(voluntary)
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x5d/0x90
+   lockdep_rcu_suspicious.cold+0x4e/0xa3
+   inet_sctp_diag_fill.isra.0+0x4b1/0x5d0
+   sctp_sock_dump+0x131/0x200
+   sctp_transport_traverse_process+0x170/0x1b0
+   ? __pfx_sctp_sock_filter+0x10/0x10
+   ? __pfx_sctp_sock_dump+0x10/0x10
+   sctp_diag_dump+0x103/0x140
+   __inet_diag_dump+0x70/0xb0
+   netlink_dump+0x148/0x490
+   __netlink_dump_start+0x1f3/0x2b0
+   inet_diag_handler_cmd+0xcd/0x100
+   ? __pfx_inet_diag_dump_start+0x10/0x10
+   ? __pfx_inet_diag_dump+0x10/0x10
+   ? __pfx_inet_diag_dump_done+0x10/0x10
+   sock_diag_rcv_msg+0x18e/0x320
+   ? __pfx_sock_diag_rcv_msg+0x10/0x10
+   netlink_rcv_skb+0x4d/0x100
+   netlink_unicast+0x1d7/0x2b0
+   netlink_sendmsg+0x203/0x450
+   ____sys_sendmsg+0x30c/0x340
+   ___sys_sendmsg+0x94/0xf0
+   __sys_sendmsg+0x83/0xf0
+   do_syscall_64+0xbb/0x390
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+   ...
+   </TASK>
+
+Fixes: 8f840e47f190 ("sctp: add the sctp_diag.c file")
+Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/20251028161506.3294376-2-stefan.wiehler@nokia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ net/sctp/diag.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-index cfbf39f0f8727..2d20e2ff29677 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-@@ -588,11 +588,13 @@ static int mlx5e_dcbnl_ieee_setmaxrate(struct net_device *netdev,
- 	u8 max_bw_value[IEEE_8021QAZ_MAX_TCS];
- 	u8 max_bw_unit[IEEE_8021QAZ_MAX_TCS];
- 	__u64 upper_limit_mbps;
-+	__u64 upper_limit_gbps;
- 	int i;
+diff --git a/net/sctp/diag.c b/net/sctp/diag.c
+index b0ce1080842d4..31cf52026202b 100644
+--- a/net/sctp/diag.c
++++ b/net/sctp/diag.c
+@@ -73,19 +73,23 @@ static int inet_diag_msg_sctpladdrs_fill(struct sk_buff *skb,
+ 	struct nlattr *attr;
+ 	void *info = NULL;
  
- 	memset(max_bw_value, 0, sizeof(max_bw_value));
- 	memset(max_bw_unit, 0, sizeof(max_bw_unit));
- 	upper_limit_mbps = 255 * MLX5E_100MB;
-+	upper_limit_gbps = 255 * MLX5E_1GB;
++	rcu_read_lock();
+ 	list_for_each_entry_rcu(laddr, address_list, list)
+ 		addrcnt++;
++	rcu_read_unlock();
  
- 	for (i = 0; i <= mlx5_max_tc(mdev); i++) {
- 		if (!maxrate->tc_maxrate[i]) {
-@@ -604,10 +606,16 @@ static int mlx5e_dcbnl_ieee_setmaxrate(struct net_device *netdev,
- 						  MLX5E_100MB);
- 			max_bw_value[i] = max_bw_value[i] ? max_bw_value[i] : 1;
- 			max_bw_unit[i]  = MLX5_100_MBPS_UNIT;
--		} else {
-+		} else if (max_bw_value[i] <= upper_limit_gbps) {
- 			max_bw_value[i] = div_u64(maxrate->tc_maxrate[i],
- 						  MLX5E_1GB);
- 			max_bw_unit[i]  = MLX5_GBPS_UNIT;
-+		} else {
-+			netdev_err(netdev,
-+				   "tc_%d maxrate %llu Kbps exceeds limit %llu\n",
-+				   i, maxrate->tc_maxrate[i],
-+				   upper_limit_gbps);
-+			return -EINVAL;
- 		}
+ 	attr = nla_reserve(skb, INET_DIAG_LOCALS, addrlen * addrcnt);
+ 	if (!attr)
+ 		return -EMSGSIZE;
+ 
+ 	info = nla_data(attr);
++	rcu_read_lock();
+ 	list_for_each_entry_rcu(laddr, address_list, list) {
+ 		memcpy(info, &laddr->a, sizeof(laddr->a));
+ 		memset(info + sizeof(laddr->a), 0, addrlen - sizeof(laddr->a));
+ 		info += addrlen;
  	}
++	rcu_read_unlock();
  
+ 	return 0;
+ }
 -- 
 2.51.0
 
