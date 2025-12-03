@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-198650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F708C9FC35
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:59:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7804CA0F0C
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:25:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2E80A300E7B5
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:54:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7A105319A765
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:23:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 240033385B3;
-	Wed,  3 Dec 2025 15:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A5DC352FBD;
+	Wed,  3 Dec 2025 16:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="szrCfmvd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zfOiLT5w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F9E338586;
-	Wed,  3 Dec 2025 15:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2382E35293B;
+	Wed,  3 Dec 2025 16:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777234; cv=none; b=SWmdgzAMBdrmkPiZ2E31kFB+ibP3ZxDXMB+IZdZC4WeXK68V+PkbS3UYVuTpcz+Whkkovml1qWhhWhaJPBwRasV3nDcnqI9IYlX5KH6SN9ONrFaaQFB0TUAZtgwoAxt6i6qLM880CEgCKTU61hpZjxlwXD1PtW6rlEjPMuUDNYA=
+	t=1764778566; cv=none; b=dA+GWrM0GsE31Waau6XVfGttl6PifxIt1lPJxf2//h2qB+jHB0LlxPK+HKwDlSXl+H1jpsEk7y5nQplzoOQmenVX5kSdcNRPpm0F24ZmD+dNcC9I9Nt0skbESW00F+DnwQfRPevpwcaJQ8GJUQlVcFTA++wxwhK+WMVpMXtcDqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777234; c=relaxed/simple;
-	bh=2MTQDVshKgY10qlFd/EGDTxILRBlkH0R/vv1DMiitBo=;
+	s=arc-20240116; t=1764778566; c=relaxed/simple;
+	bh=qwKS3bhIefXU1fmADHpXAgenDIgRbwcE7HvrrkkIcko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kduAPet05itMqVh+ZjXfPVbo3qmD3Wxyv++NVJ9fp4W37OUexa9sn58JBC8kIjBVtp/N0D7zeOSblc5NS0mpwianr0Q5e3UcaD+eH1TY8piL5FG2/kXgYKKlYkZYjacwZwa8vhIw/N9atcIEadVHkACh62i4DccwMhLqCMbEXyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=szrCfmvd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFFB1C4AF09;
-	Wed,  3 Dec 2025 15:53:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=o+AYekih8XBMLpSXUX6wMhx2rFnMCSfMl+LAH90PdM/3dCIL13YtVCBAH3ahYYRPRvTVvaD6Fv5Kl+FzOXA32+JPNRiFirIV0cMwlO1VXRY0V1IoDMivD2NAVvfjuLUPW5Vbci1Yl5kktbDS88LddOZvCkHEVzzDJpP0XU0mtIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zfOiLT5w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81149C116B1;
+	Wed,  3 Dec 2025 16:16:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777233;
-	bh=2MTQDVshKgY10qlFd/EGDTxILRBlkH0R/vv1DMiitBo=;
+	s=korg; t=1764778566;
+	bh=qwKS3bhIefXU1fmADHpXAgenDIgRbwcE7HvrrkkIcko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=szrCfmvdOys2krr4E3di6kxHX7T2n+voAj75SpBavPtgV/OVVWU9/x+ShVwPhpcVJ
-	 Vk4Um0jrL5YDVQDKClAq424VDXvmlBiGd1GozZoF7zaWIVBVwlGslgyZsMGgm4Yyd5
-	 0l065i0K5CbSw97s9BC15FPxIor9WziAmRgjMsio=
+	b=zfOiLT5w6TTe2Hd3Ayo3fU5JxTTv0YLseWrbw0S8bPjgqYx2PUalFGf7WhSJ0uH7v
+	 puG0bRnkJKdPnFZnC0imjO3rwQNsbuzLAtGvjOY2Uti51DUKZjIGCQ8xfrouEiRGjc
+	 9xhNAZs4L1Kd1zU6e84kl9zRip+6/u9j32sR6GGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksandr Suvorov <cryosay@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.17 124/146] USB: serial: ftdi_sio: add support for u-blox EVK-M101
+	Linus Walleij <linus.walleij@linaro.org>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.15 352/392] iio: accel: bmc150: Fix irq assumption regression
 Date: Wed,  3 Dec 2025 16:28:22 +0100
-Message-ID: <20251203152350.998914952@linuxfoundation.org>
+Message-ID: <20251203152427.118459094@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,65 +59,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksandr Suvorov <cryosay@gmail.com>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-commit 2d8ab771d5316de64f3bb920b82575c58eb00b1b upstream.
+commit 3aa385a9c75c09b59dcab2ff76423439d23673ab upstream.
 
-The U-Blox EVK-M101 enumerates as 1546:0506 [1] with four FTDI interfaces:
-- EVK-M101 current sensors
-- EVK-M101 I2C
-- EVK-M101 UART
-- EVK-M101 port D
+The code in bmc150-accel-core.c unconditionally calls
+bmc150_accel_set_interrupt() in the iio_buffer_setup_ops,
+such as on the runtime PM resume path giving a kernel
+splat like this if the device has no interrupts:
 
-Only the third USB interface is a UART. This change lets ftdi_sio probe
-the VID/PID and registers only interface #3 as a TTY, leaving the rest
-available for other drivers.
+Unable to handle kernel NULL pointer dereference at virtual
+  address 00000001 when read
 
-[1]
-usb 5-1.3: new high-speed USB device number 11 using xhci_hcd
-usb 5-1.3: New USB device found, idVendor=1546, idProduct=0506, bcdDevice= 8.00
-usb 5-1.3: New USB device strings: Mfr=1, Product=2, SerialNumber=0
-usb 5-1.3: Product: EVK-M101
-usb 5-1.3: Manufacturer: u-blox AG
+PC is at bmc150_accel_set_interrupt+0x98/0x194
+LR is at __pm_runtime_resume+0x5c/0x64
+(...)
+Call trace:
+bmc150_accel_set_interrupt from bmc150_accel_buffer_postenable+0x40/0x108
+bmc150_accel_buffer_postenable from __iio_update_buffers+0xbe0/0xcbc
+__iio_update_buffers from enable_store+0x84/0xc8
+enable_store from kernfs_fop_write_iter+0x154/0x1b4
 
-Datasheet: https://content.u-blox.com/sites/default/files/documents/EVK-M10_UserGuide_UBX-21003949.pdf
+This bug seems to have been in the driver since the beginning,
+but it only manifests recently, I do not know why.
 
-Signed-off-by: Oleksandr Suvorov <cryosay@gmail.com>
-Link: https://lore.kernel.org/20250926060235.3442748-1-cryosay@gmail.com/
+Store the IRQ number in the state struct, as this is a common
+pattern in other drivers, then use this to determine if we have
+IRQ support or not.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/ftdi_sio.c     |    1 +
- drivers/usb/serial/ftdi_sio_ids.h |    1 +
- 2 files changed, 2 insertions(+)
+ drivers/iio/accel/bmc150-accel-core.c |    5 +++++
+ drivers/iio/accel/bmc150-accel.h      |    1 +
+ 2 files changed, 6 insertions(+)
 
---- a/drivers/usb/serial/ftdi_sio.c
-+++ b/drivers/usb/serial/ftdi_sio.c
-@@ -1074,6 +1074,7 @@ static const struct usb_device_id id_tab
- 	/* U-Blox devices */
- 	{ USB_DEVICE(UBLOX_VID, UBLOX_C099F9P_ZED_PID) },
- 	{ USB_DEVICE(UBLOX_VID, UBLOX_C099F9P_ODIN_PID) },
-+	{ USB_DEVICE_INTERFACE_NUMBER(UBLOX_VID, UBLOX_EVK_M101_PID, 2) },
- 	/* FreeCalypso USB adapters */
- 	{ USB_DEVICE(FTDI_VID, FTDI_FALCONIA_JTAG_BUF_PID),
- 		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
---- a/drivers/usb/serial/ftdi_sio_ids.h
-+++ b/drivers/usb/serial/ftdi_sio_ids.h
-@@ -1614,6 +1614,7 @@
- #define UBLOX_VID			0x1546
- #define UBLOX_C099F9P_ZED_PID		0x0502
- #define UBLOX_C099F9P_ODIN_PID		0x0503
-+#define UBLOX_EVK_M101_PID		0x0506
+--- a/drivers/iio/accel/bmc150-accel-core.c
++++ b/drivers/iio/accel/bmc150-accel-core.c
+@@ -569,6 +569,10 @@ static int bmc150_accel_set_interrupt(st
+ 	const struct bmc150_accel_interrupt_info *info = intr->info;
+ 	int ret;
  
- /*
-  * GMC devices
++	/* We do not always have an IRQ */
++	if (data->irq <= 0)
++		return 0;
++
+ 	if (state) {
+ 		if (atomic_inc_return(&intr->users) > 1)
+ 			return 0;
+@@ -1742,6 +1746,7 @@ int bmc150_accel_core_probe(struct devic
+ 	}
+ 
+ 	if (irq > 0) {
++		data->irq = irq;
+ 		ret = devm_request_threaded_irq(dev, irq,
+ 						bmc150_accel_irq_handler,
+ 						bmc150_accel_irq_thread_handler,
+--- a/drivers/iio/accel/bmc150-accel.h
++++ b/drivers/iio/accel/bmc150-accel.h
+@@ -57,6 +57,7 @@ enum bmc150_accel_trigger_id {
+ 
+ struct bmc150_accel_data {
+ 	struct regmap *regmap;
++	int irq;
+ 	struct regulator_bulk_data regulators[2];
+ 	struct bmc150_accel_interrupt interrupts[BMC150_ACCEL_INTERRUPTS];
+ 	struct bmc150_accel_trigger triggers[BMC150_ACCEL_TRIGGERS];
 
 
 
