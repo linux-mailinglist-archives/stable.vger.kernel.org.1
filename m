@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-198966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0F60CA1114
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:40:40 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C70BCA014C
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:45:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D54D333BE0B6
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:44:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 904AC30588A1
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:39:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2525D3321C3;
-	Wed,  3 Dec 2025 16:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58CC532E69E;
+	Wed,  3 Dec 2025 15:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N9LV2mKl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RjzHRje+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD044331A46;
-	Wed,  3 Dec 2025 16:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13B2E32E692;
+	Wed,  3 Dec 2025 15:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778255; cv=none; b=CMnJ12WQV9UwU5jA0NryTj0z+sfPRpTkghgEEDJ6vKL0UXlwusmnQ+Q/zvjfn2e+9QHnqjq9dWROYb8CJG9tcTePUqFy+NEER4KIAVuYwqauYS/SqK0wq7l4k+BurKOGbRsV3inW6p9H+uEyeJdqOJdMZ0BztGnbBTM7rWkCqYE=
+	t=1764777039; cv=none; b=T9FcECfW4tzE2McF5oq0a8dJPEATRck3iE/baRs96F6kkPxPD4XafGbSmpp4GyLpoWVXLLo6Qt2vTBp3a2is4V3SFACGYcnCZHqGznsSX6lq+GMlLjosNpTGtbSOfFDYOvHHx4GixtyfbcfojEBHTlxDmftrN/q6xFKMnwiBUPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778255; c=relaxed/simple;
-	bh=ahLUm/9QJDlZj16zGuKss1ZTjNDWdoocGAwgq34Pdz4=;
+	s=arc-20240116; t=1764777039; c=relaxed/simple;
+	bh=wzF3iDCGy+RNEvWHJZW1nlfulCgv5Rhh7RlRkC/DxsA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C7j+/pvStluTcyDb35i2dXuMNRzRqJ5OhxIIb4lHvqldJo2bwelFvHbFZXXAaXG7UXjMSSZeng50AMfEeKq7u9/8tXS8u9O4B4cgb7D9wIksBjI1jRJicVkLko0ZrP21F7VElyC9lAPh69SBAUg+jQSw3UrIjTsEqmGnPB7E5jQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N9LV2mKl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AD63C4CEF5;
-	Wed,  3 Dec 2025 16:10:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dSgggCoC2vMsiGO1zsLqMZ/nuk6+3UK8GBf5cb8/UmfZxz1+OfzcNZ0a3/mYQDMICZGY4nFPzNTCgvz/sYe6w0FHxYgpUXGWQU7270T+J1y2K8pnqA1k0+xBHisdxHQvZ0rwQ86bgJD3mMU07OnzCUJBZNKcNrJyDjpFqTiGBLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RjzHRje+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 916C3C4CEF5;
+	Wed,  3 Dec 2025 15:50:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778255;
-	bh=ahLUm/9QJDlZj16zGuKss1ZTjNDWdoocGAwgq34Pdz4=;
+	s=korg; t=1764777038;
+	bh=wzF3iDCGy+RNEvWHJZW1nlfulCgv5Rhh7RlRkC/DxsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N9LV2mKlA8SBICFmmTxb8yYJ/oBV0T4TEt8javKvW2WYEFGY7VXx3Bd3Uh9p0qVp+
-	 fXln0xMu32EQB/MpN3kOc0q746ksewlIEeCcAILMeXGv3QIHv1Bkri9hgJ/DJHAC46
-	 e9bZej2vVrNUMvIV/8FHgAcNAmkAaNIunZMbduyE=
+	b=RjzHRje+fVnyN+0a/2gNOsslyb/N4bvP5viUtSX24JXXidlsxyzHkxslIq53uJTMp
+	 9VUQyujP3n3oedZUBrJw0SEa2cu22mIo4lMUJq/3JO02iRvK4Cei7OBdBIrGfVWFRe
+	 tnDlTGYpqeCJC+xrVMnePvkDMQMEZrlJXByOfTN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 5.15 291/392] MIPS: Malta: Fix !EVA SOC-it PCI MMIO
+	Linus Walleij <linus.walleij@linaro.org>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.17 063/146] iio: accel: bmc150: Fix irq assumption regression
 Date: Wed,  3 Dec 2025 16:27:21 +0100
-Message-ID: <20251203152424.865648485@linuxfoundation.org>
+Message-ID: <20251203152348.772808622@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,107 +59,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-commit ebd729fef31620e0bf74cbf8a4c7fda73a2a4e7e upstream.
+commit 3aa385a9c75c09b59dcab2ff76423439d23673ab upstream.
 
-Fix a regression that has caused accesses to the PCI MMIO window to
-complete unclaimed in non-EVA configurations with the SOC-it family of
-system controllers, preventing PCI devices from working that use MMIO.
+The code in bmc150-accel-core.c unconditionally calls
+bmc150_accel_set_interrupt() in the iio_buffer_setup_ops,
+such as on the runtime PM resume path giving a kernel
+splat like this if the device has no interrupts:
 
-In the non-EVA case PHYS_OFFSET is set to 0, meaning that PCI_BAR0 is
-set with an empty mask (and PCI_HEAD4 matches addresses starting from 0
-accordingly).  Consequently all addresses are matched for incoming DMA
-accesses from PCI.  This seems to confuse the system controller's logic
-and outgoing bus cycles targeting the PCI MMIO window seem not to make
-it to the intended devices.
+Unable to handle kernel NULL pointer dereference at virtual
+  address 00000001 when read
 
-This happens as well when a wider mask is used with PCI_BAR0, such as
-0x80000000 or 0xe0000000, that makes addresses match that overlap with
-the PCI MMIO window, which starts at 0x10000000 in our configuration.
+PC is at bmc150_accel_set_interrupt+0x98/0x194
+LR is at __pm_runtime_resume+0x5c/0x64
+(...)
+Call trace:
+bmc150_accel_set_interrupt from bmc150_accel_buffer_postenable+0x40/0x108
+bmc150_accel_buffer_postenable from __iio_update_buffers+0xbe0/0xcbc
+__iio_update_buffers from enable_store+0x84/0xc8
+enable_store from kernfs_fop_write_iter+0x154/0x1b4
 
-Set the mask in PCI_BAR0 to 0xf0000000 for non-EVA then, covering the
-non-EVA maximum 256 MiB of RAM, which is what YAMON does and which used
-to work correctly up to the offending commit.  Set PCI_P2SCMSKL to match
-PCI_BAR0 as required by the system controller's specification, and match
-PCI_P2SCMAPL to PCI_HEAD4 for identity mapping.
+This bug seems to have been in the driver since the beginning,
+but it only manifests recently, I do not know why.
 
-Verified with:
+Store the IRQ number in the state struct, as this is a common
+pattern in other drivers, then use this to determine if we have
+IRQ support or not.
 
-Core board type/revision =      0x0d (Core74K) / 0x01
-System controller/revision =    MIPS SOC-it 101 OCP / 1.3   SDR-FW-4:1
-Processor Company ID/options =  0x01 (MIPS Technologies, Inc.) / 0x1c
-Processor ID/revision =         0x97 (MIPS 74Kf) / 0x4c
-
-for non-EVA and with:
-
-Core board type/revision =      0x0c (CoreFPGA-5) / 0x00
-System controller/revision =    MIPS ROC-it2 / 0.0   FW-1:1 (CLK_unknown) GIC
-Processor Company ID/options =  0x01 (MIPS Technologies, Inc.) / 0x00
-Processor ID/revision =         0xa0 (MIPS interAptiv UP) / 0x20
-
-for EVA/non-EVA, fixing:
-
-defxx 0000:00:12.0: assign IRQ: got 10
-defxx: v1.12 2021/03/10  Lawrence V. Stefani and others
-0000:00:12.0: Could not read adapter factory MAC address!
-
-vs:
-
-defxx 0000:00:12.0: assign IRQ: got 10
-defxx: v1.12 2021/03/10  Lawrence V. Stefani and others
-0000:00:12.0: DEFPA at MMIO addr = 0x10142000, IRQ = 10, Hardware addr = 00-00-f8-xx-xx-xx
-0000:00:12.0: registered as fddi0
-
-for non-EVA and causing no change for EVA.
-
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Fixes: 422dd256642b ("MIPS: Malta: Allow PCI devices DMA to lower 2GB physical")
-Cc: stable@vger.kernel.org # v4.9+
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/mti-malta/malta-init.c |   20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ drivers/iio/accel/bmc150-accel-core.c |    5 +++++
+ drivers/iio/accel/bmc150-accel.h      |    1 +
+ 2 files changed, 6 insertions(+)
 
---- a/arch/mips/mti-malta/malta-init.c
-+++ b/arch/mips/mti-malta/malta-init.c
-@@ -241,16 +241,22 @@ mips_pci_controller:
- #endif
+--- a/drivers/iio/accel/bmc150-accel-core.c
++++ b/drivers/iio/accel/bmc150-accel-core.c
+@@ -526,6 +526,10 @@ static int bmc150_accel_set_interrupt(st
+ 	const struct bmc150_accel_interrupt_info *info = intr->info;
+ 	int ret;
  
- 		/*
--		 * Setup the Malta max (2GB) memory for PCI DMA in host bridge
--		 * in transparent addressing mode.
-+		 * Set up memory mapping in host bridge for PCI DMA masters,
-+		 * in transparent addressing mode.  For EVA use the Malta
-+		 * maximum of 2 GiB memory in the alias space at 0x80000000
-+		 * as per PHYS_OFFSET.  Otherwise use 256 MiB of memory in
-+		 * the regular space, avoiding mapping the PCI MMIO window
-+		 * for DMA as it seems to confuse the system controller's
-+		 * logic, causing PCI MMIO to stop working.
- 		 */
--		mask = PHYS_OFFSET | PCI_BASE_ADDRESS_MEM_PREFETCH;
--		MSC_WRITE(MSC01_PCI_BAR0, mask);
--		MSC_WRITE(MSC01_PCI_HEAD4, mask);
-+		mask = PHYS_OFFSET ? PHYS_OFFSET : 0xf0000000;
-+		MSC_WRITE(MSC01_PCI_BAR0,
-+			  mask | PCI_BASE_ADDRESS_MEM_PREFETCH);
-+		MSC_WRITE(MSC01_PCI_HEAD4,
-+			  PHYS_OFFSET | PCI_BASE_ADDRESS_MEM_PREFETCH);
++	/* We do not always have an IRQ */
++	if (data->irq <= 0)
++		return 0;
++
+ 	if (state) {
+ 		if (atomic_inc_return(&intr->users) > 1)
+ 			return 0;
+@@ -1699,6 +1703,7 @@ int bmc150_accel_core_probe(struct devic
+ 	}
  
--		mask &= MSC01_PCI_BAR0_SIZE_MSK;
- 		MSC_WRITE(MSC01_PCI_P2SCMSKL, mask);
--		MSC_WRITE(MSC01_PCI_P2SCMAPL, mask);
-+		MSC_WRITE(MSC01_PCI_P2SCMAPL, PHYS_OFFSET);
+ 	if (irq > 0) {
++		data->irq = irq;
+ 		ret = devm_request_threaded_irq(dev, irq,
+ 						bmc150_accel_irq_handler,
+ 						bmc150_accel_irq_thread_handler,
+--- a/drivers/iio/accel/bmc150-accel.h
++++ b/drivers/iio/accel/bmc150-accel.h
+@@ -58,6 +58,7 @@ enum bmc150_accel_trigger_id {
  
- 		/* Don't handle target retries indefinitely.  */
- 		if ((data & MSC01_PCI_CFG_MAXRTRY_MSK) ==
+ struct bmc150_accel_data {
+ 	struct regmap *regmap;
++	int irq;
+ 	struct regulator_bulk_data regulators[2];
+ 	struct bmc150_accel_interrupt interrupts[BMC150_ACCEL_INTERRUPTS];
+ 	struct bmc150_accel_trigger triggers[BMC150_ACCEL_TRIGGERS];
 
 
 
