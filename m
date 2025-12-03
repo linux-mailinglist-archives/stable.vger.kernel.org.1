@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA269C9F86F
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:37:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7BEBCA1543
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:18:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A9B89303A8F9
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:34:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 987AB3268788
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:40:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7391430B525;
-	Wed,  3 Dec 2025 15:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3781434676D;
+	Wed,  3 Dec 2025 16:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tg3nSE/c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LrF7saDB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A95256C9E;
-	Wed,  3 Dec 2025 15:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C8E345CDF;
+	Wed,  3 Dec 2025 16:29:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776046; cv=none; b=htz9ddufFiPSanUslMH2xqZok3I03J+mAMCYY5OJzMAaZB2qrSpDc/d8HQ8UkeR+ZXLoFf7loYRv01Kd/dgcflGS6SmtgMIlrX6By//n3hnyT/uWvajSED7vBEV6qulftjI/LwI9qZpfLivIZiNkPN0NKKQhFql3D/TebS9B6GU=
+	t=1764779356; cv=none; b=CkDP9Tm7NijegAt+o8wUC5+dYUEgtBM9wyHmP76rVswjOo5Pck2ZuHivyeylRw8f5mpvXULMtfDYnspZvl7/SeOrzkoWNHAiGYJ2JZH9C2aQsK899XrUaZuudra4qDLNMj9NSrQ7+Fet05PEBkXyFHIaJLHbNRn06Q9ck6dNtns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776046; c=relaxed/simple;
-	bh=bpMAjWxSnVfQXB9CnlCv719ED03le4WMjbRhS2AEGG8=;
+	s=arc-20240116; t=1764779356; c=relaxed/simple;
+	bh=0ogQjYhWPovczQaVByrQ+wqGRLrT79a8R6CdA8WsxPE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bg8kdGBa7z7Npb5BVstlgYo+e6qJKKMC4nG40s2Rgzf1By6jnCpSJdKpv+kmA69lw2Jrp9XJ0/Rt3qlnOKQT2GEwRmstmLolsUEQQjecXQiJmI2swQ4LF7b1S+wwv20YnrcYYPqvt9GIDAWVjnT5sFtaBfSkGovlk1lRHupcedg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tg3nSE/c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84589C4CEF5;
-	Wed,  3 Dec 2025 15:34:05 +0000 (UTC)
+	 MIME-Version; b=ULYAsBWdsNALKi7zMhMCO3p1vs0pvKPfS3qZyeQ7tO6fVVnLzCu/TdD+F7eqERMyTMl0Ra9u6u2Pu2Az+qzSWIkutsjE6cpPQZZHOfq1yUkq9IFIFLYnMWnmTlqfMpjjWa0OoOkymwFwwFH+uJLs9Fsx2cDn6e6rQqIeuzcb5gk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LrF7saDB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54D6BC4CEF5;
+	Wed,  3 Dec 2025 16:29:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776046;
-	bh=bpMAjWxSnVfQXB9CnlCv719ED03le4WMjbRhS2AEGG8=;
+	s=korg; t=1764779355;
+	bh=0ogQjYhWPovczQaVByrQ+wqGRLrT79a8R6CdA8WsxPE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tg3nSE/c+nLe+t9ZoDf8lvxXaRysFM5UVDmK52O4dyZfOL2b8MSZdru4DueOLsvzF
-	 M3fbKzQWiMDIw+OLLfYfaeTa8SxjtROPHkWydA7EDLJJkhvj73uMBusVQ4iwbr/ocs
-	 vRxBAbqaYTR3QCR4MUb3hg8VEur/Olk44liWBLFY=
+	b=LrF7saDBLrL4Wd54C5PUupA7yMAp7yUa0IyNqezw8YwY+I/WXJcKdKGGmiefWWwMR
+	 xWiKG6SkmCSV3loN01B4D4eXno++CWcv4WJJ84lsZ3Rz9kjsU3T8BV3oDA8yWOCqr2
+	 QfsDMfNAhxEcTp4gs7a3pqHvbWSF4xeg7ecLh/E4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Artem Shimko <a.shimko.dev@gmail.com>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 031/300] serial: 8250_dw: handle reset control deassert error
+Subject: [PATCH 6.1 233/568] scsi: lpfc: Remove ndlp kref decrement clause for F_Port_Ctrl in lpfc_cleanup
 Date: Wed,  3 Dec 2025 16:23:55 +0100
-Message-ID: <20251203152401.613740925@linuxfoundation.org>
+Message-ID: <20251203152449.256274742@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +60,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artem Shimko <a.shimko.dev@gmail.com>
+From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit daeb4037adf7d3349b4a1fb792f4bc9824686a4b ]
+[ Upstream commit a4809b98eb004fcbf7c4d45eb5a624d1c682bb73 ]
 
-Check the return value of reset_control_deassert() in the probe
-function to prevent continuing probe when reset deassertion fails.
+In lpfc_cleanup, there is an extraneous nlp_put for NPIV ports on the
+F_Port_Ctrl ndlp object.  In cases when an ABTS is issued, the
+outstanding kref is needed for when a second XRI_ABORTED CQE is
+received.  The final kref for the ndlp is designed to be decremented in
+lpfc_sli4_els_xri_aborted instead.  Also, add a new log message to allow
+for future diagnostics when debugging related issues.
 
-Previously, reset_control_deassert() was called without checking its
-return value, which could lead to probe continuing even when the
-device reset wasn't properly deasserted.
-
-The fix checks the return value and returns an error with dev_err_probe()
-if reset deassertion fails, providing better error handling and
-diagnostics.
-
-Fixes: acbdad8dd1ab ("serial: 8250_dw: simplify optional reset handling")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Artem Shimko <a.shimko.dev@gmail.com>
-Link: https://patch.msgid.link/20251019095131.252848-1-a.shimko.dev@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Message-ID: <20250915180811.137530-5-justintee8345@gmail.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_dw.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/scsi/lpfc/lpfc_els.c  | 6 +++++-
+ drivers/scsi/lpfc/lpfc_init.c | 7 -------
+ 2 files changed, 5 insertions(+), 8 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_dw.c
-+++ b/drivers/tty/serial/8250/8250_dw.c
-@@ -580,7 +580,9 @@ static int dw8250_probe(struct platform_
- 	if (IS_ERR(data->rst))
- 		return PTR_ERR(data->rst);
+diff --git a/drivers/scsi/lpfc/lpfc_els.c b/drivers/scsi/lpfc/lpfc_els.c
+index b4afaed5e4879..3b7e17ef9c2ec 100644
+--- a/drivers/scsi/lpfc/lpfc_els.c
++++ b/drivers/scsi/lpfc/lpfc_els.c
+@@ -11892,7 +11892,11 @@ lpfc_sli4_els_xri_aborted(struct lpfc_hba *phba,
+ 			sglq_entry->state = SGL_FREED;
+ 			spin_unlock_irqrestore(&phba->sli4_hba.sgl_list_lock,
+ 					       iflag);
+-
++			lpfc_printf_log(phba, KERN_INFO, LOG_ELS | LOG_SLI |
++					LOG_DISCOVERY | LOG_NODE,
++					"0732 ELS XRI ABORT on Node: ndlp=x%px "
++					"xri=x%x\n",
++					ndlp, xri);
+ 			if (ndlp) {
+ 				lpfc_set_rrq_active(phba, ndlp,
+ 					sglq_entry->sli4_lxritag,
+diff --git a/drivers/scsi/lpfc/lpfc_init.c b/drivers/scsi/lpfc/lpfc_init.c
+index 97f3c5240d572..6535474fe8a7f 100644
+--- a/drivers/scsi/lpfc/lpfc_init.c
++++ b/drivers/scsi/lpfc/lpfc_init.c
+@@ -3045,13 +3045,6 @@ lpfc_cleanup(struct lpfc_vport *vport)
+ 		lpfc_vmid_vport_cleanup(vport);
  
--	reset_control_deassert(data->rst);
-+	err = reset_control_deassert(data->rst);
-+	if (err)
-+		return dev_err_probe(dev, err, "failed to deassert resets\n");
- 
- 	err = devm_add_action_or_reset(dev, dw8250_reset_control_assert, data->rst);
- 	if (err)
+ 	list_for_each_entry_safe(ndlp, next_ndlp, &vport->fc_nodes, nlp_listp) {
+-		if (vport->port_type != LPFC_PHYSICAL_PORT &&
+-		    ndlp->nlp_DID == Fabric_DID) {
+-			/* Just free up ndlp with Fabric_DID for vports */
+-			lpfc_nlp_put(ndlp);
+-			continue;
+-		}
+-
+ 		if (ndlp->nlp_DID == Fabric_Cntl_DID &&
+ 		    ndlp->nlp_state == NLP_STE_UNUSED_NODE) {
+ 			lpfc_nlp_put(ndlp);
+-- 
+2.51.0
+
 
 
 
