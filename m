@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6225CA0520
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:17:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB511CA07F1
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:33:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8642E302CB9A
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:04:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 41EA433905B2
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:15:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACD1A393DD3;
-	Wed,  3 Dec 2025 16:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53C0D39A278;
+	Wed,  3 Dec 2025 16:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OoULEohx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hh3RC1en"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E573A393DDB;
-	Wed,  3 Dec 2025 16:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C2439A26E;
+	Wed,  3 Dec 2025 16:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764781076; cv=none; b=UksDpHZN9QNfX/0kOD3mt2fgRHOVlVeFB7Wjf01rvj+hyRkZoWTJISAvyh1lWGsdgynBeVlhvIXhmTSlfRRGBfDmYQ23CV36FwUpZ56O3xWuXlrly+krCgPB49K+gRyPKW+N5dPiHsfPOdSq4l1oTtOt47MNwKosVeznPs39yuA=
+	t=1764780813; cv=none; b=KilURwoDq7VRpfiHvK7sCkcxllB9beo4M76QKkoIna/O6cXLD3S+1vuhpLC5ZTugXFirKky8rg5MI3CzGIxFwt6Ny8n8YiRTxC6+4aD5XGjRVSMLy+5vyLSjltZ2m8lZi1UsvGBdsWXz/WoHo30AeZCZE1oaXwCLH1bc645gWfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764781076; c=relaxed/simple;
-	bh=aetw6ms5U3Rrkyao06Q+31RDIPQZ9qMZtWEmkyAvsVo=;
+	s=arc-20240116; t=1764780813; c=relaxed/simple;
+	bh=pNsLAUCPCL5AHRBFRTVniU8XFhN+QypfYjMyhDxkxJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cegfvZhxSJzVYAEh085yQ5oXMiCl3oBOCzagtfmLJQx3ffGSn6TvFZyDwPOV0YdZarBRllRwJXDroCj/20lxSnkWKuuHDyaW+sY2BJsNzImsAlTmSHkMnRXx8odDOSGkdkYCE3DGIsGMQ3R4/ZCOIqvDHUasSu/Qb1nvCJ9FUa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OoULEohx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42927C4CEF5;
-	Wed,  3 Dec 2025 16:57:55 +0000 (UTC)
+	 MIME-Version; b=lgXS3IIj+MVijM/4KhNhmfNV6IpIr0bBcg8qi09/qCo9tMhtc9A6fHyXP2yogZDbG2ZPiFM0CXC5I5jsgPBbccM60uSmfMzGyVwbhv9Q8zPhszmNdLWTqjuzAcGxDMeDYf2L5DWdO12VEV6NuZWasF9K+vPYFhJEilCyEZRxIi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hh3RC1en; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67AA4C4CEF5;
+	Wed,  3 Dec 2025 16:53:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764781075;
-	bh=aetw6ms5U3Rrkyao06Q+31RDIPQZ9qMZtWEmkyAvsVo=;
+	s=korg; t=1764780812;
+	bh=pNsLAUCPCL5AHRBFRTVniU8XFhN+QypfYjMyhDxkxJc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OoULEohxgQ5CUofktULoTc0T9Zjl80W//XUrgepf3L5FdKPlpPLn9PRPpsOSLQuBC
-	 hgdaJYW9+pkXga9lLU2z5NTFe90mgWZ5wOvCjAUsOknmVg4TbC/+D/bhHcOFxnlytU
-	 rQApCQ7yCJoucsm3PxQvMwTINfCyT2+2KK2DXy9A=
+	b=hh3RC1enemP4g9xIXURf9KvzI8KPa1KVouw/gziMv4R57mi3oH6rHa6KXG5FyYRcw
+	 AoNL986HofmT6qOa73KaV9pXz1BVove5dBCU8aS3fVuPG4BYLouJcSY2ceurfMWyyW
+	 MijY5aBLBl8IglvNeM0FlAt87YgF9F+gasJqlKm0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	Klara Modin <klarasmodin@gmail.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.6 41/93] MIPS: mm: kmalloc tlb_vpn array to avoid stack overflow
-Date: Wed,  3 Dec 2025 16:29:34 +0100
-Message-ID: <20251203152338.038542298@linuxfoundation.org>
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	stable <stable@kernel.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.12 096/132] usb: dwc3: pci: Sort out the Intel device IDs
+Date: Wed,  3 Dec 2025 16:29:35 +0100
+Message-ID: <20251203152346.844980712@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,81 +60,156 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-commit 841ecc979b18d3227fad5e2d6a1e6f92688776b5 upstream.
+commit 46b28d2fbd13148981d91246bc0e13f4fc055987 upstream.
 
-Owing to Config4.MMUSizeExt and VTLB/FTLB MMU features later MIPSr2+
-cores can have more than 64 TLB entries.  Therefore allocate an array
-for uniquification instead of placing too an small array on the stack.
+The PCI device IDs were organised based on the Intel
+architecture generation in most cases, but not with every
+ID. That left the device ID table with no real order.
+Sorting the table based on the device ID.
 
-Fixes: 35ad7e181541 ("MIPS: mm: tlb-r4k: Uniquify TLB entries on init")
-Co-developed-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Cc: stable@vger.kernel.org # v6.17+: 9f048fa48740: MIPS: mm: Prevent a TLB shutdown on initial uniquification
-Cc: stable@vger.kernel.org # v6.17+
-Tested-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Tested-by: Klara Modin <klarasmodin@gmail.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Suggested-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://patch.msgid.link/20251107121548.2702900-1-heikki.krogerus@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/mm/tlb-r4k.c |   18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/usb/dwc3/dwc3-pci.c |   82 ++++++++++++++++++++++----------------------
+ 1 file changed, 41 insertions(+), 41 deletions(-)
 
---- a/arch/mips/mm/tlb-r4k.c
-+++ b/arch/mips/mm/tlb-r4k.c
-@@ -12,6 +12,7 @@
- #include <linux/init.h>
- #include <linux/sched.h>
- #include <linux/smp.h>
-+#include <linux/memblock.h>
- #include <linux/mm.h>
- #include <linux/hugetlb.h>
- #include <linux/export.h>
-@@ -520,17 +521,26 @@ static int r4k_vpn_cmp(const void *a, co
-  * Initialise all TLB entries with unique values that do not clash with
-  * what we have been handed over and what we'll be using ourselves.
-  */
--static void r4k_tlb_uniquify(void)
-+static void __ref r4k_tlb_uniquify(void)
- {
--	unsigned long tlb_vpns[1 << MIPS_CONF1_TLBS_SIZE];
- 	int tlbsize = current_cpu_data.tlbsize;
-+	bool use_slab = slab_is_available();
- 	int start = num_wired_entries();
-+	phys_addr_t tlb_vpn_size;
-+	unsigned long *tlb_vpns;
- 	unsigned long vpn_mask;
- 	int cnt, ent, idx, i;
+--- a/drivers/usb/dwc3/dwc3-pci.c
++++ b/drivers/usb/dwc3/dwc3-pci.c
+@@ -21,41 +21,41 @@
+ #include <linux/acpi.h>
+ #include <linux/delay.h>
  
- 	vpn_mask = GENMASK(cpu_vmbits - 1, 13);
- 	vpn_mask |= IS_ENABLED(CONFIG_64BIT) ? 3ULL << 62 : 1 << 31;
- 
-+	tlb_vpn_size = tlbsize * sizeof(*tlb_vpns);
-+	tlb_vpns = (use_slab ?
-+		    kmalloc(tlb_vpn_size, GFP_KERNEL) :
-+		    memblock_alloc_raw(tlb_vpn_size, sizeof(*tlb_vpns)));
-+	if (WARN_ON(!tlb_vpns))
-+		return; /* Pray local_flush_tlb_all() is good enough. */
-+
- 	htw_stop();
- 
- 	for (i = start, cnt = 0; i < tlbsize; i++, cnt++) {
-@@ -583,6 +593,10 @@ static void r4k_tlb_uniquify(void)
- 	tlbw_use_hazard();
- 	htw_start();
- 	flush_micro_tlb();
-+	if (use_slab)
-+		kfree(tlb_vpns);
-+	else
-+		memblock_free(tlb_vpns, tlb_vpn_size);
++#define PCI_DEVICE_ID_INTEL_CMLLP		0x02ee
++#define PCI_DEVICE_ID_INTEL_CMLH		0x06ee
++#define PCI_DEVICE_ID_INTEL_BXT			0x0aaa
+ #define PCI_DEVICE_ID_INTEL_BYT			0x0f37
+ #define PCI_DEVICE_ID_INTEL_MRFLD		0x119e
+-#define PCI_DEVICE_ID_INTEL_BSW			0x22b7
+-#define PCI_DEVICE_ID_INTEL_SPTLP		0x9d30
+-#define PCI_DEVICE_ID_INTEL_SPTH		0xa130
+-#define PCI_DEVICE_ID_INTEL_BXT			0x0aaa
+ #define PCI_DEVICE_ID_INTEL_BXT_M		0x1aaa
+-#define PCI_DEVICE_ID_INTEL_APL			0x5aaa
+-#define PCI_DEVICE_ID_INTEL_KBP			0xa2b0
+-#define PCI_DEVICE_ID_INTEL_CMLLP		0x02ee
+-#define PCI_DEVICE_ID_INTEL_CMLH		0x06ee
++#define PCI_DEVICE_ID_INTEL_BSW			0x22b7
+ #define PCI_DEVICE_ID_INTEL_GLK			0x31aa
+-#define PCI_DEVICE_ID_INTEL_CNPLP		0x9dee
+-#define PCI_DEVICE_ID_INTEL_CNPH		0xa36e
+-#define PCI_DEVICE_ID_INTEL_CNPV		0xa3b0
+ #define PCI_DEVICE_ID_INTEL_ICLLP		0x34ee
+-#define PCI_DEVICE_ID_INTEL_EHL			0x4b7e
+-#define PCI_DEVICE_ID_INTEL_TGPLP		0xa0ee
+ #define PCI_DEVICE_ID_INTEL_TGPH		0x43ee
+-#define PCI_DEVICE_ID_INTEL_JSP			0x4dee
+-#define PCI_DEVICE_ID_INTEL_WCL			0x4d7e
+ #define PCI_DEVICE_ID_INTEL_ADL			0x460e
+-#define PCI_DEVICE_ID_INTEL_ADL_PCH		0x51ee
+ #define PCI_DEVICE_ID_INTEL_ADLN		0x465e
++#define PCI_DEVICE_ID_INTEL_EHL			0x4b7e
++#define PCI_DEVICE_ID_INTEL_WCL			0x4d7e
++#define PCI_DEVICE_ID_INTEL_JSP			0x4dee
++#define PCI_DEVICE_ID_INTEL_ADL_PCH		0x51ee
+ #define PCI_DEVICE_ID_INTEL_ADLN_PCH		0x54ee
+-#define PCI_DEVICE_ID_INTEL_ADLS		0x7ae1
+-#define PCI_DEVICE_ID_INTEL_RPL			0xa70e
++#define PCI_DEVICE_ID_INTEL_APL			0x5aaa
++#define PCI_DEVICE_ID_INTEL_NVLS_PCH		0x6e6f
++#define PCI_DEVICE_ID_INTEL_ARLH_PCH		0x777e
+ #define PCI_DEVICE_ID_INTEL_RPLS		0x7a61
++#define PCI_DEVICE_ID_INTEL_MTL			0x7e7e
++#define PCI_DEVICE_ID_INTEL_ADLS		0x7ae1
+ #define PCI_DEVICE_ID_INTEL_MTLM		0x7eb1
+ #define PCI_DEVICE_ID_INTEL_MTLP		0x7ec1
+ #define PCI_DEVICE_ID_INTEL_MTLS		0x7f6f
+-#define PCI_DEVICE_ID_INTEL_MTL			0x7e7e
+-#define PCI_DEVICE_ID_INTEL_NVLS_PCH		0x6e6f
+-#define PCI_DEVICE_ID_INTEL_ARLH_PCH		0x777e
+ #define PCI_DEVICE_ID_INTEL_TGL			0x9a15
++#define PCI_DEVICE_ID_INTEL_SPTLP		0x9d30
++#define PCI_DEVICE_ID_INTEL_CNPLP		0x9dee
++#define PCI_DEVICE_ID_INTEL_TGPLP		0xa0ee
++#define PCI_DEVICE_ID_INTEL_SPTH		0xa130
++#define PCI_DEVICE_ID_INTEL_KBP			0xa2b0
++#define PCI_DEVICE_ID_INTEL_CNPH		0xa36e
++#define PCI_DEVICE_ID_INTEL_CNPV		0xa3b0
++#define PCI_DEVICE_ID_INTEL_RPL			0xa70e
+ #define PCI_DEVICE_ID_INTEL_PTLH		0xe332
+ #define PCI_DEVICE_ID_INTEL_PTLH_PCH		0xe37e
+ #define PCI_DEVICE_ID_INTEL_PTLU		0xe432
+@@ -413,41 +413,41 @@ static void dwc3_pci_remove(struct pci_d
  }
  
- /*
+ static const struct pci_device_id dwc3_pci_id_table[] = {
+-	{ PCI_DEVICE_DATA(INTEL, BSW, &dwc3_pci_intel_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, BYT, &dwc3_pci_intel_byt_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, MRFLD, &dwc3_pci_intel_mrfld_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, CMLLP, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, CMLH, &dwc3_pci_intel_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, SPTLP, &dwc3_pci_intel_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, SPTH, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, BXT, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, BYT, &dwc3_pci_intel_byt_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, MRFLD, &dwc3_pci_intel_mrfld_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, BXT_M, &dwc3_pci_intel_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, APL, &dwc3_pci_intel_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, KBP, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, BSW, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, GLK, &dwc3_pci_intel_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, CNPLP, &dwc3_pci_intel_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, CNPH, &dwc3_pci_intel_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, CNPV, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, ICLLP, &dwc3_pci_intel_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, EHL, &dwc3_pci_intel_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, TGPLP, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, TGPH, &dwc3_pci_intel_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, JSP, &dwc3_pci_intel_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, WCL, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, ADL, &dwc3_pci_intel_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, ADL_PCH, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, ADLN, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, EHL, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, WCL, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, JSP, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, ADL_PCH, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, ADLN_PCH, &dwc3_pci_intel_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, ADLS, &dwc3_pci_intel_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, RPL, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, APL, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, NVLS_PCH, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, ARLH_PCH, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, RPLS, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, MTL, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, ADLS, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, MTLM, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, MTLP, &dwc3_pci_intel_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, MTL, &dwc3_pci_intel_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, NVLS_PCH, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, MTLS, &dwc3_pci_intel_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, ARLH_PCH, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, TGL, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, SPTLP, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, CNPLP, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, TGPLP, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, SPTH, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, KBP, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, CNPH, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, CNPV, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, RPL, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, PTLH, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, PTLH_PCH, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, PTLU, &dwc3_pci_intel_swnode) },
 
 
 
