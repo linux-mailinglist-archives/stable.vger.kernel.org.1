@@ -1,53 +1,57 @@
-Return-Path: <stable+bounces-199271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2311FCA015E
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:45:57 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14677C9FBFC
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:58:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3717D305A66A
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:39:13 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A07043004D1D
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:58:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B2E835E55D;
-	Wed,  3 Dec 2025 16:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F36F03446B7;
+	Wed,  3 Dec 2025 15:58:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v6wCv5+N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gfKUxQdE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 168AB35E551;
-	Wed,  3 Dec 2025 16:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9563343D92;
+	Wed,  3 Dec 2025 15:58:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779246; cv=none; b=QPgw8AZNp6aOBq32jgA6zZ6zM0QF60Epq3TZSI+mqyn5+D5krcGytes+61Hyz7nMsr312YZN4RcmezmhXv5UrdX0/MrUYGEiZhYHeROg+NjsxSMfQt8TKY42I3uCz4Nt9eQWZDKpFTCU/ic7xvBFiPLWlvUQy2VUnajQiELNAWU=
+	t=1764777484; cv=none; b=mTsfnCJyr1fZ4VdRW9Lav7+WIZQyVpbbkJsqW+IOzeeRRoYBJRW0d5aA+6hmyk7TKuFZnnw8Eg+yZqAqpvulxWp3a0PSuYsGOPNnkb5dFl7zmjBwqcdPAU4gkDNLH44C75CEqAS/iLHwzeZPdRFTsAcHkUeu891+kUrcR6F1n/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779246; c=relaxed/simple;
-	bh=ylmRP7zRMEqIXr6IQavN99fF5+J0QccluS1Gua+wnKQ=;
+	s=arc-20240116; t=1764777484; c=relaxed/simple;
+	bh=AgdfgVC5EyTFmkTmvug0pfLvQVygyDc/aJfxx9Q94Tk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uBcLB9Zq/9Hn7VQssoo3xqJiKdx8kC/hjXKdPPQeTfQPmcoCvUeW4tA1JevYjPz0+5uxj1DbBRqPG7ZeVZpza9FiTFb+uZvuAOGy1zHuYBBq447A0U7nMHJOA3ymoZ4PUrK55vtz0es989Y4xMslichGuPP2PmfvACwDiaaf/g0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v6wCv5+N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C0F8C4CEF5;
-	Wed,  3 Dec 2025 16:27:25 +0000 (UTC)
+	 MIME-Version; b=fTAeeceplAyFdkmw3n2dzJME8pFRYB9jI5wCTXqqo2QoAUG7DCdhAW3pI2azlQE22sUbSeGcln3iSU9qCpIgMu6hbD/sXYPWW8j3zvsGY1brPxcjNNG+w0YAyQfIEgFOjq680nnCJtRvpXuVD6wZ1ot1wMfBQpVTL+BH9VeJxqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gfKUxQdE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11061C116C6;
+	Wed,  3 Dec 2025 15:58:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779245;
-	bh=ylmRP7zRMEqIXr6IQavN99fF5+J0QccluS1Gua+wnKQ=;
+	s=korg; t=1764777484;
+	bh=AgdfgVC5EyTFmkTmvug0pfLvQVygyDc/aJfxx9Q94Tk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v6wCv5+Npl9mevcw2HQ8Rng7SwhCtHt1iZSeN7pUhF4TV8vnS94CRDbba/Ujvmami
-	 U7eBzE3oht3i+QKB9cBx9nAQA7bTe+dFNTB/3gnWYQmtgdqUA2rAKc1ofeJ+JCZFHW
-	 XnZKmW04VAh1PMwKnpZ2Kv2ZYwyKL0/Vr+YS18r4=
+	b=gfKUxQdE4YN4cqlhyOBjkX27XxM5kgk2iu576KMHfL+n/ZCCGafeFtuvhbKLS/HdZ
+	 gnO8aR4izAiB/7546zxg3oC+bmHizgbCXxhiLrju/AkoQ0BDCzDWqDlWD7PPo0Zd6C
+	 9VkrIallbYPjORpJB1v5TZAxuUHItjzznS8I+8D8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 199/568] drm/amd: add more cyan skillfish PCI ids
-Date: Wed,  3 Dec 2025 16:23:21 +0100
-Message-ID: <20251203152448.014236596@linuxfoundation.org>
+Subject: [PATCH 5.15 052/392] block: make REQ_OP_ZONE_OPEN a write operation
+Date: Wed,  3 Dec 2025 16:23:22 +0100
+Message-ID: <20251203152416.028550531@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,41 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 1e18746381793bef7c715fc5ec5611a422a75c4c ]
+[ Upstream commit 19de03b312d69a7e9bacb51c806c6e3f4207376c ]
 
-Add additional PCI IDs to the cyan skillfish family.
+A REQ_OP_OPEN_ZONE request changes the condition of a sequential zone of
+a zoned block device to the explicitly open condition
+(BLK_ZONE_COND_EXP_OPEN). As such, it should be considered a write
+operation.
 
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Change this operation code to be an odd number to reflect this. The
+following operation numbers are changed to keep the numbering compact.
+
+No problems were reported without this change as this operation has no
+data. However, this unifies the zone operation to reflect that they
+modify the device state and also allows strengthening checks in the
+block layer, e.g. checking if this operation is not issued against a
+read-only device.
+
+Fixes: 6c1b1da58f8c ("block: add zone open, close and finish operations")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[ relocated REQ_OP_ZONE_APPEND from 15 to 21 to resolve numbering conflict ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ include/linux/blk_types.h |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-index 1fbb73b2691d5..6104353e4c2f4 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-@@ -1997,6 +1997,11 @@ static const struct pci_device_id pciidlist[] = {
- 	{0x1002, 0x7410, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_ALDEBARAN},
+--- a/include/linux/blk_types.h
++++ b/include/linux/blk_types.h
+@@ -337,17 +337,17 @@ enum req_opf {
+ 	/* write the zero filled sector many times */
+ 	REQ_OP_WRITE_ZEROES	= 9,
+ 	/* Open a zone */
+-	REQ_OP_ZONE_OPEN	= 10,
++	REQ_OP_ZONE_OPEN	= 11,
+ 	/* Close a zone */
+-	REQ_OP_ZONE_CLOSE	= 11,
++	REQ_OP_ZONE_CLOSE	= 13,
+ 	/* Transition a zone to full */
+-	REQ_OP_ZONE_FINISH	= 13,
+-	/* write data at the current zone write pointer */
+-	REQ_OP_ZONE_APPEND	= 15,
++	REQ_OP_ZONE_FINISH	= 15,
+ 	/* reset a zone write pointer */
+ 	REQ_OP_ZONE_RESET	= 17,
+ 	/* reset all the zone present on the device */
+ 	REQ_OP_ZONE_RESET_ALL	= 19,
++	/* write data at the current zone write pointer */
++	REQ_OP_ZONE_APPEND	= 21,
  
- 	/* CYAN_SKILLFISH */
-+	{0x1002, 0x13DB, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_CYAN_SKILLFISH|AMD_IS_APU},
-+	{0x1002, 0x13F9, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_CYAN_SKILLFISH|AMD_IS_APU},
-+	{0x1002, 0x13FA, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_CYAN_SKILLFISH|AMD_IS_APU},
-+	{0x1002, 0x13FB, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_CYAN_SKILLFISH|AMD_IS_APU},
-+	{0x1002, 0x13FC, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_CYAN_SKILLFISH|AMD_IS_APU},
- 	{0x1002, 0x13FE, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_CYAN_SKILLFISH|AMD_IS_APU},
- 	{0x1002, 0x143F, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_CYAN_SKILLFISH|AMD_IS_APU},
- 
--- 
-2.51.0
-
+ 	/* Driver private requests */
+ 	REQ_OP_DRV_IN		= 34,
 
 
 
