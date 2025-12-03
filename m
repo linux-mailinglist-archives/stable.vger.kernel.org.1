@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-199702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65C88CA0B23
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:58:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A0D2CA02A9
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:52:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3AE1230542C6
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:53:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4E853301F259
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:48:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D47635BDAE;
-	Wed,  3 Dec 2025 16:50:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DB0036BCE0;
+	Wed,  3 Dec 2025 16:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M7XBbRpX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OKeD57Cf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E6634DCD6;
-	Wed,  3 Dec 2025 16:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 110BE313546;
+	Wed,  3 Dec 2025 16:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780659; cv=none; b=mm+7NSYoydZTCaMS52A6IZI4u4kOI1Hqkh0ZNYbwTEH9JA0AHgDnu93yDYyIgUEIzqd7r/tlLbx+qo+S9os5tudc+7vPV0Xo3ebS1miMAhf7omVKScXEqOfjfRXY0b2msA0aWz9WPQlfcOkuI2029/rim5czYS/srsuktaxi/Sk=
+	t=1764780487; cv=none; b=J2Ez6rXjuZxG1OEwj0+RcvAUT76xaNMYxGnP1qvSZ5hBlLaj5VAk5203SzUeiYWD7Tfzr4c1kaEncFBAJG4jlJTim9lxsBZ3c4qhdQ1w+bgaOeabNCOjMYA5kghyWk0oy00N5SX0bKcbH5oFTbROL9XZ7kSrvvkBqdxphsPZaLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780659; c=relaxed/simple;
-	bh=RuzhchP8PSMYK+O9FJAEL2jCM3KCV/I7i97oJfw+qcw=;
+	s=arc-20240116; t=1764780487; c=relaxed/simple;
+	bh=0L6G2WPXbBVLcgM+MKxDJd0iJ2j5YUa1eaN3BAtEgTU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h8UK/yMX+ffVb7VLdes2+YONXDeTNKr+U72gZ7UJbN3Ifb87Ijjajg8lXK91HRjhDcx/xRMT8wybOE2JRf2GrZkThmF+Ji0v6ku8x+pku00p+H9feNPDaz1TqxtArpuUZM28E3krEiPpdC/R1yFQ0PFr9TRQFcKIBMM4PVF1JVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M7XBbRpX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71686C116C6;
-	Wed,  3 Dec 2025 16:50:58 +0000 (UTC)
+	 MIME-Version; b=GeGWTeroyl3Z0YNOoebkEUKsqwrYplFGWM+56MfFU4dDeLBBvYaKI4jfCDRFKCAWxBjURstreaAyFp4W5S0WvbxAHwcOZVbRJdJtKJYay4ev30IMr4imtGU9FlpgC/qDkn57sAEkNqzo524Y7GZFNDBEV9ilnDoaCGOiAwVUFfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OKeD57Cf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 701C8C4CEF5;
+	Wed,  3 Dec 2025 16:48:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780658;
-	bh=RuzhchP8PSMYK+O9FJAEL2jCM3KCV/I7i97oJfw+qcw=;
+	s=korg; t=1764780486;
+	bh=0L6G2WPXbBVLcgM+MKxDJd0iJ2j5YUa1eaN3BAtEgTU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M7XBbRpXFwDbYvwCwLswBdYQK18JDpojhY6WyrwLYjFA3FQ09x6bePuRRzml61IQT
-	 ysIofAzJo1bJkdn5qryqLp6exItCn1Kl5Vr3O5AazC3SrwJzQdQfIR3i1Q1q/jIsYm
-	 9FcgAXh2wOj3m2agmb+6fYOv9oSu4Y3BDDmextC4=
+	b=OKeD57CfO7d3oomNBMBzf8l7fgMjRIDIRN7oVucnxAKLWTA2WIRrHvX3hDxtFGLzM
+	 J+t7yIFIGRQdRxB1wnzDX1htEUShtthNv6ARWbntPXEBbFQ8EBEZd99vFSc34F7nUA
+	 p3HhAj5BBHU+6uI5WgwfBO0ZC+vYXIOX48Nvjxls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.12 051/132] iio: buffer-dma: support getting the DMA channel
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH 6.1 528/568] dm-verity: fix unreliable memory allocation
 Date: Wed,  3 Dec 2025 16:28:50 +0100
-Message-ID: <20251203152345.187147467@linuxfoundation.org>
+Message-ID: <20251203152500.053959947@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,60 +57,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sá <nuno.sa@analog.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit f9c198c3ccaf90a1a265fb2ffa8d4b093c3b0784 upstream.
+commit fe680d8c747f4e676ac835c8c7fb0f287cd98758 upstream.
 
-Implement the .get_dma_dev() callback for DMA buffers by returning the
-device that owns the DMA channel. This allows the core DMABUF
-infrastructure to properly map DMA buffers using the correct device,
-avoiding the need for bounce buffers on systems where memory is mapped
-above the 32-bit range.
+GFP_NOWAIT allocation may fail anytime. It needs to be changed to
+GFP_NOIO. There's no need to handle an error because mempool_alloc with
+GFP_NOIO can't fail.
 
-The function returns the DMA queue's device, which is the actual device
-responsible for DMA operations in buffer-dma implementations.
-
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Signed-off-by: Nuno Sá <nuno.sa@analog.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Eric Biggers <ebiggers@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/buffer/industrialio-buffer-dma.c |    6 ++++++
- include/linux/iio/buffer-dma.h               |    1 +
- 2 files changed, 7 insertions(+)
+ drivers/md/dm-verity-fec.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
---- a/drivers/iio/buffer/industrialio-buffer-dma.c
-+++ b/drivers/iio/buffer/industrialio-buffer-dma.c
-@@ -786,6 +786,12 @@ out_end_signalling:
- }
- EXPORT_SYMBOL_NS_GPL(iio_dma_buffer_enqueue_dmabuf, IIO_DMA_BUFFER);
+--- a/drivers/md/dm-verity-fec.c
++++ b/drivers/md/dm-verity-fec.c
+@@ -330,11 +330,7 @@ static int fec_alloc_bufs(struct dm_veri
+ 		if (fio->bufs[n])
+ 			continue;
  
-+struct device *iio_dma_buffer_get_dma_dev(struct iio_buffer *buffer)
-+{
-+	return iio_buffer_to_queue(buffer)->dev;
-+}
-+EXPORT_SYMBOL_NS_GPL(iio_dma_buffer_get_dma_dev, IIO_DMA_BUFFER);
-+
- void iio_dma_buffer_lock_queue(struct iio_buffer *buffer)
- {
- 	struct iio_dma_buffer_queue *queue = iio_buffer_to_queue(buffer);
---- a/include/linux/iio/buffer-dma.h
-+++ b/include/linux/iio/buffer-dma.h
-@@ -174,5 +174,6 @@ int iio_dma_buffer_enqueue_dmabuf(struct
- 				  size_t size, bool cyclic);
- void iio_dma_buffer_lock_queue(struct iio_buffer *buffer);
- void iio_dma_buffer_unlock_queue(struct iio_buffer *buffer);
-+struct device *iio_dma_buffer_get_dma_dev(struct iio_buffer *buffer);
+-		fio->bufs[n] = mempool_alloc(&v->fec->prealloc_pool, GFP_NOWAIT);
+-		if (unlikely(!fio->bufs[n])) {
+-			DMERR("failed to allocate FEC buffer");
+-			return -ENOMEM;
+-		}
++		fio->bufs[n] = mempool_alloc(&v->fec->prealloc_pool, GFP_NOIO);
+ 	}
  
- #endif
+ 	/* try to allocate the maximum number of buffers */
 
 
 
