@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-199644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D2CECA029A
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:52:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14E34CA03E3
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:02:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7541D3047647
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:48:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 43994305A63D
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:53:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CEC53148CD;
-	Wed,  3 Dec 2025 16:48:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B72E393DE0;
+	Wed,  3 Dec 2025 16:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qSHQwm4M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TFJfcQTi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E46313546;
-	Wed,  3 Dec 2025 16:48:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16DE1393DD7;
+	Wed,  3 Dec 2025 16:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780480; cv=none; b=BTNNybpRlOn37tED/tQnub914feKkrJnln0mllCKFppIz0X/U8yfEg3w/szdnY1+h5qdjjKr+a2k1CzZjjc/r8pA3aA9Xxi8NVR5vspup8u6PxD2dvLyhQUnosm+XVVLRa3ltXpD6aTW/PWbWZOg/NdhZfSFNcG+ft7jh41L1j4=
+	t=1764780689; cv=none; b=DSzAM9WXf1KSS9cuq4qoUgMKxsqYgH4hIPKBmzHB4dSCrPtK4qE93IBtXqoINqUfePHZ1obnTCPm/iujToQlYImLrzqu8oVqJf1iWfEaouFmnGe9lf4C+faBt9q5mfXKC+4AgOtaqwWw2RE7ko6zITJ+OqYgnq+1KPV5BvgvvF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780480; c=relaxed/simple;
-	bh=EFXht+Hd/u+0Fs4dmlALixXYc2l4yrep9PpmMd14RLg=;
+	s=arc-20240116; t=1764780689; c=relaxed/simple;
+	bh=NVeQLv/V7RhU98lUaXjF32F2dIyqVPz0RmHuj/0yMaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a2qbvHQpnsS4OYhpL1K9fYokCW3fcsfgjNyNluW/TliIm07mzBzsfnNeCGZfw/gcs09H/ggPypg18q6HjhXoHeHeZ50kuNs3WE2IXoZRStxzsCNziApgtuLLdS9y20rHjLtMoQ/ZTepTo7B5uEN8r19c9+ckR2fruS5ZnK8oRK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qSHQwm4M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAB35C4CEF5;
-	Wed,  3 Dec 2025 16:47:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GW7nsc7MeMrADy4taeg+VUYFAkcNRS+rJ2Mq83dlIZoMGvlHvwDy2Z9IH49vGX5vFfulVuqGuLyS5baCg0/4f/Bwo9emL5KB7A8YrYYE1cPJLSX0M5y7WYjwZp+Mh6sPCAxAynKKFOaO8aEQ0p2wJTwNsKruPqy34dWjbfzUreU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TFJfcQTi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79D89C4CEF5;
+	Wed,  3 Dec 2025 16:51:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780479;
-	bh=EFXht+Hd/u+0Fs4dmlALixXYc2l4yrep9PpmMd14RLg=;
+	s=korg; t=1764780689;
+	bh=NVeQLv/V7RhU98lUaXjF32F2dIyqVPz0RmHuj/0yMaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qSHQwm4MunXzcXP5RrxqUNDFGoaWtrS4vxSCTLiSpDfaBfdiA+lkG7gjdJnLbprpu
-	 CodLTu/2BEbVaRl5aTxsL6wT7ye9kIkrOCXth/K5H0905EVUiVMVtWsveRmc6iaR+8
-	 VwDRwMTrPb8QQ6SbO1/e27dfW7oDq3XC/DUWtaf8=
+	b=TFJfcQTio+hbzM4i0XRevzs3SZqFngSYhjNV7OCEjtkFpCwTDQSsf+TBRimoHzZVZ
+	 JwMY8afbqa5+ifIYjFctTgASs+/KpfAoJzE3aSfuHGQ9fEL4/PqzJAPQppVWrrmcWj
+	 TAp4W/a6qng85Tr9npOZ69IQBpqtQRTmXNHIGFqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Peter Chen <peter.chen@kernel.org>
-Subject: [PATCH 6.1 536/568] usb: cdns3: Fix double resource release in cdns3_pci_probe
+	Linus Walleij <linus.walleij@linaro.org>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.12 059/132] iio: accel: bmc150: Fix irq assumption regression
 Date: Wed,  3 Dec 2025 16:28:58 +0100
-Message-ID: <20251203152500.345582409@linuxfoundation.org>
+Message-ID: <20251203152345.482197389@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,56 +59,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-commit 1ec39d2cd88dac2e7cdbac248762f1f057971c5d upstream.
+commit 3aa385a9c75c09b59dcab2ff76423439d23673ab upstream.
 
-The driver uses pcim_enable_device() to enable the PCI device,
-the device will be automatically disabled on driver detach through
-the managed device framework. The manual pci_disable_device() calls
-in the error paths are therefore redundant and should be removed.
+The code in bmc150-accel-core.c unconditionally calls
+bmc150_accel_set_interrupt() in the iio_buffer_setup_ops,
+such as on the runtime PM resume path giving a kernel
+splat like this if the device has no interrupts:
 
-Found via static anlaysis and this is similar to commit 99ca0b57e49f
-("thermal: intel: int340x: processor: Fix warning during module unload").
+Unable to handle kernel NULL pointer dereference at virtual
+  address 00000001 when read
 
-Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://patch.msgid.link/20251026090859.33107-1-linmq006@gmail.com
+PC is at bmc150_accel_set_interrupt+0x98/0x194
+LR is at __pm_runtime_resume+0x5c/0x64
+(...)
+Call trace:
+bmc150_accel_set_interrupt from bmc150_accel_buffer_postenable+0x40/0x108
+bmc150_accel_buffer_postenable from __iio_update_buffers+0xbe0/0xcbc
+__iio_update_buffers from enable_store+0x84/0xc8
+enable_store from kernfs_fop_write_iter+0x154/0x1b4
+
+This bug seems to have been in the driver since the beginning,
+but it only manifests recently, I do not know why.
+
+Store the IRQ number in the state struct, as this is a common
+pattern in other drivers, then use this to determine if we have
+IRQ support or not.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/cdns3/cdns3-pci-wrap.c |    5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/iio/accel/bmc150-accel-core.c |    5 +++++
+ drivers/iio/accel/bmc150-accel.h      |    1 +
+ 2 files changed, 6 insertions(+)
 
---- a/drivers/usb/cdns3/cdns3-pci-wrap.c
-+++ b/drivers/usb/cdns3/cdns3-pci-wrap.c
-@@ -101,10 +101,8 @@ static int cdns3_pci_probe(struct pci_de
- 		wrap = pci_get_drvdata(func);
- 	} else {
- 		wrap = kzalloc(sizeof(*wrap), GFP_KERNEL);
--		if (!wrap) {
--			pci_disable_device(pdev);
-+		if (!wrap)
- 			return -ENOMEM;
--		}
+--- a/drivers/iio/accel/bmc150-accel-core.c
++++ b/drivers/iio/accel/bmc150-accel-core.c
+@@ -529,6 +529,10 @@ static int bmc150_accel_set_interrupt(st
+ 	const struct bmc150_accel_interrupt_info *info = intr->info;
+ 	int ret;
+ 
++	/* We do not always have an IRQ */
++	if (data->irq <= 0)
++		return 0;
++
+ 	if (state) {
+ 		if (atomic_inc_return(&intr->users) > 1)
+ 			return 0;
+@@ -1702,6 +1706,7 @@ int bmc150_accel_core_probe(struct devic
  	}
  
- 	res = wrap->dev_res;
-@@ -163,7 +161,6 @@ static int cdns3_pci_probe(struct pci_de
- 		/* register platform device */
- 		wrap->plat_dev = platform_device_register_full(&plat_info);
- 		if (IS_ERR(wrap->plat_dev)) {
--			pci_disable_device(pdev);
- 			err = PTR_ERR(wrap->plat_dev);
- 			kfree(wrap);
- 			return err;
+ 	if (irq > 0) {
++		data->irq = irq;
+ 		ret = devm_request_threaded_irq(dev, irq,
+ 						bmc150_accel_irq_handler,
+ 						bmc150_accel_irq_thread_handler,
+--- a/drivers/iio/accel/bmc150-accel.h
++++ b/drivers/iio/accel/bmc150-accel.h
+@@ -57,6 +57,7 @@ enum bmc150_accel_trigger_id {
+ 
+ struct bmc150_accel_data {
+ 	struct regmap *regmap;
++	int irq;
+ 	struct regulator_bulk_data regulators[2];
+ 	struct bmc150_accel_interrupt interrupts[BMC150_ACCEL_INTERRUPTS];
+ 	struct bmc150_accel_trigger triggers[BMC150_ACCEL_TRIGGERS];
 
 
 
