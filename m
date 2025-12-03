@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4A4FCA04E0
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:16:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEDFDCA026C
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:51:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2EC723239CCA
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:03:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3DCA03042FFA
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:47:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4159363C4B;
-	Wed,  3 Dec 2025 16:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B93B3624AE;
+	Wed,  3 Dec 2025 16:47:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xyprnDl0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LYqR8Fee"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 882DC35FF60;
-	Wed,  3 Dec 2025 16:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9CF313546;
+	Wed,  3 Dec 2025 16:47:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764781033; cv=none; b=nqtuBKq3FuQXlDoRt7VjRtP0C6mfN5yvLxjF/Gs1ErxsB1aY71A94FDhBQgVR9OvIy9pnqM8DSVoChYukw7z/19e7MgNUSn1MYKQwCUJJll8c/QahUX/q6fPzCmNf7RE/lamTFtjRDb33TuFeulK4/FXRpaUus9S9lozuIDKJPc=
+	t=1764780454; cv=none; b=quTHGvD3Bkz9NE3axnh+WPWtUOsMMi1/uYZbUd2dfvvtsLYz45h/+6D0HVFy+NC1l5mljguvpWuxNTYB6EEEniV1Prtw7mShs0WXlz2KzTdSubPOxr96VjTGediwNp/UEYjaVZU+ydVYl8kfJJ+eO5ZJrt2LhvXk7iQNRpzGxzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764781033; c=relaxed/simple;
-	bh=kHdf5ZTaxVzBBSt3WM22uJWy+2IqSNGAJEPnPgyQ8oo=;
+	s=arc-20240116; t=1764780454; c=relaxed/simple;
+	bh=6TmJcxQqz/ZjzchD0zIJeqhO+CyPzFjnHpPKKdDRo7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mb84ka8gPEPeUHKuqd4ggH+i4jUU3G/lLvVS8x1++8ViJ1H75d+Dxur3BhPrK8JTJ8cknwvDqKJC75KiEUy1xC4HvUwUWD3plbrh+a8rk71PC2BU6gKZ/kwPMx6tL5b9MsN3Rl4nsROkopby5JzaR5z2GieKY0gRHO99VaNw9Us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xyprnDl0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4E74C4CEF5;
-	Wed,  3 Dec 2025 16:57:12 +0000 (UTC)
+	 MIME-Version; b=KyU1Pkyo4VyBF43fb/bcakXo1/FANlZ+fJuHlodgbrFGLcreTXjpSadWab5TO9l+kNYIPuFcu2Jqfq/M0WdKlBPjngpZ56zzSWmy+GG9u8nQn91QXc2GwOtReHDc2ueQC/IAWdCtGp2Z5JM7Gt4xXfI1Hb1Aw59WUdYlP/neM54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LYqR8Fee; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFDB4C4CEF5;
+	Wed,  3 Dec 2025 16:47:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764781033;
-	bh=kHdf5ZTaxVzBBSt3WM22uJWy+2IqSNGAJEPnPgyQ8oo=;
+	s=korg; t=1764780454;
+	bh=6TmJcxQqz/ZjzchD0zIJeqhO+CyPzFjnHpPKKdDRo7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xyprnDl0T4FfliyHcsxaiCewKkGpV7W2Xd3PUE89/F2ANsm7QmWiIxwke7d4XGLUH
-	 Q0V6R8mXskM6/rr7N/w2g2tTFJZRdmaD8g266dV5CV3JUTQ2Gy2rjTpFD1QyJ+E4rP
-	 hNa5RzdFatl6nsH6vNwl2rrEw0JLiyZ9EJa93D8I=
+	b=LYqR8Fee1BaP0dleE49/ijLd8oDrCLZQLE/+vxdmxLy09IsvE5mVBc+hb3dSftQfI
+	 KhI6Ng8nLLx4BptWRZ+bhRvUK0AVJJ/0Hs3Q3VmFIUFkDjm3TG5s63JWA1mVrp75Jo
+	 RSHNK5RVSToB4jaWWzGM8DumiQIX//YVVMWNNejc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 29/93] spi: spi-mem: Extend spi-mem operations with a per-operation maximum frequency
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH 6.1 560/568] mptcp: Fix proto fallback detection with BPF
 Date: Wed,  3 Dec 2025 16:29:22 +0100
-Message-ID: <20251203152337.593957710@linuxfoundation.org>
+Message-ID: <20251203152501.222977731@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,225 +61,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-[ Upstream commit 0fefeade90e74bc8f40ab0e460f483565c492e28 ]
+commit c77b3b79a92e3345aa1ee296180d1af4e7031f8f upstream.
 
-In the spi subsystem, the bus frequency is derived as follows:
-- the controller may expose a minimum and maximum operating frequency
-- the hardware description, through the spi peripheral properties,
-  advise what is the maximum acceptable frequency from a device/wiring
-  point of view.
-Transfers must be observed at a frequency which fits both (so in
-practice, the lowest maximum).
+The sockmap feature allows bpf syscall from userspace, or based
+on bpf sockops, replacing the sk_prot of sockets during protocol stack
+processing with sockmap's custom read/write interfaces.
+'''
+tcp_rcv_state_process()
+  syn_recv_sock()/subflow_syn_recv_sock()
+    tcp_init_transfer(BPF_SOCK_OPS_PASSIVE_ESTABLISHED_CB)
+      bpf_skops_established       <== sockops
+        bpf_sock_map_update(sk)   <== call bpf helper
+          tcp_bpf_update_proto()  <== update sk_prot
+'''
 
-Actually, this second point mixes two information and already takes the
-lowest frequency among:
-- what the spi device is capable of (what is written in the component
-  datasheet)
-- what the wiring allows (electromagnetic sensibility, crossovers,
-  terminations, antenna effect, etc).
+When the server has MPTCP enabled but the client sends a TCP SYN
+without MPTCP, subflow_syn_recv_sock() performs a fallback on the
+subflow, replacing the subflow sk's sk_prot with the native sk_prot.
+'''
+subflow_syn_recv_sock()
+  subflow_ulp_fallback()
+    subflow_drop_ctx()
+      mptcp_subflow_ops_undo_override()
+'''
 
-This logic works until spi devices are no longer capable of sustaining
-their highest frequency regardless of the operation. Spi memories are
-typically subject to such variation. Some devices are capable of
-spitting their internally stored data (essentially in read mode) at a
-very fast rate, typically up to 166MHz on Winbond SPI-NAND chips, using
-"fast" commands. However, some of the low-end operations, such as
-regular page read-from-cache commands, are more limited and can only be
-executed at 54MHz at most. This is currently a problem in the SPI-NAND
-subsystem. Another situation, even if not yet supported, will be with
-DTR commands, when the data is latched on both edges of the clock. The
-same chips as mentioned previously are in this case limited to
-80MHz. Yet another example might be continuous reads, which, under
-certain circumstances, can also run at most at 104 or 120MHz.
+Then, this subflow can be normally used by sockmap, which replaces the
+native sk_prot with sockmap's custom sk_prot. The issue occurs when the
+user executes accept::mptcp_stream_accept::mptcp_fallback_tcp_ops().
+Here, it uses sk->sk_prot to compare with the native sk_prot, but this
+is incorrect when sockmap is used, as we may incorrectly set
+sk->sk_socket->ops.
 
-As a matter of fact, the "one frequency per chip" policy is outdated and
-more fine grain configuration is needed: we need to allow per-operation
-frequency limitations. So far, all datasheets I encountered advertise a
-maximum default frequency, which need to be lowered for certain specific
-operations. So based on the current infrastructure, we can still expect
-firmware (device trees in general) to continued advertising the same
-maximum speed which is a mix between the PCB limitations and the chip
-maximum capability, and expect per-operation lower frequencies when this
-is relevant.
+This fix uses the more generic sk_family for the comparison instead.
 
-Add a `struct spi_mem_op` member to carry this information. Not
-providing this field explicitly from upper layers means that there is no
-further constraint and the default spi device maximum speed will be
-carried instead. The SPI_MEM_OP() macro is also expanded with an
-optional frequency argument, because virtually all operations can be
-subject to such a limitation, and this will allow for a smooth and
-discrete transition.
+Additionally, this also prevents a WARNING from occurring:
 
-For controller drivers which do not implement the spi-mem interface, the
-per-transfer speed is also set acordingly to a lower (than the maximum
-default) speed when relevant.
+result from ./scripts/decode_stacktrace.sh:
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 337 at net/mptcp/protocol.c:68 mptcp_stream_accept \
+(net/mptcp/protocol.c:4005)
+Modules linked in:
+...
 
-Acked-by: Pratyush Yadav <pratyush@kernel.org>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://patch.msgid.link/20241224-winbond-6-11-rc1-quad-support-v2-1-ad218dbc406f@bootlin.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 40ad64ac25bb ("spi: nxp-fspi: Propagate fwnode in ACPI case as well")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+PKRU: 55555554
+Call Trace:
+<TASK>
+do_accept (net/socket.c:1989)
+__sys_accept4 (net/socket.c:2028 net/socket.c:2057)
+__x64_sys_accept (net/socket.c:2067)
+x64_sys_call (arch/x86/entry/syscall_64.c:41)
+do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
+entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+RIP: 0033:0x7f87ac92b83d
+
+---[ end trace 0000000000000000 ]---
+
+Fixes: 0b4f33def7bb ("mptcp: fix tcp fallback crash")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20251111060307.194196-3-jiayuan.chen@linux.dev
+[ Conflicts in protocol.c, because commit 8e2b8a9fa512 ("mptcp: don't
+  overwrite sock_ops in mptcp_is_tcpsk()") is not in this version. It
+  changes the logic on how and where the sock_ops is overridden in case
+  of passive fallback. To fix this, mptcp_is_tcpsk() is modified to use
+  the family, but first, a check of the protocol is required to continue
+  returning 'false' in case of MPTCP socket. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/spi/core.c |  2 ++
- drivers/spi/spi-mem.c       | 28 ++++++++++++++++++++++++++++
- include/linux/spi/spi-mem.h | 12 +++++++++++-
- 3 files changed, 41 insertions(+), 1 deletion(-)
+ net/mptcp/protocol.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
-index ee61b2d882320..4c2776f52fee5 100644
---- a/drivers/mtd/nand/spi/core.c
-+++ b/drivers/mtd/nand/spi/core.c
-@@ -1044,6 +1044,8 @@ spinand_select_op_variant(struct spinand_device *spinand,
- 			if (ret)
- 				break;
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -79,8 +79,13 @@ static u64 mptcp_wnd_end(const struct mp
+ static bool mptcp_is_tcpsk(struct sock *sk)
+ {
+ 	struct socket *sock = sk->sk_socket;
++	unsigned short family;
  
-+			spi_mem_adjust_op_freq(spinand->spimem, &op);
-+
- 			if (!spi_mem_supports_op(spinand->spimem, &op))
- 				break;
- 
-diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-index 84b250703e138..b73a659e268d6 100644
---- a/drivers/spi/spi-mem.c
-+++ b/drivers/spi/spi-mem.c
-@@ -187,6 +187,10 @@ bool spi_mem_default_supports_op(struct spi_mem *mem,
- 			return false;
- 	}
- 
-+	if (op->max_freq && mem->spi->controller->min_speed_hz &&
-+	    op->max_freq < mem->spi->controller->min_speed_hz)
+-	if (unlikely(sk->sk_prot == &tcp_prot)) {
++	if (likely(sk->sk_protocol == IPPROTO_MPTCP))
 +		return false;
 +
- 	return spi_mem_check_buswidth(mem, op);
- }
- EXPORT_SYMBOL_GPL(spi_mem_default_supports_op);
-@@ -321,6 +325,9 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 	u8 *tmpbuf;
- 	int ret;
- 
-+	/* Make sure the operation frequency is correct before going futher */
-+	spi_mem_adjust_op_freq(mem, (struct spi_mem_op *)op);
-+
- 	ret = spi_mem_check_op(op);
- 	if (ret)
- 		return ret;
-@@ -363,6 +370,7 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 	xfers[xferpos].tx_buf = tmpbuf;
- 	xfers[xferpos].len = op->cmd.nbytes;
- 	xfers[xferpos].tx_nbits = op->cmd.buswidth;
-+	xfers[xferpos].speed_hz = op->max_freq;
- 	spi_message_add_tail(&xfers[xferpos], &msg);
- 	xferpos++;
- 	totalxferlen++;
-@@ -377,6 +385,7 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 		xfers[xferpos].tx_buf = tmpbuf + 1;
- 		xfers[xferpos].len = op->addr.nbytes;
- 		xfers[xferpos].tx_nbits = op->addr.buswidth;
-+		xfers[xferpos].speed_hz = op->max_freq;
- 		spi_message_add_tail(&xfers[xferpos], &msg);
- 		xferpos++;
- 		totalxferlen += op->addr.nbytes;
-@@ -388,6 +397,7 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 		xfers[xferpos].len = op->dummy.nbytes;
- 		xfers[xferpos].tx_nbits = op->dummy.buswidth;
- 		xfers[xferpos].dummy_data = 1;
-+		xfers[xferpos].speed_hz = op->max_freq;
- 		spi_message_add_tail(&xfers[xferpos], &msg);
- 		xferpos++;
- 		totalxferlen += op->dummy.nbytes;
-@@ -403,6 +413,7 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 		}
- 
- 		xfers[xferpos].len = op->data.nbytes;
-+		xfers[xferpos].speed_hz = op->max_freq;
- 		spi_message_add_tail(&xfers[xferpos], &msg);
- 		xferpos++;
- 		totalxferlen += op->data.nbytes;
-@@ -481,6 +492,23 @@ int spi_mem_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op)
- }
- EXPORT_SYMBOL_GPL(spi_mem_adjust_op_size);
- 
-+/**
-+ * spi_mem_adjust_op_freq() - Adjust the frequency of a SPI mem operation to
-+ *			      match controller, PCB and chip limitations
-+ * @mem: the SPI memory
-+ * @op: the operation to adjust
-+ *
-+ * Some chips have per-op frequency limitations and must adapt the maximum
-+ * speed. This function allows SPI mem drivers to set @op->max_freq to the
-+ * maximum supported value.
-+ */
-+void spi_mem_adjust_op_freq(struct spi_mem *mem, struct spi_mem_op *op)
-+{
-+	if (!op->max_freq || op->max_freq > mem->spi->max_speed_hz)
-+		op->max_freq = mem->spi->max_speed_hz;
-+}
-+EXPORT_SYMBOL_GPL(spi_mem_adjust_op_freq);
-+
- static ssize_t spi_mem_no_dirmap_read(struct spi_mem_dirmap_desc *desc,
- 				      u64 offs, size_t len, void *buf)
- {
-diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
-index eed6e016d69cc..cceebf8c78ba9 100644
---- a/include/linux/spi/spi-mem.h
-+++ b/include/linux/spi/spi-mem.h
-@@ -68,6 +68,9 @@ enum spi_mem_data_dir {
- 	SPI_MEM_DATA_OUT,
- };
- 
-+#define SPI_MEM_OP_MAX_FREQ(__freq)				\
-+	.max_freq = __freq
-+
- /**
-  * struct spi_mem_op - describes a SPI memory operation
-  * @cmd.nbytes: number of opcode bytes (only 1 or 2 are valid). The opcode is
-@@ -97,6 +100,9 @@ enum spi_mem_data_dir {
-  *		 operation does not involve transferring data
-  * @data.buf.in: input buffer (must be DMA-able)
-  * @data.buf.out: output buffer (must be DMA-able)
-+ * @max_freq: frequency limitation wrt this operation. 0 means there is no
-+ *	      specific constraint and the highest achievable frequency can be
-+ *	      attempted.
-  */
- struct spi_mem_op {
- 	struct {
-@@ -135,14 +141,17 @@ struct spi_mem_op {
- 			const void *out;
- 		} buf;
- 	} data;
-+
-+	unsigned int max_freq;
- };
- 
--#define SPI_MEM_OP(__cmd, __addr, __dummy, __data)		\
-+#define SPI_MEM_OP(__cmd, __addr, __dummy, __data, ...)		\
- 	{							\
- 		.cmd = __cmd,					\
- 		.addr = __addr,					\
- 		.dummy = __dummy,				\
- 		.data = __data,					\
-+		__VA_ARGS__					\
- 	}
- 
- /**
-@@ -369,6 +378,7 @@ bool spi_mem_default_supports_op(struct spi_mem *mem,
- #endif /* CONFIG_SPI_MEM */
- 
- int spi_mem_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op);
-+void spi_mem_adjust_op_freq(struct spi_mem *mem, struct spi_mem_op *op);
- 
- bool spi_mem_supports_op(struct spi_mem *mem,
- 			 const struct spi_mem_op *op);
--- 
-2.51.0
-
++	family = READ_ONCE(sk->sk_family);
++	if (unlikely(family == AF_INET)) {
+ 		/* we are being invoked after mptcp_accept() has
+ 		 * accepted a non-mp-capable flow: sk is a tcp_sk,
+ 		 * not an mptcp one.
+@@ -91,7 +96,7 @@ static bool mptcp_is_tcpsk(struct sock *
+ 		sock->ops = &inet_stream_ops;
+ 		return true;
+ #if IS_ENABLED(CONFIG_MPTCP_IPV6)
+-	} else if (unlikely(sk->sk_prot == &tcpv6_prot)) {
++	} else if (unlikely(family == AF_INET6)) {
+ 		sock->ops = &inet6_stream_ops;
+ 		return true;
+ #endif
 
 
 
