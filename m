@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEFDACA0B7D
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:00:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6A04CA0722
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:28:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 28A903175E28
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:55:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8820831BE21F
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:11:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADF9E3AA19F;
-	Wed,  3 Dec 2025 16:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CB9B398FAC;
+	Wed,  3 Dec 2025 16:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VTpdq8E6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tg4jWAip"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E823365A1B;
-	Wed,  3 Dec 2025 16:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46E5C398FB8;
+	Wed,  3 Dec 2025 16:58:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780753; cv=none; b=m4eSMwbadINBoo54hoA1WdncxrbRO/4NzuWl6F4+5oYWXesBqtBqd7Dj28GGHZhRrbE96LZQWRYuvwxuyRcQsLolSVYT7flH9pYK4o/+RQm7cVEvshThYzN0tZ4ePJ3LUipqDvLk9PAUCjt4ZpLA8JYF/0yuMJgp01YoQF/RI/g=
+	t=1764781133; cv=none; b=Dj7h/qkkXy/WW1wGKKHNKeyZsnFY1V4qPh78b4g2nLSvTWa/gdYShVtE4c50wZHk5xtLROi1xCrUlIDxHCEawvAkCR9BOTUKdsOLjhAPsnX8GvO7n2SLIRA8MbNVYwOftW9LcrfNDmehqrzKxJb/MI+611JkDRxnAm73WmsD5Ec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780753; c=relaxed/simple;
-	bh=35rYMvNL5FA+tOIbYNz5iGJ+Jvqci8fGOtiwYxkRXDk=;
+	s=arc-20240116; t=1764781133; c=relaxed/simple;
+	bh=oBrSHqv7vD0nZyQCgu4wXaQGEAT0T/Gs8/wvbE1uk8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qZxV+WoweHvE2NEiGo7qn6MoSc7SBPBNmigNpzIUmdTYQDEgjgDgfXUzYhBUIA2T8gfh5WSFbBa/RSJVhnG8ItzljxTs+w+WcdZ4+slpqVDvQtv6c3jHtynKU7gm9V3OWA7sN0WFkc+CBEvzsWrBSFTNv1WhePgDolE0j7CvMPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VTpdq8E6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D336C4CEF5;
-	Wed,  3 Dec 2025 16:52:32 +0000 (UTC)
+	 MIME-Version; b=LiEJ0w7Z40uZ+igNWNaD62HTzOgWR7KCB0EZai50vudFAz13tyFz300iyKoyQGVRpmuW7/V/bv1OFGryTUbbuCxinSK8LVFHXby8e6aGHhKf5yxWsXdMOoq1SzwZb04tfWfbuVeuXyZUDj6Hrh8uyWaJBPBsDTS/u+SLslevjn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tg4jWAip; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F05BC4CEF5;
+	Wed,  3 Dec 2025 16:58:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780752;
-	bh=35rYMvNL5FA+tOIbYNz5iGJ+Jvqci8fGOtiwYxkRXDk=;
+	s=korg; t=1764781131;
+	bh=oBrSHqv7vD0nZyQCgu4wXaQGEAT0T/Gs8/wvbE1uk8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VTpdq8E6h84pXGjYonp+VPDhYJwRt+CsMzyBVQGfzKqI+bVCAloF7dDp70HveE/++
-	 +MAsbC6Yzudih1cTs0JCSs+EtLnCew2wUHkWJo+w2VVfI4WzKV6Dy7xFyim7uNXrkl
-	 EmNtJJzqAPTpfnGL02EPgbRKoFPWHLK/REwlzaNk=
+	b=Tg4jWAip2sTEZgPB6glguyPCe7zkLYu9C8OK+icLxsrKLqDnqmmfUYmk8qu7n01WS
+	 m8RDGNX8Z4mwT/orC325TuIkJFov69FpJl9H/ZYp+fEZWKRXaTZjKTyni+JWxLikI7
+	 yu0ZqNHPtIbVcnq8S5EjnNxwoxvYU6HxY0qHrXps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	WangYuli <wangyl5933@chinaunicom.cn>,
-	Wentao Guan <guanwentao@uniontech.com>,
-	Srinivas Kandagatla <srini@kernel.org>
-Subject: [PATCH 6.12 080/132] nvmem: layouts: fix nvmem_layout_bus_uevent
+	Francesco Lavra <flavra@baylibre.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 26/93] spi: tegra114: remove Kconfig dependency on TEGRA20_APB_DMA
 Date: Wed,  3 Dec 2025 16:29:19 +0100
-Message-ID: <20251203152346.257169973@linuxfoundation.org>
+Message-ID: <20251203152337.483247063@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
+References: <20251203152336.494201426@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +60,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Guan <guanwentao@uniontech.com>
+From: Francesco Lavra <flavra@baylibre.com>
 
-commit 03bc4831ef064e114328dea906101cff7c6fb8b3 upstream.
+[ Upstream commit 3dcf44ab56e1d3ca3532083c0d5390b758e45b45 ]
 
-correctly check the ENODEV return value.
+This driver runs also on Tegra SoCs without a Tegra20 APB DMA controller
+(e.g. Tegra234).
+Remove the Kconfig dependency on TEGRA20_APB_DMA; in addition, amend the
+help text to reflect the fact that this driver works on SoCs different from
+Tegra114.
 
-Fixes: 810b790033cc ("nvmem: layouts: fix automatic module loading")
-CC: stable@vger.kernel.org
-Co-developed-by: WangYuli <wangyl5933@chinaunicom.cn>
-Signed-off-by: WangYuli <wangyl5933@chinaunicom.cn>
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://patch.msgid.link/20251114110539.143154-1-srini@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bb9667d8187b ("arm64: tegra: Add SPI device tree nodes for Tegra234")
+Signed-off-by: Francesco Lavra <flavra@baylibre.com>
+Link: https://patch.msgid.link/20251126095027.4102004-1-flavra@baylibre.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvmem/layouts.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvmem/layouts.c b/drivers/nvmem/layouts.c
-index f381ce1e84bd..7ebe53249035 100644
---- a/drivers/nvmem/layouts.c
-+++ b/drivers/nvmem/layouts.c
-@@ -51,7 +51,7 @@ static int nvmem_layout_bus_uevent(const struct device *dev,
- 	int ret;
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 3ce0fd5df8e9c..cda333f226b66 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -1059,10 +1059,10 @@ config SPI_TEGRA210_QUAD
  
- 	ret = of_device_uevent_modalias(dev, env);
--	if (ret != ENODEV)
-+	if (ret != -ENODEV)
- 		return ret;
+ config SPI_TEGRA114
+ 	tristate "NVIDIA Tegra114 SPI Controller"
+-	depends on (ARCH_TEGRA && TEGRA20_APB_DMA) || COMPILE_TEST
++	depends on ARCH_TEGRA || COMPILE_TEST
+ 	depends on RESET_CONTROLLER
+ 	help
+-	  SPI driver for NVIDIA Tegra114 SPI Controller interface. This controller
++	  SPI controller driver for NVIDIA Tegra114 and later SoCs. This controller
+ 	  is different than the older SoCs SPI controller and also register interface
+ 	  get changed with this controller.
  
- 	return 0;
 -- 
-2.52.0
+2.51.0
 
 
 
