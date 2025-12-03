@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-198744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29B25CA0937
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:43:33 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A5DFCA018E
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:47:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E4A9032C903E
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:23:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B70EF3068A59
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:39:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FC27314B8E;
-	Wed,  3 Dec 2025 15:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4788C3612DB;
+	Wed,  3 Dec 2025 16:28:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U2fuJF/M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZGm8XLAo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E4B311C15;
-	Wed,  3 Dec 2025 15:59:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1BEC2FB62A;
+	Wed,  3 Dec 2025 16:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777540; cv=none; b=LwKzJsJqwom1BoHhJCRq5APgItGlO6eS+CAjtFx8hI9GEzSygWqYKkhacu9K4tUyK+bmUltVsyF1nccjk+XcwvaQnjKbjAKxzlQv+J3IvJ4pgWOxx/eWzUOZBjnT3O99lBruOjFrd3Cs0/OsylCI7XhY6PDxJQ8oHh/w79l645Y=
+	t=1764779307; cv=none; b=TAxJmwwsCrmY0gfjbln1sgXdcDV3WMkCkYnkv5cMoC8Ejm3r7Ud8H9PzE8Pbd/aaZLpXYzrn/+075GEdiJ2iiJNGFCyXj1q0tfsiGaglWisRFsT02tzH5xfw5s+ISSJcBYC56VkDSHW/gD/vBNA6BZFq/m4VBbQPy4osTyZ+48g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777540; c=relaxed/simple;
-	bh=+rn7XJgsjglElo+zn04BrgY0dHpKKA8GYsn02AmY3N0=;
+	s=arc-20240116; t=1764779307; c=relaxed/simple;
+	bh=nOq08zCshsXFJs+T6e3kUvgTAOUyPc8zY3QpsOSVf50=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F6VUI+0eo/aVtWoLLmwc4Gjogg4zM+FXbyReMfwRaan+t4ZyRW19pYriQydLTN9kD264ziP1i4mqvRLYdmA3xWMUM/PwGEsajf6p5J6tHQRgnMuX2Cb7VaDsaeBuPevwOJzXN4CRzFe686TY6CHAUBIFGqw3x9Eay+8f5UZVjUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U2fuJF/M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDF9FC4CEF5;
-	Wed,  3 Dec 2025 15:58:58 +0000 (UTC)
+	 MIME-Version; b=TGNJ+cvXZtLasVfbn0bN9wF0bbmuKKjFiWa3bynPV5vd7qgBPToCDe8uevvHPvHDoftaIDpH1v4G0o8YewC6fooN3DVlye3dYPg9ccm/qsaiS2DXPkYbRQbIfYhtDc3ezktUxuL3GTSrjXT8kcMTd3C8V8YBxI28PwePFGR5oBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZGm8XLAo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E83AC4CEF5;
+	Wed,  3 Dec 2025 16:28:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777539;
-	bh=+rn7XJgsjglElo+zn04BrgY0dHpKKA8GYsn02AmY3N0=;
+	s=korg; t=1764779306;
+	bh=nOq08zCshsXFJs+T6e3kUvgTAOUyPc8zY3QpsOSVf50=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U2fuJF/MteseN1Dr7u9jk7BQhH3DNsizUvWz/d/PfcGnXKkR9pdJmhzEfZ3DgWi1M
-	 3oraz3K7QFdVV2fL1WNHJF0fCqhm+xio0dIz2X00LkymecPRlaTg3SemkK1WME46w9
-	 UXNv/zDfrReJIw+160ks4VzvNzgWDFgQdklDFLwc=
+	b=ZGm8XLAojhafNy/IXMS8zIkOgQMzHJSaXSs0xZ9hFNl4TT32WJlJf6WVOrtEXBerA
+	 sqOzSUcDjxvy31e/R4fCVlvWKvx8cVRES104ru/4KxtHm7yFtlJvF043P50+WLrwSt
+	 THw/xzwEQfMPzqWivgOoOYt+qD+zAHB86m4CeiD0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sarthak Garg <quic_sartgarg@quicinc.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Daniel Palmer <daniel@thingy.jp>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 071/392] mmc: sdhci-msm: Enable tuning for SDR50 mode for SD card
+Subject: [PATCH 6.1 219/568] eth: 8139too: Make 8139TOO_PIO depend on !NO_IOPORT_MAP
 Date: Wed,  3 Dec 2025 16:23:41 +0100
-Message-ID: <20251203152416.719986791@linuxfoundation.org>
+Message-ID: <20251203152448.743922935@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +60,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sarthak Garg <quic_sartgarg@quicinc.com>
+From: Daniel Palmer <daniel@thingy.jp>
 
-[ Upstream commit 08b68ca543ee9d5a8d2dc406165e4887dd8f170b ]
+[ Upstream commit 43adad382e1fdecabd2c4cd2bea777ef4ce4109e ]
 
-For Qualcomm SoCs which needs level shifter for SD card, extra delay is
-seen on receiver data path.
+When 8139too is probing and 8139TOO_PIO=y it will call pci_iomap_range()
+and from there __pci_ioport_map() for the PCI IO space.
+If HAS_IOPORT_MAP=n and NO_GENERIC_PCI_IOPORT_MAP=n, like it is on my
+m68k config, __pci_ioport_map() becomes NULL, pci_iomap_range() will
+always fail and the driver will complain it couldn't map the PIO space
+and return an error.
 
-To compensate this delay enable tuning for SDR50 mode for targets which
-has level shifter. SDHCI_SDR50_NEEDS_TUNING caps will be set for targets
-with level shifter on Qualcomm SOC's.
+NO_IOPORT_MAP seems to cover the case where what 8139too is trying
+to do cannot ever work so make 8139TOO_PIO depend on being it false
+and avoid creating an unusable driver.
 
-Signed-off-by: Sarthak Garg <quic_sartgarg@quicinc.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Daniel Palmer <daniel@thingy.jp>
+Link: https://patch.msgid.link/20250907064349.3427600-1-daniel@thingy.jp
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-msm.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/net/ethernet/realtek/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
-index 8fb2ba20e221b..b4c785393be3c 100644
---- a/drivers/mmc/host/sdhci-msm.c
-+++ b/drivers/mmc/host/sdhci-msm.c
-@@ -79,6 +79,7 @@
- #define CORE_IO_PAD_PWR_SWITCH_EN	BIT(15)
- #define CORE_IO_PAD_PWR_SWITCH	BIT(16)
- #define CORE_HC_SELECT_IN_EN	BIT(18)
-+#define CORE_HC_SELECT_IN_SDR50	(4 << 19)
- #define CORE_HC_SELECT_IN_HS400	(6 << 19)
- #define CORE_HC_SELECT_IN_MASK	(7 << 19)
- 
-@@ -1129,6 +1130,10 @@ static bool sdhci_msm_is_tuning_needed(struct sdhci_host *host)
- {
- 	struct mmc_ios *ios = &host->mmc->ios;
- 
-+	if (ios->timing == MMC_TIMING_UHS_SDR50 &&
-+	    host->flags & SDHCI_SDR50_NEEDS_TUNING)
-+		return true;
-+
- 	/*
- 	 * Tuning is required for SDR104, HS200 and HS400 cards and
- 	 * if clock frequency is greater than 100MHz in these modes.
-@@ -1197,6 +1202,8 @@ static int sdhci_msm_execute_tuning(struct mmc_host *mmc, u32 opcode)
- 	struct mmc_ios ios = host->mmc->ios;
- 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
- 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
-+	const struct sdhci_msm_offset *msm_offset = msm_host->offset;
-+	u32 config;
- 
- 	if (!sdhci_msm_is_tuning_needed(host)) {
- 		msm_host->use_cdr = false;
-@@ -1213,6 +1220,14 @@ static int sdhci_msm_execute_tuning(struct mmc_host *mmc, u32 opcode)
- 	 */
- 	msm_host->tuning_done = 0;
- 
-+	if (ios.timing == MMC_TIMING_UHS_SDR50 &&
-+	    host->flags & SDHCI_SDR50_NEEDS_TUNING) {
-+		config = readl_relaxed(host->ioaddr + msm_offset->core_vendor_spec);
-+		config &= ~CORE_HC_SELECT_IN_MASK;
-+		config |= CORE_HC_SELECT_IN_EN | CORE_HC_SELECT_IN_SDR50;
-+		writel_relaxed(config, host->ioaddr + msm_offset->core_vendor_spec);
-+	}
-+
- 	/*
- 	 * For HS400 tuning in HS200 timing requires:
- 	 * - select MCLK/2 in VENDOR_SPEC
+diff --git a/drivers/net/ethernet/realtek/Kconfig b/drivers/net/ethernet/realtek/Kconfig
+index 93d9df55b361a..01811924c4db4 100644
+--- a/drivers/net/ethernet/realtek/Kconfig
++++ b/drivers/net/ethernet/realtek/Kconfig
+@@ -58,7 +58,7 @@ config 8139TOO
+ config 8139TOO_PIO
+ 	bool "Use PIO instead of MMIO"
+ 	default y
+-	depends on 8139TOO
++	depends on 8139TOO && !NO_IOPORT_MAP
+ 	help
+ 	  This instructs the driver to use programmed I/O ports (PIO) instead
+ 	  of PCI shared memory (MMIO).  This can possibly solve some problems
 -- 
 2.51.0
 
