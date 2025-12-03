@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-198957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 144AFCA0565
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:18:47 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9712CA099D
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:45:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 14EEC3002D72
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:18:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D117A301AD26
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:44:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C4C532E146;
-	Wed,  3 Dec 2025 16:10:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D528533469A;
+	Wed,  3 Dec 2025 16:11:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aCaWpnVz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KCdDxFOU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D0E328261;
-	Wed,  3 Dec 2025 16:10:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA6A33291C;
+	Wed,  3 Dec 2025 16:11:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778225; cv=none; b=DqjgpqGcIYw3uPVNCHigs2rVpUq3qNWGSEzyAyBQHyn577gI6oP1Jbbu18amm8E9znlTQaWKX5uoYJuQlcTDotYgzHLhuPexU4echhD/anqTPVMVBl4iXPhPTfx+pCho8T0l32UMmdsQ9N4VY21YjOgjn4tkL0+plnBc/465TWY=
+	t=1764778262; cv=none; b=I8GYWoSk7Iselvn9b4M5QludabbsXeqsfk0eLZWPfnJ5dXNN3XuTotOJDQyFBonX3HkhBo4ZdM7Wi09fHrzjHJIImOgLcJM6dOFrHdVz7GsM9vSS05sTSYsGgbxx9BAhNELPPN8Y4yFL7vWbq7GewysztwOEXHzPEt74MFMjNPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778225; c=relaxed/simple;
-	bh=kl34+QPvkVffefwcOA6sSMirCk2/EtbwSJqOz3+eNiA=;
+	s=arc-20240116; t=1764778262; c=relaxed/simple;
+	bh=UrG4CvIww6a6sKV6oBXrkxuMgTHl19FKyouzGrCPycU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q/HYZ3Uy1n6yXQqoXxvVS53Uie2no9nkFoJWdtlFoVRarm/ue4oFlI9MAoNbOR9W9gQ1dpr9LizyTn3oEmX2SDNcp3+Qjlo5zxDD1F6vtcId3int9Q0c3ZAg8GGZfxVse+/PMwY+xWvsaqR3NEZEiHI3a5OSUNo5u1qKqS2iHJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aCaWpnVz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF028C116C6;
-	Wed,  3 Dec 2025 16:10:24 +0000 (UTC)
+	 MIME-Version; b=aezcpoHsjPoYsklkWa15HCDMI1BLxL3Bi8CpwISVdveyJYJVCCD6QThZ20/Y9w1GPPTSPDIbR5j1jedJ2YWs6aqr6iQKSn5yrM2IuDWc+QHeH7jz77a34WGh/p5mzkvuLZMo58Q7UNKUH85EpfHSucyuCwzQkDJ2ubs7Vem2pQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KCdDxFOU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16F9DC4CEF5;
+	Wed,  3 Dec 2025 16:11:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778225;
-	bh=kl34+QPvkVffefwcOA6sSMirCk2/EtbwSJqOz3+eNiA=;
+	s=korg; t=1764778262;
+	bh=UrG4CvIww6a6sKV6oBXrkxuMgTHl19FKyouzGrCPycU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aCaWpnVzI2VpLrN0Bdo1D2xUpMht2J/NlcgZxTua8CennVWGIUrFEKNyIgXfTUpAg
-	 B8iWPLU846vpUdZSejYW8Fzt6V68t9RUKcIBUR0lXIw2Wzok5xvmY5pBNyAo0OURJl
-	 tw5T1Izcq2f4ZmMHasRO/F/A8NkzOcYLVSsEimK8=
+	b=KCdDxFOUMDoJVz0tCth78dhwY5rM18laEAV3AZ7cxf67jzo51UULws/blXOaeUvcX
+	 mzu+kHB9AY2G/raqMU59HY0UYjR4TYzI3fEUrWRDj6arSwBuafZUTL3Jcol35SlSfz
+	 1jQ3Esh07bwInlqhNp+rhP13QliBK3gSDSWd1zzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuang Wang <nashuiliang@gmail.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 274/392] ipv4: route: Prevent rt_bind_exception() from rebinding stale fnhe
-Date: Wed,  3 Dec 2025 16:27:04 +0100
-Message-ID: <20251203152424.247031326@linuxfoundation.org>
+	Wei Yang <albinwyang@tencent.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	wangzijie <wangzijie1@honor.com>,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 275/392] fs/proc: fix uaf in proc_readdir_de()
+Date: Wed,  3 Dec 2025 16:27:05 +0100
+Message-ID: <20251203152424.283557632@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
 References: <20251203152414.082328008@linuxfoundation.org>
@@ -65,84 +67,106 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chuang Wang <nashuiliang@gmail.com>
+From: Wei Yang <albinwyang@tencent.com>
 
-commit ac1499fcd40fe06479e9b933347b837ccabc2a40 upstream.
+commit 895b4c0c79b092d732544011c3cecaf7322c36a1 upstream.
 
-The sit driver's packet transmission path calls: sit_tunnel_xmit() ->
-update_or_create_fnhe(), which lead to fnhe_remove_oldest() being called
-to delete entries exceeding FNHE_RECLAIM_DEPTH+random.
+Pde is erased from subdir rbtree through rb_erase(), but not set the node
+to EMPTY, which may result in uaf access.  We should use RB_CLEAR_NODE()
+set the erased node to EMPTY, then pde_subdir_next() will return NULL to
+avoid uaf access.
 
-The race window is between fnhe_remove_oldest() selecting fnheX for
-deletion and the subsequent kfree_rcu(). During this time, the
-concurrent path's __mkroute_output() -> find_exception() can fetch the
-soon-to-be-deleted fnheX, and rt_bind_exception() then binds it with a
-new dst using a dst_hold(). When the original fnheX is freed via RCU,
-the dst reference remains permanently leaked.
+We found an uaf issue while using stress-ng testing, need to run testcase
+getdent and tun in the same time.  The steps of the issue is as follows:
 
-CPU 0                             CPU 1
-__mkroute_output()
-  find_exception() [fnheX]
-                                  update_or_create_fnhe()
-                                    fnhe_remove_oldest() [fnheX]
-  rt_bind_exception() [bind dst]
-                                  RCU callback [fnheX freed, dst leak]
+1) use getdent to traverse dir /proc/pid/net/dev_snmp6/, and current
+   pde is tun3;
 
-This issue manifests as a device reference count leak and a warning in
-dmesg when unregistering the net device:
+2) in the [time windows] unregister netdevice tun3 and tun2, and erase
+   them from rbtree.  erase tun3 first, and then erase tun2.  the
+   pde(tun2) will be released to slab;
 
-  unregister_netdevice: waiting for sitX to become free. Usage count = N
+3) continue to getdent process, then pde_subdir_next() will return
+   pde(tun2) which is released, it will case uaf access.
 
-Ido Schimmel provided the simple test validation method [1].
+CPU 0                                      |    CPU 1
+-------------------------------------------------------------------------
+traverse dir /proc/pid/net/dev_snmp6/      |   unregister_netdevice(tun->dev)   //tun3 tun2
+sys_getdents64()                           |
+  iterate_dir()                            |
+    proc_readdir()                         |
+      proc_readdir_de()                    |     snmp6_unregister_dev()
+        pde_get(de);                       |       proc_remove()
+        read_unlock(&proc_subdir_lock);    |         remove_proc_subtree()
+                                           |           write_lock(&proc_subdir_lock);
+        [time window]                      |           rb_erase(&root->subdir_node, &parent->subdir);
+                                           |           write_unlock(&proc_subdir_lock);
+        read_lock(&proc_subdir_lock);      |
+        next = pde_subdir_next(de);        |
+        pde_put(de);                       |
+        de = next;    //UAF                |
 
-The fix clears 'oldest->fnhe_daddr' before calling fnhe_flush_routes().
-Since rt_bind_exception() checks this field, setting it to zero prevents
-the stale fnhe from being reused and bound to a new dst just before it
-is freed.
+rbtree of dev_snmp6
+                        |
+                    pde(tun3)
+                     /    \
+                  NULL  pde(tun2)
 
-[1]
-ip netns add ns1
-ip -n ns1 link set dev lo up
-ip -n ns1 address add 192.0.2.1/32 dev lo
-ip -n ns1 link add name dummy1 up type dummy
-ip -n ns1 route add 192.0.2.2/32 dev dummy1
-ip -n ns1 link add name gretap1 up arp off type gretap \
-    local 192.0.2.1 remote 192.0.2.2
-ip -n ns1 route add 198.51.0.0/16 dev gretap1
-taskset -c 0 ip netns exec ns1 mausezahn gretap1 \
-    -A 198.51.100.1 -B 198.51.0.0/16 -t udp -p 1000 -c 0 -q &
-taskset -c 2 ip netns exec ns1 mausezahn gretap1 \
-    -A 198.51.100.1 -B 198.51.0.0/16 -t udp -p 1000 -c 0 -q &
-sleep 10
-ip netns pids ns1 | xargs kill
-ip netns del ns1
-
-Cc: stable@vger.kernel.org
-Fixes: 67d6d681e15b ("ipv4: make exception cache less predictible")
-Signed-off-by: Chuang Wang <nashuiliang@gmail.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20251111064328.24440-1-nashuiliang@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lkml.kernel.org/r/20251025024233.158363-1-albin_yang@163.com
+Signed-off-by: Wei Yang <albinwyang@tencent.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: wangzijie <wangzijie1@honor.com>
+Cc: Alexey Dobriyan <adobriyan@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/route.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ fs/proc/generic.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -624,6 +624,11 @@ static void fnhe_remove_oldest(struct fn
- 			oldest_p = fnhe_p;
- 		}
+--- a/fs/proc/generic.c
++++ b/fs/proc/generic.c
+@@ -688,6 +688,12 @@ void pde_put(struct proc_dir_entry *pde)
  	}
+ }
+ 
++static void pde_erase(struct proc_dir_entry *pde, struct proc_dir_entry *parent)
++{
++	rb_erase(&pde->subdir_node, &parent->subdir);
++	RB_CLEAR_NODE(&pde->subdir_node);
++}
 +
-+	/* Clear oldest->fnhe_daddr to prevent this fnhe from being
-+	 * rebound with new dsts in rt_bind_exception().
-+	 */
-+	oldest->fnhe_daddr = 0;
- 	fnhe_flush_routes(oldest);
- 	*oldest_p = oldest->fnhe_next;
- 	kfree_rcu(oldest, rcu);
+ /*
+  * Remove a /proc entry and free it if it's not currently in use.
+  */
+@@ -710,7 +716,7 @@ void remove_proc_entry(const char *name,
+ 			WARN(1, "removing permanent /proc entry '%s'", de->name);
+ 			de = NULL;
+ 		} else {
+-			rb_erase(&de->subdir_node, &parent->subdir);
++			pde_erase(de, parent);
+ 			if (S_ISDIR(de->mode))
+ 				parent->nlink--;
+ 		}
+@@ -754,7 +760,7 @@ int remove_proc_subtree(const char *name
+ 			root->parent->name, root->name);
+ 		return -EINVAL;
+ 	}
+-	rb_erase(&root->subdir_node, &parent->subdir);
++	pde_erase(root, parent);
+ 
+ 	de = root;
+ 	while (1) {
+@@ -766,7 +772,7 @@ int remove_proc_subtree(const char *name
+ 					next->parent->name, next->name);
+ 				return -EINVAL;
+ 			}
+-			rb_erase(&next->subdir_node, &de->subdir);
++			pde_erase(next, de);
+ 			de = next;
+ 			continue;
+ 		}
 
 
 
