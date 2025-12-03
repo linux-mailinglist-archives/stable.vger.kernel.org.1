@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9EF7CA01AC
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:47:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF657CA03CB
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:01:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 29064300C5D6
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:45:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2D56D3095A8C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:53:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC4E9369212;
-	Wed,  3 Dec 2025 16:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4DED34D907;
+	Wed,  3 Dec 2025 16:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GC+XGrNv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lDKQWDjo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E635936A00B;
-	Wed,  3 Dec 2025 16:45:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70D2B34A799;
+	Wed,  3 Dec 2025 16:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780337; cv=none; b=Bs3WtU4WXkYpIqgaOzAXurCqjODnsfARAIFvDXBQRPSW7GrdmTQWl/dadZHqmNn4W6OVlNtMohEXRu4/FQi/mw0eFhXbYq6Mgce9goiNENGeNJyOAS9feLmeD+wKJuBEl/BpdLhohlnsv9h2LnJTH4wXzq++xcFQdoj3kJAgq3w=
+	t=1764780649; cv=none; b=kbLzy5oxz1BGp4ZG/YfxVEroXW5ITIb4rkMWxqJdIweRnYekOL5NGlcoqVPMlcdwHZyGILKd6kUmD6+ja0pZnyxiFrE52xzl8rbhFCfjojyqcyjqp/1HPPVMJoQo8THwO5eIJ5slpy1kvvyu9fUeG/V7UiQr/pHo1E8XroVAc9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780337; c=relaxed/simple;
-	bh=lIeA/RyiwzPU1wMyTelhWt5LzqrDc3AoU4SzBwX3E1A=;
+	s=arc-20240116; t=1764780649; c=relaxed/simple;
+	bh=G43P2ApgC3Vf4pZYxL4C83yYAupkbG2a57swGufRa2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IsZDrSAh/aCPwsoLILYNZlnenI4+kV2xA0pTChdSNk3ujfkrqLDGsYLv9xwxYi++Spg2b3iFjppblkR0hlrrSmcy0/cn64VtirKceJdAZflWX1WlrV76+zDGDt3VTP2wUevx7ncYlZ6fHmWaQ+UXcwQ5xcOelrn7yvxnD1pfTl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GC+XGrNv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AF3AC4CEF5;
-	Wed,  3 Dec 2025 16:45:36 +0000 (UTC)
+	 MIME-Version; b=Yir0YSBTgwkCyb11+zTbiDY1xvJuoqRvOvjGfNSnGHKVYy5LXvQl3L3AjOPGcwXI82q/ixRTYv4MqEVKFaE7fTVhcFGT2CCnmKNCu2WanclRAPLF57eWoAC2OqFkuQ4VOzOzzGIJhs/ZLbdLa/2gJ6eq5BYpw5JxhTL3+61XkYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lDKQWDjo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB49C4CEF5;
+	Wed,  3 Dec 2025 16:50:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780336;
-	bh=lIeA/RyiwzPU1wMyTelhWt5LzqrDc3AoU4SzBwX3E1A=;
+	s=korg; t=1764780649;
+	bh=G43P2ApgC3Vf4pZYxL4C83yYAupkbG2a57swGufRa2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GC+XGrNvnS/iwPv853HovH/rJn3HoVfNQPSmbK2j9z41imwtFV53dmFc/mH6Nyrhp
-	 O8Ex2i8Ol0d2V6Hg3LkY26bKuJX6j+hwSoXUVdRmsAXNKwRqwWGMb/KmyVmmE+RArw
-	 azKwWheJ6HPvqYkuxpF8HrxWFl4ERMB3quBp0nOc=
+	b=lDKQWDjor2rKD4g/KPTQQia4NsSnttERaN3t5ke80bNr+kJJcAdOB6doUIn3JTTgM
+	 IZoHPyiRwUfbGcVV3nL3sUBIcCDQPRmoXMbw8inLhS6Bhu/1xw/cCciLg4j8z4BcCV
+	 jRpyAVoerjiueHW6+Y1IYXFjju86BL6J/Cd+J96Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gui-Dong Han <hanguidong02@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 525/568] atm/fore200e: Fix possible data race in fore200e_open()
+	Hang Zhou <929513338@qq.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 048/132] spi: bcm63xx: fix premature CS deassertion on RX-only transactions
 Date: Wed,  3 Dec 2025 16:28:47 +0100
-Message-ID: <20251203152459.942765757@linuxfoundation.org>
+Message-ID: <20251203152345.074692392@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +60,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gui-Dong Han <hanguidong02@gmail.com>
+From: Hang Zhou <929513338@qq.com>
 
-commit 82fca3d8a4a34667f01ec2351a607135249c9cff upstream.
+[ Upstream commit fd9862f726aedbc2f29a29916cabed7bcf5cadb6 ]
 
-Protect access to fore200e->available_cell_rate with rate_mtx lock in the
-error handling path of fore200e_open() to prevent a data race.
+On BCM6358 (and also observed on BCM6368) the controller appears to
+only generate as many SPI clocks as bytes that have been written into
+the TX FIFO. For RX-only transfers the driver programs the transfer
+length in SPI_MSG_CTL but does not write anything into the FIFO, so
+chip select is deasserted early and the RX transfer segment is never
+fully clocked in.
 
-The field fore200e->available_cell_rate is a shared resource used to track
-available bandwidth. It is concurrently accessed by fore200e_open(),
-fore200e_close(), and fore200e_change_qos().
+A concrete failing case is a three-transfer MAC address read from
+SPI-NOR:
+  - TX 0x03 (read command)
+  - TX 3-byte address
+  - RX 6 bytes (MAC)
 
-In fore200e_open(), the lock rate_mtx is correctly held when subtracting
-vcc->qos.txtp.max_pcr from available_cell_rate to reserve bandwidth.
-However, if the subsequent call to fore200e_activate_vcin() fails, the
-function restores the reserved bandwidth by adding back to
-available_cell_rate without holding the lock.
+In contrast, a two-transfer JEDEC-ID read (0x9f + 6-byte RX) works
+because the driver uses prepend_len and writes dummy bytes into the
+TX FIFO for the RX part.
 
-This introduces a race condition because available_cell_rate is a global
-device resource shared across all VCCs. If the error path in
-fore200e_open() executes concurrently with operations like
-fore200e_close() or fore200e_change_qos() on other VCCs, a
-read-modify-write race occurs.
+Fix this by writing 0xff dummy bytes into the TX FIFO for RX-only
+segments so that the number of bytes written to the FIFO matches the
+total message length seen by the controller.
 
-Specifically, the error path reads the rate without the lock. If another
-CPU acquires the lock and modifies the rate (e.g., releasing bandwidth in
-fore200e_close()) between this read and the subsequent write, the error
-path will overwrite the concurrent update with a stale value. This results
-in incorrect bandwidth accounting.
+Fixes: b17de076062a ("spi/bcm63xx: work around inability to keep CS up")
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251120120657.2462194-1-hanguidong02@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hang Zhou <929513338@qq.com>
+Link: https://patch.msgid.link/tencent_7AC88FCB3076489A4A7E6C2163DF1ACF8D06@qq.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/atm/fore200e.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/spi/spi-bcm63xx.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/drivers/atm/fore200e.c
-+++ b/drivers/atm/fore200e.c
-@@ -1377,7 +1377,9 @@ fore200e_open(struct atm_vcc *vcc)
+diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+index a95badb7b7114..ba66fe9f1f543 100644
+--- a/drivers/spi/spi-bcm63xx.c
++++ b/drivers/spi/spi-bcm63xx.c
+@@ -247,6 +247,20 @@ static int bcm63xx_txrx_bufs(struct spi_device *spi, struct spi_transfer *first,
  
- 	vcc->dev_data = NULL;
- 
-+	mutex_lock(&fore200e->rate_mtx);
- 	fore200e->available_cell_rate += vcc->qos.txtp.max_pcr;
-+	mutex_unlock(&fore200e->rate_mtx);
- 
- 	kfree(fore200e_vcc);
- 	return -EINVAL;
+ 		if (t->rx_buf) {
+ 			do_rx = true;
++
++			/*
++			 * In certain hardware implementations, there appears to be a
++			 * hidden accumulator that tracks the number of bytes written into
++			 * the hardware FIFO, and this accumulator overrides the length in
++			 * the SPI_MSG_CTL register.
++			 *
++			 * Therefore, for read-only transfers, we need to write some dummy
++			 * value into the FIFO to keep the accumulator tracking the correct
++			 * length.
++			 */
++			if (!t->tx_buf)
++				memset_io(bs->tx_io + len, 0xFF, t->len);
++
+ 			/* prepend is half-duplex write only */
+ 			if (t == first)
+ 				prepend_len = 0;
+-- 
+2.51.0
+
 
 
 
