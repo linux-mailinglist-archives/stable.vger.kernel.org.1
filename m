@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-199399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B45ACCA0440
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:06:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE060C9FD67
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:12:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B3EE73003F9C
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:06:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 89FAE302C8D3
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:04:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D202832827D;
-	Wed,  3 Dec 2025 16:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38B4A34F46B;
+	Wed,  3 Dec 2025 16:04:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y5YCxRSD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ElulvS6w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 876BC31ED6C;
-	Wed,  3 Dec 2025 16:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4CBE34F466;
+	Wed,  3 Dec 2025 16:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779671; cv=none; b=ECeFGEpahfNDFqZdJdJl73cluS9EpVPdYIhQZVona9cF58Ze+VyF495Tgi8Kmx9dgnhHbPf44pZYDC+CLqRx4tZtSYA5rF4OlyQQv0Be+Z+OsO6nberlWzNpHb8R79suBbaYSDpmdavbi8Zzi7gq2noj/ClaZ0u4XodfuJO8yrA=
+	t=1764777889; cv=none; b=K+gbccydPB/RgDD2q+AMGbusGvip2ODp/yw6yuRPrT2j6acoX6VfkWZQzgWRbChbz6A/smSY1fxQJZDqNZWM+59nyg//t/oLsCSAS6y8FQ2G+XYWHSxL7g0VEAYD9JtPjh1MsK1uRFgolxAEJjNGVDVDrpSjSe1KAS0fLwLtpCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779671; c=relaxed/simple;
-	bh=9q4x4IktGc//A31X25JPW3i6RIfIAIScv79D2l1K3UM=;
+	s=arc-20240116; t=1764777889; c=relaxed/simple;
+	bh=kdrwhsAjO2q/deutRS6gyw9fKG64JLlQ+w6uOmhzwWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=posPJTglP18JnW3FEp0yBXWoqGYKnAEG6pfzbPt8pcAszWLoy82tgDllZOtCjn3635btklCFj8/5SXlgqRGhgMuV/tcCfxu8rjRi1RPwpmg0lfCqTGi6RfOpSpWMnJIMSd8byrTTBWL35xnZ3eJ28DMUKPrKwSuNR+vnIbO2c1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y5YCxRSD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8060C4CEF5;
-	Wed,  3 Dec 2025 16:34:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aseuBvggvZDlHTMGD+/McigN8eh0tiUmDCdpRrwN0aA4vn+tiWLT8tpLlGFBS9omr2l9GtneRgdTWWxIDuKb6dzvHY+L6O6RyUzDIc1TIPjoKinZqBQ7/GZFPkrWgh7+WaFFHVlsfZDa15MuY80W1Z6Zq5RfOmXaTj7CI8xR0DI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ElulvS6w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0914AC4CEF5;
+	Wed,  3 Dec 2025 16:04:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779671;
-	bh=9q4x4IktGc//A31X25JPW3i6RIfIAIScv79D2l1K3UM=;
+	s=korg; t=1764777888;
+	bh=kdrwhsAjO2q/deutRS6gyw9fKG64JLlQ+w6uOmhzwWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y5YCxRSD7m/lS1luv+CabV9aDv6xJbLhk6hkQJOv9jNL4N01P612s5nnBgvzh4VDz
-	 kINKqc5j5zfL8r6HVoC6hCRZNDaFd4dL61OYGsCzdbWZTjmDc7saCcKLkb2q5kpsTi
-	 PlSHCMZHWdhawNQTglrM/CcgNcP/EzPS2t//vzn0=
+	b=ElulvS6wgkVF324HgHkars2zKkBOXrYJqU1yccN/pSxewYUJtlShbfofilMEcymPq
+	 rcNFixDPWPxnXyCC7Ln5oMirZ7mzuA6VMVt7dUzuWh40rOagy8naWeLH/BQ/2IYSuC
+	 cCP6DZMKQqllbhhKNCiq9fVzTveB+HnRDF1zwloI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Rogers <linux@joshua.hu>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 327/568] smb: client: validate change notify buffer before copy
+	Sean Anderson <sean.anderson@linux.dev>,
+	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 179/392] net: macb: avoid dealing with endianness in macb_set_hwaddr()
 Date: Wed,  3 Dec 2025 16:25:29 +0100
-Message-ID: <20251203152452.686714245@linuxfoundation.org>
+Message-ID: <20251203152420.669166803@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,50 +60,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Rogers <linux@joshua.hu>
+From: Théo Lebrun <theo.lebrun@bootlin.com>
 
-commit 4012abe8a78fbb8869634130024266eaef7081fe upstream.
+[ Upstream commit 70a5ce8bc94545ba0fb47b2498bfb12de2132f4d ]
 
-SMB2_change_notify called smb2_validate_iov() but ignored the return
-code, then kmemdup()ed using server provided OutputBufferOffset/Length.
+bp->dev->dev_addr is of type `unsigned char *`. Casting it to a u32
+pointer and dereferencing implies dealing manually with endianness,
+which is error-prone.
 
-Check the return of smb2_validate_iov() and bail out on error.
+Replace by calls to get_unaligned_le32|le16() helpers.
 
-Discovered with help from the ZeroPath security tooling.
+This was found using sparse:
+   ⟩ make C=2 drivers/net/ethernet/cadence/macb_main.o
+   warning: incorrect type in assignment (different base types)
+      expected unsigned int [usertype] bottom
+      got restricted __le32 [usertype]
+   warning: incorrect type in assignment (different base types)
+      expected unsigned short [usertype] top
+      got restricted __le16 [usertype]
+   ...
 
-Signed-off-by: Joshua Rogers <linux@joshua.hu>
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Cc: stable@vger.kernel.org
-Fixes: e3e9463414f61 ("smb3: improve SMB3 change notification support")
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Sean Anderson <sean.anderson@linux.dev>
+Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250923-macb-fixes-v6-5-772d655cdeb6@bootlin.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2pdu.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/cadence/macb_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -3837,9 +3837,12 @@ SMB2_change_notify(const unsigned int xi
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index 2266a3ecc5533..d4a4d72460a42 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -280,9 +280,9 @@ static void macb_set_hwaddr(struct macb *bp)
+ 	u32 bottom;
+ 	u16 top;
  
- 		smb_rsp = (struct smb2_change_notify_rsp *)rsp_iov.iov_base;
+-	bottom = cpu_to_le32(*((u32 *)bp->dev->dev_addr));
++	bottom = get_unaligned_le32(bp->dev->dev_addr);
+ 	macb_or_gem_writel(bp, SA1B, bottom);
+-	top = cpu_to_le16(*((u16 *)(bp->dev->dev_addr + 4)));
++	top = get_unaligned_le16(bp->dev->dev_addr + 4);
+ 	macb_or_gem_writel(bp, SA1T, top);
  
--		smb2_validate_iov(le16_to_cpu(smb_rsp->OutputBufferOffset),
--				le32_to_cpu(smb_rsp->OutputBufferLength), &rsp_iov,
-+		rc = smb2_validate_iov(le16_to_cpu(smb_rsp->OutputBufferOffset),
-+				le32_to_cpu(smb_rsp->OutputBufferLength),
-+				&rsp_iov,
- 				sizeof(struct file_notify_information));
-+		if (rc)
-+			goto cnotify_exit;
- 
- 		*out_data = kmemdup((char *)smb_rsp + le16_to_cpu(smb_rsp->OutputBufferOffset),
- 				le32_to_cpu(smb_rsp->OutputBufferLength), GFP_KERNEL);
+ 	/* Clear unused address register sets */
+-- 
+2.51.0
+
 
 
 
