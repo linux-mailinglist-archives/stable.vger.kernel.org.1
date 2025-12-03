@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96C49C9FB9C
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:56:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69426CA17D7
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:54:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CB5D2304E38C
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:46:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 546B530690D4
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:48:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95EAE313E1D;
-	Wed,  3 Dec 2025 15:46:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77B4D33A6F3;
+	Wed,  3 Dec 2025 15:55:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rzj1mBEX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yr2da4pX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 515E7312810;
-	Wed,  3 Dec 2025 15:46:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30483303A35;
+	Wed,  3 Dec 2025 15:55:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776784; cv=none; b=oymiQluGcvFJaETfC9wxTMxwKGpwrxUQSI667WnXjg//sGsS7XE3ApCnScneCvz1qTuzYUnLLM+5gDBkde+cInk8J589umZIvgUU8o9qv0n5m43ec3bYWBpH89W/vIVUnztydHtH1L5onTj1BBJ6FdPyBs8ttR9QKODcvzt776s=
+	t=1764777313; cv=none; b=kkgk6nmMD/plmMqdofR7a49aRiSPZSa0jT2y0dCJt/Uj/NhCoY5zCJo7fCLoRnaB7o00eH5HPjScCnSPlb++FrZ4fJaPKofAs9s2Qeyux8Bs2/cZjLwRv+rnoruACjpsulJlY+Rrzskeczw3VSuHos7pfb2TCbi8j6nXErnkZuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776784; c=relaxed/simple;
-	bh=X290QDd9oF3WnbzwcktiWPxBSwSvCu3o/K6XBU8UG5Y=;
+	s=arc-20240116; t=1764777313; c=relaxed/simple;
+	bh=1wsTpKpUelKvUIyuGtskxe6ryCyGoLz7ael0bfVAFbY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JAZXVwQJzRTzSWne+Jj8xdXLrWieDTy+Mx5tksaMtY335OedqShIWGp/IVTxd9m5cVmT1j8Gw/HPVOQaVeZBDyKof76a+TrOIiQ4oVFynq6YTA5HFMUITOd5io612ewGdjH2790HsL9UYsBqdyb9L8PiBMUnqV85zLW07CJqlgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rzj1mBEX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6010C4CEF5;
-	Wed,  3 Dec 2025 15:46:23 +0000 (UTC)
+	 MIME-Version; b=CFN5dKbpNrY3qREWHDHKPIH4rPJFvCOWeijnk5USHVp7nXGlb3HQ2J8xwIsuk1JgvrBOeU3/gD7l6lM7yiNDV0hGf+sSdP926Re/dHpU3/A9MNiM1DwRiUY5ibmFJHR7pgi06PC/jCo6t2FC/7V9QhWwUwm4XEbwjFUuvGXMvCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yr2da4pX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63BB9C4CEF5;
+	Wed,  3 Dec 2025 15:55:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776784;
-	bh=X290QDd9oF3WnbzwcktiWPxBSwSvCu3o/K6XBU8UG5Y=;
+	s=korg; t=1764777312;
+	bh=1wsTpKpUelKvUIyuGtskxe6ryCyGoLz7ael0bfVAFbY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rzj1mBEX2UXJufqyClNjehNBwy7p8MswRy3eyCwLmfXHDuQPkhEz0Mgh/jCtFcMWq
-	 nuAGoRzpPBh0FADdlrdcfZRu8ZD3TFg80tQIYkXNnEpHTlqEjEs+CTPJbSWjGPInQM
-	 M1/BNDswW15vIaikS1q4jX36MxI+3EvS/2dzPsQ4=
+	b=Yr2da4pXnXmvYrpMwi1U9HFfvJen5jhd6/axaO3sgN/dpPmkgPZi4nTgmatqn+3mZ
+	 9o33Ho1JSeB2G9BEOflbl9l/ZWDXfYf/O6sYiOEZ0AcCBgkTlIuc+u4RDpPZNW2Bl3
+	 cgcViOldMSlqwlgahCgIhpR6DsptYCi56295mhSY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Johan Hovold <johan@kernel.org>,
-	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
-Subject: [PATCH 5.10 287/300] drm: sti: fix device leaks at component probe
+	stable <stable@kernel.org>,
+	Desnes Nunes <desnesn@redhat.com>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 6.17 113/146] usb: storage: Fix memory leak in USB bulk transport
 Date: Wed,  3 Dec 2025 16:28:11 +0100
-Message-ID: <20251203152411.255382976@linuxfoundation.org>
+Message-ID: <20251203152350.600636800@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +60,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Desnes Nunes <desnesn@redhat.com>
 
-commit 620a8f131154250f6a64a07d049a4f235d6451a5 upstream.
+commit 41e99fe2005182139b1058db71f0d241f8f0078c upstream.
 
-Make sure to drop the references taken to the vtg devices by
-of_find_device_by_node() when looking up their driver data during
-component probe.
+A kernel memory leak was identified by the 'ioctl_sg01' test from Linux
+Test Project (LTP). The following bytes were mainly observed: 0x53425355.
 
-Note that holding a reference to a platform device does not prevent its
-driver data from going away so there is no point in keeping the
-reference after the lookup helper returns.
+When USB storage devices incorrectly skip the data phase with status data,
+the code extracts/validates the CSW from the sg buffer, but fails to clear
+it afterwards. This leaves status protocol data in srb's transfer buffer,
+such as the US_BULK_CS_SIGN 'USBS' signature observed here. Thus, this can
+lead to USB protocols leaks to user space through SCSI generic (/dev/sg*)
+interfaces, such as the one seen here when the LTP test requested 512 KiB.
 
-Fixes: cc6b741c6f63 ("drm: sti: remove useless fields from vtg structure")
-Cc: stable@vger.kernel.org	# 4.16
-Cc: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20250922122012.27407-1-johan@kernel.org
-Signed-off-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+Fix the leak by zeroing the CSW data in srb's transfer buffer immediately
+after the validation of devices that skip data phase.
+
+Note: Differently from CVE-2018-1000204, which fixed a big leak by zero-
+ing pages at allocation time, this leak occurs after allocation, when USB
+protocol data is written to already-allocated sg pages.
+
+Fixes: a45b599ad808 ("scsi: sg: allocate with __GFP_ZERO in sg_build_indirect()")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Desnes Nunes <desnesn@redhat.com>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://patch.msgid.link/20251031043436.55929-1-desnesn@redhat.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/sti/sti_vtg.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/usb/storage/transport.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/gpu/drm/sti/sti_vtg.c b/drivers/gpu/drm/sti/sti_vtg.c
-index ee81691b3203..ce6bc7e7b135 100644
---- a/drivers/gpu/drm/sti/sti_vtg.c
-+++ b/drivers/gpu/drm/sti/sti_vtg.c
-@@ -143,12 +143,17 @@ struct sti_vtg {
- struct sti_vtg *of_vtg_find(struct device_node *np)
- {
- 	struct platform_device *pdev;
-+	struct sti_vtg *vtg;
- 
- 	pdev = of_find_device_by_node(np);
- 	if (!pdev)
- 		return NULL;
- 
--	return (struct sti_vtg *)platform_get_drvdata(pdev);
-+	vtg = platform_get_drvdata(pdev);
+--- a/drivers/usb/storage/transport.c
++++ b/drivers/usb/storage/transport.c
+@@ -1200,7 +1200,23 @@ int usb_stor_Bulk_transport(struct scsi_
+ 						US_BULK_CS_WRAP_LEN &&
+ 					bcs->Signature ==
+ 						cpu_to_le32(US_BULK_CS_SIGN)) {
++				unsigned char buf[US_BULK_CS_WRAP_LEN];
 +
-+	put_device(&pdev->dev);
+ 				usb_stor_dbg(us, "Device skipped data phase\n");
 +
-+	return vtg;
- }
- 
- static void vtg_reset(struct sti_vtg *vtg)
--- 
-2.52.0
-
++				/*
++				 * Devices skipping data phase might leave CSW data in srb's
++				 * transfer buffer. Zero it to prevent USB protocol leakage.
++				 */
++				sg = NULL;
++				offset = 0;
++				memset(buf, 0, sizeof(buf));
++				if (usb_stor_access_xfer_buf(buf,
++						US_BULK_CS_WRAP_LEN, srb, &sg,
++						&offset, TO_XFER_BUF) !=
++							US_BULK_CS_WRAP_LEN)
++					usb_stor_dbg(us, "Failed to clear CSW data\n");
++
+ 				scsi_set_resid(srb, transfer_length);
+ 				goto skipped_data_phase;
+ 			}
 
 
 
