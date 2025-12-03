@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-198847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0F36CA05D7
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:21:38 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0E03C9F89C
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:38:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C0C8832A6AE3
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:07:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E82CB30208EF
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:35:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07BC634E74F;
-	Wed,  3 Dec 2025 16:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A75EB3101A8;
+	Wed,  3 Dec 2025 15:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q5Tojhsl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JflN+E/h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7EE434E74B;
-	Wed,  3 Dec 2025 16:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B85311964;
+	Wed,  3 Dec 2025 15:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777865; cv=none; b=PyrNmjbjqmhd8P8JPTzx5Mu8VzKSIxO5yGVVOJaBkgaTwFn9VfHjRtWK96Q6DeNsRXN0ETryEbNNVliyIQ62hBSwCKRrI+R4bEw8/ktqaPE6wEkOEc3BkfP+LuSPGCU2J5nAat+3elqeMlPeaAl6OsM3dMAYKcKhYB6ItRz98kk=
+	t=1764776113; cv=none; b=eTPP3T+jku21S2d292RL9udpBuigjTPQLFj5Qr1G8twtyQbqS/JRIcbUyptnafl/4jKR/j2Ew/owLz6b+YPUfTnOr/I1GT1jrFCLgufg6D6xaBs6S01V2NSpURsw8duqbok9NsLaI7FlStEvzkS77v3PqRUMiCZP53fTEAzkYDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777865; c=relaxed/simple;
-	bh=Ztg4Dth53FC7NT0bZIqWM2a2OdXW7X1nm3+eydv48XY=;
+	s=arc-20240116; t=1764776113; c=relaxed/simple;
+	bh=nM0e8jd9fybngWNv8K7ebKtaZ5iSNIlbIU88XRqm2Yc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p5hKR5fVLvgafyF82+Daa1lO0of+mdkU1yeNvOD7ZhJJe/iCtyxtmp308fCFjFFjvm1xBaOWSnhXxV9vckSLjetoPfNSghO429ohRb/6InHq5ThkO827TxXIr0wGyBpytbHDawSizWsUuLkCZl8lwm+gvpmRyTvPtpONJw29yrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q5Tojhsl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CA42C4CEF5;
-	Wed,  3 Dec 2025 16:04:24 +0000 (UTC)
+	 MIME-Version; b=aFDB+qeqOeqYmGy773bk71vKaIE/N7wA/+RHiMH34tYAjet8eNDcja7Vwj091mPoxJMO5MS0Jp/iMr5rcsIDidDfg/fWdxtGp1WNVur5VT+ZN1aaPOQZ/KrrIQX8jbR4iEkXlyN/imDgfY8FNHqkyZps4B14VeKGyMens9wH0Dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JflN+E/h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3B8FC4CEF5;
+	Wed,  3 Dec 2025 15:35:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777865;
-	bh=Ztg4Dth53FC7NT0bZIqWM2a2OdXW7X1nm3+eydv48XY=;
+	s=korg; t=1764776113;
+	bh=nM0e8jd9fybngWNv8K7ebKtaZ5iSNIlbIU88XRqm2Yc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q5TojhsllD7bPMbEVX149dhcWZkEsGEklVZUL2XY1giNadAT5nLFkf0416IDEBp8s
-	 IBYNDuyY7Q7NMdcXLYWBks8T9mjIsJ0CjpowTwUuSfdodrh3U1BioY9iN3Jt8S2GoG
-	 PEwlwMTe/e1oXMiiUtGyiFzg5Iy+5OIxH6AWQWAc=
+	b=JflN+E/hbBJ1kwBrUFOzARR3Asey3j3/hvl6j5zKtVCus/mc0gNJB1nyUFpX3EZDJ
+	 MH+stuMhj46kvOJKiP9aAPSYZCnLZC/bs1+bFVv0RJDifUbinX0WHI47hEWAZjtR0+
+	 6dlkOXJ9GXTWYdyifxdooydj5BIFXb0O9nZygGWE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Yufeng <chenyufeng@iie.ac.cn>,
+	Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 138/392] usb: cdns3: gadget: Use-after-free during failed initialization and exit of cdnsp gadget
+Subject: [PATCH 5.10 084/300] iio: adc: spear_adc: mask SPEAR_ADC_STATUS channel and avg sample before setting register
 Date: Wed,  3 Dec 2025 16:24:48 +0100
-Message-ID: <20251203152419.166924484@linuxfoundation.org>
+Message-ID: <20251203152403.736995739@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,63 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Yufeng <chenyufeng@iie.ac.cn>
+From: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
 
-[ Upstream commit 87c5ff5615dc0a37167e8faf3adeeddc6f1344a3 ]
+[ Upstream commit d75c7021c08e8ae3f311ef2464dca0eaf75fab9f ]
 
-In the __cdnsp_gadget_init() and cdnsp_gadget_exit() functions, the gadget
-structure (pdev->gadget) was freed before its endpoints.
-The endpoints are linked via the ep_list in the gadget structure.
-Freeing the gadget first leaves dangling pointers in the endpoint list.
-When the endpoints are subsequently freed, this results in a use-after-free.
+avg sample info is a bit field coded inside the following
+bits: 5,6,7 and 8 of a device status register.
 
-Fix:
-By separating the usb_del_gadget_udc() operation into distinct "del" and
-"put" steps, cdnsp_gadget_free_endpoints() can be executed prior to the
-final release of the gadget structure with usb_put_gadget().
+Channel num info the same, but over bits: 1, 2 and 3.
 
-A patch similar to bb9c74a5bd14("usb: dwc3: gadget: Free gadget structure
- only after freeing endpoints").
+Mask both values in order to avoid touching other register bits,
+since the first info (avg sample), came from DT.
 
-Signed-off-by: Chen Yufeng <chenyufeng@iie.ac.cn>
-Link: https://lore.kernel.org/r/20250905094842.1232-1-chenyufeng@iie.ac.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250717221559.158872-1-rodrigo.gobbi.7@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/cdns3/cdnsp-gadget.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/iio/adc/spear_adc.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/usb/cdns3/cdnsp-gadget.c b/drivers/usb/cdns3/cdnsp-gadget.c
-index 1de82fb9dcb48..6bd9a2ebf687d 100644
---- a/drivers/usb/cdns3/cdnsp-gadget.c
-+++ b/drivers/usb/cdns3/cdnsp-gadget.c
-@@ -1978,7 +1978,10 @@ static int __cdnsp_gadget_init(struct cdns *cdns)
- 	return 0;
+diff --git a/drivers/iio/adc/spear_adc.c b/drivers/iio/adc/spear_adc.c
+index 1bc986a7009d2..4d4aff88aa6ce 100644
+--- a/drivers/iio/adc/spear_adc.c
++++ b/drivers/iio/adc/spear_adc.c
+@@ -12,6 +12,7 @@
+ #include <linux/kernel.h>
+ #include <linux/slab.h>
+ #include <linux/io.h>
++#include <linux/bitfield.h>
+ #include <linux/clk.h>
+ #include <linux/err.h>
+ #include <linux/completion.h>
+@@ -29,9 +30,9 @@
  
- del_gadget:
--	usb_del_gadget_udc(&pdev->gadget);
-+	usb_del_gadget(&pdev->gadget);
-+	cdnsp_gadget_free_endpoints(pdev);
-+	usb_put_gadget(&pdev->gadget);
-+	goto halt_pdev;
- free_endpoints:
- 	cdnsp_gadget_free_endpoints(pdev);
- halt_pdev:
-@@ -2000,8 +2003,9 @@ static void cdnsp_gadget_exit(struct cdns *cdns)
- 	devm_free_irq(pdev->dev, cdns->dev_irq, pdev);
- 	pm_runtime_mark_last_busy(cdns->dev);
- 	pm_runtime_put_autosuspend(cdns->dev);
--	usb_del_gadget_udc(&pdev->gadget);
-+	usb_del_gadget(&pdev->gadget);
- 	cdnsp_gadget_free_endpoints(pdev);
-+	usb_put_gadget(&pdev->gadget);
- 	cdnsp_mem_cleanup(pdev);
- 	kfree(pdev);
- 	cdns->gadget_dev = NULL;
+ /* Bit definitions for SPEAR_ADC_STATUS */
+ #define SPEAR_ADC_STATUS_START_CONVERSION	BIT(0)
+-#define SPEAR_ADC_STATUS_CHANNEL_NUM(x)		((x) << 1)
++#define SPEAR_ADC_STATUS_CHANNEL_NUM_MASK	GENMASK(3, 1)
+ #define SPEAR_ADC_STATUS_ADC_ENABLE		BIT(4)
+-#define SPEAR_ADC_STATUS_AVG_SAMPLE(x)		((x) << 5)
++#define SPEAR_ADC_STATUS_AVG_SAMPLE_MASK	GENMASK(8, 5)
+ #define SPEAR_ADC_STATUS_VREF_INTERNAL		BIT(9)
+ 
+ #define SPEAR_ADC_DATA_MASK		0x03ff
+@@ -148,8 +149,8 @@ static int spear_adc_read_raw(struct iio_dev *indio_dev,
+ 	case IIO_CHAN_INFO_RAW:
+ 		mutex_lock(&indio_dev->mlock);
+ 
+-		status = SPEAR_ADC_STATUS_CHANNEL_NUM(chan->channel) |
+-			SPEAR_ADC_STATUS_AVG_SAMPLE(st->avg_samples) |
++		status = FIELD_PREP(SPEAR_ADC_STATUS_CHANNEL_NUM_MASK, chan->channel) |
++			FIELD_PREP(SPEAR_ADC_STATUS_AVG_SAMPLE_MASK, st->avg_samples) |
+ 			SPEAR_ADC_STATUS_START_CONVERSION |
+ 			SPEAR_ADC_STATUS_ADC_ENABLE;
+ 		if (st->vref_external == 0)
 -- 
 2.51.0
 
