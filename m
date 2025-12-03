@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-198668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71BF5CA104A
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:34:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6C19CA0ED9
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:24:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 63DE1300FA09
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:34:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8402332AAD57
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:21:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D786133D6E9;
-	Wed,  3 Dec 2025 15:54:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4BDB3596FC;
+	Wed,  3 Dec 2025 16:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1eLKr+GE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f20ztH03"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E7333D6D6;
-	Wed,  3 Dec 2025 15:54:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827103596EF;
+	Wed,  3 Dec 2025 16:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777297; cv=none; b=UymhCoQytowRyCqevd4sMwy2GnaJDZKf76gP98MpTgnU3KxnvXfSvBSl7wLpFQvmxpBh3jHMMfcLNTb2slvnJv6FAQr7cKvICmQY90+g9JxgT6jkwmLkxF8u2lj51DeU/eMYmi2DQRcvpYXjEfsfS6Ugw5I01lt/NgAQ6oFdeRw=
+	t=1764780303; cv=none; b=rs3yimzL22Wjr279TycrMtOnXyxN7K/0P2ioVxCUHCHJyrnpTjU155lEMWkAySzrNH3xiQA8/Pzd1ftqNYUlkJ16Dx8aqDPctXawRiCYEMXoXP3Yad5id28OQFqpjwIzWJjVzvG6jlR7hBi7rO0z3yBF/S4pi+O6w7MxDtF20wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777297; c=relaxed/simple;
-	bh=/Ya+bzenZJyYkfqAcPxpF47IFyfoo4uklzWyvclhBGI=;
+	s=arc-20240116; t=1764780303; c=relaxed/simple;
+	bh=ia/9yqmAZaV7S4srLvSQo36lf0bhKvcnq4eoHegp6VY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bs8G/QHMsDAYRCjDZ5kTiugmxX9qQ2qXIGavMBwTOpIdgKbHLsQw5MqB69JP7tMVXMjO/APxtrI36jSY7Y2An1RqjuZNBIMGZBeHXFvnDUwHvmo63T1j6A9dZVNI+nQLBb5+cMPbxn2DOwB7i3n1TidbMt3KMAcgBX8I28pt63w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1eLKr+GE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86DFEC4CEF5;
-	Wed,  3 Dec 2025 15:54:56 +0000 (UTC)
+	 MIME-Version; b=RMmthHH+cPv3LrlOHQQfaUWgiJet0S/ldBLPdIilY+3CdD/FsDSv7MPjrO/N+rb3+tkfIB3XIuDCu4Ad0ZJSQg2OLN6GGDvXItpOPE2HfX8Ik8q7r7wg0QG/KlO940uXio+bkzL0h/c+r7Lc2tla3nG95dCVXl6WLa38puA6mpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f20ztH03; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D07B9C4CEF5;
+	Wed,  3 Dec 2025 16:45:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777297;
-	bh=/Ya+bzenZJyYkfqAcPxpF47IFyfoo4uklzWyvclhBGI=;
+	s=korg; t=1764780303;
+	bh=ia/9yqmAZaV7S4srLvSQo36lf0bhKvcnq4eoHegp6VY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1eLKr+GES2PASKJnInMGcyhbT+Df1W7QGSNvP/VvvpNV39zFqMPHqza8O0d0hFL4V
-	 Lr+cPV/KaLEx0Giho4wEMQdZfTvr70Mtoej1DSiKDOW4dzluNaJBrePs/bz1Adg+aC
-	 UjKwUGewrMu4MxzC+Mt2Omls0+Euqgcn0EHPU+KE=
+	b=f20ztH03xTx1h2FGzaSnTS9SdxE3/bBvHqvZKn7orQrzYp47vwiRWs5QsHTIKxTgC
+	 G7nZWKukz8SM2qq+gAvTgF5qSE8N+uq5f9IM+AuHZvJd82SUT4i/44GzM1T2keAKww
+	 Z/6KHh5rUSekB8wkBu+vXkipaQNMW85gZfLKT0Uc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ziming zhang <ezrakiez@gmail.com>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.17 140/146] libceph: prevent potential out-of-bounds writes in handle_auth_session_key()
+	Song Liu <song@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.1 516/568] Revert "perf/x86: Always store regs->ip in perf_callchain_kernel()"
 Date: Wed,  3 Dec 2025 16:28:38 +0100
-Message-ID: <20251203152351.598759258@linuxfoundation.org>
+Message-ID: <20251203152459.614315710@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,47 +61,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ziming zhang <ezrakiez@gmail.com>
+From: Jiri Olsa <jolsa@kernel.org>
 
-commit 7fce830ecd0a0256590ee37eb65a39cbad3d64fc upstream.
+commit 6d08340d1e354787d6c65a8c3cdd4d41ffb8a5ed upstream.
 
-The len field originates from untrusted network packets. Boundary
-checks have been added to prevent potential out-of-bounds writes when
-decrypting the connection secret or processing service tickets.
+This reverts commit 83f44ae0f8afcc9da659799db8693f74847e66b3.
 
-[ idryomov: changelog ]
+Currently we store initial stacktrace entry twice for non-HW ot_regs, which
+means callers that fail perf_hw_regs(regs) condition in perf_callchain_kernel.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: ziming zhang <ezrakiez@gmail.com>
-Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+It's easy to reproduce this bpftrace:
+
+  # bpftrace -e 'tracepoint:sched:sched_process_exec { print(kstack()); }'
+  Attaching 1 probe...
+
+        bprm_execve+1767
+        bprm_execve+1767
+        do_execveat_common.isra.0+425
+        __x64_sys_execve+56
+        do_syscall_64+133
+        entry_SYSCALL_64_after_hwframe+118
+
+When perf_callchain_kernel calls unwind_start with first_frame, AFAICS
+we do not skip regs->ip, but it's added as part of the unwind process.
+Hence reverting the extra perf_callchain_store for non-hw regs leg.
+
+I was not able to bisect this, so I'm not really sure why this was needed
+in v5.2 and why it's not working anymore, but I could see double entries
+as far as v5.10.
+
+I did the test for both ORC and framepointer unwind with and without the
+this fix and except for the initial entry the stacktraces are the same.
+
+Acked-by: Song Liu <song@kernel.org>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/r/20251104215405.168643-2-jolsa@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ceph/auth_x.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/events/core.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/net/ceph/auth_x.c
-+++ b/net/ceph/auth_x.c
-@@ -631,6 +631,7 @@ static int handle_auth_session_key(struc
+--- a/arch/x86/events/core.c
++++ b/arch/x86/events/core.c
+@@ -2794,13 +2794,13 @@ perf_callchain_kernel(struct perf_callch
+ 		return;
+ 	}
  
- 	/* connection secret */
- 	ceph_decode_32_safe(p, end, len, e_inval);
-+	ceph_decode_need(p, end, len, e_inval);
- 	dout("%s connection secret blob len %d\n", __func__, len);
- 	if (len > 0) {
- 		dp = *p + ceph_x_encrypt_offset();
-@@ -648,6 +649,7 @@ static int handle_auth_session_key(struc
+-	if (perf_callchain_store(entry, regs->ip))
+-		return;
+-
+-	if (perf_hw_regs(regs))
++	if (perf_hw_regs(regs)) {
++		if (perf_callchain_store(entry, regs->ip))
++			return;
+ 		unwind_start(&state, current, regs, NULL);
+-	else
++	} else {
+ 		unwind_start(&state, current, NULL, (void *)regs->sp);
++	}
  
- 	/* service tickets */
- 	ceph_decode_32_safe(p, end, len, e_inval);
-+	ceph_decode_need(p, end, len, e_inval);
- 	dout("%s service tickets blob len %d\n", __func__, len);
- 	if (len > 0) {
- 		ret = ceph_x_proc_ticket_reply(ac, &th->session_key,
+ 	for (; !unwind_done(&state); unwind_next_frame(&state)) {
+ 		addr = unwind_get_return_address(&state);
 
 
 
