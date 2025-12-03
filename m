@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E3B5CA1038
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:34:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 954E6C9F7FD
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:35:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 43C02300948C
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:33:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F2EF9300378C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:31:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F21D359F8B;
-	Wed,  3 Dec 2025 16:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C53A930BF66;
+	Wed,  3 Dec 2025 15:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n4uztFba"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GEI4Dud1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF8673587B0;
-	Wed,  3 Dec 2025 16:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C10630ACF4;
+	Wed,  3 Dec 2025 15:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779403; cv=none; b=a92gbgDscuYROBGJvlaghk24DFzosu+umJ97JlDMPKn8QF5iRsGYARbFe5f4OPVx5z4PAXXIXdqMjuZVOSwqcJwrYUvHhAo9kRXs3+1QZZMpxHRjaMQexnxoiOX/4j1mvdP7W4SZzjZhuiftP/JaA5/oM4HHnTYr5FQPbUeVgPo=
+	t=1764775872; cv=none; b=bFJInVRFU9+tZ/00Yb2XKjbefFe/227rz3gc3jQ75o39JDOs7j+jZUzq61bBZjgVF5E5maI/1DPTd7WCQcMD11BaseVqsAfwLOn1+Jn2DWS+FtrIQ99LFHber9U67sxI5WuJI7SOeSu3ZW0Axw0g4BY+8/DEONPWXzkYs/O54CI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779403; c=relaxed/simple;
-	bh=TTp+MbvrzU7ylTUOZoAt9GpTFybFm1h1GJCe/nKLNq8=;
+	s=arc-20240116; t=1764775872; c=relaxed/simple;
+	bh=nw6FMW4+qZvESZ/pCcNnkqNsfw2SfwDgCIUby3R/IOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hHi0fW/uOOdN/qyqz0i6yOy7yYIkRQAi7W7if0F2LkBSBQqtAnvsIgjGHe+LKBUiAv4VBYK7VF98QT0PxUGuowK6dQuiEZXsGPZ/pXs2EV4IfSR2gbGGPNSSUFmfVYEaV7u17Mikanjct1MLvD4WDxfVLNsBfBcrKzSB2Eg/m3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n4uztFba; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 248E2C116B1;
-	Wed,  3 Dec 2025 16:30:02 +0000 (UTC)
+	 MIME-Version; b=as5nZZQgWYXGI+1K3QQ+o29IzZDa1c7XH4YTn4dlo2Qy/X5sojRpH4Zkm6xOdIxFmsuZR/zBxt1WCU4QiqshpFxoGuAeohridBuWM5A0d3tUyzbck0kcqvmuW9Fewj2CdmoHnoFhRvAQRmeJSOqxHRtI5uv12OnkZdS37wE/N8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GEI4Dud1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80C78C4CEF5;
+	Wed,  3 Dec 2025 15:31:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779403;
-	bh=TTp+MbvrzU7ylTUOZoAt9GpTFybFm1h1GJCe/nKLNq8=;
+	s=korg; t=1764775872;
+	bh=nw6FMW4+qZvESZ/pCcNnkqNsfw2SfwDgCIUby3R/IOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n4uztFbavQZpmER/hKHxvq2u6BJNuE32h+ypw0PPQYfZyt1OxTeShk7GD5o+QZ6rf
-	 OmfGSAiub3lI1IVdsDPawFUR7iPF/39UGFHezAxW5bU7fP11ShHzwLT8BWekFRMe48
-	 ORCB1jXYOdb8puCuOiCEUD1QsLGVhkVtyFjPc9dQ=
+	b=GEI4Dud14Okf6oeVIi9DwyRE/dqQdVu/FJzgMGRaD+GDaaY0B+b/VELmQAWDzKj91
+	 XBgzojsLpOM4DpvY9JKNoQKqiMRmb8eEMa0X65JW1HPUxwkvM0n9/7QIW9R3x+lqNw
+	 PZ6Fan2MlQK8wRJ5ip7BD7f7+C67G8ieocG1v/88=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qianfeng Rong <rongqianfeng@vivo.com>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 214/568] media: redrat3: use int type to store negative error codes
-Date: Wed,  3 Dec 2025 16:23:36 +0100
-Message-ID: <20251203152448.560928283@linuxfoundation.org>
+	Stable@vger.kernel.org,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.10 013/300] ASoC: qdsp6: q6asm: do not sleep while atomic
+Date: Wed,  3 Dec 2025 16:23:37 +0100
+Message-ID: <20251203152400.949724126@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qianfeng Rong <rongqianfeng@vivo.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 
-[ Upstream commit ecba852dc9f4993f4f894ea1f352564560e19a3e ]
+commit fdbb53d318aa94a094434e5f226617f0eb1e8f22 upstream.
 
-Change "ret" from u8 to int type in redrat3_enable_detector() to store
-negative error codes or zero returned by redrat3_send_cmd() and
-usb_submit_urb() - this better aligns with the coding standards and
-maintains code consistency.
+For some reason we ended up kfree between spinlock lock and unlock,
+which can sleep.
 
-No effect on runtime.
+move the kfree out of spinlock section.
 
-Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a2a5d30218fd ("ASoC: qdsp6: q6asm: Add support to memory map and unmap")
+Cc: Stable@vger.kernel.org
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251017085307.4325-2-srinivas.kandagatla@oss.qualcomm.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/rc/redrat3.c | 2 +-
+ sound/soc/qcom/qdsp6/q6asm.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/rc/redrat3.c b/drivers/media/rc/redrat3.c
-index 9f2947af33aa7..880981e1c507e 100644
---- a/drivers/media/rc/redrat3.c
-+++ b/drivers/media/rc/redrat3.c
-@@ -422,7 +422,7 @@ static int redrat3_send_cmd(int cmd, struct redrat3_dev *rr3)
- static int redrat3_enable_detector(struct redrat3_dev *rr3)
- {
- 	struct device *dev = rr3->dev;
--	u8 ret;
-+	int ret;
+--- a/sound/soc/qcom/qdsp6/q6asm.c
++++ b/sound/soc/qcom/qdsp6/q6asm.c
+@@ -376,9 +376,9 @@ static void q6asm_audio_client_free_buf(
  
- 	ret = redrat3_send_cmd(RR3_RC_DET_ENABLE, rr3);
- 	if (ret != 0)
--- 
-2.51.0
-
+ 	spin_lock_irqsave(&ac->lock, flags);
+ 	port->num_periods = 0;
++	spin_unlock_irqrestore(&ac->lock, flags);
+ 	kfree(port->buf);
+ 	port->buf = NULL;
+-	spin_unlock_irqrestore(&ac->lock, flags);
+ }
+ 
+ /**
 
 
 
