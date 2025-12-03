@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51F2DC9FEFB
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:25:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BFA0CA11F8
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:44:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CDFBF3013E11
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:24:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 16BDE300A9EE
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:44:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D182315D36;
-	Wed,  3 Dec 2025 15:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABA4B361DD4;
+	Wed,  3 Dec 2025 16:30:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZM8fxJZh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UX5katz2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E91F143ABC;
-	Wed,  3 Dec 2025 15:58:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60CC6361DCC;
+	Wed,  3 Dec 2025 16:30:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777534; cv=none; b=mv8igPUpgBZA1k48grwioUcbWf3zkRzyfM8JISX58e9hUb33cl608keIWTJKmt0p/bxwYqxfkqdDHpN3VzW/LXXNLedXQi4AiF/zfDaFbANHhS2ZmxLIuZM251dpazX19xHql7LSgZNVPNuJHP4luDmLz7/l6SRDC3DaVOfGdZc=
+	t=1764779414; cv=none; b=ZqgP/YZ8kpTzJNXw7lXSg96VunGrnA4NPpvm7VH9qdxvtPsjebfb/csrTYu1NHqWN2hAonM1+CiD2LKZpga091Ba3BhD1IW2IDVZjF5vLNdcvtHJSpnfsSOGsMqVWFbQRqft2F0DjwjXL+Bv6B1Vz+vyh+15Yx9CDV1FqL4ispQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777534; c=relaxed/simple;
-	bh=nOwRTAHR6hvJBncaRKx05sINHekEXBFyQvQD8yEbhvA=;
+	s=arc-20240116; t=1764779414; c=relaxed/simple;
+	bh=IbvrOp4Dl2GYsKQ/0hHdSJcsPaMAwB41HOIDhW6v/u0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fOPqoy4JPsmnyts0deAnJpcQ7+gRKTbXcUT0QzJP34XedA1EbWBMPKa2GlMJy5K+yy97yx+4e/4Km2+H4MEX/he8kDWnjyltlyiOot+tvXfk2N9/nwBLtaZG45tzTYqOCdXqJFae8xL5ARHxoEM0LV8daFqIy3BdHgbKO5/hqYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZM8fxJZh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA1B2C4CEF5;
-	Wed,  3 Dec 2025 15:58:52 +0000 (UTC)
+	 MIME-Version; b=RaOsJ4U00AavnIUohakmkOZeuUq9BkdmB0kEQyRb6XTiVNDKlRq/8g2DjiKOad0t7TFtDqKPbiUm2W89t8eNO7FSAAAhH7Y7ckFEKmHwAKE9P8sKOKO9Ny0j8KYvQfrz/sKi1ribo33iipmlcfCjygbiKB7WTsRABJRv8OjZaps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UX5katz2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4B3BC4CEF5;
+	Wed,  3 Dec 2025 16:30:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777533;
-	bh=nOwRTAHR6hvJBncaRKx05sINHekEXBFyQvQD8yEbhvA=;
+	s=korg; t=1764779414;
+	bh=IbvrOp4Dl2GYsKQ/0hHdSJcsPaMAwB41HOIDhW6v/u0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZM8fxJZhaf5tXHUkApyhDASWod+0wkr2TAVBTlmRrBywbvYrRBs40aHe3re4Clfn4
-	 if+L64HagluFP/jcYkAcdddjVjg+GOZYygcVsUPljqi7NZIEPR6h0K91ulqSKC+GUv
-	 jRSxu1npXDfHIMdZwpRpv4Y253rfht5tyB6GpMoU=
+	b=UX5katz2SmDfGzPz+eCThdxuT6mq8nTpuiSojfLD2HgsZjcYlJKB/316xRLsHiAlB
+	 1pfnOv57BPGSKFmGbCs3NNPt3yz9dktOc7+xCsJs0uLBNKCsjfcUGbAAf7Y7c16Or8
+	 GkYG4X639raKNybCuBVJ044HJMrRvQ9Laey4MBWQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabien Proriol <fabien.proriol@viavisolutions.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Li RongQing <lirongqing@baidu.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Wangyang Guo <wangyang.guo@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 069/392] power: supply: sbs-charger: Support multiple devices
+Subject: [PATCH 6.1 217/568] x86/kvm: Prefer native qspinlock for dedicated vCPUs irrespective of PV_UNHALT
 Date: Wed,  3 Dec 2025 16:23:39 +0100
-Message-ID: <20251203152416.647171489@linuxfoundation.org>
+Message-ID: <20251203152448.670239345@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,116 +61,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabien Proriol <fabien.proriol@viavisolutions.com>
+From: Li RongQing <lirongqing@baidu.com>
 
-[ Upstream commit 3ec600210849cf122606e24caab85f0b936cf63c ]
+[ Upstream commit 960550503965094b0babd7e8c83ec66c8a763b0b ]
 
-If we have 2 instances of sbs-charger in the DTS, the driver probe for the second instance will fail:
+The commit b2798ba0b876 ("KVM: X86: Choose qspinlock when dedicated
+physical CPUs are available") states that when PV_DEDICATED=1
+(vCPU has dedicated pCPU), qspinlock should be preferred regardless of
+PV_UNHALT.  However, the current implementation doesn't reflect this: when
+PV_UNHALT=0, we still use virt_spin_lock() even with dedicated pCPUs.
 
-[    8.012874] sbs-battery 18-000b: sbs-battery: battery gas gauge device registered
-[    8.039094] sbs-charger 18-0009: ltc4100: smart charger device registered
-[    8.112911] sbs-battery 20-000b: sbs-battery: battery gas gauge device registered
-[    8.134533] sysfs: cannot create duplicate filename '/class/power_supply/sbs-charger'
-[    8.143871] CPU: 3 PID: 295 Comm: systemd-udevd Tainted: G           O      5.10.147 #22
-[    8.151974] Hardware name: ALE AMB (DT)
-[    8.155828] Call trace:
-[    8.158292]  dump_backtrace+0x0/0x1d4
-[    8.161960]  show_stack+0x18/0x6c
-[    8.165280]  dump_stack+0xcc/0x128
-[    8.168687]  sysfs_warn_dup+0x60/0x7c
-[    8.172353]  sysfs_do_create_link_sd+0xf0/0x100
-[    8.176886]  sysfs_create_link+0x20/0x40
-[    8.180816]  device_add+0x270/0x7a4
-[    8.184311]  __power_supply_register+0x304/0x560
-[    8.188930]  devm_power_supply_register+0x54/0xa0
-[    8.193644]  sbs_probe+0xc0/0x214 [sbs_charger]
-[    8.198183]  i2c_device_probe+0x2dc/0x2f4
-[    8.202196]  really_probe+0xf0/0x510
-[    8.205774]  driver_probe_device+0xfc/0x160
-[    8.209960]  device_driver_attach+0xc0/0xcc
-[    8.214146]  __driver_attach+0xc0/0x170
-[    8.218002]  bus_for_each_dev+0x74/0xd4
-[    8.221862]  driver_attach+0x24/0x30
-[    8.225444]  bus_add_driver+0x148/0x250
-[    8.229283]  driver_register+0x78/0x130
-[    8.233140]  i2c_register_driver+0x4c/0xe0
-[    8.237250]  sbs_driver_init+0x20/0x1000 [sbs_charger]
-[    8.242424]  do_one_initcall+0x50/0x1b0
-[    8.242434]  do_init_module+0x44/0x230
-[    8.242438]  load_module+0x2200/0x27c0
-[    8.242442]  __do_sys_finit_module+0xa8/0x11c
-[    8.242447]  __arm64_sys_finit_module+0x20/0x30
-[    8.242457]  el0_svc_common.constprop.0+0x64/0x154
-[    8.242464]  do_el0_svc+0x24/0x8c
-[    8.242474]  el0_svc+0x10/0x20
-[    8.242481]  el0_sync_handler+0x108/0x114
-[    8.242485]  el0_sync+0x180/0x1c0
-[    8.243847] sbs-charger 20-0009: Failed to register power supply
-[    8.287934] sbs-charger: probe of 20-0009 failed with error -17
+This is suboptimal because:
+1. Native qspinlocks should outperform virt_spin_lock() for dedicated
+   vCPUs irrespective of HALT exiting
+2. virt_spin_lock() should only be preferred when vCPUs may be preempted
+   (non-dedicated case)
 
-This is mainly because the "name" field of power_supply_desc is a constant.
-This patch fixes the issue by reusing the same approach as sbs-battery.
-With this patch, the result is:
-[    7.819532] sbs-charger 18-0009: ltc4100: smart charger device registered
-[    7.825305] sbs-battery 18-000b: sbs-battery: battery gas gauge device registered
-[    7.887423] sbs-battery 20-000b: sbs-battery: battery gas gauge device registered
-[    7.893501] sbs-charger 20-0009: ltc4100: smart charger device registered
+So reorder the PV spinlock checks to:
+1. First handle dedicated pCPU case (disable virt_spin_lock_key)
+2. Second check single CPU, and nopvspin configuration
+3. Only then check PV_UNHALT support
 
-Signed-off-by: Fabien Proriol <fabien.proriol@viavisolutions.com>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+This ensures we always use native qspinlock for dedicated vCPUs, delivering
+pretty performance gains at high contention levels.
+
+Signed-off-by: Li RongQing <lirongqing@baidu.com>
+Reviewed-by: Sean Christopherson <seanjc@google.com>
+Tested-by: Wangyang Guo <wangyang.guo@intel.com>
+Link: https://lore.kernel.org/r/20250722110005.4988-1-lirongqing@baidu.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/sbs-charger.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ arch/x86/kernel/kvm.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/power/supply/sbs-charger.c b/drivers/power/supply/sbs-charger.c
-index bc927c0ddd343..7dfed22fbce3b 100644
---- a/drivers/power/supply/sbs-charger.c
-+++ b/drivers/power/supply/sbs-charger.c
-@@ -154,8 +154,7 @@ static const struct regmap_config sbs_regmap = {
- 	.val_format_endian = REGMAP_ENDIAN_LITTLE, /* since based on SMBus */
- };
- 
--static const struct power_supply_desc sbs_desc = {
--	.name = "sbs-charger",
-+static const struct power_supply_desc sbs_default_desc = {
- 	.type = POWER_SUPPLY_TYPE_MAINS,
- 	.properties = sbs_properties,
- 	.num_properties = ARRAY_SIZE(sbs_properties),
-@@ -166,9 +165,20 @@ static int sbs_probe(struct i2c_client *client,
- 		     const struct i2c_device_id *id)
+diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
+index 796e2f9e87619..99e0768ccaae7 100644
+--- a/arch/x86/kernel/kvm.c
++++ b/arch/x86/kernel/kvm.c
+@@ -1072,16 +1072,6 @@ static void kvm_wait(u8 *ptr, u8 val)
+  */
+ void __init kvm_spinlock_init(void)
  {
- 	struct power_supply_config psy_cfg = {};
-+	struct power_supply_desc *sbs_desc;
- 	struct sbs_info *chip;
- 	int ret, val;
+-	/*
+-	 * In case host doesn't support KVM_FEATURE_PV_UNHALT there is still an
+-	 * advantage of keeping virt_spin_lock_key enabled: virt_spin_lock() is
+-	 * preferred over native qspinlock when vCPU is preempted.
+-	 */
+-	if (!kvm_para_has_feature(KVM_FEATURE_PV_UNHALT)) {
+-		pr_info("PV spinlocks disabled, no host support\n");
+-		return;
+-	}
+-
+ 	/*
+ 	 * Disable PV spinlocks and use native qspinlock when dedicated pCPUs
+ 	 * are available.
+@@ -1101,6 +1091,16 @@ void __init kvm_spinlock_init(void)
+ 		goto out;
+ 	}
  
-+	sbs_desc = devm_kmemdup(&client->dev, &sbs_default_desc,
-+				sizeof(*sbs_desc), GFP_KERNEL);
-+	if (!sbs_desc)
-+		return -ENOMEM;
++	/*
++	 * In case host doesn't support KVM_FEATURE_PV_UNHALT there is still an
++	 * advantage of keeping virt_spin_lock_key enabled: virt_spin_lock() is
++	 * preferred over native qspinlock when vCPU is preempted.
++	 */
++	if (!kvm_para_has_feature(KVM_FEATURE_PV_UNHALT)) {
++		pr_info("PV spinlocks disabled, no host support\n");
++		return;
++	}
 +
-+	sbs_desc->name = devm_kasprintf(&client->dev, GFP_KERNEL, "sbs-%s",
-+					dev_name(&client->dev));
-+	if (!sbs_desc->name)
-+		return -ENOMEM;
-+
- 	chip = devm_kzalloc(&client->dev, sizeof(struct sbs_info), GFP_KERNEL);
- 	if (!chip)
- 		return -ENOMEM;
-@@ -192,7 +202,7 @@ static int sbs_probe(struct i2c_client *client,
- 		return dev_err_probe(&client->dev, ret, "Failed to get device status\n");
- 	chip->last_state = val;
+ 	pr_info("PV spinlocks enabled\n");
  
--	chip->power_supply = devm_power_supply_register(&client->dev, &sbs_desc, &psy_cfg);
-+	chip->power_supply = devm_power_supply_register(&client->dev, sbs_desc, &psy_cfg);
- 	if (IS_ERR(chip->power_supply))
- 		return dev_err_probe(&client->dev, PTR_ERR(chip->power_supply),
- 				     "Failed to register power supply\n");
+ 	__pv_init_lock_hash();
 -- 
 2.51.0
 
