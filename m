@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-198280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E186C9F81E
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:36:15 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0845C9FD46
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:09:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4998D3011251
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:33:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A5C3630022AE
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:09:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED29030F552;
-	Wed,  3 Dec 2025 15:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3EB834AAE4;
+	Wed,  3 Dec 2025 16:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hdgGe0Zg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vYLJoAAj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A3830EF9E;
-	Wed,  3 Dec 2025 15:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FE0F34A79E;
+	Wed,  3 Dec 2025 16:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776022; cv=none; b=W3ACZwv0bUCliJAYQhJorr1vmK/ecRC/5sqcAMNT+IB061zfG8aQZMr+5hYvnaJuCKADI0XUKYesGyB4AkgWM7SI2ayPY0ODvN3Mr+fmPHjrEMQipoCpiFt47dbRGuLJb1rzziDWl4o7Xk88teQ12syUIzeVBtEBAN0lm4/C7wI=
+	t=1764777670; cv=none; b=OlAj6i6B0gztDpo4RDB8l1pi+sDumPH/VAYxxJ9PnCDwYf00DkgHc0EACHR4NbO7v3a5HWVarxlsmkGPlTuAiPMeknRm0s52Cgex3JgOSzxBlxJ/xif0mMS9VGwoN4bWn20MX0zS8I/XXi0PcGzkqZIjKHH2Fz7DUkkZYyDQ9kM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776022; c=relaxed/simple;
-	bh=D5TZ6Wy5OCwoERLL3Pa+GCKsgWabZNGNH5USnqVLGqE=;
+	s=arc-20240116; t=1764777670; c=relaxed/simple;
+	bh=36+qM03Pa0Pl5bxmk9pSM1z7E+oitXUzQGi3klXkS14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uaglxeIx6a8hpbdkyG/314RlxNQRk/CfDXFmxQ4VtwBkluVcTEcMf0da7ALN1dNlde+zls+I2mfWDxif6sAnZQrWlrvBaw7ZIeIOqdvciv/pEZBi/LB2k3TG3Wa0lHnfa4mG5lex0z6vtbDbHxSCeZ1d/NDim4DyRo4dl8U05R8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hdgGe0Zg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA41DC4CEF5;
-	Wed,  3 Dec 2025 15:33:41 +0000 (UTC)
+	 MIME-Version; b=eEoe2yR8OEBHAn0H9VBnsEwcSbD66lzJNatevgrzXEEw3UV3e8iGH7VnkNyNHCWRnzvkzLF1g07rdRfT1M0kKvAv6yXzF4V6LK3q9fbAqcFYBktxiLGhQFpJopn6IPsduQLY0JDSF5AQC6osgZvxfoWTtXnSe7+/HK6r0/NsB5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vYLJoAAj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C73C9C4CEF5;
+	Wed,  3 Dec 2025 16:01:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776022;
-	bh=D5TZ6Wy5OCwoERLL3Pa+GCKsgWabZNGNH5USnqVLGqE=;
+	s=korg; t=1764777670;
+	bh=36+qM03Pa0Pl5bxmk9pSM1z7E+oitXUzQGi3klXkS14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hdgGe0ZgyCn5kWnhIoVoMhAjyy+kLYFFezZMAkdsnkFf8mUowllCeesCEyAlDszyg
-	 gRxF1jSTdSQFI72zM+42L6k+JYTB8YBtL/NuiaEu1DHXCmksdz5plytOnuWrkAQut7
-	 KuzMiEZ4sGT/c5J2y/mlFfyBnpYEYUmQT8SVh6mw=
+	b=vYLJoAAjGk5roaa50aGOrDyRpM3cG02c/UQFfDCuMVM2TltstTwWz8lz3VTdBZY7T
+	 qjZX4lWg3hU93q2e825Uz/o5rke16KbyA3rhcdltzB17PdK11q6c8IrQcVjQIgxNTN
+	 6pszLV1AXkOG1eF2/huGBwwgDm8ex3vrmElX217w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	raub camaioni <raubcameo@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 056/300] cpuidle: Fail cpuidle device registration if there is one already
+Subject: [PATCH 5.15 110/392] usb: gadget: f_ncm: Fix MAC assignment NCM ethernet
 Date: Wed,  3 Dec 2025 16:24:20 +0100
-Message-ID: <20251203152402.697809966@linuxfoundation.org>
+Message-ID: <20251203152418.145142076@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,55 +59,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: raub camaioni <raubcameo@gmail.com>
 
-[ Upstream commit 7b1b7961170e4fcad488755e5ffaaaf9bd527e8f ]
+[ Upstream commit 956606bafb5fc6e5968aadcda86fc0037e1d7548 ]
 
-Refuse to register a cpuidle device if the given CPU has a cpuidle
-device already and print a message regarding it.
+This fix is already present in f_ecm.c and was never
+propagated to f_ncm.c
 
-Without this, an attempt to register a new cpuidle device without
-unregistering the existing one leads to the removal of the existing
-cpuidle device without removing its sysfs interface.
+When creating multiple NCM ethernet devices
+on a composite usb gadget device
+each MAC address on the HOST side will be identical.
+Having the same MAC on different network interfaces is bad.
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+This fix updates the MAC address inside the
+ncm_strings_defs global during the ncm_bind call.
+This ensures each device has a unique MAC.
+In f_ecm.c ecm_string_defs is updated in the same way.
+
+The defunct MAC assignment in ncm_alloc has been removed.
+
+Signed-off-by: raub camaioni <raubcameo@gmail.com>
+Link: https://lore.kernel.org/r/20250815131358.1047525-1-raubcameo@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpuidle/cpuidle.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/usb/gadget/function/f_ncm.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/cpuidle/cpuidle.c b/drivers/cpuidle/cpuidle.c
-index 83af15f77f66f..1c1fa6ac9244a 100644
---- a/drivers/cpuidle/cpuidle.c
-+++ b/drivers/cpuidle/cpuidle.c
-@@ -576,8 +576,14 @@ static void __cpuidle_device_init(struct cpuidle_device *dev)
- static int __cpuidle_register_device(struct cpuidle_device *dev)
- {
- 	struct cpuidle_driver *drv = cpuidle_get_cpu_driver(dev);
-+	unsigned int cpu = dev->cpu;
- 	int i, ret;
+diff --git a/drivers/usb/gadget/function/f_ncm.c b/drivers/usb/gadget/function/f_ncm.c
+index 4fe6a1efe0986..1ee950bf1604e 100644
+--- a/drivers/usb/gadget/function/f_ncm.c
++++ b/drivers/usb/gadget/function/f_ncm.c
+@@ -1468,6 +1468,8 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
  
-+	if (per_cpu(cpuidle_devices, cpu)) {
-+		pr_info("CPU%d: cpuidle device already registered\n", cpu);
-+		return -EEXIST;
-+	}
+ 	ncm_opts->bound = true;
+ 
++	ncm_string_defs[1].s = ncm->ethaddr;
 +
- 	if (!try_module_get(drv->owner))
- 		return -EINVAL;
- 
-@@ -589,7 +595,7 @@ static int __cpuidle_register_device(struct cpuidle_device *dev)
- 			dev->states_usage[i].disable |= CPUIDLE_STATE_DISABLED_BY_USER;
+ 	us = usb_gstrings_attach(cdev, ncm_strings,
+ 				 ARRAY_SIZE(ncm_string_defs));
+ 	if (IS_ERR(us))
+@@ -1717,7 +1719,6 @@ static struct usb_function *ncm_alloc(struct usb_function_instance *fi)
+ 		mutex_unlock(&opts->lock);
+ 		return ERR_PTR(-EINVAL);
  	}
+-	ncm_string_defs[STRING_MAC_IDX].s = ncm->ethaddr;
  
--	per_cpu(cpuidle_devices, dev->cpu) = dev;
-+	per_cpu(cpuidle_devices, cpu) = dev;
- 	list_add(&dev->device_list, &cpuidle_detected_devices);
- 
- 	ret = cpuidle_coupled_register_device(dev);
+ 	spin_lock_init(&ncm->lock);
+ 	ncm_reset_values(ncm);
 -- 
 2.51.0
 
