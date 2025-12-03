@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-198272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66467C9F7FA
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:35:00 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B9E0CA013D
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:45:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E53E33052C5B
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:33:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7D42D300A2BF
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:39:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEE2A30B51F;
-	Wed,  3 Dec 2025 15:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ACDF34D3AB;
+	Wed,  3 Dec 2025 16:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P6Oy1GvF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xS50ukpw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9DF6305978;
-	Wed,  3 Dec 2025 15:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 172F234D3A3;
+	Wed,  3 Dec 2025 16:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764775995; cv=none; b=ASqIUcV3PTTV+hpxMNvTk/1fTW8pVP85ecnuVjIA5rzYm0s7fsIGxoKNZkhV07JjQ0t2AH7LNzPtur27PkQvmLJuEsBRfROmNYgwtufIbWHiAZZNZw8b7Rz4kehcw4TcuoIQ3ZRtaU+JlFVAOq2s3uMkU5rDQWKu/hhWQPAAIq8=
+	t=1764777751; cv=none; b=m8RwJfp3doW1+/iAdds9yrAYlovcIy9AtbkqgPM/hF1j7eG3/c49/mWEuXNKnOt2cKhue1RLc5WdZ1Uk3LXDle/cXWAx/+b5V6axZteln9Cp0+WQu8uULQY4EeUt5/U5uyKCE8WJtO8+dFzmXezBLfmnmXaDdJEDni8Gb+xUMp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764775995; c=relaxed/simple;
-	bh=vXqavLvhY9pWmV9QDH2At740zO9Y7lykNQosjGsjgqE=;
+	s=arc-20240116; t=1764777751; c=relaxed/simple;
+	bh=GQu0030PQobScksb0RKw7OEXuPpwk4cApNybvezbUTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gbfCdmKjQz6XlzjZImrsL8UFoMz+83oiVKpw7Y0G+8BiB98Ucf6te3rXTI2hhOkzA5mBLmUMCLtYKktL8y8JXS0CDlUXXyFYk2HkrR8pM5VMrl9xEDPNnIHC53153TKgMcL9FaYup3cK7uaTo8Z8d8lvQZsT743VR3PuGytaR1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P6Oy1GvF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D64A4C4CEF5;
-	Wed,  3 Dec 2025 15:33:14 +0000 (UTC)
+	 MIME-Version; b=fftLOXu8kyF40wFisMFaXN1CGVgTi4o2wu/OuqxDiaewhPQFPZ3Q1PFj+IlssmcuXhh1B5x8fwpBjf2CDuuqINFjSJu+9wVID87okB6kRzUhyQNH/R4f+8zB0uGnJtmONtTtdYxolgPI/Z+/plMvjPYZYMcMjvvuTZimmUhqNUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xS50ukpw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83F02C4CEF5;
+	Wed,  3 Dec 2025 16:02:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764775995;
-	bh=vXqavLvhY9pWmV9QDH2At740zO9Y7lykNQosjGsjgqE=;
+	s=korg; t=1764777751;
+	bh=GQu0030PQobScksb0RKw7OEXuPpwk4cApNybvezbUTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P6Oy1GvFPCbW2IICZnd0UUoebFWhAELERAJ9N56jYs9YMc8Hr/NmafzezkyAB+QbR
-	 ZI0k4lN5spy6wik5jJh7ermpMfpeSIUokiUNrUUUX0xInSh74wPYO/7upaqdHhD4go
-	 d9L+8Go35N+pPo6zW9a621pUVXm0u/j/T4uQr8IE=
+	b=xS50ukpwyfG1uPlpnY5TpUdJ2LG2dCx1mfhHRhyRxdRjriG7od0BWQOXLCnL7+QBg
+	 MB3MMuXnS1AZhkgi0xZbB91l+OPzB8s+sn+nYYXJgZ17XREZCwI8IAgf0hQdqGiFcH
+	 HQNLKMt1xegFEXsWP1afdlDb+wN6xWzlt9iNGOvY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Bruel <christian.bruel@foss.st.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Marc Zyngier <maz@kernel.org>,
+	Lukas Wunner <lukas@wunner.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 049/300] irqchip/gic-v2m: Handle Multiple MSI base IRQ Alignment
+Subject: [PATCH 5.15 103/392] thunderbolt: Use is_pciehp instead of is_hotplug_bridge
 Date: Wed,  3 Dec 2025 16:24:13 +0100
-Message-ID: <20251203152402.433648958@linuxfoundation.org>
+Message-ID: <20251203152417.889357809@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Bruel <christian.bruel@foss.st.com>
+From: Lukas Wunner <lukas@wunner.de>
 
-[ Upstream commit 2ef3886ce626dcdab0cbc452dbbebc19f57133d8 ]
+[ Upstream commit 5d03847175e81e86d4865456c15638faaf7c0634 ]
 
-The PCI Local Bus Specification 3.0 (section 6.8.1.6) allows modifying the
-low-order bits of the MSI Message DATA register to encode nr_irqs interrupt
-numbers in the log2(nr_irqs) bits for the domain.
+The thunderbolt driver sets up device link dependencies from hotplug ports
+to the Host Router (aka Native Host Interface, NHI).  When resuming from
+system sleep, this allows the Host Router to re-establish tunnels to
+attached Thunderbolt devices before the hotplug ports resume.
 
-The problem arises if the base vector (GICV2m base spi) is not aligned with
-nr_irqs; in this case, the low-order log2(nr_irqs) bits from the base
-vector conflict with the nr_irqs masking, causing the wrong MSI interrupt
-to be identified.
+To identify the hotplug ports, the driver utilizes the is_hotplug_bridge
+flag which also encompasses ACPI slots handled by the ACPI hotplug driver.
 
-To fix this, use bitmap_find_next_zero_area_off() instead of
-bitmap_find_free_region() to align the initial base vector with nr_irqs.
+Thunderbolt hotplug ports are always Hot-Plug Capable PCIe ports, so it is
+more apt to identify them with the is_pciehp flag.
 
-Signed-off-by: Christian Bruel <christian.bruel@foss.st.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/all/20250902091045.220847-1-christian.bruel@foss.st.com
+Similarly, hotplug ports on older Thunderbolt controllers have broken MSI
+support and are quirked to use legacy INTx interrupts instead.  The quirk
+identifies them with is_hotplug_bridge, even though all affected ports are
+also matched by is_pciehp.  So use is_pciehp here as well.
+
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-gic-v2m.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/pci/quirks.c     | 2 +-
+ drivers/thunderbolt/tb.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/irqchip/irq-gic-v2m.c b/drivers/irqchip/irq-gic-v2m.c
-index b17deec1c5d4d..06c5087a439d7 100644
---- a/drivers/irqchip/irq-gic-v2m.c
-+++ b/drivers/irqchip/irq-gic-v2m.c
-@@ -179,14 +179,19 @@ static int gicv2m_irq_domain_alloc(struct irq_domain *domain, unsigned int virq,
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index 7cc346fff87e3..7597aedc05c37 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -3693,7 +3693,7 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_MELLANOX, 0xcf80, quirk_no_pm_reset);
+  */
+ static void quirk_thunderbolt_hotplug_msi(struct pci_dev *pdev)
  {
- 	msi_alloc_info_t *info = args;
- 	struct v2m_data *v2m = NULL, *tmp;
--	int hwirq, offset, i, err = 0;
-+	int hwirq, i, err = 0;
-+	unsigned long offset;
-+	unsigned long align_mask = nr_irqs - 1;
+-	if (pdev->is_hotplug_bridge &&
++	if (pdev->is_pciehp &&
+ 	    (pdev->device != PCI_DEVICE_ID_INTEL_CACTUS_RIDGE_4C ||
+ 	     pdev->revision <= 1))
+ 		pdev->no_msi = 1;
+diff --git a/drivers/thunderbolt/tb.c b/drivers/thunderbolt/tb.c
+index 8bf45da1012e8..abe171769dc7e 100644
+--- a/drivers/thunderbolt/tb.c
++++ b/drivers/thunderbolt/tb.c
+@@ -1698,7 +1698,7 @@ static void tb_apple_add_links(struct tb_nhi *nhi)
+ 		if (!pci_is_pcie(pdev))
+ 			continue;
+ 		if (pci_pcie_type(pdev) != PCI_EXP_TYPE_DOWNSTREAM ||
+-		    !pdev->is_hotplug_bridge)
++		    !pdev->is_pciehp)
+ 			continue;
  
- 	spin_lock(&v2m_lock);
- 	list_for_each_entry(tmp, &v2m_nodes, entry) {
--		offset = bitmap_find_free_region(tmp->bm, tmp->nr_spis,
--						 get_count_order(nr_irqs));
--		if (offset >= 0) {
-+		unsigned long align_off = tmp->spi_start - (tmp->spi_start & ~align_mask);
-+
-+		offset = bitmap_find_next_zero_area_off(tmp->bm, tmp->nr_spis, 0,
-+							nr_irqs, align_mask, align_off);
-+		if (offset < tmp->nr_spis) {
- 			v2m = tmp;
-+			bitmap_set(v2m->bm, offset, nr_irqs);
- 			break;
- 		}
- 	}
+ 		link = device_link_add(&pdev->dev, &nhi->pdev->dev,
 -- 
 2.51.0
 
