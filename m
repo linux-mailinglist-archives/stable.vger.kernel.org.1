@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-198688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 868C0CA095B
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:44:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3340CA05F5
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:22:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 22E4E32D3FE1
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:23:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 75E2432B02DF
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:07:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67394305970;
-	Wed,  3 Dec 2025 15:56:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C2DD34EEF0;
+	Wed,  3 Dec 2025 16:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ATPLM0aN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i9tsW8lF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAAA3338597;
-	Wed,  3 Dec 2025 15:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F40DD350A03;
+	Wed,  3 Dec 2025 16:25:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777361; cv=none; b=rMO7ywgjXCcxee9x13mr0pFX10iZgIeQGeAaNEchWkx+EBv+MVAcwtcn3JJ9Z7/hlbl1tmQK2XJpRstYovJZTnfYfri6lFkAlIlCcLhnq7nrFLiq+j1iaMpYLJbwrlk+UtQTgVS+550Z1I86i/zJpdXbJOvALgEz1FjE7JCn21g=
+	t=1764779128; cv=none; b=mGj9ubppXLbmSzqo+twJ7fQWVDkaHcGNYUQOqPNF44mp1w77ka6+exlHDI5aF7SmobSRo9wzOevQwsi4O+ML+5Sd6coEbxWV9sUuChIFir773mtHutjlB03/xtNi00Jsc+ryI3PHnGUfogZ2BbZJgH/oJHofDL3hFpcdxQ4SA7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777361; c=relaxed/simple;
-	bh=GLr8eELwDBRHw6VEicbHk6Ag95TlxJsS+Qc0Z188mnY=;
+	s=arc-20240116; t=1764779128; c=relaxed/simple;
+	bh=oXBYx1rjxiUFFsAVzHFguAly1OVdnWx/fPH1U9lDTaM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cAGyS2NLc32r4lWdsJzq1+i1DJPhBw1E0XaQOXExkb8970Kj2zAFX9dbjcAy+O4Nz94fCXlQ40jwBR/T/riTOUeIJ0H3U7aKp91Hu9h/S18TVl/dJ0niQWoAlstJ3ku9KdS3mng6T9Km2MyutPwiIa80KFB44oD9ADM9sRhjw6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ATPLM0aN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7017C4CEF5;
-	Wed,  3 Dec 2025 15:56:00 +0000 (UTC)
+	 MIME-Version; b=gZ/GEhfqGeB/CoZXR/mwiDW4u0L9PUWOqJzHh/kNFd5GlBRolTnI4tjK9rAU9i1Ko0LvBse4eDi6G7HfJHCYhoY1G9W4fDxFsEPWHZbG/VEFOTaem/74A4L7+bKw1qswOWxgS8sJSxQR7HTC84kBF0rrgfBpDvQioNrGvunRqiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i9tsW8lF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45034C116C6;
+	Wed,  3 Dec 2025 16:25:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777361;
-	bh=GLr8eELwDBRHw6VEicbHk6Ag95TlxJsS+Qc0Z188mnY=;
+	s=korg; t=1764779127;
+	bh=oXBYx1rjxiUFFsAVzHFguAly1OVdnWx/fPH1U9lDTaM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ATPLM0aNjb2wGtD95+x5qv4fgwevLyX9PAWnTKsabVchCQCdMrSPBla8d9t6Ij7zV
-	 enFKf5xOLzu/QZVS1K4Hom3sxCOfDQwH9bE0qfbgbQNpSLJKT6hSotizVD4wCD00R5
-	 LEtDPFLS95jc9rl5HU6frQ3qxsWZ25fjWq6KlUo4=
+	b=i9tsW8lFQpksyJb+B7O68dZEJuRgETdd0Gv7+2YBvxr1Ku0MhooZrafs2IzlWl1MD
+	 VEFD4dP5ZGRkYnxZgxOmRTsZuwjO3Yn/kHaXVcT7bJqmPcnvEQrU37u2kO3QEFp8bC
+	 EtItj9vi9vi/utBxDwJhRr2Oh/5OFYeYFs0pj5tk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stable@vger.kernel.org,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.15 015/392] ASoC: qdsp6: q6asm: do not sleep while atomic
+	Christoph Paasch <cpaasch@openai.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 163/568] net: When removing nexthops, dont call synchronize_net if it is not necessary
 Date: Wed,  3 Dec 2025 16:22:45 +0100
-Message-ID: <20251203152414.665699631@linuxfoundation.org>
+Message-ID: <20251203152446.693308921@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +64,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+From: Christoph Paasch <cpaasch@openai.com>
 
-commit fdbb53d318aa94a094434e5f226617f0eb1e8f22 upstream.
+[ Upstream commit b0ac6d3b56a2384db151696cfda2836a8a961b6d ]
 
-For some reason we ended up kfree between spinlock lock and unlock,
-which can sleep.
+When removing a nexthop, commit
+90f33bffa382 ("nexthops: don't modify published nexthop groups") added a
+call to synchronize_rcu() (later changed to _net()) to make sure
+everyone sees the new nexthop-group before the rtnl-lock is released.
 
-move the kfree out of spinlock section.
+When one wants to delete a large number of groups and nexthops, it is
+fastest to first flush the groups (ip nexthop flush groups) and then
+flush the nexthops themselves (ip -6 nexthop flush). As that way the
+groups don't need to be rebalanced.
 
-Fixes: a2a5d30218fd ("ASoC: qdsp6: q6asm: Add support to memory map and unmap")
-Cc: Stable@vger.kernel.org
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251017085307.4325-2-srinivas.kandagatla@oss.qualcomm.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However, `ip -6 nexthop flush` will still take a long time if there is
+a very large number of nexthops because of the call to
+synchronize_net(). Now, if there are no more groups, there is no point
+in calling synchronize_net(). So, let's skip that entirely by checking
+if nh->grp_list is empty.
+
+This gives us a nice speedup:
+
+BEFORE:
+=======
+
+$ time sudo ip -6 nexthop flush
+Dump was interrupted and may be inconsistent.
+Flushed 2097152 nexthops
+
+real	1m45.345s
+user	0m0.001s
+sys	0m0.005s
+
+$ time sudo ip -6 nexthop flush
+Dump was interrupted and may be inconsistent.
+Flushed 4194304 nexthops
+
+real	3m10.430s
+user	0m0.002s
+sys	0m0.004s
+
+AFTER:
+======
+
+$ time sudo ip -6 nexthop flush
+Dump was interrupted and may be inconsistent.
+Flushed 2097152 nexthops
+
+real	0m17.545s
+user	0m0.003s
+sys	0m0.003s
+
+$ time sudo ip -6 nexthop flush
+Dump was interrupted and may be inconsistent.
+Flushed 4194304 nexthops
+
+real	0m35.823s
+user	0m0.002s
+sys	0m0.004s
+
+Signed-off-by: Christoph Paasch <cpaasch@openai.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20250816-nexthop_dump-v2-2-491da3462118@openai.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/qcom/qdsp6/q6asm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/nexthop.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/sound/soc/qcom/qdsp6/q6asm.c
-+++ b/sound/soc/qcom/qdsp6/q6asm.c
-@@ -376,9 +376,9 @@ static void q6asm_audio_client_free_buf(
+diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
+index c0f9d125f401c..10cb365639aaa 100644
+--- a/net/ipv4/nexthop.c
++++ b/net/ipv4/nexthop.c
+@@ -1812,6 +1812,12 @@ static void remove_nexthop_from_groups(struct net *net, struct nexthop *nh,
+ {
+ 	struct nh_grp_entry *nhge, *tmp;
  
- 	spin_lock_irqsave(&ac->lock, flags);
- 	port->num_periods = 0;
-+	spin_unlock_irqrestore(&ac->lock, flags);
- 	kfree(port->buf);
- 	port->buf = NULL;
--	spin_unlock_irqrestore(&ac->lock, flags);
- }
++	/* If there is nothing to do, let's avoid the costly call to
++	 * synchronize_net()
++	 */
++	if (list_empty(&nh->grp_list))
++		return;
++
+ 	list_for_each_entry_safe(nhge, tmp, &nh->grp_list, nh_list)
+ 		remove_nh_grp_entry(net, nhge, nlinfo);
  
- /**
+-- 
+2.51.0
+
 
 
 
