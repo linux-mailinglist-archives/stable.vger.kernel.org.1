@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2AFFCA135A
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:00:21 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 986ECC9F8D5
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:40:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AE72932F1A8D
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:44:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C314E300EC12
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:36:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E08A36A028;
-	Wed,  3 Dec 2025 16:31:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB8AD3093D2;
+	Wed,  3 Dec 2025 15:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xTIQuoAm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HGcoudIT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39FBF36A020;
-	Wed,  3 Dec 2025 16:31:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77D05312800;
+	Wed,  3 Dec 2025 15:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779479; cv=none; b=f2MX3FUxk3q7Sj6KobZTRyBSvHJ3NI01Obht6rhTffA9WgO5uEFrvf5Or6eMwydr97HRhk7QZ8tWQA4qJF2yfg6H1AeE/a2k7qcSgW7uoO6WhqaWunpCPFGDT6nbQkYKo4gsYtqGl15UUlK60B2JgzxJq9kQB1bpQyOB42YjrZI=
+	t=1764776163; cv=none; b=SIhr32jjPE8is/TsjACsSdbWGVcl6Z87nyA+msv2BBgHYdnJ7j4sEL9ZK/gnZpO9hRvVduDrDslM/bjCLVU7NOY1dTYzoPRNd2C+zU00k1D2J3K9fu6wXI16lX7FKiEzZ7yuGrJClkHEwlssWOIbz1Rpg9pZZbBXGAaGSTVt5Tw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779479; c=relaxed/simple;
-	bh=tQ6kn3b2thcAKCx35gysv9EIr3PztSZxW1b1bCNas9Q=;
+	s=arc-20240116; t=1764776163; c=relaxed/simple;
+	bh=kODvYBdNLBC6PlnHihk0z78pbSxzCxWnmvFyws+7rIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p736qpoLfHgaqZkQXXdC9GbE/GvBqwM4s4fQx3X9Shph7gwhmKvNvQSn6SwepR1at2IBRHBvwWLi284Esb0eA2yc33vzhExfajyq8EBOts6k+I9Pa938rFPa/VhEw8CtutazbtukK2hdHb2DLNAdTIV6V7K5bCEW2b8gV8jeza4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xTIQuoAm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 987F5C4CEF5;
-	Wed,  3 Dec 2025 16:31:18 +0000 (UTC)
+	 MIME-Version; b=OYiEk3wdZxV4DgFeTNnkooQtHT0xtocNziDK6wrzTmhZcvS927UbJdc+hGfM1pttWg/TAfrBPuSbnucsVDzK8L4NDLbfVb+wAx1YEb92hHUCfvu9RabN57jBRTBb3tH9csiaEyt5Qco/k+1xQ1IU6PEvNlZ5rG9P0iIB78idkTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HGcoudIT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0212C4CEF5;
+	Wed,  3 Dec 2025 15:36:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779479;
-	bh=tQ6kn3b2thcAKCx35gysv9EIr3PztSZxW1b1bCNas9Q=;
+	s=korg; t=1764776163;
+	bh=kODvYBdNLBC6PlnHihk0z78pbSxzCxWnmvFyws+7rIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xTIQuoAmxUuFU0kPrz6PQCdGBRjc3AwruURUi1AlcmPmfgVGQTdBsJa8Yv8ZwbZ/H
-	 KU7K27i9e6vIMJQr7se03qLudUhTa2EHR9TXiyNqpiip+K0iJJu1gBZQ66mHRVm5px
-	 YPk8oM99TkkoiTWWl2GI2yuL/oI6mpyAxcK0KVjo=
+	b=HGcoudITa3UU4nJostwHFeMoitfz15Q1HlJfqd89O2s298m1xr4+AJ6k0HCCXB6GN
+	 4lA1A15IMDS/s2R+PdqIH1i4oJAiaaFUdO4MiaEfeifnD+69SICgWdQ1UcQGPU8GRl
+	 yXO4O3vX83N8YLOsRveDAys9OCZ26lYXpM24ekmI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jens Kehne <jens.kehne@agilent.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 269/568] page_pool: Clamp pool size to max 16K pages
+Subject: [PATCH 5.10 067/300] mfd: da9063: Split chip variant reading in two bus transactions
 Date: Wed,  3 Dec 2025 16:24:31 +0100
-Message-ID: <20251203152450.565866632@linuxfoundation.org>
+Message-ID: <20251203152403.104469120@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +60,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dragos Tatulea <dtatulea@nvidia.com>
+From: Jens Kehne <jens.kehne@agilent.com>
 
-[ Upstream commit a1b501a8c6a87c9265fd03bd004035199e2e8128 ]
+[ Upstream commit 9ac4890ac39352ccea132109e32911495574c3ec ]
 
-page_pool_init() returns E2BIG when the page_pool size goes above 32K
-pages. As some drivers are configuring the page_pool size according to
-the MTU and ring size, there are cases where this limit is exceeded and
-the queue creation fails.
+We observed the initial probe of the da9063 failing in
+da9063_get_device_type in about 30% of boots on a Xilinx ZynqMP based
+board. The problem originates in da9063_i2c_blockreg_read, which uses
+a single bus transaction to turn the register page and then read a
+register. On the bus, this should translate to a write to register 0,
+followed by a read to the target register, separated by a repeated
+start. However, we found that after the write to register 0, the
+controller sometimes continues directly with the register address of
+the read request, without sending the chip address or a repeated start
+in between, which makes the read request invalid.
 
-The page_pool size doesn't have to cover a full queue, especially for
-larger ring size. So clamp the size instead of returning an error. Do
-this in the core to avoid having each driver do the clamping.
+To fix this, separate turning the page and reading the register into
+two separate transactions. This brings the initialization code in line
+with the rest of the driver, which uses register maps (which to my
+knowledge do not use repeated starts after turning the page). This has
+been included in our kernel for several months and was recently
+included in a shipped product. For us, it reliably fixes the issue,
+and we have not observed any new issues.
 
-The current limit was deemed to high [1] so it was reduced to 16K to avoid
-page waste.
+While the underlying problem is probably with the i2c controller or
+its driver, I still propose a change here in the interest of
+robustness: First, I'm not sure this issue can be fixed on the
+controller side, since there are other issues related to repeated
+start which can't (AR# 60695, AR# 61664). Second, similar problems
+might exist with other controllers.
 
-[1] https://lore.kernel.org/all/1758532715-820422-3-git-send-email-tariqt@nvidia.com/
-
-Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20250926131605.2276734-2-dtatulea@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Jens Kehne <jens.kehne@agilent.com>
+Link: https://lore.kernel.org/r/20250804133754.3496718-1-jens.kehne@agilent.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/page_pool.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/mfd/da9063-i2c.c | 27 +++++++++++++++++++++------
+ 1 file changed, 21 insertions(+), 6 deletions(-)
 
-diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index 8ce34d1c2e076..5c66092f95801 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -168,11 +168,7 @@ static int page_pool_init(struct page_pool *pool,
- 		return -EINVAL;
+diff --git a/drivers/mfd/da9063-i2c.c b/drivers/mfd/da9063-i2c.c
+index 3419814d016b5..6e6a466c7d8c9 100644
+--- a/drivers/mfd/da9063-i2c.c
++++ b/drivers/mfd/da9063-i2c.c
+@@ -37,9 +37,13 @@ enum da9063_page_sel_buf_fmt {
+ 	DA9063_PAGE_SEL_BUF_SIZE,
+ };
  
- 	if (pool->p.pool_size)
--		ring_qsize = pool->p.pool_size;
--
--	/* Sanity limit mem that can be pinned down */
--	if (ring_qsize > 32768)
--		return -E2BIG;
-+		ring_qsize = min(pool->p.pool_size, 16384);
++enum da9063_page_sel_msgs {
++	DA9063_PAGE_SEL_MSG = 0,
++	DA9063_PAGE_SEL_CNT,
++};
++
+ enum da9063_paged_read_msgs {
+-	DA9063_PAGED_READ_MSG_PAGE_SEL = 0,
+-	DA9063_PAGED_READ_MSG_REG_SEL,
++	DA9063_PAGED_READ_MSG_REG_SEL = 0,
+ 	DA9063_PAGED_READ_MSG_DATA,
+ 	DA9063_PAGED_READ_MSG_CNT,
+ };
+@@ -65,10 +69,21 @@ static int da9063_i2c_blockreg_read(struct i2c_client *client, u16 addr,
+ 		(page_num << DA9063_I2C_PAGE_SEL_SHIFT) & DA9063_REG_PAGE_MASK;
  
- 	/* DMA direction is either DMA_FROM_DEVICE or DMA_BIDIRECTIONAL.
- 	 * DMA_BIDIRECTIONAL is for allowing page used for DMA sending,
+ 	/* Write reg address, page selection */
+-	xfer[DA9063_PAGED_READ_MSG_PAGE_SEL].addr = client->addr;
+-	xfer[DA9063_PAGED_READ_MSG_PAGE_SEL].flags = 0;
+-	xfer[DA9063_PAGED_READ_MSG_PAGE_SEL].len = DA9063_PAGE_SEL_BUF_SIZE;
+-	xfer[DA9063_PAGED_READ_MSG_PAGE_SEL].buf = page_sel_buf;
++	xfer[DA9063_PAGE_SEL_MSG].addr = client->addr;
++	xfer[DA9063_PAGE_SEL_MSG].flags = 0;
++	xfer[DA9063_PAGE_SEL_MSG].len = DA9063_PAGE_SEL_BUF_SIZE;
++	xfer[DA9063_PAGE_SEL_MSG].buf = page_sel_buf;
++
++	ret = i2c_transfer(client->adapter, xfer, DA9063_PAGE_SEL_CNT);
++	if (ret < 0) {
++		dev_err(&client->dev, "Page switch failed: %d\n", ret);
++		return ret;
++	}
++
++	if (ret != DA9063_PAGE_SEL_CNT) {
++		dev_err(&client->dev, "Page switch failed to complete\n");
++		return -EIO;
++	}
+ 
+ 	/* Select register address */
+ 	xfer[DA9063_PAGED_READ_MSG_REG_SEL].addr = client->addr;
 -- 
 2.51.0
 
