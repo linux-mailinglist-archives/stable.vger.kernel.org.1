@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-198865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC4FFC9FCAA
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:05:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16EA5CA06C4
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:26:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 04B193003075
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:05:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 68DF23306895
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:10:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AE0434F498;
-	Wed,  3 Dec 2025 16:05:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A965E34FF50;
+	Wed,  3 Dec 2025 16:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L2Jt1TjD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BkKDM/T7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F6634F484;
-	Wed,  3 Dec 2025 16:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64AF434FF42;
+	Wed,  3 Dec 2025 16:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777925; cv=none; b=DqkYiS5lQotxDJdNpI091UNBYvtBb9R/B1siIw2ngBBguKOWsT0B1XOcgYIOhsehaMVQ7/3gvz3tMSG0cOx27Idm4f1IJKBnRmaNcuDCZpsZ/V1YWYstbQlLNrOALuUy5gn9IY/ZSpCZGGpaDzpMNjafXyC+46JJluYgaXnQvw0=
+	t=1764779712; cv=none; b=WQJQ2J1S0PvohJdesaWkeXwCNdB2o/vTxjjQdyutIsJFlxtGf6yqRoISiub1sEOzpp8tQl9hFlXR9uq2rmhm1iUCfzr1RJsFOzjEJ8ljRdaP7zxscLeLEM9sJiLLRaDQSRI4VTygJphp4RlYZmzyASAbGSb9Nmbi4DxaKYBTFlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777925; c=relaxed/simple;
-	bh=HppNYPLxqAPafxWQ6DW+XFb1/Ui2DVkn79FITK37K4g=;
+	s=arc-20240116; t=1764779712; c=relaxed/simple;
+	bh=NxjQiJul0lW6QxBVxB1kbLXh+ak3/cE4jSYx8ML1XEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HgME0XZmlKq9GsZ6XEkB/4bT72QZTsIGhP2MSPgM3NCySfGjXDEEJHCU5LmlyO7o7sAWkOFTs3Y6BM0IPeHZwILutL/SttyibFHM9fJD6QnnCNT7trGCWNduD6O4dBYpN9u4Tq2ctp1ZWLRUWla2ZBMEK+Ukytt8trtpKfdqWpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L2Jt1TjD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E52AC4CEF5;
-	Wed,  3 Dec 2025 16:05:24 +0000 (UTC)
+	 MIME-Version; b=lBYDHxi+Om6HPZZ9POWLNqyR4p+FeixFUZ1C0T+u53Ogla3xuJAg6p2nOKbiQVxAQVQqzUvf4Z5ov7XHf5q60EGjMoAi1nL9+2/IqUoFHwMqQWU/UKowU8J+4b3bv4avgoRNJ4p1AkXNqRXFthY5qjQuqI5nKgkxHAiKCleVgA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BkKDM/T7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C45DAC4CEF5;
+	Wed,  3 Dec 2025 16:35:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777925;
-	bh=HppNYPLxqAPafxWQ6DW+XFb1/Ui2DVkn79FITK37K4g=;
+	s=korg; t=1764779712;
+	bh=NxjQiJul0lW6QxBVxB1kbLXh+ak3/cE4jSYx8ML1XEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L2Jt1TjDYeuYtSVwga8/hlmunsge7eV25ZBBy70sxXHO9KT5wvhBk+m1yNzDeOTB3
-	 TzPrTQC0NIOAABU33wP9Z2mN4SufsKjL/VyaktApHMzwSScGLiBg7K5//HhlQbE873
-	 /3v9/ZDK/6g1qKgozHYfbcyigKU2DXTE+qIKVFOc=
+	b=BkKDM/T76fui7+QhiPrTOXG67LkJsw7cnm+GMIbe7HqAU1DKnsm8UvFW0K/qpEJ6A
+	 QMXi6IsnpCC2PJ/0Gk+C8WNU7RF+kX93J8zr6UVv5pw2yrLwtE3T4vCD8x+dswYTbJ
+	 VNdumMlU3Xs1R87yjthllbbqb8t3WRdHVxQdV0jY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Moroni <jmoroni@google.com>,
-	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Danil Skrebenkov <danil.skrebenkov@cloudbear.ru>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Paul Walmsley <pjw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 189/392] RDMA/irdma: Set irdma_cq cq_num field during CQ create
-Date: Wed,  3 Dec 2025 16:25:39 +0100
-Message-ID: <20251203152421.032726689@linuxfoundation.org>
+Subject: [PATCH 6.1 338/568] RISC-V: clear hot-unplugged cores from all task mm_cpumasks to avoid rfence errors
+Date: Wed,  3 Dec 2025 16:25:40 +0100
+Message-ID: <20251203152453.087994270@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Moroni <jmoroni@google.com>
+From: Danil Skrebenkov <danil.skrebenkov@cloudbear.ru>
 
-[ Upstream commit 5575b7646b94c0afb0f4c0d86e00e13cf3397a62 ]
+[ Upstream commit ae9e9f3d67dcef7582a4524047b01e33c5185ddb ]
 
-The driver maintains a CQ table that is used to ensure that a CQ is
-still valid when processing CQ related AEs. When a CQ is destroyed,
-the table entry is cleared, using irdma_cq.cq_num as the index. This
-field was never being set, so it was just always clearing out entry
-0.
+openSBI v1.7 adds harts checks for ipi operations. Especially it
+adds comparison between hmask passed as an argument from linux
+and mask of online harts (from openSBI side). If they don't
+fit each other the error occurs.
 
-Additionally, the cq_num field size was increased to accommodate HW
-supporting more than 64K CQs.
+When cpu is offline, cpu_online_mask is explicitly cleared in
+__cpu_disable. However, there is no explicit clearing of
+mm_cpumask. mm_cpumask is used for rfence operations that
+call openSBI RFENCE extension which uses ipi to remote harts.
+If hart is offline there may be error if mask of linux is not
+as mask of online harts in openSBI.
 
-Fixes: b48c24c2d710 ("RDMA/irdma: Implement device supported verb APIs")
-Signed-off-by: Jacob Moroni <jmoroni@google.com>
-Link: https://patch.msgid.link/20250923142439.943930-1-jmoroni@google.com
-Acked-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+this patch adds explicit clearing of mm_cpumask for offline hart.
+
+Signed-off-by: Danil Skrebenkov <danil.skrebenkov@cloudbear.ru>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Link: https://lore.kernel.org/r/20250919132849.31676-1-danil.skrebenkov@cloudbear.ru
+[pjw@kernel.org: rewrote subject line for clarity]
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/verbs.c | 1 +
- drivers/infiniband/hw/irdma/verbs.h | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ arch/riscv/kernel/cpu-hotplug.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
-index 8896cbf9ec4d0..e62a825622834 100644
---- a/drivers/infiniband/hw/irdma/verbs.c
-+++ b/drivers/infiniband/hw/irdma/verbs.c
-@@ -1968,6 +1968,7 @@ static int irdma_create_cq(struct ib_cq *ibcq,
- 	spin_lock_init(&iwcq->lock);
- 	INIT_LIST_HEAD(&iwcq->resize_list);
- 	INIT_LIST_HEAD(&iwcq->cmpl_generated);
-+	iwcq->cq_num = cq_num;
- 	info.dev = dev;
- 	ukinfo->cq_size = max(entries, 4);
- 	ukinfo->cq_id = cq_num;
-diff --git a/drivers/infiniband/hw/irdma/verbs.h b/drivers/infiniband/hw/irdma/verbs.h
-index a74b24429b246..13c66908411f7 100644
---- a/drivers/infiniband/hw/irdma/verbs.h
-+++ b/drivers/infiniband/hw/irdma/verbs.h
-@@ -107,7 +107,7 @@ struct irdma_mr {
- struct irdma_cq {
- 	struct ib_cq ibcq;
- 	struct irdma_sc_cq sc_cq;
--	u16 cq_num;
-+	u32 cq_num;
- 	bool user_mode;
- 	atomic_t armed;
- 	enum irdma_cmpl_notify last_notify;
+diff --git a/arch/riscv/kernel/cpu-hotplug.c b/arch/riscv/kernel/cpu-hotplug.c
+index 462b3631663f9..374f334df86de 100644
+--- a/arch/riscv/kernel/cpu-hotplug.c
++++ b/arch/riscv/kernel/cpu-hotplug.c
+@@ -61,6 +61,7 @@ void __cpu_die(unsigned int cpu)
+ 	}
+ 	pr_notice("CPU%u: off\n", cpu);
+ 
++	clear_tasks_mm_cpumask(cpu);
+ 	/* Verify from the firmware if the cpu is really stopped*/
+ 	if (cpu_ops[cpu]->cpu_is_stopped)
+ 		ret = cpu_ops[cpu]->cpu_is_stopped(cpu);
 -- 
 2.51.0
 
