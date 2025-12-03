@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-199047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 184B8C9FDDF
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:16:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38CFDC9FE04
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:17:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 84A4530004CC
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:16:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3EE8330852C5
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:09:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EDB8272E41;
-	Wed,  3 Dec 2025 16:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3930338935;
+	Wed,  3 Dec 2025 15:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dw6vJyVX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QkJJa+P5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC2A347BD9;
-	Wed,  3 Dec 2025 16:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6353385A8;
+	Wed,  3 Dec 2025 15:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778524; cv=none; b=UiPze7pJpvyYmbG9HqCGLGyatvLp1XEZm+W3GSazQjyvA7uJB6pOYKVHngwAg3P167JpX9b44FcQ1fjuqbbrwbAowWrsEhHJi60k/8CsEoQvuym85cY5QWSKI3ouPTn3Z4uAcoEj9rHTXtQ5LSu5J6tL2qXDJGYDMmgwi9FqoTg=
+	t=1764777326; cv=none; b=cHYE/4H2SjQzIsoRJermVms9yLdfGjY9qSgm2NXIYo0h1vOrG7bxO4usPxv36Cp5db2b1Maqw3By72NN3mbZZUtyJCDIqrlsahYhcXMhTbljlzYgfYJDV5e2+O+MrR9PIuAH8GQ2Y++3yI3X++vjwzmqDTDEWPJbTST+NmLRa/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778524; c=relaxed/simple;
-	bh=Ke7G48pcPMFmzxvNM/zfFLJPUBCn26VMfJ3dYAHLGOY=;
+	s=arc-20240116; t=1764777326; c=relaxed/simple;
+	bh=k53DMgrWfvaIEk+/prx0/1Y/uhQuhgdC9HKaKDt5VM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cOczKLaMuKhkNl5ZljGyjxdOnp9udEY0F0JDxgscpEFoPnAJraR21ms4RfSl8ueYZ9Ip2AvTUEJYW6JaiUX44Z5PpmZUx3X0n76e3WZ298g/amCHMTGNlRdaXLVL8sGfx06ahw9mmhNdAQKR3p9TpIzJVolGIrld+u1Vx/QujbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dw6vJyVX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67B26C4CEF5;
-	Wed,  3 Dec 2025 16:15:23 +0000 (UTC)
+	 MIME-Version; b=k7fougm3JayZf/epEaVBOfGvXOcFXnHq5uGOFkK66xZ3TAjr5AvxZIJaZr1rmJZBEyO6tyTIUDKLk7KyiJi11p0v/v9qppEUaL4KkPZqzGnLiE6Vny7jil1iddwT59Z2WfVV7n/2WuV8mGHwWFS4aw4tYV/PvVY62x7RqdWbaa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QkJJa+P5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFC09C4CEF5;
+	Wed,  3 Dec 2025 15:55:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778523;
-	bh=Ke7G48pcPMFmzxvNM/zfFLJPUBCn26VMfJ3dYAHLGOY=;
+	s=korg; t=1764777326;
+	bh=k53DMgrWfvaIEk+/prx0/1Y/uhQuhgdC9HKaKDt5VM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dw6vJyVXhM+HFQREfQ01qMFeI7Zae2yG6T48PlxlXDc7bdBU6BdRwNxcNsiLHrem9
-	 ubAvFwXze8QwAt+Yoqk0vgd3Yb7pN/QY/AlerSfqvveZqGuXYMLnGT5fYLbZFvtVJN
-	 iygi/bsbuMC1NXLj2weLqcfwi5psS4yHNPjHx7Yk=
+	b=QkJJa+P5BM+1UnyUdTy3FLLwz6ZvxW5OE/80AXlzqiXzPHmtqPywVb1U4OZaW5Iml
+	 XwBZKe98yXnoNipENDTrT9c5/bsJTjrzRZ85HLUS57oDxnfeCyuNXxtF5zRYbxf5NL
+	 N0bFahkotMC7fj15GmdMeEQTjrBV4edK2BJ+5Y50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Manish Nagar <manish.nagar@oss.qualcomm.com>
-Subject: [PATCH 5.15 371/392] usb: dwc3: Fix race condition between concurrent dwc3_remove_requests() call paths
+	Kuen-Han Tsai <khtsai@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 143/146] usb: udc: Add trace event for usb_gadget_set_state
 Date: Wed,  3 Dec 2025 16:28:41 +0100
-Message-ID: <20251203152427.810121204@linuxfoundation.org>
+Message-ID: <20251203152351.708837110@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,89 +59,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manish Nagar <manish.nagar@oss.qualcomm.com>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-commit e4037689a366743c4233966f0e74bc455820d316 upstream.
+[ Upstream commit 7bf1158514e410310aec975e630cec99d4e4092f ]
 
-This patch addresses a race condition caused by unsynchronized
-execution of multiple call paths invoking `dwc3_remove_requests()`,
-leading to premature freeing of USB requests and subsequent crashes.
+While the userspace program can be notified of gadget state changes,
+timing issue can lead to missed transitions when reading the state
+value.
 
-Three distinct execution paths interact with `dwc3_remove_requests()`:
-Path 1:
-Triggered via `dwc3_gadget_reset_interrupt()` during USB reset
-handling. The call stack includes:
-- `dwc3_ep0_reset_state()`
-- `dwc3_ep0_stall_and_restart()`
-- `dwc3_ep0_out_start()`
-- `dwc3_remove_requests()`
-- `dwc3_gadget_del_and_unmap_request()`
+Introduce a trace event for usb_gadget_set_state to reliably track state
+transitions.
 
-Path 2:
-Also initiated from `dwc3_gadget_reset_interrupt()`, but through
-`dwc3_stop_active_transfers()`. The call stack includes:
-- `dwc3_stop_active_transfers()`
-- `dwc3_remove_requests()`
-- `dwc3_gadget_del_and_unmap_request()`
-
-Path 3:
-Occurs independently during `adb root` execution, which triggers
-USB function unbind and bind operations. The sequence includes:
-- `gserial_disconnect()`
-- `usb_ep_disable()`
-- `dwc3_gadget_ep_disable()`
-- `dwc3_remove_requests()` with `-ESHUTDOWN` status
-
-Path 3 operates asynchronously and lacks synchronization with Paths
-1 and 2. When Path 3 completes, it disables endpoints and frees 'out'
-requests. If Paths 1 or 2 are still processing these requests,
-accessing freed memory leads to a crash due to use-after-free conditions.
-
-To fix this added check for request completion and skip processing
-if already completed and added the request status for ep0 while queue.
-
-Fixes: 72246da40f37 ("usb: Introduce DesignWare USB3 DRD Driver")
-Cc: stable <stable@kernel.org>
-Suggested-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Signed-off-by: Manish Nagar <manish.nagar@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251120074435.1983091-1-manish.nagar@oss.qualcomm.com
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://lore.kernel.org/r/20250818082722.2952867-1-khtsai@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: baeb66fbd420 ("usb: gadget: udc: fix use-after-free in usb_gadget_state_work")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/ep0.c    |    1 +
- drivers/usb/dwc3/gadget.c |    7 +++++++
- 2 files changed, 8 insertions(+)
+ drivers/usb/gadget/udc/core.c  |    1 +
+ drivers/usb/gadget/udc/trace.h |    5 +++++
+ 2 files changed, 6 insertions(+)
 
---- a/drivers/usb/dwc3/ep0.c
-+++ b/drivers/usb/dwc3/ep0.c
-@@ -92,6 +92,7 @@ static int __dwc3_gadget_ep0_queue(struc
- 	req->request.actual	= 0;
- 	req->request.status	= -EINPROGRESS;
- 	req->epnum		= dep->number;
-+	req->status		= DWC3_REQUEST_STATUS_QUEUED;
- 
- 	list_add_tail(&req->list, &dep->pending_list);
- 
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -229,6 +229,13 @@ void dwc3_gadget_giveback(struct dwc3_ep
+--- a/drivers/usb/gadget/udc/core.c
++++ b/drivers/usb/gadget/udc/core.c
+@@ -1128,6 +1128,7 @@ void usb_gadget_set_state(struct usb_gad
  {
- 	struct dwc3			*dwc = dep->dwc;
+ 	gadget->state = state;
+ 	schedule_work(&gadget->work);
++	trace_usb_gadget_set_state(gadget, 0);
+ }
+ EXPORT_SYMBOL_GPL(usb_gadget_set_state);
  
-+	/*
-+	 * The request might have been processed and completed while the
-+	 * spinlock was released. Skip processing if already completed.
-+	 */
-+	if (req->status == DWC3_REQUEST_STATUS_COMPLETED)
-+		return;
+--- a/drivers/usb/gadget/udc/trace.h
++++ b/drivers/usb/gadget/udc/trace.h
+@@ -81,6 +81,11 @@ DECLARE_EVENT_CLASS(udc_log_gadget,
+ 		__entry->ret)
+ );
+ 
++DEFINE_EVENT(udc_log_gadget, usb_gadget_set_state,
++	TP_PROTO(struct usb_gadget *g, int ret),
++	TP_ARGS(g, ret)
++);
 +
- 	dwc3_gadget_del_and_unmap_request(dep, req, status);
- 	req->status = DWC3_REQUEST_STATUS_COMPLETED;
- 
+ DEFINE_EVENT(udc_log_gadget, usb_gadget_frame_number,
+ 	TP_PROTO(struct usb_gadget *g, int ret),
+ 	TP_ARGS(g, ret)
 
 
 
