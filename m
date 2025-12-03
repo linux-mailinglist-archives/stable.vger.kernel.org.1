@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B241CCA0749
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:28:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08301CA08F1
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:41:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EB7EB332955E
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:11:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2D4DD341D984
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:21:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD6AD398F96;
-	Wed,  3 Dec 2025 16:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAB12346FAE;
+	Wed,  3 Dec 2025 16:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LgUJVc33"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k7cj7BKy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CA10398FB8;
-	Wed,  3 Dec 2025 16:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AD153446A2;
+	Wed,  3 Dec 2025 16:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764781149; cv=none; b=H0o8tREfvmOXGmMDXsyMx6ReB+acBRp3EXyMTcWsIhCNE0QV9PhUC5YNMAGG7aO92X5FDmz75HOFCmvLif3Et9xL4snjN2l+d699zYpozvQ21HF2pXWi6wb1TXDgwKIGcAf/F9B7UCCvECboB5b2x9Bu2+Snf9b5j+dOtbi72eY=
+	t=1764780889; cv=none; b=H24qmvld40dvdtmzs5jAGyBt8dX64Z4f7N2NNOlQ8arC3hjwuPpwuXfyH90+xqHBONgepMcbOaKCz+ssyZhSq64O04fNUX57G8e2ZKvLH60tWTePqR1WYh22BAH4nD8PR+7gczlO80Lr8c1r6k2Q8NKAwrsfMs7cePLzTo/lvCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764781149; c=relaxed/simple;
-	bh=G/Mec0iqwpUesXhPb2QX0FXmDQk0CJg6E5Vgq6ZZ9Ok=;
+	s=arc-20240116; t=1764780889; c=relaxed/simple;
+	bh=FqcyIIZ0+RVh0L1TYFqErntn/Rhi95cE7OkrvUO4fEg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XbocHY4UoO/HKQmdtKV8dav/w/4mdg6Yubj9iWa+5hCbyd19gAo+yaAqlgtOzD6ybyleOOEliz59bm9SYZlphWKyD9hxIcP85NFFC20VJulLvp+R0OXDj7UGetfvIOVU9TdaCyQyqJwwTihGBi8u5ZW910eH+Q56MusZAz/rbwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LgUJVc33; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6995DC4CEF5;
-	Wed,  3 Dec 2025 16:59:08 +0000 (UTC)
+	 MIME-Version; b=Uf5a52HGxmdhfUF7qv2k6fNf2N5jxEDsS7l2qXPbWDR1WJtY2GpxNwUkrsIr6Y0yl65jWd0NDPGUcry2fdjtShvyp98FPMUVPFzKSPJ5Eq4oDRpMIlyjjjA/qa+DqlHbSFNU6FttHsc3ryIsj0gHScivZkj2Tqa3rDSNH/KL0cY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k7cj7BKy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E2B5C4CEF5;
+	Wed,  3 Dec 2025 16:54:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764781148;
-	bh=G/Mec0iqwpUesXhPb2QX0FXmDQk0CJg6E5Vgq6ZZ9Ok=;
+	s=korg; t=1764780889;
+	bh=FqcyIIZ0+RVh0L1TYFqErntn/Rhi95cE7OkrvUO4fEg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LgUJVc339/Nq4Y2nIZCqXwQBYLXswxwwCICGF/lknL/NWLITXKR7sl3q44fOgOBdN
-	 9OAAdFWP2JJJ1T0vCUzRpk0kOt337tp+j4uhAdjcjF3XeKFSuJQrBdfdBDJWFaoWRx
-	 GhPFB4PvYhtGzRnRMJ5/D4SfHQcdBX/KXS7jvW+8=
+	b=k7cj7BKy0Ot67IqFp7Vo6LcWDl45/Pl8aDfHEl87J79Duc7239xkagKVUENtiBgpl
+	 pxbAbYIpkuawuPFqKnp7KC+mx6rtqJj43/BJ81OunU5FbHpGHczlQObLwQimHc89Qv
+	 UewVFWnfGsVpLHDItuxM/Jm6QMZMjr+QqmrW4pzg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
 	stable <stable@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.6 65/93] usb: dwc3: pci: Sort out the Intel device IDs
+	Jimmy Hu <hhhuuu@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 119/132] usb: gadget: udc: fix use-after-free in usb_gadget_state_work
 Date: Wed,  3 Dec 2025 16:29:58 +0100
-Message-ID: <20251203152338.926950918@linuxfoundation.org>
+Message-ID: <20251203152347.720485053@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,156 +60,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+From: Jimmy Hu <hhhuuu@google.com>
 
-commit 46b28d2fbd13148981d91246bc0e13f4fc055987 upstream.
+[ Upstream commit baeb66fbd4201d1c4325074e78b1f557dff89b5b ]
 
-The PCI device IDs were organised based on the Intel
-architecture generation in most cases, but not with every
-ID. That left the device ID table with no real order.
-Sorting the table based on the device ID.
+A race condition during gadget teardown can lead to a use-after-free
+in usb_gadget_state_work(), as reported by KASAN:
 
-Suggested-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+  BUG: KASAN: invalid-access in sysfs_notify+0x2c/0xd0
+  Workqueue: events usb_gadget_state_work
+
+The fundamental race occurs because a concurrent event (e.g., an
+interrupt) can call usb_gadget_set_state() and schedule gadget->work
+at any time during the cleanup process in usb_del_gadget().
+
+Commit 399a45e5237c ("usb: gadget: core: flush gadget workqueue after
+device removal") attempted to fix this by moving flush_work() to after
+device_del(). However, this does not fully solve the race, as a new
+work item can still be scheduled *after* flush_work() completes but
+before the gadget's memory is freed, leading to the same use-after-free.
+
+This patch fixes the race condition robustly by introducing a 'teardown'
+flag and a 'state_lock' spinlock to the usb_gadget struct. The flag is
+set during cleanup in usb_del_gadget() *before* calling flush_work() to
+prevent any new work from being scheduled once cleanup has commenced.
+The scheduling site, usb_gadget_set_state(), now checks this flag under
+the lock before queueing the work, thus safely closing the race window.
+
+Fixes: 5702f75375aa9 ("usb: gadget: udc-core: move sysfs_notify() to a workqueue")
 Cc: stable <stable@kernel.org>
-Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://patch.msgid.link/20251107121548.2702900-1-heikki.krogerus@linux.intel.com
+Signed-off-by: Jimmy Hu <hhhuuu@google.com>
+Link: https://patch.msgid.link/20251023054945.233861-1-hhhuuu@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/dwc3-pci.c |   82 ++++++++++++++++++++++----------------------
- 1 file changed, 41 insertions(+), 41 deletions(-)
+ drivers/usb/gadget/udc/core.c |   17 ++++++++++++++++-
+ include/linux/usb/gadget.h    |    5 +++++
+ 2 files changed, 21 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/dwc3/dwc3-pci.c
-+++ b/drivers/usb/dwc3/dwc3-pci.c
-@@ -21,41 +21,41 @@
- #include <linux/acpi.h>
- #include <linux/delay.h>
- 
-+#define PCI_DEVICE_ID_INTEL_CMLLP		0x02ee
-+#define PCI_DEVICE_ID_INTEL_CMLH		0x06ee
-+#define PCI_DEVICE_ID_INTEL_BXT			0x0aaa
- #define PCI_DEVICE_ID_INTEL_BYT			0x0f37
- #define PCI_DEVICE_ID_INTEL_MRFLD		0x119e
--#define PCI_DEVICE_ID_INTEL_BSW			0x22b7
--#define PCI_DEVICE_ID_INTEL_SPTLP		0x9d30
--#define PCI_DEVICE_ID_INTEL_SPTH		0xa130
--#define PCI_DEVICE_ID_INTEL_BXT			0x0aaa
- #define PCI_DEVICE_ID_INTEL_BXT_M		0x1aaa
--#define PCI_DEVICE_ID_INTEL_APL			0x5aaa
--#define PCI_DEVICE_ID_INTEL_KBP			0xa2b0
--#define PCI_DEVICE_ID_INTEL_CMLLP		0x02ee
--#define PCI_DEVICE_ID_INTEL_CMLH		0x06ee
-+#define PCI_DEVICE_ID_INTEL_BSW			0x22b7
- #define PCI_DEVICE_ID_INTEL_GLK			0x31aa
--#define PCI_DEVICE_ID_INTEL_CNPLP		0x9dee
--#define PCI_DEVICE_ID_INTEL_CNPH		0xa36e
--#define PCI_DEVICE_ID_INTEL_CNPV		0xa3b0
- #define PCI_DEVICE_ID_INTEL_ICLLP		0x34ee
--#define PCI_DEVICE_ID_INTEL_EHL			0x4b7e
--#define PCI_DEVICE_ID_INTEL_TGPLP		0xa0ee
- #define PCI_DEVICE_ID_INTEL_TGPH		0x43ee
--#define PCI_DEVICE_ID_INTEL_JSP			0x4dee
--#define PCI_DEVICE_ID_INTEL_WCL			0x4d7e
- #define PCI_DEVICE_ID_INTEL_ADL			0x460e
--#define PCI_DEVICE_ID_INTEL_ADL_PCH		0x51ee
- #define PCI_DEVICE_ID_INTEL_ADLN		0x465e
-+#define PCI_DEVICE_ID_INTEL_EHL			0x4b7e
-+#define PCI_DEVICE_ID_INTEL_WCL			0x4d7e
-+#define PCI_DEVICE_ID_INTEL_JSP			0x4dee
-+#define PCI_DEVICE_ID_INTEL_ADL_PCH		0x51ee
- #define PCI_DEVICE_ID_INTEL_ADLN_PCH		0x54ee
--#define PCI_DEVICE_ID_INTEL_ADLS		0x7ae1
--#define PCI_DEVICE_ID_INTEL_RPL			0xa70e
-+#define PCI_DEVICE_ID_INTEL_APL			0x5aaa
-+#define PCI_DEVICE_ID_INTEL_NVLS_PCH		0x6e6f
-+#define PCI_DEVICE_ID_INTEL_ARLH_PCH		0x777e
- #define PCI_DEVICE_ID_INTEL_RPLS		0x7a61
-+#define PCI_DEVICE_ID_INTEL_MTL			0x7e7e
-+#define PCI_DEVICE_ID_INTEL_ADLS		0x7ae1
- #define PCI_DEVICE_ID_INTEL_MTLM		0x7eb1
- #define PCI_DEVICE_ID_INTEL_MTLP		0x7ec1
- #define PCI_DEVICE_ID_INTEL_MTLS		0x7f6f
--#define PCI_DEVICE_ID_INTEL_MTL			0x7e7e
--#define PCI_DEVICE_ID_INTEL_NVLS_PCH		0x6e6f
--#define PCI_DEVICE_ID_INTEL_ARLH_PCH		0x777e
- #define PCI_DEVICE_ID_INTEL_TGL			0x9a15
-+#define PCI_DEVICE_ID_INTEL_SPTLP		0x9d30
-+#define PCI_DEVICE_ID_INTEL_CNPLP		0x9dee
-+#define PCI_DEVICE_ID_INTEL_TGPLP		0xa0ee
-+#define PCI_DEVICE_ID_INTEL_SPTH		0xa130
-+#define PCI_DEVICE_ID_INTEL_KBP			0xa2b0
-+#define PCI_DEVICE_ID_INTEL_CNPH		0xa36e
-+#define PCI_DEVICE_ID_INTEL_CNPV		0xa3b0
-+#define PCI_DEVICE_ID_INTEL_RPL			0xa70e
- #define PCI_DEVICE_ID_INTEL_PTLH		0xe332
- #define PCI_DEVICE_ID_INTEL_PTLH_PCH		0xe37e
- #define PCI_DEVICE_ID_INTEL_PTLU		0xe432
-@@ -413,41 +413,41 @@ static void dwc3_pci_remove(struct pci_d
+--- a/drivers/usb/gadget/udc/core.c
++++ b/drivers/usb/gadget/udc/core.c
+@@ -1126,8 +1126,13 @@ static void usb_gadget_state_work(struct
+ void usb_gadget_set_state(struct usb_gadget *gadget,
+ 		enum usb_device_state state)
+ {
++	unsigned long flags;
++
++	spin_lock_irqsave(&gadget->state_lock, flags);
+ 	gadget->state = state;
+-	schedule_work(&gadget->work);
++	if (!gadget->teardown)
++		schedule_work(&gadget->work);
++	spin_unlock_irqrestore(&gadget->state_lock, flags);
+ 	trace_usb_gadget_set_state(gadget, 0);
  }
+ EXPORT_SYMBOL_GPL(usb_gadget_set_state);
+@@ -1361,6 +1366,8 @@ static void usb_udc_nop_release(struct d
+ void usb_initialize_gadget(struct device *parent, struct usb_gadget *gadget,
+ 		void (*release)(struct device *dev))
+ {
++	spin_lock_init(&gadget->state_lock);
++	gadget->teardown = false;
+ 	INIT_WORK(&gadget->work, usb_gadget_state_work);
+ 	gadget->dev.parent = parent;
  
- static const struct pci_device_id dwc3_pci_id_table[] = {
--	{ PCI_DEVICE_DATA(INTEL, BSW, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, BYT, &dwc3_pci_intel_byt_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, MRFLD, &dwc3_pci_intel_mrfld_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, CMLLP, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, CMLH, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, SPTLP, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, SPTH, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, BXT, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, BYT, &dwc3_pci_intel_byt_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, MRFLD, &dwc3_pci_intel_mrfld_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, BXT_M, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, APL, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, KBP, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, BSW, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, GLK, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, CNPLP, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, CNPH, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, CNPV, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, ICLLP, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, EHL, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, TGPLP, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, TGPH, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, JSP, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, WCL, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, ADL, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, ADL_PCH, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, ADLN, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, EHL, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, WCL, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, JSP, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, ADL_PCH, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, ADLN_PCH, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, ADLS, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, RPL, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, APL, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, NVLS_PCH, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, ARLH_PCH, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, RPLS, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, MTL, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, ADLS, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, MTLM, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, MTLP, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, MTL, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, NVLS_PCH, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, MTLS, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, ARLH_PCH, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, TGL, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, SPTLP, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, CNPLP, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, TGPLP, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, SPTH, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, KBP, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, CNPH, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, CNPV, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, RPL, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, PTLH, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, PTLH_PCH, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, PTLU, &dwc3_pci_intel_swnode) },
+@@ -1535,6 +1542,7 @@ EXPORT_SYMBOL_GPL(usb_add_gadget_udc);
+ void usb_del_gadget(struct usb_gadget *gadget)
+ {
+ 	struct usb_udc *udc = gadget->udc;
++	unsigned long flags;
+ 
+ 	if (!udc)
+ 		return;
+@@ -1548,6 +1556,13 @@ void usb_del_gadget(struct usb_gadget *g
+ 	kobject_uevent(&udc->dev.kobj, KOBJ_REMOVE);
+ 	sysfs_remove_link(&udc->dev.kobj, "gadget");
+ 	device_del(&gadget->dev);
++	/*
++	 * Set the teardown flag before flushing the work to prevent new work
++	 * from being scheduled while we are cleaning up.
++	 */
++	spin_lock_irqsave(&gadget->state_lock, flags);
++	gadget->teardown = true;
++	spin_unlock_irqrestore(&gadget->state_lock, flags);
+ 	flush_work(&gadget->work);
+ 	ida_free(&gadget_id_numbers, gadget->id_number);
+ 	cancel_work_sync(&udc->vbus_work);
+--- a/include/linux/usb/gadget.h
++++ b/include/linux/usb/gadget.h
+@@ -376,6 +376,9 @@ struct usb_gadget_ops {
+  *	can handle. The UDC must support this and all slower speeds and lower
+  *	number of lanes.
+  * @state: the state we are now (attached, suspended, configured, etc)
++ * @state_lock: Spinlock protecting the `state` and `teardown` members.
++ * @teardown: True if the device is undergoing teardown, used to prevent
++ *	new work from being scheduled during cleanup.
+  * @name: Identifies the controller hardware type.  Used in diagnostics
+  *	and sometimes configuration.
+  * @dev: Driver model state for this abstract device.
+@@ -451,6 +454,8 @@ struct usb_gadget {
+ 	enum usb_ssp_rate		max_ssp_rate;
+ 
+ 	enum usb_device_state		state;
++	spinlock_t			state_lock;
++	bool				teardown;
+ 	const char			*name;
+ 	struct device			dev;
+ 	unsigned			isoch_delay;
 
 
 
