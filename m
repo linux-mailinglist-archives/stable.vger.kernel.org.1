@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BED69C9F76D
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:31:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29B25CA0937
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:43:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BA60E3001506
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:31:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E4A9032C903E
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:23:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BFFE30CDB1;
-	Wed,  3 Dec 2025 15:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FC27314B8E;
+	Wed,  3 Dec 2025 15:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RA5G/t5i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U2fuJF/M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE29230BB94;
-	Wed,  3 Dec 2025 15:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E4B311C15;
+	Wed,  3 Dec 2025 15:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764775884; cv=none; b=IGO110cL6RLrSqr0IyBd3kJhLtib0QTgz6N89ARAjFd7huTn8jM1pP65Kqpqf52OMkQa8/ecOwL2PRpCiYOJ0ZjvtHqABhEQ0++FjNY31u5GFOFU1bbeSloCFsHYMGqHtpv+GhT67/eFz0syXv4iLxQdrHLcHFaDjJ+rj3bzzCA=
+	t=1764777540; cv=none; b=LwKzJsJqwom1BoHhJCRq5APgItGlO6eS+CAjtFx8hI9GEzSygWqYKkhacu9K4tUyK+bmUltVsyF1nccjk+XcwvaQnjKbjAKxzlQv+J3IvJ4pgWOxx/eWzUOZBjnT3O99lBruOjFrd3Cs0/OsylCI7XhY6PDxJQ8oHh/w79l645Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764775884; c=relaxed/simple;
-	bh=MKgMOgvKlDVKIfi/vQ8EKdzlMOJNTjWO43cDZQspjmI=;
+	s=arc-20240116; t=1764777540; c=relaxed/simple;
+	bh=+rn7XJgsjglElo+zn04BrgY0dHpKKA8GYsn02AmY3N0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q/Iuj5tj+Ix3Tia5XgmL2azhvQuNeV+9KyUdH7mpucaL2x9snd9ZGT/EshN5pBMhI/uET+/khsHEhmpQvSRSspAgG2RpmVovcRcKYFR1Ve8WIpl8T63Uyl2oa91VC/WP9ONkMQ4p8AdBDND3SA+c4a13Yb9+NI1FkHhk3MKdgmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RA5G/t5i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF875C4CEF5;
-	Wed,  3 Dec 2025 15:31:21 +0000 (UTC)
+	 MIME-Version; b=F6VUI+0eo/aVtWoLLmwc4Gjogg4zM+FXbyReMfwRaan+t4ZyRW19pYriQydLTN9kD264ziP1i4mqvRLYdmA3xWMUM/PwGEsajf6p5J6tHQRgnMuX2Cb7VaDsaeBuPevwOJzXN4CRzFe686TY6CHAUBIFGqw3x9Eay+8f5UZVjUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U2fuJF/M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDF9FC4CEF5;
+	Wed,  3 Dec 2025 15:58:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764775882;
-	bh=MKgMOgvKlDVKIfi/vQ8EKdzlMOJNTjWO43cDZQspjmI=;
+	s=korg; t=1764777539;
+	bh=+rn7XJgsjglElo+zn04BrgY0dHpKKA8GYsn02AmY3N0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RA5G/t5iENZPCES8+52InaDAL23xnM9DJJNIl0qLVxjuyfFTzyL6Eh5MxJQ/gz8Z8
-	 KRiUoiStWCJleJzM94x2CoUglziyO2YNfUEPRHOAxVGpq3nt67j+foD2cFwlgVYpgS
-	 AI99UBR8jCt46ObV41ap3Hgem9htK64Y55ACoi78=
+	b=U2fuJF/MteseN1Dr7u9jk7BQhH3DNsizUvWz/d/PfcGnXKkR9pdJmhzEfZ3DgWi1M
+	 3oraz3K7QFdVV2fL1WNHJF0fCqhm+xio0dIz2X00LkymecPRlaTg3SemkK1WME46w9
+	 UXNv/zDfrReJIw+160ks4VzvNzgWDFgQdklDFLwc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Sarthak Garg <quic_sartgarg@quicinc.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 016/300] ALSA: usb-audio: fix control pipe direction
-Date: Wed,  3 Dec 2025 16:23:40 +0100
-Message-ID: <20251203152401.059296802@linuxfoundation.org>
+Subject: [PATCH 5.15 071/392] mmc: sdhci-msm: Enable tuning for SDR50 mode for SD card
+Date: Wed,  3 Dec 2025 16:23:41 +0100
+Message-ID: <20251203152416.719986791@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +61,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>
+From: Sarthak Garg <quic_sartgarg@quicinc.com>
 
-[ Upstream commit 7963891f7c9c6f759cc9ab7da71406b4234f3dd6 ]
+[ Upstream commit 08b68ca543ee9d5a8d2dc406165e4887dd8f170b ]
 
-Since the requesttype has USB_DIR_OUT the pipe should be
-constructed with usb_sndctrlpipe().
+For Qualcomm SoCs which needs level shifter for SD card, extra delay is
+seen on receiver data path.
 
-Fixes: 8dc5efe3d17c ("ALSA: usb-audio: Add support for Presonus Studio 1810c")
-Signed-off-by: Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>
-Link: https://patch.msgid.link/aPPL3tBFE_oU-JHv@ark
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+To compensate this delay enable tuning for SDR50 mode for targets which
+has level shifter. SDHCI_SDR50_NEEDS_TUNING caps will be set for targets
+with level shifter on Qualcomm SOC's.
+
+Signed-off-by: Sarthak Garg <quic_sartgarg@quicinc.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_s1810c.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mmc/host/sdhci-msm.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/sound/usb/mixer_s1810c.c b/sound/usb/mixer_s1810c.c
-index c53a9773f310b..457e07f6fc7c8 100644
---- a/sound/usb/mixer_s1810c.c
-+++ b/sound/usb/mixer_s1810c.c
-@@ -181,7 +181,7 @@ snd_sc1810c_get_status_field(struct usb_device *dev,
+diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
+index 8fb2ba20e221b..b4c785393be3c 100644
+--- a/drivers/mmc/host/sdhci-msm.c
++++ b/drivers/mmc/host/sdhci-msm.c
+@@ -79,6 +79,7 @@
+ #define CORE_IO_PAD_PWR_SWITCH_EN	BIT(15)
+ #define CORE_IO_PAD_PWR_SWITCH	BIT(16)
+ #define CORE_HC_SELECT_IN_EN	BIT(18)
++#define CORE_HC_SELECT_IN_SDR50	(4 << 19)
+ #define CORE_HC_SELECT_IN_HS400	(6 << 19)
+ #define CORE_HC_SELECT_IN_MASK	(7 << 19)
  
- 	pkt_out.fields[SC1810C_STATE_F1_IDX] = SC1810C_SET_STATE_F1;
- 	pkt_out.fields[SC1810C_STATE_F2_IDX] = SC1810C_SET_STATE_F2;
--	ret = snd_usb_ctl_msg(dev, usb_rcvctrlpipe(dev, 0),
-+	ret = snd_usb_ctl_msg(dev, usb_sndctrlpipe(dev, 0),
- 			      SC1810C_SET_STATE_REQ,
- 			      SC1810C_SET_STATE_REQTYPE,
- 			      (*seqnum), 0, &pkt_out, sizeof(pkt_out));
+@@ -1129,6 +1130,10 @@ static bool sdhci_msm_is_tuning_needed(struct sdhci_host *host)
+ {
+ 	struct mmc_ios *ios = &host->mmc->ios;
+ 
++	if (ios->timing == MMC_TIMING_UHS_SDR50 &&
++	    host->flags & SDHCI_SDR50_NEEDS_TUNING)
++		return true;
++
+ 	/*
+ 	 * Tuning is required for SDR104, HS200 and HS400 cards and
+ 	 * if clock frequency is greater than 100MHz in these modes.
+@@ -1197,6 +1202,8 @@ static int sdhci_msm_execute_tuning(struct mmc_host *mmc, u32 opcode)
+ 	struct mmc_ios ios = host->mmc->ios;
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+ 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
++	const struct sdhci_msm_offset *msm_offset = msm_host->offset;
++	u32 config;
+ 
+ 	if (!sdhci_msm_is_tuning_needed(host)) {
+ 		msm_host->use_cdr = false;
+@@ -1213,6 +1220,14 @@ static int sdhci_msm_execute_tuning(struct mmc_host *mmc, u32 opcode)
+ 	 */
+ 	msm_host->tuning_done = 0;
+ 
++	if (ios.timing == MMC_TIMING_UHS_SDR50 &&
++	    host->flags & SDHCI_SDR50_NEEDS_TUNING) {
++		config = readl_relaxed(host->ioaddr + msm_offset->core_vendor_spec);
++		config &= ~CORE_HC_SELECT_IN_MASK;
++		config |= CORE_HC_SELECT_IN_EN | CORE_HC_SELECT_IN_SDR50;
++		writel_relaxed(config, host->ioaddr + msm_offset->core_vendor_spec);
++	}
++
+ 	/*
+ 	 * For HS400 tuning in HS200 timing requires:
+ 	 * - select MCLK/2 in VENDOR_SPEC
 -- 
 2.51.0
 
