@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-198539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8596AC9FF5B
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:27:36 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28204CA063D
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:23:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7BA8A3022F25
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:24:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 27C69300228D
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:23:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50BAE31987E;
-	Wed,  3 Dec 2025 15:47:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 977273321AB;
+	Wed,  3 Dec 2025 16:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UF6HDTfI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jN1sYG/0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AC1B313E3D;
-	Wed,  3 Dec 2025 15:47:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A3F305E05;
+	Wed,  3 Dec 2025 16:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776879; cv=none; b=sexFXiO5ud+n1EqDb8PeINkqi9mIPcKS2dIue58k1gYrWxy+e9xJ+9kSG2VdQ8AnWUTl2eTWCoqs/jqY7+34uGVn1M1PrZAzzylhjuUxPUGmmxDHtGmiE4jkdmvB1fGL+fvgXCSLphyT95Z1c1dDRvvYDL4lPDiaukqbXN6Y14s=
+	t=1764779996; cv=none; b=Diindjcklax1kRXOLZrLWSgByiCmRHMw583D2+kQ5Z+KfyfF9Lxd9frcAupHPKOvAIxpCrlT2gBrjervOaih+0vTGR6P/BDfHSZd2e5kMW7aerE7JjITU1tJDKT+RZcMmq3V+ogkaFLE373aXlE7jTrTei1nAAL3TnvoCb9UIGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776879; c=relaxed/simple;
-	bh=h++pVAUajJgEg5RyUaJxI4Sw1oS9UZIdybDyL53KmAY=;
+	s=arc-20240116; t=1764779996; c=relaxed/simple;
+	bh=I8TX9rIX1686iuc0CLgyQrW2Fp5WSm+vXaSgWr5kNSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IqohXWjSBf3zNHijp7/72ZPVJxfsNaecdZQ0Sp6EuNg8cMLZPkay+Y16ds+cipETeqojcgVvPHpZagf5CEzGXREQJfeKibu9WLegwSMmKE07LZo/gqx2wbaN7K6ocjxoCg2faS7Aaiu2uOCDDrxDVsh4oluqNNEk+h5yEDKEnnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UF6HDTfI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7360DC4CEF5;
-	Wed,  3 Dec 2025 15:47:58 +0000 (UTC)
+	 MIME-Version; b=hBUKeF655SN/JdK/GE2gME1uX3xPBhiB6zvTcHcN0xmZwibHGAPJVOBaznMyVyPGga4igCeeJQkRwWlpWsxeHNAZFT038HtWXgqEeJ2yY0aGzulFoToAiF/s0k8EQv7aCd2WZY+0neHKWiZIWnou5WeRP3KxMPRgrEyDgUqxUug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jN1sYG/0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0A10C116C6;
+	Wed,  3 Dec 2025 16:39:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776878;
-	bh=h++pVAUajJgEg5RyUaJxI4Sw1oS9UZIdybDyL53KmAY=;
+	s=korg; t=1764779996;
+	bh=I8TX9rIX1686iuc0CLgyQrW2Fp5WSm+vXaSgWr5kNSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UF6HDTfIsor5O4CTmueMpYfyxmQI0Rfy2w3XOmMnGmt4mrpv6nMjQRyQwKt3nUMnG
-	 K9W7twVaJmFnLiF48evFl7DiI1exB87OK+AV97X8Y8tFW9epxGOCfNUHOHzBa6tqx0
-	 MeB5zTBtfIiSD3sGn8AQc10r/Rk804QFqRdA/qFw=
+	b=jN1sYG/08Dv+nLprrkBjO2SYQfBXnYzHOWtOoY72cfcN9AWTIGXQAwuhymdzTJnji
+	 57fy/+SrC+1EP/PHimbRCUwAu99is1U+x1D5bC0HHYTiZ9iWAGqzGbkgcUP0tamf8S
+	 rMODofwIYD38UGrhIf9Z5DLib6DXowPcnRRYqg5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Russell King (Oracle)" <linux@armlinux.org.uk>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Eric Biggers <ebiggers@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 015/146] net: phy: mxl-gpy: fix link properties on USXGMII and internal PHYs
+Subject: [PATCH 6.1 391/568] lib/crypto: arm/curve25519: Disable on CPU_BIG_ENDIAN
 Date: Wed,  3 Dec 2025 16:26:33 +0100
-Message-ID: <20251203152347.026777763@linuxfoundation.org>
+Message-ID: <20251203152455.012651818@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +60,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: Eric Biggers <ebiggers@kernel.org>
 
-[ Upstream commit 081156ce13f8fa4e97b5148dc54d8c0ddf02117b ]
+commit 44e8241c51f762aafa50ed116da68fd6ecdcc954 upstream.
 
-gpy_update_interface() returns early in case the PHY is internal or
-connected via USXGMII. In this case the gigabit master/slave property
-as well as MDI/MDI-X status also won't be read which seems wrong.
-Always read those properties by moving the logic to retrieve them to
-gpy_read_status().
+On big endian arm kernels, the arm optimized Curve25519 code produces
+incorrect outputs and fails the Curve25519 test.  This has been true
+ever since this code was added.
 
-Fixes: fd8825cd8c6fc ("net: phy: mxl-gpy: Add PHY Auto/MDI/MDI-X set driver for GPY211 chips")
-Fixes: 311abcdddc00a ("net: phy: add support to get Master-Slave configuration")
-Suggested-by: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Link: https://patch.msgid.link/71fccf3f56742116eb18cc070d2a9810479ea7f9.1763650701.git.daniel@makrotopia.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+It seems that hardly anyone (or even no one?) actually uses big endian
+arm kernels.  But as long as they're ostensibly supported, we should
+disable this code on them so that it's not accidentally used.
+
+Note: for future-proofing, use !CPU_BIG_ENDIAN instead of
+CPU_LITTLE_ENDIAN.  Both of these are arch-specific options that could
+get removed in the future if big endian support gets dropped.
+
+Fixes: d8f1308a025f ("crypto: arm/curve25519 - wire up NEON implementation")
+Cc: stable@vger.kernel.org
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20251104054906.716914-1-ebiggers@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/mxl-gpy.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ arch/arm/crypto/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/mxl-gpy.c b/drivers/net/phy/mxl-gpy.c
-index 221b315203d06..2a873f791733a 100644
---- a/drivers/net/phy/mxl-gpy.c
-+++ b/drivers/net/phy/mxl-gpy.c
-@@ -578,13 +578,7 @@ static int gpy_update_interface(struct phy_device *phydev)
- 		break;
- 	}
+diff --git a/arch/arm/crypto/Kconfig b/arch/arm/crypto/Kconfig
+index 3858c4d4cb988..f6323b84631ff 100644
+--- a/arch/arm/crypto/Kconfig
++++ b/arch/arm/crypto/Kconfig
+@@ -4,7 +4,7 @@ menu "Accelerated Cryptographic Algorithms for CPU (arm)"
  
--	if (phydev->speed == SPEED_2500 || phydev->speed == SPEED_1000) {
--		ret = genphy_read_master_slave(phydev);
--		if (ret < 0)
--			return ret;
--	}
--
--	return gpy_update_mdix(phydev);
-+	return 0;
- }
- 
- static int gpy_read_status(struct phy_device *phydev)
-@@ -639,6 +633,16 @@ static int gpy_read_status(struct phy_device *phydev)
- 		ret = gpy_update_interface(phydev);
- 		if (ret < 0)
- 			return ret;
-+
-+		if (phydev->speed == SPEED_2500 || phydev->speed == SPEED_1000) {
-+			ret = genphy_read_master_slave(phydev);
-+			if (ret < 0)
-+				return ret;
-+		}
-+
-+		ret = gpy_update_mdix(phydev);
-+		if (ret < 0)
-+			return ret;
- 	}
- 
- 	return 0;
+ config CRYPTO_CURVE25519_NEON
+ 	tristate "Public key crypto: Curve25519 (NEON)"
+-	depends on KERNEL_MODE_NEON
++	depends on KERNEL_MODE_NEON && !CPU_BIG_ENDIAN
+ 	select CRYPTO_LIB_CURVE25519_GENERIC
+ 	select CRYPTO_ARCH_HAVE_LIB_CURVE25519
+ 	help
 -- 
 2.51.0
 
