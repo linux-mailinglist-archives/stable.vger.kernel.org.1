@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-199817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F10CBCA0407
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:03:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D823DCA02B5
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:52:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BFFB8300307C
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:03:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E2389304C9F8
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:48:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A7E6366561;
-	Wed,  3 Dec 2025 16:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2FC536C593;
+	Wed,  3 Dec 2025 16:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxF5phT8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tnBjvcFK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C59D364EB3;
-	Wed,  3 Dec 2025 16:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E72135B150;
+	Wed,  3 Dec 2025 16:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764781044; cv=none; b=C+QoOc1n1S1eUU9bQFO0aTfAQVVOkAsezVjs4x6WvYclMSuWDrzR6+NlYrDhFEd60foIg80s5WG01HzVH3ld+F8H6Kmv81JjudY7IMfqnxULQm2qtFT+/LTA28KLs/ylcH31POVNxy2Kdwwfm0VjtHDEVNVQuPPtLIjztaAGFdQ=
+	t=1764780490; cv=none; b=E4Gb54Q9o95rxIX+a06U8RI4ud2kY+K+3+Xdz17o/Qtq7OGRYOKvVwVJChiO3i2ouvwhkoYzHe5U6KvYpowghSBPDy9oQRDlR7Y3LFWtC7dzZTd8W7YmQjI3UN8BexNWa16LRjMZeLT0FRrSVrCMUx2dFHXKJ5lttWgkF/R2+HM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764781044; c=relaxed/simple;
-	bh=+WiJGoxvMRbwY0SF7aW+1LULRhL3tsWgtbcOQBwJE0M=;
+	s=arc-20240116; t=1764780490; c=relaxed/simple;
+	bh=hwwxgvBE8K5cbIjKwm6jffCRcYjV9KH6lw7zai2d90o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QPQiEKqk2XHoBrykVtmxTjhOH1YvGTorLqj/xYvyDS/4BhPfwI3YrsTFizXZU6QCfr/+IsAMDZQNhvGBVYEzHtCkHzFeoDYwwKiT87Z1OdORD+EUTObobVy8E48lAY05AFChWZ/MfIqzk2BAIyEWzDVxOel0fGbxQ4iQklDRHWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxF5phT8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B92EFC4CEF5;
-	Wed,  3 Dec 2025 16:57:22 +0000 (UTC)
+	 MIME-Version; b=cuC+QOwZ/lu6OlnmDT4X0L4cu3iK1CmXauobuZp6DcoHnWoRVlVsrYEiyu+Jx/KnX4dXjulEAlYTjcqHfBp8Q4STaixF0Ozn4f8/tpW6sj3JYA7pIJ3XL5Ju4LeQosAlL1h/w6WvHa4QzFO29FPiAYbUpjfIrRhWxQWhhmi5tTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tnBjvcFK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D21CFC4CEF5;
+	Wed,  3 Dec 2025 16:48:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764781043;
-	bh=+WiJGoxvMRbwY0SF7aW+1LULRhL3tsWgtbcOQBwJE0M=;
+	s=korg; t=1764780490;
+	bh=hwwxgvBE8K5cbIjKwm6jffCRcYjV9KH6lw7zai2d90o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fxF5phT8Up0FH4hkZp47qM3GDwzK0/XnpmWPMCpwOYNBWrO6ghEPQ1eCxRdpkPEvO
-	 jpsk/uj8Aq9DfXOCPY7JwYufnB9LT0SlquGwIKz9ZsAc7afyLS8QhF77X4HNYwG+cB
-	 FtbakPWXze5aznwqWl/qES92r358yxfJZEaR67y0=
+	b=tnBjvcFK6uKMilshyNaYxbh9gAoawQkeGwyMEbu74hV0j1teOfbJ3+3Jc/QGgzmBS
+	 45zc3w0mmC2fkEBEcJZsRh4ifLKvPe1rIrRkB13hLd1q61dPwjFleM56DBVWmDx4WN
+	 0pQFdfTn9PGaC38FLbWa5QkyDzUThDeIR97VubDY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Jameson Thies <jthies@google.com>,
+	Benson Leung <bleung@chromium.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	"Kenneth R. Crudup" <kenny@panix.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 32/93] spi: nxp-fspi: Propagate fwnode in ACPI case as well
+Subject: [PATCH 6.1 563/568] usb: typec: ucsi: psy: Set max current to zero when disconnected
 Date: Wed,  3 Dec 2025 16:29:25 +0100
-Message-ID: <20251203152337.704193662@linuxfoundation.org>
+Message-ID: <20251203152501.366072373@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,83 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Jameson Thies <jthies@google.com>
 
-[ Upstream commit 40ad64ac25bb736740f895d99a4aebbda9b80991 ]
+[ Upstream commit 23379a17334fc24c4a9cbd9967d33dcd9323cc7c ]
 
-Propagate fwnode of the ACPI device to the SPI controller Linux device.
-Currently only OF case propagates fwnode to the controller.
+The ucsi_psy_get_current_max function defaults to 0.1A when it is not
+clear how much current the partner device can support. But this does
+not check the port is connected, and will report 0.1A max current when
+nothing is connected. Update ucsi_psy_get_current_max to report 0A when
+there is no connection.
 
-While at it, replace several calls to dev_fwnode() with a single one
-cached in a local variable, and unify checks for fwnode type by using
-is_*_node() APIs.
-
-Fixes: 55ab8487e01d ("spi: spi-nxp-fspi: Add ACPI support")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
-Link: https://patch.msgid.link/20251126202501.2319679-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: af833e7f7db3 ("usb: typec: ucsi: psy: Set current max to 100mA for BC 1.2 and Default")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jameson Thies <jthies@google.com>
+Reviewed-by: Benson Leung <bleung@chromium.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Tested-by: Kenneth R. Crudup <kenny@panix.com>
+Rule: add
+Link: https://lore.kernel.org/stable/20251017000051.2094101-1-jthies%40google.com
+Link: https://patch.msgid.link/20251106011446.2052583-1-jthies@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ adapted UCSI_CONSTAT() macro to direct flag access ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-nxp-fspi.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/usb/typec/ucsi/psy.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-index 5d631f8c593e3..ce110035a3597 100644
---- a/drivers/spi/spi-nxp-fspi.c
-+++ b/drivers/spi/spi-nxp-fspi.c
-@@ -1165,7 +1165,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+--- a/drivers/usb/typec/ucsi/psy.c
++++ b/drivers/usb/typec/ucsi/psy.c
+@@ -144,6 +144,11 @@ static int ucsi_psy_get_current_max(stru
  {
- 	struct spi_controller *ctlr;
- 	struct device *dev = &pdev->dev;
--	struct device_node *np = dev->of_node;
-+	struct fwnode_handle *fwnode = dev_fwnode(dev);
- 	struct resource *res;
- 	struct nxp_fspi *f;
- 	int ret;
-@@ -1189,7 +1189,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, f);
+ 	u32 pdo;
  
- 	/* find the resources - configuration register address space */
--	if (is_acpi_node(dev_fwnode(f->dev)))
-+	if (is_acpi_node(fwnode))
- 		f->iobase = devm_platform_ioremap_resource(pdev, 0);
- 	else
- 		f->iobase = devm_platform_ioremap_resource_byname(pdev, "fspi_base");
-@@ -1200,7 +1200,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
- 	}
- 
- 	/* find the resources - controller memory mapped space */
--	if (is_acpi_node(dev_fwnode(f->dev)))
-+	if (is_acpi_node(fwnode))
- 		res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
- 	else
- 		res = platform_get_resource_byname(pdev,
-@@ -1216,7 +1216,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
- 	f->memmap_phy_size = resource_size(res);
- 
- 	/* find the clocks */
--	if (dev_of_node(&pdev->dev)) {
-+	if (is_of_node(fwnode)) {
- 		f->clk_en = devm_clk_get(dev, "fspi_en");
- 		if (IS_ERR(f->clk_en)) {
- 			ret = PTR_ERR(f->clk_en);
-@@ -1262,7 +1262,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
- 
- 	nxp_fspi_default_setup(f);
- 
--	ctlr->dev.of_node = np;
-+	device_set_node(&ctlr->dev, fwnode);
- 
- 	ret = devm_spi_register_controller(&pdev->dev, ctlr);
- 	if (ret)
--- 
-2.51.0
-
++	if (!(con->status.flags & UCSI_CONSTAT_CONNECTED)) {
++		val->intval = 0;
++		return 0;
++	}
++
+ 	switch (UCSI_CONSTAT_PWR_OPMODE(con->status.flags)) {
+ 	case UCSI_CONSTAT_PWR_OPMODE_PD:
+ 		if (con->num_pdos > 0) {
 
 
 
