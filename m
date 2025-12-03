@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-198493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56F96C9FB72
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:55:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 691EDCA0358
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:55:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 72DE33009410
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:45:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1FD43307EAAC
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:49:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45BF13128A1;
-	Wed,  3 Dec 2025 15:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5148C35B15A;
+	Wed,  3 Dec 2025 16:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xUsLQ/Vr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CUw0wxbg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00AAE312813;
-	Wed,  3 Dec 2025 15:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A71235A957;
+	Wed,  3 Dec 2025 16:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776728; cv=none; b=RdMrBm3iYxlob2sLXk9QgGGAb6qsfPHkFPlv7c4UUKav9vaEaKp0oTsVudxPt2NS2jCFRnflyju5L7dodWBFPreO9YEhwH2G2UhIwKZcqRT+QRcbkSm1AMz7IxGTDsjQWYpw1jIQj5MeXMA894OTInKS+MyVC07oNlS1uioPkUI=
+	t=1764780064; cv=none; b=qLL5X/rJPZx0nSeJikz3eRCC6GB1pd3tmPg4fV65tq3gYnyw6aNDycXxHFBKzPdvSva4lKsg/n/ZesTqs6XT3lJbsPy/jG303WTgYKlwp3i2HJUghw0qw2moSppa4MrA41UjRQVVVb2bpDyxJIeqXXfqRXbBGHXukxKujpeKBYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776728; c=relaxed/simple;
-	bh=IMnftusQ1MOqKHxDejdX9DbLern6530dPOyGfQtfKkI=;
+	s=arc-20240116; t=1764780064; c=relaxed/simple;
+	bh=P0mmfrR0EkVZSLAp3GFc0i6ibJ3NLEAiSX7vG8wPUP0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hsrQt5dNTZmAuuhiN50PE3vK6nPByJ4uJ0UEFiu1h9aMwUqNvO3gKXh12Yqokf4SeQJP993GGgm+ZDyRuZeTLF4i76Xgpi7+IdQ2Uui1QbQcIanbymuKZBycRQLgJpYa9VPkUkxd+1n+slxBSgJc5mhR4ilbvbdNCT69SnKGdb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xUsLQ/Vr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 606D3C116C6;
-	Wed,  3 Dec 2025 15:45:27 +0000 (UTC)
+	 MIME-Version; b=DPiA3jgHluM7s21OrL8YWUcWAE6juIllEwRaa8fryBzpDeB3WZG+bIrTvSj+jQDxmjZ3TIBKIPyW4hQkt9TROF4N2E40F7xkSJxdzTn9XlEwjxhCudeacAzGZS25C7jj1yoJNYh6cEmQnccX/SeRYerM9jQ617g3dBfvpl3aL+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CUw0wxbg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D145C4CEF5;
+	Wed,  3 Dec 2025 16:41:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776727;
-	bh=IMnftusQ1MOqKHxDejdX9DbLern6530dPOyGfQtfKkI=;
+	s=korg; t=1764780063;
+	bh=P0mmfrR0EkVZSLAp3GFc0i6ibJ3NLEAiSX7vG8wPUP0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xUsLQ/VrFT2+nOA9y0MBGNkcwErvoEiB3Nn/DDHUshVbzED9vAWehsvjG12O2XJ7/
-	 rYD9xbhFzur5zGnelrwp9PZsEDH/Khw0gysqlhHdoV8xxAqtUH+oR7RwC+uwUY0Pol
-	 09b5UvbCWiBCu/5EiWIJHI8SJMa5zLW7g0H6IfLY=
+	b=CUw0wxbgW+K7tAw7YbuTyp+ERM0NXBDP+Wfnv0RnL+tnuv20slhbMxSSnYGoRItud
+	 9gLK+2ne5YkJ5Dkr3XWoRSJy9web+QgG3PNUwxnGCDE2gfo63L8MTy0C3wRK8x6+aE
+	 z10RmCQs2YDtR0KycY1iLQyMYC/cPKmNPnQFFSQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+bfd77469c8966de076f7@syzkaller.appspotmail.com,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 242/300] ALSA: usb-audio: Fix potential overflow of PCM transfer buffer
+	syzbot+355158e7e301548a1424@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 444/568] mptcp: fix race condition in mptcp_schedule_work()
 Date: Wed,  3 Dec 2025 16:27:26 +0100
-Message-ID: <20251203152409.591731015@linuxfoundation.org>
+Message-ID: <20251203152456.962176679@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +61,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 05a1fc5efdd8560f34a3af39c9cf1e1526cc3ddf ]
+commit 035bca3f017ee9dea3a5a756e77a6f7138cc6eea upstream.
 
-The PCM stream data in USB-audio driver is transferred over USB URB
-packet buffers, and each packet size is determined dynamically.  The
-packet sizes are limited by some factors such as wMaxPacketSize USB
-descriptor.  OTOH, in the current code, the actually used packet sizes
-are determined only by the rate and the PPS, which may be bigger than
-the size limit above.  This results in a buffer overflow, as reported
-by syzbot.
+syzbot reported use-after-free in mptcp_schedule_work() [1]
 
-Basically when the limit is smaller than the calculated packet size,
-it implies that something is wrong, most likely a weird USB
-descriptor.  So the best option would be just to return an error at
-the parameter setup time before doing any further operations.
+Issue here is that mptcp_schedule_work() schedules a work,
+then gets a refcount on sk->sk_refcnt if the work was scheduled.
+This refcount will be released by mptcp_worker().
 
-This patch introduces such a sanity check, and returns -EINVAL when
-the packet size is greater than maxpacksize.  The comparison with
-ep->packsize[1] alone should suffice since it's always equal or
-greater than ep->packsize[0].
+[A] if (schedule_work(...)) {
+[B]     sock_hold(sk);
+        return true;
+    }
 
-Reported-by: syzbot+bfd77469c8966de076f7@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=bfd77469c8966de076f7
-Link: https://lore.kernel.org/690b6b46.050a0220.3d0d33.0054.GAE@google.com
-Cc: Lizhi Xu <lizhi.xu@windriver.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20251109091211.12739-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-[ changed ep->cur_rate to rate parameter and chip to ep->chip ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Problem is that mptcp_worker() can run immediately and complete before [B]
+
+We need instead :
+
+    sock_hold(sk);
+    if (schedule_work(...))
+        return true;
+    sock_put(sk);
+
+[1]
+refcount_t: addition on 0; use-after-free.
+ WARNING: CPU: 1 PID: 29 at lib/refcount.c:25 refcount_warn_saturate+0xfa/0x1d0 lib/refcount.c:25
+Call Trace:
+ <TASK>
+ __refcount_add include/linux/refcount.h:-1 [inline]
+  __refcount_inc include/linux/refcount.h:366 [inline]
+  refcount_inc include/linux/refcount.h:383 [inline]
+  sock_hold include/net/sock.h:816 [inline]
+  mptcp_schedule_work+0x164/0x1a0 net/mptcp/protocol.c:943
+  mptcp_tout_timer+0x21/0xa0 net/mptcp/protocol.c:2316
+  call_timer_fn+0x17e/0x5f0 kernel/time/timer.c:1747
+  expire_timers kernel/time/timer.c:1798 [inline]
+  __run_timers kernel/time/timer.c:2372 [inline]
+  __run_timer_base+0x648/0x970 kernel/time/timer.c:2384
+  run_timer_base kernel/time/timer.c:2393 [inline]
+  run_timer_softirq+0xb7/0x180 kernel/time/timer.c:2403
+  handle_softirqs+0x22f/0x710 kernel/softirq.c:622
+  __do_softirq kernel/softirq.c:656 [inline]
+  run_ktimerd+0xcf/0x190 kernel/softirq.c:1138
+  smpboot_thread_fn+0x542/0xa60 kernel/smpboot.c:160
+  kthread+0x711/0x8a0 kernel/kthread.c:463
+  ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
+  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+Cc: stable@vger.kernel.org
+Fixes: 3b1d6210a957 ("mptcp: implement and use MPTCP-level retransmission")
+Reported-by: syzbot+355158e7e301548a1424@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/6915b46f.050a0220.3565dc.0028.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251113103924.3737425-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/endpoint.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ net/mptcp/protocol.c |   19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
---- a/sound/usb/endpoint.c
-+++ b/sound/usb/endpoint.c
-@@ -1093,6 +1093,11 @@ int snd_usb_endpoint_set_params(struct s
- 	ep->sample_rem = rate % ep->pps;
- 	ep->packsize[0] = rate / ep->pps;
- 	ep->packsize[1] = (rate + (ep->pps - 1)) / ep->pps;
-+	if (ep->packsize[1] > ep->maxpacksize) {
-+		usb_audio_dbg(ep->chip, "Too small maxpacksize %u for rate %u / pps %u\n",
-+			      ep->maxpacksize, rate, ep->pps);
-+		return -EINVAL;
-+	}
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -966,14 +966,19 @@ static void mptcp_reset_rtx_timer(struct
  
- 	/* calculate the frequency in 16.16 format */
- 	ep->freqm = ep->freqn;
+ bool mptcp_schedule_work(struct sock *sk)
+ {
+-	if (inet_sk_state_load(sk) != TCP_CLOSE &&
+-	    schedule_work(&mptcp_sk(sk)->work)) {
+-		/* each subflow already holds a reference to the sk, and the
+-		 * workqueue is invoked by a subflow, so sk can't go away here.
+-		 */
+-		sock_hold(sk);
++	if (inet_sk_state_load(sk) == TCP_CLOSE)
++		return false;
++
++	/* Get a reference on this socket, mptcp_worker() will release it.
++	 * As mptcp_worker() might complete before us, we can not avoid
++	 * a sock_hold()/sock_put() if schedule_work() returns false.
++	 */
++	sock_hold(sk);
++
++	if (schedule_work(&mptcp_sk(sk)->work))
+ 		return true;
+-	}
++
++	sock_put(sk);
+ 	return false;
+ }
+ 
 
 
 
