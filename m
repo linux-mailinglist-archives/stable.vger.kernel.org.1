@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B96C6CA05DB
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:21:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE25AC9F989
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:44:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 60DAA32A907C
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:07:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4A7E730454FA
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:38:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B036346FDF;
-	Wed,  3 Dec 2025 16:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44C3B30FC1C;
+	Wed,  3 Dec 2025 15:38:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZT2Q7xUz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yqDogZ20"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16833469E3;
-	Wed,  3 Dec 2025 16:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00244303A3D;
+	Wed,  3 Dec 2025 15:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779705; cv=none; b=tqgBEfVByiG8264xGZFlCUtiwlIG3BwGX3fYFAU8HILMK8iIks6rFcgPMSjPU7ugVWMSvuidH7YTCVCRwXpB65/EfD4thBgJP4N34zTHwcU/VPbX7rwoihKgYU76/0F3MWRY+Ly6q2THREIIOu6MHML+DISTCQvQdZL6g9QDNbs=
+	t=1764776334; cv=none; b=NSYGCDZNkhgJ0LgJYD2e/RKT1aNXxPR9eYTBEjoHzL7KjGjTNkHAsSLz9OF54LP9EzYraY3k2h8xtqIIWAJnPVJo36/ns+hL1Fazo7iGd6bxxMiTR+iQBGmVvAi8hAkX53YRa6JkkxKjfiZnybhq5V3DFT3E/H9Un7f6LzM/E9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779705; c=relaxed/simple;
-	bh=sjMbLp9WqDowPUq2UPZrAxl1+2wMRdh52BWvoC/Ko6A=;
+	s=arc-20240116; t=1764776334; c=relaxed/simple;
+	bh=c2XTtx2nV3t2VPiYqo14doyOnus3NFieEJ5Yl7yE4RE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rvHaOGMQ1FsfrwCGbtG3vkArAv4L5V4VYjGdVUD1i6zDgPe2m7BzdUvMGm5yqpcjuFLQcisZulZiVmFxjpCpED7MfztxWDSP+lXsaggf3GVj/rL+ytmFEfawIXPk+x1I1bfCbUcdJLakREao3rLI6KRgIJYLAp4As1ZejfvqqKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZT2Q7xUz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20A47C16AAE;
-	Wed,  3 Dec 2025 16:35:04 +0000 (UTC)
+	 MIME-Version; b=Lr5GHtlxGWiioLWRmLH9YLjR7lShFdZOMtsaUmQOt8RSN+dCw9KUvwYWLMmJj1PINe9aayGMkBVyduZwO4/UzmIISF90N2iiqXdoA3qegxXo02BxgkrZcekc/I6XhcCh+1ZaKmrXtVlCpadTjwKZB36MTvTbDHZ9TcEOTpkikfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yqDogZ20; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 312ABC4CEF5;
+	Wed,  3 Dec 2025 15:38:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779705;
-	bh=sjMbLp9WqDowPUq2UPZrAxl1+2wMRdh52BWvoC/Ko6A=;
+	s=korg; t=1764776333;
+	bh=c2XTtx2nV3t2VPiYqo14doyOnus3NFieEJ5Yl7yE4RE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZT2Q7xUzTgqPH+11GBh9kPrl9c9d0ZzKRzzoSp2M+9P7cWKBROpDfXoIfVUfOiwjX
-	 dsXKivLfNSEpBQxUSIksvKOb9Bxk67L/pJu8d4D1PYZu2rzC9g78kFu4zxnfhQUHFk
-	 uTQAOR7iDCIrLDpbDABjhAL/VXomqz9G8quKBuLs=
+	b=yqDogZ2003h5WYoEqEzbmwNzabxd7/q6bhNpS8b/fXv9P1zsR/XVWHiaaYzRB/SJG
+	 8BizsRm11jpoi398v9BiVIJ6Iz3rDMHKSz+LxRnf/w6QTZidzNs9ZfW5ibrwr1El+O
+	 ydxabo0aTlQPN4kif3YrD9quhAshY1F5dKLflaJU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 336/568] drm/amd: Fix suspend failure with secure display TA
+Subject: [PATCH 5.10 134/300] NFSv4: handle ERR_GRACE on delegation recalls
 Date: Wed,  3 Dec 2025 16:25:38 +0100
-Message-ID: <20251203152453.015472463@linuxfoundation.org>
+Message-ID: <20251203152405.578640657@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +60,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Olga Kornievskaia <okorniev@redhat.com>
 
-[ Upstream commit b09cb2996cdf50cd1ab4020e002c95d742c81313 ]
+[ Upstream commit be390f95242785adbf37d7b8a5101dd2f2ba891b ]
 
-commit c760bcda83571 ("drm/amd: Check whether secure display TA loaded
-successfully") attempted to fix extra messages, but failed to port the
-cleanup that was in commit 5c6d52ff4b61e ("drm/amd: Don't try to enable
-secure display TA multiple times") to prevent multiple tries.
+RFC7530 states that clients should be prepared for the return of
+NFS4ERR_GRACE errors for non-reclaim lock and I/O requests.
 
-Add that to the failure handling path even on a quick failure.
-
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4679
-Fixes: c760bcda8357 ("drm/amd: Check whether secure display TA loaded successfully")
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 4104c0a454f6a4d1e0d14895d03c0e7bdd0c8240)
+Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/nfs/nfs4proc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-index e22eaf9d450d3..9153459455910 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-@@ -1962,8 +1962,11 @@ static int psp_securedisplay_initialize(struct psp_context *psp)
- 	if (!ret && !psp->securedisplay_context.context.resp_status) {
- 		psp->securedisplay_context.context.initialized = true;
- 		mutex_init(&psp->securedisplay_context.mutex);
--	} else
-+	} else {
-+		/* don't try again */
-+		psp->securedisplay_context.context.bin_desc.size_bytes = 0;
- 		return ret;
-+	}
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 87774f3b4c354..c454fb042ab2b 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -7473,10 +7473,10 @@ int nfs4_lock_delegation_recall(struct file_lock *fl, struct nfs4_state *state,
+ 		return err;
+ 	do {
+ 		err = _nfs4_do_setlk(state, F_SETLK, fl, NFS_LOCK_NEW);
+-		if (err != -NFS4ERR_DELAY)
++		if (err != -NFS4ERR_DELAY && err != -NFS4ERR_GRACE)
+ 			break;
+ 		ssleep(1);
+-	} while (err == -NFS4ERR_DELAY);
++	} while (err == -NFS4ERR_DELAY || err == -NFSERR_GRACE);
+ 	return nfs4_handle_delegation_recall_error(server, state, stateid, fl, err);
+ }
  
- 	psp_prep_securedisplay_cmd_buf(psp, &securedisplay_cmd,
- 			TA_SECUREDISPLAY_COMMAND__QUERY_TA);
 -- 
 2.51.0
 
