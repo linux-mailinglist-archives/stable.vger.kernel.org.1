@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 131C4CA0D9C
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:15:38 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD2E9CA070D
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:28:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1508130CEA82
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:12:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B96283006589
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:28:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7BF33451D4;
-	Wed,  3 Dec 2025 16:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08DB134C991;
+	Wed,  3 Dec 2025 16:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YOS+SZ9J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dH6jWVzk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21D0A33F376;
-	Wed,  3 Dec 2025 16:59:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D307D34C9AD;
+	Wed,  3 Dec 2025 16:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764781177; cv=none; b=LFONKav5j0BLwUjc7PXR4HBZ+p1/CW4OXccevGQ5IeyCt/LzJnhvqTTLMDp99ihHHj+ldDkq9GL/5okapQNQfcXWy91pxKrnthd6lgfXeR+FDaDgPO6FluizxNpRsS+u42z9hZBHpnKYgv1fPhQEgoJV8w/Qsgc91GCX2zMcD6M=
+	t=1764780921; cv=none; b=kqeYRB8hQQ6OIpG4GS798is/NWgtMyjI9S7GxXPZAnM9ACVqwSi3JuDNS338FKrcGczi0qvSmroptOH95M2IUoXY0y/cRMrxEJMFgFrh2Xs4FlaSxoUw6kvyG5+6k5VDMe81KUDpB3UwDChLxsvXO86tANd3PcmS+5Phn/KJa80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764781177; c=relaxed/simple;
-	bh=9Swga/1pFYPqjMPiP9/LjBjiMFc8TXHg9EQ+4g4/bj4=;
+	s=arc-20240116; t=1764780921; c=relaxed/simple;
+	bh=2E4+h0nY3G3LWrUGVNp3QsNfmslWGiavG0a83tGyzls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EKtXwGXASO/nAKhh2zIqqFVE41SpXxr4bQevKM4QxCTDJ2aDZqd9EaOPGMGMDSptIuCV2gI9BtL35qcxNv1hiwXHCtxby5vTWxRYa3sZe583X9h1f3WmFnABNePJzjm4YpICtdGtDrzBrf/iytK322a7Y3jWosfY9Yo3KiOxakU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YOS+SZ9J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 502ADC4CEF5;
-	Wed,  3 Dec 2025 16:59:36 +0000 (UTC)
+	 MIME-Version; b=CF0aE7BRhajCPvI0aACQ932LBi3D7rbWqn/IW/S2bCH49u7V1KHkPK2fM5YshYkx0sk76PYZXKwxjbGsMByhid8M2h3Ozvg05B+qUKIUISiDBjEwxjOQW4ueHb4xHL/dBD5uHQs6FgR6Y9kqnCoN7+/ex4besHJysJWk18dP17Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dH6jWVzk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D7A7C4CEF5;
+	Wed,  3 Dec 2025 16:55:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764781176;
-	bh=9Swga/1pFYPqjMPiP9/LjBjiMFc8TXHg9EQ+4g4/bj4=;
+	s=korg; t=1764780921;
+	bh=2E4+h0nY3G3LWrUGVNp3QsNfmslWGiavG0a83tGyzls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YOS+SZ9JfPiBWsK2pFVgmHPz4/gxZ6gjCEFGLZXTxBzqb2FbHmjBEhuRQw7Ey/lin
-	 2+OQ8moAZ9JQLMn0a2LlIlHU96utX8m1klbWN19zLoZTfOAyvwvVdP6Jo/PoWPgmLn
-	 oLuaRQcyVMKikd2z/gx93kJdttNkIuys5Cc7nYGg=
+	b=dH6jWVzkZVRJ8L+5VsPxZODscI1TeBguVjl1cpoC3hOzHpCPJ8hvxQO6xvBbOEIRb
+	 yI2xqjq//rFBZhmjI2EVco8JiIQUPrMG6kJzt9H5QtA89EGnZEUzjlRqcfUeCjKkra
+	 qATazDcHRSsapw+f9b+Hjc6uImraSzgS10A2d0JU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Lunn <andrew@lunn.ch>,
 	"Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 73/93] net: dsa: microchip: common: Fix checks on irq_find_mapping()
-Date: Wed,  3 Dec 2025 16:30:06 +0100
-Message-ID: <20251203152339.222540535@linuxfoundation.org>
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 128/132] net: dsa: microchip: Free previously initialized ports on init failures
+Date: Wed,  3 Dec 2025 16:30:07 +0100
+Message-ID: <20251203152348.057576051@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +60,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
+From: "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
 
-commit 7b3c09e1667977edee11de94a85e2593a7c15e87 upstream.
+[ Upstream commit 0f80e21bf6229637e193248fbd284c0ec44bc0fd ]
 
-irq_find_mapping() returns a positive IRQ number or 0 if no IRQ is found
-but it never returns a negative value. However, on each
-irq_find_mapping() call, we verify that the returned value isn't
-negative.
+If a port interrupt setup fails after at least one port has already been
+successfully initialized, the gotos miss some resource releasing:
+- the already initialized PTP IRQs aren't released
+- the already initialized port IRQs aren't released if the failure
+occurs in ksz_pirq_setup().
 
-Fix the irq_find_mapping() checks to enter error paths when 0 is
-returned. Return -EINVAL in such cases.
+Merge 'out_girq' and 'out_ptpirq' into a single 'port_release' label.
+Behind this label, use the reverse loop to release all IRQ resources
+for all initialized ports.
+Jump in the middle of the reverse loop if an error occurs in
+ksz_ptp_irq_setup() to only release the port IRQ of the current
+iteration.
 
-CC: stable@vger.kernel.org
+Cc: stable@vger.kernel.org
 Fixes: c9cd961c0d43 ("net: dsa: microchip: lan937x: add interrupt support for port phy link")
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
-Link: https://patch.msgid.link/20251120-ksz-fix-v6-1-891f80ae7f8f@bootlin.com
+Link: https://patch.msgid.link/20251120-ksz-fix-v6-4-891f80ae7f8f@bootlin.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/microchip/ksz_common.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/dsa/microchip/ksz_common.c |   23 +++++++++++------------
+ 1 file changed, 11 insertions(+), 12 deletions(-)
 
 --- a/drivers/net/dsa/microchip/ksz_common.c
 +++ b/drivers/net/dsa/microchip/ksz_common.c
-@@ -1870,8 +1870,8 @@ static int ksz_irq_phy_setup(struct ksz_
- 		if (BIT(phy) & ds->phys_mii_mask) {
- 			irq = irq_find_mapping(dev->ports[phy].pirq.domain,
- 					       PORT_SRC_PHY_INT);
--			if (irq < 0) {
--				ret = irq;
-+			if (!irq) {
-+				ret = -EINVAL;
- 				goto out;
+@@ -2564,12 +2564,12 @@ static int ksz_setup(struct dsa_switch *
+ 		dsa_switch_for_each_user_port(dp, dev->ds) {
+ 			ret = ksz_pirq_setup(dev, dp->index);
+ 			if (ret)
+-				goto out_girq;
++				goto port_release;
+ 
+ 			if (dev->info->ptp_capable) {
+ 				ret = ksz_ptp_irq_setup(ds, dp->index);
+ 				if (ret)
+-					goto out_pirq;
++					goto pirq_release;
  			}
- 			ds->slave_mii_bus->irq[phy] = irq;
-@@ -2095,8 +2095,8 @@ static int ksz_pirq_setup(struct ksz_dev
- 	snprintf(pirq->name, sizeof(pirq->name), "port_irq-%d", p);
+ 		}
+ 	}
+@@ -2579,7 +2579,7 @@ static int ksz_setup(struct dsa_switch *
+ 		if (ret) {
+ 			dev_err(dev->dev, "Failed to register PTP clock: %d\n",
+ 				ret);
+-			goto out_ptpirq;
++			goto port_release;
+ 		}
+ 	}
  
- 	pirq->irq_num = irq_find_mapping(dev->girq.domain, p);
--	if (pirq->irq_num < 0)
--		return pirq->irq_num;
-+	if (!pirq->irq_num)
-+		return -EINVAL;
+@@ -2602,17 +2602,16 @@ static int ksz_setup(struct dsa_switch *
+ out_ptp_clock_unregister:
+ 	if (dev->info->ptp_capable)
+ 		ksz_ptp_clock_unregister(ds);
+-out_ptpirq:
+-	if (dev->irq > 0 && dev->info->ptp_capable)
+-		dsa_switch_for_each_user_port(dp, dev->ds)
+-			ksz_ptp_irq_free(ds, dp->index);
+-out_pirq:
+-	if (dev->irq > 0)
+-		dsa_switch_for_each_user_port_continue_reverse(dp, dev->ds)
++port_release:
++	if (dev->irq > 0) {
++		dsa_switch_for_each_user_port_continue_reverse(dp, dev->ds) {
++			if (dev->info->ptp_capable)
++				ksz_ptp_irq_free(ds, dp->index);
++pirq_release:
+ 			ksz_irq_free(&dev->ports[dp->index].pirq);
+-out_girq:
+-	if (dev->irq > 0)
++		}
+ 		ksz_irq_free(&dev->girq);
++	}
  
- 	return ksz_irq_common_setup(dev, pirq);
+ 	return ret;
  }
 
 
