@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-199070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94A4FCA0F4C
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:26:54 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A1BDCA03DD
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:02:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C52F432EB432
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:24:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1B2B03002682
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:02:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B958352F9D;
-	Wed,  3 Dec 2025 16:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D41A13557F2;
+	Wed,  3 Dec 2025 16:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GuYPyfj3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="evVAsjMU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4073B352F95;
-	Wed,  3 Dec 2025 16:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C12352925;
+	Wed,  3 Dec 2025 16:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778599; cv=none; b=Tmn/5/vku6jhf0RDbgU+HIV4d4SOlLtPojnOt71PfSLIAhIjD8t+Cdm0PbVoZuata+9pNUM9zWcSp0qMEoVaj7NgbVrlOQYIouv1eNH9nnnkUWOIMjjrSCOt6VrKWc6nriVWUb4BsNxuiYJ4eUpFQsyXAahyjIefBqFhtQPxQKc=
+	t=1764780961; cv=none; b=FCbkHHfYbe2tOg3TbnVi7XjkB0nd0ZqyoOzZTxS8lcf3xlNB45oB90z7BwWpU6qGX90pzAxE77TDKFyHb5vh+sncCLI2Xzpa6Ky9YCmHYASoGBvM5+dpF67yhn7nT1qfZK8bPU3iOftWryUfZN3gVlhULaMov5g1Oby/OOI7kIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778599; c=relaxed/simple;
-	bh=8bdRHbgj6GBrXGjBh26PrekPZKqdMsxBtA2BuRfYRVU=;
+	s=arc-20240116; t=1764780961; c=relaxed/simple;
+	bh=CSCg4/IhzhVD/Ym86BecRGIBN+mf6EyrZiUNMjySA2E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D6S20L1LvVBkSXBcHCHSj9cTD475vrrh5MYLcbHShMdd7c77yrCtlWyVh02iw6FUaaxCpnDzjiFqvV6TBo5Jkg3ZkmrBuV0bp6LvNB1WnwSCbeg7Qzu9TfUvW7OtchpSKYAemFJTJH3YNvnSuQA3uq/i4J0vnUubuUO24FSjhuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GuYPyfj3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A876AC4CEF5;
-	Wed,  3 Dec 2025 16:16:38 +0000 (UTC)
+	 MIME-Version; b=djatuzDSAFhQzzJeEBXA3gE6FuaIaibY1ksvSfX3QWO8bQEQXPHhtsxNZulh/yAvvrvf4EUHfrQhSvcxsdBKo5kRNHmmhpC/b8SYKEZYPI5QxdF1MeR6CB/MVwiCuYn2ifet2AQczqxr4fq9FuoRgZNc2WxA6q/6dNfcRK6xomk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=evVAsjMU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEA73C116C6;
+	Wed,  3 Dec 2025 16:56:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778599;
-	bh=8bdRHbgj6GBrXGjBh26PrekPZKqdMsxBtA2BuRfYRVU=;
+	s=korg; t=1764780961;
+	bh=CSCg4/IhzhVD/Ym86BecRGIBN+mf6EyrZiUNMjySA2E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GuYPyfj31MXQOagAdMHdg9pI+UIIZba9MKGvXV5A7BFaxNFPrZp4tfnwyRdYwassZ
-	 /FNxLsYsVpv75jg15Rr97G8+oUECewsOJviKSok7Aje0mHrTvw8WoxpoWvNpuoa7yh
-	 tKao9dtob/DO1xsqrBefARNyLqWQw2pnVkr8P+oU=
+	b=evVAsjMURVGh4GAyK1YgoVqt0166cMrttKdo8/LSvQe9+TK5BbhEp9C1yC7FDPxYp
+	 5DsM4Yw4pGeqJqiMBjcUIZeUTQqGM5yLP7/V29VsVRCGu8k7eSvuZqYWnub6Z/mpxb
+	 U4eS2+CeuQRIltGUyxPw5Yve6bZEXe/nk9UGDDbw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	David Howells <dhowells@redhat.com>,
-	Jay Shin <jaeshin@redhat.com>,
-	linux-cifs@vger.kernel.org,
-	Steve French <stfrench@microsoft.com>,
+	Seungjin Bae <eeodqql09@gmail.com>,
+	Jimmy Assarsson <extja@kvaser.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 383/392] smb: client: fix memory leak in cifs_construct_tcon()
-Date: Wed,  3 Dec 2025 16:28:53 +0100
-Message-ID: <20251203152428.287701996@linuxfoundation.org>
+Subject: [PATCH 6.6 01/93] can: kvaser_usb: leaf: Fix potential infinite loop in command parsers
+Date: Wed,  3 Dec 2025 16:28:54 +0100
+Message-ID: <20251203152336.552627708@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
+References: <20251203152336.494201426@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.org>
+From: Seungjin Bae <eeodqql09@gmail.com>
 
-[ Upstream commit 3184b6a5a24ec9ee74087b2a550476f386df7dc2 ]
+[ Upstream commit 0c73772cd2b8cc108d5f5334de89ad648d89b9ec ]
 
-When having a multiuser mount with domain= specified and using
-cifscreds, cifs_set_cifscreds() will end up setting @ctx->domainname,
-so it needs to be freed before leaving cifs_construct_tcon().
+The `kvaser_usb_leaf_wait_cmd()` and `kvaser_usb_leaf_read_bulk_callback`
+functions contain logic to zero-length commands. These commands are used
+to align data to the USB endpoint's wMaxPacketSize boundary.
 
-This fixes the following memory leak reported by kmemleak:
+The driver attempts to skip these placeholders by aligning the buffer
+position `pos` to the next packet boundary using `round_up()` function.
 
-  mount.cifs //srv/share /mnt -o domain=ZELDA,multiuser,...
-  su - testuser
-  cifscreds add -d ZELDA -u testuser
-  ...
-  ls /mnt/1
-  ...
-  umount /mnt
-  echo scan > /sys/kernel/debug/kmemleak
-  cat /sys/kernel/debug/kmemleak
-  unreferenced object 0xffff8881203c3f08 (size 8):
-    comm "ls", pid 5060, jiffies 4307222943
-    hex dump (first 8 bytes):
-      5a 45 4c 44 41 00 cc cc                          ZELDA...
-    backtrace (crc d109a8cf):
-      __kmalloc_node_track_caller_noprof+0x572/0x710
-      kstrdup+0x3a/0x70
-      cifs_sb_tlink+0x1209/0x1770 [cifs]
-      cifs_get_fattr+0xe1/0xf50 [cifs]
-      cifs_get_inode_info+0xb5/0x240 [cifs]
-      cifs_revalidate_dentry_attr+0x2d1/0x470 [cifs]
-      cifs_getattr+0x28e/0x450 [cifs]
-      vfs_getattr_nosec+0x126/0x180
-      vfs_statx+0xf6/0x220
-      do_statx+0xab/0x110
-      __x64_sys_statx+0xd5/0x130
-      do_syscall_64+0xbb/0x380
-      entry_SYSCALL_64_after_hwframe+0x77/0x7f
+However, if zero-length command is found exactly on a packet boundary
+(i.e., `pos` is a multiple of wMaxPacketSize, including 0), `round_up`
+function will return the unchanged value of `pos`. This prevents `pos`
+to be increased, causing an infinite loop in the parsing logic.
 
-Fixes: f2aee329a68f ("cifs: set domainName when a domain-key is used in multiuser")
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Reviewed-by: David Howells <dhowells@redhat.com>
-Cc: Jay Shin <jaeshin@redhat.com>
-Cc: stable@vger.kernel.org
-Cc: linux-cifs@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ applied fix to fs/cifs/connect.c ]
+This patch fixes this in the function by using `pos + 1` instead.
+This ensures that even if `pos` is on a boundary, the calculation is
+based on `pos + 1`, forcing `round_up()` to always return the next
+aligned boundary.
+
+Fixes: 7259124eac7d ("can: kvaser_usb: Split driver into kvaser_usb_core.c and kvaser_usb_leaf.c")
+Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
+Reviewed-by: Jimmy Assarsson <extja@kvaser.com>
+Tested-by: Jimmy Assarsson <extja@kvaser.com>
+Link: https://patch.msgid.link/20251023162709.348240-1-eeodqql09@gmail.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cifs/connect.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/cifs/connect.c
-+++ b/fs/cifs/connect.c
-@@ -3926,6 +3926,7 @@ cifs_construct_tcon(struct cifs_sb_info
- 
- out:
- 	kfree(ctx->username);
-+	kfree(ctx->domainname);
- 	kfree_sensitive(ctx->password);
- 	kfree(ctx);
- 
+diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c
+index 23bd7574b1c7e..7b931953dadc4 100644
+--- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c
++++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c
+@@ -611,7 +611,7 @@ static int kvaser_usb_leaf_wait_cmd(const struct kvaser_usb *dev, u8 id,
+ 			 * for further details.
+ 			 */
+ 			if (tmp->len == 0) {
+-				pos = round_up(pos,
++				pos = round_up(pos + 1,
+ 					       le16_to_cpu
+ 						(dev->bulk_in->wMaxPacketSize));
+ 				continue;
+@@ -1590,7 +1590,7 @@ static void kvaser_usb_leaf_read_bulk_callback(struct kvaser_usb *dev,
+ 		 * number of events in case of a heavy rx load on the bus.
+ 		 */
+ 		if (cmd->len == 0) {
+-			pos = round_up(pos, le16_to_cpu
++			pos = round_up(pos + 1, le16_to_cpu
+ 						(dev->bulk_in->wMaxPacketSize));
+ 			continue;
+ 		}
+-- 
+2.51.0
+
 
 
 
