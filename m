@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-198542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F19DEC9FEC7
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:24:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5052ECA0E4F
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:20:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 265653003F91
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:24:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5E24E32B8CDA
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:16:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB8C131B10D;
-	Wed,  3 Dec 2025 15:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0635832E139;
+	Wed,  3 Dec 2025 16:10:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FgE0hEqC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NupmvJC5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 771DB313E3D;
-	Wed,  3 Dec 2025 15:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335C732D420;
+	Wed,  3 Dec 2025 16:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776889; cv=none; b=XI66Muy6ggJTOvxws1kKUfjM0fgBio52z6dro62VmLCrTWRD3Rhq8Y2KplM7+vTibq1PCP88SQtmp001bUEJsgDdZrOLxSj4PakpQXWxfGvVLW3xmJajv1QVTh4jvsCkHjl/ZOxaDY1aE+bX3pf5wGCrpODqvtDoLogDELP65KE=
+	t=1764778219; cv=none; b=eh79o505e2dXXVA5SzMSbYJfgQaIboLtjuCK1pY6OzCpB4dc3wb0DmBwX0eJoeBL2WlajtZ2UYq25cHI+EimTILDkKxOnUi0hrrX9Nh2QWa2tGXS6i8cLTtYxhG/XfXMnQm0bTyoZOX3O0VcGuYfQxfoKK+Vr4DavJji0NUo1P4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776889; c=relaxed/simple;
-	bh=B3I9WBX8zsyLjxiqaDfLZYsNyB0eOpSI0el16vrcW3I=;
+	s=arc-20240116; t=1764778219; c=relaxed/simple;
+	bh=NMUDsXWQ13qIJq2GYf7L/cZmic924kQ/1OEhqnMI+YE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O6D7dTN1vFki0/dsWd+OI3sGn/4UZLagDaTzpccfLVfOb+bKmvqtshrqm0EoomeOqLo48NaUgSpeONpeR1yjHDV/y9bpa8EU8jOFpAb8KlF6GnUjr4Uh01n9H/PWotCdDYp5Qn0tIyHTKEJ06VRKmvEy5Vx+d1gE/dc3r1DaOvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FgE0hEqC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D942EC4CEF5;
-	Wed,  3 Dec 2025 15:48:08 +0000 (UTC)
+	 MIME-Version; b=j27ivSN2sYHYDBps5Zy3cvC0xo6fgj/AT8oOxeircvf4GoWQJCHGPmeyzlIaBYAEwWLkjf6TZfxS+4Eh0hLggQEFLGvLw/3YgMjSCIYq8HbjT2cmFEIZ1aPLDZjFNWJ9FV4KLLJ7teIMAFdXKwZ01ULp4S6kgFqTa5ZK6xaxr4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NupmvJC5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A391C116C6;
+	Wed,  3 Dec 2025 16:10:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776889;
-	bh=B3I9WBX8zsyLjxiqaDfLZYsNyB0eOpSI0el16vrcW3I=;
+	s=korg; t=1764778218;
+	bh=NMUDsXWQ13qIJq2GYf7L/cZmic924kQ/1OEhqnMI+YE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FgE0hEqCevq8Oj2s+iUyw7zkzt8zAAAZl7uy8kngOtSL+fSQF6Dho2IPbE/p0ODxX
-	 2zolR8rwncRv3k+UmXtG7y/KdRO1nE+VowXaS/9sq6ywZeW5VI2Xy3VuhR67vPJJye
-	 wRRtMjGDtTGo6QIgmAdRsBTXm10jX9XpBWlevNBo=
+	b=NupmvJC56Bgjng5c8MkRBScjqxacZ6J9qfnfZyBhRy/2BsfPknXw3kRCVdDgzL0RS
+	 unQTy7Ah3sQv7RN1Vt5ihbjx64y5iwXZCjpJxvd+yNdJk9jyswHYbQ4cGjc6olkQpU
+	 Gj52Ry0kSTiwXchRIAhh6jqUfvOv5aejw5W80RKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danielle Costantino <dcostantino@meta.com>,
-	Gal Pressman <gal@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 018/146] net/mlx5e: Fix validation logic in rate limiting
+Subject: [PATCH 5.15 246/392] wifi: mac80211: skip rate verification for not captured PSDUs
 Date: Wed,  3 Dec 2025 16:26:36 +0100
-Message-ID: <20251203152347.135940631@linuxfoundation.org>
+Message-ID: <20251203152423.224714721@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danielle Costantino <dcostantino@meta.com>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-[ Upstream commit d2099d9f16dbfa1c5266d4230ff7860047bb0b68 ]
+[ Upstream commit 7fe0d21f5633af8c3fab9f0ef0706c6156623484 ]
 
-The rate limiting validation condition currently checks the output
-variable max_bw_value[i] instead of the input value
-maxrate->tc_maxrate[i]. This causes the validation to compare an
-uninitialized or stale value rather than the actual requested rate.
+If for example the sniffer did not follow any AIDs in an MU frame, then
+some of the information may not be filled in or is even expected to be
+invalid. As an example, in that case it is expected that Nss is zero.
 
-The condition should check the input rate to properly validate against
-the upper limit:
-
-    } else if (maxrate->tc_maxrate[i] <= upper_limit_gbps) {
-
-This aligns with the pattern used in the first branch, which correctly
-checks maxrate->tc_maxrate[i] against upper_limit_mbps.
-
-The current implementation can lead to unreliable validation behavior:
-
-- For rates between 25.5 Gbps and 255 Gbps, if max_bw_value[i] is 0
-  from initialization, the GBPS path may be taken regardless of whether
-  the actual rate is within bounds
-
-- When processing multiple TCs (i > 0), max_bw_value[i] contains the
-  value computed for the previous TC, affecting the validation logic
-
-- The overflow check for rates exceeding 255 Gbps may not trigger
-  consistently depending on previous array values
-
-This patch ensures the validation correctly examines the requested rate
-value for proper bounds checking.
-
-Fixes: 43b27d1bd88a ("net/mlx5e: Fix wraparound in rate limiting for values above 255 Gbps")
-Signed-off-by: Danielle Costantino <dcostantino@meta.com>
-Reviewed-by: Gal Pressman <gal@nvidia.com>
-Link: https://patch.msgid.link/20251124180043.2314428-1-dcostantino@meta.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 2ff5e52e7836 ("radiotap: add 0-length PSDU "not captured" type")
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20251110142554.83a2858ee15b.I9f78ce7984872f474722f9278691ae16378f0a3e@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/rx.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-index 9b93da4d52f64..cf8f14ce4cd50 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-@@ -627,7 +627,7 @@ static int mlx5e_dcbnl_ieee_setmaxrate(struct net_device *netdev,
- 						  MLX5E_100MB);
- 			max_bw_value[i] = max_bw_value[i] ? max_bw_value[i] : 1;
- 			max_bw_unit[i]  = MLX5_100_MBPS_UNIT;
--		} else if (max_bw_value[i] <= upper_limit_gbps) {
-+		} else if (maxrate->tc_maxrate[i] <= upper_limit_gbps) {
- 			max_bw_value[i] = div_u64(maxrate->tc_maxrate[i],
- 						  MLX5E_1GB);
- 			max_bw_unit[i]  = MLX5_GBPS_UNIT;
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 6c160ff2aab90..aa3442761ad05 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -4911,10 +4911,14 @@ void ieee80211_rx_list(struct ieee80211_hw *hw, struct ieee80211_sta *pubsta,
+ 	if (WARN_ON(!local->started))
+ 		goto drop;
+ 
+-	if (likely(!(status->flag & RX_FLAG_FAILED_PLCP_CRC))) {
++	if (likely(!(status->flag & RX_FLAG_FAILED_PLCP_CRC) &&
++		   !(status->flag & RX_FLAG_NO_PSDU &&
++		     status->zero_length_psdu_type ==
++		     IEEE80211_RADIOTAP_ZERO_LEN_PSDU_NOT_CAPTURED))) {
+ 		/*
+-		 * Validate the rate, unless a PLCP error means that
+-		 * we probably can't have a valid rate here anyway.
++		 * Validate the rate, unless there was a PLCP error which may
++		 * have an invalid rate or the PSDU was not capture and may be
++		 * missing rate information.
+ 		 */
+ 
+ 		switch (status->encoding) {
 -- 
 2.51.0
 
