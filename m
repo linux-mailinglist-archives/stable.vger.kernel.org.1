@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-199839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50289CA0553
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:18:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 786E1CA04AA
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:14:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AB0E8307317B
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:05:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8F33A30DB581
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:02:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C49453AA1A6;
-	Wed,  3 Dec 2025 16:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64AEF34FF79;
+	Wed,  3 Dec 2025 16:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hPep03YT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OFw6S0La"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D0CA3AA197;
-	Wed,  3 Dec 2025 16:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F9D350D64;
+	Wed,  3 Dec 2025 16:55:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764781112; cv=none; b=W4ktttttjSCr1i9TZFn2NoWziU1DyarnK0NORs+yPFZbMfrXPB7SaK7Nx0odLI0wRba+P6JnMtaG6C7Hxwywkwjp6bonVlFty5O95/fQDK4XhEmCcC84LKTHsYT7lKMURfa1qdl491uhJN5Uco/fe6vWOjPT/OXEA8hVsGPR13g=
+	t=1764780942; cv=none; b=g8t/06/gE7EcM/slEQA7DJ7M+cpzwRTr6fKz22CWKYUAtDOoQcgrDVhS7MC+zKRJAGIK0BUj+sNdj3AYPJsJjVOuqAYJBXUoiUmOllPfvzF09gNA0y9Bswx7UqpPmFSL9C0lWrDSNDe0Gf8/ywlcS5eAZ2GUfv4pcfQ7wiK7i+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764781112; c=relaxed/simple;
-	bh=+vkSzC2J+ZITU89o7PQPd6A0cHO+aEuGyP69rmi7/9g=;
+	s=arc-20240116; t=1764780942; c=relaxed/simple;
+	bh=AM/LryI3A8h4nyd8qw1LyxvW3xYw0e78l8zimXeLtu0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pfRs6/7MJ3AV5tAWA64sl45GogNoi+3PHB1O2f/0ZFZiVd0UEQNFXO06DIj8kV5OJwIFbEg4t3pkbcuJR/R9UqpXgrFUiJh0OijS8ONHctGUZrloHgUv/C5wPQGuJpHZvTI+fhWVeTynNLnGN2GcDZ2b5/PbhUVFZCE3X4KMYsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hPep03YT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D237FC116C6;
-	Wed,  3 Dec 2025 16:58:31 +0000 (UTC)
+	 MIME-Version; b=NTo3tOU2e5nHeTYS8NUqAlkfJRU63vLTDK1Fhhx+cfD6mSefJ/IF8rW4SsFc8C8/tDBBJhpUxkNG41W9Xiy3wi8Bh2GQCmE3SG0I7Q/HUaJXPkx+zUsIzgfq80Cudyt9tJFp7jRR+WdT3qsRYjbHOG+9FeTpbowi583o6bWwtq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OFw6S0La; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36FF5C4CEF5;
+	Wed,  3 Dec 2025 16:55:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764781112;
-	bh=+vkSzC2J+ZITU89o7PQPd6A0cHO+aEuGyP69rmi7/9g=;
+	s=korg; t=1764780941;
+	bh=AM/LryI3A8h4nyd8qw1LyxvW3xYw0e78l8zimXeLtu0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hPep03YT/DyOrP4dIwYHTGP50/3nbqY2ksBnlEt1QJFP7pCl96C745/+nIW6p0TIF
-	 BYQzSaQzeaGoyQ7WnyueM7gEekVrJ/ztzrAQrtLVq6ut2aQw/AmgWOR7767AX3eRzD
-	 SgM/mAhbeAbC5jGciOtFKLG2S91YlXUBNfz0s+ew=
+	b=OFw6S0LakIrS7soOg8/3b7eGxFJLJObgab7ZAIXLngRBQSS3DvYKkX7QfZCftwUAf
+	 QkvEzfdl44hz3rdmrG0WUfWCYzvunTj1kLHuKCqa04rzr92tx6+5j7XjEcTMZCiQHL
+	 2SIn52o6q3d3Kl+N+zPhVeGZxu+sLDoChWQuNx7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.6 51/93] thunderbolt: Add support for Intel Wildcat Lake
+	Michael Chen <michael.chen@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Shaoyun liu <Shaoyun.liu@amd.com>
+Subject: [PATCH 6.12 105/132] drm/amd/amdgpu: reserve vm invalidation engine for uni_mes
 Date: Wed,  3 Dec 2025 16:29:44 +0100
-Message-ID: <20251203152338.407724552@linuxfoundation.org>
+Message-ID: <20251203152347.176274270@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,48 +60,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
+From: Michael Chen <michael.chen@amd.com>
 
-commit 3575254546a27210a4b661ea37fbbfb836c0815d upstream.
+commit 971fb57429df5aa4e6efc796f7841e0d10b1e83c upstream.
 
-Intel Wildcat Lake derives its Thunderbolt/USB4 controller from Lunar
-Lake platform. Add Wildcat Lake PCI ID to the driver list of supported
-devices.
+Reserve vm invalidation engine 6 when uni_mes enabled. It
+is used in processing tlb flush request from host.
 
-Signed-off-by: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
+Signed-off-by: Michael Chen <michael.chen@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Shaoyun liu <Shaoyun.liu@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 873373739b9b150720ea2c5390b4e904a4d21505)
 Cc: stable@vger.kernel.org
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/nhi.c |    2 ++
- drivers/thunderbolt/nhi.h |    1 +
- 2 files changed, 3 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/thunderbolt/nhi.c
-+++ b/drivers/thunderbolt/nhi.c
-@@ -1536,6 +1536,8 @@ static struct pci_device_id nhi_ids[] =
- 	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_PTL_P_NHI1),
- 	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
-+	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_WCL_NHI0),
-+	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_80G_NHI) },
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_40G_NHI) },
- 
---- a/drivers/thunderbolt/nhi.h
-+++ b/drivers/thunderbolt/nhi.h
-@@ -75,6 +75,7 @@ extern const struct tb_nhi_ops icl_nhi_o
- #define PCI_DEVICE_ID_INTEL_TITAN_RIDGE_DD_BRIDGE	0x15ef
- #define PCI_DEVICE_ID_INTEL_ADL_NHI0			0x463e
- #define PCI_DEVICE_ID_INTEL_ADL_NHI1			0x466d
-+#define PCI_DEVICE_ID_INTEL_WCL_NHI0			0x4d33
- #define PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_80G_NHI	0x5781
- #define PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_40G_NHI	0x5784
- #define PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HUB_80G_BRIDGE 0x5786
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
+@@ -580,6 +580,9 @@ int amdgpu_gmc_allocate_vm_inv_eng(struc
+ 		/* reserve engine 5 for firmware */
+ 		if (adev->enable_mes)
+ 			vm_inv_engs[i] &= ~(1 << 5);
++		/* reserve engine 6 for uni mes */
++		if (adev->enable_uni_mes)
++			vm_inv_engs[i] &= ~(1 << 6);
+ 		/* reserve mmhub engine 3 for firmware */
+ 		if (adev->enable_umsch_mm)
+ 			vm_inv_engs[i] &= ~(1 << 3);
 
 
 
