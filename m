@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-198740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C797CA064F
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:24:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16806CA0562
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:18:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5C48830052F7
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:24:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0A67C3079E96
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:05:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F338315D3F;
-	Wed,  3 Dec 2025 15:58:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 488C235CB69;
+	Wed,  3 Dec 2025 16:25:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="umwyN2EX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jgWJuPMp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F558320CD1;
-	Wed,  3 Dec 2025 15:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0546335CB63;
+	Wed,  3 Dec 2025 16:25:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777528; cv=none; b=GYc/7pmFEhHhcpAODaJL/Tra6LXGfCP4o65jGtdiyWt81Avv2qES+9y9TOxeNALL24+iOW0EUcwsP1zvRcS/Z+QI1KzhhyjQNerDlTiT/T3SZkgBUp3Db1LCd6EO77mB/X3QOFibx1l6x4INrDPtqip3y5NjoOnCCFozIqiSfyw=
+	t=1764779159; cv=none; b=tDMmHh6zyXUv+q5c1b65GDAUSkFT7lf1zRhK2hdHFhOZGcFq2I4K1XRDMRotSTuP4ADq6CK4gky+dCsbE1upXTLoWjO3xXpWukc/RNJ+/GNA5468fn67NXL9Pb6fIWGgBn9yhe9o6C9JXAao4eTXMwDyWukkoKNxYxIktLKQlF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777528; c=relaxed/simple;
-	bh=u3Txwa+/4NEgdnj6SzozzhxkEmxUaPibI8OQeTuFqZk=;
+	s=arc-20240116; t=1764779159; c=relaxed/simple;
+	bh=vhN8Bhrh3+qZXDturpRfEGpsAy+W7X13l+tZknG1qMg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F0Ypb8INMZ24+/VzjVVnHnuFRn/CwddeUc11FgoHi5pIcgEtVIE0gFOZsIbfoI8ndvKQSvnqTI9N2sA4WPBTLZsrg3GcjXwEpuOVGFq5qVWKK8fVinq/CO3tjhYS2W82Sm3/twb96y70GGuXlIBcFwDdmW6VWrB2nbYnXkX5P9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=umwyN2EX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E923BC4CEF5;
-	Wed,  3 Dec 2025 15:58:46 +0000 (UTC)
+	 MIME-Version; b=Jp/ejVnoHPBkbrsHugNoZnABnDNLY3Cw1SfkzCbK5FhTKcCCsz61XCJVxb6A9ynEEP8gBrg1Cl8SUACwqg7c0XoBNmBlVNt5ohgeN/7CoqXcTkKFuwZeJY9H9gJnWwlHDgdrSkMRjBdGTqgLQ3j2jdySdhSKbRi5SwPybd10acQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jgWJuPMp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69096C4CEF5;
+	Wed,  3 Dec 2025 16:25:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777527;
-	bh=u3Txwa+/4NEgdnj6SzozzhxkEmxUaPibI8OQeTuFqZk=;
+	s=korg; t=1764779158;
+	bh=vhN8Bhrh3+qZXDturpRfEGpsAy+W7X13l+tZknG1qMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=umwyN2EX6yOXr1uilTuSqZAcueLJNvhPodA9TT0PpsNr24xkK05Bw0ikdqry+STTX
-	 qYT/dbL2Ah+MX0EXjs49gSmE9pDT5KlPlrCjS58hvij58C0kigkEX3Rq0cskBZNjMV
-	 A4jUi6AQxOMB7S4Kboa/Z0NoTdSjLMwG/sMI5YBg=
+	b=jgWJuPMpZR8NQUUEhjN+5QUHCAoe06vQpCIBx8+ylInB4ymL6SrjztrmJ8bT27S3O
+	 OgluKPSOSBOIdAzAz9ORbdCTmqJKOIFXvARRUFEQiJjp21YUY784uTJHtqLCEAFKil
+	 dKYzfM50J64OD7gI3FyxwFPs/lIjgaXabSQC5LwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	"Naveen N Rao (AMD)" <naveen@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 023/392] libbpf: Fix powerpcs stack register definition in bpf_tracing.h
+Subject: [PATCH 6.1 171/568] net: phy: fixed_phy: let fixed_phy_unregister free the phy_device
 Date: Wed,  3 Dec 2025 16:22:53 +0100
-Message-ID: <20251203152414.956510794@linuxfoundation.org>
+Message-ID: <20251203152446.987137585@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +61,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit 7221b9caf84b3294688228a19273d74ea19a2ee4 ]
+[ Upstream commit a0f849c1cc6df0db9083b4c81c05a5456b1ed0fb ]
 
-retsnoop's build on powerpc (ppc64le) architecture ([0]) failed due to
-wrong definition of PT_REGS_SP() macro. Looking at powerpc's
-implementation of stack unwinding in perf_callchain_user_64() clearly
-shows that stack pointer register is gpr[1].
+fixed_phy_register() creates and registers the phy_device. To be
+symmetric, we should not only unregister, but also free the phy_device
+in fixed_phy_unregister(). This allows to simplify code in users.
 
-Fix libbpf's definition of __PT_SP_REG for powerpc to fix all this.
+Note wrt of_phy_deregister_fixed_link():
+put_device(&phydev->mdio.dev) and phy_device_free(phydev) are identical.
 
-  [0] https://kojipkgs.fedoraproject.org/work/tasks/1544/137921544/build.log
-
-Fixes: 138d6153a139 ("samples/bpf: Enable powerpc support")
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Reviewed-by: Naveen N Rao (AMD) <naveen@kernel.org>
-Link: https://lore.kernel.org/r/20251020203643.989467-1-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://patch.msgid.link/ad8dda9a-10ed-4060-916b-3f13bdbb899d@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/bpf_tracing.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/dsa/dsa_loop.c  | 9 +++------
+ drivers/net/mdio/of_mdio.c  | 1 -
+ drivers/net/phy/fixed_phy.c | 1 +
+ 3 files changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/tools/lib/bpf/bpf_tracing.h b/tools/lib/bpf/bpf_tracing.h
-index 20fe06d0acd98..950ce502d655c 100644
---- a/tools/lib/bpf/bpf_tracing.h
-+++ b/tools/lib/bpf/bpf_tracing.h
-@@ -176,7 +176,7 @@
- #define __PT_RET_REG regs[31]
- #define __PT_FP_REG __unsupported__
- #define __PT_RC_REG gpr[3]
--#define __PT_SP_REG sp
-+#define __PT_SP_REG gpr[1]
- #define __PT_IP_REG nip
+diff --git a/drivers/net/dsa/dsa_loop.c b/drivers/net/dsa/dsa_loop.c
+index 5b139f2206b6e..48cf9d300bbf5 100644
+--- a/drivers/net/dsa/dsa_loop.c
++++ b/drivers/net/dsa/dsa_loop.c
+@@ -378,13 +378,10 @@ static struct mdio_driver dsa_loop_drv = {
  
- #elif defined(bpf_target_sparc)
+ static void dsa_loop_phydevs_unregister(void)
+ {
+-	unsigned int i;
+-
+-	for (i = 0; i < NUM_FIXED_PHYS; i++)
+-		if (!IS_ERR(phydevs[i])) {
++	for (int i = 0; i < NUM_FIXED_PHYS; i++) {
++		if (!IS_ERR(phydevs[i]))
+ 			fixed_phy_unregister(phydevs[i]);
+-			phy_device_free(phydevs[i]);
+-		}
++	}
+ }
+ 
+ static int __init dsa_loop_init(void)
+diff --git a/drivers/net/mdio/of_mdio.c b/drivers/net/mdio/of_mdio.c
+index 1e46e39f5f46a..6444f77931708 100644
+--- a/drivers/net/mdio/of_mdio.c
++++ b/drivers/net/mdio/of_mdio.c
+@@ -440,6 +440,5 @@ void of_phy_deregister_fixed_link(struct device_node *np)
+ 	fixed_phy_unregister(phydev);
+ 
+ 	put_device(&phydev->mdio.dev);	/* of_phy_find_device() */
+-	phy_device_free(phydev);	/* fixed_phy_register() */
+ }
+ EXPORT_SYMBOL(of_phy_deregister_fixed_link);
+diff --git a/drivers/net/phy/fixed_phy.c b/drivers/net/phy/fixed_phy.c
+index aef739c20ac4d..4694fb3eaa2ff 100644
+--- a/drivers/net/phy/fixed_phy.c
++++ b/drivers/net/phy/fixed_phy.c
+@@ -329,6 +329,7 @@ void fixed_phy_unregister(struct phy_device *phy)
+ 	phy_device_remove(phy);
+ 	of_node_put(phy->mdio.dev.of_node);
+ 	fixed_phy_del(phy->mdio.addr);
++	phy_device_free(phy);
+ }
+ EXPORT_SYMBOL_GPL(fixed_phy_unregister);
+ 
 -- 
 2.51.0
 
