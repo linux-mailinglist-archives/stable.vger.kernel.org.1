@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-198450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEA84C9FC32
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:59:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34A8ACA055F
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:18:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DC6253001E33
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:58:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9561E3000B18
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:18:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1A33316910;
-	Wed,  3 Dec 2025 15:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE21932C92B;
+	Wed,  3 Dec 2025 15:49:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lp7h53TB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ctLT6Svp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DAAB3168E8;
-	Wed,  3 Dec 2025 15:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABEA832C323;
+	Wed,  3 Dec 2025 15:49:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776583; cv=none; b=DPU8eBjtnb+DohC7emXzwWl6e3TZPTppIST6xhnl9dDz+AChwHhk2/LEcnfKdEyTqqTKEg9TuyxoxrUNsvOvg43t9KCAZlMkppDUTO30J9Df+p7WFxgNyw8ysyGD9ae7okRUfBwqd6z3tc52r+apxV2DV3mYlDwk+UelCgCtZxY=
+	t=1764776999; cv=none; b=VQGQbRTM5wq5E+iJoMHgV2Rqd38mzE6IdsxTuHjEimW7gssiS4PIYAPRE6v//wtwAilyouaNLEvhaKHS3+taiefCF//UZTiqoYNmLDxeycmQ1kqjQAw1wRPtZJoN0uCdJ4450Tuvwb2q4x/FCN6L8ryMK19/svOj3PX+f01txZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776583; c=relaxed/simple;
-	bh=ohY71j4HHKxEg5tdBOYH35Fed/Wkchxui/wwbZUdoOY=;
+	s=arc-20240116; t=1764776999; c=relaxed/simple;
+	bh=xPCeYYYuaCtlpKS2cAvm7DMGc9lCQL7rODoL9ykLGwE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oju5jDsz8JPwQnC7l9OnK1zlxArgjMZW22HdIiIP5/ZGrz7C+n1hrLQx9ua/MJmKLzpTk+tPmSsNQ7el7K6eVZPq9vzgaI18ZFtt5gFqtYoB2VAS2gK55zSqJtLiFxSL4j6rfyyMgtHHxHMmQh/f15kb6pYUMj6kNLCn1gyKgms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lp7h53TB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE824C4CEF5;
-	Wed,  3 Dec 2025 15:43:02 +0000 (UTC)
+	 MIME-Version; b=Vx+d7+BJ7aALT4zILXlHVHozLY4fqbBcae+hY85MMYJpNUj4pKYBjIGFPwpdwn5zE5mPa8+xIQJVe02LRSnmUjh9Sun0Seirh3c0N1nZxt19Nr15mViPvFRcy8KRwuwO/aVmLuyPXzmHNKlfFtfcMl8yQ6m5a9aggiBTkixcx4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ctLT6Svp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 355DDC4CEF5;
+	Wed,  3 Dec 2025 15:49:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776583;
-	bh=ohY71j4HHKxEg5tdBOYH35Fed/Wkchxui/wwbZUdoOY=;
+	s=korg; t=1764776999;
+	bh=xPCeYYYuaCtlpKS2cAvm7DMGc9lCQL7rODoL9ykLGwE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lp7h53TBR/T/puUnrUzghWALCd3xNoaPFHQAvihV2ClrEhNlhkXlF/XbyDjxfYBsT
-	 LaJ6H1Kj2OhzrmGT7r2BgEczZ37dPYOCxGXQF8P8hamSM0YqTEUNGrRCdda6YgAfBV
-	 OZyT68s06eQcHReV2xCQp/Zvbz5rHOMEVnzhcNiI=
+	b=ctLT6SvplnMIlTOditEDOQbgY+FNwpKCEmRXoSjRR1Ax2oBWQpiybkr5+pLoaC2KO
+	 ELRz9EseWw1uC9mkr2ww0ELbFajGCfx20Xa63g0uuJVzxltyb+x5TXXNwTqmpmHE3S
+	 9+fSNUNKSaeg7pi1pYlaSty3lOWbYpmNcVNnfvo8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 226/300] mlxsw: spectrum: Fix memory leak in mlxsw_sp_flower_stats()
+	Sunpeng.Li@amd.com,
+	ivan.lipski@amd.com,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.17 052/146] Revert "drm/amd/display: Move setup_stream_attribute"
 Date: Wed,  3 Dec 2025 16:27:10 +0100
-Message-ID: <20251203152408.998120975@linuxfoundation.org>
+Message-ID: <20251203152348.376280808@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +60,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 407a06507c2358554958e8164dc97176feddcafc ]
+commit 3126c9ccb4373d8758733c6699ba5ab93dbe5c9d upstream.
 
-The function mlxsw_sp_flower_stats() calls mlxsw_sp_acl_ruleset_get() to
-obtain a ruleset reference. If the subsequent call to
-mlxsw_sp_acl_rule_lookup() fails to find a rule, the function returns
-an error without releasing the ruleset reference, causing a memory leak.
+This reverts commit 2681bf4ae8d24df950138b8c9ea9c271cd62e414.
 
-Fix this by using a goto to the existing error handling label, which
-calls mlxsw_sp_acl_ruleset_put() to properly release the reference.
+This results in a blank screen on the HDMI port on some systems.
+Revert for now so as not to regress 6.18, can be addressed
+in 6.19 once the issue is root caused.
 
-Fixes: 7c1b8eb175b69 ("mlxsw: spectrum: Add support for TC flower offload statistics")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20251112052114.1591695-1-zilin@seu.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4652
+Cc: Sunpeng.Li@amd.com
+Cc: ivan.lipski@amd.com
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit d0e9de7a81503cdde37fb2d37f1d102f9e0f38fb)
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c       |    1 -
+ drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c         |    2 --
+ drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c       |    2 --
+ drivers/gpu/drm/amd/display/dc/link/link_dpms.c                 |    3 +++
+ drivers/gpu/drm/amd/display/dc/virtual/virtual_stream_encoder.c |    7 -------
+ 5 files changed, 3 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
-index 41855e58564b1..3d99b16ebd553 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
-@@ -650,8 +650,10 @@ int mlxsw_sp_flower_stats(struct mlxsw_sp *mlxsw_sp,
- 		return -EINVAL;
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
+@@ -671,7 +671,6 @@ void dce110_enable_stream(struct pipe_ct
+ 	uint32_t early_control = 0;
+ 	struct timing_generator *tg = pipe_ctx->stream_res.tg;
  
- 	rule = mlxsw_sp_acl_rule_lookup(mlxsw_sp, ruleset, f->cookie);
--	if (!rule)
--		return -EINVAL;
-+	if (!rule) {
-+		err = -EINVAL;
-+		goto err_rule_get_stats;
-+	}
+-	link_hwss->setup_stream_attribute(pipe_ctx);
+ 	link_hwss->setup_stream_encoder(pipe_ctx);
  
- 	err = mlxsw_sp_acl_rule_get_stats(mlxsw_sp, rule, &packets, &bytes,
- 					  &drops, &lastuse, &used_hw_stats);
--- 
-2.51.0
-
+ 	dc->hwss.update_info_frame(pipe_ctx);
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
+@@ -3060,8 +3060,6 @@ void dcn20_enable_stream(struct pipe_ctx
+ 						      link_enc->transmitter - TRANSMITTER_UNIPHY_A);
+ 	}
+ 
+-	link_hwss->setup_stream_attribute(pipe_ctx);
+-
+ 	if (dc->res_pool->dccg->funcs->set_pixel_rate_div)
+ 		dc->res_pool->dccg->funcs->set_pixel_rate_div(
+ 			dc->res_pool->dccg,
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
+@@ -968,8 +968,6 @@ void dcn401_enable_stream(struct pipe_ct
+ 		}
+ 	}
+ 
+-	link_hwss->setup_stream_attribute(pipe_ctx);
+-
+ 	if (dc->res_pool->dccg->funcs->set_pixel_rate_div) {
+ 		dc->res_pool->dccg->funcs->set_pixel_rate_div(
+ 			dc->res_pool->dccg,
+--- a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
++++ b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
+@@ -2458,6 +2458,7 @@ void link_set_dpms_on(
+ 	struct link_encoder *link_enc = pipe_ctx->link_res.dio_link_enc;
+ 	enum otg_out_mux_dest otg_out_dest = OUT_MUX_DIO;
+ 	struct vpg *vpg = pipe_ctx->stream_res.stream_enc->vpg;
++	const struct link_hwss *link_hwss = get_link_hwss(link, &pipe_ctx->link_res);
+ 	bool apply_edp_fast_boot_optimization =
+ 		pipe_ctx->stream->apply_edp_fast_boot_optimization;
+ 
+@@ -2501,6 +2502,8 @@ void link_set_dpms_on(
+ 		pipe_ctx->stream_res.tg->funcs->set_out_mux(pipe_ctx->stream_res.tg, otg_out_dest);
+ 	}
+ 
++	link_hwss->setup_stream_attribute(pipe_ctx);
++
+ 	pipe_ctx->stream->apply_edp_fast_boot_optimization = false;
+ 
+ 	// Enable VPG before building infoframe
+--- a/drivers/gpu/drm/amd/display/dc/virtual/virtual_stream_encoder.c
++++ b/drivers/gpu/drm/amd/display/dc/virtual/virtual_stream_encoder.c
+@@ -44,11 +44,6 @@ static void virtual_stream_encoder_dvi_s
+ 	struct dc_crtc_timing *crtc_timing,
+ 	bool is_dual_link) {}
+ 
+-static void virtual_stream_encoder_lvds_set_stream_attribute(
+-	struct stream_encoder *enc,
+-	struct dc_crtc_timing *crtc_timing)
+-{}
+-
+ static void virtual_stream_encoder_set_throttled_vcp_size(
+ 	struct stream_encoder *enc,
+ 	struct fixed31_32 avg_time_slots_per_mtp)
+@@ -120,8 +115,6 @@ static const struct stream_encoder_funcs
+ 		virtual_stream_encoder_hdmi_set_stream_attribute,
+ 	.dvi_set_stream_attribute =
+ 		virtual_stream_encoder_dvi_set_stream_attribute,
+-	.lvds_set_stream_attribute =
+-		virtual_stream_encoder_lvds_set_stream_attribute,
+ 	.set_throttled_vcp_size =
+ 		virtual_stream_encoder_set_throttled_vcp_size,
+ 	.update_hdmi_info_packets =
 
 
 
