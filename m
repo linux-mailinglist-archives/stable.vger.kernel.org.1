@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-199397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BF00CA058F
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:20:03 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50AFBC9F917
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:42:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 72A8C32840D7
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:06:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C0A86303271E
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:37:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2A62320A20;
-	Wed,  3 Dec 2025 16:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29DBF3148A8;
+	Wed,  3 Dec 2025 15:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DhIJH0zV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JwqseXeD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F3DE31ED6C;
-	Wed,  3 Dec 2025 16:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34492FB62A;
+	Wed,  3 Dec 2025 15:37:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779664; cv=none; b=jnzBsfDd4YdKy2OMmaN3rd0lQJeytGvFEf3Srx8AR6KTulFzVOn5lh91tib3FJApbgSLvMY0GNCehTQhs+g0JIUFfmrk2fDVdRsoICvHFPwKX1OieVWHKNR9YWXjd6zXk1CzjanC2c4Mi4HYR+4+RM2gqoFVQtELIX0IuV8SgW8=
+	t=1764776241; cv=none; b=dxkF2N7cQo9q8UehoLQl0kT5AitOrkbJ8Hz8TmRum6+aG+LgNdB2iQyUh6ne9GPo0KOq22yjit26IUoKzAJ35xi9Q3szl1O9oBV6sUnbJypJ0ECxYesTrmI0Da5TJPE5KHIYNcJTFYIQVtATcC2Dg34d2d7cFMgvxzItn57qwjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779664; c=relaxed/simple;
-	bh=wVwvVH3ut1rDbywlbtpbAhmRU2/OJxXHN2u7qf4z9w0=;
+	s=arc-20240116; t=1764776241; c=relaxed/simple;
+	bh=WnZu1c8yuWV+hmimlYHAr6jbySfJcWoeY9Wuy99h+jM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wp1+aV+CWz5gPhNd7vaVY8GBbD6FS27R9kJBxKP2CTLCTJLdmry3rrqlwMGNL1sbPYlXD+QMrR4U9bYUoaapfA//Gz0i9lcqzDogj3sHI5gecokpsxSf8vc8HxSLhT+5HF0RvRhqhbmAsjkZFcDnfoDOh/U6Lbgeu0UxFxI2ZBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DhIJH0zV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0832C4CEF5;
-	Wed,  3 Dec 2025 16:34:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=i4dkZqaFJw01QQeKwm5f2HMdL9AUKdLVaQwNm5yRPdS4LCztPX4Dqjq2CVArXsBF1Le+nxBzpQRQuNTta1FMVSr/5Otgk9VPXkPGMVA9H+sIzd9v8RW0+x4kHc8OT1OP6Paq2k/h7meRgimOis6yQRq3T1e/beLTejj6r0ITFek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JwqseXeD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13475C4CEF5;
+	Wed,  3 Dec 2025 15:37:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779664;
-	bh=wVwvVH3ut1rDbywlbtpbAhmRU2/OJxXHN2u7qf4z9w0=;
+	s=korg; t=1764776241;
+	bh=WnZu1c8yuWV+hmimlYHAr6jbySfJcWoeY9Wuy99h+jM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DhIJH0zVPwLhQi0OYQEVw8exXmZqwwvijp/H1k1ru0Z0JpRohvyLSKdp2qObM9Kpc
-	 MCBA6GnA5qOiq/8dMv1lKKOXzYKzTlmxjO8RFTN9lj836IBRZry8vjX+stEt+1qnz5
-	 xiVlyyt1+uj58ZcQf30g8kfZafjuwq5hPXmX58zk=
+	b=JwqseXeDGbFSABhKLe+ARIJDARRzMsoy6aYJQva/6xJkuE1tC7uVT77+cxTvx4Z+8
+	 ly8PV/YKFYEK++fCG3aLHEKe0oqQRNb86gF0EZiALo2OX34R1cP0b3Q2TES0RD5b1f
+	 ZI6cGFESN4At5xGp6jt32rXlcxVLEWw9/a6IlcFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.1 325/568] Bluetooth: MGMT: Fix OOB access in parse_adv_monitor_pattern()
+	Forest Crossman <cyrozap@gmail.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 123/300] usb: mon: Increase BUFF_MAX to 64 MiB to support multi-MB URBs
 Date: Wed,  3 Dec 2025 16:25:27 +0100
-Message-ID: <20251203152452.614748285@linuxfoundation.org>
+Message-ID: <20251203152405.173233734@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,67 +58,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
+From: Forest Crossman <cyrozap@gmail.com>
 
-commit 8d59fba49362c65332395789fd82771f1028d87e upstream.
+[ Upstream commit 368ed48a5ef52e384f54d5809f0a0b79ac567479 ]
 
-In the parse_adv_monitor_pattern() function, the value of
-the 'length' variable is currently limited to HCI_MAX_EXT_AD_LENGTH(251).
-The size of the 'value' array in the mgmt_adv_pattern structure is 31.
-If the value of 'pattern[i].length' is set in the user space
-and exceeds 31, the 'patterns[i].value' array can be accessed
-out of bound when copied.
+The usbmon binary interface currently truncates captures of large
+transfers from higher-speed USB devices. Because a single event capture
+is limited to one-fifth of the total buffer size, the current maximum
+size of a captured URB is around 240 KiB. This is insufficient when
+capturing traffic from modern devices that use transfers of several
+hundred kilobytes or more, as truncated URBs can make it impossible for
+user-space USB analysis tools like Wireshark to properly defragment and
+reassemble higher-level protocol packets in the captured data.
 
-Increasing the size of the 'value' array in
-the 'mgmt_adv_pattern' structure will break the userspace.
-Considering this, and to avoid OOB access revert the limits for 'offset'
-and 'length' back to the value of HCI_MAX_AD_LENGTH.
+The root cause of this issue is the 1200 KiB BUFF_MAX limit, which has
+not been changed since the binary interface was introduced in 2006.
 
-Found by InfoTeCS on behalf of Linux Verification Center
-(linuxtesting.org) with SVACE.
+To resolve this issue, this patch increases BUFF_MAX to 64 MiB. The
+original comment for BUFF_MAX based the limit's calculation on a
+saturated 480 Mbit/s bus. Applying the same logic to a modern USB 3.2
+Gen 2×2 20 Gbit/s bus (~2500 MB/s over a 20ms window) indicates the
+buffer should be at least 50 MB. The new limit of 64 MiB covers that,
+plus a little extra for any overhead.
 
-Fixes: db08722fc7d4 ("Bluetooth: hci_core: Fix missing instances using HCI_MAX_AD_LENGTH")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+With this change, both users and developers should now be able to debug
+and reverse engineer modern USB devices even when running unmodified
+distro kernels.
+
+Please note that this change does not affect the default buffer size. A
+larger buffer is only allocated when a user explicitly requests it via
+the MON_IOCT_RING_SIZE ioctl, so the change to the maximum buffer size
+should not unduly increase memory usage for users that don't
+deliberately request a larger buffer.
+
+Link: https://lore.kernel.org/CAO3ALPzdUkmMr0YMrODLeDSLZqNCkWcAP8NumuPHLjNJ8wC1kQ@mail.gmail.com
+Signed-off-by: Forest Crossman <cyrozap@gmail.com>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/CAO3ALPxU5RzcoueC454L=WZ1qGMfAcnxm+T+p+9D8O9mcrUbCQ@mail.gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/mgmt.h |    2 +-
- net/bluetooth/mgmt.c         |    6 +++---
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/usb/mon/mon_bin.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
---- a/include/net/bluetooth/mgmt.h
-+++ b/include/net/bluetooth/mgmt.h
-@@ -772,7 +772,7 @@ struct mgmt_adv_pattern {
- 	__u8 ad_type;
- 	__u8 offset;
- 	__u8 length;
--	__u8 value[31];
-+	__u8 value[HCI_MAX_AD_LENGTH];
- } __packed;
+diff --git a/drivers/usb/mon/mon_bin.c b/drivers/usb/mon/mon_bin.c
+index 35483217b1f6c..93998d328d9aa 100644
+--- a/drivers/usb/mon/mon_bin.c
++++ b/drivers/usb/mon/mon_bin.c
+@@ -68,18 +68,20 @@
+  * The magic limit was calculated so that it allows the monitoring
+  * application to pick data once in two ticks. This way, another application,
+  * which presumably drives the bus, gets to hog CPU, yet we collect our data.
+- * If HZ is 100, a 480 mbit/s bus drives 614 KB every jiffy. USB has an
+- * enormous overhead built into the bus protocol, so we need about 1000 KB.
++ *
++ * Originally, for a 480 Mbit/s bus this required a buffer of about 1 MB. For
++ * modern 20 Gbps buses, this value increases to over 50 MB. The maximum
++ * buffer size is set to 64 MiB to accommodate this.
+  *
+  * This is still too much for most cases, where we just snoop a few
+  * descriptor fetches for enumeration. So, the default is a "reasonable"
+- * amount for systems with HZ=250 and incomplete bus saturation.
++ * amount for typical, low-throughput use cases.
+  *
+  * XXX What about multi-megabyte URBs which take minutes to transfer?
+  */
+-#define BUFF_MAX  CHUNK_ALIGN(1200*1024)
+-#define BUFF_DFL   CHUNK_ALIGN(300*1024)
+-#define BUFF_MIN     CHUNK_ALIGN(8*1024)
++#define BUFF_MAX  CHUNK_ALIGN(64*1024*1024)
++#define BUFF_DFL      CHUNK_ALIGN(300*1024)
++#define BUFF_MIN        CHUNK_ALIGN(8*1024)
  
- #define MGMT_OP_ADD_ADV_PATTERNS_MONITOR	0x0052
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -5436,9 +5436,9 @@ static u8 parse_adv_monitor_pattern(stru
- 	for (i = 0; i < pattern_count; i++) {
- 		offset = patterns[i].offset;
- 		length = patterns[i].length;
--		if (offset >= HCI_MAX_EXT_AD_LENGTH ||
--		    length > HCI_MAX_EXT_AD_LENGTH ||
--		    (offset + length) > HCI_MAX_EXT_AD_LENGTH)
-+		if (offset >= HCI_MAX_AD_LENGTH ||
-+		    length > HCI_MAX_AD_LENGTH ||
-+		    (offset + length) > HCI_MAX_AD_LENGTH)
- 			return MGMT_STATUS_INVALID_PARAMS;
- 
- 		p = kmalloc(sizeof(*p), GFP_KERNEL);
+ /*
+  * The per-event API header (2 per URB).
+-- 
+2.51.0
+
 
 
 
