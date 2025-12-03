@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7858BCA05AB
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:20:57 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E25CC9FCBF
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:06:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E5881318DAE7
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:07:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4B521300215E
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:06:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 248B934574B;
-	Wed,  3 Dec 2025 16:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D873C34F489;
+	Wed,  3 Dec 2025 16:06:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WGT+4/bQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cUC9IvRN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4ECD3451A9;
-	Wed,  3 Dec 2025 16:34:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94D9531355B;
+	Wed,  3 Dec 2025 16:06:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779698; cv=none; b=QnMY1Hjy3GgwS29mw6GBVW/s/lu8qfG/vYP8cf0yGFEv175M9f7wh7Dvz+qhMHngZHtJB1wf6Un2qpBoCnCThvhEqEVPZwyNBP2ZkM6SOdyayidspcZuSCVe7aaYL5rXBuuQlqttGkKVedTDbh22MuIrZYNCZ1SjAv7xV7qNiFk=
+	t=1764777971; cv=none; b=jhBAlox8lOtvf8T2Ud/CqIrfjY4Tr9TYaH+zK8ikHzsvTYwSn1vnMJqH/u6FHIdaCd/enSL+hOHafvAWuzIBkjHm99B0sed1xtu2D00oBHcUOjv7piZccK9qWGoHl4l5/MdZcRsQ3tDJUt9kQGF5OFof/CMOVqkZEfbb//lpvlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779698; c=relaxed/simple;
-	bh=uX2pg6kCs0IejrACRhyYS+Q90DKHziersqf8PB777pc=;
+	s=arc-20240116; t=1764777971; c=relaxed/simple;
+	bh=d/HTijjwDjDKbYv6Xq9pgwMWmrxJ4ccuUwwMI5W4hN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bum6qbzGo+G91RloPHTfCDcYScrY7zESD1k/3l4VU+2XX4kbiLVyfxjkqQrcy7bsiDIdD0I6UcFEPMp4vOD6PVyEDna+OCI9b8E4odjtfyAqcaIXsn5PxHEj6fBRaFjD5PQ/qDglvEGnM/7UqylZ3RlUIq0Lfw1mCpYXSqTirqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WGT+4/bQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42B54C4CEF5;
-	Wed,  3 Dec 2025 16:34:58 +0000 (UTC)
+	 MIME-Version; b=e0NeZc88PdDyEyFISevZX15FTvmMuTx5gikNewVSTdGbHCPwGc/4niNoWEMrsVVK7Z6Kp8wksd9Ay9TaVsayTcYaIlS8BblQ6Ih5vTnT/aWIzk8DQDpFAGC5I15JN+Dujly+Ouw2X7rXM9rEp1eCi4B+etBdafVKqEp/JzpG4Yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cUC9IvRN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF290C116C6;
+	Wed,  3 Dec 2025 16:06:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779698;
-	bh=uX2pg6kCs0IejrACRhyYS+Q90DKHziersqf8PB777pc=;
+	s=korg; t=1764777971;
+	bh=d/HTijjwDjDKbYv6Xq9pgwMWmrxJ4ccuUwwMI5W4hN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WGT+4/bQHrPPHlKePJr2YXiPW1HD0oHg680Njv9aChFGELphNTNgb7alPVA8W2Mbx
-	 5gZyNkLQ12esBxyaX9/LSg6RdCVL8QDyagPSCTfgPxllG5NJNhL/suT+jHrzy0JZqb
-	 0LdpTqTIDHaxkdhcddYd1+GDHPQgELq3DfQuxIW8=
+	b=cUC9IvRNDdzoW0T+KzJqyvi66sZb+gWj659lPN9neKkPHR/GZuKPEo2VE9eLtzBxs
+	 LXVptoyHF/mL2fM2piYz8Ha/xJcsaSnCqfICALLcbZJNiazvSnH/tNUjg9ko9OHgeJ
+	 TKpRLJuuXOole0uR7qOr9szp/pY8A70MDDlJyMp4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xin Long <lucien.xin@gmail.com>,
-	Stefan Wiehler <stefan.wiehler@nokia.com>,
+	ChunHao Lin <hau@realtek.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 317/568] sctp: Hold sock lock while iterating over address list
-Date: Wed,  3 Dec 2025 16:25:19 +0100
-Message-ID: <20251203152452.323195150@linuxfoundation.org>
+Subject: [PATCH 5.15 170/392] r8169: set EEE speed down ratio to 1
+Date: Wed,  3 Dec 2025 16:25:20 +0100
+Message-ID: <20251203152420.332740378@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wiehler <stefan.wiehler@nokia.com>
+From: ChunHao Lin <hau@realtek.com>
 
-[ Upstream commit f1fc201148c7e684c10a72b6a3375597f28d1ef6 ]
+[ Upstream commit bf7154ffb1c65a201906296a9d3eb22e9daa5ffc ]
 
-Move address list traversal in inet_assoc_attr_size() under the sock
-lock to avoid holding the RCU read lock.
+EEE speed down means speed down MAC MCU clock. It is not from spec.
+It is kind of Realtek specific power saving feature. But enable it
+may cause some issues, like packet drop or interrupt loss. Different
+hardware may have different issues.
 
-Suggested-by: Xin Long <lucien.xin@gmail.com>
-Fixes: 8f840e47f190 ("sctp: add the sctp_diag.c file")
-Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/20251028161506.3294376-4-stefan.wiehler@nokia.com
+EEE speed down ratio (mac ocp 0xe056[7:4]) is used to set EEE speed
+down rate. The larger this value is, the more power can save. But it
+actually save less power then we expected. And, as mentioned above,
+will impact compatibility. So set it to 1 (mac ocp 0xe056[7:4] = 0)
+, which means not to speed down, to improve compatibility.
+
+Signed-off-by: ChunHao Lin <hau@realtek.com>
+Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://patch.msgid.link/20250918023425.3463-1-hau@realtek.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/diag.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/sctp/diag.c b/net/sctp/diag.c
-index 3631a32d96b07..2cf5ee7a698e2 100644
---- a/net/sctp/diag.c
-+++ b/net/sctp/diag.c
-@@ -230,14 +230,15 @@ struct sctp_comm_param {
- 	bool net_admin;
- };
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index 07dc9fdeea54c..6b5bf7d492960 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -3269,7 +3269,7 @@ static void rtl_hw_start_8168h_1(struct rtl8169_private *tp)
+ 		r8168_mac_ocp_modify(tp, 0xd412, 0x0fff, sw_cnt_1ms_ini);
+ 	}
  
--static size_t inet_assoc_attr_size(struct sctp_association *asoc)
-+static size_t inet_assoc_attr_size(struct sock *sk,
-+				   struct sctp_association *asoc)
- {
- 	int addrlen = sizeof(struct sockaddr_storage);
- 	int addrcnt = 0;
- 	struct sctp_sockaddr_entry *laddr;
+-	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0070);
++	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0000);
+ 	r8168_mac_ocp_modify(tp, 0xe052, 0x6000, 0x8008);
+ 	r8168_mac_ocp_modify(tp, 0xe0d6, 0x01ff, 0x017f);
+ 	r8168_mac_ocp_modify(tp, 0xd420, 0x0fff, 0x047f);
+@@ -3422,7 +3422,7 @@ static void rtl_hw_start_8117(struct rtl8169_private *tp)
+ 		r8168_mac_ocp_modify(tp, 0xd412, 0x0fff, sw_cnt_1ms_ini);
+ 	}
  
- 	list_for_each_entry_rcu(laddr, &asoc->base.bind_addr.address_list,
--				list)
-+				list, lockdep_sock_is_held(sk))
- 		addrcnt++;
- 
- 	return	  nla_total_size(sizeof(struct sctp_info))
-@@ -263,11 +264,14 @@ static int sctp_sock_dump_one(struct sctp_endpoint *ep, struct sctp_transport *t
- 	if (err)
- 		return err;
- 
--	rep = nlmsg_new(inet_assoc_attr_size(assoc), GFP_KERNEL);
--	if (!rep)
-+	lock_sock(sk);
-+
-+	rep = nlmsg_new(inet_assoc_attr_size(sk, assoc), GFP_KERNEL);
-+	if (!rep) {
-+		release_sock(sk);
- 		return -ENOMEM;
-+	}
- 
--	lock_sock(sk);
- 	if (ep != assoc->ep) {
- 		err = -EAGAIN;
- 		goto out;
+-	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0070);
++	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0000);
+ 	r8168_mac_ocp_write(tp, 0xea80, 0x0003);
+ 	r8168_mac_ocp_modify(tp, 0xe052, 0x0000, 0x0009);
+ 	r8168_mac_ocp_modify(tp, 0xd420, 0x0fff, 0x047f);
+@@ -3620,7 +3620,7 @@ static void rtl_hw_start_8125_common(struct rtl8169_private *tp)
+ 	r8168_mac_ocp_modify(tp, 0xc0b4, 0x0000, 0x000c);
+ 	r8168_mac_ocp_modify(tp, 0xeb6a, 0x00ff, 0x0033);
+ 	r8168_mac_ocp_modify(tp, 0xeb50, 0x03e0, 0x0040);
+-	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0030);
++	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0000);
+ 	r8168_mac_ocp_modify(tp, 0xe040, 0x1000, 0x0000);
+ 	r8168_mac_ocp_modify(tp, 0xea1c, 0x0003, 0x0001);
+ 	r8168_mac_ocp_modify(tp, 0xe0c0, 0x4f0f, 0x4403);
 -- 
 2.51.0
 
