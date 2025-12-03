@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-198468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF761C9F9B9
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:44:57 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32003CA11AC
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:44:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 26D10300306C
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:44:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1381D3007C9D
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:44:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F6C5307AD9;
-	Wed,  3 Dec 2025 15:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAC6132ED28;
+	Wed,  3 Dec 2025 15:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HJqJvGzI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ly5rrSrJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD22306D49;
-	Wed,  3 Dec 2025 15:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9718B32E75C;
+	Wed,  3 Dec 2025 15:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776645; cv=none; b=aE9Zsh/1jkyi3hBYUQ5jojiMjZ6g4dmYYXBTE5lXqbnOhw+6MnWwynzHwzf+onzAuQiVJkwTZ7l1tt1wtfkteBvO7aSFC9VHovI1TVW7EGmNwOAo+XFB6x9B+EOlNiuZNNq4BedIjYD5IBXgML8vUg0yNB81TWccjnl6kgeCDNE=
+	t=1764777064; cv=none; b=dXdY8KlmSzzxRHYmFpzZ7oV6DE8a9wwGB1gTzIE1DddnxIcgGi3lCX/5cNtROKA656zCRt2R4t9+sDfuPYYUMHGBjn7HLo2F/X7QBW4n+Yedl2F9kyrJutMtjkWc9uAW+1OXZqZqdOPQHv7zrQo07xwqIX0MUlg5Jt8VU2ySI1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776645; c=relaxed/simple;
-	bh=m/EndSUnOZFwcS4U/2l+7XMLJRdbaMsvtCY/EIj7ETU=;
+	s=arc-20240116; t=1764777064; c=relaxed/simple;
+	bh=tSRQB9EEMpXUmM2E+LP2FU+fVWZSZjxEEq+KAHsUqVE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wbvfc/llRhburJeVuFhX2i6fiPWu8lavM/eZzupEkN/T0ImFpsIsaBkpkI5VNn0QesmqhPC82l8iXHI4GOIcPRINV57ejwNJiImLwgZc6qp2Ltbm+axk0PGL9Mu8ouX51kz4MVls3NH+9S4nnLb5fcEUlGTYpAnGpMxljQilv1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HJqJvGzI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83403C4CEF5;
-	Wed,  3 Dec 2025 15:44:03 +0000 (UTC)
+	 MIME-Version; b=L41q4V+/QGHm4reVMuhFyVgJAkZKPDb3152zL+ke9sJPygmU77sSFvzW+MaLwynpUDvpJeqOwYADYLTbPa46wItm74vk60ODNFl76vXdmWCZfiDlzbj8Pk/T98oj/mPrhUuOVwIV7zUm19ICUo6fRl/pLnebaBQ5fQurYCqm9lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ly5rrSrJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA74C4CEF5;
+	Wed,  3 Dec 2025 15:51:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776644;
-	bh=m/EndSUnOZFwcS4U/2l+7XMLJRdbaMsvtCY/EIj7ETU=;
+	s=korg; t=1764777064;
+	bh=tSRQB9EEMpXUmM2E+LP2FU+fVWZSZjxEEq+KAHsUqVE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HJqJvGzIsYzOkTfTPmEVrRm6HGw3TqobKvZJvjNzbG0ARqs1mJIq+P23zsDG4pu/A
-	 RtdBn1+dGf1XEieg9aGi1iorbsshrGn1rdFMFgXksJ23VIOAkz3yX+O7QGl57PBaSx
-	 tINsPPcXPQ2yaykg8RjxI+EJSAKCf7jeNaUT2Kso=
+	b=Ly5rrSrJwnKmmAMIeerc9RoUvYnO9EcT698nUBCTUFaDBpTujcaKmrr9RLInqZzym
+	 hUc5QpywoxaIlSfSk8WxhD7UTRA06bzdMmNaeJRqchqcIyf+t8iQJkqT2/YxSZw6SM
+	 Ci0QMMTqRZ8ISHencUJiEJ9Wxc1O3h79A4LwFhdo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hansg@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.10 211/300] spi: Try to get ACPI GPIO IRQ earlier
-Date: Wed,  3 Dec 2025 16:26:55 +0100
-Message-ID: <20251203152408.440115795@linuxfoundation.org>
+	Jamie Iles <jamie.iles@oss.qualcomm.com>,
+	Punit Agrawal <punit.agrawal@oss.qualcomm.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 038/146] mailbox: pcc: dont zero error register
+Date: Wed,  3 Dec 2025 16:26:56 +0100
+Message-ID: <20251203152347.868560220@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,60 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hansg@kernel.org>
+From: Jamie Iles <jamie.iles@oss.qualcomm.com>
 
-commit 3cd2018e15b3d66d2187d92867e265f45ad79e6f upstream.
+[ Upstream commit ff0e4d4c97c94af34cc9cad37b5a5cdbe597a3b0 ]
 
-Since commit d24cfee7f63d ("spi: Fix acpi deferred irq probe"), the
-acpi_dev_gpio_irq_get() call gets delayed till spi_probe() is called
-on the SPI device.
+The error status mask for a type 3/4 subspace is used for reading the
+error status, and the bitwise inverse is used for clearing the error
+with the intent being to preserve any of the non-error bits.  However,
+we were previously applying the mask to extract the status and then
+applying the inverse to the result which ended up clearing all bits.
 
-If there is no driver for the SPI device then the move to spi_probe()
-results in acpi_dev_gpio_irq_get() never getting called. This may
-cause problems by leaving the GPIO pin floating because this call is
-responsible for setting up the GPIO pin direction and/or bias according
-to the values from the ACPI tables.
+Instead, store the inverse mask in the preserve mask and then use that
+on the original value read from the error status so that only the error
+is cleared.
 
-Re-add the removed acpi_dev_gpio_irq_get() in acpi_register_spi_device()
-to ensure the GPIO pin is always correctly setup, while keeping the
-acpi_dev_gpio_irq_get() call added to spi_probe() to deal with
--EPROBE_DEFER returns caused by the GPIO controller not having a driver
-yet.
-
-Link: https://bbs.archlinux.org/viewtopic.php?id=302348
-Fixes: d24cfee7f63d ("spi: Fix acpi deferred irq probe")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Link: https://patch.msgid.link/20251102190921.30068-1-hansg@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c45ded7e1135 ("mailbox: pcc: Add support for PCCT extended PCC subspaces(type 3/4)")
+Signed-off-by: Jamie Iles <jamie.iles@oss.qualcomm.com>
+Signed-off-by: Punit Agrawal <punit.agrawal@oss.qualcomm.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/mailbox/pcc.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2259,6 +2259,16 @@ static acpi_status acpi_register_spi_dev
- 	acpi_set_modalias(adev, acpi_device_hid(adev), spi->modalias,
- 			  sizeof(spi->modalias));
+diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
+index 0a00719b24827..ff292b9e0be9e 100644
+--- a/drivers/mailbox/pcc.c
++++ b/drivers/mailbox/pcc.c
+@@ -276,9 +276,8 @@ static int pcc_mbox_error_check_and_clear(struct pcc_chan_info *pchan)
+ 	if (ret)
+ 		return ret;
  
-+	/*
-+	 * This gets re-tried in spi_probe() for -EPROBE_DEFER handling in case
-+	 * the GPIO controller does not have a driver yet. This needs to be done
-+	 * here too, because this call sets the GPIO direction and/or bias.
-+	 * Setting these needs to be done even if there is no driver, in which
-+	 * case spi_probe() will never get called.
-+	 */
-+	if (spi->irq < 0)
-+		spi->irq = acpi_dev_gpio_irq_get(adev, 0);
-+
- 	acpi_device_set_enumerated(adev);
+-	val &= pchan->error.status_mask;
+-	if (val) {
+-		val &= ~pchan->error.status_mask;
++	if (val & pchan->error.status_mask) {
++		val &= pchan->error.preserve_mask;
+ 		pcc_chan_reg_write(&pchan->error, val);
+ 		return -EIO;
+ 	}
+@@ -745,7 +744,8 @@ static int pcc_parse_subspace_db_reg(struct pcc_chan_info *pchan,
  
- 	adev->power.flags.ignore_parent = true;
+ 		ret = pcc_chan_reg_init(&pchan->error,
+ 					&pcct_ext->error_status_register,
+-					0, 0, pcct_ext->error_status_mask,
++					~pcct_ext->error_status_mask, 0,
++					pcct_ext->error_status_mask,
+ 					"Error Status");
+ 	}
+ 	return ret;
+-- 
+2.51.0
+
 
 
 
