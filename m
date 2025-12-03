@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-198461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CFB0C9FABE
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:51:30 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85BE6CA01B8
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:48:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7DA8D303FE7F
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:43:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8DC9A301985E
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:40:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB565309EFF;
-	Wed,  3 Dec 2025 15:43:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 923EE349B16;
+	Wed,  3 Dec 2025 16:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZUfTcZsQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vCzCyMHc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F473306D3D;
-	Wed,  3 Dec 2025 15:43:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47812349B02;
+	Wed,  3 Dec 2025 16:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776621; cv=none; b=gYMVy7yEAcSP8uN7JdZTrCmH8jgPk57O8zsplAC+77mmDhKS3JHDILULDv40731PMUO80WDzhQR1Avqyu0zAm1KBSs1no3SjW3nKbH5iPl41B7OPJTf6+L4tkY+WUNSeLKTeKuhezO7VVaFmXbv9YQZywwLxELgOdSuvJQHE8ng=
+	t=1764780040; cv=none; b=g8wTAGHKr3maC3cgxF/LMSYCziBdPHHRFNH6sr/Wj52sp3dCfdMX0QKd7pFGpWc+kxNKBNxuRwl7jRVhKFwL0H9sCNNAaHL31CuEUg/J12Mteoa2ggM6CdgV4mNYSfya78QKnERcd+EXkE3br3Fb7Sk03/vhBdBy1ABPeKwY/+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776621; c=relaxed/simple;
-	bh=eZA5XddNndUM2H95WC2a0fYw2K7+VTFNtxxKpo34pFY=;
+	s=arc-20240116; t=1764780040; c=relaxed/simple;
+	bh=CZnq5y9RWzORxFo98+xA4+HvN7k2PqKIhx2hcNAY1I8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i/RmK52F1ZAgVqrsttdW70XxR7KyK1PW6Aee5rKjoAJ1shw1UqLh7j+J0a3hpZo0DDMuo0FDiiAYQAX/7A/+f2zhfa45QZu/ajqgK+Y1PFF06uAuL9IpQnEnKS7xrt2iu2jGhCLNmqo++M7yzaso7UhOT1mn1NV/srWMTMk0QIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZUfTcZsQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95AEDC4CEF5;
-	Wed,  3 Dec 2025 15:43:40 +0000 (UTC)
+	 MIME-Version; b=KJH7EyaemuOBZ+Ksyop5HK2r5/Sj03kRGWN7dA+enfD8JYlI1lqoFn4OIeSvVa1oQHTBvnDfIr/0rEy0R3SkyUAh0YpF5Tyo7rj6/aMaGquXVI/nMZ24xg/vw0qxigXS+foW8mdpwtd7GYnsGVEZymlxFfvjJ+S4Eetft3EKG2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vCzCyMHc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA341C4CEF5;
+	Wed,  3 Dec 2025 16:40:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776621;
-	bh=eZA5XddNndUM2H95WC2a0fYw2K7+VTFNtxxKpo34pFY=;
+	s=korg; t=1764780040;
+	bh=CZnq5y9RWzORxFo98+xA4+HvN7k2PqKIhx2hcNAY1I8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZUfTcZsQqiTdY26YcUFNraEVG8mStqCXt1OibS1XKXZVQSFJ0WF9Qop9acaxP09+Q
-	 xQt9nEoMJN1eRmz6mvTTtVuMUhZepSoLnvvDN0JbJaOLKHq0iNDGpRh4gzfax1vphz
-	 A+vs2laKpFV+rOk5Vr5AV4tmDgUvAgSWhOXWNRz4=
+	b=vCzCyMHc6V5WWVHHyxroYHKRjqF/b+ebnQRDF8z3l1iIi2O1OGrVjryZFIozIb36Z
+	 9ALp9O35beJ09r7seLV4DDu+AT7Do52IWiB9/SwhvR9GAnZBEroXKFVGjEMyuVHdZw
+	 yijuGF18NuZ2J6us0LVpY8S/Z4BXXRj6RvyouDxc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Nishanth Menon <nm@ti.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 236/300] net: ethernet: ti: netcp: Standardize knav_dma_open_channel to return NULL on error
+	Seungjin Bae <eeodqql09@gmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.1 438/568] Input: pegasus-notetaker - fix potential out-of-bounds access
 Date: Wed,  3 Dec 2025 16:27:20 +0100
-Message-ID: <20251203152409.368736620@linuxfoundation.org>
+Message-ID: <20251203152456.738411420@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,172 +59,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nishanth Menon <nm@ti.com>
+From: Seungjin Bae <eeodqql09@gmail.com>
 
-[ Upstream commit 90a88306eb874fe4bbdd860e6c9787f5bbc588b5 ]
+commit 69aeb507312306f73495598a055293fa749d454e upstream.
 
-Make knav_dma_open_channel consistently return NULL on error instead
-of ERR_PTR. Currently the header include/linux/soc/ti/knav_dma.h
-returns NULL when the driver is disabled, but the driver
-implementation does not even return NULL or ERR_PTR on failure,
-causing inconsistency in the users. This results in a crash in
-netcp_free_navigator_resources as followed (trimmed):
+In the pegasus_notetaker driver, the pegasus_probe() function allocates
+the URB transfer buffer using the wMaxPacketSize value from
+the endpoint descriptor. An attacker can use a malicious USB descriptor
+to force the allocation of a very small buffer.
 
-Unhandled fault: alignment exception (0x221) at 0xfffffff2
-[fffffff2] *pgd=80000800207003, *pmd=82ffda003, *pte=00000000
-Internal error: : 221 [#1] SMP ARM
-Modules linked in:
-CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.17.0-rc7 #1 NONE
-Hardware name: Keystone
-PC is at knav_dma_close_channel+0x30/0x19c
-LR is at netcp_free_navigator_resources+0x2c/0x28c
+Subsequently, if the device sends an interrupt packet with a specific
+pattern (e.g., where the first byte is 0x80 or 0x42),
+the pegasus_parse_packet() function parses the packet without checking
+the allocated buffer size. This leads to an out-of-bounds memory access.
 
-[... TRIM...]
-
-Call trace:
- knav_dma_close_channel from netcp_free_navigator_resources+0x2c/0x28c
- netcp_free_navigator_resources from netcp_ndo_open+0x430/0x46c
- netcp_ndo_open from __dev_open+0x114/0x29c
- __dev_open from __dev_change_flags+0x190/0x208
- __dev_change_flags from netif_change_flags+0x1c/0x58
- netif_change_flags from dev_change_flags+0x38/0xa0
- dev_change_flags from ip_auto_config+0x2c4/0x11f0
- ip_auto_config from do_one_initcall+0x58/0x200
- do_one_initcall from kernel_init_freeable+0x1cc/0x238
- kernel_init_freeable from kernel_init+0x1c/0x12c
- kernel_init from ret_from_fork+0x14/0x38
-[... TRIM...]
-
-Standardize the error handling by making the function return NULL on
-all error conditions. The API is used in just the netcp_core.c so the
-impact is limited.
-
-Note, this change, in effect reverts commit 5b6cb43b4d62 ("net:
-ethernet: ti: netcp_core: return error while dma channel open issue"),
-but provides a less error prone implementation.
-
-Suggested-by: Simon Horman <horms@kernel.org>
-Suggested-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Nishanth Menon <nm@ti.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20251103162811.3730055-1-nm@ti.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1afca2b66aac ("Input: add Pegasus Notetaker tablet driver")
+Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
+Link: https://lore.kernel.org/r/20251007214131.3737115-2-eeodqql09@gmail.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ti/netcp_core.c | 10 +++++-----
- drivers/soc/ti/knav_dma.c            | 14 +++++++-------
- 2 files changed, 12 insertions(+), 12 deletions(-)
+ drivers/input/tablet/pegasus_notetaker.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/net/ethernet/ti/netcp_core.c b/drivers/net/ethernet/ti/netcp_core.c
-index f145abb77a497..77dd20431c447 100644
---- a/drivers/net/ethernet/ti/netcp_core.c
-+++ b/drivers/net/ethernet/ti/netcp_core.c
-@@ -1339,10 +1339,10 @@ int netcp_txpipe_open(struct netcp_tx_pipe *tx_pipe)
+--- a/drivers/input/tablet/pegasus_notetaker.c
++++ b/drivers/input/tablet/pegasus_notetaker.c
+@@ -63,6 +63,9 @@
+ #define BUTTON_PRESSED			0xb5
+ #define COMMAND_VERSION			0xa9
  
- 	tx_pipe->dma_channel = knav_dma_open_channel(dev,
- 				tx_pipe->dma_chan_name, &config);
--	if (IS_ERR(tx_pipe->dma_channel)) {
-+	if (!tx_pipe->dma_channel) {
- 		dev_err(dev, "failed opening tx chan(%s)\n",
- 			tx_pipe->dma_chan_name);
--		ret = PTR_ERR(tx_pipe->dma_channel);
-+		ret = -EINVAL;
- 		goto err;
++/* 1 Status + 1 Color + 2 X + 2 Y = 6 bytes */
++#define NOTETAKER_PACKET_SIZE		6
++
+ /* in xy data packet */
+ #define BATTERY_NO_REPORT		0x40
+ #define BATTERY_LOW			0x41
+@@ -303,6 +306,12 @@ static int pegasus_probe(struct usb_inte
  	}
  
-@@ -1360,7 +1360,7 @@ int netcp_txpipe_open(struct netcp_tx_pipe *tx_pipe)
- 	return 0;
+ 	pegasus->data_len = usb_maxpacket(dev, pipe);
++	if (pegasus->data_len < NOTETAKER_PACKET_SIZE) {
++		dev_err(&intf->dev, "packet size is too small (%d)\n",
++			pegasus->data_len);
++		error = -EINVAL;
++		goto err_free_mem;
++	}
  
- err:
--	if (!IS_ERR_OR_NULL(tx_pipe->dma_channel))
-+	if (tx_pipe->dma_channel)
- 		knav_dma_close_channel(tx_pipe->dma_channel);
- 	tx_pipe->dma_channel = NULL;
- 	return ret;
-@@ -1679,10 +1679,10 @@ static int netcp_setup_navigator_resources(struct net_device *ndev)
- 
- 	netcp->rx_channel = knav_dma_open_channel(netcp->netcp_device->device,
- 					netcp->dma_chan_name, &config);
--	if (IS_ERR(netcp->rx_channel)) {
-+	if (!netcp->rx_channel) {
- 		dev_err(netcp->ndev_dev, "failed opening rx chan(%s\n",
- 			netcp->dma_chan_name);
--		ret = PTR_ERR(netcp->rx_channel);
-+		ret = -EINVAL;
- 		goto fail;
- 	}
- 
-diff --git a/drivers/soc/ti/knav_dma.c b/drivers/soc/ti/knav_dma.c
-index 56597f6ea666a..a677e874de543 100644
---- a/drivers/soc/ti/knav_dma.c
-+++ b/drivers/soc/ti/knav_dma.c
-@@ -410,7 +410,7 @@ static int of_channel_match_helper(struct device_node *np, const char *name,
-  * @name:	slave channel name
-  * @config:	dma configuration parameters
-  *
-- * Returns pointer to appropriate DMA channel on success or error.
-+ * Return: Pointer to appropriate DMA channel on success or NULL on error.
-  */
- void *knav_dma_open_channel(struct device *dev, const char *name,
- 					struct knav_dma_cfg *config)
-@@ -423,13 +423,13 @@ void *knav_dma_open_channel(struct device *dev, const char *name,
- 
- 	if (!kdev) {
- 		pr_err("keystone-navigator-dma driver not registered\n");
--		return (void *)-EINVAL;
-+		return NULL;
- 	}
- 
- 	chan_num = of_channel_match_helper(dev->of_node, name, &instance);
- 	if (chan_num < 0) {
- 		dev_err(kdev->dev, "No DMA instance with name %s\n", name);
--		return (void *)-EINVAL;
-+		return NULL;
- 	}
- 
- 	dev_dbg(kdev->dev, "initializing %s channel %d from DMA %s\n",
-@@ -440,7 +440,7 @@ void *knav_dma_open_channel(struct device *dev, const char *name,
- 	if (config->direction != DMA_MEM_TO_DEV &&
- 	    config->direction != DMA_DEV_TO_MEM) {
- 		dev_err(kdev->dev, "bad direction\n");
--		return (void *)-EINVAL;
-+		return NULL;
- 	}
- 
- 	/* Look for correct dma instance */
-@@ -452,7 +452,7 @@ void *knav_dma_open_channel(struct device *dev, const char *name,
- 	}
- 	if (!found) {
- 		dev_err(kdev->dev, "No DMA instance with name %s\n", instance);
--		return (void *)-EINVAL;
-+		return NULL;
- 	}
- 
- 	/* Look for correct dma channel from dma instance */
-@@ -473,14 +473,14 @@ void *knav_dma_open_channel(struct device *dev, const char *name,
- 	if (!found) {
- 		dev_err(kdev->dev, "channel %d is not in DMA %s\n",
- 				chan_num, instance);
--		return (void *)-EINVAL;
-+		return NULL;
- 	}
- 
- 	if (atomic_read(&chan->ref_count) >= 1) {
- 		if (!check_config(chan, config)) {
- 			dev_err(kdev->dev, "channel %d config miss-match\n",
- 				chan_num);
--			return (void *)-EINVAL;
-+			return NULL;
- 		}
- 	}
- 
--- 
-2.51.0
-
+ 	pegasus->data = usb_alloc_coherent(dev, pegasus->data_len, GFP_KERNEL,
+ 					   &pegasus->data_dma);
 
 
 
