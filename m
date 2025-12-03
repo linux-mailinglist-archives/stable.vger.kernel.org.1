@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-198335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7736EC9F94D
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:43:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED4D2CA0E13
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:18:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A9A2E3042857
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:37:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C474A30285A0
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:15:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B27A3148CD;
-	Wed,  3 Dec 2025 15:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17B3934EEE9;
+	Wed,  3 Dec 2025 16:04:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wy4XaQND"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1xvzJp7d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 114653093DF;
-	Wed,  3 Dec 2025 15:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE3A334E77A;
+	Wed,  3 Dec 2025 16:04:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776206; cv=none; b=kOUwXkGrK3Ln9/XAQ2ynJzN/klA6JN+nns0vLusqYgsF9DyNEBpKt6mztQvTFioKpHcUwr+YE44FbRK3pjwM/3CWPEwH4gB1rLIDozduAA/pJEiS87V2MAaf26zUPz+a4FnLlImZBRSK/CBT36cyyVqRvZ+0GhCS3od3gwdw38Y=
+	t=1764777875; cv=none; b=ph7MydrfvH0KhRYpBnIXyiC+gasM01OVN8UVf0OV9iQm45syOJhnlbnmnu2lXTpMlj/781dhqukEN/D+rs4i9JL129vN9ZQl/H7j37FapLIPOMdwr64+vkeSwdUKW3O+ilEdGHJr7gIVPo6NxZxvXFyW6h253tIBHBNTz3z8tCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776206; c=relaxed/simple;
-	bh=DxJAxVoG9c11FCqunaY1OqBT98JPbn18sJdTc3t0aZI=;
+	s=arc-20240116; t=1764777875; c=relaxed/simple;
+	bh=uso5o8mmcQX5im/eCjkO38gvvaPBqtZQXmBf68Jd/dY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z7quT5jFF1GIByuhjChDkiPEPPd8Wo9joRzAAqwbqARyK/sZWo8qgK0etL8n8sj03OMQpKyhbbK1fZSiOQPBwZZ+csbYsAzYbd/JHnsf9bDNdV3OSs0AUAyBSzP/VojTJgFwq/4Uv8RL4C1egk1gehqYVyDRcoy7FUHR0SzXq0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wy4XaQND; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74258C4CEF5;
-	Wed,  3 Dec 2025 15:36:45 +0000 (UTC)
+	 MIME-Version; b=D/BWBA3W9gHkOp8PFgBiULxNLnjRzlkYlUyI1VJfEeG7/WdC28CMAHc5rKqwTKTUJNlUKIl+txZaNQh2UeoPZoyztoyNBhmGkN5XJTy4I0e4uJiVUIWVRJQUTqvLfqbHVDnjvgiQT/9YXGXhdUGr2zJldsO/nvZ0mTKyBgd7JRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1xvzJp7d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D418C4CEF5;
+	Wed,  3 Dec 2025 16:04:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776205;
-	bh=DxJAxVoG9c11FCqunaY1OqBT98JPbn18sJdTc3t0aZI=;
+	s=korg; t=1764777875;
+	bh=uso5o8mmcQX5im/eCjkO38gvvaPBqtZQXmBf68Jd/dY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wy4XaQNDTfW+ajmoFkkLpRcq5Z28Ucio1KBWUXQlHM6CZPHkzFa8TagEmodtru5Il
-	 3z8QFI/E4XvUayZ6yX+CikPsJWm7TMLu40wjDNolsyg2k5BXUSGSwKueYld4ptOs7f
-	 72bDWnvQCavgyCBe4H4dBqb0GYmdwV1thcgX1y7Q=
+	b=1xvzJp7dr+C0he56jRBz8sUohgIbCc+XEUN0Iu8DCFQrWvEgtJCuNS53MuXMMMXwi
+	 uXdVH0SGlVqHF92hZIA0OV/0FuEIOrUvsitpbs7KtV206XgeOb9P6kNOHY14XDgJ7h
+	 9NMBND9ldm4ziG4GR9VUqShJi/tYGT7ECThjTY44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
-	David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Seyediman Seyedarab <ImanDevel@gmail.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 113/300] selftests: traceroute: Use require_command()
+Subject: [PATCH 5.15 167/392] iommu/vt-d: Replace snprintf with scnprintf in dmar_latency_snapshot()
 Date: Wed,  3 Dec 2025 16:25:17 +0100
-Message-ID: <20251203152404.807048007@linuxfoundation.org>
+Message-ID: <20251203152420.224052245@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +61,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Seyediman Seyedarab <ImanDevel@gmail.com>
 
-[ Upstream commit 47efbac9b768553331b9459743a29861e0acd797 ]
+[ Upstream commit 75c02a037609f34db17e91be195cedb33b61bae0 ]
 
-Use require_command() so that the test will return SKIP (4) when a
-required command is not present.
+snprintf() returns the number of bytes that would have been written, not
+the number actually written. Using this for offset tracking can cause
+buffer overruns if truncation occurs.
 
-Before:
+Replace snprintf() with scnprintf() to ensure the offset stays within
+bounds.
 
- # ./traceroute.sh
- SKIP: Could not run IPV6 test without traceroute6
- SKIP: Could not run IPV4 test without traceroute
- $ echo $?
- 0
+Since scnprintf() never returns a negative value, and zero is not possible
+in this context because 'bytes' starts at 0 and 'size - bytes' is
+DEBUG_BUFFER_SIZE in the first call, which is large enough to hold the
+string literals used, the return value is always positive. An integer
+overflow is also completely out of reach here due to the small and fixed
+buffer size. The error check in latency_show_one() is therefore
+unnecessary. Remove it and make dmar_latency_snapshot() return void.
 
-After:
-
- # ./traceroute.sh
- TEST: traceroute6 not installed                                    [SKIP]
- $ echo $?
- 4
-
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20250908073238.119240-6-idosch@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Seyediman Seyedarab <ImanDevel@gmail.com>
+Link: https://lore.kernel.org/r/20250731225048.131364-1-ImanDevel@gmail.com
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/traceroute.sh | 13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
+ drivers/iommu/intel/debugfs.c | 10 ++--------
+ drivers/iommu/intel/perf.c    | 10 ++++------
+ drivers/iommu/intel/perf.h    |  5 ++---
+ 3 files changed, 8 insertions(+), 17 deletions(-)
 
-diff --git a/tools/testing/selftests/net/traceroute.sh b/tools/testing/selftests/net/traceroute.sh
-index de9ca97abc306..9cb5e96e64333 100755
---- a/tools/testing/selftests/net/traceroute.sh
-+++ b/tools/testing/selftests/net/traceroute.sh
-@@ -209,11 +209,6 @@ setup_traceroute6()
- 
- run_traceroute6()
+diff --git a/drivers/iommu/intel/debugfs.c b/drivers/iommu/intel/debugfs.c
+index 62e23ff3c987e..06c3376d8feb9 100644
+--- a/drivers/iommu/intel/debugfs.c
++++ b/drivers/iommu/intel/debugfs.c
+@@ -545,17 +545,11 @@ DEFINE_SHOW_ATTRIBUTE(ir_translation_struct);
+ static void latency_show_one(struct seq_file *m, struct intel_iommu *iommu,
+ 			     struct dmar_drhd_unit *drhd)
  {
--	if [ ! -x "$(command -v traceroute6)" ]; then
--		echo "SKIP: Could not run IPV6 test without traceroute6"
--		return
--	fi
+-	int ret;
 -
- 	setup_traceroute6
+ 	seq_printf(m, "IOMMU: %s Register Base Address: %llx\n",
+ 		   iommu->name, drhd->reg_base_addr);
  
- 	# traceroute6 host-2 from host-1 (expects 2000:102::2)
-@@ -278,11 +273,6 @@ setup_traceroute()
+-	ret = dmar_latency_snapshot(iommu, debug_buf, DEBUG_BUFFER_SIZE);
+-	if (ret < 0)
+-		seq_puts(m, "Failed to get latency snapshot");
+-	else
+-		seq_puts(m, debug_buf);
+-	seq_puts(m, "\n");
++	dmar_latency_snapshot(iommu, debug_buf, DEBUG_BUFFER_SIZE);
++	seq_printf(m, "%s\n", debug_buf);
+ }
  
- run_traceroute()
+ static int latency_show(struct seq_file *m, void *v)
+diff --git a/drivers/iommu/intel/perf.c b/drivers/iommu/intel/perf.c
+index 0e8e03252d921..700eeb07bda0a 100644
+--- a/drivers/iommu/intel/perf.c
++++ b/drivers/iommu/intel/perf.c
+@@ -113,7 +113,7 @@ static char *latency_type_names[] = {
+ 	"     svm_prq"
+ };
+ 
+-int dmar_latency_snapshot(struct intel_iommu *iommu, char *str, size_t size)
++void dmar_latency_snapshot(struct intel_iommu *iommu, char *str, size_t size)
  {
--	if [ ! -x "$(command -v traceroute)" ]; then
--		echo "SKIP: Could not run IPV4 test without traceroute"
--		return
--	fi
+ 	struct latency_statistic *lstat = iommu->perf_statistic;
+ 	unsigned long flags;
+@@ -122,7 +122,7 @@ int dmar_latency_snapshot(struct intel_iommu *iommu, char *str, size_t size)
+ 	memset(str, 0, size);
+ 
+ 	for (i = 0; i < COUNTS_NUM; i++)
+-		bytes += snprintf(str + bytes, size - bytes,
++		bytes += scnprintf(str + bytes, size - bytes,
+ 				  "%s", latency_counter_names[i]);
+ 
+ 	spin_lock_irqsave(&latency_lock, flags);
+@@ -130,7 +130,7 @@ int dmar_latency_snapshot(struct intel_iommu *iommu, char *str, size_t size)
+ 		if (!dmar_latency_enabled(iommu, i))
+ 			continue;
+ 
+-		bytes += snprintf(str + bytes, size - bytes,
++		bytes += scnprintf(str + bytes, size - bytes,
+ 				  "\n%s", latency_type_names[i]);
+ 
+ 		for (j = 0; j < COUNTS_NUM; j++) {
+@@ -156,11 +156,9 @@ int dmar_latency_snapshot(struct intel_iommu *iommu, char *str, size_t size)
+ 				break;
+ 			}
+ 
+-			bytes += snprintf(str + bytes, size - bytes,
++			bytes += scnprintf(str + bytes, size - bytes,
+ 					  "%12lld", val);
+ 		}
+ 	}
+ 	spin_unlock_irqrestore(&latency_lock, flags);
 -
- 	setup_traceroute
+-	return bytes;
+ }
+diff --git a/drivers/iommu/intel/perf.h b/drivers/iommu/intel/perf.h
+index fd6db8049d1a7..1e481e9e4ad04 100644
+--- a/drivers/iommu/intel/perf.h
++++ b/drivers/iommu/intel/perf.h
+@@ -41,7 +41,7 @@ void dmar_latency_disable(struct intel_iommu *iommu, enum latency_type type);
+ bool dmar_latency_enabled(struct intel_iommu *iommu, enum latency_type type);
+ void dmar_latency_update(struct intel_iommu *iommu, enum latency_type type,
+ 			 u64 latency);
+-int dmar_latency_snapshot(struct intel_iommu *iommu, char *str, size_t size);
++void dmar_latency_snapshot(struct intel_iommu *iommu, char *str, size_t size);
+ #else
+ static inline int
+ dmar_latency_enable(struct intel_iommu *iommu, enum latency_type type)
+@@ -65,9 +65,8 @@ dmar_latency_update(struct intel_iommu *iommu, enum latency_type type, u64 laten
+ {
+ }
  
- 	# traceroute host-2 from host-1 (expects 1.0.1.1). Takes a while.
-@@ -316,6 +306,9 @@ do
- 	esac
- done
- 
-+require_command traceroute6
-+require_command traceroute
-+
- run_tests
- 
- printf "\nTests passed: %3d\n" ${nsuccess}
+-static inline int
++static inline void
+ dmar_latency_snapshot(struct intel_iommu *iommu, char *str, size_t size)
+ {
+-	return 0;
+ }
+ #endif /* CONFIG_DMAR_PERF */
 -- 
 2.51.0
 
