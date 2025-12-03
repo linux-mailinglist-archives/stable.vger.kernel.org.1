@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-199544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0D87CA021B
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:50:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CA65C9FB03
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:53:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B0574307A73D
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:42:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0EC7C30206A8
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:45:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 351E935F8CA;
-	Wed,  3 Dec 2025 16:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2C4B313263;
+	Wed,  3 Dec 2025 15:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z/zSEd2C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ll0s02f6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3DED35F8B2;
-	Wed,  3 Dec 2025 16:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 917FA3128D8;
+	Wed,  3 Dec 2025 15:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780149; cv=none; b=eKP1HjdSOMHyDIig7BF8RYzlfKBL4dTAA8Hc8YtgxLAI/ZINNWXgQJYg5LHp9wlBuPCJCf6eT13gb4GDRfWf+FFYf0f+grT1qE7oW3EE9wQmeV1oTB7TrlBvwVbZfSrYoUqqNK7thenMcXrvNN3RKCZFd4cwF9vUstmWMuCRylY=
+	t=1764776731; cv=none; b=lpHayNu1K5oPIhABXRT0VOauUnzEQzEt3QBnodBNJZZxPDHNPYwa7JT1urINlla85bhSePXCwJEev6Pp2ciho/BCR4Khp0kmk14ANZ/UthGUivO2suag//QJbDXvn9l7T0UVX3xaMDqloVRMv77FcAKJj4lRTnH47CNrdD0Ghdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780149; c=relaxed/simple;
-	bh=2n5I/mDYhuQrkgpa/VyrtEP923Dgtf8bpJqZeY3UDYM=;
+	s=arc-20240116; t=1764776731; c=relaxed/simple;
+	bh=aQVrIWCt0oQYTmMmGQKOxMzOR3U/UG+oPyKF9466ML8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kkyf3UkAT5iWtL6WMJu2MRRNFv78V5PlmxWz3PLmfI5KLya6WTW85ggh3fHSsGA53CJgHe9r1tHQhGEL/kYzT8WngulnGeKivhWlDzHhCfFpS5a/ZLvBxVpFTVoOh2xbhfVZTO4y8egHuiKh5186ciJ0xunlbqtmgV3ohhxTWCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z/zSEd2C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F92EC4CEF5;
-	Wed,  3 Dec 2025 16:42:28 +0000 (UTC)
+	 MIME-Version; b=N/aWZvZZULSTTCmLwE4hac2sdwtJKC6Faagdb9hoofUPC8xyewwNzHNbxSqS7Imm/5mNjmTuc0JRoJhmNQCwCaP5pJ7MHBBcSFsggr9GntD778PyhH04flq3lBqUUdRns93pG9tXR3ieatnJSm4GCgWpXQK9cRa8M2H9HEl/Has=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ll0s02f6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA171C4CEF5;
+	Wed,  3 Dec 2025 15:45:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780148;
-	bh=2n5I/mDYhuQrkgpa/VyrtEP923Dgtf8bpJqZeY3UDYM=;
+	s=korg; t=1764776731;
+	bh=aQVrIWCt0oQYTmMmGQKOxMzOR3U/UG+oPyKF9466ML8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z/zSEd2CnPyaCiZEPtBtKbf8ae+o4zVB1OucPdFp08hwEF/P6aJVoUlHLWGLQ2dKN
-	 4rhtmrJhzXpEU5SsTccWGElpxWbWYDtI1fyeisVyZIn+rokoH141NgtNkN0GojyDiv
-	 J3st1qDqX1XBEHAdl9bcQ3MWId5rjErJNpbk4dOg=
+	b=Ll0s02f6QUZe1A+pRHHl5r6lRTA0Jprk/a615h8abWLxr9Cg/CRVQZMLugDTPmKFm
+	 XoVWYJIzye4s7zjFmjrX3db7zZJWCVBvgvQNL1IywzNG9BuMH07q2R9gVhW+7mVNbY
+	 qaJnR66HC1IdpRXJERvFjLFv0/EX/cI+Wm09caLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lance Yang <lance.yang@linux.dev>,
-	Google Big Sleep <big-sleep-vuln-reports@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 471/568] mm/secretmem: fix use-after-free race in fault handler
+	Gui-Dong Han <hanguidong02@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.10 269/300] atm/fore200e: Fix possible data race in fore200e_open()
 Date: Wed,  3 Dec 2025 16:27:53 +0100
-Message-ID: <20251203152457.950870433@linuxfoundation.org>
+Message-ID: <20251203152410.600489522@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,73 +60,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lance Yang <lance.yang@linux.dev>
+From: Gui-Dong Han <hanguidong02@gmail.com>
 
-[ Upstream commit 6f86d0534fddfbd08687fa0f01479d4226bc3c3d ]
+commit 82fca3d8a4a34667f01ec2351a607135249c9cff upstream.
 
-When a page fault occurs in a secret memory file created with
-`memfd_secret(2)`, the kernel will allocate a new page for it, mark the
-underlying page as not-present in the direct map, and add it to the file
-mapping.
+Protect access to fore200e->available_cell_rate with rate_mtx lock in the
+error handling path of fore200e_open() to prevent a data race.
 
-If two tasks cause a fault in the same page concurrently, both could end
-up allocating a page and removing the page from the direct map, but only
-one would succeed in adding the page to the file mapping.  The task that
-failed undoes the effects of its attempt by (a) freeing the page again
-and (b) putting the page back into the direct map.  However, by doing
-these two operations in this order, the page becomes available to the
-allocator again before it is placed back in the direct mapping.
+The field fore200e->available_cell_rate is a shared resource used to track
+available bandwidth. It is concurrently accessed by fore200e_open(),
+fore200e_close(), and fore200e_change_qos().
 
-If another task attempts to allocate the page between (a) and (b), and the
-kernel tries to access it via the direct map, it would result in a
-supervisor not-present page fault.
+In fore200e_open(), the lock rate_mtx is correctly held when subtracting
+vcc->qos.txtp.max_pcr from available_cell_rate to reserve bandwidth.
+However, if the subsequent call to fore200e_activate_vcin() fails, the
+function restores the reserved bandwidth by adding back to
+available_cell_rate without holding the lock.
 
-Fix the ordering to restore the direct map before the page is freed.
+This introduces a race condition because available_cell_rate is a global
+device resource shared across all VCCs. If the error path in
+fore200e_open() executes concurrently with operations like
+fore200e_close() or fore200e_change_qos() on other VCCs, a
+read-modify-write race occurs.
 
-Link: https://lkml.kernel.org/r/20251031120955.92116-1-lance.yang@linux.dev
-Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
-Reported-by: Google Big Sleep <big-sleep-vuln-reports@google.com>
-Closes: https://lore.kernel.org/linux-mm/CAEXGt5QeDpiHTu3K9tvjUTPqo+d-=wuCNYPa+6sWKrdQJ-ATdg@mail.gmail.com/
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[rppt: replaced folio with page in the patch and in the changelog]
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Specifically, the error path reads the rate without the lock. If another
+CPU acquires the lock and modifies the rate (e.g., releasing bandwidth in
+fore200e_close()) between this read and the subsequent write, the error
+path will overwrite the concurrent update with a stale value. This results
+in incorrect bandwidth accounting.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251120120657.2462194-1-hanguidong02@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/secretmem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/atm/fore200e.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/mm/secretmem.c b/mm/secretmem.c
-index 18954eae995fc..b570a6e25b6be 100644
---- a/mm/secretmem.c
-+++ b/mm/secretmem.c
-@@ -82,13 +82,13 @@ static vm_fault_t secretmem_fault(struct vm_fault *vmf)
- 		__SetPageUptodate(page);
- 		err = add_to_page_cache_lru(page, mapping, offset, gfp);
- 		if (unlikely(err)) {
--			put_page(page);
- 			/*
- 			 * If a split of large page was required, it
- 			 * already happened when we marked the page invalid
- 			 * which guarantees that this call won't fail
- 			 */
- 			set_direct_map_default_noflush(page);
-+			put_page(page);
- 			if (err == -EEXIST)
- 				goto retry;
+--- a/drivers/atm/fore200e.c
++++ b/drivers/atm/fore200e.c
+@@ -1379,7 +1379,9 @@ fore200e_open(struct atm_vcc *vcc)
  
--- 
-2.51.0
-
+ 	vcc->dev_data = NULL;
+ 
++	mutex_lock(&fore200e->rate_mtx);
+ 	fore200e->available_cell_rate += vcc->qos.txtp.max_pcr;
++	mutex_unlock(&fore200e->rate_mtx);
+ 
+ 	kfree(fore200e_vcc);
+ 	return -EINVAL;
 
 
 
