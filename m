@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-199546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C5F8CA00D1
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:42:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E2F8CA0305
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:54:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 880D830019ED
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:42:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B90583062E32
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:48:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10D0F34F498;
-	Wed,  3 Dec 2025 16:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B494334C9BF;
+	Wed,  3 Dec 2025 16:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mIMU0IPE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="alYMx6s7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1DDC35E547;
-	Wed,  3 Dec 2025 16:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 705D734C9A9;
+	Wed,  3 Dec 2025 16:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780155; cv=none; b=kTCEd4wJwT4pBpOumt78K1Eu7WNqeIMTW4pGnYS7ndtKa+ekpJ2umpQ7zazBNIMmLfrdRvZLXj/xTbXfK3ER0QQkeusEfaODX5HstbYJs+h2UKGTqn6BNrze/mV/oi+Wly+oXotoCRZoCZ3CFrQHzTbfr0hA+BID4OZ7zDGiw9c=
+	t=1764778367; cv=none; b=nmph7pyNFI/AyxVfHGdYEWQ+rsQYlEGCHF8npD5i3fJIGSAkRrK9npRM76nd57rWkId800zJ3pWgAgmzmuvKAEvjygTjuKEUsvLNSeXVPMBp/diOzbvzCFdTtP7XCAwnMTur77fAuEiwcU+Vw6V99kgssnBx+b7aPseN3PYGJ6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780155; c=relaxed/simple;
-	bh=eBfS6GN+DXOQmO7dweWhIw6BlXcctHS6+LAVvunMV10=;
+	s=arc-20240116; t=1764778367; c=relaxed/simple;
+	bh=3jxQnItibsHOaqHkVmspt5gwX+tX556zXKtg9HT3xkc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pc2U+w/5rnnjF0qNvalZh9JXqzSonW+dHJzTGuiL5FuNa2VomQEVG10jUu5QoJz1dt1jO9owDYVwU2vOHgXB2JRKpPsYPjdjQRLKeFikisPU6IybKe98hsVLgiQYOcBe2pCX1eiEnGl+IjQ0iTbXg6UXMsPvY5RUZ13YlZHn/4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mIMU0IPE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E288C4CEF5;
-	Wed,  3 Dec 2025 16:42:35 +0000 (UTC)
+	 MIME-Version; b=J374cIZnpsM1Tz2hA/7oedXrN5eCAfMkAgxxB2K4MP17xOFYo4tzdWjZpwONlVCbdBwihg+89gfncYcb5T/nkdwfTLZtjGiRVAMK9elesbJ08v6y5rVcWqgnIYraoZay/+72tm6aecY5AtfQwJ0IMy0nr1M3z2yAaVrwc8UV1XY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=alYMx6s7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E121DC116B1;
+	Wed,  3 Dec 2025 16:12:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780155;
-	bh=eBfS6GN+DXOQmO7dweWhIw6BlXcctHS6+LAVvunMV10=;
+	s=korg; t=1764778367;
+	bh=3jxQnItibsHOaqHkVmspt5gwX+tX556zXKtg9HT3xkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mIMU0IPEiy8HnymKsEsiA7vnZ0VeplfcDW7fI3VHHVdvLPk+9lb5MDbDv2v+/55kP
-	 FEeL3kUc1maq+zpcqAwQv/IAt6HrWqYWG8Swm8QdsgBWpRD7r91zfVKUobYrg9OBvT
-	 E0rwwjCLWXqGZ/1d0WQ2s4fMRe8y9icaaxnPbHX4=
+	b=alYMx6s7GWrq6/WI+YkCU461wiQ3sSs0GKE/xp0/bPSOv/HnGqGb0KpkqDiLkAYSh
+	 qm0XBTTF6C26oNgrTjfsO6P+HPvHmQ7nKhVT0fZxqlJPEj6RGgZYjDDnt4jqFlRzrA
+	 3FsW/7Hxw3sEm1p+ZZgTvUMS42tMu9BlGdi7dkvo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
-	Takashi Iwai <tiwai@suse.de>,
+	Ville Syrjala <syrjala@sci.fi>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Henk Vergonet <Henk.Vergonet@gmail.com>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 473/568] ALSA: usb-audio: fix uac2 clock source at terminal parser
+Subject: [PATCH 5.15 325/392] Input: remove third argument of usb_maxpacket()
 Date: Wed,  3 Dec 2025 16:27:55 +0100
-Message-ID: <20251203152458.023614557@linuxfoundation.org>
+Message-ID: <20251203152426.121943509@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,52 +60,110 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: René Rebe <rene@exactco.de>
+From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
 
-[ Upstream commit d26e9f669cc0a6a85cf17180c09a6686db9f4002 ]
+[ Upstream commit 948bf187694fc1f4c20cf972fa18b1a6fb3d7603 ]
 
-Since 8b3a087f7f65 ("ALSA: usb-audio: Unify virtual type units type to
-UAC3 values") usb-audio is using UAC3_CLOCK_SOURCE instead of
-bDescriptorSubtype, later refactored with e0ccdef9265 ("ALSA: usb-audio:
-Clean up check_input_term()") into parse_term_uac2_clock_source().
+The third argument of usb_maxpacket(): in_out has been deprecated
+because it could be derived from the second argument (e.g. using
+usb_pipeout(pipe)).
 
-This breaks the clock source selection for at least my
-1397:0003 BEHRINGER International GmbH FCA610 Pro.
+N.B. function usb_maxpacket() was made variadic to accommodate the
+transition from the old prototype with three arguments to the new one
+with only two arguments (so that no renaming is needed). The variadic
+argument is to be removed once all users of usb_maxpacket() get
+migrated.
 
-Fix by using UAC2_CLOCK_SOURCE in parse_term_uac2_clock_source().
-
-Fixes: 8b3a087f7f65 ("ALSA: usb-audio: Unify virtual type units type to UAC3 values")
-Signed-off-by: René Rebe <rene@exactco.de>
-Link: https://patch.msgid.link/20251125.154149.1121389544970412061.rene@exactco.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+CC: Ville Syrjala <syrjala@sci.fi>
+CC: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+CC: Henk Vergonet <Henk.Vergonet@gmail.com>
+Signed-off-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Link: https://lore.kernel.org/r/20220317035514.6378-4-mailhol.vincent@wanadoo.fr
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 69aeb5073123 ("Input: pegasus-notetaker - fix potential out-of-bounds access")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/input/misc/ati_remote2.c         |    2 +-
+ drivers/input/misc/cm109.c               |    2 +-
+ drivers/input/misc/powermate.c           |    2 +-
+ drivers/input/misc/yealink.c             |    2 +-
+ drivers/input/tablet/acecad.c            |    2 +-
+ drivers/input/tablet/pegasus_notetaker.c |    2 +-
+ 6 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
-index 9b34004e67131..1540e9f1c2e3f 100644
---- a/sound/usb/mixer.c
-+++ b/sound/usb/mixer.c
-@@ -930,7 +930,7 @@ static int parse_term_uac2_clock_source(struct mixer_build *state,
- {
- 	struct uac_clock_source_descriptor *d = p1;
+--- a/drivers/input/misc/ati_remote2.c
++++ b/drivers/input/misc/ati_remote2.c
+@@ -639,7 +639,7 @@ static int ati_remote2_urb_init(struct a
+ 			return -ENOMEM;
  
--	term->type = UAC3_CLOCK_SOURCE << 16; /* virtual type */
-+	term->type = UAC2_CLOCK_SOURCE << 16; /* virtual type */
- 	term->id = id;
- 	term->name = d->iClockSource;
- 	return 0;
--- 
-2.51.0
-
+ 		pipe = usb_rcvintpipe(udev, ar2->ep[i]->bEndpointAddress);
+-		maxp = usb_maxpacket(udev, pipe, usb_pipeout(pipe));
++		maxp = usb_maxpacket(udev, pipe);
+ 		maxp = maxp > 4 ? 4 : maxp;
+ 
+ 		usb_fill_int_urb(ar2->urb[i], udev, pipe, ar2->buf[i], maxp,
+--- a/drivers/input/misc/cm109.c
++++ b/drivers/input/misc/cm109.c
+@@ -745,7 +745,7 @@ static int cm109_usb_probe(struct usb_in
+ 
+ 	/* get a handle to the interrupt data pipe */
+ 	pipe = usb_rcvintpipe(udev, endpoint->bEndpointAddress);
+-	ret = usb_maxpacket(udev, pipe, usb_pipeout(pipe));
++	ret = usb_maxpacket(udev, pipe);
+ 	if (ret != USB_PKT_LEN)
+ 		dev_err(&intf->dev, "invalid payload size %d, expected %d\n",
+ 			ret, USB_PKT_LEN);
+--- a/drivers/input/misc/powermate.c
++++ b/drivers/input/misc/powermate.c
+@@ -374,7 +374,7 @@ static int powermate_probe(struct usb_in
+ 
+ 	/* get a handle to the interrupt data pipe */
+ 	pipe = usb_rcvintpipe(udev, endpoint->bEndpointAddress);
+-	maxp = usb_maxpacket(udev, pipe, usb_pipeout(pipe));
++	maxp = usb_maxpacket(udev, pipe);
+ 
+ 	if (maxp < POWERMATE_PAYLOAD_SIZE_MIN || maxp > POWERMATE_PAYLOAD_SIZE_MAX) {
+ 		printk(KERN_WARNING "powermate: Expected payload of %d--%d bytes, found %d bytes!\n",
+--- a/drivers/input/misc/yealink.c
++++ b/drivers/input/misc/yealink.c
+@@ -905,7 +905,7 @@ static int usb_probe(struct usb_interfac
+ 
+ 	/* get a handle to the interrupt data pipe */
+ 	pipe = usb_rcvintpipe(udev, endpoint->bEndpointAddress);
+-	ret = usb_maxpacket(udev, pipe, usb_pipeout(pipe));
++	ret = usb_maxpacket(udev, pipe);
+ 	if (ret != USB_PKT_LEN)
+ 		dev_err(&intf->dev, "invalid payload size %d, expected %zd\n",
+ 			ret, USB_PKT_LEN);
+--- a/drivers/input/tablet/acecad.c
++++ b/drivers/input/tablet/acecad.c
+@@ -130,7 +130,7 @@ static int usb_acecad_probe(struct usb_i
+ 		return -ENODEV;
+ 
+ 	pipe = usb_rcvintpipe(dev, endpoint->bEndpointAddress);
+-	maxp = usb_maxpacket(dev, pipe, usb_pipeout(pipe));
++	maxp = usb_maxpacket(dev, pipe);
+ 
+ 	acecad = kzalloc(sizeof(struct usb_acecad), GFP_KERNEL);
+ 	input_dev = input_allocate_device();
+--- a/drivers/input/tablet/pegasus_notetaker.c
++++ b/drivers/input/tablet/pegasus_notetaker.c
+@@ -296,7 +296,7 @@ static int pegasus_probe(struct usb_inte
+ 	pegasus->intf = intf;
+ 
+ 	pipe = usb_rcvintpipe(dev, endpoint->bEndpointAddress);
+-	pegasus->data_len = usb_maxpacket(dev, pipe, usb_pipeout(pipe));
++	pegasus->data_len = usb_maxpacket(dev, pipe);
+ 
+ 	pegasus->data = usb_alloc_coherent(dev, pegasus->data_len, GFP_KERNEL,
+ 					   &pegasus->data_dma);
 
 
 
