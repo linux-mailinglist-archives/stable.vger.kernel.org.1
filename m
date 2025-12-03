@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-199653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEC21CA02E3
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:53:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE1D3CA04F9
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:17:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B9C93302719E
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:48:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6AD3B306A53B
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:04:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46BC8313546;
-	Wed,  3 Dec 2025 16:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1104369986;
+	Wed,  3 Dec 2025 16:57:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OrCRCOGQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VbKl3Hl1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04BCC3148CD;
-	Wed,  3 Dec 2025 16:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79FB736920B;
+	Wed,  3 Dec 2025 16:57:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780504; cv=none; b=IMjTv3dLhWL/ww6WddgWLvqBGHzi26l6ZyO4XieM2EIuBxiX2aQHA5u77QLDcuirvXmUKK5gcJR7zvOO0xRiL4XLTwb+Kr8Oor/dz2+LHrozcJtx7grqSYmgyqKocz3ACnSIQvHkzc5UdM4msNq3zHpAed/SD2tlwKsnwxxEK8c=
+	t=1764781056; cv=none; b=GLnhIOstjR/Q6b2KcSuer9rv7W9Ru35nsYfQR2NYewqQOnjrU2SI1W6EGPFnMocWwsRN2EQIBkyOI8RUZYhUjOqfVWWQWyPBDySeVC3gunTOhZ08LHjrFq5VRIakSHLpwDmVK19j/fOsP7Ly1gGpPzyiu4eKEpsoMwbmtNtzzfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780504; c=relaxed/simple;
-	bh=ffTNd57sRrKUwIC/7Str78Qym88dWOsZChPl7nNpVTw=;
+	s=arc-20240116; t=1764781056; c=relaxed/simple;
+	bh=CDmeRn3rQ9Y1QcCU1VtVc5k/I4dyFPIvchOBq/cTUiQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O0efEKo8TcWx9jYcsJyFwtWv2inEimzBM9dtx1Hdf6P5RmthmqaNpBwavj2mtsB/h0XazWBeGtOuCPlBXhiWtXIixZ6oNWPgZSCpizpzu/s/LQhPt/WZxRr001epcMQ8HUYjeH5cRAR/X9Ci/WlKYDCY01VKPi4cY+mwYwVlCbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OrCRCOGQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C7A6C4CEF5;
-	Wed,  3 Dec 2025 16:48:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=be3uTaGic4pEwWyzOc877YGRo0+2A39/VcPChjmsn/5lqWWPmgTKE4T7f9T2BNhCovpPokoxzG+vFN3zeTOurGr9sWzk1ZGtgoIBrgNtQZbMhILpkb4DNlHuDJIt5hkFKoLisdY0hkmTHcJ7JNmdN4aCzMf7pyWb82iIS8/8gN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VbKl3Hl1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9F4CC4CEF5;
+	Wed,  3 Dec 2025 16:57:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780503;
-	bh=ffTNd57sRrKUwIC/7Str78Qym88dWOsZChPl7nNpVTw=;
+	s=korg; t=1764781056;
+	bh=CDmeRn3rQ9Y1QcCU1VtVc5k/I4dyFPIvchOBq/cTUiQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OrCRCOGQ8ob8I9BBHrLdFCzbjMe3jLqHcyCrh1fjn/kIVRlcDIvuRutexwjOyD/Si
-	 Jiu9ikrq8W7gFkMozcW5zgNpir8HitDvCsYaIjJShNiYvB/2QoISBzubOOeY+ARF4h
-	 SF8mFRxPAmyzhr/zM0o5djSqmed2hjKJOf73ANec=
+	b=VbKl3Hl1FZovcPkR1UN1GkFmog3/KjlvCQb163Kck5OHNHhepgnmyQSQb4v3iFxrz
+	 4+E+Hb/1z9PRaBpnofuo5znMjjYtDiJmts8suXxvWMAPhHRgsFuWkawQF3nh8v7DAW
+	 +ZSlD9uvEFRmepUOvb6S6p0pO6Io0ZsYsdd6S9Pg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Wolfram Sang <wsa@kernel.org>,
-	Sudeep Holla <sudeep.holla@arm.com>
-Subject: [PATCH 6.1 567/568] i2c: xgene-slimpro: Migrate to use generic PCC shmem related macros
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 36/93] iio:common:ssp_sensors: Fix an error handling path ssp_probe()
 Date: Wed,  3 Dec 2025 16:29:29 +0100
-Message-ID: <20251203152501.518097111@linuxfoundation.org>
+Message-ID: <20251203152337.850919927@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
+References: <20251203152336.494201426@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,72 +59,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sudeep Holla <sudeep.holla@arm.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit 89a4ad1f437c049534891c3d83cd96d7c7debd2a upstream.
+commit 21553258b94861a73d7f2cf15469d69240e1170d upstream.
 
-Use the newly defined common and generic PCC shared memory region
-related macros in this driver to replace the locally defined ones.
+If an error occurs after a successful mfd_add_devices() call, it should be
+undone by a corresponding mfd_remove_devices() call, as already done in the
+remove function.
 
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Acked-by: Wolfram Sang <wsa@kernel.org>
-Link: https://lore.kernel.org/r/20230927-pcc_defines-v2-2-0b8ffeaef2e5@arm.com
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Fixes: 50dd64d57eee ("iio: common: ssp_sensors: Add sensorhub driver")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-xgene-slimpro.c |   16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ drivers/iio/common/ssp_sensors/ssp_dev.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/i2c/busses/i2c-xgene-slimpro.c
-+++ b/drivers/i2c/busses/i2c-xgene-slimpro.c
-@@ -91,14 +91,6 @@
+--- a/drivers/iio/common/ssp_sensors/ssp_dev.c
++++ b/drivers/iio/common/ssp_sensors/ssp_dev.c
+@@ -503,7 +503,7 @@ static int ssp_probe(struct spi_device *
+ 	ret = spi_setup(spi);
+ 	if (ret < 0) {
+ 		dev_err(&spi->dev, "Failed to setup spi\n");
+-		return ret;
++		goto err_setup_spi;
+ 	}
  
- #define SLIMPRO_IIC_MSG_DWORD_COUNT			3
+ 	data->fw_dl_state = SSP_FW_DL_STATE_NONE;
+@@ -568,6 +568,8 @@ err_read_reg:
+ err_setup_irq:
+ 	mutex_destroy(&data->pending_lock);
+ 	mutex_destroy(&data->comm_lock);
++err_setup_spi:
++	mfd_remove_devices(&spi->dev);
  
--/* PCC related defines */
--#define PCC_SIGNATURE			0x50424300
--#define PCC_STS_CMD_COMPLETE		BIT(0)
--#define PCC_STS_SCI_DOORBELL		BIT(1)
--#define PCC_STS_ERR			BIT(2)
--#define PCC_STS_PLAT_NOTIFY		BIT(3)
--#define PCC_CMD_GENERATE_DB_INT		BIT(15)
--
- struct slimpro_i2c_dev {
- 	struct i2c_adapter adapter;
- 	struct device *dev;
-@@ -160,11 +152,11 @@ static void slimpro_i2c_pcc_rx_cb(struct
+ 	dev_err(&spi->dev, "Probe failed!\n");
  
- 	/* Check if platform sends interrupt */
- 	if (!xgene_word_tst_and_clr(&generic_comm_base->status,
--				    PCC_STS_SCI_DOORBELL))
-+				    PCC_STATUS_SCI_DOORBELL))
- 		return;
- 
- 	if (xgene_word_tst_and_clr(&generic_comm_base->status,
--				   PCC_STS_CMD_COMPLETE)) {
-+				   PCC_STATUS_CMD_COMPLETE)) {
- 		msg = generic_comm_base + 1;
- 
- 		/* Response message msg[1] contains the return value. */
-@@ -186,10 +178,10 @@ static void slimpro_i2c_pcc_tx_prepare(s
- 		   cpu_to_le32(PCC_SIGNATURE | ctx->mbox_idx));
- 
- 	WRITE_ONCE(generic_comm_base->command,
--		   cpu_to_le16(SLIMPRO_MSG_TYPE(msg[0]) | PCC_CMD_GENERATE_DB_INT));
-+		   cpu_to_le16(SLIMPRO_MSG_TYPE(msg[0]) | PCC_CMD_GENERATE_DB_INTR));
- 
- 	status = le16_to_cpu(READ_ONCE(generic_comm_base->status));
--	status &= ~PCC_STS_CMD_COMPLETE;
-+	status &= ~PCC_STATUS_CMD_COMPLETE;
- 	WRITE_ONCE(generic_comm_base->status, cpu_to_le16(status));
- 
- 	/* Copy the message to the PCC comm space */
 
 
 
