@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C789CA0971
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:44:22 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F2B8C9F936
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:42:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DFB38347243F
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:23:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 01CD53003F93
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:42:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3ED5327BE6;
-	Wed,  3 Dec 2025 16:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF032314D0A;
+	Wed,  3 Dec 2025 15:42:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vRludL3T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KqBEl2Gr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF4131A077;
-	Wed,  3 Dec 2025 16:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9054A3161BC;
+	Wed,  3 Dec 2025 15:42:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779962; cv=none; b=smFuN2xdGeha9xaVyxX2aF1z6CTHTgvPv6DVuxjq8P00TYroFVJtozkNw4IFHLepGwFbOKo++28N3Aa2XydNeRSzmMihmYEL6ci7aqa90gKbCPcp3HUKcLBb8ki6Grrw/IkvDIR1o/EqovaF9SuyFBgc/AQ7LNTGvjPII2FWjX8=
+	t=1764776537; cv=none; b=EbZaNza/0CaMXqSpoSBaBcmZfo2KcoGs4foiU3U9HfEmPX3gz/CQuE+xMe534f7CTK3J/A5PgMzu0b2I8Wcb1W9ytXcjJDtQguMkH2rVKuLWm5V2z9lX4RNa8Q6vAoUhlGSACd65jc5fTa325tndxjydqw0KJHbhiS4QkQa6oEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779962; c=relaxed/simple;
-	bh=ISVmKsGFflGMg7Ukkgt2WrHx+4ZVyaN1/0eKmzuwA5U=;
+	s=arc-20240116; t=1764776537; c=relaxed/simple;
+	bh=LftdVImH2mB0LPHx/ADMMcvZXTulyyNUyV/ODs4zOQE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H0ET2MlPo8uRUwiLyVw87u9OH1Bzrdo+hK0UrOhEDKYnvEFxnb3YMrneiMiSo5yio7GU2O0BSt6jiWYrPVgZkP97o1Fcog+M4yUpIM+S3DMD7q7p235AeTbB7fN05yQpeqLZiBN0q9zfsfJ/gxGP6Alpquzbp/uWTtN4uXpABWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vRludL3T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7931C4CEF5;
-	Wed,  3 Dec 2025 16:39:21 +0000 (UTC)
+	 MIME-Version; b=ZMsjLQq2BdHxIO9GQ6o/9vyeP0DolAKLMjQYHoqYQoIV6tOUv9OSOnG046loz2vpccaf0exXOO6pOMZKon8uP+qryFYMMK63M0D8Fg0NtjyrWsicqizde8iaAESVy/ejnEQlJNd6C94VYUDtbcwYFv40EVSV0JJ8We9q/gE10rw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KqBEl2Gr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2B81C16AAE;
+	Wed,  3 Dec 2025 15:42:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779962;
-	bh=ISVmKsGFflGMg7Ukkgt2WrHx+4ZVyaN1/0eKmzuwA5U=;
+	s=korg; t=1764776537;
+	bh=LftdVImH2mB0LPHx/ADMMcvZXTulyyNUyV/ODs4zOQE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vRludL3TwjXgCfR3y/4xoKYzv6LdsX+0a5FiwCVSKlhMyeTaCwE7y8cuCDXduyhqL
-	 p3J5Vol2Edql0SiNVf1ul0NKti0rPA0y+ETdiQqSe+5edwhTzUSPxrwv4JOK6l9sGC
-	 IjZsBlxKn1tu5v0N9Z4pd8MR9ywG4HcmXPpIbeMU=
+	b=KqBEl2GrfR/Z1ODhaXCNFJjS6htEje50RpPQ9fxyJMlHQNYzE+VFk8rpIaQqlslGn
+	 7x2JW+JUsu3Evum61ZKo+j2S6PJHDDvBLP0Md0dEhFy6y+qXb4YuyBB1Vims1O7OTU
+	 7oQMX8vpr7GYmIX6MEqfxZ/2BngobS6a0S7W3ais=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 414/568] scsi: ufs: core: Add a quirk to suppress link_startup_again
-Date: Wed,  3 Dec 2025 16:26:56 +0100
-Message-ID: <20251203152455.856124103@linuxfoundation.org>
+	Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Dinh Nguyen <dinguyen@kernel.org>
+Subject: [PATCH 5.10 213/300] EDAC/altera: Use INTTEST register for Ethernet and USB SBE injection
+Date: Wed,  3 Dec 2025 16:26:57 +0100
+Message-ID: <20251203152408.513207195@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,63 +60,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
 
-ufshcd_link_startup() has a facility (link_startup_again) to issue
-DME_LINKSTARTUP a 2nd time even though the 1st time was successful.
+commit 281326be67252ac5794d1383f67526606b1d6b13 upstream.
 
-Some older hardware benefits from that, however the behaviour is
-non-standard, and has been found to cause link startup to be unreliable
-for some Intel Alder Lake based host controllers.
+The current single-bit error injection mechanism flips bits directly in ECC RAM
+by performing write and read operations. When the ECC RAM is actively used by
+the Ethernet or USB controller, this approach sometimes trigger a false
+double-bit error.
 
-Add UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE to suppress
-link_startup_again, in preparation for setting the quirk for affected
-controllers.
+Switch both Ethernet and USB EDAC devices to use the INTTEST register
+(altr_edac_a10_device_inject_fops) for single-bit error injection, similar to
+the existing double-bit error injection method.
 
-Fixes: 7dc9fb47bc9a ("scsi: ufs: ufs-pci: Add support for Intel ADL")
+Fixes: 064acbd4f4ab ("EDAC, altera: Add Stratix10 peripheral support")
+Signed-off-by: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Dinh Nguyen <dinguyen@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20251024085918.31825-3-adrian.hunter@intel.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://patch.msgid.link/20251111081333.1279635-1-niravkumarlaxmidas.rabara@altera.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/core/ufshcd.c |    3 ++-
- include/ufs/ufshcd.h      |    7 +++++++
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ drivers/edac/altera_edac.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -4778,7 +4778,8 @@ static int ufshcd_link_startup(struct uf
- 	 * If UFS device isn't active then we will have to issue link startup
- 	 * 2 times to make sure the device state move to active.
- 	 */
--	if (!ufshcd_is_ufs_dev_active(hba))
-+	if (!(hba->quirks & UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE) &&
-+	    !ufshcd_is_ufs_dev_active(hba))
- 		link_startup_again = true;
- 
- link_startup:
---- a/include/ufs/ufshcd.h
-+++ b/include/ufs/ufshcd.h
-@@ -592,6 +592,13 @@ enum ufshcd_quirks {
- 	 * auto-hibernate capability but it's FASTAUTO only.
- 	 */
- 	UFSHCD_QUIRK_HIBERN_FASTAUTO			= 1 << 18,
-+
-+	/*
-+	 * This quirk indicates that DME_LINKSTARTUP should not be issued a 2nd
-+	 * time (refer link_startup_again) after the 1st time was successful,
-+	 * because it causes link startup to become unreliable.
-+	 */
-+	UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE		= 1 << 19,
+--- a/drivers/edac/altera_edac.c
++++ b/drivers/edac/altera_edac.c
+@@ -1332,7 +1332,7 @@ static const struct edac_device_prv_data
+ 	.ue_set_mask = ALTR_A10_ECC_TDERRA,
+ 	.set_err_ofst = ALTR_A10_ECC_INTTEST_OFST,
+ 	.ecc_irq_handler = altr_edac_a10_ecc_irq,
+-	.inject_fops = &altr_edac_a10_device_inject2_fops,
++	.inject_fops = &altr_edac_a10_device_inject_fops,
  };
  
- enum ufshcd_caps {
+ #endif	/* CONFIG_EDAC_ALTERA_ETHERNET */
+@@ -1422,7 +1422,7 @@ static const struct edac_device_prv_data
+ 	.ue_set_mask = ALTR_A10_ECC_TDERRA,
+ 	.set_err_ofst = ALTR_A10_ECC_INTTEST_OFST,
+ 	.ecc_irq_handler = altr_edac_a10_ecc_irq,
+-	.inject_fops = &altr_edac_a10_device_inject2_fops,
++	.inject_fops = &altr_edac_a10_device_inject_fops,
+ };
+ 
+ #endif	/* CONFIG_EDAC_ALTERA_USB */
 
 
 
