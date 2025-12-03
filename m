@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-199652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0037CA02DD
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:53:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04B4ACA0E16
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:18:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1033430213D5
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:48:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0455D316BDE0
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:16:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2EF436BCDB;
-	Wed,  3 Dec 2025 16:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9D3139A25C;
+	Wed,  3 Dec 2025 16:53:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CG5owtj1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qHLyMZRq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7DB3148CD;
-	Wed,  3 Dec 2025 16:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9097E39A25A;
+	Wed,  3 Dec 2025 16:53:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780500; cv=none; b=HQoWdmNUODCzFERpYDDIGNzVDXynKz1tlKvqBy6YgMJKNvVFR/sqibnsFjQPM+zAhpIhjb3CtThOeSBVJ/5vmg7Dda0M9UjBQtC/2F5up7egHNigVfinVUpGUtwnGiSPRbIVOS3WCcSMphoECZRay7iG+wNNiSUjth4j0y/FMTM=
+	t=1764780787; cv=none; b=ZKoi4DvcKO/iSm60T/jH5P+I7iuykDSDRssM6DD9cpywA5NIWHdD0m+AbV9r+BSBro9esGFpan9N/MKuSE4ublfgnxvbNBA1DYz+AJEjPpa3k44bJz2qSwIc6Wz/U/1wTna5DLGnB5oyXCu2oaJH0XO0CvHyo5AFTMp21QSPevA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780500; c=relaxed/simple;
-	bh=jCZ1nwn+SEayR32dmpb8s+RvFitztN7wEJtyxAiD+WI=;
+	s=arc-20240116; t=1764780787; c=relaxed/simple;
+	bh=iyKdZZt6CzZjWdhnI+lODwmbioOKLY44J51PmYMu1z0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sCY1/KnEG/DTJBumUU7x7ythVqXcSn9N1l0RwqUVvP3v24JWF0JigVldmoF/JgMBwWEeuQ5WTfdkxNTWgxO6f6dDU2v9nVkUpuLQLF0gr4IYYsi+OsOuHF1HvgsoW3VXRlCBVG8C/dTDhxDImhC+Zs9rHBW3ypArSXpaj2v1SoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CG5owtj1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12804C4CEF5;
-	Wed,  3 Dec 2025 16:48:19 +0000 (UTC)
+	 MIME-Version; b=P+ZhBZGPhC0UOhyHDMrmDwy+V/3vLrBWhtCXXzt+0Cc9oyJZvAPJsEZcL/rb1tgVXCSvZzsscBM+i3qqN4NcwLaSkrqLnmiVp4RJv+qbOhW2Cr0zJAVtEXBLHebjRNaz/t9YITJ1wb1787ZXbVYe3YgmKUHHAGvj44uw8H4GEII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qHLyMZRq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 925B6C4CEF5;
+	Wed,  3 Dec 2025 16:53:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780500;
-	bh=jCZ1nwn+SEayR32dmpb8s+RvFitztN7wEJtyxAiD+WI=;
+	s=korg; t=1764780786;
+	bh=iyKdZZt6CzZjWdhnI+lODwmbioOKLY44J51PmYMu1z0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CG5owtj1HxT6k4LXZC3hYtKq/4TlzvT7dXisUfgI0mPwRo1Qx6KnNFJrd87o/VeAK
-	 hdYQuxG0RG700Ap/AoS2yBIVly0yd483A7El83RlKUUfmZfnVKM8LMTbLccZN5zMWs
-	 Kvz8AEMHmEo+Y0Fwi1eB+KipoMAGWeKqkv+ptLz8=
+	b=qHLyMZRqYeYgjRRsXR1iVo9NuCUyCjOYWwbdqNZgeaSHDw+UP/k9AX2CYh+/Vf6MM
+	 dki+QCXsNie2M/b5PDX6T+UAvR9F8rTXNIqcRE3v3Jwwd8koH0UyWWyn1v2Up3/k22
+	 PBdeIMNpya28HGbMEn6aogLHzOG5gh03+R+KjWas=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Pylypiv <ipylypiv@google.com>,
-	Terrence Adams <tadamsjr@google.com>,
-	Jack Wang <jinpu.wang@ionos.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Nazar Kalashnikov <sivartiwe@gmail.com>
-Subject: [PATCH 6.1 566/568] scsi: pm80xx: Set phy->enable_completion only when we
+	stable@kernel.org,
+	Kuen-Han Tsai <khtsai@google.com>
+Subject: [PATCH 6.12 089/132] usb: gadget: f_eem: Fix memory leak in eem_unwrap
 Date: Wed,  3 Dec 2025 16:29:28 +0100
-Message-ID: <20251203152501.479482878@linuxfoundation.org>
+Message-ID: <20251203152346.588375552@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +59,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Igor Pylypiv <ipylypiv@google.com>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-[ Upstream commit e4f949ef1516c0d74745ee54a0f4882c1f6c7aea ]
+commit e4f5ce990818d37930cd9fb0be29eee0553c59d9 upstream.
 
-pm8001_phy_control() populates the enable_completion pointer with a stack
-address, sends a PHY_LINK_RESET / PHY_HARD_RESET, waits 300 ms, and
-returns. The problem arises when a phy control response comes late.  After
-300 ms the pm8001_phy_control() function returns and the passed
-enable_completion stack address is no longer valid. Late phy control
-response invokes complete() on a dangling enable_completion pointer which
-leads to a kernel crash.
+The existing code did not handle the failure case of usb_ep_queue in the
+command path, potentially leading to memory leaks.
 
-Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
-Signed-off-by: Terrence Adams <tadamsjr@google.com>
-Link: https://lore.kernel.org/r/20240627155924.2361370-2-tadamsjr@google.com
-Acked-by: Jack Wang <jinpu.wang@ionos.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Nazar Kalashnikov <sivartiwe@gmail.com>
+Improve error handling to free all allocated resources on usb_ep_queue
+failure. This patch continues to use goto logic for error handling, as the
+existing error handling is complex and not easily adaptable to auto-cleanup
+helpers.
+
+kmemleak results:
+  unreferenced object 0xffffff895a512300 (size 240):
+    backtrace:
+      slab_post_alloc_hook+0xbc/0x3a4
+      kmem_cache_alloc+0x1b4/0x358
+      skb_clone+0x90/0xd8
+      eem_unwrap+0x1cc/0x36c
+  unreferenced object 0xffffff8a157f4000 (size 256):
+    backtrace:
+      slab_post_alloc_hook+0xbc/0x3a4
+      __kmem_cache_alloc_node+0x1b4/0x2dc
+      kmalloc_trace+0x48/0x140
+      dwc3_gadget_ep_alloc_request+0x58/0x11c
+      usb_ep_alloc_request+0x40/0xe4
+      eem_unwrap+0x204/0x36c
+  unreferenced object 0xffffff8aadbaac00 (size 128):
+    backtrace:
+      slab_post_alloc_hook+0xbc/0x3a4
+      __kmem_cache_alloc_node+0x1b4/0x2dc
+      __kmalloc+0x64/0x1a8
+      eem_unwrap+0x218/0x36c
+  unreferenced object 0xffffff89ccef3500 (size 64):
+    backtrace:
+      slab_post_alloc_hook+0xbc/0x3a4
+      __kmem_cache_alloc_node+0x1b4/0x2dc
+      kmalloc_trace+0x48/0x140
+      eem_unwrap+0x238/0x36c
+
+Fixes: 4249d6fbc10f ("usb: gadget: eem: fix echo command packet response issue")
+Cc: stable@kernel.org
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://patch.msgid.link/20251103121814.1559719-1-khtsai@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
-Backport fix for CVE-2024-47666
- drivers/scsi/pm8001/pm8001_sas.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/gadget/function/f_eem.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/scsi/pm8001/pm8001_sas.c
-+++ b/drivers/scsi/pm8001/pm8001_sas.c
-@@ -168,7 +168,6 @@ int pm8001_phy_control(struct asd_sas_ph
- 	unsigned long flags;
- 	pm8001_ha = sas_phy->ha->lldd_ha;
- 	phy = &pm8001_ha->phy[phy_id];
--	pm8001_ha->phy[phy_id].enable_completion = &completion;
- 	switch (func) {
- 	case PHY_FUNC_SET_LINK_RATE:
- 		rates = funcdata;
-@@ -181,6 +180,7 @@ int pm8001_phy_control(struct asd_sas_ph
- 				rates->maximum_linkrate;
- 		}
- 		if (pm8001_ha->phy[phy_id].phy_state ==  PHY_LINK_DISABLE) {
-+			pm8001_ha->phy[phy_id].enable_completion = &completion;
- 			PM8001_CHIP_DISP->phy_start_req(pm8001_ha, phy_id);
- 			wait_for_completion(&completion);
- 		}
-@@ -189,6 +189,7 @@ int pm8001_phy_control(struct asd_sas_ph
- 		break;
- 	case PHY_FUNC_HARD_RESET:
- 		if (pm8001_ha->phy[phy_id].phy_state == PHY_LINK_DISABLE) {
-+			pm8001_ha->phy[phy_id].enable_completion = &completion;
- 			PM8001_CHIP_DISP->phy_start_req(pm8001_ha, phy_id);
- 			wait_for_completion(&completion);
- 		}
-@@ -197,6 +198,7 @@ int pm8001_phy_control(struct asd_sas_ph
- 		break;
- 	case PHY_FUNC_LINK_RESET:
- 		if (pm8001_ha->phy[phy_id].phy_state == PHY_LINK_DISABLE) {
-+			pm8001_ha->phy[phy_id].enable_completion = &completion;
- 			PM8001_CHIP_DISP->phy_start_req(pm8001_ha, phy_id);
- 			wait_for_completion(&completion);
- 		}
+--- a/drivers/usb/gadget/function/f_eem.c
++++ b/drivers/usb/gadget/function/f_eem.c
+@@ -477,8 +477,13 @@ static int eem_unwrap(struct gether *por
+ 				req->complete = eem_cmd_complete;
+ 				req->zero = 1;
+ 				req->context = ctx;
+-				if (usb_ep_queue(port->in_ep, req, GFP_ATOMIC))
++				if (usb_ep_queue(port->in_ep, req, GFP_ATOMIC)) {
+ 					DBG(cdev, "echo response queue fail\n");
++					kfree(ctx);
++					kfree(req->buf);
++					usb_ep_free_request(ep, req);
++					dev_kfree_skb_any(skb2);
++				}
+ 				break;
+ 
+ 			case 1:  /* echo response */
 
 
 
