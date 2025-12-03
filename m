@@ -1,156 +1,140 @@
-Return-Path: <stable+bounces-198181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2376EC9E6BF
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 10:13:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40097C9E78C
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 10:28:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B1053A6A4A
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 09:13:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7659B3A91DE
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 09:28:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FDDD2D7DE3;
-	Wed,  3 Dec 2025 09:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A83542DCF4C;
+	Wed,  3 Dec 2025 09:28:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ARGyTjRN"
+	dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b="ZC8APadj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A90F2D77E2
-	for <stable@vger.kernel.org>; Wed,  3 Dec 2025 09:13:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489BF2DCF4E
+	for <stable@vger.kernel.org>; Wed,  3 Dec 2025 09:28:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764753201; cv=none; b=cX1TLM4H/fTO5xENy3thKrC6Au1KgDRjm3OY8GfNdJqZGIiTKzniyo+HvpzLFEgjYEi86JifoFZPPMR/ncgpoNkMoib2bSsBSnm9QiXh8FW7ezvbB/hJyMPCc3tpJhDLNEGNdLFqm+xKe5cuKI+VtNS1GlLw9fqrkvTX9VvFhF0=
+	t=1764754097; cv=none; b=tFNpzNK/TNQB0d704QpHJDfSI8EVoMFdtGuZFo6VQbF+bTKr/dgL6e89R00zKdtB8xil5nSTHBhd5iss1E6MYypzEf4jp+gn6Hu8K5XkUaBiMJ7oWbQv17gWMrTdLZ62Az/qGE2ugKYXjjLsISe1qEVHg91TmZK3wsrl13c2/4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764753201; c=relaxed/simple;
-	bh=gwg1cUeefqEYWrbqIza438gE3P5ot++SGc1pBk7cowg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J5xfEZyw+ptaGoX3Vt/dHoJnmMIViSY9R0eT6VZr2/wqc7Pb4zr5fAXOhZsZiO9IG4l2TLP72y3qoccqOcx+UjpAmyAtkYfuHTdQBHJe4zNJcP8BrFfGIH+qkRpfEyUMLVidl7juizxIX4ekhTyEoSMdMixb1r+ozgQ8vnevSPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ARGyTjRN; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b73a9592fb8so211384566b.1
-        for <stable@vger.kernel.org>; Wed, 03 Dec 2025 01:13:18 -0800 (PST)
+	s=arc-20240116; t=1764754097; c=relaxed/simple;
+	bh=ns2TzdrZVTfQ2mVS+gF3kQw0VyYvREhCt2c0Yr6Y9zg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=icyM9nlkuGKTIHfzNL32W77c4vT1DBdbF1lFvaUcrILuE+2JzR5lUdrDwaXkUFWsQWb4al8VDlJ5UV5XJ0k67+YA3ZAfncIlcf7QD+Hf4eHNBxqaQhO7jmO/T6xaEuhJ1hNJbis0zysoXl8XiJP1YiuQ2BvhIPFoDULxE2/r/jY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szeredi.hu; spf=pass smtp.mailfrom=szeredi.hu; dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b=ZC8APadj; arc=none smtp.client-ip=209.85.222.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szeredi.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szeredi.hu
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-8b2148ca40eso775209485a.1
+        for <stable@vger.kernel.org>; Wed, 03 Dec 2025 01:28:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764753197; x=1765357997; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+        d=szeredi.hu; s=google; t=1764754093; x=1765358893; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=T7oZdM7Bhkia/T2ka2lT6n6j9t2T47bvS70YVWKTp9c=;
-        b=ARGyTjRNR8zg9pnYiJ79xkzyzhTJS4MX7JcN2oToEvGIZhcLpV0BVtGuoshT0gvnZi
-         rAKkxciytOrt+EpMdeEcxb3gKVsiTYah280/iUFgnCSLm6pU4pXnbN5OzcdTICyevA2d
-         giFtwcTHLSqcw8zkzwmKxPRYYaGAKBpx+b9XgCX39mN9NYTu+EB26NjD84JmvEobTOZp
-         vQT0aGgXVulr+Ql2imRW8DSnzSawc4Un/gVSrfGnkkDNf7EQY+rZ0QLA3CZN0n6isCuV
-         W0Cab4rg2sLagLTRd2+hCZ0YYLSTbynvzvDtE9DkC89aG++o/tTcQdyDblDgedIz5PRH
-         WPlw==
+        bh=ns2TzdrZVTfQ2mVS+gF3kQw0VyYvREhCt2c0Yr6Y9zg=;
+        b=ZC8APadjeAHlLFij1YgDUWZkNqowc4sUQsEVBq0EBE/+BPP8l1W2k8fXVL920ytYtu
+         zb4sI7hRZP7N3+7fOA8UbDhiiCJXLh4m8aTh5dHIWnXyousEna+SnDlsrxEwbR26kfLK
+         2ctiUxKbNwwVnDfZ+5VY4//RYO4ixO9Bn/lS8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764753197; x=1765357997;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1764754093; x=1765358893;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=T7oZdM7Bhkia/T2ka2lT6n6j9t2T47bvS70YVWKTp9c=;
-        b=IW2OiEfbtS9T7gnbsddr7siw+f+Ol+nLyo8/8owaDj6r76ZnWKWC9SOVM5uEafsuHQ
-         b6hXWnJKLKQhbijAFXGowcfAGjYU2KQFwu/U7/qTjFavwHueHk1YzFPzzKa/9VUSpd0R
-         VbGCIpzzZdfUv+FH0s/Dtg1zYQ2gs5TJQyj6m/CEb4P8fQndU9gOXVhqF6we2kCtDCiC
-         Ehf49ROgCpiJ5jcjhTUQgWOx0DNyM+gJItCKPXAR66z1eSao4rckxW+1NKTDPC1kPFKA
-         LhV5HO4DrHgKgGM+kl4ZNPWOzMkiz3NiyejFHXnlScDlARyLBc4ZbkLkbbRA5hIbirPA
-         ciPw==
-X-Forwarded-Encrypted: i=1; AJvYcCWdD2oWKSmtKTXm83gLFmQHDnYUnTdCHakhRyt81uBOjSrF2q5OUwPcAbQSr8cRyU+CObDSw3w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwtSHVkDwYP2JaCKbplxIHN+SPXMEOI5RzcSW2blLJFcKcsGVl4
-	FP6f4MpnmH7gf/Wv9f86V02+6+P9+Ri548tEXjDPcR/hJAhJ5/PZVda4
-X-Gm-Gg: ASbGncvtT2LLDVrToPpXsaSAyM/hXW/kleVgPkHoT5MZ0lwC0N4ni7lsNVo2Maor7Dl
-	du5ol5YtbBJrKknroDvR4wI6iqc0/WlDyeTtm+4pbkbyLshqloqlx5MbGDCi/JmWXc6rPqiJ0KM
-	xkoMCHYPCy+LtBpO9GIDzZM4GYxPsCt3qEiz0VqbXl2EWc9NJa4AOv2nGQ9xlzU7nfs21eDKr4y
-	Tq3qsITORfY56cF05BTbp6/Xxq352amLRXWKz81Sa5VBpLsZzs88c5E1wv9merPkfvzc8T7dIcF
-	oXz+ZMTVFBbuml6kKw5aVW4C7JtyqV6ZhLuSIbLGKb+FG2/mLz1Al+YFPlwtHn68Di+VFe3b6Z+
-	JIReWI2JCxRrsX0llRFlRE+/Uwx/v0hNrm5MVrgRKCcRWgdHJ8LUVtlE5ErKPLboRdWyACjmA9N
-	dkF3z70kU=
-X-Google-Smtp-Source: AGHT+IHRcaZPHaIjuKYFbFHtZj/e375S+VWRWPNOXbUn5kpsJd7u/xOi3ucj9K/9ixeSl8Qs6jLIgA==
-X-Received: by 2002:a17:907:60c9:b0:b79:cbbf:7b09 with SMTP id a640c23a62f3a-b79d65a6485mr181409366b.15.1764753197095;
-        Wed, 03 Dec 2025 01:13:17 -0800 (PST)
-Received: from foz.lan ([95.90.158.170])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b76f51a9819sm1762754166b.25.2025.12.03.01.13.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Dec 2025 01:13:16 -0800 (PST)
-Date: Wed, 3 Dec 2025 10:13:14 +0100
-From: Mauro Carvalho Chehab <maurochehab@gmail.com>
-To: Ricardo Ribalda <ribalda@chromium.org>
-Cc: Keke Li <keke.li@amlogic.com>, Jacopo Mondi
- <jacopo.mondi@ideasonboard.com>, Daniel Scally
- <dan.scally@ideasonboard.com>, Hans Verkuil <hverkuil+cisco@kernel.org>,
- Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, Vikash
- Garodia <vikash.garodia@oss.qualcomm.com>, Dikshita Agarwal
- <dikshita.agarwal@oss.qualcomm.com>, Abhinav Kumar
- <abhinav.kumar@linux.dev>, Bryan O'Donoghue <bod@kernel.org>, Mauro
- Carvalho Chehab <mchehab@kernel.org>, Sakari Ailus
- <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, Stephen
- Rothwell <sfr@canb.auug.org.au>, stable@vger.kernel.org
-Subject: Re: [PATCH 1/3] media: uapi: c3-isp: Fix documentation warning
-Message-ID: <20251203101314.18910911@foz.lan>
-In-Reply-To: <20251203-warnings-6-19-v1-1-25308e136bca@chromium.org>
-References: <20251203-warnings-6-19-v1-0-25308e136bca@chromium.org>
-	<20251203-warnings-6-19-v1-1-25308e136bca@chromium.org>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+        bh=ns2TzdrZVTfQ2mVS+gF3kQw0VyYvREhCt2c0Yr6Y9zg=;
+        b=Nbb1fMSDHPETBXX80GRJmU321WAh4tPbSaRyY71/SCdj8P++LOlipqkcwVkm8Y6MwE
+         cZMCmNloKYt8vPuTTI7wZub6VNLtHX9BT+K/unMCcw+vRqKReU1Aocn8e78eLmIHfHdy
+         TJKBRWDlU2JHcrU+KwvdsNOnsVnxiruXAHEtoKRgmj/qCCW94h2P/W+uwCbI74eiaKvh
+         EZG94+ohaRP4yQXGbey3B+FXpHuAQ27L/WLKReIaxQacvTSRg/JNp9yLyOU98FUKlCgM
+         h6ii+Coz/6hqaRQb0CwCUH2dgcByS4oHBt+/YB6/fG0ec8zXZuUr9yiwHOOU3+YvTCNm
+         qFvw==
+X-Forwarded-Encrypted: i=1; AJvYcCW+Sza9zsoUo5p91cr7r9O8WM8b0WWrior/TDMH3hhulr4RQEiihMPNqHwcKZwTpWeuIiMERyo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx0Nf5C6j8eb2Q6PggjEdz5Ka0LHf7QV+74sBx3fvIbvov+ipPf
+	5me5/G4DsFoOgAmbxBHXjqEbUyvekyjhl/kBUn08fsZiJYhKzW2VihYVsXTf+zVQt0Rf97PAx4m
+	c4/BTUJg+0Fms+BCjWcHxsTSxBdy0wmg/3jF46REuFFZKHjKyKATGgY8=
+X-Gm-Gg: ASbGncvmVXxnWKeMk49hU1bfekKrJ7DrsdkEihQ/b/U1D8jJrq5z29rZIM62OdHK8Rn
+	0GSF45d/yENuCACZhi6Qjz06RxpCv9t1ey4zJ8Og+2wqrivfT1wXicbf0aD+1q9SUcDU9bwXwCs
+	YAxC+em2WjkCMZbbM8kkwNVwSEl1OkxPz20G36zaK29x679zs/LpGTq/c3TOep+68fQ2dX+Xsjr
+	3oPs+Rah6Ycn+ygPHdCO4E9R16+B5+TUOVcr4Isrxb5PcOTQkNe3Pk0YBfjzXNk5qUf/sA=
+X-Google-Smtp-Source: AGHT+IGH4y6G7l0uWAM7MVs0ZUDjiX64KDLpg17aJDNSM/roeQAWJbNS+KY5jVjRbd5lpner64LysoyLNATeT3izA2o=
+X-Received: by 2002:ac8:7e86:0:b0:4ee:1dd0:5a4f with SMTP id
+ d75a77b69052e-4f0176da1c4mr19930841cf.61.1764754092958; Wed, 03 Dec 2025
+ 01:28:12 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20251120184211.2379439-1-joannelkoong@gmail.com>
+ <20251120184211.2379439-3-joannelkoong@gmail.com> <5c1630ac-d304-4854-9ba6-5c9cc1f78be5@kernel.org>
+ <CAJnrk1Zsdw9Uvb44ynkfWLBvs2vw7he-opVu6mzJqokphMiLSQ@mail.gmail.com>
+ <f8da9ee0-f136-4366-b63a-1812fda11304@kernel.org> <CAJnrk1aJeNmQLd99PuzWVp8EycBBNBf1NZEE+sM6BY_gS64DCw@mail.gmail.com>
+ <504d100d-b8f3-475b-b575-3adfd17627b5@kernel.org> <CAJnrk1a1XsA9u1W-b4GLcyFXvZP41z7kWbJsdnEh7khcoco==A@mail.gmail.com>
+In-Reply-To: <CAJnrk1a1XsA9u1W-b4GLcyFXvZP41z7kWbJsdnEh7khcoco==A@mail.gmail.com>
+From: Miklos Szeredi <miklos@szeredi.hu>
+Date: Wed, 3 Dec 2025 10:28:01 +0100
+X-Gm-Features: AWmQ_blcA_e4kaMi5shA7dS-lb9KIG0yD8t2lL60ZmfQjrXgcrRpZu3lHj-XY4c
+Message-ID: <CAJfpegv7_UyTht-W9pimE-G6tZQ0nKU6fYo1K2hcoNSHYC3tpw@mail.gmail.com>
+Subject: Re: [PATCH v1 2/2] fs/writeback: skip inodes with potential writeback
+ hang in wait_sb_inodes()
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	shakeel.butt@linux.dev, athul.krishna.kr@protonmail.com, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Em Wed, 03 Dec 2025 08:55:34 +0000
-Ricardo Ribalda <ribalda@chromium.org> escreveu:
+On Wed, 26 Nov 2025 at 18:58, Joanne Koong <joannelkoong@gmail.com> wrote:
+>
+> On Wed, Nov 26, 2025 at 2:55=E2=80=AFAM David Hildenbrand (Red Hat)
+> <david@kernel.org> wrote:
+> > >
+> > >> having a flag that states something like that that
+> > >> "AS_NO_WRITEBACK_WAIT_ON_DATA_SYNC" would probable be what we would =
+want
+> > >> to add to avoid waiting for writeback with clear semantics why it is=
+ ok
+> > >> in that specific scenario.
+> > >
+> > > Having a separate AS_NO_WRITEBACK_WAIT_ON_DATA_SYNC mapping flag
+> > > sounds reasonable to me and I agree is more clearer semantically.
+> >
+> > Good. Then it's clear that we are not waiting because writeback is
+> > shaky, but because even if it would be working, because we don't have t=
+o
+> > because there are no such guarantees.
+> >
+> > Maybe
+> >
+> > AS_NO_DATA_INTEGRITY
+> >
+> > or similar would be cleaner, I'll have to leave that to you and Miklos
+> > to decide what exactly the semantics are that fuse currently doesn't
+> > provide.
+>
+> After reading Miklos's reply, I must have misunderstood this then - my
+> understanding was that the reason we couldn't guarantee data integrity
+> in fuse was because of the temp pages design where checking the
+> writeback flag on the real folio doesn't reflect writeback state, but
+> that removing the temp pages and using the real folio now does
+> guarantee this. But it seems like it's not as simple as that and
+> there's no data integrity guarantees for other reasons.
+>
+> Changing this to AS_NO_DATA_INTEGRITY sounds good to me, if that
+> sounds good to Miklos as well. Or do you have another preference,
+> Miklos?
 
-> From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-> 
-> Building htmldocs generates a warning:
-> 
-> WARNING: include/uapi/linux/media/amlogic/c3-isp-config.h:199
-> error: Cannot parse struct or union!
-> 
-> Which correctly highlights that the c3_isp_params_block_header symbol
-> is wrongly documented as a struct while it's a plain #define instead.
-> 
-> Fix this by removing the 'struct' identifier from the documentation of
-> the c3_isp_params_block_header symbol.
-> 
-> [ribalda: Add Closes:]
-> 
-> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-> Closes: https://lore.kernel.org/all/20251127131425.4b5b6644@canb.auug.org.au/
-> Fixes: 45662082855c ("media: uapi: Convert Amlogic C3 to V4L2 extensible params")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-> ---
->  include/uapi/linux/media/amlogic/c3-isp-config.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/include/uapi/linux/media/amlogic/c3-isp-config.h b/include/uapi/linux/media/amlogic/c3-isp-config.h
-> index 0a3c1cc55ccbbad12f18037d65f32ec9ca1a4ec0..92db5dcdda181cb31665e230cc56b443fa37a0be 100644
-> --- a/include/uapi/linux/media/amlogic/c3-isp-config.h
-> +++ b/include/uapi/linux/media/amlogic/c3-isp-config.h
-> @@ -186,7 +186,7 @@ enum c3_isp_params_block_type {
->  #define C3_ISP_PARAMS_BLOCK_FL_ENABLE	V4L2_ISP_PARAMS_FL_BLOCK_ENABLE
->  
->  /**
-> - * struct c3_isp_params_block_header - C3 ISP parameter block header
-> + * c3_isp_params_block_header - C3 ISP parameter block header
->   *
->   * This structure represents the common part of all the ISP configuration
->   * blocks and is identical to :c:type:`v4l2_isp_params_block_header`.
-> 
+Sure, sounds good.
 
-Just merged this one at media-committers next. 
+(Sorry about the delay, missed this.)
 
-My plan is to send later during the merge window, after the first
-PR I sent upstream gets merged.
-
-Regards,
-Mauro
+Thanks,
+Miklos
 
