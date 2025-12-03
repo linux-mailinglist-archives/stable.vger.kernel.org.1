@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-198266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1910FC9F7B2
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:32:58 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D39A2CA0BD1
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:02:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 87C7B300079A
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:32:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 78E6A3027A30
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:00:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 233C930C358;
-	Wed,  3 Dec 2025 15:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98F6A34CFD2;
+	Wed,  3 Dec 2025 16:02:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Khv85igs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hwOWjWD+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D260B308F2C;
-	Wed,  3 Dec 2025 15:32:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 556E734CFCF;
+	Wed,  3 Dec 2025 16:02:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764775975; cv=none; b=bPCVKjXhHBFfDpsSswyc9Uwjyf4+dqcocCICt3Scck7IaOLgY7amk3C9nIoOsU2J7w8fT0uroDuQQtyLwl+0s/3IoC2wAz+nr4UVc69LCXh4EsBfkYfsovYbhdwsSxB5sdH9GWmyv33c/IcgJ8HkzvY32sL0QMn/VZbHVWHv9OQ=
+	t=1764777739; cv=none; b=Kt/sBj81wb4wV2PwvIYNapLYhlbVpH3bspomDifx45GNInBEcA/KABhdRSj3UoIS8MXyzG0rOYFF3e9mhaIbGhySz5iqJ1ObzJyyRL7KoEValYVrOIAk8mCeXoFAVHxdYfeZb/BFSFfLmKbikF6gUgqJ/b9YlmLU6iNXpdRwO4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764775975; c=relaxed/simple;
-	bh=3Q40rsJ5NWDEsFAJNneUisY+h85Nr47zt/K4vxKNaMc=;
+	s=arc-20240116; t=1764777739; c=relaxed/simple;
+	bh=seNgaLy6+m+l0y0lG2n2aBsnatmkZPWjqWbG1fAbYsk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m8LB7FxU7yGsAYypYjTe+wmyW4woxAMwZqzFnhVez2KGTHYuYVh5X2jSKuyNLji6XUcg1X9UDHgWNzq9AudW7CdI1Mr4dqmN0z3W8V+k5wbuQSlLQwN2PL7KEZjo/SHgFDbcVFkwwDbPE1fgByFaRChV4rk5oydvyyvXGBMhK3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Khv85igs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5196AC4CEF5;
-	Wed,  3 Dec 2025 15:32:55 +0000 (UTC)
+	 MIME-Version; b=T9RzYTopwIQJdft1alQEuMg3os5TQviUn0BaVBNvGlJUFMQ5eJJBaK1nWAh2F06Xb8fsl3bknHFCMITj8lF2hYRYhnHuugFSSHD+/ELnTo1ss7t0ZxPV5qwteYfwPn4L1YVMoOHam/CFc7uWdZ6c9kulo0aZa11fTGmxe5xyMpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hwOWjWD+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81F87C4CEF5;
+	Wed,  3 Dec 2025 16:02:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764775975;
-	bh=3Q40rsJ5NWDEsFAJNneUisY+h85Nr47zt/K4vxKNaMc=;
+	s=korg; t=1764777738;
+	bh=seNgaLy6+m+l0y0lG2n2aBsnatmkZPWjqWbG1fAbYsk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Khv85igsRiORPgGqeu7yFI8k9SJuny7/n6EHpELqk2Rc48BDtXCjghXLkHORtQQux
-	 a1gTpjq5NhqcypmYuq5Qd5LmtwaCCu5Owl3vPQ/6RhuUq2KI6aHkcLoWwhTevWsVi8
-	 ssna7kH49k4W3UzHPA7JKmdGQYHQp5bXHgGZeWPA=
+	b=hwOWjWD+6DE9xJl47G8Azv+jfVW7UlfP5jBuLLtjiyARuflPJny0NnHJc/K91ilnK
+	 PaDs69+uAS47RospuNOXiiiCKEkifaNEVKFNgwB1Y/CI8+IGjK3R2tiTFSQq4nwjOJ
+	 YJR13/PcgVZguijSBVF5jNTsFXaLbZ0zeIsVYNJ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayi Li <lijiayi@kylinos.cn>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
+	Parth Pancholi <parth.pancholi@toradex.com>,
+	Jayesh Choudhary <j-choudhary@ti.com>,
+	Devarsh Thakkar <devarsht@ti.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 044/300] memstick: Add timeout to prevent indefinite waiting
-Date: Wed,  3 Dec 2025 16:24:08 +0100
-Message-ID: <20251203152402.246628462@linuxfoundation.org>
+Subject: [PATCH 5.15 099/392] drm/tidss: Use the crtc_* timings when programming the HW
+Date: Wed,  3 Dec 2025 16:24:09 +0100
+Message-ID: <20251203152417.742209545@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayi Li <lijiayi@kylinos.cn>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit b65e630a55a490a0269ab1e4a282af975848064c ]
+[ Upstream commit 478306edc23eec4f0ec24a46222485910c66212d ]
 
-Add timeout handling to wait_for_completion calls in memstick_set_rw_addr()
-and memstick_alloc_card() to prevent indefinite blocking in case of
-hardware or communication failures.
+Use the crtc_* fields from drm_display_mode, instead of the "logical"
+fields. This shouldn't change anything in practice, but afaiu the crtc_*
+fields are the correct ones to use here.
 
-Signed-off-by: Jiayi Li <lijiayi@kylinos.cn>
-Link: https://lore.kernel.org/r/20250804024825.1565078-1-lijiayi@kylinos.cn
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reviewed-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
+Tested-by: Parth Pancholi <parth.pancholi@toradex.com>
+Tested-by: Jayesh Choudhary <j-choudhary@ti.com>
+Reviewed-by: Devarsh Thakkar <devarsht@ti.com>
+Link: https://lore.kernel.org/r/20250723-cdns-dsi-impro-v5-3-e61cc06074c2@ideasonboard.com
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/memstick/core/memstick.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/tidss/tidss_crtc.c  |  2 +-
+ drivers/gpu/drm/tidss/tidss_dispc.c | 16 ++++++++--------
+ 2 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/memstick/core/memstick.c b/drivers/memstick/core/memstick.c
-index e24ab362e51a9..7b8483f8d6f4f 100644
---- a/drivers/memstick/core/memstick.c
-+++ b/drivers/memstick/core/memstick.c
-@@ -369,7 +369,9 @@ int memstick_set_rw_addr(struct memstick_dev *card)
- {
- 	card->next_request = h_memstick_set_rw_addr;
- 	memstick_new_req(card->host);
--	wait_for_completion(&card->mrq_complete);
-+	if (!wait_for_completion_timeout(&card->mrq_complete,
-+			msecs_to_jiffies(500)))
-+		card->current_mrq.error = -ETIMEDOUT;
+diff --git a/drivers/gpu/drm/tidss/tidss_crtc.c b/drivers/gpu/drm/tidss/tidss_crtc.c
+index 812be02c16efc..3de103c673576 100644
+--- a/drivers/gpu/drm/tidss/tidss_crtc.c
++++ b/drivers/gpu/drm/tidss/tidss_crtc.c
+@@ -232,7 +232,7 @@ static void tidss_crtc_atomic_enable(struct drm_crtc *crtc,
+ 	tidss_runtime_get(tidss);
  
- 	return card->current_mrq.error;
+ 	r = dispc_vp_set_clk_rate(tidss->dispc, tcrtc->hw_videoport,
+-				  mode->clock * 1000);
++				  mode->crtc_clock * 1000);
+ 	if (r != 0)
+ 		return;
+ 
+diff --git a/drivers/gpu/drm/tidss/tidss_dispc.c b/drivers/gpu/drm/tidss/tidss_dispc.c
+index ad559f5c11482..7f0f4b5abdecc 100644
+--- a/drivers/gpu/drm/tidss/tidss_dispc.c
++++ b/drivers/gpu/drm/tidss/tidss_dispc.c
+@@ -978,13 +978,13 @@ void dispc_vp_enable(struct dispc_device *dispc, u32 hw_videoport,
+ 
+ 	dispc_set_num_datalines(dispc, hw_videoport, fmt->data_width);
+ 
+-	hfp = mode->hsync_start - mode->hdisplay;
+-	hsw = mode->hsync_end - mode->hsync_start;
+-	hbp = mode->htotal - mode->hsync_end;
++	hfp = mode->crtc_hsync_start - mode->crtc_hdisplay;
++	hsw = mode->crtc_hsync_end - mode->crtc_hsync_start;
++	hbp = mode->crtc_htotal - mode->crtc_hsync_end;
+ 
+-	vfp = mode->vsync_start - mode->vdisplay;
+-	vsw = mode->vsync_end - mode->vsync_start;
+-	vbp = mode->vtotal - mode->vsync_end;
++	vfp = mode->crtc_vsync_start - mode->crtc_vdisplay;
++	vsw = mode->crtc_vsync_end - mode->crtc_vsync_start;
++	vbp = mode->crtc_vtotal - mode->crtc_vsync_end;
+ 
+ 	dispc_vp_write(dispc, hw_videoport, DISPC_VP_TIMING_H,
+ 		       FLD_VAL(hsw - 1, 7, 0) |
+@@ -1026,8 +1026,8 @@ void dispc_vp_enable(struct dispc_device *dispc, u32 hw_videoport,
+ 		       FLD_VAL(ivs, 12, 12));
+ 
+ 	dispc_vp_write(dispc, hw_videoport, DISPC_VP_SIZE_SCREEN,
+-		       FLD_VAL(mode->hdisplay - 1, 11, 0) |
+-		       FLD_VAL(mode->vdisplay - 1, 27, 16));
++		       FLD_VAL(mode->crtc_hdisplay - 1, 11, 0) |
++		       FLD_VAL(mode->crtc_vdisplay - 1, 27, 16));
+ 
+ 	VP_REG_FLD_MOD(dispc, hw_videoport, DISPC_VP_CONTROL, 1, 0, 0);
  }
-@@ -403,7 +405,9 @@ static struct memstick_dev *memstick_alloc_card(struct memstick_host *host)
- 
- 		card->next_request = h_memstick_read_dev_id;
- 		memstick_new_req(host);
--		wait_for_completion(&card->mrq_complete);
-+		if (!wait_for_completion_timeout(&card->mrq_complete,
-+				msecs_to_jiffies(500)))
-+			card->current_mrq.error = -ETIMEDOUT;
- 
- 		if (card->current_mrq.error)
- 			goto err_out;
 -- 
 2.51.0
 
