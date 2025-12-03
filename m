@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 450D1CA01D6
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:49:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAF71CA031A
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:54:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EA52B302326A
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:41:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 73646302AFA7
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:48:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2BD435BDA5;
-	Wed,  3 Dec 2025 16:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBED3346E62;
+	Wed,  3 Dec 2025 16:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V5WbNHfi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DNKmeCsn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F6DE35BDAF;
-	Wed,  3 Dec 2025 16:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7729E346E58;
+	Wed,  3 Dec 2025 16:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780094; cv=none; b=Ev+RHFAzsgWW1Fkzwvx0KkDoiyB0p3yeASLz7YskQcw1HkMH/LYFo9UI8N4PS5BGuE3OJSfHSO3tKY2w/CSFWlJCVPbmfj2zShxtp7fa9JYqwRmC5czQcDOSGtD62CbSJW7HBmrHmb3JLsGFvvl65ni2g3EbipsvxPmDrc2XvIQ=
+	t=1764778308; cv=none; b=qhDpeNnFUDP+keu837pQD+hpp8OKoKExf+Ty2u6LEt7/PFaG7w9kQbIbPQEkIZuMM33IcieXnhwZA8d2kMCzFG0ASO6T6/dDzoNaQkLL9JyFkK1h1mvWjbNzYsSI+fkG8ywuBz+gUlt59RW8967fXNZCBg94IDNMPBWaaR2RlZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780094; c=relaxed/simple;
-	bh=pX5hTD6PQwQ6H5V2F+z3zNxoFpdef0liAEEPmLQn2zo=;
+	s=arc-20240116; t=1764778308; c=relaxed/simple;
+	bh=+03kmBdLbCMoCnis6LhHAfKj1L2zmulsNTZlQgC3eoo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IPYJkxmXisbRRbyqRgKA05PORUaSxe/vOtespD5tY3zMu49AyleST5Q7weDC9agfmtnm+A4qMXhiJfPdHnO2v5QP0XN1XPMFazyxys3+x3Q+rmnuVjTOWPMqRjLmfQFuyt1UhZDl4gzjxj5wr7HywyaHGWWfl+mosS+4eKiyz6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V5WbNHfi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3873C4CEF5;
-	Wed,  3 Dec 2025 16:41:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GgxnuWgBgO3l4h80KIpNokboDWYrnG26oQYVtTH7MUMbWe1GspyFQ05n8E9SHLeMFfTIY2INEleDsTNUt+rqRiutoYxNzLa4m8MoJRkCHoM0W7qhQPhhho+SujFLzHzrPXoynMZPIgzP6EeMv61hb9Lwr3tNvxChr3+SQ/r3cno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DNKmeCsn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0879C4CEF5;
+	Wed,  3 Dec 2025 16:11:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780094;
-	bh=pX5hTD6PQwQ6H5V2F+z3zNxoFpdef0liAEEPmLQn2zo=;
+	s=korg; t=1764778308;
+	bh=+03kmBdLbCMoCnis6LhHAfKj1L2zmulsNTZlQgC3eoo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V5WbNHfiG/Jn4QYmOr4knS31CSjV8d+qnYTkKzV8bWbrap1EOxbE+L+yf8Bv7K1Ql
-	 9k0XsuGOuAVWNEI+gfP1vNHSqAdPlmb0sBPNj2bPCly+zyA7DFcjNuaDjBkAfoGTZM
-	 w8LdEi3X6CNhTl4Ael2Z7LcXSOYoZPTXq9Rq6DaM=
+	b=DNKmeCsnQfipo2RQ7cW0NNqQqjA8yKNIDoxGvZqyggwmddZvyPQfZbHqzAldPaKCO
+	 DJpmwRZaK9nocq1y+IUXgDgD8Wecv2u2xyPsgci+05ST9lpuUnqJEUzlgMnlOqIZEl
+	 IL/DspedUzoSnTzOsc8HhwLuCer334IHr4L/qFwc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Jakub=20Hork=C3=BD?= <jakub.git@horky.net>,
+	Nathan Chancellor <nathan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 452/568] mlxsw: spectrum: Fix memory leak in mlxsw_sp_flower_stats()
-Date: Wed,  3 Dec 2025 16:27:34 +0100
-Message-ID: <20251203152457.261176628@linuxfoundation.org>
+Subject: [PATCH 5.15 305/392] kconfig/mconf: Initialize the default locale at startup
+Date: Wed,  3 Dec 2025 16:27:35 +0100
+Message-ID: <20251203152425.387560697@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,51 +58,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Jakub Horký <jakub.git@horky.net>
 
-[ Upstream commit 407a06507c2358554958e8164dc97176feddcafc ]
+[ Upstream commit 3927c4a1084c48ef97f11281a0a43ecb2cb4d6f1 ]
 
-The function mlxsw_sp_flower_stats() calls mlxsw_sp_acl_ruleset_get() to
-obtain a ruleset reference. If the subsequent call to
-mlxsw_sp_acl_rule_lookup() fails to find a rule, the function returns
-an error without releasing the ruleset reference, causing a memory leak.
+Fix bug where make menuconfig doesn't initialize the default locale, which
+causes ncurses menu borders to be displayed incorrectly (lqqqqk) in
+UTF-8 terminals that don't support VT100 ACS by default, such as PuTTY.
 
-Fix this by using a goto to the existing error handling label, which
-calls mlxsw_sp_acl_ruleset_put() to properly release the reference.
-
-Fixes: 7c1b8eb175b69 ("mlxsw: spectrum: Add support for TC flower offload statistics")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20251112052114.1591695-1-zilin@seu.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Jakub Horký <jakub.git@horky.net>
+Link: https://patch.msgid.link/20251014154933.3990990-1-jakub.git@horky.net
+[nathan: Alphabetize locale.h include]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ scripts/kconfig/mconf.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
-index e91fb205e0b4c..66e95918bdf6e 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
-@@ -719,8 +719,10 @@ int mlxsw_sp_flower_stats(struct mlxsw_sp *mlxsw_sp,
- 		return -EINVAL;
+diff --git a/scripts/kconfig/mconf.c b/scripts/kconfig/mconf.c
+index 9d3cf510562f8..0649ff35ec5c0 100644
+--- a/scripts/kconfig/mconf.c
++++ b/scripts/kconfig/mconf.c
+@@ -12,6 +12,7 @@
+ #include <errno.h>
+ #include <fcntl.h>
+ #include <limits.h>
++#include <locale.h>
+ #include <stdarg.h>
+ #include <stdlib.h>
+ #include <string.h>
+@@ -1005,6 +1006,8 @@ int main(int ac, char **av)
  
- 	rule = mlxsw_sp_acl_rule_lookup(mlxsw_sp, ruleset, f->cookie);
--	if (!rule)
--		return -EINVAL;
-+	if (!rule) {
-+		err = -EINVAL;
-+		goto err_rule_get_stats;
-+	}
+ 	signal(SIGINT, sig_handler);
  
- 	err = mlxsw_sp_acl_rule_get_stats(mlxsw_sp, rule, &packets, &bytes,
- 					  &drops, &lastuse, &used_hw_stats);
++	setlocale(LC_ALL, "");
++
+ 	if (ac > 1 && strcmp(av[1], "-s") == 0) {
+ 		silent = 1;
+ 		/* Silence conf_read() until the real callback is set up */
 -- 
 2.51.0
 
