@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-199404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 285A9CA029D
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:52:27 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8DDDC9F867
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:37:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 72EF7304E60B
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:44:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 26256300097C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:37:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F8E433EAF5;
-	Wed,  3 Dec 2025 16:34:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58725309EFF;
+	Wed,  3 Dec 2025 15:37:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vI9Hs/tw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YLA4gJAa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07CCF33DEF4;
-	Wed,  3 Dec 2025 16:34:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1529F3148A3;
+	Wed,  3 Dec 2025 15:37:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779689; cv=none; b=JoHj8l7+/S0iwscTMRU109mTqrmwtt1Mh6HrwlLj3a809bCc3/nXnpzWEr6pudbxrx1vEJzcHutoqaahK2/r1IoagvP2V7bIrHf0ns4/2F4AaUr3qn3mqpfgDf0XkDmIqPsa2z2dyFvwtTOvsonC/FmQfws02MSNBdzhcZtOCys=
+	t=1764776267; cv=none; b=oXsJXO3t8vj5wl7K0zJLBuNbDOjnBVxosa6LnmeUfjfW+N++qUeblhpC8cpDX75edCf6FktgDW0zYXGAnb/H3Ei3x5ZdkmJbb7Ax1N+luVr60h0ky2T6cQ7yMtVwW+CblPvmz0cusBREqzjEkWwZ7F8BoHvT3HQcdSMsxD8FV/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779689; c=relaxed/simple;
-	bh=Y9EgJwpmqdM9CQlkzqBDdwKIkPHvhAdc35CzgQCOZVg=;
+	s=arc-20240116; t=1764776267; c=relaxed/simple;
+	bh=6P+avpMFobyxws9xNzSR8ItuBGlcA/Bo+LDUgleAy/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i2QEqTJnx59rqWUHn/1qTGz5bFRfAlE6bkXMTqGC1zxUQeaj1nIfU+t7zTzOzMQhF5WUcid06HRobM+TZ/lfl656+tuoEAvqZX2Bq3oWBwu4b4yaPzLVRw1YKTsVS8gKEdlcaCoz8Z6otCCeegngx2X0XrHypXgJ6nWzd3OwHRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vI9Hs/tw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E24EC4CEF5;
-	Wed,  3 Dec 2025 16:34:48 +0000 (UTC)
+	 MIME-Version; b=TpOkrblG5d96Gvqj0K3LSC+iI8yVxZ35GFJ5KAsj37Q0nQRYe6dWZsAu6/qsE1UTZqjx7VepuF149LSKZCnYcBkSHm5K4u3j82braHOn3d+p+Fh8fwFVHlEQiNWReMyKXQpG85+dpyRCEjwx2CkTBkRHaRSjCsVRe+5Tad/remk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YLA4gJAa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 852BEC4CEF5;
+	Wed,  3 Dec 2025 15:37:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779688;
-	bh=Y9EgJwpmqdM9CQlkzqBDdwKIkPHvhAdc35CzgQCOZVg=;
+	s=korg; t=1764776267;
+	bh=6P+avpMFobyxws9xNzSR8ItuBGlcA/Bo+LDUgleAy/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vI9Hs/twxaTSPnvV2ikJ4n+CcGXuTGIHLzNcsp53t3ol8scUdD3Pgv3eZpo7sc/Qm
-	 FhUm/bDZ+NT0vN/ahZtutLLFmrdoCes0ubDjko3JWhTvivqkRTp0Y9leH+Ar4a1pyQ
-	 AFyr3dmXd3Hx+H8FFtlgQGOw1CujENqP8Hh+iXf0=
+	b=YLA4gJAaaJ1dQkpMd+8/7KYSixAsIwvoR53l//ZkJbIxCo3HI/4cDlknoNbmvxfO9
+	 +r88qpJOtovbRxZ7aKEXHXgFm9nhjwxB1au8nvwXnhZddD0snUSqEu0c0v3+shRSHt
+	 DfWCLSC2rdurUZZNI7AXo41t+8fqVbvX3t5aECmE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	ChunHao Lin <hau@realtek.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1 332/568] selftests: netdevsim: set test timeout to 10 minutes
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 130/300] r8169: set EEE speed down ratio to 1
 Date: Wed,  3 Dec 2025 16:25:34 +0100
-Message-ID: <20251203152452.869235638@linuxfoundation.org>
+Message-ID: <20251203152405.428348495@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,37 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: ChunHao Lin <hau@realtek.com>
 
-commit afbf75e8da8ce8a0698212953d350697bb4355a6 upstream.
+[ Upstream commit bf7154ffb1c65a201906296a9d3eb22e9daa5ffc ]
 
-The longest running netdevsim test, nexthop.sh, currently takes
-5 min to finish. Around 260s to be exact, and 310s on a debug kernel.
-The default timeout in selftest is 45sec, so we need an explicit
-config. Give ourselves some headroom and use 10min.
+EEE speed down means speed down MAC MCU clock. It is not from spec.
+It is kind of Realtek specific power saving feature. But enable it
+may cause some issues, like packet drop or interrupt loss. Different
+hardware may have different issues.
 
-Commit under Fixes isn't really to "blame" but prior to that
-netdevsim tests weren't integrated with kselftest infra
-so blaming the tests themselves doesn't seem right, either.
+EEE speed down ratio (mac ocp 0xe056[7:4]) is used to set EEE speed
+down rate. The larger this value is, the more power can save. But it
+actually save less power then we expected. And, as mentioned above,
+will impact compatibility. So set it to 1 (mac ocp 0xe056[7:4] = 0)
+, which means not to speed down, to improve compatibility.
 
-Fixes: 8ff25dac88f6 ("netdevsim: add Makefile for selftests")
+Signed-off-by: ChunHao Lin <hau@realtek.com>
+Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://patch.msgid.link/20250918023425.3463-1-hau@realtek.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/drivers/net/netdevsim/settings |    1 +
- 1 file changed, 1 insertion(+)
- create mode 100644 tools/testing/selftests/drivers/net/netdevsim/settings
+ drivers/net/ethernet/realtek/r8169_main.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/netdevsim/settings
-@@ -0,0 +1 @@
-+timeout=600
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index 9fb8fdd5b2619..fc3e42c1ee0d9 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -3278,7 +3278,7 @@ static void rtl_hw_start_8168h_1(struct rtl8169_private *tp)
+ 		r8168_mac_ocp_modify(tp, 0xd412, 0x0fff, sw_cnt_1ms_ini);
+ 	}
+ 
+-	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0070);
++	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0000);
+ 	r8168_mac_ocp_modify(tp, 0xe052, 0x6000, 0x8008);
+ 	r8168_mac_ocp_modify(tp, 0xe0d6, 0x01ff, 0x017f);
+ 	r8168_mac_ocp_modify(tp, 0xd420, 0x0fff, 0x047f);
+@@ -3433,7 +3433,7 @@ static void rtl_hw_start_8117(struct rtl8169_private *tp)
+ 		r8168_mac_ocp_modify(tp, 0xd412, 0x0fff, sw_cnt_1ms_ini);
+ 	}
+ 
+-	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0070);
++	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0000);
+ 	r8168_mac_ocp_write(tp, 0xea80, 0x0003);
+ 	r8168_mac_ocp_modify(tp, 0xe052, 0x0000, 0x0009);
+ 	r8168_mac_ocp_modify(tp, 0xd420, 0x0fff, 0x047f);
+@@ -3628,7 +3628,7 @@ static void rtl_hw_start_8125_common(struct rtl8169_private *tp)
+ 	r8168_mac_ocp_modify(tp, 0xc0b4, 0x0000, 0x000c);
+ 	r8168_mac_ocp_modify(tp, 0xeb6a, 0x00ff, 0x0033);
+ 	r8168_mac_ocp_modify(tp, 0xeb50, 0x03e0, 0x0040);
+-	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0030);
++	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0000);
+ 	r8168_mac_ocp_modify(tp, 0xe040, 0x1000, 0x0000);
+ 	r8168_mac_ocp_modify(tp, 0xea1c, 0x0003, 0x0001);
+ 	r8168_mac_ocp_modify(tp, 0xe0c0, 0x4f0f, 0x4403);
+-- 
+2.51.0
+
 
 
 
