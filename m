@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-199413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDEC4CA09A9
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:45:19 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 079ACC9FCAD
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:05:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 56DE93000B3A
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:45:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 74F7730019F2
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:05:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A149352923;
-	Wed,  3 Dec 2025 16:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C49734F495;
+	Wed,  3 Dec 2025 16:05:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o/OlvIm9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Knf+bQS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BD2E30749E;
-	Wed,  3 Dec 2025 16:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD73E34F49C;
+	Wed,  3 Dec 2025 16:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779719; cv=none; b=Wm4tak7OWbf9MCqvWgqyYqMGyOF7Daw0MjxusrFamTmyIG6YTBYcxF8VWD+yGyM+hWo7a0VM8ZgNyF348WLMqeclarAVU21PfwaYVsZQFRWLE6SGlWrdz/XydFL8RELEL9QyG/5t2U2iGqnH7MBSh7muakZvV6CBmGaW9AkCffU=
+	t=1764777935; cv=none; b=q7Ra3JdO21Uhk8BvchNYQmJieSUcvLeYwm+wCY15YHzIRc7mGU4Jv6fiBAeR84sGfuzSPA0Q+UeZhN79vtXtIiXRDULh8WmrjmuV/LYcOMVYHRcHqaFEB1xE4yRmHp4UIKfzB7s04d/YC2Vzfshg5Dtglw/KTSy4ZJLyU/zavoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779719; c=relaxed/simple;
-	bh=cfEGh53osM+aPISvnGhvTTHnSR60XHzC7mcuC9+qCbU=;
+	s=arc-20240116; t=1764777935; c=relaxed/simple;
+	bh=Aw06kBW+InVUI2Sl91VOGQweAQEbdGV62xIRYtqcIh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=arLfF38rzWXW+wF2yZWPMEXbE6UU88mcqWo5uLQnRw7Qgq4KJZe1v53YfWZs9T+twHp5maXAYfiHaCVfmwLeiNHJ3rXvX8NafFj1vvJ429fdgpDGiUR2E6sHShdlfEpxpf8QOg4xl+xqTmTBCBQ3eURV/JMbPXRHUaQuGoS3Yks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o/OlvIm9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85DEFC4CEF5;
-	Wed,  3 Dec 2025 16:35:18 +0000 (UTC)
+	 MIME-Version; b=cHMLmDLRgGmEFbjXVIsxr4QUoE7XJr5c/YcVpnoeItrr15Zvhs6kqTGhbj1GRBI+rXGa7NcDq1ZEeOeWSOk8luutgQ9ZWsNDE3R8k4rcx2nnnxTV7QmfzoTykDVgIp5O3kenORkyYhzzEVBiB3iKuueq9KwmHCEwfnjRH0D8Cr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Knf+bQS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20861C116C6;
+	Wed,  3 Dec 2025 16:05:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779719;
-	bh=cfEGh53osM+aPISvnGhvTTHnSR60XHzC7mcuC9+qCbU=;
+	s=korg; t=1764777935;
+	bh=Aw06kBW+InVUI2Sl91VOGQweAQEbdGV62xIRYtqcIh0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o/OlvIm9ScRupOw7XarRtVufJJL661JSBaYtz4p3EE5ZLcqY3DcDDJ/I/bdQwYxwQ
-	 4Mx5vHl/3rKYIY4RRQse29e+KuDgCOm7qkiUwqpp6joWfu4bPCgaRX1mX5att/tgrB
-	 xwhpNV+ovrO0sylVsRTt9niGV5UW7SgukOCL18qI=
+	b=2Knf+bQSLmK4YpuDRVPzfY06yiuWoYwTKAcm+vD7CN34rki9WbWYQeM7+Juj8Vy6R
+	 sfADq0iwWhwp0aPJLTDRyTCNW8+V2Eejj6VriLDhVsAWTcusuIThbBF+hlEKSUiBFH
+	 /ah0Ia75S8UK28nyj7kzAcci8IiYNPln212ROKhQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Jesse Zhang <Jesse.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Yikang Yue <yikangy2@illinois.edu>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 340/568] drm/amdgpu: Fix NULL pointer dereference in VRAM logic for APU devices
+Subject: [PATCH 5.15 192/392] fs/hpfs: Fix error code for new_inode() failure in mkdir/create/mknod/symlink
 Date: Wed,  3 Dec 2025 16:25:42 +0100
-Message-ID: <20251203152453.160025798@linuxfoundation.org>
+Message-ID: <20251203152421.140899024@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,114 +58,100 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse.Zhang <Jesse.Zhang@amd.com>
+From: Yikang Yue <yikangy2@illinois.edu>
 
-[ Upstream commit 883f309add55060233bf11c1ea6947140372920f ]
+[ Upstream commit 32058c38d3b79a28963a59ac0353644dc24775cd ]
 
-Previously, APU platforms (and other scenarios with uninitialized VRAM managers)
-triggered a NULL pointer dereference in `ttm_resource_manager_usage()`. The root
-cause is not that the `struct ttm_resource_manager *man` pointer itself is NULL,
-but that `man->bdev` (the backing device pointer within the manager) remains
-uninitialized (NULL) on APUs—since APUs lack dedicated VRAM and do not fully
-set up VRAM manager structures. When `ttm_resource_manager_usage()` attempts to
-acquire `man->bdev->lru_lock`, it dereferences the NULL `man->bdev`, leading to
-a kernel OOPS.
+The function call new_inode() is a primitive for allocating an inode in memory,
+rather than planning disk space for it. Therefore, -ENOMEM should be returned
+as the error code rather than -ENOSPC.
 
-1. **amdgpu_cs.c**: Extend the existing bandwidth control check in
-   `amdgpu_cs_get_threshold_for_moves()` to include a check for
-   `ttm_resource_manager_used()`. If the manager is not used (uninitialized
-   `bdev`), return 0 for migration thresholds immediately—skipping VRAM-specific
-   logic that would trigger the NULL dereference.
+To be specific, new_inode()'s call path looks like this:
+new_inode
+  new_inode_pseudo
+    alloc_inode
+      ops->alloc_inode (hpfs_alloc_inode)
+        alloc_inode_sb
+          kmem_cache_alloc_lru
 
-2. **amdgpu_kms.c**: Update the `AMDGPU_INFO_VRAM_USAGE` ioctl and memory info
-   reporting to use a conditional: if the manager is used, return the real VRAM
-   usage; otherwise, return 0. This avoids accessing `man->bdev` when it is
-   NULL.
+Therefore, the failure of new_inode() indicates a memory presure issue (-ENOMEM),
+not a lack of disk space. However, the current implementation of
+hpfs_mkdir/create/mknod/symlink incorrectly returns -ENOSPC when new_inode() fails.
+This patch fix this by set err to -ENOMEM before the goto statement.
 
-3. **amdgpu_virt.c**: Modify the vf2pf (virtual function to physical function)
-   data write path. Use `ttm_resource_manager_used()` to check validity: if the
-   manager is usable, calculate `fb_usage` from VRAM usage; otherwise, set
-   `fb_usage` to 0 (APUs have no discrete framebuffer to report).
+BTW, we also noticed that other nested calls within these four functions,
+like hpfs_alloc_f/dnode and hpfs_add_dirent, might also fail due to memory presure.
+But similarly, only -ENOSPC is returned. Addressing these will involve code
+modifications in other functions, and we plan to submit dedicated patches for these
+issues in the future. For this patch, we focus on new_inode().
 
-This approach is more robust than APU-specific checks because it:
-- Works for all scenarios where the VRAM manager is uninitialized (not just APUs),
-- Aligns with TTM's design by using its native helper function,
-- Preserves correct behavior for discrete GPUs (which have fully initialized
-  `man->bdev` and pass the `ttm_resource_manager_used()` check).
-
-v4: use ttm_resource_manager_used(&adev->mman.vram_mgr.manager) instead of checking the adev->gmc.is_app_apu flag (Christian)
-
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Suggested-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Yikang Yue <yikangy2@illinois.edu>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c   | 2 +-
- drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c  | 7 ++++---
- drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c | 4 ++--
- 3 files changed, 7 insertions(+), 6 deletions(-)
+ fs/hpfs/namei.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-index 9ff6a9255c1b1..f83eff3c62e17 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-@@ -663,7 +663,7 @@ static void amdgpu_cs_get_threshold_for_moves(struct amdgpu_device *adev,
- 	 */
- 	const s64 us_upper_bound = 200000;
+diff --git a/fs/hpfs/namei.c b/fs/hpfs/namei.c
+index d73f8a67168e9..c1c53602e4130 100644
+--- a/fs/hpfs/namei.c
++++ b/fs/hpfs/namei.c
+@@ -53,8 +53,10 @@ static int hpfs_mkdir(struct user_namespace *mnt_userns, struct inode *dir,
+ 	dee.fnode = cpu_to_le32(fno);
+ 	dee.creation_date = dee.write_date = dee.read_date = cpu_to_le32(local_get_seconds(dir->i_sb));
+ 	result = new_inode(dir->i_sb);
+-	if (!result)
++	if (!result) {
++		err = -ENOMEM;
+ 		goto bail2;
++	}
+ 	hpfs_init_inode(result);
+ 	result->i_ino = fno;
+ 	hpfs_i(result)->i_parent_dir = dir->i_ino;
+@@ -156,9 +158,10 @@ static int hpfs_create(struct user_namespace *mnt_userns, struct inode *dir,
+ 	dee.creation_date = dee.write_date = dee.read_date = cpu_to_le32(local_get_seconds(dir->i_sb));
  
--	if (!adev->mm_stats.log2_max_MBps) {
-+	if ((!adev->mm_stats.log2_max_MBps) || !ttm_resource_manager_used(&adev->mman.vram_mgr.manager)) {
- 		*max_bytes = 0;
- 		*max_vis_bytes = 0;
- 		return;
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
-index 24b4bd6bb2771..345ccd721d745 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
-@@ -647,7 +647,8 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
- 		ui64 = atomic64_read(&adev->num_vram_cpu_page_faults);
- 		return copy_to_user(out, &ui64, min(size, 8u)) ? -EFAULT : 0;
- 	case AMDGPU_INFO_VRAM_USAGE:
--		ui64 = ttm_resource_manager_usage(&adev->mman.vram_mgr.manager);
-+		ui64 = ttm_resource_manager_used(&adev->mman.vram_mgr.manager) ?
-+			ttm_resource_manager_usage(&adev->mman.vram_mgr.manager) : 0;
- 		return copy_to_user(out, &ui64, min(size, 8u)) ? -EFAULT : 0;
- 	case AMDGPU_INFO_VIS_VRAM_USAGE:
- 		ui64 = amdgpu_vram_mgr_vis_usage(&adev->mman.vram_mgr);
-@@ -693,8 +694,8 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
- 		mem.vram.usable_heap_size = adev->gmc.real_vram_size -
- 			atomic64_read(&adev->vram_pin_size) -
- 			AMDGPU_VM_RESERVED_VRAM;
--		mem.vram.heap_usage =
--			ttm_resource_manager_usage(vram_man);
-+		mem.vram.heap_usage = ttm_resource_manager_used(&adev->mman.vram_mgr.manager) ?
-+				ttm_resource_manager_usage(vram_man) : 0;
- 		mem.vram.max_allocation = mem.vram.usable_heap_size * 3 / 4;
+ 	result = new_inode(dir->i_sb);
+-	if (!result)
++	if (!result) {
++		err = -ENOMEM;
+ 		goto bail1;
+-	
++	}
+ 	hpfs_init_inode(result);
+ 	result->i_ino = fno;
+ 	result->i_mode |= S_IFREG;
+@@ -244,9 +247,10 @@ static int hpfs_mknod(struct user_namespace *mnt_userns, struct inode *dir,
+ 	dee.creation_date = dee.write_date = dee.read_date = cpu_to_le32(local_get_seconds(dir->i_sb));
  
- 		mem.cpu_accessible_vram.total_heap_size =
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-index 6174bef0ecb88..c626ed88e6420 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-@@ -593,8 +593,8 @@ static int amdgpu_virt_write_vf2pf_data(struct amdgpu_device *adev)
- 	vf2pf_info->driver_cert = 0;
- 	vf2pf_info->os_info.all = 0;
+ 	result = new_inode(dir->i_sb);
+-	if (!result)
++	if (!result) {
++		err = -ENOMEM;
+ 		goto bail1;
+-
++	}
+ 	hpfs_init_inode(result);
+ 	result->i_ino = fno;
+ 	hpfs_i(result)->i_parent_dir = dir->i_ino;
+@@ -321,8 +325,10 @@ static int hpfs_symlink(struct user_namespace *mnt_userns, struct inode *dir,
+ 	dee.creation_date = dee.write_date = dee.read_date = cpu_to_le32(local_get_seconds(dir->i_sb));
  
--	vf2pf_info->fb_usage =
--		ttm_resource_manager_usage(&adev->mman.vram_mgr.manager) >> 20;
-+	vf2pf_info->fb_usage = ttm_resource_manager_used(&adev->mman.vram_mgr.manager) ?
-+		 ttm_resource_manager_usage(&adev->mman.vram_mgr.manager) >> 20 : 0;
- 	vf2pf_info->fb_vis_usage =
- 		amdgpu_vram_mgr_vis_usage(&adev->mman.vram_mgr) >> 20;
- 	vf2pf_info->fb_size = adev->gmc.real_vram_size >> 20;
+ 	result = new_inode(dir->i_sb);
+-	if (!result)
++	if (!result) {
++		err = -ENOMEM;
+ 		goto bail1;
++	}
+ 	result->i_ino = fno;
+ 	hpfs_init_inode(result);
+ 	hpfs_i(result)->i_parent_dir = dir->i_ino;
 -- 
 2.51.0
 
