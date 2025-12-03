@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-198965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19D85CA09BE
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:45:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3573BC9F9AB
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:44:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 737EA30202DC
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:44:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 54909300A6FA
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:43:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26C1A3321A3;
-	Wed,  3 Dec 2025 16:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F15432FFF95;
+	Wed,  3 Dec 2025 15:43:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XnNkjvfS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R6kNPGOk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D08B7331A7B;
-	Wed,  3 Dec 2025 16:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCE7230F929;
+	Wed,  3 Dec 2025 15:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778252; cv=none; b=j9WzYqL3fnK2iUn4qw1E2z6+2jDACkRIHN0+jv17Pu5FfoUPSr8oJeYyHhW5oa/IEmuTPIuWQ68gSAitV6O4YeaxeDMjn+iv3lh4UUBuB9Lq9ox65bkDy2NRdLORQ0Q6hryERCUBfrN7UivzBzLMh9kgq3Ii2QZuR/5DPbYd23o=
+	t=1764776625; cv=none; b=Ey1/CGJGKgf7mnYIs4laRsrYe4a4EIVVWwj5cv151PD65o4wFXEyXG6M5dRC74CLwgVtIljw1Eki4T2od3qcfJ/0mGH9GO3cAftSMhXaumsd+kQG3elx2u1GBGs/PzOvH4xbRja40b9JPGpaaNBiJoI9lkQ53p9T3hWPWKfP+5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778252; c=relaxed/simple;
-	bh=ria0pktmPASNFdOwRG9F7IHYGKBmmYCludIaHHoy5PU=;
+	s=arc-20240116; t=1764776625; c=relaxed/simple;
+	bh=lfE0T+ij7kZFVuSF9+2XFg551vlY6vLN6WfF1UBb4FQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WgDCwl72CGaNuHDmsCJL1aBuUaE3QsZ8RGTixUY3OxnnsRtdhdDxtacw6igcvU+V1+0ivRumAmCsKXemp/Thi3U7dCidka94yBA7upV1uAWl0yj7TFWvzOhXoUZPmgdCGWsCPtfjqPUft8puWy0Nfzceg0pUdPJZKoXjFlpT17U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XnNkjvfS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D471CC4CEF5;
-	Wed,  3 Dec 2025 16:10:51 +0000 (UTC)
+	 MIME-Version; b=e+P5mn3xeiw7jesgzJKlOOiLDl4pJJDiW8c6ZVZRMYoBVbVCWc7wap/raqL/Hq5nVoc2ZTxPaa4H8fvJMx1kBDG51Gp43PBrpDqxbLbo9nCPyCK4T6NMYKueNlvswaCkxQtlrDhDasEZprA6ZaVY8MSk0DkjFWQsjxVL3X05Gwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R6kNPGOk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7309C4CEF5;
+	Wed,  3 Dec 2025 15:43:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778252;
-	bh=ria0pktmPASNFdOwRG9F7IHYGKBmmYCludIaHHoy5PU=;
+	s=korg; t=1764776624;
+	bh=lfE0T+ij7kZFVuSF9+2XFg551vlY6vLN6WfF1UBb4FQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XnNkjvfSgqppotoCXx4kCvnAIkW/BtD6Vk7igTGe2V7ja+j3tk+8wLRMba9LXIFQB
-	 Oo/U801yXNt0h46QUxeGdVJwENbZfqkYmnNVrcY0d3k1jxzJr1M6p5rOiDxaWNJT6X
-	 7RLc3zeeUsUjVEIsb8wjbf+GMSvzcYbjQpacAZ8A=
+	b=R6kNPGOkLbC6qFiR3qt3WKkIE6AMzr1Ee4uzapm2SwpWoIw1IYfiw/WX7BIf5Am8/
+	 jWmg0OzYHDs26d5cb2xo2ZZzqnKv7TNAO1ROgrMeN+dbC3TZ+Tr2ZtBICiwH7DfTbH
+	 H0uymddcsizt8+xvlB9e1lCYgtnrvuYbyQmA8x0w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Allen Pais <apais@linux.microsoft.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.15 290/392] scsi: target: tcm_loop: Fix segfault in tcm_loop_tpg_address_show()
-Date: Wed,  3 Dec 2025 16:27:20 +0100
-Message-ID: <20251203152424.829066860@linuxfoundation.org>
+	Long Li <longli@microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Naman Jain <namjain@linux.microsoft.com>
+Subject: [PATCH 5.10 237/300] uio_hv_generic: Set event for all channels on the device
+Date: Wed,  3 Dec 2025 16:27:21 +0100
+Message-ID: <20251203152409.405589383@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +61,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+From: Long Li <longli@microsoft.com>
 
-commit e6965188f84a7883e6a0d3448e86b0cf29b24dfc upstream.
+commit d062463edf1770427dc2d637df4088df4835aa47 upstream.
 
-If the allocation of tl_hba->sh fails in tcm_loop_driver_probe() and we
-attempt to dereference it in tcm_loop_tpg_address_show() we will get a
-segfault, see below for an example. So, check tl_hba->sh before
-dereferencing it.
+Hyper-V may offer a non latency sensitive device with subchannels without
+monitor bit enabled. The decision is entirely on the Hyper-V host not
+configurable within guest.
 
-  Unable to allocate struct scsi_host
-  BUG: kernel NULL pointer dereference, address: 0000000000000194
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 0 P4D 0
-  Oops: 0000 [#1] PREEMPT SMP NOPTI
-  CPU: 1 PID: 8356 Comm: tokio-runtime-w Not tainted 6.6.104.2-4.azl3 #1
-  Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine, BIOS Hyper-V UEFI Release v4.1 09/28/2024
-  RIP: 0010:tcm_loop_tpg_address_show+0x2e/0x50 [tcm_loop]
-...
-  Call Trace:
-   <TASK>
-   configfs_read_iter+0x12d/0x1d0 [configfs]
-   vfs_read+0x1b5/0x300
-   ksys_read+0x6f/0xf0
-...
+When a device has subchannels, also signal events for the subchannel
+if its monitor bit is disabled.
 
-Cc: stable@vger.kernel.org
-Fixes: 2628b352c3d4 ("tcm_loop: Show address of tpg in configfs")
-Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Reviewed-by: Allen Pais <apais@linux.microsoft.com>
-Link: https://patch.msgid.link/1762370746-6304-1-git-send-email-hamzamahfooz@linux.microsoft.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+This patch also removes the memory barrier when monitor bit is enabled
+as it is not necessary. The memory barrier is only needed between
+setting up interrupt mask and calling vmbus_set_event() when monitor
+bit is disabled.
+
+Signed-off-by: Long Li <longli@microsoft.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Link: https://lore.kernel.org/r/1741644721-20389-1-git-send-email-longli@linuxonhyperv.com
+Fixes: b15b7d2a1b09 ("uio_hv_generic: Let userspace take care of interrupt mask")
+Closes: https://bugs.debian.org/1120602
+Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/target/loopback/tcm_loop.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/uio/uio_hv_generic.c |   21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
---- a/drivers/target/loopback/tcm_loop.c
-+++ b/drivers/target/loopback/tcm_loop.c
-@@ -934,6 +934,9 @@ static ssize_t tcm_loop_tpg_address_show
- 			struct tcm_loop_tpg, tl_se_tpg);
- 	struct tcm_loop_hba *tl_hba = tl_tpg->tl_hba;
+--- a/drivers/uio/uio_hv_generic.c
++++ b/drivers/uio/uio_hv_generic.c
+@@ -80,9 +80,15 @@ hv_uio_irqcontrol(struct uio_info *info,
+ {
+ 	struct hv_uio_private_data *pdata = info->priv;
+ 	struct hv_device *dev = pdata->device;
++	struct vmbus_channel *primary, *sc;
  
-+	if (!tl_hba->sh)
-+		return -ENODEV;
+-	dev->channel->inbound.ring_buffer->interrupt_mask = !irq_state;
+-	virt_mb();
++	primary = dev->channel;
++	primary->inbound.ring_buffer->interrupt_mask = !irq_state;
 +
- 	return snprintf(page, PAGE_SIZE, "%d:0:%d\n",
- 			tl_hba->sh->host_no, tl_tpg->tl_tpgt);
++	mutex_lock(&vmbus_connection.channel_mutex);
++	list_for_each_entry(sc, &primary->sc_list, sc_list)
++		sc->inbound.ring_buffer->interrupt_mask = !irq_state;
++	mutex_unlock(&vmbus_connection.channel_mutex);
+ 
+ 	return 0;
  }
+@@ -93,11 +99,18 @@ hv_uio_irqcontrol(struct uio_info *info,
+ static void hv_uio_channel_cb(void *context)
+ {
+ 	struct vmbus_channel *chan = context;
+-	struct hv_device *hv_dev = chan->device_obj;
+-	struct hv_uio_private_data *pdata = hv_get_drvdata(hv_dev);
++	struct hv_device *hv_dev;
++	struct hv_uio_private_data *pdata;
+ 
+ 	virt_mb();
+ 
++	/*
++	 * The callback may come from a subchannel, in which case look
++	 * for the hv device in the primary channel
++	 */
++	hv_dev = chan->primary_channel ?
++		 chan->primary_channel->device_obj : chan->device_obj;
++	pdata = hv_get_drvdata(hv_dev);
+ 	uio_event_notify(&pdata->info);
+ }
+ 
 
 
 
