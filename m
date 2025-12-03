@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-199044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47266C9FDDC
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:16:47 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71BF5CA104A
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:34:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B45FA300078F
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:16:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 63DE1300FA09
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:34:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1973D354ACF;
-	Wed,  3 Dec 2025 16:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D786133D6E9;
+	Wed,  3 Dec 2025 15:54:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mBdzZ5Vw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1eLKr+GE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8872352FBF;
-	Wed,  3 Dec 2025 16:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E7333D6D6;
+	Wed,  3 Dec 2025 15:54:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778513; cv=none; b=vDQjxULXnRBgJSf/EIBneCIArG6J2noiWcxIPN76n1Wdc06rzRiR/xEpRKZ4mqKIl/dPJbYcqPuUf6L/oyxtCaG4DGtu/95Ob+xfnRfCMgoEXsBZ62eAQ96c1BnfYlI88sYtlVA5BQ3xaSj8oF4r8nSZndoOi7GZ9gb/Ru+To4Q=
+	t=1764777297; cv=none; b=UymhCoQytowRyCqevd4sMwy2GnaJDZKf76gP98MpTgnU3KxnvXfSvBSl7wLpFQvmxpBh3jHMMfcLNTb2slvnJv6FAQr7cKvICmQY90+g9JxgT6jkwmLkxF8u2lj51DeU/eMYmi2DQRcvpYXjEfsfS6Ugw5I01lt/NgAQ6oFdeRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778513; c=relaxed/simple;
-	bh=diQGueEbUvr6MSq8LvUkI27/2QV6jKiNK1JlLNp+T7k=;
+	s=arc-20240116; t=1764777297; c=relaxed/simple;
+	bh=/Ya+bzenZJyYkfqAcPxpF47IFyfoo4uklzWyvclhBGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kdWO35Zj4YV9hdYcBOO+/UUkzFF/xY5+/ScEki4alBaN3EEjVEwjHhjM4B9cXDFi5AI1FmGNdPi4jmNxeYucBX34mdQ7w3/jjumfNtQ6GPwvZSbwSKHZWY+hS+jUmksdzh44Z7XX1wA9KKf29NNOyaOemQ7M1ofse0ISinEItMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mBdzZ5Vw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B8FFC4CEF5;
-	Wed,  3 Dec 2025 16:15:12 +0000 (UTC)
+	 MIME-Version; b=bs8G/QHMsDAYRCjDZ5kTiugmxX9qQ2qXIGavMBwTOpIdgKbHLsQw5MqB69JP7tMVXMjO/APxtrI36jSY7Y2An1RqjuZNBIMGZBeHXFvnDUwHvmo63T1j6A9dZVNI+nQLBb5+cMPbxn2DOwB7i3n1TidbMt3KMAcgBX8I28pt63w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1eLKr+GE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86DFEC4CEF5;
+	Wed,  3 Dec 2025 15:54:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778513;
-	bh=diQGueEbUvr6MSq8LvUkI27/2QV6jKiNK1JlLNp+T7k=;
+	s=korg; t=1764777297;
+	bh=/Ya+bzenZJyYkfqAcPxpF47IFyfoo4uklzWyvclhBGI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mBdzZ5Vws7EFoTHb6ft0IvGp9F6sY4eLkrT86FLu9oDwAu73VEEhHst6qKqjQfWFM
-	 aeZW+nz6a2txbbTvCI6ju01AauW2vL/lthG6flY9649vYB9E8WtqgE/ZPsr/DKPYCF
-	 maYXZ2D62lUl9W70rfsSUhdQfQgxVCP8XIVrxm9E=
+	b=1eLKr+GES2PASKJnInMGcyhbT+Df1W7QGSNvP/VvvpNV39zFqMPHqza8O0d0hFL4V
+	 Lr+cPV/KaLEx0Giho4wEMQdZfTvr70Mtoej1DSiKDOW4dzluNaJBrePs/bz1Adg+aC
+	 UjKwUGewrMu4MxzC+Mt2Omls0+Euqgcn0EHPU+KE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stealth <oleg.smirnov.1988@gmail.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.15 368/392] USB: storage: Remove subclass and protocol overrides from Novatek quirk
+	ziming zhang <ezrakiez@gmail.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 6.17 140/146] libceph: prevent potential out-of-bounds writes in handle_auth_session_key()
 Date: Wed,  3 Dec 2025 16:28:38 +0100
-Message-ID: <20251203152427.702865402@linuxfoundation.org>
+Message-ID: <20251203152351.598759258@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +59,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: ziming zhang <ezrakiez@gmail.com>
 
-commit df5fde297e617041449f603ed5f646861c80000b upstream.
+commit 7fce830ecd0a0256590ee37eb65a39cbad3d64fc upstream.
 
-A report from Oleg Smirnov indicates that the unusual_devs quirks
-entry for the Novatek camera does not need to override the subclass
-and protocol parameters:
+The len field originates from untrusted network packets. Boundary
+checks have been added to prevent potential out-of-bounds writes when
+decrypting the connection secret or processing service tickets.
 
-[3266355.209532] usb 1-3: new high-speed USB device number 10 using xhci_hcd
-[3266355.333031] usb 1-3: New USB device found, idVendor=0603, idProduct=8611, bcdDevice= 1.00
-[3266355.333040] usb 1-3: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-[3266355.333043] usb 1-3: Product: YICARCAM
-[3266355.333045] usb 1-3: Manufacturer: XIAO-YI
-[3266355.333047] usb 1-3: SerialNumber: 966110000000100
-[3266355.338621] usb-storage 1-3:1.0: USB Mass Storage device detected
-[3266355.338817] usb-storage 1-3:1.0: Quirks match for vid 0603 pid 8611: 4000
-[3266355.338821] usb-storage 1-3:1.0: This device (0603,8611,0100 S 06 P 50) has unneeded SubClass and Protocol entries in unusual_devs.h (kernel 6.16.10-arch1-1)
-                    Please send a copy of this message to
-<linux-usb@vger.kernel.org> and <usb-storage@lists.one-eyed-alien.net>
+[ idryomov: changelog ]
 
-The overrides are harmless but they do provoke the driver into logging
-this annoying message.  Update the entry to remove the unneeded entries.
-
-Reported-by: stealth <oleg.smirnov.1988@gmail.com>
-Closes: https://lore.kernel.org/CAKxjRRxhC0s19iEWoN=pEMqXJ_z8w_moC0GCXSqSKCcOddnWjQ@mail.gmail.com/
-Fixes: 6ca8af3c8fb5 ("USB: storage: Add unusual-devs entry for Novatek NTK96550-based camera")
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Cc: stable <stable@kernel.org>
-Link: https://patch.msgid.link/b440f177-f0b8-4d5a-8f7b-10855d4424ee@rowland.harvard.edu
+Cc: stable@vger.kernel.org
+Signed-off-by: ziming zhang <ezrakiez@gmail.com>
+Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/unusual_devs.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ceph/auth_x.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/usb/storage/unusual_devs.h
-+++ b/drivers/usb/storage/unusual_devs.h
-@@ -938,7 +938,7 @@ UNUSUAL_DEV(  0x05e3, 0x0723, 0x9451, 0x
- UNUSUAL_DEV(  0x0603, 0x8611, 0x0000, 0xffff,
- 		"Novatek",
- 		"NTK96550-based camera",
--		USB_SC_SCSI, USB_PR_BULK, NULL,
-+		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
- 		US_FL_BULK_IGNORE_TAG ),
+--- a/net/ceph/auth_x.c
++++ b/net/ceph/auth_x.c
+@@ -631,6 +631,7 @@ static int handle_auth_session_key(struc
  
- /*
+ 	/* connection secret */
+ 	ceph_decode_32_safe(p, end, len, e_inval);
++	ceph_decode_need(p, end, len, e_inval);
+ 	dout("%s connection secret blob len %d\n", __func__, len);
+ 	if (len > 0) {
+ 		dp = *p + ceph_x_encrypt_offset();
+@@ -648,6 +649,7 @@ static int handle_auth_session_key(struc
+ 
+ 	/* service tickets */
+ 	ceph_decode_32_safe(p, end, len, e_inval);
++	ceph_decode_need(p, end, len, e_inval);
+ 	dout("%s service tickets blob len %d\n", __func__, len);
+ 	if (len > 0) {
+ 		ret = ceph_x_proc_ticket_reply(ac, &th->session_key,
 
 
 
