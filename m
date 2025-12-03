@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-198670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDCE6CA0981
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:44:53 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14AB0CA11B8
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:44:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3A42B3481049
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:24:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A103A3002FE6
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:44:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19F8633F37B;
-	Wed,  3 Dec 2025 15:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB7C93502A0;
+	Wed,  3 Dec 2025 16:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YuuM0oGq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dApJ0S99"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79D933A70C;
-	Wed,  3 Dec 2025 15:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E9635028D;
+	Wed,  3 Dec 2025 16:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777303; cv=none; b=r+25eLDOLic389+T8gdJcgH0vZZDiI092xCE4Ha4ByNhei5tJgrDcCk3hOwdwYQCBhrADBOxr3MrGkafGvLC4vPIRPfOvFaTEwGORPljOnKPymDGnHmQrGSdNcm20eiNg3H0sQOkDC0ISka+nQcOuZe952zkdLFb29oBXrHoYQs=
+	t=1764778414; cv=none; b=k2IQ2A81LEbC70UrLJIIy83SdZxhWu0+e0TjdE4e3npWc7jBT1iDmNzTnAdaUfkDiQFwJ+PqUMZEpsJYpjBmTUpKaG+xHdlqzbKHKp29VeCcUQ9D+I7MJcV76EBIBG8uPICDYzqyU78IXmHQc8myMW8DdpuSPrfgR12jAMfuonA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777303; c=relaxed/simple;
-	bh=azq08zlVVcYdUklBf9kmh7yVe3MNpy0VXuqOeTBXy9Y=;
+	s=arc-20240116; t=1764778414; c=relaxed/simple;
+	bh=Ya3sabE6I1yvo++zgVEJ/UeZlyN0bRfq5OAQza5KnCw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GP3oFDPw7EE72IPmDrz9O0t5wZRQCN4VxEf8PcVPUpiziRiEmmqdM2f7+au1Fyg5/SaPDL3Wu3GyG+oLPFvmIQtIwTFXbSAs/jbEj+dyTjozsmNWr5Ez7kHGGPVKX6H7DIpWitMfve8jPAxS9a0iyVqBPve5UBYALK5PC1AJvrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YuuM0oGq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 166E7C4CEF5;
-	Wed,  3 Dec 2025 15:55:02 +0000 (UTC)
+	 MIME-Version; b=lN1fp0KRAeChyPlLc5Az9HVNLiXNVHhdN/lBqZhrOFo65HbEbCJqBzfFIce/0fjjVkhdRksd45cnIroaSOtLked4fTb4uy200VnCE/SZ3oRDQ0Uy9yhP++WLtxQJe1RtHy4y0Y+AZSL5BjWOks2FbSvD8kb4pEIyCrQUfWpNzp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dApJ0S99; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26B4FC4CEF5;
+	Wed,  3 Dec 2025 16:13:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777303;
-	bh=azq08zlVVcYdUklBf9kmh7yVe3MNpy0VXuqOeTBXy9Y=;
+	s=korg; t=1764778414;
+	bh=Ya3sabE6I1yvo++zgVEJ/UeZlyN0bRfq5OAQza5KnCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YuuM0oGqq8fdR1MokDI583ANa3CIrY93LDZ+/CENubY3VitG9UOpkAQQUnNsibmlv
-	 VIHEcckxdHd8eKleS9IGUtn0EOhCucEzb+3Afh25y04XJw04lsyRTEKv1q7vWFMIXV
-	 zleiybjcDA99PBr0sjQUIB6DN9iu+hHssiPrc6Kw=
+	b=dApJ0S99B0ElY180lRmetCEJ/7VBoOAwTZ3xiAe2r9rdhDyy4bh9q0GuyeMKVwDVP
+	 4+Ym2RgcyJLOU3zLkfkBj9yK0IoZFylgeqtG/D2aMrOGxrvKE45LVZgNr3ZOsifnRe
+	 YBoB1iqpqEsfCo6cMhSa86WlhbFEtz/DtEa25u0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Peter Chen <peter.chen@kernel.org>
-Subject: [PATCH 6.17 110/146] usb: cdns3: Fix double resource release in cdns3_pci_probe
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 338/392] Bluetooth: SMP: Fix not generating mackey and ltk when repairing
 Date: Wed,  3 Dec 2025 16:28:08 +0100
-Message-ID: <20251203152350.492593194@linuxfoundation.org>
+Message-ID: <20251203152426.609576451@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +59,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit 1ec39d2cd88dac2e7cdbac248762f1f057971c5d upstream.
+[ Upstream commit 545d7827b2cd5de5eb85580cebeda6b35b3ff443 ]
 
-The driver uses pcim_enable_device() to enable the PCI device,
-the device will be automatically disabled on driver detach through
-the managed device framework. The manual pci_disable_device() calls
-in the error paths are therefore redundant and should be removed.
+The change eed467b517e8 ("Bluetooth: fix passkey uninitialized when used")
+introduced a goto that bypasses the creation of temporary mackey and ltk
+which are later used by the likes of DHKey Check step.
 
-Found via static anlaysis and this is similar to commit 99ca0b57e49f
-("thermal: intel: int340x: processor: Fix warning during module unload").
+Later ffee202a78c2 ("Bluetooth: Always request for user confirmation for
+Just Works (LE SC)") which means confirm_hint is always set in case
+JUST_WORKS so the branch checking for an existing LTK becomes pointless
+as confirm_hint will always be set, so this just merge both cases of
+malicious or legitimate devices to be confirmed before continuing with the
+pairing procedure.
 
-Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://patch.msgid.link/20251026090859.33107-1-linmq006@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://github.com/bluez/bluez/issues/1622
+Fixes: eed467b517e8 ("Bluetooth: fix passkey uninitialized when used")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/cdns3/cdns3-pci-wrap.c |    5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ net/bluetooth/smp.c | 31 +++++++------------------------
+ 1 file changed, 7 insertions(+), 24 deletions(-)
 
---- a/drivers/usb/cdns3/cdns3-pci-wrap.c
-+++ b/drivers/usb/cdns3/cdns3-pci-wrap.c
-@@ -98,10 +98,8 @@ static int cdns3_pci_probe(struct pci_de
- 		wrap = pci_get_drvdata(func);
- 	} else {
- 		wrap = kzalloc(sizeof(*wrap), GFP_KERNEL);
--		if (!wrap) {
--			pci_disable_device(pdev);
-+		if (!wrap)
- 			return -ENOMEM;
+diff --git a/net/bluetooth/smp.c b/net/bluetooth/smp.c
+index 697ec98b07982..d1ba41153b66a 100644
+--- a/net/bluetooth/smp.c
++++ b/net/bluetooth/smp.c
+@@ -2130,7 +2130,7 @@ static u8 smp_cmd_pairing_random(struct l2cap_conn *conn, struct sk_buff *skb)
+ 	struct smp_chan *smp = chan->data;
+ 	struct hci_conn *hcon = conn->hcon;
+ 	u8 *pkax, *pkbx, *na, *nb, confirm_hint;
+-	u32 passkey;
++	u32 passkey = 0;
+ 	int err;
+ 
+ 	bt_dev_dbg(hcon->hdev, "conn %p", conn);
+@@ -2182,24 +2182,6 @@ static u8 smp_cmd_pairing_random(struct l2cap_conn *conn, struct sk_buff *skb)
+ 		smp_send_cmd(conn, SMP_CMD_PAIRING_RANDOM, sizeof(smp->prnd),
+ 			     smp->prnd);
+ 		SMP_ALLOW_CMD(smp, SMP_CMD_DHKEY_CHECK);
+-
+-		/* Only Just-Works pairing requires extra checks */
+-		if (smp->method != JUST_WORKS)
+-			goto mackey_and_ltk;
+-
+-		/* If there already exists long term key in local host, leave
+-		 * the decision to user space since the remote device could
+-		 * be legitimate or malicious.
+-		 */
+-		if (hci_find_ltk(hcon->hdev, &hcon->dst, hcon->dst_type,
+-				 hcon->role)) {
+-			/* Set passkey to 0. The value can be any number since
+-			 * it'll be ignored anyway.
+-			 */
+-			passkey = 0;
+-			confirm_hint = 1;
+-			goto confirm;
 -		}
  	}
  
- 	res = wrap->dev_res;
-@@ -160,7 +158,6 @@ static int cdns3_pci_probe(struct pci_de
- 		/* register platform device */
- 		wrap->plat_dev = platform_device_register_full(&plat_info);
- 		if (IS_ERR(wrap->plat_dev)) {
--			pci_disable_device(pdev);
- 			err = PTR_ERR(wrap->plat_dev);
- 			kfree(wrap);
- 			return err;
+ mackey_and_ltk:
+@@ -2220,11 +2202,12 @@ static u8 smp_cmd_pairing_random(struct l2cap_conn *conn, struct sk_buff *skb)
+ 	if (err)
+ 		return SMP_UNSPECIFIED;
+ 
+-	confirm_hint = 0;
+-
+-confirm:
+-	if (smp->method == JUST_WORKS)
+-		confirm_hint = 1;
++	/* Always require user confirmation for Just-Works pairing to prevent
++	 * impersonation attacks, or in case of a legitimate device that is
++	 * repairing use the confirmation as acknowledgment to proceed with the
++	 * creation of new keys.
++	 */
++	confirm_hint = smp->method == JUST_WORKS ? 1 : 0;
+ 
+ 	err = mgmt_user_confirm_request(hcon->hdev, &hcon->dst, hcon->type,
+ 					hcon->dst_type, passkey, confirm_hint);
+-- 
+2.51.0
+
 
 
 
