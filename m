@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE985CA02E6
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:53:39 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F10CBCA0407
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:03:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 35C0830274FC
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:48:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BFFB8300307C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:03:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C789C313546;
-	Wed,  3 Dec 2025 16:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A7E6366561;
+	Wed,  3 Dec 2025 16:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XKeBk5Hp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxF5phT8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E1AD36CE0F;
-	Wed,  3 Dec 2025 16:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C59D364EB3;
+	Wed,  3 Dec 2025 16:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780510; cv=none; b=FRzRAFniIx/gXTNYrHvfRs8WllsNwjy8xiEJu2GQhWLD+MKZS3cjPQyEz4YOrHS7Hv5AiF9i2qBMUQziktGVpcOhZKsEAuIi09ditunas1h5dKqA8OH/kqxxqBOpZFa6Smvh7cu8NHAhi+j54X6eACVkRbsmBmG1kfIDm7kMKYQ=
+	t=1764781044; cv=none; b=C+QoOc1n1S1eUU9bQFO0aTfAQVVOkAsezVjs4x6WvYclMSuWDrzR6+NlYrDhFEd60foIg80s5WG01HzVH3ld+F8H6Kmv81JjudY7IMfqnxULQm2qtFT+/LTA28KLs/ylcH31POVNxy2Kdwwfm0VjtHDEVNVQuPPtLIjztaAGFdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780510; c=relaxed/simple;
-	bh=fPMG5KGNE/EgjNRVQEAUi/WXSI565X8IEvmzvzJun3k=;
+	s=arc-20240116; t=1764781044; c=relaxed/simple;
+	bh=+WiJGoxvMRbwY0SF7aW+1LULRhL3tsWgtbcOQBwJE0M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r2G9HJilb5NgaiVueQhi4O/eex5nI+Mf6gO2aI//fmYI0MsusWMgFFRRFQ5Hq2n00Z1A1UhB7o72M8cSNHXvo2F+ifASRDgqWjAZRkdqFuHaHkRMRAJOZDY0hNWbJ4jDTnSROo0zukzUiXAdoxNvyrFAOOrUZz5QdMMqF0e8Q1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XKeBk5Hp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F16EBC116C6;
-	Wed,  3 Dec 2025 16:48:29 +0000 (UTC)
+	 MIME-Version; b=QPQiEKqk2XHoBrykVtmxTjhOH1YvGTorLqj/xYvyDS/4BhPfwI3YrsTFizXZU6QCfr/+IsAMDZQNhvGBVYEzHtCkHzFeoDYwwKiT87Z1OdORD+EUTObobVy8E48lAY05AFChWZ/MfIqzk2BAIyEWzDVxOel0fGbxQ4iQklDRHWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxF5phT8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B92EFC4CEF5;
+	Wed,  3 Dec 2025 16:57:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780510;
-	bh=fPMG5KGNE/EgjNRVQEAUi/WXSI565X8IEvmzvzJun3k=;
+	s=korg; t=1764781043;
+	bh=+WiJGoxvMRbwY0SF7aW+1LULRhL3tsWgtbcOQBwJE0M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XKeBk5HpcPa4jj2dTUDZy2nR9VzSAUWUQ3omNhTAhxxqFCvbA/BF1RhuuG+fVLvAb
-	 kAoAiao0n7SdVThYUwF6ZxEpw8anHzNNlBXr0H4QjmG1lajo1exeEzxt9vHGKxToVM
-	 7wBQR77SYKLrlaM+RMHIf+38p956CD0BXINALXJc=
+	b=fxF5phT8Up0FH4hkZp47qM3GDwzK0/XnpmWPMCpwOYNBWrO6ghEPQ1eCxRdpkPEvO
+	 jpsk/uj8Aq9DfXOCPY7JwYufnB9LT0SlquGwIKz9ZsAc7afyLS8QhF77X4HNYwG+cB
+	 FtbakPWXze5aznwqWl/qES92r358yxfJZEaR67y0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Heelan <seanheelan@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Nazar Kalashnikov <sivartiwe@gmail.com>
-Subject: [PATCH 6.1 562/568] ksmbd: fix use-after-free in session logoff
-Date: Wed,  3 Dec 2025 16:29:24 +0100
-Message-ID: <20251203152501.328236895@linuxfoundation.org>
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 32/93] spi: nxp-fspi: Propagate fwnode in ACPI case as well
+Date: Wed,  3 Dec 2025 16:29:25 +0100
+Message-ID: <20251203152337.704193662@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
+References: <20251203152336.494201426@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Heelan <seanheelan@gmail.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 2fc9feff45d92a92cd5f96487655d5be23fb7e2b upstream.
+[ Upstream commit 40ad64ac25bb736740f895d99a4aebbda9b80991 ]
 
-The sess->user object can currently be in use by another thread, for
-example if another connection has sent a session setup request to
-bind to the session being free'd. The handler for that connection could
-be in the smb2_sess_setup function which makes use of sess->user.
+Propagate fwnode of the ACPI device to the SPI controller Linux device.
+Currently only OF case propagates fwnode to the controller.
 
-Signed-off-by: Sean Heelan <seanheelan@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Nazar Kalashnikov <sivartiwe@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+While at it, replace several calls to dev_fwnode() with a single one
+cached in a local variable, and unify checks for fwnode type by using
+is_*_node() APIs.
+
+Fixes: 55ab8487e01d ("spi: spi-nxp-fspi: Add ACPI support")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
+Link: https://patch.msgid.link/20251126202501.2319679-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-v2: Fix duplicate From: header
-Backport fix for CVE-2025-37899
- fs/smb/server/smb2pdu.c |    4 ----
- 1 file changed, 4 deletions(-)
+ drivers/spi/spi-nxp-fspi.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -2253,10 +2253,6 @@ int smb2_session_logoff(struct ksmbd_wor
- 	sess->state = SMB2_SESSION_EXPIRED;
- 	up_write(&conn->session_lock);
+diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+index 5d631f8c593e3..ce110035a3597 100644
+--- a/drivers/spi/spi-nxp-fspi.c
++++ b/drivers/spi/spi-nxp-fspi.c
+@@ -1165,7 +1165,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+ {
+ 	struct spi_controller *ctlr;
+ 	struct device *dev = &pdev->dev;
+-	struct device_node *np = dev->of_node;
++	struct fwnode_handle *fwnode = dev_fwnode(dev);
+ 	struct resource *res;
+ 	struct nxp_fspi *f;
+ 	int ret;
+@@ -1189,7 +1189,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, f);
  
--	if (sess->user) {
--		ksmbd_free_user(sess->user);
--		sess->user = NULL;
--	}
- 	ksmbd_all_conn_set_status(sess_id, KSMBD_SESS_NEED_NEGOTIATE);
+ 	/* find the resources - configuration register address space */
+-	if (is_acpi_node(dev_fwnode(f->dev)))
++	if (is_acpi_node(fwnode))
+ 		f->iobase = devm_platform_ioremap_resource(pdev, 0);
+ 	else
+ 		f->iobase = devm_platform_ioremap_resource_byname(pdev, "fspi_base");
+@@ -1200,7 +1200,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+ 	}
  
- 	rsp->StructureSize = cpu_to_le16(4);
+ 	/* find the resources - controller memory mapped space */
+-	if (is_acpi_node(dev_fwnode(f->dev)))
++	if (is_acpi_node(fwnode))
+ 		res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
+ 	else
+ 		res = platform_get_resource_byname(pdev,
+@@ -1216,7 +1216,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+ 	f->memmap_phy_size = resource_size(res);
+ 
+ 	/* find the clocks */
+-	if (dev_of_node(&pdev->dev)) {
++	if (is_of_node(fwnode)) {
+ 		f->clk_en = devm_clk_get(dev, "fspi_en");
+ 		if (IS_ERR(f->clk_en)) {
+ 			ret = PTR_ERR(f->clk_en);
+@@ -1262,7 +1262,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+ 
+ 	nxp_fspi_default_setup(f);
+ 
+-	ctlr->dev.of_node = np;
++	device_set_node(&ctlr->dev, fwnode);
+ 
+ 	ret = devm_spi_register_controller(&pdev->dev, ctlr);
+ 	if (ret)
+-- 
+2.51.0
+
 
 
 
