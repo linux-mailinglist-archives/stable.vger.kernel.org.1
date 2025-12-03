@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCD1ACA0848
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:36:21 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FE41C9F884
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:38:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 073A032C252E
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:17:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 60866300196D
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:38:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0664733B6EE;
-	Wed,  3 Dec 2025 16:03:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF0663148A3;
+	Wed,  3 Dec 2025 15:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MI0IGwzj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H+8rqiPu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B36B933893A;
-	Wed,  3 Dec 2025 16:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99C7E314A9B;
+	Wed,  3 Dec 2025 15:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777824; cv=none; b=WgDfAWERfjC5lRa3CV/OoDxcabJ69OeUTZTGahFnsJ1ot2kqQ1pxAgz9yztBNJhzoe0i8N2SeZvqzsv7/yn41Yk+mTu9lG1SxPZ76VzgixuwtdGOhZ5mNjwvzSY6Wxbte5qbRkyzwb1lweSOTq0wlFM2EhoEfxq/M47rO2cnmc4=
+	t=1764776289; cv=none; b=A6JUG2sZq7xIIW5iWE5VKtCeEXQ9XTeo7rwjHV5EArq4gCCqEISCoA9+kMf9f+DZ9Qy6k4hMVi4QXUQ5J7+z6s8q33fb+zCnL/ycjXTi+6i04Vp11qQn2dJbyzuuW/SPkB79GEIhW8FkX7+C+7lQCxhMjIv3XANMYRI8v5yW8Pg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777824; c=relaxed/simple;
-	bh=QrKSvtIuUYerQl5U35UAgh4Mw9252cy387NTwogAOKQ=;
+	s=arc-20240116; t=1764776289; c=relaxed/simple;
+	bh=7bEMhweOpmcBRSl/4s9hfHeP6smQMy7spEc80B81474=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YiHEfIgvoQqkuCEv77XP63RW/hKMOdwZMCOl7JnFo/czbxqJ+QJK8bEjGxOJB4p290HCagORUBY8Iusb1zmMzmkWYWC864QUdoXbhN+MNL8eAPjzFLBdgXuorm5CmJgvdl0VCgrvNep2R1tbauFq3aWSU7QKxdvkwSmlgAKWDAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MI0IGwzj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E8AEC4CEF5;
-	Wed,  3 Dec 2025 16:03:43 +0000 (UTC)
+	 MIME-Version; b=ujFXZAH1eP9ctlwOkWeqotNt8MT+FYQspm3cjzjZe4c0JaR2qj0mAw8izCbSVltbrF2jm5yinnE3ZCVqlJpM/RPO5y47rzAHChZ3ZhrwqifUdFqf/72S8e/dXwMrfqg3L+ipSNNS1QHqSP6ZfXW4hou/UwfSG9KuNVpZhAJtQO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H+8rqiPu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 096C1C4CEF5;
+	Wed,  3 Dec 2025 15:38:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777824;
-	bh=QrKSvtIuUYerQl5U35UAgh4Mw9252cy387NTwogAOKQ=;
+	s=korg; t=1764776289;
+	bh=7bEMhweOpmcBRSl/4s9hfHeP6smQMy7spEc80B81474=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MI0IGwzjbVS+APtoIK3rklJBOGpDOzC5qRdvOFQgKHdIVAlZlcCAoUDLDMbxicxzW
-	 2zaX0qVttKryz6UaOsI1OviqI3/ytNcTCtD0t0r+SAZTckwuIBMjOY1yk+JlxZAZAk
-	 Lk9BTgDj+j1qZQOFXKrcM9/OpM/4xOg6aga4Xuos=
+	b=H+8rqiPu7MP2SvaGQqlISkyWAGwSlqVsEexbXvmzAed+0iOQBeiFwSDWJyy+7jJrH
+	 EWPTbrrhieNrbVMC6tl3EhMYf2u5/9HRVmF72w5Q9h4r8UZM/HLSUZBzmrYlOks7cO
+	 UF7PAZCIGHrVFVyFyDljS34bygKkLqZ/SQTCor+Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Guoli An <anguoli@uniontech.com>,
+	Cryolitia PukNgae <cryolitia@uniontech.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 158/392] scsi: lpfc: Remove ndlp kref decrement clause for F_Port_Ctrl in lpfc_cleanup
-Date: Wed,  3 Dec 2025 16:25:08 +0100
-Message-ID: <20251203152419.895035079@linuxfoundation.org>
+Subject: [PATCH 5.10 105/300] ALSA: usb-audio: apply quirk for MOONDROP Quark2
+Date: Wed,  3 Dec 2025 16:25:09 +0100
+Message-ID: <20251203152404.513991761@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Cryolitia PukNgae <cryolitia@uniontech.com>
 
-[ Upstream commit a4809b98eb004fcbf7c4d45eb5a624d1c682bb73 ]
+[ Upstream commit a73349c5dd27bc544b048e2e2c8ef6394f05b793 ]
 
-In lpfc_cleanup, there is an extraneous nlp_put for NPIV ports on the
-F_Port_Ctrl ndlp object.  In cases when an ABTS is issued, the
-outstanding kref is needed for when a second XRI_ABORTED CQE is
-received.  The final kref for the ndlp is designed to be decremented in
-lpfc_sli4_els_xri_aborted instead.  Also, add a new log message to allow
-for future diagnostics when debugging related issues.
+It reports a MIN value -15360 for volume control, but will mute when
+setting it less than -14208
 
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Message-ID: <20250915180811.137530-5-justintee8345@gmail.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Tested-by: Guoli An <anguoli@uniontech.com>
+Signed-off-by: Cryolitia PukNgae <cryolitia@uniontech.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250903-sound-v1-4-d4ca777b8512@uniontech.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_els.c  | 6 +++++-
- drivers/scsi/lpfc/lpfc_init.c | 7 -------
- 2 files changed, 5 insertions(+), 8 deletions(-)
+ sound/usb/mixer.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/scsi/lpfc/lpfc_els.c b/drivers/scsi/lpfc/lpfc_els.c
-index 134d56bd00daf..cb2ee84ccc976 100644
---- a/drivers/scsi/lpfc/lpfc_els.c
-+++ b/drivers/scsi/lpfc/lpfc_els.c
-@@ -11449,7 +11449,11 @@ lpfc_sli4_els_xri_aborted(struct lpfc_hba *phba,
- 			sglq_entry->state = SGL_FREED;
- 			spin_unlock_irqrestore(&phba->sli4_hba.sgl_list_lock,
- 					       iflag);
--
-+			lpfc_printf_log(phba, KERN_INFO, LOG_ELS | LOG_SLI |
-+					LOG_DISCOVERY | LOG_NODE,
-+					"0732 ELS XRI ABORT on Node: ndlp=x%px "
-+					"xri=x%x\n",
-+					ndlp, xri);
- 			if (ndlp) {
- 				lpfc_set_rrq_active(phba, ndlp,
- 					sglq_entry->sli4_lxritag,
-diff --git a/drivers/scsi/lpfc/lpfc_init.c b/drivers/scsi/lpfc/lpfc_init.c
-index bba51ce4276ae..e2f9b23a3fbb2 100644
---- a/drivers/scsi/lpfc/lpfc_init.c
-+++ b/drivers/scsi/lpfc/lpfc_init.c
-@@ -2912,13 +2912,6 @@ lpfc_cleanup(struct lpfc_vport *vport)
- 		lpfc_vmid_vport_cleanup(vport);
+diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
+index 8826a588f5ab8..c84e25b2b1fb9 100644
+--- a/sound/usb/mixer.c
++++ b/sound/usb/mixer.c
+@@ -1192,6 +1192,13 @@ static void volume_control_quirks(struct usb_mixer_elem_info *cval,
+ 			cval->res = 1;
+ 		}
+ 		break;
++	case USB_ID(0x3302, 0x12db): /* MOONDROP Quark2 */
++		if (!strcmp(kctl->id.name, "PCM Playback Volume")) {
++			usb_audio_info(chip,
++				"set volume quirk for MOONDROP Quark2\n");
++			cval->min = -14208; /* Mute under it */
++		}
++		break;
+ 	}
+ }
  
- 	list_for_each_entry_safe(ndlp, next_ndlp, &vport->fc_nodes, nlp_listp) {
--		if (vport->port_type != LPFC_PHYSICAL_PORT &&
--		    ndlp->nlp_DID == Fabric_DID) {
--			/* Just free up ndlp with Fabric_DID for vports */
--			lpfc_nlp_put(ndlp);
--			continue;
--		}
--
- 		if (ndlp->nlp_DID == Fabric_Cntl_DID &&
- 		    ndlp->nlp_state == NLP_STE_UNUSED_NODE) {
- 			lpfc_nlp_put(ndlp);
 -- 
 2.51.0
 
