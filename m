@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 983BACA020A
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:50:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41293CA0DE4
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:17:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1F33A300420A
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:46:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A7A5A337BCAE
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:15:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12AAF313546;
-	Wed,  3 Dec 2025 16:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA83E39A265;
+	Wed,  3 Dec 2025 16:53:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oIFlHZst"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PAhlvCzD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B26D234AB1F;
-	Wed,  3 Dec 2025 16:46:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E7B39A255;
+	Wed,  3 Dec 2025 16:53:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780386; cv=none; b=B5HqfMtaPS5HmKldQhSFE+e3SM70hN07yoPivufT5PQ+O6uSBI5POwyH3h1pBKRr1W5pHNW8AKmVLwg3Jzpf5fj38rgG5MAZUbMCsFHA5C2CpQ2d6BrJ9qIoD9c1ToKy55HT8GQXOzZMLo2MVpzcxl/Dvo5gK+S7Une8bR+qFDs=
+	t=1764780796; cv=none; b=GsQoe4PP7D93tGl+EYoQ0DoGJU55/vOwMV4Z/nHiGqAIuT4qnMpJfaQvkGy0o+mHrvN1QDYjpx7c2YnuuFJF8eorf3N21fJ5Rms1JImEmw93TmECOUfv0dSKgOemoLxvEiv1IZ17L9Vp/dDSpU8PZTMO4dK5xW1nhyXT5P699Io=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780386; c=relaxed/simple;
-	bh=MlMUaNfrsdnl1DWshT+XyrwUg/CHrcl0CjHKaiShpWQ=;
+	s=arc-20240116; t=1764780796; c=relaxed/simple;
+	bh=27b24KjNTv6DwWYWHMA6b86kIhT+1t75PK+kqVg7FaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A4T7leokWT5il3BH9Dzxf8bWsEFsxqm0ON8ccJIKyQ9JS/WYyL26HwUQaVSlrYbVTey7M7KZ2XWGa4vHFC8O1Oy/7J1EMdkCyxPAZDF2ur1UPThrDO0sR4fCfoYoIeLDrW+uW9UbBusRADYtN65TrF1rFmiUB9zBIFSsjg1HjOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oIFlHZst; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E29CC4CEF5;
-	Wed,  3 Dec 2025 16:46:25 +0000 (UTC)
+	 MIME-Version; b=cLA0YuH3JU1miVr3MAx6S77GK42J95OTGYGRKYdv7+ojW9a7aj2pUrrwMNuEyG+teRcnO+y/wSLPUZcc0mqAdO3BfHSvmRZ5kRGTsXynb9u862rDDJtP8ZaHY5tUkmRcWwPeZ4ZjvSfn9JY3+xA0PFIWOf/OIAy8uFtimivHox0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PAhlvCzD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BE91C4CEF5;
+	Wed,  3 Dec 2025 16:53:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780386;
-	bh=MlMUaNfrsdnl1DWshT+XyrwUg/CHrcl0CjHKaiShpWQ=;
+	s=korg; t=1764780796;
+	bh=27b24KjNTv6DwWYWHMA6b86kIhT+1t75PK+kqVg7FaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oIFlHZstMpEgOaJteKJywQe7R1KWxTo4GLwqv/J5Twze3Qy7C28L5UUOoWsI1JIWq
-	 +gqAUtWWPkiLni64XPaiIyTWw1kJgBHzd5B2pDwCud4/oLUStJBxdJbziZuyRS0ufd
-	 9xBU1zc6A0F9U7sIjj2hoR8iCqfojqgupzNvdyCU=
+	b=PAhlvCzDZAREH5Pk5CPxxVM2fLYHKOFEkSQ13UUXLqSMkLQRc1AqUFFyg2+1I19if
+	 0H59/B8UtcBr06cqRdznu2QYHdA+0/hWACTyiSvPuLqeZIg9jVCo7n50seejO0IAi3
+	 ClPuuyTzRzazY4sDsLzcfGOgxpokOYKaHWGWgHdI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Manish Nagar <manish.nagar@oss.qualcomm.com>
-Subject: [PATCH 6.1 542/568] usb: dwc3: Fix race condition between concurrent dwc3_remove_requests() call paths
+	syzbot+a72c325b042aae6403c7@syzkaller.appspotmail.com,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.12 065/132] tracing: Fix WARN_ON in tracing_buffers_mmap_close for split VMAs
 Date: Wed,  3 Dec 2025 16:29:04 +0100
-Message-ID: <20251203152500.562702538@linuxfoundation.org>
+Message-ID: <20251203152345.706019338@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,89 +60,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manish Nagar <manish.nagar@oss.qualcomm.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-commit e4037689a366743c4233966f0e74bc455820d316 upstream.
+commit b042fdf18e89a347177a49e795d8e5184778b5b6 upstream.
 
-This patch addresses a race condition caused by unsynchronized
-execution of multiple call paths invoking `dwc3_remove_requests()`,
-leading to premature freeing of USB requests and subsequent crashes.
+When a VMA is split (e.g., by partial munmap or MAP_FIXED), the kernel
+calls vm_ops->close on each portion. For trace buffer mappings, this
+results in ring_buffer_unmap() being called multiple times while
+ring_buffer_map() was only called once.
 
-Three distinct execution paths interact with `dwc3_remove_requests()`:
-Path 1:
-Triggered via `dwc3_gadget_reset_interrupt()` during USB reset
-handling. The call stack includes:
-- `dwc3_ep0_reset_state()`
-- `dwc3_ep0_stall_and_restart()`
-- `dwc3_ep0_out_start()`
-- `dwc3_remove_requests()`
-- `dwc3_gadget_del_and_unmap_request()`
+This causes ring_buffer_unmap() to return -ENODEV on subsequent calls
+because user_mapped is already 0, triggering a WARN_ON.
 
-Path 2:
-Also initiated from `dwc3_gadget_reset_interrupt()`, but through
-`dwc3_stop_active_transfers()`. The call stack includes:
-- `dwc3_stop_active_transfers()`
-- `dwc3_remove_requests()`
-- `dwc3_gadget_del_and_unmap_request()`
+Trace buffer mappings cannot support partial mappings because the ring
+buffer structure requires the complete buffer including the meta page.
 
-Path 3:
-Occurs independently during `adb root` execution, which triggers
-USB function unbind and bind operations. The sequence includes:
-- `gserial_disconnect()`
-- `usb_ep_disable()`
-- `dwc3_gadget_ep_disable()`
-- `dwc3_remove_requests()` with `-ESHUTDOWN` status
+Fix this by adding a may_split callback that returns -EINVAL to prevent
+VMA splits entirely.
 
-Path 3 operates asynchronously and lacks synchronization with Paths
-1 and 2. When Path 3 completes, it disables endpoints and frees 'out'
-requests. If Paths 1 or 2 are still processing these requests,
-accessing freed memory leads to a crash due to use-after-free conditions.
-
-To fix this added check for request completion and skip processing
-if already completed and added the request status for ep0 while queue.
-
-Fixes: 72246da40f37 ("usb: Introduce DesignWare USB3 DRD Driver")
-Cc: stable <stable@kernel.org>
-Suggested-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Signed-off-by: Manish Nagar <manish.nagar@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251120074435.1983091-1-manish.nagar@oss.qualcomm.com
+Cc: stable@vger.kernel.org
+Fixes: cf9f0f7c4c5bb ("tracing: Allow user-space mapping of the ring-buffer")
+Link: https://patch.msgid.link/20251119064019.25904-1-kartikey406@gmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=a72c325b042aae6403c7
+Tested-by: syzbot+a72c325b042aae6403c7@syzkaller.appspotmail.com
+Reported-by: syzbot+a72c325b042aae6403c7@syzkaller.appspotmail.com
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/ep0.c    |    1 +
- drivers/usb/dwc3/gadget.c |    7 +++++++
- 2 files changed, 8 insertions(+)
+ kernel/trace/trace.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/drivers/usb/dwc3/ep0.c
-+++ b/drivers/usb/dwc3/ep0.c
-@@ -92,6 +92,7 @@ static int __dwc3_gadget_ep0_queue(struc
- 	req->request.actual	= 0;
- 	req->request.status	= -EINPROGRESS;
- 	req->epnum		= dep->number;
-+	req->status		= DWC3_REQUEST_STATUS_QUEUED;
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -8283,8 +8283,18 @@ static void tracing_buffers_mmap_close(s
+ 	put_snapshot_map(iter->tr);
+ }
  
- 	list_add_tail(&req->list, &dep->pending_list);
- 
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -229,6 +229,13 @@ void dwc3_gadget_giveback(struct dwc3_ep
- {
- 	struct dwc3			*dwc = dep->dwc;
- 
++static int tracing_buffers_may_split(struct vm_area_struct *vma, unsigned long addr)
++{
 +	/*
-+	 * The request might have been processed and completed while the
-+	 * spinlock was released. Skip processing if already completed.
++	 * Trace buffer mappings require the complete buffer including
++	 * the meta page. Partial mappings are not supported.
 +	 */
-+	if (req->status == DWC3_REQUEST_STATUS_COMPLETED)
-+		return;
++	return -EINVAL;
++}
 +
- 	dwc3_gadget_del_and_unmap_request(dep, req, status);
- 	req->status = DWC3_REQUEST_STATUS_COMPLETED;
+ static const struct vm_operations_struct tracing_buffers_vmops = {
+ 	.close		= tracing_buffers_mmap_close,
++	.may_split      = tracing_buffers_may_split,
+ };
  
+ static int tracing_buffers_mmap(struct file *filp, struct vm_area_struct *vma)
 
 
 
