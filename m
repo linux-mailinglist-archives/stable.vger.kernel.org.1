@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-199057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D633CA09CD
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:45:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 144DBCA0503
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:17:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 41AA0349F3CB
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:25:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6BE26314C7FB
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:04:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8523035505E;
-	Wed,  3 Dec 2025 16:15:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2867331A46;
+	Wed,  3 Dec 2025 16:49:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e6k9IyOP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c9gmLRxB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3743D355058;
-	Wed,  3 Dec 2025 16:15:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D60131B812;
+	Wed,  3 Dec 2025 16:49:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778556; cv=none; b=JXZLmxQiCqGTzEWLJYOgMyuH3jmME+B93RENyhxMkIVA6J8R0ItxaUHE7NW0nnz63+P6bGvdyqhTgcsnr8vvtl8QDx/4+nZOJ2j0jIEMF6QucwxAfqVAlQEEBzF+oWDz2RugL96fD8wGZtdK63NDublHkeN4Cc0RT5v1zgRt54E=
+	t=1764780554; cv=none; b=EK7hQtxMFJPh9mMUFX7BoB2i/qmGxxraC7igz5Rw5zGg/8x4I5w8EYDkJ7urDakTUnhsOSvygbsA4nWI3g1q9dcd0cC6S4HU2gMzz8fd2/anj6vSvLfco4Su1Oe1TRKWbhR9Phw2anxo1WucjC4Kr268OQVEn0JTKS1qeexlOPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778556; c=relaxed/simple;
-	bh=PbYrnzds6ECwNywzg4eQxwtL9QPcL0ZWW+NlxdU3Hd0=;
+	s=arc-20240116; t=1764780554; c=relaxed/simple;
+	bh=R9KMQA8BkLk+3aNByB4XnBxSCZpnp0/eVPrjgn6qtok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SvQOTRYOhnUeHLtRSIbpVqshj9xf+RfR9Su1fz5HjMjz1258g4leQ2AQxhT6vvpfeYZuAMwTWFsb6drfpIrzWpn41zxfJ2yqSEyN6mSRpqKFCny+Wgsmo5KONI99/SeXweWlO+eCpVdMzevb9Nx/wFK0w1zpOqxXDR/2mRWzj2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e6k9IyOP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DE3DC116B1;
-	Wed,  3 Dec 2025 16:15:55 +0000 (UTC)
+	 MIME-Version; b=eKons5EOBwvII9M/A+Ucqw3X/vhwJPQM38+TaFdHszwB2bX6Gaj1sc4+Z9Qkxm0OZCSAnIQBz3gpzwKrphDAta+Bm2rCoLomXbcefaTY1KsxHyR1OMdklW6hemkZblpQvKoUB9I1uNndlUDD+nTciFSP4CvKiEseV2ZK5t7PlKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c9gmLRxB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9510C4CEF5;
+	Wed,  3 Dec 2025 16:49:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778556;
-	bh=PbYrnzds6ECwNywzg4eQxwtL9QPcL0ZWW+NlxdU3Hd0=;
+	s=korg; t=1764780554;
+	bh=R9KMQA8BkLk+3aNByB4XnBxSCZpnp0/eVPrjgn6qtok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e6k9IyOP5lrHJfLMPyxrh7GKR+XSSiA1dzk2Oa2jtILI3/aG/jLc8v1AL/I4JQYmk
-	 kWKYtDNMpWYDI3KWd/DIbYzl5jByZ+qpgwuIBkaVNRIr8ERwOkLcfmv7VMekwD3PhQ
-	 3EevSd3gT7sIySbpVf7KFOu8DAw3BKh3B+2QMKvs=
+	b=c9gmLRxBsgYseBCYsxgLnKmw/p304DrIncVkQMTy5uprm3DCdB4V+suy46eLQhV5x
+	 a7Zs9qGkxfcoucPc5udgKZlARPyjuefK7biQjPb2koBjk9RLMDrEq4LnECqFxYgLME
+	 ow1TwfzGkH6cKyQim3OMEdIcZoRR/QbXlNaaiOxg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Song Liu <song@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.15 349/392] Revert "perf/x86: Always store regs->ip in perf_callchain_kernel()"
+	syzbot+a2a3b519de727b0f7903@syzkaller.appspotmail.com,
+	"Nikola Z. Ivanov" <zlatistiv@gmail.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 020/132] team: Move team device type change at the end of team_port_add
 Date: Wed,  3 Dec 2025 16:28:19 +0100
-Message-ID: <20251203152427.010247819@linuxfoundation.org>
+Message-ID: <20251203152344.046360337@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +62,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: Nikola Z. Ivanov <zlatistiv@gmail.com>
 
-commit 6d08340d1e354787d6c65a8c3cdd4d41ffb8a5ed upstream.
+[ Upstream commit 0ae9cfc454ea5ead5f3ddbdfe2e70270d8e2c8ef ]
 
-This reverts commit 83f44ae0f8afcc9da659799db8693f74847e66b3.
+Attempting to add a port device that is already up will expectedly fail,
+but not before modifying the team device header_ops.
 
-Currently we store initial stacktrace entry twice for non-HW ot_regs, which
-means callers that fail perf_hw_regs(regs) condition in perf_callchain_kernel.
+In the case of the syzbot reproducer the gre0 device is
+already in state UP when it attempts to add it as a
+port device of team0, this fails but before that
+header_ops->create of team0 is changed from eth_header to ipgre_header
+in the call to team_dev_type_check_change.
 
-It's easy to reproduce this bpftrace:
+Later when we end up in ipgre_header() struct ip_tunnel* points to nonsense
+as the private data of the device still holds a struct team.
 
-  # bpftrace -e 'tracepoint:sched:sched_process_exec { print(kstack()); }'
-  Attaching 1 probe...
+Example sequence of iproute2 commands to reproduce the hang/BUG():
+ip link add dev team0 type team
+ip link add dev gre0 type gre
+ip link set dev gre0 up
+ip link set dev gre0 master team0
+ip link set dev team0 up
+ping -I team0 1.1.1.1
 
-        bprm_execve+1767
-        bprm_execve+1767
-        do_execveat_common.isra.0+425
-        __x64_sys_execve+56
-        do_syscall_64+133
-        entry_SYSCALL_64_after_hwframe+118
+Move team_dev_type_check_change down where all other checks have passed
+as it changes the dev type with no way to restore it in case
+one of the checks that follow it fail.
 
-When perf_callchain_kernel calls unwind_start with first_frame, AFAICS
-we do not skip regs->ip, but it's added as part of the unwind process.
-Hence reverting the extra perf_callchain_store for non-hw regs leg.
+Also make sure to preserve the origial mtu assignment:
+  - If port_dev is not the same type as dev, dev takes mtu from port_dev
+  - If port_dev is the same type as dev, port_dev takes mtu from dev
 
-I was not able to bisect this, so I'm not really sure why this was needed
-in v5.2 and why it's not working anymore, but I could see double entries
-as far as v5.10.
+This is done by adding a conditional before the call to dev_set_mtu
+to prevent it from assigning port_dev->mtu = dev->mtu and instead
+letting team_dev_type_check_change assign dev->mtu = port_dev->mtu.
+The conditional is needed because the patch moves the call to
+team_dev_type_check_change past dev_set_mtu.
 
-I did the test for both ORC and framepointer unwind with and without the
-this fix and except for the initial entry the stacktraces are the same.
+Testing:
+  - team device driver in-tree selftests
+  - Add/remove various devices as slaves of team device
+  - syzbot
 
-Acked-by: Song Liu <song@kernel.org>
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/r/20251104215405.168643-2-jolsa@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+a2a3b519de727b0f7903@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=a2a3b519de727b0f7903
+Fixes: 1d76efe1577b ("team: add support for non-ethernet devices")
+Signed-off-by: Nikola Z. Ivanov <zlatistiv@gmail.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://patch.msgid.link/20251122002027.695151-1-zlatistiv@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/core.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/team/team_core.c | 23 +++++++++++++++--------
+ 1 file changed, 15 insertions(+), 8 deletions(-)
 
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -2772,13 +2772,13 @@ perf_callchain_kernel(struct perf_callch
- 		return;
+diff --git a/drivers/net/team/team_core.c b/drivers/net/team/team_core.c
+index 6cfafaac1b4fb..94c40c5cebdd6 100644
+--- a/drivers/net/team/team_core.c
++++ b/drivers/net/team/team_core.c
+@@ -1190,10 +1190,6 @@ static int team_port_add(struct team *team, struct net_device *port_dev,
+ 		return -EPERM;
  	}
  
--	if (perf_callchain_store(entry, regs->ip))
--		return;
+-	err = team_dev_type_check_change(dev, port_dev);
+-	if (err)
+-		return err;
 -
--	if (perf_hw_regs(regs))
-+	if (perf_hw_regs(regs)) {
-+		if (perf_callchain_store(entry, regs->ip))
-+			return;
- 		unwind_start(&state, current, regs, NULL);
--	else
-+	} else {
- 		unwind_start(&state, current, NULL, (void *)regs->sp);
-+	}
+ 	if (port_dev->flags & IFF_UP) {
+ 		NL_SET_ERR_MSG(extack, "Device is up. Set it down before adding it as a team port");
+ 		netdev_err(dev, "Device %s is up. Set it down before adding it as a team port\n",
+@@ -1211,10 +1207,16 @@ static int team_port_add(struct team *team, struct net_device *port_dev,
+ 	INIT_LIST_HEAD(&port->qom_list);
  
- 	for (; !unwind_done(&state); unwind_next_frame(&state)) {
- 		addr = unwind_get_return_address(&state);
+ 	port->orig.mtu = port_dev->mtu;
+-	err = dev_set_mtu(port_dev, dev->mtu);
+-	if (err) {
+-		netdev_dbg(dev, "Error %d calling dev_set_mtu\n", err);
+-		goto err_set_mtu;
++	/*
++	 * MTU assignment will be handled in team_dev_type_check_change
++	 * if dev and port_dev are of different types
++	 */
++	if (dev->type == port_dev->type) {
++		err = dev_set_mtu(port_dev, dev->mtu);
++		if (err) {
++			netdev_dbg(dev, "Error %d calling dev_set_mtu\n", err);
++			goto err_set_mtu;
++		}
+ 	}
+ 
+ 	memcpy(port->orig.dev_addr, port_dev->dev_addr, port_dev->addr_len);
+@@ -1289,6 +1291,10 @@ static int team_port_add(struct team *team, struct net_device *port_dev,
+ 		}
+ 	}
+ 
++	err = team_dev_type_check_change(dev, port_dev);
++	if (err)
++		goto err_set_dev_type;
++
+ 	if (dev->flags & IFF_UP) {
+ 		netif_addr_lock_bh(dev);
+ 		dev_uc_sync_multiple(port_dev, dev);
+@@ -1307,6 +1313,7 @@ static int team_port_add(struct team *team, struct net_device *port_dev,
+ 
+ 	return 0;
+ 
++err_set_dev_type:
+ err_set_slave_promisc:
+ 	__team_option_inst_del_port(team, port);
+ 
+-- 
+2.51.0
+
 
 
 
