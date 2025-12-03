@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3B73CA1438
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:07:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29A26CA0899
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:38:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E73BA3011FA3
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:44:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2389633D531E
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:18:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D48F032E752;
-	Wed,  3 Dec 2025 15:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A80BE35A942;
+	Wed,  3 Dec 2025 16:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dFIWvhuK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="te5K11Pq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FB0E32E733;
-	Wed,  3 Dec 2025 15:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6230E35B158;
+	Wed,  3 Dec 2025 16:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777058; cv=none; b=Z/i+yin8vuhFCJjY4OYjdx1NnfDjrqRlNZ2SkjfqSfJnHA8OHHTK0oEjmxCYuRpm74U1AYdrwNqZNzGxshiEyppmaL/2jmwE3yalZG7e/kv9I+UZc1hrQNeFAgiQyoQnmM5XXAla5Rdwz0eOPixJS3DUWOhPYsh+XwUnrTloEVo=
+	t=1764780067; cv=none; b=KrFLrKCTWOZkeI6Mljkd7CQMK9qlIZuF/0VEpaMqin0db5qzj2AY1ID4oX+baC+dGTb3Owb2QocpfpdJMDGtWK2a4m0NssFd9sF0/d6jyyFpMNN9xxMMjw/23M8u+mcHfQMm0CulUn8YlbyPtmt8V+YLXXlyukPc0mDs8/pdMtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777058; c=relaxed/simple;
-	bh=lMC84jf8NWiusOuDx0mJjTC7YuRdzXHI7kFoj7RUU4Q=;
+	s=arc-20240116; t=1764780067; c=relaxed/simple;
+	bh=JlRmjDYmg3tYgIi2Fsb+WPv6VLJtzZ7AZvfr3uSO+UY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DILdEKRY8C0uegvqpLTKhwmOtKx9Bx91+4RzR/WmH8iNw1Ap2RKz0yQ59L8uQpglvb2iLZaB1qWQ0TTC2SSxsibjQ/0+e3dTvS8qKdmZSu/RmKUfxJTNh26lAQ4scwcU3m/4U2WqJ5Vzqe0zWkZIOkKaulPZ/usTZCICLav+Pbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dFIWvhuK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFBF2C4CEF5;
-	Wed,  3 Dec 2025 15:50:57 +0000 (UTC)
+	 MIME-Version; b=iK3L4AJ2hAvsc7IMy4+AtM05ENcvqqVMPHQU5GXw3+zA0SPrJMahAfZLI6w6n5xvQX+7I3MVMHpuW8vYmut+iaOat875rCEDYZOj5HWfGLAEjjwiuKvK+KBU4R2NrSUtcZScgwqyPoGJGCYwXQoBEifyk6aBSzSOfEMF9UHOBH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=te5K11Pq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6DABC4CEF5;
+	Wed,  3 Dec 2025 16:41:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777058;
-	bh=lMC84jf8NWiusOuDx0mJjTC7YuRdzXHI7kFoj7RUU4Q=;
+	s=korg; t=1764780067;
+	bh=JlRmjDYmg3tYgIi2Fsb+WPv6VLJtzZ7AZvfr3uSO+UY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dFIWvhuKP0i7I0tQQbBRMS18fVz5nSKQ9TgdNJNArXOx5iTQS4cAmvgkO/78cjnjI
-	 NwlekLeZftka4XLAZqCFuWwCwuXaVBdmrnzCFiP/33qXNjSRYif5l8X6BvYRejeNBw
-	 PE/VYX8/dAs2LruCOlpRQ78qg+lWKvsq8eNrhFNs=
+	b=te5K11PqEGjq0qQQxxtnyc+3F/9aO4h9QaDCwnGutD8IhcIzOEhAFV4AN7BHuMXcl
+	 jpehUorpYclkhYhSBlUvPwQeBG+G4jDQNS4k/MjFgtbrdbWokNZcg7ZhLHIrPXrXHv
+	 W7Q47laG7068Xqnj1hb7GpH3Auw/diJoZv+pkvp0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.17 068/146] iio: adc: ad7380: fix SPI offload trigger rate
-Date: Wed,  3 Dec 2025 16:27:26 +0100
-Message-ID: <20251203152348.955655246@linuxfoundation.org>
+	Paolo Abeni <pabeni@redhat.com>,
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 445/568] mptcp: fix ack generation for fallback msk
+Date: Wed,  3 Dec 2025 16:27:27 +0100
+Message-ID: <20251203152456.999109733@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +61,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit 632757312d7eb320b66ca60e0cfe098ec53cee08 upstream.
+commit 5e15395f6d9ec07395866c5511f4b4ac566c0c9b upstream.
 
-Add a special case to double the SPI offload trigger rate when all
-channels of a single-ended chip are enabled in a buffered read.
+mptcp_cleanup_rbuf() needs to know the last most recent, mptcp-level
+rcv_wnd sent, and such information is tracked into the msk->old_wspace
+field, updated at ack transmission time by mptcp_write_options().
 
-The single-ended chips in the AD738x family can only do simultaneous
-sampling of half their channels and have a multiplexer to allow reading
-the other half. To comply with the IIO definition of sampling_frequency,
-we need to trigger twice as often when the sequencer is enabled to so
-that both banks can be read in a single sample period.
+Fallback socket do not add any mptcp options, such helper is never
+invoked, and msk->old_wspace value remain stale. That in turn makes
+ack generation at recvmsg() time quite random.
 
-Fixes: bbeaec81a03e ("iio: ad7380: add support for SPI offload")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Address the issue ensuring mptcp_write_options() is invoked even for
+fallback sockets, and just update the needed info in such a case.
+
+The issue went unnoticed for a long time, as mptcp currently overshots
+the fallback socket receive buffer autotune significantly. It is going
+to change in the near future.
+
+Fixes: e3859603ba13 ("mptcp: better msk receive window updates")
+Cc: stable@vger.kernel.org
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/594
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-1-806d3781c95f@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ad7380.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/mptcp/options.c |   23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/adc/ad7380.c
-+++ b/drivers/iio/adc/ad7380.c
-@@ -1227,6 +1227,14 @@ static int ad7380_offload_buffer_postena
- 	if (ret)
- 		return ret;
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -834,8 +834,11 @@ bool mptcp_established_options(struct so
  
-+	/*
-+	 * When the sequencer is required to read all channels, we need to
-+	 * trigger twice per sample period in order to read one complete set
-+	 * of samples.
+ 	opts->suboptions = 0;
+ 
++	/* Force later mptcp_write_options(), but do not use any actual
++	 * option space.
 +	 */
-+	if (st->seq)
-+		config.periodic.frequency_hz *= 2;
+ 	if (unlikely(__mptcp_check_fallback(msk) && !mptcp_check_infinite_map(skb)))
+-		return false;
++		return true;
+ 
+ 	if (unlikely(skb && TCP_SKB_CB(skb)->tcp_flags & TCPHDR_RST)) {
+ 		if (mptcp_established_options_fastclose(sk, &opt_size, remaining, opts) ||
+@@ -1296,6 +1299,20 @@ update_wspace:
+ 	WRITE_ONCE(msk->old_wspace, tp->rcv_wnd);
+ }
+ 
++static void mptcp_track_rwin(struct tcp_sock *tp)
++{
++	const struct sock *ssk = (const struct sock *)tp;
++	struct mptcp_subflow_context *subflow;
++	struct mptcp_sock *msk;
 +
- 	ret = spi_offload_trigger_enable(st->offload, st->offload_trigger, &config);
- 	if (ret)
- 		spi_unoptimize_message(&st->offload_msg);
++	if (!ssk)
++		return;
++
++	subflow = mptcp_subflow_ctx(ssk);
++	msk = mptcp_sk(subflow->conn);
++	WRITE_ONCE(msk->old_wspace, tp->rcv_wnd);
++}
++
+ __sum16 __mptcp_make_csum(u64 data_seq, u32 subflow_seq, u16 data_len, __wsum sum)
+ {
+ 	struct csum_pseudo_header header;
+@@ -1588,6 +1605,10 @@ mp_rst:
+ 				      opts->reset_transient,
+ 				      opts->reset_reason);
+ 		return;
++	} else if (unlikely(!opts->suboptions)) {
++		/* Fallback to TCP */
++		mptcp_track_rwin(tp);
++		return;
+ 	}
+ 
+ 	if (OPTION_MPTCP_PRIO & opts->suboptions) {
 
 
 
