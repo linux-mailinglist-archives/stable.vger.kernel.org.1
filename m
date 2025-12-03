@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-199178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C61E8C9FEE8
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:25:15 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21D43CA0709
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:28:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 72739300726D
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:22:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 17BE330071AC
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:28:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F3F335BDAC;
-	Wed,  3 Dec 2025 16:22:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7C13357A4C;
+	Wed,  3 Dec 2025 16:20:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0chUpKdn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I/NU9diy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D12F35BDB4;
-	Wed,  3 Dec 2025 16:22:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6ACB34DCE3;
+	Wed,  3 Dec 2025 16:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778946; cv=none; b=LjiYlDwI+pCg7iMnjxnSmzihsmYA2XHTFN1Z1kMwJwuXjnhFH35Gtc3goZ1RBOYEcF3ojRr97fxcgJ2bI7RLBXYnLiOu3w2ikFGOqCRxH8mL5vzz2VxV9x51358XdcAWPZDnNJLWaaQUnmxLg79KJLjHtCdz8aDrbN5BEq9hg7Y=
+	t=1764778835; cv=none; b=ULfuIwOa6DQO+8sctMooAYf3k9a60y5+WWGwG8yeq6pjLbcWeMp9KpGwBVij4BgBKIgrmec7U5MHekRJMKmX6WvxwbiJx5C3Lyz91pd7b+kCzgKgAegFmEVc1O0XmyJ+7JOVcob3aMAzrJDcfBRAasrlgm7DNwSuarSFqFaj3+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778946; c=relaxed/simple;
-	bh=r1s7vDZKIFkUtuLfuJ2JCs1TR9a9AJDPnUHrAA698TY=;
+	s=arc-20240116; t=1764778835; c=relaxed/simple;
+	bh=1k1UWBmJZ+ioqbwzYxifYEi2/VKtPB4sjXGKe7upQ3E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nE3aiDR+z3bZWb8mGZpWHuhGTf57ppb7QRzaQcIeSR66mSXReVuPymdaXo7Uy6RAWJhyAcb2HVhC1A05WITQ30q1MhYAP9g72CqoPbfIKQCghtc0UW1DAEA8MYnpCkqVeqs2lPP8NJfFK6vPOnONRnLd8nN51Q0x3VaamhtLspI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0chUpKdn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B795C4CEF5;
-	Wed,  3 Dec 2025 16:22:25 +0000 (UTC)
+	 MIME-Version; b=NKQtPA6KKhRPR0Y5KLqjg5BNi+TAOPsiF2YSZfoJsAgq7mfxipIWIWY3uzIG9LA6WJuN7QQ8pelkiUOlq+ODp6ScghJr5yOIJnJXgdryMRLmdK1+h9jkF1dYQ7XUAbmKBDsNi1AI9bCW5uA9NYuAJXgCYnwPkxjXPPhQC7mU/NU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I/NU9diy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22E20C4CEF5;
+	Wed,  3 Dec 2025 16:20:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778945;
-	bh=r1s7vDZKIFkUtuLfuJ2JCs1TR9a9AJDPnUHrAA698TY=;
+	s=korg; t=1764778835;
+	bh=1k1UWBmJZ+ioqbwzYxifYEi2/VKtPB4sjXGKe7upQ3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0chUpKdn9rX2V9IDErQYmX5E6oTTFu8BJTOYN+7FuUl24VIrsC2HuTeiawL2VVMwg
-	 OnuL8b5Sx02PeuOICkY5IsP8TL0HptU+uyJ9H4VXSoJyzAdhRTdwakE+yHHALVh553
-	 IZegHCnPV/QlXEVWXDC65LcnWD3BNcIVK2gy1rwA=
+	b=I/NU9diy/7BDrXu7rUeQhYIPB0Ar8gAkTB/KcVtQa4cmR5NjIsybnG6fxE6mmajzI
+	 3LaihOL4fdy4485AYvZUi+LIJlUK1Rf4Ht4vsWAWvQnQV5CUzHW/RsvmgDVU1QymXl
+	 RakgooeIWdL6qZFBl1VmwjlNrfXKvtYC6yCABpZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Pierre Gondois <pierre.gondois@arm.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sudeep Holla <sudeep.holla@arm.com>,
 	Wen Yang <wen.yang@linux.dev>
-Subject: [PATCH 6.1 066/568] cacheinfo: Return error code in init_of_cache_level()
-Date: Wed,  3 Dec 2025 16:21:08 +0100
-Message-ID: <20251203152443.122168701@linuxfoundation.org>
+Subject: [PATCH 6.1 067/568] cacheinfo: Check cache-unified property to count cache leaves
+Date: Wed,  3 Dec 2025 16:21:09 +0100
+Message-ID: <20251203152443.159096156@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
 References: <20251203152440.645416925@linuxfoundation.org>
@@ -67,53 +67,93 @@ Content-Transfer-Encoding: 8bit
 
 From: Pierre Gondois <pierre.gondois@arm.com>
 
-[ Upstream commit 8844c3df001bc1d8397fddea341308da63855d53 ]
+[ Upstream commit de0df442ee49cb1f6ee58f3fec5dcb5e5eb70aab ]
 
-Make init_of_cache_level() return an error code when the cache
-information parsing fails to help detecting missing information.
+The DeviceTree Specification v0.3 specifies that the cache node
+'[d-|i-|]cache-size' property is required. The 'cache-unified'
+property is specifies whether the cache level is separate
+or unified.
 
-init_of_cache_level() is only called for riscv. Returning an error
-code instead of 0 will prevent detect_cache_attributes() to allocate
-memory if an incomplete DT is parsed.
+If the cache-size property is missing, no cache leaves is accounted.
+This can lead to a 'BUG: KASAN: slab-out-of-bounds' [1] bug.
 
+Check 'cache-unified' property and always account for at least
+one cache leaf when parsing the device tree.
+
+[1] https://lore.kernel.org/all/0f19cb3f-d6cf-4032-66d2-dedc9d09a0e3@linaro.org/
+
+Reported-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
-Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
-Link: https://lore.kernel.org/r/20230104183033.755668-3-pierre.gondois@arm.com
+Tested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20230104183033.755668-4-pierre.gondois@arm.com
 Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Wen Yang <wen.yang@linux.dev>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/cacheinfo.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/base/cacheinfo.c |   37 ++++++++++++++++++++++++++-----------
+ 1 file changed, 26 insertions(+), 11 deletions(-)
 
 --- a/drivers/base/cacheinfo.c
 +++ b/drivers/base/cacheinfo.c
-@@ -245,11 +245,11 @@ int init_of_cache_level(unsigned int cpu
- 		of_node_put(prev);
- 		prev = np;
- 		if (!of_device_is_compatible(np, "cache"))
--			break;
-+			goto err_out;
- 		if (of_property_read_u32(np, "cache-level", &level))
--			break;
-+			goto err_out;
- 		if (level <= levels)
--			break;
-+			goto err_out;
- 		if (of_property_read_bool(np, "cache-size"))
- 			++leaves;
- 		if (of_property_read_bool(np, "i-cache-size"))
-@@ -264,6 +264,10 @@ int init_of_cache_level(unsigned int cpu
- 	this_cpu_ci->num_leaves = leaves;
- 
+@@ -224,12 +224,9 @@ static int cache_setup_of_node(unsigned
  	return 0;
-+
-+err_out:
-+	of_node_put(np);
-+	return -EINVAL;
  }
  
- #else
+-int init_of_cache_level(unsigned int cpu)
++static int of_count_cache_leaves(struct device_node *np)
+ {
+-	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
+-	struct device_node *np = of_cpu_device_node_get(cpu);
+-	struct device_node *prev = NULL;
+-	unsigned int levels = 0, leaves = 0, level;
++	unsigned int leaves = 0;
+ 
+ 	if (of_property_read_bool(np, "cache-size"))
+ 		++leaves;
+@@ -237,6 +234,28 @@ int init_of_cache_level(unsigned int cpu
+ 		++leaves;
+ 	if (of_property_read_bool(np, "d-cache-size"))
+ 		++leaves;
++
++	if (!leaves) {
++		/* The '[i-|d-|]cache-size' property is required, but
++		 * if absent, fallback on the 'cache-unified' property.
++		 */
++		if (of_property_read_bool(np, "cache-unified"))
++			return 1;
++		else
++			return 2;
++	}
++
++	return leaves;
++}
++
++int init_of_cache_level(unsigned int cpu)
++{
++	struct cpu_cacheinfo *this_cpu_ci = get_cpu_cacheinfo(cpu);
++	struct device_node *np = of_cpu_device_node_get(cpu);
++	struct device_node *prev = NULL;
++	unsigned int levels = 0, leaves, level;
++
++	leaves = of_count_cache_leaves(np);
+ 	if (leaves > 0)
+ 		levels = 1;
+ 
+@@ -250,12 +269,8 @@ int init_of_cache_level(unsigned int cpu
+ 			goto err_out;
+ 		if (level <= levels)
+ 			goto err_out;
+-		if (of_property_read_bool(np, "cache-size"))
+-			++leaves;
+-		if (of_property_read_bool(np, "i-cache-size"))
+-			++leaves;
+-		if (of_property_read_bool(np, "d-cache-size"))
+-			++leaves;
++
++		leaves += of_count_cache_leaves(np);
+ 		levels = level;
+ 	}
+ 
 
 
 
