@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D69E9CA0B41
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:58:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8759CA17B9
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:53:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CDABA3003100
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:58:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4823C305DCD8
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:48:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A05832F760;
-	Wed,  3 Dec 2025 15:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A19FD34404F;
+	Wed,  3 Dec 2025 16:29:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c4BFJXqJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aq/YQMem"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B930E32F748;
-	Wed,  3 Dec 2025 15:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D66934405F;
+	Wed,  3 Dec 2025 16:29:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777580; cv=none; b=hzEQ9XFOLINc4fVLaxWLhw7FmDspVIEaMJIIrpNbgAN7qO76msFwN+qyO4c58wfiP8GumqG6CrBuo0irVHsR/gA5QDJ0yuvKm9is7Blbz0FBgBYrcPOHTpVELEK5Eqz4wgrdv/QB+zwS39JXRNfFklTQj6D2fh3VigW5knauQWc=
+	t=1764779346; cv=none; b=PpPurMGCmJpmxQRlTGcCJJBCEoq6RvXLZHTkohkdHRP4278ZZWHpVbih8+zAXvYHc7KUmxuoStAqNFQ7Td/DbjafFrJXsy7HGIcUbz0/UitXD1fD/Pyop15dHEAIYK3jb6jWtbejfLO83BWKMbAzgakPzhespV9YiSJhGZ5YhPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777580; c=relaxed/simple;
-	bh=keRsridbH4HD8tga/Vfz95KEV5s9AHdvbrtp/VfldUI=;
+	s=arc-20240116; t=1764779346; c=relaxed/simple;
+	bh=XAtPWJ5zxCzbZrk2k/I5B0k4BgwnyR8/3ADE8AP7tnk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LO1SPt/vL13MzqfND19EUfPotemUGg0AxdNVbEp3US82CSdq2OTN/TpaTz4XVi/VB67APGRGd/e6FemzhgFnxIXFjeAnb+gROo3feOthNcA5K4p1HHAg43hjJ2FatXvTHBzHQ3W0xqlW60LppxsRL8hiUtl7hUqDnNk6jA/K1fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c4BFJXqJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CD12C4CEF5;
-	Wed,  3 Dec 2025 15:59:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=q3UJmaA+gEIj3kjo6qk3gosz3VdjmxuwXOeoVZ4sBk7Z9crMCURbWJy1uOcW2a+tjxN1FnTZvZRDLhuRIDt6ECb6f52ViwbCqc+YSfsBym1dj8AeIkEmXr8OK31uya8O+JiIrJqE3PLM6QRn98nlw3D+5SRUZ8xl5lx/RVQf5lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aq/YQMem; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61CB7C116C6;
+	Wed,  3 Dec 2025 16:29:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777580;
-	bh=keRsridbH4HD8tga/Vfz95KEV5s9AHdvbrtp/VfldUI=;
+	s=korg; t=1764779345;
+	bh=XAtPWJ5zxCzbZrk2k/I5B0k4BgwnyR8/3ADE8AP7tnk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c4BFJXqJNNIoZ13xgWSxER/4NTYQAPjRQEu/dQG12SFSQTSK1QVMcA8zwup5RiSZ6
-	 5BDHEi35Faa1eiRlpgopo3cegn2cw5BVOg2bK/Y3FkXqr2GutFmefGUWMxEpkP8bLZ
-	 Gy8x7YP3PXqaurs4YhBnsmCkJHdFC7wNx5a7RMdI=
+	b=Aq/YQMem1Kr3oF7s8KtRlBgYDlogd703C+E8//4caUtCiFtkPKbGe4I814KLXzGtA
+	 BVDmW/2iZy6NiAcc8B7Dbbo8FJ4tGmb5I9q8P9xO9qjqfm7YfbUFUC0HZF5g6MEAFK
+	 iDDqUyMonAOeaQLY3mUOiEzVc2CSpH3eG2rVC0eo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 082/392] tools/cpupower: Fix incorrect size in cpuidle_state_disable()
+Subject: [PATCH 6.1 230/568] drm/amdgpu: reject gang submissions under SRIOV
 Date: Wed,  3 Dec 2025 16:23:52 +0100
-Message-ID: <20251203152417.121735620@linuxfoundation.org>
+Message-ID: <20251203152449.145568009@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,64 +58,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+From: Christian König <christian.koenig@amd.com>
 
-[ Upstream commit 23199d2aa6dcaf6dd2da772f93d2c94317d71459 ]
+[ Upstream commit d7ddcf921e7d0d8ebe82e89635bc9dc26ba9540d ]
 
-Fix incorrect size parameter passed to cpuidle_state_write_file() in
-cpuidle_state_disable().
+Gang submission means that the kernel driver guarantees that multiple
+submissions are executed on the HW at the same time on different engines.
 
-The function was incorrectly using sizeof(disable) which returns the
-size of the unsigned int variable (4 bytes) instead of the actual
-length of the string stored in the 'value' buffer.
+Background is that those submissions then depend on each other and each
+can't finish stand alone.
 
-Since 'value' is populated with snprintf() to contain the string
-representation of the disable value, we should use the length
-returned by snprintf() to get the correct string length for
-writing to the sysfs file.
+SRIOV now uses world switch to preempt submissions on the engines to allow
+sharing the HW resources between multiple VFs.
 
-This ensures the correct number of bytes is written to the cpuidle
-state disable file in sysfs.
+The problem is now that the SRIOV world switch can't know about such inter
+dependencies and will cause a timeout if it waits for a partially running
+gang submission.
 
-Link: https://lore.kernel.org/r/20250917050820.1785377-1-kaushlendra.kumar@intel.com
-Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+To conclude SRIOV and gang submissions are fundamentally incompatible at
+the moment. For now just disable them.
+
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/cpupower/lib/cpuidle.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/power/cpupower/lib/cpuidle.c b/tools/power/cpupower/lib/cpuidle.c
-index 479c5971aa6da..c15d0de12357f 100644
---- a/tools/power/cpupower/lib/cpuidle.c
-+++ b/tools/power/cpupower/lib/cpuidle.c
-@@ -231,6 +231,7 @@ int cpuidle_state_disable(unsigned int cpu,
- {
- 	char value[SYSFS_PATH_MAX];
- 	int bytes_written;
-+	int len;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+index e0cd6a08ffb27..9ff6a9255c1b1 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+@@ -279,7 +279,7 @@ static int amdgpu_cs_pass1(struct amdgpu_cs_parser *p,
+ 		}
+ 	}
  
- 	if (cpuidle_state_count(cpu) <= idlestate)
- 		return -1;
-@@ -239,10 +240,10 @@ int cpuidle_state_disable(unsigned int cpu,
- 				 idlestate_value_files[IDLESTATE_DISABLE]))
- 		return -2;
- 
--	snprintf(value, SYSFS_PATH_MAX, "%u", disable);
-+	len = snprintf(value, SYSFS_PATH_MAX, "%u", disable);
- 
- 	bytes_written = cpuidle_state_write_file(cpu, idlestate, "disable",
--						   value, sizeof(disable));
-+						   value, len);
- 	if (bytes_written)
- 		return 0;
- 	return -3;
+-	if (!p->gang_size) {
++	if (!p->gang_size || (amdgpu_sriov_vf(p->adev) && p->gang_size > 1)) {
+ 		ret = -EINVAL;
+ 		goto free_all_kdata;
+ 	}
 -- 
 2.51.0
 
