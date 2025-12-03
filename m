@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-198921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D95EC9FD31
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:08:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB645CA0304
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:54:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DABD130017FF
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:08:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AB1743062E20
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:48:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E975A34FF48;
-	Wed,  3 Dec 2025 16:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C84B8343D69;
+	Wed,  3 Dec 2025 16:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KwKh4VFi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p96F2Kgk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C3932E13E;
-	Wed,  3 Dec 2025 16:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70143340281;
+	Wed,  3 Dec 2025 16:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778107; cv=none; b=ColURRr5dNqtOcQy2751a0iy6Ib8Al8PzVnZHOy5WKQ/X8Zf5n2SzSEzu3TFC+QdsCWGh5EWnw9c2jwKjNy283vjPj5fPkVW6V3TmF3fMIyEbWnGwXZtOXivXhmgZ9tP90M1FCAyEWVAZfPu2m9iXt6OEAPY+xFwzu0aDHfFzzs=
+	t=1764780013; cv=none; b=olFheqt6Fnn1NVaka4+dHY6Rnwj4pkdfu3DZAyg1OIpiu59pQQfkFEHZF4xiML/LcxrO1KPovjOMHJyxlAVLu+Jo3O7UviBaxQPIMfMF/ZGuExuSTAV5i7UxbhpA+NhcftiJ21YnaCdb5C36+xxOyKdKq+4hwvjKoZA0COROyto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778107; c=relaxed/simple;
-	bh=li206/yMDeslhq1JN7apptddKVWcrx4+brpMnV4EWFI=;
+	s=arc-20240116; t=1764780013; c=relaxed/simple;
+	bh=PwNLt8EYJKSj3Ph+Fqx4IyEJCC1KD7Pk7H94ytI+Q3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eD9xAcpPCWthk/aFubTcrs5MTisQ8e0KjeKKDxQNIRhegnA/QJVoeG3cuGUQM3faV14JjKmAb/4qIBrJARUWsXBDiBJ/XeH9V62vR4VrbmMG/podZ6DetKlqZ+UVcNK98AONJGZTc8VTaPQph1jnfpNsFCtO4L5nBHYGxrXQZyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KwKh4VFi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B3B3C4CEF5;
-	Wed,  3 Dec 2025 16:08:26 +0000 (UTC)
+	 MIME-Version; b=uY/3e/6Ifp3RCW3axIL1kYParxpSiK8fO0eRcYtkE8pEN4Wiydh7nH9p+FVhkkAZltdy0ibx4bmk50/y1r27yn4KmyXmcTpPkaSqXu5DjMxWfzV7UX5Dvpx6fDu1YJzwwmyZ9tIoq32J7i+zVSnbynIYKznt/IytG7dxgWE9bM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p96F2Kgk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF492C4CEF5;
+	Wed,  3 Dec 2025 16:40:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778107;
-	bh=li206/yMDeslhq1JN7apptddKVWcrx4+brpMnV4EWFI=;
+	s=korg; t=1764780013;
+	bh=PwNLt8EYJKSj3Ph+Fqx4IyEJCC1KD7Pk7H94ytI+Q3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KwKh4VFip/BRife4xRLcuT/IunJBtE+hCk5ixFaWt2i4srebHYtc+qePA6f2Dj5B2
-	 xMkooQoYnBOYaVtoiC8gIzr8OfKRcBCmlx3v/rHi9CVcN5m2xVqATruP+Em9b0kCpX
-	 75VC9k+SMjeoOksk9gR5f3I0SMTNt9WTnRkzv3S8=
+	b=p96F2KgkC1itq/ZYkCGrkW+ayDoIZcLsyeN/xsewJIhamop8FP26jusBt3wYgCxoX
+	 5uIlgK8D4gY5DrtBnh7Zyseiie71lslEvuCF/UBrl0DliyJycirotyjaYOeqf2SFzP
+	 BKJBNrntUNwrjpTcvgIBKpThKfkwLH7CSggy2aFY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+2fc81b50a4f8263a159b@syzkaller.appspotmail.com,
-	Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Haein Lee <lhi0729@kaist.ac.kr>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 238/392] Bluetooth: btusb: reorder cleanup in btusb_disconnect to avoid UAF
+Subject: [PATCH 6.1 386/568] ALSA: usb-audio: Fix NULL pointer dereference in snd_usb_mixer_controls_badd
 Date: Wed,  3 Dec 2025 16:26:28 +0100
-Message-ID: <20251203152422.934561813@linuxfoundation.org>
+Message-ID: <20251203152454.831404407@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +60,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
+From: Haein Lee <lhi0729@kaist.ac.kr>
 
-[ Upstream commit 23d22f2f71768034d6ef86168213843fc49bf550 ]
+[ Upstream commit 632108ec072ad64c8c83db6e16a7efee29ebfb74 ]
 
-There is a KASAN: slab-use-after-free read in btusb_disconnect().
-Calling "usb_driver_release_interface(&btusb_driver, data->intf)" will
-free the btusb data associated with the interface. The same data is
-then used later in the function, hence the UAF.
+In snd_usb_create_streams(), for UAC version 3 devices, the Interface
+Association Descriptor (IAD) is retrieved via usb_ifnum_to_if(). If this
+call fails, a fallback routine attempts to obtain the IAD from the next
+interface and sets a BADD profile. However, snd_usb_mixer_controls_badd()
+assumes that the IAD retrieved from usb_ifnum_to_if() is always valid,
+without performing a NULL check. This can lead to a NULL pointer
+dereference when usb_ifnum_to_if() fails to find the interface descriptor.
 
-Fix by moving the accesses to btusb data to before the data is free'd.
+This patch adds a NULL pointer check after calling usb_ifnum_to_if() in
+snd_usb_mixer_controls_badd() to prevent the dereference.
 
-Reported-by: syzbot+2fc81b50a4f8263a159b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=2fc81b50a4f8263a159b
-Tested-by: syzbot+2fc81b50a4f8263a159b@syzkaller.appspotmail.com
-Fixes: fd913ef7ce619 ("Bluetooth: btusb: Add out-of-band wakeup support")
-Signed-off-by: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+This issue was discovered by syzkaller, which triggered the bug by sending
+a crafted USB device descriptor.
+
+Fixes: 17156f23e93c ("ALSA: usb: add UAC3 BADD profiles support")
+Signed-off-by: Haein Lee <lhi0729@kaist.ac.kr>
+Link: https://patch.msgid.link/vwhzmoba9j2f.vwhzmob9u9e2.g6@dooray.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ sound/usb/mixer.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 4a5b937f78d91..c8c638aa47262 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -4126,6 +4126,11 @@ static void btusb_disconnect(struct usb_interface *intf)
+diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
+index d258c7324fcc7..9b34004e67131 100644
+--- a/sound/usb/mixer.c
++++ b/sound/usb/mixer.c
+@@ -3081,6 +3081,8 @@ static int snd_usb_mixer_controls_badd(struct usb_mixer_interface *mixer,
+ 	int i;
  
- 	hci_unregister_dev(hdev);
+ 	assoc = usb_ifnum_to_if(dev, ctrlif)->intf_assoc;
++	if (!assoc)
++		return -EINVAL;
  
-+	if (data->oob_wake_irq)
-+		device_init_wakeup(&data->udev->dev, false);
-+	if (data->reset_gpio)
-+		gpiod_put(data->reset_gpio);
-+
- 	if (intf == data->intf) {
- 		if (data->isoc)
- 			usb_driver_release_interface(&btusb_driver, data->isoc);
-@@ -4136,17 +4141,11 @@ static void btusb_disconnect(struct usb_interface *intf)
- 			usb_driver_release_interface(&btusb_driver, data->diag);
- 		usb_driver_release_interface(&btusb_driver, data->intf);
- 	} else if (intf == data->diag) {
--		usb_driver_release_interface(&btusb_driver, data->intf);
- 		if (data->isoc)
- 			usb_driver_release_interface(&btusb_driver, data->isoc);
-+		usb_driver_release_interface(&btusb_driver, data->intf);
- 	}
- 
--	if (data->oob_wake_irq)
--		device_init_wakeup(&data->udev->dev, false);
--
--	if (data->reset_gpio)
--		gpiod_put(data->reset_gpio);
--
- 	hci_free_dev(hdev);
- }
- 
+ 	/* Detect BADD capture/playback channels from AS EP descriptors */
+ 	for (i = 0; i < assoc->bInterfaceCount; i++) {
 -- 
 2.51.0
 
