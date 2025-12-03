@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-199497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B79FCA0C4F
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:07:50 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05F21CA0949
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:43:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E10DC3007C67
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:03:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 115FE30019C8
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:43:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DE0031987E;
-	Wed,  3 Dec 2025 16:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 590B7328B7E;
+	Wed,  3 Dec 2025 16:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yXUB5kp6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wOEaRKkn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10830305E05;
-	Wed,  3 Dec 2025 16:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1406332AAB7;
+	Wed,  3 Dec 2025 16:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779993; cv=none; b=BD0mET4AGG7/I2uMigH//GDFzBWb1DKVeYZqpAgq1d4kPu6tn2/j1YrRyLa6+3mGMDrqjshn3BtEEqOUYwmUM0NFV4c82CVf50HXso6fKj7V/JrHnCyfGlcfPPVeF0uvAk+bB9SoSOHKDvMwetSzBC2uqxNW/D3y5+869ZrYQCE=
+	t=1764778209; cv=none; b=GzywS1RoqbEk5/h45S3GJ8SH7LGd/NWaR4xfcbif/AV6zkGVuskP+u7ayxUeI0pUsko3cqi/p/Gkz57T4/CK/Yse5XjXqw8vIvhJKP97Sh4bJoAn0U24QSEgelcFiRZxr0fEWRYjbEUH7WlPuXhmzBVw+pqaOvAJNEmbfQqe2S0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779993; c=relaxed/simple;
-	bh=dQ73bm1OBx4QuEoCQqQvnrShB32S4Jv9HN8hRWVvsZk=;
+	s=arc-20240116; t=1764778209; c=relaxed/simple;
+	bh=Q6a4IL5e19d3UMPPnUMS+WurZb0GJqEOmexKATmppFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KBHZBbahSOgwebkYgQ0LK5E629z0+1oB17/BcvJeQkN+f5K2RirQdH334ASSP24gpIBNynqecTGCgrLa0Vfmi5BVDaiqWH7Vlobl4/LevAADpdAEzHEjhPibWOU1wTZQTgBw3xzY/4SuZiUCpx7EgRlyTb6PleCUpPhe+HOViKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yXUB5kp6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73DB6C4CEF5;
-	Wed,  3 Dec 2025 16:39:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MAhKqhODXxwpH+8pnd+oz/8BO2lneIQxc7nKECX5yhqpqEhU1FSEYFUARQTjcN0QaQp0oS3POUBJZ6MOJa4RtF292y8xwyvdSatjQpfqTdaHu2kfPcQ/BI54oxDN6Deohe4eqx6E7IDYXs7P2W0+ONEFGAaqGwZYFbUsF5a0EzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wOEaRKkn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89226C4CEF5;
+	Wed,  3 Dec 2025 16:10:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779992;
-	bh=dQ73bm1OBx4QuEoCQqQvnrShB32S4Jv9HN8hRWVvsZk=;
+	s=korg; t=1764778208;
+	bh=Q6a4IL5e19d3UMPPnUMS+WurZb0GJqEOmexKATmppFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yXUB5kp6jyugxrAGqx46r+O+9S9Kxt/qwN4lJXQ48aZ5ZB+awTW9BgWOuye0WZNQ1
-	 c/D3LsRXibUCIdu9a5UjRYqyd2qYnWLmO8oaiCyvYOV2Cw+dv8ImQHUDgpPXMrUEYW
-	 8hy2FKt8aMQVjeZGP6xbZMBvpYGmrULogwcMEBJo=
+	b=wOEaRKkn+dDioLhZtN27uZjVzwdUIXaLq8NqM1o0GFnbBzSuBV1kTX9SHqRj092Ej
+	 lF8AFVTUZ2HGV29oWXl65XJgHIo4VNt1YIZ/FU+QWlcg+F4Us2S4yXpKu5N6XIP9k7
+	 HJjW56o1TE8CaQ5TUyrvyPhTiT5kuX4MOgCi+qjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Simon Horman <horms@kernel.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Ruohan Lan <ruohanlan@aliyun.com>,
+	"D. Wythe" <alibuda@linux.alibaba.com>,
+	Alexandra Winter <wintera@linux.ibm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 390/568] espintcp: fix skb leaks
-Date: Wed,  3 Dec 2025 16:26:32 +0100
-Message-ID: <20251203152454.975761704@linuxfoundation.org>
+Subject: [PATCH 5.15 243/392] net/smc: fix mismatch between CLC header and proposal
+Date: Wed,  3 Dec 2025 16:26:33 +0100
+Message-ID: <20251203152423.116878043@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,79 +59,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: D. Wythe <alibuda@linux.alibaba.com>
 
-[ Upstream commit 63c1f19a3be3169e51a5812d22a6d0c879414076 ]
+[ Upstream commit ec33f2e5a2d0dbbfd71435209aee812fdc9369b8 ]
 
-A few error paths are missing a kfree_skb.
+The current CLC proposal message construction uses a mix of
+`ini->smc_type_v1/v2` and `pclc_base->hdr.typev1/v2` to decide whether
+to include optional extensions (IPv6 prefix extension for v1, and v2
+extension). This leads to a critical inconsistency: when
+`smc_clc_prfx_set()` fails - for example, in IPv6-only environments with
+only link-local addresses, or when the local IP address and the outgoing
+interface’s network address are not in the same subnet.
 
-Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-[ Minor context change fixed. ]
-Signed-off-by: Ruohan Lan <ruohanlan@aliyun.com>
+As a result, the proposal message is assembled using the stale
+`ini->smc_type_v1` value—causing the IPv6 prefix extension to be
+included even though the header indicates v1 is not supported.
+The peer then receives a malformed CLC proposal where the header type
+does not match the payload, and immediately resets the connection.
+
+The fix ensures consistency between the CLC header flags and the actual
+payload by synchronizing `ini->smc_type_v1` with `pclc_base->hdr.typev1`
+when prefix setup fails.
+
+Fixes: 8c3dca341aea ("net/smc: build and send V2 CLC proposal")
+Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
+Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
+Link: https://patch.msgid.link/20251107024029.88753-1-alibuda@linux.alibaba.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/esp4.c     | 4 +++-
- net/ipv6/esp6.c     | 4 +++-
- net/xfrm/espintcp.c | 4 +++-
- 3 files changed, 9 insertions(+), 3 deletions(-)
+ net/smc/smc_clc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
-index 8f5417ff355d7..a40f78a6474c6 100644
---- a/net/ipv4/esp4.c
-+++ b/net/ipv4/esp4.c
-@@ -152,8 +152,10 @@ static int esp_output_tcp_finish(struct xfrm_state *x, struct sk_buff *skb)
- 
- 	sk = esp_find_tcp_sk(x);
- 	err = PTR_ERR_OR_ZERO(sk);
--	if (err)
-+	if (err) {
-+		kfree_skb(skb);
- 		goto out;
-+	}
- 
- 	bh_lock_sock(sk);
- 	if (sock_owned_by_user(sk))
-diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
-index 085a83b807afd..48963fc9057bc 100644
---- a/net/ipv6/esp6.c
-+++ b/net/ipv6/esp6.c
-@@ -169,8 +169,10 @@ static int esp_output_tcp_finish(struct xfrm_state *x, struct sk_buff *skb)
- 
- 	sk = esp6_find_tcp_sk(x);
- 	err = PTR_ERR_OR_ZERO(sk);
--	if (err)
-+	if (err) {
-+		kfree_skb(skb);
- 		goto out;
-+	}
- 
- 	bh_lock_sock(sk);
- 	if (sock_owned_by_user(sk))
-diff --git a/net/xfrm/espintcp.c b/net/xfrm/espintcp.c
-index d6fece1ed982d..b26fbaead7a55 100644
---- a/net/xfrm/espintcp.c
-+++ b/net/xfrm/espintcp.c
-@@ -168,8 +168,10 @@ int espintcp_queue_out(struct sock *sk, struct sk_buff *skb)
- {
- 	struct espintcp_ctx *ctx = espintcp_getctx(sk);
- 
--	if (skb_queue_len(&ctx->out_queue) >= READ_ONCE(netdev_max_backlog))
-+	if (skb_queue_len(&ctx->out_queue) >= READ_ONCE(netdev_max_backlog)) {
-+		kfree_skb(skb);
- 		return -ENOBUFS;
-+	}
- 
- 	__skb_queue_tail(&ctx->out_queue, skb);
- 
+diff --git a/net/smc/smc_clc.c b/net/smc/smc_clc.c
+index 52a0ba939c91c..ec8c4cfdb1471 100644
+--- a/net/smc/smc_clc.c
++++ b/net/smc/smc_clc.c
+@@ -529,6 +529,7 @@ int smc_clc_send_proposal(struct smc_sock *smc, struct smc_init_info *ini)
+ 				return SMC_CLC_DECL_CNFERR;
+ 			}
+ 			pclc_base->hdr.typev1 = SMC_TYPE_N;
++			ini->smc_type_v1 = SMC_TYPE_N;
+ 		} else {
+ 			pclc_base->iparea_offset = htons(sizeof(*pclc_smcd));
+ 			plen += sizeof(*pclc_prfx) +
 -- 
 2.51.0
 
