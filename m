@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-198964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFB92CA0A33
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:48:50 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 010ADCA09AC
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:45:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C1C863001BDA
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:48:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6E65B3001821
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:45:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26A0432ED5B;
-	Wed,  3 Dec 2025 16:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8187D32E68B;
+	Wed,  3 Dec 2025 15:50:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DpPS3xFK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LXOTUszV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D647A32F74D;
-	Wed,  3 Dec 2025 16:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CC2932E13D;
+	Wed,  3 Dec 2025 15:50:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778248; cv=none; b=TtPFl/GRFaT3bjAn6kWJn91XHpS+46oMBu8G1nNxbaw2gizte7851HXiOIwl70OF26EE/k6z9Z7gr8+0T8I0s2O1EiUnpzDSRiTfRTJdrmtKWKWvoqszZH63kRbdIeha2UxHq6+cpLWT6STVfCcL2SEwxh+Mu+DXTz+ZucgZeSc=
+	t=1764777036; cv=none; b=UtSi4WF6NapK0R/J1UcR2ZXRES2wHEEKy3PtU6CjlzXEgerUM/xT3pKzCSa67r08Sa5x/fRu7wRxQvivcFdF/60fK1m/U2yDubDlvu6X/FYDmn23yvWpJAeBfoOX7J/E3RWMDT6GZP0uVivvcTz1AFIVVamRtnjbx3JSgSfW69M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778248; c=relaxed/simple;
-	bh=lS6NEzby+2hMtkJjnNe5knR2afByblWtNMA2fF5DSjs=;
+	s=arc-20240116; t=1764777036; c=relaxed/simple;
+	bh=RJ1Vtdq1wRQLbbth7r0mewb2wNGIkF0qA7yoJF8Xwdc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OxDbiHsuMmQA9mFAVIGhojqvT6TbRQNpULZe9e0LDXtCVp/+3hPT1gScRxbtL5e1CpR1/HaXp/IhzJnjY6HaNl9ihPCNah6wsZxQL4GBEazGIrvolP7ttbgwPLUsbU6b41pBg97kZBKgYdENwGd2YNgP3pNgZUsKp2nX7gpeMxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DpPS3xFK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4652AC4CEF5;
-	Wed,  3 Dec 2025 16:10:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=frPJEtTJDJOCIB4Owpf8KqcL69QuG3CHbDaA1TImE9rucAXchd95hi4/aDm0UJOUDbVKAxxZPQ1FW56ZRhwakdNQ2b4+g3KiCMp1/hIBGVfU0rH+cAYez8Onwp3bJps2w2dyzu63NheEgqAaxw2FjnkcbIWeT6iGB3nKYJB0pwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LXOTUszV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3826C4CEF5;
+	Wed,  3 Dec 2025 15:50:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778248;
-	bh=lS6NEzby+2hMtkJjnNe5knR2afByblWtNMA2fF5DSjs=;
+	s=korg; t=1764777036;
+	bh=RJ1Vtdq1wRQLbbth7r0mewb2wNGIkF0qA7yoJF8Xwdc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DpPS3xFKdYhB3q3PZ3dYY1csRNrMKpfjG4K+MkoUoxK08EATqY+m8+njfI+iEwEVW
-	 dZIf1cYY/763KzpSo1PpylYD3Dc2cybmwcfuzrVfmLCitnvqcNY5upsE4QQnt5V4XX
-	 VqcRwavbnVp5GomdAXbtEkSTQqvTcSxciJigCdLE=
+	b=LXOTUszVwwciptIR9yN9GL0C8hVKkREH/cNuwECTtR6eDwZbKahlD6kwPQXstHaE2
+	 cVXwexXyCKmazm4bfn96CW6EZq/R1G4/poTBJGDTRSN7omlDTdyltyNFZ7ULy4JGuX
+	 p98FtTpezqstyR7UWtG/tki7KFUu7yNhbZ2nCH0Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c01f8e6e73f20459912e@syzkaller.appspotmail.com,
-	Hannes Reinecke <hare@suse.de>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.15 289/392] scsi: sg: Do not sleep in atomic context
-Date: Wed,  3 Dec 2025 16:27:19 +0100
-Message-ID: <20251203152424.792649984@linuxfoundation.org>
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.17 062/146] iio: adc: stm32-dfsdm: fix st,adc-alt-channel property handling
+Date: Wed,  3 Dec 2025 16:27:20 +0100
+Message-ID: <20251203152348.736957192@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,54 +59,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Olivier Moysan <olivier.moysan@foss.st.com>
 
-commit 90449f2d1e1f020835cba5417234636937dd657e upstream.
+commit 8a6b7989ff0cd0a95c93be1927f2af7ad10f28de upstream.
 
-sg_finish_rem_req() calls blk_rq_unmap_user(). The latter function may
-sleep. Hence, call sg_finish_rem_req() with interrupts enabled instead
-of disabled.
+Initially st,adc-alt-channel property was defined as an enum in the DFSDM
+binding. The DFSDM binding has been changed to use the new IIO backend
+framework, along with the adoption of IIO generic channels.
+In this new binding st,adc-alt-channel is defined as a boolean property,
+but it is still handled has an enum in DFSDM driver.
+Fix st,adc-alt-channel property handling in DFSDM driver.
 
-Reported-by: syzbot+c01f8e6e73f20459912e@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-scsi/691560c4.a70a0220.3124cb.001a.GAE@google.com/
-Cc: Hannes Reinecke <hare@suse.de>
-Cc: stable@vger.kernel.org
-Fixes: 97d27b0dd015 ("scsi: sg: close race condition in sg_remove_sfp_usercontext()")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20251113181643.1108973-1-bvanassche@acm.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 3208fa0cd919 ("iio: adc: stm32-dfsdm: adopt generic channels bindings")
+Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/sg.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/iio/adc/stm32-dfsdm-adc.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/scsi/sg.c
-+++ b/drivers/scsi/sg.c
-@@ -2198,9 +2198,17 @@ sg_remove_sfp_usercontext(struct work_st
- 	write_lock_irqsave(&sfp->rq_list_lock, iflags);
- 	while (!list_empty(&sfp->rq_list)) {
- 		srp = list_first_entry(&sfp->rq_list, Sg_request, entry);
--		sg_finish_rem_req(srp);
- 		list_del(&srp->entry);
-+		write_unlock_irqrestore(&sfp->rq_list_lock, iflags);
-+
-+		sg_finish_rem_req(srp);
-+		/*
-+		 * sg_rq_end_io() uses srp->parentfp. Hence, only clear
-+		 * srp->parentfp after blk_mq_free_request() has been called.
-+		 */
- 		srp->parentfp = NULL;
-+
-+		write_lock_irqsave(&sfp->rq_list_lock, iflags);
+--- a/drivers/iio/adc/stm32-dfsdm-adc.c
++++ b/drivers/iio/adc/stm32-dfsdm-adc.c
+@@ -725,9 +725,8 @@ static int stm32_dfsdm_generic_channel_p
  	}
- 	write_unlock_irqrestore(&sfp->rq_list_lock, iflags);
+ 	df_ch->src = val;
  
+-	ret = fwnode_property_read_u32(node, "st,adc-alt-channel", &df_ch->alt_si);
+-	if (ret != -EINVAL)
+-		df_ch->alt_si = 0;
++	if (fwnode_property_present(node, "st,adc-alt-channel"))
++		df_ch->alt_si = 1;
+ 
+ 	if (adc->dev_data->type == DFSDM_IIO) {
+ 		backend = devm_iio_backend_fwnode_get(&indio_dev->dev, NULL, node);
 
 
 
