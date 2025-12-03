@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-199333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42226CA10F8
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:40:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 952ADC9F851
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:37:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 441B930136D8
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:39:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D51B630380C8
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:33:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C78D0369217;
-	Wed,  3 Dec 2025 16:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85A4130DEA9;
+	Wed,  3 Dec 2025 15:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mbZJfFnC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I33R8TvP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83E9218A6A7;
-	Wed,  3 Dec 2025 16:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39AAF30C348;
+	Wed,  3 Dec 2025 15:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779448; cv=none; b=aotAZCr/OhfpCRC6CW7GA0zRiFQ6gFtH7xuR6E0vUmLvZ6WXtR2dlz+mCBkcXG+lmfYo8LOgDi1NyU2XUQP+2kXDh0LBuskRjHDihxrWOdMDlh8M5Z0n7egbjD08yDOPvLOx52Hblm5KE0Tagxe739mARf59TaPqzxYNR3JCsRY=
+	t=1764776036; cv=none; b=kMzNYh8HqTWH7cv/Bwa8p++X1EQt8bLV5/GbNBlolvXD3OaZiRhHLwoNv4vStJQednH1IhKIbL7OS7OwclFDk4tZ2B8GP+BCui7TzOTrm0Ncr9y+/kZVTnqhygoTpWNbcnDBXQdTAl0K4YEWgeuVbNyy0gbSz/t5zevVRfmcSxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779448; c=relaxed/simple;
-	bh=AEX3ohW3DuRh4HGxrrINIK8MBiUbmYA700hYZ9a4DcE=;
+	s=arc-20240116; t=1764776036; c=relaxed/simple;
+	bh=YheAUKr9ulW4UE2jY2EEEScGWnNO2ENfGPh0Psf2MO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EBx8+/qKXTxZCw21dNZvyBm8Gv1s483dXtgOTaz9Nbwe++1O/4A9kTyXHX8QWB6CTLtyrofHyKLrhzxKNzxYLmrElguhNG02+K97JqMy5J3alYNAdACxpISgnHUnmjqWVVKQIKq/FQZRvXA7FX6WNyCzy1+Hf/ZsUb9U75hJjVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mbZJfFnC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DECFBC4CEF5;
-	Wed,  3 Dec 2025 16:30:47 +0000 (UTC)
+	 MIME-Version; b=XKwQT7sjuEcOafMQ1wqefLajtjOY5wPOu1j1vtJm9Te2hef3kxbi4NL4fOGxzNGiC+ehdD+tYT+EHbfqGKXB5BTlYwz+nfOFohv6UQR8CejMyCZGcHlGo4BWOtXeuAc9GylcFH+Psw0kAGVA54TubFvfxZSn0TIPx2QTIBMW8B8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I33R8TvP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E560C4CEF5;
+	Wed,  3 Dec 2025 15:33:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779448;
-	bh=AEX3ohW3DuRh4HGxrrINIK8MBiUbmYA700hYZ9a4DcE=;
+	s=korg; t=1764776036;
+	bh=YheAUKr9ulW4UE2jY2EEEScGWnNO2ENfGPh0Psf2MO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mbZJfFnCw6J9NG7+aQy3ZQU+2K9MNTAoQUN+EiRucfm2E55NXY4HelatlO8/qBDPu
-	 XgJDHJU9rfYHk1XQRp9eOfA0nKh2Nt6Z+8rIoZ7LThYamfyJdFdEzgn+sSprKCTgZp
-	 HaxyQavtEKAPNhxv3gxsUorWYXMLE8YSomztVYPA=
+	b=I33R8TvPU0aeisXd8jT+N13LI1sXrwDxIETh11zT+n1vgnRq5vKN9c6TtLbEbPeR8
+	 cAlfd8gKlbJG9UBLdtucJ0+DGmnh/nCI0dKZZ3JG/ipW4AfI2+bzynbit67dsE05u3
+	 YAatX8Bk3mzGgrlOpIhZCfxi0nQWFw1QtQXRLJEA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Yael Chemla <ychemla@nvidia.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 261/568] net/mlx5e: Dont query FEC statistics when FEC is disabled
-Date: Wed,  3 Dec 2025 16:24:23 +0100
-Message-ID: <20251203152450.276954979@linuxfoundation.org>
+Subject: [PATCH 5.10 060/300] tools/cpupower: Fix incorrect size in cpuidle_state_disable()
+Date: Wed,  3 Dec 2025 16:24:24 +0100
+Message-ID: <20251203152402.844705212@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +60,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carolina Jubran <cjubran@nvidia.com>
+From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
 
-[ Upstream commit 6b81b8a0b1978284e007566d7a1607b47f92209f ]
+[ Upstream commit 23199d2aa6dcaf6dd2da772f93d2c94317d71459 ]
 
-Update mlx5e_stats_fec_get() to check the active FEC mode and skip
-statistics collection when FEC is disabled.
+Fix incorrect size parameter passed to cpuidle_state_write_file() in
+cpuidle_state_disable().
 
-Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Reviewed-by: Yael Chemla <ychemla@nvidia.com>
-Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Link: https://patch.msgid.link/20250924124037.1508846-3-vadim.fedorenko@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The function was incorrectly using sizeof(disable) which returns the
+size of the unsigned int variable (4 bytes) instead of the actual
+length of the string stored in the 'value' buffer.
+
+Since 'value' is populated with snprintf() to contain the string
+representation of the disable value, we should use the length
+returned by snprintf() to get the correct string length for
+writing to the sysfs file.
+
+This ensures the correct number of bytes is written to the cpuidle
+state disable file in sysfs.
+
+Link: https://lore.kernel.org/r/20250917050820.1785377-1-kaushlendra.kumar@intel.com
+Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_stats.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ tools/power/cpupower/lib/cpuidle.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c b/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c
-index f7f54550a8bbc..5db4fd40fe8b8 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c
-@@ -1301,16 +1301,13 @@ static void fec_set_rs_stats(struct ethtool_fec_stats *fec_stats, u32 *ppcnt)
- }
- 
- static void fec_set_block_stats(struct mlx5e_priv *priv,
-+				int mode,
- 				struct ethtool_fec_stats *fec_stats)
+diff --git a/tools/power/cpupower/lib/cpuidle.c b/tools/power/cpupower/lib/cpuidle.c
+index 479c5971aa6da..c15d0de12357f 100644
+--- a/tools/power/cpupower/lib/cpuidle.c
++++ b/tools/power/cpupower/lib/cpuidle.c
+@@ -231,6 +231,7 @@ int cpuidle_state_disable(unsigned int cpu,
  {
- 	struct mlx5_core_dev *mdev = priv->mdev;
- 	u32 out[MLX5_ST_SZ_DW(ppcnt_reg)] = {};
- 	u32 in[MLX5_ST_SZ_DW(ppcnt_reg)] = {};
- 	int sz = MLX5_ST_SZ_BYTES(ppcnt_reg);
--	int mode = fec_active_mode(mdev);
--
--	if (mode == MLX5E_FEC_NOFEC)
--		return;
+ 	char value[SYSFS_PATH_MAX];
+ 	int bytes_written;
++	int len;
  
- 	MLX5_SET(ppcnt_reg, in, local_port, 1);
- 	MLX5_SET(ppcnt_reg, in, grp, MLX5_PHYSICAL_LAYER_COUNTERS_GROUP);
-@@ -1351,11 +1348,14 @@ static void fec_set_corrected_bits_total(struct mlx5e_priv *priv,
- void mlx5e_stats_fec_get(struct mlx5e_priv *priv,
- 			 struct ethtool_fec_stats *fec_stats)
- {
--	if (!MLX5_CAP_PCAM_FEATURE(priv->mdev, ppcnt_statistical_group))
-+	int mode = fec_active_mode(priv->mdev);
-+
-+	if (mode == MLX5E_FEC_NOFEC ||
-+	    !MLX5_CAP_PCAM_FEATURE(priv->mdev, ppcnt_statistical_group))
- 		return;
+ 	if (cpuidle_state_count(cpu) <= idlestate)
+ 		return -1;
+@@ -239,10 +240,10 @@ int cpuidle_state_disable(unsigned int cpu,
+ 				 idlestate_value_files[IDLESTATE_DISABLE]))
+ 		return -2;
  
- 	fec_set_corrected_bits_total(priv, fec_stats);
--	fec_set_block_stats(priv, fec_stats);
-+	fec_set_block_stats(priv, mode, fec_stats);
- }
+-	snprintf(value, SYSFS_PATH_MAX, "%u", disable);
++	len = snprintf(value, SYSFS_PATH_MAX, "%u", disable);
  
- #define PPORT_ETH_EXT_OFF(c) \
+ 	bytes_written = cpuidle_state_write_file(cpu, idlestate, "disable",
+-						   value, sizeof(disable));
++						   value, len);
+ 	if (bytes_written)
+ 		return 0;
+ 	return -3;
 -- 
 2.51.0
 
