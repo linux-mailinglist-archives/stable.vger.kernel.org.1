@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-198290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB2E2C9F839
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:36:53 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EB03CA175F
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:48:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6ABA43007B41
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:34:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 04A5A3009FF3
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:48:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 832B130AAD0;
-	Wed,  3 Dec 2025 15:34:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 733D6346A0D;
+	Wed,  3 Dec 2025 16:29:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nlQO1QvW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O81ZYoR6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 911FC1A2C25;
-	Wed,  3 Dec 2025 15:34:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BDAB346E53;
+	Wed,  3 Dec 2025 16:29:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776057; cv=none; b=AdnAW79tNKUXuymlmsYzmU8DtLpf7ooCDnJA8KKzV7zFxg39CZbiomHIdmqDkC6H047RYYJ7+QH38KsH8z7BEdKGt7ZIhkjW44cxRCwyTFhl9GAZBIY64aUIcv30fl3OF8wmqfIbo39OebdJhZ15MnRh3zxVqGcxYe1/CPXAkco=
+	t=1764779366; cv=none; b=p2s1kmJwWd2FRubHEeyUjKGbluvPOh1SaYc+zbuR4nFFnP9rDg5/7EuDgJgp5Q9Q4OWeatvRZgyWhghb2Yp1Ml/km0sHCXQ3T08tE9dvn+BSBsuvWwyZhvjHzFOvL9z8lKAPbwcLYn6oOwSxLIIRLvjyYl4DlWet+oNUIKzqNBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776057; c=relaxed/simple;
-	bh=mygK41qAGbgLv0I9VrTwg/jn3fpp72IHgWAwvrZd0Xs=;
+	s=arc-20240116; t=1764779366; c=relaxed/simple;
+	bh=e9ixmfO0zbQlGjucuZCBwSm1trkvhf9sldTSfDEtPLE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fnx3sQQkXUcfDMtEvNboLHEk+vaEx84k+6EgqoeJ4WrfnDw9aPO3HB1iAI3pHMtnBKGmQx3dYXxzoo3OMs9Hqi+V8F4prUq5Hnh/rezcUGjtTVkrMT+6yCWL+EXXRk1lm1dTXnk2V57vx3DPDbedz4FiLFDgSO0DRkJx7n48UeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nlQO1QvW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4695AC4CEF5;
-	Wed,  3 Dec 2025 15:34:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Dw5/WqdTYqFBpZt7INOiyf8mm+dLPBDzO+cxHhnPJNtkR8aVoh0gBpWCJXZGOe5NJt+HcO7kHBJnkusMs6AiX7uznv/JkQOJohTTMVsGGI2gf5LvnS8So6dIRs8ZlqE6U5EMM6z1dQgDp2oIV3w3DKIBJ/749aMz3uB430WvSvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O81ZYoR6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B68FC4CEF5;
+	Wed,  3 Dec 2025 16:29:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776056;
-	bh=mygK41qAGbgLv0I9VrTwg/jn3fpp72IHgWAwvrZd0Xs=;
+	s=korg; t=1764779366;
+	bh=e9ixmfO0zbQlGjucuZCBwSm1trkvhf9sldTSfDEtPLE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nlQO1QvWk73zdn3mtJpbzMv/J0Z5y2UOyQNHx69hDfaMFPdnefy62yTMsJkAYhpCd
-	 6572DwLpzK13/y3Bdjug582mDVDlKJUQaDY4Rf8kh25LL+daxGdq2UWDfe9CwPXrr6
-	 mSOI7RlEv/R3l+O7NlIH65jWC4chlj1b07BapB2I=
+	b=O81ZYoR6E+Nne7F6s2p6YwNFTI50OCqyCySUzHDj8V6mARuR3G0DZu4sTdePCpnHQ
+	 7zzTZuCbnGEexQHSLBRLRiI8ESvqsqfslovXtZ05A3NN9nOIOCElhp3AT1O6ctB46Y
+	 3xhmKTc5k4cEddBJeAl755i01u8iWLLSyu2aP/3I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 5.10 034/300] arch: back to -std=gnu89 in < v5.18
+	Forest Crossman <cyrozap@gmail.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 236/568] usb: mon: Increase BUFF_MAX to 64 MiB to support multi-MB URBs
 Date: Wed,  3 Dec 2025 16:23:58 +0100
-Message-ID: <20251203152401.725896224@linuxfoundation.org>
+Message-ID: <20251203152449.364877348@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,115 +58,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Forest Crossman <cyrozap@gmail.com>
 
-Recent fixes have been backported to < v5.18 to fix build issues with
-GCC 5.15. They all force -std=gnu11 in the CFLAGS, "because [the kernel]
-requests the gnu11 standard via '-std=' in the main Makefile".
+[ Upstream commit 368ed48a5ef52e384f54d5809f0a0b79ac567479 ]
 
-This is true for >= 5.18 versions, but not before. This switch to
--std=gnu11 has been done in commit e8c07082a810 ("Kbuild: move to
--std=gnu11").
+The usbmon binary interface currently truncates captures of large
+transfers from higher-speed USB devices. Because a single event capture
+is limited to one-fifth of the total buffer size, the current maximum
+size of a captured URB is around 240 KiB. This is insufficient when
+capturing traffic from modern devices that use transfers of several
+hundred kilobytes or more, as truncated URBs can make it impossible for
+user-space USB analysis tools like Wireshark to properly defragment and
+reassemble higher-level protocol packets in the captured data.
 
-For a question of uniformity, force -std=gnu89, similar to what is done
-in the main Makefile.
+The root cause of this issue is the 1200 KiB BUFF_MAX limit, which has
+not been changed since the binary interface was introduced in 2006.
 
-Note: the fixes tags below refers to upstream commits, but this fix is
-only for kernels not having commit e8c07082a810 ("Kbuild: move to
--std=gnu11").
+To resolve this issue, this patch increases BUFF_MAX to 64 MiB. The
+original comment for BUFF_MAX based the limit's calculation on a
+saturated 480 Mbit/s bus. Applying the same logic to a modern USB 3.2
+Gen 2×2 20 Gbit/s bus (~2500 MB/s over a 20ms window) indicates the
+buffer should be at least 50 MB. The new limit of 64 MiB covers that,
+plus a little extra for any overhead.
 
-Fixes: 7cbb015e2d3d ("parisc: fix building with gcc-15")
-Fixes: 3b8b80e99376 ("s390: Add '-std=gnu11' to decompressor and purgatory CFLAGS")
-Fixes: b3bee1e7c3f2 ("x86/boot: Compile boot code with -std=gnu11 too")
-Fixes: ee2ab467bddf ("x86/boot: Use '-std=gnu11' to fix build with GCC 15")
-Fixes: 8ba14d9f490a ("efi: libstub: Use '-std=gnu11' to fix build with GCC 15")
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Alexey Dobriyan <adobriyan@gmail.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
+With this change, both users and developers should now be able to debug
+and reverse engineer modern USB devices even when running unmodified
+distro kernels.
+
+Please note that this change does not affect the default buffer size. A
+larger buffer is only allocated when a user explicitly requests it via
+the MON_IOCT_RING_SIZE ioctl, so the change to the maximum buffer size
+should not unduly increase memory usage for users that don't
+deliberately request a larger buffer.
+
+Link: https://lore.kernel.org/CAO3ALPzdUkmMr0YMrODLeDSLZqNCkWcAP8NumuPHLjNJ8wC1kQ@mail.gmail.com
+Signed-off-by: Forest Crossman <cyrozap@gmail.com>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/CAO3ALPxU5RzcoueC454L=WZ1qGMfAcnxm+T+p+9D8O9mcrUbCQ@mail.gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/boot/compressed/Makefile  |    2 +-
- arch/s390/Makefile                    |    2 +-
- arch/s390/purgatory/Makefile          |    2 +-
- arch/x86/Makefile                     |    2 +-
- arch/x86/boot/compressed/Makefile     |    2 +-
- drivers/firmware/efi/libstub/Makefile |    2 +-
- 6 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/usb/mon/mon_bin.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
---- a/arch/parisc/boot/compressed/Makefile
-+++ b/arch/parisc/boot/compressed/Makefile
-@@ -22,7 +22,7 @@ KBUILD_CFLAGS += -fno-PIE -mno-space-reg
- ifndef CONFIG_64BIT
- KBUILD_CFLAGS += -mfast-indirect-calls
- endif
--KBUILD_CFLAGS += -std=gnu11
-+KBUILD_CFLAGS += -std=gnu89
+diff --git a/drivers/usb/mon/mon_bin.c b/drivers/usb/mon/mon_bin.c
+index 35483217b1f6c..93998d328d9aa 100644
+--- a/drivers/usb/mon/mon_bin.c
++++ b/drivers/usb/mon/mon_bin.c
+@@ -68,18 +68,20 @@
+  * The magic limit was calculated so that it allows the monitoring
+  * application to pick data once in two ticks. This way, another application,
+  * which presumably drives the bus, gets to hog CPU, yet we collect our data.
+- * If HZ is 100, a 480 mbit/s bus drives 614 KB every jiffy. USB has an
+- * enormous overhead built into the bus protocol, so we need about 1000 KB.
++ *
++ * Originally, for a 480 Mbit/s bus this required a buffer of about 1 MB. For
++ * modern 20 Gbps buses, this value increases to over 50 MB. The maximum
++ * buffer size is set to 64 MiB to accommodate this.
+  *
+  * This is still too much for most cases, where we just snoop a few
+  * descriptor fetches for enumeration. So, the default is a "reasonable"
+- * amount for systems with HZ=250 and incomplete bus saturation.
++ * amount for typical, low-throughput use cases.
+  *
+  * XXX What about multi-megabyte URBs which take minutes to transfer?
+  */
+-#define BUFF_MAX  CHUNK_ALIGN(1200*1024)
+-#define BUFF_DFL   CHUNK_ALIGN(300*1024)
+-#define BUFF_MIN     CHUNK_ALIGN(8*1024)
++#define BUFF_MAX  CHUNK_ALIGN(64*1024*1024)
++#define BUFF_DFL      CHUNK_ALIGN(300*1024)
++#define BUFF_MIN        CHUNK_ALIGN(8*1024)
  
- OBJECTS += $(obj)/head.o $(obj)/real2.o $(obj)/firmware.o $(obj)/misc.o $(obj)/piggy.o
- 
---- a/arch/s390/Makefile
-+++ b/arch/s390/Makefile
-@@ -23,7 +23,7 @@ endif
- aflags_dwarf	:= -Wa,-gdwarf-2
- KBUILD_AFLAGS_DECOMPRESSOR := $(CLANG_FLAGS) -m64 -D__ASSEMBLY__
- KBUILD_AFLAGS_DECOMPRESSOR += $(if $(CONFIG_DEBUG_INFO),$(aflags_dwarf))
--KBUILD_CFLAGS_DECOMPRESSOR := $(CLANG_FLAGS) -m64 -O2 -std=gnu11
-+KBUILD_CFLAGS_DECOMPRESSOR := $(CLANG_FLAGS) -m64 -O2 -std=gnu89
- KBUILD_CFLAGS_DECOMPRESSOR += -DDISABLE_BRANCH_PROFILING -D__NO_FORTIFY
- KBUILD_CFLAGS_DECOMPRESSOR += -fno-delete-null-pointer-checks -msoft-float
- KBUILD_CFLAGS_DECOMPRESSOR += -fno-asynchronous-unwind-tables
---- a/arch/s390/purgatory/Makefile
-+++ b/arch/s390/purgatory/Makefile
-@@ -20,7 +20,7 @@ GCOV_PROFILE := n
- UBSAN_SANITIZE := n
- KASAN_SANITIZE := n
- 
--KBUILD_CFLAGS := -std=gnu11 -fno-strict-aliasing -Wall -Wstrict-prototypes
-+KBUILD_CFLAGS := -std=gnu89 -fno-strict-aliasing -Wall -Wstrict-prototypes
- KBUILD_CFLAGS += -Wno-pointer-sign -Wno-sign-compare
- KBUILD_CFLAGS += -fno-zero-initialized-in-bss -fno-builtin -ffreestanding
- KBUILD_CFLAGS += -c -MD -Os -m64 -msoft-float -fno-common
---- a/arch/x86/Makefile
-+++ b/arch/x86/Makefile
-@@ -31,7 +31,7 @@ endif
- CODE16GCC_CFLAGS := -m32 -Wa,$(srctree)/arch/x86/boot/code16gcc.h
- M16_CFLAGS	 := $(call cc-option, -m16, $(CODE16GCC_CFLAGS))
- 
--REALMODE_CFLAGS	:= -std=gnu11 $(M16_CFLAGS) -g -Os -DDISABLE_BRANCH_PROFILING -D__DISABLE_EXPORTS \
-+REALMODE_CFLAGS	:= -std=gnu89 $(M16_CFLAGS) -g -Os -DDISABLE_BRANCH_PROFILING -D__DISABLE_EXPORTS \
- 		   -Wall -Wstrict-prototypes -march=i386 -mregparm=3 \
- 		   -fno-strict-aliasing -fomit-frame-pointer -fno-pic \
- 		   -mno-mmx -mno-sse $(call cc-option,-fcf-protection=none)
---- a/arch/x86/boot/compressed/Makefile
-+++ b/arch/x86/boot/compressed/Makefile
-@@ -33,7 +33,7 @@ targets := vmlinux vmlinux.bin vmlinux.b
- # avoid errors with '-march=i386', and future flags may depend on the target to
- # be valid.
- KBUILD_CFLAGS := -m$(BITS) -O2 $(CLANG_FLAGS)
--KBUILD_CFLAGS += -std=gnu11
-+KBUILD_CFLAGS += -std=gnu89
- KBUILD_CFLAGS += -fno-strict-aliasing -fPIE
- KBUILD_CFLAGS += -DDISABLE_BRANCH_PROFILING
- cflags-$(CONFIG_X86_32) := -march=i386
---- a/drivers/firmware/efi/libstub/Makefile
-+++ b/drivers/firmware/efi/libstub/Makefile
-@@ -7,7 +7,7 @@
- #
- cflags-$(CONFIG_X86_32)		:= -march=i386
- cflags-$(CONFIG_X86_64)		:= -mcmodel=small
--cflags-$(CONFIG_X86)		+= -m$(BITS) -D__KERNEL__ -std=gnu11 \
-+cflags-$(CONFIG_X86)		+= -m$(BITS) -D__KERNEL__ -std=gnu89 \
- 				   -fPIC -fno-strict-aliasing -mno-red-zone \
- 				   -mno-mmx -mno-sse -fshort-wchar \
- 				   -Wno-pointer-sign \
+ /*
+  * The per-event API header (2 per URB).
+-- 
+2.51.0
+
 
 
 
