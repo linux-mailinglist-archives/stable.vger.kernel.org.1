@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-199846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 675B2CA0725
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:28:15 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1271BCA017F
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:46:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9904B331DB86
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:11:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7C4023000B06
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:46:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67D13398F8B;
-	Wed,  3 Dec 2025 16:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC84535BDB7;
+	Wed,  3 Dec 2025 16:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qs94F5d7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vaLLhp2t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E485398F9B;
-	Wed,  3 Dec 2025 16:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87295313546;
+	Wed,  3 Dec 2025 16:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764781135; cv=none; b=vE20okiWeGKRTsK1tTKpaNdk2gnZEQ4jggbpM9Q6vwdEFHO7OnWHZ2WF08KgsqpWtxEGnMLDkH8s7f9l2S+3SL39Tf9XU1YS5li47cDwY17gKi24Rx0B1akyJ5FQFiqkb/V9uVyNw/y/EqMLNadEVhkjt2QejbqcRKgoEb6Kd8I=
+	t=1764780410; cv=none; b=sTev5EZGbMBfPn6G5F1a1CN4kgpoxArbi1L+8tDQvOhZGBIsbCT2vSvzjGflnxjKtld+kVXRpBs5MKLvot8uCFPXKApJ0ZJh93QYvzSnMnmlctyxWoYJJ+1w4sjtF+xnl4faqjxpZJgfreb1gUjbJnTYnABouJWhVRA5Ab6YVOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764781135; c=relaxed/simple;
-	bh=l5E5WdZNG9BR3ZMrpej7gLujfYobZxy5xH4P1afD4+o=;
+	s=arc-20240116; t=1764780410; c=relaxed/simple;
+	bh=YT9BDyOk7Y2GhgUs2Sh7Cnn3Lv4+XDW9ema7VmAP+Pg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XXtQ9iVgZoglIlKC3TnNOhwjeQxhL/EFvKYuFfUXEyD9fsvuk1I4/V+aDWYBByl0UvNeuqx8Lg9xD8TmXYR9cdRt1mjmmkk3oDAI5zbibrB1BTlbe9qoygfaYX7xSt9WL0kbutvgYIjbFMRDhq+wqXAAuhXrw+9ETbAL6ikktlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qs94F5d7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28842C4CEF5;
-	Wed,  3 Dec 2025 16:58:53 +0000 (UTC)
+	 MIME-Version; b=mSnPTEVLLRLIeb2JuumWFFjV8v8zfE6p68+4M8it6ET3S4mYua+bUL24NpQP9hckvS8p1cHRq1Ve/w0A51+t5FZvTChR4v1I7YKRBiZ46waqaMsgcNf80FU+vVk3jVN/1KHlYDKODSCQgfLPoiFSb9t9ilkwnT7Fw7C1KY/T8Us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vaLLhp2t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC10BC4CEF5;
+	Wed,  3 Dec 2025 16:46:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764781134;
-	bh=l5E5WdZNG9BR3ZMrpej7gLujfYobZxy5xH4P1afD4+o=;
+	s=korg; t=1764780410;
+	bh=YT9BDyOk7Y2GhgUs2Sh7Cnn3Lv4+XDW9ema7VmAP+Pg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qs94F5d7qqaopSFZNLBu2w041JV/5odD7N0VkJQxoi9yrOn+hN5jYlErsIK9+Q5Nb
-	 vO9jfB2Iu8KIH428wWfbDj1CWzXjgWcm+c8UopTWObMOMNKqFZQLsdAC/upi8VPyxc
-	 UhqqH14qhieRLjDXRMZkBrCRWhgXqzeHeWnz6BsQ=
+	b=vaLLhp2tP0AfxbbZMoII0W01hTjws4p9bC9onZPyu3rjO7RGVVkXk554wKiCfeSkI
+	 kANkngeZo/RX5sW9l7G0fAuT8rK3FVLMRFKF94NX6/+jwHr1TQYtImcrFhBzQNLWI3
+	 7Jk/2KNp1G2Ml3Nd3WtUAusstH1jfXWGP4xbGEKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 17/93] net: fec: cancel perout_timer when PEROUT is disabled
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Alex Hung <alex.hung@amd.com>
+Subject: [PATCH 6.1 548/568] drm/amd/display: Check NULL before accessing
 Date: Wed,  3 Dec 2025 16:29:10 +0100
-Message-ID: <20251203152337.148279531@linuxfoundation.org>
+Message-ID: <20251203152500.781817835@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +61,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 50caa744689e505414673c20359b04aa918439e3 ]
+commit 3ce62c189693e8ed7b3abe551802bbc67f3ace54 upstream.
 
-The PEROUT allows the user to set a specified future time to output the
-periodic signal. If the future time is far from the current time, the FEC
-driver will use hrtimer to configure PEROUT one second before the future
-time. However, the hrtimer will not be canceled if the PEROUT is disabled
-before the hrtimer expires. So the PEROUT will be configured when the
-hrtimer expires, which is not as expected. Therefore, cancel the hrtimer
-in fec_ptp_pps_disable() to fix this issue.
+[WHAT]
+IGT kms_cursor_legacy's long-nonblocking-modeset-vs-cursor-atomic
+fails with NULL pointer dereference. This can be reproduced with
+both an eDP panel and a DP monitors connected.
 
-Fixes: 350749b909bf ("net: fec: Add support for periodic output signal of PPS")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Link: https://patch.msgid.link/20251125085210.1094306-2-wei.fang@nxp.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ BUG: kernel NULL pointer dereference, address: 0000000000000000
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ PGD 0 P4D 0
+ Oops: Oops: 0000 [#1] SMP NOPTI
+ CPU: 13 UID: 0 PID: 2960 Comm: kms_cursor_lega Not tainted
+6.16.0-99-custom #8 PREEMPT(voluntary)
+ Hardware name: AMD ........
+ RIP: 0010:dc_stream_get_scanoutpos+0x34/0x130 [amdgpu]
+ Code: 57 4d 89 c7 41 56 49 89 ce 41 55 49 89 d5 41 54 49
+ 89 fc 53 48 83 ec 18 48 8b 87 a0 64 00 00 48 89 75 d0 48 c7 c6 e0 41 30
+ c2 <48> 8b 38 48 8b 9f 68 06 00 00 e8 8d d7 fd ff 31 c0 48 81 c3 e0 02
+ RSP: 0018:ffffd0f3c2bd7608 EFLAGS: 00010292
+ RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffd0f3c2bd7668
+ RDX: ffffd0f3c2bd7664 RSI: ffffffffc23041e0 RDI: ffff8b32494b8000
+ RBP: ffffd0f3c2bd7648 R08: ffffd0f3c2bd766c R09: ffffd0f3c2bd7760
+ R10: ffffd0f3c2bd7820 R11: 0000000000000000 R12: ffff8b32494b8000
+ R13: ffffd0f3c2bd7664 R14: ffffd0f3c2bd7668 R15: ffffd0f3c2bd766c
+ FS:  000071f631b68700(0000) GS:ffff8b399f114000(0000)
+knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 0000000000000000 CR3: 00000001b8105000 CR4: 0000000000f50ef0
+ PKRU: 55555554
+ Call Trace:
+ <TASK>
+ dm_crtc_get_scanoutpos+0xd7/0x180 [amdgpu]
+ amdgpu_display_get_crtc_scanoutpos+0x86/0x1c0 [amdgpu]
+ ? __pfx_amdgpu_crtc_get_scanout_position+0x10/0x10[amdgpu]
+ amdgpu_crtc_get_scanout_position+0x27/0x50 [amdgpu]
+ drm_crtc_vblank_helper_get_vblank_timestamp_internal+0xf7/0x400
+ drm_crtc_vblank_helper_get_vblank_timestamp+0x1c/0x30
+ drm_crtc_get_last_vbltimestamp+0x55/0x90
+ drm_crtc_next_vblank_start+0x45/0xa0
+ drm_atomic_helper_wait_for_fences+0x81/0x1f0
+ ...
+
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 621e55f1919640acab25383362b96e65f2baea3c)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/fec_ptp.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/display/dc/core/dc_stream.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-index 7f6b574320716..cb3f05da3eee6 100644
---- a/drivers/net/ethernet/freescale/fec_ptp.c
-+++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -498,6 +498,8 @@ static int fec_ptp_pps_disable(struct fec_enet_private *fep, uint channel)
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
+@@ -619,9 +619,14 @@ bool dc_stream_get_scanoutpos(const stru
  {
- 	unsigned long flags;
- 
-+	hrtimer_cancel(&fep->perout_timer);
+ 	uint8_t i;
+ 	bool ret = false;
+-	struct dc  *dc = stream->ctx->dc;
+-	struct resource_context *res_ctx =
+-		&dc->current_state->res_ctx;
++	struct dc  *dc;
++	struct resource_context *res_ctx;
 +
- 	spin_lock_irqsave(&fep->tmreg_lock, flags);
- 	writel(0, fep->hwp + FEC_TCSR(channel));
- 	spin_unlock_irqrestore(&fep->tmreg_lock, flags);
--- 
-2.51.0
-
++	if (!stream->ctx)
++		return false;
++
++	dc = stream->ctx->dc;
++	res_ctx = &dc->current_state->res_ctx;
+ 
+ 	for (i = 0; i < MAX_PIPES; i++) {
+ 		struct timing_generator *tg = res_ctx->pipe_ctx[i].stream_res.tg;
 
 
 
