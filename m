@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-199334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84B68CA14CE
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:12:43 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AC95CA0BB6
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:01:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6B21831B5B12
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:34:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F285A3007195
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:59:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 402A3369221;
-	Wed,  3 Dec 2025 16:30:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BD9634B1A1;
+	Wed,  3 Dec 2025 16:01:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F9a2c988"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r8ISNlYc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A8936921D;
-	Wed,  3 Dec 2025 16:30:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E129F34B193;
+	Wed,  3 Dec 2025 16:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779452; cv=none; b=KpPUI8PVlIhV0yVZ2QCAqAJBhL7QxRFDTR52MpLNfLLHwzWWuvvmJfL44kkpbnZnHnPd9mesMU10BQc9JJUfGEmMNT5dxWCxjpDe9Iun8fSAZASi8gnW4q/MGGZ2IVTEZrAxJA+rN/7Um/FWaBJXvbn5WrFUi7HPCwT4rTcfVC4=
+	t=1764777684; cv=none; b=BKNZKoUDCs8pW5wxanMTPAuqLZlcI0wABBTpfs6iSd4RwcPCWitLBYkHBEXuQFQnijnjs3ncLmZKRxLfkCspZdW2OvY0dJHnqR7cbfc/uHpAVayNQT0WDXWQiBlhfRfFSxx7Bgkhp8dI5fCT8ilqgdbd2QcEqwKmsC7QW+FVpSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779452; c=relaxed/simple;
-	bh=GZlRBCn1GfgFCrKX4dEjEkH2TOufyNYjqD7F48KZQCc=;
+	s=arc-20240116; t=1764777684; c=relaxed/simple;
+	bh=mH5AYjGNzZxFTLs5ObaIB1MJg+ZpODBaW1O+p65yO+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EZKZdQZEYOmULT67yRp58fsHE3NyECqRWa6nKjXj/37eQRcLgMfmw3ZTHg9bqbLLHTIhcww0zLAvw5q72R+0cR4RYKIVwX4hCOPWr2xmegxci5sNah3DFXqzDomMJ5f5SspdQSwv9k4FyYf7Cm/oHOOp6oBJC/EYZnHwQf8A0CU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F9a2c988; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F603C4CEF5;
-	Wed,  3 Dec 2025 16:30:51 +0000 (UTC)
+	 MIME-Version; b=ckxuRkguZ7Bxc7OuuBDBqxy2D2r4zZ5kkADQW9mhtNIohR6mv3QeqK03zWHQXntQHExM61+HDscs3SRW/ETDW8Q+gejl1HAb1odu52sRWIhraRtgyfXoaEHJNob2kzIKSgwW3hieayXfn/5FDZrjtDX2vPq5/w5Iswe4rx8aS4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r8ISNlYc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52AA5C4CEF5;
+	Wed,  3 Dec 2025 16:01:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779451;
-	bh=GZlRBCn1GfgFCrKX4dEjEkH2TOufyNYjqD7F48KZQCc=;
+	s=korg; t=1764777683;
+	bh=mH5AYjGNzZxFTLs5ObaIB1MJg+ZpODBaW1O+p65yO+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F9a2c988FIYCnJcQaAf4oaPsPZIqGokPSCVrlEPYKsVefGaEm6MH467KrX747p8a6
-	 kko8Nyfb5X+Ng3xa0nKA96l684JP30P8V0k+4PgnTrx33U07eliOLj+z1lws0kIq29
-	 VuL5Eo0YOfQjaJvHJb94p/rME/sNsy/zmLf+XF90=
+	b=r8ISNlYcZuYf9GfJKQswylMbzf85AZBrWhh/5+YH+pzD4UniBV5Za68lRz02dEfRo
+	 2UAVliGBU+Wyf4cp/cQrNSoCqrygLS5/wbRiT+u8U5yrchwb1wgbwclYHu7zbH4xyO
+	 T4h7MOwyMCO4fGCU7PhoVSqG1sa13bpj/iypbMYs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sungho Kim <sungho.kim@furiosa.ai>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 262/568] net: macb: avoid dealing with endianness in macb_set_hwaddr()
+Subject: [PATCH 5.15 114/392] PCI/P2PDMA: Fix incorrect pointer usage in devm_kfree() call
 Date: Wed,  3 Dec 2025 16:24:24 +0100
-Message-ID: <20251203152450.314133762@linuxfoundation.org>
+Message-ID: <20251203152418.293252004@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +59,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Théo Lebrun <theo.lebrun@bootlin.com>
+From: Sungho Kim <sungho.kim@furiosa.ai>
 
-[ Upstream commit 70a5ce8bc94545ba0fb47b2498bfb12de2132f4d ]
+[ Upstream commit 6238784e502b6a9fbeb3a6b77284b29baa4135cc ]
 
-bp->dev->dev_addr is of type `unsigned char *`. Casting it to a u32
-pointer and dereferencing implies dealing manually with endianness,
-which is error-prone.
+The error handling path in pci_p2pdma_add_resource() contains a bug in its
+`pgmap_free` label.
 
-Replace by calls to get_unaligned_le32|le16() helpers.
+Memory is allocated for the `p2p_pgmap` struct, and the pointer is stored
+in `p2p_pgmap`. However, the error path calls devm_kfree() with `pgmap`,
+which is a pointer to a member field within the `p2p_pgmap` struct, not the
+base pointer of the allocation.
 
-This was found using sparse:
-   ⟩ make C=2 drivers/net/ethernet/cadence/macb_main.o
-   warning: incorrect type in assignment (different base types)
-      expected unsigned int [usertype] bottom
-      got restricted __le32 [usertype]
-   warning: incorrect type in assignment (different base types)
-      expected unsigned short [usertype] top
-      got restricted __le16 [usertype]
-   ...
+Correct the bug by passing the correct base pointer, `p2p_pgmap`, to
+devm_kfree().
 
-Reviewed-by: Sean Anderson <sean.anderson@linux.dev>
-Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250923-macb-fixes-v6-5-772d655cdeb6@bootlin.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sungho Kim <sungho.kim@furiosa.ai>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
+Link: https://patch.msgid.link/20250820105714.2939896-1-sungho.kim@furiosa.ai
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pci/p2pdma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 1ea7c86f75013..a143f8214c088 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -283,9 +283,9 @@ static void macb_set_hwaddr(struct macb *bp)
- 	u32 bottom;
- 	u16 top;
- 
--	bottom = cpu_to_le32(*((u32 *)bp->dev->dev_addr));
-+	bottom = get_unaligned_le32(bp->dev->dev_addr);
- 	macb_or_gem_writel(bp, SA1B, bottom);
--	top = cpu_to_le16(*((u16 *)(bp->dev->dev_addr + 4)));
-+	top = get_unaligned_le16(bp->dev->dev_addr + 4);
- 	macb_or_gem_writel(bp, SA1T, top);
- 
- 	if (gem_has_ptp(bp)) {
+diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
+index 57654c82b08e8..e70993730728b 100644
+--- a/drivers/pci/p2pdma.c
++++ b/drivers/pci/p2pdma.c
+@@ -231,7 +231,7 @@ int pci_p2pdma_add_resource(struct pci_dev *pdev, int bar, size_t size,
+ pages_free:
+ 	devm_memunmap_pages(&pdev->dev, pgmap);
+ pgmap_free:
+-	devm_kfree(&pdev->dev, pgmap);
++	devm_kfree(&pdev->dev, p2p_pgmap);
+ 	return error;
+ }
+ EXPORT_SYMBOL_GPL(pci_p2pdma_add_resource);
 -- 
 2.51.0
 
