@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-199776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BD58CA0904
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:41:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DD64CA0758
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:29:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 85AD1342471A
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:21:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4D72630C27F7
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:12:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17AAB34A78B;
-	Wed,  3 Dec 2025 16:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 961F433DEF4;
+	Wed,  3 Dec 2025 16:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gcFaUFtZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B5IOIJI9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9FC9347BCB;
-	Wed,  3 Dec 2025 16:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E4832C944;
+	Wed,  3 Dec 2025 16:59:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780902; cv=none; b=MnLgStP3s2qvCi/rPwceCb3JhULwtkCcWkJWyNs5mdcz04HhaxBhzw8iuEgitbdBf2XGrztlBB9GbTrE8cBmPqR/1enkVO1gtnpOM/NfMEsEeHozkcCcxfa8ZIJVZG8BdR4nRic97TlvJvIoSCUU5Y79N0mK0f/GBbLfmzjqwow=
+	t=1764781162; cv=none; b=We1qP23GqmxoHFvjkl9cNTgtltA3dgeTSz4NsXHFn6/mAOIFTu3rdTNcbzrokCZ7SYmjNRhz/kYZ8DVlKIz07y+5df7TY7n6yAew87bR88z7942fc+A88GuSqMSp4mD9NsQ/NLRM/mZP7HsWH3vY0KOEBo0MbQy0rxCf0WflhE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780902; c=relaxed/simple;
-	bh=+VFVh7Rtf4Q5SnzMvjHBixCrIDaWiSVAuODN3zmMVgI=;
+	s=arc-20240116; t=1764781162; c=relaxed/simple;
+	bh=0YIWKbvjDM60pCRq4ocxHcy3Vg4nTjkiu/qk7II+Z6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jy0RPqEJc/93TcUDADoNk926xVLBLdwsGrsUAaTKDhFrZ2NZKhHYaidG0Ct606osQ7161Vz1v7PFS2qUKwLOPnot5YmcYonwFG5+kbydRsSxabfucS0M/BdzvFUq9b947QJCqMERYzp301sDi1tvtUMh9PRY4wk5RrX5xjqNH7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gcFaUFtZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D602AC4CEF5;
-	Wed,  3 Dec 2025 16:55:01 +0000 (UTC)
+	 MIME-Version; b=jf7I3DFWTFuS0LdL+2hav5jf/Ckz+SaJhghef0MOqa3zHidrmkO5ax2iQMdhPcLJHBaydaWucxd/1E9XPn1VvrJ2RWtSXr9/wie2ezRAg/TQ1F+suoCHfJDeUineeKsGfzm8IwZKyQNv/dlWcIXRwEN09sSz2+4ifloJvlGw4Fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B5IOIJI9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E312C4CEF5;
+	Wed,  3 Dec 2025 16:59:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780902;
-	bh=+VFVh7Rtf4Q5SnzMvjHBixCrIDaWiSVAuODN3zmMVgI=;
+	s=korg; t=1764781161;
+	bh=0YIWKbvjDM60pCRq4ocxHcy3Vg4nTjkiu/qk7II+Z6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gcFaUFtZyMqjBIkml+2hir/QarU/I1o7VgNhRcS5i51sIUqoRO2rW9QmA0pTQvmTR
-	 FJUV6h/aKhhtaaszpCE2iejZtXh0qXIWjriVOJfoGSuRaZPqoSCQBnXOSBpAyWFTWM
-	 8Noa8swcMwJGb0fQbEv+0sU1Z9K5usOIrN5PtEKg=
+	b=B5IOIJI9gXxGkEtyYzuscyl3ZHvxUGjojG3Z4D1vhDw/YiREN282PMJl3bHWSgOm4
+	 MnIbzYJQ/oPml2JRBHZX5ZG4k+89njCAQP8sIgzu8zgtSSOkb48r2Q6X4agwly8ljE
+	 W8Rx4jy0T8QkIvQk3rIgllb8YAMZ2ZQcNWtCBLT4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.12 123/132] KVM: nSVM: Fix and simplify LBR virtualization handling with nested
+	Oleksandr Suvorov <cryosay@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.6 69/93] USB: serial: ftdi_sio: add support for u-blox EVK-M101
 Date: Wed,  3 Dec 2025 16:30:02 +0100
-Message-ID: <20251203152347.869961220@linuxfoundation.org>
+Message-ID: <20251203152339.075313724@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
+References: <20251203152336.494201426@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,198 +59,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
+From: Oleksandr Suvorov <cryosay@gmail.com>
 
-commit 8a4821412cf2c1429fffa07c012dd150f2edf78c upstream.
+commit 2d8ab771d5316de64f3bb920b82575c58eb00b1b upstream.
 
-The current scheme for handling LBRV when nested is used is very
-complicated, especially when L1 does not enable LBRV (i.e. does not set
-LBR_CTL_ENABLE_MASK).
+The U-Blox EVK-M101 enumerates as 1546:0506 [1] with four FTDI interfaces:
+- EVK-M101 current sensors
+- EVK-M101 I2C
+- EVK-M101 UART
+- EVK-M101 port D
 
-To avoid copying LBRs between VMCB01 and VMCB02 on every nested
-transition, the current implementation switches between using VMCB01 or
-VMCB02 as the source of truth for the LBRs while L2 is running. If L2
-enables LBR, VMCB02 is used as the source of truth. When L2 disables
-LBR, the LBRs are copied to VMCB01 and VMCB01 is used as the source of
-truth. This introduces significant complexity, and incorrect behavior in
-some cases.
+Only the third USB interface is a UART. This change lets ftdi_sio probe
+the VID/PID and registers only interface #3 as a TTY, leaving the rest
+available for other drivers.
 
-For example, on a nested #VMEXIT, the LBRs are only copied from VMCB02
-to VMCB01 if LBRV is enabled in VMCB01. This is because L2's writes to
-MSR_IA32_DEBUGCTLMSR to enable LBR are intercepted and propagated to
-VMCB01 instead of VMCB02. However, LBRV is only enabled in VMCB02 when
-L2 is running.
+[1]
+usb 5-1.3: new high-speed USB device number 11 using xhci_hcd
+usb 5-1.3: New USB device found, idVendor=1546, idProduct=0506, bcdDevice= 8.00
+usb 5-1.3: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+usb 5-1.3: Product: EVK-M101
+usb 5-1.3: Manufacturer: u-blox AG
 
-This means that if L2 enables LBR and exits to L1, the LBRs will not be
-propagated from VMCB02 to VMCB01, because LBRV is disabled in VMCB01.
+Datasheet: https://content.u-blox.com/sites/default/files/documents/EVK-M10_UserGuide_UBX-21003949.pdf
 
-There is no meaningful difference in CPUID rate in L2 when copying LBRs
-on every nested transition vs. the current approach, so do the simple
-and correct thing and always copy LBRs between VMCB01 and VMCB02 on
-nested transitions (when LBRV is disabled by L1). Drop the conditional
-LBRs copying in __svm_{enable/disable}_lbrv() as it is now unnecessary.
-
-VMCB02 becomes the only source of truth for LBRs when L2 is running,
-regardless of LBRV being enabled by L1, drop svm_get_lbr_vmcb() and use
-svm->vmcb directly in its place.
-
-Fixes: 1d5a1b5860ed ("KVM: x86: nSVM: correctly virtualize LBR msrs when L2 is running")
+Signed-off-by: Oleksandr Suvorov <cryosay@gmail.com>
+Link: https://lore.kernel.org/20250926060235.3442748-1-cryosay@gmail.com/
 Cc: stable@vger.kernel.org
-Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-Link: https://patch.msgid.link/20251108004524.1600006-4-yosry.ahmed@linux.dev
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/nested.c |   20 ++++++-------------
- arch/x86/kvm/svm/svm.c    |   47 +++++++++-------------------------------------
- 2 files changed, 17 insertions(+), 50 deletions(-)
+ drivers/usb/serial/ftdi_sio.c     |    1 +
+ drivers/usb/serial/ftdi_sio_ids.h |    1 +
+ 2 files changed, 2 insertions(+)
 
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -602,11 +602,10 @@ static void nested_vmcb02_prepare_save(s
- 		 */
- 		svm_copy_lbrs(vmcb02, vmcb12);
- 		vmcb02->save.dbgctl &= ~DEBUGCTL_RESERVED_BITS;
--		svm_update_lbrv(&svm->vcpu);
--
--	} else if (unlikely(vmcb01->control.virt_ext & LBR_CTL_ENABLE_MASK)) {
-+	} else {
- 		svm_copy_lbrs(vmcb02, vmcb01);
- 	}
-+	svm_update_lbrv(&svm->vcpu);
- }
+--- a/drivers/usb/serial/ftdi_sio.c
++++ b/drivers/usb/serial/ftdi_sio.c
+@@ -1074,6 +1074,7 @@ static const struct usb_device_id id_tab
+ 	/* U-Blox devices */
+ 	{ USB_DEVICE(UBLOX_VID, UBLOX_C099F9P_ZED_PID) },
+ 	{ USB_DEVICE(UBLOX_VID, UBLOX_C099F9P_ODIN_PID) },
++	{ USB_DEVICE_INTERFACE_NUMBER(UBLOX_VID, UBLOX_EVK_M101_PID, 2) },
+ 	/* FreeCalypso USB adapters */
+ 	{ USB_DEVICE(FTDI_VID, FTDI_FALCONIA_JTAG_BUF_PID),
+ 		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+--- a/drivers/usb/serial/ftdi_sio_ids.h
++++ b/drivers/usb/serial/ftdi_sio_ids.h
+@@ -1614,6 +1614,7 @@
+ #define UBLOX_VID			0x1546
+ #define UBLOX_C099F9P_ZED_PID		0x0502
+ #define UBLOX_C099F9P_ODIN_PID		0x0503
++#define UBLOX_EVK_M101_PID		0x0506
  
- static inline bool is_evtinj_soft(u32 evtinj)
-@@ -731,11 +730,7 @@ static void nested_vmcb02_prepare_contro
- 			svm->soft_int_next_rip = vmcb12_rip;
- 	}
- 
--	vmcb02->control.virt_ext            = vmcb01->control.virt_ext &
--					      LBR_CTL_ENABLE_MASK;
--	if (guest_can_use(vcpu, X86_FEATURE_LBRV))
--		vmcb02->control.virt_ext  |=
--			(svm->nested.ctl.virt_ext & LBR_CTL_ENABLE_MASK);
-+	/* LBR_CTL_ENABLE_MASK is controlled by svm_update_lbrv() */
- 
- 	if (!nested_vmcb_needs_vls_intercept(svm))
- 		vmcb02->control.virt_ext |= VIRTUAL_VMLOAD_VMSAVE_ENABLE_MASK;
-@@ -1066,13 +1061,12 @@ int nested_svm_vmexit(struct vcpu_svm *s
- 		kvm_make_request(KVM_REQ_EVENT, &svm->vcpu);
- 
- 	if (unlikely(guest_can_use(vcpu, X86_FEATURE_LBRV) &&
--		     (svm->nested.ctl.virt_ext & LBR_CTL_ENABLE_MASK))) {
-+		     (svm->nested.ctl.virt_ext & LBR_CTL_ENABLE_MASK)))
- 		svm_copy_lbrs(vmcb12, vmcb02);
--		svm_update_lbrv(vcpu);
--	} else if (unlikely(vmcb01->control.virt_ext & LBR_CTL_ENABLE_MASK)) {
-+	else
- 		svm_copy_lbrs(vmcb01, vmcb02);
--		svm_update_lbrv(vcpu);
--	}
-+
-+	svm_update_lbrv(vcpu);
- 
- 	if (vnmi) {
- 		if (vmcb02->control.int_ctl & V_NMI_BLOCKING_MASK)
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -1016,13 +1016,7 @@ static void svm_recalc_lbr_msr_intercept
- 
- static void __svm_enable_lbrv(struct kvm_vcpu *vcpu)
- {
--	struct vcpu_svm *svm = to_svm(vcpu);
--
--	svm->vmcb->control.virt_ext |= LBR_CTL_ENABLE_MASK;
--
--	/* Move the LBR msrs to the vmcb02 so that the guest can see them. */
--	if (is_guest_mode(vcpu))
--		svm_copy_lbrs(svm->vmcb, svm->vmcb01.ptr);
-+	to_svm(vcpu)->vmcb->control.virt_ext |= LBR_CTL_ENABLE_MASK;
- }
- 
- void svm_enable_lbrv(struct kvm_vcpu *vcpu)
-@@ -1033,36 +1027,15 @@ void svm_enable_lbrv(struct kvm_vcpu *vc
- 
- static void __svm_disable_lbrv(struct kvm_vcpu *vcpu)
- {
--	struct vcpu_svm *svm = to_svm(vcpu);
--
- 	KVM_BUG_ON(sev_es_guest(vcpu->kvm), vcpu->kvm);
--
--	svm->vmcb->control.virt_ext &= ~LBR_CTL_ENABLE_MASK;
--
--	/*
--	 * Move the LBR msrs back to the vmcb01 to avoid copying them
--	 * on nested guest entries.
--	 */
--	if (is_guest_mode(vcpu))
--		svm_copy_lbrs(svm->vmcb01.ptr, svm->vmcb);
--}
--
--static struct vmcb *svm_get_lbr_vmcb(struct vcpu_svm *svm)
--{
--	/*
--	 * If LBR virtualization is disabled, the LBR MSRs are always kept in
--	 * vmcb01.  If LBR virtualization is enabled and L1 is running VMs of
--	 * its own, the MSRs are moved between vmcb01 and vmcb02 as needed.
--	 */
--	return svm->vmcb->control.virt_ext & LBR_CTL_ENABLE_MASK ? svm->vmcb :
--								   svm->vmcb01.ptr;
-+	to_svm(vcpu)->vmcb->control.virt_ext &= ~LBR_CTL_ENABLE_MASK;
- }
- 
- void svm_update_lbrv(struct kvm_vcpu *vcpu)
- {
- 	struct vcpu_svm *svm = to_svm(vcpu);
- 	bool current_enable_lbrv = svm->vmcb->control.virt_ext & LBR_CTL_ENABLE_MASK;
--	bool enable_lbrv = (svm_get_lbr_vmcb(svm)->save.dbgctl & DEBUGCTLMSR_LBR) ||
-+	bool enable_lbrv = (svm->vmcb->save.dbgctl & DEBUGCTLMSR_LBR) ||
- 			    (is_guest_mode(vcpu) && guest_can_use(vcpu, X86_FEATURE_LBRV) &&
- 			    (svm->nested.ctl.virt_ext & LBR_CTL_ENABLE_MASK));
- 
-@@ -2991,19 +2964,19 @@ static int svm_get_msr(struct kvm_vcpu *
- 		msr_info->data = svm->tsc_aux;
- 		break;
- 	case MSR_IA32_DEBUGCTLMSR:
--		msr_info->data = svm_get_lbr_vmcb(svm)->save.dbgctl;
-+		msr_info->data = svm->vmcb->save.dbgctl;
- 		break;
- 	case MSR_IA32_LASTBRANCHFROMIP:
--		msr_info->data = svm_get_lbr_vmcb(svm)->save.br_from;
-+		msr_info->data = svm->vmcb->save.br_from;
- 		break;
- 	case MSR_IA32_LASTBRANCHTOIP:
--		msr_info->data = svm_get_lbr_vmcb(svm)->save.br_to;
-+		msr_info->data = svm->vmcb->save.br_to;
- 		break;
- 	case MSR_IA32_LASTINTFROMIP:
--		msr_info->data = svm_get_lbr_vmcb(svm)->save.last_excp_from;
-+		msr_info->data = svm->vmcb->save.last_excp_from;
- 		break;
- 	case MSR_IA32_LASTINTTOIP:
--		msr_info->data = svm_get_lbr_vmcb(svm)->save.last_excp_to;
-+		msr_info->data = svm->vmcb->save.last_excp_to;
- 		break;
- 	case MSR_VM_HSAVE_PA:
- 		msr_info->data = svm->nested.hsave_msr;
-@@ -3276,10 +3249,10 @@ static int svm_set_msr(struct kvm_vcpu *
- 		if (data & DEBUGCTL_RESERVED_BITS)
- 			return 1;
- 
--		if (svm_get_lbr_vmcb(svm)->save.dbgctl == data)
-+		if (svm->vmcb->save.dbgctl == data)
- 			break;
- 
--		svm_get_lbr_vmcb(svm)->save.dbgctl = data;
-+		svm->vmcb->save.dbgctl = data;
- 		vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
- 		svm_update_lbrv(vcpu);
- 		break;
+ /*
+  * GMC devices
 
 
 
