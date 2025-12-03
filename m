@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-198247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B289BC9F78E
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:32:05 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1717CA110D
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:40:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C107F3000B6C
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:31:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 898A63014B74
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:39:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1871030F925;
-	Wed,  3 Dec 2025 15:31:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 170CF332902;
+	Wed,  3 Dec 2025 16:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ppU28Wbf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XILq2rQA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F7E430F7F6;
-	Wed,  3 Dec 2025 15:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54909331204;
+	Wed,  3 Dec 2025 16:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764775912; cv=none; b=jryBzD8wk7gWicwxBveqsDp6cnxl76eGFC+6Mt+uuPdAUrnlVjqbk11D9X1IRNYskE342T/6YEVBOhGmQchIQWDVG7fPxxxa8oRmKpCf+crsneShQsh7SnHrfXDlhh3NIHHs49b56//zuLhqKI9DzmIwhMkXhLKEd7kv99OM2DI=
+	t=1764779329; cv=none; b=Ls17EjfgkF6QqbQYKcETy2NrLVpBZixqjtVk7sRmnOIxB8rPWJ+TbkN5/Zfk4L9Usop4d1X54AqraxM7dS/vXn3X/63OBNBorv+zBisDFooiwwkS+Q4PKwLpVZQMt5pROMlMmAbnCoRjJWs7/D8XE7dzRXNa0ZTBf+8VtB8Gfek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764775912; c=relaxed/simple;
-	bh=t8plqfGggaQ3neuP27evXDRMsOEfaJyuJE0PbRZHjos=;
+	s=arc-20240116; t=1764779329; c=relaxed/simple;
+	bh=m0AEI3SYjWcpjL9aY1myhD6mHZ6bt2AtGd9Y7TZPwIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mNr7dDL0Ri5jhRVOsdHkClPkV/euGnwT8SuInlP7vPhKFTn3VejtXsWOgfrxmfs54521FYC7RbMMmIDQgOw4wqd4uTDFy6rjX//PSyOoztKLIdZPOu4sRUf+7T7jAEegrN+Itp+O+qVBMvoK6ka3rxTezlXYwscZuaCLWC7K+k0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ppU28Wbf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27456C4CEF5;
-	Wed,  3 Dec 2025 15:31:50 +0000 (UTC)
+	 MIME-Version; b=hwYKSZIMog6ONoGgVXZzMAA+btQuP47FN6OGutardgCC0ggmpU/RygG6ABuhfeqvJbPLwBy+I/r+F9cJUmofhjN5EuVxOHqbPxt+SYDRcHxJOKhAFKs9cNcgL5J+mJoDOw1qyjuUB/IGBABzhFAiExXG/ZPL51TVllRwd/pjzlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XILq2rQA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6693C4CEF5;
+	Wed,  3 Dec 2025 16:28:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764775911;
-	bh=t8plqfGggaQ3neuP27evXDRMsOEfaJyuJE0PbRZHjos=;
+	s=korg; t=1764779329;
+	bh=m0AEI3SYjWcpjL9aY1myhD6mHZ6bt2AtGd9Y7TZPwIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ppU28Wbfz+SIVw0g8pQFnPHjSDREpOBqfdCWJnTBxzA0nzK6TxFcF2v+IsmMLixF2
-	 bKx4qq3UQMPACnwo7kydX4LZSqVmpz6g+y7ZAXi1nOMg2YSjgZSK7K4liRE6X27Dr0
-	 BIwPuj2RFizXbFWDFTbp47w9ukmBI8CuFl7TjM+8=
+	b=XILq2rQANeKxSDBsHgekjmj7AzHEfMmIL9cz/R+kxuwq+ne0juC/JfINlIUDSWm1p
+	 PvoC74/IbvIgZDR6mxL1dHcEUDdb7iIIyAfRJ5+IpguQhAupryL4KzMreJDfClFxaC
+	 loFP0K+Gmum1rAn5aKDZmrXb3JuVf3UMZRmIWxBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Ma Ke <make24@iscas.ac.cn>,
-	Steev Klimaszewski <steev@kali.org>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.10 024/300] regmap: slimbus: fix bus_context pointer in regmap init calls
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 226/568] drm/amdgpu: Use memdup_array_user in amdgpu_cs_wait_fences_ioctl
 Date: Wed,  3 Dec 2025 16:23:48 +0100
-Message-ID: <20251203152401.352627207@linuxfoundation.org>
+Message-ID: <20251203152449.000074488@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,103 +60,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Klimov <alexey.klimov@linaro.org>
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-commit 434f7349a1f00618a620b316f091bd13a12bc8d2 upstream.
+[ Upstream commit dea75df7afe14d6217576dbc28cc3ec1d1f712fb ]
 
-Commit 4e65bda8273c ("ASoC: wcd934x: fix error handling in
-wcd934x_codec_parse_data()") revealed the problem in the slimbus regmap.
-That commit breaks audio playback, for instance, on sdm845 Thundercomm
-Dragonboard 845c board:
+Replace kmalloc_array() + copy_from_user() with memdup_array_user().
 
- Unable to handle kernel paging request at virtual address ffff8000847cbad4
- ...
- CPU: 5 UID: 0 PID: 776 Comm: aplay Not tainted 6.18.0-rc1-00028-g7ea30958b305 #11 PREEMPT
- Hardware name: Thundercomm Dragonboard 845c (DT)
- ...
- Call trace:
-  slim_xfer_msg+0x24/0x1ac [slimbus] (P)
-  slim_read+0x48/0x74 [slimbus]
-  regmap_slimbus_read+0x18/0x24 [regmap_slimbus]
-  _regmap_raw_read+0xe8/0x174
-  _regmap_bus_read+0x44/0x80
-  _regmap_read+0x60/0xd8
-  _regmap_update_bits+0xf4/0x140
-  _regmap_select_page+0xa8/0x124
-  _regmap_raw_write_impl+0x3b8/0x65c
-  _regmap_bus_raw_write+0x60/0x80
-  _regmap_write+0x58/0xc0
-  regmap_write+0x4c/0x80
-  wcd934x_hw_params+0x494/0x8b8 [snd_soc_wcd934x]
-  snd_soc_dai_hw_params+0x3c/0x7c [snd_soc_core]
-  __soc_pcm_hw_params+0x22c/0x634 [snd_soc_core]
-  dpcm_be_dai_hw_params+0x1d4/0x38c [snd_soc_core]
-  dpcm_fe_dai_hw_params+0x9c/0x17c [snd_soc_core]
-  snd_pcm_hw_params+0x124/0x464 [snd_pcm]
-  snd_pcm_common_ioctl+0x110c/0x1820 [snd_pcm]
-  snd_pcm_ioctl+0x34/0x4c [snd_pcm]
-  __arm64_sys_ioctl+0xac/0x104
-  invoke_syscall+0x48/0x104
-  el0_svc_common.constprop.0+0x40/0xe0
-  do_el0_svc+0x1c/0x28
-  el0_svc+0x34/0xec
-  el0t_64_sync_handler+0xa0/0xf0
-  el0t_64_sync+0x198/0x19c
+This shrinks the source code and improves separation between the kernel
+and userspace slabs.
 
-The __devm_regmap_init_slimbus() started to be used instead of
-__regmap_init_slimbus() after the commit mentioned above and turns out
-the incorrect bus_context pointer (3rd argument) was used in
-__devm_regmap_init_slimbus(). It should be just "slimbus" (which is equal
-to &slimbus->dev). Correct it. The wcd934x codec seems to be the only or
-the first user of devm_regmap_init_slimbus() but we should fix it till
-the point where __devm_regmap_init_slimbus() was introduced therefore
-two "Fixes" tags.
-
-While at this, also correct the same argument in __regmap_init_slimbus().
-
-Fixes: 4e65bda8273c ("ASoC: wcd934x: fix error handling in wcd934x_codec_parse_data()")
-Fixes: 7d6f7fb053ad ("regmap: add SLIMbus support")
-Cc: stable@vger.kernel.org
-Cc: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: Ma Ke <make24@iscas.ac.cn>
-Cc: Steev Klimaszewski <steev@kali.org>
-Cc: Srinivas Kandagatla <srini@kernel.org>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251022201013.1740211-1-alexey.klimov@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/regmap/regmap-slimbus.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c | 19 +++++--------------
+ 1 file changed, 5 insertions(+), 14 deletions(-)
 
---- a/drivers/base/regmap/regmap-slimbus.c
-+++ b/drivers/base/regmap/regmap-slimbus.c
-@@ -48,8 +48,7 @@ struct regmap *__regmap_init_slimbus(str
- 	if (IS_ERR(bus))
- 		return ERR_CAST(bus);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+index 25cccd080d977..e0cd6a08ffb27 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+@@ -1695,30 +1695,21 @@ int amdgpu_cs_wait_fences_ioctl(struct drm_device *dev, void *data,
+ {
+ 	struct amdgpu_device *adev = drm_to_adev(dev);
+ 	union drm_amdgpu_wait_fences *wait = data;
+-	uint32_t fence_count = wait->in.fence_count;
+-	struct drm_amdgpu_fence *fences_user;
+ 	struct drm_amdgpu_fence *fences;
+ 	int r;
  
--	return __regmap_init(&slimbus->dev, bus, &slimbus->dev, config,
--			     lock_key, lock_name);
-+	return __regmap_init(&slimbus->dev, bus, slimbus, config, lock_key, lock_name);
- }
- EXPORT_SYMBOL_GPL(__regmap_init_slimbus);
+ 	/* Get the fences from userspace */
+-	fences = kmalloc_array(fence_count, sizeof(struct drm_amdgpu_fence),
+-			GFP_KERNEL);
+-	if (fences == NULL)
+-		return -ENOMEM;
+-
+-	fences_user = u64_to_user_ptr(wait->in.fences);
+-	if (copy_from_user(fences, fences_user,
+-		sizeof(struct drm_amdgpu_fence) * fence_count)) {
+-		r = -EFAULT;
+-		goto err_free_fences;
+-	}
++	fences = memdup_array_user(u64_to_user_ptr(wait->in.fences),
++				   wait->in.fence_count,
++				   sizeof(struct drm_amdgpu_fence));
++	if (IS_ERR(fences))
++		return PTR_ERR(fences);
  
-@@ -63,8 +62,7 @@ struct regmap *__devm_regmap_init_slimbu
- 	if (IS_ERR(bus))
- 		return ERR_CAST(bus);
+ 	if (wait->in.wait_all)
+ 		r = amdgpu_cs_wait_all_fences(adev, filp, wait, fences);
+ 	else
+ 		r = amdgpu_cs_wait_any_fence(adev, filp, wait, fences);
  
--	return __devm_regmap_init(&slimbus->dev, bus, &slimbus, config,
--				  lock_key, lock_name);
-+	return __devm_regmap_init(&slimbus->dev, bus, slimbus, config, lock_key, lock_name);
- }
- EXPORT_SYMBOL_GPL(__devm_regmap_init_slimbus);
+-err_free_fences:
+ 	kfree(fences);
  
+ 	return r;
+-- 
+2.51.0
+
 
 
 
