@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-199708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3A6DCA0B2C
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:58:16 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EEECCA05FB
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:22:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4BD3030DC389
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:53:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9BE603000B1D
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:22:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DCE7393DCC;
-	Wed,  3 Dec 2025 16:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8F0834F275;
+	Wed,  3 Dec 2025 16:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rsfO+/IY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rTNt0tpT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA396376BD0;
-	Wed,  3 Dec 2025 16:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93EB634F250;
+	Wed,  3 Dec 2025 16:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780678; cv=none; b=D5QbEr7SdY3T3gC2GRTFMBeWJDQcmibZlz4hAMtCRrwPSQCRoMb/5TgJmgjji/L9kVCJAxRoM2Y1INCvVpNqQf11RS0y8Nxljs++/bb8AAUulpL/fFgiqH7GukcXb5bO1nyhSDiZTWxCMvHlpt/Yd/4bDn3aqKPSPOFinilSMb0=
+	t=1764778480; cv=none; b=u3nv83QnHUwyNPua+K1XMK+C6ezmifmaZ1V6P1EE+jjXqNPNzrpLJjDt1S9YV1JJ4Dp7J+M7FUq4cpPXxR5XZW3IGTrFQFwRffkCZFObPlpFOxWzrTQIbu8uO0DfnNE0nW4749DKir4HHvbHBXcehEEGOlOShLnBnGMQZFqFBvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780678; c=relaxed/simple;
-	bh=7kglwBD3O/SBuE8jUiKLRNxQdsXmXpi/sQmAcc6/i5g=;
+	s=arc-20240116; t=1764778480; c=relaxed/simple;
+	bh=jzq1xZGL3ArOT0YHPQRMh1dPwlPMIN0DlV/hd8gST4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X3KOmgEyQHdWOvI5omskQJMtH/rYOzovXNkBXxDNgoYHVEUtuZme+4x5gMIfYZoHNeaCOVWt1hX6cFTIy1U2iwMsFHNAw2p3T4czq+Uz3U/WOZH2oZGA7yAO32W8QVv39I2KpWDprACHGX/bkwGjKgFq4PrSb2EYvaNF6yzBjGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rsfO+/IY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26A0DC4CEF5;
-	Wed,  3 Dec 2025 16:51:17 +0000 (UTC)
+	 MIME-Version; b=uiHRXn5NffhvJ2Y8vvq9kriG2Pc4kOuwmVN1Dfl0L/8NR/Wkit46/pSWb6JKulBD6X0Qo0lLHIvntNrqoDooY6sRDpVmyO+G27aev/8waGgdg8VyH2xgaZiUZe4p8tsBeaF4DSIHinQafZK+7sQsdy56tuA8QFs49UXX8MbqK54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rTNt0tpT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 015B9C4CEF5;
+	Wed,  3 Dec 2025 16:14:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780678;
-	bh=7kglwBD3O/SBuE8jUiKLRNxQdsXmXpi/sQmAcc6/i5g=;
+	s=korg; t=1764778480;
+	bh=jzq1xZGL3ArOT0YHPQRMh1dPwlPMIN0DlV/hd8gST4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rsfO+/IYuH7Y8Fg72kvoTMm5P6imkdZ6uF/Vl3MrbUgV42s1FDMMx4XK8sD3uy13g
-	 QzauhW/7NPv7XAQ1ah8nFaN5AUcV3CwumRP1qix72HJjcbpz11Sf7gvR+w1840WzeI
-	 n1Tmp3lnnL8wCAschbv0gd4uY8uE4EGf1NnH7+uE=
+	b=rTNt0tpTyXkfOV7ZLnqPpz6QabhObSmizJ9PI+/Z05II8xeE/LMWFifwWErMOk8C2
+	 mu82rBlf+kYBhazDlT9MdmuAcOtEk/PL3ZmCOzLeRNFjsk6CYnN8MHZi3E7VV08qGM
+	 8LSVYq8dEPyA305fAgIf00g3ItnDtkKE/OC2MDoQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 030/132] net: fec: do not allow enabling PPS and PEROUT simultaneously
+	stable <stable@kernel.org>,
+	Jamie Iles <jamie.iles@oss.qualcomm.com>,
+	Punit Agrawal <punit.agrawal@oss.qualcomm.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 5.15 359/392] drivers/usb/dwc3: fix PCI parent check
 Date: Wed,  3 Dec 2025 16:28:29 +0100
-Message-ID: <20251203152344.416717433@linuxfoundation.org>
+Message-ID: <20251203152427.375681842@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,63 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Jamie Iles <jamie.iles@oss.qualcomm.com>
 
-[ Upstream commit c0a1f3d7e128e8d1b6c0fe09c68eac5ebcf677c8 ]
+commit 40f8d17eed7533ed2bbb5e3cc680049b19411b2e upstream.
 
-In the current driver, PPS and PEROUT use the same channel to generate
-the events, so they cannot be enabled at the same time. Otherwise, the
-later configuration will overwrite the earlier configuration. Therefore,
-when configuring PPS, the driver will check whether PEROUT is enabled.
-Similarly, when configuring PEROUT, the driver will check whether PPS
-is enabled.
+The sysdev_is_parent check was being used to infer PCI devices that have
+the DMA mask set from the PCI capabilities, but sysdev_is_parent is also
+used for non-PCI ACPI devices in which case the DMA mask would be the
+bus default or as set by the _DMA method.
 
-Fixes: 350749b909bf ("net: fec: Add support for periodic output signal of PPS")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Link: https://patch.msgid.link/20251125085210.1094306-4-wei.fang@nxp.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Without this fix the DMA mask would default to 32-bits and so allocation
+would fail if there was no DRAM below 4GB.
+
+Fixes: 47ce45906ca9 ("usb: dwc3: leave default DMA for PCI devices")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Jamie Iles <jamie.iles@oss.qualcomm.com>
+Signed-off-by: Punit Agrawal <punit.agrawal@oss.qualcomm.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://patch.msgid.link/20251107104437.1602509-1-punit.agrawal@oss.qualcomm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/fec_ptp.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/usb/dwc3/core.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-index a3853fccdc7b6..beb1d98fa741a 100644
---- a/drivers/net/ethernet/freescale/fec_ptp.c
-+++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -129,6 +129,12 @@ static int fec_ptp_enable_pps(struct fec_enet_private *fep, uint enable)
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -24,6 +24,7 @@
+ #include <linux/dma-mapping.h>
+ #include <linux/of.h>
+ #include <linux/acpi.h>
++#include <linux/pci.h>
+ #include <linux/pinctrl/consumer.h>
+ #include <linux/reset.h>
  
- 	spin_lock_irqsave(&fep->tmreg_lock, flags);
+@@ -1667,7 +1668,7 @@ static int dwc3_probe(struct platform_de
+ 	platform_set_drvdata(pdev, dwc);
+ 	dwc3_cache_hwparams(dwc);
  
-+	if (fep->perout_enable) {
-+		spin_unlock_irqrestore(&fep->tmreg_lock, flags);
-+		dev_err(&fep->pdev->dev, "PEROUT is running");
-+		return -EBUSY;
-+	}
-+
- 	if (fep->pps_enable == enable) {
- 		spin_unlock_irqrestore(&fep->tmreg_lock, flags);
- 		return 0;
-@@ -572,6 +578,12 @@ static int fec_ptp_enable(struct ptp_clock_info *ptp,
- 			}
- 			spin_lock_irqsave(&fep->tmreg_lock, flags);
- 
-+			if (fep->pps_enable) {
-+				dev_err(&fep->pdev->dev, "PPS is running");
-+				ret = -EBUSY;
-+				goto unlock;
-+			}
-+
- 			if (fep->perout_enable) {
- 				dev_err(&fep->pdev->dev,
- 					"PEROUT has been enabled\n");
--- 
-2.51.0
-
+-	if (!dwc->sysdev_is_parent &&
++	if (!dev_is_pci(dwc->sysdev) &&
+ 	    DWC3_GHWPARAMS0_AWIDTH(dwc->hwparams.hwparams0) == 64) {
+ 		ret = dma_set_mask_and_coherent(dwc->sysdev, DMA_BIT_MASK(64));
+ 		if (ret)
 
 
 
