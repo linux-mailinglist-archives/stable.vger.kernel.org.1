@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-198497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0467C9FB7B
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:55:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EC86CA144A
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:07:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EC06330213DE
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:45:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 39B9C32E8878
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:43:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8F6B31352F;
-	Wed,  3 Dec 2025 15:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C992634CFB2;
+	Wed,  3 Dec 2025 16:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UEqYTlNi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I7ImSaJV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744D631328E;
-	Wed,  3 Dec 2025 15:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83ACE34CFAE;
+	Wed,  3 Dec 2025 16:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776741; cv=none; b=sta9ca/Px+Df/M3XRyU0pEN/sbxfc/1VRIQEJvLV3tsxrjBDQXipYHgmETrl5nAXjfpucZrqfoh0sd5NMEevu5zzxe5Jv0gI/yQx6MAK8EagaZY7Xrf2VXL4ayxe9Evl17j6CFv4+3q4AqLSLhN8FEuhSf7mzMkMmQ88lN/EIw0=
+	t=1764778370; cv=none; b=FBi/Oe0+YuvrKNbm9bWO/eReN4PoWWUwbjGlHh8fK8oLADnm5PX9EGnGC30H+7aS2ERhqsfntkrQ5oux18ecCBTJeZAy0cmMRLxyhmsvlL1JPIs7nB0aZ5FdV09NdT7zIXoCwnFseMtxUKXWFkET7luCTRJsVMmW6wUeaWwlKhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776741; c=relaxed/simple;
-	bh=Kyr+TQyb4Bdf72YPxiPRcz0g23djHJ0oVYNBaa0DTls=;
+	s=arc-20240116; t=1764778370; c=relaxed/simple;
+	bh=1IV84oWCihc8Qv7DjrbJ+a3BEkwp+4NWGmuKQTE6yF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N0rSW9iK5L01uwJyLn9vYq62S3y8omRsBf8qXwqgNIS3Cu/FXY/H5WW7AExrnXZgEsxKDRqVqA3s8Jo8tk53FLR2MKTtc804qsfkEwvjQ7uLHeAiuDJ1DOQlu+8UbQLecaT6kfua72dPkTKiOHWvhS54S5M0NTf6rZi2p133FF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UEqYTlNi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B270AC4CEF5;
-	Wed,  3 Dec 2025 15:45:40 +0000 (UTC)
+	 MIME-Version; b=QfaQ9NbGV62bZvT6A3NhWh2RpPZmQQJbrDQEJvmF++C4Ipf25YzJkWMruo+E0Up/5GMIsidIyg5IkeA9IbzKZC8E63WBYr22DVDRN//GT4KIWt/U7S52VdRs0Voo4s17SpSE1/1PzsOJBPf1ueBfm61egzes2s7GgY/nEMKLbOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I7ImSaJV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E34AEC4CEF5;
+	Wed,  3 Dec 2025 16:12:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776741;
-	bh=Kyr+TQyb4Bdf72YPxiPRcz0g23djHJ0oVYNBaa0DTls=;
+	s=korg; t=1764778370;
+	bh=1IV84oWCihc8Qv7DjrbJ+a3BEkwp+4NWGmuKQTE6yF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UEqYTlNi0+VqXirEXq+H9j6EnFhbRsDOkMfvAIloh+3MYTjUUctSPiWs3vYUJBMJN
-	 pKPttUDTYydzSGBFCJ3RKFDb51TFDsv9FV9JihiaRaDc73c/aHKtDhqh+Ve7LmiJBv
-	 ISz2Dh+cwd/52RvGrPSiwIemMfxOGyTGyHub/C0s=
+	b=I7ImSaJV8itaC/4iwh8NsCarKwVTLs3Dxd2mAcUZJ48U2VCQ+B41E09H/eRbS1YSg
+	 p8EmPI8nm9Bhlh2aLQNBLaCPXPxEuRdxlHbB0CPYCMMhf5+CsE1/omBlwi4h1xnuU6
+	 sK109lmxDVLjXlAJgQ//ENyx3knn3By67BP8QGTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 5.10 272/300] dm-verity: fix unreliable memory allocation
+	Seungjin Bae <eeodqql09@gmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 326/392] Input: pegasus-notetaker - fix potential out-of-bounds access
 Date: Wed,  3 Dec 2025 16:27:56 +0100
-Message-ID: <20251203152410.709121085@linuxfoundation.org>
+Message-ID: <20251203152426.159306899@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,41 +60,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Seungjin Bae <eeodqql09@gmail.com>
 
-commit fe680d8c747f4e676ac835c8c7fb0f287cd98758 upstream.
+[ Upstream commit 69aeb507312306f73495598a055293fa749d454e ]
 
-GFP_NOWAIT allocation may fail anytime. It needs to be changed to
-GFP_NOIO. There's no need to handle an error because mempool_alloc with
-GFP_NOIO can't fail.
+In the pegasus_notetaker driver, the pegasus_probe() function allocates
+the URB transfer buffer using the wMaxPacketSize value from
+the endpoint descriptor. An attacker can use a malicious USB descriptor
+to force the allocation of a very small buffer.
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Subsequently, if the device sends an interrupt packet with a specific
+pattern (e.g., where the first byte is 0x80 or 0x42),
+the pegasus_parse_packet() function parses the packet without checking
+the allocated buffer size. This leads to an out-of-bounds memory access.
+
+Fixes: 1afca2b66aac ("Input: add Pegasus Notetaker tablet driver")
+Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
+Link: https://lore.kernel.org/r/20251007214131.3737115-2-eeodqql09@gmail.com
 Cc: stable@vger.kernel.org
-Reviewed-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-verity-fec.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/input/tablet/pegasus_notetaker.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/md/dm-verity-fec.c
-+++ b/drivers/md/dm-verity-fec.c
-@@ -314,11 +314,7 @@ static int fec_alloc_bufs(struct dm_veri
- 		if (fio->bufs[n])
- 			continue;
+--- a/drivers/input/tablet/pegasus_notetaker.c
++++ b/drivers/input/tablet/pegasus_notetaker.c
+@@ -63,6 +63,9 @@
+ #define BUTTON_PRESSED			0xb5
+ #define COMMAND_VERSION			0xa9
  
--		fio->bufs[n] = mempool_alloc(&v->fec->prealloc_pool, GFP_NOWAIT);
--		if (unlikely(!fio->bufs[n])) {
--			DMERR("failed to allocate FEC buffer");
--			return -ENOMEM;
--		}
-+		fio->bufs[n] = mempool_alloc(&v->fec->prealloc_pool, GFP_NOIO);
- 	}
++/* 1 Status + 1 Color + 2 X + 2 Y = 6 bytes */
++#define NOTETAKER_PACKET_SIZE		6
++
+ /* in xy data packet */
+ #define BATTERY_NO_REPORT		0x40
+ #define BATTERY_LOW			0x41
+@@ -297,6 +300,12 @@ static int pegasus_probe(struct usb_inte
  
- 	/* try to allocate the maximum number of buffers */
+ 	pipe = usb_rcvintpipe(dev, endpoint->bEndpointAddress);
+ 	pegasus->data_len = usb_maxpacket(dev, pipe);
++	if (pegasus->data_len < NOTETAKER_PACKET_SIZE) {
++		dev_err(&intf->dev, "packet size is too small (%d)\n",
++			pegasus->data_len);
++		error = -EINVAL;
++		goto err_free_mem;
++	}
+ 
+ 	pegasus->data = usb_alloc_coherent(dev, pegasus->data_len, GFP_KERNEL,
+ 					   &pegasus->data_dma);
 
 
 
