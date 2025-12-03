@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D70ECA0069
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:39:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCEF1CA0E1A
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:19:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 45180300D654
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:36:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C2F2E313C691
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:16:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E9883596E4;
-	Wed,  3 Dec 2025 16:36:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 116A334EEF7;
+	Wed,  3 Dec 2025 16:04:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yrCtxosc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kgLUGvnc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A5183590D4;
-	Wed,  3 Dec 2025 16:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7FAA34EEF1;
+	Wed,  3 Dec 2025 16:04:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779772; cv=none; b=fnN7EBdepy5X7XX63rGkgDug4BJlWxiy7LwtUxrTwINtRI7Nnd6LXGBmvWvge1lmkxfv+N5UIvcil4YF6rLb/1A4yZzE0uWp8kuMUqOfodMZ9B+EkjglNfw/dwYb9aUdJ30qM/76CQBBHrMiIt2pFqaYwu78jlOHjD0wq2Bl4d0=
+	t=1764777878; cv=none; b=UILToESNVcgwPwmpuw0J4tb9/bj+qREqtm2KhAY0tG5dn9qGXqfvyyQ1y/J3mv0pLSY/RBzAgiuMgR3V5riW5TuE2enT4EnIJ4CcgvweBl8pyLn6oG7qHeLT7x0fVDb3Ibg0xnuNneTNO//vzDfJT+RFrVlz4piB7ExeTmvup6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779772; c=relaxed/simple;
-	bh=cPfWueQwGYAoljf1y8OscaRghY3WBfFkAGK6WRXkvPo=;
+	s=arc-20240116; t=1764777878; c=relaxed/simple;
+	bh=jwZQMhBE9JC2NktYd0GjecQ60mRwf9cTWbWyt1l7FEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NUc3bGQ0/+NHka6P4IsGJYJ3maxCwKozgyAk6QVbMhq87tgyV8dck3Cef2/6YtAULzYBwfIkTZphOUQ9ihs55/IvTslb06GWVF1nKNIbhehmZtaOM9hyjMK42JBA+NvcTX8jKHCRKD3Gu5mQ6yluE5W7EGk9AKpXBRuwMJngt7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yrCtxosc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63062C4CEF5;
-	Wed,  3 Dec 2025 16:36:11 +0000 (UTC)
+	 MIME-Version; b=gHEYv9MvoS+hzqtiWHW0Zk4AxU08I11iI9nm+SrJPBVjFKioJsj8m90+cPX9cu1jdvkchu/+AQOoPiIyFH11cqcSkcffrMmPvnOJ3y5nmIL+PSaxqArKy8BL0rtJxe+qPymHtv0UeHnhp4l7/+SiTFFho94IVtOoSUPDtORQ+w4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kgLUGvnc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41344C4CEF5;
+	Wed,  3 Dec 2025 16:04:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779771;
-	bh=cPfWueQwGYAoljf1y8OscaRghY3WBfFkAGK6WRXkvPo=;
+	s=korg; t=1764777878;
+	bh=jwZQMhBE9JC2NktYd0GjecQ60mRwf9cTWbWyt1l7FEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yrCtxoscE8GHiG1bWxAQNcjWlVfp78Aasqu2eiqOQC8y4gh6tdbc1GiWtOG7yJExn
-	 zaEuiAalQY+QpVsoztCmv8awfdVGoIAFlYL8gIHi7FGEObEgfTpojzb55ADMqO11N1
-	 fMCgncAMx26B8BPNwsV2IxSS+90Uy24VBeKNXDGU=
+	b=kgLUGvncHJPLVeQgwdTU/WUBEdju8P+bVJBm8Ik90icCX1udNKh6Vc54Svz7/fmwG
+	 6nbf2yEJoU1jCT5IYirJUOx1SVYjlep+Gr+T2Sk4v6SHP1xyrbtVmCnDJr4fwzTJcR
+	 6tPGnthGf0eir+k4zC8Wcsa7W4XlR6v+7F6VoxG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 324/568] tracing: Fix memory leaks in create_field_var()
+Subject: [PATCH 5.15 176/392] nfs4_setup_readdir(): insufficient locking for ->d_parent->d_inode dereferencing
 Date: Wed,  3 Dec 2025 16:25:26 +0100
-Message-ID: <20251203152452.578511007@linuxfoundation.org>
+Message-ID: <20251203152420.559471817@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 80f0d631dcc76ee1b7755bfca1d8417d91d71414 ]
+[ Upstream commit a890a2e339b929dbd843328f9a92a1625404fe63 ]
 
-The function create_field_var() allocates memory for 'val' through
-create_hist_field() inside parse_atom(), and for 'var' through
-create_var(), which in turn allocates var->type and var->var.name
-internally. Simply calling kfree() to release these structures will
-result in memory leaks.
+Theoretically it's an oopsable race, but I don't believe one can manage
+to hit it on real hardware; might become doable on a KVM, but it still
+won't be easy to attack.
 
-Use destroy_hist_field() to properly free 'val', and explicitly release
-the memory of var->type and var->var.name before freeing 'var' itself.
+Anyway, it's easy to deal with - since xdr_encode_hyper() is just a call of
+put_unaligned_be64(), we can put that under ->d_lock and be done with that.
 
-Link: https://patch.msgid.link/20251106120132.3639920-1-zilin@seu.edu.cn
-Fixes: 02205a6752f22 ("tracing: Add support for 'field variables'")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events_hist.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/nfs/nfs4proc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
-index c53be68bcd111..31d60758053d1 100644
---- a/kernel/trace/trace_events_hist.c
-+++ b/kernel/trace/trace_events_hist.c
-@@ -3210,14 +3210,16 @@ static struct field_var *create_field_var(struct hist_trigger_data *hist_data,
- 	var = create_var(hist_data, file, field_name, val->size, val->type);
- 	if (IS_ERR(var)) {
- 		hist_err(tr, HIST_ERR_VAR_CREATE_FIND_FAIL, errpos(field_name));
--		kfree(val);
-+		destroy_hist_field(val, 0);
- 		ret = PTR_ERR(var);
- 		goto err;
- 	}
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 1c62c4314173e..5c29e2d383639 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -365,7 +365,9 @@ static void nfs4_setup_readdir(u64 cookie, __be32 *verifier, struct dentry *dent
+ 	*p++ = htonl(attrs);                           /* bitmap */
+ 	*p++ = htonl(12);             /* attribute buffer length */
+ 	*p++ = htonl(NF4DIR);
++	spin_lock(&dentry->d_lock);
+ 	p = xdr_encode_hyper(p, NFS_FILEID(d_inode(dentry->d_parent)));
++	spin_unlock(&dentry->d_lock);
  
- 	field_var = kzalloc(sizeof(struct field_var), GFP_KERNEL);
- 	if (!field_var) {
--		kfree(val);
-+		destroy_hist_field(val, 0);
-+		kfree_const(var->type);
-+		kfree(var->var.name);
- 		kfree(var);
- 		ret =  -ENOMEM;
- 		goto err;
+ 	readdir->pgbase = (char *)p - (char *)start;
+ 	readdir->count -= readdir->pgbase;
 -- 
 2.51.0
 
