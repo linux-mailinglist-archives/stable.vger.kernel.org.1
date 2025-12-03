@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-198408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DE20C9FA2B
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:47:02 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47714CA0027
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:38:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 98E8730575B5
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:40:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E78073000934
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:38:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 350D5303C91;
-	Wed,  3 Dec 2025 15:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F93535C18A;
+	Wed,  3 Dec 2025 16:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P2fW2QOs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o06MBoFF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5221DDAB;
-	Wed,  3 Dec 2025 15:40:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D9E35BDDF;
+	Wed,  3 Dec 2025 16:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776444; cv=none; b=Ubb97Y0gHyxn9cixa2KFruXPcni+WXwOxxour2Fp3Ihyi0/1dkDQNjQqUmYXVyB4efUGzgYa6t5UvGphvx/70ifS51hh224SHrI4+LMVGY9JZRRiShPoBf8+P0yjC+gdiYUDtQTFdPz/I9i0SWNXmRAew++ZgKyg/AHm6n8GlJc=
+	t=1764779894; cv=none; b=s41/z0vEHRxT1En3CvvCO6wRcZdsy7eG1ZkAYmELZzRvJfdlrK9y/ZV9hoNadCiCX0tszck9Rhnvjjaa/WP/C5mzjP7Q7/xk99GXfL2jPOaTsUpKLFgCzXMSxX7HY/MSNaJKn2+UOqCbkwIr/otxMbN29gs7+jZtNXsy8RNPYWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776444; c=relaxed/simple;
-	bh=5tUQV4zXL3lWJ2CsoJ+5H1c9PGEi1KnnEJHbgRkLskY=;
+	s=arc-20240116; t=1764779894; c=relaxed/simple;
+	bh=511pwULCo2qAnKiNqwsFy41Ute+xlnIozq+kp9go9nQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fnGUmd0JMumHcEAmwz5ACxDb/FEzpjiEu5BopFzWDRn2VeOx+eq0PWMBlI5jxfyjM0sGM8ROs99PrXIS7GgG9pVcvybKU/ww42nHNJygJsXXO3wRB4Det2f4XckD/Ot9+dC7BB/A0q0CH4AOV6qCVvnpJr+B79P5vZMxswgwh/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P2fW2QOs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54FD0C116C6;
-	Wed,  3 Dec 2025 15:40:43 +0000 (UTC)
+	 MIME-Version; b=OQeMmse6mYQrhae7va1V18znW8M6m/CpciW1/cWINg+L5nJAas0KaM9ddDCBWYHFHcJ5olprOWjkSiZ26v9QgAdrNYPQRk+3ESF6EV0WnVCmXpA/3WZeNTm016TBqoUucNnB3sAOOBH7MrdHypYpiE0MbjtyqjmenY3oKOgLeJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o06MBoFF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D792C4CEF5;
+	Wed,  3 Dec 2025 16:38:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776443;
-	bh=5tUQV4zXL3lWJ2CsoJ+5H1c9PGEi1KnnEJHbgRkLskY=;
+	s=korg; t=1764779894;
+	bh=511pwULCo2qAnKiNqwsFy41Ute+xlnIozq+kp9go9nQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P2fW2QOsd72RI7CpeM/9Y3/9ERmnLEpZ57rlB7e07uQLPGaate5bVphsJU+rKwjSF
-	 zKI/SO6BJUgjHj3BE9ZS9VFQkBEHf55T5h5cXaL73eCzUBfv8RQ4OBZtHy76scAJXQ
-	 SQgN9ZuCZ88UqIVJZutoGyPBAH+hnidu4JMB2nCk=
+	b=o06MBoFFzE79K2v7MtM6hM6VUBiZtYBtLAwkhurxZDs+gKqsIwnJyH61pHlaMZPeW
+	 ptYYudiguzaUfFWY+5bjZZ9ceQna3XEXEeIBozn5lZg2klYlm/GPKlAo/hSmzSDtJa
+	 ijukCyrYej1JaJk0OxkjB4NCLRy5pKMXNZZnosOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d7dad7fd4b3921104957@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 185/300] tipc: Fix use-after-free in tipc_mon_reinit_self().
+Subject: [PATCH 6.1 387/568] bpf: Add bpf_prog_run_data_pointers()
 Date: Wed,  3 Dec 2025 16:26:29 +0100
-Message-ID: <20251203152407.481872586@linuxfoundation.org>
+Message-ID: <20251203152454.867631195@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,152 +63,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 0725e6afb55128be21a2ca36e9674f573ccec173 ]
+[ Upstream commit 4ef92743625818932b9c320152b58274c05e5053 ]
 
-syzbot reported use-after-free of tipc_net(net)->monitors[]
-in tipc_mon_reinit_self(). [0]
+syzbot found that cls_bpf_classify() is able to change
+tc_skb_cb(skb)->drop_reason triggering a warning in sk_skb_reason_drop().
 
-The array is protected by RTNL, but tipc_mon_reinit_self()
-iterates over it without RTNL.
+WARNING: CPU: 0 PID: 5965 at net/core/skbuff.c:1192 __sk_skb_reason_drop net/core/skbuff.c:1189 [inline]
+WARNING: CPU: 0 PID: 5965 at net/core/skbuff.c:1192 sk_skb_reason_drop+0x76/0x170 net/core/skbuff.c:1214
 
-tipc_mon_reinit_self() is called from tipc_net_finalize(),
-which is always under RTNL except for tipc_net_finalize_work().
+struct tc_skb_cb has been added in commit ec624fe740b4 ("net/sched:
+Extend qdisc control block with tc control block"), which added a wrong
+interaction with db58ba459202 ("bpf: wire in data and data_end for
+cls_act_bpf").
 
-Let's hold RTNL in tipc_net_finalize_work().
+drop_reason was added later.
 
-[0]:
-BUG: KASAN: slab-use-after-free in __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
-BUG: KASAN: slab-use-after-free in _raw_spin_lock_irqsave+0xa7/0xf0 kernel/locking/spinlock.c:162
-Read of size 1 at addr ffff88805eae1030 by task kworker/0:7/5989
+Add bpf_prog_run_data_pointers() helper to save/restore the net_sched
+storage colliding with BPF data_meta/data_end.
 
-CPU: 0 UID: 0 PID: 5989 Comm: kworker/0:7 Not tainted syzkaller #0 PREEMPT_{RT,(full)}
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/18/2025
-Workqueue: events tipc_net_finalize_work
-Call Trace:
- <TASK>
- dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0xca/0x240 mm/kasan/report.c:482
- kasan_report+0x118/0x150 mm/kasan/report.c:595
- __kasan_check_byte+0x2a/0x40 mm/kasan/common.c:568
- kasan_check_byte include/linux/kasan.h:399 [inline]
- lock_acquire+0x8d/0x360 kernel/locking/lockdep.c:5842
- __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
- _raw_spin_lock_irqsave+0xa7/0xf0 kernel/locking/spinlock.c:162
- rtlock_slowlock kernel/locking/rtmutex.c:1894 [inline]
- rwbase_rtmutex_lock_state kernel/locking/spinlock_rt.c:160 [inline]
- rwbase_write_lock+0xd3/0x7e0 kernel/locking/rwbase_rt.c:244
- rt_write_lock+0x76/0x110 kernel/locking/spinlock_rt.c:243
- write_lock_bh include/linux/rwlock_rt.h:99 [inline]
- tipc_mon_reinit_self+0x79/0x430 net/tipc/monitor.c:718
- tipc_net_finalize+0x115/0x190 net/tipc/net.c:140
- process_one_work kernel/workqueue.c:3236 [inline]
- process_scheduled_works+0xade/0x17b0 kernel/workqueue.c:3319
- worker_thread+0x8a0/0xda0 kernel/workqueue.c:3400
- kthread+0x70e/0x8a0 kernel/kthread.c:463
- ret_from_fork+0x439/0x7d0 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-
-Allocated by task 6089:
- kasan_save_stack mm/kasan/common.c:47 [inline]
- kasan_save_track+0x3e/0x80 mm/kasan/common.c:68
- poison_kmalloc_redzone mm/kasan/common.c:388 [inline]
- __kasan_kmalloc+0x93/0xb0 mm/kasan/common.c:405
- kasan_kmalloc include/linux/kasan.h:260 [inline]
- __kmalloc_cache_noprof+0x1a8/0x320 mm/slub.c:4407
- kmalloc_noprof include/linux/slab.h:905 [inline]
- kzalloc_noprof include/linux/slab.h:1039 [inline]
- tipc_mon_create+0xc3/0x4d0 net/tipc/monitor.c:657
- tipc_enable_bearer net/tipc/bearer.c:357 [inline]
- __tipc_nl_bearer_enable+0xe16/0x13f0 net/tipc/bearer.c:1047
- __tipc_nl_compat_doit net/tipc/netlink_compat.c:371 [inline]
- tipc_nl_compat_doit+0x3bc/0x5f0 net/tipc/netlink_compat.c:393
- tipc_nl_compat_handle net/tipc/netlink_compat.c:-1 [inline]
- tipc_nl_compat_recv+0x83c/0xbe0 net/tipc/netlink_compat.c:1321
- genl_family_rcv_msg_doit+0x215/0x300 net/netlink/genetlink.c:1115
- genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
- genl_rcv_msg+0x60e/0x790 net/netlink/genetlink.c:1210
- netlink_rcv_skb+0x208/0x470 net/netlink/af_netlink.c:2552
- genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
- netlink_unicast_kernel net/netlink/af_netlink.c:1320 [inline]
- netlink_unicast+0x846/0xa10 net/netlink/af_netlink.c:1346
- netlink_sendmsg+0x805/0xb30 net/netlink/af_netlink.c:1896
- sock_sendmsg_nosec net/socket.c:714 [inline]
- __sock_sendmsg+0x21c/0x270 net/socket.c:729
- ____sys_sendmsg+0x508/0x820 net/socket.c:2614
- ___sys_sendmsg+0x21f/0x2a0 net/socket.c:2668
- __sys_sendmsg net/socket.c:2700 [inline]
- __do_sys_sendmsg net/socket.c:2705 [inline]
- __se_sys_sendmsg net/socket.c:2703 [inline]
- __x64_sys_sendmsg+0x1a1/0x260 net/socket.c:2703
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Freed by task 6088:
- kasan_save_stack mm/kasan/common.c:47 [inline]
- kasan_save_track+0x3e/0x80 mm/kasan/common.c:68
- kasan_save_free_info+0x46/0x50 mm/kasan/generic.c:576
- poison_slab_object mm/kasan/common.c:243 [inline]
- __kasan_slab_free+0x5b/0x80 mm/kasan/common.c:275
- kasan_slab_free include/linux/kasan.h:233 [inline]
- slab_free_hook mm/slub.c:2422 [inline]
- slab_free mm/slub.c:4695 [inline]
- kfree+0x195/0x550 mm/slub.c:4894
- tipc_l2_device_event+0x380/0x650 net/tipc/bearer.c:-1
- notifier_call_chain+0x1b3/0x3e0 kernel/notifier.c:85
- call_netdevice_notifiers_extack net/core/dev.c:2267 [inline]
- call_netdevice_notifiers net/core/dev.c:2281 [inline]
- unregister_netdevice_many_notify+0x14d7/0x1fe0 net/core/dev.c:12166
- unregister_netdevice_many net/core/dev.c:12229 [inline]
- unregister_netdevice_queue+0x33c/0x380 net/core/dev.c:12073
- unregister_netdevice include/linux/netdevice.h:3385 [inline]
- __tun_detach+0xe4d/0x1620 drivers/net/tun.c:621
- tun_detach drivers/net/tun.c:637 [inline]
- tun_chr_close+0x10d/0x1c0 drivers/net/tun.c:3433
- __fput+0x458/0xa80 fs/file_table.c:468
- task_work_run+0x1d4/0x260 kernel/task_work.c:227
- resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
- exit_to_user_mode_loop+0xec/0x110 kernel/entry/common.c:43
- exit_to_user_mode_prepare include/linux/irq-entry-common.h:225 [inline]
- syscall_exit_to_user_mode_work include/linux/entry-common.h:175 [inline]
- syscall_exit_to_user_mode include/linux/entry-common.h:210 [inline]
- do_syscall_64+0x2bd/0x3b0 arch/x86/entry/syscall_64.c:100
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Fixes: 46cb01eeeb86 ("tipc: update mon's self addr when node addr generated")
-Reported-by: syzbot+d7dad7fd4b3921104957@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/690c323a.050a0220.baf87.007f.GAE@google.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251107064038.2361188-1-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: ec624fe740b4 ("net/sched: Extend qdisc control block with tc control block")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Closes: https://lore.kernel.org/netdev/6913437c.a70a0220.22f260.013b.GAE@google.com/
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20251112125516.1563021-1-edumazet@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tipc/net.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/linux/filter.h | 20 ++++++++++++++++++++
+ net/sched/act_bpf.c    |  6 ++----
+ net/sched/cls_bpf.c    |  6 ++----
+ 3 files changed, 24 insertions(+), 8 deletions(-)
 
-diff --git a/net/tipc/net.c b/net/tipc/net.c
-index 671cb4f9d5633..95aa3a97b53a8 100644
---- a/net/tipc/net.c
-+++ b/net/tipc/net.c
-@@ -141,7 +141,9 @@ void tipc_net_finalize_work(struct work_struct *work)
- {
- 	struct tipc_net *tn = container_of(work, struct tipc_net, work);
- 
-+	rtnl_lock();
- 	tipc_net_finalize(tipc_link_net(tn->bcl), tn->trial_addr);
-+	rtnl_unlock();
+diff --git a/include/linux/filter.h b/include/linux/filter.h
+index bbdae97d50c42..502cab01e9e97 100644
+--- a/include/linux/filter.h
++++ b/include/linux/filter.h
+@@ -676,6 +676,26 @@ static inline void bpf_compute_data_pointers(struct sk_buff *skb)
+ 	cb->data_end  = skb->data + skb_headlen(skb);
  }
  
- void tipc_net_stop(struct net *net)
++static inline int bpf_prog_run_data_pointers(
++	const struct bpf_prog *prog,
++	struct sk_buff *skb)
++{
++	struct bpf_skb_data_end *cb = (struct bpf_skb_data_end *)skb->cb;
++	void *save_data_meta, *save_data_end;
++	int res;
++
++	save_data_meta = cb->data_meta;
++	save_data_end = cb->data_end;
++
++	bpf_compute_data_pointers(skb);
++	res = bpf_prog_run(prog, skb);
++
++	cb->data_meta = save_data_meta;
++	cb->data_end = save_data_end;
++
++	return res;
++}
++
+ /* Similar to bpf_compute_data_pointers(), except that save orginal
+  * data in cb->data and cb->meta_data for restore.
+  */
+diff --git a/net/sched/act_bpf.c b/net/sched/act_bpf.c
+index b79eee44e24eb..e33a6be877def 100644
+--- a/net/sched/act_bpf.c
++++ b/net/sched/act_bpf.c
+@@ -45,12 +45,10 @@ static int tcf_bpf_act(struct sk_buff *skb, const struct tc_action *act,
+ 	filter = rcu_dereference(prog->filter);
+ 	if (at_ingress) {
+ 		__skb_push(skb, skb->mac_len);
+-		bpf_compute_data_pointers(skb);
+-		filter_res = bpf_prog_run(filter, skb);
++		filter_res = bpf_prog_run_data_pointers(filter, skb);
+ 		__skb_pull(skb, skb->mac_len);
+ 	} else {
+-		bpf_compute_data_pointers(skb);
+-		filter_res = bpf_prog_run(filter, skb);
++		filter_res = bpf_prog_run_data_pointers(filter, skb);
+ 	}
+ 	if (unlikely(!skb->tstamp && skb->mono_delivery_time))
+ 		skb->mono_delivery_time = 0;
+diff --git a/net/sched/cls_bpf.c b/net/sched/cls_bpf.c
+index 0320e11eb248b..5820ee95fa36e 100644
+--- a/net/sched/cls_bpf.c
++++ b/net/sched/cls_bpf.c
+@@ -95,12 +95,10 @@ static int cls_bpf_classify(struct sk_buff *skb, const struct tcf_proto *tp,
+ 		} else if (at_ingress) {
+ 			/* It is safe to push/pull even if skb_shared() */
+ 			__skb_push(skb, skb->mac_len);
+-			bpf_compute_data_pointers(skb);
+-			filter_res = bpf_prog_run(prog->filter, skb);
++			filter_res = bpf_prog_run_data_pointers(prog->filter, skb);
+ 			__skb_pull(skb, skb->mac_len);
+ 		} else {
+-			bpf_compute_data_pointers(skb);
+-			filter_res = bpf_prog_run(prog->filter, skb);
++			filter_res = bpf_prog_run_data_pointers(prog->filter, skb);
+ 		}
+ 		if (unlikely(!skb->tstamp && skb->mono_delivery_time))
+ 			skb->mono_delivery_time = 0;
 -- 
 2.51.0
 
