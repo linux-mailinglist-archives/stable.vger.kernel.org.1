@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE92BC9FF1F
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:26:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08380CA1411
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:06:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E5A70301C674
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:24:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A85A832FAB22
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:44:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C8D1314A80;
-	Wed,  3 Dec 2025 16:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97C9D32FA0B;
+	Wed,  3 Dec 2025 15:51:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jopHt+XZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jkOxLGNi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D17531329E;
-	Wed,  3 Dec 2025 16:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5315832FA06;
+	Wed,  3 Dec 2025 15:51:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778418; cv=none; b=bDUjHCt17XNhIwtqtzFEuhELuv+sqyh9SZmdwGdhcnuBjNMKhU+yb2SdyZTCWUMUbntJSitXYNtdjE6JjcZ6Vb8U2x5RwznfEUACIh4S0qNKaH0y8T4C+O9XkVsRj+7B55rbjNLn5nmsfWgBrMf7pEoeaW+ZwnmuPiAbH4a2e0o=
+	t=1764777105; cv=none; b=FALanNxrcZKv0RiIYdArIhIEvDV5+SQuz6baqnYYuazEveISy9T1QkqwDr1nut2baaq6KrZTRjL/VTQU5SZtwLlExUUB1Z/ms22kICYMU6w46fY8fIbeacYeUePblOtNU0xtnR9gz8AbAVYKTGlk3WL+/StO9Bnk6ewnZJL8KfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778418; c=relaxed/simple;
-	bh=WhG/tf0BhPkdhlq9abE/XsvScMN51/fNufBfjGVG+xw=;
+	s=arc-20240116; t=1764777105; c=relaxed/simple;
+	bh=IwK+vcatgQxajwo+M73tKMMQAJrOKQz/FiQVH+bIBzc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AGCUIR3WZMGI499NYwn90HA8Iyye86i4tG1nqqqlG12HIGbx7YY0fv9BebY6NMkymce2qDAd+UY9dORdu0EraBFjYKdMgXQ5xipbDazfBFWeSqmEiL4Ox4oNIRvE+qyCL+GisVqaQBG9SZr2ZMuNY7Nl+2C9zL3g2E8c01zOyUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jopHt+XZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FFCAC4CEF5;
-	Wed,  3 Dec 2025 16:13:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ciIbAzYhjRMAKCOtZjtHqjXfuZ4V4bgx35d6zPsUUC0pPf/6nOotUhhqcsuhxWTzRGnbf6Uspw56EAXFGqui55plQfRScOn8WXJ2Ib8Pe0+ABO5H2uCSINcT4NQV/yIfqiLufzRBQ7VNz/APEfkLMwQvPnw7yJm4QqK6K6t6dgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jkOxLGNi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD0A9C4CEF5;
+	Wed,  3 Dec 2025 15:51:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778417;
-	bh=WhG/tf0BhPkdhlq9abE/XsvScMN51/fNufBfjGVG+xw=;
+	s=korg; t=1764777105;
+	bh=IwK+vcatgQxajwo+M73tKMMQAJrOKQz/FiQVH+bIBzc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jopHt+XZpl4RAUWZHS0CTM38aqFuUUqXM7alC20t4/DuNh16tv8ckZCoV/1uoL9bm
-	 JZnBjOoKM4i/FPGG58Ug7hEhdMyHmJF0TF/gJ9M6/ZxE0yf5MAZLAPRCvjQp9LRs0W
-	 C8Hj+Vrw6lZYtgBNV8ZjXvCAOnoZtcw7baksdbHk=
+	b=jkOxLGNifADxi+ql9Kc4Qt74G6Z7mH/TOOaeqTqiRpd771YCIzFFx3lK+hXViTBfN
+	 ctrnq92r5EsOWijctxIcOk05i/J3JYjHdMjZiTXq0/RND3v4Up3e6H+7ZnuJbYlXVo
+	 MQ8VOoLGSBhskLIre/9azblVEFr3OlKPG/HnaVdU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <longli@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Naman Jain <namjain@linux.microsoft.com>
-Subject: [PATCH 5.15 312/392] uio_hv_generic: Set event for all channels on the device
+	=?UTF-8?q?Thomas=20M=C3=BChlbacher?= <tmuehlbacher@posteo.net>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.17 084/146] can: sja1000: fix max irq loop handling
 Date: Wed,  3 Dec 2025 16:27:42 +0100
-Message-ID: <20251203152425.641968255@linuxfoundation.org>
+Message-ID: <20251203152349.537143680@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,81 +58,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <longli@microsoft.com>
+From: Thomas Mühlbacher <tmuehlbacher@posteo.net>
 
-commit d062463edf1770427dc2d637df4088df4835aa47 upstream.
+commit 30db4451c7f6aabcada029b15859a76962ec0cf8 upstream.
 
-Hyper-V may offer a non latency sensitive device with subchannels without
-monitor bit enabled. The decision is entirely on the Hyper-V host not
-configurable within guest.
+Reading the interrupt register `SJA1000_IR` causes all of its bits to be
+reset. If we ever reach the condition of handling more than
+`SJA1000_MAX_IRQ` IRQs, we will have read the register and reset all its
+bits but without actually handling the interrupt inside of the loop
+body.
 
-When a device has subchannels, also signal events for the subchannel
-if its monitor bit is disabled.
+This may, among other issues, cause us to never `netif_wake_queue()`
+again after a transmission interrupt.
 
-This patch also removes the memory barrier when monitor bit is enabled
-as it is not necessary. The memory barrier is only needed between
-setting up interrupt mask and calling vmbus_set_event() when monitor
-bit is disabled.
-
-Signed-off-by: Long Li <longli@microsoft.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Link: https://lore.kernel.org/r/1741644721-20389-1-git-send-email-longli@linuxonhyperv.com
-Fixes: b15b7d2a1b09 ("uio_hv_generic: Let userspace take care of interrupt mask")
-Closes: https://bugs.debian.org/1120602
-Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+Fixes: 429da1cc841b ("can: Driver for the SJA1000 CAN controller")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Mühlbacher <tmuehlbacher@posteo.net>
+Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://patch.msgid.link/20251115153437.11419-1-tmuehlbacher@posteo.net
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/uio/uio_hv_generic.c |   21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+ drivers/net/can/sja1000/sja1000.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/uio/uio_hv_generic.c
-+++ b/drivers/uio/uio_hv_generic.c
-@@ -80,9 +80,15 @@ hv_uio_irqcontrol(struct uio_info *info,
- {
- 	struct hv_uio_private_data *pdata = info->priv;
- 	struct hv_device *dev = pdata->device;
-+	struct vmbus_channel *primary, *sc;
+--- a/drivers/net/can/sja1000/sja1000.c
++++ b/drivers/net/can/sja1000/sja1000.c
+@@ -548,8 +548,8 @@ irqreturn_t sja1000_interrupt(int irq, v
+ 	if (priv->read_reg(priv, SJA1000_IER) == IRQ_OFF)
+ 		goto out;
  
--	dev->channel->inbound.ring_buffer->interrupt_mask = !irq_state;
--	virt_mb();
-+	primary = dev->channel;
-+	primary->inbound.ring_buffer->interrupt_mask = !irq_state;
-+
-+	mutex_lock(&vmbus_connection.channel_mutex);
-+	list_for_each_entry(sc, &primary->sc_list, sc_list)
-+		sc->inbound.ring_buffer->interrupt_mask = !irq_state;
-+	mutex_unlock(&vmbus_connection.channel_mutex);
+-	while ((isrc = priv->read_reg(priv, SJA1000_IR)) &&
+-	       (n < SJA1000_MAX_IRQ)) {
++	while ((n < SJA1000_MAX_IRQ) &&
++	       (isrc = priv->read_reg(priv, SJA1000_IR))) {
  
- 	return 0;
- }
-@@ -93,11 +99,18 @@ hv_uio_irqcontrol(struct uio_info *info,
- static void hv_uio_channel_cb(void *context)
- {
- 	struct vmbus_channel *chan = context;
--	struct hv_device *hv_dev = chan->device_obj;
--	struct hv_uio_private_data *pdata = hv_get_drvdata(hv_dev);
-+	struct hv_device *hv_dev;
-+	struct hv_uio_private_data *pdata;
- 
- 	virt_mb();
- 
-+	/*
-+	 * The callback may come from a subchannel, in which case look
-+	 * for the hv device in the primary channel
-+	 */
-+	hv_dev = chan->primary_channel ?
-+		 chan->primary_channel->device_obj : chan->device_obj;
-+	pdata = hv_get_drvdata(hv_dev);
- 	uio_event_notify(&pdata->info);
- }
- 
+ 		status = priv->read_reg(priv, SJA1000_SR);
+ 		/* check for absent controller due to hw unplug */
 
 
 
