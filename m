@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-199577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34ACFCA1008
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:32:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3662CA0679
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:24:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6A678351D359
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:30:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AE37F32EDA68
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:09:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F10523557E8;
-	Wed,  3 Dec 2025 16:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CC75345CAB;
+	Wed,  3 Dec 2025 16:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2uzrQJNM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2jZYRdQd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA527352F96;
-	Wed,  3 Dec 2025 16:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3784D33F8AE;
+	Wed,  3 Dec 2025 16:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780253; cv=none; b=Agp1ZaFIlkJWPt/IbbMO9nUlWlTfehXfq68OSBErI9hUJ6GCR/E9uw/ljo6tPcAZ/obB3bc1J0RE3vekRkK1WvLFPS6skKzehd1xmFVmAJ/l89TNIgj8KE7xyZWXw4dazuDoaisJR/P7duaLtTSTDgIJtT7GYxFNCzSBaerJvTA=
+	t=1764780571; cv=none; b=KZ8j6lsmQhLDkf6Jfbds/u7zQBHXaC2q+K8gajj+Gi7pasVtDApJQTGYhjIgLFvyBrdgHd7ki0yfDgIaQfZwQH+a1LbFNo/cAGi5iMiTxxN05iW0F0CePwVlfF8XQd+gjN7UDJRr+qrujGdBAjk/JVf7a3RRjbxqu/0flwgPxHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780253; c=relaxed/simple;
-	bh=zJDnNDrx45kehE+yw6oahSAj15O3o/Z/EFc5EOSZ59M=;
+	s=arc-20240116; t=1764780571; c=relaxed/simple;
+	bh=LnQNTYkUxgcqY31g69P04jPVlUlyihX8VfJB6ZCKyK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=meHxTPufELqrL57p4f76XAdRlQ31BK/Hh9hvXFh3IIZbMieQx+IsEry6BMmnKgRDMf0rQcCM2rzTa0DPhHOVnxFhKFhZ7GfL3BY8H6PpuNrDJk+EceIQBq+TjvxRXXLwAyKycRWTVivGDKlWQOc4HwNqbWeZRmRhz1AbX7Cmtg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2uzrQJNM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE4C7C4CEF5;
-	Wed,  3 Dec 2025 16:44:12 +0000 (UTC)
+	 MIME-Version; b=Pj1TmZfiF0CkmGlBhSWtnprxK60rUkroDiuOjhA352oJ2WPCgTctSJD0UkMdBbSuoF3djJvrqKKBaKYhJwe6G8Ya7BrlR718WXglrgOZ5KpZYgxhTDTkNrqvCT3LNT9SDLfqk9ww9IH8LNLhPb9X/Lt+5VrnuDEgbpqMD0cTouY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2jZYRdQd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3315C4CEF5;
+	Wed,  3 Dec 2025 16:49:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780253;
-	bh=zJDnNDrx45kehE+yw6oahSAj15O3o/Z/EFc5EOSZ59M=;
+	s=korg; t=1764780571;
+	bh=LnQNTYkUxgcqY31g69P04jPVlUlyihX8VfJB6ZCKyK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2uzrQJNMosUe/l0jR//Hd63XvJOsJ8R3TpflH+axEQLrtPOQNl1D48llYljY7H0eQ
-	 hqBgn2E8b7yJRZwxNWcws5EF+L5NZCCP4INee4IZb1FpRwHVAyH8sDcp5RDZtMpf5c
-	 LQm2O3nom2NH3Uoq2IXbAij8Z1vAflpJpQBPcqdk=
+	b=2jZYRdQdTD+sof4ODtgRP/Y7OkZ8lhf3ZY6V0+1Ik3cASmKCflerYpiKiEe9GU3uB
+	 0IZEwprRZ1CPkjalufhv6xQ7ixmXlL2hF86cTQK3pv4KyW9S5wJt3NJYUkfpWhJqes
+	 HghNB3duVMLQdu1XETS8u1QQ9AWGn7RF6686iyqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 502/568] drm/amdgpu: fix cyan_skillfish2 gpu info fw handling
+Subject: [PATCH 6.12 025/132] net: dsa: sja1105: fix SGMII linking at 10M or 100M but not passing traffic
 Date: Wed,  3 Dec 2025 16:28:24 +0100
-Message-ID: <20251203152459.100127802@linuxfoundation.org>
+Message-ID: <20251203152344.232856316@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,41 +60,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 7fa666ab07ba9e08f52f357cb8e1aad753e83ac6 ]
+[ Upstream commit da62abaaa268357b1aa66b372ace562189a05df1 ]
 
-If the board supports IP discovery, we don't need to
-parse the gpu info firmware.
+When using the SGMII PCS as a fixed-link chip-to-chip connection, it is
+easy to miss the fact that traffic passes only at 1G, since that's what
+any normal such connection would use.
 
-Backport to 6.18.
+When using the SGMII PCS connected towards an on-board PHY or an SFP
+module, it is immediately noticeable that when the link resolves to a
+speed other than 1G, traffic from the MAC fails to pass: TX counters
+increase, but nothing gets decoded by the other end, and no local RX
+counters increase either.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4721
-Fixes: fa819e3a7c1e ("drm/amdgpu: add support for cyan skillfish gpu_info")
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 5427e32fa3a0ba9a016db83877851ed277b065fb)
+Artificially lowering a fixed-link rate to speed = <100> makes us able
+to see the same issue as in the case of having an SGMII PHY.
+
+Some debugging shows that the XPCS configuration is A-OK, but that the
+MAC Configuration Table entry for the port has the SPEED bits still set
+to 1000Mbps, due to a special condition in the driver. Deleting that
+condition, and letting the resolved link speed be programmed directly
+into the MAC speed field, results in a functional link at all 3 speeds.
+
+This piece of evidence, based on testing on both generations with SGMII
+support (SJA1105S and SJA1110A) directly contradicts the statement from
+the blamed commit that "the MAC is fixed at 1 Gbps and we need to
+configure the PCS only (if even that)". Worse, that statement is not
+backed by any documentation, and no one from NXP knows what it might
+refer to.
+
+I am unable to recall sufficient context regarding my testing from March
+2020 to understand what led me to draw such a braindead and factually
+incorrect conclusion. Yet, there is nothing of value regarding forcing
+the MAC speed, either for SGMII or 2500Base-X (introduced at a later
+stage), so remove all such logic.
+
+Fixes: ffe10e679cec ("net: dsa: sja1105: Add support for the SGMII port")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20251122111324.136761-1-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/dsa/sja1105/sja1105_main.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index f18f165876043..38b81ae236cb3 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -2021,6 +2021,8 @@ static int amdgpu_device_parse_gpu_info_fw(struct amdgpu_device *adev)
- 		chip_name = "navi12";
- 		break;
- 	case CHIP_CYAN_SKILLFISH:
-+		if (adev->mman.discovery_bin)
-+			return 0;
- 		chip_name = "cyan_skillfish";
- 		break;
- 	}
+diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
+index f3bb49a9e63c0..a078653531b51 100644
+--- a/drivers/net/dsa/sja1105/sja1105_main.c
++++ b/drivers/net/dsa/sja1105/sja1105_main.c
+@@ -1303,14 +1303,7 @@ static int sja1105_set_port_speed(struct sja1105_private *priv, int port,
+ 	 * table, since this will be used for the clocking setup, and we no
+ 	 * longer need to store it in the static config (already told hardware
+ 	 * we want auto during upload phase).
+-	 * Actually for the SGMII port, the MAC is fixed at 1 Gbps and
+-	 * we need to configure the PCS only (if even that).
+ 	 */
+-	if (priv->phy_mode[port] == PHY_INTERFACE_MODE_SGMII)
+-		speed = priv->info->port_speed[SJA1105_SPEED_1000MBPS];
+-	else if (priv->phy_mode[port] == PHY_INTERFACE_MODE_2500BASEX)
+-		speed = priv->info->port_speed[SJA1105_SPEED_2500MBPS];
+-
+ 	mac[port].speed = speed;
+ 
+ 	return 0;
 -- 
 2.51.0
 
