@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-198241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85DEEC9F809
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:35:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99CD1C9F80F
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:35:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7DCA83007243
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:31:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5E04C300B91E
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:31:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FCAF30C62A;
-	Wed,  3 Dec 2025 15:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2573081C5;
+	Wed,  3 Dec 2025 15:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c+ZadINM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eLQY6dvd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3B7430DD1A;
-	Wed,  3 Dec 2025 15:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0E030C606;
+	Wed,  3 Dec 2025 15:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764775892; cv=none; b=cWyEUfkhz2dKrwEqt0W8i74CeniBqrQY3RVnOjTj3080JY/dbD1O3a3u/VsDJ9ZVU6j9Je9aeHW9r3eesaCbR8cUw/gokn1RU6Mdu9lSHC2wR7XR7/K6uLc6er2VIQLldCVCO2Tyy6yiKdHDsItGXwRx1rE8C6EV8j6UTIsvae0=
+	t=1764775899; cv=none; b=IgLe5mZWDwuu4Joe7p7iWt8oJicrbcTlY41W8mq/r2udy370RAR47T3TP4cOAEpluW5AFu+Wj2w/SQcVDyDyTMhY/RNhrjD52IwCyYKXv9ITdJRZ+69OpzdnIaOwZISwYioWAnpjv77BJcYhUM6k5sw8aVWJ7iUC4Z3NG9BMwFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764775892; c=relaxed/simple;
-	bh=kpYJKbOGDw/3fZBJWvWtlwUaCmiKzNURU/Dm21o7P14=;
+	s=arc-20240116; t=1764775899; c=relaxed/simple;
+	bh=Hy5a7dFtAQjcVIpFz9xEjzS2q0vHRBWXdLG7LyeTE7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GP8pReyugdtCDKxAC5HFCtIb12CH9NAzdD4TyffX3vSYUtD0loVarUHpiHgh28/bR7Q/PEN9RJaQTnh0nNtAMxZp27T8XJhS6l6YTxmRQIozs+3XdZP3Y68nK8LJWTM66aI98tTebmGilihHfmSGpMF09PnyId2ofEt2j02tNDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c+ZadINM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95AE2C4CEF5;
-	Wed,  3 Dec 2025 15:31:31 +0000 (UTC)
+	 MIME-Version; b=Q9Ib7On5KGrlYcOAs+NdQKi4Hp4moH0ndFG/2OZokpTZ0xJNEeOaHcEe0EElMruylwif8cqUtbB9Isb0QZ0+rjULNzl6JaMsTLv38mDsNelVBgPVukH6+3/VPCsw4IHdpGqbOIbPC68yRCa5fBZQRRmUH/vJd4YdDf827O58cEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eLQY6dvd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86506C4CEF5;
+	Wed,  3 Dec 2025 15:31:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764775892;
-	bh=kpYJKbOGDw/3fZBJWvWtlwUaCmiKzNURU/Dm21o7P14=;
+	s=korg; t=1764775898;
+	bh=Hy5a7dFtAQjcVIpFz9xEjzS2q0vHRBWXdLG7LyeTE7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c+ZadINMErJI+qWz+7jQPFpUH1QibbXufgqJv5DHFoOeZciwwxgSszLw6Oql2zoyR
-	 2yzOhtsTu6QJNhx04GpZL3cPTdH4IEMLsKU1iskPw32jIbp8Kxow+55lVTxLSntO2D
-	 m09i+q69z+TRBQIyUy4FhZcMQSzz6Gz1u65799YU=
+	b=eLQY6dvd7F13Eg9o6na+xG9y/a42JTv3FTzJpwwtVecU2N+wPoxkECGwjZsiP7mnC
+	 KZaoufW542HBnFyrvnllK38umBZTKbfTz9SG/zTd4+DXgDU8bXQJdznl32sMXTdg1w
+	 25KHjS9JVfJhdlNHMkzbWBld0TpRIfhllSk4vP2A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomeu Vizoso <tomeu@tomeuvizoso.net>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Christian Gmeiner <cgmeiner@igalia.com>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 019/300] drm/etnaviv: fix flush sequence logic
-Date: Wed,  3 Dec 2025 16:23:43 +0100
-Message-ID: <20251203152401.169744933@linuxfoundation.org>
+Subject: [PATCH 5.10 020/300] drm/amd/pm: fix smu table id bound check issue in smu_cmn_update_table()
+Date: Wed,  3 Dec 2025 16:23:44 +0100
+Message-ID: <20251203152401.206743524@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
 References: <20251203152400.447697997@linuxfoundation.org>
@@ -65,44 +65,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tomeu Vizoso <tomeu@tomeuvizoso.net>
+From: Yang Wang <kevinyang.wang@amd.com>
 
-[ Upstream commit a042beac6e6f8ac1e923784cfff98b47cbabb185 ]
+[ Upstream commit 238d468d3ed18a324bb9d8c99f18c665dbac0511 ]
 
-The current logic uses the flush sequence from the current address
-space. This is harmless when deducing the flush requirements for the
-current submit, as either the incoming address space is the same one
-as the currently active one or we switch context, in which case the
-flush is unconditional.
+'table_index' is a variable defined by the smu driver (kmd)
+'table_id' is a variable defined by the hw smu (pmfw)
 
-However, this sequence is also stored as the current flush sequence
-of the GPU. If we switch context the stored flush sequence will no
-longer belong to the currently active address space. This incoherency
-can then cause missed flushes, resulting in translation errors.
+This code should use table_index as a bounds check.
 
-Fixes: 27b67278e007 ("drm/etnaviv: rework MMU handling")
-Signed-off-by: Tomeu Vizoso <tomeu@tomeuvizoso.net>
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-Reviewed-by: Christian Gmeiner <cgmeiner@igalia.com>
-Link: https://lore.kernel.org/r/20251021093723.3887980-1-l.stach@pengutronix.de
+Fixes: caad2613dc4bd ("drm/amd/powerplay: move table setting common code to smu_cmn.c")
+Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit fca0c66b22303de0d1d6313059baf4dc960a4753)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/etnaviv/etnaviv_buffer.c | 2 +-
+ drivers/gpu/drm/amd/pm/swsmu/smu_cmn.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/etnaviv/etnaviv_buffer.c b/drivers/gpu/drm/etnaviv/etnaviv_buffer.c
-index 982174af74b1e..7d897aafb2a6a 100644
---- a/drivers/gpu/drm/etnaviv/etnaviv_buffer.c
-+++ b/drivers/gpu/drm/etnaviv/etnaviv_buffer.c
-@@ -346,7 +346,7 @@ void etnaviv_buffer_queue(struct etnaviv_gpu *gpu, u32 exec_state,
- 	u32 link_target, link_dwords;
- 	bool switch_context = gpu->exec_state != exec_state;
- 	bool switch_mmu_context = gpu->mmu_context != mmu_context;
--	unsigned int new_flush_seq = READ_ONCE(gpu->mmu_context->flush_seq);
-+	unsigned int new_flush_seq = READ_ONCE(mmu_context->flush_seq);
- 	bool need_flush = switch_mmu_context || gpu->flush_seq != new_flush_seq;
- 	bool has_blt = !!(gpu->identity.minor_features5 &
- 			  chipMinorFeatures5_BLT_ENGINE);
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu_cmn.c b/drivers/gpu/drm/amd/pm/swsmu/smu_cmn.c
+index 92b2ea4c197b8..5219eb685c88e 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu_cmn.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu_cmn.c
+@@ -587,7 +587,7 @@ int smu_cmn_update_table(struct smu_context *smu,
+ 						      table_index);
+ 	uint32_t table_size;
+ 	int ret = 0;
+-	if (!table_data || table_id >= SMU_TABLE_COUNT || table_id < 0)
++	if (!table_data || table_index >= SMU_TABLE_COUNT || table_id < 0)
+ 		return -EINVAL;
+ 
+ 	table_size = smu_table->tables[table_index].size;
 -- 
 2.51.0
 
