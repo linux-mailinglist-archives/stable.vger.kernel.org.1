@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-199750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB511CA07F1
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:33:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05C2FCA0C58
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:08:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 41EA433905B2
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:15:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 09C78324801D
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:04:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53C0D39A278;
-	Wed,  3 Dec 2025 16:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13CA8329E79;
+	Wed,  3 Dec 2025 16:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hh3RC1en"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dc1+krGB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C2439A26E;
-	Wed,  3 Dec 2025 16:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FAD1393DD6;
+	Wed,  3 Dec 2025 16:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780813; cv=none; b=KilURwoDq7VRpfiHvK7sCkcxllB9beo4M76QKkoIna/O6cXLD3S+1vuhpLC5ZTugXFirKky8rg5MI3CzGIxFwt6Ny8n8YiRTxC6+4aD5XGjRVSMLy+5vyLSjltZ2m8lZi1UsvGBdsWXz/WoHo30AeZCZE1oaXwCLH1bc645gWfU=
+	t=1764781079; cv=none; b=oTQ+sdmCMmXmRC1wVReiAmQIhf5rW39ZyqpMBl1A0gGHglTVjhUno1qx152Sz/FqDqcM1o9+y2xzg7HrgKB/cZcu04gziY504TmYs08Py5XPmECnK16lkvIU7OOtF/Qu8COBqK93ozRMvy/trlHUnSerWJydtHbtCfOCQ6rqdOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780813; c=relaxed/simple;
-	bh=pNsLAUCPCL5AHRBFRTVniU8XFhN+QypfYjMyhDxkxJc=;
+	s=arc-20240116; t=1764781079; c=relaxed/simple;
+	bh=PUxWT/bAPgMTDUjwrfsV8RLyNpSVhbOBCMoLNhqKbNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lgXS3IIj+MVijM/4KhNhmfNV6IpIr0bBcg8qi09/qCo9tMhtc9A6fHyXP2yogZDbG2ZPiFM0CXC5I5jsgPBbccM60uSmfMzGyVwbhv9Q8zPhszmNdLWTqjuzAcGxDMeDYf2L5DWdO12VEV6NuZWasF9K+vPYFhJEilCyEZRxIi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hh3RC1en; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67AA4C4CEF5;
-	Wed,  3 Dec 2025 16:53:32 +0000 (UTC)
+	 MIME-Version; b=M00je+8C9q1vjH1UKjNYnMwq4aiFarroEUSdZsAjBbhHAUWfRbaJHIKNq38F9PIkC9wD7xAgUql7IYObNHqJYkRliEOeZYzTgle32jQgdPVqv4t5Ova6CkXWEYV270YOy7QKbsi16NznpeZ/NCuXEeJxa/BSzga6o9rdyFj+dcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dc1+krGB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 447D8C4CEF5;
+	Wed,  3 Dec 2025 16:57:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780812;
-	bh=pNsLAUCPCL5AHRBFRTVniU8XFhN+QypfYjMyhDxkxJc=;
+	s=korg; t=1764781078;
+	bh=PUxWT/bAPgMTDUjwrfsV8RLyNpSVhbOBCMoLNhqKbNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hh3RC1enemP4g9xIXURf9KvzI8KPa1KVouw/gziMv4R57mi3oH6rHa6KXG5FyYRcw
-	 AoNL986HofmT6qOa73KaV9pXz1BVove5dBCU8aS3fVuPG4BYLouJcSY2ceurfMWyyW
-	 MijY5aBLBl8IglvNeM0FlAt87YgF9F+gasJqlKm0=
+	b=dc1+krGBDhEEhachCeX97ZEuGw0ubD/0tRfl2b3w5TYJ6NpSqL6t5Ff4CnoLo2+Ff
+	 UePSbEwYbf+cSjPI31tEkSd9X29pPw9AHMH029BBClBCCC+qLa1/0BH/6Ym4MCtT4M
+	 gQYJrcJxI8/qLADzUn0cDre2zM5VgO6/UInhFUfI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	stable <stable@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.12 096/132] usb: dwc3: pci: Sort out the Intel device IDs
+	Ivan Zhaldak <i.v.zhaldak@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 42/93] ALSA: usb-audio: Add DSD quirk for LEAK Stereo 230
 Date: Wed,  3 Dec 2025 16:29:35 +0100
-Message-ID: <20251203152346.844980712@linuxfoundation.org>
+Message-ID: <20251203152338.076166856@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
+References: <20251203152336.494201426@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,156 +59,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+From: Ivan Zhaldak <i.v.zhaldak@gmail.com>
 
-commit 46b28d2fbd13148981d91246bc0e13f4fc055987 upstream.
+commit c83fc13960643c4429cd9dfef1321e6430a81b47 upstream.
 
-The PCI device IDs were organised based on the Intel
-architecture generation in most cases, but not with every
-ID. That left the device ID table with no real order.
-Sorting the table based on the device ID.
+Integrated amplifier LEAK Stereo 230 by IAG Limited has built-in
+ESS9038Q2M DAC served by XMOS controller. It supports both DSD Native
+and DSD-over-PCM (DoP) operational modes. But it doesn't work properly
+by default and tries DSD-to-PCM conversion. USB quirks below allow it
+to operate as designed.
 
-Suggested-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Cc: stable <stable@kernel.org>
-Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://patch.msgid.link/20251107121548.2702900-1-heikki.krogerus@linux.intel.com
+Add DSD_RAW quirk flag for IAG Limited devices (vendor ID 0x2622)
+Add DSD format quirk for LEAK Stereo 230 (USB ID 0x2622:0x0061)
+
+Signed-off-by: Ivan Zhaldak <i.v.zhaldak@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20251117125848.30769-1-i.v.zhaldak@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/dwc3-pci.c |   82 ++++++++++++++++++++++----------------------
- 1 file changed, 41 insertions(+), 41 deletions(-)
+ sound/usb/quirks.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/usb/dwc3/dwc3-pci.c
-+++ b/drivers/usb/dwc3/dwc3-pci.c
-@@ -21,41 +21,41 @@
- #include <linux/acpi.h>
- #include <linux/delay.h>
- 
-+#define PCI_DEVICE_ID_INTEL_CMLLP		0x02ee
-+#define PCI_DEVICE_ID_INTEL_CMLH		0x06ee
-+#define PCI_DEVICE_ID_INTEL_BXT			0x0aaa
- #define PCI_DEVICE_ID_INTEL_BYT			0x0f37
- #define PCI_DEVICE_ID_INTEL_MRFLD		0x119e
--#define PCI_DEVICE_ID_INTEL_BSW			0x22b7
--#define PCI_DEVICE_ID_INTEL_SPTLP		0x9d30
--#define PCI_DEVICE_ID_INTEL_SPTH		0xa130
--#define PCI_DEVICE_ID_INTEL_BXT			0x0aaa
- #define PCI_DEVICE_ID_INTEL_BXT_M		0x1aaa
--#define PCI_DEVICE_ID_INTEL_APL			0x5aaa
--#define PCI_DEVICE_ID_INTEL_KBP			0xa2b0
--#define PCI_DEVICE_ID_INTEL_CMLLP		0x02ee
--#define PCI_DEVICE_ID_INTEL_CMLH		0x06ee
-+#define PCI_DEVICE_ID_INTEL_BSW			0x22b7
- #define PCI_DEVICE_ID_INTEL_GLK			0x31aa
--#define PCI_DEVICE_ID_INTEL_CNPLP		0x9dee
--#define PCI_DEVICE_ID_INTEL_CNPH		0xa36e
--#define PCI_DEVICE_ID_INTEL_CNPV		0xa3b0
- #define PCI_DEVICE_ID_INTEL_ICLLP		0x34ee
--#define PCI_DEVICE_ID_INTEL_EHL			0x4b7e
--#define PCI_DEVICE_ID_INTEL_TGPLP		0xa0ee
- #define PCI_DEVICE_ID_INTEL_TGPH		0x43ee
--#define PCI_DEVICE_ID_INTEL_JSP			0x4dee
--#define PCI_DEVICE_ID_INTEL_WCL			0x4d7e
- #define PCI_DEVICE_ID_INTEL_ADL			0x460e
--#define PCI_DEVICE_ID_INTEL_ADL_PCH		0x51ee
- #define PCI_DEVICE_ID_INTEL_ADLN		0x465e
-+#define PCI_DEVICE_ID_INTEL_EHL			0x4b7e
-+#define PCI_DEVICE_ID_INTEL_WCL			0x4d7e
-+#define PCI_DEVICE_ID_INTEL_JSP			0x4dee
-+#define PCI_DEVICE_ID_INTEL_ADL_PCH		0x51ee
- #define PCI_DEVICE_ID_INTEL_ADLN_PCH		0x54ee
--#define PCI_DEVICE_ID_INTEL_ADLS		0x7ae1
--#define PCI_DEVICE_ID_INTEL_RPL			0xa70e
-+#define PCI_DEVICE_ID_INTEL_APL			0x5aaa
-+#define PCI_DEVICE_ID_INTEL_NVLS_PCH		0x6e6f
-+#define PCI_DEVICE_ID_INTEL_ARLH_PCH		0x777e
- #define PCI_DEVICE_ID_INTEL_RPLS		0x7a61
-+#define PCI_DEVICE_ID_INTEL_MTL			0x7e7e
-+#define PCI_DEVICE_ID_INTEL_ADLS		0x7ae1
- #define PCI_DEVICE_ID_INTEL_MTLM		0x7eb1
- #define PCI_DEVICE_ID_INTEL_MTLP		0x7ec1
- #define PCI_DEVICE_ID_INTEL_MTLS		0x7f6f
--#define PCI_DEVICE_ID_INTEL_MTL			0x7e7e
--#define PCI_DEVICE_ID_INTEL_NVLS_PCH		0x6e6f
--#define PCI_DEVICE_ID_INTEL_ARLH_PCH		0x777e
- #define PCI_DEVICE_ID_INTEL_TGL			0x9a15
-+#define PCI_DEVICE_ID_INTEL_SPTLP		0x9d30
-+#define PCI_DEVICE_ID_INTEL_CNPLP		0x9dee
-+#define PCI_DEVICE_ID_INTEL_TGPLP		0xa0ee
-+#define PCI_DEVICE_ID_INTEL_SPTH		0xa130
-+#define PCI_DEVICE_ID_INTEL_KBP			0xa2b0
-+#define PCI_DEVICE_ID_INTEL_CNPH		0xa36e
-+#define PCI_DEVICE_ID_INTEL_CNPV		0xa3b0
-+#define PCI_DEVICE_ID_INTEL_RPL			0xa70e
- #define PCI_DEVICE_ID_INTEL_PTLH		0xe332
- #define PCI_DEVICE_ID_INTEL_PTLH_PCH		0xe37e
- #define PCI_DEVICE_ID_INTEL_PTLU		0xe432
-@@ -413,41 +413,41 @@ static void dwc3_pci_remove(struct pci_d
- }
- 
- static const struct pci_device_id dwc3_pci_id_table[] = {
--	{ PCI_DEVICE_DATA(INTEL, BSW, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, BYT, &dwc3_pci_intel_byt_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, MRFLD, &dwc3_pci_intel_mrfld_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, CMLLP, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, CMLH, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, SPTLP, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, SPTH, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, BXT, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, BYT, &dwc3_pci_intel_byt_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, MRFLD, &dwc3_pci_intel_mrfld_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, BXT_M, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, APL, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, KBP, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, BSW, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, GLK, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, CNPLP, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, CNPH, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, CNPV, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, ICLLP, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, EHL, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, TGPLP, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, TGPH, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, JSP, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, WCL, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, ADL, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, ADL_PCH, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, ADLN, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, EHL, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, WCL, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, JSP, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, ADL_PCH, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, ADLN_PCH, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, ADLS, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, RPL, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, APL, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, NVLS_PCH, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, ARLH_PCH, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, RPLS, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, MTL, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, ADLS, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, MTLM, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, MTLP, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, MTL, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, NVLS_PCH, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, MTLS, &dwc3_pci_intel_swnode) },
--	{ PCI_DEVICE_DATA(INTEL, ARLH_PCH, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, TGL, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, SPTLP, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, CNPLP, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, TGPLP, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, SPTH, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, KBP, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, CNPH, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, CNPV, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, RPL, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, PTLH, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, PTLH_PCH, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, PTLU, &dwc3_pci_intel_swnode) },
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -1928,6 +1928,7 @@ u64 snd_usb_interface_dsd_format_quirks(
+ 	case USB_ID(0x249c, 0x9326): /* M2Tech Young MkIII */
+ 	case USB_ID(0x2616, 0x0106): /* PS Audio NuWave DAC */
+ 	case USB_ID(0x2622, 0x0041): /* Audiolab M-DAC+ */
++	case USB_ID(0x2622, 0x0061): /* LEAK Stereo 230 */
+ 	case USB_ID(0x278b, 0x5100): /* Rotel RC-1590 */
+ 	case USB_ID(0x27f7, 0x3002): /* W4S DAC-2v2SE */
+ 	case USB_ID(0x29a2, 0x0086): /* Mutec MC3+ USB */
+@@ -2311,6 +2312,8 @@ static const struct usb_audio_quirk_flag
+ 		   QUIRK_FLAG_DSD_RAW),
+ 	VENDOR_FLG(0x25ce, /* Mytek devices */
+ 		   QUIRK_FLAG_DSD_RAW),
++	VENDOR_FLG(0x2622, /* IAG Limited devices */
++		   QUIRK_FLAG_DSD_RAW),
+ 	VENDOR_FLG(0x278b, /* Rotel? */
+ 		   QUIRK_FLAG_DSD_RAW),
+ 	VENDOR_FLG(0x292b, /* Gustard/Ess based devices */
 
 
 
