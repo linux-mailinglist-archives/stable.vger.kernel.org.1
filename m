@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-199355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54884CA1032
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:34:04 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52B15C9F836
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:36:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 642C830033BA
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:33:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AECA43007B44
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:34:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9D11311C10;
-	Wed,  3 Dec 2025 16:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B129930AAD0;
+	Wed,  3 Dec 2025 15:33:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tBau4ToT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xLxwJWDs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EFC436C0B5;
-	Wed,  3 Dec 2025 16:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CFEE308F2C;
+	Wed,  3 Dec 2025 15:33:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779523; cv=none; b=YjGHT91RoBCaH1+gV14Ac8mdGDcxxW63ejXnMmh2VZPSiVmxbKLaL/Ig3M8SdtBNcwJ11wv/Ln1hR9xOyCHeBMJ9cDwrlcbz6byUIkgfBChY5tae3o73Lz34/5L9cfcR4rLK02TID3vrNgKGrIj/X2vTZ2702ynPr89Y6lqLkUg=
+	t=1764775993; cv=none; b=KOiqrorBao6UpCJSUbUl4T1oMi/zhA70anZnAn0Vfdk9SiWG7aK6Zhj4jglHAqi2fcdBjp8Pn03k5GkDSLTW8GbJZXqgP3L7OtPASIeRUZmD2+5tSOCgmBItr+x5cOrv77PDXGsQyVw/OXARF2x7UHiOLFOxG1eVcSqKfKwb67U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779523; c=relaxed/simple;
-	bh=7ZVzNfACwSSY2jLxelk+cHpZ4twRdDjZhpAPh7DIUbE=;
+	s=arc-20240116; t=1764775993; c=relaxed/simple;
+	bh=GsK0f0gO4OPAcra/REnJkf4eYaPABkll/waTlWIwmtQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mpJjq7gX6q+Kp22VOGy/WKX8wNfPjTjGc1FFd2cOLb50qFymQcGYiDkGGk9gn9JOd1NtmhsRKCnb3jzIqC0Tk2/wcKRwbOIGoTbkKzOr4XBmzSSmruzOViIjrl57pEomsod35/0QQIUsG09FPh0JvrZ0u1aYOrkCDMjk14qLmL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tBau4ToT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C525C4CEF5;
-	Wed,  3 Dec 2025 16:32:02 +0000 (UTC)
+	 MIME-Version; b=VlIrULlT3tdnZynSTfjVIPmUK6X+/+bkUzLyTiiuWJcs88ALLmyH3/ayqd8xMEkIInDuKA4b3iNXVfie36snmZVe46QBJqhjG7XqZwvx1fjykvbUcm9ze2YK67a+pzA5Z0G3C25yyoM6YooVVJdcp0qorrzrhwXecLtymT3jfcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xLxwJWDs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8531EC4CEF5;
+	Wed,  3 Dec 2025 15:33:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779523;
-	bh=7ZVzNfACwSSY2jLxelk+cHpZ4twRdDjZhpAPh7DIUbE=;
+	s=korg; t=1764775992;
+	bh=GsK0f0gO4OPAcra/REnJkf4eYaPABkll/waTlWIwmtQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tBau4ToTCpzT4DW8STxhIit9iR30CAeQZVzMd6a+sewcGifZoYquFR4SBBdg4JiFM
-	 vL56J+AEZCvX9pOfam8bKMuWRFBq115ZEwRDPAfCWgnx+nFqYvwnbTzew6+8Kkrm/a
-	 wPzdGsg2tJ0xCM5kL3Rv3CfERVj5m856RKZqLRBo=
+	b=xLxwJWDstmmffjX3sA+pvQx5kIYcpw6retQ+5epzymn7UXovb6zXYo8deDqTHKRYh
+	 EBGTMxq/2BfWBzemopuoIDcG2jZeRQEdZ0NAN7qZCuTNeYq9u0jUvRL6qvLUNYCsZ7
+	 yu9AQkpvZeXc0BfNPk8Z93kdRrJ3NYlRXaX4Izh4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Mastro <amastro@fb.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
+	kernel test robot <lkp@intel.com>,
+	Kees Cook <kees@kernel.org>,
+	Vineet Gupta <vgupta@kernel.org>,
+	"Yury Norov (NVIDIA)" <yury.norov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 250/568] vfio: return -ENOTTY for unsupported device feature
+Subject: [PATCH 5.10 048/300] arc: Fix __fls() const-foldability via __builtin_clzl()
 Date: Wed,  3 Dec 2025 16:24:12 +0100
-Message-ID: <20251203152449.878104019@linuxfoundation.org>
+Message-ID: <20251203152402.395722063@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Mastro <amastro@fb.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 16df67f2189a71a8310bcebddb87ed569e8352be ]
+[ Upstream commit a3fecb9160482367365cc384c59dd220b162b066 ]
 
-The two implementers of vfio_device_ops.device_feature,
-vfio_cdx_ioctl_feature and vfio_pci_core_ioctl_feature, return
--ENOTTY in the fallthrough case when the feature is unsupported. For
-consistency, the base case, vfio_ioctl_device_feature, should do the
-same when device_feature == NULL, indicating an implementation has no
-feature extensions.
+While tracking down a problem where constant expressions used by
+BUILD_BUG_ON() suddenly stopped working[1], we found that an added static
+initializer was convincing the compiler that it couldn't track the state
+of the prior statically initialized value. Tracing this down found that
+ffs() was used in the initializer macro, but since it wasn't marked with
+__attribute__const__, the compiler had to assume the function might
+change variable states as a side-effect (which is not true for ffs(),
+which provides deterministic math results).
 
-Signed-off-by: Alex Mastro <amastro@fb.com>
-Link: https://lore.kernel.org/r/20250908-vfio-enotty-v1-1-4428e1539e2e@fb.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+For arc architecture with CONFIG_ISA_ARCV2=y, the __fls() function
+uses __builtin_arc_fls() which lacks GCC's const attribute, preventing
+compile-time constant folding, and KUnit testing of ffs/fls fails on
+arc[3]. A patch[2] to GCC to solve this has been sent.
+
+Add a fix for this by handling compile-time constants with the standard
+__builtin_clzl() builtin (which has const attribute) while preserving
+the optimized arc-specific builtin for runtime cases. This has the added
+benefit of skipping runtime calculation of compile-time constant values.
+Even with the GCC bug fixed (which is about "attribute const") this is a
+good change to avoid needless runtime costs, and should be done
+regardless of the state of GCC's bug.
+
+Build tested ARCH=arc allyesconfig with GCC arc-linux 15.2.0.
+
+Link: https://github.com/KSPP/linux/issues/364 [1]
+Link: https://gcc.gnu.org/pipermail/gcc-patches/2025-August/693273.html
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202508031025.doWxtzzc-lkp@intel.com/ [3]
+Signed-off-by: Kees Cook <kees@kernel.org>
+Acked-by: Vineet Gupta <vgupta@kernel.org>
+Signed-off-by: Yury Norov (NVIDIA) <yury.norov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/vfio_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arc/include/asm/bitops.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
-index 6e8804fe00953..e191422e99c4c 100644
---- a/drivers/vfio/vfio_main.c
-+++ b/drivers/vfio/vfio_main.c
-@@ -1501,7 +1501,7 @@ static int vfio_ioctl_device_feature(struct vfio_device *device,
- 			feature.argsz - minsz);
- 	default:
- 		if (unlikely(!device->ops->device_feature))
--			return -EINVAL;
-+			return -ENOTTY;
- 		return device->ops->device_feature(device, feature.flags,
- 						   arg->data,
- 						   feature.argsz - minsz);
+diff --git a/arch/arc/include/asm/bitops.h b/arch/arc/include/asm/bitops.h
+index fb98440c0bd4c..325512148c7b8 100644
+--- a/arch/arc/include/asm/bitops.h
++++ b/arch/arc/include/asm/bitops.h
+@@ -315,6 +315,8 @@ static inline __attribute__ ((const)) int fls(unsigned long x)
+  */
+ static inline __attribute__ ((const)) int __fls(unsigned long x)
+ {
++	if (__builtin_constant_p(x))
++		return x ? BITS_PER_LONG - 1 - __builtin_clzl(x) : 0;
+ 	/* FLS insn has exactly same semantics as the API */
+ 	return	__builtin_arc_fls(x);
+ }
 -- 
 2.51.0
 
