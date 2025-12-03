@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-198828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6C92CA10AA
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:38:59 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 146FDC9FFC4
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:35:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DADB23028E7E
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:59:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9C7B0302E943
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:33:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CCC634DCC4;
-	Wed,  3 Dec 2025 16:03:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AC903AA1A4;
+	Wed,  3 Dec 2025 16:33:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bx5NkjYI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TUos6Hs5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBB9E34DB7B;
-	Wed,  3 Dec 2025 16:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA6743AA1A2;
+	Wed,  3 Dec 2025 16:33:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777808; cv=none; b=UedY6ny22XuBeVCRqVnIaUO87SwMRhHTTF36P3dHug0oS6P4wJ5VNJCUriycNBfkv8ykUkUVuhFKyODpCZyNIkBB0JnGsItxfXtU1ePpBrwx50HuJAhsyTCcv7qYTlXSxIi5s3SMLO43GE4Qrr8jEZZMYjIVVvWLIDgSbaskzq4=
+	t=1764779585; cv=none; b=ehwYpVUjLuFB2mvIAfqczNOn1Lu1jFhGWWG1fCz2Tn/Q7IwsNl30WRCHYxsWsH+6x9WdIPvXlT+bxWd1I+//NsglldIjTPYKvNJYblFGShk0JSqYd1Wub0w09ejSde+6xpi8hBiVLoyeRgQSjT0QUBv+B1HMiG7iYNzN4iIObh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777808; c=relaxed/simple;
-	bh=iVHH4Ujf8j+oDtZv9Qc1YTNH80ymXpea4DZGdYGFH3k=;
+	s=arc-20240116; t=1764779585; c=relaxed/simple;
+	bh=ZWvZqTeuyHqyedB//DcMDFVtOTMmCY5573u8MZjq2sQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LPmBEYGsqTslkKP7WMjSOomLmluGkMucO6ofzblQeXTP0+j8XC+qFRlzpFNOB/lplW6C+jTcv36U9YU6FSt9xYEWbXz/z6tGQN9DL89UhrTNxqctHNDEsO50I32Cny8iAbZuChU3cHcbKBSpbNjnT3O+5of2Ws/jgf2hVdXANFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bx5NkjYI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 504C6C4CEF5;
-	Wed,  3 Dec 2025 16:03:28 +0000 (UTC)
+	 MIME-Version; b=rGcIeSFO9hJ21e3DVMa6bzEB1AzBVP3dtWE9D8tnRVySe43elYWupgwxeDNt5zyojJUC2nldUKnjKmAxs0n0A28sQiFiZNEHRPRbkUqN8i5+KvOnUpv8FiX4R+yN9v8aygDuA8pWfMzd9ikcuS3re1xcEC8/G/FP7qYiVqb4AFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TUos6Hs5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D686C4CEF5;
+	Wed,  3 Dec 2025 16:33:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777808;
-	bh=iVHH4Ujf8j+oDtZv9Qc1YTNH80ymXpea4DZGdYGFH3k=;
+	s=korg; t=1764779585;
+	bh=ZWvZqTeuyHqyedB//DcMDFVtOTMmCY5573u8MZjq2sQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bx5NkjYIRRl8ST/iCSd42Tp+xL0Y8Za993QIQM7v8AdJG9QEjvtTmsJ0yG2AnVHfn
-	 a9aM51gGien/yckYMOE/knDdn5VBSmZvUtETVqnoRTIhuGylKAzFefdYhRGWvk7shT
-	 uvt4YjYXAQz3TMVwsUTZ2E7BODYTROlrwxbuYdSc=
+	b=TUos6Hs5IBb3PwiZiupW7eE//4Lq35qh8eT8eRcgt8A4T8mlHu+s15+hMYe6aZJW+
+	 JiobAKyVvfqgHP7i5hc5bSgQDTKU5083tggLbd+/fwySMWdEjKMQ42pVBJmOuzXMB4
+	 G5hprPBNHFrUMd3C5rA4qQSCWnnn4ATmJt3t5D8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yafang Shao <laoar.shao@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Thomas Graf <tgraf@suug.ch>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Alex Markuze <amarkuze@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 153/392] net/cls_cgroup: Fix task_get_classid() during qdisc run
+Subject: [PATCH 6.1 301/568] ceph: add checking of wait_for_completion_killable() return value
 Date: Wed,  3 Dec 2025 16:25:03 +0100
-Message-ID: <20251203152419.711822106@linuxfoundation.org>
+Message-ID: <20251203152451.730991674@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,109 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yafang Shao <laoar.shao@gmail.com>
+From: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
 
-[ Upstream commit 66048f8b3cc7e462953c04285183cdee43a1cb89 ]
+[ Upstream commit b7ed1e29cfe773d648ca09895b92856bd3a2092d ]
 
-During recent testing with the netem qdisc to inject delays into TCP
-traffic, we observed that our CLS BPF program failed to function correctly
-due to incorrect classid retrieval from task_get_classid(). The issue
-manifests in the following call stack:
+The Coverity Scan service has detected the calling of
+wait_for_completion_killable() without checking the return
+value in ceph_lock_wait_for_completion() [1]. The CID 1636232
+defect contains explanation: "If the function returns an error
+value, the error value may be mistaken for a normal value.
+In ceph_lock_wait_for_completion(): Value returned from
+a function is not checked for errors before being used. (CWE-252)".
 
-        bpf_get_cgroup_classid+5
-        cls_bpf_classify+507
-        __tcf_classify+90
-        tcf_classify+217
-        __dev_queue_xmit+798
-        bond_dev_queue_xmit+43
-        __bond_start_xmit+211
-        bond_start_xmit+70
-        dev_hard_start_xmit+142
-        sch_direct_xmit+161
-        __qdisc_run+102             <<<<< Issue location
-        __dev_xmit_skb+1015
-        __dev_queue_xmit+637
-        neigh_hh_output+159
-        ip_finish_output2+461
-        __ip_finish_output+183
-        ip_finish_output+41
-        ip_output+120
-        ip_local_out+94
-        __ip_queue_xmit+394
-        ip_queue_xmit+21
-        __tcp_transmit_skb+2169
-        tcp_write_xmit+959
-        __tcp_push_pending_frames+55
-        tcp_push+264
-        tcp_sendmsg_locked+661
-        tcp_sendmsg+45
-        inet_sendmsg+67
-        sock_sendmsg+98
-        sock_write_iter+147
-        vfs_write+786
-        ksys_write+181
-        __x64_sys_write+25
-        do_syscall_64+56
-        entry_SYSCALL_64_after_hwframe+100
+The patch adds the checking of wait_for_completion_killable()
+return value and return the error code from
+ceph_lock_wait_for_completion().
 
-The problem occurs when multiple tasks share a single qdisc. In such cases,
-__qdisc_run() may transmit skbs created by different tasks. Consequently,
-task_get_classid() retrieves an incorrect classid since it references the
-current task's context rather than the skb's originating task.
+[1] https://scan5.scan.coverity.com/#/project-view/64304/10063?selectedIssue=1636232
 
-Given that dev_queue_xmit() always executes with bh disabled, we can use
-softirq_count() instead to obtain the correct classid.
-
-The simple steps to reproduce this issue:
-1. Add network delay to the network interface:
-  such as: tc qdisc add dev bond0 root netem delay 1.5ms
-2. Build two distinct net_cls cgroups, each with a network-intensive task
-3. Initiate parallel TCP streams from both tasks to external servers.
-
-Under this specific condition, the issue reliably occurs. The kernel
-eventually dequeues an SKB that originated from Task-A while executing in
-the context of Task-B.
-
-It is worth noting that it will change the established behavior for a
-slightly different scenario:
-
-  <sock S is created by task A>
-  <class ID for task A is changed>
-  <skb is created by sock S xmit and classified>
-
-prior to this patch the skb will be classified with the 'new' task A
-classid, now with the old/original one. The bpf_get_cgroup_classid_curr()
-function is a more appropriate choice for this case.
-
-Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Thomas Graf <tgraf@suug.ch>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20250902062933.30087-1-laoar.shao@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Reviewed-by: Alex Markuze <amarkuze@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/cls_cgroup.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ceph/locks.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/cls_cgroup.h b/include/net/cls_cgroup.h
-index 7e78e7d6f0152..668aeee9b3f66 100644
---- a/include/net/cls_cgroup.h
-+++ b/include/net/cls_cgroup.h
-@@ -63,7 +63,7 @@ static inline u32 task_get_classid(const struct sk_buff *skb)
- 	 * calls by looking at the number of nested bh disable calls because
- 	 * softirqs always disables bh.
- 	 */
--	if (in_serving_softirq()) {
-+	if (softirq_count()) {
- 		struct sock *sk = skb_to_full_sk(skb);
+diff --git a/fs/ceph/locks.c b/fs/ceph/locks.c
+index b191426bf880c..3da9e53f80918 100644
+--- a/fs/ceph/locks.c
++++ b/fs/ceph/locks.c
+@@ -202,7 +202,10 @@ static int ceph_lock_wait_for_completion(struct ceph_mds_client *mdsc,
+ 	if (err && err != -ERESTARTSYS)
+ 		return err;
  
- 		/* If there is an sock_cgroup_classid we'll use that. */
+-	wait_for_completion_killable(&req->r_safe_completion);
++	err = wait_for_completion_killable(&req->r_safe_completion);
++	if (err)
++		return err;
++
+ 	return 0;
+ }
+ 
 -- 
 2.51.0
 
