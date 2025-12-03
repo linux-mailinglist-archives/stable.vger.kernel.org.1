@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EF12CA0EEB
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:24:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C26E1C9FB5B
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:54:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0807730A0316
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:22:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 74E84301DBBB
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:48:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1001355051;
-	Wed,  3 Dec 2025 16:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48FDE314A95;
+	Wed,  3 Dec 2025 15:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CbI3Pjep"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BXG2YAoS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D3FB352943;
-	Wed,  3 Dec 2025 16:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A793148B9;
+	Wed,  3 Dec 2025 15:47:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778559; cv=none; b=XEFkwYHTPkHb4C059BQtbGzVzI0e9+Z+I8mZntUE33sL/HgGXd87kOJpgQLGmUWflkGvmFfZNjAc1zhEkwFH8uR9xsb1S6F20C3w9nwdHXAr2GPhatex/DA8+NfMKpwfaQ2NSSEVXLa2bOzzmW/i1GcrOYnFPK+N/o3UxzsG/JQ=
+	t=1764776822; cv=none; b=d1aoapmUtHlKnNenWZysBRzVEXKXdygcbdvJraKU0VsRFbyfd5eDgpKpWTwSGb9+7UmUrTRZLv1ruw/KM4D65JYo/SvhZT7VVk4/mbvPkbxBHxvbRUy0aJnUS5prYdjw0BR5h/o4vTmMtEpU8qizYEy7hFspCYA7jdBtlF16b2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778559; c=relaxed/simple;
-	bh=8KMIf6pCoOBtNHogQENcJpBw45GFT4qQgUWvmwqyLeg=;
+	s=arc-20240116; t=1764776822; c=relaxed/simple;
+	bh=vqKmAGd7HTl/Q9AY8aXegRinyF0mDojx2rPc69VM/Mw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TEN3qOow6tUvKKtpfqAas3q9uUyWtAeddAgLjJpVKz9YJkHUm/VwdbkSzmDXNjPXjywQ9enxMqs/m4EawzfaBJTR3jN7ODQ8gQdTjqC3Gv89Gw2PlfJ+/0jx4QrmzIyEu7bGWcO+SW9JLnuJDov/IfCnymmgwQxENHf/zYdgV7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CbI3Pjep; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D35CEC116C6;
-	Wed,  3 Dec 2025 16:15:58 +0000 (UTC)
+	 MIME-Version; b=jvn+rXFwqQXDwepH4+7mrS95OJqoM0S6nW3zGx76Xdbidppo3pL99P5o3br+JPstVpT/ukIp8ErHkqPaQ621zG6SudC/u9AMnYOLJwdyzhQjyEZ7wuk8mXcv/IMKh7cbTsACzR1onD9Gt+qK6QlngHDu4AY4TF0rjKsny4Vi/yI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BXG2YAoS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64AF6C4CEF5;
+	Wed,  3 Dec 2025 15:47:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778559;
-	bh=8KMIf6pCoOBtNHogQENcJpBw45GFT4qQgUWvmwqyLeg=;
+	s=korg; t=1764776821;
+	bh=vqKmAGd7HTl/Q9AY8aXegRinyF0mDojx2rPc69VM/Mw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CbI3PjepzA/0WrpHskh5lzg5013PhKUQ3LiGyNnYJY76cTuUXzLKkB2/wQOn1wdQZ
-	 QgSdxTVpeXNtKjo9jjg6jPUHRrGZnZly7u6Wxu/DvzG8laEgIHKxFFD1TFDijxiobH
-	 6gO578yCOo2DFzn4gPkovkvLBKikEfpHAhC1iBa0=
+	b=BXG2YAoSy/m9x8RhnELLE4+bBtSxdI4CsjNQfLBJCuFGckpMUrNbt/9MLgWrACgUZ
+	 rJfNaSKKmC2wBoEfchMHEiTVVCxqNrMWzBFakjERDTL2vFCPj/peuBjcdykdtE3Xwj
+	 DnZor14PHwW+Gk6UaZGx+NOcbpq9W/VoHfEUvHy8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francesco Lavra <flavra@baylibre.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 350/392] iio: imu: st_lsm6dsx: fix array size for st_lsm6dsx_settings fields
-Date: Wed,  3 Dec 2025 16:28:20 +0100
-Message-ID: <20251203152427.046527736@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 297/300] usb: renesas_usbhs: Fix synchronous external abort on unbind
+Date: Wed,  3 Dec 2025 16:28:21 +0100
+Message-ID: <20251203152411.625640645@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +60,148 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Francesco Lavra <flavra@baylibre.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit 3af0c1fb1cdc351b64ff1a4bc06d491490c1f10a upstream.
+[ Upstream commit eb9ac779830b2235847b72cb15cf07c7e3333c5e ]
 
-The `decimator` and `batch` fields of struct st_lsm6dsx_settings
-are arrays indexed by sensor type, not by sensor hardware
-identifier; moreover, the `batch` field is only used for the
-accelerometer and gyroscope.
-Change the array size for `decimator` from ST_LSM6DSX_MAX_ID to
-ST_LSM6DSX_ID_MAX, and change the array size for `batch` from
-ST_LSM6DSX_MAX_ID to 2; move the enum st_lsm6dsx_sensor_id
-definition so that the ST_LSM6DSX_ID_MAX value is usable within
-the struct st_lsm6dsx_settings definition.
+A synchronous external abort occurs on the Renesas RZ/G3S SoC if unbind is
+executed after the configuration sequence described above:
 
-Fixes: 801a6e0af0c6c ("iio: imu: st_lsm6dsx: add support to LSM6DSO")
-Signed-off-by: Francesco Lavra <flavra@baylibre.com>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+modprobe usb_f_ecm
+modprobe libcomposite
+modprobe configfs
+cd /sys/kernel/config/usb_gadget
+mkdir -p g1
+cd g1
+echo "0x1d6b" > idVendor
+echo "0x0104" > idProduct
+mkdir -p strings/0x409
+echo "0123456789" > strings/0x409/serialnumber
+echo "Renesas." > strings/0x409/manufacturer
+echo "Ethernet Gadget" > strings/0x409/product
+mkdir -p functions/ecm.usb0
+mkdir -p configs/c.1
+mkdir -p configs/c.1/strings/0x409
+echo "ECM" > configs/c.1/strings/0x409/configuration
+
+if [ ! -L configs/c.1/ecm.usb0 ]; then
+        ln -s functions/ecm.usb0 configs/c.1
+fi
+
+echo 11e20000.usb > UDC
+echo 11e20000.usb > /sys/bus/platform/drivers/renesas_usbhs/unbind
+
+The displayed trace is as follows:
+
+ Internal error: synchronous external abort: 0000000096000010 [#1] SMP
+ CPU: 0 UID: 0 PID: 188 Comm: sh Tainted: G M 6.17.0-rc7-next-20250922-00010-g41050493b2bd #55 PREEMPT
+ Tainted: [M]=MACHINE_CHECK
+ Hardware name: Renesas SMARC EVK version 2 based on r9a08g045s33 (DT)
+ pstate: 604000c5 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+ pc : usbhs_sys_function_pullup+0x10/0x40 [renesas_usbhs]
+ lr : usbhsg_update_pullup+0x3c/0x68 [renesas_usbhs]
+ sp : ffff8000838b3920
+ x29: ffff8000838b3920 x28: ffff00000d585780 x27: 0000000000000000
+ x26: 0000000000000000 x25: 0000000000000000 x24: ffff00000c3e3810
+ x23: ffff00000d5e5c80 x22: ffff00000d5e5d40 x21: 0000000000000000
+ x20: 0000000000000000 x19: ffff00000d5e5c80 x18: 0000000000000020
+ x17: 2e30303230316531 x16: 312d7968703a7968 x15: 3d454d414e5f4344
+ x14: 000000000000002c x13: 0000000000000000 x12: 0000000000000000
+ x11: ffff00000f358f38 x10: ffff00000f358db0 x9 : ffff00000b41f418
+ x8 : 0101010101010101 x7 : 7f7f7f7f7f7f7f7f x6 : fefefeff6364626d
+ x5 : 8080808000000000 x4 : 000000004b5ccb9d x3 : 0000000000000000
+ x2 : 0000000000000000 x1 : ffff800083790000 x0 : ffff00000d5e5c80
+ Call trace:
+ usbhs_sys_function_pullup+0x10/0x40 [renesas_usbhs] (P)
+ usbhsg_pullup+0x4c/0x7c [renesas_usbhs]
+ usb_gadget_disconnect_locked+0x48/0xd4
+ gadget_unbind_driver+0x44/0x114
+ device_remove+0x4c/0x80
+ device_release_driver_internal+0x1c8/0x224
+ device_release_driver+0x18/0x24
+ bus_remove_device+0xcc/0x10c
+ device_del+0x14c/0x404
+ usb_del_gadget+0x88/0xc0
+ usb_del_gadget_udc+0x18/0x30
+ usbhs_mod_gadget_remove+0x24/0x44 [renesas_usbhs]
+ usbhs_mod_remove+0x20/0x30 [renesas_usbhs]
+ usbhs_remove+0x98/0xdc [renesas_usbhs]
+ platform_remove+0x20/0x30
+ device_remove+0x4c/0x80
+ device_release_driver_internal+0x1c8/0x224
+ device_driver_detach+0x18/0x24
+ unbind_store+0xb4/0xb8
+ drv_attr_store+0x24/0x38
+ sysfs_kf_write+0x7c/0x94
+ kernfs_fop_write_iter+0x128/0x1b8
+ vfs_write+0x2ac/0x350
+ ksys_write+0x68/0xfc
+ __arm64_sys_write+0x1c/0x28
+ invoke_syscall+0x48/0x110
+ el0_svc_common.constprop.0+0xc0/0xe0
+ do_el0_svc+0x1c/0x28
+ el0_svc+0x34/0xf0
+ el0t_64_sync_handler+0xa0/0xe4
+ el0t_64_sync+0x198/0x19c
+ Code: 7100003f 1a9f07e1 531c6c22 f9400001 (79400021)
+ ---[ end trace 0000000000000000 ]---
+ note: sh[188] exited with irqs disabled
+ note: sh[188] exited with preempt_count 1
+
+The issue occurs because usbhs_sys_function_pullup(), which accesses the IP
+registers, is executed after the USBHS clocks have been disabled. The
+problem is reproducible on the Renesas RZ/G3S SoC starting with the
+addition of module stop in the clock enable/disable APIs. With module stop
+functionality enabled, a bus error is expected if a master accesses a
+module whose clock has been stopped and module stop activated.
+
+Disable the IP clocks at the end of remove.
+
+Cc: stable <stable@kernel.org>
+Fixes: f1407d5c6624 ("usb: renesas_usbhs: Add Renesas USBHS common code")
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://patch.msgid.link/20251027140741.557198-1-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h |   22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ drivers/usb/renesas_usbhs/common.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-@@ -226,6 +226,15 @@ struct st_lsm6dsx_event_settings {
- 	u8 wakeup_src_x_mask;
- };
+--- a/drivers/usb/renesas_usbhs/common.c
++++ b/drivers/usb/renesas_usbhs/common.c
+@@ -802,19 +802,19 @@ static int usbhs_remove(struct platform_
  
-+enum st_lsm6dsx_sensor_id {
-+	ST_LSM6DSX_ID_GYRO,
-+	ST_LSM6DSX_ID_ACC,
-+	ST_LSM6DSX_ID_EXT0,
-+	ST_LSM6DSX_ID_EXT1,
-+	ST_LSM6DSX_ID_EXT2,
-+	ST_LSM6DSX_ID_MAX
-+};
-+
- enum st_lsm6dsx_ext_sensor_id {
- 	ST_LSM6DSX_ID_MAGN,
- };
-@@ -311,23 +320,14 @@ struct st_lsm6dsx_settings {
- 	struct st_lsm6dsx_reg drdy_mask;
- 	struct st_lsm6dsx_odr_table_entry odr_table[2];
- 	struct st_lsm6dsx_fs_table_entry fs_table[2];
--	struct st_lsm6dsx_reg decimator[ST_LSM6DSX_MAX_ID];
--	struct st_lsm6dsx_reg batch[ST_LSM6DSX_MAX_ID];
-+	struct st_lsm6dsx_reg decimator[ST_LSM6DSX_ID_MAX];
-+	struct st_lsm6dsx_reg batch[2];
- 	struct st_lsm6dsx_fifo_ops fifo_ops;
- 	struct st_lsm6dsx_hw_ts_settings ts_settings;
- 	struct st_lsm6dsx_shub_settings shub_settings;
- 	struct st_lsm6dsx_event_settings event_settings;
- };
+ 	flush_delayed_work(&priv->notify_hotplug_work);
  
--enum st_lsm6dsx_sensor_id {
--	ST_LSM6DSX_ID_GYRO,
--	ST_LSM6DSX_ID_ACC,
--	ST_LSM6DSX_ID_EXT0,
--	ST_LSM6DSX_ID_EXT1,
--	ST_LSM6DSX_ID_EXT2,
--	ST_LSM6DSX_ID_MAX,
--};
+-	/* power off */
+-	if (!usbhs_get_dparam(priv, runtime_pwctrl))
+-		usbhsc_power_ctrl(priv, 0);
 -
- enum st_lsm6dsx_fifo_mode {
- 	ST_LSM6DSX_FIFO_BYPASS = 0x0,
- 	ST_LSM6DSX_FIFO_CONT = 0x6,
+-	pm_runtime_disable(&pdev->dev);
+-
+ 	usbhs_platform_call(priv, hardware_exit, pdev);
+-	usbhsc_clk_put(priv);
+ 	reset_control_assert(priv->rsts);
+ 	usbhs_mod_remove(priv);
+ 	usbhs_fifo_remove(priv);
+ 	usbhs_pipe_remove(priv);
+ 
++	/* power off */
++	if (!usbhs_get_dparam(priv, runtime_pwctrl))
++		usbhsc_power_ctrl(priv, 0);
++
++	usbhsc_clk_put(priv);
++	pm_runtime_disable(&pdev->dev);
++
+ 	return 0;
+ }
+ 
 
 
 
