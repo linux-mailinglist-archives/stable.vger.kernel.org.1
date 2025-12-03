@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-198274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8278C9F800
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:35:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7F9CCA15D3
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:26:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1DBE33002B05
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:33:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 87E1530AF55B
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:03:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AD09256C9E;
-	Wed,  3 Dec 2025 15:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27D02349B1A;
+	Wed,  3 Dec 2025 16:00:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nur873ij"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EEqrI7rt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 364C6305978;
-	Wed,  3 Dec 2025 15:33:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5C7E349B16;
+	Wed,  3 Dec 2025 16:00:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776002; cv=none; b=alW2nGzYIzpRajFln7KkocYntBxww8H21z1fu+cIEoR3tOim/jtO/X11/GAzPPhZZpgdyOSkw9ti8zCXyEc4M5fTZkZYb/RZDkWCgcRBnCWQKanKtP/DwAoSPIfNaWq3lNsKQ6nvAziXOOvU0Dk4skaAi6N5EBUZGp/tfks4rfg=
+	t=1764777653; cv=none; b=DwcuKq0u2WyoQMC4GfRQ2U6XAZrdsdl0wLCSLucdd3vF4qFbo87XcJFDmQRjcwPQo0/Y7QKuF1C51K0dyNUyMs2MeFSdODGSvHcDJpDgntd5Mw2tT61MZwJwhkgcqt/uGQhyM0HzukpOOgLl+zEc0HPS7B860+xYwAndUiXp2vk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776002; c=relaxed/simple;
-	bh=RT8pSYQ+pY1uqcmB7MrSCT++iwmP5Gua3wk/mNphgrY=;
+	s=arc-20240116; t=1764777653; c=relaxed/simple;
+	bh=g4ZwT9Whjkm3YzGbPapMq14gA85aQBSp8UaqBQSZ/sg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fFcqvOzd3zkK3jgg/4xD7lyYkKxuFSS1e+xIAlSWlMViKxiWJiNKvF3VTD19qInTKxAW3365zDuz8jgwxil525Op+nm4Ox+77jFZaMWPjw8G8DVValquyn3lbEweOHAnqC5GDpv7GsYeNWKw++RBRUY3xE/Pg3X9dZSwR2dj1GU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nur873ij; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4592FC116B1;
-	Wed,  3 Dec 2025 15:33:20 +0000 (UTC)
+	 MIME-Version; b=XFBI+vICmVKXCtgptl6UINrmvTd6nOrPSuHj/stV87nWAk9eV3kAOX41X8i6QtpLv5IEAG9sfqVFpJIm6V6fjT3GJpMXWxKHfYclSCelgK83/cELrpqLFSt7bIiAWtR0/e6KFkmDUs9l4gCXjf/qSaOrKXfKkQJQGo1YsLCMlcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EEqrI7rt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 393D0C4CEF5;
+	Wed,  3 Dec 2025 16:00:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776001;
-	bh=RT8pSYQ+pY1uqcmB7MrSCT++iwmP5Gua3wk/mNphgrY=;
+	s=korg; t=1764777653;
+	bh=g4ZwT9Whjkm3YzGbPapMq14gA85aQBSp8UaqBQSZ/sg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nur873ij3jwOXdFm/dJyCrARKf5SOl9eHYkr5t4r2wyOrcxzlu+HZg7oedzSJg20S
-	 MfS5tMXSNccEZafHHro6JfUHY3IJT3JNsCxqFwnYJqV3EHFnbc27M0IODEtpRbAQ4h
-	 xd7vh47ulc53JA2hD+rXCVnkUayrSLAPp8SH1Wn0=
+	b=EEqrI7rt9Sa3gQrNyhBXZ91/w2TaAO5RN/Cu+quz2JonPUIIWDfO+EatqKX8iTscj
+	 j10gclBfAGYIEjLU6XojyUI6OxMpswrxYVFvauycpWnfGUt82rgqvQuHN+p5EuFCZ1
+	 5hB6muXdIKL5J8dv6OggFA3IfRerEL/gAu3olacM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sarthak Garg <quic_sartgarg@quicinc.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Petr Machata <petrm@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 051/300] mmc: sdhci-msm: Enable tuning for SDR50 mode for SD card
+Subject: [PATCH 5.15 105/392] bridge: Redirect to backup port when port is administratively down
 Date: Wed,  3 Dec 2025 16:24:15 +0100
-Message-ID: <20251203152402.510379563@linuxfoundation.org>
+Message-ID: <20251203152417.963554452@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sarthak Garg <quic_sartgarg@quicinc.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 08b68ca543ee9d5a8d2dc406165e4887dd8f170b ]
+[ Upstream commit 3d05b24429e1de7a17c8fdccb04a04dbc8ad297b ]
 
-For Qualcomm SoCs which needs level shifter for SD card, extra delay is
-seen on receiver data path.
+If a backup port is configured for a bridge port, the bridge will
+redirect known unicast traffic towards the backup port when the primary
+port is administratively up but without a carrier. This is useful, for
+example, in MLAG configurations where a system is connected to two
+switches and there is a peer link between both switches. The peer link
+serves as the backup port in case one of the switches loses its
+connection to the multi-homed system.
 
-To compensate this delay enable tuning for SDR50 mode for targets which
-has level shifter. SDHCI_SDR50_NEEDS_TUNING caps will be set for targets
-with level shifter on Qualcomm SOC's.
+In order to avoid flooding when the primary port loses its carrier, the
+bridge does not flush dynamic FDB entries pointing to the port upon STP
+disablement, if the port has a backup port.
 
-Signed-off-by: Sarthak Garg <quic_sartgarg@quicinc.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+The above means that known unicast traffic destined to the primary port
+will be blackholed when the port is put administratively down, until the
+FDB entries pointing to it are aged-out.
+
+Given that the current behavior is quite weird and unlikely to be
+depended on by anyone, amend the bridge to redirect to the backup port
+also when the primary port is administratively down and not only when it
+does not have a carrier.
+
+The change is motivated by a report from a user who expected traffic to
+be redirected to the backup port when the primary port was put
+administratively down while debugging a network issue.
+
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20250812080213.325298-2-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-msm.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ net/bridge/br_forward.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
-index 183617d56b446..c900525b52516 100644
---- a/drivers/mmc/host/sdhci-msm.c
-+++ b/drivers/mmc/host/sdhci-msm.c
-@@ -78,6 +78,7 @@
- #define CORE_IO_PAD_PWR_SWITCH_EN	BIT(15)
- #define CORE_IO_PAD_PWR_SWITCH	BIT(16)
- #define CORE_HC_SELECT_IN_EN	BIT(18)
-+#define CORE_HC_SELECT_IN_SDR50	(4 << 19)
- #define CORE_HC_SELECT_IN_HS400	(6 << 19)
- #define CORE_HC_SELECT_IN_MASK	(7 << 19)
+diff --git a/net/bridge/br_forward.c b/net/bridge/br_forward.c
+index 1b66c276118a3..aec5ab772a69d 100644
+--- a/net/bridge/br_forward.c
++++ b/net/bridge/br_forward.c
+@@ -148,7 +148,8 @@ void br_forward(const struct net_bridge_port *to,
+ 		goto out;
  
-@@ -1113,6 +1114,10 @@ static bool sdhci_msm_is_tuning_needed(struct sdhci_host *host)
- {
- 	struct mmc_ios *ios = &host->mmc->ios;
+ 	/* redirect to backup link if the destination port is down */
+-	if (rcu_access_pointer(to->backup_port) && !netif_carrier_ok(to->dev)) {
++	if (rcu_access_pointer(to->backup_port) &&
++	    (!netif_carrier_ok(to->dev) || !netif_running(to->dev))) {
+ 		struct net_bridge_port *backup_port;
  
-+	if (ios->timing == MMC_TIMING_UHS_SDR50 &&
-+	    host->flags & SDHCI_SDR50_NEEDS_TUNING)
-+		return true;
-+
- 	/*
- 	 * Tuning is required for SDR104, HS200 and HS400 cards and
- 	 * if clock frequency is greater than 100MHz in these modes.
-@@ -1181,6 +1186,8 @@ static int sdhci_msm_execute_tuning(struct mmc_host *mmc, u32 opcode)
- 	struct mmc_ios ios = host->mmc->ios;
- 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
- 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
-+	const struct sdhci_msm_offset *msm_offset = msm_host->offset;
-+	u32 config;
- 
- 	if (!sdhci_msm_is_tuning_needed(host)) {
- 		msm_host->use_cdr = false;
-@@ -1197,6 +1204,14 @@ static int sdhci_msm_execute_tuning(struct mmc_host *mmc, u32 opcode)
- 	 */
- 	msm_host->tuning_done = 0;
- 
-+	if (ios.timing == MMC_TIMING_UHS_SDR50 &&
-+	    host->flags & SDHCI_SDR50_NEEDS_TUNING) {
-+		config = readl_relaxed(host->ioaddr + msm_offset->core_vendor_spec);
-+		config &= ~CORE_HC_SELECT_IN_MASK;
-+		config |= CORE_HC_SELECT_IN_EN | CORE_HC_SELECT_IN_SDR50;
-+		writel_relaxed(config, host->ioaddr + msm_offset->core_vendor_spec);
-+	}
-+
- 	/*
- 	 * For HS400 tuning in HS200 timing requires:
- 	 * - select MCLK/2 in VENDOR_SPEC
+ 		backup_port = rcu_dereference(to->backup_port);
 -- 
 2.51.0
 
