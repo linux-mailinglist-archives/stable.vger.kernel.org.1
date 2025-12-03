@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-198937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 535B6CA0012
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:38:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89E9EC9FAC1
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:51:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A524C3034CE5
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:34:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 02D2C3041987
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:43:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 468B230DEA5;
-	Wed,  3 Dec 2025 16:09:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 515F73074A0;
+	Wed,  3 Dec 2025 15:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M0ue6Tuq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M9+Z1fEc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0188526B756;
-	Wed,  3 Dec 2025 16:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19422DA769;
+	Wed,  3 Dec 2025 15:43:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778160; cv=none; b=S9m7seDtzoCISe4dGgtwdyeto/QcN3YvvbGycGNRBWrufRUbz6yMDI7pog3QcKamGJt9xlF+aM3ciD6zUxdJYUCPv2FC/qccT1VDzegiIUMlJtPYJU/XR1MRzNydajVXs0ewaXUrDugjOVD3qqEPyRl2HJ2qilMwskK6uivSmx8=
+	t=1764776631; cv=none; b=Y0MSezLBz7SfTAlAJEYiKVgIIN1jF4YNn2vRBEbtQ7yujKDsAMagvJM33OZ5Wch/ajPcyid5SXzTK2rPenHjl0HKr34a+CRh0HK23eCWE3UdGJQOTyxyOkU3OjLe6qXWZFtVzKh/6Gu25uKTpHJglIGlKVf5vMKY/zkIMhdIm2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778160; c=relaxed/simple;
-	bh=MsxDUDxKxcRfoMJbs8RSTlfok9jjziOn6OtLPWlIpIE=;
+	s=arc-20240116; t=1764776631; c=relaxed/simple;
+	bh=+hzTvBGMmRB+f5cNnmxUsJyRYDIjB3UAcbITVgd6OpU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R3B86d/Kl66drN2hRF3EkA21xcHsWn8hfW+69tX7FDfai9i7EmFb+Lo9gV/SELOPtbWmp9kkMGWXSLmyVQxUfLhpsoppsBXFqlSEhNhHy2ETR4/Z2SvJrrOoX3qTyeVXKgKKosHY3z5iXZbc9aH7mg2ji9D/MYrM598TpynYaL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M0ue6Tuq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF691C4CEF5;
-	Wed,  3 Dec 2025 16:09:18 +0000 (UTC)
+	 MIME-Version; b=R1WJjpsIcUMokyr+ybjPlbdxrJ+Qr/h+Oy8A9eTIXgVfaIiqbFy16058ilw+A+ppDFtkiazOMIRlYHH8zNW+bD7np3QG7tcagXTz3Ui/ON1ksRPk1n5sCCPUV+/gs1mviESr0SaELhc5VvV2s0TrVw2sX+Xl3QVRpbJ8TRQB0gM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M9+Z1fEc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D1A0C4CEF5;
+	Wed,  3 Dec 2025 15:43:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778159;
-	bh=MsxDUDxKxcRfoMJbs8RSTlfok9jjziOn6OtLPWlIpIE=;
+	s=korg; t=1764776630;
+	bh=+hzTvBGMmRB+f5cNnmxUsJyRYDIjB3UAcbITVgd6OpU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M0ue6TuqhEFMBNtF00Tav7pBnaxA06FmLrKOvXc3dkRQajgOcRMI6plEyv4zpIXSp
-	 ChVV0BrLaMBhEiFvXy2DAurZQ9HiHF+oBRj3MPaHj5fIMnX6vRtHpy/O2wVqn/M+mx
-	 2dhEQguZ5UMJJ2eaxVFwg9kD8oqBJl+ysIOM3ncM=
+	b=M9+Z1fEc7rof15lCtoy23YDzA93VW5kn9IcOOLE3ZpTn52hpucB+59JJP0LRqCeFk
+	 xM5DPzu/DNEIx2ea0ysxisYK0uE5/zufClP8JJfnBdejevpTsoSbSee7HqfXC+ocnQ
+	 FVEFH/WL0Z9McDhaUH81Ch0H27t+llrkiJazWXPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rohit Keshri <rkeshri@redhat.com>,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	Maaz Mombasawala <maaz.mombasawala@broadcom.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 261/392] drm/vmwgfx: Validate command header size against SVGA_CMD_MAX_DATASIZE
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 207/300] gcov: add support for GCC 15
 Date: Wed,  3 Dec 2025 16:26:51 +0100
-Message-ID: <20251203152423.771956247@linuxfoundation.org>
+Message-ID: <20251203152408.291453271@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +60,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Forbes <ian.forbes@broadcom.com>
+From: Peter Oberparleiter <oberpar@linux.ibm.com>
 
-[ Upstream commit 32b415a9dc2c212e809b7ebc2b14bc3fbda2b9af ]
+commit ec4d11fc4b2dd4a2fa8c9d801ee9753b74623554 upstream.
 
-This data originates from userspace and is used in buffer offset
-calculations which could potentially overflow causing an out-of-bounds
-access.
+Using gcov on kernels compiled with GCC 15 results in truncated 16-byte
+long .gcda files with no usable data.  To fix this, update GCOV_COUNTERS
+to match the value defined by GCC 15.
 
-Fixes: 8ce75f8ab904 ("drm/vmwgfx: Update device includes for DX device functionality")
-Reported-by: Rohit Keshri <rkeshri@redhat.com>
-Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
-Reviewed-by: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patch.msgid.link/20251021190128.13014-1-ian.forbes@broadcom.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Tested with GCC 14.3.0 and GCC 15.2.0.
+
+Link: https://lkml.kernel.org/r/20251028115125.1319410-1-oberpar@linux.ibm.com
+Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Reported-by: Matthieu Baerts <matttbe@kernel.org>
+Closes: https://github.com/linux-test-project/lcov/issues/445
+Tested-by: Matthieu Baerts <matttbe@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ kernel/gcov/gcc_4_7.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-index 7dd42c5a7fd62..fd7d6987f9134 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-@@ -3627,6 +3627,11 @@ static int vmw_cmd_check(struct vmw_private *dev_priv,
+--- a/kernel/gcov/gcc_4_7.c
++++ b/kernel/gcov/gcc_4_7.c
+@@ -19,7 +19,9 @@
+ #include <linux/vmalloc.h>
+ #include "gcov.h"
  
- 
- 	cmd_id = header->id;
-+	if (header->size > SVGA_CMD_MAX_DATASIZE) {
-+		VMW_DEBUG_USER("SVGA3D command: %d is too big.\n",
-+			       cmd_id + SVGA_3D_CMD_BASE);
-+		return -E2BIG;
-+	}
- 	*size = header->size + sizeof(SVGA3dCmdHeader);
- 
- 	cmd_id -= SVGA_3D_CMD_BASE;
--- 
-2.51.0
-
+-#if (__GNUC__ >= 14)
++#if (__GNUC__ >= 15)
++#define GCOV_COUNTERS			10
++#elif (__GNUC__ >= 14)
+ #define GCOV_COUNTERS			9
+ #elif (__GNUC__ >= 10)
+ #define GCOV_COUNTERS			8
 
 
 
