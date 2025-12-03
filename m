@@ -1,53 +1,58 @@
-Return-Path: <stable+bounces-198986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8CA7CA095E
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:44:01 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB201CA01EE
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:49:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 185D730012DF
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:44:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 143953027FCE
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:41:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C32BB347BB8;
-	Wed,  3 Dec 2025 16:12:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFDB735C19A;
+	Wed,  3 Dec 2025 16:41:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ULDuH1ic"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gDJTkIHb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78188346FC8;
-	Wed,  3 Dec 2025 16:12:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EDEA35BDBD;
+	Wed,  3 Dec 2025 16:41:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778321; cv=none; b=BRfAYYvWKgxveSKM6r3iadXgcfZDjTYV4E8U+MKvfqdsNlpLexZTPxZc4Gl0u7Yj1aoJSPk7eiMUblN20pQ8dBmw3t/FcO5BViNLKaRYVmDtZMaF4g7unT/tKPS03OEmMHCnHLHYxutgkCA/KXre0ZZYglbrdJ2fUvX8nwAIs4U=
+	t=1764780110; cv=none; b=f1gc52tPUBAzFGcFM2C3zxPI4e/MpzNYKawUTcUW9BZQ+8fi7Y6hp9L6+y3W9Im9g8JSmfisaN++Kqou7uHbcj3cv4TIVu68K67Un9unARK4JkMObOyWuoX2YETJpHRmRTETclFJNjT1zYsyn3QufiztP3CLPpvy5G5Yzje1ODc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778321; c=relaxed/simple;
-	bh=xiw+mDpvVTlx4y7XmT2i+/M9Um7ikQt9X3BGj6TyyZs=;
+	s=arc-20240116; t=1764780110; c=relaxed/simple;
+	bh=yZFleS3X42mAfQyP6f+Yw18eoJxED1GPoJK0f2DAX9I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f7GTMDgj+/l0kCpPgh/2yxl7pDi1H2lUITYvkQcReKawqeDgMs0IghhsVgj2kLVADEy71E5KAHSIceX0oINYktdgjugf2cbrGi1p18uOwBjfAUhu+dPNJ4w+GZ1GmPqsHZgu85BPVPp/KOUzLIPEnS4kecu769Iv1T0p58/BXgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ULDuH1ic; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5602C4CEF5;
-	Wed,  3 Dec 2025 16:12:00 +0000 (UTC)
+	 MIME-Version; b=hYfR1UNP73H61gO67KudD/qFbcmTtZg8Bcavgx0XL0tmOAZJAl+QmFnnM6TzoWk3mOKAUcK2nEG67qF99QpoDz7vV0yWNRkk7IlxwCpCc67q5mjMYq1aCpcBgozrutkcSEoZOsN/VKeV/rWi4BOEPC2PeDKHhX6OgEyfZ3oEVfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gDJTkIHb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD52CC4CEF5;
+	Wed,  3 Dec 2025 16:41:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778321;
-	bh=xiw+mDpvVTlx4y7XmT2i+/M9Um7ikQt9X3BGj6TyyZs=;
+	s=korg; t=1764780110;
+	bh=yZFleS3X42mAfQyP6f+Yw18eoJxED1GPoJK0f2DAX9I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ULDuH1iciasril9mWUYiKKvRjwwNOrRx4wJIdaaejDnRTbX96E/vLPZzFSR7TVKSz
-	 RwndTVm1WT9LeuBckBWMUcc1uh3jAcbSEK2WN7DJtPZqhR/PFAUy5V3rcj74n2M5ff
-	 KJgk2mxRHRnUoHT9+TPkhn9en6f+AAodFa80L2Ss=
+	b=gDJTkIHbYP6XO2iF2itwURdhy9uYFQk41t1Pk0LYD2ltf1xoXbAJNV+f3I/Y/imI0
+	 o945Ts6sCvOnOrqD6r6mJPi+T1WDj1z6HQX+QkMS9hqMZ0TVU3Ur7bfwjgwW7aoMnm
+	 hqbgg3xpYtUH2CLbZb7qpQ4ZA90apDjYwzDrUVGc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hansg@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.15 277/392] spi: Try to get ACPI GPIO IRQ earlier
-Date: Wed,  3 Dec 2025 16:27:07 +0100
-Message-ID: <20251203152424.356157705@linuxfoundation.org>
+	Armen Ratner <armeng@nvidia.com>,
+	Maher Sanalla <msanalla@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Alexei Lazar <alazar@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 426/568] net/mlx5e: Preserve shared buffer capacity during headroom updates
+Date: Wed,  3 Dec 2025 16:27:08 +0100
+Message-ID: <20251203152456.298744662@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,60 +64,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hansg@kernel.org>
+From: Armen Ratner <armeng@nvidia.com>
 
-commit 3cd2018e15b3d66d2187d92867e265f45ad79e6f upstream.
+commit 8b0587a885fdb34fd6090a3f8625cb7ac1444826 upstream.
 
-Since commit d24cfee7f63d ("spi: Fix acpi deferred irq probe"), the
-acpi_dev_gpio_irq_get() call gets delayed till spi_probe() is called
-on the SPI device.
+When port buffer headroom changes, port_update_shared_buffer()
+recalculates the shared buffer size and splits it in a 3:1 ratio
+(lossy:lossless) - Currently, the calculation is:
+lossless = shared / 4;
+lossy = (shared / 4) * 3;
 
-If there is no driver for the SPI device then the move to spi_probe()
-results in acpi_dev_gpio_irq_get() never getting called. This may
-cause problems by leaving the GPIO pin floating because this call is
-responsible for setting up the GPIO pin direction and/or bias according
-to the values from the ACPI tables.
+Meaning, the calculation dropped the remainder of shared % 4 due to
+integer division, unintentionally reducing the total shared buffer
+by up to three cells on each update. Over time, this could shrink
+the buffer below usable size.
 
-Re-add the removed acpi_dev_gpio_irq_get() in acpi_register_spi_device()
-to ensure the GPIO pin is always correctly setup, while keeping the
-acpi_dev_gpio_irq_get() call added to spi_probe() to deal with
--EPROBE_DEFER returns caused by the GPIO controller not having a driver
-yet.
+Fix it by changing the calculation to:
+lossless = shared / 4;
+lossy = shared - lossless;
 
-Link: https://bbs.archlinux.org/viewtopic.php?id=302348
-Fixes: d24cfee7f63d ("spi: Fix acpi deferred irq probe")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Link: https://patch.msgid.link/20251102190921.30068-1-hansg@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This retains all buffer cells while still approximating the
+intended 3:1 split, preventing capacity loss over time.
+
+While at it, perform headroom calculations in units of cells rather than
+in bytes for more accurate calculations avoiding extra divisions.
+
+Fixes: a440030d8946 ("net/mlx5e: Update shared buffer along with device buffer changes")
+Signed-off-by: Armen Ratner <armeng@nvidia.com>
+Signed-off-by: Maher Sanalla <msanalla@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Alexei Lazar <alazar@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Link: https://patch.msgid.link/20250820133209.389065-9-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c |   18 ++++++---------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
 
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2416,6 +2416,16 @@ static acpi_status acpi_register_spi_dev
- 	acpi_set_modalias(adev, acpi_device_hid(adev), spi->modalias,
- 			  sizeof(spi->modalias));
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
+@@ -272,8 +272,8 @@ static int port_update_shared_buffer(str
+ 	/* Total shared buffer size is split in a ratio of 3:1 between
+ 	 * lossy and lossless pools respectively.
+ 	 */
+-	lossy_epool_size = (shared_buffer_size / 4) * 3;
+ 	lossless_ipool_size = shared_buffer_size / 4;
++	lossy_epool_size    = shared_buffer_size - lossless_ipool_size;
  
-+	/*
-+	 * This gets re-tried in spi_probe() for -EPROBE_DEFER handling in case
-+	 * the GPIO controller does not have a driver yet. This needs to be done
-+	 * here too, because this call sets the GPIO direction and/or bias.
-+	 * Setting these needs to be done even if there is no driver, in which
-+	 * case spi_probe() will never get called.
-+	 */
-+	if (spi->irq < 0)
-+		spi->irq = acpi_dev_gpio_irq_get(adev, 0);
+ 	mlx5e_port_set_sbpr(mdev, 0, MLX5_EGRESS_DIR, MLX5_LOSSY_POOL, 0,
+ 			    lossy_epool_size);
+@@ -288,14 +288,12 @@ static int port_set_buffer(struct mlx5e_
+ 	u16 port_buff_cell_sz = priv->dcbx.port_buff_cell_sz;
+ 	struct mlx5_core_dev *mdev = priv->mdev;
+ 	int sz = MLX5_ST_SZ_BYTES(pbmc_reg);
+-	u32 new_headroom_size = 0;
+-	u32 current_headroom_size;
++	u32 current_headroom_cells = 0;
++	u32 new_headroom_cells = 0;
+ 	void *in;
+ 	int err;
+ 	int i;
+ 
+-	current_headroom_size = port_buffer->headroom_size;
+-
+ 	in = kzalloc(sz, GFP_KERNEL);
+ 	if (!in)
+ 		return -ENOMEM;
+@@ -306,12 +304,14 @@ static int port_set_buffer(struct mlx5e_
+ 
+ 	for (i = 0; i < MLX5E_MAX_NETWORK_BUFFER; i++) {
+ 		void *buffer = MLX5_ADDR_OF(pbmc_reg, in, buffer[i]);
++		current_headroom_cells += MLX5_GET(bufferx_reg, buffer, size);
 +
- 	acpi_device_set_enumerated(adev);
+ 		u64 size = port_buffer->buffer[i].size;
+ 		u64 xoff = port_buffer->buffer[i].xoff;
+ 		u64 xon = port_buffer->buffer[i].xon;
  
- 	adev->power.flags.ignore_parent = true;
+-		new_headroom_size += size;
+ 		do_div(size, port_buff_cell_sz);
++		new_headroom_cells += size;
+ 		do_div(xoff, port_buff_cell_sz);
+ 		do_div(xon, port_buff_cell_sz);
+ 		MLX5_SET(bufferx_reg, buffer, size, size);
+@@ -320,10 +320,8 @@ static int port_set_buffer(struct mlx5e_
+ 		MLX5_SET(bufferx_reg, buffer, xon_threshold, xon);
+ 	}
+ 
+-	new_headroom_size /= port_buff_cell_sz;
+-	current_headroom_size /= port_buff_cell_sz;
+-	err = port_update_shared_buffer(priv->mdev, current_headroom_size,
+-					new_headroom_size);
++	err = port_update_shared_buffer(priv->mdev, current_headroom_cells,
++					new_headroom_cells);
+ 	if (err)
+ 		goto out;
+ 
 
 
 
