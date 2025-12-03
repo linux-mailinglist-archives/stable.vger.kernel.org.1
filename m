@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-198529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F90ACA0E19
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:19:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCAF1CA0373
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:56:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A8628305F65D
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:16:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CA92B30062CE
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:49:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE9CB3148B9;
-	Wed,  3 Dec 2025 15:47:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0F0D349AF4;
+	Wed,  3 Dec 2025 16:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rZ4ys61e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fBAwqP5j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96FB43191D7;
-	Wed,  3 Dec 2025 15:47:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4CB349AE7;
+	Wed,  3 Dec 2025 16:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776847; cv=none; b=SA6hD7EUt27uK5/GnWNX/Py75Sp++27DSrdm/EXB9EuoPQ6eANu9QxYRT9o3tppLQypHDmARo4Hglp0gJBWFHt9IicGPdNvq0Cp/BaGIe0dsxRtBUXk+ERwbp+V9fCPNJtqRTg5a9x5vGCcEza9PDfm+h6K4n7oVQh+vlYiBiHw=
+	t=1764780587; cv=none; b=NEPwLK+Y3HXLdWSKQV94ldAo8a8Xggy+0DG4SRTUnoWPdC2U72D5Oqv4lGvvOirkV1wp9o3kyIUzPb0LzZEvZKdNsrzsqjU0knaza4dgEsHaS3iia/QoOkJg+0QaOokp+yMUZenURwAnWzDILbT6iJyV+IpIAzqYmMhq+IOPlwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776847; c=relaxed/simple;
-	bh=6d1PesyqF/ep5VY8/JLWvozVSUhUIaffbH/m0o78RQI=;
+	s=arc-20240116; t=1764780587; c=relaxed/simple;
+	bh=dYyWVk/RZKpst02gcylyPSv++9NI2vUXZj40+f21oQs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p2/SvIboxbudTXnI+1wZ6dvm42hR5/ah/RPNrwar+l/XV8V4w3asuFqCR6CjozdFCgkpp+WSGrAYq3KFjdjvDmRW2o7s1WUoTOhmF+UaJ29qMyzC38ukdvl14r9Q/nIE+LGN92eFabJwggpGFO5d1TfJcf7msc1YRl8PYS7wdY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rZ4ys61e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B3BCC4CEF5;
-	Wed,  3 Dec 2025 15:47:26 +0000 (UTC)
+	 MIME-Version; b=ORcm0LWc+N9tNl0Xa5+vZzSyZmtEFi7+V7qqe0x656h0pMwFjmTo6h0GWBN/SIh8yR/ivEC9AejS5o3OOGxJ1+zJrNiYjWuzYvh2qfgcxNeZ8HiS5LFQJNc1XPjJ+WViWrk06Vkd+IxwNfL1shWR5LODdINHM4yDtxKho8YNfZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fBAwqP5j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 036B8C4CEF5;
+	Wed,  3 Dec 2025 16:49:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776847;
-	bh=6d1PesyqF/ep5VY8/JLWvozVSUhUIaffbH/m0o78RQI=;
+	s=korg; t=1764780587;
+	bh=dYyWVk/RZKpst02gcylyPSv++9NI2vUXZj40+f21oQs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rZ4ys61eR9fgI7aJP8lLEqkorvoVtE2qiD75A7PcFdEXVjJBmujrvD3FC7wtXojst
-	 HhE3zvIF8TBixXqTSlggUDASgNYqdw9qZLQ+W2rwx4ATPQcfr4UHpYfNCUypib2OEy
-	 T7VxZyESqv4b6S45i76n/vS+GDXVeWJMyhvC05AM=
+	b=fBAwqP5jOmfr3ETTpNe3KH3c4TOrhQGQsCGD1GIyz110tzeOBhBWHGH8CsKsgDIzn
+	 b8f9q+PNl2zjqO7E+wcEAeklufifx7HMtCfcfCworPOUVUyxZcgbzDZQWrm/dMNnEh
+	 g1NGjEaCvZnSvPnsqjiDlpy++bwSWOkKnrI2QT70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stealth <oleg.smirnov.1988@gmail.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.10 281/300] USB: storage: Remove subclass and protocol overrides from Novatek quirk
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 006/132] Bluetooth: hci_core: Fix triggering cmd_timer for HCI_OP_NOP
 Date: Wed,  3 Dec 2025 16:28:05 +0100
-Message-ID: <20251203152411.036774281@linuxfoundation.org>
+Message-ID: <20251203152343.527912624@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +59,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit df5fde297e617041449f603ed5f646861c80000b upstream.
+[ Upstream commit 275ddfeb3fdc274050c2173ffd985b1e80a9aa37 ]
 
-A report from Oleg Smirnov indicates that the unusual_devs quirks
-entry for the Novatek camera does not need to override the subclass
-and protocol parameters:
+HCI_OP_NOP means no command was actually sent so there is no point in
+triggering cmd_timer which may cause a hdev->reset in the process since
+it is assumed that the controller is stuck processing a command.
 
-[3266355.209532] usb 1-3: new high-speed USB device number 10 using xhci_hcd
-[3266355.333031] usb 1-3: New USB device found, idVendor=0603, idProduct=8611, bcdDevice= 1.00
-[3266355.333040] usb 1-3: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-[3266355.333043] usb 1-3: Product: YICARCAM
-[3266355.333045] usb 1-3: Manufacturer: XIAO-YI
-[3266355.333047] usb 1-3: SerialNumber: 966110000000100
-[3266355.338621] usb-storage 1-3:1.0: USB Mass Storage device detected
-[3266355.338817] usb-storage 1-3:1.0: Quirks match for vid 0603 pid 8611: 4000
-[3266355.338821] usb-storage 1-3:1.0: This device (0603,8611,0100 S 06 P 50) has unneeded SubClass and Protocol entries in unusual_devs.h (kernel 6.16.10-arch1-1)
-                    Please send a copy of this message to
-<linux-usb@vger.kernel.org> and <usb-storage@lists.one-eyed-alien.net>
-
-The overrides are harmless but they do provoke the driver into logging
-this annoying message.  Update the entry to remove the unneeded entries.
-
-Reported-by: stealth <oleg.smirnov.1988@gmail.com>
-Closes: https://lore.kernel.org/CAKxjRRxhC0s19iEWoN=pEMqXJ_z8w_moC0GCXSqSKCcOddnWjQ@mail.gmail.com/
-Fixes: 6ca8af3c8fb5 ("USB: storage: Add unusual-devs entry for Novatek NTK96550-based camera")
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Cc: stable <stable@kernel.org>
-Link: https://patch.msgid.link/b440f177-f0b8-4d5a-8f7b-10855d4424ee@rowland.harvard.edu
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e2d471b7806b ("Bluetooth: ISO: Fix not using SID from adv report")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/storage/unusual_devs.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/hci_core.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/usb/storage/unusual_devs.h b/drivers/usb/storage/unusual_devs.h
-index dfa5276a5a43..47f50d7a385c 100644
---- a/drivers/usb/storage/unusual_devs.h
-+++ b/drivers/usb/storage/unusual_devs.h
-@@ -938,7 +938,7 @@ UNUSUAL_DEV(  0x05e3, 0x0723, 0x9451, 0x9451,
- UNUSUAL_DEV(  0x0603, 0x8611, 0x0000, 0xffff,
- 		"Novatek",
- 		"NTK96550-based camera",
--		USB_SC_SCSI, USB_PR_BULK, NULL,
-+		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
- 		US_FL_BULK_IGNORE_TAG ),
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index b74ada8092378..ba01d0fa07193 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -4076,7 +4076,7 @@ static void hci_rx_work(struct work_struct *work)
+ 	}
+ }
  
- /*
+-static void hci_send_cmd_sync(struct hci_dev *hdev, struct sk_buff *skb)
++static int hci_send_cmd_sync(struct hci_dev *hdev, struct sk_buff *skb)
+ {
+ 	int err;
+ 
+@@ -4088,16 +4088,19 @@ static void hci_send_cmd_sync(struct hci_dev *hdev, struct sk_buff *skb)
+ 	if (!hdev->sent_cmd) {
+ 		skb_queue_head(&hdev->cmd_q, skb);
+ 		queue_work(hdev->workqueue, &hdev->cmd_work);
+-		return;
++		return -EINVAL;
+ 	}
+ 
+ 	if (hci_skb_opcode(skb) != HCI_OP_NOP) {
+ 		err = hci_send_frame(hdev, skb);
+ 		if (err < 0) {
+ 			hci_cmd_sync_cancel_sync(hdev, -err);
+-			return;
++			return err;
+ 		}
+ 		atomic_dec(&hdev->cmd_cnt);
++	} else {
++		err = -ENODATA;
++		kfree_skb(skb);
+ 	}
+ 
+ 	if (hdev->req_status == HCI_REQ_PEND &&
+@@ -4105,12 +4108,15 @@ static void hci_send_cmd_sync(struct hci_dev *hdev, struct sk_buff *skb)
+ 		kfree_skb(hdev->req_skb);
+ 		hdev->req_skb = skb_clone(hdev->sent_cmd, GFP_KERNEL);
+ 	}
++
++	return err;
+ }
+ 
+ static void hci_cmd_work(struct work_struct *work)
+ {
+ 	struct hci_dev *hdev = container_of(work, struct hci_dev, cmd_work);
+ 	struct sk_buff *skb;
++	int err;
+ 
+ 	BT_DBG("%s cmd_cnt %d cmd queued %d", hdev->name,
+ 	       atomic_read(&hdev->cmd_cnt), skb_queue_len(&hdev->cmd_q));
+@@ -4121,7 +4127,9 @@ static void hci_cmd_work(struct work_struct *work)
+ 		if (!skb)
+ 			return;
+ 
+-		hci_send_cmd_sync(hdev, skb);
++		err = hci_send_cmd_sync(hdev, skb);
++		if (err)
++			return;
+ 
+ 		rcu_read_lock();
+ 		if (test_bit(HCI_RESET, &hdev->flags) ||
 -- 
-2.52.0
+2.51.0
 
 
 
