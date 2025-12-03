@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F2B8C9F936
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:42:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F3A8CA0313
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:54:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 01CD53003F93
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:42:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B2B603066DB1
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:48:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF032314D0A;
-	Wed,  3 Dec 2025 15:42:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B564432AAC4;
+	Wed,  3 Dec 2025 16:39:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KqBEl2Gr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BsgfVcGL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9054A3161BC;
-	Wed,  3 Dec 2025 15:42:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7397831A077;
+	Wed,  3 Dec 2025 16:39:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776537; cv=none; b=EbZaNza/0CaMXqSpoSBaBcmZfo2KcoGs4foiU3U9HfEmPX3gz/CQuE+xMe534f7CTK3J/A5PgMzu0b2I8Wcb1W9ytXcjJDtQguMkH2rVKuLWm5V2z9lX4RNa8Q6vAoUhlGSACd65jc5fTa325tndxjydqw0KJHbhiS4QkQa6oEQ=
+	t=1764779966; cv=none; b=f6sH8g82P2Qyv2JvcNulRSL/HZUsUM+LNHoxyVwtjPTBjZxK5sNa3UDERpe+aaU2RqD3pQymQegp5GXmI3SAaMOpR0je0PSj5zTsVsr1uEu7XiFD1MPCCXLWFodyAIaByIEwg7rdsGnx0dxhHxrsijX9CFU6C4AY20/EKzIGKeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776537; c=relaxed/simple;
-	bh=LftdVImH2mB0LPHx/ADMMcvZXTulyyNUyV/ODs4zOQE=;
+	s=arc-20240116; t=1764779966; c=relaxed/simple;
+	bh=MSrDtaSGITKm/nIXWMzKPiUtis96Wtd1t65GUdIJCQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZMsjLQq2BdHxIO9GQ6o/9vyeP0DolAKLMjQYHoqYQoIV6tOUv9OSOnG046loz2vpccaf0exXOO6pOMZKon8uP+qryFYMMK63M0D8Fg0NtjyrWsicqizde8iaAESVy/ejnEQlJNd6C94VYUDtbcwYFv40EVSV0JJ8We9q/gE10rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KqBEl2Gr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2B81C16AAE;
-	Wed,  3 Dec 2025 15:42:16 +0000 (UTC)
+	 MIME-Version; b=e0FbtcbKRKbQyrYz7LqMHI5Hagf2kALbJnMSsMHVnhyJhwABPOOJ56o8ZFkOSFmje4FwX/Xwh78hGx3KXubt3IEI5me/CR2AxkfmiGQmZne6EKfPqaeSdKGKDEiCyX/zxzI/WbQ2K/JAI3MdgmmB7RlopZQENZp/Ot2ni8aYQjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BsgfVcGL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CD95C4CEF5;
+	Wed,  3 Dec 2025 16:39:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776537;
-	bh=LftdVImH2mB0LPHx/ADMMcvZXTulyyNUyV/ODs4zOQE=;
+	s=korg; t=1764779965;
+	bh=MSrDtaSGITKm/nIXWMzKPiUtis96Wtd1t65GUdIJCQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KqBEl2GrfR/Z1ODhaXCNFJjS6htEje50RpPQ9fxyJMlHQNYzE+VFk8rpIaQqlslGn
-	 7x2JW+JUsu3Evum61ZKo+j2S6PJHDDvBLP0Md0dEhFy6y+qXb4YuyBB1Vims1O7OTU
-	 7oQMX8vpr7GYmIX6MEqfxZ/2BngobS6a0S7W3ais=
+	b=BsgfVcGLKQ5VE+TF3hJZQ6hfcZCPrAKWpYYPaXNSePAVuqvoA5sPo2WmqdABpjrDf
+	 rmwL6/W78VD+EsY+GWWHS8eHdBF7PnYp80pHKZT8esS8Zizo+098XbJVhL0HAXDusb
+	 VkHdxYM0pb1/+430FGSUqsYC1oULSgT3ZmTNp4ro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Dinh Nguyen <dinguyen@kernel.org>
-Subject: [PATCH 5.10 213/300] EDAC/altera: Use INTTEST register for Ethernet and USB SBE injection
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 415/568] scsi: ufs: ufs-pci: Set UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE for Intel ADL
 Date: Wed,  3 Dec 2025 16:26:57 +0100
-Message-ID: <20251203152408.513207195@linuxfoundation.org>
+Message-ID: <20251203152455.893404735@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-commit 281326be67252ac5794d1383f67526606b1d6b13 upstream.
+[ Upstream commit d968e99488c4b08259a324a89e4ed17bf36561a4 ]
 
-The current single-bit error injection mechanism flips bits directly in ECC RAM
-by performing write and read operations. When the ECC RAM is actively used by
-the Ethernet or USB controller, this approach sometimes trigger a false
-double-bit error.
+Link startup becomes unreliable for Intel Alder Lake based host
+controllers when a 2nd DME_LINKSTARTUP is issued unnecessarily.  Employ
+UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE to suppress that from happening.
 
-Switch both Ethernet and USB EDAC devices to use the INTTEST register
-(altr_edac_a10_device_inject_fops) for single-bit error injection, similar to
-the existing double-bit error injection method.
-
-Fixes: 064acbd4f4ab ("EDAC, altera: Add Stratix10 peripheral support")
-Signed-off-by: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Dinh Nguyen <dinguyen@kernel.org>
+Fixes: 7dc9fb47bc9a ("scsi: ufs: ufs-pci: Add support for Intel ADL")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251111081333.1279635-1-niravkumarlaxmidas.rabara@altera.com
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20251024085918.31825-4-adrian.hunter@intel.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+[ adjusted patch context line numbers from 428 to 460 due to prerequisite backport ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/edac/altera_edac.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/ufs/host/ufshcd-pci.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/edac/altera_edac.c
-+++ b/drivers/edac/altera_edac.c
-@@ -1332,7 +1332,7 @@ static const struct edac_device_prv_data
- 	.ue_set_mask = ALTR_A10_ECC_TDERRA,
- 	.set_err_ofst = ALTR_A10_ECC_INTTEST_OFST,
- 	.ecc_irq_handler = altr_edac_a10_ecc_irq,
--	.inject_fops = &altr_edac_a10_device_inject2_fops,
-+	.inject_fops = &altr_edac_a10_device_inject_fops,
- };
- 
- #endif	/* CONFIG_EDAC_ALTERA_ETHERNET */
-@@ -1422,7 +1422,7 @@ static const struct edac_device_prv_data
- 	.ue_set_mask = ALTR_A10_ECC_TDERRA,
- 	.set_err_ofst = ALTR_A10_ECC_INTTEST_OFST,
- 	.ecc_irq_handler = altr_edac_a10_ecc_irq,
--	.inject_fops = &altr_edac_a10_device_inject2_fops,
-+	.inject_fops = &altr_edac_a10_device_inject_fops,
- };
- 
- #endif	/* CONFIG_EDAC_ALTERA_USB */
+--- a/drivers/ufs/host/ufshcd-pci.c
++++ b/drivers/ufs/host/ufshcd-pci.c
+@@ -463,7 +463,8 @@ static int ufs_intel_lkf_init(struct ufs
+ static int ufs_intel_adl_init(struct ufs_hba *hba)
+ {
+ 	hba->nop_out_timeout = 200;
+-	hba->quirks |= UFSHCD_QUIRK_BROKEN_AUTO_HIBERN8;
++	hba->quirks |= UFSHCD_QUIRK_BROKEN_AUTO_HIBERN8 |
++		       UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE;
+ 	hba->caps |= UFSHCD_CAP_WB_EN;
+ 	return ufs_intel_common_init(hba);
+ }
 
 
 
