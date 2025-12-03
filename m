@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29BD1CA14B6
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:12:05 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8C77CA01A9
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:47:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E4C6F31A71FD
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:33:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CF1E8300EA31
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:39:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EA9836C0CE;
-	Wed,  3 Dec 2025 16:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F1AE30F7EF;
+	Wed,  3 Dec 2025 16:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qjZhXlOR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RCB2g5U/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80FCB36BCFE;
-	Wed,  3 Dec 2025 16:31:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A67234C9BF;
+	Wed,  3 Dec 2025 16:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779507; cv=none; b=llJLzoQjj6+Q69uuqdNvEdtrFn/Ro7yE4RtTwnr8Ax9tiGdbXZlGIXI5Qzv0BZR0Fx4hUoFgNM1nFTPq+Lh/1qpC6bEZ94pBZWQpo33oW64q1yf3RX2/nJKio3SBBVM5F6HNwpHqvhN4nltUK+Nv4KA8OYuY8mrUNOa0wqGOHjY=
+	t=1764777733; cv=none; b=gXSOYLrdicg9nQ3RYUyjXjd+Gma4gFDmwmLVMgT92K5SqdPzeyAOrq6Plmnw9alZ5eSP4h871cmFUeEW7pmSn6KFvOd1tGZzaym5FXnIj0bBQgFWZbHKvtqZ2Jf+ZKFOeBk5+9mLVx/QH9hLZkg5TQzhkLyjou/YYMHHdPXsqoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779507; c=relaxed/simple;
-	bh=vpQLAHA0yrRNa84lEdJzd2mX0vvGhxrIBNNYLNqKS9Y=;
+	s=arc-20240116; t=1764777733; c=relaxed/simple;
+	bh=aF2kAm4Rj08SdVr3g4CVwx9XCgi9FeYMuQVkDgVG7iE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KT9KZk4CKEuhuY14SCN+SkyWdjDH9zcUtOI1dBxY3bqqkJA3pPL8Ld5TBJ1PHv6x1IlMxnqy1uvrsW1P77QP97RKGYVGbKm2KNP+ZtdcNKlD/WectwNThQkWhYnGb4v5beYB1AGSv7wxawUWNUK7AN0mbQDimUrruZbzyHddTSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qjZhXlOR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D746DC116B1;
-	Wed,  3 Dec 2025 16:31:46 +0000 (UTC)
+	 MIME-Version; b=Ze3VQAfs60QR7/Pf2oq9hRmoVU362VfdvtV3lnvBE2xLnV2RojuKN7WHUj2vjzLQFQDqS+m4CUHUhn+Gx2Gkli98ZPdZQ5QExSCiUqjB4fcPD4IMtysF/dO1bb1kAapnM3LVipUmDGJKH4L11stlOLNOKN+hNBUqXUKnLc/zm4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RCB2g5U/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89A7AC4CEF5;
+	Wed,  3 Dec 2025 16:02:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779507;
-	bh=vpQLAHA0yrRNa84lEdJzd2mX0vvGhxrIBNNYLNqKS9Y=;
+	s=korg; t=1764777732;
+	bh=aF2kAm4Rj08SdVr3g4CVwx9XCgi9FeYMuQVkDgVG7iE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qjZhXlORXGE9GDmB0wWXMBZaUcka4q6WaQqZdxUx3kEANCepUT3/rSRxh0+Ba+gnu
-	 oehavk8OxgOhV6A0kbjqtOll8Asp+N93T0WAL12pDrcy7eWS414BOOXQRrm5BIkM9P
-	 QvwuF4i7UhIOKxV2xKIZvABWqHVCmbLHJD+hyxSA=
+	b=RCB2g5U/++MvaONpGdMh4d7iu2LvdKFL0homXxv3H2DFsobulicmjFXIESYClm2Hj
+	 gEI1uiyzmrg36WLOSfywMDRskqvywP4LDYJJpaiXwV+PGLhVztgO1C7wBOjg1hW5OE
+	 3i+AeJjIyADoL0BApcOG3EMduGUJ0eYvWvyHkBfU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Moroni <jmoroni@google.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Rosen Penev <rosenp@gmail.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 276/568] RDMA/irdma: Remove unused struct irdma_cq fields
+Subject: [PATCH 5.15 128/392] dmaengine: mv_xor: match alloc_wc and free_wc
 Date: Wed,  3 Dec 2025 16:24:38 +0100
-Message-ID: <20251203152450.818462757@linuxfoundation.org>
+Message-ID: <20251203152418.803118180@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,71 +60,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Moroni <jmoroni@google.com>
+From: Rosen Penev <rosenp@gmail.com>
 
-[ Upstream commit 880245fd029a8f8ee8fd557c2681d077c1b1a959 ]
+[ Upstream commit a33e3b667d2f004fdfae6b442bd4676f6c510abb ]
 
-These fields were set but not used anywhere, so remove them.
+dma_alloc_wc is used but not dma_free_wc.
 
-Link: https://patch.msgid.link/r/20250923142128.943240-1-jmoroni@google.com
-Signed-off-by: Jacob Moroni <jmoroni@google.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Stable-dep-of: 5575b7646b94 ("RDMA/irdma: Set irdma_cq cq_num field during CQ create")
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Link: https://lore.kernel.org/r/20250821220942.10578-1-rosenp@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/verbs.c | 3 ---
- drivers/infiniband/hw/irdma/verbs.h | 6 ------
- 2 files changed, 9 deletions(-)
+ drivers/dma/mv_xor.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
-index baa3dff6faab1..fb02017a1aa63 100644
---- a/drivers/infiniband/hw/irdma/verbs.c
-+++ b/drivers/infiniband/hw/irdma/verbs.c
-@@ -2088,8 +2088,6 @@ static int irdma_create_cq(struct ib_cq *ibcq,
- 			goto cq_free_rsrc;
- 		}
+diff --git a/drivers/dma/mv_xor.c b/drivers/dma/mv_xor.c
+index ca0ba1d462832..8b215cbca1186 100644
+--- a/drivers/dma/mv_xor.c
++++ b/drivers/dma/mv_xor.c
+@@ -1013,7 +1013,7 @@ static int mv_xor_channel_remove(struct mv_xor_chan *mv_chan)
  
--		iwcq->iwpbl = iwpbl;
--		iwcq->cq_mem_size = 0;
- 		cqmr = &iwpbl->cq_mr;
+ 	dma_async_device_unregister(&mv_chan->dmadev);
  
- 		if (rf->sc_dev.hw_attrs.uk_attrs.feature_flags &
-@@ -2104,7 +2102,6 @@ static int irdma_create_cq(struct ib_cq *ibcq,
- 				err_code = -EPROTO;
- 				goto cq_free_rsrc;
- 			}
--			iwcq->iwpbl_shadow = iwpbl_shadow;
- 			cqmr_shadow = &iwpbl_shadow->cq_mr;
- 			info.shadow_area_pa = cqmr_shadow->cq_pbl.addr;
- 			cqmr->split = true;
-diff --git a/drivers/infiniband/hw/irdma/verbs.h b/drivers/infiniband/hw/irdma/verbs.h
-index 0bc0d0faa0868..b55d30df96261 100644
---- a/drivers/infiniband/hw/irdma/verbs.h
-+++ b/drivers/infiniband/hw/irdma/verbs.h
-@@ -113,19 +113,13 @@ struct irdma_mr {
- struct irdma_cq {
- 	struct ib_cq ibcq;
- 	struct irdma_sc_cq sc_cq;
--	u16 cq_head;
--	u16 cq_size;
- 	u16 cq_num;
- 	bool user_mode;
- 	atomic_t armed;
- 	enum irdma_cmpl_notify last_notify;
--	u32 polled_cmpls;
--	u32 cq_mem_size;
- 	struct irdma_dma_mem kmem;
- 	struct irdma_dma_mem kmem_shadow;
- 	spinlock_t lock; /* for poll cq */
--	struct irdma_pbl *iwpbl;
--	struct irdma_pbl *iwpbl_shadow;
- 	struct list_head resize_list;
- 	struct irdma_cq_poll_info cur_cqe;
- 	struct list_head cmpl_generated;
+-	dma_free_coherent(dev, MV_XOR_POOL_SIZE,
++	dma_free_wc(dev, MV_XOR_POOL_SIZE,
+ 			  mv_chan->dma_desc_pool_virt, mv_chan->dma_desc_pool);
+ 	dma_unmap_single(dev, mv_chan->dummy_src_addr,
+ 			 MV_XOR_MIN_BYTE_COUNT, DMA_FROM_DEVICE);
+@@ -1163,7 +1163,7 @@ mv_xor_channel_add(struct mv_xor_device *xordev,
+ err_free_irq:
+ 	free_irq(mv_chan->irq, mv_chan);
+ err_free_dma:
+-	dma_free_coherent(&pdev->dev, MV_XOR_POOL_SIZE,
++	dma_free_wc(&pdev->dev, MV_XOR_POOL_SIZE,
+ 			  mv_chan->dma_desc_pool_virt, mv_chan->dma_desc_pool);
+ err_unmap_dst:
+ 	dma_unmap_single(dma_dev->dev, mv_chan->dummy_dst_addr,
 -- 
 2.51.0
 
