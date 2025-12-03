@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6241C9F7F4
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:34:48 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B5FFCA0122
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:44:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6F9C330088D1
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:33:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2B00C300910B
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:38:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0797D30AAD0;
-	Wed,  3 Dec 2025 15:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE60D36C5B4;
+	Wed,  3 Dec 2025 16:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ziFi282N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xs+OjjMM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B472B15ADB4;
-	Wed,  3 Dec 2025 15:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77EA136C0B5;
+	Wed,  3 Dec 2025 16:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764775985; cv=none; b=TEikhAyE+0rHEooqHSEh/+kHfvnvayLtP0Fv3iAz6/lGGJsbQQ7V8DHRFIIpybATqkkKQuQbzNeCf5AvfZyv/Cg27rqec2M8n6uCg1QZ3XwcCLmxNG+gDnwnKXDWZ1Trhp98+EtkNsvjkGyCXnnO8o4MfdqI0RbmRyd/g4ogOtA=
+	t=1764779520; cv=none; b=Ddrs1P79Bs6Lghz3qYrt2a86vNwySkMhp/pdulvimFkMV3XAKdQ2rpvRW4YFHYrerw3dQG764+SxRxJe2yHmHUKJVzJXVAwDl4sxC0t2mlIcXnmhvuJFOWmZLr5TX8IzWgTE8NVpp97gGfn50eTRHailO1HhAkSxIPSjy+IqCQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764775985; c=relaxed/simple;
-	bh=g7nSI8Eniiaxo+B7/3k5rMQ/kOcdk5bUVY8vIIR6zdk=;
+	s=arc-20240116; t=1764779520; c=relaxed/simple;
+	bh=irpL39SRXca/GnfRK3ozUYLQq3oEcGwZ3bmgkOLRFoU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uMoSr76FhxhKpm0OsjPgxSk2dVA3O8bVGGRprh+elSQEGD88vZkP3ppqy4aariX+zqkgkRSlDmK4qHrn0wy1cnb8eDtgxovRyDiujA2jq781JsORH9xdZnJy0z/uySYWnlcDoIb59FEpj2/No7FLNY+GeAlXfVAtKmbg38xT2Cc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ziFi282N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 316BFC4CEF5;
-	Wed,  3 Dec 2025 15:33:05 +0000 (UTC)
+	 MIME-Version; b=a1XSW2QTo4kRbTjs18Xh+atWzLbSnx6ZFdh+XuhtS+91M4utTyT2tYYQ0RG808WBdDN1wyyr/0nLFRLRMLLRtA5xU3NqM+rQgmFJSq+U6Nifa9qORk57+ptZLtfdiTDRxgp6zmy1j7+o16dgIbNZaSbki221nUY53DqhV/NuoSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xs+OjjMM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBD1FC4AF0B;
+	Wed,  3 Dec 2025 16:31:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764775985;
-	bh=g7nSI8Eniiaxo+B7/3k5rMQ/kOcdk5bUVY8vIIR6zdk=;
+	s=korg; t=1764779520;
+	bh=irpL39SRXca/GnfRK3ozUYLQq3oEcGwZ3bmgkOLRFoU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ziFi282NSySosVDJVjkjJDWGvNFiJom4nS2OHzTJXZ57t4vE9nXMDkRHoZxnh8rCE
-	 W5jXJ1QUwzLORGo5+TW7c9bUzR8L1pB3L9VyOZ1mVugms96+hfk8lpZU+ry6mgWmx4
-	 7yH4D37GGysxEpP6iEWWAeRcIm6iR0Eq3Xi0u/yM=
+	b=xs+OjjMMs0/Jhlid2JSUP8K2DAWuyZeykKoa9OsIR2S47+SEgB1Dp41DJqVfwf/Lx
+	 IZYuXiT4Pwehf4F2N2nHWgjv3bK8GRp6K7F1Dw3D4rCEgcFlqLtSUTnHgnl4Q6ozWn
+	 8rgeWmwsSjF19AFZC0mRjrhf9o14CzxLRbYpXxZY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Andreas Larsson <andreas@gaisler.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 046/300] selftests/bpf: Fix bpf_prog_detach2 usage in test_lirc_mode2
-Date: Wed,  3 Dec 2025 16:24:10 +0100
-Message-ID: <20251203152402.320761225@linuxfoundation.org>
+Subject: [PATCH 6.1 249/568] sparc64: fix prototypes of reads[bwl]()
+Date: Wed,  3 Dec 2025 16:24:11 +0100
+Message-ID: <20251203152449.840678337@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,42 +58,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo B. Marlière <rbm@suse.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 98857d111c53954aa038fcbc4cf48873e4240f7c ]
+[ Upstream commit 7205ef77dfe167df1b83aea28cf00fc02d662990 ]
 
-Commit e9fc3ce99b34 ("libbpf: Streamline error reporting for high-level
-APIs") redefined the way that bpf_prog_detach2() returns. Therefore, adapt
-the usage in test_lirc_mode2_user.c.
+Conventions for readsl() are the same as for readl() - any __iomem
+pointer is acceptable, both const and volatile ones being OK.  Same
+for readsb() and readsw().
 
-Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250828-selftests-bpf-v1-1-c7811cd8b98c@suse.com
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Reviewed-by: Andreas Larsson <andreas@gaisler.com>
+Signed-off-by: Andreas Larsson <andreas@gaisler.com> # Making sparc64 subject prefix
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/test_lirc_mode2_user.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/sparc/include/asm/io_64.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/test_lirc_mode2_user.c b/tools/testing/selftests/bpf/test_lirc_mode2_user.c
-index fb5fd6841ef39..d63878bc2d5f9 100644
---- a/tools/testing/selftests/bpf/test_lirc_mode2_user.c
-+++ b/tools/testing/selftests/bpf/test_lirc_mode2_user.c
-@@ -73,7 +73,7 @@ int main(int argc, char **argv)
+diff --git a/arch/sparc/include/asm/io_64.h b/arch/sparc/include/asm/io_64.h
+index 9303270b22f3c..f9d370324729e 100644
+--- a/arch/sparc/include/asm/io_64.h
++++ b/arch/sparc/include/asm/io_64.h
+@@ -250,19 +250,19 @@ void insl(unsigned long, void *, unsigned long);
+ #define insw insw
+ #define insl insl
  
- 	/* Let's try detach it before it was ever attached */
- 	ret = bpf_prog_detach2(progfd, lircfd, BPF_LIRC_MODE2);
--	if (ret != -1 || errno != ENOENT) {
-+	if (ret != -ENOENT) {
- 		printf("bpf_prog_detach2 not attached should fail: %m\n");
- 		return 1;
- 	}
+-static inline void readsb(void __iomem *port, void *buf, unsigned long count)
++static inline void readsb(const volatile void __iomem *port, void *buf, unsigned long count)
+ {
+ 	insb((unsigned long __force)port, buf, count);
+ }
+ #define readsb readsb
+ 
+-static inline void readsw(void __iomem *port, void *buf, unsigned long count)
++static inline void readsw(const volatile void __iomem *port, void *buf, unsigned long count)
+ {
+ 	insw((unsigned long __force)port, buf, count);
+ }
+ #define readsw readsw
+ 
+-static inline void readsl(void __iomem *port, void *buf, unsigned long count)
++static inline void readsl(const volatile void __iomem *port, void *buf, unsigned long count)
+ {
+ 	insl((unsigned long __force)port, buf, count);
+ }
 -- 
 2.51.0
 
