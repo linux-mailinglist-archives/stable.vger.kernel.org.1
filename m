@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-199049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D824AC9FE8B
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:23:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EDB7CA0B14
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:57:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7DDCF302AE27
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:16:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 455C3304F12E
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:53:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9541E145348;
-	Wed,  3 Dec 2025 16:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2163934DB67;
+	Wed,  3 Dec 2025 16:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lqFrdKYt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qt6+H4Oy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DFA8354AEF;
-	Wed,  3 Dec 2025 16:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD49358D35;
+	Wed,  3 Dec 2025 16:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778530; cv=none; b=NxcFFfhWNOLn62mE38sYJ8vtBOCex0wDCS+0DrlWI8MOnPs5NK8PIcEtcl5x+oyIjPKu4XXMvq1Tl+kM3a9yn9N+Zba8QPyC++VBxiXNbLQzsDoZlZ9YoYYI56MRCwDxXQpBodXt5vPZLaJuXJGU83QADwiz4OiU2zvOp6tI+qc=
+	t=1764780632; cv=none; b=B/FCiFyvOmshI9mXnGvK1z7qPwHT4kicsHs2fs8vAAbx4ViYTnkp6ts1LYFQGZ32SFBi5//FOEoC9AWORw2FLUJDgT7Tpb/OfZMPSOf8F75wNn6h69CYjiog7XJdO2KgsFQfw9JrQSaE1BikrJKST/ZsnX7iqsTkIufa0AKRmZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778530; c=relaxed/simple;
-	bh=GqWshF/IbVX0OwEl1sOt23Mog7BKLLbdfBTFK+pf1y4=;
+	s=arc-20240116; t=1764780632; c=relaxed/simple;
+	bh=6QO3d6xz9MDaMswxaF5/yPeesio6n4E1CM8tHNjJq94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P3UHpZZPu7XapemFqmAu/ITXkyOGt6zRCeuxlWnlnvXKG2OPRttVFzpwkhHZ1BJBoxn81+tsfkqkHrVAKjX+3uDmFEm9WSU0mU1PnIi05FDyiTDhfUeynmRtU9XPl4LID2ZBxYXXXPMcNZqfmTkzAsBM90GdQxkLCx4H76q6p1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lqFrdKYt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6E22C4CEF5;
-	Wed,  3 Dec 2025 16:15:29 +0000 (UTC)
+	 MIME-Version; b=qZ1MqtAjWc+fJbe/nYbrrVWbX/SJqnt3DRoJLjk2goPjaA2CSIHg7Jx5AfKQIK51xxSicMmsStWCM6CmFD7+sZEFlQAp2GDEMkC3YUOPcMufmYkoqf9GRH4tbkEuUE6Dsjg4vmik5yt6lmi0VhoIlBCSUZYOyDj3U8ppmyh6stE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qt6+H4Oy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22BD4C4CEF5;
+	Wed,  3 Dec 2025 16:50:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778530;
-	bh=GqWshF/IbVX0OwEl1sOt23Mog7BKLLbdfBTFK+pf1y4=;
+	s=korg; t=1764780632;
+	bh=6QO3d6xz9MDaMswxaF5/yPeesio6n4E1CM8tHNjJq94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lqFrdKYtApCyUr4RkCHRxYGGjT5KU9W4qlqA4U1AG3+8egKbUIe4gsqRQiKwjxXM3
-	 E+Gty0iKP3RrkK66u4REe8OXvplR3nGTldCRgjDHWrPbIThrh4ZQnF5vIqiHJ+bv9D
-	 yeiMZroL6nqAXV40piYYB3fSYj3jFyrXXahXBwLA=
+	b=qt6+H4Oy7rfSaK8NkqLfJ7f9IJekLbtawVc4WpHPlYEVxP59pEjzgL2VKn4gdvhGb
+	 tp7D1HY3okArWWkoI6vGb4eidHR61joTRRaJ/rpuuObyncaga7OEU/2o+/BrihaNDY
+	 nXwkKwZyIjRpVQs+GhZ9LZraf6UDqjiPRcqNgPbQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksandr Suvorov <cryosay@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.15 373/392] USB: serial: ftdi_sio: add support for u-blox EVK-M101
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 044/132] spi: nxp-fspi: Support per spi-mem operation frequency switches
 Date: Wed,  3 Dec 2025 16:28:43 +0100
-Message-ID: <20251203152427.883124456@linuxfoundation.org>
+Message-ID: <20251203152344.927858367@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,63 +61,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksandr Suvorov <cryosay@gmail.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-commit 2d8ab771d5316de64f3bb920b82575c58eb00b1b upstream.
+[ Upstream commit 26851cf65ffca2d3a8d529a125e54cf0084d69e7 ]
 
-The U-Blox EVK-M101 enumerates as 1546:0506 [1] with four FTDI interfaces:
-- EVK-M101 current sensors
-- EVK-M101 I2C
-- EVK-M101 UART
-- EVK-M101 port D
+Every ->exec_op() call correctly configures the spi bus speed to the
+maximum allowed frequency for the memory using the constant spi default
+parameter. Since we can now have per-operation constraints, let's use
+the value that comes from the spi-mem operation structure instead. In
+case there is no specific limitation for this operation, the default spi
+device value will be given anyway.
 
-Only the third USB interface is a UART. This change lets ftdi_sio probe
-the VID/PID and registers only interface #3 as a TTY, leaving the rest
-available for other drivers.
+The per-operation frequency capability is thus advertised to the spi-mem
+core.
 
-[1]
-usb 5-1.3: new high-speed USB device number 11 using xhci_hcd
-usb 5-1.3: New USB device found, idVendor=1546, idProduct=0506, bcdDevice= 8.00
-usb 5-1.3: New USB device strings: Mfr=1, Product=2, SerialNumber=0
-usb 5-1.3: Product: EVK-M101
-usb 5-1.3: Manufacturer: u-blox AG
-
-Datasheet: https://content.u-blox.com/sites/default/files/documents/EVK-M10_UserGuide_UBX-21003949.pdf
-
-Signed-off-by: Oleksandr Suvorov <cryosay@gmail.com>
-Link: https://lore.kernel.org/20250926060235.3442748-1-cryosay@gmail.com/
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://patch.msgid.link/20241224-winbond-6-11-rc1-quad-support-v2-12-ad218dbc406f@bootlin.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 40ad64ac25bb ("spi: nxp-fspi: Propagate fwnode in ACPI case as well")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/ftdi_sio.c     |    1 +
- drivers/usb/serial/ftdi_sio_ids.h |    1 +
- 2 files changed, 2 insertions(+)
+ drivers/spi/spi-nxp-fspi.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/serial/ftdi_sio.c
-+++ b/drivers/usb/serial/ftdi_sio.c
-@@ -1052,6 +1052,7 @@ static const struct usb_device_id id_tab
- 	/* U-Blox devices */
- 	{ USB_DEVICE(UBLOX_VID, UBLOX_C099F9P_ZED_PID) },
- 	{ USB_DEVICE(UBLOX_VID, UBLOX_C099F9P_ODIN_PID) },
-+	{ USB_DEVICE_INTERFACE_NUMBER(UBLOX_VID, UBLOX_EVK_M101_PID, 2) },
- 	/* FreeCalypso USB adapters */
- 	{ USB_DEVICE(FTDI_VID, FTDI_FALCONIA_JTAG_BUF_PID),
- 		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
---- a/drivers/usb/serial/ftdi_sio_ids.h
-+++ b/drivers/usb/serial/ftdi_sio_ids.h
-@@ -1607,6 +1607,7 @@
- #define UBLOX_VID			0x1546
- #define UBLOX_C099F9P_ZED_PID		0x0502
- #define UBLOX_C099F9P_ODIN_PID		0x0503
-+#define UBLOX_EVK_M101_PID		0x0506
+diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+index b569302f22e61..78afef8851fc9 100644
+--- a/drivers/spi/spi-nxp-fspi.c
++++ b/drivers/spi/spi-nxp-fspi.c
+@@ -711,9 +711,10 @@ static void nxp_fspi_dll_calibration(struct nxp_fspi *f)
+  * Value for rest of the CS FLSHxxCR0 register would be zero.
+  *
+  */
+-static void nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi)
++static void nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi,
++				const struct spi_mem_op *op)
+ {
+-	unsigned long rate = spi->max_speed_hz;
++	unsigned long rate = op->max_freq;
+ 	int ret;
+ 	uint64_t size_kb;
  
- /*
-  * GMC devices
+@@ -937,7 +938,7 @@ static int nxp_fspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 				   FSPI_STS0_ARB_IDLE, 1, POLL_TOUT, true);
+ 	WARN_ON(err);
+ 
+-	nxp_fspi_select_mem(f, mem->spi);
++	nxp_fspi_select_mem(f, mem->spi, op);
+ 
+ 	nxp_fspi_prepare_lut(f, op);
+ 	/*
+@@ -1155,6 +1156,10 @@ static const struct spi_controller_mem_ops nxp_fspi_mem_ops = {
+ 	.get_name = nxp_fspi_get_name,
+ };
+ 
++static const struct spi_controller_mem_caps nxp_fspi_mem_caps = {
++	.per_op_freq = true,
++};
++
+ static int nxp_fspi_probe(struct platform_device *pdev)
+ {
+ 	struct spi_controller *ctlr;
+@@ -1252,6 +1257,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+ 	ctlr->bus_num = -1;
+ 	ctlr->num_chipselect = NXP_FSPI_MAX_CHIPSELECT;
+ 	ctlr->mem_ops = &nxp_fspi_mem_ops;
++	ctlr->mem_caps = &nxp_fspi_mem_caps;
+ 
+ 	nxp_fspi_default_setup(f);
+ 
+-- 
+2.51.0
+
 
 
 
