@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22B88CA110A
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:40:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20546CA0349
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:55:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 67EFD3009F12
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:39:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E4EA43030919
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:49:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 170F7331A78;
-	Wed,  3 Dec 2025 15:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C530345CBF;
+	Wed,  3 Dec 2025 16:11:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ucD4Lv6R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eLK+RNoL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69EE331A5D;
-	Wed,  3 Dec 2025 15:52:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17EE6345759;
+	Wed,  3 Dec 2025 16:11:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777159; cv=none; b=X89Bp0QH6yLACYWgKVAS5GzkTifcRBDsk7+druRU8kqJPaeH8PcM6FMt9Xh/iuYJLilw8b3P2zp8l25YpqEdBQqmhj95kdnj8M2WA6ZNkgPPNxO8wxzuTlXrXkB0ouHrL/P/hWFVdzzdsUn6DFaLZEBNku286ue4ULYJ0ecCyak=
+	t=1764778292; cv=none; b=Mb5mtNLYZ5AkOF+FWNb3diaEpsiamjcRELnvCP+H3rpVFIMJc9GC9TJRy/A0R3+W0j9NC+c4sGdR6BR11ZT4mfLQib/CtBJKum5LGhtNBQn/qNCfPFE7hkGJq3ByeMVNRJwHxDANVhwxElMzO9xlk9uhpM/g2RVMspXLJNXC1t8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777159; c=relaxed/simple;
-	bh=biI4essHFq69P31FG9BGcNCemj/jxu9dEoIZf0uyga0=;
+	s=arc-20240116; t=1764778292; c=relaxed/simple;
+	bh=KRYhewRz7rigzkdviFkL1IgfVcNX7AXDKHxK120FQnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L9O0nUrz1Ib5wYH7h5hLCoWuMQg8usAyRIlxRXmwuWbIQAjwngJtOU2YKNMldDPb6+3sLgsSopmJesrx0EqNcvOX9y/0PD+nOhv+Z30flFv9v2hLr4iGBCqZpse38p+43/9KKdJ/EyOoJWDsyz3LbCIT27qVJUBDP8NVmquelYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ucD4Lv6R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FE6EC4CEF5;
-	Wed,  3 Dec 2025 15:52:39 +0000 (UTC)
+	 MIME-Version; b=u5zP/w/r4dCz7/5kM84UZzfB1ICFvPmNxHnAqrMP2s04KL4QEHSSPXfaJs1cpqr4fShBfKhdfudASygXy65iah04mW7d2iOlba5o3/yvDs9FZyU+Ziwun0eWrT0NDB04SS/xI4/UdVYjifjTyslGC/ob7mdEV6zxga3xYcdOGvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eLK+RNoL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AF83C4CEF5;
+	Wed,  3 Dec 2025 16:11:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777159;
-	bh=biI4essHFq69P31FG9BGcNCemj/jxu9dEoIZf0uyga0=;
+	s=korg; t=1764778292;
+	bh=KRYhewRz7rigzkdviFkL1IgfVcNX7AXDKHxK120FQnw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ucD4Lv6R/ydsq824A7pFFxyDSnQUbMHUeZIv+Ncd1xsRlXAKfupChn8jDFjCxoWyR
-	 M4GPMCDqQFyvC+zdfOnhPsBDqyMgwQJKyR6OJ9VBXNnJCFCxmd6FXTLdRW7QXU2pvx
-	 xiOhW2va2kpGSHfLJH3tGEoyPet2fBGPQg3afw/c=
+	b=eLK+RNoLHFmEUyGWfxX1QaCENgR9Q/e2IrBUOBdHZ7S7VJO49yaAbP5QA/vcd/cS3
+	 RPCBBf2TaJzsfOiVi0nJlj+4Llm1BLEc2RzqQDggA0OwcV66ngURzAY4RydwFkTgzu
+	 j+oBzY72TCwI3ZN9dyPw5mMFzyj2NYAlT0A2ghDE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Wang <jasowang@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.17 073/146] vhost: rewind next_avail_head while discarding descriptors
+	Michal Luczaj <mhal@rbox.co>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 301/392] vsock: Ignore signal/timeout on connect() if already established
 Date: Wed,  3 Dec 2025 16:27:31 +0100
-Message-ID: <20251203152349.138986657@linuxfoundation.org>
+Message-ID: <20251203152425.243603270@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,359 +61,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Wang <jasowang@redhat.com>
+From: Michal Luczaj <mhal@rbox.co>
 
-commit 779bcdd4b9ae6566f309043c53c946e8ac0015fd upstream.
+[ Upstream commit 002541ef650b742a198e4be363881439bb9d86b4 ]
 
-When discarding descriptors with IN_ORDER, we should rewind
-next_avail_head otherwise it would run out of sync with
-last_avail_idx. This would cause driver to report
-"id X is not a head".
+During connect(), acting on a signal/timeout by disconnecting an already
+established socket leads to several issues:
 
-Fixing this by returning the number of descriptors that is used for
-each buffer via vhost_get_vq_desc_n() so caller can use the value
-while discarding descriptors.
+1. connect() invoking vsock_transport_cancel_pkt() ->
+   virtio_transport_purge_skbs() may race with sendmsg() invoking
+   virtio_transport_get_credit(). This results in a permanently elevated
+   `vvs->bytes_unsent`. Which, in turn, confuses the SOCK_LINGER handling.
 
-Fixes: 67a873df0c41 ("vhost: basic in order support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jason Wang <jasowang@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Link: https://patch.msgid.link/20251120022950.10117-1-jasowang@redhat.com
+2. connect() resetting a connected socket's state may race with socket
+   being placed in a sockmap. A disconnected socket remaining in a sockmap
+   breaks sockmap's assumptions. And gives rise to WARNs.
+
+3. connect() transitioning SS_CONNECTED -> SS_UNCONNECTED allows for a
+   transport change/drop after TCP_ESTABLISHED. Which poses a problem for
+   any simultaneous sendmsg() or connect() and may result in a
+   use-after-free/null-ptr-deref.
+
+Do not disconnect socket on signal/timeout. Keep the logic for unconnected
+sockets: they don't linger, can't be placed in a sockmap, are rejected by
+sendmsg().
+
+[1]: https://lore.kernel.org/netdev/e07fd95c-9a38-4eea-9638-133e38c2ec9b@rbox.co/
+[2]: https://lore.kernel.org/netdev/20250317-vsock-trans-signal-race-v4-0-fc8837f3f1d4@rbox.co/
+[3]: https://lore.kernel.org/netdev/60f1b7db-3099-4f6a-875e-af9f6ef194f6@rbox.co/
+
+Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://patch.msgid.link/20251119-vsock-interrupted-connect-v2-1-70734cf1233f@rbox.co
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/net.c   | 53 ++++++++++++++++++------------
- drivers/vhost/vhost.c | 76 +++++++++++++++++++++++++++++++++++--------
- drivers/vhost/vhost.h | 10 +++++-
- 3 files changed, 103 insertions(+), 36 deletions(-)
+ net/vmw_vsock/af_vsock.c | 40 +++++++++++++++++++++++++++++++---------
+ 1 file changed, 31 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
-index 35ded4330431..8f7f50acb6d6 100644
---- a/drivers/vhost/net.c
-+++ b/drivers/vhost/net.c
-@@ -592,14 +592,15 @@ static void vhost_net_busy_poll(struct vhost_net *net,
- static int vhost_net_tx_get_vq_desc(struct vhost_net *net,
- 				    struct vhost_net_virtqueue *tnvq,
- 				    unsigned int *out_num, unsigned int *in_num,
--				    struct msghdr *msghdr, bool *busyloop_intr)
-+				    struct msghdr *msghdr, bool *busyloop_intr,
-+				    unsigned int *ndesc)
- {
- 	struct vhost_net_virtqueue *rnvq = &net->vqs[VHOST_NET_VQ_RX];
- 	struct vhost_virtqueue *rvq = &rnvq->vq;
- 	struct vhost_virtqueue *tvq = &tnvq->vq;
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index 033fcdffc9e50..d79a755388318 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -1493,18 +1493,40 @@ static int vsock_connect(struct socket *sock, struct sockaddr *addr,
+ 		timeout = schedule_timeout(timeout);
+ 		lock_sock(sk);
  
--	int r = vhost_get_vq_desc(tvq, tvq->iov, ARRAY_SIZE(tvq->iov),
--				  out_num, in_num, NULL, NULL);
-+	int r = vhost_get_vq_desc_n(tvq, tvq->iov, ARRAY_SIZE(tvq->iov),
-+				    out_num, in_num, NULL, NULL, ndesc);
- 
- 	if (r == tvq->num && tvq->busyloop_timeout) {
- 		/* Flush batched packets first */
-@@ -610,8 +611,8 @@ static int vhost_net_tx_get_vq_desc(struct vhost_net *net,
- 
- 		vhost_net_busy_poll(net, rvq, tvq, busyloop_intr, false);
- 
--		r = vhost_get_vq_desc(tvq, tvq->iov, ARRAY_SIZE(tvq->iov),
--				      out_num, in_num, NULL, NULL);
-+		r = vhost_get_vq_desc_n(tvq, tvq->iov, ARRAY_SIZE(tvq->iov),
-+					out_num, in_num, NULL, NULL, ndesc);
- 	}
- 
- 	return r;
-@@ -642,12 +643,14 @@ static int get_tx_bufs(struct vhost_net *net,
- 		       struct vhost_net_virtqueue *nvq,
- 		       struct msghdr *msg,
- 		       unsigned int *out, unsigned int *in,
--		       size_t *len, bool *busyloop_intr)
-+		       size_t *len, bool *busyloop_intr,
-+		       unsigned int *ndesc)
- {
- 	struct vhost_virtqueue *vq = &nvq->vq;
- 	int ret;
- 
--	ret = vhost_net_tx_get_vq_desc(net, nvq, out, in, msg, busyloop_intr);
-+	ret = vhost_net_tx_get_vq_desc(net, nvq, out, in, msg,
-+				       busyloop_intr, ndesc);
- 
- 	if (ret < 0 || ret == vq->num)
- 		return ret;
-@@ -766,6 +769,7 @@ static void handle_tx_copy(struct vhost_net *net, struct socket *sock)
- 	int sent_pkts = 0;
- 	bool sock_can_batch = (sock->sk->sk_sndbuf == INT_MAX);
- 	bool in_order = vhost_has_feature(vq, VIRTIO_F_IN_ORDER);
-+	unsigned int ndesc = 0;
- 
- 	do {
- 		bool busyloop_intr = false;
-@@ -774,7 +778,7 @@ static void handle_tx_copy(struct vhost_net *net, struct socket *sock)
- 			vhost_tx_batch(net, nvq, sock, &msg);
- 
- 		head = get_tx_bufs(net, nvq, &msg, &out, &in, &len,
--				   &busyloop_intr);
-+				   &busyloop_intr, &ndesc);
- 		/* On error, stop handling until the next kick. */
- 		if (unlikely(head < 0))
- 			break;
-@@ -806,7 +810,7 @@ static void handle_tx_copy(struct vhost_net *net, struct socket *sock)
- 				goto done;
- 			} else if (unlikely(err != -ENOSPC)) {
- 				vhost_tx_batch(net, nvq, sock, &msg);
--				vhost_discard_vq_desc(vq, 1);
-+				vhost_discard_vq_desc(vq, 1, ndesc);
- 				vhost_net_enable_vq(net, vq);
- 				break;
- 			}
-@@ -829,7 +833,7 @@ static void handle_tx_copy(struct vhost_net *net, struct socket *sock)
- 		err = sock->ops->sendmsg(sock, &msg, len);
- 		if (unlikely(err < 0)) {
- 			if (err == -EAGAIN || err == -ENOMEM || err == -ENOBUFS) {
--				vhost_discard_vq_desc(vq, 1);
-+				vhost_discard_vq_desc(vq, 1, ndesc);
- 				vhost_net_enable_vq(net, vq);
- 				break;
- 			}
-@@ -868,6 +872,7 @@ static void handle_tx_zerocopy(struct vhost_net *net, struct socket *sock)
- 	int err;
- 	struct vhost_net_ubuf_ref *ubufs;
- 	struct ubuf_info_msgzc *ubuf;
-+	unsigned int ndesc = 0;
- 	bool zcopy_used;
- 	int sent_pkts = 0;
- 
-@@ -879,7 +884,7 @@ static void handle_tx_zerocopy(struct vhost_net *net, struct socket *sock)
- 
- 		busyloop_intr = false;
- 		head = get_tx_bufs(net, nvq, &msg, &out, &in, &len,
--				   &busyloop_intr);
-+				   &busyloop_intr, &ndesc);
- 		/* On error, stop handling until the next kick. */
- 		if (unlikely(head < 0))
- 			break;
-@@ -941,7 +946,7 @@ static void handle_tx_zerocopy(struct vhost_net *net, struct socket *sock)
- 					vq->heads[ubuf->desc].len = VHOST_DMA_DONE_LEN;
- 			}
- 			if (retry) {
--				vhost_discard_vq_desc(vq, 1);
-+				vhost_discard_vq_desc(vq, 1, ndesc);
- 				vhost_net_enable_vq(net, vq);
- 				break;
- 			}
-@@ -1045,11 +1050,12 @@ static int get_rx_bufs(struct vhost_net_virtqueue *nvq,
- 		       unsigned *iovcount,
- 		       struct vhost_log *log,
- 		       unsigned *log_num,
--		       unsigned int quota)
-+		       unsigned int quota,
-+		       unsigned int *ndesc)
- {
- 	struct vhost_virtqueue *vq = &nvq->vq;
- 	bool in_order = vhost_has_feature(vq, VIRTIO_F_IN_ORDER);
--	unsigned int out, in;
-+	unsigned int out, in, desc_num, n = 0;
- 	int seg = 0;
- 	int headcount = 0;
- 	unsigned d;
-@@ -1064,9 +1070,9 @@ static int get_rx_bufs(struct vhost_net_virtqueue *nvq,
- 			r = -ENOBUFS;
- 			goto err;
+-		if (signal_pending(current)) {
+-			err = sock_intr_errno(timeout);
+-			sk->sk_state = sk->sk_state == TCP_ESTABLISHED ? TCP_CLOSING : TCP_CLOSE;
+-			sock->state = SS_UNCONNECTED;
+-			vsock_transport_cancel_pkt(vsk);
+-			vsock_remove_connected(vsk);
+-			goto out_wait;
+-		} else if ((sk->sk_state != TCP_ESTABLISHED) && (timeout == 0)) {
+-			err = -ETIMEDOUT;
++		/* Connection established. Whatever happens to socket once we
++		 * release it, that's not connect()'s concern. No need to go
++		 * into signal and timeout handling. Call it a day.
++		 *
++		 * Note that allowing to "reset" an already established socket
++		 * here is racy and insecure.
++		 */
++		if (sk->sk_state == TCP_ESTABLISHED)
++			break;
++
++		/* If connection was _not_ established and a signal/timeout came
++		 * to be, we want the socket's state reset. User space may want
++		 * to retry.
++		 *
++		 * sk_state != TCP_ESTABLISHED implies that socket is not on
++		 * vsock_connected_table. We keep the binding and the transport
++		 * assigned.
++		 */
++		if (signal_pending(current) || timeout == 0) {
++			err = timeout == 0 ? -ETIMEDOUT : sock_intr_errno(timeout);
++
++			/* Listener might have already responded with
++			 * VIRTIO_VSOCK_OP_RESPONSE. Its handling expects our
++			 * sk_state == TCP_SYN_SENT, which hereby we break.
++			 * In such case VIRTIO_VSOCK_OP_RST will follow.
++			 */
+ 			sk->sk_state = TCP_CLOSE;
+ 			sock->state = SS_UNCONNECTED;
++
++			/* Try to cancel VIRTIO_VSOCK_OP_REQUEST skb sent out by
++			 * transport->connect().
++			 */
+ 			vsock_transport_cancel_pkt(vsk);
++
+ 			goto out_wait;
  		}
--		r = vhost_get_vq_desc(vq, vq->iov + seg,
--				      ARRAY_SIZE(vq->iov) - seg, &out,
--				      &in, log, log_num);
-+		r = vhost_get_vq_desc_n(vq, vq->iov + seg,
-+					ARRAY_SIZE(vq->iov) - seg, &out,
-+					&in, log, log_num, &desc_num);
- 		if (unlikely(r < 0))
- 			goto err;
  
-@@ -1093,6 +1099,7 @@ static int get_rx_bufs(struct vhost_net_virtqueue *nvq,
- 		++headcount;
- 		datalen -= len;
- 		seg += in;
-+		n += desc_num;
- 	}
- 
- 	*iovcount = seg;
-@@ -1113,9 +1120,11 @@ static int get_rx_bufs(struct vhost_net_virtqueue *nvq,
- 		nheads[0] = headcount;
- 	}
- 
-+	*ndesc = n;
-+
- 	return headcount;
- err:
--	vhost_discard_vq_desc(vq, headcount);
-+	vhost_discard_vq_desc(vq, headcount, n);
- 	return r;
- }
- 
-@@ -1151,6 +1160,7 @@ static void handle_rx(struct vhost_net *net)
- 	struct iov_iter fixup;
- 	__virtio16 num_buffers;
- 	int recv_pkts = 0;
-+	unsigned int ndesc;
- 
- 	mutex_lock_nested(&vq->mutex, VHOST_NET_VQ_RX);
- 	sock = vhost_vq_get_backend(vq);
-@@ -1182,7 +1192,8 @@ static void handle_rx(struct vhost_net *net)
- 		headcount = get_rx_bufs(nvq, vq->heads + count,
- 					vq->nheads + count,
- 					vhost_len, &in, vq_log, &log,
--					likely(mergeable) ? UIO_MAXIOV : 1);
-+					likely(mergeable) ? UIO_MAXIOV : 1,
-+					&ndesc);
- 		/* On error, stop handling until the next kick. */
- 		if (unlikely(headcount < 0))
- 			goto out;
-@@ -1228,7 +1239,7 @@ static void handle_rx(struct vhost_net *net)
- 		if (unlikely(err != sock_len)) {
- 			pr_debug("Discarded rx packet: "
- 				 " len %d, expected %zd\n", err, sock_len);
--			vhost_discard_vq_desc(vq, headcount);
-+			vhost_discard_vq_desc(vq, headcount, ndesc);
- 			continue;
- 		}
- 		/* Supply virtio_net_hdr if VHOST_NET_F_VIRTIO_NET_HDR */
-@@ -1252,7 +1263,7 @@ static void handle_rx(struct vhost_net *net)
- 		    copy_to_iter(&num_buffers, sizeof num_buffers,
- 				 &fixup) != sizeof num_buffers) {
- 			vq_err(vq, "Failed num_buffers write");
--			vhost_discard_vq_desc(vq, headcount);
-+			vhost_discard_vq_desc(vq, headcount, ndesc);
- 			goto out;
- 		}
- 		nvq->done_idx += headcount;
-diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-index 8570fdf2e14a..a78226b37739 100644
---- a/drivers/vhost/vhost.c
-+++ b/drivers/vhost/vhost.c
-@@ -2792,18 +2792,34 @@ static int get_indirect(struct vhost_virtqueue *vq,
- 	return 0;
- }
- 
--/* This looks in the virtqueue and for the first available buffer, and converts
-- * it to an iovec for convenient access.  Since descriptors consist of some
-- * number of output then some number of input descriptors, it's actually two
-- * iovecs, but we pack them into one and note how many of each there were.
-+/**
-+ * vhost_get_vq_desc_n - Fetch the next available descriptor chain and build iovecs
-+ * @vq: target virtqueue
-+ * @iov: array that receives the scatter/gather segments
-+ * @iov_size: capacity of @iov in elements
-+ * @out_num: the number of output segments
-+ * @in_num: the number of input segments
-+ * @log: optional array to record addr/len for each writable segment; NULL if unused
-+ * @log_num: optional output; number of entries written to @log when provided
-+ * @ndesc: optional output; number of descriptors consumed from the available ring
-+ *         (useful for rollback via vhost_discard_vq_desc)
-  *
-- * This function returns the descriptor number found, or vq->num (which is
-- * never a valid descriptor number) if none was found.  A negative code is
-- * returned on error. */
--int vhost_get_vq_desc(struct vhost_virtqueue *vq,
--		      struct iovec iov[], unsigned int iov_size,
--		      unsigned int *out_num, unsigned int *in_num,
--		      struct vhost_log *log, unsigned int *log_num)
-+ * Extracts one available descriptor chain from @vq and translates guest addresses
-+ * into host iovecs.
-+ *
-+ * On success, advances @vq->last_avail_idx by 1 and @vq->next_avail_head by the
-+ * number of descriptors consumed (also stored via @ndesc when non-NULL).
-+ *
-+ * Return:
-+ * - head index in [0, @vq->num) on success;
-+ * - @vq->num if no descriptor is currently available;
-+ * - negative errno on failure
-+ */
-+int vhost_get_vq_desc_n(struct vhost_virtqueue *vq,
-+			struct iovec iov[], unsigned int iov_size,
-+			unsigned int *out_num, unsigned int *in_num,
-+			struct vhost_log *log, unsigned int *log_num,
-+			unsigned int *ndesc)
- {
- 	bool in_order = vhost_has_feature(vq, VIRTIO_F_IN_ORDER);
- 	struct vring_desc desc;
-@@ -2921,17 +2937,49 @@ int vhost_get_vq_desc(struct vhost_virtqueue *vq,
- 	vq->last_avail_idx++;
- 	vq->next_avail_head += c;
- 
-+	if (ndesc)
-+		*ndesc = c;
-+
- 	/* Assume notifications from guest are disabled at this point,
- 	 * if they aren't we would need to update avail_event index. */
- 	BUG_ON(!(vq->used_flags & VRING_USED_F_NO_NOTIFY));
- 	return head;
- }
-+EXPORT_SYMBOL_GPL(vhost_get_vq_desc_n);
-+
-+/* This looks in the virtqueue and for the first available buffer, and converts
-+ * it to an iovec for convenient access.  Since descriptors consist of some
-+ * number of output then some number of input descriptors, it's actually two
-+ * iovecs, but we pack them into one and note how many of each there were.
-+ *
-+ * This function returns the descriptor number found, or vq->num (which is
-+ * never a valid descriptor number) if none was found.  A negative code is
-+ * returned on error.
-+ */
-+int vhost_get_vq_desc(struct vhost_virtqueue *vq,
-+		      struct iovec iov[], unsigned int iov_size,
-+		      unsigned int *out_num, unsigned int *in_num,
-+		      struct vhost_log *log, unsigned int *log_num)
-+{
-+	return vhost_get_vq_desc_n(vq, iov, iov_size, out_num, in_num,
-+				   log, log_num, NULL);
-+}
- EXPORT_SYMBOL_GPL(vhost_get_vq_desc);
- 
--/* Reverse the effect of vhost_get_vq_desc. Useful for error handling. */
--void vhost_discard_vq_desc(struct vhost_virtqueue *vq, int n)
-+/**
-+ * vhost_discard_vq_desc - Reverse the effect of vhost_get_vq_desc_n()
-+ * @vq: target virtqueue
-+ * @nbufs: number of buffers to roll back
-+ * @ndesc: number of descriptors to roll back
-+ *
-+ * Rewinds the internal consumer cursors after a failed attempt to use buffers
-+ * returned by vhost_get_vq_desc_n().
-+ */
-+void vhost_discard_vq_desc(struct vhost_virtqueue *vq, int nbufs,
-+			   unsigned int ndesc)
- {
--	vq->last_avail_idx -= n;
-+	vq->next_avail_head -= ndesc;
-+	vq->last_avail_idx -= nbufs;
- }
- EXPORT_SYMBOL_GPL(vhost_discard_vq_desc);
- 
-diff --git a/drivers/vhost/vhost.h b/drivers/vhost/vhost.h
-index 621a6d9a8791..b49f08e4a1b4 100644
---- a/drivers/vhost/vhost.h
-+++ b/drivers/vhost/vhost.h
-@@ -230,7 +230,15 @@ int vhost_get_vq_desc(struct vhost_virtqueue *,
- 		      struct iovec iov[], unsigned int iov_size,
- 		      unsigned int *out_num, unsigned int *in_num,
- 		      struct vhost_log *log, unsigned int *log_num);
--void vhost_discard_vq_desc(struct vhost_virtqueue *, int n);
-+
-+int vhost_get_vq_desc_n(struct vhost_virtqueue *vq,
-+			struct iovec iov[], unsigned int iov_size,
-+			unsigned int *out_num, unsigned int *in_num,
-+			struct vhost_log *log, unsigned int *log_num,
-+			unsigned int *ndesc);
-+
-+void vhost_discard_vq_desc(struct vhost_virtqueue *, int nbuf,
-+			   unsigned int ndesc);
- 
- bool vhost_vq_work_queue(struct vhost_virtqueue *vq, struct vhost_work *work);
- bool vhost_vq_has_work(struct vhost_virtqueue *vq);
 -- 
-2.52.0
+2.51.0
 
 
 
