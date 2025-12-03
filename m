@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEAB5C9FF22
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:26:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96C49C9FB9C
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:56:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 78A94301C8AA
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:24:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CB5D2304E38C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:46:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5320434251A;
-	Wed,  3 Dec 2025 16:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95EAE313E1D;
+	Wed,  3 Dec 2025 15:46:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lApIXdAM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rzj1mBEX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 029B534166A;
-	Wed,  3 Dec 2025 16:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 515E7312810;
+	Wed,  3 Dec 2025 15:46:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778428; cv=none; b=fRvrZX2FPGZ5p1Hxd56EGfVGscWXpcH/hcOU72YoXUgKwutSKLeOFun1/JWcbFU4HVyJP94pkRJGchn7PWHlfxsaoHCwbbWjy9bxS4jPFUAI5ndJi2hFDkmqGsE+qQcE299lhNtJ3QnvOiFLQHpnN5Sm9IBCfGaZEBhoBDVV1UM=
+	t=1764776784; cv=none; b=oymiQluGcvFJaETfC9wxTMxwKGpwrxUQSI667WnXjg//sGsS7XE3ApCnScneCvz1qTuzYUnLLM+5gDBkde+cInk8J589umZIvgUU8o9qv0n5m43ec3bYWBpH89W/vIVUnztydHtH1L5onTj1BBJ6FdPyBs8ttR9QKODcvzt776s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778428; c=relaxed/simple;
-	bh=bOs1B/aTDlJ2hm/rzC65IVSH12sicC5xzfd4FnxK0gg=;
+	s=arc-20240116; t=1764776784; c=relaxed/simple;
+	bh=X290QDd9oF3WnbzwcktiWPxBSwSvCu3o/K6XBU8UG5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dp5OGW617i1iPLbeCzYpjkVZCK9K4chYUuvriD1Bgh2xM4pOVgzfGVeD0p2pAy20QO+EJg+4Ezmy/DeWeEoDM3e5JcZGPg2o285Hx6PTsctNTsJcdHafRQ8NnKZpiyKxhYXXkpdoADp4ETv2i5hcMADPpIItL6DvElbEY8Ce9uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lApIXdAM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E0F2C4CEF5;
-	Wed,  3 Dec 2025 16:13:47 +0000 (UTC)
+	 MIME-Version; b=JAZXVwQJzRTzSWne+Jj8xdXLrWieDTy+Mx5tksaMtY335OedqShIWGp/IVTxd9m5cVmT1j8Gw/HPVOQaVeZBDyKof76a+TrOIiQ4oVFynq6YTA5HFMUITOd5io612ewGdjH2790HsL9UYsBqdyb9L8PiBMUnqV85zLW07CJqlgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rzj1mBEX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6010C4CEF5;
+	Wed,  3 Dec 2025 15:46:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778427;
-	bh=bOs1B/aTDlJ2hm/rzC65IVSH12sicC5xzfd4FnxK0gg=;
+	s=korg; t=1764776784;
+	bh=X290QDd9oF3WnbzwcktiWPxBSwSvCu3o/K6XBU8UG5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lApIXdAM4VLbAUXK57wxdmCfvtp5C78+6NpcJUt1yywJBqt/yYc5V5JAXxXcU+5pR
-	 mguGnr3BKkjBqWDP4mZT6xt5smLPcnGox7yKVWjqNMg3umT13LLVpkiqiFLfhKLIYm
-	 L14RZUUWDo6Or2l/M8bzK4m/zYgDn//jMFWdkxBg=
+	b=rzj1mBEX2UXJufqyClNjehNBwy7p8MswRy3eyCwLmfXHDuQPkhEz0Mgh/jCtFcMWq
+	 nuAGoRzpPBh0FADdlrdcfZRu8ZD3TFg80tQIYkXNnEpHTlqEjEs+CTPJbSWjGPInQM
+	 M1/BNDswW15vIaikS1q4jX36MxI+3EvS/2dzPsQ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danielle Costantino <dcostantino@meta.com>,
-	Gal Pressman <gal@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 341/392] net/mlx5e: Fix validation logic in rate limiting
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	Johan Hovold <johan@kernel.org>,
+	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+Subject: [PATCH 5.10 287/300] drm: sti: fix device leaks at component probe
 Date: Wed,  3 Dec 2025 16:28:11 +0100
-Message-ID: <20251203152426.718314583@linuxfoundation.org>
+Message-ID: <20251203152411.255382976@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +60,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danielle Costantino <dcostantino@meta.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit d2099d9f16dbfa1c5266d4230ff7860047bb0b68 ]
+commit 620a8f131154250f6a64a07d049a4f235d6451a5 upstream.
 
-The rate limiting validation condition currently checks the output
-variable max_bw_value[i] instead of the input value
-maxrate->tc_maxrate[i]. This causes the validation to compare an
-uninitialized or stale value rather than the actual requested rate.
+Make sure to drop the references taken to the vtg devices by
+of_find_device_by_node() when looking up their driver data during
+component probe.
 
-The condition should check the input rate to properly validate against
-the upper limit:
+Note that holding a reference to a platform device does not prevent its
+driver data from going away so there is no point in keeping the
+reference after the lookup helper returns.
 
-    } else if (maxrate->tc_maxrate[i] <= upper_limit_gbps) {
-
-This aligns with the pattern used in the first branch, which correctly
-checks maxrate->tc_maxrate[i] against upper_limit_mbps.
-
-The current implementation can lead to unreliable validation behavior:
-
-- For rates between 25.5 Gbps and 255 Gbps, if max_bw_value[i] is 0
-  from initialization, the GBPS path may be taken regardless of whether
-  the actual rate is within bounds
-
-- When processing multiple TCs (i > 0), max_bw_value[i] contains the
-  value computed for the previous TC, affecting the validation logic
-
-- The overflow check for rates exceeding 255 Gbps may not trigger
-  consistently depending on previous array values
-
-This patch ensures the validation correctly examines the requested rate
-value for proper bounds checking.
-
-Fixes: 43b27d1bd88a ("net/mlx5e: Fix wraparound in rate limiting for values above 255 Gbps")
-Signed-off-by: Danielle Costantino <dcostantino@meta.com>
-Reviewed-by: Gal Pressman <gal@nvidia.com>
-Link: https://patch.msgid.link/20251124180043.2314428-1-dcostantino@meta.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cc6b741c6f63 ("drm: sti: remove useless fields from vtg structure")
+Cc: stable@vger.kernel.org	# 4.16
+Cc: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20250922122012.27407-1-johan@kernel.org
+Signed-off-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/sti/sti_vtg.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-index 86545554abb4e..dae944d28ee26 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-@@ -606,7 +606,7 @@ static int mlx5e_dcbnl_ieee_setmaxrate(struct net_device *netdev,
- 						  MLX5E_100MB);
- 			max_bw_value[i] = max_bw_value[i] ? max_bw_value[i] : 1;
- 			max_bw_unit[i]  = MLX5_100_MBPS_UNIT;
--		} else if (max_bw_value[i] <= upper_limit_gbps) {
-+		} else if (maxrate->tc_maxrate[i] <= upper_limit_gbps) {
- 			max_bw_value[i] = div_u64(maxrate->tc_maxrate[i],
- 						  MLX5E_1GB);
- 			max_bw_unit[i]  = MLX5_GBPS_UNIT;
+diff --git a/drivers/gpu/drm/sti/sti_vtg.c b/drivers/gpu/drm/sti/sti_vtg.c
+index ee81691b3203..ce6bc7e7b135 100644
+--- a/drivers/gpu/drm/sti/sti_vtg.c
++++ b/drivers/gpu/drm/sti/sti_vtg.c
+@@ -143,12 +143,17 @@ struct sti_vtg {
+ struct sti_vtg *of_vtg_find(struct device_node *np)
+ {
+ 	struct platform_device *pdev;
++	struct sti_vtg *vtg;
+ 
+ 	pdev = of_find_device_by_node(np);
+ 	if (!pdev)
+ 		return NULL;
+ 
+-	return (struct sti_vtg *)platform_get_drvdata(pdev);
++	vtg = platform_get_drvdata(pdev);
++
++	put_device(&pdev->dev);
++
++	return vtg;
+ }
+ 
+ static void vtg_reset(struct sti_vtg *vtg)
 -- 
-2.51.0
+2.52.0
 
 
 
