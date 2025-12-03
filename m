@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41BCDCA06EB
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:27:32 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BED69C9F76D
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:31:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3FA2E3315463
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:11:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BA60E3001506
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:31:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B0CB3612C8;
-	Wed,  3 Dec 2025 16:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BFFE30CDB1;
+	Wed,  3 Dec 2025 15:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TEwBO8Qv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RA5G/t5i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF4135FF4E;
-	Wed,  3 Dec 2025 16:28:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE29230BB94;
+	Wed,  3 Dec 2025 15:31:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779303; cv=none; b=qCqT1JYhW1g26P7iYtYmlUHU5CAKwuyT5imKEm72VUC2zX8EqniJDC/wpryM4pBPGDJc+KLaXHjNCCtieZRdkiQArRU9sFNLzR9lfuhsG6OdU2m30OL4H9Tl8/BnOFxysxQbN7dzV6xlwvNSEFl1Q5uCDgZpVa2Hsup8/fYZ6ro=
+	t=1764775884; cv=none; b=IGO110cL6RLrSqr0IyBd3kJhLtib0QTgz6N89ARAjFd7huTn8jM1pP65Kqpqf52OMkQa8/ecOwL2PRpCiYOJ0ZjvtHqABhEQ0++FjNY31u5GFOFU1bbeSloCFsHYMGqHtpv+GhT67/eFz0syXv4iLxQdrHLcHFaDjJ+rj3bzzCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779303; c=relaxed/simple;
-	bh=KtsN93mrf0dQJRl2bhv1J24xiOGCzTl4PtJz3Y4Hd1g=;
+	s=arc-20240116; t=1764775884; c=relaxed/simple;
+	bh=MKgMOgvKlDVKIfi/vQ8EKdzlMOJNTjWO43cDZQspjmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l6XXMDNIespJxB/EHsOMNwVn92fV83nQ209QHT2ZYGUHeyUduotIsdtFhBteX080wcmxbIWSZNTzsoq5aaZvTGLLv49Ll74+TKdm5OslDLPtgzeM5qNC0hSutpEyUM6awnsxewiPIyZMtN5J6srvmXopHbKB7Cq4sf2dn9qcQ1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TEwBO8Qv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD0BEC4CEF5;
-	Wed,  3 Dec 2025 16:28:22 +0000 (UTC)
+	 MIME-Version; b=q/Iuj5tj+Ix3Tia5XgmL2azhvQuNeV+9KyUdH7mpucaL2x9snd9ZGT/EshN5pBMhI/uET+/khsHEhmpQvSRSspAgG2RpmVovcRcKYFR1Ve8WIpl8T63Uyl2oa91VC/WP9ONkMQ4p8AdBDND3SA+c4a13Yb9+NI1FkHhk3MKdgmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RA5G/t5i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF875C4CEF5;
+	Wed,  3 Dec 2025 15:31:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779303;
-	bh=KtsN93mrf0dQJRl2bhv1J24xiOGCzTl4PtJz3Y4Hd1g=;
+	s=korg; t=1764775882;
+	bh=MKgMOgvKlDVKIfi/vQ8EKdzlMOJNTjWO43cDZQspjmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TEwBO8QvuY4wHIVvh7ISnIMyclBrEAVN1E1ch7nRontdZFmUApepfp9QAEvTwWozZ
-	 QK/PefogVvjoKmCDyCN9MAaNK00fm+Hs+JIpq+5oYRZeaRqgQ62YIBNrZpeCzEA1wB
-	 FBpsPUquuZ/5p+K4DF5yLhmHBf+1aDX88J/2kQHM=
+	b=RA5G/t5iENZPCES8+52InaDAL23xnM9DJJNIl0qLVxjuyfFTzyL6Eh5MxJQ/gz8Z8
+	 KRiUoiStWCJleJzM94x2CoUglziyO2YNfUEPRHOAxVGpq3nt67j+foD2cFwlgVYpgS
+	 AI99UBR8jCt46ObV41ap3Hgem9htK64Y55ACoi78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Ahern <dsahern@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 218/568] selftests: Disable dad for ipv6 in fcnal-test.sh
+Subject: [PATCH 5.10 016/300] ALSA: usb-audio: fix control pipe direction
 Date: Wed,  3 Dec 2025 16:23:40 +0100
-Message-ID: <20251203152448.706625853@linuxfoundation.org>
+Message-ID: <20251203152401.059296802@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +60,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Ahern <dsahern@kernel.org>
+From: Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>
 
-[ Upstream commit 53d591730ea34f97a82f7ec6e7c987ca6e34dc21 ]
+[ Upstream commit 7963891f7c9c6f759cc9ab7da71406b4234f3dd6 ]
 
-Constrained test environment; duplicate address detection is not needed
-and causes races so disable it.
+Since the requesttype has USB_DIR_OUT the pipe should be
+constructed with usb_sndctrlpipe().
 
-Signed-off-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250910025828.38900-1-dsahern@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 8dc5efe3d17c ("ALSA: usb-audio: Add support for Presonus Studio 1810c")
+Signed-off-by: Roy Vegard Ovesen <roy.vegard.ovesen@gmail.com>
+Link: https://patch.msgid.link/aPPL3tBFE_oU-JHv@ark
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/fcnal-test.sh | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/usb/mixer_s1810c.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/fcnal-test.sh b/tools/testing/selftests/net/fcnal-test.sh
-index 1c0dcddbe2bd1..135e19db39eb0 100755
---- a/tools/testing/selftests/net/fcnal-test.sh
-+++ b/tools/testing/selftests/net/fcnal-test.sh
-@@ -423,6 +423,8 @@ create_ns()
- 	ip netns exec ${ns} sysctl -qw net.ipv6.conf.all.keep_addr_on_down=1
- 	ip netns exec ${ns} sysctl -qw net.ipv6.conf.all.forwarding=1
- 	ip netns exec ${ns} sysctl -qw net.ipv6.conf.default.forwarding=1
-+	ip netns exec ${ns} sysctl -qw net.ipv6.conf.default.accept_dad=0
-+	ip netns exec ${ns} sysctl -qw net.ipv6.conf.all.accept_dad=0
- }
+diff --git a/sound/usb/mixer_s1810c.c b/sound/usb/mixer_s1810c.c
+index c53a9773f310b..457e07f6fc7c8 100644
+--- a/sound/usb/mixer_s1810c.c
++++ b/sound/usb/mixer_s1810c.c
+@@ -181,7 +181,7 @@ snd_sc1810c_get_status_field(struct usb_device *dev,
  
- # create veth pair to connect namespaces and apply addresses.
+ 	pkt_out.fields[SC1810C_STATE_F1_IDX] = SC1810C_SET_STATE_F1;
+ 	pkt_out.fields[SC1810C_STATE_F2_IDX] = SC1810C_SET_STATE_F2;
+-	ret = snd_usb_ctl_msg(dev, usb_rcvctrlpipe(dev, 0),
++	ret = snd_usb_ctl_msg(dev, usb_sndctrlpipe(dev, 0),
+ 			      SC1810C_SET_STATE_REQ,
+ 			      SC1810C_SET_STATE_REQTYPE,
+ 			      (*seqnum), 0, &pkt_out, sizeof(pkt_out));
 -- 
 2.51.0
 
