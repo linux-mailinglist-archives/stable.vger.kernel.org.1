@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-199608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89A89CA0158
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:45:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F374C9FBF9
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:58:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 03F1A30012F8
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:45:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BA6DA300306B
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:53:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 372CA36BCF3;
-	Wed,  3 Dec 2025 16:45:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76CFF3370E3;
+	Wed,  3 Dec 2025 15:53:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XMZSBAL+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xixi9QcQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E47BF36A009;
-	Wed,  3 Dec 2025 16:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05AB731ED8D;
+	Wed,  3 Dec 2025 15:53:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780354; cv=none; b=UxUn7pYUVdmcnbhJGLVFPi36pHPAR/L73P4fRVlfKQ8aqVEY9DjTIJX4jETPiunucsd/0AUnF/Q10rkaYMmQq3W7EGo7dkvD99fef/L6xwyyKS2OItjULEHSHCgJMi72sOi2HP5ekvI2lIzKkUyWjZxaolCp1tI6cIorktp/tVU=
+	t=1764777227; cv=none; b=nVFsMRaR7CTxvDRmrM9MmA1uo6kPc8u3asqOc9HpeSaigIfzNNe5ecicFt3YFjSyjGreSal2oTe4CK9f/ybIFhPwp3M9zAZr5SFi43982g4U0PQXF/1IbQeOFpod3VSGS0kQ6/JDfkGDtL5heteqs9CHuFlI9qCDE2QEYySjm9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780354; c=relaxed/simple;
-	bh=5Q/Qf1MyxAyasHpm5gXsQoVsABhQYBZbvUnS0Fa7naQ=;
+	s=arc-20240116; t=1764777227; c=relaxed/simple;
+	bh=NTBFiX+b0wwtJef3NmAO5PTu6XK1Ta/+Vv8V8o7KDDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LAgpkIL1QhGZnLlKrkYroYJ8Nfy5SaDKbPMVX4xLKI0qp5PLXtJUHruwF/38Cb7gKY2S93+XpKNySNVJ7d8irPP+ub11XQQQKX5+edBVT3eJd6BAKVMF8AyAS8OHBYv7jwFqIF/zV6r9qNOoZBHRZRth9QKVYyOMEFbr7kx6y18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XMZSBAL+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 397BDC4CEF5;
-	Wed,  3 Dec 2025 16:45:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lr9gTvHhlKS3bUjB60dfmRperj4U023uA9RjCBJ669jVD4D60P5j+8Cd6zAOvldXGN6+dHYt2HyT7nEVYQchZi1McLBgjKU6nXbWZGl3BakxR6J16oeGv8dapp5YFucSzwSI9N2UUZOiDQ/PfPDc5bxTE7uOa3TYEO4gfZZ5kmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xixi9QcQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CAB5C4CEF5;
+	Wed,  3 Dec 2025 15:53:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780353;
-	bh=5Q/Qf1MyxAyasHpm5gXsQoVsABhQYBZbvUnS0Fa7naQ=;
+	s=korg; t=1764777226;
+	bh=NTBFiX+b0wwtJef3NmAO5PTu6XK1Ta/+Vv8V8o7KDDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XMZSBAL+mL0+TjvvdcwryqH/5BVyXdE/QBauYQxqSFZss6sulPbpmilcvELjpyk8h
-	 esddm37xbXJZwuDxBzecN52br2FT2S5L8TeQ0l686RzNtN3gXC+4bXEGCwBISs4R5e
-	 lWAtjDJpZwFq6Bj6V9LSSz4u1gn3iR0HJgF6mxFE=
+	b=Xixi9QcQccg97fNAubUTHEGE8LBdTUMTk+Ser3jcmHxo00xfhjjP6mGSGAJR9+YeZ
+	 HM/MQTVCO4AVExNLjHHQp/8sq2oB2nGK2jsf8YoBQTg+/5xmYNScPhaiKNguxWvPAm
+	 /1dWCQ6lZhuwpWwyOAaL3h+YY6Rj42AL1F2kJols=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carol Soto <csoto@nvidia.com>,
-	Kai-Heng Feng <kaihengf@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 498/568] net: aquantia: Add missing descriptor cache invalidation on ATL2
+	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.17 122/146] xhci: dbgtty: Fix data corruption when transmitting data form DbC to host
 Date: Wed,  3 Dec 2025 16:28:20 +0100
-Message-ID: <20251203152458.954790211@linuxfoundation.org>
+Message-ID: <20251203152350.927102333@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,151 +57,129 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai-Heng Feng <kaihengf@nvidia.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-[ Upstream commit 7526183cfdbe352c51c285762f0e15b7c428ea06 ]
+commit f6bb3b67be9af0cfb90075c60850b6af5338a508 upstream.
 
-ATL2 hardware was missing descriptor cache invalidation in hw_stop(),
-causing SMMU translation faults during device shutdown and module removal:
-[   70.355743] arm-smmu-v3 arm-smmu-v3.5.auto: event 0x10 received:
-[   70.361893] arm-smmu-v3 arm-smmu-v3.5.auto:  0x0002060000000010
-[   70.367948] arm-smmu-v3 arm-smmu-v3.5.auto:  0x0000020000000000
-[   70.374002] arm-smmu-v3 arm-smmu-v3.5.auto:  0x00000000ff9bc000
-[   70.380055] arm-smmu-v3 arm-smmu-v3.5.auto:  0x0000000000000000
-[   70.386109] arm-smmu-v3 arm-smmu-v3.5.auto: event: F_TRANSLATION client: 0001:06:00.0 sid: 0x20600 ssid: 0x0 iova: 0xff9bc000 ipa: 0x0
-[   70.398531] arm-smmu-v3 arm-smmu-v3.5.auto: unpriv data write s1 "Input address caused fault" stag: 0x0
+Data read from a DbC device may be corrupted due to a race between
+ongoing write and write request completion handler both queuing new
+transfer blocks (TRBs) if there are remining data in the kfifo.
 
-Commit 7a1bb49461b1 ("net: aquantia: fix potential IOMMU fault after
-driver unbind") and commit ed4d81c4b3f2 ("net: aquantia: when cleaning
-hw cache it should be toggled") fixed cache invalidation for ATL B0, but
-ATL2 was left with only interrupt disabling. This allowed hardware to
-write to cached descriptors after DMA memory was unmapped, triggering
-SMMU faults. Once cache invalidation is applied to ATL2, the translation
-fault can't be observed anymore.
+TRBs may be in incorrct order compared to the data in the kfifo.
 
-Add shared aq_hw_invalidate_descriptor_cache() helper and use it in both
-ATL B0 and ATL2 hw_stop() implementations for consistent behavior.
+Driver fails to keep lock between reading data from kfifo into a
+dbc request buffer, and queuing the request to the transfer ring.
 
-Fixes: e54dcf4bba3e ("net: atlantic: basic A2 init/deinit hw_ops")
-Tested-by: Carol Soto <csoto@nvidia.com>
-Signed-off-by: Kai-Heng Feng <kaihengf@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251120041537.62184-1-kaihengf@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This allows completed request to re-queue itself in the middle of
+an ongoing transfer loop, forcing itself between a kfifo read and
+request TRB write of another request
+
+cpu0					cpu1 (re-queue completed req2)
+
+lock(port_lock)
+dbc_start_tx()
+kfifo_out(fifo, req1->buffer)
+unlock(port_lock)
+					lock(port_lock)
+					dbc_write_complete(req2)
+					dbc_start_tx()
+      					kfifo_out(fifo, req2->buffer)
+					unlock(port_lock)
+					lock(port_lock)
+					req2->trb = ring->enqueue;
+					ring->enqueue++
+					unlock(port_lock)
+lock(port_lock)
+req1->trb = ring->enqueue;
+ring->enqueue++
+unlock(port_lock)
+
+In the above scenario a kfifo containing "12345678" would read "1234" to
+req1 and "5678" to req2, but req2 is queued before req1 leading to
+data being transmitted as "56781234"
+
+Solve this by adding a flag that prevents starting a new tx if we
+are already mid dbc_start_tx() during the unlocked part.
+
+The already running dbc_do_start_tx() will make sure the newly completed
+request gets re-queued as it is added to the request write_pool while
+holding the lock.
+
+Cc: stable@vger.kernel.org
+Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
+Tested-by: Łukasz Bartosik <ukaszb@chromium.org>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://patch.msgid.link/20251107162819.1362579-3-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../ethernet/aquantia/atlantic/aq_hw_utils.c  | 22 +++++++++++++++++++
- .../ethernet/aquantia/atlantic/aq_hw_utils.h  |  1 +
- .../aquantia/atlantic/hw_atl/hw_atl_b0.c      | 19 +---------------
- .../aquantia/atlantic/hw_atl2/hw_atl2.c       |  2 +-
- 4 files changed, 25 insertions(+), 19 deletions(-)
+ drivers/usb/host/xhci-dbgcap.h |    1 +
+ drivers/usb/host/xhci-dbgtty.c |   17 ++++++++++++++++-
+ 2 files changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_hw_utils.c b/drivers/net/ethernet/aquantia/atlantic/aq_hw_utils.c
-index 1921741f7311d..18b08277d2e1a 100644
---- a/drivers/net/ethernet/aquantia/atlantic/aq_hw_utils.c
-+++ b/drivers/net/ethernet/aquantia/atlantic/aq_hw_utils.c
-@@ -15,6 +15,7 @@
+--- a/drivers/usb/host/xhci-dbgcap.h
++++ b/drivers/usb/host/xhci-dbgcap.h
+@@ -114,6 +114,7 @@ struct dbc_port {
+ 	unsigned int			tx_boundary;
  
- #include "aq_hw.h"
- #include "aq_nic.h"
-+#include "hw_atl/hw_atl_llh.h"
+ 	bool				registered;
++	bool				tx_running;
+ };
  
- void aq_hw_write_reg_bit(struct aq_hw_s *aq_hw, u32 addr, u32 msk,
- 			 u32 shift, u32 val)
-@@ -81,6 +82,27 @@ void aq_hw_write_reg64(struct aq_hw_s *hw, u32 reg, u64 value)
- 		lo_hi_writeq(value, hw->mmio + reg);
+ struct dbc_driver {
+--- a/drivers/usb/host/xhci-dbgtty.c
++++ b/drivers/usb/host/xhci-dbgtty.c
+@@ -47,7 +47,7 @@ dbc_kfifo_to_req(struct dbc_port *port,
+ 	return len;
  }
  
-+int aq_hw_invalidate_descriptor_cache(struct aq_hw_s *hw)
+-static int dbc_start_tx(struct dbc_port *port)
++static int dbc_do_start_tx(struct dbc_port *port)
+ 	__releases(&port->port_lock)
+ 	__acquires(&port->port_lock)
+ {
+@@ -57,6 +57,8 @@ static int dbc_start_tx(struct dbc_port
+ 	bool			do_tty_wake = false;
+ 	struct list_head	*pool = &port->write_pool;
+ 
++	port->tx_running = true;
++
+ 	while (!list_empty(pool)) {
+ 		req = list_entry(pool->next, struct dbc_request, list_pool);
+ 		len = dbc_kfifo_to_req(port, req->buf);
+@@ -77,12 +79,25 @@ static int dbc_start_tx(struct dbc_port
+ 		}
+ 	}
+ 
++	port->tx_running = false;
++
+ 	if (do_tty_wake && port->port.tty)
+ 		tty_wakeup(port->port.tty);
+ 
+ 	return status;
+ }
+ 
++/* must be called with port->port_lock held */
++static int dbc_start_tx(struct dbc_port *port)
 +{
-+	int err;
-+	u32 val;
++	lockdep_assert_held(&port->port_lock);
 +
-+	/* Invalidate Descriptor Cache to prevent writing to the cached
-+	 * descriptors and to the data pointer of those descriptors
-+	 */
-+	hw_atl_rdm_rx_dma_desc_cache_init_tgl(hw);
++	if (port->tx_running)
++		return -EBUSY;
 +
-+	err = aq_hw_err_from_flags(hw);
-+	if (err)
-+		goto err_exit;
-+
-+	readx_poll_timeout_atomic(hw_atl_rdm_rx_dma_desc_cache_init_done_get,
-+				  hw, val, val == 1, 1000U, 10000U);
-+
-+err_exit:
-+	return err;
++	return dbc_do_start_tx(port);
 +}
 +
- int aq_hw_err_from_flags(struct aq_hw_s *hw)
- {
- 	int err = 0;
-diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_hw_utils.h b/drivers/net/ethernet/aquantia/atlantic/aq_hw_utils.h
-index ffa6e4067c211..d89c63d88e4a4 100644
---- a/drivers/net/ethernet/aquantia/atlantic/aq_hw_utils.h
-+++ b/drivers/net/ethernet/aquantia/atlantic/aq_hw_utils.h
-@@ -35,6 +35,7 @@ u32 aq_hw_read_reg(struct aq_hw_s *hw, u32 reg);
- void aq_hw_write_reg(struct aq_hw_s *hw, u32 reg, u32 value);
- u64 aq_hw_read_reg64(struct aq_hw_s *hw, u32 reg);
- void aq_hw_write_reg64(struct aq_hw_s *hw, u32 reg, u64 value);
-+int aq_hw_invalidate_descriptor_cache(struct aq_hw_s *hw);
- int aq_hw_err_from_flags(struct aq_hw_s *hw);
- int aq_hw_num_tcs(struct aq_hw_s *hw);
- int aq_hw_q_per_tc(struct aq_hw_s *hw);
-diff --git a/drivers/net/ethernet/aquantia/atlantic/hw_atl/hw_atl_b0.c b/drivers/net/ethernet/aquantia/atlantic/hw_atl/hw_atl_b0.c
-index 54e70f07b5734..7b4814b3ba442 100644
---- a/drivers/net/ethernet/aquantia/atlantic/hw_atl/hw_atl_b0.c
-+++ b/drivers/net/ethernet/aquantia/atlantic/hw_atl/hw_atl_b0.c
-@@ -1198,26 +1198,9 @@ static int hw_atl_b0_hw_interrupt_moderation_set(struct aq_hw_s *self)
- 
- static int hw_atl_b0_hw_stop(struct aq_hw_s *self)
- {
--	int err;
--	u32 val;
--
- 	hw_atl_b0_hw_irq_disable(self, HW_ATL_B0_INT_MASK);
- 
--	/* Invalidate Descriptor Cache to prevent writing to the cached
--	 * descriptors and to the data pointer of those descriptors
--	 */
--	hw_atl_rdm_rx_dma_desc_cache_init_tgl(self);
--
--	err = aq_hw_err_from_flags(self);
--
--	if (err)
--		goto err_exit;
--
--	readx_poll_timeout_atomic(hw_atl_rdm_rx_dma_desc_cache_init_done_get,
--				  self, val, val == 1, 1000U, 10000U);
--
--err_exit:
--	return err;
-+	return aq_hw_invalidate_descriptor_cache(self);
- }
- 
- int hw_atl_b0_hw_ring_tx_stop(struct aq_hw_s *self, struct aq_ring_s *ring)
-diff --git a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2.c b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2.c
-index 5dfc751572edc..bc4e1b6035e08 100644
---- a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2.c
-+++ b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2.c
-@@ -759,7 +759,7 @@ static int hw_atl2_hw_stop(struct aq_hw_s *self)
- {
- 	hw_atl_b0_hw_irq_disable(self, HW_ATL2_INT_MASK);
- 
--	return 0;
-+	return aq_hw_invalidate_descriptor_cache(self);
- }
- 
- static struct aq_stats_s *hw_atl2_utils_get_hw_stats(struct aq_hw_s *self)
--- 
-2.51.0
-
+ static void dbc_start_rx(struct dbc_port *port)
+ 	__releases(&port->port_lock)
+ 	__acquires(&port->port_lock)
 
 
 
