@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8631BCA0DBA
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:16:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80237CA0FB1
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:30:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 807C931D990A
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:13:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E07423327515
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:28:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2507355022;
-	Wed,  3 Dec 2025 17:00:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A560A345CD7;
+	Wed,  3 Dec 2025 16:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QoQ/KmPW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zo6ml8A0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF1A352949;
-	Wed,  3 Dec 2025 17:00:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9A93451D9;
+	Wed,  3 Dec 2025 16:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764781223; cv=none; b=gBrkb6h6fiW43K9kcUT9Vkrgz4S8UlSTFfb/XAGCSLv9d5E8zFYctRt7MXr59zqzlMd7oklnwFzgaBGQ8NcXu1yBZ/MJPVnIp27uJWDPm0li6zeK4I/i7yDmT1fQ6/b1u0hc4t2dJKwXeSZ2YCMhXnWIBQAcAhUJuFz2zy60AkU=
+	t=1764780856; cv=none; b=ImW/NAsXgok7DyiepTjYv3gMtL8c/6KSM8HXThvkKLyDWqV453fxMs3ktFnH+aQtpib7FdTdJ0gSO7h7x/1QcqW41cCNpyQGxncGXOPWybcw1zMRjVFArxOanL9T/hcshekbfAq9LOMstJXV8miPPxpIvl9OoGqBYh6mAfPZidw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764781223; c=relaxed/simple;
-	bh=bPOrODEfWt4gTvS9j6WTsEg/zouEaU6G4L8Y1F1ejeI=;
+	s=arc-20240116; t=1764780856; c=relaxed/simple;
+	bh=aiREDO0lmyESJwDZ8zB1ARgj63HGaZuJTaDTR20HVio=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LiNIPSGaBsC3OWlzT2BgPtfnku7JZvBFWzFihWc46RxivLOpVle9/uj3+MnwQnL18mOLiAXnE2LJmIq8PcckifncC5fClwXzRfhIgFX1urad3fxIFv6KfV9TSHne/GzrCgQ5GuH4XULSurPVHwp6AsTPcJFPpsUoOZe8akAEnto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QoQ/KmPW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A66C4CEF5;
-	Wed,  3 Dec 2025 17:00:22 +0000 (UTC)
+	 MIME-Version; b=XwSizGDYjPfv6ihyv7om4L9wnlaE2vFQkz42KeDNZGFZ/YPmEAN14vBB4e6y9PbLouIgHA9bU3dyLCLzPBUcFoOSDzd+qI3IYbSL73sJQbrzgd3S6MsfdggHy7lH3BXg2ma2ZGR0kblCuDVR5ynNA65iAXlKH/mt0doMfVSIbIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zo6ml8A0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0F9CC116B1;
+	Wed,  3 Dec 2025 16:54:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764781223;
-	bh=bPOrODEfWt4gTvS9j6WTsEg/zouEaU6G4L8Y1F1ejeI=;
+	s=korg; t=1764780856;
+	bh=aiREDO0lmyESJwDZ8zB1ARgj63HGaZuJTaDTR20HVio=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QoQ/KmPWpR9CqyjperXPeqTe2KCV/awHxEGRrztiwJZb3PEhLFswCGmTTzhPAKgLQ
-	 YEYcy/FvfAwU6t3q4nvZe3pJtNBW6bhdh8t8lllxIWwA9GdKfR5ykZgeJT0yxHzqX5
-	 NcCrD03mtOhuk2Wc56Q+6pd7MhXUeb4ucqYh3oQk=
+	b=zo6ml8A0GtkOGZ9ti2afmz6M89J1eSQ0WX0FsuYTWN5FK/W3wDerSsfAnmGV1pE4I
+	 709nYpuUKqH0brqh3GkVaoDLG3zJbK85x0FfS0UsHlEGqoGHvWnB+Am+tSE+2I066D
+	 00vHxUNlVljX4t04ZqqxNd9B6+IkF8Bnseal9R4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Peter Chen <peter.chen@kernel.org>
-Subject: [PATCH 6.6 57/93] usb: cdns3: Fix double resource release in cdns3_pci_probe
+	David Howells <dhowells@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Subject: [PATCH 6.12 111/132] libceph: fix potential use-after-free in have_mon_and_osd_map()
 Date: Wed,  3 Dec 2025 16:29:50 +0100
-Message-ID: <20251203152338.631274542@linuxfoundation.org>
+Message-ID: <20251203152347.395282972@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +60,227 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-commit 1ec39d2cd88dac2e7cdbac248762f1f057971c5d upstream.
+commit 076381c261374c587700b3accf410bdd2dba334e upstream.
 
-The driver uses pcim_enable_device() to enable the PCI device,
-the device will be automatically disabled on driver detach through
-the managed device framework. The manual pci_disable_device() calls
-in the error paths are therefore redundant and should be removed.
+The wait loop in __ceph_open_session() can race with the client
+receiving a new monmap or osdmap shortly after the initial map is
+received.  Both ceph_monc_handle_map() and handle_one_map() install
+a new map immediately after freeing the old one
 
-Found via static anlaysis and this is similar to commit 99ca0b57e49f
-("thermal: intel: int340x: processor: Fix warning during module unload").
+    kfree(monc->monmap);
+    monc->monmap = monmap;
 
-Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://patch.msgid.link/20251026090859.33107-1-linmq006@gmail.com
+    ceph_osdmap_destroy(osdc->osdmap);
+    osdc->osdmap = newmap;
+
+under client->monc.mutex and client->osdc.lock respectively, but
+because neither is taken in have_mon_and_osd_map() it's possible for
+client->monc.monmap->epoch and client->osdc.osdmap->epoch arms in
+
+    client->monc.monmap && client->monc.monmap->epoch &&
+        client->osdc.osdmap && client->osdc.osdmap->epoch;
+
+condition to dereference an already freed map.  This happens to be
+reproducible with generic/395 and generic/397 with KASAN enabled:
+
+    BUG: KASAN: slab-use-after-free in have_mon_and_osd_map+0x56/0x70
+    Read of size 4 at addr ffff88811012d810 by task mount.ceph/13305
+    CPU: 2 UID: 0 PID: 13305 Comm: mount.ceph Not tainted 6.14.0-rc2-build2+ #1266
+    ...
+    Call Trace:
+    <TASK>
+    have_mon_and_osd_map+0x56/0x70
+    ceph_open_session+0x182/0x290
+    ceph_get_tree+0x333/0x680
+    vfs_get_tree+0x49/0x180
+    do_new_mount+0x1a3/0x2d0
+    path_mount+0x6dd/0x730
+    do_mount+0x99/0xe0
+    __do_sys_mount+0x141/0x180
+    do_syscall_64+0x9f/0x100
+    entry_SYSCALL_64_after_hwframe+0x76/0x7e
+    </TASK>
+
+    Allocated by task 13305:
+    ceph_osdmap_alloc+0x16/0x130
+    ceph_osdc_init+0x27a/0x4c0
+    ceph_create_client+0x153/0x190
+    create_fs_client+0x50/0x2a0
+    ceph_get_tree+0xff/0x680
+    vfs_get_tree+0x49/0x180
+    do_new_mount+0x1a3/0x2d0
+    path_mount+0x6dd/0x730
+    do_mount+0x99/0xe0
+    __do_sys_mount+0x141/0x180
+    do_syscall_64+0x9f/0x100
+    entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+    Freed by task 9475:
+    kfree+0x212/0x290
+    handle_one_map+0x23c/0x3b0
+    ceph_osdc_handle_map+0x3c9/0x590
+    mon_dispatch+0x655/0x6f0
+    ceph_con_process_message+0xc3/0xe0
+    ceph_con_v1_try_read+0x614/0x760
+    ceph_con_workfn+0x2de/0x650
+    process_one_work+0x486/0x7c0
+    process_scheduled_works+0x73/0x90
+    worker_thread+0x1c8/0x2a0
+    kthread+0x2ec/0x300
+    ret_from_fork+0x24/0x40
+    ret_from_fork_asm+0x1a/0x30
+
+Rewrite the wait loop to check the above condition directly with
+client->monc.mutex and client->osdc.lock taken as appropriate.  While
+at it, improve the timeout handling (previously mount_timeout could be
+exceeded in case wait_event_interruptible_timeout() slept more than
+once) and access client->auth_err under client->monc.mutex to match
+how it's set in finish_auth().
+
+monmap_show() and osdmap_show() now take the respective lock before
+accessing the map as well.
+
+Cc: stable@vger.kernel.org
+Reported-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/cdns3/cdns3-pci-wrap.c |    5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ net/ceph/ceph_common.c |   53 +++++++++++++++++++++++++++++--------------------
+ net/ceph/debugfs.c     |   14 +++++++++---
+ 2 files changed, 42 insertions(+), 25 deletions(-)
 
---- a/drivers/usb/cdns3/cdns3-pci-wrap.c
-+++ b/drivers/usb/cdns3/cdns3-pci-wrap.c
-@@ -101,10 +101,8 @@ static int cdns3_pci_probe(struct pci_de
- 		wrap = pci_get_drvdata(func);
- 	} else {
- 		wrap = kzalloc(sizeof(*wrap), GFP_KERNEL);
--		if (!wrap) {
--			pci_disable_device(pdev);
-+		if (!wrap)
- 			return -ENOMEM;
--		}
+--- a/net/ceph/ceph_common.c
++++ b/net/ceph/ceph_common.c
+@@ -786,41 +786,52 @@ void ceph_reset_client_addr(struct ceph_
+ EXPORT_SYMBOL(ceph_reset_client_addr);
+ 
+ /*
+- * true if we have the mon map (and have thus joined the cluster)
+- */
+-static bool have_mon_and_osd_map(struct ceph_client *client)
+-{
+-	return client->monc.monmap && client->monc.monmap->epoch &&
+-	       client->osdc.osdmap && client->osdc.osdmap->epoch;
+-}
+-
+-/*
+  * mount: join the ceph cluster, and open root directory.
+  */
+ int __ceph_open_session(struct ceph_client *client, unsigned long started)
+ {
+-	unsigned long timeout = client->options->mount_timeout;
+-	long err;
++	DEFINE_WAIT_FUNC(wait, woken_wake_function);
++	long timeout = ceph_timeout_jiffies(client->options->mount_timeout);
++	bool have_monmap, have_osdmap;
++	int err;
+ 
+ 	/* open session, and wait for mon and osd maps */
+ 	err = ceph_monc_open_session(&client->monc);
+ 	if (err < 0)
+ 		return err;
+ 
+-	while (!have_mon_and_osd_map(client)) {
+-		if (timeout && time_after_eq(jiffies, started + timeout))
+-			return -ETIMEDOUT;
++	add_wait_queue(&client->auth_wq, &wait);
++	for (;;) {
++		mutex_lock(&client->monc.mutex);
++		err = client->auth_err;
++		have_monmap = client->monc.monmap && client->monc.monmap->epoch;
++		mutex_unlock(&client->monc.mutex);
++
++		down_read(&client->osdc.lock);
++		have_osdmap = client->osdc.osdmap && client->osdc.osdmap->epoch;
++		up_read(&client->osdc.lock);
++
++		if (err || (have_monmap && have_osdmap))
++			break;
++
++		if (signal_pending(current)) {
++			err = -ERESTARTSYS;
++			break;
++		}
++
++		if (!timeout) {
++			err = -ETIMEDOUT;
++			break;
++		}
+ 
+ 		/* wait */
+ 		dout("mount waiting for mon_map\n");
+-		err = wait_event_interruptible_timeout(client->auth_wq,
+-			have_mon_and_osd_map(client) || (client->auth_err < 0),
+-			ceph_timeout_jiffies(timeout));
+-		if (err < 0)
+-			return err;
+-		if (client->auth_err < 0)
+-			return client->auth_err;
++		timeout = wait_woken(&wait, TASK_INTERRUPTIBLE, timeout);
+ 	}
++	remove_wait_queue(&client->auth_wq, &wait);
++
++	if (err)
++		return err;
+ 
+ 	pr_info("client%llu fsid %pU\n", ceph_client_gid(client),
+ 		&client->fsid);
+--- a/net/ceph/debugfs.c
++++ b/net/ceph/debugfs.c
+@@ -36,8 +36,9 @@ static int monmap_show(struct seq_file *
+ 	int i;
+ 	struct ceph_client *client = s->private;
+ 
++	mutex_lock(&client->monc.mutex);
+ 	if (client->monc.monmap == NULL)
+-		return 0;
++		goto out_unlock;
+ 
+ 	seq_printf(s, "epoch %d\n", client->monc.monmap->epoch);
+ 	for (i = 0; i < client->monc.monmap->num_mon; i++) {
+@@ -48,6 +49,9 @@ static int monmap_show(struct seq_file *
+ 			   ENTITY_NAME(inst->name),
+ 			   ceph_pr_addr(&inst->addr));
+ 	}
++
++out_unlock:
++	mutex_unlock(&client->monc.mutex);
+ 	return 0;
+ }
+ 
+@@ -56,13 +60,14 @@ static int osdmap_show(struct seq_file *
+ 	int i;
+ 	struct ceph_client *client = s->private;
+ 	struct ceph_osd_client *osdc = &client->osdc;
+-	struct ceph_osdmap *map = osdc->osdmap;
++	struct ceph_osdmap *map;
+ 	struct rb_node *n;
+ 
++	down_read(&osdc->lock);
++	map = osdc->osdmap;
+ 	if (map == NULL)
+-		return 0;
++		goto out_unlock;
+ 
+-	down_read(&osdc->lock);
+ 	seq_printf(s, "epoch %u barrier %u flags 0x%x\n", map->epoch,
+ 			osdc->epoch_barrier, map->flags);
+ 
+@@ -131,6 +136,7 @@ static int osdmap_show(struct seq_file *
+ 		seq_printf(s, "]\n");
  	}
  
- 	res = wrap->dev_res;
-@@ -163,7 +161,6 @@ static int cdns3_pci_probe(struct pci_de
- 		/* register platform device */
- 		wrap->plat_dev = platform_device_register_full(&plat_info);
- 		if (IS_ERR(wrap->plat_dev)) {
--			pci_disable_device(pdev);
- 			err = PTR_ERR(wrap->plat_dev);
- 			kfree(wrap);
- 			return err;
++out_unlock:
+ 	up_read(&osdc->lock);
+ 	return 0;
+ }
 
 
 
