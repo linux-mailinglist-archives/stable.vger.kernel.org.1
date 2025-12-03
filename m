@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-199272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B3C2CA0661
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:24:21 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA6B4C9FC02
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:58:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A2BCA31A08CA
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:09:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3455E3002B2C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:58:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 876D235E54F;
-	Wed,  3 Dec 2025 16:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9F4C3446C0;
+	Wed,  3 Dec 2025 15:58:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rqVEJK3V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R7zXC+61"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41E2135F8A1;
-	Wed,  3 Dec 2025 16:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 651B83446C2;
+	Wed,  3 Dec 2025 15:58:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779249; cv=none; b=ezelMsEgADLlIdoZnGe/tKZ07Tui+js+rRNtkrXURz+N5+QU3uOgK3hQHM5d2IwqyekeXM9Bed87TMxO4KZn0TwKBzdcliuPY+xhLH+bE/z1hDqVXGU9fw5BcXbdChufLtGpWw3ejDDAzxd//1qiQ08tZ8gMkmHrDXBW8q/8Wd8=
+	t=1764777490; cv=none; b=OVMsO2CnwhqceEO4fW650Nx6NSgqR2cWqoxZsXjxmjsak94gFFg+ncsx3C4y6aWTp8iSpVGYjmF0Ycw9Cjp0bi0MlDIKAV0S2v7XrDU74ja0Wh1diX410/2yAMxBlnHnEt3iTDdPg41J8xGiWMNzfbJq255gdNOaElq8JhpMebg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779249; c=relaxed/simple;
-	bh=2xJ4ILaSoDH6ETW06QTDNmUcjO7zmvgCT+6SXyFwHzY=;
+	s=arc-20240116; t=1764777490; c=relaxed/simple;
+	bh=3bCHBRcQ9VtmTpy1uPQS2hG1idUj27KMjQDnVN3Cv1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L12G4K9HStjxNFxlzUmdn/oWssSJhv8wKIJnHPhMiQpEsUV2RiD2O6FKa0MbklqfuN5lD/1znl/N2I0f7EOJjMDHDFz0m23H+2bXodNh/0tcX7FQIA4wjjTPDUgd+YNVEtfivTsdBLsu5W+bGyxvbn74Pvr/kHiNXXQJK7eStMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rqVEJK3V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B40CC4CEF5;
-	Wed,  3 Dec 2025 16:27:28 +0000 (UTC)
+	 MIME-Version; b=tZb64oTao7rzgLfM6GtQz6FUt8PVxgCmkwr77IlNq1hKGKSwYsbpQqWlW2bPu3lI6WDw3h7sg4/BPlXwiYzmZo6jVVByDDPb8KcRtjylnU3NJ06O8F1B6brMaYe8yhgZgfWzLfPswk3hxoV3zhTnooDtaitHTTcukE6jzgF7wfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R7zXC+61; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E273EC4CEF5;
+	Wed,  3 Dec 2025 15:58:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779248;
-	bh=2xJ4ILaSoDH6ETW06QTDNmUcjO7zmvgCT+6SXyFwHzY=;
+	s=korg; t=1764777490;
+	bh=3bCHBRcQ9VtmTpy1uPQS2hG1idUj27KMjQDnVN3Cv1A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rqVEJK3VhshDkTZc9wEala1SLTQFndFSqjsjRCgAIuOSEsPQ8423HbPJDZKUlvMvt
-	 Sa9YXDMZ5Ch67f+gr8hGbr3s5NtjssOkWtuTWOsPVPHhPoF3VFlpg/5MDv52COj0+Y
-	 B5ItjNLsiFvS/Xu8HjP1V+PxUOcg5nnuxdXLgCRw=
+	b=R7zXC+61bPlDdCqBev8mPY9x5w2jToP1mRvzsi4WCmj7s/KodPc2mkacB6FELzg6r
+	 3OG+hEBNdODhCrBmLik2k17MU+AEqkzwEwuT3YXEKuOmLRh+B17Hxw6SSkmTbgFrVI
+	 WGrslDDCAnUAg90hctw1jPCwNxExfsxlHKkNa9kY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Ryan Chen <ryan_chen@aspeedtech.com>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 200/568] drm/amdgpu: dont enable SMU on cyan skillfish
-Date: Wed,  3 Dec 2025 16:23:22 +0100
-Message-ID: <20251203152448.051005532@linuxfoundation.org>
+Subject: [PATCH 5.15 053/392] soc: aspeed: socinfo: Add AST27xx silicon IDs
+Date: Wed,  3 Dec 2025 16:23:23 +0100
+Message-ID: <20251203152416.065716812@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,44 +60,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Ryan Chen <ryan_chen@aspeedtech.com>
 
-[ Upstream commit 94bd7bf2c920998b4c756bc8a54fd3dbdf7e4360 ]
+[ Upstream commit c30dcfd4b5a0f0e3fe7138bf287f6de6b1b00278 ]
 
-Cyan skillfish uses different SMU firmware.
+Extend the ASPEED SoC info driver to support AST27XX silicon IDs.
 
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Ryan Chen <ryan_chen@aspeedtech.com>
+Link: https://patch.msgid.link/20250807005208.3517283-1-ryan_chen@aspeedtech.com
+Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/soc/aspeed/aspeed-socinfo.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-index d8441e273cb5d..9b1c4d5be61f8 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-@@ -1669,13 +1669,16 @@ static int amdgpu_discovery_set_smu_ip_blocks(struct amdgpu_device *adev)
- 	case IP_VERSION(11, 0, 5):
- 	case IP_VERSION(11, 0, 9):
- 	case IP_VERSION(11, 0, 7):
--	case IP_VERSION(11, 0, 8):
- 	case IP_VERSION(11, 0, 11):
- 	case IP_VERSION(11, 0, 12):
- 	case IP_VERSION(11, 0, 13):
- 	case IP_VERSION(11, 5, 0):
- 		amdgpu_device_ip_block_add(adev, &smu_v11_0_ip_block);
- 		break;
-+	case IP_VERSION(11, 0, 8):
-+		if (adev->apu_flags & AMD_APU_IS_CYAN_SKILLFISH2)
-+			amdgpu_device_ip_block_add(adev, &smu_v11_0_ip_block);
-+		break;
- 	case IP_VERSION(12, 0, 0):
- 	case IP_VERSION(12, 0, 1):
- 		amdgpu_device_ip_block_add(adev, &smu_v12_0_ip_block);
+diff --git a/drivers/soc/aspeed/aspeed-socinfo.c b/drivers/soc/aspeed/aspeed-socinfo.c
+index 3f759121dc00a..67e9ac3d08ecc 100644
+--- a/drivers/soc/aspeed/aspeed-socinfo.c
++++ b/drivers/soc/aspeed/aspeed-socinfo.c
+@@ -27,6 +27,10 @@ static struct {
+ 	{ "AST2620", 0x05010203 },
+ 	{ "AST2605", 0x05030103 },
+ 	{ "AST2625", 0x05030403 },
++	/* AST2700 */
++	{ "AST2750", 0x06000003 },
++	{ "AST2700", 0x06000103 },
++	{ "AST2720", 0x06000203 },
+ };
+ 
+ static const char *siliconid_to_name(u32 siliconid)
 -- 
 2.51.0
 
