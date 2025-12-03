@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1931DCA0288
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:52:10 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8F13C9FCD1
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:06:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 76D65304602D
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:44:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9FB343002FDE
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:06:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CB72358D37;
-	Wed,  3 Dec 2025 16:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0FBB34F492;
+	Wed,  3 Dec 2025 16:06:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hcrPBIod"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mmiX4kx3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17AEC3587A2;
-	Wed,  3 Dec 2025 16:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D9931355B;
+	Wed,  3 Dec 2025 16:06:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779762; cv=none; b=VftBnLE6Gk5BwXwhCo2zXjnGseMoC3BcfOR9phrABQwi2KmI3CS/Tvyn36eJumCvB8NncDltHraAaBAevGXVxNuOn2RIOd/o9NGKfTBIdPDoDYPVChEzkusKXsnAmPEg+yzfDl//h6k0wxgkmcEIG4E21MhAzoiz/cyDtLv1QxU=
+	t=1764777981; cv=none; b=n/RpQpJVhOqKJR7SGhwEIiWx7ogNVRHHJaIFVhXAS+BsvNfy3RkQ1sCazSw9CUdTAgyFQ22vlHf3AgRNjBOqgV4W1gtPj4HjfVipeLa3brrUJBHJ18MY90wJ6blCPFps3jMclh5uO9/pdFX/jzlAMjpoQajTjjvgNT7RQJ2W8N0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779762; c=relaxed/simple;
-	bh=/E8OzR0h7fL9hZ+0nBlAIRF/zjgf1P2RtHQOG/jC0dM=;
+	s=arc-20240116; t=1764777981; c=relaxed/simple;
+	bh=gf7O8OCwFB5AQ2VmJmTZKCmgaghvGkrpfHHKOADx6UA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N+FOfPI1Z/OiWofjxHuuwVkm0u9M69gwSrAUQlzqi/ZDsWj7/UsU2OMwsWRT/GFYtu7fr+FU9VDecAYyMCAPXAKVq9ixZ+aqzWUnjUOIFBX0sPMUwoB7OtMZiCRWnft0nBNXWA2L2hmMTaZloZQtX+FUMFhAoIubO3W1ETeeUsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hcrPBIod; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5599CC116B1;
-	Wed,  3 Dec 2025 16:36:01 +0000 (UTC)
+	 MIME-Version; b=SwwBUTPkU/2lU95sN4ot/QrlK1z2RfrrTYF2sB38uXFc9L14okEZM8EpAS8yOPy3cWAJQRypbA5WJO+39BpHfxvIw3iOEWlryjZmR1jMbr3/JwX0zwTPxh+PnLPCYwK1kTDmdNHtcfNsqGCnhvjkLdM7YaRDDg9HcL6I82ghZzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mmiX4kx3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1B8EC4CEF5;
+	Wed,  3 Dec 2025 16:06:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779762;
-	bh=/E8OzR0h7fL9hZ+0nBlAIRF/zjgf1P2RtHQOG/jC0dM=;
+	s=korg; t=1764777981;
+	bh=gf7O8OCwFB5AQ2VmJmTZKCmgaghvGkrpfHHKOADx6UA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hcrPBIodE4zqZFrRX6W21orBsp+Uaq34b9tPQws09Z6rz2IwBu6xNWFgh4lDiljrj
-	 k53d+O+WTw1QQlmQ0iKx1PZBBPR/qIflqmzOlRjC7kz7wxoYpz0tOSpGHAL2rdr3Wr
-	 jjg+/BtTFc3v/kXoGXHkcjMOL4jZqO3045/jd4+A=
+	b=mmiX4kx36CK820ACShNoDAxhNntotkeiD8lXfbwddDW38tUWXrcJnjz20DysUzeAn
+	 EbNusXc5Zvh5+KUy24An2JCiz1BZpy1iiAfa7nLggIjBeium34wtzEeKpWx/0Buh27
+	 etyfdJ5betBN17xE+Ta+S4Q9/eQRWJ6jmEOjuljc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tristram Ha <tristram.ha@microchip.com>,
-	=?UTF-8?q?=C5=81ukasz=20Majewski?= <lukma@nabladev.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 321/568] net: dsa: microchip: Fix reserved multicast address table programming
+Subject: [PATCH 5.15 173/392] remoteproc: qcom: q6v5: Avoid handling handover twice
 Date: Wed,  3 Dec 2025 16:25:23 +0100
-Message-ID: <20251203152452.469121927@linuxfoundation.org>
+Message-ID: <20251203152420.444057682@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,220 +59,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tristram Ha <tristram.ha@microchip.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-[ Upstream commit 96baf482ca1f69f0da9d10a5bd8422c87ea9039e ]
+[ Upstream commit 54898664e1eb6b5b3e6cdd9343c6eb15da776153 ]
 
-KSZ9477/KSZ9897 and LAN937X families of switches use a reserved multicast
-address table for some specific forwarding with some multicast addresses,
-like the one used in STP.  The hardware assumes the host port is the last
-port in KSZ9897 family and port 5 in LAN937X family.  Most of the time
-this assumption is correct but not in other cases like KSZ9477.
-Originally the function just setups the first entry, but the others still
-need update, especially for one common multicast address that is used by
-PTP operation.
+A remoteproc could theoretically signal handover twice. This is unexpected
+and would break the reference counting for the handover resources (power
+domains, clocks, regulators, etc), so add a check to prevent that from
+happening.
 
-LAN937x also uses different register bits when accessing the reserved
-table.
-
-Fixes: 457c182af597 ("net: dsa: microchip: generic access to ksz9477 static and reserved table")
-Signed-off-by: Tristram Ha <tristram.ha@microchip.com>
-Tested-by: Łukasz Majewski <lukma@nabladev.com>
-Link: https://patch.msgid.link/20251105033741.6455-1-Tristram.Ha@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Link: https://lore.kernel.org/r/20250820-rproc-qcom-q6v5-fixes-v2-2-910b1a3aff71@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/microchip/ksz9477.c     | 98 +++++++++++++++++++++----
- drivers/net/dsa/microchip/ksz9477_reg.h |  3 +-
- drivers/net/dsa/microchip/ksz_common.c  |  4 +
- drivers/net/dsa/microchip/ksz_common.h  |  2 +
- 4 files changed, 91 insertions(+), 16 deletions(-)
+ drivers/remoteproc/qcom_q6v5.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/dsa/microchip/ksz9477.c b/drivers/net/dsa/microchip/ksz9477.c
-index b854ee425fcdd..d6e459fd7a00a 100644
---- a/drivers/net/dsa/microchip/ksz9477.c
-+++ b/drivers/net/dsa/microchip/ksz9477.c
-@@ -1127,9 +1127,15 @@ void ksz9477_config_cpu_port(struct dsa_switch *ds)
- 	}
- }
- 
-+#define RESV_MCAST_CNT	8
-+
-+static u8 reserved_mcast_map[RESV_MCAST_CNT] = { 0, 1, 3, 16, 32, 33, 2, 17 };
-+
- int ksz9477_enable_stp_addr(struct ksz_device *dev)
+diff --git a/drivers/remoteproc/qcom_q6v5.c b/drivers/remoteproc/qcom_q6v5.c
+index 515c6d68e47ce..ab011371c53e8 100644
+--- a/drivers/remoteproc/qcom_q6v5.c
++++ b/drivers/remoteproc/qcom_q6v5.c
+@@ -124,6 +124,11 @@ static irqreturn_t q6v5_handover_interrupt(int irq, void *data)
  {
-+	u8 i, ports, update;
- 	const u32 *masks;
-+	bool override;
- 	u32 data;
- 	int ret;
+ 	struct qcom_q6v5 *q6v5 = data;
  
-@@ -1138,23 +1144,87 @@ int ksz9477_enable_stp_addr(struct ksz_device *dev)
- 	/* Enable Reserved multicast table */
- 	ksz_cfg(dev, REG_SW_LUE_CTRL_0, SW_RESV_MCAST_ENABLE, true);
- 
--	/* Set the Override bit for forwarding BPDU packet to CPU */
--	ret = ksz_write32(dev, REG_SW_ALU_VAL_B,
--			  ALU_V_OVERRIDE | BIT(dev->cpu_port));
--	if (ret < 0)
--		return ret;
-+	/* The reserved multicast address table has 8 entries.  Each entry has
-+	 * a default value of which port to forward.  It is assumed the host
-+	 * port is the last port in most of the switches, but that is not the
-+	 * case for KSZ9477 or maybe KSZ9897.  For LAN937X family the default
-+	 * port is port 5, the first RGMII port.  It is okay for LAN9370, a
-+	 * 5-port switch, but may not be correct for the other 8-port
-+	 * versions.  It is necessary to update the whole table to forward to
-+	 * the right ports.
-+	 * Furthermore PTP messages can use a reserved multicast address and
-+	 * the host will not receive them if this table is not correct.
-+	 */
-+	for (i = 0; i < RESV_MCAST_CNT; i++) {
-+		data = reserved_mcast_map[i] <<
-+			dev->info->shifts[ALU_STAT_INDEX];
-+		data |= ALU_STAT_START |
-+			masks[ALU_STAT_DIRECT] |
-+			masks[ALU_RESV_MCAST_ADDR] |
-+			masks[ALU_STAT_READ];
-+		ret = ksz_write32(dev, REG_SW_ALU_STAT_CTRL__4, data);
-+		if (ret < 0)
-+			return ret;
- 
--	data = ALU_STAT_START | ALU_RESV_MCAST_ADDR | masks[ALU_STAT_WRITE];
-+		/* wait to be finished */
-+		ret = ksz9477_wait_alu_sta_ready(dev);
-+		if (ret < 0)
-+			return ret;
- 
--	ret = ksz_write32(dev, REG_SW_ALU_STAT_CTRL__4, data);
--	if (ret < 0)
--		return ret;
-+		ret = ksz_read32(dev, REG_SW_ALU_VAL_B, &data);
-+		if (ret < 0)
-+			return ret;
- 
--	/* wait to be finished */
--	ret = ksz9477_wait_alu_sta_ready(dev);
--	if (ret < 0) {
--		dev_err(dev->dev, "Failed to update Reserved Multicast table\n");
--		return ret;
-+		override = false;
-+		ports = data & dev->port_mask;
-+		switch (i) {
-+		case 0:
-+		case 6:
-+			/* Change the host port. */
-+			update = BIT(dev->cpu_port);
-+			override = true;
-+			break;
-+		case 2:
-+			/* Change the host port. */
-+			update = BIT(dev->cpu_port);
-+			break;
-+		case 4:
-+		case 5:
-+		case 7:
-+			/* Skip the host port. */
-+			update = dev->port_mask & ~BIT(dev->cpu_port);
-+			break;
-+		default:
-+			update = ports;
-+			break;
-+		}
-+		if (update != ports || override) {
-+			data &= ~dev->port_mask;
-+			data |= update;
-+			/* Set Override bit to receive frame even when port is
-+			 * closed.
-+			 */
-+			if (override)
-+				data |= ALU_V_OVERRIDE;
-+			ret = ksz_write32(dev, REG_SW_ALU_VAL_B, data);
-+			if (ret < 0)
-+				return ret;
++	if (q6v5->handover_issued) {
++		dev_err(q6v5->dev, "Handover signaled, but it already happened\n");
++		return IRQ_HANDLED;
++	}
 +
-+			data = reserved_mcast_map[i] <<
-+			       dev->info->shifts[ALU_STAT_INDEX];
-+			data |= ALU_STAT_START |
-+				masks[ALU_STAT_DIRECT] |
-+				masks[ALU_RESV_MCAST_ADDR] |
-+				masks[ALU_STAT_WRITE];
-+			ret = ksz_write32(dev, REG_SW_ALU_STAT_CTRL__4, data);
-+			if (ret < 0)
-+				return ret;
-+
-+			/* wait to be finished */
-+			ret = ksz9477_wait_alu_sta_ready(dev);
-+			if (ret < 0)
-+				return ret;
-+		}
- 	}
+ 	if (q6v5->handover)
+ 		q6v5->handover(q6v5);
  
- 	return 0;
-diff --git a/drivers/net/dsa/microchip/ksz9477_reg.h b/drivers/net/dsa/microchip/ksz9477_reg.h
-index ffb9484018ed5..600dbf2ba4b1f 100644
---- a/drivers/net/dsa/microchip/ksz9477_reg.h
-+++ b/drivers/net/dsa/microchip/ksz9477_reg.h
-@@ -2,7 +2,7 @@
- /*
-  * Microchip KSZ9477 register definitions
-  *
-- * Copyright (C) 2017-2024 Microchip Technology Inc.
-+ * Copyright (C) 2017-2025 Microchip Technology Inc.
-  */
- 
- #ifndef __KSZ9477_REGS_H
-@@ -422,7 +422,6 @@
- 
- #define ALU_RESV_MCAST_INDEX_M		(BIT(6) - 1)
- #define ALU_STAT_START			BIT(7)
--#define ALU_RESV_MCAST_ADDR		BIT(1)
- 
- #define REG_SW_ALU_VAL_A		0x0420
- 
-diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
-index 9dbe188f09c3c..aa10131f80f95 100644
---- a/drivers/net/dsa/microchip/ksz_common.c
-+++ b/drivers/net/dsa/microchip/ksz_common.c
-@@ -392,6 +392,8 @@ static const u16 ksz9477_regs[] = {
- static const u32 ksz9477_masks[] = {
- 	[ALU_STAT_WRITE]		= 0,
- 	[ALU_STAT_READ]			= 1,
-+	[ALU_STAT_DIRECT]		= 0,
-+	[ALU_RESV_MCAST_ADDR]		= BIT(1),
- 	[P_MII_TX_FLOW_CTRL]		= BIT(5),
- 	[P_MII_RX_FLOW_CTRL]		= BIT(3),
- };
-@@ -419,6 +421,8 @@ static const u8 ksz9477_xmii_ctrl1[] = {
- static const u32 lan937x_masks[] = {
- 	[ALU_STAT_WRITE]		= 1,
- 	[ALU_STAT_READ]			= 2,
-+	[ALU_STAT_DIRECT]		= BIT(3),
-+	[ALU_RESV_MCAST_ADDR]		= BIT(2),
- 	[P_MII_TX_FLOW_CTRL]		= BIT(5),
- 	[P_MII_RX_FLOW_CTRL]		= BIT(3),
- };
-diff --git a/drivers/net/dsa/microchip/ksz_common.h b/drivers/net/dsa/microchip/ksz_common.h
-index a3a7a90dad967..b35c98adbfcbd 100644
---- a/drivers/net/dsa/microchip/ksz_common.h
-+++ b/drivers/net/dsa/microchip/ksz_common.h
-@@ -225,6 +225,8 @@ enum ksz_masks {
- 	DYNAMIC_MAC_TABLE_TIMESTAMP,
- 	ALU_STAT_WRITE,
- 	ALU_STAT_READ,
-+	ALU_STAT_DIRECT,
-+	ALU_RESV_MCAST_ADDR,
- 	P_MII_TX_FLOW_CTRL,
- 	P_MII_RX_FLOW_CTRL,
- };
 -- 
 2.51.0
 
