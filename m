@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-199012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F3D2CA0364
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:56:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A835FC9FC80
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:02:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D9D183032A98
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:49:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2D435303975C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:55:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51FEF350295;
-	Wed,  3 Dec 2025 16:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBD87337689;
+	Wed,  3 Dec 2025 15:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B3oWF+fJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x9AasVF/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ACBD3502A2;
-	Wed,  3 Dec 2025 16:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A2D33A6FA;
+	Wed,  3 Dec 2025 15:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778408; cv=none; b=pa2tnR5f18i/Ax54HwNIXqPtTOWM2xWCIqYzcFS87wl1A6yo8poMRW+sNDjgHudTRkm38C8TAUPPNvoEy2aN9FObGjU8j+xzdDn1qOaY2t8CA5CoLNMXjvX7U92WL99vbycF9nUi/6kyjyCNYukRikVx7uu/UArq/QUoSjo/ObY=
+	t=1764777242; cv=none; b=rdLu9LNcnTZvXHvMAXPOQg8tJEU7KIeza3YYhaTJg5MCANYbN+WotDPg7HOfET2EXCIkLPilZLptaS+pwIdiFkhjY/0DaV6ggGrKuHtCy6AmEkwxnEZUnLpS2q1xxZmkCGeP/+RPqwrvQns3Fs+uE1AqgzAxEFcPIPkypZil990=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778408; c=relaxed/simple;
-	bh=O/mySWCqsQDsHwTNugyFMSDwFdUrqNTv4W2u5c42WwU=;
+	s=arc-20240116; t=1764777242; c=relaxed/simple;
+	bh=RaE+7kn5JAhyC3EQhoSqun6hktDBkzs5Ti2kNmFJC0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tAAjaOHcktR0ThsBE7emD/ZgJhmdc1kNeimI5E5hkrdGFPlk5fIqvDiC1hMFeo4BYOEAZMYMECPiMB5BGgmcuhARQ8f2GhiWWBwv7u2rd3JTwWflrDi+IGRy+LKuGdwdnr333+4PZLHFiyGHTSRtAWw4LG6tuQ+FhjhpFGoZ63Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B3oWF+fJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6552EC4CEF5;
-	Wed,  3 Dec 2025 16:13:27 +0000 (UTC)
+	 MIME-Version; b=o/JzAqYWRiNL5oRoDBEGV1dc0AhVJllMlKw2Rr2YFgweefAXSuQ65lwFZlGEoi2mfPBhd818yYY8BM9IJHp/uSL6+VC1NfkiopQXQ3gJXrKXDMz21YAQPTQNU9CNlqp3AHE1aXvPK6PjnzbxUjB+FSnp2NdVXsShtf7+NCEKZZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x9AasVF/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5931C4AF0B;
+	Wed,  3 Dec 2025 15:53:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778407;
-	bh=O/mySWCqsQDsHwTNugyFMSDwFdUrqNTv4W2u5c42WwU=;
+	s=korg; t=1764777240;
+	bh=RaE+7kn5JAhyC3EQhoSqun6hktDBkzs5Ti2kNmFJC0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B3oWF+fJC3BhKfA873gHFDXgYu0z+YhcF4NHR7Apn3H3PRy+DBgB15DF2JQyXww1Y
-	 X0u1aiOfCr8AhuCMLsTPtN/j7nAFxexgWyKA3ijHheFwVvunzn/OIUkcM5a2m1wleg
-	 MBaN45TG08UOwBECWGsiDxGqJv+J3bf+e+bsod0M=
+	b=x9AasVF/UcmL47jXDDj+gannct2C0Ba1Y0XT2E5VxtzrOMm9Q06m1KiuXUgiXNKH1
+	 uqkIUvUg4LmwQ2RFWDNa3olRnWNJSa/YVsBWHW5u7BQiOAxm8GqadxQWo1QtwbTphN
+	 i/QSRMHWTl+Pye8JNXTs0Xm1iTo6KWJdqWO0E8YQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gulam Mohamed <gulam.mohamed@oracle.com>
-Subject: [PATCH 5.15 336/392] Revert "block: dont add or resize partition on the disk with GENHD_FL_NO_PART"
+	stable <stable@kernel.org>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>
+Subject: [PATCH 6.17 108/146] serial: amba-pl011: prefer dma_mapping_error() over explicit address checking
 Date: Wed,  3 Dec 2025 16:28:06 +0100
-Message-ID: <20251203152426.535356428@linuxfoundation.org>
+Message-ID: <20251203152350.418728539@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,71 +60,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gulam Mohamed <gulam.mohamed@oracle.com>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-This reverts commit 1a721de8489fa559ff4471f73c58bb74ac5580d3.
+commit eb4917f557d43c7a1c805dd73ffcdfddb2aba39a upstream.
 
-The commit 1a721de8489f ("block: don't add or resize partition on the disk
-with GENHD_FL_NO_PART") and the commit 7777f47f2ea6 ("block: Move checking
-GENHD_FL_NO_PART to bdev_add_partition()") used the flag GENHD_FL_NO_PART
-to prevent the add or resize of partitions in 5.15 stable kernels.But in
-these 5.15 kernels, this is giving an issue with the following error
-where the loop driver wants to create a partition when the partscan is
-disabled on the loop device:
+Check for returned DMA addresses using specialized dma_mapping_error()
+helper which is generally recommended for this purpose by
+Documentation/core-api/dma-api.rst:
 
-dd if=/dev/zero of=loopDisk.dsk bs=1M count=1 seek=10240;
-losetup -f loopDisk.dsk;parted -s /dev/loop0 -- mklabel gpt mkpart primary
-           2048s 4096s
-1+0 records in
-1+0 records out
-1048576 bytes (1.0 MB, 1.0 MiB) copied, 0.0016293 s, 644 MB/s
-""
-Error: Partition(s) 1 on /dev/loop0 have been written, but we have been
-unable to inform the kernel of the change, probably because it/they are
-in use.  As a result, the old partition(s) will remain in use.  You should
-reboot now before making further changes.
-""
-If the partition scan is not enabled on the loop device, this flag
-GENHD_FL_NO_PART is getting set and when partition creation is tried,
-it returns an error EINVAL thereby preventing the creation of partitions.
-So, there is no such distinction between disabling of partition scan and
-partition creation.
+  "In some circumstances dma_map_single(), ...
+will fail to create a mapping. A driver can check for these errors
+by testing the returned DMA address with dma_mapping_error()."
 
-Later in 6.xxx kernels, the commit b9684a71fca7 ("block, loop: support
-partitions without scanning") a new flag GD_SUPPRESS_PART_SCAN was
-introduced that just disables the partition scan and uses GENHD_FL_NO_PART
-only to prevent creating partition scan. So, the partition creationg can
-proceed with even if partition scan is disabled.
+Found via static analysis and this is similar to commit fa0308134d26
+("ALSA: memalloc: prefer dma_mapping_error() over explicit address checking")
 
-As the commit b9684a71fca7 ("block, loop: support partitions without
-scanning") is not available in 5.15 stable kernel, and since there is no
-distinction between disabling of "partition scan" and "partition
-creation", we need to revert the commits 1a721de8489f and 7777f47f2ea6
-from 5.15 stable kernel to allow partition creation when partscan is
-disabled.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Gulam Mohamed <gulam.mohamed@oracle.com>
+Fixes: 58ac1b379979 ("ARM: PL011: Fix DMA support")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Reviewed-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Link: https://patch.msgid.link/20251027092053.87937-1-linmq006@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/ioctl.c |    2 --
- 1 file changed, 2 deletions(-)
+ drivers/tty/serial/amba-pl011.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/block/ioctl.c
-+++ b/block/ioctl.c
-@@ -20,8 +20,6 @@ static int blkpg_do_ioctl(struct block_d
- 	struct blkpg_partition p;
- 	sector_t start, length;
- 
--	if (disk->flags & GENHD_FL_NO_PART)
--		return -EINVAL;
- 	if (!capable(CAP_SYS_ADMIN))
- 		return -EACCES;
- 	if (copy_from_user(&p, upart, sizeof(struct blkpg_partition)))
+diff --git a/drivers/tty/serial/amba-pl011.c b/drivers/tty/serial/amba-pl011.c
+index 22939841b1de..7f17d288c807 100644
+--- a/drivers/tty/serial/amba-pl011.c
++++ b/drivers/tty/serial/amba-pl011.c
+@@ -628,7 +628,7 @@ static int pl011_dma_tx_refill(struct uart_amba_port *uap)
+ 	dmatx->len = count;
+ 	dmatx->dma = dma_map_single(dma_dev->dev, dmatx->buf, count,
+ 				    DMA_TO_DEVICE);
+-	if (dmatx->dma == DMA_MAPPING_ERROR) {
++	if (dma_mapping_error(dma_dev->dev, dmatx->dma)) {
+ 		uap->dmatx.queued = false;
+ 		dev_dbg(uap->port.dev, "unable to map TX DMA\n");
+ 		return -EBUSY;
+-- 
+2.52.0
+
 
 
 
