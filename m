@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-198943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66EB9CA082D
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:35:57 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77CB7C9FF0D
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:25:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 83FE33240694
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:16:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A1C3F3015E0E
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:24:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9477D3101DE;
-	Wed,  3 Dec 2025 16:09:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 556D831A077;
+	Wed,  3 Dec 2025 15:47:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pOIhEiG9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0VaH8Dhw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523EB3081DF;
-	Wed,  3 Dec 2025 16:09:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB9731987E;
+	Wed,  3 Dec 2025 15:47:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778179; cv=none; b=kGCx8HyqvGZFZng+KWpBYce/G+z2nb1F9DdzTG+pu7ptyylgWmkbMbM5aO1Mf/C9muKGgpWQHyhjKztK22QX43JEsSOG2PFP6oDQjX5ylB2Pat9eFiBtBJaYXrhr90K3dWLxoGlDNaF3nReURPjll4teUQP067FIbueV7ytoUM0=
+	t=1764776870; cv=none; b=EFh4BhZuFn1wr6pCn890MRN5fT3FR4yPfnJPrWI3iSsNbvf5wA0qpkSMPiUkbWH3OQ1WF9hUDTg1RNMmv9bLlakwfJd7EOLERM1WF0rFn50GxlxieGboC6+NW79xfvC82HVdBNa4pGPq8LX+2CzGQShr5BeZLdmYrbZRvmiSbFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778179; c=relaxed/simple;
-	bh=9cQdeC/9xnTi0HN6DxOgJyBxreyWgeocexcrkg2hhlE=;
+	s=arc-20240116; t=1764776870; c=relaxed/simple;
+	bh=F2MU4lkaZeHH4sO1Lq5lJJhFERxwJrNt9HR2Lm6PRfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=emFaoqF5NFnRtEF79bkAS3btYkSoPuTSEN5Tsc3X155nkTh+ttal5rqYByWUxv+t3ove+6FfE4VYnn+lt/w2HveQNpP1UAMaUO7k+RPkeCtD2UhubdYo3Z3IS8e1NiNc3+D2mCWY5rJhOodYPlbHh6q2vnNVLqoglC2teAcVbGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pOIhEiG9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3693C4CEF5;
-	Wed,  3 Dec 2025 16:09:38 +0000 (UTC)
+	 MIME-Version; b=dGdUH+D2BQlqi5e1T9JQyP+RkAv4j2e/YHZgTLnJpyM+5yWsj/qzEiUxAcek8d6isKBG1bP0PYpqObHheTFkSXLpcm1r0JQjIvxkSfIkDABPHY6RGaCnmlWMsxZVjIJ+KIzW9BfQAuLbD5LQHKad+tmfSavl6yFm1ztdVILIVaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0VaH8Dhw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83643C4CEF5;
+	Wed,  3 Dec 2025 15:47:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778179;
-	bh=9cQdeC/9xnTi0HN6DxOgJyBxreyWgeocexcrkg2hhlE=;
+	s=korg; t=1764776869;
+	bh=F2MU4lkaZeHH4sO1Lq5lJJhFERxwJrNt9HR2Lm6PRfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pOIhEiG9PeJSt23Ce/oyZwGbfS62Lh88zHl2RFejc5lNXJoZ5uJ7n8dd4IXUYzooc
-	 t1MNZydbrvKTnTdt+4TXhkChHZMKN6cAz9/AgPlqHyEgbCPKJQ18pVMzIXgywr3Xtk
-	 lTuq4XEImuJXlqAorqv1OP0T1AZzXKRMPmQVzx3I=
+	b=0VaH8DhwTstsKP/mhNxYLQyrzxV9ADQu3rU7jHpj+yDHYIrZPMn7ZGdqIMXC6C1i6
+	 lbyyCxGNy/TDW+We3n4/sULchM54cPzJnNdNfXMPToyVRo9gFbVwh6jcQY8AwB/Lah
+	 MDtoXdZktjHfXR1rQfIwrMYNZuOm9bOIbXQGWi9c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Pauli Virtanen <pav@iki.fi>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 240/392] Bluetooth: 6lowpan: fix BDADDR_LE vs ADDR_LE_DEV address type confusion
+Subject: [PATCH 6.17 012/146] net: phy: mxl-gpy: fix bogus error on USXGMII and integrated PHY
 Date: Wed,  3 Dec 2025 16:26:30 +0100
-Message-ID: <20251203152423.007324096@linuxfoundation.org>
+Message-ID: <20251203152346.915621618@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,104 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pauli Virtanen <pav@iki.fi>
+From: Daniel Golle <daniel@makrotopia.org>
 
-[ Upstream commit b454505bf57a2e4f5d49951d4deb03730a9348d9 ]
+[ Upstream commit ec3803b5917b6ff2f86ea965d0985c95d8a85119 ]
 
-Bluetooth 6lowpan.c confuses BDADDR_LE and ADDR_LE_DEV address types,
-e.g. debugfs "connect" command takes the former, and "disconnect" and
-"connect" to already connected device take the latter.  This is due to
-using same value both for l2cap_chan_connect and hci_conn_hash_lookup_le
-which take different dst_type values.
+As the interface mode doesn't need to be updated on PHYs connected with
+USXGMII and integrated PHYs, gpy_update_interface() should just return 0
+in these cases rather than -EINVAL which has wrongly been introduced by
+commit 7a495dde27ebc ("net: phy: mxl-gpy: Change gpy_update_interface()
+function return type"), as this breaks support for those PHYs.
 
-Fix address type passed to hci_conn_hash_lookup_le().
-
-Retain the debugfs API difference between "connect" and "disconnect"
-commands since it's been like this since 2015 and nobody apparently
-complained.
-
-Fixes: f5ad4ffceba0 ("Bluetooth: 6lowpan: Use hci_conn_hash_lookup_le() when possible")
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 7a495dde27ebc ("net: phy: mxl-gpy: Change gpy_update_interface() function return type")
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://patch.msgid.link/f744f721a1fcc5e2e936428c62ff2c7d94d2a293.1763648168.git.daniel@makrotopia.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/6lowpan.c | 28 ++++++++++++++++++++++++----
- 1 file changed, 24 insertions(+), 4 deletions(-)
+ drivers/net/phy/mxl-gpy.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/6lowpan.c b/net/bluetooth/6lowpan.c
-index cfe3753a6f160..db3e2d5290966 100644
---- a/net/bluetooth/6lowpan.c
-+++ b/net/bluetooth/6lowpan.c
-@@ -955,10 +955,11 @@ static struct l2cap_chan *bt_6lowpan_listen(void)
- }
+diff --git a/drivers/net/phy/mxl-gpy.c b/drivers/net/phy/mxl-gpy.c
+index 0c8dc16ee7bde..221b315203d06 100644
+--- a/drivers/net/phy/mxl-gpy.c
++++ b/drivers/net/phy/mxl-gpy.c
+@@ -540,7 +540,7 @@ static int gpy_update_interface(struct phy_device *phydev)
+ 	/* Interface mode is fixed for USXGMII and integrated PHY */
+ 	if (phydev->interface == PHY_INTERFACE_MODE_USXGMII ||
+ 	    phydev->interface == PHY_INTERFACE_MODE_INTERNAL)
+-		return -EINVAL;
++		return 0;
  
- static int get_l2cap_conn(char *buf, bdaddr_t *addr, u8 *addr_type,
--			  struct l2cap_conn **conn)
-+			  struct l2cap_conn **conn, bool disconnect)
- {
- 	struct hci_conn *hcon;
- 	struct hci_dev *hdev;
-+	int le_addr_type;
- 	int n;
- 
- 	n = sscanf(buf, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx %hhu",
-@@ -969,13 +970,32 @@ static int get_l2cap_conn(char *buf, bdaddr_t *addr, u8 *addr_type,
- 	if (n < 7)
- 		return -EINVAL;
- 
-+	if (disconnect) {
-+		/* The "disconnect" debugfs command has used different address
-+		 * type constants than "connect" since 2015. Let's retain that
-+		 * for now even though it's obviously buggy...
-+		 */
-+		*addr_type += 1;
-+	}
-+
-+	switch (*addr_type) {
-+	case BDADDR_LE_PUBLIC:
-+		le_addr_type = ADDR_LE_DEV_PUBLIC;
-+		break;
-+	case BDADDR_LE_RANDOM:
-+		le_addr_type = ADDR_LE_DEV_RANDOM;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
- 	/* The LE_PUBLIC address type is ignored because of BDADDR_ANY */
- 	hdev = hci_get_route(addr, BDADDR_ANY, BDADDR_LE_PUBLIC);
- 	if (!hdev)
- 		return -ENOENT;
- 
- 	hci_dev_lock(hdev);
--	hcon = hci_conn_hash_lookup_le(hdev, addr, *addr_type);
-+	hcon = hci_conn_hash_lookup_le(hdev, addr, le_addr_type);
- 	hci_dev_unlock(hdev);
- 	hci_dev_put(hdev);
- 
-@@ -1102,7 +1122,7 @@ static ssize_t lowpan_control_write(struct file *fp,
- 	buf[buf_size] = '\0';
- 
- 	if (memcmp(buf, "connect ", 8) == 0) {
--		ret = get_l2cap_conn(&buf[8], &addr, &addr_type, &conn);
-+		ret = get_l2cap_conn(&buf[8], &addr, &addr_type, &conn, false);
- 		if (ret == -EINVAL)
- 			return ret;
- 
-@@ -1139,7 +1159,7 @@ static ssize_t lowpan_control_write(struct file *fp,
- 	}
- 
- 	if (memcmp(buf, "disconnect ", 11) == 0) {
--		ret = get_l2cap_conn(&buf[11], &addr, &addr_type, &conn);
-+		ret = get_l2cap_conn(&buf[11], &addr, &addr_type, &conn, true);
- 		if (ret < 0)
- 			return ret;
- 
+ 	/* Automatically switch SERDES interface between SGMII and 2500-BaseX
+ 	 * according to speed. Disable ANEG in 2500-BaseX mode.
 -- 
 2.51.0
 
