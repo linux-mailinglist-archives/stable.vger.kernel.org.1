@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-199881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06E5ACA0DC3
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:16:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0313CA0C28
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:06:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4AFCB31FAF06
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:13:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7A7493234C8C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:02:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E629A359FA7;
-	Wed,  3 Dec 2025 17:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2AFB352F8F;
+	Wed,  3 Dec 2025 16:55:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QBDBvhpS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qEypwomZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1BC4359FA5;
-	Wed,  3 Dec 2025 17:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79CF34EEE1;
+	Wed,  3 Dec 2025 16:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764781237; cv=none; b=UoqGvLDQiuBIrzwa09RO/1olccoDpilr36FH5DiG2mTjhOVddKdkFo9qMtVDAc1Lm9ar7SVbwd2CEdvvP4pMN9bXbevx18e2vVcA/DWXowxuYNAaagIIukgCOF7m00EUtie9YXYEe6mlzSIKtf74TW2GxILgC7taeRiPQgLb0sI=
+	t=1764780948; cv=none; b=HWgYUUB4ldUn9AwXpLQeJvBUq9Ak4pkkvf4HOvkyWqM8AnK66XahzU1hn5y/ksekPJPFDYr52JXmqMjYJNxRHC65VU+y0RXYveQbhVbzNXCpsMOXvjBGIoxBuhMtb3czHUnPIKnh70+MSQqcHdNBItqSQeusEhUKgDlkhahbcl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764781237; c=relaxed/simple;
-	bh=zta7Z9vvB6YQUYimTECM+2Rh0YUGATPSceDZtIxOpNo=;
+	s=arc-20240116; t=1764780948; c=relaxed/simple;
+	bh=6aGLcsSvkIVdlEQyHU5XFO+VeFYdaJddfe588FXmvyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ngEWPXYdUUCQ2uwslT+57A16kFDNlH0/kkDOfRzAZGnQ9E6ct/Y5b/tlBCGMoIEq71nN6rqwVRqx999K9c+SqV0EYWJ0uA8d7c757uD4XTMaHcen91sjmWffpw3D4K7JbxJwcDvhlJd1P+nsFp9MyY2NdjrShBMSXKCMvAXSH90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QBDBvhpS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D4FBC4CEF5;
-	Wed,  3 Dec 2025 17:00:37 +0000 (UTC)
+	 MIME-Version; b=sOTCO2PbkKDmgV9RMd+lxymElwbj3OB0L5e+BDBEw2QxTcUsUiOCsNojdwRCQyC08CMPEMeDur2pJAjDvblDFi2ho/iQoNiK7aFChX5BVwDVDyk3rDeSZYg04ocEOGg16DRzpLjZ+xJLnZzkKsvbWgdyOKY/ity3pzIhFjjXS2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qEypwomZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10E5BC4CEF5;
+	Wed,  3 Dec 2025 16:55:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764781237;
-	bh=zta7Z9vvB6YQUYimTECM+2Rh0YUGATPSceDZtIxOpNo=;
+	s=korg; t=1764780948;
+	bh=6aGLcsSvkIVdlEQyHU5XFO+VeFYdaJddfe588FXmvyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QBDBvhpSX6k0BrKcksXpiR5HT123mgSU3v+JAk1suZlvPOEYQNQ6zeWsDeeX0UlZ5
-	 BlSel9UqGsl8fThuZx77uX6/+cPIFD9kNPjC9TAZGxVnSsKORPJmBXMU1LqcRvhpvb
-	 CPbZwgEsG64glpsu2GT29AuwRrEqlexrK33kz3cE=
+	b=qEypwomZHzEzS1/gIyOrUe4JHaE9OydGgtwiPmefTVZuXnC6wdGbGjPo9Q+r2vAI2
+	 70FteWji88Zre/jZHTJU8ft4YZU4IBIPAuFTvA8nCta94FCzk42QjUa1etLNDQkGvP
+	 L/jEqDja5/qwCqRHtEuhwIhBU6+YFFCP/9UpNERQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Subject: [PATCH 6.6 52/93] slimbus: ngd: Fix reference count leak in qcom_slim_ngd_notify_slaves
-Date: Wed,  3 Dec 2025 16:29:45 +0100
-Message-ID: <20251203152338.444217707@linuxfoundation.org>
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Ray Wu <ray.wu@amd.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Alex Hung <alex.hung@amd.com>
+Subject: [PATCH 6.12 107/132] drm/amd/display: Dont change brightness for disabled connectors
+Date: Wed,  3 Dec 2025 16:29:46 +0100
+Message-ID: <20251203152347.250022575@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Mario Limonciello (AMD) <superm1@kernel.org>
 
-commit 96cf8500934e0ce2a6c486f1dbc3b1fff12f7a5e upstream.
+commit 81f4d4ba509522596143fd5d7dc2fc3495296b0a upstream.
 
-The function qcom_slim_ngd_notify_slaves() calls of_slim_get_device() which
-internally uses device_find_child() to obtain a device reference.
-According to the device_find_child() documentation,
-the caller must drop the reference with put_device() after use.
+[WHY]
+When a laptop lid is closed the connector is disabled but userspace
+can still try to change brightness.  This doesn't work because the
+panel is turned off. It will eventually time out, but there is a lot
+of stutter along the way.
 
-Found via static analysis and this is similar to commit 4e65bda8273c
-("ASoC: wcd934x: fix error handling in wcd934x_codec_parse_data()")
+[How]
+Iterate all connectors to check whether the matching one for the backlight
+index is enabled.
 
-Fixes: 917809e2280b ("slimbus: ngd: Add qcom SLIMBus NGD driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251027060601.33228-1-linmq006@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4675
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Ray Wu <ray.wu@amd.com>
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit f6eeab30323d1174a4cc022e769d248fe8241304)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/slimbus/qcom-ngd-ctrl.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
---- a/drivers/slimbus/qcom-ngd-ctrl.c
-+++ b/drivers/slimbus/qcom-ngd-ctrl.c
-@@ -1239,6 +1239,7 @@ static void qcom_slim_ngd_notify_slaves(
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -4701,6 +4701,21 @@ static void amdgpu_dm_backlight_set_leve
+ 	struct dc_link *link;
+ 	u32 brightness;
+ 	bool rc, reallow_idle = false;
++	struct drm_connector *connector;
++
++	list_for_each_entry(connector, &dm->ddev->mode_config.connector_list, head) {
++		struct amdgpu_dm_connector *aconnector = to_amdgpu_dm_connector(connector);
++
++		if (aconnector->bl_idx != bl_idx)
++			continue;
++
++		/* if connector is off, save the brightness for next time it's on */
++		if (!aconnector->base.encoder) {
++			dm->brightness[bl_idx] = user_brightness;
++			dm->actual_brightness[bl_idx] = 0;
++			return;
++		}
++	}
  
- 		if (slim_get_logical_addr(sbdev))
- 			dev_err(ctrl->dev, "Failed to get logical address\n");
-+		put_device(&sbdev->dev);
- 	}
- }
- 
+ 	amdgpu_dm_update_backlight_caps(dm, bl_idx);
+ 	caps = dm->backlight_caps[bl_idx];
 
 
 
