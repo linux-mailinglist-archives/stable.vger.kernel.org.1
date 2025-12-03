@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8281BC9F95A
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:43:27 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B8FECA0BA1
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:01:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 31354304399D
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:37:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DE4E130210E3
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:59:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74663313558;
-	Wed,  3 Dec 2025 15:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1261434DB76;
+	Wed,  3 Dec 2025 16:03:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I+iuTCsT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jNC/l0RT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 314B3304BC2;
-	Wed,  3 Dec 2025 15:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE1CC34DCC6;
+	Wed,  3 Dec 2025 16:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776216; cv=none; b=khRqpvDNdFUu5P5bit/8vKl99rMjE5j9LDNFhqxDQxA6HkF4X0EaObU1P9E9Hc7xRPi/TZjRrNMVGCeqrx9fjxUI0RIsKDCqBiQcQw9+BxH2MyCJnYrFts3UTAJQpK3t1QO0t/Q2rBIkujja4HcgCYGs+WPQVw7I31eUeRioVpk=
+	t=1764777805; cv=none; b=KzviLUV1cEI8U78hl+FgtSrwM1DGCKgbu2VtJv/IjXkr/bgCU8PVfzGLne8NlCZ4/SIa34ijb04/npz+uEGFpEtRssoATNFN7V2X2kmtG9d8TkFzw/xqqDLuSVSv9aRcugi94mbtkS4LPDaOlAtJXkqIHnVU+aGHz4r0yIAoX9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776216; c=relaxed/simple;
-	bh=8G8GIbq+2Eg8clqYlkRM9rRXiAx62DhgsOIpn6kNIAM=;
+	s=arc-20240116; t=1764777805; c=relaxed/simple;
+	bh=kR/UUYBv2H9ZhwIkolKEWATwC7e16ygOCVluAP8/XV8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NLs7zThwGl5W07zd+MQOO/i8gqIj0kyA1MbNTF+adM/4wI8jJveT3uDFD/P8aCte2nZvSQI8yhAyqnMP+aohOhMxi9wMNPL+0oXNNwGldzW32M0CYq2ZdmVUPiN28bK71FqVCHZFhyvD9P3lXlICHwERy2nvPj0vFf7BfSQWm4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I+iuTCsT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95A01C4CEF5;
-	Wed,  3 Dec 2025 15:36:55 +0000 (UTC)
+	 MIME-Version; b=R+pGv1Q41Kgiu0zGyDmQofTLVU1s0FCIGSdbvQuBMMsJdZfhNGlO+pER7zASPZJTyN5ITfBmgsxhhc2QsB1vEmfwcx1gqKb0B/zp9Ca78KlgwS4NsGIFEd8zSaIQ6al6MqbJCo091sUHYJ4xcEeOAR1QdJIPO8XN5FwUW0shWwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jNC/l0RT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FA00C4CEF5;
+	Wed,  3 Dec 2025 16:03:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776216;
-	bh=8G8GIbq+2Eg8clqYlkRM9rRXiAx62DhgsOIpn6kNIAM=;
+	s=korg; t=1764777805;
+	bh=kR/UUYBv2H9ZhwIkolKEWATwC7e16ygOCVluAP8/XV8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I+iuTCsTskoPHsq6Yc3rwB/1CeiiBR5WfUVPsOPEUl12hacsbSRophB3Lj6NWz+JO
-	 dflbTK+GpY4/ugAfNFWQ97yn5vqidqGZsMSInCsZp6lAhNQ5dNf9xU1qzEkLaGWtEc
-	 6mkHTjJ6m8u7McTI4hcNP5nKBOerboGfazLe8Ekk=
+	b=jNC/l0RTQc79AFLqbEJA/ERcqksIc9jYXvHMpJmB9wJ+WlP3MmHtiyUvoMoeSp9m5
+	 jv8S/kpPLuCB1e0JiAPjQ7qyJvo12HfWUipdgmH5EVEbyXnaOULOi/Uqfj9EmIy4je
+	 eAaqyaR5LpuRMOIaoRbg1LMiwysVITsiW9NVAQWY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksander Jan Bajkowski <olek2@wp.pl>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 098/300] mips: lantiq: xway: sysctrl: rename stp clock
+Subject: [PATCH 5.15 152/392] udp_tunnel: use netdev_warn() instead of netdev_WARN()
 Date: Wed,  3 Dec 2025 16:25:02 +0100
-Message-ID: <20251203152404.254563590@linuxfoundation.org>
+Message-ID: <20251203152419.676162145@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,40 +59,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksander Jan Bajkowski <olek2@wp.pl>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit b0d04fe6a633ada2c7bc1b5ddd011cbd85961868 ]
+[ Upstream commit dc2f650f7e6857bf384069c1a56b2937a1ee370d ]
 
-Bindig requires a node name matching ‘^gpio@[0-9a-f]+$’. This patch
-changes the clock name from “stp” to “gpio”.
+netdev_WARN() uses WARN/WARN_ON to print a backtrace along with
+file and line information. In this case, udp_tunnel_nic_register()
+returning an error is just a failed operation, not a kernel bug.
 
-Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+udp_tunnel_nic_register() can fail due to a memory allocation
+failure (kzalloc() or udp_tunnel_nic_alloc()).
+This is a normal runtime error and not a kernel bug.
+
+Replace netdev_WARN() with netdev_warn() accordingly.
+
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250910195031.3784748-1-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/lantiq/xway/sysctrl.c | 2 +-
+ net/ipv4/udp_tunnel_nic.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/lantiq/xway/sysctrl.c b/arch/mips/lantiq/xway/sysctrl.c
-index 084f6caba5f23..96a62b42e2971 100644
---- a/arch/mips/lantiq/xway/sysctrl.c
-+++ b/arch/mips/lantiq/xway/sysctrl.c
-@@ -463,7 +463,7 @@ void __init ltq_soc_init(void)
- 	/* add our generic xway clocks */
- 	clkdev_add_pmu("10000000.fpi", NULL, 0, 0, PMU_FPI);
- 	clkdev_add_pmu("1e100a00.gptu", NULL, 1, 0, PMU_GPT);
--	clkdev_add_pmu("1e100bb0.stp", NULL, 1, 0, PMU_STP);
-+	clkdev_add_pmu("1e100bb0.gpio", NULL, 1, 0, PMU_STP);
- 	clkdev_add_pmu("1e100c00.serial", NULL, 0, 0, PMU_ASC1);
- 	clkdev_add_pmu("1e104100.dma", NULL, 1, 0, PMU_DMA);
- 	clkdev_add_pmu("1e100800.spi", NULL, 1, 0, PMU_SPI);
+diff --git a/net/ipv4/udp_tunnel_nic.c b/net/ipv4/udp_tunnel_nic.c
+index bc3a043a5d5c7..72b0210cdead7 100644
+--- a/net/ipv4/udp_tunnel_nic.c
++++ b/net/ipv4/udp_tunnel_nic.c
+@@ -897,7 +897,7 @@ udp_tunnel_nic_netdevice_event(struct notifier_block *unused,
+ 
+ 		err = udp_tunnel_nic_register(dev);
+ 		if (err)
+-			netdev_WARN(dev, "failed to register for UDP tunnel offloads: %d", err);
++			netdev_warn(dev, "failed to register for UDP tunnel offloads: %d", err);
+ 		return notifier_from_errno(err);
+ 	}
+ 	/* All other events will need the udp_tunnel_nic state */
 -- 
 2.51.0
 
