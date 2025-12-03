@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-199004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82574CA06A7
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:25:45 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0319CA00E0
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:42:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0020D32F859F
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:09:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BAF4B30006F6
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:42:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F82934D4EA;
-	Wed,  3 Dec 2025 16:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3D9E35CBA2;
+	Wed,  3 Dec 2025 16:42:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IH4ZaLpP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mA2AdImp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ADFC34D4DB;
-	Wed,  3 Dec 2025 16:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2F135C1AC;
+	Wed,  3 Dec 2025 16:42:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778381; cv=none; b=GSh7WkaVsA1Avud+EHDeqrRBIwCiKtHUlRheS2eeNsx4uTKbZDFKt0njJqTgg3SIvArSBHPlXUIVSnQjOZneHhCqmazMaRzhjFedDo8j1QWv6ySOWuRJOfXFPRcaVjl3ZYPyRyIgSEGb9OWpHuSEpn/JWvsYI/rhhrnw+FNoMek=
+	t=1764780168; cv=none; b=cEMvVZryDOpDft6jr3geyNaaylRvAO8hD+vfAsnrwf1/WsdKV90wayyli5YxrFGYiLFc9ch2qQwgWhgg+YcHKbHzaa2SundGXaDa1ISxeb7fWkCke1+eyJ7JjmYfy/AV2/y5HQ6GFf/Qncmp79epayTuP/s9+DsncxLppD5ni1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778381; c=relaxed/simple;
-	bh=x5uDpfPXajp1udaDQoxaFCpkskOzq0zx5HVNwz5wKCM=;
+	s=arc-20240116; t=1764780168; c=relaxed/simple;
+	bh=7nkiVVuXJ2DArrl6U8URNFuQ0BEhVZVIHTdaWMZNM14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QN2qBFjYwEQ3IYYiy/cVmtC1Tu2PMnl8f/3jem+IlLFtdBLWVcEsA2TNsY0GY1lMzFCS19YMlstjviwjAmqo6WmDqUAgYIOtyzuAnhOEhKYW40naCuf81ZltujvANFAI2N6Teia2NAhPN4DS1KBGm5ag74YSgnu1mlos8ILMRtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IH4ZaLpP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD0F0C4CEF5;
-	Wed,  3 Dec 2025 16:13:00 +0000 (UTC)
+	 MIME-Version; b=rsUfATY7YPHcCNJCb3/o0lo0dXE3ovLyQ6NCMAZGaYYCY+96SLtE/OIC4KelguIrvMA8tNYrtdwd7bPJM5Om3TnuisWVQwcQ0SFGkyT4tXxAE2n1A57uTE0VIeQTYFpKAZ21SJ9VRjveBpB4mDL+N8+bZ3eW7iIj3T5MVJUhiVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mA2AdImp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD9AC4CEF5;
+	Wed,  3 Dec 2025 16:42:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778381;
-	bh=x5uDpfPXajp1udaDQoxaFCpkskOzq0zx5HVNwz5wKCM=;
+	s=korg; t=1764780168;
+	bh=7nkiVVuXJ2DArrl6U8URNFuQ0BEhVZVIHTdaWMZNM14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IH4ZaLpPAHObV5vAuf3b6jRsjrH/bJ2ltGnPcMbU8x977VB21NIHR3XwkzwEcXkuI
-	 07+5XP85N6GUaNIyzfTtVnwYYs6Be68cf8iXW976inUwB5IiAnvWwa0vknBuX3aCtp
-	 HbHaiWRefLhVrPpFYMk7mOdLcyQT17uZ8j/9SDuQ=
+	b=mA2AdImp7QnmwmndG1EWRDChKWV0aoto0xfhqFbPQ5RoTSJ17ZyH4OsAVSSAct7H0
+	 7SIT0D2ZpouFZD6Wbaz7NSzANOjdIwNXqXOalea+f27IzIfW3dv1bVEcEoc5cu9TdM
+	 8CNCRq4HLCoEYrFAe6y0yaPf5BmxsQwhYdKChCZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Chujun <zhangchujun@cmss.chinamobile.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Aswin Karuvally <aswin@linux.ibm.com>,
+	Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 311/392] tracing/tools: Fix incorrcet short option in usage text for --threads
+Subject: [PATCH 6.1 459/568] s390/ctcm: Fix double-kfree
 Date: Wed,  3 Dec 2025 16:27:41 +0100
-Message-ID: <20251203152425.605608758@linuxfoundation.org>
+Message-ID: <20251203152457.516391485@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Chujun <zhangchujun@cmss.chinamobile.com>
+From: Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>
 
-[ Upstream commit 53afec2c8fb2a562222948cb1c2aac48598578c9 ]
+[ Upstream commit da02a1824884d6c84c5e5b5ac373b0c9e3288ec2 ]
 
-The help message incorrectly listed '-t' as the short option for
---threads, but the actual getopt_long configuration uses '-e'.
-This mismatch can confuse users and lead to incorrect command-line
-usage. This patch updates the usage string to correctly show:
-	"-e, --threads NRTHR"
-to match the implementation.
+The function 'mpc_rcvd_sweep_req(mpcginfo)' is called conditionally
+from function 'ctcmpc_unpack_skb'. It frees passed mpcginfo.
+After that a call to function 'kfree' in function 'ctcmpc_unpack_skb'
+frees it again.
 
-Note: checkpatch.pl reports a false-positive spelling warning on
-'Run', which is intentional.
+Remove 'kfree' call in function 'mpc_rcvd_sweep_req(mpcginfo)'.
 
-Link: https://patch.msgid.link/20251106031040.1869-1-zhangchujun@cmss.chinamobile.com
-Signed-off-by: Zhang Chujun <zhangchujun@cmss.chinamobile.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Bug detected by the clang static analyzer.
+
+Fixes: 0c0b20587b9f25a2 ("s390/ctcm: fix potential memory leak")
+Reviewed-by: Aswin Karuvally <aswin@linux.ibm.com>
+Signed-off-by: Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>
+Signed-off-by: Aswin Karuvally <aswin@linux.ibm.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251112182724.1109474-1-aswin@linux.ibm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/tracing/latency/latency-collector.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/s390/net/ctcm_mpc.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/tools/tracing/latency/latency-collector.c b/tools/tracing/latency/latency-collector.c
-index f7ed8084e16ad..ec95b94f80e1f 100644
---- a/tools/tracing/latency/latency-collector.c
-+++ b/tools/tracing/latency/latency-collector.c
-@@ -1725,7 +1725,7 @@ static void show_usage(void)
- "-n, --notrace\t\tIf latency is detected, do not print out the content of\n"
- "\t\t\tthe trace file to standard output\n\n"
+diff --git a/drivers/s390/net/ctcm_mpc.c b/drivers/s390/net/ctcm_mpc.c
+index 8ac213a551418..55216d2fbea0b 100644
+--- a/drivers/s390/net/ctcm_mpc.c
++++ b/drivers/s390/net/ctcm_mpc.c
+@@ -698,7 +698,6 @@ static void mpc_rcvd_sweep_req(struct mpcg_info *mpcginfo)
  
--"-t, --threads NRTHR\tRun NRTHR threads for printing. Default is %d.\n\n"
-+"-e, --threads NRTHR\tRun NRTHR threads for printing. Default is %d.\n\n"
+ 	grp->sweep_req_pend_num--;
+ 	ctcmpc_send_sweep_resp(ch);
+-	kfree(mpcginfo);
+ 	return;
+ }
  
- "-r, --random\t\tArbitrarily sleep a certain amount of time, default\n"
- "\t\t\t%ld ms, before reading the trace file. The\n"
 -- 
 2.51.0
 
