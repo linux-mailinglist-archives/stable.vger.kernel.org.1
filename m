@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-198785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DBFACA1086
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:38:07 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A76FC9F827
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:36:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4BF9A32642BC
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:38:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F3C8E300E91B
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:33:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E5F534B185;
-	Wed,  3 Dec 2025 16:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62B9C30DECE;
+	Wed,  3 Dec 2025 15:33:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ECdh1V1x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oaUNUE23"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09DE234AB14;
-	Wed,  3 Dec 2025 16:01:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A9130F535;
+	Wed,  3 Dec 2025 15:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777677; cv=none; b=djT2B0WkF2XFrSH0dKMyivhaSw53GfHFh1vor7on8oXX7ISg47wWfrk1YNa/wi3xoRq3izuR07uPqUkFEFtmiKcfZVnBiAB6nVkfmFOHzaTo9QPyL2VOaIC6hO2emM6t9dcAJ4lPF+8aVVhhDp5PGty+8zgbbXtDvn0QegqdkFs=
+	t=1764776033; cv=none; b=U8LmKGJtICRf0sgEJuH0xcBqyDhLAjOy9kTsXSmuFdfGC6gZVBSid4lRqluToiiR+EZL2ud0Q8M18eIMCx2c8RtP35nfqCNXBeepRKo8Y2LvW+2ZWeSs+fgVqwZnosLRbnPaP+aXEZ+JUFDNikn4bO+XLxcRBgWZXqhDbJ7P6RA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777677; c=relaxed/simple;
-	bh=q70X19hMI87eSTfZ20rhIQQCLc13EDPaxus4TB/QeyA=;
+	s=arc-20240116; t=1764776033; c=relaxed/simple;
+	bh=KvJN6ct/JdKOzrydI/Vs/uw2d7InfeWSQLUsN7UPvK8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f0SYxzcv9elktgI1nwIQSYwXQKeGle24Cl++eBKJzN3Ez4zI7tsWEzZTtQPMDN4aOUOOEFD6ZE+ekyrI3x02WsYDMqADqu4aRYAvZvC343lboe3v/FmiCayDpk8hSuUgYIFZNldcHcR8WIAeShfNfIIqOuu0vOFOYkOZizL8QMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ECdh1V1x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C51DC4CEF5;
-	Wed,  3 Dec 2025 16:01:15 +0000 (UTC)
+	 MIME-Version; b=QVHlvXRGQ7akVvCVAywvsM9wPLikntQPE6Z8Ix+aqjaQ4mStuRkF1tKTBOjxjKW+m+qtVnosru/7paRw11TRGFFLEHxbNxJDeGKPR7h5Vs9y63XBZWYJ11m474vKqUiHJlkZz0HHiFvl0ZG1evyDH75dxB5TcklZQcuNW42PAmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oaUNUE23; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 667A6C4CEF5;
+	Wed,  3 Dec 2025 15:33:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777676;
-	bh=q70X19hMI87eSTfZ20rhIQQCLc13EDPaxus4TB/QeyA=;
+	s=korg; t=1764776032;
+	bh=KvJN6ct/JdKOzrydI/Vs/uw2d7InfeWSQLUsN7UPvK8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ECdh1V1x90Zp5J3cs8ZLRQmO7NEwonVoKTdAFDIp2o2PpKRgXubob3Imf9FBMPv0y
-	 BVcJuTdsN65Fytw9oomAdqtKU+u+EVm0uv+ozVNfP/4gjU1IX+lCFr0GZv1yGP/C2p
-	 6AxV4AldLB3hVRIsUlUQJK38zkq+gUW99IhIhE+Q=
+	b=oaUNUE23cPQzvVLMhhtzVMyVcYF7iZT8KOTYBD4U4xxtuz8SUwERGQsCT/Fwv1T1k
+	 IY/t5apwe/R/X/pLK4pUvYR6COtX73eSU233T9wa9G0ACTzWIzONYgDG0sJXviKKJU
+	 iRCcTiTCQn4GX6WypwyxR0Wd55fI2KqgIolO5I7Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Paasch <cpaasch@openai.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Armin Wolf <W_Armin@gmx.de>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 112/392] net: When removing nexthops, dont call synchronize_net if it is not necessary
-Date: Wed,  3 Dec 2025 16:24:22 +0100
-Message-ID: <20251203152418.220219713@linuxfoundation.org>
+Subject: [PATCH 5.10 059/300] hwmon: (dell-smm) Add support for Dell OptiPlex 7040
+Date: Wed,  3 Dec 2025 16:24:23 +0100
+Message-ID: <20251203152402.808310535@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,99 +60,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Paasch <cpaasch@openai.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit b0ac6d3b56a2384db151696cfda2836a8a961b6d ]
+[ Upstream commit 53d3bd48ef6ff1567a75ca77728968f5ab493cb4 ]
 
-When removing a nexthop, commit
-90f33bffa382 ("nexthops: don't modify published nexthop groups") added a
-call to synchronize_rcu() (later changed to _net()) to make sure
-everyone sees the new nexthop-group before the rtnl-lock is released.
+The Dell OptiPlex 7040 supports the legacy SMM interface for reading
+sensors and performing fan control. Whitelist this machine so that
+this driver loads automatically.
 
-When one wants to delete a large number of groups and nexthops, it is
-fastest to first flush the groups (ip nexthop flush groups) and then
-flush the nexthops themselves (ip -6 nexthop flush). As that way the
-groups don't need to be rebalanced.
-
-However, `ip -6 nexthop flush` will still take a long time if there is
-a very large number of nexthops because of the call to
-synchronize_net(). Now, if there are no more groups, there is no point
-in calling synchronize_net(). So, let's skip that entirely by checking
-if nh->grp_list is empty.
-
-This gives us a nice speedup:
-
-BEFORE:
-=======
-
-$ time sudo ip -6 nexthop flush
-Dump was interrupted and may be inconsistent.
-Flushed 2097152 nexthops
-
-real	1m45.345s
-user	0m0.001s
-sys	0m0.005s
-
-$ time sudo ip -6 nexthop flush
-Dump was interrupted and may be inconsistent.
-Flushed 4194304 nexthops
-
-real	3m10.430s
-user	0m0.002s
-sys	0m0.004s
-
-AFTER:
-======
-
-$ time sudo ip -6 nexthop flush
-Dump was interrupted and may be inconsistent.
-Flushed 2097152 nexthops
-
-real	0m17.545s
-user	0m0.003s
-sys	0m0.003s
-
-$ time sudo ip -6 nexthop flush
-Dump was interrupted and may be inconsistent.
-Flushed 4194304 nexthops
-
-real	0m35.823s
-user	0m0.002s
-sys	0m0.004s
-
-Signed-off-by: Christoph Paasch <cpaasch@openai.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250816-nexthop_dump-v2-2-491da3462118@openai.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Closes: https://github.com/Wer-Wolf/i8kutils/issues/15
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://lore.kernel.org/r/20250917181036.10972-5-W_Armin@gmx.de
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/nexthop.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/hwmon/dell-smm-hwmon.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
-index 4a8fdaae6bf21..9bd72526000c4 100644
---- a/net/ipv4/nexthop.c
-+++ b/net/ipv4/nexthop.c
-@@ -1811,6 +1811,12 @@ static void remove_nexthop_from_groups(struct net *net, struct nexthop *nh,
- {
- 	struct nh_grp_entry *nhge, *tmp;
- 
-+	/* If there is nothing to do, let's avoid the costly call to
-+	 * synchronize_net()
-+	 */
-+	if (list_empty(&nh->grp_list))
-+		return;
-+
- 	list_for_each_entry_safe(nhge, tmp, &nh->grp_list, nh_list)
- 		remove_nh_grp_entry(net, nhge, nlinfo);
- 
+diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon.c
+index 10c7b6295b02e..9fb389fa17817 100644
+--- a/drivers/hwmon/dell-smm-hwmon.c
++++ b/drivers/hwmon/dell-smm-hwmon.c
+@@ -1065,6 +1065,13 @@ static const struct dmi_system_id i8k_dmi_table[] __initconst = {
+ 		},
+ 		.driver_data = (void *)&i8k_config_data[DELL_PRECISION_490],
+ 	},
++	{
++		.ident = "Dell OptiPlex 7040",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
++			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "OptiPlex 7040"),
++		},
++	},
+ 	{
+ 		.ident = "Dell Precision",
+ 		.matches = {
 -- 
 2.51.0
 
