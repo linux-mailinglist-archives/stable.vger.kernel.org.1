@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2E30C9F7F7
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:34:52 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54884CA1032
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:34:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D5487300960F
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:33:12 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 642C830033BA
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:33:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70D6A30C62A;
-	Wed,  3 Dec 2025 15:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9D11311C10;
+	Wed,  3 Dec 2025 16:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jARclX4Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tBau4ToT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F84530C348;
-	Wed,  3 Dec 2025 15:33:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EFC436C0B5;
+	Wed,  3 Dec 2025 16:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764775989; cv=none; b=ngc75KcRT1CfILEburlmGsYAuJXZ5QuZyBCAUpmNvtiZb6tWisbIxF4ZlrT8YUkP8FZhGLFoMkGuOwNkIcNmiFUjemFo8OCjQQRK+LcC0Rl7m/BXdR7fGuBmYW7gZkf2ak9HUHx8r0OLiMqDRWmvVt15q1MIJTc2X1lLqKb6mwo=
+	t=1764779523; cv=none; b=YjGHT91RoBCaH1+gV14Ac8mdGDcxxW63ejXnMmh2VZPSiVmxbKLaL/Ig3M8SdtBNcwJ11wv/Ln1hR9xOyCHeBMJ9cDwrlcbz6byUIkgfBChY5tae3o73Lz34/5L9cfcR4rLK02TID3vrNgKGrIj/X2vTZ2702ynPr89Y6lqLkUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764775989; c=relaxed/simple;
-	bh=hFWfRGNQ3O9zi9hsawHCHFdq+hC+zAKM4h7TqYbySeI=;
+	s=arc-20240116; t=1764779523; c=relaxed/simple;
+	bh=7ZVzNfACwSSY2jLxelk+cHpZ4twRdDjZhpAPh7DIUbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DWe12hI71YYXFJ8yEfTEJYoUyARZza5HQYth4TqmkrfdRK/wEmgDT/NHQdOyy7IVe8xBqD0yaWVwLhHMj9wVZ5+Qi58C1dRn4EmP5ME15wp9QSD40JPcow85zzL+u3Mem1+QLJB8mlHtVhTC/yz5BG/X2TGGhiL0OeGBDtwRmoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jARclX4Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C8F8C4CEF5;
-	Wed,  3 Dec 2025 15:33:08 +0000 (UTC)
+	 MIME-Version; b=mpJjq7gX6q+Kp22VOGy/WKX8wNfPjTjGc1FFd2cOLb50qFymQcGYiDkGGk9gn9JOd1NtmhsRKCnb3jzIqC0Tk2/wcKRwbOIGoTbkKzOr4XBmzSSmruzOViIjrl57pEomsod35/0QQIUsG09FPh0JvrZ0u1aYOrkCDMjk14qLmL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tBau4ToT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C525C4CEF5;
+	Wed,  3 Dec 2025 16:32:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764775988;
-	bh=hFWfRGNQ3O9zi9hsawHCHFdq+hC+zAKM4h7TqYbySeI=;
+	s=korg; t=1764779523;
+	bh=7ZVzNfACwSSY2jLxelk+cHpZ4twRdDjZhpAPh7DIUbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jARclX4QDhXlcC3ckTT9XQKHYVhpgEalOGqRIvlxGuaPclGe9IBDGO8yi+ycoTYDm
-	 u+Pg88YFbSjf5xB1xiL81vPiZyYAo5E6jLFe7MqTSa59PIALcG6pchJ+Te35uXF+2r
-	 tVsP5ghr/G+mD5AaPlmKmvA7ohESVF8mH57zhotQ=
+	b=tBau4ToTCpzT4DW8STxhIit9iR30CAeQZVzMd6a+sewcGifZoYquFR4SBBdg4JiFM
+	 vL56J+AEZCvX9pOfam8bKMuWRFBq115ZEwRDPAfCWgnx+nFqYvwnbTzew6+8Kkrm/a
+	 wPzdGsg2tJ0xCM5kL3Rv3CfERVj5m856RKZqLRBo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dennis Beier <nanovim@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Alex Mastro <amastro@fb.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 047/300] cpufreq/longhaul: handle NULL policy in longhaul_exit
-Date: Wed,  3 Dec 2025 16:24:11 +0100
-Message-ID: <20251203152402.358160804@linuxfoundation.org>
+Subject: [PATCH 6.1 250/568] vfio: return -ENOTTY for unsupported device feature
+Date: Wed,  3 Dec 2025 16:24:12 +0100
+Message-ID: <20251203152449.878104019@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dennis Beier <nanovim@gmail.com>
+From: Alex Mastro <amastro@fb.com>
 
-[ Upstream commit 592532a77b736b5153e0c2e4c74aa50af0a352ab ]
+[ Upstream commit 16df67f2189a71a8310bcebddb87ed569e8352be ]
 
-longhaul_exit() was calling cpufreq_cpu_get(0) without checking
-for a NULL policy pointer. On some systems, this could lead to a
-NULL dereference and a kernel warning or panic.
+The two implementers of vfio_device_ops.device_feature,
+vfio_cdx_ioctl_feature and vfio_pci_core_ioctl_feature, return
+-ENOTTY in the fallthrough case when the feature is unsupported. For
+consistency, the base case, vfio_ioctl_device_feature, should do the
+same when device_feature == NULL, indicating an implementation has no
+feature extensions.
 
-This patch adds a check using unlikely() and returns early if the
-policy is NULL.
-
-Bugzilla: #219962
-
-Signed-off-by: Dennis Beier <nanovim@gmail.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Alex Mastro <amastro@fb.com>
+Link: https://lore.kernel.org/r/20250908-vfio-enotty-v1-1-4428e1539e2e@fb.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/longhaul.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/vfio/vfio_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/cpufreq/longhaul.c b/drivers/cpufreq/longhaul.c
-index 182a4dbca0952..7197b0daabea2 100644
---- a/drivers/cpufreq/longhaul.c
-+++ b/drivers/cpufreq/longhaul.c
-@@ -955,6 +955,9 @@ static void __exit longhaul_exit(void)
- 	struct cpufreq_policy *policy = cpufreq_cpu_get(0);
- 	int i;
- 
-+	if (unlikely(!policy))
-+		return;
-+
- 	for (i = 0; i < numscales; i++) {
- 		if (mults[i] == maxmult) {
- 			struct cpufreq_freqs freqs;
+diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
+index 6e8804fe00953..e191422e99c4c 100644
+--- a/drivers/vfio/vfio_main.c
++++ b/drivers/vfio/vfio_main.c
+@@ -1501,7 +1501,7 @@ static int vfio_ioctl_device_feature(struct vfio_device *device,
+ 			feature.argsz - minsz);
+ 	default:
+ 		if (unlikely(!device->ops->device_feature))
+-			return -EINVAL;
++			return -ENOTTY;
+ 		return device->ops->device_feature(device, feature.flags,
+ 						   arg->data,
+ 						   feature.argsz - minsz);
 -- 
 2.51.0
 
