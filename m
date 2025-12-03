@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-199337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07ABFCA1347
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:59:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39DC8C9F881
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:38:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E87C6330C919
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:45:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 991053004B98
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:34:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76DC936997F;
-	Wed,  3 Dec 2025 16:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 379A830ACF2;
+	Wed,  3 Dec 2025 15:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zhG6fQbp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H2byZoQ7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2809B369979;
-	Wed,  3 Dec 2025 16:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6EAB2FD678;
+	Wed,  3 Dec 2025 15:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779462; cv=none; b=SI6R9VQTCqGs8pEhGq5oz4c35TOgG5kNm3MzbB8cmUDwnQS07b45AiFjyjx/JFpQvJeyPXqHq05n4av1BKwGfeYbKmVfDHQSc+FZ44IQuzkhGK5UN9VnKnJBa9nMXcvU25KpvFqKEbabSguNyIbx11g1XnIx8XH6W5jQsTQPqlg=
+	t=1764776064; cv=none; b=FiXP7uBESzEQh+1RHXQD9qCapLB22PQCdDv9TE9tUOpHeWbzxcJNjqpCMsruiyHXqqXn3Fg9TyXgPhDjw22ELWnWo8cMks91ypfCYRrENtk9Z0f1hS4sbiC7wpVKS8nbWKFucUmIssH/jJqvh8U+o25f4eF+LVoG5N5Q3dmXnJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779462; c=relaxed/simple;
-	bh=8LK4fkA9NxVAgExUN5L8adq0Xke9l4UtQ5MaMZKM/h8=;
+	s=arc-20240116; t=1764776064; c=relaxed/simple;
+	bh=llJWf7E52UaRuVBp8vMk5o7BrjMPo6L4nOTj/Sn3IHM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=earRzJKD+FHKeXNuQDAvwEmRTILVpYJzhMv28C1geWVE56wiyXAOrWzrnDOLHzi2XoXbzrfX7STOSumuJa9QLsXy0ymPvPnRKkcPK1NXyCvK/DNwf/XZJSlDbtRJwF2qCzahW/niFLHQD/Pruv+XHxJIJDJBcjNMGWNHlMwfm98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zhG6fQbp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 809E0C4CEF5;
-	Wed,  3 Dec 2025 16:31:01 +0000 (UTC)
+	 MIME-Version; b=rWUTMip8lFAT7Ldas8J92XRJMi1GtMBZqXuyh7LugVohuzxz7XHEYrmLnXOOuYz0HG/th/epvHCLI7096+1Gl+or8yGGJy4Dvy0TlSQRVtRRwSDVC+f3fuiRyHsjxQHX4cVcNCcCFZoqds7MFzgun/V2BSSlBkEkWhm5kDgd0dI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H2byZoQ7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21FF4C4CEF5;
+	Wed,  3 Dec 2025 15:34:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779462;
-	bh=8LK4fkA9NxVAgExUN5L8adq0Xke9l4UtQ5MaMZKM/h8=;
+	s=korg; t=1764776063;
+	bh=llJWf7E52UaRuVBp8vMk5o7BrjMPo6L4nOTj/Sn3IHM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zhG6fQbpuHOD85lCwQ8tPFQPSp8CI5aRXfpFTJOwHrqWdL6RuRKeMSb/xWC5pY2k8
-	 T1DBdUHRGxoZzXilAOxot/sc0E1N9DzBPulJLsTQhDAFVGGgCWsfuvEcRztTqBLBDV
-	 kYaFlj2iD4DXpKk5YhwDrH6S2K7B4hTnOg10ua60=
+	b=H2byZoQ7TDKoF3+bi21enWNHa1TMYz4xEAzlMpN99WrtSWFJPryVupBEX2Ex0Ys7/
+	 9gdyqbf6Ce4AS0niGXm7dGXwChcYsQQA0lRMeed91wERDl+vQhM49prkMHkhbnnoWD
+	 2APj9ApTSDgJjwQ8KoqekEMD+G2615drM8agU6wI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	cen zhang <zzzccc427@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Len Brown <len.brown@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 264/568] Bluetooth: SCO: Fix UAF on sco_conn_free
+Subject: [PATCH 5.10 062/300] tools/power x86_energy_perf_policy: Enhance HWP enable
 Date: Wed,  3 Dec 2025 16:24:26 +0100
-Message-ID: <20251203152450.386086502@linuxfoundation.org>
+Message-ID: <20251203152402.919279861@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,126 +59,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Len Brown <len.brown@intel.com>
 
-[ Upstream commit ecb9a843be4d6fd710d7026e359f21015a062572 ]
+[ Upstream commit c97c057d357c4b39b153e9e430bbf8976e05bd4e ]
 
-BUG: KASAN: slab-use-after-free in sco_conn_free net/bluetooth/sco.c:87 [inline]
-BUG: KASAN: slab-use-after-free in kref_put include/linux/kref.h:65 [inline]
-BUG: KASAN: slab-use-after-free in sco_conn_put+0xdd/0x410
-net/bluetooth/sco.c:107
-Write of size 8 at addr ffff88811cb96b50 by task kworker/u17:4/352
+On enabling HWP, preserve the reserved bits in MSR_PM_ENABLE.
 
-CPU: 1 UID: 0 PID: 352 Comm: kworker/u17:4 Not tainted
-6.17.0-rc5-g717368f83676 #4 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-Workqueue: hci13 hci_cmd_sync_work
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x10b/0x170 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0x191/0x550 mm/kasan/report.c:482
- kasan_report+0xc4/0x100 mm/kasan/report.c:595
- sco_conn_free net/bluetooth/sco.c:87 [inline]
- kref_put include/linux/kref.h:65 [inline]
- sco_conn_put+0xdd/0x410 net/bluetooth/sco.c:107
- sco_connect_cfm+0xb4/0xae0 net/bluetooth/sco.c:1441
- hci_connect_cfm include/net/bluetooth/hci_core.h:2082 [inline]
- hci_conn_failed+0x20a/0x2e0 net/bluetooth/hci_conn.c:1313
- hci_conn_unlink+0x55f/0x810 net/bluetooth/hci_conn.c:1121
- hci_conn_del+0xb6/0x1110 net/bluetooth/hci_conn.c:1147
- hci_abort_conn_sync+0x8c5/0xbb0 net/bluetooth/hci_sync.c:5689
- hci_cmd_sync_work+0x281/0x380 net/bluetooth/hci_sync.c:332
- process_one_work kernel/workqueue.c:3236 [inline]
- process_scheduled_works+0x77e/0x1040 kernel/workqueue.c:3319
- worker_thread+0xbee/0x1200 kernel/workqueue.c:3400
- kthread+0x3c7/0x870 kernel/kthread.c:463
- ret_from_fork+0x13a/0x1e0 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
+Also, skip writing the MSR_PM_ENABLE if HWP is already enabled.
 
-Allocated by task 31370:
- kasan_save_stack mm/kasan/common.c:47 [inline]
- kasan_save_track+0x30/0x70 mm/kasan/common.c:68
- poison_kmalloc_redzone mm/kasan/common.c:388 [inline]
- __kasan_kmalloc+0x82/0x90 mm/kasan/common.c:405
- kasan_kmalloc include/linux/kasan.h:260 [inline]
- __do_kmalloc_node mm/slub.c:4382 [inline]
- __kmalloc_noprof+0x22f/0x390 mm/slub.c:4394
- kmalloc_noprof include/linux/slab.h:909 [inline]
- sk_prot_alloc+0xae/0x220 net/core/sock.c:2239
- sk_alloc+0x34/0x5a0 net/core/sock.c:2295
- bt_sock_alloc+0x3c/0x330 net/bluetooth/af_bluetooth.c:151
- sco_sock_alloc net/bluetooth/sco.c:562 [inline]
- sco_sock_create+0xc0/0x350 net/bluetooth/sco.c:593
- bt_sock_create+0x161/0x3b0 net/bluetooth/af_bluetooth.c:135
- __sock_create+0x3ad/0x780 net/socket.c:1589
- sock_create net/socket.c:1647 [inline]
- __sys_socket_create net/socket.c:1684 [inline]
- __sys_socket+0xd5/0x330 net/socket.c:1731
- __do_sys_socket net/socket.c:1745 [inline]
- __se_sys_socket net/socket.c:1743 [inline]
- __x64_sys_socket+0x7a/0x90 net/socket.c:1743
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xc7/0x240 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Freed by task 31374:
- kasan_save_stack mm/kasan/common.c:47 [inline]
- kasan_save_track+0x30/0x70 mm/kasan/common.c:68
- kasan_save_free_info+0x40/0x50 mm/kasan/generic.c:576
- poison_slab_object mm/kasan/common.c:243 [inline]
- __kasan_slab_free+0x3d/0x50 mm/kasan/common.c:275
- kasan_slab_free include/linux/kasan.h:233 [inline]
- slab_free_hook mm/slub.c:2428 [inline]
- slab_free mm/slub.c:4701 [inline]
- kfree+0x199/0x3b0 mm/slub.c:4900
- sk_prot_free net/core/sock.c:2278 [inline]
- __sk_destruct+0x4aa/0x630 net/core/sock.c:2373
- sco_sock_release+0x2ad/0x300 net/bluetooth/sco.c:1333
- __sock_release net/socket.c:649 [inline]
- sock_close+0xb8/0x230 net/socket.c:1439
- __fput+0x3d1/0x9e0 fs/file_table.c:468
- task_work_run+0x206/0x2a0 kernel/task_work.c:227
- get_signal+0x1201/0x1410 kernel/signal.c:2807
- arch_do_signal_or_restart+0x34/0x740 arch/x86/kernel/signal.c:337
- exit_to_user_mode_loop+0x68/0xc0 kernel/entry/common.c:40
- exit_to_user_mode_prepare include/linux/irq-entry-common.h:225 [inline]
- syscall_exit_to_user_mode_work include/linux/entry-common.h:175 [inline]
- syscall_exit_to_user_mode include/linux/entry-common.h:210 [inline]
- do_syscall_64+0x1dd/0x240 arch/x86/entry/syscall_64.c:100
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Reported-by: cen zhang <zzzccc427@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Len Brown <len.brown@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/sco.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ .../x86_energy_perf_policy/x86_energy_perf_policy.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/net/bluetooth/sco.c b/net/bluetooth/sco.c
-index fe8728041ad08..cf53d483dd071 100644
---- a/net/bluetooth/sco.c
-+++ b/net/bluetooth/sco.c
-@@ -434,6 +434,13 @@ static void sco_sock_kill(struct sock *sk)
+diff --git a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
+index 60917e32ec853..5c93546fc689b 100644
+--- a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
++++ b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
+@@ -1077,13 +1077,18 @@ int update_hwp_request_pkg(int pkg)
  
- 	BT_DBG("sk %p state %d", sk, sk->sk_state);
- 
-+	/* Sock is dead, so set conn->sk to NULL to avoid possible UAF */
-+	if (sco_pi(sk)->conn) {
-+		sco_conn_lock(sco_pi(sk)->conn);
-+		sco_pi(sk)->conn->sk = NULL;
-+		sco_conn_unlock(sco_pi(sk)->conn);
-+	}
+ int enable_hwp_on_cpu(int cpu)
+ {
+-	unsigned long long msr;
++	unsigned long long old_msr, new_msr;
 +
- 	/* Kill poor orphan */
- 	bt_sock_unlink(&sco_sk_list, sk);
- 	sock_set_flag(sk, SOCK_DEAD);
++	get_msr(cpu, MSR_PM_ENABLE, &old_msr);
++
++	if (old_msr & 1)
++		return 0;	/* already enabled */
+ 
+-	get_msr(cpu, MSR_PM_ENABLE, &msr);
+-	put_msr(cpu, MSR_PM_ENABLE, 1);
++	new_msr = old_msr | 1;
++	put_msr(cpu, MSR_PM_ENABLE, new_msr);
+ 
+ 	if (verbose)
+-		printf("cpu%d: MSR_PM_ENABLE old: %d new: %d\n", cpu, (unsigned int) msr, 1);
++		printf("cpu%d: MSR_PM_ENABLE old: %llX new: %llX\n", cpu, old_msr, new_msr);
+ 
+ 	return 0;
+ }
 -- 
 2.51.0
 
