@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50AFBC9F917
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:42:18 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 044C1C9FC98
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:05:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C0A86303271E
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:37:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3932E300316A
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:04:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29DBF3148A8;
-	Wed,  3 Dec 2025 15:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DFE734F247;
+	Wed,  3 Dec 2025 16:04:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JwqseXeD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uTkeqIAq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34492FB62A;
-	Wed,  3 Dec 2025 15:37:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19FE734EF12;
+	Wed,  3 Dec 2025 16:04:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776241; cv=none; b=dxkF2N7cQo9q8UehoLQl0kT5AitOrkbJ8Hz8TmRum6+aG+LgNdB2iQyUh6ne9GPo0KOq22yjit26IUoKzAJ35xi9Q3szl1O9oBV6sUnbJypJ0ECxYesTrmI0Da5TJPE5KHIYNcJTFYIQVtATcC2Dg34d2d7cFMgvxzItn57qwjk=
+	t=1764777882; cv=none; b=ux4v7XLFjfqWMFLbZaPzITzbH5bndTncojVwRcGGfmK3s7Sszo4AlSzhHWxtmTrZCD9gagjY/ZqXmIQSShHHu7eNMId6lhNTi+RTajIJkK+jE1k5iI8/raW9BxFSrGH8qV8TPPmYLFJ25Xtc9cyLx6e4inAfe3wkxaTwQMgOQu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776241; c=relaxed/simple;
-	bh=WnZu1c8yuWV+hmimlYHAr6jbySfJcWoeY9Wuy99h+jM=;
+	s=arc-20240116; t=1764777882; c=relaxed/simple;
+	bh=sW2VWlcjS+syrNCFpW7+mTuCuvZtFw7q6FHF7mfkeNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i4dkZqaFJw01QQeKwm5f2HMdL9AUKdLVaQwNm5yRPdS4LCztPX4Dqjq2CVArXsBF1Le+nxBzpQRQuNTta1FMVSr/5Otgk9VPXkPGMVA9H+sIzd9v8RW0+x4kHc8OT1OP6Paq2k/h7meRgimOis6yQRq3T1e/beLTejj6r0ITFek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JwqseXeD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13475C4CEF5;
-	Wed,  3 Dec 2025 15:37:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UcGznfU0Uco363NI25dKTG0zzTlMAdAne887GoQbQ0I0BY4zHeC50DG01U8CbPneCZp0jXYD+up6jF/6BbJnGLs3EucSKQCXPBY0qPTFPJIlSZKk9TegNwl0Q2zx1T1rphvt01HvU1HXTH1Rq8Venbzo9Ppa+tILIgmk/77JsB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uTkeqIAq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2732DC4CEF5;
+	Wed,  3 Dec 2025 16:04:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776241;
-	bh=WnZu1c8yuWV+hmimlYHAr6jbySfJcWoeY9Wuy99h+jM=;
+	s=korg; t=1764777882;
+	bh=sW2VWlcjS+syrNCFpW7+mTuCuvZtFw7q6FHF7mfkeNE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JwqseXeDGbFSABhKLe+ARIJDARRzMsoy6aYJQva/6xJkuE1tC7uVT77+cxTvx4Z+8
-	 ly8PV/YKFYEK++fCG3aLHEKe0oqQRNb86gF0EZiALo2OX34R1cP0b3Q2TES0RD5b1f
-	 ZI6cGFESN4At5xGp6jt32rXlcxVLEWw9/a6IlcFI=
+	b=uTkeqIAqQ9nhf5wZwtvUIs02/XAUqFfs0K0Qa565AsMT2WNoPll91lQ2kRF9QMI1O
+	 1KgtLXv7rghR/0fTsygvxxcBNm2kJ/0PmbIT0wlPEzzE1g59ZS3a1FVHb0EsJmQJPM
+	 zn1OgXH7W8LVlTWFnARqpkyJi04pMTej/nRUDkU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Forest Crossman <cyrozap@gmail.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 123/300] usb: mon: Increase BUFF_MAX to 64 MiB to support multi-MB URBs
+Subject: [PATCH 5.15 177/392] scsi: libfc: Fix potential buffer overflow in fc_ct_ms_fill()
 Date: Wed,  3 Dec 2025 16:25:27 +0100
-Message-ID: <20251203152405.173233734@linuxfoundation.org>
+Message-ID: <20251203152420.595904213@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +61,69 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Forest Crossman <cyrozap@gmail.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 368ed48a5ef52e384f54d5809f0a0b79ac567479 ]
+[ Upstream commit 072fdd4b0be9b9051bdf75f36d0227aa705074ba ]
 
-The usbmon binary interface currently truncates captures of large
-transfers from higher-speed USB devices. Because a single event capture
-is limited to one-fifth of the total buffer size, the current maximum
-size of a captured URB is around 240 KiB. This is insufficient when
-capturing traffic from modern devices that use transfers of several
-hundred kilobytes or more, as truncated URBs can make it impossible for
-user-space USB analysis tools like Wireshark to properly defragment and
-reassemble higher-level protocol packets in the captured data.
+The fc_ct_ms_fill() helper currently formats the OS name and version
+into entry->value using "%s v%s". Since init_utsname()->sysname and
+->release are unbounded strings, snprintf() may attempt to write more
+than FC_FDMI_HBA_ATTR_OSNAMEVERSION_LEN bytes, triggering a
+-Wformat-truncation warning with W=1.
 
-The root cause of this issue is the 1200 KiB BUFF_MAX limit, which has
-not been changed since the binary interface was introduced in 2006.
+In file included from drivers/scsi/libfc/fc_elsct.c:18:
+drivers/scsi/libfc/fc_encode.h: In function ‘fc_ct_ms_fill.constprop’:
+drivers/scsi/libfc/fc_encode.h:359:30: error: ‘%s’ directive output may
+be truncated writing up to 64 bytes into a region of size between 62
+and 126 [-Werror=format-truncation=]
+  359 |                         "%s v%s",
+      |                              ^~
+  360 |                         init_utsname()->sysname,
+  361 |                         init_utsname()->release);
+      |                         ~~~~~~~~~~~~~~~~~~~~~~~
+drivers/scsi/libfc/fc_encode.h:357:17: note: ‘snprintf’ output between
+3 and 131 bytes into a destination of size 128
+  357 |                 snprintf((char *)&entry->value,
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  358 |                         FC_FDMI_HBA_ATTR_OSNAMEVERSION_LEN,
+      |                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  359 |                         "%s v%s",
+      |                         ~~~~~~~~~
+  360 |                         init_utsname()->sysname,
+      |                         ~~~~~~~~~~~~~~~~~~~~~~~~
+  361 |                         init_utsname()->release);
+      |                         ~~~~~~~~~~~~~~~~~~~~~~~~
 
-To resolve this issue, this patch increases BUFF_MAX to 64 MiB. The
-original comment for BUFF_MAX based the limit's calculation on a
-saturated 480 Mbit/s bus. Applying the same logic to a modern USB 3.2
-Gen 2×2 20 Gbit/s bus (~2500 MB/s over a 20ms window) indicates the
-buffer should be at least 50 MB. The new limit of 64 MiB covers that,
-plus a little extra for any overhead.
+Fix this by using "%.62s v%.62s", which ensures sysname and release are
+truncated to fit within the 128-byte field defined by
+FC_FDMI_HBA_ATTR_OSNAMEVERSION_LEN.
 
-With this change, both users and developers should now be able to debug
-and reverse engineer modern USB devices even when running unmodified
-distro kernels.
+[mkp: clarified commit description]
 
-Please note that this change does not affect the default buffer size. A
-larger buffer is only allocated when a user explicitly requests it via
-the MON_IOCT_RING_SIZE ioctl, so the change to the maximum buffer size
-should not unduly increase memory usage for users that don't
-deliberately request a larger buffer.
-
-Link: https://lore.kernel.org/CAO3ALPzdUkmMr0YMrODLeDSLZqNCkWcAP8NumuPHLjNJ8wC1kQ@mail.gmail.com
-Signed-off-by: Forest Crossman <cyrozap@gmail.com>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/CAO3ALPxU5RzcoueC454L=WZ1qGMfAcnxm+T+p+9D8O9mcrUbCQ@mail.gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/mon/mon_bin.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/scsi/libfc/fc_encode.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/mon/mon_bin.c b/drivers/usb/mon/mon_bin.c
-index 35483217b1f6c..93998d328d9aa 100644
---- a/drivers/usb/mon/mon_bin.c
-+++ b/drivers/usb/mon/mon_bin.c
-@@ -68,18 +68,20 @@
-  * The magic limit was calculated so that it allows the monitoring
-  * application to pick data once in two ticks. This way, another application,
-  * which presumably drives the bus, gets to hog CPU, yet we collect our data.
-- * If HZ is 100, a 480 mbit/s bus drives 614 KB every jiffy. USB has an
-- * enormous overhead built into the bus protocol, so we need about 1000 KB.
-+ *
-+ * Originally, for a 480 Mbit/s bus this required a buffer of about 1 MB. For
-+ * modern 20 Gbps buses, this value increases to over 50 MB. The maximum
-+ * buffer size is set to 64 MiB to accommodate this.
-  *
-  * This is still too much for most cases, where we just snoop a few
-  * descriptor fetches for enumeration. So, the default is a "reasonable"
-- * amount for systems with HZ=250 and incomplete bus saturation.
-+ * amount for typical, low-throughput use cases.
-  *
-  * XXX What about multi-megabyte URBs which take minutes to transfer?
-  */
--#define BUFF_MAX  CHUNK_ALIGN(1200*1024)
--#define BUFF_DFL   CHUNK_ALIGN(300*1024)
--#define BUFF_MIN     CHUNK_ALIGN(8*1024)
-+#define BUFF_MAX  CHUNK_ALIGN(64*1024*1024)
-+#define BUFF_DFL      CHUNK_ALIGN(300*1024)
-+#define BUFF_MIN        CHUNK_ALIGN(8*1024)
+diff --git a/drivers/scsi/libfc/fc_encode.h b/drivers/scsi/libfc/fc_encode.h
+index 74ae7fd15d8db..9107d89256055 100644
+--- a/drivers/scsi/libfc/fc_encode.h
++++ b/drivers/scsi/libfc/fc_encode.h
+@@ -354,7 +354,7 @@ static inline int fc_ct_ms_fill(struct fc_lport *lport,
+ 		put_unaligned_be16(len, &entry->len);
+ 		snprintf((char *)&entry->value,
+ 			FC_FDMI_HBA_ATTR_OSNAMEVERSION_LEN,
+-			"%s v%s",
++			"%.62s v%.62s",
+ 			init_utsname()->sysname,
+ 			init_utsname()->release);
  
- /*
-  * The per-event API header (2 per URB).
 -- 
 2.51.0
 
