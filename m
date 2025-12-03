@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-198952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05F21CA0949
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:43:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8596AC9FF5B
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:27:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 115FE30019C8
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:43:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7BA8A3022F25
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:24:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 590B7328B7E;
-	Wed,  3 Dec 2025 16:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50BAE31987E;
+	Wed,  3 Dec 2025 15:47:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wOEaRKkn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UF6HDTfI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1406332AAB7;
-	Wed,  3 Dec 2025 16:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AC1B313E3D;
+	Wed,  3 Dec 2025 15:47:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778209; cv=none; b=GzywS1RoqbEk5/h45S3GJ8SH7LGd/NWaR4xfcbif/AV6zkGVuskP+u7ayxUeI0pUsko3cqi/p/Gkz57T4/CK/Yse5XjXqw8vIvhJKP97Sh4bJoAn0U24QSEgelcFiRZxr0fEWRYjbEUH7WlPuXhmzBVw+pqaOvAJNEmbfQqe2S0=
+	t=1764776879; cv=none; b=sexFXiO5ud+n1EqDb8PeINkqi9mIPcKS2dIue58k1gYrWxy+e9xJ+9kSG2VdQ8AnWUTl2eTWCoqs/jqY7+34uGVn1M1PrZAzzylhjuUxPUGmmxDHtGmiE4jkdmvB1fGL+fvgXCSLphyT95Z1c1dDRvvYDL4lPDiaukqbXN6Y14s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778209; c=relaxed/simple;
-	bh=Q6a4IL5e19d3UMPPnUMS+WurZb0GJqEOmexKATmppFA=;
+	s=arc-20240116; t=1764776879; c=relaxed/simple;
+	bh=h++pVAUajJgEg5RyUaJxI4Sw1oS9UZIdybDyL53KmAY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MAhKqhODXxwpH+8pnd+oz/8BO2lneIQxc7nKECX5yhqpqEhU1FSEYFUARQTjcN0QaQp0oS3POUBJZ6MOJa4RtF292y8xwyvdSatjQpfqTdaHu2kfPcQ/BI54oxDN6Deohe4eqx6E7IDYXs7P2W0+ONEFGAaqGwZYFbUsF5a0EzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wOEaRKkn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89226C4CEF5;
-	Wed,  3 Dec 2025 16:10:08 +0000 (UTC)
+	 MIME-Version; b=IqohXWjSBf3zNHijp7/72ZPVJxfsNaecdZQ0Sp6EuNg8cMLZPkay+Y16ds+cipETeqojcgVvPHpZagf5CEzGXREQJfeKibu9WLegwSMmKE07LZo/gqx2wbaN7K6ocjxoCg2faS7Aaiu2uOCDDrxDVsh4oluqNNEk+h5yEDKEnnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UF6HDTfI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7360DC4CEF5;
+	Wed,  3 Dec 2025 15:47:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778208;
-	bh=Q6a4IL5e19d3UMPPnUMS+WurZb0GJqEOmexKATmppFA=;
+	s=korg; t=1764776878;
+	bh=h++pVAUajJgEg5RyUaJxI4Sw1oS9UZIdybDyL53KmAY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wOEaRKkn+dDioLhZtN27uZjVzwdUIXaLq8NqM1o0GFnbBzSuBV1kTX9SHqRj092Ej
-	 lF8AFVTUZ2HGV29oWXl65XJgHIo4VNt1YIZ/FU+QWlcg+F4Us2S4yXpKu5N6XIP9k7
-	 HJjW56o1TE8CaQ5TUyrvyPhTiT5kuX4MOgCi+qjk=
+	b=UF6HDTfIsor5O4CTmueMpYfyxmQI0Rfy2w3XOmMnGmt4mrpv6nMjQRyQwKt3nUMnG
+	 K9W7twVaJmFnLiF48evFl7DiI1exB87OK+AV97X8Y8tFW9epxGOCfNUHOHzBa6tqx0
+	 MeB5zTBtfIiSD3sGn8AQc10r/Rk804QFqRdA/qFw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"D. Wythe" <alibuda@linux.alibaba.com>,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Russell King (Oracle)" <linux@armlinux.org.uk>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 243/392] net/smc: fix mismatch between CLC header and proposal
+Subject: [PATCH 6.17 015/146] net: phy: mxl-gpy: fix link properties on USXGMII and internal PHYs
 Date: Wed,  3 Dec 2025 16:26:33 +0100
-Message-ID: <20251203152423.116878043@linuxfoundation.org>
+Message-ID: <20251203152347.026777763@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,57 +59,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: D. Wythe <alibuda@linux.alibaba.com>
+From: Daniel Golle <daniel@makrotopia.org>
 
-[ Upstream commit ec33f2e5a2d0dbbfd71435209aee812fdc9369b8 ]
+[ Upstream commit 081156ce13f8fa4e97b5148dc54d8c0ddf02117b ]
 
-The current CLC proposal message construction uses a mix of
-`ini->smc_type_v1/v2` and `pclc_base->hdr.typev1/v2` to decide whether
-to include optional extensions (IPv6 prefix extension for v1, and v2
-extension). This leads to a critical inconsistency: when
-`smc_clc_prfx_set()` fails - for example, in IPv6-only environments with
-only link-local addresses, or when the local IP address and the outgoing
-interface’s network address are not in the same subnet.
+gpy_update_interface() returns early in case the PHY is internal or
+connected via USXGMII. In this case the gigabit master/slave property
+as well as MDI/MDI-X status also won't be read which seems wrong.
+Always read those properties by moving the logic to retrieve them to
+gpy_read_status().
 
-As a result, the proposal message is assembled using the stale
-`ini->smc_type_v1` value—causing the IPv6 prefix extension to be
-included even though the header indicates v1 is not supported.
-The peer then receives a malformed CLC proposal where the header type
-does not match the payload, and immediately resets the connection.
-
-The fix ensures consistency between the CLC header flags and the actual
-payload by synchronizing `ini->smc_type_v1` with `pclc_base->hdr.typev1`
-when prefix setup fails.
-
-Fixes: 8c3dca341aea ("net/smc: build and send V2 CLC proposal")
-Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
-Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
-Link: https://patch.msgid.link/20251107024029.88753-1-alibuda@linux.alibaba.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: fd8825cd8c6fc ("net: phy: mxl-gpy: Add PHY Auto/MDI/MDI-X set driver for GPY211 chips")
+Fixes: 311abcdddc00a ("net: phy: add support to get Master-Slave configuration")
+Suggested-by: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Link: https://patch.msgid.link/71fccf3f56742116eb18cc070d2a9810479ea7f9.1763650701.git.daniel@makrotopia.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/smc_clc.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/phy/mxl-gpy.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/net/smc/smc_clc.c b/net/smc/smc_clc.c
-index 52a0ba939c91c..ec8c4cfdb1471 100644
---- a/net/smc/smc_clc.c
-+++ b/net/smc/smc_clc.c
-@@ -529,6 +529,7 @@ int smc_clc_send_proposal(struct smc_sock *smc, struct smc_init_info *ini)
- 				return SMC_CLC_DECL_CNFERR;
- 			}
- 			pclc_base->hdr.typev1 = SMC_TYPE_N;
-+			ini->smc_type_v1 = SMC_TYPE_N;
- 		} else {
- 			pclc_base->iparea_offset = htons(sizeof(*pclc_smcd));
- 			plen += sizeof(*pclc_prfx) +
+diff --git a/drivers/net/phy/mxl-gpy.c b/drivers/net/phy/mxl-gpy.c
+index 221b315203d06..2a873f791733a 100644
+--- a/drivers/net/phy/mxl-gpy.c
++++ b/drivers/net/phy/mxl-gpy.c
+@@ -578,13 +578,7 @@ static int gpy_update_interface(struct phy_device *phydev)
+ 		break;
+ 	}
+ 
+-	if (phydev->speed == SPEED_2500 || phydev->speed == SPEED_1000) {
+-		ret = genphy_read_master_slave(phydev);
+-		if (ret < 0)
+-			return ret;
+-	}
+-
+-	return gpy_update_mdix(phydev);
++	return 0;
+ }
+ 
+ static int gpy_read_status(struct phy_device *phydev)
+@@ -639,6 +633,16 @@ static int gpy_read_status(struct phy_device *phydev)
+ 		ret = gpy_update_interface(phydev);
+ 		if (ret < 0)
+ 			return ret;
++
++		if (phydev->speed == SPEED_2500 || phydev->speed == SPEED_1000) {
++			ret = genphy_read_master_slave(phydev);
++			if (ret < 0)
++				return ret;
++		}
++
++		ret = gpy_update_mdix(phydev);
++		if (ret < 0)
++			return ret;
+ 	}
+ 
+ 	return 0;
 -- 
 2.51.0
 
