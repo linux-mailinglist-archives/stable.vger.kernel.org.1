@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-199620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FC74CA020F
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:50:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6897ACA08CF
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:40:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 52384300C5E4
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:46:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5467C329733B
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:20:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CBC136C593;
-	Wed,  3 Dec 2025 16:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55F6526B756;
+	Wed,  3 Dec 2025 16:53:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C2W9XYRp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pCooicbO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA4C3148CD;
-	Wed,  3 Dec 2025 16:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E65939A27B;
+	Wed,  3 Dec 2025 16:53:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780393; cv=none; b=Cmi2tIh9sNORBIVDQhhDwoyVsAzbAHwYjDUeAZSg6ZMMIYGQ9tI10GJ3Z+wHvF6iIKS2lRLs1jcHlJdK7Mv817oIZyaqktKhB/sCNKISED96/fUVls1/v0PVABXpGeaAJEB17awIrtO4+La/AsUpSFvhJhdNUkuVpRgAhuMuvYU=
+	t=1764780823; cv=none; b=DT/Avg2MIT59sRz2r0/7z6vWX7/OWmXKg6bh1P79h2JNxbqdEi9axPTnbuNWyRBMVJJfvnRdqkQwVVmbwth//qbWXPC5gmE1YFvbiVtcUTUIkEHZWPRUZU+Y1YOFYSEHkBXxvcNlB4afGns9Rl/mjIw3CP4vuCbmpu0css4N/QU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780393; c=relaxed/simple;
-	bh=SP70hSBlLfJr7soh/lJJs3dqpRtoH97hxMvUyl/J1uU=;
+	s=arc-20240116; t=1764780823; c=relaxed/simple;
+	bh=9bbMl+VR//pz9hOQjx6eQmrkN9HOBfIlgGzUTjpvhbg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fQDHkokqji9Mcs4H2LFYODpQMoCGHXytEPqWi4Ik2pm+8GeJAR2v1lp7fmgm1iqo3iD4gM2nwv/phUjHYEWUfgroS0CKNlIYjGq0KKrwvGL+ezRcuxUoMrJTu6C8i9jc1651/s2dcOknj7Ke1iZoMaw1X9mHUAvP9tIiDUPPXYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C2W9XYRp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C9AC4CEF5;
-	Wed,  3 Dec 2025 16:46:32 +0000 (UTC)
+	 MIME-Version; b=NkZEAfd/3XNKhyJ/Lb2TaW8qllsFOCkhcyWBp7yDu3ZAEwcJqP0H61vJrog7nxlohM2pWlI7Gw4ih7xEVW56jsyXni6XIJtDkCt0ujOP9yiPBIomHeBFHll4Qd0hFVkgcIyGfx+QCO/bQpnGo2pX6T73IypKLA1QDtV8oLzIxDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pCooicbO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57BD4C4CEF5;
+	Wed,  3 Dec 2025 16:53:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780393;
-	bh=SP70hSBlLfJr7soh/lJJs3dqpRtoH97hxMvUyl/J1uU=;
+	s=korg; t=1764780822;
+	bh=9bbMl+VR//pz9hOQjx6eQmrkN9HOBfIlgGzUTjpvhbg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C2W9XYRpONvJg1KViVTtKw4K2rSPAtLDP4bGGvz2f+oug7nFwUpdcJC4AaMrAjYbX
-	 plLJPj762apsVnhIkxmP4CZ2VV3QBxFA5M8sbrwmKcD8MDFt8yFsdatYrbHQBSCG8w
-	 ibZv2r0lxCg2ADls9nFkmeSCQ2Dwl4PWZSDfnnOI=
+	b=pCooicbOdhHsynfIRQRzS0DF0jGewx2owWxjV2cYXbB4YpvmzCu1iBCT58bZWhdNo
+	 rpPJugeBgCFT9PG7o3t9Uh/xqz+hfyHWZJlplbYBYQMrBrIG6aOOxUz0ReNnA0rlNt
+	 kBsSyw4/v1w6TyFjKg/YJx9owOlDtX+njgks+1ys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>
-Subject: [PATCH 6.1 544/568] xhci: dbgtty: fix device unregister
+	Frank Li <Frank.Li@nxp.com>,
+	Alexander Dahl <ada@thorsis.com>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: [PATCH 6.12 067/132] arm64: dts: imx8dxl-ss-conn: swap interrupts number of eqos
 Date: Wed,  3 Dec 2025 16:29:06 +0100
-Message-ID: <20251203152500.635478452@linuxfoundation.org>
+Message-ID: <20251203152345.779604914@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,50 +58,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Łukasz Bartosik <ukaszb@chromium.org>
+From: Frank Li <Frank.Li@nxp.com>
 
-commit 1f73b8b56cf35de29a433aee7bfff26cea98be3f upstream.
+commit 5b6677d6451bbbac3b6ab93fae6506b59e2c19bd upstream.
 
-When DbC is disconnected then xhci_dbc_tty_unregister_device()
-is called. However if there is any user space process blocked
-on write to DbC terminal device then it will never be signalled
-and thus stay blocked indifinitely.
+Swap interrupt numbers of eqos because the below commit just swap
+interrupt-names and missed swap interrupts also.
 
-This fix adds a tty_vhangup() call in xhci_dbc_tty_unregister_device().
-The tty_vhangup() wakes up any blocked writers and causes subsequent
-write attempts to DbC terminal device to fail.
+The driver (drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c) use
+interrupt-names to get irq numbers.
 
-Cc: stable <stable@kernel.org>
-Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
-Signed-off-by: Łukasz Bartosik <ukaszb@chromium.org>
-Link: https://patch.msgid.link/20251119212910.1245694-1-ukaszb@google.com
+Fixes: f29c19a6e488 ("arm64: dts: imx8dxl-ss-conn: Fix Ethernet interrupt-names order")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Tested-by: Alexander Dahl <ada@thorsis.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-dbgtty.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/arm64/boot/dts/freescale/imx8dxl-ss-conn.dtsi |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/host/xhci-dbgtty.c
-+++ b/drivers/usb/host/xhci-dbgtty.c
-@@ -519,6 +519,12 @@ static void xhci_dbc_tty_unregister_devi
- 
- 	if (!port->registered)
- 		return;
-+	/*
-+	 * Hang up the TTY. This wakes up any blocked
-+	 * writers and causes subsequent writes to fail.
-+	 */
-+	tty_vhangup(port->port.tty);
-+
- 	tty_unregister_device(dbc_tty_driver, port->minor);
- 	xhci_dbc_tty_exit_port(port);
- 	port->registered = false;
+--- a/arch/arm64/boot/dts/freescale/imx8dxl-ss-conn.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8dxl-ss-conn.dtsi
+@@ -27,8 +27,8 @@
+ 		compatible = "nxp,imx8dxl-dwmac-eqos", "snps,dwmac-5.10a";
+ 		reg = <0x5b050000 0x10000>;
+ 		interrupt-parent = <&gic>;
+-		interrupts = <GIC_SPI 163 IRQ_TYPE_LEVEL_HIGH>,
+-			     <GIC_SPI 162 IRQ_TYPE_LEVEL_HIGH>;
++		interrupts = <GIC_SPI 162 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 163 IRQ_TYPE_LEVEL_HIGH>;
+ 		interrupt-names = "macirq", "eth_wake_irq";
+ 		clocks = <&eqos_lpcg IMX_LPCG_CLK_4>,
+ 			 <&eqos_lpcg IMX_LPCG_CLK_6>,
 
 
 
