@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB368CA04AD
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:14:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 488D0CA0200
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:49:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E65C330E3C6A
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:02:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 88410301C3FA
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:46:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5F453557EB;
-	Wed,  3 Dec 2025 16:56:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7855B3624AE;
+	Wed,  3 Dec 2025 16:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vzke32kq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4cAWOYf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FFFA350285;
-	Wed,  3 Dec 2025 16:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3474F3074B3;
+	Wed,  3 Dec 2025 16:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780965; cv=none; b=JDB9jPdlXdrvjUqjV00GYkczm4uxXjBbBjbUClrgLTiJEz+s61zGgX51kIdvYmW3lIjBvie+gQ8SbX+iLppkh6sFGj5E42cTf45APTKbZWUdNxlpfjpbMmcsZfV6CpgmpTIK36NeE7armIdki7q0W0hM1pZd2IrFCi0U7EGLtYo=
+	t=1764780383; cv=none; b=MrQV11cjf1/genCctUhnKFUYpIcyG8IudriUg1A/e/zEfQFRhOeWg4WFxiv0xI2UVpxGXh6xWFatoR7oIjwkZppAD25UZZTy6+O7q/wq6ETRUEcehN1eJDAAVyvruFoS/xDrd9bV99pG8n1rhSLnr0uo6lMea+5bAHIX4YRBTik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780965; c=relaxed/simple;
-	bh=1WxeUsn5KHfiiGS05As/8pKsHvzMHZ1LkzwG1lcxUJc=;
+	s=arc-20240116; t=1764780383; c=relaxed/simple;
+	bh=6spceUFpbhljT5/sB4M9xs0CFhoSYyTCFbbx5jNGZtg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tJZe7q1rCeF9cXG7oepd4UQt4s8z6HA2sgsLT15k9rlyO4Junoj9OVeSV2XT7ThmRAwBENwM70H7/2bO7Xjhprs+otnr43uiTNXd9uhMT6MIwxfDCNy7LToJf34K9nsjrEa9CD4sYKymCN2+3Ml97lIq4qKNrUjqDxEgnrMbWFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vzke32kq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4136FC4CEF5;
-	Wed,  3 Dec 2025 16:56:04 +0000 (UTC)
+	 MIME-Version; b=VRF09/TWuy0dBeQYRn+kKth4zrb78GHNXHutnnQRR1Ztk1JD6hTbFuXyjxZtk0Uo0Ao57EbBSaBiMU4vDSVrt8tOpCAzRcB9UFNUDgX/Ci9I4lPWDN/dw5MjSwTQ8O5eoWz23JzbhLNgy21ZZcAQN056WN+WFWYoqtxK4MdP2Mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4cAWOYf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF379C4CEF5;
+	Wed,  3 Dec 2025 16:46:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780964;
-	bh=1WxeUsn5KHfiiGS05As/8pKsHvzMHZ1LkzwG1lcxUJc=;
+	s=korg; t=1764780383;
+	bh=6spceUFpbhljT5/sB4M9xs0CFhoSYyTCFbbx5jNGZtg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vzke32kqDbPRWAJg/MmGF6l/3qWfzMUFnvSJfL72zw+8JyO3ucFd0jK1LJEh1/4yc
-	 A0PqZL3XslKgB0a74GqDwXQCtgtnQi0dhCg98sgATA6A5niE92gqrO34tHY51mqaG/
-	 GCZ5oWcxoG50MRNbhB9wnEojTkcg6hBP0iUan0l0=
+	b=q4cAWOYfFArCIMaZb7NVMxYRBwFuHS05hkQvZkPhQasGJ/JUqw4ORAXcbG4A7r9qG
+	 UvAOVtV0yXDcVwmv4oF0l+sTpVjbsVySWQQY3cIWEbvsXa+N0tIlxuAeaEX3ZXJxgG
+	 V6NGnE3MH7k3KisqVmnwAZumyXEIUVfFnPXfMEIk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 10/93] net: lan966x: Fix the initialization of taprio
+	stable <stable@kernel.org>,
+	Yu Chen <chenyu45@xiaomi.com>,
+	Owen Gu <guhuinan@xiaomi.com>,
+	Oliver Neukum <oneukum@suse.com>
+Subject: [PATCH 6.1 541/568] usb: uas: fix urb unmapping issue when the uas device is remove during ongoing data transfer
 Date: Wed,  3 Dec 2025 16:29:03 +0100
-Message-ID: <20251203152336.888262696@linuxfoundation.org>
+Message-ID: <20251203152500.526705818@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +61,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
+From: Owen Gu <guhuinan@xiaomi.com>
 
-[ Upstream commit 9780f535f8e0f20b4632b5a173ead71aa8f095d2 ]
+commit 26d56a9fcb2014b99e654127960aa0a48a391e3c upstream.
 
-To initialize the taprio block in lan966x, it is required to configure
-the register REVISIT_DLY. The purpose of this register is to set the
-delay before revisit the next gate and the value of this register depends
-on the system clock. The problem is that the we calculated wrong the value
-of the system clock period in picoseconds. The actual system clock is
-~165.617754MHZ and this correspond to a period of 6038 pico seconds and
-not 15125 as currently set.
+When a UAS device is unplugged during data transfer, there is
+a probability of a system panic occurring. The root cause is
+an access to an invalid memory address during URB callback handling.
+Specifically, this happens when the dma_direct_unmap_sg() function
+is called within the usb_hcd_unmap_urb_for_dma() interface, but the
+sg->dma_address field is 0 and the sg data structure has already been
+freed.
 
-Fixes: e462b2717380b4 ("net: lan966x: Add offload support for taprio")
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251121061411.810571-1-horatiu.vultur@microchip.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The SCSI driver sends transfer commands by invoking uas_queuecommand_lck()
+in uas.c, using the uas_submit_urbs() function to submit requests to USB.
+Within the uas_submit_urbs() implementation, three URBs (sense_urb,
+data_urb, and cmd_urb) are sequentially submitted. Device removal may
+occur at any point during uas_submit_urbs execution, which may result
+in URB submission failure. However, some URBs might have been successfully
+submitted before the failure, and uas_submit_urbs will return the -ENODEV
+error code in this case. The current error handling directly calls
+scsi_done(). In the SCSI driver, this eventually triggers scsi_complete()
+to invoke scsi_end_request() for releasing the sgtable. The successfully
+submitted URBs, when being unlinked to giveback, call
+usb_hcd_unmap_urb_for_dma() in hcd.c, leading to exceptions during sg
+unmapping operations since the sg data structure has already been freed.
+
+This patch modifies the error condition check in the uas_submit_urbs()
+function. When a UAS device is removed but one or more URBs have already
+been successfully submitted to USB, it avoids immediately invoking
+scsi_done() and save the cmnd to devinfo->cmnd array. If the successfully
+submitted URBs is completed before devinfo->resetting being set, then
+the scsi_done() function will be called within uas_try_complete() after
+all pending URB operations are finalized. Otherwise, the scsi_done()
+function will be called within uas_zap_pending(), which is executed after
+usb_kill_anchored_urbs().
+
+The error handling only takes effect when uas_queuecommand_lck() calls
+uas_submit_urbs() and returns the error value -ENODEV . In this case,
+the device is disconnected, and the flow proceeds to uas_disconnect(),
+where uas_zap_pending() is invoked to call uas_try_complete().
+
+Fixes: eb2a86ae8c54 ("USB: UAS: fix disconnect by unplugging a hub")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Yu Chen <chenyu45@xiaomi.com>
+Signed-off-by: Owen Gu <guhuinan@xiaomi.com>
+Acked-by: Oliver Neukum <oneukum@suse.com>
+Link: https://patch.msgid.link/20251120123336.3328-1-guhuinan@xiaomi.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/usb/storage/uas.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c b/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c
-index 87e5e81d40dc6..84f5b4410e48e 100644
---- a/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c
-+++ b/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c
-@@ -1,11 +1,14 @@
- // SPDX-License-Identifier: GPL-2.0+
- 
- #include <linux/ptp_classify.h>
-+#include <linux/units.h>
- 
- #include "lan966x_main.h"
- #include "vcap_api.h"
- #include "vcap_api_client.h"
- 
-+#define LAN9X66_CLOCK_RATE	165617754
+--- a/drivers/usb/storage/uas.c
++++ b/drivers/usb/storage/uas.c
+@@ -697,6 +697,10 @@ static int uas_queuecommand_lck(struct s
+ 	 * of queueing, no matter how fatal the error
+ 	 */
+ 	if (err == -ENODEV) {
++		if (cmdinfo->state & (COMMAND_INFLIGHT | DATA_IN_URB_INFLIGHT |
++				DATA_OUT_URB_INFLIGHT))
++			goto out;
 +
- #define LAN966X_MAX_PTP_ID	512
+ 		set_host_byte(cmnd, DID_NO_CONNECT);
+ 		scsi_done(cmnd);
+ 		goto zombie;
+@@ -710,6 +714,7 @@ static int uas_queuecommand_lck(struct s
+ 		uas_add_work(cmnd);
+ 	}
  
- /* Represents 1ppm adjustment in 2^59 format with 6.037735849ns as reference
-@@ -1132,5 +1135,5 @@ void lan966x_ptp_rxtstamp(struct lan966x *lan966x, struct sk_buff *skb,
- u32 lan966x_ptp_get_period_ps(void)
- {
- 	/* This represents the system clock period in picoseconds */
--	return 15125;
-+	return PICO / LAN9X66_CLOCK_RATE;
- }
--- 
-2.51.0
-
++out:
+ 	devinfo->cmnd[idx] = cmnd;
+ zombie:
+ 	spin_unlock_irqrestore(&devinfo->lock, flags);
 
 
 
