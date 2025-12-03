@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-198500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B3ECC9FB81
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:55:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDB6DCA0845
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:36:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DBBE030281B2
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:45:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0E0D832C253A
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:17:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CDF631352C;
-	Wed,  3 Dec 2025 15:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71C2135BDA0;
+	Wed,  3 Dec 2025 16:41:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mYC68HuC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y8oXWP9x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 236E731329C;
-	Wed,  3 Dec 2025 15:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A61E340279;
+	Wed,  3 Dec 2025 16:41:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776751; cv=none; b=REa7MU5H/MUZKyjQ571pnto5iNrv7lUM/+7KLNauxLrzxZQD6oQl0pQOY70xZMTVIKGsQjKeAGd5e+db+PjDEFL9GbUI0yYf5EVoPeYoP5yDPHE5uS+ALYll2eML77Mg13VOVyWoJNLXwXyMCK+heY8pyL5GoNhI6lcI3Rc8Ddc=
+	t=1764780074; cv=none; b=Q2InVwjq81K0mfYXSf7is3YkYSz7e2LxYf5teDcURHSfjYNy+EiM17FBsV9KquhyRaJyK3PAjUFrZoVIwtAnHlCM/TCOoJyf9w4eN+UivbUVPzIfEB+pazKtbNNsDK1NcpglpATFjk+Vum1kjhgTdTsHaSR3zBRMlVWWouIVOd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776751; c=relaxed/simple;
-	bh=685MwvQgZuKDqRq08vpVWl/AucKGFx0GlpAfGnyhKSc=;
+	s=arc-20240116; t=1764780074; c=relaxed/simple;
+	bh=5Qy8cIt3zUCvvM1FbZGtDrs7zVNg8Zmuw9CQsl6OB4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Eg6VHQrg1iOEB3edYfYzGul/2XXbkpUWp71gswZ66lHqJDE3G3xfgG2tlSO0c5KI0O5DdGgQtXbSmHFJv4c+s8KS69JuJUIW3DGDvAUjajEoZDWeqb2X1ZFGmWYpboKrIz7GHLvYaz/pnYEPuuelp1xdmG0jTc3C1Ma0f+Q2tDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mYC68HuC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F0DAC4CEF5;
-	Wed,  3 Dec 2025 15:45:50 +0000 (UTC)
+	 MIME-Version; b=huO+pVFPwRfyTx6WB0IQGfDQGTkTnVJFCZUUzBy8a+Ay5+cuQ7FRXQnGF6JW6DKoCKN+UX6HBtSncYkCCqXRNBEP3lJgdow9ugXV56jscliNyNjFAUE0Iv+fxJ+OW3a+fUBIaPuMirsa22PW7nAVOKXmgLeW7cu9FDBk6Foi8VM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y8oXWP9x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E5E2C4CEF5;
+	Wed,  3 Dec 2025 16:41:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776751;
-	bh=685MwvQgZuKDqRq08vpVWl/AucKGFx0GlpAfGnyhKSc=;
+	s=korg; t=1764780074;
+	bh=5Qy8cIt3zUCvvM1FbZGtDrs7zVNg8Zmuw9CQsl6OB4o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mYC68HuC2yBJCqB0ByLBI7zacYaKFjfmKbIFCiT6OEINlaP23J+TJinJNmOMue2lh
-	 TjQdlGnWUC+LlPnaxO0hsTfSPrBhuksddzkZK5bgop3IQRoGLDIefCmfXZwfkYMJAM
-	 JJG4EHFQ/qsVb6p1vp+IP8FAFHf3/6xuEwDa6I00=
+	b=y8oXWP9xprW4mmu9dhHgzWrKAIrJmJ5PK2dqqIPrKWrnERPswaJIxldqX6fo2Ndk5
+	 lZ+5j0vI4ouseuWIkgyLkGy69hH1QWsJB+zyvukghPDfDe1jyginon5hdZRcG8A0iS
+	 XSTNj7iMGzbt0gD5ko8hRwY4DuN2N4hQEEKXgwGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 244/300] pmdomain: arm: scmi: Fix genpd leak on provider registration failure
-Date: Wed,  3 Dec 2025 16:27:28 +0100
-Message-ID: <20251203152409.667178789@linuxfoundation.org>
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 447/568] mptcp: avoid unneeded subflow-level drops
+Date: Wed,  3 Dec 2025 16:27:29 +0100
+Message-ID: <20251203152457.080635804@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +60,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sudeep Holla <sudeep.holla@arm.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 7458f72cc28f9eb0de811effcb5376d0ec19094a ]
+commit 4f102d747cadd8f595f2b25882eed9bec1675fb1 upstream.
 
-If of_genpd_add_provider_onecell() fails during probe, the previously
-created generic power domains are not removed, leading to a memory leak
-and potential kernel crash later in genpd_debug_add().
+The rcv window is shared among all the subflows. Currently, MPTCP sync
+the TCP-level rcv window with the MPTCP one at tcp_transmit_skb() time.
 
-Add proper error handling to unwind the initialized domains before
-returning from probe to ensure all resources are correctly released on
-failure.
+The above means that incoming data may sporadically observe outdated
+TCP-level rcv window and being wrongly dropped by TCP.
 
-Example crash trace observed without this fix:
+Address the issue checking for the edge condition before queuing the
+data at TCP level, and eventually syncing the rcv window as needed.
 
-  | Unable to handle kernel paging request at virtual address fffffffffffffc70
-  | CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.18.0-rc1 #405 PREEMPT
-  | Hardware name: ARM LTD ARM Juno Development Platform/ARM Juno Development Platform
-  | pstate: 00000005 (nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-  | pc : genpd_debug_add+0x2c/0x160
-  | lr : genpd_debug_init+0x74/0x98
-  | Call trace:
-  |  genpd_debug_add+0x2c/0x160 (P)
-  |  genpd_debug_init+0x74/0x98
-  |  do_one_initcall+0xd0/0x2d8
-  |  do_initcall_level+0xa0/0x140
-  |  do_initcalls+0x60/0xa8
-  |  do_basic_setup+0x28/0x40
-  |  kernel_init_freeable+0xe8/0x170
-  |  kernel_init+0x2c/0x140
-  |  ret_from_fork+0x10/0x20
+Note that the issue is actually present from the very first MPTCP
+implementation, but backports older than the blamed commit below will
+range from impossible to useless.
 
-Fixes: 898216c97ed2 ("firmware: arm_scmi: add device power domain support using genpd")
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Before:
+
+  $ nstat -n; sleep 1; nstat -z TcpExtBeyondWindow
+  TcpExtBeyondWindow              14                 0.0
+
+After:
+
+  $ nstat -n; sleep 1; nstat -z TcpExtBeyondWindow
+  TcpExtBeyondWindow              0                  0.0
+
+Fixes: fa3fe2b15031 ("mptcp: track window announced to peer")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-[ drivers/pmdomain/arm/scmi_pm_domain.c -> drivers/firmware/arm_scmi/scmi_pm_domain.c ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-2-806d3781c95f@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/arm_scmi/scmi_pm_domain.c |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ net/mptcp/options.c  |   31 +++++++++++++++++++++++++++++++
+ net/mptcp/protocol.h |    1 +
+ 2 files changed, 32 insertions(+)
 
---- a/drivers/firmware/arm_scmi/scmi_pm_domain.c
-+++ b/drivers/firmware/arm_scmi/scmi_pm_domain.c
-@@ -53,7 +53,7 @@ static int scmi_pd_power_off(struct gene
- 
- static int scmi_pm_domain_probe(struct scmi_device *sdev)
- {
--	int num_domains, i;
-+	int num_domains, i, ret;
- 	struct device *dev = &sdev->dev;
- 	struct device_node *np = dev->of_node;
- 	struct scmi_pm_domain *scmi_pd;
-@@ -106,9 +106,18 @@ static int scmi_pm_domain_probe(struct s
- 	scmi_pd_data->domains = domains;
- 	scmi_pd_data->num_domains = num_domains;
- 
-+	ret = of_genpd_add_provider_onecell(np, scmi_pd_data);
-+	if (ret)
-+		goto err_rm_genpds;
-+
- 	dev_set_drvdata(dev, scmi_pd_data);
- 
--	return of_genpd_add_provider_onecell(np, scmi_pd_data);
-+	return 0;
-+err_rm_genpds:
-+	for (i = num_domains - 1; i >= 0; i--)
-+		pm_genpd_remove(domains[i]);
-+
-+	return ret;
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -1028,6 +1028,31 @@ u64 __mptcp_expand_seq(u64 old_seq, u64
+ 	return cur_seq;
  }
  
- static void scmi_pm_domain_remove(struct scmi_device *sdev)
++static void rwin_update(struct mptcp_sock *msk, struct sock *ssk,
++			struct sk_buff *skb)
++{
++	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(ssk);
++	struct tcp_sock *tp = tcp_sk(ssk);
++	u64 mptcp_rcv_wnd;
++
++	/* Avoid touching extra cachelines if TCP is going to accept this
++	 * skb without filling the TCP-level window even with a possibly
++	 * outdated mptcp-level rwin.
++	 */
++	if (!skb->len || skb->len < tcp_receive_window(tp))
++		return;
++
++	mptcp_rcv_wnd = atomic64_read(&msk->rcv_wnd_sent);
++	if (!after64(mptcp_rcv_wnd, subflow->rcv_wnd_sent))
++		return;
++
++	/* Some other subflow grew the mptcp-level rwin since rcv_wup,
++	 * resync.
++	 */
++	tp->rcv_wnd += mptcp_rcv_wnd - subflow->rcv_wnd_sent;
++	subflow->rcv_wnd_sent = mptcp_rcv_wnd;
++}
++
+ static void ack_update_msk(struct mptcp_sock *msk,
+ 			   struct sock *ssk,
+ 			   struct mptcp_options_received *mp_opt)
+@@ -1188,6 +1213,7 @@ bool mptcp_incoming_options(struct sock
+ 	 */
+ 	if (mp_opt.use_ack)
+ 		ack_update_msk(msk, sk, &mp_opt);
++	rwin_update(msk, sk, skb);
+ 
+ 	/* Zero-data-length packets are dropped by the caller and not
+ 	 * propagated to the MPTCP layer, so the skb extension does not
+@@ -1274,6 +1300,10 @@ static void mptcp_set_rwin(struct tcp_so
+ 
+ 	if (rcv_wnd_new != rcv_wnd_old) {
+ raise_win:
++		/* The msk-level rcv wnd is after the tcp level one,
++		 * sync the latter.
++		 */
++		rcv_wnd_new = rcv_wnd_old;
+ 		win = rcv_wnd_old - ack_seq;
+ 		tp->rcv_wnd = min_t(u64, win, U32_MAX);
+ 		new_win = tp->rcv_wnd;
+@@ -1297,6 +1327,7 @@ raise_win:
+ 
+ update_wspace:
+ 	WRITE_ONCE(msk->old_wspace, tp->rcv_wnd);
++	subflow->rcv_wnd_sent = rcv_wnd_new;
+ }
+ 
+ static void mptcp_track_rwin(struct tcp_sock *tp)
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -458,6 +458,7 @@ struct mptcp_subflow_context {
+ 	u64	remote_key;
+ 	u64	idsn;
+ 	u64	map_seq;
++	u64	rcv_wnd_sent;
+ 	u32	snd_isn;
+ 	u32	token;
+ 	u32	rel_write_seq;
 
 
 
