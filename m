@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-198365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1480C9F950
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:43:17 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22AE5CA027F
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:52:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5F33F300E3F7
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:38:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 89FDB30A3172
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:44:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D564314A8E;
-	Wed,  3 Dec 2025 15:38:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F5383563FF;
+	Wed,  3 Dec 2025 16:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kximjK1V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PprgLXGq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE826314A80;
-	Wed,  3 Dec 2025 15:38:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BBAC3559D4;
+	Wed,  3 Dec 2025 16:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776300; cv=none; b=OS+wWdvWHZQM1qW9WvhrLsEou1YQjuwWown258juwt2US57qYRNoDDTwjl399wt5OanXUlckgkMJKMNEg7iWmkToQYRX6Wx9gOXTiYJFylxm3gJNjGrf9RGQdYzBs5uLmWBpJwcHWQ8AJdvCyKBmihEOQTZMfGQL8cy6vNq6gBo=
+	t=1764779739; cv=none; b=Lx0Mlt+0Tb8TujwM1XcKLjysyjmp8kSlFJMj+e8kPxgCFPTg+oSDY9AYJGCHQxFbPK2oD31Cu2qZGLpVjdtGFY++ihYsWOYcVah0f/I+DoNaobsIzUumB8Ov2pBGqflPURECeT+HzU/r6uWW8Ljo4y0MCposfvsTAKWSnazQ5U4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776300; c=relaxed/simple;
-	bh=Te73L48H0pWG1nd+LAuTg3vtxvqf1tRfApdxcDjcGQM=;
+	s=arc-20240116; t=1764779739; c=relaxed/simple;
+	bh=IWkp5zhPGdyFt4pA06q/yjVSGTYwFQiqlOweqmPX96U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yom7QQX/p3E9kpPAWbO68N4GnvLnhWUJOvmLLMcpqzi9XiE9ZpmrasK9v8Dl5mf8mlj71FM8R7i+lEYtLIjVrFFzwOhhKrtPMUp9ObL4f2X+Zqe+oLNhCTqw4wkq+aqni3iDxuk9++YEERZ6uqXJlnfEJtTXNiR4VXdIczACOrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kximjK1V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47036C4CEF5;
-	Wed,  3 Dec 2025 15:38:18 +0000 (UTC)
+	 MIME-Version; b=mcMeSqAU3w3o5P9dr2BFEuUTRGmOWpvAlXVOGHNJjt00M4hgcNS7Bd4N0V8sDtp2yEbc19/rmBmuOW7GAr+QgnZlHPU3W0vOYACsLi4f7gPG9ua4LrZFd730f7R+Ewb2YIvw5XdNALAhKWOdj98bmczKUbDAXerDt6jgpLYSQM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PprgLXGq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FD91C4CEF5;
+	Wed,  3 Dec 2025 16:35:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776299;
-	bh=Te73L48H0pWG1nd+LAuTg3vtxvqf1tRfApdxcDjcGQM=;
+	s=korg; t=1764779739;
+	bh=IWkp5zhPGdyFt4pA06q/yjVSGTYwFQiqlOweqmPX96U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kximjK1V1ousIW0pYZBeZqalQs+Dh0bDfvm1KH/+CfU8R4LHpnUgTH248ccHcGcrN
-	 0BOrz4UNydGN3HahOUQP7Bil7lBAMqGBgZBLDLnyPgGhi0+xFnNRR6lfssw1DLZdQW
-	 qDMFzAvLP0I/hjeyG27vYrJ+2QbbNGEaApqpAz2o=
+	b=PprgLXGq78Ka9Shb1NI0hJIAjgnppjTgSQXkjc7fGqZElF5YDCTRLpM0ibq9pgiH1
+	 DjsNCA52rcdqYuFJc+NFC07prbzMApK9Obx2yDO9+zjabiof32X5z2Tp28b0gE4qAZ
+	 XNzmXZH1JUOyZB6gHn+mi7E7bC91ALL4XVsHltwY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chi Zhiling <chizhiling@kylinos.cn>,
+	ChenXiaoSong <chenxiaosong@kylinos.cn>,
+	ZhangGuoDong <zhangguodong@kylinos.cn>,
 	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 142/300] exfat: limit log print for IO error
-Date: Wed,  3 Dec 2025 16:25:46 +0100
-Message-ID: <20251203152405.878535876@linuxfoundation.org>
+Subject: [PATCH 6.1 345/568] smb/server: fix possible refcount leak in smb2_sess_setup()
+Date: Wed,  3 Dec 2025 16:25:47 +0100
+Message-ID: <20251203152453.340364925@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,87 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chi Zhiling <chizhiling@kylinos.cn>
+From: ZhangGuoDong <zhangguodong@kylinos.cn>
 
-[ Upstream commit 6dfba108387bf4e71411b3da90b2d5cce48ba054 ]
+[ Upstream commit 379510a815cb2e64eb0a379cb62295d6ade65df0 ]
 
-For exFAT filesystems with 4MB read_ahead_size, removing the storage device
-when the read operation is in progress, which cause the last read syscall
-spent 150s [1]. The main reason is that exFAT generates excessive log
-messages [2].
+Reference count of ksmbd_session will leak when session need reconnect.
+Fix this by adding the missing ksmbd_user_session_put().
 
-After applying this patch, approximately 300,000 lines of log messages
-were suppressed, and the delay of the last read() syscall was reduced
-to about 4 seconds.
-
-[1]:
-write(5, "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"..., 131072) = 131072 <0.000120>
-read(4, "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"..., 131072) = 131072 <0.000032>
-write(5, "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"..., 131072) = 131072 <0.000119>
-read(4, 0x7fccf28ae000, 131072)         = -1 EIO (Input/output error) <150.186215>
-
-[2]:
-[  333.696603] exFAT-fs (vdb): error, failed to access to FAT (entry 0x0000d780, err:-5)
-[  333.697378] exFAT-fs (vdb): error, failed to access to FAT (entry 0x0000d780, err:-5)
-[  333.698156] exFAT-fs (vdb): error, failed to access to FAT (entry 0x0000d780, err:-5)
-
-Signed-off-by: Chi Zhiling <chizhiling@kylinos.cn>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Co-developed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
+Signed-off-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
+Signed-off-by: ZhangGuoDong <zhangguodong@kylinos.cn>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/exfat/fatent.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ fs/smb/server/smb2pdu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/exfat/fatent.c b/fs/exfat/fatent.c
-index b6cce8225d058..38a7b129f731e 100644
---- a/fs/exfat/fatent.c
-+++ b/fs/exfat/fatent.c
-@@ -88,35 +88,36 @@ int exfat_ent_get(struct super_block *sb, unsigned int loc,
- 	int err;
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 173135f6f7dbf..e3ea06aab8c1b 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -1796,6 +1796,7 @@ int smb2_sess_setup(struct ksmbd_work *work)
  
- 	if (!is_valid_cluster(sbi, loc)) {
--		exfat_fs_error(sb, "invalid access to FAT (entry 0x%08x)",
-+		exfat_fs_error_ratelimit(sb,
-+			"invalid access to FAT (entry 0x%08x)",
- 			loc);
- 		return -EIO;
- 	}
- 
- 	err = __exfat_ent_get(sb, loc, content);
- 	if (err) {
--		exfat_fs_error(sb,
-+		exfat_fs_error_ratelimit(sb,
- 			"failed to access to FAT (entry 0x%08x, err:%d)",
- 			loc, err);
- 		return err;
- 	}
- 
- 	if (*content == EXFAT_FREE_CLUSTER) {
--		exfat_fs_error(sb,
-+		exfat_fs_error_ratelimit(sb,
- 			"invalid access to FAT free cluster (entry 0x%08x)",
- 			loc);
- 		return -EIO;
- 	}
- 
- 	if (*content == EXFAT_BAD_CLUSTER) {
--		exfat_fs_error(sb,
-+		exfat_fs_error_ratelimit(sb,
- 			"invalid access to FAT bad cluster (entry 0x%08x)",
- 			loc);
- 		return -EIO;
- 	}
- 
- 	if (*content != EXFAT_EOF_CLUSTER && !is_valid_cluster(sbi, *content)) {
--		exfat_fs_error(sb,
-+		exfat_fs_error_ratelimit(sb,
- 			"invalid access to FAT (entry 0x%08x) bogus content (0x%08x)",
- 			loc, *content);
- 		return -EIO;
+ 		if (ksmbd_conn_need_reconnect(conn)) {
+ 			rc = -EFAULT;
++			ksmbd_user_session_put(sess);
+ 			sess = NULL;
+ 			goto out_err;
+ 		}
 -- 
 2.51.0
 
