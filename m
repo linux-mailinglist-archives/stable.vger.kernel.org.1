@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-198448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCDA9CA0437
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:05:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59456CA1230
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:46:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DAB6630038D2
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:05:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EEC0D31B5A81
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:48:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3E8B314D3A;
-	Wed,  3 Dec 2025 15:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0078E347BBD;
+	Wed,  3 Dec 2025 16:12:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n96TnffO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cNLLUiXC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB7F3168FB;
-	Wed,  3 Dec 2025 15:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0060346FC8;
+	Wed,  3 Dec 2025 16:12:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776577; cv=none; b=l+oaUt1jY8154l32vDycmokjnXMlezbnGf60DCcriCFY9fmDo2kyu2w3nqvPcS74P2M8pVQOJ3zL6Sm7Cq80ETDnCMjIi4BouYZgLexL90ymMhaLnwvegP3imkTjimjLx4G+6QBdtHiIFyPEF70sZBCPTsC9F3kv8gtOEGM4Ys8=
+	t=1764778324; cv=none; b=jxviOqqbJbVH5/HY4DllbVvpZlGuFqhqsOBd0uVGwytnMb7nQmESupV97EGwvmqfAymVX+4aGas4gwaPa3BIP7sk9H5ddqvpEJFU3XLhdmSYlp0fYmYOlSlINMdwWysMfb74SHV2X5Fen7upI6Q5Tx12g2umPTo42vQ0Iz7l5S0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776577; c=relaxed/simple;
-	bh=7T+yOAgo6ndVjbuBAOTzWi1U7iO2jx72FTnBQQiCa4A=;
+	s=arc-20240116; t=1764778324; c=relaxed/simple;
+	bh=4GFr5Wgtt/QYjDHD9vZ6z3ilRbBg+PKhdMJevVbVdD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hR9U56/fBev0lVTZaEafZ64zf3tHwXnjErxT/XaP6+Htmt/4x6kZIBRUdEgyvL8WA/+5Egkw/pWUDAP7ttV8FOSx9hLTCA9QIKWbp6531yGbA/bF4X1EwYXdYoVzZ3NYzhpZUPA4Gb8UgbzkdhzYQPmX56Kk0LxCDQIx7Gd8Y38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n96TnffO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E718C4CEF5;
-	Wed,  3 Dec 2025 15:42:56 +0000 (UTC)
+	 MIME-Version; b=UGT30m19dffolbYro5Z6pyEtLRRj9MRseTLFU72N02Kd9wjPQyCX6gKQV1cSBst3SlSgYxDVaRWojyP86Mlt4OUvbKK0owJ0aDGx/372TTcw0OTmmm0OvFY9h/Do43oPMRBUioaSobJTyztvkwaOVs1k7XCliMbFzJK8tTOxJtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cNLLUiXC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2465EC4CEF5;
+	Wed,  3 Dec 2025 16:12:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776576;
-	bh=7T+yOAgo6ndVjbuBAOTzWi1U7iO2jx72FTnBQQiCa4A=;
+	s=korg; t=1764778324;
+	bh=4GFr5Wgtt/QYjDHD9vZ6z3ilRbBg+PKhdMJevVbVdD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n96TnffOzynNY0687H18ttjQvUMuVjEZnNRGQq5EIUF9R7RgM4gbafIR0nzBs+vWc
-	 2F1ZgSLSkARH8ELajFXsb5eMdhjFhB+SBoA3hPD9P3iRsp8qOu++XPbolrImHyTiQ1
-	 tNJ4tA/1QiUwFrwZRFaiNDo/V9UgTE5wgamBX/G0=
+	b=cNLLUiXChMZKzw00b4Tz0V4iXXlXASasml3UouV+Z75Y5F+FQIAopDiBILAAaC51Q
+	 kQKloj6klp+0fw1+RkWBf3WyRwpfHo2PTO8AnZI8W/fQCBXl1cBmKIVF+YONLwkJEI
+	 q+9TuRAI7PGtZnUwg4tmgCdY9y2d/a0/R63fBPBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 5.10 224/300] MIPS: Malta: Fix !EVA SOC-it PCI MMIO
+	Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Dinh Nguyen <dinguyen@kernel.org>
+Subject: [PATCH 5.15 278/392] EDAC/altera: Handle OCRAM ECC enable after warm reset
 Date: Wed,  3 Dec 2025 16:27:08 +0100
-Message-ID: <20251203152408.923387086@linuxfoundation.org>
+Message-ID: <20251203152424.392631391@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,105 +60,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
 
-commit ebd729fef31620e0bf74cbf8a4c7fda73a2a4e7e upstream.
+commit fd3ecda38fe0cb713d167b5477d25f6b350f0514 upstream.
 
-Fix a regression that has caused accesses to the PCI MMIO window to
-complete unclaimed in non-EVA configurations with the SOC-it family of
-system controllers, preventing PCI devices from working that use MMIO.
+The OCRAM ECC is always enabled either by the BootROM or by the Secure Device
+Manager (SDM) during a power-on reset on SoCFPGA.
 
-In the non-EVA case PHYS_OFFSET is set to 0, meaning that PCI_BAR0 is
-set with an empty mask (and PCI_HEAD4 matches addresses starting from 0
-accordingly).  Consequently all addresses are matched for incoming DMA
-accesses from PCI.  This seems to confuse the system controller's logic
-and outgoing bus cycles targeting the PCI MMIO window seem not to make
-it to the intended devices.
+However, during a warm reset, the OCRAM content is retained to preserve data,
+while the control and status registers are reset to their default values. As
+a result, ECC must be explicitly re-enabled after a warm reset.
 
-This happens as well when a wider mask is used with PCI_BAR0, such as
-0x80000000 or 0xe0000000, that makes addresses match that overlap with
-the PCI MMIO window, which starts at 0x10000000 in our configuration.
-
-Set the mask in PCI_BAR0 to 0xf0000000 for non-EVA then, covering the
-non-EVA maximum 256 MiB of RAM, which is what YAMON does and which used
-to work correctly up to the offending commit.  Set PCI_P2SCMSKL to match
-PCI_BAR0 as required by the system controller's specification, and match
-PCI_P2SCMAPL to PCI_HEAD4 for identity mapping.
-
-Verified with:
-
-Core board type/revision =      0x0d (Core74K) / 0x01
-System controller/revision =    MIPS SOC-it 101 OCP / 1.3   SDR-FW-4:1
-Processor Company ID/options =  0x01 (MIPS Technologies, Inc.) / 0x1c
-Processor ID/revision =         0x97 (MIPS 74Kf) / 0x4c
-
-for non-EVA and with:
-
-Core board type/revision =      0x0c (CoreFPGA-5) / 0x00
-System controller/revision =    MIPS ROC-it2 / 0.0   FW-1:1 (CLK_unknown) GIC
-Processor Company ID/options =  0x01 (MIPS Technologies, Inc.) / 0x00
-Processor ID/revision =         0xa0 (MIPS interAptiv UP) / 0x20
-
-for EVA/non-EVA, fixing:
-
-defxx 0000:00:12.0: assign IRQ: got 10
-defxx: v1.12 2021/03/10  Lawrence V. Stefani and others
-0000:00:12.0: Could not read adapter factory MAC address!
-
-vs:
-
-defxx 0000:00:12.0: assign IRQ: got 10
-defxx: v1.12 2021/03/10  Lawrence V. Stefani and others
-0000:00:12.0: DEFPA at MMIO addr = 0x10142000, IRQ = 10, Hardware addr = 00-00-f8-xx-xx-xx
-0000:00:12.0: registered as fddi0
-
-for non-EVA and causing no change for EVA.
-
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Fixes: 422dd256642b ("MIPS: Malta: Allow PCI devices DMA to lower 2GB physical")
-Cc: stable@vger.kernel.org # v4.9+
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: 17e47dc6db4f ("EDAC/altera: Add Stratix10 OCRAM ECC support")
+Signed-off-by: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Dinh Nguyen <dinguyen@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251111080801.1279401-1-niravkumarlaxmidas.rabara@altera.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/mti-malta/malta-init.c |   20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ drivers/edac/altera_edac.c |   18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
---- a/arch/mips/mti-malta/malta-init.c
-+++ b/arch/mips/mti-malta/malta-init.c
-@@ -242,16 +242,22 @@ mips_pci_controller:
- #endif
+--- a/drivers/edac/altera_edac.c
++++ b/drivers/edac/altera_edac.c
+@@ -1156,10 +1156,22 @@ altr_check_ocram_deps_init(struct altr_e
+ 	if (ret)
+ 		return ret;
  
- 		/*
--		 * Setup the Malta max (2GB) memory for PCI DMA in host bridge
--		 * in transparent addressing mode.
-+		 * Set up memory mapping in host bridge for PCI DMA masters,
-+		 * in transparent addressing mode.  For EVA use the Malta
-+		 * maximum of 2 GiB memory in the alias space at 0x80000000
-+		 * as per PHYS_OFFSET.  Otherwise use 256 MiB of memory in
-+		 * the regular space, avoiding mapping the PCI MMIO window
-+		 * for DMA as it seems to confuse the system controller's
-+		 * logic, causing PCI MMIO to stop working.
- 		 */
--		mask = PHYS_OFFSET | PCI_BASE_ADDRESS_MEM_PREFETCH;
--		MSC_WRITE(MSC01_PCI_BAR0, mask);
--		MSC_WRITE(MSC01_PCI_HEAD4, mask);
-+		mask = PHYS_OFFSET ? PHYS_OFFSET : 0xf0000000;
-+		MSC_WRITE(MSC01_PCI_BAR0,
-+			  mask | PCI_BASE_ADDRESS_MEM_PREFETCH);
-+		MSC_WRITE(MSC01_PCI_HEAD4,
-+			  PHYS_OFFSET | PCI_BASE_ADDRESS_MEM_PREFETCH);
+-	/* Verify OCRAM has been initialized */
++	/*
++	 * Verify that OCRAM has been initialized.
++	 * During a warm reset, OCRAM contents are retained, but the control
++	 * and status registers are reset to their default values. Therefore,
++	 * ECC must be explicitly re-enabled in the control register.
++	 * Error condition: if INITCOMPLETEA is clear and ECC_EN is already set.
++	 */
+ 	if (!ecc_test_bits(ALTR_A10_ECC_INITCOMPLETEA,
+-			   (base + ALTR_A10_ECC_INITSTAT_OFST)))
+-		return -ENODEV;
++			   (base + ALTR_A10_ECC_INITSTAT_OFST))) {
++		if (!ecc_test_bits(ALTR_A10_ECC_EN,
++				   (base + ALTR_A10_ECC_CTRL_OFST)))
++			ecc_set_bits(ALTR_A10_ECC_EN,
++				     (base + ALTR_A10_ECC_CTRL_OFST));
++		else
++			return -ENODEV;
++	}
  
--		mask &= MSC01_PCI_BAR0_SIZE_MSK;
- 		MSC_WRITE(MSC01_PCI_P2SCMSKL, mask);
--		MSC_WRITE(MSC01_PCI_P2SCMAPL, mask);
-+		MSC_WRITE(MSC01_PCI_P2SCMAPL, PHYS_OFFSET);
- 
- 		/* Don't handle target retries indefinitely.  */
- 		if ((data & MSC01_PCI_CFG_MAXRTRY_MSK) ==
+ 	/* Enable IRQ on Single Bit Error */
+ 	writel(ALTR_A10_ECC_SERRINTEN, (base + ALTR_A10_ECC_ERRINTENS_OFST));
 
 
 
