@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-198571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46C3ACA09E2
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:46:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5602ACA17DE
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:54:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D47D830133D0
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:44:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6F9DF3069C92
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:48:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18A9132937B;
-	Wed,  3 Dec 2025 15:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2E6B31619A;
+	Wed,  3 Dec 2025 15:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p5GP6ark"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j1AqKeMQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB475328B65;
-	Wed,  3 Dec 2025 15:49:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD04F316198;
+	Wed,  3 Dec 2025 15:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776983; cv=none; b=AHLiKLRcf2EFqAfKs25CMehYsQXxwprYAjJn2ntljeEFOWxzFnk4RTUGXQ40Tnj73DhUPAZvbwiGgt2QsCgor1s7VdY6NF9pF5YDznfJB1pDiy3nG3b7jx/ZrzYxzaTV25Jky3I3hNdZxXiEeToQ2g1c3S9BjrKhAZf26Vxd62c=
+	t=1764776566; cv=none; b=CiwQoTx4ZRUPMAFGZnY5C2Q4dLq6uJJGrD2gzuR7GkntEdypvcdWvuPhlgOUtxJMu4wcKlFLiNAcFcT013UDFCnllFrz1gmWL84woKkIdbnseu6VEzy6neD7oqA0iuYMBkTANAxU5MUKftT7FFxSBC1qDK1UO0Fe52GQ1cTX/Cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776983; c=relaxed/simple;
-	bh=t4pjJU9EwdedkfKNxndNUKxbmLeWXTbGDvGNN9bzMg4=;
+	s=arc-20240116; t=1764776566; c=relaxed/simple;
+	bh=Y13Tt4z3tHgdmUUWVcBO+2oNJev/+f/ZBSph70q/0Sg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ldFjtqs3E6HtOxVBHDCMysuLKkki9wEGrUt301kO2AzFJaUHshmmfPD27D7mOZ51wBJhMY8n3UqcZwNCY2w5Pz8phdtVH65d7AsN/TsGr3SfLvu7U6e+A6CYl5SPMSKKvm29Db0A7rUUMzN0VmkYh0A2+zacQiP8SBTAxafXJnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p5GP6ark; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA83EC4CEF5;
-	Wed,  3 Dec 2025 15:49:42 +0000 (UTC)
+	 MIME-Version; b=gZP7i9GQU1JsTrQI3vr6DeOqcjIE8NG5TpHGQjvmQ2sHHzd62AkQIFyED/ulSRe+9eGjr3C6mmT1v1LSCgujwH2fF31ChY1pYe/hKgu4orB4PYDkmobG0kWTtB7puTiNdmVhbZ55xm7eAFL2uAqQ9WpfgDEv9rakaJpFX1flAzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j1AqKeMQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D9D0C4CEF5;
+	Wed,  3 Dec 2025 15:42:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776983;
-	bh=t4pjJU9EwdedkfKNxndNUKxbmLeWXTbGDvGNN9bzMg4=;
+	s=korg; t=1764776566;
+	bh=Y13Tt4z3tHgdmUUWVcBO+2oNJev/+f/ZBSph70q/0Sg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p5GP6arkp/fqjru+lUXajShVxk7/y2ybCdTY9EKr7F+2Oc4GLzKL14L/Gdd2CCtFo
-	 2sZhZJN5CraaqvrfpQB0FUoSKLA0w1Ii4NeOWNNiw0aMcrNnIq1r8A2Ja3x/nuGpbi
-	 PzwQyiCokyfTKyNOU1a3IxZW0hHEIbCECvgfcdxY=
+	b=j1AqKeMQ3eiphtry37OFGj+k8Jo6f3esBKe7ozuOWpLBoc+B2cn6LaJXETaJMJPEX
+	 91EWpT5BxPeAlB6zVUYifs+Ib2KI6+GMIJmZ7QOc21PUuazyLmSvfAejU1xt5QdL9m
+	 P/uu9TX5OKyImpTtYM+luJ/SpJ7CFI0agCUX/2OQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 047/146] spi: spi-nxp-fspi: Add OCT-DTR mode support
-Date: Wed,  3 Dec 2025 16:27:05 +0100
-Message-ID: <20251203152348.195895937@linuxfoundation.org>
+	syzbot+c01f8e6e73f20459912e@syzkaller.appspotmail.com,
+	Hannes Reinecke <hare@suse.de>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.10 222/300] scsi: sg: Do not sleep in atomic context
+Date: Wed,  3 Dec 2025 16:27:06 +0100
+Message-ID: <20251203152408.847778442@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haibo Chen <haibo.chen@nxp.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 0f67557763accbdd56681f17ed5350735198c57b ]
+commit 90449f2d1e1f020835cba5417234636937dd657e upstream.
 
-Add OCT-DTR mode support in default, since flexspi do not supports
-swapping bytes on a 16 bit boundary in OCT-DTR mode, so mark swap16
-as false.
+sg_finish_rem_req() calls blk_rq_unmap_user(). The latter function may
+sleep. Hence, call sg_finish_rem_req() with interrupts enabled instead
+of disabled.
 
-lx2160a do not support DQS, so add a quirk to disable DTR mode for this
-platform.
-
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20250917-flexspi-ddr-v2-5-bb9fe2a01889@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 40ad64ac25bb ("spi: nxp-fspi: Propagate fwnode in ACPI case as well")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+c01f8e6e73f20459912e@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-scsi/691560c4.a70a0220.3124cb.001a.GAE@google.com/
+Cc: Hannes Reinecke <hare@suse.de>
+Cc: stable@vger.kernel.org
+Fixes: 97d27b0dd015 ("scsi: sg: close race condition in sg_remove_sfp_usercontext()")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20251113181643.1108973-1-bvanassche@acm.org
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-nxp-fspi.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/scsi/sg.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-index ab13f11242c3c..fcf10be66d391 100644
---- a/drivers/spi/spi-nxp-fspi.c
-+++ b/drivers/spi/spi-nxp-fspi.c
-@@ -330,6 +330,8 @@
- 
- /* Access flash memory using IP bus only */
- #define FSPI_QUIRK_USE_IP_ONLY	BIT(0)
-+/* Disable DTR */
-+#define FSPI_QUIRK_DISABLE_DTR	BIT(1)
- 
- struct nxp_fspi_devtype_data {
- 	unsigned int rxfifo;
-@@ -344,7 +346,7 @@ static struct nxp_fspi_devtype_data lx2160a_data = {
- 	.rxfifo = SZ_512,       /* (64  * 64 bits)  */
- 	.txfifo = SZ_1K,        /* (128 * 64 bits)  */
- 	.ahb_buf_size = SZ_2K,  /* (256 * 64 bits)  */
--	.quirks = 0,
-+	.quirks = FSPI_QUIRK_DISABLE_DTR,
- 	.lut_num = 32,
- 	.little_endian = true,  /* little-endian    */
- };
-@@ -1236,6 +1238,13 @@ static const struct spi_controller_mem_ops nxp_fspi_mem_ops = {
- };
- 
- static const struct spi_controller_mem_caps nxp_fspi_mem_caps = {
-+	.dtr = true,
-+	.swap16 = false,
-+	.per_op_freq = true,
-+};
+--- a/drivers/scsi/sg.c
++++ b/drivers/scsi/sg.c
+@@ -2235,9 +2235,17 @@ sg_remove_sfp_usercontext(struct work_st
+ 	write_lock_irqsave(&sfp->rq_list_lock, iflags);
+ 	while (!list_empty(&sfp->rq_list)) {
+ 		srp = list_first_entry(&sfp->rq_list, Sg_request, entry);
+-		sg_finish_rem_req(srp);
+ 		list_del(&srp->entry);
++		write_unlock_irqrestore(&sfp->rq_list_lock, iflags);
 +
-+static const struct spi_controller_mem_caps nxp_fspi_mem_caps_disable_dtr = {
-+	.dtr = false,
- 	.per_op_freq = true,
- };
- 
-@@ -1351,7 +1360,12 @@ static int nxp_fspi_probe(struct platform_device *pdev)
- 	ctlr->bus_num = -1;
- 	ctlr->num_chipselect = NXP_FSPI_MAX_CHIPSELECT;
- 	ctlr->mem_ops = &nxp_fspi_mem_ops;
--	ctlr->mem_caps = &nxp_fspi_mem_caps;
++		sg_finish_rem_req(srp);
++		/*
++		 * sg_rq_end_io() uses srp->parentfp. Hence, only clear
++		 * srp->parentfp after blk_mq_free_request() has been called.
++		 */
+ 		srp->parentfp = NULL;
 +
-+	if (f->devtype_data->quirks & FSPI_QUIRK_DISABLE_DTR)
-+		ctlr->mem_caps = &nxp_fspi_mem_caps_disable_dtr;
-+	else
-+		ctlr->mem_caps = &nxp_fspi_mem_caps;
-+
- 	ctlr->dev.of_node = np;
++		write_lock_irqsave(&sfp->rq_list_lock, iflags);
+ 	}
+ 	write_unlock_irqrestore(&sfp->rq_list_lock, iflags);
  
- 	ret = devm_add_action_or_reset(dev, nxp_fspi_cleanup, f);
--- 
-2.51.0
-
 
 
 
