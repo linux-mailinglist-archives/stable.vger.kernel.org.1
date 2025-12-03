@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-198892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22A73C9FCE0
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:07:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CB11C9F9CB
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:45:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 27FBE30014E3
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:06:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DFD8F3006F7C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:39:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 047C634F489;
-	Wed,  3 Dec 2025 16:06:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B272D30AD06;
+	Wed,  3 Dec 2025 15:39:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2qCHPRe1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GEkMXnPN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5204313558;
-	Wed,  3 Dec 2025 16:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2B0303C91;
+	Wed,  3 Dec 2025 15:39:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778013; cv=none; b=b7Xr5j94wxjcMzimccNo4vEsS+b9k5XImMEqRsfNBLLfMyGiZ/LuZE4WGaOK6pHh0aw+V6XgAbrixDPBmY+aAgFE1OSKF93XUwlLtUW48GHn5skhhajS2QLgWPODFVwFBEcO5hgVIfpdK4mg0TcEQg+E4C7hR+qkXm8M+rwGhWI=
+	t=1764776376; cv=none; b=rCacvbqAjZT+nZNqPlhV36yVQwAx1gEH6jHsByrrDiFW/7ePh+X6NOwJIATDoDJUsnHXcY+RpVY9t+c6b8/8Kz9yh3g1Muzub0XB/T8JoQ0A8uT3q8nh4/I7epKSTjrsZxocFBBUrVeKL2ZM6GkwVXuNcdO0hoTBbgdva1I06Mw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778013; c=relaxed/simple;
-	bh=09/7jYpHF2Tf25CuFDKpAHy6i4USOYTg8mWypMkIXeU=;
+	s=arc-20240116; t=1764776376; c=relaxed/simple;
+	bh=LacVSKRlina8GkFgBqGOzh49sQX3kAvMLWlbn42WQl8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KTjMYuEYHB7YhdAOOH3Q++giPncA0vXhtQGJbp/wPuBOqnlmpag6Io4dgKKPXIJvRFuTIFh30bwF36N59AXsqCavVjPQjNM+odrSk8MBAQr/sPLBjgdodUtPkBINRALrBC63/frdraA3Hb3novGinbhJAlCdUrN1oRYRwI/Sf8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2qCHPRe1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27E8FC4CEF5;
-	Wed,  3 Dec 2025 16:06:52 +0000 (UTC)
+	 MIME-Version; b=CO3GcqMn8eOczJSyRYofEYC0vHU88YDmp+z/dDTAzW/91tjy6EKAn13w1HASHBQ7BC2DnSEa37udZ6oIHf9/Jin8P7Lc9t+vpmyOrmlJSJBhgfW5lBkDS8MHFMIu1IhF0EwKijW3k9aTdyjBeip8VNAr7eo0bjGmCmNQQgisNgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GEkMXnPN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D134EC4CEF5;
+	Wed,  3 Dec 2025 15:39:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778013;
-	bh=09/7jYpHF2Tf25CuFDKpAHy6i4USOYTg8mWypMkIXeU=;
+	s=korg; t=1764776376;
+	bh=LacVSKRlina8GkFgBqGOzh49sQX3kAvMLWlbn42WQl8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2qCHPRe1AR12REkOcJsgvDETUwMjr9ef7OLvTG4Mjda1BAi45xvguo9my3tkXXsfO
-	 h3r/VVjZXx49RrBek3kvvQ1vbe2GNijyTTVZE1r7kGkXGTbQdRYorvcMCoXQOhvyhk
-	 oxKzdfUNtqrxuGKIec1druSXSNSAuGn8ELzdMAA0=
+	b=GEkMXnPNy5anVWUdem3fl2Ytpj1j0yztJB44OO4ZicZi9wCdt0xRRdd9FffLr2qHX
+	 rYHs7AjkwMPX3AsoZ/LW5vtx3I+NDJeKUfShSiJfVXrX7R6hdzCZmwVAsOaeb0sYC1
+	 j9vGKfg8iv8WxF6eajB3IBalIrSaWbdeRPbKA9S0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Stefan Wiehler <stefan.wiehler@nokia.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Xin Long <lucien.xin@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 217/392] net: dsa: b53: fix enabling ip multicast
+Subject: [PATCH 5.10 163/300] sctp: Hold RCU read lock while iterating over address list
 Date: Wed,  3 Dec 2025 16:26:07 +0100
-Message-ID: <20251203152422.169615755@linuxfoundation.org>
+Message-ID: <20251203152406.656457132@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +62,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Stefan Wiehler <stefan.wiehler@nokia.com>
 
-[ Upstream commit c264294624e956a967a9e2e5fa41e3273340b089 ]
+[ Upstream commit 38f50242bf0f237cdc262308d624d333286ec3c5 ]
 
-In the New Control register bit 1 is either reserved, or has a different
-function:
+With CONFIG_PROVE_RCU_LIST=y and by executing
 
-    Out of Range Error Discard
+  $ netcat -l --sctp &
+  $ netcat --sctp localhost &
+  $ ss --sctp
 
-    When enabled, the ingress port discards any frames
-    if the Length field is between 1500 and 1536
-    (excluding 1500 and 1536) and with good CRC.
+one can trigger the following Lockdep-RCU splat(s):
 
-The actual bit for enabling IP multicast is bit 0, which was only
-explicitly enabled for BCM5325 so far.
+  WARNING: suspicious RCU usage
+  6.18.0-rc1-00093-g7f864458e9a6 #5 Not tainted
+  -----------------------------
+  net/sctp/diag.c:76 RCU-list traversed in non-reader section!!
 
-For older switch chips, this bit defaults to 0, so we want to enable it
-as well, while newer switch chips default to 1, and their documentation
-says "It is illegal to set this bit to zero."
+  other info that might help us debug this:
 
-So drop the wrong B53_IPMC_FWD_EN define, enable the IP multicast bit
-also for other switch chips. While at it, rename it to (B53_)IP_MC as
-that is how it is called in Broadcom code.
+  rcu_scheduler_active = 2, debug_locks = 1
+  2 locks held by ss/215:
+   #0: ffff9c740828bec0 (nlk_cb_mutex-SOCK_DIAG){+.+.}-{4:4}, at: __netlink_dump_start+0x84/0x2b0
+   #1: ffff9c7401d72cd0 (sk_lock-AF_INET6){+.+.}-{0:0}, at: sctp_sock_dump+0x38/0x200
 
-Fixes: 63cc54a6f073 ("net: dsa: b53: Fix egress flooding settings")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20251102100758.28352-2-jonas.gorski@gmail.com
+  stack backtrace:
+  CPU: 0 UID: 0 PID: 215 Comm: ss Not tainted 6.18.0-rc1-00093-g7f864458e9a6 #5 PREEMPT(voluntary)
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x5d/0x90
+   lockdep_rcu_suspicious.cold+0x4e/0xa3
+   inet_sctp_diag_fill.isra.0+0x4b1/0x5d0
+   sctp_sock_dump+0x131/0x200
+   sctp_transport_traverse_process+0x170/0x1b0
+   ? __pfx_sctp_sock_filter+0x10/0x10
+   ? __pfx_sctp_sock_dump+0x10/0x10
+   sctp_diag_dump+0x103/0x140
+   __inet_diag_dump+0x70/0xb0
+   netlink_dump+0x148/0x490
+   __netlink_dump_start+0x1f3/0x2b0
+   inet_diag_handler_cmd+0xcd/0x100
+   ? __pfx_inet_diag_dump_start+0x10/0x10
+   ? __pfx_inet_diag_dump+0x10/0x10
+   ? __pfx_inet_diag_dump_done+0x10/0x10
+   sock_diag_rcv_msg+0x18e/0x320
+   ? __pfx_sock_diag_rcv_msg+0x10/0x10
+   netlink_rcv_skb+0x4d/0x100
+   netlink_unicast+0x1d7/0x2b0
+   netlink_sendmsg+0x203/0x450
+   ____sys_sendmsg+0x30c/0x340
+   ___sys_sendmsg+0x94/0xf0
+   __sys_sendmsg+0x83/0xf0
+   do_syscall_64+0xbb/0x390
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+   ...
+   </TASK>
+
+Fixes: 8f840e47f190 ("sctp: add the sctp_diag.c file")
+Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/20251028161506.3294376-2-stefan.wiehler@nokia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 4 ++--
- drivers/net/dsa/b53/b53_regs.h   | 3 +--
- 2 files changed, 3 insertions(+), 4 deletions(-)
+ net/sctp/diag.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index f84f64d5a6163..228b470d13a0f 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -349,11 +349,11 @@ static void b53_set_forwarding(struct b53_device *dev, int enable)
- 		 * frames should be flooded or not.
- 		 */
- 		b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
--		mgmt |= B53_UC_FWD_EN | B53_MC_FWD_EN | B53_IPMC_FWD_EN;
-+		mgmt |= B53_UC_FWD_EN | B53_MC_FWD_EN | B53_IP_MC;
- 		b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
- 	} else {
- 		b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
--		mgmt |= B53_IP_MCAST_25;
-+		mgmt |= B53_IP_MC;
- 		b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
+diff --git a/net/sctp/diag.c b/net/sctp/diag.c
+index 07d0ada23bfd2..5f441a48e7aa3 100644
+--- a/net/sctp/diag.c
++++ b/net/sctp/diag.c
+@@ -73,19 +73,23 @@ static int inet_diag_msg_sctpladdrs_fill(struct sk_buff *skb,
+ 	struct nlattr *attr;
+ 	void *info = NULL;
+ 
++	rcu_read_lock();
+ 	list_for_each_entry_rcu(laddr, address_list, list)
+ 		addrcnt++;
++	rcu_read_unlock();
+ 
+ 	attr = nla_reserve(skb, INET_DIAG_LOCALS, addrlen * addrcnt);
+ 	if (!attr)
+ 		return -EMSGSIZE;
+ 
+ 	info = nla_data(attr);
++	rcu_read_lock();
+ 	list_for_each_entry_rcu(laddr, address_list, list) {
+ 		memcpy(info, &laddr->a, sizeof(laddr->a));
+ 		memset(info + sizeof(laddr->a), 0, addrlen - sizeof(laddr->a));
+ 		info += addrlen;
  	}
++	rcu_read_unlock();
+ 
+ 	return 0;
  }
-diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
-index 77fb7ae660b8c..95f70248c194d 100644
---- a/drivers/net/dsa/b53/b53_regs.h
-+++ b/drivers/net/dsa/b53/b53_regs.h
-@@ -104,8 +104,7 @@
- 
- /* IP Multicast control (8 bit) */
- #define B53_IP_MULTICAST_CTRL		0x21
--#define  B53_IP_MCAST_25		BIT(0)
--#define  B53_IPMC_FWD_EN		BIT(1)
-+#define  B53_IP_MC			BIT(0)
- #define  B53_UC_FWD_EN			BIT(6)
- #define  B53_MC_FWD_EN			BIT(7)
- 
 -- 
 2.51.0
 
