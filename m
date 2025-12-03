@@ -1,221 +1,150 @@
-Return-Path: <stable+bounces-199895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBA3CCA114C
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:42:47 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6807CA1639
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:29:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 33A7A33C30FD
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:44:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D134B301473A
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:28:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECFCC34402C;
-	Wed,  3 Dec 2025 17:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAA723446CB;
+	Wed,  3 Dec 2025 17:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="hquDKHO9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="al+F0NKF"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC9CC343D8C;
-	Wed,  3 Dec 2025 17:32:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF6443446C7
+	for <stable@vger.kernel.org>; Wed,  3 Dec 2025 17:33:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764783181; cv=none; b=W0suCqCcAavRsbx7fXlzcw4pOsGe93/vTXX0GmWsYAmpTkZA8uxASS//6zTplTVOcCP+Eg9R/tCjPW0aDikzVtTuUVtlDIjkTWfk4nrc4uC1qr5GsYnZLHxJztMj4X1FUa1Pn606Ix4Nah9IquFO3/pJNH0mU9kHMiiYSB2HFz8=
+	t=1764783205; cv=none; b=i3nnx/gursLdm/g4ae+l842nfc+ojB4CQT0mvLMbCMuuTsAiMwh7rdfXg7P+e2S0jlVaxY3MOgivARpofXiteHbfBW78JHJzC8rpdKClExD1CTgAKkEv993et0Kgwp8Ie90+p1JP5clyZGN1zQAPyqAb0QrxcKsprP860FcZGvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764783181; c=relaxed/simple;
-	bh=pbMKC4itzZWfHYtlL8IS4DaRNb8ZGGo086czBrh8riE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=b2PEN2k7I1WNmTZHOHf244mp1CSDSAvrBmyY/ouekAMc5A8ONnoEvWdUo7pF9otmYI+wWGqa7d4nX5QQg7PgpnbC1OVtvHDnF9Crf8nwePzEITZeAAQ12eGHAmzEokm+ut41VJOTUZcsrfUQw/56+ytedyP9B3QNAzj7LUKJSuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=hquDKHO9; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 906A3C1357B;
-	Wed,  3 Dec 2025 17:32:32 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id B368E60706;
-	Wed,  3 Dec 2025 17:32:55 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9E27B119213EE;
-	Wed,  3 Dec 2025 18:32:48 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1764783174; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=l5N8LMUtN8xuEF/DzRqebJYXJKlpFf/+mVUj6hu5WNA=;
-	b=hquDKHO9woxdbW7IaSDl2n7vRqA6PSN6uWGNOrFtN3/rtcT4Ep9S/RDobPX7b+BmseSD8U
-	VJYemaoB7t55/5LypTEDb1e+ISuXRwefEbNjkjjNyRsQY01l9cHThfFPCdlWbuUbpYjOeX
-	Mx4ozdPzsKQzdImQb/BbUiJC3YPqvIH73CSHkmnLE2eTX6P/X5/aqAfWKoW0ggku38/NFU
-	rtAzbhIW6Iyt6jNZsgOeUyiYuesJ7xMqIo2D2cRkWySMC9/1QHDGejbe+qx91Ut9Y68pBt
-	iliQT0cpBIFDHW02NreSWRNwKG3nqK6To0fyhAEtPeYxffIi4AFUgedb2GmA+Q==
+	s=arc-20240116; t=1764783205; c=relaxed/simple;
+	bh=sjUmzhwrSpbGiFQFS+CfvvfSPMIH1gw++YX7SKEckOc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MNh80sIPqd47Rw7EhGp7HYr5zkl9ehptSBVSTSzIFM+0aeifMj15jx3eZQdr8JviWun8JI2/Ic2RopUDpfXcE/uEdKVQT25dMV/J8Osy2GFY+DTCTAd1mGL+WFZOp4Vj1y9JFmdHYunchyFopMni98IflroYyMpJIgvd1gpmrAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=al+F0NKF; arc=none smtp.client-ip=209.85.222.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-8b3016c311bso861841485a.1
+        for <stable@vger.kernel.org>; Wed, 03 Dec 2025 09:33:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764783203; x=1765388003; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fAySZyoVUYZcty/scbJ6Onf/leg2X+nER5+BrR1/QFw=;
+        b=al+F0NKF/UMsr37WJ8S7sfhL1dTweWHjJG7TY/7iDVVing39lt+Byrg1Blib+qiZja
+         SSmTepuCyTU+rdHFQ7NLyGDxoqj7zZAQ1+zwbTRAqKB2THTH+6gQkjwTE4zhX1zp/BPK
+         G09NuUNkb+rCnYtietJMeOqeUy25P7vEidaCOdxO1PcD1UzeZyi81JH4Z2HkTgxSszaC
+         YBqDVp9i0B1fq3ALEKdUMnQfzW8uAfDcrXWXjbEt22dv4C83kC2ftTE854GDFQwb0tpC
+         2KKIQkuYVtraJ/t95NsrSHD8L7rJ5KduvJz8mF6mvhlxU46l47QB8e1dMG5hFiklYbnp
+         I+2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764783203; x=1765388003;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fAySZyoVUYZcty/scbJ6Onf/leg2X+nER5+BrR1/QFw=;
+        b=bG87WuMgrJYGdxViDG+G9L69jGGZLis7ktWKwVdVpo+VORoY2LFnyBwtbuSmdGQoOa
+         nw4RMm45ctFs+altRYYhk0p+jgjJ5Oy7vifF15Z1dqgNMnPTRjzzhAB6sZ/AeIQrU5L7
+         94xFOkk9+tIPbAHL6msnur25qAwP//GyqwmpraVgQtPuiKkn48HbT7n/QU4pLono4yq8
+         3+9QYNq5zR4ocLozyzaS97WVGndq4bDMKdYaunExCqSfuqjTkbibjdmMLyuWMOVaqG9e
+         LYpNWzIJWJBtt8bLMw2cxNGKo+cY/9g8k9/bgHtAUd8YJAOB4ao7G1gxH7Ciu7yLTymK
+         RcQg==
+X-Forwarded-Encrypted: i=1; AJvYcCXeEwm1CVv0iewCtscCOhu6+iWzZVeL9q/7iI17pHrxrkQY2/0cYBT6w4nmUhqYcapMp5eu7GA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YweGD1LbMABVfr183TFkRNwn03hHrNFcdVzX8xj/I4s1eqdWzlq
+	I+tPw3nU1/EYekufeP6GIlvoZzYbZrnBYjW37g3ve4TfxHJ/D+MtS6jh
+X-Gm-Gg: ASbGncuLnQxLDqBE9MKN9PQkUxCfv/RU9UCqJVKPQ2nfUCkcXXOzUe+3+or22GlAcAn
+	uAIYtzEI3zoTexRTxSSc+HkNkGRbKx9n6tSaFEKoCgZbbKUMNaOfxs2l+TDhKVo1gogtd0LLOPa
+	2LNHkQf1RETqBr8FZfsQVXXbzyvFUsDtktR4/+ynoSnmcbDo577wE95B8TBJRY0td5fa39JC1ZQ
+	ZQv8RZM7usgYHbJJ/ESElBbbFL+BIlJx+VcYrnC7xOgfl3wMy80knA3zEyXYZ+YfcxyLNaCnNNx
+	NjyIkHnnwZ3Ocg66qUdtIZdZgkY6dNM/FbshcW30GC0SMRXOZCJWy3IMuZ3A1KBwue2rpakwxEH
+	Z9qocMIpmiY5asxC+nkods4w023RUcBI0+MhcBMSIAWiNv9IiVwhEfcNhPZmQdWw9qXP1yiOywD
+	pfocmvmXoHJUA8pJ+XTVGlsG5L4B6++gSr0qgVOg==
+X-Google-Smtp-Source: AGHT+IGr/13cEMHjcnMqt4Gm84Jo/I/ZJcPV6vXbwW6ARVpoUUQCSul2/FTG3CF5U56R7EkUSB7O+g==
+X-Received: by 2002:a05:620a:7082:b0:8b2:effe:b4d4 with SMTP id af79cd13be357-8b5e7451300mr436873885a.78.1764783202619;
+        Wed, 03 Dec 2025 09:33:22 -0800 (PST)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b52a1b6f72sm1342785585a.29.2025.12.03.09.33.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 03 Dec 2025 09:33:21 -0800 (PST)
+Message-ID: <139db995-0ff6-49f1-b7c9-9c213bf36e35@gmail.com>
+Date: Wed, 3 Dec 2025 09:33:16 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 03 Dec 2025 18:32:47 +0100
-Message-Id: <DEORF6XCJEOG.3BGTKVL2QFQKN@bootlin.com>
-Subject: Re: [PATCH] drm/bridge: ti-sn65dsi83: ignore PLL_UNLOCK errors
-Cc: "Philippe Schenker" <philippe.schenker@impulsing.ch>, "Hui Pu"
- <Hui.Pu@gehealthcare.com>, "Thomas Petazzoni"
- <thomas.petazzoni@bootlin.com>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
- =?utf-8?q?Herv=C3=A9_Codina?= <herve.codina@bootlin.com>
-To: "Emanuele Ghidoli" <ghidoliemanuele@gmail.com>,
- =?utf-8?q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?=
- <jpaulo.silvagoncalves@gmail.com>, "Francesco Dolcini"
- <francesco@dolcini.it>, "Andrzej Hajda" <andrzej.hajda@intel.com>, "Neil
- Armstrong" <neil.armstrong@linaro.org>, "Robert Foss" <rfoss@kernel.org>,
- "Laurent Pinchart" <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman"
- <jonas@kwiboo.se>, "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Maarten
- Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
- <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "David
- Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-X-Mailer: aerc 0.20.1
-References: <20251127-drm-ti-sn65dsi83-ignore-pll-unlock-v1-1-8a03fdf562e9@bootlin.com> <cd607656-90d3-4821-98ea-4dad48288fc9@gmail.com>
-In-Reply-To: <cd607656-90d3-4821-98ea-4dad48288fc9@gmail.com>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.10 000/300] 5.10.247-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+ sr@sladewatkins.com
+References: <20251203152400.447697997@linuxfoundation.org>
+Content-Language: en-US, fr-FR
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Emanuele,
+On 12/3/25 07:23, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.10.247 release.
+> There are 300 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri, 05 Dec 2025 15:23:16 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.247-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-On Tue Dec 2, 2025 at 12:19 PM CET, Emanuele Ghidoli wrote:
->
->
-> On 27/11/2025 09:42, Luca Ceresoli wrote:
->> On hardware based on Toradex Verdin AM62 the recovery mechanism added by
->> commit ad5c6ecef27e ("drm: bridge: ti-sn65dsi83: Add error recovery
->> mechanism") has been reported [0] to make the display turn on and off an=
-d
->> and the kernel logging "Unexpected link status 0x01".
->>
->> According to the report, the error recovery mechanism is triggered by th=
-e
->> PLL_UNLOCK error going active. Analysis suggested the board is unable to
->> provide the correct DSI clock neede by the SN65DSI84, to which the TI
->> SN65DSI84 reacts by raising the PLL_UNLOCK, while the display still work=
-s
->> apparently without issues.
->>
->> On other hardware, where all the clocks are within the components
->> specifications, the PLL_UNLOCK bit does not trigger while the display is=
- in
->> normal use. It can trigger for e.g. electromagnetic interference, which =
-is
->> a transient event and exactly the reason why the error recovery mechanis=
-m
->> has been implemented.
->>
->> Idelly the PLL_UNLOCK bit could be ignored when working out of
->> specification, but this requires to detect in software whether it trigge=
-rs
->> because the device is working out of specification but visually correctl=
-y
->> for the user or for good reasons (e.g. EMI, or even because working out =
-of
->> specifications but compromising the visual output).
->>
->> The ongoing analysis as of this writing [1][2] has not yet found a way f=
-or
->> the driver to discriminate among the two cases. So as a temporary measur=
-e
->> mask the PLL_UNLOCK error bit unconditionally.
->>
->> [0] https://lore.kernel.org/r/bhkn6hley4xrol5o3ytn343h4unkwsr26p6s6ltcwe=
-xnrsjsdx@mgkdf6ztow42
->> [1] https://lore.kernel.org/all/b71e941c-fc8a-4ac1-9407-0fe7df73b412@gma=
-il.com/
->> [2] https://lore.kernel.org/all/20251125103900.31750-1-francesco@dolcini=
-.it/
->>
->> Closes: https://lore.kernel.org/r/bhkn6hley4xrol5o3ytn343h4unkwsr26p6s6l=
-tcwexnrsjsdx@mgkdf6ztow42
->> Cc: stable@vger.kernel.org # 6.15+
->> Co-developed-by: Herv=C3=A9 Codina <herve.codina@bootlin.com>
->> Signed-off-by: Herv=C3=A9 Codina <herve.codina@bootlin.com>
->> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
->> ---
->> Francesco, Emanuele, Jo=C3=A3o: can you please apply this patch and repo=
-rt
->> whether the display on the affected boards gets back to working as befor=
-e?
->>
->> Cc: Jo=C3=A3o Paulo Gon=C3=A7alves <jpaulo.silvagoncalves@gmail.com>
->> Cc: Francesco Dolcini <francesco@dolcini.it>
->> Cc: Emanuele Ghidoli <ghidoliemanuele@gmail.com>
->> ---
->>  drivers/gpu/drm/bridge/ti-sn65dsi83.c | 11 +++++++++--
->>  1 file changed, 9 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi83.c b/drivers/gpu/drm/bri=
-dge/ti-sn65dsi83.c
->> index 033c44326552..fffb47b62f43 100644
->> --- a/drivers/gpu/drm/bridge/ti-sn65dsi83.c
->> +++ b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
->> @@ -429,7 +429,14 @@ static void sn65dsi83_handle_errors(struct sn65dsi8=
-3 *ctx)
->>  	 */
->>
->>  	ret =3D regmap_read(ctx->regmap, REG_IRQ_STAT, &irq_stat);
->> -	if (ret || irq_stat) {
->> +
->> +	/*
->> +	 * Some hardware (Toradex Verdin AM62) is known to report the
->> +	 * PLL_UNLOCK error interrupt while working without visible
->> +	 * problems. In lack of a reliable way to discriminate such cases
->> +	 * from user-visible PLL_UNLOCK cases, ignore that bit entirely.
->> +	 */
->> +	if (ret || irq_stat & ~REG_IRQ_STAT_CHA_PLL_UNLOCK) {
->>  		/*
->>  		 * IRQ acknowledged is not always possible (the bridge can be in
->>  		 * a state where it doesn't answer anymore). To prevent an
->> @@ -654,7 +661,7 @@ static void sn65dsi83_atomic_enable(struct drm_bridg=
-e *bridge,
->>  	if (ctx->irq) {
->>  		/* Enable irq to detect errors */
->>  		regmap_write(ctx->regmap, REG_IRQ_GLOBAL, REG_IRQ_GLOBAL_IRQ_EN);
->> -		regmap_write(ctx->regmap, REG_IRQ_EN, 0xff);
->> +		regmap_write(ctx->regmap, REG_IRQ_EN, 0xff & ~REG_IRQ_EN_CHA_PLL_UNLO=
-CK_EN);
->>  	} else {
->>  		/* Use the polling task */
->>  		sn65dsi83_monitor_start(ctx);
->>
->> ---
->> base-commit: c884ee70b15a8d63184d7c1e02eba99676a6fcf7
->> change-id: 20251126-drm-ti-sn65dsi83-ignore-pll-unlock-4a28aa29eb5c
->>
->> Best regards,
+MIPS fails to build with:
 
-Thanks for testing!
+arch/mips/mm/tlb-r4k.c: In function 'r4k_tlb_uniquify':
+arch/mips/mm/tlb-r4k.c:591:17: error: passing argument 1 of 
+'memblock_free' makes integer from pointer without a cast 
+[-Werror=int-conversion]
+    memblock_free(tlb_vpns, tlb_vpn_size);
+                  ^~~~~~~~
+In file included from arch/mips/mm/tlb-r4k.c:15:
+./include/linux/memblock.h:107:31: note: expected 'phys_addr_t' {aka 
+'unsigned int'} but argument is of type 'long unsigned int *'
+  int memblock_free(phys_addr_t base, phys_addr_t size);
+                    ~~~~~~~~~~~~^~~~
+cc1: all warnings being treated as errors
+host-make[4]: *** [scripts/Makefile.build:286: arch/mips/mm/tlb-r4k.o] 
+Error 1
+host-make[4]: *** Waiting for unfinished jobs....
 
-We'll still need a R-by from a maintainer, after that this patch can be app=
-lied.
+Caused by:
 
-> I would suggest a couple of tags, thanks.
-> Emanuele
->
-> Fixes: ad5c6ecef27e ("drm: bridge: ti-sn65dsi83: Add error recovery mecha=
-nism")
+commit 97ddb0e2389b4a53d395ed47ea83540ff495d1b6
+Author: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Date:   Fri Nov 28 16:53:46 2025 +0000
 
-I'm not sure about this one. There is no known bug in that commit, right?
-It's rather exposing a pre-existing issue. I thought about adding it for
-stable branches pickup, but the 'Cc: stable...v6.15+' line is for that.
+     MIPS: mm: kmalloc tlb_vpn array to avoid stack overflow
 
-So apart from blaming someone I don't see much point.
-
-That said, if there is a valid reason I'm not seeing for the Fixes: line,
-I'll be OK in adding it while applying.
-
-> Reported-by: Jo=C3=A3o Paulo Gon=C3=A7alves <joao.goncalves@toradex.com>
-
-Absolutely! Sorry I forgot to add this.
-
-Luca
-
---
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+It seems like we might have to cast to a phys_addr_t before passing that 
+to memblock_free().
+-- 
+Florian
 
