@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-198900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62A9AC9FDA9
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:15:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC16AC9FA3D
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:47:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D0549305A3EB
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:07:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 47EE63016364
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:40:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BCB6313E03;
-	Wed,  3 Dec 2025 16:07:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17ECB30B520;
+	Wed,  3 Dec 2025 15:40:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TUgb/Kqb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DDtzCPWW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1801A2FB0B4;
-	Wed,  3 Dec 2025 16:07:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC32D3081AF;
+	Wed,  3 Dec 2025 15:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778039; cv=none; b=flD4HRpNn8uoZwy63/MUyl+a1fQqvzinUvIKnJ3wmhP+5KS9iVqO6ZRXY5zYbhaoVMeUKKYvYwSkRgq7QxkwA14AFo4uXp79wl6OR8cWPgeXOCDoGUy5rjYEncEOis7Fe3UlWopZ5pMmJrsZ+OA7BlNWcrfdoPtZlFLU7fxKxj0=
+	t=1764776453; cv=none; b=Gf9Rs4v7idV7HbKouhDivBKx+G/xc1XDn8T+z1F4CNvpQe/Nv+WOImQbBD+5KERJcs9Sef36FlnFPGNmXK0auYoGFIJyT3KQhJ1lFXBKB8CfRp6uwQCCrbw95d/o7t0pjJapLpkBqLqz8s6toooYTr1lquzBarUjcVA/H6SeBPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778039; c=relaxed/simple;
-	bh=n/ZF8dizxMo98xJ2qORPfefAFQRqVmgcMz7OVJfTsWM=;
+	s=arc-20240116; t=1764776453; c=relaxed/simple;
+	bh=HgN4G4ZkYTfJjajVmp9/VID/gdaJXvYv5PWM94LpIuo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LzLD4vvlJ/OVIQ+Udt0srzoiSWITZXsHtEB4jmeOgXRMEqxQ5MP4LDDM+qjhXoXepYVCRHx6fgHEccZve9ipN57rkh5nH7RbjztUhLBRoIrCaVd5Ysm0mFBGHggkPuqQaVmPUS7EAh2rE32hr7RlPiGEy4PBjVUmjq2o3d5pozU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TUgb/Kqb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86084C4CEF5;
-	Wed,  3 Dec 2025 16:07:18 +0000 (UTC)
+	 MIME-Version; b=L2vhuhiKkj0Uqi96xghP21ZgfzNYmcHYJWl5/aGJFKUHzY5lxZ5WS436JXpTguMfYe9xFrKdujsfAhSJwChFuCRJ/MLv85e+yTBCJQDKZRIHhOO34iB3X4Tip/kCai8nX7x8H4Ua0yKd5bnRgBp13fYV0GtcCJMjPL2kn5OddJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DDtzCPWW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B07FC4CEF5;
+	Wed,  3 Dec 2025 15:40:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778038;
-	bh=n/ZF8dizxMo98xJ2qORPfefAFQRqVmgcMz7OVJfTsWM=;
+	s=korg; t=1764776453;
+	bh=HgN4G4ZkYTfJjajVmp9/VID/gdaJXvYv5PWM94LpIuo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TUgb/KqbS3jmtiG1BEqMqJUSQQMUvcL/C0WmagPKZVKuFyJYS73379vrgQBAhzt3G
-	 wQ2lTHmoGLFC5WZ4JgrVUlHk7HYQoc3cWgubY9CP+sDmzKajqTxx6u4xkY72IJEBVn
-	 Hfz3f/8eFPH82QmS6OI7Ku8OxWkuxqFgVCz4hiEM=
+	b=DDtzCPWWW8SdehkN3Hn1NF5MG6r+phQipEXBMPJCSUWIidJhMxxYe0NHAjfAcfH5O
+	 HKmtWENLP1BFe116x8NI+lHch3Vh1/AshipwbvJ/TGkgQ4on84556l758BhC/HvXRJ
+	 eaKo6aniRdrdSotcrAQ6EG4TgEKqMPhOV0xSPOrE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Somnath Kotur <somnath.kotur@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 224/392] bnxt_en: Fix a possible memory leak in bnxt_ptp_init
+Subject: [PATCH 5.10 170/300] tracing: Fix memory leaks in create_field_var()
 Date: Wed,  3 Dec 2025 16:26:14 +0100
-Message-ID: <20251203152422.427823815@linuxfoundation.org>
+Message-ID: <20251203152406.918143926@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +60,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit deb8eb39164382f1f67ef8e8af9176baf5e10f2d ]
+[ Upstream commit 80f0d631dcc76ee1b7755bfca1d8417d91d71414 ]
 
-In bnxt_ptp_init(), when ptp_clock_register() fails, the driver is
-not freeing the memory allocated for ptp_info->pin_config.  Fix it
-to unconditionally free ptp_info->pin_config in bnxt_ptp_free().
+The function create_field_var() allocates memory for 'val' through
+create_hist_field() inside parse_atom(), and for 'var' through
+create_var(), which in turn allocates var->type and var->var.name
+internally. Simply calling kfree() to release these structures will
+result in memory leaks.
 
-Fixes: caf3eedbcd8d ("bnxt_en: 1PPS support for 5750X family chips")
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://patch.msgid.link/20251104005700.542174-3-michael.chan@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Use destroy_hist_field() to properly free 'val', and explicitly release
+the memory of var->type and var->var.name before freeing 'var' itself.
+
+Link: https://patch.msgid.link/20251106120132.3639920-1-zilin@seu.edu.cn
+Fixes: 02205a6752f22 ("tracing: Add support for 'field variables'")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/trace/trace_events_hist.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
-index 67717274f6b9e..328ae267eba5c 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
-@@ -755,9 +755,9 @@ static void bnxt_ptp_free(struct bnxt *bp)
- 	if (ptp->ptp_clock) {
- 		ptp_clock_unregister(ptp->ptp_clock);
- 		ptp->ptp_clock = NULL;
--		kfree(ptp->ptp_info.pin_config);
--		ptp->ptp_info.pin_config = NULL;
+diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
+index a0342b45a06da..f499838d9103f 100644
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -2729,14 +2729,16 @@ static struct field_var *create_field_var(struct hist_trigger_data *hist_data,
+ 	var = create_var(hist_data, file, field_name, val->size, val->type);
+ 	if (IS_ERR(var)) {
+ 		hist_err(tr, HIST_ERR_VAR_CREATE_FIND_FAIL, errpos(field_name));
+-		kfree(val);
++		destroy_hist_field(val, 0);
+ 		ret = PTR_ERR(var);
+ 		goto err;
  	}
-+	kfree(ptp->ptp_info.pin_config);
-+	ptp->ptp_info.pin_config = NULL;
- }
  
- int bnxt_ptp_init(struct bnxt *bp)
+ 	field_var = kzalloc(sizeof(struct field_var), GFP_KERNEL);
+ 	if (!field_var) {
+-		kfree(val);
++		destroy_hist_field(val, 0);
++		kfree_const(var->type);
++		kfree(var->var.name);
+ 		kfree(var);
+ 		ret =  -ENOMEM;
+ 		goto err;
 -- 
 2.51.0
 
