@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-199800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63CBBCA04B2
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:15:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66704CA0A66
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:49:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AB4EF3027D85
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:02:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7B753331F0C6
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:28:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6B7A3559F1;
-	Wed,  3 Dec 2025 16:56:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A51C257459;
+	Wed,  3 Dec 2025 16:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cln1hDSg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W4Y3qsDs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68B53570D3;
-	Wed,  3 Dec 2025 16:56:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9F7039A27A;
+	Wed,  3 Dec 2025 16:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780982; cv=none; b=Sd+FRrssqpIlu+ZgMrDYz3CeDeCQPPnIGjzbKlCPdtbAkx/HFgYu9QjFzmVMkLO8gAQrt9a7yzXgzY6ORx/K7RfJLIlKIqQkG5LS1RpvefxbTj5BeadsPkCRnglj1MinRcPhL/UD6Tmg80TtKnIsqdMeXg8BTe65thomZhb/r2I=
+	t=1764780829; cv=none; b=CdzUDo04kHCjTKcovuixxr2W0GD9criCI5x24J6vT95U5tqtg/bo60rz8sXEDb2bHcsg2oh8+M7Ji36FEGEJ6S9dAoZlvyxhA8L64cJuy4NeqtJEdIImOius4lfaaiVLjCwTQjefGnBiWrdOejKGlUzyrULoFE2Op+NRY/8dFmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780982; c=relaxed/simple;
-	bh=RY1ol0copboKfGW5jBt3TQvXiz1mkv3gcnUpUziNCvM=;
+	s=arc-20240116; t=1764780829; c=relaxed/simple;
+	bh=VTqSk3y3WYV0+UTF+MHhdwklMDVMAVJUQU1ZxSQckoQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W7bqekxKBLHfl3+c4h91LnmoispZ2roqI4vLDyFKgGtDV0ykysPDCz4+k+f2XY+pVg6yf17OiUYU0EkUNISioxwIeQFQOWtV9WZ2k6v0DHZFzw9cWenpZdzrYcbdcr664FhcX+I2N4kfbUq1k+fvPjGCOsqTzU7JSNf2vgbVMmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cln1hDSg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5171C4CEF5;
-	Wed,  3 Dec 2025 16:56:21 +0000 (UTC)
+	 MIME-Version; b=c9+0hWb9TI9Fjne5eLTMUcwlRjyssLJps7yYsdX9nVT9vmh044Xwg1h4pKqqsYhmvJXIKahCqLoilrNkPOBNSGFBmBHaU36Otb1arImbfaGXi6pbI+NhKxhc6IdZ/EutNhX8ngDq3YTomijbmpXyFmWzwwwJdPy3dzErdsECz7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W4Y3qsDs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D860CC4CEF5;
+	Wed,  3 Dec 2025 16:53:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780982;
-	bh=RY1ol0copboKfGW5jBt3TQvXiz1mkv3gcnUpUziNCvM=;
+	s=korg; t=1764780829;
+	bh=VTqSk3y3WYV0+UTF+MHhdwklMDVMAVJUQU1ZxSQckoQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cln1hDSg/MqqYlKajQ827Hc0UZnrCA32VUhyn2y7QtQrQOqioHumH2NPGsm0lmyE3
-	 O+br9DCocUFxVEZYnWuc/JIs7LcymFdd3kXLLxqmBaghROEk6gZdoUcELzPMGG/gnr
-	 wu5GSKR5VrTUkDVd2yHy7eEd1kfESdSRTJGNiE44=
+	b=W4Y3qsDs44eQ2FWbtF6ut8dNDUgn13Om+osRN6jKsvR9SeSRXebDTIbOAjpj2R9s/
+	 +wrcs43UcXzgFXTZZ27kbFFUPazUJv8YbzxOPb97fVtauyjo6yhOuomgFu1lDzq9DY
+	 OAA1cMLyPxHr25yRaA6/0DJIiw1CSxmRdm3Bfsvo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 15/93] net: dsa: sja1105: fix SGMII linking at 10M or 100M but not passing traffic
+	Maarten Zanders <maarten@zanders.be>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: [PATCH 6.12 069/132] ARM: dts: nxp: imx6ul: correct SAI3 interrupt line
 Date: Wed,  3 Dec 2025 16:29:08 +0100
-Message-ID: <20251203152337.074582286@linuxfoundation.org>
+Message-ID: <20251203152345.853270480@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,77 +59,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Maarten Zanders <maarten@zanders.be>
 
-[ Upstream commit da62abaaa268357b1aa66b372ace562189a05df1 ]
+commit 1b03346314b791ad966d3c6d59253328226a2b2d upstream.
 
-When using the SGMII PCS as a fixed-link chip-to-chip connection, it is
-easy to miss the fact that traffic passes only at 1G, since that's what
-any normal such connection would use.
+The i.MX6UL reference manual lists two possible interrupt lines for
+SAI3 (56 and 57, offset +32). The current device tree entry uses
+the first one (24), which prevents IRQs from being handled properly.
 
-When using the SGMII PCS connected towards an on-board PHY or an SFP
-module, it is immediately noticeable that when the link resolves to a
-speed other than 1G, traffic from the MAC fails to pass: TX counters
-increase, but nothing gets decoded by the other end, and no local RX
-counters increase either.
+Use the second interrupt line (25), which does allow interrupts
+to work as expected.
 
-Artificially lowering a fixed-link rate to speed = <100> makes us able
-to see the same issue as in the case of having an SGMII PHY.
-
-Some debugging shows that the XPCS configuration is A-OK, but that the
-MAC Configuration Table entry for the port has the SPEED bits still set
-to 1000Mbps, due to a special condition in the driver. Deleting that
-condition, and letting the resolved link speed be programmed directly
-into the MAC speed field, results in a functional link at all 3 speeds.
-
-This piece of evidence, based on testing on both generations with SGMII
-support (SJA1105S and SJA1110A) directly contradicts the statement from
-the blamed commit that "the MAC is fixed at 1 Gbps and we need to
-configure the PCS only (if even that)". Worse, that statement is not
-backed by any documentation, and no one from NXP knows what it might
-refer to.
-
-I am unable to recall sufficient context regarding my testing from March
-2020 to understand what led me to draw such a braindead and factually
-incorrect conclusion. Yet, there is nothing of value regarding forcing
-the MAC speed, either for SGMII or 2500Base-X (introduced at a later
-stage), so remove all such logic.
-
-Fixes: ffe10e679cec ("net: dsa: sja1105: Add support for the SGMII port")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20251122111324.136761-1-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 36e2edf6ac07 ("ARM: dts: imx6ul: add sai support")
+Signed-off-by: Maarten Zanders <maarten@zanders.be>
+Cc: stable@vger.kernel.org
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/sja1105/sja1105_main.c | 7 -------
- 1 file changed, 7 deletions(-)
+ arch/arm/boot/dts/nxp/imx/imx6ul.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
-index 0de73a6257f9a..1acc5d912d161 100644
---- a/drivers/net/dsa/sja1105/sja1105_main.c
-+++ b/drivers/net/dsa/sja1105/sja1105_main.c
-@@ -1307,14 +1307,7 @@ static int sja1105_set_port_speed(struct sja1105_private *priv, int port,
- 	 * table, since this will be used for the clocking setup, and we no
- 	 * longer need to store it in the static config (already told hardware
- 	 * we want auto during upload phase).
--	 * Actually for the SGMII port, the MAC is fixed at 1 Gbps and
--	 * we need to configure the PCS only (if even that).
- 	 */
--	if (priv->phy_mode[port] == PHY_INTERFACE_MODE_SGMII)
--		speed = priv->info->port_speed[SJA1105_SPEED_1000MBPS];
--	else if (priv->phy_mode[port] == PHY_INTERFACE_MODE_2500BASEX)
--		speed = priv->info->port_speed[SJA1105_SPEED_2500MBPS];
--
- 	mac[port].speed = speed;
- 
- 	return 0;
--- 
-2.51.0
-
+--- a/arch/arm/boot/dts/nxp/imx/imx6ul.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6ul.dtsi
+@@ -333,7 +333,7 @@
+ 					#sound-dai-cells = <0>;
+ 					compatible = "fsl,imx6ul-sai", "fsl,imx6sx-sai";
+ 					reg = <0x02030000 0x4000>;
+-					interrupts = <GIC_SPI 24 IRQ_TYPE_LEVEL_HIGH>;
++					interrupts = <GIC_SPI 25 IRQ_TYPE_LEVEL_HIGH>;
+ 					clocks = <&clks IMX6UL_CLK_SAI3_IPG>,
+ 						 <&clks IMX6UL_CLK_SAI3>,
+ 						 <&clks IMX6UL_CLK_DUMMY>, <&clks IMX6UL_CLK_DUMMY>;
 
 
 
