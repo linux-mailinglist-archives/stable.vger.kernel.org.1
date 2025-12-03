@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-199052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3502C9FE97
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:23:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02BCBCA01A0
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:47:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 41F3C302C205
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:16:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 427563009420
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:45:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDB1F2FB987;
-	Wed,  3 Dec 2025 16:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73E8C368274;
+	Wed,  3 Dec 2025 16:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sSCd1v8x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ox61Z1dJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994D0350A03;
-	Wed,  3 Dec 2025 16:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0E136826D;
+	Wed,  3 Dec 2025 16:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778540; cv=none; b=ZNLMtUU0Pm11bp/u0FuD2YFpFSvgLBDzNf4LmZGI9cSHtPsrnE/YOFL8Jb3lmjhc2eP5OyPEsiWGAy4QczN312wqaZarVtgmj4DAW42ifH/8oCH7P4FmFR97ox6kat5ayY8D7LrRNI+RII9miKcoOu7goOkIA3G1Fu85HOpvrfo=
+	t=1764780330; cv=none; b=RUfd0cXQ6Nn8mRvnHr4kM86IshMzCr8KKzyV+AP2eqKiKzEi0nDdYAuH6XT9+31urFF4c+xT8nZSNRNwEcZ8OOJ7yrB3tZYdLFyOrv+8oNbEYfdLoyAIH9KAjrcT58KHMYgUpiq3P6wLJJW1NBFqKMpgLFfUCDjeLmt8b4VKatM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778540; c=relaxed/simple;
-	bh=v49CobYErsbg6HP6RR9Vs8jlQLD7DMuYLUZ/HUgUPzg=;
+	s=arc-20240116; t=1764780330; c=relaxed/simple;
+	bh=/oBdTLIXiqWLmEkbV4CSW2jWKULrG6WBCfwHzLCT1Zk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=evdaFuSWyHoN7sR6lbsEjT6Ay5K2HjY5NM3Odf0mIpZlJiySqwUoCJOuVy1vOdUD4j6A6IFP0DPU8WvwDzbKQPU4AC4f1ZXeou/g2K55xVQaKhycoBu54WKVpmRexe/SZ1gwAvijXKB5t+HolR5YlUlsVNZP51sKhEKQKWhmHL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sSCd1v8x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4E6AC19422;
-	Wed,  3 Dec 2025 16:15:39 +0000 (UTC)
+	 MIME-Version; b=s+XTU27lMj74fb0LYWJTiYydY/oLRjCASVbRZ18yEpdddpIq+112Y10jgfAeW+3xcwsZLDn1D3iFTB4LFZ7802aCWHFreWDNytakzxO3wMazLdo1IFxFtB3RSr0KIm7aWBBSxmbM3urq9JjtQO/AgBm4ppL86C06enLr+ZjVQhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ox61Z1dJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A784CC4CEF5;
+	Wed,  3 Dec 2025 16:45:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778540;
-	bh=v49CobYErsbg6HP6RR9Vs8jlQLD7DMuYLUZ/HUgUPzg=;
+	s=korg; t=1764780330;
+	bh=/oBdTLIXiqWLmEkbV4CSW2jWKULrG6WBCfwHzLCT1Zk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sSCd1v8xcNmn3rp86PUy69GO0rPNchPBqfij9cOwZCqFF3fY/aE8MN/P5UPuh3E7n
-	 vk4iyEvNw/zMs2qqlxDEQefNS3ZEynIkZlhksIxKM5S/KYZxVr35f/LaCcloldw2gR
-	 XxGOlKwNKBy12dQpifnz7y1aLGSYCyWHDv9Ye8pM=
+	b=Ox61Z1dJEqPE3g3yUHE+lmG1zfeFZ3lD/V1TV/TSvKtUJYPlEMO+RlUgixIPaDBTo
+	 5Nu8mZswfeOLZ6FQDwi9AdrkiOAS9/lbIh3MCH1NYsF+bwyC6+oPbx6gnxwU5Fgh/r
+	 eOOISAMiNNZIAY+TrNUOkoKEimwJ1C7OnJXTD3Kk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Johan Hovold <johan@kernel.org>,
-	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
-Subject: [PATCH 5.15 375/392] drm: sti: fix device leaks at component probe
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
+	Klara Modin <klarasmodin@gmail.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.1 523/568] MIPS: mm: kmalloc tlb_vpn array to avoid stack overflow
 Date: Wed,  3 Dec 2025 16:28:45 +0100
-Message-ID: <20251203152427.954874116@linuxfoundation.org>
+Message-ID: <20251203152459.867813267@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +61,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 
-commit 620a8f131154250f6a64a07d049a4f235d6451a5 upstream.
+commit 841ecc979b18d3227fad5e2d6a1e6f92688776b5 upstream.
 
-Make sure to drop the references taken to the vtg devices by
-of_find_device_by_node() when looking up their driver data during
-component probe.
+Owing to Config4.MMUSizeExt and VTLB/FTLB MMU features later MIPSr2+
+cores can have more than 64 TLB entries.  Therefore allocate an array
+for uniquification instead of placing too an small array on the stack.
 
-Note that holding a reference to a platform device does not prevent its
-driver data from going away so there is no point in keeping the
-reference after the lookup helper returns.
-
-Fixes: cc6b741c6f63 ("drm: sti: remove useless fields from vtg structure")
-Cc: stable@vger.kernel.org	# 4.16
-Cc: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20250922122012.27407-1-johan@kernel.org
-Signed-off-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+Fixes: 35ad7e181541 ("MIPS: mm: tlb-r4k: Uniquify TLB entries on init")
+Co-developed-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Cc: stable@vger.kernel.org # v6.17+: 9f048fa48740: MIPS: mm: Prevent a TLB shutdown on initial uniquification
+Cc: stable@vger.kernel.org # v6.17+
+Tested-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Tested-by: Klara Modin <klarasmodin@gmail.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/sti/sti_vtg.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/mips/mm/tlb-r4k.c |   18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/sti/sti_vtg.c
-+++ b/drivers/gpu/drm/sti/sti_vtg.c
-@@ -143,12 +143,17 @@ struct sti_vtg {
- struct sti_vtg *of_vtg_find(struct device_node *np)
+--- a/arch/mips/mm/tlb-r4k.c
++++ b/arch/mips/mm/tlb-r4k.c
+@@ -12,6 +12,7 @@
+ #include <linux/init.h>
+ #include <linux/sched.h>
+ #include <linux/smp.h>
++#include <linux/memblock.h>
+ #include <linux/mm.h>
+ #include <linux/hugetlb.h>
+ #include <linux/export.h>
+@@ -512,17 +513,26 @@ static int r4k_vpn_cmp(const void *a, co
+  * Initialise all TLB entries with unique values that do not clash with
+  * what we have been handed over and what we'll be using ourselves.
+  */
+-static void r4k_tlb_uniquify(void)
++static void __ref r4k_tlb_uniquify(void)
  {
- 	struct platform_device *pdev;
-+	struct sti_vtg *vtg;
+-	unsigned long tlb_vpns[1 << MIPS_CONF1_TLBS_SIZE];
+ 	int tlbsize = current_cpu_data.tlbsize;
++	bool use_slab = slab_is_available();
+ 	int start = num_wired_entries();
++	phys_addr_t tlb_vpn_size;
++	unsigned long *tlb_vpns;
+ 	unsigned long vpn_mask;
+ 	int cnt, ent, idx, i;
  
- 	pdev = of_find_device_by_node(np);
- 	if (!pdev)
- 		return NULL;
+ 	vpn_mask = GENMASK(cpu_vmbits - 1, 13);
+ 	vpn_mask |= IS_ENABLED(CONFIG_64BIT) ? 3ULL << 62 : 1 << 31;
  
--	return (struct sti_vtg *)platform_get_drvdata(pdev);
-+	vtg = platform_get_drvdata(pdev);
++	tlb_vpn_size = tlbsize * sizeof(*tlb_vpns);
++	tlb_vpns = (use_slab ?
++		    kmalloc(tlb_vpn_size, GFP_KERNEL) :
++		    memblock_alloc_raw(tlb_vpn_size, sizeof(*tlb_vpns)));
++	if (WARN_ON(!tlb_vpns))
++		return; /* Pray local_flush_tlb_all() is good enough. */
 +
-+	put_device(&pdev->dev);
-+
-+	return vtg;
+ 	htw_stop();
+ 
+ 	for (i = start, cnt = 0; i < tlbsize; i++, cnt++) {
+@@ -575,6 +585,10 @@ static void r4k_tlb_uniquify(void)
+ 	tlbw_use_hazard();
+ 	htw_start();
+ 	flush_micro_tlb();
++	if (use_slab)
++		kfree(tlb_vpns);
++	else
++		memblock_free(tlb_vpns, tlb_vpn_size);
  }
  
- static void vtg_reset(struct sti_vtg *vtg)
+ /*
 
 
 
