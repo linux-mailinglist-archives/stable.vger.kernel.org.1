@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-199798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19A1CCA04B0
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:14:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FC74CA020F
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:50:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F154A30E6275
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:02:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 52384300C5E4
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:46:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AE89338596;
-	Wed,  3 Dec 2025 16:56:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CBC136C593;
+	Wed,  3 Dec 2025 16:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tQEv7AKH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C2W9XYRp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E033563CE;
-	Wed,  3 Dec 2025 16:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA4C3148CD;
+	Wed,  3 Dec 2025 16:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780975; cv=none; b=rkJRTg6mRuQKiS86igpSyXob0InwZz7N7ssO0FZCX9ZfMDaWGIYCHYcBzSmW0D5sJ0tezsjR1BD5tBGt6nCLdaFhB141DUrz5U7E1M0jv2prxw09jBqsO9u5tYWT339lK/Cym6S/4uIHrmkLd7xWdO7c9em1oU7a1D73Q8GGbdg=
+	t=1764780393; cv=none; b=Cmi2tIh9sNORBIVDQhhDwoyVsAzbAHwYjDUeAZSg6ZMMIYGQ9tI10GJ3Z+wHvF6iIKS2lRLs1jcHlJdK7Mv817oIZyaqktKhB/sCNKISED96/fUVls1/v0PVABXpGeaAJEB17awIrtO4+La/AsUpSFvhJhdNUkuVpRgAhuMuvYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780975; c=relaxed/simple;
-	bh=mjSBR6FYLlOnCdyodMAJEwqeMm60ebXlXnebgXA1k/8=;
+	s=arc-20240116; t=1764780393; c=relaxed/simple;
+	bh=SP70hSBlLfJr7soh/lJJs3dqpRtoH97hxMvUyl/J1uU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qdXiR4obZYXWvmfHozFlHsku7nrskol4mpWH1wZyrHqLqLe3YYUymElPe3hrlOPf6P58T8tQqBKqezysPPPVCdWrltIQvJ0q07OMD5efWmn2EfbZfUigigJsqZAU7fCo/cIOKbMjF6oEh5g4W9XyTL69pJl3i6IB8bik3Q9/nes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tQEv7AKH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6342C4CEF5;
-	Wed,  3 Dec 2025 16:56:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fQDHkokqji9Mcs4H2LFYODpQMoCGHXytEPqWi4Ik2pm+8GeJAR2v1lp7fmgm1iqo3iD4gM2nwv/phUjHYEWUfgroS0CKNlIYjGq0KKrwvGL+ezRcuxUoMrJTu6C8i9jc1651/s2dcOknj7Ke1iZoMaw1X9mHUAvP9tIiDUPPXYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C2W9XYRp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C9AC4CEF5;
+	Wed,  3 Dec 2025 16:46:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780975;
-	bh=mjSBR6FYLlOnCdyodMAJEwqeMm60ebXlXnebgXA1k/8=;
+	s=korg; t=1764780393;
+	bh=SP70hSBlLfJr7soh/lJJs3dqpRtoH97hxMvUyl/J1uU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tQEv7AKH5m6605YkEO3ApAg4Y67n4V57RoIz5IdZQEiJMKq5t4J8vrbZDGuukKc+H
-	 94PtZRDWr1Rl6O7Sy+6mbbi6kAUfBXW3rha6dDLz23qhI8Uco72wJHl39w1KRSPg+5
-	 Xc9aMiF//F1pouvZNOQSr7V/cvl64+OVzPajAGhY=
+	b=C2W9XYRpONvJg1KViVTtKw4K2rSPAtLDP4bGGvz2f+oug7nFwUpdcJC4AaMrAjYbX
+	 plLJPj762apsVnhIkxmP4CZ2VV3QBxFA5M8sbrwmKcD8MDFt8yFsdatYrbHQBSCG8w
+	 ibZv2r0lxCg2ADls9nFkmeSCQ2Dwl4PWZSDfnnOI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 13/93] drm/amdgpu: fix cyan_skillfish2 gpu info fw handling
+	stable <stable@kernel.org>,
+	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>
+Subject: [PATCH 6.1 544/568] xhci: dbgtty: fix device unregister
 Date: Wed,  3 Dec 2025 16:29:06 +0100
-Message-ID: <20251203152337.000662371@linuxfoundation.org>
+Message-ID: <20251203152500.635478452@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,46 +57,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Łukasz Bartosik <ukaszb@chromium.org>
 
-[ Upstream commit 7fa666ab07ba9e08f52f357cb8e1aad753e83ac6 ]
+commit 1f73b8b56cf35de29a433aee7bfff26cea98be3f upstream.
 
-If the board supports IP discovery, we don't need to
-parse the gpu info firmware.
+When DbC is disconnected then xhci_dbc_tty_unregister_device()
+is called. However if there is any user space process blocked
+on write to DbC terminal device then it will never be signalled
+and thus stay blocked indifinitely.
 
-Backport to 6.18.
+This fix adds a tty_vhangup() call in xhci_dbc_tty_unregister_device().
+The tty_vhangup() wakes up any blocked writers and causes subsequent
+write attempts to DbC terminal device to fail.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4721
-Fixes: fa819e3a7c1e ("drm/amdgpu: add support for cyan skillfish gpu_info")
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 5427e32fa3a0ba9a016db83877851ed277b065fb)
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
+Signed-off-by: Łukasz Bartosik <ukaszb@chromium.org>
+Link: https://patch.msgid.link/20251119212910.1245694-1-ukaszb@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/host/xhci-dbgtty.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index b2a1dc193cb8f..c1b9333d7b78a 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -1941,6 +1941,8 @@ static int amdgpu_device_parse_gpu_info_fw(struct amdgpu_device *adev)
- 		chip_name = "navi12";
- 		break;
- 	case CHIP_CYAN_SKILLFISH:
-+		if (adev->mman.discovery_bin)
-+			return 0;
- 		chip_name = "cyan_skillfish";
- 		break;
- 	}
--- 
-2.51.0
-
+--- a/drivers/usb/host/xhci-dbgtty.c
++++ b/drivers/usb/host/xhci-dbgtty.c
+@@ -519,6 +519,12 @@ static void xhci_dbc_tty_unregister_devi
+ 
+ 	if (!port->registered)
+ 		return;
++	/*
++	 * Hang up the TTY. This wakes up any blocked
++	 * writers and causes subsequent writes to fail.
++	 */
++	tty_vhangup(port->port.tty);
++
+ 	tty_unregister_device(dbc_tty_driver, port->minor);
+ 	xhci_dbc_tty_exit_port(port);
+ 	port->registered = false;
 
 
 
