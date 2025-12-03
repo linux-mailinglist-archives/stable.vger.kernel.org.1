@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-199771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E16F5CA0A6C
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:49:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B241CCA0749
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:28:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B5839331F0E9
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:28:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EB7EB332955E
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:11:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 122C1349AE6;
-	Wed,  3 Dec 2025 16:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD6AD398F96;
+	Wed,  3 Dec 2025 16:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZCZ4XAdx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LgUJVc33"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A00DA346FBE;
-	Wed,  3 Dec 2025 16:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CA10398FB8;
+	Wed,  3 Dec 2025 16:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780885; cv=none; b=O21/B7uppgJGSqY/C/ijVJHlLsu3I6DDa++3JwReC0w863QALqIfNPZTEZSIGoUEfjYtJ1/W1dqj7Yp5axPlkEbr1CaV4P3kbC94xJhflc4soGekHESUBp31qvH3QSlnAziAvWf//DIo/A3L3OJyrI1037UnKI9r4WJPJpuOqgY=
+	t=1764781149; cv=none; b=H0o8tREfvmOXGmMDXsyMx6ReB+acBRp3EXyMTcWsIhCNE0QV9PhUC5YNMAGG7aO92X5FDmz75HOFCmvLif3Et9xL4snjN2l+d699zYpozvQ21HF2pXWi6wb1TXDgwKIGcAf/F9B7UCCvECboB5b2x9Bu2+Snf9b5j+dOtbi72eY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780885; c=relaxed/simple;
-	bh=djtYYWl2awtDmg8LaGjPFnB9e9CRJ3Vs5apCIkd7AQU=;
+	s=arc-20240116; t=1764781149; c=relaxed/simple;
+	bh=G/Mec0iqwpUesXhPb2QX0FXmDQk0CJg6E5Vgq6ZZ9Ok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lUUhxiRbZLWmiILhQJUBz+eL9JFD40e6cCIlAYfXKkhWrr+vQKZDPxw8HU3lCbZW5mh6xAGh8Oz1w4n55UxuzfYiDC8Hhf9BrAieF4oZbr1QI3sDteEMA3V/4DsrwkHkHqzAtcGnUozL0S9fEOrXK0QR5k84tbO6bQafvw5rJgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZCZ4XAdx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05465C4CEF5;
-	Wed,  3 Dec 2025 16:54:44 +0000 (UTC)
+	 MIME-Version; b=XbocHY4UoO/HKQmdtKV8dav/w/4mdg6Yubj9iWa+5hCbyd19gAo+yaAqlgtOzD6ybyleOOEliz59bm9SYZlphWKyD9hxIcP85NFFC20VJulLvp+R0OXDj7UGetfvIOVU9TdaCyQyqJwwTihGBi8u5ZW910eH+Q56MusZAz/rbwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LgUJVc33; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6995DC4CEF5;
+	Wed,  3 Dec 2025 16:59:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780885;
-	bh=djtYYWl2awtDmg8LaGjPFnB9e9CRJ3Vs5apCIkd7AQU=;
+	s=korg; t=1764781148;
+	bh=G/Mec0iqwpUesXhPb2QX0FXmDQk0CJg6E5Vgq6ZZ9Ok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZCZ4XAdxBi2iUgD7HRUxElKrBE4AUEFA6Xg2wGuePG/7SRSceFsasqn3dEhSBKVGI
-	 td0tfyUFAlJy7Gmp4Se7bvzps+8ra372Q1Wad2MwQ1TVsYuuiP7LOSd0xMUnfPQG+Y
-	 lbc1OnCCT01L6Jk0Z/nasKQeU+4FuWy7qJdl2GKs=
+	b=LgUJVc339/Nq4Y2nIZCqXwQBYLXswxwwCICGF/lknL/NWLITXKR7sl3q44fOgOBdN
+	 9OAAdFWP2JJJ1T0vCUzRpk0kOt337tp+j4uhAdjcjF3XeKFSuJQrBdfdBDJWFaoWRx
+	 GhPFB4PvYhtGzRnRMJ5/D4SfHQcdBX/KXS7jvW+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuen-Han Tsai <khtsai@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 118/132] usb: udc: Add trace event for usb_gadget_set_state
-Date: Wed,  3 Dec 2025 16:29:57 +0100
-Message-ID: <20251203152347.683996507@linuxfoundation.org>
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	stable <stable@kernel.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.6 65/93] usb: dwc3: pci: Sort out the Intel device IDs
+Date: Wed,  3 Dec 2025 16:29:58 +0100
+Message-ID: <20251203152338.926950918@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
+References: <20251203152336.494201426@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,56 +60,156 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-[ Upstream commit 7bf1158514e410310aec975e630cec99d4e4092f ]
+commit 46b28d2fbd13148981d91246bc0e13f4fc055987 upstream.
 
-While the userspace program can be notified of gadget state changes,
-timing issue can lead to missed transitions when reading the state
-value.
+The PCI device IDs were organised based on the Intel
+architecture generation in most cases, but not with every
+ID. That left the device ID table with no real order.
+Sorting the table based on the device ID.
 
-Introduce a trace event for usb_gadget_set_state to reliably track state
-transitions.
-
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://lore.kernel.org/r/20250818082722.2952867-1-khtsai@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: baeb66fbd420 ("usb: gadget: udc: fix use-after-free in usb_gadget_state_work")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Suggested-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://patch.msgid.link/20251107121548.2702900-1-heikki.krogerus@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/udc/core.c  |    1 +
- drivers/usb/gadget/udc/trace.h |    5 +++++
- 2 files changed, 6 insertions(+)
+ drivers/usb/dwc3/dwc3-pci.c |   82 ++++++++++++++++++++++----------------------
+ 1 file changed, 41 insertions(+), 41 deletions(-)
 
---- a/drivers/usb/gadget/udc/core.c
-+++ b/drivers/usb/gadget/udc/core.c
-@@ -1128,6 +1128,7 @@ void usb_gadget_set_state(struct usb_gad
- {
- 	gadget->state = state;
- 	schedule_work(&gadget->work);
-+	trace_usb_gadget_set_state(gadget, 0);
+--- a/drivers/usb/dwc3/dwc3-pci.c
++++ b/drivers/usb/dwc3/dwc3-pci.c
+@@ -21,41 +21,41 @@
+ #include <linux/acpi.h>
+ #include <linux/delay.h>
+ 
++#define PCI_DEVICE_ID_INTEL_CMLLP		0x02ee
++#define PCI_DEVICE_ID_INTEL_CMLH		0x06ee
++#define PCI_DEVICE_ID_INTEL_BXT			0x0aaa
+ #define PCI_DEVICE_ID_INTEL_BYT			0x0f37
+ #define PCI_DEVICE_ID_INTEL_MRFLD		0x119e
+-#define PCI_DEVICE_ID_INTEL_BSW			0x22b7
+-#define PCI_DEVICE_ID_INTEL_SPTLP		0x9d30
+-#define PCI_DEVICE_ID_INTEL_SPTH		0xa130
+-#define PCI_DEVICE_ID_INTEL_BXT			0x0aaa
+ #define PCI_DEVICE_ID_INTEL_BXT_M		0x1aaa
+-#define PCI_DEVICE_ID_INTEL_APL			0x5aaa
+-#define PCI_DEVICE_ID_INTEL_KBP			0xa2b0
+-#define PCI_DEVICE_ID_INTEL_CMLLP		0x02ee
+-#define PCI_DEVICE_ID_INTEL_CMLH		0x06ee
++#define PCI_DEVICE_ID_INTEL_BSW			0x22b7
+ #define PCI_DEVICE_ID_INTEL_GLK			0x31aa
+-#define PCI_DEVICE_ID_INTEL_CNPLP		0x9dee
+-#define PCI_DEVICE_ID_INTEL_CNPH		0xa36e
+-#define PCI_DEVICE_ID_INTEL_CNPV		0xa3b0
+ #define PCI_DEVICE_ID_INTEL_ICLLP		0x34ee
+-#define PCI_DEVICE_ID_INTEL_EHL			0x4b7e
+-#define PCI_DEVICE_ID_INTEL_TGPLP		0xa0ee
+ #define PCI_DEVICE_ID_INTEL_TGPH		0x43ee
+-#define PCI_DEVICE_ID_INTEL_JSP			0x4dee
+-#define PCI_DEVICE_ID_INTEL_WCL			0x4d7e
+ #define PCI_DEVICE_ID_INTEL_ADL			0x460e
+-#define PCI_DEVICE_ID_INTEL_ADL_PCH		0x51ee
+ #define PCI_DEVICE_ID_INTEL_ADLN		0x465e
++#define PCI_DEVICE_ID_INTEL_EHL			0x4b7e
++#define PCI_DEVICE_ID_INTEL_WCL			0x4d7e
++#define PCI_DEVICE_ID_INTEL_JSP			0x4dee
++#define PCI_DEVICE_ID_INTEL_ADL_PCH		0x51ee
+ #define PCI_DEVICE_ID_INTEL_ADLN_PCH		0x54ee
+-#define PCI_DEVICE_ID_INTEL_ADLS		0x7ae1
+-#define PCI_DEVICE_ID_INTEL_RPL			0xa70e
++#define PCI_DEVICE_ID_INTEL_APL			0x5aaa
++#define PCI_DEVICE_ID_INTEL_NVLS_PCH		0x6e6f
++#define PCI_DEVICE_ID_INTEL_ARLH_PCH		0x777e
+ #define PCI_DEVICE_ID_INTEL_RPLS		0x7a61
++#define PCI_DEVICE_ID_INTEL_MTL			0x7e7e
++#define PCI_DEVICE_ID_INTEL_ADLS		0x7ae1
+ #define PCI_DEVICE_ID_INTEL_MTLM		0x7eb1
+ #define PCI_DEVICE_ID_INTEL_MTLP		0x7ec1
+ #define PCI_DEVICE_ID_INTEL_MTLS		0x7f6f
+-#define PCI_DEVICE_ID_INTEL_MTL			0x7e7e
+-#define PCI_DEVICE_ID_INTEL_NVLS_PCH		0x6e6f
+-#define PCI_DEVICE_ID_INTEL_ARLH_PCH		0x777e
+ #define PCI_DEVICE_ID_INTEL_TGL			0x9a15
++#define PCI_DEVICE_ID_INTEL_SPTLP		0x9d30
++#define PCI_DEVICE_ID_INTEL_CNPLP		0x9dee
++#define PCI_DEVICE_ID_INTEL_TGPLP		0xa0ee
++#define PCI_DEVICE_ID_INTEL_SPTH		0xa130
++#define PCI_DEVICE_ID_INTEL_KBP			0xa2b0
++#define PCI_DEVICE_ID_INTEL_CNPH		0xa36e
++#define PCI_DEVICE_ID_INTEL_CNPV		0xa3b0
++#define PCI_DEVICE_ID_INTEL_RPL			0xa70e
+ #define PCI_DEVICE_ID_INTEL_PTLH		0xe332
+ #define PCI_DEVICE_ID_INTEL_PTLH_PCH		0xe37e
+ #define PCI_DEVICE_ID_INTEL_PTLU		0xe432
+@@ -413,41 +413,41 @@ static void dwc3_pci_remove(struct pci_d
  }
- EXPORT_SYMBOL_GPL(usb_gadget_set_state);
  
---- a/drivers/usb/gadget/udc/trace.h
-+++ b/drivers/usb/gadget/udc/trace.h
-@@ -81,6 +81,11 @@ DECLARE_EVENT_CLASS(udc_log_gadget,
- 		__entry->ret)
- );
- 
-+DEFINE_EVENT(udc_log_gadget, usb_gadget_set_state,
-+	TP_PROTO(struct usb_gadget *g, int ret),
-+	TP_ARGS(g, ret)
-+);
-+
- DEFINE_EVENT(udc_log_gadget, usb_gadget_frame_number,
- 	TP_PROTO(struct usb_gadget *g, int ret),
- 	TP_ARGS(g, ret)
+ static const struct pci_device_id dwc3_pci_id_table[] = {
+-	{ PCI_DEVICE_DATA(INTEL, BSW, &dwc3_pci_intel_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, BYT, &dwc3_pci_intel_byt_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, MRFLD, &dwc3_pci_intel_mrfld_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, CMLLP, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, CMLH, &dwc3_pci_intel_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, SPTLP, &dwc3_pci_intel_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, SPTH, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, BXT, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, BYT, &dwc3_pci_intel_byt_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, MRFLD, &dwc3_pci_intel_mrfld_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, BXT_M, &dwc3_pci_intel_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, APL, &dwc3_pci_intel_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, KBP, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, BSW, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, GLK, &dwc3_pci_intel_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, CNPLP, &dwc3_pci_intel_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, CNPH, &dwc3_pci_intel_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, CNPV, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, ICLLP, &dwc3_pci_intel_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, EHL, &dwc3_pci_intel_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, TGPLP, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, TGPH, &dwc3_pci_intel_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, JSP, &dwc3_pci_intel_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, WCL, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, ADL, &dwc3_pci_intel_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, ADL_PCH, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, ADLN, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, EHL, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, WCL, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, JSP, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, ADL_PCH, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, ADLN_PCH, &dwc3_pci_intel_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, ADLS, &dwc3_pci_intel_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, RPL, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, APL, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, NVLS_PCH, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, ARLH_PCH, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, RPLS, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, MTL, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, ADLS, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, MTLM, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, MTLP, &dwc3_pci_intel_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, MTL, &dwc3_pci_intel_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, NVLS_PCH, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, MTLS, &dwc3_pci_intel_swnode) },
+-	{ PCI_DEVICE_DATA(INTEL, ARLH_PCH, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, TGL, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, SPTLP, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, CNPLP, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, TGPLP, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, SPTH, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, KBP, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, CNPH, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, CNPV, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, RPL, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, PTLH, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, PTLH_PCH, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, PTLU, &dwc3_pci_intel_swnode) },
 
 
 
