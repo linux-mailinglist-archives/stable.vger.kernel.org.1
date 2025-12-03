@@ -1,198 +1,173 @@
-Return-Path: <stable+bounces-198173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF1B9C9E2A4
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 09:14:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B6FFC9E2AB
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 09:17:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5FB2C4E1076
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 08:14:03 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EBAD54E103C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 08:17:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 895842BF013;
-	Wed,  3 Dec 2025 08:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52C1D22B594;
+	Wed,  3 Dec 2025 08:17:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H8OGuvh4"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="jUPrYhaY"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362702BEFF8
-	for <stable@vger.kernel.org>; Wed,  3 Dec 2025 08:13:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52AD5214204;
+	Wed,  3 Dec 2025 08:17:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764749632; cv=none; b=KW9snVkrE6Q7hQaVTsy1tt9FpOm8cGPDcZGTht5cO7RHzQ9o6HHQzYN9OHUtratDUlkZ7HJEebo7VzptBA78zL9Uft+Ap0/NDe4rL1pDpy+Lr8hiN8DuHj8E42V/6Dj5KwIKBF4KtxFEA9Nw1ScyQ3+jsdYwd2SSzZ7uXw/Zwf8=
+	t=1764749849; cv=none; b=hG3LHyAUB00vl23ZHnxvMTeu0RPHQ8+HwaUOkguHngXn3VCK1MOvSQpYsa5hE+9u6TwHFCfYdcryah5Gs4o0/rC2QdZKi4u1J9N6Voumotn9O4bPDSbRAwqAINLCmdlfuO4PHOG2wI3//KzbijZJGyjAyIStGg61iF+J5apVk4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764749632; c=relaxed/simple;
-	bh=EbSYU953RKjHW7wA5plT5zQZwU7gj4GUV/v9MPqxLeI=;
-	h=From:To:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Qp0BVzzd8n0oqMOulB8cCG1A+3BnAmEraLoc4tcARmyUCJNuV5JSGck8od61CGrdKdZh0IEs4q0i34186FVTsyBN85TYTyxEYVW2onWExREOv+jJBpY5fFOH30rPgchMh+glZgb8+gUHv+89Eja7XMb1dA7Ndda/bP4J0ObRILY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H8OGuvh4; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764749630; x=1796285630;
-  h=from:to:subject:in-reply-to:references:date:message-id:
-   mime-version;
-  bh=EbSYU953RKjHW7wA5plT5zQZwU7gj4GUV/v9MPqxLeI=;
-  b=H8OGuvh4kZwEQYecG1ulr5dETrZ1mOIh6+D1jai39eM7ZDheF8OYGbFJ
-   FCDXsqqhpb26XOZmLzP3n3WOK6Lcl+bg9VpZIYCuE7CtpgzgwDfy572/q
-   UBI6f98VP3N27Wcc1l/+J67jZJN4MDu0K/IadAO1IUfFFXSru6umSaFPg
-   LwMf64/9acaH0zXVaTj9lgpYGKGATRxndzMxTL21xCiNb9duCZjsw1mF9
-   tnUTXyV/Poy30lbk96XJWpq+MqlgEBflnHV7KLr/4JCctWG/hpjaH5Rgr
-   qAwBzVtYRLQSrzYNX0nalnrV9LVCyFcrgDRHdttoOf/ANyB7xsunP3Q0m
-   Q==;
-X-CSE-ConnectionGUID: kFBq3BHyTkWUTKpo0mNVLA==
-X-CSE-MsgGUID: +fM2ZKIzRVaomTG4okZmVw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="77416102"
-X-IronPort-AV: E=Sophos;i="6.20,245,1758610800"; 
-   d="scan'208";a="77416102"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2025 00:13:49 -0800
-X-CSE-ConnectionGUID: ixh40zUTSZS5MeE6+3KAsg==
-X-CSE-MsgGUID: WLU3ByICTXmrrhIGNiK7WQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,245,1758610800"; 
-   d="scan'208";a="193891482"
-Received: from ettammin-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.246.211])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2025 00:13:47 -0800
-From: Jani Nikula <jani.nikula@intel.com>
-To: imre.deak@intel.com, intel-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org, Mohammed Thasleem
- <mohammed.thasleem@intel.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] drm/i915/dmc: fix an unlikely NULL pointer deference at
- probe
-In-Reply-To: <aS9bj8RRYYc01Rzs@ideak-desk>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20251202183950.2450315-1-jani.nikula@intel.com>
- <aS9ZGmXG_n0IXv-N@ideak-desk> <aS9bj8RRYYc01Rzs@ideak-desk>
-Date: Wed, 03 Dec 2025 10:13:44 +0200
-Message-ID: <43c4d7f0d9fe4ba6acac828306b41d612dd4f085@intel.com>
+	s=arc-20240116; t=1764749849; c=relaxed/simple;
+	bh=mvFuhMD54i7/xxkNa7kVr8dfwPQ5KcDNvwjJAfRBj28=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q6ySoRfmYyARg3SfouDDricc3xTLX9ddYhmQkrk5hzd6ieA1Q/G7uUL5gukepzUEQ9MgI6HarJk3yK+DYH1aW4BcuhgO9bgqkGcXxUBsF76rrtgHgYvbCHgGXjdgG0kw5EPMmekRT5sGuWU4iNkEylhzvJTjWhU/5PkFpfhpIa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=jUPrYhaY; arc=none smtp.client-ip=115.124.30.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1764749837; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=S8fvIMewKMZCC3x/STpt5BFZ1WcxOgScYNM9rzC9VGE=;
+	b=jUPrYhaYEKnTqXTaNnNZy+H3JG/jPuENmpCV9LZKvGg8cCw/h1y8A2lqN0HryBWYP755Bf10mXFB890TOQ7NzzIwBdbk64ejviHSHvv/Ax2wNy03ZEeVVpUduis/C1yVafNdksASnIvgcFGX+0gdXjMNMrt8YTycllTgjE82OZ4=
+Received: from localhost(mailfrom:peng_wang@linux.alibaba.com fp:SMTPD_---0Wu-brGT_1764749835 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 03 Dec 2025 16:17:16 +0800
+Date: Wed, 3 Dec 2025 16:17:15 +0800
+From: Peng Wang <peng_wang@linux.alibaba.com>
+To: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: bsegall@google.com, dietmar.eggemann@arm.com, juri.lelli@redhat.com,
+	linux-kernel@vger.kernel.org, mgorman@suse.de, mingo@redhat.com,
+	peterz@infradead.org, rostedt@goodmis.org, stable@vger.kernel.org,
+	vdavydov.dev@gmail.com, vschneid@redhat.com
+Subject: Re: [PATCH v3] sched/fair: Clear ->h_load_next when unregistering
+ cgroup
+Message-ID: <aS_yC_smGTS-_JbK@U-N9MN20RF-1935.local>
+Reply-To: Peng Wang <peng_wang@linux.alibaba.com>
+References: <CAKfTPtC-L3R6iYA=boxQGKVafC_UhBihYq6n6qTJ6hk4Q76OZg@mail.gmail.com>
+ <bf93d41ff9f2da19ef2c1cfb505362e0b48c39de.1761290330.git.peng_wang@linux.alibaba.com>
+ <CAKfTPtBMVkCVCSMN2ztpA=kje-BoNFt=bK44_zdkMeAPfNMdqA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=gb2312
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAKfTPtBMVkCVCSMN2ztpA=kje-BoNFt=bK44_zdkMeAPfNMdqA@mail.gmail.com>
 
-On Tue, 02 Dec 2025, Imre Deak <imre.deak@intel.com> wrote:
-> On Tue, Dec 02, 2025 at 11:24:42PM +0200, Imre Deak wrote:
->> On Tue, Dec 02, 2025 at 08:39:50PM +0200, Jani Nikula wrote:
->> > intel_dmc_update_dc6_allowed_count() oopses when DMC hasn't been
->> > initialized, and dmc is thus NULL.
->> > 
->> > That would be the case when the call path is
->> > intel_power_domains_init_hw() -> {skl,bxt,icl}_display_core_init() ->
->> > gen9_set_dc_state() -> intel_dmc_update_dc6_allowed_count(), as
->> > intel_power_domains_init_hw() is called *before* intel_dmc_init().
->> > 
->> > However, gen9_set_dc_state() calls intel_dmc_update_dc6_allowed_count()
->> > conditionally, depending on the current and target DC states. At probe,
->> > the target is disabled, but if DC6 is enabled, the function is called,
->> > and an oops follows. Apparently it's quite unlikely that DC6 is enabled
->> > at probe, as we haven't seen this failure mode before.
->> > 
->> > Add NULL checks and switch the dmc->display references to just display.
->> > 
->> > Fixes: 88c1f9a4d36d ("drm/i915/dmc: Create debugfs entry for dc6 counter")
->> > Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>
->> > Cc: Imre Deak <imre.deak@intel.com>
->> > Cc: <stable@vger.kernel.org> # v6.16+
->> > Signed-off-by: Jani Nikula <jani.nikula@intel.com>
->> > 
->> > ---
->> > 
->> > Rare case, but this may also throw off the rc6 counting in debugfs when
->> > it does happen.
->> 
->> Yes, I missed the case where the driver is being loaded while DC6 is
->> enabled, this is what happens for the reporter:
->> 
->> i915 0000:00:04.0: [drm] *ERROR* DC state mismatch (0x0 -> 0x2)
->> 
->> That's odd, as DC6 requires the DMC firmware, which - if it's indeed
->> loaded by BIOS for instance - will be overwritten by the driver, not a
->> well specified sequence (even though the driver is trying to handle it
->> correctly by disabling any active firmware handler).
->> 
->> But as you pointed out this would also throw off the cooked-up DC6
->> counter tracking,
->
-> Actually the patch would keep the counter working, as the counter
-> wouldn't be updated in the dmc==NULL case. However I still think the
-> correct fix would be to check the correct DC state, which from the POV
-> of the counter tracking is the driver's version of the state, not the HW
-> state.
+On Fri, Oct 24, 2025 at 09:52:59AM +0200, Vincent Guittot wrote:
+> On Fri, 24 Oct 2025 at 09:24, Peng Wang <peng_wang@linux.alibaba.com> wrote:
+> >
+> > An invalid pointer dereference bug was reported on arm64 cpu, and has
+> > not yet been seen on x86. A partial oops looks like:
+> >
+> >  Call trace:
+> >   update_cfs_rq_h_load+0x80/0xb0
+> >   wake_affine+0x158/0x168
+> >   select_task_rq_fair+0x364/0x3a8
+> >   try_to_wake_up+0x154/0x648
+> >   wake_up_q+0x68/0xd0
+> >   futex_wake_op+0x280/0x4c8
+> >   do_futex+0x198/0x1c0
+> >   __arm64_sys_futex+0x11c/0x198
+> >
+> > Link: https://lore.kernel.org/all/20251013071820.1531295-1-CruzZhao@linux.alibaba.com/
+> >
+> > We found that the task_group corresponding to the problematic se
+> > is not in the parent task_group¡¯s children list, indicating that
+> > h_load_next points to an invalid address. Consider the following
+> > cgroup and task hierarchy:
+> >
+> >          A
+> >         / \
+> >        /   \
+> >       B     E
+> >      / \    |
+> >     /   \   t2
+> >    C     D
+> >    |     |
+> >    t0    t1
+> >
+> > Here follows a timing sequence that may be responsible for triggering
+> > the problem:
+> >
+> > CPU X                   CPU Y                   CPU Z
+> > wakeup t0
+> > set list A->B->C
+> > traverse A->B->C
+> > t0 exits
+> > destroy C
+> >                         wakeup t2
+> >                         set list A->E           wakeup t1
+> >                                                 set list A->B->D
+> >                         traverse A->B->C
+> >                         panic
+> >
+> > CPU Z sets ->h_load_next list to A->B->D, but due to arm64 weaker memory
+> > ordering, Y may observe A->B before it sees B->D, then in this time window,
+> > it can traverse A->B->C and reach an invalid se.
+> >
+> > We can avoid stale pointer accesses by clearing ->h_load_next when
+> > unregistering cgroup.
+> >
+> > Suggested-by: Vincent Guittot <vincent.guittot@linaro.org>
+> > Fixes: 685207963be9 ("sched: Move h_load calculation to task_h_load()")
+> > Cc: <stable@vger.kernel.org>
+> > Co-developed-by: Cruz Zhao <CruzZhao@linux.alibaba.com>
+> > Signed-off-by: Cruz Zhao <CruzZhao@linux.alibaba.com>
+> > Signed-off-by: Peng Wang <peng_wang@linux.alibaba.com>
+> 
+> Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
 
-One thing I failed to mention is that this happens in a KASAN run in
-QEMU. So I'm kind of not surprised we haven't hit this before. And it
-impacts the deductions about the DC state.
+Gentle Ping
 
-I'm not quite sure what exactly you're suggesting, maybe a draft patch
-would communicate the idea better than plain English? ;)
+Hi, Peter and Vincent,
 
-Anyway, I think "not oopsing" is a lot better than "inaccurate DC
-counters in debugfs".
+after applying this patch, update_cfs_rq_h_load crashing has not occurred for the past two weeks.
+The patch has proven to be effective. Would you consider merging it?
 
-BR,
-Jani.
-
-
->
->> so could instead the counter update depend on the
->> driver's DC state instead of the HW state? I.e. set
->> gen9_set_dc_state()/dc6_was_enabled,
->> intel_dmc_get_dc6_allowed_count()/dc6_enable if power_domains->dc_state
->> says that DC6 was indeed enabled by the driver (instead of checking the
->> HW state).
->> 
->> That would fix the reporter's oops when calling
->> intel_dmc_update_dc6_allowed_count(start_tracking=false), by not calling
->> it if the driver hasn't actually enabled DC6 and it would also keep the
->> DC6 counter tracking correct.
->> 
->> intel_dmc_update_dc6_allowed_count(start_tracking=true) would be also
->> guaranteed to be called only once the firmware is loaded, as until that
->> point enabling DC6 is blocked (by holding a reference on the DC_off
->> power well).
->> 
->> > ---
->> >  drivers/gpu/drm/i915/display/intel_dmc.c | 6 +++---
->> >  1 file changed, 3 insertions(+), 3 deletions(-)
->> > 
->> > diff --git a/drivers/gpu/drm/i915/display/intel_dmc.c b/drivers/gpu/drm/i915/display/intel_dmc.c
->> > index 2fb6fec6dc99..169bbbc91f6d 100644
->> > --- a/drivers/gpu/drm/i915/display/intel_dmc.c
->> > +++ b/drivers/gpu/drm/i915/display/intel_dmc.c
->> > @@ -1570,10 +1570,10 @@ void intel_dmc_update_dc6_allowed_count(struct intel_display *display,
->> >  	struct intel_dmc *dmc = display_to_dmc(display);
->> >  	u32 dc5_cur_count;
->> >  
->> > -	if (DISPLAY_VER(dmc->display) < 14)
->> > +	if (!dmc || DISPLAY_VER(display) < 14)
->> >  		return;
->> >  
->> > -	dc5_cur_count = intel_de_read(dmc->display, DG1_DMC_DEBUG_DC5_COUNT);
->> > +	dc5_cur_count = intel_de_read(display, DG1_DMC_DEBUG_DC5_COUNT);
->> >  
->> >  	if (!start_tracking)
->> >  		dmc->dc6_allowed.count += dc5_cur_count - dmc->dc6_allowed.dc5_start;
->> > @@ -1587,7 +1587,7 @@ static bool intel_dmc_get_dc6_allowed_count(struct intel_display *display, u32 *
->> >  	struct intel_dmc *dmc = display_to_dmc(display);
->> >  	bool dc6_enabled;
->> >  
->> > -	if (DISPLAY_VER(display) < 14)
->> > +	if (!dmc || DISPLAY_VER(display) < 14)
->> >  		return false;
->> >  
->> >  	mutex_lock(&power_domains->lock);
->> > -- 
->> > 2.47.3
->> > 
-
--- 
-Jani Nikula, Intel
+> 
+> > ---
+> >  kernel/sched/fair.c | 9 +++++++++
+> >  1 file changed, 9 insertions(+)
+> >
+> > diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+> > index cee1793e8277..32b466605925 100644
+> > --- a/kernel/sched/fair.c
+> > +++ b/kernel/sched/fair.c
+> > @@ -13418,6 +13418,8 @@ void unregister_fair_sched_group(struct task_group *tg)
+> >                 struct rq *rq = cpu_rq(cpu);
+> >
+> >                 if (se) {
+> > +                       struct cfs_rq *parent_cfs_rq = cfs_rq_of(se);
+> > +
+> >                         if (se->sched_delayed) {
+> >                                 guard(rq_lock_irqsave)(rq);
+> >                                 if (se->sched_delayed) {
+> > @@ -13427,6 +13429,13 @@ void unregister_fair_sched_group(struct task_group *tg)
+> >                                 list_del_leaf_cfs_rq(cfs_rq);
+> >                         }
+> >                         remove_entity_load_avg(se);
+> > +
+> > +                       /*
+> > +                        * Clear parent's h_load_next if it points to the
+> > +                        * sched_entity being freed to avoid stale pointer.
+> > +                        */
+> > +                       if (READ_ONCE(parent_cfs_rq->h_load_next) == se)
+> > +                               WRITE_ONCE(parent_cfs_rq->h_load_next, NULL);
+> >                 }
+> >
+> >                 /*
+> > --
+> > 2.27.0
+> >
 
