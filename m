@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-198317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61B7AC9F8C3
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:39:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA922CA0AAE
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:50:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E26B730229D0
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:36:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 77CF030D2E37
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:29:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74099313270;
-	Wed,  3 Dec 2025 15:35:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2E9C31280A;
+	Wed,  3 Dec 2025 16:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YXpWPiNE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qHSP8Hzc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 309F53128C5;
-	Wed,  3 Dec 2025 15:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960D33126C7;
+	Wed,  3 Dec 2025 16:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776147; cv=none; b=TjKTvYg4RPRWj5lD4GzdLjRVqbEsV7QWrH/ufD+hdLUb9Pk1zBDoiH70N8KyrFPvui4/RRnrOdocJwpkuW6UFw3SiJwrygdIbsJH9MS1A+LYb4wkBZt5nYmFrUwqP22Ytrz55l5VL23fTVX85yjXKkSASl9I8CfdzpBIKrHLatA=
+	t=1764777786; cv=none; b=BGnbh0Zk+cz18NhpKdkly+/9ed2KGc24ClNHt7gjksuBTtdz25NC81eA59KlsfIF5L/K5FebmxkqpUU9xwHkk6Bt2xM8yY5gEUFQvD3cBavI3DiBBgkYn1TERkj0szI8rMFDTtgPX+Jmtn7s0+JrN9t8wqJBMXjTVRwiH9J1QYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776147; c=relaxed/simple;
-	bh=EXRyUFwGptQcXyrp5h7wBz6A9eNIQv7g2/mp2c83uu0=;
+	s=arc-20240116; t=1764777786; c=relaxed/simple;
+	bh=11qrLR5ZzU8xFJOQol8NctcNsUhyYEUbo++8CNo4Vb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a8vHhvUSHd4VhghfNRSB1pa0qxeb1SD0714ytFms8QFjw5QYpdZ90WpcRcm7scbg/IGgD3gY6gEt0pbTaFNQb8bMmi+zQffagA/oGv+9smIJBra6mBdDGRMEi7EgeBMOdKo2NgaXAtKMl3EhI9qRf90OABymHSIJ2iw5eQZQ2m4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YXpWPiNE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47F57C4CEF5;
-	Wed,  3 Dec 2025 15:35:45 +0000 (UTC)
+	 MIME-Version; b=Zz+iv2g/tAAmgqEZtAF0rRkxoNOwo0oohA4eW3cRmH8tFUij+4oRiTvSAbWWWW7M+qeOGbBGOCFgqO+67jZB6KZGLoZSCqhniao4+hwQWp0nA3gxLIuuUyUMqMUOi5noHQaEWJH/qeWAtm8Iy6QM/x4MAuqH/34Kj1LHpkYJKx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qHSP8Hzc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 212A1C4CEF5;
+	Wed,  3 Dec 2025 16:03:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776146;
-	bh=EXRyUFwGptQcXyrp5h7wBz6A9eNIQv7g2/mp2c83uu0=;
+	s=korg; t=1764777786;
+	bh=11qrLR5ZzU8xFJOQol8NctcNsUhyYEUbo++8CNo4Vb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YXpWPiNERwKbO6/km70gJ3tdlc8xqXvzPbB5sOyjtA//qO9d8V8ubSMganpd7Mfb9
-	 8FW/tm1SJa5v2T2/dYOqSTKgTp8jHnttDSwzVWpAKi/fBEDlkPSOzjytJgZ6/0HyTv
-	 YXVMzRaARQy8VRD9lXXq2r5/wI9RLttQIsJxupvI=
+	b=qHSP8Hzc5nmuP9ZAwvChH7NCv6xeeV2/0ZH3VcjoWSKumOVPnFS67wtnmt+7EbF0D
+	 WZGw8vfbF0u43AtEs/KTyAu6oyv9TFoJaI/7LWWUYEsFibutNY6t69xcPO0lMNLCnU
+	 80u3pnRLic232kNGDWMv/i7CD0/J3S30P9DsSsCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	MyungJoo Ham <myungjoo.ham@samsung.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 093/300] extcon: adc-jack: Fix wakeup source leaks on device unbind
+Subject: [PATCH 5.15 147/392] netfilter: nf_reject: dont reply to icmp error messages
 Date: Wed,  3 Dec 2025 16:24:57 +0100
-Message-ID: <20251203152404.070199345@linuxfoundation.org>
+Message-ID: <20251203152419.493742446@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +59,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 78b6a991eb6c6f19ed7d0ac91cda3b3b117fda8f ]
+[ Upstream commit db99b2f2b3e2cd8227ac9990ca4a8a31a1e95e56 ]
 
-Device can be unbound, so driver must also release memory for the wakeup
-source.  Do not use devm interface, because it would change the order of
-cleanup.
+tcp reject code won't reply to a tcp reset.
 
-Link: https://lore.kernel.org/lkml/20250501-device-wakeup-leak-extcon-v2-1-7af77802cbea@linaro.org/
-Acked-by: MyungJoo Ham <myungjoo.ham@samsung.com>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
+But the icmp reject 'netdev' family versions will reply to icmp
+dst-unreach errors, unlike icmp_send() and icmp6_send() which are used
+by the inet family implementation (and internally by the REJECT target).
+
+Check for the icmp(6) type and do not respond if its an unreachable error.
+
+Without this, something like 'ip protocol icmp reject', when used
+in a netdev chain attached to 'lo', cause a packet loop.
+
+Same for two hosts that both use such a rule: each error packet
+will be replied to.
+
+Such situation persist until the (bogus) rule is amended to ratelimit or
+checks the icmp type before the reject statement.
+
+As the inet versions don't do this make the netdev ones follow along.
+
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/extcon/extcon-adc-jack.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/ipv4/netfilter/nf_reject_ipv4.c | 25 ++++++++++++++++++++++++
+ net/ipv6/netfilter/nf_reject_ipv6.c | 30 +++++++++++++++++++++++++++++
+ 2 files changed, 55 insertions(+)
 
-diff --git a/drivers/extcon/extcon-adc-jack.c b/drivers/extcon/extcon-adc-jack.c
-index 0317b614b6805..ea06cd4340525 100644
---- a/drivers/extcon/extcon-adc-jack.c
-+++ b/drivers/extcon/extcon-adc-jack.c
-@@ -162,6 +162,7 @@ static int adc_jack_remove(struct platform_device *pdev)
- {
- 	struct adc_jack_data *data = platform_get_drvdata(pdev);
+diff --git a/net/ipv4/netfilter/nf_reject_ipv4.c b/net/ipv4/netfilter/nf_reject_ipv4.c
+index c1f5ca847c8a8..4d16d49b430e9 100644
+--- a/net/ipv4/netfilter/nf_reject_ipv4.c
++++ b/net/ipv4/netfilter/nf_reject_ipv4.c
+@@ -71,6 +71,27 @@ struct sk_buff *nf_reject_skb_v4_tcp_reset(struct net *net,
+ }
+ EXPORT_SYMBOL_GPL(nf_reject_skb_v4_tcp_reset);
  
-+	device_init_wakeup(&pdev->dev, false);
- 	free_irq(data->irq, data);
- 	cancel_work_sync(&data->handler.work);
++static bool nf_skb_is_icmp_unreach(const struct sk_buff *skb)
++{
++	const struct iphdr *iph = ip_hdr(skb);
++	u8 *tp, _type;
++	int thoff;
++
++	if (iph->protocol != IPPROTO_ICMP)
++		return false;
++
++	thoff = skb_network_offset(skb) + sizeof(*iph);
++
++	tp = skb_header_pointer(skb,
++				thoff + offsetof(struct icmphdr, type),
++				sizeof(_type), &_type);
++
++	if (!tp)
++		return false;
++
++	return *tp == ICMP_DEST_UNREACH;
++}
++
+ struct sk_buff *nf_reject_skb_v4_unreach(struct net *net,
+ 					 struct sk_buff *oldskb,
+ 					 const struct net_device *dev,
+@@ -90,6 +111,10 @@ struct sk_buff *nf_reject_skb_v4_unreach(struct net *net,
+ 	if (ip_hdr(oldskb)->frag_off & htons(IP_OFFSET))
+ 		return NULL;
  
++	/* don't reply to ICMP_DEST_UNREACH with ICMP_DEST_UNREACH. */
++	if (nf_skb_is_icmp_unreach(oldskb))
++		return NULL;
++
+ 	/* RFC says return as much as we can without exceeding 576 bytes. */
+ 	len = min_t(unsigned int, 536, oldskb->len);
+ 
+diff --git a/net/ipv6/netfilter/nf_reject_ipv6.c b/net/ipv6/netfilter/nf_reject_ipv6.c
+index ca39b83c2a5d1..e209e8ca0c1cf 100644
+--- a/net/ipv6/netfilter/nf_reject_ipv6.c
++++ b/net/ipv6/netfilter/nf_reject_ipv6.c
+@@ -91,6 +91,32 @@ struct sk_buff *nf_reject_skb_v6_tcp_reset(struct net *net,
+ }
+ EXPORT_SYMBOL_GPL(nf_reject_skb_v6_tcp_reset);
+ 
++static bool nf_skb_is_icmp6_unreach(const struct sk_buff *skb)
++{
++	const struct ipv6hdr *ip6h = ipv6_hdr(skb);
++	u8 proto = ip6h->nexthdr;
++	u8 _type, *tp;
++	int thoff;
++	__be16 fo;
++
++	thoff = ipv6_skip_exthdr(skb, ((u8 *)(ip6h + 1) - skb->data), &proto, &fo);
++
++	if (thoff < 0 || thoff >= skb->len || fo != 0)
++		return false;
++
++	if (proto != IPPROTO_ICMPV6)
++		return false;
++
++	tp = skb_header_pointer(skb,
++				thoff + offsetof(struct icmp6hdr, icmp6_type),
++				sizeof(_type), &_type);
++
++	if (!tp)
++		return false;
++
++	return *tp == ICMPV6_DEST_UNREACH;
++}
++
+ struct sk_buff *nf_reject_skb_v6_unreach(struct net *net,
+ 					 struct sk_buff *oldskb,
+ 					 const struct net_device *dev,
+@@ -104,6 +130,10 @@ struct sk_buff *nf_reject_skb_v6_unreach(struct net *net,
+ 	if (!nf_reject_ip6hdr_validate(oldskb))
+ 		return NULL;
+ 
++	/* Don't reply to ICMPV6_DEST_UNREACH with ICMPV6_DEST_UNREACH */
++	if (nf_skb_is_icmp6_unreach(oldskb))
++		return NULL;
++
+ 	/* Include "As much of invoking packet as possible without the ICMPv6
+ 	 * packet exceeding the minimum IPv6 MTU" in the ICMP payload.
+ 	 */
 -- 
 2.51.0
 
