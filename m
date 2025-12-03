@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-199303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 599EFCA10DA
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:40:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E59D3C9F857
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:37:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E90DD3000B7C
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:39:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 842E7300ACF0
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:34:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C1FF3446D8;
-	Wed,  3 Dec 2025 16:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CB7930DEA5;
+	Wed,  3 Dec 2025 15:34:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vUfMuOlB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IeZ+Ud0d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 405E73446C8;
-	Wed,  3 Dec 2025 16:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0CD030B51F;
+	Wed,  3 Dec 2025 15:33:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779349; cv=none; b=OB0opXvUSQztgtydyUnkTjlJC46SYhl7B0brkNNSV5Xe9JRMdFKfFHX6NlWgeoYJYORJnGtuWcUSuSkGdUyBvYvUCBlDw4roKBIdwROCz1z7AnhzQDfXf9NiLeEJGSrVmPUT9bJUTs90utPw3nm37T6b7LU/Hxv8e1C05U+zBQA=
+	t=1764776039; cv=none; b=XvzNSq7TVzWD/XBsbthP+21Mor7GGNPlXiUEBBvMtXXTEIRKgp7+JTmn4XL9cDh4u7SqKeUuJPRunpnsJc/tvirzha2GSNnuCKtoIsGONHsBECw/3jscbtnzZ7U2BHTDyoCCaVk7THF9wkQmYuEgGA/BjbXFHV8Ku6+bSlqU8U8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779349; c=relaxed/simple;
-	bh=VteeuswbGr88K/PlCqPf74slkToVzu7DWSVZs78s4U4=;
+	s=arc-20240116; t=1764776039; c=relaxed/simple;
+	bh=VnTYL+q285TzllG49qcmD78b8E5WszG3UiS31oQiHhQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jXQuiAT5gm4Qo2CjkpFc81cMcO5TbV0ro4i3A1YCvZrQej4fKBSnDNTHm9M+Lpkk+Z/rc9YFKMVoyV/LxTR9HBwid0fS9nH0vW6mRJakIvQnVnXlJOlYUnhD7uRFs8VBk2d2QV+z3A+w9RGzvloXOH3t7TXlAb5p3MsdaSDMqpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vUfMuOlB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4794C116B1;
-	Wed,  3 Dec 2025 16:29:08 +0000 (UTC)
+	 MIME-Version; b=m8uBoMUrZO7yN/EQupkOC0RfMNJKRbLfzV9HrZnRuHkPS8AN7v6zl19AlhYLdKMGEBFSdnV1p8GXT9i5GqDtQzC2BKZqbvuFFW7Y9ZZPzh7z5wMeK5pFLT6g5uGkhfbcZJYjP0EUGZQXNzbCuilD+ZNIJdeFV6aImyWrAea3NQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IeZ+Ud0d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 998C2C4CEF5;
+	Wed,  3 Dec 2025 15:33:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779349;
-	bh=VteeuswbGr88K/PlCqPf74slkToVzu7DWSVZs78s4U4=;
+	s=korg; t=1764776039;
+	bh=VnTYL+q285TzllG49qcmD78b8E5WszG3UiS31oQiHhQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vUfMuOlBVYp58DsfbEGOnYSzdGx+5sTWaX38grlChbAoCncgp9Pi2BCnXyVVieb5q
-	 bNVk4XecBccjV04wWUTylg2AUblpYs9ySTbM8kVU0XVNmbgFpJxH++zJA5gMCMaaD6
-	 wzSWIjjHx3Xki/Ex1LIDedjXslUjo7N/UzwQTzn8=
+	b=IeZ+Ud0dB2eGYaysYHthFUKW7noEZMLrE0OofJRP2uvsIVUmMYC5uy0hr0nXejjh8
+	 gcKZLuVxVbBv7GzYSs/LMW/a99qIE1dbjb7+2kvhh2MDovYsMkloA+rgVD6e9h7iO0
+	 ynETc0jJISwpo//PiJdeJ+5NJdWw6Z5Z7D0D5fp8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nai-Chen Cheng <bleach1827@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 231/568] selftests/Makefile: include $(INSTALL_DEP_TARGETS) in clean target to clean net/lib dependency
+	Runcheng Lu <runcheng.lu@hpmicro.com>,
+	Vincent Mailhol <mailhol@kernel.org>,
+	Celeste Liu <uwu@coelacanthus.name>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 5.10 029/300] can: gs_usb: increase max interface to U8_MAX
 Date: Wed,  3 Dec 2025 16:23:53 +0100
-Message-ID: <20251203152449.182333744@linuxfoundation.org>
+Message-ID: <20251203152401.541036563@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +61,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nai-Chen Cheng <bleach1827@gmail.com>
+From: Celeste Liu <uwu@coelacanthus.name>
 
-[ Upstream commit d3f7457da7b9527a06dbcbfaf666aa51ac2eeb53 ]
+commit 2a27f6a8fb5722223d526843040f747e9b0e8060 upstream
 
-The selftests 'make clean' does not clean the net/lib because it only
-processes $(TARGETS) and ignores $(INSTALL_DEP_TARGETS). This leaves
-compiled objects in net/lib after cleaning, requiring manual cleanup.
+This issue was found by Runcheng Lu when develop HSCanT USB to CAN FD
+converter[1]. The original developers may have only 3 interfaces
+device to test so they write 3 here and wait for future change.
 
-Include $(INSTALL_DEP_TARGETS) in clean target to ensure net/lib
-dependency is properly cleaned.
+During the HSCanT development, we actually used 4 interfaces, so the
+limitation of 3 is not enough now. But just increase one is not
+future-proofed. Since the channel index type in gs_host_frame is u8,
+just make canch[] become a flexible array with a u8 index, so it
+naturally constraint by U8_MAX and avoid statically allocate 256
+pointer for every gs_usb device.
 
-Signed-off-by: Nai-Chen Cheng <bleach1827@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Simon Horman <horms@kernel.org> # build-tested
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
-Link: https://patch.msgid.link/20250910-selftests-makefile-clean-v1-1-29e7f496cd87@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[1]: https://github.com/cherry-embedded/HSCanT-hardware
+
+Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
+Reported-by: Runcheng Lu <runcheng.lu@hpmicro.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Vincent Mailhol <mailhol@kernel.org>
+Signed-off-by: Celeste Liu <uwu@coelacanthus.name>
+Link: https://patch.msgid.link/20250930-gs-usb-max-if-v5-1-863330bf6666@coelacanthus.name
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/can/usb/gs_usb.c |   23 +++++++++++------------
+ 1 file changed, 11 insertions(+), 12 deletions(-)
 
-diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
-index aae64eb2ae737..bf34fa443b233 100644
---- a/tools/testing/selftests/Makefile
-+++ b/tools/testing/selftests/Makefile
-@@ -250,7 +250,7 @@ gen_tar: install
- 	@echo "Created ${TAR_PATH}"
+--- a/drivers/net/can/usb/gs_usb.c
++++ b/drivers/net/can/usb/gs_usb.c
+@@ -156,10 +156,6 @@ struct gs_host_frame {
+ #define GS_MAX_TX_URBS 10
+ /* Only launch a max of GS_MAX_RX_URBS usb requests at a time. */
+ #define GS_MAX_RX_URBS 30
+-/* Maximum number of interfaces the driver supports per device.
+- * Current hardware only supports 2 interfaces. The future may vary.
+- */
+-#define GS_MAX_INTF 2
  
- clean:
--	@for TARGET in $(TARGETS); do \
-+	@for TARGET in $(TARGETS) $(INSTALL_DEP_TARGETS); do \
- 		BUILD_TARGET=$$BUILD/$$TARGET;	\
- 		$(MAKE) OUTPUT=$$BUILD_TARGET -C $$TARGET clean;\
- 	done;
--- 
-2.51.0
-
+ struct gs_tx_context {
+ 	struct gs_can *dev;
+@@ -190,10 +186,11 @@ struct gs_can {
+ 
+ /* usb interface struct */
+ struct gs_usb {
+-	struct gs_can *canch[GS_MAX_INTF];
+ 	struct usb_anchor rx_submitted;
+ 	struct usb_device *udev;
+ 	u8 active_channels;
++	u8 channel_cnt;
++	struct gs_can *canch[];
+ };
+ 
+ /* 'allocate' a tx context.
+@@ -321,7 +318,7 @@ static void gs_usb_receive_bulk_callback
+ 	}
+ 
+ 	/* device reports out of range channel id */
+-	if (hf->channel >= GS_MAX_INTF)
++	if (hf->channel >= usbcan->channel_cnt)
+ 		goto device_detach;
+ 
+ 	dev = usbcan->canch[hf->channel];
+@@ -409,7 +406,7 @@ static void gs_usb_receive_bulk_callback
+ 	/* USB failure take down all interfaces */
+ 	if (rc == -ENODEV) {
+  device_detach:
+-		for (rc = 0; rc < GS_MAX_INTF; rc++) {
++		for (rc = 0; rc < usbcan->channel_cnt; rc++) {
+ 			if (usbcan->canch[rc])
+ 				netif_device_detach(usbcan->canch[rc]->netdev);
+ 		}
+@@ -991,20 +988,22 @@ static int gs_usb_probe(struct usb_inter
+ 	icount = dconf->icount + 1;
+ 	dev_info(&intf->dev, "Configuring for %d interfaces\n", icount);
+ 
+-	if (icount > GS_MAX_INTF) {
++	if (icount > type_max(typeof(dev->channel_cnt))) {
+ 		dev_err(&intf->dev,
+-			"Driver cannot handle more that %d CAN interfaces\n",
+-			GS_MAX_INTF);
++			"Driver cannot handle more that %u CAN interfaces\n",
++			type_max(typeof(dev->channel_cnt)));
+ 		kfree(dconf);
+ 		return -EINVAL;
+ 	}
+ 
+-	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
++	dev = kzalloc(struct_size(dev, canch, icount), GFP_KERNEL);
+ 	if (!dev) {
+ 		kfree(dconf);
+ 		return -ENOMEM;
+ 	}
+ 
++	dev->channel_cnt = icount;
++
+ 	init_usb_anchor(&dev->rx_submitted);
+ 
+ 	usb_set_intfdata(intf, dev);
+@@ -1045,7 +1044,7 @@ static void gs_usb_disconnect(struct usb
+ 		return;
+ 	}
+ 
+-	for (i = 0; i < GS_MAX_INTF; i++)
++	for (i = 0; i < dev->channel_cnt; i++)
+ 		if (dev->canch[i])
+ 			gs_destroy_candev(dev->canch[i]);
+ 
 
 
 
