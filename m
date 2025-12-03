@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-198759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88315CA0B50
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:58:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA269C9F86F
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:37:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 06FA330014F9
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:58:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A9B89303A8F9
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:34:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 016EF331235;
-	Wed,  3 Dec 2025 15:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7391430B525;
+	Wed,  3 Dec 2025 15:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jLCRIgWF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tg3nSE/c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1AB4331227;
-	Wed,  3 Dec 2025 15:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A95256C9E;
+	Wed,  3 Dec 2025 15:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777590; cv=none; b=HIEZQ3ud3Kb804KVzxO7r8qmVZkx9WhF+0DZoesDkGUw6IIfmNz9baor07PT4a/3eemptEnffn6zvxiNCjR7zUW6inZQvTLHJULd0FfibE+ISBwwqbKtQD2TUX8zJti7M/0rkiqvHCo5eBV1JIFtreA/XZ4vLoK0bbJFhNlF0as=
+	t=1764776046; cv=none; b=htz9ddufFiPSanUslMH2xqZok3I03J+mAMCYY5OJzMAaZB2qrSpDc/d8HQ8UkeR+ZXLoFf7loYRv01Kd/dgcflGS6SmtgMIlrX6By//n3hnyT/uWvajSED7vBEV6qulftjI/LwI9qZpfLivIZiNkPN0NKKQhFql3D/TebS9B6GU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777590; c=relaxed/simple;
-	bh=yO/JvbdAaM5JO6M9tdbKo+kAP4PJUT05tdxqy5Bfxec=;
+	s=arc-20240116; t=1764776046; c=relaxed/simple;
+	bh=bpMAjWxSnVfQXB9CnlCv719ED03le4WMjbRhS2AEGG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jpZAYK00eqymlpGXBFYtgY1urHjbVaKLeehpXkt3K05q8KCSNBOI33l5p+W8aTn0vhOY9bI66q3q3iZFvQYv9H1JjA3Rel07jMw/rLdL1XK+HXXvDGmQWA6gsPi6SORaYHQ0z/BoGuQ3hZMLrsXI1OFb4dsMACrPAmov8oSFqiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jLCRIgWF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27328C16AAE;
-	Wed,  3 Dec 2025 15:59:49 +0000 (UTC)
+	 MIME-Version; b=Bg8kdGBa7z7Npb5BVstlgYo+e6qJKKMC4nG40s2Rgzf1By6jnCpSJdKpv+kmA69lw2Jrp9XJ0/Rt3qlnOKQT2GEwRmstmLolsUEQQjecXQiJmI2swQ4LF7b1S+wwv20YnrcYYPqvt9GIDAWVjnT5sFtaBfSkGovlk1lRHupcedg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tg3nSE/c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84589C4CEF5;
+	Wed,  3 Dec 2025 15:34:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777590;
-	bh=yO/JvbdAaM5JO6M9tdbKo+kAP4PJUT05tdxqy5Bfxec=;
+	s=korg; t=1764776046;
+	bh=bpMAjWxSnVfQXB9CnlCv719ED03le4WMjbRhS2AEGG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jLCRIgWFWAKCpAPa78FuFkOfAXN8eQRveTllYRQQgzgoA9YGlCdn7sgLyWxGi2SNd
-	 ra1O8p0f6Eh7noURssphO8wSlb57D4fhcJ/WZwSRYS/30mFx0U137dPWGmymrQZeJn
-	 /0jZOOxAp0x7QQpPY37ZizA/mqi1T9dPOj8OgPPc=
+	b=tg3nSE/c+nLe+t9ZoDf8lvxXaRysFM5UVDmK52O4dyZfOL2b8MSZdru4DueOLsvzF
+	 M3fbKzQWiMDIw+OLLfYfaeTa8SxjtROPHkWydA7EDLJJkhvj73uMBusVQ4iwbr/ocs
+	 vRxBAbqaYTR3QCR4MUb3hg8VEur/Olk44liWBLFY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Len Brown <len.brown@intel.com>,
+	stable <stable@kernel.org>,
+	Artem Shimko <a.shimko.dev@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 085/392] tools/power x86_energy_perf_policy: Prefer driver HWP limits
+Subject: [PATCH 5.10 031/300] serial: 8250_dw: handle reset control deassert error
 Date: Wed,  3 Dec 2025 16:23:55 +0100
-Message-ID: <20251203152417.232004011@linuxfoundation.org>
+Message-ID: <20251203152401.613740925@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,80 +60,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Len Brown <len.brown@intel.com>
+From: Artem Shimko <a.shimko.dev@gmail.com>
 
-[ Upstream commit 2734fdbc9bb8a3aeb309ba0d62212d7f53f30bc7 ]
+[ Upstream commit daeb4037adf7d3349b4a1fb792f4bc9824686a4b ]
 
-When we are successful in using cpufreq min/max limits,
-skip setting the raw MSR limits entirely.
+Check the return value of reset_control_deassert() in the probe
+function to prevent continuing probe when reset deassertion fails.
 
-This is necessary to avoid undoing any modification that
-the cpufreq driver makes to our sysfs request.
+Previously, reset_control_deassert() was called without checking its
+return value, which could lead to probe continuing even when the
+device reset wasn't properly deasserted.
 
-eg. intel_pstate may take our request for a limit
-that is valid according to HWP.CAP.MIN/MAX and clip
-it to be within the range available in PLATFORM_INFO.
+The fix checks the return value and returns an error with dev_err_probe()
+if reset deassertion fails, providing better error handling and
+diagnostics.
 
-Signed-off-by: Len Brown <len.brown@intel.com>
+Fixes: acbdad8dd1ab ("serial: 8250_dw: simplify optional reset handling")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Artem Shimko <a.shimko.dev@gmail.com>
+Link: https://patch.msgid.link/20251019095131.252848-1-a.shimko.dev@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../x86_energy_perf_policy/x86_energy_perf_policy.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/tty/serial/8250/8250_dw.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
-index 0bda8e3ae7f77..891738116c8b2 100644
---- a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
-+++ b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
-@@ -62,6 +62,7 @@ unsigned char turbo_update_value;
- unsigned char update_hwp_epp;
- unsigned char update_hwp_min;
- unsigned char update_hwp_max;
-+unsigned char hwp_limits_done_via_sysfs;
- unsigned char update_hwp_desired;
- unsigned char update_hwp_window;
- unsigned char update_hwp_use_pkg;
-@@ -951,8 +952,10 @@ int ratio_2_sysfs_khz(int ratio)
- }
- /*
-  * If HWP is enabled and cpufreq sysfs attribtes are present,
-- * then update sysfs, so that it will not become
-- * stale when we write to MSRs.
-+ * then update via sysfs. The intel_pstate driver may modify (clip)
-+ * this request, say, when HWP_CAP is outside of PLATFORM_INFO limits,
-+ * and the driver-chosen value takes precidence.
-+ *
-  * (intel_pstate's max_perf_pct and min_perf_pct will follow cpufreq,
-  *  so we don't have to touch that.)
-  */
-@@ -1007,6 +1010,8 @@ int update_sysfs(int cpu)
- 	if (update_hwp_max)
- 		update_cpufreq_scaling_freq(1, cpu, req_update.hwp_max);
+--- a/drivers/tty/serial/8250/8250_dw.c
++++ b/drivers/tty/serial/8250/8250_dw.c
+@@ -580,7 +580,9 @@ static int dw8250_probe(struct platform_
+ 	if (IS_ERR(data->rst))
+ 		return PTR_ERR(data->rst);
  
-+	hwp_limits_done_via_sysfs = 1;
-+
- 	return 0;
- }
+-	reset_control_deassert(data->rst);
++	err = reset_control_deassert(data->rst);
++	if (err)
++		return dev_err_probe(dev, err, "failed to deassert resets\n");
  
-@@ -1085,10 +1090,10 @@ int update_hwp_request(int cpu)
- 	if (debug)
- 		print_hwp_request(cpu, &req, "old: ");
- 
--	if (update_hwp_min)
-+	if (update_hwp_min && !hwp_limits_done_via_sysfs)
- 		req.hwp_min = req_update.hwp_min;
- 
--	if (update_hwp_max)
-+	if (update_hwp_max && !hwp_limits_done_via_sysfs)
- 		req.hwp_max = req_update.hwp_max;
- 
- 	if (update_hwp_desired)
--- 
-2.51.0
-
+ 	err = devm_add_action_or_reset(dev, dw8250_reset_control_assert, data->rst);
+ 	if (err)
 
 
 
