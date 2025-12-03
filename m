@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-199509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B90BCA0323
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:54:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8CC6CA10BF
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:39:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 04264302C212
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:48:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DB3B633FC15C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:45:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6CA346E47;
-	Wed,  3 Dec 2025 16:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89DEF32E14F;
+	Wed,  3 Dec 2025 15:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d++XoC4m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y9aib0Na"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49CB2346A1C;
-	Wed,  3 Dec 2025 16:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4731332E144;
+	Wed,  3 Dec 2025 15:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780033; cv=none; b=dDvwZPjjtHntKFP4LjzpaJ+CnWb5Aq0SIcARwDCIPMPkt55xdNHzTirhnBbKWf0TMmM1dP7XGFvIuzIW9t+WrR27BRxwSfxIXRnSUlfRaL80Ej291muafflZJs66yZk7HU9OacRRs/9a5M9pqCGjT5oJG4CjUi+v0v3T4ZBKgHk=
+	t=1764777033; cv=none; b=R2GqtoYceqiCJ0D/8+C+CM8ydG3P36xRwbw7CGN+ChA8JvR+3+5CIvlULLxHeIYBiuM+47UGiEjsIgLOg5ydPQTiZupHAb20BoIfv+u/R1K813A3Ei1H2qTo7ULVHWiajB5sLh1xQaDD1YZnz48cSHm1EFX5Bzkf5Y3Yumsj2Uc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780033; c=relaxed/simple;
-	bh=CnH8X+3GeTjS6p9I5n8GWFFy4Nk+uYgCZA8Kc3tMtzM=;
+	s=arc-20240116; t=1764777033; c=relaxed/simple;
+	bh=3Bg/5uVaSj/nT7hltCLoPzY6EG40f6kUHQVYgwAE78w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dxDlboBr1YR4OEu05pBC3LndHjoUuIZYGWMqsI4+9bAtnT60nkCcGVrPTxmUI9QKfVYSewJEKcYSm/ozV2DDxbVngvDIx35p5MnOTSVUplmt05xdq5TFfnC63Y2Gv97EP4tLceKAYwyHEWgID+4XAQEJz3aXg2f+VYaCMsMxIog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d++XoC4m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFC18C4CEF5;
-	Wed,  3 Dec 2025 16:40:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=W5PzfetMK5pH/144mJsi3yN5DI5PDrsl2r6Ffk/V8YPldQbM7goC47BKHm2lRMUoHAuH420d9g9E/LqW8CCNbKnQcP6wM0Xr+/IEWqdUSLwzNyx6T6DQE5RpFOZtTpcnCCxOOyCMVyztK5CieEpl9tk6wVFDyc0Jg3BzpQcRXWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y9aib0Na; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C26A8C116C6;
+	Wed,  3 Dec 2025 15:50:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780033;
-	bh=CnH8X+3GeTjS6p9I5n8GWFFy4Nk+uYgCZA8Kc3tMtzM=;
+	s=korg; t=1764777033;
+	bh=3Bg/5uVaSj/nT7hltCLoPzY6EG40f6kUHQVYgwAE78w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d++XoC4msk9qrL3hOFFIUHldb+bg+oD/PzPKi2r0sa15JGGG8p74ZNdGGmkCDd21y
-	 Qi2P4vDS5bqhGEZytag3Ijn1wrMIx6yt76JmcSxeja6wiYn6/lDaeT2K80eI65q0Bc
-	 Y5Gc60TOpMTBDKUg9XUh67awfv6Uu8bqY6d9LQCw=
+	b=Y9aib0NavH/vduUGKA0F3ktZoC01aBBN6VamkSvYohcRy41D+LlkZOgb+/NJ4TGju
+	 CGdXlcNkp+BGuxyL1EjCMDcZzKUYa1RHzmRr0HVkOma+yfux+dcTo1WAjzhRO/nVV0
+	 IQ+agu6m3+cVUAxyN/Byi7ISOz3lhghIag0rS2pg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.1 436/568] Input: cros_ec_keyb - fix an invalid memory access
-Date: Wed,  3 Dec 2025 16:27:18 +0100
-Message-ID: <20251203152456.665475117@linuxfoundation.org>
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.17 061/146] iio:common:ssp_sensors: Fix an error handling path ssp_probe()
+Date: Wed,  3 Dec 2025 16:27:19 +0100
+Message-ID: <20251203152348.701528149@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,60 +59,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tzung-Bi Shih <tzungbi@kernel.org>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit e08969c4d65ac31297fcb4d31d4808c789152f68 upstream.
+commit 21553258b94861a73d7f2cf15469d69240e1170d upstream.
 
-If cros_ec_keyb_register_matrix() isn't called (due to
-`buttons_switches_only`) in cros_ec_keyb_probe(), `ckdev->idev` remains
-NULL.  An invalid memory access is observed in cros_ec_keyb_process()
-when receiving an EC_MKBP_EVENT_KEY_MATRIX event in cros_ec_keyb_work()
-in such case.
+If an error occurs after a successful mfd_add_devices() call, it should be
+undone by a corresponding mfd_remove_devices() call, as already done in the
+remove function.
 
-  Unable to handle kernel read from unreadable memory at virtual address 0000000000000028
-  ...
-  x3 : 0000000000000000 x2 : 0000000000000000
-  x1 : 0000000000000000 x0 : 0000000000000000
-  Call trace:
-  input_event
-  cros_ec_keyb_work
-  blocking_notifier_call_chain
-  ec_irq_thread
-
-It's still unknown about why the kernel receives such malformed event,
-in any cases, the kernel shouldn't access `ckdev->idev` and friends if
-the driver doesn't intend to initialize them.
-
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Link: https://patch.msgid.link/20251104070310.3212712-1-tzungbi@kernel.org
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Fixes: 50dd64d57eee ("iio: common: ssp_sensors: Add sensorhub driver")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/keyboard/cros_ec_keyb.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/iio/common/ssp_sensors/ssp_dev.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/input/keyboard/cros_ec_keyb.c
-+++ b/drivers/input/keyboard/cros_ec_keyb.c
-@@ -248,6 +248,12 @@ static int cros_ec_keyb_work(struct noti
- 	case EC_MKBP_EVENT_KEY_MATRIX:
- 		pm_wakeup_event(ckdev->dev, 0);
+--- a/drivers/iio/common/ssp_sensors/ssp_dev.c
++++ b/drivers/iio/common/ssp_sensors/ssp_dev.c
+@@ -503,7 +503,7 @@ static int ssp_probe(struct spi_device *
+ 	ret = spi_setup(spi);
+ 	if (ret < 0) {
+ 		dev_err(&spi->dev, "Failed to setup spi\n");
+-		return ret;
++		goto err_setup_spi;
+ 	}
  
-+		if (!ckdev->idev) {
-+			dev_warn_once(ckdev->dev,
-+				      "Unexpected key matrix event\n");
-+			return NOTIFY_OK;
-+		}
-+
- 		if (ckdev->ec->event_size != ckdev->cols) {
- 			dev_err(ckdev->dev,
- 				"Discarded incomplete key matrix event.\n");
+ 	data->fw_dl_state = SSP_FW_DL_STATE_NONE;
+@@ -568,6 +568,8 @@ err_read_reg:
+ err_setup_irq:
+ 	mutex_destroy(&data->pending_lock);
+ 	mutex_destroy(&data->comm_lock);
++err_setup_spi:
++	mfd_remove_devices(&spi->dev);
+ 
+ 	dev_err(&spi->dev, "Probe failed!\n");
+ 
 
 
 
