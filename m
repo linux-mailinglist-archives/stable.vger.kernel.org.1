@@ -1,101 +1,333 @@
-Return-Path: <stable+bounces-198229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B272DC9F73A
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:29:12 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F274C9F6FB
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:27:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A2840306635C
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:23:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3E50B300BECA
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:24:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7501327C01;
-	Wed,  3 Dec 2025 15:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFC4032B98B;
+	Wed,  3 Dec 2025 15:18:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="CHv2iRHh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WZ++y0Wf"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F9E325735;
-	Wed,  3 Dec 2025 15:14:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.22.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 976D7186E40
+	for <stable@vger.kernel.org>; Wed,  3 Dec 2025 15:18:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764774854; cv=none; b=mkK6diqgitRcrZXwIY2yrTGRRRKI9DhMjsE0o6qIYGtgDIqYfH8/EEm8EeRHy3218Iu+zn7Q8foxzx2iB5fQldzVjGHAfOYgCSy8CzY+0EilpkF+Grzoox6a4ncd712MrXaAMVSdg9lj1RU1CWFFP49rSSax2atWPplQvzfUaEs=
+	t=1764775104; cv=none; b=YZHX29jNfuXRzExlKs4ZZubFgBnP2xrygIvam00295UXde2r3uZhJfFFq4pAslYOfHcLkBhEOJH5Y/PoJgAonwJFyIWAezE0B9Ndj80Tk+seA+aud5mwPC+sIFXkisUKvKSGqmWrYn6FS4jb54/roJbVSwu3g4pB5dVyHoIJaEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764774854; c=relaxed/simple;
-	bh=9rQwhuwE28lZS1AqNoToFbJLMg/7qrASKtXWJXSss7s=;
-	h=From:To:Cc:Subject:Mime-Version:Content-Type:Date:Message-ID:
-	 References:In-Reply-To; b=tds3SeexPefB9nkvfeZvUKV/tM01aRiwqjkpQCXEyFdivnzby5E93N/HHMM3rz4BXJXFw7gm+XAoH/vxaIKbpxGdAwVcsg2FttD0tlHfudk+BF4gI/FrXp7ls27UkkhJPAoiuApeU8WtgJvMW/O8C6tX8c+w+JPdc6cg7UKIHH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=CHv2iRHh; arc=none smtp.client-ip=54.207.22.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1764774785;
-	bh=9rQwhuwE28lZS1AqNoToFbJLMg/7qrASKtXWJXSss7s=;
-	h=From:To:Subject:Mime-Version:Date:Message-ID;
-	b=CHv2iRHhuRsc02GbEVnlIm0OXM3IlB44JzVEI8Er/Fg7D4gRr+5/0nyXGIg/sRlb2
-	 2Xs1mq3DTYa/+P1XPKb9MO4H1I3vyUD1OCgYtwQm8ixP3fBRxVVeiAyrIz5yFz7GFD
-	 3jD11yE1JkY0+PbIbo7kgGCmNbrhq17uIuo0oSSE=
-EX-QQ-RecipientCnt: 10
-X-QQ-GoodBg: 1
-X-QQ-SSF: 00400000000000F0
-X-QQ-FEAT: D4aqtcRDiqRRDMu1q775QruR7Y790WuywJEQvw7b5Zs=
-X-QQ-BUSINESS-ORIGIN: 2
-X-QQ-Originating-IP: tMNm0zgY7jhtBL+/I/XU9x0UqeH6l5jD1cbN11/M2oM=
-X-QQ-STYLE: 
-X-QQ-mid: lv3gz7b-6t1764774760tdd47a65e
-From: "=?utf-8?B?V2VudGFvIEd1YW4=?=" <guanwentao@uniontech.com>
-To: "=?utf-8?B?QW5keSBTaGV2Y2hlbmtv?=" <andriy.shevchenko@linux.intel.com>
-Cc: "=?utf-8?B?YnJnbA==?=" <brgl@kernel.org>, "=?utf-8?B?bWF0aGlldS5kdWJvaXMtYnJpYW5k?=" <mathieu.dubois-briand@bootlin.com>, "=?utf-8?B?SW9hbmEgQ2lvcm5laQ==?=" <ioana.ciornei@nxp.com>, "=?utf-8?B?bGludXgtZ3Bpbw==?=" <linux-gpio@vger.kernel.org>, "=?utf-8?B?bGludXgta2VybmVs?=" <linux-kernel@vger.kernel.org>, "=?utf-8?B?5Y2g5L+K?=" <zhanjun@uniontech.com>, "=?utf-8?B?6IGC6K+a?=" <niecheng1@uniontech.com>, "=?utf-8?B?c3RhYmxl?=" <stable@vger.kernel.org>, "=?utf-8?B?V2FuZ1l1bGk=?=" <wangyl5933@chinaunicom.cn>
-Subject: Re: [PATCH v2] gpio: regmap: Fix memleak in gpio_remap_register
+	s=arc-20240116; t=1764775104; c=relaxed/simple;
+	bh=ABZJVd0vwxXIRcA1EMlVWzzqKDbyKyTfRUgBrr74vqs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Fs/x4d+P3aqjkz5YMV9QsLkQuESVU4939lyf21Mdzw2VC7BcsJoVO33Qu13yUHr6mvzb/xa34GYUIjgagLwrlPK+7ahuc2Yi+mRV9yZe54s3UMYXPfGvSRWPUI1wUxWFS6E17d5OKTRmJW1r3h333obX3OM47YAOGRnpCakB5sM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WZ++y0Wf; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-42e2ce8681eso3217354f8f.0
+        for <stable@vger.kernel.org>; Wed, 03 Dec 2025 07:18:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764775101; x=1765379901; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fHkKMPEnQ9YySxWfhJQb2dUyJQ3XmA+wblB+0uzx3ww=;
+        b=WZ++y0WfCojxOP+1/Nts6psHO+LkDswLRMti9Dp85IfKo2f+obn7bUjSfNi/woLPx8
+         Ap0hvM3tZVgtKBqk/2ZMl6C0tmRQbOyzDINmDy2kNWL2yRyC43m16T3Zsr5Lz0a/Hh01
+         mkxf6FL+iLzYelMTLyjAiquNhVbghf3lmlti1q5YNtF+iZMhlKxCXtWFIBrshK923C8/
+         WlpzOgSdsZNxmG7hStvC4Bmi5Vyj2EpDKtAcCfR0SOsKSjCbRmPXBWatgf3zO59pL90A
+         oT9wxLGoqNDOCmVLjRD35UEVigEtjuFHqZj9jssYTJAupv+mSUEfnJ09Rw2U+BWI4LBf
+         jhNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764775101; x=1765379901;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=fHkKMPEnQ9YySxWfhJQb2dUyJQ3XmA+wblB+0uzx3ww=;
+        b=Vm/0DIh2+ljpCmt/7D6BCNM1325N9EVszBtgy7rJYfCeGFikot45W3ozy9rua0hN0s
+         y4Mcg+tr6ksyMUeIpKn+6zzho5WUS9y0nm/NDVwmbPwvHbpvoUeJGjU43/ZjRIpLav2S
+         r/HzFQHeKvuFM5lM+ITky3XX47Ppf5Q4Usg+LjHDOdj1EuJKp+yNcbeqXIREjRGyzybQ
+         S0OKiMVNfKLFfG6v3Owh8q/aIoLtEeADqLNcUyO8q2jd36C3e5R71k0RhOpDWdgR1b90
+         1biBqtxZu5MAFmMNqwAeJpeMc1HH19rCgYdbiRIVZX+MeiZ8Edwol1RshxSiVZm304O3
+         y0Fw==
+X-Forwarded-Encrypted: i=1; AJvYcCUCqdqOGDTXOwdacqUdN98bcJPSBna69dErQViAKDZezWRNIoJDgSohHRaAAIUy4qdNlvyo4ws=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzuzqW5pxjPZCktqShyPtITJdiMZ8gRbO+mkO/Vhi9jOmGumoJu
+	kBjWqjwus9ys7giG7LX0FTeDZqUKmwmmGQT60tn7RTz0jH4Y77czKRBVnaELN5IupyDPvq6JMRZ
+	GS+19kMsFbfadevVYE5HNen846V0YyJc=
+X-Gm-Gg: ASbGncujZiLuhbqYkcJpCpFtf2tydycDselDnQr0PitfVTrRjoM345WDZ/Wbs820TVm
+	KCWLn29i8xQADmUah4IBgf3D/aRLsOgdY7RPe72WB6AVx4PLTkF735Qk3gtc7bVp+ENtw2Kop4I
+	95AanxEpeOXuQz2Nf0iTmCEd2BrPkw+D0FiIBEjxXMSjEQIDW7+KJNSt7ZGK4QPMKY5KMx1BHpv
+	ye64NrRE+SqkiWFAGR9O3VM/7dwsfetlo+w9ioDLxvQAgdSJMYENz/iO+6d3uTKXquP4pvZ/rjb
+	lac4iCBFOc0yY2tqNHtm/mT3Dz5df9NFpjJNZtFi6WG9
+X-Google-Smtp-Source: AGHT+IHwAOgKdZnjv8Ra6NRCH56wK2VLEzPW8OibPCEBWdRd2pmyHYQV/MPmjLsAx3h7bvr0pXS5J2RD3mxuOVyH004=
+X-Received: by 2002:a5d:64c5:0:b0:429:d6dc:ae30 with SMTP id
+ ffacd0b85a97d-42f731c2b6cmr2934585f8f.46.1764775100859; Wed, 03 Dec 2025
+ 07:18:20 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
-Date: Wed, 3 Dec 2025 23:12:39 +0800
-X-Priority: 3
-Message-ID: <tencent_7AA5492F0C3086555B6EF720@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
-References: <20251203141557.2652348-1-guanwentao@uniontech.com>
-	<aTBOSfH9KyI0epZB@smile.fi.intel.com>
-In-Reply-To: <aTBOSfH9KyI0epZB@smile.fi.intel.com>
-X-QQ-ReplyHash: 2649634659
-X-BIZMAIL-ID: 2757764031343989435
-X-Address-Ticket:version=;type=;ticket_id=;id_list=;display_name=;session_id=;
-X-QQ-SENDSIZE: 520
-Received: from qq.com (unknown [127.0.0.1])
-	by smtp.qq.com (ESMTP) with SMTP
-	id ; Wed, 03 Dec 2025 23:12:40 +0800 (CST)
-Feedback-ID: lv:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
-X-QQ-XMAILINFO: M3ziZXKDk+iOTyTYriq8ZwXG5WvWJwylFGyq8CL9vEGgy5sVd15gQyvm
-	d1ZRpfvRNJGqwKbPZelAeP6ZJmmEQPX2z7MU8vV/4bbmaaWyNI3Z6dLZl5rqc6Ec329QPL1
-	tb6oPdtCK8RlcllaPxIsRuMRDu3aUlCgc2FUYuj3P/d/e5ag6t+7RL0FZBQvwuaeg2Qf1CL
-	1ukNqet6tdmy7jdsaYh0GlysLwHRQrrk3jJSjHvlAUBo5wPToa6xrQksDgR+LwsEO8fcRjb
-	EINs9Tcj3vHevg07iESrpfRKMyq0I9AQsM8ediiTQhQaAjpMJQ7qKxrKXDrdJU6+zHRWj3x
-	+y8UVB7xfT0qSXxB7JuN/x8iCP8W5NfDn7P9kOIay65fnwyNWRvAZFsKMuxXPBFA9+oK3QO
-	qh55TjrmXdEh3UoMmgV4olALluI2hrRGnKpMTf908MVaQN1M1zOM60gSvvHWNdDhzSRH8KB
-	ukt7BeIHzjvEtXFllSiu00Fl6hMRK3CRRwdSr5auIOYVXcNZO6oD7ILkufuwCXrMKSkXWEf
-	xfmRod9xS4r/0IgZD01ksp96UNpg8vySNaip6xR+NZ0hYO9Q3QTazB1VN0u8jv4MGnGUAIc
-	cfslYXbAOltGjT3HbN5Y3aa1UimUMo0hRd5NGdOEwouyKLD16lqQmLV1sKy73P+PGRnaoIA
-	jppJGsCu/klUuKfPJaN+6CH7quY91hgh8be3gW/AIvf1cMgjRZf3DCEnCka798kidegsNK4
-	7fKhSLfLiJApEZzLgwu8ZJBptryGKtAulEDAGqpPv0fT2Aj0gMJ0OWgrfybHNWT5XetiwZK
-	PI4sHnVsW+TOoEGGoCrcOf3Bu9TYb6mDcxNwnA84H+53/xpqREHzQgGC8sM2x+se/5V5anP
-	xKemlzVpyyVstyzSL31Mv0JouFhLTAnpZ4nCm3vD7gV0VQqzOBkIZeBga38nWY9Kps4R/LX
-	SkqEAHkivJaKKOUVyVdYSpVsYY76nMhMWu6iu0J/tvcn/s8LEkXe6nNROJHHTJD5gHFR5nw
-	fkAk9J3DMFom5KEEHGpR+Xr9vLRNUs22jq0rosRuFX/qNkWaHW
-X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
-X-QQ-RECHKSPAM: 0
+MIME-Version: 1.0
+References: <20251128185523.B995CC4CEFB@smtp.kernel.org>
+In-Reply-To: <20251128185523.B995CC4CEFB@smtp.kernel.org>
+From: Andrey Konovalov <andreyknvl@gmail.com>
+Date: Wed, 3 Dec 2025 16:18:10 +0100
+X-Gm-Features: AWmQ_bkUSZqwRcjEKOHC2jF7jJ05Jhr7oMctTnmr-36-DTvY88P7pB7sfUaL8pw
+Message-ID: <CA+fCnZeKm4uZuv2hhnSE0RrBvjw26eZFNXC6S+SPDMD0O1vvvA@mail.gmail.com>
+Subject: Re: + mm-kasan-fix-incorrect-unpoisoning-in-vrealloc-for-kasan.patch
+ added to mm-hotfixes-unstable branch
+To: jiayuan.chen@linux.dev, Kees Cook <kees@kernel.org>
+Cc: mm-commits@vger.kernel.org, vincenzo.frascino@arm.com, urezki@gmail.com, 
+	stable@vger.kernel.org, ryabinin.a.a@gmail.com, glider@google.com, 
+	dvyukov@google.com, dakr@kernel.org, kasan-dev <kasan-dev@googlegroups.com>, 
+	Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, Andrew Morton <akpm@linux-foundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-SGVsbG8gQW5keToNCg0KSSBkaWQgbm90IGZvdW5kIGFlNDk1ODEwY2ZmZSAsdGhvdWdodCBp
-dCBpcyB0aGF0Og0KRml4ZXM6IDAwYWFhZTYwZmFmNSAoImdwaW86IHJlZ21hcDogYWRkIHRo
-ZSAuZml4ZWRfZGlyZWN0aW9uX291dHB1dCBjb25maWd1cmF0aW9uIHBhcmFtZXRlciIpLA0K
-DQpJIHdpbGwgYWRkIGl0IHRvIHYzLg0KDQpCUnMNCldlbnRhbyBHdWFu
+On Fri, Nov 28, 2025 at 7:55=E2=80=AFPM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
+>
+>
+> The patch titled
+>      Subject: mm/kasan: fix incorrect unpoisoning in vrealloc for KASAN
+> has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+>      mm-kasan-fix-incorrect-unpoisoning-in-vrealloc-for-kasan.patch
+>
+> This patch will shortly appear at
+>      https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree=
+/patches/mm-kasan-fix-incorrect-unpoisoning-in-vrealloc-for-kasan.patch
+>
+> This patch will later appear in the mm-hotfixes-unstable branch at
+>     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+>
+> Before you just go and hit "reply", please:
+>    a) Consider who else should be cc'ed
+>    b) Prefer to cc a suitable mailing list as well
+>    c) Ideally: find the original patch on the mailing list and do a
+>       reply-to-all to that, adding suitable additional cc's
+>
+> *** Remember to use Documentation/process/submit-checklist.rst when testi=
+ng your code ***
+>
+> The -mm tree is included into linux-next via the mm-everything
+> branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> and is updated there every 2-3 working days
+>
+> ------------------------------------------------------
+> From: Jiayuan Chen <jiayuan.chen@linux.dev>
+> Subject: mm/kasan: fix incorrect unpoisoning in vrealloc for KASAN
+> Date: Fri, 28 Nov 2025 19:15:14 +0800
 
+Hi Jiayuan,
+
+Please CC kasan-dev@googlegroups.com when sending KASAN patches.
+
+>
+> Syzkaller reported a memory out-of-bounds bug [1]. This patch fixes two
+> issues:
+>
+> 1. In vrealloc, we were missing the KASAN_VMALLOC_VM_ALLOC flag when
+>    unpoisoning the extended region. This flag is required to correctly
+>    associate the allocation with KASAN's vmalloc tracking.
+>
+>    Note: In contrast, vzalloc (via __vmalloc_node_range_noprof) explicitl=
+y
+>    sets KASAN_VMALLOC_VM_ALLOC and calls kasan_unpoison_vmalloc() with it=
+.
+>    vrealloc must behave consistently =E2=80=94 especially when reusing ex=
+isting
+>    vmalloc regions =E2=80=94 to ensure KASAN can track allocations correc=
+tly.
+>
+> 2. When vrealloc reuses an existing vmalloc region (without allocating ne=
+w
+>    pages), KASAN previously generated a new tag, which broke tag-based
+>    memory access tracking. We now add a 'reuse_tag' parameter to
+>    __kasan_unpoison_vmalloc() to preserve the original tag in such cases.
+
+I think we actually could assign a new tag to detect accesses through
+the old pointer. Just gotta retag the whole region with this tag. But
+this is a separate thing; filed
+https://bugzilla.kernel.org/show_bug.cgi?id=3D220829 for this.
+
+>
+> A new helper kasan_unpoison_vralloc() is introduced to handle this reuse
+> scenario, ensuring consistent tag behavior during reallocation.
+>
+>
+> Link: https://lkml.kernel.org/r/20251128111516.244497-1-jiayuan.chen@linu=
+x.dev
+> Link: https://syzkaller.appspot.com/bug?extid=3D997752115a851cb0cf36 [1]
+> Fixes: a0309faf1cb0 ("mm: vmalloc: support more granular vrealloc() sizin=
+g")
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+> Reported-by: syzbot+997752115a851cb0cf36@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/all/68e243a2.050a0220.1696c6.007d.GAE@goo=
+gle.com/T/
+> Cc: Alexander Potapenko <glider@google.com>
+> Cc: Andrey Konovalov <andreyknvl@gmail.com>
+> Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+> Cc: Danilo Krummrich <dakr@kernel.org>
+> Cc: Dmitriy Vyukov <dvyukov@google.com>
+> Cc: Kees Cook <kees@kernel.org>
+> Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+> Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> ---
+>
+>  include/linux/kasan.h |   21 +++++++++++++++++++--
+>  mm/kasan/hw_tags.c    |    4 ++--
+>  mm/kasan/shadow.c     |    6 ++++--
+>  mm/vmalloc.c          |    4 ++--
+>  4 files changed, 27 insertions(+), 8 deletions(-)
+>
+> --- a/include/linux/kasan.h~mm-kasan-fix-incorrect-unpoisoning-in-vreallo=
+c-for-kasan
+> +++ a/include/linux/kasan.h
+> @@ -596,13 +596,23 @@ static inline void kasan_release_vmalloc
+>  #endif /* CONFIG_KASAN_GENERIC || CONFIG_KASAN_SW_TAGS */
+>
+>  void *__kasan_unpoison_vmalloc(const void *start, unsigned long size,
+> -                              kasan_vmalloc_flags_t flags);
+> +                              kasan_vmalloc_flags_t flags, bool reuse_ta=
+g);
+> +
+> +static __always_inline void *kasan_unpoison_vrealloc(const void *start,
+> +                                                    unsigned long size,
+> +                                                    kasan_vmalloc_flags_=
+t flags)
+> +{
+> +       if (kasan_enabled())
+> +               return __kasan_unpoison_vmalloc(start, size, flags, true)=
+;
+> +       return (void *)start;
+> +}
+> +
+>  static __always_inline void *kasan_unpoison_vmalloc(const void *start,
+>                                                 unsigned long size,
+>                                                 kasan_vmalloc_flags_t fla=
+gs)
+>  {
+>         if (kasan_enabled())
+> -               return __kasan_unpoison_vmalloc(start, size, flags);
+> +               return __kasan_unpoison_vmalloc(start, size, flags, false=
+);
+>         return (void *)start;
+>  }
+>
+> @@ -629,6 +639,13 @@ static inline void kasan_release_vmalloc
+>                                          unsigned long free_region_end,
+>                                          unsigned long flags) { }
+>
+> +static inline void *kasan_unpoison_vrealloc(const void *start,
+> +                                           unsigned long size,
+> +                                           kasan_vmalloc_flags_t flags)
+> +{
+> +       return (void *)start;
+> +}
+> +
+>  static inline void *kasan_unpoison_vmalloc(const void *start,
+>                                            unsigned long size,
+>                                            kasan_vmalloc_flags_t flags)
+> --- a/mm/kasan/hw_tags.c~mm-kasan-fix-incorrect-unpoisoning-in-vrealloc-f=
+or-kasan
+> +++ a/mm/kasan/hw_tags.c
+> @@ -317,7 +317,7 @@ static void init_vmalloc_pages(const voi
+>  }
+>
+>  void *__kasan_unpoison_vmalloc(const void *start, unsigned long size,
+> -                               kasan_vmalloc_flags_t flags)
+> +                               kasan_vmalloc_flags_t flags, bool reuse_t=
+ag)
+>  {
+>         u8 tag;
+>         unsigned long redzone_start, redzone_size;
+> @@ -361,7 +361,7 @@ void *__kasan_unpoison_vmalloc(const voi
+>                 return (void *)start;
+>         }
+>
+> -       tag =3D kasan_random_tag();
+> +       tag =3D reuse_tag ? get_tag(start) : kasan_random_tag();
+>         start =3D set_tag(start, tag);
+>
+>         /* Unpoison and initialize memory up to size. */
+> --- a/mm/kasan/shadow.c~mm-kasan-fix-incorrect-unpoisoning-in-vrealloc-fo=
+r-kasan
+> +++ a/mm/kasan/shadow.c
+> @@ -625,7 +625,7 @@ void kasan_release_vmalloc(unsigned long
+>  }
+>
+>  void *__kasan_unpoison_vmalloc(const void *start, unsigned long size,
+> -                              kasan_vmalloc_flags_t flags)
+> +                              kasan_vmalloc_flags_t flags, bool reuse_ta=
+g)
+
+Since we already have kasan_vmalloc_flags_t, I think it makes sense to
+add reuse_tag as another flag.
+
+>  {
+>         /*
+>          * Software KASAN modes unpoison both VM_ALLOC and non-VM_ALLOC
+> @@ -648,7 +648,9 @@ void *__kasan_unpoison_vmalloc(const voi
+>             !(flags & KASAN_VMALLOC_PROT_NORMAL))
+>                 return (void *)start;
+>
+> -       start =3D set_tag(start, kasan_random_tag());
+> +       if (!reuse_tag)
+> +               start =3D set_tag(start, kasan_random_tag());
+
+The HW_TAGS mode should also need this fix. Please build it (the build
+should be failing with your patch as is), boot it, and run the KASAN
+tests. And do the same for the other modes.
+
+Would be good to have tests for vrealloc too. Filed
+https://bugzilla.kernel.org/show_bug.cgi?id=3D220830 for this.
+
+> +
+>         kasan_unpoison(start, size, false);
+>         return (void *)start;
+>  }
+> --- a/mm/vmalloc.c~mm-kasan-fix-incorrect-unpoisoning-in-vrealloc-for-kas=
+an
+> +++ a/mm/vmalloc.c
+> @@ -4175,8 +4175,8 @@ void *vrealloc_node_align_noprof(const v
+>          * We already have the bytes available in the allocation; use the=
+m.
+>          */
+>         if (size <=3D alloced_size) {
+> -               kasan_unpoison_vmalloc(p + old_size, size - old_size,
+> -                                      KASAN_VMALLOC_PROT_NORMAL);
+> +               kasan_unpoison_vrealloc(p, size,
+> +                                       KASAN_VMALLOC_PROT_NORMAL | KASAN=
+_VMALLOC_VM_ALLOC);
+
+Orthogonal to this series, but is it allowed to call vrealloc on
+executable mappings? If so, we need to only set
+KASAN_VMALLOC_PROT_NORMAL for non-executable mappings. And
+kasan_poison_vmalloc should not be called for them as well (so we
+likely need to pass a protection flag to it to avoid exposing this
+logic).
+
+Kees, I see you worked on vrealloc annotations, do you happen to know?
+
+
+>                 /*
+>                  * No need to zero memory here, as unused memory will hav=
+e
+>                  * already been zeroed at initial allocation time or duri=
+ng
+> _
+>
+> Patches currently in -mm which might be from jiayuan.chen@linux.dev are
+>
+> mm-kasan-fix-incorrect-unpoisoning-in-vrealloc-for-kasan.patch
+> mm-vmscan-skip-increasing-kswapd_failures-when-reclaim-was-boosted.patch
+>
 
