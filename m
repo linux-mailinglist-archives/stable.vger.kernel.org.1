@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-199454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02C3BCA0009
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:37:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47EF7C9FA16
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:46:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 719EE300094B
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:37:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 461B5304FBBB
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:40:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D97735C185;
-	Wed,  3 Dec 2025 16:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 140D33081AF;
+	Wed,  3 Dec 2025 15:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A4Z6Foqh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xza6yDxx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD2C83596FA;
-	Wed,  3 Dec 2025 16:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A172FC010;
+	Wed,  3 Dec 2025 15:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779852; cv=none; b=hPrOmDifkVQOTY7+HwqRjxhpKbUvfhnklEBLayVfmpNhyA/aEX/c+g9zmdY16niDzXoZblAzwkn1QZzFvDUtByr0nsy0npf+BWkRWNWxwbaW0VdKX/HV9QABFc24KYIyWQxlI/gC7Nt2WBD61dgJmxXsln1pXoah14rZcVD7pqg=
+	t=1764776420; cv=none; b=vArQ3mIUQJuy59EQd/ZxQJr4qN77J+qFeZEet2OKGDZlrirD+P79mS0W5IxcKcegogRjUwaXFtA4SQaqOYNqls8w2WULPqfuXI25tf5c2+ONZ71MBFl0dCF7Uhy/t/Qjlsn9AMk723bVwgn9wfJTfGISrKsm1gGXtbm6KDzRu6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779852; c=relaxed/simple;
-	bh=Kdgqn2spV+yEMPGnku/amilGEdfeeXGeG0CFYpxqp6k=;
+	s=arc-20240116; t=1764776420; c=relaxed/simple;
+	bh=gRpoa8Gvx1f1uVl8AWLR6ZcYET/bSzdvMxIbeTIiWkM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XBT7uxjjuQgFhVsW0VA7hd8sirc5OFxYJ7q2aP4nzhiP+VtY/wVhjA99Bzny4C/5u7A8YovL6ZIm3rWkkTcIRB0jPj+XSpEw/pHnodm6qy30wLy72ZaASaYEgCKmUqGX9mfWZSNj4IUSOEQuj5TwJvs9ock0l2/COG6IzqSJoa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A4Z6Foqh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 459C5C4CEF5;
-	Wed,  3 Dec 2025 16:37:32 +0000 (UTC)
+	 MIME-Version; b=OaBBMa3I6ToLFkjQ12nkgnYMnRDevxMydivHd3cjgVdfKF8KhXjp4M0hspZYR5GK39ljNn5QvzG01pDuKsktbP8JQvkS5r31yJeVSLPjygKPDfRjv69yM0SnORho/yx8ggPQjWENKyaz4bXyzcnMBRQhBAttw7zm+4ETheeetCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xza6yDxx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 307C3C116B1;
+	Wed,  3 Dec 2025 15:40:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779852;
-	bh=Kdgqn2spV+yEMPGnku/amilGEdfeeXGeG0CFYpxqp6k=;
+	s=korg; t=1764776420;
+	bh=gRpoa8Gvx1f1uVl8AWLR6ZcYET/bSzdvMxIbeTIiWkM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A4Z6FoqhjsXGnNtA2fPYEzcauslj3/MkD4MoNKMjHIj6uO6XKLNoEv6jxgg9jy8TK
-	 YMl56sXHxIeCp9yvRjWW2TSGGq/WSctsoP8a/cZ2SmQb2vr8ajUKhRZ8LrW9eodCVz
-	 g7IFOZNt+prIjUvZxOcmkMtZ1RHfM+74Zy6sdoC0=
+	b=Xza6yDxxclBmsUnzpTeJ+nEgH8hoILYbwMhshMk1aaNsFqoNy3WUQX4DEgkvmixBj
+	 7QMNfnznXp9iqhMOGsWjztp+p/92xyzeoM99OApEe4YvntcTPS3r5RGiAP4YhPu1Di
+	 rq1TjQX1ylnwO6CRgmJahLiPgM+FAFrIop4KANi0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wu Zongyong <wuzongyong@linux.alibaba.com>,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 380/568] acpi,srat: Fix incorrect device handle check for Generic Initiator
+Subject: [PATCH 5.10 178/300] net: fec: correct rx_bytes statistic for the case SHIFT16 is set
 Date: Wed,  3 Dec 2025 16:26:22 +0100
-Message-ID: <20251203152454.614745214@linuxfoundation.org>
+Message-ID: <20251203152407.221828460@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuai Xue <xueshuai@linux.alibaba.com>
+From: Wei Fang <wei.fang@nxp.com>
 
-[ Upstream commit 7c3643f204edf1c5edb12b36b34838683ee5f8dc ]
+[ Upstream commit ad17e7e92a7c52ce70bb764813fcf99464f96903 ]
 
-The Generic Initiator Affinity Structure in SRAT table uses device
-handle type field to indicate the device type. According to ACPI
-specification, the device handle type value of 1 represents PCI device,
-not 0.
+Two additional bytes in front of each frame received into the RX FIFO if
+SHIFT16 is set, so we need to subtract the extra two bytes from pkt_len
+to correct the statistic of rx_bytes.
 
-Fixes: 894c26a1c274 ("ACPI: Support Generic Initiator only domains")
-Reported-by: Wu Zongyong <wuzongyong@linux.alibaba.com>
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Link: https://patch.msgid.link/20250913023224.39281-1-xueshuai@linux.alibaba.com
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Fixes: 3ac72b7b63d5 ("net: fec: align IP header in hardware")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20251106021421.2096585-1-wei.fang@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/numa/srat.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/freescale/fec_main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
-index a44c0761fd1c0..848942bf883cb 100644
---- a/drivers/acpi/numa/srat.c
-+++ b/drivers/acpi/numa/srat.c
-@@ -140,7 +140,7 @@ acpi_table_print_srat_entry(struct acpi_subtable_header *header)
- 		struct acpi_srat_generic_affinity *p =
- 			(struct acpi_srat_generic_affinity *)header;
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index 9905e65621004..dfe3e7b1fae51 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -1525,6 +1525,8 @@ fec_enet_rx_queue(struct net_device *ndev, int budget, u16 queue_id)
+ 		ndev->stats.rx_packets++;
+ 		pkt_len = fec16_to_cpu(bdp->cbd_datlen);
+ 		ndev->stats.rx_bytes += pkt_len;
++		if (fep->quirks & FEC_QUIRK_HAS_RACC)
++			ndev->stats.rx_bytes -= 2;
  
--		if (p->device_handle_type == 0) {
-+		if (p->device_handle_type == 1) {
- 			/*
- 			 * For pci devices this may be the only place they
- 			 * are assigned a proximity domain
+ 		index = fec_enet_get_bd_index(bdp, &rxq->bd);
+ 		skb = rxq->rx_skbuff[index];
 -- 
 2.51.0
 
