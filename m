@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE7FECA0634
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:23:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3544CA060A
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:22:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 54BA03000B3C
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:23:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5F97832B6783
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:07:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D9233A6ED;
-	Wed,  3 Dec 2025 15:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DB47349B0C;
+	Wed,  3 Dec 2025 16:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PllL6wYt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LSft/LCs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F76B33A71A;
-	Wed,  3 Dec 2025 15:55:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 198E5346FA8;
+	Wed,  3 Dec 2025 16:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777352; cv=none; b=ExWpqcwEgtd6pkfnBbgf13gUUAYGPbMiTEr2q7u9JQZWVRU3B/FAhLfOX9RWTTK+7wIzfAc6IDeMDZxRV/WAwgW34zh+AXVGNGg+6sIK+vtVb1vX4mBgbggMjo4eVYT451zAH+9mTOsQ64Fv7nurx2wAXuN0Wt0eFBUixTksYWE=
+	t=1764779118; cv=none; b=qUJEV54ZRPvy+NO0I51hzeJAhGgnyfddCy4vAQHfGHN3Z5eBMi6ecTjzYnaxUhrbk8ZU5Y6J1qStdHMVSNvI858/EjwPsBitVtY/W0rUIkAtw1VXa5cr/VsRkNtdXibKzFfFk0kVw3Qll16iMtnMjcY+32UvJNXpddfph6Z/xHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777352; c=relaxed/simple;
-	bh=OFoUPf6jtryKHYHhNqAI087Ojx2fF8kLzgYEpGdQ8xY=;
+	s=arc-20240116; t=1764779118; c=relaxed/simple;
+	bh=rP78KzwRGW1Lhm122NrjVMsoS4fROjNd2N39M/x1bXI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JXhcsIpH6GT8Bhwgj1i2xff1ITMVv9/tgj4p2gZGkUu/FDprENkUZnFW3H2ndzG+VPqE8EW3zwdC8kWcZElWgKbArd6YURAe9cxwqbSlf/SUC6lYVgD9a8mSTgGAxVfT0/zRdPhz0/eX0BTnJ9QyQ2isAfLDBWVNP0wHzq8yB+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PllL6wYt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2154CC4CEF5;
-	Wed,  3 Dec 2025 15:55:50 +0000 (UTC)
+	 MIME-Version; b=RuH9NfgwF771PjqjPXfivXWg+00J43jP8Jh9BqO9hYNy6+q+3mOXe7eKurY3TP+s5Z2+dc45GLZZspFIV8Cyq1Sguxz2wjcji5J9XH7oeE1s5rhQDONA3Dhqk8acqCv0Fw5iI7LNVNHIg9iYaBqzXgUKcNgnvBY/ENGvqjoltJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LSft/LCs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59693C116B1;
+	Wed,  3 Dec 2025 16:25:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777351;
-	bh=OFoUPf6jtryKHYHhNqAI087Ojx2fF8kLzgYEpGdQ8xY=;
+	s=korg; t=1764779117;
+	bh=rP78KzwRGW1Lhm122NrjVMsoS4fROjNd2N39M/x1bXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PllL6wYtFpQDJDgVuM8GO78HmSY1/e+FyIb/kW2qNNpEdkjuBkxvJtZae6v1NmrDi
-	 RiQN6n49BIbJjyX50x0egslCml9BcItyJ6KpAkhYVvywLV4e6so6yBe8IaHwrOzQBP
-	 utFCuqOZCerp4fBbfzRH8WVcLvSFpiM4m+5LIabg=
+	b=LSft/LCsiiuLlNvMp5Wr2XqaUIQM4IOfc+mJdkcZDsi3t6tG8R/XUnoPgS7mdosyk
+	 DpPtaqZLeuX/WQ/BIV5S91AoO3btPYzb/cPxbjLfvqenQ8bLnN2KA/Mj5/goo38iCQ
+	 DZYhKXQvAd20s9pVhHhB/kpKy8C6nP9kJA33ZLvE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fuchs <fuchsfl@gmail.com>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.15 012/392] fbdev: pvr2fb: Fix leftover reference to ONCHIP_NR_DMA_CHANNELS
+	Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 160/568] iio: adc: spear_adc: mask SPEAR_ADC_STATUS channel and avg sample before setting register
 Date: Wed,  3 Dec 2025 16:22:42 +0100
-Message-ID: <20251203152414.555701408@linuxfoundation.org>
+Message-ID: <20251203152446.584791855@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +61,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Fuchs <fuchsfl@gmail.com>
+From: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
 
-commit 5f566c0ac51cd2474e47da68dbe719d3acf7d999 upstream.
+[ Upstream commit d75c7021c08e8ae3f311ef2464dca0eaf75fab9f ]
 
-Commit e24cca19babe ("sh: Kill off MAX_DMA_ADDRESS leftovers.") removed
-the define ONCHIP_NR_DMA_CHANNELS. So that the leftover reference needs
-to be replaced by CONFIG_NR_ONCHIP_DMA_CHANNELS to compile successfully
-with CONFIG_PVR2_DMA enabled.
+avg sample info is a bit field coded inside the following
+bits: 5,6,7 and 8 of a device status register.
 
-Signed-off-by: Florian Fuchs <fuchsfl@gmail.com>
-Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Channel num info the same, but over bits: 1, 2 and 3.
+
+Mask both values in order to avoid touching other register bits,
+since the first info (avg sample), came from DT.
+
+Signed-off-by: Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250717221559.158872-1-rodrigo.gobbi.7@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/pvr2fb.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/spear_adc.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/drivers/video/fbdev/pvr2fb.c
-+++ b/drivers/video/fbdev/pvr2fb.c
-@@ -191,7 +191,7 @@ static unsigned long pvr2fb_map;
+diff --git a/drivers/iio/adc/spear_adc.c b/drivers/iio/adc/spear_adc.c
+index d93e580b3dc5b..8fda16dd012f7 100644
+--- a/drivers/iio/adc/spear_adc.c
++++ b/drivers/iio/adc/spear_adc.c
+@@ -12,6 +12,7 @@
+ #include <linux/kernel.h>
+ #include <linux/slab.h>
+ #include <linux/io.h>
++#include <linux/bitfield.h>
+ #include <linux/clk.h>
+ #include <linux/err.h>
+ #include <linux/completion.h>
+@@ -29,9 +30,9 @@
  
- #ifdef CONFIG_PVR2_DMA
- static unsigned int shdma = PVR2_CASCADE_CHAN;
--static unsigned int pvr2dma = ONCHIP_NR_DMA_CHANNELS;
-+static unsigned int pvr2dma = CONFIG_NR_ONCHIP_DMA_CHANNELS;
- #endif
+ /* Bit definitions for SPEAR_ADC_STATUS */
+ #define SPEAR_ADC_STATUS_START_CONVERSION	BIT(0)
+-#define SPEAR_ADC_STATUS_CHANNEL_NUM(x)		((x) << 1)
++#define SPEAR_ADC_STATUS_CHANNEL_NUM_MASK	GENMASK(3, 1)
+ #define SPEAR_ADC_STATUS_ADC_ENABLE		BIT(4)
+-#define SPEAR_ADC_STATUS_AVG_SAMPLE(x)		((x) << 5)
++#define SPEAR_ADC_STATUS_AVG_SAMPLE_MASK	GENMASK(8, 5)
+ #define SPEAR_ADC_STATUS_VREF_INTERNAL		BIT(9)
  
- static struct fb_videomode pvr2_modedb[] = {
+ #define SPEAR_ADC_DATA_MASK		0x03ff
+@@ -157,8 +158,8 @@ static int spear_adc_read_raw(struct iio_dev *indio_dev,
+ 	case IIO_CHAN_INFO_RAW:
+ 		mutex_lock(&st->lock);
+ 
+-		status = SPEAR_ADC_STATUS_CHANNEL_NUM(chan->channel) |
+-			SPEAR_ADC_STATUS_AVG_SAMPLE(st->avg_samples) |
++		status = FIELD_PREP(SPEAR_ADC_STATUS_CHANNEL_NUM_MASK, chan->channel) |
++			FIELD_PREP(SPEAR_ADC_STATUS_AVG_SAMPLE_MASK, st->avg_samples) |
+ 			SPEAR_ADC_STATUS_START_CONVERSION |
+ 			SPEAR_ADC_STATUS_ADC_ENABLE;
+ 		if (st->vref_external == 0)
+-- 
+2.51.0
+
 
 
 
