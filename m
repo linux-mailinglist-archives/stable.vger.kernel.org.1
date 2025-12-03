@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-199880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B57CCA07A6
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:31:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 726B9CA08C3
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:40:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8CD923077CE4
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:13:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3A7F1318AE9E
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:20:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FD80357A21;
-	Wed,  3 Dec 2025 17:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C04D6346A1B;
+	Wed,  3 Dec 2025 16:54:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UWHT4ouq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O5r3q3rJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF284359701;
-	Wed,  3 Dec 2025 17:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F7F5346E4F;
+	Wed,  3 Dec 2025 16:54:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764781234; cv=none; b=FsNL+uH55vYoGuRTZekXA0Qd10vTOAIU+ZdfrT4iAHoB4I7rEHTbeM3AJrDcIXotpBEHB5Ukn5B4NMwnuC+12DYsXCIJqm+EllMPPFXunr3R07/l2wrP31cjiLmZDPyYi20hjlcQbBRZ9yTZzUQXja2VQniPdbMsAGTsNuk6uho=
+	t=1764780872; cv=none; b=OvqiZ1YyNrEUPf4TkYlImgB9NvpuXSX4gZqVNQUHOdSqCAYoMovPLFfkZUiBwMLarC5QDpipm+sVGG0TArs9BxzRg+baqf5uEDZf64HGFzPvfm0vKZPnqppyBsL3Jp25I6DlbV2YhSpPYLhj153NqXUqou5mr3RwDOpFG6Mn1nA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764781234; c=relaxed/simple;
-	bh=ibd64aUxnM540gKpihya+JEbfw5533lSY+ExWNRFCSs=;
+	s=arc-20240116; t=1764780872; c=relaxed/simple;
+	bh=nPJC2YIX2H5ifBZJRrXFNbehIqK5P0HMqiNDpn4nj0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N7wPVF073u/SeS0t5qsYUMb3/0pngBRKI90qGGbQLOrz/Nr1HWFuZdteSjxckbunvwY3cKCshxoQerzjwRH/H5oOflI039kA4jUlHzIA/CyyI7P4yqXVtvRWVdj8DWic/W9ZDli31QJsWTBtxWqmUus8bbxzdiZSizRTGR04Ops=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UWHT4ouq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57993C4CEF5;
-	Wed,  3 Dec 2025 17:00:34 +0000 (UTC)
+	 MIME-Version; b=GypjX6FPBVP2Qw0ABXzBWOPaDiV4KAg6pp/a8R7MAhlFygnWMbXQMtgxAIhgh3Qtv991ehH/lOEXnnxHh1gJeRtSgiYD4osK8EY3DkjoJK5vMvko95OPKZLRGWjJScs1SKDJ9ruiCO3IKftPJPDHBrdCvzv/56yE/x0TvRKd8c4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O5r3q3rJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77684C4CEF5;
+	Wed,  3 Dec 2025 16:54:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764781234;
-	bh=ibd64aUxnM540gKpihya+JEbfw5533lSY+ExWNRFCSs=;
+	s=korg; t=1764780871;
+	bh=nPJC2YIX2H5ifBZJRrXFNbehIqK5P0HMqiNDpn4nj0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UWHT4ouq47oKEx376SRN/zrIoQuigiOArZOfFdds8pPTkh3A53fSB/qs8W0B1V+++
-	 AUalFFtq4VXYNGShRIbpJAdfCpj/VwDBOfIrrtd4gQ8y/LMrAqd/FnWwIbi8vME2yg
-	 mX20NTivqp8HQw33aNdV3Flbgod4JxPwjkoZc2K8=
+	b=O5r3q3rJ5XGALF7Mi+Lx99OD2loY1xouh10q/lnOPbx/bMGaEhRriPPArFaQHVkUy
+	 LXrdn8InNM25CTftbg1RqzaWNI9WIKHPRW+kuPCBxeF23jnKd7L3ZzWteoBjmKhKgX
+	 MrHrBjPlnY/hSBWqKA9pQMup6RoiQ7wfp/rHRtwo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stealth <oleg.smirnov.1988@gmail.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.6 61/93] USB: storage: Remove subclass and protocol overrides from Novatek quirk
+	NeilBrown <neil@brown.name>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.12 115/132] nfsd: Replace clamp_t in nfsd4_get_drc_mem()
 Date: Wed,  3 Dec 2025 16:29:54 +0100
-Message-ID: <20251203152338.780388271@linuxfoundation.org>
+Message-ID: <20251203152347.573843607@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +59,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: NeilBrown <neil@brown.name>
 
-commit df5fde297e617041449f603ed5f646861c80000b upstream.
+A recent change to clamp_t() in 6.1.y caused fs/nfsd/nfs4state.c to fail
+to compile with gcc-9. The code in nfsd4_get_drc_mem() was written with
+the assumption that when "max < min",
 
-A report from Oleg Smirnov indicates that the unusual_devs quirks
-entry for the Novatek camera does not need to override the subclass
-and protocol parameters:
+   clamp(val, min, max)
 
-[3266355.209532] usb 1-3: new high-speed USB device number 10 using xhci_hcd
-[3266355.333031] usb 1-3: New USB device found, idVendor=0603, idProduct=8611, bcdDevice= 1.00
-[3266355.333040] usb 1-3: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-[3266355.333043] usb 1-3: Product: YICARCAM
-[3266355.333045] usb 1-3: Manufacturer: XIAO-YI
-[3266355.333047] usb 1-3: SerialNumber: 966110000000100
-[3266355.338621] usb-storage 1-3:1.0: USB Mass Storage device detected
-[3266355.338817] usb-storage 1-3:1.0: Quirks match for vid 0603 pid 8611: 4000
-[3266355.338821] usb-storage 1-3:1.0: This device (0603,8611,0100 S 06 P 50) has unneeded SubClass and Protocol entries in unusual_devs.h (kernel 6.16.10-arch1-1)
-                    Please send a copy of this message to
-<linux-usb@vger.kernel.org> and <usb-storage@lists.one-eyed-alien.net>
+would return max.  This assumption is not documented as an API promise
+and the change caused a compile failure if it could be statically
+determined that "max < min".
 
-The overrides are harmless but they do provoke the driver into logging
-this annoying message.  Update the entry to remove the unneeded entries.
+The relevant code was no longer present upstream when commit 1519fbc8832b
+("minmax.h: use BUILD_BUG_ON_MSG() for the lo < hi test in clamp()")
+landed there, so there is no upstream change to nfsd4_get_drc_mem() to
+backport.
 
-Reported-by: stealth <oleg.smirnov.1988@gmail.com>
-Closes: https://lore.kernel.org/CAKxjRRxhC0s19iEWoN=pEMqXJ_z8w_moC0GCXSqSKCcOddnWjQ@mail.gmail.com/
-Fixes: 6ca8af3c8fb5 ("USB: storage: Add unusual-devs entry for Novatek NTK96550-based camera")
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Cc: stable <stable@kernel.org>
-Link: https://patch.msgid.link/b440f177-f0b8-4d5a-8f7b-10855d4424ee@rowland.harvard.edu
+There is no clear case that the existing code in nfsd4_get_drc_mem()
+is functioning incorrectly. The goal of this patch is to permit the clean
+application of commit 1519fbc8832b ("minmax.h: use BUILD_BUG_ON_MSG() for
+the lo < hi test in clamp()"), and any commits that depend on it, to LTS
+kernels without affecting the ability to compile those kernels. This is
+done by open-coding the __clamp() macro sans the built-in type checking.
+
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220745#c0
+Signed-off-by: NeilBrown <neil@brown.name>
+Stable-dep-of: 1519fbc8832b ("minmax.h: use BUILD_BUG_ON_MSG() for the lo < hi test in clamp()")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed_by: David Laight <david.laight.linux@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/unusual_devs.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfsd/nfs4state.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/storage/unusual_devs.h
-+++ b/drivers/usb/storage/unusual_devs.h
-@@ -938,7 +938,7 @@ UNUSUAL_DEV(  0x05e3, 0x0723, 0x9451, 0x
- UNUSUAL_DEV(  0x0603, 0x8611, 0x0000, 0xffff,
- 		"Novatek",
- 		"NTK96550-based camera",
--		USB_SC_SCSI, USB_PR_BULK, NULL,
-+		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
- 		US_FL_BULK_IGNORE_TAG ),
+Changes since Neil's post:
+* Editorial changes to the commit message
+* Attempt to address David's review comments
+* Applied to linux-6.12.y, passed NFSD upstream CI suite
+
+This patch is intended to be applied to linux-6.12.y, and should
+apply cleanly to other LTS kernels since nfsd4_get_drc_mem hasn't
+changed since v5.4.
+
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -1984,8 +1984,10 @@ static u32 nfsd4_get_drc_mem(struct nfsd
+ 	 */
+ 	scale_factor = max_t(unsigned int, 8, nn->nfsd_serv->sv_nrthreads);
  
- /*
+-	avail = clamp_t(unsigned long, avail, slotsize,
+-			total_avail/scale_factor);
++	if (avail > total_avail / scale_factor)
++		avail = total_avail / scale_factor;
++	else if (avail < slotsize)
++		avail = slotsize;
+ 	num = min_t(int, num, avail / slotsize);
+ 	num = max_t(int, num, 1);
+ 	nfsd_drc_mem_used += num * slotsize;
 
 
 
