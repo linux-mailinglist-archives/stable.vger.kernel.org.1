@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B785BCA15D4
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:26:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF949C9F941
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:43:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DFB60301276B
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:03:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D966D303B7E3
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:38:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 637D434DB6F;
-	Wed,  3 Dec 2025 16:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76FF4314A97;
+	Wed,  3 Dec 2025 15:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hEQEi6yb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JfLeZn/T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E4E234DB6D;
-	Wed,  3 Dec 2025 16:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3338C314A78;
+	Wed,  3 Dec 2025 15:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777799; cv=none; b=nooPXpzOL2jGJulB946zvB6Wvi24d1w84xj3QmeNMTzvGAh/P+r8ucmQAFdBmEz5orcJA5UebSQ7XPCnqAdRf69FHCNFrUO1i+tBFEWg+XIMRfqg66LLE8wN573lFS6SoZwWR79bouYcVz8Cjnl69GPCSKKoTmVN1O9cWAl4vg0=
+	t=1764776293; cv=none; b=qlDwpSKVXGoF3/tQtFt4QlYxII/aDi2O0EoLDpBMCfbSMXWlJgWaPq45VMSW/DpH9A+w8+QG+ltWAqctVnUtyqo2ANHplzTnW17235Jf0vevC5u1r0rYM9yj8+eZjaMRepzVQbWcpxLBnCoH/Q0hfNcIXsdLmsFsZtPb21+Q4p0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777799; c=relaxed/simple;
-	bh=zsNya3/5YHwK6CiakfImrZzY+cRwMD3M5pPmvtuwSRI=;
+	s=arc-20240116; t=1764776293; c=relaxed/simple;
+	bh=C0llxzNN3ONfJ87G87/EJK9/Oq5J9Vz1iRCLTLTbTqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BiBiK47ZnNRqBXxFoRK/bnFZFxl4P+MCbRNeHrigfyoNunjj9m+XY6cA0JmU09ST4p/QtusOieopydx2pYHktBGhFsRvh99VggGzQVlGOhgzGZ4su3MBcTEnL4zFSttKc3XNqx9rphrYjR6ANmlRJtZzqaLu/x3LzbzfljBTLPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hEQEi6yb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A1FFC4CEF5;
-	Wed,  3 Dec 2025 16:03:18 +0000 (UTC)
+	 MIME-Version; b=SnXmUsDKdCBFghcyuDqxv7c+XGSarj3tnsVSoVBcwVtwF5GmG5i9//1V4HgvEwMUSeTgv0mFfqE6g6M+16FT1HQQBnyxdaqqqU79Sqj+oh0UIhZW37yCIMy9d3HlZFOS17l75lPe+tHyUo2sromFwWAYyBWS4lK4Bk06U8VzxRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JfLeZn/T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94AE9C4CEF5;
+	Wed,  3 Dec 2025 15:38:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777799;
-	bh=zsNya3/5YHwK6CiakfImrZzY+cRwMD3M5pPmvtuwSRI=;
+	s=korg; t=1764776293;
+	bh=C0llxzNN3ONfJ87G87/EJK9/Oq5J9Vz1iRCLTLTbTqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hEQEi6yb6eIdP+XLnIxsPL4TD53GPn8mdQus9Sfuk8Rs2c+9VYHT4sX6ZHpedHBi9
-	 alSQ+SPVbP/1zjnx3nYUYZG6+yjNB0FIXFs5imCTpC+toemHs6Ja58iSuWGYCvLDGR
-	 +JwNBhj4090EWmWZGt7hXAIDIJkftuT2oiE3kyug=
+	b=JfLeZn/TqCHKFczUJGAq9W8Cl+xRkObsCuSf3Be/nXHSKy0kInnDbJ49pjlYg1Noo
+	 3ayf4xFaySXClReZZXVkViriJBMQnjYBqxxtFHHpb5D48ooaVSlLtGRzLIYO7Mq1a5
+	 89JWuMKkVP1/r9g3SG7TgWw2ziv9v7z1Nv6SVyvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Palmer <daniel@thingy.jp>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Aleksander Jan Bajkowski <olek2@wp.pl>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 150/392] eth: 8139too: Make 8139TOO_PIO depend on !NO_IOPORT_MAP
+Subject: [PATCH 5.10 096/300] mips: lantiq: danube: add missing properties to cpu node
 Date: Wed,  3 Dec 2025 16:25:00 +0100
-Message-ID: <20251203152419.603804708@linuxfoundation.org>
+Message-ID: <20251203152404.180266118@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +60,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Palmer <daniel@thingy.jp>
+From: Aleksander Jan Bajkowski <olek2@wp.pl>
 
-[ Upstream commit 43adad382e1fdecabd2c4cd2bea777ef4ce4109e ]
+[ Upstream commit e8dee66c37085dc9858eb8608bc783c2900e50e7 ]
 
-When 8139too is probing and 8139TOO_PIO=y it will call pci_iomap_range()
-and from there __pci_ioport_map() for the PCI IO space.
-If HAS_IOPORT_MAP=n and NO_GENERIC_PCI_IOPORT_MAP=n, like it is on my
-m68k config, __pci_ioport_map() becomes NULL, pci_iomap_range() will
-always fail and the driver will complain it couldn't map the PIO space
-and return an error.
+This fixes the following warnings:
+arch/mips/boot/dts/lantiq/danube_easy50712.dtb: cpus: '#address-cells' is a required property
+	from schema $id: http://devicetree.org/schemas/cpus.yaml#
+arch/mips/boot/dts/lantiq/danube_easy50712.dtb: cpus: '#size-cells' is a required property
+	from schema $id: http://devicetree.org/schemas/cpus.yaml#
+arch/mips/boot/dts/lantiq/danube_easy50712.dtb: cpu@0 (mips,mips24Kc): 'reg' is a required property
+	from schema $id: http://devicetree.org/schemas/mips/cpus.yaml#
 
-NO_IOPORT_MAP seems to cover the case where what 8139too is trying
-to do cannot ever work so make 8139TOO_PIO depend on being it false
-and avoid creating an unusable driver.
-
-Signed-off-by: Daniel Palmer <daniel@thingy.jp>
-Link: https://patch.msgid.link/20250907064349.3427600-1-daniel@thingy.jp
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/boot/dts/lantiq/danube.dtsi | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/realtek/Kconfig b/drivers/net/ethernet/realtek/Kconfig
-index 93d9df55b361a..01811924c4db4 100644
---- a/drivers/net/ethernet/realtek/Kconfig
-+++ b/drivers/net/ethernet/realtek/Kconfig
-@@ -58,7 +58,7 @@ config 8139TOO
- config 8139TOO_PIO
- 	bool "Use PIO instead of MMIO"
- 	default y
--	depends on 8139TOO
-+	depends on 8139TOO && !NO_IOPORT_MAP
- 	help
- 	  This instructs the driver to use programmed I/O ports (PIO) instead
- 	  of PCI shared memory (MMIO).  This can possibly solve some problems
+diff --git a/arch/mips/boot/dts/lantiq/danube.dtsi b/arch/mips/boot/dts/lantiq/danube.dtsi
+index 510be63c8bdf1..ff6ff9568e1bc 100644
+--- a/arch/mips/boot/dts/lantiq/danube.dtsi
++++ b/arch/mips/boot/dts/lantiq/danube.dtsi
+@@ -5,8 +5,12 @@
+ 	compatible = "lantiq,xway", "lantiq,danube";
+ 
+ 	cpus {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
+ 		cpu@0 {
+ 			compatible = "mips,mips24Kc";
++			reg = <0>;
+ 		};
+ 	};
+ 
 -- 
 2.51.0
 
