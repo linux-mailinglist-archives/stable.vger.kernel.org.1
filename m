@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-199541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66CA7CA0209
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:50:06 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79639CA0006
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:37:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 212CB302F115
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:42:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1B66F3028538
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:34:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9E1735CBAB;
-	Wed,  3 Dec 2025 16:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0657330B16;
+	Wed,  3 Dec 2025 15:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kMe2RKYN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ly26oAaT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63ACD35C1B7;
-	Wed,  3 Dec 2025 16:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C9A7330B06;
+	Wed,  3 Dec 2025 15:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780139; cv=none; b=lSQCTpZkV6MqlPOP1ayvWR1AllB7np4RY8oTXmMTEkv/CGONjKAVwYKei9M1DiDZ2eqTEuWI0iEwq5r06EZ7cL6pOEOsCdYQ97rn+f4LOOsFDCMM+m9EOBOBY3kYzj+0yiox1JdxGmc5Uj9Ym+akGfjXtunkqeE4FScPFTNfPuU=
+	t=1764777134; cv=none; b=bp1Tmpu5tJk2VTOt4jAJBJu0BmglxgihbZXTN76pT0mLfGBPlqNBH/K0b3+Ir1+ojr3KbA5eGrgQbUkJiQMr5wGVwhaMXW3Y3bS0Ynmish+nca9hOHnK7TjWG+06HVlyWc6x0KJf0ZMDVPekdMrWkq9TXK8j2V69Qn4+uAwtdCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780139; c=relaxed/simple;
-	bh=4AJNGZMS5AKQaevPdZT/sgR+kMK8Y8YtaWUrTXbbvpk=;
+	s=arc-20240116; t=1764777134; c=relaxed/simple;
+	bh=gZS87XFu+oGRCW4WJQbLlpHuEH/LB/mHLpgdiEDPi00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RkffyU8MKLDu+XTAO2sy7xWXvGB3zkbitGJqVw9456kYvke5Bes1oZ9G5b3In9LksJorIUseIfmqwJh63a/4U5GDpGgiQndT8lVJ/6fvIcnBe3hPiyyvE3QmRSZZrALz4iVEVIIDR/HL8bE6LVGsKQtQf6Dz2Vj06mHhcN2zdj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kMe2RKYN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD786C4CEF5;
-	Wed,  3 Dec 2025 16:42:18 +0000 (UTC)
+	 MIME-Version; b=S95WjEX4FQsVIimveGXHE2EdlD/hKTY5dcRqk93Tg5Y+6XowcXAuTJvxe6j1QlV2yIYtSC+yKorZ/d9jnOM6qhInyiKeoRDzXM9vuu2u23TVTgpe99q0GrunlQ0QRbxt7maonmwB3dCyq204T7OZM8E+fHRLqvbVUil2iRJ2OfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ly26oAaT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E37DCC4CEF5;
+	Wed,  3 Dec 2025 15:52:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780139;
-	bh=4AJNGZMS5AKQaevPdZT/sgR+kMK8Y8YtaWUrTXbbvpk=;
+	s=korg; t=1764777134;
+	bh=gZS87XFu+oGRCW4WJQbLlpHuEH/LB/mHLpgdiEDPi00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kMe2RKYNNqOtQw/lfczy1D/TplUWceEi0HYpu3Bq/LQL5tvC0uKAv2hmPWSt4GH2L
-	 JfrAOhJsFq4kxTl4EH+vL1KKsdcRTa4IfsDrnmA7s3588eMa7OmHoX9gllVX8PtzdB
-	 fObonFJesqG2tdxgWKuDOQUs4avPHyDFBRWALWmI=
+	b=Ly26oAaTPxIl5sJuizcpzyrrBJIVPBdaFAMJatQ0UN+dTRH0ZU6M+nCzVDJ97IoIy
+	 rjLhyaiCVrM3gOnYhZ6tSMSb6Yo9d1Wu0OMLfCGGKWwktrREIOtGaR0R6jwmLDyGnk
+	 a3uf7K3gQ4YQs5Y4fGtdH4zv3I8xBimMAZtZjc6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shahar Shitrit <shshitrit@nvidia.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 468/568] net: tls: Cancel RX async resync request on rcd_delta overflow
+	Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 6.17 092/146] thunderbolt: Add support for Intel Wildcat Lake
 Date: Wed,  3 Dec 2025 16:27:50 +0100
-Message-ID: <20251203152457.842821485@linuxfoundation.org>
+Message-ID: <20251203152349.827198506@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +59,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shahar Shitrit <shshitrit@nvidia.com>
+From: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
 
-[ Upstream commit c15d5c62ab313c19121f10e25d4fec852bd1c40c ]
+commit 3575254546a27210a4b661ea37fbbfb836c0815d upstream.
 
-When a netdev issues a RX async resync request for a TLS connection,
-the TLS module handles it by logging record headers and attempting to
-match them to the tcp_sn provided by the device. If a match is found,
-the TLS module approves the tcp_sn for resynchronization.
+Intel Wildcat Lake derives its Thunderbolt/USB4 controller from Lunar
+Lake platform. Add Wildcat Lake PCI ID to the driver list of supported
+devices.
 
-While waiting for a device response, the TLS module also increments
-rcd_delta each time a new TLS record is received, tracking the distance
-from the original resync request.
-
-However, if the device response is delayed or fails (e.g due to
-unstable connection and device getting out of tracking, hardware
-errors, resource exhaustion etc.), the TLS module keeps logging and
-incrementing, which can lead to a WARN() when rcd_delta exceeds the
-threshold.
-
-To address this, introduce tls_offload_rx_resync_async_request_cancel()
-to explicitly cancel resync requests when a device response failure is
-detected. Call this helper also as a final safeguard when rcd_delta
-crosses its threshold, as reaching this point implies that earlier
-cancellation did not occur.
-
-Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1761508983-937977-3-git-send-email-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/tls.h    | 6 ++++++
- net/tls/tls_device.c | 4 +++-
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ drivers/thunderbolt/nhi.c |    2 ++
+ drivers/thunderbolt/nhi.h |    1 +
+ 2 files changed, 3 insertions(+)
 
-diff --git a/include/net/tls.h b/include/net/tls.h
-index 899c863aba02c..037049def8a7f 100644
---- a/include/net/tls.h
-+++ b/include/net/tls.h
-@@ -475,6 +475,12 @@ tls_offload_rx_resync_async_request_end(struct sock *sk, __be32 seq)
- 		     ((u64)ntohl(seq) << 32) | RESYNC_REQ);
- }
+--- a/drivers/thunderbolt/nhi.c
++++ b/drivers/thunderbolt/nhi.c
+@@ -1528,6 +1528,8 @@ static struct pci_device_id nhi_ids[] =
+ 	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
+ 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_PTL_P_NHI1),
+ 	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
++	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_WCL_NHI0),
++	  .driver_data = (kernel_ulong_t)&icl_nhi_ops },
+ 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_80G_NHI) },
+ 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_40G_NHI) },
  
-+static inline void
-+tls_offload_rx_resync_async_request_cancel(struct tls_offload_resync_async *resync_async)
-+{
-+	atomic64_set(&resync_async->req, 0);
-+}
-+
- static inline void
- tls_offload_rx_resync_set_type(struct sock *sk, enum tls_offload_sync_type type)
- {
-diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
-index 1849827884735..c51377a159bec 100644
---- a/net/tls/tls_device.c
-+++ b/net/tls/tls_device.c
-@@ -739,8 +739,10 @@ tls_device_rx_resync_async(struct tls_offload_resync_async *resync_async,
- 		/* shouldn't get to wraparound:
- 		 * too long in async stage, something bad happened
- 		 */
--		if (WARN_ON_ONCE(resync_async->rcd_delta == USHRT_MAX))
-+		if (WARN_ON_ONCE(resync_async->rcd_delta == USHRT_MAX)) {
-+			tls_offload_rx_resync_async_request_cancel(resync_async);
- 			return false;
-+		}
- 
- 		/* asynchronous stage: log all headers seq such that
- 		 * req_seq <= seq <= end_seq, and wait for real resync request
--- 
-2.51.0
-
+--- a/drivers/thunderbolt/nhi.h
++++ b/drivers/thunderbolt/nhi.h
+@@ -75,6 +75,7 @@ extern const struct tb_nhi_ops icl_nhi_o
+ #define PCI_DEVICE_ID_INTEL_TITAN_RIDGE_DD_BRIDGE	0x15ef
+ #define PCI_DEVICE_ID_INTEL_ADL_NHI0			0x463e
+ #define PCI_DEVICE_ID_INTEL_ADL_NHI1			0x466d
++#define PCI_DEVICE_ID_INTEL_WCL_NHI0			0x4d33
+ #define PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_80G_NHI	0x5781
+ #define PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HOST_40G_NHI	0x5784
+ #define PCI_DEVICE_ID_INTEL_BARLOW_RIDGE_HUB_80G_BRIDGE 0x5786
 
 
 
