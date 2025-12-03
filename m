@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-198790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05717CA0D5A
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:13:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC7E5C9F8A5
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:39:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4673E330F608
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:10:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1D5EC3002D08
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:35:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78B3034B42C;
-	Wed,  3 Dec 2025 16:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A63E230F925;
+	Wed,  3 Dec 2025 15:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tJu7rDN/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7jeHgH9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C0C734B40E;
-	Wed,  3 Dec 2025 16:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6C7306D49;
+	Wed,  3 Dec 2025 15:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777693; cv=none; b=b2JEV0UpF7oXtcs5yP0W5qr0Ej0SRltUcOX2zrcp5nAGMVNlrK31fPe9sGLiCtCGzFSihd2XcuuGLompecIADoc9zSmh/7ds0u7CGGTi7RZozB+0lsJYg8qhc8hkMreOZwboJcEDJgoK285QdmEozqDyKStHFFdXASsejawOkHk=
+	t=1764776100; cv=none; b=tzzTn84kTuyXhHF+7zfPxIYFKYV3JkObrsoo59nNEdx/to7uCMpLjec3DSBhRHDN9hhDGXFqcc/E0gDqJZLNNyJdBK1bL3qifGgpBjPAvG6eOm0ns8r/QbsgAl7WQHmsmnfNPQdQ1s0VCs41r9xpJe4gfYNbVHytsDwXH4Q7WeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777693; c=relaxed/simple;
-	bh=PjoVhRFruOmVTEs0OxGNNQVdQzIqzvVHNTh3k8kobAQ=;
+	s=arc-20240116; t=1764776100; c=relaxed/simple;
+	bh=r4t3bFpHEJQlkj0tZDU8+rciJFa83vGurEQX34xRrpc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KRG6CddI8lfv25Y8NGMezvPd3n1VOUcZe+5ieTpsLNpEwkB+BAl5zmGysLldvWXdIw9TbBxxQjvZjmomosXpwdLu4xz9cnyNKlkuAW2EIZo6Kr4qJLvKb68pKA3qzbV5cTiGnM/1p3IZ6aDAavygV0aE89DjsbYdc0YPVMZISCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tJu7rDN/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C122C4CEF5;
-	Wed,  3 Dec 2025 16:01:32 +0000 (UTC)
+	 MIME-Version; b=MFiG0UQxCX9cqzZ0aNfR98z/Nf8urC53Bq+/ll4jOxK58DzskUOUNabeLJI27tNyAeFKejShwnmRSfxtpH5YErSg7GsuFFPJqD6sTiBUOuN7qezAzFcxPev6NsaxdszhIfd7mb1uCH0qIGirP+brCtxY6sp74/Ec06WH2zr1fIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J7jeHgH9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEE1EC4CEF5;
+	Wed,  3 Dec 2025 15:34:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777692;
-	bh=PjoVhRFruOmVTEs0OxGNNQVdQzIqzvVHNTh3k8kobAQ=;
+	s=korg; t=1764776100;
+	bh=r4t3bFpHEJQlkj0tZDU8+rciJFa83vGurEQX34xRrpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tJu7rDN/sDFlCbV7WToauqeZ6ojXrygjvg1W2t/5GWmcf6hkrn/KR2y8s15obexQb
-	 Euaz6jTIKng4rTfZVECl2cMSrZbt8ClPmoSXyDRnC0q/x4yHC0F2SCUxdIBZeiEhsz
-	 SySM1Kn/gpBvrXmVrl46hX+7xmjMcpb8qMyDehFc=
+	b=J7jeHgH9IvqapiI6ueVvlLO5l0EptPdssuZTgnVF22UD9GeUDrfdHK+H5IE/BWplP
+	 sY/LYoaWuqZKNgTLoj44IMotrnkopv6I1C8iX2Cn/S6cZPDfqmh9mFSuSv53meu9Cq
+	 fDtAzhrZlFY55TwHJFAVxN6tStYrh26HwCzoivtU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ujwal Kundur <ujwal.kundur@gmail.com>,
-	Allison Henderson <allison.henderson@oracle.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Len Brown <len.brown@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 116/392] rds: Fix endianness annotation for RDS_MPATH_HASH
-Date: Wed,  3 Dec 2025 16:24:26 +0100
-Message-ID: <20251203152418.365515351@linuxfoundation.org>
+Subject: [PATCH 5.10 063/300] tools/power x86_energy_perf_policy: Prefer driver HWP limits
+Date: Wed,  3 Dec 2025 16:24:27 +0100
+Message-ID: <20251203152402.956046435@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +59,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ujwal Kundur <ujwal.kundur@gmail.com>
+From: Len Brown <len.brown@intel.com>
 
-[ Upstream commit 77907a068717fbefb25faf01fecca553aca6ccaa ]
+[ Upstream commit 2734fdbc9bb8a3aeb309ba0d62212d7f53f30bc7 ]
 
-jhash_1word accepts host endian inputs while rs_bound_port is a be16
-value (sockaddr_in6.sin6_port). Use ntohs() for consistency.
+When we are successful in using cpufreq min/max limits,
+skip setting the raw MSR limits entirely.
 
-Flagged by Sparse.
+This is necessary to avoid undoing any modification that
+the cpufreq driver makes to our sysfs request.
 
-Signed-off-by: Ujwal Kundur <ujwal.kundur@gmail.com>
-Reviewed-by: Allison Henderson <allison.henderson@oracle.com>
-Link: https://patch.msgid.link/20250820175550.498-4-ujwal.kundur@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+eg. intel_pstate may take our request for a limit
+that is valid according to HWP.CAP.MIN/MAX and clip
+it to be within the range available in PLATFORM_INFO.
+
+Signed-off-by: Len Brown <len.brown@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rds/rds.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../x86_energy_perf_policy/x86_energy_perf_policy.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/net/rds/rds.h b/net/rds/rds.h
-index d35d1fc398076..1257867e85e4e 100644
---- a/net/rds/rds.h
-+++ b/net/rds/rds.h
-@@ -93,7 +93,7 @@ enum {
+diff --git a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
+index 5c93546fc689b..702b5882cfce4 100644
+--- a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
++++ b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
+@@ -62,6 +62,7 @@ unsigned char turbo_update_value;
+ unsigned char update_hwp_epp;
+ unsigned char update_hwp_min;
+ unsigned char update_hwp_max;
++unsigned char hwp_limits_done_via_sysfs;
+ unsigned char update_hwp_desired;
+ unsigned char update_hwp_window;
+ unsigned char update_hwp_use_pkg;
+@@ -862,8 +863,10 @@ int ratio_2_sysfs_khz(int ratio)
+ }
+ /*
+  * If HWP is enabled and cpufreq sysfs attribtes are present,
+- * then update sysfs, so that it will not become
+- * stale when we write to MSRs.
++ * then update via sysfs. The intel_pstate driver may modify (clip)
++ * this request, say, when HWP_CAP is outside of PLATFORM_INFO limits,
++ * and the driver-chosen value takes precidence.
++ *
+  * (intel_pstate's max_perf_pct and min_perf_pct will follow cpufreq,
+  *  so we don't have to touch that.)
+  */
+@@ -918,6 +921,8 @@ int update_sysfs(int cpu)
+ 	if (update_hwp_max)
+ 		update_cpufreq_scaling_freq(1, cpu, req_update.hwp_max);
  
- /* Max number of multipaths per RDS connection. Must be a power of 2 */
- #define	RDS_MPATH_WORKERS	8
--#define	RDS_MPATH_HASH(rs, n) (jhash_1word((rs)->rs_bound_port, \
-+#define	RDS_MPATH_HASH(rs, n) (jhash_1word(ntohs((rs)->rs_bound_port), \
- 			       (rs)->rs_hash_initval) & ((n) - 1))
++	hwp_limits_done_via_sysfs = 1;
++
+ 	return 0;
+ }
  
- #define IS_CANONICAL(laddr, faddr) (htonl(laddr) < htonl(faddr))
+@@ -996,10 +1001,10 @@ int update_hwp_request(int cpu)
+ 	if (debug)
+ 		print_hwp_request(cpu, &req, "old: ");
+ 
+-	if (update_hwp_min)
++	if (update_hwp_min && !hwp_limits_done_via_sysfs)
+ 		req.hwp_min = req_update.hwp_min;
+ 
+-	if (update_hwp_max)
++	if (update_hwp_max && !hwp_limits_done_via_sysfs)
+ 		req.hwp_max = req_update.hwp_max;
+ 
+ 	if (update_hwp_desired)
 -- 
 2.51.0
 
