@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4351ACA0C85
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:09:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EFC8CA04A7
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:14:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D3939325973B
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:05:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B99153233189
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:02:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BF213AA188;
-	Wed,  3 Dec 2025 16:58:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C48B35292A;
+	Wed,  3 Dec 2025 16:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xoq1ByLz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wfupR/K1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F7913A1CE8;
-	Wed,  3 Dec 2025 16:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD86A350D65;
+	Wed,  3 Dec 2025 16:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764781106; cv=none; b=tOau1LVPujta/uuw8WEEW8T6HqXGGQE4NPMy+EovvoH6UEwMAO3MUfJuGFGm5NmrlloeDK1bvbFM/1bAfMrCeFlyc6+HXBUam1FiygI4weHH1Nvg93zpsC4MTOAKLp8MXQ1SgE3o3gfTsG7yYhulCbGNTgdjKg7eT2kNjELnGJM=
+	t=1764780938; cv=none; b=qumGRECljhA+KrPr1OFyFGe+9jgVBaIJfELZ6Qze878k2yc0OEGeQxgTZHzcQMPwGYSfPGQ54QDDcjfSzICglF/a0ARyQFYzkVQVdbh/1BmvA90SFSiHa8U2xJu75ib9610Nb5WlJmYRTtWoaTu4LpJjrYNNKW8duMmnw4jA+3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764781106; c=relaxed/simple;
-	bh=yAZJdcT6ccIIto8/d8SW+cR0l6C1KO6RKwgk1NdL2z4=;
+	s=arc-20240116; t=1764780938; c=relaxed/simple;
+	bh=m4bvjCWEtBtYqcBtPGIIQCauS71eoX73uUOGUIggaPo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r/UjFH4oo+sFlcPW/WmBy2SoMDQtnfLA7yzXX81e/7BUPp3FbG17mD5yjw2OHS7fgxGnMM2Ya6AOCKjgno/0fBg9C0t6hfpk/ZtHcSSN4d7qjP88/M6Z51W6l///i30s3C+gMTMYGsPbpJqzMMvhl/QbBiOJ/p8yRi6u5Gz8ziM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xoq1ByLz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C265C4CEF5;
-	Wed,  3 Dec 2025 16:58:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PB7+l0tYz62aSXB3s1s3Xk9dOEQU3DiBM5XHCt+mYPIkKoqwGTPycTW3Lij6omzopzl2Go5tmP6z+VIunadKLayizT1T5ikmDWdNkS4dbenkWMZTmCLnBOUFu2QKIXA5hdmmrbV/cF7MzWOrXIc8Czt93zUko+zrgjkRBi23jYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wfupR/K1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28459C4CEF5;
+	Wed,  3 Dec 2025 16:55:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764781105;
-	bh=yAZJdcT6ccIIto8/d8SW+cR0l6C1KO6RKwgk1NdL2z4=;
+	s=korg; t=1764780938;
+	bh=m4bvjCWEtBtYqcBtPGIIQCauS71eoX73uUOGUIggaPo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xoq1ByLzhBs5YdkusLtbbH60zDq0oPli3Y4u6kZDUDnJYmK1vj5e86t33r21RZFjj
-	 TGfzmwhkEjwvl5fLih8eWLUqAQJa15Au0Yn0w0imhPQyKb6z0ODnCuZyBsJ8OCfmlz
-	 W7qGJXfxou5ZsTypH9o1v9+2CGJ8mOUC+hEvBeNk=
+	b=wfupR/K1wZ6OhwFsu9DH4FDBhEcs3Ibzdw8jQlcAgOzEIYbyR6ztHAd1M1ptbTxQw
+	 PHSgpGSTcFIxQomgHchg1wuZe/5lI/OSSjurpFX9nwzN9aDZ2cQkXxCMCw2q/RSUPB
+	 tIDtPNheJODsl+SK/4utPN1fYMS8n/5hUTLaUDDI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Jamie Iles <jamie.iles@oss.qualcomm.com>,
-	Punit Agrawal <punit.agrawal@oss.qualcomm.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.6 49/93] drivers/usb/dwc3: fix PCI parent check
-Date: Wed,  3 Dec 2025 16:29:42 +0100
-Message-ID: <20251203152338.334332584@linuxfoundation.org>
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Prike Liang <Prike.Liang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 104/132] drm/amdgpu: attach tlb fence to the PTs update
+Date: Wed,  3 Dec 2025 16:29:43 +0100
+Message-ID: <20251203152347.140534129@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,55 +58,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamie Iles <jamie.iles@oss.qualcomm.com>
+From: Prike Liang <Prike.Liang@amd.com>
 
-commit 40f8d17eed7533ed2bbb5e3cc680049b19411b2e upstream.
+commit b4a7f4e7ad2b120a94f3111f92a11520052c762d upstream.
 
-The sysdev_is_parent check was being used to infer PCI devices that have
-the DMA mask set from the PCI capabilities, but sysdev_is_parent is also
-used for non-PCI ACPI devices in which case the DMA mask would be the
-bus default or as set by the _DMA method.
+Ensure the userq TLB flush is emitted only after
+the VM update finishes and the PT BOs have been
+annotated with bookkeeping fences.
 
-Without this fix the DMA mask would default to 32-bits and so allocation
-would fail if there was no DRAM below 4GB.
-
-Fixes: 47ce45906ca9 ("usb: dwc3: leave default DMA for PCI devices")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Jamie Iles <jamie.iles@oss.qualcomm.com>
-Signed-off-by: Punit Agrawal <punit.agrawal@oss.qualcomm.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://patch.msgid.link/20251107104437.1602509-1-punit.agrawal@oss.qualcomm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Prike Liang <Prike.Liang@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit f3854e04b708d73276c4488231a8bd66d30b4671)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/core.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -25,6 +25,7 @@
- #include <linux/of.h>
- #include <linux/of_graph.h>
- #include <linux/acpi.h>
-+#include <linux/pci.h>
- #include <linux/pinctrl/consumer.h>
- #include <linux/reset.h>
- #include <linux/bitfield.h>
-@@ -1990,7 +1991,7 @@ static int dwc3_probe(struct platform_de
- 	platform_set_drvdata(pdev, dwc);
- 	dwc3_cache_hwparams(dwc);
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+@@ -917,7 +917,7 @@ amdgpu_vm_tlb_flush(struct amdgpu_vm_upd
+ 	}
  
--	if (!dwc->sysdev_is_parent &&
-+	if (!dev_is_pci(dwc->sysdev) &&
- 	    DWC3_GHWPARAMS0_AWIDTH(dwc->hwparams.hwparams0) == 64) {
- 		ret = dma_set_mask_and_coherent(dwc->sysdev, DMA_BIT_MASK(64));
- 		if (ret)
+ 	/* Prepare a TLB flush fence to be attached to PTs */
+-	if (!params->unlocked && vm->is_compute_context) {
++	if (!params->unlocked) {
+ 		amdgpu_vm_tlb_fence_create(params->adev, vm, fence);
+ 
+ 		/* Makes sure no PD/PT is freed before the flush */
 
 
 
