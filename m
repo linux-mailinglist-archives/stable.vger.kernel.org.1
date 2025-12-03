@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69006CA0263
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:51:33 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9A75CA054D
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:18:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D6F04303E649
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:47:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A47BF30001A5
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:18:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 721F436C593;
-	Wed,  3 Dec 2025 16:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D01B3AA1AB;
+	Wed,  3 Dec 2025 16:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IkvL4vYZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GGWW9qPm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DDAF3148CD;
-	Wed,  3 Dec 2025 16:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481C03AA195;
+	Wed,  3 Dec 2025 16:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780441; cv=none; b=VsM4K24NmhcStP+yU6lpdGsGTgTGAl6ZkAGu+c55hKkxs6yoGzlOf9IYxBGoJ3ZZfXqr7hRiRcl592ntksIV0+dOEMStptchYMJHWuZxPXeDkW+0Dh5HAAhO3ZZCj4+yAexttElWi1VITGge8+o7TD9mtZdwgvRwONC26WSn9t4=
+	t=1764780756; cv=none; b=dKVsdMBaa8l1hkSrJ5YiNV4wcovTEZUjTuF8EyYbpiv2UR2H4jVXOT9OwkhDRHlQp044/PGYIpB/Ssr0xgqImdfCBAXa1o4RT4ZPUHkE+YsUDDUWPlUpJeTyuhpRYDgCm4kbK+NY7QDgVgWJLJY5F94BEbDVg48v4hA+t9A6I+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780441; c=relaxed/simple;
-	bh=0zIsfJYS5H106uPBc5DYfFjxElJZtT0iwjMzvtZoAm8=;
+	s=arc-20240116; t=1764780756; c=relaxed/simple;
+	bh=mpGWUpNh88z+DxMansY8IA9IYMC7mbD5LzXpxqXgvRs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NdiIkrMe5PmaapdFifJcGLKeSQP39QvZbyNG/ibb3MioVWqkmhVHt93y4fpTRk4dPzOIprmLv+bzhuRkBWAjlBvmC71fj6MB4vYpQbHqGOGKaBAp8KDJz15C2Al0n5PomT3+jrPc0jxs9RrezGdZJugTh/K3uhhMH/aDysYRZo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IkvL4vYZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F1B6C4CEF5;
-	Wed,  3 Dec 2025 16:47:20 +0000 (UTC)
+	 MIME-Version; b=mHnXghywSLZyhtMaD/maDgO8o9O/xUoaJ9Qn49jpUcsKklmpOmjk88OMPFHvEThvHxMeaJ3W8hVTz7tT5/YAncFfrESTEWvxwEmg8lEnyE5ChKiIvvCrYSgTzWRwKmQZqmS2FOjXQtnviVHsdiaIFPsVgiMwWIt+mEoCeZp9h8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GGWW9qPm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF18CC4CEF5;
+	Wed,  3 Dec 2025 16:52:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780441;
-	bh=0zIsfJYS5H106uPBc5DYfFjxElJZtT0iwjMzvtZoAm8=;
+	s=korg; t=1764780756;
+	bh=mpGWUpNh88z+DxMansY8IA9IYMC7mbD5LzXpxqXgvRs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IkvL4vYZeeJX/kkECjgTy9+uYFtiRtljrW9/bfK8qUWByKkq+0GkHZ9l4Jg8Urr2r
-	 nZACYRLA58YGiUwzfl4jP7V6+aVhhIVfEG/6nJYWAcTMAHlYstKrLoZAhxrUUwYGb0
-	 PChyAcX+FCGsg03iZ6cE8MEeSo3tsmhcOShrLup0=
+	b=GGWW9qPmBAuyI38skYS+1fzLshK6GKTLXWQ3eqycUZEYbrQ+2HmKXK9hje9zsboAl
+	 uZSH67bcSgK7hj/7cVzFcAUnT2QiRc2Ih/P6pej1hAtIyPt0UkTbRRL23riGtSNeGh
+	 h+6BfpjQ+fWOqXgmKBMqcTdrR5yPZJd0onyS/dI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	luoguangfei <15388634752@163.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Alva Lan <alvalan9@foxmail.com>
-Subject: [PATCH 6.1 557/568] net: macb: fix unregister_netdev call order in macb_remove()
-Date: Wed,  3 Dec 2025 16:29:19 +0100
-Message-ID: <20251203152501.110165942@linuxfoundation.org>
+	Ang Tien Sung <tiensung.ang@altera.com>,
+	Khairul Anuar Romli <khairul.anuar.romli@altera.com>,
+	Dinh Nguyen <dinguyen@kernel.org>
+Subject: [PATCH 6.12 081/132] firmware: stratix10-svc: fix bug in saving controller data
+Date: Wed,  3 Dec 2025 16:29:20 +0100
+Message-ID: <20251203152346.293417090@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +60,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: luoguangfei <15388634752@163.com>
+From: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
 
-[ Upstream commit 01b9128c5db1b470575d07b05b67ffa3cb02ebf1 ]
+commit d0fcf70c680e4d1669fcb3a8632f41400b9a73c2 upstream.
 
-When removing a macb device, the driver calls phy_exit() before
-unregister_netdev(). This leads to a WARN from kernfs:
+Fix the incorrect usage of platform_set_drvdata and dev_set_drvdata. They
+both are of the same data and overrides each other. This resulted in the
+rmmod of the svc driver to fail and throw a kernel panic for kthread_stop
+and fifo free.
 
-  ------------[ cut here ]------------
-  kernfs: can not remove 'attached_dev', no directory
-  WARNING: CPU: 1 PID: 27146 at fs/kernfs/dir.c:1683
-  Call trace:
-    kernfs_remove_by_name_ns+0xd8/0xf0
-    sysfs_remove_link+0x24/0x58
-    phy_detach+0x5c/0x168
-    phy_disconnect+0x4c/0x70
-    phylink_disconnect_phy+0x6c/0xc0 [phylink]
-    macb_close+0x6c/0x170 [macb]
-    ...
-    macb_remove+0x60/0x168 [macb]
-    platform_remove+0x5c/0x80
-    ...
-
-The warning happens because the PHY is being exited while the netdev
-is still registered. The correct order is to unregister the netdev
-before shutting down the PHY and cleaning up the MDIO bus.
-
-Fix this by moving unregister_netdev() ahead of phy_exit() in
-macb_remove().
-
-Fixes: 8b73fa3ae02b ("net: macb: Added ZynqMP-specific initialization")
-Signed-off-by: luoguangfei <15388634752@163.com>
-Link: https://patch.msgid.link/20250818232527.1316-1-15388634752@163.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Minor context change fixed. ]
-Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+Fixes: b5dc75c915cd ("firmware: stratix10-svc: extend svc to support new RSU features")
+Cc: stable@vger.kernel.org # 6.6+
+Signed-off-by: Ang Tien Sung <tiensung.ang@altera.com>
+Signed-off-by: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
+Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/cadence/macb_main.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/firmware/stratix10-svc.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -5068,11 +5068,11 @@ static int macb_remove(struct platform_d
+--- a/drivers/firmware/stratix10-svc.c
++++ b/drivers/firmware/stratix10-svc.c
+@@ -134,6 +134,7 @@ struct stratix10_svc_data {
+  * @complete_status: state for completion
+  * @svc_fifo_lock: protect access to service message data queue
+  * @invoke_fn: function to issue secure monitor call or hypervisor call
++ * @svc: manages the list of client svc drivers
+  *
+  * This struct is used to create communication channels for service clients, to
+  * handle secure monitor or hypervisor call.
+@@ -150,6 +151,7 @@ struct stratix10_svc_controller {
+ 	struct completion complete_status;
+ 	spinlock_t svc_fifo_lock;
+ 	svc_invoke_fn *invoke_fn;
++	struct stratix10_svc *svc;
+ };
  
- 	if (dev) {
- 		bp = netdev_priv(dev);
-+		unregister_netdev(dev);
- 		phy_exit(bp->sgmii_phy);
- 		mdiobus_unregister(bp->mii_bus);
- 		mdiobus_free(bp->mii_bus);
+ /**
+@@ -1209,6 +1211,7 @@ static int stratix10_svc_drv_probe(struc
+ 		ret = -ENOMEM;
+ 		goto err_free_kfifo;
+ 	}
++	controller->svc = svc;
  
--		unregister_netdev(dev);
- 		tasklet_kill(&bp->hresp_err_tasklet);
- 		pm_runtime_disable(&pdev->dev);
- 		pm_runtime_dont_use_autosuspend(&pdev->dev);
+ 	svc->stratix10_svc_rsu = platform_device_alloc(STRATIX10_RSU, 0);
+ 	if (!svc->stratix10_svc_rsu) {
+@@ -1240,8 +1243,6 @@ static int stratix10_svc_drv_probe(struc
+ 	if (ret)
+ 		goto err_unregister_fcs_dev;
+ 
+-	dev_set_drvdata(dev, svc);
+-
+ 	pr_info("Intel Service Layer Driver Initialized\n");
+ 
+ 	return 0;
+@@ -1259,8 +1260,8 @@ err_destroy_pool:
+ 
+ static void stratix10_svc_drv_remove(struct platform_device *pdev)
+ {
+-	struct stratix10_svc *svc = dev_get_drvdata(&pdev->dev);
+ 	struct stratix10_svc_controller *ctrl = platform_get_drvdata(pdev);
++	struct stratix10_svc *svc = ctrl->svc;
+ 
+ 	of_platform_depopulate(ctrl->dev);
+ 
 
 
 
