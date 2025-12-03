@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-199436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E47AEC9FFE5
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:36:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA9E1C9F9C5
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:45:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5DF413000956
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:36:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 38762301E188
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:39:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9D9D35C184;
-	Wed,  3 Dec 2025 16:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9077630BF66;
+	Wed,  3 Dec 2025 15:39:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R20iag8T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ekxpNuDi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DE7C2FD1C5;
-	Wed,  3 Dec 2025 16:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CA8B3081AF;
+	Wed,  3 Dec 2025 15:39:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779795; cv=none; b=QBKUOKqiLrFggzY/8dcXanVTyvQBbKKrJJgDYAtZdwG8FUyrkg2HSPluyE10dWyTKQbfdOS/5cElLctUfvOsavHbNvIdRO8gaFGJPfg/+m5dw6/E4guaq84pauP1wjy3fcgUJCrbUa7G70Dyxzg7iX11gyOfSYqH0DacKCXjxW0=
+	t=1764776373; cv=none; b=mBu5sNgDqHw0o12Rivg4QKKPRkBCjcq3Fgwx3uobt9AKXZfeOL0cRu/I4jyW9LrjE78ki0RjUJRiwp1djY2uYLBLggcwFRQYwCSJAsDS0QuILkRHrJrd4vJzlLshaivJvIuOb6qE3+LveBp2rqfznRwe/wLigqK5vKsX3HWqhUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779795; c=relaxed/simple;
-	bh=tI/AJg4CosNoMK6Qe/fn3qaCBi+RaXRydd4yV6NFHDk=;
+	s=arc-20240116; t=1764776373; c=relaxed/simple;
+	bh=r7Cwluro/w/JKBsezvNAGpbCd7GU8T8UXzle7dZ/kLE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rxLqnB8vOBPXTjjh92uu/SOTPfmv97MKlZypxmzeovxvQKojOyuURUuNHjYEsqL1KhX7zaVfDQyAQy4T1trwyxftli1gFfhQDlKEXZw3wycQYaaTY4tN0D3aR+UUsdhEmjD3lANkm7aeC0Ia5hAzAaZOExG80U75zBeRCs7LjkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R20iag8T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09DABC4CEF5;
-	Wed,  3 Dec 2025 16:36:34 +0000 (UTC)
+	 MIME-Version; b=EGIKR1odhVmvadnkCHpXiyLagxxSD4LDKROGG0ZypLtU/GZaw7W5cuEABpbvxoqQp2p8s0aszVfPVCYxH17hIfOhe6wjFSAHvbxY9rGd565i/tCGDCUMzFnuBonJWx6VRHVetXV4/7oBmFqMMJv06tkg97CmRh5VoII9YKLaQH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ekxpNuDi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8965C116B1;
+	Wed,  3 Dec 2025 15:39:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779795;
-	bh=tI/AJg4CosNoMK6Qe/fn3qaCBi+RaXRydd4yV6NFHDk=;
+	s=korg; t=1764776373;
+	bh=r7Cwluro/w/JKBsezvNAGpbCd7GU8T8UXzle7dZ/kLE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R20iag8TseusjIixgbTdqx556ANQR7yLRJf4roD+82Dv30wYpC1VWrUTX2tJfvsbg
-	 WXOo3+tV+QbSCap4FSRR5jOKYWYuXN92k80vX3O+VZ5jGyGydI5+4aWyVX7+X9Ii+E
-	 IUOeQD8+dGgZ12KuAu4oLf6p2juCAgqvRkdHDggA=
+	b=ekxpNuDimweWVYkmGU3zOJhCFotVW9r/M+PBy2DZONIyCzkbyoLG1KODdnyPmc/+L
+	 M9Olf5H8yKuYY+w0sX+x0DGo52A5ngix18RAw+MWqoVBDkwtRF06l0B9Peymt32/y+
+	 aLtSMREmDcXncorOj5YOHDYraNXlZ0DPdJ6e5yew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com,
-	Ranganath V N <vnranganath.20@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 364/568] net: sched: act_connmark: initialize struct tc_ife to fix kernel leak
+Subject: [PATCH 5.10 162/300] net: dsa: b53: stop reading ARL entries if search is done
 Date: Wed,  3 Dec 2025 16:26:06 +0100
-Message-ID: <20251203152454.032438449@linuxfoundation.org>
+Message-ID: <20251203152406.618858234@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ranganath V N <vnranganath.20@gmail.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit 62b656e43eaeae445a39cd8021a4f47065af4389 ]
+[ Upstream commit 0be04b5fa62a82a9929ca261f6c9f64a3d0a28da ]
 
-In tcf_connmark_dump(), the variable 'opt' was partially initialized using a
-designatied initializer. While the padding bytes are reamined
-uninitialized. nla_put() copies the entire structure into a
-netlink message, these uninitialized bytes leaked to userspace.
+The switch clears the ARL_SRCH_STDN bit when the search is done, i.e. it
+finished traversing the ARL table.
 
-Initialize the structure with memset before assigning its fields
-to ensure all members and padding are cleared prior to beign copied.
+This means that there will be no valid result, so we should not attempt
+to read and process any further entries.
 
-Reported-by: syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=0c85cae3350b7d486aee
-Tested-by: syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com
-Fixes: 22a5dc0e5e3e ("net: sched: Introduce connmark action")
-Signed-off-by: Ranganath V N <vnranganath.20@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20251109091336.9277-2-vnranganath.20@gmail.com
-Acked-by: Cong Wang <xiyou.wangcong@gmail.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+We only ever check the validity of the entries for 4 ARL bin chips, and
+only after having passed the first entry to the b53_fdb_copy().
+
+This means that we always pass an invalid entry at the end to the
+b53_fdb_copy(). b53_fdb_copy() does check the validity though before
+passing on the entry, so it never gets passed on.
+
+On < 4 ARL bin chips, we will even continue reading invalid entries
+until we reach the result limit.
+
+Fixes: 1da6df85c6fb ("net: dsa: b53: Implement ARL add/del/dump operations")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20251102100758.28352-3-jonas.gorski@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/act_connmark.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/net/dsa/b53/b53_common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sched/act_connmark.c b/net/sched/act_connmark.c
-index 79cfe51a09e74..4d75d2ae0d8ce 100644
---- a/net/sched/act_connmark.c
-+++ b/net/sched/act_connmark.c
-@@ -190,13 +190,15 @@ static inline int tcf_connmark_dump(struct sk_buff *skb, struct tc_action *a,
- 	const struct tcf_connmark_info *ci = to_connmark(a);
- 	unsigned char *b = skb_tail_pointer(skb);
- 	const struct tcf_connmark_parms *parms;
--	struct tc_connmark opt = {
--		.index   = ci->tcf_index,
--		.refcnt  = refcount_read(&ci->tcf_refcnt) - ref,
--		.bindcnt = atomic_read(&ci->tcf_bindcnt) - bind,
--	};
-+	struct tc_connmark opt;
- 	struct tcf_t t;
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index a30961f9b0060..416ed1ca1d522 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -1731,7 +1731,7 @@ static int b53_arl_search_wait(struct b53_device *dev)
+ 	do {
+ 		b53_read8(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_CTL, &reg);
+ 		if (!(reg & ARL_SRCH_STDN))
+-			return 0;
++			return -ENOENT;
  
-+	memset(&opt, 0, sizeof(opt));
-+
-+	opt.index   = ci->tcf_index;
-+	opt.refcnt  = refcount_read(&ci->tcf_refcnt) - ref;
-+	opt.bindcnt = atomic_read(&ci->tcf_bindcnt) - bind;
-+
- 	rcu_read_lock();
- 	parms = rcu_dereference(ci->parms);
- 
+ 		if (reg & ARL_SRCH_VLID)
+ 			return 0;
 -- 
 2.51.0
 
