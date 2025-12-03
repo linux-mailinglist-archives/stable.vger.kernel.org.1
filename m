@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8FBDC9FA85
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:49:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3026CA0361
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:55:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A18AA304C9F1
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:42:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 35C18308234B
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:49:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AF15316198;
-	Wed,  3 Dec 2025 15:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F9CB314A9E;
+	Wed,  3 Dec 2025 16:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g34vhvj2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vCxzOBbL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 479A8316189;
-	Wed,  3 Dec 2025 15:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15700307AD9;
+	Wed,  3 Dec 2025 16:38:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776534; cv=none; b=XsDSLxCK7kH+8C/a41lFhJeS25Mt+1vB+MiiVa/WaZWP6AYkpKJixIIQ8NgK3C4pmRKr3ge9r2N8yiERLNPyRxF/ib7hMO7yCiMqB+3aFIIcKqIG1U2Uye0N0RwGv9KvV2qQosKeIzwGjkAA+ZE5f4ck7Wp21Pb7rSoWKZy1wuU=
+	t=1764779935; cv=none; b=MPW/+Hz01y9pNBjSNi6i+iHm8v/pcfm1LbcpKMZ543kaaqGZXw/4CcZAnKgPVExtMp6tHn91qcFpI2bMdnfCrBvVAuoRHg5LgK5nzEERBLzSorn0Gu9fbKJXT+E2vOQX8kxdjHPOWWf8dEWuuk02WvYOTj2tc7AM8tAxsU6o15w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776534; c=relaxed/simple;
-	bh=yMYH1DFyPlHAEMTG5+uotGJLRhurUAMVH07/Gc/mJX0=;
+	s=arc-20240116; t=1764779935; c=relaxed/simple;
+	bh=EvlCL4vNjL0ZlBRbcAsv2B2cNvX6oLHLGKYStMmNtqg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dMbBEmbDFGERVUorzPwX01hrP7TjdwTxxFIcRxPlLT/tlmoJmH/SaTZ+5XGZ7zSF/AFlP4juA8sNV1JGWDS4JOBPkDgu8ZAVe94GmMbXzcqREi4NKp0H6oeqySjZwJU/Kp9pIQRPAR85blRMEH6UOVZkoLdVZEdoUG9AgnBPerg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g34vhvj2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5506C116C6;
-	Wed,  3 Dec 2025 15:42:13 +0000 (UTC)
+	 MIME-Version; b=tnDl/mPh3S0Pmxkga8jQPJ2N0fSCvAy49Y9hexzFiZ62OuNGoyhdBVIGwK4Ooiq7LSZIGWrC6l4hXgRBS8dk2X/KkLi63ryomhLjN6Cm4wrpYEvnFF8ncIy7tOiWmz0PqGIlTxlv8NkMEw43BHV3izkgcpZtsXjzaTQaNa/rpbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vCxzOBbL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3226AC116B1;
+	Wed,  3 Dec 2025 16:38:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776534;
-	bh=yMYH1DFyPlHAEMTG5+uotGJLRhurUAMVH07/Gc/mJX0=;
+	s=korg; t=1764779934;
+	bh=EvlCL4vNjL0ZlBRbcAsv2B2cNvX6oLHLGKYStMmNtqg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g34vhvj25FDZ8fHhe0wgDudepqbksAo60ONznb5CNGccPMThqpTa3jgXzake6qcHj
-	 A/I6wwBqpp8TRdWNeTbK0LAKzaGvn7k5pHivTajJ03/SlaoKuSP1DxXPVJ84x49xJ6
-	 eMAfv7kgegyVQTk+WM816HBCEHiCnPTBjDxXODAU=
+	b=vCxzOBbL0k94fXfz9vUNsZM6WK45BbSWV/lHzlzRrwbIvytCpJY+2ZlI4LKVqAAae
+	 YExzFFyo7hlObzXAm4tFv0N1u3610BWlOZ8vboZjU6rFNi/5y+9PU5UEQAZllqIA9V
+	 Dg/Vc5JPJN6h5h40bLkCRo4jbMf0U/TQUShxUSzQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 204/300] netfilter: nf_tables: reject duplicate device on updates
+	syzbot+bfd77469c8966de076f7@syzkaller.appspotmail.com,
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 406/568] ALSA: usb-audio: Fix potential overflow of PCM transfer buffer
 Date: Wed,  3 Dec 2025 16:26:48 +0100
-Message-ID: <20251203152408.181882225@linuxfoundation.org>
+Message-ID: <20251203152455.557940099@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,74 +60,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit cf5fb87fcdaaaafec55dcc0dc5a9e15ead343973 upstream.
+commit 05a1fc5efdd8560f34a3af39c9cf1e1526cc3ddf upstream.
 
-A chain/flowtable update with duplicated devices in the same batch is
-possible. Unfortunately, netdev event path only removes the first
-device that is found, leaving unregistered the hook of the duplicated
-device.
+The PCM stream data in USB-audio driver is transferred over USB URB
+packet buffers, and each packet size is determined dynamically.  The
+packet sizes are limited by some factors such as wMaxPacketSize USB
+descriptor.  OTOH, in the current code, the actually used packet sizes
+are determined only by the rate and the PPS, which may be bigger than
+the size limit above.  This results in a buffer overflow, as reported
+by syzbot.
 
-Check if a duplicated device exists in the transaction batch, bail out
-with EEXIST in such case.
+Basically when the limit is smaller than the calculated packet size,
+it implies that something is wrong, most likely a weird USB
+descriptor.  So the best option would be just to return an error at
+the parameter setup time before doing any further operations.
 
-WARNING is hit when unregistering the hook:
+This patch introduces such a sanity check, and returns -EINVAL when
+the packet size is greater than maxpacksize.  The comparison with
+ep->packsize[1] alone should suffice since it's always equal or
+greater than ep->packsize[0].
 
- [49042.221275] WARNING: CPU: 4 PID: 8425 at net/netfilter/core.c:340 nf_hook_entry_head+0xaa/0x150
- [49042.221375] CPU: 4 UID: 0 PID: 8425 Comm: nft Tainted: G S                  6.16.0+ #170 PREEMPT(full)
- [...]
- [49042.221382] RIP: 0010:nf_hook_entry_head+0xaa/0x150
-
-Fixes: 78d9f48f7f44 ("netfilter: nf_tables: add devices to existing flowtable")
-Fixes: b9703ed44ffb ("netfilter: nf_tables: support for adding new devices to an existing netdev chain")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+bfd77469c8966de076f7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=bfd77469c8966de076f7
+Link: https://lore.kernel.org/690b6b46.050a0220.3d0d33.0054.GAE@google.com
+Cc: Lizhi Xu <lizhi.xu@windriver.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20251109091211.12739-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ sound/usb/endpoint.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 8e799848cbcc1..dcb35be8b2af2 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -7105,6 +7105,7 @@ static int nft_flowtable_update(struct nft_ctx *ctx, const struct nlmsghdr *nlh,
- {
- 	const struct nlattr * const *nla = ctx->nla;
- 	struct nft_flowtable_hook flowtable_hook;
-+	struct nftables_pernet *nft_net;
- 	struct nft_hook *hook, *next;
- 	struct nft_trans *trans;
- 	bool unregister = false;
-@@ -7120,6 +7121,20 @@ static int nft_flowtable_update(struct nft_ctx *ctx, const struct nlmsghdr *nlh,
- 		if (nft_hook_list_find(&flowtable->hook_list, hook)) {
- 			list_del(&hook->list);
- 			kfree(hook);
-+			continue;
-+		}
-+
-+		nft_net = net_generic(ctx->net, nf_tables_net_id);
-+		list_for_each_entry(trans, &nft_net->commit_list, list) {
-+			if (trans->msg_type != NFT_MSG_NEWFLOWTABLE ||
-+			    trans->ctx.table != ctx->table ||
-+			    !nft_trans_flowtable_update(trans))
-+				continue;
-+
-+			if (nft_hook_list_find(&nft_trans_flowtable_hooks(trans), hook)) {
-+				err = -EEXIST;
-+				goto err_flowtable_update_hook;
-+			}
- 		}
- 	}
+--- a/sound/usb/endpoint.c
++++ b/sound/usb/endpoint.c
+@@ -1379,6 +1379,11 @@ int snd_usb_endpoint_set_params(struct s
+ 	ep->sample_rem = ep->cur_rate % ep->pps;
+ 	ep->packsize[0] = ep->cur_rate / ep->pps;
+ 	ep->packsize[1] = (ep->cur_rate + (ep->pps - 1)) / ep->pps;
++	if (ep->packsize[1] > ep->maxpacksize) {
++		usb_audio_dbg(chip, "Too small maxpacksize %u for rate %u / pps %u\n",
++			      ep->maxpacksize, ep->cur_rate, ep->pps);
++		return -EINVAL;
++	}
  
--- 
-2.51.0
-
+ 	/* calculate the frequency in 16.16 format */
+ 	ep->freqm = ep->freqn;
 
 
 
