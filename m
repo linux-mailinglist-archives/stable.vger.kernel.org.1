@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-198863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 397FDC9FD79
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:13:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3E30C9F94A
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:43:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4E650303F4FE
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:05:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 11D86300DA74
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:38:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6899434F49B;
-	Wed,  3 Dec 2025 16:05:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3F0C3148A3;
+	Wed,  3 Dec 2025 15:38:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BBmb+xUo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UioCEa5m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D05434F497;
-	Wed,  3 Dec 2025 16:05:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 620D5314A91;
+	Wed,  3 Dec 2025 15:38:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777918; cv=none; b=NeMHLgOhIB72/6fi1X+kOyvkQRSOWIjbhuOKqr9ZUoWOgEp/td+trybavU/U0Wf8CdsZE+VuUYD6OZE/6bfgwZ2o2UqyuTJXJQOsdf2E4oHAYQgUUjh4OS/kxWfi2Q8sbTLPH6XDwebQTC2sHhRVhDOVczvkg5LezrSM5iFg2Bw=
+	t=1764776296; cv=none; b=HZGtoxp+GS6lWaAgY0ZhQPRPoLnWliyG5TsPQ/tr3wXHgUUvfoHSXpOSNoLif5FCJxSwu/yw1sXQEtMlE33LRBWQvoAx89DI3eQ/m8kmqfgMF5gu2KmykHwJkMXrPl+uCIltxa3hIhUJTM8NhZ9PGe406ny8jBd2rzCjO5h6DmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777918; c=relaxed/simple;
-	bh=2NzWQgHekCkpf6Sd7L+HgrdCbI67Bgek8dMhrBV/RA0=;
+	s=arc-20240116; t=1764776296; c=relaxed/simple;
+	bh=4uzDUzjEh7zA6Murk2AKauqhGg6B4h/Yt42eTseKZz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fMAe+tI2Cszq4QdqV2PWR4oKGdN5S2DVMdSFzM4AapXeWo+YMf4xShSrtDyrX/qJaZBRc5XUvcbuxkvJGWCYSaM8JCnraTlMV4c/Clihl+/CBy/sSEeiD+u9om6EB6D6XCqh2hvleEU104UaG95WlG5E4opDyHq95N+voC2cYvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BBmb+xUo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 811ABC4CEF5;
-	Wed,  3 Dec 2025 16:05:17 +0000 (UTC)
+	 MIME-Version; b=N0qpdTa2V7brwEVVyv1qzajM5LN+2X4csB9mxGIkWHFx6+tl7WcZ8UJGNOKpLUExKgTjHctPh9J5A7xu9Xh9IvVGrtVdTAeTjq6KfN6plI5IyJZH1DRmYgzwBpvmbZ4G1mZnKgNqwzrYydxFflCOTyTIGVr9a6cyq1vcPfijzGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UioCEa5m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA2FBC4CEF5;
+	Wed,  3 Dec 2025 15:38:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777917;
-	bh=2NzWQgHekCkpf6Sd7L+HgrdCbI67Bgek8dMhrBV/RA0=;
+	s=korg; t=1764776296;
+	bh=4uzDUzjEh7zA6Murk2AKauqhGg6B4h/Yt42eTseKZz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BBmb+xUolR6Oqfn80wdgP3fZp/YuI4WeHSUgjiV4Ce6HmK2VHTtxYoNzlmrvvrWWO
-	 B8ko4RzdO0ey/XbQyrKaN/9gYG3bCpuMnLMkjFsn0nMJ0W40m1tRMDH83rTK/RK1r0
-	 FMz8MeriRfnQdZloFnDOA9DUjWRv/RA+tnKcJvoA=
+	b=UioCEa5m1hRCBhqefIeV3lXx3sJPPni6GSe8YDYEuV0nfT/8ozZ8Zs9Uu/ZbkQhQv
+	 c3t+oWq8TD/71UHYQoGk6OfuZqdjAyNqTckFhpqj2rrKG3l4bcqpjaCbJ4NLvEpezH
+	 VIM9qYxQOxB9TyVUIikDVkvs3LUQsTkJaiintZgc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Moroni <jmoroni@google.com>,
-	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 187/392] RDMA/irdma: Fix SD index calculation
+Subject: [PATCH 5.10 133/300] remoteproc: qcom: q6v5: Avoid handling handover twice
 Date: Wed,  3 Dec 2025 16:25:37 +0100
-Message-ID: <20251203152420.960135445@linuxfoundation.org>
+Message-ID: <20251203152405.542097042@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Moroni <jmoroni@google.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-[ Upstream commit 8d158f47f1f33d8747e80c3afbea5aa337e59d41 ]
+[ Upstream commit 54898664e1eb6b5b3e6cdd9343c6eb15da776153 ]
 
-In some cases, it is possible for pble_rsrc->next_fpm_addr to be
-larger than u32, so remove the u32 cast to avoid unintentional
-truncation.
+A remoteproc could theoretically signal handover twice. This is unexpected
+and would break the reference counting for the handover resources (power
+domains, clocks, regulators, etc), so add a check to prevent that from
+happening.
 
-This fixes the following error that can be observed when registering
-massive memory regions:
-
-[  447.227494] (NULL ib_device): cqp opcode = 0x1f maj_err_code = 0xffff min_err_code = 0x800c
-[  447.227505] (NULL ib_device): [Update PE SDs Cmd Error][op_code=21] status=-5 waiting=1 completion_err=1 maj=0xffff min=0x800c
-
-Fixes: e8c4dbc2fcac ("RDMA/irdma: Add PBLE resource manager")
-Signed-off-by: Jacob Moroni <jmoroni@google.com>
-Link: https://patch.msgid.link/20250923190850.1022773-1-jmoroni@google.com
-Acked-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Link: https://lore.kernel.org/r/20250820-rproc-qcom-q6v5-fixes-v2-2-910b1a3aff71@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/pble.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/remoteproc/qcom_q6v5.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/infiniband/hw/irdma/pble.c b/drivers/infiniband/hw/irdma/pble.c
-index fed49da770f3b..6562592695b70 100644
---- a/drivers/infiniband/hw/irdma/pble.c
-+++ b/drivers/infiniband/hw/irdma/pble.c
-@@ -74,7 +74,7 @@ irdma_hmc_init_pble(struct irdma_sc_dev *dev,
- static void get_sd_pd_idx(struct irdma_hmc_pble_rsrc *pble_rsrc,
- 			  struct sd_pd_idx *idx)
+diff --git a/drivers/remoteproc/qcom_q6v5.c b/drivers/remoteproc/qcom_q6v5.c
+index f2080738ca05e..82e28eb4d477d 100644
+--- a/drivers/remoteproc/qcom_q6v5.c
++++ b/drivers/remoteproc/qcom_q6v5.c
+@@ -123,6 +123,11 @@ static irqreturn_t q6v5_handover_interrupt(int irq, void *data)
  {
--	idx->sd_idx = (u32)pble_rsrc->next_fpm_addr / IRDMA_HMC_DIRECT_BP_SIZE;
-+	idx->sd_idx = pble_rsrc->next_fpm_addr / IRDMA_HMC_DIRECT_BP_SIZE;
- 	idx->pd_idx = (u32)(pble_rsrc->next_fpm_addr / IRDMA_HMC_PAGED_BP_SIZE);
- 	idx->rel_pd_idx = (idx->pd_idx % IRDMA_HMC_PD_CNT_IN_SD);
- }
+ 	struct qcom_q6v5 *q6v5 = data;
+ 
++	if (q6v5->handover_issued) {
++		dev_err(q6v5->dev, "Handover signaled, but it already happened\n");
++		return IRQ_HANDLED;
++	}
++
+ 	if (q6v5->handover)
+ 		q6v5->handover(q6v5);
+ 
 -- 
 2.51.0
 
