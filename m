@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-199559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FD5ECA024E
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:51:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F21F9C9FB93
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:56:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7E4D43035C16
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:43:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 83181304CC3F
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:46:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0CEC3612C5;
-	Wed,  3 Dec 2025 16:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA3CD313E1E;
+	Wed,  3 Dec 2025 15:46:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pKHFuOJy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mlaxKgf8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BEA035F8CF;
-	Wed,  3 Dec 2025 16:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 772F3313E00;
+	Wed,  3 Dec 2025 15:46:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780199; cv=none; b=eXJyjwk40Q66C9wzkwGNov1aYEjDHN56QSoZXdHsVJ9i9V61cQM9sPARF3KdIDHrnjuwRhTjs7E5IyF5ctRLNhxrFFYrrPigaBYerByPJRzop/8dC7c6YPLYWn5HoA6vok7DoVfUNrFpzdoNRwx0TAEDdBq2/c8gvZ0YaaBpIO0=
+	t=1764776774; cv=none; b=L3ZWMiL2kt7uWwCMXvj3w9PubNf2SAenC0MLcN8WpTAHjn9uROfJPxj79/27FWoPV0Dht5P25x9likVPN8nMxcGQooduHbev9xGw/RqD8KoDX+ZBs8WB5CLNTJiWq1BGn3JpZX7YV48cXTGlXOL3vzsC+tRQygeIYSWcQjQmH4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780199; c=relaxed/simple;
-	bh=2ivvNUiM4Vs7kcF/GQp+iSUYS0zFb11av23IHNzt7yQ=;
+	s=arc-20240116; t=1764776774; c=relaxed/simple;
+	bh=pSGhcBfJhahy2gBzPJKAdbyI1+fPWhZ7S52p42w8Ecc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PFU4kZno5k1SBOASKOclb1r0tRopGlH489BxnjlljSsi0kh3ns9Qw0//kiLPCqErNpdADPCVzqRzFAmRZ1szrSj8p4TBLK5uSLtTbGfEc1yLlwUZHsR2Lq0VJ/xNfgsMgvQC0jRO0yLyWAMequ4rJt1qqiuCqMGWVV98rjxQMO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pKHFuOJy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D31B0C4CEF5;
-	Wed,  3 Dec 2025 16:43:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UZIULfEt4CEfewzlB8fvrupz04ZTOtZufvUCotzeDmc8bfw+7eoCUx9bOjZntHLSTk5N2/HFYzHaL1RRNdkFL7pMi4XO0aGqXYqJRamQi6NHmcbHU0gyhwqH44kn2yufDDVPKlZN4X5zwgJrKIQsVLdr2WxWUP032pLBYrVlEHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mlaxKgf8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF731C4CEF5;
+	Wed,  3 Dec 2025 15:46:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780199;
-	bh=2ivvNUiM4Vs7kcF/GQp+iSUYS0zFb11av23IHNzt7yQ=;
+	s=korg; t=1764776774;
+	bh=pSGhcBfJhahy2gBzPJKAdbyI1+fPWhZ7S52p42w8Ecc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pKHFuOJyoVT+dkNzeQfezDos3xhwNKCT4ewLUBJDFbvdwligU4fTXJskJ11CydVlr
-	 lW0UZTI3L+Vrs4kX+VhABLLuARJs/yMO4Rk8+qQnPrHSTx6YCwFB3tIunIgQHwb4Ol
-	 K8C2LAICEJvkRYMkaMWxaqF1cJGOIsSr5UDq3R5k=
+	b=mlaxKgf831oqp75SMmZZUk+Y/VfKZqmw5Jb5dxmRqjwBYwMNHprnx9gp/xio7zl/J
+	 Mc76IM1JbwzqORFUbsO/iccrYdG/pO9XbGGBfbC7mcB21I43zl+ijwvWFiv1P1B7+8
+	 w9g41cydnZ6F8+abQ8/lcGUP1vptSZjzxlU7sNcY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Titas <novatitas366@gmail.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 485/568] HID: amd_sfh: Stop sensor before starting
-Date: Wed,  3 Dec 2025 16:28:07 +0100
-Message-ID: <20251203152458.466288715@linuxfoundation.org>
+	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 5.10 284/300] xhci: dbgtty: Fix data corruption when transmitting data form DbC to host
+Date: Wed,  3 Dec 2025 16:28:08 +0100
+Message-ID: <20251203152411.145565022@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,48 +57,129 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Mario Limonciello (AMD)" <superm1@kernel.org>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-[ Upstream commit 4d3a13afa8b64dc49293b3eab3e7beac11072c12 ]
+commit f6bb3b67be9af0cfb90075c60850b6af5338a508 upstream.
 
-Titas reports that the accelerometer sensor on their laptop only
-works after a warm boot or unloading/reloading the amd-sfh kernel
-module.
+Data read from a DbC device may be corrupted due to a race between
+ongoing write and write request completion handler both queuing new
+transfer blocks (TRBs) if there are remining data in the kfifo.
 
-Presumably the sensor is in a bad state on cold boot and failing to
-start, so explicitly stop it before starting.
+TRBs may be in incorrct order compared to the data in the kfifo.
+
+Driver fails to keep lock between reading data from kfifo into a
+dbc request buffer, and queuing the request to the transfer ring.
+
+This allows completed request to re-queue itself in the middle of
+an ongoing transfer loop, forcing itself between a kfifo read and
+request TRB write of another request
+
+cpu0					cpu1 (re-queue completed req2)
+
+lock(port_lock)
+dbc_start_tx()
+kfifo_out(fifo, req1->buffer)
+unlock(port_lock)
+					lock(port_lock)
+					dbc_write_complete(req2)
+					dbc_start_tx()
+      					kfifo_out(fifo, req2->buffer)
+					unlock(port_lock)
+					lock(port_lock)
+					req2->trb = ring->enqueue;
+					ring->enqueue++
+					unlock(port_lock)
+lock(port_lock)
+req1->trb = ring->enqueue;
+ring->enqueue++
+unlock(port_lock)
+
+In the above scenario a kfifo containing "12345678" would read "1234" to
+req1 and "5678" to req2, but req2 is queued before req1 leading to
+data being transmitted as "56781234"
+
+Solve this by adding a flag that prevents starting a new tx if we
+are already mid dbc_start_tx() during the unlocked part.
+
+The already running dbc_do_start_tx() will make sure the newly completed
+request gets re-queued as it is added to the request write_pool while
+holding the lock.
 
 Cc: stable@vger.kernel.org
-Fixes: 93ce5e0231d79 ("HID: amd_sfh: Implement SFH1.1 functionality")
-Reported-by: Titas <novatitas366@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220670
-Tested-by: Titas <novatitas366@gmail.com>
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
+Tested-by: Łukasz Bartosik <ukaszb@chromium.org>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://patch.msgid.link/20251107162819.1362579-3-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/host/xhci-dbgcap.h |    1 +
+ drivers/usb/host/xhci-dbgtty.c |   17 ++++++++++++++++-
+ 2 files changed, 17 insertions(+), 1 deletion(-)
 
---- a/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c
-+++ b/drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c
-@@ -163,6 +163,8 @@ static int amd_sfh1_1_hid_client_init(st
- 		if (rc)
- 			goto cleanup;
+--- a/drivers/usb/host/xhci-dbgcap.h
++++ b/drivers/usb/host/xhci-dbgcap.h
+@@ -110,6 +110,7 @@ struct dbc_port {
+ 	struct kfifo			write_fifo;
  
-+		mp2_ops->stop(privdata, cl_data->sensor_idx[i]);
-+		amd_sfh_wait_for_response(privdata, cl_data->sensor_idx[i], DISABLE_SENSOR);
- 		writel(0, privdata->mmio + AMD_P2C_MSG(0));
- 		mp2_ops->start(privdata, info);
- 		status = amd_sfh_wait_for_response
+ 	bool				registered;
++	bool				tx_running;
+ };
+ 
+ struct dbc_driver {
+--- a/drivers/usb/host/xhci-dbgtty.c
++++ b/drivers/usb/host/xhci-dbgtty.c
+@@ -37,7 +37,7 @@ dbc_send_packet(struct dbc_port *port, c
+ 	return size;
+ }
+ 
+-static int dbc_start_tx(struct dbc_port *port)
++static int dbc_do_start_tx(struct dbc_port *port)
+ 	__releases(&port->port_lock)
+ 	__acquires(&port->port_lock)
+ {
+@@ -47,6 +47,8 @@ static int dbc_start_tx(struct dbc_port
+ 	bool			do_tty_wake = false;
+ 	struct list_head	*pool = &port->write_pool;
+ 
++	port->tx_running = true;
++
+ 	while (!list_empty(pool)) {
+ 		req = list_entry(pool->next, struct dbc_request, list_pool);
+ 		len = dbc_send_packet(port, req->buf, DBC_MAX_PACKET);
+@@ -67,12 +69,25 @@ static int dbc_start_tx(struct dbc_port
+ 		}
+ 	}
+ 
++	port->tx_running = false;
++
+ 	if (do_tty_wake && port->port.tty)
+ 		tty_wakeup(port->port.tty);
+ 
+ 	return status;
+ }
+ 
++/* must be called with port->port_lock held */
++static int dbc_start_tx(struct dbc_port *port)
++{
++	lockdep_assert_held(&port->port_lock);
++
++	if (port->tx_running)
++		return -EBUSY;
++
++	return dbc_do_start_tx(port);
++}
++
+ static void dbc_start_rx(struct dbc_port *port)
+ 	__releases(&port->port_lock)
+ 	__acquires(&port->port_lock)
 
 
 
