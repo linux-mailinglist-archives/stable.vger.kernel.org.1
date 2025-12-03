@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-199543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198997-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F7B3CA00CE
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:42:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1693ECA1453
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:08:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1F8343001C12
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:42:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 928DF32E15EF
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:43:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22C0835CBCF;
-	Wed,  3 Dec 2025 16:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C9A734B183;
+	Wed,  3 Dec 2025 16:12:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F/Ul0doB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S7yO5GE1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C3335E546;
-	Wed,  3 Dec 2025 16:42:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0819734AAE3;
+	Wed,  3 Dec 2025 16:12:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780145; cv=none; b=e/WqBpprMuE6ryn/PJoMimxhr4f1EJkGFqc0X0caiN1eYC7y9MtVp5ylGEtmD/XZlj9nV9f/UQC8UQhstdjkRh7CbuUiN5vFQy4IcFu71oY+fz1WG3AOV1Odk0a7Ql5o5FVsHZgfZUmGzevT/AxM/M5BdFVYoC9nTxob7dTUcnE=
+	t=1764778358; cv=none; b=XvsvZ5RQG3/cA32iEeiuJuKLC6Y+BTj/s62108VHXjx/0na2X9wmgLYBkGKYWcOgdqJ6v3wQ29Zkwqe6xmwUSJdIE31RW0i+FkD81iud4blARMswso+NhNdli3ksaMKTluGb+etAPf0oXIh4vG+xgTfw8nk7g5IJzVPs9lxkel4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780145; c=relaxed/simple;
-	bh=kKgpuvmHbeRw8w0P5Wqse/1TlbfVmSYKHy2QQuJbL0I=;
+	s=arc-20240116; t=1764778358; c=relaxed/simple;
+	bh=X544rEJL8NDQlWnRJhHeAHi0UJTOBXNVYCs2Tp1qY/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FMWlYrMxVfcGFzEo72MSCTqeaGxuUQpGG9HsuVnYStzUv+ynLarkQbDBa0aCjXRe1Js/f0N8KkAd1V9luiuBDpcdWJDk4fmcBlmvnm0GlTnIrEY3CzTyrDUSQlvDpEoxZxTM+4eY4mCLLJULWwWJ3Tq8z8XR10OCYHZSaA1wID0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F/Ul0doB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FAB8C4CEF5;
-	Wed,  3 Dec 2025 16:42:25 +0000 (UTC)
+	 MIME-Version; b=Tzvgx+y1W2uCg8yOA/FiqnoojcOyAh/WOtOI05yFb5ui0MlY3tD/qHyXGQ4SOoSqWRI+kHUmSHMhhnJMX+A24oZQQoUeGpsdF6B7hHaf6Sp8Pq2zLj4OIdm+dsOA/33B8veZaqMjV4+rLCqDa+CR0vPGtakEv40Aip3h6lcdCxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S7yO5GE1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B6DEC4CEF5;
+	Wed,  3 Dec 2025 16:12:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780145;
-	bh=kKgpuvmHbeRw8w0P5Wqse/1TlbfVmSYKHy2QQuJbL0I=;
+	s=korg; t=1764778357;
+	bh=X544rEJL8NDQlWnRJhHeAHi0UJTOBXNVYCs2Tp1qY/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F/Ul0doBBL7GuS7MMKQ+YRkbRv8GAXADqoUShvWQl2WPddgUzEfAXVMlKt3o3hvV5
-	 6nRiTQA11/AbhCWVQsWSBdZ5t72Zu2w13hBKDENt3HUoWU6BsLMO5kCEJQwlUnXWVK
-	 h5DQ0sHrEc7KbidhZu8LnW9XOr9s1MkNVOOm2i7s=
+	b=S7yO5GE1NOrch2WC4nPCMIO0V+oXxrkIoWY0tIxY13A+CN+qYAoLCbtZh0rYjhyaE
+	 /xuo1+O77AKWi+mkKrGA9vRmGl42M6/K+i6QArlvSvYUcG+wReGgiTSRfNV/JbjN3A
+	 66yCRe1e5oPwvRahsS84kI0j8j9U+125n6qgdLCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jakub=20Hork=C3=BD?= <jakub.git@horky.net>,
-	Nathan Chancellor <nathan@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 470/568] kconfig/nconf: Initialize the default locale at startup
+Subject: [PATCH 5.15 322/392] selftests: mptcp: connect: fix fallback note due to OoO
 Date: Wed,  3 Dec 2025 16:27:52 +0100
-Message-ID: <20251203152457.915068492@linuxfoundation.org>
+Message-ID: <20251203152426.011140401@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,54 +59,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Horký <jakub.git@horky.net>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit 43c2931a95e6b295bfe9e3b90dbe0f7596933e91 ]
+[ Upstream commit 63c643aa7b7287fdbb0167063785f89ece3f000f ]
 
-Fix bug where make nconfig doesn't initialize the default locale, which
-causes ncurses menu borders to be displayed incorrectly (lqqqqk) in
-UTF-8 terminals that don't support VT100 ACS by default, such as PuTTY.
+The "fallback due to TCP OoO" was never printed because the stat_ooo_now
+variable was checked twice: once in the parent if-statement, and one in
+the child one. The second condition was then always true then, and the
+'else' branch was never taken.
 
-Signed-off-by: Jakub Horký <jakub.git@horky.net>
-Link: https://patch.msgid.link/20251014144405.3975275-2-jakub.git@horky.net
-[nathan: Alphabetize locale.h include]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+The idea is that when there are more ACK + MP_CAPABLE than expected, the
+test either fails if there was no out of order packets, or a notice is
+printed.
+
+Fixes: 69ca3d29a755 ("mptcp: update selftest for fallback due to OoO")
+Cc: stable@vger.kernel.org
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251110-net-mptcp-sft-join-unstable-v1-1-a4332c714e10@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Different operators used ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/kconfig/nconf.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/testing/selftests/net/mptcp/mptcp_connect.sh |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/scripts/kconfig/nconf.c b/scripts/kconfig/nconf.c
-index 16a2db59432a5..e9ae03d056b09 100644
---- a/scripts/kconfig/nconf.c
-+++ b/scripts/kconfig/nconf.c
-@@ -7,6 +7,7 @@
- #ifndef _GNU_SOURCE
- #define _GNU_SOURCE
- #endif
-+#include <locale.h>
- #include <string.h>
- #include <strings.h>
- #include <stdlib.h>
-@@ -1476,6 +1477,8 @@ int main(int ac, char **av)
- 	int lines, columns;
- 	char *mode;
- 
-+	setlocale(LC_ALL, "");
-+
- 	if (ac > 1 && strcmp(av[1], "-s") == 0) {
- 		/* Silence conf_read() until the real callback is set up */
- 		conf_set_message_callback(NULL);
--- 
-2.51.0
-
+--- a/tools/testing/selftests/net/mptcp/mptcp_connect.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect.sh
+@@ -535,7 +535,7 @@ do_transfer()
+ 			"${stat_synrx_now_l}" "${expect_synrx}" 1>&2
+ 		retc=1
+ 	fi
+-	if [ ${stat_ackrx_now_l} -lt ${expect_ackrx} -a ${stat_ooo_now} -eq 0 ]; then
++	if [ ${stat_ackrx_now_l} -lt ${expect_ackrx} ]; then
+ 		if [ ${stat_ooo_now} -eq 0 ]; then
+ 			printf "[ FAIL ] lower MPC ACK rx (%d) than expected (%d)\n" \
+ 				"${stat_ackrx_now_l}" "${expect_ackrx}" 1>&2
 
 
 
