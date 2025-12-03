@@ -1,146 +1,149 @@
-Return-Path: <stable+bounces-199491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FC90CA080B
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:35:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE6C7CA016D
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:46:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EEB423260C86
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:16:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8C3AE30022B2
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:43:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0B4632E69E;
-	Wed,  3 Dec 2025 16:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77FB135CBCB;
+	Wed,  3 Dec 2025 16:43:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fSrWNmta"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GMJmOKBS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F1C731A077
-	for <stable@vger.kernel.org>; Wed,  3 Dec 2025 16:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA2E35FF46;
+	Wed,  3 Dec 2025 16:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779973; cv=none; b=sZkvpUsLbQCklpzlSW4nm65jJ0Vr78BLcJNjHiu/TAV0+SOsDP3t9J+1L9U29VZ1yhWiHQ7lfd17WTVuCU7AFKiek7yhKdQ3hE+Fz1KxJrEa0XD3+rWYQAwiDP3Bxo9leysQVrPx1LagqWjZyvP82hTka9ZL9aqZwAYX58H2Sy0=
+	t=1764780201; cv=none; b=CqpeglVf0keKRXA6I+G0M7+pmoO4sl/tV+FIshcu+5f99t2Hulr7nAVj3RLfID+qLHpGxCdxZcGuhQC0qLvY8dwx3F1RuFDwaqhLEJ4j2B0JbpGGoUvaRyUe45a5F7pY+q0PQcvJK3t8Vl7la/YcMftPj+NRrO6rv1Znf+8IauM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779973; c=relaxed/simple;
-	bh=nGI+90G+qxZwST01C3YjM07YV9L/HeblzgbrJvTyowU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QuyzUMBrzHlkA0DvDCfnI2NjOxeH72NOhobabnj4VI1lLh073qiw/nK4klSwujtkTDtjnSfADvbzfYnleLD0aFF1gGptYbVDp7OMxL4wwPNeT6Y+3BmaDP00VuIWRBu0QfxTRlnr6+OO3aEll+6ZJyQdYJyQEzIUhxDYgFglkCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fSrWNmta; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46766C16AAE
-	for <stable@vger.kernel.org>; Wed,  3 Dec 2025 16:39:33 +0000 (UTC)
+	s=arc-20240116; t=1764780201; c=relaxed/simple;
+	bh=1XNQS0lbn9FevDFX+NqC8EFfjK6r037ERyxzwj6yRtA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rvWNd1mrXy6u/qJsOIOsTpaCUiJJqFrUaOwkASsG/Pak8hkB8580wTRQngM+8854lq44PR/1GXedcxMeL7cjnavoPGw/01S4cJaLjhzn7VbO0YzpkAlwWuHLyIB5V1Ku6kOnn31pD5QoWnOibCwAiiTzQk7JQh3TGbd84gRj7qY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GMJmOKBS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADB3FC4CEF5;
+	Wed,  3 Dec 2025 16:43:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764779973;
-	bh=nGI+90G+qxZwST01C3YjM07YV9L/HeblzgbrJvTyowU=;
-	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc:From;
-	b=fSrWNmta3l0wExlZVRKdQ9KfqWL60/01T5rx8+OoQW6BBfncYA/gDaYIPe4fO2K5p
-	 iucicAETFNAHvjubHZH6mMIrrtBI3yG12q3TEz4NbPQCVgb9NLI8g2vr5zCQ4V6i3T
-	 pI1UKYcdO28XdkUk1edpeBJF7jSFKW6SNiM5M/qemdciQJVV1nB+a8Y4JfbZ3Q+bnq
-	 uCV1kSoOlnnOuU5sDyMqxX5Yq21zgbyFktY+8AwIqWclnlqYzzSCVG8HnLavKaLazF
-	 Ql/bIB6pGZft8Zl7OxaZKSjCpR92O0jIbCx6bUNHLrfFqZ+8PrZWAnBAS66u6B/nmo
-	 8OSsA2fNpUpEA==
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-37b999d0c81so57796531fa.2
-        for <stable@vger.kernel.org>; Wed, 03 Dec 2025 08:39:33 -0800 (PST)
-X-Gm-Message-State: AOJu0YxrbNQxS/sD0nWE+WtfBq0Xi+mvbgmf0YlHbzRYqarighEDF7D+
-	RpOT9t58Ev0KaktaoJkHJmgushp5iRuSg7NmCMhGLI8ioSNrQFJEWZ+ozruk4Y1W0UsJk9kwlm/
-	7FubA/2clyGH1PVvsW98s54v3anoEV/I=
-X-Google-Smtp-Source: AGHT+IGm0vXbsh0XtG/ynlgazAvS1H3eYlsF8Yd6HuqsVLDuqeCsn1/RkJZdvB9GVzU2RpR3/w9+a/1QbTwcQAS8Wik=
-X-Received: by 2002:a05:651c:23c3:20b0:375:ffc2:1b40 with SMTP id
- 38308e7fff4ca-37e6391d3a8mr8131711fa.35.1764779971589; Wed, 03 Dec 2025
- 08:39:31 -0800 (PST)
+	s=k20201202; t=1764780201;
+	bh=1XNQS0lbn9FevDFX+NqC8EFfjK6r037ERyxzwj6yRtA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GMJmOKBSwDtijIjhVAv3lZAEXFA8Yg75apJnBXD7HeB41Pcbx4cEfrGe5PC453Zwb
+	 0KSjymC4CyxhG91V4UP+V+lgmtigbMB6EdZgdlpZ/KdfV/2cg6Gj5pFEN+HxAxhfxm
+	 ekGvhYvlws2XvOGcvo3spTIC88zChQSeKvrDvJdDArfUveZU4ApFeEcnOwFuCIspv0
+	 FiWrutG1OQHIwSSeJ7oCxlukKtE2D5JRw9uli5xeysT7leY1KC9Do3Ll3Q66hrMJbi
+	 ZzCpg59GJ1gatpTK4jrU3K2cyIdj5YmogAU0MVLmc03HISbQEiNI8GVIbiuUpjU2gz
+	 UF8KLZa5msswQ==
+Date: Wed, 3 Dec 2025 13:43:17 -0300
+From: Arnaldo Carvalho de Melo <acme@kernel.org>
+To: Jon Kohler <jon@nutanix.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	James Clark <james.clark@linaro.org>,
+	Tomas Glozar <tglozar@redhat.com>, linux-perf-users@vger.kernel.org,
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] perf build: build BPF skeletons with fPIC
+Message-ID: <aTBopdY6tmmxbDuu@x1>
+References: <20251203035526.1237602-1-jon@nutanix.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251203152440.645416925@linuxfoundation.org> <20251203152451.071218150@linuxfoundation.org>
-In-Reply-To: <20251203152451.071218150@linuxfoundation.org>
-Reply-To: wens@kernel.org
-From: Chen-Yu Tsai <wens@kernel.org>
-Date: Thu, 4 Dec 2025 00:39:19 +0800
-X-Gmail-Original-Message-ID: <CAGb2v66AhhbEdXJVOZbUiUa2yJ-XAroSvHi3Xqyot6dUkfj7iQ@mail.gmail.com>
-X-Gm-Features: AWmQ_blg5NpXOz2PHei0zlzpGhp0VIiFBZDw-a0IBHQLiuOvXj79j_NVDBClfdw
-Message-ID: <CAGb2v66AhhbEdXJVOZbUiUa2yJ-XAroSvHi3Xqyot6dUkfj7iQ@mail.gmail.com>
-Subject: Re: [PATCH 6.1 283/568] clk: sunxi-ng: sun6i-rtc: Add A523 specifics
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Sasha Levin <sashal@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251203035526.1237602-1-jon@nutanix.com>
 
-On Thu, Dec 4, 2025 at 12:34=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> 6.1-stable review patch.  If anyone has any objections, please let me kno=
-w.
->
-> ------------------
->
-> From: Chen-Yu Tsai <wens@csie.org>
->
-> [ Upstream commit 7aa8781f379c32c31bd78f1408a31765b2297c43 ]
->
-> The A523's RTC block is backward compatible with the R329's, but it also
-> has a calibration function for its internal oscillator, which would
-> allow it to provide a clock rate closer to the desired 32.768 KHz. This
-> is useful on the Radxa Cubie A5E, which does not have an external 32.768
-> KHz crystal.
->
-> Add new compatible-specific data for it.
+On Tue, Dec 02, 2025 at 08:55:26PM -0700, Jon Kohler wrote:
+> Fix Makefile.perf to ensure that bpf skeletons are built with fPIC.
+> 
+> When building with BUILD_BPF_SKEL=1, bpf_skel's was not getting built
+> with fPIC, seeing compilation failures like:
+> 
+> /usr/bin/ld: /builddir/.../tools/perf/util/bpf_skel/.tmp/bootstrap/main.o:
+>   relocation R_X86_64_32 against `.rodata.str1.8' can not be used when
+>   making a PIE object; recompile with -fPIE
+> 
+> Bisected down to 6.18 commit a39516805992 ("tools build: Don't assume
+> libtracefs-devel is always available").
+> 
+> Fixes: a39516805992 ("tools build: Don't assume libtracefs-devel is always available")
 
-Support for the A523 SoC was added in v6.16. I don't think we need to
-backport A523 specific stuff any further back.
+How come, this patch is just:
+
+diff --git a/tools/build/Makefile.feature b/tools/build/Makefile.feature
+index 9c1a69d26f5121fd..531f8fc4f7df9943 100644
+--- a/tools/build/Makefile.feature
++++ b/tools/build/Makefile.feature
+@@ -83,7 +83,6 @@ FEATURE_TESTS_BASIC :=                  \
+         libpython                       \
+         libslang                        \
+         libtraceevent                   \
+-        libtracefs                      \
+         libcpupower                     \
+         pthread-attr-setaffinity-np     \
+         pthread-barrier                \
+diff --git a/tools/build/feature/test-all.c b/tools/build/feature/test-all.c
+index e1847db6f8e63750..2df593593b6ec15e 100644
+--- a/tools/build/feature/test-all.c
++++ b/tools/build/feature/test-all.c
+@@ -150,10 +150,6 @@
+ # include "test-libtraceevent.c"
+ #undef main
+
+-#define main main_test_libtracefs
+-# include "test-libtracefs.c"
+-#undef main
+-
+ int main(int argc, char *argv[])
+ {
+        main_test_libpython();
+@@ -187,7 +183,6 @@ int main(int argc, char *argv[])
+        main_test_reallocarray();
+        main_test_libzstd();
+        main_test_libtraceevent();
+-       main_test_libtracefs();
+
+        return 0;
+}
 
 
-ChenYu
+----
 
+And your patch is touching building bpftool? Seems very unrelated :-\
 
-> Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-> Link: https://patch.msgid.link/20250909170947.2221611-1-wens@kernel.org
-> Signed-off-by: Chen-Yu Tsai <wens@csie.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+- Arnaldo
+
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jon Kohler <jon@nutanix.com>
 > ---
->  drivers/clk/sunxi-ng/ccu-sun6i-rtc.c | 11 +++++++++++
->  1 file changed, 11 insertions(+)
->
-> diff --git a/drivers/clk/sunxi-ng/ccu-sun6i-rtc.c b/drivers/clk/sunxi-ng/=
-ccu-sun6i-rtc.c
-> index d65398497d5f6..e42348bda20f8 100644
-> --- a/drivers/clk/sunxi-ng/ccu-sun6i-rtc.c
-> +++ b/drivers/clk/sunxi-ng/ccu-sun6i-rtc.c
-> @@ -323,6 +323,13 @@ static const struct sun6i_rtc_match_data sun50i_r329=
-_rtc_ccu_data =3D {
->         .osc32k_fanout_nparents =3D ARRAY_SIZE(sun50i_r329_osc32k_fanout_=
-parents),
->  };
->
-> +static const struct sun6i_rtc_match_data sun55i_a523_rtc_ccu_data =3D {
-> +       .have_ext_osc32k        =3D true,
-> +       .have_iosc_calibration  =3D true,
-> +       .osc32k_fanout_parents  =3D sun50i_r329_osc32k_fanout_parents,
-> +       .osc32k_fanout_nparents =3D ARRAY_SIZE(sun50i_r329_osc32k_fanout_=
-parents),
-> +};
-> +
->  static const struct of_device_id sun6i_rtc_ccu_match[] =3D {
->         {
->                 .compatible     =3D "allwinner,sun50i-h616-rtc",
-> @@ -332,6 +339,10 @@ static const struct of_device_id sun6i_rtc_ccu_match=
-[] =3D {
->                 .compatible     =3D "allwinner,sun50i-r329-rtc",
->                 .data           =3D &sun50i_r329_rtc_ccu_data,
->         },
-> +       {
-> +               .compatible     =3D "allwinner,sun55i-a523-rtc",
-> +               .data           =3D &sun55i_a523_rtc_ccu_data,
-> +       },
->         {},
->  };
->
-> --
-> 2.51.0
->
->
->
+>  tools/perf/Makefile.perf | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tools/perf/Makefile.perf b/tools/perf/Makefile.perf
+> index 02f87c49801f..4557c2e89e88 100644
+> --- a/tools/perf/Makefile.perf
+> +++ b/tools/perf/Makefile.perf
+> @@ -1211,7 +1211,7 @@ endif
+>  
+>  $(BPFTOOL): | $(SKEL_TMP_OUT)
+>  	$(Q)CFLAGS= $(MAKE) -C ../bpf/bpftool \
+> -		OUTPUT=$(SKEL_TMP_OUT)/ bootstrap
+> +		EXTRA_CFLAGS="-fPIC" OUTPUT=$(SKEL_TMP_OUT)/ bootstrap
+>  
+>  # Paths to search for a kernel to generate vmlinux.h from.
+>  VMLINUX_BTF_ELF_PATHS ?= $(if $(O),$(O)/vmlinux)			\
+> -- 
+> 2.43.0
 
