@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1DFAC9FFD3
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:36:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCD1ACA0848
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:36:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DBAE33037AE3
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:33:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 073A032C252E
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:17:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 319683AA198;
-	Wed,  3 Dec 2025 16:33:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0664733B6EE;
+	Wed,  3 Dec 2025 16:03:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LQMXVOiC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MI0IGwzj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F7B35F8AF;
-	Wed,  3 Dec 2025 16:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B36B933893A;
+	Wed,  3 Dec 2025 16:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779603; cv=none; b=E6zsc0zPz6XWkX01cF6ZbLnObFhOlhX9zK/36ETauazbvMRKxRLwB8uqn7CPcmDPghIY7XklK5Ks8DFN1k/8G/0SMR7fIYmS4iFsBKynYy9HWFvVnIblbFg5ygLbWz9PS/xQQr3hM66pMpwmZaGgTS+8hVfhjz1sVJKACTRh9vg=
+	t=1764777824; cv=none; b=WgDfAWERfjC5lRa3CV/OoDxcabJ69OeUTZTGahFnsJ1ot2kqQ1pxAgz9yztBNJhzoe0i8N2SeZvqzsv7/yn41Yk+mTu9lG1SxPZ76VzgixuwtdGOhZ5mNjwvzSY6Wxbte5qbRkyzwb1lweSOTq0wlFM2EhoEfxq/M47rO2cnmc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779603; c=relaxed/simple;
-	bh=WE9FdAkWfUHbjz+jcA9UG10k9xXj+sCvh5xVGFUzD3I=;
+	s=arc-20240116; t=1764777824; c=relaxed/simple;
+	bh=QrKSvtIuUYerQl5U35UAgh4Mw9252cy387NTwogAOKQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ReOQbJsSJgQ7sLasDbnWjvfe9Nx8LkGABuCgyYkbVpbNa+SNGe6li6jPWQb4FvlS1gTv9XzTJvvE73wqRdu2JE1sxfaWVJ05rsECAOZ1XLuMCTpwt3VhwbwsEWCS2je1O5022Lssdsum2JU8jNtmLdXRFwjb1gM3MP624sRR494=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LQMXVOiC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53B01C4CEF5;
-	Wed,  3 Dec 2025 16:33:22 +0000 (UTC)
+	 MIME-Version; b=YiHEfIgvoQqkuCEv77XP63RW/hKMOdwZMCOl7JnFo/czbxqJ+QJK8bEjGxOJB4p290HCagORUBY8Iusb1zmMzmkWYWC864QUdoXbhN+MNL8eAPjzFLBdgXuorm5CmJgvdl0VCgrvNep2R1tbauFq3aWSU7QKxdvkwSmlgAKWDAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MI0IGwzj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E8AEC4CEF5;
+	Wed,  3 Dec 2025 16:03:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779602;
-	bh=WE9FdAkWfUHbjz+jcA9UG10k9xXj+sCvh5xVGFUzD3I=;
+	s=korg; t=1764777824;
+	bh=QrKSvtIuUYerQl5U35UAgh4Mw9252cy387NTwogAOKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LQMXVOiCY5dPstK8RzuYKsu/esPha+piwSkBhJbsRbw+eZK8GMsjgYtthhUv1dr9o
-	 gzrKaZWprZ0nz+Hunwho0VECg1NjpsNoIdN//0LF8+hePN6YoadWoDOQb7axrPvseS
-	 /RZoeDqGg8mZ+W+kZkMB6aqBHt9nkx8bzJPLlkNI=
+	b=MI0IGwzjbVS+APtoIK3rklJBOGpDOzC5qRdvOFQgKHdIVAlZlcCAoUDLDMbxicxzW
+	 2zaX0qVttKryz6UaOsI1OviqI3/ytNcTCtD0t0r+SAZTckwuIBMjOY1yk+JlxZAZAk
+	 Lk9BTgDj+j1qZQOFXKrcM9/OpM/4xOg6aga4Xuos=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Willem de Bruijn <willemb@google.com>,
-	Anubhav Singh <anubhavsinggh@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 306/568] selftests/net: fix out-of-order delivery of FIN in gro:tcp test
+Subject: [PATCH 5.15 158/392] scsi: lpfc: Remove ndlp kref decrement clause for F_Port_Ctrl in lpfc_cleanup
 Date: Wed,  3 Dec 2025 16:25:08 +0100
-Message-ID: <20251203152451.916884206@linuxfoundation.org>
+Message-ID: <20251203152419.895035079@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +60,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anubhav Singh <anubhavsinggh@google.com>
+From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit 02d064de05b1fcca769391fa82d205bed8bb9bf0 ]
+[ Upstream commit a4809b98eb004fcbf7c4d45eb5a624d1c682bb73 ]
 
-Due to the gro_sender sending data packets and FIN packets
-in very quick succession, these are received almost simultaneously
-by the gro_receiver. FIN packets are sometimes processed before the
-data packets leading to intermittent (~1/100) test failures.
+In lpfc_cleanup, there is an extraneous nlp_put for NPIV ports on the
+F_Port_Ctrl ndlp object.  In cases when an ABTS is issued, the
+outstanding kref is needed for when a second XRI_ABORTED CQE is
+received.  The final kref for the ndlp is designed to be decremented in
+lpfc_sli4_els_xri_aborted instead.  Also, add a new log message to allow
+for future diagnostics when debugging related issues.
 
-This change adds a delay of 100ms before sending FIN packets
-in gro:tcp test to avoid the out-of-order delivery. The same
-mitigation already exists for the gro:ip test.
-
-Fixes: 7d1575014a63 ("selftests/net: GRO coalesce test")
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: Anubhav Singh <anubhavsinggh@google.com>
-Link: https://patch.msgid.link/20251030062818.1562228-1-anubhavsinggh@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Message-ID: <20250915180811.137530-5-justintee8345@gmail.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/gro.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/scsi/lpfc/lpfc_els.c  | 6 +++++-
+ drivers/scsi/lpfc/lpfc_init.c | 7 -------
+ 2 files changed, 5 insertions(+), 8 deletions(-)
 
-diff --git a/tools/testing/selftests/net/gro.c b/tools/testing/selftests/net/gro.c
-index 30024d0ed3739..ad7b07084ca24 100644
---- a/tools/testing/selftests/net/gro.c
-+++ b/tools/testing/selftests/net/gro.c
-@@ -802,6 +802,7 @@ static void check_recv_pkts(int fd, int *correct_payload,
+diff --git a/drivers/scsi/lpfc/lpfc_els.c b/drivers/scsi/lpfc/lpfc_els.c
+index 134d56bd00daf..cb2ee84ccc976 100644
+--- a/drivers/scsi/lpfc/lpfc_els.c
++++ b/drivers/scsi/lpfc/lpfc_els.c
+@@ -11449,7 +11449,11 @@ lpfc_sli4_els_xri_aborted(struct lpfc_hba *phba,
+ 			sglq_entry->state = SGL_FREED;
+ 			spin_unlock_irqrestore(&phba->sli4_hba.sgl_list_lock,
+ 					       iflag);
+-
++			lpfc_printf_log(phba, KERN_INFO, LOG_ELS | LOG_SLI |
++					LOG_DISCOVERY | LOG_NODE,
++					"0732 ELS XRI ABORT on Node: ndlp=x%px "
++					"xri=x%x\n",
++					ndlp, xri);
+ 			if (ndlp) {
+ 				lpfc_set_rrq_active(phba, ndlp,
+ 					sglq_entry->sli4_lxritag,
+diff --git a/drivers/scsi/lpfc/lpfc_init.c b/drivers/scsi/lpfc/lpfc_init.c
+index bba51ce4276ae..e2f9b23a3fbb2 100644
+--- a/drivers/scsi/lpfc/lpfc_init.c
++++ b/drivers/scsi/lpfc/lpfc_init.c
+@@ -2912,13 +2912,6 @@ lpfc_cleanup(struct lpfc_vport *vport)
+ 		lpfc_vmid_vport_cleanup(vport);
  
- static void gro_sender(void)
- {
-+	const int fin_delay_us = 100 * 1000;
- 	static char fin_pkt[MAX_HDR_LEN];
- 	struct sockaddr_ll daddr = {};
- 	int txfd = -1;
-@@ -845,15 +846,22 @@ static void gro_sender(void)
- 		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
- 	} else if (strcmp(testname, "tcp") == 0) {
- 		send_changed_checksum(txfd, &daddr);
-+		/* Adding sleep before sending FIN so that it is not
-+		 * received prior to other packets.
-+		 */
-+		usleep(fin_delay_us);
- 		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
- 
- 		send_changed_seq(txfd, &daddr);
-+		usleep(fin_delay_us);
- 		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
- 
- 		send_changed_ts(txfd, &daddr);
-+		usleep(fin_delay_us);
- 		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
- 
- 		send_diff_opt(txfd, &daddr);
-+		usleep(fin_delay_us);
- 		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
- 	} else if (strcmp(testname, "ip") == 0) {
- 		send_changed_ECN(txfd, &daddr);
+ 	list_for_each_entry_safe(ndlp, next_ndlp, &vport->fc_nodes, nlp_listp) {
+-		if (vport->port_type != LPFC_PHYSICAL_PORT &&
+-		    ndlp->nlp_DID == Fabric_DID) {
+-			/* Just free up ndlp with Fabric_DID for vports */
+-			lpfc_nlp_put(ndlp);
+-			continue;
+-		}
+-
+ 		if (ndlp->nlp_DID == Fabric_Cntl_DID &&
+ 		    ndlp->nlp_state == NLP_STE_UNUSED_NODE) {
+ 			lpfc_nlp_put(ndlp);
 -- 
 2.51.0
 
