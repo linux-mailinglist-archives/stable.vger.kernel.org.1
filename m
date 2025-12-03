@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48C08CA1197
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:43:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99B1FCA0DDD
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:17:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DC172300250A
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:43:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7326030DD950
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:14:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD2C032D451;
-	Wed,  3 Dec 2025 15:50:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E8933469E7;
+	Wed,  3 Dec 2025 16:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZLL92n2N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2pAenoaH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B17C32C92E;
-	Wed,  3 Dec 2025 15:50:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC5CF34677A;
+	Wed,  3 Dec 2025 16:40:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777015; cv=none; b=LVfWBHTdG+7FaGUcMJFj9OlBaK6SXeIW3NPt5+f/GEGNtCfMWaIgQ+ka4/FaZCFp67WOhnul1ncSMUzKspgGS5KFlYT0HmhfIo1jI53Gb/uc9ggYegYhuMqjPR3159E727ErXOlrpBhPvzGnnXa/ECqD/Mkqtyv6hzhLsqDYYjA=
+	t=1764780023; cv=none; b=KYbQR2s4GIwX7NRcXUD9QjwO7XmlyjbwNvpHrQuzb3H8LXp4wMuzxWs+RoncAn96F81qZDUWQsMVQgc/C4WEfKXnysTciufPsmZehOECqrrojMbl7nTRCv4lnEaqTgqSgq6rhP9Lhaw5P/h7Dw8epghsdH7/mhYJcnE9IMiD//k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777015; c=relaxed/simple;
-	bh=4/r/+TI8vUw9O/LoUe6UdbTKOu8YPTDU3C58SNbb6KE=;
+	s=arc-20240116; t=1764780023; c=relaxed/simple;
+	bh=hY9bpA6Na7jhxE4+D0qWptcqsYmEqHNQQWoHv2SGadY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LsOa3jA/ZRDvO82wIVBfTKZM0wSld0jDCrDWE67pmzXjPo/m1ocXQolgwlf4l7jkhCeN7+2f7FbbmJT3dZjiEapRLx5JJBlWfcMigNdinYEhm55FBmRvY9Ere4Bqcw+cqyeaOceSAw4FUeAbXOapC67hklEAf8JJ7q3Ii0Ocpyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZLL92n2N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B17C4CEF5;
-	Wed,  3 Dec 2025 15:50:14 +0000 (UTC)
+	 MIME-Version; b=kUJu7K3LH6PLGAKBMreFoqSFJc8yU2Te5AgpS9lwJ9XgJXetarE1npeoJY93Lf4D1IqSiNuwnrJ9yW2yzdw4/Z76KhhbPgxa5eo2l9SX5d/wFfj3Rwx/B5yccCY2r7jdYe5aAXkVzLud5IJEdWdWIEJD+Gj6mRvNlefqlDe+xa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2pAenoaH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA427C4CEF5;
+	Wed,  3 Dec 2025 16:40:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777015;
-	bh=4/r/+TI8vUw9O/LoUe6UdbTKOu8YPTDU3C58SNbb6KE=;
+	s=korg; t=1764780023;
+	bh=hY9bpA6Na7jhxE4+D0qWptcqsYmEqHNQQWoHv2SGadY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZLL92n2N/Jy2rHnzmH69EXdceUa9UoTDf8Hx0j+clpWWxgbPKFm1EmvUxvBYcEUBp
-	 qWcIQYUp5VMPmgYBFffzcrApAxODeGCoshkEgMKal1Q23T7VEKAF8sz8cwWKsOarcC
-	 sLmOjpKGE0HkGhHw4Yt3I/jpuUzgemplVfYGUV/o=
+	b=2pAenoaHhF49uTAu66GJc9ZcDtXhjYsSGLNnz+izS594IMWDGtz2ShVrZZOx3by3i
+	 Wew4Xr7EQQo3ig3wSkH4ckjUs9+kX7lhRaPZodfjQj9CoW5wBSNoJ5fA9WATK6yGZY
+	 ndJi7Kdf5fjhAG4Hk7RfzYuQuySRfMQnaE/N3NLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.17 056/146] iio: buffer: support getting dma channel from the buffer
-Date: Wed,  3 Dec 2025 16:27:14 +0100
-Message-ID: <20251203152348.521598104@linuxfoundation.org>
+	Yihang Li <liyihang9@h-partners.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>
+Subject: [PATCH 6.1 433/568] ata: libata-scsi: Add missing scsi_device_put() in ata_scsi_dev_rescan()
+Date: Wed,  3 Dec 2025 16:27:15 +0100
+Message-ID: <20251203152456.555923247@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,133 +58,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sá <nuno.sa@analog.com>
+From: Yihang Li <liyihang9@h-partners.com>
 
-commit a514bb109eada64f798f1c86c17182229cc20fe7 upstream.
+commit b32cc17d607e8ae7af037303fe101368cb4dc44c upstream.
 
-Add a new buffer accessor .get_dma_dev() in order to get the
-struct device responsible for actually providing the dma channel. We
-cannot assume that we can use the parent of the IIO device for mapping
-the DMA buffer. This becomes important on systems (like the Xilinx/AMD
-zynqMP Ultrascale) where memory (or part of it) is mapped above the
-32 bit range. On such systems and given that a device by default has
-a dma mask of 32 bits we would then need to rely on bounce buffers (to
-swiotlb) for mapping memory above the dma mask limit.
+Call scsi_device_put() in ata_scsi_dev_rescan() if the device or its
+queue are not running.
 
-In the process, add an iio_buffer_get_dma_dev() helper function to get
-the proper DMA device.
-
+Fixes: 0c76106cb975 ("scsi: sd: Fix TCG OPAL unlock on system resume")
 Cc: stable@vger.kernel.org
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Signed-off-by: Nuno Sá <nuno.sa@analog.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Yihang Li <liyihang9@h-partners.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/industrialio-buffer.c |   21 ++++++++++++++++-----
- include/linux/iio/buffer_impl.h   |    2 ++
- 2 files changed, 18 insertions(+), 5 deletions(-)
+ drivers/ata/libata-scsi.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/industrialio-buffer.c
-+++ b/drivers/iio/industrialio-buffer.c
-@@ -1623,19 +1623,28 @@ static int iio_dma_resv_lock(struct dma_
- 	return 0;
- }
- 
-+static struct device *iio_buffer_get_dma_dev(const struct iio_dev *indio_dev,
-+					     struct iio_buffer *buffer)
-+{
-+	if (buffer->access->get_dma_dev)
-+		return buffer->access->get_dma_dev(buffer);
-+
-+	return indio_dev->dev.parent;
-+}
-+
- static struct dma_buf_attachment *
- iio_buffer_find_attachment(struct iio_dev_buffer_pair *ib,
- 			   struct dma_buf *dmabuf, bool nonblock)
- {
--	struct device *dev = ib->indio_dev->dev.parent;
- 	struct iio_buffer *buffer = ib->buffer;
-+	struct device *dma_dev = iio_buffer_get_dma_dev(ib->indio_dev, buffer);
- 	struct dma_buf_attachment *attach = NULL;
- 	struct iio_dmabuf_priv *priv;
- 
- 	guard(mutex)(&buffer->dmabufs_mutex);
- 
- 	list_for_each_entry(priv, &buffer->dmabufs, entry) {
--		if (priv->attach->dev == dev
-+		if (priv->attach->dev == dma_dev
- 		    && priv->attach->dmabuf == dmabuf) {
- 			attach = priv->attach;
- 			break;
-@@ -1653,6 +1662,7 @@ static int iio_buffer_attach_dmabuf(stru
- {
- 	struct iio_dev *indio_dev = ib->indio_dev;
- 	struct iio_buffer *buffer = ib->buffer;
-+	struct device *dma_dev = iio_buffer_get_dma_dev(indio_dev, buffer);
- 	struct dma_buf_attachment *attach;
- 	struct iio_dmabuf_priv *priv, *each;
- 	struct dma_buf *dmabuf;
-@@ -1679,7 +1689,7 @@ static int iio_buffer_attach_dmabuf(stru
- 		goto err_free_priv;
- 	}
- 
--	attach = dma_buf_attach(dmabuf, indio_dev->dev.parent);
-+	attach = dma_buf_attach(dmabuf, dma_dev);
- 	if (IS_ERR(attach)) {
- 		err = PTR_ERR(attach);
- 		goto err_dmabuf_put;
-@@ -1719,7 +1729,7 @@ static int iio_buffer_attach_dmabuf(stru
- 	 * combo. If we do, refuse to attach.
- 	 */
- 	list_for_each_entry(each, &buffer->dmabufs, entry) {
--		if (each->attach->dev == indio_dev->dev.parent
-+		if (each->attach->dev == dma_dev
- 		    && each->attach->dmabuf == dmabuf) {
- 			/*
- 			 * We unlocked the reservation object, so going through
-@@ -1758,6 +1768,7 @@ static int iio_buffer_detach_dmabuf(stru
- {
- 	struct iio_buffer *buffer = ib->buffer;
- 	struct iio_dev *indio_dev = ib->indio_dev;
-+	struct device *dma_dev = iio_buffer_get_dma_dev(indio_dev, buffer);
- 	struct iio_dmabuf_priv *priv;
- 	struct dma_buf *dmabuf;
- 	int dmabuf_fd, ret = -EPERM;
-@@ -1772,7 +1783,7 @@ static int iio_buffer_detach_dmabuf(stru
- 	guard(mutex)(&buffer->dmabufs_mutex);
- 
- 	list_for_each_entry(priv, &buffer->dmabufs, entry) {
--		if (priv->attach->dev == indio_dev->dev.parent
-+		if (priv->attach->dev == dma_dev
- 		    && priv->attach->dmabuf == dmabuf) {
- 			list_del(&priv->entry);
- 
---- a/include/linux/iio/buffer_impl.h
-+++ b/include/linux/iio/buffer_impl.h
-@@ -50,6 +50,7 @@ struct sg_table;
-  * @enqueue_dmabuf:	called from userspace via ioctl to queue this DMABUF
-  *			object to this buffer. Requires a valid DMABUF fd, that
-  *			was previouly attached to this buffer.
-+ * @get_dma_dev:	called to get the DMA channel associated with this buffer.
-  * @lock_queue:		called when the core needs to lock the buffer queue;
-  *                      it is used when enqueueing DMABUF objects.
-  * @unlock_queue:       used to unlock a previously locked buffer queue
-@@ -90,6 +91,7 @@ struct iio_buffer_access_funcs {
- 			      struct iio_dma_buffer_block *block,
- 			      struct dma_fence *fence, struct sg_table *sgt,
- 			      size_t size, bool cyclic);
-+	struct device * (*get_dma_dev)(struct iio_buffer *buffer);
- 	void (*lock_queue)(struct iio_buffer *buffer);
- 	void (*unlock_queue)(struct iio_buffer *buffer);
- 
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -4683,8 +4683,10 @@ void ata_scsi_dev_rescan(struct work_str
+ 			spin_unlock_irqrestore(ap->lock, flags);
+ 			if (do_resume) {
+ 				ret = scsi_resume_device(sdev);
+-				if (ret == -EWOULDBLOCK)
++				if (ret == -EWOULDBLOCK) {
++					scsi_device_put(sdev);
+ 					goto unlock_scan;
++				}
+ 				dev->flags &= ~ATA_DFLAG_RESUMING;
+ 			}
+ 			ret = scsi_rescan_device(sdev);
 
 
 
