@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D6BEC9F7AC
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:32:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DB44CA06D0
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:27:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DAC3A30004D1
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:32:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3EA9E330DE96
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:10:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AC9530B51F;
-	Wed,  3 Dec 2025 15:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7254534B1B8;
+	Wed,  3 Dec 2025 16:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BPdcBTXO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vX9M5gUu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB9415ADB4;
-	Wed,  3 Dec 2025 15:32:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A3F34B1B0;
+	Wed,  3 Dec 2025 16:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764775972; cv=none; b=BsSkcZMNuLWlqHpyy5LONmUXNP1z28gbC6486nIzRFxsbjelVvByX+XuhxpJaUjU9+yl7wv0Bk+vD97Yl1lgV7UPISvOjHNDH7ui6/W853t5xmnFC9W/tcb1h+eJGwS8DiTJqcb67lRtJO3P7VusdwYzz2e4nPh2lm66EepdDGs=
+	t=1764777687; cv=none; b=FmNMswfoNsLa/yRghlxB2UpF7JKVULfGRo+9u2+918j3IB7zbDY4rOhfuUaYT41TDiH1Wx1+n4X3GphMT4EYawgPRIiKR1y9JbrPoR9vGxCEGDCNsxriCGY1BwHdv7YeHHRidvEV2MV87VD5VsYLf0jaXrLYDn8rJvK0Mlc6aFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764775972; c=relaxed/simple;
-	bh=4AMXrnsypvifbJEePw1o8p5VC8FnOxH6wigU5VSIzmk=;
+	s=arc-20240116; t=1764777687; c=relaxed/simple;
+	bh=k21pjHh+SZOom5ij6K1L7WC8NrdUm5i+ZswtDIQq4d4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DsuIYri8fhmRzaQZjUrFEnhANIVhFIKaVXA2kZtVaf5CRmpH0RwK9/ZRXu3HTi5dgXutwxy59Cm9J+CxiQEUpIF9LXI8Ia8GnZmEAGhCCJl8EGFkky8COjM9IQVkQywNP0yiLsjI/pZGLp96Figae+O/Cw6go6VrwwtV6lvF5QQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BPdcBTXO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16AC8C4CEF5;
-	Wed,  3 Dec 2025 15:32:51 +0000 (UTC)
+	 MIME-Version; b=Hpk1YSNHGVYimy6MYAZG379i3QRggV/X8UmIMGMaXubM1vG1sTAhMupgXbAfim7m0LIa4hRJnapRbvH/wh2QpiR8tpfRW1IlfnFNKmjQBRGaRz6rvi2UgmpfTi+FRevdZIwrdZYvbmcGdFoYjF5rwRGGKc8y5y3N8sx+P6e0TJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vX9M5gUu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 706D8C4CEF5;
+	Wed,  3 Dec 2025 16:01:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764775972;
-	bh=4AMXrnsypvifbJEePw1o8p5VC8FnOxH6wigU5VSIzmk=;
+	s=korg; t=1764777686;
+	bh=k21pjHh+SZOom5ij6K1L7WC8NrdUm5i+ZswtDIQq4d4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BPdcBTXOGNeq9H2JaDIgJ8OBxfeht31m16rSH6IAxkRS9Dno9qfANVS6miU+dcWyx
-	 WB5eYHR1/RPxeKVRqK/YY0jDKcK/op9XKiWL5FHwIOWLdZs8/o9KBMlAOTXlLDJhVA
-	 0aHKRkv3Vw87DbipwrrY1HJOu/xHM1HTk5cRPb1U=
+	b=vX9M5gUuGfDxbo3tFlQGLSPv/w7xuRkw8J1JcGqA5nQxFEf1WH56YLSfOqF0Y3k+L
+	 cWcZOLgSPiKpC40BPu6EuZD+1qou9bR7x0pxYpvRpEWGbH0pfQq6EllLp136eAeZx7
+	 BrvCD3ncnZAsOGDGn1lPYca4jls0YqKW/p4GVy5Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Geoffrey McRae <geoffrey.mcrae@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 043/300] mmc: host: renesas_sdhi: Fix the actual clock
+Subject: [PATCH 5.15 097/392] drm/amdkfd: return -ENOTTY for unsupported IOCTLs
 Date: Wed,  3 Dec 2025 16:24:07 +0100
-Message-ID: <20251203152402.208719437@linuxfoundation.org>
+Message-ID: <20251203152417.670279437@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Geoffrey McRae <geoffrey.mcrae@amd.com>
 
-[ Upstream commit 9c174e4dacee9fb2014a4ffc953d79a5707b77e4 ]
+[ Upstream commit 57af162bfc8c05332a28c4d458d246cc46d2746d ]
 
-Wrong actual clock reported, if the SD clock division ratio is other
-than 1:1(bits DIV[7:0] in SD_CLK_CTRL are set to 11111111).
+Some kfd ioctls may not be available depending on the kernel version the
+user is running, as such we need to report -ENOTTY so userland can
+determine the cause of the ioctl failure.
 
-On high speed mode, cat /sys/kernel/debug/mmc1/ios
-Without the patch:
-clock:          50000000 Hz
-actual clock:   200000000 Hz
-
-After the fix:
-clock:          50000000 Hz
-actual clock:   50000000 Hz
-
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Link: https://lore.kernel.org/r/20250629203859.170850-1-biju.das.jz@bp.renesas.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Geoffrey McRae <geoffrey.mcrae@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/renesas_sdhi_core.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_chardev.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/renesas_sdhi_core.c
-index a15b44ca87d35..c0acb309e3243 100644
---- a/drivers/mmc/host/renesas_sdhi_core.c
-+++ b/drivers/mmc/host/renesas_sdhi_core.c
-@@ -183,7 +183,11 @@ static void renesas_sdhi_set_clock(struct tmio_mmc_host *host,
- 			clk &= ~0xff;
- 	}
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+index 7b2111be3019a..4f60ba2db1811 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+@@ -1947,8 +1947,10 @@ static long kfd_ioctl(struct file *filep, unsigned int cmd, unsigned long arg)
+ 	unsigned int usize, asize;
+ 	int retcode = -EINVAL;
  
--	sd_ctrl_write16(host, CTL_SD_CARD_CLK_CTL, clk & CLK_CTL_DIV_MASK);
-+	clock = clk & CLK_CTL_DIV_MASK;
-+	if (clock != 0xff)
-+		host->mmc->actual_clock /= (1 << (ffs(clock) + 1));
-+
-+	sd_ctrl_write16(host, CTL_SD_CARD_CLK_CTL, clock);
- 	if (!(host->pdata->flags & TMIO_MMC_MIN_RCAR2))
- 		usleep_range(10000, 11000);
+-	if (nr >= AMDKFD_CORE_IOCTL_COUNT)
++	if (nr >= AMDKFD_CORE_IOCTL_COUNT) {
++		retcode = -ENOTTY;
+ 		goto err_i1;
++	}
+ 
+ 	if ((nr >= AMDKFD_COMMAND_START) && (nr < AMDKFD_COMMAND_END)) {
+ 		u32 amdkfd_size;
+@@ -1961,8 +1963,10 @@ static long kfd_ioctl(struct file *filep, unsigned int cmd, unsigned long arg)
+ 			asize = amdkfd_size;
+ 
+ 		cmd = ioctl->cmd;
+-	} else
++	} else {
++		retcode = -ENOTTY;
+ 		goto err_i1;
++	}
+ 
+ 	dev_dbg(kfd_device, "ioctl cmd 0x%x (#0x%x), arg 0x%lx\n", cmd, nr, arg);
  
 -- 
 2.51.0
