@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B056CCA0D45
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:13:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 868C0CA095B
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:44:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 76C9B3301C3F
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:10:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 22E4E32D3FE1
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:23:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A202034E748;
-	Wed,  3 Dec 2025 16:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67394305970;
+	Wed,  3 Dec 2025 15:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mzo66f1Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ATPLM0aN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4944434B419;
-	Wed,  3 Dec 2025 16:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAAA3338597;
+	Wed,  3 Dec 2025 15:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779124; cv=none; b=eGqxQjYZFUBcD+SUmDUB3vtZEbKRH+Ca0IO3V2i+X9PKEDDKf+xcK+mR4zCMq02MA+edGHRO6D7l6sgy1K6iST0iMduDrAZyTbVq2mpoXU3orH2Gy4Tb7zTNmvlxjgSK3b9U1PG6wIfzx0npehYIHKsEg45KmqyOoP2LSz77nYw=
+	t=1764777361; cv=none; b=rMO7ywgjXCcxee9x13mr0pFX10iZgIeQGeAaNEchWkx+EBv+MVAcwtcn3JJ9Z7/hlbl1tmQK2XJpRstYovJZTnfYfri6lFkAlIlCcLhnq7nrFLiq+j1iaMpYLJbwrlk+UtQTgVS+550Z1I86i/zJpdXbJOvALgEz1FjE7JCn21g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779124; c=relaxed/simple;
-	bh=Kd0edrNUr8qslfSUhObP9zCK2+xc+wXroTBo8LFcHxo=;
+	s=arc-20240116; t=1764777361; c=relaxed/simple;
+	bh=GLr8eELwDBRHw6VEicbHk6Ag95TlxJsS+Qc0Z188mnY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k8UcZLNSKM7fJ4vI9laasXqz+PiZQLTSv+ca9Vi9TLkkPBkmjcMSGL8EbGgGwC2fk9VGeMs47BxIBmzmTS7LeMwriwLsAwje4h7T1SYetCeVGLLui1sWRxj8YUUxaYKAfxPP7z3155JJqmczne87PvdWFHS4tJ1/U+FG2gjqXHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mzo66f1Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA5BBC4CEF5;
-	Wed,  3 Dec 2025 16:25:23 +0000 (UTC)
+	 MIME-Version; b=cAGyS2NLc32r4lWdsJzq1+i1DJPhBw1E0XaQOXExkb8970Kj2zAFX9dbjcAy+O4Nz94fCXlQ40jwBR/T/riTOUeIJ0H3U7aKp91Hu9h/S18TVl/dJ0niQWoAlstJ3ku9KdS3mng6T9Km2MyutPwiIa80KFB44oD9ADM9sRhjw6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ATPLM0aN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7017C4CEF5;
+	Wed,  3 Dec 2025 15:56:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779124;
-	bh=Kd0edrNUr8qslfSUhObP9zCK2+xc+wXroTBo8LFcHxo=;
+	s=korg; t=1764777361;
+	bh=GLr8eELwDBRHw6VEicbHk6Ag95TlxJsS+Qc0Z188mnY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mzo66f1YR0b6sIpBkDvtvN1aYWcxBX5kOzjwSvQEyR1jPNbPJz662KzWX99QJDgwS
-	 avXwEbteQgcJdm/V5/iaO3J6eVL7UkfFDAVXsWA75hv7coBwCGVbSx39DHAmjFcfKU
-	 Z6x8MiIeieKNWbyRu02BbQvFJqrMbHVLckzcehM8=
+	b=ATPLM0aNjb2wGtD95+x5qv4fgwevLyX9PAWnTKsabVchCQCdMrSPBla8d9t6Ij7zV
+	 enFKf5xOLzu/QZVS1K4Hom3sxCOfDQwH9bE0qfbgbQNpSLJKT6hSotizVD4wCD00R5
+	 LEtDPFLS95jc9rl5HU6frQ3qxsWZ25fjWq6KlUo4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Zijun Hu <zijun.hu@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 162/568] char: misc: Does not request module for miscdevice with dynamic minor
-Date: Wed,  3 Dec 2025 16:22:44 +0100
-Message-ID: <20251203152446.656906574@linuxfoundation.org>
+	Stable@vger.kernel.org,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.15 015/392] ASoC: qdsp6: q6asm: do not sleep while atomic
+Date: Wed,  3 Dec 2025 16:22:45 +0100
+Message-ID: <20251203152414.665699631@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,63 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <zijun.hu@oss.qualcomm.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 
-[ Upstream commit 1ba0fb42aa6a5f072b1b8c0b0520b32ad4ef4b45 ]
+commit fdbb53d318aa94a094434e5f226617f0eb1e8f22 upstream.
 
-misc_open() may request module for miscdevice with dynamic minor, which
-is meaningless since:
+For some reason we ended up kfree between spinlock lock and unlock,
+which can sleep.
 
-- The dynamic minor allocated is unknown in advance without registering
-  miscdevice firstly.
-- Macro MODULE_ALIAS_MISCDEV() is not applicable for dynamic minor.
+move the kfree out of spinlock section.
 
-Fix by only requesting module for miscdevice with fixed minor.
-
-Acked-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Signed-off-by: Zijun Hu <zijun.hu@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250714-rfc_miscdev-v6-6-2ed949665bde@oss.qualcomm.com
+Fixes: a2a5d30218fd ("ASoC: qdsp6: q6asm: Add support to memory map and unmap")
+Cc: Stable@vger.kernel.org
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251017085307.4325-2-srinivas.kandagatla@oss.qualcomm.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/misc.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ sound/soc/qcom/qdsp6/q6asm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/char/misc.c b/drivers/char/misc.c
-index cba19bfdc44dd..b5dd944d0282d 100644
---- a/drivers/char/misc.c
-+++ b/drivers/char/misc.c
-@@ -114,7 +114,8 @@ static int misc_open(struct inode *inode, struct file *file)
- 		break;
- 	}
+--- a/sound/soc/qcom/qdsp6/q6asm.c
++++ b/sound/soc/qcom/qdsp6/q6asm.c
+@@ -376,9 +376,9 @@ static void q6asm_audio_client_free_buf(
  
--	if (!new_fops) {
-+	/* Only request module for fixed minor code */
-+	if (!new_fops && minor < MISC_DYNAMIC_MINOR) {
- 		mutex_unlock(&misc_mtx);
- 		request_module("char-major-%d-%d", MISC_MAJOR, minor);
- 		mutex_lock(&misc_mtx);
-@@ -126,10 +127,11 @@ static int misc_open(struct inode *inode, struct file *file)
- 			new_fops = fops_get(iter->fops);
- 			break;
- 		}
--		if (!new_fops)
--			goto fail;
- 	}
+ 	spin_lock_irqsave(&ac->lock, flags);
+ 	port->num_periods = 0;
++	spin_unlock_irqrestore(&ac->lock, flags);
+ 	kfree(port->buf);
+ 	port->buf = NULL;
+-	spin_unlock_irqrestore(&ac->lock, flags);
+ }
  
-+	if (!new_fops)
-+		goto fail;
-+
- 	/*
- 	 * Place the miscdevice in the file's
- 	 * private_data so it can be used by the
--- 
-2.51.0
-
+ /**
 
 
 
