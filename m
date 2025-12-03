@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-199385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02CDACA0CFD
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:11:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9DFDCA0824
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:35:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D9A9832AE955
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:07:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F1D88329077D
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:16:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9495530C358;
-	Wed,  3 Dec 2025 16:33:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38A3634402B;
+	Wed,  3 Dec 2025 16:04:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OohpW8rw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ciy0Zm3a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC06305067;
-	Wed,  3 Dec 2025 16:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8D8F342146;
+	Wed,  3 Dec 2025 16:04:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779623; cv=none; b=U/Bxwg7D2Km8riOHv+KYOZumuOe94Bn7JaFABYR8UP0rftT2HHHIWC0cGCxcvUFsViQbEfjjwPLCqS0XoLcNIcBx1BlkLd5TuFZDAK3ODGzXG9y+eyRrD1RP+pfjVFo3Q/oJw3dyakhg/VbZqWEtdJ3V3Vlh+B/94GgorSILE8M=
+	t=1764777847; cv=none; b=enkz0wEzNYIa7frWept842pRrSZPw7i2X0QEJnL0534rI+0BiFTJ/DzCLXG5vhYSoIUl1g9fdEMEuIcNa1Jolo0sfuwHTO2YlwmW+1UP9Jd6a090LSjPsK5V8SkkWMeU6Uwho0u2+wZ0WGFv1V0HINjEH6+vHGpzAojjSRK0BSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779623; c=relaxed/simple;
-	bh=pJdbAzIucR1rJvAlDkw+AqIc2jDZssvOqDObs0DnM2c=;
+	s=arc-20240116; t=1764777847; c=relaxed/simple;
+	bh=OcJ7YBzS+TYV1Q3secgEisAtZPOfA9EPLUXkxMILleU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=thAsJJTgxaeVAC55l72D5GZTjPQy+VDT8TO8uplbp6FkVYDYraAf0YPHb+NjWpdn0lAIvfNaOAuk67VoC5QE4OmKCJDOPCBm+eZK2KczY3s7GScM2MYOk9Hs2BqRs57NOfmkXGdQHnfFitY40q7mE1QoQhjSnl/r0pWl5xNr4/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OohpW8rw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6370BC4CEF5;
-	Wed,  3 Dec 2025 16:33:42 +0000 (UTC)
+	 MIME-Version; b=q2OS/xAShtTZv5g5mskICMDnj+OFy+H40co8I/kMiKIMjFhA4Mjgyjyocd1YC7vZu16n1kRfnKMBlEdBoVWMsha7oXBN0v8lkpygwXjlLPGssbEIx05NDP2Za821hdxj0w3MxigSePb9Y1ULSfDe95yOCONZfOGbMhTYH23QqLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ciy0Zm3a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A584C4CEF5;
+	Wed,  3 Dec 2025 16:04:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779622;
-	bh=pJdbAzIucR1rJvAlDkw+AqIc2jDZssvOqDObs0DnM2c=;
+	s=korg; t=1764777846;
+	bh=OcJ7YBzS+TYV1Q3secgEisAtZPOfA9EPLUXkxMILleU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OohpW8rwvhd5kuJkY+d7RWuroFz84uApmlP8s3Z02YzffHabA07O/h2yIomesRIIS
-	 cQlCVCb06zFKdIOR+wsATP4Swdy8QSdNC2ZWZvCdTZA4vP4OFuzbt9uSRIIWiAYC1o
-	 FnVm+wFjHjO4TXwnPw5+R+Vy3zm6mask1Fi1lwkM=
+	b=Ciy0Zm3a39AY3v+aDNSyOlzY5e1+1fWkTw0j2/Dln1BRI3GJ+J9lQjuXrRUm99nAW
+	 Rguia0+KlgBrUg7hcg/cfgs+UpTEZzS0tHj1Sy9t/13u8HzX0z+Fg3vb6+0QCumij2
+	 AlF8qhCBfD27b7fXij8uU2LdfAJdedRhtcKKcMFs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 311/568] net: vlan: sync VLAN features with lower device
-Date: Wed,  3 Dec 2025 16:25:13 +0100
-Message-ID: <20251203152452.105274753@linuxfoundation.org>
+Subject: [PATCH 5.15 164/392] jfs: Verify inode mode when loading from disk
+Date: Wed,  3 Dec 2025 16:25:14 +0100
+Message-ID: <20251203152420.113479706@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit c211f5d7cbd5cb34489d526648bb9c8ecc907dee ]
+[ Upstream commit 7a5aa54fba2bd591b22b9b624e6baa9037276986 ]
 
-After registering a VLAN device and setting its feature flags, we need to
-synchronize the VLAN features with the lower device. For example, the VLAN
-device does not have the NETIF_F_LRO flag, it should be synchronized with
-the lower device based on the NETIF_F_UPPER_DISABLES definition.
+The inode mode loaded from corrupted disk can be invalid. Do like what
+commit 0a9e74051313 ("isofs: Verify inode mode when loading from disk")
+does.
 
-As the dev->vlan_features has changed, we need to call
-netdev_update_features(). The caller must run after netdev_upper_dev_link()
-links the lower devices, so this patch adds the netdev_update_features()
-call in register_vlan_dev().
-
-Fixes: fd867d51f889 ("net/core: generic support for disabling netdev features down stack")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://patch.msgid.link/20251030073539.133779-1-liuhangbin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/8021q/vlan.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/jfs/inode.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/net/8021q/vlan.c b/net/8021q/vlan.c
-index 422f726346ea5..7c77482f31594 100644
---- a/net/8021q/vlan.c
-+++ b/net/8021q/vlan.c
-@@ -194,6 +194,8 @@ int register_vlan_dev(struct net_device *dev, struct netlink_ext_ack *extack)
- 	vlan_group_set_device(grp, vlan->vlan_proto, vlan_id, dev);
- 	grp->nr_vlan_devs++;
- 
-+	netdev_update_features(dev);
-+
- 	return 0;
- 
- out_unregister_netdev:
+diff --git a/fs/jfs/inode.c b/fs/jfs/inode.c
+index e132dafa1b6ca..6d6425cdb1185 100644
+--- a/fs/jfs/inode.c
++++ b/fs/jfs/inode.c
+@@ -59,9 +59,15 @@ struct inode *jfs_iget(struct super_block *sb, unsigned long ino)
+ 			 */
+ 			inode->i_link[inode->i_size] = '\0';
+ 		}
+-	} else {
++	} else if (S_ISCHR(inode->i_mode) || S_ISBLK(inode->i_mode) ||
++		   S_ISFIFO(inode->i_mode) || S_ISSOCK(inode->i_mode)) {
+ 		inode->i_op = &jfs_file_inode_operations;
+ 		init_special_inode(inode, inode->i_mode, inode->i_rdev);
++	} else {
++		printk(KERN_DEBUG "JFS: Invalid file type 0%04o for inode %lu.\n",
++		       inode->i_mode, inode->i_ino);
++		iget_failed(inode);
++		return ERR_PTR(-EIO);
+ 	}
+ 	unlock_new_inode(inode);
+ 	return inode;
 -- 
 2.51.0
 
