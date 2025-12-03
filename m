@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-198998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01233CA0D0C
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:12:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAF0FCA11EE
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:44:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9B1F2319C071
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:08:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4C19E300C35E
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:44:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A71734C815;
-	Wed,  3 Dec 2025 16:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 611DA33122E;
+	Wed,  3 Dec 2025 15:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AdlbLRNV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AIzP2trR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4670634C13B;
-	Wed,  3 Dec 2025 16:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 148DD331227;
+	Wed,  3 Dec 2025 15:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778361; cv=none; b=IbEHhMVG0OvogtyR/7oP2iiUm/udsFcn9HQakNlAjxjD4lvjUpS5xE1n9BvaZiJFuU/qOvV3lJq0hdvTGdyeyaHhs7Zu+AHRhl1V51e5hyWWhvxEitFEKdixqymlSRVmvBxLuoBf9bL0ZooElMFK9NqFAj0MG+DJ0Pmjkr+LSg0=
+	t=1764777144; cv=none; b=e5LGbKz4tATArotmE6ruGRCPGY/p1vEn+KBMJ+EIWZPTunFS8QiIve5Lq9hc45slJS9AmWICouJHP/2dU04nQfRjYByidkFvTHdbuRPq/Tg2eNlw3qGFA3vVe4CLGSRnJ+nuVb/dVkhoM4NpaTz5KKi7NvjE5aT89/XsvbiKu/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778361; c=relaxed/simple;
-	bh=49rUCxYcMKihUVbzTIIRptv0bEWOmWuWcizGjQGGpgs=;
+	s=arc-20240116; t=1764777144; c=relaxed/simple;
+	bh=L5bnergv5wMk1KBb0kAp6Na3I6ezO3ks/W2VjG+mJcs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tho93mRYamV+ATJPJVpm3fPn5fYBGhjl7QEX9bgoWU3vtSMZqFPHdRuBJvtoCUpnRx1InH2UA1qb5/NRqFNwpF46oZS7giDalzlExr4BP/tFKF++NSpJLEPb1vWNtPmjn7W/nGrtJCmM3D/m7FzbmWGIuGfoMveVFUOZ18vXnkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AdlbLRNV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6465C4CEF5;
-	Wed,  3 Dec 2025 16:12:40 +0000 (UTC)
+	 MIME-Version; b=JvGSDKc2mtnmeRGcWsJcBOMqpRB7Dy+6c2bSRM8NTyGlk8rMwLPDH34i+IFv2oYeXE7RYTAWl5BTNR7OcVF2cOp8WX0/jyyVb1J4QqrxoUwqSs9bPIh7yCGUCOYSqNjGlxRTGpJx+qvoDUBjFlFDXXwd12LZR4aQ/RfMD54TN/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AIzP2trR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CDDCC116B1;
+	Wed,  3 Dec 2025 15:52:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778361;
-	bh=49rUCxYcMKihUVbzTIIRptv0bEWOmWuWcizGjQGGpgs=;
+	s=korg; t=1764777143;
+	bh=L5bnergv5wMk1KBb0kAp6Na3I6ezO3ks/W2VjG+mJcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AdlbLRNVgFJE0FosbIhVewZFcTKwWCjzA/0tl0jsthqyExeD16KM6LsdSLlW/yvaq
-	 5jfU3jfVpB+macgv+94rc9U7pr4kbIrWCyi6NtTg/7CZ7xGxD2whDYaxxzgNn8JQ95
-	 3BycA/7s8CESBp1HBQg8irYPnqqgXjqMJwvQa+LI=
+	b=AIzP2trRumDVO01pYbgJWBwc+683M10GFjz9wHzTKvCQThGaVXqk4tXjnIVwhYjVo
+	 1ZW87VV3oS1HydJfpiKjVAMekgtgTAoUFLILTVs4clvsJQEYosL/iP/aUE6TD5IoKS
+	 7LplK+jURwHaDE/ABvG/3A3Y3D1gVm2ivSaK7gOA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 323/392] mptcp: Disallow MPTCP subflows from sockmap
+	Jon Hunter <jonathanh@nvidia.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.17 095/146] pmdomain: tegra: Add GENPD_FLAG_NO_STAY_ON flag
 Date: Wed,  3 Dec 2025 16:27:53 +0100
-Message-ID: <20251203152426.048347442@linuxfoundation.org>
+Message-ID: <20251203152349.937409097@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +59,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Jon Hunter <jonathanh@nvidia.com>
 
-[ Upstream commit fbade4bd08ba52cbc74a71c4e86e736f059f99f7 ]
+commit c98c99d5dbdf9fb0063650594edfd7d49b5f4e29 upstream.
 
-The sockmap feature allows bpf syscall from userspace, or based on bpf
-sockops, replacing the sk_prot of sockets during protocol stack processing
-with sockmap's custom read/write interfaces.
-'''
-tcp_rcv_state_process()
-  subflow_syn_recv_sock()
-    tcp_init_transfer(BPF_SOCK_OPS_PASSIVE_ESTABLISHED_CB)
-      bpf_skops_established       <== sockops
-        bpf_sock_map_update(sk)   <== call bpf helper
-          tcp_bpf_update_proto()  <== update sk_prot
-'''
-Consider two scenarios:
+Commit 13a4b7fb6260 ("pmdomain: core: Leave powered-on genpds on until
+late_initcall_sync") kept power-domains on longer during boot which is
+causing some GPU related tests to fail on Tegra234. While this is being
+investigated, add the flag GENPD_FLAG_NO_STAY_ON for Tegra devices to
+restore the previous behaviour to fix this.
 
-1. When the server has MPTCP enabled and the client also requests MPTCP,
-   the sk passed to the BPF program is a subflow sk. Since subflows only
-   handle partial data, replacing their sk_prot is meaningless and will
-   cause traffic disruption.
-
-2. When the server has MPTCP enabled but the client sends a TCP SYN
-   without MPTCP, subflow_syn_recv_sock() performs a fallback on the
-   subflow, replacing the subflow sk's sk_prot with the native sk_prot.
-   '''
-   subflow_ulp_fallback()
-    subflow_drop_ctx()
-      mptcp_subflow_ops_undo_override()
-   '''
-   Subsequently, accept::mptcp_stream_accept::mptcp_fallback_tcp_ops()
-   converts the subflow to plain TCP.
-
-For the first case, we should prevent it from being combined with sockmap
-by setting sk_prot->psock_update_sk_prot to NULL, which will be blocked by
-sockmap's own flow.
-
-For the second case, since subflow_syn_recv_sock() has already restored
-sk_prot to native tcp_prot/tcpv6_prot, no further action is needed.
-
-Fixes: cec37a6e41aa ("mptcp: Handle MP_CAPABLE options for outgoing connections")
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20251111060307.194196-2-jiayuan.chen@linux.dev
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 13a4b7fb6260 ("pmdomain: core: Leave powered-on genpds on until late_initcall_sync")
+Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/subflow.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/pmdomain/tegra/powergate-bpmp.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -1854,6 +1854,10 @@ void __init mptcp_subflow_init(void)
+--- a/drivers/pmdomain/tegra/powergate-bpmp.c
++++ b/drivers/pmdomain/tegra/powergate-bpmp.c
+@@ -184,6 +184,7 @@ tegra_powergate_add(struct tegra_bpmp *b
+ 	powergate->genpd.name = kstrdup(info->name, GFP_KERNEL);
+ 	powergate->genpd.power_on = tegra_powergate_power_on;
+ 	powergate->genpd.power_off = tegra_powergate_power_off;
++	powergate->genpd.flags = GENPD_FLAG_NO_STAY_ON;
  
- 	tcp_prot_override = tcp_prot;
- 	tcp_prot_override.release_cb = tcp_release_cb_override;
-+#ifdef CONFIG_BPF_SYSCALL
-+	/* Disable sockmap processing for subflows */
-+	tcp_prot_override.psock_update_sk_prot = NULL;
-+#endif
- 
- #if IS_ENABLED(CONFIG_MPTCP_IPV6)
- 	/* In struct mptcp_subflow_request_sock, we assume the TCP request sock
-@@ -1887,6 +1891,10 @@ void __init mptcp_subflow_init(void)
- 
- 	tcpv6_prot_override = tcpv6_prot;
- 	tcpv6_prot_override.release_cb = tcp_release_cb_override;
-+#ifdef CONFIG_BPF_SYSCALL
-+	/* Disable sockmap processing for subflows */
-+	tcpv6_prot_override.psock_update_sk_prot = NULL;
-+#endif
- #endif
- 
- 	mptcp_diag_subflow_init(&subflow_ulp_ops);
+ 	err = pm_genpd_init(&powergate->genpd, NULL, off);
+ 	if (err < 0) {
 
 
 
