@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-198446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 782ECCA0718
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:28:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA509CA0E7F
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:21:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E7BE63000B29
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:28:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 37DC433CCDF5
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:18:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 629163164A4;
-	Wed,  3 Dec 2025 15:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82174325496;
+	Wed,  3 Dec 2025 16:38:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DzCHYMeU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rygPpAQ9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20616315D51;
-	Wed,  3 Dec 2025 15:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 814C731354A;
+	Wed,  3 Dec 2025 16:38:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776570; cv=none; b=V8RsgXi2p3X6vtlNaE61L6laG7r9DdaJXh/nunwE38STaYlP1wZt3iRl+e4414EpRIYP9wSFwr0T28E4k3mRDIAIuWv0QXTYlVctyUgdM2Wy0/zwTSWWEq26McOU/3VAEWsFaNLa9ussw9eN98zEDwd1g1tfnLTg3KQBMjokOGM=
+	t=1764779938; cv=none; b=D+bRAJnkVWV4S0QrV+eqeTF7iNjo76cBW/zqQhFKCLg1E/aWMjPXjytwtesPYZgF0dr0fwtHgi6hBAGbqG4oT8lFUUTw1Ht/LGRBZzFdBoCtSXqdJAwa0yTZKYn+V9BW0Jd2HgkefuAQZZQMY++BuJoYRJI+NPk+RirNkJ3KFxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776570; c=relaxed/simple;
-	bh=i60slNYl/39H+n7gX74aDvl0trY4EYXVyOUJO+p1zd4=;
+	s=arc-20240116; t=1764779938; c=relaxed/simple;
+	bh=gkVfl1Bx4oUg8QPRGC1gQzwDMW2ge7X8wSPz+RvrtoE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=leEvRb0GIGuc5ETzEtb3P0lx7drSceTz2GmjUuS6ozeL4QFkrOTjoEd3xHEWDWXPujLlxkQBYm+jI+qQVKVj30FEC2uFxRLvcbO5+BBnoai8Qvq3pYME6mxTkjLuXIXZbxMVePTHUp8bGD4EMIxiHu0ujnCOsFO8GthMzN6MWzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DzCHYMeU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D945C4CEF5;
-	Wed,  3 Dec 2025 15:42:49 +0000 (UTC)
+	 MIME-Version; b=iJTgIQ1UvE9IaFjk6SfGz/BCx8hg3X8hERzSOJg2w3Zao6EU/6EDmLykKv5pjvp3QMoSiXpBxfv5Dr/vHSYEF9QZtnbo4hW/8r9DymWo6w3JlAsTLpYjxUTet80u47puEjvNdX2xJLcoK57T4l8/DZMRG08iRTUaFkr4Q7C+AA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rygPpAQ9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92570C4CEF5;
+	Wed,  3 Dec 2025 16:38:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776570;
-	bh=i60slNYl/39H+n7gX74aDvl0trY4EYXVyOUJO+p1zd4=;
+	s=korg; t=1764779938;
+	bh=gkVfl1Bx4oUg8QPRGC1gQzwDMW2ge7X8wSPz+RvrtoE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DzCHYMeUYDVaopl2AgSYdNPayrA33ms8fEEBwFRVMkN5JeAjHT/ul0wD1qU0m4fah
-	 8bQBIrAesWnDmFSBHeqNqKckbK328MVxgeLhdgfxnOhJXgqU9bVtW+my67HfLm8V1Z
-	 E8RiHt1qzQuQKjyq4hzFretTdBxOH4jfnIeU7/QI=
+	b=rygPpAQ9lZgwgnucdTZl5GXU21tV5mJ27qGt1GCORVBPOIZjRLoz/cqIwJU/A7FHO
+	 nH+0C+Fn+yKdRJoY3fa38DNvhYIgP9+/1SWFcTmPOdUCJV0/7arqoYB3OHMX/22j8R
+	 XH6vj2ildpWsWr/amJ5Qrfs7lGQVucw1/N3sgD+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Ichikawa <masami256@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 205/300] HID: hid-ntrig: Prevent memory leak in ntrig_report_version()
+	Hans de Goede <hansg@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 407/568] spi: Try to get ACPI GPIO IRQ earlier
 Date: Wed,  3 Dec 2025 16:26:49 +0100
-Message-ID: <20251203152408.218237892@linuxfoundation.org>
+Message-ID: <20251203152455.593585131@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +59,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Ichikawa <masami256@gmail.com>
+From: Hans de Goede <hansg@kernel.org>
 
-[ Upstream commit 53f731f5bba0cf03b751ccceb98b82fadc9ccd1e ]
+commit 3cd2018e15b3d66d2187d92867e265f45ad79e6f upstream.
 
-Use a scope-based cleanup helper for the buffer allocated with kmalloc()
-in ntrig_report_version() to simplify the cleanup logic and prevent
-memory leaks (specifically the !hid_is_usb()-case one).
+Since commit d24cfee7f63d ("spi: Fix acpi deferred irq probe"), the
+acpi_dev_gpio_irq_get() call gets delayed till spi_probe() is called
+on the SPI device.
 
-[jkosina@suse.com: elaborate on the actual existing leak]
-Fixes: 185c926283da ("HID: hid-ntrig: fix unable to handle page fault in ntrig_report_version()")
-Signed-off-by: Masami Ichikawa <masami256@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If there is no driver for the SPI device then the move to spi_probe()
+results in acpi_dev_gpio_irq_get() never getting called. This may
+cause problems by leaving the GPIO pin floating because this call is
+responsible for setting up the GPIO pin direction and/or bias according
+to the values from the ACPI tables.
+
+Re-add the removed acpi_dev_gpio_irq_get() in acpi_register_spi_device()
+to ensure the GPIO pin is always correctly setup, while keeping the
+acpi_dev_gpio_irq_get() call added to spi_probe() to deal with
+-EPROBE_DEFER returns caused by the GPIO controller not having a driver
+yet.
+
+Link: https://bbs.archlinux.org/viewtopic.php?id=302348
+Fixes: d24cfee7f63d ("spi: Fix acpi deferred irq probe")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <hansg@kernel.org>
+Link: https://patch.msgid.link/20251102190921.30068-1-hansg@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-ntrig.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/spi/spi.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/hid/hid-ntrig.c b/drivers/hid/hid-ntrig.c
-index a1128c5315fff..3c41f6841f775 100644
---- a/drivers/hid/hid-ntrig.c
-+++ b/drivers/hid/hid-ntrig.c
-@@ -142,13 +142,13 @@ static void ntrig_report_version(struct hid_device *hdev)
- 	int ret;
- 	char buf[20];
- 	struct usb_device *usb_dev = hid_to_usb_dev(hdev);
--	unsigned char *data = kmalloc(8, GFP_KERNEL);
-+	unsigned char *data __free(kfree) = kmalloc(8, GFP_KERNEL);
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2707,6 +2707,16 @@ static acpi_status acpi_register_spi_dev
+ 	acpi_set_modalias(adev, acpi_device_hid(adev), spi->modalias,
+ 			  sizeof(spi->modalias));
  
- 	if (!hid_is_usb(hdev))
- 		return;
++	/*
++	 * This gets re-tried in spi_probe() for -EPROBE_DEFER handling in case
++	 * the GPIO controller does not have a driver yet. This needs to be done
++	 * here too, because this call sets the GPIO direction and/or bias.
++	 * Setting these needs to be done even if there is no driver, in which
++	 * case spi_probe() will never get called.
++	 */
++	if (spi->irq < 0)
++		spi->irq = acpi_dev_gpio_irq_get(adev, 0);
++
+ 	acpi_device_set_enumerated(adev);
  
- 	if (!data)
--		goto err_free;
-+		return;
- 
- 	ret = usb_control_msg(usb_dev, usb_rcvctrlpipe(usb_dev, 0),
- 			      USB_REQ_CLEAR_FEATURE,
-@@ -163,9 +163,6 @@ static void ntrig_report_version(struct hid_device *hdev)
- 		hid_info(hdev, "Firmware version: %s (%02x%02x %02x%02x)\n",
- 			 buf, data[2], data[3], data[4], data[5]);
- 	}
--
--err_free:
--	kfree(data);
- }
- 
- static ssize_t show_phys_width(struct device *dev,
--- 
-2.51.0
-
+ 	adev->power.flags.ignore_parent = true;
 
 
 
