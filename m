@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A27ECA0851
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:36:56 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 782ECCA0718
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:28:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 468CA33B6A4D
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:17:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E7BE63000B29
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:28:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C3903002B6;
-	Wed,  3 Dec 2025 16:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 629163164A4;
+	Wed,  3 Dec 2025 15:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T7QqU1rg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DzCHYMeU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F61258CD9;
-	Wed,  3 Dec 2025 16:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20616315D51;
+	Wed,  3 Dec 2025 15:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778153; cv=none; b=bDU2tztLxJce7wyhMA3ILqVJ8TcxVUNtwweWbzg4cHZhzpGP70glrtyZ4KFl5fS1jUcQzV+1xAVKKCGRM4LX2024/GfO+SNcA57cfFqJqcfbrnZqZYKPzeGCHFLh/9nkdXXhf+5V0fl0/TSTcJgeGzed7Cnwt3Hm/UMjmb4Im8Y=
+	t=1764776570; cv=none; b=V8RsgXi2p3X6vtlNaE61L6laG7r9DdaJXh/nunwE38STaYlP1wZt3iRl+e4414EpRIYP9wSFwr0T28E4k3mRDIAIuWv0QXTYlVctyUgdM2Wy0/zwTSWWEq26McOU/3VAEWsFaNLa9ussw9eN98zEDwd1g1tfnLTg3KQBMjokOGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778153; c=relaxed/simple;
-	bh=OMcFbTEdJ0pRtDrK7IKwSVaW0VhsYiUNEOyOd7Q1gkk=;
+	s=arc-20240116; t=1764776570; c=relaxed/simple;
+	bh=i60slNYl/39H+n7gX74aDvl0trY4EYXVyOUJO+p1zd4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H3/pWeeDfSFke8WOztDMx/n47cKL007IzD6N+KqLsyfTwqSFxnTNlEv8rpJk5iXNy8NqLFfSpwCB/6WwmNgGKG+9U/hIXMiWNk8VPnlYXxR1oypfy1m9GtRndDvT1z0VIcPe3iRopnxStmfUX+lr9K7hvPmIzE5a0HAQIoD2qxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T7QqU1rg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49049C4CEF5;
-	Wed,  3 Dec 2025 16:09:12 +0000 (UTC)
+	 MIME-Version; b=leEvRb0GIGuc5ETzEtb3P0lx7drSceTz2GmjUuS6ozeL4QFkrOTjoEd3xHEWDWXPujLlxkQBYm+jI+qQVKVj30FEC2uFxRLvcbO5+BBnoai8Qvq3pYME6mxTkjLuXIXZbxMVePTHUp8bGD4EMIxiHu0ujnCOsFO8GthMzN6MWzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DzCHYMeU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D945C4CEF5;
+	Wed,  3 Dec 2025 15:42:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778152;
-	bh=OMcFbTEdJ0pRtDrK7IKwSVaW0VhsYiUNEOyOd7Q1gkk=;
+	s=korg; t=1764776570;
+	bh=i60slNYl/39H+n7gX74aDvl0trY4EYXVyOUJO+p1zd4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T7QqU1rgayZ6dSKov/534qGzFiRrOqfBxZKBPi9fxFOBb6EZT9Hlnakg37K73TI/N
-	 9wpONH1EJSYshvgMET81AhGl6hU3m3CM5iy2AszbSqJ6fCniB6NKcXfsf08dVVhG6Y
-	 vrcUkB+bMxjpt8kJjgwghASvJvvT7UCC9Ib1uCWM=
+	b=DzCHYMeUYDVaopl2AgSYdNPayrA33ms8fEEBwFRVMkN5JeAjHT/ul0wD1qU0m4fah
+	 8bQBIrAesWnDmFSBHeqNqKckbK328MVxgeLhdgfxnOhJXgqU9bVtW+my67HfLm8V1Z
+	 E8RiHt1qzQuQKjyq4hzFretTdBxOH4jfnIeU7/QI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Mark Brown <broonie@kernel.org>,
+	Masami Ichikawa <masami256@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 259/392] regulator: fixed: fix GPIO descriptor leak on register failure
+Subject: [PATCH 5.10 205/300] HID: hid-ntrig: Prevent memory leak in ntrig_report_version()
 Date: Wed,  3 Dec 2025 16:26:49 +0100
-Message-ID: <20251203152423.698938076@linuxfoundation.org>
+Message-ID: <20251203152408.218237892@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +60,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Masami Ichikawa <masami256@gmail.com>
 
-[ Upstream commit 636f4618b1cd96f6b5a2b8c7c4f665c8533ecf13 ]
+[ Upstream commit 53f731f5bba0cf03b751ccceb98b82fadc9ccd1e ]
 
-In the commit referenced by the Fixes tag,
-devm_gpiod_get_optional() was replaced by manual
-GPIO management, relying on the regulator core to release the
-GPIO descriptor. However, this approach does not account for the
-error path: when regulator registration fails, the core never
-takes over the GPIO, resulting in a resource leak.
+Use a scope-based cleanup helper for the buffer allocated with kmalloc()
+in ntrig_report_version() to simplify the cleanup logic and prevent
+memory leaks (specifically the !hid_is_usb()-case one).
 
-Add gpiod_put() before returning on regulator registration failure.
-
-Fixes: 5e6f3ae5c13b ("regulator: fixed: Let core handle GPIO descriptor")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20251028172828.625-1-vulab@iscas.ac.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
+[jkosina@suse.com: elaborate on the actual existing leak]
+Fixes: 185c926283da ("HID: hid-ntrig: fix unable to handle page fault in ntrig_report_version()")
+Signed-off-by: Masami Ichikawa <masami256@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/fixed.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hid/hid-ntrig.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/regulator/fixed.c b/drivers/regulator/fixed.c
-index fb163458337fc..adc21b1bad94b 100644
---- a/drivers/regulator/fixed.c
-+++ b/drivers/regulator/fixed.c
-@@ -290,6 +290,7 @@ static int reg_fixed_voltage_probe(struct platform_device *pdev)
- 		ret = dev_err_probe(&pdev->dev, PTR_ERR(drvdata->dev),
- 				    "Failed to register regulator: %ld\n",
- 				    PTR_ERR(drvdata->dev));
-+		gpiod_put(cfg.ena_gpiod);
- 		return ret;
- 	}
+diff --git a/drivers/hid/hid-ntrig.c b/drivers/hid/hid-ntrig.c
+index a1128c5315fff..3c41f6841f775 100644
+--- a/drivers/hid/hid-ntrig.c
++++ b/drivers/hid/hid-ntrig.c
+@@ -142,13 +142,13 @@ static void ntrig_report_version(struct hid_device *hdev)
+ 	int ret;
+ 	char buf[20];
+ 	struct usb_device *usb_dev = hid_to_usb_dev(hdev);
+-	unsigned char *data = kmalloc(8, GFP_KERNEL);
++	unsigned char *data __free(kfree) = kmalloc(8, GFP_KERNEL);
  
+ 	if (!hid_is_usb(hdev))
+ 		return;
+ 
+ 	if (!data)
+-		goto err_free;
++		return;
+ 
+ 	ret = usb_control_msg(usb_dev, usb_rcvctrlpipe(usb_dev, 0),
+ 			      USB_REQ_CLEAR_FEATURE,
+@@ -163,9 +163,6 @@ static void ntrig_report_version(struct hid_device *hdev)
+ 		hid_info(hdev, "Firmware version: %s (%02x%02x %02x%02x)\n",
+ 			 buf, data[2], data[3], data[4], data[5]);
+ 	}
+-
+-err_free:
+-	kfree(data);
+ }
+ 
+ static ssize_t show_phys_width(struct device *dev,
 -- 
 2.51.0
 
