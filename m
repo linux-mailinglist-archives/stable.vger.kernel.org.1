@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-198854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE060C9FD67
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:12:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94905C9F929
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:42:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 89FAE302C8D3
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:04:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 293353036585
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:37:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38B4A34F46B;
-	Wed,  3 Dec 2025 16:04:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A66B23148C1;
+	Wed,  3 Dec 2025 15:37:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ElulvS6w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="urTUypqH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4CBE34F466;
-	Wed,  3 Dec 2025 16:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64A37309EFF;
+	Wed,  3 Dec 2025 15:37:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777889; cv=none; b=K+gbccydPB/RgDD2q+AMGbusGvip2ODp/yw6yuRPrT2j6acoX6VfkWZQzgWRbChbz6A/smSY1fxQJZDqNZWM+59nyg//t/oLsCSAS6y8FQ2G+XYWHSxL7g0VEAYD9JtPjh1MsK1uRFgolxAEJjNGVDVDrpSjSe1KAS0fLwLtpCg=
+	t=1764776254; cv=none; b=girFG5wT/dmlnjQ38Iiw2eevj4TAryQPXlz2ivBsAerNdLarxlo/qaJZgMzUig7CFs/6kWINlqBEt3pNQX2jz2wvktb1i3v0YRkJdonhtgPseP/9viX3mmQqFy82rVx0JhhiNYTpLzFVmRoODGXGbL/NQ4CO0urTJfLIYKEVIQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777889; c=relaxed/simple;
-	bh=kdrwhsAjO2q/deutRS6gyw9fKG64JLlQ+w6uOmhzwWk=;
+	s=arc-20240116; t=1764776254; c=relaxed/simple;
+	bh=OieaGKzYkQmv2oWRBBHFK1aCAA9jfJzeADyn5/VmeU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aseuBvggvZDlHTMGD+/McigN8eh0tiUmDCdpRrwN0aA4vn+tiWLT8tpLlGFBS9omr2l9GtneRgdTWWxIDuKb6dzvHY+L6O6RyUzDIc1TIPjoKinZqBQ7/GZFPkrWgh7+WaFFHVlsfZDa15MuY80W1Z6Zq5RfOmXaTj7CI8xR0DI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ElulvS6w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0914AC4CEF5;
-	Wed,  3 Dec 2025 16:04:47 +0000 (UTC)
+	 MIME-Version; b=kblN31TGejiATXCZ4W6CeUFxFRtRB9Kep2jZpbfLYr+HIk/CGtAjGyhHAMILG6WUemAFpw5AHNnyrM86Sjk8S6INjfy5+nRDWokjvfnoQdoSl2A8sVicr038T6S375P5fSGgb7UVLMIJUsUIB2uc04/PYK9/AKHEkUFS+tqmvt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=urTUypqH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6D3DC4CEF5;
+	Wed,  3 Dec 2025 15:37:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777888;
-	bh=kdrwhsAjO2q/deutRS6gyw9fKG64JLlQ+w6uOmhzwWk=;
+	s=korg; t=1764776254;
+	bh=OieaGKzYkQmv2oWRBBHFK1aCAA9jfJzeADyn5/VmeU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ElulvS6wgkVF324HgHkars2zKkBOXrYJqU1yccN/pSxewYUJtlShbfofilMEcymPq
-	 rcNFixDPWPxnXyCC7Ln5oMirZ7mzuA6VMVt7dUzuWh40rOagy8naWeLH/BQ/2IYSuC
-	 cCP6DZMKQqllbhhKNCiq9fVzTveB+HnRDF1zwloI=
+	b=urTUypqHJuuYi4us8A+66/XNAecVmtX5LblYJCZGWNa1cYF7sZyGy3/diRUH4C9Ab
+	 6tXUeQzVFFKsPZcFDFz436pTTWXBoya9YJpqAFesqa6O2fQxOJbgYtrYuw4I8VJ162
+	 Qg1W9lFus9y8oJz7bhZnp2+eTPPXXcUtZwiGwnQU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 179/392] net: macb: avoid dealing with endianness in macb_set_hwaddr()
-Date: Wed,  3 Dec 2025 16:25:29 +0100
-Message-ID: <20251203152420.669166803@linuxfoundation.org>
+Subject: [PATCH 5.10 126/300] jfs: Verify inode mode when loading from disk
+Date: Wed,  3 Dec 2025 16:25:30 +0100
+Message-ID: <20251203152405.280725784@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +59,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Théo Lebrun <theo.lebrun@bootlin.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit 70a5ce8bc94545ba0fb47b2498bfb12de2132f4d ]
+[ Upstream commit 7a5aa54fba2bd591b22b9b624e6baa9037276986 ]
 
-bp->dev->dev_addr is of type `unsigned char *`. Casting it to a u32
-pointer and dereferencing implies dealing manually with endianness,
-which is error-prone.
+The inode mode loaded from corrupted disk can be invalid. Do like what
+commit 0a9e74051313 ("isofs: Verify inode mode when loading from disk")
+does.
 
-Replace by calls to get_unaligned_le32|le16() helpers.
-
-This was found using sparse:
-   ⟩ make C=2 drivers/net/ethernet/cadence/macb_main.o
-   warning: incorrect type in assignment (different base types)
-      expected unsigned int [usertype] bottom
-      got restricted __le32 [usertype]
-   warning: incorrect type in assignment (different base types)
-      expected unsigned short [usertype] top
-      got restricted __le16 [usertype]
-   ...
-
-Reviewed-by: Sean Anderson <sean.anderson@linux.dev>
-Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250923-macb-fixes-v6-5-772d655cdeb6@bootlin.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/jfs/inode.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 2266a3ecc5533..d4a4d72460a42 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -280,9 +280,9 @@ static void macb_set_hwaddr(struct macb *bp)
- 	u32 bottom;
- 	u16 top;
- 
--	bottom = cpu_to_le32(*((u32 *)bp->dev->dev_addr));
-+	bottom = get_unaligned_le32(bp->dev->dev_addr);
- 	macb_or_gem_writel(bp, SA1B, bottom);
--	top = cpu_to_le16(*((u16 *)(bp->dev->dev_addr + 4)));
-+	top = get_unaligned_le16(bp->dev->dev_addr + 4);
- 	macb_or_gem_writel(bp, SA1T, top);
- 
- 	/* Clear unused address register sets */
+diff --git a/fs/jfs/inode.c b/fs/jfs/inode.c
+index 2472b33e3a2d8..01f55fac31cf3 100644
+--- a/fs/jfs/inode.c
++++ b/fs/jfs/inode.c
+@@ -59,9 +59,15 @@ struct inode *jfs_iget(struct super_block *sb, unsigned long ino)
+ 			 */
+ 			inode->i_link[inode->i_size] = '\0';
+ 		}
+-	} else {
++	} else if (S_ISCHR(inode->i_mode) || S_ISBLK(inode->i_mode) ||
++		   S_ISFIFO(inode->i_mode) || S_ISSOCK(inode->i_mode)) {
+ 		inode->i_op = &jfs_file_inode_operations;
+ 		init_special_inode(inode, inode->i_mode, inode->i_rdev);
++	} else {
++		printk(KERN_DEBUG "JFS: Invalid file type 0%04o for inode %lu.\n",
++		       inode->i_mode, inode->i_ino);
++		iget_failed(inode);
++		return ERR_PTR(-EIO);
+ 	}
+ 	unlock_new_inode(inode);
+ 	return inode;
 -- 
 2.51.0
 
