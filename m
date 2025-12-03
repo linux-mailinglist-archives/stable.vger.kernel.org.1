@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-199449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D8B6CA00A2
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:41:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8870CC9FA79
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:48:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4CE53301412F
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:37:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DECA1303E015
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:41:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBFE735C185;
-	Wed,  3 Dec 2025 16:37:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98EFD30F93B;
+	Wed,  3 Dec 2025 15:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F7HHV8fw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="znhMvGtw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80AD2357720;
-	Wed,  3 Dec 2025 16:37:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55D6030C37A;
+	Wed,  3 Dec 2025 15:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779837; cv=none; b=Rj8xAzTlCv1JIbtOWz22q7eVfRV6YzYCywdbF7oZ4IzmAg/kUh3XjVqA0pvmT5fylU5YFnAI3aZMXAb1qbwqFLnC6w1O7ckmFts2vHtJX+noOCrBaZBRZ7SFJjWth8xlQc3Qxmxx6a1BWl4o6ybT25bWU9SjR8qGY0qLGeoQaGI=
+	t=1764776517; cv=none; b=f8vuGmWtZbRHAJR65xvGEnyAHeeNCQ3QGR7KtUP9/JWL/WRE720+kOKkE6P6v4V8Q5HPgGXxULX5uMp8c49sdTpbCD3yYCOyV7q2zG16NMkBcgPLijnSjnZBRlnVOU8oJi64RQZ5ZERNiDVjySIEwCAT+dFkABoK2BEn1cjcFAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779837; c=relaxed/simple;
-	bh=05HwqpET8SQTopBntpqL7HbvVuJN5b1atJRYFZ2NhlY=;
+	s=arc-20240116; t=1764776517; c=relaxed/simple;
+	bh=lMYUb+pAEOiU1Ia76nqpvaKw6ei6BjKxQuMD5c3Xbzc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XQtrrqHYQEm3v64GI/neDuluY2WgMeE2x8VolUZ2fbvCcs3QchPf4YLJGe7ROpz6MWUhvynahN+G/FsB/DX3XNoSkXD2uODnQygYODZccRB0dWyh3EINZA5nKhS61dxr3iRjM/2dCNNHSA+eVI6rrbODHiGsWalCYQPIDZ6k000=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F7HHV8fw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E34D1C4CEF5;
-	Wed,  3 Dec 2025 16:37:16 +0000 (UTC)
+	 MIME-Version; b=Pnz0vJHhLAxHM8RtOKRWe9PMhW7OUxpnX0P+jyaCQPJSdq4Gu+nhKImo/aa9YEu1VAxieg39MTFflcEbCG5F0YwA0brYbUXxFqiNdRVC3PRy41v6EkETr/FUgGZnekFzOFprEZDz4IJb7ajGnpWzSM4urY9BrooojVf42twjd3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=znhMvGtw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3144C116B1;
+	Wed,  3 Dec 2025 15:41:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779837;
-	bh=05HwqpET8SQTopBntpqL7HbvVuJN5b1atJRYFZ2NhlY=;
+	s=korg; t=1764776517;
+	bh=lMYUb+pAEOiU1Ia76nqpvaKw6ei6BjKxQuMD5c3Xbzc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F7HHV8fw2wCbd9zhEGh9yujiYME1jipIfOV2YOc2On//tHRcqlTndt0A9u7n3ZAAR
-	 MtunFV9zq0c5Tlb3g31HWyZwtdd1LQWpXmWZKi1TF1S0rCddxBKI1aEEttzMKsBVir
-	 GWwhZBsVMTs6rxAhq8WaeWgAl7H5S82oFc3VzTBE=
+	b=znhMvGtwLb9OKoFQtFMlnm/9q1rc0cFZ33JVTe1XNlGIPYyuPY78aquThBAyzGqDu
+	 RaHiJ2KYQWq7qickjSXRmdR5wJb8ilQftUjXDDy6/xs50+mKKGm6FMPlc0BIHgAz39
+	 jj4jCxY5rEvnh5vnX9YmU9S9+9jxTdxtFOw1KLiw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christopher Harris <chris.harris79@gmail.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	"Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Danil Skrebenkov <danil.skrebenkov@cloudbear.ru>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Paul Walmsley <pjw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 376/568] ACPI: CPPC: Check _CPC validity for only the online CPUs
+Subject: [PATCH 5.10 174/300] RISC-V: clear hot-unplugged cores from all task mm_cpumasks to avoid rfence errors
 Date: Wed,  3 Dec 2025 16:26:18 +0100
-Message-ID: <20251203152454.470273188@linuxfoundation.org>
+Message-ID: <20251203152407.072293592@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gautham R. Shenoy <gautham.shenoy@amd.com>
+From: Danil Skrebenkov <danil.skrebenkov@cloudbear.ru>
 
-[ Upstream commit 6dd3b8a709a130a4d55c866af9804c81b8486d28 ]
+[ Upstream commit ae9e9f3d67dcef7582a4524047b01e33c5185ddb ]
 
-per_cpu(cpc_desc_ptr, cpu) object is initialized for only the online
-CPUs via acpi_soft_cpu_online() --> __acpi_processor_start() -->
-acpi_cppc_processor_probe().
+openSBI v1.7 adds harts checks for ipi operations. Especially it
+adds comparison between hmask passed as an argument from linux
+and mask of online harts (from openSBI side). If they don't
+fit each other the error occurs.
 
-However the function acpi_cpc_valid() checks for the validity of the
-_CPC object for all the present CPUs. This breaks when the kernel is
-booted with "nosmt=force".
+When cpu is offline, cpu_online_mask is explicitly cleared in
+__cpu_disable. However, there is no explicit clearing of
+mm_cpumask. mm_cpumask is used for rfence operations that
+call openSBI RFENCE extension which uses ipi to remote harts.
+If hart is offline there may be error if mask of linux is not
+as mask of online harts in openSBI.
 
-Hence check the validity of the _CPC objects of only the online CPUs.
+this patch adds explicit clearing of mm_cpumask for offline hart.
 
-Fixes: 2aeca6bd0277 ("ACPI: CPPC: Check present CPUs for determining _CPC is valid")
-Reported-by: Christopher Harris <chris.harris79@gmail.com>
-Closes: https://lore.kernel.org/lkml/CAM+eXpdDT7KjLV0AxEwOLkSJ2QtrsvGvjA2cCHvt1d0k2_C4Cw@mail.gmail.com/
-Suggested-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: "Mario Limonciello (AMD) (kernel.org)" <superm1@kernel.org>
-Tested-by: Chrisopher Harris <chris.harris79@gmail.com>
-Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Link: https://patch.msgid.link/20251107074145.2340-3-gautham.shenoy@amd.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Danil Skrebenkov <danil.skrebenkov@cloudbear.ru>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Link: https://lore.kernel.org/r/20250919132849.31676-1-danil.skrebenkov@cloudbear.ru
+[pjw@kernel.org: rewrote subject line for clarity]
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/cppc_acpi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/riscv/kernel/cpu-hotplug.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index 504fe14c566e3..6d89299af3bbe 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -440,7 +440,7 @@ bool acpi_cpc_valid(void)
- 	if (acpi_disabled)
- 		return false;
+diff --git a/arch/riscv/kernel/cpu-hotplug.c b/arch/riscv/kernel/cpu-hotplug.c
+index 0e948e87bd813..6cd16a2af2ee0 100644
+--- a/arch/riscv/kernel/cpu-hotplug.c
++++ b/arch/riscv/kernel/cpu-hotplug.c
+@@ -65,6 +65,7 @@ void __cpu_die(unsigned int cpu)
+ 	}
+ 	pr_notice("CPU%u: off\n", cpu);
  
--	for_each_present_cpu(cpu) {
-+	for_each_online_cpu(cpu) {
- 		cpc_ptr = per_cpu(cpc_desc_ptr, cpu);
- 		if (!cpc_ptr)
- 			return false;
++	clear_tasks_mm_cpumask(cpu);
+ 	/* Verify from the firmware if the cpu is really stopped*/
+ 	if (cpu_ops[cpu]->cpu_is_stopped)
+ 		ret = cpu_ops[cpu]->cpu_is_stopped(cpu);
 -- 
 2.51.0
 
