@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-198649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EAC4C9FC0E
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:59:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 075EBCA0676
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:24:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2D3D830062C3
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:53:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 522B132EBBCB
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:09:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDC7733769B;
-	Wed,  3 Dec 2025 15:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7745F338F39;
+	Wed,  3 Dec 2025 16:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nW9+uOec"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xq5bhKq4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2D63370F2;
-	Wed,  3 Dec 2025 15:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3483D338918;
+	Wed,  3 Dec 2025 16:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777231; cv=none; b=h/0vnePoy2jaVxUNdPWycK7YWKrFnRXb1TiOIsDC13hDy2B95qN5eTbD70mOx2gej/ci+1J/QQO7lLSg5Q+I4e78YcJUZWSDhzfQ9GqxWagCwjpvpoC3zX8Q6uekcxK9YbvMMfPUUGZRrXHNA/49OMzVbAm2po/M6NGj+bjjd4k=
+	t=1764780561; cv=none; b=rvt5dsBs8TIiqq+ibdlxFWTsijENjXZ2QkfwFC8SYTwmxBziQrCnTHaWFnUhahxn3VhT+UuNQnT3JnffETVuWS8vJI2rfp2+S3hQQhT/X6ebS/G1mEtPFF7PNPGcW8iAiUDmnKywNTJyLsFXY8OcaMYPz/6nRmLKrIiHIxZX0Jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777231; c=relaxed/simple;
-	bh=PAylfpklgSLNbsVJ5blf0/Dx6VtMn6LTnmNR0mCUa94=;
+	s=arc-20240116; t=1764780561; c=relaxed/simple;
+	bh=1IJ4wYYKkqpaWU4SgpCm3Msvax5CTug+VAwS2nn+4bY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZPRDHMcifFM8Eehoj7EKs/gvLYrgJI6cALa2jA+4I+ARqeBztRVqJG1iWuWntqfxoQv9xPd2+X+++WH/zl8EaG0QN7ibdv+hYFaI4fW89IQRFlOhHjHcRVme/dsbPgVjHJBZF+WooIqi9UUe+bTPRwemji80AliIABuE26GrAes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nW9+uOec; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 939B6C2BCF4;
-	Wed,  3 Dec 2025 15:53:49 +0000 (UTC)
+	 MIME-Version; b=vE+fvb+/t3FhLVOAZL5osi9AME3YrNBXe1l+Uzbqz+94KGFKHD/OeR2BW5AYdz9fLDD6E01WYUeJiF0xIgEMAEPKLIJiC5EWCpIkPsNP9bbtxyI4JDSjimjJVp8VO2muu4VRkyTRzRgSPajnXJ8DOz5HScNEY/UQictfbvgcobY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xq5bhKq4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F7E2C4CEF5;
+	Wed,  3 Dec 2025 16:49:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777230;
-	bh=PAylfpklgSLNbsVJ5blf0/Dx6VtMn6LTnmNR0mCUa94=;
+	s=korg; t=1764780561;
+	bh=1IJ4wYYKkqpaWU4SgpCm3Msvax5CTug+VAwS2nn+4bY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nW9+uOecfFkgS++fez1Ut23aQWJittmjR8wnDufNZ616iMn5CFtdyb1SSyskGiov5
-	 vtmVKFNo6c0i9fgdyjDs22FWcgsMHT1b87gOY0ZBYqXOQZUJs8nsLjmIPMOk7+1QMD
-	 oTCD+AZ/LXuUwtKNnTe2z44eZncvWjE1gd1YkOzk=
+	b=xq5bhKq4mpGLkZ0WfCqJ/LGhur0o5da1Vt7sbNgidlEvnbVFFbSkAYZhdd1sVB5qk
+	 HO40TJE2Mawg7pQ1TgkV/W9A8QUG2C/rmfb+hfdA5ps4AtjGhDI4Ce6vfZQX/T+zY+
+	 fxUHwRK649qwBDsSdfBNF7Uzn+KH/gNyBAeIxVw8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>
-Subject: [PATCH 6.17 123/146] xhci: dbgtty: fix device unregister
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 022/132] drm/amdgpu: fix cyan_skillfish2 gpu info fw handling
 Date: Wed,  3 Dec 2025 16:28:21 +0100
-Message-ID: <20251203152350.963382060@linuxfoundation.org>
+Message-ID: <20251203152344.121738841@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,50 +57,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Łukasz Bartosik <ukaszb@chromium.org>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit 1f73b8b56cf35de29a433aee7bfff26cea98be3f upstream.
+[ Upstream commit 7fa666ab07ba9e08f52f357cb8e1aad753e83ac6 ]
 
-When DbC is disconnected then xhci_dbc_tty_unregister_device()
-is called. However if there is any user space process blocked
-on write to DbC terminal device then it will never be signalled
-and thus stay blocked indifinitely.
+If the board supports IP discovery, we don't need to
+parse the gpu info firmware.
 
-This fix adds a tty_vhangup() call in xhci_dbc_tty_unregister_device().
-The tty_vhangup() wakes up any blocked writers and causes subsequent
-write attempts to DbC terminal device to fail.
+Backport to 6.18.
 
-Cc: stable <stable@kernel.org>
-Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
-Signed-off-by: Łukasz Bartosik <ukaszb@chromium.org>
-Link: https://patch.msgid.link/20251119212910.1245694-1-ukaszb@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4721
+Fixes: fa819e3a7c1e ("drm/amdgpu: add support for cyan skillfish gpu_info")
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 5427e32fa3a0ba9a016db83877851ed277b065fb)
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-dbgtty.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/usb/host/xhci-dbgtty.c
-+++ b/drivers/usb/host/xhci-dbgtty.c
-@@ -550,6 +550,12 @@ static void xhci_dbc_tty_unregister_devi
- 
- 	if (!port->registered)
- 		return;
-+	/*
-+	 * Hang up the TTY. This wakes up any blocked
-+	 * writers and causes subsequent writes to fail.
-+	 */
-+	tty_vhangup(port->port.tty);
-+
- 	tty_unregister_device(dbc_tty_driver, port->minor);
- 	xhci_dbc_tty_exit_port(port);
- 	port->registered = false;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index b93afd52a0094..9e1716a3f70ba 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -2414,6 +2414,8 @@ static int amdgpu_device_parse_gpu_info_fw(struct amdgpu_device *adev)
+ 		chip_name = "navi12";
+ 		break;
+ 	case CHIP_CYAN_SKILLFISH:
++		if (adev->mman.discovery_bin)
++			return 0;
+ 		chip_name = "cyan_skillfish";
+ 		break;
+ 	}
+-- 
+2.51.0
+
 
 
 
