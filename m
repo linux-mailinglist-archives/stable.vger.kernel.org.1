@@ -1,53 +1,57 @@
-Return-Path: <stable+bounces-198530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53627CA09D6
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:46:08 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88DC8CA024B
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:51:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0AD6031A40F9
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:25:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A194A303D07E
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:43:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BB4F3191CF;
-	Wed,  3 Dec 2025 15:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACC943612D7;
+	Wed,  3 Dec 2025 16:43:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WDg5tgub"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PSsRUNdt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DADA83191AF;
-	Wed,  3 Dec 2025 15:47:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D9563612E1;
+	Wed,  3 Dec 2025 16:43:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776850; cv=none; b=MlRIRZu94I3K0ms+aSeWFx5A8B9fnBHZK0a7fSj3AEA2UkRBBjFEnqu5X5itefrkB5S/LHWhvTNKLmTrEE/a5bbMCwGCODKz33VHgWq5KbKaAoJTrQHDW75Pb9Az2N4FeEkdGQx6pLUwje5WKupiYXx5htzLPRzdN5ubn5CLXy0=
+	t=1764780196; cv=none; b=d4o3VAcmap5OFMf3aUehaV9qI2Ixexsba7e5MSV54UcSp3veacO+OJwITNymHMbcnWz2+FH0PNNr/C3quFEj89dkXlXPiG1eh3iR+eZKRfqkSsPjqWvlGoRSLQ0vknkqoxcOhadDi7CjUDLX99T6KrdHC/cIIaMqrYVwsaSbTHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776850; c=relaxed/simple;
-	bh=8klkRzoYz7QFet1vfuOsz2Cp8RqGWpko9uHHfM8wOHs=;
+	s=arc-20240116; t=1764780196; c=relaxed/simple;
+	bh=HKt+++PCsUFp/2qJ9/ntX0wMxh1e4jOJ7nsmAZK5dqo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H12FfYDYJanINv477MRWe6oMAhoAFH9nMApgzHUcsOTc5bRTuquyGitmVjb+gHS8oNfqvkhV6cRQNMPj40k4ay16XsnQz0JGJYdZtOIDyitXgb4yj1gNiAUA2eJ+cat0czI7zh7/JYtaiHDlUugkIGpM5ljZGkZnrTIKfqhoPV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WDg5tgub; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B941C4CEF5;
-	Wed,  3 Dec 2025 15:47:30 +0000 (UTC)
+	 MIME-Version; b=BluWdMaNrIju0F8NdcZL8FbC6l1fcMRd0gNUGz79A77urVTMcFOJq1/jIzik6BjB9SGONq8xNW7V0hATuBKRZZDWnaGZK/UGCXf/1c7dFPJ8fGf9pnchZ+Cuqk7xU7HT6wBm/aobPTK8eD/ebD6ByJ3bfVYyvfNbstH0KQysYxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PSsRUNdt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F96EC4CEF5;
+	Wed,  3 Dec 2025 16:43:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776850;
-	bh=8klkRzoYz7QFet1vfuOsz2Cp8RqGWpko9uHHfM8wOHs=;
+	s=korg; t=1764780196;
+	bh=HKt+++PCsUFp/2qJ9/ntX0wMxh1e4jOJ7nsmAZK5dqo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WDg5tgubNpcSzHNWrP8Ddqz6EaNDEba8D/F0eNKUbQFyJW6cb6YwnJawYX6kykFGS
-	 SaEiZybXv7XyaWZz60AA1c8rau5t4MxI1Nc5ip43AU8BJH7iOELnzNux7CJInndGLx
-	 I7m+7udQ6iEjPCh6LpZtNSdkTiUQe3u6scO5UYOU=
+	b=PSsRUNdt3AVVW8eOKCgznasHYntrdXp1ckS7PJK1b4hWp1QyPVcxsAcx/h5/SxCu4
+	 88NctvRtMTDU7fr14A/AlpEr2dKOJdy4o+ohd2DPq/Pt6TLU5TJ5UI8+395oaAzG2M
+	 H+79xy9sFwzmXzgb13o1wav085laqB4LUATYmEvc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tianchu Chen <flynnnchen@tencent.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.10 282/300] usb: storage: sddr55: Reject out-of-bound new_pba
+	Ilia Baryshnikov <qwelias@gmail.com>,
+	Hannes Reinecke <hare@suse.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 484/568] ata: libata-scsi: Fix system suspend for a security locked drive
 Date: Wed,  3 Dec 2025 16:28:06 +0100
-Message-ID: <20251203152411.073103147@linuxfoundation.org>
+Message-ID: <20251203152458.429354701@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,47 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tianchu Chen <flynnnchen@tencent.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-commit b59d4fda7e7d0aff1043a7f742487cb829f5aac1 upstream.
+[ Upstream commit b11890683380a36b8488229f818d5e76e8204587 ]
 
-Discovered by Atuin - Automated Vulnerability Discovery Engine.
+Commit cf3fc037623c ("ata: libata-scsi: Fix ata_to_sense_error() status
+handling") fixed ata_to_sense_error() to properly generate sense key
+ABORTED COMMAND (without any additional sense code), instead of the
+previous bogus sense key ILLEGAL REQUEST with the additional sense code
+UNALIGNED WRITE COMMAND, for a failed command.
 
-new_pba comes from the status packet returned after each write.
-A bogus device could report values beyond the block count derived
-from info->capacity, letting the driver walk off the end of
-pba_to_lba[] and corrupt heap memory.
+However, this broke suspend for Security locked drives (drives that have
+Security enabled, and have not been Security unlocked by boot firmware).
 
-Reject PBAs that exceed the computed block count and fail the
-transfer so we avoid touching out-of-range mapping entries.
+The reason for this is that the SCSI disk driver, for the Synchronize
+Cache command only, treats any sense data with sense key ILLEGAL REQUEST
+as a successful command (regardless of ASC / ASCQ).
 
-Signed-off-by: Tianchu Chen <flynnnchen@tencent.com>
-Cc: stable <stable@kernel.org>
-Link: https://patch.msgid.link/B2DC73A3EE1E3A1D+202511161322001664687@tencent.com
+After commit cf3fc037623c ("ata: libata-scsi: Fix ata_to_sense_error()
+status handling") the code that treats any sense data with sense key
+ILLEGAL REQUEST as a successful command is no longer applicable, so the
+command fails, which causes the system suspend to be aborted:
+
+  sd 1:0:0:0: PM: dpm_run_callback(): scsi_bus_suspend returns -5
+  sd 1:0:0:0: PM: failed to suspend async: error -5
+  PM: Some devices failed to suspend, or early wake event detected
+
+To make suspend work once again, for a Security locked device only,
+return sense data LOGICAL UNIT ACCESS NOT AUTHORIZED, the actual sense
+data which a real SCSI device would have returned if locked.
+The SCSI disk driver treats this sense data as a successful command.
+
+Cc: stable@vger.kernel.org
+Reported-by: Ilia Baryshnikov <qwelias@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220704
+Fixes: cf3fc037623c ("ata: libata-scsi: Fix ata_to_sense_error() status handling")
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/sddr55.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/ata/libata-scsi.c |    8 ++++++++
+ include/linux/ata.h       |    1 +
+ 2 files changed, 9 insertions(+)
 
---- a/drivers/usb/storage/sddr55.c
-+++ b/drivers/usb/storage/sddr55.c
-@@ -469,6 +469,12 @@ static int sddr55_write_data(struct us_d
- 		new_pba = (status[3] + (status[4] << 8) + (status[5] << 16))
- 						  >> info->blockshift;
- 
-+		/* check if device-reported new_pba is out of range */
-+		if (new_pba >= (info->capacity >> (info->blockshift + info->pageshift))) {
-+			result = USB_STOR_TRANSPORT_FAILED;
-+			goto leave;
-+		}
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -996,6 +996,14 @@ static void ata_gen_ata_sense(struct ata
+ 		ata_scsi_set_sense(dev, cmd, NOT_READY, 0x04, 0x21);
+ 		return;
+ 	}
 +
- 		/* check status for error */
- 		if (status[0] == 0xff && status[1] == 0x4) {
- 			info->pba_to_lba[new_pba] = BAD_BLOCK;
++	if (ata_id_is_locked(dev->id)) {
++		/* Security locked */
++		/* LOGICAL UNIT ACCESS NOT AUTHORIZED */
++		ata_scsi_set_sense(dev, cmd, DATA_PROTECT, 0x74, 0x71);
++		return;
++	}
++
+ 	/* Use ata_to_sense_error() to map status register bits
+ 	 * onto sense key, asc & ascq.
+ 	 */
+--- a/include/linux/ata.h
++++ b/include/linux/ata.h
+@@ -558,6 +558,7 @@ struct ata_bmdma_prd {
+ #define ata_id_has_ncq(id)	((id)[ATA_ID_SATA_CAPABILITY] & (1 << 8))
+ #define ata_id_queue_depth(id)	(((id)[ATA_ID_QUEUE_DEPTH] & 0x1f) + 1)
+ #define ata_id_removable(id)	((id)[ATA_ID_CONFIG] & (1 << 7))
++#define ata_id_is_locked(id)	(((id)[ATA_ID_DLF] & 0x7) == 0x7)
+ #define ata_id_has_atapi_AN(id)	\
+ 	((((id)[ATA_ID_SATA_CAPABILITY] != 0x0000) && \
+ 	  ((id)[ATA_ID_SATA_CAPABILITY] != 0xffff)) && \
 
 
 
