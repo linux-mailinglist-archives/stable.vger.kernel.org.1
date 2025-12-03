@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-198489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1344C9FB66
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:55:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13F63CA0A39
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:48:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 78F123062BC9
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:45:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8FE3F3004CDB
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:48:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B06D30BB9B;
-	Wed,  3 Dec 2025 15:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D41C348896;
+	Wed,  3 Dec 2025 16:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lgAKtYWV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EqVx6xld"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DADC130F925;
-	Wed,  3 Dec 2025 15:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 280CD34888F;
+	Wed,  3 Dec 2025 16:12:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776715; cv=none; b=BXMpGyyyqgBjdeWn85ah+l8gm7Gc5/+ixmSRracbSCbcdBoJ2lLCHeiBVhq1fpSJ6Y6J2wF5+CiFm/FyGN9z0e06yYAwseKKd20CVLrF/gwt355/xZsZVRePfqZ5s0+sLh0ISDre0+RAXkSMc0pvxnQTOifOYNA7MGNpMgqFfaE=
+	t=1764778348; cv=none; b=Bl0k4cf1ePqOOGwb/34CWwgbqwbm0WbEEJpLU5QwYXplEUeiEWimTtFlr6/KSrMHyZ7KJBIZOL1B5r6dvtzcGzJseuuxcFBjLCbX/GPXzfcYp+vlq1MI7F6kay3yewRDy3J5gplGF8UQssC7aHSvICUhNZlQoOR6xU16PBDbDJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776715; c=relaxed/simple;
-	bh=fs2g1LE46cI1eFImU53WiedkhBfpfoThgjfBkR5R0e0=;
+	s=arc-20240116; t=1764778348; c=relaxed/simple;
+	bh=hnozSIcLkd3TVczrvPlcou7V3DyCOUG8VFXqbDbN/bI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d4HsiQvn+ncYzQtCIgMmPIWL1nQsxFywc4DYhnRdiL1m6d5fiiUtPeTnoG6qqcQL8OXbfs97U4u5j2bidmtqiY0GUuFom4iqn8LvL+7DFs1bbclAplqMr031Uo2wSHYZpm9hr7rA3hUUMUCJKFWNIJppnujJKaNJVlxKVTQVgkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lgAKtYWV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49695C4CEF5;
-	Wed,  3 Dec 2025 15:45:14 +0000 (UTC)
+	 MIME-Version; b=ahHipwskhul8dObybYmJCzWx5k5Nx8Ea3BycYCqk2mHQGlRlYwgNo5ezgQTv9UkU6VS8a3XfXypHoVnz1LLJG9+k+laLUgVxmfncKYm7RUpHgV1zxhFuP4/5U6KDpXLVnqWEf1Bb0Ro1v46c8EtXRjyG7ccs2lks2q5V5xRfO+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EqVx6xld; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31955C4CEF5;
+	Wed,  3 Dec 2025 16:12:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776714;
-	bh=fs2g1LE46cI1eFImU53WiedkhBfpfoThgjfBkR5R0e0=;
+	s=korg; t=1764778347;
+	bh=hnozSIcLkd3TVczrvPlcou7V3DyCOUG8VFXqbDbN/bI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lgAKtYWVREsA/ogEqSn6O6R/jcuSFxfksVk4DldD+CHjivh2sKLqV9AHKgjfv6ZHA
-	 0GDhM7y+8k5YzB2o+dWE3OVxN9LZi3QF2iWQ6n59Q/BGqx/1pIIAMbXStIDgYp1zfl
-	 GiH+YaRtJjnDvR/j1SWQnR90L1M8tDlyRGMbnL7Y=
+	b=EqVx6xldSu8Kh3jy4rzfrp8tw7hR1sn8UnE75vIqs+za86C4giED73s5Lc8wqeltq
+	 l9kzT7Zvmya11Qv8ZjGq+N4W/kjUzcIJdGsD5lcpeaPbWItqQdbfMMQ0NbXP8PBUn/
+	 DQCu5eZGSckGKejEygRn6Nm3u+u6AvOmmomarMLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francesco Lavra <flavra@baylibre.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 265/300] iio: imu: st_lsm6dsx: fix array size for st_lsm6dsx_settings fields
+	Miaoqian Lin <linmq006@gmail.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 319/392] pmdomain: imx: Fix reference count leak in imx_gpc_remove
 Date: Wed,  3 Dec 2025 16:27:49 +0100
-Message-ID: <20251203152410.452946631@linuxfoundation.org>
+Message-ID: <20251203152425.898628365@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +60,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Francesco Lavra <flavra@baylibre.com>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-commit 3af0c1fb1cdc351b64ff1a4bc06d491490c1f10a upstream.
+[ Upstream commit bbde14682eba21d86f5f3d6fe2d371b1f97f1e61 ]
 
-The `decimator` and `batch` fields of struct st_lsm6dsx_settings
-are arrays indexed by sensor type, not by sensor hardware
-identifier; moreover, the `batch` field is only used for the
-accelerometer and gyroscope.
-Change the array size for `decimator` from ST_LSM6DSX_MAX_ID to
-ST_LSM6DSX_ID_MAX, and change the array size for `batch` from
-ST_LSM6DSX_MAX_ID to 2; move the enum st_lsm6dsx_sensor_id
-definition so that the ST_LSM6DSX_ID_MAX value is usable within
-the struct st_lsm6dsx_settings definition.
+of_get_child_by_name() returns a node pointer with refcount incremented, we
+should use of_node_put() on it when not needed anymore. Add the missing
+of_node_put() to avoid refcount leak.
 
-Fixes: 801a6e0af0c6c ("iio: imu: st_lsm6dsx: add support to LSM6DSO")
-Signed-off-by: Francesco Lavra <flavra@baylibre.com>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 721cabf6c660 ("soc: imx: move PGC handling to a new GPC driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+[ drivers/pmdomain/imx/gpc.c -> drivers/soc/imx/gpc.c ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h |   22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ drivers/soc/imx/gpc.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-@@ -221,6 +221,15 @@ struct st_lsm6dsx_event_settings {
- 	u8 wakeup_src_x_mask;
- };
+--- a/drivers/soc/imx/gpc.c
++++ b/drivers/soc/imx/gpc.c
+@@ -540,6 +540,8 @@ static int imx_gpc_remove(struct platfor
+ 			return ret;
+ 	}
  
-+enum st_lsm6dsx_sensor_id {
-+	ST_LSM6DSX_ID_GYRO,
-+	ST_LSM6DSX_ID_ACC,
-+	ST_LSM6DSX_ID_EXT0,
-+	ST_LSM6DSX_ID_EXT1,
-+	ST_LSM6DSX_ID_EXT2,
-+	ST_LSM6DSX_ID_MAX
-+};
++	of_node_put(pgc_node);
 +
- enum st_lsm6dsx_ext_sensor_id {
- 	ST_LSM6DSX_ID_MAGN,
- };
-@@ -307,23 +316,14 @@ struct st_lsm6dsx_settings {
- 	struct st_lsm6dsx_reg drdy_mask;
- 	struct st_lsm6dsx_odr_table_entry odr_table[2];
- 	struct st_lsm6dsx_fs_table_entry fs_table[2];
--	struct st_lsm6dsx_reg decimator[ST_LSM6DSX_MAX_ID];
--	struct st_lsm6dsx_reg batch[ST_LSM6DSX_MAX_ID];
-+	struct st_lsm6dsx_reg decimator[ST_LSM6DSX_ID_MAX];
-+	struct st_lsm6dsx_reg batch[2];
- 	struct st_lsm6dsx_fifo_ops fifo_ops;
- 	struct st_lsm6dsx_hw_ts_settings ts_settings;
- 	struct st_lsm6dsx_shub_settings shub_settings;
- 	struct st_lsm6dsx_event_settings event_settings;
- };
+ 	return 0;
+ }
  
--enum st_lsm6dsx_sensor_id {
--	ST_LSM6DSX_ID_GYRO,
--	ST_LSM6DSX_ID_ACC,
--	ST_LSM6DSX_ID_EXT0,
--	ST_LSM6DSX_ID_EXT1,
--	ST_LSM6DSX_ID_EXT2,
--	ST_LSM6DSX_ID_MAX,
--};
--
- enum st_lsm6dsx_fifo_mode {
- 	ST_LSM6DSX_FIFO_BYPASS = 0x0,
- 	ST_LSM6DSX_FIFO_CONT = 0x6,
 
 
 
