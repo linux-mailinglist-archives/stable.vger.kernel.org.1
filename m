@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48B8ECA06CF
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:27:00 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 961EBC9FBCC
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:57:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6F3F9330B979
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:10:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 412863001DCD
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:57:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71CBC35CBD0;
-	Wed,  3 Dec 2025 16:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 660A63431EF;
+	Wed,  3 Dec 2025 15:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AzwaSoZL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CHJ9N9PJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DEEC35CBC4;
-	Wed,  3 Dec 2025 16:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21A433431EE;
+	Wed,  3 Dec 2025 15:57:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779217; cv=none; b=tk+eaJvdQw6kUiW3U0uXI2gslfMsqOU/qWiue2MaDa8MUX5+sVwwba3+EN0qrKK5kPhqPmQ5tS32pJgV6Cg+VMEVTYvq+e6Pi+bSlAdMMkzryo0SZZHsRNreID61iXi7dwStWg1UFqvB2BHS4AgVqyGJcYM+kbyVC0LtJTNUr28=
+	t=1764777461; cv=none; b=Xll3yD1LCkzo5UwLVpS86beBqWfQQF+H7idllmt6ecX2PuYMExCyxf+SRhqI0JR6bYfjlD5KPpaAi+DQTbT+JXIQWY8APm+ituOmcmzcvu9KqEj2Fayv9atnWa+qSzxTPUDxpvod0LKw8zlOBKqc7wgi2lmdqNwjeu6F+JZGEpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779217; c=relaxed/simple;
-	bh=FFqgbI17iSZnlbpsqvI83EtslEXhLiXTlMr4pC4tZVA=;
+	s=arc-20240116; t=1764777461; c=relaxed/simple;
+	bh=JpfSQTVb6DXngXt5aDkold8crw+7JtEPYVpVILeIoxI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EazKOcZfopUpGsM9r0gLdCsazWN7/bhk8nnNOGrq1cWt4OkUKmB0yICXrQQXUDGDHjDS5BNzbOREnNDAo83WPFXq0VUw4U8rKXPHEAuA47H1raz2OKAGcPYKBsP2St1pD3/Mehwhi28+keLd+X/ea8luSu/XCvdfB7YK+BkD2Uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AzwaSoZL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA5CFC116C6;
-	Wed,  3 Dec 2025 16:26:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WL61HuFEKDmVzE039Z5Zy10RiBeWx2N4ZpuSvF97qHHqXAc5q9Hd+TY/ITmMlgz645egNK6Y0caduBOqcxdtcqcJFIyfolJKqIW+hmT9K/WKKtbybXbVYc/BAvPmyeFUkoxFYwaWyrCf7yLfLr6pyyQoBMZDZablkENxu1LCz+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CHJ9N9PJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31875C4CEF5;
+	Wed,  3 Dec 2025 15:57:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779217;
-	bh=FFqgbI17iSZnlbpsqvI83EtslEXhLiXTlMr4pC4tZVA=;
+	s=korg; t=1764777460;
+	bh=JpfSQTVb6DXngXt5aDkold8crw+7JtEPYVpVILeIoxI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AzwaSoZLeiTHLfmZEGPi7PKfDPjAbTfSGniIiec+i3Egyi3QtlFRDcB1xKDyUlQKv
-	 5e5ZDXGDMSuf/i3HEC5vBkHcbTFYWSRh7Esf3YJQb+AhvVBE+X2td8kDTvjRuWHbZM
-	 PjKu02IFrpN05NGcabePkP5ucWelfUTaAKgUyGDA=
+	b=CHJ9N9PJ0hcHU7g+0ngYMzYjZv5NqDqkL6KTyrXg4ZVMBv58mfBJJMHm6w/4TNfbn
+	 YaXOmhQOOTBS9yyl4HyiW3h+TXtk5OR/uRvFWDFn1xJkrtFJXHII9TcI3tvjE/Ql2m
+	 vwxjF/adDv7i0jZND9uMyzNfH+Hxmtfh2oZVueqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 191/568] media: adv7180: Add missing lock in suspend callback
-Date: Wed,  3 Dec 2025 16:23:13 +0100
-Message-ID: <20251203152447.721129458@linuxfoundation.org>
+Subject: [PATCH 5.15 044/392] xhci: dbc: Avoid event polling busyloop if pending rx transfers are inactive.
+Date: Wed,  3 Dec 2025 16:23:14 +0100
+Message-ID: <20251203152415.730809846@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +61,125 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-[ Upstream commit 878c496ac5080f94a93a9216a8f70cfd67ace8c9 ]
+[ Upstream commit cab63934c33b12c0d1e9f4da7450928057f2c142 ]
 
-The adv7180_set_power() utilizes adv7180_write() which in turn requires
-the state mutex to be held, take it before calling adv7180_set_power()
-to avoid tripping a lockdep_assert_held().
+Event polling delay is set to 0 if there are any pending requests in
+either rx or tx requests lists. Checking for pending requests does
+not work well for "IN" transfers as the tty driver always queues
+requests to the list and TRBs to the ring, preparing to receive data
+from the host.
 
-Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+This causes unnecessary busylooping and cpu hogging.
+
+Only set the event polling delay to 0 if there are pending tx "write"
+transfers, or if it was less than 10ms since last active data transfer
+in any direction.
+
+Cc: Łukasz Bartosik <ukaszb@chromium.org>
+Fixes: fb18e5bb9660 ("xhci: dbc: poll at different rate depending on data transfer activity")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250505125630.561699-3-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: f3d12ec847b9 ("xhci: dbc: fix bogus 1024 byte prefix if ttyDBC read races with stall event")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/adv7180.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/usb/host/xhci-dbgcap.c |   19 ++++++++++++++++---
+ drivers/usb/host/xhci-dbgcap.h |    3 +++
+ 2 files changed, 19 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/i2c/adv7180.c b/drivers/media/i2c/adv7180.c
-index 46912a7b671a8..a7977f9c64c88 100644
---- a/drivers/media/i2c/adv7180.c
-+++ b/drivers/media/i2c/adv7180.c
-@@ -804,6 +804,8 @@ static int adv7180_set_pad_format(struct v4l2_subdev *sd,
+--- a/drivers/usb/host/xhci-dbgcap.c
++++ b/drivers/usb/host/xhci-dbgcap.c
+@@ -855,6 +855,7 @@ static enum evtreturn xhci_dbc_do_handle
+ {
+ 	dma_addr_t		deq;
+ 	union xhci_trb		*evt;
++	enum evtreturn		ret = EVT_DONE;
+ 	u32			ctrl, portsc;
+ 	bool			update_erdp = false;
  
- 	if (format->which == V4L2_SUBDEV_FORMAT_ACTIVE) {
- 		if (state->field != format->format.field) {
-+			guard(mutex)(&state->mutex);
-+
- 			state->field = format->format.field;
- 			adv7180_set_power(state, false);
- 			adv7180_set_field_mode(state);
-@@ -1568,6 +1570,8 @@ static int adv7180_suspend(struct device *dev)
- 	struct v4l2_subdev *sd = dev_get_drvdata(dev);
- 	struct adv7180_state *state = to_state(sd);
+@@ -939,6 +940,7 @@ static enum evtreturn xhci_dbc_do_handle
+ 			break;
+ 		case TRB_TYPE(TRB_TRANSFER):
+ 			dbc_handle_xfer_event(dbc, evt);
++			ret = EVT_XFER_DONE;
+ 			break;
+ 		default:
+ 			break;
+@@ -957,7 +959,7 @@ static enum evtreturn xhci_dbc_do_handle
+ 		lo_hi_writeq(deq, &dbc->regs->erdp);
+ 	}
  
-+	guard(mutex)(&state->mutex);
-+
- 	return adv7180_set_power(state, false);
+-	return EVT_DONE;
++	return ret;
  }
  
-@@ -1581,6 +1585,8 @@ static int adv7180_resume(struct device *dev)
- 	if (ret < 0)
- 		return ret;
+ static void xhci_dbc_handle_events(struct work_struct *work)
+@@ -966,6 +968,7 @@ static void xhci_dbc_handle_events(struc
+ 	struct xhci_dbc		*dbc;
+ 	unsigned long		flags;
+ 	unsigned int		poll_interval;
++	unsigned long		busypoll_timelimit;
  
-+	guard(mutex)(&state->mutex);
+ 	dbc = container_of(to_delayed_work(work), struct xhci_dbc, event_work);
+ 	poll_interval = dbc->poll_interval;
+@@ -984,11 +987,21 @@ static void xhci_dbc_handle_events(struc
+ 			dbc->driver->disconnect(dbc);
+ 		break;
+ 	case EVT_DONE:
+-		/* set fast poll rate if there are pending data transfers */
++		/*
++		 * Set fast poll rate if there are pending out transfers, or
++		 * a transfer was recently processed
++		 */
++		busypoll_timelimit = dbc->xfer_timestamp +
++			msecs_to_jiffies(DBC_XFER_INACTIVITY_TIMEOUT);
 +
- 	ret = adv7180_set_power(state, state->powered);
- 	if (ret)
- 		return ret;
--- 
-2.51.0
-
+ 		if (!list_empty(&dbc->eps[BULK_OUT].list_pending) ||
+-		    !list_empty(&dbc->eps[BULK_IN].list_pending))
++		    time_is_after_jiffies(busypoll_timelimit))
+ 			poll_interval = 0;
+ 		break;
++	case EVT_XFER_DONE:
++		dbc->xfer_timestamp = jiffies;
++		poll_interval = 0;
++		break;
+ 	default:
+ 		dev_info(dbc->dev, "stop handling dbc events\n");
+ 		return;
+--- a/drivers/usb/host/xhci-dbgcap.h
++++ b/drivers/usb/host/xhci-dbgcap.h
+@@ -95,6 +95,7 @@ struct dbc_ep {
+ #define DBC_WRITE_BUF_SIZE		8192
+ #define DBC_POLL_INTERVAL_DEFAULT	64	/* milliseconds */
+ #define DBC_POLL_INTERVAL_MAX		5000	/* milliseconds */
++#define DBC_XFER_INACTIVITY_TIMEOUT	10	/* milliseconds */
+ /*
+  * Private structure for DbC hardware state:
+  */
+@@ -140,6 +141,7 @@ struct xhci_dbc {
+ 	enum dbc_state			state;
+ 	struct delayed_work		event_work;
+ 	unsigned int			poll_interval;	/* ms */
++	unsigned long			xfer_timestamp;
+ 	unsigned			resume_required:1;
+ 	struct dbc_ep			eps[2];
+ 
+@@ -185,6 +187,7 @@ struct dbc_request {
+ enum evtreturn {
+ 	EVT_ERR	= -1,
+ 	EVT_DONE,
++	EVT_XFER_DONE,
+ 	EVT_GSER,
+ 	EVT_DISC,
+ };
 
 
 
