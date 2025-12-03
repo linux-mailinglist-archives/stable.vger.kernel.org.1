@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-199498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28204CA063D
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:23:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7795C9FA43
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:47:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 27C69300228D
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:23:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C4B7A301899D
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:41:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 977273321AB;
-	Wed,  3 Dec 2025 16:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92C8330AD1A;
+	Wed,  3 Dec 2025 15:41:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jN1sYG/0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iC5XyTfo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A3F305E05;
-	Wed,  3 Dec 2025 16:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504293081AF;
+	Wed,  3 Dec 2025 15:41:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779996; cv=none; b=Diindjcklax1kRXOLZrLWSgByiCmRHMw583D2+kQ5Z+KfyfF9Lxd9frcAupHPKOvAIxpCrlT2gBrjervOaih+0vTGR6P/BDfHSZd2e5kMW7aerE7JjITU1tJDKT+RZcMmq3V+ogkaFLE373aXlE7jTrTei1nAAL3TnvoCb9UIGg=
+	t=1764776460; cv=none; b=CEoXb5qTyljzZyxQNQ9zkKh1XadSie/VhNoQsdfSJLvo0UK4xuK5E3c0j0g02nwF65kR4xQaJ/pNPp69F5XknzUdrlDia5e12Pyo8LK5TKLwZGf3fZcnFvwR+8ZMZbINPlTW42F94/IPMrthF/CoTgs+YI6rlIEJwU1LcvZDTTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779996; c=relaxed/simple;
-	bh=I8TX9rIX1686iuc0CLgyQrW2Fp5WSm+vXaSgWr5kNSM=;
+	s=arc-20240116; t=1764776460; c=relaxed/simple;
+	bh=Se37BBj6MVFiB4Kg/dCY8/NNnhvGwRUgE9ZV7YA9yOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hBUKeF655SN/JdK/GE2gME1uX3xPBhiB6zvTcHcN0xmZwibHGAPJVOBaznMyVyPGga4igCeeJQkRwWlpWsxeHNAZFT038HtWXgqEeJ2yY0aGzulFoToAiF/s0k8EQv7aCd2WZY+0neHKWiZIWnou5WeRP3KxMPRgrEyDgUqxUug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jN1sYG/0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0A10C116C6;
-	Wed,  3 Dec 2025 16:39:55 +0000 (UTC)
+	 MIME-Version; b=C90qNzwyXtvU5YQcW2ly1NofHpbeB1t759H6gFvPNcUPP4UovWLylgTuq4RTprgVsuER9gzLke7ubSXMR8hTEwsO2mIPCm+KjunDIdyqBr09/9hNWtvLCsml7nrXNJ4o8u3k1hn15e3K9iwRocngfTffD20iPHo99p08R0w9zgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iC5XyTfo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C585C116C6;
+	Wed,  3 Dec 2025 15:40:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779996;
-	bh=I8TX9rIX1686iuc0CLgyQrW2Fp5WSm+vXaSgWr5kNSM=;
+	s=korg; t=1764776460;
+	bh=Se37BBj6MVFiB4Kg/dCY8/NNnhvGwRUgE9ZV7YA9yOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jN1sYG/08Dv+nLprrkBjO2SYQfBXnYzHOWtOoY72cfcN9AWTIGXQAwuhymdzTJnji
-	 57fy/+SrC+1EP/PHimbRCUwAu99is1U+x1D5bC0HHYTiZ9iWAGqzGbkgcUP0tamf8S
-	 rMODofwIYD38UGrhIf9Z5DLib6DXowPcnRRYqg5o=
+	b=iC5XyTfoIqmQOODaUil4Y6nuF9Y7I+BTiXOJ8gapJNv/ULwhAxsiymqldbEcPUabv
+	 fPqgZ9aY+Fuptt2PClO0lfbqUSd/IzqV83EVraeLqKI3dIDG8B7K5GJyWAJHb0uQnd
+	 r3Qdqt1NUHz/DcCBB9VKWxK/wehe8aES2Tyy7fKA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>,
+	Gal Pressman <gal@nvidia.com>,
+	Nimrod Oren <noren@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 391/568] lib/crypto: arm/curve25519: Disable on CPU_BIG_ENDIAN
+Subject: [PATCH 5.10 189/300] net/mlx5e: Fix maxrate wraparound in threshold between units
 Date: Wed,  3 Dec 2025 16:26:33 +0100
-Message-ID: <20251203152455.012651818@linuxfoundation.org>
+Message-ID: <20251203152407.628593063@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Gal Pressman <gal@nvidia.com>
 
-commit 44e8241c51f762aafa50ed116da68fd6ecdcc954 upstream.
+[ Upstream commit a7bf4d5063c7837096aab2853224eb23628514d9 ]
 
-On big endian arm kernels, the arm optimized Curve25519 code produces
-incorrect outputs and fails the Curve25519 test.  This has been true
-ever since this code was added.
+The previous calculation used roundup() which caused an overflow for
+rates between 25.5Gbps and 26Gbps.
+For example, a rate of 25.6Gbps would result in using 100Mbps units with
+value of 256, which would overflow the 8 bits field.
 
-It seems that hardly anyone (or even no one?) actually uses big endian
-arm kernels.  But as long as they're ostensibly supported, we should
-disable this code on them so that it's not accidentally used.
+Simplify the upper_limit_mbps calculation by removing the
+unnecessary roundup, and adjust the comparison to use <= to correctly
+handle the boundary condition.
 
-Note: for future-proofing, use !CPU_BIG_ENDIAN instead of
-CPU_LITTLE_ENDIAN.  Both of these are arch-specific options that could
-get removed in the future if big endian support gets dropped.
-
-Fixes: d8f1308a025f ("crypto: arm/curve25519 - wire up NEON implementation")
-Cc: stable@vger.kernel.org
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://lore.kernel.org/r/20251104054906.716914-1-ebiggers@kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Fixes: d8880795dabf ("net/mlx5e: Implement DCBNL IEEE max rate")
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Reviewed-by: Nimrod Oren <noren@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1762681073-1084058-4-git-send-email-tariqt@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/crypto/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/crypto/Kconfig b/arch/arm/crypto/Kconfig
-index 3858c4d4cb988..f6323b84631ff 100644
---- a/arch/arm/crypto/Kconfig
-+++ b/arch/arm/crypto/Kconfig
-@@ -4,7 +4,7 @@ menu "Accelerated Cryptographic Algorithms for CPU (arm)"
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
+index c25fb0cbde274..4f1ce1287cdae 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
+@@ -587,18 +587,19 @@ static int mlx5e_dcbnl_ieee_setmaxrate(struct net_device *netdev,
+ 	struct mlx5_core_dev *mdev = priv->mdev;
+ 	u8 max_bw_value[IEEE_8021QAZ_MAX_TCS];
+ 	u8 max_bw_unit[IEEE_8021QAZ_MAX_TCS];
+-	__u64 upper_limit_mbps = roundup(255 * MLX5E_100MB, MLX5E_1GB);
++	__u64 upper_limit_mbps;
+ 	int i;
  
- config CRYPTO_CURVE25519_NEON
- 	tristate "Public key crypto: Curve25519 (NEON)"
--	depends on KERNEL_MODE_NEON
-+	depends on KERNEL_MODE_NEON && !CPU_BIG_ENDIAN
- 	select CRYPTO_LIB_CURVE25519_GENERIC
- 	select CRYPTO_ARCH_HAVE_LIB_CURVE25519
- 	help
+ 	memset(max_bw_value, 0, sizeof(max_bw_value));
+ 	memset(max_bw_unit, 0, sizeof(max_bw_unit));
++	upper_limit_mbps = 255 * MLX5E_100MB;
+ 
+ 	for (i = 0; i <= mlx5_max_tc(mdev); i++) {
+ 		if (!maxrate->tc_maxrate[i]) {
+ 			max_bw_unit[i]  = MLX5_BW_NO_LIMIT;
+ 			continue;
+ 		}
+-		if (maxrate->tc_maxrate[i] < upper_limit_mbps) {
++		if (maxrate->tc_maxrate[i] <= upper_limit_mbps) {
+ 			max_bw_value[i] = div_u64(maxrate->tc_maxrate[i],
+ 						  MLX5E_100MB);
+ 			max_bw_value[i] = max_bw_value[i] ? max_bw_value[i] : 1;
 -- 
 2.51.0
 
