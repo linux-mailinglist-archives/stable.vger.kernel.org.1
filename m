@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-198332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66F72C9F8FC
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:41:46 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 151D3CA02EC
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:53:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 79C3B3022F3D
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:37:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4A2AF30377A6
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:43:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 078F1313E33;
-	Wed,  3 Dec 2025 15:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF41C3148CD;
+	Wed,  3 Dec 2025 16:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lMtq7UPQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NpTtQg05"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 984C1313270;
-	Wed,  3 Dec 2025 15:36:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75BB030DEC4;
+	Wed,  3 Dec 2025 16:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776196; cv=none; b=jnQ0+Bis7pG/i98PAclBSUe69ISoHQFclNhaiD86auWzvy8Rlz1DghYoiZt2WF5xrwHBPGKIucJ3YUCl8QtQwaWssQRLX2fhu53v+Hef5gR+zI92MNtU75s6jLEjYMig3RZN8+/2x6quRR5Pvco5+Qf86yLSuJXJtbFy+VFzgLE=
+	t=1764779626; cv=none; b=JLbAFjfXdlZNDvfl2M1vcE4O9YNtLHoS6yUeyBhkLLRSB7WbwlIVVrp85k7Zj14ZmW4NJstK4R1bG6wh5GhpAUAMmTLr8Eo8fJM7LIPBY9at0z5MkniMU+9DpwZv+yLP0MEDLjR8HyQW7wcc3ZXF3mONP85TyIySD8vDI9Tssqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776196; c=relaxed/simple;
-	bh=7Q2dkM39dSp7aAbwIx9f6IJsPx+O9A1dLqAK53UyHyI=;
+	s=arc-20240116; t=1764779626; c=relaxed/simple;
+	bh=XxVmpzUlB5fuGervVhGyhoYF35grvSpY0Jx68Z/cfFQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qV2D34kp0JkqqlJnu5oB8qKGeyhqEmOd1gu/U82A379rC0xQGp3QBNIJfSbr5NFmwXbUMPoAf6GjMYa+wGmj6fKkE/F5Id9MSLFW1BtwP4UMggKG9H+weMvzh82UmvAcIkVIskWJw8WlgPclqI67rPHZXwgDsu+Gj69ec5tSvh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lMtq7UPQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4F8BC4CEF5;
-	Wed,  3 Dec 2025 15:36:35 +0000 (UTC)
+	 MIME-Version; b=mTyEsk7KCletexZrNPCtWTigd+abz3eEJyC9ulpiDc/qAe7IOMgUBFnva00AHJyKxLpKjn4pYNcxTaosCXpNJsPBgl8btfWukv0aobyJc0HiwDLGKYeDEF1nAFC4XWnKEyaKh6iLW/ujMwUU6JGKD6td9rbc7RMoI2cFTqz42vQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NpTtQg05; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D58C7C116B1;
+	Wed,  3 Dec 2025 16:33:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776196;
-	bh=7Q2dkM39dSp7aAbwIx9f6IJsPx+O9A1dLqAK53UyHyI=;
+	s=korg; t=1764779626;
+	bh=XxVmpzUlB5fuGervVhGyhoYF35grvSpY0Jx68Z/cfFQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lMtq7UPQptbjVtR4CiEJrVIc9+wDFcz9RdkFPKviu8NkDBEYP0RLx3GGKL1yspZaL
-	 2yyHEjdjgLQJlPjSB6b8kZn6c41PpcjErP1lq9eLWhumbg8yM5LEUOVqAlDE506rFQ
-	 6pMqxpuvVwqUVJE0xO3pBQmBfRCZk+5/1U7hknxQ=
+	b=NpTtQg05jEzhhvmVfXokV6IHmQpRcpkEFb4ddQNXmBTsSbDHgKFq24e5XJQzH/fR8
+	 Th15FPGqeQbb2RLOKn5Grhp+yFSeBL/rg79+lPF7JGjVg1uv9sUqwjHbD2ED0kKbJM
+	 8WMZD1r3y+xUpClV4ITiAVr5k4z3HsQ9USWHF6ks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Udit Kumar <u-kumar1@ti.com>,
-	Devarsh Thakkar <devarsht@ti.com>,
-	Harikrishna Shenoy <h-shenoy@ti.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 110/300] phy: cadence: cdns-dphy: Enable lower resolutions in dphy
+Subject: [PATCH 6.1 312/568] net: dsa: b53: fix resetting speed and pause on forced link
 Date: Wed,  3 Dec 2025 16:25:14 +0100
-Message-ID: <20251203152404.697284933@linuxfoundation.org>
+Message-ID: <20251203152452.140905775@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harikrishna Shenoy <h-shenoy@ti.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit 43bd2c44515f8ee5c019ce6e6583f5640387a41b ]
+[ Upstream commit b6a8a5477fe9bd6be2b594a88f82f8bba41e6d54 ]
 
-Enable support for data lane rates between 80-160 Mbps cdns dphy
-as mentioned in TRM [0] by setting the pll_opdiv field to 16.
-This change enables lower resolutions like 640x480 at 60Hz.
+There is no guarantee that the port state override registers have their
+default values, as not all switches support being reset via register or
+have a reset GPIO.
 
-[0]: https://www.ti.com/lit/zip/spruil1
-(Table 12-552. DPHY_TX_PLL_CTRL Register Field Descriptions)
+So when forcing port config, we need to make sure to clear all fields,
+which we currently do not do for the speed and flow control
+configuration. This can cause flow control stay enabled, or in the case
+of speed becoming an illegal value, e.g. configured for 1G (0x2), then
+setting 100M (0x1), results in 0x3 which is invalid.
 
-Reviewed-by: Udit Kumar <u-kumar1@ti.com>
-Reviewed-by: Devarsh Thakkar <devarsht@ti.com>
-Signed-off-by: Harikrishna Shenoy <h-shenoy@ti.com>
-Link: https://lore.kernel.org/r/20250807052002.717807-1-h-shenoy@ti.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+For PORT_OVERRIDE_SPEED_2000M we need to make sure to only clear it on
+supported chips, as the bit can have different meanings on other chips,
+e.g. for BCM5389 this controls scanning PHYs for link/speed
+configuration.
+
+Fixes: 5e004460f874 ("net: dsa: b53: Add helper to set link parameters")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20251101132807.50419-2-jonas.gorski@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/cadence/cdns-dphy.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/dsa/b53/b53_common.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/phy/cadence/cdns-dphy.c b/drivers/phy/cadence/cdns-dphy.c
-index 90c4e9b5aac83..04cee5a00a5b4 100644
---- a/drivers/phy/cadence/cdns-dphy.c
-+++ b/drivers/phy/cadence/cdns-dphy.c
-@@ -115,7 +115,7 @@ static int cdns_dsi_get_dphy_pll_cfg(struct cdns_dphy *dphy,
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index b0e283bc3efbc..d5a1d26e8e3de 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -1215,6 +1215,10 @@ static void b53_force_port_config(struct b53_device *dev, int port,
+ 	else
+ 		reg &= ~PORT_OVERRIDE_FULL_DUPLEX;
  
- 	dlane_bps = opts->hs_clk_rate;
++	reg &= ~(0x3 << GMII_PO_SPEED_S);
++	if (is5301x(dev) || is58xx(dev))
++		reg &= ~PORT_OVERRIDE_SPEED_2000M;
++
+ 	switch (speed) {
+ 	case 2000:
+ 		reg |= PORT_OVERRIDE_SPEED_2000M;
+@@ -1233,6 +1237,11 @@ static void b53_force_port_config(struct b53_device *dev, int port,
+ 		return;
+ 	}
  
--	if (dlane_bps > 2500000000UL || dlane_bps < 160000000UL)
-+	if (dlane_bps > 2500000000UL || dlane_bps < 80000000UL)
- 		return -EINVAL;
- 	else if (dlane_bps >= 1250000000)
- 		cfg->pll_opdiv = 1;
-@@ -125,6 +125,8 @@ static int cdns_dsi_get_dphy_pll_cfg(struct cdns_dphy *dphy,
- 		cfg->pll_opdiv = 4;
- 	else if (dlane_bps >= 160000000)
- 		cfg->pll_opdiv = 8;
-+	else if (dlane_bps >= 80000000)
-+		cfg->pll_opdiv = 16;
- 
- 	cfg->pll_fbdiv = DIV_ROUND_UP_ULL(dlane_bps * 2 * cfg->pll_opdiv *
- 					  cfg->pll_ipdiv,
++	if (is5325(dev))
++		reg &= ~PORT_OVERRIDE_LP_FLOW_25;
++	else
++		reg &= ~(PORT_OVERRIDE_RX_FLOW | PORT_OVERRIDE_TX_FLOW);
++
+ 	if (rx_pause) {
+ 		if (is5325(dev))
+ 			reg |= PORT_OVERRIDE_LP_FLOW_25;
 -- 
 2.51.0
 
