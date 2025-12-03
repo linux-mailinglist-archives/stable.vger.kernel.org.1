@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-198523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EF85C9FB60
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:55:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05B59CA0EA6
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:23:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1C608301DB81
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:48:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DBB5D318A0A6
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:20:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91754305067;
-	Wed,  3 Dec 2025 15:47:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEC85352958;
+	Wed,  3 Dec 2025 16:16:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bgLnW6Bg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bRKsxJjG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C8B515ADB4;
-	Wed,  3 Dec 2025 15:47:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99F7352937;
+	Wed,  3 Dec 2025 16:16:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776828; cv=none; b=AXwbgcICh1vAOyzuxotFUlRVSgLQQZvLd4QFGMSJAYS3Y8XOaDB/MJghr8EnvKZKLvYacAx14No58+K43TDghmYEDYinXpfdIKEr5KCR0PEd51nGmvE6z+NulEwPITMIdrV5VV2Rn2GWoR6LkRAnSdFGgCBT+2is8BArcales3M=
+	t=1764778569; cv=none; b=Uth5oOdIvMsjtT2UK/vBRYIIcZMPbMYdgiiMmj1EYcWUrrT0xWjt3cd1WhBln9duRdRawHAKvoEyVc8GP1yiJ9hSnr3ghSI4jYs4obEBmkSvYxOuSifpIBuGJTnes7ySzgS6hKzqqZrsGpsauJyECV5v470nJZr2HTuXt9IJkqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776828; c=relaxed/simple;
-	bh=qZG6BCo/YC/kJWQhtoFWRu7sBzu5k20Zt9IfAlcyFaQ=;
+	s=arc-20240116; t=1764778569; c=relaxed/simple;
+	bh=SsTirVWd6H4rwzfOX7fuCK0J8fFxyQrBGr/tCyMRb0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fkYYvnqW0v5N7MfhQqwz0goFnDQhQSrnRVhe7x2G8jnW/5cWmDbFxCqRA1EMW48FoIq+rfjFr7HLp2og9bsAStrC+VwWtR0SrTAw6k1TWV0F6nft/zKQ1l1llXf95QwZcyCihEnZ1nqp3KtqC/BP9D9qpNq+UJPK/Llk6Rzsvm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bgLnW6Bg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2AE1C4CEF5;
-	Wed,  3 Dec 2025 15:47:07 +0000 (UTC)
+	 MIME-Version; b=cR8KSWP1Uynh14XgjXQak/1dm4bcFOZtFkjOmv1aDzUbywodzm/IZsRjhudONuCocYCVGMN6RhMgA57hmoQrqIvF7YE8ZpfrxmRFvd8wGssyJ6K5Lfj7PvJSxpFdPo9wraVfQrehDw4IXuMS4BVHyF8M24xx3qr5h3a+gOE6dg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bRKsxJjG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B6F9C4CEF5;
+	Wed,  3 Dec 2025 16:16:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776828;
-	bh=qZG6BCo/YC/kJWQhtoFWRu7sBzu5k20Zt9IfAlcyFaQ=;
+	s=korg; t=1764778569;
+	bh=SsTirVWd6H4rwzfOX7fuCK0J8fFxyQrBGr/tCyMRb0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bgLnW6BgBjeCapgdwAcBTLlR9V5qBERbMIE9RytF9WRslWXOXAim8KyzJcLbfn5LP
-	 A4eFPhQHV9D/Tb6E5x9JqtMSQUzC4K+/craLikRRz7d5iQnghL/v57zlJYo8hHqQLZ
-	 gu3PrLK4WiNszNrd0538fiGg3m2zctoqOYF2QkWg=
+	b=bRKsxJjGqSTRgV8XDK/kbBbo1lnAQvjD2dr5Mhkw6ATD6TGsKxYu3kQBcsrWehB7X
+	 ouUw6fDSfeJGVI/4CuFksjtd/2cbCY18j6sxfYQtG9QVyHqS5anIh+WfBr+DIoxHLz
+	 7zIXuUsc0YRX0zmOmTgxPtSmyblULy5ighdr4H1w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+316db8a1191938280eb6@syzkaller.appspotmail.com,
-	Vasiliy Kovalev <kovalev@altlinux.org>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Bin Lan <lanbincn@qq.com>
-Subject: [PATCH 5.10 299/300] ovl: fix UAF in ovl_dentry_update_reval by moving dput() in ovl_link_up
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 5.15 353/392] MIPS: mm: Prevent a TLB shutdown on initial uniquification
 Date: Wed,  3 Dec 2025 16:28:23 +0100
-Message-ID: <20251203152411.698835585@linuxfoundation.org>
+Message-ID: <20251203152427.154441533@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +60,179 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasiliy Kovalev <kovalev@altlinux.org>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-[ Upstream commit c84e125fff2615b4d9c259e762596134eddd2f27 ]
+commit 9f048fa487409e364cf866c957cf0b0d782ca5a3 upstream.
 
-The issue was caused by dput(upper) being called before
-ovl_dentry_update_reval(), while upper->d_flags was still
-accessed in ovl_dentry_remote().
+Depending on the particular CPU implementation a TLB shutdown may occur
+if multiple matching entries are detected upon the execution of a TLBP
+or the TLBWI/TLBWR instructions.  Given that we don't know what entries
+we have been handed we need to be very careful with the initial TLB
+setup and avoid all these instructions.
 
-Move dput(upper) after its last use to prevent use-after-free.
+Therefore read all the TLB entries one by one with the TLBR instruction,
+bypassing the content addressing logic, and truncate any large pages in
+place so as to avoid a case in the second step where an incoming entry
+for a large page at a lower address overlaps with a replacement entry
+chosen at another index.  Then preinitialize the TLB using addresses
+outside our usual unique range and avoiding clashes with any entries
+received, before making the usual call to local_flush_tlb_all().
 
-BUG: KASAN: slab-use-after-free in ovl_dentry_remote fs/overlayfs/util.c:162 [inline]
-BUG: KASAN: slab-use-after-free in ovl_dentry_update_reval+0xd2/0xf0 fs/overlayfs/util.c:167
+This fixes (at least) R4x00 cores if TLBP hits multiple matching TLB
+entries (SGI IP22 PROM for examples sets up all TLBs to the same virtual
+address).
 
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:114
- print_address_description mm/kasan/report.c:377 [inline]
- print_report+0xc3/0x620 mm/kasan/report.c:488
- kasan_report+0xd9/0x110 mm/kasan/report.c:601
- ovl_dentry_remote fs/overlayfs/util.c:162 [inline]
- ovl_dentry_update_reval+0xd2/0xf0 fs/overlayfs/util.c:167
- ovl_link_up fs/overlayfs/copy_up.c:610 [inline]
- ovl_copy_up_one+0x2105/0x3490 fs/overlayfs/copy_up.c:1170
- ovl_copy_up_flags+0x18d/0x200 fs/overlayfs/copy_up.c:1223
- ovl_rename+0x39e/0x18c0 fs/overlayfs/dir.c:1136
- vfs_rename+0xf84/0x20a0 fs/namei.c:4893
-...
- </TASK>
-
-Fixes: b07d5cc93e1b ("ovl: update of dentry revalidate flags after copy up")
-Reported-by: syzbot+316db8a1191938280eb6@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=316db8a1191938280eb6
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-Link: https://lore.kernel.org/r/20250214215148.761147-1-kovalev@altlinux.org
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-[ Minor context change fixed. ]
-Signed-off-by: Bin Lan <lanbincn@qq.com>
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Fixes: 35ad7e181541 ("MIPS: mm: tlb-r4k: Uniquify TLB entries on init")
+Cc: stable@vger.kernel.org
+Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Tested-by: Jiaxun Yang <jiaxun.yang@flygoat.com> # Boston I6400, M5150 sim
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/overlayfs/copy_up.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/mm/tlb-r4k.c |  102 ++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 64 insertions(+), 38 deletions(-)
 
---- a/fs/overlayfs/copy_up.c
-+++ b/fs/overlayfs/copy_up.c
-@@ -469,7 +469,6 @@ static int ovl_link_up(struct ovl_copy_u
- 	err = PTR_ERR(upper);
- 	if (!IS_ERR(upper)) {
- 		err = ovl_do_link(ovl_dentry_upper(c->dentry), udir, upper);
--		dput(upper);
+--- a/arch/mips/mm/tlb-r4k.c
++++ b/arch/mips/mm/tlb-r4k.c
+@@ -15,6 +15,7 @@
+ #include <linux/mm.h>
+ #include <linux/hugetlb.h>
+ #include <linux/export.h>
++#include <linux/sort.h>
  
- 		if (!err) {
- 			/* Restore timestamps on parent (best effort) */
-@@ -477,6 +476,7 @@ static int ovl_link_up(struct ovl_copy_u
- 			ovl_dentry_set_upper_alias(c->dentry);
- 			ovl_dentry_update_reval(c->dentry, upper);
- 		}
-+		dput(upper);
+ #include <asm/cpu.h>
+ #include <asm/cpu-type.h>
+@@ -498,55 +499,79 @@ static int __init set_ntlb(char *str)
+ 
+ __setup("ntlb=", set_ntlb);
+ 
+-/* Initialise all TLB entries with unique values */
++
++/* Comparison function for EntryHi VPN fields.  */
++static int r4k_vpn_cmp(const void *a, const void *b)
++{
++	long v = *(unsigned long *)a - *(unsigned long *)b;
++	int s = sizeof(long) > sizeof(int) ? sizeof(long) * 8 - 1: 0;
++	return s ? (v != 0) | v >> s : v;
++}
++
++/*
++ * Initialise all TLB entries with unique values that do not clash with
++ * what we have been handed over and what we'll be using ourselves.
++ */
+ static void r4k_tlb_uniquify(void)
+ {
+-	int entry = num_wired_entries();
++	unsigned long tlb_vpns[1 << MIPS_CONF1_TLBS_SIZE];
++	int tlbsize = current_cpu_data.tlbsize;
++	int start = num_wired_entries();
++	unsigned long vpn_mask;
++	int cnt, ent, idx, i;
++
++	vpn_mask = GENMASK(cpu_vmbits - 1, 13);
++	vpn_mask |= IS_ENABLED(CONFIG_64BIT) ? 3ULL << 62 : 1 << 31;
+ 
+ 	htw_stop();
+-	write_c0_entrylo0(0);
+-	write_c0_entrylo1(0);
+ 
+-	while (entry < current_cpu_data.tlbsize) {
+-		unsigned long asid_mask = cpu_asid_mask(&current_cpu_data);
+-		unsigned long asid = 0;
+-		int idx;
++	for (i = start, cnt = 0; i < tlbsize; i++, cnt++) {
++		unsigned long vpn;
+ 
+-		/* Skip wired MMID to make ginvt_mmid work */
+-		if (cpu_has_mmid)
+-			asid = MMID_KERNEL_WIRED + 1;
++		write_c0_index(i);
++		mtc0_tlbr_hazard();
++		tlb_read();
++		tlb_read_hazard();
++		vpn = read_c0_entryhi();
++		vpn &= vpn_mask & PAGE_MASK;
++		tlb_vpns[cnt] = vpn;
+ 
+-		/* Check for match before using UNIQUE_ENTRYHI */
+-		do {
+-			if (cpu_has_mmid) {
+-				write_c0_memorymapid(asid);
+-				write_c0_entryhi(UNIQUE_ENTRYHI(entry));
+-			} else {
+-				write_c0_entryhi(UNIQUE_ENTRYHI(entry) | asid);
+-			}
+-			mtc0_tlbw_hazard();
+-			tlb_probe();
+-			tlb_probe_hazard();
+-			idx = read_c0_index();
+-			/* No match or match is on current entry */
+-			if (idx < 0 || idx == entry)
+-				break;
+-			/*
+-			 * If we hit a match, we need to try again with
+-			 * a different ASID.
+-			 */
+-			asid++;
+-		} while (asid < asid_mask);
+-
+-		if (idx >= 0 && idx != entry)
+-			panic("Unable to uniquify TLB entry %d", idx);
+-
+-		write_c0_index(entry);
++		/* Prevent any large pages from overlapping regular ones.  */
++		write_c0_pagemask(read_c0_pagemask() & PM_DEFAULT_MASK);
+ 		mtc0_tlbw_hazard();
+ 		tlb_write_indexed();
+-		entry++;
++		tlbw_use_hazard();
  	}
- 	inode_unlock(udir);
- 	if (err)
+ 
++	sort(tlb_vpns, cnt, sizeof(tlb_vpns[0]), r4k_vpn_cmp, NULL);
++
++	write_c0_pagemask(PM_DEFAULT_MASK);
++	write_c0_entrylo0(0);
++	write_c0_entrylo1(0);
++
++	idx = 0;
++	ent = tlbsize;
++	for (i = start; i < tlbsize; i++)
++		while (1) {
++			unsigned long entryhi, vpn;
++
++			entryhi = UNIQUE_ENTRYHI(ent);
++			vpn = entryhi & vpn_mask & PAGE_MASK;
++
++			if (idx >= cnt || vpn < tlb_vpns[idx]) {
++				write_c0_entryhi(entryhi);
++				write_c0_index(i);
++				mtc0_tlbw_hazard();
++				tlb_write_indexed();
++				ent++;
++				break;
++			} else if (vpn == tlb_vpns[idx]) {
++				ent++;
++			} else {
++				idx++;
++			}
++		}
++
+ 	tlbw_use_hazard();
+ 	htw_start();
+ 	flush_micro_tlb();
+@@ -592,6 +617,7 @@ static void r4k_tlb_configure(void)
+ 
+ 	/* From this point on the ARC firmware is dead.	 */
+ 	r4k_tlb_uniquify();
++	local_flush_tlb_all();
+ 
+ 	/* Did I tell you that ARC SUCKS?  */
+ }
 
 
 
