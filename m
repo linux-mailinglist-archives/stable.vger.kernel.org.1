@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE065C9F9C8
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:45:09 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40C51C9FFF1
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:36:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8573D300442B
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:44:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2D3E43018ED2
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:33:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAB4C3074BA;
-	Wed,  3 Dec 2025 15:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC0CD32F76E;
+	Wed,  3 Dec 2025 15:51:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WpR33rxR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ih3AEMSE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98BEE30ACE6;
-	Wed,  3 Dec 2025 15:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C0C32F769;
+	Wed,  3 Dec 2025 15:51:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776677; cv=none; b=MbDRcbUOr4xMb1Xkn0Nt2oUOkIqGmTDuPC4xhOKnrfXKwOkqPaTRJuvEmUn/piI12l3JRg6RCuEke5rn5s77PA9GO+5sijCpnfje4/Eg9sSQzaBPHyJ9mkxeOKh4cGXJZSeqzXUqm2FyKTNsOt8xbMrjAfDaoZ8RiKKRVYK5J+c=
+	t=1764777095; cv=none; b=j3T1/390UWW65hQQSGmeZEhcfHMsJcWC7fP5zLPcD53GnBhdfYzMaVw3tKZssKhIYHAs5c9/4d5YCddcumI+tJk5aZ5KbHM0DaMZihMnCLBbWXYutWVEzLamxsUIR5tyqeC8veUYLvVlAfJnNa7RKtlbCFjc9COpDwKbJ1x1nGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776677; c=relaxed/simple;
-	bh=e0/3rlBwI70/j/eZSA4cxCsM3BlA2WDB1ZxCX0EcGp4=;
+	s=arc-20240116; t=1764777095; c=relaxed/simple;
+	bh=Fy7NbzI6O1/J2zc1bpyTxTYevGDR3Yp7VBm5a8Zm/Wg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PoK+FoCjLOvQQk1innQ5Gm2dO3IY4X3EoHQRSvcGUMN0Qn3T20UD1g8dunrUlODfvh5mXh3NouOaAgmii6aVhKu4xQx3EzrsUbwqCPDvpHzDKXe6L9J1fNvGPiHS9Y8ZuftcGwRrgV9b8ndzgqpV5W0eQUG8UvzCdikBD2RIqYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WpR33rxR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04801C4CEF5;
-	Wed,  3 Dec 2025 15:44:36 +0000 (UTC)
+	 MIME-Version; b=guhSEcYATltPWP+cmKZcuKtmSBPO4rNh8n3qG+1liCnHHb8ryM7iF92nA2zF2GS3gCcds4mS/+6AbJSTp8yUMyNe6tBHH1yA5UZj9pk7WU8hzwTUkdNOpaoU8ARLnUXmtJ2zwS743YNQze/hvbh0xndHoMqanyv1H9+1qyOtrqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ih3AEMSE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB626C4CEF5;
+	Wed,  3 Dec 2025 15:51:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776677;
-	bh=e0/3rlBwI70/j/eZSA4cxCsM3BlA2WDB1ZxCX0EcGp4=;
+	s=korg; t=1764777095;
+	bh=Fy7NbzI6O1/J2zc1bpyTxTYevGDR3Yp7VBm5a8Zm/Wg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WpR33rxRMgitUCUDsit0Wzczy+8SEII5aYMQ3qhnVlUcqMA0ZGIN04pUV0p4zPmmu
-	 vLEA7SEeZxWf+5VY7nA3OH5jY1JvDBxP9PN+Xv8oY5bVqgGfl4oJ4KtJKVpKh5SkYt
-	 LSNtumGcXG7FyhcAAlNmH8wPanMbokEI8DF78xOE=
+	b=ih3AEMSEtfB+lXwrjKqVNRYxTML/Q6sXGqYCuCdjeZPANtQPIrm5gyD9cS7ejZl8q
+	 GqicJm60ti0lJ+ulmRLo/ZOZs89qg/cBiU3WqX7Qw4HWiuxqtQoEQJGnnZksRf+KNT
+	 19fLDmT59EaJN2edNTvUHJXJbcBmo8lME/lF2+NU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seungjin Bae <eeodqql09@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 255/300] Input: pegasus-notetaker - fix potential out-of-bounds access
+	Gui-Dong Han <hanguidong02@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.17 081/146] atm/fore200e: Fix possible data race in fore200e_open()
 Date: Wed,  3 Dec 2025 16:27:39 +0100
-Message-ID: <20251203152410.083561046@linuxfoundation.org>
+Message-ID: <20251203152349.428434208@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +60,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Seungjin Bae <eeodqql09@gmail.com>
+From: Gui-Dong Han <hanguidong02@gmail.com>
 
-[ Upstream commit 69aeb507312306f73495598a055293fa749d454e ]
+commit 82fca3d8a4a34667f01ec2351a607135249c9cff upstream.
 
-In the pegasus_notetaker driver, the pegasus_probe() function allocates
-the URB transfer buffer using the wMaxPacketSize value from
-the endpoint descriptor. An attacker can use a malicious USB descriptor
-to force the allocation of a very small buffer.
+Protect access to fore200e->available_cell_rate with rate_mtx lock in the
+error handling path of fore200e_open() to prevent a data race.
 
-Subsequently, if the device sends an interrupt packet with a specific
-pattern (e.g., where the first byte is 0x80 or 0x42),
-the pegasus_parse_packet() function parses the packet without checking
-the allocated buffer size. This leads to an out-of-bounds memory access.
+The field fore200e->available_cell_rate is a shared resource used to track
+available bandwidth. It is concurrently accessed by fore200e_open(),
+fore200e_close(), and fore200e_change_qos().
 
-Fixes: 1afca2b66aac ("Input: add Pegasus Notetaker tablet driver")
-Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
-Link: https://lore.kernel.org/r/20251007214131.3737115-2-eeodqql09@gmail.com
+In fore200e_open(), the lock rate_mtx is correctly held when subtracting
+vcc->qos.txtp.max_pcr from available_cell_rate to reserve bandwidth.
+However, if the subsequent call to fore200e_activate_vcin() fails, the
+function restores the reserved bandwidth by adding back to
+available_cell_rate without holding the lock.
+
+This introduces a race condition because available_cell_rate is a global
+device resource shared across all VCCs. If the error path in
+fore200e_open() executes concurrently with operations like
+fore200e_close() or fore200e_change_qos() on other VCCs, a
+read-modify-write race occurs.
+
+Specifically, the error path reads the rate without the lock. If another
+CPU acquires the lock and modifies the rate (e.g., releasing bandwidth in
+fore200e_close()) between this read and the subsequent write, the error
+path will overwrite the concurrent update with a stale value. This results
+in incorrect bandwidth accounting.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251120120657.2462194-1-hanguidong02@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/tablet/pegasus_notetaker.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/atm/fore200e.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/input/tablet/pegasus_notetaker.c
-+++ b/drivers/input/tablet/pegasus_notetaker.c
-@@ -63,6 +63,9 @@
- #define BUTTON_PRESSED			0xb5
- #define COMMAND_VERSION			0xa9
+--- a/drivers/atm/fore200e.c
++++ b/drivers/atm/fore200e.c
+@@ -1374,7 +1374,9 @@ fore200e_open(struct atm_vcc *vcc)
  
-+/* 1 Status + 1 Color + 2 X + 2 Y = 6 bytes */
-+#define NOTETAKER_PACKET_SIZE		6
-+
- /* in xy data packet */
- #define BATTERY_NO_REPORT		0x40
- #define BATTERY_LOW			0x41
-@@ -297,6 +300,12 @@ static int pegasus_probe(struct usb_inte
+ 	vcc->dev_data = NULL;
  
- 	pipe = usb_rcvintpipe(dev, endpoint->bEndpointAddress);
- 	pegasus->data_len = usb_maxpacket(dev, pipe);
-+	if (pegasus->data_len < NOTETAKER_PACKET_SIZE) {
-+		dev_err(&intf->dev, "packet size is too small (%d)\n",
-+			pegasus->data_len);
-+		error = -EINVAL;
-+		goto err_free_mem;
-+	}
++	mutex_lock(&fore200e->rate_mtx);
+ 	fore200e->available_cell_rate += vcc->qos.txtp.max_pcr;
++	mutex_unlock(&fore200e->rate_mtx);
  
- 	pegasus->data = usb_alloc_coherent(dev, pegasus->data_len, GFP_KERNEL,
- 					   &pegasus->data_dma);
+ 	kfree(fore200e_vcc);
+ 	return -EINVAL;
 
 
 
