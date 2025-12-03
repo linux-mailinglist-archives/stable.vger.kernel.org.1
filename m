@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-199368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D91CCA0042
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:38:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FF96C9FAAF
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:51:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 155483007FC2
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:32:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C44FE306C666
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:43:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E30A03AA186;
-	Wed,  3 Dec 2025 16:32:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83C823128D5;
+	Wed,  3 Dec 2025 15:35:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DTNq0sun"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="njoN6o3k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DB453AA182;
-	Wed,  3 Dec 2025 16:32:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E7F03128C6;
+	Wed,  3 Dec 2025 15:35:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779565; cv=none; b=BK4AdZqMThMfyqos+RYFr+FPvQfZdx/rsAfLr76HbJ+efIvbfZ+uR9hqwki5Neuc0uX7lhZIVW8gjBLkT0AtYF95QhIpNF9lkyPnIbdGVSvd0SJxanV+7bbkjzigg8PTzBeqzXKDp+n9VHA+ObF3PceeHquwz5CWDv0N3GjaNew=
+	t=1764776150; cv=none; b=lSaeUSlFlc06GrS3gY9Ls8eYcICCqgp5auKrkUJ0zOZ4CWT4+rx4HOxLJKGFTBYu3iQl/n6nPMBJROOfeYkdrWTU5oWP60TpbdOiTqdXJzkwW9vfX5MibfTBTsy3cuRrjVkbGerh8d5NDfsp0YrtXtva8dVktRh1Ll28H59cn4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779565; c=relaxed/simple;
-	bh=6ZRLlSHLvIN82zVW2VTpa/LMN7YvPWgVLNam3OgiZns=;
+	s=arc-20240116; t=1764776150; c=relaxed/simple;
+	bh=1nhWlwFyAepKpzPthr9M4rE/fKXJPKY35J+UE2I0YOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mx/iMs2ZSaVcumuOOzGzplmYjQClpbf1268E0o+T18HmN/2oZpT1MXwWFtwjdgtUmdetLi+hxtWe8ELucxK3O5GlOkXkzPo7NgAkJ8J/ncWNYwJFu0Xm338TKC2jcjub/jXj+9LQhjRP/yk/6tnpBULo6fxyclHqh4HZWIASuVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DTNq0sun; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BDAEC4CEF5;
-	Wed,  3 Dec 2025 16:32:44 +0000 (UTC)
+	 MIME-Version; b=LoCB/xC2lH8hrk2qvsjhNY0DZh5VMiHzLmk8FEVbHb4fqz/cl+DQ6WqaNSDHu4ymzCW8YqT58uhwCpKuRcyxXw/ZojTN+1jyz+MBChlozXGXX2BOXFX1vpZAb8WQNv2Y0wjk4MHR37qj3vvSobrXs0PZ5rL1j59gnWAWifsmwmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=njoN6o3k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B69F1C116C6;
+	Wed,  3 Dec 2025 15:35:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779565;
-	bh=6ZRLlSHLvIN82zVW2VTpa/LMN7YvPWgVLNam3OgiZns=;
+	s=korg; t=1764776150;
+	bh=1nhWlwFyAepKpzPthr9M4rE/fKXJPKY35J+UE2I0YOM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DTNq0sunDQVkH0BvAJYxc/83oC+pEs9Dqoy61R/2uR7s9swVMlId/yJaTOG4leYMC
-	 uVYsle6uiKgx5Nqf3qv6kXAzuSFCZAN4ywSF0xNBOu/K0Wmpn909eBmriFG42pUZgm
-	 0O6r08WBcSqiUFwXYNl3k1lDmMNjmLSN5CLsTED4=
+	b=njoN6o3kbXKEtf+d3E6Gpwc6L5ncW7KClQ0zlltpU9MX1oEDkA61ETDOqS6aq0oEB
+	 1R060FRU6YHxuzk99bB9cRAkP31DvaFega1LeZAJZFJaSL8Faao9TO35FWIixuxGfF
+	 CeswJRKlQQvY71mcu3RjAV6DyT/r/szMXM+1mCgM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emil Dahl Juhl <juhl.emildahl@gmail.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Amber Lin <Amber.Lin@amd.com>,
+	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 296/568] tools: lib: thermal: dont preserve owner in install
+Subject: [PATCH 5.10 094/300] drm/amdkfd: Tie UNMAP_LATENCY to queue_preemption
 Date: Wed,  3 Dec 2025 16:24:58 +0100
-Message-ID: <20251203152451.545985836@linuxfoundation.org>
+Message-ID: <20251203152404.106811920@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emil Dahl Juhl <juhl.emildahl@gmail.com>
+From: Amber Lin <Amber.Lin@amd.com>
 
-[ Upstream commit 1375152bb02ab2a8435e87ea27034482dbc95f57 ]
+[ Upstream commit f3820e9d356132e18405cd7606e22dc87ccfa6d1 ]
 
-Instead of preserving mode, timestamp, and owner, for the object files
-during installation, just preserve the mode and timestamp.
+When KFD asks CP to preempt queues, other than preempt CP queues, CP
+also requests SDMA to preempt SDMA queues with UNMAP_LATENCY timeout.
+Currently queue_preemption_timeout_ms is 9000 ms by default but can be
+configured via module parameter. KFD_UNMAP_LATENCY_MS is hard coded as
+4000 ms though. This patch ties KFD_UNMAP_LATENCY_MS to
+queue_preemption_timeout_ms so in a slow system such as emulator, both
+CP and SDMA slowness are taken into account.
 
-When installing as root, the installed files should be owned by root.
-When installing as user, --preserve=ownership doesn't work anyway. This
-makes --preserve=ownership rather pointless.
-
-Signed-off-by: Emil Dahl Juhl <juhl.emildahl@gmail.com>
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Amber Lin <Amber.Lin@amd.com>
+Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/thermal/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_priv.h | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/tools/lib/thermal/Makefile b/tools/lib/thermal/Makefile
-index 8890fd57b110c..1694889847caf 100644
---- a/tools/lib/thermal/Makefile
-+++ b/tools/lib/thermal/Makefile
-@@ -147,7 +147,7 @@ endef
- install_lib: libs
- 	$(call QUIET_INSTALL, $(LIBTHERMAL_ALL)) \
- 		$(call do_install_mkdir,$(libdir_SQ)); \
--		cp -fpR $(LIBTHERMAL_ALL) $(DESTDIR)$(libdir_SQ)
-+		cp -fR --preserve=mode,timestamp $(LIBTHERMAL_ALL) $(DESTDIR)$(libdir_SQ)
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_priv.h b/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
+index 057c48a9b53a7..af2ea008340cc 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
+@@ -108,7 +108,14 @@
  
- install_headers:
- 	$(call QUIET_INSTALL, headers) \
+ #define KFD_KERNEL_QUEUE_SIZE 2048
+ 
+-#define KFD_UNMAP_LATENCY_MS	(4000)
++/*  KFD_UNMAP_LATENCY_MS is the timeout CP waiting for SDMA preemption. One XCC
++ *  can be associated to 2 SDMA engines. queue_preemption_timeout_ms is the time
++ *  driver waiting for CP returning the UNMAP_QUEUE fence. Thus the math is
++ *  queue_preemption_timeout_ms = sdma_preemption_time * 2 + cp workload
++ *  The format here makes CP workload 10% of total timeout
++ */
++#define KFD_UNMAP_LATENCY_MS	\
++	((queue_preemption_timeout_ms - queue_preemption_timeout_ms / 10) >> 1)
+ 
+ /*
+  * 512 = 0x200
 -- 
 2.51.0
 
