@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88C7CCA0036
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:38:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4285ACA0E6D
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:20:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 01F19300095C
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:38:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7DDCA32D0D16
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:17:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3A9735BDDB;
-	Wed,  3 Dec 2025 16:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63337233D9E;
+	Wed,  3 Dec 2025 16:08:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OATzdd43"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kQY2CM/T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF1233E36A;
-	Wed,  3 Dec 2025 16:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 107E82561AE;
+	Wed,  3 Dec 2025 16:08:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779904; cv=none; b=Ugi7ofy6AfTA2qpcBqdLtUBg9+PvunKPmma2ef5XPNqDGepbvdQijEZlGsfGViqluAzMbiWND1Z8OjDaoUGoLH9xnIm8OR3GzWIW4utSpbuKqFcgDHq0dMtTkBo9sAsNzWvQGROzI0V26Rcy3f/HgPHsPryIAdvqGAeSYJsmK38=
+	t=1764778121; cv=none; b=mWw3Y2LyTekW9mF8WGJFnUHd+q7EzsHLu/5yvpk1GAwbii8j8Jy15otSwdIOe5Az5a6ABNu5BDB1loBLxSzzZqqiP8ppuFfjw3RQEs7VvK2JkJpQEJvn6kdC/s1hGU0TJUK1bpLSXu+Ijo41DuI6rd064r5dCeghsOPK6WddS2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779904; c=relaxed/simple;
-	bh=YuutO9no87joUamNLX3hgFkeV71TaZwIprJU1T1TdaQ=;
+	s=arc-20240116; t=1764778121; c=relaxed/simple;
+	bh=yPVB/YhVCQc4M/YU7x4I7xwoTJfUU0hXTiqD1D9tVKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MVStltO83YaGoqrQdITIWDLj/5oQ8cpsH3ua8XY6V9SY1tp3yH/9cAMNQrf3D1psyYvoUXOFubZSy8nGDqXsie9QwZ269jAgeUK8FyEUdy8Qr8PT+ZVfzi0G27SX4sq/3zqbqScPzECYK1MdIdgyBX6IWggEqF7OoPwlIyv4eYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OATzdd43; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04DDCC4CEF5;
-	Wed,  3 Dec 2025 16:38:23 +0000 (UTC)
+	 MIME-Version; b=jjKF28xCW93vOlE0YDz5arSiJ/5+ZEDyRfokd7nRzU4NtRM8bsx8yHv+MLcK+tc8njWNrS3PkIR9G9SnesSRnvhOWS3rDcVMLLgSTspnC22eRTswrIil9wjK9XoiFg8Wyz3MlSQ7rRj5svzYrhpPCnEZt1wKFJZ531KId6/k420=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kQY2CM/T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43635C4CEF5;
+	Wed,  3 Dec 2025 16:08:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779904;
-	bh=YuutO9no87joUamNLX3hgFkeV71TaZwIprJU1T1TdaQ=;
+	s=korg; t=1764778120;
+	bh=yPVB/YhVCQc4M/YU7x4I7xwoTJfUU0hXTiqD1D9tVKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OATzdd431RiwuwvaZD0kkAhYl8bBVTf0qRmVsYU70pGnQIJ+L3qZE5C1zCFWLmF0D
-	 cSIGrT+Td9ofpQGsyeYF2jXk78W+LtiruPkxaCkrXcSvmQp2IcBEDoWNWEugNgf3yU
-	 GQXLFR9iS+slsFqRI2lFjOWl50Pkg7EBdYZoXFMI=
+	b=kQY2CM/TRWA1yy0Up504LLLEbxWLIh7U2E5e3uNZ2ItWVc8qicDiuqR5aDthsa22u
+	 /k7oavOWsaj02gainucrI362AnWQ67S7EtyR3owho4ggXTDkn2pKzBlROEr2u9MV4H
+	 cD1O8aFqQXnN+/mMQyWuDZ7/+SlAGFB3itczLOPY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Rogers <linux@joshua.hu>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 398/568] ksmbd: close accepted socket when per-IP limit rejects connection
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 250/392] net_sched: act_connmark: use RCU in tcf_connmark_dump()
 Date: Wed,  3 Dec 2025 16:26:40 +0100
-Message-ID: <20251203152455.268985788@linuxfoundation.org>
+Message-ID: <20251203152423.370247157@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +60,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Rogers <linux@joshua.hu>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 98a5fd31cbf72d46bf18e50b3ab0ce86d5f319a9 upstream.
+[ Upstream commit 0d752877705c0252ef2726e4c63c5573f048951c ]
 
-When the per-IP connection limit is exceeded in ksmbd_kthread_fn(),
-the code sets ret = -EAGAIN and continues the accept loop without
-closing the just-accepted socket. That leaks one socket per rejected
-attempt from a single IP and enables a trivial remote DoS.
+Also storing tcf_action into struct tcf_connmark_parms
+makes sure there is no discrepancy in tcf_connmark_act().
 
-Release client_sk before continuing.
-
-This bug was found with ZeroPath.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Joshua Rogers <linux@joshua.hu>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250709090204.797558-3-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 62b656e43eae ("net: sched: act_connmark: initialize struct tc_ife to fix kernel leak")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/transport_tcp.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ include/net/tc_act/tc_connmark.h |  1 +
+ net/sched/act_connmark.c         | 18 ++++++++++--------
+ 2 files changed, 11 insertions(+), 8 deletions(-)
 
---- a/fs/smb/server/transport_tcp.c
-+++ b/fs/smb/server/transport_tcp.c
-@@ -282,8 +282,11 @@ static int ksmbd_kthread_fn(void *p)
- 			}
- 		}
- 		up_read(&conn_list_lock);
--		if (ret == -EAGAIN)
-+		if (ret == -EAGAIN) {
-+			/* Per-IP limit hit: release the just-accepted socket. */
-+			sock_release(client_sk);
- 			continue;
-+		}
+diff --git a/include/net/tc_act/tc_connmark.h b/include/net/tc_act/tc_connmark.h
+index e8dd77a967480..a5ce83f3eea4b 100644
+--- a/include/net/tc_act/tc_connmark.h
++++ b/include/net/tc_act/tc_connmark.h
+@@ -7,6 +7,7 @@
+ struct tcf_connmark_parms {
+ 	struct net *net;
+ 	u16 zone;
++	int action;
+ 	struct rcu_head rcu;
+ };
  
- skip_max_ip_conns_limit:
- 		if (server_conf.max_connections &&
+diff --git a/net/sched/act_connmark.c b/net/sched/act_connmark.c
+index 418d60435b9d4..79cfe51a09e74 100644
+--- a/net/sched/act_connmark.c
++++ b/net/sched/act_connmark.c
+@@ -86,7 +86,7 @@ static int tcf_connmark_act(struct sk_buff *skb, const struct tc_action *a,
+ 	/* using overlimits stats to count how many packets marked */
+ 	tcf_action_inc_overlimit_qstats(&ca->common);
+ out:
+-	return READ_ONCE(ca->tcf_action);
++	return parms->action;
+ }
+ 
+ static const struct nla_policy connmark_policy[TCA_CONNMARK_MAX + 1] = {
+@@ -162,6 +162,8 @@ static int tcf_connmark_init(struct net *net, struct nlattr *nla,
+ 	if (err < 0)
+ 		goto release_idr;
+ 
++	nparms->action = parm->action;
++
+ 	spin_lock_bh(&ci->tcf_lock);
+ 	goto_ch = tcf_action_set_ctrlact(*a, parm->action, goto_ch);
+ 	oparms = rcu_replace_pointer(ci->parms, nparms, lockdep_is_held(&ci->tcf_lock));
+@@ -185,20 +187,20 @@ static int tcf_connmark_init(struct net *net, struct nlattr *nla,
+ static inline int tcf_connmark_dump(struct sk_buff *skb, struct tc_action *a,
+ 				    int bind, int ref)
+ {
++	const struct tcf_connmark_info *ci = to_connmark(a);
+ 	unsigned char *b = skb_tail_pointer(skb);
+-	struct tcf_connmark_info *ci = to_connmark(a);
++	const struct tcf_connmark_parms *parms;
+ 	struct tc_connmark opt = {
+ 		.index   = ci->tcf_index,
+ 		.refcnt  = refcount_read(&ci->tcf_refcnt) - ref,
+ 		.bindcnt = atomic_read(&ci->tcf_bindcnt) - bind,
+ 	};
+-	struct tcf_connmark_parms *parms;
+ 	struct tcf_t t;
+ 
+-	spin_lock_bh(&ci->tcf_lock);
+-	parms = rcu_dereference_protected(ci->parms, lockdep_is_held(&ci->tcf_lock));
++	rcu_read_lock();
++	parms = rcu_dereference(ci->parms);
+ 
+-	opt.action = ci->tcf_action;
++	opt.action = parms->action;
+ 	opt.zone = parms->zone;
+ 	if (nla_put(skb, TCA_CONNMARK_PARMS, sizeof(opt), &opt))
+ 		goto nla_put_failure;
+@@ -207,12 +209,12 @@ static inline int tcf_connmark_dump(struct sk_buff *skb, struct tc_action *a,
+ 	if (nla_put_64bit(skb, TCA_CONNMARK_TM, sizeof(t), &t,
+ 			  TCA_CONNMARK_PAD))
+ 		goto nla_put_failure;
+-	spin_unlock_bh(&ci->tcf_lock);
++	rcu_read_unlock();
+ 
+ 	return skb->len;
+ 
+ nla_put_failure:
+-	spin_unlock_bh(&ci->tcf_lock);
++	rcu_read_unlock();
+ 	nlmsg_trim(skb, b);
+ 	return -1;
+ }
+-- 
+2.51.0
+
 
 
 
