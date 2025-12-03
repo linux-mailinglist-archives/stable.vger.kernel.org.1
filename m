@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-198385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06B76C9F9BA
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:44:58 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEAFCCA007B
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:40:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8F606301BEBA
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:39:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 15CA93010E79
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:36:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E70830FC1C;
-	Wed,  3 Dec 2025 15:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C785B35C18E;
+	Wed,  3 Dec 2025 16:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="feWbBR7V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mztD/G/P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A54C830BF52;
-	Wed,  3 Dec 2025 15:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B33F3596FA;
+	Wed,  3 Dec 2025 16:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776366; cv=none; b=T8t1iR/9oY6aMgOSDIhVuYi1HBRiZ/nJNuscH0RKggK2JAEHXNcyHTDQm1GiQAJGDM7lIHWeCUzzc+acXOovKN/qBUOth52FVvvkhVX37tE3i2AWggcmRwpj1WqYQf2wAJHCG/2zNPlNeohj8jBkesCnO05jRj41iXrs1rT275Y=
+	t=1764779792; cv=none; b=l92velWGQHDAvzJcq+0MOOwKQR2vAg6U7APu98r9Y1pcx0Pta30+RUXmatkGGpTbk6eEvSW5jqB37XXTknT/qOanHHQ5c/1KBqfNGCKREoJUUw+vFj+zECr42Sq4ToRKkvdg8M0oO47Vt1edkZs3LJhI4I1HsDM5wLpZXF4YI2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776366; c=relaxed/simple;
-	bh=1mJB7DmZnggfONcXGYfvSfWlAg7fxbe7ACcOjQ8xmPE=;
+	s=arc-20240116; t=1764779792; c=relaxed/simple;
+	bh=i8neKgNwAlaFKv4ZfoG9pQsFd4sW9kAtGbn6ZqJ2Y2E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GBfRM0tFvangL8fiuLb+hAGbknMRSMh2YnOC2bNIoLheuxIIkkN2D3OHwk/wVjYiK22xhZugtqn9fcAkDKNBembBuSn17WV8C2CfGvgzktnCJym+ioPpmp3ng5AmKk9bAadRZky8CRiQHkzoXAAVUBpLxyYzeH8m8pPwSl01+Nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=feWbBR7V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2B95C4CEF5;
-	Wed,  3 Dec 2025 15:39:25 +0000 (UTC)
+	 MIME-Version; b=ukkK6XlJ8PSR8cY9Z6TEqPgthvZ2zZ83X+oddX1PIJwCLHrstn1B+OIQc4h9Iz9p/reVnCkPuYX02ZgFQkNKzhvRLZyumKQfeiiK3mY30eA0Q+JhYiddyYZx/tg7J/3kWxErUU+CFfh64czL0Ob+s6e8Uy/bjmYfvj6cu+uZBVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mztD/G/P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E62BAC4CEF5;
+	Wed,  3 Dec 2025 16:36:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776366;
-	bh=1mJB7DmZnggfONcXGYfvSfWlAg7fxbe7ACcOjQ8xmPE=;
+	s=korg; t=1764779792;
+	bh=i8neKgNwAlaFKv4ZfoG9pQsFd4sW9kAtGbn6ZqJ2Y2E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=feWbBR7VAduo6YxyY+jxBLgyPGLuEe9CB8GtPclmEm2/VZN0mrEKbOoi3ayMTWyQD
-	 uPg/ifrwYm1FDU/cL74Ep6t0c3sFT4ftTVFrSRfvPD26Cixc1ZnD1KSNfmbIfOr6Nn
-	 u6QuUlwjwKAdgX+ROj25ugv28TJo+oliA/VrehuQ=
+	b=mztD/G/PJDR3Xvf0S4yo+S61O73dfzrcJ42xnLjaYF+Ht0YTTi69hgjeEtdSr64nc
+	 K+xV9055RPh7KO+BfsLwJG9FhzXsCXGCSRtj4JmmNQiVTjEtHeTlpNLTNWw76yqx2o
+	 g6isjyZY+8W6vo/NI9VUlYPo+VYcJA6u37dUf3A0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 161/300] net: dsa: b53: fix enabling ip multicast
+Subject: [PATCH 6.1 363/568] net_sched: act_connmark: use RCU in tcf_connmark_dump()
 Date: Wed,  3 Dec 2025 16:26:05 +0100
-Message-ID: <20251203152406.582067371@linuxfoundation.org>
+Message-ID: <20251203152453.995732963@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +60,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit c264294624e956a967a9e2e5fa41e3273340b089 ]
+[ Upstream commit 0d752877705c0252ef2726e4c63c5573f048951c ]
 
-In the New Control register bit 1 is either reserved, or has a different
-function:
+Also storing tcf_action into struct tcf_connmark_parms
+makes sure there is no discrepancy in tcf_connmark_act().
 
-    Out of Range Error Discard
-
-    When enabled, the ingress port discards any frames
-    if the Length field is between 1500 and 1536
-    (excluding 1500 and 1536) and with good CRC.
-
-The actual bit for enabling IP multicast is bit 0, which was only
-explicitly enabled for BCM5325 so far.
-
-For older switch chips, this bit defaults to 0, so we want to enable it
-as well, while newer switch chips default to 1, and their documentation
-says "It is illegal to set this bit to zero."
-
-So drop the wrong B53_IPMC_FWD_EN define, enable the IP multicast bit
-also for other switch chips. While at it, rename it to (B53_)IP_MC as
-that is how it is called in Broadcom code.
-
-Fixes: 63cc54a6f073 ("net: dsa: b53: Fix egress flooding settings")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20251102100758.28352-2-jonas.gorski@gmail.com
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250709090204.797558-3-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 62b656e43eae ("net: sched: act_connmark: initialize struct tc_ife to fix kernel leak")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 4 ++--
- drivers/net/dsa/b53/b53_regs.h   | 3 +--
- 2 files changed, 3 insertions(+), 4 deletions(-)
+ include/net/tc_act/tc_connmark.h |  1 +
+ net/sched/act_connmark.c         | 18 ++++++++++--------
+ 2 files changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 704ec51a1500e..a30961f9b0060 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -349,11 +349,11 @@ static void b53_set_forwarding(struct b53_device *dev, int enable)
- 		 * frames should be flooded or not.
- 		 */
- 		b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
--		mgmt |= B53_UC_FWD_EN | B53_MC_FWD_EN | B53_IPMC_FWD_EN;
-+		mgmt |= B53_UC_FWD_EN | B53_MC_FWD_EN | B53_IP_MC;
- 		b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
- 	} else {
- 		b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
--		mgmt |= B53_IP_MCAST_25;
-+		mgmt |= B53_IP_MC;
- 		b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
- 	}
+diff --git a/include/net/tc_act/tc_connmark.h b/include/net/tc_act/tc_connmark.h
+index e8dd77a967480..a5ce83f3eea4b 100644
+--- a/include/net/tc_act/tc_connmark.h
++++ b/include/net/tc_act/tc_connmark.h
+@@ -7,6 +7,7 @@
+ struct tcf_connmark_parms {
+ 	struct net *net;
+ 	u16 zone;
++	int action;
+ 	struct rcu_head rcu;
+ };
+ 
+diff --git a/net/sched/act_connmark.c b/net/sched/act_connmark.c
+index 418d60435b9d4..79cfe51a09e74 100644
+--- a/net/sched/act_connmark.c
++++ b/net/sched/act_connmark.c
+@@ -86,7 +86,7 @@ static int tcf_connmark_act(struct sk_buff *skb, const struct tc_action *a,
+ 	/* using overlimits stats to count how many packets marked */
+ 	tcf_action_inc_overlimit_qstats(&ca->common);
+ out:
+-	return READ_ONCE(ca->tcf_action);
++	return parms->action;
  }
-diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
-index 77fb7ae660b8c..95f70248c194d 100644
---- a/drivers/net/dsa/b53/b53_regs.h
-+++ b/drivers/net/dsa/b53/b53_regs.h
-@@ -104,8 +104,7 @@
  
- /* IP Multicast control (8 bit) */
- #define B53_IP_MULTICAST_CTRL		0x21
--#define  B53_IP_MCAST_25		BIT(0)
--#define  B53_IPMC_FWD_EN		BIT(1)
-+#define  B53_IP_MC			BIT(0)
- #define  B53_UC_FWD_EN			BIT(6)
- #define  B53_MC_FWD_EN			BIT(7)
+ static const struct nla_policy connmark_policy[TCA_CONNMARK_MAX + 1] = {
+@@ -162,6 +162,8 @@ static int tcf_connmark_init(struct net *net, struct nlattr *nla,
+ 	if (err < 0)
+ 		goto release_idr;
  
++	nparms->action = parm->action;
++
+ 	spin_lock_bh(&ci->tcf_lock);
+ 	goto_ch = tcf_action_set_ctrlact(*a, parm->action, goto_ch);
+ 	oparms = rcu_replace_pointer(ci->parms, nparms, lockdep_is_held(&ci->tcf_lock));
+@@ -185,20 +187,20 @@ static int tcf_connmark_init(struct net *net, struct nlattr *nla,
+ static inline int tcf_connmark_dump(struct sk_buff *skb, struct tc_action *a,
+ 				    int bind, int ref)
+ {
++	const struct tcf_connmark_info *ci = to_connmark(a);
+ 	unsigned char *b = skb_tail_pointer(skb);
+-	struct tcf_connmark_info *ci = to_connmark(a);
++	const struct tcf_connmark_parms *parms;
+ 	struct tc_connmark opt = {
+ 		.index   = ci->tcf_index,
+ 		.refcnt  = refcount_read(&ci->tcf_refcnt) - ref,
+ 		.bindcnt = atomic_read(&ci->tcf_bindcnt) - bind,
+ 	};
+-	struct tcf_connmark_parms *parms;
+ 	struct tcf_t t;
+ 
+-	spin_lock_bh(&ci->tcf_lock);
+-	parms = rcu_dereference_protected(ci->parms, lockdep_is_held(&ci->tcf_lock));
++	rcu_read_lock();
++	parms = rcu_dereference(ci->parms);
+ 
+-	opt.action = ci->tcf_action;
++	opt.action = parms->action;
+ 	opt.zone = parms->zone;
+ 	if (nla_put(skb, TCA_CONNMARK_PARMS, sizeof(opt), &opt))
+ 		goto nla_put_failure;
+@@ -207,12 +209,12 @@ static inline int tcf_connmark_dump(struct sk_buff *skb, struct tc_action *a,
+ 	if (nla_put_64bit(skb, TCA_CONNMARK_TM, sizeof(t), &t,
+ 			  TCA_CONNMARK_PAD))
+ 		goto nla_put_failure;
+-	spin_unlock_bh(&ci->tcf_lock);
++	rcu_read_unlock();
+ 
+ 	return skb->len;
+ 
+ nla_put_failure:
+-	spin_unlock_bh(&ci->tcf_lock);
++	rcu_read_unlock();
+ 	nlmsg_trim(skb, b);
+ 	return -1;
+ }
 -- 
 2.51.0
 
