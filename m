@@ -1,202 +1,204 @@
-Return-Path: <stable+bounces-199931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99954CA1C8E
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 23:12:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 862A6CA1CBD
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 23:14:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 47C2330161EE
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 22:12:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DFF8D300CAE9
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 22:14:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C076E2D24A0;
-	Wed,  3 Dec 2025 22:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 079312DEA8C;
+	Wed,  3 Dec 2025 22:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C0DZty2n"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="T7fFR9KE"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011051.outbound.protection.outlook.com [40.107.130.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 659FB2DEA79;
-	Wed,  3 Dec 2025 22:12:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764799953; cv=none; b=l8In0THkBpDfUYrJZaZBPZ2A9aVQyRRQ26aE8iv5erwrg7RPRLO/T4BQOuNrcbCTWyvNh6tPHSoY5UPAvWFM4YL/Hiy5mX7dluROirbfAfJ2SEuFksx5WZJh0WA4Teu4NFLpFdT2BgDwlNeM0Vy8ARQT/4iWIOnvpI+bpRtnqkA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764799953; c=relaxed/simple;
-	bh=pEroIieDV0yILHi+qd0Kw6/doaQeGzsOJ0pf58PbQwA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WaTSy1eEJYCy4OSqNed6cWDNZFlOuITGkjR4tGs8t8F2twMne2+RgKCOJBAM6lnja9Z9VT0d+L/eY/uXKO1DIWs4zQ9icJGshh8Q5LKJKc2G3prlNytTxuc4hn0Xd/H9MuN+DSMM/XAD7IVVj/4nnDpRrbq34IoPHumrISmACdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C0DZty2n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FF99C116C6;
-	Wed,  3 Dec 2025 22:12:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764799952;
-	bh=pEroIieDV0yILHi+qd0Kw6/doaQeGzsOJ0pf58PbQwA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C0DZty2n2AhAGmyoQKq5vTxejWi8Z74IGkDyFZRWRqVpHzn3w/aZ9g/h4YfZx920I
-	 XwTzOtS5r/KmufN+l+QIwUYL/HDd2JV1vkGn7KHEAnulXcJrUkiBq7oTlnV18YXm8H
-	 07hicCXbjstV4RQ//0H2CD5WOShsYwn9J31n177Ry3Co8EHVoD071BDMNiT0ejDKAM
-	 MdYkE2Q561T5LexBPie0NW7SqbpXNcrR/+tno2wfoh+Bbq13Z0GXxB4dmY74TOdMWc
-	 7MJntUlXKWqxet0SuFVY7O8lesTfqflHHd3i9v0Q4dhVm+a7B7u5AvZsDEHu/cYzPv
-	 mnARD1agS+8cg==
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: linux-integrity@vger.kernel.org
-Cc: Jarkko Sakkinen <jarkko@kernel.org>,
-	Jonathan McDowell <noodles@earth.li>,
-	Peter Huewe <peterhuewe@gmx.de>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	linux-kernel@vger.kernel.org (open list),
-	stable@vger.kernel.org,
-	James Bottomley <James.Bottomley@HansenPartnership.com>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH v3 2/4] tpm2-sessions: Fix tpm2_read_public range checks
-Date: Thu,  4 Dec 2025 00:12:12 +0200
-Message-ID: <20251203221215.536031-3-jarkko@kernel.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203221215.536031-1-jarkko@kernel.org>
-References: <20251203221215.536031-1-jarkko@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D86F2DEA94;
+	Wed,  3 Dec 2025 22:14:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764800087; cv=fail; b=C5+rInqYRItk5+wWyOcYdb01h/1zSplQ+O3s4sb80D+khZD0Tbl2oCBK6bP1Z1ZvGaN9f7vGP/yL8kMih4oPKqCL8Cy4zb7VZD92vJSJDoi4yWQIBXvAmZqm69dtSAd9Xc/6htYUC2nZlGjEUIQWehFswnF9v6pkYuVwAYod3OA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764800087; c=relaxed/simple;
+	bh=eLGvIPESURVf+aEXjc1Wmth72oQnQJdwd9/Rx1K1+Io=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=d1DfoNsbiY0y0D78cF54JzobktRdUA0+aFtoBQhHWTH7PPLbW1H0Fw9FQuCDzf2/tPNGeff9E6Vagso4bW2oaPamDNvLtwlc6YX5Mexrq1RP7R+sp/5VqnxtiUI8z4mU2JKWt42Qg+WSBNvPryJHmoqUohdnjPCio7QvE9wTiXY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=T7fFR9KE; arc=fail smtp.client-ip=40.107.130.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xaq7+NaeGFW0IulxdW8WHgM59Y+49gcZtrby9xKCULBRbVToUDFqtVec9gi1X9gLU+xTJUir4vhp8FeXG7ZES46FdJ5TEoZ+tXytPVTJGu8k9kVp6MhbSRf9y129CJ7zRe8gmFTvQ8pyIjezNE5vGFAkpacSfEiyz3D6fMt8uj0Np/H4Agvx3CqaNbCIAxKBAV4GZuSGuBoMZRmfkJc2gsrYNuAKKrTIsriyK2Drm3eYPWGdWNLIT82/KxcO9yv09sZurveu/p/yuPxFvQVuiEIIb5pEeCRenXa7RZhabDSUQwWL21WBCz+70qEs7DWpFiXMJEGh3fXYHOz1T+GGTQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ICwi9t8n9AQgbT67pyEUrLakr4QOYeTfwmSpAZlLlO4=;
+ b=ksEKKjhyLsgCs5aWBinswLW/1vMw/GhaaSzW6m3JWT56ow9TiZSjzvzUzRbHnU6s/gUUK0J6eM4W/vTXOT2YGLZgPvt9gB7hrdd5o3yNBlSSR/gcEr1RrzCduu2fdVIAwwa8wqrGDBJcW5IlKzpjQqehrt4LKNOebJZ8S4INauEy7cssE6XwYmEmbRaBgdxufs11Webd2EhkHViz7dAqOmT+AbYe2Rcgyb23l2NS8hGb/H/aKFGrXdV9Yeh3q+S4oQjzJ5byzODA+odmcI6L2R7Py8h6Y/aHISalAvt79KyWGN9L0o3dR/L7BY6sPNoHyvMRYYJDBCYoQJh3nYn2Ug==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ICwi9t8n9AQgbT67pyEUrLakr4QOYeTfwmSpAZlLlO4=;
+ b=T7fFR9KEcgf0Fheq45t8ZKqLe9zZvOyAIxjiujfibJR8HbFas0b6Mj2qAxbV1LKaEurGkWKOuiMTQha4/Uq37i0I8ImPnJK7+TeorsCG9GRnhmAR7qozmb6WfeiMdrqOEnRSF8fMIUbSNUvg/eCuBqiKf90X/V6GkuD15xEG25o8O9Rbih+4zxLVofMcu9c+f+2gY/QDq5KRAMd65M10Sa2jpcrmkFKERaerIgcV6UJRl9NIS+nkGphMmc3HLDT8nAS+1TO7n0zKEK2v8zyOREumPXHDY96SMwyzBd+S7qyyy6uVlWrTXhqtQSlQB3MvUVph2znIClAYZ5IwGVut0Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU2PR04MB8951.eurprd04.prod.outlook.com (2603:10a6:10:2e2::22)
+ by AS8PR04MB8962.eurprd04.prod.outlook.com (2603:10a6:20b:42d::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Wed, 3 Dec
+ 2025 22:14:41 +0000
+Received: from DU2PR04MB8951.eurprd04.prod.outlook.com
+ ([fe80::753c:468d:266:196]) by DU2PR04MB8951.eurprd04.prod.outlook.com
+ ([fe80::753c:468d:266:196%4]) with mapi id 15.20.9366.012; Wed, 3 Dec 2025
+ 22:14:41 +0000
+Date: Wed, 3 Dec 2025 17:14:34 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Zhen Ni <zhen.ni@easystack.cn>
+Cc: vkoul@kernel.org, imx@lists.linux.dev, dmaengine@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v4] dmaengine: fsl-edma: Fix clk leak on
+ alloc_chan_resources failure
+Message-ID: <aTC2SrErg/R4UlAI@lizhi-Precision-Tower-5810>
+References: <20251014090522.827726-1-zhen.ni@easystack.cn>
+ <aO5t/dHjLsfkaFar@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aO5t/dHjLsfkaFar@lizhi-Precision-Tower-5810>
+X-ClientProxiedBy: BYAPR21CA0002.namprd21.prod.outlook.com
+ (2603:10b6:a03:114::12) To DU2PR04MB8951.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e2::22)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8951:EE_|AS8PR04MB8962:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6fd4f71a-b58b-4620-b953-08de32b95b1c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|376014|19092799006|366016|1800799024|38350700014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?J+TIyxjX2Q2ItbV6JbUP5ZHQoJgh35+2wKOkBRWVI09CaKxHVNgZesO4Pb0B?=
+ =?us-ascii?Q?uym+Bf+Sn3VXpRhhyK63nleD8hWtUH0lhsvIryEDBnHTwrBY0HCAAFzRDoad?=
+ =?us-ascii?Q?mWZ6a1gALYkxt1te5ejrawlMawKpiaNoXkZCkQ2tJ4jdELnI0pX4wob9Wlxj?=
+ =?us-ascii?Q?5Li2wC9vDr+aAl/W6yOku7YHhj04kseK8ee12sMPsCV1B/5c2NbeinjLwTWK?=
+ =?us-ascii?Q?GGWczTsCZzjDXPNEhXrxmJ0jOlk6kEzfvCDBNeBCf87kNVWQjt8/RTkVEi9K?=
+ =?us-ascii?Q?eOe4pdKTA55a0f98+faBf4Rbi86kT0HHmuJrSu8I7/+nxzPi/hdUzSBNFCg1?=
+ =?us-ascii?Q?8AVztZY40Wj3EIGknPd66e2xhEvrkhx9AtOqUx2A55SK0K2nmKhAP5MIAv11?=
+ =?us-ascii?Q?8LPWPoPc0g2u6ie2UJi2KV4aaVdUvA+qBEiaI7sj8KoU3oN8036lciOAKFB4?=
+ =?us-ascii?Q?AYZ9Cj6+ASuz98lzQWPnhqg+C/OtGOsiCinJPyds9ajwENexF7XKUolRovT0?=
+ =?us-ascii?Q?TPA7DScLUWOON9PCk+Tv7ZaRjNAXFLcAa0JLD0VCC0uTSsqUqO/qf4oAPq1m?=
+ =?us-ascii?Q?C0WjyLfRSdgxR8K8aY8peyOhvgAMdwl6bXk5/Mc7IFbey3fVvVYyLDa+Gmt0?=
+ =?us-ascii?Q?AQj0c+QwXjeME/ySnKtm1J5vYRYIUUofl+V1VUKPU5+QZt7jOwbbOcvEUkKk?=
+ =?us-ascii?Q?GebhCxXZofAL6or9VDDOIIuq2QndqHLjLGu1GFDmFCH+w+msq8rmNglQa/oy?=
+ =?us-ascii?Q?jiO/d92VgZRFSxmgESn42Z/q9qCnyjgTzdFrjMfAkl38osPTiHAe9KzDLqy3?=
+ =?us-ascii?Q?kjkFLXpyGyRleJhcBFeszMI7rSgDtFtyIk5XBrrM/U+nUpXM4R3u1taCs1BA?=
+ =?us-ascii?Q?MHXOypDUaPLo32PGWG5+6ALn5MYyaE2upBErjbq/M8+Ch4DQF7W8T5jrLLGl?=
+ =?us-ascii?Q?4iW2ngALdCtPJq557v3ZrgFYziA9eb8ELKBa2yohJFLew4EjjNCaIH57A8lL?=
+ =?us-ascii?Q?vn0ze5+KPUqks1OxdfCAnhbbKveX0owsb+2q+Bzv1gCNg8cBj2z8QAmVGBlW?=
+ =?us-ascii?Q?S3AYDmuOhBXEVm0+sEHN5QrMfuy0TxvhzR9si/CmeIddzaCmBFtvXYpqqvdR?=
+ =?us-ascii?Q?HSnkxre0yZ5h8mXaw6gksn3ntRk4a8Ot/KAgWCD57RV4rTSJq23hpQhR18ca?=
+ =?us-ascii?Q?8Zoypv41fSmBKmaxuLyQm/dRRLzD2SvhJAKeFgYywFmXuY+mRmwtKlVEdWO6?=
+ =?us-ascii?Q?q0Y2PM+LGcS01Zv9JFak75te6sujobAXhi/tH14Jmhcn62lpg19z/9KBij0L?=
+ =?us-ascii?Q?bSJE/L+79+/pq9wld1Eneu0xkSaTiPHfnrDUqR+iYN5xV7glD3NcMR7t/Pbp?=
+ =?us-ascii?Q?F3syEbNR5CqHzOOZoNh212Hh3mse4/1WTEMMWiuyQwHwDOQXxrY/+XkVNA5F?=
+ =?us-ascii?Q?I3/0JjGNkpgG09KLNyh4ll/824sXxsiFwvJS3w2+q4UJj5gT8KgnON48a/g0?=
+ =?us-ascii?Q?ADoIWIv6VtV2Qy/p3tfi9iuq9y1WgrqNpziF?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8951.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(19092799006)(366016)(1800799024)(38350700014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?epDidpUjFEW3E8wsM0D+cAnNf+er1TWLCOvqDZ9OD4gR7Bxoh9o1KhCxFME5?=
+ =?us-ascii?Q?1OlPp6FEGmvEzlNoDm1qR09e1aFd1aGEAVGsMUl+VYxkE2VyPM8Yq4yfbywy?=
+ =?us-ascii?Q?EpqLOdiX9YTg9+Qd9wXf4JtOnbvGqAsdfBhOsWb8iaal4ADd/Nl8Wb1OU961?=
+ =?us-ascii?Q?3v7mUQD4oDk/D9qZuWudZyvfnO2R+N3lTpq9+cFJo78LyXEwegi6izC8mhxh?=
+ =?us-ascii?Q?/9pOpEu7Dv/PbALJpUa5aIHk6rYhiry4kF82esSwu01/a2rj/1YRGjyJiQq4?=
+ =?us-ascii?Q?ueMASanCKx4atFlnFtezUjXMR8alGrx31is8sN3dN0BOAuB1+CRhz0EKXKsd?=
+ =?us-ascii?Q?C1QTp/j3W8YxoWRJ5uOZQymOgqGSUb9gCfwQI5b2g6Wptnn7ay2gL0bNvCSJ?=
+ =?us-ascii?Q?J5lUSg4Zt3I6jzcvRjQL8wfwUlaIBBYFGb+FP+DSW9uiexdR35vbd7xLfaSt?=
+ =?us-ascii?Q?6pXBbFjL/Pm8CAQtfznl6fos8eKLxO/4Lv3yTBnZdehbgbnrcVlhwRg5svsU?=
+ =?us-ascii?Q?ejWCrm2WwyXU6CQrBaFjj+JTeEidLnp6xha975C4h03hvQQxxoVnSsG8KPPO?=
+ =?us-ascii?Q?wyiopWP7u6XX+6Ll9PsV8ejvCLUxUewOAxbuS46M23DIhDd+xiGmSzCW5eVU?=
+ =?us-ascii?Q?mDftnfSnBUHkRKEnBbE/pTPzPkPwkduvfA8i52DJckL9LHQ7KJGEkETFSaR2?=
+ =?us-ascii?Q?1yTUT/4sVwIMM7XOyqtdxePkv24PbfhWbMbu90WwIdsswbjCctDujTf24qNb?=
+ =?us-ascii?Q?GwYZ8/mKn9fpN0uFbm7zG2jrh+GhC/GRH1aQP/Ard5FY4b5XZDQButDAthoC?=
+ =?us-ascii?Q?QXVeI15YQCvhmQzq2nz0/b6ZsQOvsWvMeTx/HgeW2Kkfsvwk/TG7fNKI8Rc2?=
+ =?us-ascii?Q?0aRBnl0tHCKtDy6kEP2jISYi/NhfGyfkGcWOCqCBcQQrcmn7pBDEdO0gr5LM?=
+ =?us-ascii?Q?cunv3Eb1EEgzWELKBXCBuMOqguPUi4xyQcquzPkYFmVtFYqjoGzd6OOGPzqs?=
+ =?us-ascii?Q?2j3qHvLsAnuSx3Zt+a8lqrYgqMbUkcHc33MYNo/JQNBtF2hCyhSYXez1HfhJ?=
+ =?us-ascii?Q?Veda8U7WXD6MC4mex0YoLMRWtyFJxpLBf36rqFMeNQVRfGdnX/JLi6AhKq97?=
+ =?us-ascii?Q?An4MZCSUGv+T26qxmwcOkE/XSZ2QZaqmbQrfP/ZvaJBVqk3PDDsPCkQVk0tB?=
+ =?us-ascii?Q?+SJ67MFU9IGwYgONs/yz83fCbezSkw3Go3xS0KMYkCA0EH+VHScHCb0XtUYB?=
+ =?us-ascii?Q?jqUogYpIGkB9Qw0bFdVfDqoIK3VshXcFnc8xD3ztoRziteiNfWHPvrk3IOiW?=
+ =?us-ascii?Q?N/KGwJBVgH40TiMq4/O90tlrDK+PIZOsHuJvExI7rwKbtg7brFTIp0vDkMBH?=
+ =?us-ascii?Q?NAkGlsusciCPpDsg3KAMpojg/9psM9x+hckjnGW/Ifhrw5IMxew3AYqXI11t?=
+ =?us-ascii?Q?95z3sWI+ev8ZlgF135WsHBR7UrweDY4XzEwN+rrTshLElme39kDz+f4dUfP+?=
+ =?us-ascii?Q?zVUEtOeHLYkkkRSlqDKGkMf2b6kmriCImPsSYtoqI7IM6RE0Tt8Zk9pJeCfC?=
+ =?us-ascii?Q?y5B1LH4c7r66xgzka0dXA+ngJrzjNNviPBGlTJEM?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6fd4f71a-b58b-4620-b953-08de32b95b1c
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8951.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Dec 2025 22:14:41.3322
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: PDRrE2yTJB/9je6F1IXea+rjML5F78SiZu7uU8i/v6IC30BK8ckCJvFiIOGA4X18PqZ4vjMLu6trOop1v1GmRg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8962
 
-'tpm2_read_public' has some rudimentary range checks but the function
-does not ensure that the response buffer has enough bytes for the full
-TPMT_HA payload.
+On Tue, Oct 14, 2025 at 11:36:29AM -0400, Frank Li wrote:
+> On Tue, Oct 14, 2025 at 05:05:22PM +0800, Zhen Ni wrote:
+> > When fsl_edma_alloc_chan_resources() fails after clk_prepare_enable(),
+> > the error paths only free IRQs and destroy the TCD pool, but forget to
+> > call clk_disable_unprepare(). This causes the channel clock to remain
+> > enabled, leaking power and resources.
+> >
+> > Fix it by disabling the channel clock in the error unwind path.
+> >
+> > Fixes: d8d4355861d8 ("dmaengine: fsl-edma: add i.MX8ULP edma support")
+> > Cc: stable@vger.kernel.org
+> > Suggested-by: Frank Li <Frank.Li@nxp.com>
+> > Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-Re-implement the function with necessary checks and validation.
+Vinod Koul:
 
-Cc: stable@vger.kernel.org # v6.10+
-Fixes: d0a25bb961e6 ("tpm: Add HMAC session name/handle append")
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+	Do you have chance to pickup this small fix patch?
 
-v2:
-- Made the fix localized instead of spread all over the place.
----
- drivers/char/tpm/tpm2-cmd.c      |  3 ++
- drivers/char/tpm/tpm2-sessions.c | 77 +++++++++++++++++---------------
- 2 files changed, 44 insertions(+), 36 deletions(-)
-
-diff --git a/drivers/char/tpm/tpm2-cmd.c b/drivers/char/tpm/tpm2-cmd.c
-index be4a9c7f2e1a..34e3599f094f 100644
---- a/drivers/char/tpm/tpm2-cmd.c
-+++ b/drivers/char/tpm/tpm2-cmd.c
-@@ -11,8 +11,11 @@
-  * used by the kernel internally.
-  */
- 
-+#include "linux/dev_printk.h"
-+#include "linux/tpm.h"
- #include "tpm.h"
- #include <crypto/hash_info.h>
-+#include <linux/unaligned.h>
- 
- static bool disable_pcr_integrity;
- module_param(disable_pcr_integrity, bool, 0444);
-diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
-index a265e9752a5e..e9f439be3916 100644
---- a/drivers/char/tpm/tpm2-sessions.c
-+++ b/drivers/char/tpm/tpm2-sessions.c
-@@ -163,54 +163,59 @@ static int name_size(const u8 *name)
- 	}
- }
- 
--static int tpm2_parse_read_public(char *name, struct tpm_buf *buf)
-+static int tpm2_read_public(struct tpm_chip *chip, u32 handle, void *name)
- {
--	struct tpm_header *head = (struct tpm_header *)buf->data;
-+	u32 mso = tpm2_handle_mso(handle);
- 	off_t offset = TPM_HEADER_SIZE;
--	u32 tot_len = be32_to_cpu(head->length);
--	int ret;
--	u32 val;
--
--	/* we're starting after the header so adjust the length */
--	tot_len -= TPM_HEADER_SIZE;
--
--	/* skip public */
--	val = tpm_buf_read_u16(buf, &offset);
--	if (val > tot_len)
--		return -EINVAL;
--	offset += val;
--	/* name */
--
--	val = tpm_buf_read_u16(buf, &offset);
--	ret = name_size(&buf->data[offset]);
--	if (ret < 0)
--		return ret;
-+	struct tpm_buf buf;
-+	int rc, rc2;
- 
--	if (val != ret)
-+	if (mso != TPM2_MSO_PERSISTENT && mso != TPM2_MSO_VOLATILE &&
-+	    mso != TPM2_MSO_NVRAM)
- 		return -EINVAL;
- 
--	memcpy(name, &buf->data[offset], val);
--	/* forget the rest */
--	return 0;
--}
--
--static int tpm2_read_public(struct tpm_chip *chip, u32 handle, char *name)
--{
--	struct tpm_buf buf;
--	int rc;
--
- 	rc = tpm_buf_init(&buf, TPM2_ST_NO_SESSIONS, TPM2_CC_READ_PUBLIC);
- 	if (rc)
- 		return rc;
- 
- 	tpm_buf_append_u32(&buf, handle);
--	rc = tpm_transmit_cmd(chip, &buf, 0, "read public");
--	if (rc == TPM2_RC_SUCCESS)
--		rc = tpm2_parse_read_public(name, &buf);
- 
--	tpm_buf_destroy(&buf);
-+	rc = tpm_transmit_cmd(chip, &buf, 0, "TPM2_ReadPublic");
-+	if (rc) {
-+		tpm_buf_destroy(&buf);
-+		return tpm_ret_to_err(rc);
-+	}
- 
--	return rc;
-+	/* Skip TPMT_PUBLIC: */
-+	offset += tpm_buf_read_u16(&buf, &offset);
-+
-+	/*
-+	 * Ensure space for the length field of TPM2B_NAME and hashAlg field of
-+	 * TPMT_HA (the extra four bytes).
-+	 */
-+	if (offset + 4 > tpm_buf_length(&buf)) {
-+		tpm_buf_destroy(&buf);
-+		return -EIO;
-+	}
-+
-+	rc = tpm_buf_read_u16(&buf, &offset);
-+	rc2 = name_size(&buf.data[offset]);
-+
-+	if (rc2 < 0)
-+		return rc2;
-+
-+	if (rc != rc2) {
-+		tpm_buf_destroy(&buf);
-+		return -EIO;
-+	}
-+
-+	if (offset + rc > tpm_buf_length(&buf)) {
-+		tpm_buf_destroy(&buf);
-+		return -EIO;
-+	}
-+
-+	memcpy(name, &buf.data[offset], rc);
-+	return 0;
- }
- #endif /* CONFIG_TCG_TPM2_HMAC */
- 
--- 
-2.52.0
-
+Frank
+>
+> > ---
+> > Changes in v2:
+> > - Remove FSL_EDMA_DRV_HAS_CHCLK check
+> > Changes in v3:
+> > - Remove cleanup
+> > Changes in v4:
+> > - Re-send as a new thread
+> > ---
+> >  drivers/dma/fsl-edma-common.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> >
+> > diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-common.c
+> > index 4976d7dde080..11655dcc4d6c 100644
+> > --- a/drivers/dma/fsl-edma-common.c
+> > +++ b/drivers/dma/fsl-edma-common.c
+> > @@ -852,6 +852,7 @@ int fsl_edma_alloc_chan_resources(struct dma_chan *chan)
+> >  		free_irq(fsl_chan->txirq, fsl_chan);
+> >  err_txirq:
+> >  	dma_pool_destroy(fsl_chan->tcd_pool);
+> > +	clk_disable_unprepare(fsl_chan->clk);
+> >
+> >  	return ret;
+> >  }
+> > --
+> > 2.20.1
+> >
 
