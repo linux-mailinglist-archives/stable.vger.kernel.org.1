@@ -1,97 +1,221 @@
-Return-Path: <stable+bounces-198168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE53BC9DF0C
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 07:38:27 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8183DC9E060
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 08:15:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A32283A7F85
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 06:38:26 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BB17934A90F
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 07:15:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62259288C2F;
-	Wed,  3 Dec 2025 06:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EED0A29BDA4;
+	Wed,  3 Dec 2025 07:15:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MbAGz/Id"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ot9JMckg"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00034285C85;
-	Wed,  3 Dec 2025 06:38:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2251929D260
+	for <stable@vger.kernel.org>; Wed,  3 Dec 2025 07:15:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764743902; cv=none; b=a231Nwjwx1dbEzDr3n91p/S0OG7OW4GWJG5K0z7uiyLiDVnavC3rCWvYJFST/Pizu8l/7O3RJeNzqqPNYBE7oetOtVN0yuDv9HBK6bW6l9Ijndt0jAkQ9l39Wy+vYrdJhcJ9eE7Qbp13MgVQfgshUUPhc83SWtEwtq0tjHjp9dE=
+	t=1764746114; cv=none; b=WjP1WqtwrBsrvzPyLILaDn2x+vIKZWsYeQQ1Vwfw2TbFx6p6KVU27zFmeH3me8sBshfvVNfKdO2CXFVa2Sd1alTYPSjJFGWK0uPIbXDk8Gi0doarKBfpFWQH7S5b1nxXhUTMKAwVzEMh4V1J+tKeJgu8eNY0LODah76tw+hzTy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764743902; c=relaxed/simple;
-	bh=+XM1mndVqIT1rszXCFeTNF26QNeMpZY6yncOwatE4o4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EbByl1XuR1UJEGe5GFQRENBgg+xK6iaF35ax01KzZY8FZZKjIek4tGzVQ3Yk/DzzAYLr4c8QDQVkA1E+ecYqkp7rbmNpLArW9vGzDsrDMKX0AONmxYTq0FWHfEry7TaMYi194TUA8CYiBtyh9vpCPUFkc94kySwV4YS1xgE96F4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MbAGz/Id; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8C25C4CEFB;
-	Wed,  3 Dec 2025 06:38:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764743901;
-	bh=+XM1mndVqIT1rszXCFeTNF26QNeMpZY6yncOwatE4o4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MbAGz/Idp+mJMwpHKzEWPKLovgDlr1iUrJHRRsyeJRM1sdLTEiE8LImW+6IQDqzis
-	 uin3U3kbUo4zRuoucZW/xjHBnBLpgpEsThz0FFmgsBKoufxUFL2xzDu0i53IlRE2NP
-	 P3xXsvk9szcTBsLLnkICLzfX6e+DPQMn80vPMhoA=
-Date: Wed, 3 Dec 2025 07:38:18 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Florian Fainelli <florian.fainelli@broadcom.com>
-Cc: stable@vger.kernel.org, Doug Berger <opendmb@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Doug Berger <doug.berger@broadcom.com>,
-	Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	"open list:SCHEDULER" <linux-kernel@vger.kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	bcm-kernel-feedback-list@broadcom.com
-Subject: Re: [PATCH stable 6.12] sched/deadline: only set free_cpus for
- online runqueues
-Message-ID: <2025120356-professed-criteria-0a25@gregkh>
-References: <20251027224351.2893946-1-florian.fainelli@broadcom.com>
- <20251027224351.2893946-5-florian.fainelli@broadcom.com>
- <2025103157-effective-bulk-f9f6@gregkh>
- <31316499-4007-4211-add8-eb6bab565e0d@broadcom.com>
- <6df70e8d-86b5-48ce-8228-699f28f7ef2b@broadcom.com>
+	s=arc-20240116; t=1764746114; c=relaxed/simple;
+	bh=hhYimVu64Jhzi0NwwVUu2hKUQTleXM0vwg56OYBPvRo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XQ9GsLmwvlZzGCQWTN0yk0I4mJNjg6qKJ4tnsaN8hJEpdYafkmBI96ERGaAQWfh88Pbq9vpGlLqPTPDvdgD7icOsb02Z7VWl/j+Vc6smMr/gxYCcv0t4Seu2ExVR0oI3v4tzwTeeX4b6WKkkrkdFCz6c22yUoY5TvMoi4HwjwHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ot9JMckg; arc=none smtp.client-ip=209.85.215.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-bddba676613so4003767a12.2
+        for <stable@vger.kernel.org>; Tue, 02 Dec 2025 23:15:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1764746111; x=1765350911; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KuaqeRiXB2RSHvZmjA8H7YeoSS8/bN+aXc/eV8k0YL4=;
+        b=ot9JMckgdkHmqAqZuSYMALYDk4zogolTrWiY0MM+ckGda4MWcu5gB77ZRAf4b2orvG
+         ogBr3OYk7jg3LsmGjSLk9XtgJDaU30fibNc+MR8dk783ZPiBT+ChdsK1m+dlWkqHxxId
+         kC0w8Gz3pnMGLNzAQ9TvXieY3y7ZDBNx07qgQzMrV+ayTGbCcXvPfiTZORsIywYUX+12
+         cUHyhetdcpPScA44WAZ6Po/DUs/YNF+eIKd7N2osh0V+4bIIY347e2xht5vpHA70lmmv
+         I6Q559BNIXaXfx2R75NxICmQIJvgzXOpg2yrxQI6lJu3SGUrTJr5RzA7nhUyX4MDmRBk
+         s95g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764746111; x=1765350911;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=KuaqeRiXB2RSHvZmjA8H7YeoSS8/bN+aXc/eV8k0YL4=;
+        b=kkTl9iUgBhVVe0HcL90Fei6VnZg2Ce83ABFgUQZAEJ4lE0Mm1PCiCTrLf+BwX3qatY
+         5XYjlpF+EqVODrlJKi0A3JyHR56QG0AsmUGf8pcoSlfokfz6eSDAi0SDT8RUXeZe4ypc
+         zyanOjI2dejuX5gZpjtC5BJEadj75od5HLSHQqBRrf9jCU5Uj3iTm+cXfNc2+hrjGbv+
+         wYn5g9kuR1Ufl4xfmQUZnl3h9+jxfJFJEtOHGEUynzEv7neIM1G8cS4NL5NSDSVZX+5h
+         JpPSJa8AMBWi1Yuprnt4cJMq/IPWoHii/hCMOvfY/hpdf1wKPFf+YsfapSovTPTXVn7C
+         smhg==
+X-Gm-Message-State: AOJu0YzgNyBxjpUkutzRHveLbjW4En71WkGnx9M1NqWm+1e5cKSYXLEa
+	A4vryAQTckE8z7mVbmScwqD1BxZQAqnKf99PjhUJ/h8GcSfqojw4U3C1y5HYLP/a4grDmVQzT1j
+	H57RHISy4+0rZ/4IH+tpXY7ftcOhMOL0G8AhpJwm7cw==
+X-Gm-Gg: ASbGncuiche2A55yFBW6UBF0NIOQCnrNQmhdvieUEuYU7ZjMyHOPLS73XAnsJttrSFI
+	cdEKVxuvTR2V8Iz6av8NDulWD1GOs37oTf8W3UFy+v1BFy1ufbo93Xrdvr4M5bcxaDoFDCXsr35
+	mhXjglTYBxHqI3mjsEieU3Kz7ITZypHTJBDnrxUB3tPwF+pCqHNjyAqhgyEzsMbRhfSS28ieeRo
+	q/bM/Ha/PoUsbvUe4Vsai/BoWL3ucRSF1HuAlHZjCySTnkW16i7V1yOrjEjyUMR5PKbrYYHrHM7
+	9Up4aVLZXdS2piZMJMflKlqPRx9J
+X-Google-Smtp-Source: AGHT+IEETnb54HbdKeTiuWDb/Lm7b8afZhTKNTzzH0LI7UTbYLqKJsp23LG3WvoCfMvvkbfrzU+7EYOG3b5zJPTCWxc=
+X-Received: by 2002:a05:693c:2c94:b0:2a4:3593:c7d4 with SMTP id
+ 5a478bee46e88-2ab92ea4736mr969734eec.20.1764746110958; Tue, 02 Dec 2025
+ 23:15:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6df70e8d-86b5-48ce-8228-699f28f7ef2b@broadcom.com>
+References: <20251202152903.637577865@linuxfoundation.org>
+In-Reply-To: <20251202152903.637577865@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Wed, 3 Dec 2025 12:44:59 +0530
+X-Gm-Features: AWmQ_bnUN2qyQc96l7jqt-7SYMj2rnFyyw2W-5GaA3sZoN7Dn6CHN1uhUQkFwtE
+Message-ID: <CA+G9fYsut9v7pNOEMV=xt1NeGoT_WhUcgvO5+vcJyTHqjAV45A@mail.gmail.com>
+Subject: Re: [PATCH 5.4 000/182] 5.4.302-rc3 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org, sr@sladewatkins.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 02, 2025 at 10:32:23AM -0800, Florian Fainelli wrote:
-> On 10/31/25 11:10, Florian Fainelli wrote:
-> > On 10/31/25 05:27, Greg Kroah-Hartman wrote:
-> > > On Mon, Oct 27, 2025 at 03:43:49PM -0700, Florian Fainelli wrote:
-> > > > From: Doug Berger <opendmb@gmail.com>
-> > > > 
-> > > > [ Upstream commit 382748c05e58a9f1935f5a653c352422375566ea ]
-> > > 
-> > > Not a valid git id :(
-> > 
-> > This is valid in linux-next, looks like this still has not reached
-> > Linus' tree for some reason, I will resubmit when it does, sorry about
-> > that.
-> 
-> The commit is now in upstream in Linus' tree, can you pick up the stable
-> patches when you get a chance? Thanks!
+On Tue, 2 Dec 2025 at 21:00, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 5.4.302 release.
+> There are 182 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 04 Dec 2025 15:28:35 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
+5.4.302-rc3.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-5.4.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Which patches exactly?  And normally we have to wait until they show up
-in a -rc release, right?
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-thanks,
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-greg k-h
+## Build
+* kernel: 5.4.302-rc3
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git commit: 95d4a5c8c83fb774f7103574166d0190dc839cdc
+* git describe: v5.4.301-183-g95d4a5c8c83f
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.4.y/build/v5.4.3=
+01-183-g95d4a5c8c83f
+
+## Test Regressions (compared to v5.4.300-225-g4e89a6191515)
+
+## Metric Regressions (compared to v5.4.300-225-g4e89a6191515)
+
+## Test Fixes (compared to v5.4.300-225-g4e89a6191515)
+
+## Metric Fixes (compared to v5.4.300-225-g4e89a6191515)
+
+## Test result summary
+total: 27636, pass: 19070, fail: 3006, skip: 5408, xfail: 152
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 131 total, 131 passed, 0 failed
+* arm64: 31 total, 29 passed, 2 failed
+* i386: 18 total, 13 passed, 5 failed
+* mips: 25 total, 25 passed, 0 failed
+* parisc: 3 total, 0 passed, 3 failed
+* powerpc: 26 total, 26 passed, 0 failed
+* riscv: 9 total, 3 passed, 6 failed
+* s390: 6 total, 6 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 6 total, 6 passed, 0 failed
+* x86_64: 27 total, 27 passed, 0 failed
+
+## Test suites summary
+* boot
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-exec
+* kselftest-fpu
+* kselftest-futex
+* kselftest-intel_pstate
+* kselftest-kcmp
+* kselftest-membarrier
+* kselftest-mincore
+* kselftest-mqueue
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-x86
+* kunit
+* lava
+* libhugetlbfs
+* log-parser-boot
+* log-parser-build-clang
+* log-parser-build-gcc
+* log-parser-test
+* ltp-capability
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
