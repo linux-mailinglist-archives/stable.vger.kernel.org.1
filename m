@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-199486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4678DCA0655
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:24:13 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71208CA0A1E
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:48:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 43DFE3004D35
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:24:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 725D53003F88
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:48:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D0CF3164AA;
-	Wed,  3 Dec 2025 16:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5101E30BF66;
+	Wed,  3 Dec 2025 16:09:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="duZnd7sJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1vJozB/D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A2363164D0;
-	Wed,  3 Dec 2025 16:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3F4330FC3A;
+	Wed,  3 Dec 2025 16:09:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779959; cv=none; b=tKnIe/dYdbjkz6vwb3Arl3bMMqJsda2/QpmX11CD4NhJYzVjd+8A9AtHRb3TULFTQwJ99pKHpwzEUKYKxr2p5Q+YnvdSfWU76Rrww/K3Afr+5HSLnokGnwXZTCg/uZtYvT9bEx/kJZzIep6ExBHg0TOGFgYMSyxh1W9BE2P7s/4=
+	t=1764778173; cv=none; b=gy6FNRdHsnd8nXQEWnQzG/U297HDdr46enrtPYoCJsMsFrV6FpJSd7c/ZajNThhKcrBHKnH4jAFB8zu3N9XUEWdv8hgs9iXmvJNwiEGflnMO9MR7+EcCjcE12BXLsnYO2vavSam7eECgz8jAt95ZaP+JBUdrPNANrGyctWu1DDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779959; c=relaxed/simple;
-	bh=Syh1M6dps5uPFlOKQLAHuihooVn/rYA3lIgwiKs+9N8=;
+	s=arc-20240116; t=1764778173; c=relaxed/simple;
+	bh=JFsFLL3YTRY9RQOuJuMcDKua8V8fBERUoQJ6+lyMerc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kZDpam0jfI1pLWCjIbRvK2BESM9QC9SD2DQgRJJNuzebzJPx3vvaFFCv5wOQRKB1NSjzUBzvjTjR7wso8JSofTxS7j6NNwd6c9+aeIA4uZyUaEWn8WbQqvrknrOMiGluO6BxeOqYt/c2sF4iHgCyXtSl/P/4vukrcjFE3I8jdYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=duZnd7sJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45A00C4CEF5;
-	Wed,  3 Dec 2025 16:39:18 +0000 (UTC)
+	 MIME-Version; b=GkxfAP5210tqT6cApQACtYFWX2yIvTJGiuAo7Y7S47UrFaznzRdtlOqAe3EjpTX2/eB73bDJ7Ns50p6iR5NdzUGKMkfCVj1wDrG+Qh/ZROUBONzo4iO+890PsEBKTRPr+TNta4Il3IgX88hut6Jc3zOYeMM4XO72EsyZMVDvVZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1vJozB/D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F8DEC4CEF5;
+	Wed,  3 Dec 2025 16:09:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779958;
-	bh=Syh1M6dps5uPFlOKQLAHuihooVn/rYA3lIgwiKs+9N8=;
+	s=korg; t=1764778172;
+	bh=JFsFLL3YTRY9RQOuJuMcDKua8V8fBERUoQJ6+lyMerc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=duZnd7sJCj029dUxnB/L0WD0ZXoc4SvNmJ0IZQDrOJUX0SfeLxXlaIc3lPMvwtEhg
-	 e2GYl1IlPbz8H6CWxNbmj1ylFttZvTOlF4o524S4dAMySgdfC3zERqNJ8FS78ayYgu
-	 RDdQSYcEG0vXHjqSfbCKqO3TsRn/rNrgLCK/Ny44=
+	b=1vJozB/DOUdMIphHzrs4bHIhKE44egSQBviStAHKlBNTmEYztzNNaMN2wj3KgBqQu
+	 tNUawYwBFA6O/E3mRJIYgMC25MCoHZpojhzrYBo4qjGbHFbi+DVsOnqcJezZ48sXgf
+	 PaKzVTsh8h+wSgJ1Xp1CFUEOC5zKYq1hThErDdT0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bui Quang Minh <minhquangbui99@gmail.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Lei Yang <leiyang@redhat.com>,
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 413/568] virtio-net: fix received length check in big packets
+Subject: [PATCH 5.15 265/392] mptcp: pm: in-kernel: C-flag: handle late ADD_ADDR
 Date: Wed,  3 Dec 2025 16:26:55 +0100
-Message-ID: <20251203152455.818643972@linuxfoundation.org>
+Message-ID: <20251203152423.917173415@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +61,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bui Quang Minh <minhquangbui99@gmail.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 0c716703965ffc5ef4311b65cb5d84a703784717 ]
+[ Upstream commit e84cb860ac3ce67ec6ecc364433fd5b412c448bc ]
 
-Since commit 4959aebba8c0 ("virtio-net: use mtu size as buffer length
-for big packets"), when guest gso is off, the allocated size for big
-packets is not MAX_SKB_FRAGS * PAGE_SIZE anymore but depends on
-negotiated MTU. The number of allocated frags for big packets is stored
-in vi->big_packets_num_skbfrags.
+The special C-flag case expects the ADD_ADDR to be received when
+switching to 'fully-established'. But for various reasons, the ADD_ADDR
+could be sent after the "4th ACK", and the special case doesn't work.
 
-Because the host announced buffer length can be malicious (e.g. the host
-vhost_net driver's get_rx_bufs is modified to announce incorrect
-length), we need a check in virtio_net receive path. Currently, the
-check is not adapted to the new change which can lead to NULL page
-pointer dereference in the below while loop when receiving length that
-is larger than the allocated one.
+On NIPA, the new test validating this special case for the C-flag failed
+a few times, e.g.
 
-This commit fixes the received length check corresponding to the new
-change.
+  102 default limits, server deny join id 0
+        syn rx                 [FAIL] got 0 JOIN[s] syn rx expected 2
 
-Fixes: 4959aebba8c0 ("virtio-net: use mtu size as buffer length for big packets")
+  Server ns stats
+  (...)
+  MPTcpExtAddAddrTx  1
+  MPTcpExtEchoAdd    1
+
+  Client ns stats
+  (...)
+  MPTcpExtAddAddr    1
+  MPTcpExtEchoAddTx  1
+
+        synack rx              [FAIL] got 0 JOIN[s] synack rx expected 2
+        ack rx                 [FAIL] got 0 JOIN[s] ack rx expected 2
+        join Rx                [FAIL] see above
+        syn tx                 [FAIL] got 0 JOIN[s] syn tx expected 2
+        join Tx                [FAIL] see above
+
+I had a suspicion about what the issue could be: the ADD_ADDR might have
+been received after the switch to the 'fully-established' state. The
+issue was not easy to reproduce. The packet capture shown that the
+ADD_ADDR can indeed be sent with a delay, and the client would not try
+to establish subflows to it as expected.
+
+A simple fix is not to mark the endpoints as 'used' in the C-flag case,
+when looking at creating subflows to the remote initial IP address and
+port. In this case, there is no need to try.
+
+Note: newly added fullmesh endpoints will still continue to be used as
+expected, thanks to the conditions behind mptcp_pm_add_addr_c_flag_case.
+
+Fixes: 4b1ff850e0c1 ("mptcp: pm: in-kernel: usable client side with C-flag")
 Cc: stable@vger.kernel.org
-Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Tested-by: Lei Yang <leiyang@redhat.com>
-Link: https://patch.msgid.link/20251030144438.7582-1-minhquangbui99@gmail.com
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251020-net-mptcp-c-flag-late-add-addr-v1-1-8207030cb0e8@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ adapted page_to_skb() call ]
+[ applied to pm_netlink.c instead of pm_kernel.c ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ I took the version from Sasha from v6.1, and fixed an additional
+  conflict in pm_netlink.c, because commit a88c9e496937 ("mptcp: do not
+  block subflows creation on errors") is not in this version and changed
+  the code around: check_work_pending() is now called directly, followed
+  by a return instead of a goto. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/virtio_net.c |   26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ net/mptcp/pm_netlink.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -542,17 +542,6 @@ static struct sk_buff *page_to_skb(struc
- 		goto ok;
+diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
+index df46ca14ce234..e94b78a8b0ef1 100644
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -532,6 +532,12 @@ static void mptcp_pm_create_subflow_or_signal_addr(struct mptcp_sock *msk)
+ 		check_work_pending(msk);
  	}
  
--	/*
--	 * Verify that we can indeed put this data into a skb.
--	 * This is here to handle cases when the device erroneously
--	 * tries to receive more than is possible. This is usually
--	 * the case of a broken device.
--	 */
--	if (unlikely(len > MAX_SKB_FRAGS * PAGE_SIZE)) {
--		net_dbg_ratelimited("%s: too much data\n", skb->dev->name);
--		dev_kfree_skb(skb);
--		return NULL;
--	}
- 	BUG_ON(offset >= PAGE_SIZE);
- 	while (len) {
- 		unsigned int frag_size = min((unsigned)PAGE_SIZE - offset, len);
-@@ -955,8 +944,19 @@ static struct sk_buff *receive_big(struc
- 				   struct virtnet_rq_stats *stats)
- {
- 	struct page *page = buf;
--	struct sk_buff *skb =
--		page_to_skb(vi, rq, page, 0, len, PAGE_SIZE, true, 0, 0);
-+	struct sk_buff *skb;
-+
-+	/* Make sure that len does not exceed the size allocated in
-+	 * add_recvbuf_big.
-+	 */
-+	if (unlikely(len > (vi->big_packets_num_skbfrags + 1) * PAGE_SIZE)) {
-+		pr_debug("%s: rx error: len %u exceeds allocated size %lu\n",
-+			 dev->name, len,
-+			 (vi->big_packets_num_skbfrags + 1) * PAGE_SIZE);
-+		goto err;
++	/* No need to try establishing subflows to remote id0 if not allowed */
++	if (mptcp_pm_add_addr_c_flag_case(msk)) {
++		check_work_pending(msk);
++		return;
 +	}
 +
-+	skb = page_to_skb(vi, rq, page, 0, len, PAGE_SIZE, true, 0, 0);
- 
- 	stats->bytes += len - vi->hdr_len;
- 	if (unlikely(!skb))
+ 	/* check if should create a new subflow */
+ 	if (msk->pm.local_addr_used < local_addr_max &&
+ 	    msk->pm.subflows < subflows_max &&
+-- 
+2.51.0
+
 
 
 
