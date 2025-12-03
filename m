@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A442ECA115B
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:43:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76C5EC9FA73
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:48:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3E0C633D56D6
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:44:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 90E18302B13E
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:41:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24E71257431;
-	Wed,  3 Dec 2025 15:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F62B30F939;
+	Wed,  3 Dec 2025 15:41:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OEtNelE/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TFWCpW/C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C77FD31ED96;
-	Wed,  3 Dec 2025 15:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCCD03081AF;
+	Wed,  3 Dec 2025 15:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776917; cv=none; b=dbg3QJ7emcg1gwvqyz9ZsT/5uGLe0qojkWdQQPxgMGXmMdcqHJs7kTrpeINDHBTyCJcBya1xI1usOPK6pJlM5VPeQREvNhxgZNBNTcEPRtVzsI8zqXDAE8+h9QyiI0gz5ZD6au8WtOZvsWCotO2qL0F111EgDbFD7Y+LWRkojkk=
+	t=1764776502; cv=none; b=T3OdVuz1UtqKzg/wbco//rFUU03kK/gFQdWTTeGp/lXOytMABfXui7A+mkS9rVAr4QHpws433ixFIDcx5XcQE344j8NfiIR/2K1r6m1BjQE3JusZvlZHsx8hLZ1yJ4jrPA2hMrNmLBTmg/+uaJhWu8KzW2s3ZhqI+w0FzM2t0xI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776917; c=relaxed/simple;
-	bh=wLm5Y7PMTCDsY5DvXPFDkut8AwpuqiknOdSg27Cd1ZM=;
+	s=arc-20240116; t=1764776502; c=relaxed/simple;
+	bh=va/jygWQ+i9KpzqxdOj1O3kNxHVpMmdEQJYCjaqaUhE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C+EDHvH8OuK2zEZc3pC0xNhjlNvZ3+HxdyZQaNVsmD6LSkxPQ9Vq7O2ptJgk2+euctnmyCO2aIzeZBOLe+ard9+pnFywjfG5Vdhna/y7yS3Es+bAMsEedQFFc2ohu2mGcdibSDmplPTgjAcDn3zioVRleo9Um3HhV+ir6pxJi2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OEtNelE/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECF7EC4CEF5;
-	Wed,  3 Dec 2025 15:48:36 +0000 (UTC)
+	 MIME-Version; b=n+6TcOszG06uupFerwCQsDrQzfcl+RNrx/cvIpT+zjFlZyx+2V6ztWgFnTufK6hEMjb0zwE6YdFvn0fuDL2WHaq5vpTYXTmFND85onNFsHZ5Dduvapnh6v+mrlaqWvunSNcBBVYszbXQYCslYxqdK4wFfFghXMWvZsQPBC4rlnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TFWCpW/C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49966C4CEF5;
+	Wed,  3 Dec 2025 15:41:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776917;
-	bh=wLm5Y7PMTCDsY5DvXPFDkut8AwpuqiknOdSg27Cd1ZM=;
+	s=korg; t=1764776501;
+	bh=va/jygWQ+i9KpzqxdOj1O3kNxHVpMmdEQJYCjaqaUhE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OEtNelE/5ooXZd6nxNT3EcZeilotUQ4RAX15fMYkoRZhpN/tlzyr4xO1Zfo8e6iZ6
-	 pyG61vX3apsaomYWMqVY6BRtnchUcpbHdnsrHJt4ZK23z4kjhIqfDC5sG8rAWcSIdq
-	 gJVdnw2eXZNZVf4ORe6HFpqbLyS5CrV4xhZ9G8Ps=
+	b=TFWCpW/COAE0qWgJhsx/7YalIRNvHtqlw89OLXIdYRTV+TPQsaTmkY6kBYhRAfTII
+	 fGYa2nsxoBACvNCaYaKQ3NerI7Zh1LLrkvRHhj4TdQjWynSlUDUFgtwHOtpyIU+OS1
+	 wIKdEJfno7WoH/HVtw0B3P78dEeBWYMxZyb/yAQ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Eliav Farber <farbere@amazon.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 026/146] net: dsa: sja1105: fix SGMII linking at 10M or 100M but not passing traffic
+Subject: [PATCH 5.10 200/300] fsdax: mark the iomap argument to dax_iomap_sector as const
 Date: Wed,  3 Dec 2025 16:26:44 +0100
-Message-ID: <20251203152347.425436322@linuxfoundation.org>
+Message-ID: <20251203152408.033844627@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,74 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit da62abaaa268357b1aa66b372ace562189a05df1 ]
+[ Upstream commit 7e4f4b2d689d959b03cb07dfbdb97b9696cb1076 ]
 
-When using the SGMII PCS as a fixed-link chip-to-chip connection, it is
-easy to miss the fact that traffic passes only at 1G, since that's what
-any normal such connection would use.
-
-When using the SGMII PCS connected towards an on-board PHY or an SFP
-module, it is immediately noticeable that when the link resolves to a
-speed other than 1G, traffic from the MAC fails to pass: TX counters
-increase, but nothing gets decoded by the other end, and no local RX
-counters increase either.
-
-Artificially lowering a fixed-link rate to speed = <100> makes us able
-to see the same issue as in the case of having an SGMII PHY.
-
-Some debugging shows that the XPCS configuration is A-OK, but that the
-MAC Configuration Table entry for the port has the SPEED bits still set
-to 1000Mbps, due to a special condition in the driver. Deleting that
-condition, and letting the resolved link speed be programmed directly
-into the MAC speed field, results in a functional link at all 3 speeds.
-
-This piece of evidence, based on testing on both generations with SGMII
-support (SJA1105S and SJA1110A) directly contradicts the statement from
-the blamed commit that "the MAC is fixed at 1 Gbps and we need to
-configure the PCS only (if even that)". Worse, that statement is not
-backed by any documentation, and no one from NXP knows what it might
-refer to.
-
-I am unable to recall sufficient context regarding my testing from March
-2020 to understand what led me to draw such a braindead and factually
-incorrect conclusion. Yet, there is nothing of value regarding forcing
-the MAC speed, either for SGMII or 2500Base-X (introduced at a later
-stage), so remove all such logic.
-
-Fixes: ffe10e679cec ("net: dsa: sja1105: Add support for the SGMII port")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20251122111324.136761-1-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Eliav Farber <farbere@amazon.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/sja1105/sja1105_main.c | 7 -------
- 1 file changed, 7 deletions(-)
+ fs/dax.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
-index f674c400f05b2..aa2145cf29a67 100644
---- a/drivers/net/dsa/sja1105/sja1105_main.c
-+++ b/drivers/net/dsa/sja1105/sja1105_main.c
-@@ -1302,14 +1302,7 @@ static int sja1105_set_port_speed(struct sja1105_private *priv, int port,
- 	 * table, since this will be used for the clocking setup, and we no
- 	 * longer need to store it in the static config (already told hardware
- 	 * we want auto during upload phase).
--	 * Actually for the SGMII port, the MAC is fixed at 1 Gbps and
--	 * we need to configure the PCS only (if even that).
- 	 */
--	if (priv->phy_mode[port] == PHY_INTERFACE_MODE_SGMII)
--		speed = priv->info->port_speed[SJA1105_SPEED_1000MBPS];
--	else if (priv->phy_mode[port] == PHY_INTERFACE_MODE_2500BASEX)
--		speed = priv->info->port_speed[SJA1105_SPEED_2500MBPS];
--
- 	mac[port].speed = speed;
+diff --git a/fs/dax.c b/fs/dax.c
+index 91820b9b50b73..2ca33ef5d519d 100644
+--- a/fs/dax.c
++++ b/fs/dax.c
+@@ -1006,7 +1006,7 @@ int dax_writeback_mapping_range(struct address_space *mapping,
+ }
+ EXPORT_SYMBOL_GPL(dax_writeback_mapping_range);
  
- 	return 0;
+-static sector_t dax_iomap_sector(struct iomap *iomap, loff_t pos)
++static sector_t dax_iomap_sector(const struct iomap *iomap, loff_t pos)
+ {
+ 	return (iomap->addr + (pos & PAGE_MASK) - iomap->offset) >> 9;
+ }
 -- 
 2.51.0
 
