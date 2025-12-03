@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-198702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7A86C9FEC4
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:24:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FFF3CA063A
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:23:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 780E93002923
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:23:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9976B32CEE8D
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:08:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B79C033AD8F;
-	Wed,  3 Dec 2025 15:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81DCE346783;
+	Wed,  3 Dec 2025 16:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zCsh+Pbl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F9mc/RtK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2703081D8;
-	Wed,  3 Dec 2025 15:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE1334679C;
+	Wed,  3 Dec 2025 16:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777409; cv=none; b=Avcc9fU6yfOhoOS54LNhP/IWlVQCvTKGJESs/WNXIkLhkrYjfgNiuDPPdQVMW5xbrF/Xw3Aa3O5IYXTliGK830Zu8pEzpInFG86CeLnThBedYCEkiQcsyzkLwvO4EA7DTVQm7dSrSoHIbqAHG3jvzEX9DuNCVTKZBZ93AurGPtU=
+	t=1764779108; cv=none; b=n5wuL7xS5P74BEdNzUec49FLMP0Lteo6bmulD5HjE/5re/36LUX73+25S+tGHwtXO8j1PHaYpGOZImZjnYHtl0wKojVewXL1d59rhocQE4hdxfYPP7d8qh6i0ok4EBCvYH2msKAGGeWBrHgT3EAs6CGlKIOMBRYmjdSVNoi6RXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777409; c=relaxed/simple;
-	bh=aneuUDmUb964UBjA1iTgkSjOjlAXylG4fXwwJK6H1eg=;
+	s=arc-20240116; t=1764779108; c=relaxed/simple;
+	bh=uuTgAnOn4YhTIHqp2wx/IkN6gw2OQRP+Ynp5t52lgcU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=apOKADNyo3YQoxXkCeVlnwGfZNdpdOtPSAY6ySk6mKs2JQXaTxIRlbNNte+CaFansfCE80A+4hJUBHMepXEiITa3m7vXPl0bByuldlNW48HOinm83AtMxKGeh6DNyboryJ7lo+peQeaLudTZZKqRLGoUWt59blbqGgggRgvKFqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zCsh+Pbl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E91EC4CEF5;
-	Wed,  3 Dec 2025 15:56:48 +0000 (UTC)
+	 MIME-Version; b=m77eOJNIoK0IpAFvLD5GcZAjBLLtGum7K1CSnHkt+3Vczj8MRnXHpS1M9RLQe0Ni9D/p5rdUqgO9gVWtUV7MnWf8VUFp1SsEe08nm9EOcsCG29PBmmsAjzAA1wUylA/BLLThLOe8vXqCEOXJwMubJOfiOaZ3pPWS6A+1Gf9zBhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F9mc/RtK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B641EC4CEF5;
+	Wed,  3 Dec 2025 16:25:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777408;
-	bh=aneuUDmUb964UBjA1iTgkSjOjlAXylG4fXwwJK6H1eg=;
+	s=korg; t=1764779108;
+	bh=uuTgAnOn4YhTIHqp2wx/IkN6gw2OQRP+Ynp5t52lgcU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zCsh+Pbl+G7cLUcbuisfQUgVVjTerr7Bb8K/wWiV3fB9EGgx+QD/PY8VTvWcDGtGs
-	 8E5ryDaUMHy3sB8qT/E6AlO+dShwOJ8J4mZadT64B6LLFF9a7fbonu3JovJEsNVKjf
-	 YcJIcqDRX1W9chU3fMWe1xbg6XjwMCU8CHlKvI9o=
+	b=F9mc/RtKwZH22hRD6kgtwpUlLw7y4YkA3ATm4Y2QzuivM9tqlpz3ZAhOVEWIO6r2d
+	 tlGLkqVFbcpvJDCtTrOuP5pX/VZ8u57x/u5UtHYpYkhgwk/m/R8R1Arj5RvmBt3eg7
+	 pLvWTe7eKNZ/vS7INEu4cWzp5Zox88N2pMczisRI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Palmer <daniel@0x0f.com>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.15 008/392] fbdev: atyfb: Check if pll_ops->init_pll failed
-Date: Wed,  3 Dec 2025 16:22:38 +0100
-Message-ID: <20251203152414.401058686@linuxfoundation.org>
+	syzbot+01b0667934cdceb4451c@syzkaller.appspotmail.com,
+	Charalampos Mitrodimas <charmitro@posteo.net>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 157/568] net: ipv6: fix field-spanning memcpy warning in AH output
+Date: Wed,  3 Dec 2025 16:22:39 +0100
+Message-ID: <20251203152446.475978950@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,54 +61,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Palmer <daniel@0x0f.com>
+From: Charalampos Mitrodimas <charmitro@posteo.net>
 
-commit 7073c7fc8d8ba47194e5fc58fcafc0efe7586e9b upstream.
+[ Upstream commit 2327a3d6f65ce2fe2634546dde4a25ef52296fec ]
 
-Actually check the return value from pll_ops->init_pll()
-as it can return an error.
+Fix field-spanning memcpy warnings in ah6_output() and
+ah6_output_done() where extension headers are copied to/from IPv6
+address fields, triggering fortify-string warnings about writes beyond
+the 16-byte address fields.
 
-If the card's BIOS didn't run because it's not the primary VGA card
-the fact that the xclk source is unsupported is printed as shown
-below but the driver continues on regardless and on my machine causes
-a hard lock up.
+  memcpy: detected field-spanning write (size 40) of single field "&top_iph->saddr" at net/ipv6/ah6.c:439 (size 16)
+  WARNING: CPU: 0 PID: 8838 at net/ipv6/ah6.c:439 ah6_output+0xe7e/0x14e0 net/ipv6/ah6.c:439
 
-[   61.470088] atyfb 0000:03:05.0: enabling device (0080 -> 0083)
-[   61.476191] atyfb: using auxiliary register aperture
-[   61.481239] atyfb: 3D RAGE XL (Mach64 GR, PCI-33) [0x4752 rev 0x27]
-[   61.487569] atyfb: 512K SGRAM (1:1), 14.31818 MHz XTAL, 230 MHz PLL, 83 Mhz MCLK, 63 MHz XCLK
-[   61.496112] atyfb: Unsupported xclk source:  5.
+The warnings are false positives as the extension headers are
+intentionally placed after the IPv6 header in memory. Fix by properly
+copying addresses and extension headers separately, and introduce
+helper functions to avoid code duplication.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Daniel Palmer <daniel@0x0f.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+01b0667934cdceb4451c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=01b0667934cdceb4451c
+Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/aty/atyfb_base.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/ipv6/ah6.c | 50 +++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 31 insertions(+), 19 deletions(-)
 
---- a/drivers/video/fbdev/aty/atyfb_base.c
-+++ b/drivers/video/fbdev/aty/atyfb_base.c
-@@ -2617,8 +2617,12 @@ static int aty_init(struct fb_info *info
- 		pr_cont("\n");
- 	}
- #endif
--	if (par->pll_ops->init_pll)
--		par->pll_ops->init_pll(info, &par->pll);
-+	if (par->pll_ops->init_pll) {
-+		ret = par->pll_ops->init_pll(info, &par->pll);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	if (par->pll_ops->resume_pll)
- 		par->pll_ops->resume_pll(info, &par->pll);
+diff --git a/net/ipv6/ah6.c b/net/ipv6/ah6.c
+index 5228d27162893..151d8d98d0463 100644
+--- a/net/ipv6/ah6.c
++++ b/net/ipv6/ah6.c
+@@ -46,6 +46,34 @@ struct ah_skb_cb {
  
+ #define AH_SKB_CB(__skb) ((struct ah_skb_cb *)&((__skb)->cb[0]))
+ 
++/* Helper to save IPv6 addresses and extension headers to temporary storage */
++static inline void ah6_save_hdrs(struct tmp_ext *iph_ext,
++				 struct ipv6hdr *top_iph, int extlen)
++{
++	if (!extlen)
++		return;
++
++#if IS_ENABLED(CONFIG_IPV6_MIP6)
++	iph_ext->saddr = top_iph->saddr;
++#endif
++	iph_ext->daddr = top_iph->daddr;
++	memcpy(&iph_ext->hdrs, top_iph + 1, extlen - sizeof(*iph_ext));
++}
++
++/* Helper to restore IPv6 addresses and extension headers from temporary storage */
++static inline void ah6_restore_hdrs(struct ipv6hdr *top_iph,
++				    struct tmp_ext *iph_ext, int extlen)
++{
++	if (!extlen)
++		return;
++
++#if IS_ENABLED(CONFIG_IPV6_MIP6)
++	top_iph->saddr = iph_ext->saddr;
++#endif
++	top_iph->daddr = iph_ext->daddr;
++	memcpy(top_iph + 1, &iph_ext->hdrs, extlen - sizeof(*iph_ext));
++}
++
+ static void *ah_alloc_tmp(struct crypto_ahash *ahash, int nfrags,
+ 			  unsigned int size)
+ {
+@@ -304,13 +332,7 @@ static void ah6_output_done(struct crypto_async_request *base, int err)
+ 	memcpy(ah->auth_data, icv, ahp->icv_trunc_len);
+ 	memcpy(top_iph, iph_base, IPV6HDR_BASELEN);
+ 
+-	if (extlen) {
+-#if IS_ENABLED(CONFIG_IPV6_MIP6)
+-		memcpy(&top_iph->saddr, iph_ext, extlen);
+-#else
+-		memcpy(&top_iph->daddr, iph_ext, extlen);
+-#endif
+-	}
++	ah6_restore_hdrs(top_iph, iph_ext, extlen);
+ 
+ 	kfree(AH_SKB_CB(skb)->tmp);
+ 	xfrm_output_resume(skb->sk, skb, err);
+@@ -381,12 +403,8 @@ static int ah6_output(struct xfrm_state *x, struct sk_buff *skb)
+ 	 */
+ 	memcpy(iph_base, top_iph, IPV6HDR_BASELEN);
+ 
++	ah6_save_hdrs(iph_ext, top_iph, extlen);
+ 	if (extlen) {
+-#if IS_ENABLED(CONFIG_IPV6_MIP6)
+-		memcpy(iph_ext, &top_iph->saddr, extlen);
+-#else
+-		memcpy(iph_ext, &top_iph->daddr, extlen);
+-#endif
+ 		err = ipv6_clear_mutable_options(top_iph,
+ 						 extlen - sizeof(*iph_ext) +
+ 						 sizeof(*top_iph),
+@@ -437,13 +455,7 @@ static int ah6_output(struct xfrm_state *x, struct sk_buff *skb)
+ 	memcpy(ah->auth_data, icv, ahp->icv_trunc_len);
+ 	memcpy(top_iph, iph_base, IPV6HDR_BASELEN);
+ 
+-	if (extlen) {
+-#if IS_ENABLED(CONFIG_IPV6_MIP6)
+-		memcpy(&top_iph->saddr, iph_ext, extlen);
+-#else
+-		memcpy(&top_iph->daddr, iph_ext, extlen);
+-#endif
+-	}
++	ah6_restore_hdrs(top_iph, iph_ext, extlen);
+ 
+ out_free:
+ 	kfree(iph_base);
+-- 
+2.51.0
+
 
 
 
