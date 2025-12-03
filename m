@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 733E8CA09EB
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:46:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D963FCA0B35
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:58:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D6E7432F57F6
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:25:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 30B773058FAA
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:53:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DC80352FB2;
-	Wed,  3 Dec 2025 16:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05A2F393DD6;
+	Wed,  3 Dec 2025 16:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rpARif03"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eWC0CAbm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A269309EF1;
-	Wed,  3 Dec 2025 16:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D1A393DC8;
+	Wed,  3 Dec 2025 16:51:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778611; cv=none; b=CsurItQr5BZSaKuMI9ArIocPicNqS/tUzhWL6APiCIMoTQfGCmYxF7bPkTf+e87Gs3zJOgqVGXVCMwmJP1Lkzsua1SNCMSAjL4o87OVD6vsu53dXD5q1eO+54366ueu/LWEPsUHiD0msIHT7BgqPMGxpIp15RmBe/rM07m8e63g=
+	t=1764780685; cv=none; b=Mhfp8qRDoA62G05M/R2V5TGxDf//WovafJX2Nxx9kbIZ6eL9Kc4i5He0k/nyJZI8KSMBwwx6eN35G7R7IbG4JOkNpOcaaTW+2CJRO7eeUFxgYzRUeidUDl08etOvAiSwZSBM9iTjgOpxVSUmOYUucCpLu0ipJoT0HkpHVBN3iWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778611; c=relaxed/simple;
-	bh=zdCjY0rMo3r4w0x9Ix85JRNKUf+R04ZTdODUFuHZAhA=;
+	s=arc-20240116; t=1764780685; c=relaxed/simple;
+	bh=xYYgnEs+7y053+nGplvB4Szg/BuZhm1eFzSUv5EiuGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rXQmquEgKWBm/x6NgaCV+U3PK5ip04r2hOv/Pyjih7pviXXGYEIasdItkNBzpjXLr5qr9PsaSCH+pqqa48TYbRN49N1Cj9iyNjQWwONXsxmYPRU6GTCNeYnnPmo5b9AhlCVGpf1iqZ5Xvu6p76+j439Wv1lWlJrYxfL34mCW4S8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rpARif03; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3727C4CEF5;
-	Wed,  3 Dec 2025 16:16:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RdjlsP7BMRYAt0aUXq9IFpvEBJWRdqxvTaMGlk4KTGYlHdXWtHxtla2mZitTvu6vR7yFChPkjGOgap1K+F4ZbAqkX/LQloxe2pmiQX6LkDccLIUSE+8/exwdekKXv/TnpNbq9CaLJjrs3CMR0lXrC91M4VX2zLsTopHwqwCFl5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eWC0CAbm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20748C4CEF5;
+	Wed,  3 Dec 2025 16:51:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778611;
-	bh=zdCjY0rMo3r4w0x9Ix85JRNKUf+R04ZTdODUFuHZAhA=;
+	s=korg; t=1764780685;
+	bh=xYYgnEs+7y053+nGplvB4Szg/BuZhm1eFzSUv5EiuGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rpARif03jt1d5y1swHB0LFFP2McSnvlx1Co0ktcmC/VdyMR1n+J4FRPdV12EGSJNG
-	 WYOt1Zx1YFoIpIOONzn2MbbjE/Bj13SUEGb3zoTdKKYQ9bOYBru8lnWttk1V8+JIp3
-	 a+x4pYH8ZFhqlIV1pVFw3EHckEPQmrzNCbOq9D5U=
+	b=eWC0CAbmFtIcjKYVrT92zagZS49zR/Uij3wJHMbVlLZTbW62QN9mlwNKj7ynvSLZz
+	 WZ8bsEQiQfgmNKNw9t1AygbSNmMOyEjaMO9o4oBROoVyU0LHLOjgxNyYAQHoI+7v0H
+	 fbCqZE8QVMjhxCScRLxOwmTF8kpUcA8lJKmVrKTs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Lu <alex_lu@realsil.com.cn>,
-	Max Chou <max.chou@realtek.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Nazar Kalashnikov <sivartiwe@gmail.com>
-Subject: [PATCH 5.15 387/392] Bluetooth: Add more enc key size check
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.12 058/132] iio: adc: stm32-dfsdm: fix st,adc-alt-channel property handling
 Date: Wed,  3 Dec 2025 16:28:57 +0100
-Message-ID: <20251203152428.434741791@linuxfoundation.org>
+Message-ID: <20251203152345.446334559@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,150 +59,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Lu <alex_lu@realsil.com.cn>
+From: Olivier Moysan <olivier.moysan@foss.st.com>
 
-[ Upstream commit 04a342cc49a8522e99c9b3346371c329d841dcd2 ]
+commit 8a6b7989ff0cd0a95c93be1927f2af7ad10f28de upstream.
 
-When we are slave role and receives l2cap conn req when encryption has
-started, we should check the enc key size to avoid KNOB attack or BLUFFS
-attack.
->From SIG recommendation, implementations are advised to reject
-service-level connections on an encrypted baseband link with key
-strengths below 7 octets.
-A simple and clear way to achieve this is to place the enc key size
-check in hci_cc_read_enc_key_size()
+Initially st,adc-alt-channel property was defined as an enum in the DFSDM
+binding. The DFSDM binding has been changed to use the new IIO backend
+framework, along with the adoption of IIO generic channels.
+In this new binding st,adc-alt-channel is defined as a boolean property,
+but it is still handled has an enum in DFSDM driver.
+Fix st,adc-alt-channel property handling in DFSDM driver.
 
-The btmon log below shows the case that lacks enc key size check.
-
-> HCI Event: Connect Request (0x04) plen 10
-        Address: BB:22:33:44:55:99 (OUI BB-22-33)
-        Class: 0x480104
-          Major class: Computer (desktop, notebook, PDA, organizers)
-          Minor class: Desktop workstation
-          Capturing (Scanner, Microphone)
-          Telephony (Cordless telephony, Modem, Headset)
-        Link type: ACL (0x01)
-< HCI Command: Accept Connection Request (0x01|0x0009) plen 7
-        Address: BB:22:33:44:55:99 (OUI BB-22-33)
-        Role: Peripheral (0x01)
-> HCI Event: Command Status (0x0f) plen 4
-      Accept Connection Request (0x01|0x0009) ncmd 2
-        Status: Success (0x00)
-> HCI Event: Connect Complete (0x03) plen 11
-        Status: Success (0x00)
-        Handle: 1
-        Address: BB:22:33:44:55:99 (OUI BB-22-33)
-        Link type: ACL (0x01)
-        Encryption: Disabled (0x00)
-...
-
-> HCI Event: Encryption Change (0x08) plen 4
-        Status: Success (0x00)
-        Handle: 1 Address: BB:22:33:44:55:99 (OUI BB-22-33)
-        Encryption: Enabled with E0 (0x01)
-< HCI Command: Read Encryption Key Size (0x05|0x0008) plen 2
-        Handle: 1 Address: BB:22:33:44:55:99 (OUI BB-22-33)
-> HCI Event: Command Complete (0x0e) plen 7
-      Read Encryption Key Size (0x05|0x0008) ncmd 2
-        Status: Success (0x00)
-        Handle: 1 Address: BB:22:33:44:55:99 (OUI BB-22-33)
-        Key size: 6
-// We should check the enc key size
-...
-
-> ACL Data RX: Handle 1 flags 0x02 dlen 12
-      L2CAP: Connection Request (0x02) ident 3 len 4
-        PSM: 25 (0x0019)
-        Source CID: 64
-< ACL Data TX: Handle 1 flags 0x00 dlen 16
-      L2CAP: Connection Response (0x03) ident 3 len 8
-        Destination CID: 64
-        Source CID: 64
-        Result: Connection pending (0x0001)
-        Status: Authorization pending (0x0002)
-> HCI Event: Number of Completed Packets (0x13) plen 5
-        Num handles: 1
-        Handle: 1 Address: BB:22:33:44:55:99 (OUI BB-22-33)
-        Count: 1
-        #35: len 16 (25 Kb/s)
-        Latency: 5 msec (2-7 msec ~4 msec)
-< ACL Data TX: Handle 1 flags 0x00 dlen 16
-      L2CAP: Connection Response (0x03) ident 3 len 8
-        Destination CID: 64
-        Source CID: 64
-        Result: Connection successful (0x0000)
-        Status: No further information available (0x0000)
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Alex Lu <alex_lu@realsil.com.cn>
-Signed-off-by: Max Chou <max.chou@realtek.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-[ Nazar Kalashnikov: change status to 
-rp_status due to function parameter conflict ]
-Signed-off-by: Nazar Kalashnikov <sivartiwe@gmail.com>
+Fixes: 3208fa0cd919 ("iio: adc: stm32-dfsdm: adopt generic channels bindings")
+Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
-Backport fix for CVE-2023-24023
- net/bluetooth/hci_event.c |   21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+ drivers/iio/adc/stm32-dfsdm-adc.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -3136,6 +3136,7 @@ static void read_enc_key_size_complete(s
- 	const struct hci_rp_read_enc_key_size *rp;
- 	struct hci_conn *conn;
- 	u16 handle;
-+	u8 rp_status;
- 
- 	BT_DBG("%s status 0x%02x", hdev->name, status);
- 
-@@ -3145,6 +3146,7 @@ static void read_enc_key_size_complete(s
+--- a/drivers/iio/adc/stm32-dfsdm-adc.c
++++ b/drivers/iio/adc/stm32-dfsdm-adc.c
+@@ -721,9 +721,8 @@ static int stm32_dfsdm_generic_channel_p
  	}
+ 	df_ch->src = val;
  
- 	rp = (void *)skb->data;
-+	rp_status = rp->status;
- 	handle = le16_to_cpu(rp->handle);
+-	ret = fwnode_property_read_u32(node, "st,adc-alt-channel", &df_ch->alt_si);
+-	if (ret != -EINVAL)
+-		df_ch->alt_si = 0;
++	if (fwnode_property_present(node, "st,adc-alt-channel"))
++		df_ch->alt_si = 1;
  
- 	hci_dev_lock(hdev);
-@@ -3157,15 +3159,30 @@ static void read_enc_key_size_complete(s
- 	 * secure approach is to then assume the key size is 0 to force a
- 	 * disconnection.
- 	 */
--	if (rp->status) {
-+	if (rp_status) {
- 		bt_dev_err(hdev, "failed to read key size for handle %u",
- 			   handle);
- 		conn->enc_key_size = 0;
- 	} else {
- 		conn->enc_key_size = rp->key_size;
-+		rp_status = 0;
-+
-+		if (conn->enc_key_size < hdev->min_enc_key_size) {
-+			/* As slave role, the conn->state has been set to
-+			 * BT_CONNECTED and l2cap conn req might not be received
-+			 * yet, at this moment the l2cap layer almost does
-+			 * nothing with the non-zero status.
-+			 * So we also clear encrypt related bits, and then the
-+			 * handler of l2cap conn req will get the right secure
-+			 * state at a later time.
-+			 */
-+			rp_status = HCI_ERROR_AUTH_FAILURE;
-+			clear_bit(HCI_CONN_ENCRYPT, &conn->flags);
-+			clear_bit(HCI_CONN_AES_CCM, &conn->flags);
-+		}
- 	}
- 
--	hci_encrypt_cfm(conn, 0);
-+	hci_encrypt_cfm(conn, rp_status);
- 
- unlock:
- 	hci_dev_unlock(hdev);
+ 	if (adc->dev_data->type == DFSDM_IIO) {
+ 		backend = devm_iio_backend_fwnode_get(&indio_dev->dev, NULL, node);
 
 
 
