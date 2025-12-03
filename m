@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-199697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 447B6CA0B1B
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:57:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E202CA01A6
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:47:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E8900308DAE3
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:53:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5460B30198F8
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:45:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 908D334B18B;
-	Wed,  3 Dec 2025 16:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15201369204;
+	Wed,  3 Dec 2025 16:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VFamBm90"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZKcjOirW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492A634A3BF;
-	Wed,  3 Dec 2025 16:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B886F36827D;
+	Wed,  3 Dec 2025 16:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780646; cv=none; b=di9biY6caUqf5MQh+isSGyJF/O95yyXsg/dsj9WHZecfkawf8Xdo+cZT3uaBNIjghoXrKjjZ1D5TGtfZLAHHpbt6i5qBAHyVou19/Fq126L4jjbCsZIXVhrJlGLsYw8nmkBULe/HzEcOWTS/Pg8UPXmSJCVgpySYGJy4dxKKlSo=
+	t=1764780333; cv=none; b=LMZ4IMZqpPS2XkFVufxvzYmStCWE7tsvtbSdmwsanhGx3o/sQ3VqJJM9AtJODu761oek6d6EBSbHNye2uYfoA7cbTEDAWcCqzYf5IIxaA+tk1iQ7eDfMhck0ohppCEHsvf9UYg0ewAwa1wenklwfL9sPIK1vIOeG/ZddBIgPEMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780646; c=relaxed/simple;
-	bh=ASwtOBF/fQu2SQ1DLCoCzPs7qHCk4hpmz07Mls0Svt8=;
+	s=arc-20240116; t=1764780333; c=relaxed/simple;
+	bh=2VwDW8lwXh7P+lJ241yaYt0iuDDeANJBeEY0z5Rt+ko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bnM7HAYXd5RGR3rXnpZDD+Q+ZPQYTaAnTb/UzdJr8EvDZcXbLtGXWZlaPaKbuQslon6bbx5LaM9h7wXILm+DI2Q7+Axdlv60fodiMCy0a3yDMbjYwrBISEsSCg7pUFVuyHI3lwaZ4WnysEr3oHGMkzPNutXFyIwZdU8btD25GiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VFamBm90; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95019C116C6;
-	Wed,  3 Dec 2025 16:50:45 +0000 (UTC)
+	 MIME-Version; b=nKIzBPx9vWT1TUxhW0s+FlTSEnIgaA+wRVuFHDGwHe+G/yLk6OzYTBMbf1c4MMCWmwpqgh4hh7aPQjSQ5j1luMntJ0NpLcS1aM9cpK0kgiMQDqSBRzcyJCCg8uDH/E60bEMQ79NHDDyhC2nzHxHGqXeRd91M/ugXpMDYUa196CM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZKcjOirW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D166FC4CEF5;
+	Wed,  3 Dec 2025 16:45:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780646;
-	bh=ASwtOBF/fQu2SQ1DLCoCzPs7qHCk4hpmz07Mls0Svt8=;
+	s=korg; t=1764780333;
+	bh=2VwDW8lwXh7P+lJ241yaYt0iuDDeANJBeEY0z5Rt+ko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VFamBm90gdHvvurt/al0Ihjl6WWX6Xo4/lXgfEQnP1wG3xfB/DFPHTkE/zcFKF82O
-	 INwkWQKDb0pX0065z09sEALmbAuR/uRvurHgayHr7MBxTt3x6m4FlI9BQsfwZjapAr
-	 3ycJzx8hyAym/F/iw/oX2SrRjjas7gPb5ogg+NpI=
+	b=ZKcjOirWt9FCkuWso7cTG34sevHtD3BUZYXCN8NJqklDXEM7soHVrwUkJ5s1lQpLc
+	 LGWBXJReaADxB89ke8QnSZZKhbozHddt2K027jm0tXygkLs8hgtL7gUu5H10t3SQYu
+	 yXW0Hfq6Ol96LViYWQFrPoeWnhD7LWct8HnattzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 047/132] spi: nxp-fspi: Propagate fwnode in ACPI case as well
+	Ivan Zhaldak <i.v.zhaldak@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 524/568] ALSA: usb-audio: Add DSD quirk for LEAK Stereo 230
 Date: Wed,  3 Dec 2025 16:28:46 +0100
-Message-ID: <20251203152345.037790579@linuxfoundation.org>
+Message-ID: <20251203152459.906318660@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,83 +59,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Ivan Zhaldak <i.v.zhaldak@gmail.com>
 
-[ Upstream commit 40ad64ac25bb736740f895d99a4aebbda9b80991 ]
+commit c83fc13960643c4429cd9dfef1321e6430a81b47 upstream.
 
-Propagate fwnode of the ACPI device to the SPI controller Linux device.
-Currently only OF case propagates fwnode to the controller.
+Integrated amplifier LEAK Stereo 230 by IAG Limited has built-in
+ESS9038Q2M DAC served by XMOS controller. It supports both DSD Native
+and DSD-over-PCM (DoP) operational modes. But it doesn't work properly
+by default and tries DSD-to-PCM conversion. USB quirks below allow it
+to operate as designed.
 
-While at it, replace several calls to dev_fwnode() with a single one
-cached in a local variable, and unify checks for fwnode type by using
-is_*_node() APIs.
+Add DSD_RAW quirk flag for IAG Limited devices (vendor ID 0x2622)
+Add DSD format quirk for LEAK Stereo 230 (USB ID 0x2622:0x0061)
 
-Fixes: 55ab8487e01d ("spi: spi-nxp-fspi: Add ACPI support")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
-Link: https://patch.msgid.link/20251126202501.2319679-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ivan Zhaldak <i.v.zhaldak@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20251117125848.30769-1-i.v.zhaldak@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-nxp-fspi.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ sound/usb/quirks.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-index 6cdeee9c581bd..5100b189c9050 100644
---- a/drivers/spi/spi-nxp-fspi.c
-+++ b/drivers/spi/spi-nxp-fspi.c
-@@ -1173,7 +1173,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
- {
- 	struct spi_controller *ctlr;
- 	struct device *dev = &pdev->dev;
--	struct device_node *np = dev->of_node;
-+	struct fwnode_handle *fwnode = dev_fwnode(dev);
- 	struct resource *res;
- 	struct nxp_fspi *f;
- 	int ret, irq;
-@@ -1195,7 +1195,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, f);
- 
- 	/* find the resources - configuration register address space */
--	if (is_acpi_node(dev_fwnode(f->dev)))
-+	if (is_acpi_node(fwnode))
- 		f->iobase = devm_platform_ioremap_resource(pdev, 0);
- 	else
- 		f->iobase = devm_platform_ioremap_resource_byname(pdev, "fspi_base");
-@@ -1203,7 +1203,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
- 		return PTR_ERR(f->iobase);
- 
- 	/* find the resources - controller memory mapped space */
--	if (is_acpi_node(dev_fwnode(f->dev)))
-+	if (is_acpi_node(fwnode))
- 		res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
- 	else
- 		res = platform_get_resource_byname(pdev,
-@@ -1216,7 +1216,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
- 	f->memmap_phy_size = resource_size(res);
- 
- 	/* find the clocks */
--	if (dev_of_node(&pdev->dev)) {
-+	if (is_of_node(fwnode)) {
- 		f->clk_en = devm_clk_get(dev, "fspi_en");
- 		if (IS_ERR(f->clk_en))
- 			return PTR_ERR(f->clk_en);
-@@ -1260,7 +1260,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
- 	else
- 		ctlr->mem_caps = &nxp_fspi_mem_caps;
- 
--	ctlr->dev.of_node = np;
-+	device_set_node(&ctlr->dev, fwnode);
- 
- 	return devm_spi_register_controller(&pdev->dev, ctlr);
- }
--- 
-2.51.0
-
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -1926,6 +1926,7 @@ u64 snd_usb_interface_dsd_format_quirks(
+ 	case USB_ID(0x249c, 0x9326): /* M2Tech Young MkIII */
+ 	case USB_ID(0x2616, 0x0106): /* PS Audio NuWave DAC */
+ 	case USB_ID(0x2622, 0x0041): /* Audiolab M-DAC+ */
++	case USB_ID(0x2622, 0x0061): /* LEAK Stereo 230 */
+ 	case USB_ID(0x278b, 0x5100): /* Rotel RC-1590 */
+ 	case USB_ID(0x27f7, 0x3002): /* W4S DAC-2v2SE */
+ 	case USB_ID(0x29a2, 0x0086): /* Mutec MC3+ USB */
+@@ -2309,6 +2310,8 @@ static const struct usb_audio_quirk_flag
+ 		   QUIRK_FLAG_DSD_RAW),
+ 	VENDOR_FLG(0x25ce, /* Mytek devices */
+ 		   QUIRK_FLAG_DSD_RAW),
++	VENDOR_FLG(0x2622, /* IAG Limited devices */
++		   QUIRK_FLAG_DSD_RAW),
+ 	VENDOR_FLG(0x278b, /* Rotel? */
+ 		   QUIRK_FLAG_DSD_RAW),
+ 	VENDOR_FLG(0x292b, /* Gustard/Ess based devices */
 
 
 
