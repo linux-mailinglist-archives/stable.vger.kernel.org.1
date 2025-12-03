@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 645F2C9FCA1
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:05:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B96C6CA05DB
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:21:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B63133000B38
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:05:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 60DAA32A907C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:07:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A07D834F48B;
-	Wed,  3 Dec 2025 16:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B036346FDF;
+	Wed,  3 Dec 2025 16:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h9uesgCC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZT2Q7xUz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5963234F492;
-	Wed,  3 Dec 2025 16:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16833469E3;
+	Wed,  3 Dec 2025 16:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777922; cv=none; b=iq8TFl+47TBvjX2ntix5T9yd/WuZcPG8NQPNLtpCGSCzRsKQq8X93/mkJT+FI/pd2rRVpXWshVliW8LfD8E97bTqsS8+LFvLFH+yizmpBjfGrCD4VdATVOzKnIV7kpTfq+KZOpR5tDfryAuhqJ4kDAPP/sFiinR8zxQT0n9eewM=
+	t=1764779705; cv=none; b=tqgBEfVByiG8264xGZFlCUtiwlIG3BwGX3fYFAU8HILMK8iIks6rFcgPMSjPU7ugVWMSvuidH7YTCVCRwXpB65/EfD4thBgJP4N34zTHwcU/VPbX7rwoihKgYU76/0F3MWRY+Ly6q2THREIIOu6MHML+DISTCQvQdZL6g9QDNbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777922; c=relaxed/simple;
-	bh=lFhqOodEK+PKf465591w3nkkpa39q8h2ajMvG7PZTBI=;
+	s=arc-20240116; t=1764779705; c=relaxed/simple;
+	bh=sjMbLp9WqDowPUq2UPZrAxl1+2wMRdh52BWvoC/Ko6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ifHhQ6+ENh/MmchxOprbzwTsrNsFOxSThUHNICZ7rZKIBtkoJIyRBBoAwe9hZn5Csv9ELWANYvzK3EzUMPWrtjC4QUrDnCLd+GmW3iTy9bHwg2EmwgBeUHqoPACDLNCcdPe/byZ5vjzMvopbrRz5+uOJOfS5oAqXihKtLN7/Y+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h9uesgCC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AA11C4CEF5;
-	Wed,  3 Dec 2025 16:05:21 +0000 (UTC)
+	 MIME-Version; b=rvHaOGMQ1FsfrwCGbtG3vkArAv4L5V4VYjGdVUD1i6zDgPe2m7BzdUvMGm5yqpcjuFLQcisZulZiVmFxjpCpED7MfztxWDSP+lXsaggf3GVj/rL+ytmFEfawIXPk+x1I1bfCbUcdJLakREao3rLI6KRgIJYLAp4As1ZejfvqqKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZT2Q7xUz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20A47C16AAE;
+	Wed,  3 Dec 2025 16:35:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777922;
-	bh=lFhqOodEK+PKf465591w3nkkpa39q8h2ajMvG7PZTBI=;
+	s=korg; t=1764779705;
+	bh=sjMbLp9WqDowPUq2UPZrAxl1+2wMRdh52BWvoC/Ko6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h9uesgCCgBQ6d//93xdX65KCLwJkLZq8wXg4ikDxPKo1ewSVj7DXnNk6hmHPQBkKW
-	 3spJE1L5Yuuvj28Q28Y0N60pf9tvmMgZq1Toe7UQ43fDjFg9oW+LpaaKU5gOiRBPCF
-	 012BUKhBRkzpLxQ49myOFeYgk+2ZnLgi+5KaETlc=
+	b=ZT2Q7xUzTgqPH+11GBh9kPrl9c9d0ZzKRzzoSp2M+9P7cWKBROpDfXoIfVUfOiwjX
+	 dsXKivLfNSEpBQxUSIksvKOb9Bxk67L/pJu8d4D1PYZu2rzC9g78kFu4zxnfhQUHFk
+	 uTQAOR7iDCIrLDpbDABjhAL/VXomqz9G8quKBuLs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Moroni <jmoroni@google.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 188/392] RDMA/irdma: Remove unused struct irdma_cq fields
+Subject: [PATCH 6.1 336/568] drm/amd: Fix suspend failure with secure display TA
 Date: Wed,  3 Dec 2025 16:25:38 +0100
-Message-ID: <20251203152420.996248453@linuxfoundation.org>
+Message-ID: <20251203152453.015472463@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,71 +60,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Moroni <jmoroni@google.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 880245fd029a8f8ee8fd557c2681d077c1b1a959 ]
+[ Upstream commit b09cb2996cdf50cd1ab4020e002c95d742c81313 ]
 
-These fields were set but not used anywhere, so remove them.
+commit c760bcda83571 ("drm/amd: Check whether secure display TA loaded
+successfully") attempted to fix extra messages, but failed to port the
+cleanup that was in commit 5c6d52ff4b61e ("drm/amd: Don't try to enable
+secure display TA multiple times") to prevent multiple tries.
 
-Link: https://patch.msgid.link/r/20250923142128.943240-1-jmoroni@google.com
-Signed-off-by: Jacob Moroni <jmoroni@google.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Stable-dep-of: 5575b7646b94 ("RDMA/irdma: Set irdma_cq cq_num field during CQ create")
+Add that to the failure handling path even on a quick failure.
+
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4679
+Fixes: c760bcda8357 ("drm/amd: Check whether secure display TA loaded successfully")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 4104c0a454f6a4d1e0d14895d03c0e7bdd0c8240)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/verbs.c | 3 ---
- drivers/infiniband/hw/irdma/verbs.h | 6 ------
- 2 files changed, 9 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
-index b2bf147883edb..8896cbf9ec4d0 100644
---- a/drivers/infiniband/hw/irdma/verbs.c
-+++ b/drivers/infiniband/hw/irdma/verbs.c
-@@ -2006,8 +2006,6 @@ static int irdma_create_cq(struct ib_cq *ibcq,
- 			goto cq_free_rsrc;
- 		}
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+index e22eaf9d450d3..9153459455910 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+@@ -1962,8 +1962,11 @@ static int psp_securedisplay_initialize(struct psp_context *psp)
+ 	if (!ret && !psp->securedisplay_context.context.resp_status) {
+ 		psp->securedisplay_context.context.initialized = true;
+ 		mutex_init(&psp->securedisplay_context.mutex);
+-	} else
++	} else {
++		/* don't try again */
++		psp->securedisplay_context.context.bin_desc.size_bytes = 0;
+ 		return ret;
++	}
  
--		iwcq->iwpbl = iwpbl;
--		iwcq->cq_mem_size = 0;
- 		cqmr = &iwpbl->cq_mr;
- 
- 		if (rf->sc_dev.hw_attrs.uk_attrs.feature_flags &
-@@ -2022,7 +2020,6 @@ static int irdma_create_cq(struct ib_cq *ibcq,
- 				err_code = -EPROTO;
- 				goto cq_free_rsrc;
- 			}
--			iwcq->iwpbl_shadow = iwpbl_shadow;
- 			cqmr_shadow = &iwpbl_shadow->cq_mr;
- 			info.shadow_area_pa = cqmr_shadow->cq_pbl.addr;
- 			cqmr->split = true;
-diff --git a/drivers/infiniband/hw/irdma/verbs.h b/drivers/infiniband/hw/irdma/verbs.h
-index a934c985dbb4d..a74b24429b246 100644
---- a/drivers/infiniband/hw/irdma/verbs.h
-+++ b/drivers/infiniband/hw/irdma/verbs.h
-@@ -107,19 +107,13 @@ struct irdma_mr {
- struct irdma_cq {
- 	struct ib_cq ibcq;
- 	struct irdma_sc_cq sc_cq;
--	u16 cq_head;
--	u16 cq_size;
- 	u16 cq_num;
- 	bool user_mode;
- 	atomic_t armed;
- 	enum irdma_cmpl_notify last_notify;
--	u32 polled_cmpls;
--	u32 cq_mem_size;
- 	struct irdma_dma_mem kmem;
- 	struct irdma_dma_mem kmem_shadow;
- 	spinlock_t lock; /* for poll cq */
--	struct irdma_pbl *iwpbl;
--	struct irdma_pbl *iwpbl_shadow;
- 	struct list_head resize_list;
- 	struct irdma_cq_poll_info cur_cqe;
- 	struct list_head cmpl_generated;
+ 	psp_prep_securedisplay_cmd_buf(psp, &securedisplay_cmd,
+ 			TA_SECUREDISPLAY_COMMAND__QUERY_TA);
 -- 
 2.51.0
 
