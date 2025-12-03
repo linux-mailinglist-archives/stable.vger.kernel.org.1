@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-198292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39DC8C9F881
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:38:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05717CA0D5A
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:13:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 991053004B98
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:34:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4673E330F608
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:10:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 379A830ACF2;
-	Wed,  3 Dec 2025 15:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78B3034B42C;
+	Wed,  3 Dec 2025 16:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H2byZoQ7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tJu7rDN/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6EAB2FD678;
-	Wed,  3 Dec 2025 15:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C0C734B40E;
+	Wed,  3 Dec 2025 16:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776064; cv=none; b=FiXP7uBESzEQh+1RHXQD9qCapLB22PQCdDv9TE9tUOpHeWbzxcJNjqpCMsruiyHXqqXn3Fg9TyXgPhDjw22ELWnWo8cMks91ypfCYRrENtk9Z0f1hS4sbiC7wpVKS8nbWKFucUmIssH/jJqvh8U+o25f4eF+LVoG5N5Q3dmXnJc=
+	t=1764777693; cv=none; b=b2JEV0UpF7oXtcs5yP0W5qr0Ej0SRltUcOX2zrcp5nAGMVNlrK31fPe9sGLiCtCGzFSihd2XcuuGLompecIADoc9zSmh/7ds0u7CGGTi7RZozB+0lsJYg8qhc8hkMreOZwboJcEDJgoK285QdmEozqDyKStHFFdXASsejawOkHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776064; c=relaxed/simple;
-	bh=llJWf7E52UaRuVBp8vMk5o7BrjMPo6L4nOTj/Sn3IHM=;
+	s=arc-20240116; t=1764777693; c=relaxed/simple;
+	bh=PjoVhRFruOmVTEs0OxGNNQVdQzIqzvVHNTh3k8kobAQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rWUTMip8lFAT7Ldas8J92XRJMi1GtMBZqXuyh7LugVohuzxz7XHEYrmLnXOOuYz0HG/th/epvHCLI7096+1Gl+or8yGGJy4Dvy0TlSQRVtRRwSDVC+f3fuiRyHsjxQHX4cVcNCcCFZoqds7MFzgun/V2BSSlBkEkWhm5kDgd0dI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H2byZoQ7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21FF4C4CEF5;
-	Wed,  3 Dec 2025 15:34:22 +0000 (UTC)
+	 MIME-Version; b=KRG6CddI8lfv25Y8NGMezvPd3n1VOUcZe+5ieTpsLNpEwkB+BAl5zmGysLldvWXdIw9TbBxxQjvZjmomosXpwdLu4xz9cnyNKlkuAW2EIZo6Kr4qJLvKb68pKA3qzbV5cTiGnM/1p3IZ6aDAavygV0aE89DjsbYdc0YPVMZISCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tJu7rDN/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C122C4CEF5;
+	Wed,  3 Dec 2025 16:01:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776063;
-	bh=llJWf7E52UaRuVBp8vMk5o7BrjMPo6L4nOTj/Sn3IHM=;
+	s=korg; t=1764777692;
+	bh=PjoVhRFruOmVTEs0OxGNNQVdQzIqzvVHNTh3k8kobAQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H2byZoQ7TDKoF3+bi21enWNHa1TMYz4xEAzlMpN99WrtSWFJPryVupBEX2Ex0Ys7/
-	 9gdyqbf6Ce4AS0niGXm7dGXwChcYsQQA0lRMeed91wERDl+vQhM49prkMHkhbnnoWD
-	 2APj9ApTSDgJjwQ8KoqekEMD+G2615drM8agU6wI=
+	b=tJu7rDN/sDFlCbV7WToauqeZ6ojXrygjvg1W2t/5GWmcf6hkrn/KR2y8s15obexQb
+	 Euaz6jTIKng4rTfZVECl2cMSrZbt8ClPmoSXyDRnC0q/x4yHC0F2SCUxdIBZeiEhsz
+	 SySM1Kn/gpBvrXmVrl46hX+7xmjMcpb8qMyDehFc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Len Brown <len.brown@intel.com>,
+	Ujwal Kundur <ujwal.kundur@gmail.com>,
+	Allison Henderson <allison.henderson@oracle.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 062/300] tools/power x86_energy_perf_policy: Enhance HWP enable
+Subject: [PATCH 5.15 116/392] rds: Fix endianness annotation for RDS_MPATH_HASH
 Date: Wed,  3 Dec 2025 16:24:26 +0100
-Message-ID: <20251203152402.919279861@linuxfoundation.org>
+Message-ID: <20251203152418.365515351@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,51 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Len Brown <len.brown@intel.com>
+From: Ujwal Kundur <ujwal.kundur@gmail.com>
 
-[ Upstream commit c97c057d357c4b39b153e9e430bbf8976e05bd4e ]
+[ Upstream commit 77907a068717fbefb25faf01fecca553aca6ccaa ]
 
-On enabling HWP, preserve the reserved bits in MSR_PM_ENABLE.
+jhash_1word accepts host endian inputs while rs_bound_port is a be16
+value (sockaddr_in6.sin6_port). Use ntohs() for consistency.
 
-Also, skip writing the MSR_PM_ENABLE if HWP is already enabled.
+Flagged by Sparse.
 
-Signed-off-by: Len Brown <len.brown@intel.com>
+Signed-off-by: Ujwal Kundur <ujwal.kundur@gmail.com>
+Reviewed-by: Allison Henderson <allison.henderson@oracle.com>
+Link: https://patch.msgid.link/20250820175550.498-4-ujwal.kundur@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../x86_energy_perf_policy/x86_energy_perf_policy.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ net/rds/rds.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
-index 60917e32ec853..5c93546fc689b 100644
---- a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
-+++ b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
-@@ -1077,13 +1077,18 @@ int update_hwp_request_pkg(int pkg)
+diff --git a/net/rds/rds.h b/net/rds/rds.h
+index d35d1fc398076..1257867e85e4e 100644
+--- a/net/rds/rds.h
++++ b/net/rds/rds.h
+@@ -93,7 +93,7 @@ enum {
  
- int enable_hwp_on_cpu(int cpu)
- {
--	unsigned long long msr;
-+	unsigned long long old_msr, new_msr;
-+
-+	get_msr(cpu, MSR_PM_ENABLE, &old_msr);
-+
-+	if (old_msr & 1)
-+		return 0;	/* already enabled */
+ /* Max number of multipaths per RDS connection. Must be a power of 2 */
+ #define	RDS_MPATH_WORKERS	8
+-#define	RDS_MPATH_HASH(rs, n) (jhash_1word((rs)->rs_bound_port, \
++#define	RDS_MPATH_HASH(rs, n) (jhash_1word(ntohs((rs)->rs_bound_port), \
+ 			       (rs)->rs_hash_initval) & ((n) - 1))
  
--	get_msr(cpu, MSR_PM_ENABLE, &msr);
--	put_msr(cpu, MSR_PM_ENABLE, 1);
-+	new_msr = old_msr | 1;
-+	put_msr(cpu, MSR_PM_ENABLE, new_msr);
- 
- 	if (verbose)
--		printf("cpu%d: MSR_PM_ENABLE old: %d new: %d\n", cpu, (unsigned int) msr, 1);
-+		printf("cpu%d: MSR_PM_ENABLE old: %llX new: %llX\n", cpu, old_msr, new_msr);
- 
- 	return 0;
- }
+ #define IS_CANONICAL(laddr, faddr) (htonl(laddr) < htonl(faddr))
 -- 
 2.51.0
 
