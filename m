@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34A8ACA055F
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:18:39 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91770CA01FA
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:49:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9561E3000B18
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:18:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3E71B3029790
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:42:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE21932C92B;
-	Wed,  3 Dec 2025 15:49:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8CFA35BDBD;
+	Wed,  3 Dec 2025 16:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ctLT6Svp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c4I2m6ZQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABEA832C323;
-	Wed,  3 Dec 2025 15:49:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A604735BDB9;
+	Wed,  3 Dec 2025 16:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776999; cv=none; b=VQGQbRTM5wq5E+iJoMHgV2Rqd38mzE6IdsxTuHjEimW7gssiS4PIYAPRE6v//wtwAilyouaNLEvhaKHS3+taiefCF//UZTiqoYNmLDxeycmQ1kqjQAw1wRPtZJoN0uCdJ4450Tuvwb2q4x/FCN6L8ryMK19/svOj3PX+f01txZc=
+	t=1764780116; cv=none; b=oHMsNI3KUAgInv/OIffuR3iuviHr+CZcJykFVDX1sxH7cAqGKQtu7FIMZCmpL1KDTvkhbJ5Elhatp6+DjH58a/3osl41GghcvC8xwuHCkyq9hMLio9GLwMSA3NGlaknM3w/Tg0lehUNK/mro/0EY3tYBVCEomsWcqosfZkbhukA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776999; c=relaxed/simple;
-	bh=xPCeYYYuaCtlpKS2cAvm7DMGc9lCQL7rODoL9ykLGwE=;
+	s=arc-20240116; t=1764780116; c=relaxed/simple;
+	bh=UGLLZrFATmWQ9HfB9ThpVbPjqLRHejoO2KPV1lSuNpg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vx+d7+BJ7aALT4zILXlHVHozLY4fqbBcae+hY85MMYJpNUj4pKYBjIGFPwpdwn5zE5mPa8+xIQJVe02LRSnmUjh9Sun0Seirh3c0N1nZxt19Nr15mViPvFRcy8KRwuwO/aVmLuyPXzmHNKlfFtfcMl8yQ6m5a9aggiBTkixcx4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ctLT6Svp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 355DDC4CEF5;
-	Wed,  3 Dec 2025 15:49:59 +0000 (UTC)
+	 MIME-Version; b=klUYpTlcgGgsXSej3/u6Rcuf9AjmqGIe/MPRg9tFDCNzuYuaYIhxLFewyJUE42sbCo2AYx8IJWdUlKWqWU5379W3eRXYnIcsWehQxNYOBSYfsg4WipqHzGgBwnXUE7gp+4d9R4EklWf4iIwGT4VAUz0GJ7bgSWcmeTum1KicSdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c4I2m6ZQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B51AC4CEF5;
+	Wed,  3 Dec 2025 16:41:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776999;
-	bh=xPCeYYYuaCtlpKS2cAvm7DMGc9lCQL7rODoL9ykLGwE=;
+	s=korg; t=1764780116;
+	bh=UGLLZrFATmWQ9HfB9ThpVbPjqLRHejoO2KPV1lSuNpg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ctLT6SvplnMIlTOditEDOQbgY+FNwpKCEmRXoSjRR1Ax2oBWQpiybkr5+pLoaC2KO
-	 ELRz9EseWw1uC9mkr2ww0ELbFajGCfx20Xa63g0uuJVzxltyb+x5TXXNwTqmpmHE3S
-	 9+fSNUNKSaeg7pi1pYlaSty3lOWbYpmNcVNnfvo8=
+	b=c4I2m6ZQEsfoKkeijTLACTivXYLKCfsewtOwqVoSEbXrciWhx7Pwklmfjpd4ksvXm
+	 kUP1Y39SrV6ZsFMx01tCdPPfUeAFyNeanOEbLdK/UolRt8XQzsBNNitEvFBYSzN+Mx
+	 LIA1VAFZliDO60Sewg6SWatbXqGPmTTPLByrsoiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sunpeng.Li@amd.com,
-	ivan.lipski@amd.com,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.17 052/146] Revert "drm/amd/display: Move setup_stream_attribute"
+	staffan.melin@oscillator.se,
+	Terry Junge <linuxhid@cosmicgizmosystems.com>,
+	Zhang Heng <zhangheng@kylinos.cn>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.1 428/568] HID: quirks: work around VID/PID conflict for 0x4c4a/0x4155
 Date: Wed,  3 Dec 2025 16:27:10 +0100
-Message-ID: <20251203152348.376280808@linuxfoundation.org>
+Message-ID: <20251203152456.371134539@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,108 +61,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Zhang Heng <zhangheng@kylinos.cn>
 
-commit 3126c9ccb4373d8758733c6699ba5ab93dbe5c9d upstream.
+commit beab067dbcff642243291fd528355d64c41dc3b2 upstream.
 
-This reverts commit 2681bf4ae8d24df950138b8c9ea9c271cd62e414.
+Based on available evidence, the USB ID 4c4a:4155 used by multiple
+devices has been attributed to Jieli. The commit 1a8953f4f774
+("HID: Add IGNORE quirk for SMARTLINKTECHNOLOGY") affected touchscreen
+functionality. Added checks for manufacturer and serial number to
+maintain microphone compatibility, enabling both devices to function
+properly.
 
-This results in a blank screen on the HDMI port on some systems.
-Revert for now so as not to regress 6.18, can be addressed
-in 6.19 once the issue is root caused.
-
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4652
-Cc: Sunpeng.Li@amd.com
-Cc: ivan.lipski@amd.com
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit d0e9de7a81503cdde37fb2d37f1d102f9e0f38fb)
+[jkosina@suse.com: edit shortlog]
+Fixes: 1a8953f4f774 ("HID: Add IGNORE quirk for SMARTLINKTECHNOLOGY")
+Cc: stable@vger.kernel.org
+Tested-by: staffan.melin@oscillator.se
+Reviewed-by: Terry Junge <linuxhid@cosmicgizmosystems.com>
+Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c       |    1 -
- drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c         |    2 --
- drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c       |    2 --
- drivers/gpu/drm/amd/display/dc/link/link_dpms.c                 |    3 +++
- drivers/gpu/drm/amd/display/dc/virtual/virtual_stream_encoder.c |    7 -------
- 5 files changed, 3 insertions(+), 12 deletions(-)
+ drivers/hid/hid-ids.h    |    4 ++--
+ drivers/hid/hid-quirks.c |   13 ++++++++++++-
+ 2 files changed, 14 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
-@@ -671,7 +671,6 @@ void dce110_enable_stream(struct pipe_ct
- 	uint32_t early_control = 0;
- 	struct timing_generator *tg = pipe_ctx->stream_res.tg;
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -1460,7 +1460,7 @@
+ #define USB_VENDOR_ID_SIGNOTEC			0x2133
+ #define USB_DEVICE_ID_SIGNOTEC_VIEWSONIC_PD1011	0x0018
  
--	link_hwss->setup_stream_attribute(pipe_ctx);
- 	link_hwss->setup_stream_encoder(pipe_ctx);
+-#define USB_VENDOR_ID_SMARTLINKTECHNOLOGY              0x4c4a
+-#define USB_DEVICE_ID_SMARTLINKTECHNOLOGY_4155         0x4155
++#define USB_VENDOR_ID_JIELI_SDK_DEFAULT		0x4c4a
++#define USB_DEVICE_ID_JIELI_SDK_4155		0x4155
  
- 	dc->hwss.update_info_frame(pipe_ctx);
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
-@@ -3060,8 +3060,6 @@ void dcn20_enable_stream(struct pipe_ctx
- 						      link_enc->transmitter - TRANSMITTER_UNIPHY_A);
+ #endif
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -888,7 +888,6 @@ static const struct hid_device_id hid_ig
+ #endif
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_YEALINK, USB_DEVICE_ID_YEALINK_P1K_P4K_B2K) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_QUANTA, USB_DEVICE_ID_QUANTA_HP_5MP_CAMERA_5473) },
+-	{ HID_USB_DEVICE(USB_VENDOR_ID_SMARTLINKTECHNOLOGY, USB_DEVICE_ID_SMARTLINKTECHNOLOGY_4155) },
+ 	{ }
+ };
+ 
+@@ -1045,6 +1044,18 @@ bool hid_ignore(struct hid_device *hdev)
+ 					     strlen(elan_acpi_id[i].id)))
+ 					return true;
+ 		break;
++	case USB_VENDOR_ID_JIELI_SDK_DEFAULT:
++		/*
++		 * Multiple USB devices with identical IDs (mic & touchscreen).
++		 * The touch screen requires hid core processing, but the
++		 * microphone does not. They can be distinguished by manufacturer
++		 * and serial number.
++		 */
++		if (hdev->product == USB_DEVICE_ID_JIELI_SDK_4155 &&
++		    strncmp(hdev->name, "SmartlinkTechnology", 19) == 0 &&
++		    strncmp(hdev->uniq, "20201111000001", 14) == 0)
++			return true;
++		break;
  	}
  
--	link_hwss->setup_stream_attribute(pipe_ctx);
--
- 	if (dc->res_pool->dccg->funcs->set_pixel_rate_div)
- 		dc->res_pool->dccg->funcs->set_pixel_rate_div(
- 			dc->res_pool->dccg,
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
-@@ -968,8 +968,6 @@ void dcn401_enable_stream(struct pipe_ct
- 		}
- 	}
- 
--	link_hwss->setup_stream_attribute(pipe_ctx);
--
- 	if (dc->res_pool->dccg->funcs->set_pixel_rate_div) {
- 		dc->res_pool->dccg->funcs->set_pixel_rate_div(
- 			dc->res_pool->dccg,
---- a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
-@@ -2458,6 +2458,7 @@ void link_set_dpms_on(
- 	struct link_encoder *link_enc = pipe_ctx->link_res.dio_link_enc;
- 	enum otg_out_mux_dest otg_out_dest = OUT_MUX_DIO;
- 	struct vpg *vpg = pipe_ctx->stream_res.stream_enc->vpg;
-+	const struct link_hwss *link_hwss = get_link_hwss(link, &pipe_ctx->link_res);
- 	bool apply_edp_fast_boot_optimization =
- 		pipe_ctx->stream->apply_edp_fast_boot_optimization;
- 
-@@ -2501,6 +2502,8 @@ void link_set_dpms_on(
- 		pipe_ctx->stream_res.tg->funcs->set_out_mux(pipe_ctx->stream_res.tg, otg_out_dest);
- 	}
- 
-+	link_hwss->setup_stream_attribute(pipe_ctx);
-+
- 	pipe_ctx->stream->apply_edp_fast_boot_optimization = false;
- 
- 	// Enable VPG before building infoframe
---- a/drivers/gpu/drm/amd/display/dc/virtual/virtual_stream_encoder.c
-+++ b/drivers/gpu/drm/amd/display/dc/virtual/virtual_stream_encoder.c
-@@ -44,11 +44,6 @@ static void virtual_stream_encoder_dvi_s
- 	struct dc_crtc_timing *crtc_timing,
- 	bool is_dual_link) {}
- 
--static void virtual_stream_encoder_lvds_set_stream_attribute(
--	struct stream_encoder *enc,
--	struct dc_crtc_timing *crtc_timing)
--{}
--
- static void virtual_stream_encoder_set_throttled_vcp_size(
- 	struct stream_encoder *enc,
- 	struct fixed31_32 avg_time_slots_per_mtp)
-@@ -120,8 +115,6 @@ static const struct stream_encoder_funcs
- 		virtual_stream_encoder_hdmi_set_stream_attribute,
- 	.dvi_set_stream_attribute =
- 		virtual_stream_encoder_dvi_set_stream_attribute,
--	.lvds_set_stream_attribute =
--		virtual_stream_encoder_lvds_set_stream_attribute,
- 	.set_throttled_vcp_size =
- 		virtual_stream_encoder_set_throttled_vcp_size,
- 	.update_hdmi_info_packets =
+ 	if (hdev->type == HID_TYPE_USBMOUSE &&
 
 
 
