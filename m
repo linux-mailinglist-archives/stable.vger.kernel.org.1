@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-198430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8870CC9FA79
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:48:57 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E125CC9FCFB
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:07:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DECA1303E015
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:41:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 86B6130014D2
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:07:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98EFD30F93B;
-	Wed,  3 Dec 2025 15:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20A0F31355B;
+	Wed,  3 Dec 2025 16:07:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="znhMvGtw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xu4GRZEJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55D6030C37A;
-	Wed,  3 Dec 2025 15:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D27A1313558;
+	Wed,  3 Dec 2025 16:07:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776517; cv=none; b=f8vuGmWtZbRHAJR65xvGEnyAHeeNCQ3QGR7KtUP9/JWL/WRE720+kOKkE6P6v4V8Q5HPgGXxULX5uMp8c49sdTpbCD3yYCOyV7q2zG16NMkBcgPLijnSjnZBRlnVOU8oJi64RQZ5ZERNiDVjySIEwCAT+dFkABoK2BEn1cjcFAU=
+	t=1764778054; cv=none; b=JEzwL+vTcXPOSvflf4x9vq0ldWW6Q/IGRzCmSsHD+dj2WxusQynpziNB8XkRG/VwYhHUWjN8oGmTiicwsMQG9EwA6rATmkxaRiK5f/0x50jfCo27uOSxLCfj8pMBkdMW/W6PQrjWVitT+9nTXjrQO/NuiKto0Y7fFZds9sI1ZQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776517; c=relaxed/simple;
-	bh=lMYUb+pAEOiU1Ia76nqpvaKw6ei6BjKxQuMD5c3Xbzc=;
+	s=arc-20240116; t=1764778054; c=relaxed/simple;
+	bh=Lu83OpVvrjR6fnu5Qq00tSDUy1sxgkUkH1q55TgBx/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pnz0vJHhLAxHM8RtOKRWe9PMhW7OUxpnX0P+jyaCQPJSdq4Gu+nhKImo/aa9YEu1VAxieg39MTFflcEbCG5F0YwA0brYbUXxFqiNdRVC3PRy41v6EkETr/FUgGZnekFzOFprEZDz4IJb7ajGnpWzSM4urY9BrooojVf42twjd3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=znhMvGtw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3144C116B1;
-	Wed,  3 Dec 2025 15:41:56 +0000 (UTC)
+	 MIME-Version; b=C4eW6so44XBMHLfoagW26yqdXc8CdpsMjE+vtGVeHEf7TFpPkh4nHKi0knsjTxyclI78z1W72flvCQPbqGRMHjAilL8V8mqWTr4nk1LtQyMGy0yTMIGc9AOxiBY0yAq9KbAwVu0TYfpfgyGbj7Dqh3M6kt48sBHe4a4nNKwJ6ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xu4GRZEJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 558F4C4CEF5;
+	Wed,  3 Dec 2025 16:07:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776517;
-	bh=lMYUb+pAEOiU1Ia76nqpvaKw6ei6BjKxQuMD5c3Xbzc=;
+	s=korg; t=1764778054;
+	bh=Lu83OpVvrjR6fnu5Qq00tSDUy1sxgkUkH1q55TgBx/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=znhMvGtwLb9OKoFQtFMlnm/9q1rc0cFZ33JVTe1XNlGIPYyuPY78aquThBAyzGqDu
-	 RaHiJ2KYQWq7qickjSXRmdR5wJb8ilQftUjXDDy6/xs50+mKKGm6FMPlc0BIHgAz39
-	 jj4jCxY5rEvnh5vnX9YmU9S9+9jxTdxtFOw1KLiw=
+	b=Xu4GRZEJOP3vw2JMVhHer9viL/dfR1xP1JBwGbsSolfxj2i/LaNtdoZYrR8SG0RG4
+	 f8IdE9R7MS5p6/pVk22CYZ9wAjNgWxFvyqckm2IdkutzULg/U2S+eyj/paOtBjNmQu
+	 qPvaeRm4vsARd4iSsgsCDhTLsvdjBKkvGWejA01A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danil Skrebenkov <danil.skrebenkov@cloudbear.ru>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Paul Walmsley <pjw@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 174/300] RISC-V: clear hot-unplugged cores from all task mm_cpumasks to avoid rfence errors
-Date: Wed,  3 Dec 2025 16:26:18 +0100
-Message-ID: <20251203152407.072293592@linuxfoundation.org>
+	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.15 229/392] selftests: netdevsim: set test timeout to 10 minutes
+Date: Wed,  3 Dec 2025 16:26:19 +0100
+Message-ID: <20251203152422.609748217@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +60,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danil Skrebenkov <danil.skrebenkov@cloudbear.ru>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit ae9e9f3d67dcef7582a4524047b01e33c5185ddb ]
+commit afbf75e8da8ce8a0698212953d350697bb4355a6 upstream.
 
-openSBI v1.7 adds harts checks for ipi operations. Especially it
-adds comparison between hmask passed as an argument from linux
-and mask of online harts (from openSBI side). If they don't
-fit each other the error occurs.
+The longest running netdevsim test, nexthop.sh, currently takes
+5 min to finish. Around 260s to be exact, and 310s on a debug kernel.
+The default timeout in selftest is 45sec, so we need an explicit
+config. Give ourselves some headroom and use 10min.
 
-When cpu is offline, cpu_online_mask is explicitly cleared in
-__cpu_disable. However, there is no explicit clearing of
-mm_cpumask. mm_cpumask is used for rfence operations that
-call openSBI RFENCE extension which uses ipi to remote harts.
-If hart is offline there may be error if mask of linux is not
-as mask of online harts in openSBI.
+Commit under Fixes isn't really to "blame" but prior to that
+netdevsim tests weren't integrated with kselftest infra
+so blaming the tests themselves doesn't seem right, either.
 
-this patch adds explicit clearing of mm_cpumask for offline hart.
-
-Signed-off-by: Danil Skrebenkov <danil.skrebenkov@cloudbear.ru>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Link: https://lore.kernel.org/r/20250919132849.31676-1-danil.skrebenkov@cloudbear.ru
-[pjw@kernel.org: rewrote subject line for clarity]
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8ff25dac88f6 ("netdevsim: add Makefile for selftests")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kernel/cpu-hotplug.c | 1 +
+ tools/testing/selftests/drivers/net/netdevsim/settings |    1 +
  1 file changed, 1 insertion(+)
+ create mode 100644 tools/testing/selftests/drivers/net/netdevsim/settings
 
-diff --git a/arch/riscv/kernel/cpu-hotplug.c b/arch/riscv/kernel/cpu-hotplug.c
-index 0e948e87bd813..6cd16a2af2ee0 100644
---- a/arch/riscv/kernel/cpu-hotplug.c
-+++ b/arch/riscv/kernel/cpu-hotplug.c
-@@ -65,6 +65,7 @@ void __cpu_die(unsigned int cpu)
- 	}
- 	pr_notice("CPU%u: off\n", cpu);
- 
-+	clear_tasks_mm_cpumask(cpu);
- 	/* Verify from the firmware if the cpu is really stopped*/
- 	if (cpu_ops[cpu]->cpu_is_stopped)
- 		ret = cpu_ops[cpu]->cpu_is_stopped(cpu);
--- 
-2.51.0
-
+--- /dev/null
++++ b/tools/testing/selftests/drivers/net/netdevsim/settings
+@@ -0,0 +1 @@
++timeout=600
 
 
 
