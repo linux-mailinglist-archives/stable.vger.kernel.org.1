@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-198841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 180EECA08AE
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:39:19 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08879C9F944
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:43:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 81709300FA37
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:38:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6735F301675D
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:37:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F34234403D;
-	Wed,  3 Dec 2025 16:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A7C3148BB;
+	Wed,  3 Dec 2025 15:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="saTlTIdQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XWcl8bXB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019E034403A;
-	Wed,  3 Dec 2025 16:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A5D2313535;
+	Wed,  3 Dec 2025 15:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777850; cv=none; b=lsQW135QUrwNtw0fILX2Lpwwsgh7+OwruIcBjV4Xzqg/litI8Xf9aGw0cLQ31H8x+ZbLb2wCM7kqQfMd61GR8z+VnmwNiOylfl6ZKaE3kmw1gu51JMSBOhJ7JYoruEi052QW0g3EwDutkcGRLLqrKVsmvy8JpZERmYIWGCxBVbM=
+	t=1764776199; cv=none; b=U6UbyrD9RIdq9ZyMSESw+75Adg+PSsqKotTWSBmXFP1cgR4ZaFiJZZBJzbHtaXCW2PDn+eXTlTUWkl2ggMeCWel0GE/KssXLzBz14jNAzxGN4eXHoAsJA6jNmNl1QHaR12NIJqqRgbMN4vpJeJq7L1u+9Z0hyz/ca8OQNo0PKHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777850; c=relaxed/simple;
-	bh=6JFvmtVkGEjjYfG2f/ZoUvREeYYnfCX8c4SrdeDrUEE=;
+	s=arc-20240116; t=1764776199; c=relaxed/simple;
+	bh=VdCgBsswWc7HTyxwmQp+t5W5nxmxaBhE8kIj/72wYsg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NAiBToySQbCBqtdVXy3dWEd477OYfoR4Q2PeBC+QeA9Tqu2YlC/EvEryokAjG+39DMrp1uNG3AdCj/k//zLnmjKNQpHgXZ5ANythA1i98h4FbHMg59+nTDJcINXWToMUgFooHMn/jVtVuhGMwHRT1idsUVtuZL+Tt9GnVV2/dB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=saTlTIdQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65AA8C4CEF5;
-	Wed,  3 Dec 2025 16:04:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ezK0FQOpeAtcC7s3dtq19ZtFsdioV+O6gq40qa0QG26PwyOexXw/l8h1gfCxlTTDIwJAf2IENTPWMcIEtPR8EKUPTkpnopC7QZUSavxib8rEaxUQKWIOmMJvbz9DTh/tAxqG9mhSXivuDG5VZpC6ZNyvVLBcccTxOKH5uFl8tQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XWcl8bXB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A1F7C4CEF5;
+	Wed,  3 Dec 2025 15:36:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777849;
-	bh=6JFvmtVkGEjjYfG2f/ZoUvREeYYnfCX8c4SrdeDrUEE=;
+	s=korg; t=1764776199;
+	bh=VdCgBsswWc7HTyxwmQp+t5W5nxmxaBhE8kIj/72wYsg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=saTlTIdQJPFptHU1m4dSakSk8pqxLwlfcUQd5C3s5flEmlG9gV/0qmz+NZdpwhQcL
-	 3xDEqQ0P6y3PGSoKnJgBkMdzhmSUApSF9boJu+U1W809WdsIpFmD+BI1y6ufHk2JAI
-	 au1uZSXe6am8IBix696K+kTM6iIX8ZYTle/pEBUE=
+	b=XWcl8bXB84Px2UITSukbwME2++u4HpHSfob6dAshKnvez6GAq3P4AB2aT+WCfea82
+	 xo0kaMQPGDNJIg1cDsTBAnXFPenixMSnf8pRLKJm4l7KuCzNJTDcBg3Z30n2fL1qpW
+	 P2Rz7FzQkNXY88+2/wxi+oFs84f1QFURQapAgda0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c4f3462d8b2ad7977bea@syzkaller.appspotmail.com,
-	Shaurya Rane <ssrane_b23@ee.vjti.ac.in>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 165/392] jfs: fix uninitialized waitqueue in transaction manager
+Subject: [PATCH 5.10 111/300] net: sh_eth: Disable WoL if system can not suspend
 Date: Wed,  3 Dec 2025 16:25:15 +0100
-Message-ID: <20251203152420.150891955@linuxfoundation.org>
+Message-ID: <20251203152404.733782618@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,65 +60,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
+From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
 
-[ Upstream commit 300b072df72694ea330c4c673c035253e07827b8 ]
+[ Upstream commit 9c02ea544ac35a9def5827d30594406947ccd81a ]
 
-The transaction manager initialization in txInit() was not properly
-initializing TxBlock[0].waitor waitqueue, causing a crash when
-txEnd(0) is called on read-only filesystems.
+The MAC can't facilitate WoL if the system can't go to sleep. Gate the
+WoL support callbacks in ethtool at compile time using CONFIG_PM_SLEEP.
 
-When a filesystem is mounted read-only, txBegin() returns tid=0 to
-indicate no transaction. However, txEnd(0) still gets called and
-tries to access TxBlock[0].waitor via tid_to_tblock(0), but this
-waitqueue was never initialized because the initialization loop
-started at index 1 instead of 0.
-
-This causes a 'non-static key' lockdep warning and system crash:
-  INFO: trying to register non-static key in txEnd
-
-Fix by ensuring all transaction blocks including TxBlock[0] have
-their waitqueues properly initialized during txInit().
-
-Reported-by: syzbot+c4f3462d8b2ad7977bea@syzkaller.appspotmail.com
-
-Signed-off-by: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20250909085849.3808169-1-niklas.soderlund+renesas@ragnatech.se
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_txnmgr.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/renesas/sh_eth.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/jfs/jfs_txnmgr.c b/fs/jfs/jfs_txnmgr.c
-index 3a547e0b934f2..d322a22477e49 100644
---- a/fs/jfs/jfs_txnmgr.c
-+++ b/fs/jfs/jfs_txnmgr.c
-@@ -272,14 +272,15 @@ int txInit(void)
- 	if (TxBlock == NULL)
- 		return -ENOMEM;
+diff --git a/drivers/net/ethernet/renesas/sh_eth.c b/drivers/net/ethernet/renesas/sh_eth.c
+index e2019dc3ac563..88ba7972ce635 100644
+--- a/drivers/net/ethernet/renesas/sh_eth.c
++++ b/drivers/net/ethernet/renesas/sh_eth.c
+@@ -2362,6 +2362,7 @@ static int sh_eth_set_ringparam(struct net_device *ndev,
+ 	return 0;
+ }
  
--	for (k = 1; k < nTxBlock - 1; k++) {
--		TxBlock[k].next = k + 1;
-+	for (k = 0; k < nTxBlock; k++) {
- 		init_waitqueue_head(&TxBlock[k].gcwait);
- 		init_waitqueue_head(&TxBlock[k].waitor);
- 	}
-+
-+	for (k = 1; k < nTxBlock - 1; k++) {
-+		TxBlock[k].next = k + 1;
-+	}
- 	TxBlock[k].next = 0;
--	init_waitqueue_head(&TxBlock[k].gcwait);
--	init_waitqueue_head(&TxBlock[k].waitor);
++#ifdef CONFIG_PM_SLEEP
+ static void sh_eth_get_wol(struct net_device *ndev, struct ethtool_wolinfo *wol)
+ {
+ 	struct sh_eth_private *mdp = netdev_priv(ndev);
+@@ -2388,6 +2389,7 @@ static int sh_eth_set_wol(struct net_device *ndev, struct ethtool_wolinfo *wol)
  
- 	TxAnchor.freetid = 1;
- 	init_waitqueue_head(&TxAnchor.freewait);
+ 	return 0;
+ }
++#endif
+ 
+ static const struct ethtool_ops sh_eth_ethtool_ops = {
+ 	.get_regs_len	= sh_eth_get_regs_len,
+@@ -2403,8 +2405,10 @@ static const struct ethtool_ops sh_eth_ethtool_ops = {
+ 	.set_ringparam	= sh_eth_set_ringparam,
+ 	.get_link_ksettings = phy_ethtool_get_link_ksettings,
+ 	.set_link_ksettings = phy_ethtool_set_link_ksettings,
++#ifdef CONFIG_PM_SLEEP
+ 	.get_wol	= sh_eth_get_wol,
+ 	.set_wol	= sh_eth_set_wol,
++#endif
+ };
+ 
+ /* network device open function */
 -- 
 2.51.0
 
