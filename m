@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-198992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E37D0CA05C2
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:21:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98DE6CA0837
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:36:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 232D9329F6F5
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:07:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7C6FA32B7F5A
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:16:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97C16348865;
-	Wed,  3 Dec 2025 16:12:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A999330300;
+	Wed,  3 Dec 2025 16:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Z0ughp5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KbRxlAkW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D54348468;
-	Wed,  3 Dec 2025 16:12:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F6B32F761;
+	Wed,  3 Dec 2025 16:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778341; cv=none; b=myse+z3MEVw9RJT3Wl0SqnYv4+SJIGKvIQsyOI5xvXFSQoJ0oHhMR4DjIDUCQbN+9vcE5rV/3MTDVLcdpVlhmnndREWBd8HE9ox5ipq2ruVQkmQagohr0lThN/QQP1AMH4hPM7LN5AFrccFqVueGaRahfS8ity3AmTpw7FuEOj8=
+	t=1764779989; cv=none; b=QiqWlnfeNoUhwH9n1RsnmxS/OBsMcVojEmWFsfwupCQr8ivWIUC56ZSQqcDeErznY29aw8sWVHgoauLmDwZgR76DbKHyziGvcjdT3Yt3fKFGq6zloJ2HPrzVmltVjyeK8z+WiasM0OEEk9oNBmqea5JBPz1d72sphhRZKj+32EU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778341; c=relaxed/simple;
-	bh=B1q1wyURr1iebxvroPKCo8lJvSsBVtDGUfnZsx52GtY=;
+	s=arc-20240116; t=1764779989; c=relaxed/simple;
+	bh=7Lpty1hWTegaRqpeKbq5LRz9j6XMIq8yOWOHUbDm0Hg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SbrWqhJ9PLyAQeQcuulERg4kWn4zV/MbiNVTLKET4IgnLS8P/Ebwkro+Q5CdKL+wDSBN1Jbhk/DaImgvZZUX8wkyN/4c0/DatLczRD7GjWWnJNoo30MwHU9vW6PkghsldoGRlQm0mHwpjfyIH3nHaM0KpOa58p67oyvbAqx0IrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Z0ughp5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3B22C4CEF5;
-	Wed,  3 Dec 2025 16:12:20 +0000 (UTC)
+	 MIME-Version; b=BAkUvPMyIw+N2/YJIT1prg+UTPXW1NJISHI5wHk8hGsS7pIcySaOnnE7BLN0qqECJHpPdfYy/8i/rT1iWigNnSsCPg0HII2gH2auqujo+PLAocPUwi+Y7GP/H+ydxtxFRHgP4eMdNrqBEwW8Q4pBdzTPp+pEGo5dG6g9+5Ac2/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KbRxlAkW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02020C4CEF5;
+	Wed,  3 Dec 2025 16:39:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778341;
-	bh=B1q1wyURr1iebxvroPKCo8lJvSsBVtDGUfnZsx52GtY=;
+	s=korg; t=1764779989;
+	bh=7Lpty1hWTegaRqpeKbq5LRz9j6XMIq8yOWOHUbDm0Hg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Z0ughp5BxrBBwf8FTVlwj0MXodGW1D4FdHnRKDqU87/a4zQ3Q1Pxu+cVAWjsyXEr
-	 txXAvvwd0FhVKCkeuZ12ufhtPziO1kVmHgJcys7Mke8dh9xIhAPksg5P5XgFmRBgcN
-	 k5vvhbymnvsqs00uAYMxo8e1y+EdnBaW0b71OOk4=
+	b=KbRxlAkWDnxThci2TtP6S2ZbWZ9eENB32CWmKDaO7zUTAjncUQrHqaIUOXpBkVtQa
+	 NZNJ+l3EoHHmkyhSUh8oM11B/4uePucOyAquydJ7fYXFoao8dCZMNFCccXObdwjwz7
+	 rNHn+3dT+jAiyfu8CLZeNbLSjRYE+QM+KS94JDGI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nate Karstens <nate.karstens@garmin.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
+	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 273/392] strparser: Fix signed/unsigned mismatch bug
+Subject: [PATCH 6.1 421/568] isdn: mISDN: hfcsusb: fix memory leak in hfcsusb_probe()
 Date: Wed,  3 Dec 2025 16:27:03 +0100
-Message-ID: <20251203152424.210660610@linuxfoundation.org>
+Message-ID: <20251203152456.117839920@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +59,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nate Karstens <nate.karstens@garmin.com>
+From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
 
-commit 4da4e4bde1c453ac5cc2dce5def81d504ae257ee upstream.
+commit 3f978e3f1570155a1327ffa25f60968bc7b9398f upstream.
 
-The `len` member of the sk_buff is an unsigned int. This is cast to
-`ssize_t` (a signed type) for the first sk_buff in the comparison,
-but not the second sk_buff. On 32-bit systems, this can result in
-an integer underflow for certain values because unsigned arithmetic
-is being used.
+In hfcsusb_probe(), the memory allocated for ctrl_urb gets leaked when
+setup_instance() fails with an error code. Fix that by freeing the urb
+before freeing the hw structure. Also change the error paths to use the
+goto ladder style.
 
-This appears to be an oversight: if the intention was to use unsigned
-arithmetic, then the first cast would have been omitted. The change
-ensures both len values are cast to `ssize_t`.
+Compile tested only. Issue found using a prototype static analysis tool.
 
-The underflow causes an issue with ktls when multiple TLS PDUs are
-included in a single TCP segment. The mainline kernel does not use
-strparser for ktls anymore, but this is still useful for other
-features that still use strparser, and for backporting.
-
-Signed-off-by: Nate Karstens <nate.karstens@garmin.com>
-Cc: stable@vger.kernel.org
-Fixes: 43a0c6751a32 ("strparser: Stream parser for messages")
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/20251106222835.1871628-1-nate.karstens@garmin.com
+Fixes: 69f52adb2d53 ("mISDN: Add HFC USB driver")
+Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+Link: https://patch.msgid.link/20251030042524.194812-1-nihaal@cse.iitm.ac.in
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/strparser/strparser.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/isdn/hardware/mISDN/hfcsusb.c |   18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
---- a/net/strparser/strparser.c
-+++ b/net/strparser/strparser.c
-@@ -238,7 +238,7 @@ static int __strp_recv(read_descriptor_t
- 				strp_parser_err(strp, -EMSGSIZE, desc);
- 				break;
- 			} else if (len <= (ssize_t)head->len -
--					  skb->len - stm->strp.offset) {
-+					  (ssize_t)skb->len - stm->strp.offset) {
- 				/* Length must be into new skb (and also
- 				 * greater than zero)
- 				 */
+--- a/drivers/isdn/hardware/mISDN/hfcsusb.c
++++ b/drivers/isdn/hardware/mISDN/hfcsusb.c
+@@ -1903,13 +1903,13 @@ out:
+ 	mISDN_freebchannel(&hw->bch[1]);
+ 	mISDN_freebchannel(&hw->bch[0]);
+ 	mISDN_freedchannel(&hw->dch);
+-	kfree(hw);
+ 	return err;
+ }
+ 
+ static int
+ hfcsusb_probe(struct usb_interface *intf, const struct usb_device_id *id)
+ {
++	int err;
+ 	struct hfcsusb			*hw;
+ 	struct usb_device		*dev = interface_to_usbdev(intf);
+ 	struct usb_host_interface	*iface = intf->cur_altsetting;
+@@ -2100,20 +2100,28 @@ hfcsusb_probe(struct usb_interface *intf
+ 	if (!hw->ctrl_urb) {
+ 		pr_warn("%s: No memory for control urb\n",
+ 			driver_info->vend_name);
+-		kfree(hw);
+-		return -ENOMEM;
++		err = -ENOMEM;
++		goto err_free_hw;
+ 	}
+ 
+ 	pr_info("%s: %s: detected \"%s\" (%s, if=%d alt=%d)\n",
+ 		hw->name, __func__, driver_info->vend_name,
+ 		conf_str[small_match], ifnum, alt_used);
+ 
+-	if (setup_instance(hw, dev->dev.parent))
+-		return -EIO;
++	if (setup_instance(hw, dev->dev.parent)) {
++		err = -EIO;
++		goto err_free_urb;
++	}
+ 
+ 	hw->intf = intf;
+ 	usb_set_intfdata(hw->intf, hw);
+ 	return 0;
++
++err_free_urb:
++	usb_free_urb(hw->ctrl_urb);
++err_free_hw:
++	kfree(hw);
++	return err;
+ }
+ 
+ /* function called when an active device is removed */
 
 
 
