@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-198428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BBDBC9FA88
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:49:42 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DEB2C9FFFD
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:37:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8F5853063F40
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:41:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1C8EA30007B7
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:37:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED8C6314A9E;
-	Wed,  3 Dec 2025 15:41:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65C6335C18A;
+	Wed,  3 Dec 2025 16:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EhOOCIuS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R6vrV75p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4438F314A9D;
-	Wed,  3 Dec 2025 15:41:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1120C3596FA;
+	Wed,  3 Dec 2025 16:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776511; cv=none; b=lOI+AKKJ3Cr1eVGPOuT/1V3Pu/QMDBxQtn4X8S0SuXAz9tDDLGVxuxRCzo2tP9QRQNFHEJlaq4F1IrGwaWpshNffIZ9ZSxvnU/frA17iIBuhMN5jFTPGyeddYY2thCnLxNjYus6EzHQfGkWBQmU2b/Wrl2KzKdpwcaMHx+BgA6k=
+	t=1764779831; cv=none; b=DZAMrO4VRMFy/smEZ2tVIAdfY4HHOtsTPhCwOFui/feTB3+mKZxNnbHofC3odOMfUTTnaksA4D5/XuRmbYKSEQl2XX/87ASv1RVNsYg1v5hYFK+eNxhX3wVJM3HtnC5N0etPm8Z5JfTX+5zj4rEpw6Uj5iWL06TOjyI9a0eHuxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776511; c=relaxed/simple;
-	bh=1dVussKkDWVT1Mno4T8YRCWQyTkHcuJuGwiZnzNXzd4=;
+	s=arc-20240116; t=1764779831; c=relaxed/simple;
+	bh=BrQrc2Rvx3m9pupC44PiLSdDQQrtR6V5qhNOX1t5iLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oPzIDTmnKXg/ArCJdrRUaTj/zrdkylzSHb/Ap9ymL3JjznFwDofz6Ol+qvW1DVQKOBDF1J691e6v39L465xdgUIGon3KvhzFkZaHOHZUoD1oOKs+UdvHxEFkwq61uQxiPUct6th7fuCsFy0KOsEV5ArRJGhMAzshyCrCzeJ7ZQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EhOOCIuS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A37BEC4CEF5;
-	Wed,  3 Dec 2025 15:41:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lHJqeHmquzCvch57nu5YM531XegqiINLfaEPaO4AyggCxTTkdZGlYUACl7+ZBHFmY1toLUgyt+wE0TmCINvqHjJFgtMDbiYa7LLQjPQLxMyNVKpXaURxdpKy7YV5E6zhUU1gKKCAh8P74x53lA/VwGTNcFntCU8YzhX8N2j+0Zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R6vrV75p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9120DC116B1;
+	Wed,  3 Dec 2025 16:37:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776511;
-	bh=1dVussKkDWVT1Mno4T8YRCWQyTkHcuJuGwiZnzNXzd4=;
+	s=korg; t=1764779830;
+	bh=BrQrc2Rvx3m9pupC44PiLSdDQQrtR6V5qhNOX1t5iLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EhOOCIuSk/dvqyAG4w/TCip8xs0NvNgtOKvP9ZERahJ+hCIbMXkFIHeilUhSCWSks
-	 yJyLk7+GyjHGKHbKs/MIT17fhuXUCoKaskbaHI6KsRfOJG6BRU7LuKqdymw7i3adIG
-	 0cOT9bzNPdEACtW0cXrf4vcI9O4dpa4ExR7MC4qE=
+	b=R6vrV75pC6tKwP4uGjToSzz4Jta2ysOWJhCg6pRotbbatKJrZgzIfLla8kNGcssBG
+	 ZS6biQXKqEXfMD4WrFRYQs3LBskSE6WvY2ZDo7uqLudgzcnv7vak6nmiVMz7JC27Zq
+	 4/ioct7lBM7JmLPaNekprSVmtUE3Sv7S5+2Up6Is=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Chanwoo Choi <cw00.choi@samsung.com>
-Subject: [PATCH 5.10 172/300] extcon: adc-jack: Cleanup wakeup source only if it was enabled
+	Eric Dumazet <edumazet@google.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 374/568] net_sched: limit try_bulk_dequeue_skb() batches
 Date: Wed,  3 Dec 2025 16:26:16 +0100
-Message-ID: <20251203152406.992619057@linuxfoundation.org>
+Message-ID: <20251203152454.396121723@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,43 +60,148 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 92bac7d4de9c07933f6b76d8f1c7f8240f911f4f upstream.
+[ Upstream commit 0345552a653ce5542affeb69ac5aa52177a5199b ]
 
-Driver in the probe enables wakeup source conditionally, so the cleanup
-path should do the same - do not release the wakeup source memory if it
-was not allocated.
+After commit 100dfa74cad9 ("inet: dev_queue_xmit() llist adoption")
+I started seeing many qdisc requeues on IDPF under high TX workload.
 
-Link: https://lore.kernel.org/lkml/20250509071703.39442-2-krzysztof.kozlowski@linaro.org/
-Reported-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Closes: https://lore.kernel.org/r/22aaebb7-553b-4571-8a43-58a523241082@wanadoo.fr/
-Fixes: 78b6a991eb6c ("extcon: adc-jack: Fix wakeup source leaks on device unbind")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+$ tc -s qd sh dev eth1 handle 1: ; sleep 1; tc -s qd sh dev eth1 handle 1:
+qdisc mq 1: root
+ Sent 43534617319319 bytes 268186451819 pkt (dropped 0, overlimits 0 requeues 3532840114)
+ backlog 1056Kb 6675p requeues 3532840114
+qdisc mq 1: root
+ Sent 43554665866695 bytes 268309964788 pkt (dropped 0, overlimits 0 requeues 3537737653)
+ backlog 781164b 4822p requeues 3537737653
+
+This is caused by try_bulk_dequeue_skb() being only limited by BQL budget.
+
+perf record -C120-239 -e qdisc:qdisc_dequeue sleep 1 ; perf script
+...
+ netperf 75332 [146]  2711.138269: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1292 skbaddr=0xff378005a1e9f200
+ netperf 75332 [146]  2711.138953: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1213 skbaddr=0xff378004d607a500
+ netperf 75330 [144]  2711.139631: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1233 skbaddr=0xff3780046be20100
+ netperf 75333 [147]  2711.140356: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1093 skbaddr=0xff37800514845b00
+ netperf 75337 [151]  2711.141037: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1353 skbaddr=0xff37800460753300
+ netperf 75337 [151]  2711.141877: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1367 skbaddr=0xff378004e72c7b00
+ netperf 75330 [144]  2711.142643: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1202 skbaddr=0xff3780045bd60000
+...
+
+This is bad because :
+
+1) Large batches hold one victim cpu for a very long time.
+
+2) Driver often hit their own TX ring limit (all slots are used).
+
+3) We call dev_requeue_skb()
+
+4) Requeues are using a FIFO (q->gso_skb), breaking qdisc ability to
+   implement FQ or priority scheduling.
+
+5) dequeue_skb() gets packets from q->gso_skb one skb at a time
+   with no xmit_more support. This is causing many spinlock games
+   between the qdisc and the device driver.
+
+Requeues were supposed to be very rare, lets keep them this way.
+
+Limit batch sizes to /proc/sys/net/core/dev_weight (default 64) as
+__qdisc_run() was designed to use.
+
+Fixes: 5772e9a3463b ("qdisc: bulk dequeue support for qdiscs with TCQ_F_ONETXQUEUE")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
+Link: https://patch.msgid.link/20251109161215.2574081-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/extcon/extcon-adc-jack.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/sched/sch_generic.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
---- a/drivers/extcon/extcon-adc-jack.c
-+++ b/drivers/extcon/extcon-adc-jack.c
-@@ -162,7 +162,8 @@ static int adc_jack_remove(struct platfo
+diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
+index b51af871a621c..1b51b3038b4bd 100644
+--- a/net/sched/sch_generic.c
++++ b/net/sched/sch_generic.c
+@@ -178,9 +178,10 @@ static inline void dev_requeue_skb(struct sk_buff *skb, struct Qdisc *q)
+ static void try_bulk_dequeue_skb(struct Qdisc *q,
+ 				 struct sk_buff *skb,
+ 				 const struct netdev_queue *txq,
+-				 int *packets)
++				 int *packets, int budget)
  {
- 	struct adc_jack_data *data = platform_get_drvdata(pdev);
+ 	int bytelimit = qdisc_avail_bulklimit(txq) - skb->len;
++	int cnt = 0;
  
--	device_init_wakeup(&pdev->dev, false);
-+	if (data->wakeup_source)
-+		device_init_wakeup(&pdev->dev, false);
- 	free_irq(data->irq, data);
- 	cancel_work_sync(&data->handler.work);
+ 	while (bytelimit > 0) {
+ 		struct sk_buff *nskb = q->dequeue(q);
+@@ -191,8 +192,10 @@ static void try_bulk_dequeue_skb(struct Qdisc *q,
+ 		bytelimit -= nskb->len; /* covers GSO len */
+ 		skb->next = nskb;
+ 		skb = nskb;
+-		(*packets)++; /* GSO counts as one pkt */
++		if (++cnt >= budget)
++			break;
+ 	}
++	(*packets) += cnt;
+ 	skb_mark_not_on_list(skb);
+ }
  
+@@ -226,7 +229,7 @@ static void try_bulk_dequeue_skb_slow(struct Qdisc *q,
+  * A requeued skb (via q->gso_skb) can also be a SKB list.
+  */
+ static struct sk_buff *dequeue_skb(struct Qdisc *q, bool *validate,
+-				   int *packets)
++				   int *packets, int budget)
+ {
+ 	const struct netdev_queue *txq = q->dev_queue;
+ 	struct sk_buff *skb = NULL;
+@@ -293,7 +296,7 @@ static struct sk_buff *dequeue_skb(struct Qdisc *q, bool *validate,
+ 	if (skb) {
+ bulk:
+ 		if (qdisc_may_bulk(q))
+-			try_bulk_dequeue_skb(q, skb, txq, packets);
++			try_bulk_dequeue_skb(q, skb, txq, packets, budget);
+ 		else
+ 			try_bulk_dequeue_skb_slow(q, skb, packets);
+ 	}
+@@ -385,7 +388,7 @@ bool sch_direct_xmit(struct sk_buff *skb, struct Qdisc *q,
+  *				>0 - queue is not empty.
+  *
+  */
+-static inline bool qdisc_restart(struct Qdisc *q, int *packets)
++static inline bool qdisc_restart(struct Qdisc *q, int *packets, int budget)
+ {
+ 	spinlock_t *root_lock = NULL;
+ 	struct netdev_queue *txq;
+@@ -394,7 +397,7 @@ static inline bool qdisc_restart(struct Qdisc *q, int *packets)
+ 	bool validate;
+ 
+ 	/* Dequeue packet */
+-	skb = dequeue_skb(q, &validate, packets);
++	skb = dequeue_skb(q, &validate, packets, budget);
+ 	if (unlikely(!skb))
+ 		return false;
+ 
+@@ -412,7 +415,7 @@ void __qdisc_run(struct Qdisc *q)
+ 	int quota = READ_ONCE(dev_tx_weight);
+ 	int packets;
+ 
+-	while (qdisc_restart(q, &packets)) {
++	while (qdisc_restart(q, &packets, quota)) {
+ 		quota -= packets;
+ 		if (quota <= 0) {
+ 			if (q->flags & TCQ_F_NOLOCK)
+-- 
+2.51.0
+
 
 
 
