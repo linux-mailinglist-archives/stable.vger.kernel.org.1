@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26798CA083C
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:36:14 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57FA1CA0AB1
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:50:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0B65932BB6D9
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:17:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1BAB9302401F
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:49:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C637393DFC;
-	Wed,  3 Dec 2025 16:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B81433C518;
+	Wed,  3 Dec 2025 15:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZZO+1MBe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1QZ4L3+P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC8C0376BCD;
-	Wed,  3 Dec 2025 16:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B42B333C1BA;
+	Wed,  3 Dec 2025 15:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780718; cv=none; b=DCabsQly6nOw7T8pyxPKJOV20K3TZvxNso8hBbL0DbeSs7N6uRkUw6aC/UgbPK2baNlDZpxbQLQiwUACkiOz4xGHo2jw7BKIv4x/m+gDjf4eQNSvYTvwu2erM/pLim03A7XgV13jKmwMwWJ54FPWKTp8oySPqnlIkRjj2a+6ers=
+	t=1764777255; cv=none; b=qr8VAX9KVGcNLqmWm4lh4utLniJ8OWxFhylHpZ9hgTxM5BWNoROgWbRqyBKWuroFcIjKDoM1CNnQbu1bFgEZ3HfEzxxdNlajQR/nhB1aII9nd8LuuBlV4WISpOxpZa3fmIFyXpHuWl4Yynlf6nkpIfcG6cGt99+aQN7eWPWwEJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780718; c=relaxed/simple;
-	bh=Yo9Zq3GDGMPstnt+VTGEbBLWOzO3SpIr8WDO3zv1L+Y=;
+	s=arc-20240116; t=1764777255; c=relaxed/simple;
+	bh=m3S2KYGE+O9j4MIyByZ9Cc8IzKkW4+VZD4Kmv+s6D0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KU/aMgb+Oc756mtEOXcmcKzimEpP5dn15tsPMIWaAetOIv5VLRKH62hKZubs9EG0oTqtLHrNBGj51MlgZ+jdEutgCY8RsT7U6XLyNQDDPJETVsi2QJ+fRaG2eHDTuwPnKrJMwl9wKoklIWOMQzrzM+Yqxcuy4jYl2JjAtvPzVqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZZO+1MBe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3033DC116B1;
-	Wed,  3 Dec 2025 16:51:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BYDe1q437KlCRQDv2NSET+maia5mmVa2mz348qn2JV9sfzaYypgCStbQqXvKACqshypCLNy6TPKuadiisPi0LAjMolTNCoixLGnsuYGSCyvQ7nyki+8ZYuodurpBtATC30HvHUfqnxFNF+JVgUYVZ320Qbb7M40fw1apJS3Y7Z4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1QZ4L3+P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75752C2BD01;
+	Wed,  3 Dec 2025 15:54:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780718;
-	bh=Yo9Zq3GDGMPstnt+VTGEbBLWOzO3SpIr8WDO3zv1L+Y=;
+	s=korg; t=1764777254;
+	bh=m3S2KYGE+O9j4MIyByZ9Cc8IzKkW4+VZD4Kmv+s6D0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZZO+1MBeuj0vxZoEvTVE9snLdWnRd1EYox0mq3L0sVMFy2tvEbqkcu4K0QsNgAZ78
-	 6LL3KS5GmGE45CwakXA3AM+9flnAws/cwzLZzNYi40oeoHplOZZSF1qLj8MrQs5Nmt
-	 Fo9j1qzIewx8uk/iboUX0dMDmZNKSotTWr/OE2uE=
+	b=1QZ4L3+Pu9gbrQhZGHEZfnw2r3PP09NMem/y3fZPKzGjj+wEeyLVINoQGLmx2B3Po
+	 e37RQpfQlKQ1v5NW77HSHn0qcLeKslN3UrFLpg7fjzQosp3gpHg91KW/MqGUJ7oKBx
+	 yKTWPvXLVX7JukeUfTN6V3Yhrc5kp56vBlTqpe2s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiefeng Zhang <jiefeng.z.zhang@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 027/132] net: atlantic: fix fragment overflow handling in RX path
-Date: Wed,  3 Dec 2025 16:28:26 +0100
-Message-ID: <20251203152344.306821600@linuxfoundation.org>
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Prike Liang <Prike.Liang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.17 129/146] drm/amdgpu: attach tlb fence to the PTs update
+Date: Wed,  3 Dec 2025 16:28:27 +0100
+Message-ID: <20251203152351.182356193@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,100 +58,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiefeng Zhang <jiefeng.z.zhang@gmail.com>
+From: Prike Liang <Prike.Liang@amd.com>
 
-[ Upstream commit 5ffcb7b890f61541201461580bb6622ace405aec ]
+commit b4a7f4e7ad2b120a94f3111f92a11520052c762d upstream.
 
-The atlantic driver can receive packets with more than MAX_SKB_FRAGS (17)
-fragments when handling large multi-descriptor packets. This causes an
-out-of-bounds write in skb_add_rx_frag_netmem() leading to kernel panic.
+Ensure the userq TLB flush is emitted only after
+the VM update finishes and the PT BOs have been
+annotated with bookkeeping fences.
 
-The issue occurs because the driver doesn't check the total number of
-fragments before calling skb_add_rx_frag(). When a packet requires more
-than MAX_SKB_FRAGS fragments, the fragment index exceeds the array bounds.
-
-Fix by assuming there will be an extra frag if buff->len > AQ_CFG_RX_HDR_SIZE,
-then all fragments are accounted for. And reusing the existing check to
-prevent the overflow earlier in the code path.
-
-This crash occurred in production with an Aquantia AQC113 10G NIC.
-
-Stack trace from production environment:
-```
-RIP: 0010:skb_add_rx_frag_netmem+0x29/0xd0
-Code: 90 f3 0f 1e fa 0f 1f 44 00 00 48 89 f8 41 89
-ca 48 89 d7 48 63 ce 8b 90 c0 00 00 00 48 c1 e1 04 48 01 ca 48 03 90
-c8 00 00 00 <48> 89 7a 30 44 89 52 3c 44 89 42 38 40 f6 c7 01 75 74 48
-89 fa 83
-RSP: 0018:ffffa9bec02a8d50 EFLAGS: 00010287
-RAX: ffff925b22e80a00 RBX: ffff925ad38d2700 RCX:
-fffffffe0a0c8000
-RDX: ffff9258ea95bac0 RSI: ffff925ae0a0c800 RDI:
-0000000000037a40
-RBP: 0000000000000024 R08: 0000000000000000 R09:
-0000000000000021
-R10: 0000000000000848 R11: 0000000000000000 R12:
-ffffa9bec02a8e24
-R13: ffff925ad8615570 R14: 0000000000000000 R15:
-ffff925b22e80a00
-FS: 0000000000000000(0000)
-GS:ffff925e47880000(0000) knlGS:0000000000000000
-CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffff9258ea95baf0 CR3: 0000000166022004 CR4:
-0000000000f72ef0
-PKRU: 55555554
-Call Trace:
-<IRQ>
-aq_ring_rx_clean+0x175/0xe60 [atlantic]
-? aq_ring_rx_clean+0x14d/0xe60 [atlantic]
-? aq_ring_tx_clean+0xdf/0x190 [atlantic]
-? kmem_cache_free+0x348/0x450
-? aq_vec_poll+0x81/0x1d0 [atlantic]
-? __napi_poll+0x28/0x1c0
-? net_rx_action+0x337/0x420
-```
-
-Fixes: 6aecbba12b5c ("net: atlantic: add check for MAX_SKB_FRAGS")
-Changes in v4:
-- Add Fixes: tag to satisfy patch validation requirements.
-
-Changes in v3:
-- Fix by assuming there will be an extra frag if buff->len > AQ_CFG_RX_HDR_SIZE,
-  then all fragments are accounted for.
-
-Signed-off-by: Jiefeng Zhang <jiefeng.z.zhang@gmail.com>
-Link: https://patch.msgid.link/20251126032249.69358-1-jiefeng.z.zhang@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Suggested-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Prike Liang <Prike.Liang@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit f3854e04b708d73276c4488231a8bd66d30b4671)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/aquantia/atlantic/aq_ring.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_ring.c b/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
-index f21de0c21e524..d23d23bed39fe 100644
---- a/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
-+++ b/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
-@@ -547,6 +547,11 @@ static int __aq_ring_rx_clean(struct aq_ring_s *self, struct napi_struct *napi,
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+@@ -1056,7 +1056,7 @@ amdgpu_vm_tlb_flush(struct amdgpu_vm_upd
+ 	}
  
- 		if (!buff->is_eop) {
- 			unsigned int frag_cnt = 0U;
-+
-+			/* There will be an extra fragment */
-+			if (buff->len > AQ_CFG_RX_HDR_SIZE)
-+				frag_cnt++;
-+
- 			buff_ = buff;
- 			do {
- 				bool is_rsc_completed = true;
--- 
-2.51.0
-
+ 	/* Prepare a TLB flush fence to be attached to PTs */
+-	if (!params->unlocked && vm->is_compute_context) {
++	if (!params->unlocked) {
+ 		amdgpu_vm_tlb_fence_create(params->adev, vm, fence);
+ 
+ 		/* Makes sure no PD/PT is freed before the flush */
 
 
 
