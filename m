@@ -1,51 +1,54 @@
-Return-Path: <stable+bounces-199129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 847F2CA17C5
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:53:40 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DD10CA11D3
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:44:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7814D30071A8
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:53:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 303E33003173
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:44:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84BEA34E761;
-	Wed,  3 Dec 2025 16:19:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19BBF34EEEF;
+	Wed,  3 Dec 2025 16:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DgzQlgWl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GS4mcmyH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F63734E768;
-	Wed,  3 Dec 2025 16:19:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E82F34CFD0;
+	Wed,  3 Dec 2025 16:19:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778789; cv=none; b=XB/FGCKRgsWT1vDy/+8fW4CZpVka9zWabn+DaGgX1MO3Hrq8qtUX2UfTEmxnwyddOsdA0NkURsRRv/QYU4pntoD8ONPrEThTZWj23LgjLeTqVrszmuhORo2EAnDzsYk+TM95Y0is7LxYFiItg5q0NhNKhOFjmftO37H7vzoz1aU=
+	t=1764778796; cv=none; b=ldk76J76b2fap7jU4/CpF1NBzt/NvyUlBee7cKE1yNZrj/4P0A+mVTto83V+NgTHLA2k1lzEjYdwEG+O3sRW+92lknqnQKNiqyGBnLEbBCI/eziTLDmqYW1WIy/F5nfW9pGCU3aT0408sDSzipcb2TeJr6w6X8IgZggPEXoQ/O4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778789; c=relaxed/simple;
-	bh=H0w2D5rLjiPZj0FocZh8+K245zP+CEuAko7mBKgKFI4=;
+	s=arc-20240116; t=1764778796; c=relaxed/simple;
+	bh=46xZpzCovNSWZ9rz0NJ5Dv5mMMtkpZuOD63il9ZoGBo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WfIqiQeeYURMhgF48Jencr9CQKrv0fNTfYyRZgwvd7jFcIInQdDWuVITIFnIbS3l2lM+HRm+l48rkB+dQwSFZhlBYqF1OnmgL0L10q7FtglZAr1B8m3/E2U1NQbsO7CVQFDHf+7tVIojKvJlAU0OCLSZ+404QAePTLjKlRA3GKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DgzQlgWl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8957BC116B1;
-	Wed,  3 Dec 2025 16:19:48 +0000 (UTC)
+	 MIME-Version; b=FVgwvFZb9BaOZuH4AQgcFUuMGUQHq/tHsst3clObHUJPDPwrf3knz5+12ctbjRSCHLoxlpwKlLbp9f/sIWBjiWlftRnTNoKGsmZy7CYgcE5Kki5U7j8BiSYKZiCLzf1G8mI1YK7bltdv9RbK0IodMBrk2bhJpSdgAtrjTkhOSb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GS4mcmyH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A946C4CEF5;
+	Wed,  3 Dec 2025 16:19:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778789;
-	bh=H0w2D5rLjiPZj0FocZh8+K245zP+CEuAko7mBKgKFI4=;
+	s=korg; t=1764778795;
+	bh=46xZpzCovNSWZ9rz0NJ5Dv5mMMtkpZuOD63il9ZoGBo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DgzQlgWlkhjIcobUnFfp7/Ff1/N6i7Me25GIdDoTFO33PO0pV9zWtF3OpzDxN6ORR
-	 L3h0rbgBjmW/WKW7MKMhC9XGyy+AC+O5Y4rzeZ2v9qipBIGxuGXOJ89bfhW5pyFPVx
-	 7CQwjwVGRkswy5nipUuJ1+3B6nTmcvBZmA+EEX3k=
+	b=GS4mcmyHBxAjs5mcCioMK3ssCMciAiYWq1FaARNIULnZFbtmzXn70VTWl7YpsRcbx
+	 IDHZFIAzCMbJf5etLYK24jBJQr9R+NHiGsw5hxViGuYMs1at50vH2CsyNmefu8uqKf
+	 Q3Ahyc7DKrTyXcXeM4P1vEULfc1/sG06RyUDPtyA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Salvatore Bonaccorso <carnil@debian.org>
-Subject: [PATCH 6.1 059/568] Reapply "Revert drm/amd/display: Enable Freesync Video Mode by default"
-Date: Wed,  3 Dec 2025 16:21:01 +0100
-Message-ID: <20251203152442.859526246@linuxfoundation.org>
+	stable@vger.kernnel.org,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Matthew Rosato <mjrosato@linux.ibm.com>,
+	Farhan Ali <alifm@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 060/568] s390/pci: Restore IRQ unconditionally for the zPCI device
+Date: Wed,  3 Dec 2025 16:21:02 +0100
+Message-ID: <20251203152442.896269001@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
 References: <20251203152440.645416925@linuxfoundation.org>
@@ -64,75 +67,85 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Farhan Ali <alifm@linux.ibm.com>
 
-This reverts commit 11b92df8a2f7f4605ccc764ce6ae4a72760674df.
+[ Upstream commit b45873c3f09153d1ad9b3a7bf9e5c0b0387fd2ea ]
 
-This conflicts with how compositors want to handle VRR.  Now
-that compositors actually handle VRR, we probably don't need
-freesync video.
+Commit c1e18c17bda6 ("s390/pci: add zpci_set_irq()/zpci_clear_irq()"),
+introduced the zpci_set_irq() and zpci_clear_irq(), to be used while
+resetting a zPCI device.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/2985
-Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-[ Salvatore Bonaccorso: Adjust context due to missing 3e094a287526
-  ("drm/amd/display: Use drm_connector in create_stream_for_sink") in
-  6.1.y stable series ]
-Signed-off-by: Salvatore Bonaccorso <carnil@debian.org>
+Commit da995d538d3a ("s390/pci: implement reset_slot for hotplug
+slot"), mentions zpci_clear_irq() being called in the path for
+zpci_hot_reset_device().  But that is not the case anymore and these
+functions are not called outside of this file. Instead
+zpci_hot_reset_device() relies on zpci_disable_device() also clearing
+the IRQs, but misses to reset the zdev->irqs_registered flag.
+
+However after a CLP disable/enable reset, the device's IRQ are
+unregistered, but the flag zdev->irq_registered does not get cleared. It
+creates an inconsistent state and so arch_restore_msi_irqs() doesn't
+correctly restore the device's IRQ. This becomes a problem when a PCI
+driver tries to restore the state of the device through
+pci_restore_state(). Restore IRQ unconditionally for the device and remove
+the irq_registered flag as its redundant.
+
+Fixes: c1e18c17bda6 ("s390/pci: add zpci_set_irq()/zpci_clear_irq()")
+Cc: stable@vger.kernnel.org
+Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+[ adjusted bitfield context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ arch/s390/include/asm/pci.h |    1 -
+ arch/s390/pci/pci_irq.c     |    9 +--------
+ 2 files changed, 1 insertion(+), 9 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -6044,7 +6044,8 @@ create_stream_for_sink(struct amdgpu_dm_
- 		 */
- 		DRM_DEBUG_DRIVER("No preferred mode found\n");
- 	} else {
--		recalculate_timing = is_freesync_video_mode(&mode, aconnector);
-+		recalculate_timing = amdgpu_freesync_vid_mode &&
-+				 is_freesync_video_mode(&mode, aconnector);
- 		if (recalculate_timing) {
- 			freesync_mode = get_highest_refresh_rate_mode(aconnector, false);
- 			drm_mode_copy(&saved_mode, &mode);
-@@ -7147,7 +7148,7 @@ static void amdgpu_dm_connector_add_free
- 	struct amdgpu_dm_connector *amdgpu_dm_connector =
- 		to_amdgpu_dm_connector(connector);
+--- a/arch/s390/include/asm/pci.h
++++ b/arch/s390/include/asm/pci.h
+@@ -136,7 +136,6 @@ struct zpci_dev {
+ 	u8		has_resources	: 1;
+ 	u8		is_physfn	: 1;
+ 	u8		util_str_avail	: 1;
+-	u8		irqs_registered	: 1;
+ 	u8		reserved	: 2;
+ 	unsigned int	devfn;		/* DEVFN part of the RID*/
  
--	if (!edid)
-+	if (!(amdgpu_freesync_vid_mode && edid))
- 		return;
+--- a/arch/s390/pci/pci_irq.c
++++ b/arch/s390/pci/pci_irq.c
+@@ -107,9 +107,6 @@ static int zpci_set_irq(struct zpci_dev
+ 	else
+ 		rc = zpci_set_airq(zdev);
  
- 	if (amdgpu_dm_connector->max_vfreq - amdgpu_dm_connector->min_vfreq > 10)
-@@ -9160,7 +9161,8 @@ static int dm_update_crtc_state(struct a
- 		 * TODO: Refactor this function to allow this check to work
- 		 * in all conditions.
- 		 */
--		if (dm_new_crtc_state->stream &&
-+		if (amdgpu_freesync_vid_mode &&
-+		    dm_new_crtc_state->stream &&
- 		    is_timing_unchanged_for_freesync(new_crtc_state, old_crtc_state))
- 			goto skip_modeset;
+-	if (!rc)
+-		zdev->irqs_registered = 1;
+-
+ 	return rc;
+ }
  
-@@ -9200,7 +9202,7 @@ static int dm_update_crtc_state(struct a
- 		}
+@@ -123,9 +120,6 @@ static int zpci_clear_irq(struct zpci_de
+ 	else
+ 		rc = zpci_clear_airq(zdev);
  
- 		/* Now check if we should set freesync video mode */
--		if (dm_new_crtc_state->stream &&
-+		if (amdgpu_freesync_vid_mode && dm_new_crtc_state->stream &&
- 		    dc_is_stream_unchanged(new_stream, dm_old_crtc_state->stream) &&
- 		    dc_is_stream_scaling_unchanged(new_stream, dm_old_crtc_state->stream) &&
- 		    is_timing_unchanged_for_freesync(new_crtc_state,
-@@ -9213,7 +9215,7 @@ static int dm_update_crtc_state(struct a
- 			set_freesync_fixed_config(dm_new_crtc_state);
+-	if (!rc)
+-		zdev->irqs_registered = 0;
+-
+ 	return rc;
+ }
  
- 			goto skip_modeset;
--		} else if (aconnector &&
-+		} else if (amdgpu_freesync_vid_mode && aconnector &&
- 			   is_freesync_video_mode(&new_crtc_state->mode,
- 						  aconnector)) {
- 			struct drm_display_mode *high_mode;
+@@ -427,8 +421,7 @@ bool arch_restore_msi_irqs(struct pci_de
+ {
+ 	struct zpci_dev *zdev = to_zpci(pdev);
+ 
+-	if (!zdev->irqs_registered)
+-		zpci_set_irq(zdev);
++	zpci_set_irq(zdev);
+ 	return true;
+ }
+ 
 
 
 
