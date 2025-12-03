@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-198473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54A1AC9FACD
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:52:01 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 450D1CA01D6
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:49:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2535B307D36D
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:44:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EA52B302326A
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:41:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BBA23090F7;
-	Wed,  3 Dec 2025 15:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2BD435BDA5;
+	Wed,  3 Dec 2025 16:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+R8BvsR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V5WbNHfi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3712630276F;
-	Wed,  3 Dec 2025 15:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F6DE35BDAF;
+	Wed,  3 Dec 2025 16:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776661; cv=none; b=TbEIrhSweBm3hPheJDnZzk1l6jqT/zDlueGai+fTAjzTM5aqVK1E2OerF8yC/eRACvn240HqKzF93389mb92OEwhsUO/MLK9qxuqjz475I5U11Qpgt/nK2jYDQwN2U1ADUuIlx3J+5wo2uoBadZi2V56pLTnzL/XQGYG2j6kpjs=
+	t=1764780094; cv=none; b=Ev+RHFAzsgWW1Fkzwvx0KkDoiyB0p3yeASLz7YskQcw1HkMH/LYFo9UI8N4PS5BGuE3OJSfHSO3tKY2w/CSFWlJCVPbmfj2zShxtp7fa9JYqwRmC5czQcDOSGtD62CbSJW7HBmrHmb3JLsGFvvl65ni2g3EbipsvxPmDrc2XvIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776661; c=relaxed/simple;
-	bh=HLub6TJ+L5ccwv+HQeC82zrz+i1deawsCIkkbvPpEzY=;
+	s=arc-20240116; t=1764780094; c=relaxed/simple;
+	bh=pX5hTD6PQwQ6H5V2F+z3zNxoFpdef0liAEEPmLQn2zo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QtwFKTbYJ8Q/Y+KKX7CH/3giJN3unpLYn0nUjrIO/e5g3+bhYVs4ieG8QrKoJJ4OJqv9Di7erdNJtlxmBaXL76vOH80d8hpHFBPIlL2VZW/vhvvECkECXYQnuYkLtIavenBgspsL0F6FMENQmLE6B4LglsEP11mIhl7PlEXIxBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L+R8BvsR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0EE8C4CEF5;
-	Wed,  3 Dec 2025 15:44:20 +0000 (UTC)
+	 MIME-Version; b=IPYJkxmXisbRRbyqRgKA05PORUaSxe/vOtespD5tY3zMu49AyleST5Q7weDC9agfmtnm+A4qMXhiJfPdHnO2v5QP0XN1XPMFazyxys3+x3Q+rmnuVjTOWPMqRjLmfQFuyt1UhZDl4gzjxj5wr7HywyaHGWWfl+mosS+4eKiyz6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V5WbNHfi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3873C4CEF5;
+	Wed,  3 Dec 2025 16:41:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776661;
-	bh=HLub6TJ+L5ccwv+HQeC82zrz+i1deawsCIkkbvPpEzY=;
+	s=korg; t=1764780094;
+	bh=pX5hTD6PQwQ6H5V2F+z3zNxoFpdef0liAEEPmLQn2zo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L+R8BvsRDX3ypzvNh0YK0t1bPfaZR4vX8KKHAYtbBRPrUFpvSgVP6PO0H0FSRoESr
-	 JXP3OVo3JFZp+DQjD4UZedGc7b4qTjM8CA8Lib2NenV+Sxs0wJyE9P1v9uxIEr8xMf
-	 qxnlbJEcsAJUtgNwvXopZMOARrD9yzcbGpIlXmgo=
+	b=V5WbNHfiG/Jn4QYmOr4knS31CSjV8d+qnYTkKzV8bWbrap1EOxbE+L+yf8Bv7K1Ql
+	 9k0XsuGOuAVWNEI+gfP1vNHSqAdPlmb0sBPNj2bPCly+zyA7DFcjNuaDjBkAfoGTZM
+	 w8LdEi3X6CNhTl4Ael2Z7LcXSOYoZPTXq9Rq6DaM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Vlastimil Babka <vbabka@suse.cz>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 250/300] mm/mempool: fix poisoning order>0 pages with HIGHMEM
+Subject: [PATCH 6.1 452/568] mlxsw: spectrum: Fix memory leak in mlxsw_sp_flower_stats()
 Date: Wed,  3 Dec 2025 16:27:34 +0100
-Message-ID: <20251203152409.895826345@linuxfoundation.org>
+Message-ID: <20251203152457.261176628@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,112 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vlastimil Babka <vbabka@suse.cz>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit ec33b59542d96830e3c89845ff833cf7b25ef172 ]
+[ Upstream commit 407a06507c2358554958e8164dc97176feddcafc ]
 
-The kernel test has reported:
+The function mlxsw_sp_flower_stats() calls mlxsw_sp_acl_ruleset_get() to
+obtain a ruleset reference. If the subsequent call to
+mlxsw_sp_acl_rule_lookup() fails to find a rule, the function returns
+an error without releasing the ruleset reference, causing a memory leak.
 
-  BUG: unable to handle page fault for address: fffba000
-  #PF: supervisor write access in kernel mode
-  #PF: error_code(0x0002) - not-present page
-  *pde = 03171067 *pte = 00000000
-  Oops: Oops: 0002 [#1]
-  CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Tainted: G                T   6.18.0-rc2-00031-gec7f31b2a2d3 #1 NONE  a1d066dfe789f54bc7645c7989957d2bdee593ca
-  Tainted: [T]=RANDSTRUCT
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-  EIP: memset (arch/x86/include/asm/string_32.h:168 arch/x86/lib/memcpy_32.c:17)
-  Code: a5 8b 4d f4 83 e1 03 74 02 f3 a4 83 c4 04 5e 5f 5d 2e e9 73 41 01 00 90 90 90 3e 8d 74 26 00 55 89 e5 57 56 89 c6 89 d0 89 f7 <f3> aa 89 f0 5e 5f 5d 2e e9 53 41 01 00 cc cc cc 55 89 e5 53 57 56
-  EAX: 0000006b EBX: 00000015 ECX: 001fefff EDX: 0000006b
-  ESI: fffb9000 EDI: fffba000 EBP: c611fbf0 ESP: c611fbe8
-  DS: 007b ES: 007b FS: 0000 GS: 0000 SS: 0068 EFLAGS: 00010287
-  CR0: 80050033 CR2: fffba000 CR3: 0316e000 CR4: 00040690
-  Call Trace:
-   poison_element (mm/mempool.c:83 mm/mempool.c:102)
-   mempool_init_node (mm/mempool.c:142 mm/mempool.c:226)
-   mempool_init_noprof (mm/mempool.c:250 (discriminator 1))
-   ? mempool_alloc_pages (mm/mempool.c:640)
-   bio_integrity_initfn (block/bio-integrity.c:483 (discriminator 8))
-   ? mempool_alloc_pages (mm/mempool.c:640)
-   do_one_initcall (init/main.c:1283)
+Fix this by using a goto to the existing error handling label, which
+calls mlxsw_sp_acl_ruleset_put() to properly release the reference.
 
-Christoph found out this is due to the poisoning code not dealing
-properly with CONFIG_HIGHMEM because only the first page is mapped but
-then the whole potentially high-order page is accessed.
-
-We could give up on HIGHMEM here, but it's straightforward to fix this
-with a loop that's mapping, poisoning or checking and unmapping
-individual pages.
-
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202511111411.9ebfa1ba-lkp@intel.com
-Analyzed-by: Christoph Hellwig <hch@lst.de>
-Fixes: bdfedb76f4f5 ("mm, mempool: poison elements backed by slab allocator")
-Cc: stable@vger.kernel.org
-Tested-by: kernel test robot <oliver.sang@intel.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://patch.msgid.link/20251113-mempool-poison-v1-1-233b3ef984c3@suse.cz
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Fixes: 7c1b8eb175b69 ("mlxsw: spectrum: Add support for TC flower offload statistics")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20251112052114.1591695-1-zilin@seu.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/mempool.c |   32 ++++++++++++++++++++++++++------
- 1 file changed, 26 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/mm/mempool.c
-+++ b/mm/mempool.c
-@@ -63,10 +63,20 @@ static void check_element(mempool_t *poo
- 	} else if (pool->free == mempool_free_pages) {
- 		/* Mempools backed by page allocator */
- 		int order = (int)(long)pool->pool_data;
--		void *addr = kmap_local_page((struct page *)element);
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
+index e91fb205e0b4c..66e95918bdf6e 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
+@@ -719,8 +719,10 @@ int mlxsw_sp_flower_stats(struct mlxsw_sp *mlxsw_sp,
+ 		return -EINVAL;
  
--		__check_element(pool, addr, 1UL << (PAGE_SHIFT + order));
--		kunmap_local(addr);
-+#ifdef CONFIG_HIGHMEM
-+		for (int i = 0; i < (1 << order); i++) {
-+			struct page *page = (struct page *)element;
-+			void *addr = kmap_local_page(page + i);
-+
-+			__check_element(pool, addr, PAGE_SIZE);
-+			kunmap_local(addr);
-+		}
-+#else
-+		void *addr = page_address((struct page *)element);
-+
-+		__check_element(pool, addr, PAGE_SIZE << order);
-+#endif
- 	}
- }
+ 	rule = mlxsw_sp_acl_rule_lookup(mlxsw_sp, ruleset, f->cookie);
+-	if (!rule)
+-		return -EINVAL;
++	if (!rule) {
++		err = -EINVAL;
++		goto err_rule_get_stats;
++	}
  
-@@ -86,10 +96,20 @@ static void poison_element(mempool_t *po
- 	} else if (pool->alloc == mempool_alloc_pages) {
- 		/* Mempools backed by page allocator */
- 		int order = (int)(long)pool->pool_data;
--		void *addr = kmap_local_page((struct page *)element);
- 
--		__poison_element(addr, 1UL << (PAGE_SHIFT + order));
--		kunmap_local(addr);
-+#ifdef CONFIG_HIGHMEM
-+		for (int i = 0; i < (1 << order); i++) {
-+			struct page *page = (struct page *)element;
-+			void *addr = kmap_local_page(page + i);
-+
-+			__poison_element(addr, PAGE_SIZE);
-+			kunmap_local(addr);
-+		}
-+#else
-+		void *addr = page_address((struct page *)element);
-+
-+		__poison_element(addr, PAGE_SIZE << order);
-+#endif
- 	}
- }
- #else /* CONFIG_DEBUG_SLAB || CONFIG_SLUB_DEBUG_ON */
+ 	err = mlxsw_sp_acl_rule_get_stats(mlxsw_sp, rule, &packets, &bytes,
+ 					  &drops, &lastuse, &used_hw_stats);
+-- 
+2.51.0
+
 
 
 
