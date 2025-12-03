@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-198975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70B83CA05DA
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:21:43 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 772A7CA019A
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:47:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5BA0F32A9073
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:07:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 497F6306A789
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:39:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92CC0345CAE;
-	Wed,  3 Dec 2025 16:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45C7A32F756;
+	Wed,  3 Dec 2025 15:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QLrmW+MU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zNtELZRo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB94345759;
-	Wed,  3 Dec 2025 16:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F404B32ED5F;
+	Wed,  3 Dec 2025 15:51:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778285; cv=none; b=hUb8NLJxAEtSMcns4fzP7tRx2KzgnwI8tyoLMgvvA5r5z/3oFX3MZ7EAVLhyD32jzk3zKjnn8O92V4eB/k1hu44IKJ1UM884DS84es/9fosQRTTT2PrsEh9y7Ql8DzLbtgQDVtakOfm0aCTTneib2VyNlvTNfq7Kfimhqipj1FY=
+	t=1764777089; cv=none; b=dRsiSm77csvRK9UcEB75A9ufCuB+ntQcWvWccBpfDgrc5wNXEyFx2wwtdmTfW/7CzFgmbzisqwEAi00PQTkS9aYI4JGhqnqB484ngNNCQ7QKfpfDQ22v0cdZOe9HIK8FTMYq7o04ASFQZlW988l+okpSn36d3Z6IweK8WHh8wUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778285; c=relaxed/simple;
-	bh=/AIkk43RRLmvVtMi4N2Ob7Bt5cqyCBiWB9+1wKTH3xo=;
+	s=arc-20240116; t=1764777089; c=relaxed/simple;
+	bh=hLqg8Wne/kJHo+4gdBJs6M0q4yUE09eShUW7PxXxn8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fWeCyqFJmAYCWt0rAYxYvOkEcIqjGO4RYNXch2RA4YQNKZka7vIFHkObrBLADAl4z3WGfkIz4IvxRLoQKe28Ny14SkbakUHg+NQ5VL67jKYECY8IWkjGuphItjyA1687yToU0jKe11UscoOu4rpw/Uuos6Jn+jK5vy4y5kUdz+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QLrmW+MU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B06DCC4CEF5;
-	Wed,  3 Dec 2025 16:11:24 +0000 (UTC)
+	 MIME-Version; b=doeXIzminx17eL8IWBPU+g5xT2mPCa50Eahr55bqLAWm1K+Gg7SBFnZFV7Mx0zuuuOGD8eaHnWUn4Ip58uqGPXi8Sa88zFkoeJ2TkaZyeHlOoktQN42CxqJmqvPVeK+7XgMcpjABhfZFzBMBmYvdwEq8bH9roqJfoAP90ACmtfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zNtELZRo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AF56C4CEF5;
+	Wed,  3 Dec 2025 15:51:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778285;
-	bh=/AIkk43RRLmvVtMi4N2Ob7Bt5cqyCBiWB9+1wKTH3xo=;
+	s=korg; t=1764777088;
+	bh=hLqg8Wne/kJHo+4gdBJs6M0q4yUE09eShUW7PxXxn8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QLrmW+MUQ+q6MJ6IuK44TbOjE9ScGNDSecczH4j692rzBztn8Vqofpr2ob9ivVORK
-	 Hs6oMUI9bnVevuDeAa1Nq1gtpVYMXZ8Dxx3ScvwDDD62yiDhXrqTGFvRm9R3NQ/lfm
-	 tQQlVjBgUjfWAaGIf9I5i4/n35bJll3me4r6Vr1E=
+	b=zNtELZRoGtRoHYRiGtb9+qR4dbAET6seFi2jgWjJFts3UAdS0PwDnxstCP8hbAPc0
+	 Hkns57nLxQiOXK39pLPSrNMhPKyLEjUlEQ7cMTHwItYe9fguEi13nBtwjmIc7sPC6p
+	 DHsUCz9HhrRIqDLSVNUuMC3693ZObHlXYOgG7edg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alejandro Colomar <alx@kernel.org>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 299/392] kernel.h: Move ARRAY_SIZE() to a separate header
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
+	Klara Modin <klarasmodin@gmail.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.17 071/146] MIPS: mm: kmalloc tlb_vpn array to avoid stack overflow
 Date: Wed,  3 Dec 2025 16:27:29 +0100
-Message-ID: <20251203152425.171220765@linuxfoundation.org>
+Message-ID: <20251203152349.065219062@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,94 +61,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alejandro Colomar <alx@kernel.org>
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 
-[ Upstream commit 3cd39bc3b11b8d34b7d7c961a35fdfd18b0ebf75 ]
+commit 841ecc979b18d3227fad5e2d6a1e6f92688776b5 upstream.
 
-Touching files so used for the kernel,
-forces 'make' to recompile most of the kernel.
+Owing to Config4.MMUSizeExt and VTLB/FTLB MMU features later MIPSr2+
+cores can have more than 64 TLB entries.  Therefore allocate an array
+for uniquification instead of placing too an small array on the stack.
 
-Having those definitions in more granular files
-helps avoid recompiling so much of the kernel.
-
-Signed-off-by: Alejandro Colomar <alx@kernel.org>
-Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Link: https://lore.kernel.org/r/20230817143352.132583-2-lucas.segarra.fernandez@intel.com
-[andy: reduced to cover only string.h for now]
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Stable-dep-of: 896f1a2493b5 ("net: qlogic/qede: fix potential out-of-bounds read in qede_tpa_cont() and qede_tpa_end()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 35ad7e181541 ("MIPS: mm: tlb-r4k: Uniquify TLB entries on init")
+Co-developed-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Cc: stable@vger.kernel.org # v6.17+: 9f048fa48740: MIPS: mm: Prevent a TLB shutdown on initial uniquification
+Cc: stable@vger.kernel.org # v6.17+
+Tested-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Tested-by: Klara Modin <klarasmodin@gmail.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/array_size.h | 13 +++++++++++++
- include/linux/kernel.h     |  7 +------
- include/linux/string.h     |  1 +
- 3 files changed, 15 insertions(+), 6 deletions(-)
- create mode 100644 include/linux/array_size.h
+ arch/mips/mm/tlb-r4k.c |   18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/array_size.h b/include/linux/array_size.h
-new file mode 100644
-index 0000000000000..06d7d83196ca3
---- /dev/null
-+++ b/include/linux/array_size.h
-@@ -0,0 +1,13 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _LINUX_ARRAY_SIZE_H
-+#define _LINUX_ARRAY_SIZE_H
+--- a/arch/mips/mm/tlb-r4k.c
++++ b/arch/mips/mm/tlb-r4k.c
+@@ -12,6 +12,7 @@
+ #include <linux/init.h>
+ #include <linux/sched.h>
+ #include <linux/smp.h>
++#include <linux/memblock.h>
+ #include <linux/mm.h>
+ #include <linux/hugetlb.h>
+ #include <linux/export.h>
+@@ -522,17 +523,26 @@ static int r4k_vpn_cmp(const void *a, co
+  * Initialise all TLB entries with unique values that do not clash with
+  * what we have been handed over and what we'll be using ourselves.
+  */
+-static void r4k_tlb_uniquify(void)
++static void __ref r4k_tlb_uniquify(void)
+ {
+-	unsigned long tlb_vpns[1 << MIPS_CONF1_TLBS_SIZE];
+ 	int tlbsize = current_cpu_data.tlbsize;
++	bool use_slab = slab_is_available();
+ 	int start = num_wired_entries();
++	phys_addr_t tlb_vpn_size;
++	unsigned long *tlb_vpns;
+ 	unsigned long vpn_mask;
+ 	int cnt, ent, idx, i;
+ 
+ 	vpn_mask = GENMASK(cpu_vmbits - 1, 13);
+ 	vpn_mask |= IS_ENABLED(CONFIG_64BIT) ? 3ULL << 62 : 1 << 31;
+ 
++	tlb_vpn_size = tlbsize * sizeof(*tlb_vpns);
++	tlb_vpns = (use_slab ?
++		    kmalloc(tlb_vpn_size, GFP_KERNEL) :
++		    memblock_alloc_raw(tlb_vpn_size, sizeof(*tlb_vpns)));
++	if (WARN_ON(!tlb_vpns))
++		return; /* Pray local_flush_tlb_all() is good enough. */
 +
-+#include <linux/compiler.h>
-+
-+/**
-+ * ARRAY_SIZE - get the number of elements in array @arr
-+ * @arr: array to be sized
-+ */
-+#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]) + __must_be_array(arr))
-+
-+#endif  /* _LINUX_ARRAY_SIZE_H */
-diff --git a/include/linux/kernel.h b/include/linux/kernel.h
-index f56cd8879a594..5717a0965bd6c 100644
---- a/include/linux/kernel.h
-+++ b/include/linux/kernel.h
-@@ -4,6 +4,7 @@
+ 	htw_stop();
  
- #include <linux/stdarg.h>
- #include <linux/align.h>
-+#include <linux/array_size.h>
- #include <linux/limits.h>
- #include <linux/linkage.h>
- #include <linux/stddef.h>
-@@ -37,12 +38,6 @@
- #define READ			0
- #define WRITE			1
+ 	for (i = start, cnt = 0; i < tlbsize; i++, cnt++) {
+@@ -585,6 +595,10 @@ static void r4k_tlb_uniquify(void)
+ 	tlbw_use_hazard();
+ 	htw_start();
+ 	flush_micro_tlb();
++	if (use_slab)
++		kfree(tlb_vpns);
++	else
++		memblock_free(tlb_vpns, tlb_vpn_size);
+ }
  
--/**
-- * ARRAY_SIZE - get the number of elements in array @arr
-- * @arr: array to be sized
-- */
--#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]) + __must_be_array(arr))
--
- #define PTR_IF(cond, ptr)	((cond) ? (ptr) : NULL)
- 
- #define u64_to_user_ptr(x) (		\
-diff --git a/include/linux/string.h b/include/linux/string.h
-index 3b9f5abe5ee83..bf368130bc42b 100644
---- a/include/linux/string.h
-+++ b/include/linux/string.h
-@@ -2,6 +2,7 @@
- #ifndef _LINUX_STRING_H_
- #define _LINUX_STRING_H_
- 
-+#include <linux/array_size.h>
- #include <linux/compiler.h>	/* for inline */
- #include <linux/types.h>	/* for size_t */
- #include <linux/stddef.h>	/* for NULL */
--- 
-2.51.0
-
+ /*
 
 
 
