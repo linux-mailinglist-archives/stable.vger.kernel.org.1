@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-198981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 081F2CA151C
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:17:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54A1AC9FACD
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:52:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ADCA23031344
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:38:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2535B307D36D
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:44:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD5DC346E41;
-	Wed,  3 Dec 2025 16:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BBA23090F7;
+	Wed,  3 Dec 2025 15:44:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hEPLwQ0U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+R8BvsR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 797C9346A1B;
-	Wed,  3 Dec 2025 16:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3712630276F;
+	Wed,  3 Dec 2025 15:44:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778305; cv=none; b=a0ks1RvQXdSdaIWExWY2QiEoXhTN9B7rgof/w/Z6Ve9MjgcpmOKwResbr7as0QpU+Z8S1riK9LdwTanULz/HDZqnR/yuY8hna+4q/0TA3Cpwo2qLSVGZU0EQ/NbWE/o58zaeVtWE+0EOJUvCKWOZ5KLYvHl4AgE7tnfBeG77bNA=
+	t=1764776661; cv=none; b=TbEIrhSweBm3hPheJDnZzk1l6jqT/zDlueGai+fTAjzTM5aqVK1E2OerF8yC/eRACvn240HqKzF93389mb92OEwhsUO/MLK9qxuqjz475I5U11Qpgt/nK2jYDQwN2U1ADUuIlx3J+5wo2uoBadZi2V56pLTnzL/XQGYG2j6kpjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778305; c=relaxed/simple;
-	bh=C2PEzuHipy09YcoZzCO3hv2ULL3a2MV+WMtyElF09oc=;
+	s=arc-20240116; t=1764776661; c=relaxed/simple;
+	bh=HLub6TJ+L5ccwv+HQeC82zrz+i1deawsCIkkbvPpEzY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gcyC1usCb/R4yy38bXXHux3lNPCap2jH8BJQSOSGHkK82M8hdSMZr+KGyn1r5E+BMoh9Yahl9kQ6VDbNJX+7pKlHKrJL6M2+0/HkZkcDKvuaXs6+k/4kDKcKbrOmJBb8Gky8U3buX7ExxJxcDE07L69ijY6N5wolBds422d9UEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hEPLwQ0U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBF5FC4CEF5;
-	Wed,  3 Dec 2025 16:11:44 +0000 (UTC)
+	 MIME-Version; b=QtwFKTbYJ8Q/Y+KKX7CH/3giJN3unpLYn0nUjrIO/e5g3+bhYVs4ieG8QrKoJJ4OJqv9Di7erdNJtlxmBaXL76vOH80d8hpHFBPIlL2VZW/vhvvECkECXYQnuYkLtIavenBgspsL0F6FMENQmLE6B4LglsEP11mIhl7PlEXIxBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L+R8BvsR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0EE8C4CEF5;
+	Wed,  3 Dec 2025 15:44:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778305;
-	bh=C2PEzuHipy09YcoZzCO3hv2ULL3a2MV+WMtyElF09oc=;
+	s=korg; t=1764776661;
+	bh=HLub6TJ+L5ccwv+HQeC82zrz+i1deawsCIkkbvPpEzY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hEPLwQ0UJuMffv3imRYRWjCa5+iUkf6dhRMrymlGF8zvE86Rk3QcYk/ZCFqY9XOLV
-	 5grW0iEYZuvnNBPks/sEFctHCRvnUcyMrrgKuwNF34Yv8dpUyqnFOD0HgfnM82StOe
-	 iL0rDm/6wfrQvDZbhZd3sl9SCWO/L1aqmcCSZSWk=
+	b=L+R8BvsRDX3ypzvNh0YK0t1bPfaZR4vX8KKHAYtbBRPrUFpvSgVP6PO0H0FSRoESr
+	 JXP3OVo3JFZp+DQjD4UZedGc7b4qTjM8CA8Lib2NenV+Sxs0wJyE9P1v9uxIEr8xMf
+	 qxnlbJEcsAJUtgNwvXopZMOARrD9yzcbGpIlXmgo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shahar Shitrit <shshitrit@nvidia.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	kernel test robot <oliver.sang@intel.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Vlastimil Babka <vbabka@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 304/392] net: tls: Cancel RX async resync request on rcd_delta overflow
+Subject: [PATCH 5.10 250/300] mm/mempool: fix poisoning order>0 pages with HIGHMEM
 Date: Wed,  3 Dec 2025 16:27:34 +0100
-Message-ID: <20251203152425.351430879@linuxfoundation.org>
+Message-ID: <20251203152409.895826345@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +61,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shahar Shitrit <shshitrit@nvidia.com>
+From: Vlastimil Babka <vbabka@suse.cz>
 
-[ Upstream commit c15d5c62ab313c19121f10e25d4fec852bd1c40c ]
+[ Upstream commit ec33b59542d96830e3c89845ff833cf7b25ef172 ]
 
-When a netdev issues a RX async resync request for a TLS connection,
-the TLS module handles it by logging record headers and attempting to
-match them to the tcp_sn provided by the device. If a match is found,
-the TLS module approves the tcp_sn for resynchronization.
+The kernel test has reported:
 
-While waiting for a device response, the TLS module also increments
-rcd_delta each time a new TLS record is received, tracking the distance
-from the original resync request.
+  BUG: unable to handle page fault for address: fffba000
+  #PF: supervisor write access in kernel mode
+  #PF: error_code(0x0002) - not-present page
+  *pde = 03171067 *pte = 00000000
+  Oops: Oops: 0002 [#1]
+  CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Tainted: G                T   6.18.0-rc2-00031-gec7f31b2a2d3 #1 NONE  a1d066dfe789f54bc7645c7989957d2bdee593ca
+  Tainted: [T]=RANDSTRUCT
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+  EIP: memset (arch/x86/include/asm/string_32.h:168 arch/x86/lib/memcpy_32.c:17)
+  Code: a5 8b 4d f4 83 e1 03 74 02 f3 a4 83 c4 04 5e 5f 5d 2e e9 73 41 01 00 90 90 90 3e 8d 74 26 00 55 89 e5 57 56 89 c6 89 d0 89 f7 <f3> aa 89 f0 5e 5f 5d 2e e9 53 41 01 00 cc cc cc 55 89 e5 53 57 56
+  EAX: 0000006b EBX: 00000015 ECX: 001fefff EDX: 0000006b
+  ESI: fffb9000 EDI: fffba000 EBP: c611fbf0 ESP: c611fbe8
+  DS: 007b ES: 007b FS: 0000 GS: 0000 SS: 0068 EFLAGS: 00010287
+  CR0: 80050033 CR2: fffba000 CR3: 0316e000 CR4: 00040690
+  Call Trace:
+   poison_element (mm/mempool.c:83 mm/mempool.c:102)
+   mempool_init_node (mm/mempool.c:142 mm/mempool.c:226)
+   mempool_init_noprof (mm/mempool.c:250 (discriminator 1))
+   ? mempool_alloc_pages (mm/mempool.c:640)
+   bio_integrity_initfn (block/bio-integrity.c:483 (discriminator 8))
+   ? mempool_alloc_pages (mm/mempool.c:640)
+   do_one_initcall (init/main.c:1283)
 
-However, if the device response is delayed or fails (e.g due to
-unstable connection and device getting out of tracking, hardware
-errors, resource exhaustion etc.), the TLS module keeps logging and
-incrementing, which can lead to a WARN() when rcd_delta exceeds the
-threshold.
+Christoph found out this is due to the poisoning code not dealing
+properly with CONFIG_HIGHMEM because only the first page is mapped but
+then the whole potentially high-order page is accessed.
 
-To address this, introduce tls_offload_rx_resync_async_request_cancel()
-to explicitly cancel resync requests when a device response failure is
-detected. Call this helper also as a final safeguard when rcd_delta
-crosses its threshold, as reaching this point implies that earlier
-cancellation did not occur.
+We could give up on HIGHMEM here, but it's straightforward to fix this
+with a loop that's mapping, poisoning or checking and unmapping
+individual pages.
 
-Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1761508983-937977-3-git-send-email-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202511111411.9ebfa1ba-lkp@intel.com
+Analyzed-by: Christoph Hellwig <hch@lst.de>
+Fixes: bdfedb76f4f5 ("mm, mempool: poison elements backed by slab allocator")
+Cc: stable@vger.kernel.org
+Tested-by: kernel test robot <oliver.sang@intel.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://patch.msgid.link/20251113-mempool-poison-v1-1-233b3ef984c3@suse.cz
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/tls.h    | 6 ++++++
- net/tls/tls_device.c | 4 +++-
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ mm/mempool.c |   32 ++++++++++++++++++++++++++------
+ 1 file changed, 26 insertions(+), 6 deletions(-)
 
-diff --git a/include/net/tls.h b/include/net/tls.h
-index 59ff5c901ab56..db0d1ec04f39c 100644
---- a/include/net/tls.h
-+++ b/include/net/tls.h
-@@ -665,6 +665,12 @@ tls_offload_rx_resync_async_request_end(struct sock *sk, __be32 seq)
- 		     ((u64)ntohl(seq) << 32) | RESYNC_REQ);
+--- a/mm/mempool.c
++++ b/mm/mempool.c
+@@ -63,10 +63,20 @@ static void check_element(mempool_t *poo
+ 	} else if (pool->free == mempool_free_pages) {
+ 		/* Mempools backed by page allocator */
+ 		int order = (int)(long)pool->pool_data;
+-		void *addr = kmap_local_page((struct page *)element);
+ 
+-		__check_element(pool, addr, 1UL << (PAGE_SHIFT + order));
+-		kunmap_local(addr);
++#ifdef CONFIG_HIGHMEM
++		for (int i = 0; i < (1 << order); i++) {
++			struct page *page = (struct page *)element;
++			void *addr = kmap_local_page(page + i);
++
++			__check_element(pool, addr, PAGE_SIZE);
++			kunmap_local(addr);
++		}
++#else
++		void *addr = page_address((struct page *)element);
++
++		__check_element(pool, addr, PAGE_SIZE << order);
++#endif
+ 	}
  }
  
-+static inline void
-+tls_offload_rx_resync_async_request_cancel(struct tls_offload_resync_async *resync_async)
-+{
-+	atomic64_set(&resync_async->req, 0);
-+}
-+
- static inline void
- tls_offload_rx_resync_set_type(struct sock *sk, enum tls_offload_sync_type type)
- {
-diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
-index e7c361807590d..1338e4e2c0f40 100644
---- a/net/tls/tls_device.c
-+++ b/net/tls/tls_device.c
-@@ -694,8 +694,10 @@ tls_device_rx_resync_async(struct tls_offload_resync_async *resync_async,
- 		/* shouldn't get to wraparound:
- 		 * too long in async stage, something bad happened
- 		 */
--		if (WARN_ON_ONCE(resync_async->rcd_delta == USHRT_MAX))
-+		if (WARN_ON_ONCE(resync_async->rcd_delta == USHRT_MAX)) {
-+			tls_offload_rx_resync_async_request_cancel(resync_async);
- 			return false;
-+		}
+@@ -86,10 +96,20 @@ static void poison_element(mempool_t *po
+ 	} else if (pool->alloc == mempool_alloc_pages) {
+ 		/* Mempools backed by page allocator */
+ 		int order = (int)(long)pool->pool_data;
+-		void *addr = kmap_local_page((struct page *)element);
  
- 		/* asynchronous stage: log all headers seq such that
- 		 * req_seq <= seq <= end_seq, and wait for real resync request
--- 
-2.51.0
-
+-		__poison_element(addr, 1UL << (PAGE_SHIFT + order));
+-		kunmap_local(addr);
++#ifdef CONFIG_HIGHMEM
++		for (int i = 0; i < (1 << order); i++) {
++			struct page *page = (struct page *)element;
++			void *addr = kmap_local_page(page + i);
++
++			__poison_element(addr, PAGE_SIZE);
++			kunmap_local(addr);
++		}
++#else
++		void *addr = page_address((struct page *)element);
++
++		__poison_element(addr, PAGE_SIZE << order);
++#endif
+ 	}
+ }
+ #else /* CONFIG_DEBUG_SLAB || CONFIG_SLUB_DEBUG_ON */
 
 
 
