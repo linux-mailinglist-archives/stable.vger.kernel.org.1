@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A2EBC9FA8E
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:49:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 770CBCA08FA
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:41:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CCAE0303E3D8
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:42:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 68BCE32A4E29
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:21:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B7AA314A9D;
-	Wed,  3 Dec 2025 15:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 021F5313E07;
+	Wed,  3 Dec 2025 15:47:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f3qtGzUs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qn2Q3Zh0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 575AC30F7E4;
-	Wed,  3 Dec 2025 15:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABEB519C553;
+	Wed,  3 Dec 2025 15:47:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776521; cv=none; b=SpdEyohHOP8wrWFXB90efDHw/XLM3EPTaYdFPdMNiytSGos/hdLotYvl1ArhYblbnKBIPLzmQbLFdwPQubcNPkksLDLwCeyeEXihH+9YYy2qWnDdgz2anIC20Q9bEMb172Wjw0TGmxGQmuiL899QSbrS/YJ3kQ8WBHelDR43mjw=
+	t=1764776860; cv=none; b=FeHQfSR3fmWv4fF55AAsDpn2El8kMrAqppz+s34uigiKEwJzWEZIz8TdRPFDuUw/t4ljFCC4jN9AmWvFataceiSALQIC+fZyky4Ga5fxLq1+KUl9NPvXVf0i8qptIe+F9MqkujR/Xx+Kog23Yh/NoGQ5Pu4f9dNa+rHPkuhHL+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776521; c=relaxed/simple;
-	bh=JBEyMXp8DEdLg51aWBN7TkjPqr4Avhn7aVQ+cbr2hlg=;
+	s=arc-20240116; t=1764776860; c=relaxed/simple;
+	bh=CvspgXB0UbGKqcX/59E56fSA1J/LHhSpaYqAvYBbOl0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sS/Ul+CqI55pPya0IsaypQa5Rkk3XRVBX1c/VOd8HOXDIq7t7LowOGsr3et3TsA4bXbd9h5nQYKfuiSv5vcz/UW/+EnKakKtrbMQWC1e6K2BTrVK+MZlaKigbZqYYGyFv8klO/HxjO8OTqmb/jgdItPrDbc+Bya6uS+xJqYBdVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f3qtGzUs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1F56C4CEF5;
-	Wed,  3 Dec 2025 15:42:00 +0000 (UTC)
+	 MIME-Version; b=JB5Qcf9b0k30NOFNuSvsppmE5hCo/PI0A1MQLJnodAQRv79dBGj+1DM6ihcxzufQJ65iUdoyvni+Guki2eHm4VYVtMa4VHBqpxLncA8bWxuSW0X3+NWgRBG2AstcN3eBkl8/MIADxlXVg5n4rWe/d9DcwvS0YT0NqcHAZoB9jCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qn2Q3Zh0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0707AC4CEF5;
+	Wed,  3 Dec 2025 15:47:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776521;
-	bh=JBEyMXp8DEdLg51aWBN7TkjPqr4Avhn7aVQ+cbr2hlg=;
+	s=korg; t=1764776860;
+	bh=CvspgXB0UbGKqcX/59E56fSA1J/LHhSpaYqAvYBbOl0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f3qtGzUsMQCBaHqF8p7Nsv9fG/JQw3PrBVD+iWTVFNd5zWrKK9H1ABL36K0Sr6jc9
-	 7dvQLIlUl1AbtNDjHSDy6EnAhsEGHMMkjXzZ324bccoLsAcLHk4MpmyPFhpVQj7I6B
-	 c1R5tgeWmCJzgnOMncTmM2TP8b12nx4HnLV2Lw38=
+	b=Qn2Q3Zh0pEgLr5OnZ8XrrNOHZnlkkYHLLg5fnp3/u7TONTxFhRa7rDLnVZMyegTdt
+	 a7KxN/eJP5PEwxyZrqOODJKnyTl5IvVspH4K80xT2b6pAcmiJ4Ng7RBcymxG2rjdkL
+	 cNHz7dyJ16Jxp1MPD2kmNWtayE68DaTdJT9Reqo0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Watt <jpewhacker@gmail.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Seungjin Bae <eeodqql09@gmail.com>,
+	Jimmy Assarsson <extja@kvaser.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 175/300] NFS4: Fix state renewals missing after boot
+Subject: [PATCH 6.17 001/146] can: kvaser_usb: leaf: Fix potential infinite loop in command parsers
 Date: Wed,  3 Dec 2025 16:26:19 +0100
-Message-ID: <20251203152407.109136515@linuxfoundation.org>
+Message-ID: <20251203152346.513843262@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Watt <jpewhacker@gmail.com>
+From: Seungjin Bae <eeodqql09@gmail.com>
 
-[ Upstream commit 9bb3baa9d1604cd20f49ae7dac9306b4037a0e7a ]
+[ Upstream commit 0c73772cd2b8cc108d5f5334de89ad648d89b9ec ]
 
-Since the last renewal time was initialized to 0 and jiffies start
-counting at -5 minutes, any clients connected in the first 5 minutes
-after a reboot would have their renewal timer set to a very long
-interval. If the connection was idle, this would result in the client
-state timing out on the server and the next call to the server would
-return NFS4ERR_BADSESSION.
+The `kvaser_usb_leaf_wait_cmd()` and `kvaser_usb_leaf_read_bulk_callback`
+functions contain logic to zero-length commands. These commands are used
+to align data to the USB endpoint's wMaxPacketSize boundary.
 
-Fix this by initializing the last renewal time to the current jiffies
-instead of 0.
+The driver attempts to skip these placeholders by aligning the buffer
+position `pos` to the next packet boundary using `round_up()` function.
 
-Signed-off-by: Joshua Watt <jpewhacker@gmail.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+However, if zero-length command is found exactly on a packet boundary
+(i.e., `pos` is a multiple of wMaxPacketSize, including 0), `round_up`
+function will return the unchanged value of `pos`. This prevents `pos`
+to be increased, causing an infinite loop in the parsing logic.
+
+This patch fixes this in the function by using `pos + 1` instead.
+This ensures that even if `pos` is on a boundary, the calculation is
+based on `pos + 1`, forcing `round_up()` to always return the next
+aligned boundary.
+
+Fixes: 7259124eac7d ("can: kvaser_usb: Split driver into kvaser_usb_core.c and kvaser_usb_leaf.c")
+Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
+Reviewed-by: Jimmy Assarsson <extja@kvaser.com>
+Tested-by: Jimmy Assarsson <extja@kvaser.com>
+Link: https://patch.msgid.link/20251023162709.348240-1-eeodqql09@gmail.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4client.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfs/nfs4client.c b/fs/nfs/nfs4client.c
-index 89835457b7fda..5fd63df2db8b1 100644
---- a/fs/nfs/nfs4client.c
-+++ b/fs/nfs/nfs4client.c
-@@ -221,6 +221,7 @@ struct nfs_client *nfs4_alloc_client(const struct nfs_client_initdata *cl_init)
- 	clp->cl_state = 1 << NFS4CLNT_LEASE_EXPIRED;
- 	clp->cl_mvops = nfs_v4_minor_ops[cl_init->minorversion];
- 	clp->cl_mig_gen = 1;
-+	clp->cl_last_renewal = jiffies;
- #if IS_ENABLED(CONFIG_NFS_V4_1)
- 	init_waitqueue_head(&clp->cl_lock_waitq);
- #endif
+diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c
+index c29828a94ad0e..1167d38344f1d 100644
+--- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c
++++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_leaf.c
+@@ -685,7 +685,7 @@ static int kvaser_usb_leaf_wait_cmd(const struct kvaser_usb *dev, u8 id,
+ 			 * for further details.
+ 			 */
+ 			if (tmp->len == 0) {
+-				pos = round_up(pos,
++				pos = round_up(pos + 1,
+ 					       le16_to_cpu
+ 						(dev->bulk_in->wMaxPacketSize));
+ 				continue;
+@@ -1732,7 +1732,7 @@ static void kvaser_usb_leaf_read_bulk_callback(struct kvaser_usb *dev,
+ 		 * number of events in case of a heavy rx load on the bus.
+ 		 */
+ 		if (cmd->len == 0) {
+-			pos = round_up(pos, le16_to_cpu
++			pos = round_up(pos + 1, le16_to_cpu
+ 						(dev->bulk_in->wMaxPacketSize));
+ 			continue;
+ 		}
 -- 
 2.51.0
 
