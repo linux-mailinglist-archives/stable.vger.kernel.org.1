@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-198819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9A37C9FE49
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:19:45 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73FA9C9FF82
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:32:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0FB9A30022BF
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:09:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CBF29300079E
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:32:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B491E34DB5F;
-	Wed,  3 Dec 2025 16:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E1503A1CFA;
+	Wed,  3 Dec 2025 16:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YgZNSfGv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YoDLADK1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FEBD31280A;
-	Wed,  3 Dec 2025 16:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06BAE3A1D05;
+	Wed,  3 Dec 2025 16:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777783; cv=none; b=hcJfQERkAAgsQAwr9mdxIXN1FPYZ6rrSHVJFVhvNKFcQEtx2c1BMCp9fVeV9wk+rgH2a9rP4PwIRCj50YQ2H6dvoh3YQFXw5byYdcTJC6LdCoIE7hvxxdp8gegdEfPLGg/jb5AngPx2Q5epiz5eme8n1cacP/ad8umjBzcnJikE=
+	t=1764779559; cv=none; b=NzMY6wjTRwGdda3EFhEGpvH6rRMm9qEs4KU/AfuJ8clotyInrpFCrQCsG5FZ5sVlZdkty44xuse92taUiA2x1zyrKZSA4zluDsSTtAwbfbtn5dQUeA73pB/RK1N4ocG5pPhMCmPwWWp0Qlb8ptXr5gWNjLupOGTQojoslNx1A2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777783; c=relaxed/simple;
-	bh=MUd9di/VpwrPK7Nptnhp9ZF3YrSr5eG8vCx3y0+EmVs=;
+	s=arc-20240116; t=1764779559; c=relaxed/simple;
+	bh=XPHdjiAcROzHoUq3ZrEtD832vpwFDo5NSxRWX1iCZLs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QKzmhHLU0wNWuNLuYJ9T75/JDzuGfUrNOwQsYd45Bch2syVyvz3an7gcG8KIR9ByeVK1C7OxzfC9JXd02qruyXa2iFuTDhTxyoP2gOg70Ungyv6NMIFIHR3p4DMam7wnPt303jZ9exoNxheRsGmuO7e3cl7nhHzVzaV0k2njUUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YgZNSfGv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1451C4CEF5;
-	Wed,  3 Dec 2025 16:03:02 +0000 (UTC)
+	 MIME-Version; b=mrZrOGe7CfdbJrWsMBJdmwOdPjzTHMLV5dxTTwh+Opn8YH/IQZkeGS7/Up0mQeTcRpSrh0midYb4Wpud+BJ+6762tZUzaLj+PBz726I6XHZcxPFLBIiSLqh7pFsh0/M39vz1LddrsLnfdGsRtmvaqKWQ1QY5MDNxfcphZtOUALo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YoDLADK1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 714D9C4CEF5;
+	Wed,  3 Dec 2025 16:32:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777783;
-	bh=MUd9di/VpwrPK7Nptnhp9ZF3YrSr5eG8vCx3y0+EmVs=;
+	s=korg; t=1764779558;
+	bh=XPHdjiAcROzHoUq3ZrEtD832vpwFDo5NSxRWX1iCZLs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YgZNSfGv6JB6JGs97AMqJyJt7wj7ARoqkzZ8EFVIFjCVZK8SA74LEZyQKD7uPhngO
-	 bE5DDgmfV6w/MIPa63h0l3G3HyguE8FOoFsgpWtzReDbUqFwaydSkS8Eqin/lOmNhD
-	 UmCLWQYnHXxqm7om2w7DEAelI2nQpjn7Zi05aKUs=
+	b=YoDLADK1wx4Uqvblkl1ogimgVcTFhhzB7qNY/ynC6fLOtk/5JZ5GkoBBD713zEDgy
+	 rTjBVj/WiKR5VDxIsu1deY/DTLHjCGtR8pe6PbG9CSJqb9Kcys0iTbzJt4HVCXTmyk
+	 olO5aGTU6ooA0EGsnokxJPHQciuvnhUuaCoJpxu8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
-	David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 146/392] selftests: traceroute: Use require_command()
+Subject: [PATCH 6.1 294/568] ACPI: property: Return present device nodes only on fwnode interface
 Date: Wed,  3 Dec 2025 16:24:56 +0100
-Message-ID: <20251203152419.457710747@linuxfoundation.org>
+Message-ID: <20251203152451.470212359@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit 47efbac9b768553331b9459743a29861e0acd797 ]
+[ Upstream commit d9f866b2bb3eec38b3734f1fed325ec7c55ccdfa ]
 
-Use require_command() so that the test will return SKIP (4) when a
-required command is not present.
+fwnode_graph_get_next_subnode() may return fwnode backed by ACPI
+device nodes and there has been no check these devices are present
+in the system, unlike there has been on fwnode OF backend.
 
-Before:
+In order to provide consistent behaviour towards callers,
+add a check for device presence by introducing
+a new function acpi_get_next_present_subnode(), used as the
+get_next_child_node() fwnode operation that also checks device
+node presence.
 
- # ./traceroute.sh
- SKIP: Could not run IPV6 test without traceroute6
- SKIP: Could not run IPV4 test without traceroute
- $ echo $?
- 0
-
-After:
-
- # ./traceroute.sh
- TEST: traceroute6 not installed                                    [SKIP]
- $ echo $?
- 4
-
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20250908073238.119240-6-idosch@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Link: https://patch.msgid.link/20251001102636.1272722-2-sakari.ailus@linux.intel.com
+[ rjw: Kerneldoc comment and changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/traceroute.sh | 13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
+ drivers/acpi/property.c | 24 +++++++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/traceroute.sh b/tools/testing/selftests/net/traceroute.sh
-index de9ca97abc306..9cb5e96e64333 100755
---- a/tools/testing/selftests/net/traceroute.sh
-+++ b/tools/testing/selftests/net/traceroute.sh
-@@ -209,11 +209,6 @@ setup_traceroute6()
+diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+index 46003b642b597..9f7880cc2bd8c 100644
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -1298,6 +1298,28 @@ struct fwnode_handle *acpi_get_next_subnode(const struct fwnode_handle *fwnode,
+ 	return NULL;
+ }
  
- run_traceroute6()
- {
--	if [ ! -x "$(command -v traceroute6)" ]; then
--		echo "SKIP: Could not run IPV6 test without traceroute6"
--		return
--	fi
--
- 	setup_traceroute6
- 
- 	# traceroute6 host-2 from host-1 (expects 2000:102::2)
-@@ -278,11 +273,6 @@ setup_traceroute()
- 
- run_traceroute()
- {
--	if [ ! -x "$(command -v traceroute)" ]; then
--		echo "SKIP: Could not run IPV4 test without traceroute"
--		return
--	fi
--
- 	setup_traceroute
- 
- 	# traceroute host-2 from host-1 (expects 1.0.1.1). Takes a while.
-@@ -316,6 +306,9 @@ do
- 	esac
- done
- 
-+require_command traceroute6
-+require_command traceroute
++/*
++ * acpi_get_next_present_subnode - Return the next present child node handle
++ * @fwnode: Firmware node to find the next child node for.
++ * @child: Handle to one of the device's child nodes or a null handle.
++ *
++ * Like acpi_get_next_subnode(), but the device nodes returned by
++ * acpi_get_next_present_subnode() are guaranteed to be present.
++ *
++ * Returns: The fwnode handle of the next present sub-node.
++ */
++static struct fwnode_handle *
++acpi_get_next_present_subnode(const struct fwnode_handle *fwnode,
++			      struct fwnode_handle *child)
++{
++	do {
++		child = acpi_get_next_subnode(fwnode, child);
++	} while (is_acpi_device_node(child) &&
++		 !acpi_device_is_present(to_acpi_device_node(child)));
 +
- run_tests
- 
- printf "\nTests passed: %3d\n" ${nsuccess}
++	return child;
++}
++
+ /**
+  * acpi_node_get_parent - Return parent fwnode of this fwnode
+  * @fwnode: Firmware node whose parent to get
+@@ -1641,7 +1663,7 @@ static int acpi_fwnode_irq_get(const struct fwnode_handle *fwnode,
+ 		.property_read_string_array =				\
+ 			acpi_fwnode_property_read_string_array,		\
+ 		.get_parent = acpi_node_get_parent,			\
+-		.get_next_child_node = acpi_get_next_subnode,		\
++		.get_next_child_node = acpi_get_next_present_subnode,	\
+ 		.get_named_child_node = acpi_fwnode_get_named_child_node, \
+ 		.get_name = acpi_fwnode_get_name,			\
+ 		.get_name_prefix = acpi_fwnode_get_name_prefix,		\
 -- 
 2.51.0
 
