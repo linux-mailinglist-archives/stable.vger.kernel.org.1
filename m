@@ -1,150 +1,208 @@
-Return-Path: <stable+bounces-199896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6807CA1639
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:29:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20F7BCA0BAD
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:01:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D134B301473A
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:28:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1FB8C300A6D2
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:59:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAA723446CB;
-	Wed,  3 Dec 2025 17:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38EB13254BD;
+	Wed,  3 Dec 2025 17:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="al+F0NKF"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="gKOt4EZp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF6443446C7
-	for <stable@vger.kernel.org>; Wed,  3 Dec 2025 17:33:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7682398FBA;
+	Wed,  3 Dec 2025 17:33:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764783205; cv=none; b=i3nnx/gursLdm/g4ae+l842nfc+ojB4CQT0mvLMbCMuuTsAiMwh7rdfXg7P+e2S0jlVaxY3MOgivARpofXiteHbfBW78JHJzC8rpdKClExD1CTgAKkEv993et0Kgwp8Ie90+p1JP5clyZGN1zQAPyqAb0QrxcKsprP860FcZGvw=
+	t=1764783229; cv=none; b=eWJOc3PBcFR9TkF7rRsm3UzwsAQGJRIYzB6V1gsQpE3D42kYh28nAW1zn340Udp3fiAfpf7sEgOUtE5JIAIrGPwnKeAcjTqAHj4sR9JRFkvCMi493S5XYb17CIBQOU+OWnFFJECvAgYDMofkCfAyHqk0DwhqigdpNdvoHKk6qjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764783205; c=relaxed/simple;
-	bh=sjUmzhwrSpbGiFQFS+CfvvfSPMIH1gw++YX7SKEckOc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MNh80sIPqd47Rw7EhGp7HYr5zkl9ehptSBVSTSzIFM+0aeifMj15jx3eZQdr8JviWun8JI2/Ic2RopUDpfXcE/uEdKVQT25dMV/J8Osy2GFY+DTCTAd1mGL+WFZOp4Vj1y9JFmdHYunchyFopMni98IflroYyMpJIgvd1gpmrAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=al+F0NKF; arc=none smtp.client-ip=209.85.222.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-8b3016c311bso861841485a.1
-        for <stable@vger.kernel.org>; Wed, 03 Dec 2025 09:33:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764783203; x=1765388003; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=fAySZyoVUYZcty/scbJ6Onf/leg2X+nER5+BrR1/QFw=;
-        b=al+F0NKF/UMsr37WJ8S7sfhL1dTweWHjJG7TY/7iDVVing39lt+Byrg1Blib+qiZja
-         SSmTepuCyTU+rdHFQ7NLyGDxoqj7zZAQ1+zwbTRAqKB2THTH+6gQkjwTE4zhX1zp/BPK
-         G09NuUNkb+rCnYtietJMeOqeUy25P7vEidaCOdxO1PcD1UzeZyi81JH4Z2HkTgxSszaC
-         YBqDVp9i0B1fq3ALEKdUMnQfzW8uAfDcrXWXjbEt22dv4C83kC2ftTE854GDFQwb0tpC
-         2KKIQkuYVtraJ/t95NsrSHD8L7rJ5KduvJz8mF6mvhlxU46l47QB8e1dMG5hFiklYbnp
-         I+2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764783203; x=1765388003;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fAySZyoVUYZcty/scbJ6Onf/leg2X+nER5+BrR1/QFw=;
-        b=bG87WuMgrJYGdxViDG+G9L69jGGZLis7ktWKwVdVpo+VORoY2LFnyBwtbuSmdGQoOa
-         nw4RMm45ctFs+altRYYhk0p+jgjJ5Oy7vifF15Z1dqgNMnPTRjzzhAB6sZ/AeIQrU5L7
-         94xFOkk9+tIPbAHL6msnur25qAwP//GyqwmpraVgQtPuiKkn48HbT7n/QU4pLono4yq8
-         3+9QYNq5zR4ocLozyzaS97WVGndq4bDMKdYaunExCqSfuqjTkbibjdmMLyuWMOVaqG9e
-         LYpNWzIJWJBtt8bLMw2cxNGKo+cY/9g8k9/bgHtAUd8YJAOB4ao7G1gxH7Ciu7yLTymK
-         RcQg==
-X-Forwarded-Encrypted: i=1; AJvYcCXeEwm1CVv0iewCtscCOhu6+iWzZVeL9q/7iI17pHrxrkQY2/0cYBT6w4nmUhqYcapMp5eu7GA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YweGD1LbMABVfr183TFkRNwn03hHrNFcdVzX8xj/I4s1eqdWzlq
-	I+tPw3nU1/EYekufeP6GIlvoZzYbZrnBYjW37g3ve4TfxHJ/D+MtS6jh
-X-Gm-Gg: ASbGncuLnQxLDqBE9MKN9PQkUxCfv/RU9UCqJVKPQ2nfUCkcXXOzUe+3+or22GlAcAn
-	uAIYtzEI3zoTexRTxSSc+HkNkGRbKx9n6tSaFEKoCgZbbKUMNaOfxs2l+TDhKVo1gogtd0LLOPa
-	2LNHkQf1RETqBr8FZfsQVXXbzyvFUsDtktR4/+ynoSnmcbDo577wE95B8TBJRY0td5fa39JC1ZQ
-	ZQv8RZM7usgYHbJJ/ESElBbbFL+BIlJx+VcYrnC7xOgfl3wMy80knA3zEyXYZ+YfcxyLNaCnNNx
-	NjyIkHnnwZ3Ocg66qUdtIZdZgkY6dNM/FbshcW30GC0SMRXOZCJWy3IMuZ3A1KBwue2rpakwxEH
-	Z9qocMIpmiY5asxC+nkods4w023RUcBI0+MhcBMSIAWiNv9IiVwhEfcNhPZmQdWw9qXP1yiOywD
-	pfocmvmXoHJUA8pJ+XTVGlsG5L4B6++gSr0qgVOg==
-X-Google-Smtp-Source: AGHT+IGr/13cEMHjcnMqt4Gm84Jo/I/ZJcPV6vXbwW6ARVpoUUQCSul2/FTG3CF5U56R7EkUSB7O+g==
-X-Received: by 2002:a05:620a:7082:b0:8b2:effe:b4d4 with SMTP id af79cd13be357-8b5e7451300mr436873885a.78.1764783202619;
-        Wed, 03 Dec 2025 09:33:22 -0800 (PST)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b52a1b6f72sm1342785585a.29.2025.12.03.09.33.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Dec 2025 09:33:21 -0800 (PST)
-Message-ID: <139db995-0ff6-49f1-b7c9-9c213bf36e35@gmail.com>
-Date: Wed, 3 Dec 2025 09:33:16 -0800
+	s=arc-20240116; t=1764783229; c=relaxed/simple;
+	bh=n6mtZcC5aX+FO46O79H0VnBZGBkGL5iqdMQWGpScr7k=;
+	h=Date:To:From:Subject:Message-Id; b=ZeR794YyqR0sddL44BnPwc3m2NzlwsuVDfT0SYjUYWSMxaDSRn7LmALq97kKoMKjgqR0RjxVnxa6QSwMo8Nu+KT9RRgC9IEWb+hA5gpkVjQvcKUVarItUDxErlsjyi+aGH+t4WSHL5WLqwfxB21WNPtEwF/bGBaKZPOp7B/9/SI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=gKOt4EZp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CCA0C116B1;
+	Wed,  3 Dec 2025 17:33:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1764783228;
+	bh=n6mtZcC5aX+FO46O79H0VnBZGBkGL5iqdMQWGpScr7k=;
+	h=Date:To:From:Subject:From;
+	b=gKOt4EZpo85XJnoVYGmdMgimx8dEPe7HHJXW+m48DuFXoRFbeHyVNZ9REVYmbe5BD
+	 aZscJr4Fi9mgPLG0XTq9IJNyaUSosXMESCyGR5MHk+WyfsY7/QdjeL/0V0MLCSbBZw
+	 37yzfWJzRRX+1dJwIDu1ZXTxZiKjuQjZN4c/VQhU=
+Date: Wed, 03 Dec 2025 09:33:47 -0800
+To: mm-commits@vger.kernel.org,vincenzo.frascino@arm.com,urezki@gmail.com,stable@vger.kernel.org,ryabinin.a.a@gmail.com,kees@kernel.org,glider@google.com,dvyukov@google.com,dakr@kernel.org,andreyknvl@gmail.com,jiayuan.chen@linux.dev,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [to-be-updated] mm-kasan-fix-incorrect-unpoisoning-in-vrealloc-for-kasan.patch removed from -mm tree
+Message-Id: <20251203173348.4CCA0C116B1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.10 000/300] 5.10.247-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
- sr@sladewatkins.com
-References: <20251203152400.447697997@linuxfoundation.org>
-Content-Language: en-US, fr-FR
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 12/3/25 07:23, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.10.247 release.
-> There are 300 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Fri, 05 Dec 2025 15:23:16 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.247-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
 
-MIPS fails to build with:
+The quilt patch titled
+     Subject: mm/kasan: fix incorrect unpoisoning in vrealloc for KASAN
+has been removed from the -mm tree.  Its filename was
+     mm-kasan-fix-incorrect-unpoisoning-in-vrealloc-for-kasan.patch
 
-arch/mips/mm/tlb-r4k.c: In function 'r4k_tlb_uniquify':
-arch/mips/mm/tlb-r4k.c:591:17: error: passing argument 1 of 
-'memblock_free' makes integer from pointer without a cast 
-[-Werror=int-conversion]
-    memblock_free(tlb_vpns, tlb_vpn_size);
-                  ^~~~~~~~
-In file included from arch/mips/mm/tlb-r4k.c:15:
-./include/linux/memblock.h:107:31: note: expected 'phys_addr_t' {aka 
-'unsigned int'} but argument is of type 'long unsigned int *'
-  int memblock_free(phys_addr_t base, phys_addr_t size);
-                    ~~~~~~~~~~~~^~~~
-cc1: all warnings being treated as errors
-host-make[4]: *** [scripts/Makefile.build:286: arch/mips/mm/tlb-r4k.o] 
-Error 1
-host-make[4]: *** Waiting for unfinished jobs....
+This patch was dropped because an updated version will be issued
 
-Caused by:
+------------------------------------------------------
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+Subject: mm/kasan: fix incorrect unpoisoning in vrealloc for KASAN
+Date: Fri, 28 Nov 2025 19:15:14 +0800
 
-commit 97ddb0e2389b4a53d395ed47ea83540ff495d1b6
-Author: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Date:   Fri Nov 28 16:53:46 2025 +0000
+Syzkaller reported a memory out-of-bounds bug [1]. This patch fixes two
+issues:
 
-     MIPS: mm: kmalloc tlb_vpn array to avoid stack overflow
+1. In vrealloc, we were missing the KASAN_VMALLOC_VM_ALLOC flag when
+   unpoisoning the extended region. This flag is required to correctly
+   associate the allocation with KASAN's vmalloc tracking.
 
-It seems like we might have to cast to a phys_addr_t before passing that 
-to memblock_free().
--- 
-Florian
+   Note: In contrast, vzalloc (via __vmalloc_node_range_noprof) explicitly
+   sets KASAN_VMALLOC_VM_ALLOC and calls kasan_unpoison_vmalloc() with it.
+   vrealloc must behave consistently — especially when reusing existing
+   vmalloc regions — to ensure KASAN can track allocations correctly.
+
+2. When vrealloc reuses an existing vmalloc region (without allocating new
+   pages), KASAN previously generated a new tag, which broke tag-based
+   memory access tracking. We now add a 'reuse_tag' parameter to
+   __kasan_unpoison_vmalloc() to preserve the original tag in such cases.
+
+A new helper kasan_unpoison_vralloc() is introduced to handle this reuse
+scenario, ensuring consistent tag behavior during reallocation.
+
+Link: https://lkml.kernel.org/r/20251128111516.244497-1-jiayuan.chen@linux.dev
+Link: https://syzkaller.appspot.com/bug?extid=997752115a851cb0cf36 [1]
+Fixes: a0309faf1cb0 ("mm: vmalloc: support more granular vrealloc() sizing")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Reported-by: syzbot+997752115a851cb0cf36@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68e243a2.050a0220.1696c6.007d.GAE@google.com/T/
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ include/linux/kasan.h |   21 +++++++++++++++++++--
+ mm/kasan/hw_tags.c    |    4 ++--
+ mm/kasan/shadow.c     |    6 ++++--
+ mm/vmalloc.c          |    4 ++--
+ 4 files changed, 27 insertions(+), 8 deletions(-)
+
+--- a/include/linux/kasan.h~mm-kasan-fix-incorrect-unpoisoning-in-vrealloc-for-kasan
++++ a/include/linux/kasan.h
+@@ -596,13 +596,23 @@ static inline void kasan_release_vmalloc
+ #endif /* CONFIG_KASAN_GENERIC || CONFIG_KASAN_SW_TAGS */
+ 
+ void *__kasan_unpoison_vmalloc(const void *start, unsigned long size,
+-			       kasan_vmalloc_flags_t flags);
++			       kasan_vmalloc_flags_t flags, bool reuse_tag);
++
++static __always_inline void *kasan_unpoison_vrealloc(const void *start,
++						     unsigned long size,
++						     kasan_vmalloc_flags_t flags)
++{
++	if (kasan_enabled())
++		return __kasan_unpoison_vmalloc(start, size, flags, true);
++	return (void *)start;
++}
++
+ static __always_inline void *kasan_unpoison_vmalloc(const void *start,
+ 						unsigned long size,
+ 						kasan_vmalloc_flags_t flags)
+ {
+ 	if (kasan_enabled())
+-		return __kasan_unpoison_vmalloc(start, size, flags);
++		return __kasan_unpoison_vmalloc(start, size, flags, false);
+ 	return (void *)start;
+ }
+ 
+@@ -629,6 +639,13 @@ static inline void kasan_release_vmalloc
+ 					 unsigned long free_region_end,
+ 					 unsigned long flags) { }
+ 
++static inline void *kasan_unpoison_vrealloc(const void *start,
++					    unsigned long size,
++					    kasan_vmalloc_flags_t flags)
++{
++	return (void *)start;
++}
++
+ static inline void *kasan_unpoison_vmalloc(const void *start,
+ 					   unsigned long size,
+ 					   kasan_vmalloc_flags_t flags)
+--- a/mm/kasan/hw_tags.c~mm-kasan-fix-incorrect-unpoisoning-in-vrealloc-for-kasan
++++ a/mm/kasan/hw_tags.c
+@@ -317,7 +317,7 @@ static void init_vmalloc_pages(const voi
+ }
+ 
+ void *__kasan_unpoison_vmalloc(const void *start, unsigned long size,
+-				kasan_vmalloc_flags_t flags)
++				kasan_vmalloc_flags_t flags, bool reuse_tag)
+ {
+ 	u8 tag;
+ 	unsigned long redzone_start, redzone_size;
+@@ -361,7 +361,7 @@ void *__kasan_unpoison_vmalloc(const voi
+ 		return (void *)start;
+ 	}
+ 
+-	tag = kasan_random_tag();
++	tag = reuse_tag ? get_tag(start) : kasan_random_tag();
+ 	start = set_tag(start, tag);
+ 
+ 	/* Unpoison and initialize memory up to size. */
+--- a/mm/kasan/shadow.c~mm-kasan-fix-incorrect-unpoisoning-in-vrealloc-for-kasan
++++ a/mm/kasan/shadow.c
+@@ -625,7 +625,7 @@ void kasan_release_vmalloc(unsigned long
+ }
+ 
+ void *__kasan_unpoison_vmalloc(const void *start, unsigned long size,
+-			       kasan_vmalloc_flags_t flags)
++			       kasan_vmalloc_flags_t flags, bool reuse_tag)
+ {
+ 	/*
+ 	 * Software KASAN modes unpoison both VM_ALLOC and non-VM_ALLOC
+@@ -648,7 +648,9 @@ void *__kasan_unpoison_vmalloc(const voi
+ 	    !(flags & KASAN_VMALLOC_PROT_NORMAL))
+ 		return (void *)start;
+ 
+-	start = set_tag(start, kasan_random_tag());
++	if (!reuse_tag)
++		start = set_tag(start, kasan_random_tag());
++
+ 	kasan_unpoison(start, size, false);
+ 	return (void *)start;
+ }
+--- a/mm/vmalloc.c~mm-kasan-fix-incorrect-unpoisoning-in-vrealloc-for-kasan
++++ a/mm/vmalloc.c
+@@ -4175,8 +4175,8 @@ void *vrealloc_node_align_noprof(const v
+ 	 * We already have the bytes available in the allocation; use them.
+ 	 */
+ 	if (size <= alloced_size) {
+-		kasan_unpoison_vmalloc(p + old_size, size - old_size,
+-				       KASAN_VMALLOC_PROT_NORMAL);
++		kasan_unpoison_vrealloc(p, size,
++					KASAN_VMALLOC_PROT_NORMAL | KASAN_VMALLOC_VM_ALLOC);
+ 		/*
+ 		 * No need to zero memory here, as unused memory will have
+ 		 * already been zeroed at initial allocation time or during
+_
+
+Patches currently in -mm which might be from jiayuan.chen@linux.dev are
+
+
 
