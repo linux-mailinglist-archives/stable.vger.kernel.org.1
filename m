@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-198252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5481DC9F792
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:32:11 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8938CCA069A
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:25:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C33253000794
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:32:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 88D54300722D
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:25:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14D2330C63C;
-	Wed,  3 Dec 2025 15:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33C6F329C7D;
+	Wed,  3 Dec 2025 15:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RnLZdjPR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TCBA01sO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D1130C358;
-	Wed,  3 Dec 2025 15:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3711328634;
+	Wed,  3 Dec 2025 15:59:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764775928; cv=none; b=KrCXfQAk/xP1eJQ9t9oNwDRXnAacR+sucZtUrwqC5Uf2HGIf5k4QvYoFCLpJAq7o+Wtm91m7/eE3/XHMXH9CIiiRFQzvR2MAAAIcisPF/bLHkovXKLkXhuDZHIAiAV28Iv87jxq5QF3HuiUv8TFupXaNNsvWBUO0XAH3EYRLtSM=
+	t=1764777568; cv=none; b=Nu1EaBLyxHhmBcNMnCiRBR9Cr2JbEZGnvgclqG5JU8MQfCabRxbCrdZMeisdksMat8t0SX6XN6J7epQa9Bz+tiVaoE+72Tqm+FdgYJfuDxCUFms07WYfzdjYr7VxPzvE7L9K3KlKJhxPQZ2oRbIazmp3ku4JzvS4LyYmaZuyy0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764775928; c=relaxed/simple;
-	bh=rFbHk1t25LXjZE8L0Ia/o01BOmgC5DiSHSDE09Q9jls=;
+	s=arc-20240116; t=1764777568; c=relaxed/simple;
+	bh=NaIXOlrbgq8Ensul24gnbCAwEWP7Ergguqm4AO9T2cQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nGncNhYs+pFp1MPk5IZlvzNKCeQZ8wpP+u2kfmQA4Vy92clCmRFUOMKde4iJsH8fE9Qai+dEjn6dGLj4D3UkTGPRAqAkwEnJACBooCVtGu6F3JZVMNiWFnCokewdpf1cz5USsARTARGK2VqmNaSvdTppVxl7GUpnTRXgHOnrOQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RnLZdjPR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B62C4CEF5;
-	Wed,  3 Dec 2025 15:32:07 +0000 (UTC)
+	 MIME-Version; b=ZuwU7GvVxDVyrgiTdDxhT2V6v+86jQJABNCFun6V1DpVzIwciuvu9/bUpDiGXEhVQqxfc04TEA04GfJN7HQZHRKQYlGAY9kpVvTouiOKjVaDgfiqEMBcOStZmdR+JFD3KfMYWOXfxKo4azfhO8aTKkboJdBH0njHTMZbeBhjRx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TCBA01sO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1FB5C4CEF5;
+	Wed,  3 Dec 2025 15:59:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764775928;
-	bh=rFbHk1t25LXjZE8L0Ia/o01BOmgC5DiSHSDE09Q9jls=;
+	s=korg; t=1764777567;
+	bh=NaIXOlrbgq8Ensul24gnbCAwEWP7Ergguqm4AO9T2cQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RnLZdjPR3/F2dmegVqphJ8Alh7SQBUvPxLnOOgoZ+RuIgKqmfQywdZyTI0DAUZmJN
-	 MYSXNt9nFDq4HUCUF5a8p5RyvmSdJFijoRmYWZ5mAj5thffgr6+cZq5XuVhhjoA8E0
-	 Lka/a5NbYorLDfRP1B1aIOZGRKWT+iNjbVbXhlHE=
+	b=TCBA01sO048I7nDtUfPPtYLRQk49cvTqKj4bGAEg/uNcaS9FjiqdkuLw/sNRWNKNx
+	 PoE4yvoHiakS5qQ5trRwt4AYTGpAvV4l8wfar27FG0L9/72YIIWVEZCfmOiSivLWpO
+	 DbNmW1XYgN1PM46xr/F2qP62xQjrAmu+ImR5JvHE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Palmer <daniel@0x0f.com>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.10 007/300] fbdev: atyfb: Check if pll_ops->init_pll failed
+	Wilson Alvarez <wilson.e.alvarez@rubonnek.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 061/392] ACPI: video: force native for Lenovo 82K8
 Date: Wed,  3 Dec 2025 16:23:31 +0100
-Message-ID: <20251203152400.731769836@linuxfoundation.org>
+Message-ID: <20251203152416.357524007@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,54 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Palmer <daniel@0x0f.com>
+From: Mario Limonciello (AMD) <superm1@kernel.org>
 
-commit 7073c7fc8d8ba47194e5fc58fcafc0efe7586e9b upstream.
+[ Upstream commit f144bc21befdcf8e54d2f19b23b4e84f13be01f9 ]
 
-Actually check the return value from pll_ops->init_pll()
-as it can return an error.
+Lenovo 82K8 has a broken brightness control provided by nvidia_wmi_ec.
+Add a quirk to prevent using it.
 
-If the card's BIOS didn't run because it's not the primary VGA card
-the fact that the xclk source is unsupported is printed as shown
-below but the driver continues on regardless and on my machine causes
-a hard lock up.
-
-[   61.470088] atyfb 0000:03:05.0: enabling device (0080 -> 0083)
-[   61.476191] atyfb: using auxiliary register aperture
-[   61.481239] atyfb: 3D RAGE XL (Mach64 GR, PCI-33) [0x4752 rev 0x27]
-[   61.487569] atyfb: 512K SGRAM (1:1), 14.31818 MHz XTAL, 230 MHz PLL, 83 Mhz MCLK, 63 MHz XCLK
-[   61.496112] atyfb: Unsupported xclk source:  5.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Daniel Palmer <daniel@0x0f.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Wilson Alvarez <wilson.e.alvarez@rubonnek.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4512
+Tested-by: Wilson Alvarez <wilson.e.alvarez@rubonnek.com>
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Link: https://patch.msgid.link/20250820170927.895573-1-superm1@kernel.org
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/aty/atyfb_base.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/acpi/video_detect.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/video/fbdev/aty/atyfb_base.c
-+++ b/drivers/video/fbdev/aty/atyfb_base.c
-@@ -2606,8 +2606,12 @@ static int aty_init(struct fb_info *info
- 		pr_cont("\n");
- 	}
- #endif
--	if (par->pll_ops->init_pll)
--		par->pll_ops->init_pll(info, &par->pll);
-+	if (par->pll_ops->init_pll) {
-+		ret = par->pll_ops->init_pll(info, &par->pll);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	if (par->pll_ops->resume_pll)
- 		par->pll_ops->resume_pll(info, &par->pll);
+diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+index 338e1f44906a9..0ecc47e273140 100644
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -635,6 +635,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "MS-7721"),
+ 		},
+ 	},
++	/* https://gitlab.freedesktop.org/drm/amd/-/issues/4512 */
++	{
++	 .callback = video_detect_force_native,
++	 .matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++		DMI_MATCH(DMI_PRODUCT_NAME, "82K8"),
++		},
++	},
+ 	{ },
+ };
  
+-- 
+2.51.0
+
 
 
 
