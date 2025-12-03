@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-198240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEE0CC9F776
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:31:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F147ACA0F12
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:25:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 451E830007AB
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:31:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 35A8E319BC96
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:23:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 907B430C63C;
-	Wed,  3 Dec 2025 15:31:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F06D30FF2F;
+	Wed,  3 Dec 2025 15:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CNPeHdMg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MzHDAVhG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4505C303C86;
-	Wed,  3 Dec 2025 15:31:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC8443ABC;
+	Wed,  3 Dec 2025 15:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764775889; cv=none; b=AIPZGSMKbaem9kTh4sBfeJg4WN0VfyiGK4bkHq8h1cpj6J9d5V+z0Pb8Hid+IjTzFD47EL3QCivC9hwqCHHTH+PCO6MVxpKl5NB5F4fD/qEL1B0xkxlbm41Yad8ehmLGTWLei9CxzaBMNjtCugHRig4jWL74//I6SEO0lPcUt+g=
+	t=1764777546; cv=none; b=DU1M3BxGQqZXgGui/7y6WutyFXdd2Z1OL/6kNnEoOlbukCmkGHvs1IvJRF1eKylpqYqRyk0BMTjqlY/Zq2riQm36IHppeY4Agoh4SX0LFsvEL8m+8DYeJA/m2qB6I8xQJ3zmy3CEcFICf/QOChSZXwuVHIohH39ozoT7MWW5iRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764775889; c=relaxed/simple;
-	bh=eSucpLjJUXocBC5lIc4nxxkVaFMkjwviLbeAwtC7KSc=;
+	s=arc-20240116; t=1764777546; c=relaxed/simple;
+	bh=6O11lu/h68tyjzLmKKrQ5/QY3K2vGYaw0MvHANbi4rU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nHzEEgsaGWN/fD9sOGeccn+pIEFJfZfeSuLOHnBLnhgnshs6UneJZbROtxQHEODZMH5pybV+w2jYl0TURyAAh0Wv6THjWNeRwl4ZPSUjUSNeto+3ozV3ReRWwMlU5mYzWUbQSgFrimX36/60Vk3KppHgNSSfSYIJ15xv25Qd7+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CNPeHdMg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 474F4C4CEF5;
-	Wed,  3 Dec 2025 15:31:28 +0000 (UTC)
+	 MIME-Version; b=UEhf2PwAea0XCsnD5DeTVOpmq/hcCdkdqwE+yGF2ZgP4a30FgKFHIbfBrY5sjZwcLcibwqAaNSCp45QsWKCF1SRcjeG7SE3Z241huN1gBQDvvnkBvtBEVk25Sc3lYmX8m+zVZelW4Dyhh262tA/DmDnVkkDs22f9kM2jMNnwTBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MzHDAVhG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78244C4CEF5;
+	Wed,  3 Dec 2025 15:59:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764775888;
-	bh=eSucpLjJUXocBC5lIc4nxxkVaFMkjwviLbeAwtC7KSc=;
+	s=korg; t=1764777545;
+	bh=6O11lu/h68tyjzLmKKrQ5/QY3K2vGYaw0MvHANbi4rU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CNPeHdMgK2/0kFlSPl+wCr7zstKd8bT0CtV9mgITKz3L6uI0REFOFFmOBOV1Xe8DG
-	 JzjMwnCSDd5aLrvXDqCGklKqXke52aAfRpcEn1owodpoC/FIZBHHo1tMIBNZRM8Vy3
-	 9jMM0vDP6jHRONYYA3ekNICbgdau8LLjoiF0kMnM=
+	b=MzHDAVhGB4jPKUC7rfL0QtvC62Z2V5Rwm2AC6FGax4ZvF9T6O9UaqKtauo5yC5PN2
+	 87au0OJrW485RS6pB/pJJEjv0V/hAE3llwQ8D9KnPYEM7yRVh8Ay4QVoYjx5j3OmDd
+	 Aml9w1eDQ5tR2GDqDa2x9iUoZoxVnt6ecSkk5ExQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Sun <samsun1006219@gmail.com>,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sumit Garg <sumit.garg@oss.qualcomm.com>,
+	Amirreza Zarrabi <amirreza.zarrabi@oss.qualcomm.com>,
+	Jens Wiklander <jens.wiklander@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 018/300] usbnet: Prevents free active kevent
-Date: Wed,  3 Dec 2025 16:23:42 +0100
-Message-ID: <20251203152401.132166794@linuxfoundation.org>
+Subject: [PATCH 5.15 073/392] tee: allow a driver to allocate a tee_device without a pool
+Date: Wed,  3 Dec 2025 16:23:43 +0100
+Message-ID: <20251203152416.792545005@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lizhi Xu <lizhi.xu@windriver.com>
+From: Amirreza Zarrabi <amirreza.zarrabi@oss.qualcomm.com>
 
-[ Upstream commit 420c84c330d1688b8c764479e5738bbdbf0a33de ]
+[ Upstream commit 6dbcd5a9ab6cb6644e7d728521da1c9035ec7235 ]
 
-The root cause of this issue are:
-1. When probing the usbnet device, executing usbnet_link_change(dev, 0, 0);
-put the kevent work in global workqueue. However, the kevent has not yet
-been scheduled when the usbnet device is unregistered. Therefore, executing
-free_netdev() results in the "free active object (kevent)" error reported
-here.
+A TEE driver doesn't always need to provide a pool if it doesn't
+support memory sharing ioctls and can allocate memory for TEE
+messages in another way. Although this is mentioned in the
+documentation for tee_device_alloc(), it is not handled correctly.
 
-2. Another factor is that when calling usbnet_disconnect()->unregister_netdev(),
-if the usbnet device is up, ndo_stop() is executed to cancel the kevent.
-However, because the device is not up, ndo_stop() is not executed.
-
-The solution to this problem is to cancel the kevent before executing
-free_netdev().
-
-Fixes: a69e617e533e ("usbnet: Fix linkwatch use-after-free on disconnect")
-Reported-by: Sam Sun <samsun1006219@gmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=8bfd7bcc98f7300afb84
-Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
-Link: https://patch.msgid.link/20251022024007.1831898-1-lizhi.xu@windriver.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
+Signed-off-by: Amirreza Zarrabi <amirreza.zarrabi@oss.qualcomm.com>
+Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/usbnet.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/tee/tee_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index ac439f9ccfd46..9ac9fbdad5c08 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -1597,6 +1597,8 @@ void usbnet_disconnect (struct usb_interface *intf)
- 	net = dev->net;
- 	unregister_netdev (net);
+diff --git a/drivers/tee/tee_core.c b/drivers/tee/tee_core.c
+index a7e89c229fc51..f10089fadaf07 100644
+--- a/drivers/tee/tee_core.c
++++ b/drivers/tee/tee_core.c
+@@ -895,7 +895,7 @@ struct tee_device *tee_device_alloc(const struct tee_desc *teedesc,
  
-+	cancel_work_sync(&dev->kevent);
-+
- 	while ((urb = usb_get_from_anchor(&dev->deferred))) {
- 		dev_kfree_skb(urb->context);
- 		kfree(urb->sg);
+ 	if (!teedesc || !teedesc->name || !teedesc->ops ||
+ 	    !teedesc->ops->get_version || !teedesc->ops->open ||
+-	    !teedesc->ops->release || !pool)
++	    !teedesc->ops->release)
+ 		return ERR_PTR(-EINVAL);
+ 
+ 	teedev = kzalloc(sizeof(*teedev), GFP_KERNEL);
 -- 
 2.51.0
 
