@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C76BEC9FFCA
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:35:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 728D1CA0FEB
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:31:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 542CD3030D67
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:33:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0949A3337A03
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:29:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D32433AA196;
-	Wed,  3 Dec 2025 16:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A0F30DD14;
+	Wed,  3 Dec 2025 16:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UdkR6m+F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1+nYPk2b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9AF35F8AF;
-	Wed,  3 Dec 2025 16:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D467D30ACEE;
+	Wed,  3 Dec 2025 16:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779592; cv=none; b=A74ZfB5C0+lRlbCVQTsbaGTT91/aNF2gj1VSLr9HVWii3IjnfWxM7MyRaq18mSZXq36hZWRNjTm1xqaBI7EIv7rV3JNwiE0KvBpENlF581ulCTmYAJS5xkuQirEplbFX2WPscMqADcje7KKfyS2G8o5sy9uYAidRo9fDKiRN+CY=
+	t=1764777814; cv=none; b=iwJ3zr8b4wbcXoP2QNvXOQA9Je3t+wjvsKIju5qMA9c51qL0Qiu8tjgZks26hOPiZ8sR+Sd/VL/y93Bo3b2FpWZzeZU5dx/OMw7/X19qWqjgMT0sQmoOIUqgTQtdMjfr3WrIx2t2YhFs4MZnyS3kjSttQcMjJAy0tGtb/H/dfIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779592; c=relaxed/simple;
-	bh=F+GyuzvVAwSXHF6+Yim2wXKuQFvT1s4OY9YLlfxA38A=;
+	s=arc-20240116; t=1764777814; c=relaxed/simple;
+	bh=tgrkkC1v9SKJHbmBQ+rAtEfJbDe021JSPJ2w/NeeB6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cfnjQnJ6AEpzvjrdv2aakV/ZAd8BmXeEbpCKSoynpOdvPolUpixnkiMiZ2/pi5kh775F3/eHZqzqvfiW32Z/arAiiybAfsknf/lHzdPtbys7044LmhCMACzB+Yj0mvTDanFaUNfPQCMR/XmOK0UXmcRJaGe6lDXXzpecYmXKjOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UdkR6m+F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE536C4CEF5;
-	Wed,  3 Dec 2025 16:33:11 +0000 (UTC)
+	 MIME-Version; b=He7eZer9Jyv9DzYv7CdxMHvKcodzNwAMjUsJ8EzyvRiYe8hTaORinKokbz0JNrtfqtBya8ZY28Oy/dQZSWz2nZxnUx0Hhzp1B/PRTqo94ZkenDeygsn0rZLmswM7VKYJ112VRPYBpJ44andrm38FGL6BBtS7mYqkvRvRQmpNT0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1+nYPk2b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4822EC4CEF5;
+	Wed,  3 Dec 2025 16:03:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779592;
-	bh=F+GyuzvVAwSXHF6+Yim2wXKuQFvT1s4OY9YLlfxA38A=;
+	s=korg; t=1764777814;
+	bh=tgrkkC1v9SKJHbmBQ+rAtEfJbDe021JSPJ2w/NeeB6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UdkR6m+FBwzJ52UZIWkXUpspvND7mXMcekpo1TmsnmgniPm5JKQlrzVgK1GEHx/tF
-	 JdgLOTteHRwIU+xjbE5xlqXjB6qY0XBkbNd71fzgUHsYKPjsTl2Ee/91iTV76CuU/r
-	 E+jFQmll6aDet5ay1G2gVERtQLCfCMoYUnUxRBWU=
+	b=1+nYPk2bkOygIm/Pl2ju1JSfzdhGiN3Yhiys4O7HguqbSrBsKK539o7QDaKYJPhPu
+	 In0GkP83bLt2baw6e44YYspv6E4/xgg9f+2Vhmlr/gVCe0vMgNxdfOyNMOAgKAqogi
+	 nPuLwA0FNSTjF9jU2ULNVbrqFG6LwstJXzhbelt8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Subject: [PATCH 6.1 303/568] Revert "wifi: ath10k: avoid unnecessary wait for service ready message"
+	Mina Almasry <almasrymina@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 155/392] page_pool: always add GFP_NOWARN for ATOMIC allocations
 Date: Wed,  3 Dec 2025 16:25:05 +0100
-Message-ID: <20251203152451.804035637@linuxfoundation.org>
+Message-ID: <20251203152419.785234134@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,90 +60,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit 2469bb6a6af944755a7d7daf66be90f3b8decbf9 upstream.
+[ Upstream commit f3b52167a0cb23b27414452fbc1278da2ee884fc ]
 
-This reverts commit 51a73f1b2e56b0324b4a3bb8cebc4221b5be4c7a.
+Driver authors often forget to add GFP_NOWARN for page allocation
+from the datapath. This is annoying to users as OOMs are a fact
+of life, and we pretty much expect network Rx to hit page allocation
+failures during OOM. Make page pool add GFP_NOWARN for ATOMIC allocations
+by default.
 
-Although this commit benefits QCA6174, it breaks QCA988x and
-QCA9984 [1][2]. Since it is not likely to root cause/fix this
-issue in a short time, revert it to get those chips back.
-
-Compile tested only.
-
-Fixes: 51a73f1b2e56 ("wifi: ath10k: avoid unnecessary wait for service ready message")
-Link: https://lore.kernel.org/ath10k/6d41bc00602c33ffbf68781f563ff2e6c6915a3e.camel@gmail.com # [1]
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220671 # [2]
-Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251027-ath10k-revert-polling-first-change-v1-1-89aaf3bcbfa1@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Link: https://patch.msgid.link/20250912161703.361272-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/wmi.c |   39 +++++++++++++++++-----------------
- 1 file changed, 20 insertions(+), 19 deletions(-)
+ net/core/page_pool.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/net/wireless/ath/ath10k/wmi.c
-+++ b/drivers/net/wireless/ath/ath10k/wmi.c
-@@ -1762,32 +1762,33 @@ void ath10k_wmi_put_wmi_channel(struct a
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index 416be038e1cae..813d15a5593c6 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -283,6 +283,12 @@ static struct page *__page_pool_alloc_pages_slow(struct page_pool *pool,
+ 	struct page *page;
+ 	int i, nr_pages;
  
- int ath10k_wmi_wait_for_service_ready(struct ath10k *ar)
- {
--	unsigned long timeout = jiffies + WMI_SERVICE_READY_TIMEOUT_HZ;
- 	unsigned long time_left, i;
- 
--	/* Sometimes the PCI HIF doesn't receive interrupt
--	 * for the service ready message even if the buffer
--	 * was completed. PCIe sniffer shows that it's
--	 * because the corresponding CE ring doesn't fires
--	 * it. Workaround here by polling CE rings. Since
--	 * the message could arrive at any time, continue
--	 * polling until timeout.
--	 */
--	do {
-+	time_left = wait_for_completion_timeout(&ar->wmi.service_ready,
-+						WMI_SERVICE_READY_TIMEOUT_HZ);
-+	if (!time_left) {
-+		/* Sometimes the PCI HIF doesn't receive interrupt
-+		 * for the service ready message even if the buffer
-+		 * was completed. PCIe sniffer shows that it's
-+		 * because the corresponding CE ring doesn't fires
-+		 * it. Workaround here by polling CE rings once.
-+		 */
-+		ath10k_warn(ar, "failed to receive service ready completion, polling..\n");
++	/* Unconditionally set NOWARN if allocating from NAPI.
++	 * Drivers forget to set it, and OOM reports on packet Rx are useless.
++	 */
++	if ((gfp & GFP_ATOMIC) == GFP_ATOMIC)
++		gfp |= __GFP_NOWARN;
 +
- 		for (i = 0; i < CE_COUNT; i++)
- 			ath10k_hif_send_complete_check(ar, i, 1);
- 
--		/* The 100 ms granularity is a tradeoff considering scheduler
--		 * overhead and response latency
--		 */
- 		time_left = wait_for_completion_timeout(&ar->wmi.service_ready,
--							msecs_to_jiffies(100));
--		if (time_left)
--			return 0;
--	} while (time_before(jiffies, timeout));
-+							WMI_SERVICE_READY_TIMEOUT_HZ);
-+		if (!time_left) {
-+			ath10k_warn(ar, "polling timed out\n");
-+			return -ETIMEDOUT;
-+		}
-+
-+		ath10k_warn(ar, "service ready completion received, continuing normally\n");
-+	}
- 
--	ath10k_warn(ar, "failed to receive service ready completion\n");
--	return -ETIMEDOUT;
-+	return 0;
- }
- 
- int ath10k_wmi_wait_for_unified_ready(struct ath10k *ar)
+ 	/* Don't support bulk alloc for high-order pages */
+ 	if (unlikely(pp_order))
+ 		return __page_pool_alloc_page_order(pool, gfp);
+-- 
+2.51.0
+
 
 
 
