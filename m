@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2B14CA090A
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:41:48 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3855CA05FE
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:22:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DA2773427802
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:21:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3BCA130012CA
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:22:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C745930275E;
-	Wed,  3 Dec 2025 15:54:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB161354ACA;
+	Wed,  3 Dec 2025 16:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m9OqQimv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/EFm/Ll"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F08633C539;
-	Wed,  3 Dec 2025 15:54:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9748131283B;
+	Wed,  3 Dec 2025 16:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777290; cv=none; b=f4iIWhFe77MmqSUJQxFBm8DV8qjCsUIaa6x0UK85gJGs4Vz9P33XuhlSTY1EPbABrj8GVouNgf3q5/ZSoGnUVFSm7V21j4gYtuwW25iChgRqhT+5UQRw8/9GPZIUz1Z8wCGIZVbr33v+0lu8WgL7XznQymPxuAkLuEW0IqYiZpI=
+	t=1764778510; cv=none; b=usNVgrTRVugpkDz7F+U/BXWiEh0sTo7rfVjvLExKFkng1e6YrTJt4weemn0M1yUCYgnw/A+XA+VqFEXHYRJsms1cBmHWGVI8NRtJD5ZX5YXGqUmAlOpeJRkHGgQUPFwwoP4vvIAgdpU1/oJy906xh91a+kAez6APFpEn2uIZ1jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777290; c=relaxed/simple;
-	bh=bSdO3J8R/Mj6uLKJzrAOIHmwcRB+Hd2839nsTGTKTJ4=;
+	s=arc-20240116; t=1764778510; c=relaxed/simple;
+	bh=paMsJuHuMdP6xTlFyVsK1ZDd3N0KSvXq+rx6pi/vHxE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cGcpUSUN9Rx1bvqpTYPUhKeSHkglJUEbk3waTllA54rcKpeih4+NhGm5tJr1y5na1WY6KEPABDjRLJ2nNlez+Ku78Jv6ogMAB3lfbcppVM9L1n2y6gjpCCJJ91bHxjKrfI8V4esZcQBwJ17TIniCdgAM2ii7GjjXkiStmbBBfX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m9OqQimv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 025C0C4CEF5;
-	Wed,  3 Dec 2025 15:54:49 +0000 (UTC)
+	 MIME-Version; b=t6TpHlJGSW3nr8N4jg9uMlJgJNmXPkCLiEwn5iRi0IX/LXc4tgcPVNmYgUQv2SQsO59jeRaJcNE6rmRm6iOvWksuLiSt/rTmCoag1ppXuVKabOn49H0v451sMLPHWnZafNTbgI3hm9Z9MZP6TJSZZZj6k+6QjKH2RfMLEa6fheQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/EFm/Ll; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05E25C4CEF5;
+	Wed,  3 Dec 2025 16:15:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777290;
-	bh=bSdO3J8R/Mj6uLKJzrAOIHmwcRB+Hd2839nsTGTKTJ4=;
+	s=korg; t=1764778510;
+	bh=paMsJuHuMdP6xTlFyVsK1ZDd3N0KSvXq+rx6pi/vHxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m9OqQimveuYoiiHz212O72RUoivo3CT4dYBLNHigQbzlqLKzJu0XhSjjYZkCCL1Ik
-	 RjZ67g2BD/e3eH6CCIOtZag/Y6a9zRsHuqGk7suQUM7SHWRvjLR6gjJeti4j85q6Lb
-	 I04ImqeSQs4zoOCYZ5pDMa5ln79fa1CDbA/1xAl4=
+	b=v/EFm/LlXm8Xtu4AnfXX8Z7hd2j6F6e/gdrsqZnrLDzTO1vuXKT/qMKemPoJNnx6L
+	 N+goPSiC4TghhhUxSTM8vWS9i9TdboEXZoulDEjEDuF6/BXpFSDW9uk7SvVHlrOd+u
+	 Bk6avzHWYd56tFWUJPDx80KuWpwNaHg/15BjG8k8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Lunn <andrew@lunn.ch>,
-	"Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.17 138/146] net: dsa: microchip: Fix symetry in ksz_ptp_msg_irq_{setup/free}()
-Date: Wed,  3 Dec 2025 16:28:36 +0100
-Message-ID: <20251203152351.523524303@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Desnes Nunes <desnesn@redhat.com>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 5.15 367/392] usb: storage: Fix memory leak in USB bulk transport
+Date: Wed,  3 Dec 2025 16:28:37 +0100
+Message-ID: <20251203152427.667226720@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,89 +60,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
+From: Desnes Nunes <desnesn@redhat.com>
 
-commit d0b8fec8ae50525b57139393d0bb1f446e82ff7e upstream.
+commit 41e99fe2005182139b1058db71f0d241f8f0078c upstream.
 
-The IRQ numbers created through irq_create_mapping() are only assigned
-to ptpmsg_irq[n].num at the end of the IRQ setup. So if an error occurs
-between their creation and their assignment (for instance during the
-request_threaded_irq() step), we enter the error path and fail to
-release the newly created virtual IRQs because they aren't yet assigned
-to ptpmsg_irq[n].num.
+A kernel memory leak was identified by the 'ioctl_sg01' test from Linux
+Test Project (LTP). The following bytes were mainly observed: 0x53425355.
 
-Move the mapping creation to ksz_ptp_msg_irq_setup() to ensure symetry
-with what's released by ksz_ptp_msg_irq_free().
-In the error path, move the irq_dispose_mapping to the out_ptp_msg label
-so it will be called only on created IRQs.
+When USB storage devices incorrectly skip the data phase with status data,
+the code extracts/validates the CSW from the sg buffer, but fails to clear
+it afterwards. This leaves status protocol data in srb's transfer buffer,
+such as the US_BULK_CS_SIGN 'USBS' signature observed here. Thus, this can
+lead to USB protocols leaks to user space through SCSI generic (/dev/sg*)
+interfaces, such as the one seen here when the LTP test requested 512 KiB.
 
-Cc: stable@vger.kernel.org
-Fixes: cc13ab18b201 ("net: dsa: microchip: ptp: enable interrupt for timestamping")
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
-Link: https://patch.msgid.link/20251120-ksz-fix-v6-5-891f80ae7f8f@bootlin.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fix the leak by zeroing the CSW data in srb's transfer buffer immediately
+after the validation of devices that skip data phase.
+
+Note: Differently from CVE-2018-1000204, which fixed a big leak by zero-
+ing pages at allocation time, this leak occurs after allocation, when USB
+protocol data is written to already-allocated sg pages.
+
+Fixes: a45b599ad808 ("scsi: sg: allocate with __GFP_ZERO in sg_build_indirect()")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Desnes Nunes <desnesn@redhat.com>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://patch.msgid.link/20251031043436.55929-1-desnesn@redhat.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/microchip/ksz_ptp.c |   18 +++++++-----------
- 1 file changed, 7 insertions(+), 11 deletions(-)
+ drivers/usb/storage/transport.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/drivers/net/dsa/microchip/ksz_ptp.c
-+++ b/drivers/net/dsa/microchip/ksz_ptp.c
-@@ -1093,19 +1093,19 @@ static int ksz_ptp_msg_irq_setup(struct
- 	static const char * const name[] = {"pdresp-msg", "xdreq-msg",
- 					    "sync-msg"};
- 	const struct ksz_dev_ops *ops = port->ksz_dev->dev_ops;
-+	struct ksz_irq *ptpirq = &port->ptpirq;
- 	struct ksz_ptp_irq *ptpmsg_irq;
- 
- 	ptpmsg_irq = &port->ptpmsg_irq[n];
-+	ptpmsg_irq->num = irq_create_mapping(ptpirq->domain, n);
-+	if (!ptpmsg_irq->num)
-+		return -EINVAL;
- 
- 	ptpmsg_irq->port = port;
- 	ptpmsg_irq->ts_reg = ops->get_port_addr(port->num, ts_reg[n]);
- 
- 	strscpy(ptpmsg_irq->name, name[n]);
- 
--	ptpmsg_irq->num = irq_find_mapping(port->ptpirq.domain, n);
--	if (ptpmsg_irq->num < 0)
--		return ptpmsg_irq->num;
--
- 	return request_threaded_irq(ptpmsg_irq->num, NULL,
- 				    ksz_ptp_msg_thread_fn, IRQF_ONESHOT,
- 				    ptpmsg_irq->name, ptpmsg_irq);
-@@ -1135,9 +1135,6 @@ int ksz_ptp_irq_setup(struct dsa_switch
- 	if (!ptpirq->domain)
- 		return -ENOMEM;
- 
--	for (irq = 0; irq < ptpirq->nirqs; irq++)
--		irq_create_mapping(ptpirq->domain, irq);
--
- 	ptpirq->irq_num = irq_find_mapping(port->pirq.domain, PORT_SRC_PTP_INT);
- 	if (!ptpirq->irq_num) {
- 		ret = -EINVAL;
-@@ -1159,12 +1156,11 @@ int ksz_ptp_irq_setup(struct dsa_switch
- 
- out_ptp_msg:
- 	free_irq(ptpirq->irq_num, ptpirq);
--	while (irq--)
-+	while (irq--) {
- 		free_irq(port->ptpmsg_irq[irq].num, &port->ptpmsg_irq[irq]);
--out:
--	for (irq = 0; irq < ptpirq->nirqs; irq++)
- 		irq_dispose_mapping(port->ptpmsg_irq[irq].num);
--
-+	}
-+out:
- 	irq_domain_remove(ptpirq->domain);
- 
- 	return ret;
+--- a/drivers/usb/storage/transport.c
++++ b/drivers/usb/storage/transport.c
+@@ -1204,7 +1204,23 @@ int usb_stor_Bulk_transport(struct scsi_
+ 						US_BULK_CS_WRAP_LEN &&
+ 					bcs->Signature ==
+ 						cpu_to_le32(US_BULK_CS_SIGN)) {
++				unsigned char buf[US_BULK_CS_WRAP_LEN];
++
+ 				usb_stor_dbg(us, "Device skipped data phase\n");
++
++				/*
++				 * Devices skipping data phase might leave CSW data in srb's
++				 * transfer buffer. Zero it to prevent USB protocol leakage.
++				 */
++				sg = NULL;
++				offset = 0;
++				memset(buf, 0, sizeof(buf));
++				if (usb_stor_access_xfer_buf(buf,
++						US_BULK_CS_WRAP_LEN, srb, &sg,
++						&offset, TO_XFER_BUF) !=
++							US_BULK_CS_WRAP_LEN)
++					usb_stor_dbg(us, "Failed to clear CSW data\n");
++
+ 				scsi_set_resid(srb, transfer_length);
+ 				goto skipped_data_phase;
+ 			}
 
 
 
