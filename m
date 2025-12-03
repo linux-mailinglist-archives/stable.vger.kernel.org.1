@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDFE3C9FD07
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:07:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id F4192CA00B0
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:42:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CDE0730000B9
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:07:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E1074302C358
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:37:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E90034F48B;
-	Wed,  3 Dec 2025 16:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C22235BDDF;
+	Wed,  3 Dec 2025 16:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lhc9h9Dr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hRlTK6IS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69F43148D4;
-	Wed,  3 Dec 2025 16:07:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA780357720;
+	Wed,  3 Dec 2025 16:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778071; cv=none; b=pMtbfqc/q+1JgC+McE3WnySZ7O5A+96ZYOEt9V23fDtlQAGHxDCq2JLxTzj+iH+U0uUDEVXItA7TcvNkBliffTcYX2SoHkPIlvSyQXMpdIxrWCkOJSPOeTbvCGQFaPCV8Jdp1JG0OxdUlneFLR//G2LTBgDUGU2c3icAlHaI0U0=
+	t=1764779859; cv=none; b=LRj3Th03NgV/OukjF/91f6a1FNz5s0n19OTpjmNXEKeisZ9H5SFp/WbiBOMnUJUcWOlclWqOuDou34kZuWXddFdF9tuX7P4mL+VfkDcGSiDdmickxhD4ngmzZHt0ukdwZCqBhGeWHMJpDO2oLlQ/e48W+dMmvoyzwsC3yctVfEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778071; c=relaxed/simple;
-	bh=2g0IJmgk7j/sWPxZjKEbv9OXTTC2rj4pDeKs3DE6S9c=;
+	s=arc-20240116; t=1764779859; c=relaxed/simple;
+	bh=y/JirUQ/lT668CX5M4LBJVkVVxzjiLVDcjI58zy2kBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fkoHWCVsOuR+W1s7b2P9LyIkNBb9lOqZOJeLBgNQPlx8lo9pYRKFXE25Dve05JnRqs3QFqVhmTci+IqSmpJEgWhh5M6GmK2+VOyPO6pIhtrSk46sQ7+ABigX8aTLJUQzDt9tELfEXo+CdU6tY4man2jiNiznb7Hypx7kPiHuxro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lhc9h9Dr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 326C3C4CEF5;
-	Wed,  3 Dec 2025 16:07:49 +0000 (UTC)
+	 MIME-Version; b=jarzPrH5ySBprIYgyfc10DsD8Sq9QShoA/FtRDDQ0J0pm8q6eiQPOErd+F8OkUbGWaA5lgAHd/XwR6uYMXp/LLQzC0JuAiSMCh9w4Vh/R8ksk1RK7DKcpO8pnHlGSyaHMkX2tzXvIEOmKxiWIDoi0f7zoKhg2+v9VcDXwNqJHqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hRlTK6IS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B898C4CEF5;
+	Wed,  3 Dec 2025 16:37:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778070;
-	bh=2g0IJmgk7j/sWPxZjKEbv9OXTTC2rj4pDeKs3DE6S9c=;
+	s=korg; t=1764779859;
+	bh=y/JirUQ/lT668CX5M4LBJVkVVxzjiLVDcjI58zy2kBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lhc9h9DrhOspifwh2heM/6QmSZ0c/ZYa4ZhLaIzXpspQdHur2MR+gubEx+lmucBwl
-	 fY6COqKl04Bnh/OO7q6Argn+Ka+gOTcw9lex+NDPKISNjahrekEygPYmMlQChK0vpU
-	 +SsoSp2MjtdHeim+Y7EGQRanuy4CKzShV/x2ayaE=
+	b=hRlTK6ISY71iYKlnukkyMVMZHUh1gfYcuC23p0PI/IYy16PkOjJatbjES1UUZayqc
+	 hO3tHK21ZstOkSNpGVSGUD283nNBvQ1CyP2iypHF6RvEwnZVhaYFbyisM1JPG11AyQ
+	 4PimTAvcB9XIPZdqgxP2plLru7NiEEqMpHlVOLdo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Watt <jpewhacker@gmail.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 233/392] NFS4: Fix state renewals missing after boot
-Date: Wed,  3 Dec 2025 16:26:23 +0100
-Message-ID: <20251203152422.754802996@linuxfoundation.org>
+Subject: [PATCH 6.1 382/568] ASoC: cs4271: Fix regulator leak on probe failure
+Date: Wed,  3 Dec 2025 16:26:24 +0100
+Message-ID: <20251203152454.687172211@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +61,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Watt <jpewhacker@gmail.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 9bb3baa9d1604cd20f49ae7dac9306b4037a0e7a ]
+[ Upstream commit 6b6eddc63ce871897d3a5bc4f8f593e698aef104 ]
 
-Since the last renewal time was initialized to 0 and jiffies start
-counting at -5 minutes, any clients connected in the first 5 minutes
-after a reboot would have their renewal timer set to a very long
-interval. If the connection was idle, this would result in the client
-state timing out on the server and the next call to the server would
-return NFS4ERR_BADSESSION.
+The probe function enables regulators at the beginning
+but fails to disable them in its error handling path.
+If any operation after enabling the regulators fails,
+the probe will exit with an error, leaving the regulators
+permanently enabled, which could lead to a resource leak.
 
-Fix this by initializing the last renewal time to the current jiffies
-instead of 0.
+Add a proper error handling path to call regulator_bulk_disable()
+before returning an error.
 
-Signed-off-by: Joshua Watt <jpewhacker@gmail.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Fixes: 9a397f473657 ("ASoC: cs4271: add regulator consumer support")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/20251105062246.1955-1-vulab@iscas.ac.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4client.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/codecs/cs4271.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/fs/nfs/nfs4client.c b/fs/nfs/nfs4client.c
-index 7e4b126e3061e..02082580d34eb 100644
---- a/fs/nfs/nfs4client.c
-+++ b/fs/nfs/nfs4client.c
-@@ -221,6 +221,7 @@ struct nfs_client *nfs4_alloc_client(const struct nfs_client_initdata *cl_init)
- 	clp->cl_state = 1 << NFS4CLNT_LEASE_EXPIRED;
- 	clp->cl_mvops = nfs_v4_minor_ops[cl_init->minorversion];
- 	clp->cl_mig_gen = 1;
-+	clp->cl_last_renewal = jiffies;
- #if IS_ENABLED(CONFIG_NFS_V4_1)
- 	init_waitqueue_head(&clp->cl_lock_waitq);
- #endif
+diff --git a/sound/soc/codecs/cs4271.c b/sound/soc/codecs/cs4271.c
+index 2021cf4426061..f6c9430612f53 100644
+--- a/sound/soc/codecs/cs4271.c
++++ b/sound/soc/codecs/cs4271.c
+@@ -594,17 +594,17 @@ static int cs4271_component_probe(struct snd_soc_component *component)
+ 
+ 	ret = regcache_sync(cs4271->regmap);
+ 	if (ret < 0)
+-		return ret;
++		goto err_disable_regulator;
+ 
+ 	ret = regmap_update_bits(cs4271->regmap, CS4271_MODE2,
+ 				 CS4271_MODE2_PDN | CS4271_MODE2_CPEN,
+ 				 CS4271_MODE2_PDN | CS4271_MODE2_CPEN);
+ 	if (ret < 0)
+-		return ret;
++		goto err_disable_regulator;
+ 	ret = regmap_update_bits(cs4271->regmap, CS4271_MODE2,
+ 				 CS4271_MODE2_PDN, 0);
+ 	if (ret < 0)
+-		return ret;
++		goto err_disable_regulator;
+ 	/* Power-up sequence requires 85 uS */
+ 	udelay(85);
+ 
+@@ -614,6 +614,10 @@ static int cs4271_component_probe(struct snd_soc_component *component)
+ 				   CS4271_MODE2_MUTECAEQUB);
+ 
+ 	return 0;
++
++err_disable_regulator:
++	regulator_bulk_disable(ARRAY_SIZE(cs4271->supplies), cs4271->supplies);
++	return ret;
+ }
+ 
+ static void cs4271_component_remove(struct snd_soc_component *component)
 -- 
 2.51.0
 
