@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-198503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64EEFCA090F
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:42:05 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5631CA009C
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:41:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 88D0832AEFA3
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:22:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2EB5630007B2
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:41:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9F4B30F929;
-	Wed,  3 Dec 2025 15:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0AD335BDAE;
+	Wed,  3 Dec 2025 16:41:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q3Ny28vQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lx6+v+FM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784E2313E26;
-	Wed,  3 Dec 2025 15:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D79C340279;
+	Wed,  3 Dec 2025 16:41:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776761; cv=none; b=ielv1LDY0zqkX1dIncjeNgd1eZeOGGmNjsCGwgnZwqmgWbhK8nMEfVFcvpbi8PjmFTRsFuPUrB/mktBee2yHAj+8zVp+7DnkErzbITpOIwbN++qANh/AuXPqfI8XSPYl8z1IoAQNTVC6D7RkfN67hvYjoXsUa+uDwx2//6J94Ck=
+	t=1764780084; cv=none; b=SVUYCwB2fOmFZdEt4y+Telm7rZGcwnGqoq+YZ0FwSRcaEBhB/NAYIW/lOX1QdzcVOeszc0H24GkQPiwsTIwYouPod34faGAXL3VejdqwsXV+qR3s0FyICbpOkXIuxJnOs+n58qJbEAe1LNlFcQ80ya+kbNOhlN8lqf8aKD5m8oc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776761; c=relaxed/simple;
-	bh=D1j7SA6YOrDSl2Nx+1B7pMsCGOvEYZmQrG/RR/NoOvI=;
+	s=arc-20240116; t=1764780084; c=relaxed/simple;
+	bh=p1L1q2gXVuMlxHT02lST4BcJniVoCj5Roe2KfniQ07M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rox9uKoZzVkUcYPF63S69lEo0/kxAR3KsdiSiOEK9N/L+xqxi1zNg8d6RTh4x4/K9j2wxSVruXeAO7ZWgydA7qe5bE1Krs8bDm+2gqYowoExXG/Ud75iHkSrydkDcesdzUyRFQ9i+xb6Pn/j/kBhLpRXFpWw9/Nq8P+hdXdtZUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q3Ny28vQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD2A5C4CEF5;
-	Wed,  3 Dec 2025 15:46:00 +0000 (UTC)
+	 MIME-Version; b=L/MNmrWGqQQO0CCMrxIluYe6FJpAnxTnyzRWLzLH3cHjv98glxVWt187zIblZIJKqkMI4fXiLPPcPTNez/GsgBGAR1tmXohfixzr6KCF0umFpq4IuUL+CwspqbYtFw/8XJS+N7WTwBTodnpInd9563TLY+XT1xw71bihGzpP31U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lx6+v+FM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFC8DC116C6;
+	Wed,  3 Dec 2025 16:41:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776761;
-	bh=D1j7SA6YOrDSl2Nx+1B7pMsCGOvEYZmQrG/RR/NoOvI=;
+	s=korg; t=1764780084;
+	bh=p1L1q2gXVuMlxHT02lST4BcJniVoCj5Roe2KfniQ07M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q3Ny28vQe9U1NPBXkjauNRFpl/GJ7gVQmjMXddBpm7d5+WHUQs3YeW5bXeAKeNXYF
-	 7vdbYsXcibUBn+o6oQDgugesFM4qTUJsRi44KVbmHIZ5Ei4AF1R68XARfbDpu9Jk+D
-	 4cQacjLV1NMBxc3S1IKLwU6NgNyG9cz2wr/upb+k=
+	b=lx6+v+FMJM3SqNIlhfuKA+XatZRWdOPyTId5JCJtK/vRcHcU1VcpiocQDArGCzXH/
+	 32rcuCv2ire2OnirD2xpENRexdt0HfE1nEnX+zXrm7+uxGYQEeZL3wWZyN//upF9fm
+	 EeTxPyvOZ+SoYrTvzGCq9Ipp55lVrS1Drs8/uEow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+355158e7e301548a1424@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 247/300] mptcp: fix race condition in mptcp_schedule_work()
-Date: Wed,  3 Dec 2025 16:27:31 +0100
-Message-ID: <20251203152409.782877883@linuxfoundation.org>
+	Yifan Zha <Yifan.Zha@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 450/568] drm/amdgpu: Skip emit de meta data on gfx11 with rs64 enabled
+Date: Wed,  3 Dec 2025 16:27:32 +0100
+Message-ID: <20251203152457.188609462@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,102 +59,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Yifan Zha <Yifan.Zha@amd.com>
 
-[ Upstream commit 035bca3f017ee9dea3a5a756e77a6f7138cc6eea ]
+commit 80d8a9ad1587b64c545d515ab6cb7ecb9908e1b3 upstream.
 
-syzbot reported use-after-free in mptcp_schedule_work() [1]
+[Why]
+Accoreding to CP updated to RS64 on gfx11,
+WRITE_DATA with PREEMPTION_META_MEMORY(dst_sel=8) is illegal for CP FW.
+That packet is used for MCBP on F32 based system.
+So it would lead to incorrect GRBM write and FW is not handling that
+extra case correctly.
 
-Issue here is that mptcp_schedule_work() schedules a work,
-then gets a refcount on sk->sk_refcnt if the work was scheduled.
-This refcount will be released by mptcp_worker().
+[How]
+With gfx11 rs64 enabled, skip emit de meta data.
 
-[A] if (schedule_work(...)) {
-[B]     sock_hold(sk);
-        return true;
-    }
-
-Problem is that mptcp_worker() can run immediately and complete before [B]
-
-We need instead :
-
-    sock_hold(sk);
-    if (schedule_work(...))
-        return true;
-    sock_put(sk);
-
-[1]
-refcount_t: addition on 0; use-after-free.
- WARNING: CPU: 1 PID: 29 at lib/refcount.c:25 refcount_warn_saturate+0xfa/0x1d0 lib/refcount.c:25
-Call Trace:
- <TASK>
- __refcount_add include/linux/refcount.h:-1 [inline]
-  __refcount_inc include/linux/refcount.h:366 [inline]
-  refcount_inc include/linux/refcount.h:383 [inline]
-  sock_hold include/net/sock.h:816 [inline]
-  mptcp_schedule_work+0x164/0x1a0 net/mptcp/protocol.c:943
-  mptcp_tout_timer+0x21/0xa0 net/mptcp/protocol.c:2316
-  call_timer_fn+0x17e/0x5f0 kernel/time/timer.c:1747
-  expire_timers kernel/time/timer.c:1798 [inline]
-  __run_timers kernel/time/timer.c:2372 [inline]
-  __run_timer_base+0x648/0x970 kernel/time/timer.c:2384
-  run_timer_base kernel/time/timer.c:2393 [inline]
-  run_timer_softirq+0xb7/0x180 kernel/time/timer.c:2403
-  handle_softirqs+0x22f/0x710 kernel/softirq.c:622
-  __do_softirq kernel/softirq.c:656 [inline]
-  run_ktimerd+0xcf/0x190 kernel/softirq.c:1138
-  smpboot_thread_fn+0x542/0xa60 kernel/smpboot.c:160
-  kthread+0x711/0x8a0 kernel/kthread.c:463
-  ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
+Signed-off-by: Yifan Zha <Yifan.Zha@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 8366cd442d226463e673bed5d199df916f4ecbcf)
 Cc: stable@vger.kernel.org
-Fixes: 3b1d6210a957 ("mptcp: implement and use MPTCP-level retransmission")
-Reported-by: syzbot+355158e7e301548a1424@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6915b46f.050a0220.3565dc.0028.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251113103924.3737425-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |   19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -716,14 +716,19 @@ static void mptcp_reset_timer(struct soc
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+@@ -5392,9 +5392,9 @@ static void gfx_v11_0_ring_emit_ib_gfx(s
+ 		if (flags & AMDGPU_IB_PREEMPTED)
+ 			control |= INDIRECT_BUFFER_PRE_RESUME(1);
  
- bool mptcp_schedule_work(struct sock *sk)
- {
--	if (inet_sk_state_load(sk) != TCP_CLOSE &&
--	    schedule_work(&mptcp_sk(sk)->work)) {
--		/* each subflow already holds a reference to the sk, and the
--		 * workqueue is invoked by a subflow, so sk can't go away here.
--		 */
--		sock_hold(sk);
-+	if (inet_sk_state_load(sk) == TCP_CLOSE)
-+		return false;
-+
-+	/* Get a reference on this socket, mptcp_worker() will release it.
-+	 * As mptcp_worker() might complete before us, we can not avoid
-+	 * a sock_hold()/sock_put() if schedule_work() returns false.
-+	 */
-+	sock_hold(sk);
-+
-+	if (schedule_work(&mptcp_sk(sk)->work))
- 		return true;
--	}
-+
-+	sock_put(sk);
- 	return false;
- }
+-		if (vmid)
++		if (vmid && !ring->adev->gfx.rs64_enable)
+ 			gfx_v11_0_ring_emit_de_meta(ring,
+-				    (!amdgpu_sriov_vf(ring->adev) && flags & AMDGPU_IB_PREEMPTED) ? true : false);
++				!amdgpu_sriov_vf(ring->adev) && (flags & AMDGPU_IB_PREEMPTED));
+ 	}
  
+ 	if (ring->is_mes_queue)
 
 
 
