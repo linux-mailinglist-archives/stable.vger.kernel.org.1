@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-198823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0041CA0BBF
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:02:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9D31C9F8A2
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:38:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 330CE30249A0
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:59:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 30D793046381
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:34:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99D6434DB71;
-	Wed,  3 Dec 2025 16:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A9C3244665;
+	Wed,  3 Dec 2025 15:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MdgTihN4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BZ3JKJvy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BF4134DB6F;
-	Wed,  3 Dec 2025 16:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F348530F535;
+	Wed,  3 Dec 2025 15:34:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777796; cv=none; b=nlGa3awid31tKu+m88Q9QDCktUAcMWGBVg9zndJ0Q66PCWpDxrAi8//0FoZzV7erYpSVFysBXVdzawjeXEPrZQLfgmgs4/1qd6Zus0bY5MVr+qAxYfBAahvjWz+s5DfO2m2LBMP/IJqkSaeitfSiZ0lOYVw6GeqvIANV14X5tPU=
+	t=1764776091; cv=none; b=Wgj+saYP3DpXEjzhPuUzlkR73FhiheSRSKBkgzOzDiM41Fta+VRxgN5BpRRjvEEdNjpKmiV9IyhuBV2c9GA1qPK13ghykKd04ccoC4xKzPdyJh4Nsk/SKfpDa776SZkpYMyZ5rgCok6ClnGwLHBRETzOs+FZ/JHivHcqqkWEiO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777796; c=relaxed/simple;
-	bh=HCVI0LDa8fzHPbNHNXb9RZB/W8kdN6FhNk7SDx5Hr7w=;
+	s=arc-20240116; t=1764776091; c=relaxed/simple;
+	bh=ibqH2NtZDA6cL7Rycm7psrmLqF2SrtWvnVvNdSGms8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BvGGku/AwuqV4hYwzZ8Qm1LJfRJE3rcgaxIODWS8pXxRX7hNLnoza6+wPk9RPh7Je7XSk/CzmZwX36mO0HvJ6SA4ziwIjg+N5RGOvT1WT52vK/EKceebc9r0/yx5uDG+SP0FwVpnZ7SUYqtznWMSb4xPHCNQIwL5FNiIrzy6hHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MdgTihN4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCF65C4CEF5;
-	Wed,  3 Dec 2025 16:03:15 +0000 (UTC)
+	 MIME-Version; b=qqQe1FvyG5zGn6qbopwZgJTDZdZDcuPoUE0JpEiTztCabTZ6d8smm6gqowB1gFz9kzuinGxT7mT0vpxV5ffm5o1j5w9w/amenqaiOQfcE7Kth7kkvds6/Ko2Km1H0yJDPOc7Xm8Y3mP37/vtl5c38xjNqrs7HENdfCblay32a0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BZ3JKJvy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8F25C4CEF5;
+	Wed,  3 Dec 2025 15:34:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777796;
-	bh=HCVI0LDa8fzHPbNHNXb9RZB/W8kdN6FhNk7SDx5Hr7w=;
+	s=korg; t=1764776090;
+	bh=ibqH2NtZDA6cL7Rycm7psrmLqF2SrtWvnVvNdSGms8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MdgTihN4fw1oCDWKSsUZu8YLwFisULxvOte3bDKwVndtEnXCEmmFgUhl79/rsJ360
-	 dBLW92kA6oAoYOs084qnj/XLv+fet8ubAOxA0s/PgFdPgwXkxdCGEKfvWhpDYFYJYw
-	 HOk2UvRH9Wo154Ngx7czg0BjL3EF0cLdctIURKS4=
+	b=BZ3JKJvyuqiUww0UyShvZd2KU7CV13FQwC7IGEy9zE6SycWLyJcxCkF3VNKtrIqDB
+	 IFqdoUUSW1f/asmr/rg4CPELm8NDNs0dAsV489EjZW+FzyKajTVkrfMHrNnvb2TRtz
+	 q0Zu1oUafOwwgcTWkhyQiIsgZSRwc6n5b/s9DgXg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yue Haibing <yuehaibing@huawei.com>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 132/392] ipv6: Add sanity checks on ipv6_devconf.rpl_seg_enabled
+Subject: [PATCH 5.10 078/300] net: stmmac: Check stmmac_hw_setup() in stmmac_resume()
 Date: Wed,  3 Dec 2025 16:24:42 +0100
-Message-ID: <20251203152418.949215421@linuxfoundation.org>
+Message-ID: <20251203152403.514814699@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yue Haibing <yuehaibing@huawei.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-[ Upstream commit 3d95261eeb74958cd496e1875684827dc5d028cc ]
+[ Upstream commit 6896c2449a1858acb643014894d01b3a1223d4e5 ]
 
-In ipv6_rpl_srh_rcv() we use min(net->ipv6.devconf_all->rpl_seg_enabled,
-idev->cnf.rpl_seg_enabled) is intended to return 0 when either value is
-zero, but if one of the values is negative it will in fact return non-zero.
+stmmac_hw_setup() may return 0 on success and an appropriate negative
+integer as defined in errno.h file on failure, just check it and then
+return early if failed in stmmac_resume().
 
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
-Link: https://patch.msgid.link/20250901123726.1972881-3-yuehaibing@huawei.com
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
+Link: https://patch.msgid.link/20250811073506.27513-2-yangtiezhu@loongson.cn
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/addrconf.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index 43df9ad96e39d..68038aa522db0 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -7041,7 +7041,9 @@ static const struct ctl_table addrconf_sysctl[] = {
- 		.data		= &ipv6_devconf.rpl_seg_enabled,
- 		.maxlen		= sizeof(int),
- 		.mode		= 0644,
--		.proc_handler	= proc_dointvec,
-+		.proc_handler   = proc_dointvec_minmax,
-+		.extra1         = SYSCTL_ZERO,
-+		.extra2         = SYSCTL_ONE,
- 	},
- 	{
- 		.procname	= "ioam6_enabled",
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index e6fa2782d28f2..ac278d81f1614 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -5415,7 +5415,14 @@ int stmmac_resume(struct device *dev)
+ 	stmmac_free_tx_skbufs(priv);
+ 	stmmac_clear_descriptors(priv);
+ 
+-	stmmac_hw_setup(ndev, false);
++	ret = stmmac_hw_setup(ndev, false);
++	if (ret < 0) {
++		netdev_err(priv->dev, "%s: Hw setup failed\n", __func__);
++		mutex_unlock(&priv->lock);
++		rtnl_unlock();
++		return ret;
++	}
++
+ 	stmmac_init_coalesce(priv);
+ 	stmmac_set_rx_mode(ndev);
+ 
 -- 
 2.51.0
 
