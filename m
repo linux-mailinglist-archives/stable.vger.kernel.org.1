@@ -1,59 +1,53 @@
-Return-Path: <stable+bounces-198574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5D68CA12D2
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:54:07 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D263CA00AE
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:41:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D8087300E83D
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:53:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 88E32300079A
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:41:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC58B32BF25;
-	Wed,  3 Dec 2025 15:49:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9D8E35C19B;
+	Wed,  3 Dec 2025 16:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SyY83qXJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lx0mGp89"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6570C32B9B3;
-	Wed,  3 Dec 2025 15:49:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94D1735C193;
+	Wed,  3 Dec 2025 16:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776993; cv=none; b=GGrklp0yNoUM0dPDMbwwmV0kuhmrq1+i/GQrT3wLpGJ3eCBU+a6bAclHQZ4PnVzytKqV4ke5sGDjVbCMZX3uGKSIwrHx0jH0V0gNFJ+0CJk7z1KjX9FcConjxx2axXmQ/YtoHswdenPTf+4oRSjKcGjKx8lIT/qyZiBszKw15jw=
+	t=1764780113; cv=none; b=rRnfL7fWGzF+VN3gsQTNHx3sDBGnUuBCThRgowVnOdFLuiuOfQ6OenkN6B+/jtL2thHX7lrGkm6x/XkzE1fGSSW2bHXp5PwhSFeJ9kwrwCSTy4i6GxnBRUmnB0YEXMeZoiofo18LNndKsal29a1L9rlbEEMkf7iSOtRy6DGzKCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776993; c=relaxed/simple;
-	bh=jO8uzi3Si5l3LVhDdcaywLi3ykfjTVkA16+VrEW12OA=;
+	s=arc-20240116; t=1764780113; c=relaxed/simple;
+	bh=gWym7HL1iil6CemRoI9rWk11HQAWq3swoyYHJ17xddY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tWXHm4dd4gnRCKNjZpullJa33lcG+ufkyCt1vUwvtB8zfhbdBRgt2nmCrnMFQcfCEfdQRyQn/+e66a1ycXCL69Zb83dN3PnsYODT+Cifpxo8WJmOfwY3/rouqO1SSLfac/pp3L81MLn2U6RwDbyQxizO/9/sv7Q623spxTri+io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SyY83qXJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C951CC116B1;
-	Wed,  3 Dec 2025 15:49:52 +0000 (UTC)
+	 MIME-Version; b=G3H7tDlR3D1ipcRQ+Dturdor+enfeAwc1M9YtXc/SshoTje42WPpLAj0jzt+bUDB4xwV/RgY+RqEpO1RCQseMWoV8re0FWCl49el90G8r7zjnVlxj9KVizDvMVWUHuJpWpsk/GwcqcnN7hj2IRrRtnpONTz7bKRRN6vIq0Zu3QA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lx0mGp89; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AF3EC4CEF5;
+	Wed,  3 Dec 2025 16:41:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776993;
-	bh=jO8uzi3Si5l3LVhDdcaywLi3ykfjTVkA16+VrEW12OA=;
+	s=korg; t=1764780113;
+	bh=gWym7HL1iil6CemRoI9rWk11HQAWq3swoyYHJ17xddY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SyY83qXJps64oZUFTd01h3BdLWBuTuZa4pA5aOJ+h1CAxyPSKzYNLC7vfPxiQ2ri1
-	 tma9cxML9+/bZ0nkOvgaciTXJVp4Rcf0k1H8mCKHs11FnrsfVVAkQ8V0qTS1Geufuv
-	 4izpuBszKWKSl4K6e5x0NLJJFQPw/FPNZFhkWz7Y=
+	b=lx0mGp89B74HV9eLSKphbPz5iBsdw+/x2+Ixb9YMMO6O9j2NsM+CZsJFPCPYgZIy+
+	 O5Fm9Z7RaI/n6tELWbgdaaAOfAJovKNIRRbcCWUQExIXlN6+JbM2QOgnZ5VBavsyRn
+	 vf065meNLCv50RmSNlNGI6xyZXtolMVW/WlqudYg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paulo Alcantra <pc@manguebit.org>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	syzbot+41c68824eefb67cdf00c@syzkaller.appspotmail.com,
-	linux-afs@lists.infradead.org,
-	linux-fsdevel@vger.kernel.org,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 050/146] afs: Fix uninit var in afs_alloc_anon_key()
-Date: Wed,  3 Dec 2025 16:27:08 +0100
-Message-ID: <20251203152348.302980110@linuxfoundation.org>
+	Yipeng Zou <zouyipeng@huawei.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.1 427/568] timers: Fix NULL function pointer race in timer_shutdown_sync()
+Date: Wed,  3 Dec 2025 16:27:09 +0100
+Message-ID: <20251203152456.334938331@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,55 +59,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Yipeng Zou <zouyipeng@huawei.com>
 
-[ Upstream commit 19eef1d98eeda3745df35839190b7d4a4adea656 ]
+commit 20739af07383e6eb1ec59dcd70b72ebfa9ac362c upstream.
 
-Fix an uninitialised variable (key) in afs_alloc_anon_key() by setting it
-to cell->anonymous_key.  Without this change, the error check may return a
-false failure with a bad error number.
+There is a race condition between timer_shutdown_sync() and timer
+expiration that can lead to hitting a WARN_ON in expire_timers().
 
-Most of the time this is unlikely to happen because the first encounter
-with afs_alloc_anon_key() will usually be from (auto)mount, for which all
-subsequent operations must wait - apart from other (auto)mounts.  Once the
-call->anonymous_key is allocated, all further calls to afs_request_key()
-will skip the call to afs_alloc_anon_key() for that cell.
+The issue occurs when timer_shutdown_sync() clears the timer function
+to NULL while the timer is still running on another CPU. The race
+scenario looks like this:
 
-Fixes: d27c71257825 ("afs: Fix delayed allocation of a cell's anonymous key")
-Reported-by: Paulo Alcantra <pc@manguebit.org>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Paulo Alcantara <pc@manguebit.org>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: syzbot+41c68824eefb67cdf00c@syzkaller.appspotmail.com
-cc: linux-afs@lists.infradead.org
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CPU0					CPU1
+					<SOFTIRQ>
+					lock_timer_base()
+					expire_timers()
+					base->running_timer = timer;
+					unlock_timer_base()
+					[call_timer_fn enter]
+					mod_timer()
+					...
+timer_shutdown_sync()
+lock_timer_base()
+// For now, will not detach the timer but only clear its function to NULL
+if (base->running_timer != timer)
+	ret = detach_if_pending(timer, base, true);
+if (shutdown)
+	timer->function = NULL;
+unlock_timer_base()
+					[call_timer_fn exit]
+					lock_timer_base()
+					base->running_timer = NULL;
+					unlock_timer_base()
+					...
+					// Now timer is pending while its function set to NULL.
+					// next timer trigger
+					<SOFTIRQ>
+					expire_timers()
+					WARN_ON_ONCE(!fn) // hit
+					...
+lock_timer_base()
+// Now timer will detach
+if (base->running_timer != timer)
+	ret = detach_if_pending(timer, base, true);
+if (shutdown)
+	timer->function = NULL;
+unlock_timer_base()
+
+The problem is that timer_shutdown_sync() clears the timer function
+regardless of whether the timer is currently running. This can leave a
+pending timer with a NULL function pointer, which triggers the
+WARN_ON_ONCE(!fn) check in expire_timers().
+
+Fix this by only clearing the timer function when actually detaching the
+timer. If the timer is running, leave the function pointer intact, which is
+safe because the timer will be properly detached when it finishes running.
+
+Fixes: 0cc04e80458a ("timers: Add shutdown mechanism to the internal functions")
+Signed-off-by: Yipeng Zou <zouyipeng@huawei.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251122093942.301559-1-zouyipeng@huawei.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/afs/security.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/time/timer.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/fs/afs/security.c b/fs/afs/security.c
-index ff8830e6982fb..55ddce94af031 100644
---- a/fs/afs/security.c
-+++ b/fs/afs/security.c
-@@ -26,7 +26,8 @@ static int afs_alloc_anon_key(struct afs_cell *cell)
- 	struct key *key;
+--- a/kernel/time/timer.c
++++ b/kernel/time/timer.c
+@@ -1413,10 +1413,11 @@ static int __try_to_del_timer_sync(struc
  
- 	mutex_lock(&afs_key_lock);
--	if (!cell->anonymous_key) {
-+	key = cell->anonymous_key;
-+	if (!key) {
- 		key = rxrpc_get_null_key(cell->key_desc);
- 		if (!IS_ERR(key))
- 			cell->anonymous_key = key;
--- 
-2.51.0
-
+ 	base = lock_timer_base(timer, &flags);
+ 
+-	if (base->running_timer != timer)
++	if (base->running_timer != timer) {
+ 		ret = detach_if_pending(timer, base, true);
+-	if (shutdown)
+-		timer->function = NULL;
++		if (shutdown)
++			timer->function = NULL;
++	}
+ 
+ 	raw_spin_unlock_irqrestore(&base->lock, flags);
+ 
 
 
 
