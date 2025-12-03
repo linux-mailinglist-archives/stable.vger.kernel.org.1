@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-198805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D39A2CA0BD1
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:02:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9677CA14DA
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:13:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 78E6A3027A30
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:00:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 78ADB327FA25
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:34:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98F6A34CFD2;
-	Wed,  3 Dec 2025 16:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38FA736BCC4;
+	Wed,  3 Dec 2025 16:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hwOWjWD+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cTdqZz7b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 556E734CFCF;
-	Wed,  3 Dec 2025 16:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E77A736BCEB;
+	Wed,  3 Dec 2025 16:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777739; cv=none; b=Kt/sBj81wb4wV2PwvIYNapLYhlbVpH3bspomDifx45GNInBEcA/KABhdRSj3UoIS8MXyzG0rOYFF3e9mhaIbGhySz5iqJ1ObzJyyRL7KoEValYVrOIAk8mCeXoFAVHxdYfeZb/BFSFfLmKbikF6gUgqJ/b9YlmLU6iNXpdRwO4E=
+	t=1764779497; cv=none; b=De1rJq/uKADVFgxmCnPD1czh6OqLeCxYM4e6IgncWBjfzjMsn3TUqerNX7doBJZKRQBq5aPugo+rwT5PlHrXDupaFsZtFTsilqul8bXx1ZL71Eedcv/2vbLyIVAv6zTd5CMIu413Dn4hEQ0V6N1sd2grj101fxuLQpXhworHM9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777739; c=relaxed/simple;
-	bh=seNgaLy6+m+l0y0lG2n2aBsnatmkZPWjqWbG1fAbYsk=;
+	s=arc-20240116; t=1764779497; c=relaxed/simple;
+	bh=TnGajzmdmi4DdxKF77LGYKkT+GpRU+MNJhP2r3RprWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T9RzYTopwIQJdft1alQEuMg3os5TQviUn0BaVBNvGlJUFMQ5eJJBaK1nWAh2F06Xb8fsl3bknHFCMITj8lF2hYRYhnHuugFSSHD+/ELnTo1ss7t0ZxPV5qwteYfwPn4L1YVMoOHam/CFc7uWdZ6c9kulo0aZa11fTGmxe5xyMpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hwOWjWD+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81F87C4CEF5;
-	Wed,  3 Dec 2025 16:02:18 +0000 (UTC)
+	 MIME-Version; b=E1bVxFW/F/TP0+gqmDUtN1iwiDJirp3CYFizSt51g3E6eamdD4/0/ayi30oQ7Z8RDX/Dqjdcr+39i5fBksP8GFF1MbReRcrRTp3kl8nMWUV/MtINE8o6kYhDfJ7OeXmHqsVbCsUm4osSLWpjgu4spH7GzLaP3THZMm4C8JBL5cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cTdqZz7b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A482C16AAE;
+	Wed,  3 Dec 2025 16:31:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777738;
-	bh=seNgaLy6+m+l0y0lG2n2aBsnatmkZPWjqWbG1fAbYsk=;
+	s=korg; t=1764779496;
+	bh=TnGajzmdmi4DdxKF77LGYKkT+GpRU+MNJhP2r3RprWM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hwOWjWD+6DE9xJl47G8Azv+jfVW7UlfP5jBuLLtjiyARuflPJny0NnHJc/K91ilnK
-	 PaDs69+uAS47RospuNOXiiiCKEkifaNEVKFNgwB1Y/CI8+IGjK3R2tiTFSQq4nwjOJ
-	 YJR13/PcgVZguijSBVF5jNTsFXaLbZ0zeIsVYNJ8=
+	b=cTdqZz7b5AC0UnzZBdN2VEwHMpYiGZYNM7Co8to0Yf6nur0XkG0PSYPVZLhMdseCc
+	 kFkiXDXeyP1RJ8tW1KanremxH5CKKWhRGT/6P51+wya7jgZNbEA8v9w3Q1mhZm6N4Q
+	 HA62Ow3kPd8jji2b7iSlj/urtEhdeJmP2jMiKOd4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
-	Parth Pancholi <parth.pancholi@toradex.com>,
-	Jayesh Choudhary <j-choudhary@ti.com>,
-	Devarsh Thakkar <devarsht@ti.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Chen Wang <unicorn_wang@outlook.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 099/392] drm/tidss: Use the crtc_* timings when programming the HW
+Subject: [PATCH 6.1 247/568] PCI: cadence: Check for the existence of cdns_pcie::ops before using it
 Date: Wed,  3 Dec 2025 16:24:09 +0100
-Message-ID: <20251203152417.742209545@linuxfoundation.org>
+Message-ID: <20251203152449.765953485@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +60,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Chen Wang <unicorn_wang@outlook.com>
 
-[ Upstream commit 478306edc23eec4f0ec24a46222485910c66212d ]
+[ Upstream commit 49a6c160ad4812476f8ae1a8f4ed6d15adfa6c09 ]
 
-Use the crtc_* fields from drm_display_mode, instead of the "logical"
-fields. This shouldn't change anything in practice, but afaiu the crtc_*
-fields are the correct ones to use here.
+cdns_pcie::ops might not be populated by all the Cadence glue drivers. This
+is going to be true for the upcoming Sophgo platform which doesn't set the
+ops.
 
-Reviewed-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
-Tested-by: Parth Pancholi <parth.pancholi@toradex.com>
-Tested-by: Jayesh Choudhary <j-choudhary@ti.com>
-Reviewed-by: Devarsh Thakkar <devarsht@ti.com>
-Link: https://lore.kernel.org/r/20250723-cdns-dsi-impro-v5-3-e61cc06074c2@ideasonboard.com
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Hence, add a check to prevent NULL pointer dereference.
+
+Signed-off-by: Chen Wang <unicorn_wang@outlook.com>
+[mani: reworded subject and description]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Link: https://patch.msgid.link/35182ee1d972dfcd093a964e11205efcebbdc044.1757643388.git.unicorn_wang@outlook.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tidss/tidss_crtc.c  |  2 +-
- drivers/gpu/drm/tidss/tidss_dispc.c | 16 ++++++++--------
- 2 files changed, 9 insertions(+), 9 deletions(-)
+ drivers/pci/controller/cadence/pcie-cadence-host.c | 2 +-
+ drivers/pci/controller/cadence/pcie-cadence.c      | 4 ++--
+ drivers/pci/controller/cadence/pcie-cadence.h      | 6 +++---
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/tidss/tidss_crtc.c b/drivers/gpu/drm/tidss/tidss_crtc.c
-index 812be02c16efc..3de103c673576 100644
---- a/drivers/gpu/drm/tidss/tidss_crtc.c
-+++ b/drivers/gpu/drm/tidss/tidss_crtc.c
-@@ -232,7 +232,7 @@ static void tidss_crtc_atomic_enable(struct drm_crtc *crtc,
- 	tidss_runtime_get(tidss);
+diff --git a/drivers/pci/controller/cadence/pcie-cadence-host.c b/drivers/pci/controller/cadence/pcie-cadence-host.c
+index 0a1b11d41a38a..d2c8d5e0882a5 100644
+--- a/drivers/pci/controller/cadence/pcie-cadence-host.c
++++ b/drivers/pci/controller/cadence/pcie-cadence-host.c
+@@ -452,7 +452,7 @@ static int cdns_pcie_host_init_address_translation(struct cdns_pcie_rc *rc)
+ 	cdns_pcie_writel(pcie, CDNS_PCIE_AT_OB_REGION_PCI_ADDR1(0), addr1);
+ 	cdns_pcie_writel(pcie, CDNS_PCIE_AT_OB_REGION_DESC1(0), desc1);
  
- 	r = dispc_vp_set_clk_rate(tidss->dispc, tcrtc->hw_videoport,
--				  mode->clock * 1000);
-+				  mode->crtc_clock * 1000);
- 	if (r != 0)
- 		return;
+-	if (pcie->ops->cpu_addr_fixup)
++	if (pcie->ops && pcie->ops->cpu_addr_fixup)
+ 		cpu_addr = pcie->ops->cpu_addr_fixup(pcie, cpu_addr);
  
-diff --git a/drivers/gpu/drm/tidss/tidss_dispc.c b/drivers/gpu/drm/tidss/tidss_dispc.c
-index ad559f5c11482..7f0f4b5abdecc 100644
---- a/drivers/gpu/drm/tidss/tidss_dispc.c
-+++ b/drivers/gpu/drm/tidss/tidss_dispc.c
-@@ -978,13 +978,13 @@ void dispc_vp_enable(struct dispc_device *dispc, u32 hw_videoport,
+ 	addr0 = CDNS_PCIE_AT_OB_REGION_CPU_ADDR0_NBITS(12) |
+diff --git a/drivers/pci/controller/cadence/pcie-cadence.c b/drivers/pci/controller/cadence/pcie-cadence.c
+index 13c4032ca379a..ddf893fb8e164 100644
+--- a/drivers/pci/controller/cadence/pcie-cadence.c
++++ b/drivers/pci/controller/cadence/pcie-cadence.c
+@@ -89,7 +89,7 @@ void cdns_pcie_set_outbound_region(struct cdns_pcie *pcie, u8 busnr, u8 fn,
+ 	cdns_pcie_writel(pcie, CDNS_PCIE_AT_OB_REGION_DESC1(r), desc1);
  
- 	dispc_set_num_datalines(dispc, hw_videoport, fmt->data_width);
+ 	/* Set the CPU address */
+-	if (pcie->ops->cpu_addr_fixup)
++	if (pcie->ops && pcie->ops->cpu_addr_fixup)
+ 		cpu_addr = pcie->ops->cpu_addr_fixup(pcie, cpu_addr);
  
--	hfp = mode->hsync_start - mode->hdisplay;
--	hsw = mode->hsync_end - mode->hsync_start;
--	hbp = mode->htotal - mode->hsync_end;
-+	hfp = mode->crtc_hsync_start - mode->crtc_hdisplay;
-+	hsw = mode->crtc_hsync_end - mode->crtc_hsync_start;
-+	hbp = mode->crtc_htotal - mode->crtc_hsync_end;
+ 	addr0 = CDNS_PCIE_AT_OB_REGION_CPU_ADDR0_NBITS(nbits) |
+@@ -119,7 +119,7 @@ void cdns_pcie_set_outbound_region_for_normal_msg(struct cdns_pcie *pcie,
+ 	}
  
--	vfp = mode->vsync_start - mode->vdisplay;
--	vsw = mode->vsync_end - mode->vsync_start;
--	vbp = mode->vtotal - mode->vsync_end;
-+	vfp = mode->crtc_vsync_start - mode->crtc_vdisplay;
-+	vsw = mode->crtc_vsync_end - mode->crtc_vsync_start;
-+	vbp = mode->crtc_vtotal - mode->crtc_vsync_end;
+ 	/* Set the CPU address */
+-	if (pcie->ops->cpu_addr_fixup)
++	if (pcie->ops && pcie->ops->cpu_addr_fixup)
+ 		cpu_addr = pcie->ops->cpu_addr_fixup(pcie, cpu_addr);
  
- 	dispc_vp_write(dispc, hw_videoport, DISPC_VP_TIMING_H,
- 		       FLD_VAL(hsw - 1, 7, 0) |
-@@ -1026,8 +1026,8 @@ void dispc_vp_enable(struct dispc_device *dispc, u32 hw_videoport,
- 		       FLD_VAL(ivs, 12, 12));
+ 	addr0 = CDNS_PCIE_AT_OB_REGION_CPU_ADDR0_NBITS(17) |
+diff --git a/drivers/pci/controller/cadence/pcie-cadence.h b/drivers/pci/controller/cadence/pcie-cadence.h
+index 2891e8c16a592..ff5ee5c787fbc 100644
+--- a/drivers/pci/controller/cadence/pcie-cadence.h
++++ b/drivers/pci/controller/cadence/pcie-cadence.h
+@@ -494,7 +494,7 @@ static inline u32 cdns_pcie_ep_fn_readl(struct cdns_pcie *pcie, u8 fn, u32 reg)
  
- 	dispc_vp_write(dispc, hw_videoport, DISPC_VP_SIZE_SCREEN,
--		       FLD_VAL(mode->hdisplay - 1, 11, 0) |
--		       FLD_VAL(mode->vdisplay - 1, 27, 16));
-+		       FLD_VAL(mode->crtc_hdisplay - 1, 11, 0) |
-+		       FLD_VAL(mode->crtc_vdisplay - 1, 27, 16));
+ static inline int cdns_pcie_start_link(struct cdns_pcie *pcie)
+ {
+-	if (pcie->ops->start_link)
++	if (pcie->ops && pcie->ops->start_link)
+ 		return pcie->ops->start_link(pcie);
  
- 	VP_REG_FLD_MOD(dispc, hw_videoport, DISPC_VP_CONTROL, 1, 0, 0);
+ 	return 0;
+@@ -502,13 +502,13 @@ static inline int cdns_pcie_start_link(struct cdns_pcie *pcie)
+ 
+ static inline void cdns_pcie_stop_link(struct cdns_pcie *pcie)
+ {
+-	if (pcie->ops->stop_link)
++	if (pcie->ops && pcie->ops->stop_link)
+ 		pcie->ops->stop_link(pcie);
  }
+ 
+ static inline bool cdns_pcie_link_up(struct cdns_pcie *pcie)
+ {
+-	if (pcie->ops->link_up)
++	if (pcie->ops && pcie->ops->link_up)
+ 		return pcie->ops->link_up(pcie);
+ 
+ 	return true;
 -- 
 2.51.0
 
