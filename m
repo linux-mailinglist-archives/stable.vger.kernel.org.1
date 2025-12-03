@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 523D5CA0F5A
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:27:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8CABCA1792
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:51:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C9D7F34B1697
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:25:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4427D3049D14
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:48:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30D17322557;
-	Wed,  3 Dec 2025 15:59:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35ADE3612CD;
+	Wed,  3 Dec 2025 16:28:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EcglIb2/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wd4o3Nq0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ACC2314B7F;
-	Wed,  3 Dec 2025 15:59:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D3223612DC;
+	Wed,  3 Dec 2025 16:28:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777543; cv=none; b=IaDKsXCZTtBf7Y8UEd7aho/KNFhvmC0z2JP3sn+op1k8z8r5V/lmLrGlyzCaCPUHgrzaQrKSHFvFACEpGEnIxQeYhYdnuyeRG7lVPz9g4NmuPPH7EkZEiLSqgJH/YPreSqTpJz6xZqT7M7rpDc0ZwDN+guAtU24MzlB0wdVgdjI=
+	t=1764779310; cv=none; b=Z9L5bsfVA8P7yI4Xk3G0k2hzwRHCuY0tVidfaAxnr9RqnJBjs7A6NH2HaDvzZq5qCLhJpESdAZec9iYbTjcTCCaaixX7gkQM4fwyUR90YFGoyWssZ0yLmuC4avuOqami2TaAGQCBmQMhmVM8OEuAznBZ4xPCOCCqn9CRYrpzuAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777543; c=relaxed/simple;
-	bh=sJc5LvIfiOqHiqq0agY81wT0MOQpuvTiIYJ46SbEh34=;
+	s=arc-20240116; t=1764779310; c=relaxed/simple;
+	bh=I1JrhXmYxwOQsfD92ypRx3Mv4MXOezTJS9GSChIM62c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bqkTrEbZ2R7hqkYpjYLika84QLEnccCE5bdza6rSSfecXByoYB4z6RTEN4yh1AB6JFoN3YOXrzvvq+edpVyqTP94DeNuP6KtyjAirHvUAq9O4iIN/TxL2e9R7iDvFrbAkXminK4UkbwIktLh31NJ9i9/6R4D/di+O+ZkSTLydqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EcglIb2/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 391D0C4CEF5;
-	Wed,  3 Dec 2025 15:59:02 +0000 (UTC)
+	 MIME-Version; b=qDP8GBPB+5Z1DfZuA43HTvGW11uurhL6+FCl3aIh3P8WLayGVhpWxE0/b3jVgiFWKLkAZgtFc5LskUV2Kg7vwTAQV8ubJHRu4YZrg7UIGTQjei9t+mURYrpBfTpEPArg6I1Uv7Rns1A70pYw8gWkqev6O//2QNa+PcRgibBf6QA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wd4o3Nq0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4B00C4CEF5;
+	Wed,  3 Dec 2025 16:28:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777542;
-	bh=sJc5LvIfiOqHiqq0agY81wT0MOQpuvTiIYJ46SbEh34=;
+	s=korg; t=1764779310;
+	bh=I1JrhXmYxwOQsfD92ypRx3Mv4MXOezTJS9GSChIM62c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EcglIb2/cDpSnlFzZ8v/gIevhNHVP7MQkR/5oCSkzlxWCAPl8w203xNwSq3raWmFV
-	 THH0/jBhW/dLP9yKNwQycywcpL8TgbbO3kqFIN5Fk0/FGl2wW7c4qymqiWxtGkeuqG
-	 97o0i6/PXdOm5SqZKJDl5MMeL8qVmJ2gvZvL1am0=
+	b=wd4o3Nq0OFLhdmBUKiWMk04QMUSm038/o5qjV7AgCAkH32bwco49SzSOMEwFL+cTk
+	 ZTuUN7BKFqA3RY54QO1QSKn7Yvp+EivXI+6024gBv9Gss8xoKwKl45Lw9XiKDiHZz4
+	 PRsHUZ5fsZ73OVYUO0EEOMPBJuxbFjbfcX64KYQE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hansg@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	David Ahern <dsahern@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 072/392] ACPICA: dispatcher: Use acpi_ds_clear_operands() in acpi_ds_call_control_method()
+Subject: [PATCH 6.1 220/568] selftests: Replace sleep with slowwait
 Date: Wed,  3 Dec 2025 16:23:42 +0100
-Message-ID: <20251203152416.756322058@linuxfoundation.org>
+Message-ID: <20251203152448.780758510@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hansg@kernel.org>
+From: David Ahern <dsahern@kernel.org>
 
-[ Upstream commit e9dff11a7a50fcef23fe3e8314fafae6d5641826 ]
+[ Upstream commit 2f186dd5585c3afb415df80e52f71af16c9d3655 ]
 
-When deleting the previous walkstate operand stack
-acpi_ds_call_control_method() was deleting obj_desc->Method.param_count
-operands. But Method.param_count does not necessarily match
-this_walk_state->num_operands, it may be either less or more.
+Replace the sleep in kill_procs with slowwait.
 
-After correcting the for loop to check `i < this_walk_state->num_operands`
-the code is identical to acpi_ds_clear_operands(), so just outright
-replace the code with acpi_ds_clear_operands() to fix this.
-
-Link: https://github.com/acpica/acpica/commit/53fc0220
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250910025828.38900-2-dsahern@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/dsmethod.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ tools/testing/selftests/net/fcnal-test.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/acpica/dsmethod.c b/drivers/acpi/acpica/dsmethod.c
-index 132ab74935be8..9aa7a24777e95 100644
---- a/drivers/acpi/acpica/dsmethod.c
-+++ b/drivers/acpi/acpica/dsmethod.c
-@@ -546,14 +546,7 @@ acpi_ds_call_control_method(struct acpi_thread_state *thread,
- 	 * Delete the operands on the previous walkstate operand stack
- 	 * (they were copied to new objects)
- 	 */
--	for (i = 0; i < obj_desc->method.param_count; i++) {
--		acpi_ut_remove_reference(this_walk_state->operands[i]);
--		this_walk_state->operands[i] = NULL;
--	}
--
--	/* Clear the operand stack */
--
--	this_walk_state->num_operands = 0;
-+	acpi_ds_clear_operands(this_walk_state);
+diff --git a/tools/testing/selftests/net/fcnal-test.sh b/tools/testing/selftests/net/fcnal-test.sh
+index 135e19db39eb0..bb20dac178698 100755
+--- a/tools/testing/selftests/net/fcnal-test.sh
++++ b/tools/testing/selftests/net/fcnal-test.sh
+@@ -194,7 +194,7 @@ show_hint()
+ kill_procs()
+ {
+ 	killall nettest ping ping6 >/dev/null 2>&1
+-	sleep 1
++	slowwait 2 sh -c 'test -z "$(pgrep '"'^(nettest|ping|ping6)$'"')"'
+ }
  
- 	ACPI_DEBUG_PRINT((ACPI_DB_DISPATCH,
- 			  "**** Begin nested execution of [%4.4s] **** WalkState=%p\n",
+ do_run_cmd()
 -- 
 2.51.0
 
