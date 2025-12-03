@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-199807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8332CA04BF
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:15:22 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EB75C9FF31
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:26:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 31BF030F23CA
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:02:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3227C30253C4
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:24:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3346435A95D;
-	Wed,  3 Dec 2025 16:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58F1D35293F;
+	Wed,  3 Dec 2025 16:16:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bW8qi/6y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ReR6ciha"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E23D735A924;
-	Wed,  3 Dec 2025 16:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12154350D7B;
+	Wed,  3 Dec 2025 16:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764781009; cv=none; b=TaCtw7adgbAq0Pp1L7kvNyQxEny8Rj9DMChleu/Rdx8kicqgTaNQg7zKaziAKIOzrPm/ALFUhc3kW/ZU/e+U7QUvRsS+JkynTaHTo4GyyqnDwHmjzN0R2mnvDvrEwMwTenwNzds7b2ueZaC1H4wGLBP+BQPIMVl0nXntEz/6sG8=
+	t=1764778584; cv=none; b=iGEUrenGq+ctKuHeuMHk64gFW2rWrdrKaH2rcTlgAjwlUrIaxHau4vSVhbkN605ljoZfuF9QiCirrZRue9iOpBRgvUYeerDtMwmQFSy48uTAgJzdJeHIPu+FY+SlHAOaF/Ycw7zfKYm7Pbmv0jZc1bxCRXBoPZTSnGGmAjegsRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764781009; c=relaxed/simple;
-	bh=DWkvslaMu2IrQKr8Uuu/0BkkELV1RRpo7WCOcIHuAMM=;
+	s=arc-20240116; t=1764778584; c=relaxed/simple;
+	bh=wuUILEwP68v4MoOJnV3abwvdWjWdzsgSTENpffwC1fM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TpOJWQRcmXsvQq66zqe1Im5Bsx5u3XLgs+rgff2g6vTt+36J8F8veJfAsJozzC1EHM7CzUTSQCSJPR8jneYypWyJJT+2OCXvaF/XbXIxDGrVRE4K5x4RbWHzS4rvdEE7YbkBTUpzkhSS3F2mmuM9tC2pPX0NtcNMFie00CNZUn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bW8qi/6y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F144EC4CEF5;
-	Wed,  3 Dec 2025 16:56:47 +0000 (UTC)
+	 MIME-Version; b=WfxcE0tzQOnskyRF5/vdr1p5Bc3aFWtI6Rrdy+qsMAoVTlmeRvalccjyffgk+tNFc9omL6Ucayf/flN9RP6OeeCNkOX0zuTCXBCtj5H0WrBg+Vww431EdAEnAnZkKKClD7Us6YeetXrMCKDG/DJmywSmOsV/m/tMhdBVwBblGvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ReR6ciha; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34127C4CEF5;
+	Wed,  3 Dec 2025 16:16:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764781008;
-	bh=DWkvslaMu2IrQKr8Uuu/0BkkELV1RRpo7WCOcIHuAMM=;
+	s=korg; t=1764778582;
+	bh=wuUILEwP68v4MoOJnV3abwvdWjWdzsgSTENpffwC1fM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bW8qi/6yachQ+tGNtdlmefwRTBaGOYTZLzRvB5qKQ3ibUEfSjlghJ/CyE7qjPHNqc
-	 +TBbvSRiRSLZ9c65iVzihgbxryV2oQMQfScP169g4WH4e+85MGSz9O+/8vudS5oMhs
-	 G69+5ahh0zWbSYk50tab/EXBuBzpAZ6rJzZMsZHU=
+	b=ReR6cihaMkXgyjWGDztGCdlai3IO60cFtXwq4h+TmC2b+jX6NBuD4V3mt1cw6lznr
+	 LasWti0FlcsxbcZAH7OZWhT8jDCNqVru6UCfWvLHDI2TIeAWEmE3DFvCvG7+ut8N9S
+	 HeXmVA7s1P0w7F30qw36vEg6U3Y9YGTh5E2t5jNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Golle <daniel@makrotopia.org>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 07/93] net: phy: mxl-gpy: fix bogus error on USXGMII and integrated PHY
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Andrii Nakryiko <andrii@kernel.org>
+Subject: [PATCH 5.15 390/392] libbpf: Fix riscv register names
 Date: Wed,  3 Dec 2025 16:29:00 +0100
-Message-ID: <20251203152336.777051512@linuxfoundation.org>
+Message-ID: <20251203152428.544978843@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +59,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-[ Upstream commit ec3803b5917b6ff2f86ea965d0985c95d8a85119 ]
+commit 5c101153bfd67387ba159b7864176217a40757da upstream.
 
-As the interface mode doesn't need to be updated on PHYs connected with
-USXGMII and integrated PHYs, gpy_update_interface() should just return 0
-in these cases rather than -EINVAL which has wrongly been introduced by
-commit 7a495dde27ebc ("net: phy: mxl-gpy: Change gpy_update_interface()
-function return type"), as this breaks support for those PHYs.
+riscv registers are accessed via struct user_regs_struct, not struct
+pt_regs. The program counter member in this struct is called pc, not
+epc. The frame pointer is called s0, not fp.
 
-Fixes: 7a495dde27ebc ("net: phy: mxl-gpy: Change gpy_update_interface() function return type")
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://patch.msgid.link/f744f721a1fcc5e2e936428c62ff2c7d94d2a293.1763648168.git.daniel@makrotopia.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3cc31d794097 ("libbpf: Normalize PT_REGS_xxx() macro definitions")
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20220209021745.2215452-6-iii@linux.ibm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/mxl-gpy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/lib/bpf/bpf_tracing.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/phy/mxl-gpy.c b/drivers/net/phy/mxl-gpy.c
-index 034f5c4d03377..5868a0747097f 100644
---- a/drivers/net/phy/mxl-gpy.c
-+++ b/drivers/net/phy/mxl-gpy.c
-@@ -515,7 +515,7 @@ static int gpy_update_interface(struct phy_device *phydev)
- 	/* Interface mode is fixed for USXGMII and integrated PHY */
- 	if (phydev->interface == PHY_INTERFACE_MODE_USXGMII ||
- 	    phydev->interface == PHY_INTERFACE_MODE_INTERNAL)
--		return -EINVAL;
-+		return 0;
+--- a/tools/lib/bpf/bpf_tracing.h
++++ b/tools/lib/bpf/bpf_tracing.h
+@@ -206,10 +206,10 @@
+ #define __PT_PARM4_REG a3
+ #define __PT_PARM5_REG a4
+ #define __PT_RET_REG ra
+-#define __PT_FP_REG fp
++#define __PT_FP_REG s0
+ #define __PT_RC_REG a5
+ #define __PT_SP_REG sp
+-#define __PT_IP_REG epc
++#define __PT_IP_REG pc
  
- 	/* Automatically switch SERDES interface between SGMII and 2500-BaseX
- 	 * according to speed. Disable ANEG in 2500-BaseX mode.
--- 
-2.51.0
-
+ #endif
+ 
 
 
 
