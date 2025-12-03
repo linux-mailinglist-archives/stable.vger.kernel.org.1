@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F4192CA00B0
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:42:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4023FC9FA1F
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:46:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E1074302C358
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:37:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6F3943009550
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:40:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C22235BDDF;
-	Wed,  3 Dec 2025 16:37:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA26D30AD06;
+	Wed,  3 Dec 2025 15:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hRlTK6IS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S5hwlQcT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA780357720;
-	Wed,  3 Dec 2025 16:37:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8765F25BEE5;
+	Wed,  3 Dec 2025 15:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779859; cv=none; b=LRj3Th03NgV/OukjF/91f6a1FNz5s0n19OTpjmNXEKeisZ9H5SFp/WbiBOMnUJUcWOlclWqOuDou34kZuWXddFdF9tuX7P4mL+VfkDcGSiDdmickxhD4ngmzZHt0ukdwZCqBhGeWHMJpDO2oLlQ/e48W+dMmvoyzwsC3yctVfEU=
+	t=1764776427; cv=none; b=AXvkZ6O/42FLNsMQRK0UiV5TGr4D3vfprclLwFpMQofXTd1z1YuR69rrSJpQi+lg5KwXNwwModW994BbZu9ClwfgW1Zy+L+pZ9k/QnzExiHT9DQJd1r+aCDELe9posqzmd7Dgg/ZsikDW4FAzI242IPJfmLz/SJLrUrSVRVCz50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779859; c=relaxed/simple;
-	bh=y/JirUQ/lT668CX5M4LBJVkVVxzjiLVDcjI58zy2kBw=;
+	s=arc-20240116; t=1764776427; c=relaxed/simple;
+	bh=668ZlH4eIW7ct00rsrBkQd6eNoBB5C7tIiYwvG7C+NY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jarzPrH5ySBprIYgyfc10DsD8Sq9QShoA/FtRDDQ0J0pm8q6eiQPOErd+F8OkUbGWaA5lgAHd/XwR6uYMXp/LLQzC0JuAiSMCh9w4Vh/R8ksk1RK7DKcpO8pnHlGSyaHMkX2tzXvIEOmKxiWIDoi0f7zoKhg2+v9VcDXwNqJHqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hRlTK6IS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B898C4CEF5;
-	Wed,  3 Dec 2025 16:37:39 +0000 (UTC)
+	 MIME-Version; b=PCDvVq3IpF4lBi7We1WxFAv4K/qAsM1rNMzT7zDX1682RMxy6SfGoWXT415y06Adn4by6Gmeec6bxxSd6b81Gxazij2XvfY58RJX/lQdMSDR9e/RwZPQlmV5O/zBPioZnkKV2GVn6MTMpUg+rXu7BoKZZ51Uc3d4g9KGqYWNhWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S5hwlQcT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9640C4CEF5;
+	Wed,  3 Dec 2025 15:40:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779859;
-	bh=y/JirUQ/lT668CX5M4LBJVkVVxzjiLVDcjI58zy2kBw=;
+	s=korg; t=1764776427;
+	bh=668ZlH4eIW7ct00rsrBkQd6eNoBB5C7tIiYwvG7C+NY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hRlTK6ISY71iYKlnukkyMVMZHUh1gfYcuC23p0PI/IYy16PkOjJatbjES1UUZayqc
-	 hO3tHK21ZstOkSNpGVSGUD283nNBvQ1CyP2iypHF6RvEwnZVhaYFbyisM1JPG11AyQ
-	 4PimTAvcB9XIPZdqgxP2plLru7NiEEqMpHlVOLdo=
+	b=S5hwlQcT8exl6ZPdKNCocpLR50gWLCjVjVUoUNJQsgU4Z0c/d177jn0WqkSTNB9i/
+	 SNk6PlomkXnOBUMyn2xTERtsOmryRUYBgYgxYyG76dmF/2mXb6puFP13mfn7C+sR0e
+	 WX4fPlad1CrCvJZzVBj0bOnuqf1ziflXWyo18/Vk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Pauli Virtanen <pav@iki.fi>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 382/568] ASoC: cs4271: Fix regulator leak on probe failure
+Subject: [PATCH 5.10 180/300] Bluetooth: 6lowpan: reset link-local header on ipv6 recv path
 Date: Wed,  3 Dec 2025 16:26:24 +0100
-Message-ID: <20251203152454.687172211@linuxfoundation.org>
+Message-ID: <20251203152407.296077202@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,69 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Pauli Virtanen <pav@iki.fi>
 
-[ Upstream commit 6b6eddc63ce871897d3a5bc4f8f593e698aef104 ]
+[ Upstream commit 3b78f50918276ab28fb22eac9aa49401ac436a3b ]
 
-The probe function enables regulators at the beginning
-but fails to disable them in its error handling path.
-If any operation after enabling the regulators fails,
-the probe will exit with an error, leaving the regulators
-permanently enabled, which could lead to a resource leak.
+Bluetooth 6lowpan.c netdev has header_ops, so it must set link-local
+header for RX skb, otherwise things crash, eg. with AF_PACKET SOCK_RAW
 
-Add a proper error handling path to call regulator_bulk_disable()
-before returning an error.
+Add missing skb_reset_mac_header() for uncompressed ipv6 RX path.
 
-Fixes: 9a397f473657 ("ASoC: cs4271: add regulator consumer support")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/20251105062246.1955-1-vulab@iscas.ac.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
+For the compressed one, it is done in lowpan_header_decompress().
+
+Log: (BlueZ 6lowpan-tester Client Recv Raw - Success)
+------
+kernel BUG at net/core/skbuff.c:212!
+Call Trace:
+<IRQ>
+...
+packet_rcv (net/packet/af_packet.c:2152)
+...
+<TASK>
+__local_bh_enable_ip (kernel/softirq.c:407)
+netif_rx (net/core/dev.c:5648)
+chan_recv_cb (net/bluetooth/6lowpan.c:294 net/bluetooth/6lowpan.c:359)
+------
+
+Fixes: 18722c247023 ("Bluetooth: Enable 6LoWPAN support for BT LE devices")
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/cs4271.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ net/bluetooth/6lowpan.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/codecs/cs4271.c b/sound/soc/codecs/cs4271.c
-index 2021cf4426061..f6c9430612f53 100644
---- a/sound/soc/codecs/cs4271.c
-+++ b/sound/soc/codecs/cs4271.c
-@@ -594,17 +594,17 @@ static int cs4271_component_probe(struct snd_soc_component *component)
+diff --git a/net/bluetooth/6lowpan.c b/net/bluetooth/6lowpan.c
+index 7e698b0ac7bc7..32dc74115dcbc 100644
+--- a/net/bluetooth/6lowpan.c
++++ b/net/bluetooth/6lowpan.c
+@@ -317,6 +317,7 @@ static int recv_pkt(struct sk_buff *skb, struct net_device *dev,
+ 		local_skb->pkt_type = PACKET_HOST;
+ 		local_skb->dev = dev;
  
- 	ret = regcache_sync(cs4271->regmap);
- 	if (ret < 0)
--		return ret;
-+		goto err_disable_regulator;
++		skb_reset_mac_header(local_skb);
+ 		skb_set_transport_header(local_skb, sizeof(struct ipv6hdr));
  
- 	ret = regmap_update_bits(cs4271->regmap, CS4271_MODE2,
- 				 CS4271_MODE2_PDN | CS4271_MODE2_CPEN,
- 				 CS4271_MODE2_PDN | CS4271_MODE2_CPEN);
- 	if (ret < 0)
--		return ret;
-+		goto err_disable_regulator;
- 	ret = regmap_update_bits(cs4271->regmap, CS4271_MODE2,
- 				 CS4271_MODE2_PDN, 0);
- 	if (ret < 0)
--		return ret;
-+		goto err_disable_regulator;
- 	/* Power-up sequence requires 85 uS */
- 	udelay(85);
- 
-@@ -614,6 +614,10 @@ static int cs4271_component_probe(struct snd_soc_component *component)
- 				   CS4271_MODE2_MUTECAEQUB);
- 
- 	return 0;
-+
-+err_disable_regulator:
-+	regulator_bulk_disable(ARRAY_SIZE(cs4271->supplies), cs4271->supplies);
-+	return ret;
- }
- 
- static void cs4271_component_remove(struct snd_soc_component *component)
+ 		if (give_skb_to_upper(local_skb, dev) != NET_RX_SUCCESS) {
 -- 
 2.51.0
 
