@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-198488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61B90C9FAFD
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:53:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72C5BCA17E9
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:54:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8A79E301E5AF
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:45:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4D633306E024
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:48:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5707830FF26;
-	Wed,  3 Dec 2025 15:45:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 194CB34A788;
+	Wed,  3 Dec 2025 16:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sma23a/d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vnFd4n/G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75A3B309EFF;
-	Wed,  3 Dec 2025 15:45:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C32F434A3BC;
+	Wed,  3 Dec 2025 16:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776711; cv=none; b=oGC/oR/sZhkX/Qp4kxHa+aSscKJZiaugZyySdNWwdBIovbphqZEY5uqJwwp0a+XRrFsDJlR4iv//9hicoNtb3Hl+xmx5qWXf7euCBcXefOuHUqG5HLfYVRkieya18Abn3xhfBAHTktC0K8t9uKaCoF9ocgOdScKLvIfB8FBzSgw=
+	t=1764778454; cv=none; b=s4NF+NjHg8HGFI1842M8IipaEvPOnWWXybMk+Izb3RphyuU67aLVQFS2lORyhg18s8bSX/77okjA5QJLat3BgOYcsf7PYyp0I8lqpKFFSGfHwYZspvaiOtlGDjJAd1ehm9B2wI3l8s/4hZ958tpsrHX5jfOvqDXCKYN6sOrQYBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776711; c=relaxed/simple;
-	bh=zJrBVzJJj1J6bsd19bVy4Q+sv1pEguUSLTyYMu4j+II=;
+	s=arc-20240116; t=1764778454; c=relaxed/simple;
+	bh=Og1ykeIFP4sKskX61HLXzr0/7hOrFbipzc4i6S1U32M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SXBKqRi2uFbsWLhUNjAHy91fYk5nxyDbuXOCJigBkZERFQoqO8OX9a0yBj5UAnPix48m5pjHuc/gxxLg/wp5qqoSEb6aG3t8KeWQM8xRJ4VvMGH97hIsFFPNbSsegqeeeEJCr4KBo8gRtucnbj/FbAVGyhhBnjsCf9tBSjXPfmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sma23a/d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAEA5C4CEF5;
-	Wed,  3 Dec 2025 15:45:10 +0000 (UTC)
+	 MIME-Version; b=Mc8DcT8ZwYWwrZ7phoT+dluQp1YHuhSPWoooThB514Wqs52kSF+AaaJW4QUGWQeInXkgOoNYl2tkKPlL9gl+U//bct3bjIVRDsd6j6Rcs0/q05MoKIfD+TGWNpXpa2RqL+ypf3uRiJqCJx6+r58hez98RxKIfWR3yTkti2KmBeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vnFd4n/G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B23FC4CEF5;
+	Wed,  3 Dec 2025 16:14:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776711;
-	bh=zJrBVzJJj1J6bsd19bVy4Q+sv1pEguUSLTyYMu4j+II=;
+	s=korg; t=1764778454;
+	bh=Og1ykeIFP4sKskX61HLXzr0/7hOrFbipzc4i6S1U32M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sma23a/dHZ3XhZbDkN89K9z0ytTWMHZCZYJJ8Hu8hSjEE11AvnidiCa6BTclZLe4o
-	 CvVvJvMN3Nk3sYicYL8f34RtURj8m5Nvtammw/qmGMVZJvFdJF8gk7rJYK+LWe0oAV
-	 pdIXRmQt6U8Khj3ZwXrwjwamUR53QK3kxZdVbCDo=
+	b=vnFd4n/GTc+UK7icvhQWLG8iEW5M3eqaviL3w2qhROADst7cP3aW6UqFqVyjnKR7p
+	 X30erakMM/Eqs5svdsCIyL2INlGz9mh01pPC3Q46r6u+kI29eztljdwvs7x5qBmgCq
+	 X7BjXiLb9/gFGfLHMe6vCKrsv7Kcq4tDxgWOC6ac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Song Liu <song@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.10 264/300] Revert "perf/x86: Always store regs->ip in perf_callchain_kernel()"
+	Jay Vosburgh <jv@jvosburgh.net>,
+	Breno Leitao <leitao@debian.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 318/392] net: netpoll: fix incorrect refcount handling causing incorrect cleanup
 Date: Wed,  3 Dec 2025 16:27:48 +0100
-Message-ID: <20251203152410.416857802@linuxfoundation.org>
+Message-ID: <20251203152425.861478644@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: Breno Leitao <leitao@debian.org>
 
-commit 6d08340d1e354787d6c65a8c3cdd4d41ffb8a5ed upstream.
+[ Upstream commit 49c8d2c1f94cc2f4d1a108530d7ba52614b874c2 ]
 
-This reverts commit 83f44ae0f8afcc9da659799db8693f74847e66b3.
+commit efa95b01da18 ("netpoll: fix use after free") incorrectly
+ignored the refcount and prematurely set dev->npinfo to NULL during
+netpoll cleanup, leading to improper behavior and memory leaks.
 
-Currently we store initial stacktrace entry twice for non-HW ot_regs, which
-means callers that fail perf_hw_regs(regs) condition in perf_callchain_kernel.
+Scenario causing lack of proper cleanup:
 
-It's easy to reproduce this bpftrace:
+1) A netpoll is associated with a NIC (e.g., eth0) and netdev->npinfo is
+   allocated, and refcnt = 1
+   - Keep in mind that npinfo is shared among all netpoll instances. In
+     this case, there is just one.
 
-  # bpftrace -e 'tracepoint:sched:sched_process_exec { print(kstack()); }'
-  Attaching 1 probe...
+2) Another netpoll is also associated with the same NIC and
+   npinfo->refcnt += 1.
+   - Now dev->npinfo->refcnt = 2;
+   - There is just one npinfo associated to the netdev.
 
-        bprm_execve+1767
-        bprm_execve+1767
-        do_execveat_common.isra.0+425
-        __x64_sys_execve+56
-        do_syscall_64+133
-        entry_SYSCALL_64_after_hwframe+118
+3) When the first netpolls goes to clean up:
+   - The first cleanup succeeds and clears np->dev->npinfo, ignoring
+     refcnt.
+     - It basically calls `RCU_INIT_POINTER(np->dev->npinfo, NULL);`
+   - Set dev->npinfo = NULL, without proper cleanup
+   - No ->ndo_netpoll_cleanup() is either called
 
-When perf_callchain_kernel calls unwind_start with first_frame, AFAICS
-we do not skip regs->ip, but it's added as part of the unwind process.
-Hence reverting the extra perf_callchain_store for non-hw regs leg.
+4) Now the second target tries to clean up
+   - The second cleanup fails because np->dev->npinfo is already NULL.
+     * In this case, ops->ndo_netpoll_cleanup() was never called, and
+       the skb pool is not cleaned as well (for the second netpoll
+       instance)
+  - This leaks npinfo and skbpool skbs, which is clearly reported by
+    kmemleak.
 
-I was not able to bisect this, so I'm not really sure why this was needed
-in v5.2 and why it's not working anymore, but I could see double entries
-as far as v5.10.
+Revert commit efa95b01da18 ("netpoll: fix use after free") and adds
+clarifying comments emphasizing that npinfo cleanup should only happen
+once the refcount reaches zero, ensuring stable and correct netpoll
+behavior.
 
-I did the test for both ORC and framepointer unwind with and without the
-this fix and except for the initial entry the stacktraces are the same.
-
-Acked-by: Song Liu <song@kernel.org>
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/r/20251104215405.168643-2-jolsa@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Cc: <stable@vger.kernel.org> # 3.17.x
+Cc: Jay Vosburgh <jv@jvosburgh.net>
+Fixes: efa95b01da18 ("netpoll: fix use after free")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251107-netconsole_torture-v10-1-749227b55f63@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/core.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ net/core/netpoll.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -2554,13 +2554,13 @@ perf_callchain_kernel(struct perf_callch
- 		return;
- 	}
+--- a/net/core/netpoll.c
++++ b/net/core/netpoll.c
+@@ -851,6 +851,10 @@ void __netpoll_cleanup(struct netpoll *n
  
--	if (perf_callchain_store(entry, regs->ip))
--		return;
--
--	if (perf_hw_regs(regs))
-+	if (perf_hw_regs(regs)) {
-+		if (perf_callchain_store(entry, regs->ip))
-+			return;
- 		unwind_start(&state, current, regs, NULL);
--	else
-+	} else {
- 		unwind_start(&state, current, NULL, (void *)regs->sp);
+ 	synchronize_srcu(&netpoll_srcu);
+ 
++	/* At this point, there is a single npinfo instance per netdevice, and
++	 * its refcnt tracks how many netpoll structures are linked to it. We
++	 * only perform npinfo cleanup when the refcnt decrements to zero.
++	 */
+ 	if (refcount_dec_and_test(&npinfo->refcnt)) {
+ 		const struct net_device_ops *ops;
+ 
+@@ -860,8 +864,7 @@ void __netpoll_cleanup(struct netpoll *n
+ 
+ 		RCU_INIT_POINTER(np->dev->npinfo, NULL);
+ 		call_rcu(&npinfo->rcu, rcu_cleanup_netpoll_info);
+-	} else
+-		RCU_INIT_POINTER(np->dev->npinfo, NULL);
 +	}
+ }
+ EXPORT_SYMBOL_GPL(__netpoll_cleanup);
  
- 	for (; !unwind_done(&state); unwind_next_frame(&state)) {
- 		addr = unwind_get_return_address(&state);
 
 
 
