@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-199332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5786ECA102C
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:33:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DBFACA1086
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:38:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 82E50300997B
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:33:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4BF9A32642BC
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:38:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2160369213;
-	Wed,  3 Dec 2025 16:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E5F534B185;
+	Wed,  3 Dec 2025 16:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mQj97/R6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ECdh1V1x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D99C18A6A7;
-	Wed,  3 Dec 2025 16:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09DE234AB14;
+	Wed,  3 Dec 2025 16:01:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779445; cv=none; b=j2afBkyEFDNXiOBoxyRIe2LMK1VlX5OMrDfEVL19uXnZN5LBIxyvc8pTNHSDd7LMuQVEOBJ5VbXmSOfeYfSVReuzGMbCsidgnGz0PRlGxMd5w5wYFJl/Sl9EY3ZtyPmV003+K74XNtJ/R8I/CKBL1hXhWojdy58id7o9doAMoTE=
+	t=1764777677; cv=none; b=djT2B0WkF2XFrSH0dKMyivhaSw53GfHFh1vor7on8oXX7ISg47wWfrk1YNa/wi3xoRq3izuR07uPqUkFEFtmiKcfZVnBiAB6nVkfmFOHzaTo9QPyL2VOaIC6hO2emM6t9dcAJ4lPF+8aVVhhDp5PGty+8zgbbXtDvn0QegqdkFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779445; c=relaxed/simple;
-	bh=WFnmQ66MIAHrRaHUZEOD7CKXjNmEBNYP3fgVYDIFkg8=;
+	s=arc-20240116; t=1764777677; c=relaxed/simple;
+	bh=q70X19hMI87eSTfZ20rhIQQCLc13EDPaxus4TB/QeyA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vg0PCbnPLO4luAySQCjSwtrxo13DopLPrDnSAi5pyuTqmYK1+sR4R4zmPrxx/dyYcLbhUUaY/v6UEaiWMNKaLn47tdYwTz9sgJj7uto1jsmwsPox+RXogUMkS7lAleKLk7dAoZa8039TDxpPWcSlVpiN7/Bwr7o/N8547dPOoz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mQj97/R6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98184C4CEF5;
-	Wed,  3 Dec 2025 16:30:44 +0000 (UTC)
+	 MIME-Version; b=f0SYxzcv9elktgI1nwIQSYwXQKeGle24Cl++eBKJzN3Ez4zI7tsWEzZTtQPMDN4aOUOOEFD6ZE+ekyrI3x02WsYDMqADqu4aRYAvZvC343lboe3v/FmiCayDpk8hSuUgYIFZNldcHcR8WIAeShfNfIIqOuu0vOFOYkOZizL8QMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ECdh1V1x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C51DC4CEF5;
+	Wed,  3 Dec 2025 16:01:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779445;
-	bh=WFnmQ66MIAHrRaHUZEOD7CKXjNmEBNYP3fgVYDIFkg8=;
+	s=korg; t=1764777676;
+	bh=q70X19hMI87eSTfZ20rhIQQCLc13EDPaxus4TB/QeyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mQj97/R6tBNb4iTEnGxptRyrmM5Jg9u/HNfzFnVdBw6ojcJ0pJ+6DaBnsbIEm+zhN
-	 TxmJyE/Vv2uQU7Twi3lZBj0PXxL+X2JDqPdN6IUaH/5L6F0mudf1/YH86J9LNQlYEu
-	 DH5Ii7j4n8wvmbDkx0TT9/ikNZGnONoZ0KJHZhFI=
+	b=ECdh1V1x90Zp5J3cs8ZLRQmO7NEwonVoKTdAFDIp2o2PpKRgXubob3Imf9FBMPv0y
+	 BVcJuTdsN65Fytw9oomAdqtKU+u+EVm0uv+ozVNfP/4gjU1IX+lCFr0GZv1yGP/C2p
+	 6AxV4AldLB3hVRIsUlUQJK38zkq+gUW99IhIhE+Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Julian Sun <sunjunchao@bytedance.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Christoph Paasch <cpaasch@openai.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 260/568] ext4: increase IO priority of fastcommit
+Subject: [PATCH 5.15 112/392] net: When removing nexthops, dont call synchronize_net if it is not necessary
 Date: Wed,  3 Dec 2025 16:24:22 +0100
-Message-ID: <20251203152450.241376076@linuxfoundation.org>
+Message-ID: <20251203152418.220219713@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +64,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Julian Sun <sunjunchao@bytedance.com>
+From: Christoph Paasch <cpaasch@openai.com>
 
-[ Upstream commit 46e75c56dfeafb6756773b71cabe187a6886859a ]
+[ Upstream commit b0ac6d3b56a2384db151696cfda2836a8a961b6d ]
 
-The following code paths may result in high latency or even task hangs:
-   1. fastcommit io is throttled by wbt.
-   2. jbd2_fc_wait_bufs() might wait for a long time while
-JBD2_FAST_COMMIT_ONGOING is set in journal->flags, and then
-jbd2_journal_commit_transaction() waits for the
-JBD2_FAST_COMMIT_ONGOING bit for a long time while holding the write
-lock of j_state_lock.
-   3. start_this_handle() waits for read lock of j_state_lock which
-results in high latency or task hang.
+When removing a nexthop, commit
+90f33bffa382 ("nexthops: don't modify published nexthop groups") added a
+call to synchronize_rcu() (later changed to _net()) to make sure
+everyone sees the new nexthop-group before the rtnl-lock is released.
 
-Given the fact that ext4_fc_commit() already modifies the current
-process' IO priority to match that of the jbd2 thread, it should be
-reasonable to match jbd2's IO submission flags as well.
+When one wants to delete a large number of groups and nexthops, it is
+fastest to first flush the groups (ip nexthop flush groups) and then
+flush the nexthops themselves (ip -6 nexthop flush). As that way the
+groups don't need to be rebalanced.
 
-Suggested-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Julian Sun <sunjunchao@bytedance.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Message-ID: <20250827121812.1477634-1-sunjunchao@bytedance.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+However, `ip -6 nexthop flush` will still take a long time if there is
+a very large number of nexthops because of the call to
+synchronize_net(). Now, if there are no more groups, there is no point
+in calling synchronize_net(). So, let's skip that entirely by checking
+if nh->grp_list is empty.
+
+This gives us a nice speedup:
+
+BEFORE:
+=======
+
+$ time sudo ip -6 nexthop flush
+Dump was interrupted and may be inconsistent.
+Flushed 2097152 nexthops
+
+real	1m45.345s
+user	0m0.001s
+sys	0m0.005s
+
+$ time sudo ip -6 nexthop flush
+Dump was interrupted and may be inconsistent.
+Flushed 4194304 nexthops
+
+real	3m10.430s
+user	0m0.002s
+sys	0m0.004s
+
+AFTER:
+======
+
+$ time sudo ip -6 nexthop flush
+Dump was interrupted and may be inconsistent.
+Flushed 2097152 nexthops
+
+real	0m17.545s
+user	0m0.003s
+sys	0m0.003s
+
+$ time sudo ip -6 nexthop flush
+Dump was interrupted and may be inconsistent.
+Flushed 4194304 nexthops
+
+real	0m35.823s
+user	0m0.002s
+sys	0m0.004s
+
+Signed-off-by: Christoph Paasch <cpaasch@openai.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20250816-nexthop_dump-v2-2-491da3462118@openai.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/fast_commit.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/nexthop.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/ext4/fast_commit.c b/fs/ext4/fast_commit.c
-index e2062cd4adadf..94f90032ca561 100644
---- a/fs/ext4/fast_commit.c
-+++ b/fs/ext4/fast_commit.c
-@@ -675,7 +675,7 @@ void ext4_fc_track_range(handle_t *handle, struct inode *inode, ext4_lblk_t star
- 
- static void ext4_fc_submit_bh(struct super_block *sb, bool is_tail)
+diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
+index 4a8fdaae6bf21..9bd72526000c4 100644
+--- a/net/ipv4/nexthop.c
++++ b/net/ipv4/nexthop.c
+@@ -1811,6 +1811,12 @@ static void remove_nexthop_from_groups(struct net *net, struct nexthop *nh,
  {
--	blk_opf_t write_flags = REQ_SYNC;
-+	blk_opf_t write_flags = JBD2_JOURNAL_REQ_FLAGS;
- 	struct buffer_head *bh = EXT4_SB(sb)->s_fc_bh;
+ 	struct nh_grp_entry *nhge, *tmp;
  
- 	/* Add REQ_FUA | REQ_PREFLUSH only its tail */
++	/* If there is nothing to do, let's avoid the costly call to
++	 * synchronize_net()
++	 */
++	if (list_empty(&nh->grp_list))
++		return;
++
+ 	list_for_each_entry_safe(nhge, tmp, &nh->grp_list, nh_list)
+ 		remove_nh_grp_entry(net, nhge, nlinfo);
+ 
 -- 
 2.51.0
 
