@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-199251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CB74CA0D33
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:13:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7635ECA17D1
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:53:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9B67932F5312
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:09:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B5781306635C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:48:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 926E135CB81;
-	Wed,  3 Dec 2025 16:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BF0A336EE3;
+	Wed,  3 Dec 2025 16:24:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2s9u6uCJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZTr1Zrg/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 442C435CB7D;
-	Wed,  3 Dec 2025 16:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0259315D36;
+	Wed,  3 Dec 2025 16:24:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779182; cv=none; b=HoNH/K5tMnGov++0Uln9FnMCW6MGbsktcR13wunFmR6S3OaM/W4h2S45e46TXhH15iHEv6fElomsBQvaLYwgVu9up9Z8sje6O74phbT5qI8FeJT2czOKkDMX4IF7won6jOq5yTmp6phlaqjZuLeS+saEOfOulicnmNrosdmwWXc=
+	t=1764779069; cv=none; b=i/rKRFA+/gdOpWItxAh3mCV4Dk+1AGU+4dSeqYoJ5TdW364AbfRRJ2fGv/+GeAWApkf2ke4BN/qO6xTwHE3NSouqVgkPN2LCaookwWl+S4jm9ji9h6v/RndB9ddQOq4FkKiITKJ/5RhwAue6pKT4BvpUmu9bJf3o8PfLCwrCeZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779182; c=relaxed/simple;
-	bh=P2pQh9dBbm4W0NBUuhceoEcLBbZvrryrF5+6T7Vtc9s=;
+	s=arc-20240116; t=1764779069; c=relaxed/simple;
+	bh=vU239JGvbXPP3L1oM3sST/fm9bh1KHdcCUBRVICXfB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=joFTmnH6VT0V87uYZ5PaL09g1AoZCI72gdHYFlgzQicviBwwMzt+eE0Rv7RGwM6HIP4Ef9d3uj6LsryX+6yhXvAVI8HKYtPlxRsbYCaKB8/qUAefiZ/fzg9wO/3wheVq6SRfMueU2hMVPbjKhGx8QugPGFPcoSQ5afrbRCnFt4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2s9u6uCJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4A10C4CEF5;
-	Wed,  3 Dec 2025 16:26:21 +0000 (UTC)
+	 MIME-Version; b=BCHO1leDIRhJvdIPyi9fhL38w54jVhdTvSBzxhBTd5mDhnp7hSIY7BBXGNs8BZR7xevN8/IbY+LLEQ/07UIl9J/nZRIVrGERzecACSjAYjxdUsB42w8142t/Bj4l9bC9hZf8LhR8Sk4FPfMRM7qbtcoafDDw1dVHnMyJREVvBvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZTr1Zrg/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02800C4CEF5;
+	Wed,  3 Dec 2025 16:24:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779182;
-	bh=P2pQh9dBbm4W0NBUuhceoEcLBbZvrryrF5+6T7Vtc9s=;
+	s=korg; t=1764779068;
+	bh=vU239JGvbXPP3L1oM3sST/fm9bh1KHdcCUBRVICXfB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2s9u6uCJjbpVYbXa9TxkSJLLN2ki4ICjPtfY2uh/W++mGMv7WJ0zlT+igbyr4bqP+
-	 xH3XMLFYlhYTcIEunEj4+KlWhf/te5XH0ctg8gzxQcDuHDWZMRASkt6w99OY0MnmCS
-	 J2W0QHfod/qjX8eoq0O5TAr9lFoZxrHFOVdHYjtI=
+	b=ZTr1Zrg/zh4jo5WQ2BbTNsReuto3b6UBUEfTkMkYqRuxKsPWz55v8FCe9tkIktO0y
+	 ukMp7apJ5L8zgie24iyCi+Ukz6DBakLSLqWooFqqn+ttzh/EFL1Qi6syL2O+V/P42q
+	 qs2/J3C9UqOGNEUo1nRsCVr63274TD5x8uo6/dpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seyediman Seyedarab <ImanDevel@gmail.com>,
-	Danilo Krummrich <dakr@kernel.org>,
+	Marcos Del Sol Vives <marcos@orca.pet>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 137/568] drm/nouveau: replace snprintf() with scnprintf() in nvkm_snprintbf()
-Date: Wed,  3 Dec 2025 16:22:19 +0100
-Message-ID: <20251203152445.743713875@linuxfoundation.org>
+Subject: [PATCH 6.1 138/568] PCI: Disable MSI on RDC PCI to PCIe bridges
+Date: Wed,  3 Dec 2025 16:22:20 +0100
+Message-ID: <20251203152445.780264492@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
 References: <20251203152440.645416925@linuxfoundation.org>
@@ -64,39 +64,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Seyediman Seyedarab <imandevel@gmail.com>
+From: Marcos Del Sol Vives <marcos@orca.pet>
 
-[ Upstream commit 6510b62fe9303aaf48ff136ff69186bcfc32172d ]
+[ Upstream commit ebc7086b39e5e4f3d3ca82caaea20538c9b62d42 ]
 
-snprintf() returns the number of characters that *would* have been
-written, which can overestimate how much you actually wrote to the
-buffer in case of truncation. That leads to 'data += this' advancing
-the pointer past the end of the buffer and size going negative.
+RDC PCI to PCIe bridges, present on Vortex86DX3 and Vortex86EX2 SoCs, do
+not support MSIs. If enabled, interrupts generated by PCIe devices never
+reach the processor.
 
-Switching to scnprintf() prevents potential buffer overflows and ensures
-consistent behavior when building the output string.
+I have contacted the manufacturer (DM&P) and they confirmed that PCI MSIs
+need to be disabled for them.
 
-Signed-off-by: Seyediman Seyedarab <ImanDevel@gmail.com>
-Link: https://lore.kernel.org/r/20250724195913.60742-1-ImanDevel@gmail.com
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Marcos Del Sol Vives <marcos@orca.pet>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Link: https://patch.msgid.link/20250705233209.721507-1-marcos@orca.pet
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nvkm/core/enum.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/quirks.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/nouveau/nvkm/core/enum.c b/drivers/gpu/drm/nouveau/nvkm/core/enum.c
-index b9581feb24ccb..a23b40b27b81b 100644
---- a/drivers/gpu/drm/nouveau/nvkm/core/enum.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/core/enum.c
-@@ -44,7 +44,7 @@ nvkm_snprintbf(char *data, int size, const struct nvkm_bitfield *bf, u32 value)
- 	bool space = false;
- 	while (size >= 1 && bf->name) {
- 		if (value & bf->mask) {
--			int this = snprintf(data, size, "%s%s",
-+			int this = scnprintf(data, size, "%s%s",
- 					    space ? " " : "", bf->name);
- 			size -= this;
- 			data += this;
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index f4932d2f9f973..0772ce28cba41 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -2604,6 +2604,7 @@ static void quirk_disable_msi(struct pci_dev *dev)
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_8131_BRIDGE, quirk_disable_msi);
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_VIA, 0xa238, quirk_disable_msi);
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x5a3f, quirk_disable_msi);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_RDC, 0x1031, quirk_disable_msi);
+ 
+ /*
+  * The APC bridge device in AMD 780 family northbridges has some random
 -- 
 2.51.0
 
