@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-199437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AC39C9FFEB
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:36:45 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6913C9FCE3
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:07:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7C5C03000900
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:36:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 788633000B05
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:06:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1800635C185;
-	Wed,  3 Dec 2025 16:36:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3413434F494;
+	Wed,  3 Dec 2025 16:06:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="POS4d9Re"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XY1ZBKRm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86CA2FD1C5;
-	Wed,  3 Dec 2025 16:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3F98313546;
+	Wed,  3 Dec 2025 16:06:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779798; cv=none; b=txz/FGd6B2rQnR8b3zi6x+sefzQ7VNpeiHQRt0aavIMUtRmSXgI6qaWnAC/+rHx8DVvkBgaZSsmVy7r2vPhcE3Vv8dLiHWNA3S3aPM1bN9yYSg4t003gkuOuYkSSDJ7kdAkWYRMg56jWZjZ8r+jiaQ5ChxRHrj7s9cE4Csd5j5g=
+	t=1764778017; cv=none; b=eBOzjVHB+84P7nqr91dJSnIstcJrnXV0uOCP+bmUwQbIyK2ZHfIWwbuRvhrdv2s4PDoR/on+itV+XMsna4RmQXDWQmtGFGRAHJPYARPYFd9cvAuWDah1iIPDSWtbQ2bPmID9FJiCL0U0NpDv1xqibmQS5LmwDAw5bi3n2J+nbmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779798; c=relaxed/simple;
-	bh=4MLeSIG2iWejoMI+Lt+1ix5xqm5PLy+qhs7qn5johbA=;
+	s=arc-20240116; t=1764778017; c=relaxed/simple;
+	bh=Tw4bw4izyiK915/P0ZXEXx6IXDW6W1kPa8VrlLFJXJs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CX1Pu+OMOz1uihsWxIEfN7+iGb4880U23d72DpYebd/Bt5FSrjvvpqMKSxT/we6JPuw/IuUNxvBUVAEUCtl0w95NcU4HkNqxhYYo14ld+gkzUpI+CpZHuknxDIYxO1+CyVui4okJTBpGM1D70UnIQZ4Lec8d+1G8cV3bOkKyGhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=POS4d9Re; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 507AAC4CEF5;
-	Wed,  3 Dec 2025 16:36:38 +0000 (UTC)
+	 MIME-Version; b=SaWckPsjQB2EKqzxmeoS3+2aHx6ovAiix2IG5A7I6QrQ4uUuzxD8a902mqqgL56W7RQ8jwU2tsEAH3iAVgOTQE4ctokInRsj6Lm//wSoIiCxMIpIknQWBecKg2sV6VlQ+ZBEeqKAGCy32Z5RR3ZAS3vznIWHXnPheanSSmZuMYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XY1ZBKRm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A759C4CEF5;
+	Wed,  3 Dec 2025 16:06:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779798;
-	bh=4MLeSIG2iWejoMI+Lt+1ix5xqm5PLy+qhs7qn5johbA=;
+	s=korg; t=1764778016;
+	bh=Tw4bw4izyiK915/P0ZXEXx6IXDW6W1kPa8VrlLFJXJs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=POS4d9ReOPWuKV+K4ouUlkA5NbndL9/1XHRiv5XwMOLoy+mfzjWIJWBO3l3ssts8U
-	 D/b+m2iFajGWEACT3rDNGoS5Z5n8K9EzG2WZrJJwzdcltMTOWTkkU8oXSoz9MYjXOH
-	 h/SVtMREsCjwoez/7TI1OtKAiwHj3p629LmKpI00=
+	b=XY1ZBKRm07laaFq6HpASRpXXBDilYOmKenLvDyS07NvZCJEInQ5XomNaCfa0LwZAz
+	 BAqU98XPRMdHzFh6PQsi6rTyp6kbb8ZwMC5LjhkTFls6uT5AOw69FsfrkHHlq/piuV
+	 Jtmk6tI3Ayz/XzINiB8pIMLhjQ13VesfeKnYvwwA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com,
-	Ranganath V N <vnranganath.20@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 365/568] net: sched: act_ife: initialize struct tc_ife to fix KMSAN kernel-infoleak
-Date: Wed,  3 Dec 2025 16:26:07 +0100
-Message-ID: <20251203152454.068556147@linuxfoundation.org>
+Subject: [PATCH 5.15 218/392] net: dsa: b53: stop reading ARL entries if search is done
+Date: Wed,  3 Dec 2025 16:26:08 +0100
+Message-ID: <20251203152422.205209517@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ranganath V N <vnranganath.20@gmail.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit ce50039be49eea9b4cd8873ca6eccded1b4a130a ]
+[ Upstream commit 0be04b5fa62a82a9929ca261f6c9f64a3d0a28da ]
 
-Fix a KMSAN kernel-infoleak detected  by the syzbot .
+The switch clears the ARL_SRCH_STDN bit when the search is done, i.e. it
+finished traversing the ARL table.
 
-[net?] KMSAN: kernel-infoleak in __skb_datagram_iter
+This means that there will be no valid result, so we should not attempt
+to read and process any further entries.
 
-In tcf_ife_dump(), the variable 'opt' was partially initialized using a
-designatied initializer. While the padding bytes are reamined
-uninitialized. nla_put() copies the entire structure into a
-netlink message, these uninitialized bytes leaked to userspace.
+We only ever check the validity of the entries for 4 ARL bin chips, and
+only after having passed the first entry to the b53_fdb_copy().
 
-Initialize the structure with memset before assigning its fields
-to ensure all members and padding are cleared prior to beign copied.
+This means that we always pass an invalid entry at the end to the
+b53_fdb_copy(). b53_fdb_copy() does check the validity though before
+passing on the entry, so it never gets passed on.
 
-This change silences the KMSAN report and prevents potential information
-leaks from the kernel memory.
+On < 4 ARL bin chips, we will even continue reading invalid entries
+until we reach the result limit.
 
-This fix has been tested and validated by syzbot. This patch closes the
-bug reported at the following syzkaller link and ensures no infoleak.
-
-Reported-by: syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=0c85cae3350b7d486aee
-Tested-by: syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com
-Fixes: ef6980b6becb ("introduce IFE action")
-Signed-off-by: Ranganath V N <vnranganath.20@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20251109091336.9277-3-vnranganath.20@gmail.com
-Acked-by: Cong Wang <xiyou.wangcong@gmail.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 1da6df85c6fb ("net: dsa: b53: Implement ARL add/del/dump operations")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20251102100758.28352-3-jonas.gorski@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/act_ife.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/net/dsa/b53/b53_common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sched/act_ife.c b/net/sched/act_ife.c
-index 41d63b33461dc..a4505b926a1e4 100644
---- a/net/sched/act_ife.c
-+++ b/net/sched/act_ife.c
-@@ -643,13 +643,15 @@ static int tcf_ife_dump(struct sk_buff *skb, struct tc_action *a, int bind,
- 	unsigned char *b = skb_tail_pointer(skb);
- 	struct tcf_ife_info *ife = to_ife(a);
- 	struct tcf_ife_params *p;
--	struct tc_ife opt = {
--		.index = ife->tcf_index,
--		.refcnt = refcount_read(&ife->tcf_refcnt) - ref,
--		.bindcnt = atomic_read(&ife->tcf_bindcnt) - bind,
--	};
-+	struct tc_ife opt;
- 	struct tcf_t t;
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 228b470d13a0f..d5ed733c0c979 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -1802,7 +1802,7 @@ static int b53_arl_search_wait(struct b53_device *dev)
+ 	do {
+ 		b53_read8(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_CTL, &reg);
+ 		if (!(reg & ARL_SRCH_STDN))
+-			return 0;
++			return -ENOENT;
  
-+	memset(&opt, 0, sizeof(opt));
-+
-+	opt.index = ife->tcf_index,
-+	opt.refcnt = refcount_read(&ife->tcf_refcnt) - ref,
-+	opt.bindcnt = atomic_read(&ife->tcf_bindcnt) - bind,
-+
- 	spin_lock_bh(&ife->tcf_lock);
- 	opt.action = ife->tcf_action;
- 	p = rcu_dereference_protected(ife->params,
+ 		if (reg & ARL_SRCH_VLID)
+ 			return 0;
 -- 
 2.51.0
 
