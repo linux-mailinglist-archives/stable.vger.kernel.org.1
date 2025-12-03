@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1D44C9F8D8
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:40:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B785BCA15D4
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:26:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A382D3014D80
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:36:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DFB60301276B
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:03:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EF853128C6;
-	Wed,  3 Dec 2025 15:35:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 637D434DB6F;
+	Wed,  3 Dec 2025 16:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bzXUdl6+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hEQEi6yb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAF3F3090C6;
-	Wed,  3 Dec 2025 15:35:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E4E234DB6D;
+	Wed,  3 Dec 2025 16:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776153; cv=none; b=ZqjV3TVrObYGJe+nXkwHZ0xFqY6RmQ1yY704xLj2znnlfVErpd9bbC1YbGLU3Ck1aesr81a7aJB3zU4nFLpOuR39z2gmX2HdV3JLndWqaH5cmuTtXaMSVc+/CFhE/BFdoBiQqyQix5HqdjS194WmWaU9EKVX4dq+E4ETAmT8mw4=
+	t=1764777799; cv=none; b=nooPXpzOL2jGJulB946zvB6Wvi24d1w84xj3QmeNMTzvGAh/P+r8ucmQAFdBmEz5orcJA5UebSQ7XPCnqAdRf69FHCNFrUO1i+tBFEWg+XIMRfqg66LLE8wN573lFS6SoZwWR79bouYcVz8Cjnl69GPCSKKoTmVN1O9cWAl4vg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776153; c=relaxed/simple;
-	bh=2/bMq2ETbTyl2xGre8AZ65yZquJcfM9q8uiVZp1mAr4=;
+	s=arc-20240116; t=1764777799; c=relaxed/simple;
+	bh=zsNya3/5YHwK6CiakfImrZzY+cRwMD3M5pPmvtuwSRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Br0qaohC3ZJ0d7/oP1zYW07V+SVtbBSmMqgVWU/SPcMF4NfLTVuUnsa6lnBrzErB82CrNdyghLWKIbH2MBgSOx5W6PhunDj2AggJe1hE6/fHs5DzsIZG55NkJXiVxaW51OLqP855DmGfIHnogyL/c065BvQsWI0JvYBhszKQY98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bzXUdl6+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 260F5C4CEF5;
-	Wed,  3 Dec 2025 15:35:52 +0000 (UTC)
+	 MIME-Version; b=BiBiK47ZnNRqBXxFoRK/bnFZFxl4P+MCbRNeHrigfyoNunjj9m+XY6cA0JmU09ST4p/QtusOieopydx2pYHktBGhFsRvh99VggGzQVlGOhgzGZ4su3MBcTEnL4zFSttKc3XNqx9rphrYjR6ANmlRJtZzqaLu/x3LzbzfljBTLPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hEQEi6yb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A1FFC4CEF5;
+	Wed,  3 Dec 2025 16:03:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776153;
-	bh=2/bMq2ETbTyl2xGre8AZ65yZquJcfM9q8uiVZp1mAr4=;
+	s=korg; t=1764777799;
+	bh=zsNya3/5YHwK6CiakfImrZzY+cRwMD3M5pPmvtuwSRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bzXUdl6+A0k0CUXSnkgLTLqk44j1nlHQ1LHxBESu4oAJ/q05oH+sssePSwhc1bNSp
-	 rm2xfsNpXEiS9kjFsYztxJhWYxfQQcxugPiZ2IdHEmFTIhzJCxqq6CT8bBKA+SyYEg
-	 Y2Jb40zaTVG5LuMvJNkP4UWjIU7dKNNOmx1HAezQ=
+	b=hEQEi6yb6eIdP+XLnIxsPL4TD53GPn8mdQus9Sfuk8Rs2c+9VYHT4sX6ZHpedHBi9
+	 alSQ+SPVbP/1zjnx3nYUYZG6+yjNB0FIXFs5imCTpC+toemHs6Ja58iSuWGYCvLDGR
+	 +JwNBhj4090EWmWZGt7hXAIDIJkftuT2oiE3kyug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chelsy Ratnawat <chelsyratnawat2001@gmail.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Daniel Palmer <daniel@thingy.jp>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 095/300] media: fix uninitialized symbol warnings
-Date: Wed,  3 Dec 2025 16:24:59 +0100
-Message-ID: <20251203152404.143835612@linuxfoundation.org>
+Subject: [PATCH 5.15 150/392] eth: 8139too: Make 8139TOO_PIO depend on !NO_IOPORT_MAP
+Date: Wed,  3 Dec 2025 16:25:00 +0100
+Message-ID: <20251203152419.603804708@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,115 +60,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
+From: Daniel Palmer <daniel@thingy.jp>
 
-[ Upstream commit b4c441310c3baaa7c39a5457e305ca93c7a0400d ]
+[ Upstream commit 43adad382e1fdecabd2c4cd2bea777ef4ce4109e ]
 
-Initialize variables to fix these smatch warnings
-drivers/media/i2c/ir-kbd-i2c.c:339 ir_key_poll() error: uninitialized
-symbol 'protocol'.
-drivers/media/i2c/ir-kbd-i2c.c:339 ir_key_poll() error: uninitialized
-symbol 'scancode'.
-drivers/media/i2c/ir-kbd-i2c.c:339 ir_key_poll() error: uninitialized
-symbol 'toggle'.
-drivers/media/tuners/xc4000.c:1102 xc_debug_dump() error: uninitialized
-symbol 'adc_envelope'.
-drivers/media/tuners/xc4000.c:1108 xc_debug_dump() error: uninitialized
-symbol 'lock_status'.
-drivers/media/tuners/xc4000.c:1123 xc_debug_dump() error: uninitialized
-symbol 'frame_lines'.
-drivers/media/tuners/xc4000.c:1127 xc_debug_dump() error: uninitialized
-symbol 'quality'.
-drivers/media/tuners/xc5000.c:645 xc_debug_dump() error: uninitialized
-symbol 'adc_envelope'.
-drivers/media/tuners/xc5000.c:651 xc_debug_dump() error: uninitialized
-symbol 'lock_status'.
-drivers/media/tuners/xc5000.c:665 xc_debug_dump() error: uninitialized
-symbol 'frame_lines'.
-drivers/media/tuners/xc5000.c:668 xc_debug_dump() error: uninitialized
-symbol 'quality'.
-drivers/media/tuners/xc5000.c:671 xc_debug_dump() error: uninitialized
-symbol 'snr'.
-drivers/media/tuners/xc5000.c:674 xc_debug_dump() error: uninitialized
-symbol 'totalgain'.
+When 8139too is probing and 8139TOO_PIO=y it will call pci_iomap_range()
+and from there __pci_ioport_map() for the PCI IO space.
+If HAS_IOPORT_MAP=n and NO_GENERIC_PCI_IOPORT_MAP=n, like it is on my
+m68k config, __pci_ioport_map() becomes NULL, pci_iomap_range() will
+always fail and the driver will complain it couldn't map the PIO space
+and return an error.
 
-Signed-off-by: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-[hverkuil: dropped ' = 0' from rc in ir-kbd-i2c.c, not needed]
+NO_IOPORT_MAP seems to cover the case where what 8139too is trying
+to do cannot ever work so make 8139TOO_PIO depend on being it false
+and avoid creating an unusable driver.
+
+Signed-off-by: Daniel Palmer <daniel@thingy.jp>
+Link: https://patch.msgid.link/20250907064349.3427600-1-daniel@thingy.jp
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ir-kbd-i2c.c |  6 +++---
- drivers/media/tuners/xc4000.c  |  8 ++++----
- drivers/media/tuners/xc5000.c  | 12 ++++++------
- 3 files changed, 13 insertions(+), 13 deletions(-)
+ drivers/net/ethernet/realtek/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/i2c/ir-kbd-i2c.c b/drivers/media/i2c/ir-kbd-i2c.c
-index 56674173524fd..0c1c54b5a6f5e 100644
---- a/drivers/media/i2c/ir-kbd-i2c.c
-+++ b/drivers/media/i2c/ir-kbd-i2c.c
-@@ -284,9 +284,9 @@ static int get_key_avermedia_cardbus(struct IR_i2c *ir, enum rc_proto *protocol,
- 
- static int ir_key_poll(struct IR_i2c *ir)
- {
--	enum rc_proto protocol;
--	u32 scancode;
--	u8 toggle;
-+	enum rc_proto protocol = 0;
-+	u32 scancode = 0;
-+	u8 toggle = 0;
- 	int rc;
- 
- 	dev_dbg(&ir->rc->dev, "%s\n", __func__);
-diff --git a/drivers/media/tuners/xc4000.c b/drivers/media/tuners/xc4000.c
-index 849df4d1c573c..c8aa193e04e71 100644
---- a/drivers/media/tuners/xc4000.c
-+++ b/drivers/media/tuners/xc4000.c
-@@ -1089,12 +1089,12 @@ static int check_firmware(struct dvb_frontend *fe, unsigned int type,
- 
- static void xc_debug_dump(struct xc4000_priv *priv)
- {
--	u16	adc_envelope;
-+	u16	adc_envelope = 0;
- 	u32	freq_error_hz = 0;
--	u16	lock_status;
-+	u16	lock_status = 0;
- 	u32	hsync_freq_hz = 0;
--	u16	frame_lines;
--	u16	quality;
-+	u16	frame_lines = 0;
-+	u16	quality = 0;
- 	u16	signal = 0;
- 	u16	noise = 0;
- 	u8	hw_majorversion = 0, hw_minorversion = 0;
-diff --git a/drivers/media/tuners/xc5000.c b/drivers/media/tuners/xc5000.c
-index ec9a3cd4784e1..a28481edd22ed 100644
---- a/drivers/media/tuners/xc5000.c
-+++ b/drivers/media/tuners/xc5000.c
-@@ -622,14 +622,14 @@ static int xc5000_fwupload(struct dvb_frontend *fe,
- 
- static void xc_debug_dump(struct xc5000_priv *priv)
- {
--	u16 adc_envelope;
-+	u16 adc_envelope = 0;
- 	u32 freq_error_hz = 0;
--	u16 lock_status;
-+	u16 lock_status = 0;
- 	u32 hsync_freq_hz = 0;
--	u16 frame_lines;
--	u16 quality;
--	u16 snr;
--	u16 totalgain;
-+	u16 frame_lines = 0;
-+	u16 quality = 0;
-+	u16 snr = 0;
-+	u16 totalgain = 0;
- 	u8 hw_majorversion = 0, hw_minorversion = 0;
- 	u8 fw_majorversion = 0, fw_minorversion = 0;
- 	u16 fw_buildversion = 0;
+diff --git a/drivers/net/ethernet/realtek/Kconfig b/drivers/net/ethernet/realtek/Kconfig
+index 93d9df55b361a..01811924c4db4 100644
+--- a/drivers/net/ethernet/realtek/Kconfig
++++ b/drivers/net/ethernet/realtek/Kconfig
+@@ -58,7 +58,7 @@ config 8139TOO
+ config 8139TOO_PIO
+ 	bool "Use PIO instead of MMIO"
+ 	default y
+-	depends on 8139TOO
++	depends on 8139TOO && !NO_IOPORT_MAP
+ 	help
+ 	  This instructs the driver to use programmed I/O ports (PIO) instead
+ 	  of PCI shared memory (MMIO).  This can possibly solve some problems
 -- 
 2.51.0
 
