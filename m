@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE2AEC9F9E2
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:45:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2FCACA0EBE
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:23:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EE8863001526
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:45:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 31F1D31919E8
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:21:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C0B6313285;
-	Wed,  3 Dec 2025 15:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 412EF331A4F;
+	Wed,  3 Dec 2025 15:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d2GP7rui"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TQR4KRor"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE99931326B;
-	Wed,  3 Dec 2025 15:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1F56331A46;
+	Wed,  3 Dec 2025 15:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776737; cv=none; b=axCmhQnc2aqTsUBwsZhlMV+ocYpNnb0J/2IXLFzxf8dOu7nRsOAEnRlBBy5JyqPJLt24iJB4fIasMoAstlMEMMjaExUxOODABHjxUtVdHWJOfW2Vt/rP15JbnbnFqmiNbKQ4Q6Y6X3h0UGJArk0OtZWei8FTngNqQPCcynkf8v4=
+	t=1764777154; cv=none; b=Mjzp3hEbLfwbxSfDC6lYx9tbILBI1DXiygYIe5wvaDFtqbLaWgSnPbbxOlL/sxoSLA9ogefxV+HPZimBUVo/5I5+yPr5VXHCo5hlDASzkqaYYXKrD2lsDc9Eg6f5DeGavNt5Z5gGEi3kxaZc6o64S/z+7EpZ5dyyETR23+P59yM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776737; c=relaxed/simple;
-	bh=uWCjLRdP9a0Nn0KI8UnBGqxHUbleALFOJloPhtzvTMg=;
+	s=arc-20240116; t=1764777154; c=relaxed/simple;
+	bh=+8ldBo0trxHNPrLEVrTM2kMAKBb7RQIuifWqyUTCl70=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=txssYVOu7R+eZPeFJZ67j7v0qs9hI2TSEYvbGs/PqlDl/0bGcRMBPMM4IpM8Au7Faw+hYyM0HBIx1M1VupXjoPJO1Rhurm5NGa/Y5RZD2RnBxgHWOBdfb5iujw+B5VVPFcvf2NuOv5rppnYBJlgaoEhOv0tINPrSrowz1WarbqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d2GP7rui; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39DC7C4CEF5;
-	Wed,  3 Dec 2025 15:45:37 +0000 (UTC)
+	 MIME-Version; b=KhJC9A+e78Uw1PLYTVON+VkHKWKIU52Ay0KBJ5Kry1EUFL3J2CH6GMoTUTJMLX7oskxjUx415KprpvVbGL0FhCafC/hh399caVK9CxB616uUNhWH30t9IF8QuXdN+2u3U9W0VUO9ZMdjtn2wAXDcLyipiD2cZ2ksjTdugMWdOPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TQR4KRor; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D577C4CEF5;
+	Wed,  3 Dec 2025 15:52:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776737;
-	bh=uWCjLRdP9a0Nn0KI8UnBGqxHUbleALFOJloPhtzvTMg=;
+	s=korg; t=1764777153;
+	bh=+8ldBo0trxHNPrLEVrTM2kMAKBb7RQIuifWqyUTCl70=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d2GP7rui13U4XI1B8JQ2rZBFFIpoS3yLevkqH+/L7a1wGyPcyFfN3vMrhaOpDFrvm
-	 TngvOVa0EHIEZiGtKtuzqVXJMwwifhaKBM3Qq5B2+gFdmuMei+G/d40ayAQ7Z/GrgU
-	 7mY2iMmX9zCROtG1+MHlas+UwbWfdR6jYWnSoqzo=
+	b=TQR4KRorlkMO25GgC2IxDh3ToJIvMlnfJpl4RpEFjVoZRv4BW+udrsMxTOviMrUXf
+	 d0+Lo3uZl76xRIPwazWhv6/p/T+6VRe6U/TN+f1oNucuRN6RYTv5e+6BPxLpsQBq7H
+	 GeA448EajIhTchrxXCaa4zQlb5JyepW81lfl/yDY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20M=C3=BChlbacher?= <tmuehlbacher@posteo.net>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 5.10 271/300] can: sun4i_can: sun4i_can_interrupt(): fix max irq loop handling
-Date: Wed,  3 Dec 2025 16:27:55 +0100
-Message-ID: <20251203152410.673171765@linuxfoundation.org>
+	Yoon Dong Min <dm.youn@telechips.com>,
+	ChiYuan Huang <cy_huang@richtek.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.17 098/146] regulator: rtq2208: Correct LDO2 logic judgment bits
+Date: Wed,  3 Dec 2025 16:27:56 +0100
+Message-ID: <20251203152350.046969212@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,50 +58,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: ChiYuan Huang <cy_huang@richtek.com>
 
-commit 76544beea7cfe5bcce6d60f53811657b88ec8be1 upstream.
+commit 8684229e19c4185d53d6fb7004d733907c865a91 upstream.
 
-Reading the interrupt register `SUN4I_REG_INT_ADDR` causes all of its bits
-to be reset. If we ever reach the condition of handling more than
-`SUN4I_CAN_MAX_IRQ` IRQs, we will have read the register and reset all its
-bits but without actually handling the interrupt inside of the loop body.
+The LDO2 judgement bit position should be 7, not 6.
 
-This may, among other issues, cause us to never `netif_wake_queue()` again
-after a transmission interrupt.
-
-Fixes: 0738eff14d81 ("can: Allwinner A10/A20 CAN Controller support - Kernel module")
 Cc: stable@vger.kernel.org
-Co-developed-by: Thomas Mühlbacher <tmuehlbacher@posteo.net>
-Signed-off-by: Thomas Mühlbacher <tmuehlbacher@posteo.net>
-Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Link: https://patch.msgid.link/20251116-sun4i-fix-loop-v1-1-3d76d3f81950@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Reported-by: Yoon Dong Min <dm.youn@telechips.com>
+Fixes: b65439d90150 ("regulator: rtq2208: Fix the LDO DVS capability")
+Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
+Link: https://patch.msgid.link/faadb009f84b88bfcabe39fc5009c7357b00bbe2.1764209258.git.cy_huang@richtek.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/sun4i_can.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/regulator/rtq2208-regulator.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/can/sun4i_can.c
-+++ b/drivers/net/can/sun4i_can.c
-@@ -644,8 +644,8 @@ static irqreturn_t sun4i_can_interrupt(i
- 	u8 isrc, status;
- 	int n = 0;
+diff --git a/drivers/regulator/rtq2208-regulator.c b/drivers/regulator/rtq2208-regulator.c
+index 4a174e27c579..f669a562f036 100644
+--- a/drivers/regulator/rtq2208-regulator.c
++++ b/drivers/regulator/rtq2208-regulator.c
+@@ -53,7 +53,7 @@
+ #define RTQ2208_MASK_BUCKPH_GROUP1		GENMASK(6, 4)
+ #define RTQ2208_MASK_BUCKPH_GROUP2		GENMASK(2, 0)
+ #define RTQ2208_MASK_LDO2_OPT0			BIT(7)
+-#define RTQ2208_MASK_LDO2_OPT1			BIT(6)
++#define RTQ2208_MASK_LDO2_OPT1			BIT(7)
+ #define RTQ2208_MASK_LDO1_FIXED			BIT(6)
  
--	while ((isrc = readl(priv->base + SUN4I_REG_INT_ADDR)) &&
--	       (n < SUN4I_CAN_MAX_IRQ)) {
-+	while ((n < SUN4I_CAN_MAX_IRQ) &&
-+	       (isrc = readl(priv->base + SUN4I_REG_INT_ADDR))) {
- 		n++;
- 		status = readl(priv->base + SUN4I_REG_STA_ADDR);
- 
+ /* Size */
+-- 
+2.52.0
+
 
 
 
