@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7DA7C9FBCF
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:57:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5537ACA0637
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:23:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D96723039749
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:48:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CA22B32CCE06
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:08:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82ECD318133;
-	Wed,  3 Dec 2025 15:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 780713469FD;
+	Wed,  3 Dec 2025 16:49:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ayf+bKU2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DWvS8ML8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A6C3148D5;
-	Wed,  3 Dec 2025 15:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E3E2346789;
+	Wed,  3 Dec 2025 16:49:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776831; cv=none; b=UcgkV7y7BufcEkzHr6rEWQkfA7jBBrBpqtgrd07npZl1x72LSHywx73VxBrG1n1QrjANlviODQ5GOqWb+Mg4msEAiIr9xKjeFVLLPCOinQAbG09+Fg+fM3bv9UjiscivhjVnxjV+YO3SoBRW6Pnb5i7k9AlfXLkNdhF60YQdBLU=
+	t=1764780574; cv=none; b=Q+QE/oMktmGcnoQZsUmQ1pqVJOosqf4kYVWYzc3gZdGvHTRlWnSLX2uwCE4vbAMvsrpvXYHJ5B7TEUQdjHLhhkndyG2qq4JH4tA8noXJFzziL87VlbwfxO0Aer/i7TRy/cyPBNDLMo66k4ltRjJ1Dhb4NEDpll5lJrZxBBoBsyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776831; c=relaxed/simple;
-	bh=W2BFbYmqUGwN/RxUwEX7PHvKxfPt4HTGsetWX+C5Yk4=;
+	s=arc-20240116; t=1764780574; c=relaxed/simple;
+	bh=s1fHEdWEfPpReqhg/0li7FvNv2htbCprznAWinZs1Gs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W/tbzDT+cdEO/ouI8xfolnRk1gP+tluAY2Z1KiVrjSvxiCwokgfAe4hBN/r3dZYI1xwhdwOHgECaIJWRZeEq1NamBjdKsQoJb6p5joSTTceIxungxzPkOZ8O4U80HnIi19H3oVlbABipqnLd7/HXJVAYL3ThEWOn6EosRKGndAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ayf+bKU2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9753C4CEF5;
-	Wed,  3 Dec 2025 15:47:10 +0000 (UTC)
+	 MIME-Version; b=m6kyZEtCwAgTk5RDkTd+aUAjdMCjblb+Qzea1NGT6VgNoQl6RJGp3k34Mn3dmRaQ5o2lfaFzjb7Crtw4dG0txvGidiFC6m2i/bCNLL82ngFPDxcYE+LemYuHtvIzGQm9BaiYglBuyulc7sF+592TUVu8GUQ5YaowwL+9tXPJGj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DWvS8ML8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE0BDC4CEF5;
+	Wed,  3 Dec 2025 16:49:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776831;
-	bh=W2BFbYmqUGwN/RxUwEX7PHvKxfPt4HTGsetWX+C5Yk4=;
+	s=korg; t=1764780574;
+	bh=s1fHEdWEfPpReqhg/0li7FvNv2htbCprznAWinZs1Gs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ayf+bKU2zcPRGLmxp3xMmbkb8NeQYxZhdH8m/Ptjl8NmE4hJcqUXTgMNMTPuNjt1T
-	 Nwdgq9gF92yWT0lvnOVXxRtRtesDl3zWoJ30eSDUbM8fUoTgHKSeYbq4ZdIEyoxe8H
-	 /7peO5xSKW8SGV4hQSmRdzU1+jiYSjEaNMPGNqbo=
+	b=DWvS8ML8uGv5sDa1KnxdIAua/xMg+mDlSMJ2g8hSMotPCODLlCmBM0P8w/GJtwsQV
+	 gxVAEHOSjzKE2TAHGSsL/6jtcIZppsYZvrjmS2KQoZy+j/qtXbt/80dpbMlVCvxI2c
+	 Z5y5088JvkFO8tN9NK9SqhDDcacsgVjgZs2BhmKI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.10 300/300] netfilter: nf_set_pipapo_avx2: fix initial map fill
-Date: Wed,  3 Dec 2025 16:28:24 +0100
-Message-ID: <20251203152411.737298627@linuxfoundation.org>
+	Mohsin Bashir <mohsin.bashr@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 026/132] eth: fbnic: Fix counter roll-over issue
+Date: Wed,  3 Dec 2025 16:28:25 +0100
+Message-ID: <20251203152344.270416114@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,68 +60,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Mohsin Bashir <mohsin.bashr@gmail.com>
 
-commit ea77c397bff8b6d59f6d83dae1425b08f465e8b5 upstream.
+[ Upstream commit 6d66e093e0740d39a36ef742c60eec247df26f41 ]
 
-If the first field doesn't cover the entire start map, then we must zero
-out the remainder, else we leak those bits into the next match round map.
+Fix a potential counter roll-over issue in fbnic_mbx_alloc_rx_msgs()
+when calculating descriptor slots. The issue occurs when head - tail
+results in a large positive value (unsigned) and the compiler interprets
+head - tail - 1 as a signed value.
 
-The early fix was incomplete and did only fix up the generic C
-implementation.
+Since FBNIC_IPC_MBX_DESC_LEN is a power of two, use a masking operation,
+which is a common way of avoiding this problem when dealing with these
+sort of ring space calculations.
 
-A followup patch adds a test case to nft_concat_range.sh.
-
-Fixes: 791a615b7ad2 ("netfilter: nf_set_pipapo: fix initial map fill")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: da3cde08209e ("eth: fbnic: Add FW communication mechanism")
+Signed-off-by: Mohsin Bashir <mohsin.bashr@gmail.com>
+Link: https://patch.msgid.link/20251125211704.3222413-1-mohsin.bashr@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_pipapo_avx2.c |   21 ++++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/meta/fbnic/fbnic_fw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/netfilter/nft_set_pipapo_avx2.c
-+++ b/net/netfilter/nft_set_pipapo_avx2.c
-@@ -1106,6 +1106,25 @@ bool nft_pipapo_avx2_estimate(const stru
- }
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
+index d6cf97ecf3276..6f606bdfd2296 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
+@@ -198,7 +198,7 @@ static int fbnic_mbx_alloc_rx_msgs(struct fbnic_dev *fbd)
+ 		return -ENODEV;
  
- /**
-+ * pipapo_resmap_init_avx2() - Initialise result map before first use
-+ * @m:		Matching data, including mapping table
-+ * @res_map:	Result map
-+ *
-+ * Like pipapo_resmap_init() but do not set start map bits covered by the first field.
-+ */
-+static inline void pipapo_resmap_init_avx2(const struct nft_pipapo_match *m, unsigned long *res_map)
-+{
-+	const struct nft_pipapo_field *f = m->f;
-+	int i;
-+
-+	/* Starting map doesn't need to be set to all-ones for this implementation,
-+	 * but we do need to zero the remaining bits, if any.
-+	 */
-+	for (i = f->bsize; i < m->bsize_max; i++)
-+		res_map[i] = 0ul;
-+}
-+
-+/**
-  * nft_pipapo_avx2_lookup() - Lookup function for AVX2 implementation
-  * @net:	Network namespace
-  * @set:	nftables API set representation
-@@ -1158,7 +1177,7 @@ bool nft_pipapo_avx2_lookup(const struct
- 	res  = scratch->map + (map_index ? m->bsize_max : 0);
- 	fill = scratch->map + (map_index ? 0 : m->bsize_max);
+ 	/* Fill all but 1 unused descriptors in the Rx queue. */
+-	count = (head - tail - 1) % FBNIC_IPC_MBX_DESC_LEN;
++	count = (head - tail - 1) & (FBNIC_IPC_MBX_DESC_LEN - 1);
+ 	while (!err && count--) {
+ 		struct fbnic_tlv_msg *msg;
  
--	/* Starting map doesn't need to be set for this implementation */
-+	pipapo_resmap_init_avx2(m, res);
- 
- 	nft_pipapo_avx2_prepare();
- 
+-- 
+2.51.0
+
 
 
 
