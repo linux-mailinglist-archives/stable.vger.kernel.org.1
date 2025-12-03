@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-198282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C529CC9F821
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:36:26 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5786ECA102C
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:33:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 420343001DFB
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:33:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 82E50300997B
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:33:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEBC530B51F;
-	Wed,  3 Dec 2025 15:33:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2160369213;
+	Wed,  3 Dec 2025 16:30:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0/xq2FRa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mQj97/R6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE86830F800;
-	Wed,  3 Dec 2025 15:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D99C18A6A7;
+	Wed,  3 Dec 2025 16:30:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776029; cv=none; b=VqivmHIFwu8MV2eBCp/2B9y9I1tVr7+z0fl9v8aGjbKr4gmNole39UP1NPu46M0rzsrVabyt0oFlwuzRG+PpYd2zpgdtoFBCRgbiLP6SWFIkOVLF3s7xc+pdr0tRx58v3/hHBvkWY8e3WP87QuUWc8txkT++9z42nIEupxwVmaw=
+	t=1764779445; cv=none; b=j2afBkyEFDNXiOBoxyRIe2LMK1VlX5OMrDfEVL19uXnZN5LBIxyvc8pTNHSDd7LMuQVEOBJ5VbXmSOfeYfSVReuzGMbCsidgnGz0PRlGxMd5w5wYFJl/Sl9EY3ZtyPmV003+K74XNtJ/R8I/CKBL1hXhWojdy58id7o9doAMoTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776029; c=relaxed/simple;
-	bh=BtFRgs2Y0TlkNskWTV8PVcJi/ZGf5kTdZDRRV2SC5X8=;
+	s=arc-20240116; t=1764779445; c=relaxed/simple;
+	bh=WFnmQ66MIAHrRaHUZEOD7CKXjNmEBNYP3fgVYDIFkg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oWleBNJzvF3hEa6qxihcVsFFtSlP2Gbr2K1BBVBXO7RI+R/yDlo8jq+Eah2z12Rgw46M2krLvrhNH0/WL0M1Cv8sSz7UpljCQTy/bAq/BGc6sSZxxMTLl3AQqaPSWd9q9HErbD9VJcPl/sHGdan0hqcLcqlnstmPY0VnCqnjx8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0/xq2FRa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 053E2C4CEF5;
-	Wed,  3 Dec 2025 15:33:48 +0000 (UTC)
+	 MIME-Version; b=Vg0PCbnPLO4luAySQCjSwtrxo13DopLPrDnSAi5pyuTqmYK1+sR4R4zmPrxx/dyYcLbhUUaY/v6UEaiWMNKaLn47tdYwTz9sgJj7uto1jsmwsPox+RXogUMkS7lAleKLk7dAoZa8039TDxpPWcSlVpiN7/Bwr7o/N8547dPOoz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mQj97/R6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98184C4CEF5;
+	Wed,  3 Dec 2025 16:30:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776029;
-	bh=BtFRgs2Y0TlkNskWTV8PVcJi/ZGf5kTdZDRRV2SC5X8=;
+	s=korg; t=1764779445;
+	bh=WFnmQ66MIAHrRaHUZEOD7CKXjNmEBNYP3fgVYDIFkg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0/xq2FRazRLnSj6dOUYP+/BjlJtltMV8E/abHnyrwdGYmNOsnwKLP47+qj5g0q03l
-	 oEDQ0QY/4MwnxDfySM5N/wX5N9ANAFDzW+G/vNFuiX5EAkbjm11QUw9UJH1GRQGMVp
-	 YpODrTHYzUwmLvCa3D6CdWLVTjwRPS/YFH75ugMY=
+	b=mQj97/R6tBNb4iTEnGxptRyrmM5Jg9u/HNfzFnVdBw6ojcJ0pJ+6DaBnsbIEm+zhN
+	 TxmJyE/Vv2uQU7Twi3lZBj0PXxL+X2JDqPdN6IUaH/5L6F0mudf1/YH86J9LNQlYEu
+	 DH5Ii7j4n8wvmbDkx0TT9/ikNZGnONoZ0KJHZhFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleg Nesterov <oleg@redhat.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Julian Sun <sunjunchao@bytedance.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 058/300] uprobe: Do not emulate/sstep original instruction when ip is changed
+Subject: [PATCH 6.1 260/568] ext4: increase IO priority of fastcommit
 Date: Wed,  3 Dec 2025 16:24:22 +0100
-Message-ID: <20251203152402.771621741@linuxfoundation.org>
+Message-ID: <20251203152450.241376076@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: Julian Sun <sunjunchao@bytedance.com>
 
-[ Upstream commit 4363264111e1297fa37aa39b0598faa19298ecca ]
+[ Upstream commit 46e75c56dfeafb6756773b71cabe187a6886859a ]
 
-If uprobe handler changes instruction pointer we still execute single
-step) or emulate the original instruction and increment the (new) ip
-with its length.
+The following code paths may result in high latency or even task hangs:
+   1. fastcommit io is throttled by wbt.
+   2. jbd2_fc_wait_bufs() might wait for a long time while
+JBD2_FAST_COMMIT_ONGOING is set in journal->flags, and then
+jbd2_journal_commit_transaction() waits for the
+JBD2_FAST_COMMIT_ONGOING bit for a long time while holding the write
+lock of j_state_lock.
+   3. start_this_handle() waits for read lock of j_state_lock which
+results in high latency or task hang.
 
-This makes the new instruction pointer bogus and application will
-likely crash on illegal instruction execution.
+Given the fact that ext4_fc_commit() already modifies the current
+process' IO priority to match that of the jbd2 thread, it should be
+reasonable to match jbd2's IO submission flags as well.
 
-If user decided to take execution elsewhere, it makes little sense
-to execute the original instruction, so let's skip it.
-
-Acked-by: Oleg Nesterov <oleg@redhat.com>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/r/20250916215301.664963-3-jolsa@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Suggested-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Julian Sun <sunjunchao@bytedance.com>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Message-ID: <20250827121812.1477634-1-sunjunchao@bytedance.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/uprobes.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/ext4/fast_commit.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-index 1ea2c1f311261..4f2a9fab8ae88 100644
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -2242,6 +2242,13 @@ static void handle_swbp(struct pt_regs *regs)
+diff --git a/fs/ext4/fast_commit.c b/fs/ext4/fast_commit.c
+index e2062cd4adadf..94f90032ca561 100644
+--- a/fs/ext4/fast_commit.c
++++ b/fs/ext4/fast_commit.c
+@@ -675,7 +675,7 @@ void ext4_fc_track_range(handle_t *handle, struct inode *inode, ext4_lblk_t star
  
- 	handler_chain(uprobe, regs);
+ static void ext4_fc_submit_bh(struct super_block *sb, bool is_tail)
+ {
+-	blk_opf_t write_flags = REQ_SYNC;
++	blk_opf_t write_flags = JBD2_JOURNAL_REQ_FLAGS;
+ 	struct buffer_head *bh = EXT4_SB(sb)->s_fc_bh;
  
-+	/*
-+	 * If user decided to take execution elsewhere, it makes little sense
-+	 * to execute the original instruction, so let's skip it.
-+	 */
-+	if (instruction_pointer(regs) != bp_vaddr)
-+		goto out;
-+
- 	if (arch_uprobe_skip_sstep(&uprobe->arch, regs))
- 		goto out;
- 
+ 	/* Add REQ_FUA | REQ_PREFLUSH only its tail */
 -- 
 2.51.0
 
