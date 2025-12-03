@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-199677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD77ACA01F4
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:49:46 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D3DACA0239
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:50:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AEEBB30014C4
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:49:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DC16B303B575
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:43:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B282349AEA;
-	Wed,  3 Dec 2025 16:49:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 520BD35FF64;
+	Wed,  3 Dec 2025 16:43:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PKwQ9rOo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A3oy+t1c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA91348894;
-	Wed,  3 Dec 2025 16:49:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F03B035FF46;
+	Wed,  3 Dec 2025 16:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780580; cv=none; b=Efvg+svODceywDKy3Kisrh6C2InvJbFqOalZSVXqqqpEU+tgO+tMgxbfmT9nAc7eX3nCe5hBVJOMqfmyi+496T6hIxziSioZhAQQHIU3RDXJTo1Xg/magCJ7rHn9F8mIEqp28O91VEseHsY+IyRR3vlA5XX2yCJyBORgeoYbbUc=
+	t=1764780186; cv=none; b=rMOkTYiRVMQTX3xJDz91n6gem8liS7ka+mDpIgpzzTFnQgYIEoxWAw89xD28QXiEYTMz+w2IQd95YsqG3hHGJoSGkBSX20HBRIxEqK80p1oEzeE4FgWYVY0wFQtpmkpNrg3QbjL0hfSHE4h5ojvxoPTOtQDWS5VdKfNdAR7E5tM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780580; c=relaxed/simple;
-	bh=0MAAbXZFfSU/l/i0dmisJGkHDvy5kCgr3Wxx14y88bE=;
+	s=arc-20240116; t=1764780186; c=relaxed/simple;
+	bh=kyumMvkf/cf5Q5OC2uTdZR3ctX675GhI2M7lhmMeX9U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VFiFeBDkGmXhysLiTZJUC4JYd/YZ1jXjmn9mFTQS3E7vtItTkuU9wxcKHuI4FWTM2qa1uuKpvGnackuetS6xjlcs9nPZRem0KqE0U37UexckoneywLQdMvjo/35r+5sev0kFDhvsnRGmV44vkBkLexa2C06qLCA2RvwzGHKem/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PKwQ9rOo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C3D0C4CEF5;
-	Wed,  3 Dec 2025 16:49:39 +0000 (UTC)
+	 MIME-Version; b=Sbi1SvRv/QmjvLh1j5oqcXJpXROu7whyTUQ5Bk2CdbrlJ+v2KOScN/XDEt/1MGoriG3eW6lDQFRmIaCffCB0sf0Bp2SSnBR709u7vQWkzwKeinxCOISoDekz3p62hOz2gDUeD1AMpCB+THHISf+5hZxNkNV18ix9QcXeFmBX0EA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A3oy+t1c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63AD9C4CEF5;
+	Wed,  3 Dec 2025 16:43:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780580;
-	bh=0MAAbXZFfSU/l/i0dmisJGkHDvy5kCgr3Wxx14y88bE=;
+	s=korg; t=1764780185;
+	bh=kyumMvkf/cf5Q5OC2uTdZR3ctX675GhI2M7lhmMeX9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PKwQ9rOo5dqQp/im1CQ3yj6P4+afng3QBxpohMRWt3LWLa468Iwnr8SRQ4wWk98td
-	 W9DEOHIuo2/GS8WI9t+5OoIwidIyaqZyfJ6PfcBuBuA+GuisSMP9a+8DkoYXOPN8H9
-	 Q7LfUi4QEQn5FTeWZQ0TuYTzs9aC08rFxoLRYVfs=
+	b=A3oy+t1cbVVcshvuLHDSzJuwWVp5LCyYNv7MtsmPhtVjjIpq0JDNImSskmzDIVFkl
+	 j4RTfcQvrjjXt036VEYV9s5GHcnLlgi7zWlabdx0miLg8U/KnfHw4N8AHj79f4VMfd
+	 nR1KyzFghOhZFfyWmqIfprYuiaaQo5zqzCY99f6M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	"Fabio M. De Francesco" <fabio.maria.de.francesco@linux.intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 004/132] can: gs_usb: gs_usb_receive_bulk_callback(): check actual_length before accessing data
+Subject: [PATCH 6.1 481/568] mm/mempool: replace kmap_atomic() with kmap_local_page()
 Date: Wed,  3 Dec 2025 16:28:03 +0100
-Message-ID: <20251203152343.454595685@linuxfoundation.org>
+Message-ID: <20251203152458.316304834@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,144 +61,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: "Fabio M. De Francesco" <fabio.maria.de.francesco@linux.intel.com>
 
-[ Upstream commit 395d988f93861101ec89d0dd9e3b876ae9392a5b ]
+[ Upstream commit f2bcc99a5e901a13b754648d1dbab60f4adf9375 ]
 
-The URB received in gs_usb_receive_bulk_callback() contains a struct
-gs_host_frame. The length of the data after the header depends on the
-gs_host_frame hf::flags and the active device features (e.g. time
-stamping).
+kmap_atomic() has been deprecated in favor of kmap_local_page().
 
-Introduce a new function gs_usb_get_minimum_length() and check that we have
-at least received the required amount of data before accessing it. Only
-copy the data to that skb that has actually been received.
+Therefore, replace kmap_atomic() with kmap_local_page().
 
-Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
-Link: https://patch.msgid.link/20251114-gs_usb-fix-usb-callbacks-v1-3-a29b42eacada@pengutronix.de
-[mkl: rename gs_usb_get_minimum_length() -> +gs_usb_get_minimum_rx_length()]
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+kmap_atomic() is implemented like a kmap_local_page() which also disables
+page-faults and preemption (the latter only in !PREEMPT_RT kernels).  The
+kernel virtual addresses returned by these two API are only valid in the
+context of the callers (i.e., they cannot be handed to other threads).
+
+With kmap_local_page() the mappings are per thread and CPU local like in
+kmap_atomic(); however, they can handle page-faults and can be called from
+any context (including interrupts).  The tasks that call kmap_local_page()
+can be preempted and, when they are scheduled to run again, the kernel
+virtual addresses are restored and are still valid.
+
+The code blocks between the mappings and un-mappings don't rely on the
+above-mentioned side effects of kmap_atomic(), so that mere replacements
+of the old API with the new one is all that they require (i.e., there is
+no need to explicitly call pagefault_disable() and/or preempt_disable()).
+
+Link: https://lkml.kernel.org/r/20231120142640.7077-1-fabio.maria.de.francesco@linux.intel.com
+Signed-off-by: Fabio M. De Francesco <fabio.maria.de.francesco@linux.intel.com>
+Cc: Ira Weiny <ira.weiny@intel.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: ec33b59542d9 ("mm/mempool: fix poisoning order>0 pages with HIGHMEM")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/usb/gs_usb.c | 59 +++++++++++++++++++++++++++++++++---
- 1 file changed, 54 insertions(+), 5 deletions(-)
+ mm/mempool.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
-index b2cfdc3558a5a..36540a2544586 100644
---- a/drivers/net/can/usb/gs_usb.c
-+++ b/drivers/net/can/usb/gs_usb.c
-@@ -258,6 +258,11 @@ struct canfd_quirk {
- 	u8 quirk;
- } __packed;
+--- a/mm/mempool.c
++++ b/mm/mempool.c
+@@ -62,10 +62,10 @@ static void check_element(mempool_t *poo
+ 	} else if (pool->free == mempool_free_pages) {
+ 		/* Mempools backed by page allocator */
+ 		int order = (int)(long)pool->pool_data;
+-		void *addr = kmap_atomic((struct page *)element);
++		void *addr = kmap_local_page((struct page *)element);
  
-+/* struct gs_host_frame::echo_id == GS_HOST_FRAME_ECHO_ID_RX indicates
-+ * a regular RX'ed CAN frame
-+ */
-+#define GS_HOST_FRAME_ECHO_ID_RX 0xffffffff
-+
- struct gs_host_frame {
- 	struct_group(header,
- 		u32 echo_id;
-@@ -567,6 +572,37 @@ gs_usb_get_echo_skb(struct gs_can *dev, struct sk_buff *skb,
- 	return len;
+ 		__check_element(pool, addr, 1UL << (PAGE_SHIFT + order));
+-		kunmap_atomic(addr);
++		kunmap_local(addr);
+ 	}
  }
  
-+static unsigned int
-+gs_usb_get_minimum_rx_length(const struct gs_can *dev, const struct gs_host_frame *hf,
-+			     unsigned int *data_length_p)
-+{
-+	unsigned int minimum_length, data_length = 0;
-+
-+	if (hf->flags & GS_CAN_FLAG_FD) {
-+		if (hf->echo_id == GS_HOST_FRAME_ECHO_ID_RX)
-+			data_length = can_fd_dlc2len(hf->can_dlc);
-+
-+		if (dev->feature & GS_CAN_FEATURE_HW_TIMESTAMP)
-+			/* timestamp follows data field of max size */
-+			minimum_length = struct_size(hf, canfd_ts, 1);
-+		else
-+			minimum_length = sizeof(hf->header) + data_length;
-+	} else {
-+		if (hf->echo_id == GS_HOST_FRAME_ECHO_ID_RX &&
-+		    !(hf->can_id & cpu_to_le32(CAN_RTR_FLAG)))
-+			data_length = can_cc_dlc2len(hf->can_dlc);
-+
-+		if (dev->feature & GS_CAN_FEATURE_HW_TIMESTAMP)
-+			/* timestamp follows data field of max size */
-+			minimum_length = struct_size(hf, classic_can_ts, 1);
-+		else
-+			minimum_length = sizeof(hf->header) + data_length;
-+	}
-+
-+	*data_length_p = data_length;
-+	return minimum_length;
-+}
-+
- static void gs_usb_receive_bulk_callback(struct urb *urb)
- {
- 	struct gs_usb *parent = urb->context;
-@@ -575,7 +611,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
- 	int rc;
- 	struct net_device_stats *stats;
- 	struct gs_host_frame *hf = urb->transfer_buffer;
--	unsigned int minimum_length;
-+	unsigned int minimum_length, data_length;
- 	struct gs_tx_context *txc;
- 	struct can_frame *cf;
- 	struct canfd_frame *cfd;
-@@ -618,20 +654,33 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
- 	if (!netif_running(netdev))
- 		goto resubmit_urb;
+@@ -85,10 +85,10 @@ static void poison_element(mempool_t *po
+ 	} else if (pool->alloc == mempool_alloc_pages) {
+ 		/* Mempools backed by page allocator */
+ 		int order = (int)(long)pool->pool_data;
+-		void *addr = kmap_atomic((struct page *)element);
++		void *addr = kmap_local_page((struct page *)element);
  
--	if (hf->echo_id == -1) { /* normal rx */
-+	minimum_length = gs_usb_get_minimum_rx_length(dev, hf, &data_length);
-+	if (urb->actual_length < minimum_length) {
-+		stats->rx_errors++;
-+		stats->rx_length_errors++;
-+
-+		if (net_ratelimit())
-+			netdev_err(netdev,
-+				   "short read (actual_length=%u, minimum_length=%u)\n",
-+				   urb->actual_length, minimum_length);
-+
-+		goto resubmit_urb;
-+	}
-+
-+	if (hf->echo_id == GS_HOST_FRAME_ECHO_ID_RX) { /* normal rx */
- 		if (hf->flags & GS_CAN_FLAG_FD) {
- 			skb = alloc_canfd_skb(netdev, &cfd);
- 			if (!skb)
- 				return;
- 
- 			cfd->can_id = le32_to_cpu(hf->can_id);
--			cfd->len = can_fd_dlc2len(hf->can_dlc);
-+			cfd->len = data_length;
- 			if (hf->flags & GS_CAN_FLAG_BRS)
- 				cfd->flags |= CANFD_BRS;
- 			if (hf->flags & GS_CAN_FLAG_ESI)
- 				cfd->flags |= CANFD_ESI;
- 
--			memcpy(cfd->data, hf->canfd->data, cfd->len);
-+			memcpy(cfd->data, hf->canfd->data, data_length);
- 		} else {
- 			skb = alloc_can_skb(netdev, &cf);
- 			if (!skb)
-@@ -640,7 +689,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
- 			cf->can_id = le32_to_cpu(hf->can_id);
- 			can_frame_set_cc_len(cf, hf->can_dlc, dev->can.ctrlmode);
- 
--			memcpy(cf->data, hf->classic_can->data, 8);
-+			memcpy(cf->data, hf->classic_can->data, data_length);
- 
- 			/* ERROR frames tell us information about the controller */
- 			if (le32_to_cpu(hf->can_id) & CAN_ERR_FLAG)
--- 
-2.51.0
-
+ 		__poison_element(addr, 1UL << (PAGE_SHIFT + order));
+-		kunmap_atomic(addr);
++		kunmap_local(addr);
+ 	}
+ }
+ #else /* CONFIG_DEBUG_SLAB || CONFIG_SLUB_DEBUG_ON */
 
 
 
