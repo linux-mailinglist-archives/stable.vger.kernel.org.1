@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69A29C9FD91
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:14:43 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05434CA0064
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:39:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0190E304D0C3
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:06:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E11BB300C35D
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:36:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8860B34F489;
-	Wed,  3 Dec 2025 16:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 482A33590A5;
+	Wed,  3 Dec 2025 16:36:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RxEnMfhC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HGzmsP8Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 413B1303A28;
-	Wed,  3 Dec 2025 16:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35AD3590A2;
+	Wed,  3 Dec 2025 16:36:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777988; cv=none; b=mTzSGqrg60gNtZPIk47Z2ER4iya0BRAmDslfbprQm74207YeatOE1dgwzixeFo7Na2PfOp2x/UMBx9oIdnGzj6iVOx9b2GJnIqQvaeDgRhggwUUP9PXyfmtiJviXLqPCO3vqIe7WxJgivbb2h6Q+Ra/a/Vniuxpzzqcc5Q5qmT8=
+	t=1764779769; cv=none; b=RKhLFSHi94WsL76y4TGUumsUBk1MEKqM3jOiaYke3y/uqqb+uJ7VtNFbVluqVRwfmN3i3IU4tyaDAy3UvYdyi4pHIT9tGSjkVy2no39/SvEMidnqNIKemwXc5OTZGQmNN45vPJ+oYMK3TADK3mY4/EORn5xvmVbfFigI1SkCRhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777988; c=relaxed/simple;
-	bh=Ny0iphFx9NwaBpLmJvApsQhb7nLPDL8D8X/8ucsuj40=;
+	s=arc-20240116; t=1764779769; c=relaxed/simple;
+	bh=8I+N0Tdmfx16Y6KSAN5IuWQ7omjJkKX6J6J4oUTEIco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TuX/zoTDN4+DOvXrt83nzX6HGc/fxOSqx2L//lEHfaDl5EDfiFNX+P5fIm7lX0BtDiRHSvXZNfOP4cBhyDbj95an/JCs94/hbNYz1VPV1eaPG959MlheCHdEajy43jBWZ2N1iKgbElQzEWPznbcKFX+E5Ym1AxLc1ax9skie1RM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RxEnMfhC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89370C4CEF5;
-	Wed,  3 Dec 2025 16:06:27 +0000 (UTC)
+	 MIME-Version; b=U3El3+yAtuyklF/7XIkFIBvZ40Vt84trRvTtn0ZFwk/4q6ZRb39R1q5FDpk+dzs0LWSSMNLjDO5nmNz2oqKXOYSFQKU/ulg4TycC0jExkyVlvNleYbtT1idJVbaT4ztIORgUQNbjoQ2gT7Ym3M3doO6XmfI+YXF4qCdD2/pW2GI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HGzmsP8Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A6C6C4CEF5;
+	Wed,  3 Dec 2025 16:36:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777988;
-	bh=Ny0iphFx9NwaBpLmJvApsQhb7nLPDL8D8X/8ucsuj40=;
+	s=korg; t=1764779768;
+	bh=8I+N0Tdmfx16Y6KSAN5IuWQ7omjJkKX6J6J4oUTEIco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RxEnMfhCPk317rIm4Xytn72ib6KTcWR58hIN/eT6OgPW0GhOC5loT4wI2zKfvpl85
-	 QS/MPPIxPM8Do4Wlgp5AYL2wQeTSno+aDBGMqrZVksQ2sfutTNhe0Bx/OZcAP3YI1y
-	 gmM08oolZc0ubSO8CS5V/QqdYbWD/+zHe+RE/ug0=
+	b=HGzmsP8ZJZfk2l1KY4ekxOSLenXqi3+uz88+HMtB1vctNzZExrRyxRygXgxEA03ol
+	 u8+mnWqHvr7gbuURxCQ8gaAPCJ1v6DZ3zQTjOF5QbPwpl+/fvBwzsHiNJ1KjREwXMW
+	 nx9vWk6eHzcbCNsf3lE/zzrwFc9H49CxEt/R7RNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anthony Iliopoulos <ailiop@suse.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 175/392] NFSv4.1: fix mount hang after CREATE_SESSION failure
+Subject: [PATCH 6.1 323/568] net: bridge: fix MST static key usage
 Date: Wed,  3 Dec 2025 16:25:25 +0100
-Message-ID: <20251203152420.517083273@linuxfoundation.org>
+Message-ID: <20251203152452.542451038@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +61,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anthony Iliopoulos <ailiop@suse.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
 
-[ Upstream commit bf75ad096820fee5da40e671ebb32de725a1c417 ]
+[ Upstream commit ee87c63f9b2a418f698d79c2991347e31a7d2c27 ]
 
-When client initialization goes through server trunking discovery, it
-schedules the state manager and then sleeps waiting for nfs_client
-initialization completion.
+As Ido pointed out, the static key usage in MST is buggy and should use
+inc/dec instead of enable/disable because we can have multiple bridges
+with MST enabled which means a single bridge can disable MST for all.
+Use static_branch_inc/dec to avoid that. When destroying a bridge decrement
+the key if MST was enabled.
 
-The state manager can fail during state recovery, and specifically in
-lease establishment as nfs41_init_clientid() will bail out in case of
-errors returned from nfs4_proc_create_session(), without ever marking
-the client ready. The session creation can fail for a variety of reasons
-e.g. during backchannel parameter negotiation, with status -EINVAL.
-
-The error status will propagate all the way to the nfs4_state_manager
-but the client status will not be marked, and thus the mount process
-will remain blocked waiting.
-
-Fix it by adding -EINVAL error handling to nfs4_state_manager().
-
-Signed-off-by: Anthony Iliopoulos <ailiop@suse.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Fixes: ec7328b59176 ("net: bridge: mst: Multiple Spanning Tree (MST) mode")
+Reported-by: Ido Schimmel <idosch@nvidia.com>
+Closes: https://lore.kernel.org/netdev/20251104120313.1306566-1-razor@blackwall.org/T/#m6888d87658f94ed1725433940f4f4ebb00b5a68b
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20251105111919.1499702-3-razor@blackwall.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4state.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/bridge/br_if.c      |  1 +
+ net/bridge/br_mst.c     | 10 ++++++++--
+ net/bridge/br_private.h |  5 +++++
+ 3 files changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfs/nfs4state.c b/fs/nfs/nfs4state.c
-index b1dec7a9bd723..d070378c47387 100644
---- a/fs/nfs/nfs4state.c
-+++ b/fs/nfs/nfs4state.c
-@@ -2731,6 +2731,9 @@ static void nfs4_state_manager(struct nfs_client *clp)
- 	case -ENETUNREACH:
- 		nfs_mark_client_ready(clp, -EIO);
- 		break;
-+	case -EINVAL:
-+		nfs_mark_client_ready(clp, status);
-+		break;
- 	default:
- 		ssleep(1);
- 		break;
+diff --git a/net/bridge/br_if.c b/net/bridge/br_if.c
+index 0989074f316ef..42495d643a1bc 100644
+--- a/net/bridge/br_if.c
++++ b/net/bridge/br_if.c
+@@ -386,6 +386,7 @@ void br_dev_delete(struct net_device *dev, struct list_head *head)
+ 		del_nbp(p);
+ 	}
+ 
++	br_mst_uninit(br);
+ 	br_recalculate_neigh_suppress_enabled(br);
+ 
+ 	br_fdb_delete_by_port(br, NULL, 0, 1);
+diff --git a/net/bridge/br_mst.c b/net/bridge/br_mst.c
+index 3f24b4ee49c27..43a300ae6bfaf 100644
+--- a/net/bridge/br_mst.c
++++ b/net/bridge/br_mst.c
+@@ -22,6 +22,12 @@ bool br_mst_enabled(const struct net_device *dev)
+ }
+ EXPORT_SYMBOL_GPL(br_mst_enabled);
+ 
++void br_mst_uninit(struct net_bridge *br)
++{
++	if (br_opt_get(br, BROPT_MST_ENABLED))
++		static_branch_dec(&br_mst_used);
++}
++
+ int br_mst_get_info(const struct net_device *dev, u16 msti, unsigned long *vids)
+ {
+ 	const struct net_bridge_vlan_group *vg;
+@@ -225,9 +231,9 @@ int br_mst_set_enabled(struct net_bridge *br, bool on,
+ 		return err;
+ 
+ 	if (on)
+-		static_branch_enable(&br_mst_used);
++		static_branch_inc(&br_mst_used);
+ 	else
+-		static_branch_disable(&br_mst_used);
++		static_branch_dec(&br_mst_used);
+ 
+ 	br_opt_toggle(br, BROPT_MST_ENABLED, on);
+ 	return 0;
+diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
+index 372e9664b2cb8..901b9f609b0c7 100644
+--- a/net/bridge/br_private.h
++++ b/net/bridge/br_private.h
+@@ -1821,6 +1821,7 @@ int br_mst_fill_info(struct sk_buff *skb,
+ 		     const struct net_bridge_vlan_group *vg);
+ int br_mst_process(struct net_bridge_port *p, const struct nlattr *mst_attr,
+ 		   struct netlink_ext_ack *extack);
++void br_mst_uninit(struct net_bridge *br);
+ #else
+ static inline bool br_mst_is_enabled(const struct net_bridge_port *p)
+ {
+@@ -1856,6 +1857,10 @@ static inline int br_mst_process(struct net_bridge_port *p,
+ {
+ 	return -EOPNOTSUPP;
+ }
++
++static inline void br_mst_uninit(struct net_bridge *br)
++{
++}
+ #endif
+ 
+ struct nf_br_ops {
 -- 
 2.51.0
 
