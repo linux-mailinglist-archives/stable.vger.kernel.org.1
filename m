@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9171BCA1603
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:28:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98E48CA14C2
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:12:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3750430DCF66
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:08:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 92A0B30C12B6
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:33:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8019234C9A1;
-	Wed,  3 Dec 2025 16:02:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C441D36BCF0;
+	Wed,  3 Dec 2025 16:31:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FFEy1kNt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mDq/IOLh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BC7234C988;
-	Wed,  3 Dec 2025 16:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AEE236BCEE;
+	Wed,  3 Dec 2025 16:31:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777724; cv=none; b=Pz+Kw/rHALLJzRoH+pBaJ1z22O6pgBPjxw5GeoUJNMsFeSBuyqYRIFzv/syzIIvzUj8/4eX5dG5Cc8Hgc54Cfc4F4NOf1YFuOMutkA0xVsbALRhL0xNAKNiCdNkRMpLo7FZ+XIt0RKwDbUUToJ6R9OnlkJjkcQ5MMhfmX2uHw8s=
+	t=1764779500; cv=none; b=DR0/8OKGSVLC2E3Bf2PdpDI62bXv29useECqUTCmmZNY3ZiLRhuHhLGx+fVCRgZDCk6UlANSTKd+xTMF9WuVKVqb6UPOFqh8SLjx+ScPe32jNw6Yi+jVJ8v8xjgLD4+ekTHxjiL1bNlUiY1jxav2WrNfFapwxzomgwTArWvNTkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777724; c=relaxed/simple;
-	bh=BvEwuIThMGP+cyk6N6akDdUerbcgD2P/hyKxqHSUKE8=;
+	s=arc-20240116; t=1764779500; c=relaxed/simple;
+	bh=BD+2tikuf8ejrymv49dJBNfMfvZ1tnuooYnFw0P+PY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ucdReNm3SJ2fFd3sV2OjkPRCHTM9moRbNapzRSLyqVyzbUL3VY2U8k2VKCjige526J+XXIbTTdqvhiR8viP8q1tG9/h4Hw6D/vh3eXkDrifgUy3xi8mBA+eYgASG981lZNZriTjsCpvggfNAThAmBUIJAtOptYrlZzM0KnYug8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FFEy1kNt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80A38C4CEF5;
-	Wed,  3 Dec 2025 16:02:03 +0000 (UTC)
+	 MIME-Version; b=ZTpzos+LpVbdpWcYsyy9OYiT6bjuhYOZ6h1ZP2fRtC6+nQwfu2XfXHituk3lUXljY23RdmVlkifbm9FaY+WHM102axDoPUjUrlEy0xXHpx/9T+9Ec/CVj4ZhlxVRQ9FmMtd60pY3B+BM0yzvxD5KC/ZQcAp3CrjLvw5OL57twoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mDq/IOLh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6663AC4CEF5;
+	Wed,  3 Dec 2025 16:31:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777723;
-	bh=BvEwuIThMGP+cyk6N6akDdUerbcgD2P/hyKxqHSUKE8=;
+	s=korg; t=1764779499;
+	bh=BD+2tikuf8ejrymv49dJBNfMfvZ1tnuooYnFw0P+PY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FFEy1kNt8GeRrIY5YUTRfbH7QLjS2DMNR8TnZeOWrEo57G+SBJ+gzvZOlR4ljkLjX
-	 +GT5YBKin1Du3w049/2koJurJoiqJw4HeFgX5hLQCH0vIX6kRfiM7mDJsqANwuQadk
-	 qNPt3HhQN+1u0q0cMUneI3L4pn24ZiACiKPbNmsQ=
+	b=mDq/IOLhf+TbAloGuKhj3cOvpnKFy5sKJhd66inyTH6Hr1L1/V3WjtS3Cv4VW+aZS
+	 9MqPOs/CjlRncHWLCa8O+XBSQb9F0LF9JSxVmeUDzHcRkBE+U0GWMOdiy5HtVCvjUK
+	 mVJtPoWkrnG+i6ni3PDB86u/jL1BhOAJv1lSyPKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qianfeng Rong <rongqianfeng@vivo.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Saket Dumbre <saket.dumbre@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 125/392] scsi: pm8001: Use int instead of u32 to store error codes
-Date: Wed,  3 Dec 2025 16:24:35 +0100
-Message-ID: <20251203152418.693478884@linuxfoundation.org>
+Subject: [PATCH 6.1 274/568] ACPICA: Update dsmethod.c to get rid of unused variable warning
+Date: Wed,  3 Dec 2025 16:24:36 +0100
+Message-ID: <20251203152450.746143089@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,38 +60,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qianfeng Rong <rongqianfeng@vivo.com>
+From: Saket Dumbre <saket.dumbre@intel.com>
 
-[ Upstream commit bee3554d1a4efbce91d6eca732f41b97272213a5 ]
+[ Upstream commit 761dc71c6020d6aa68666e96373342d49a7e9d0a ]
 
-Use int instead of u32 for 'ret' variable to store negative error codes
-returned by PM8001_CHIP_DISP->set_nvmd_req().
+All the 3 major C compilers (MSVC, GCC, LLVM/Clang) warn about
+the unused variable i after the removal of its usage by PR #1031
+addressing Issue #1027
 
-Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
-Link: https://lore.kernel.org/r/20250826093242.230344-1-rongqianfeng@vivo.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://github.com/acpica/acpica/commit/6d235320
+Signed-off-by: Saket Dumbre <saket.dumbre@intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/pm8001/pm8001_ctl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/acpica/dsmethod.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/scsi/pm8001/pm8001_ctl.c b/drivers/scsi/pm8001/pm8001_ctl.c
-index e2ff42e16f94b..082437c84f81e 100644
---- a/drivers/scsi/pm8001/pm8001_ctl.c
-+++ b/drivers/scsi/pm8001/pm8001_ctl.c
-@@ -684,7 +684,7 @@ static int pm8001_set_nvmd(struct pm8001_hba_info *pm8001_ha)
- 	struct pm8001_ioctl_payload	*payload;
- 	DECLARE_COMPLETION_ONSTACK(completion);
- 	u8		*ioctlbuffer;
--	u32		ret;
-+	int		ret;
- 	u32		length = 1024 * 5 + sizeof(*payload) - 1;
+diff --git a/drivers/acpi/acpica/dsmethod.c b/drivers/acpi/acpica/dsmethod.c
+index c5ad377558645..12efc4ac9ba64 100644
+--- a/drivers/acpi/acpica/dsmethod.c
++++ b/drivers/acpi/acpica/dsmethod.c
+@@ -462,7 +462,6 @@ acpi_ds_call_control_method(struct acpi_thread_state *thread,
+ 	struct acpi_walk_state *next_walk_state = NULL;
+ 	union acpi_operand_object *obj_desc;
+ 	struct acpi_evaluate_info *info;
+-	u32 i;
  
- 	if (pm8001_ha->fw_image->size > 4096) {
+ 	ACPI_FUNCTION_TRACE_PTR(ds_call_control_method, this_walk_state);
+ 
 -- 
 2.51.0
 
