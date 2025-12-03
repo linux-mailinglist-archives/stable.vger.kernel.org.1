@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C43DC9FDCD
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:16:26 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C28A7CA00BF
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:42:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 816AD3062BF1
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:08:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2056230315C5
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:37:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FAE33074B3;
-	Wed,  3 Dec 2025 16:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D582B35C191;
+	Wed,  3 Dec 2025 16:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sX7cp4mO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UsZ7Jp4N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A17340D82;
-	Wed,  3 Dec 2025 16:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2F835C184;
+	Wed,  3 Dec 2025 16:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778088; cv=none; b=tK5HPQ59KjmZQ2KbzTASgr6avnqowyyB1jp9egFw6glZy5f25Ushe0S3xG5kXKvG4JV0n//MidDgOm9/4zbRxvkEUFlEmdeYWw20SbucW7NvVezlHE7zDWLGHdvNt2glDIzgKmHMtElzbSjaDmQ+LgfKB+MlnKu8RzybgzfFyYE=
+	t=1764779871; cv=none; b=qTroRyV7684HzsPjkd+DLl70dU0hxt7ZQAhRlw10vLAvwkEOZyLcfDGrteX09SW8XmLR5CGvsQo2XTibQDBvsn1ODh9lR+nGEyF6Q+xuSsqvwVSDTT+tfpOhPwfxxJxnneYgJU14cehTTnVhvToynJ8iG0G/x3SwDiZlMoapR0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778088; c=relaxed/simple;
-	bh=eH0C041VtX87DLd2Pr3DZPbCwQ30LXDwcyRI8hWCD/I=;
+	s=arc-20240116; t=1764779871; c=relaxed/simple;
+	bh=7td0OR+JYKF5J5Gp0XLYPBmZwqOuIYFYoYwq34/agcE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D0ZKxap8z1vAQsJ2udC1MQ8UIEMtMcCfyxfSizLxEuiUesvLSjOGYH1HyaMyNcpVk3f0tyfGRMOriL4PVvX6fqT7Z1hHGm+bJzldbmIq8xSCmaFHuQwxUX4CoMBv0uFx8hIEua+X2uRDYob587ih3r6ej0O+jAxZEJlJF1NPBRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sX7cp4mO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20BFAC4CEF5;
-	Wed,  3 Dec 2025 16:08:03 +0000 (UTC)
+	 MIME-Version; b=Ulr6ztoF9+kmTROjJtBvgopZxm6b+ffafQanmDu/+4hsUzZx6Nt4Cnx05bnuiUhDSCw3bihjr1TnANyvBkK51x8rKpcuM1mLOi2n3VYnOEd+TNdgOzBVrIU1Ap7uX+rmIKk4AW3xoxe4+n93pdjlmxm00AwdakGfkZLrtPm4NOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UsZ7Jp4N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B98CFC4CEF5;
+	Wed,  3 Dec 2025 16:37:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778084;
-	bh=eH0C041VtX87DLd2Pr3DZPbCwQ30LXDwcyRI8hWCD/I=;
+	s=korg; t=1764779871;
+	bh=7td0OR+JYKF5J5Gp0XLYPBmZwqOuIYFYoYwq34/agcE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sX7cp4mON7SH6AQrWwMu62sHXYjc2eXRwtqQOGlNKO0GDT6PEYsrGTnwoIG/oID8L
-	 c9dhYJIBDOntnAw6k1xkH/cW1m7NAF9zH5M+u5o2yp1+cjleU4E0k85hZjVVMA35jJ
-	 FymWnmr4qK+h529P1/cYZA6snisSDuQMYbQm2mxI=
+	b=UsZ7Jp4NsJekAnfth9MVyZQUYmIM3VGo6Ot4YoqCGWnGBi0Pt1ZM/CVvC9kVmYvo7
+	 biCEvc6g6Spz6mnu6AExLtRaTI5Baip4NPNJnhjSWD4MFeDRJOZrdK/6CsOLLJNiTo
+	 ORtvZQQ3Tn6QNnhohjGsvUaKi6loHXNCMLg/K3ik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Pauli Virtanen <pav@iki.fi>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 206/392] ALSA: hda/realtek: Audio disappears on HP 15-fc000 after warm boot again
+Subject: [PATCH 6.1 354/568] Bluetooth: 6lowpan: fix BDADDR_LE vs ADDR_LE_DEV address type confusion
 Date: Wed,  3 Dec 2025 16:25:56 +0100
-Message-ID: <20251203152421.653111145@linuxfoundation.org>
+Message-ID: <20251203152453.670617033@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,75 +61,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Pauli Virtanen <pav@iki.fi>
 
-[ Upstream commit f4b3cef55f5f96fdb4e7f9ca90b7d6213689faeb ]
+[ Upstream commit b454505bf57a2e4f5d49951d4deb03730a9348d9 ]
 
-There was a similar bug in the past (Bug 217440), which was fixed for
-this laptop.
-The same issue is occurring again as of kernel v.6.12.2. The symptoms
-are very similar - initially audio works but after a warm reboot, the
-audio completely disappears until the computer is powered off (there
-is no audio output at all).
+Bluetooth 6lowpan.c confuses BDADDR_LE and ADDR_LE_DEV address types,
+e.g. debugfs "connect" command takes the former, and "disconnect" and
+"connect" to already connected device take the latter.  This is due to
+using same value both for l2cap_chan_connect and hci_conn_hash_lookup_le
+which take different dst_type values.
 
-The issue is also related by caused by a different change now. By
-bisecting different kernel versions, I found that reverting
-cc3d0b5dd989 in patch_realtek.c[*] restores the sound and it works
-fine after the reboot.
+Fix address type passed to hci_conn_hash_lookup_le().
 
-[*] https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/sound/pci/hda/patch_realtek.c?h=v6.12.2&id=4ed7f16070a8475c088ff423b2eb11ba15eb89b6
+Retain the debugfs API difference between "connect" and "disconnect"
+commands since it's been like this since 2015 and nobody apparently
+complained.
 
-[ patch description reformatted by tiwai ]
-
-Fixes: cc3d0b5dd989 ("ALSA: hda/realtek: Update ALC256 depop procedure")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220109
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Link: https://lore.kernel.org/5317ca723c82447a938414fcca85cbf5@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: f5ad4ffceba0 ("Bluetooth: 6lowpan: Use hci_conn_hash_lookup_le() when possible")
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ net/bluetooth/6lowpan.c | 28 ++++++++++++++++++++++++----
+ 1 file changed, 24 insertions(+), 4 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 1352e9328ee2d..10f7f807e706e 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -3634,6 +3634,15 @@ static void alc256_shutup(struct hda_codec *codec)
- 		hp_pin = 0x21;
+diff --git a/net/bluetooth/6lowpan.c b/net/bluetooth/6lowpan.c
+index 003c8ae104f29..57553abde4180 100644
+--- a/net/bluetooth/6lowpan.c
++++ b/net/bluetooth/6lowpan.c
+@@ -956,10 +956,11 @@ static struct l2cap_chan *bt_6lowpan_listen(void)
+ }
  
- 	alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x1); /* Low power */
+ static int get_l2cap_conn(char *buf, bdaddr_t *addr, u8 *addr_type,
+-			  struct l2cap_conn **conn)
++			  struct l2cap_conn **conn, bool disconnect)
+ {
+ 	struct hci_conn *hcon;
+ 	struct hci_dev *hdev;
++	int le_addr_type;
+ 	int n;
+ 
+ 	n = sscanf(buf, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx %hhu",
+@@ -970,13 +971,32 @@ static int get_l2cap_conn(char *buf, bdaddr_t *addr, u8 *addr_type,
+ 	if (n < 7)
+ 		return -EINVAL;
+ 
++	if (disconnect) {
++		/* The "disconnect" debugfs command has used different address
++		 * type constants than "connect" since 2015. Let's retain that
++		 * for now even though it's obviously buggy...
++		 */
++		*addr_type += 1;
++	}
 +
-+	/* 3k pull low control for Headset jack. */
-+	/* NOTE: call this before clearing the pin, otherwise codec stalls */
-+	/* If disable 3k pulldown control for alc257, the Mic detection will not work correctly
-+	 * when booting with headset plugged. So skip setting it for the codec alc257
-+	 */
-+	if (spec->en_3kpull_low)
-+		alc_update_coef_idx(codec, 0x46, 0, 3 << 12);
++	switch (*addr_type) {
++	case BDADDR_LE_PUBLIC:
++		le_addr_type = ADDR_LE_DEV_PUBLIC;
++		break;
++	case BDADDR_LE_RANDOM:
++		le_addr_type = ADDR_LE_DEV_RANDOM;
++		break;
++	default:
++		return -EINVAL;
++	}
 +
- 	hp_pin_sense = snd_hda_jack_detect(codec, hp_pin);
+ 	/* The LE_PUBLIC address type is ignored because of BDADDR_ANY */
+ 	hdev = hci_get_route(addr, BDADDR_ANY, BDADDR_LE_PUBLIC);
+ 	if (!hdev)
+ 		return -ENOENT;
  
- 	if (hp_pin_sense) {
-@@ -3644,14 +3653,6 @@ static void alc256_shutup(struct hda_codec *codec)
+ 	hci_dev_lock(hdev);
+-	hcon = hci_conn_hash_lookup_le(hdev, addr, *addr_type);
++	hcon = hci_conn_hash_lookup_le(hdev, addr, le_addr_type);
+ 	hci_dev_unlock(hdev);
+ 	hci_dev_put(hdev);
  
- 		msleep(75);
+@@ -1103,7 +1123,7 @@ static ssize_t lowpan_control_write(struct file *fp,
+ 	buf[buf_size] = '\0';
  
--	/* 3k pull low control for Headset jack. */
--	/* NOTE: call this before clearing the pin, otherwise codec stalls */
--	/* If disable 3k pulldown control for alc257, the Mic detection will not work correctly
--	 * when booting with headset plugged. So skip setting it for the codec alc257
--	 */
--		if (spec->en_3kpull_low)
--			alc_update_coef_idx(codec, 0x46, 0, 3 << 12);
--
- 		if (!spec->no_shutup_pins)
- 			snd_hda_codec_write(codec, hp_pin, 0,
- 				    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
+ 	if (memcmp(buf, "connect ", 8) == 0) {
+-		ret = get_l2cap_conn(&buf[8], &addr, &addr_type, &conn);
++		ret = get_l2cap_conn(&buf[8], &addr, &addr_type, &conn, false);
+ 		if (ret == -EINVAL)
+ 			return ret;
+ 
+@@ -1140,7 +1160,7 @@ static ssize_t lowpan_control_write(struct file *fp,
+ 	}
+ 
+ 	if (memcmp(buf, "disconnect ", 11) == 0) {
+-		ret = get_l2cap_conn(&buf[11], &addr, &addr_type, &conn);
++		ret = get_l2cap_conn(&buf[11], &addr, &addr_type, &conn, true);
+ 		if (ret < 0)
+ 			return ret;
+ 
 -- 
 2.51.0
 
