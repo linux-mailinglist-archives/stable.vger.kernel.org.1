@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33C2CCA0242
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:51:02 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FF8BCA0673
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:24:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6A82930336D1
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:43:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D36DB3000B23
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:24:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F09C93612EB;
-	Wed,  3 Dec 2025 16:43:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B50F340293;
+	Wed,  3 Dec 2025 15:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fyYUS5fH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C1WZWXAy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0888635FF54;
-	Wed,  3 Dec 2025 16:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44088340260;
+	Wed,  3 Dec 2025 15:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780190; cv=none; b=PsXfkutCdGcKdXU2z2+me5h4shR4N49AwZp/KMtNdonyiMFXGPel8OY1iNLEa2Ju0WpHnY9knffnbF9eFXzbPQZqiczWMxAl8ddzTKVk1zTGub7hitJ6C391xX52hzgzExDmiGPJ6Y2mMs3ijWglaANzXV/kz1/RiYDkMJShQO8=
+	t=1764777323; cv=none; b=edMgiZdaiXY/Rjk3hAM9BeaGv4uuLonoDhjcsZxRNdDviW9BHpoI88EgYBvjbpuxroB2g0cavI+f0PPaEuWnasCiPNyhMP59QxIsTUk0u4V543ih2Wpjth2FLP67dbgM2TgdqY7mvJGVOUtHgsyVpezbJDFs0EJGskeasuPw1SY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780190; c=relaxed/simple;
-	bh=fmIvxhgBiPlovCiTpTCTM1JhZ1p0unSHscrO0p9XAhA=;
+	s=arc-20240116; t=1764777323; c=relaxed/simple;
+	bh=oglL+AYZ68l5gsrkJWKvjjWh8xiJ+L8gdoXkH1JwOaw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kDSKE39YRzsDP7PppmEiUQJferwkHkfdsBjghSSZhz/uPGyF2XkI2NPYKNFhgo7x2iNDHc+SJpaFTnADcN2FnoP91sVkfmFQD4xZu+tTbJBHsfp3YQNmWaOGUQjajx3Lci03uZeOvwXcqTKCTohM2f3yScoQD+83D5G1BqhgxjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fyYUS5fH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C27C5C4CEF5;
-	Wed,  3 Dec 2025 16:43:08 +0000 (UTC)
+	 MIME-Version; b=Pwx94pm0jI//fPomHBd/epw0utXY7PHA0NlufwtV9sB53II9WOPqGgFoljxl4M0QjHqp7ogX9ov9OZwXDGGiuOfukSheUbOiV2eFyKlPiEy+zJuj5jRkbBdNdPAYQwR7SPSqhKjIeDBS7OYUmmW6x+hQXKvQqlbcR7sW955UPK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C1WZWXAy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B0B9C4CEF5;
+	Wed,  3 Dec 2025 15:55:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780189;
-	bh=fmIvxhgBiPlovCiTpTCTM1JhZ1p0unSHscrO0p9XAhA=;
+	s=korg; t=1764777322;
+	bh=oglL+AYZ68l5gsrkJWKvjjWh8xiJ+L8gdoXkH1JwOaw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fyYUS5fHt2FR8xiHFdn1+TvXsyLrlfQGI/L0VqKMpPL97ZhxlNe/TBP2o5RfNU/5I
-	 bT4SzWX0rEowiKDzKKfaC46hcTkJWswxRpEXDXYkDXpFHdMF75r9cV7J9SCnibxz4j
-	 xPBduqoFCGRNo2S6ofQBvQZ+e9gd1Rk/nx/PXpOc=
+	b=C1WZWXAy0xxmHYrBXS7k8nhdbGzD5X3RqTob+kh9lHs7MAOVo+wb3IyR1KkR3QfXx
+	 NCoAJfm2D4/lwIRHqTZeeYcDf7DX+5kooPZuxNCvqdyuWD+uCRVCFL0xDF5lk2ziT2
+	 LlrrprqdnsgmUDwGkc4koDEwuT1vP9GQOfTVnHwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 482/568] mm/mempool: fix poisoning order>0 pages with HIGHMEM
+	syzbot+3a92d359bc2ec6255a33@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.17 106/146] mptcp: Initialise rcv_mss before calling tcp_send_active_reset() in mptcp_do_fastclose().
 Date: Wed,  3 Dec 2025 16:28:04 +0100
-Message-ID: <20251203152458.353959394@linuxfoundation.org>
+Message-ID: <20251203152350.345342201@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,112 +61,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vlastimil Babka <vbabka@suse.cz>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit ec33b59542d96830e3c89845ff833cf7b25ef172 ]
+commit f07f4ea53e22429c84b20832fa098b5ecc0d4e35 upstream.
 
-The kernel test has reported:
+syzbot reported divide-by-zero in __tcp_select_window() by
+MPTCP socket. [0]
 
-  BUG: unable to handle page fault for address: fffba000
-  #PF: supervisor write access in kernel mode
-  #PF: error_code(0x0002) - not-present page
-  *pde = 03171067 *pte = 00000000
-  Oops: Oops: 0002 [#1]
-  CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Tainted: G                T   6.18.0-rc2-00031-gec7f31b2a2d3 #1 NONE  a1d066dfe789f54bc7645c7989957d2bdee593ca
-  Tainted: [T]=RANDSTRUCT
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-  EIP: memset (arch/x86/include/asm/string_32.h:168 arch/x86/lib/memcpy_32.c:17)
-  Code: a5 8b 4d f4 83 e1 03 74 02 f3 a4 83 c4 04 5e 5f 5d 2e e9 73 41 01 00 90 90 90 3e 8d 74 26 00 55 89 e5 57 56 89 c6 89 d0 89 f7 <f3> aa 89 f0 5e 5f 5d 2e e9 53 41 01 00 cc cc cc 55 89 e5 53 57 56
-  EAX: 0000006b EBX: 00000015 ECX: 001fefff EDX: 0000006b
-  ESI: fffb9000 EDI: fffba000 EBP: c611fbf0 ESP: c611fbe8
-  DS: 007b ES: 007b FS: 0000 GS: 0000 SS: 0068 EFLAGS: 00010287
-  CR0: 80050033 CR2: fffba000 CR3: 0316e000 CR4: 00040690
-  Call Trace:
-   poison_element (mm/mempool.c:83 mm/mempool.c:102)
-   mempool_init_node (mm/mempool.c:142 mm/mempool.c:226)
-   mempool_init_noprof (mm/mempool.c:250 (discriminator 1))
-   ? mempool_alloc_pages (mm/mempool.c:640)
-   bio_integrity_initfn (block/bio-integrity.c:483 (discriminator 8))
-   ? mempool_alloc_pages (mm/mempool.c:640)
-   do_one_initcall (init/main.c:1283)
+We had a similar issue for the bare TCP and fixed in commit
+499350a5a6e7 ("tcp: initialize rcv_mss to TCP_MIN_MSS instead
+of 0").
 
-Christoph found out this is due to the poisoning code not dealing
-properly with CONFIG_HIGHMEM because only the first page is mapped but
-then the whole potentially high-order page is accessed.
+Let's apply the same fix to mptcp_do_fastclose().
 
-We could give up on HIGHMEM here, but it's straightforward to fix this
-with a loop that's mapping, poisoning or checking and unmapping
-individual pages.
+[0]:
+Oops: divide error: 0000 [#1] SMP KASAN PTI
+CPU: 0 UID: 0 PID: 6068 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
+RIP: 0010:__tcp_select_window+0x824/0x1320 net/ipv4/tcp_output.c:3336
+Code: ff ff ff 44 89 f1 d3 e0 89 c1 f7 d1 41 01 cc 41 21 c4 e9 a9 00 00 00 e8 ca 49 01 f8 e9 9c 00 00 00 e8 c0 49 01 f8 44 89 e0 99 <f7> 7c 24 1c 41 29 d4 48 bb 00 00 00 00 00 fc ff df e9 80 00 00 00
+RSP: 0018:ffffc90003017640 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffff88807b469e40
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: ffffc90003017730 R08: ffff888033268143 R09: 1ffff1100664d028
+R10: dffffc0000000000 R11: ffffed100664d029 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+FS:  000055557faa0500(0000) GS:ffff888126135000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f64a1912ff8 CR3: 0000000072122000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ tcp_select_window net/ipv4/tcp_output.c:281 [inline]
+ __tcp_transmit_skb+0xbc7/0x3aa0 net/ipv4/tcp_output.c:1568
+ tcp_transmit_skb net/ipv4/tcp_output.c:1649 [inline]
+ tcp_send_active_reset+0x2d1/0x5b0 net/ipv4/tcp_output.c:3836
+ mptcp_do_fastclose+0x27e/0x380 net/mptcp/protocol.c:2793
+ mptcp_disconnect+0x238/0x710 net/mptcp/protocol.c:3253
+ mptcp_sendmsg_fastopen+0x2f8/0x580 net/mptcp/protocol.c:1776
+ mptcp_sendmsg+0x1774/0x1980 net/mptcp/protocol.c:1855
+ sock_sendmsg_nosec net/socket.c:727 [inline]
+ __sock_sendmsg+0xe5/0x270 net/socket.c:742
+ __sys_sendto+0x3bd/0x520 net/socket.c:2244
+ __do_sys_sendto net/socket.c:2251 [inline]
+ __se_sys_sendto net/socket.c:2247 [inline]
+ __x64_sys_sendto+0xde/0x100 net/socket.c:2247
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f66e998f749
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffff9acedb8 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 00007f66e9be5fa0 RCX: 00007f66e998f749
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000003
+RBP: 00007ffff9acee10 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000001
+R13: 00007f66e9be5fa0 R14: 00007f66e9be5fa0 R15: 0000000000000006
+ </TASK>
 
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202511111411.9ebfa1ba-lkp@intel.com
-Analyzed-by: Christoph Hellwig <hch@lst.de>
-Fixes: bdfedb76f4f5 ("mm, mempool: poison elements backed by slab allocator")
+Fixes: ae155060247b ("mptcp: fix duplicate reset on fastclose")
+Reported-by: syzbot+3a92d359bc2ec6255a33@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/69260882.a70a0220.d98e3.00b4.GAE@google.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Cc: stable@vger.kernel.org
-Tested-by: kernel test robot <oliver.sang@intel.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://patch.msgid.link/20251113-mempool-poison-v1-1-233b3ef984c3@suse.cz
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://patch.msgid.link/20251125195331.309558-1-kuniyu@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/mempool.c |   32 ++++++++++++++++++++++++++------
- 1 file changed, 26 insertions(+), 6 deletions(-)
+ net/mptcp/protocol.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/mm/mempool.c
-+++ b/mm/mempool.c
-@@ -62,10 +62,20 @@ static void check_element(mempool_t *poo
- 	} else if (pool->free == mempool_free_pages) {
- 		/* Mempools backed by page allocator */
- 		int order = (int)(long)pool->pool_data;
--		void *addr = kmap_local_page((struct page *)element);
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2770,6 +2770,12 @@ static void mptcp_do_fastclose(struct so
+ 			goto unlock;
  
--		__check_element(pool, addr, 1UL << (PAGE_SHIFT + order));
--		kunmap_local(addr);
-+#ifdef CONFIG_HIGHMEM
-+		for (int i = 0; i < (1 << order); i++) {
-+			struct page *page = (struct page *)element;
-+			void *addr = kmap_local_page(page + i);
+ 		subflow->send_fastclose = 1;
 +
-+			__check_element(pool, addr, PAGE_SIZE);
-+			kunmap_local(addr);
-+		}
-+#else
-+		void *addr = page_address((struct page *)element);
++		/* Initialize rcv_mss to TCP_MIN_MSS to avoid division by 0
++		 * issue in __tcp_select_window(), see tcp_disconnect().
++		 */
++		inet_csk(ssk)->icsk_ack.rcv_mss = TCP_MIN_MSS;
 +
-+		__check_element(pool, addr, PAGE_SIZE << order);
-+#endif
- 	}
- }
- 
-@@ -85,10 +95,20 @@ static void poison_element(mempool_t *po
- 	} else if (pool->alloc == mempool_alloc_pages) {
- 		/* Mempools backed by page allocator */
- 		int order = (int)(long)pool->pool_data;
--		void *addr = kmap_local_page((struct page *)element);
- 
--		__poison_element(addr, 1UL << (PAGE_SHIFT + order));
--		kunmap_local(addr);
-+#ifdef CONFIG_HIGHMEM
-+		for (int i = 0; i < (1 << order); i++) {
-+			struct page *page = (struct page *)element;
-+			void *addr = kmap_local_page(page + i);
-+
-+			__poison_element(addr, PAGE_SIZE);
-+			kunmap_local(addr);
-+		}
-+#else
-+		void *addr = page_address((struct page *)element);
-+
-+		__poison_element(addr, PAGE_SIZE << order);
-+#endif
- 	}
- }
- #else /* CONFIG_DEBUG_SLAB || CONFIG_SLUB_DEBUG_ON */
+ 		tcp_send_active_reset(ssk, ssk->sk_allocation,
+ 				      SK_RST_REASON_TCP_ABORT_ON_CLOSE);
+ unlock:
 
 
 
