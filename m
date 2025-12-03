@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F895CA115E
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:43:12 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FDE0CA01E2
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:49:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 90E5C30B450E
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:44:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8BB913026F83
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:41:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23AD8346FB7;
-	Wed,  3 Dec 2025 16:11:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BD6B35BDBE;
+	Wed,  3 Dec 2025 16:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jBOcdLOR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LRfctEPE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3BD1346FAE;
-	Wed,  3 Dec 2025 16:11:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 081B435BDB8;
+	Wed,  3 Dec 2025 16:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778311; cv=none; b=BJKtywHOTCJ+1KqKpXPFopn8spOcP9SIkNj/hfFegR+y14D63dXpAnmDlqgtjxwoAQff/wf0AXw7+aeUNzAL9ucaSSygnPaNbzbVcwiCZym2UCHfSv66AWW1+x/pNl/+m4ZdEKLMKbj4jhfE7IAsFpVp7x1oKcTXwwSzJeD0Nqo=
+	t=1764780101; cv=none; b=pzPj9R7Ry5O2wEpHbU8zFOUHHfV3/2Iz6dZMLEXVqF93YK632VhHMEqcbRNCxVVIU6/wj40cV8oCekJw57g4yrdow1rUZwlJE5GdaBiF2j+6HthJiboKH2v2gCyxrLL9iqytRRixgHPWAar9XbXUy1EMfmhP88jPsYTc+TmmZMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778311; c=relaxed/simple;
-	bh=yN3vbxw31puUTRlk8TXRuEBxNUTw38WikPXUMXAsGUs=;
+	s=arc-20240116; t=1764780101; c=relaxed/simple;
+	bh=6cT6Duxw3+NpTt1w+Oj+oRRdATN3SkwURJGcb1LKJMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TOo0WBSvsizLzieA+2cec40Tm7J5wYMS0DHLu/tILNM53AAeXyKulvC0s30yrbp2AuDdX7lBP2rKp1AW5Zx7rVV5F4BFkjtbcoFgkgTWihJgZcdCdg7TW2gVLO2fGV8yXVBg0fgk17VGsBfe1BUiTMTdCYDBnVuzIQmsCkVKAsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jBOcdLOR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A2DBC4CEF5;
-	Wed,  3 Dec 2025 16:11:50 +0000 (UTC)
+	 MIME-Version; b=i82VaZtQUltrtpsQYHM5cpxvbigzn/rQ5EvSJm9rHnNx5Jhu6XQenoGOlY9cqgRUmqAhYIsCebDoLBi2M060mEFh4bN17tK33qegxrMO4r8QDlASg8XyTxf2tqmsk8QEibhhniB48C9bL2ZKgGEO9FjxvF1q3cqT9ayH/Hj6KFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LRfctEPE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 623DDC4CEF5;
+	Wed,  3 Dec 2025 16:41:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778311;
-	bh=yN3vbxw31puUTRlk8TXRuEBxNUTw38WikPXUMXAsGUs=;
+	s=korg; t=1764780100;
+	bh=6cT6Duxw3+NpTt1w+Oj+oRRdATN3SkwURJGcb1LKJMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jBOcdLORXIpgclr4zMvEpO0TCCelM/qSQCLVflZWsfNCDHDV+mpRcMmH40k9psFM3
-	 mhjneAVE4C+NncGbBKmhHJpl7j+qlrAPUrtS+PDd4BjJO6IXQ5mVxqNh1ngGRRC/MG
-	 7X+FosvmKpZIljO4K4Ki6mn63VdhXV3CbL80wLUw=
+	b=LRfctEPEO85EnKdTbQoUkeMg4iMzuOctWtoLCS3lVOkvKwPLo97IVx8tG03dEPnwG
+	 32qZqmwTr9jmUvWgpN9gWACF5NFHfJgv/PplV+2sDwNJLEs2Lalz3xqGMTNf3c+aLC
+	 vbvPGpMg5nb3yiO5B9e6V4DN+pJAUiWUlCf0f7Rs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jakub=20Hork=C3=BD?= <jakub.git@horky.net>,
-	Nathan Chancellor <nathan@kernel.org>,
+	Prateek Agarwal <praagarwal@nvidia.com>,
+	Mikko Perttunen <mperttunen@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 306/392] kconfig/nconf: Initialize the default locale at startup
+Subject: [PATCH 6.1 454/568] drm/tegra: Add call to put_pid()
 Date: Wed,  3 Dec 2025 16:27:36 +0100
-Message-ID: <20251203152425.422917801@linuxfoundation.org>
+Message-ID: <20251203152457.333274646@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,51 +59,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Horký <jakub.git@horky.net>
+From: Prateek Agarwal <praagarwal@nvidia.com>
 
-[ Upstream commit 43c2931a95e6b295bfe9e3b90dbe0f7596933e91 ]
+[ Upstream commit 6cbab9f0da72b4dc3c3f9161197aa3b9daa1fa3a ]
 
-Fix bug where make nconfig doesn't initialize the default locale, which
-causes ncurses menu borders to be displayed incorrectly (lqqqqk) in
-UTF-8 terminals that don't support VT100 ACS by default, such as PuTTY.
+Add a call to put_pid() corresponding to get_task_pid().
+host1x_memory_context_alloc() does not take ownership of the PID so we
+need to free it here to avoid leaking.
 
-Signed-off-by: Jakub Horký <jakub.git@horky.net>
-Link: https://patch.msgid.link/20251014144405.3975275-2-jakub.git@horky.net
-[nathan: Alphabetize locale.h include]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Prateek Agarwal <praagarwal@nvidia.com>
+Fixes: e09db97889ec ("drm/tegra: Support context isolation")
+[mperttunen@nvidia.com: reword commit message]
+Signed-off-by: Mikko Perttunen <mperttunen@nvidia.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Link: https://patch.msgid.link/20250919-host1x-put-pid-v1-1-19c2163dfa87@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/nconf.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/tegra/uapi.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/kconfig/nconf.c b/scripts/kconfig/nconf.c
-index 8b166ccb0447f..d1d928b20ecfd 100644
---- a/scripts/kconfig/nconf.c
-+++ b/scripts/kconfig/nconf.c
-@@ -7,6 +7,7 @@
- #ifndef _GNU_SOURCE
- #define _GNU_SOURCE
- #endif
-+#include <locale.h>
- #include <string.h>
- #include <strings.h>
- #include <stdlib.h>
-@@ -1472,6 +1473,8 @@ int main(int ac, char **av)
- 	int lines, columns;
- 	char *mode;
+diff --git a/drivers/gpu/drm/tegra/uapi.c b/drivers/gpu/drm/tegra/uapi.c
+index 5adab6b229164..d0b6a1fa6efad 100644
+--- a/drivers/gpu/drm/tegra/uapi.c
++++ b/drivers/gpu/drm/tegra/uapi.c
+@@ -114,9 +114,12 @@ int tegra_drm_ioctl_channel_open(struct drm_device *drm, void *data, struct drm_
+ 		if (err)
+ 			goto put_channel;
  
-+	setlocale(LC_ALL, "");
-+
- 	if (ac > 1 && strcmp(av[1], "-s") == 0) {
- 		/* Silence conf_read() until the real callback is set up */
- 		conf_set_message_callback(NULL);
+-		if (supported)
++		if (supported) {
++			struct pid *pid = get_task_pid(current, PIDTYPE_TGID);
+ 			context->memory_context = host1x_memory_context_alloc(
+-				host, client->base.dev, get_task_pid(current, PIDTYPE_TGID));
++				host, client->base.dev, pid);
++			put_pid(pid);
++		}
+ 
+ 		if (IS_ERR(context->memory_context)) {
+ 			if (PTR_ERR(context->memory_context) != -EOPNOTSUPP) {
 -- 
 2.51.0
 
