@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-199832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 721DDCA0C64
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:08:29 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43CE1CA0623
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:23:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BBA8D316EED6
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:04:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0AE563002699
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:23:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 041F03A1CF1;
-	Wed,  3 Dec 2025 16:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 895B734CFA7;
+	Wed,  3 Dec 2025 16:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rlRmV4ju"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s6ydeJ82"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2102D3A1CEE;
-	Wed,  3 Dec 2025 16:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD58834DB67;
+	Wed,  3 Dec 2025 16:55:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764781092; cv=none; b=o+L3rVO5h1S3BICwtxQNzW+owXNcc5k14lC8IaMyuRbi2intpmzKQA+qF55ujTUlrWhSJMxgv+1z4h7pLDM5OYsX8HtK3trpfxHQi6/atzH5cYad6kG+32JaI9K4f0BFv577iVY3Q/abjJSRWUi6X+6cZ3VezPCsoI+cRnHlfog=
+	t=1764780918; cv=none; b=iLltf5hPUoim2nGoXKqkzSqk5RaxxdheHwElPDC6/W7NONEmoMTv/rX8q2+YaE8xBqWmerzBFia4MDUkDF25So0ES433Z4RpJr5LpgSCQftXcsgX6FSAPkMTBqRB8oohzkAOfYtelNyGhFxBY358UIURfSUUL9J8h9LWLnUDAfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764781092; c=relaxed/simple;
-	bh=EbUegxFOvTcUfX0d+JPl0u8PZjxkwxVFrPij8yBB+gw=;
+	s=arc-20240116; t=1764780918; c=relaxed/simple;
+	bh=hBWAgzI8pWOsAip4xrtbrINqoHcM7qhnU2nH6c5Yl5g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tE4rnGE9pB8v4Bj78RhNmtcN9rSwKaAHB8J8ksJNHB37VJdzHDhYgKLkieSVNckhZNpMY45Mx1e1TWfAENeMFVZYKNUKaIbAkLLU8ir01VNd76UaP13fqg0hxMv8TvlymWETxdxbMZcn2UuKoyanBXZ3GW2QM7xUfvt2xwx7DTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rlRmV4ju; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D3ACC4CEF5;
-	Wed,  3 Dec 2025 16:58:11 +0000 (UTC)
+	 MIME-Version; b=nE1OdkXMnhEarZvXgf+Eo1dBCxSEKAxdvsMAFt+0ZMU4STMpwh3I+bV/WBQHX+uBWMVdqLXij93ZfOy4DlcHVQIlIx2vwt6HREjTbvbdJn2NXw3ceGZV2v4ryNk4MHcIhJihtR2npUhl/TBiovot4d5aqJGes//gyh82oSap+FU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s6ydeJ82; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 155ADC116C6;
+	Wed,  3 Dec 2025 16:55:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764781091;
-	bh=EbUegxFOvTcUfX0d+JPl0u8PZjxkwxVFrPij8yBB+gw=;
+	s=korg; t=1764780918;
+	bh=hBWAgzI8pWOsAip4xrtbrINqoHcM7qhnU2nH6c5Yl5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rlRmV4juV4nSlZcPAv3wE1Ds+lmsniwqXNReRfJ5dppp69zpdYehNtHVPtRgOkib4
-	 SJOOHhrzART6sKIsN+YeVQA+FocFsiaWFsdhzkvrarBSM4y1kxOgtMTVMTpf9phd1b
-	 TPcYRALRWIyPNBXJ5uhGcBzZO+dQBI61hrbwJF3c=
+	b=s6ydeJ82R/Wo9b9pLjBcYcH33ZaPZM5SARRuTtX8LxTabNlXGGgV5+XqfQNzq5Scw
+	 3+QxzXuV3Z/R+k4eDRpYswCij5hQzBEFZCbU8hJ1yHtc1WibblUymlVDbGEo8kJ4Uq
+	 LlMhLmMgaFU4J8rHfdPOK41MBLlRtyu2dBqFU0ag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20M=C3=BChlbacher?= <tmuehlbacher@posteo.net>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.6 46/93] can: sun4i_can: sun4i_can_interrupt(): fix max irq loop handling
-Date: Wed,  3 Dec 2025 16:29:39 +0100
-Message-ID: <20251203152338.223601186@linuxfoundation.org>
+	Oleksandr Suvorov <cryosay@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.12 101/132] USB: serial: ftdi_sio: add support for u-blox EVK-M101
+Date: Wed,  3 Dec 2025 16:29:40 +0100
+Message-ID: <20251203152347.027462918@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,50 +57,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Oleksandr Suvorov <cryosay@gmail.com>
 
-commit 76544beea7cfe5bcce6d60f53811657b88ec8be1 upstream.
+commit 2d8ab771d5316de64f3bb920b82575c58eb00b1b upstream.
 
-Reading the interrupt register `SUN4I_REG_INT_ADDR` causes all of its bits
-to be reset. If we ever reach the condition of handling more than
-`SUN4I_CAN_MAX_IRQ` IRQs, we will have read the register and reset all its
-bits but without actually handling the interrupt inside of the loop body.
+The U-Blox EVK-M101 enumerates as 1546:0506 [1] with four FTDI interfaces:
+- EVK-M101 current sensors
+- EVK-M101 I2C
+- EVK-M101 UART
+- EVK-M101 port D
 
-This may, among other issues, cause us to never `netif_wake_queue()` again
-after a transmission interrupt.
+Only the third USB interface is a UART. This change lets ftdi_sio probe
+the VID/PID and registers only interface #3 as a TTY, leaving the rest
+available for other drivers.
 
-Fixes: 0738eff14d81 ("can: Allwinner A10/A20 CAN Controller support - Kernel module")
+[1]
+usb 5-1.3: new high-speed USB device number 11 using xhci_hcd
+usb 5-1.3: New USB device found, idVendor=1546, idProduct=0506, bcdDevice= 8.00
+usb 5-1.3: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+usb 5-1.3: Product: EVK-M101
+usb 5-1.3: Manufacturer: u-blox AG
+
+Datasheet: https://content.u-blox.com/sites/default/files/documents/EVK-M10_UserGuide_UBX-21003949.pdf
+
+Signed-off-by: Oleksandr Suvorov <cryosay@gmail.com>
+Link: https://lore.kernel.org/20250926060235.3442748-1-cryosay@gmail.com/
 Cc: stable@vger.kernel.org
-Co-developed-by: Thomas Mühlbacher <tmuehlbacher@posteo.net>
-Signed-off-by: Thomas Mühlbacher <tmuehlbacher@posteo.net>
-Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Link: https://patch.msgid.link/20251116-sun4i-fix-loop-v1-1-3d76d3f81950@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/sun4i_can.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/serial/ftdi_sio.c     |    1 +
+ drivers/usb/serial/ftdi_sio_ids.h |    1 +
+ 2 files changed, 2 insertions(+)
 
---- a/drivers/net/can/sun4i_can.c
-+++ b/drivers/net/can/sun4i_can.c
-@@ -657,8 +657,8 @@ static irqreturn_t sun4i_can_interrupt(i
- 	u8 isrc, status;
- 	int n = 0;
+--- a/drivers/usb/serial/ftdi_sio.c
++++ b/drivers/usb/serial/ftdi_sio.c
+@@ -1074,6 +1074,7 @@ static const struct usb_device_id id_tab
+ 	/* U-Blox devices */
+ 	{ USB_DEVICE(UBLOX_VID, UBLOX_C099F9P_ZED_PID) },
+ 	{ USB_DEVICE(UBLOX_VID, UBLOX_C099F9P_ODIN_PID) },
++	{ USB_DEVICE_INTERFACE_NUMBER(UBLOX_VID, UBLOX_EVK_M101_PID, 2) },
+ 	/* FreeCalypso USB adapters */
+ 	{ USB_DEVICE(FTDI_VID, FTDI_FALCONIA_JTAG_BUF_PID),
+ 		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+--- a/drivers/usb/serial/ftdi_sio_ids.h
++++ b/drivers/usb/serial/ftdi_sio_ids.h
+@@ -1614,6 +1614,7 @@
+ #define UBLOX_VID			0x1546
+ #define UBLOX_C099F9P_ZED_PID		0x0502
+ #define UBLOX_C099F9P_ODIN_PID		0x0503
++#define UBLOX_EVK_M101_PID		0x0506
  
--	while ((isrc = readl(priv->base + SUN4I_REG_INT_ADDR)) &&
--	       (n < SUN4I_CAN_MAX_IRQ)) {
-+	while ((n < SUN4I_CAN_MAX_IRQ) &&
-+	       (isrc = readl(priv->base + SUN4I_REG_INT_ADDR))) {
- 		n++;
- 		status = readl(priv->base + SUN4I_REG_STA_ADDR);
- 
+ /*
+  * GMC devices
 
 
 
