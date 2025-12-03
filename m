@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-198573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBCB4CA1170
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:43:41 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8CA7CA095E
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:44:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 492DA33F49DB
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:45:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 185D730012DF
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:44:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EB2D32B983;
-	Wed,  3 Dec 2025 15:49:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C32BB347BB8;
+	Wed,  3 Dec 2025 16:12:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U8L34++b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ULDuH1ic"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0F932ABC7;
-	Wed,  3 Dec 2025 15:49:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78188346FC8;
+	Wed,  3 Dec 2025 16:12:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776990; cv=none; b=sVg7zXqbJSY4Dsw6A+EUiAaTrzS03U8iAF87j74xa9xU7ACK79HwInJstLLJdgVyHdMc+LiRUcYDFqq3Tnd00iR6okIUPGnm3NM8CAZ5/ft7dgK0ZEWiKhj6UtjvA9XFv8wp917erEv3DB8Xiua61NOPhX7dn1+YVZLAjy1gN50=
+	t=1764778321; cv=none; b=BRfAYYvWKgxveSKM6r3iadXgcfZDjTYV4E8U+MKvfqdsNlpLexZTPxZc4Gl0u7Yj1aoJSPk7eiMUblN20pQ8dBmw3t/FcO5BViNLKaRYVmDtZMaF4g7unT/tKPS03OEmMHCnHLHYxutgkCA/KXre0ZZYglbrdJ2fUvX8nwAIs4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776990; c=relaxed/simple;
-	bh=vM1cwB9prmsd8+CChzJ1kerK1EnHDd2lY6UpGI/oZvE=;
+	s=arc-20240116; t=1764778321; c=relaxed/simple;
+	bh=xiw+mDpvVTlx4y7XmT2i+/M9Um7ikQt9X3BGj6TyyZs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sOEM1bdhXNorTEbOn1XQYT/QKFI+Z+pjyTqdJcpw5VnvZGtLKEN7vl3ek61DobJBoyTwEWBbTQNHczUMktBPdsZQ4Gn9Hx8M3Q2z05zf7a3TJL/uoVayyoVXBCjhdhObGYKh6mHi7AWMmlQZ7uKZmS7/ntvxugRdJxZTBtPGSKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U8L34++b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 716CEC4CEF5;
-	Wed,  3 Dec 2025 15:49:49 +0000 (UTC)
+	 MIME-Version; b=f7GTMDgj+/l0kCpPgh/2yxl7pDi1H2lUITYvkQcReKawqeDgMs0IghhsVgj2kLVADEy71E5KAHSIceX0oINYktdgjugf2cbrGi1p18uOwBjfAUhu+dPNJ4w+GZ1GmPqsHZgu85BPVPp/KOUzLIPEnS4kecu769Iv1T0p58/BXgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ULDuH1ic; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5602C4CEF5;
+	Wed,  3 Dec 2025 16:12:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776989;
-	bh=vM1cwB9prmsd8+CChzJ1kerK1EnHDd2lY6UpGI/oZvE=;
+	s=korg; t=1764778321;
+	bh=xiw+mDpvVTlx4y7XmT2i+/M9Um7ikQt9X3BGj6TyyZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U8L34++bX/FbvdY2kl1kcD5p0VDC7HCV/wodQ/SHJDv7Q6HuRZ0r7I2aLPdQMgn8q
-	 VqlNo2dWGK0NA1AVXEwZP8Mg4NhpnZEi523hfxiKVzu9OqYWbf2Dr9oGS9I9Nw0GYX
-	 9ozD9FtBIEtq65KBbSNfsHsG7te9s+lHfKt5JfIM=
+	b=ULDuH1iciasril9mWUYiKKvRjwwNOrRx4wJIdaaejDnRTbX96E/vLPZzFSR7TVKSz
+	 RwndTVm1WT9LeuBckBWMUcc1uh3jAcbSEK2WN7DJtPZqhR/PFAUy5V3rcj74n2M5ff
+	 KJgk2mxRHRnUoHT9+TPkhn9en6f+AAodFa80L2Ss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hang Zhou <929513338@qq.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 049/146] spi: bcm63xx: fix premature CS deassertion on RX-only transactions
+	Hans de Goede <hansg@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.15 277/392] spi: Try to get ACPI GPIO IRQ earlier
 Date: Wed,  3 Dec 2025 16:27:07 +0100
-Message-ID: <20251203152348.267336518@linuxfoundation.org>
+Message-ID: <20251203152424.356157705@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,73 +59,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hang Zhou <929513338@qq.com>
+From: Hans de Goede <hansg@kernel.org>
 
-[ Upstream commit fd9862f726aedbc2f29a29916cabed7bcf5cadb6 ]
+commit 3cd2018e15b3d66d2187d92867e265f45ad79e6f upstream.
 
-On BCM6358 (and also observed on BCM6368) the controller appears to
-only generate as many SPI clocks as bytes that have been written into
-the TX FIFO. For RX-only transfers the driver programs the transfer
-length in SPI_MSG_CTL but does not write anything into the FIFO, so
-chip select is deasserted early and the RX transfer segment is never
-fully clocked in.
+Since commit d24cfee7f63d ("spi: Fix acpi deferred irq probe"), the
+acpi_dev_gpio_irq_get() call gets delayed till spi_probe() is called
+on the SPI device.
 
-A concrete failing case is a three-transfer MAC address read from
-SPI-NOR:
-  - TX 0x03 (read command)
-  - TX 3-byte address
-  - RX 6 bytes (MAC)
+If there is no driver for the SPI device then the move to spi_probe()
+results in acpi_dev_gpio_irq_get() never getting called. This may
+cause problems by leaving the GPIO pin floating because this call is
+responsible for setting up the GPIO pin direction and/or bias according
+to the values from the ACPI tables.
 
-In contrast, a two-transfer JEDEC-ID read (0x9f + 6-byte RX) works
-because the driver uses prepend_len and writes dummy bytes into the
-TX FIFO for the RX part.
+Re-add the removed acpi_dev_gpio_irq_get() in acpi_register_spi_device()
+to ensure the GPIO pin is always correctly setup, while keeping the
+acpi_dev_gpio_irq_get() call added to spi_probe() to deal with
+-EPROBE_DEFER returns caused by the GPIO controller not having a driver
+yet.
 
-Fix this by writing 0xff dummy bytes into the TX FIFO for RX-only
-segments so that the number of bytes written to the FIFO matches the
-total message length seen by the controller.
-
-Fixes: b17de076062a ("spi/bcm63xx: work around inability to keep CS up")
-
-Signed-off-by: Hang Zhou <929513338@qq.com>
-Link: https://patch.msgid.link/tencent_7AC88FCB3076489A4A7E6C2163DF1ACF8D06@qq.com
+Link: https://bbs.archlinux.org/viewtopic.php?id=302348
+Fixes: d24cfee7f63d ("spi: Fix acpi deferred irq probe")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <hansg@kernel.org>
+Link: https://patch.msgid.link/20251102190921.30068-1-hansg@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-bcm63xx.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/spi/spi.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index b56210734caaf..2e3c62f12bef9 100644
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -247,6 +247,20 @@ static int bcm63xx_txrx_bufs(struct spi_device *spi, struct spi_transfer *first,
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2416,6 +2416,16 @@ static acpi_status acpi_register_spi_dev
+ 	acpi_set_modalias(adev, acpi_device_hid(adev), spi->modalias,
+ 			  sizeof(spi->modalias));
  
- 		if (t->rx_buf) {
- 			do_rx = true;
++	/*
++	 * This gets re-tried in spi_probe() for -EPROBE_DEFER handling in case
++	 * the GPIO controller does not have a driver yet. This needs to be done
++	 * here too, because this call sets the GPIO direction and/or bias.
++	 * Setting these needs to be done even if there is no driver, in which
++	 * case spi_probe() will never get called.
++	 */
++	if (spi->irq < 0)
++		spi->irq = acpi_dev_gpio_irq_get(adev, 0);
 +
-+			/*
-+			 * In certain hardware implementations, there appears to be a
-+			 * hidden accumulator that tracks the number of bytes written into
-+			 * the hardware FIFO, and this accumulator overrides the length in
-+			 * the SPI_MSG_CTL register.
-+			 *
-+			 * Therefore, for read-only transfers, we need to write some dummy
-+			 * value into the FIFO to keep the accumulator tracking the correct
-+			 * length.
-+			 */
-+			if (!t->tx_buf)
-+				memset_io(bs->tx_io + len, 0xFF, t->len);
-+
- 			/* prepend is half-duplex write only */
- 			if (t == first)
- 				prepend_len = 0;
--- 
-2.51.0
-
+ 	acpi_device_set_enumerated(adev);
+ 
+ 	adev->power.flags.ignore_parent = true;
 
 
 
