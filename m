@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-199831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94CE0CA0FA2
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:29:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 281A5CA097C
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:44:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DF9E7331FBA2
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:28:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B266032E1161
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:24:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9B013A1CE6;
-	Wed,  3 Dec 2025 16:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C1E7346E7B;
+	Wed,  3 Dec 2025 16:54:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eB6dfior"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qwpvQ8nD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC84E393DF0;
-	Wed,  3 Dec 2025 16:58:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25998346E51;
+	Wed,  3 Dec 2025 16:54:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764781089; cv=none; b=Ul2VuTell54pK+fXgf3ggetR5RBCLscb9uWM0bdNfCtdjbirw5VmT1VDlJjeDZZRKVIaJ9S6ibDQv5mRu+TKBuUZjtrLhUDqkt/9rR+QqKxl4Hh96U0fJ3XxnSkoFMoCUJNQLkoTWqRKQk/HGNRslzvout7W9b3N7P59hvzSM8U=
+	t=1764780882; cv=none; b=VTvN/YBV1WJMelc3b5QLrO1IZP9xSJ9EctD1VYVSmUZrQ3c6LQ66ptV3jvAWUnCTjj/menCXDlb5BkrFdOQsElShj8+21X9Vbwt7isATCf44urTxvgSUdQ6O1W7ekMpmCAC9TnB4cAS8s/w1H8pyuc2iBc0qtBMnilj1lLeLYJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764781089; c=relaxed/simple;
-	bh=rvHkIzx4zWAgw0MNJ2aWdOgYBKVyVXZ/EEQy4bnIgxU=;
+	s=arc-20240116; t=1764780882; c=relaxed/simple;
+	bh=bYLze0U1e99T6fcAUFRB63+Q+FWHSnBWiMyLo0hbfJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bdpJ+B/AecJs9ybX+7YKSV+jK72ISgfyMRcwVa5vYhQN0ZPPzUzTTIH5n/omAwh+WDRETSQGTSICDQg54FNO77+4r5wFbGhkydpGNgW2WOVh5m9W9VMGuDwGCZuyN5X6OP5OYl08mX8z+/zeZJ35Jn8u26js5x5pcW7TyTAV0CY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eB6dfior; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43090C4CEF5;
-	Wed,  3 Dec 2025 16:58:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kS8rfB1DV9eqYnLT8mZeVozNRWlGyZpGEOv4fRjvzniM7IduTmAPptz7bZALfhn/Py4ovGOpRoFTLq3ECvzKfTqCqhZgqfFbzMG7Gxmst/H0jyTz5ZZe1xwTaoH28qfHnUjj95btymc0YtH6rTc3rfbTk92ONdNRDSnRLZVviw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qwpvQ8nD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8139EC4CEF5;
+	Wed,  3 Dec 2025 16:54:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764781088;
-	bh=rvHkIzx4zWAgw0MNJ2aWdOgYBKVyVXZ/EEQy4bnIgxU=;
+	s=korg; t=1764780882;
+	bh=bYLze0U1e99T6fcAUFRB63+Q+FWHSnBWiMyLo0hbfJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eB6dfiorJC3jtV1fEsyAXPQs4Vm86rV3oNFGpL39k58hYL4dmmhEAtr6lyZiU/MMK
-	 QlAI4sk7KhTIpkkbjdkJ+Z3Oa1P91LiQkx5yt02U+v0hby2Oy/p0nqJV9eZvkEr1iG
-	 wdj5Fi9hDhv59n4cB0BvXbSMDJCqQ8/TR1RDvK2c=
+	b=qwpvQ8nD3YbsOLABLoehe26OMe+aOJhl2OSLKD5lWAYXLr7TuZSMrPOTaaCZdQdS/
+	 5mWHBz4L+Ek1/qKjmGeVow4qqvtHjw5tL1O90RFQnr+lEQvF2xzqp6nbQ02/LTURas
+	 7uP5VYzq23jc4m6iUZd9RjL6zdQJph5+ZAVQ2KRA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20M=C3=BChlbacher?= <tmuehlbacher@posteo.net>,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.6 45/93] can: sja1000: fix max irq loop handling
-Date: Wed,  3 Dec 2025 16:29:38 +0100
-Message-ID: <20251203152338.186428626@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>
+Subject: [PATCH 6.12 100/132] xhci: dbgtty: fix device unregister
+Date: Wed,  3 Dec 2025 16:29:39 +0100
+Message-ID: <20251203152346.991007822@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +60,47 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Mühlbacher <tmuehlbacher@posteo.net>
+From: Łukasz Bartosik <ukaszb@chromium.org>
 
-commit 30db4451c7f6aabcada029b15859a76962ec0cf8 upstream.
+commit 1f73b8b56cf35de29a433aee7bfff26cea98be3f upstream.
 
-Reading the interrupt register `SJA1000_IR` causes all of its bits to be
-reset. If we ever reach the condition of handling more than
-`SJA1000_MAX_IRQ` IRQs, we will have read the register and reset all its
-bits but without actually handling the interrupt inside of the loop
-body.
+When DbC is disconnected then xhci_dbc_tty_unregister_device()
+is called. However if there is any user space process blocked
+on write to DbC terminal device then it will never be signalled
+and thus stay blocked indifinitely.
 
-This may, among other issues, cause us to never `netif_wake_queue()`
-again after a transmission interrupt.
+This fix adds a tty_vhangup() call in xhci_dbc_tty_unregister_device().
+The tty_vhangup() wakes up any blocked writers and causes subsequent
+write attempts to DbC terminal device to fail.
 
-Fixes: 429da1cc841b ("can: Driver for the SJA1000 CAN controller")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Mühlbacher <tmuehlbacher@posteo.net>
-Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Link: https://patch.msgid.link/20251115153437.11419-1-tmuehlbacher@posteo.net
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: stable <stable@kernel.org>
+Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
+Signed-off-by: Łukasz Bartosik <ukaszb@chromium.org>
+Link: https://patch.msgid.link/20251119212910.1245694-1-ukaszb@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/sja1000/sja1000.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/host/xhci-dbgtty.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/net/can/sja1000/sja1000.c
-+++ b/drivers/net/can/sja1000/sja1000.c
-@@ -548,8 +548,8 @@ irqreturn_t sja1000_interrupt(int irq, v
- 	if (priv->read_reg(priv, SJA1000_IER) == IRQ_OFF)
- 		goto out;
+--- a/drivers/usb/host/xhci-dbgtty.c
++++ b/drivers/usb/host/xhci-dbgtty.c
+@@ -518,6 +518,12 @@ static void xhci_dbc_tty_unregister_devi
  
--	while ((isrc = priv->read_reg(priv, SJA1000_IR)) &&
--	       (n < SJA1000_MAX_IRQ)) {
-+	while ((n < SJA1000_MAX_IRQ) &&
-+	       (isrc = priv->read_reg(priv, SJA1000_IR))) {
- 
- 		status = priv->read_reg(priv, SJA1000_SR);
- 		/* check for absent controller due to hw unplug */
+ 	if (!port->registered)
+ 		return;
++	/*
++	 * Hang up the TTY. This wakes up any blocked
++	 * writers and causes subsequent writes to fail.
++	 */
++	tty_vhangup(port->port.tty);
++
+ 	tty_unregister_device(dbc_tty_driver, port->minor);
+ 	xhci_dbc_tty_exit_port(port);
+ 	port->registered = false;
 
 
 
