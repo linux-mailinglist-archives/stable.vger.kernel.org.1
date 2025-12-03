@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-199276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84D36CA117F
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:43:45 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A13F3C9FC08
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:59:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 04F75300250E
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:43:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 62D393007D05
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:58:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C0E119C553;
-	Wed,  3 Dec 2025 16:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E3463446A2;
+	Wed,  3 Dec 2025 15:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J1jQB1Vz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UUj/Q6TJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AD4235BDAC;
-	Wed,  3 Dec 2025 16:27:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BA07344044;
+	Wed,  3 Dec 2025 15:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779261; cv=none; b=bwABaVmH4i5g+Jawcyw27+QtSCiZ2G/dAb5FnTntCp9RZLCTyh55t7BwRWh5N4FA3I5e+7pWI/wtuglKPyx4nsHv1xb64urVkH8e1kkGSW6muG0nWuUb9DqEpzAwjyi3RsZMUyapLODY4BlgVroggOG+iS2MzmdbBiB3Qowjcf8=
+	t=1764777500; cv=none; b=OX6zQ52AFLrE2MCjGYvzQJyPYPiUvmnHLxBlaDISr1fVXbq0BHNoS0trlQwYSKPzhRr2iaYixuCU/7jRzDNL4XIBJposEh3dL2GIZbkovpL9IcuR//fYK/8/B43AGMZpysaoOn1qDHv3UYYimsYMKKT66HHV+DYVlSnRZjVxgoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779261; c=relaxed/simple;
-	bh=smG5r0YBEUDPtz2mO6g8Yp3wWVqi0Gcxvm5+m/QNthA=;
+	s=arc-20240116; t=1764777500; c=relaxed/simple;
+	bh=hpEwcPPDltj2Ar3qLuvGz5GhkNAQeuLMrNbGaW+MTEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mqYagOw8JFytmyKhuajmksrYERXzPMge7mPZ5VZ/Y041CGM6JjywnAOFTNpSUequ0JMYw9a3ATKfO+TaRfAIJd7KnVrExbax25Hh/BFO8FxeS4Guh/XOPC9uBt0EEsQQIMTrQ2EoGO4yoJWLVT+EG6WuUVgerJW3ct89l2dIUdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J1jQB1Vz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 847D6C4CEF5;
-	Wed,  3 Dec 2025 16:27:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=E42Xbm3LJxHXZVaDI9ZF2eoa3h3Nh5uiPC06wlUUoxlcJXp7bnUJ1oHZd4sZO3IrWhtwD9i3nkcLEuEoUun2JE7QzX+fTqNOJc/gR5/XEkY3OTdWs7Ou+73XC0p2O1Pc3lbH39xICWUnn2R9xLDEleU+MUO/svfrxXziz91w3wE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UUj/Q6TJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AAD4C4CEF5;
+	Wed,  3 Dec 2025 15:58:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779261;
-	bh=smG5r0YBEUDPtz2mO6g8Yp3wWVqi0Gcxvm5+m/QNthA=;
+	s=korg; t=1764777498;
+	bh=hpEwcPPDltj2Ar3qLuvGz5GhkNAQeuLMrNbGaW+MTEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J1jQB1Vzjy6c4eLraj9XT5QhGYRlBPH0KwHCPEaRwuJIrqaA7U40nrtfkwspOXRtw
-	 iQ7OVOUnYrJhAFRt/yoU732HbewNHiONKYKjWPO4WySOKd5IL1796cYJYzDQOLDrju
-	 uDtBp5nCOcqjMXXqPrhIQqxoiTrIwXujvunDJSEE=
+	b=UUj/Q6TJ1s0VMi06h0CFE66K7yurVjITUC1WedOx4m+1UUcXlAthkWaH02voa2ckg
+	 JXa9sohy9NXTrSx2KShJXXsipJCvF/sPfbkmS6utcyI+fMjL2AEJ18lF55Z3u1ZiCp
+	 Vw40fOWnJyuz52Kmggw8/Pjdv1AH+QRa1kAQ3LKY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Yufeng <chenyufeng@iie.ac.cn>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 203/568] usb: cdns3: gadget: Use-after-free during failed initialization and exit of cdnsp gadget
-Date: Wed,  3 Dec 2025 16:23:25 +0100
-Message-ID: <20251203152448.161306578@linuxfoundation.org>
+Subject: [PATCH 5.15 056/392] soc: ti: pruss: dont use %pK through printk
+Date: Wed,  3 Dec 2025 16:23:26 +0100
+Message-ID: <20251203152416.174842571@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,65 +58,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Yufeng <chenyufeng@iie.ac.cn>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit 87c5ff5615dc0a37167e8faf3adeeddc6f1344a3 ]
+[ Upstream commit a5039648f86424885aae37f03dc39bc9cb972ecb ]
 
-In the __cdnsp_gadget_init() and cdnsp_gadget_exit() functions, the gadget
-structure (pdev->gadget) was freed before its endpoints.
-The endpoints are linked via the ep_list in the gadget structure.
-Freeing the gadget first leaves dangling pointers in the endpoint list.
-When the endpoints are subsequently freed, this results in a use-after-free.
+In the past %pK was preferable to %p as it would not leak raw pointer
+values into the kernel log.
+Since commit ad67b74d2469 ("printk: hash addresses printed with %p")
+the regular %p has been improved to avoid this issue.
+Furthermore, restricted pointers ("%pK") were never meant to be used
+through printk(). They can still unintentionally leak raw pointers or
+acquire sleeping locks in atomic contexts.
 
-Fix:
-By separating the usb_del_gadget_udc() operation into distinct "del" and
-"put" steps, cdnsp_gadget_free_endpoints() can be executed prior to the
-final release of the gadget structure with usb_put_gadget().
+Switch to the regular pointer formatting which is safer and
+easier to reason about.
 
-A patch similar to bb9c74a5bd14("usb: dwc3: gadget: Free gadget structure
- only after freeing endpoints").
-
-Signed-off-by: Chen Yufeng <chenyufeng@iie.ac.cn>
-Link: https://lore.kernel.org/r/20250905094842.1232-1-chenyufeng@iie.ac.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Link: https://lore.kernel.org/r/20250811-restricted-pointers-soc-v2-1-7af7ed993546@linutronix.de
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/cdns3/cdnsp-gadget.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/soc/ti/pruss.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/cdns3/cdnsp-gadget.c b/drivers/usb/cdns3/cdnsp-gadget.c
-index ccd02f6be78ae..51dac7db52841 100644
---- a/drivers/usb/cdns3/cdnsp-gadget.c
-+++ b/drivers/usb/cdns3/cdnsp-gadget.c
-@@ -1975,7 +1975,10 @@ static int __cdnsp_gadget_init(struct cdns *cdns)
- 	return 0;
+diff --git a/drivers/soc/ti/pruss.c b/drivers/soc/ti/pruss.c
+index b36779309e49b..84f992320c4d8 100644
+--- a/drivers/soc/ti/pruss.c
++++ b/drivers/soc/ti/pruss.c
+@@ -270,7 +270,7 @@ static int pruss_probe(struct platform_device *pdev)
+ 		pruss->mem_regions[i].pa = res.start;
+ 		pruss->mem_regions[i].size = resource_size(&res);
  
- del_gadget:
--	usb_del_gadget_udc(&pdev->gadget);
-+	usb_del_gadget(&pdev->gadget);
-+	cdnsp_gadget_free_endpoints(pdev);
-+	usb_put_gadget(&pdev->gadget);
-+	goto halt_pdev;
- free_endpoints:
- 	cdnsp_gadget_free_endpoints(pdev);
- halt_pdev:
-@@ -1997,8 +2000,9 @@ static void cdnsp_gadget_exit(struct cdns *cdns)
- 	devm_free_irq(pdev->dev, cdns->dev_irq, pdev);
- 	pm_runtime_mark_last_busy(cdns->dev);
- 	pm_runtime_put_autosuspend(cdns->dev);
--	usb_del_gadget_udc(&pdev->gadget);
-+	usb_del_gadget(&pdev->gadget);
- 	cdnsp_gadget_free_endpoints(pdev);
-+	usb_put_gadget(&pdev->gadget);
- 	cdnsp_mem_cleanup(pdev);
- 	kfree(pdev);
- 	cdns->gadget_dev = NULL;
+-		dev_dbg(dev, "memory %8s: pa %pa size 0x%zx va %pK\n",
++		dev_dbg(dev, "memory %8s: pa %pa size 0x%zx va %p\n",
+ 			mem_names[i], &pruss->mem_regions[i].pa,
+ 			pruss->mem_regions[i].size, pruss->mem_regions[i].va);
+ 	}
 -- 
 2.51.0
 
