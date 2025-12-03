@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-198630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C9EFCA1357
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:00:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1AEDC9FBDE
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:57:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 33D673305141
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:45:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EC3A6303A183
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:48:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7552D33290E;
-	Wed,  3 Dec 2025 15:52:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10F84318131;
+	Wed,  3 Dec 2025 15:47:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UqDJCu1A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eJ1xy/rT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D6E3328F6;
-	Wed,  3 Dec 2025 15:52:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B29E822579E;
+	Wed,  3 Dec 2025 15:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777175; cv=none; b=hpbp37MO7w8Trjlcr6HorrTZBgTEq/LUj0ccXndy4RQCJ6iEUePRB5Qam0ag0OKq7HmGZEtmzsh7Nh3k+C6cQDoesWLnB1ZDnGMDr9U/hHnpOTjFxK8YHjnZYC2NfcR0qNbxbY2TvrBJZOaNbhbyzA7SSOI9PtBFfa58kSqIJP8=
+	t=1764776837; cv=none; b=D9M1lKvBgS0UQh61qDd2tQahjp19OENSrFgJgItzyfyTlRHb23KKBR0sYOx0Mv1+qubkQs8JaDDtcSjq2pltSNGK+873BnkXOGwMYX9cFDUc0EAWOIMbGHtke+GR6i6OLye3Oui2hSlWe25OfYp0UcBPKfgUfQsaJdJrkx0s9X8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777175; c=relaxed/simple;
-	bh=ZNjNIBovP/XUnrxUFFYukwFvuMb320Xg1kvR4cuYMSQ=;
+	s=arc-20240116; t=1764776837; c=relaxed/simple;
+	bh=AMXO62TGd6imtaguW372UiAC7/mp9QKGVDCUHUYGYKQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VURRviZ5uq3dOL2Sl7Ly3jHo6FH44Rk2Bun68XiuNR9MRnUdygsu1MQqaY2DonkwsxCmRyNw8rC5VLf/C78VKKOCNF2SXoD9Hb2jDGMC2DB4Ou3LVj/vNUvhI+abaRRBTXgfmtkWC1mItdknY+V0aWPA/QcUaPHckuvkqpVFJpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UqDJCu1A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D7BC4CEF5;
-	Wed,  3 Dec 2025 15:52:54 +0000 (UTC)
+	 MIME-Version; b=Iq7eH+MTwN5Y/ws9fdmcE3yz/89+zC9I16QU/9GaYDtR4F2BxG3MDM7ndyGgj73P361nYaq/1DgyrCpeDBflQIHBExiKohqgogF/dq7oLZtrPdet82pcXRNJD2elFa8fa5le6zd6leNdUkIYXqyY+/5Jk1ihRTauZm6a5euFpGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eJ1xy/rT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12619C4CEF5;
+	Wed,  3 Dec 2025 15:47:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777175;
-	bh=ZNjNIBovP/XUnrxUFFYukwFvuMb320Xg1kvR4cuYMSQ=;
+	s=korg; t=1764776837;
+	bh=AMXO62TGd6imtaguW372UiAC7/mp9QKGVDCUHUYGYKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UqDJCu1ATKgXMksTBPyAWssruFRpVC8BX184j7BVwPzZV/HbZDJ1eO+Ka2m5RqN5P
-	 zaNl8zDIndqJMy9NTwXR+jyzOhH6sKNzNWTTyFW7ewh2O5zSri8/Vn0ZANuv2cItIA
-	 HjUMqOHuo+/rM3uDw7TfHnioiI3MaF7DqAbqZvJ0=
+	b=eJ1xy/rTNwhBwrYI5aViScb14hT+B4Om+JThcMeVRj+/XB7QpE148dzZE2l7R8HuE
+	 QwAbseiHp8ytWpipiPLrLJWR7js6TWiAod9gBm8TFRcGvJ20lsui8bk7uTZJZ8v7LF
+	 sBpJV+8Um0E7/mkTrXoJE8vMLyn2cwJK6tXH94cY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jisheng Zhang <jszhang@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.17 104/146] mmc: sdhci-of-dwcmshc: Promote the th1520 reset handling to ip level
+	stable <stable@kernel.org>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	Peter Chen <peter.chen@kernel.org>
+Subject: [PATCH 5.10 278/300] usb: cdns3: Fix double resource release in cdns3_pci_probe
 Date: Wed,  3 Dec 2025 16:28:02 +0100
-Message-ID: <20251203152350.272719038@linuxfoundation.org>
+Message-ID: <20251203152410.927627302@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,100 +60,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jisheng Zhang <jszhang@kernel.org>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-commit 747528729c9b6733839f9c95f300d5bef95ee52c upstream.
+commit 1ec39d2cd88dac2e7cdbac248762f1f057971c5d upstream.
 
-Commit 27e8fe0da3b7 ("mmc: sdhci-of-dwcmshc: Prevent stale command
-interrupt handling") clears pending interrupts when resetting
-host->pending_reset to ensure no pending stale interrupts after
-sdhci_threaded_irq restores interrupts. But this fix is only added for
-th1520 platforms, in fact per my test, this issue exists on all
-dwcmshc users, such as cv1800b, sg2002, and synaptics platforms.
+The driver uses pcim_enable_device() to enable the PCI device,
+the device will be automatically disabled on driver detach through
+the managed device framework. The manual pci_disable_device() calls
+in the error paths are therefore redundant and should be removed.
 
-So promote the above reset handling from th1520 to ip level. And keep
-reset handling on rk, sg2042 and bf3 as is, until it's confirmed that
-the same issue exists on these platforms too.
+Found via static anlaysis and this is similar to commit 99ca0b57e49f
+("thermal: intel: int340x: processor: Fix warning during module unload").
 
-Fixes: 017199c2849c ("mmc: sdhci-of-dwcmshc: Add support for Sophgo CV1800B and SG2002")
-Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://patch.msgid.link/20251026090859.33107-1-linmq006@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci-of-dwcmshc.c |   29 +++++++++++++++++------------
- 1 file changed, 17 insertions(+), 12 deletions(-)
+ drivers/usb/cdns3/cdns3-pci-wrap.c |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/drivers/mmc/host/sdhci-of-dwcmshc.c
-+++ b/drivers/mmc/host/sdhci-of-dwcmshc.c
-@@ -289,6 +289,19 @@ static void dwcmshc_adma_write_desc(stru
- 	sdhci_adma_write_desc(host, desc, addr, len, cmd);
- }
+--- a/drivers/usb/cdns3/cdns3-pci-wrap.c
++++ b/drivers/usb/cdns3/cdns3-pci-wrap.c
+@@ -101,10 +101,8 @@ static int cdns3_pci_probe(struct pci_de
+ 		wrap = pci_get_drvdata(func);
+ 	} else {
+ 		wrap = kzalloc(sizeof(*wrap), GFP_KERNEL);
+-		if (!wrap) {
+-			pci_disable_device(pdev);
++		if (!wrap)
+ 			return -ENOMEM;
+-		}
+ 	}
  
-+static void dwcmshc_reset(struct sdhci_host *host, u8 mask)
-+{
-+	sdhci_reset(host, mask);
-+
-+	/* The dwcmshc does not comply with the SDHCI specification
-+	 * regarding the "Software Reset for CMD line should clear 'Command
-+	 * Complete' in the Normal Interrupt Status Register." Clear the bit
-+	 * here to compensate for this quirk.
-+	 */
-+	if (mask & SDHCI_RESET_CMD)
-+		sdhci_writel(host, SDHCI_INT_RESPONSE, SDHCI_INT_STATUS);
-+}
-+
- static unsigned int dwcmshc_get_max_clock(struct sdhci_host *host)
- {
- 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
-@@ -832,15 +845,7 @@ static void th1520_sdhci_reset(struct sd
- 	struct dwcmshc_priv *priv = sdhci_pltfm_priv(pltfm_host);
- 	u16 ctrl_2;
- 
--	sdhci_reset(host, mask);
--
--	/* The T-Head 1520 SoC does not comply with the SDHCI specification
--	 * regarding the "Software Reset for CMD line should clear 'Command
--	 * Complete' in the Normal Interrupt Status Register." Clear the bit
--	 * here to compensate for this quirk.
--	 */
--	if (mask & SDHCI_RESET_CMD)
--		sdhci_writel(host, SDHCI_INT_RESPONSE, SDHCI_INT_STATUS);
-+	dwcmshc_reset(host, mask);
- 
- 	if (priv->flags & FLAG_IO_FIXED_1V8) {
- 		ctrl_2 = sdhci_readw(host, SDHCI_HOST_CONTROL2);
-@@ -886,7 +891,7 @@ static void cv18xx_sdhci_reset(struct sd
- 	struct dwcmshc_priv *priv = sdhci_pltfm_priv(pltfm_host);
- 	u32 val, emmc_caps = MMC_CAP2_NO_SD | MMC_CAP2_NO_SDIO;
- 
--	sdhci_reset(host, mask);
-+	dwcmshc_reset(host, mask);
- 
- 	if ((host->mmc->caps2 & emmc_caps) == emmc_caps) {
- 		val = sdhci_readl(host, priv->vendor_specific_area1 + CV18XX_SDHCI_MSHC_CTRL);
-@@ -958,7 +963,7 @@ static void cv18xx_sdhci_post_tuning(str
- 	val |= SDHCI_INT_DATA_AVAIL;
- 	sdhci_writel(host, val, SDHCI_INT_STATUS);
- 
--	sdhci_reset(host, SDHCI_RESET_CMD | SDHCI_RESET_DATA);
-+	dwcmshc_reset(host, SDHCI_RESET_CMD | SDHCI_RESET_DATA);
- }
- 
- static int cv18xx_sdhci_execute_tuning(struct sdhci_host *host, u32 opcode)
-@@ -1100,7 +1105,7 @@ static const struct sdhci_ops sdhci_dwcm
- 	.set_bus_width		= sdhci_set_bus_width,
- 	.set_uhs_signaling	= dwcmshc_set_uhs_signaling,
- 	.get_max_clock		= dwcmshc_get_max_clock,
--	.reset			= sdhci_reset,
-+	.reset			= dwcmshc_reset,
- 	.adma_write_desc	= dwcmshc_adma_write_desc,
- 	.irq			= dwcmshc_cqe_irq_handler,
- };
+ 	res = wrap->dev_res;
+@@ -163,7 +161,6 @@ static int cdns3_pci_probe(struct pci_de
+ 		/* register platform device */
+ 		wrap->plat_dev = platform_device_register_full(&plat_info);
+ 		if (IS_ERR(wrap->plat_dev)) {
+-			pci_disable_device(pdev);
+ 			err = PTR_ERR(wrap->plat_dev);
+ 			kfree(wrap);
+ 			return err;
 
 
 
