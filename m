@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-198341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0EBEC9F9D4
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:45:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F3F8CA060D
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:22:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 69DDC300A8DF
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:43:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3560F32B93FB
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:07:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A244313544;
-	Wed,  3 Dec 2025 15:37:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D59D3587C6;
+	Wed,  3 Dec 2025 16:35:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="olFaOCPa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eZ6Eye3D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 208E131353B;
-	Wed,  3 Dec 2025 15:37:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 272023587BE;
+	Wed,  3 Dec 2025 16:35:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776226; cv=none; b=SX0dDo5zlfwhKIzeGOV8fGla/G+rc9/Om2T0zIbiiysVZ0KeSdTMborfMBHggWjmTk1XXRvTEZAu+Zo7d/36MQNN7QIe6BTgWzvQ9Zo/UqGSSB7O0OoTWPFA9v4n/2fBjCo6dXzwar7UfxuRxzSRpXM5UwhuDS5B07fxlm2B02w=
+	t=1764779759; cv=none; b=vC3fQ+s3pDllVHDDSe3T2+Y7QWGGw/4xp8e3mFhk1ZnUyg1I2OIqrUjeJU0eSqDeQiJYVXAeWhXpd+7844EEugVCsv10lkixY6P9/SCty1WSx3xuSGmRtH+z5GtGoKsf8K2FelUXocDekMG1toWqQ/tXgdzPmOsz3/v/WS38re8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776226; c=relaxed/simple;
-	bh=JZ+Sa3wqXB6U65PsLK9QaxSCWDQIbXC032FfECvWsEE=;
+	s=arc-20240116; t=1764779759; c=relaxed/simple;
+	bh=n7yaF3NSGndnBee4C3Z/TbwZjCsIkNFoPdn1zUox0Uc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EODCdoui1E2CPZWERkEjbwesZ19r+TelHuOqaXXR1xYlj7iIPdXT3veFzPB1izIDe5Al2GbJ1p/keRhGFL9GfKQS5l5049Et1Ng5AeEVe3kcy+mUMGhiyUXFLxXxeihkJbp6NFt9niKpOmPKxTmn0N9Joo8TcOvdfsCtavAYLko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=olFaOCPa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93728C4CEF5;
-	Wed,  3 Dec 2025 15:37:05 +0000 (UTC)
+	 MIME-Version; b=rGDAOTV1M5vkqcjlx2KZREURkcau1DV1ECgV0mR7HuSpa1hgpGEFRBin1gHPOtRTMcyzMfp6u2jn4pLSac1Mb8poTpuMfHdem5sOXBsgUFyC7zBSQqZ6RgJobI+ugqC9aqE3x0dn3TJbCEfyhz9BL+Jg7/fPVk+FtqjMYZmx9Qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eZ6Eye3D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F0D8C4CEF5;
+	Wed,  3 Dec 2025 16:35:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776226;
-	bh=JZ+Sa3wqXB6U65PsLK9QaxSCWDQIbXC032FfECvWsEE=;
+	s=korg; t=1764779758;
+	bh=n7yaF3NSGndnBee4C3Z/TbwZjCsIkNFoPdn1zUox0Uc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=olFaOCPajI7J1TsFyLi4X53/GqKEpJXSnmeYjMJTh4sUu41jmwG5mDMsdZjdjGzvD
-	 nQdxGpWlLllGjN+ROnsHQDbNPBJ00W5KIqoCxXKqhG0eGAfarvJUyYAFbzmJOuebHk
-	 otLBx7igZWD9Kc/tgz6nhbyoFMSHiRG/dEQHv2s0=
+	b=eZ6Eye3DpDR2XjmnV+EeKUcdSBNVail5mVR6hLECerMITmsLpJgpu7gnoCij/9Fii
+	 aIkjNGTLJULR97VTZ9tV/Pu+qwJ9mGlFLd9fQzfCrEEuNxmsiMFeVt49exRZ7sJKbA
+	 4XV9eXih9ydbDk+q5en9W6uQ/3pYzVecOBPpBDCY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
 	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 118/300] udp_tunnel: use netdev_warn() instead of netdev_WARN()
+Subject: [PATCH 6.1 320/568] net/mlx5e: SHAMPO, Fix skb size check for 64K pages
 Date: Wed,  3 Dec 2025 16:25:22 +0100
-Message-ID: <20251203152404.990791406@linuxfoundation.org>
+Message-ID: <20251203152452.432509531@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Dragos Tatulea <dtatulea@nvidia.com>
 
-[ Upstream commit dc2f650f7e6857bf384069c1a56b2937a1ee370d ]
+[ Upstream commit bacd8d80181ebe34b599a39aa26bf73a44c91e55 ]
 
-netdev_WARN() uses WARN/WARN_ON to print a backtrace along with
-file and line information. In this case, udp_tunnel_nic_register()
-returning an error is just a failed operation, not a kernel bug.
+mlx5e_hw_gro_skb_has_enough_space() uses a formula to check if there is
+enough space in the skb frags to store more data. This formula is
+incorrect for 64K page sizes and it triggers early GRO session
+termination because the first fragment will blow up beyond
+GRO_LEGACY_MAX_SIZE.
 
-udp_tunnel_nic_register() can fail due to a memory allocation
-failure (kzalloc() or udp_tunnel_nic_alloc()).
-This is a normal runtime error and not a kernel bug.
+This patch adds a special case for page sizes >= GRO_LEGACY_MAX_SIZE
+(64K) which uses the skb->len instead. Within this context,
+the check is safe from fragment overflow because the hardware
+will continuously fill the data up to the reservation size of 64K
+and the driver will coalesce all data from the same page to the same
+fragment. This means that the data will span one fragment or at most
+two for such a large page size.
 
-Replace netdev_WARN() with netdev_warn() accordingly.
+It is expected that the if statement will be optimized out as the
+check is done with constants.
 
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Fixes: 92552d3abd32 ("net/mlx5e: HW_GRO cqe handler implementation")
+Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250910195031.3784748-1-alok.a.tiwari@oracle.com
+Link: https://patch.msgid.link/1762238915-1027590-3-git-send-email-tariqt@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/udp_tunnel_nic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_rx.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/udp_tunnel_nic.c b/net/ipv4/udp_tunnel_nic.c
-index bc3a043a5d5c7..72b0210cdead7 100644
---- a/net/ipv4/udp_tunnel_nic.c
-+++ b/net/ipv4/udp_tunnel_nic.c
-@@ -897,7 +897,7 @@ udp_tunnel_nic_netdevice_event(struct notifier_block *unused,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+index 2768eab89eada..75934d0f144cc 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+@@ -2056,7 +2056,10 @@ mlx5e_hw_gro_skb_has_enough_space(struct sk_buff *skb, u16 data_bcnt)
+ {
+ 	int nr_frags = skb_shinfo(skb)->nr_frags;
  
- 		err = udp_tunnel_nic_register(dev);
- 		if (err)
--			netdev_WARN(dev, "failed to register for UDP tunnel offloads: %d", err);
-+			netdev_warn(dev, "failed to register for UDP tunnel offloads: %d", err);
- 		return notifier_from_errno(err);
- 	}
- 	/* All other events will need the udp_tunnel_nic state */
+-	return PAGE_SIZE * nr_frags + data_bcnt <= GRO_LEGACY_MAX_SIZE;
++	if (PAGE_SIZE >= GRO_LEGACY_MAX_SIZE)
++		return skb->len + data_bcnt <= GRO_LEGACY_MAX_SIZE;
++	else
++		return PAGE_SIZE * nr_frags + data_bcnt <= GRO_LEGACY_MAX_SIZE;
+ }
+ 
+ static void
 -- 
 2.51.0
 
