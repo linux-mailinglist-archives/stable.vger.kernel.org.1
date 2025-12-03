@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-198518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE189C9FBBD
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:57:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4F3BCA01B2
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:48:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CCBDD301A1F4
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:47:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9621D301EC62
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:45:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21A4D3191CA;
-	Wed,  3 Dec 2025 15:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B9E836B05A;
+	Wed,  3 Dec 2025 16:45:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l7qMo71M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HJOWNxLN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D17573148AF;
-	Wed,  3 Dec 2025 15:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18DF636A010;
+	Wed,  3 Dec 2025 16:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776810; cv=none; b=AQHYuPLCYYEjB8Y5lx2R2MOKbqpbTdsoNflfXo25i9EF1aLYZP0oMledZo/JkEQI1MrILYmBR52jKBzFzGEPQweeCtWQa8mxcvEuvSRLxUbkmzXnhszlHPb2b2PeCuHw/oBURp5SKI1SgFQ0yBgFmhuleg/XyJ3uW3V9NrE0Tas=
+	t=1764780347; cv=none; b=AKK6iX1tpgdGcHkTYeX7Kfhcebl9aWo2GdS/xKw2d02v1YcZPI3skgXEMwZmW9stV/fBKBHnspBj+c2o5cJBanc+vUdDhENnZ5wYB9GpnBC/hRyAIt0xh34FquUaj/M7Z8IWTpuoYTMK73NMIMLJQD0LGj9abixUOto2UXA8CL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776810; c=relaxed/simple;
-	bh=5VA79EA1upzJTys9movM1EJDJQEGoUdp+xk+8p4D/VY=;
+	s=arc-20240116; t=1764780347; c=relaxed/simple;
+	bh=yRBxsTJB/IW/sMCt8t2STK1FunQP9NQy9UksBd8J+7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GVN5XYJJ3YeuzvN8fA6zkxhYwetKfy8xeHeZfWg6xRo6CwnpOh/Xythmp5P267Z3zAIsaZRNWfQxOAEVkWZAdnTjLujYpkso/NaFXJK4NFWmGRCXnjfgTOtUvDkGwqPlN39WAWyFtAHR2c1zn76dRQFLXz+2ODEg5WKeddFKH5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l7qMo71M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53730C4CEF5;
-	Wed,  3 Dec 2025 15:46:50 +0000 (UTC)
+	 MIME-Version; b=UC7q8WalU2K6NnXEQ7BiNxleHxBt3ULvRWfhS3ZbXYVTBnUwiibRNOciPARcPpcNvgW6zlh3TiHfnzHYTcNEcdeYnh7yMrCGmhVFiIrdPs0Ufc4qZFvJhbjcIJp94KzGrLgyjbPNNUr7iZDhkKgeXRSJPM4rlov/oSAvPbmdiGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HJOWNxLN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45B51C4CEF5;
+	Wed,  3 Dec 2025 16:45:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776810;
-	bh=5VA79EA1upzJTys9movM1EJDJQEGoUdp+xk+8p4D/VY=;
+	s=korg; t=1764780346;
+	bh=yRBxsTJB/IW/sMCt8t2STK1FunQP9NQy9UksBd8J+7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l7qMo71MX+MCCcz/faW9oE9swrEKW47pehqQMkXRN6rSLrVNtt0zyT1htXVl3R0o4
-	 uxWNGqAPDDk7jO2vRWOzLobuCQuDKEAALxDVQkNudDp+keFETThtkpM/W8FQjSqRDP
-	 QQLX54AU1w0IAGlxjraaVYFb1wbOHII3mpedzIi0=
+	b=HJOWNxLNBVt5zvaLHeoPdg3esKxRoBGZsk9nBOE9FDBPsO0zhGC2PWXq5a/QIYZAU
+	 pULcUxRs2DhzVjFozK+9o49qm6Q/gcC1Wk6ECgJLM2YF1xUOkx7qeUHyNmgBCoNDJF
+	 erMGi21cRIZ/+0z3IgFxrpmBDDbti9rzj8G9eKz8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Subject: [PATCH 5.10 294/300] mptcp: Fix proto fallback detection with BPF
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 496/568] Bluetooth: SMP: Fix not generating mackey and ltk when repairing
 Date: Wed,  3 Dec 2025 16:28:18 +0100
-Message-ID: <20251203152411.514223462@linuxfoundation.org>
+Message-ID: <20251203152458.881284472@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,112 +59,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit c77b3b79a92e3345aa1ee296180d1af4e7031f8f upstream.
+[ Upstream commit 545d7827b2cd5de5eb85580cebeda6b35b3ff443 ]
 
-The sockmap feature allows bpf syscall from userspace, or based
-on bpf sockops, replacing the sk_prot of sockets during protocol stack
-processing with sockmap's custom read/write interfaces.
-'''
-tcp_rcv_state_process()
-  syn_recv_sock()/subflow_syn_recv_sock()
-    tcp_init_transfer(BPF_SOCK_OPS_PASSIVE_ESTABLISHED_CB)
-      bpf_skops_established       <== sockops
-        bpf_sock_map_update(sk)   <== call bpf helper
-          tcp_bpf_update_proto()  <== update sk_prot
-'''
+The change eed467b517e8 ("Bluetooth: fix passkey uninitialized when used")
+introduced a goto that bypasses the creation of temporary mackey and ltk
+which are later used by the likes of DHKey Check step.
 
-When the server has MPTCP enabled but the client sends a TCP SYN
-without MPTCP, subflow_syn_recv_sock() performs a fallback on the
-subflow, replacing the subflow sk's sk_prot with the native sk_prot.
-'''
-subflow_syn_recv_sock()
-  subflow_ulp_fallback()
-    subflow_drop_ctx()
-      mptcp_subflow_ops_undo_override()
-'''
+Later ffee202a78c2 ("Bluetooth: Always request for user confirmation for
+Just Works (LE SC)") which means confirm_hint is always set in case
+JUST_WORKS so the branch checking for an existing LTK becomes pointless
+as confirm_hint will always be set, so this just merge both cases of
+malicious or legitimate devices to be confirmed before continuing with the
+pairing procedure.
 
-Then, this subflow can be normally used by sockmap, which replaces the
-native sk_prot with sockmap's custom sk_prot. The issue occurs when the
-user executes accept::mptcp_stream_accept::mptcp_fallback_tcp_ops().
-Here, it uses sk->sk_prot to compare with the native sk_prot, but this
-is incorrect when sockmap is used, as we may incorrectly set
-sk->sk_socket->ops.
-
-This fix uses the more generic sk_family for the comparison instead.
-
-Additionally, this also prevents a WARNING from occurring:
-
-result from ./scripts/decode_stacktrace.sh:
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 337 at net/mptcp/protocol.c:68 mptcp_stream_accept \
-(net/mptcp/protocol.c:4005)
-Modules linked in:
-...
-
-PKRU: 55555554
-Call Trace:
-<TASK>
-do_accept (net/socket.c:1989)
-__sys_accept4 (net/socket.c:2028 net/socket.c:2057)
-__x64_sys_accept (net/socket.c:2067)
-x64_sys_call (arch/x86/entry/syscall_64.c:41)
-do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-RIP: 0033:0x7f87ac92b83d
-
----[ end trace 0000000000000000 ]---
-
-Fixes: 0b4f33def7bb ("mptcp: fix tcp fallback crash")
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20251111060307.194196-3-jiayuan.chen@linux.dev
-[ Conflicts in protocol.c, because commit 8e2b8a9fa512 ("mptcp: don't
-  overwrite sock_ops in mptcp_is_tcpsk()") is not in this version. It
-  changes the logic on how and where the sock_ops is overridden in case
-  of passive fallback. To fix this, mptcp_is_tcpsk() is modified to use
-  the family, but first, a check of the protocol is required to continue
-  returning 'false' in case of MPTCP socket. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://github.com/bluez/bluez/issues/1622
+Fixes: eed467b517e8 ("Bluetooth: fix passkey uninitialized when used")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ net/bluetooth/smp.c | 31 +++++++------------------------
+ 1 file changed, 7 insertions(+), 24 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -56,8 +56,13 @@ static struct socket *__mptcp_nmpc_socke
- static bool mptcp_is_tcpsk(struct sock *sk)
- {
- 	struct socket *sock = sk->sk_socket;
-+	unsigned short family;
+diff --git a/net/bluetooth/smp.c b/net/bluetooth/smp.c
+index a03920fe44d94..d8a77bfe65a62 100644
+--- a/net/bluetooth/smp.c
++++ b/net/bluetooth/smp.c
+@@ -2130,7 +2130,7 @@ static u8 smp_cmd_pairing_random(struct l2cap_conn *conn, struct sk_buff *skb)
+ 	struct smp_chan *smp = chan->data;
+ 	struct hci_conn *hcon = conn->hcon;
+ 	u8 *pkax, *pkbx, *na, *nb, confirm_hint;
+-	u32 passkey;
++	u32 passkey = 0;
+ 	int err;
  
--	if (unlikely(sk->sk_prot == &tcp_prot)) {
-+	if (likely(sk->sk_protocol == IPPROTO_MPTCP))
-+		return false;
-+
-+	family = READ_ONCE(sk->sk_family);
-+	if (unlikely(family == AF_INET)) {
- 		/* we are being invoked after mptcp_accept() has
- 		 * accepted a non-mp-capable flow: sk is a tcp_sk,
- 		 * not an mptcp one.
-@@ -68,7 +73,7 @@ static bool mptcp_is_tcpsk(struct sock *
- 		sock->ops = &inet_stream_ops;
- 		return true;
- #if IS_ENABLED(CONFIG_MPTCP_IPV6)
--	} else if (unlikely(sk->sk_prot == &tcpv6_prot)) {
-+	} else if (unlikely(family == AF_INET6)) {
- 		sock->ops = &inet6_stream_ops;
- 		return true;
- #endif
+ 	bt_dev_dbg(hcon->hdev, "conn %p", conn);
+@@ -2182,24 +2182,6 @@ static u8 smp_cmd_pairing_random(struct l2cap_conn *conn, struct sk_buff *skb)
+ 		smp_send_cmd(conn, SMP_CMD_PAIRING_RANDOM, sizeof(smp->prnd),
+ 			     smp->prnd);
+ 		SMP_ALLOW_CMD(smp, SMP_CMD_DHKEY_CHECK);
+-
+-		/* Only Just-Works pairing requires extra checks */
+-		if (smp->method != JUST_WORKS)
+-			goto mackey_and_ltk;
+-
+-		/* If there already exists long term key in local host, leave
+-		 * the decision to user space since the remote device could
+-		 * be legitimate or malicious.
+-		 */
+-		if (hci_find_ltk(hcon->hdev, &hcon->dst, hcon->dst_type,
+-				 hcon->role)) {
+-			/* Set passkey to 0. The value can be any number since
+-			 * it'll be ignored anyway.
+-			 */
+-			passkey = 0;
+-			confirm_hint = 1;
+-			goto confirm;
+-		}
+ 	}
+ 
+ mackey_and_ltk:
+@@ -2220,11 +2202,12 @@ static u8 smp_cmd_pairing_random(struct l2cap_conn *conn, struct sk_buff *skb)
+ 	if (err)
+ 		return SMP_UNSPECIFIED;
+ 
+-	confirm_hint = 0;
+-
+-confirm:
+-	if (smp->method == JUST_WORKS)
+-		confirm_hint = 1;
++	/* Always require user confirmation for Just-Works pairing to prevent
++	 * impersonation attacks, or in case of a legitimate device that is
++	 * repairing use the confirmation as acknowledgment to proceed with the
++	 * creation of new keys.
++	 */
++	confirm_hint = smp->method == JUST_WORKS ? 1 : 0;
+ 
+ 	err = mgmt_user_confirm_request(hcon->hdev, &hcon->dst, hcon->type,
+ 					hcon->dst_type, passkey, confirm_hint);
+-- 
+2.51.0
+
 
 
 
