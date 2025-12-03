@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D71FCA0734
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:28:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DE85CA0F90
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:29:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1C548332665C
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:11:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4156031B93B7
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:27:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CC1C398FB7;
-	Wed,  3 Dec 2025 16:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 243A4346E4A;
+	Wed,  3 Dec 2025 16:54:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CP2wws4f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RlYEPUKT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45EAB22579E;
-	Wed,  3 Dec 2025 16:59:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B44338F45;
+	Wed,  3 Dec 2025 16:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764781143; cv=none; b=UNZCq6AtVu9kgKdoSEG1DWwmRIXrAFJ1rTT70MaRTRvgBH9J68WIrlO1x0fp1Cz75xsOXSVq92Chhl0Q55PlkeLhLfgaRxw3t+nkXDqEBqJ0eN9Y2ra+470S3Y4wx2qeriTeUQpHMumGMEb2X9cLXsvai9c2a7VElpCmm4gKI2o=
+	t=1764780878; cv=none; b=duWUjkjYUj+Cj9SOAOH0Sh7jhyBMbRgZ8IqMPNZbItRAYvb/gNKnz1Z18YRue0EpGV5PpKI8+VBxMfs6l3F2EiDaVrC3Uoqrc6kUWlQ06XPGFzjIHel47Bi0aReiw26cexX4KyAp4twMmwm23SsHBIWlUxamQdzhVK+Fv61/ZKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764781143; c=relaxed/simple;
-	bh=+JLE9Dh/L+xXFk3PKuQlG3MtU+HEyRGOePyLf/zBXDM=;
+	s=arc-20240116; t=1764780878; c=relaxed/simple;
+	bh=6AvCHEULzaJYWnvtuku9qy/fjcF6BWWU4vd9JXZJ8kE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BAuahXNUHlBJtJF2PVm+MOPZ6Fx+POMm16WAdDqzVPtqsH8uWXGPH+ORR9xkgsAxJ0foSZw5e1YFLFJT//Un5HD2eUje+en494cxry/hX6HRxOkbR9BhT5v3tByZsUWo6AhO40TbAXuIOuKJ2lCFyo50smId31aqJ3sdlLd51Dw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CP2wws4f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D441C4CEF5;
-	Wed,  3 Dec 2025 16:59:02 +0000 (UTC)
+	 MIME-Version; b=I3cS3dKfP4cSJEy3UFQ+Ahnh/OXYNv1a14P2ZJtMR/K8mVl4lwPoJT4oL82ZKEx1jbe1sHLWVRN+z8rs0ZRZK7bv2tUmufBl3+1iGYkhj1vtDtfyc/FPbxvEeeqrjM2vRxliURTO7W7NR3np7cFv8vGe25vgjd/MQU/qpVP8CUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RlYEPUKT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C74FC4CEF5;
+	Wed,  3 Dec 2025 16:54:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764781143;
-	bh=+JLE9Dh/L+xXFk3PKuQlG3MtU+HEyRGOePyLf/zBXDM=;
+	s=korg; t=1764780878;
+	bh=6AvCHEULzaJYWnvtuku9qy/fjcF6BWWU4vd9JXZJ8kE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CP2wws4f0JxesVwopYvt82T3bg0HBH5s11KfUnQKUNq0y6t4xrdtf6zoWxswHDVtk
-	 xT6bwfDN5Hj06XrcJJ2ZM1wmjSHQCKlP/TbCo/9zZfIkxom0SJEqs72J7GdIM5BQ+h
-	 qC3JB3yETJDc86wOhXDcd0J+nGghUfvKil750HEU=
+	b=RlYEPUKTYHkvde8TfG57r1otsEsKcFg6xQ08G0gSTf/5RsLaGOZCkS/dBNgEwg+VI
+	 owg6ZFqw/fBUBn4ywKAXiew56WhlhYPeUmk/Chin8JlzyiHEx4ivR/8a9NT6L+1QhC
+	 ZvlADW4XOwsIUIM2QrkdiGxIrr62gTVL3Y4KaLX0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Yu Chen <chenyu45@xiaomi.com>,
-	Owen Gu <guhuinan@xiaomi.com>,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 6.6 63/93] usb: uas: fix urb unmapping issue when the uas device is remove during ongoing data transfer
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 117/132] can: rcar_canfd: Fix CAN-FD mode as default
 Date: Wed,  3 Dec 2025 16:29:56 +0100
-Message-ID: <20251203152338.854360476@linuxfoundation.org>
+Message-ID: <20251203152347.646816017@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,83 +60,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Owen Gu <guhuinan@xiaomi.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-commit 26d56a9fcb2014b99e654127960aa0a48a391e3c upstream.
+[ Upstream commit 6d849ff573722afcf5508d2800017bdd40f27eb9 ]
 
-When a UAS device is unplugged during data transfer, there is
-a probability of a system panic occurring. The root cause is
-an access to an invalid memory address during URB callback handling.
-Specifically, this happens when the dma_direct_unmap_sg() function
-is called within the usb_hcd_unmap_urb_for_dma() interface, but the
-sg->dma_address field is 0 and the sg data structure has already been
-freed.
+The commit 5cff263606a1 ("can: rcar_canfd: Fix controller mode setting")
+has aligned with the flow mentioned in the hardware manual for all SoCs
+except R-Car Gen3 and RZ/G2L SoCs. On R-Car Gen4 and RZ/G3E SoCs, due to
+the wrong logic in the commit[1] sets the default mode to FD-Only mode
+instead of CAN-FD mode.
 
-The SCSI driver sends transfer commands by invoking uas_queuecommand_lck()
-in uas.c, using the uas_submit_urbs() function to submit requests to USB.
-Within the uas_submit_urbs() implementation, three URBs (sense_urb,
-data_urb, and cmd_urb) are sequentially submitted. Device removal may
-occur at any point during uas_submit_urbs execution, which may result
-in URB submission failure. However, some URBs might have been successfully
-submitted before the failure, and uas_submit_urbs will return the -ENODEV
-error code in this case. The current error handling directly calls
-scsi_done(). In the SCSI driver, this eventually triggers scsi_complete()
-to invoke scsi_end_request() for releasing the sgtable. The successfully
-submitted URBs, when being unlinked to giveback, call
-usb_hcd_unmap_urb_for_dma() in hcd.c, leading to exceptions during sg
-unmapping operations since the sg data structure has already been freed.
+This patch sets the CAN-FD mode as the default for all SoCs by dropping
+the rcar_canfd_set_mode() as some SoC requires mode setting in global
+reset mode, and the rest of the SoCs in channel reset mode and update the
+rcar_canfd_reset_controller() to take care of these constraints. Moreover,
+the RZ/G3E and R-Car Gen4 SoCs support 3 modes compared to 2 modes on the
+R-Car Gen3. Use inverted logic in rcar_canfd_reset_controller() to
+simplify the code later to support FD-only mode.
 
-This patch modifies the error condition check in the uas_submit_urbs()
-function. When a UAS device is removed but one or more URBs have already
-been successfully submitted to USB, it avoids immediately invoking
-scsi_done() and save the cmnd to devinfo->cmnd array. If the successfully
-submitted URBs is completed before devinfo->resetting being set, then
-the scsi_done() function will be called within uas_try_complete() after
-all pending URB operations are finalized. Otherwise, the scsi_done()
-function will be called within uas_zap_pending(), which is executed after
-usb_kill_anchored_urbs().
+[1]
+commit 45721c406dcf ("can: rcar_canfd: Add support for r8a779a0 SoC")
 
-The error handling only takes effect when uas_queuecommand_lck() calls
-uas_submit_urbs() and returns the error value -ENODEV . In this case,
-the device is disconnected, and the flow proceeds to uas_disconnect(),
-where uas_zap_pending() is invoked to call uas_try_complete().
-
-Fixes: eb2a86ae8c54 ("USB: UAS: fix disconnect by unplugging a hub")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Yu Chen <chenyu45@xiaomi.com>
-Signed-off-by: Owen Gu <guhuinan@xiaomi.com>
-Acked-by: Oliver Neukum <oneukum@suse.com>
-Link: https://patch.msgid.link/20251120123336.3328-1-guhuinan@xiaomi.com
+Fixes: 5cff263606a1 ("can: rcar_canfd: Fix controller mode setting")
+Cc: stable@vger.kernel.org
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Link: https://patch.msgid.link/20251118123926.193445-1-biju.das.jz@bp.renesas.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+[ adapted to use existing is_gen4() helper and RCANFD_GEN4_FDCFG() macro instead of new ch_interface_mode field and fcbase struct ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/uas.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/can/rcar/rcar_canfd.c |   53 +++++++++++++++++++++-----------------
+ 1 file changed, 30 insertions(+), 23 deletions(-)
 
---- a/drivers/usb/storage/uas.c
-+++ b/drivers/usb/storage/uas.c
-@@ -697,6 +697,10 @@ static int uas_queuecommand_lck(struct s
- 	 * of queueing, no matter how fatal the error
- 	 */
- 	if (err == -ENODEV) {
-+		if (cmdinfo->state & (COMMAND_INFLIGHT | DATA_IN_URB_INFLIGHT |
-+				DATA_OUT_URB_INFLIGHT))
-+			goto out;
-+
- 		set_host_byte(cmnd, DID_NO_CONNECT);
- 		scsi_done(cmnd);
- 		goto zombie;
-@@ -710,6 +714,7 @@ static int uas_queuecommand_lck(struct s
- 		uas_add_work(cmnd);
- 	}
+--- a/drivers/net/can/rcar/rcar_canfd.c
++++ b/drivers/net/can/rcar/rcar_canfd.c
+@@ -681,26 +681,6 @@ static void rcar_canfd_tx_failure_cleanu
+ 		can_free_echo_skb(ndev, i, NULL);
+ }
  
-+out:
- 	devinfo->cmnd[idx] = cmnd;
- zombie:
- 	spin_unlock_irqrestore(&devinfo->lock, flags);
+-static void rcar_canfd_set_mode(struct rcar_canfd_global *gpriv)
+-{
+-	if (is_gen4(gpriv)) {
+-		u32 ch, val = gpriv->fdmode ? RCANFD_GEN4_FDCFG_FDOE
+-					    : RCANFD_GEN4_FDCFG_CLOE;
+-
+-		for_each_set_bit(ch, &gpriv->channels_mask,
+-				 gpriv->info->max_channels)
+-			rcar_canfd_set_bit(gpriv->base, RCANFD_GEN4_FDCFG(ch),
+-					   val);
+-	} else {
+-		if (gpriv->fdmode)
+-			rcar_canfd_set_bit(gpriv->base, RCANFD_GRMCFG,
+-					   RCANFD_GRMCFG_RCMC);
+-		else
+-			rcar_canfd_clear_bit(gpriv->base, RCANFD_GRMCFG,
+-					     RCANFD_GRMCFG_RCMC);
+-	}
+-}
+-
+ static int rcar_canfd_reset_controller(struct rcar_canfd_global *gpriv)
+ {
+ 	u32 sts, ch;
+@@ -732,6 +712,16 @@ static int rcar_canfd_reset_controller(s
+ 	/* Reset Global error flags */
+ 	rcar_canfd_write(gpriv->base, RCANFD_GERFL, 0x0);
+ 
++	/* Set the controller into appropriate mode */
++	if (!is_gen4(gpriv)) {
++		if (gpriv->fdmode)
++			rcar_canfd_set_bit(gpriv->base, RCANFD_GRMCFG,
++					   RCANFD_GRMCFG_RCMC);
++		else
++			rcar_canfd_clear_bit(gpriv->base, RCANFD_GRMCFG,
++					     RCANFD_GRMCFG_RCMC);
++	}
++
+ 	/* Transition all Channels to reset mode */
+ 	for_each_set_bit(ch, &gpriv->channels_mask, gpriv->info->max_channels) {
+ 		rcar_canfd_clear_bit(gpriv->base,
+@@ -750,10 +740,27 @@ static int rcar_canfd_reset_controller(s
+ 				"channel %u reset failed\n", ch);
+ 			return err;
+ 		}
+-	}
+ 
+-	/* Set the controller into appropriate mode */
+-	rcar_canfd_set_mode(gpriv);
++		/* Set the controller into appropriate mode */
++		if (is_gen4(gpriv)) {
++			/* Do not set CLOE and FDOE simultaneously */
++			if (!gpriv->fdmode) {
++				rcar_canfd_clear_bit(gpriv->base,
++						     RCANFD_GEN4_FDCFG(ch),
++						     RCANFD_GEN4_FDCFG_FDOE);
++				rcar_canfd_set_bit(gpriv->base,
++						   RCANFD_GEN4_FDCFG(ch),
++						   RCANFD_GEN4_FDCFG_CLOE);
++			} else {
++				rcar_canfd_clear_bit(gpriv->base,
++						     RCANFD_GEN4_FDCFG(ch),
++						     RCANFD_GEN4_FDCFG_FDOE);
++				rcar_canfd_clear_bit(gpriv->base,
++						     RCANFD_GEN4_FDCFG(ch),
++						     RCANFD_GEN4_FDCFG_CLOE);
++			}
++		}
++	}
+ 
+ 	return 0;
+ }
 
 
 
