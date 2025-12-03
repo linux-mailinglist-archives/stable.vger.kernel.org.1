@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-199422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87D99CA0D03
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:11:34 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CE0EC9FCB9
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:06:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 06C3D32B20DA
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:07:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7962D30019C6
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:06:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7AB7357739;
-	Wed,  3 Dec 2025 16:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16BB534F492;
+	Wed,  3 Dec 2025 16:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ieZm98+Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gk8i2ngt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9390A357730;
-	Wed,  3 Dec 2025 16:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C52F3313546;
+	Wed,  3 Dec 2025 16:06:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779749; cv=none; b=c4fwv/m5rRrXqgTVFMTBxnvp1uS4fCOmMpENVZ23GNB1UlIrHCbkLyTsn5k6gTOGPkxD9VTyNX/Mp/Lx2eaR/XxHrBuCozeHnw+dVorTnz/a1jvyb3nnykesrhodEiyArvwzWNNWbThctwKGQXGET48yYnwAiZeiW7YXzF6c80c=
+	t=1764777964; cv=none; b=nNeRzffwBdlv7YD5+R6Ws2OJMuIjSHRGEfuLs6Tzml7757sE7zfUWrJJbrSbAEOm2p0LtjiygHcBL4fGM88sknMMW4HV3KUgRLmYvzjAtVUQNFoDJ4B8AqdoiMCbPz6/pyaDz6Tc6LnXv+RVIPuvfHaHXuz4IgUqMWw8+giDv8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779749; c=relaxed/simple;
-	bh=nMf11DXLCtn2ReD4GXp09DNYcp2yCOPglVqKxGTv5GA=;
+	s=arc-20240116; t=1764777964; c=relaxed/simple;
+	bh=FjzpW1vss1ZlwpZ4vKbd9E4TTun3UB9FMmR8B32bpMU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XXM7oc1lsrAMMMAXItAuS/QDTVRhpPEX7JHCsbkpbN46OmQSo+X/0pWyMpW+zm/JWNL8sSwbHZtjyC4GTBVF6OHIn5dpcHQagHZeXqzKscOqB4VLRnlwSD7WFFDj11xnv9Zy9WilrLf2KEdIPx/XrWiP4SdgIPGjaboAAPfYkLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ieZm98+Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8BF9C4CEF5;
-	Wed,  3 Dec 2025 16:35:48 +0000 (UTC)
+	 MIME-Version; b=PmtcS9gH3Ee43bOECWJ76uvhr3B8e215UnzEaTuZ0TSQ1tJfNb3/7IpokoZOiPkcSz2A+Ni6rnr9O9HLnFDw8gJnX9vytdRRcs7juxAWzFrlUdS77QkDUhj7wfAmFtQMWM84UVebyE97IiqeO3+g9dWTscZOSzBqgOHAvSdB998=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gk8i2ngt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EC13C116B1;
+	Wed,  3 Dec 2025 16:06:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779749;
-	bh=nMf11DXLCtn2ReD4GXp09DNYcp2yCOPglVqKxGTv5GA=;
+	s=korg; t=1764777964;
+	bh=FjzpW1vss1ZlwpZ4vKbd9E4TTun3UB9FMmR8B32bpMU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ieZm98+QUm5zZld+HAZ/HYFnlLmoF1d1jgWwAk0yNh7AtJ81sSPZ7l7TSRD9n7swC
-	 ineUlv9pKDkIxF08SKDrUP6x/mE8jHto+Hq5k+PM1v3c45UteCVKN5inYY0DqLzjNI
-	 +eCdxgx3XIDShI/dp5S95DiulhLQornKuj0UJVaI=
+	b=Gk8i2ngtAp4vBq4Sg+F20wkZC7yBtovbDe/d2ZlOnruQuqxWWIXeJsaBkLEEXv0cS
+	 2YOZ3MziyaMJw2hpvMAzgGHY4AIC//EsDzoquc6drFTMv/oxlhAXASVRj+SBEZGYan
+	 i8ydy+7cIGe9TwIEOwVJFZLet48mYa0osQIUU2AA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Escande <nico.escande@gmail.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	"Randall P. Embry" <rpembry@gmail.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 348/568] wifi: ath11k: zero init info->status in wmi_process_mgmt_tx_comp()
+Subject: [PATCH 5.15 200/392] 9p: sysfs_init: dont hardcode error to ENOMEM
 Date: Wed,  3 Dec 2025 16:25:50 +0100
-Message-ID: <20251203152453.450467151@linuxfoundation.org>
+Message-ID: <20251203152421.434382120@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +60,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Escande <nico.escande@gmail.com>
+From: Randall P. Embry <rpembry@gmail.com>
 
-[ Upstream commit 9065b968752334f972e0d48e50c4463a172fc2a7 ]
+[ Upstream commit 528f218b31aac4bbfc58914d43766a22ab545d48 ]
 
-When reporting tx completion using ieee80211_tx_status_xxx() family of
-functions, the status part of the struct ieee80211_tx_info nested in the
-skb is used to report things like transmit rates & retry count to mac80211
+v9fs_sysfs_init() always returned -ENOMEM on failure;
+return the actual sysfs_create_group() error instead.
 
-On the TX data path, this is correctly memset to 0 before calling
-ieee80211_tx_status_ext(), but on the tx mgmt path this was not done.
-
-This leads to mac80211 treating garbage values as valid transmit counters
-(like tx retries for example) and accounting them as real statistics that
-makes their way to userland via station dump.
-
-The same issue was resolved in ath12k by commit 9903c0986f78 ("wifi:
-ath12k: Add memset and update default rate value in wmi tx completion")
-
-Tested-on: QCN9074 PCI WLAN.HK.2.9.0.1-01977-QCAHKSWPL_SILICONZ-1
-
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251104083957.717825-1-nico.escande@gmail.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Randall P. Embry <rpembry@gmail.com>
+Message-ID: <20250926-v9fs_misc-v1-3-a8b3907fc04d@codewreck.org>
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/wmi.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/9p/v9fs.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 1b58979bdfdc6..ed12bbb11fe89 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -5246,6 +5246,9 @@ static int wmi_process_mgmt_tx_comp(struct ath11k *ar,
- 	dma_unmap_single(ar->ab->dev, skb_cb->paddr, msdu->len, DMA_TO_DEVICE);
+diff --git a/fs/9p/v9fs.c b/fs/9p/v9fs.c
+index 52765f7a3375a..3a44a77e276b8 100644
+--- a/fs/9p/v9fs.c
++++ b/fs/9p/v9fs.c
+@@ -594,13 +594,16 @@ static const struct attribute_group v9fs_attr_group = {
  
- 	info = IEEE80211_SKB_CB(msdu);
-+	memset(&info->status, 0, sizeof(info->status));
-+	info->status.rates[0].idx = -1;
+ static int __init v9fs_sysfs_init(void)
+ {
++	int ret;
 +
- 	if ((!(info->flags & IEEE80211_TX_CTL_NO_ACK)) &&
- 	    !tx_compl_param->status) {
- 		info->flags |= IEEE80211_TX_STAT_ACK;
+ 	v9fs_kobj = kobject_create_and_add("9p", fs_kobj);
+ 	if (!v9fs_kobj)
+ 		return -ENOMEM;
+ 
+-	if (sysfs_create_group(v9fs_kobj, &v9fs_attr_group)) {
++	ret = sysfs_create_group(v9fs_kobj, &v9fs_attr_group);
++	if (ret) {
+ 		kobject_put(v9fs_kobj);
+-		return -ENOMEM;
++		return ret;
+ 	}
+ 
+ 	return 0;
 -- 
 2.51.0
 
