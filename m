@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-198337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A283C9F956
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:43:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7858BCA05AB
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:20:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A9C4930435E0
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:37:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E5881318DAE7
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:07:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 329C4313523;
-	Wed,  3 Dec 2025 15:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 248B934574B;
+	Wed,  3 Dec 2025 16:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vWuVGkFn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WGT+4/bQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E23D6304BC2;
-	Wed,  3 Dec 2025 15:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4ECD3451A9;
+	Wed,  3 Dec 2025 16:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776213; cv=none; b=HkbiLZOlMqP/WPgSKneOTRh7kBmyLkBziNwP/Ev7wHkNnIRnQNMJk3Vz6yB7q5rOXc/HXIhskqPR0naPK0gepylMl86m5dyNd8NGoZy5FOurfErM6vWulWVFVNSSMvTyLARHkahjDH2uz0QMLkUoBgQ1ToHaB9a+qYwe3tBYyts=
+	t=1764779698; cv=none; b=QnMY1Hjy3GgwS29mw6GBVW/s/lu8qfG/vYP8cf0yGFEv175M9f7wh7Dvz+qhMHngZHtJB1wf6Un2qpBoCnCThvhEqEVPZwyNBP2ZkM6SOdyayidspcZuSCVe7aaYL5rXBuuQlqttGkKVedTDbh22MuIrZYNCZ1SjAv7xV7qNiFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776213; c=relaxed/simple;
-	bh=1xO0ggLUYr0EYcVOby4DEr4K5qnGqWlFW1mC0sswOKQ=;
+	s=arc-20240116; t=1764779698; c=relaxed/simple;
+	bh=uX2pg6kCs0IejrACRhyYS+Q90DKHziersqf8PB777pc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WQvW/ZWdypK8n5QozQawwZ77srg8UxKir09/u5QllbXbBu1UmxgymkHswHpQDyiW2XuskO8uE3sGe3qn6tvweKVdAyeE1AlQRFZVgaBKRHNgNo5wDlbMJ7hqS3i2H2VRzzhHXd+FOg5F0/d2y4ayoer8Gez5jvFX0nPKbvzpVYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vWuVGkFn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E44EC4CEF5;
-	Wed,  3 Dec 2025 15:36:52 +0000 (UTC)
+	 MIME-Version; b=Bum6qbzGo+G91RloPHTfCDcYScrY7zESD1k/3l4VU+2XX4kbiLVyfxjkqQrcy7bsiDIdD0I6UcFEPMp4vOD6PVyEDna+OCI9b8E4odjtfyAqcaIXsn5PxHEj6fBRaFjD5PQ/qDglvEGnM/7UqylZ3RlUIq0Lfw1mCpYXSqTirqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WGT+4/bQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42B54C4CEF5;
+	Wed,  3 Dec 2025 16:34:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776212;
-	bh=1xO0ggLUYr0EYcVOby4DEr4K5qnGqWlFW1mC0sswOKQ=;
+	s=korg; t=1764779698;
+	bh=uX2pg6kCs0IejrACRhyYS+Q90DKHziersqf8PB777pc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vWuVGkFnAVRpemzFIOiTj96yhujzOx908O8WYsz+Vcrko+7zAh3mkI9WYcAH59jQ1
-	 7zgaUYqJIz2SI3UYdNVejJR6R3+HJq8dyQ2ME8+r2Q1Ov5LZYP+ykhxpF4saT90ND3
-	 8OuQj6E+5rB9HCcxxNmUC0AILhp61fEVGohjfmTs=
+	b=WGT+4/bQHrPPHlKePJr2YXiPW1HD0oHg680Njv9aChFGELphNTNgb7alPVA8W2Mbx
+	 5gZyNkLQ12esBxyaX9/LSg6RdCVL8QDyagPSCTfgPxllG5NJNhL/suT+jHrzy0JZqb
+	 0LdpTqTIDHaxkdhcddYd1+GDHPQgELq3DfQuxIW8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Ahern <dsahern@kernel.org>,
-	Simon Horman <horms@kernel.org>,
+	Xin Long <lucien.xin@gmail.com>,
+	Stefan Wiehler <stefan.wiehler@nokia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 115/300] selftests: Disable dad for ipv6 in fcnal-test.sh
+Subject: [PATCH 6.1 317/568] sctp: Hold sock lock while iterating over address list
 Date: Wed,  3 Dec 2025 16:25:19 +0100
-Message-ID: <20251203152404.879885489@linuxfoundation.org>
+Message-ID: <20251203152452.323195150@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Ahern <dsahern@kernel.org>
+From: Stefan Wiehler <stefan.wiehler@nokia.com>
 
-[ Upstream commit 53d591730ea34f97a82f7ec6e7c987ca6e34dc21 ]
+[ Upstream commit f1fc201148c7e684c10a72b6a3375597f28d1ef6 ]
 
-Constrained test environment; duplicate address detection is not needed
-and causes races so disable it.
+Move address list traversal in inet_assoc_attr_size() under the sock
+lock to avoid holding the RCU read lock.
 
-Signed-off-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250910025828.38900-1-dsahern@kernel.org
+Suggested-by: Xin Long <lucien.xin@gmail.com>
+Fixes: 8f840e47f190 ("sctp: add the sctp_diag.c file")
+Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/20251028161506.3294376-4-stefan.wiehler@nokia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/fcnal-test.sh | 2 ++
- 1 file changed, 2 insertions(+)
+ net/sctp/diag.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/net/fcnal-test.sh b/tools/testing/selftests/net/fcnal-test.sh
-index acffe0029fdd1..806c409de124e 100755
---- a/tools/testing/selftests/net/fcnal-test.sh
-+++ b/tools/testing/selftests/net/fcnal-test.sh
-@@ -400,6 +400,8 @@ create_ns()
- 	ip netns exec ${ns} sysctl -qw net.ipv6.conf.all.keep_addr_on_down=1
- 	ip netns exec ${ns} sysctl -qw net.ipv6.conf.all.forwarding=1
- 	ip netns exec ${ns} sysctl -qw net.ipv6.conf.default.forwarding=1
-+	ip netns exec ${ns} sysctl -qw net.ipv6.conf.default.accept_dad=0
-+	ip netns exec ${ns} sysctl -qw net.ipv6.conf.all.accept_dad=0
- }
+diff --git a/net/sctp/diag.c b/net/sctp/diag.c
+index 3631a32d96b07..2cf5ee7a698e2 100644
+--- a/net/sctp/diag.c
++++ b/net/sctp/diag.c
+@@ -230,14 +230,15 @@ struct sctp_comm_param {
+ 	bool net_admin;
+ };
  
- # create veth pair to connect namespaces and apply addresses.
+-static size_t inet_assoc_attr_size(struct sctp_association *asoc)
++static size_t inet_assoc_attr_size(struct sock *sk,
++				   struct sctp_association *asoc)
+ {
+ 	int addrlen = sizeof(struct sockaddr_storage);
+ 	int addrcnt = 0;
+ 	struct sctp_sockaddr_entry *laddr;
+ 
+ 	list_for_each_entry_rcu(laddr, &asoc->base.bind_addr.address_list,
+-				list)
++				list, lockdep_sock_is_held(sk))
+ 		addrcnt++;
+ 
+ 	return	  nla_total_size(sizeof(struct sctp_info))
+@@ -263,11 +264,14 @@ static int sctp_sock_dump_one(struct sctp_endpoint *ep, struct sctp_transport *t
+ 	if (err)
+ 		return err;
+ 
+-	rep = nlmsg_new(inet_assoc_attr_size(assoc), GFP_KERNEL);
+-	if (!rep)
++	lock_sock(sk);
++
++	rep = nlmsg_new(inet_assoc_attr_size(sk, assoc), GFP_KERNEL);
++	if (!rep) {
++		release_sock(sk);
+ 		return -ENOMEM;
++	}
+ 
+-	lock_sock(sk);
+ 	if (ep != assoc->ep) {
+ 		err = -EAGAIN;
+ 		goto out;
 -- 
 2.51.0
 
