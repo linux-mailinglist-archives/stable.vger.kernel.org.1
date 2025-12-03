@@ -1,63 +1,55 @@
-Return-Path: <stable+bounces-198629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5696CCA10B9
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:39:16 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77DB4CA119D
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:43:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 466A5300A9CD
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:39:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F37AC3002EBF
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:43:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 212293321C8;
-	Wed,  3 Dec 2025 15:52:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E79BD34FF5D;
+	Wed,  3 Dec 2025 16:13:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JwogGWjf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pk3EOwYL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0921331A75;
-	Wed,  3 Dec 2025 15:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A315534FF50;
+	Wed,  3 Dec 2025 16:13:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777171; cv=none; b=ETfWyJMo1UOv0zLplNR2ED6aeVtbRqOi/FbU371gx6Dnp/VPlPBj3zSwKIcLfp930n0cQTz32YxUz3elTTKNd3psBRSiGycoEmWP73Kd3cwBCQYDxv8WgjLEX0W9KhTmpOIEZc80BxphR38ghGyU3KaYugyEo/GQhI/PinYd++Q=
+	t=1764778394; cv=none; b=trWhI9Kt+9url9wSsLLaoSxod4kd3I+7odExwZQyAfDvMUC0TV8pnkCJ+H6KnV6dQR43ei4Emf2+HlJQhOCxrzNMKzn9YfrJXyILppAIPzTbhFFntZU8GaqOjmdM78+/bY++fcV2vyqwHJHBz5uE+aTFr4DZzMVJGmjD8XR69kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777171; c=relaxed/simple;
-	bh=lfetsaWgFhcNeGt1Ms8W2Ie4lSVmig2ELXZPzhrVgg4=;
+	s=arc-20240116; t=1764778394; c=relaxed/simple;
+	bh=HJST/VmlUYdgnVZv2XnmCjaEvJuDCwxDTA6B1ZG2Q3w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pRZcQzUlqEsMamMueJdmlRvw+wbs4mY3p2aICkUDXVbjAoyIC02gz0VN1J5yr1ITyFqrKp5HWaSx8+f+z8BGAGGGib95O1KmvLCf1A4qahd9/et83IzFnxKF0sK1TmHoeHpFUQWr87/o7zAD38GkaaUINb5lNqK/r9hlbPmZI1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JwogGWjf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F24EC4CEF5;
-	Wed,  3 Dec 2025 15:52:51 +0000 (UTC)
+	 MIME-Version; b=D3fU5Resis8Jss2IZTO8vCmpgTsdz4QUiluJGDr1FsASX+PVODvamlTek7VPkIZZNfdYOU4yLt0cJkAXPZx5sRsjmdoVDFsMhU9cTMmv+FrnoIENfnzqk+zZ/iSNb1QgTgvEKfLutdBjN7XbDdu8cZVHJV4jq8Td4WFJMOXVJ+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pk3EOwYL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25DFCC4CEF5;
+	Wed,  3 Dec 2025 16:13:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777171;
-	bh=lfetsaWgFhcNeGt1Ms8W2Ie4lSVmig2ELXZPzhrVgg4=;
+	s=korg; t=1764778394;
+	bh=HJST/VmlUYdgnVZv2XnmCjaEvJuDCwxDTA6B1ZG2Q3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JwogGWjf9JxdK+hbdf/RQVj+IA7N+hBF7f8KVivfKHdl0yTLCuFIZ3TvQECMHQcJd
-	 hiP2TkDN17zWj0840xyGo9mSFFOdrfdbxxS9Xhf3/xyPS0w2u7ZaNMqyamTvvkEzqY
-	 b4WCPEYb7qwBF7bhiSedhQ67VkClpmNCrzwhLm04=
+	b=pk3EOwYL3vCNRq3HPh1dWmCXv4Ggl2hIoW/y8QWp+WQb7kahou0wBbMWdoaaWqHCw
+	 6Kb8JF03vMmbf4m1miJ7XKmxqbhZmWZ1tov2ByXS1yPmCiLmzvv6/RiRRjLEZkEYHJ
+	 aJJkwADQGS6ajzCp2a1q/HLF2XVOdgfGcQGBt4RQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	syzbot+f64019ba229e3a5c411b@syzkaller.appspotmail.com,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@redhat.com>,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>,
-	Hugh Dickins <hughd@google.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Dave Airlie <airlied@redhat.com>,
-	Gerd Hoffmann <kraxel@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@lst.de>
-Subject: [PATCH 6.17 103/146] mm/memfd: fix information leak in hugetlb folios
-Date: Wed,  3 Dec 2025 16:28:01 +0100
-Message-ID: <20251203152350.234730002@linuxfoundation.org>
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 332/392] mptcp: fix premature close in case of fallback
+Date: Wed,  3 Dec 2025 16:28:02 +0100
+Message-ID: <20251203152426.386125108@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,99 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit de8798965fd0d9a6c47fc2ac57767ec32de12b49 upstream.
+[ Upstream commit 17393fa7b7086664be519e7230cb6ed7ec7d9462 ]
 
-When allocating hugetlb folios for memfd, three initialization steps are
-missing:
+I'm observing very frequent self-tests failures in case of fallback when
+running on a CONFIG_PREEMPT kernel.
 
-1. Folios are not zeroed, leading to kernel memory disclosure to userspace
-2. Folios are not marked uptodate before adding to page cache
-3. hugetlb_fault_mutex is not taken before hugetlb_add_to_page_cache()
+The root cause is that subflow_sched_work_if_closed() closes any subflow
+as soon as it is half-closed and has no incoming data pending.
 
-The memfd allocation path bypasses the normal page fault handler
-(hugetlb_no_page) which would handle all of these initialization steps.
-This is problematic especially for udmabuf use cases where folios are
-pinned and directly accessed by userspace via DMA.
+That works well for regular subflows - MPTCP needs bi-directional
+connectivity to operate on a given subflow - but for fallback socket is
+race prone.
 
-Fix by matching the initialization pattern used in hugetlb_no_page():
-- Zero the folio using folio_zero_user() which is optimized for huge pages
-- Mark it uptodate with folio_mark_uptodate()
-- Take hugetlb_fault_mutex before adding to page cache to prevent races
+When TCP peer closes the connection before the MPTCP one,
+subflow_sched_work_if_closed() will schedule the MPTCP worker to
+gracefully close the subflow, and shortly after will do another schedule
+to inject and process a dummy incoming DATA_FIN.
 
-The folio_zero_user() change also fixes a potential security issue where
-uninitialized kernel memory could be disclosed to userspace through read()
-or mmap() operations on the memfd.
+On CONFIG_PREEMPT kernel, the MPTCP worker can kick-in and close the
+fallback subflow before subflow_sched_work_if_closed() is able to create
+the dummy DATA_FIN, unexpectedly interrupting the transfer.
 
-Link: https://lkml.kernel.org/r/20251112145034.2320452-1-kartikey406@gmail.com
-Fixes: 89c1905d9c14 ("mm/gup: introduce memfd_pin_folios() for pinning memfd folios")
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Reported-by: syzbot+f64019ba229e3a5c411b@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/20251112031631.2315651-1-kartikey406@gmail.com/ [v1]
-Closes: https://syzkaller.appspot.com/bug?extid=f64019ba229e3a5c411b
-Suggested-by: Oscar Salvador <osalvador@suse.de>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Tested-by: syzbot+f64019ba229e3a5c411b@syzkaller.appspotmail.com
-Acked-by: Oscar Salvador <osalvador@suse.de>
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Acked-by: Hugh Dickins <hughd@google.com>
-Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com> (v2)
-Cc: Christoph Hellwig <hch@lst.de> (v6)
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Address the issue explicitly avoiding closing fallback subflows on when
+the peer is only half-closed.
+
+Note that, when the subflow is able to create the DATA_FIN before the
+worker invocation, the worker will change the msk state before trying to
+close the subflow and will skip the latter operation as the msk will not
+match anymore the precondition in __mptcp_close_subflow().
+
+Fixes: f09b0ad55a11 ("mptcp: close subflow when receiving TCP+FIN")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-3-806d3781c95f@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ sk -> ssk ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memfd.c |   27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ net/mptcp/protocol.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/mm/memfd.c
-+++ b/mm/memfd.c
-@@ -96,9 +96,36 @@ struct folio *memfd_alloc_folio(struct f
- 						    NULL,
- 						    gfp_mask);
- 		if (folio) {
-+			u32 hash;
-+
-+			/*
-+			 * Zero the folio to prevent information leaks to userspace.
-+			 * Use folio_zero_user() which is optimized for huge/gigantic
-+			 * pages. Pass 0 as addr_hint since this is not a faulting path
-+			 *  and we don't have a user virtual address yet.
-+			 */
-+			folio_zero_user(folio, 0);
-+
-+			/*
-+			 * Mark the folio uptodate before adding to page cache,
-+			 * as required by filemap.c and other hugetlb paths.
-+			 */
-+			__folio_mark_uptodate(folio);
-+
-+			/*
-+			 * Serialize hugepage allocation and instantiation to prevent
-+			 * races with concurrent allocations, as required by all other
-+			 * callers of hugetlb_add_to_page_cache().
-+			 */
-+			hash = hugetlb_fault_mutex_hash(memfd->f_mapping, idx);
-+			mutex_lock(&hugetlb_fault_mutex_table[hash]);
-+
- 			err = hugetlb_add_to_page_cache(folio,
- 							memfd->f_mapping,
- 							idx);
-+
-+			mutex_unlock(&hugetlb_fault_mutex_table[hash]);
-+
- 			if (err) {
- 				folio_put(folio);
- 				goto err_unresv;
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2411,7 +2411,8 @@ static void __mptcp_close_subflow(struct
+ 
+ 		if (ssk_state != TCP_CLOSE &&
+ 		    (ssk_state != TCP_CLOSE_WAIT ||
+-		     inet_sk_state_load((struct sock *)ssk) != TCP_ESTABLISHED))
++		     inet_sk_state_load((struct sock *)ssk) != TCP_ESTABLISHED ||
++		     __mptcp_check_fallback(msk)))
+ 			continue;
+ 
+ 		/* 'subflow_data_ready' will re-sched once rx queue is empty */
 
 
 
