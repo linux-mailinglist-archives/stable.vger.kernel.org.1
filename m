@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-198780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2C28CA067D
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:25:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B52ACA14C5
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:12:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4D60031A3869
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:09:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 031B030A42FB
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:33:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9060334A3B0;
-	Wed,  3 Dec 2025 16:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E124364E93;
+	Wed,  3 Dec 2025 16:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZGPCA8HU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vodQyXV2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49EFB34A3AB;
-	Wed,  3 Dec 2025 16:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08EEF364E83;
+	Wed,  3 Dec 2025 16:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777660; cv=none; b=FDX0RLkX0TH4CUBKfYGiMW5IUxgvP82QnmjqXo2puD9VV44ZDsvFT7kDjvDX3Q/AA6+QF0WpZc51P9o82x3sOIL9vnsNIMcCVMnTixicludE+sj8iVyCm4d1YjgM8TDwp0jysMrSpFfA54z0CCen5NYrbG/DwQA4Yef6B+9NEDY=
+	t=1764779428; cv=none; b=m3nSBXYYNAn+KDjbeqkFb8q4huS3MjN9wHq9KXjcQOwYUOAUu+4dkEAPJZBq90q/ik981yfufd98IA/orDivGLVhvJKph9/msDFusTBSBofCKgI1bCVndN5NmjWoXZQZd1zGNPC284xU/rQgZOsyDhlVkc7FBLIdzIlBGxoA2TE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777660; c=relaxed/simple;
-	bh=D3/4w6brNs5bizkoOMiAZue+HBrWZ7/BVcHfbuuQLDY=;
+	s=arc-20240116; t=1764779428; c=relaxed/simple;
+	bh=N2UBRpNEaNqLMXLb6O9Bn7VOl9IHXbv3Gjb74echYLM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=th9moj4Ga3gPqq3G/GfOW7B124M9GXmTOGv1LWS2zwkJ1KlW3mDjf4liGQXhGaW/JNSonOyjGE5nArziuPXxLdH/TXkg6NpbSEi9GQtFc7gVvYCARQ5Zw5CzKnCfGQOIF3Vd28yx5D9gcz6HG2M22ej/5EWdkc1zAAUEU1A6MwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZGPCA8HU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B25E8C116B1;
-	Wed,  3 Dec 2025 16:00:59 +0000 (UTC)
+	 MIME-Version; b=KLAw84kYqQ4fWjvrWM4HEH/Zaxj1rardPsvdIAPNXT4sr20zgfKPJZR8nO1xhemLZ/Ay5iWULvEBOUolNrGhCtgblsp3NF340nM4TQ+Cr5iMGUZuDvFi6p1W1Jom7ypTAX8issWXC41qazJBhhx70Rnzs80weJLvo8CDlZaPklc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vodQyXV2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AD89C4CEF5;
+	Wed,  3 Dec 2025 16:30:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777660;
-	bh=D3/4w6brNs5bizkoOMiAZue+HBrWZ7/BVcHfbuuQLDY=;
+	s=korg; t=1764779427;
+	bh=N2UBRpNEaNqLMXLb6O9Bn7VOl9IHXbv3Gjb74echYLM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZGPCA8HUhlvA4LLly1awGC/m/qbnCii5B+EZelIxot4qc4WT78J/5pn7AvMLHfTYr
-	 qD4CIawEPRnP4ebKidlQ+8xfdYkuMl86rcA9x8zKr5PXp2dm1AMtyhhS9IPFFus2tz
-	 7X0bhGsoi8ZJca7+2/v0CXA/qv8CykyYKJpUlcSQ=
+	b=vodQyXV22K730qXo7v8OwMkw/TGxWy5AIY4Yvo5PyJAOirmIZP0c/4JJb26120qYl
+	 lqwdTqzR/KrR0yQzTlO1Ozk81o9TvZ2g1zOxXOMndj0q+eHnZyNoXyOc+Ah7/uud2D
+	 J9lBaUQVo3VR0NMvJd7crE2yI68raXGH7I2dDXIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 107/392] media: imon: make send_packet() more robust
+Subject: [PATCH 6.1 255/568] nfs4_setup_readdir(): insufficient locking for ->d_parent->d_inode dereferencing
 Date: Wed,  3 Dec 2025 16:24:17 +0100
-Message-ID: <20251203152418.036552063@linuxfoundation.org>
+Message-ID: <20251203152450.060254434@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,186 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit eecd203ada43a4693ce6fdd3a58ae10c7819252c ]
+[ Upstream commit a890a2e339b929dbd843328f9a92a1625404fe63 ]
 
-syzbot is reporting that imon has three problems which result in
-hung tasks due to forever holding device lock [1].
+Theoretically it's an oopsable race, but I don't believe one can manage
+to hit it on real hardware; might become doable on a KVM, but it still
+won't be easy to attack.
 
-First problem is that when usb_rx_callback_intf0() once got -EPROTO error
-after ictx->dev_present_intf0 became true, usb_rx_callback_intf0()
-resubmits urb after printk(), and resubmitted urb causes
-usb_rx_callback_intf0() to again get -EPROTO error. This results in
-printk() flooding (RCU stalls).
+Anyway, it's easy to deal with - since xdr_encode_hyper() is just a call of
+put_unaligned_be64(), we can put that under ->d_lock and be done with that.
 
-Alan Stern commented [2] that
-
-  In theory it's okay to resubmit _if_ the driver has a robust
-  error-recovery scheme (such as giving up after some fixed limit on the
-  number of errors or after some fixed time has elapsed, perhaps with a
-  time delay to prevent a flood of errors).  Most drivers don't bother to
-  do this; they simply give up right away.  This makes them more
-  vulnerable to short-term noise interference during USB transfers, but in
-  reality such interference is quite rare.  There's nothing really wrong
-  with giving up right away.
-
-but imon has a poor error-recovery scheme which just retries forever;
-this behavior should be fixed.
-
-Since I'm not sure whether it is safe for imon users to give up upon any
-error code, this patch takes care of only union of error codes chosen from
-modules in drivers/media/rc/ directory which handle -EPROTO error (i.e.
-ir_toy, mceusb and igorplugusb).
-
-Second problem is that when usb_rx_callback_intf0() once got -EPROTO error
-before ictx->dev_present_intf0 becomes true, usb_rx_callback_intf0() always
-resubmits urb due to commit 8791d63af0cf ("[media] imon: don't wedge
-hardware after early callbacks"). Move the ictx->dev_present_intf0 test
-introduced by commit 6f6b90c9231a ("[media] imon: don't parse scancodes
-until intf configured") to immediately before imon_incoming_packet(), or
-the first problem explained above happens without printk() flooding (i.e.
-hung task).
-
-Third problem is that when usb_rx_callback_intf0() is not called for some
-reason (e.g. flaky hardware; the reproducer for this problem sometimes
-prevents usb_rx_callback_intf0() from being called),
-wait_for_completion_interruptible() in send_packet() never returns (i.e.
-hung task). As a workaround for such situation, change send_packet() to
-wait for completion with timeout of 10 seconds.
-
-Link: https://syzkaller.appspot.com/bug?extid=592e2ab8775dbe0bf09a [1]
-Link: https://lkml.kernel.org/r/d6da6709-d799-4be3-a695-850bddd6eb24@rowland.harvard.edu [2]
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/rc/imon.c | 61 +++++++++++++++++++++++++----------------
- 1 file changed, 37 insertions(+), 24 deletions(-)
+ fs/nfs/nfs4proc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/media/rc/imon.c b/drivers/media/rc/imon.c
-index 0257a4f293ecc..a70f449f35290 100644
---- a/drivers/media/rc/imon.c
-+++ b/drivers/media/rc/imon.c
-@@ -650,12 +650,15 @@ static int send_packet(struct imon_context *ictx)
- 		smp_rmb(); /* ensure later readers know we're not busy */
- 		pr_err_ratelimited("error submitting urb(%d)\n", retval);
- 	} else {
--		/* Wait for transmission to complete (or abort) */
--		retval = wait_for_completion_interruptible(
--				&ictx->tx.finished);
--		if (retval) {
-+		/* Wait for transmission to complete (or abort or timeout) */
-+		retval = wait_for_completion_interruptible_timeout(&ictx->tx.finished, 10 * HZ);
-+		if (retval <= 0) {
- 			usb_kill_urb(ictx->tx_urb);
- 			pr_err_ratelimited("task interrupted\n");
-+			if (retval < 0)
-+				ictx->tx.status = retval;
-+			else
-+				ictx->tx.status = -ETIMEDOUT;
- 		}
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 935ca3845ce53..f387a3862ca09 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -362,7 +362,9 @@ static void nfs4_setup_readdir(u64 cookie, __be32 *verifier, struct dentry *dent
+ 	*p++ = htonl(attrs);                           /* bitmap */
+ 	*p++ = htonl(12);             /* attribute buffer length */
+ 	*p++ = htonl(NF4DIR);
++	spin_lock(&dentry->d_lock);
+ 	p = xdr_encode_hyper(p, NFS_FILEID(d_inode(dentry->d_parent)));
++	spin_unlock(&dentry->d_lock);
  
- 		ictx->tx.busy = false;
-@@ -1756,14 +1759,6 @@ static void usb_rx_callback_intf0(struct urb *urb)
- 	if (!ictx)
- 		return;
- 
--	/*
--	 * if we get a callback before we're done configuring the hardware, we
--	 * can't yet process the data, as there's nowhere to send it, but we
--	 * still need to submit a new rx URB to avoid wedging the hardware
--	 */
--	if (!ictx->dev_present_intf0)
--		goto out;
--
- 	switch (urb->status) {
- 	case -ENOENT:		/* usbcore unlink successful! */
- 		return;
-@@ -1772,16 +1767,29 @@ static void usb_rx_callback_intf0(struct urb *urb)
- 		break;
- 
- 	case 0:
--		imon_incoming_packet(ictx, urb, intfnum);
-+		/*
-+		 * if we get a callback before we're done configuring the hardware, we
-+		 * can't yet process the data, as there's nowhere to send it, but we
-+		 * still need to submit a new rx URB to avoid wedging the hardware
-+		 */
-+		if (ictx->dev_present_intf0)
-+			imon_incoming_packet(ictx, urb, intfnum);
- 		break;
- 
-+	case -ECONNRESET:
-+	case -EILSEQ:
-+	case -EPROTO:
-+	case -EPIPE:
-+		dev_warn(ictx->dev, "imon %s: status(%d)\n",
-+			 __func__, urb->status);
-+		return;
-+
- 	default:
- 		dev_warn(ictx->dev, "imon %s: status(%d): ignored\n",
- 			 __func__, urb->status);
- 		break;
- 	}
- 
--out:
- 	usb_submit_urb(ictx->rx_urb_intf0, GFP_ATOMIC);
- }
- 
-@@ -1797,14 +1805,6 @@ static void usb_rx_callback_intf1(struct urb *urb)
- 	if (!ictx)
- 		return;
- 
--	/*
--	 * if we get a callback before we're done configuring the hardware, we
--	 * can't yet process the data, as there's nowhere to send it, but we
--	 * still need to submit a new rx URB to avoid wedging the hardware
--	 */
--	if (!ictx->dev_present_intf1)
--		goto out;
--
- 	switch (urb->status) {
- 	case -ENOENT:		/* usbcore unlink successful! */
- 		return;
-@@ -1813,16 +1813,29 @@ static void usb_rx_callback_intf1(struct urb *urb)
- 		break;
- 
- 	case 0:
--		imon_incoming_packet(ictx, urb, intfnum);
-+		/*
-+		 * if we get a callback before we're done configuring the hardware, we
-+		 * can't yet process the data, as there's nowhere to send it, but we
-+		 * still need to submit a new rx URB to avoid wedging the hardware
-+		 */
-+		if (ictx->dev_present_intf1)
-+			imon_incoming_packet(ictx, urb, intfnum);
- 		break;
- 
-+	case -ECONNRESET:
-+	case -EILSEQ:
-+	case -EPROTO:
-+	case -EPIPE:
-+		dev_warn(ictx->dev, "imon %s: status(%d)\n",
-+			 __func__, urb->status);
-+		return;
-+
- 	default:
- 		dev_warn(ictx->dev, "imon %s: status(%d): ignored\n",
- 			 __func__, urb->status);
- 		break;
- 	}
- 
--out:
- 	usb_submit_urb(ictx->rx_urb_intf1, GFP_ATOMIC);
- }
- 
+ 	readdir->pgbase = (char *)p - (char *)start;
+ 	readdir->count -= readdir->pgbase;
 -- 
 2.51.0
 
