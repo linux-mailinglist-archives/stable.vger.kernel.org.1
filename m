@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-199392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2827CA066A
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:24:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E39FCA0C94
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:09:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D3DFA32E48F8
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:09:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5DE3331791C5
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:05:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8746531AF37;
-	Wed,  3 Dec 2025 16:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61E2934E774;
+	Wed,  3 Dec 2025 16:04:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wCOuel4s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EuLTO8hU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4020631961F;
-	Wed,  3 Dec 2025 16:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D24834E769;
+	Wed,  3 Dec 2025 16:04:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779647; cv=none; b=Qg/x527EEsw9WNLH+jMYEwZxshWwjcVQap9j9ymIlo+DMM86qbBMoBybLcRJkpJFXPuoyGlRCT4nWWkT4Xn5YXJJt1rX1COexGy2KLKaJu+BCIGy7vQoo7CwvQCd0GY+XeplLU8PMlYguOrTQ+wqHqiljPSPm1UlvEvAMAOyFaI=
+	t=1764777869; cv=none; b=m1/TSH74RUOJZjGVsHI9leUsrjmKChRZa53nL8At2WMkLCXWmzZ9y5MeFlYekM3rVOlvOdf0WFrvKxWfig9nPy4yUXNUNPV++vhi+UZvjJiNlJwmLH2knaQUSAWmGg7vARHHy1mnKkj3CY6sfWB+wxW7x4HCnNXzftHJpjzDy3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779647; c=relaxed/simple;
-	bh=qpkIcVJ5miBuK6sYHytIt7HDp1ODdKaWYKa1EPzgVoI=;
+	s=arc-20240116; t=1764777869; c=relaxed/simple;
+	bh=L+LyCavVTfDRMhMG2qmn85b1vJT/qA6g/ggPOEjBTo8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KwFWHMNMM1jJUAo/PbfCThWOVhBmxgfwqNNruJJQs3BvumQQuGSEX/Y7lYccrw9SpPjeEHfJQCeUVRTDiHJUpPy30654XmefHijVUNQMF07dyeWhH7d6om37YqA1yoBkfVJ5oTOSHTZZ0xtiIL/sRTgviSyY6cCLGBpQ8At0raI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wCOuel4s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1C3FC4CEF5;
-	Wed,  3 Dec 2025 16:34:06 +0000 (UTC)
+	 MIME-Version; b=pjDpTBVqIj3HaSS7c/5D5Xb+joE8mnxDJxSuJjXurIKRp6KZyvqCIqezpul1kKDUvEwY03IMl0oE+mjuoFM4QBEJ5VRqMMchsK6Zvsfrybp67UlrT5iYmcpkvu/y2INpSnoYnW3veYCF8YM6NyQmpkftKcbBsZ5botC82n/8ziE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EuLTO8hU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CC16C4CEF5;
+	Wed,  3 Dec 2025 16:04:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779647;
-	bh=qpkIcVJ5miBuK6sYHytIt7HDp1ODdKaWYKa1EPzgVoI=;
+	s=korg; t=1764777869;
+	bh=L+LyCavVTfDRMhMG2qmn85b1vJT/qA6g/ggPOEjBTo8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wCOuel4sGKyEuuDkhcTbyYp83S/49qhAnFpo7ZnzHok4ZMyCkcuWYEjArjXDzMTbw
-	 sK1C4xrI2fszo2bj9vPAyn2qsDPFHHcizYgstV707IbcS09E/0s8Kc74NKTZsPr5oz
-	 I+pDsGcdD9FmjtA+Ik4KZZvv5oOEfnc+ypNkIF3Q=
+	b=EuLTO8hU5ECzE6kg1o3b4rYWeejiCrw00Wxr3XwCbf7V8Z6CYxB0c2ATaplk74JWV
+	 Qk6pcdzT4bw7NoYOwLeMO0mijDxXl55Ii2Ke7FGeUrh6/61vUBA73YNz/ltZCdFuuT
+	 l9uookhrKPINRVyauqX9tuQFE4GyplHZFLjLG6s4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryan Wanner <Ryan.Wanner@microchip.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Antonino Maniscalco <antomani103@gmail.com>,
+	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 286/568] clk: at91: clk-master: Add check for divide by 3
-Date: Wed,  3 Dec 2025 16:24:48 +0100
-Message-ID: <20251203152451.179025601@linuxfoundation.org>
+Subject: [PATCH 5.15 139/392] drm/msm: make sure to not queue up recovery more than once
+Date: Wed,  3 Dec 2025 16:24:49 +0100
+Message-ID: <20251203152419.204096005@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,38 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Wanner <Ryan.Wanner@microchip.com>
+From: Antonino Maniscalco <antomani103@gmail.com>
 
-[ Upstream commit e0237f5635727d64635ec6665e1de9f4cacce35c ]
+[ Upstream commit 10fb1b2fcaee5545a5e54db1ed4d7b15c2db50c8 ]
 
-A potential divider for the master clock is div/3. The register
-configuration for div/3 is MASTER_PRES_MAX. The current bit shifting
-method does not work for this case. Checking for MASTER_PRES_MAX will
-ensure the correct decimal value is stored in the system.
+If two fault IRQs arrive in short succession recovery work will be
+queued up twice.
 
-Signed-off-by: Ryan Wanner <Ryan.Wanner@microchip.com>
-Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+When recovery runs a second time it may end up killing an unrelated
+context.
+
+Prevent this by masking off interrupts when triggering recovery.
+
+Signed-off-by: Antonino Maniscalco <antomani103@gmail.com>
+Reviewed-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/670023/
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/at91/clk-master.c | 3 +++
+ drivers/gpu/drm/msm/adreno/a6xx_gpu.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/drivers/clk/at91/clk-master.c b/drivers/clk/at91/clk-master.c
-index b7cd1924de52a..1f07a5d292602 100644
---- a/drivers/clk/at91/clk-master.c
-+++ b/drivers/clk/at91/clk-master.c
-@@ -574,6 +574,9 @@ clk_sama7g5_master_recalc_rate(struct clk_hw *hw,
- {
- 	struct clk_master *master = to_clk_master(hw);
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+index 1c38c3acacbeb..95c31009bbec1 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+@@ -1386,6 +1386,9 @@ static void a6xx_fault_detect_irq(struct msm_gpu *gpu)
+ 	/* Turn off the hangcheck timer to keep it from bothering us */
+ 	del_timer(&gpu->hangcheck_timer);
  
-+	if (master->div == MASTER_PRES_MAX)
-+		return DIV_ROUND_CLOSEST_ULL(parent_rate, 3);
++	/* Turn off interrupts to avoid triggering recovery again */
++	gpu_write(gpu, REG_A6XX_RBBM_INT_0_MASK, 0);
 +
- 	return DIV_ROUND_CLOSEST_ULL(parent_rate, (1 << master->div));
+ 	kthread_queue_work(gpu->worker, &gpu->recover_work);
  }
  
 -- 
