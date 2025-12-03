@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-199875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35659CA079A
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:31:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1CA5CA0F7B
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:29:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C5A7C31E15A4
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:13:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E901D34D4F77
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:27:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30E891EF36C;
-	Wed,  3 Dec 2025 17:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5202337119;
+	Wed,  3 Dec 2025 16:54:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M8D7mBuz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GFdu0XsV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFE7A280329;
-	Wed,  3 Dec 2025 17:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B051342526;
+	Wed,  3 Dec 2025 16:54:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764781221; cv=none; b=JAhjwD8l020Utyx3jaVH7aRQh+thq45uC01OQFNxG05sDePgJEnIHDxc/XUtDpvCeyqGuzCTwIj8a+XM7RhDxSzSYWAHrf1uiXQb067dICugdJQXumLb3pX2XTZIRm81XyixONPhrLVlBdD4XEd91MIfoigFSM4R2a6nhNfKpzs=
+	t=1764780853; cv=none; b=fnMWiEd0L0FiBLK3M90YYkT0CtfKjkjQBAj33T0tXNxIgzjBhGacy+w/I9pcuAX8E/azjzIrnwhDFTbsphdmO4Pt+8dAp9/OWcXJQ6ESi/FhUnStsYQ1WdJAg2ukE3QhFoRSD8Xsgtsn2DMITj6RsIQJKQmbPk6aw9skKvYX4Zs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764781221; c=relaxed/simple;
-	bh=DlA4q3ehwOWa9VedkKp0+wjN6BoxpYlP0iVWMBdVLw0=;
+	s=arc-20240116; t=1764780853; c=relaxed/simple;
+	bh=lGXKgEkgGxKzES6Ml9fp5joYnKuB3nh4HUCiZFZf4KM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PsMoJfQAPw0W1u/7V83CXTc6IFtWkI9i4JRdki81hf9pc1V1U4mGqUguG9MBBHtuSD/rl6AYqGmDIBUydoMWqehWA9RrosG8qZBJomt2OSNQiNhgpsJQDb2Y9ELjJCf9Wt6CYCnZw8m2DXPar88u6xPkZUVUT/Kxviid0KYjTxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M8D7mBuz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D8CC4CEF5;
-	Wed,  3 Dec 2025 17:00:20 +0000 (UTC)
+	 MIME-Version; b=utdfBoadLcmfQGvlP6bbc6Cunq4XF9gIYfTKzOXeCQBV6h2i8dsDJt9ZJ54tH2QEWFMDrbaQM0RppNX1rEdLQxLWRp2Ss4pWBMI/qJhAnGOhxSNtZrqf5u7xpepUUVhbLhkK3f/IDjj4ZpuqgykWi4BJSf6cbd1XmeU4rRNbcSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GFdu0XsV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B33DC4CEF5;
+	Wed,  3 Dec 2025 16:54:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764781220;
-	bh=DlA4q3ehwOWa9VedkKp0+wjN6BoxpYlP0iVWMBdVLw0=;
+	s=korg; t=1764780852;
+	bh=lGXKgEkgGxKzES6Ml9fp5joYnKuB3nh4HUCiZFZf4KM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M8D7mBuzC0yxueb9mW6rXIZ0XGjbgeF/UzK5eabFVLDQWtiEoiuNsbgMToHIgbcFZ
-	 S11veVvRgzTcJIJd9eg8Yxb/H/JbhxTF4P7KJ/WnaErN5PKzUwFuVleq0Qs5ghSvXq
-	 QmAGARKBmIComUI3u5AcYJ5Xdk5PlSh6SkNKLbCQ=
+	b=GFdu0XsVtzZrNkhalOrRni9aciICw8JkT8HfpTyq0O7wsDtQ2EivQ2+MV2dM8e1bJ
+	 W7Y62zpCCk4l0TE2BWE3WIEM+43efA6YEdK4ECUJJUQVas09EOszt+6BXeLH1d42F1
+	 Vrs1ueOgDZzXnG0Cwejj67FRgnFG3yFRbknknJB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Gromm <christian.gromm@microchip.com>,
-	Victoria Votokina <Victoria.Votokina@kaspersky.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.6 56/93] most: usb: fix double free on late probe failure
+	"Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.12 110/132] net: dsa: microchip: Dont free uninitialized ksz_irq
 Date: Wed,  3 Dec 2025 16:29:49 +0100
-Message-ID: <20251203152338.594423929@linuxfoundation.org>
+Message-ID: <20251203152347.358995105@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,78 +59,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
 
-commit baadf2a5c26e802a46573eaad331b427b49aaa36 upstream.
+commit 25b62cc5b22c45face094ae3e8717258e46d1d19 upstream.
 
-The MOST subsystem has a non-standard registration function which frees
-the interface on registration failures and on deregistration.
+If something goes wrong at setup, ksz_irq_free() can be called on
+uninitialized ksz_irq (for example when ksz_ptp_irq_setup() fails). It
+leads to freeing uninitialized IRQ numbers and/or domains.
 
-This unsurprisingly leads to bugs in the MOST drivers, and a couple of
-recent changes turned a reference underflow and use-after-free in the
-USB driver into several double free and a use-after-free on late probe
-failures.
+Use dsa_switch_for_each_user_port_continue_reverse() in the error path
+to iterate only over the fully initialized ports.
 
-Fixes: 723de0f9171e ("staging: most: remove device from interface structure")
-Fixes: 4b1270902609 ("most: usb: Fix use-after-free in hdm_disconnect")
-Fixes: a8cc9e5fcb0e ("most: usb: hdm_probe: Fix calling put_device() before device initialization")
 Cc: stable@vger.kernel.org
-Cc: Christian Gromm <christian.gromm@microchip.com>
-Cc: Victoria Votokina <Victoria.Votokina@kaspersky.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20251029093029.28922-1-johan@kernel.org
+Fixes: cc13ab18b201 ("net: dsa: microchip: ptp: enable interrupt for timestamping")
+Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
+Link: https://patch.msgid.link/20251120-ksz-fix-v6-3-891f80ae7f8f@bootlin.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/most/most_usb.c |   14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ drivers/net/dsa/microchip/ksz_common.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/most/most_usb.c
-+++ b/drivers/most/most_usb.c
-@@ -1058,7 +1058,7 @@ hdm_probe(struct usb_interface *interfac
- 
- 	ret = most_register_interface(&mdev->iface);
- 	if (ret)
--		goto err_free_busy_urbs;
-+		return ret;
- 
- 	mutex_lock(&mdev->io_mutex);
- 	if (le16_to_cpu(usb_dev->descriptor.idProduct) == USB_DEV_ID_OS81118 ||
-@@ -1068,8 +1068,7 @@ hdm_probe(struct usb_interface *interfac
- 		if (!mdev->dci) {
- 			mutex_unlock(&mdev->io_mutex);
- 			most_deregister_interface(&mdev->iface);
--			ret = -ENOMEM;
--			goto err_free_busy_urbs;
-+			return -ENOMEM;
- 		}
- 
- 		mdev->dci->dev.init_name = "dci";
-@@ -1078,18 +1077,15 @@ hdm_probe(struct usb_interface *interfac
- 		mdev->dci->dev.release = release_dci;
- 		if (device_register(&mdev->dci->dev)) {
- 			mutex_unlock(&mdev->io_mutex);
-+			put_device(&mdev->dci->dev);
- 			most_deregister_interface(&mdev->iface);
--			ret = -ENOMEM;
--			goto err_free_dci;
-+			return -ENOMEM;
- 		}
- 		mdev->dci->usb_device = mdev->usb_device;
- 	}
- 	mutex_unlock(&mdev->io_mutex);
- 	return 0;
--err_free_dci:
--	put_device(&mdev->dci->dev);
--err_free_busy_urbs:
--	kfree(mdev->busy_urbs);
-+
- err_free_ep_address:
- 	kfree(mdev->ep_address);
- err_free_cap:
+--- a/drivers/net/dsa/microchip/ksz_common.c
++++ b/drivers/net/dsa/microchip/ksz_common.c
+@@ -2592,7 +2592,7 @@ out_ptpirq:
+ 			ksz_ptp_irq_free(ds, dp->index);
+ out_pirq:
+ 	if (dev->irq > 0)
+-		dsa_switch_for_each_user_port(dp, dev->ds)
++		dsa_switch_for_each_user_port_continue_reverse(dp, dev->ds)
+ 			ksz_irq_free(&dev->ports[dp->index].pirq);
+ out_girq:
+ 	if (dev->irq > 0)
 
 
 
