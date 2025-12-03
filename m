@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-198410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A67FC9F8DE
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:40:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99B7ACA0DF8
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:18:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8C38430000AF
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:40:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BFFD6310E88E
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:15:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2BB9303C91;
-	Wed,  3 Dec 2025 15:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4275E319864;
+	Wed,  3 Dec 2025 15:47:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uG4MX5Va"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NDGeOF+M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0D125BEE5;
-	Wed,  3 Dec 2025 15:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F29AA313E3D;
+	Wed,  3 Dec 2025 15:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776450; cv=none; b=napW+ReuWdWDuGNPfcSmK0d/s2G7DMPQmgovlw7rl9b1UWsgY5b5rfEvQhx5XiDI113YMCTEJv7srDAcLWwjpk/jnvGNxAOmOL/lAhxUP+cshCrJVwaL70EwZbfmk79h/qHmV/g9OYYYNgpHBQ9NcGUIuEYumpwNJPPw19LU9uE=
+	t=1764776873; cv=none; b=LwYjx6VJ90+bf5O+9InkvRVCHECt2nfwwYACMlqc/ciwdhXrRwegynAFDxWOLZ5t5XH0iSnBRk5MCevU/IsE6KwztkuRwCtpE1iPC0xxCx6hyduOYwxRft58YT5qvEXUxEr8NZHH3FbM+hUbLDQPWzYEK3eBTwClmMc/9sN8PkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776450; c=relaxed/simple;
-	bh=tpI7gBxcDQN2/v31mJ3DLBdR2zsYuLyTB6aTMXTcBoc=;
+	s=arc-20240116; t=1764776873; c=relaxed/simple;
+	bh=vNAEegTBAQCzm9NNPvjhjnr4OpBHIlkIWV872rOqHzo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oFIv/IutxTCNhHIf97OXK3IS5gxar0yJU7BQoj86tF2+KFh9LfQrq1k0Ns75Arpt9zu3Ed+o//5VPsvqn4IPC6ws6658KEN7bOe1o+qBzXqKcExRVGAJcajNCDCpi92zunIuam+BvCZVgxu16G3+mTxVRpocSExaFpeTSzaNE2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uG4MX5Va; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01E30C4CEF5;
-	Wed,  3 Dec 2025 15:40:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GV6XIudTn9ynjAN5wOOLaNawoTkWSiZzWfg3b+SSdu6BcFvlrMNYgnmEoS/5O0eSB4dhnwFRRcV4dlwAEJjCZp44HyfBw88l9bCS1MTj1lJyt8detfsbhvIfyIuHOQeMomfpHrjSCPlj8paS7ejt53r7COAwQQJH/lvSLJXySLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NDGeOF+M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EE3FC4CEF5;
+	Wed,  3 Dec 2025 15:47:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776450;
-	bh=tpI7gBxcDQN2/v31mJ3DLBdR2zsYuLyTB6aTMXTcBoc=;
+	s=korg; t=1764776872;
+	bh=vNAEegTBAQCzm9NNPvjhjnr4OpBHIlkIWV872rOqHzo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uG4MX5VadIiRJB52xtgimjOFM1aAoWWaGFrnywKguGeWZK9xGlDD0VgViHMGugd7b
-	 OrZqNqr26HDeLqrZH8W3NJL3xVnzG1NB/rrSWABfIh1tbf2WzGNx+SRtT/BgiHsh4w
-	 kspbHcLO37peMvLW7X68q5e4q5nDt4tUM0KO+6rk=
+	b=NDGeOF+MVhFgPnVP/m4DmftYBSIPg9AQtZKCDMf4w7FCa/jG5pciy9C0YNpRFW8Rj
+	 mAj9s88FEQPo+CcZweLx0mC6gph4/qJ9pX1aS34y3GjciXOpjZvPg/gzrJEkC0V/6W
+	 m6n5N+KU0u3dtEn7o94W6BNtkiPC5u1iwS7mYBxw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 187/300] wifi: mac80211: skip rate verification for not captured PSDUs
+Subject: [PATCH 6.17 013/146] platform/x86: intel: punit_ipc: fix memory corruption
 Date: Wed,  3 Dec 2025 16:26:31 +0100
-Message-ID: <20251203152407.555209615@linuxfoundation.org>
+Message-ID: <20251203152346.952499091@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,52 +58,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 7fe0d21f5633af8c3fab9f0ef0706c6156623484 ]
+[ Upstream commit 9b9c0adbc3f8a524d291baccc9d0c04097fb4869 ]
 
-If for example the sniffer did not follow any AIDs in an MU frame, then
-some of the information may not be filled in or is even expected to be
-invalid. As an example, in that case it is expected that Nss is zero.
+This passes the address of the pointer "&punit_ipcdev" when the intent
+was to pass the pointer itself "punit_ipcdev" (without the ampersand).
+This means that the:
 
-Fixes: 2ff5e52e7836 ("radiotap: add 0-length PSDU "not captured" type")
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20251110142554.83a2858ee15b.I9f78ce7984872f474722f9278691ae16378f0a3e@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+	complete(&ipcdev->cmd_complete);
+
+in intel_punit_ioc() will write to a wrong memory address corrupting it.
+
+Fixes: fdca4f16f57d ("platform:x86: add Intel P-Unit mailbox IPC driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/aSCmoBipSQ_tlD-D@stanley.mountain
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/rx.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/platform/x86/intel/punit_ipc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index b46c4c770608c..98f06563d184c 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -4779,10 +4779,14 @@ void ieee80211_rx_list(struct ieee80211_hw *hw, struct ieee80211_sta *pubsta,
- 	if (WARN_ON(!local->started))
- 		goto drop;
- 
--	if (likely(!(status->flag & RX_FLAG_FAILED_PLCP_CRC))) {
-+	if (likely(!(status->flag & RX_FLAG_FAILED_PLCP_CRC) &&
-+		   !(status->flag & RX_FLAG_NO_PSDU &&
-+		     status->zero_length_psdu_type ==
-+		     IEEE80211_RADIOTAP_ZERO_LEN_PSDU_NOT_CAPTURED))) {
- 		/*
--		 * Validate the rate, unless a PLCP error means that
--		 * we probably can't have a valid rate here anyway.
-+		 * Validate the rate, unless there was a PLCP error which may
-+		 * have an invalid rate or the PSDU was not capture and may be
-+		 * missing rate information.
- 		 */
- 
- 		switch (status->encoding) {
+diff --git a/drivers/platform/x86/intel/punit_ipc.c b/drivers/platform/x86/intel/punit_ipc.c
+index bafac8aa2baf6..14513010daadf 100644
+--- a/drivers/platform/x86/intel/punit_ipc.c
++++ b/drivers/platform/x86/intel/punit_ipc.c
+@@ -250,7 +250,7 @@ static int intel_punit_ipc_probe(struct platform_device *pdev)
+ 	} else {
+ 		ret = devm_request_irq(&pdev->dev, irq, intel_punit_ioc,
+ 				       IRQF_NO_SUSPEND, "intel_punit_ipc",
+-				       &punit_ipcdev);
++				       punit_ipcdev);
+ 		if (ret) {
+ 			dev_err(&pdev->dev, "Failed to request irq: %d\n", irq);
+ 			return ret;
 -- 
 2.51.0
 
