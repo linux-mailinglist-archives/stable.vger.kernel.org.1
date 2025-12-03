@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16EA5CA06C4
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:26:39 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D1CBC9F97A
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:43:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 68DF23306895
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:10:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DC02030000AA
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:39:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A965E34FF50;
-	Wed,  3 Dec 2025 16:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE9CE3081AF;
+	Wed,  3 Dec 2025 15:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BkKDM/T7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qy1bW5eQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64AF434FF42;
-	Wed,  3 Dec 2025 16:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B25A2FFFAD;
+	Wed,  3 Dec 2025 15:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779712; cv=none; b=WQJQ2J1S0PvohJdesaWkeXwCNdB2o/vTxjjQdyutIsJFlxtGf6yqRoISiub1sEOzpp8tQl9hFlXR9uq2rmhm1iUCfzr1RJsFOzjEJ8ljRdaP7zxscLeLEM9sJiLLRaDQSRI4VTygJphp4RlYZmzyASAbGSb9Nmbi4DxaKYBTFlw=
+	t=1764776393; cv=none; b=CbuSnDDoPQFcsngii9ZQm0YDdKSmoxprUH3rSPN+E5WqMTBafKBZ/gXYIn2LheQc7S4SXKvN8iTKf8TclRkWk6llIN/pj0L8ebor+svXZKdzeGpIQTG0Wz3B804MrTX9ZWZ9Z9LUVufAPJGJRojqIiKpotj1Un4tSLNNSr4ybA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779712; c=relaxed/simple;
-	bh=NxjQiJul0lW6QxBVxB1kbLXh+ak3/cE4jSYx8ML1XEs=;
+	s=arc-20240116; t=1764776393; c=relaxed/simple;
+	bh=1b95N5qshDYBO9JlFVyVmVcUyAXiVUMV9mEyAXFoT3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lBYDHxi+Om6HPZZ9POWLNqyR4p+FeixFUZ1C0T+u53Ogla3xuJAg6p2nOKbiQVxAQVQqzUvf4Z5ov7XHf5q60EGjMoAi1nL9+2/IqUoFHwMqQWU/UKowU8J+4b3bv4avgoRNJ4p1AkXNqRXFthY5qjQuqI5nKgkxHAiKCleVgA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BkKDM/T7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C45DAC4CEF5;
-	Wed,  3 Dec 2025 16:35:11 +0000 (UTC)
+	 MIME-Version; b=sGKC566SzkLiymWBeXtiW3E6NUmFPdeVoUUIGgu6AS6Ba+N8mYvm/tvIYADTNEz1ucLCpExGQTL9HRt241Ny1He4Ro/rd/FQzEuvlDtvsxQiZvmUG4DPdjbtRwn+HKVJ1qFgsMJDR/17+Y+urUlrehfiZh3VjU54jaMWNIjpE9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qy1bW5eQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 103A9C4CEF5;
+	Wed,  3 Dec 2025 15:39:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779712;
-	bh=NxjQiJul0lW6QxBVxB1kbLXh+ak3/cE4jSYx8ML1XEs=;
+	s=korg; t=1764776393;
+	bh=1b95N5qshDYBO9JlFVyVmVcUyAXiVUMV9mEyAXFoT3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BkKDM/T76fui7+QhiPrTOXG67LkJsw7cnm+GMIbe7HqAU1DKnsm8UvFW0K/qpEJ6A
-	 QMXi6IsnpCC2PJ/0Gk+C8WNU7RF+kX93J8zr6UVv5pw2yrLwtE3T4vCD8x+dswYTbJ
-	 VNdumMlU3Xs1R87yjthllbbqb8t3WRdHVxQdV0jY=
+	b=qy1bW5eQVnEzFle/pOFz3+cVhwS2bXVm1ckNB7LMzjLU+eJTxl9Y7613znANOiUfZ
+	 3S13hwEXNJb8w8F4+pC3G62c5LTAV8Li08jPS4gTt9nbUxksxDsgJGJoY8pAWllBo6
+	 PWkWlNACzps4eHgQFMX1fgit/XZZDKUXoHA3pToM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danil Skrebenkov <danil.skrebenkov@cloudbear.ru>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Paul Walmsley <pjw@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 338/568] RISC-V: clear hot-unplugged cores from all task mm_cpumasks to avoid rfence errors
+Subject: [PATCH 5.10 136/300] nfs4_setup_readdir(): insufficient locking for ->d_parent->d_inode dereferencing
 Date: Wed,  3 Dec 2025 16:25:40 +0100
-Message-ID: <20251203152453.087994270@linuxfoundation.org>
+Message-ID: <20251203152405.652563232@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danil Skrebenkov <danil.skrebenkov@cloudbear.ru>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit ae9e9f3d67dcef7582a4524047b01e33c5185ddb ]
+[ Upstream commit a890a2e339b929dbd843328f9a92a1625404fe63 ]
 
-openSBI v1.7 adds harts checks for ipi operations. Especially it
-adds comparison between hmask passed as an argument from linux
-and mask of online harts (from openSBI side). If they don't
-fit each other the error occurs.
+Theoretically it's an oopsable race, but I don't believe one can manage
+to hit it on real hardware; might become doable on a KVM, but it still
+won't be easy to attack.
 
-When cpu is offline, cpu_online_mask is explicitly cleared in
-__cpu_disable. However, there is no explicit clearing of
-mm_cpumask. mm_cpumask is used for rfence operations that
-call openSBI RFENCE extension which uses ipi to remote harts.
-If hart is offline there may be error if mask of linux is not
-as mask of online harts in openSBI.
+Anyway, it's easy to deal with - since xdr_encode_hyper() is just a call of
+put_unaligned_be64(), we can put that under ->d_lock and be done with that.
 
-this patch adds explicit clearing of mm_cpumask for offline hart.
-
-Signed-off-by: Danil Skrebenkov <danil.skrebenkov@cloudbear.ru>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Link: https://lore.kernel.org/r/20250919132849.31676-1-danil.skrebenkov@cloudbear.ru
-[pjw@kernel.org: rewrote subject line for clarity]
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/cpu-hotplug.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/nfs/nfs4proc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/riscv/kernel/cpu-hotplug.c b/arch/riscv/kernel/cpu-hotplug.c
-index 462b3631663f9..374f334df86de 100644
---- a/arch/riscv/kernel/cpu-hotplug.c
-+++ b/arch/riscv/kernel/cpu-hotplug.c
-@@ -61,6 +61,7 @@ void __cpu_die(unsigned int cpu)
- 	}
- 	pr_notice("CPU%u: off\n", cpu);
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index c454fb042ab2b..12f5c240a2689 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -365,7 +365,9 @@ static void nfs4_setup_readdir(u64 cookie, __be32 *verifier, struct dentry *dent
+ 	*p++ = htonl(attrs);                           /* bitmap */
+ 	*p++ = htonl(12);             /* attribute buffer length */
+ 	*p++ = htonl(NF4DIR);
++	spin_lock(&dentry->d_lock);
+ 	p = xdr_encode_hyper(p, NFS_FILEID(d_inode(dentry->d_parent)));
++	spin_unlock(&dentry->d_lock);
  
-+	clear_tasks_mm_cpumask(cpu);
- 	/* Verify from the firmware if the cpu is really stopped*/
- 	if (cpu_ops[cpu]->cpu_is_stopped)
- 		ret = cpu_ops[cpu]->cpu_is_stopped(cpu);
+ 	readdir->pgbase = (char *)p - (char *)start;
+ 	readdir->count -= readdir->pgbase;
 -- 
 2.51.0
 
