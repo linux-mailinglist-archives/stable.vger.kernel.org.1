@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-198621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9BD3CA1338
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:59:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00EFBCA0628
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:23:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 025A43310091
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:45:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E650E319A244
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:08:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A425533123D;
-	Wed,  3 Dec 2025 15:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A817F34C981;
+	Wed,  3 Dec 2025 16:12:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HVceDS3w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xkXea4YG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56E45330B3E;
-	Wed,  3 Dec 2025 15:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C58834C83A;
+	Wed,  3 Dec 2025 16:12:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777147; cv=none; b=gY54E5i/OH9lK2PkzlupClq/TrTE6UP6wAL0IiEjNEafCq8Ww3pD5ZsX8SrlLthgp7aPXzbDEAhBdAYAxPl56JuoriON9Z8kdK36R9hL0yUUGEyiPM4Q1nVsyTiQQ59tx4izO4X1idSiFbKHacz2+1HW/p8pfGyrL8eXF0ACbLU=
+	t=1764778364; cv=none; b=E628kjklJKDKJ62pX7Inc1c0GCNuPc9Dkvj9kRZFGYlssy0RFQLDPM0QqaTP0CKaUtbHqTAtBIfZCEp7r1c0XTc8zBGZnjR/lx+5NfV2khd2BHFCQ2Agot/wCmY94Aa5UvHY/LXn7cpcWFzrOA9KDesRo1RjzT3aWulWGoAvUEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777147; c=relaxed/simple;
-	bh=TbzA0ruhYb9VMERzG/iTko1QfygU8FiA4aLImsSagDM=;
+	s=arc-20240116; t=1764778364; c=relaxed/simple;
+	bh=hoclxPDgydsNeHq40g4aJGdcjxSNh59wMkw+729IdvY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EgdyyixbFnbKMn3dyBz+G2wLhMjmYsr/UgT3y+rMZq5LdRpDZPCW3A8io1iIbp7wScMovgHOvkZZ6bkPVjpoADGERdRWWF3qGkwSw8nEk6rpbu/xPHikSDSIbLW9SYKZPBLielOozobwIxC4yzu2ysHaAJdblTly6Q6nrTQ75jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HVceDS3w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDEE0C4CEF5;
-	Wed,  3 Dec 2025 15:52:26 +0000 (UTC)
+	 MIME-Version; b=N8crG9YkvjFkz/gH3NbhW0nJsKFodnif8lOM7lSHDT5ANBCef/fK+dvVs4BVkj8j+lbEmNvI0Af3tJjCoD7U/nsPupFy0TexXFVpi293xuTgXAAwe9WELOtftUI9ZcLtDKEQuyVoW2v4oD2YGuXYrF9doiU39xYl0sPAFlBX5jU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xkXea4YG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6DDAC4CEF5;
+	Wed,  3 Dec 2025 16:12:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777147;
-	bh=TbzA0ruhYb9VMERzG/iTko1QfygU8FiA4aLImsSagDM=;
+	s=korg; t=1764778364;
+	bh=hoclxPDgydsNeHq40g4aJGdcjxSNh59wMkw+729IdvY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HVceDS3wh5LhXSgWGMC3TLsjvqQFVodwfN4cPOCDQy8wnGrXjO4nrho1VlGvCmD7q
-	 I7q1arF8iIYuAEzXjq0SuP5J+BOjdvF1bTtETjpErUf3R1EQ9BsgHp9FNtmoC6MMYP
-	 lxa2W5l9BMIbAxevv6DBzpPXGToGcS0z/iMZZcy4=
+	b=xkXea4YGmL/Xi09kBPgGXTy1Vn+LDMwY44Fxz+nE65sRFGPqfzFDu758K33yPadRj
+	 W+B41Q3n1Ci5q3mVfFRYUJBh2Zfl9rLHw13YFhq2l10ClRnDwWfeFac5xd6kDIDzM3
+	 e++3P8veP+aqrpQcriDsKN6bXab3pDitmgMkRx8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Baltieri <fabio.baltieri@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.17 096/146] r8169: fix RTL8127 hang on suspend/shutdown
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 324/392] usb: deprecate the third argument of usb_maxpacket()
 Date: Wed,  3 Dec 2025 16:27:54 +0100
-Message-ID: <20251203152349.973679195@linuxfoundation.org>
+Message-ID: <20251203152426.085894160@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +59,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
 
-commit ae1737e7339b513f8c2fc21b500a0fc215d155c3 upstream.
+[ Upstream commit 0f08c2e7458e25c967d844170f8ad1aac3b57a02 ]
 
-There have been reports that RTL8127 hangs on suspend and shutdown,
-partially disappearing from lspci until power-cycling.
-According to Realtek disabling PLL's when switching to D3 should be
-avoided on that chip version. Fix this by aligning disabling PLL's
-with the vendor drivers, what in addition results in PLL's not being
-disabled when switching to D3hot on other chip versions.
+This is a transitional patch with the ultimate goal of changing the
+prototype of usb_maxpacket() from:
+| static inline __u16
+| usb_maxpacket(struct usb_device *udev, int pipe, int is_out)
 
-Fixes: f24f7b2f3af9 ("r8169: add support for RTL8127A")
-Tested-by: Fabio Baltieri <fabio.baltieri@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Link: https://patch.msgid.link/d7faae7e-66bc-404a-a432-3a496600575f@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+into:
+| static inline u16 usb_maxpacket(struct usb_device *udev, int pipe)
+
+The third argument of usb_maxpacket(): is_out gets removed because it
+can be derived from its second argument: pipe using
+usb_pipeout(pipe). Furthermore, in the current version,
+ubs_pipeout(pipe) is called regardless in order to sanitize the is_out
+parameter.
+
+In order to make a smooth change, we first deprecate the is_out
+parameter by simply ignoring it (using a variadic function) and will
+remove it later, once all the callers get updated.
+
+The body of the function is reworked accordingly and is_out is
+replaced by usb_pipeout(pipe). The WARN_ON() calls become unnecessary
+and get removed.
+
+Finally, the return type is changed from __u16 to u16 because this is
+not a UAPI function.
+
+Signed-off-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Link: https://lore.kernel.org/r/20220317035514.6378-2-mailhol.vincent@wanadoo.fr
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 69aeb5073123 ("Input: pegasus-notetaker - fix potential out-of-bounds access")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ include/linux/usb.h |   16 +++++-----------
+ 1 file changed, 5 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index d18734fe12e4..853aabedb128 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -1514,11 +1514,20 @@ static enum rtl_dash_type rtl_get_dash_type(struct rtl8169_private *tp)
- 
- static void rtl_set_d3_pll_down(struct rtl8169_private *tp, bool enable)
- {
--	if (tp->mac_version >= RTL_GIGA_MAC_VER_25 &&
--	    tp->mac_version != RTL_GIGA_MAC_VER_28 &&
--	    tp->mac_version != RTL_GIGA_MAC_VER_31 &&
--	    tp->mac_version != RTL_GIGA_MAC_VER_38)
--		r8169_mod_reg8_cond(tp, PMCH, D3_NO_PLL_DOWN, !enable);
-+	switch (tp->mac_version) {
-+	case RTL_GIGA_MAC_VER_02 ... RTL_GIGA_MAC_VER_24:
-+	case RTL_GIGA_MAC_VER_28:
-+	case RTL_GIGA_MAC_VER_31:
-+	case RTL_GIGA_MAC_VER_38:
-+		break;
-+	case RTL_GIGA_MAC_VER_80:
-+		r8169_mod_reg8_cond(tp, PMCH, D3_NO_PLL_DOWN, true);
-+		break;
-+	default:
-+		r8169_mod_reg8_cond(tp, PMCH, D3HOT_NO_PLL_DOWN, true);
-+		r8169_mod_reg8_cond(tp, PMCH, D3COLD_NO_PLL_DOWN, !enable);
-+		break;
-+	}
+--- a/include/linux/usb.h
++++ b/include/linux/usb.h
+@@ -1987,21 +1987,17 @@ usb_pipe_endpoint(struct usb_device *dev
+ 	return eps[usb_pipeendpoint(pipe)];
  }
  
- static void rtl_reset_packet_filter(struct rtl8169_private *tp)
--- 
-2.52.0
-
+-/*-------------------------------------------------------------------------*/
+-
+-static inline __u16
+-usb_maxpacket(struct usb_device *udev, int pipe, int is_out)
++static inline u16 usb_maxpacket(struct usb_device *udev, int pipe,
++				/* int is_out deprecated */ ...)
+ {
+ 	struct usb_host_endpoint	*ep;
+ 	unsigned			epnum = usb_pipeendpoint(pipe);
+ 
+-	if (is_out) {
+-		WARN_ON(usb_pipein(pipe));
++	if (usb_pipeout(pipe))
+ 		ep = udev->ep_out[epnum];
+-	} else {
+-		WARN_ON(usb_pipeout(pipe));
++	else
+ 		ep = udev->ep_in[epnum];
+-	}
++
+ 	if (!ep)
+ 		return 0;
+ 
+@@ -2009,8 +2005,6 @@ usb_maxpacket(struct usb_device *udev, i
+ 	return usb_endpoint_maxp(&ep->desc);
+ }
+ 
+-/* ----------------------------------------------------------------------- */
+-
+ /* translate USB error codes to codes user space understands */
+ static inline int usb_translate_errors(int error_code)
+ {
 
 
 
