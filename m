@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-198923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19A66C9FE37
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:19:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA161C9FF0A
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:25:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DF20D301A70E
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:08:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 52F8E301559E
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:24:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACF99313E03;
-	Wed,  3 Dec 2025 16:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59B5E31ED7A;
+	Wed,  3 Dec 2025 15:48:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xXOjkjQR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o2jh+bGc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A4234F49C;
-	Wed,  3 Dec 2025 16:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1586731CA54;
+	Wed,  3 Dec 2025 15:48:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778114; cv=none; b=HpU13JaXu+BIuEFpK9jQyn6yMmLIsTd9jwhXWqs1JGXhvYCdkH8zoCHz2MAojZg+64v7myWKowrEODkRhLcKEGuoVshHzHM5YZr0bay4pfzf8b3BoxRsqDP5nDRwUsNMSmw/oTGMXRQXtzNxttGTkdVN+mYDcq8MeAhRNBfLeog=
+	t=1764776902; cv=none; b=oG+31wB/ec6XIoUVDI3U86jOfmSracZBquCu86VBgCamzwjTmvKWLjH4vVhMuEuOlj/xExwF8Oe0+bH3C0IZg/odEuxcVgJJmOcgkvUVQfxOwzGWRUQzEDfWqEJL3lvMythUbc3fdeM+bAy48XN/5/cxDB8+I6k4F7qqlvEQsoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778114; c=relaxed/simple;
-	bh=ChAVyggNqyit5ssg8LGDoFwfQc0ZFiVCtUu+yp/sxKg=;
+	s=arc-20240116; t=1764776902; c=relaxed/simple;
+	bh=MYQwbxCqzsQLOqjqDQeYG4sdFyHN/HDgYGCoYS/B4mE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vei+UYH8nAW3r3HLhTwbBY3FCG/BupweuL3X1Ye3nDqP4j8QADgOoBOkhl0Zm/pOgLo916QkM7L+pTEax5zHdn/onwV5ef0UdVuVf3FpmmwaCxfT19V2yacwx1b+oXbY3cIFfBc3K+te7re6zwVlgKG9Z0/3uICtj3KiW43An2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xXOjkjQR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6443C4CEF5;
-	Wed,  3 Dec 2025 16:08:33 +0000 (UTC)
+	 MIME-Version; b=eK/t22Vrg0zMs/zxstwLM9yBPp9yjbKFr7P/l0p3FC0IdUoNw5faDTD4X5ens380L+9QiAapf4PItvcPtAqOYGyye/Di48xSYKLppuX/4l331E23WJZtkCU8YWPVTxKDrty+EW3FwimY0uNt2PsKGVNO2C52aJmsoeXq0YWdmEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o2jh+bGc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7738BC4CEF5;
+	Wed,  3 Dec 2025 15:48:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778114;
-	bh=ChAVyggNqyit5ssg8LGDoFwfQc0ZFiVCtUu+yp/sxKg=;
+	s=korg; t=1764776902;
+	bh=MYQwbxCqzsQLOqjqDQeYG4sdFyHN/HDgYGCoYS/B4mE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xXOjkjQRFJozkO/hdaWHgnMoStZJn9Kkp62SMSiGPSoLFLH/SrYagYKRWPLtGdV43
-	 vgz/d0uUfuAUoQgQxq+AAH3/WtJbg4u5S+T/4IGj5ejt69sJ1nj0wWgwL2l9o67Q8X
-	 GZLoPurzZyLUUIff0zd+M1LvqRqSdzLvpxnDfero=
+	b=o2jh+bGcAbXyZOYguJbIJBuAU0gOfYOGeSgtBYkRF/BRDc3LYyyr8KFhrjhtqBzfg
+	 fxbYYnQ6v/CbPpWjPnVuLNOzCk8lD1MIN3v14YOBhQOb3x8ZkXLQy9+YAhZ9inkfB6
+	 tiqh4uypGDRNPeSNA/6BB/gWrMkkVfaN6dd9iU1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhengchao Shao <shaozhengchao@huawei.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 248/392] net: sched: act_connmark: get rid of tcf_connmark_walker and tcf_connmark_search
-Date: Wed,  3 Dec 2025 16:26:38 +0100
-Message-ID: <20251203152423.298165139@linuxfoundation.org>
+Subject: [PATCH 6.17 021/146] xsk: avoid overwriting skb fields for multi-buffer traffic
+Date: Wed,  3 Dec 2025 16:26:39 +0100
+Message-ID: <20251203152347.244759972@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchao Shao <shaozhengchao@huawei.com>
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-[ Upstream commit c4d2497032ae31d234425648bf2720dfb1688796 ]
+[ Upstream commit c30d084960cf316c95fbf145d39974ce1ff7889c ]
 
-tcf_connmark_walker() and tcf_connmark_search() do the same thing as
-generic walk/search function, so remove them.
+We are unnecessarily setting a bunch of skb fields per each processed
+descriptor, which is redundant for fragmented frames.
 
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 62b656e43eae ("net: sched: act_connmark: initialize struct tc_ife to fix kernel leak")
+Let us set these respective members for first fragment only. To address
+both paths that we have within xsk_build_skb(), move assignments onto
+xsk_set_destructor_arg() and rename it to xsk_skb_init_misc().
+
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://patch.msgid.link/20250925160009.2474816-2-maciej.fijalkowski@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 0ebc27a4c67d ("xsk: avoid data corruption on cq descriptor number")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/act_connmark.c | 19 -------------------
- 1 file changed, 19 deletions(-)
+ net/xdp/xsk.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/net/sched/act_connmark.c b/net/sched/act_connmark.c
-index 16b3d56ef2f43..d41002e4613ff 100644
---- a/net/sched/act_connmark.c
-+++ b/net/sched/act_connmark.c
-@@ -199,23 +199,6 @@ static inline int tcf_connmark_dump(struct sk_buff *skb, struct tc_action *a,
- 	return -1;
+diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+index 72e34bd2d925c..01f258894faeb 100644
+--- a/net/xdp/xsk.c
++++ b/net/xdp/xsk.c
+@@ -618,11 +618,16 @@ static void xsk_destruct_skb(struct sk_buff *skb)
+ 	sock_wfree(skb);
  }
  
--static int tcf_connmark_walker(struct net *net, struct sk_buff *skb,
--			       struct netlink_callback *cb, int type,
--			       const struct tc_action_ops *ops,
--			       struct netlink_ext_ack *extack)
--{
--	struct tc_action_net *tn = net_generic(net, act_connmark_ops.net_id);
--
--	return tcf_generic_walker(tn, skb, cb, type, ops, extack);
--}
--
--static int tcf_connmark_search(struct net *net, struct tc_action **a, u32 index)
--{
--	struct tc_action_net *tn = net_generic(net, act_connmark_ops.net_id);
--
--	return tcf_idr_search(tn, a, index);
--}
--
- static struct tc_action_ops act_connmark_ops = {
- 	.kind		=	"connmark",
- 	.id		=	TCA_ID_CONNMARK,
-@@ -223,8 +206,6 @@ static struct tc_action_ops act_connmark_ops = {
- 	.act		=	tcf_connmark_act,
- 	.dump		=	tcf_connmark_dump,
- 	.init		=	tcf_connmark_init,
--	.walk		=	tcf_connmark_walker,
--	.lookup		=	tcf_connmark_search,
- 	.size		=	sizeof(struct tcf_connmark_info),
- };
+-static void xsk_set_destructor_arg(struct sk_buff *skb, u64 addr)
++static void xsk_skb_init_misc(struct sk_buff *skb, struct xdp_sock *xs,
++			      u64 addr)
+ {
+ 	BUILD_BUG_ON(sizeof(struct xsk_addr_head) > sizeof(skb->cb));
+ 	INIT_LIST_HEAD(&XSKCB(skb)->addrs_list);
++	skb->dev = xs->dev;
++	skb->priority = READ_ONCE(xs->sk.sk_priority);
++	skb->mark = READ_ONCE(xs->sk.sk_mark);
+ 	XSKCB(skb)->num_descs = 0;
++	skb->destructor = xsk_destruct_skb;
+ 	skb_shinfo(skb)->destructor_arg = (void *)(uintptr_t)addr;
+ }
  
+@@ -673,7 +678,7 @@ static struct sk_buff *xsk_build_skb_zerocopy(struct xdp_sock *xs,
+ 
+ 		skb_reserve(skb, hr);
+ 
+-		xsk_set_destructor_arg(skb, desc->addr);
++		xsk_skb_init_misc(skb, xs, desc->addr);
+ 	} else {
+ 		xsk_addr = kmem_cache_zalloc(xsk_tx_generic_cache, GFP_KERNEL);
+ 		if (!xsk_addr)
+@@ -757,7 +762,7 @@ static struct sk_buff *xsk_build_skb(struct xdp_sock *xs,
+ 			if (unlikely(err))
+ 				goto free_err;
+ 
+-			xsk_set_destructor_arg(skb, desc->addr);
++			xsk_skb_init_misc(skb, xs, desc->addr);
+ 		} else {
+ 			int nr_frags = skb_shinfo(skb)->nr_frags;
+ 			struct xsk_addr_node *xsk_addr;
+@@ -826,14 +831,10 @@ static struct sk_buff *xsk_build_skb(struct xdp_sock *xs,
+ 
+ 			if (meta->flags & XDP_TXMD_FLAGS_LAUNCH_TIME)
+ 				skb->skb_mstamp_ns = meta->request.launch_time;
++			xsk_tx_metadata_to_compl(meta, &skb_shinfo(skb)->xsk_meta);
+ 		}
+ 	}
+ 
+-	skb->dev = dev;
+-	skb->priority = READ_ONCE(xs->sk.sk_priority);
+-	skb->mark = READ_ONCE(xs->sk.sk_mark);
+-	skb->destructor = xsk_destruct_skb;
+-	xsk_tx_metadata_to_compl(meta, &skb_shinfo(skb)->xsk_meta);
+ 	xsk_inc_num_desc(skb);
+ 
+ 	return skb;
 -- 
 2.51.0
 
