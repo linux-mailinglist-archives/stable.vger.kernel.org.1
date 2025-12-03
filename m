@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC0FECA1450
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:08:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0251FCA0D21
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:12:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1A08532E5E65
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:43:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C66F232E2BEF
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:09:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43FC632D0D3;
-	Wed,  3 Dec 2025 15:50:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B843348466;
+	Wed,  3 Dec 2025 16:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cCOwSPrA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qeTNIUH7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD6B32C924;
-	Wed,  3 Dec 2025 15:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4085034845C;
+	Wed,  3 Dec 2025 16:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777009; cv=none; b=qnYuL6mgAn95qw2ZUdYAE9kTIcdKYcAcagql46mIlMUDpK1ZGGlUvdLat7LzwBCH6bkfNNgJGpcIhpjE0cjLzI4Gaa6J5W8M8yGKi4Pn9TajeadMPOCbSevs/k+iT/AzC4SbSAILO8l0kcRTgYjx99MnoHe6byDddHOgkR91CVY=
+	t=1764778338; cv=none; b=quS/zfWzlsP0A2PXz0iCQcDqyBwPtNdp4cBEeD5POzNPzWXnpt3EwNNZzJaA27eh4ynMXyUUgRTMJ/Kcqwe+PH6YO+JuhpvFber04TZxQMUcJ+YQkKkB+AWBNYCjOOf8eX9RDGOj9ukzDHWL2pg1Tb438fIjjasYkpW+G1yG6EQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777009; c=relaxed/simple;
-	bh=4Od+VMgAUtwTm+owrRDf/Tq+oAsbjZk9bcQM6aIyPQY=;
+	s=arc-20240116; t=1764778338; c=relaxed/simple;
+	bh=B1wAi9YHQhEkIm8PNGNeHjZTE+CJ93PT2cZ6oWyEjqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bUuH37oFIhFiz/2PZn9OfW7yC3HGf5c2jr/rK6EqHeZvathjumRv8eD/bHGmedEyKYP7QXKtLUXXIyT1Q1CgkSYxEd6RMWI95qiLe85cIwvhvSP6HZ+PZP1d4/jF6NT6nPmE8yK34b4JPr+NrbX7b0wjah+ufqvDFlVOKf1o4Ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cCOwSPrA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60575C116C6;
-	Wed,  3 Dec 2025 15:50:08 +0000 (UTC)
+	 MIME-Version; b=H3K8i77IKycGDtjXQ12tzoTCA3MoJVCp+o2GKXyfHkWSuKv+vJfOsI9VamTShSG63rWmQOvbamNGwFhpSRgh6beXbyTPpTUgkztCmBls6mbj7tG92pNXs3G4xEHJ+jvULdw8NdsgWRyLRIqlZh311re9C8AOORg7XFerdM08OIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qeTNIUH7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C234C4CEF5;
+	Wed,  3 Dec 2025 16:12:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777008;
-	bh=4Od+VMgAUtwTm+owrRDf/Tq+oAsbjZk9bcQM6aIyPQY=;
+	s=korg; t=1764778338;
+	bh=B1wAi9YHQhEkIm8PNGNeHjZTE+CJ93PT2cZ6oWyEjqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cCOwSPrAAqVI/XAoLpYNWmSSdxrKzhmrz9Mswkusd2n4rOoGjVZowHHaZIKxKuzFu
-	 w4qpS+fq01q1+tF4yYKtS17JIbE01roATSLrVg13XdRE7aYst1ya2XMGTSEB5SLUFr
-	 /8A6qZ4uc5Te5Df8Ggl2UknXrRGIFiCiJ21/YpUU=
+	b=qeTNIUH757W62G0bmuwfYJa118vOC+wX38uyrylEsAtK+Ham4X/n4R1GWFBRJ+A1X
+	 Q9DtN1vJb4nTSlQSIGybb/vyBQY6FZ362JHeThThEKMDZH4whQCj09ZQjbsMmLkndF
+	 A0oyNO37teFx5gV3eJ7LcY2XMzr9pOmI+pYROhf4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.17 054/146] iio: buffer-dma: support getting the DMA channel
+	staffan.melin@oscillator.se,
+	Terry Junge <linuxhid@cosmicgizmosystems.com>,
+	Zhang Heng <zhangheng@kylinos.cn>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 5.15 282/392] HID: quirks: work around VID/PID conflict for 0x4c4a/0x4155
 Date: Wed,  3 Dec 2025 16:27:12 +0100
-Message-ID: <20251203152348.449391598@linuxfoundation.org>
+Message-ID: <20251203152424.535895273@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,60 +59,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sá <nuno.sa@analog.com>
+From: Zhang Heng <zhangheng@kylinos.cn>
 
-commit f9c198c3ccaf90a1a265fb2ffa8d4b093c3b0784 upstream.
+commit beab067dbcff642243291fd528355d64c41dc3b2 upstream.
 
-Implement the .get_dma_dev() callback for DMA buffers by returning the
-device that owns the DMA channel. This allows the core DMABUF
-infrastructure to properly map DMA buffers using the correct device,
-avoiding the need for bounce buffers on systems where memory is mapped
-above the 32-bit range.
+Based on available evidence, the USB ID 4c4a:4155 used by multiple
+devices has been attributed to Jieli. The commit 1a8953f4f774
+("HID: Add IGNORE quirk for SMARTLINKTECHNOLOGY") affected touchscreen
+functionality. Added checks for manufacturer and serial number to
+maintain microphone compatibility, enabling both devices to function
+properly.
 
-The function returns the DMA queue's device, which is the actual device
-responsible for DMA operations in buffer-dma implementations.
-
+[jkosina@suse.com: edit shortlog]
+Fixes: 1a8953f4f774 ("HID: Add IGNORE quirk for SMARTLINKTECHNOLOGY")
 Cc: stable@vger.kernel.org
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Signed-off-by: Nuno Sá <nuno.sa@analog.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Tested-by: staffan.melin@oscillator.se
+Reviewed-by: Terry Junge <linuxhid@cosmicgizmosystems.com>
+Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/buffer/industrialio-buffer-dma.c |    6 ++++++
- include/linux/iio/buffer-dma.h               |    1 +
- 2 files changed, 7 insertions(+)
+ drivers/hid/hid-ids.h    |    4 ++--
+ drivers/hid/hid-quirks.c |   13 ++++++++++++-
+ 2 files changed, 14 insertions(+), 3 deletions(-)
 
---- a/drivers/iio/buffer/industrialio-buffer-dma.c
-+++ b/drivers/iio/buffer/industrialio-buffer-dma.c
-@@ -786,6 +786,12 @@ out_end_signalling:
- }
- EXPORT_SYMBOL_NS_GPL(iio_dma_buffer_enqueue_dmabuf, "IIO_DMA_BUFFER");
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -1406,7 +1406,7 @@
+ #define USB_VENDOR_ID_SIGNOTEC			0x2133
+ #define USB_DEVICE_ID_SIGNOTEC_VIEWSONIC_PD1011	0x0018
  
-+struct device *iio_dma_buffer_get_dma_dev(struct iio_buffer *buffer)
-+{
-+	return iio_buffer_to_queue(buffer)->dev;
-+}
-+EXPORT_SYMBOL_NS_GPL(iio_dma_buffer_get_dma_dev, "IIO_DMA_BUFFER");
-+
- void iio_dma_buffer_lock_queue(struct iio_buffer *buffer)
- {
- 	struct iio_dma_buffer_queue *queue = iio_buffer_to_queue(buffer);
---- a/include/linux/iio/buffer-dma.h
-+++ b/include/linux/iio/buffer-dma.h
-@@ -174,5 +174,6 @@ int iio_dma_buffer_enqueue_dmabuf(struct
- 				  size_t size, bool cyclic);
- void iio_dma_buffer_lock_queue(struct iio_buffer *buffer);
- void iio_dma_buffer_unlock_queue(struct iio_buffer *buffer);
-+struct device *iio_dma_buffer_get_dma_dev(struct iio_buffer *buffer);
+-#define USB_VENDOR_ID_SMARTLINKTECHNOLOGY              0x4c4a
+-#define USB_DEVICE_ID_SMARTLINKTECHNOLOGY_4155         0x4155
++#define USB_VENDOR_ID_JIELI_SDK_DEFAULT		0x4c4a
++#define USB_DEVICE_ID_JIELI_SDK_4155		0x4155
  
  #endif
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -877,7 +877,6 @@ static const struct hid_device_id hid_ig
+ #endif
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_YEALINK, USB_DEVICE_ID_YEALINK_P1K_P4K_B2K) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_QUANTA, USB_DEVICE_ID_QUANTA_HP_5MP_CAMERA_5473) },
+-	{ HID_USB_DEVICE(USB_VENDOR_ID_SMARTLINKTECHNOLOGY, USB_DEVICE_ID_SMARTLINKTECHNOLOGY_4155) },
+ 	{ }
+ };
+ 
+@@ -1026,6 +1025,18 @@ bool hid_ignore(struct hid_device *hdev)
+ 					     strlen(elan_acpi_id[i].id)))
+ 					return true;
+ 		break;
++	case USB_VENDOR_ID_JIELI_SDK_DEFAULT:
++		/*
++		 * Multiple USB devices with identical IDs (mic & touchscreen).
++		 * The touch screen requires hid core processing, but the
++		 * microphone does not. They can be distinguished by manufacturer
++		 * and serial number.
++		 */
++		if (hdev->product == USB_DEVICE_ID_JIELI_SDK_4155 &&
++		    strncmp(hdev->name, "SmartlinkTechnology", 19) == 0 &&
++		    strncmp(hdev->uniq, "20201111000001", 14) == 0)
++			return true;
++		break;
+ 	}
+ 
+ 	if (hdev->type == HID_TYPE_USBMOUSE &&
 
 
 
