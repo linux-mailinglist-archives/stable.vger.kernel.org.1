@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-198972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 059A6CA056E
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:19:03 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56F96C9FB72
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:55:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0515C3004C91
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:19:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 72DE33009410
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:45:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75BA43446B7;
-	Wed,  3 Dec 2025 16:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45BF13128A1;
+	Wed,  3 Dec 2025 15:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zx5bohew"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xUsLQ/Vr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2818434404D;
-	Wed,  3 Dec 2025 16:11:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00AAE312813;
+	Wed,  3 Dec 2025 15:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778276; cv=none; b=M5X5pX+73UNrQv53NaN0ma3Se4LrwrZ6u943FU9bRvJ73D+By/PAeu2K3v1l6TNGJKdT1hzmwWx4ybAdD/1W+ItyO6nYijWE2z2n5Rl/MPDb95YP7yo3s98vgt4UdWUChdMLtbsy170LvMWAaqzFRkYdWhySyUy7O15PIt6VFEE=
+	t=1764776728; cv=none; b=RdMrBm3iYxlob2sLXk9QgGGAb6qsfPHkFPlv7c4UUKav9vaEaKp0oTsVudxPt2NS2jCFRnflyju5L7dodWBFPreO9YEhwH2G2UhIwKZcqRT+QRcbkSm1AMz7IxGTDsjQWYpw1jIQj5MeXMA894OTInKS+MyVC07oNlS1uioPkUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778276; c=relaxed/simple;
-	bh=irnzax5CZkiVlKbHqc7sqa4ItT8fp2sG9tFzpT0Ro/4=;
+	s=arc-20240116; t=1764776728; c=relaxed/simple;
+	bh=IMnftusQ1MOqKHxDejdX9DbLern6530dPOyGfQtfKkI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GXPTaEQOFU/t5WWVdaFm6uUDO6fvGBtVWmyPPRv0heObqX72lRFY5xd+VeyOAoi/qOpEnhew+K4tNB+tDBvI7fzW0XWGodJCkehyUs+S2GI4LvZnK8XfMskOemiAGyRbghcKXnHq28cJXm4hIlS8rehBaCgFcGTpcY5edTUOV+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zx5bohew; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3167C4CEF5;
-	Wed,  3 Dec 2025 16:11:14 +0000 (UTC)
+	 MIME-Version; b=hsrQt5dNTZmAuuhiN50PE3vK6nPByJ4uJ0UEFiu1h9aMwUqNvO3gKXh12Yqokf4SeQJP993GGgm+ZDyRuZeTLF4i76Xgpi7+IdQ2Uui1QbQcIanbymuKZBycRQLgJpYa9VPkUkxd+1n+slxBSgJc5mhR4ilbvbdNCT69SnKGdb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xUsLQ/Vr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 606D3C116C6;
+	Wed,  3 Dec 2025 15:45:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778275;
-	bh=irnzax5CZkiVlKbHqc7sqa4ItT8fp2sG9tFzpT0Ro/4=;
+	s=korg; t=1764776727;
+	bh=IMnftusQ1MOqKHxDejdX9DbLern6530dPOyGfQtfKkI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zx5bohew/mVtjmKYD56SilgmTFV2Y7v27lR2VQKLK9W3psuqyy3JnkoloiPNZTVaK
-	 8sO0tgiN/SjjH0RHqtLCcH8KpiYdc8BGghORH01Ew4XvaL85zvbC8zJP8L6hLhiQTk
-	 P0VDjKmG8Zz7APi2ILWeQ/eI5hrtWCnsv8XclNos=
+	b=xUsLQ/VrFT2+nOA9y0MBGNkcwErvoEiB3Nn/DDHUshVbzED9vAWehsvjG12O2XJ7/
+	 rYD9xbhFzur5zGnelrwp9PZsEDH/Khw0gysqlhHdoV8xxAqtUH+oR7RwC+uwUY0Pol
+	 09b5UvbCWiBCu/5EiWIJHI8SJMa5zLW7g0H6IfLY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junvy Yang <zhuque@tencent.com>,
-	Ilya Maximets <i.maximets@ovn.org>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Aaron Conole <aconole@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+bfd77469c8966de076f7@syzkaller.appspotmail.com,
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 296/392] net: openvswitch: remove never-working support for setting nsh fields
+Subject: [PATCH 5.10 242/300] ALSA: usb-audio: Fix potential overflow of PCM transfer buffer
 Date: Wed,  3 Dec 2025 16:27:26 +0100
-Message-ID: <20251203152425.059168716@linuxfoundation.org>
+Message-ID: <20251203152409.591731015@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,315 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Maximets <i.maximets@ovn.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit dfe28c4167a9259fc0c372d9f9473e1ac95cff67 ]
+[ Upstream commit 05a1fc5efdd8560f34a3af39c9cf1e1526cc3ddf ]
 
-The validation of the set(nsh(...)) action is completely wrong.
-It runs through the nsh_key_put_from_nlattr() function that is the
-same function that validates NSH keys for the flow match and the
-push_nsh() action.  However, the set(nsh(...)) has a very different
-memory layout.  Nested attributes in there are doubled in size in
-case of the masked set().  That makes proper validation impossible.
+The PCM stream data in USB-audio driver is transferred over USB URB
+packet buffers, and each packet size is determined dynamically.  The
+packet sizes are limited by some factors such as wMaxPacketSize USB
+descriptor.  OTOH, in the current code, the actually used packet sizes
+are determined only by the rate and the PPS, which may be bigger than
+the size limit above.  This results in a buffer overflow, as reported
+by syzbot.
 
-There is also confusion in the code between the 'masked' flag, that
-says that the nested attributes are doubled in size containing both
-the value and the mask, and the 'is_mask' that says that the value
-we're parsing is the mask.  This is causing kernel crash on trying to
-write into mask part of the match with SW_FLOW_KEY_PUT() during
-validation, while validate_nsh() doesn't allocate any memory for it:
+Basically when the limit is smaller than the calculated packet size,
+it implies that something is wrong, most likely a weird USB
+descriptor.  So the best option would be just to return an error at
+the parameter setup time before doing any further operations.
 
-  BUG: kernel NULL pointer dereference, address: 0000000000000018
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 1c2383067 P4D 1c2383067 PUD 20b703067 PMD 0
-  Oops: Oops: 0000 [#1] SMP NOPTI
-  CPU: 8 UID: 0 Kdump: loaded Not tainted 6.17.0-rc4+ #107 PREEMPT(voluntary)
-  RIP: 0010:nsh_key_put_from_nlattr+0x19d/0x610 [openvswitch]
-  Call Trace:
-   <TASK>
-   validate_nsh+0x60/0x90 [openvswitch]
-   validate_set.constprop.0+0x270/0x3c0 [openvswitch]
-   __ovs_nla_copy_actions+0x477/0x860 [openvswitch]
-   ovs_nla_copy_actions+0x8d/0x100 [openvswitch]
-   ovs_packet_cmd_execute+0x1cc/0x310 [openvswitch]
-   genl_family_rcv_msg_doit+0xdb/0x130
-   genl_family_rcv_msg+0x14b/0x220
-   genl_rcv_msg+0x47/0xa0
-   netlink_rcv_skb+0x53/0x100
-   genl_rcv+0x24/0x40
-   netlink_unicast+0x280/0x3b0
-   netlink_sendmsg+0x1f7/0x430
-   ____sys_sendmsg+0x36b/0x3a0
-   ___sys_sendmsg+0x87/0xd0
-   __sys_sendmsg+0x6d/0xd0
-   do_syscall_64+0x7b/0x2c0
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+This patch introduces such a sanity check, and returns -EINVAL when
+the packet size is greater than maxpacksize.  The comparison with
+ep->packsize[1] alone should suffice since it's always equal or
+greater than ep->packsize[0].
 
-The third issue with this process is that while trying to convert
-the non-masked set into masked one, validate_set() copies and doubles
-the size of the OVS_KEY_ATTR_NSH as if it didn't have any nested
-attributes.  It should be copying each nested attribute and doubling
-them in size independently.  And the process must be properly reversed
-during the conversion back from masked to a non-masked variant during
-the flow dump.
-
-In the end, the only two outcomes of trying to use this action are
-either validation failure or a kernel crash.  And if somehow someone
-manages to install a flow with such an action, it will most definitely
-not do what it is supposed to, since all the keys and the masks are
-mixed up.
-
-Fixing all the issues is a complex task as it requires re-writing
-most of the validation code.
-
-Given that and the fact that this functionality never worked since
-introduction, let's just remove it altogether.  It's better to
-re-introduce it later with a proper implementation instead of trying
-to fix it in stable releases.
-
-Fixes: b2d0f5d5dc53 ("openvswitch: enable NSH support")
-Reported-by: Junvy Yang <zhuque@tencent.com>
-Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
-Acked-by: Eelco Chaudron <echaudro@redhat.com>
-Reviewed-by: Aaron Conole <aconole@redhat.com>
-Link: https://patch.msgid.link/20251112112246.95064-1-i.maximets@ovn.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: syzbot+bfd77469c8966de076f7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=bfd77469c8966de076f7
+Link: https://lore.kernel.org/690b6b46.050a0220.3d0d33.0054.GAE@google.com
+Cc: Lizhi Xu <lizhi.xu@windriver.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20251109091211.12739-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+[ changed ep->cur_rate to rate parameter and chip to ep->chip ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/openvswitch/actions.c      | 68 +---------------------------------
- net/openvswitch/flow_netlink.c | 64 ++++----------------------------
- net/openvswitch/flow_netlink.h |  2 -
- 3 files changed, 9 insertions(+), 125 deletions(-)
+ sound/usb/endpoint.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
-index 0de165ed04eba..aa240953d7669 100644
---- a/net/openvswitch/actions.c
-+++ b/net/openvswitch/actions.c
-@@ -595,69 +595,6 @@ static int set_ipv6(struct sk_buff *skb, struct sw_flow_key *flow_key,
- 	return 0;
- }
+--- a/sound/usb/endpoint.c
++++ b/sound/usb/endpoint.c
+@@ -1093,6 +1093,11 @@ int snd_usb_endpoint_set_params(struct s
+ 	ep->sample_rem = rate % ep->pps;
+ 	ep->packsize[0] = rate / ep->pps;
+ 	ep->packsize[1] = (rate + (ep->pps - 1)) / ep->pps;
++	if (ep->packsize[1] > ep->maxpacksize) {
++		usb_audio_dbg(ep->chip, "Too small maxpacksize %u for rate %u / pps %u\n",
++			      ep->maxpacksize, rate, ep->pps);
++		return -EINVAL;
++	}
  
--static int set_nsh(struct sk_buff *skb, struct sw_flow_key *flow_key,
--		   const struct nlattr *a)
--{
--	struct nshhdr *nh;
--	size_t length;
--	int err;
--	u8 flags;
--	u8 ttl;
--	int i;
--
--	struct ovs_key_nsh key;
--	struct ovs_key_nsh mask;
--
--	err = nsh_key_from_nlattr(a, &key, &mask);
--	if (err)
--		return err;
--
--	/* Make sure the NSH base header is there */
--	if (!pskb_may_pull(skb, skb_network_offset(skb) + NSH_BASE_HDR_LEN))
--		return -ENOMEM;
--
--	nh = nsh_hdr(skb);
--	length = nsh_hdr_len(nh);
--
--	/* Make sure the whole NSH header is there */
--	err = skb_ensure_writable(skb, skb_network_offset(skb) +
--				       length);
--	if (unlikely(err))
--		return err;
--
--	nh = nsh_hdr(skb);
--	skb_postpull_rcsum(skb, nh, length);
--	flags = nsh_get_flags(nh);
--	flags = OVS_MASKED(flags, key.base.flags, mask.base.flags);
--	flow_key->nsh.base.flags = flags;
--	ttl = nsh_get_ttl(nh);
--	ttl = OVS_MASKED(ttl, key.base.ttl, mask.base.ttl);
--	flow_key->nsh.base.ttl = ttl;
--	nsh_set_flags_and_ttl(nh, flags, ttl);
--	nh->path_hdr = OVS_MASKED(nh->path_hdr, key.base.path_hdr,
--				  mask.base.path_hdr);
--	flow_key->nsh.base.path_hdr = nh->path_hdr;
--	switch (nh->mdtype) {
--	case NSH_M_TYPE1:
--		for (i = 0; i < NSH_MD1_CONTEXT_SIZE; i++) {
--			nh->md1.context[i] =
--			    OVS_MASKED(nh->md1.context[i], key.context[i],
--				       mask.context[i]);
--		}
--		memcpy(flow_key->nsh.context, nh->md1.context,
--		       sizeof(nh->md1.context));
--		break;
--	case NSH_M_TYPE2:
--		memset(flow_key->nsh.context, 0,
--		       sizeof(flow_key->nsh.context));
--		break;
--	default:
--		return -EINVAL;
--	}
--	skb_postpush_rcsum(skb, nh, length);
--	return 0;
--}
--
- /* Must follow skb_ensure_writable() since that can move the skb data. */
- static void set_tp_port(struct sk_buff *skb, __be16 *port,
- 			__be16 new_port, __sum16 *check)
-@@ -1130,10 +1067,6 @@ static int execute_masked_set_action(struct sk_buff *skb,
- 				   get_mask(a, struct ovs_key_ethernet *));
- 		break;
- 
--	case OVS_KEY_ATTR_NSH:
--		err = set_nsh(skb, flow_key, a);
--		break;
--
- 	case OVS_KEY_ATTR_IPV4:
- 		err = set_ipv4(skb, flow_key, nla_data(a),
- 			       get_mask(a, struct ovs_key_ipv4 *));
-@@ -1170,6 +1103,7 @@ static int execute_masked_set_action(struct sk_buff *skb,
- 	case OVS_KEY_ATTR_CT_LABELS:
- 	case OVS_KEY_ATTR_CT_ORIG_TUPLE_IPV4:
- 	case OVS_KEY_ATTR_CT_ORIG_TUPLE_IPV6:
-+	case OVS_KEY_ATTR_NSH:
- 		err = -EINVAL;
- 		break;
- 	}
-diff --git a/net/openvswitch/flow_netlink.c b/net/openvswitch/flow_netlink.c
-index 7db0f8938c145..7c2692f897f99 100644
---- a/net/openvswitch/flow_netlink.c
-+++ b/net/openvswitch/flow_netlink.c
-@@ -1280,6 +1280,11 @@ static int metadata_from_nlattrs(struct net *net, struct sw_flow_match *match,
- 	return 0;
- }
- 
-+/*
-+ * Constructs NSH header 'nh' from attributes of OVS_ACTION_ATTR_PUSH_NSH,
-+ * where 'nh' points to a memory block of 'size' bytes.  It's assumed that
-+ * attributes were previously validated with validate_push_nsh().
-+ */
- int nsh_hdr_from_nlattr(const struct nlattr *attr,
- 			struct nshhdr *nh, size_t size)
- {
-@@ -1289,8 +1294,6 @@ int nsh_hdr_from_nlattr(const struct nlattr *attr,
- 	u8 ttl = 0;
- 	int mdlen = 0;
- 
--	/* validate_nsh has check this, so we needn't do duplicate check here
--	 */
- 	if (size < NSH_BASE_HDR_LEN)
- 		return -ENOBUFS;
- 
-@@ -1334,46 +1337,6 @@ int nsh_hdr_from_nlattr(const struct nlattr *attr,
- 	return 0;
- }
- 
--int nsh_key_from_nlattr(const struct nlattr *attr,
--			struct ovs_key_nsh *nsh, struct ovs_key_nsh *nsh_mask)
--{
--	struct nlattr *a;
--	int rem;
--
--	/* validate_nsh has check this, so we needn't do duplicate check here
--	 */
--	nla_for_each_nested(a, attr, rem) {
--		int type = nla_type(a);
--
--		switch (type) {
--		case OVS_NSH_KEY_ATTR_BASE: {
--			const struct ovs_nsh_key_base *base = nla_data(a);
--			const struct ovs_nsh_key_base *base_mask = base + 1;
--
--			nsh->base = *base;
--			nsh_mask->base = *base_mask;
--			break;
--		}
--		case OVS_NSH_KEY_ATTR_MD1: {
--			const struct ovs_nsh_key_md1 *md1 = nla_data(a);
--			const struct ovs_nsh_key_md1 *md1_mask = md1 + 1;
--
--			memcpy(nsh->context, md1->context, sizeof(*md1));
--			memcpy(nsh_mask->context, md1_mask->context,
--			       sizeof(*md1_mask));
--			break;
--		}
--		case OVS_NSH_KEY_ATTR_MD2:
--			/* Not supported yet */
--			return -ENOTSUPP;
--		default:
--			return -EINVAL;
--		}
--	}
--
--	return 0;
--}
--
- static int nsh_key_put_from_nlattr(const struct nlattr *attr,
- 				   struct sw_flow_match *match, bool is_mask,
- 				   bool is_push_nsh, bool log)
-@@ -2794,17 +2757,13 @@ static int validate_and_copy_set_tun(const struct nlattr *attr,
- 	return err;
- }
- 
--static bool validate_nsh(const struct nlattr *attr, bool is_mask,
--			 bool is_push_nsh, bool log)
-+static bool validate_push_nsh(const struct nlattr *attr, bool log)
- {
- 	struct sw_flow_match match;
- 	struct sw_flow_key key;
--	int ret = 0;
- 
- 	ovs_match_init(&match, &key, true, NULL);
--	ret = nsh_key_put_from_nlattr(attr, &match, is_mask,
--				      is_push_nsh, log);
--	return !ret;
-+	return !nsh_key_put_from_nlattr(attr, &match, false, true, log);
- }
- 
- /* Return false if there are any non-masked bits set.
-@@ -2952,13 +2911,6 @@ static int validate_set(const struct nlattr *a,
- 
- 		break;
- 
--	case OVS_KEY_ATTR_NSH:
--		if (eth_type != htons(ETH_P_NSH))
--			return -EINVAL;
--		if (!validate_nsh(nla_data(a), masked, false, log))
--			return -EINVAL;
--		break;
--
- 	default:
- 		return -EINVAL;
- 	}
-@@ -3365,7 +3317,7 @@ static int __ovs_nla_copy_actions(struct net *net, const struct nlattr *attr,
- 					return -EINVAL;
- 			}
- 			mac_proto = MAC_PROTO_NONE;
--			if (!validate_nsh(nla_data(a), false, true, true))
-+			if (!validate_push_nsh(nla_data(a), log))
- 				return -EINVAL;
- 			break;
- 
-diff --git a/net/openvswitch/flow_netlink.h b/net/openvswitch/flow_netlink.h
-index fe7f77fc5f189..ff8cdecbe3465 100644
---- a/net/openvswitch/flow_netlink.h
-+++ b/net/openvswitch/flow_netlink.h
-@@ -65,8 +65,6 @@ int ovs_nla_put_actions(const struct nlattr *attr,
- void ovs_nla_free_flow_actions(struct sw_flow_actions *);
- void ovs_nla_free_flow_actions_rcu(struct sw_flow_actions *);
- 
--int nsh_key_from_nlattr(const struct nlattr *attr, struct ovs_key_nsh *nsh,
--			struct ovs_key_nsh *nsh_mask);
- int nsh_hdr_from_nlattr(const struct nlattr *attr, struct nshhdr *nh,
- 			size_t size);
- 
--- 
-2.51.0
-
+ 	/* calculate the frequency in 16.16 format */
+ 	ep->freqm = ep->freqn;
 
 
 
