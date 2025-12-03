@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-199484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6B77CA0544
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:18:06 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CE85C9F9E0
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:45:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D5D1B3004CB0
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:18:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 93D6F30001B2
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:43:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1681426AA93;
-	Wed,  3 Dec 2025 16:39:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AD1E306D49;
+	Wed,  3 Dec 2025 15:43:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TPmaNgf1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HgZUCY4p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5DDD313526;
-	Wed,  3 Dec 2025 16:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D23E7304BC2;
+	Wed,  3 Dec 2025 15:43:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779951; cv=none; b=BV3N8Xc50ickMKtwsT9PXN7JW9g51ncqRFw+WXO9osFcRx13HfnB65Tf7Zb+P1eZucdMNtjzXG0gbIlSD+lQziGOez0Jv8yqVoQJ5KBqmhWytiMjjWXBqahWb4eCSh81kARRBH/1aqRDdJnvIM2Q1EWAZG/6H7JNdUxD7tMJnfQ=
+	t=1764776637; cv=none; b=YlhVB2DFtSSycX0mt4K7+aKaesivAf4FdRqNL+U4i28i3LJmxUrN5MZZ2M+Rsk1iIh4y2ytuA3iO/kSi3KyD55YXo1KbCdgtCZlFX95lXui8zGcug0jeOmRnlvp4E/84Wbn9/UUhSjqmvzXJkuVjwnMmpJSGDl65wRxpH2/XBew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779951; c=relaxed/simple;
-	bh=4BBUcirxBn6SvEUrFr+RJDD+tB5azzAQQ1C8OSFZrzA=;
+	s=arc-20240116; t=1764776637; c=relaxed/simple;
+	bh=7M1JiV60uYmlC25nI46kkjKLYbbyAsMtrE6xagt1aSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NSCyHTVWmBb4f8IDiaIiY41K1SoLmyolcnlY3Hx0zhtgvvWuT/cIc3bMfzjl2/OOymCzB3XYN9W2hlQmsUKwoeqox0WsfmnW2e3r+4LmZVktQfZh2KM9CGlP1+OI0x2+4xlYMsBvPuFlN+9zGyBnsieJnT66TNLVQV6S8zyV7sE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TPmaNgf1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34580C4CEF5;
-	Wed,  3 Dec 2025 16:39:10 +0000 (UTC)
+	 MIME-Version; b=uNoA56lS4O1MBAwQoxNyFd/70MkP7NAy2NiW1CisycPeSdoLvDNj0NJm3HTJoKIYTgUIOFMWZ5IcNVNC7L7If/n9xHV08mFaP4DTi8ORG+aeVFAK2ylYCz1W5sW6Td2RMlvdBmF5YVReie0NgtiGn7mlwboMge0evXR6oRkR7+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HgZUCY4p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7ADAC4CEF5;
+	Wed,  3 Dec 2025 15:43:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779951;
-	bh=4BBUcirxBn6SvEUrFr+RJDD+tB5azzAQQ1C8OSFZrzA=;
+	s=korg; t=1764776637;
+	bh=7M1JiV60uYmlC25nI46kkjKLYbbyAsMtrE6xagt1aSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TPmaNgf11rCOHR6vgjlWZxRiCYwVk7WksJeUv6U2wYdcVy15nElHjvLhu07pXu0jp
-	 zwlpvw5r+tSyHXDZVjc8u7C9nIanrTlde581OJsbki3INhDDZgw3onC6nmnEPutJ5T
-	 gMDSYuK7j0TMj2Klw7G7j2X/DtxsWrURNLO6cfJo=
+	b=HgZUCY4ppdUVEH2DSlCGnTqdof0Nr7b9OUx10R7TBqQvchvGnMmyo4IN4YDOy+av3
+	 6C+E0bSysWnDTHMLi5+w05xmG5ytNdZWKA34Z47aImSCukjYIf/F7TZjmW6dYl5L20
+	 YBK50SJc+6m26wJ+BEPOQFMdw7RD7e9N2o1Ygt1w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vyacheslav Kovalevsky <slava.kovalevskiy.2014@gmail.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 411/568] btrfs: do not update last_log_commit when logging inode due to a new name
+	Chuang Wang <nashuiliang@gmail.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 209/300] ipv4: route: Prevent rt_bind_exception() from rebinding stale fnhe
 Date: Wed,  3 Dec 2025 16:26:53 +0100
-Message-ID: <20251203152455.741938602@linuxfoundation.org>
+Message-ID: <20251203152408.366014472@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,113 +61,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Chuang Wang <nashuiliang@gmail.com>
 
-commit bfe3d755ef7cec71aac6ecda34a107624735aac7 upstream.
+commit ac1499fcd40fe06479e9b933347b837ccabc2a40 upstream.
 
-When logging that a new name exists, we skip updating the inode's
-last_log_commit field to prevent a later explicit fsync against the inode
-from doing nothing (as updating last_log_commit makes btrfs_inode_in_log()
-return true). We are detecting, at btrfs_log_inode(), that logging a new
-name is happening by checking the logging mode is not LOG_INODE_EXISTS,
-but that is not enough because we may log parent directories when logging
-a new name of a file in LOG_INODE_ALL mode - we need to check that the
-logging_new_name field of the log context too.
+The sit driver's packet transmission path calls: sit_tunnel_xmit() ->
+update_or_create_fnhe(), which lead to fnhe_remove_oldest() being called
+to delete entries exceeding FNHE_RECLAIM_DEPTH+random.
 
-An example scenario where this results in an explicit fsync against a
-directory not persisting changes to the directory is the following:
+The race window is between fnhe_remove_oldest() selecting fnheX for
+deletion and the subsequent kfree_rcu(). During this time, the
+concurrent path's __mkroute_output() -> find_exception() can fetch the
+soon-to-be-deleted fnheX, and rt_bind_exception() then binds it with a
+new dst using a dst_hold(). When the original fnheX is freed via RCU,
+the dst reference remains permanently leaked.
 
-  $ mkfs.btrfs -f /dev/sdc
-  $ mount /dev/sdc /mnt
+CPU 0                             CPU 1
+__mkroute_output()
+  find_exception() [fnheX]
+                                  update_or_create_fnhe()
+                                    fnhe_remove_oldest() [fnheX]
+  rt_bind_exception() [bind dst]
+                                  RCU callback [fnheX freed, dst leak]
 
-  $ touch /mnt/foo
+This issue manifests as a device reference count leak and a warning in
+dmesg when unregistering the net device:
 
-  $ sync
+  unregister_netdevice: waiting for sitX to become free. Usage count = N
 
-  $ mkdir /mnt/dir
+Ido Schimmel provided the simple test validation method [1].
 
-  # Write some data to our file and fsync it.
-  $ xfs_io -c "pwrite -S 0xab 0 64K" -c "fsync" /mnt/foo
+The fix clears 'oldest->fnhe_daddr' before calling fnhe_flush_routes().
+Since rt_bind_exception() checks this field, setting it to zero prevents
+the stale fnhe from being reused and bound to a new dst just before it
+is freed.
 
-  # Add a new link to our file. Since the file was logged before, we
-  # update it in the log tree by calling btrfs_log_new_name().
-  $ ln /mnt/foo /mnt/dir/bar
+[1]
+ip netns add ns1
+ip -n ns1 link set dev lo up
+ip -n ns1 address add 192.0.2.1/32 dev lo
+ip -n ns1 link add name dummy1 up type dummy
+ip -n ns1 route add 192.0.2.2/32 dev dummy1
+ip -n ns1 link add name gretap1 up arp off type gretap \
+    local 192.0.2.1 remote 192.0.2.2
+ip -n ns1 route add 198.51.0.0/16 dev gretap1
+taskset -c 0 ip netns exec ns1 mausezahn gretap1 \
+    -A 198.51.100.1 -B 198.51.0.0/16 -t udp -p 1000 -c 0 -q &
+taskset -c 2 ip netns exec ns1 mausezahn gretap1 \
+    -A 198.51.100.1 -B 198.51.0.0/16 -t udp -p 1000 -c 0 -q &
+sleep 10
+ip netns pids ns1 | xargs kill
+ip netns del ns1
 
-  # fsync the root directory - we expect it to persist the dentry for
-  # the new directory "dir".
-  $ xfs_io -c "fsync" /mnt
-
-  <power fail>
-
-After mounting the fs the entry for directory "dir" does not exists,
-despite the explicit fsync on the root directory.
-
-Here's why this happens:
-
-1) When we fsync the file we log the inode, so that it's present in the
-   log tree;
-
-2) When adding the new link we enter btrfs_log_new_name(), and since the
-   inode is in the log tree we proceed to updating the inode in the log
-   tree;
-
-3) We first set the inode's last_unlink_trans to the current transaction
-   (early in btrfs_log_new_name());
-
-4) We then eventually enter btrfs_log_inode_parent(), and after logging
-   the file's inode, we call btrfs_log_all_parents() because the inode's
-   last_unlink_trans matches the current transaction's ID (updated in the
-   previous step);
-
-5) So btrfs_log_all_parents() logs the root directory by calling
-   btrfs_log_inode() for the root's inode with a log mode of LOG_INODE_ALL
-   so that new dentries are logged;
-
-6) At btrfs_log_inode(), because the log mode is LOG_INODE_ALL, we
-   update root inode's last_log_commit to the last transaction that
-   changed the inode (->last_sub_trans field of the inode), which
-   corresponds to the current transaction's ID;
-
-7) Then later when user space explicitly calls fsync against the root
-   directory, we enter btrfs_sync_file(), which calls skip_inode_logging()
-   and that returns true, since its call to btrfs_inode_in_log() returns
-   true and there are no ordered extents (it's a directory, never has
-   ordered extents). This results in btrfs_sync_file() returning without
-   syncing the log or committing the current transaction, so all the
-   updates we did when logging the new name, including logging the root
-   directory,  are not persisted.
-
-So fix this by but updating the inode's last_log_commit if we are sure
-we are not logging a new name (if ctx->logging_new_name is false).
-
-A test case for fstests will follow soon.
-
-Reported-by: Vyacheslav Kovalevsky <slava.kovalevskiy.2014@gmail.com>
-Link: https://lore.kernel.org/linux-btrfs/03c5d7ec-5b3d-49d1-95bc-8970a7f82d87@gmail.com/
-Fixes: 130341be7ffa ("btrfs: always update the logged transaction when logging new names")
-CC: stable@vger.kernel.org # 6.1+
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Cc: stable@vger.kernel.org
+Fixes: 67d6d681e15b ("ipv4: make exception cache less predictible")
+Signed-off-by: Chuang Wang <nashuiliang@gmail.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20251111064328.24440-1-nashuiliang@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/tree-log.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/route.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -6705,7 +6705,7 @@ log_extents:
- 	 *    a power failure unless the log was synced as part of an fsync
- 	 *    against any other unrelated inode.
- 	 */
--	if (inode_only != LOG_INODE_EXISTS)
-+	if (!ctx->logging_new_name && inode_only != LOG_INODE_EXISTS)
- 		inode->last_log_commit = inode->last_sub_trans;
- 	spin_unlock(&inode->lock);
- 
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -646,6 +646,11 @@ static void fnhe_remove_oldest(struct fn
+ 			oldest_p = fnhe_p;
+ 		}
+ 	}
++
++	/* Clear oldest->fnhe_daddr to prevent this fnhe from being
++	 * rebound with new dsts in rt_bind_exception().
++	 */
++	oldest->fnhe_daddr = 0;
+ 	fnhe_flush_routes(oldest);
+ 	*oldest_p = oldest->fnhe_next;
+ 	kfree_rcu(oldest, rcu);
 
 
 
