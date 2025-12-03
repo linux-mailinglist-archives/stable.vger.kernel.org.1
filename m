@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70A36CA0C25
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:06:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06E5ACA0DC3
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:16:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E811030DBCAA
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:02:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4AFCB31FAF06
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:13:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE2AC34B691;
-	Wed,  3 Dec 2025 16:55:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E629A359FA7;
+	Wed,  3 Dec 2025 17:00:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2HC92vjs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QBDBvhpS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A12C6350A39;
-	Wed,  3 Dec 2025 16:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1BC4359FA5;
+	Wed,  3 Dec 2025 17:00:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780946; cv=none; b=UmbapeLyoZw6E5NGXmM8Ubp7i/cYeIOuDE5BXraoW8hNHeubaudA0sSYRNqVLG3HAjioU2ql1dFw5TvOcR2h14y9BR9PoC5z8eRtkOuMFix/xxXvXki/gM0n08r30WfjM0pmZaUCVfeMD8lJcX5ioZr6ASIvW6/CVnXQXxl/dN8=
+	t=1764781237; cv=none; b=UoqGvLDQiuBIrzwa09RO/1olccoDpilr36FH5DiG2mTjhOVddKdkFo9qMtVDAc1Lm9ar7SVbwd2CEdvvP4pMN9bXbevx18e2vVcA/DWXowxuYNAaagIIukgCOF7m00EUtie9YXYEe6mlzSIKtf74TW2GxILgC7taeRiPQgLb0sI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780946; c=relaxed/simple;
-	bh=wFWBb11kyNsBQFdu+8Dza6o0t4TDGBfrk+/sZDEOkQ8=;
+	s=arc-20240116; t=1764781237; c=relaxed/simple;
+	bh=zta7Z9vvB6YQUYimTECM+2Rh0YUGATPSceDZtIxOpNo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XIWUx2kwDa9Xq3uqHiKPqxznFjIPh2sHxX1svoDpDtXRBKpguv5jXxtKqXLHPNMHOSkoqyEPlCCJvNqy3beJ0ggs+o9kRQ2uLx4BMEjj+XkZfNHRrXcGRdlwJik0iYOtJp0MB+xEyf5/bio2JUFrKl/9voajjWm7Tb89/FkBmUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2HC92vjs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF3BFC116C6;
-	Wed,  3 Dec 2025 16:55:44 +0000 (UTC)
+	 MIME-Version; b=ngEWPXYdUUCQ2uwslT+57A16kFDNlH0/kkDOfRzAZGnQ9E6ct/Y5b/tlBCGMoIEq71nN6rqwVRqx999K9c+SqV0EYWJ0uA8d7c757uD4XTMaHcen91sjmWffpw3D4K7JbxJwcDvhlJd1P+nsFp9MyY2NdjrShBMSXKCMvAXSH90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QBDBvhpS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D4FBC4CEF5;
+	Wed,  3 Dec 2025 17:00:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780945;
-	bh=wFWBb11kyNsBQFdu+8Dza6o0t4TDGBfrk+/sZDEOkQ8=;
+	s=korg; t=1764781237;
+	bh=zta7Z9vvB6YQUYimTECM+2Rh0YUGATPSceDZtIxOpNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2HC92vjsjvApJirA/hbXne4Jk9Pgg50kLY4X/Hd9f5/z/ptA5fakGczwuUa1mSwhY
-	 ILyJn4x7wkSLVW864Go/ld0pRPUydj41/X03Q3OUoCTgAS3pdcOeNUAJoPqUUJWEpv
-	 LyTAp1w6nhRJV8g3iQnfUVwO4M9W7sg4pPgjux/I=
+	b=QBDBvhpSX6k0BrKcksXpiR5HT123mgSU3v+JAk1suZlvPOEYQNQ6zeWsDeeX0UlZ5
+	 BlSel9UqGsl8fThuZx77uX6/+cPIFD9kNPjC9TAZGxVnSsKORPJmBXMU1LqcRvhpvb
+	 CPbZwgEsG64glpsu2GT29AuwRrEqlexrK33kz3cE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Alex Hung <alex.hung@amd.com>
-Subject: [PATCH 6.12 106/132] drm/amd/display: Check NULL before accessing
+	stable <stable@kernel.org>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Subject: [PATCH 6.6 52/93] slimbus: ngd: Fix reference count leak in qcom_slim_ngd_notify_slaves
 Date: Wed,  3 Dec 2025 16:29:45 +0100
-Message-ID: <20251203152347.213086723@linuxfoundation.org>
+Message-ID: <20251203152338.444217707@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
+References: <20251203152336.494201426@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-commit 3ce62c189693e8ed7b3abe551802bbc67f3ace54 upstream.
+commit 96cf8500934e0ce2a6c486f1dbc3b1fff12f7a5e upstream.
 
-[WHAT]
-IGT kms_cursor_legacy's long-nonblocking-modeset-vs-cursor-atomic
-fails with NULL pointer dereference. This can be reproduced with
-both an eDP panel and a DP monitors connected.
+The function qcom_slim_ngd_notify_slaves() calls of_slim_get_device() which
+internally uses device_find_child() to obtain a device reference.
+According to the device_find_child() documentation,
+the caller must drop the reference with put_device() after use.
 
- BUG: kernel NULL pointer dereference, address: 0000000000000000
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 0 P4D 0
- Oops: Oops: 0000 [#1] SMP NOPTI
- CPU: 13 UID: 0 PID: 2960 Comm: kms_cursor_lega Not tainted
-6.16.0-99-custom #8 PREEMPT(voluntary)
- Hardware name: AMD ........
- RIP: 0010:dc_stream_get_scanoutpos+0x34/0x130 [amdgpu]
- Code: 57 4d 89 c7 41 56 49 89 ce 41 55 49 89 d5 41 54 49
- 89 fc 53 48 83 ec 18 48 8b 87 a0 64 00 00 48 89 75 d0 48 c7 c6 e0 41 30
- c2 <48> 8b 38 48 8b 9f 68 06 00 00 e8 8d d7 fd ff 31 c0 48 81 c3 e0 02
- RSP: 0018:ffffd0f3c2bd7608 EFLAGS: 00010292
- RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffd0f3c2bd7668
- RDX: ffffd0f3c2bd7664 RSI: ffffffffc23041e0 RDI: ffff8b32494b8000
- RBP: ffffd0f3c2bd7648 R08: ffffd0f3c2bd766c R09: ffffd0f3c2bd7760
- R10: ffffd0f3c2bd7820 R11: 0000000000000000 R12: ffff8b32494b8000
- R13: ffffd0f3c2bd7664 R14: ffffd0f3c2bd7668 R15: ffffd0f3c2bd766c
- FS:  000071f631b68700(0000) GS:ffff8b399f114000(0000)
-knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000000000000000 CR3: 00000001b8105000 CR4: 0000000000f50ef0
- PKRU: 55555554
- Call Trace:
- <TASK>
- dm_crtc_get_scanoutpos+0xd7/0x180 [amdgpu]
- amdgpu_display_get_crtc_scanoutpos+0x86/0x1c0 [amdgpu]
- ? __pfx_amdgpu_crtc_get_scanout_position+0x10/0x10[amdgpu]
- amdgpu_crtc_get_scanout_position+0x27/0x50 [amdgpu]
- drm_crtc_vblank_helper_get_vblank_timestamp_internal+0xf7/0x400
- drm_crtc_vblank_helper_get_vblank_timestamp+0x1c/0x30
- drm_crtc_get_last_vbltimestamp+0x55/0x90
- drm_crtc_next_vblank_start+0x45/0xa0
- drm_atomic_helper_wait_for_fences+0x81/0x1f0
- ...
+Found via static analysis and this is similar to commit 4e65bda8273c
+("ASoC: wcd934x: fix error handling in wcd934x_codec_parse_data()")
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 621e55f1919640acab25383362b96e65f2baea3c)
-Cc: stable@vger.kernel.org
+Fixes: 917809e2280b ("slimbus: ngd: Add qcom SLIMBus NGD driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251027060601.33228-1-linmq006@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc_stream.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/slimbus/qcom-ngd-ctrl.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
-@@ -689,9 +689,14 @@ bool dc_stream_get_scanoutpos(const stru
- {
- 	uint8_t i;
- 	bool ret = false;
--	struct dc  *dc = stream->ctx->dc;
--	struct resource_context *res_ctx =
--		&dc->current_state->res_ctx;
-+	struct dc  *dc;
-+	struct resource_context *res_ctx;
-+
-+	if (!stream->ctx)
-+		return false;
-+
-+	dc = stream->ctx->dc;
-+	res_ctx = &dc->current_state->res_ctx;
+--- a/drivers/slimbus/qcom-ngd-ctrl.c
++++ b/drivers/slimbus/qcom-ngd-ctrl.c
+@@ -1239,6 +1239,7 @@ static void qcom_slim_ngd_notify_slaves(
  
- 	dc_exit_ips_for_hw_access(dc);
+ 		if (slim_get_logical_addr(sbdev))
+ 			dev_err(ctrl->dev, "Failed to get logical address\n");
++		put_device(&sbdev->dev);
+ 	}
+ }
  
 
 
