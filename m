@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BC3FCA067A
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:24:58 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C995C9FC14
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:59:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 796713129CD9
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:09:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5FB6D300701D
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:58:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9288F35F8BF;
-	Wed,  3 Dec 2025 16:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0E873451D1;
+	Wed,  3 Dec 2025 15:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PtwfeJre"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WosGoDR2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD0435E551;
-	Wed,  3 Dec 2025 16:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6231B3451B4;
+	Wed,  3 Dec 2025 15:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779270; cv=none; b=JVrD/R/PLdl74UDSEQ50jnbbx5vdiZYJunXaxwpruObrI0lrtiw7zUSXI8FzeszwFvp76xoW1T/yY8N4aj8ZnDh4xlmWltKCxqD+Ffu2gMtNf9xu0SJc9TMz4+OmXQrHbCCERKiMy9s0whEdWPAxtRTsN5b8xH3U0TYiohM9cN0=
+	t=1764777506; cv=none; b=IyLOvQmsxHdnVbJ9HzFuxmU1aJeHc+2cXjxSUYpifKqXSIBeXQABdy46NL+5tnJPtBkoaOU4CUI6Q2wplz+yM7R3c3IVqaaVi/i7WqY6BA1enbfxjPl7T5s+pkfmf3wVDWkj2dfnykDpQ5lk4Hu6Qv5B/7w4mvC8CIcvJ7sXmDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779270; c=relaxed/simple;
-	bh=CwgyjHJdgxJjLFdmUhgvSOrPPg2xwVfhvEBlWwEQDbo=;
+	s=arc-20240116; t=1764777506; c=relaxed/simple;
+	bh=9CJd6JsUM+v+N7mHRCUEm4O6TxZ4NdAo0g6H99jIhOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tqQvMkmy5u6vt0bKv/DMJs/ooSzfsSvbPhgNAADqIGbaQuVtt/v+wbFRTHRLz6ndNxE7SJNfEgzQDRd+zMpSqg0Pg7AVo6zkQhNfk0wC2UaadG+CFzGv/2GlsnwQ0cVjviMDvfG3MU2Ks+o94qhsMRkX2g1nm37f9tAaUEq6krA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PtwfeJre; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7A4DC4CEF5;
-	Wed,  3 Dec 2025 16:27:49 +0000 (UTC)
+	 MIME-Version; b=nQQk0IUPvVy+pyrr96uaxBwNAbiLJkmBPDx8kptBmgIFBi5vkh2D7Yp+CAzoG0W+KYC0BIJGAfQ+78l/bwT9V7CdYaJgKCB36Yk3mUA497L+I+8u6aQRvG/glCCDZrkcxWbESVPfy6gqMKJC8tFSjsgxhQWJseV1c8HuGI78QrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WosGoDR2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8055C4CEF5;
+	Wed,  3 Dec 2025 15:58:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779270;
-	bh=CwgyjHJdgxJjLFdmUhgvSOrPPg2xwVfhvEBlWwEQDbo=;
+	s=korg; t=1764777505;
+	bh=9CJd6JsUM+v+N7mHRCUEm4O6TxZ4NdAo0g6H99jIhOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PtwfeJrerxQTGhGi6x/b99gYpyw9io1HN7lAQ1VHqnejWeykcIlEFTIRNlKCpeTJ4
-	 a2Y+/YqflMxdyAuRNtWdIcTU+pcbmnXat+SCAaPbjZy6n23RMIvQiebHj4WU+aV0eI
-	 CRO4EwOl1hA3VSTXpK7/fBpqC8TG4hTCBoaKffsA=
+	b=WosGoDR2UM0+BYm+qt/pg5GH2blNGvZQnkdZJi1rPR+LMvpk1S8gX5SuPMaUIJ4Bm
+	 SS3OOjWTGKgqGO6JYb4C1aSz/ldeFFoSK+KkduszSJlIOz/6L5ExLnAV1yZSdO0Zy1
+	 m1TWvHMe/Sd1N0/kktnlLSI4BK5jID4ErK9+eRmA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Wang <peter.wang@mediatek.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Chi Zhang <chizhang@asrmicro.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 206/568] scsi: ufs: host: mediatek: Enhance recovery on resume failure
+Subject: [PATCH 5.15 058/392] pinctrl: single: fix bias pull up/down handling in pin_config_set
 Date: Wed,  3 Dec 2025 16:23:28 +0100
-Message-ID: <20251203152448.270480720@linuxfoundation.org>
+Message-ID: <20251203152416.249657279@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +60,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Wang <peter.wang@mediatek.com>
+From: Chi Zhang <chizhang@asrmicro.com>
 
-[ Upstream commit 15ef3f5aa822f32524cba1463422a2c9372443f0 ]
+[ Upstream commit 236152dd9b1675a35eee912e79e6c57ca6b6732f ]
 
-Improve the recovery process for failed resume operations. Log the
-device's power status and return 0 if both resume and recovery fail to
-prevent I/O hang.
+In the pin_config_set function, when handling PIN_CONFIG_BIAS_PULL_DOWN or
+PIN_CONFIG_BIAS_PULL_UP, the function calls pcs_pinconf_clear_bias()
+which writes the register. However, the subsequent operations continue
+using the stale 'data' value from before the register write, effectively
+causing the bias clear operation to be overwritten and not take effect.
 
-Signed-off-by: Peter Wang <peter.wang@mediatek.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fix this by reading the 'data' value from the register after calling
+pcs_pinconf_clear_bias().
+
+This bug seems to have existed when this code was first merged in commit
+9dddb4df90d1 ("pinctrl: single: support generic pinconf").
+
+Signed-off-by: Chi Zhang <chizhang@asrmicro.com>
+Link: https://lore.kernel.org/20250807062038.13610-1-chizhang@asrmicro.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufs-mediatek.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/pinctrl/pinctrl-single.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/ufs/host/ufs-mediatek.c b/drivers/ufs/host/ufs-mediatek.c
-index 1c6348ee58092..3dbcb30e610fc 100644
---- a/drivers/ufs/host/ufs-mediatek.c
-+++ b/drivers/ufs/host/ufs-mediatek.c
-@@ -1359,8 +1359,21 @@ static int ufs_mtk_resume(struct ufs_hba *hba, enum ufs_pm_op pm_op)
- 	}
- 
- 	return 0;
-+
- fail:
--	return ufshcd_link_recovery(hba);
-+	/*
-+	 * Check if the platform (parent) device has resumed, and ensure that
-+	 * power, clock, and MTCMOS are all turned on.
-+	 */
-+	err = ufshcd_link_recovery(hba);
-+	if (err) {
-+		dev_err(hba->dev, "Device PM: req=%d, status:%d, err:%d\n",
-+			hba->dev->power.request,
-+			hba->dev->power.runtime_status,
-+			hba->dev->power.runtime_error);
-+	}
-+
-+	return 0; /* Cannot return a failure, otherwise, the I/O will hang. */
- }
- 
- static void ufs_mtk_dbg_register_dump(struct ufs_hba *hba)
+diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
+index 28f3fabc72e30..a72911e8ea82d 100644
+--- a/drivers/pinctrl/pinctrl-single.c
++++ b/drivers/pinctrl/pinctrl-single.c
+@@ -588,8 +588,10 @@ static int pcs_pinconf_set(struct pinctrl_dev *pctldev,
+ 				break;
+ 			case PIN_CONFIG_BIAS_PULL_DOWN:
+ 			case PIN_CONFIG_BIAS_PULL_UP:
+-				if (arg)
++				if (arg) {
+ 					pcs_pinconf_clear_bias(pctldev, pin);
++					data = pcs->read(pcs->base + offset);
++				}
+ 				fallthrough;
+ 			case PIN_CONFIG_INPUT_SCHMITT_ENABLE:
+ 				data &= ~func->conf[i].mask;
 -- 
 2.51.0
 
