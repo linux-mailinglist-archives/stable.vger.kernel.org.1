@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-199230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CFDECA043D
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:06:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD125CA0EFA
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:25:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8E5443003F8A
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:06:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BA3D83451F78
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:23:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DED37346E67;
-	Wed,  3 Dec 2025 16:25:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ED07340A52;
+	Wed,  3 Dec 2025 15:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rkw5pNoB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AhTWPg12"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94EA43469FD;
-	Wed,  3 Dec 2025 16:25:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD8A42FE59A;
+	Wed,  3 Dec 2025 15:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779114; cv=none; b=erQO1sZjzi3k9mc0sV3lm8GYobiVzFXwsT2ub/TMC+Y55z53178+FtHSHmdRJECsSq8BPoZ+fKNzvEzrzTNTW0iU3jKJX/SrdKRn1/7HRPwSkoIpM1Hu4GBYpeZluQoRn+5YMYBJ7PGPGD4fIuOILfVa+dDZAY0bNLIqb4gmHbg=
+	t=1764777349; cv=none; b=RtB1PE7ppaUew+3K4Fh+wc0eH7pEG6Wpr4ZkW9GdZNxnuXhd/Pb3yRsjyIkbkTUoQ8YdtsGqtiJqw8KSjZ2fwB+qVN6VppFlsKK1FiL/KVMkxEp6JPUdox44h68MpJVfLtaK8EU/sfa0XBmw6xNrIRGCiN09lvYtBsI/98mivC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779114; c=relaxed/simple;
-	bh=5pnUEq32KM9imqXTIhI6aciggopE/Ht1uVFZ2tGwQyU=;
+	s=arc-20240116; t=1764777349; c=relaxed/simple;
+	bh=f7mE8qFqyXnBYu0SoFhRR003xjgWwgqkAHqNRmRnIU0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tu4AEGH+d3nd+q5475r4lEhlVnNAYnZB2lzqvuZAunzNHsO1AKdwFPgHkuzrDmjbfeWJQFZGpx9aLxX5OznDVCUwzI+tcwGoFNegnXH6a3sUAZ2+XUIcb3QGlMmEGN+SsdX3sWDJyfFw/stxkibo/8wtgXXdq+BdjRtAeoXSIh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rkw5pNoB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC2F0C4CEF5;
-	Wed,  3 Dec 2025 16:25:13 +0000 (UTC)
+	 MIME-Version; b=ZsH37/nDwwCZ8P02AjS3mh/XsP3jYipHTEN2jGQAK9dh6Sdbf0CMPzuMF1h3o/AT26WnlOxbvof2yXINPzWW0J4awHJPwa1sIZn7KzwXPVmcseIhboYdVa0JRSwqLjFt5gD8KwGj7Enq5iiiu8p7w9WAsdB+mjAmWF4iXKe92DY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AhTWPg12; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EC74C4CEF5;
+	Wed,  3 Dec 2025 15:55:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779114;
-	bh=5pnUEq32KM9imqXTIhI6aciggopE/Ht1uVFZ2tGwQyU=;
+	s=korg; t=1764777348;
+	bh=f7mE8qFqyXnBYu0SoFhRR003xjgWwgqkAHqNRmRnIU0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rkw5pNoB3gKIFm2/ItCZk8Rj4x/ReEHNwwPnDRSdiQ4gxAIULFGqjwJeVpNV6L46+
-	 qZtHRF0++0nR3Wwbzl6YWxNUwnTJ8CVgx200QBE9pFXh7ebJjthVDbAVu6SZojyLcl
-	 GHM19tb6oD/Qes6qJ5UM3c/dtGqQfJZD0TdEcZ4A=
+	b=AhTWPg12fYWr4w2TDspdNbhdCgQZKyGcnpf6rwR0BuMQ/utCluMCz1fMkG3qruLK9
+	 3Hl03DBkMCKV21Gjs4r2knIzfuQmesGADRjqibBVhBYMyUoMxWHJXd0CTjWWh/+y1m
+	 M4HIAxWt7lh/bstu9GwG7zhF/ieMdsh1auC4HisE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	linux-arm-msm@vger.kernel.org,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 159/568] drm/bridge: display-connector: dont set OP_DETECT for DisplayPorts
+	Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 5.15 011/392] wifi: brcmfmac: fix crash while sending Action Frames in standalone AP Mode
 Date: Wed,  3 Dec 2025 16:22:41 +0100
-Message-ID: <20251203152446.549207412@linuxfoundation.org>
+Message-ID: <20251203152414.518937874@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +60,196 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
 
-[ Upstream commit cb640b2ca54617f4a9d4d6efd5ff2afd6be11f19 ]
+commit 3776c685ebe5f43e9060af06872661de55e80b9a upstream.
 
-Detecting the monitor for DisplayPort targets is more complicated than
-just reading the HPD pin level: it requires reading the DPCD in order to
-check what kind of device is attached to the port and whether there is
-an actual display attached.
+Currently, whenever there is a need to transmit an Action frame,
+the brcmfmac driver always uses the P2P vif to send the "actframe" IOVAR to
+firmware. The P2P interfaces were available when wpa_supplicant is managing
+the wlan interface.
 
-In order to let DRM framework handle such configurations, disable
-DRM_BRIDGE_OP_DETECT for dp-connector devices, letting the actual DP
-driver perform detection. This still keeps DRM_BRIDGE_OP_HPD enabled, so
-it is valid for the bridge to report HPD events.
+However, the P2P interfaces are not created/initialized when only hostapd
+is managing the wlan interface. And if hostapd receives an ANQP Query REQ
+Action frame even from an un-associated STA, the brcmfmac driver tries
+to use an uninitialized P2P vif pointer for sending the IOVAR to firmware.
+This NULL pointer dereferencing triggers a driver crash.
 
-Currently inside the kernel there are only two targets which list
-hpd-gpios for dp-connector devices: arm64/qcom/qcs6490-rb3gen2 and
-arm64/qcom/sa8295p-adp. Both should be fine with this change.
+ [ 1417.074538] Unable to handle kernel NULL pointer dereference at virtual
+ address 0000000000000000
+ [...]
+ [ 1417.075188] Hardware name: Raspberry Pi 4 Model B Rev 1.5 (DT)
+ [...]
+ [ 1417.075653] Call trace:
+ [ 1417.075662]  brcmf_p2p_send_action_frame+0x23c/0xc58 [brcmfmac]
+ [ 1417.075738]  brcmf_cfg80211_mgmt_tx+0x304/0x5c0 [brcmfmac]
+ [ 1417.075810]  cfg80211_mlme_mgmt_tx+0x1b0/0x428 [cfg80211]
+ [ 1417.076067]  nl80211_tx_mgmt+0x238/0x388 [cfg80211]
+ [ 1417.076281]  genl_family_rcv_msg_doit+0xe0/0x158
+ [ 1417.076302]  genl_rcv_msg+0x220/0x2a0
+ [ 1417.076317]  netlink_rcv_skb+0x68/0x140
+ [ 1417.076330]  genl_rcv+0x40/0x60
+ [ 1417.076343]  netlink_unicast+0x330/0x3b8
+ [ 1417.076357]  netlink_sendmsg+0x19c/0x3f8
+ [ 1417.076370]  __sock_sendmsg+0x64/0xc0
+ [ 1417.076391]  ____sys_sendmsg+0x268/0x2a0
+ [ 1417.076408]  ___sys_sendmsg+0xb8/0x118
+ [ 1417.076427]  __sys_sendmsg+0x90/0xf8
+ [ 1417.076445]  __arm64_sys_sendmsg+0x2c/0x40
+ [ 1417.076465]  invoke_syscall+0x50/0x120
+ [ 1417.076486]  el0_svc_common.constprop.0+0x48/0xf0
+ [ 1417.076506]  do_el0_svc+0x24/0x38
+ [ 1417.076525]  el0_svc+0x30/0x100
+ [ 1417.076548]  el0t_64_sync_handler+0x100/0x130
+ [ 1417.076569]  el0t_64_sync+0x190/0x198
+ [ 1417.076589] Code: f9401e80 aa1603e2 f9403be1 5280e483 (f9400000)
 
-Cc: Bjorn Andersson <andersson@kernel.org>
-Cc: Konrad Dybcio <konradybcio@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org
-Acked-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Link: https://lore.kernel.org/r/20250802-dp-conn-no-detect-v1-1-2748c2b946da@oss.qualcomm.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this, by always using the vif corresponding to the wdev on which the
+Action frame Transmission request was initiated by the userspace. This way,
+even if P2P vif is not available, the IOVAR is sent to firmware on AP vif
+and the ANQP Query RESP Action frame is transmitted without crashing the
+driver.
+
+Move init_completion() for "send_af_done" from brcmf_p2p_create_p2pdev()
+to brcmf_p2p_attach(). Because the former function would not get executed
+when only hostapd is managing wlan interface, and it is not safe to do
+reinit_completion() later in brcmf_p2p_tx_action_frame(), without any prior
+init_completion().
+
+And in the brcmf_p2p_tx_action_frame() function, the condition check for
+P2P Presence response frame is not needed, since the wpa_supplicant is
+properly sending the P2P Presense Response frame on the P2P-GO vif instead
+of the P2P-Device vif.
+
+Cc: stable@vger.kernel.org
+Fixes: 18e2f61db3b7 ("brcmfmac: P2P action frame tx")
+Signed-off-by: Gokul Sivakumar <gokulkumar.sivakumar@infineon.com>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Link: https://patch.msgid.link/20251013102819.9727-1-gokulkumar.sivakumar@infineon.com
+[Cc stable]
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/display-connector.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c |    3 -
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c      |   28 ++++--------
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.h      |    3 -
+ 3 files changed, 12 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/display-connector.c b/drivers/gpu/drm/bridge/display-connector.c
-index 9a12449ad7b87..8eded18ad2ec2 100644
---- a/drivers/gpu/drm/bridge/display-connector.c
-+++ b/drivers/gpu/drm/bridge/display-connector.c
-@@ -364,7 +364,8 @@ static int display_connector_probe(struct platform_device *pdev)
- 	if (conn->bridge.ddc)
- 		conn->bridge.ops |= DRM_BRIDGE_OP_EDID
- 				 |  DRM_BRIDGE_OP_DETECT;
--	if (conn->hpd_gpio)
-+	/* Detecting the monitor requires reading DPCD */
-+	if (conn->hpd_gpio && type != DRM_MODE_CONNECTOR_DisplayPort)
- 		conn->bridge.ops |= DRM_BRIDGE_OP_DETECT;
- 	if (conn->hpd_irq >= 0)
- 		conn->bridge.ops |= DRM_BRIDGE_OP_HPD;
--- 
-2.51.0
-
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -5200,8 +5200,7 @@ brcmf_cfg80211_mgmt_tx(struct wiphy *wip
+ 		brcmf_dbg(TRACE, "Action frame, cookie=%lld, len=%d, freq=%d\n",
+ 			  *cookie, le16_to_cpu(action_frame->len), freq);
+ 
+-		ack = brcmf_p2p_send_action_frame(cfg, cfg_to_ndev(cfg),
+-						  af_params);
++		ack = brcmf_p2p_send_action_frame(vif->ifp, af_params);
+ 
+ 		cfg80211_mgmt_tx_status(wdev, *cookie, buf, len, ack,
+ 					GFP_KERNEL);
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.c
+@@ -1529,6 +1529,7 @@ int brcmf_p2p_notify_action_tx_complete(
+ /**
+  * brcmf_p2p_tx_action_frame() - send action frame over fil.
+  *
++ * @ifp: interface to transmit on.
+  * @p2p: p2p info struct for vif.
+  * @af_params: action frame data/info.
+  *
+@@ -1538,12 +1539,11 @@ int brcmf_p2p_notify_action_tx_complete(
+  * The WLC_E_ACTION_FRAME_COMPLETE event will be received when the action
+  * frame is transmitted.
+  */
+-static s32 brcmf_p2p_tx_action_frame(struct brcmf_p2p_info *p2p,
++static s32 brcmf_p2p_tx_action_frame(struct brcmf_if *ifp,
++				     struct brcmf_p2p_info *p2p,
+ 				     struct brcmf_fil_af_params_le *af_params)
+ {
+ 	struct brcmf_pub *drvr = p2p->cfg->pub;
+-	struct brcmf_cfg80211_vif *vif;
+-	struct brcmf_p2p_action_frame *p2p_af;
+ 	s32 err = 0;
+ 
+ 	brcmf_dbg(TRACE, "Enter\n");
+@@ -1552,14 +1552,7 @@ static s32 brcmf_p2p_tx_action_frame(str
+ 	clear_bit(BRCMF_P2P_STATUS_ACTION_TX_COMPLETED, &p2p->status);
+ 	clear_bit(BRCMF_P2P_STATUS_ACTION_TX_NOACK, &p2p->status);
+ 
+-	/* check if it is a p2p_presence response */
+-	p2p_af = (struct brcmf_p2p_action_frame *)af_params->action_frame.data;
+-	if (p2p_af->subtype == P2P_AF_PRESENCE_RSP)
+-		vif = p2p->bss_idx[P2PAPI_BSSCFG_CONNECTION].vif;
+-	else
+-		vif = p2p->bss_idx[P2PAPI_BSSCFG_DEVICE].vif;
+-
+-	err = brcmf_fil_bsscfg_data_set(vif->ifp, "actframe", af_params,
++	err = brcmf_fil_bsscfg_data_set(ifp, "actframe", af_params,
+ 					sizeof(*af_params));
+ 	if (err) {
+ 		bphy_err(drvr, " sending action frame has failed\n");
+@@ -1711,16 +1704,14 @@ static bool brcmf_p2p_check_dwell_overfl
+ /**
+  * brcmf_p2p_send_action_frame() - send action frame .
+  *
+- * @cfg: driver private data for cfg80211 interface.
+- * @ndev: net device to transmit on.
++ * @ifp: interface to transmit on.
+  * @af_params: configuration data for action frame.
+  */
+-bool brcmf_p2p_send_action_frame(struct brcmf_cfg80211_info *cfg,
+-				 struct net_device *ndev,
++bool brcmf_p2p_send_action_frame(struct brcmf_if *ifp,
+ 				 struct brcmf_fil_af_params_le *af_params)
+ {
++	struct brcmf_cfg80211_info *cfg = ifp->drvr->config;
+ 	struct brcmf_p2p_info *p2p = &cfg->p2p;
+-	struct brcmf_if *ifp = netdev_priv(ndev);
+ 	struct brcmf_fil_action_frame_le *action_frame;
+ 	struct brcmf_config_af_params config_af_params;
+ 	struct afx_hdl *afx_hdl = &p2p->afx_hdl;
+@@ -1857,7 +1848,7 @@ bool brcmf_p2p_send_action_frame(struct
+ 		if (af_params->channel)
+ 			msleep(P2P_AF_RETRY_DELAY_TIME);
+ 
+-		ack = !brcmf_p2p_tx_action_frame(p2p, af_params);
++		ack = !brcmf_p2p_tx_action_frame(ifp, p2p, af_params);
+ 		tx_retry++;
+ 		dwell_overflow = brcmf_p2p_check_dwell_overflow(requested_dwell,
+ 								dwell_jiffies);
+@@ -2217,7 +2208,6 @@ static struct wireless_dev *brcmf_p2p_cr
+ 
+ 	WARN_ON(p2p_ifp->bsscfgidx != bsscfgidx);
+ 
+-	init_completion(&p2p->send_af_done);
+ 	INIT_WORK(&p2p->afx_hdl.afx_work, brcmf_p2p_afx_handler);
+ 	init_completion(&p2p->afx_hdl.act_frm_scan);
+ 	init_completion(&p2p->wait_next_af);
+@@ -2509,6 +2499,8 @@ s32 brcmf_p2p_attach(struct brcmf_cfg802
+ 	pri_ifp = brcmf_get_ifp(cfg->pub, 0);
+ 	p2p->bss_idx[P2PAPI_BSSCFG_PRIMARY].vif = pri_ifp->vif;
+ 
++	init_completion(&p2p->send_af_done);
++
+ 	if (p2pdev_forced) {
+ 		err_ptr = brcmf_p2p_create_p2pdev(p2p, NULL, NULL);
+ 		if (IS_ERR(err_ptr)) {
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.h
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/p2p.h
+@@ -168,8 +168,7 @@ int brcmf_p2p_notify_action_frame_rx(str
+ int brcmf_p2p_notify_action_tx_complete(struct brcmf_if *ifp,
+ 					const struct brcmf_event_msg *e,
+ 					void *data);
+-bool brcmf_p2p_send_action_frame(struct brcmf_cfg80211_info *cfg,
+-				 struct net_device *ndev,
++bool brcmf_p2p_send_action_frame(struct brcmf_if *ifp,
+ 				 struct brcmf_fil_af_params_le *af_params);
+ bool brcmf_p2p_scan_finding_common_channel(struct brcmf_cfg80211_info *cfg,
+ 					   struct brcmf_bss_info_le *bi);
 
 
 
