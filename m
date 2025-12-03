@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DC27CA0D6F
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:14:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF845CA0B71
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:59:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2AA50331E339
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:11:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C79873175867
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:55:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D06C398FB9;
-	Wed,  3 Dec 2025 16:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 183103AA19C;
+	Wed,  3 Dec 2025 16:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xa+4PQhQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J5RI/iJB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB38398FA2;
-	Wed,  3 Dec 2025 16:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8104368287;
+	Wed,  3 Dec 2025 16:52:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764781131; cv=none; b=Di6htvPukCLy/0+8yL574SM0C9YR+SKQHAzwqTJf8vzTfDE9q75OPUaEJ2tBTH0QWCo4aJouNYke2LU3xkTSOstDr5lMM7LPVdSifvUhL4w/CPdpnn24P0nGtZdJeBQCGKdZDmnkWa/AHpFa72FBPUCWU4CtTsfUsX1wpdnAjLQ=
+	t=1764780749; cv=none; b=i/UIeix2poExhgJcgylMlWn+lciKQG+UfawhiL4L4NvT/VnMgC+OFh3a70CWHMEcP+x74eAKbyqxSdj0mqkNN4Cn2ZtCgdLFT6iSbbrj1d2xkd2D5hpn/cL8n61CFehGZGIxwPYML1uondxsBcZImq8G55VcH2x9bXgOUIMNpyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764781131; c=relaxed/simple;
-	bh=6HVgGwTPl78YhVItI8YKbS5u97jQX9nTd4so5fMBgq4=;
+	s=arc-20240116; t=1764780749; c=relaxed/simple;
+	bh=4dKKPgjBk15aXMuSn7opo+2TBCIKHk3TdiIzn8hcyoU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dnbyCbVrn+LVBxA+WWoCl6JcLnjyIeXUGx31dIh6D0DC+FlY3LLbF4L9qnFaGuTvx8fIAFqoMAr7RcEZxthuaTXbH44teGwPYkUifcn04ab5PRT9wVW3d/ParrwxbC7qKuhYYnPRYAc78dAAiCWM9MZG4mfnqWaJ2mN1h9hfgVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xa+4PQhQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69C03C116B1;
-	Wed,  3 Dec 2025 16:58:48 +0000 (UTC)
+	 MIME-Version; b=beuVDAvSL346QUY5O8he++Vg35u0g3+JJYyQtNfZuak5gmXABT7aOdRm6mR8/oG6PZqaGc5/q0ZqeOktvk1IjhOlnrZcn360zdmib5VQ1wm9KKa8cCEjTvrBlYHjFR30UKIEiyRJCFMqTt4jDROCdndyN6hESyHSMkVRrhKaqDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J5RI/iJB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5660BC4CEF5;
+	Wed,  3 Dec 2025 16:52:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764781128;
-	bh=6HVgGwTPl78YhVItI8YKbS5u97jQX9nTd4so5fMBgq4=;
+	s=korg; t=1764780749;
+	bh=4dKKPgjBk15aXMuSn7opo+2TBCIKHk3TdiIzn8hcyoU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xa+4PQhQ0QRD1e57L2tlwWjun9fCqjljLPlIBXHxsKHLsk+q6ExGIGgyZd2S0pKc/
-	 5FnXaEwJyi2qxmGAUn3WYKLnymc6k1WLMO+3RbmlMyhpSRRcCthAsDqqppp89UBbRG
-	 VvyiAuCvfDfS3dG9m97m+9QQuCeDdS1sJemPodqM=
+	b=J5RI/iJB8ITIunAWe2oDa3PW9VuvavGhPXYs56rExdvlbnGADEXoqSiFRTd++PoxD
+	 ziI+VLLSsfj57EUge/ozYf6QJEPGcdrAptyNvUyYyUuw7eKPnkrDbPBhB2fSRd4x8O
+	 wxthO2Ltmw1vJXET1EME6n86NAiVP+ApQoQke6Qs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamie Iles <jamie.iles@oss.qualcomm.com>,
-	Punit Agrawal <punit.agrawal@oss.qualcomm.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 25/93] mailbox: pcc: dont zero error register
+	stable <stable@kernel.org>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Subject: [PATCH 6.12 079/132] slimbus: ngd: Fix reference count leak in qcom_slim_ngd_notify_slaves
 Date: Wed,  3 Dec 2025 16:29:18 +0100
-Message-ID: <20251203152337.444163325@linuxfoundation.org>
+Message-ID: <20251203152346.220514598@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +60,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamie Iles <jamie.iles@oss.qualcomm.com>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-[ Upstream commit ff0e4d4c97c94af34cc9cad37b5a5cdbe597a3b0 ]
+commit 96cf8500934e0ce2a6c486f1dbc3b1fff12f7a5e upstream.
 
-The error status mask for a type 3/4 subspace is used for reading the
-error status, and the bitwise inverse is used for clearing the error
-with the intent being to preserve any of the non-error bits.  However,
-we were previously applying the mask to extract the status and then
-applying the inverse to the result which ended up clearing all bits.
+The function qcom_slim_ngd_notify_slaves() calls of_slim_get_device() which
+internally uses device_find_child() to obtain a device reference.
+According to the device_find_child() documentation,
+the caller must drop the reference with put_device() after use.
 
-Instead, store the inverse mask in the preserve mask and then use that
-on the original value read from the error status so that only the error
-is cleared.
+Found via static analysis and this is similar to commit 4e65bda8273c
+("ASoC: wcd934x: fix error handling in wcd934x_codec_parse_data()")
 
-Fixes: c45ded7e1135 ("mailbox: pcc: Add support for PCCT extended PCC subspaces(type 3/4)")
-Signed-off-by: Jamie Iles <jamie.iles@oss.qualcomm.com>
-Signed-off-by: Punit Agrawal <punit.agrawal@oss.qualcomm.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 917809e2280b ("slimbus: ngd: Add qcom SLIMBus NGD driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251027060601.33228-1-linmq006@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mailbox/pcc.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/slimbus/qcom-ngd-ctrl.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-index bb977cf8ad423..2b7d0bc920726 100644
---- a/drivers/mailbox/pcc.c
-+++ b/drivers/mailbox/pcc.c
-@@ -278,9 +278,8 @@ static int pcc_mbox_error_check_and_clear(struct pcc_chan_info *pchan)
- 	if (ret)
- 		return ret;
+--- a/drivers/slimbus/qcom-ngd-ctrl.c
++++ b/drivers/slimbus/qcom-ngd-ctrl.c
+@@ -1241,6 +1241,7 @@ static void qcom_slim_ngd_notify_slaves(
  
--	val &= pchan->error.status_mask;
--	if (val) {
--		val &= ~pchan->error.status_mask;
-+	if (val & pchan->error.status_mask) {
-+		val &= pchan->error.preserve_mask;
- 		pcc_chan_reg_write(&pchan->error, val);
- 		return -EIO;
+ 		if (slim_get_logical_addr(sbdev))
+ 			dev_err(ctrl->dev, "Failed to get logical address\n");
++		put_device(&sbdev->dev);
  	}
-@@ -673,7 +672,8 @@ static int pcc_parse_subspace_db_reg(struct pcc_chan_info *pchan,
+ }
  
- 		ret = pcc_chan_reg_init(&pchan->error,
- 					&pcct_ext->error_status_register,
--					0, 0, pcct_ext->error_status_mask,
-+					~pcct_ext->error_status_mask, 0,
-+					pcct_ext->error_status_mask,
- 					"Error Status");
- 	}
- 	return ret;
--- 
-2.51.0
-
 
 
 
