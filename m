@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-198974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A96ACCA1973
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 21:49:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66908CA153A
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:18:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B555030249DD
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 20:48:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E7947325B1AA
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:39:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8350D345CA1;
-	Wed,  3 Dec 2025 16:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8446E3358B7;
+	Wed,  3 Dec 2025 15:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZXr8I3S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YZoVamrt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F2E9345759;
-	Wed,  3 Dec 2025 16:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 403F13358A8;
+	Wed,  3 Dec 2025 15:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778282; cv=none; b=Qci3R0MNAU6T078EoNF23NpUq35U7KA53X4IDuC0+OGYf7S7q5O4XrSa+Z237PI4ed8kCZ6hdXqXjcpctmplIVDLgxTVHsFMOkeAl3V+9CcdoS/dSzGjSDmo7uXk+rmdmKv5kimoh09KXC0RwXoB7S0UZvs7d2BgfvmqCDt8Dik=
+	t=1764777201; cv=none; b=JO+rTvQ/AMUMPLkE/CZZ9TWe6tFasXGsZzfpAguf7l+aFSy4++dIqgSLz1fl0IKM3RIJGaIUFdiN6R8OgPwZ47sBsZ4gYlLTe1KZUr2fl1tkOSAHaQTlwGKJtPKgVrGZ9Ld9yitvwlkxix20kvL4KR1L0UtBpf9pjNkszLMJ4Rw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778282; c=relaxed/simple;
-	bh=Gyh56lI68DTvI19a3e+a5y1IomYz9mQNoQX43SlauvU=;
+	s=arc-20240116; t=1764777201; c=relaxed/simple;
+	bh=ga+d34LiqF4XQULrvaHPjlssNkew6mFKTYS14yixh/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IV6b4/duJAzCTkMwG3wDw2I+IHOc+MEF/zwlcTDV8YB+g9PVBGzn3SuniFL4lOtfGy+oe6C3lzSEps8N7xUO+tL2+eQ5n+HvsWcACL6gDJfwB46Amf9eMj3Nhn1yw+V9Yx6xcv/kV9CpcJLMzs/CTFomminIqjAkcbha2yqp61I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZXr8I3S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5CADC4CEF5;
-	Wed,  3 Dec 2025 16:11:21 +0000 (UTC)
+	 MIME-Version; b=mDvvDRV/u35HLaLDnlmzTWgXPWuO9wPlXd/PNDouD2s+I371mlUh8F8u3VstzhA87jQpNejXTkQ7CKirp9L3P3/s412CgAMq06JTKeXQ3+UWd4KAOnR3e8L5YXFd94RMyd2oDUgP9Ih8zZSKeSu0bJmmdByq1L/xD9FXTfA3ibo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YZoVamrt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8F3FC4CEF5;
+	Wed,  3 Dec 2025 15:53:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778282;
-	bh=Gyh56lI68DTvI19a3e+a5y1IomYz9mQNoQX43SlauvU=;
+	s=korg; t=1764777201;
+	bh=ga+d34LiqF4XQULrvaHPjlssNkew6mFKTYS14yixh/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XZXr8I3SeTT/X1jjuNc9uaYAFGByi6XqxQzB7CXF3y3GBQN7CKh8mvl9FDl9bhOgL
-	 vkHibvgPVOC1MC5oRZtqwCM2aQIwEZIrROmtcfB9g6hWo6+tGQ+lfjYruRgmfNa2DR
-	 EDrmjtaTY0p2sg/g5T7H7YWFDsnvcM1NmzHIbmpY=
+	b=YZoVamrtjG/aHirNZ8L+ndkEkBB8eeDKYQ+T2diioptoQ+PQUDh7njmFkd3dN4OY3
+	 LKcZGY72tl9z3qrJWdC3mQwRyMxvZfm0bKbAr3yFe/w9CfBwiMK/WUJT8kmeo7suV6
+	 t1K+4y8kZonMhc5/dtdwhHlt8ZW9K2CC7CASIZQ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 298/392] platform/x86/intel/speed_select_if: Convert PCIBIOS_* return codes to errnos
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.17 070/146] MIPS: mm: Prevent a TLB shutdown on initial uniquification
 Date: Wed,  3 Dec 2025 16:27:28 +0100
-Message-ID: <20251203152425.134888358@linuxfoundation.org>
+Message-ID: <20251203152349.027860123@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,57 +58,181 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-[ Upstream commit d8bb447efc5622577994287dc77c684fa8840b30 ]
+commit 9f048fa487409e364cf866c957cf0b0d782ca5a3 upstream.
 
-isst_if_probe() uses pci_read_config_dword() that returns PCIBIOS_*
-codes. The return code is returned from the probe function as is but
-probe functions should return normal errnos. A proper implementation
-can be found in drivers/leds/leds-ss4200.c.
+Depending on the particular CPU implementation a TLB shutdown may occur
+if multiple matching entries are detected upon the execution of a TLBP
+or the TLBWI/TLBWR instructions.  Given that we don't know what entries
+we have been handed we need to be very careful with the initial TLB
+setup and avoid all these instructions.
 
-Convert PCIBIOS_* return codes using pcibios_err_to_errno() into
-normal errno before returning.
+Therefore read all the TLB entries one by one with the TLBR instruction,
+bypassing the content addressing logic, and truncate any large pages in
+place so as to avoid a case in the second step where an incoming entry
+for a large page at a lower address overlaps with a replacement entry
+chosen at another index.  Then preinitialize the TLB using addresses
+outside our usual unique range and avoiding clashes with any entries
+received, before making the usual call to local_flush_tlb_all().
 
-Fixes: d3a23584294c ("platform/x86: ISST: Add Intel Speed Select mmio interface")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Link: https://patch.msgid.link/20251117033354.132-1-vulab@iscas.ac.cn
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This fixes (at least) R4x00 cores if TLBP hits multiple matching TLB
+entries (SGI IP22 PROM for examples sets up all TLBs to the same virtual
+address).
+
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Fixes: 35ad7e181541 ("MIPS: mm: tlb-r4k: Uniquify TLB entries on init")
+Cc: stable@vger.kernel.org
+Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Tested-by: Jiaxun Yang <jiaxun.yang@flygoat.com> # Boston I6400, M5150 sim
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/intel/speed_select_if/isst_if_mmio.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/mips/mm/tlb-r4k.c |  102 ++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 64 insertions(+), 38 deletions(-)
 
-diff --git a/drivers/platform/x86/intel/speed_select_if/isst_if_mmio.c b/drivers/platform/x86/intel/speed_select_if/isst_if_mmio.c
-index ff49025ec0856..bb38e5f021a80 100644
---- a/drivers/platform/x86/intel/speed_select_if/isst_if_mmio.c
-+++ b/drivers/platform/x86/intel/speed_select_if/isst_if_mmio.c
-@@ -106,11 +106,11 @@ static int isst_if_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+--- a/arch/mips/mm/tlb-r4k.c
++++ b/arch/mips/mm/tlb-r4k.c
+@@ -15,6 +15,7 @@
+ #include <linux/mm.h>
+ #include <linux/hugetlb.h>
+ #include <linux/export.h>
++#include <linux/sort.h>
  
- 	ret = pci_read_config_dword(pdev, 0xD0, &mmio_base);
- 	if (ret)
--		return ret;
-+		return pcibios_err_to_errno(ret);
+ #include <asm/cpu.h>
+ #include <asm/cpu-type.h>
+@@ -508,55 +509,79 @@ static int __init set_ntlb(char *str)
  
- 	ret = pci_read_config_dword(pdev, 0xFC, &pcu_base);
- 	if (ret)
--		return ret;
-+		return pcibios_err_to_errno(ret);
+ __setup("ntlb=", set_ntlb);
  
- 	pcu_base &= GENMASK(10, 0);
- 	base_addr = (u64)mmio_base << 23 | (u64) pcu_base << 12;
--- 
-2.51.0
-
+-/* Initialise all TLB entries with unique values */
++
++/* Comparison function for EntryHi VPN fields.  */
++static int r4k_vpn_cmp(const void *a, const void *b)
++{
++	long v = *(unsigned long *)a - *(unsigned long *)b;
++	int s = sizeof(long) > sizeof(int) ? sizeof(long) * 8 - 1: 0;
++	return s ? (v != 0) | v >> s : v;
++}
++
++/*
++ * Initialise all TLB entries with unique values that do not clash with
++ * what we have been handed over and what we'll be using ourselves.
++ */
+ static void r4k_tlb_uniquify(void)
+ {
+-	int entry = num_wired_entries();
++	unsigned long tlb_vpns[1 << MIPS_CONF1_TLBS_SIZE];
++	int tlbsize = current_cpu_data.tlbsize;
++	int start = num_wired_entries();
++	unsigned long vpn_mask;
++	int cnt, ent, idx, i;
++
++	vpn_mask = GENMASK(cpu_vmbits - 1, 13);
++	vpn_mask |= IS_ENABLED(CONFIG_64BIT) ? 3ULL << 62 : 1 << 31;
+ 
+ 	htw_stop();
+-	write_c0_entrylo0(0);
+-	write_c0_entrylo1(0);
+ 
+-	while (entry < current_cpu_data.tlbsize) {
+-		unsigned long asid_mask = cpu_asid_mask(&current_cpu_data);
+-		unsigned long asid = 0;
+-		int idx;
++	for (i = start, cnt = 0; i < tlbsize; i++, cnt++) {
++		unsigned long vpn;
+ 
+-		/* Skip wired MMID to make ginvt_mmid work */
+-		if (cpu_has_mmid)
+-			asid = MMID_KERNEL_WIRED + 1;
++		write_c0_index(i);
++		mtc0_tlbr_hazard();
++		tlb_read();
++		tlb_read_hazard();
++		vpn = read_c0_entryhi();
++		vpn &= vpn_mask & PAGE_MASK;
++		tlb_vpns[cnt] = vpn;
+ 
+-		/* Check for match before using UNIQUE_ENTRYHI */
+-		do {
+-			if (cpu_has_mmid) {
+-				write_c0_memorymapid(asid);
+-				write_c0_entryhi(UNIQUE_ENTRYHI(entry));
+-			} else {
+-				write_c0_entryhi(UNIQUE_ENTRYHI(entry) | asid);
+-			}
+-			mtc0_tlbw_hazard();
+-			tlb_probe();
+-			tlb_probe_hazard();
+-			idx = read_c0_index();
+-			/* No match or match is on current entry */
+-			if (idx < 0 || idx == entry)
+-				break;
+-			/*
+-			 * If we hit a match, we need to try again with
+-			 * a different ASID.
+-			 */
+-			asid++;
+-		} while (asid < asid_mask);
+-
+-		if (idx >= 0 && idx != entry)
+-			panic("Unable to uniquify TLB entry %d", idx);
+-
+-		write_c0_index(entry);
++		/* Prevent any large pages from overlapping regular ones.  */
++		write_c0_pagemask(read_c0_pagemask() & PM_DEFAULT_MASK);
+ 		mtc0_tlbw_hazard();
+ 		tlb_write_indexed();
+-		entry++;
++		tlbw_use_hazard();
+ 	}
+ 
++	sort(tlb_vpns, cnt, sizeof(tlb_vpns[0]), r4k_vpn_cmp, NULL);
++
++	write_c0_pagemask(PM_DEFAULT_MASK);
++	write_c0_entrylo0(0);
++	write_c0_entrylo1(0);
++
++	idx = 0;
++	ent = tlbsize;
++	for (i = start; i < tlbsize; i++)
++		while (1) {
++			unsigned long entryhi, vpn;
++
++			entryhi = UNIQUE_ENTRYHI(ent);
++			vpn = entryhi & vpn_mask & PAGE_MASK;
++
++			if (idx >= cnt || vpn < tlb_vpns[idx]) {
++				write_c0_entryhi(entryhi);
++				write_c0_index(i);
++				mtc0_tlbw_hazard();
++				tlb_write_indexed();
++				ent++;
++				break;
++			} else if (vpn == tlb_vpns[idx]) {
++				ent++;
++			} else {
++				idx++;
++			}
++		}
++
+ 	tlbw_use_hazard();
+ 	htw_start();
+ 	flush_micro_tlb();
+@@ -602,6 +627,7 @@ static void r4k_tlb_configure(void)
+ 
+ 	/* From this point on the ARC firmware is dead.	 */
+ 	r4k_tlb_uniquify();
++	local_flush_tlb_all();
+ 
+ 	/* Did I tell you that ARC SUCKS?  */
+ }
 
 
 
