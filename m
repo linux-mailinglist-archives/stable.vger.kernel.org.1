@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-199358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9235C9FF8B
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:33:09 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8278C9F800
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:35:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7874730017EF
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:32:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1DBE33002B05
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:33:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF30393DDD;
-	Wed,  3 Dec 2025 16:32:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AD09256C9E;
+	Wed,  3 Dec 2025 15:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LxMVzSQ0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nur873ij"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47CC5393DDA;
-	Wed,  3 Dec 2025 16:32:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 364C6305978;
+	Wed,  3 Dec 2025 15:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779533; cv=none; b=DCJD19yc9IwbzA14UvuNWm/XusDNQc9FxPlQO5bZKXG76deb7Stuq7qXEJ81SmoBv9ux0C1851DrDEXSfMiMnotClzyANAbIIU37rTN1l/Fr0uEKjL0ZEb1hldZOw8hfSewadYJOe78hYuRgxUdBkoHPSUWc9SOFtC4H5/4fJjg=
+	t=1764776002; cv=none; b=alW2nGzYIzpRajFln7KkocYntBxww8H21z1fu+cIEoR3tOim/jtO/X11/GAzPPhZZpgdyOSkw9ti8zCXyEc4M5fTZkZYb/RZDkWCgcRBnCWQKanKtP/DwAoSPIfNaWq3lNsKQ6nvAziXOOvU0Dk4skaAi6N5EBUZGp/tfks4rfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779533; c=relaxed/simple;
-	bh=pCdxjjYtqARsLHVH0J3O889tcbQh/egNw9tg3wdJ1jY=;
+	s=arc-20240116; t=1764776002; c=relaxed/simple;
+	bh=RT8pSYQ+pY1uqcmB7MrSCT++iwmP5Gua3wk/mNphgrY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LW93j1N//9LacirRkdUAFfwiqupI5k/W7V5u79GJSniEre0fri1TO6d6lvdSJcsakXIrW6dqV8cCXq6fCVDPN09bhyvvpq2fAVfmNtjZ2fZmm/z9qgR+DRITPiWj7+V11yqP6AZH2QIro2VW7ZiFQyNH8StaJK8BP2mLkh3ozn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LxMVzSQ0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2A97C4CEF5;
-	Wed,  3 Dec 2025 16:32:12 +0000 (UTC)
+	 MIME-Version; b=fFcqvOzd3zkK3jgg/4xD7lyYkKxuFSS1e+xIAlSWlMViKxiWJiNKvF3VTD19qInTKxAW3365zDuz8jgwxil525Op+nm4Ox+77jFZaMWPjw8G8DVValquyn3lbEweOHAnqC5GDpv7GsYeNWKw++RBRUY3xE/Pg3X9dZSwR2dj1GU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nur873ij; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4592FC116B1;
+	Wed,  3 Dec 2025 15:33:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779533;
-	bh=pCdxjjYtqARsLHVH0J3O889tcbQh/egNw9tg3wdJ1jY=;
+	s=korg; t=1764776001;
+	bh=RT8pSYQ+pY1uqcmB7MrSCT++iwmP5Gua3wk/mNphgrY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LxMVzSQ09RdzLjOnBcY9gdH2nMr3Uom3zwAdaEgBkUBak6ZreEm/eZDOFNz4v5JXC
-	 0skZxLnCdrs84A7pBesM+4qeAh42q0/hgjSl1eRM+khMscs7xR4LlT6X1M3itG4oxe
-	 cK5H+cXjpdHorcJ+Vm3F7EkBIITb4Rp5IH5EzhqY=
+	b=nur873ij3jwOXdFm/dJyCrARKf5SOl9eHYkr5t4r2wyOrcxzlu+HZg7oedzSJg20S
+	 MfS5tMXSNccEZafHHro6JfUHY3IJT3JNsCxqFwnYJqV3EHFnbc27M0IODEtpRbAQ4h
+	 xd7vh47ulc53JA2hD+rXCVnkUayrSLAPp8SH1Wn0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Sarthak Garg <quic_sartgarg@quicinc.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 253/568] NFSv4: handle ERR_GRACE on delegation recalls
+Subject: [PATCH 5.10 051/300] mmc: sdhci-msm: Enable tuning for SDR50 mode for SD card
 Date: Wed,  3 Dec 2025 16:24:15 +0100
-Message-ID: <20251203152449.987834338@linuxfoundation.org>
+Message-ID: <20251203152402.510379563@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +61,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Kornievskaia <okorniev@redhat.com>
+From: Sarthak Garg <quic_sartgarg@quicinc.com>
 
-[ Upstream commit be390f95242785adbf37d7b8a5101dd2f2ba891b ]
+[ Upstream commit 08b68ca543ee9d5a8d2dc406165e4887dd8f170b ]
 
-RFC7530 states that clients should be prepared for the return of
-NFS4ERR_GRACE errors for non-reclaim lock and I/O requests.
+For Qualcomm SoCs which needs level shifter for SD card, extra delay is
+seen on receiver data path.
 
-Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+To compensate this delay enable tuning for SDR50 mode for targets which
+has level shifter. SDHCI_SDR50_NEEDS_TUNING caps will be set for targets
+with level shifter on Qualcomm SOC's.
+
+Signed-off-by: Sarthak Garg <quic_sartgarg@quicinc.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4proc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mmc/host/sdhci-msm.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index cbcff4603232b..935ca3845ce53 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -7663,10 +7663,10 @@ int nfs4_lock_delegation_recall(struct file_lock *fl, struct nfs4_state *state,
- 		return err;
- 	do {
- 		err = _nfs4_do_setlk(state, F_SETLK, fl, NFS_LOCK_NEW);
--		if (err != -NFS4ERR_DELAY)
-+		if (err != -NFS4ERR_DELAY && err != -NFS4ERR_GRACE)
- 			break;
- 		ssleep(1);
--	} while (err == -NFS4ERR_DELAY);
-+	} while (err == -NFS4ERR_DELAY || err == -NFSERR_GRACE);
- 	return nfs4_handle_delegation_recall_error(server, state, stateid, fl, err);
- }
+diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
+index 183617d56b446..c900525b52516 100644
+--- a/drivers/mmc/host/sdhci-msm.c
++++ b/drivers/mmc/host/sdhci-msm.c
+@@ -78,6 +78,7 @@
+ #define CORE_IO_PAD_PWR_SWITCH_EN	BIT(15)
+ #define CORE_IO_PAD_PWR_SWITCH	BIT(16)
+ #define CORE_HC_SELECT_IN_EN	BIT(18)
++#define CORE_HC_SELECT_IN_SDR50	(4 << 19)
+ #define CORE_HC_SELECT_IN_HS400	(6 << 19)
+ #define CORE_HC_SELECT_IN_MASK	(7 << 19)
  
+@@ -1113,6 +1114,10 @@ static bool sdhci_msm_is_tuning_needed(struct sdhci_host *host)
+ {
+ 	struct mmc_ios *ios = &host->mmc->ios;
+ 
++	if (ios->timing == MMC_TIMING_UHS_SDR50 &&
++	    host->flags & SDHCI_SDR50_NEEDS_TUNING)
++		return true;
++
+ 	/*
+ 	 * Tuning is required for SDR104, HS200 and HS400 cards and
+ 	 * if clock frequency is greater than 100MHz in these modes.
+@@ -1181,6 +1186,8 @@ static int sdhci_msm_execute_tuning(struct mmc_host *mmc, u32 opcode)
+ 	struct mmc_ios ios = host->mmc->ios;
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+ 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
++	const struct sdhci_msm_offset *msm_offset = msm_host->offset;
++	u32 config;
+ 
+ 	if (!sdhci_msm_is_tuning_needed(host)) {
+ 		msm_host->use_cdr = false;
+@@ -1197,6 +1204,14 @@ static int sdhci_msm_execute_tuning(struct mmc_host *mmc, u32 opcode)
+ 	 */
+ 	msm_host->tuning_done = 0;
+ 
++	if (ios.timing == MMC_TIMING_UHS_SDR50 &&
++	    host->flags & SDHCI_SDR50_NEEDS_TUNING) {
++		config = readl_relaxed(host->ioaddr + msm_offset->core_vendor_spec);
++		config &= ~CORE_HC_SELECT_IN_MASK;
++		config |= CORE_HC_SELECT_IN_EN | CORE_HC_SELECT_IN_SDR50;
++		writel_relaxed(config, host->ioaddr + msm_offset->core_vendor_spec);
++	}
++
+ 	/*
+ 	 * For HS400 tuning in HS200 timing requires:
+ 	 * - select MCLK/2 in VENDOR_SPEC
 -- 
 2.51.0
 
