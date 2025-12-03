@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-198634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95B56CA1414
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:06:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 081F2CA151C
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:17:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4FA7832F9676
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:44:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ADCA23031344
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:38:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D22C334C30;
-	Wed,  3 Dec 2025 15:53:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD5DC346E41;
+	Wed,  3 Dec 2025 16:11:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y9g/PQy8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hEPLwQ0U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A9C9334C2A;
-	Wed,  3 Dec 2025 15:53:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 797C9346A1B;
+	Wed,  3 Dec 2025 16:11:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777188; cv=none; b=Wm5XJ5SYIKp0pkXdKeVWFpLpn/xULAJfSsli4cVNZs99Yq+aqwqK8jS43LPOvRhYk1ZSuYIx2yMiQKDaYFXfrLXNLGV2QqeWA0pQmXju5r8HzGKW2oObZXL/+UNnJlLbAEHWswdzSJQp/ZMIutX6+/0IfM13R85mjf1jksSfzzQ=
+	t=1764778305; cv=none; b=a0ks1RvQXdSdaIWExWY2QiEoXhTN9B7rgof/w/Z6Ve9MjgcpmOKwResbr7as0QpU+Z8S1riK9LdwTanULz/HDZqnR/yuY8hna+4q/0TA3Cpwo2qLSVGZU0EQ/NbWE/o58zaeVtWE+0EOJUvCKWOZ5KLYvHl4AgE7tnfBeG77bNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777188; c=relaxed/simple;
-	bh=nNAXRvyP8aeMQIUjwLdhkk++z7DRWvGkMZqBNGdVipw=;
+	s=arc-20240116; t=1764778305; c=relaxed/simple;
+	bh=C2PEzuHipy09YcoZzCO3hv2ULL3a2MV+WMtyElF09oc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n4EHaSnXr/si8gKQKmU45Ga9/UXcDjXNJFviCDPT7r5rm1PObWZuUssvYurozVpRWmmSGMfsWdFSsvZA+QCi4JIsNkwtoIJqOZlUTfYILwXwjVrbysCjOxA9z2Ye8oJoud9csp3TqUgcctS5zGujR7oV8y53P1loFA2Jd2axnOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y9g/PQy8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3216C4CEF5;
-	Wed,  3 Dec 2025 15:53:07 +0000 (UTC)
+	 MIME-Version; b=gcyC1usCb/R4yy38bXXHux3lNPCap2jH8BJQSOSGHkK82M8hdSMZr+KGyn1r5E+BMoh9Yahl9kQ6VDbNJX+7pKlHKrJL6M2+0/HkZkcDKvuaXs6+k/4kDKcKbrOmJBb8Gky8U3buX7ExxJxcDE07L69ijY6N5wolBds422d9UEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hEPLwQ0U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBF5FC4CEF5;
+	Wed,  3 Dec 2025 16:11:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777188;
-	bh=nNAXRvyP8aeMQIUjwLdhkk++z7DRWvGkMZqBNGdVipw=;
+	s=korg; t=1764778305;
+	bh=C2PEzuHipy09YcoZzCO3hv2ULL3a2MV+WMtyElF09oc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y9g/PQy8hsuEc+b0N+gBeuVAtURd8Vtxrqu72Dhcp/NOSHv7PDbvLb1VKT8AYUw+l
-	 FZAVZd2XyyYpRw8UaqczoHkocq5dTXX5zX4rxb5tcwOz7ke4+2uF+xOQEZ3r7Gwx3A
-	 brkfQIeA3egDdZXcsX2j8JC78jO4GjihI0tsakfI=
+	b=hEPLwQ0UJuMffv3imRYRWjCa5+iUkf6dhRMrymlGF8zvE86Rk3QcYk/ZCFqY9XOLV
+	 5grW0iEYZuvnNBPks/sEFctHCRvnUcyMrrgKuwNF34Yv8dpUyqnFOD0HgfnM82StOe
+	 iL0rDm/6wfrQvDZbhZd3sl9SCWO/L1aqmcCSZSWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Zhaldak <i.v.zhaldak@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.17 076/146] ALSA: usb-audio: Add DSD quirk for LEAK Stereo 230
+	Shahar Shitrit <shshitrit@nvidia.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 304/392] net: tls: Cancel RX async resync request on rcd_delta overflow
 Date: Wed,  3 Dec 2025 16:27:34 +0100
-Message-ID: <20251203152349.247202922@linuxfoundation.org>
+Message-ID: <20251203152425.351430879@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,51 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Zhaldak <i.v.zhaldak@gmail.com>
+From: Shahar Shitrit <shshitrit@nvidia.com>
 
-commit c83fc13960643c4429cd9dfef1321e6430a81b47 upstream.
+[ Upstream commit c15d5c62ab313c19121f10e25d4fec852bd1c40c ]
 
-Integrated amplifier LEAK Stereo 230 by IAG Limited has built-in
-ESS9038Q2M DAC served by XMOS controller. It supports both DSD Native
-and DSD-over-PCM (DoP) operational modes. But it doesn't work properly
-by default and tries DSD-to-PCM conversion. USB quirks below allow it
-to operate as designed.
+When a netdev issues a RX async resync request for a TLS connection,
+the TLS module handles it by logging record headers and attempting to
+match them to the tcp_sn provided by the device. If a match is found,
+the TLS module approves the tcp_sn for resynchronization.
 
-Add DSD_RAW quirk flag for IAG Limited devices (vendor ID 0x2622)
-Add DSD format quirk for LEAK Stereo 230 (USB ID 0x2622:0x0061)
+While waiting for a device response, the TLS module also increments
+rcd_delta each time a new TLS record is received, tracking the distance
+from the original resync request.
 
-Signed-off-by: Ivan Zhaldak <i.v.zhaldak@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20251117125848.30769-1-i.v.zhaldak@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However, if the device response is delayed or fails (e.g due to
+unstable connection and device getting out of tracking, hardware
+errors, resource exhaustion etc.), the TLS module keeps logging and
+incrementing, which can lead to a WARN() when rcd_delta exceeds the
+threshold.
+
+To address this, introduce tls_offload_rx_resync_async_request_cancel()
+to explicitly cancel resync requests when a device response failure is
+detected. Call this helper also as a final safeguard when rcd_delta
+crosses its threshold, as reaching this point implies that earlier
+cancellation did not occur.
+
+Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1761508983-937977-3-git-send-email-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks.c |    3 +++
- 1 file changed, 3 insertions(+)
+ include/net/tls.h    | 6 ++++++
+ net/tls/tls_device.c | 4 +++-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -2028,6 +2028,7 @@ u64 snd_usb_interface_dsd_format_quirks(
- 	case USB_ID(0x249c, 0x9326): /* M2Tech Young MkIII */
- 	case USB_ID(0x2616, 0x0106): /* PS Audio NuWave DAC */
- 	case USB_ID(0x2622, 0x0041): /* Audiolab M-DAC+ */
-+	case USB_ID(0x2622, 0x0061): /* LEAK Stereo 230 */
- 	case USB_ID(0x278b, 0x5100): /* Rotel RC-1590 */
- 	case USB_ID(0x27f7, 0x3002): /* W4S DAC-2v2SE */
- 	case USB_ID(0x29a2, 0x0086): /* Mutec MC3+ USB */
-@@ -2411,6 +2412,8 @@ static const struct usb_audio_quirk_flag
- 		   QUIRK_FLAG_DSD_RAW),
- 	VENDOR_FLG(0x25ce, /* Mytek devices */
- 		   QUIRK_FLAG_DSD_RAW),
-+	VENDOR_FLG(0x2622, /* IAG Limited devices */
-+		   QUIRK_FLAG_DSD_RAW),
- 	VENDOR_FLG(0x278b, /* Rotel? */
- 		   QUIRK_FLAG_DSD_RAW),
- 	VENDOR_FLG(0x292b, /* Gustard/Ess based devices */
+diff --git a/include/net/tls.h b/include/net/tls.h
+index 59ff5c901ab56..db0d1ec04f39c 100644
+--- a/include/net/tls.h
++++ b/include/net/tls.h
+@@ -665,6 +665,12 @@ tls_offload_rx_resync_async_request_end(struct sock *sk, __be32 seq)
+ 		     ((u64)ntohl(seq) << 32) | RESYNC_REQ);
+ }
+ 
++static inline void
++tls_offload_rx_resync_async_request_cancel(struct tls_offload_resync_async *resync_async)
++{
++	atomic64_set(&resync_async->req, 0);
++}
++
+ static inline void
+ tls_offload_rx_resync_set_type(struct sock *sk, enum tls_offload_sync_type type)
+ {
+diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
+index e7c361807590d..1338e4e2c0f40 100644
+--- a/net/tls/tls_device.c
++++ b/net/tls/tls_device.c
+@@ -694,8 +694,10 @@ tls_device_rx_resync_async(struct tls_offload_resync_async *resync_async,
+ 		/* shouldn't get to wraparound:
+ 		 * too long in async stage, something bad happened
+ 		 */
+-		if (WARN_ON_ONCE(resync_async->rcd_delta == USHRT_MAX))
++		if (WARN_ON_ONCE(resync_async->rcd_delta == USHRT_MAX)) {
++			tls_offload_rx_resync_async_request_cancel(resync_async);
+ 			return false;
++		}
+ 
+ 		/* asynchronous stage: log all headers seq such that
+ 		 * req_seq <= seq <= end_seq, and wait for real resync request
+-- 
+2.51.0
+
 
 
 
