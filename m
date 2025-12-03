@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-199630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BB42CA0248
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:51:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A9DACA070C
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:28:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D54293016361
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:47:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 250433160D3C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:11:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8A1135B150;
-	Wed,  3 Dec 2025 16:47:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DA06398FB6;
+	Wed,  3 Dec 2025 16:58:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vFoQckJ+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wI3hvVGB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DCD1313546;
-	Wed,  3 Dec 2025 16:47:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8C8398F81;
+	Wed,  3 Dec 2025 16:58:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780428; cv=none; b=UzVj6ps8MyjnPY59j1jXUqx+cWERdY7VIvAgOnkvRQMuLarIF0LPOKJ8TTuOhswswhd1JLd4cx6fmHIHb7+fkP5DIwhHxv8Mg3B8imKw4l4aw8M8uasFXEPJfxmJbXbgP52S7rW+km9M2PgGuzVd621lltFVf3sVS7veUqEaGvc=
+	t=1764781120; cv=none; b=T9DchCdJsDWNLDjPzzJD2+R+UFRalEnewG2tGHjRAmfrptDM5TzoS9RlK9088vg/0AdDGXSEaQr1k3q+7XhXS2iIR0md5QBpGeUTxCUhVB+l9Qv845TlkaGiLJ3RB+E8GOdpMQg9B9tpLhS4kYY5nbzqfZui3XHT954EJB/xX+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780428; c=relaxed/simple;
-	bh=Hpp//6eGvTxDY09jjrBz7cO7nNx0K6x+7ZyZP0ffgZg=;
+	s=arc-20240116; t=1764781120; c=relaxed/simple;
+	bh=GJAV0RJ6Gtgm3xkj1wzYMNmupha/smNjqkxd8eOZvw0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sQ7Yg3lio6xzxXsNW5xlXWfSb8R7Edkt9naaZZGd6L3mMrDxTIkJSJ4P6JRBU6DWAwpurwL1o2d8Gw3hRpumd3WceVRUIF5/9kV+/CplrZjiXmvJV4jBJ+QjRyonoJpzU4dPBW5RJLZfdt6vHgI2J6gPMHleqTvAz5tZC3ulpPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vFoQckJ+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF70AC4CEF5;
-	Wed,  3 Dec 2025 16:47:07 +0000 (UTC)
+	 MIME-Version; b=doD0yqgZQ1Z28ScXq8zXROsNdh5J335lM5pElDNKBWkX6K1gMna5JZa/tLwVUSYCtBFmFBKsGZd+ZEwksxVb2xFhBDa6ZL2vYb1VamOfqKmvHc45ek5qXaxd0fySLRgmn/ovrtXwBlwNbT3+SwCwpyk6rnzaqicctPU4Qd23kI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wI3hvVGB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4A48C4CEF5;
+	Wed,  3 Dec 2025 16:58:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780428;
-	bh=Hpp//6eGvTxDY09jjrBz7cO7nNx0K6x+7ZyZP0ffgZg=;
+	s=korg; t=1764781119;
+	bh=GJAV0RJ6Gtgm3xkj1wzYMNmupha/smNjqkxd8eOZvw0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vFoQckJ+D0m2QKg645crvElbgeG144wp7bpXaD+YmuNupCFyy/AIvvmHpibFT66B0
-	 uSTRk/3x6zVjH3z9ZEr6G2aazz6kFJ7FfSv0qS/SMZJW6840VnBY4pMj6qrn6NdfxF
-	 lCefmMwVd5oWSST6YO6pLSNijwVHYou1fjPGIuRc=
+	b=wI3hvVGBShlDtULwJXoFNWKDKg4oPYoFjGXYp6GOlpq7go0nAjSegFrsFUdl6BYA1
+	 by3ll2Cm1I3d5sa7LS/gwa0fQmVRQipJd+fz5XuI5Rmu/9IwDxIBkVnboHoAk2cPWj
+	 YchqLXOu569JpQe9D73/lbuJ/wpYYErO3dRa5Gtk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neil@brown.name>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 553/568] nfsd: Replace clamp_t in nfsd4_get_drc_mem()
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 22/93] usb: gadget: renesas_usbf: Handle devm_pm_runtime_enable() errors
 Date: Wed,  3 Dec 2025 16:29:15 +0100
-Message-ID: <20251203152500.965331640@linuxfoundation.org>
+Message-ID: <20251203152337.333699007@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
+References: <20251203152336.494201426@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,68 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neil@brown.name>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-A recent change to clamp_t() in 6.1.y caused fs/nfsd/nfs4state.c to fail
-to compile with gcc-9. The code in nfsd4_get_drc_mem() was written with
-the assumption that when "max < min",
+[ Upstream commit 74851fbb6d647304f8a7dc491434d3a335ef4b8d ]
 
-   clamp(val, min, max)
+devm_pm_runtime_enable() can fail due to memory allocation.
+The current code ignores its return value, potentially causing
+pm_runtime_resume_and_get() to operate on uninitialized runtime
+PM state.
 
-would return max.  This assumption is not documented as an API promise
-and the change caused a compile failure if it could be statically
-determined that "max < min".
+Check the return value of devm_pm_runtime_enable() and return on failure.
 
-The relevant code was no longer present upstream when commit 1519fbc8832b
-("minmax.h: use BUILD_BUG_ON_MSG() for the lo < hi test in clamp()")
-landed there, so there is no upstream change to nfsd4_get_drc_mem() to
-backport.
-
-There is no clear case that the existing code in nfsd4_get_drc_mem()
-is functioning incorrectly. The goal of this patch is to permit the clean
-application of commit 1519fbc8832b ("minmax.h: use BUILD_BUG_ON_MSG() for
-the lo < hi test in clamp()"), and any commits that depend on it, to LTS
-kernels without affecting the ability to compile those kernels. This is
-done by open-coding the __clamp() macro sans the built-in type checking.
-
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220745#c0
-Signed-off-by: NeilBrown <neil@brown.name>
-Stable-dep-of: 1519fbc8832b ("minmax.h: use BUILD_BUG_ON_MSG() for the lo < hi test in clamp()")
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Reviewed_by: David Laight <david.laight.linux@gmail.com>
+Fixes: 3e6e14ffdea4 ("usb: gadget: udc: add Renesas RZ/N1 USBF controller support")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Acked-by: Herve Codina <herve.codina@bootlin.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20251124022215.1619-1-vulab@iscas.ac.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/usb/gadget/udc/renesas_usbf.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Changes since Neil's post:
-* Editorial changes to the commit message
-* Attempt to address David's review comments
-* Applied to linux-6.12.y, passed NFSD upstream CI suite
-
-This patch is intended to be applied to linux-6.12.y, and should
-apply cleanly to other LTS kernels since nfsd4_get_drc_mem hasn't
-changed since v5.4.
-
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -1823,8 +1823,10 @@ static u32 nfsd4_get_drc_mem(struct nfsd
- 	 */
- 	scale_factor = max_t(unsigned int, 8, nn->nfsd_serv->sv_nrthreads);
+diff --git a/drivers/usb/gadget/udc/renesas_usbf.c b/drivers/usb/gadget/udc/renesas_usbf.c
+index 657f265ac7cc5..8463f681ae673 100644
+--- a/drivers/usb/gadget/udc/renesas_usbf.c
++++ b/drivers/usb/gadget/udc/renesas_usbf.c
+@@ -3262,7 +3262,9 @@ static int usbf_probe(struct platform_device *pdev)
+ 	if (IS_ERR(udc->regs))
+ 		return PTR_ERR(udc->regs);
  
--	avail = clamp_t(unsigned long, avail, slotsize,
--			total_avail/scale_factor);
-+	if (avail > total_avail / scale_factor)
-+		avail = total_avail / scale_factor;
-+	else if (avail < slotsize)
-+		avail = slotsize;
- 	num = min_t(int, num, avail / slotsize);
- 	num = max_t(int, num, 1);
- 	nfsd_drc_mem_used += num * slotsize;
+-	devm_pm_runtime_enable(&pdev->dev);
++	ret = devm_pm_runtime_enable(&pdev->dev);
++	if (ret)
++		return ret;
+ 	ret = pm_runtime_resume_and_get(&pdev->dev);
+ 	if (ret < 0)
+ 		return ret;
+-- 
+2.51.0
+
 
 
 
