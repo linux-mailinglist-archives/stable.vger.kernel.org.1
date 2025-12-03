@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3F89CA0EF9
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:25:07 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6758ACA06F4
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:27:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4A48732C19D0
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:23:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DC4383000B3D
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:27:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F39033A707;
-	Wed,  3 Dec 2025 15:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF96431ED7C;
+	Wed,  3 Dec 2025 16:45:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ckiqVtO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nascdf6K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCFCC33890B;
-	Wed,  3 Dec 2025 15:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 998573587AE;
+	Wed,  3 Dec 2025 16:45:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777293; cv=none; b=Kr25BhuigewvfOgDdOE8uNmjjFWc7Sw5+ub3xokAiiv6HLJZsaGXnI5F3AP/WsxrpPpuWUHsyVqDIGyRKMoS73xN/Cm3z+DfAufYA8jrdHkWkJnEOJcK7MQkux78vNfuBXomMTgFvgf6RWEbvUtqjknHow4qhl12RSNeVf63na0=
+	t=1764780300; cv=none; b=Ybh4AtvUNU7l502RxZUgsUqbdmr2tBLKo+DBuZCzHyIuRgRivzaPti1UtrLG0pSYAooICi+qJPCI6aFRjvHhrSOQ7aF/AAJkdOeJ9euGOsv9AW86vzeMTTIfijC23tzhHRxRfryjFsLI6C8uZ8I/VU6NkKRJBZbehhgQzY7fXjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777293; c=relaxed/simple;
-	bh=JVAJb6IKxF0YZwoytGwVJfqgaTCAEz8G4PRrnczYcq0=;
+	s=arc-20240116; t=1764780300; c=relaxed/simple;
+	bh=XOaQIIx0SdO9qv59eBc7g5M9XJIwjP6t7tq90M11Bnc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OJ/i/CK+r/zz51AiGJ4ZcvIF53JwIqZInwM/u7CtDwxo/j62XpTHJ9tYkkmKvatTdOOALUG/JUdNd+Pv6yBMWSpdDcWBUjhLo7jDN4gxp1mW6nIuRYoUqoo9PdykeuNxUIHUPD9qlPKCeCRu1/dZmA6Mq1Q5N7Q44Grr8OZuOd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ckiqVtO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44E9CC16AAE;
-	Wed,  3 Dec 2025 15:54:53 +0000 (UTC)
+	 MIME-Version; b=f3bGU3N53QpMTJzGdFOoD02ynCWWKDbeIaUk0iUzFgL3HvSHCKc1ExaQ3S4qQsT2dunkhtMx0ZXFIfEbEGQJlRMIc8V00MnQOAS/0UBqur36nPxMotfYMDxyoT/5hPW9SL2NKSgtSZuh3BDzjlFaL6wdSk0Qh7rK71m5W68F7C8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nascdf6K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8285C4CEF5;
+	Wed,  3 Dec 2025 16:44:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777293;
-	bh=JVAJb6IKxF0YZwoytGwVJfqgaTCAEz8G4PRrnczYcq0=;
+	s=korg; t=1764780300;
+	bh=XOaQIIx0SdO9qv59eBc7g5M9XJIwjP6t7tq90M11Bnc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2ckiqVtOIpwfCofl1IumY2PqWCKjZyxHfPcxl3IarBkZlgmSLmCPK9/RoWDSOg7ND
-	 yRG3SBLPoGdpyPew3V/aXoaoekmCZLOCQFbqhTPDSHZ62L/glwr8ufbfAmZyDbo4HU
-	 BvvSiKFl9hG3tDAXCXVa/tOhnSnAgorjqmAGzkA8=
+	b=nascdf6Ki3QvBszYA40fgEY1p4BAshmiigS/hjWAAcn5dFxYAPI6zx1UeZKssDNd+
+	 XnXeIvm8JX5QIQ619anZmwUBvBJN/WVRPp0D2Sv3xMZWjJclpcCDSp8BcQPtHXSEBH
+	 fv3CA7nM+TL3ImfTdzvxOtXR1REfGvLdOm0U+FnM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Subject: [PATCH 6.17 139/146] libceph: fix potential use-after-free in have_mon_and_osd_map()
+	Hang Zhou <929513338@qq.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 515/568] spi: bcm63xx: fix premature CS deassertion on RX-only transactions
 Date: Wed,  3 Dec 2025 16:28:37 +0100
-Message-ID: <20251203152351.559654251@linuxfoundation.org>
+Message-ID: <20251203152459.577127878@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,227 +60,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Hang Zhou <929513338@qq.com>
 
-commit 076381c261374c587700b3accf410bdd2dba334e upstream.
+[ Upstream commit fd9862f726aedbc2f29a29916cabed7bcf5cadb6 ]
 
-The wait loop in __ceph_open_session() can race with the client
-receiving a new monmap or osdmap shortly after the initial map is
-received.  Both ceph_monc_handle_map() and handle_one_map() install
-a new map immediately after freeing the old one
+On BCM6358 (and also observed on BCM6368) the controller appears to
+only generate as many SPI clocks as bytes that have been written into
+the TX FIFO. For RX-only transfers the driver programs the transfer
+length in SPI_MSG_CTL but does not write anything into the FIFO, so
+chip select is deasserted early and the RX transfer segment is never
+fully clocked in.
 
-    kfree(monc->monmap);
-    monc->monmap = monmap;
+A concrete failing case is a three-transfer MAC address read from
+SPI-NOR:
+  - TX 0x03 (read command)
+  - TX 3-byte address
+  - RX 6 bytes (MAC)
 
-    ceph_osdmap_destroy(osdc->osdmap);
-    osdc->osdmap = newmap;
+In contrast, a two-transfer JEDEC-ID read (0x9f + 6-byte RX) works
+because the driver uses prepend_len and writes dummy bytes into the
+TX FIFO for the RX part.
 
-under client->monc.mutex and client->osdc.lock respectively, but
-because neither is taken in have_mon_and_osd_map() it's possible for
-client->monc.monmap->epoch and client->osdc.osdmap->epoch arms in
+Fix this by writing 0xff dummy bytes into the TX FIFO for RX-only
+segments so that the number of bytes written to the FIFO matches the
+total message length seen by the controller.
 
-    client->monc.monmap && client->monc.monmap->epoch &&
-        client->osdc.osdmap && client->osdc.osdmap->epoch;
+Fixes: b17de076062a ("spi/bcm63xx: work around inability to keep CS up")
 
-condition to dereference an already freed map.  This happens to be
-reproducible with generic/395 and generic/397 with KASAN enabled:
-
-    BUG: KASAN: slab-use-after-free in have_mon_and_osd_map+0x56/0x70
-    Read of size 4 at addr ffff88811012d810 by task mount.ceph/13305
-    CPU: 2 UID: 0 PID: 13305 Comm: mount.ceph Not tainted 6.14.0-rc2-build2+ #1266
-    ...
-    Call Trace:
-    <TASK>
-    have_mon_and_osd_map+0x56/0x70
-    ceph_open_session+0x182/0x290
-    ceph_get_tree+0x333/0x680
-    vfs_get_tree+0x49/0x180
-    do_new_mount+0x1a3/0x2d0
-    path_mount+0x6dd/0x730
-    do_mount+0x99/0xe0
-    __do_sys_mount+0x141/0x180
-    do_syscall_64+0x9f/0x100
-    entry_SYSCALL_64_after_hwframe+0x76/0x7e
-    </TASK>
-
-    Allocated by task 13305:
-    ceph_osdmap_alloc+0x16/0x130
-    ceph_osdc_init+0x27a/0x4c0
-    ceph_create_client+0x153/0x190
-    create_fs_client+0x50/0x2a0
-    ceph_get_tree+0xff/0x680
-    vfs_get_tree+0x49/0x180
-    do_new_mount+0x1a3/0x2d0
-    path_mount+0x6dd/0x730
-    do_mount+0x99/0xe0
-    __do_sys_mount+0x141/0x180
-    do_syscall_64+0x9f/0x100
-    entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-    Freed by task 9475:
-    kfree+0x212/0x290
-    handle_one_map+0x23c/0x3b0
-    ceph_osdc_handle_map+0x3c9/0x590
-    mon_dispatch+0x655/0x6f0
-    ceph_con_process_message+0xc3/0xe0
-    ceph_con_v1_try_read+0x614/0x760
-    ceph_con_workfn+0x2de/0x650
-    process_one_work+0x486/0x7c0
-    process_scheduled_works+0x73/0x90
-    worker_thread+0x1c8/0x2a0
-    kthread+0x2ec/0x300
-    ret_from_fork+0x24/0x40
-    ret_from_fork_asm+0x1a/0x30
-
-Rewrite the wait loop to check the above condition directly with
-client->monc.mutex and client->osdc.lock taken as appropriate.  While
-at it, improve the timeout handling (previously mount_timeout could be
-exceeded in case wait_event_interruptible_timeout() slept more than
-once) and access client->auth_err under client->monc.mutex to match
-how it's set in finish_auth().
-
-monmap_show() and osdmap_show() now take the respective lock before
-accessing the map as well.
-
-Cc: stable@vger.kernel.org
-Reported-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hang Zhou <929513338@qq.com>
+Link: https://patch.msgid.link/tencent_7AC88FCB3076489A4A7E6C2163DF1ACF8D06@qq.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ceph/ceph_common.c |   53 +++++++++++++++++++++++++++++--------------------
- net/ceph/debugfs.c     |   14 +++++++++---
- 2 files changed, 42 insertions(+), 25 deletions(-)
+ drivers/spi/spi-bcm63xx.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/net/ceph/ceph_common.c
-+++ b/net/ceph/ceph_common.c
-@@ -786,41 +786,52 @@ void ceph_reset_client_addr(struct ceph_
- EXPORT_SYMBOL(ceph_reset_client_addr);
+diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+index 2f2a130464651..e57e1f75cd9f9 100644
+--- a/drivers/spi/spi-bcm63xx.c
++++ b/drivers/spi/spi-bcm63xx.c
+@@ -257,6 +257,20 @@ static int bcm63xx_txrx_bufs(struct spi_device *spi, struct spi_transfer *first,
  
- /*
-- * true if we have the mon map (and have thus joined the cluster)
-- */
--static bool have_mon_and_osd_map(struct ceph_client *client)
--{
--	return client->monc.monmap && client->monc.monmap->epoch &&
--	       client->osdc.osdmap && client->osdc.osdmap->epoch;
--}
--
--/*
-  * mount: join the ceph cluster, and open root directory.
-  */
- int __ceph_open_session(struct ceph_client *client, unsigned long started)
- {
--	unsigned long timeout = client->options->mount_timeout;
--	long err;
-+	DEFINE_WAIT_FUNC(wait, woken_wake_function);
-+	long timeout = ceph_timeout_jiffies(client->options->mount_timeout);
-+	bool have_monmap, have_osdmap;
-+	int err;
- 
- 	/* open session, and wait for mon and osd maps */
- 	err = ceph_monc_open_session(&client->monc);
- 	if (err < 0)
- 		return err;
- 
--	while (!have_mon_and_osd_map(client)) {
--		if (timeout && time_after_eq(jiffies, started + timeout))
--			return -ETIMEDOUT;
-+	add_wait_queue(&client->auth_wq, &wait);
-+	for (;;) {
-+		mutex_lock(&client->monc.mutex);
-+		err = client->auth_err;
-+		have_monmap = client->monc.monmap && client->monc.monmap->epoch;
-+		mutex_unlock(&client->monc.mutex);
+ 		if (t->rx_buf) {
+ 			do_rx = true;
 +
-+		down_read(&client->osdc.lock);
-+		have_osdmap = client->osdc.osdmap && client->osdc.osdmap->epoch;
-+		up_read(&client->osdc.lock);
++			/*
++			 * In certain hardware implementations, there appears to be a
++			 * hidden accumulator that tracks the number of bytes written into
++			 * the hardware FIFO, and this accumulator overrides the length in
++			 * the SPI_MSG_CTL register.
++			 *
++			 * Therefore, for read-only transfers, we need to write some dummy
++			 * value into the FIFO to keep the accumulator tracking the correct
++			 * length.
++			 */
++			if (!t->tx_buf)
++				memset_io(bs->tx_io + len, 0xFF, t->len);
 +
-+		if (err || (have_monmap && have_osdmap))
-+			break;
-+
-+		if (signal_pending(current)) {
-+			err = -ERESTARTSYS;
-+			break;
-+		}
-+
-+		if (!timeout) {
-+			err = -ETIMEDOUT;
-+			break;
-+		}
- 
- 		/* wait */
- 		dout("mount waiting for mon_map\n");
--		err = wait_event_interruptible_timeout(client->auth_wq,
--			have_mon_and_osd_map(client) || (client->auth_err < 0),
--			ceph_timeout_jiffies(timeout));
--		if (err < 0)
--			return err;
--		if (client->auth_err < 0)
--			return client->auth_err;
-+		timeout = wait_woken(&wait, TASK_INTERRUPTIBLE, timeout);
- 	}
-+	remove_wait_queue(&client->auth_wq, &wait);
-+
-+	if (err)
-+		return err;
- 
- 	pr_info("client%llu fsid %pU\n", ceph_client_gid(client),
- 		&client->fsid);
---- a/net/ceph/debugfs.c
-+++ b/net/ceph/debugfs.c
-@@ -36,8 +36,9 @@ static int monmap_show(struct seq_file *
- 	int i;
- 	struct ceph_client *client = s->private;
- 
-+	mutex_lock(&client->monc.mutex);
- 	if (client->monc.monmap == NULL)
--		return 0;
-+		goto out_unlock;
- 
- 	seq_printf(s, "epoch %d\n", client->monc.monmap->epoch);
- 	for (i = 0; i < client->monc.monmap->num_mon; i++) {
-@@ -48,6 +49,9 @@ static int monmap_show(struct seq_file *
- 			   ENTITY_NAME(inst->name),
- 			   ceph_pr_addr(&inst->addr));
- 	}
-+
-+out_unlock:
-+	mutex_unlock(&client->monc.mutex);
- 	return 0;
- }
- 
-@@ -56,13 +60,14 @@ static int osdmap_show(struct seq_file *
- 	int i;
- 	struct ceph_client *client = s->private;
- 	struct ceph_osd_client *osdc = &client->osdc;
--	struct ceph_osdmap *map = osdc->osdmap;
-+	struct ceph_osdmap *map;
- 	struct rb_node *n;
- 
-+	down_read(&osdc->lock);
-+	map = osdc->osdmap;
- 	if (map == NULL)
--		return 0;
-+		goto out_unlock;
- 
--	down_read(&osdc->lock);
- 	seq_printf(s, "epoch %u barrier %u flags 0x%x\n", map->epoch,
- 			osdc->epoch_barrier, map->flags);
- 
-@@ -131,6 +136,7 @@ static int osdmap_show(struct seq_file *
- 		seq_printf(s, "]\n");
- 	}
- 
-+out_unlock:
- 	up_read(&osdc->lock);
- 	return 0;
- }
+ 			/* prepend is half-duplex write only */
+ 			if (t == first)
+ 				prepend_len = 0;
+-- 
+2.51.0
+
 
 
 
