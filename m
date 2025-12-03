@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-199858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32282CA0767
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:29:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D823FCA078B
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:30:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 29BB331C901C
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:12:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A736330806AD
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:13:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5935A341AC7;
-	Wed,  3 Dec 2025 16:59:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93AFE350D7A;
+	Wed,  3 Dec 2025 17:00:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dsNIT7Mz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UUv/4mUp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D234398FB3;
-	Wed,  3 Dec 2025 16:59:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB4FC350D60;
+	Wed,  3 Dec 2025 17:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764781171; cv=none; b=Vjf/f6wPtVigfzf1tp0QKdfBMLcIVQjvw/MVaIfJkSaQT1sTcLEVtewdqZ+E92oohRjt+UsV4gj6QvT9WScV+k9eEOBQyLBPLuaOlVc1J/eL+JzujLJM+CXvZ/7DWBqr2kegQ7R+s+Ao7CwDGmPFMu4d9fS0XgJVQLZ1bfHygtY=
+	t=1764781205; cv=none; b=dZGuwLf6gqahRP75P5+D+wynVUfw1IY8++6PtZDVxterMuFIqDe08FZYrNKBkZcII4P2Sf7+CpC63eVlEp6/hEH8Y3k1Oixw6PcLuFLAI2mFgodtIx1iwqyVyQ5QlLqn5ADxTNVK/FUJ4DZQSt5vjt18H6EeFmTyYy/IuZCV9E4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764781171; c=relaxed/simple;
-	bh=lc67ClD/XqohOZtH+uZh+mq3ZQB+HO7aeFrp+qJMQ1k=;
+	s=arc-20240116; t=1764781205; c=relaxed/simple;
+	bh=H1dsj1s/vE7eHD1S9UAtCxf8EtgFhGtpcxyYzpsJ0DY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=okNl1RYH7AYVU/42uLWXKfp5Urw8PqVbK1xjnhrcGK2nkvNjfor/WsykjHxgsPXHyYtZZO+RrKoInb67Kpg2EyeMBzo7bC5SvOPsRnyMHibnLtXjb+91fvxvE0M7hjXJuzR8fNkMmAar01krd+aPk3HCt7Lr2H45jIgc/CZom/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dsNIT7Mz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF03C4CEF5;
-	Wed,  3 Dec 2025 16:59:30 +0000 (UTC)
+	 MIME-Version; b=TdGm7XYWwmWT+S1gU+b11YAskrr/1w8yWYH5jcv+oABG2W3qH+ves4tTsQmGSbFj/zwVOcn3eJClARlpVzxt4EmU0fJh6pjpfcTZj3EOSXP2Tkls/hsc6JMHxyCMnlzyWT4gRbj3g8141Oh4vKcoDA4nk5L4i8jZ28Mn2R6I0+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UUv/4mUp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8277AC4CEF5;
+	Wed,  3 Dec 2025 17:00:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764781171;
-	bh=lc67ClD/XqohOZtH+uZh+mq3ZQB+HO7aeFrp+qJMQ1k=;
+	s=korg; t=1764781203;
+	bh=H1dsj1s/vE7eHD1S9UAtCxf8EtgFhGtpcxyYzpsJ0DY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dsNIT7MzkCjPhMJCr2WC50VeGn9Vozv/4AtWuUUOSJYk2BjbF8D53XFwXgGPJweRv
-	 zFmzQc5QmS0HJEgVihbqOC6JovR1G9NxZs3GVDsj+U8/E05+Nf6nxCVhXBYsJdXqeh
-	 iIDeisPAEQnwn89K40LoDfZQWhBl9bjKl2L5w4Hk=
+	b=UUv/4mUpEkbyuEvBkbRJi0V4d1Aq1AMSBU9AlYLv4CnJgXBgqQPRe//K53wBrJL+n
+	 1ZdkRiAPyfgUK6tK+sEVLxzODMs+XgQgHhkK5xurbuYESK9SsNVwiwyir65Dcavvfk
+	 em2uFN7xTlWuQCz7tiXVjnNnG84vHtX2z+JPOqg0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filip Pokryvka <fpokryvk@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 54/93] mptcp: clear scheduled subflows on retransmit
-Date: Wed,  3 Dec 2025 16:29:47 +0100
-Message-ID: <20251203152338.521695157@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>
+Subject: [PATCH 6.6 55/93] serial: amba-pl011: prefer dma_mapping_error() over explicit address checking
+Date: Wed,  3 Dec 2025 16:29:48 +0100
+Message-ID: <20251203152338.558043312@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
 References: <20251203152336.494201426@linuxfoundation.org>
@@ -65,69 +64,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-commit 27fd02860164bfa78cec2640dfad630d832e302c upstream.
+commit eb4917f557d43c7a1c805dd73ffcdfddb2aba39a upstream.
 
-When __mptcp_retrans() kicks-in, it schedules one or more subflows for
-retransmission, but such subflows could be actually left alone if there
-is no more data to retransmit and/or in case of concurrent fallback.
+Check for returned DMA addresses using specialized dma_mapping_error()
+helper which is generally recommended for this purpose by
+Documentation/core-api/dma-api.rst:
 
-Scheduled subflows could be processed much later in time, i.e. when new
-data will be transmitted, leading to bad subflow selection.
+  "In some circumstances dma_map_single(), ...
+will fail to create a mapping. A driver can check for these errors
+by testing the returned DMA address with dma_mapping_error()."
 
-Explicitly clear all scheduled subflows before leaving the
-retransmission function.
+Found via static analysis and this is similar to commit fa0308134d26
+("ALSA: memalloc: prefer dma_mapping_error() over explicit address checking")
 
-Fixes: ee2708aedad0 ("mptcp: use get_retrans wrapper")
-Cc: stable@vger.kernel.org
-Reported-by: Filip Pokryvka <fpokryvk@redhat.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251125-net-mptcp-clear-sched-rtx-v1-1-1cea4ad2165f@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 58ac1b379979 ("ARM: PL011: Fix DMA support")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Reviewed-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Link: https://patch.msgid.link/20251027092053.87937-1-linmq006@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/tty/serial/amba-pl011.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2691,7 +2691,7 @@ static void __mptcp_retrans(struct sock
- 		}
- 
- 		if (!mptcp_send_head(sk))
--			return;
-+			goto clear_scheduled;
- 
- 		goto reset_timer;
- 	}
-@@ -2722,7 +2722,7 @@ static void __mptcp_retrans(struct sock
- 			if (__mptcp_check_fallback(msk)) {
- 				spin_unlock_bh(&msk->fallback_lock);
- 				release_sock(ssk);
--				return;
-+				goto clear_scheduled;
- 			}
- 
- 			while (info.sent < info.limit) {
-@@ -2754,6 +2754,15 @@ reset_timer:
- 
- 	if (!mptcp_rtx_timer_pending(sk))
- 		mptcp_reset_rtx_timer(sk);
-+
-+clear_scheduled:
-+	/* If no rtx data was available or in case of fallback, there
-+	 * could be left-over scheduled subflows; clear them all
-+	 * or later xmit could use bad ones
-+	 */
-+	mptcp_for_each_subflow(msk, subflow)
-+		if (READ_ONCE(subflow->scheduled))
-+			mptcp_subflow_set_scheduled(subflow, false);
- }
- 
- /* schedule the timeout timer for the relevant event: either close timeout
+--- a/drivers/tty/serial/amba-pl011.c
++++ b/drivers/tty/serial/amba-pl011.c
+@@ -636,7 +636,7 @@ static int pl011_dma_tx_refill(struct ua
+ 	dmatx->len = count;
+ 	dmatx->dma = dma_map_single(dma_dev->dev, dmatx->buf, count,
+ 				    DMA_TO_DEVICE);
+-	if (dmatx->dma == DMA_MAPPING_ERROR) {
++	if (dma_mapping_error(dma_dev->dev, dmatx->dma)) {
+ 		uap->dmatx.queued = false;
+ 		dev_dbg(uap->port.dev, "unable to map TX DMA\n");
+ 		return -EBUSY;
 
 
 
