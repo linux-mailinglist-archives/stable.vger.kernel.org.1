@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-198375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE25AC9F989
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:44:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F84CC9F9C2
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:45:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4A7E730454FA
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:38:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B924A30062FB
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:39:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44C3B30FC1C;
-	Wed,  3 Dec 2025 15:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A0B030AD06;
+	Wed,  3 Dec 2025 15:39:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yqDogZ20"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JMUm/7HM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00244303A3D;
-	Wed,  3 Dec 2025 15:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D8D303A3D;
+	Wed,  3 Dec 2025 15:39:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776334; cv=none; b=NSYGCDZNkhgJ0LgJYD2e/RKT1aNXxPR9eYTBEjoHzL7KjGjTNkHAsSLz9OF54LP9EzYraY3k2h8xtqIIWAJnPVJo36/ns+hL1Fazo7iGd6bxxMiTR+iQBGmVvAi8hAkX53YRa6JkkxKjfiZnybhq5V3DFT3E/H9Un7f6LzM/E9U=
+	t=1764776370; cv=none; b=k5oZAuMz4YpP/O6Go9DvK18q4vmYZEIDM010OZx1+LBfpfYABxyErbD8ZAaU7PTgqnapb2jKcwtE+AwdhU5wUk4jIARy7ECHZI0gy3GwFK9ZnkXovF9DYI9w6GX2UN3IAzfnLA2/yOycKV3D2Eey/dkSxqYk/ewCTdpJ2Cnk8YM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776334; c=relaxed/simple;
-	bh=c2XTtx2nV3t2VPiYqo14doyOnus3NFieEJ5Yl7yE4RE=;
+	s=arc-20240116; t=1764776370; c=relaxed/simple;
+	bh=oW8D+t620lCk4YNQmixVBHFnwqz08Y+X4JwY3Jldpkg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lr5GHtlxGWiioLWRmLH9YLjR7lShFdZOMtsaUmQOt8RSN+dCw9KUvwYWLMmJj1PINe9aayGMkBVyduZwO4/UzmIISF90N2iiqXdoA3qegxXo02BxgkrZcekc/I6XhcCh+1ZaKmrXtVlCpadTjwKZB36MTvTbDHZ9TcEOTpkikfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yqDogZ20; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 312ABC4CEF5;
-	Wed,  3 Dec 2025 15:38:53 +0000 (UTC)
+	 MIME-Version; b=LUiM9k5P6B5X+DtPrRFBD88qVAgZheuB6P8mmBunylPK0MLPWOk2CIi9kMxIiFOV3Y4G9BB0p7ClBJZ/SQdRYYeAXkreaBDgbRzh/AVZhoZObw22es6d/M+KPb+sRbm0yAd4+vrOj2Mnv75d4oSCSnfUP0bnZI4fHlF1yIfDkFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JMUm/7HM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FB0EC4CEF5;
+	Wed,  3 Dec 2025 15:39:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776333;
-	bh=c2XTtx2nV3t2VPiYqo14doyOnus3NFieEJ5Yl7yE4RE=;
+	s=korg; t=1764776369;
+	bh=oW8D+t620lCk4YNQmixVBHFnwqz08Y+X4JwY3Jldpkg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yqDogZ2003h5WYoEqEzbmwNzabxd7/q6bhNpS8b/fXv9P1zsR/XVWHiaaYzRB/SJG
-	 8BizsRm11jpoi398v9BiVIJ6Iz3rDMHKSz+LxRnf/w6QTZidzNs9ZfW5ibrwr1El+O
-	 ydxabo0aTlQPN4kif3YrD9quhAshY1F5dKLflaJU=
+	b=JMUm/7HMDTOwMRFt4TaPfHB72bZGJ9gnOvJC1b4F5s1msGG63RCxlD4rVXOIVPcdh
+	 ttdwuHWtX7cuUtqYikwJWbiBEel5gQ/ifeGB0Skw0VUXBAjA7h8vs2AL9Djj3k2Olb
+	 G53CGCTe8FOflTMli9ezSCX31bH6FXCzJhOYGglM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <okorniev@redhat.com>,
+	Anthony Iliopoulos <ailiop@suse.com>,
 	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 134/300] NFSv4: handle ERR_GRACE on delegation recalls
-Date: Wed,  3 Dec 2025 16:25:38 +0100
-Message-ID: <20251203152405.578640657@linuxfoundation.org>
+Subject: [PATCH 5.10 135/300] NFSv4.1: fix mount hang after CREATE_SESSION failure
+Date: Wed,  3 Dec 2025 16:25:39 +0100
+Message-ID: <20251203152405.615358811@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
 References: <20251203152400.447697997@linuxfoundation.org>
@@ -64,37 +64,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Olga Kornievskaia <okorniev@redhat.com>
+From: Anthony Iliopoulos <ailiop@suse.com>
 
-[ Upstream commit be390f95242785adbf37d7b8a5101dd2f2ba891b ]
+[ Upstream commit bf75ad096820fee5da40e671ebb32de725a1c417 ]
 
-RFC7530 states that clients should be prepared for the return of
-NFS4ERR_GRACE errors for non-reclaim lock and I/O requests.
+When client initialization goes through server trunking discovery, it
+schedules the state manager and then sleeps waiting for nfs_client
+initialization completion.
 
-Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
+The state manager can fail during state recovery, and specifically in
+lease establishment as nfs41_init_clientid() will bail out in case of
+errors returned from nfs4_proc_create_session(), without ever marking
+the client ready. The session creation can fail for a variety of reasons
+e.g. during backchannel parameter negotiation, with status -EINVAL.
+
+The error status will propagate all the way to the nfs4_state_manager
+but the client status will not be marked, and thus the mount process
+will remain blocked waiting.
+
+Fix it by adding -EINVAL error handling to nfs4_state_manager().
+
+Signed-off-by: Anthony Iliopoulos <ailiop@suse.com>
 Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4proc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nfs/nfs4state.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index 87774f3b4c354..c454fb042ab2b 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -7473,10 +7473,10 @@ int nfs4_lock_delegation_recall(struct file_lock *fl, struct nfs4_state *state,
- 		return err;
- 	do {
- 		err = _nfs4_do_setlk(state, F_SETLK, fl, NFS_LOCK_NEW);
--		if (err != -NFS4ERR_DELAY)
-+		if (err != -NFS4ERR_DELAY && err != -NFS4ERR_GRACE)
- 			break;
+diff --git a/fs/nfs/nfs4state.c b/fs/nfs/nfs4state.c
+index e3cabced1aead..171bc21eb945b 100644
+--- a/fs/nfs/nfs4state.c
++++ b/fs/nfs/nfs4state.c
+@@ -2724,6 +2724,9 @@ static void nfs4_state_manager(struct nfs_client *clp)
+ 	case -ENETUNREACH:
+ 		nfs_mark_client_ready(clp, -EIO);
+ 		break;
++	case -EINVAL:
++		nfs_mark_client_ready(clp, status);
++		break;
+ 	default:
  		ssleep(1);
--	} while (err == -NFS4ERR_DELAY);
-+	} while (err == -NFS4ERR_DELAY || err == -NFSERR_GRACE);
- 	return nfs4_handle_delegation_recall_error(server, state, stateid, fl, err);
- }
- 
+ 		break;
 -- 
 2.51.0
 
