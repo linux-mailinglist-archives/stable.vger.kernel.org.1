@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31DC1C9FD22
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:08:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00170C9FA1C
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:46:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C138A3005A66
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:07:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6403E302E05C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:40:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED67834F484;
-	Wed,  3 Dec 2025 16:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 369F6303C91;
+	Wed,  3 Dec 2025 15:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dqV9OVWi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tgQpG0pE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7DFC31355B;
-	Wed,  3 Dec 2025 16:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E86C8DDAB;
+	Wed,  3 Dec 2025 15:40:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778074; cv=none; b=gaSVnFtqF8QNBalShm7BPvMxqSQSzcms8sHJNMsqHMPCT4Kqu25/2iyi4M0J0oGAsIk/HTDMBMHXWOqHF28wtkPts1KAulBSHmGCsfy/LRbKbbzQqBzREcerVbPf/tCwZ18Qcr9VSAs7TK+qlea+tJMQSFTl906sqZQstsCDLXo=
+	t=1764776431; cv=none; b=IWOPsAYthVtPn6I4Nq6BG5ffgXTMJFCnYKMcIBycUvPuAA6somxBrcYSctzclBcnuqDzF9qPG92vLJPf/BerzRE+v7wgnj+t9D3cVHOdmetEJ0ljaEt+kh+ftzmaU4KdDNreSg9LyclvFelIwIEDg7BufUA1GDL9EcY/h8vJ9ms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778074; c=relaxed/simple;
-	bh=TgyV2b42wLPiEzrdSUWLNT5OUGzTC3kc3U36/aMkK34=;
+	s=arc-20240116; t=1764776431; c=relaxed/simple;
+	bh=T5Zszy90TyCp4WBM8czdVlBpoLjBWNSN3AVrhgCeFjg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fKihct50e7l2+hBRPHKWKPb7ByE1i7B2+Evf/c8/50RgQisLSI+gHNj4+0dUdR4KUcYCiyObwwye51fIfIMKAyP/Qj6Zv/lBSuiZ4jeQRu0B9f+yWH5WPr3pA9sFu9/53Ob2N0xaZjHIAyPgGNOuufl0S3M6WRRJJDgDpXC24D8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dqV9OVWi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB269C4CEF5;
-	Wed,  3 Dec 2025 16:07:53 +0000 (UTC)
+	 MIME-Version; b=Y/Dzf9BfF7CIOlwt2CyAKB1o6atMDrTVSypvS9kTVfVnTmnzlpxBoJbaK947RkmYaML8n1owcWg+M88NcMRuNl0g+DzE+Pv4K/FJa72A1CJHY3IPlYelrxUU4ruT/Wsds0GmgfD+yG5OyreSiJUnf/rQ0r44PPpa6BALn374p4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tgQpG0pE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55C58C4CEF5;
+	Wed,  3 Dec 2025 15:40:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778074;
-	bh=TgyV2b42wLPiEzrdSUWLNT5OUGzTC3kc3U36/aMkK34=;
+	s=korg; t=1764776430;
+	bh=T5Zszy90TyCp4WBM8czdVlBpoLjBWNSN3AVrhgCeFjg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dqV9OVWiJSBuDA7b4gfrAMYzkDwY0iD3WQqM9SdQw8Qzk8uCNDGU/bMz/hrdnkFDj
-	 wkg/3Pd7k0X5Gx+DG4H9sn7REaxbBPJ7Tu5eARmtCLkVpX2XLeDp8WLfx1UEi0EpiM
-	 TRgB6+FYotheQXnLw8heZWe7SNI12otmpk3i7yMg=
+	b=tgQpG0pEEzFD/UrYxkLyvMiCY9btCOYbDxv3m/Me9NYyiIkp5qxxuy8jecJqJ2BaU
+	 yIG75huumq6XC+Cm47p0SvjXoOkcGxzKLiOYX0xLJ6MTz21P1urDb8v98d7GTZCqrF
+	 CXqTmVaE9LwWECp77+EbTwOYSKSB42eeDEKbT+Xs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tristan Lobb <tristan.lobb@it-lobb.de>,
-	Jiri Kosina <jkosina@suse.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Pauli Virtanen <pav@iki.fi>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 234/392] HID: quirks: avoid Cooler Master MM712 dongle wakeup bug
-Date: Wed,  3 Dec 2025 16:26:24 +0100
-Message-ID: <20251203152422.790741255@linuxfoundation.org>
+Subject: [PATCH 5.10 181/300] Bluetooth: 6lowpan: fix BDADDR_LE vs ADDR_LE_DEV address type confusion
+Date: Wed,  3 Dec 2025 16:26:25 +0100
+Message-ID: <20251203152407.333416591@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +61,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tristan Lobb <tristan.lobb@it-lobb.de>
+From: Pauli Virtanen <pav@iki.fi>
 
-[ Upstream commit 0be4253bf878d9aaa2b96031ac8683fceeb81480 ]
+[ Upstream commit b454505bf57a2e4f5d49951d4deb03730a9348d9 ]
 
-The Cooler Master Mice Dongle includes a vendor defined HID interface
-alongside its mouse interface. Not polling it will cause the mouse to
-stop responding to polls on any interface once woken up again after
-going into power saving mode.
+Bluetooth 6lowpan.c confuses BDADDR_LE and ADDR_LE_DEV address types,
+e.g. debugfs "connect" command takes the former, and "disconnect" and
+"connect" to already connected device take the latter.  This is due to
+using same value both for l2cap_chan_connect and hci_conn_hash_lookup_le
+which take different dst_type values.
 
-Add the HID_QUIRK_ALWAYS_POLL quirk alongside the Cooler Master VID and
-the Dongle's PID.
+Fix address type passed to hci_conn_hash_lookup_le().
 
-Signed-off-by: Tristan Lobb <tristan.lobb@it-lobb.de>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Retain the debugfs API difference between "connect" and "disconnect"
+commands since it's been like this since 2015 and nobody apparently
+complained.
+
+Fixes: f5ad4ffceba0 ("Bluetooth: 6lowpan: Use hci_conn_hash_lookup_le() when possible")
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h    | 3 +++
- drivers/hid/hid-quirks.c | 1 +
- 2 files changed, 4 insertions(+)
+ net/bluetooth/6lowpan.c | 28 ++++++++++++++++++++++++----
+ 1 file changed, 24 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index bdad42f1e9f96..906e0c37a8e7e 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -304,6 +304,9 @@
- #define USB_DEVICE_ID_CODEMERCS_IOW_FIRST	0x1500
- #define USB_DEVICE_ID_CODEMERCS_IOW_LAST	0x15ff
+diff --git a/net/bluetooth/6lowpan.c b/net/bluetooth/6lowpan.c
+index 32dc74115dcbc..d035bb927aec2 100644
+--- a/net/bluetooth/6lowpan.c
++++ b/net/bluetooth/6lowpan.c
+@@ -994,10 +994,11 @@ static struct l2cap_chan *bt_6lowpan_listen(void)
+ }
  
-+#define USB_VENDOR_ID_COOLER_MASTER	0x2516
-+#define USB_DEVICE_ID_COOLER_MASTER_MICE_DONGLE	0x01b7
+ static int get_l2cap_conn(char *buf, bdaddr_t *addr, u8 *addr_type,
+-			  struct l2cap_conn **conn)
++			  struct l2cap_conn **conn, bool disconnect)
+ {
+ 	struct hci_conn *hcon;
+ 	struct hci_dev *hdev;
++	int le_addr_type;
+ 	int n;
+ 
+ 	n = sscanf(buf, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx %hhu",
+@@ -1008,13 +1009,32 @@ static int get_l2cap_conn(char *buf, bdaddr_t *addr, u8 *addr_type,
+ 	if (n < 7)
+ 		return -EINVAL;
+ 
++	if (disconnect) {
++		/* The "disconnect" debugfs command has used different address
++		 * type constants than "connect" since 2015. Let's retain that
++		 * for now even though it's obviously buggy...
++		 */
++		*addr_type += 1;
++	}
 +
- #define USB_VENDOR_ID_CORSAIR		0x1b1c
- #define USB_DEVICE_ID_CORSAIR_K90	0x1b02
- #define USB_DEVICE_ID_CORSAIR_K70R      0x1b09
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index 72b7aebcc771f..3f83070349b82 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -57,6 +57,7 @@ static const struct hid_device_id hid_quirks[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CH, USB_DEVICE_ID_CH_FLIGHT_SIM_YOKE), HID_QUIRK_NOGET },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CH, USB_DEVICE_ID_CH_PRO_PEDALS), HID_QUIRK_NOGET },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CH, USB_DEVICE_ID_CH_PRO_THROTTLE), HID_QUIRK_NOGET },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_COOLER_MASTER, USB_DEVICE_ID_COOLER_MASTER_MICE_DONGLE), HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CORSAIR, USB_DEVICE_ID_CORSAIR_K65RGB), HID_QUIRK_NO_INIT_REPORTS },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CORSAIR, USB_DEVICE_ID_CORSAIR_K65RGB_RAPIDFIRE), HID_QUIRK_NO_INIT_REPORTS | HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CORSAIR, USB_DEVICE_ID_CORSAIR_K70RGB), HID_QUIRK_NO_INIT_REPORTS },
++	switch (*addr_type) {
++	case BDADDR_LE_PUBLIC:
++		le_addr_type = ADDR_LE_DEV_PUBLIC;
++		break;
++	case BDADDR_LE_RANDOM:
++		le_addr_type = ADDR_LE_DEV_RANDOM;
++		break;
++	default:
++		return -EINVAL;
++	}
++
+ 	/* The LE_PUBLIC address type is ignored because of BDADDR_ANY */
+ 	hdev = hci_get_route(addr, BDADDR_ANY, BDADDR_LE_PUBLIC);
+ 	if (!hdev)
+ 		return -ENOENT;
+ 
+ 	hci_dev_lock(hdev);
+-	hcon = hci_conn_hash_lookup_le(hdev, addr, *addr_type);
++	hcon = hci_conn_hash_lookup_le(hdev, addr, le_addr_type);
+ 	hci_dev_unlock(hdev);
+ 	hci_dev_put(hdev);
+ 
+@@ -1141,7 +1161,7 @@ static ssize_t lowpan_control_write(struct file *fp,
+ 	buf[buf_size] = '\0';
+ 
+ 	if (memcmp(buf, "connect ", 8) == 0) {
+-		ret = get_l2cap_conn(&buf[8], &addr, &addr_type, &conn);
++		ret = get_l2cap_conn(&buf[8], &addr, &addr_type, &conn, false);
+ 		if (ret == -EINVAL)
+ 			return ret;
+ 
+@@ -1178,7 +1198,7 @@ static ssize_t lowpan_control_write(struct file *fp,
+ 	}
+ 
+ 	if (memcmp(buf, "disconnect ", 11) == 0) {
+-		ret = get_l2cap_conn(&buf[11], &addr, &addr_type, &conn);
++		ret = get_l2cap_conn(&buf[11], &addr, &addr_type, &conn, true);
+ 		if (ret < 0)
+ 			return ret;
+ 
 -- 
 2.51.0
 
