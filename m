@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-198893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6913C9FCE3
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:07:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33859C9FFE8
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:36:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 788633000B05
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:06:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A234830012C5
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:36:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3413434F494;
-	Wed,  3 Dec 2025 16:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C532B35C18A;
+	Wed,  3 Dec 2025 16:36:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XY1ZBKRm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KwTGlI/e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3F98313546;
-	Wed,  3 Dec 2025 16:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3F62FD1C5;
+	Wed,  3 Dec 2025 16:36:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778017; cv=none; b=eBOzjVHB+84P7nqr91dJSnIstcJrnXV0uOCP+bmUwQbIyK2ZHfIWwbuRvhrdv2s4PDoR/on+itV+XMsna4RmQXDWQmtGFGRAHJPYARPYFd9cvAuWDah1iIPDSWtbQ2bPmID9FJiCL0U0NpDv1xqibmQS5LmwDAw5bi3n2J+nbmM=
+	t=1764779802; cv=none; b=XfjWg64pLPiL2rgODoQAiLVI8RXMduVEtYJOHDjCRtr38KoUeuSfeXwhhD5aKix+vEJDViVAeo2ngv6ED3mzbBMtrvnTh/H6RA2WTzzUyM1/+6WKD7hHWKpoOlVzQN1lTiy/5euzc/HNXD7KNe731pSkuZDvJzX+2+hXYJgj5WM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778017; c=relaxed/simple;
-	bh=Tw4bw4izyiK915/P0ZXEXx6IXDW6W1kPa8VrlLFJXJs=;
+	s=arc-20240116; t=1764779802; c=relaxed/simple;
+	bh=e3FSaYRHE+iqvXn/NuFebeUbPXCvfanOeuqGx1LfAZk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SaWckPsjQB2EKqzxmeoS3+2aHx6ovAiix2IG5A7I6QrQ4uUuzxD8a902mqqgL56W7RQ8jwU2tsEAH3iAVgOTQE4ctokInRsj6Lm//wSoIiCxMIpIknQWBecKg2sV6VlQ+ZBEeqKAGCy32Z5RR3ZAS3vznIWHXnPheanSSmZuMYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XY1ZBKRm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A759C4CEF5;
-	Wed,  3 Dec 2025 16:06:56 +0000 (UTC)
+	 MIME-Version; b=p5L0fMbi1+eqUWXhzl/pwwRqqJT9YtJJaL0ZoxxOiH7wibB63YFSBLoIKHxo+P098to+X36wenIIb5aOQbUBRMLG6wUM3pbRnKAwYNP/uZrqP3BEQDib+UQJosEbeqwSvPXdhuNVvf7xdtxxSvQWXNTT8tD5Qf82KNXyh9CTUH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KwTGlI/e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95A6AC4CEF5;
+	Wed,  3 Dec 2025 16:36:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778016;
-	bh=Tw4bw4izyiK915/P0ZXEXx6IXDW6W1kPa8VrlLFJXJs=;
+	s=korg; t=1764779802;
+	bh=e3FSaYRHE+iqvXn/NuFebeUbPXCvfanOeuqGx1LfAZk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XY1ZBKRm07laaFq6HpASRpXXBDilYOmKenLvDyS07NvZCJEInQ5XomNaCfa0LwZAz
-	 BAqU98XPRMdHzFh6PQsi6rTyp6kbb8ZwMC5LjhkTFls6uT5AOw69FsfrkHHlq/piuV
-	 Jtmk6tI3Ayz/XzINiB8pIMLhjQ13VesfeKnYvwwA=
+	b=KwTGlI/ewDE9y0HxB4hr2HSyNMvtJ1eJF8mEwhGSzcRGWoM3TwouUBIqqOv8oHk3K
+	 xQwXIFaZFjefun9Ib9ZkA6DNV2H1hhLoSZw9zDPPhQvVkvba7cFLiA2PewK+9tH6Ol
+	 vMhuHP07R0L/4l75yVfozBBiOW2mWelVXcWIga6E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Gal Pressman <gal@nvidia.com>,
+	Nimrod Oren <noren@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 218/392] net: dsa: b53: stop reading ARL entries if search is done
+Subject: [PATCH 6.1 366/568] net/mlx5e: Fix maxrate wraparound in threshold between units
 Date: Wed,  3 Dec 2025 16:26:08 +0100
-Message-ID: <20251203152422.205209517@linuxfoundation.org>
+Message-ID: <20251203152454.104108669@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Gal Pressman <gal@nvidia.com>
 
-[ Upstream commit 0be04b5fa62a82a9929ca261f6c9f64a3d0a28da ]
+[ Upstream commit a7bf4d5063c7837096aab2853224eb23628514d9 ]
 
-The switch clears the ARL_SRCH_STDN bit when the search is done, i.e. it
-finished traversing the ARL table.
+The previous calculation used roundup() which caused an overflow for
+rates between 25.5Gbps and 26Gbps.
+For example, a rate of 25.6Gbps would result in using 100Mbps units with
+value of 256, which would overflow the 8 bits field.
 
-This means that there will be no valid result, so we should not attempt
-to read and process any further entries.
+Simplify the upper_limit_mbps calculation by removing the
+unnecessary roundup, and adjust the comparison to use <= to correctly
+handle the boundary condition.
 
-We only ever check the validity of the entries for 4 ARL bin chips, and
-only after having passed the first entry to the b53_fdb_copy().
-
-This means that we always pass an invalid entry at the end to the
-b53_fdb_copy(). b53_fdb_copy() does check the validity though before
-passing on the entry, so it never gets passed on.
-
-On < 4 ARL bin chips, we will even continue reading invalid entries
-until we reach the result limit.
-
-Fixes: 1da6df85c6fb ("net: dsa: b53: Implement ARL add/del/dump operations")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20251102100758.28352-3-jonas.gorski@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: d8880795dabf ("net/mlx5e: Implement DCBNL IEEE max rate")
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Reviewed-by: Nimrod Oren <noren@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1762681073-1084058-4-git-send-email-tariqt@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 228b470d13a0f..d5ed733c0c979 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -1802,7 +1802,7 @@ static int b53_arl_search_wait(struct b53_device *dev)
- 	do {
- 		b53_read8(dev, B53_ARLIO_PAGE, B53_ARL_SRCH_CTL, &reg);
- 		if (!(reg & ARL_SRCH_STDN))
--			return 0;
-+			return -ENOENT;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
+index 89de92d064836..cfbf39f0f8727 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
+@@ -587,18 +587,19 @@ static int mlx5e_dcbnl_ieee_setmaxrate(struct net_device *netdev,
+ 	struct mlx5_core_dev *mdev = priv->mdev;
+ 	u8 max_bw_value[IEEE_8021QAZ_MAX_TCS];
+ 	u8 max_bw_unit[IEEE_8021QAZ_MAX_TCS];
+-	__u64 upper_limit_mbps = roundup(255 * MLX5E_100MB, MLX5E_1GB);
++	__u64 upper_limit_mbps;
+ 	int i;
  
- 		if (reg & ARL_SRCH_VLID)
- 			return 0;
+ 	memset(max_bw_value, 0, sizeof(max_bw_value));
+ 	memset(max_bw_unit, 0, sizeof(max_bw_unit));
++	upper_limit_mbps = 255 * MLX5E_100MB;
+ 
+ 	for (i = 0; i <= mlx5_max_tc(mdev); i++) {
+ 		if (!maxrate->tc_maxrate[i]) {
+ 			max_bw_unit[i]  = MLX5_BW_NO_LIMIT;
+ 			continue;
+ 		}
+-		if (maxrate->tc_maxrate[i] < upper_limit_mbps) {
++		if (maxrate->tc_maxrate[i] <= upper_limit_mbps) {
+ 			max_bw_value[i] = div_u64(maxrate->tc_maxrate[i],
+ 						  MLX5E_100MB);
+ 			max_bw_value[i] = max_bw_value[i] ? max_bw_value[i] : 1;
 -- 
 2.51.0
 
