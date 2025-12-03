@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-199088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00AC2CA09F1
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:46:45 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6751CA08B1
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:39:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5C6B334B8EE1
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:25:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 01F4C3009C3A
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:38:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA0E73559F0;
-	Wed,  3 Dec 2025 16:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4995F3570B0;
+	Wed,  3 Dec 2025 16:18:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VOvGZV6U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NhaUVIdj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66750355814;
-	Wed,  3 Dec 2025 16:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 013F53570AF;
+	Wed,  3 Dec 2025 16:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778656; cv=none; b=eHwLEsj3l4lDLDV10+RWbjwK798R6jndBqe/goalhK/LZCBw0h8kBnfhOLNJ4pndd5AD6gQglI5qrNk4dmBGuABfJ3HGCcglUiVgQGusNuwzQv23ovwmWVnjYXSuiN3xSP4CgHJ0q/XSC1h60+5VAnt52ARyemXiEhGTxfQC2Q8=
+	t=1764778692; cv=none; b=LGglLmCRgKQxCVSn/85mRGEMO3eLdtKoHxYXjnYXl9U1nqK4u1BwHxygo6eYIggjpKcX522QtV2PAlShYpOQFtb8269LyFfTBrTr2/Jv2J9vPiA2YQPTfyY2DYsVlyo/VDUTwbKj2kzQuvrlIfGxNaRKt84NqWuPlZkXsX84zUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778656; c=relaxed/simple;
-	bh=ds24TMXuDgOLmtxMu7lJ+vMFUIuMPtAADTiobxtM+iI=;
+	s=arc-20240116; t=1764778692; c=relaxed/simple;
+	bh=EYibWdQVueCFAVD+DWeOze4Q3TIKbJp+Rx3q3Ztb/N4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PrZvLsTOsW9NlFoGKxnUXXhri8+WM6Sm9huNLkNWGcYadZd1DxrCaYgnCH+5V+TKJ9cryA6QrzhRERf1cNznE4Vjmax2MDeZ6xGS+9eaCIjLf+UZOBC3hcNsPy9SNFG6OWeVriF70Y7NkBg4yfsdXbbX7jhWSKjHvCStFid75e0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VOvGZV6U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54BDCC4CEF5;
-	Wed,  3 Dec 2025 16:17:35 +0000 (UTC)
+	 MIME-Version; b=XZGFpVUgfEP8mk9ML+zXVvnxBe8Xl7nZLmOA1HV4ZYX3oS6yEHN5RFA+5Au2lblTBZSowdimBQImXChiROnnClzGwdflb4+OU1/rdZ+1kpX9K/8+wdak08QyhxEF8CYRROJPzIPJudSapdSg2Zf1nskkJoeO7sPuJ42TEhvxVDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NhaUVIdj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C299C4CEF5;
+	Wed,  3 Dec 2025 16:18:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778655;
-	bh=ds24TMXuDgOLmtxMu7lJ+vMFUIuMPtAADTiobxtM+iI=;
+	s=korg; t=1764778691;
+	bh=EYibWdQVueCFAVD+DWeOze4Q3TIKbJp+Rx3q3Ztb/N4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VOvGZV6UKWZIFq5hwibYnN44bTodwNso5JzebMFD9bvXMSjAXv12K8CwA3O3CxmzU
-	 Ou0HED3C0ACGCv/mVji1I1+JZnutyk54R8YPcBDUKiUuRdtLD0ZviRzjw5rdQaj3gJ
-	 sh8Nox5J4m8RBUIsHiNz6nHIgBT8+mDJFQYk9mBQ=
+	b=NhaUVIdjvyb2MpJySjwG49zosCyLvLE0ImqfzN/1ckuxQbbPs3AyKSSmwQOhqxU3V
+	 H1G2SxfhcFskyHT3pxkG6zZcM/wM4ES0l28B6J0E4r1APAOpDLq2Wrl7vR9/7jMdFN
+	 8NIM7ivA+f3rY6HUcY6L5FmHM5oEVz7QlbYAAKo8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	David Kaplan <david.kaplan@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 002/568] perf: Have get_perf_callchain() return NULL if crosstask and user are set
-Date: Wed,  3 Dec 2025 16:20:04 +0100
-Message-ID: <20251203152440.743546086@linuxfoundation.org>
+Subject: [PATCH 6.1 003/568] x86/bugs: Fix reporting of LFENCE retpoline
+Date: Wed,  3 Dec 2025 16:20:05 +0100
+Message-ID: <20251203152440.780323192@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
 References: <20251203152440.645416925@linuxfoundation.org>
@@ -65,65 +64,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: David Kaplan <david.kaplan@amd.com>
 
-[ Upstream commit 153f9e74dec230f2e070e16fa061bc7adfd2c450 ]
+[ Upstream commit d1cc1baef67ac6c09b74629ca053bf3fb812f7dc ]
 
-get_perf_callchain() doesn't support cross-task unwinding for user space
-stacks, have it return NULL if both the crosstask and user arguments are
-set.
+The LFENCE retpoline mitigation is not secure but the kernel prints
+inconsistent messages about this fact.  The dmesg log says 'Mitigation:
+LFENCE', implying the system is mitigated.  But sysfs reports 'Vulnerable:
+LFENCE' implying the system (correctly) is not mitigated.
 
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250820180428.426423415@kernel.org
+Fix this by printing a consistent 'Vulnerable: LFENCE' string everywhere
+when this mitigation is selected.
+
+Signed-off-by: David Kaplan <david.kaplan@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/20250915134706.3201818-1-david.kaplan@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/callchain.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ arch/x86/kernel/cpu/bugs.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/kernel/events/callchain.c b/kernel/events/callchain.c
-index 1273be84392cf..ce5534c97cd1d 100644
---- a/kernel/events/callchain.c
-+++ b/kernel/events/callchain.c
-@@ -184,6 +184,10 @@ get_perf_callchain(struct pt_regs *regs, u32 init_nr, bool kernel, bool user,
- 	struct perf_callchain_entry_ctx ctx;
- 	int rctx;
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index ff8965bce6c90..a0b362ac50a1b 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -1539,7 +1539,7 @@ spectre_v2_user_select_mitigation(void)
+ static const char * const spectre_v2_strings[] = {
+ 	[SPECTRE_V2_NONE]			= "Vulnerable",
+ 	[SPECTRE_V2_RETPOLINE]			= "Mitigation: Retpolines",
+-	[SPECTRE_V2_LFENCE]			= "Mitigation: LFENCE",
++	[SPECTRE_V2_LFENCE]			= "Vulnerable: LFENCE",
+ 	[SPECTRE_V2_EIBRS]			= "Mitigation: Enhanced / Automatic IBRS",
+ 	[SPECTRE_V2_EIBRS_LFENCE]		= "Mitigation: Enhanced / Automatic IBRS + LFENCE",
+ 	[SPECTRE_V2_EIBRS_RETPOLINE]		= "Mitigation: Enhanced / Automatic IBRS + Retpolines",
+@@ -3169,9 +3169,6 @@ static const char *spectre_bhi_state(void)
  
-+	/* crosstask is not supported for user stacks */
-+	if (crosstask && user && !kernel)
-+		return NULL;
-+
- 	entry = get_callchain_entry(&rctx);
- 	if (!entry)
- 		return NULL;
-@@ -200,7 +204,7 @@ get_perf_callchain(struct pt_regs *regs, u32 init_nr, bool kernel, bool user,
- 		perf_callchain_kernel(&ctx, regs);
- 	}
- 
--	if (user) {
-+	if (user && !crosstask) {
- 		if (!user_mode(regs)) {
- 			if  (current->mm)
- 				regs = task_pt_regs(current);
-@@ -209,9 +213,6 @@ get_perf_callchain(struct pt_regs *regs, u32 init_nr, bool kernel, bool user,
- 		}
- 
- 		if (regs) {
--			if (crosstask)
--				goto exit_put;
+ static ssize_t spectre_v2_show_state(char *buf)
+ {
+-	if (spectre_v2_enabled == SPECTRE_V2_LFENCE)
+-		return sysfs_emit(buf, "Vulnerable: LFENCE\n");
 -
- 			if (add_mark)
- 				perf_callchain_store_context(&ctx, PERF_CONTEXT_USER);
+ 	if (spectre_v2_enabled == SPECTRE_V2_EIBRS && unprivileged_ebpf_enabled())
+ 		return sysfs_emit(buf, "Vulnerable: eIBRS with unprivileged eBPF\n");
  
-@@ -219,7 +220,6 @@ get_perf_callchain(struct pt_regs *regs, u32 init_nr, bool kernel, bool user,
- 		}
- 	}
- 
--exit_put:
- 	put_callchain_entry(rctx);
- 
- 	return entry;
 -- 
 2.51.0
 
