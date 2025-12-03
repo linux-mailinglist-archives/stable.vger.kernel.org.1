@@ -1,366 +1,87 @@
-Return-Path: <stable+bounces-199890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBB6ECA0FE7
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:31:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18D92CA0FF0
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:31:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9D6723337A14
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:29:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 044913338048
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:29:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B07F93148B1;
-	Wed,  3 Dec 2025 17:15:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="0RON9zjQ";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="6E4NoMFW";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="zIZbpQdU";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="03816KMm"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0566730B512;
+	Wed,  3 Dec 2025 17:16:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C015342C99
-	for <stable@vger.kernel.org>; Wed,  3 Dec 2025 17:15:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA8AC30CDA9;
+	Wed,  3 Dec 2025 17:16:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764782143; cv=none; b=lDc83FcK65RXPDpI2/M18kU2Qe/w+LhEpP+bFplGlVx+p2MWh45h1NLHqgv2ZUt3S6KgiKZ/5pIi+9lEoMg0Wc4F2GzzQRRensKUXZv1nuQrXW5SpkkFVnthzeP5O4GsZYQIRIiPwpshMi46+UoScSeHU7y+lrDoOPGqtxXRhA4=
+	t=1764782173; cv=none; b=c7VP7sFJAazOT8QV730T8AurXu5e1zxE6xtuUkKjY5VhrV66PPNjbTrm05xep9kFGBPMbdSC2D9qpCPDebZGsCopzxPX41hgbsJXuP8NYLHqF0UfZe+0x3fXl7cYt7r6NK3qYv6v9hu4DhFhSmGNolOgMET8yy2lqf7/8MXcAXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764782143; c=relaxed/simple;
-	bh=P/tDL77InlavfNi2lCgUvlH2tQLldc1e7JkMCUq7YVQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MHJKd57oaWwgDQioRBg2aaEOQiyfl+qtdY5/00LaUr0lm/ZHsWUgdjvp0x1V/jpeBWgGC0Cuu8sAyfIt9pcZwjj3unNmF9NXsY90bkG4yGjt4qlzq2vWnYK2R7zRAAWO70wI7mnbOSffWGbREP1Qr0C6bqNmopU3hmvGCucvXuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=0RON9zjQ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=6E4NoMFW; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=zIZbpQdU; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=03816KMm; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 047F85BDC4;
-	Wed,  3 Dec 2025 17:15:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1764782138; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=qfaRP1TVSlb2FrbK+FspbEIhwCAz7AGdQqxTllry70g=;
-	b=0RON9zjQQUcyXkzcSd6PcezDf1yKgK/Ut8/ALOylDcZudnwhE5ZMLgJZymPwMHJXs0tYby
-	7sNIznibOSxqKloedwLgr8mTAGhy19x18EPgxi3L38sAOU1dyo5Y+gonSwlAvYjhRMXTTQ
-	LQev7uTJR0W/2+/UG32QtTXm4WU6JOw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1764782138;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=qfaRP1TVSlb2FrbK+FspbEIhwCAz7AGdQqxTllry70g=;
-	b=6E4NoMFWK/Q7NquC4XU+Dte2OMgsAnbLIfujK8CZexshhlu0GrI3oz+gqAL0KuQSOS4q/y
-	TviK4z0Dr0+xrKCg==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=zIZbpQdU;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=03816KMm
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1764782137; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=qfaRP1TVSlb2FrbK+FspbEIhwCAz7AGdQqxTllry70g=;
-	b=zIZbpQdUqtP8kTwuXgwTUatYT4Tmdiq76Nq7HtrkjnfndThzVjgmcyTyRz/XUUWTP/U6DA
-	S1/EaH727Ps+2emEri2IVTszHSjPM+9+baoDbWroYI57CIMt4da3sn9Zhg/KIlN3k0pNYd
-	Up4+JXt7lKphpKPsz7ILVjTw7MyhAQ0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1764782137;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=qfaRP1TVSlb2FrbK+FspbEIhwCAz7AGdQqxTllry70g=;
-	b=03816KMmF5c5LOgA6u+PX//aDEaeuQLO7R7Z7tH5LY27zJRTzrC0pQCW/GNXgAvVP+LnGC
-	EjjYdDFZIZPz6iBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AAB453EA63;
-	Wed,  3 Dec 2025 17:15:36 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 8AvlJzhwMGmBPgAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Wed, 03 Dec 2025 17:15:36 +0000
-Message-ID: <64a09b88-5fe2-46ab-861e-9330a66a0459@suse.de>
-Date: Wed, 3 Dec 2025 18:15:35 +0100
+	s=arc-20240116; t=1764782173; c=relaxed/simple;
+	bh=5uUHyVBab1IIK2THz/icU8D3tVumbHD3IyFhj+XwJqI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=D1HR/2pYO5fc0b/SRy9vctOcCu1HIO9NYj+DlvQp+VDNApIW5NZmhBQVsp3LZPixjsz4JrphERKldII5HYXFQh68NhY4Xp3rOKbcTjuTu5WRCeo2KccM0DgHZ7n0A89ZstWT3MsO93ifXaE6YAXppte0K+harO37u58rUXYxTDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
+Received: from omf02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A0B1151C25;
+	Wed,  3 Dec 2025 17:16:03 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf02.hostedemail.com (Postfix) with ESMTPA id AEDFA80011;
+	Wed,  3 Dec 2025 17:16:00 +0000 (UTC)
+Date: Wed, 3 Dec 2025 12:17:03 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Sumanth Gavini <sumanth.gavini@yahoo.com>
+Cc: jstultz@google.com, mhiramat@kernel.org, tglx@linutronix.de,
+ clingutla@codeaurora.org, mingo@kernel.org, sashal@kernel.org,
+ boqun.feng@gmail.com, gregkh@linuxfoundation.org, ryotkkr98@gmail.com,
+ kprateek.nayak@amd.com, elavila@google.com, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH V2 6.1] softirq: Add trace points for tasklet entry/exit
+Message-ID: <20251203121703.0c3a5ed6@gandalf.local.home>
+In-Reply-To: <20251112031620.121107-1-sumanth.gavini@yahoo.com>
+References: <CANDhNCq_11zO4SNWsYzxOeDuwN5Ogrq9s4B9PVJ=mkx_v8RT9Q@mail.gmail.com>
+	<20251112031620.121107-1-sumanth.gavini@yahoo.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 126/132] drm, fbcon, vga_switcheroo: Avoid race
- condition in fbcon setup
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Javier Martinez Canillas <javierm@redhat.com>,
- Alex Deucher <alexander.deucher@amd.com>, dri-devel@lists.freedesktop.org,
- nouveau@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
- linux-fbdev@vger.kernel.org, Sasha Levin <sashal@kernel.org>
-References: <20251203152343.285859633@linuxfoundation.org>
- <20251203152347.982336576@linuxfoundation.org>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20251203152347.982336576@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-0.999];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	URIBL_BLOCKED(0.00)[suse.com:url,bootlin.com:url,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,amd.com:email,lists.freedesktop.org:email,suse.de:email,suse.de:dkim,suse.de:mid,linuxfoundation.org:email];
-	FROM_HAS_DN(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:url,linuxfoundation.org:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,msgid.link:url]
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spam-Level: 
-X-Rspamd-Queue-Id: 047F85BDC4
-X-Spam-Flag: NO
-X-Spam-Score: -4.51
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: zo976ui93yj7i9fmwcdusdhzidtcr4tj
+X-Rspamd-Server: rspamout02
+X-Rspamd-Queue-Id: AEDFA80011
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX18zCd23UKDhSX9bMWSGYHH+za3w4eMchBU=
+X-HE-Tag: 1764782160-895588
+X-HE-Meta: U2FsdGVkX1/xT3xAAh8cPXJrKvilT1E4ovGvM8aFDMcl69FJxB1Scx5ilQAof7UH8L+zuWuOZ3Kt7WTQfAmh1ttWAhWZEkDGGHADkGKW/pxE+kFJVdVkYDh8CjjYBMMUAJiu2eJKvFZM3yJ6ofFwnLzx1S86fDwkkwNhXSakhGmBIaC0AfcbspeNukF71Dmx6xK2e6I31pIZKor87ZBbAceHhkQ0paTwp7kkt05sM/MEdcaFVqo3OhBQN/+NXMQfpv4LXqb5Qky4xEFzyLMhNUl4UPRyrU5nIws4W7RhGiNjt29rytgePfrfHC78EqIyHi+3lXrvyJO+p8HspiWe47eGAqL3iHWC
 
-Hi,
+On Tue, 11 Nov 2025 21:16:20 -0600
+Sumanth Gavini <sumanth.gavini@yahoo.com> wrote:
 
-thank you for making the updated patch.
+> [elavila: Port to android-mainline]
+> [jstultz: Rebased to upstream, cut unused trace points, added
+>  comments for the tracepoints, reworded commit]
+> 
+> The intention is to keep the stable branch in sync with upstream fixes
+> and improve observability without introducing new functionality.
+> 
+> Signed-off-by: Sumanth Gavini <sumanth.gavini@yahoo.com>
 
-Am 03.12.25 um 16:30 schrieb Greg Kroah-Hartman:
-> 6.12-stable review patch.  If anyone has any objections, please let me know.
->
-> ------------------
->
-> From: Thomas Zimmermann <tzimmermann@suse.de>
->
-> [ Upstream commit eb76d0f5553575599561010f24c277cc5b31d003 ]
->
-> Protect vga_switcheroo_client_fb_set() with console lock. Avoids OOB
-> access in fbcon_remap_all(). Without holding the console lock the call
-> races with switching outputs.
->
-> VGA switcheroo calls fbcon_remap_all() when switching clients. The fbcon
-> function uses struct fb_info.node, which is set by register_framebuffer().
-> As the fb-helper code currently sets up VGA switcheroo before registering
-> the framebuffer, the value of node is -1 and therefore not a legal value.
-> For example, fbcon uses the value within set_con2fb_map() [1] as an index
-> into an array.
->
-> Moving vga_switcheroo_client_fb_set() after register_framebuffer() can
-> result in VGA switching that does not switch fbcon correctly.
->
-> Therefore move vga_switcheroo_client_fb_set() under fbcon_fb_registered(),
-> which already holds the console lock. Fbdev calls fbcon_fb_registered()
-> from within register_framebuffer(). Serializes the helper with VGA
-> switcheroo's call to fbcon_remap_all().
->
-> Although vga_switcheroo_client_fb_set() takes an instance of struct fb_info
-> as parameter, it really only needs the contained fbcon state. Moving the
-> call to fbcon initialization is therefore cleaner than before. Only amdgpu,
-> i915, nouveau and radeon support vga_switcheroo. For all other drivers,
-> this change does nothing.
->
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Link: https://elixir.bootlin.com/linux/v6.17/source/drivers/video/fbdev/core/fbcon.c#L2942 # [1]
-> Fixes: 6a9ee8af344e ("vga_switcheroo: initial implementation (v15)")
-> Acked-by: Javier Martinez Canillas <javierm@redhat.com>
-> Acked-by: Alex Deucher <alexander.deucher@amd.com>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: nouveau@lists.freedesktop.org
-> Cc: amd-gfx@lists.freedesktop.org
-> Cc: linux-fbdev@vger.kernel.org
-> Cc: <stable@vger.kernel.org> # v2.6.34+
-> Link: https://patch.msgid.link/20251105161549.98836-1-tzimmermann@suse.de
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+I just noticed that this is being pulled into 6.1.
 
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+I'm still not sure why this was added. Yes, it may improve observability,
+but that's because it is adding new functionality. Adding a trace event, is
+functionality and not a bug fix.
 
-> ---
->   drivers/gpu/drm/drm_fb_helper.c            |    6 ------
->   drivers/gpu/drm/i915/display/intel_fbdev.c |    6 ------
->   drivers/gpu/drm/radeon/radeon_fbdev.c      |    5 -----
->   drivers/video/fbdev/core/fbcon.c           |    9 +++++++++
->   4 files changed, 9 insertions(+), 17 deletions(-)
->
-> --- a/drivers/gpu/drm/drm_fb_helper.c
-> +++ b/drivers/gpu/drm/drm_fb_helper.c
-> @@ -30,9 +30,7 @@
->   #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
->   
->   #include <linux/console.h>
-> -#include <linux/pci.h>
->   #include <linux/sysrq.h>
-> -#include <linux/vga_switcheroo.h>
->   
->   #include <drm/drm_atomic.h>
->   #include <drm/drm_drv.h>
-> @@ -1637,10 +1635,6 @@ static int drm_fb_helper_single_fb_probe
->   
->   	strcpy(fb_helper->fb->comm, "[fbcon]");
->   
-> -	/* Set the fb info for vgaswitcheroo clients. Does nothing otherwise. */
-> -	if (dev_is_pci(dev->dev))
-> -		vga_switcheroo_client_fb_set(to_pci_dev(dev->dev), fb_helper->info);
-> -
->   	return 0;
->   }
->   
-> --- a/drivers/gpu/drm/i915/display/intel_fbdev.c
-> +++ b/drivers/gpu/drm/i915/display/intel_fbdev.c
-> @@ -589,11 +589,8 @@ static int intel_fbdev_restore_mode(stru
->   static void intel_fbdev_client_unregister(struct drm_client_dev *client)
->   {
->   	struct drm_fb_helper *fb_helper = drm_fb_helper_from_client(client);
-> -	struct drm_device *dev = fb_helper->dev;
-> -	struct pci_dev *pdev = to_pci_dev(dev->dev);
->   
->   	if (fb_helper->info) {
-> -		vga_switcheroo_client_fb_set(pdev, NULL);
->   		drm_fb_helper_unregister_info(fb_helper);
->   	} else {
->   		drm_fb_helper_unprepare(fb_helper);
-> @@ -620,7 +617,6 @@ static int intel_fbdev_client_hotplug(st
->   {
->   	struct drm_fb_helper *fb_helper = drm_fb_helper_from_client(client);
->   	struct drm_device *dev = client->dev;
-> -	struct pci_dev *pdev = to_pci_dev(dev->dev);
->   	int ret;
->   
->   	if (dev->fb_helper)
-> @@ -634,8 +630,6 @@ static int intel_fbdev_client_hotplug(st
->   	if (ret)
->   		goto err_drm_fb_helper_fini;
->   
-> -	vga_switcheroo_client_fb_set(pdev, fb_helper->info);
-> -
->   	return 0;
->   
->   err_drm_fb_helper_fini:
-> --- a/drivers/gpu/drm/radeon/radeon_fbdev.c
-> +++ b/drivers/gpu/drm/radeon/radeon_fbdev.c
-> @@ -300,10 +300,8 @@ static void radeon_fbdev_client_unregist
->   {
->   	struct drm_fb_helper *fb_helper = drm_fb_helper_from_client(client);
->   	struct drm_device *dev = fb_helper->dev;
-> -	struct radeon_device *rdev = dev->dev_private;
->   
->   	if (fb_helper->info) {
-> -		vga_switcheroo_client_fb_set(rdev->pdev, NULL);
->   		drm_helper_force_disable_all(dev);
->   		drm_fb_helper_unregister_info(fb_helper);
->   	} else {
-> @@ -325,7 +323,6 @@ static int radeon_fbdev_client_hotplug(s
->   {
->   	struct drm_fb_helper *fb_helper = drm_fb_helper_from_client(client);
->   	struct drm_device *dev = client->dev;
-> -	struct radeon_device *rdev = dev->dev_private;
->   	int ret;
->   
->   	if (dev->fb_helper)
-> @@ -342,8 +339,6 @@ static int radeon_fbdev_client_hotplug(s
->   	if (ret)
->   		goto err_drm_fb_helper_fini;
->   
-> -	vga_switcheroo_client_fb_set(rdev->pdev, fb_helper->info);
-> -
->   	return 0;
->   
->   err_drm_fb_helper_fini:
-> --- a/drivers/video/fbdev/core/fbcon.c
-> +++ b/drivers/video/fbdev/core/fbcon.c
-> @@ -65,6 +65,7 @@
->   #include <linux/string.h>
->   #include <linux/kd.h>
->   #include <linux/panic.h>
-> +#include <linux/pci.h>
->   #include <linux/printk.h>
->   #include <linux/slab.h>
->   #include <linux/fb.h>
-> @@ -77,6 +78,7 @@
->   #include <linux/interrupt.h>
->   #include <linux/crc32.h> /* For counting font checksums */
->   #include <linux/uaccess.h>
-> +#include <linux/vga_switcheroo.h>
->   #include <asm/irq.h>
->   
->   #include "fbcon.h"
-> @@ -2894,6 +2896,9 @@ void fbcon_fb_unregistered(struct fb_inf
->   
->   	console_lock();
->   
-> +	if (info->device && dev_is_pci(info->device))
-> +		vga_switcheroo_client_fb_set(to_pci_dev(info->device), NULL);
-> +
->   	fbcon_registered_fb[info->node] = NULL;
->   	fbcon_num_registered_fb--;
->   
-> @@ -3027,6 +3032,10 @@ static int do_fb_registered(struct fb_in
->   		}
->   	}
->   
-> +	/* Set the fb info for vga_switcheroo clients. Does nothing otherwise. */
-> +	if (info->device && dev_is_pci(info->device))
-> +		vga_switcheroo_client_fb_set(to_pci_dev(info->device), info);
-> +
->   	return ret;
->   }
->   
->
->
->
+I'm not going to argue against this backport, but I do want to point out
+that it is adding new functionality to a stable release.
 
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
-
-
+-- Steve
 
