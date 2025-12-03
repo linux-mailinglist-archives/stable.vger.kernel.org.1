@@ -1,125 +1,106 @@
-Return-Path: <stable+bounces-199571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0C87CA1005
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:32:08 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E3DFCA0D4C
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:13:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A282930D8950
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:30:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5E46230052CA
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:13:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7428034B68A;
-	Wed,  3 Dec 2025 16:43:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="ChzS+WEs"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E01483563D2;
+	Wed,  3 Dec 2025 16:44:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-10631.protonmail.ch (mail-10631.protonmail.ch [79.135.106.31])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 785F934B413
-	for <stable@vger.kernel.org>; Wed,  3 Dec 2025 16:43:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.31
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E386C19258E;
+	Wed,  3 Dec 2025 16:44:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780235; cv=none; b=Ul642VwN1CVaiVgcLhrGzUdN35a5mqo6qr6NWNvEg0FFA8lXkaq8xSoTr5kpLCRSYxOLTO6umOJn3CxCZSJ6bfoM/t5pheMhI7TtuuxNsi4quOK2WYZm92xlr8oEUNY20+wiImW9NMYewzLBv+bhX4cBqXvGljZMvjSx6zhGQSo=
+	t=1764780276; cv=none; b=XcanDDeWbXcrqEuwAAGLTJqSLQiblNKKDUZUDatSMX09n59QoKQPbBA9cX+ugZwGZVEavTleLJ7hcqYFXhID5CjDUIvvUrO2jEc5aov+jFRScyywp9My+UPA1xFJTgNG0GcsvgrsjqcjtJHs5jlOZn1jDVwoNWaN7GMAaw1dD+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780235; c=relaxed/simple;
-	bh=C347GRmJDNHW6eA8F9VxDj4f7e7nJ4BRnT7xWbVUM0M=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q/bav1xKhYJjQ9pAVUf/tih3i8VqkXaihBj8bg36DpjHJ+TH+OmkzCFQ+X2TCdGihgUe3+sg8vImjBkJEgnDRh7q9RVxH2LVURCJD1jcRKpBLr2MeNO0JZ7LK7wTnSEDSzkCkkSxos3WpeR97nlkafkBwdkNpjXN9aVbk3OQu4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=ChzS+WEs; arc=none smtp.client-ip=79.135.106.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1764780229; x=1765039429;
-	bh=nxrvBXGpA1Q+nnlGY6f0s+0LHNsraSWWBUdSBcXFF08=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=ChzS+WEsjeMWAL/FoYDDx8ErAUE1ldyouBZhZrMc58wd/Wb4ajYmXBHagzFO1uJWR
-	 yBsOF7rUr7qHvjP/Cmu7iJyqfrl4VeW1O6XfEIuY92AtHWK4p+apC3NOTLchtUsG9r
-	 IpvoR1lHrM8kKfm10b9mZbwaw6BudNM/yH1N0kpnzwBtdSxMsM8A1CGMU2cceRRDTT
-	 zfs6HhYi3HYFAf29GkWCDS7nDiDWB3LTRBr3n3hQGfGCdI7mET+u1qWgxIbZAiFYGj
-	 arZx81GcvT/9nDR1Z9Nxm9NZ9TyJEo5YFcqptxFOTr6uyzCx1scz7coSnQ3oo9E89J
-	 xDFqpt2Dj2KyQ==
-Date: Wed, 03 Dec 2025 16:43:43 +0000
-To: Andrey Konovalov <andreyknvl@gmail.com>
-From: =?utf-8?Q?Maciej_Wiecz=C3=B3r-Retman?= <m.wieczorretman@pm.me>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, Marco Elver <elver@google.com>, stable@vger.kernel.org, Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 1/2] kasan: Refactor pcpu kasan vmalloc unpoison
-Message-ID: <bi7dif47rpmdymfu3fkuz432vv5p2tmabk5snpqo27f5fitq5x@xap7rkeqejrj>
-In-Reply-To: <CA+fCnZcNoLERGmjyVV=ykD62hPRkPua4AqKE083BBm6OHmGtPw@mail.gmail.com>
-References: <cover.1764685296.git.m.wieczorretman@pm.me> <3907c330d802e5b86bfe003485220de972aaac18.1764685296.git.m.wieczorretman@pm.me> <CA+fCnZcNoLERGmjyVV=ykD62hPRkPua4AqKE083BBm6OHmGtPw@mail.gmail.com>
-Feedback-ID: 164464600:user:proton
-X-Pm-Message-ID: 0dd43d3234ed39ac31442c89bad75ed3613a9e3d
+	s=arc-20240116; t=1764780276; c=relaxed/simple;
+	bh=HEuqkLKJeLwonYbhFqrBWQcMiVnNbV38FGG2d9ZwBGs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Tm9IUvPEbYBojeBxrnukvqgHn12cxD7zk3kNqWy5hmCEYpNToZ4bKLzhgn3hwpETWkK3RGn6V0r0bnFzLl6Y0Hwvi85vc8eYTniSnVNd/T7zGGI2C1kjuZ4R79d10AZSWw0Y0rEi9ME3zHs0M75wm0XdiKKMdAjNQFTWjhsoiRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CDB55339;
+	Wed,  3 Dec 2025 08:44:26 -0800 (PST)
+Received: from [10.1.32.62] (e127648.arm.com [10.1.32.62])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2DC113F66E;
+	Wed,  3 Dec 2025 08:44:33 -0800 (PST)
+Message-ID: <39c7d882-6711-4178-bce6-c1e4fc909b84@arm.com>
+Date: Wed, 3 Dec 2025 16:44:31 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: Performance regressions introduced via Revert "cpuidle: menu:
+ Avoid discarding useful information" on 5.15 LTS
+To: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc: Sasha Levin <sashal@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <d4690be7-9b81-498e-868b-fb4f1d558e08@oracle.com>
+Content-Language: en-US
+From: Christian Loehle <christian.loehle@arm.com>
+In-Reply-To: <d4690be7-9b81-498e-868b-fb4f1d558e08@oracle.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 2025-12-03 at 16:53:04 +0100, Andrey Konovalov wrote:
->On Tue, Dec 2, 2025 at 3:29=E2=80=AFPM Maciej Wieczor-Retman
-><m.wieczorretman@pm.me> wrote:
->>
->> From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
->>
-...
->> diff --git a/mm/kasan/common.c b/mm/kasan/common.c
->> index d4c14359feaf..7884ea7d13f9 100644
->> --- a/mm/kasan/common.c
->> +++ b/mm/kasan/common.c
->> @@ -28,6 +28,7 @@
->>  #include <linux/string.h>
->>  #include <linux/types.h>
->>  #include <linux/bug.h>
->> +#include <linux/vmalloc.h>
->>
->>  #include "kasan.h"
->>  #include "../slab.h"
->> @@ -582,3 +583,19 @@ bool __kasan_check_byte(const void *address, unsign=
-ed long ip)
->>         }
->>         return true;
->>  }
->> +
->> +#ifdef CONFIG_KASAN_VMALLOC
->> +void kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms,
->> +                              kasan_vmalloc_flags_t flags)
->
->kasan_unpoison_vmap_areas() needs to be defined in
->inclunde/linux/kasan.h and call __kasan_unpoison_vmap_areas() when
->kasan_enabled() =3D=3D true, similar to the other wrappers.
->
->And check my comment for patch #2: with that, you should not need to
->add so many new __helpers: just __kasan_unpoison_vmalloc and
->__kasan_unpoison_vmap_areas should suffice.
+On 12/3/25 16:18, Harshvardhan Jha wrote:
+> Hi there,
+> 
+> While running performance benchmarks for the 5.15.196 LTS tags , it was
+> observed that several regressions across different benchmarks is being
+> introduced when compared to the previous 5.15.193 kernel tag. Running an
+> automated bisect on both of them narrowed down the culprit commit to:
+> - 5666bcc3c00f7 Revert "cpuidle: menu: Avoid discarding useful
+> information" for 5.15
+> 
+> Regressions on 5.15.196 include:
+> -9.3% : Phoronix pts/sqlite using 2 processes on OnPrem X6-2
+> -6.3% : Phoronix system/sqlite on OnPrem X6-2
+> -18%  : rds-stress -M 1 (readonly rdma-mode) metrics with 1 depth & 1
+> thread & 1M buffer size on OnPrem X6-2
+> -4 -> -8% : rds-stress -M 2 (writeonly rdma-mode) metrics with 1 depth &
+> 1 thread & 1M buffer size on OnPrem X6-2
+> Up to -30% : Some Netpipe metrics on OnPrem X5-2
+> 
+> The culprit commits' messages mention that these reverts were done due
+> to performance regressions introduced in Intel Jasper Lake systems but
+> this revert is causing issues in other systems unfortunately. I wanted
+> to know the maintainers' opinion on how we should proceed in order to
+> fix this. If we reapply it'll bring back the previous regressions on
+> Jasper Lake systems and if we don't revert it then it's stuck with
+> current regressions. If this problem has been reported before and a fix
+> is in the works then please let me know I shall follow developments to
+> that mail thread.
 
-Okay, I think I see what you mean. I was trying to avoid using
-__kasan_unpoison_vmalloc() here so that it compiled properly, but that
-was before I added the ifdef guard. Now there is not reason not to use
-it here.
+The discussion regarding this can be found here:
+https://lore.kernel.org/lkml/36iykr223vmcfsoysexug6s274nq2oimcu55ybn6ww4il3g3cv@cohflgdbpnq7/
+we explored an alternative to the full revert here:
+https://lore.kernel.org/lkml/4687373.LvFx2qVVIh@rafael.j.wysocki/
+unfortunately that didn't lead anywhere useful, so Rafael went with the
+full revert you're seeing now.
 
-I'll make the changes you mentioned.
+Ultimately it seems to me that this "aggressiveness" on deep idle tradeoffs
+will highly depend on your platform, but also your workload, Jasper Lake
+in particular seems to favor deep idle states even when they don't seem
+to be a 'good' choice from a purely cpuidle (governor) perspective, so
+we're kind of stuck with that.
 
-Kind regards
-Maciej Wiecz=C3=B3r-Retman
+For teo we've discussed a tunable knob in the past, which comes naturally with
+the logic, for menu there's nothing obvious that would be comparable.
+But for teo such a knob didn't generate any further interest (so far).
 
->
->> +{
->> +       unsigned long size;
->> +       void *addr;
->> +       int area;
->> +
->> +       for (area =3D 0 ; area < nr_vms ; area++) {
->> +               size =3D vms[area]->size;
->> +               addr =3D vms[area]->addr;
->> +               vms[area]->addr =3D __kasan_unpoison_vmap_areas(addr, si=
-ze, flags);
->> +       }
->> +}
->> +#endif
-
+That's the status, unless I missed anything?
 
