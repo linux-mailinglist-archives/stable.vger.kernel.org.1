@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3F4DCA008A
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:40:47 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3A0CC9FD13
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:08:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E650A30194EE
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:36:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 53CC93001BC1
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:07:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5E7935BDDF;
-	Wed,  3 Dec 2025 16:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66778313E03;
+	Wed,  3 Dec 2025 16:07:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A4nWK9dj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vv0ouKRs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637E42FD1C5;
-	Wed,  3 Dec 2025 16:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23480313546;
+	Wed,  3 Dec 2025 16:07:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779815; cv=none; b=KaUHlLHMenIwMI8dhRggPVtRBIwqmSZre92hcRuwO8V37FMzIRpGmdfVXr8wFMdvM7FNd1F/BxdaW/REUkRJeWUs6jxzI9O1t4Q41dHP7Tt4sgckJk9iLfbSYTr8/yEztHNL5FhSAWJNCForqcbhzc9iK57TYPtyKxMAmrRHA2k=
+	t=1764778064; cv=none; b=GB9YDFRhcx4ry2P9meE9TIMDwjdAg4s2ghMW4W3139ORo99ydCSCUFUPvdA6Vps2097rrg5CxAqd1ZMTbCvW7jGxgQywy1cx0OpL0OyP92iplnrx9Sci95KQH3qJIivinGsDpXMMz81UwkFBiKsZgzEsO2Phw8WU70fVT9WQT3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779815; c=relaxed/simple;
-	bh=PKlCqHWfcCkSObL2ZnTppAuHkY1JQK9Y3Nx4tTFGiZ0=;
+	s=arc-20240116; t=1764778064; c=relaxed/simple;
+	bh=md7O2iDK5uqo0/EMO+bRcghytxMk01PGg8LU27gsBJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e4EAxceTyzGy1n2+WhQeNn2NSN/N42VNccIdfaxaVr2kny1qjZnZb7y/it37EzSNYYz4sPzxD0bA78RnDSc+qHKbd+GjCZG8PZAg1+Ruqp8fsrO/YEhnBVf/lGXsmCOnwGRv0LvvytlJApo/uwYQ1kxYFdWhYbNBhNeS6l8UQ74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A4nWK9dj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFBE5C4CEF5;
-	Wed,  3 Dec 2025 16:36:54 +0000 (UTC)
+	 MIME-Version; b=g5kuFnKtFt3ebMRM+EGPIWHqryYOH5a0kgww3E8MVLIiD+es1AIL+E9aday0KId0IvjsSg9PTpKojT+iya81JcKk6FHtmDYpMJRrWnnrRLK+l2KAd0zY39CciFAoUan4G5klseCkV2eFyQuISxapGtVzg3xXX52+b3FMgV8byuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vv0ouKRs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C878C4CEF5;
+	Wed,  3 Dec 2025 16:07:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779815;
-	bh=PKlCqHWfcCkSObL2ZnTppAuHkY1JQK9Y3Nx4tTFGiZ0=;
+	s=korg; t=1764778064;
+	bh=md7O2iDK5uqo0/EMO+bRcghytxMk01PGg8LU27gsBJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A4nWK9djFO95j/V+QWBVI/CKC8EETxFE2smsQ982IcKVfgVvM1/xRKJ+UI4IiFRvB
-	 IhmfI8d0d1zKyGWF9SnIYHSI+6B0JmF8cZofHUF5maesfvKnX6+ZQ3YNUWxnrH8Wwl
-	 RYkvWPDEHidTbgyqnh8fx68jlYJ4EyyYIS9ZreWY=
+	b=Vv0ouKRs9vgtN4zhfB4TExWr3T8BbhhXMjckhklHy89xQiym+DD/++UetFJ5Agefl
+	 Z1NJsd4UD8ACuX4qayUR7NrrPgPoYFi0z2XotuQCWv4WARPwKASIJyryUBOcYrhnQC
+	 jvKG13z+zMOwTxHFmRiE5zbupKuZ+VrwCgGrNXwY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+2fc81b50a4f8263a159b@syzkaller.appspotmail.com,
-	Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Alex Markuze <amarkuze@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 352/568] Bluetooth: btusb: reorder cleanup in btusb_disconnect to avoid UAF
-Date: Wed,  3 Dec 2025 16:25:54 +0100
-Message-ID: <20251203152453.598232996@linuxfoundation.org>
+Subject: [PATCH 5.15 205/392] ceph: add checking of wait_for_completion_killable() return value
+Date: Wed,  3 Dec 2025 16:25:55 +0100
+Message-ID: <20251203152421.617954270@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
+From: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
 
-[ Upstream commit 23d22f2f71768034d6ef86168213843fc49bf550 ]
+[ Upstream commit b7ed1e29cfe773d648ca09895b92856bd3a2092d ]
 
-There is a KASAN: slab-use-after-free read in btusb_disconnect().
-Calling "usb_driver_release_interface(&btusb_driver, data->intf)" will
-free the btusb data associated with the interface. The same data is
-then used later in the function, hence the UAF.
+The Coverity Scan service has detected the calling of
+wait_for_completion_killable() without checking the return
+value in ceph_lock_wait_for_completion() [1]. The CID 1636232
+defect contains explanation: "If the function returns an error
+value, the error value may be mistaken for a normal value.
+In ceph_lock_wait_for_completion(): Value returned from
+a function is not checked for errors before being used. (CWE-252)".
 
-Fix by moving the accesses to btusb data to before the data is free'd.
+The patch adds the checking of wait_for_completion_killable()
+return value and return the error code from
+ceph_lock_wait_for_completion().
 
-Reported-by: syzbot+2fc81b50a4f8263a159b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=2fc81b50a4f8263a159b
-Tested-by: syzbot+2fc81b50a4f8263a159b@syzkaller.appspotmail.com
-Fixes: fd913ef7ce619 ("Bluetooth: btusb: Add out-of-band wakeup support")
-Signed-off-by: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+[1] https://scan5.scan.coverity.com/#/project-view/64304/10063?selectedIssue=1636232
+
+Signed-off-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Reviewed-by: Alex Markuze <amarkuze@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ fs/ceph/locks.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 29130160066a5..70cdcef684138 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -4204,6 +4204,11 @@ static void btusb_disconnect(struct usb_interface *intf)
+diff --git a/fs/ceph/locks.c b/fs/ceph/locks.c
+index 3e3b8be76b21e..38974c54240d6 100644
+--- a/fs/ceph/locks.c
++++ b/fs/ceph/locks.c
+@@ -202,7 +202,10 @@ static int ceph_lock_wait_for_completion(struct ceph_mds_client *mdsc,
+ 	if (err && err != -ERESTARTSYS)
+ 		return err;
  
- 	hci_unregister_dev(hdev);
- 
-+	if (data->oob_wake_irq)
-+		device_init_wakeup(&data->udev->dev, false);
-+	if (data->reset_gpio)
-+		gpiod_put(data->reset_gpio);
+-	wait_for_completion_killable(&req->r_safe_completion);
++	err = wait_for_completion_killable(&req->r_safe_completion);
++	if (err)
++		return err;
 +
- 	if (intf == data->intf) {
- 		if (data->isoc)
- 			usb_driver_release_interface(&btusb_driver, data->isoc);
-@@ -4214,17 +4219,11 @@ static void btusb_disconnect(struct usb_interface *intf)
- 			usb_driver_release_interface(&btusb_driver, data->diag);
- 		usb_driver_release_interface(&btusb_driver, data->intf);
- 	} else if (intf == data->diag) {
--		usb_driver_release_interface(&btusb_driver, data->intf);
- 		if (data->isoc)
- 			usb_driver_release_interface(&btusb_driver, data->isoc);
-+		usb_driver_release_interface(&btusb_driver, data->intf);
- 	}
- 
--	if (data->oob_wake_irq)
--		device_init_wakeup(&data->udev->dev, false);
--
--	if (data->reset_gpio)
--		gpiod_put(data->reset_gpio);
--
- 	hci_free_dev(hdev);
+ 	return 0;
  }
  
 -- 
