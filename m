@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-198709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0E9DCA09CA
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:45:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1D8DCA05B9
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:21:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9022632EEE28
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:24:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C46C231919E4
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:07:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8394D34166B;
-	Wed,  3 Dec 2025 15:57:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 097E535CB88;
+	Wed,  3 Dec 2025 16:26:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J6PCuXMd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YeVomeqX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8AA34107C;
-	Wed,  3 Dec 2025 15:57:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7A7D35CB78;
+	Wed,  3 Dec 2025 16:26:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777432; cv=none; b=crNDq+PSFYasvkVcGNk0+2OgbeSdN5NXrMbP+FxaYIHqfvJLF/st+uiEnK5f06jtTA+yHsk5uFEH/ZezjW0IEEEbk8Ny9ZMIlNMgtF9lPsZrH1VVsfpDVz5I5K+Y8s0mI2rw057x40X5O3Z9e1/i19WKNqjTnWO/1+GzP963h6o=
+	t=1764779195; cv=none; b=jX76JHptsdoWvpKWyL3lDz16E/AwoFh6XfzeaxDBwWL6m139sV4s73DE2DAay/q7P0TX1/vGRQFoqeY7DGgOZBptIW3UjTEKa/bswPjRJ6VneqeJNlvjyDglMFTrT9rli9L3p62bJ0Y3ph3/HgCzZk5QhE1jT4K+o8Nb96Mq3/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777432; c=relaxed/simple;
-	bh=yWshMHqNyzEelKBM8db/v1uyMFCDs6XrFOzVV9ehBoM=;
+	s=arc-20240116; t=1764779195; c=relaxed/simple;
+	bh=XHaS1WipkPGEDbnXMqkdBpoSugvDKdM3jHK6Xk1mVmQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rIdUCpWQRpP0n+F720AGpACrihiOAFSKU24cMZfNeTgA0T5/Xu0X6duErAZvipcag0B+66BJCs0u2QUypxe9z+LQtkqC8bivlI93W4Ee26B+UJQicr90cXETVUfQr4zNYMXES0OA3f837FvLjXyPoEhlu8jW/zV4u4Zy3jF0w8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J6PCuXMd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6743C4CEF5;
-	Wed,  3 Dec 2025 15:57:11 +0000 (UTC)
+	 MIME-Version; b=kitZ/MA6/8iTVnFPf1qrAdAfQtrDfRD3vjIWgUhL7PxGjL6ty1/3ItGJvMuKWsglSKYQhfSZCqhDUEApphD36u1n3A2Dy1g/NQpCoFBEH33lDSQj4GQs0jLJj4NLq3soU9tbrU0cjSywUx2+gi2dl9TMW7YsfvwOgJr9dehUcRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YeVomeqX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 150DDC4CEF5;
+	Wed,  3 Dec 2025 16:26:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777432;
-	bh=yWshMHqNyzEelKBM8db/v1uyMFCDs6XrFOzVV9ehBoM=;
+	s=korg; t=1764779195;
+	bh=XHaS1WipkPGEDbnXMqkdBpoSugvDKdM3jHK6Xk1mVmQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J6PCuXMd9Piz4IfFD8d75DZzYMwPwUCNjyDSvfmRYw1K17OgKJBwz5VD0+fLLhun6
-	 KwVw0qG6T0ohzIbMxqkyrkH5sP4m22UKw34uadl8w1uhAqscLnzcOUkhEPJVqCNQoQ
-	 Q+aH5NgyVkLvE8Cbht1WLM3qq27QX/e2xTVmwsS8=
+	b=YeVomeqXmbX+9pHHKsnQW3VmQBXehDbe1NfnzbGRBB89wz0v1fBtlkVDUt1HKuZiF
+	 O+vc47iEnUKR8cXG5afFxCoS5MUOdr/DE+ISPOptZbgewZs333AMgNxxgX3qg0oke4
+	 raDSCfu7ktXerTESy9NujwiJuPNEjSMOrBVr2248=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Rosen Penev <rosenp@gmail.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 036/392] net: ravb: Enforce descriptor type ordering
+Subject: [PATCH 6.1 184/568] dmaengine: mv_xor: match alloc_wc and free_wc
 Date: Wed,  3 Dec 2025 16:23:06 +0100
-Message-ID: <20251203152415.432089148@linuxfoundation.org>
+Message-ID: <20251203152447.465606360@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,79 +58,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Rosen Penev <rosenp@gmail.com>
 
-[ Upstream commit 5370c31e84b0e0999c7b5ff949f4e104def35584 ]
+[ Upstream commit a33e3b667d2f004fdfae6b442bd4676f6c510abb ]
 
-Ensure the TX descriptor type fields are published in a safe order so the
-DMA engine never begins processing a descriptor chain before all descriptor
-fields are fully initialised.
+dma_alloc_wc is used but not dma_free_wc.
 
-For multi-descriptor transmits the driver writes DT_FEND into the last
-descriptor and DT_FSTART into the first. The DMA engine begins processing
-when it observes DT_FSTART. Move the dma_wmb() barrier so it executes
-immediately after DT_FEND and immediately before writing DT_FSTART
-(and before DT_FSINGLE in the single-descriptor case). This guarantees
-that all prior CPU writes to the descriptor memory are visible to the
-device before DT_FSTART is seen.
-
-This avoids a situation where compiler/CPU reordering could publish
-DT_FSTART ahead of DT_FEND or other descriptor fields, allowing the DMA to
-start on a partially initialised chain and causing corrupted transmissions
-or TX timeouts. Such a failure was observed on RZ/G2L with an RT kernel as
-transmit queue timeouts and device resets.
-
-Fixes: 2f45d1902acf ("ravb: minimize TX data copying")
-Cc: stable@vger.kernel.org
-Co-developed-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Link: https://patch.msgid.link/20251017151830.171062-4-prabhakar.mahadev-lad.rj@bp.renesas.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Link: https://lore.kernel.org/r/20250821220942.10578-1-rosenp@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/renesas/ravb_main.c |   16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ drivers/dma/mv_xor.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -1668,13 +1668,25 @@ static netdev_tx_t ravb_start_xmit(struc
+diff --git a/drivers/dma/mv_xor.c b/drivers/dma/mv_xor.c
+index ca0ba1d462832..8b215cbca1186 100644
+--- a/drivers/dma/mv_xor.c
++++ b/drivers/dma/mv_xor.c
+@@ -1013,7 +1013,7 @@ static int mv_xor_channel_remove(struct mv_xor_chan *mv_chan)
  
- 		skb_tx_timestamp(skb);
- 	}
--	/* Descriptor type must be set after all the above writes */
--	dma_wmb();
-+
- 	if (num_tx_desc > 1) {
- 		desc->die_dt = DT_FEND;
- 		desc--;
-+		/* When using multi-descriptors, DT_FEND needs to get written
-+		 * before DT_FSTART, but the compiler may reorder the memory
-+		 * writes in an attempt to optimize the code.
-+		 * Use a dma_wmb() barrier to make sure DT_FEND and DT_FSTART
-+		 * are written exactly in the order shown in the code.
-+		 * This is particularly important for cases where the DMA engine
-+		 * is already running when we are running this code. If the DMA
-+		 * sees DT_FSTART without the corresponding DT_FEND it will enter
-+		 * an error condition.
-+		 */
-+		dma_wmb();
- 		desc->die_dt = DT_FSTART;
- 	} else {
-+		/* Descriptor type must be set after all the above writes */
-+		dma_wmb();
- 		desc->die_dt = DT_FSINGLE;
- 	}
+ 	dma_async_device_unregister(&mv_chan->dmadev);
  
+-	dma_free_coherent(dev, MV_XOR_POOL_SIZE,
++	dma_free_wc(dev, MV_XOR_POOL_SIZE,
+ 			  mv_chan->dma_desc_pool_virt, mv_chan->dma_desc_pool);
+ 	dma_unmap_single(dev, mv_chan->dummy_src_addr,
+ 			 MV_XOR_MIN_BYTE_COUNT, DMA_FROM_DEVICE);
+@@ -1163,7 +1163,7 @@ mv_xor_channel_add(struct mv_xor_device *xordev,
+ err_free_irq:
+ 	free_irq(mv_chan->irq, mv_chan);
+ err_free_dma:
+-	dma_free_coherent(&pdev->dev, MV_XOR_POOL_SIZE,
++	dma_free_wc(&pdev->dev, MV_XOR_POOL_SIZE,
+ 			  mv_chan->dma_desc_pool_virt, mv_chan->dma_desc_pool);
+ err_unmap_dst:
+ 	dma_unmap_single(dma_dev->dev, mv_chan->dummy_dst_addr,
+-- 
+2.51.0
+
 
 
 
