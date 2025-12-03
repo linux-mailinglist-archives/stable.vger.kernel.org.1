@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-199557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9DB5CA0164
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:46:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F3D2CA0364
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:56:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0524A3003071
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:43:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D9D183032A98
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:49:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F8B23612E3;
-	Wed,  3 Dec 2025 16:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51FEF350295;
+	Wed,  3 Dec 2025 16:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F5ufxXbW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B3oWF+fJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E42353612D2;
-	Wed,  3 Dec 2025 16:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ACBD3502A2;
+	Wed,  3 Dec 2025 16:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780193; cv=none; b=mCBa41Ofy5ILTRnzNLWhENx0G7Tmz2sHgjoBJmCLiobNQPPKm5DNvlUIXMrL50c24HS8i1Xf2rKVXN6aOdH8BgVQjdEElftBox6NA0lyoO0Y0b6EYK76raUHgIZ3T2coKq/HOI3def3x9j4fql39bseohpU+/KteOSdHkwziWE4=
+	t=1764778408; cv=none; b=pa2tnR5f18i/Ax54HwNIXqPtTOWM2xWCIqYzcFS87wl1A6yo8poMRW+sNDjgHudTRkm38C8TAUPPNvoEy2aN9FObGjU8j+xzdDn1qOaY2t8CA5CoLNMXjvX7U92WL99vbycF9nUi/6kyjyCNYukRikVx7uu/UArq/QUoSjo/ObY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780193; c=relaxed/simple;
-	bh=0xifiuOjRqLzvcBLTK0FNiaqxK/Vl2RGiTY6xz7cCew=;
+	s=arc-20240116; t=1764778408; c=relaxed/simple;
+	bh=O/mySWCqsQDsHwTNugyFMSDwFdUrqNTv4W2u5c42WwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jfrM2YqvBqzHytjufHc1NUygq9q1657FMb6RUk2KyW4zdPdz2Oxg5IdwkwdzjBrieXU12pP9KNSh3T09UIexhCUNENY1r1AtObUbAHbwb5WdUwGRpIY86YpIJKMbUSQQN23AuT3lf5kq01JtHKTCIrn0b6AFeVCc5mWT9zMOI1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F5ufxXbW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27808C4CEF5;
-	Wed,  3 Dec 2025 16:43:11 +0000 (UTC)
+	 MIME-Version; b=tAAjaOHcktR0ThsBE7emD/ZgJhmdc1kNeimI5E5hkrdGFPlk5fIqvDiC1hMFeo4BYOEAZMYMECPiMB5BGgmcuhARQ8f2GhiWWBwv7u2rd3JTwWflrDi+IGRy+LKuGdwdnr333+4PZLHFiyGHTSRtAWw4LG6tuQ+FhjhpFGoZ63Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B3oWF+fJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6552EC4CEF5;
+	Wed,  3 Dec 2025 16:13:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780192;
-	bh=0xifiuOjRqLzvcBLTK0FNiaqxK/Vl2RGiTY6xz7cCew=;
+	s=korg; t=1764778407;
+	bh=O/mySWCqsQDsHwTNugyFMSDwFdUrqNTv4W2u5c42WwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F5ufxXbWwb202+iFyy3LqW/naVHw+rEtBZtisVgDp00VenDfqxbKNjQFD3YaTdtj9
-	 hDFHy6HPm2VzcQhba3GuO8dYSlt7DH4bkKaIby9V536KXDEtLrEF0MeBI2f2YNIWLF
-	 G4MfH6/wpfD0YV6CcVxB1kuwPCgfMh9aJaB219eM=
+	b=B3oWF+fJC3BhKfA873gHFDXgYu0z+YhcF4NHR7Apn3H3PRy+DBgB15DF2JQyXww1Y
+	 X0u1aiOfCr8AhuCMLsTPtN/j7nAFxexgWyKA3ijHheFwVvunzn/OIUkcM5a2m1wleg
+	 MBaN45TG08UOwBECWGsiDxGqJv+J3bf+e+bsod0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 483/568] dt-bindings: pinctrl: toshiba,visconti: Fix number of items in groups
-Date: Wed,  3 Dec 2025 16:28:05 +0100
-Message-ID: <20251203152458.392487727@linuxfoundation.org>
+	Gulam Mohamed <gulam.mohamed@oracle.com>
+Subject: [PATCH 5.15 336/392] Revert "block: dont add or resize partition on the disk with GENHD_FL_NO_PART"
+Date: Wed,  3 Dec 2025 16:28:06 +0100
+Message-ID: <20251203152426.535356428@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,69 +58,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Gulam Mohamed <gulam.mohamed@oracle.com>
 
-[ Upstream commit 316e361b5d2cdeb8d778983794a1c6eadcb26814 ]
+This reverts commit 1a721de8489fa559ff4471f73c58bb74ac5580d3.
 
-The "groups" property can hold multiple entries (e.g.
-toshiba/tmpv7708-rm-mbrc.dts file), so allow that by dropping incorrect
-type (pinmux-node.yaml schema already defines that as string-array) and
-adding constraints for items.  This fixes dtbs_check warnings like:
+The commit 1a721de8489f ("block: don't add or resize partition on the disk
+with GENHD_FL_NO_PART") and the commit 7777f47f2ea6 ("block: Move checking
+GENHD_FL_NO_PART to bdev_add_partition()") used the flag GENHD_FL_NO_PART
+to prevent the add or resize of partitions in 5.15 stable kernels.But in
+these 5.15 kernels, this is giving an issue with the following error
+where the loop driver wants to create a partition when the partscan is
+disabled on the loop device:
 
-  toshiba/tmpv7708-rm-mbrc.dtb: pinctrl@24190000 (toshiba,tmpv7708-pinctrl):
-    pwm-pins:groups: ['pwm0_gpio16_grp', 'pwm1_gpio17_grp', 'pwm2_gpio18_grp', 'pwm3_gpio19_grp'] is too long
+dd if=/dev/zero of=loopDisk.dsk bs=1M count=1 seek=10240;
+losetup -f loopDisk.dsk;parted -s /dev/loop0 -- mklabel gpt mkpart primary
+           2048s 4096s
+1+0 records in
+1+0 records out
+1048576 bytes (1.0 MB, 1.0 MiB) copied, 0.0016293 s, 644 MB/s
+""
+Error: Partition(s) 1 on /dev/loop0 have been written, but we have been
+unable to inform the kernel of the change, probably because it/they are
+in use.  As a result, the old partition(s) will remain in use.  You should
+reboot now before making further changes.
+""
+If the partition scan is not enabled on the loop device, this flag
+GENHD_FL_NO_PART is getting set and when partition creation is tried,
+it returns an error EINVAL thereby preventing the creation of partitions.
+So, there is no such distinction between disabling of partition scan and
+partition creation.
 
-Fixes: 1825c1fe0057 ("pinctrl: Add DT bindings for Toshiba Visconti TMPV7700 SoC")
+Later in 6.xxx kernels, the commit b9684a71fca7 ("block, loop: support
+partitions without scanning") a new flag GD_SUPPRESS_PART_SCAN was
+introduced that just disables the partition scan and uses GENHD_FL_NO_PART
+only to prevent creating partition scan. So, the partition creationg can
+proceed with even if partition scan is disabled.
+
+As the commit b9684a71fca7 ("block, loop: support partitions without
+scanning") is not available in 5.15 stable kernel, and since there is no
+distinction between disabling of "partition scan" and "partition
+creation", we need to revert the commits 1a721de8489f and 7777f47f2ea6
+from 5.15 stable kernel to allow partition creation when partscan is
+disabled.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-[ adjusted $ref context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Gulam Mohamed <gulam.mohamed@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/pinctrl/toshiba,visconti-pinctrl.yaml |   26 +++++-----
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ block/ioctl.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/Documentation/devicetree/bindings/pinctrl/toshiba,visconti-pinctrl.yaml
-+++ b/Documentation/devicetree/bindings/pinctrl/toshiba,visconti-pinctrl.yaml
-@@ -50,18 +50,20 @@ patternProperties:
-       groups:
-         description:
-           Name of the pin group to use for the functions.
--        $ref: "/schemas/types.yaml#/definitions/string"
--        enum: [i2c0_grp, i2c1_grp, i2c2_grp, i2c3_grp, i2c4_grp,
--               i2c5_grp, i2c6_grp, i2c7_grp, i2c8_grp,
--               spi0_grp, spi0_cs0_grp, spi0_cs1_grp, spi0_cs2_grp,
--               spi1_grp, spi2_grp, spi3_grp, spi4_grp, spi5_grp, spi6_grp,
--               uart0_grp, uart1_grp, uart2_grp, uart3_grp,
--               pwm0_gpio4_grp, pwm0_gpio8_grp, pwm0_gpio12_grp,
--               pwm0_gpio16_grp, pwm1_gpio5_grp, pwm1_gpio9_grp,
--               pwm1_gpio13_grp, pwm1_gpio17_grp, pwm2_gpio6_grp,
--               pwm2_gpio10_grp, pwm2_gpio14_grp, pwm2_gpio18_grp,
--               pwm3_gpio7_grp, pwm3_gpio11_grp, pwm3_gpio15_grp,
--               pwm3_gpio19_grp, pcmif_out_grp, pcmif_in_grp]
-+        items:
-+          enum: [i2c0_grp, i2c1_grp, i2c2_grp, i2c3_grp, i2c4_grp,
-+                 i2c5_grp, i2c6_grp, i2c7_grp, i2c8_grp,
-+                 spi0_grp, spi0_cs0_grp, spi0_cs1_grp, spi0_cs2_grp,
-+                 spi1_grp, spi2_grp, spi3_grp, spi4_grp, spi5_grp, spi6_grp,
-+                 uart0_grp, uart1_grp, uart2_grp, uart3_grp,
-+                 pwm0_gpio4_grp, pwm0_gpio8_grp, pwm0_gpio12_grp,
-+                 pwm0_gpio16_grp, pwm1_gpio5_grp, pwm1_gpio9_grp,
-+                 pwm1_gpio13_grp, pwm1_gpio17_grp, pwm2_gpio6_grp,
-+                 pwm2_gpio10_grp, pwm2_gpio14_grp, pwm2_gpio18_grp,
-+                 pwm3_gpio7_grp, pwm3_gpio11_grp, pwm3_gpio15_grp,
-+                 pwm3_gpio19_grp, pcmif_out_grp, pcmif_in_grp]
-+        minItems: 1
-+        maxItems: 8
+--- a/block/ioctl.c
++++ b/block/ioctl.c
+@@ -20,8 +20,6 @@ static int blkpg_do_ioctl(struct block_d
+ 	struct blkpg_partition p;
+ 	sector_t start, length;
  
-       drive-strength:
-         enum: [2, 4, 6, 8, 16, 24, 32]
+-	if (disk->flags & GENHD_FL_NO_PART)
+-		return -EINVAL;
+ 	if (!capable(CAP_SYS_ADMIN))
+ 		return -EACCES;
+ 	if (copy_from_user(&p, upart, sizeof(struct blkpg_partition)))
 
 
 
