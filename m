@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57FA1CA0AB1
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:50:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FABECA038E
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:58:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1BAB9302401F
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:49:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3EA2D305393C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:50:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B81433C518;
-	Wed,  3 Dec 2025 15:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F139E34BA3B;
+	Wed,  3 Dec 2025 16:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1QZ4L3+P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q8ry5RlR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B42B333C1BA;
-	Wed,  3 Dec 2025 15:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95FDD34DCDF;
+	Wed,  3 Dec 2025 16:50:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777255; cv=none; b=qr8VAX9KVGcNLqmWm4lh4utLniJ8OWxFhylHpZ9hgTxM5BWNoROgWbRqyBKWuroFcIjKDoM1CNnQbu1bFgEZ3HfEzxxdNlajQR/nhB1aII9nd8LuuBlV4WISpOxpZa3fmIFyXpHuWl4Yynlf6nkpIfcG6cGt99+aQN7eWPWwEJA=
+	t=1764780607; cv=none; b=IxsqI+RQMsntnZizqjpbh9uNXlveMNsKXaf4MBiqQ7UCEGmfugtGrDbhcWfN1xVqCRsRE0lCq2rx4y8b5kiDO11xslKJCuOnhR/yHC0A7HCZx1js+9jWaBdEBrU74K9KK9hW/hUAj+CLoY5g0q7tS70UpSb/41NNbib7ZKL4Foo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777255; c=relaxed/simple;
-	bh=m3S2KYGE+O9j4MIyByZ9Cc8IzKkW4+VZD4Kmv+s6D0E=;
+	s=arc-20240116; t=1764780607; c=relaxed/simple;
+	bh=B2Jbwj23pvbeOx9kJJLp9OLgeVfMtKtlAGYbr0M3Asg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BYDe1q437KlCRQDv2NSET+maia5mmVa2mz348qn2JV9sfzaYypgCStbQqXvKACqshypCLNy6TPKuadiisPi0LAjMolTNCoixLGnsuYGSCyvQ7nyki+8ZYuodurpBtATC30HvHUfqnxFNF+JVgUYVZ320Qbb7M40fw1apJS3Y7Z4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1QZ4L3+P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75752C2BD01;
-	Wed,  3 Dec 2025 15:54:14 +0000 (UTC)
+	 MIME-Version; b=IGG41P2SdQOJQSv8qsMlEQBrIkt9IQ95+V1jBrmn6KWgjBwDL5EgQA59LmyWZCbPSIX5L6PE2zHmLXbX1fGP+TSg7cRQcoEhYWe2gqlyAYrzYA9qOistQ35rGUlih4drCYNELf+Sb/CuVcP+RZoHWc5T25IdD68Ag4k/nCoUCpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q8ry5RlR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83C09C116C6;
+	Wed,  3 Dec 2025 16:50:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777254;
-	bh=m3S2KYGE+O9j4MIyByZ9Cc8IzKkW4+VZD4Kmv+s6D0E=;
+	s=korg; t=1764780605;
+	bh=B2Jbwj23pvbeOx9kJJLp9OLgeVfMtKtlAGYbr0M3Asg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1QZ4L3+Pu9gbrQhZGHEZfnw2r3PP09NMem/y3fZPKzGjj+wEeyLVINoQGLmx2B3Po
-	 e37RQpfQlKQ1v5NW77HSHn0qcLeKslN3UrFLpg7fjzQosp3gpHg91KW/MqGUJ7oKBx
-	 yKTWPvXLVX7JukeUfTN6V3Yhrc5kp56vBlTqpe2s=
+	b=Q8ry5RlROq8sIt6ozL8Yd9hR4wQo04+KaSKRvUAgneo/B3Cw53v3uKDu9NQeH5lz0
+	 BYc2ag91yuhc5AGCoQMyh8798qVOrUaXWrWtXiuLeSDgvpcR+ErxIv8hbojRbYPhsz
+	 +fjV3hypU7e3mtjKS0uDk8fBe+c65zGOAtv0foxc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Prike Liang <Prike.Liang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.17 129/146] drm/amdgpu: attach tlb fence to the PTs update
+	Wei Fang <wei.fang@nxp.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 028/132] net: fec: cancel perout_timer when PEROUT is disabled
 Date: Wed,  3 Dec 2025 16:28:27 +0100
-Message-ID: <20251203152351.182356193@linuxfoundation.org>
+Message-ID: <20251203152344.343180886@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,43 +58,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prike Liang <Prike.Liang@amd.com>
+From: Wei Fang <wei.fang@nxp.com>
 
-commit b4a7f4e7ad2b120a94f3111f92a11520052c762d upstream.
+[ Upstream commit 50caa744689e505414673c20359b04aa918439e3 ]
 
-Ensure the userq TLB flush is emitted only after
-the VM update finishes and the PT BOs have been
-annotated with bookkeeping fences.
+The PEROUT allows the user to set a specified future time to output the
+periodic signal. If the future time is far from the current time, the FEC
+driver will use hrtimer to configure PEROUT one second before the future
+time. However, the hrtimer will not be canceled if the PEROUT is disabled
+before the hrtimer expires. So the PEROUT will be configured when the
+hrtimer expires, which is not as expected. Therefore, cancel the hrtimer
+in fec_ptp_pps_disable() to fix this issue.
 
-Suggested-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Prike Liang <Prike.Liang@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit f3854e04b708d73276c4488231a8bd66d30b4671)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 350749b909bf ("net: fec: Add support for periodic output signal of PPS")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Link: https://patch.msgid.link/20251125085210.1094306-2-wei.fang@nxp.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/freescale/fec_ptp.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-@@ -1056,7 +1056,7 @@ amdgpu_vm_tlb_flush(struct amdgpu_vm_upd
- 	}
+diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
+index 7f6b574320716..cb3f05da3eee6 100644
+--- a/drivers/net/ethernet/freescale/fec_ptp.c
++++ b/drivers/net/ethernet/freescale/fec_ptp.c
+@@ -498,6 +498,8 @@ static int fec_ptp_pps_disable(struct fec_enet_private *fep, uint channel)
+ {
+ 	unsigned long flags;
  
- 	/* Prepare a TLB flush fence to be attached to PTs */
--	if (!params->unlocked && vm->is_compute_context) {
-+	if (!params->unlocked) {
- 		amdgpu_vm_tlb_fence_create(params->adev, vm, fence);
- 
- 		/* Makes sure no PD/PT is freed before the flush */
++	hrtimer_cancel(&fep->perout_timer);
++
+ 	spin_lock_irqsave(&fep->tmreg_lock, flags);
+ 	writel(0, fep->hwp + FEC_TCSR(channel));
+ 	spin_unlock_irqrestore(&fep->tmreg_lock, flags);
+-- 
+2.51.0
+
 
 
 
