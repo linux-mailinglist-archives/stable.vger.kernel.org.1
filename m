@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-199553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4026CA02D7
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:53:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4D92C9FA55
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:48:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 708B9307F25E
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:43:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E0AD73001967
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:48:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CF3335CBCB;
-	Wed,  3 Dec 2025 16:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B20FC314A99;
+	Wed,  3 Dec 2025 15:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gZ0fKdjY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="frxUg8ZT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58CC035C1BC;
-	Wed,  3 Dec 2025 16:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 626943148B9;
+	Wed,  3 Dec 2025 15:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780179; cv=none; b=FB8erVkuuES4ttrthwvScSWBvSX5B/AQ8yyrV4B0forL7njel4+Q23nwRZLF0GySXwZyXfogu3V4HLkP0u+ll+2cTBa6cwZgBLhBiSi4Oesb0OnNJ2eT6mT6Gh+3ZkpPGSWb+xupiBpvy7WogdKigsULqsZ0o6/8PoU/U+5k+eM=
+	t=1764776834; cv=none; b=Wvnz685zH9PolRd1+imxKIrJWhcPgc/Vr53wF9ND0RkApgeK/QyXQWXuSmvT7LoerRML/EVK+C8V+iZzFj+LOexRCMcR05IxfJUaNUEVzom00fuGZJuEbhpcAlSUZI5lEfA50zBeL5i7Ye/ovkddelZB86deqY2B3FHENIcKKDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780179; c=relaxed/simple;
-	bh=InTJWyOxvEIUD7sTtWOxoPojfdOUI7A8sBWOqriOAAg=;
+	s=arc-20240116; t=1764776834; c=relaxed/simple;
+	bh=Xecv7HMkwsvasjHJUR499MsP2FTeJ7oIdB4lvxoas68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=no6/bQS5THLj0cErfw+utHwwIAGHmUHJe1C+dSGxaTv+QZ3flaz2tFKiFF6831sPvUL0zM0A+rCjm1ciQImJgD43p7oDbudjhewqx7eHE7p1Q8aeDFAmjpyKpISvlXCGC8j0hBCc2cr/mQ59avDPsev4oq2j+Q7gRvHPk39H8O4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gZ0fKdjY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86AC9C4CEF5;
-	Wed,  3 Dec 2025 16:42:58 +0000 (UTC)
+	 MIME-Version; b=W71cwPtk4AWp26bdIBEyyZf+5H5bbyGatFv4dnXjfIcJ8LPYnkzYYXrFJUFyYpzgxZS0Sem/d3HrPbgJpBH3qv1B1H4coG4+RLTi25MU8O95BUFpV5sVqw3Sly9scZ74FyIIclRmzJT3B6iv9yk6Pe4HmSXDm2cyFwnhQcT36I4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=frxUg8ZT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCCCCC4CEF5;
+	Wed,  3 Dec 2025 15:47:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780178;
-	bh=InTJWyOxvEIUD7sTtWOxoPojfdOUI7A8sBWOqriOAAg=;
+	s=korg; t=1764776834;
+	bh=Xecv7HMkwsvasjHJUR499MsP2FTeJ7oIdB4lvxoas68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gZ0fKdjYWbcr+/Zu1NjXP129OegB7GJx320sJ84jZJn7f6DsyL34h5O1liKYHp8Vl
-	 8o5ZWR4x+N4g1YFH+om8TpwdasIYSoGC1iGBmi1bPIBC0XFIaBThbD6riQLKrqKrEa
-	 FNPr6YcZMhYQ1Sb+rmHj9R5rwAhES7Wo9FE+ExxY=
+	b=frxUg8ZTBFIoHVTqx2txsp7ddz/EAzxrbp4QZO5FlnaGi6oh0i9XXq6J025HYKDU1
+	 dieJPaaucfvE8FGELzyJj+Mcj5xRciAXuO3vkqxf90nh+M6zqcryiOf1ohEeocia8M
+	 VPykrPBE9nC0oF8k4xojksPptNWdlGOeVIXHdK0o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 479/568] mptcp: decouple mptcp fastclose from tcp close
+	Christian Gromm <christian.gromm@microchip.com>,
+	Victoria Votokina <Victoria.Votokina@kaspersky.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.10 277/300] most: usb: fix double free on late probe failure
 Date: Wed,  3 Dec 2025 16:28:01 +0100
-Message-ID: <20251203152458.241003265@linuxfoundation.org>
+Message-ID: <20251203152410.891315855@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,104 +60,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit fff0c87996672816a84c3386797a5e69751c5888 ]
+commit baadf2a5c26e802a46573eaad331b427b49aaa36 upstream.
 
-With the current fastclose implementation, the mptcp_do_fastclose()
-helper is in charge of two distinct actions: send the fastclose reset
-and cleanup the subflows.
+The MOST subsystem has a non-standard registration function which frees
+the interface on registration failures and on deregistration.
 
-Formally decouple the two steps, ensuring that mptcp explicitly closes
-all the subflows after the mentioned helper.
+This unsurprisingly leads to bugs in the MOST drivers, and a couple of
+recent changes turned a reference underflow and use-after-free in the
+USB driver into several double free and a use-after-free on late probe
+failures.
 
-This will make the upcoming fix simpler, and allows dropping the 2nd
-argument from mptcp_destroy_common(). The Fixes tag is then the same as
-in the next commit to help with the backports.
-
-Fixes: d21f83485518 ("mptcp: use fastclose on more edge scenarios")
+Fixes: 723de0f9171e ("staging: most: remove device from interface structure")
+Fixes: 4b1270902609 ("most: usb: Fix use-after-free in hdm_disconnect")
+Fixes: a8cc9e5fcb0e ("most: usb: hdm_probe: Fix calling put_device() before device initialization")
 Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-5-806d3781c95f@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Christian Gromm <christian.gromm@microchip.com>
+Cc: Victoria Votokina <Victoria.Votokina@kaspersky.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20251029093029.28922-1-johan@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |   13 +++++++++----
- net/mptcp/protocol.h |    2 +-
- 2 files changed, 10 insertions(+), 5 deletions(-)
+ drivers/most/most_usb.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2826,8 +2826,12 @@ static void mptcp_worker(struct work_str
- 		__mptcp_close_subflow(sk);
+diff --git a/drivers/most/most_usb.c b/drivers/most/most_usb.c
+index 10064d7b7249..41ee169f80c5 100644
+--- a/drivers/most/most_usb.c
++++ b/drivers/most/most_usb.c
+@@ -1058,7 +1058,7 @@ hdm_probe(struct usb_interface *interface, const struct usb_device_id *id)
  
- 	if (mptcp_close_tout_expired(sk)) {
-+		struct mptcp_subflow_context *subflow, *tmp;
+ 	ret = most_register_interface(&mdev->iface);
+ 	if (ret)
+-		goto err_free_busy_urbs;
++		return ret;
+ 
+ 	mutex_lock(&mdev->io_mutex);
+ 	if (le16_to_cpu(usb_dev->descriptor.idProduct) == USB_DEV_ID_OS81118 ||
+@@ -1068,8 +1068,7 @@ hdm_probe(struct usb_interface *interface, const struct usb_device_id *id)
+ 		if (!mdev->dci) {
+ 			mutex_unlock(&mdev->io_mutex);
+ 			most_deregister_interface(&mdev->iface);
+-			ret = -ENOMEM;
+-			goto err_free_busy_urbs;
++			return -ENOMEM;
+ 		}
+ 
+ 		mdev->dci->dev.init_name = "dci";
+@@ -1078,18 +1077,15 @@ hdm_probe(struct usb_interface *interface, const struct usb_device_id *id)
+ 		mdev->dci->dev.release = release_dci;
+ 		if (device_register(&mdev->dci->dev)) {
+ 			mutex_unlock(&mdev->io_mutex);
++			put_device(&mdev->dci->dev);
+ 			most_deregister_interface(&mdev->iface);
+-			ret = -ENOMEM;
+-			goto err_free_dci;
++			return -ENOMEM;
+ 		}
+ 		mdev->dci->usb_device = mdev->usb_device;
+ 	}
+ 	mutex_unlock(&mdev->io_mutex);
+ 	return 0;
+-err_free_dci:
+-	put_device(&mdev->dci->dev);
+-err_free_busy_urbs:
+-	kfree(mdev->busy_urbs);
 +
- 		inet_sk_state_store(sk, TCP_CLOSE);
- 		mptcp_do_fastclose(sk);
-+		mptcp_for_each_subflow_safe(msk, subflow, tmp)
-+			__mptcp_close_ssk(sk, subflow->tcp_sock, subflow, 0);
- 		mptcp_close_wake_up(sk);
- 	}
- 
-@@ -3233,7 +3237,8 @@ static int mptcp_disconnect(struct sock
- 	/* msk->subflow is still intact, the following will not free the first
- 	 * subflow
- 	 */
--	mptcp_destroy_common(msk, MPTCP_CF_FASTCLOSE);
-+	mptcp_do_fastclose(sk);
-+	mptcp_destroy_common(msk);
- 	msk->last_snd = NULL;
- 
- 	/* The first subflow is already in TCP_CLOSE status, the following
-@@ -3456,7 +3461,7 @@ out:
- 	return newsk;
- }
- 
--void mptcp_destroy_common(struct mptcp_sock *msk, unsigned int flags)
-+void mptcp_destroy_common(struct mptcp_sock *msk)
- {
- 	struct mptcp_subflow_context *subflow, *tmp;
- 	struct sock *sk = (struct sock *)msk;
-@@ -3465,7 +3470,7 @@ void mptcp_destroy_common(struct mptcp_s
- 
- 	/* join list will be eventually flushed (with rst) at sock lock release time */
- 	mptcp_for_each_subflow_safe(msk, subflow, tmp)
--		__mptcp_close_ssk(sk, mptcp_subflow_tcp_sock(subflow), subflow, flags);
-+		__mptcp_close_ssk(sk, mptcp_subflow_tcp_sock(subflow), subflow, 0);
- 
- 	/* move to sk_receive_queue, sk_stream_kill_queues will purge it */
- 	mptcp_data_lock(sk);
-@@ -3492,7 +3497,7 @@ static void mptcp_destroy(struct sock *s
- 
- 	/* allow the following to close even the initial subflow */
- 	msk->free_first = 1;
--	mptcp_destroy_common(msk, 0);
-+	mptcp_destroy_common(msk);
- 	sk_sockets_allocated_dec(sk);
- }
- 
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -762,7 +762,7 @@ static inline void mptcp_write_space(str
- 	}
- }
- 
--void mptcp_destroy_common(struct mptcp_sock *msk, unsigned int flags);
-+void mptcp_destroy_common(struct mptcp_sock *msk);
- 
- #define MPTCP_TOKEN_MAX_RETRIES	4
- 
+ err_free_ep_address:
+ 	kfree(mdev->ep_address);
+ err_free_cap:
+-- 
+2.52.0
+
 
 
 
