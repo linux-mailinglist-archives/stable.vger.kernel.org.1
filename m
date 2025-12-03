@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35F76C9FD9D
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:15:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06B76C9F9BA
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:44:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 419E7302D92A
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:06:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8F606301BEBA
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:39:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1438034F484;
-	Wed,  3 Dec 2025 16:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E70830FC1C;
+	Wed,  3 Dec 2025 15:39:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AW4CVKeh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="feWbBR7V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A42313546;
-	Wed,  3 Dec 2025 16:06:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A54C830BF52;
+	Wed,  3 Dec 2025 15:39:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778007; cv=none; b=ZRGIzh1J/HKQE2mPBrqHggu2nZib9eMZnXUJfQ1fV/GL6QCaJTAMPeZeVfFVOTwa7W6VSRonxNdDvA2a6uefKGfFjtkMugnEdSL13N8wxjqxk98oFXD7kpXnJakHGCO/Ox1KoIqMROqY580aA+LvGDTjRgFhvIoW6ePMrLfos2w=
+	t=1764776366; cv=none; b=T8t1iR/9oY6aMgOSDIhVuYi1HBRiZ/nJNuscH0RKggK2JAEHXNcyHTDQm1GiQAJGDM7lIHWeCUzzc+acXOovKN/qBUOth52FVvvkhVX37tE3i2AWggcmRwpj1WqYQf2wAJHCG/2zNPlNeohj8jBkesCnO05jRj41iXrs1rT275Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778007; c=relaxed/simple;
-	bh=okQcuGvZBw4SLKj+rlvT+hmejBrGJ+WIKH5q6PGn52o=;
+	s=arc-20240116; t=1764776366; c=relaxed/simple;
+	bh=1mJB7DmZnggfONcXGYfvSfWlAg7fxbe7ACcOjQ8xmPE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=anjsOpeVFPU0mFcKCDJOB5dS4Q97/LVh4Qdy5LlTOHBpVC2PmR2vRKbJWdMUMg9x9LEWcdkuIK1W0zFB6yvg6+V+VXixBiU7R9MobP9h1RaL5JwSfKEwddHkBUpRWO7rv8vEgnXIPiLBU7S95cGvs47tU40QE5FkmBpR7/334/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AW4CVKeh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7DA2C4CEF5;
-	Wed,  3 Dec 2025 16:06:46 +0000 (UTC)
+	 MIME-Version; b=GBfRM0tFvangL8fiuLb+hAGbknMRSMh2YnOC2bNIoLheuxIIkkN2D3OHwk/wVjYiK22xhZugtqn9fcAkDKNBembBuSn17WV8C2CfGvgzktnCJym+ioPpmp3ng5AmKk9bAadRZky8CRiQHkzoXAAVUBpLxyYzeH8m8pPwSl01+Nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=feWbBR7V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2B95C4CEF5;
+	Wed,  3 Dec 2025 15:39:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778007;
-	bh=okQcuGvZBw4SLKj+rlvT+hmejBrGJ+WIKH5q6PGn52o=;
+	s=korg; t=1764776366;
+	bh=1mJB7DmZnggfONcXGYfvSfWlAg7fxbe7ACcOjQ8xmPE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AW4CVKehDKx8ExiDdjanffv3KUqGdRAEIpJTuedWHRmqqdk/6InRE7nAt9KSQ2niM
-	 wtzlk7SfwvAIwJGdYBMqxzDSN8mxcmYKddXdeWrZB/rg31zQzQWOQYaeQ5Kb9OAcv1
-	 TO9J/nXCU0WYCOQnhq7DZOuMtUZfI1uPSJ7epw5I=
+	b=feWbBR7VAduo6YxyY+jxBLgyPGLuEe9CB8GtPclmEm2/VZN0mrEKbOoi3ayMTWyQD
+	 uPg/ifrwYm1FDU/cL74Ep6t0c3sFT4ftTVFrSRfvPD26Cixc1ZnD1KSNfmbIfOr6Nn
+	 u6QuUlwjwKAdgX+ROj25ugv28TJo+oliA/VrehuQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 215/392] net: vlan: sync VLAN features with lower device
+Subject: [PATCH 5.10 161/300] net: dsa: b53: fix enabling ip multicast
 Date: Wed,  3 Dec 2025 16:26:05 +0100
-Message-ID: <20251203152422.086381345@linuxfoundation.org>
+Message-ID: <20251203152406.582067371@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +61,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit c211f5d7cbd5cb34489d526648bb9c8ecc907dee ]
+[ Upstream commit c264294624e956a967a9e2e5fa41e3273340b089 ]
 
-After registering a VLAN device and setting its feature flags, we need to
-synchronize the VLAN features with the lower device. For example, the VLAN
-device does not have the NETIF_F_LRO flag, it should be synchronized with
-the lower device based on the NETIF_F_UPPER_DISABLES definition.
+In the New Control register bit 1 is either reserved, or has a different
+function:
 
-As the dev->vlan_features has changed, we need to call
-netdev_update_features(). The caller must run after netdev_upper_dev_link()
-links the lower devices, so this patch adds the netdev_update_features()
-call in register_vlan_dev().
+    Out of Range Error Discard
 
-Fixes: fd867d51f889 ("net/core: generic support for disabling netdev features down stack")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://patch.msgid.link/20251030073539.133779-1-liuhangbin@gmail.com
+    When enabled, the ingress port discards any frames
+    if the Length field is between 1500 and 1536
+    (excluding 1500 and 1536) and with good CRC.
+
+The actual bit for enabling IP multicast is bit 0, which was only
+explicitly enabled for BCM5325 so far.
+
+For older switch chips, this bit defaults to 0, so we want to enable it
+as well, while newer switch chips default to 1, and their documentation
+says "It is illegal to set this bit to zero."
+
+So drop the wrong B53_IPMC_FWD_EN define, enable the IP multicast bit
+also for other switch chips. While at it, rename it to (B53_)IP_MC as
+that is how it is called in Broadcom code.
+
+Fixes: 63cc54a6f073 ("net: dsa: b53: Fix egress flooding settings")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20251102100758.28352-2-jonas.gorski@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/8021q/vlan.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/dsa/b53/b53_common.c | 4 ++--
+ drivers/net/dsa/b53/b53_regs.h   | 3 +--
+ 2 files changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/net/8021q/vlan.c b/net/8021q/vlan.c
-index 2c5b532b0f054..7d61ab0647f20 100644
---- a/net/8021q/vlan.c
-+++ b/net/8021q/vlan.c
-@@ -194,6 +194,8 @@ int register_vlan_dev(struct net_device *dev, struct netlink_ext_ack *extack)
- 	vlan_group_set_device(grp, vlan->vlan_proto, vlan_id, dev);
- 	grp->nr_vlan_devs++;
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 704ec51a1500e..a30961f9b0060 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -349,11 +349,11 @@ static void b53_set_forwarding(struct b53_device *dev, int enable)
+ 		 * frames should be flooded or not.
+ 		 */
+ 		b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
+-		mgmt |= B53_UC_FWD_EN | B53_MC_FWD_EN | B53_IPMC_FWD_EN;
++		mgmt |= B53_UC_FWD_EN | B53_MC_FWD_EN | B53_IP_MC;
+ 		b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
+ 	} else {
+ 		b53_read8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, &mgmt);
+-		mgmt |= B53_IP_MCAST_25;
++		mgmt |= B53_IP_MC;
+ 		b53_write8(dev, B53_CTRL_PAGE, B53_IP_MULTICAST_CTRL, mgmt);
+ 	}
+ }
+diff --git a/drivers/net/dsa/b53/b53_regs.h b/drivers/net/dsa/b53/b53_regs.h
+index 77fb7ae660b8c..95f70248c194d 100644
+--- a/drivers/net/dsa/b53/b53_regs.h
++++ b/drivers/net/dsa/b53/b53_regs.h
+@@ -104,8 +104,7 @@
  
-+	netdev_update_features(dev);
-+
- 	return 0;
+ /* IP Multicast control (8 bit) */
+ #define B53_IP_MULTICAST_CTRL		0x21
+-#define  B53_IP_MCAST_25		BIT(0)
+-#define  B53_IPMC_FWD_EN		BIT(1)
++#define  B53_IP_MC			BIT(0)
+ #define  B53_UC_FWD_EN			BIT(6)
+ #define  B53_MC_FWD_EN			BIT(7)
  
- out_unregister_netdev:
 -- 
 2.51.0
 
