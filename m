@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-198907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AC00C9FD01
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:07:46 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE856C9F920
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:42:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4C2DB30017C1
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:07:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E50153001FD9
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:42:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8998B34F48B;
-	Wed,  3 Dec 2025 16:07:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AEB831354A;
+	Wed,  3 Dec 2025 15:42:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zzDm2Sde"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="012n6Bza"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44250313546;
-	Wed,  3 Dec 2025 16:07:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBED830FF2F;
+	Wed,  3 Dec 2025 15:42:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778061; cv=none; b=Ry3ycZBPGtMmxbASAE+XrYqpJeT3xEQC++hToh+T4Bv5U44ElO71vKxzQlCTtjwRjrL7qhRYHA//xxj+Awd2RsAAs0LJlaxBaOcpkRk8Gw61+Z59jcOyQHMQmzCQJNGQmCI9HwTv/zw3YV+yrglyMI+z0L2TgGAxl3Jb/0P3TTE=
+	t=1764776528; cv=none; b=B4MVJvhynQvcrsdBN8HG+D8BcXAzsow/WMl+W3jajwHNZMiMPyPEZxp9V9nqZ8dMAmZ/8svNXNB7yTDj5fSVd+nK3GFYiMB83JLv/bZdSQHPtCuJhX9WaLDVHx+huEBv9WdBkLz9xSltkGF10L2Jgl8/jBi0ZRP1yjcYzIq6N0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778061; c=relaxed/simple;
-	bh=yDYFpFBXqYsvNeuLdKVSBksMNmUVkfz6y3sRLSf9VrE=;
+	s=arc-20240116; t=1764776528; c=relaxed/simple;
+	bh=cnxo4lEi2C5pNcgqHug/XHhX0QQzpbH5DEbgujR2XPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g4wI4/KqJfqiKXMfjCHobAp8/jA5YME8kJEX/CDel1yTuixJOL2XVh4zmxzxaPy/BxpmXpfvi+BP94BrjhjGS0nQGg9Blkf6+ZOM8Tb4+Elh3SS02nPThiaEpZpliSIeWf2zsA5QPYMNwN7VUyXaeI/R79mOi5wzL16QMAQCITo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zzDm2Sde; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A773FC116C6;
-	Wed,  3 Dec 2025 16:07:40 +0000 (UTC)
+	 MIME-Version; b=NItMC5FIINOzkz5vDLisWSoCt429RL7Wf6aoSnouSjuciNx0zDOzeYwE/aIbyRUX0XL4MaaNLwFRQYOTt8Ud5JJ7Z4ap1BX1cvnYNDZ6H40xbaat6tDPl9GqYNx5cUC2VhpLjcsaESlEuFwb5QVY0fvm8Gm/tOptQvaJ/P2ZNBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=012n6Bza; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A84FC4CEF5;
+	Wed,  3 Dec 2025 15:42:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778061;
-	bh=yDYFpFBXqYsvNeuLdKVSBksMNmUVkfz6y3sRLSf9VrE=;
+	s=korg; t=1764776527;
+	bh=cnxo4lEi2C5pNcgqHug/XHhX0QQzpbH5DEbgujR2XPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zzDm2SdeEcb3iOdBV3Q6+MgdQVGOP5MefUmALKvt5tBlUdrYH8YTeWGOQAxWGKUWi
-	 4Qc4zz9l/LU6WEG9J57h72BfCyexcYk1Nmp3jYLmzgwBpoW7TOeQ6OEH6AWlazFbm9
-	 swtG9G5GHm6MHNWSCw/0pAaAw9IlaIyqhvYJbyO8=
+	b=012n6BzaU07wrfkj06zf3pCNorrmZwyxUy9vUYTOBQRuKp5P2AemjzR8y13DLJy4z
+	 J/RDucVn8rFI0169RQNxscedaUP/M4QbdGhEXpmC21Qx22sllf9RdjNKi92UT9VbOS
+	 ITqSvI+0rRAm1s8Z+NWfWlu6/YTOAhAJ4heS3GBQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Zijlstra <peterz@infradead.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Nathan Chancellor <nathan@kernel.org>,
+	Sharique Mohammad <sharq0406@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 231/392] compiler_types: Move unused static inline functions warning to W=2
+Subject: [PATCH 5.10 177/300] ASoC: max98090/91: fixed max98091 ALSA widget powering up/down
 Date: Wed,  3 Dec 2025 16:26:21 +0100
-Message-ID: <20251203152422.682527290@linuxfoundation.org>
+Message-ID: <20251203152407.184339441@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +60,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Sharique Mohammad <sharq0406@gmail.com>
 
-[ Upstream commit 9818af18db4bfefd320d0fef41390a616365e6f7 ]
+[ Upstream commit 7a37291ed40a33a5f6c3d370fdde5ee0d8f7d0e4 ]
 
-Per Nathan, clang catches unused "static inline" functions in C files
-since commit 6863f5643dd7 ("kbuild: allow Clang to find unused static
-inline functions for W=1 build").
+The widgets DMIC3_ENA and DMIC4_ENA must be defined in the DAPM
+suppy widget, just like DMICL_ENA and DMICR_ENA. Whenever they
+are turned on or off, the required startup or shutdown sequences
+must be taken care by the max98090_shdn_event.
 
-Linus said:
-
-> So I entirely ignore W=1 issues, because I think so many of the extra
-> warnings are bogus.
->
-> But if this one in particular is causing more problems than most -
-> some teams do seem to use W=1 as part of their test builds - it's fine
-> to send me a patch that just moves bad warnings to W=2.
->
-> And if anybody uses W=2 for their test builds, that's THEIR problem..
-
-Here is the change to bump the warning from W=1 to W=2.
-
-Fixes: 6863f5643dd7 ("kbuild: allow Clang to find unused static inline functions for W=1 build")
-Signed-off-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20251106105000.2103276-1-andriy.shevchenko@linux.intel.com
-[nathan: Adjust comment as well]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Sharique Mohammad <sharq0406@gmail.com>
+Link: https://patch.msgid.link/20251015134215.750001-1-sharq0406@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/compiler_types.h | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ sound/soc/codecs/max98090.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
-index 4f2203c4a2574..ca9345e2934d3 100644
---- a/include/linux/compiler_types.h
-+++ b/include/linux/compiler_types.h
-@@ -163,10 +163,9 @@ struct ftrace_likely_data {
- /*
-  * GCC does not warn about unused static inline functions for -Wunused-function.
-  * Suppress the warning in clang as well by using __maybe_unused, but enable it
-- * for W=1 build. This will allow clang to find unused functions. Remove the
-- * __inline_maybe_unused entirely after fixing most of -Wunused-function warnings.
-+ * for W=2 build. This will allow clang to find unused functions.
-  */
--#ifdef KBUILD_EXTRA_WARN1
-+#ifdef KBUILD_EXTRA_WARN2
- #define __inline_maybe_unused
- #else
- #define __inline_maybe_unused __maybe_unused
+diff --git a/sound/soc/codecs/max98090.c b/sound/soc/codecs/max98090.c
+index 0c73979cad4a4..c7df685be4ea5 100644
+--- a/sound/soc/codecs/max98090.c
++++ b/sound/soc/codecs/max98090.c
+@@ -1233,9 +1233,11 @@ static const struct snd_soc_dapm_widget max98091_dapm_widgets[] = {
+ 	SND_SOC_DAPM_INPUT("DMIC4"),
+ 
+ 	SND_SOC_DAPM_SUPPLY("DMIC3_ENA", M98090_REG_DIGITAL_MIC_ENABLE,
+-		 M98090_DIGMIC3_SHIFT, 0, NULL, 0),
++		 M98090_DIGMIC3_SHIFT, 0, max98090_shdn_event,
++			SND_SOC_DAPM_POST_PMU),
+ 	SND_SOC_DAPM_SUPPLY("DMIC4_ENA", M98090_REG_DIGITAL_MIC_ENABLE,
+-		 M98090_DIGMIC4_SHIFT, 0, NULL, 0),
++		 M98090_DIGMIC4_SHIFT, 0, max98090_shdn_event,
++			 SND_SOC_DAPM_POST_PMU),
+ };
+ 
+ static const struct snd_soc_dapm_route max98090_dapm_routes[] = {
 -- 
 2.51.0
 
