@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-199459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C4ADCA00D4
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:42:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD18FCA1113
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:40:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EB9C13016FBB
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:37:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9731733BBD5E
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:44:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A762B35BDDB;
-	Wed,  3 Dec 2025 16:37:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF39A32824E;
+	Wed,  3 Dec 2025 15:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yxfub1NQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JpsraCda"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E62435C184;
-	Wed,  3 Dec 2025 16:37:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B3CA327BF9;
+	Wed,  3 Dec 2025 15:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779868; cv=none; b=V7P9wXFx8euGKlTD99SWTjtNokG8Y+xm4RYKJI+rXs+s/Pdkc1MMWHF6fSxQFwS+iinOkIvYkAksbu4PQWXzr9VdEyMU5vM9otOh2A2AfS5WBS1x8XCgpaiG37uKgyNkJGd+3yyrwOMEhedRdgGixChHOWoME6sV21r11saDutE=
+	t=1764776963; cv=none; b=tbueaxqdJL1nFjLJ8X0Z38pZfUU6Us/BfM+ihAm1udjo8krEir9Mw0T8SOY/aAO93j0T6u1uHa0BuInBs09f8xve/lEotYiM2GM7InHKi+1Sw03GhubGUtuIbK4k7IEJP+PnR1771D6oPoSYP+wJZM6F0r1eBc2cyFqhYmP73qk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779868; c=relaxed/simple;
-	bh=U3515F7c2aWWVnHYigHnssz+q1jcYkttaLhISJJj8ok=;
+	s=arc-20240116; t=1764776963; c=relaxed/simple;
+	bh=sjEW/uTYLHu+N/RySBp/WppbiauEUDtXquJ2ezd7erE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ono54IVfuErjTA5U/7K0W+DQEIUveXJa76nTbBZRPlj2CwDE/cZgjmNz+r/jT8TbObc4iL99SBbp7YVVbNTtru2jYZsa5LdIAheohEl860knwjxZTW92I/BlG5K6pnbz8QABnE4LGHab8d80XkjdRLzYpg0cDeppcHTGrEyOR9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yxfub1NQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D678AC116B1;
-	Wed,  3 Dec 2025 16:37:47 +0000 (UTC)
+	 MIME-Version; b=eiPerseUFZk0Go6oXTMDWrMSOixnpNhA+t2ciGE31BudroTLYo14y24j4BVVqjzBbm1EswcB6hErxh5OoePMmimce5HnzDoD0GG2cGNG7TKifMQZ857iixGGthhY5bbCzJK+k0K9CWw8Zmzoz91sGBZU44YdHTWrkX88i5CQIBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JpsraCda; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB27BC116C6;
+	Wed,  3 Dec 2025 15:49:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779868;
-	bh=U3515F7c2aWWVnHYigHnssz+q1jcYkttaLhISJJj8ok=;
+	s=korg; t=1764776963;
+	bh=sjEW/uTYLHu+N/RySBp/WppbiauEUDtXquJ2ezd7erE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yxfub1NQQvEsGg9AYU9batdhtmHU7ww+cEtZH9GlrZsL9/bWuXD+S6epqSIF/NJai
-	 vxOIEKREUwRTxZnBmgTlbXpZHs4XGshHgyvKSiKkYNSTy7r+MNH3fKo6FSOzw7yeZo
-	 lHH2oND7tUbtz2ri6J6D4X0IIXoZc6Q6f8JG+WEE=
+	b=JpsraCdauca/vKn87dyRScFnXrdkMBgpp/I8r2AJ/AaSnEIFcRD2NDIe2t4TlAEdq
+	 iLb1//nFgX1UjIE4h8xkFr5VZTbQQ1Gbii8VhOFA5g6MrXdc7FVcg38DnsfXsQGbpF
+	 MYxJF/LO+42d8Nc59yyAa9gN6nt20ulaZQWuec+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 385/568] NFSv4: Fix an incorrect parameter when calling nfs4_call_sync()
+Subject: [PATCH 6.17 009/146] Bluetooth: SMP: Fix not generating mackey and ltk when repairing
 Date: Wed,  3 Dec 2025 16:26:27 +0100
-Message-ID: <20251203152454.794768302@linuxfoundation.org>
+Message-ID: <20251203152346.806052433@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +59,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 1f214e9c3aef2d0936be971072e991d78a174d71 ]
+[ Upstream commit 545d7827b2cd5de5eb85580cebeda6b35b3ff443 ]
 
-The Smatch static checker noted that in _nfs4_proc_lookupp(), the flag
-RPC_TASK_TIMEOUT is being passed as an argument to nfs4_init_sequence(),
-which is clearly incorrect.
-Since LOOKUPP is an idempotent operation, nfs4_init_sequence() should
-not ask the server to cache the result. The RPC_TASK_TIMEOUT flag needs
-to be passed down to the RPC layer.
+The change eed467b517e8 ("Bluetooth: fix passkey uninitialized when used")
+introduced a goto that bypasses the creation of temporary mackey and ltk
+which are later used by the likes of DHKey Check step.
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reported-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Fixes: 76998ebb9158 ("NFSv4: Observe the NFS_MOUNT_SOFTREVAL flag in _nfs4_proc_lookupp")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Later ffee202a78c2 ("Bluetooth: Always request for user confirmation for
+Just Works (LE SC)") which means confirm_hint is always set in case
+JUST_WORKS so the branch checking for an existing LTK becomes pointless
+as confirm_hint will always be set, so this just merge both cases of
+malicious or legitimate devices to be confirmed before continuing with the
+pairing procedure.
+
+Link: https://github.com/bluez/bluez/issues/1622
+Fixes: eed467b517e8 ("Bluetooth: fix passkey uninitialized when used")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4proc.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ net/bluetooth/smp.c | 31 +++++++------------------------
+ 1 file changed, 7 insertions(+), 24 deletions(-)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index f387a3862ca09..d4ae2ce56af4a 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -4584,16 +4584,19 @@ static int _nfs4_proc_lookupp(struct inode *inode,
- 	};
- 	unsigned short task_flags = 0;
+diff --git a/net/bluetooth/smp.c b/net/bluetooth/smp.c
+index 45512b2ba951c..3a1ce04a7a536 100644
+--- a/net/bluetooth/smp.c
++++ b/net/bluetooth/smp.c
+@@ -2136,7 +2136,7 @@ static u8 smp_cmd_pairing_random(struct l2cap_conn *conn, struct sk_buff *skb)
+ 	struct smp_chan *smp = chan->data;
+ 	struct hci_conn *hcon = conn->hcon;
+ 	u8 *pkax, *pkbx, *na, *nb, confirm_hint;
+-	u32 passkey;
++	u32 passkey = 0;
+ 	int err;
  
--	if (NFS_SERVER(inode)->flags & NFS_MOUNT_SOFTREVAL)
-+	if (server->flags & NFS_MOUNT_SOFTREVAL)
- 		task_flags |= RPC_TASK_TIMEOUT;
-+	if (server->caps & NFS_CAP_MOVEABLE)
-+		task_flags |= RPC_TASK_MOVEABLE;
+ 	bt_dev_dbg(hcon->hdev, "conn %p", conn);
+@@ -2188,24 +2188,6 @@ static u8 smp_cmd_pairing_random(struct l2cap_conn *conn, struct sk_buff *skb)
+ 		smp_send_cmd(conn, SMP_CMD_PAIRING_RANDOM, sizeof(smp->prnd),
+ 			     smp->prnd);
+ 		SMP_ALLOW_CMD(smp, SMP_CMD_DHKEY_CHECK);
+-
+-		/* Only Just-Works pairing requires extra checks */
+-		if (smp->method != JUST_WORKS)
+-			goto mackey_and_ltk;
+-
+-		/* If there already exists long term key in local host, leave
+-		 * the decision to user space since the remote device could
+-		 * be legitimate or malicious.
+-		 */
+-		if (hci_find_ltk(hcon->hdev, &hcon->dst, hcon->dst_type,
+-				 hcon->role)) {
+-			/* Set passkey to 0. The value can be any number since
+-			 * it'll be ignored anyway.
+-			 */
+-			passkey = 0;
+-			confirm_hint = 1;
+-			goto confirm;
+-		}
+ 	}
  
- 	args.bitmask = nfs4_bitmask(server, fattr->label);
+ mackey_and_ltk:
+@@ -2226,11 +2208,12 @@ static u8 smp_cmd_pairing_random(struct l2cap_conn *conn, struct sk_buff *skb)
+ 	if (err)
+ 		return SMP_UNSPECIFIED;
  
- 	nfs_fattr_init(fattr);
-+	nfs4_init_sequence(&args.seq_args, &res.seq_res, 0, 0);
+-	confirm_hint = 0;
+-
+-confirm:
+-	if (smp->method == JUST_WORKS)
+-		confirm_hint = 1;
++	/* Always require user confirmation for Just-Works pairing to prevent
++	 * impersonation attacks, or in case of a legitimate device that is
++	 * repairing use the confirmation as acknowledgment to proceed with the
++	 * creation of new keys.
++	 */
++	confirm_hint = smp->method == JUST_WORKS ? 1 : 0;
  
- 	dprintk("NFS call  lookupp ino=0x%lx\n", inode->i_ino);
--	status = nfs4_call_sync(clnt, server, &msg, &args.seq_args,
--				&res.seq_res, task_flags);
-+	status = nfs4_do_call_sync(clnt, server, &msg, &args.seq_args,
-+				   &res.seq_res, task_flags);
- 	dprintk("NFS reply lookupp: %d\n", status);
- 	return status;
- }
+ 	err = mgmt_user_confirm_request(hcon->hdev, &hcon->dst, hcon->type,
+ 					hcon->dst_type, passkey, confirm_hint);
 -- 
 2.51.0
 
