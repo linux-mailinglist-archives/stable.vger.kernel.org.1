@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-199745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41293CA0DE4
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:17:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD7E7CA04AF
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:14:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A7A5A337BCAE
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:15:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3000430E5A59
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:02:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA83E39A265;
-	Wed,  3 Dec 2025 16:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E9C735502F;
+	Wed,  3 Dec 2025 16:56:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PAhlvCzD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y/0yOPBj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E7B39A255;
-	Wed,  3 Dec 2025 16:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BCCC34E74B;
+	Wed,  3 Dec 2025 16:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780796; cv=none; b=GsQoe4PP7D93tGl+EYoQ0DoGJU55/vOwMV4Z/nHiGqAIuT4qnMpJfaQvkGy0o+mHrvN1QDYjpx7c2YnuuFJF8eorf3N21fJ5Rms1JImEmw93TmECOUfv0dSKgOemoLxvEiv1IZ17L9Vp/dDSpU8PZTMO4dK5xW1nhyXT5P699Io=
+	t=1764780973; cv=none; b=H35NsrlBuJbQ1CN63hYu9fQu120h80o6wIq4W/FVWZoaj5UHfMIqizBcAg6MwPES0D8xH6ZAQ7sLlXv0QDntP7o92N6TGZgbbyM2WtQcFakHqf35fDRWTvRVf4Ifmc8jua3QWWYj3BjJvtIho2QBjtdRdxTjGTGWd5/kWG9Fcx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780796; c=relaxed/simple;
-	bh=27b24KjNTv6DwWYWHMA6b86kIhT+1t75PK+kqVg7FaQ=;
+	s=arc-20240116; t=1764780973; c=relaxed/simple;
+	bh=XMEjew+5B+vsAj2AmQjb1xC442fTaRQxPNXPIks4Pqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cLA0YuH3JU1miVr3MAx6S77GK42J95OTGYGRKYdv7+ojW9a7aj2pUrrwMNuEyG+teRcnO+y/wSLPUZcc0mqAdO3BfHSvmRZ5kRGTsXynb9u862rDDJtP8ZaHY5tUkmRcWwPeZ4ZjvSfn9JY3+xA0PFIWOf/OIAy8uFtimivHox0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PAhlvCzD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BE91C4CEF5;
-	Wed,  3 Dec 2025 16:53:15 +0000 (UTC)
+	 MIME-Version; b=o12zd5vD7WNmLPQIaWklWgrVenIZ/8R32RNYaESNq2Z1gQUlxtIqUtiWQxJxDbnao83/oVJnzvd3BZ/J/wahk/0XOG990REMHCyFtp5DQujzQpFqOzOI1ndlS4egr5jqWIGzgeZiQN619rutYWvl4fkKd47YHYWXIn3XoUn2ZGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y/0yOPBj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17705C4CEF5;
+	Wed,  3 Dec 2025 16:56:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780796;
-	bh=27b24KjNTv6DwWYWHMA6b86kIhT+1t75PK+kqVg7FaQ=;
+	s=korg; t=1764780972;
+	bh=XMEjew+5B+vsAj2AmQjb1xC442fTaRQxPNXPIks4Pqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PAhlvCzDZAREH5Pk5CPxxVM2fLYHKOFEkSQ13UUXLqSMkLQRc1AqUFFyg2+1I19if
-	 0H59/B8UtcBr06cqRdznu2QYHdA+0/hWACTyiSvPuLqeZIg9jVCo7n50seejO0IAi3
-	 ClPuuyTzRzazY4sDsLzcfGOgxpokOYKaHWGWgHdI=
+	b=Y/0yOPBjYafsDw3Y7AVAb/DtCUIk6sroj5IjNjYHdbnHm3JtuXtktOurlBzCj3Gja
+	 tq4GKe18qo4/fSjZypvSv+Z2VHXFkXn9QLPjQn3q6mETF5VlhZeaLKSlHd0dxpYuFh
+	 xEM4Tdb/YjH4LTW5GwTyZ0sQ16nZor+M4fTYZt+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+a72c325b042aae6403c7@syzkaller.appspotmail.com,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.12 065/132] tracing: Fix WARN_ON in tracing_buffers_mmap_close for split VMAs
-Date: Wed,  3 Dec 2025 16:29:04 +0100
-Message-ID: <20251203152345.706019338@linuxfoundation.org>
+	Alexey Kodanev <aleksei.kodanev@bell-sw.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 12/93] net: sxgbe: fix potential NULL dereference in sxgbe_rx()
+Date: Wed,  3 Dec 2025 16:29:05 +0100
+Message-ID: <20251203152336.963270372@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
+References: <20251203152336.494201426@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
 
-commit b042fdf18e89a347177a49e795d8e5184778b5b6 upstream.
+[ Upstream commit f5bce28f6b9125502abec4a67d68eabcd24b3b17 ]
 
-When a VMA is split (e.g., by partial munmap or MAP_FIXED), the kernel
-calls vm_ops->close on each portion. For trace buffer mappings, this
-results in ring_buffer_unmap() being called multiple times while
-ring_buffer_map() was only called once.
+Currently, when skb is null, the driver prints an error and then
+dereferences skb on the next line.
 
-This causes ring_buffer_unmap() to return -ENODEV on subsequent calls
-because user_mapped is already 0, triggering a WARN_ON.
+To fix this, let's add a 'break' after the error message to switch
+to sxgbe_rx_refill(), which is similar to the approach taken by the
+other drivers in this particular case, e.g. calxeda with xgmac_rx().
 
-Trace buffer mappings cannot support partial mappings because the ring
-buffer structure requires the complete buffer including the meta page.
+Found during a code review.
 
-Fix this by adding a may_split callback that returns -EINVAL to prevent
-VMA splits entirely.
-
-Cc: stable@vger.kernel.org
-Fixes: cf9f0f7c4c5bb ("tracing: Allow user-space mapping of the ring-buffer")
-Link: https://patch.msgid.link/20251119064019.25904-1-kartikey406@gmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=a72c325b042aae6403c7
-Tested-by: syzbot+a72c325b042aae6403c7@syzkaller.appspotmail.com
-Reported-by: syzbot+a72c325b042aae6403c7@syzkaller.appspotmail.com
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1edb9ca69e8a ("net: sxgbe: add basic framework for Samsung 10Gb ethernet driver")
+Signed-off-by: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251121123834.97748-1-aleksei.kodanev@bell-sw.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/ethernet/samsung/sxgbe/sxgbe_main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -8283,8 +8283,18 @@ static void tracing_buffers_mmap_close(s
- 	put_snapshot_map(iter->tr);
- }
+diff --git a/drivers/net/ethernet/samsung/sxgbe/sxgbe_main.c b/drivers/net/ethernet/samsung/sxgbe/sxgbe_main.c
+index 71439825ea4e0..d662679c29832 100644
+--- a/drivers/net/ethernet/samsung/sxgbe/sxgbe_main.c
++++ b/drivers/net/ethernet/samsung/sxgbe/sxgbe_main.c
+@@ -1521,8 +1521,10 @@ static int sxgbe_rx(struct sxgbe_priv_data *priv, int limit)
  
-+static int tracing_buffers_may_split(struct vm_area_struct *vma, unsigned long addr)
-+{
-+	/*
-+	 * Trace buffer mappings require the complete buffer including
-+	 * the meta page. Partial mappings are not supported.
-+	 */
-+	return -EINVAL;
-+}
-+
- static const struct vm_operations_struct tracing_buffers_vmops = {
- 	.close		= tracing_buffers_mmap_close,
-+	.may_split      = tracing_buffers_may_split,
- };
+ 		skb = priv->rxq[qnum]->rx_skbuff[entry];
  
- static int tracing_buffers_mmap(struct file *filp, struct vm_area_struct *vma)
+-		if (unlikely(!skb))
++		if (unlikely(!skb)) {
+ 			netdev_err(priv->dev, "rx descriptor is not consistent\n");
++			break;
++		}
+ 
+ 		prefetch(skb->data - NET_IP_ALIGN);
+ 		priv->rxq[qnum]->rx_skbuff[entry] = NULL;
+-- 
+2.51.0
+
 
 
 
