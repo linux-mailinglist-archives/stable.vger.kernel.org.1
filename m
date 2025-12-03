@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23F18C9F8B5
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:39:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03222CA06B5
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:25:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7EFE530088AE
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:35:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CB41B32FBD70
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:10:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F9B03115BC;
-	Wed,  3 Dec 2025 15:35:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAE7234C123;
+	Wed,  3 Dec 2025 16:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I34bCVQL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EJL4ci1j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B592DA769;
-	Wed,  3 Dec 2025 15:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64C7434BA22;
+	Wed,  3 Dec 2025 16:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776136; cv=none; b=DI6eJFObggd+2hD5z8j+VU6fH3fTbU+eCRv0VjfySjHQUmj+pJ4TZp3Nuzwx0lJbwsrig6fafXinQ7OoAtmkpl538wPrmX2DLoideVEo7RWzxjAH1lo6dSOoUkgd7bAIblysgCA5AZ2DRXMdgDJGeQwzVqNwCDwW2e9SQG9oTIs=
+	t=1764777702; cv=none; b=bSPqD84AIGryTJy0+UxhxwafBpwc1MUT30/nRsH27NNQBhEJjsAmlmFLtznkxJrjV1kyU881CTorVgFFLFx+zNKgZvrRlsWI0pCYW3k8hOLoOd5uRmgi0CRkYUNW374zZymuolXSCkPkwZjzz6x9gcefecD5pJmLGF7o7h9T9QI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776136; c=relaxed/simple;
-	bh=iVyKqYvYZQTw4ijQK9MzlcdMVJeJUlSdMKeAK92CgIM=;
+	s=arc-20240116; t=1764777702; c=relaxed/simple;
+	bh=hUHx7ZobtydRwsFPzgY7yM9s0J+7iwJzPzr27dkiNEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ebkCYChydDRsTdVRcoSE8FjPC/bdk/xh2cy76f2tSZFUzlAZJ1K/q3qONTTuiC8qUHq4Jb+dpiR7m2gZYW7o/TVGDlX3TLBD8eQvBXSRzxLorGtzs5QpGcHAc/QO7fua7I3ufvuLZiiEYItH1WAspbPtqWHNRz9rohp/3IX+P9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I34bCVQL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23823C4CEF5;
-	Wed,  3 Dec 2025 15:35:35 +0000 (UTC)
+	 MIME-Version; b=sN7bT45H5jTiW6mlR49qDneQBFsnYR9Jgp+jcOODqdix9Dky6CYTP5bevQ+IEnx8qkeM/pcNQVTHSG8qET/xSq4pZu21qpUgkB7D307EpOofwTrDoeBDL+hOgYtpxOXH/1B1y9Ml1rj3vZ64WbEBuGlC88RxTe37wKss3ufzZXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EJL4ci1j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA7F0C4CEF5;
+	Wed,  3 Dec 2025 16:01:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776136;
-	bh=iVyKqYvYZQTw4ijQK9MzlcdMVJeJUlSdMKeAK92CgIM=;
+	s=korg; t=1764777702;
+	bh=hUHx7ZobtydRwsFPzgY7yM9s0J+7iwJzPzr27dkiNEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I34bCVQLcsHV0YogdnV1ExDaVVVS0BsZeRK+o5FvxBe4BGHYjmt+hIJn8b30daURa
-	 KYiHsx/gb8040gV5negziPmJp6ddgtgWyijbQq/dethfky9tMpRxVb29YT+OrER5Kp
-	 T9wNDdiZHoQee2Ig1M14x1+8OpXd1dbhJmWbCjK4=
+	b=EJL4ci1j18Vv7cDLDO99ZNV5P+n9IaXvoOiDH8bZ4BcX3FBuLZYYMuXEoBL2k/coS
+	 53l+kc9nC636xBU2S+Q9UUdJDXKTXXgDhIuFHgLUEpbH2ZZQNAxb/LvWe7OZ+Fhsdv
+	 Q/XYB/bQXtcjoktGKzhbvzeZxSRyrLstr9ZSZDGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Lee Jones <lee@kernel.org>,
+	MyungJoo Ham <myungjoo.ham@samsung.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 064/300] mfd: stmpe: Remove IRQ domain upon removal
-Date: Wed,  3 Dec 2025 16:24:28 +0100
-Message-ID: <20251203152402.992766759@linuxfoundation.org>
+Subject: [PATCH 5.15 119/392] extcon: adc-jack: Fix wakeup source leaks on device unbind
+Date: Wed,  3 Dec 2025 16:24:29 +0100
+Message-ID: <20251203152418.474146513@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 57bf2a312ab2d0bc8ee0f4e8a447fa94a2fc877d ]
+[ Upstream commit 78b6a991eb6c6f19ed7d0ac91cda3b3b117fda8f ]
 
-The IRQ domain is (optionally) added during stmpe_probe, but never removed.
-Add the call to stmpe_remove.
+Device can be unbound, so driver must also release memory for the wakeup
+source.  Do not use devm interface, because it would change the order of
+cleanup.
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Link: https://lore.kernel.org/r/20250725070752.338376-1-alexander.stein@ew.tq-group.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Link: https://lore.kernel.org/lkml/20250501-device-wakeup-leak-extcon-v2-1-7af77802cbea@linaro.org/
+Acked-by: MyungJoo Ham <myungjoo.ham@samsung.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/stmpe.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/extcon/extcon-adc-jack.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mfd/stmpe.c b/drivers/mfd/stmpe.c
-index 7f758fb60c1fa..70ca3fe4e99ee 100644
---- a/drivers/mfd/stmpe.c
-+++ b/drivers/mfd/stmpe.c
-@@ -1494,6 +1494,9 @@ int stmpe_probe(struct stmpe_client_info *ci, enum stmpe_partnum partnum)
- 
- int stmpe_remove(struct stmpe *stmpe)
+diff --git a/drivers/extcon/extcon-adc-jack.c b/drivers/extcon/extcon-adc-jack.c
+index 0317b614b6805..ea06cd4340525 100644
+--- a/drivers/extcon/extcon-adc-jack.c
++++ b/drivers/extcon/extcon-adc-jack.c
+@@ -162,6 +162,7 @@ static int adc_jack_remove(struct platform_device *pdev)
  {
-+	if (stmpe->domain)
-+		irq_domain_remove(stmpe->domain);
-+
- 	if (!IS_ERR(stmpe->vio) && regulator_is_enabled(stmpe->vio))
- 		regulator_disable(stmpe->vio);
- 	if (!IS_ERR(stmpe->vcc) && regulator_is_enabled(stmpe->vcc))
+ 	struct adc_jack_data *data = platform_get_drvdata(pdev);
+ 
++	device_init_wakeup(&pdev->dev, false);
+ 	free_irq(data->irq, data);
+ 	cancel_work_sync(&data->handler.work);
+ 
 -- 
 2.51.0
 
