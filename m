@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-199241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7B53CA0D1B
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:12:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66D77CA064C
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:24:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 19D5D32E0404
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:08:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6380F300290C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:24:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82F5535CB66;
-	Wed,  3 Dec 2025 16:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13909340286;
+	Wed,  3 Dec 2025 15:56:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EG2HihpB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XRJona2W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B77F35CB63;
-	Wed,  3 Dec 2025 16:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE4933B6C1;
+	Wed,  3 Dec 2025 15:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779149; cv=none; b=iEbOzHvOkGtgTDevwNkBR+F2WTCRGdBPPAcafBiDk0pZpYYt1sVaMbAYC4H+xRJ1bPeF0k/OTg2DOOQzmQ0Ps4JowKS87ZhymGt4edM8rEWnOW26Pe9V8Bj+OgXadmoXj5UtUxAunY+13JQ3RKspEPC1n4mXI2/xE3lbEQkWTD4=
+	t=1764777383; cv=none; b=HDO/TFPSV6EN0jgmpq+UbcypvXC7q/UWefGsHrLC87zLAO+Y+6Y0Nvh5o0/PjL12/Iq3I+BUcBMEWD25V8mWTCngDVaV8kAt+eFkUICJdoY5HP83UAIsMUmm3M9hX4wQYy957GLFeyfBpUGCJ9Hm7R5zItHVj3Ktz/kkvgMAcgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779149; c=relaxed/simple;
-	bh=4QbuwMrg2Fl7cfdOzpNMzx7qLtiP9+pK93QdADpVEbE=;
+	s=arc-20240116; t=1764777383; c=relaxed/simple;
+	bh=c8HL1BQfsJc2uKBj2D7Aw9qEB9LSnXGD7340SD4wGXU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O881Y6dkkUA8BTk/WQyPEUhaKUxRwEo91V51pyglIA9AhYKkI9WSO5txfMOPEJ8z1Ij/vGsUen0WCHtHKXyXOv3pAnTVm/ZcRd0wcv20dBbVqE3V6fsREJIxXryQQZ6NhbTn7XGxVEMqGrKOauhoH1Bidt/6+nWFz6n0CLyGyuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EG2HihpB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 784B8C4CEF5;
-	Wed,  3 Dec 2025 16:25:48 +0000 (UTC)
+	 MIME-Version; b=ndcT6KUvlahFcffKJ49fZVK/PXxPktmSwBfMs7Q7myPRaTB9f60954Sa+EJlcJVDuT+f9aXe4JezJmlfXT/bLpKlTl98HN9PhPMp5bqEGg9ifb9UaTxlNgNVHP+lZJi0l0CDFgTZn0abtBA9JsI8ZCIbs5vrw4sB3OC5iyOu39A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XRJona2W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50AC5C4CEF5;
+	Wed,  3 Dec 2025 15:56:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779149;
-	bh=4QbuwMrg2Fl7cfdOzpNMzx7qLtiP9+pK93QdADpVEbE=;
+	s=korg; t=1764777382;
+	bh=c8HL1BQfsJc2uKBj2D7Aw9qEB9LSnXGD7340SD4wGXU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EG2HihpBPEYKbwRzjJLQZdlke8XaAyrAftIN3Xr0wkz6MiAbGufMRjxrWKbwb/rgN
-	 jbq1jx6S1FdiXd8tbRv0XRYcvOt2T+B36Rrb42OyMDx5TcnYuvyNhoTSPKoqPmkAb0
-	 4bq3H9TBEJ2G+Qx0+DtaFegJWlN6pZwp7MTjzIxo=
+	b=XRJona2WWr9157QtcCTxUwKjbTGO656PxNd1xCKkLX2AL/u2x0BkeppYkDl38P6cZ
+	 6vUu8hzUn55ez78RSJMoiCKOlLbj497KhI2yq4jpRT+enygF2Em/hy1lAbkzwNtDNP
+	 ro7rxRnty71mDF6y8ot/7BcOYAJJJc5zix1ugiE4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chandrakanth Patil <chandrakanth.patil@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 168/568] scsi: mpi3mr: Fix controller init failure on fault during queue creation
+Subject: [PATCH 5.15 020/392] bpf: Do not audit capability check in do_jit()
 Date: Wed,  3 Dec 2025 16:22:50 +0100
-Message-ID: <20251203152446.877329827@linuxfoundation.org>
+Message-ID: <20251203152414.846513051@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
+From: Ondrej Mosnacek <omosnace@redhat.com>
 
-[ Upstream commit 829fa1582b6ff607b0e2fe41ba1c45c77f686618 ]
+[ Upstream commit 881a9c9cb7856b24e390fad9f59acfd73b98b3b2 ]
 
-Firmware can enter a transient fault while creating operational queues.
-The driver fails the load immediately.
+The failure of this check only results in a security mitigation being
+applied, slightly affecting performance of the compiled BPF program. It
+doesn't result in a failed syscall, an thus auditing a failed LSM
+permission check for it is unwanted. For example with SELinux, it causes
+a denial to be reported for confined processes running as root, which
+tends to be flagged as a problem to be fixed in the policy. Yet
+dontauditing or allowing CAP_SYS_ADMIN to the domain may not be
+desirable, as it would allow/silence also other checks - either going
+against the principle of least privilege or making debugging potentially
+harder.
 
-Add a retry loop that checks controller status and history bit after
-queue creation. If either indicates a fault, retry init up to a set
-limit before failing.
+Fix it by changing it from capable() to ns_capable_noaudit(), which
+instructs the LSMs to not audit the resulting denials.
 
-Signed-off-by: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
-Link: https://lore.kernel.org/r/20250820084138.228471-3-chandrakanth.patil@broadcom.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2369326
+Fixes: d4e89d212d40 ("x86/bpf: Call branch history clearing sequence on exit")
+Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+Reviewed-by: Paul Moore <paul@paul-moore.com>
+Link: https://lore.kernel.org/r/20251021122758.2659513-1-omosnace@redhat.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpi3mr/mpi3mr_fw.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/x86/net/bpf_jit_comp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/mpi3mr/mpi3mr_fw.c b/drivers/scsi/mpi3mr/mpi3mr_fw.c
-index d50bc67061563..9d8f5a4794666 100644
---- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
-@@ -2111,6 +2111,8 @@ static int mpi3mr_create_op_queues(struct mpi3mr_ioc *mrioc)
- {
- 	int retval = 0;
- 	u16 num_queues = 0, i = 0, msix_count_op_q = 1;
-+	u32 ioc_status;
-+	enum mpi3mr_iocstate ioc_state;
+diff --git a/arch/x86/net/bpf_jit_comp.c b/arch/x86/net/bpf_jit_comp.c
+index 37a005df0b952..4100eed372486 100644
+--- a/arch/x86/net/bpf_jit_comp.c
++++ b/arch/x86/net/bpf_jit_comp.c
+@@ -1786,7 +1786,7 @@ st:			if (is_imm8(insn->off))
+ 			ctx->cleanup_addr = proglen;
  
- 	num_queues = min_t(int, mrioc->facts.max_op_reply_q,
- 	    mrioc->facts.max_op_req_q);
-@@ -2166,6 +2168,14 @@ static int mpi3mr_create_op_queues(struct mpi3mr_ioc *mrioc)
- 		retval = -1;
- 		goto out_failed;
- 	}
-+	ioc_status = readl(&mrioc->sysif_regs->ioc_status);
-+	ioc_state = mpi3mr_get_iocstate(mrioc);
-+	if ((ioc_status & MPI3_SYSIF_IOC_STATUS_RESET_HISTORY) ||
-+	    ioc_state != MRIOC_STATE_READY) {
-+		mpi3mr_print_fault_info(mrioc);
-+		retval = -1;
-+		goto out_failed;
-+	}
- 	mrioc->num_op_reply_q = mrioc->num_op_req_q = i;
- 	ioc_info(mrioc,
- 	    "successfully created %d operational queue pairs(default/polled) queue = (%d/%d)\n",
+ 			if (bpf_prog_was_classic(bpf_prog) &&
+-			    !capable(CAP_SYS_ADMIN)) {
++			    !ns_capable_noaudit(&init_user_ns, CAP_SYS_ADMIN)) {
+ 				u8 *ip = image + addrs[i - 1];
+ 
+ 				if (emit_spectre_bhb_barrier(&prog, ip, bpf_prog))
 -- 
 2.51.0
 
