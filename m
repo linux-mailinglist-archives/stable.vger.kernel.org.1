@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-199415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9038FCA062E
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:23:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 643AAC9F9FB
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:46:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 984E6319A74F
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:08:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 585FB3007941
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:40:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1247B352FBB;
-	Wed,  3 Dec 2025 16:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26B6E3081AF;
+	Wed,  3 Dec 2025 15:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e1yN0a9K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vyWaM9/s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C122B35029B;
-	Wed,  3 Dec 2025 16:35:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7375303A3D;
+	Wed,  3 Dec 2025 15:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779725; cv=none; b=Ypfm108PMI3cBR5PFn92QhFXvuZsSHZtIuYkuvuCS2XkH9L+74X/QQlQRajiypUoaiHRo12YkvgZ0BTq/HNXPAKtBphu8gqrTi6gvf5+gFopRJgQoY27151JEgE0nCHV1AQN2NuDg9FUXop3Eg4plghZSc/TXJwaZjA2CTBgvQA=
+	t=1764776406; cv=none; b=U+IyGnY2DnIXtOUe9D4tlwzm4qKRG0rMMsqErlUkJIPzNbD7rdYxj8sYZhRgQ/KycoRnYHIKMNJ1BfyJB03ym2WSAi+QyEQGZif/SIJjMElFByqqi/nibf6FJMpk0EgVNDWqIhvQYMrSmqBDpw1u+ebqzTnGT0NAoce3DNpK77I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779725; c=relaxed/simple;
-	bh=EkGyPzJpxmyqsPRzs4h1zJU1p67up/ZODy6MPi/51UQ=;
+	s=arc-20240116; t=1764776406; c=relaxed/simple;
+	bh=C0ncVdAkwDBCIOrWdmlg4xkqnjxsRCFK9KFdW5ULuWc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j5SM1Pl99zdpuB/21f9EvLzKm6TSTJQQ80cUQLKcU8BsnAVtQdX+Nu+l4SODkWV8YF5igBPXnOSqYWsaWQ/kpdj2uiP6U4DfpRvqH5vLMdS6k21PpV7y4KjJHF7X+gAVprS3LLqfo+dvB3FecS1OjAzppThTMD8DpZlp+RlwuqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e1yN0a9K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32C49C4CEF5;
-	Wed,  3 Dec 2025 16:35:24 +0000 (UTC)
+	 MIME-Version; b=SIhRxCQTCgQp0XTnvuCvcNQdnuJJlNIsDw7oE/wucWC7MpWdts8ZthDBrLN6Hp3ly5fqXG1mpancUCBWC3Fc5zBuMvCD7RisjqbPA+hU/CKGjZMcfaEkV8aUaPA3HZywHj4GQ7usIBZ2URYaaSyxFtSaZyH124yrNKITuyAS7OY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vyWaM9/s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41FF6C4CEF5;
+	Wed,  3 Dec 2025 15:40:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779725;
-	bh=EkGyPzJpxmyqsPRzs4h1zJU1p67up/ZODy6MPi/51UQ=;
+	s=korg; t=1764776406;
+	bh=C0ncVdAkwDBCIOrWdmlg4xkqnjxsRCFK9KFdW5ULuWc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e1yN0a9KFbDeEclj/yKUVfmPwzirjTfaXdKUbrR2REnwCyKAf6I7Xo/6VDBWWNZcI
-	 ryPojo58PCwlE4qp2Z/2o0eZbLX8r3lRHuWBK53QQWID9D4YMD2ub9Wzrhse1F6P3B
-	 zVO6/2iUZgejfV5gF57oOrQWRMcFCdpab5cpc4qk=
+	b=vyWaM9/svZCQROrc2+zMco1KDMgjIBPxOF1zTuxDJDMeaf7JHN/REq8WVneQXw6t0
+	 dJy7I/m04CGhvg9iXhyKfZB/hszHkL5qcxgnaiUY6NW5jlhsITyQQHfJ+Soy3A6xBz
+	 OAo7T1vXv5H16AqIfQfhTfN6n7FOlyhuqJs5ryEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tristan Lobb <tristan.lobb@it-lobb.de>,
-	Jiri Kosina <jkosina@suse.com>,
+	syzbot+4ed6852d4da4606c93da@syzkaller.appspotmail.com,
+	Ivan Pravdin <ipravdin.official@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 342/568] HID: quirks: avoid Cooler Master MM712 dongle wakeup bug
+Subject: [PATCH 5.10 140/300] Bluetooth: bcsp: receive data only if registered
 Date: Wed,  3 Dec 2025 16:25:44 +0100
-Message-ID: <20251203152453.231746439@linuxfoundation.org>
+Message-ID: <20251203152405.805538695@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tristan Lobb <tristan.lobb@it-lobb.de>
+From: Ivan Pravdin <ipravdin.official@gmail.com>
 
-[ Upstream commit 0be4253bf878d9aaa2b96031ac8683fceeb81480 ]
+[ Upstream commit ca94b2b036c22556c3a66f1b80f490882deef7a6 ]
 
-The Cooler Master Mice Dongle includes a vendor defined HID interface
-alongside its mouse interface. Not polling it will cause the mouse to
-stop responding to polls on any interface once woken up again after
-going into power saving mode.
+Currently, bcsp_recv() can be called even when the BCSP protocol has not
+been registered. This leads to a NULL pointer dereference, as shown in
+the following stack trace:
 
-Add the HID_QUIRK_ALWAYS_POLL quirk alongside the Cooler Master VID and
-the Dongle's PID.
+    KASAN: null-ptr-deref in range [0x0000000000000108-0x000000000000010f]
+    RIP: 0010:bcsp_recv+0x13d/0x1740 drivers/bluetooth/hci_bcsp.c:590
+    Call Trace:
+     <TASK>
+     hci_uart_tty_receive+0x194/0x220 drivers/bluetooth/hci_ldisc.c:627
+     tiocsti+0x23c/0x2c0 drivers/tty/tty_io.c:2290
+     tty_ioctl+0x626/0xde0 drivers/tty/tty_io.c:2706
+     vfs_ioctl fs/ioctl.c:51 [inline]
+     __do_sys_ioctl fs/ioctl.c:907 [inline]
+     __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:893
+     do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+     do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+     entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Signed-off-by: Tristan Lobb <tristan.lobb@it-lobb.de>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+To prevent this, ensure that the HCI_UART_REGISTERED flag is set before
+processing received data. If the protocol is not registered, return
+-EUNATCH.
+
+Reported-by: syzbot+4ed6852d4da4606c93da@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=4ed6852d4da4606c93da
+Tested-by: syzbot+4ed6852d4da4606c93da@syzkaller.appspotmail.com
+Signed-off-by: Ivan Pravdin <ipravdin.official@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h    | 3 +++
- drivers/hid/hid-quirks.c | 1 +
- 2 files changed, 4 insertions(+)
+ drivers/bluetooth/hci_bcsp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 0bbba80d6c51c..307f921a98068 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -321,6 +321,9 @@
- #define USB_DEVICE_ID_CODEMERCS_IOW_FIRST	0x1500
- #define USB_DEVICE_ID_CODEMERCS_IOW_LAST	0x15ff
+diff --git a/drivers/bluetooth/hci_bcsp.c b/drivers/bluetooth/hci_bcsp.c
+index 8055f63603f45..8ff69111ceede 100644
+--- a/drivers/bluetooth/hci_bcsp.c
++++ b/drivers/bluetooth/hci_bcsp.c
+@@ -582,6 +582,9 @@ static int bcsp_recv(struct hci_uart *hu, const void *data, int count)
+ 	struct bcsp_struct *bcsp = hu->priv;
+ 	const unsigned char *ptr;
  
-+#define USB_VENDOR_ID_COOLER_MASTER	0x2516
-+#define USB_DEVICE_ID_COOLER_MASTER_MICE_DONGLE	0x01b7
++	if (!test_bit(HCI_UART_REGISTERED, &hu->flags))
++		return -EUNATCH;
 +
- #define USB_VENDOR_ID_CORSAIR		0x1b1c
- #define USB_DEVICE_ID_CORSAIR_K90	0x1b02
- #define USB_DEVICE_ID_CORSAIR_K70R      0x1b09
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index b37927f909412..b42aa9e22fcf0 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -57,6 +57,7 @@ static const struct hid_device_id hid_quirks[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CH, USB_DEVICE_ID_CH_FLIGHT_SIM_YOKE), HID_QUIRK_NOGET },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CH, USB_DEVICE_ID_CH_PRO_PEDALS), HID_QUIRK_NOGET },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CH, USB_DEVICE_ID_CH_PRO_THROTTLE), HID_QUIRK_NOGET },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_COOLER_MASTER, USB_DEVICE_ID_COOLER_MASTER_MICE_DONGLE), HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CORSAIR, USB_DEVICE_ID_CORSAIR_K65RGB), HID_QUIRK_NO_INIT_REPORTS },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CORSAIR, USB_DEVICE_ID_CORSAIR_K65RGB_RAPIDFIRE), HID_QUIRK_NO_INIT_REPORTS | HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CORSAIR, USB_DEVICE_ID_CORSAIR_K70RGB), HID_QUIRK_NO_INIT_REPORTS },
+ 	BT_DBG("hu %p count %d rx_state %d rx_count %ld",
+ 	       hu, count, bcsp->rx_state, bcsp->rx_count);
+ 
 -- 
 2.51.0
 
