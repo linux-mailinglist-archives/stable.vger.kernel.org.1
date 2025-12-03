@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-198779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 966B6CA13C0
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:04:11 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38A83C9F803
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:35:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E91D0300A9FB
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:03:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7594B300A8FF
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:33:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 415EF349B1F;
-	Wed,  3 Dec 2025 16:00:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9484930C63C;
+	Wed,  3 Dec 2025 15:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jAYmJohd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bp23/z6P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC81349B14;
-	Wed,  3 Dec 2025 16:00:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40FA715ADB4;
+	Wed,  3 Dec 2025 15:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777657; cv=none; b=N21Zlbg7s3o9asLO+3kV/aVit1xg3In4+vPQdWuUOc6Gyyjko7liktoP8niJe78RvaCu+7bWbrPGNPr5PcySkrAU2LM6m7TlGHzCWaj5ix3+jEVQCZYak62H38yvmyYDajNL1q54LHJrmuFN1KCKyLPltKb8TRAUCIs72KvP/8g=
+	t=1764776005; cv=none; b=YnWGKfkXMbvCkEg5uJHWB81+FHrOTYVVWpZQ/7IModczxci/VHWzPzwc56qb+jZXEWHhCU6bzxaDXGlzFm8mk/ZxiGFVmd1UeEZEr7UQjCPp3aSrSXqQubusANkezkPRg38IF3oXxyjUw/Uhq8b1joTet1pqpZgAdGDHI28mFL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777657; c=relaxed/simple;
-	bh=LtmO0lJ5BbqXzbuI7ylNgi8ZP6AaK0A35sl/AqY2tUU=;
+	s=arc-20240116; t=1764776005; c=relaxed/simple;
+	bh=l0RgxUq1J3dZOJJuKl0xFnP7wDxm6/ms6ZRtQUr5qCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gncra26pVmsMckpEZz6NhvCTSbRymSb9WaDPDKZzcVdL01fTUQdqxvsgLNlCLnwLp67VSWB6a1b9ySUGLKg64LpRfUGjBZnsX2ypLDKMFmV8s77xOC0CWlU6RglVBRXFzLlXIFiiwS3+RtN0OcnC0IuT6p3Aq/1vB3D/iUPUKKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jAYmJohd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F08BC116C6;
-	Wed,  3 Dec 2025 16:00:56 +0000 (UTC)
+	 MIME-Version; b=Cp/bsP9YbS3tl0SJmN2PzdXDALX0QAHDbv1cmeof3B/Mj4UKxkoIm4LfIdQj6p1wxvB/ObGtZjuUxhZvtPW5wwbZVwEuNJ/5GYEJQGODlQxXewPRN1g4HmhdeRKFheI+fKLXtt8HUfSHTMLNYGRBTFwRQOUwCPVfRa2eplM1zos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bp23/z6P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4D61C4CEF5;
+	Wed,  3 Dec 2025 15:33:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777656;
-	bh=LtmO0lJ5BbqXzbuI7ylNgi8ZP6AaK0A35sl/AqY2tUU=;
+	s=korg; t=1764776005;
+	bh=l0RgxUq1J3dZOJJuKl0xFnP7wDxm6/ms6ZRtQUr5qCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jAYmJohd+NdmpRr8ZChHic8r3lX4m3Nd0W5YaD4Qa1pxKHty0e50YptWT3qBr1+EP
-	 dGmSVjqRy2Hvo6bQ1mOYWnWWyEwTdPLQ6RFixW8o1gv0kUHgZgd05EP2uOz0x4yCmO
-	 hxsPCuQPY6XVoXov7p3EhaSGv+H3ioEAHw2bFxg0=
+	b=Bp23/z6PYRwhq6Ct10h3hihJDEGq/37AnGPO2GZrjMEsIQaRV/P2mJMZgAf2oDyFt
+	 OYF/8Fb0vUUBfdg0HBCSMUlpttg2LBWW2IVmPlynnpsZzfgxZSScj8MM4QZ+TZ8a4r
+	 4P3LWnKZHQhmG6xcEXzDItQduaCbMtsCOCd0FpW8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+01b0667934cdceb4451c@syzkaller.appspotmail.com,
-	Charalampos Mitrodimas <charmitro@posteo.net>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	Hans de Goede <hansg@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 106/392] net: ipv6: fix field-spanning memcpy warning in AH output
+Subject: [PATCH 5.10 052/300] ACPICA: dispatcher: Use acpi_ds_clear_operands() in acpi_ds_call_control_method()
 Date: Wed,  3 Dec 2025 16:24:16 +0100
-Message-ID: <20251203152417.999813239@linuxfoundation.org>
+Message-ID: <20251203152402.548931204@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,119 +60,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charalampos Mitrodimas <charmitro@posteo.net>
+From: Hans de Goede <hansg@kernel.org>
 
-[ Upstream commit 2327a3d6f65ce2fe2634546dde4a25ef52296fec ]
+[ Upstream commit e9dff11a7a50fcef23fe3e8314fafae6d5641826 ]
 
-Fix field-spanning memcpy warnings in ah6_output() and
-ah6_output_done() where extension headers are copied to/from IPv6
-address fields, triggering fortify-string warnings about writes beyond
-the 16-byte address fields.
+When deleting the previous walkstate operand stack
+acpi_ds_call_control_method() was deleting obj_desc->Method.param_count
+operands. But Method.param_count does not necessarily match
+this_walk_state->num_operands, it may be either less or more.
 
-  memcpy: detected field-spanning write (size 40) of single field "&top_iph->saddr" at net/ipv6/ah6.c:439 (size 16)
-  WARNING: CPU: 0 PID: 8838 at net/ipv6/ah6.c:439 ah6_output+0xe7e/0x14e0 net/ipv6/ah6.c:439
+After correcting the for loop to check `i < this_walk_state->num_operands`
+the code is identical to acpi_ds_clear_operands(), so just outright
+replace the code with acpi_ds_clear_operands() to fix this.
 
-The warnings are false positives as the extension headers are
-intentionally placed after the IPv6 header in memory. Fix by properly
-copying addresses and extension headers separately, and introduce
-helper functions to avoid code duplication.
-
-Reported-by: syzbot+01b0667934cdceb4451c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=01b0667934cdceb4451c
-Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Link: https://github.com/acpica/acpica/commit/53fc0220
+Signed-off-by: Hans de Goede <hansg@kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ah6.c | 50 +++++++++++++++++++++++++++++++-------------------
- 1 file changed, 31 insertions(+), 19 deletions(-)
+ drivers/acpi/acpica/dsmethod.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/net/ipv6/ah6.c b/net/ipv6/ah6.c
-index 828e62514260a..589f008dcee9c 100644
---- a/net/ipv6/ah6.c
-+++ b/net/ipv6/ah6.c
-@@ -46,6 +46,34 @@ struct ah_skb_cb {
- 
- #define AH_SKB_CB(__skb) ((struct ah_skb_cb *)&((__skb)->cb[0]))
- 
-+/* Helper to save IPv6 addresses and extension headers to temporary storage */
-+static inline void ah6_save_hdrs(struct tmp_ext *iph_ext,
-+				 struct ipv6hdr *top_iph, int extlen)
-+{
-+	if (!extlen)
-+		return;
-+
-+#if IS_ENABLED(CONFIG_IPV6_MIP6)
-+	iph_ext->saddr = top_iph->saddr;
-+#endif
-+	iph_ext->daddr = top_iph->daddr;
-+	memcpy(&iph_ext->hdrs, top_iph + 1, extlen - sizeof(*iph_ext));
-+}
-+
-+/* Helper to restore IPv6 addresses and extension headers from temporary storage */
-+static inline void ah6_restore_hdrs(struct ipv6hdr *top_iph,
-+				    struct tmp_ext *iph_ext, int extlen)
-+{
-+	if (!extlen)
-+		return;
-+
-+#if IS_ENABLED(CONFIG_IPV6_MIP6)
-+	top_iph->saddr = iph_ext->saddr;
-+#endif
-+	top_iph->daddr = iph_ext->daddr;
-+	memcpy(top_iph + 1, &iph_ext->hdrs, extlen - sizeof(*iph_ext));
-+}
-+
- static void *ah_alloc_tmp(struct crypto_ahash *ahash, int nfrags,
- 			  unsigned int size)
- {
-@@ -307,13 +335,7 @@ static void ah6_output_done(struct crypto_async_request *base, int err)
- 	memcpy(ah->auth_data, icv, ahp->icv_trunc_len);
- 	memcpy(top_iph, iph_base, IPV6HDR_BASELEN);
- 
--	if (extlen) {
--#if IS_ENABLED(CONFIG_IPV6_MIP6)
--		memcpy(&top_iph->saddr, iph_ext, extlen);
--#else
--		memcpy(&top_iph->daddr, iph_ext, extlen);
--#endif
--	}
-+	ah6_restore_hdrs(top_iph, iph_ext, extlen);
- 
- 	kfree(AH_SKB_CB(skb)->tmp);
- 	xfrm_output_resume(skb->sk, skb, err);
-@@ -384,12 +406,8 @@ static int ah6_output(struct xfrm_state *x, struct sk_buff *skb)
+diff --git a/drivers/acpi/acpica/dsmethod.c b/drivers/acpi/acpica/dsmethod.c
+index 13c67f58e9052..5a2081ee37f55 100644
+--- a/drivers/acpi/acpica/dsmethod.c
++++ b/drivers/acpi/acpica/dsmethod.c
+@@ -546,14 +546,7 @@ acpi_ds_call_control_method(struct acpi_thread_state *thread,
+ 	 * Delete the operands on the previous walkstate operand stack
+ 	 * (they were copied to new objects)
  	 */
- 	memcpy(iph_base, top_iph, IPV6HDR_BASELEN);
- 
-+	ah6_save_hdrs(iph_ext, top_iph, extlen);
- 	if (extlen) {
--#if IS_ENABLED(CONFIG_IPV6_MIP6)
--		memcpy(iph_ext, &top_iph->saddr, extlen);
--#else
--		memcpy(iph_ext, &top_iph->daddr, extlen);
--#endif
- 		err = ipv6_clear_mutable_options(top_iph,
- 						 extlen - sizeof(*iph_ext) +
- 						 sizeof(*top_iph),
-@@ -440,13 +458,7 @@ static int ah6_output(struct xfrm_state *x, struct sk_buff *skb)
- 	memcpy(ah->auth_data, icv, ahp->icv_trunc_len);
- 	memcpy(top_iph, iph_base, IPV6HDR_BASELEN);
- 
--	if (extlen) {
--#if IS_ENABLED(CONFIG_IPV6_MIP6)
--		memcpy(&top_iph->saddr, iph_ext, extlen);
--#else
--		memcpy(&top_iph->daddr, iph_ext, extlen);
--#endif
+-	for (i = 0; i < obj_desc->method.param_count; i++) {
+-		acpi_ut_remove_reference(this_walk_state->operands[i]);
+-		this_walk_state->operands[i] = NULL;
 -	}
-+	ah6_restore_hdrs(top_iph, iph_ext, extlen);
+-
+-	/* Clear the operand stack */
+-
+-	this_walk_state->num_operands = 0;
++	acpi_ds_clear_operands(this_walk_state);
  
- out_free:
- 	kfree(iph_base);
+ 	ACPI_DEBUG_PRINT((ACPI_DB_DISPATCH,
+ 			  "**** Begin nested execution of [%4.4s] **** WalkState=%p\n",
 -- 
 2.51.0
 
