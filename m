@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-198743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40E98CA09E8
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:46:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41BCDCA06EB
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:27:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D7B5434B47E5
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:25:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3FA2E3315463
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:11:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31CB3311C19;
-	Wed,  3 Dec 2025 15:59:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B0CB3612C8;
+	Wed,  3 Dec 2025 16:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FFwoI5+B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TEwBO8Qv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD2F320CA7;
-	Wed,  3 Dec 2025 15:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF4135FF4E;
+	Wed,  3 Dec 2025 16:28:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777537; cv=none; b=eeLUC+w3ZDcS7qBwFTYXLvXsqzu/IsCZTwl1WcfvBPEYxdxi9otW2zkqGUNJT8va0i249EOIgQ3NSMYYpqpdjSn5QNCXttvMmXZWeyWZ9zY73YwapP2/QJh7VXdBLfpcT6250eXgAmSHxwf6fuwvBygKkVvVuioxiuWWgfpuUIY=
+	t=1764779303; cv=none; b=qCqT1JYhW1g26P7iYtYmlUHU5CAKwuyT5imKEm72VUC2zX8EqniJDC/wpryM4pBPGDJc+KLaXHjNCCtieZRdkiQArRU9sFNLzR9lfuhsG6OdU2m30OL4H9Tl8/BnOFxysxQbN7dzV6xlwvNSEFl1Q5uCDgZpVa2Hsup8/fYZ6ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777537; c=relaxed/simple;
-	bh=hZbVfbzHLcvTkMBluuSWhyQb+XiVG9RVH2058vP7i8Y=;
+	s=arc-20240116; t=1764779303; c=relaxed/simple;
+	bh=KtsN93mrf0dQJRl2bhv1J24xiOGCzTl4PtJz3Y4Hd1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kI3BJ31WO0a+11wswLTJUDwGv53oH77V9ROybVFDT1dh6rHDu3hPunVuh4Pdpphkcvnba0YsQgwqT1XKsnAMd1xBjkEAJliNIX22XK9JhMK2swfbq1w95878GHU6usw3RqAz1UFv4cGjOwsSmo3BkL0ehFbeOwrhG14vKckwNG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FFwoI5+B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBD66C4CEF5;
-	Wed,  3 Dec 2025 15:58:55 +0000 (UTC)
+	 MIME-Version; b=l6XXMDNIespJxB/EHsOMNwVn92fV83nQ209QHT2ZYGUHeyUduotIsdtFhBteX080wcmxbIWSZNTzsoq5aaZvTGLLv49Ll74+TKdm5OslDLPtgzeM5qNC0hSutpEyUM6awnsxewiPIyZMtN5J6srvmXopHbKB7Cq4sf2dn9qcQ1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TEwBO8Qv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD0BEC4CEF5;
+	Wed,  3 Dec 2025 16:28:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777536;
-	bh=hZbVfbzHLcvTkMBluuSWhyQb+XiVG9RVH2058vP7i8Y=;
+	s=korg; t=1764779303;
+	bh=KtsN93mrf0dQJRl2bhv1J24xiOGCzTl4PtJz3Y4Hd1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FFwoI5+BIUllOZcONuH14zFgVUg784f5P4KV8rT12Qu3OjsIjme8A629mkjwgXysd
-	 17F0Q4dvwhru3cSd1kWKbFsvkAh5peMDVI6U3CG/hq4ZlMV57JmFarPUEdLQ/K/JHY
-	 5xkskGj8njgEMCjURl/hiMla2bvxsI4R8PJ+MkuQ=
+	b=TEwBO8QvuY4wHIVvh7ISnIMyclBrEAVN1E1ch7nRontdZFmUApepfp9QAEvTwWozZ
+	 QK/PefogVvjoKmCDyCN9MAaNK00fm+Hs+JIpq+5oYRZeaRqgQ62YIBNrZpeCzEA1wB
+	 FBpsPUquuZ/5p+K4DF5yLhmHBf+1aDX88J/2kQHM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Svyatoslav Ryhel <clamor95@gmail.com>,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
+	David Ahern <dsahern@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 070/392] soc/tegra: fuse: Add Tegra114 nvmem cells and fuse lookups
+Subject: [PATCH 6.1 218/568] selftests: Disable dad for ipv6 in fcnal-test.sh
 Date: Wed,  3 Dec 2025 16:23:40 +0100
-Message-ID: <20251203152416.683316197@linuxfoundation.org>
+Message-ID: <20251203152448.706625853@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,165 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Svyatoslav Ryhel <clamor95@gmail.com>
+From: David Ahern <dsahern@kernel.org>
 
-[ Upstream commit b9c01adedf38c69abb725a60a05305ef70dbce03 ]
+[ Upstream commit 53d591730ea34f97a82f7ec6e7c987ca6e34dc21 ]
 
-Add missing Tegra114 nvmem cells and fuse lookups which were added for
-Tegra124+ but omitted for Tegra114.
+Constrained test environment; duplicate address detection is not needed
+and causes races so disable it.
 
-Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
-Reviewed-by: Mikko Perttunen <mperttunen@nvidia.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250910025828.38900-1-dsahern@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/tegra/fuse/fuse-tegra30.c | 122 ++++++++++++++++++++++++++
- 1 file changed, 122 insertions(+)
+ tools/testing/selftests/net/fcnal-test.sh | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/soc/tegra/fuse/fuse-tegra30.c b/drivers/soc/tegra/fuse/fuse-tegra30.c
-index b071d433d74f8..bfc8d39ae9efd 100644
---- a/drivers/soc/tegra/fuse/fuse-tegra30.c
-+++ b/drivers/soc/tegra/fuse/fuse-tegra30.c
-@@ -117,6 +117,124 @@ const struct tegra_fuse_soc tegra30_fuse_soc = {
- #endif
+diff --git a/tools/testing/selftests/net/fcnal-test.sh b/tools/testing/selftests/net/fcnal-test.sh
+index 1c0dcddbe2bd1..135e19db39eb0 100755
+--- a/tools/testing/selftests/net/fcnal-test.sh
++++ b/tools/testing/selftests/net/fcnal-test.sh
+@@ -423,6 +423,8 @@ create_ns()
+ 	ip netns exec ${ns} sysctl -qw net.ipv6.conf.all.keep_addr_on_down=1
+ 	ip netns exec ${ns} sysctl -qw net.ipv6.conf.all.forwarding=1
+ 	ip netns exec ${ns} sysctl -qw net.ipv6.conf.default.forwarding=1
++	ip netns exec ${ns} sysctl -qw net.ipv6.conf.default.accept_dad=0
++	ip netns exec ${ns} sysctl -qw net.ipv6.conf.all.accept_dad=0
+ }
  
- #ifdef CONFIG_ARCH_TEGRA_114_SOC
-+static const struct nvmem_cell_info tegra114_fuse_cells[] = {
-+	{
-+		.name = "tsensor-cpu1",
-+		.offset = 0x084,
-+		.bytes = 4,
-+		.bit_offset = 0,
-+		.nbits = 32,
-+	}, {
-+		.name = "tsensor-cpu2",
-+		.offset = 0x088,
-+		.bytes = 4,
-+		.bit_offset = 0,
-+		.nbits = 32,
-+	}, {
-+		.name = "tsensor-common",
-+		.offset = 0x08c,
-+		.bytes = 4,
-+		.bit_offset = 0,
-+		.nbits = 32,
-+	}, {
-+		.name = "tsensor-cpu0",
-+		.offset = 0x098,
-+		.bytes = 4,
-+		.bit_offset = 0,
-+		.nbits = 32,
-+	}, {
-+		.name = "xusb-pad-calibration",
-+		.offset = 0x0f0,
-+		.bytes = 4,
-+		.bit_offset = 0,
-+		.nbits = 32,
-+	}, {
-+		.name = "tsensor-cpu3",
-+		.offset = 0x12c,
-+		.bytes = 4,
-+		.bit_offset = 0,
-+		.nbits = 32,
-+	}, {
-+		.name = "tsensor-gpu",
-+		.offset = 0x154,
-+		.bytes = 4,
-+		.bit_offset = 0,
-+		.nbits = 32,
-+	}, {
-+		.name = "tsensor-mem0",
-+		.offset = 0x158,
-+		.bytes = 4,
-+		.bit_offset = 0,
-+		.nbits = 32,
-+	}, {
-+		.name = "tsensor-mem1",
-+		.offset = 0x15c,
-+		.bytes = 4,
-+		.bit_offset = 0,
-+		.nbits = 32,
-+	}, {
-+		.name = "tsensor-pllx",
-+		.offset = 0x160,
-+		.bytes = 4,
-+		.bit_offset = 0,
-+		.nbits = 32,
-+	},
-+};
-+
-+static const struct nvmem_cell_lookup tegra114_fuse_lookups[] = {
-+	{
-+		.nvmem_name = "fuse",
-+		.cell_name = "xusb-pad-calibration",
-+		.dev_id = "7009f000.padctl",
-+		.con_id = "calibration",
-+	}, {
-+		.nvmem_name = "fuse",
-+		.cell_name = "tsensor-common",
-+		.dev_id = "700e2000.thermal-sensor",
-+		.con_id = "common",
-+	}, {
-+		.nvmem_name = "fuse",
-+		.cell_name = "tsensor-cpu0",
-+		.dev_id = "700e2000.thermal-sensor",
-+		.con_id = "cpu0",
-+	}, {
-+		.nvmem_name = "fuse",
-+		.cell_name = "tsensor-cpu1",
-+		.dev_id = "700e2000.thermal-sensor",
-+		.con_id = "cpu1",
-+	}, {
-+		.nvmem_name = "fuse",
-+		.cell_name = "tsensor-cpu2",
-+		.dev_id = "700e2000.thermal-sensor",
-+		.con_id = "cpu2",
-+	}, {
-+		.nvmem_name = "fuse",
-+		.cell_name = "tsensor-cpu3",
-+		.dev_id = "700e2000.thermal-sensor",
-+		.con_id = "cpu3",
-+	}, {
-+		.nvmem_name = "fuse",
-+		.cell_name = "tsensor-mem0",
-+		.dev_id = "700e2000.thermal-sensor",
-+		.con_id = "mem0",
-+	}, {
-+		.nvmem_name = "fuse",
-+		.cell_name = "tsensor-mem1",
-+		.dev_id = "700e2000.thermal-sensor",
-+		.con_id = "mem1",
-+	}, {
-+		.nvmem_name = "fuse",
-+		.cell_name = "tsensor-gpu",
-+		.dev_id = "700e2000.thermal-sensor",
-+		.con_id = "gpu",
-+	}, {
-+		.nvmem_name = "fuse",
-+		.cell_name = "tsensor-pllx",
-+		.dev_id = "700e2000.thermal-sensor",
-+		.con_id = "pllx",
-+	},
-+};
-+
- static const struct tegra_fuse_info tegra114_fuse_info = {
- 	.read = tegra30_fuse_read,
- 	.size = 0x2a0,
-@@ -127,6 +245,10 @@ const struct tegra_fuse_soc tegra114_fuse_soc = {
- 	.init = tegra30_fuse_init,
- 	.speedo_init = tegra114_init_speedo_data,
- 	.info = &tegra114_fuse_info,
-+	.lookups = tegra114_fuse_lookups,
-+	.num_lookups = ARRAY_SIZE(tegra114_fuse_lookups),
-+	.cells = tegra114_fuse_cells,
-+	.num_cells = ARRAY_SIZE(tegra114_fuse_cells),
- 	.soc_attr_group = &tegra_soc_attr_group,
- 	.clk_suspend_on = false,
- };
+ # create veth pair to connect namespaces and apply addresses.
 -- 
 2.51.0
 
