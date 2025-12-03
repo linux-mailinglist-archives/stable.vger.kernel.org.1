@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-198507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F21F9C9FB93
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:56:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA3AFCA0376
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:57:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 83181304CC3F
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:46:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 27CD0309448C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:49:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA3CD313E1E;
-	Wed,  3 Dec 2025 15:46:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2718349AF9;
+	Wed,  3 Dec 2025 16:49:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mlaxKgf8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GKRx2dax"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 772F3313E00;
-	Wed,  3 Dec 2025 15:46:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C058349AE0;
+	Wed,  3 Dec 2025 16:49:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776774; cv=none; b=L3ZWMiL2kt7uWwCMXvj3w9PubNf2SAenC0MLcN8WpTAHjn9uROfJPxj79/27FWoPV0Dht5P25x9likVPN8nMxcGQooduHbev9xGw/RqD8KoDX+ZBs8WB5CLNTJiWq1BGn3JpZX7YV48cXTGlXOL3vzsC+tRQygeIYSWcQjQmH4U=
+	t=1764780597; cv=none; b=F2/KpqGN1kIIcOn3QTvE7DbKmg/JVQI0z3y7Y57u/RlcXBDk+7ypKJZKWuNplB/4mWDcC10DxpKS6kQjxe06tITKl6poEbwCM17O9dTQ+YxSnnL+ABsCogOgg0lSKEAsP05IqGZNxXdBkgGn/bvmx0xZIOB+JkTRn6lvPMmdvaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776774; c=relaxed/simple;
-	bh=pSGhcBfJhahy2gBzPJKAdbyI1+fPWhZ7S52p42w8Ecc=;
+	s=arc-20240116; t=1764780597; c=relaxed/simple;
+	bh=oICig/v+ikYFpAJeZ7QZktP7cMngW8eOoMdyjiQUxFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UZIULfEt4CEfewzlB8fvrupz04ZTOtZufvUCotzeDmc8bfw+7eoCUx9bOjZntHLSTk5N2/HFYzHaL1RRNdkFL7pMi4XO0aGqXYqJRamQi6NHmcbHU0gyhwqH44kn2yufDDVPKlZN4X5zwgJrKIQsVLdr2WxWUP032pLBYrVlEHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mlaxKgf8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF731C4CEF5;
-	Wed,  3 Dec 2025 15:46:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JQxlytcR8yBgOjp5hOmlK1p/DxdSK4XMycScVGtAW4kd9ICnZzcGo2XMfGaufmsYdQpgZwkMfDO7YXbqvuqJ2JAniVuOuC1qoKXwqk+l3zDhU5ryNRJG6ye59BC719aFZtlEcypMicEc6D6mDbwgHtBUL9rphBWQTBgVeZ5tyNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GKRx2dax; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03663C4CEF5;
+	Wed,  3 Dec 2025 16:49:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776774;
-	bh=pSGhcBfJhahy2gBzPJKAdbyI1+fPWhZ7S52p42w8Ecc=;
+	s=korg; t=1764780597;
+	bh=oICig/v+ikYFpAJeZ7QZktP7cMngW8eOoMdyjiQUxFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mlaxKgf831oqp75SMmZZUk+Y/VfKZqmw5Jb5dxmRqjwBYwMNHprnx9gp/xio7zl/J
-	 Mc76IM1JbwzqORFUbsO/iccrYdG/pO9XbGGBfbC7mcB21I43zl+ijwvWFiv1P1B7+8
-	 w9g41cydnZ6F8+abQ8/lcGUP1vptSZjzxlU7sNcY=
+	b=GKRx2daxGHbnXTVq5WLPc0T+9ecUlNeV6mgsXHCbiANIZlmI8dvSpw0Pvgk+t7AU6
+	 WUOu8D5vZw03PzpW47GEK2pdVSnrHGnvHov44ApYPnrjGuoobwm0ItEVvSjy9iqyKw
+	 DzbGf4pe2IfXnb0xIz2jn60AUMuSOlxZn9fYEuRA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 5.10 284/300] xhci: dbgtty: Fix data corruption when transmitting data form DbC to host
+	David Ahern <dsahern@kernel.org>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 009/132] net: sched: generalize check for no-queue qdisc on TX queue
 Date: Wed,  3 Dec 2025 16:28:08 +0100
-Message-ID: <20251203152411.145565022@linuxfoundation.org>
+Message-ID: <20251203152343.637307392@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,126 +63,95 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Jesper Dangaard Brouer <hawk@kernel.org>
 
-commit f6bb3b67be9af0cfb90075c60850b6af5338a508 upstream.
+[ Upstream commit 34dd0fecaa02d654c447d43a7e4c72f9b18b7033 ]
 
-Data read from a DbC device may be corrupted due to a race between
-ongoing write and write request completion handler both queuing new
-transfer blocks (TRBs) if there are remining data in the kfifo.
+The "noqueue" qdisc can either be directly attached, or get default
+attached if net_device priv_flags has IFF_NO_QUEUE. In both cases, the
+allocated Qdisc structure gets it's enqueue function pointer reset to
+NULL by noqueue_init() via noqueue_qdisc_ops.
 
-TRBs may be in incorrct order compared to the data in the kfifo.
+This is a common case for software virtual net_devices. For these devices
+with no-queue, the transmission path in __dev_queue_xmit() will bypass
+the qdisc layer. Directly invoking device drivers ndo_start_xmit (via
+dev_hard_start_xmit).  In this mode the device driver is not allowed to
+ask for packets to be queued (either via returning NETDEV_TX_BUSY or
+stopping the TXQ).
 
-Driver fails to keep lock between reading data from kfifo into a
-dbc request buffer, and queuing the request to the transfer ring.
+The simplest and most reliable way to identify this no-queue case is by
+checking if enqueue == NULL.
 
-This allows completed request to re-queue itself in the middle of
-an ongoing transfer loop, forcing itself between a kfifo read and
-request TRB write of another request
+The vrf driver currently open-codes this check (!qdisc->enqueue). While
+functionally correct, this low-level detail is better encapsulated in a
+dedicated helper for clarity and long-term maintainability.
 
-cpu0					cpu1 (re-queue completed req2)
+To make this behavior more explicit and reusable, this patch introduce a
+new helper: qdisc_txq_has_no_queue(). Helper will also be used by the
+veth driver in the next patch, which introduces optional qdisc-based
+backpressure.
 
-lock(port_lock)
-dbc_start_tx()
-kfifo_out(fifo, req1->buffer)
-unlock(port_lock)
-					lock(port_lock)
-					dbc_write_complete(req2)
-					dbc_start_tx()
-      					kfifo_out(fifo, req2->buffer)
-					unlock(port_lock)
-					lock(port_lock)
-					req2->trb = ring->enqueue;
-					ring->enqueue++
-					unlock(port_lock)
-lock(port_lock)
-req1->trb = ring->enqueue;
-ring->enqueue++
-unlock(port_lock)
+This is a non-functional change.
 
-In the above scenario a kfifo containing "12345678" would read "1234" to
-req1 and "5678" to req2, but req2 is queued before req1 leading to
-data being transmitted as "56781234"
-
-Solve this by adding a flag that prevents starting a new tx if we
-are already mid dbc_start_tx() during the unlocked part.
-
-The already running dbc_do_start_tx() will make sure the newly completed
-request gets re-queued as it is added to the request write_pool while
-holding the lock.
-
-Cc: stable@vger.kernel.org
-Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
-Tested-by: Łukasz Bartosik <ukaszb@chromium.org>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://patch.msgid.link/20251107162819.1362579-3-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Signed-off-by: Jesper Dangaard Brouer <hawk@kernel.org>
+Link: https://patch.msgid.link/174559293172.827981.7583862632045264175.stgit@firesoul
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: a14602fcae17 ("veth: reduce XDP no_direct return section to fix race")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-dbgcap.h |    1 +
- drivers/usb/host/xhci-dbgtty.c |   17 ++++++++++++++++-
- 2 files changed, 17 insertions(+), 1 deletion(-)
+ drivers/net/vrf.c         | 4 +---
+ include/net/sch_generic.h | 8 ++++++++
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/host/xhci-dbgcap.h
-+++ b/drivers/usb/host/xhci-dbgcap.h
-@@ -110,6 +110,7 @@ struct dbc_port {
- 	struct kfifo			write_fifo;
- 
- 	bool				registered;
-+	bool				tx_running;
- };
- 
- struct dbc_driver {
---- a/drivers/usb/host/xhci-dbgtty.c
-+++ b/drivers/usb/host/xhci-dbgtty.c
-@@ -37,7 +37,7 @@ dbc_send_packet(struct dbc_port *port, c
- 	return size;
- }
- 
--static int dbc_start_tx(struct dbc_port *port)
-+static int dbc_do_start_tx(struct dbc_port *port)
- 	__releases(&port->port_lock)
- 	__acquires(&port->port_lock)
+diff --git a/drivers/net/vrf.c b/drivers/net/vrf.c
+index 89dde220058a2..b62462d8eff26 100644
+--- a/drivers/net/vrf.c
++++ b/drivers/net/vrf.c
+@@ -352,15 +352,13 @@ static int vrf_ifindex_lookup_by_table_id(struct net *net, u32 table_id)
+ static bool qdisc_tx_is_default(const struct net_device *dev)
  {
-@@ -47,6 +47,8 @@ static int dbc_start_tx(struct dbc_port
- 	bool			do_tty_wake = false;
- 	struct list_head	*pool = &port->write_pool;
+ 	struct netdev_queue *txq;
+-	struct Qdisc *qdisc;
  
-+	port->tx_running = true;
-+
- 	while (!list_empty(pool)) {
- 		req = list_entry(pool->next, struct dbc_request, list_pool);
- 		len = dbc_send_packet(port, req->buf, DBC_MAX_PACKET);
-@@ -67,12 +69,25 @@ static int dbc_start_tx(struct dbc_port
- 		}
- 	}
+ 	if (dev->num_tx_queues > 1)
+ 		return false;
  
-+	port->tx_running = false;
-+
- 	if (do_tty_wake && port->port.tty)
- 		tty_wakeup(port->port.tty);
+ 	txq = netdev_get_tx_queue(dev, 0);
+-	qdisc = rcu_access_pointer(txq->qdisc);
  
- 	return status;
+-	return !qdisc->enqueue;
++	return qdisc_txq_has_no_queue(txq);
  }
  
-+/* must be called with port->port_lock held */
-+static int dbc_start_tx(struct dbc_port *port)
+ /* Local traffic destined to local address. Reinsert the packet to rx
+diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
+index a9d7e9ecee6b5..1e002b1dea629 100644
+--- a/include/net/sch_generic.h
++++ b/include/net/sch_generic.h
+@@ -803,6 +803,14 @@ static inline bool qdisc_tx_changing(const struct net_device *dev)
+ 	return false;
+ }
+ 
++/* "noqueue" qdisc identified by not having any enqueue, see noqueue_init() */
++static inline bool qdisc_txq_has_no_queue(const struct netdev_queue *txq)
 +{
-+	lockdep_assert_held(&port->port_lock);
++	struct Qdisc *qdisc = rcu_access_pointer(txq->qdisc);
 +
-+	if (port->tx_running)
-+		return -EBUSY;
-+
-+	return dbc_do_start_tx(port);
++	return qdisc->enqueue == NULL;
 +}
 +
- static void dbc_start_rx(struct dbc_port *port)
- 	__releases(&port->port_lock)
- 	__acquires(&port->port_lock)
+ /* Is the device using the noop qdisc on all queues?  */
+ static inline bool qdisc_tx_is_noop(const struct net_device *dev)
+ {
+-- 
+2.51.0
+
 
 
 
