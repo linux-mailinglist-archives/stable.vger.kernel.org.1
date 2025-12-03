@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-198321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97C05C9F8E7
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:41:03 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9C7DCA1023
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:33:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9D67A301898E
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:36:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DB8E2300216B
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:33:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8A1B3128CD;
-	Wed,  3 Dec 2025 15:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C9C36A023;
+	Wed,  3 Dec 2025 16:31:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="akz8TQth"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wbN91HSi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 749BD3128BC;
-	Wed,  3 Dec 2025 15:36:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCFBF36A020;
+	Wed,  3 Dec 2025 16:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776162; cv=none; b=DpMR/CJhOplORgBf7Wl47QcHJRFFaE0z7ErPB7FCNBQtm1YVoSnRge+fHDnJCuSFjs3Y2qX4nBIPUcUNCXe/jIH5r7wZBZ55Udvadl19A71B9Dgtzd/RaJXyJZBdcvgSkbsVfSvFqgiJeFvGDx7umeht9V1DJ3fpnHvP/IX+tQQ=
+	t=1764779475; cv=none; b=FB96e3mcsUTfsVBw4L4b7pyOqaW/R/Th5ZAh3KoTT8DgYq9CdjzqS7AcI1cCawCD356oZ0F7MXa315M/Zg9SoqnHRq1rah5+IBPoJse50qC9hEwgy0CT3jBuP9iggbOIPKkshGgCu5K3CtjleVrZF5GU0OOEwt90EkAJMhk2lTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776162; c=relaxed/simple;
-	bh=VlkVFWdQBwOQ6Edrk/3Dkti+YAZ7+7aeevlJ07ODSRk=;
+	s=arc-20240116; t=1764779475; c=relaxed/simple;
+	bh=1rCAe7ZBq/58Q/0L6FbCyStTJ540TgU01zyrwJVkX+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=shi19hjEnrWgUv8OsV2fHTssMfqtE38fhpIEucSorVoBaTTW3f6ireOFVZrFgIhkT2SePfvZajythK2rVB+zbyq3P4ucAfQXQJFqHzVhu+arwrOKblv/O6N3101LuiL01gyHH49CEIqbzMQtxvesMP/VGZYjdXBuXZEXRE2Q2JQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=akz8TQth; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EB5FC4CEF5;
-	Wed,  3 Dec 2025 15:35:59 +0000 (UTC)
+	 MIME-Version; b=ezrtUYNk60C7iJmd/dATl+CEpOuTsk6zyhabVXGXIKg7X7XgMg4MILr2d1KNGmZWZoMcJ3BAxImkKU9DbgAOSbvl4uxWNqCQxZmZFZWH4MYzfJUK9/j0oHlywNz+5sqcGx4pVFWhN8K9V/c/7zRLdC1UkrWHt+g4Q+iYr7lT9hY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wbN91HSi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54B66C4CEF5;
+	Wed,  3 Dec 2025 16:31:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776160;
-	bh=VlkVFWdQBwOQ6Edrk/3Dkti+YAZ7+7aeevlJ07ODSRk=;
+	s=korg; t=1764779475;
+	bh=1rCAe7ZBq/58Q/0L6FbCyStTJ540TgU01zyrwJVkX+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=akz8TQthngZIa1O7mO3on61wmMYCu/YPICuD50KVX6iVk/ZfmbYlEzT1xwvEMBxGv
-	 M1B9hb51LVhYT4OxcnRI/MroPY4IN+56FOCus65iC0xzQ8BvCjH+RcX4aGoKt+KvHY
-	 35lht18vfsUkarahR+XWS9Dvi34eoFbCA+zTM7ls=
+	b=wbN91HSi2vRDd03S+kok2VR5L0bJKTpuIAn3uYTJ3WavbNUB8IuVFQaNukISsOIIO
+	 cSI37qHbBpQmY4O4KYcpIwyDUKH3N5q+ho1dcg1hZyl+YKCKMcKAzFGBE0azNYlZP/
+	 yKz5VefAZq3q4NXCe77PvVM+F2QxonbL0I3Lg0qA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Lee Jones <lee@kernel.org>,
+	syzbot+5fd749c74105b0e1b302@syzkaller.appspotmail.com,
+	Qingfang Deng <dqfext@gmail.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 066/300] mfd: madera: Work around false-positive -Wininitialized warning
+Subject: [PATCH 6.1 268/568] 6pack: drop redundant locking and refcounting
 Date: Wed,  3 Dec 2025 16:24:30 +0100
-Message-ID: <20251203152403.068688439@linuxfoundation.org>
+Message-ID: <20251203152450.530087360@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +62,175 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Qingfang Deng <dqfext@gmail.com>
 
-[ Upstream commit 364752aa0c6ab0a06a2d5bfdb362c1ca407f1a30 ]
+[ Upstream commit 38b04ed7072e54086102eae2d05d03ffcdb4b695 ]
 
-clang-21 warns about one uninitialized variable getting dereferenced
-in madera_dev_init:
+The TTY layer already serializes line discipline operations with
+tty->ldisc_sem, so the extra disc_data_lock and refcnt in 6pack
+are unnecessary.
 
-drivers/mfd/madera-core.c:739:10: error: variable 'mfd_devs' is uninitialized when used here [-Werror,-Wuninitialized]
-  739 |                               mfd_devs, n_devs,
-      |                               ^~~~~~~~
-drivers/mfd/madera-core.c:459:33: note: initialize the variable 'mfd_devs' to silence this warning
-  459 |         const struct mfd_cell *mfd_devs;
-      |                                        ^
-      |                                         = NULL
+Removing them simplifies the code and also resolves a lockdep warning
+reported by syzbot. The warning did not indicate a real deadlock, since
+the write-side lock was only taken in process context with hardirqs
+disabled.
 
-The code is actually correct here because n_devs is only nonzero
-when mfd_devs is a valid pointer, but this is impossible for the
-compiler to see reliably.
-
-Change the logic to check for the pointer as well, to make this easier
-for the compiler to follow.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20250807071932.4085458-1-arnd@kernel.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+Reported-by: syzbot+5fd749c74105b0e1b302@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68c858b0.050a0220.3c6139.0d1c.GAE@google.com/
+Signed-off-by: Qingfang Deng <dqfext@gmail.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/20250925051059.26876-1-dqfext@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/madera-core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/hamradio/6pack.c | 57 ++++--------------------------------
+ 1 file changed, 5 insertions(+), 52 deletions(-)
 
-diff --git a/drivers/mfd/madera-core.c b/drivers/mfd/madera-core.c
-index 4ed6ad8ce0020..e3b7048de0c66 100644
---- a/drivers/mfd/madera-core.c
-+++ b/drivers/mfd/madera-core.c
-@@ -436,7 +436,7 @@ int madera_dev_init(struct madera *madera)
- 	struct device *dev = madera->dev;
- 	unsigned int hwid;
- 	int (*patch_fn)(struct madera *) = NULL;
--	const struct mfd_cell *mfd_devs;
-+	const struct mfd_cell *mfd_devs = NULL;
- 	int n_devs = 0;
- 	int i, ret;
+diff --git a/drivers/net/hamradio/6pack.c b/drivers/net/hamradio/6pack.c
+index 9fb5675242207..1b007dd174794 100644
+--- a/drivers/net/hamradio/6pack.c
++++ b/drivers/net/hamradio/6pack.c
+@@ -121,8 +121,6 @@ struct sixpack {
  
-@@ -642,7 +642,7 @@ int madera_dev_init(struct madera *madera)
- 		goto err_reset;
+ 	struct timer_list	tx_t;
+ 	struct timer_list	resync_t;
+-	refcount_t		refcnt;
+-	struct completion	dead;
+ 	spinlock_t		lock;
+ };
+ 
+@@ -359,42 +357,13 @@ static void sp_bump(struct sixpack *sp, char cmd)
+ 
+ /* ----------------------------------------------------------------------- */
+ 
+-/*
+- * We have a potential race on dereferencing tty->disc_data, because the tty
+- * layer provides no locking at all - thus one cpu could be running
+- * sixpack_receive_buf while another calls sixpack_close, which zeroes
+- * tty->disc_data and frees the memory that sixpack_receive_buf is using.  The
+- * best way to fix this is to use a rwlock in the tty struct, but for now we
+- * use a single global rwlock for all ttys in ppp line discipline.
+- */
+-static DEFINE_RWLOCK(disc_data_lock);
+-                                                                                
+-static struct sixpack *sp_get(struct tty_struct *tty)
+-{
+-	struct sixpack *sp;
+-
+-	read_lock(&disc_data_lock);
+-	sp = tty->disc_data;
+-	if (sp)
+-		refcount_inc(&sp->refcnt);
+-	read_unlock(&disc_data_lock);
+-
+-	return sp;
+-}
+-
+-static void sp_put(struct sixpack *sp)
+-{
+-	if (refcount_dec_and_test(&sp->refcnt))
+-		complete(&sp->dead);
+-}
+-
+ /*
+  * Called by the TTY driver when there's room for more data.  If we have
+  * more packets to send, we send them here.
+  */
+ static void sixpack_write_wakeup(struct tty_struct *tty)
+ {
+-	struct sixpack *sp = sp_get(tty);
++	struct sixpack *sp = tty->disc_data;
+ 	int actual;
+ 
+ 	if (!sp)
+@@ -406,7 +375,7 @@ static void sixpack_write_wakeup(struct tty_struct *tty)
+ 		clear_bit(TTY_DO_WRITE_WAKEUP, &tty->flags);
+ 		sp->tx_enable = 0;
+ 		netif_wake_queue(sp->dev);
+-		goto out;
++		return;
  	}
  
--	if (!n_devs) {
-+	if (!n_devs || !mfd_devs) {
- 		dev_err(madera->dev, "Device ID 0x%x not a %s\n", hwid,
- 			madera->type_name);
- 		ret = -ENODEV;
+ 	if (sp->tx_enable) {
+@@ -414,9 +383,6 @@ static void sixpack_write_wakeup(struct tty_struct *tty)
+ 		sp->xleft -= actual;
+ 		sp->xhead += actual;
+ 	}
+-
+-out:
+-	sp_put(sp);
+ }
+ 
+ /* ----------------------------------------------------------------------- */
+@@ -436,7 +402,7 @@ static void sixpack_receive_buf(struct tty_struct *tty,
+ 	if (!count)
+ 		return;
+ 
+-	sp = sp_get(tty);
++	sp = tty->disc_data;
+ 	if (!sp)
+ 		return;
+ 
+@@ -452,7 +418,6 @@ static void sixpack_receive_buf(struct tty_struct *tty,
+ 	}
+ 	sixpack_decode(sp, cp, count1);
+ 
+-	sp_put(sp);
+ 	tty_unthrottle(tty);
+ }
+ 
+@@ -567,8 +532,6 @@ static int sixpack_open(struct tty_struct *tty)
+ 
+ 	spin_lock_init(&sp->lock);
+ 	spin_lock_init(&sp->rxlock);
+-	refcount_set(&sp->refcnt, 1);
+-	init_completion(&sp->dead);
+ 
+ 	/* !!! length of the buffers. MTU is IP MTU, not PACLEN!  */
+ 
+@@ -650,19 +613,11 @@ static void sixpack_close(struct tty_struct *tty)
+ {
+ 	struct sixpack *sp;
+ 
+-	write_lock_irq(&disc_data_lock);
+ 	sp = tty->disc_data;
+-	tty->disc_data = NULL;
+-	write_unlock_irq(&disc_data_lock);
+ 	if (!sp)
+ 		return;
+ 
+-	/*
+-	 * We have now ensured that nobody can start using ap from now on, but
+-	 * we have to wait for all existing users to finish.
+-	 */
+-	if (!refcount_dec_and_test(&sp->refcnt))
+-		wait_for_completion(&sp->dead);
++	tty->disc_data = NULL;
+ 
+ 	/* We must stop the queue to avoid potentially scribbling
+ 	 * on the free buffers. The sp->dead completion is not sufficient
+@@ -686,7 +641,7 @@ static void sixpack_close(struct tty_struct *tty)
+ static int sixpack_ioctl(struct tty_struct *tty, unsigned int cmd,
+ 		unsigned long arg)
+ {
+-	struct sixpack *sp = sp_get(tty);
++	struct sixpack *sp = tty->disc_data;
+ 	struct net_device *dev;
+ 	unsigned int tmp, err;
+ 
+@@ -738,8 +693,6 @@ static int sixpack_ioctl(struct tty_struct *tty, unsigned int cmd,
+ 		err = tty_mode_ioctl(tty, cmd, arg);
+ 	}
+ 
+-	sp_put(sp);
+-
+ 	return err;
+ }
+ 
 -- 
 2.51.0
 
