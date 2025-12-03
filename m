@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-198817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0929CCA004C
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:39:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1472DC9F8B4
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:39:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9E90A30006FD
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:39:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7A981300724C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:35:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59AC334DB46;
-	Wed,  3 Dec 2025 16:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16AE73090C6;
+	Wed,  3 Dec 2025 15:35:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SljDQR3F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RYFBBOE8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 143DE34D937;
-	Wed,  3 Dec 2025 16:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C734B301700;
+	Wed,  3 Dec 2025 15:35:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777777; cv=none; b=VgagHIEtrk6xKyxWYC3cvud2lyAyo/lvpckAkZqtg581wcZyhlqYss/HQ3VM8zodvFtVGd5j35Ex36217R815szHKdS0GTSzBQZR7GHg8StzT8HdDUVI9EU2k/vbRTDEiGw/5BliXAvSHpQPsd3z9Enq2wjk5ItzL37hDOOZksk=
+	t=1764776133; cv=none; b=VBYsDM4G3riA5buR2muQ1FOSeTAU/lkNiBX7uUfsm3C0tpYP8dg3f76BCnFDY/5/fc+nHvph6ypCy2KT9Yv7YLXO2AXpWPMxusu45EHqnEtNOHHd8NS8RmomyLvqu1ZsKXfYncI0foGwWU/6BmJFJzy8PosHSiYyFEM9NWz5L+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777777; c=relaxed/simple;
-	bh=oBnyBt0ZwoZsRmTnX/LU+Az0K3iAo56+/D3Wd8JRA34=;
+	s=arc-20240116; t=1764776133; c=relaxed/simple;
+	bh=RICmmYjKuybs419OkruZgfVryTPeH6nCqi+8zy5x+W4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KdeP7Ig++UznhDfDg+OkoIg1UpC9FOKTsvJEsyYV9l+LdDCU28mk4kZmxHGyioplRtXVZHjm+he+c6kDWzNI1O6KSwRgmQlOwbih7Lfb5P1s8WHKoSBfPmBP4T6j9s8s63yTjLkGpwWlnIcI9qSVFguMmBsE9vPdnf9XccR3TSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SljDQR3F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C58AC4CEF5;
-	Wed,  3 Dec 2025 16:02:56 +0000 (UTC)
+	 MIME-Version; b=oSmk8zUJg0FR92L61T/pCsHYVvJy1tp2Evx60F1Lc629Qw9HXoEaGsEfSj+Am3M12r3ltl+IfF4bQTfZcyJuNAOiK8KtMQyOQ5sVVY/UsvDv55hfpn4IXGLsaK2JdTRWe+/5Z4bxsJRDmjjZK3hNU8KjWb73ySB+1HsoBANDDZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RYFBBOE8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2CD8C4CEF5;
+	Wed,  3 Dec 2025 15:35:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777776;
-	bh=oBnyBt0ZwoZsRmTnX/LU+Az0K3iAo56+/D3Wd8JRA34=;
+	s=korg; t=1764776133;
+	bh=RICmmYjKuybs419OkruZgfVryTPeH6nCqi+8zy5x+W4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SljDQR3FvyUnZb68zSK92YeNtdUf9+ulsjdwmh19epGOIdNwkGbm2j4OX0XwVmNrp
-	 zQB698zRfXMRKTa8NuJv1wkg8Ss3b9l6NmIUOE0GapaoOqMuUx8q10Jb+WbNCm7Mne
-	 gaO0RN0f/1rJ6a3N4s57AXf4MRgBIcUL6aX5lTwE=
+	b=RYFBBOE8UwGS0G8vgo3E87Hk7ciGgNjvMIe1IQ7evYC7H7A8CQ7pf3wZ9TvqSMwGy
+	 lvif/eSzfkBS+QGgCPB3JuO1l07q8wKSZJgrxP+ZiWebR3xbRq6zsSTsMqGLsq+qP8
+	 1BXmfFfrL45sffqgCgWhwHUjKCXetR29hR555BlE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 144/392] net: sh_eth: Disable WoL if system can not suspend
+Subject: [PATCH 5.10 090/300] ALSA: usb-audio: Add validation of UAC2/UAC3 effect units
 Date: Wed,  3 Dec 2025 16:24:54 +0100
-Message-ID: <20251203152419.384875755@linuxfoundation.org>
+Message-ID: <20251203152403.957531231@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +57,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 9c02ea544ac35a9def5827d30594406947ccd81a ]
+[ Upstream commit 2aec0b6a6b5395bca7d6fde9c7e9dc391d329698 ]
 
-The MAC can't facilitate WoL if the system can't go to sleep. Gate the
-WoL support callbacks in ethtool at compile time using CONFIG_PM_SLEEP.
+Just add fixed struct size validations for UAC2 and UAC3 effect
+units.  The descriptor has a variable-length array, so it should be
+validated with a proper function later once when the unit is really
+parsed and used by the driver (currently only referred partially for
+the input terminal parsing).
 
-Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/20250909085849.3808169-1-niklas.soderlund+renesas@ragnatech.se
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://patch.msgid.link/20250821151751.12100-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/renesas/sh_eth.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ sound/usb/validate.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/renesas/sh_eth.c b/drivers/net/ethernet/renesas/sh_eth.c
-index 183db093815cb..b6f11c0c3e009 100644
---- a/drivers/net/ethernet/renesas/sh_eth.c
-+++ b/drivers/net/ethernet/renesas/sh_eth.c
-@@ -2362,6 +2362,7 @@ static int sh_eth_set_ringparam(struct net_device *ndev,
- 	return 0;
- }
- 
-+#ifdef CONFIG_PM_SLEEP
- static void sh_eth_get_wol(struct net_device *ndev, struct ethtool_wolinfo *wol)
- {
- 	struct sh_eth_private *mdp = netdev_priv(ndev);
-@@ -2388,6 +2389,7 @@ static int sh_eth_set_wol(struct net_device *ndev, struct ethtool_wolinfo *wol)
- 
- 	return 0;
- }
-+#endif
- 
- static const struct ethtool_ops sh_eth_ethtool_ops = {
- 	.get_regs_len	= sh_eth_get_regs_len,
-@@ -2403,8 +2405,10 @@ static const struct ethtool_ops sh_eth_ethtool_ops = {
- 	.set_ringparam	= sh_eth_set_ringparam,
- 	.get_link_ksettings = phy_ethtool_get_link_ksettings,
- 	.set_link_ksettings = phy_ethtool_set_link_ksettings,
-+#ifdef CONFIG_PM_SLEEP
- 	.get_wol	= sh_eth_get_wol,
- 	.set_wol	= sh_eth_set_wol,
-+#endif
- };
- 
- /* network device open function */
+diff --git a/sound/usb/validate.c b/sound/usb/validate.c
+index a0d55b77c9941..4bb4893f6e74f 100644
+--- a/sound/usb/validate.c
++++ b/sound/usb/validate.c
+@@ -266,7 +266,11 @@ static const struct usb_desc_validator audio_validators[] = {
+ 	FUNC(UAC_VERSION_2, UAC_MIXER_UNIT, validate_mixer_unit),
+ 	FUNC(UAC_VERSION_2, UAC_SELECTOR_UNIT, validate_selector_unit),
+ 	FUNC(UAC_VERSION_2, UAC_FEATURE_UNIT, validate_uac2_feature_unit),
+-	/* UAC_VERSION_2, UAC2_EFFECT_UNIT: not implemented yet */
++	/* just a stop-gap, it should be a proper function for the array
++	 * once if the unit is really parsed/used
++	 */
++	FIXED(UAC_VERSION_2, UAC2_EFFECT_UNIT,
++	      struct uac2_effect_unit_descriptor),
+ 	FUNC(UAC_VERSION_2, UAC2_PROCESSING_UNIT_V2, validate_processing_unit),
+ 	FUNC(UAC_VERSION_2, UAC2_EXTENSION_UNIT_V2, validate_processing_unit),
+ 	FIXED(UAC_VERSION_2, UAC2_CLOCK_SOURCE,
+@@ -286,7 +290,8 @@ static const struct usb_desc_validator audio_validators[] = {
+ 	FUNC(UAC_VERSION_3, UAC3_MIXER_UNIT, validate_mixer_unit),
+ 	FUNC(UAC_VERSION_3, UAC3_SELECTOR_UNIT, validate_selector_unit),
+ 	FUNC(UAC_VERSION_3, UAC3_FEATURE_UNIT, validate_uac3_feature_unit),
+-	/*  UAC_VERSION_3, UAC3_EFFECT_UNIT: not implemented yet */
++	FIXED(UAC_VERSION_3, UAC3_EFFECT_UNIT,
++	      struct uac2_effect_unit_descriptor), /* sharing the same struct */
+ 	FUNC(UAC_VERSION_3, UAC3_PROCESSING_UNIT, validate_processing_unit),
+ 	FUNC(UAC_VERSION_3, UAC3_EXTENSION_UNIT, validate_processing_unit),
+ 	FIXED(UAC_VERSION_3, UAC3_CLOCK_SOURCE,
 -- 
 2.51.0
 
