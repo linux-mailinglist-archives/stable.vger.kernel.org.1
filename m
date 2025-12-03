@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-198878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D788C9FCBC
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:06:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFB2EC9F96B
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:43:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9C74330022AD
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:06:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 27E66303EF6A
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:38:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BC8234F488;
-	Wed,  3 Dec 2025 16:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED462314A7D;
+	Wed,  3 Dec 2025 15:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oHLxOZXS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dj0NbDRB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19D92313546;
-	Wed,  3 Dec 2025 16:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 930AF314A80;
+	Wed,  3 Dec 2025 15:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777968; cv=none; b=AkdxXFMtYjc9MYX2FfD1zM47CxGqa63Eks7GyCIf4SYkmbyxGmRxooM8lppWlsDCbbR0QCtzh0Kmu59jMd97R2V7AL5hYjSQabgKqa3n/+sqMlEkZOALcgB6XBwaasWIM8cVSm2iiQekBV5+Eoj+LhKZ3gMoCWgefS9CKnIE6vU=
+	t=1764776317; cv=none; b=Z2nAYYpRef+iHE8b4tXeFKyuc4iHhIYSs+ox1NYjZBI8bkfXfoTkYKK4Mls4C3Gm9+U1UMqq4yP1eOUNJ2R0Lg0d5U3jAO1JX1MtpI9csOIBisVTcOi1WD52CYozwP+7VWhFs5diIcGjjrbNOcFCzow3fQQH4U3H77HcV7Y8huQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777968; c=relaxed/simple;
-	bh=bwPmDQDeuq0CuGSecLJ5NvlvVQ+WF7OvaF17BnuqDgs=;
+	s=arc-20240116; t=1764776317; c=relaxed/simple;
+	bh=6eBfr+jhhWpwshEiuubEJ9ISNEbWuD728cL3lfOrWHk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mzoiZFmYOXIwl+b7TN6uFdBz3Pg436ZenKPrwK0201KCrrk+xnG2GRsdMCFCOtNkfOL2I0h5ylryfQ7hwBqaGv4HFRgNzwjdsZVbksXI6XaqnTC62GZqV8CEYvQyqyGBdXWfrx26k0kSYvsVxxQZXTGMFe/KjtO50DxZ9qTgbL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oHLxOZXS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77024C4CEF5;
-	Wed,  3 Dec 2025 16:06:07 +0000 (UTC)
+	 MIME-Version; b=VILDTi9tePM5p45aL1tEt4a6fKM7UkPKFearYJbKVQDRk2GfuI9two+ntkHRGOor3BBp40KmqjdU3yahQBIAFQufwdBZBuLV4mL4SKi9nUFNsSr3PV5u1kiM1fDwBXf1zgcmicS5OllIBT672+VpUEX+Vx96fI32UpURqPq6Wzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dj0NbDRB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3BD7C4CEF5;
+	Wed,  3 Dec 2025 15:38:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777968;
-	bh=bwPmDQDeuq0CuGSecLJ5NvlvVQ+WF7OvaF17BnuqDgs=;
+	s=korg; t=1764776317;
+	bh=6eBfr+jhhWpwshEiuubEJ9ISNEbWuD728cL3lfOrWHk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oHLxOZXS8axkJLwuB9Q8tLHjmPjPNaevyZ/pbZnsHGFl/V+x4Xn+cL6WE6//90ZHk
-	 JR281jh5PR76Rt0tCw2sY5NyJaAIGcP2ZEUbmx4J/AsmAQ2fY3BiZEIODWnWbB19Px
-	 5drSf1mZZ759224EYAcJCrTYeuKrVORbABHSP6Ro=
+	b=Dj0NbDRBzhiA+2xvjV3Tl3KX7/RYRuxauc+KWJ2czJLa+CzBVjxh7xlt04dbSuc+p
+	 8GZwdGAHljzIzcPy8RBvaznpoZmh+arifR9MWXwLkjFWXyT4+H/DVDBDMlNz4oXA0U
+	 Cab0wDi2CtJpjyezlFRO0tyRX8FmvmrgqUP5W8SA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Yikang Yue <yikangy2@illinois.edu>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 201/392] ACPI: property: Return present device nodes only on fwnode interface
+Subject: [PATCH 5.10 147/300] fs/hpfs: Fix error code for new_inode() failure in mkdir/create/mknod/symlink
 Date: Wed,  3 Dec 2025 16:25:51 +0100
-Message-ID: <20251203152421.469925442@linuxfoundation.org>
+Message-ID: <20251203152406.063984762@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +60,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Yikang Yue <yikangy2@illinois.edu>
 
-[ Upstream commit d9f866b2bb3eec38b3734f1fed325ec7c55ccdfa ]
+[ Upstream commit 32058c38d3b79a28963a59ac0353644dc24775cd ]
 
-fwnode_graph_get_next_subnode() may return fwnode backed by ACPI
-device nodes and there has been no check these devices are present
-in the system, unlike there has been on fwnode OF backend.
+The function call new_inode() is a primitive for allocating an inode in memory,
+rather than planning disk space for it. Therefore, -ENOMEM should be returned
+as the error code rather than -ENOSPC.
 
-In order to provide consistent behaviour towards callers,
-add a check for device presence by introducing
-a new function acpi_get_next_present_subnode(), used as the
-get_next_child_node() fwnode operation that also checks device
-node presence.
+To be specific, new_inode()'s call path looks like this:
+new_inode
+  new_inode_pseudo
+    alloc_inode
+      ops->alloc_inode (hpfs_alloc_inode)
+        alloc_inode_sb
+          kmem_cache_alloc_lru
 
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Link: https://patch.msgid.link/20251001102636.1272722-2-sakari.ailus@linux.intel.com
-[ rjw: Kerneldoc comment and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Therefore, the failure of new_inode() indicates a memory presure issue (-ENOMEM),
+not a lack of disk space. However, the current implementation of
+hpfs_mkdir/create/mknod/symlink incorrectly returns -ENOSPC when new_inode() fails.
+This patch fix this by set err to -ENOMEM before the goto statement.
+
+BTW, we also noticed that other nested calls within these four functions,
+like hpfs_alloc_f/dnode and hpfs_add_dirent, might also fail due to memory presure.
+But similarly, only -ENOSPC is returned. Addressing these will involve code
+modifications in other functions, and we plan to submit dedicated patches for these
+issues in the future. For this patch, we focus on new_inode().
+
+Signed-off-by: Yikang Yue <yikangy2@illinois.edu>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/property.c | 24 +++++++++++++++++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
+ fs/hpfs/namei.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-index 9ab7f7184343a..4205c7fdc4cc9 100644
---- a/drivers/acpi/property.c
-+++ b/drivers/acpi/property.c
-@@ -1087,6 +1087,28 @@ struct fwnode_handle *acpi_get_next_subnode(const struct fwnode_handle *fwnode,
- 	return NULL;
- }
+diff --git a/fs/hpfs/namei.c b/fs/hpfs/namei.c
+index 1aee39160ac5b..bc1309ef4cfa5 100644
+--- a/fs/hpfs/namei.c
++++ b/fs/hpfs/namei.c
+@@ -52,8 +52,10 @@ static int hpfs_mkdir(struct inode *dir, struct dentry *dentry, umode_t mode)
+ 	dee.fnode = cpu_to_le32(fno);
+ 	dee.creation_date = dee.write_date = dee.read_date = cpu_to_le32(local_get_seconds(dir->i_sb));
+ 	result = new_inode(dir->i_sb);
+-	if (!result)
++	if (!result) {
++		err = -ENOMEM;
+ 		goto bail2;
++	}
+ 	hpfs_init_inode(result);
+ 	result->i_ino = fno;
+ 	hpfs_i(result)->i_parent_dir = dir->i_ino;
+@@ -154,9 +156,10 @@ static int hpfs_create(struct inode *dir, struct dentry *dentry, umode_t mode, b
+ 	dee.creation_date = dee.write_date = dee.read_date = cpu_to_le32(local_get_seconds(dir->i_sb));
  
-+/*
-+ * acpi_get_next_present_subnode - Return the next present child node handle
-+ * @fwnode: Firmware node to find the next child node for.
-+ * @child: Handle to one of the device's child nodes or a null handle.
-+ *
-+ * Like acpi_get_next_subnode(), but the device nodes returned by
-+ * acpi_get_next_present_subnode() are guaranteed to be present.
-+ *
-+ * Returns: The fwnode handle of the next present sub-node.
-+ */
-+static struct fwnode_handle *
-+acpi_get_next_present_subnode(const struct fwnode_handle *fwnode,
-+			      struct fwnode_handle *child)
-+{
-+	do {
-+		child = acpi_get_next_subnode(fwnode, child);
-+	} while (is_acpi_device_node(child) &&
-+		 !acpi_device_is_present(to_acpi_device_node(child)));
-+
-+	return child;
-+}
-+
- /**
-  * acpi_node_get_parent - Return parent fwnode of this fwnode
-  * @fwnode: Firmware node whose parent to get
-@@ -1400,7 +1422,7 @@ acpi_fwnode_device_get_match_data(const struct fwnode_handle *fwnode,
- 		.property_read_string_array =				\
- 			acpi_fwnode_property_read_string_array,		\
- 		.get_parent = acpi_node_get_parent,			\
--		.get_next_child_node = acpi_get_next_subnode,		\
-+		.get_next_child_node = acpi_get_next_present_subnode,	\
- 		.get_named_child_node = acpi_fwnode_get_named_child_node, \
- 		.get_name = acpi_fwnode_get_name,			\
- 		.get_name_prefix = acpi_fwnode_get_name_prefix,		\
+ 	result = new_inode(dir->i_sb);
+-	if (!result)
++	if (!result) {
++		err = -ENOMEM;
+ 		goto bail1;
+-	
++	}
+ 	hpfs_init_inode(result);
+ 	result->i_ino = fno;
+ 	result->i_mode |= S_IFREG;
+@@ -241,9 +244,10 @@ static int hpfs_mknod(struct inode *dir, struct dentry *dentry, umode_t mode, de
+ 	dee.creation_date = dee.write_date = dee.read_date = cpu_to_le32(local_get_seconds(dir->i_sb));
+ 
+ 	result = new_inode(dir->i_sb);
+-	if (!result)
++	if (!result) {
++		err = -ENOMEM;
+ 		goto bail1;
+-
++	}
+ 	hpfs_init_inode(result);
+ 	result->i_ino = fno;
+ 	hpfs_i(result)->i_parent_dir = dir->i_ino;
+@@ -317,8 +321,10 @@ static int hpfs_symlink(struct inode *dir, struct dentry *dentry, const char *sy
+ 	dee.creation_date = dee.write_date = dee.read_date = cpu_to_le32(local_get_seconds(dir->i_sb));
+ 
+ 	result = new_inode(dir->i_sb);
+-	if (!result)
++	if (!result) {
++		err = -ENOMEM;
+ 		goto bail1;
++	}
+ 	result->i_ino = fno;
+ 	hpfs_init_inode(result);
+ 	hpfs_i(result)->i_parent_dir = dir->i_ino;
 -- 
 2.51.0
 
