@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ED7ECA0215
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:50:20 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 807F6CA11B3
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:44:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BA0C130796A4
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:42:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1C2FD3004453
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:44:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0520A35CB9E;
-	Wed,  3 Dec 2025 16:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE2A7330B19;
+	Wed,  3 Dec 2025 15:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YsdPR3DY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EkvRAH6j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2AE135E554;
-	Wed,  3 Dec 2025 16:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A570330B06;
+	Wed,  3 Dec 2025 15:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780142; cv=none; b=cMw2M9TvdZ9gP+qZJhoeoysdHnxQAzc8dbwLppPdfjhWqRxSd/p0l9VX0/ZLICXjRMgxF8GZYPlpBr0P3uRpCAxi4HPPDOsESksaAcuyS57F27xrilSpC4R7KL5MS6o5dLoKwbop6TpS/8k6ExqLq/iojb97Qji3roUUQDp2G1w=
+	t=1764777137; cv=none; b=EIpidnlDZkTtOwwb+eaxQjezDPAe32YQL4naDHOiO6O5SigcgQhW04lwYhtzR+bZuKv0ZqvdJWrmxFYjyW02zQHBhlmY/IuPdhGTCsjKIz4/AYYH3Me8H3CC6sp/LqNYYnDJ7KWxyVYRDStUSX7sGT98lBFccygKGUcTd8vUnNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780142; c=relaxed/simple;
-	bh=Z1OrTAcITpR6nai9duUxNG5TiiE+kehtA4oZkRBV5jc=;
+	s=arc-20240116; t=1764777137; c=relaxed/simple;
+	bh=ptZKBvrM79wM2IXiHey9QzxxXWKlKXFUWt1sHVc95a8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZntuXz/KgnRwOyUGm2NTD1YUwSzhhMXgb9vF1jN20zPAyajEWyzldLmm5oYEnp5liYrmJSKvzt1U/N8Si8g2nPWP6ylRjZQCz/uM8obROCFPPVMzSAWRvQ4QZvZUFwD7+groYYuSvC+JcQ/9AGDzv7nvKFtkuC5pqA/eFC/sfWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YsdPR3DY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15635C4CEF5;
-	Wed,  3 Dec 2025 16:42:21 +0000 (UTC)
+	 MIME-Version; b=WzOiJg6k++sg/dyPJv+WVqadfCwIPVCORIdA7Z2jsT3nRZvv0zX9Kevc8cZ1T9ny4p8njD7n8hPxDGCr5IwhZeVCut1W+9ls5KnaLrSlUEBkOuMv4h5mLY76QoNQpSSCl28stNo7RC//yYI1D8LzcXlYo7R3u3mMRnCXgEh/6YA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EkvRAH6j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F121C4CEF5;
+	Wed,  3 Dec 2025 15:52:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780142;
-	bh=Z1OrTAcITpR6nai9duUxNG5TiiE+kehtA4oZkRBV5jc=;
+	s=korg; t=1764777137;
+	bh=ptZKBvrM79wM2IXiHey9QzxxXWKlKXFUWt1sHVc95a8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YsdPR3DYEcgtY/VzCk4lVdpWUdH9QDk6qkNArGHKhoQcQPjYhla+L312I7VkyN9FQ
-	 Tn7bjZYMfb4RyU+4aLlsyw5LA+Ae2+Opx59iPngAEaXpxfdIc4Ygpp2YZ7+CmKZvjz
-	 iD2N59K70LduDchKjl4tLgTSrohYX7v6eWuLiZG4=
+	b=EkvRAH6j2D9EQXXFMv2H3HCa5lRPA9pvuW5NUbH9ZqFg2Ub0NkyXdhd2sobdzB5oC
+	 8Wtb46GK4QBKmsnuhkwsDFOw5GPV61UwDMcbaR5DxRRC+aeKhsrdud92QyvwyADNoW
+	 NgZ2tcmJtGHsUHSrL3BukVbAbDzRHi/sD73P6Z/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jakub=20Hork=C3=BD?= <jakub.git@horky.net>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 469/568] kconfig/mconf: Initialize the default locale at startup
+	stable <stable@kernel.org>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Subject: [PATCH 6.17 093/146] slimbus: ngd: Fix reference count leak in qcom_slim_ngd_notify_slaves
 Date: Wed,  3 Dec 2025 16:27:51 +0100
-Message-ID: <20251203152457.879083813@linuxfoundation.org>
+Message-ID: <20251203152349.863972749@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,54 +58,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Horký <jakub.git@horky.net>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-[ Upstream commit 3927c4a1084c48ef97f11281a0a43ecb2cb4d6f1 ]
+commit 96cf8500934e0ce2a6c486f1dbc3b1fff12f7a5e upstream.
 
-Fix bug where make menuconfig doesn't initialize the default locale, which
-causes ncurses menu borders to be displayed incorrectly (lqqqqk) in
-UTF-8 terminals that don't support VT100 ACS by default, such as PuTTY.
+The function qcom_slim_ngd_notify_slaves() calls of_slim_get_device() which
+internally uses device_find_child() to obtain a device reference.
+According to the device_find_child() documentation,
+the caller must drop the reference with put_device() after use.
 
-Signed-off-by: Jakub Horký <jakub.git@horky.net>
-Link: https://patch.msgid.link/20251014154933.3990990-1-jakub.git@horky.net
-[nathan: Alphabetize locale.h include]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Found via static analysis and this is similar to commit 4e65bda8273c
+("ASoC: wcd934x: fix error handling in wcd934x_codec_parse_data()")
+
+Fixes: 917809e2280b ("slimbus: ngd: Add qcom SLIMBus NGD driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251027060601.33228-1-linmq006@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/kconfig/mconf.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/slimbus/qcom-ngd-ctrl.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/scripts/kconfig/mconf.c b/scripts/kconfig/mconf.c
-index 9d3cf510562f8..0649ff35ec5c0 100644
---- a/scripts/kconfig/mconf.c
-+++ b/scripts/kconfig/mconf.c
-@@ -12,6 +12,7 @@
- #include <errno.h>
- #include <fcntl.h>
- #include <limits.h>
-+#include <locale.h>
- #include <stdarg.h>
- #include <stdlib.h>
- #include <string.h>
-@@ -1005,6 +1006,8 @@ int main(int ac, char **av)
+--- a/drivers/slimbus/qcom-ngd-ctrl.c
++++ b/drivers/slimbus/qcom-ngd-ctrl.c
+@@ -1241,6 +1241,7 @@ static void qcom_slim_ngd_notify_slaves(
  
- 	signal(SIGINT, sig_handler);
+ 		if (slim_get_logical_addr(sbdev))
+ 			dev_err(ctrl->dev, "Failed to get logical address\n");
++		put_device(&sbdev->dev);
+ 	}
+ }
  
-+	setlocale(LC_ALL, "");
-+
- 	if (ac > 1 && strcmp(av[1], "-s") == 0) {
- 		silent = 1;
- 		/* Silence conf_read() until the real callback is set up */
--- 
-2.51.0
-
 
 
 
