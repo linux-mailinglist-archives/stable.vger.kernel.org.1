@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31BECCA10E6
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:40:07 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0557C9FF01
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:25:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EEC8A30021CC
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:40:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3B20B3014110
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:24:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A71B34BA4C;
-	Wed,  3 Dec 2025 16:29:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55099346A12;
+	Wed,  3 Dec 2025 16:00:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0lTMU97a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AXbCAoj8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC78C34B669;
-	Wed,  3 Dec 2025 16:29:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C64346A09;
+	Wed,  3 Dec 2025 16:00:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779383; cv=none; b=TYsGbu8l0Uk3NWUF/wsPxB7fatS4IIZF4CWMH5kFqBA0cOlP6bbtkk5Zholp29QIopBI6N++pI7fVWOqO5tfQXxrMTsFy5UED15lshsO4KzrO6Nwsi2juolWFrqCAlH1LlQAl+YM+UnUPn6ccAc+FRDCHOTKzh57Kt83HHb9Ze8=
+	t=1764777619; cv=none; b=Jdez/kddUQsPtPU94IXD+jdD9J8Z7eH96bBMRLMT67XOWYK1wsJ8DSMwTKIXNXa4QGBF1aqpHhqDzNazn3tp7anTZdmL93sHw3pMVMBH3DVJKfDtw+0b8frfcxLDY09SNGQ7EFrv66BkwSr/msAxBIKGhxcl5SX4aB8VaksaqNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779383; c=relaxed/simple;
-	bh=OEoTlKkERTRacnR1ejBQnVOScJFMH8Y5QiY+7Mjgxnc=;
+	s=arc-20240116; t=1764777619; c=relaxed/simple;
+	bh=eC7iWINYk8ynF8TScypnfBZyvzFfOElfifgyCSTxxHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mzaTYVpOnUH+qzz3rihgbqM7I15sCQXr4mK5CBMaZ9G6CZeGB5iTI89XhbLJ8Zq7LHp9amiDJzSJkSDHHqO+cTMQjEOFKTJKmLcd29nOKt613RJPY4ZE+unlUI0Ve3A/0EzHtBLMsyPYLtVSxCLqpeGbSo+l6OQly5we/MfEm8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0lTMU97a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 595A5C4CEF5;
-	Wed,  3 Dec 2025 16:29:42 +0000 (UTC)
+	 MIME-Version; b=gJzOmLJeM8Q422NBszbc/t1a2eouJ1InN8mOm89QmZQqqIfvfZck3WaumPu3yPiluKqjt/jW9y1dquEI6j84fI50CW2GmxwzizQjQLFVxQJ35t/KOjrXcDB2Ez4usW3KrrLFmDPPEF3spoLW2rZHUse01jVhhwmO+ukULrCjtko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AXbCAoj8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AEF6C116B1;
+	Wed,  3 Dec 2025 16:00:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779382;
-	bh=OEoTlKkERTRacnR1ejBQnVOScJFMH8Y5QiY+7Mjgxnc=;
+	s=korg; t=1764777618;
+	bh=eC7iWINYk8ynF8TScypnfBZyvzFfOElfifgyCSTxxHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0lTMU97aO9djVOZct2J8co9Z4TlbujZfrbt+wuohx+I3zmwv3O+HzSozZ4/rZkxng
-	 1Jk+Rf2f8JK1aCMBvM2OGDTOqiAFoFZYy9ohFauqeGnWK/zC1rnmHJ97WQ8K9JzBRU
-	 LsuNhzvCDtPvVUVry+oOxUnK8ehVakanqGKv/etw=
+	b=AXbCAoj8i0UmnqHfDteNLxH2AFQcKPlB2duoUFRUB3OjqjLChLwYsFphiDUDzdp/n
+	 +xiZ9mU3dvDuvvP8V2qtp4C+RrmHK1gaX9zrSacMCPwc/vLcP0Rmm1KQd9j4/nir/I
+	 t4czl/r2KWQai1XXSL7x5fFRJZAzfTQmpIDuPT64=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c4f3462d8b2ad7977bea@syzkaller.appspotmail.com,
-	Shaurya Rane <ssrane_b23@ee.vjti.ac.in>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Sathishkumar S <sathishkumar.sundararaju@amd.com>,
+	Leo Liu <leo.liu@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 240/568] jfs: fix uninitialized waitqueue in transaction manager
+Subject: [PATCH 5.15 092/392] drm/amdgpu/jpeg: Hold pg_lock before jpeg poweroff
 Date: Wed,  3 Dec 2025 16:24:02 +0100
-Message-ID: <20251203152449.510968694@linuxfoundation.org>
+Message-ID: <20251203152417.488883330@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
+From: Sathishkumar S <sathishkumar.sundararaju@amd.com>
 
-[ Upstream commit 300b072df72694ea330c4c673c035253e07827b8 ]
+[ Upstream commit 0e7581eda8c76d1ca4cf519631a4d4eb9f82b94c ]
 
-The transaction manager initialization in txInit() was not properly
-initializing TxBlock[0].waitor waitqueue, causing a crash when
-txEnd(0) is called on read-only filesystems.
+Acquire jpeg_pg_lock before changes to jpeg power state
+and release it after power off from idle work handler.
 
-When a filesystem is mounted read-only, txBegin() returns tid=0 to
-indicate no transaction. However, txEnd(0) still gets called and
-tries to access TxBlock[0].waitor via tid_to_tblock(0), but this
-waitqueue was never initialized because the initialization loop
-started at index 1 instead of 0.
-
-This causes a 'non-static key' lockdep warning and system crash:
-  INFO: trying to register non-static key in txEnd
-
-Fix by ensuring all transaction blocks including TxBlock[0] have
-their waitqueues properly initialized during txInit().
-
-Reported-by: syzbot+c4f3462d8b2ad7977bea@syzkaller.appspotmail.com
-
-Signed-off-by: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Sathishkumar S <sathishkumar.sundararaju@amd.com>
+Reviewed-by: Leo Liu <leo.liu@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_txnmgr.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_jpeg.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/jfs/jfs_txnmgr.c b/fs/jfs/jfs_txnmgr.c
-index dccc8b3f10459..42fb833ef2834 100644
---- a/fs/jfs/jfs_txnmgr.c
-+++ b/fs/jfs/jfs_txnmgr.c
-@@ -272,14 +272,15 @@ int txInit(void)
- 	if (TxBlock == NULL)
- 		return -ENOMEM;
- 
--	for (k = 1; k < nTxBlock - 1; k++) {
--		TxBlock[k].next = k + 1;
-+	for (k = 0; k < nTxBlock; k++) {
- 		init_waitqueue_head(&TxBlock[k].gcwait);
- 		init_waitqueue_head(&TxBlock[k].waitor);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_jpeg.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_jpeg.c
+index 9342aa23ebd26..902523af9865a 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_jpeg.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_jpeg.c
+@@ -85,10 +85,12 @@ static void amdgpu_jpeg_idle_work_handler(struct work_struct *work)
+ 		fences += amdgpu_fence_count_emitted(&adev->jpeg.inst[i].ring_dec);
  	}
-+
-+	for (k = 1; k < nTxBlock - 1; k++) {
-+		TxBlock[k].next = k + 1;
-+	}
- 	TxBlock[k].next = 0;
--	init_waitqueue_head(&TxBlock[k].gcwait);
--	init_waitqueue_head(&TxBlock[k].waitor);
  
- 	TxAnchor.freetid = 1;
- 	init_waitqueue_head(&TxAnchor.freewait);
+-	if (!fences && !atomic_read(&adev->jpeg.total_submission_cnt))
++	if (!fences && !atomic_read(&adev->jpeg.total_submission_cnt)) {
++		mutex_lock(&adev->jpeg.jpeg_pg_lock);
+ 		amdgpu_device_ip_set_powergating_state(adev, AMD_IP_BLOCK_TYPE_JPEG,
+ 						       AMD_PG_STATE_GATE);
+-	else
++		mutex_unlock(&adev->jpeg.jpeg_pg_lock);
++	} else
+ 		schedule_delayed_work(&adev->jpeg.idle_work, JPEG_IDLE_TIMEOUT);
+ }
+ 
 -- 
 2.51.0
 
