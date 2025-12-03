@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-199340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 372E9CA14BD
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:12:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB937CA06CA
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:26:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2CE2330CEA98
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:33:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9087F3307C2A
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:10:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9EC236A01E;
-	Wed,  3 Dec 2025 16:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE23C34C12B;
+	Wed,  3 Dec 2025 16:01:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r2xmLE93"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IIH3xqL4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9316536A00E;
-	Wed,  3 Dec 2025 16:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69F4F34BA44;
+	Wed,  3 Dec 2025 16:01:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779472; cv=none; b=ug+48v40bQhkQrVmUm9X/v2Cb5VqSbng2QqoUFr9z0CfHybxKKRxHcwYkTGSFtQFqk5ZZaThwuw5DkBn4wYZ7OuSQPSIYzCTv+xx3XIKCQRzrb02fQpekYhW7lnuss/Up8CONPyso+kVgXGtJvaH01z8OtqWgbH8u+/HJT/T6wY=
+	t=1764777705; cv=none; b=T03Y4WyXTIriENxgUVneVVPP8X1gJVjj6GBVGjaRpoQkuH83+RSBowhpG14iVLV8mKjgbQ4qBzxlnv/R7UPIgCIM6yxz39Q4VE0RVGFlesmr38pMdireSZwuF3X4ZIDYmThmZWW3G474w3gQbFmg2+K4ZA3tninIF48zNCwKzts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779472; c=relaxed/simple;
-	bh=SzJ6iIcD2QFE8FjJwrEpprMPDc1Pl8Z5YR4Dm80r0So=;
+	s=arc-20240116; t=1764777705; c=relaxed/simple;
+	bh=hRVEmG8t4SjnPKUuEuYOJCs9WwSxa5K4vh1XlEAGki8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E0UiBkjgRzblc3QCVu4JiIr3Zj8EMsI8ueLDvdR9RpNnlUGn5QOGNR9X05wQH/BJ+avASruvKkrAZYgsKM+MuYBc6PUS7gOIHjzKNyn5y7M5MzMcbA10iS3KHCGJtZXLQywyjhaDXgq1OGTMNTM0o4f/XmIg4+yK4QX+tMtAIeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r2xmLE93; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF28BC4CEF5;
-	Wed,  3 Dec 2025 16:31:11 +0000 (UTC)
+	 MIME-Version; b=QAGKAbioxYQO2x5M6DxYdXABjOeZdmlBtDBnfeDpPxPxTOJ6PusvJAqIB7DwyvP49PY9I9XE21ZTSTXq0r/VPJQiIcxkUf2Hww2lKDKzu+dTX2l8fgO6XcpcKH6HvHB7QJxavX7SU0nwLp2PeAEUFPi1RFDoxnP2rVDpN9qmPIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IIH3xqL4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D236AC4CEF5;
+	Wed,  3 Dec 2025 16:01:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779472;
-	bh=SzJ6iIcD2QFE8FjJwrEpprMPDc1Pl8Z5YR4Dm80r0So=;
+	s=korg; t=1764777705;
+	bh=hRVEmG8t4SjnPKUuEuYOJCs9WwSxa5K4vh1XlEAGki8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r2xmLE933m140YH5WnwDsh5lAM8MPyXm59670bawQTqQ64myTpUA+jg7PFmJdKr0s
-	 ABtFPo2pXJ8znDVxJaEtsYxtV4+WB2JuMn2FlZWoKgGnxqa/IGqefy4f5AH1DRSgpR
-	 extKcC58nn+NUndKyHqWSDva22Yp62oaZuhScyX4=
+	b=IIH3xqL4SwQP2Cad6jcHCTw+XNYbvVBIZk8bTbDyK7Nc4K3cd4AqWc4mXXnJeUbOB
+	 KS6+PFPcet6SzgoXC2fDi91ETxsI49ntTNSRnv0zKXzPhNoqUqsoUHVWXZU4A0JCow
+	 ReTdxZ/cO7Jo/19VkVTa2+urOdeMq9fKhglOxGIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chi Zhiling <chizhiling@kylinos.cn>,
-	Namjae Jeon <linkinjeon@kernel.org>,
+	Amber Lin <Amber.Lin@amd.com>,
+	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 267/568] exfat: limit log print for IO error
-Date: Wed,  3 Dec 2025 16:24:29 +0100
-Message-ID: <20251203152450.494537008@linuxfoundation.org>
+Subject: [PATCH 5.15 120/392] drm/amdkfd: Tie UNMAP_LATENCY to queue_preemption
+Date: Wed,  3 Dec 2025 16:24:30 +0100
+Message-ID: <20251203152418.510065493@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,87 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chi Zhiling <chizhiling@kylinos.cn>
+From: Amber Lin <Amber.Lin@amd.com>
 
-[ Upstream commit 6dfba108387bf4e71411b3da90b2d5cce48ba054 ]
+[ Upstream commit f3820e9d356132e18405cd7606e22dc87ccfa6d1 ]
 
-For exFAT filesystems with 4MB read_ahead_size, removing the storage device
-when the read operation is in progress, which cause the last read syscall
-spent 150s [1]. The main reason is that exFAT generates excessive log
-messages [2].
+When KFD asks CP to preempt queues, other than preempt CP queues, CP
+also requests SDMA to preempt SDMA queues with UNMAP_LATENCY timeout.
+Currently queue_preemption_timeout_ms is 9000 ms by default but can be
+configured via module parameter. KFD_UNMAP_LATENCY_MS is hard coded as
+4000 ms though. This patch ties KFD_UNMAP_LATENCY_MS to
+queue_preemption_timeout_ms so in a slow system such as emulator, both
+CP and SDMA slowness are taken into account.
 
-After applying this patch, approximately 300,000 lines of log messages
-were suppressed, and the delay of the last read() syscall was reduced
-to about 4 seconds.
-
-[1]:
-write(5, "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"..., 131072) = 131072 <0.000120>
-read(4, "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"..., 131072) = 131072 <0.000032>
-write(5, "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"..., 131072) = 131072 <0.000119>
-read(4, 0x7fccf28ae000, 131072)         = -1 EIO (Input/output error) <150.186215>
-
-[2]:
-[  333.696603] exFAT-fs (vdb): error, failed to access to FAT (entry 0x0000d780, err:-5)
-[  333.697378] exFAT-fs (vdb): error, failed to access to FAT (entry 0x0000d780, err:-5)
-[  333.698156] exFAT-fs (vdb): error, failed to access to FAT (entry 0x0000d780, err:-5)
-
-Signed-off-by: Chi Zhiling <chizhiling@kylinos.cn>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Amber Lin <Amber.Lin@amd.com>
+Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/exfat/fatent.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_priv.h | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/fs/exfat/fatent.c b/fs/exfat/fatent.c
-index 9fa4cffabfb67..e7e160d022566 100644
---- a/fs/exfat/fatent.c
-+++ b/fs/exfat/fatent.c
-@@ -89,35 +89,36 @@ int exfat_ent_get(struct super_block *sb, unsigned int loc,
- 	int err;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_priv.h b/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
+index 47ec820cae72b..2cf71155a7184 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
+@@ -109,7 +109,14 @@
  
- 	if (!is_valid_cluster(sbi, loc)) {
--		exfat_fs_error(sb, "invalid access to FAT (entry 0x%08x)",
-+		exfat_fs_error_ratelimit(sb,
-+			"invalid access to FAT (entry 0x%08x)",
- 			loc);
- 		return -EIO;
- 	}
+ #define KFD_KERNEL_QUEUE_SIZE 2048
  
- 	err = __exfat_ent_get(sb, loc, content);
- 	if (err) {
--		exfat_fs_error(sb,
-+		exfat_fs_error_ratelimit(sb,
- 			"failed to access to FAT (entry 0x%08x, err:%d)",
- 			loc, err);
- 		return err;
- 	}
+-#define KFD_UNMAP_LATENCY_MS	(4000)
++/*  KFD_UNMAP_LATENCY_MS is the timeout CP waiting for SDMA preemption. One XCC
++ *  can be associated to 2 SDMA engines. queue_preemption_timeout_ms is the time
++ *  driver waiting for CP returning the UNMAP_QUEUE fence. Thus the math is
++ *  queue_preemption_timeout_ms = sdma_preemption_time * 2 + cp workload
++ *  The format here makes CP workload 10% of total timeout
++ */
++#define KFD_UNMAP_LATENCY_MS	\
++	((queue_preemption_timeout_ms - queue_preemption_timeout_ms / 10) >> 1)
  
- 	if (*content == EXFAT_FREE_CLUSTER) {
--		exfat_fs_error(sb,
-+		exfat_fs_error_ratelimit(sb,
- 			"invalid access to FAT free cluster (entry 0x%08x)",
- 			loc);
- 		return -EIO;
- 	}
- 
- 	if (*content == EXFAT_BAD_CLUSTER) {
--		exfat_fs_error(sb,
-+		exfat_fs_error_ratelimit(sb,
- 			"invalid access to FAT bad cluster (entry 0x%08x)",
- 			loc);
- 		return -EIO;
- 	}
- 
- 	if (*content != EXFAT_EOF_CLUSTER && !is_valid_cluster(sbi, *content)) {
--		exfat_fs_error(sb,
-+		exfat_fs_error_ratelimit(sb,
- 			"invalid access to FAT (entry 0x%08x) bogus content (0x%08x)",
- 			loc, *content);
- 		return -EIO;
+ /*
+  * 512 = 0x200
 -- 
 2.51.0
 
