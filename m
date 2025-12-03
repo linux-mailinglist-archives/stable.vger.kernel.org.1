@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-198331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5227DC9F903
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:42:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02CDACA0CFD
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:11:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C2A34306636C
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:37:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D9A9832AE955
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:07:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B30F3148A3;
-	Wed,  3 Dec 2025 15:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9495530C358;
+	Wed,  3 Dec 2025 16:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yh3RWfOf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OohpW8rw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA37313E33;
-	Wed,  3 Dec 2025 15:36:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC06305067;
+	Wed,  3 Dec 2025 16:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776193; cv=none; b=cmhocZwMa7iDhFjEmuFvvTllIVpLZslVUxzyTazovc7iYBQmVQEkv6vXAa8w4Nv0M5TlqYwqLjnaB1fXbBqqbCuwBp6kCi0hAK8xxd4ZuKAXu1qDn1honJnPYUEJwtJkQOA6pBmJPVJHfGSGqf86SoZej5nx7Qv10o373xrwJL8=
+	t=1764779623; cv=none; b=U/Bxwg7D2Km8riOHv+KYOZumuOe94Bn7JaFABYR8UP0rftT2HHHIWC0cGCxcvUFsViQbEfjjwPLCqS0XoLcNIcBx1BlkLd5TuFZDAK3ODGzXG9y+eyRrD1RP+pfjVFo3Q/oJw3dyakhg/VbZqWEtdJ3V3Vlh+B/94GgorSILE8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776193; c=relaxed/simple;
-	bh=60UYSVG9xdkjuwOqvewBYqZ+h+HiParSLyrTJW3cJ1k=;
+	s=arc-20240116; t=1764779623; c=relaxed/simple;
+	bh=pJdbAzIucR1rJvAlDkw+AqIc2jDZssvOqDObs0DnM2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eBbKiI0yrUiDpMDx3wXFCTCWrKjx7aZbcVN6PAC9gud2tVUU38aQ+CYqsXpX2baExoBL/wzb0Qy4x1XQnqT/JUjaNtQtElRg4OIV+zKy0TRTuGOzK4klZWVQkOC327ryDpB4m59MrL0xwo+99zuYhfKxnCH6n8/NaYMCtHXnZeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yh3RWfOf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58DA6C4CEF5;
-	Wed,  3 Dec 2025 15:36:32 +0000 (UTC)
+	 MIME-Version; b=thAsJJTgxaeVAC55l72D5GZTjPQy+VDT8TO8uplbp6FkVYDYraAf0YPHb+NjWpdn0lAIvfNaOAuk67VoC5QE4OmKCJDOPCBm+eZK2KczY3s7GScM2MYOk9Hs2BqRs57NOfmkXGdQHnfFitY40q7mE1QoQhjSnl/r0pWl5xNr4/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OohpW8rw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6370BC4CEF5;
+	Wed,  3 Dec 2025 16:33:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776192;
-	bh=60UYSVG9xdkjuwOqvewBYqZ+h+HiParSLyrTJW3cJ1k=;
+	s=korg; t=1764779622;
+	bh=pJdbAzIucR1rJvAlDkw+AqIc2jDZssvOqDObs0DnM2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yh3RWfOf070lc9I0Ks0M1B10pSgropcpED2ocfw9SRemOQp1H2aG9GM9J0Xfhn9Zu
-	 t3dZnphrM/WBYpde45gKUKDVHD1lYq4UvOLXOsoZeTE9WSl4sUibxJajyCOmb0RHeY
-	 LXKOPeVG7ln7WdNv+BguVvxnwfAwPlrYfVXAhuTI=
+	b=OohpW8rwvhd5kuJkY+d7RWuroFz84uApmlP8s3Z02YzffHabA07O/h2yIomesRIIS
+	 cQlCVCb06zFKdIOR+wsATP4Swdy8QSdNC2ZWZvCdTZA4vP4OFuzbt9uSRIIWiAYC1o
+	 FnVm+wFjHjO4TXwnPw5+R+Vy3zm6mask1Fi1lwkM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rohan G Thomas <rohan.g.thomas@altera.com>,
-	Matthew Gerlach <matthew.gerlach@altera.com>,
-	Andrew Lunn <andrew@lunn.ch>,
+	Hangbin Liu <liuhangbin@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 109/300] net: phy: marvell: Fix 88e1510 downshift counter errata
+Subject: [PATCH 6.1 311/568] net: vlan: sync VLAN features with lower device
 Date: Wed,  3 Dec 2025 16:25:13 +0100
-Message-ID: <20251203152404.660771977@linuxfoundation.org>
+Message-ID: <20251203152452.105274753@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +60,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rohan G Thomas <rohan.g.thomas@altera.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit deb105f49879dd50d595f7f55207d6e74dec34e6 ]
+[ Upstream commit c211f5d7cbd5cb34489d526648bb9c8ecc907dee ]
 
-The 88e1510 PHY has an erratum where the phy downshift counter is not
-cleared after phy being suspended(BMCR_PDOWN set) and then later
-resumed(BMCR_PDOWN cleared). This can cause the gigabit link to
-intermittently downshift to a lower speed.
+After registering a VLAN device and setting its feature flags, we need to
+synchronize the VLAN features with the lower device. For example, the VLAN
+device does not have the NETIF_F_LRO flag, it should be synchronized with
+the lower device based on the NETIF_F_UPPER_DISABLES definition.
 
-Disabling and re-enabling the downshift feature clears the counter,
-allowing the PHY to retry gigabit link negotiation up to the programmed
-retry count times before downshifting. This behavior has been observed
-on copper links.
+As the dev->vlan_features has changed, we need to call
+netdev_update_features(). The caller must run after netdev_upper_dev_link()
+links the lower devices, so this patch adds the netdev_update_features()
+call in register_vlan_dev().
 
-Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
-Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250906-marvell_fix-v2-1-f6efb286937f@altera.com
+Fixes: fd867d51f889 ("net/core: generic support for disabling netdev features down stack")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://patch.msgid.link/20251030073539.133779-1-liuhangbin@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/marvell.c | 39 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 38 insertions(+), 1 deletion(-)
+ net/8021q/vlan.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/phy/marvell.c b/drivers/net/phy/marvell.c
-index 54786712a9913..6504aa0f1889d 100644
---- a/drivers/net/phy/marvell.c
-+++ b/drivers/net/phy/marvell.c
-@@ -1596,6 +1596,43 @@ static int marvell_resume(struct phy_device *phydev)
- 	return err;
- }
+diff --git a/net/8021q/vlan.c b/net/8021q/vlan.c
+index 422f726346ea5..7c77482f31594 100644
+--- a/net/8021q/vlan.c
++++ b/net/8021q/vlan.c
+@@ -194,6 +194,8 @@ int register_vlan_dev(struct net_device *dev, struct netlink_ext_ack *extack)
+ 	vlan_group_set_device(grp, vlan->vlan_proto, vlan_id, dev);
+ 	grp->nr_vlan_devs++;
  
-+/* m88e1510_resume
-+ *
-+ * The 88e1510 PHY has an erratum where the phy downshift counter is not cleared
-+ * after phy being suspended(BMCR_PDOWN set) and then later resumed(BMCR_PDOWN
-+ * cleared). This can cause the link to intermittently downshift to a lower speed.
-+ *
-+ * Disabling and re-enabling the downshift feature clears the counter, allowing
-+ * the PHY to retry gigabit link negotiation up to the programmed retry count
-+ * before downshifting. This behavior has been observed on copper links.
-+ */
-+static int m88e1510_resume(struct phy_device *phydev)
-+{
-+	int err;
-+	u8 cnt = 0;
++	netdev_update_features(dev);
 +
-+	err = marvell_resume(phydev);
-+	if (err < 0)
-+		return err;
-+
-+	/* read downshift counter value */
-+	err = m88e1011_get_downshift(phydev, &cnt);
-+	if (err < 0)
-+		return err;
-+
-+	if (cnt) {
-+		/* downshift disabled */
-+		err = m88e1011_set_downshift(phydev, 0);
-+		if (err < 0)
-+			return err;
-+
-+		/* downshift enabled, with previous counter value */
-+		err = m88e1011_set_downshift(phydev, cnt);
-+	}
-+
-+	return err;
-+}
-+
- static int marvell_aneg_done(struct phy_device *phydev)
- {
- 	int retval = phy_read(phydev, MII_M1011_PHY_STATUS);
-@@ -2845,7 +2882,7 @@ static struct phy_driver marvell_drivers[] = {
- 		.did_interrupt = m88e1121_did_interrupt,
- 		.get_wol = m88e1318_get_wol,
- 		.set_wol = m88e1318_set_wol,
--		.resume = marvell_resume,
-+		.resume = m88e1510_resume,
- 		.suspend = marvell_suspend,
- 		.read_page = marvell_read_page,
- 		.write_page = marvell_write_page,
+ 	return 0;
+ 
+ out_unregister_netdev:
 -- 
 2.51.0
 
