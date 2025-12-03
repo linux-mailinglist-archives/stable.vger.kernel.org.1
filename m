@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA608C9F848
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:37:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0956CA05A7
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:20:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B9958300105D
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:37:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B1A213295689
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:06:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EF2C309DB4;
-	Wed,  3 Dec 2025 15:36:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29A303570AD;
+	Wed,  3 Dec 2025 16:35:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ebjaUPst"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mHv20wG8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5EA304BC2;
-	Wed,  3 Dec 2025 15:36:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D953D3559E3;
+	Wed,  3 Dec 2025 16:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776219; cv=none; b=Dlc1HAwbKaNrqIk84kBlEwX7aO9EVFHoi9VV/MkRYMYafIKpIi0oVH3B11MFgCrZImU4+md/IlXP6BlCyj3E95nkLoJN8tE0zx0aF2Y2SCybePL1iwd7lHLkI8pLbSbMaZlF7bycMp7F8El0j08+jOvYWQGPv39sH9fqFNFrq+M=
+	t=1764779735; cv=none; b=PiJUf12gAwK4/fbEUZ4HUwECYAuVdwT+g/nOcd5TsERZJbyCFkCFiyDUEYZI/PKmxkbl3UzfjzHghtZZH4Z9GbJFSS0CyfdnpnY8yNa3wwmivp53hHfLYozISDV9iPHAZd4CrwXpGL6Uj7nqvViDZGnWRLmGQOl1DYuoLGJEfeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776219; c=relaxed/simple;
-	bh=1BC9FHrRDGzZbkCf7fZ1bo2/EndcVRipUfR0m+Uma3M=;
+	s=arc-20240116; t=1764779735; c=relaxed/simple;
+	bh=Zae4tDDiVeqvGcADn3iPaiCneZUaEde0xP1/LKh6FYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K4G16BqjxbZzoGn5hEBz1mTn4xeMsHG2UjOaf+oYZWaiNo5pYq/ZjIJR69zLoJ/1fWSvKSr1vxxJDDazOkCH2cVs5x0xZ52Pt10Vf8EHoBjMONgtT+ZKoOp7K3LcvdaARZxCRxzJP1PyNA0sKXSCi93h3ytDFACApTAl6K/cqVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ebjaUPst; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8719C116B1;
-	Wed,  3 Dec 2025 15:36:58 +0000 (UTC)
+	 MIME-Version; b=NWThfzC6KG2QqCdFuE32WmRXDbYyaxEYXDRQc3PPifpHqJp5vpNHQEIreppzNdk68V5eD8/8OeicWm4Si1Ms0eaFRp3jR02Nc+ItuawO/PZFMtN5Y4dshVK7JQicKL5iF4fecmFJZVsx5rBEKzVggkJa6Zz6MG9F/H3a7SNhPAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mHv20wG8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 400C8C4CEF5;
+	Wed,  3 Dec 2025 16:35:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776219;
-	bh=1BC9FHrRDGzZbkCf7fZ1bo2/EndcVRipUfR0m+Uma3M=;
+	s=korg; t=1764779735;
+	bh=Zae4tDDiVeqvGcADn3iPaiCneZUaEde0xP1/LKh6FYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ebjaUPstKbwuRwQ6MCdtaKUgaaVH/xVrZvpmwdg9P13nfoF2skaQOMadiXOnrYvgQ
-	 945Q/3fx8/iN8FP2TyR46SlqhHQ7ueQkYVpl+syxx7vIZOBBsAhM/Ozt28Y//keP5S
-	 kTO1+lt/uRHiuQflReZdsKoVExrV8PHDLGyptzGE=
+	b=mHv20wG8RnzpmQ60KHSu7Fkux8ezlFAa8LiITk/ZK3XPCpaewJlV19R3MjgbooSFX
+	 1g6j5zAWrSA/OUTslKkPE1GtzhMB4WuUAWRoAmumQ/vZnDDjr4D1w6apllvkVce6Ke
+	 OTD9M/EnIC1rFTNOfIDivWRvX00jPWTxOLjL4iyo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Palmer <daniel@thingy.jp>,
+	Qendrim Maxhuni <qendrim.maxhuni@garderos.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 116/300] eth: 8139too: Make 8139TOO_PIO depend on !NO_IOPORT_MAP
+Subject: [PATCH 6.1 318/568] net: usb: qmi_wwan: initialize MAC header offset in qmimux_rx_fixup
 Date: Wed,  3 Dec 2025 16:25:20 +0100
-Message-ID: <20251203152404.916421075@linuxfoundation.org>
+Message-ID: <20251203152452.359569977@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +60,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Palmer <daniel@thingy.jp>
+From: Qendrim Maxhuni <qendrim.maxhuni@garderos.com>
 
-[ Upstream commit 43adad382e1fdecabd2c4cd2bea777ef4ce4109e ]
+[ Upstream commit e120f46768d98151ece8756ebd688b0e43dc8b29 ]
 
-When 8139too is probing and 8139TOO_PIO=y it will call pci_iomap_range()
-and from there __pci_ioport_map() for the PCI IO space.
-If HAS_IOPORT_MAP=n and NO_GENERIC_PCI_IOPORT_MAP=n, like it is on my
-m68k config, __pci_ioport_map() becomes NULL, pci_iomap_range() will
-always fail and the driver will complain it couldn't map the PIO space
-and return an error.
+Raw IP packets have no MAC header, leaving skb->mac_header uninitialized.
+This can trigger kernel panics on ARM64 when xfrm or other subsystems
+access the offset due to strict alignment checks.
 
-NO_IOPORT_MAP seems to cover the case where what 8139too is trying
-to do cannot ever work so make 8139TOO_PIO depend on being it false
-and avoid creating an unusable driver.
+Initialize the MAC header to prevent such crashes.
 
-Signed-off-by: Daniel Palmer <daniel@thingy.jp>
-Link: https://patch.msgid.link/20250907064349.3427600-1-daniel@thingy.jp
+This can trigger kernel panics on ARM when running IPsec over the
+qmimux0 interface.
+
+Example trace:
+
+    Internal error: Oops: 000000009600004f [#1] SMP
+    CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.12.34-gbe78e49cb433 #1
+    Hardware name: LS1028A RDB Board (DT)
+    pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+    pc : xfrm_input+0xde8/0x1318
+    lr : xfrm_input+0x61c/0x1318
+    sp : ffff800080003b20
+    Call trace:
+     xfrm_input+0xde8/0x1318
+     xfrm6_rcv+0x38/0x44
+     xfrm6_esp_rcv+0x48/0xa8
+     ip6_protocol_deliver_rcu+0x94/0x4b0
+     ip6_input_finish+0x44/0x70
+     ip6_input+0x44/0xc0
+     ipv6_rcv+0x6c/0x114
+     __netif_receive_skb_one_core+0x5c/0x8c
+     __netif_receive_skb+0x18/0x60
+     process_backlog+0x78/0x17c
+     __napi_poll+0x38/0x180
+     net_rx_action+0x168/0x2f0
+
+Fixes: c6adf77953bc ("net: usb: qmi_wwan: add qmap mux protocol support")
+Signed-off-by: Qendrim Maxhuni <qendrim.maxhuni@garderos.com>
+Link: https://patch.msgid.link/20251029075744.105113-1-qendrim.maxhuni@garderos.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/usb/qmi_wwan.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/realtek/Kconfig b/drivers/net/ethernet/realtek/Kconfig
-index 93d9df55b361a..01811924c4db4 100644
---- a/drivers/net/ethernet/realtek/Kconfig
-+++ b/drivers/net/ethernet/realtek/Kconfig
-@@ -58,7 +58,7 @@ config 8139TOO
- config 8139TOO_PIO
- 	bool "Use PIO instead of MMIO"
- 	default y
--	depends on 8139TOO
-+	depends on 8139TOO && !NO_IOPORT_MAP
- 	help
- 	  This instructs the driver to use programmed I/O ports (PIO) instead
- 	  of PCI shared memory (MMIO).  This can possibly solve some problems
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index 28fd36234311a..e4d8041861a24 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -191,6 +191,12 @@ static int qmimux_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
+ 		if (!skbn)
+ 			return 0;
+ 
++	       /* Raw IP packets don't have a MAC header, but other subsystems
++		* (like xfrm) may still access MAC header offsets, so they must
++		* be initialized.
++		*/
++		skb_reset_mac_header(skbn);
++
+ 		switch (skb->data[offset + qmimux_hdr_sz] & 0xf0) {
+ 		case 0x40:
+ 			skbn->protocol = htons(ETH_P_IP);
 -- 
 2.51.0
 
