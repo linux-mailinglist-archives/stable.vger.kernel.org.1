@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 488D0CA0200
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:49:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B5C0CA0E4C
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:20:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 88410301C3FA
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:46:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B756332ABA54
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:16:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7855B3624AE;
-	Wed,  3 Dec 2025 16:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09F743AA1AE;
+	Wed,  3 Dec 2025 16:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4cAWOYf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="imhWkmNp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3474F3074B3;
-	Wed,  3 Dec 2025 16:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1BAD3624A4;
+	Wed,  3 Dec 2025 16:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780383; cv=none; b=MrQV11cjf1/genCctUhnKFUYpIcyG8IudriUg1A/e/zEfQFRhOeWg4WFxiv0xI2UVpxGXh6xWFatoR7oIjwkZppAD25UZZTy6+O7q/wq6ETRUEcehN1eJDAAVyvruFoS/xDrd9bV99pG8n1rhSLnr0uo6lMea+5bAHIX4YRBTik=
+	t=1764780759; cv=none; b=KsK+WkYRvkO9W7OSjWYo+3fLKD9Nrps6TPyLLvXtPuEAkPPUxaY1nvs6dW89/vIDn7dvj1p84YxpNj8lK/Gaq0DiVCHbO/ts3bP+c9FkkWD1qB2J06nhl05Q9YQZAlpnId8cIHnQKAcZwQzIMt6xwxheOJNRG61i1CEd7t52LOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780383; c=relaxed/simple;
-	bh=6spceUFpbhljT5/sB4M9xs0CFhoSYyTCFbbx5jNGZtg=;
+	s=arc-20240116; t=1764780759; c=relaxed/simple;
+	bh=T/nQUIYnU7LFnUI09xtxulyMyLNZA9FtRRJF6fb5KOg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VRF09/TWuy0dBeQYRn+kKth4zrb78GHNXHutnnQRR1Ztk1JD6hTbFuXyjxZtk0Uo0Ao57EbBSaBiMU4vDSVrt8tOpCAzRcB9UFNUDgX/Ci9I4lPWDN/dw5MjSwTQ8O5eoWz23JzbhLNgy21ZZcAQN056WN+WFWYoqtxK4MdP2Mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4cAWOYf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF379C4CEF5;
-	Wed,  3 Dec 2025 16:46:22 +0000 (UTC)
+	 MIME-Version; b=Em05ZgZi+CpwBjp597lr4OhAuU0Lo/YkF5oSYt3mOVx5Nb/FckmNXw3cNy8eGI1BbJeqwHbtY5ul1sAWZXUT/nb83loN4K+leWAeirJQ2yE46BTjKsBCv1raCD0989d4HnU1/iCP0+AVPYPqd402q0Jbemr9oraYVRod+c5M4E8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=imhWkmNp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2576CC4CEF5;
+	Wed,  3 Dec 2025 16:52:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780383;
-	bh=6spceUFpbhljT5/sB4M9xs0CFhoSYyTCFbbx5jNGZtg=;
+	s=korg; t=1764780759;
+	bh=T/nQUIYnU7LFnUI09xtxulyMyLNZA9FtRRJF6fb5KOg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q4cAWOYfFArCIMaZb7NVMxYRBwFuHS05hkQvZkPhQasGJ/JUqw4ORAXcbG4A7r9qG
-	 UvAOVtV0yXDcVwmv4oF0l+sTpVjbsVySWQQY3cIWEbvsXa+N0tIlxuAeaEX3ZXJxgG
-	 V6NGnE3MH7k3KisqVmnwAZumyXEIUVfFnPXfMEIk=
+	b=imhWkmNpwGMQ98vBYCnnAYfx22jwVko/76P7O3TV+3ugEsE286XtpqPuZ6K07RLI+
+	 Js3WS89Z3c2xLM1ZUuRGzjmjqczcNc9cZuBQWn9AimIj+Pl6SV3hKwte960tsW10Na
+	 01G0Bx2Nd9IOWwiG4coUr+3paUAoJE9/S+3NHKmI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Yu Chen <chenyu45@xiaomi.com>,
-	Owen Gu <guhuinan@xiaomi.com>,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 6.1 541/568] usb: uas: fix urb unmapping issue when the uas device is remove during ongoing data transfer
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
+	Klara Modin <klarasmodin@gmail.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.12 064/132] MIPS: mm: kmalloc tlb_vpn array to avoid stack overflow
 Date: Wed,  3 Dec 2025 16:29:03 +0100
-Message-ID: <20251203152500.526705818@linuxfoundation.org>
+Message-ID: <20251203152345.668510869@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,83 +61,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Owen Gu <guhuinan@xiaomi.com>
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 
-commit 26d56a9fcb2014b99e654127960aa0a48a391e3c upstream.
+commit 841ecc979b18d3227fad5e2d6a1e6f92688776b5 upstream.
 
-When a UAS device is unplugged during data transfer, there is
-a probability of a system panic occurring. The root cause is
-an access to an invalid memory address during URB callback handling.
-Specifically, this happens when the dma_direct_unmap_sg() function
-is called within the usb_hcd_unmap_urb_for_dma() interface, but the
-sg->dma_address field is 0 and the sg data structure has already been
-freed.
+Owing to Config4.MMUSizeExt and VTLB/FTLB MMU features later MIPSr2+
+cores can have more than 64 TLB entries.  Therefore allocate an array
+for uniquification instead of placing too an small array on the stack.
 
-The SCSI driver sends transfer commands by invoking uas_queuecommand_lck()
-in uas.c, using the uas_submit_urbs() function to submit requests to USB.
-Within the uas_submit_urbs() implementation, three URBs (sense_urb,
-data_urb, and cmd_urb) are sequentially submitted. Device removal may
-occur at any point during uas_submit_urbs execution, which may result
-in URB submission failure. However, some URBs might have been successfully
-submitted before the failure, and uas_submit_urbs will return the -ENODEV
-error code in this case. The current error handling directly calls
-scsi_done(). In the SCSI driver, this eventually triggers scsi_complete()
-to invoke scsi_end_request() for releasing the sgtable. The successfully
-submitted URBs, when being unlinked to giveback, call
-usb_hcd_unmap_urb_for_dma() in hcd.c, leading to exceptions during sg
-unmapping operations since the sg data structure has already been freed.
-
-This patch modifies the error condition check in the uas_submit_urbs()
-function. When a UAS device is removed but one or more URBs have already
-been successfully submitted to USB, it avoids immediately invoking
-scsi_done() and save the cmnd to devinfo->cmnd array. If the successfully
-submitted URBs is completed before devinfo->resetting being set, then
-the scsi_done() function will be called within uas_try_complete() after
-all pending URB operations are finalized. Otherwise, the scsi_done()
-function will be called within uas_zap_pending(), which is executed after
-usb_kill_anchored_urbs().
-
-The error handling only takes effect when uas_queuecommand_lck() calls
-uas_submit_urbs() and returns the error value -ENODEV . In this case,
-the device is disconnected, and the flow proceeds to uas_disconnect(),
-where uas_zap_pending() is invoked to call uas_try_complete().
-
-Fixes: eb2a86ae8c54 ("USB: UAS: fix disconnect by unplugging a hub")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Yu Chen <chenyu45@xiaomi.com>
-Signed-off-by: Owen Gu <guhuinan@xiaomi.com>
-Acked-by: Oliver Neukum <oneukum@suse.com>
-Link: https://patch.msgid.link/20251120123336.3328-1-guhuinan@xiaomi.com
+Fixes: 35ad7e181541 ("MIPS: mm: tlb-r4k: Uniquify TLB entries on init")
+Co-developed-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Cc: stable@vger.kernel.org # v6.17+: 9f048fa48740: MIPS: mm: Prevent a TLB shutdown on initial uniquification
+Cc: stable@vger.kernel.org # v6.17+
+Tested-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Tested-by: Klara Modin <klarasmodin@gmail.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/uas.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ arch/mips/mm/tlb-r4k.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/storage/uas.c
-+++ b/drivers/usb/storage/uas.c
-@@ -697,6 +697,10 @@ static int uas_queuecommand_lck(struct s
- 	 * of queueing, no matter how fatal the error
- 	 */
- 	if (err == -ENODEV) {
-+		if (cmdinfo->state & (COMMAND_INFLIGHT | DATA_IN_URB_INFLIGHT |
-+				DATA_OUT_URB_INFLIGHT))
-+			goto out;
-+
- 		set_host_byte(cmnd, DID_NO_CONNECT);
- 		scsi_done(cmnd);
- 		goto zombie;
-@@ -710,6 +714,7 @@ static int uas_queuecommand_lck(struct s
- 		uas_add_work(cmnd);
- 	}
+diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
+index 3facf7cc6c7d..44a662536148 100644
+--- a/arch/mips/mm/tlb-r4k.c
++++ b/arch/mips/mm/tlb-r4k.c
+@@ -12,6 +12,7 @@
+ #include <linux/init.h>
+ #include <linux/sched.h>
+ #include <linux/smp.h>
++#include <linux/memblock.h>
+ #include <linux/mm.h>
+ #include <linux/hugetlb.h>
+ #include <linux/export.h>
+@@ -522,17 +523,26 @@ static int r4k_vpn_cmp(const void *a, const void *b)
+  * Initialise all TLB entries with unique values that do not clash with
+  * what we have been handed over and what we'll be using ourselves.
+  */
+-static void r4k_tlb_uniquify(void)
++static void __ref r4k_tlb_uniquify(void)
+ {
+-	unsigned long tlb_vpns[1 << MIPS_CONF1_TLBS_SIZE];
+ 	int tlbsize = current_cpu_data.tlbsize;
++	bool use_slab = slab_is_available();
+ 	int start = num_wired_entries();
++	phys_addr_t tlb_vpn_size;
++	unsigned long *tlb_vpns;
+ 	unsigned long vpn_mask;
+ 	int cnt, ent, idx, i;
  
-+out:
- 	devinfo->cmnd[idx] = cmnd;
- zombie:
- 	spin_unlock_irqrestore(&devinfo->lock, flags);
+ 	vpn_mask = GENMASK(cpu_vmbits - 1, 13);
+ 	vpn_mask |= IS_ENABLED(CONFIG_64BIT) ? 3ULL << 62 : 1 << 31;
+ 
++	tlb_vpn_size = tlbsize * sizeof(*tlb_vpns);
++	tlb_vpns = (use_slab ?
++		    kmalloc(tlb_vpn_size, GFP_KERNEL) :
++		    memblock_alloc_raw(tlb_vpn_size, sizeof(*tlb_vpns)));
++	if (WARN_ON(!tlb_vpns))
++		return; /* Pray local_flush_tlb_all() is good enough. */
++
+ 	htw_stop();
+ 
+ 	for (i = start, cnt = 0; i < tlbsize; i++, cnt++) {
+@@ -585,6 +595,10 @@ static void r4k_tlb_uniquify(void)
+ 	tlbw_use_hazard();
+ 	htw_start();
+ 	flush_micro_tlb();
++	if (use_slab)
++		kfree(tlb_vpns);
++	else
++		memblock_free(tlb_vpns, tlb_vpn_size);
+ }
+ 
+ /*
+-- 
+2.52.0
+
 
 
 
