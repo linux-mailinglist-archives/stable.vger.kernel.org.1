@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-199688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5E7CCA02BB
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:52:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB068CA0EFB
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:25:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 19C0330012D8
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:52:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D74883452D53
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:23:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A53034D38A;
-	Wed,  3 Dec 2025 16:50:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0231433A716;
+	Wed,  3 Dec 2025 15:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M6CvfEkh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hEtcM11v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9C99349AF9;
-	Wed,  3 Dec 2025 16:50:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B60303A35;
+	Wed,  3 Dec 2025 15:55:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780619; cv=none; b=MZCowS7xKqrWkZQ4xjPvHmrxX0fMHOHOyJowe/YOYxGl69oaiAVA0IvWjpxXeuLN8w8GcwI8Hcu4jqa1IlEPuJ5cj/e2M4E7cb8wECAElelUOww+mGR6TCGdglYmGdyrrZAP9sc25q62Ie+qMn+4qndkIweYSlkFuV+/izJDz40=
+	t=1764777300; cv=none; b=BHOhLkc+erin92UQkujEQtnE69FIXaWVSXzrYyHvOAaOY7KfBlYVtC91NqLDqjWmxi3mAQel44JgZF6Si1+HoHzZ87D/q8lwPiWwQYOiW8eFJgKK/FvjEykXQWsO//xAvBB45mtnCkoVSHSGbaZPHsVrJb0WNuHeLSoWV2oNXqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780619; c=relaxed/simple;
-	bh=M9nJ91ZnLQsDFiNi6SBFfq2D5bk1fC85DqV9kB6uOqU=;
+	s=arc-20240116; t=1764777300; c=relaxed/simple;
+	bh=dnUDpSqZI5GnYCmHRMx48IHqxos56f+lle9cA+m0cQk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TgxtYKWOnM6hxNSBSlmQwGAzkESjzS/soMkRwMD8hj/aaOq6skNFXeJOA8O5RPlBKt9ibCmMj97jS2X4BqND+82+d9qzdMtwYZIT6drSpSzDbodHzvdjtlIOwaPO5usaWHHJvh9k+iyTTe55dGAkoTZ8GG46UlSpWdUK+f+BEsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M6CvfEkh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55443C4CEF5;
-	Wed,  3 Dec 2025 16:50:18 +0000 (UTC)
+	 MIME-Version; b=VrFcV/MIJIrMt1AXalxe+uDMJytrNqqLbRwpzi76e5x+3DxhoH5xO+r/q7gdvnLL1XB4NPrInSPR7Ft+191IDzPhvyRm93kZJOf+hCAdzb7LnbpsQ+hwhg3G8MryCUPb0FHr70LyV7QjN6ipYgW7Y+iJhjIQVXhQiidMKSRn7tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hEtcM11v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA834C116B1;
+	Wed,  3 Dec 2025 15:54:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780618;
-	bh=M9nJ91ZnLQsDFiNi6SBFfq2D5bk1fC85DqV9kB6uOqU=;
+	s=korg; t=1764777300;
+	bh=dnUDpSqZI5GnYCmHRMx48IHqxos56f+lle9cA+m0cQk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M6CvfEkhCPXvghEUABlE3BPX2uzjjNu89IVZUKsZb+gDks2OGblJCw3nmcFT095ZG
-	 tnD6DUxohhUEWgEM8aTLkgs6T0Acza93CNedszyZ7sq9kHPDSDtxTl5Dc0fLqfLm8v
-	 yqOTj+INxops0Zv1X5q0hfSLJZJXnCaKtAmesjlE=
+	b=hEtcM11v77gtdRhRtCp7lsdj/fPXnivlMQt6FbE+D0awBXrjjWpv8f5V5OFwlKbGu
+	 +1toBi36wnoSv3iCUvVDj4ZhQysemAXaUV8l4FTE2YrUSywgwnWIPq/L2JZcan4onF
+	 jX0YR3ca5vrFaehm3W+9w7SfJFaLPVB1v3IuckxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 040/132] spi: amlogic-spifc-a1: Handle devm_pm_runtime_enable() errors
+	ziming zhang <ezrakiez@gmail.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 6.17 141/146] libceph: replace BUG_ON with bounds check for map->max_osd
 Date: Wed,  3 Dec 2025 16:28:39 +0100
-Message-ID: <20251203152344.781192909@linuxfoundation.org>
+Message-ID: <20251203152351.634340039@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +59,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: ziming zhang <ezrakiez@gmail.com>
 
-[ Upstream commit a90903c2a3c38bce475f46ea3f93dbf6a9971553 ]
+commit ec3797f043756a94ea2d0f106022e14ac4946c02 upstream.
 
-devm_pm_runtime_enable() can fail due to memory allocation. The current
-code ignores its return value, potentially causing runtime PM operations
-to fail silently after autosuspend configuration.
+OSD indexes come from untrusted network packets. Boundary checks are
+added to validate these against map->max_osd.
 
-Check the return value of devm_pm_runtime_enable() and return on failure.
+[ idryomov: drop BUG_ON in ceph_get_primary_affinity(), minor cosmetic
+  edits ]
 
-Fixes: 909fac05b926 ("spi: add support for Amlogic A1 SPI Flash Controller")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20251124015852.937-1-vulab@iscas.ac.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: ziming zhang <ezrakiez@gmail.com>
+Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-amlogic-spifc-a1.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/ceph/osdmap.c |   18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/spi/spi-amlogic-spifc-a1.c b/drivers/spi/spi-amlogic-spifc-a1.c
-index fadf6667cd51c..b430bca4f8bce 100644
---- a/drivers/spi/spi-amlogic-spifc-a1.c
-+++ b/drivers/spi/spi-amlogic-spifc-a1.c
-@@ -349,7 +349,9 @@ static int amlogic_spifc_a1_probe(struct platform_device *pdev)
+--- a/net/ceph/osdmap.c
++++ b/net/ceph/osdmap.c
+@@ -1504,8 +1504,6 @@ static int decode_new_primary_temp(void
  
- 	pm_runtime_set_autosuspend_delay(spifc->dev, 500);
- 	pm_runtime_use_autosuspend(spifc->dev);
--	devm_pm_runtime_enable(spifc->dev);
-+	ret = devm_pm_runtime_enable(spifc->dev);
-+	if (ret)
-+		return ret;
+ u32 ceph_get_primary_affinity(struct ceph_osdmap *map, int osd)
+ {
+-	BUG_ON(osd >= map->max_osd);
+-
+ 	if (!map->osd_primary_affinity)
+ 		return CEPH_OSD_DEFAULT_PRIMARY_AFFINITY;
  
- 	ctrl->num_chipselect = 1;
- 	ctrl->dev.of_node = pdev->dev.of_node;
--- 
-2.51.0
-
+@@ -1514,8 +1512,6 @@ u32 ceph_get_primary_affinity(struct cep
+ 
+ static int set_primary_affinity(struct ceph_osdmap *map, int osd, u32 aff)
+ {
+-	BUG_ON(osd >= map->max_osd);
+-
+ 	if (!map->osd_primary_affinity) {
+ 		int i;
+ 
+@@ -1577,6 +1573,8 @@ static int decode_new_primary_affinity(v
+ 
+ 		ceph_decode_32_safe(p, end, osd, e_inval);
+ 		ceph_decode_32_safe(p, end, aff, e_inval);
++		if (osd >= map->max_osd)
++			goto e_inval;
+ 
+ 		ret = set_primary_affinity(map, osd, aff);
+ 		if (ret)
+@@ -1879,7 +1877,9 @@ static int decode_new_up_state_weight(vo
+ 		ceph_decode_need(p, end, 2*sizeof(u32), e_inval);
+ 		osd = ceph_decode_32(p);
+ 		w = ceph_decode_32(p);
+-		BUG_ON(osd >= map->max_osd);
++		if (osd >= map->max_osd)
++			goto e_inval;
++
+ 		osdmap_info(map, "osd%d weight 0x%x %s\n", osd, w,
+ 			    w == CEPH_OSD_IN ? "(in)" :
+ 			    (w == CEPH_OSD_OUT ? "(out)" : ""));
+@@ -1905,13 +1905,15 @@ static int decode_new_up_state_weight(vo
+ 		u32 xorstate;
+ 
+ 		osd = ceph_decode_32(p);
++		if (osd >= map->max_osd)
++			goto e_inval;
++
+ 		if (struct_v >= 5)
+ 			xorstate = ceph_decode_32(p);
+ 		else
+ 			xorstate = ceph_decode_8(p);
+ 		if (xorstate == 0)
+ 			xorstate = CEPH_OSD_UP;
+-		BUG_ON(osd >= map->max_osd);
+ 		if ((map->osd_state[osd] & CEPH_OSD_UP) &&
+ 		    (xorstate & CEPH_OSD_UP))
+ 			osdmap_info(map, "osd%d down\n", osd);
+@@ -1937,7 +1939,9 @@ static int decode_new_up_state_weight(vo
+ 		struct ceph_entity_addr addr;
+ 
+ 		osd = ceph_decode_32(p);
+-		BUG_ON(osd >= map->max_osd);
++		if (osd >= map->max_osd)
++			goto e_inval;
++
+ 		if (struct_v >= 7)
+ 			ret = ceph_decode_entity_addrvec(p, end, msgr2, &addr);
+ 		else
 
 
 
