@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-199764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75E17CA0A69
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:49:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2BF4CA079D
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:31:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 29473331EFCD
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:28:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 82F96308E17B
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:13:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EB79346772;
-	Wed,  3 Dec 2025 16:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C336A3559E3;
+	Wed,  3 Dec 2025 17:00:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JcyOJwZJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N2xhb2Ck"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA8E3446D3;
-	Wed,  3 Dec 2025 16:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70FC43563C4;
+	Wed,  3 Dec 2025 17:00:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780859; cv=none; b=VGouICW+7kWz/SoG305tTV4u3PTmxRlfQcADDPn/6CPPf3AMStZy8VYX3IYGBPhaNujh6jp5Odr66s3Hwb8pkBWqZJVcTVfIhbaYzwA52R74uGU7CMquKsqUIHE0oF93xbGoD74rU2BdYa1gifyIFRIP0qbSbGYbQAHy8yAHA9U=
+	t=1764781226; cv=none; b=KY9Z+A1vVFoEjrUhA7uIdDzcv3Hcds8RdSkhDEhq0PMt2bRRNk4HN3pan9lnaFQs+v85GCUC3V/mxZkhwH4tEdpjDGYWYNP38xgC7VIj1xYmdvg0GhGa1vEfjsoQ82OT1k4HnZ2qE7zP5DUJQFHDHEumMJvcGNGv0DI/3MxPsGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780859; c=relaxed/simple;
-	bh=Lvnsqi9WV1tgqUMi52I3VNB0I+ejlRAtLseH6FV9fcs=;
+	s=arc-20240116; t=1764781226; c=relaxed/simple;
+	bh=K2Sh5mnnHenTUm+MkCjdarBtCqtr9KNFqne6CQ0nFi8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bXTLcmHgqYORB56jszLosaNw6Kt80IHhPpTCVeWHzQVGDdLIdgFS2D6AwElQxO+6Xa+qn71MXh3tc13JJ2h4DWYhOLLwBAHOMNnrhxfUGnA/751Il7Ld4FCsFQukuGFkO0sXgdhLvDFGLoEYpyOO7QFZYXtXDTd1RmhFS1xmAb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JcyOJwZJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D959FC4CEF5;
-	Wed,  3 Dec 2025 16:54:18 +0000 (UTC)
+	 MIME-Version; b=Qe6sFd+tWQ2FvYqztGoncgOwYpnyib2p79nVRf0ivWapDtiAFpt9vYpXW1tmAEMXjsyj3W3KCtZHO2aX0jlBkXOybtbUclCqQCr7JiaVwsfgb8GgL4cPzU/qoGMiIuVFJwoLZ6OyiIsht4trJPqrs1g1UMGXacJj7eTb7BtO4jg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N2xhb2Ck; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9D1BC4CEF5;
+	Wed,  3 Dec 2025 17:00:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780859;
-	bh=Lvnsqi9WV1tgqUMi52I3VNB0I+ejlRAtLseH6FV9fcs=;
+	s=korg; t=1764781226;
+	bh=K2Sh5mnnHenTUm+MkCjdarBtCqtr9KNFqne6CQ0nFi8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JcyOJwZJMBDZgNO61vrFVOzI2P6+f2V1WrmyfR2jrzPcZTtBzP1z6Wqyz8GOvhYbz
-	 q2+5X/+IOlz0kospr5/8QBxyqri0qW5lYpNsSLufKHspc5xrmeFqAAMdFLkShEG8/6
-	 qWM9oZe6d1dEHQKDa/LF8IkfJzEBQiQt7BeRNYZo=
+	b=N2xhb2CkkQkejpjV66Z8FiEYiLAwhoSkXsmeweMZHYUKcfsZv2HdXx2OJ5ifYnqlv
+	 e8TuIdt3HQEWWceYFPv5WnEwtWqFU8x9iFoG8HF2VhLVSe7eWu4uxdEAFnRf0QC1/S
+	 hUgCphbBHW8CR8YMimIySdN6WqiP59rL3gcapBtM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ziming zhang <ezrakiez@gmail.com>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.12 112/132] libceph: prevent potential out-of-bounds writes in handle_auth_session_key()
+	stable@kernel.org,
+	Kuen-Han Tsai <khtsai@google.com>
+Subject: [PATCH 6.6 58/93] usb: gadget: f_eem: Fix memory leak in eem_unwrap
 Date: Wed,  3 Dec 2025 16:29:51 +0100
-Message-ID: <20251203152347.431007153@linuxfoundation.org>
+Message-ID: <20251203152338.668552332@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
+References: <20251203152336.494201426@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,47 +59,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ziming zhang <ezrakiez@gmail.com>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-commit 7fce830ecd0a0256590ee37eb65a39cbad3d64fc upstream.
+commit e4f5ce990818d37930cd9fb0be29eee0553c59d9 upstream.
 
-The len field originates from untrusted network packets. Boundary
-checks have been added to prevent potential out-of-bounds writes when
-decrypting the connection secret or processing service tickets.
+The existing code did not handle the failure case of usb_ep_queue in the
+command path, potentially leading to memory leaks.
 
-[ idryomov: changelog ]
+Improve error handling to free all allocated resources on usb_ep_queue
+failure. This patch continues to use goto logic for error handling, as the
+existing error handling is complex and not easily adaptable to auto-cleanup
+helpers.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: ziming zhang <ezrakiez@gmail.com>
-Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+kmemleak results:
+  unreferenced object 0xffffff895a512300 (size 240):
+    backtrace:
+      slab_post_alloc_hook+0xbc/0x3a4
+      kmem_cache_alloc+0x1b4/0x358
+      skb_clone+0x90/0xd8
+      eem_unwrap+0x1cc/0x36c
+  unreferenced object 0xffffff8a157f4000 (size 256):
+    backtrace:
+      slab_post_alloc_hook+0xbc/0x3a4
+      __kmem_cache_alloc_node+0x1b4/0x2dc
+      kmalloc_trace+0x48/0x140
+      dwc3_gadget_ep_alloc_request+0x58/0x11c
+      usb_ep_alloc_request+0x40/0xe4
+      eem_unwrap+0x204/0x36c
+  unreferenced object 0xffffff8aadbaac00 (size 128):
+    backtrace:
+      slab_post_alloc_hook+0xbc/0x3a4
+      __kmem_cache_alloc_node+0x1b4/0x2dc
+      __kmalloc+0x64/0x1a8
+      eem_unwrap+0x218/0x36c
+  unreferenced object 0xffffff89ccef3500 (size 64):
+    backtrace:
+      slab_post_alloc_hook+0xbc/0x3a4
+      __kmem_cache_alloc_node+0x1b4/0x2dc
+      kmalloc_trace+0x48/0x140
+      eem_unwrap+0x238/0x36c
+
+Fixes: 4249d6fbc10f ("usb: gadget: eem: fix echo command packet response issue")
+Cc: stable@kernel.org
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://patch.msgid.link/20251103121814.1559719-1-khtsai@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ceph/auth_x.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/gadget/function/f_eem.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/net/ceph/auth_x.c
-+++ b/net/ceph/auth_x.c
-@@ -631,6 +631,7 @@ static int handle_auth_session_key(struc
+--- a/drivers/usb/gadget/function/f_eem.c
++++ b/drivers/usb/gadget/function/f_eem.c
+@@ -477,8 +477,13 @@ static int eem_unwrap(struct gether *por
+ 				req->complete = eem_cmd_complete;
+ 				req->zero = 1;
+ 				req->context = ctx;
+-				if (usb_ep_queue(port->in_ep, req, GFP_ATOMIC))
++				if (usb_ep_queue(port->in_ep, req, GFP_ATOMIC)) {
+ 					DBG(cdev, "echo response queue fail\n");
++					kfree(ctx);
++					kfree(req->buf);
++					usb_ep_free_request(ep, req);
++					dev_kfree_skb_any(skb2);
++				}
+ 				break;
  
- 	/* connection secret */
- 	ceph_decode_32_safe(p, end, len, e_inval);
-+	ceph_decode_need(p, end, len, e_inval);
- 	dout("%s connection secret blob len %d\n", __func__, len);
- 	if (len > 0) {
- 		dp = *p + ceph_x_encrypt_offset();
-@@ -648,6 +649,7 @@ static int handle_auth_session_key(struc
- 
- 	/* service tickets */
- 	ceph_decode_32_safe(p, end, len, e_inval);
-+	ceph_decode_need(p, end, len, e_inval);
- 	dout("%s service tickets blob len %d\n", __func__, len);
- 	if (len > 0) {
- 		ret = ceph_x_proc_ticket_reply(ac, &th->session_key,
+ 			case 1:  /* echo response */
 
 
 
