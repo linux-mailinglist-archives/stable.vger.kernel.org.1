@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 075E3C9FFB8
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:35:10 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBF89C9F92F
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:42:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2272530249B8
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:32:53 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5F6C3303E8A4
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:36:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 798373AA199;
-	Wed,  3 Dec 2025 16:32:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07B1F31280D;
+	Wed,  3 Dec 2025 15:36:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XVELz2YI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="18X3pGju"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3526A3AA194;
-	Wed,  3 Dec 2025 16:32:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5771313E27;
+	Wed,  3 Dec 2025 15:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779572; cv=none; b=V5E54F2n+uXckR5IMxqJWQmGIQsoZT5tVGgzvaoDxUf0BBv8Ly1jnJtQhf6ArcPiHtlb+YUcYPs16BAvlk+nQGXKKrNHwWYgOw51Vw/xwN15p4Bki0N5ppVdKziyEk1vmojquUrIDmUxzqwpDi1o6OWhvrfiNNqr1PocCUr7z24=
+	t=1764776179; cv=none; b=GtuHZzJzmblqcBbe37NM2l6XHX/csKggWU/Fsr/xsne/pGvmFN8C3U6NmHbCARRg5PHlv2gAwsXDeaLtKdlFF9BuFdaa2CeMg1Q+hj9DG5IByAtzdb70pX0mfde2kvjUOnHrYDGs+jEohFL9cJjG1/2spKYUPrxT2BZ321WKb3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779572; c=relaxed/simple;
-	bh=Br7FJ0pw0UFB7ALDXH8NlL6iBhrHrAHzxQ9uGAhlXfs=;
+	s=arc-20240116; t=1764776179; c=relaxed/simple;
+	bh=iAI3SD3TJfgIdDLancSUxQa5pPoEc8+moahMVNepOZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uqLrQVmPmt2cMrJaNlL0kFPW6uQaqLQF0WdgU9mpsiAC4VMR2fFUK0O9FnjCJ8xnyHXKhLADX8PQq5AUOSThhxB8pya6ewPt0e+E4Kmdx62PLyW/RZVyX6rJRmtTNHCyg5BcRzLFFrjRzoBShC5A6TtIe2kR7gumKe4lF8oYxq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XVELz2YI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98CDDC4CEF5;
-	Wed,  3 Dec 2025 16:32:51 +0000 (UTC)
+	 MIME-Version; b=ghWrPqddZodm0MEtg1QwiyNESW9vIPKeT+FWSBKwlJp4T4VMojH1wA9dOqmTjn0C4Kq1XmNBftN5/n1uLvYpObu9XUSWYtY+Mic3uHQ09yc6WuNRpTGS8HjL50YU3LKb0Mdn+K9sOLqm4x5lDheDnxE0NJ0DTBMaHmciYR/6U08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=18X3pGju; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3507EC116C6;
+	Wed,  3 Dec 2025 15:36:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779572;
-	bh=Br7FJ0pw0UFB7ALDXH8NlL6iBhrHrAHzxQ9uGAhlXfs=;
+	s=korg; t=1764776179;
+	bh=iAI3SD3TJfgIdDLancSUxQa5pPoEc8+moahMVNepOZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XVELz2YI2j2uthGICVsgj1snUaIZuRPNVegDzt/c1RZXlghgV7uqhfMBlAWdyIG/k
-	 cSl9aSBdSW+bJEwyJh2KrhHNTgUQlpVnROsET9icS3kqGJJ2fw04yRQFra1bsNrGST
-	 WLlg5Ltvkh3UfqfSwyyUcmcit4Al50PLS3qDSX3M=
+	b=18X3pGjuxe3akLgWM1vYrAkKCGMc9IT6Le7XrI5ipScxd5z2ASE28BqIrEmO9SWsN
+	 HQyyjt+qMLUrTlphwHgOLF9omgB0PCpoN+Ew5tkn83PHfPRJY7VRVu1a1gLkmY2ojy
+	 teXtUL/7+iSyfBwaVOD8hd+LlAmjTHS6M/273PpE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+48b0652a95834717f190@syzkaller.appspotmail.com,
-	Helge Deller <deller@gmx.de>,
-	Albin Babu Varghese <albinbabuvarghese20@gmail.com>,
+	Aleksander Jan Bajkowski <olek2@wp.pl>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 298/568] fbdev: Add bounds checking in bit_putcs to fix vmalloc-out-of-bounds
-Date: Wed,  3 Dec 2025 16:25:00 +0100
-Message-ID: <20251203152451.622277599@linuxfoundation.org>
+Subject: [PATCH 5.10 097/300] mips: lantiq: danube: add missing device_type in pci node
+Date: Wed,  3 Dec 2025 16:25:01 +0100
+Message-ID: <20251203152404.217018422@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +60,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Albin Babu Varghese <albinbabuvarghese20@gmail.com>
+From: Aleksander Jan Bajkowski <olek2@wp.pl>
 
-[ Upstream commit 3637d34b35b287ab830e66048841ace404382b67 ]
+[ Upstream commit d66949a1875352d2ddd52b144333288952a9e36f ]
 
-Add bounds checking to prevent writes past framebuffer boundaries when
-rendering text near screen edges. Return early if the Y position is off-screen
-and clip image height to screen boundary. Break from the rendering loop if the
-X position is off-screen. When clipping image width to fit the screen, update
-the character count to match the clipped width to prevent buffer size
-mismatches.
+This fixes the following warning:
+arch/mips/boot/dts/lantiq/danube_easy50712.dtb: pci@e105400 (lantiq,pci-xway): 'device_type' is a required property
+	from schema $id: http://devicetree.org/schemas/pci/pci-bus-common.yaml#
 
-Without the character count update, bit_putcs_aligned and bit_putcs_unaligned
-receive mismatched parameters where the buffer is allocated for the clipped
-width but cnt reflects the original larger count, causing out-of-bounds writes.
-
-Reported-by: syzbot+48b0652a95834717f190@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=48b0652a95834717f190
-Suggested-by: Helge Deller <deller@gmx.de>
-Tested-by: syzbot+48b0652a95834717f190@syzkaller.appspotmail.com
-Signed-off-by: Albin Babu Varghese <albinbabuvarghese20@gmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/bitblit.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ arch/mips/boot/dts/lantiq/danube.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/video/fbdev/core/bitblit.c b/drivers/video/fbdev/core/bitblit.c
-index a4b4e1ec702e5..8563264d11fac 100644
---- a/drivers/video/fbdev/core/bitblit.c
-+++ b/drivers/video/fbdev/core/bitblit.c
-@@ -168,6 +168,11 @@ static void bit_putcs(struct vc_data *vc, struct fb_info *info,
- 	image.height = vc->vc_font.height;
- 	image.depth = 1;
- 
-+	if (image.dy >= info->var.yres)
-+		return;
+diff --git a/arch/mips/boot/dts/lantiq/danube.dtsi b/arch/mips/boot/dts/lantiq/danube.dtsi
+index ff6ff9568e1bc..1a5f4faa0831f 100644
+--- a/arch/mips/boot/dts/lantiq/danube.dtsi
++++ b/arch/mips/boot/dts/lantiq/danube.dtsi
+@@ -105,6 +105,8 @@
+ 				  0x1000000 0 0x00000000 0xae00000 0 0x200000>; /* io space */
+ 			reg = <0x7000000 0x8000		/* config space */
+ 				0xe105400 0x400>;	/* pci bridge */
 +
-+	image.height = min(image.height, info->var.yres - image.dy);
-+
- 	if (attribute) {
- 		buf = kmalloc(cellsize, GFP_ATOMIC);
- 		if (!buf)
-@@ -181,6 +186,18 @@ static void bit_putcs(struct vc_data *vc, struct fb_info *info,
- 			cnt = count;
- 
- 		image.width = vc->vc_font.width * cnt;
-+
-+		if (image.dx >= info->var.xres)
-+			break;
-+
-+		if (image.dx + image.width > info->var.xres) {
-+			image.width = info->var.xres - image.dx;
-+			cnt = image.width / vc->vc_font.width;
-+			if (cnt == 0)
-+				break;
-+			image.width = cnt * vc->vc_font.width;
-+		}
-+
- 		pitch = DIV_ROUND_UP(image.width, 8) + scan_align;
- 		pitch &= ~scan_align;
- 		size = pitch * image.height + buf_align;
++			device_type = "pci";
+ 		};
+ 	};
+ };
 -- 
 2.51.0
 
