@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-198896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97119C9FCEC
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:07:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB809CA0087
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:40:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3E0D7300214A
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:07:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AC174301833A
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:36:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD81B34F489;
-	Wed,  3 Dec 2025 16:07:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B60C35C18A;
+	Wed,  3 Dec 2025 16:36:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ey+fc3so"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g8nIlaNF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A7D3313558;
-	Wed,  3 Dec 2025 16:07:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F542FD1C5;
+	Wed,  3 Dec 2025 16:36:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778026; cv=none; b=ZHGqcxIMRkx5SfYg3nt2lCu05SRpD7lVAn9pItnCmsIHHFqnPgKCpsbDmFNklm9+kBJfTe5GPRhWigkoV8GG4U9U/83LH7iqDVWxFC9wRnBzqkC7h7nRHjp9DLLuNcpTO+YcuXBLbEHIVG3NV9A3YBtNQKzH1gvsjO+73hl04kU=
+	t=1764779812; cv=none; b=eSi7fWa77JCtxbPWlRRSvlJt9nEGFgeQBXjdUUTg4ifFYN34qUzcdXrkvlrSHUSDeSmzMg3TtYxu9C8j/Tk1bNsxQgjtEPvsPDPVVfZWl/pmbQpGcuJnzh5FOwpKXSEh0n1GomYeYLbGeifhgfyqA+JVmI8/i4WLxs/nDNTGxQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778026; c=relaxed/simple;
-	bh=yeSnQGbFi4tH0JyonIdbUDdmz2cHsHIXHeVGvKE2JP0=;
+	s=arc-20240116; t=1764779812; c=relaxed/simple;
+	bh=wt12OHvqNjwSsibexWBOSt+2B8FYYVBWEwG6F24VVp8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gYCFFheuWmmQ8OFLLe5Bh+q+MEIVjvTZkFLVYQJZAofDrgAOunGZY3SdTIhgQ44Pzs/WTprrqaYTzhv4LCQ7a+x0B+9k0k7qjeSiWixHt4Lw8z8J6dUL81S/4aQMayaapVDeDlwP+OdaJYBy5Nj/i7Hm03lNPUpG7xqVXQSpr78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ey+fc3so; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09C56C4CEF5;
-	Wed,  3 Dec 2025 16:07:05 +0000 (UTC)
+	 MIME-Version; b=Apmz2wAHGrvBTvqhsVOMKihHV+DJUpsjoEF1aNdQ6ONEDUrG2eCKU44xbFskhUpFDuskfquUUx6q69/iO9kTL3z1AHOq7UCtm8s3rnm0avualoIWgVCJKo/OZrWI1ExsyW11ZXUfPgi/dRZlyX+tE8Lz3yFdobRJocuBHvuWl+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g8nIlaNF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E4F7C4CEF5;
+	Wed,  3 Dec 2025 16:36:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778026;
-	bh=yeSnQGbFi4tH0JyonIdbUDdmz2cHsHIXHeVGvKE2JP0=;
+	s=korg; t=1764779812;
+	bh=wt12OHvqNjwSsibexWBOSt+2B8FYYVBWEwG6F24VVp8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ey+fc3soMrvRw4Z/z6SATRNa0L5KX8HLNwfaj/SbPa86bT0AnAHzH8ERzy0bOQzpA
-	 p6hKZldlt6jlgl7b7RThYPQuO2f5DLrFbF9z1R0EdwVsFvNwuTZRmKe8jlev3o7KBK
-	 cg8yW8ly/v/GwKoUULovHE5rcp6L5fMfYH3l0dEY=
+	b=g8nIlaNF7f1rdPouSJ5Ak9dZMiL7r+9TQ+nNynXTXX6xEYUfDQvdlrBMTkcgePlbH
+	 5/C/U2ORAzxJXqgeggdNfvKfiOSyXJHU5IR2e12nVJUBGi50Pgjn8v3uYGFCLRksFk
+	 RaTOxjV520cO0pgm1Eyicz3wH1dIKeo6rZsoCrq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xin Long <lucien.xin@gmail.com>,
-	Stefan Wiehler <stefan.wiehler@nokia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Maher Sanalla <msanalla@nvidia.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 221/392] sctp: Hold sock lock while iterating over address list
+Subject: [PATCH 6.1 369/568] net/mlx5e: Add API to query/modify SBPR and SBCM registers
 Date: Wed,  3 Dec 2025 16:26:11 +0100
-Message-ID: <20251203152422.318518677@linuxfoundation.org>
+Message-ID: <20251203152454.213249732@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +61,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wiehler <stefan.wiehler@nokia.com>
+From: Maher Sanalla <msanalla@nvidia.com>
 
-[ Upstream commit f1fc201148c7e684c10a72b6a3375597f28d1ef6 ]
+[ Upstream commit 11f0996d5c6023f4889882c8d088ec76a050d704 ]
 
-Move address list traversal in inet_assoc_attr_size() under the sock
-lock to avoid holding the RCU read lock.
+To allow users to configure shared receive buffer parameters through
+dcbnl callbacks, expose an API to query and modify SBPR and SBCM registers,
+which will be used in the upcoming patch.
 
-Suggested-by: Xin Long <lucien.xin@gmail.com>
-Fixes: 8f840e47f190 ("sctp: add the sctp_diag.c file")
-Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/20251028161506.3294376-4-stefan.wiehler@nokia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Maher Sanalla <msanalla@nvidia.com>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Stable-dep-of: 9fcc2b6c1052 ("net/mlx5e: Fix potentially misleading debug message")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/diag.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ .../net/ethernet/mellanox/mlx5/core/en/port.c | 72 +++++++++++++++++++
+ .../net/ethernet/mellanox/mlx5/core/en/port.h |  6 ++
+ 2 files changed, 78 insertions(+)
 
-diff --git a/net/sctp/diag.c b/net/sctp/diag.c
-index 3631a32d96b07..2cf5ee7a698e2 100644
---- a/net/sctp/diag.c
-+++ b/net/sctp/diag.c
-@@ -230,14 +230,15 @@ struct sctp_comm_param {
- 	bool net_admin;
- };
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/port.c b/drivers/net/ethernet/mellanox/mlx5/core/en/port.c
+index 89510cac46c22..505ba41195b93 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/port.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/port.c
+@@ -287,6 +287,78 @@ int mlx5e_port_set_pbmc(struct mlx5_core_dev *mdev, void *in)
+ 	return err;
+ }
  
--static size_t inet_assoc_attr_size(struct sctp_association *asoc)
-+static size_t inet_assoc_attr_size(struct sock *sk,
-+				   struct sctp_association *asoc)
- {
- 	int addrlen = sizeof(struct sockaddr_storage);
- 	int addrcnt = 0;
- 	struct sctp_sockaddr_entry *laddr;
- 
- 	list_for_each_entry_rcu(laddr, &asoc->base.bind_addr.address_list,
--				list)
-+				list, lockdep_sock_is_held(sk))
- 		addrcnt++;
- 
- 	return	  nla_total_size(sizeof(struct sctp_info))
-@@ -263,11 +264,14 @@ static int sctp_sock_dump_one(struct sctp_endpoint *ep, struct sctp_transport *t
- 	if (err)
- 		return err;
- 
--	rep = nlmsg_new(inet_assoc_attr_size(assoc), GFP_KERNEL);
--	if (!rep)
-+	lock_sock(sk);
++int mlx5e_port_query_sbpr(struct mlx5_core_dev *mdev, u32 desc, u8 dir,
++			  u8 pool_idx, void *out, int size_out)
++{
++	u32 in[MLX5_ST_SZ_DW(sbpr_reg)] = {};
 +
-+	rep = nlmsg_new(inet_assoc_attr_size(sk, assoc), GFP_KERNEL);
-+	if (!rep) {
-+		release_sock(sk);
- 		return -ENOMEM;
-+	}
++	MLX5_SET(sbpr_reg, in, desc, desc);
++	MLX5_SET(sbpr_reg, in, dir, dir);
++	MLX5_SET(sbpr_reg, in, pool, pool_idx);
++
++	return mlx5_core_access_reg(mdev, in, sizeof(in), out, size_out, MLX5_REG_SBPR, 0, 0);
++}
++
++int mlx5e_port_set_sbpr(struct mlx5_core_dev *mdev, u32 desc, u8 dir,
++			u8 pool_idx, u32 infi_size, u32 size)
++{
++	u32 out[MLX5_ST_SZ_DW(sbpr_reg)] = {};
++	u32 in[MLX5_ST_SZ_DW(sbpr_reg)] = {};
++
++	MLX5_SET(sbpr_reg, in, desc, desc);
++	MLX5_SET(sbpr_reg, in, dir, dir);
++	MLX5_SET(sbpr_reg, in, pool, pool_idx);
++	MLX5_SET(sbpr_reg, in, infi_size, infi_size);
++	MLX5_SET(sbpr_reg, in, size, size);
++	MLX5_SET(sbpr_reg, in, mode, 1);
++
++	return mlx5_core_access_reg(mdev, in, sizeof(in), out, sizeof(out), MLX5_REG_SBPR, 0, 1);
++}
++
++static int mlx5e_port_query_sbcm(struct mlx5_core_dev *mdev, u32 desc,
++				 u8 pg_buff_idx, u8 dir, void *out,
++				 int size_out)
++{
++	u32 in[MLX5_ST_SZ_DW(sbcm_reg)] = {};
++
++	MLX5_SET(sbcm_reg, in, desc, desc);
++	MLX5_SET(sbcm_reg, in, local_port, 1);
++	MLX5_SET(sbcm_reg, in, pg_buff, pg_buff_idx);
++	MLX5_SET(sbcm_reg, in, dir, dir);
++
++	return mlx5_core_access_reg(mdev, in, sizeof(in), out, size_out, MLX5_REG_SBCM, 0, 0);
++}
++
++int mlx5e_port_set_sbcm(struct mlx5_core_dev *mdev, u32 desc, u8 pg_buff_idx,
++			u8 dir, u8 infi_size, u32 max_buff, u8 pool_idx)
++{
++	u32 out[MLX5_ST_SZ_DW(sbcm_reg)] = {};
++	u32 in[MLX5_ST_SZ_DW(sbcm_reg)] = {};
++	u32 min_buff;
++	int err;
++	u8 exc;
++
++	err = mlx5e_port_query_sbcm(mdev, desc, pg_buff_idx, dir, out,
++				    sizeof(out));
++	if (err)
++		return err;
++
++	exc = MLX5_GET(sbcm_reg, out, exc);
++	min_buff = MLX5_GET(sbcm_reg, out, min_buff);
++
++	MLX5_SET(sbcm_reg, in, desc, desc);
++	MLX5_SET(sbcm_reg, in, local_port, 1);
++	MLX5_SET(sbcm_reg, in, pg_buff, pg_buff_idx);
++	MLX5_SET(sbcm_reg, in, dir, dir);
++	MLX5_SET(sbcm_reg, in, exc, exc);
++	MLX5_SET(sbcm_reg, in, min_buff, min_buff);
++	MLX5_SET(sbcm_reg, in, infi_max, infi_size);
++	MLX5_SET(sbcm_reg, in, max_buff, max_buff);
++	MLX5_SET(sbcm_reg, in, pool, pool_idx);
++
++	return mlx5_core_access_reg(mdev, in, sizeof(in), out, sizeof(out), MLX5_REG_SBCM, 0, 1);
++}
++
+ /* buffer[i]: buffer that priority i mapped to */
+ int mlx5e_port_query_priority2buffer(struct mlx5_core_dev *mdev, u8 *buffer)
+ {
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/port.h b/drivers/net/ethernet/mellanox/mlx5/core/en/port.h
+index 7a7defe607926..3f474e370828d 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/port.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/port.h
+@@ -57,6 +57,12 @@ u32 mlx5e_port_speed2linkmodes(struct mlx5_core_dev *mdev, u32 speed,
+ bool mlx5e_ptys_ext_supported(struct mlx5_core_dev *mdev);
+ int mlx5e_port_query_pbmc(struct mlx5_core_dev *mdev, void *out);
+ int mlx5e_port_set_pbmc(struct mlx5_core_dev *mdev, void *in);
++int mlx5e_port_query_sbpr(struct mlx5_core_dev *mdev, u32 desc, u8 dir,
++			  u8 pool_idx, void *out, int size_out);
++int mlx5e_port_set_sbpr(struct mlx5_core_dev *mdev, u32 desc, u8 dir,
++			u8 pool_idx, u32 infi_size, u32 size);
++int mlx5e_port_set_sbcm(struct mlx5_core_dev *mdev, u32 desc, u8 pg_buff_idx,
++			u8 dir, u8 infi_size, u32 max_buff, u8 pool_idx);
+ int mlx5e_port_query_priority2buffer(struct mlx5_core_dev *mdev, u8 *buffer);
+ int mlx5e_port_set_priority2buffer(struct mlx5_core_dev *mdev, u8 *buffer);
  
--	lock_sock(sk);
- 	if (ep != assoc->ep) {
- 		err = -EAGAIN;
- 		goto out;
 -- 
 2.51.0
 
