@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-198971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 421D9CA05E0
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:21:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4664BC9FAEB
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:52:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 336D53194D9F
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:07:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D5487301AD35
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:44:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95EA033FE01;
-	Wed,  3 Dec 2025 16:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DEA6309EFF;
+	Wed,  3 Dec 2025 15:44:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xyJRcKtA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ch55sJ1h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5170233B97E;
-	Wed,  3 Dec 2025 16:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 100513074A0;
+	Wed,  3 Dec 2025 15:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778272; cv=none; b=JbfdppCA9k3GTzFlDskaDo+vqhi4KfJNSSk0aeGdRGr621y65+OEX6u4KhQ6fBR8Po1+QBd24AzPlLdhJpnVGyT7lPb3Sg4bf6Jg7SCb0MJkimeS6RIudFgiZ62Z3lsbV5BFNqrz4n/paE4nEWIuGYnFYerkJqEBwPOgikXLCeI=
+	t=1764776691; cv=none; b=enBvi4Tfnr198gudrEPh0po4rsOaMbsVPl/Re0z4WuSpwgrB2dj+wuPCiJbtSQ6xYVPE9sHHjHUvGleKWSdn54Ax/CfJu5JheF491waNjgZpl2ELBODs34SO2NFFLrF7y1acr4pWAjSlRvo6CZnRoeYVO1bR1cCvR1NDKlUQfJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778272; c=relaxed/simple;
-	bh=/nHm66zBgfvpvgP41co/S+d9Y1fuXrUEokffL6MSGKc=;
+	s=arc-20240116; t=1764776691; c=relaxed/simple;
+	bh=eENgCL/a7RBp6TXqkIp1h15HMOVR8MuOtVMyS55paT4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O/AOijryA2bghXlf2zcQyx3kpiedfPc4mz5zrLw73E0M1pmlbrhLXgrYXBTlKQpHqg5tbblwwQywFEi5S/nEiu7iyR7+uA8SZtiqyD25wmjGgt86oTmcACwrqJ8YeQR037bW65uTZwrB0miKFTRnfDz8a/AaLYl/XO/vBtn8zT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xyJRcKtA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFFBEC4CEF5;
-	Wed,  3 Dec 2025 16:11:11 +0000 (UTC)
+	 MIME-Version; b=Sxw/VyqRewloo/YgxMuYCj7DPqkq+blW26zBqAvtYJLfxRd88hpcdkxpQ8D4WzUb81JuznP1R7cM9/llKnkbJUSHIzs+ac6gssvRjYMO9pHAUbZj1TR8bO9CdspFOD5rO1kRA8N8ItotrZla0ZTlqDMipFud78YP6t3etTimKjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ch55sJ1h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2285AC4CEF5;
+	Wed,  3 Dec 2025 15:44:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778272;
-	bh=/nHm66zBgfvpvgP41co/S+d9Y1fuXrUEokffL6MSGKc=;
+	s=korg; t=1764776690;
+	bh=eENgCL/a7RBp6TXqkIp1h15HMOVR8MuOtVMyS55paT4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xyJRcKtA6ioaTzTmud4q1hnlxA1jb/KDM0o99OkJJWu+m96GGb92klXqTD91Yeby4
-	 hlGXzhG819bu7ilOYVLfKhIlkiuBupujBGNZ2Jv9hR0MhXbd5/OGVIuqb6UopJOSfU
-	 Y38/46J2nsRGrIZEMoMJwmutkLv5esP32OdpDoug=
+	b=Ch55sJ1hrPZR5d7p+a/d6CX+vp9ycg0+j2u5KZL/QY2MX6izcxxPOHIH7PImOcAH0
+	 a9+YS5RLnwoDeXwbKn6a/Sa58Vw2DAU/OuGGhRx8/Y2Lfk+R1zs0Unz7Ye3vt2NroC
+	 lGtP9nKyqElT7i7DhfrkKR4097BWYGI2KrOBL+G4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Kurt Kanzenbach <kurt@linutronix.de>,
+	Jay Vosburgh <jv@jvosburgh.net>,
+	Breno Leitao <leitao@debian.org>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 295/392] net: dsa: hellcreek: fix missing error handling in LED registration
+Subject: [PATCH 5.10 241/300] net: netpoll: fix incorrect refcount handling causing incorrect cleanup
 Date: Wed,  3 Dec 2025 16:27:25 +0100
-Message-ID: <20251203152425.011115351@linuxfoundation.org>
+Message-ID: <20251203152409.552890516@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit e6751b0b19a6baab219a62e1e302b8aa6b5a55b2 ]
+[ Upstream commit 49c8d2c1f94cc2f4d1a108530d7ba52614b874c2 ]
 
-The LED setup routine registered both led_sync_good
-and led_is_gm devices without checking the return
-values of led_classdev_register(). If either registration
-failed, the function continued silently, leaving the
-driver in a partially-initialized state and leaking
-a registered LED classdev.
+commit efa95b01da18 ("netpoll: fix use after free") incorrectly
+ignored the refcount and prematurely set dev->npinfo to NULL during
+netpoll cleanup, leading to improper behavior and memory leaks.
 
-Add proper error handling
+Scenario causing lack of proper cleanup:
 
-Fixes: 7d9ee2e8ff15 ("net: dsa: hellcreek: Add PTP status LEDs")
-Signed-off-by: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Acked-by: Kurt Kanzenbach <kurt@linutronix.de>
-Link: https://patch.msgid.link/20251113135745.92375-1-Pavel.Zhigulin@kaspersky.com
+1) A netpoll is associated with a NIC (e.g., eth0) and netdev->npinfo is
+   allocated, and refcnt = 1
+   - Keep in mind that npinfo is shared among all netpoll instances. In
+     this case, there is just one.
+
+2) Another netpoll is also associated with the same NIC and
+   npinfo->refcnt += 1.
+   - Now dev->npinfo->refcnt = 2;
+   - There is just one npinfo associated to the netdev.
+
+3) When the first netpolls goes to clean up:
+   - The first cleanup succeeds and clears np->dev->npinfo, ignoring
+     refcnt.
+     - It basically calls `RCU_INIT_POINTER(np->dev->npinfo, NULL);`
+   - Set dev->npinfo = NULL, without proper cleanup
+   - No ->ndo_netpoll_cleanup() is either called
+
+4) Now the second target tries to clean up
+   - The second cleanup fails because np->dev->npinfo is already NULL.
+     * In this case, ops->ndo_netpoll_cleanup() was never called, and
+       the skb pool is not cleaned as well (for the second netpoll
+       instance)
+  - This leaks npinfo and skbpool skbs, which is clearly reported by
+    kmemleak.
+
+Revert commit efa95b01da18 ("netpoll: fix use after free") and adds
+clarifying comments emphasizing that npinfo cleanup should only happen
+once the refcount reaches zero, ensuring stable and correct netpoll
+behavior.
+
+Cc: <stable@vger.kernel.org> # 3.17.x
+Cc: Jay Vosburgh <jv@jvosburgh.net>
+Fixes: efa95b01da18 ("netpoll: fix use after free")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251107-netconsole_torture-v10-1-749227b55f63@debian.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/hirschmann/hellcreek_ptp.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ net/core/netpoll.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/hirschmann/hellcreek_ptp.c b/drivers/net/dsa/hirschmann/hellcreek_ptp.c
-index b28baab6d56a1..763666480a8a8 100644
---- a/drivers/net/dsa/hirschmann/hellcreek_ptp.c
-+++ b/drivers/net/dsa/hirschmann/hellcreek_ptp.c
-@@ -367,8 +367,18 @@ static int hellcreek_led_setup(struct hellcreek *hellcreek)
- 		hellcreek_set_brightness(hellcreek, STATUS_OUT_IS_GM, 1);
+--- a/net/core/netpoll.c
++++ b/net/core/netpoll.c
+@@ -863,6 +863,10 @@ void __netpoll_cleanup(struct netpoll *n
  
- 	/* Register both leds */
--	led_classdev_register(hellcreek->dev, &hellcreek->led_sync_good);
--	led_classdev_register(hellcreek->dev, &hellcreek->led_is_gm);
-+	ret = led_classdev_register(hellcreek->dev, &hellcreek->led_sync_good);
-+	if (ret) {
-+		dev_err(hellcreek->dev, "Failed to register sync_good LED\n");
-+		goto out;
+ 	synchronize_srcu(&netpoll_srcu);
+ 
++	/* At this point, there is a single npinfo instance per netdevice, and
++	 * its refcnt tracks how many netpoll structures are linked to it. We
++	 * only perform npinfo cleanup when the refcnt decrements to zero.
++	 */
+ 	if (refcount_dec_and_test(&npinfo->refcnt)) {
+ 		const struct net_device_ops *ops;
+ 
+@@ -872,8 +876,7 @@ void __netpoll_cleanup(struct netpoll *n
+ 
+ 		RCU_INIT_POINTER(np->dev->npinfo, NULL);
+ 		call_rcu(&npinfo->rcu, rcu_cleanup_netpoll_info);
+-	} else
+-		RCU_INIT_POINTER(np->dev->npinfo, NULL);
 +	}
-+
-+	ret = led_classdev_register(hellcreek->dev, &hellcreek->led_is_gm);
-+	if (ret) {
-+		dev_err(hellcreek->dev, "Failed to register is_gm LED\n");
-+		led_classdev_unregister(&hellcreek->led_sync_good);
-+		goto out;
-+	}
+ }
+ EXPORT_SYMBOL_GPL(__netpoll_cleanup);
  
- 	ret = 0;
- 
--- 
-2.51.0
-
 
 
 
