@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-199412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90506CA05A4
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:20:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4F83C9F9EF
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:45:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1F87A32931E0
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:06:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E18773021769
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:40:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D402350D76;
-	Wed,  3 Dec 2025 16:35:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BEDB3081AF;
+	Wed,  3 Dec 2025 15:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UiF2Zeui"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gma6r9iy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C0F35029B;
-	Wed,  3 Dec 2025 16:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09BF8DDAB;
+	Wed,  3 Dec 2025 15:39:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779715; cv=none; b=lybfuupslcPRb4s7dpKcLjinY2MFRz1ebBbCWjad1AYCnO+GTh0eC4reKB6yD5uM2rLLXtppDi9mS417n90TWh/GYlsry472AaTwBBMFpEGt4or2zPmI52ciFuAzyKcEVyszZJ1nk7xcy9ozPZsE9Qd8AwkM9gz5e8FHDDlv5g0=
+	t=1764776400; cv=none; b=THgi3FAGWVHcEAwgZI1A1yWY+HXj9ck6XwfVxKXNTLhSd/9GF+7AfRcQVZUMF6vfZv1Ao5ro1xu+vPCDDFdQy9vYe5rm2PYixQpwkIDPd3WWhAWGsSa4+PScOScY5A1IyKtd6CXMmRATOllQUj0iavpA7IkKE80M+10WvOdl3+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779715; c=relaxed/simple;
-	bh=1rBGl3g4VZAecrHczVxETIBnw++ZztUtZkImfxOg+hs=;
+	s=arc-20240116; t=1764776400; c=relaxed/simple;
+	bh=13NFWCw3oV78KyRsA85oauo33h+2B3IMa8Ec70rS6nU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mlr3/SBpDodFVB53k5W6K9jh4CdXWpoJIbccD2knEUFpUsgeUFjDYzj3uBEnOm218nysWHrvMHVhN7yFJNSFkTbEx4LnmXK7ndFFi7pZe69LSye+W8If+vPjuPol8Vx3sKeeLkt5rfRv+Odmu0krQE+GjyGs+6OEWFEammh0dH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UiF2Zeui; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41688C4CEF5;
-	Wed,  3 Dec 2025 16:35:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aS9mwdqE86z3Kl1Osc6X+Q4zysgFR0MAZNyTzCNGVil6YrRBKeKZZdK4ojzIWuOqmDSNkILuW9KriGUamW2Y+95ZRkGwzjhacOsP/ciGelDkPcF/960HAMiEanz0vRFjlUdxf5iJEcwWhEk9ku/yhNIxKEIXi5l6zmlmcZWXfjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gma6r9iy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74BA6C4CEF5;
+	Wed,  3 Dec 2025 15:39:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779715;
-	bh=1rBGl3g4VZAecrHczVxETIBnw++ZztUtZkImfxOg+hs=;
+	s=korg; t=1764776399;
+	bh=13NFWCw3oV78KyRsA85oauo33h+2B3IMa8Ec70rS6nU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UiF2Zeui3wGg0eim/bjEiHi89mldm5l4vz9hbvUZM1xo+4Qm6k3p0xFGZWx6q9ZcI
-	 eMBxrgrpPhw6UMNUMl8Ms2g9262eGwJyMwVOV4OfALKXBUFpi2mjZZB4UI89v0rLcO
-	 h55l+7XYjoZnzqwKkbyhIWMawwlfjEGFMgWj6f3I=
+	b=Gma6r9iyhfP1kQm8TMfGt9qzUZNGXtsQur/CJHiyyWRBSB3QJwE66I2y0KSazHOuA
+	 Sl7bQVmR8yPd3uZD9WHHAaCZpUDZ96u2/uSUnUeFupq0jtC3DTBBCPZIAg5a6WMh+n
+	 T/UrXTFhp++OGkiXzp11KM6oU2/dlOw9RAKs7TpY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 339/568] drm/amd/pm: Disable MCLK switching on SI at high pixel clocks
-Date: Wed,  3 Dec 2025 16:25:41 +0100
-Message-ID: <20251203152453.124146718@linuxfoundation.org>
+Subject: [PATCH 5.10 138/300] net: macb: avoid dealing with endianness in macb_set_hwaddr()
+Date: Wed,  3 Dec 2025 16:25:42 +0100
+Message-ID: <20251203152405.729791233@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +63,56 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Théo Lebrun <theo.lebrun@bootlin.com>
 
-[ Upstream commit 5c05bcf6ae7732da1bd4dc1958d527b5f07f216a ]
+[ Upstream commit 70a5ce8bc94545ba0fb47b2498bfb12de2132f4d ]
 
-On various SI GPUs, a flickering can be observed near the bottom
-edge of the screen when using a single 4K 60Hz monitor over DP.
-Disabling MCLK switching works around this problem.
+bp->dev->dev_addr is of type `unsigned char *`. Casting it to a u32
+pointer and dereferencing implies dealing manually with endianness,
+which is error-prone.
 
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Replace by calls to get_unaligned_le32|le16() helpers.
+
+This was found using sparse:
+   ⟩ make C=2 drivers/net/ethernet/cadence/macb_main.o
+   warning: incorrect type in assignment (different base types)
+      expected unsigned int [usertype] bottom
+      got restricted __le32 [usertype]
+   warning: incorrect type in assignment (different base types)
+      expected unsigned short [usertype] top
+      got restricted __le16 [usertype]
+   ...
+
+Reviewed-by: Sean Anderson <sean.anderson@linux.dev>
+Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250923-macb-fixes-v6-5-772d655cdeb6@bootlin.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/ethernet/cadence/macb_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-index 7a85c042a6db9..2395d0a831846 100644
---- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-@@ -3485,6 +3485,11 @@ static void si_apply_state_adjust_rules(struct amdgpu_device *adev,
- 	 * for these GPUs to calculate bandwidth requirements.
- 	 */
- 	if (high_pixelclock_count) {
-+		/* Work around flickering lines at the bottom edge
-+		 * of the screen when using a single 4K 60Hz monitor.
-+		 */
-+		disable_mclk_switching = true;
-+
- 		/* On Oland, we observe some flickering when two 4K 60Hz
- 		 * displays are connected, possibly because voltage is too low.
- 		 * Raise the voltage by requiring a higher SCLK.
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index 2a103be1c9d8a..c407e8d0eb618 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -276,9 +276,9 @@ static void macb_set_hwaddr(struct macb *bp)
+ 	u32 bottom;
+ 	u16 top;
+ 
+-	bottom = cpu_to_le32(*((u32 *)bp->dev->dev_addr));
++	bottom = get_unaligned_le32(bp->dev->dev_addr);
+ 	macb_or_gem_writel(bp, SA1B, bottom);
+-	top = cpu_to_le16(*((u16 *)(bp->dev->dev_addr + 4)));
++	top = get_unaligned_le16(bp->dev->dev_addr + 4);
+ 	macb_or_gem_writel(bp, SA1T, top);
+ 
+ 	/* Clear unused address register sets */
 -- 
 2.51.0
 
