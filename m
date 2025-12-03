@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38121CA05F2
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:22:00 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9960CA0C0A
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:05:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EBBC732AEFB2
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:07:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9DB783002527
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:04:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FA0F32FA03;
-	Wed,  3 Dec 2025 16:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A7913191DA;
+	Wed,  3 Dec 2025 15:53:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SVPkMH5M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lCPctvji"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B3F4326D77;
-	Wed,  3 Dec 2025 16:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54F8C317715;
+	Wed,  3 Dec 2025 15:53:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780547; cv=none; b=pFxkiW3njUyJyLgtZENek4BQhDGkpKg57sZxU2xORS9mc0AfDYapiY9Mk7lHBHhLokwEvw5kENNfJuPdnP2k5tzg1d9WEjHUyve5hHZCLVni4WAu5xS6DliThR6R3YJmxXBMtUyCnA/P9h8IDcsjiVTDFZ5ErDibGd4MkT3amJ4=
+	t=1764777220; cv=none; b=KN2lc4tYwnx4mTYbZY2j8S1EakgOgSyCP1qN4uyLmnyvWJm1hqUDFZemIbfZpvbNzDd1e80lNeBYsPIemPcT0pynykJ6VdAFlZkCyK9GINTTPmFO83vf2N0DQQyfsEAAaUhKRdytG/5tNQ5+bxWBkxWHHELY3pedZCtVAa+pBiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780547; c=relaxed/simple;
-	bh=jCMXjIu+Ee0viD/5UcvDFhAT2CT0lh35jyHHDzpd9wc=;
+	s=arc-20240116; t=1764777220; c=relaxed/simple;
+	bh=RyC8OeKmKMHo2XbXVWRu26ChHXhRsV12jQmjmVy8QII=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ro2JOlZvlN1buvMD1mOPf7qxgeBu5ZnEOs9Rv1BgV6uzh89+A7ErdMEIvjYH4S2fOBiRdCjQ6Ph82tc7qTWoq+HkWWOUpgFbz8z9Njrk9JRkN41Js2wTsF1tbgmVB1RnYm0vCSo010gy7eyiJv1bnixzZcrfojsLbV2rbniDNck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SVPkMH5M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC97EC116B1;
-	Wed,  3 Dec 2025 16:49:06 +0000 (UTC)
+	 MIME-Version; b=Dbv5Ow1xd/Z5tKcZyF8mEey8c7iVX0PGue7K0gv65Ogol/pvzEdGViIFX5ME0v+3wKseR1i5NPQ/yozMqSPV6rsffXMZcMRMXvDfeY3Uz1nR4h4KumbP4AK5JZW9lJK4UiObxdrsGojc1TI2G0l8k5+ZraL1eMjQpqjIKx9Y6PQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lCPctvji; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6422C4CEF5;
+	Wed,  3 Dec 2025 15:53:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780547;
-	bh=jCMXjIu+Ee0viD/5UcvDFhAT2CT0lh35jyHHDzpd9wc=;
+	s=korg; t=1764777220;
+	bh=RyC8OeKmKMHo2XbXVWRu26ChHXhRsV12jQmjmVy8QII=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SVPkMH5MBeiAUmXuYhIz8WQiWWvBweAv3aK04sLP55Nv2TWiQKOD6Z4AC6Numbr8U
-	 tyMFyarz/818pOSwImGccYw4hy8yYJxKUwojGxVzGrHc8VBJzdEUFOFPenehrGNphN
-	 m7J8dHHygZfRz/jp+sKm8Bg0OSxim8Dn34cevZMQ=
+	b=lCPctvjipziTJBYbwNj4kvSEi7fZdvl7O2V+fHo5pOUz8dWIyKnFhcR5NxBcXY6r8
+	 wnrVCd7rYyM3x4dLdZMP5kljrt256B7Bi3MaoWQHb89U0g5C4SGx6X377UlAXBYZlv
+	 Pn8QybOol+Qp2T7JDW5jsu1V9/pq2XFhxDfiFEEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danielle Costantino <dcostantino@meta.com>,
-	Gal Pressman <gal@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 019/132] net/mlx5e: Fix validation logic in rate limiting
+	stable <stable@kernel.org>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Manish Nagar <manish.nagar@oss.qualcomm.com>
+Subject: [PATCH 6.17 120/146] usb: dwc3: Fix race condition between concurrent dwc3_remove_requests() call paths
 Date: Wed,  3 Dec 2025 16:28:18 +0100
-Message-ID: <20251203152344.009038038@linuxfoundation.org>
+Message-ID: <20251203152350.855303484@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +60,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danielle Costantino <dcostantino@meta.com>
+From: Manish Nagar <manish.nagar@oss.qualcomm.com>
 
-[ Upstream commit d2099d9f16dbfa1c5266d4230ff7860047bb0b68 ]
+commit e4037689a366743c4233966f0e74bc455820d316 upstream.
 
-The rate limiting validation condition currently checks the output
-variable max_bw_value[i] instead of the input value
-maxrate->tc_maxrate[i]. This causes the validation to compare an
-uninitialized or stale value rather than the actual requested rate.
+This patch addresses a race condition caused by unsynchronized
+execution of multiple call paths invoking `dwc3_remove_requests()`,
+leading to premature freeing of USB requests and subsequent crashes.
 
-The condition should check the input rate to properly validate against
-the upper limit:
+Three distinct execution paths interact with `dwc3_remove_requests()`:
+Path 1:
+Triggered via `dwc3_gadget_reset_interrupt()` during USB reset
+handling. The call stack includes:
+- `dwc3_ep0_reset_state()`
+- `dwc3_ep0_stall_and_restart()`
+- `dwc3_ep0_out_start()`
+- `dwc3_remove_requests()`
+- `dwc3_gadget_del_and_unmap_request()`
 
-    } else if (maxrate->tc_maxrate[i] <= upper_limit_gbps) {
+Path 2:
+Also initiated from `dwc3_gadget_reset_interrupt()`, but through
+`dwc3_stop_active_transfers()`. The call stack includes:
+- `dwc3_stop_active_transfers()`
+- `dwc3_remove_requests()`
+- `dwc3_gadget_del_and_unmap_request()`
 
-This aligns with the pattern used in the first branch, which correctly
-checks maxrate->tc_maxrate[i] against upper_limit_mbps.
+Path 3:
+Occurs independently during `adb root` execution, which triggers
+USB function unbind and bind operations. The sequence includes:
+- `gserial_disconnect()`
+- `usb_ep_disable()`
+- `dwc3_gadget_ep_disable()`
+- `dwc3_remove_requests()` with `-ESHUTDOWN` status
 
-The current implementation can lead to unreliable validation behavior:
+Path 3 operates asynchronously and lacks synchronization with Paths
+1 and 2. When Path 3 completes, it disables endpoints and frees 'out'
+requests. If Paths 1 or 2 are still processing these requests,
+accessing freed memory leads to a crash due to use-after-free conditions.
 
-- For rates between 25.5 Gbps and 255 Gbps, if max_bw_value[i] is 0
-  from initialization, the GBPS path may be taken regardless of whether
-  the actual rate is within bounds
+To fix this added check for request completion and skip processing
+if already completed and added the request status for ep0 while queue.
 
-- When processing multiple TCs (i > 0), max_bw_value[i] contains the
-  value computed for the previous TC, affecting the validation logic
-
-- The overflow check for rates exceeding 255 Gbps may not trigger
-  consistently depending on previous array values
-
-This patch ensures the validation correctly examines the requested rate
-value for proper bounds checking.
-
-Fixes: 43b27d1bd88a ("net/mlx5e: Fix wraparound in rate limiting for values above 255 Gbps")
-Signed-off-by: Danielle Costantino <dcostantino@meta.com>
-Reviewed-by: Gal Pressman <gal@nvidia.com>
-Link: https://patch.msgid.link/20251124180043.2314428-1-dcostantino@meta.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 72246da40f37 ("usb: Introduce DesignWare USB3 DRD Driver")
+Cc: stable <stable@kernel.org>
+Suggested-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Manish Nagar <manish.nagar@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251120074435.1983091-1-manish.nagar@oss.qualcomm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/dwc3/ep0.c    |    1 +
+ drivers/usb/dwc3/gadget.c |    7 +++++++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-index 2ca32fb1961e1..84e700777941e 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-@@ -627,7 +627,7 @@ static int mlx5e_dcbnl_ieee_setmaxrate(struct net_device *netdev,
- 						  MLX5E_100MB);
- 			max_bw_value[i] = max_bw_value[i] ? max_bw_value[i] : 1;
- 			max_bw_unit[i]  = MLX5_100_MBPS_UNIT;
--		} else if (max_bw_value[i] <= upper_limit_gbps) {
-+		} else if (maxrate->tc_maxrate[i] <= upper_limit_gbps) {
- 			max_bw_value[i] = div_u64(maxrate->tc_maxrate[i],
- 						  MLX5E_1GB);
- 			max_bw_unit[i]  = MLX5_GBPS_UNIT;
--- 
-2.51.0
-
+--- a/drivers/usb/dwc3/ep0.c
++++ b/drivers/usb/dwc3/ep0.c
+@@ -94,6 +94,7 @@ static int __dwc3_gadget_ep0_queue(struc
+ 	req->request.actual	= 0;
+ 	req->request.status	= -EINPROGRESS;
+ 	req->epnum		= dep->number;
++	req->status		= DWC3_REQUEST_STATUS_QUEUED;
+ 
+ 	list_add_tail(&req->list, &dep->pending_list);
+ 
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -228,6 +228,13 @@ void dwc3_gadget_giveback(struct dwc3_ep
+ {
+ 	struct dwc3			*dwc = dep->dwc;
+ 
++	/*
++	 * The request might have been processed and completed while the
++	 * spinlock was released. Skip processing if already completed.
++	 */
++	if (req->status == DWC3_REQUEST_STATUS_COMPLETED)
++		return;
++
+ 	dwc3_gadget_del_and_unmap_request(dep, req, status);
+ 	req->status = DWC3_REQUEST_STATUS_COMPLETED;
+ 
 
 
 
