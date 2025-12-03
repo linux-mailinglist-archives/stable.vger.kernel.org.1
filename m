@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-199064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FD5CCA05E3
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:21:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CAAECA0B3B
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:58:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0F1613005AB4
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:21:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2502B30285C8
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:53:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBA062D5412;
-	Wed,  3 Dec 2025 16:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B398393DE9;
+	Wed,  3 Dec 2025 16:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bhvBLPR3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="II9OtNZo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C5235293F;
-	Wed,  3 Dec 2025 16:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F709393DE6;
+	Wed,  3 Dec 2025 16:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778579; cv=none; b=i7/5Nh6eFMAE/D6OtKqt2QAKz0dSYRyXZrCbyfOg/AeF3KiL65r20+C7fSAN/hsQvvB+9Ym1cs/N6VeIQLqe+LJJIaNjDOEKx+a2XQSRSS4V2Qn7sfd6gJJXobkb1EmQvi308xglraHz8wFeclLZSLgfy3ehcIAYaQQCQlZ8Pv4=
+	t=1764780692; cv=none; b=F6upomaJGFSZ2ERt+NGMpYsrqJisbmwFCBcIxyz3RjjX5Eb+DFq4AoQZJwk+kcUFahWZ4pQQaB6lBhoRlVQU9hMzwmmDvtACaTGhnBMEv/X/Dep38YNZQh8CU6FI/A/3n4Asa/gbrv9xO1+ANSeSMxBk2ZBe1Hu7QVNay+ILVbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778579; c=relaxed/simple;
-	bh=9jLDUhb01PVWj2MMAUcS889hNZtwd2lfYEOlopBIQaQ=;
+	s=arc-20240116; t=1764780692; c=relaxed/simple;
+	bh=7u/TbkyrglSHPc8lChmjrv1+CCeJIQwjcilXkE4xff8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RHe15sK0ABqqLTXgniV7IoSutfRrGaKSSayUvU218el3PbB9TK+ELvyiwEPWgrz61rIEu9FvXaLUhKFO3JEHghletpj/xUMz1aSYJuCiNa7Z9TZx6IeEc9Rku5b5HMtcy76I1zaM+mw3uHt6Yl4W/j5yL24QPwjwiEFAq3TE2qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bhvBLPR3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E02F7C4CEF5;
-	Wed,  3 Dec 2025 16:16:18 +0000 (UTC)
+	 MIME-Version; b=JeQIFVvB8ul26QB5A/LXRzKU2x3JpeEu7OwCgW1zTJkDObtdqYYT19cDlc619Mfr2c/WghyhCRpdDfcaM1GBQ+Xo3qjcMmcHEWgnyKhaq2qCoJ4WMKq5Sry/ELvcDIbskJIg4I43IRN2cx0og5I4M82A8vouLqqY75ojY/cHhUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=II9OtNZo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD575C4CEF5;
+	Wed,  3 Dec 2025 16:51:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778579;
-	bh=9jLDUhb01PVWj2MMAUcS889hNZtwd2lfYEOlopBIQaQ=;
+	s=korg; t=1764780692;
+	bh=7u/TbkyrglSHPc8lChmjrv1+CCeJIQwjcilXkE4xff8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bhvBLPR3LS/HiLds5NfMqjCEUuhkECxG/S99npIY4cBQV1KoyGJeKob1SsiHfRCDT
-	 53mec1umxgMBaIpRWSNmdDZ4yyRS47S00OKRsk0O41NFpOFJzLVeBTn7NNQ2gELc6U
-	 HCcQP/agV9NJHEd+qpYA4jSm60jkkYiemcYFVn3I=
+	b=II9OtNZoHszj+Vze/CsEGkh11efyskjV4b2bKdwKY0ClJgJ2rRe0HNvO+pXrgxImR
+	 S8NzZu8IXTnW8MSt3iiGs6AZ8cZkdngpVguFnANO88ysIStESvLVakJ0knSs3NE6xY
+	 AdL6T0kSOR00gA7E0aJwo2kTzrAeHJyz+TksTMmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>
-Subject: [PATCH 5.15 389/392] selftests/bpf: Dont rely on preserving volatile in PT_REGS macros in loop3
+	Valek Andrej <andrej.v@skyrain.eu>,
+	Kessler Markus <markus.kessler@hilti.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.12 060/132] iio: accel: fix ADXL355 startup race condition
 Date: Wed,  3 Dec 2025 16:28:59 +0100
-Message-ID: <20251203152428.508639906@linuxfoundation.org>
+Message-ID: <20251203152345.519033442@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,47 +61,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Valek Andrej <andrej.v@skyrain.eu>
 
-commit 70bc793382a0e37ba4e35e4d1a317b280b829a44 upstream.
+commit c92c1bc408e9e11ae3c7011b062fdd74c09283a3 upstream.
 
-PT_REGS*() macro on some architectures force-cast struct pt_regs to
-other types (user_pt_regs, etc) and might drop volatile modifiers, if any.
-Volatile isn't really required as pt_regs value isn't supposed to change
-during the BPF program run, so this is correct behavior.
+There is an race-condition where device is not full working after SW reset.
+Therefore it's necessary to wait some time after reset and verify shadow
+registers values by reading and comparing the values before/after reset.
+This mechanism is described in datasheet at least from revision D.
 
-But progs/loop3.c relies on that volatile modifier to ensure that loop
-is preserved. Fix loop3.c by declaring i and sum variables as volatile
-instead. It preserves the loop and makes the test pass on all
-architectures (including s390x which is currently broken).
-
-Fixes: 3cc31d794097 ("libbpf: Normalize PT_REGS_xxx() macro definitions")
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20220106205156.955373-1-andrii@kernel.org
+Fixes: 12ed27863ea3 ("iio: accel: Add driver support for ADXL355")
+Signed-off-by: Valek Andrej <andrej.v@skyrain.eu>
+Signed-off-by: Kessler Markus <markus.kessler@hilti.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/bpf/progs/loop3.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/accel/adxl355_core.c |   44 ++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 39 insertions(+), 5 deletions(-)
 
---- a/tools/testing/selftests/bpf/progs/loop3.c
-+++ b/tools/testing/selftests/bpf/progs/loop3.c
-@@ -12,9 +12,9 @@
- char _license[] SEC("license") = "GPL";
+--- a/drivers/iio/accel/adxl355_core.c
++++ b/drivers/iio/accel/adxl355_core.c
+@@ -56,6 +56,8 @@
+ #define  ADXL355_POWER_CTL_DRDY_MSK	BIT(2)
+ #define ADXL355_SELF_TEST_REG		0x2E
+ #define ADXL355_RESET_REG		0x2F
++#define ADXL355_BASE_ADDR_SHADOW_REG	0x50
++#define ADXL355_SHADOW_REG_COUNT	5
  
- SEC("raw_tracepoint/consume_skb")
--int while_true(volatile struct pt_regs* ctx)
-+int while_true(struct pt_regs *ctx)
+ #define ADXL355_DEVID_AD_VAL		0xAD
+ #define ADXL355_DEVID_MST_VAL		0x1D
+@@ -294,7 +296,12 @@ static void adxl355_fill_3db_frequency_t
+ static int adxl355_setup(struct adxl355_data *data)
  {
--	__u64 i = 0, sum = 0;
-+	volatile __u64 i = 0, sum = 0;
- 	do {
- 		i++;
- 		sum += PT_REGS_RC(ctx);
+ 	unsigned int regval;
++	int retries = 5; /* the number is chosen based on empirical reasons */
+ 	int ret;
++	u8 *shadow_regs __free(kfree) = kzalloc(ADXL355_SHADOW_REG_COUNT, GFP_KERNEL);
++
++	if (!shadow_regs)
++		return -ENOMEM;
+ 
+ 	ret = regmap_read(data->regmap, ADXL355_DEVID_AD_REG, &regval);
+ 	if (ret)
+@@ -321,14 +328,41 @@ static int adxl355_setup(struct adxl355_
+ 	if (regval != ADXL355_PARTID_VAL)
+ 		dev_warn(data->dev, "Invalid DEV ID 0x%02x\n", regval);
+ 
+-	/*
+-	 * Perform a software reset to make sure the device is in a consistent
+-	 * state after start-up.
+-	 */
+-	ret = regmap_write(data->regmap, ADXL355_RESET_REG, ADXL355_RESET_CODE);
++	/* Read shadow registers to be compared after reset */
++	ret = regmap_bulk_read(data->regmap,
++			       ADXL355_BASE_ADDR_SHADOW_REG,
++			       shadow_regs, ADXL355_SHADOW_REG_COUNT);
+ 	if (ret)
+ 		return ret;
+ 
++	do {
++		if (--retries == 0) {
++			dev_err(data->dev, "Shadow registers mismatch\n");
++			return -EIO;
++		}
++
++		/*
++		 * Perform a software reset to make sure the device is in a consistent
++		 * state after start-up.
++		 */
++		ret = regmap_write(data->regmap, ADXL355_RESET_REG,
++				   ADXL355_RESET_CODE);
++		if (ret)
++			return ret;
++
++		/* Wait at least 5ms after software reset */
++		usleep_range(5000, 10000);
++
++		/* Read shadow registers for comparison */
++		ret = regmap_bulk_read(data->regmap,
++				       ADXL355_BASE_ADDR_SHADOW_REG,
++				       data->buffer.buf,
++				       ADXL355_SHADOW_REG_COUNT);
++		if (ret)
++			return ret;
++	} while (memcmp(shadow_regs, data->buffer.buf,
++			ADXL355_SHADOW_REG_COUNT));
++
+ 	ret = regmap_update_bits(data->regmap, ADXL355_POWER_CTL_REG,
+ 				 ADXL355_POWER_CTL_DRDY_MSK,
+ 				 FIELD_PREP(ADXL355_POWER_CTL_DRDY_MSK, 1));
 
 
 
