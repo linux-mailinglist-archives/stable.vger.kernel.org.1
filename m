@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5537ACA0637
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:23:23 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56A2CCA1756
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:48:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CA22B32CCE06
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:08:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CD72F300251F
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:48:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 780713469FD;
-	Wed,  3 Dec 2025 16:49:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACDD634B40C;
+	Wed,  3 Dec 2025 16:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DWvS8ML8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ThFVX1PT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E3E2346789;
-	Wed,  3 Dec 2025 16:49:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 646A234B1AF;
+	Wed,  3 Dec 2025 16:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780574; cv=none; b=Q+QE/oMktmGcnoQZsUmQ1pqVJOosqf4kYVWYzc3gZdGvHTRlWnSLX2uwCE4vbAMvsrpvXYHJ5B7TEUQdjHLhhkndyG2qq4JH4tA8noXJFzziL87VlbwfxO0Aer/i7TRy/cyPBNDLMo66k4ltRjJ1Dhb4NEDpll5lJrZxBBoBsyc=
+	t=1764778467; cv=none; b=XorI5DeWTD/dxLg2y23qgNj8pyWcpKRxU3t6ZI+yDNa7J5OcUNy6seW+xAcU+0PwwrDPQret11DpK/PTDvf1uaBlnSENPZ4XKuAkVu7nA/p+gN3yfiu1ivS803/QXEnjY30OUXn5Ho6SqX9bsoUSAJgUoMJyeC7dauuZisBUFfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780574; c=relaxed/simple;
-	bh=s1fHEdWEfPpReqhg/0li7FvNv2htbCprznAWinZs1Gs=;
+	s=arc-20240116; t=1764778467; c=relaxed/simple;
+	bh=5iFkhH5VKV08EqvqqV2mjrQkQvOQ1spZXaygcqGnBsM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m6kyZEtCwAgTk5RDkTd+aUAjdMCjblb+Qzea1NGT6VgNoQl6RJGp3k34Mn3dmRaQ5o2lfaFzjb7Crtw4dG0txvGidiFC6m2i/bCNLL82ngFPDxcYE+LemYuHtvIzGQm9BaiYglBuyulc7sF+592TUVu8GUQ5YaowwL+9tXPJGj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DWvS8ML8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE0BDC4CEF5;
-	Wed,  3 Dec 2025 16:49:33 +0000 (UTC)
+	 MIME-Version; b=RvZJxfq1GXD378s5rMh9AU2Qm5R57DZMV0iGdmAt++FFvXIhO598QGrzLQ1NylEjAPeHG4tSFxdM89dvvGQlJ+fiWjZMcT8juhywYQAzto8T1aTMJ7sk76Rl3du2J3xnEtoZeuV/wK7gkjewS0r3CrkhAn3ZDgWy5YfUXYDWnqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ThFVX1PT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4EDDC4CEF5;
+	Wed,  3 Dec 2025 16:14:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780574;
-	bh=s1fHEdWEfPpReqhg/0li7FvNv2htbCprznAWinZs1Gs=;
+	s=korg; t=1764778467;
+	bh=5iFkhH5VKV08EqvqqV2mjrQkQvOQ1spZXaygcqGnBsM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DWvS8ML8uGv5sDa1KnxdIAua/xMg+mDlSMJ2g8hSMotPCODLlCmBM0P8w/GJtwsQV
-	 gxVAEHOSjzKE2TAHGSsL/6jtcIZppsYZvrjmS2KQoZy+j/qtXbt/80dpbMlVCvxI2c
-	 Z5y5088JvkFO8tN9NK9SqhDDcacsgVjgZs2BhmKI=
+	b=ThFVX1PTKrGtNRHcNSfYl50Pnos7g+hGcgoYWB9QcT8IZVmZnwJ+rTlGoHykGsYOA
+	 ArHV2IUSxx27YdWi7QC5o2EvEC9bUMbNAL77Jqltn+CouLZzMXa0n/hEiqtEY8Xakq
+	 1K28U6wQZRIlg3DEqd1s5wN8Yl3D1cZ34RyyBO34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mohsin Bashir <mohsin.bashr@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 026/132] eth: fbnic: Fix counter roll-over issue
+	Gui-Dong Han <hanguidong02@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.15 355/392] atm/fore200e: Fix possible data race in fore200e_open()
 Date: Wed,  3 Dec 2025 16:28:25 +0100
-Message-ID: <20251203152344.270416114@linuxfoundation.org>
+Message-ID: <20251203152427.229576140@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +60,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mohsin Bashir <mohsin.bashr@gmail.com>
+From: Gui-Dong Han <hanguidong02@gmail.com>
 
-[ Upstream commit 6d66e093e0740d39a36ef742c60eec247df26f41 ]
+commit 82fca3d8a4a34667f01ec2351a607135249c9cff upstream.
 
-Fix a potential counter roll-over issue in fbnic_mbx_alloc_rx_msgs()
-when calculating descriptor slots. The issue occurs when head - tail
-results in a large positive value (unsigned) and the compiler interprets
-head - tail - 1 as a signed value.
+Protect access to fore200e->available_cell_rate with rate_mtx lock in the
+error handling path of fore200e_open() to prevent a data race.
 
-Since FBNIC_IPC_MBX_DESC_LEN is a power of two, use a masking operation,
-which is a common way of avoiding this problem when dealing with these
-sort of ring space calculations.
+The field fore200e->available_cell_rate is a shared resource used to track
+available bandwidth. It is concurrently accessed by fore200e_open(),
+fore200e_close(), and fore200e_change_qos().
 
-Fixes: da3cde08209e ("eth: fbnic: Add FW communication mechanism")
-Signed-off-by: Mohsin Bashir <mohsin.bashr@gmail.com>
-Link: https://patch.msgid.link/20251125211704.3222413-1-mohsin.bashr@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In fore200e_open(), the lock rate_mtx is correctly held when subtracting
+vcc->qos.txtp.max_pcr from available_cell_rate to reserve bandwidth.
+However, if the subsequent call to fore200e_activate_vcin() fails, the
+function restores the reserved bandwidth by adding back to
+available_cell_rate without holding the lock.
+
+This introduces a race condition because available_cell_rate is a global
+device resource shared across all VCCs. If the error path in
+fore200e_open() executes concurrently with operations like
+fore200e_close() or fore200e_change_qos() on other VCCs, a
+read-modify-write race occurs.
+
+Specifically, the error path reads the rate without the lock. If another
+CPU acquires the lock and modifies the rate (e.g., releasing bandwidth in
+fore200e_close()) between this read and the subsequent write, the error
+path will overwrite the concurrent update with a stale value. This results
+in incorrect bandwidth accounting.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251120120657.2462194-1-hanguidong02@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/meta/fbnic/fbnic_fw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/atm/fore200e.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
-index d6cf97ecf3276..6f606bdfd2296 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
-@@ -198,7 +198,7 @@ static int fbnic_mbx_alloc_rx_msgs(struct fbnic_dev *fbd)
- 		return -ENODEV;
+--- a/drivers/atm/fore200e.c
++++ b/drivers/atm/fore200e.c
+@@ -1377,7 +1377,9 @@ fore200e_open(struct atm_vcc *vcc)
  
- 	/* Fill all but 1 unused descriptors in the Rx queue. */
--	count = (head - tail - 1) % FBNIC_IPC_MBX_DESC_LEN;
-+	count = (head - tail - 1) & (FBNIC_IPC_MBX_DESC_LEN - 1);
- 	while (!err && count--) {
- 		struct fbnic_tlv_msg *msg;
+ 	vcc->dev_data = NULL;
  
--- 
-2.51.0
-
++	mutex_lock(&fore200e->rate_mtx);
+ 	fore200e->available_cell_rate += vcc->qos.txtp.max_pcr;
++	mutex_unlock(&fore200e->rate_mtx);
+ 
+ 	kfree(fore200e_vcc);
+ 	return -EINVAL;
 
 
 
