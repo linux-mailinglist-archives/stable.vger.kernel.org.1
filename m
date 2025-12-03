@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-198765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B0F5CA13C3
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:04:14 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7CA6CA10E3
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:40:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 56AB830155A3
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:03:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 74014300CA38
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:39:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4D09345732;
-	Wed,  3 Dec 2025 16:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 605B7349B08;
+	Wed,  3 Dec 2025 16:29:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AOolqMl0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GBJVnEXu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A14B83451DA;
-	Wed,  3 Dec 2025 16:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CD5F34888E;
+	Wed,  3 Dec 2025 16:29:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777611; cv=none; b=jKYcDZ1m3ObkBvmBcW+EiSGLUUqQN+n3drTultoiZhaaEvXP0YqvlLUSmNhwPHeWs5JYTcKxaOhUhr6N+dya6XdBbE9UFreCMmFUCz3dz6SneDZbpRtcuULZgCsxVBWwpsxdHZjp9AgYclMZEOQwrI+uOwKdFtc+/FAStYUhntg=
+	t=1764779376; cv=none; b=govxVygyEdSl0VRtRhRJsEjLsD6aqApLzmcy1E/8L14JI3/onW5fpwuA+x+qvQvKtZfIEGuQdSiPfIbB/K+HLeZyHzg+hQ8y5MVGrtHNh1FZmIfFHwKcHMocB0Xm1DPq3QrAdLCw1FPhu8gpDZEHgKo9gpozPWEXOdRQAef41/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777611; c=relaxed/simple;
-	bh=JBM5lpxdFWl//mNtql0DutlbgQgGjMyrBagWEN03vSY=;
+	s=arc-20240116; t=1764779376; c=relaxed/simple;
+	bh=338BkyryfSihX1sYcQh7Fj2it/ubda7Ciw/QyGBSb+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gVwUkNRx5075FvpmmyZuHnHuSCaxfC3bIIgOazGHW7EiOtdY5wg9OvNuGy3+gOvzQhBLZ8JUzOmHb9QVYdXNHxFPQ4cOdoz9OaTWhK9BCU7hlaRMNmHBS+he+xw6bhjaw1dBL5KeTuLvNCadm84advVgqLl+sLBg80NmaMvtmb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AOolqMl0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23AC2C4CEF5;
-	Wed,  3 Dec 2025 16:00:10 +0000 (UTC)
+	 MIME-Version; b=q3/+WxynuvjGW/SQBtdmGn/54TYR9WDcD6p5Clkhr5Z9nI5uVYMPPMc8lelvBjB33dIFUXwgLkSQ7xMV4PNWGCu983nbddl+d/Iddp7+2vIJ1vfWh6+5EMyk/ts9aIgZPAO0xp+0X3upi5cPr56OWMyP1h2hC2HRIjnRuh9O4so=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GBJVnEXu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E49AC4CEF5;
+	Wed,  3 Dec 2025 16:29:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777611;
-	bh=JBM5lpxdFWl//mNtql0DutlbgQgGjMyrBagWEN03vSY=;
+	s=korg; t=1764779376;
+	bh=338BkyryfSihX1sYcQh7Fj2it/ubda7Ciw/QyGBSb+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AOolqMl0BmYHmlrNp+hR5t4ZRCIuECrkONDVDHA7pUDx0gwK1k80hm4zeRTdUu+/C
-	 968zS7SVWBrJdhkqEyVy7J7Gu5VTpGM1ErgH5grdYKRrNFQIvGWFXQpF/y5jAZlbu/
-	 +eU3tEe745TP0FRkJkPIcZLN9/JHLhUQCN6dwN1Y=
+	b=GBJVnEXuz7vBnfiENs0af3Cg24wutG+gVre+J1Wj7j2QdKwcXDSvzHiNzVjZBWk84
+	 zUqZtgL1I4jDLkmjO9xRxW3HWZoq795VTgtGEQWDszyh0+pRwa0o1rbV7QU8MsIM4+
+	 t/3boyn5dq4P5K33FOLENE2jHAbfkRj42NaCisJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Asad Kamal <asad.kamal@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 090/392] drm/amd/pm: Use cached metrics data on aldebaran
+Subject: [PATCH 6.1 238/568] ipv6: np->rxpmtu race annotation
 Date: Wed,  3 Dec 2025 16:24:00 +0100
-Message-ID: <20251203152417.416842203@linuxfoundation.org>
+Message-ID: <20251203152449.437658572@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lijo Lazar <lijo.lazar@amd.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit e87577ef6daa0cfb10ca139c720f0c57bd894174 ]
+[ Upstream commit 9fba1eb39e2f74d2002c5cbcf1d4435d37a4f752 ]
 
-Cached metrics data validity is 1ms on aldebaran. It's not reasonable
-for any client to query gpu_metrics at a faster rate and constantly
-interrupt PMFW.
+Add READ_ONCE() annotations because np->rxpmtu can be changed
+while udpv6_recvmsg() and rawv6_recvmsg() read it.
 
-Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Asad Kamal <asad.kamal@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Since this is a very rarely used feature, and that udpv6_recvmsg()
+and rawv6_recvmsg() read np->rxopt anyway, change the test order
+so that np->rxpmtu does not need to be in a hot cache line.
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250916160951.541279-4-edumazet@google.com
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv6/raw.c | 2 +-
+ net/ipv6/udp.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c
-index d3389fb374c9b..94dfbdc2ea910 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c
-@@ -1696,7 +1696,7 @@ static ssize_t aldebaran_get_gpu_metrics(struct smu_context *smu,
+diff --git a/net/ipv6/raw.c b/net/ipv6/raw.c
+index dc31752a7edcc..c644300680ba6 100644
+--- a/net/ipv6/raw.c
++++ b/net/ipv6/raw.c
+@@ -437,7 +437,7 @@ static int rawv6_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+ 	if (flags & MSG_ERRQUEUE)
+ 		return ipv6_recv_error(sk, msg, len, addr_len);
  
- 	ret = smu_cmn_get_metrics_table(smu,
- 					&metrics,
--					true);
-+					false);
- 	if (ret)
- 		return ret;
+-	if (np->rxpmtu && np->rxopt.bits.rxpmtu)
++	if (np->rxopt.bits.rxpmtu && READ_ONCE(np->rxpmtu))
+ 		return ipv6_recv_rxpmtu(sk, msg, len, addr_len);
  
+ 	skb = skb_recv_datagram(sk, flags, &err);
+diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+index 4b063aa37e389..184fc7a5e4d17 100644
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -364,7 +364,7 @@ int udpv6_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+ 	if (flags & MSG_ERRQUEUE)
+ 		return ipv6_recv_error(sk, msg, len, addr_len);
+ 
+-	if (np->rxpmtu && np->rxopt.bits.rxpmtu)
++	if (np->rxopt.bits.rxpmtu && READ_ONCE(np->rxpmtu))
+ 		return ipv6_recv_rxpmtu(sk, msg, len, addr_len);
+ 
+ try_again:
 -- 
 2.51.0
 
