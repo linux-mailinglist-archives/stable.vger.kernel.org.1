@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-199330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFC45CA11EF
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:44:45 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E186C9F81E
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:36:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4E58F300C361
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:44:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4998D3011251
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:33:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F822366DC0;
-	Wed,  3 Dec 2025 16:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED29030F552;
+	Wed,  3 Dec 2025 15:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RCtHgL5C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hdgGe0Zg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C56F366DB9;
-	Wed,  3 Dec 2025 16:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A3830EF9E;
+	Wed,  3 Dec 2025 15:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779438; cv=none; b=fnMCIgMuDU+cqR5zUFTlrDoPWsOlWVpo59KKTCDZ59ycsbLLXif23dQo/uv3z62Y7SVd3NMzj0tjdkm9Sipizq3JDSZTVONCdXzb5Jv+FOWoo49s5PAdFt8c4pmCdJtzaJCtJnE7FT9F/VvGbN9yTZtmE0NdzWVuyzXUD+P4PYg=
+	t=1764776022; cv=none; b=W3ACZwv0bUCliJAYQhJorr1vmK/ecRC/5sqcAMNT+IB061zfG8aQZMr+5hYvnaJuCKADI0XUKYesGyB4AkgWM7SI2ayPY0ODvN3Mr+fmPHjrEMQipoCpiFt47dbRGuLJb1rzziDWl4o7Xk88teQ12syUIzeVBtEBAN0lm4/C7wI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779438; c=relaxed/simple;
-	bh=QvMlQ5kLVN0CYOVNzOm6ZaO8zutqwdle8RmKf+XR47Q=;
+	s=arc-20240116; t=1764776022; c=relaxed/simple;
+	bh=D5TZ6Wy5OCwoERLL3Pa+GCKsgWabZNGNH5USnqVLGqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W1KmU5P6vPSzn/2ay3RNgFsSBawKjiYKK5/1l40MEKllIi0yhiTCWaw+rM9RrLuNg4qg8ZFFLAIEXlxL6qCB0v639MwVkGLEZZBCWq0+z7Nt8mtg2LPyexpn9T5KcckL+E9T9JbheiDboTlEGreIWK0hTXTCL7pmSJCyK/eFMFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RCtHgL5C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAADAC4CEF5;
-	Wed,  3 Dec 2025 16:30:37 +0000 (UTC)
+	 MIME-Version; b=uaglxeIx6a8hpbdkyG/314RlxNQRk/CfDXFmxQ4VtwBkluVcTEcMf0da7ALN1dNlde+zls+I2mfWDxif6sAnZQrWlrvBaw7ZIeIOqdvciv/pEZBi/LB2k3TG3Wa0lHnfa4mG5lex0z6vtbDbHxSCeZ1d/NDim4DyRo4dl8U05R8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hdgGe0Zg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA41DC4CEF5;
+	Wed,  3 Dec 2025 15:33:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779438;
-	bh=QvMlQ5kLVN0CYOVNzOm6ZaO8zutqwdle8RmKf+XR47Q=;
+	s=korg; t=1764776022;
+	bh=D5TZ6Wy5OCwoERLL3Pa+GCKsgWabZNGNH5USnqVLGqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RCtHgL5CwxxOdlWTsUxMWhjhbL9eDk5fy5pVFcoYOl+wwpuma1dxflrygDXbar/ZA
-	 C7fnOkNOESbAvrN+jNH9lew3LnJZsXN2gPfPEn8j0ziVPg4TVaas/4L+eIBztzWpdN
-	 j+LTmgpSkPo2buV+UZgT3Dc9TRT62BeYPH8cESxM=
+	b=hdgGe0ZgyCn5kWnhIoVoMhAjyy+kLYFFezZMAkdsnkFf8mUowllCeesCEyAlDszyg
+	 gRxF1jSTdSQFI72zM+42L6k+JYTB8YBtL/NuiaEu1DHXCmksdz5plytOnuWrkAQut7
+	 KuzMiEZ4sGT/c5J2y/mlFfyBnpYEYUmQT8SVh6mw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ranjan Kumar <ranjan.kumar@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 258/568] scsi: mpt3sas: Add support for 22.5 Gbps SAS link rate
+Subject: [PATCH 5.10 056/300] cpuidle: Fail cpuidle device registration if there is one already
 Date: Wed,  3 Dec 2025 16:24:20 +0100
-Message-ID: <20251203152450.169826074@linuxfoundation.org>
+Message-ID: <20251203152402.697809966@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +59,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ranjan Kumar <ranjan.kumar@broadcom.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 4be7599d6b27bade41bfccca42901b917c01c30c ]
+[ Upstream commit 7b1b7961170e4fcad488755e5ffaaaf9bd527e8f ]
 
-Add handling for MPI26_SAS_NEG_LINK_RATE_22_5 in
-_transport_convert_phy_link_rate(). This maps the new 22.5 Gbps
-negotiated rate to SAS_LINK_RATE_22_5_GBPS, to get correct PHY link
-speeds.
+Refuse to register a cpuidle device if the given CPU has a cpuidle
+device already and print a message regarding it.
 
-Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
-Message-Id: <20250922095113.281484-4-ranjan.kumar@broadcom.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Without this, an attempt to register a new cpuidle device without
+unregistering the existing one leads to the removal of the existing
+cpuidle device without removing its sysfs interface.
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpt3sas/mpt3sas_transport.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/cpuidle/cpuidle.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/mpt3sas/mpt3sas_transport.c b/drivers/scsi/mpt3sas/mpt3sas_transport.c
-index 7d6e4fe31ceed..02c970575464c 100644
---- a/drivers/scsi/mpt3sas/mpt3sas_transport.c
-+++ b/drivers/scsi/mpt3sas/mpt3sas_transport.c
-@@ -166,6 +166,9 @@ _transport_convert_phy_link_rate(u8 link_rate)
- 	case MPI25_SAS_NEG_LINK_RATE_12_0:
- 		rc = SAS_LINK_RATE_12_0_GBPS;
- 		break;
-+	case MPI26_SAS_NEG_LINK_RATE_22_5:
-+		rc = SAS_LINK_RATE_22_5_GBPS;
-+		break;
- 	case MPI2_SAS_NEG_LINK_RATE_PHY_DISABLED:
- 		rc = SAS_PHY_DISABLED;
- 		break;
+diff --git a/drivers/cpuidle/cpuidle.c b/drivers/cpuidle/cpuidle.c
+index 83af15f77f66f..1c1fa6ac9244a 100644
+--- a/drivers/cpuidle/cpuidle.c
++++ b/drivers/cpuidle/cpuidle.c
+@@ -576,8 +576,14 @@ static void __cpuidle_device_init(struct cpuidle_device *dev)
+ static int __cpuidle_register_device(struct cpuidle_device *dev)
+ {
+ 	struct cpuidle_driver *drv = cpuidle_get_cpu_driver(dev);
++	unsigned int cpu = dev->cpu;
+ 	int i, ret;
+ 
++	if (per_cpu(cpuidle_devices, cpu)) {
++		pr_info("CPU%d: cpuidle device already registered\n", cpu);
++		return -EEXIST;
++	}
++
+ 	if (!try_module_get(drv->owner))
+ 		return -EINVAL;
+ 
+@@ -589,7 +595,7 @@ static int __cpuidle_register_device(struct cpuidle_device *dev)
+ 			dev->states_usage[i].disable |= CPUIDLE_STATE_DISABLED_BY_USER;
+ 	}
+ 
+-	per_cpu(cpuidle_devices, dev->cpu) = dev;
++	per_cpu(cpuidle_devices, cpu) = dev;
+ 	list_add(&dev->device_list, &cpuidle_detected_devices);
+ 
+ 	ret = cpuidle_coupled_register_device(dev);
 -- 
 2.51.0
 
