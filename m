@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A88A8CA06BC
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:26:24 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8346C9F9B6
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:44:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 54CB63148434
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:10:19 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CB7C03009385
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:43:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC04F32571C;
-	Wed,  3 Dec 2025 15:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C830C317711;
+	Wed,  3 Dec 2025 15:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U9N+SAwr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J8bAYZkm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F0213271F5;
-	Wed,  3 Dec 2025 15:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 613233168FB;
+	Wed,  3 Dec 2025 15:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776941; cv=none; b=op33tF6WPHLjscK/6cTCAjLb/ziwlB5MxWhn+TyrjIWc75MImikJB3/KMQRqILQ7RfDuKREXfubsYG5zUgttREaxVI6DOKMPjZyQaA5kEewGswPyQ6Z+XktbiSnI/DGVNlYOZwdzHNd0AMPWDKe/vUZlHT5V1lp7hSOAV7XOMjk=
+	t=1764776607; cv=none; b=jMChcSybAtWAOIBYCFiFlOwaDsxqGgPj3fRDwAq0zguuxwAZAauqZ2aia2H1n+orPXPmK8J/mTugUe21+MRxAnK8jSxrcxEsBBu9JuRKzUcGLDkt9gnY/oZOJNu7faW9SN8QK06NgqdG/t63GnDnJ3lgFhlZ3R2MMnYX8oGylNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776941; c=relaxed/simple;
-	bh=rdrSJ6u0LCcCXiDyPtzSEwmgX1fug5KB2CYaSgTU5Sg=;
+	s=arc-20240116; t=1764776607; c=relaxed/simple;
+	bh=kGv7nwGTpucbUnklSIpjlvEkS0EhmaeZ7N9xbyQlgGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FMNZAXpMmMvf1ZzeVHJlIS7vm31ndvhDBPaZnkLFwWWJlfBmL3cOW35x0p0jCL1PIwc96a2Aj3Fcbxuz5wJet47n+ypnqcwmvMJxIyVdn7S2QqW1hdgbiLDwDhXg1ojFQ1NsWPtQHoiiBhMIa3sPvgWF8NUpm0Z71Z6fizpNyKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U9N+SAwr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66796C116C6;
-	Wed,  3 Dec 2025 15:49:00 +0000 (UTC)
+	 MIME-Version; b=QUOcppHBsZ47A9sdylL5OHdhdPdHoRco9LEnzIy/zYMUl36iV9rCRAXRx8BVfdi+CkLw4RHvZvWb97bS0//vlO1JTMkdGJwKc5wqpowhsAdmDiCDQuxZi3NMPwK/P97TB/OuDBsYAz9iIcRT3Sro4gQGFfz+0V7vICfWQf4vTrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J8bAYZkm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BDFEC19425;
+	Wed,  3 Dec 2025 15:43:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776940;
-	bh=rdrSJ6u0LCcCXiDyPtzSEwmgX1fug5KB2CYaSgTU5Sg=;
+	s=korg; t=1764776607;
+	bh=kGv7nwGTpucbUnklSIpjlvEkS0EhmaeZ7N9xbyQlgGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U9N+SAwrcphgW/2izbwsXV+/QItYQ2T/oEEjnDOfvv8kww9hgXO+Mwox744X8KTcm
-	 4F+1jX8NceJB6YAC3Pn7lt2f57fb2DD1BOBUATTmS8r3/tSKSJ/TC1CaC03nCGuBLe
-	 MabB0fUIGfqrPJdefy9LOxqQTa4Xx/dax3ICoam0=
+	b=J8bAYZkmU6oxVTL+MJW7+d6Tk9ztxOvNrcCYqyN7PbiHItqXtL1hI7rOJcn5eNCwe
+	 ALLsCIQB2gHZZdTOop5dku4pR1lzEkTI5SShCbW8iBEyuhdwEQmbJ8b1++VOENUAcj
+	 6iNvCM8hOP13srbW2SebU+/HlwX79W8XIjaBctug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 032/146] net: fec: do not allow enabling PPS and PEROUT simultaneously
+	rtm@csail.mit.edu,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.10 206/300] NFSD: free copynotify stateid in nfs4_free_ol_stateid()
 Date: Wed,  3 Dec 2025 16:26:50 +0100
-Message-ID: <20251203152347.649470418@linuxfoundation.org>
+Message-ID: <20251203152408.254904186@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,63 +60,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Olga Kornievskaia <okorniev@redhat.com>
 
-[ Upstream commit c0a1f3d7e128e8d1b6c0fe09c68eac5ebcf677c8 ]
+commit 4aa17144d5abc3c756883e3a010246f0dba8b468 upstream.
 
-In the current driver, PPS and PEROUT use the same channel to generate
-the events, so they cannot be enabled at the same time. Otherwise, the
-later configuration will overwrite the earlier configuration. Therefore,
-when configuring PPS, the driver will check whether PEROUT is enabled.
-Similarly, when configuring PEROUT, the driver will check whether PPS
-is enabled.
+Typically copynotify stateid is freed either when parent's stateid
+is being close/freed or in nfsd4_laundromat if the stateid hasn't
+been used in a lease period.
 
-Fixes: 350749b909bf ("net: fec: Add support for periodic output signal of PPS")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Link: https://patch.msgid.link/20251125085210.1094306-4-wei.fang@nxp.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, in case when the server got an OPEN (which created
+a parent stateid), followed by a COPY_NOTIFY using that stateid,
+followed by a client reboot. New client instance while doing
+CREATE_SESSION would force expire previous state of this client.
+It leads to the open state being freed thru release_openowner->
+nfs4_free_ol_stateid() and it finds that it still has copynotify
+stateid associated with it. We currently print a warning and is
+triggerred
+
+WARNING: CPU: 1 PID: 8858 at fs/nfsd/nfs4state.c:1550 nfs4_free_ol_stateid+0xb0/0x100 [nfsd]
+
+This patch, instead, frees the associated copynotify stateid here.
+
+If the parent stateid is freed (without freeing the copynotify
+stateids associated with it), it leads to the list corruption
+when laundromat ends up freeing the copynotify state later.
+
+[ 1626.839430] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
+[ 1626.842828] Modules linked in: nfnetlink_queue nfnetlink_log bluetooth cfg80211 rpcrdma rdma_cm iw_cm ib_cm ib_core nfsd nfs_acl lockd grace nfs_localio ext4 crc16 mbcache jbd2 overlay uinput snd_seq_dummy snd_hrtimer qrtr rfkill vfat fat uvcvideo snd_hda_codec_generic videobuf2_vmalloc videobuf2_memops snd_hda_intel uvc snd_intel_dspcfg videobuf2_v4l2 videobuf2_common snd_hda_codec snd_hda_core videodev snd_hwdep snd_seq mc snd_seq_device snd_pcm snd_timer snd soundcore sg loop auth_rpcgss vsock_loopback vmw_vsock_virtio_transport_common vmw_vsock_vmci_transport vmw_vmci vsock xfs 8021q garp stp llc mrp nvme ghash_ce e1000e nvme_core sr_mod nvme_keyring nvme_auth cdrom vmwgfx drm_ttm_helper ttm sunrpc dm_mirror dm_region_hash dm_log iscsi_tcp libiscsi_tcp libiscsi scsi_transport_iscsi fuse dm_multipath dm_mod nfnetlink
+[ 1626.855594] CPU: 2 UID: 0 PID: 199 Comm: kworker/u24:33 Kdump: loaded Tainted: G    B   W           6.17.0-rc7+ #22 PREEMPT(voluntary)
+[ 1626.857075] Tainted: [B]=BAD_PAGE, [W]=WARN
+[ 1626.857573] Hardware name: VMware, Inc. VMware20,1/VBSA, BIOS VMW201.00V.24006586.BA64.2406042154 06/04/2024
+[ 1626.858724] Workqueue: nfsd4 laundromat_main [nfsd]
+[ 1626.859304] pstate: 61400005 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+[ 1626.860010] pc : __list_del_entry_valid_or_report+0x148/0x200
+[ 1626.860601] lr : __list_del_entry_valid_or_report+0x148/0x200
+[ 1626.861182] sp : ffff8000881d7a40
+[ 1626.861521] x29: ffff8000881d7a40 x28: 0000000000000018 x27: ffff0000c2a98200
+[ 1626.862260] x26: 0000000000000600 x25: 0000000000000000 x24: ffff8000881d7b20
+[ 1626.862986] x23: ffff0000c2a981e8 x22: 1fffe00012410e7d x21: ffff0000920873e8
+[ 1626.863701] x20: ffff0000920873e8 x19: ffff000086f22998 x18: 0000000000000000
+[ 1626.864421] x17: 20747562202c3839 x16: 3932326636383030 x15: 3030666666662065
+[ 1626.865092] x14: 6220646c756f6873 x13: 0000000000000001 x12: ffff60004fd9e4a3
+[ 1626.865713] x11: 1fffe0004fd9e4a2 x10: ffff60004fd9e4a2 x9 : dfff800000000000
+[ 1626.866320] x8 : 00009fffb0261b5e x7 : ffff00027ecf2513 x6 : 0000000000000001
+[ 1626.866938] x5 : ffff00027ecf2510 x4 : ffff60004fd9e4a3 x3 : 0000000000000000
+[ 1626.867553] x2 : 0000000000000000 x1 : ffff000096069640 x0 : 000000000000006d
+[ 1626.868167] Call trace:
+[ 1626.868382]  __list_del_entry_valid_or_report+0x148/0x200 (P)
+[ 1626.868876]  _free_cpntf_state_locked+0xd0/0x268 [nfsd]
+[ 1626.869368]  nfs4_laundromat+0x6f8/0x1058 [nfsd]
+[ 1626.869813]  laundromat_main+0x24/0x60 [nfsd]
+[ 1626.870231]  process_one_work+0x584/0x1050
+[ 1626.870595]  worker_thread+0x4c4/0xc60
+[ 1626.870893]  kthread+0x2f8/0x398
+[ 1626.871146]  ret_from_fork+0x10/0x20
+[ 1626.871422] Code: aa1303e1 aa1403e3 910e8000 97bc55d7 (d4210000)
+[ 1626.871892] SMP: stopping secondary CPUs
+
+Reported-by: rtm@csail.mit.edu
+Closes: https://lore.kernel.org/linux-nfs/d8f064c1-a26f-4eed-b4f0-1f7f608f415f@oracle.com/T/#t
+Fixes: 624322f1adc5 ("NFSD add COPY_NOTIFY operation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/fec_ptp.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ fs/nfsd/nfs4state.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-index f31b1626c12f7..ed5d59abeb537 100644
---- a/drivers/net/ethernet/freescale/fec_ptp.c
-+++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -128,6 +128,12 @@ static int fec_ptp_enable_pps(struct fec_enet_private *fep, uint enable)
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -1499,7 +1499,8 @@ static void nfs4_free_ol_stateid(struct
+ 	release_all_access(stp);
+ 	if (stp->st_stateowner)
+ 		nfs4_put_stateowner(stp->st_stateowner);
+-	WARN_ON(!list_empty(&stid->sc_cp_list));
++	if (!list_empty(&stid->sc_cp_list))
++		nfs4_free_cpntf_statelist(stid->sc_client->net, stid);
+ 	kmem_cache_free(stateid_slab, stid);
+ }
  
- 	spin_lock_irqsave(&fep->tmreg_lock, flags);
- 
-+	if (fep->perout_enable) {
-+		spin_unlock_irqrestore(&fep->tmreg_lock, flags);
-+		dev_err(&fep->pdev->dev, "PEROUT is running");
-+		return -EBUSY;
-+	}
-+
- 	if (fep->pps_enable == enable) {
- 		spin_unlock_irqrestore(&fep->tmreg_lock, flags);
- 		return 0;
-@@ -571,6 +577,12 @@ static int fec_ptp_enable(struct ptp_clock_info *ptp,
- 			}
- 			spin_lock_irqsave(&fep->tmreg_lock, flags);
- 
-+			if (fep->pps_enable) {
-+				dev_err(&fep->pdev->dev, "PPS is running");
-+				ret = -EBUSY;
-+				goto unlock;
-+			}
-+
- 			if (fep->perout_enable) {
- 				dev_err(&fep->pdev->dev,
- 					"PEROUT has been enabled\n");
--- 
-2.51.0
-
 
 
 
