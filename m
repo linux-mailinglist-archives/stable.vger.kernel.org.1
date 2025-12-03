@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7BF7CA0120
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:44:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C41A5CA0983
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:44:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A6B483009860
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:38:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 73DBA3482671
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:24:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC66334DB7D;
-	Wed,  3 Dec 2025 16:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7293A346E7E;
+	Wed,  3 Dec 2025 16:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EY948IQG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1oeXN28D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F30C34D3B6;
-	Wed,  3 Dec 2025 16:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EC48346E72;
+	Wed,  3 Dec 2025 16:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779386; cv=none; b=oc9mK+pKASN62BV9SMhotlGwkRWRpHeiLjaalhZ3WX9lB7L+7L2PLKnK4iOybsufbJq8NkIAYQfXrmigGL7KcOSnB5/AuPVRxir+DaJ5z+azfXD1bm82Y0g0YWMeGSJMO0jPU8IKcYmpwjDRluvtjKZjm7wmOTtqbU5xNmfqOCs=
+	t=1764777622; cv=none; b=n7tDeicfziNx5VJHkxQAwvxrYWu/M7trgHU8GPofnic7HfJ+/SQ1wFwcNRWPvnZRNR4U2mwE8hhd90XRq/hFD2Qcj+cWIy7QDhOb05nt0aXqQikDSQLEXcE8sOUPqYQBztznvT2tyo33rtxFl6ea7BSrlXIh0evsCHblrxGskQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779386; c=relaxed/simple;
-	bh=lny3wRn/F8N2QWYIgrkxg604UJB9elbRBetqx8Qh97U=;
+	s=arc-20240116; t=1764777622; c=relaxed/simple;
+	bh=+AMqbujxpTymEembM702tCSVaM9eXHgAPGw08IU24A4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pcm+o8y2qu5FtWVvyi7yyFIKb3eaZGk/7oeJwYxNtlWCIP2YdUDeKrmTG1J2JaRDNyH/cVZ7fZ9BCyvTg0vay14LPpLkdvwFF+8UBgb1nz1e31O02yd2WSsb1q7TU83eAKIso2km1nxPev0J8o5V2ZpQ6Amc6hgyYuazUDY3O0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EY948IQG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB244C116B1;
-	Wed,  3 Dec 2025 16:29:45 +0000 (UTC)
+	 MIME-Version; b=JFLMMYw1PcLhNQAmdQrPiZVTu4IM9+SP19qmi/XMBKJXPB8Uw6kGc7MIHi5EsXtVOKCDj19KMWNw9x4ztK+OGmJsWu1Yj7Brn8gXWzCFHuAggNQza8yGsb4OFJfxgnLBNBRb2E3o/PXq/pc/z2u7445v11lLA8SgQlW4BeMXqtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1oeXN28D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71CB6C4CEF5;
+	Wed,  3 Dec 2025 16:00:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779386;
-	bh=lny3wRn/F8N2QWYIgrkxg604UJB9elbRBetqx8Qh97U=;
+	s=korg; t=1764777622;
+	bh=+AMqbujxpTymEembM702tCSVaM9eXHgAPGw08IU24A4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EY948IQGtSfgLuWHL2bLoWzrHZx8yI/73oNJOCbl9I3a41/FOdT1a7OuRhomFy2l+
-	 uoLCx0BlJzSBpoGJnJl0w0w0YD++n9CbnBPlW/imLVwfqY/4tKL15XRkRsZOT4RjXi
-	 J4Om2bxH6hiQM3CSetfO6aBpHtVUWnvV8LqM7FCM=
+	b=1oeXN28DrjlK6bNS2SHHxwiRspolqOf9puhsEvOm5ZkoAyuIIyb/oe/F8lTKwhWRK
+	 HeMdbyQrA6PlbttOdveN6KgWJamunYxOMwzgYcuTmes892Xak9enjhgUvAVDx//7qX
+	 3ee9DBO92w6T61KgJtzEH3LC9Uyt9O/P3tJAwFjY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Seyediman Seyedarab <ImanDevel@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 241/568] ASoC: qcom: sc8280xp: explicitly set S16LE format in sc8280xp_be_hw_params_fixup()
+Subject: [PATCH 5.15 093/392] drm/nouveau: replace snprintf() with scnprintf() in nvkm_snprintbf()
 Date: Wed,  3 Dec 2025 16:24:03 +0100
-Message-ID: <20251203152449.546798355@linuxfoundation.org>
+Message-ID: <20251203152417.524915159@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +60,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Klimov <alexey.klimov@linaro.org>
+From: Seyediman Seyedarab <imandevel@gmail.com>
 
-[ Upstream commit 9565c9d53c5b440f0dde6fa731a99c1b14d879d2 ]
+[ Upstream commit 6510b62fe9303aaf48ff136ff69186bcfc32172d ]
 
-Setting format to s16le is required for compressed playback on compatible
-soundcards.
+snprintf() returns the number of characters that *would* have been
+written, which can overestimate how much you actually wrote to the
+buffer in case of truncation. That leads to 'data += this' advancing
+the pointer past the end of the buffer and size going negative.
 
-Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
-Link: https://patch.msgid.link/20250911154340.2798304-1-alexey.klimov@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Switching to scnprintf() prevents potential buffer overflows and ensures
+consistent behavior when building the output string.
+
+Signed-off-by: Seyediman Seyedarab <ImanDevel@gmail.com>
+Link: https://lore.kernel.org/r/20250724195913.60742-1-ImanDevel@gmail.com
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/qcom/sc8280xp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/nouveau/nvkm/core/enum.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/qcom/sc8280xp.c b/sound/soc/qcom/sc8280xp.c
-index 14d9fea33d16a..8ae2fe917c370 100644
---- a/sound/soc/qcom/sc8280xp.c
-+++ b/sound/soc/qcom/sc8280xp.c
-@@ -7,6 +7,7 @@
- #include <sound/soc.h>
- #include <sound/soc-dapm.h>
- #include <sound/pcm.h>
-+#include <sound/pcm_params.h>
- #include <linux/soundwire/sdw.h>
- #include <sound/jack.h>
- #include <linux/input-event-codes.h>
-@@ -39,8 +40,10 @@ static int sc8280xp_be_hw_params_fixup(struct snd_soc_pcm_runtime *rtd,
- 					SNDRV_PCM_HW_PARAM_RATE);
- 	struct snd_interval *channels = hw_param_interval(params,
- 					SNDRV_PCM_HW_PARAM_CHANNELS);
-+	struct snd_mask *fmt = hw_param_mask(params, SNDRV_PCM_HW_PARAM_FORMAT);
- 
- 	rate->min = rate->max = 48000;
-+	snd_mask_set_format(fmt, SNDRV_PCM_FORMAT_S16_LE);
- 	channels->min = 2;
- 	channels->max = 2;
- 	switch (cpu_dai->id) {
+diff --git a/drivers/gpu/drm/nouveau/nvkm/core/enum.c b/drivers/gpu/drm/nouveau/nvkm/core/enum.c
+index b9581feb24ccb..a23b40b27b81b 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/core/enum.c
++++ b/drivers/gpu/drm/nouveau/nvkm/core/enum.c
+@@ -44,7 +44,7 @@ nvkm_snprintbf(char *data, int size, const struct nvkm_bitfield *bf, u32 value)
+ 	bool space = false;
+ 	while (size >= 1 && bf->name) {
+ 		if (value & bf->mask) {
+-			int this = snprintf(data, size, "%s%s",
++			int this = scnprintf(data, size, "%s%s",
+ 					    space ? " " : "", bf->name);
+ 			size -= this;
+ 			data += this;
 -- 
 2.51.0
 
