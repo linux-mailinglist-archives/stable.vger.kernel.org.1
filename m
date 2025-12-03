@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-198930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81355CA0884
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:38:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB032C9FA91
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:49:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3F2743263533
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:18:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A764C302E14D
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:41:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E2C1260592;
-	Wed,  3 Dec 2025 16:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45BD83148A3;
+	Wed,  3 Dec 2025 15:41:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t8dJ2THO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pm1wtAPJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E102A238C1B;
-	Wed,  3 Dec 2025 16:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFFEC31354A;
+	Wed,  3 Dec 2025 15:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778137; cv=none; b=l4RKfqaL8gUp8BBHI9CXBCNO49s563ed3SgY9KJW0b7PfwLsqqsNutTBFF5gIRki4BvKeLci/hz0mgZ7tGLsZ4XyIxT8oMdiiePd2LjY6IOrLkL/p7mFG3rNwr3YYP2G42cMt7kDKs45Xyp1Q2RNmnxfKaTvCdQpy8GrjCRHeSY=
+	t=1764776505; cv=none; b=Buvq23Vo4Y+nPedw9k71OAzds72/log/8tS1IH3ikVSglctvwAmoDMp0KCBUkTuZMjBkqVLT+Mlwsb9w3LVK5njFbf8C/Oc9EnoXf0wS0Z720OuqAHoErm0Eh+X1sDKLeMYrO6EnGksJppRo6PKW75MzJDsITsH9gwfnoXaY2fo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778137; c=relaxed/simple;
-	bh=9baBBSxVnzMB81MXxNHQMF1jOLvasT1E6YjLBxp8Fd4=;
+	s=arc-20240116; t=1764776505; c=relaxed/simple;
+	bh=IWfEARS6sJoe68bJpOxmDPoz68zb/KMEG8+wVgvMSxY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gVi9sCd4VEKkKYHjxZWUSX8mKS0CYkKh/fSZ5QJ5rlaZEoJsprjebXT5JoNxdm2upAfr3yp6ee38uLcfQ5hrKI85TbpNW7Z+UYgLpqyzGYcP9QVM16qReE7AsH5s2dJYXbYtGMJA7+g/Dje8tl5q85aLElevemR+pMkzYgF5feY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t8dJ2THO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21775C116C6;
-	Wed,  3 Dec 2025 16:08:55 +0000 (UTC)
+	 MIME-Version; b=olhaIvwRyi3FdoujnXgTDXnD+iML1jqqpsWQmJuJ+dAIyNqNcMfZgTLbcpbwTR4sTrPb3MakUbM/IKTVp6UdArpnfb0tKJ5gD84MDFBB+QPJhXNMemmQ6pjYGZgxj/GSxCOuW9GmyI9Og+GGM3cHVN+aZ9yUNkNcEc2QwAiggUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pm1wtAPJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B6EEC4CEF5;
+	Wed,  3 Dec 2025 15:41:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778136;
-	bh=9baBBSxVnzMB81MXxNHQMF1jOLvasT1E6YjLBxp8Fd4=;
+	s=korg; t=1764776504;
+	bh=IWfEARS6sJoe68bJpOxmDPoz68zb/KMEG8+wVgvMSxY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t8dJ2THORT8zUFWmI0k+5qwqV6a7b/8BRsKogYo+IIkgQZD84S3uCj7bwwEu4CwzP
-	 35rAP2gN9cWB5zf8IBhSCp9zpn7RvJGYgQ3HFEU5nSFOn9E3u2qQBWpXbufCvd4GC9
-	 WNa9OoOc2k0UPWVM/bwwJZ1wUqMDAbTpyAGzM3lM=
+	b=Pm1wtAPJ5Y+7fselocNEjv3c3YxO6kz6J0jqPgG9nqUC1AvCKdrcuizRsFHNXJUJQ
+	 WCZ9Lga9XAo2xb3efjKAPkX3GHnsd+hMuY4C5ou+5PEbxlDq0M3tJ/vm+gQnekQWjw
+	 LzP0r1OADTo+VfwN3kA9xIweAiUutaLod/jLCk3c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jakub Acs <acsjakub@amazon.de>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	David Hildenbrand <david@redhat.com>,
+	SeongJae Park <sj@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Xu Xin <xu.xin16@zte.com.cn>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Peter Xu <peterx@redhat.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 255/392] net_sched: limit try_bulk_dequeue_skb() batches
+Subject: [PATCH 5.10 201/300] mm/ksm: fix flag-dropping behavior in ksm_madvise
 Date: Wed,  3 Dec 2025 16:26:45 +0100
-Message-ID: <20251203152423.553469000@linuxfoundation.org>
+Message-ID: <20251203152408.071872892@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,145 +66,111 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jakub Acs <acsjakub@amazon.de>
 
-[ Upstream commit 0345552a653ce5542affeb69ac5aa52177a5199b ]
+[ Upstream commit f04aad36a07cc17b7a5d5b9a2d386ce6fae63e93 ]
 
-After commit 100dfa74cad9 ("inet: dev_queue_xmit() llist adoption")
-I started seeing many qdisc requeues on IDPF under high TX workload.
+syzkaller discovered the following crash: (kernel BUG)
 
-$ tc -s qd sh dev eth1 handle 1: ; sleep 1; tc -s qd sh dev eth1 handle 1:
-qdisc mq 1: root
- Sent 43534617319319 bytes 268186451819 pkt (dropped 0, overlimits 0 requeues 3532840114)
- backlog 1056Kb 6675p requeues 3532840114
-qdisc mq 1: root
- Sent 43554665866695 bytes 268309964788 pkt (dropped 0, overlimits 0 requeues 3537737653)
- backlog 781164b 4822p requeues 3537737653
+[   44.607039] ------------[ cut here ]------------
+[   44.607422] kernel BUG at mm/userfaultfd.c:2067!
+[   44.608148] Oops: invalid opcode: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
+[   44.608814] CPU: 1 UID: 0 PID: 2475 Comm: reproducer Not tainted 6.16.0-rc6 #1 PREEMPT(none)
+[   44.609635] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+[   44.610695] RIP: 0010:userfaultfd_release_all+0x3a8/0x460
 
-This is caused by try_bulk_dequeue_skb() being only limited by BQL budget.
+<snip other registers, drop unreliable trace>
 
-perf record -C120-239 -e qdisc:qdisc_dequeue sleep 1 ; perf script
-...
- netperf 75332 [146]  2711.138269: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1292 skbaddr=0xff378005a1e9f200
- netperf 75332 [146]  2711.138953: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1213 skbaddr=0xff378004d607a500
- netperf 75330 [144]  2711.139631: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1233 skbaddr=0xff3780046be20100
- netperf 75333 [147]  2711.140356: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1093 skbaddr=0xff37800514845b00
- netperf 75337 [151]  2711.141037: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1353 skbaddr=0xff37800460753300
- netperf 75337 [151]  2711.141877: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1367 skbaddr=0xff378004e72c7b00
- netperf 75330 [144]  2711.142643: qdisc:qdisc_dequeue: dequeue ifindex=5 qdisc handle=0x80150000 parent=0x10013 txq_state=0x0 packets=1202 skbaddr=0xff3780045bd60000
-...
+[   44.617726] Call Trace:
+[   44.617926]  <TASK>
+[   44.619284]  userfaultfd_release+0xef/0x1b0
+[   44.620976]  __fput+0x3f9/0xb60
+[   44.621240]  fput_close_sync+0x110/0x210
+[   44.622222]  __x64_sys_close+0x8f/0x120
+[   44.622530]  do_syscall_64+0x5b/0x2f0
+[   44.622840]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[   44.623244] RIP: 0033:0x7f365bb3f227
 
-This is bad because :
+Kernel panics because it detects UFFD inconsistency during
+userfaultfd_release_all().  Specifically, a VMA which has a valid pointer
+to vma->vm_userfaultfd_ctx, but no UFFD flags in vma->vm_flags.
 
-1) Large batches hold one victim cpu for a very long time.
+The inconsistency is caused in ksm_madvise(): when user calls madvise()
+with MADV_UNMEARGEABLE on a VMA that is registered for UFFD in MINOR mode,
+it accidentally clears all flags stored in the upper 32 bits of
+vma->vm_flags.
 
-2) Driver often hit their own TX ring limit (all slots are used).
+Assuming x86_64 kernel build, unsigned long is 64-bit and unsigned int and
+int are 32-bit wide.  This setup causes the following mishap during the &=
+~VM_MERGEABLE assignment.
 
-3) We call dev_requeue_skb()
+VM_MERGEABLE is a 32-bit constant of type unsigned int, 0x8000'0000.
+After ~ is applied, it becomes 0x7fff'ffff unsigned int, which is then
+promoted to unsigned long before the & operation.  This promotion fills
+upper 32 bits with leading 0s, as we're doing unsigned conversion (and
+even for a signed conversion, this wouldn't help as the leading bit is 0).
+& operation thus ends up AND-ing vm_flags with 0x0000'0000'7fff'ffff
+instead of intended 0xffff'ffff'7fff'ffff and hence accidentally clears
+the upper 32-bits of its value.
 
-4) Requeues are using a FIFO (q->gso_skb), breaking qdisc ability to
-   implement FQ or priority scheduling.
+Fix it by changing `VM_MERGEABLE` constant to unsigned long, using the
+BIT() macro.
 
-5) dequeue_skb() gets packets from q->gso_skb one skb at a time
-   with no xmit_more support. This is causing many spinlock games
-   between the qdisc and the device driver.
+Note: other VM_* flags are not affected: This only happens to the
+VM_MERGEABLE flag, as the other VM_* flags are all constants of type int
+and after ~ operation, they end up with leading 1 and are thus converted
+to unsigned long with leading 1s.
 
-Requeues were supposed to be very rare, lets keep them this way.
+Note 2:
+After commit 31defc3b01d9 ("userfaultfd: remove (VM_)BUG_ON()s"), this is
+no longer a kernel BUG, but a WARNING at the same place:
 
-Limit batch sizes to /proc/sys/net/core/dev_weight (default 64) as
-__qdisc_run() was designed to use.
+[   45.595973] WARNING: CPU: 1 PID: 2474 at mm/userfaultfd.c:2067
 
-Fixes: 5772e9a3463b ("qdisc: bulk dequeue support for qdiscs with TCQ_F_ONETXQUEUE")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
-Link: https://patch.msgid.link/20251109161215.2574081-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+but the root-cause (flag-drop) remains the same.
+
+[akpm@linux-foundation.org: rust bindgen wasn't able to handle BIT(), from Miguel]
+  Link: https://lore.kernel.org/oe-kbuild-all/202510030449.VfSaAjvd-lkp@intel.com/
+Link: https://lkml.kernel.org/r/20251001090353.57523-2-acsjakub@amazon.de
+Fixes: 7677f7fd8be7 ("userfaultfd: add minor fault registration mode")
+Signed-off-by: Jakub Acs <acsjakub@amazon.de>
+Signed-off-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: SeongJae Park <sj@kernel.org>
+Tested-by: Alice Ryhl <aliceryhl@google.com>
+Tested-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Xu Xin <xu.xin16@zte.com.cn>
+Cc: Chengming Zhou <chengming.zhou@linux.dev>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ acsjakub: drop rust-compatibility change (no rust in 5.10) ]
+Signed-off-by: Jakub Acs <acsjakub@amazon.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_generic.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ include/linux/mm.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
-index 02299785209c1..565970cca295b 100644
---- a/net/sched/sch_generic.c
-+++ b/net/sched/sch_generic.c
-@@ -178,9 +178,10 @@ static inline void dev_requeue_skb(struct sk_buff *skb, struct Qdisc *q)
- static void try_bulk_dequeue_skb(struct Qdisc *q,
- 				 struct sk_buff *skb,
- 				 const struct netdev_queue *txq,
--				 int *packets)
-+				 int *packets, int budget)
- {
- 	int bytelimit = qdisc_avail_bulklimit(txq) - skb->len;
-+	int cnt = 0;
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index e168d87d6f2ee..4787d39bbad4a 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -296,7 +296,7 @@ extern unsigned int kobjsize(const void *objp);
+ #define VM_MIXEDMAP	0x10000000	/* Can contain "struct page" and pure PFN pages */
+ #define VM_HUGEPAGE	0x20000000	/* MADV_HUGEPAGE marked this vma */
+ #define VM_NOHUGEPAGE	0x40000000	/* MADV_NOHUGEPAGE marked this vma */
+-#define VM_MERGEABLE	0x80000000	/* KSM may merge identical pages */
++#define VM_MERGEABLE	BIT(31)		/* KSM may merge identical pages */
  
- 	while (bytelimit > 0) {
- 		struct sk_buff *nskb = q->dequeue(q);
-@@ -191,8 +192,10 @@ static void try_bulk_dequeue_skb(struct Qdisc *q,
- 		bytelimit -= nskb->len; /* covers GSO len */
- 		skb->next = nskb;
- 		skb = nskb;
--		(*packets)++; /* GSO counts as one pkt */
-+		if (++cnt >= budget)
-+			break;
- 	}
-+	(*packets) += cnt;
- 	skb_mark_not_on_list(skb);
- }
- 
-@@ -226,7 +229,7 @@ static void try_bulk_dequeue_skb_slow(struct Qdisc *q,
-  * A requeued skb (via q->gso_skb) can also be a SKB list.
-  */
- static struct sk_buff *dequeue_skb(struct Qdisc *q, bool *validate,
--				   int *packets)
-+				   int *packets, int budget)
- {
- 	const struct netdev_queue *txq = q->dev_queue;
- 	struct sk_buff *skb = NULL;
-@@ -293,7 +296,7 @@ static struct sk_buff *dequeue_skb(struct Qdisc *q, bool *validate,
- 	if (skb) {
- bulk:
- 		if (qdisc_may_bulk(q))
--			try_bulk_dequeue_skb(q, skb, txq, packets);
-+			try_bulk_dequeue_skb(q, skb, txq, packets, budget);
- 		else
- 			try_bulk_dequeue_skb_slow(q, skb, packets);
- 	}
-@@ -385,7 +388,7 @@ bool sch_direct_xmit(struct sk_buff *skb, struct Qdisc *q,
-  *				>0 - queue is not empty.
-  *
-  */
--static inline bool qdisc_restart(struct Qdisc *q, int *packets)
-+static inline bool qdisc_restart(struct Qdisc *q, int *packets, int budget)
- {
- 	spinlock_t *root_lock = NULL;
- 	struct netdev_queue *txq;
-@@ -394,7 +397,7 @@ static inline bool qdisc_restart(struct Qdisc *q, int *packets)
- 	bool validate;
- 
- 	/* Dequeue packet */
--	skb = dequeue_skb(q, &validate, packets);
-+	skb = dequeue_skb(q, &validate, packets, budget);
- 	if (unlikely(!skb))
- 		return false;
- 
-@@ -412,7 +415,7 @@ void __qdisc_run(struct Qdisc *q)
- 	int quota = READ_ONCE(dev_tx_weight);
- 	int packets;
- 
--	while (qdisc_restart(q, &packets)) {
-+	while (qdisc_restart(q, &packets, quota)) {
- 		quota -= packets;
- 		if (quota <= 0) {
- 			if (q->flags & TCQ_F_NOLOCK)
+ #ifdef CONFIG_ARCH_USES_HIGH_VMA_FLAGS
+ #define VM_HIGH_ARCH_BIT_0	32	/* bit only usable on 64-bit architectures */
 -- 
 2.51.0
 
