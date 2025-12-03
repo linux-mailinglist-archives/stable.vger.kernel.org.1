@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-199797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD7E7CA04AF
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:14:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDF48CA0EB2
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:23:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3000430E5A59
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:02:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 637973413574
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:21:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E9C735502F;
-	Wed,  3 Dec 2025 16:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CBF139A27E;
+	Wed,  3 Dec 2025 16:53:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y/0yOPBj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a3x/bjU0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BCCC34E74B;
-	Wed,  3 Dec 2025 16:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B97F539A26E;
+	Wed,  3 Dec 2025 16:53:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780973; cv=none; b=H35NsrlBuJbQ1CN63hYu9fQu120h80o6wIq4W/FVWZoaj5UHfMIqizBcAg6MwPES0D8xH6ZAQ7sLlXv0QDntP7o92N6TGZgbbyM2WtQcFakHqf35fDRWTvRVf4Ifmc8jua3QWWYj3BjJvtIho2QBjtdRdxTjGTGWd5/kWG9Fcx8=
+	t=1764780819; cv=none; b=QuZXsPvMagySfuZ6vswFnmPO5ucAYgUtWwcq8Iml1l0zwR6asfirhdDrRCcORcg5niUUeC09pNp/dX/rgjgk/MN+IM2VQnV6rQqemkQ5pcyVPfDftAwKWdXMyer7s1h4RKOZVO2BBXEVSZM+wGP113kaK5vB8tWp8S3vKlKMvo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780973; c=relaxed/simple;
-	bh=XMEjew+5B+vsAj2AmQjb1xC442fTaRQxPNXPIks4Pqw=;
+	s=arc-20240116; t=1764780819; c=relaxed/simple;
+	bh=v/rhyZXIZbfggC/A9vFCA/AMDVI6hVY2+A7RB/Kl0tY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o12zd5vD7WNmLPQIaWklWgrVenIZ/8R32RNYaESNq2Z1gQUlxtIqUtiWQxJxDbnao83/oVJnzvd3BZ/J/wahk/0XOG990REMHCyFtp5DQujzQpFqOzOI1ndlS4egr5jqWIGzgeZiQN619rutYWvl4fkKd47YHYWXIn3XoUn2ZGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y/0yOPBj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17705C4CEF5;
-	Wed,  3 Dec 2025 16:56:10 +0000 (UTC)
+	 MIME-Version; b=W4BdWAjHaVAi5p3HaOFzfHAfeZvJPwq0Z6w2p91pchfMIWJqYTygfEIxpO7rZY4VMgMHRaAUexqU3wAA8CXuiAdnysp4QT7UejatGuh35GV06EySfX3CeaP1O18r/Eq82WnmKsaI/gyrJ5vTJ4YeYmJoel2Fgd166BnF5W/SS9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a3x/bjU0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C47EC4CEF5;
+	Wed,  3 Dec 2025 16:53:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780972;
-	bh=XMEjew+5B+vsAj2AmQjb1xC442fTaRQxPNXPIks4Pqw=;
+	s=korg; t=1764780819;
+	bh=v/rhyZXIZbfggC/A9vFCA/AMDVI6hVY2+A7RB/Kl0tY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y/0yOPBjYafsDw3Y7AVAb/DtCUIk6sroj5IjNjYHdbnHm3JtuXtktOurlBzCj3Gja
-	 tq4GKe18qo4/fSjZypvSv+Z2VHXFkXn9QLPjQn3q6mETF5VlhZeaLKSlHd0dxpYuFh
-	 xEM4Tdb/YjH4LTW5GwTyZ0sQ16nZor+M4fTYZt+8=
+	b=a3x/bjU0AtH8AyHI4KlIzshi2jsctzpa9d+5vyfp3+y0Qjk0zbNRUjmoNVLUcSG/h
+	 i1lkP+adKDxmVwBqFgJxIeIg/ZEtIqelr09w85mHErVMs3ZDO9I228IjIZV8iicRZu
+	 gZcaTbKI3uXeJTxvRtqx1+m15s5Agt+2p08W/5Wo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Kodanev <aleksei.kodanev@bell-sw.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 12/93] net: sxgbe: fix potential NULL dereference in sxgbe_rx()
+	Ivan Zhaldak <i.v.zhaldak@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 066/132] ALSA: usb-audio: Add DSD quirk for LEAK Stereo 230
 Date: Wed,  3 Dec 2025 16:29:05 +0100
-Message-ID: <20251203152336.963270372@linuxfoundation.org>
+Message-ID: <20251203152345.742599822@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +59,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
+From: Ivan Zhaldak <i.v.zhaldak@gmail.com>
 
-[ Upstream commit f5bce28f6b9125502abec4a67d68eabcd24b3b17 ]
+commit c83fc13960643c4429cd9dfef1321e6430a81b47 upstream.
 
-Currently, when skb is null, the driver prints an error and then
-dereferences skb on the next line.
+Integrated amplifier LEAK Stereo 230 by IAG Limited has built-in
+ESS9038Q2M DAC served by XMOS controller. It supports both DSD Native
+and DSD-over-PCM (DoP) operational modes. But it doesn't work properly
+by default and tries DSD-to-PCM conversion. USB quirks below allow it
+to operate as designed.
 
-To fix this, let's add a 'break' after the error message to switch
-to sxgbe_rx_refill(), which is similar to the approach taken by the
-other drivers in this particular case, e.g. calxeda with xgmac_rx().
+Add DSD_RAW quirk flag for IAG Limited devices (vendor ID 0x2622)
+Add DSD format quirk for LEAK Stereo 230 (USB ID 0x2622:0x0061)
 
-Found during a code review.
-
-Fixes: 1edb9ca69e8a ("net: sxgbe: add basic framework for Samsung 10Gb ethernet driver")
-Signed-off-by: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251121123834.97748-1-aleksei.kodanev@bell-sw.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ivan Zhaldak <i.v.zhaldak@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20251117125848.30769-1-i.v.zhaldak@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/samsung/sxgbe/sxgbe_main.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ sound/usb/quirks.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/samsung/sxgbe/sxgbe_main.c b/drivers/net/ethernet/samsung/sxgbe/sxgbe_main.c
-index 71439825ea4e0..d662679c29832 100644
---- a/drivers/net/ethernet/samsung/sxgbe/sxgbe_main.c
-+++ b/drivers/net/ethernet/samsung/sxgbe/sxgbe_main.c
-@@ -1521,8 +1521,10 @@ static int sxgbe_rx(struct sxgbe_priv_data *priv, int limit)
- 
- 		skb = priv->rxq[qnum]->rx_skbuff[entry];
- 
--		if (unlikely(!skb))
-+		if (unlikely(!skb)) {
- 			netdev_err(priv->dev, "rx descriptor is not consistent\n");
-+			break;
-+		}
- 
- 		prefetch(skb->data - NET_IP_ALIGN);
- 		priv->rxq[qnum]->rx_skbuff[entry] = NULL;
--- 
-2.51.0
-
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -2028,6 +2028,7 @@ u64 snd_usb_interface_dsd_format_quirks(
+ 	case USB_ID(0x249c, 0x9326): /* M2Tech Young MkIII */
+ 	case USB_ID(0x2616, 0x0106): /* PS Audio NuWave DAC */
+ 	case USB_ID(0x2622, 0x0041): /* Audiolab M-DAC+ */
++	case USB_ID(0x2622, 0x0061): /* LEAK Stereo 230 */
+ 	case USB_ID(0x278b, 0x5100): /* Rotel RC-1590 */
+ 	case USB_ID(0x27f7, 0x3002): /* W4S DAC-2v2SE */
+ 	case USB_ID(0x29a2, 0x0086): /* Mutec MC3+ USB */
+@@ -2411,6 +2412,8 @@ static const struct usb_audio_quirk_flag
+ 		   QUIRK_FLAG_DSD_RAW),
+ 	VENDOR_FLG(0x25ce, /* Mytek devices */
+ 		   QUIRK_FLAG_DSD_RAW),
++	VENDOR_FLG(0x2622, /* IAG Limited devices */
++		   QUIRK_FLAG_DSD_RAW),
+ 	VENDOR_FLG(0x278b, /* Rotel? */
+ 		   QUIRK_FLAG_DSD_RAW),
+ 	VENDOR_FLG(0x292b, /* Gustard/Ess based devices */
 
 
 
