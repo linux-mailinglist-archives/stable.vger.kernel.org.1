@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-199455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 946F1CA00EC
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:43:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B352C9FA10
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:46:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 567C530054BA
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:37:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B9309302CF67
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:40:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2344B35C18A;
-	Wed,  3 Dec 2025 16:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 591D530ACE5;
+	Wed,  3 Dec 2025 15:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h0hF/bcn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zwsuRsEa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D118735BDDB;
-	Wed,  3 Dec 2025 16:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E91DDAB;
+	Wed,  3 Dec 2025 15:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779855; cv=none; b=TrU8Cwr3seWp8VB6xegt7dU87sj+MT6O1eM3vjzAYkedUIuEuyAmVhZQQjs6lybGCH+32ivu0A/dLyP/QCSAtNf3QCKqOLpMHCoKxLt52uWAZiQpW0sF3moV0xf92/sgdu0oDuI7oDXKWqVXtQfs7CNCso+4hyYIzfAtH/6MLWw=
+	t=1764776424; cv=none; b=ayeq1KzB7vFzd9r8KlQFdDOP4rBKnOQUo6oOkhOXOKqYMFluJoRYJzLUGqzhysflP1vKG4bN7o0PtxSYGyA+oukUiTj28+LLv4UQD0ORxoZ3AW85ct6ksl6Ov4nHoHii2U1vkdBbn+y60J6CzBZsTD5Hn4mvEDkfVtSnmGQLTI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779855; c=relaxed/simple;
-	bh=5lRYY6pBuXAQr6F/S6giWCE0CatHNeA45454S9Y3dD4=;
+	s=arc-20240116; t=1764776424; c=relaxed/simple;
+	bh=1DGqSx19oZvViD+VbQMHxlnMEMTchQm6qUqoisVs1t4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MKN2MQ/boSCfdIbEaA9zS/T5RcugffpGofsTAxoQ3CTD/Mp6hoWjasFST7/kyedeowxyd74mEjaSpj9UhpV6c8EOVaTD+j+QTMDMqYKvaBdmtm0+pOToNcuJ/D4lpzt5VXQOX4vol8IQE7aRyjLF+pvFgfMbo4hUkhRgS9/70SM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h0hF/bcn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4828CC4CEF5;
-	Wed,  3 Dec 2025 16:37:35 +0000 (UTC)
+	 MIME-Version; b=YH55Tk84AZ6bEFyzSKHm2U/z6g/VPYLXPTorslw5Asa2uJmPNNIrSi5B/oO3USP0y7QbAcrqxr5dF7O/6WtGCFZbmoTZBuuIlEQgm7lh8Src7z5lYbGAkouvlQKQY+eBCCnTzQDhVTtj72Sqk6i4KgkV1GUH3P/1MMe0SsZ/qZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zwsuRsEa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74BC5C4CEF5;
+	Wed,  3 Dec 2025 15:40:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779855;
-	bh=5lRYY6pBuXAQr6F/S6giWCE0CatHNeA45454S9Y3dD4=;
+	s=korg; t=1764776423;
+	bh=1DGqSx19oZvViD+VbQMHxlnMEMTchQm6qUqoisVs1t4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h0hF/bcnne1Z+ZIPcSMRqwgXFHEB6I0lyT8r3ujcQEEFMVyQ1DStQ0ntyGqSmgrKS
-	 xtM1c7gO+YgleprkTFPjtwf4bxLf0R6OoEwQSTeIdSqYZFcVmbCoYSTdRmicYYRu89
-	 kDDpbpC+avQDTZRQ69QOQR4gWEzTnb0MS3X7Xt6A=
+	b=zwsuRsEa+M/k0axiUlOTJitNeLw+beJ3z42+kZ7AWUURiFAYCYNh9AN+vJ9gz4NH+
+	 LGE5xEb+wx6zQlq0WmGgV3B/WpUWo9doV9sIL49bAh0hK+DjJt7r1CkHz2A2PzR8/8
+	 ERQMuwx50IrXexb+0r6DxCszXNTfY8PKknB1ygww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Mark Brown <broonie@kernel.org>,
+	syzbot+2fc81b50a4f8263a159b@syzkaller.appspotmail.com,
+	Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 381/568] regulator: fixed: fix GPIO descriptor leak on register failure
+Subject: [PATCH 5.10 179/300] Bluetooth: btusb: reorder cleanup in btusb_disconnect to avoid UAF
 Date: Wed,  3 Dec 2025 16:26:23 +0100
-Message-ID: <20251203152454.650920463@linuxfoundation.org>
+Message-ID: <20251203152407.258982950@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
 
-[ Upstream commit 636f4618b1cd96f6b5a2b8c7c4f665c8533ecf13 ]
+[ Upstream commit 23d22f2f71768034d6ef86168213843fc49bf550 ]
 
-In the commit referenced by the Fixes tag,
-devm_gpiod_get_optional() was replaced by manual
-GPIO management, relying on the regulator core to release the
-GPIO descriptor. However, this approach does not account for the
-error path: when regulator registration fails, the core never
-takes over the GPIO, resulting in a resource leak.
+There is a KASAN: slab-use-after-free read in btusb_disconnect().
+Calling "usb_driver_release_interface(&btusb_driver, data->intf)" will
+free the btusb data associated with the interface. The same data is
+then used later in the function, hence the UAF.
 
-Add gpiod_put() before returning on regulator registration failure.
+Fix by moving the accesses to btusb data to before the data is free'd.
 
-Fixes: 5e6f3ae5c13b ("regulator: fixed: Let core handle GPIO descriptor")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20251028172828.625-1-vulab@iscas.ac.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reported-by: syzbot+2fc81b50a4f8263a159b@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=2fc81b50a4f8263a159b
+Tested-by: syzbot+2fc81b50a4f8263a159b@syzkaller.appspotmail.com
+Fixes: fd913ef7ce619 ("Bluetooth: btusb: Add out-of-band wakeup support")
+Signed-off-by: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/fixed.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/bluetooth/btusb.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/regulator/fixed.c b/drivers/regulator/fixed.c
-index e6724a229d237..e273275e60259 100644
---- a/drivers/regulator/fixed.c
-+++ b/drivers/regulator/fixed.c
-@@ -287,6 +287,7 @@ static int reg_fixed_voltage_probe(struct platform_device *pdev)
- 		ret = dev_err_probe(&pdev->dev, PTR_ERR(drvdata->dev),
- 				    "Failed to register regulator: %ld\n",
- 				    PTR_ERR(drvdata->dev));
-+		gpiod_put(cfg.ena_gpiod);
- 		return ret;
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index cf0a0b3eaf886..155eaaf0485a1 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -4391,6 +4391,11 @@ static void btusb_disconnect(struct usb_interface *intf)
+ 
+ 	hci_unregister_dev(hdev);
+ 
++	if (data->oob_wake_irq)
++		device_init_wakeup(&data->udev->dev, false);
++	if (data->reset_gpio)
++		gpiod_put(data->reset_gpio);
++
+ 	if (intf == data->intf) {
+ 		if (data->isoc)
+ 			usb_driver_release_interface(&btusb_driver, data->isoc);
+@@ -4401,17 +4406,11 @@ static void btusb_disconnect(struct usb_interface *intf)
+ 			usb_driver_release_interface(&btusb_driver, data->diag);
+ 		usb_driver_release_interface(&btusb_driver, data->intf);
+ 	} else if (intf == data->diag) {
+-		usb_driver_release_interface(&btusb_driver, data->intf);
+ 		if (data->isoc)
+ 			usb_driver_release_interface(&btusb_driver, data->isoc);
++		usb_driver_release_interface(&btusb_driver, data->intf);
  	}
+ 
+-	if (data->oob_wake_irq)
+-		device_init_wakeup(&data->udev->dev, false);
+-
+-	if (data->reset_gpio)
+-		gpiod_put(data->reset_gpio);
+-
+ 	hci_free_dev(hdev);
+ }
  
 -- 
 2.51.0
