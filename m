@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-198511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9705DC9FA13
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:46:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 522CDCA0FF1
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:31:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 23E74300019A
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:46:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5E20633386C2
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:29:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85FA03148B5;
-	Wed,  3 Dec 2025 15:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14B9634A3D0;
+	Wed,  3 Dec 2025 16:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mXgTWY9b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0SKFgv7I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21C231329C;
-	Wed,  3 Dec 2025 15:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA6BA346FB9;
+	Wed,  3 Dec 2025 16:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776788; cv=none; b=D9kF5R4uqjwSmOmhfLa9OJ98mLU/nxhfPlAA+zEzT1Ic4B8X3ZefgMTlu/esAMtHWK8cJXnU5zxa4ZASxX3L6ZHWmW9mTqUDPyA5nqPLDrh4A3fva8VZEO4jcqv46b9X/64eMc/ek81lZ19HoWU6YTn8XHNE7bp+iHeM4MSV1Is=
+	t=1764780219; cv=none; b=L5yknk5dl6bt+FA65JDY8d8CDeL2xlCkgusaBHLZic2daR0dwU4hExEQDMYVNn6P5aXcimMp/q4pMiFnP0KrnELIWHoovFMlx79TBxjjFCYi4s8rKmI6+lw+cqOrSlDd9Yb/lW02xaj6bw3Zw6FiBaa3lvlfDpc/H+bcpV8r4Fk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776788; c=relaxed/simple;
-	bh=YHXseSTYY2cvLWNbJxDWhazBWEbIw7Ula/AXEJC6+Kg=;
+	s=arc-20240116; t=1764780219; c=relaxed/simple;
+	bh=hTHX8kqGfFZHYmo75PkRoD5z5LtwKJWpY6JAs+RqgME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GrSgJF1A3mWP3R6rrEkIkqeJ9OMb2jo4V4XeidLVH5atxDPqqEV0RoPKOXEDriiZW0OeQnNtbMW6RL3n/Y53BCltJBm7vxMhCnN9oIMA8XxzBbEJjCtrpPhqED5MEkkRAMCfGENKPbRrdyjURuYYQxWB+Roe4Cy8AQLPpt5cpdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mXgTWY9b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA38DC4CEF5;
-	Wed,  3 Dec 2025 15:46:26 +0000 (UTC)
+	 MIME-Version; b=bprLTJMTAgS6npStqdGICFA3bGr3OlwVnyosUIZzVDgdWD1yTbGIDgP3sMFhLT85Xn//LA4vaFRGKwJa4f8qtS60W01H1D6BVB/yYfUYTMWcurlJkOGeQTJbBXkklrXxipVf448lbn8dNmqtxTpkazP5dikZ8XbeTb009RVZVYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0SKFgv7I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 001FEC4CEF5;
+	Wed,  3 Dec 2025 16:43:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776787;
-	bh=YHXseSTYY2cvLWNbJxDWhazBWEbIw7Ula/AXEJC6+Kg=;
+	s=korg; t=1764780219;
+	bh=hTHX8kqGfFZHYmo75PkRoD5z5LtwKJWpY6JAs+RqgME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mXgTWY9bzbEKull/JXCOCEc9Ql5upg5GcoqW3L1xpvQ0HnjXSnthEpRRZOHkc/6tR
-	 7DR6crU7CEUgqGgmnaeciyWnvAO2NzgzhQk+Liuy3ts30QbxuBBmQmhAkltAazlOfp
-	 9w3yngKjqvxlJ8WE5cklN8jWxQCuyVyX7c7z7Y1A=
+	b=0SKFgv7IEA2pzdTXyYERVa9GrwxQKMrLR62neQq33vVJQHgb6KEXbgPBTn+gwVBF3
+	 +/37wupT1SlmjL/eZkbV30N5hD5QXHlzB/XotsSSc+STTrc/DRsGRERXHRb3XgpTjd
+	 24L20E8FO9/CmEJoRbzVb7nRV72jtD3FVUpL/54M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Alex Hung <alex.hung@amd.com>
-Subject: [PATCH 5.10 288/300] drm/amd/display: Check NULL before accessing
+	Miaoqian Lin <linmq006@gmail.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 490/568] pmdomain: imx: Fix reference count leak in imx_gpc_remove
 Date: Wed,  3 Dec 2025 16:28:12 +0100
-Message-ID: <20251203152411.292214540@linuxfoundation.org>
+Message-ID: <20251203152458.661076001@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +60,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-commit 3ce62c189693e8ed7b3abe551802bbc67f3ace54 upstream.
+[ Upstream commit bbde14682eba21d86f5f3d6fe2d371b1f97f1e61 ]
 
-[WHAT]
-IGT kms_cursor_legacy's long-nonblocking-modeset-vs-cursor-atomic
-fails with NULL pointer dereference. This can be reproduced with
-both an eDP panel and a DP monitors connected.
+of_get_child_by_name() returns a node pointer with refcount incremented, we
+should use of_node_put() on it when not needed anymore. Add the missing
+of_node_put() to avoid refcount leak.
 
- BUG: kernel NULL pointer dereference, address: 0000000000000000
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 0 P4D 0
- Oops: Oops: 0000 [#1] SMP NOPTI
- CPU: 13 UID: 0 PID: 2960 Comm: kms_cursor_lega Not tainted
-6.16.0-99-custom #8 PREEMPT(voluntary)
- Hardware name: AMD ........
- RIP: 0010:dc_stream_get_scanoutpos+0x34/0x130 [amdgpu]
- Code: 57 4d 89 c7 41 56 49 89 ce 41 55 49 89 d5 41 54 49
- 89 fc 53 48 83 ec 18 48 8b 87 a0 64 00 00 48 89 75 d0 48 c7 c6 e0 41 30
- c2 <48> 8b 38 48 8b 9f 68 06 00 00 e8 8d d7 fd ff 31 c0 48 81 c3 e0 02
- RSP: 0018:ffffd0f3c2bd7608 EFLAGS: 00010292
- RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffd0f3c2bd7668
- RDX: ffffd0f3c2bd7664 RSI: ffffffffc23041e0 RDI: ffff8b32494b8000
- RBP: ffffd0f3c2bd7648 R08: ffffd0f3c2bd766c R09: ffffd0f3c2bd7760
- R10: ffffd0f3c2bd7820 R11: 0000000000000000 R12: ffff8b32494b8000
- R13: ffffd0f3c2bd7664 R14: ffffd0f3c2bd7668 R15: ffffd0f3c2bd766c
- FS:  000071f631b68700(0000) GS:ffff8b399f114000(0000)
-knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000000000000000 CR3: 00000001b8105000 CR4: 0000000000f50ef0
- PKRU: 55555554
- Call Trace:
- <TASK>
- dm_crtc_get_scanoutpos+0xd7/0x180 [amdgpu]
- amdgpu_display_get_crtc_scanoutpos+0x86/0x1c0 [amdgpu]
- ? __pfx_amdgpu_crtc_get_scanout_position+0x10/0x10[amdgpu]
- amdgpu_crtc_get_scanout_position+0x27/0x50 [amdgpu]
- drm_crtc_vblank_helper_get_vblank_timestamp_internal+0xf7/0x400
- drm_crtc_vblank_helper_get_vblank_timestamp+0x1c/0x30
- drm_crtc_get_last_vbltimestamp+0x55/0x90
- drm_crtc_next_vblank_start+0x45/0xa0
- drm_atomic_helper_wait_for_fences+0x81/0x1f0
- ...
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 621e55f1919640acab25383362b96e65f2baea3c)
+Fixes: 721cabf6c660 ("soc: imx: move PGC handling to a new GPC driver")
 Cc: stable@vger.kernel.org
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+[ drivers/pmdomain/imx/gpc.c -> drivers/soc/imx/gpc.c ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc_stream.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/soc/imx/gpc.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
-@@ -586,9 +586,14 @@ bool dc_stream_get_scanoutpos(const stru
- {
- 	uint8_t i;
- 	bool ret = false;
--	struct dc  *dc = stream->ctx->dc;
--	struct resource_context *res_ctx =
--		&dc->current_state->res_ctx;
-+	struct dc  *dc;
-+	struct resource_context *res_ctx;
-+
-+	if (!stream->ctx)
-+		return false;
-+
-+	dc = stream->ctx->dc;
-+	res_ctx = &dc->current_state->res_ctx;
+--- a/drivers/soc/imx/gpc.c
++++ b/drivers/soc/imx/gpc.c
+@@ -541,6 +541,8 @@ static int imx_gpc_remove(struct platfor
+ 			return ret;
+ 	}
  
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		struct timing_generator *tg = res_ctx->pipe_ctx[i].stream_res.tg;
++	of_node_put(pgc_node);
++
+ 	return 0;
+ }
+ 
 
 
 
