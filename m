@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-199804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2456CA0C3A
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:06:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 383C2CA028B
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:52:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A30403028E63
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:02:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C143F30463B3
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:47:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 452493587CE;
-	Wed,  3 Dec 2025 16:56:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 685D936CDFD;
+	Wed,  3 Dec 2025 16:47:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qMd69mIf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rngKUE8S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B74793570A7;
-	Wed,  3 Dec 2025 16:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 232BE35B156;
+	Wed,  3 Dec 2025 16:47:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780998; cv=none; b=Y02SEt83lSnPA2JYRwU4+HK3Zu8m+vGuHLvd8HhR5ApEtQcfzmdhV8Ds+VdhU7PsdaOAAikLQkUQ4HF66I1rof4j2w68G1igoUYr+33tLQuV8/R0mN7P4njgOTr5UKGq3ohLhddSnCUKon9PC8wUbL4nsTPdQEVs73PP1Ib89A4=
+	t=1764780476; cv=none; b=eCUCxKyhemXZp8ksxv8fGbOQQP6bxZZXQlzj2Ts+pv9dS5naU/1uqRTfgRgmZ1fx1L2bNNRv1+I7G7ZtYnCXobLv93s5fN6H598JgngVgZA9NTvyEZYLRYLhxkzRChXoMGnc9lfUmN+4R/S+1bG2R29XyJ0uhCAa4U447m5dW5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780998; c=relaxed/simple;
-	bh=MSSxpK+yW9pDmBYRRnp0heT46746QOWBNHx18vfxtig=;
+	s=arc-20240116; t=1764780476; c=relaxed/simple;
+	bh=amcQ9yfuE8MXJ3HKOn0bu6fBvPg/a37MDCZ2EkWEilY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J++YfQJ5vzuCvFpcTM8AIr6MY2K+8p2JhNzXDWE30w+9KUEECjkyEcY5aRMu1ZW60ImBPbgB0NTxylMddT4puG+2FGGsLc4A5nmUBbNl0OOWlSRl5OFVvyBN0Ke6TyxtNN/V+BvcFd0KP0DQb2hQ+4dLw2wA0aej3hDTQfkPdqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qMd69mIf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0318C4CEF5;
-	Wed,  3 Dec 2025 16:56:37 +0000 (UTC)
+	 MIME-Version; b=XLiOgd1VFyQtK9Zgt8P0Dz/Agfu7WnJ2O1u1TRQ91ywn3Wp/Y1VHsUTOH8QNDVt55kPCGQD+NpojgYUbGbWYahsFMgKrwtV0tyUE4lxW+OUzoF2x+WVejdDaTNwehyCdDroShR5l1j4PERrqrLJupKZHXCGW8Cvs2G0UXzZYQ8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rngKUE8S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0033C4CEF5;
+	Wed,  3 Dec 2025 16:47:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780998;
-	bh=MSSxpK+yW9pDmBYRRnp0heT46746QOWBNHx18vfxtig=;
+	s=korg; t=1764780476;
+	bh=amcQ9yfuE8MXJ3HKOn0bu6fBvPg/a37MDCZ2EkWEilY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qMd69mIfQoLiVFZ2QnUmvTtpG+AVPH4Lve1ZJJDt85kte/rpxI60ZkwF7qm5Yb4FB
-	 43qUlCeqve/ANBG9/I0BQ619wkiviBWhVh1yhDpUTFv8xo0RukXu5SgvbDCJeV5dAq
-	 gNcFcw0FqMO4D0REbk0Yb9E7pEzJNXGLo7tX14nk=
+	b=rngKUE8S2WALeygSr1FtW7Tpey20Lz5v99pwye/PP/OPrMOlXolo+RSY6ezeXEoAT
+	 /c0Ab+/wCAjsS7BrxQvHPdI3CBRTwXHrBQfa2jme5fcKZV8pUmBRKB8C4Lj5txNbPt
+	 quZdckJGVnCbPAu6xsnlUdrRaJ/7OmWeMA6bGstg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 04/93] can: gs_usb: gs_usb_receive_bulk_callback(): check actual_length before accessing data
+	Christian Gromm <christian.gromm@microchip.com>,
+	Victoria Votokina <Victoria.Votokina@kaspersky.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.1 535/568] most: usb: fix double free on late probe failure
 Date: Wed,  3 Dec 2025 16:28:57 +0100
-Message-ID: <20251203152336.663417695@linuxfoundation.org>
+Message-ID: <20251203152500.308952423@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,144 +60,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 395d988f93861101ec89d0dd9e3b876ae9392a5b ]
+commit baadf2a5c26e802a46573eaad331b427b49aaa36 upstream.
 
-The URB received in gs_usb_receive_bulk_callback() contains a struct
-gs_host_frame. The length of the data after the header depends on the
-gs_host_frame hf::flags and the active device features (e.g. time
-stamping).
+The MOST subsystem has a non-standard registration function which frees
+the interface on registration failures and on deregistration.
 
-Introduce a new function gs_usb_get_minimum_length() and check that we have
-at least received the required amount of data before accessing it. Only
-copy the data to that skb that has actually been received.
+This unsurprisingly leads to bugs in the MOST drivers, and a couple of
+recent changes turned a reference underflow and use-after-free in the
+USB driver into several double free and a use-after-free on late probe
+failures.
 
-Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
-Link: https://patch.msgid.link/20251114-gs_usb-fix-usb-callbacks-v1-3-a29b42eacada@pengutronix.de
-[mkl: rename gs_usb_get_minimum_length() -> +gs_usb_get_minimum_rx_length()]
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 723de0f9171e ("staging: most: remove device from interface structure")
+Fixes: 4b1270902609 ("most: usb: Fix use-after-free in hdm_disconnect")
+Fixes: a8cc9e5fcb0e ("most: usb: hdm_probe: Fix calling put_device() before device initialization")
+Cc: stable@vger.kernel.org
+Cc: Christian Gromm <christian.gromm@microchip.com>
+Cc: Victoria Votokina <Victoria.Votokina@kaspersky.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20251029093029.28922-1-johan@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/usb/gs_usb.c | 59 +++++++++++++++++++++++++++++++++---
- 1 file changed, 54 insertions(+), 5 deletions(-)
+ drivers/most/most_usb.c |   14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
-index e786616d167b8..72997312c9567 100644
---- a/drivers/net/can/usb/gs_usb.c
-+++ b/drivers/net/can/usb/gs_usb.c
-@@ -258,6 +258,11 @@ struct canfd_quirk {
- 	u8 quirk;
- } __packed;
+--- a/drivers/most/most_usb.c
++++ b/drivers/most/most_usb.c
+@@ -1058,7 +1058,7 @@ hdm_probe(struct usb_interface *interfac
  
-+/* struct gs_host_frame::echo_id == GS_HOST_FRAME_ECHO_ID_RX indicates
-+ * a regular RX'ed CAN frame
-+ */
-+#define GS_HOST_FRAME_ECHO_ID_RX 0xffffffff
-+
- struct gs_host_frame {
- 	struct_group(header,
- 		u32 echo_id;
-@@ -567,6 +572,37 @@ gs_usb_get_echo_skb(struct gs_can *dev, struct sk_buff *skb,
- 	return len;
- }
+ 	ret = most_register_interface(&mdev->iface);
+ 	if (ret)
+-		goto err_free_busy_urbs;
++		return ret;
  
-+static unsigned int
-+gs_usb_get_minimum_rx_length(const struct gs_can *dev, const struct gs_host_frame *hf,
-+			     unsigned int *data_length_p)
-+{
-+	unsigned int minimum_length, data_length = 0;
-+
-+	if (hf->flags & GS_CAN_FLAG_FD) {
-+		if (hf->echo_id == GS_HOST_FRAME_ECHO_ID_RX)
-+			data_length = can_fd_dlc2len(hf->can_dlc);
-+
-+		if (dev->feature & GS_CAN_FEATURE_HW_TIMESTAMP)
-+			/* timestamp follows data field of max size */
-+			minimum_length = struct_size(hf, canfd_ts, 1);
-+		else
-+			minimum_length = sizeof(hf->header) + data_length;
-+	} else {
-+		if (hf->echo_id == GS_HOST_FRAME_ECHO_ID_RX &&
-+		    !(hf->can_id & cpu_to_le32(CAN_RTR_FLAG)))
-+			data_length = can_cc_dlc2len(hf->can_dlc);
-+
-+		if (dev->feature & GS_CAN_FEATURE_HW_TIMESTAMP)
-+			/* timestamp follows data field of max size */
-+			minimum_length = struct_size(hf, classic_can_ts, 1);
-+		else
-+			minimum_length = sizeof(hf->header) + data_length;
-+	}
-+
-+	*data_length_p = data_length;
-+	return minimum_length;
-+}
-+
- static void gs_usb_receive_bulk_callback(struct urb *urb)
- {
- 	struct gs_usb *parent = urb->context;
-@@ -575,7 +611,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
- 	int rc;
- 	struct net_device_stats *stats;
- 	struct gs_host_frame *hf = urb->transfer_buffer;
--	unsigned int minimum_length;
-+	unsigned int minimum_length, data_length;
- 	struct gs_tx_context *txc;
- 	struct can_frame *cf;
- 	struct canfd_frame *cfd;
-@@ -618,20 +654,33 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
- 	if (!netif_running(netdev))
- 		goto resubmit_urb;
+ 	mutex_lock(&mdev->io_mutex);
+ 	if (le16_to_cpu(usb_dev->descriptor.idProduct) == USB_DEV_ID_OS81118 ||
+@@ -1068,8 +1068,7 @@ hdm_probe(struct usb_interface *interfac
+ 		if (!mdev->dci) {
+ 			mutex_unlock(&mdev->io_mutex);
+ 			most_deregister_interface(&mdev->iface);
+-			ret = -ENOMEM;
+-			goto err_free_busy_urbs;
++			return -ENOMEM;
+ 		}
  
--	if (hf->echo_id == -1) { /* normal rx */
-+	minimum_length = gs_usb_get_minimum_rx_length(dev, hf, &data_length);
-+	if (urb->actual_length < minimum_length) {
-+		stats->rx_errors++;
-+		stats->rx_length_errors++;
+ 		mdev->dci->dev.init_name = "dci";
+@@ -1078,18 +1077,15 @@ hdm_probe(struct usb_interface *interfac
+ 		mdev->dci->dev.release = release_dci;
+ 		if (device_register(&mdev->dci->dev)) {
+ 			mutex_unlock(&mdev->io_mutex);
++			put_device(&mdev->dci->dev);
+ 			most_deregister_interface(&mdev->iface);
+-			ret = -ENOMEM;
+-			goto err_free_dci;
++			return -ENOMEM;
+ 		}
+ 		mdev->dci->usb_device = mdev->usb_device;
+ 	}
+ 	mutex_unlock(&mdev->io_mutex);
+ 	return 0;
+-err_free_dci:
+-	put_device(&mdev->dci->dev);
+-err_free_busy_urbs:
+-	kfree(mdev->busy_urbs);
 +
-+		if (net_ratelimit())
-+			netdev_err(netdev,
-+				   "short read (actual_length=%u, minimum_length=%u)\n",
-+				   urb->actual_length, minimum_length);
-+
-+		goto resubmit_urb;
-+	}
-+
-+	if (hf->echo_id == GS_HOST_FRAME_ECHO_ID_RX) { /* normal rx */
- 		if (hf->flags & GS_CAN_FLAG_FD) {
- 			skb = alloc_canfd_skb(netdev, &cfd);
- 			if (!skb)
- 				return;
- 
- 			cfd->can_id = le32_to_cpu(hf->can_id);
--			cfd->len = can_fd_dlc2len(hf->can_dlc);
-+			cfd->len = data_length;
- 			if (hf->flags & GS_CAN_FLAG_BRS)
- 				cfd->flags |= CANFD_BRS;
- 			if (hf->flags & GS_CAN_FLAG_ESI)
- 				cfd->flags |= CANFD_ESI;
- 
--			memcpy(cfd->data, hf->canfd->data, cfd->len);
-+			memcpy(cfd->data, hf->canfd->data, data_length);
- 		} else {
- 			skb = alloc_can_skb(netdev, &cf);
- 			if (!skb)
-@@ -640,7 +689,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
- 			cf->can_id = le32_to_cpu(hf->can_id);
- 			can_frame_set_cc_len(cf, hf->can_dlc, dev->can.ctrlmode);
- 
--			memcpy(cf->data, hf->classic_can->data, 8);
-+			memcpy(cf->data, hf->classic_can->data, data_length);
- 
- 			/* ERROR frames tell us information about the controller */
- 			if (le32_to_cpu(hf->can_id) & CAN_ERR_FLAG)
--- 
-2.51.0
-
+ err_free_ep_address:
+ 	kfree(mdev->ep_address);
+ err_free_cap:
 
 
 
