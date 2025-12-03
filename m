@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-198698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CBC8CA0F18
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:25:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0C29CA067B
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:24:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 784093465F25
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:23:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D505C32EF48B
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:09:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF21F336EF7;
-	Wed,  3 Dec 2025 15:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AC8531AF09;
+	Wed,  3 Dec 2025 16:24:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w9U/TL+s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tVxonNEW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BEA3338597;
-	Wed,  3 Dec 2025 15:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A341313E3D;
+	Wed,  3 Dec 2025 16:24:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777396; cv=none; b=PSD9ebD0b3L9bByGoo6k0m7pnzj2CIzjcG9qxs9c87CkknxMCufbQ+d2Vnyolhw+AOBGo/TZcLFvPpNVrdNht6D5u/bi76JV9Nu9jIlmeipDU6Fvd+03bOS/qcs+on4APH1go81171X1BaNIvFlbTV/FF2k1/wBJmQa+21XSu1A=
+	t=1764779092; cv=none; b=cyCcGEuF/U/Sy/bVsJGDOYbycHf8OysQZu+eoq7y7Z8wmYY8Fm+RhYBU7KKfhsuw6uJ2fAzzFKplPmsvaU2jGdlHrnfyhA1Q1Ro8Debw+V+KDXhn4Kl2XVTEpJKd14+RWXewhJ5jTUQB9rCjEu+7lwSpJ/SxuMRouZwjACfnSGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777396; c=relaxed/simple;
-	bh=lHPKFxlYS8iA/nElpmY00iFRyCM72zXY6GukvNpXIyM=;
+	s=arc-20240116; t=1764779092; c=relaxed/simple;
+	bh=1+WzWyZMZ7oUnMAlVBM398SQpzourTF/JpKl4CGzh7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i9cw2fBLiTfrIP9DTTDozV8vU9C14K/ladfDaxWUTtC8ERcbe9m3QBx2PtA7mYnC0n08DCx/1Ryb5JyF6dvVNPHWCaK/rc6I/+cZkAXZ3l7UAKNlwWshg+yuijHnzebT1CPgPqMHxoweVuBR4qlPlG2Xuyrdd+sof7XP4cUjRGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w9U/TL+s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE734C4CEF5;
-	Wed,  3 Dec 2025 15:56:35 +0000 (UTC)
+	 MIME-Version; b=jAbywoS7vpdYWcf5EoFrod+WHC6lvCjwg4B9MjJkeT6SbhmxWtZadmlaw+NICVIB32C065QVx2IXjulxy6Oh54BV3W4ju0AjmfrTlpO+jaZ88409CLmMICR4/gy+ovLDE+LrARlyRBHmfJnNH8FTe++arQNPDaSoJiGGMYGEE44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tVxonNEW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9117FC4CEF5;
+	Wed,  3 Dec 2025 16:24:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777396;
-	bh=lHPKFxlYS8iA/nElpmY00iFRyCM72zXY6GukvNpXIyM=;
+	s=korg; t=1764779092;
+	bh=1+WzWyZMZ7oUnMAlVBM398SQpzourTF/JpKl4CGzh7c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w9U/TL+sJDw3mu1If4EkrNU6AQUIObj+Mry+BI2Jp1qIZRqv3mXfohQ6yUJJ4QU0Y
-	 IClFjd2Jnh1W3ehXTkCFEbvRJv6qaiBGsw1V5YsyaLYgJWtkwNwPfcxOv7NLAD/fLT
-	 9oNHmnoU895x8aYjpmkHaKQRfBluo3hYuUyt849I=
+	b=tVxonNEWM1yaNdGd2E3sGVr/p2RsEYe90bmBtGRJNHfnCOdj2dDWd0wwVHwVZ+eJR
+	 yFZR7sriLInIdId89rmNXLXusfsuiGDsyXG42V/DLnOybXPizDOsWLORlSxwrmG1fQ
+	 +deR/w2UEb0jqdmWMaG+bmJ4tt0z1My/wJZ0Ik5s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 004/392] btrfs: always drop log root tree reference in btrfs_replay_log()
-Date: Wed,  3 Dec 2025 16:22:34 +0100
-Message-ID: <20251203152414.253071647@linuxfoundation.org>
+Subject: [PATCH 6.1 153/568] bridge: Redirect to backup port when port is administratively down
+Date: Wed,  3 Dec 2025 16:22:35 +0100
+Message-ID: <20251203152446.330527519@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 2f5b8095ea47b142c56c09755a8b1e14145a2d30 ]
+[ Upstream commit 3d05b24429e1de7a17c8fdccb04a04dbc8ad297b ]
 
-Currently we have this odd behaviour:
+If a backup port is configured for a bridge port, the bridge will
+redirect known unicast traffic towards the backup port when the primary
+port is administratively up but without a carrier. This is useful, for
+example, in MLAG configurations where a system is connected to two
+switches and there is a peer link between both switches. The peer link
+serves as the backup port in case one of the switches loses its
+connection to the multi-homed system.
 
-1) At btrfs_replay_log() we drop the reference of the log root tree if
-   the call to btrfs_recover_log_trees() failed;
+In order to avoid flooding when the primary port loses its carrier, the
+bridge does not flush dynamic FDB entries pointing to the port upon STP
+disablement, if the port has a backup port.
 
-2) But if the call to btrfs_recover_log_trees() did not fail, we don't
-   drop the reference in btrfs_replay_log() - we expect that
-   btrfs_recover_log_trees() does it in case it returns success.
+The above means that known unicast traffic destined to the primary port
+will be blackholed when the port is put administratively down, until the
+FDB entries pointing to it are aged-out.
 
-Let's simplify this and make btrfs_replay_log() always drop the reference
-on the log root tree, not only this simplifies code as it's what makes
-sense since it's btrfs_replay_log() who grabbed the reference in the first
-place.
+Given that the current behavior is quite weird and unlikely to be
+depended on by anyone, amend the bridge to redirect to the backup port
+also when the primary port is administratively down and not only when it
+does not have a carrier.
 
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+The change is motivated by a report from a user who expected traffic to
+be redirected to the backup port when the primary port was put
+administratively down while debugging a network issue.
+
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20250812080213.325298-2-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/disk-io.c  | 2 +-
- fs/btrfs/tree-log.c | 1 -
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ net/bridge/br_forward.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-index 9c2d6f96f46da..136902f27e441 100644
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -2387,10 +2387,10 @@ static int btrfs_replay_log(struct btrfs_fs_info *fs_info,
- 	}
- 	/* returns with log_tree_root freed on success */
- 	ret = btrfs_recover_log_trees(log_tree_root);
-+	btrfs_put_root(log_tree_root);
- 	if (ret) {
- 		btrfs_handle_fs_error(fs_info, ret,
- 				      "Failed to recover log tree");
--		btrfs_put_root(log_tree_root);
- 		return ret;
- 	}
+diff --git a/net/bridge/br_forward.c b/net/bridge/br_forward.c
+index a32d73f381558..d3257c9bfa920 100644
+--- a/net/bridge/br_forward.c
++++ b/net/bridge/br_forward.c
+@@ -148,7 +148,8 @@ void br_forward(const struct net_bridge_port *to,
+ 		goto out;
  
-diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
-index 34fedac4e1864..445c7a5641b62 100644
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -6513,7 +6513,6 @@ int btrfs_recover_log_trees(struct btrfs_root *log_root_tree)
+ 	/* redirect to backup link if the destination port is down */
+-	if (rcu_access_pointer(to->backup_port) && !netif_carrier_ok(to->dev)) {
++	if (rcu_access_pointer(to->backup_port) &&
++	    (!netif_carrier_ok(to->dev) || !netif_running(to->dev))) {
+ 		struct net_bridge_port *backup_port;
  
- 	log_root_tree->log_root = NULL;
- 	clear_bit(BTRFS_FS_LOG_RECOVERING, &fs_info->flags);
--	btrfs_put_root(log_root_tree);
- 
- 	return 0;
- error:
+ 		backup_port = rcu_dereference(to->backup_port);
 -- 
 2.51.0
 
