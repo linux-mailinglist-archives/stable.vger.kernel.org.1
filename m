@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-198589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A904CA1417
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:06:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF761C9F9B9
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:44:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ED2B530B71EE
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:44:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 26D10300306C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:44:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C50B32E6B1;
-	Wed,  3 Dec 2025 15:50:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F6C5307AD9;
+	Wed,  3 Dec 2025 15:44:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pVLlikhJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HJqJvGzI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2875032E692;
-	Wed,  3 Dec 2025 15:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD22306D49;
+	Wed,  3 Dec 2025 15:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777042; cv=none; b=IvgsiqwPnlAscCWG4a6LEfQ9GMkROtjkE5BFHt8bnbM5MkJ713iG4ATquOUJ0ksSpKSM9y8reqshCRoqSdwkqbaDRzBaIVUX0I/ROcSNOoFe9hFGDJ3D5Gfr3s3D3/oyLL//AvxQb+2XGcgRWQVP6XwYVOoDc1c9MiPjosReR5A=
+	t=1764776645; cv=none; b=aE9Zsh/1jkyi3hBYUQ5jojiMjZ6g4dmYYXBTE5lXqbnOhw+6MnWwynzHwzf+onzAuQiVJkwTZ7l1tt1wtfkteBvO7aSFC9VHovI1TVW7EGmNwOAo+XFB6x9B+EOlNiuZNNq4BedIjYD5IBXgML8vUg0yNB81TWccjnl6kgeCDNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777042; c=relaxed/simple;
-	bh=DLlG78Z9FeyhWCc2Iu9rlnstxfTU8ApW4L/QltmQ80E=;
+	s=arc-20240116; t=1764776645; c=relaxed/simple;
+	bh=m/EndSUnOZFwcS4U/2l+7XMLJRdbaMsvtCY/EIj7ETU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SYkfDrz8VBU0yXWwXYc5/OTiDzlV5uaUmPzmApRt0mZqkuC9TANMS0tcNACxso7GMz6/sbj6wpE3dYg1yzIq57/d0eybsZ2boDMKZdpQbf5p56WJCFE8NfSUkTDqqW8wqQf8FR5DkIHp2GUqFpajOR0SbAGdyN6VmZS9iavCDfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pVLlikhJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C9C4C4CEF5;
-	Wed,  3 Dec 2025 15:50:41 +0000 (UTC)
+	 MIME-Version; b=Wbvfc/llRhburJeVuFhX2i6fiPWu8lavM/eZzupEkN/T0ImFpsIsaBkpkI5VNn0QesmqhPC82l8iXHI4GOIcPRINV57ejwNJiImLwgZc6qp2Ltbm+axk0PGL9Mu8ouX51kz4MVls3NH+9S4nnLb5fcEUlGTYpAnGpMxljQilv1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HJqJvGzI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83403C4CEF5;
+	Wed,  3 Dec 2025 15:44:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777041;
-	bh=DLlG78Z9FeyhWCc2Iu9rlnstxfTU8ApW4L/QltmQ80E=;
+	s=korg; t=1764776644;
+	bh=m/EndSUnOZFwcS4U/2l+7XMLJRdbaMsvtCY/EIj7ETU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pVLlikhJRbq6/xsxyHgEqYRrITKr2ip3ueb9aluJFEHGE286VLM7p+oWBxX+V7MAU
-	 GHyRVpY4D3r81Uy0cK5iqLqnjhGg0Ssmr0uvKV8iZa8i3iK9U/S9X8qqxDabVlRNPg
-	 c2AxDY1UGEDxdUUs+9AwQ+XbNO7malsCrZsDnZOQ=
+	b=HJqJvGzIsYzOkTfTPmEVrRm6HGw3TqobKvZJvjNzbG0ARqs1mJIq+P23zsDG4pu/A
+	 RtdBn1+dGf1XEieg9aGi1iorbsshrGn1rdFMFgXksJ23VIOAkz3yX+O7QGl57PBaSx
+	 tINsPPcXPQ2yaykg8RjxI+EJSAKCf7jeNaUT2Kso=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason-JH Lin <jason-jh.lin@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 037/146] mailbox: mtk-cmdq: Refine DMA address handling for the command buffer
+	Hans de Goede <hansg@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.10 211/300] spi: Try to get ACPI GPIO IRQ earlier
 Date: Wed,  3 Dec 2025 16:26:55 +0100
-Message-ID: <20251203152347.832221924@linuxfoundation.org>
+Message-ID: <20251203152408.440115795@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,174 +59,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason-JH Lin <jason-jh.lin@mediatek.com>
+From: Hans de Goede <hansg@kernel.org>
 
-[ Upstream commit a195c7ccfb7a21b8118139835e25936ec8722596 ]
+commit 3cd2018e15b3d66d2187d92867e265f45ad79e6f upstream.
 
-GCE can only fetch the command buffer address from a 32-bit register.
-Some SoCs support a 35-bit command buffer address for GCE, which
-requires a right shift of 3 bits before setting the address into
-the 32-bit register. A comment has been added to the header of
-cmdq_get_shift_pa() to explain this requirement.
+Since commit d24cfee7f63d ("spi: Fix acpi deferred irq probe"), the
+acpi_dev_gpio_irq_get() call gets delayed till spi_probe() is called
+on the SPI device.
 
-To prevent the GCE command buffer address from being DMA mapped beyond
-its supported bit range, the DMA bit mask for the device is set during
-initialization.
+If there is no driver for the SPI device then the move to spi_probe()
+results in acpi_dev_gpio_irq_get() never getting called. This may
+cause problems by leaving the GPIO pin floating because this call is
+responsible for setting up the GPIO pin direction and/or bias according
+to the values from the ACPI tables.
 
-Additionally, to ensure the correct shift is applied when setting or
-reading the register that stores the GCE command buffer address,
-new APIs, cmdq_convert_gce_addr() and cmdq_revert_gce_addr(), have
-been introduced for consistent operations on this register.
+Re-add the removed acpi_dev_gpio_irq_get() in acpi_register_spi_device()
+to ensure the GPIO pin is always correctly setup, while keeping the
+acpi_dev_gpio_irq_get() call added to spi_probe() to deal with
+-EPROBE_DEFER returns caused by the GPIO controller not having a driver
+yet.
 
-The variable type for the command buffer address has been standardized
-to dma_addr_t to prevent handling issues caused by type mismatches.
-
-Fixes: 0858fde496f8 ("mailbox: cmdq: variablize address shift in platform")
-Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://bbs.archlinux.org/viewtopic.php?id=302348
+Fixes: d24cfee7f63d ("spi: Fix acpi deferred irq probe")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <hansg@kernel.org>
+Link: https://patch.msgid.link/20251102190921.30068-1-hansg@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mailbox/mtk-cmdq-mailbox.c       | 45 ++++++++++++++++--------
- include/linux/mailbox/mtk-cmdq-mailbox.h | 10 ++++++
- 2 files changed, 41 insertions(+), 14 deletions(-)
+ drivers/spi/spi.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/mailbox/mtk-cmdq-mailbox.c b/drivers/mailbox/mtk-cmdq-mailbox.c
-index 654a60f63756a..5791f80f995ab 100644
---- a/drivers/mailbox/mtk-cmdq-mailbox.c
-+++ b/drivers/mailbox/mtk-cmdq-mailbox.c
-@@ -92,6 +92,18 @@ struct gce_plat {
- 	u32 gce_num;
- };
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2259,6 +2259,16 @@ static acpi_status acpi_register_spi_dev
+ 	acpi_set_modalias(adev, acpi_device_hid(adev), spi->modalias,
+ 			  sizeof(spi->modalias));
  
-+static inline u32 cmdq_convert_gce_addr(dma_addr_t addr, const struct gce_plat *pdata)
-+{
-+	/* Convert DMA addr (PA or IOVA) to GCE readable addr */
-+	return addr >> pdata->shift;
-+}
++	/*
++	 * This gets re-tried in spi_probe() for -EPROBE_DEFER handling in case
++	 * the GPIO controller does not have a driver yet. This needs to be done
++	 * here too, because this call sets the GPIO direction and/or bias.
++	 * Setting these needs to be done even if there is no driver, in which
++	 * case spi_probe() will never get called.
++	 */
++	if (spi->irq < 0)
++		spi->irq = acpi_dev_gpio_irq_get(adev, 0);
 +
-+static inline dma_addr_t cmdq_revert_gce_addr(u32 addr, const struct gce_plat *pdata)
-+{
-+	/* Revert GCE readable addr to DMA addr (PA or IOVA) */
-+	return (dma_addr_t)addr << pdata->shift;
-+}
-+
- u8 cmdq_get_shift_pa(struct mbox_chan *chan)
- {
- 	struct cmdq *cmdq = container_of(chan->mbox, struct cmdq, mbox);
-@@ -188,13 +200,12 @@ static void cmdq_task_insert_into_thread(struct cmdq_task *task)
- 	struct cmdq_task *prev_task = list_last_entry(
- 			&thread->task_busy_list, typeof(*task), list_entry);
- 	u64 *prev_task_base = prev_task->pkt->va_base;
-+	u32 gce_addr = cmdq_convert_gce_addr(task->pa_base, task->cmdq->pdata);
+ 	acpi_device_set_enumerated(adev);
  
- 	/* let previous task jump to this task */
- 	dma_sync_single_for_cpu(dev, prev_task->pa_base,
- 				prev_task->pkt->cmd_buf_size, DMA_TO_DEVICE);
--	prev_task_base[CMDQ_NUM_CMD(prev_task->pkt) - 1] =
--		(u64)CMDQ_JUMP_BY_PA << 32 |
--		(task->pa_base >> task->cmdq->pdata->shift);
-+	prev_task_base[CMDQ_NUM_CMD(prev_task->pkt) - 1] = (u64)CMDQ_JUMP_BY_PA << 32 | gce_addr;
- 	dma_sync_single_for_device(dev, prev_task->pa_base,
- 				   prev_task->pkt->cmd_buf_size, DMA_TO_DEVICE);
- 
-@@ -237,7 +248,8 @@ static void cmdq_thread_irq_handler(struct cmdq *cmdq,
- 				    struct cmdq_thread *thread)
- {
- 	struct cmdq_task *task, *tmp, *curr_task = NULL;
--	u32 curr_pa, irq_flag, task_end_pa;
-+	u32 irq_flag, gce_addr;
-+	dma_addr_t curr_pa, task_end_pa;
- 	bool err;
- 
- 	irq_flag = readl(thread->base + CMDQ_THR_IRQ_STATUS);
-@@ -259,7 +271,8 @@ static void cmdq_thread_irq_handler(struct cmdq *cmdq,
- 	else
- 		return;
- 
--	curr_pa = readl(thread->base + CMDQ_THR_CURR_ADDR) << cmdq->pdata->shift;
-+	gce_addr = readl(thread->base + CMDQ_THR_CURR_ADDR);
-+	curr_pa = cmdq_revert_gce_addr(gce_addr, cmdq->pdata);
- 
- 	list_for_each_entry_safe(task, tmp, &thread->task_busy_list,
- 				 list_entry) {
-@@ -378,7 +391,8 @@ static int cmdq_mbox_send_data(struct mbox_chan *chan, void *data)
- 	struct cmdq_thread *thread = (struct cmdq_thread *)chan->con_priv;
- 	struct cmdq *cmdq = dev_get_drvdata(chan->mbox->dev);
- 	struct cmdq_task *task;
--	unsigned long curr_pa, end_pa;
-+	u32 gce_addr;
-+	dma_addr_t curr_pa, end_pa;
- 
- 	/* Client should not flush new tasks if suspended. */
- 	WARN_ON(cmdq->suspended);
-@@ -402,20 +416,20 @@ static int cmdq_mbox_send_data(struct mbox_chan *chan, void *data)
- 		 */
- 		WARN_ON(cmdq_thread_reset(cmdq, thread) < 0);
- 
--		writel(task->pa_base >> cmdq->pdata->shift,
--		       thread->base + CMDQ_THR_CURR_ADDR);
--		writel((task->pa_base + pkt->cmd_buf_size) >> cmdq->pdata->shift,
--		       thread->base + CMDQ_THR_END_ADDR);
-+		gce_addr = cmdq_convert_gce_addr(task->pa_base, cmdq->pdata);
-+		writel(gce_addr, thread->base + CMDQ_THR_CURR_ADDR);
-+		gce_addr = cmdq_convert_gce_addr(task->pa_base + pkt->cmd_buf_size, cmdq->pdata);
-+		writel(gce_addr, thread->base + CMDQ_THR_END_ADDR);
- 
- 		writel(thread->priority, thread->base + CMDQ_THR_PRIORITY);
- 		writel(CMDQ_THR_IRQ_EN, thread->base + CMDQ_THR_IRQ_ENABLE);
- 		writel(CMDQ_THR_ENABLED, thread->base + CMDQ_THR_ENABLE_TASK);
- 	} else {
- 		WARN_ON(cmdq_thread_suspend(cmdq, thread) < 0);
--		curr_pa = readl(thread->base + CMDQ_THR_CURR_ADDR) <<
--			cmdq->pdata->shift;
--		end_pa = readl(thread->base + CMDQ_THR_END_ADDR) <<
--			cmdq->pdata->shift;
-+		gce_addr = readl(thread->base + CMDQ_THR_CURR_ADDR);
-+		curr_pa = cmdq_revert_gce_addr(gce_addr, cmdq->pdata);
-+		gce_addr = readl(thread->base + CMDQ_THR_END_ADDR);
-+		end_pa = cmdq_revert_gce_addr(gce_addr, cmdq->pdata);
- 		/* check boundary */
- 		if (curr_pa == end_pa - CMDQ_INST_SIZE ||
- 		    curr_pa == end_pa) {
-@@ -646,6 +660,9 @@ static int cmdq_probe(struct platform_device *pdev)
- 	if (err)
- 		return err;
- 
-+	dma_set_coherent_mask(dev,
-+			      DMA_BIT_MASK(sizeof(u32) * BITS_PER_BYTE + cmdq->pdata->shift));
-+
- 	cmdq->mbox.dev = dev;
- 	cmdq->mbox.chans = devm_kcalloc(dev, cmdq->pdata->thread_nr,
- 					sizeof(*cmdq->mbox.chans), GFP_KERNEL);
-diff --git a/include/linux/mailbox/mtk-cmdq-mailbox.h b/include/linux/mailbox/mtk-cmdq-mailbox.h
-index 4c1a91b07de39..e1555e06e7e55 100644
---- a/include/linux/mailbox/mtk-cmdq-mailbox.h
-+++ b/include/linux/mailbox/mtk-cmdq-mailbox.h
-@@ -77,6 +77,16 @@ struct cmdq_pkt {
- 	size_t			buf_size; /* real buffer size */
- };
- 
-+/**
-+ * cmdq_get_shift_pa() - get the shift bits of physical address
-+ * @chan: mailbox channel
-+ *
-+ * GCE can only fetch the command buffer address from a 32-bit register.
-+ * Some SOCs support more than 32-bit command buffer address for GCE, which
-+ * requires some shift bits to make the address fit into the 32-bit register.
-+ *
-+ * Return: the shift bits of physical address
-+ */
- u8 cmdq_get_shift_pa(struct mbox_chan *chan);
- 
- #endif /* __MTK_CMDQ_MAILBOX_H__ */
--- 
-2.51.0
-
+ 	adev->power.flags.ignore_parent = true;
 
 
 
