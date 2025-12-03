@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-198660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67DC6CA1191
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:43:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63ADECA0A6F
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:49:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9C2AF300249A
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:43:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 356283007FCF
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:28:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C324F33A018;
-	Wed,  3 Dec 2025 15:54:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80586357709;
+	Wed,  3 Dec 2025 16:44:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fEKe/i5D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G9QwS9px"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7935533F366;
-	Wed,  3 Dec 2025 15:54:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE7E19258E;
+	Wed,  3 Dec 2025 16:44:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777270; cv=none; b=dYLdzebwEJmlV7tnTQWNNLHlfIF+fwPFd8BmUc3dS7F7PMatuCfIWbufiG8mUsv3N5eC6rugE+/n3FoUXgVpaGq0UQBPh4TCPANaoTvNOTGlhrCeGpeSl701eEnxjKFYUTRDTnn+eaCxl6SEYxzOVom8fe8zuijbaybmp1Gmwww=
+	t=1764780277; cv=none; b=YPHMLSp7yJqraghstFRH+Zx7gM6QukzpUNlFdlFluYOme6rkhZl6G+oRKnNM43tuEptt7/VR0J2qGcgK8CoRH0fvAd/39vbQiUzUpKTY+eDLKn/MUXV8eCoy3lvkBEnbYZdmJgRA+/2O5nQQGSPnaxYruh1B4OjaGUYoWKDd3pQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777270; c=relaxed/simple;
-	bh=ABeoAXc0kg0oqr6iq+uxa6WuRrByfqpF1HQE08isirI=;
+	s=arc-20240116; t=1764780277; c=relaxed/simple;
+	bh=FDbiW8RBWKYSJVpqvYBCrFaJyXNnjY77YQuYOvX5MdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JkGBGiDvEFPkO1AcIwbQ1dDcY6hH2n5jUSgfKGO98TOHaq/daBGl8KH5AagVBrD45V/fErlwWKR+yOM0udAyCDfj+014yuEnD6GF7XSPCcxyTBLSdxrOJM0KE9G468ZQNJGKwF3RJuN5cBoPno96uMPqLtWWpAJlPw1txEA4Dbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fEKe/i5D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70F2AC2BC86;
-	Wed,  3 Dec 2025 15:54:29 +0000 (UTC)
+	 MIME-Version; b=c+i8hn/BOyFtLnYXO3iRyGJZYC2Gyb+slaUcgM4COPZobFGLQrBPkcW4Ad40eOkwv/uJ98y194kaooULZC7dRzoXc5+D9y4f3upAIWllfBE4roPds1EpQL6vbZHwYxnbhXlIF7iAWZvv++m4/hAZnWQ0L5sCHxvCb6iqt2/bgW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G9QwS9px; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E7AC4CEF5;
+	Wed,  3 Dec 2025 16:44:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777270;
-	bh=ABeoAXc0kg0oqr6iq+uxa6WuRrByfqpF1HQE08isirI=;
+	s=korg; t=1764780277;
+	bh=FDbiW8RBWKYSJVpqvYBCrFaJyXNnjY77YQuYOvX5MdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fEKe/i5Dg0AU5Qn/hUv1ei8+HY1JcdjTqsrnB0KolEhEJYQiHd5xnx89Rl0S5v9eq
-	 FbL961g12hmwCHJjsJuGSOB9EklBg5QW6WsAyZaTyjDcIwiNzBtCsEximPjpI/kI7o
-	 o26T5NrR0OCDIYREuMbEvipwZSl0xipJVvb9LbfI=
+	b=G9QwS9pxp4BFR1PlEmhY8F4BSLW4LAJdPqDMjFlDWRP0bjQgKVyMSqkrBUaUqIkRp
+	 QDS05980+UimbDDr08WOha4mP35QB40iyizjfrR/v0eefm1j+yGQ4Fkjb5Sl7ODNNj
+	 LQpiauY90UGdEChc4c3PKcphqIg02DCzEn5rITI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Dan Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.17 133/146] drm/amd/display: Increase EDID read retries
+	Huisong Li <lihuisong@huawei.com>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 509/568] mailbox: pcc: Add support for platform notification handling
 Date: Wed,  3 Dec 2025 16:28:31 +0100
-Message-ID: <20251203152351.339178859@linuxfoundation.org>
+Message-ID: <20251203152459.357352975@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +61,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello (AMD) <superm1@kernel.org>
+From: Huisong Li <lihuisong@huawei.com>
 
-commit 8ea902361734c87b82122f9c17830f168ebfc65a upstream.
+[ Upstream commit 60c40b06fa68694dd08a1a0038ea8b9de3f3b1ca ]
 
-[WHY]
-When monitor is still booting EDID read can fail while DPCD read
-is successful.  In this case no EDID data will be returned, and this
-could happen for a while.
+Currently, PCC driver doesn't support the processing of platform
+notification for type 4 PCC subspaces.
 
-[HOW]
-Increase number of attempts to read EDID in dm_helpers_read_local_edid()
-to 25.
+According to ACPI specification, if platform sends a notification
+to OSPM, it must clear the command complete bit and trigger platform
+interrupt. OSPM needs to check whether the command complete bit is
+cleared, clear platform interrupt, process command, and then set the
+command complete and ring doorbell to the Platform.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4672
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit a76d6f2c76c3abac519ba753e2723e6ffe8e461c)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Let us stash the value of the pcc type and use the same while processing
+the interrupt of the channel. We also need to set the command complete
+bit and ring doorbell in the interrupt handler for the type 4 channel to
+complete the communication flow after processing the notification from
+the Platform.
+
+Signed-off-by: Huisong Li <lihuisong@huawei.com>
+Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
+Link: https://lore.kernel.org/r/20230801063827.25336-2-lihuisong@huawei.com
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Stable-dep-of: ff0e4d4c97c9 ("mailbox: pcc: don't zero error register")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/mailbox/pcc.c | 50 +++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 41 insertions(+), 9 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
-@@ -996,8 +996,8 @@ enum dc_edid_status dm_helpers_read_loca
- 	struct amdgpu_dm_connector *aconnector = link->priv;
- 	struct drm_connector *connector = &aconnector->base;
- 	struct i2c_adapter *ddc;
--	int retry = 3;
--	enum dc_edid_status edid_status;
-+	int retry = 25;
-+	enum dc_edid_status edid_status = EDID_NO_RESPONSE;
- 	const struct drm_edid *drm_edid;
- 	const struct edid *edid;
+diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
+index a44d4b3e5beb2..80310b48bfb6a 100644
+--- a/drivers/mailbox/pcc.c
++++ b/drivers/mailbox/pcc.c
+@@ -91,6 +91,7 @@ struct pcc_chan_reg {
+  * @cmd_update: PCC register bundle for the command complete update register
+  * @error: PCC register bundle for the error status register
+  * @plat_irq: platform interrupt
++ * @type: PCC subspace type
+  */
+ struct pcc_chan_info {
+ 	struct pcc_mbox_chan chan;
+@@ -100,12 +101,15 @@ struct pcc_chan_info {
+ 	struct pcc_chan_reg cmd_update;
+ 	struct pcc_chan_reg error;
+ 	int plat_irq;
++	u8 type;
+ };
  
-@@ -1027,7 +1027,7 @@ enum dc_edid_status dm_helpers_read_loca
- 		}
+ #define to_pcc_chan_info(c) container_of(c, struct pcc_chan_info, chan)
+ static struct pcc_chan_info *chan_info;
+ static int pcc_chan_count;
  
- 		if (!drm_edid)
--			return EDID_NO_RESPONSE;
-+			continue;
++static int pcc_send_data(struct mbox_chan *chan, void *data);
++
+ /*
+  * PCC can be used with perf critical drivers such as CPPC
+  * So it makes sense to locally cache the virtual address and
+@@ -221,6 +225,34 @@ static int pcc_map_interrupt(u32 interrupt, u32 flags)
+ 	return acpi_register_gsi(NULL, interrupt, trigger, polarity);
+ }
  
- 		edid = drm_edid_raw(drm_edid); // FIXME: Get rid of drm_edid_raw()
- 		if (!edid ||
-@@ -1045,7 +1045,7 @@ enum dc_edid_status dm_helpers_read_loca
- 						&sink->dc_edid,
- 						&sink->edid_caps);
++static bool pcc_mbox_cmd_complete_check(struct pcc_chan_info *pchan)
++{
++	u64 val;
++	int ret;
++
++	ret = pcc_chan_reg_read(&pchan->cmd_complete, &val);
++	if (ret)
++		return false;
++
++	if (!pchan->cmd_complete.gas)
++		return true;
++
++	/*
++	 * Judge if the channel respond the interrupt based on the value of
++	 * command complete.
++	 */
++	val &= pchan->cmd_complete.status_mask;
++	/*
++	 * If this is PCC slave subspace channel, and the command complete
++	 * bit 0 indicates that Platform is sending a notification and OSPM
++	 * needs to respond this interrupt to process this command.
++	 */
++	if (pchan->type == ACPI_PCCT_TYPE_EXT_PCC_SLAVE_SUBSPACE)
++		return !val;
++
++	return !!val;
++}
++
+ /**
+  * pcc_mbox_irq - PCC mailbox interrupt handler
+  * @irq:	interrupt number
+@@ -236,17 +268,9 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
+ 	int ret;
  
--	} while (edid_status == EDID_BAD_CHECKSUM && --retry > 0);
-+	} while ((edid_status == EDID_BAD_CHECKSUM || edid_status == EDID_NO_RESPONSE) && --retry > 0);
+ 	pchan = chan->con_priv;
+-
+-	ret = pcc_chan_reg_read(&pchan->cmd_complete, &val);
+-	if (ret)
++	if (!pcc_mbox_cmd_complete_check(pchan))
+ 		return IRQ_NONE;
  
- 	if (edid_status != EDID_OK)
- 		DRM_ERROR("EDID err: %d, on connector: %s",
+-	if (val) { /* Ensure GAS exists and value is non-zero */
+-		val &= pchan->cmd_complete.status_mask;
+-		if (!val)
+-			return IRQ_NONE;
+-	}
+-
+ 	ret = pcc_chan_reg_read(&pchan->error, &val);
+ 	if (ret)
+ 		return IRQ_NONE;
+@@ -262,6 +286,13 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
+ 
+ 	mbox_chan_received_data(chan, NULL);
+ 
++	/*
++	 * The PCC slave subspace channel needs to set the command complete bit
++	 * and ring doorbell after processing message.
++	 */
++	if (pchan->type == ACPI_PCCT_TYPE_EXT_PCC_SLAVE_SUBSPACE)
++		pcc_send_data(chan, NULL);
++
+ 	return IRQ_HANDLED;
+ }
+ 
+@@ -698,6 +729,7 @@ static int pcc_mbox_probe(struct platform_device *pdev)
+ 
+ 		pcc_parse_subspace_shmem(pchan, pcct_entry);
+ 
++		pchan->type = pcct_entry->type;
+ 		pcct_entry = (struct acpi_subtable_header *)
+ 			((unsigned long) pcct_entry + pcct_entry->length);
+ 	}
+-- 
+2.51.0
+
 
 
 
