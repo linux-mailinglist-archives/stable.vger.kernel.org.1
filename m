@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0CBACA0F2A
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:25:58 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A67FC9F8DE
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:40:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E4B2F32DB4AF
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:23:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8C38430000AF
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:40:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A251232E12D;
-	Wed,  3 Dec 2025 16:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2BB9303C91;
+	Wed,  3 Dec 2025 15:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9FDDa+h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uG4MX5Va"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560633164D0;
-	Wed,  3 Dec 2025 16:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0D125BEE5;
+	Wed,  3 Dec 2025 15:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779969; cv=none; b=bFRNbiPdP41FwEazEEVTww8PXPQbKU4LamZBTh6wzqtzJKpYHHgp7iTJG/7hokdU2wxnsZ3bGLER7urim4d6d/GS/vIGpw+67OdbPX1lGUU2Bx7uSUXCKdmh1JiZK7x6ixhrpNOy/tpN4sEx+WS6J5wK0G/KR0mQPOamhxh34fs=
+	t=1764776450; cv=none; b=napW+ReuWdWDuGNPfcSmK0d/s2G7DMPQmgovlw7rl9b1UWsgY5b5rfEvQhx5XiDI113YMCTEJv7srDAcLWwjpk/jnvGNxAOmOL/lAhxUP+cshCrJVwaL70EwZbfmk79h/qHmV/g9OYYYNgpHBQ9NcGUIuEYumpwNJPPw19LU9uE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779969; c=relaxed/simple;
-	bh=C97hBH7TlrEKtuVa7/wL6Q3shENKEFceBur0fjs1gE0=;
+	s=arc-20240116; t=1764776450; c=relaxed/simple;
+	bh=tpI7gBxcDQN2/v31mJ3DLBdR2zsYuLyTB6aTMXTcBoc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OZMmgquCpNCn65BGwroC1mpsa8QRSxCrnvivu+M+kifsn6egbhxGnJdCMQ8cHXicxUW9uaICHMyPjORx4CCCvVo7619g4RTp6oePL8BAY3knbUTcFtfbEGL7cpICnqbX1T5msudo8aKXvUsM7VJi4TP+vp+zxJ1K2sXKasf0KEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D9FDDa+h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1E9FC4CEF5;
-	Wed,  3 Dec 2025 16:39:28 +0000 (UTC)
+	 MIME-Version; b=oFIv/IutxTCNhHIf97OXK3IS5gxar0yJU7BQoj86tF2+KFh9LfQrq1k0Ns75Arpt9zu3Ed+o//5VPsvqn4IPC6ws6658KEN7bOe1o+qBzXqKcExRVGAJcajNCDCpi92zunIuam+BvCZVgxu16G3+mTxVRpocSExaFpeTSzaNE2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uG4MX5Va; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01E30C4CEF5;
+	Wed,  3 Dec 2025 15:40:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779969;
-	bh=C97hBH7TlrEKtuVa7/wL6Q3shENKEFceBur0fjs1gE0=;
+	s=korg; t=1764776450;
+	bh=tpI7gBxcDQN2/v31mJ3DLBdR2zsYuLyTB6aTMXTcBoc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D9FDDa+hN9KHql3hf0uiAF0S0gj0y4St57pSVZV+pJartaTK7YsVH/VAgSPfqbIMd
-	 ldX/iTBQXmsGxb+pUp+zsGKSE+vSlMBnt11/damDE5kEyFZfZFs21N8X+WygDIVv+M
-	 KPy6aNDXzYXyk4FhLq6NPzTZUPkunAF7RXU6RCOk=
+	b=uG4MX5VadIiRJB52xtgimjOFM1aAoWWaGFrnywKguGeWZK9xGlDD0VgViHMGugd7b
+	 OrZqNqr26HDeLqrZH8W3NJL3xVnzG1NB/rrSWABfIh1tbf2WzGNx+SRtT/BgiHsh4w
+	 kspbHcLO37peMvLW7X68q5e4q5nDt4tUM0KO+6rk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arseniy Krasnov <avkrasnov@salutedevices.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Alva Lan <alvalan9@foxmail.com>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 389/568] Bluetooth: hci_sync: fix double free in hci_discovery_filter_clear()
+Subject: [PATCH 5.10 187/300] wifi: mac80211: skip rate verification for not captured PSDUs
 Date: Wed,  3 Dec 2025 16:26:31 +0100
-Message-ID: <20251203152454.939647665@linuxfoundation.org>
+Message-ID: <20251203152407.555209615@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,120 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arseniy Krasnov <avkrasnov@salutedevices.com>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-[ Upstream commit 2935e556850e9c94d7a00adf14d3cd7fe406ac03 ]
+[ Upstream commit 7fe0d21f5633af8c3fab9f0ef0706c6156623484 ]
 
-Function 'hci_discovery_filter_clear()' frees 'uuids' array and then
-sets it to NULL. There is a tiny chance of the following race:
+If for example the sniffer did not follow any AIDs in an MU frame, then
+some of the information may not be filled in or is even expected to be
+invalid. As an example, in that case it is expected that Nss is zero.
 
-'hci_cmd_sync_work()'
-
- 'update_passive_scan_sync()'
-
-   'hci_update_passive_scan_sync()'
-
-     'hci_discovery_filter_clear()'
-       kfree(uuids);
-
-       <-------------------------preempted-------------------------------->
-                                           'start_service_discovery()'
-
-                                             'hci_discovery_filter_clear()'
-                                               kfree(uuids); // DOUBLE FREE
-
-       <-------------------------preempted-------------------------------->
-
-      uuids = NULL;
-
-To fix it let's add locking around 'kfree()' call and NULL pointer
-assignment. Otherwise the following backtrace fires:
-
-[ ] ------------[ cut here ]------------
-[ ] kernel BUG at mm/slub.c:547!
-[ ] Internal error: Oops - BUG: 00000000f2000800 [#1] PREEMPT SMP
-[ ] CPU: 3 UID: 0 PID: 246 Comm: bluetoothd Tainted: G O 6.12.19-kernel #1
-[ ] Tainted: [O]=OOT_MODULE
-[ ] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[ ] pc : __slab_free+0xf8/0x348
-[ ] lr : __slab_free+0x48/0x348
-...
-[ ] Call trace:
-[ ]  __slab_free+0xf8/0x348
-[ ]  kfree+0x164/0x27c
-[ ]  start_service_discovery+0x1d0/0x2c0
-[ ]  hci_sock_sendmsg+0x518/0x924
-[ ]  __sock_sendmsg+0x54/0x60
-[ ]  sock_write_iter+0x98/0xf8
-[ ]  do_iter_readv_writev+0xe4/0x1c8
-[ ]  vfs_writev+0x128/0x2b0
-[ ]  do_writev+0xfc/0x118
-[ ]  __arm64_sys_writev+0x20/0x2c
-[ ]  invoke_syscall+0x68/0xf0
-[ ]  el0_svc_common.constprop.0+0x40/0xe0
-[ ]  do_el0_svc+0x1c/0x28
-[ ]  el0_svc+0x30/0xd0
-[ ]  el0t_64_sync_handler+0x100/0x12c
-[ ]  el0t_64_sync+0x194/0x198
-[ ] Code: 8b0002e6 eb17031f 54fffbe1 d503201f (d4210000)
-[ ] ---[ end trace 0000000000000000 ]---
-
-Fixes: ad383c2c65a5 ("Bluetooth: hci_sync: Enable advertising when LL privacy is enabled")
-Signed-off-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-[ Minor context change fixed. ]
-Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+Fixes: 2ff5e52e7836 ("radiotap: add 0-length PSDU "not captured" type")
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20251110142554.83a2858ee15b.I9f78ce7984872f474722f9278691ae16378f0a3e@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/hci_core.h | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ net/mac80211/rx.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
-index 4a1faf11785f4..b0a7ceb99eec0 100644
---- a/include/net/bluetooth/hci_core.h
-+++ b/include/net/bluetooth/hci_core.h
-@@ -28,7 +28,7 @@
- #include <linux/idr.h>
- #include <linux/leds.h>
- #include <linux/rculist.h>
--
-+#include <linux/spinlock.h>
- #include <net/bluetooth/hci.h>
- #include <net/bluetooth/hci_sync.h>
- #include <net/bluetooth/hci_sock.h>
-@@ -92,6 +92,7 @@ struct discovery_state {
- 	unsigned long		scan_start;
- 	unsigned long		scan_duration;
- 	unsigned long		name_resolve_timeout;
-+	spinlock_t		lock;
- };
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index b46c4c770608c..98f06563d184c 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -4779,10 +4779,14 @@ void ieee80211_rx_list(struct ieee80211_hw *hw, struct ieee80211_sta *pubsta,
+ 	if (WARN_ON(!local->started))
+ 		goto drop;
  
- #define SUSPEND_NOTIFIER_TIMEOUT	msecs_to_jiffies(2000) /* 2 seconds */
-@@ -881,6 +882,7 @@ static inline void iso_recv(struct hci_conn *hcon, struct sk_buff *skb,
+-	if (likely(!(status->flag & RX_FLAG_FAILED_PLCP_CRC))) {
++	if (likely(!(status->flag & RX_FLAG_FAILED_PLCP_CRC) &&
++		   !(status->flag & RX_FLAG_NO_PSDU &&
++		     status->zero_length_psdu_type ==
++		     IEEE80211_RADIOTAP_ZERO_LEN_PSDU_NOT_CAPTURED))) {
+ 		/*
+-		 * Validate the rate, unless a PLCP error means that
+-		 * we probably can't have a valid rate here anyway.
++		 * Validate the rate, unless there was a PLCP error which may
++		 * have an invalid rate or the PSDU was not capture and may be
++		 * missing rate information.
+ 		 */
  
- static inline void discovery_init(struct hci_dev *hdev)
- {
-+	spin_lock_init(&hdev->discovery.lock);
- 	hdev->discovery.state = DISCOVERY_STOPPED;
- 	INIT_LIST_HEAD(&hdev->discovery.all);
- 	INIT_LIST_HEAD(&hdev->discovery.unknown);
-@@ -895,8 +897,12 @@ static inline void hci_discovery_filter_clear(struct hci_dev *hdev)
- 	hdev->discovery.report_invalid_rssi = true;
- 	hdev->discovery.rssi = HCI_RSSI_INVALID;
- 	hdev->discovery.uuid_count = 0;
-+
-+	spin_lock(&hdev->discovery.lock);
- 	kfree(hdev->discovery.uuids);
- 	hdev->discovery.uuids = NULL;
-+	spin_unlock(&hdev->discovery.lock);
-+
- 	hdev->discovery.scan_start = 0;
- 	hdev->discovery.scan_duration = 0;
- }
+ 		switch (status->encoding) {
 -- 
 2.51.0
 
