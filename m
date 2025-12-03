@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-199658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B2F9CA0541
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:17:53 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 712AACA0301
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:54:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B69B83021762
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:04:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8BA8F309A12A
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:44:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF0B7264617;
-	Wed,  3 Dec 2025 16:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0DA13612D1;
+	Wed,  3 Dec 2025 16:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QIXkZSIV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qp65I3P/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A50257849;
-	Wed,  3 Dec 2025 16:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB72361DCF;
+	Wed,  3 Dec 2025 16:43:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780520; cv=none; b=by5jnWHjQ76XF2F30UdC8j+gIJ6E6Rpj6fP6GPdf+BknwuNCYRuwzCUBOAWqEEMk94qri8aBFSrlr4VQ1leUPGcmRsnYS3xlQ1Tc/sr/zVuF0U59Blu7Bxr48q7UNYLN93ZfJ/w7knoDrjM6r5INug6Jhd+iTPpv92GWYfOmndg=
+	t=1764780216; cv=none; b=AwkOleMswQt5zrC0017P22ZrGH++h4lF+RenGINBcSd3zrqrIp/rIEIjw3f73OPYLeyWDqT1gG3rvDqeDEFQH3Vx3Y/75SeGaMp6pK5ewUX56QTVYx3JVUv4BIeShpUdftaQEM89+09C4Paxqw4RG+Lo3MmTb/UHMdKipm6y66o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780520; c=relaxed/simple;
-	bh=G1DlXEiv5FrpSYnUsFRJPr4wt1nQaAX4CWApaRtbeG0=;
+	s=arc-20240116; t=1764780216; c=relaxed/simple;
+	bh=3DhRZ+b4TZcUph260Q5kK5Y7encsgj9UyIZ8e9NLCps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hCyuHO2K93wiaI/+A6d5BAXgTTeMrUgvisN2spAcpejsp7yykCvXAPgxA56DB5KTuqdDqGs8TpYQ3KAygsmuSUBC+LND/QEkS+r6BGCZiQyHqQqcoNQf8fXM9FvCERCc2BQPQEgBQbtsDYdUEoPl/zrc6yNW2TLCe9vNL7Ua6Dc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QIXkZSIV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E88FCC4CEF5;
-	Wed,  3 Dec 2025 16:48:39 +0000 (UTC)
+	 MIME-Version; b=d1QHVMfenUPXb0MinTf173W3sBi13JRDhW2hsvfBq1FdBK3LBXAI26xAYoP5u72WqJ7814Fjao5/vobXJGotPN6ccnuvnsdzBVoITPxkdTQlaYe+8Jh77RfMqCyLZZHopSNiR1TcQmrgAsEJc9m1sEsXMPSOyMBPQcxScobBlV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qp65I3P/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 658FFC4CEF5;
+	Wed,  3 Dec 2025 16:43:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780520;
-	bh=G1DlXEiv5FrpSYnUsFRJPr4wt1nQaAX4CWApaRtbeG0=;
+	s=korg; t=1764780215;
+	bh=3DhRZ+b4TZcUph260Q5kK5Y7encsgj9UyIZ8e9NLCps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QIXkZSIVJiyS++qIPxwYWME8H9Y6XYmb3FRxTzzSXueNlByDOHmsosHy+lBI2o6KE
-	 8ut1cmjR5A1HFPLq6yX3U7Ba8oCHwWx9ewaWBesdBxSmBs5RdQBlrShsuUD5GbBTUw
-	 D6uoxpgcZ1GslBSDJJpQ9NwOSOoXRanNBekuRlD0=
+	b=Qp65I3P/MvO8GJD2jHcl0alemL92nwwvKNjiFx/wbXgsXtOrF2/Sho+bmm+B3yrO3
+	 nOPIDRZqS30Y7yA/u7JoxCtw2pdvwMEHVtUnTTQerLSIoUjDraysEOJE4XWW56bs/S
+	 B0UMZa0lqWjidWwQ5dapwp+YjOlrISdZ3bmieBHQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	syzbot+c4c7bf27f6b0c4bd97fe@syzkaller.appspotmail.com,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 011/132] veth: prevent NULL pointer dereference in veth_xdp_rcv
-Date: Wed,  3 Dec 2025 16:28:10 +0100
-Message-ID: <20251203152343.712241518@linuxfoundation.org>
+Subject: [PATCH 6.1 489/568] pmdomain: arm: scmi: Fix genpd leak on provider registration failure
+Date: Wed,  3 Dec 2025 16:28:11 +0100
+Message-ID: <20251203152458.616688113@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +61,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesper Dangaard Brouer <hawk@kernel.org>
+From: Sudeep Holla <sudeep.holla@arm.com>
 
-[ Upstream commit 9337c54401a5bb6ac3c9f6c71dd2a9130cfba82e ]
+[ Upstream commit 7458f72cc28f9eb0de811effcb5376d0ec19094a ]
 
-The veth peer device is RCU protected, but when the peer device gets
-deleted (veth_dellink) then the pointer is assigned NULL (via
-RCU_INIT_POINTER).
+If of_genpd_add_provider_onecell() fails during probe, the previously
+created generic power domains are not removed, leading to a memory leak
+and potential kernel crash later in genpd_debug_add().
 
-This patch adds a necessary NULL check in veth_xdp_rcv when accessing
-the veth peer net_device.
+Add proper error handling to unwind the initialized domains before
+returning from probe to ensure all resources are correctly released on
+failure.
 
-This fixes a bug introduced in commit dc82a33297fc ("veth: apply qdisc
-backpressure on full ptr_ring to reduce TX drops"). The bug is a race
-and only triggers when having inflight packets on a veth that is being
-deleted.
+Example crash trace observed without this fix:
 
-Reported-by: Ihor Solodrai <ihor.solodrai@linux.dev>
-Closes: https://lore.kernel.org/all/fecfcad0-7a16-42b8-bff2-66ee83a6e5c4@linux.dev/
-Reported-by: syzbot+c4c7bf27f6b0c4bd97fe@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/683da55e.a00a0220.d8eae.0052.GAE@google.com/
-Fixes: dc82a33297fc ("veth: apply qdisc backpressure on full ptr_ring to reduce TX drops")
-Signed-off-by: Jesper Dangaard Brouer <hawk@kernel.org>
-Acked-by: Ihor Solodrai <ihor.solodrai@linux.dev>
-Link: https://patch.msgid.link/174964557873.519608.10855046105237280978.stgit@firesoul
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: a14602fcae17 ("veth: reduce XDP no_direct return section to fix race")
+  | Unable to handle kernel paging request at virtual address fffffffffffffc70
+  | CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.18.0-rc1 #405 PREEMPT
+  | Hardware name: ARM LTD ARM Juno Development Platform/ARM Juno Development Platform
+  | pstate: 00000005 (nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+  | pc : genpd_debug_add+0x2c/0x160
+  | lr : genpd_debug_init+0x74/0x98
+  | Call trace:
+  |  genpd_debug_add+0x2c/0x160 (P)
+  |  genpd_debug_init+0x74/0x98
+  |  do_one_initcall+0xd0/0x2d8
+  |  do_initcall_level+0xa0/0x140
+  |  do_initcalls+0x60/0xa8
+  |  do_basic_setup+0x28/0x40
+  |  kernel_init_freeable+0xe8/0x170
+  |  kernel_init+0x2c/0x140
+  |  ret_from_fork+0x10/0x20
+
+Fixes: 898216c97ed2 ("firmware: arm_scmi: add device power domain support using genpd")
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+[ drivers/pmdomain/arm/scmi_pm_domain.c -> drivers/firmware/arm_scmi/scmi_pm_domain.c ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/veth.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/firmware/arm_scmi/scmi_pm_domain.c |   13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/veth.c b/drivers/net/veth.c
-index 44903e2b0925e..25b43036cc08b 100644
---- a/drivers/net/veth.c
-+++ b/drivers/net/veth.c
-@@ -909,7 +909,7 @@ static int veth_xdp_rcv(struct veth_rq *rq, int budget,
+--- a/drivers/firmware/arm_scmi/scmi_pm_domain.c
++++ b/drivers/firmware/arm_scmi/scmi_pm_domain.c
+@@ -54,7 +54,7 @@ static int scmi_pd_power_off(struct gene
  
- 	/* NAPI functions as RCU section */
- 	peer_dev = rcu_dereference_check(priv->peer, rcu_read_lock_bh_held());
--	peer_txq = netdev_get_tx_queue(peer_dev, queue_idx);
-+	peer_txq = peer_dev ? netdev_get_tx_queue(peer_dev, queue_idx) : NULL;
+ static int scmi_pm_domain_probe(struct scmi_device *sdev)
+ {
+-	int num_domains, i;
++	int num_domains, i, ret;
+ 	struct device *dev = &sdev->dev;
+ 	struct device_node *np = dev->of_node;
+ 	struct scmi_pm_domain *scmi_pd;
+@@ -112,9 +112,18 @@ static int scmi_pm_domain_probe(struct s
+ 	scmi_pd_data->domains = domains;
+ 	scmi_pd_data->num_domains = num_domains;
  
- 	for (i = 0; i < budget; i++) {
- 		void *ptr = __ptr_ring_consume(&rq->xdp_ring);
-@@ -959,7 +959,7 @@ static int veth_xdp_rcv(struct veth_rq *rq, int budget,
- 	rq->stats.vs.xdp_packets += done;
- 	u64_stats_update_end(&rq->stats.syncp);
++	ret = of_genpd_add_provider_onecell(np, scmi_pd_data);
++	if (ret)
++		goto err_rm_genpds;
++
+ 	dev_set_drvdata(dev, scmi_pd_data);
  
--	if (unlikely(netif_tx_queue_stopped(peer_txq)))
-+	if (peer_txq && unlikely(netif_tx_queue_stopped(peer_txq)))
- 		netif_tx_wake_queue(peer_txq);
+-	return of_genpd_add_provider_onecell(np, scmi_pd_data);
++	return 0;
++err_rm_genpds:
++	for (i = num_domains - 1; i >= 0; i--)
++		pm_genpd_remove(domains[i]);
++
++	return ret;
+ }
  
- 	return done;
--- 
-2.51.0
-
+ static void scmi_pm_domain_remove(struct scmi_device *sdev)
 
 
 
