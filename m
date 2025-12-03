@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-199713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CAAECA0B3B
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:58:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BECEBCA02A6
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:52:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2502B30285C8
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:53:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E2CD3301EC5F
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:48:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B398393DE9;
-	Wed,  3 Dec 2025 16:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE5E8376BCE;
+	Wed,  3 Dec 2025 16:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="II9OtNZo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hwWVmOIH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F709393DE6;
-	Wed,  3 Dec 2025 16:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E3B36BCDB;
+	Wed,  3 Dec 2025 16:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780692; cv=none; b=F6upomaJGFSZ2ERt+NGMpYsrqJisbmwFCBcIxyz3RjjX5Eb+DFq4AoQZJwk+kcUFahWZ4pQQaB6lBhoRlVQU9hMzwmmDvtACaTGhnBMEv/X/Dep38YNZQh8CU6FI/A/3n4Asa/gbrv9xO1+ANSeSMxBk2ZBe1Hu7QVNay+ILVbQ=
+	t=1764780483; cv=none; b=c/ZeaPHioYhVDRK/fQ3uifQcZ5SBiz+dvumjH61GyCpL7iDSSptj0J4QkWCTRWqf86ZIWvOy2YdwOtEasMXUmRT/YC4KWqWjzX089egGqzfL7hiEhyp+CoBVdYEePMSZndIw4xtZcPBFDw2a6ciGCW7oEqCIskmQla8ooD6zjHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780692; c=relaxed/simple;
-	bh=7u/TbkyrglSHPc8lChmjrv1+CCeJIQwjcilXkE4xff8=;
+	s=arc-20240116; t=1764780483; c=relaxed/simple;
+	bh=6wAX26u5FrY13PvbPzgJBF58SoX86r89k64uTRgva1U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JeQIFVvB8ul26QB5A/LXRzKU2x3JpeEu7OwCgW1zTJkDObtdqYYT19cDlc619Mfr2c/WghyhCRpdDfcaM1GBQ+Xo3qjcMmcHEWgnyKhaq2qCoJ4WMKq5Sry/ELvcDIbskJIg4I43IRN2cx0og5I4M82A8vouLqqY75ojY/cHhUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=II9OtNZo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD575C4CEF5;
-	Wed,  3 Dec 2025 16:51:31 +0000 (UTC)
+	 MIME-Version; b=qxrtp4PwEvVKuOuIj/Wro8O7DECW4/wRIDqMCTozm7mNFpUL9oFNwlq727w8C87lFpE3uDxH0NGUgm53GvWtpkSHFZ/jKNtFiy3cjBYOvo5v8cchLZqR4NDVaz4zOb0yv2lnFd7imYereLXaoCnyzPXUCHSwb6uHz2GRGkQsRf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hwWVmOIH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C838C4CEF5;
+	Wed,  3 Dec 2025 16:48:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780692;
-	bh=7u/TbkyrglSHPc8lChmjrv1+CCeJIQwjcilXkE4xff8=;
+	s=korg; t=1764780482;
+	bh=6wAX26u5FrY13PvbPzgJBF58SoX86r89k64uTRgva1U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=II9OtNZoHszj+Vze/CsEGkh11efyskjV4b2bKdwKY0ClJgJ2rRe0HNvO+pXrgxImR
-	 S8NzZu8IXTnW8MSt3iiGs6AZ8cZkdngpVguFnANO88ysIStESvLVakJ0knSs3NE6xY
-	 AdL6T0kSOR00gA7E0aJwo2kTzrAeHJyz+TksTMmk=
+	b=hwWVmOIHz3G475/NsQgtl4HdsJwioJl3nmwNEPgwbBZuu9vhDTuER6f69HcWEObtS
+	 xy0PZf2Lbqbm+hl5y2ZdpQfbICr09+LgUmCRuutxnoWf+yJQsVvQ5aNs9xaRUPZ7m9
+	 D3c28A35fXgYeKoL0Thbfzi1AtnFKtcoqpqTNnW4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Valek Andrej <andrej.v@skyrain.eu>,
-	Kessler Markus <markus.kessler@hilti.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.12 060/132] iio: accel: fix ADXL355 startup race condition
+	stable@kernel.org,
+	Kuen-Han Tsai <khtsai@google.com>
+Subject: [PATCH 6.1 537/568] usb: gadget: f_eem: Fix memory leak in eem_unwrap
 Date: Wed,  3 Dec 2025 16:28:59 +0100
-Message-ID: <20251203152345.519033442@linuxfoundation.org>
+Message-ID: <20251203152500.381167810@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,100 +59,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Valek Andrej <andrej.v@skyrain.eu>
+From: Kuen-Han Tsai <khtsai@google.com>
 
-commit c92c1bc408e9e11ae3c7011b062fdd74c09283a3 upstream.
+commit e4f5ce990818d37930cd9fb0be29eee0553c59d9 upstream.
 
-There is an race-condition where device is not full working after SW reset.
-Therefore it's necessary to wait some time after reset and verify shadow
-registers values by reading and comparing the values before/after reset.
-This mechanism is described in datasheet at least from revision D.
+The existing code did not handle the failure case of usb_ep_queue in the
+command path, potentially leading to memory leaks.
 
-Fixes: 12ed27863ea3 ("iio: accel: Add driver support for ADXL355")
-Signed-off-by: Valek Andrej <andrej.v@skyrain.eu>
-Signed-off-by: Kessler Markus <markus.kessler@hilti.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Improve error handling to free all allocated resources on usb_ep_queue
+failure. This patch continues to use goto logic for error handling, as the
+existing error handling is complex and not easily adaptable to auto-cleanup
+helpers.
+
+kmemleak results:
+  unreferenced object 0xffffff895a512300 (size 240):
+    backtrace:
+      slab_post_alloc_hook+0xbc/0x3a4
+      kmem_cache_alloc+0x1b4/0x358
+      skb_clone+0x90/0xd8
+      eem_unwrap+0x1cc/0x36c
+  unreferenced object 0xffffff8a157f4000 (size 256):
+    backtrace:
+      slab_post_alloc_hook+0xbc/0x3a4
+      __kmem_cache_alloc_node+0x1b4/0x2dc
+      kmalloc_trace+0x48/0x140
+      dwc3_gadget_ep_alloc_request+0x58/0x11c
+      usb_ep_alloc_request+0x40/0xe4
+      eem_unwrap+0x204/0x36c
+  unreferenced object 0xffffff8aadbaac00 (size 128):
+    backtrace:
+      slab_post_alloc_hook+0xbc/0x3a4
+      __kmem_cache_alloc_node+0x1b4/0x2dc
+      __kmalloc+0x64/0x1a8
+      eem_unwrap+0x218/0x36c
+  unreferenced object 0xffffff89ccef3500 (size 64):
+    backtrace:
+      slab_post_alloc_hook+0xbc/0x3a4
+      __kmem_cache_alloc_node+0x1b4/0x2dc
+      kmalloc_trace+0x48/0x140
+      eem_unwrap+0x238/0x36c
+
+Fixes: 4249d6fbc10f ("usb: gadget: eem: fix echo command packet response issue")
+Cc: stable@kernel.org
+Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
+Link: https://patch.msgid.link/20251103121814.1559719-1-khtsai@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/accel/adxl355_core.c |   44 ++++++++++++++++++++++++++++++++++-----
- 1 file changed, 39 insertions(+), 5 deletions(-)
+ drivers/usb/gadget/function/f_eem.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/accel/adxl355_core.c
-+++ b/drivers/iio/accel/adxl355_core.c
-@@ -56,6 +56,8 @@
- #define  ADXL355_POWER_CTL_DRDY_MSK	BIT(2)
- #define ADXL355_SELF_TEST_REG		0x2E
- #define ADXL355_RESET_REG		0x2F
-+#define ADXL355_BASE_ADDR_SHADOW_REG	0x50
-+#define ADXL355_SHADOW_REG_COUNT	5
+--- a/drivers/usb/gadget/function/f_eem.c
++++ b/drivers/usb/gadget/function/f_eem.c
+@@ -479,8 +479,13 @@ static int eem_unwrap(struct gether *por
+ 				req->complete = eem_cmd_complete;
+ 				req->zero = 1;
+ 				req->context = ctx;
+-				if (usb_ep_queue(port->in_ep, req, GFP_ATOMIC))
++				if (usb_ep_queue(port->in_ep, req, GFP_ATOMIC)) {
+ 					DBG(cdev, "echo response queue fail\n");
++					kfree(ctx);
++					kfree(req->buf);
++					usb_ep_free_request(ep, req);
++					dev_kfree_skb_any(skb2);
++				}
+ 				break;
  
- #define ADXL355_DEVID_AD_VAL		0xAD
- #define ADXL355_DEVID_MST_VAL		0x1D
-@@ -294,7 +296,12 @@ static void adxl355_fill_3db_frequency_t
- static int adxl355_setup(struct adxl355_data *data)
- {
- 	unsigned int regval;
-+	int retries = 5; /* the number is chosen based on empirical reasons */
- 	int ret;
-+	u8 *shadow_regs __free(kfree) = kzalloc(ADXL355_SHADOW_REG_COUNT, GFP_KERNEL);
-+
-+	if (!shadow_regs)
-+		return -ENOMEM;
- 
- 	ret = regmap_read(data->regmap, ADXL355_DEVID_AD_REG, &regval);
- 	if (ret)
-@@ -321,14 +328,41 @@ static int adxl355_setup(struct adxl355_
- 	if (regval != ADXL355_PARTID_VAL)
- 		dev_warn(data->dev, "Invalid DEV ID 0x%02x\n", regval);
- 
--	/*
--	 * Perform a software reset to make sure the device is in a consistent
--	 * state after start-up.
--	 */
--	ret = regmap_write(data->regmap, ADXL355_RESET_REG, ADXL355_RESET_CODE);
-+	/* Read shadow registers to be compared after reset */
-+	ret = regmap_bulk_read(data->regmap,
-+			       ADXL355_BASE_ADDR_SHADOW_REG,
-+			       shadow_regs, ADXL355_SHADOW_REG_COUNT);
- 	if (ret)
- 		return ret;
- 
-+	do {
-+		if (--retries == 0) {
-+			dev_err(data->dev, "Shadow registers mismatch\n");
-+			return -EIO;
-+		}
-+
-+		/*
-+		 * Perform a software reset to make sure the device is in a consistent
-+		 * state after start-up.
-+		 */
-+		ret = regmap_write(data->regmap, ADXL355_RESET_REG,
-+				   ADXL355_RESET_CODE);
-+		if (ret)
-+			return ret;
-+
-+		/* Wait at least 5ms after software reset */
-+		usleep_range(5000, 10000);
-+
-+		/* Read shadow registers for comparison */
-+		ret = regmap_bulk_read(data->regmap,
-+				       ADXL355_BASE_ADDR_SHADOW_REG,
-+				       data->buffer.buf,
-+				       ADXL355_SHADOW_REG_COUNT);
-+		if (ret)
-+			return ret;
-+	} while (memcmp(shadow_regs, data->buffer.buf,
-+			ADXL355_SHADOW_REG_COUNT));
-+
- 	ret = regmap_update_bits(data->regmap, ADXL355_POWER_CTL_REG,
- 				 ADXL355_POWER_CTL_DRDY_MSK,
- 				 FIELD_PREP(ADXL355_POWER_CTL_DRDY_MSK, 1));
+ 			case 1:  /* echo response */
 
 
 
