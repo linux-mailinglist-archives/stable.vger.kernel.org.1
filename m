@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-198940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198578-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E30B9CA07FD
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:34:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5529BCA10CE
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:39:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AACE431631F7
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:15:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0BCFE33E2673
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:44:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C38AB30F800;
-	Wed,  3 Dec 2025 16:09:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1863B32D0C4;
+	Wed,  3 Dec 2025 15:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pBHtaKF6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k7upv4aI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB0826B756;
-	Wed,  3 Dec 2025 16:09:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FC132C94C;
+	Wed,  3 Dec 2025 15:50:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778169; cv=none; b=uEXsiVnF2aZWvu0/i0dY3u1Pftm6N8Fyoxs4YprFYpolyIFrmr1pXu3iJWoQHwFUOc/frJ8eTUPtBdiFVUOgo6K7nXGFzihFpsuFYVxxJIgDyCpSiMJvtWEL+ERfEVAcvEhn9qNXl2AZaSCzruK1+27zPN81oFc+qVygsqCsLo8=
+	t=1764777005; cv=none; b=O74IJ8b/h3j+CjHvPtHVUok6sZ3zWAJrEvFkud3hUO+P7IBujJtuGdlDDZ5Pnlyu41nIE0s+GAcxm+rBkS1lRPrf+VdsL58S/qdAUKZSRQ50FezffWQxgZMOeLxCV7rzVt3TndR4VBR3gcOibA12jNZ0+xk6jPBFm3rdTvcUX+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778169; c=relaxed/simple;
-	bh=TvXYRFO9nJXm+nuN4bSBxclUnzOUp5gmlzMA5LB+QvE=;
+	s=arc-20240116; t=1764777005; c=relaxed/simple;
+	bh=BpUpDgwBS9GDImFe9QJALAG2uDFIMf0nhUhG/vohyXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KKIXNFFnt5Jt52KjZ6jpQGQU7uFsCIjXPN13RoWF3nOIJjh/OpPMC1z1/sWoPptE2F1r24WQQIhrnjpOZYtNHgJbN0sYkJhyvtBaToCOtksmfo4Z680EQkemr6GZ3quW1gBpTx52oBHYXPU2ZGxH6EmngZ7Bqry1Q71yUCDZtXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pBHtaKF6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3AD9C4CEF5;
-	Wed,  3 Dec 2025 16:09:28 +0000 (UTC)
+	 MIME-Version; b=IT/gFeHVdbE44AbJvj8agAsE7JyA3WP48scDHeSviA4n/7q9KDqZKMbXtEa+XdoeXPC1vB6udjeRWBevi07kb+pCzY6Zznpy9LsY9gGFVpzYzDE5AtXwPGf+WAdYbsy0AxaXvz5vhp5naTDxG4DROUuA8G5YBeAwg7gfWOqgbEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k7upv4aI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E39D1C4CEF5;
+	Wed,  3 Dec 2025 15:50:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778169;
-	bh=TvXYRFO9nJXm+nuN4bSBxclUnzOUp5gmlzMA5LB+QvE=;
+	s=korg; t=1764777005;
+	bh=BpUpDgwBS9GDImFe9QJALAG2uDFIMf0nhUhG/vohyXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pBHtaKF6TZ6ac8lEgLU25UeC2Bc+slnnW/BNSXhUOi9Z5ESTjfqj9Cn914JzptTxB
-	 bV58iUvLixLZwQIRaa8Vz+Te+SOsaJMa+XnwkRuCcsEKq/LYo79lynxGxhowK7mKay
-	 1ttHqGxnLAamUkZfT7XTzHWCH+tv6RAcddd4Pduk=
+	b=k7upv4aIwMD/7qwmBZI4w4K15yxLdg83cbFgI4Ft8d927tQtKzdxycpiK+9Uiov+I
+	 gEwQ4hvIju99ZVozZwn/N3N5QOS0Ermu5DgHQ2HMAfHNFfUpsL4IegchUTl7WGccem
+	 72e8yVFGcH4FzQe6lK+5gY14Etf87ONXoJqvLaSc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 264/392] bpf: Add bpf_prog_run_data_pointers()
+Subject: [PATCH 6.17 036/146] mailbox: mailbox-test: Fix debugfs_create_dir error checking
 Date: Wed,  3 Dec 2025 16:26:54 +0100
-Message-ID: <20251203152423.880607280@linuxfoundation.org>
+Message-ID: <20251203152347.795815257@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,114 +60,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 4ef92743625818932b9c320152b58274c05e5053 ]
+[ Upstream commit 3acf1028f5003731977f750a7070f3321a9cb740 ]
 
-syzbot found that cls_bpf_classify() is able to change
-tc_skb_cb(skb)->drop_reason triggering a warning in sk_skb_reason_drop().
+The debugfs_create_dir() function returns ERR_PTR() on error, not NULL.
+The current null-check fails to catch errors.
 
-WARNING: CPU: 0 PID: 5965 at net/core/skbuff.c:1192 __sk_skb_reason_drop net/core/skbuff.c:1189 [inline]
-WARNING: CPU: 0 PID: 5965 at net/core/skbuff.c:1192 sk_skb_reason_drop+0x76/0x170 net/core/skbuff.c:1214
+Use IS_ERR() to correctly check for errors.
 
-struct tc_skb_cb has been added in commit ec624fe740b4 ("net/sched:
-Extend qdisc control block with tc control block"), which added a wrong
-interaction with db58ba459202 ("bpf: wire in data and data_end for
-cls_act_bpf").
-
-drop_reason was added later.
-
-Add bpf_prog_run_data_pointers() helper to save/restore the net_sched
-storage colliding with BPF data_meta/data_end.
-
-Fixes: ec624fe740b4 ("net/sched: Extend qdisc control block with tc control block")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Closes: https://lore.kernel.org/netdev/6913437c.a70a0220.22f260.013b.GAE@google.com/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20251112125516.1563021-1-edumazet@google.com
+Fixes: 8ea4484d0c2b ("mailbox: Add generic mechanism for testing Mailbox Controllers")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/filter.h | 20 ++++++++++++++++++++
- net/sched/act_bpf.c    |  6 ++----
- net/sched/cls_bpf.c    |  6 ++----
- 3 files changed, 24 insertions(+), 8 deletions(-)
+ drivers/mailbox/mailbox-test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/filter.h b/include/linux/filter.h
-index dc49c8eb00fd6..e8d52cf2883a6 100644
---- a/include/linux/filter.h
-+++ b/include/linux/filter.h
-@@ -701,6 +701,26 @@ static inline void bpf_compute_data_pointers(struct sk_buff *skb)
- 	cb->data_end  = skb->data + skb_headlen(skb);
- }
+diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
+index c9dd8c42c0cdf..3a28ab5c42e57 100644
+--- a/drivers/mailbox/mailbox-test.c
++++ b/drivers/mailbox/mailbox-test.c
+@@ -268,7 +268,7 @@ static int mbox_test_add_debugfs(struct platform_device *pdev,
+ 		return 0;
  
-+static inline int bpf_prog_run_data_pointers(
-+	const struct bpf_prog *prog,
-+	struct sk_buff *skb)
-+{
-+	struct bpf_skb_data_end *cb = (struct bpf_skb_data_end *)skb->cb;
-+	void *save_data_meta, *save_data_end;
-+	int res;
-+
-+	save_data_meta = cb->data_meta;
-+	save_data_end = cb->data_end;
-+
-+	bpf_compute_data_pointers(skb);
-+	res = bpf_prog_run(prog, skb);
-+
-+	cb->data_meta = save_data_meta;
-+	cb->data_end = save_data_end;
-+
-+	return res;
-+}
-+
- /* Similar to bpf_compute_data_pointers(), except that save orginal
-  * data in cb->data and cb->meta_data for restore.
-  */
-diff --git a/net/sched/act_bpf.c b/net/sched/act_bpf.c
-index 5576eb97d39e0..e1b6e88feaf51 100644
---- a/net/sched/act_bpf.c
-+++ b/net/sched/act_bpf.c
-@@ -45,12 +45,10 @@ static int tcf_bpf_act(struct sk_buff *skb, const struct tc_action *act,
- 	filter = rcu_dereference(prog->filter);
- 	if (at_ingress) {
- 		__skb_push(skb, skb->mac_len);
--		bpf_compute_data_pointers(skb);
--		filter_res = bpf_prog_run(filter, skb);
-+		filter_res = bpf_prog_run_data_pointers(filter, skb);
- 		__skb_pull(skb, skb->mac_len);
- 	} else {
--		bpf_compute_data_pointers(skb);
--		filter_res = bpf_prog_run(filter, skb);
-+		filter_res = bpf_prog_run_data_pointers(filter, skb);
+ 	tdev->root_debugfs_dir = debugfs_create_dir(dev_name(&pdev->dev), NULL);
+-	if (!tdev->root_debugfs_dir) {
++	if (IS_ERR(tdev->root_debugfs_dir)) {
+ 		dev_err(&pdev->dev, "Failed to create Mailbox debugfs\n");
+ 		return -EINVAL;
  	}
- 	if (skb_sk_is_prefetched(skb) && filter_res != TC_ACT_OK)
- 		skb_orphan(skb);
-diff --git a/net/sched/cls_bpf.c b/net/sched/cls_bpf.c
-index b7c46a93a4121..63fb61a290cd6 100644
---- a/net/sched/cls_bpf.c
-+++ b/net/sched/cls_bpf.c
-@@ -95,12 +95,10 @@ static int cls_bpf_classify(struct sk_buff *skb, const struct tcf_proto *tp,
- 		} else if (at_ingress) {
- 			/* It is safe to push/pull even if skb_shared() */
- 			__skb_push(skb, skb->mac_len);
--			bpf_compute_data_pointers(skb);
--			filter_res = bpf_prog_run(prog->filter, skb);
-+			filter_res = bpf_prog_run_data_pointers(prog->filter, skb);
- 			__skb_pull(skb, skb->mac_len);
- 		} else {
--			bpf_compute_data_pointers(skb);
--			filter_res = bpf_prog_run(prog->filter, skb);
-+			filter_res = bpf_prog_run_data_pointers(prog->filter, skb);
- 		}
- 
- 		if (prog->exts_integrated) {
 -- 
 2.51.0
 
