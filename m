@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66908CA153A
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:18:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B3ECC9FB81
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:55:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E7947325B1AA
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:39:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DBBE030281B2
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:45:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8446E3358B7;
-	Wed,  3 Dec 2025 15:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CDF631352C;
+	Wed,  3 Dec 2025 15:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YZoVamrt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mYC68HuC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 403F13358A8;
-	Wed,  3 Dec 2025 15:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 236E731329C;
+	Wed,  3 Dec 2025 15:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777201; cv=none; b=JO+rTvQ/AMUMPLkE/CZZ9TWe6tFasXGsZzfpAguf7l+aFSy4++dIqgSLz1fl0IKM3RIJGaIUFdiN6R8OgPwZ47sBsZ4gYlLTe1KZUr2fl1tkOSAHaQTlwGKJtPKgVrGZ9Ld9yitvwlkxix20kvL4KR1L0UtBpf9pjNkszLMJ4Rw=
+	t=1764776751; cv=none; b=REa7MU5H/MUZKyjQ571pnto5iNrv7lUM/+7KLNauxLrzxZQD6oQl0pQOY70xZMTVIKGsQjKeAGd5e+db+PjDEFL9GbUI0yYf5EVoPeYoP5yDPHE5uS+ALYll2eML77Mg13VOVyWoJNLXwXyMCK+heY8pyL5GoNhI6lcI3Rc8Ddc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777201; c=relaxed/simple;
-	bh=ga+d34LiqF4XQULrvaHPjlssNkew6mFKTYS14yixh/4=;
+	s=arc-20240116; t=1764776751; c=relaxed/simple;
+	bh=685MwvQgZuKDqRq08vpVWl/AucKGFx0GlpAfGnyhKSc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mDvvDRV/u35HLaLDnlmzTWgXPWuO9wPlXd/PNDouD2s+I371mlUh8F8u3VstzhA87jQpNejXTkQ7CKirp9L3P3/s412CgAMq06JTKeXQ3+UWd4KAOnR3e8L5YXFd94RMyd2oDUgP9Ih8zZSKeSu0bJmmdByq1L/xD9FXTfA3ibo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YZoVamrt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8F3FC4CEF5;
-	Wed,  3 Dec 2025 15:53:20 +0000 (UTC)
+	 MIME-Version; b=Eg6VHQrg1iOEB3edYfYzGul/2XXbkpUWp71gswZ66lHqJDE3G3xfgG2tlSO0c5KI0O5DdGgQtXbSmHFJv4c+s8KS69JuJUIW3DGDvAUjajEoZDWeqb2X1ZFGmWYpboKrIz7GHLvYaz/pnYEPuuelp1xdmG0jTc3C1Ma0f+Q2tDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mYC68HuC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F0DAC4CEF5;
+	Wed,  3 Dec 2025 15:45:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777201;
-	bh=ga+d34LiqF4XQULrvaHPjlssNkew6mFKTYS14yixh/4=;
+	s=korg; t=1764776751;
+	bh=685MwvQgZuKDqRq08vpVWl/AucKGFx0GlpAfGnyhKSc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YZoVamrtjG/aHirNZ8L+ndkEkBB8eeDKYQ+T2diioptoQ+PQUDh7njmFkd3dN4OY3
-	 LKcZGY72tl9z3qrJWdC3mQwRyMxvZfm0bKbAr3yFe/w9CfBwiMK/WUJT8kmeo7suV6
-	 t1K+4y8kZonMhc5/dtdwhHlt8ZW9K2CC7CASIZQ0=
+	b=mYC68HuC2yBJCqB0ByLBI7zacYaKFjfmKbIFCiT6OEINlaP23J+TJinJNmOMue2lh
+	 TjQdlGnWUC+LlPnaxO0hsTfSPrBhuksddzkZK5bgop3IQRoGLDIefCmfXZwfkYMJAM
+	 JJG4EHFQ/qsVb6p1vp+IP8FAFHf3/6xuEwDa6I00=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.17 070/146] MIPS: mm: Prevent a TLB shutdown on initial uniquification
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 244/300] pmdomain: arm: scmi: Fix genpd leak on provider registration failure
 Date: Wed,  3 Dec 2025 16:27:28 +0100
-Message-ID: <20251203152349.027860123@linuxfoundation.org>
+Message-ID: <20251203152409.667178789@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,179 +61,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Sudeep Holla <sudeep.holla@arm.com>
 
-commit 9f048fa487409e364cf866c957cf0b0d782ca5a3 upstream.
+[ Upstream commit 7458f72cc28f9eb0de811effcb5376d0ec19094a ]
 
-Depending on the particular CPU implementation a TLB shutdown may occur
-if multiple matching entries are detected upon the execution of a TLBP
-or the TLBWI/TLBWR instructions.  Given that we don't know what entries
-we have been handed we need to be very careful with the initial TLB
-setup and avoid all these instructions.
+If of_genpd_add_provider_onecell() fails during probe, the previously
+created generic power domains are not removed, leading to a memory leak
+and potential kernel crash later in genpd_debug_add().
 
-Therefore read all the TLB entries one by one with the TLBR instruction,
-bypassing the content addressing logic, and truncate any large pages in
-place so as to avoid a case in the second step where an incoming entry
-for a large page at a lower address overlaps with a replacement entry
-chosen at another index.  Then preinitialize the TLB using addresses
-outside our usual unique range and avoiding clashes with any entries
-received, before making the usual call to local_flush_tlb_all().
+Add proper error handling to unwind the initialized domains before
+returning from probe to ensure all resources are correctly released on
+failure.
 
-This fixes (at least) R4x00 cores if TLBP hits multiple matching TLB
-entries (SGI IP22 PROM for examples sets up all TLBs to the same virtual
-address).
+Example crash trace observed without this fix:
 
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Fixes: 35ad7e181541 ("MIPS: mm: tlb-r4k: Uniquify TLB entries on init")
+  | Unable to handle kernel paging request at virtual address fffffffffffffc70
+  | CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.18.0-rc1 #405 PREEMPT
+  | Hardware name: ARM LTD ARM Juno Development Platform/ARM Juno Development Platform
+  | pstate: 00000005 (nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+  | pc : genpd_debug_add+0x2c/0x160
+  | lr : genpd_debug_init+0x74/0x98
+  | Call trace:
+  |  genpd_debug_add+0x2c/0x160 (P)
+  |  genpd_debug_init+0x74/0x98
+  |  do_one_initcall+0xd0/0x2d8
+  |  do_initcall_level+0xa0/0x140
+  |  do_initcalls+0x60/0xa8
+  |  do_basic_setup+0x28/0x40
+  |  kernel_init_freeable+0xe8/0x170
+  |  kernel_init+0x2c/0x140
+  |  ret_from_fork+0x10/0x20
+
+Fixes: 898216c97ed2 ("firmware: arm_scmi: add device power domain support using genpd")
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Tested-by: Jiaxun Yang <jiaxun.yang@flygoat.com> # Boston I6400, M5150 sim
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+[ drivers/pmdomain/arm/scmi_pm_domain.c -> drivers/firmware/arm_scmi/scmi_pm_domain.c ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/mm/tlb-r4k.c |  102 ++++++++++++++++++++++++++++++-------------------
- 1 file changed, 64 insertions(+), 38 deletions(-)
+ drivers/firmware/arm_scmi/scmi_pm_domain.c |   13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
---- a/arch/mips/mm/tlb-r4k.c
-+++ b/arch/mips/mm/tlb-r4k.c
-@@ -15,6 +15,7 @@
- #include <linux/mm.h>
- #include <linux/hugetlb.h>
- #include <linux/export.h>
-+#include <linux/sort.h>
+--- a/drivers/firmware/arm_scmi/scmi_pm_domain.c
++++ b/drivers/firmware/arm_scmi/scmi_pm_domain.c
+@@ -53,7 +53,7 @@ static int scmi_pd_power_off(struct gene
  
- #include <asm/cpu.h>
- #include <asm/cpu-type.h>
-@@ -508,55 +509,79 @@ static int __init set_ntlb(char *str)
- 
- __setup("ntlb=", set_ntlb);
- 
--/* Initialise all TLB entries with unique values */
-+
-+/* Comparison function for EntryHi VPN fields.  */
-+static int r4k_vpn_cmp(const void *a, const void *b)
-+{
-+	long v = *(unsigned long *)a - *(unsigned long *)b;
-+	int s = sizeof(long) > sizeof(int) ? sizeof(long) * 8 - 1: 0;
-+	return s ? (v != 0) | v >> s : v;
-+}
-+
-+/*
-+ * Initialise all TLB entries with unique values that do not clash with
-+ * what we have been handed over and what we'll be using ourselves.
-+ */
- static void r4k_tlb_uniquify(void)
+ static int scmi_pm_domain_probe(struct scmi_device *sdev)
  {
--	int entry = num_wired_entries();
-+	unsigned long tlb_vpns[1 << MIPS_CONF1_TLBS_SIZE];
-+	int tlbsize = current_cpu_data.tlbsize;
-+	int start = num_wired_entries();
-+	unsigned long vpn_mask;
-+	int cnt, ent, idx, i;
+-	int num_domains, i;
++	int num_domains, i, ret;
+ 	struct device *dev = &sdev->dev;
+ 	struct device_node *np = dev->of_node;
+ 	struct scmi_pm_domain *scmi_pd;
+@@ -106,9 +106,18 @@ static int scmi_pm_domain_probe(struct s
+ 	scmi_pd_data->domains = domains;
+ 	scmi_pd_data->num_domains = num_domains;
+ 
++	ret = of_genpd_add_provider_onecell(np, scmi_pd_data);
++	if (ret)
++		goto err_rm_genpds;
 +
-+	vpn_mask = GENMASK(cpu_vmbits - 1, 13);
-+	vpn_mask |= IS_ENABLED(CONFIG_64BIT) ? 3ULL << 62 : 1 << 31;
+ 	dev_set_drvdata(dev, scmi_pd_data);
  
- 	htw_stop();
--	write_c0_entrylo0(0);
--	write_c0_entrylo1(0);
- 
--	while (entry < current_cpu_data.tlbsize) {
--		unsigned long asid_mask = cpu_asid_mask(&current_cpu_data);
--		unsigned long asid = 0;
--		int idx;
-+	for (i = start, cnt = 0; i < tlbsize; i++, cnt++) {
-+		unsigned long vpn;
- 
--		/* Skip wired MMID to make ginvt_mmid work */
--		if (cpu_has_mmid)
--			asid = MMID_KERNEL_WIRED + 1;
-+		write_c0_index(i);
-+		mtc0_tlbr_hazard();
-+		tlb_read();
-+		tlb_read_hazard();
-+		vpn = read_c0_entryhi();
-+		vpn &= vpn_mask & PAGE_MASK;
-+		tlb_vpns[cnt] = vpn;
- 
--		/* Check for match before using UNIQUE_ENTRYHI */
--		do {
--			if (cpu_has_mmid) {
--				write_c0_memorymapid(asid);
--				write_c0_entryhi(UNIQUE_ENTRYHI(entry));
--			} else {
--				write_c0_entryhi(UNIQUE_ENTRYHI(entry) | asid);
--			}
--			mtc0_tlbw_hazard();
--			tlb_probe();
--			tlb_probe_hazard();
--			idx = read_c0_index();
--			/* No match or match is on current entry */
--			if (idx < 0 || idx == entry)
--				break;
--			/*
--			 * If we hit a match, we need to try again with
--			 * a different ASID.
--			 */
--			asid++;
--		} while (asid < asid_mask);
--
--		if (idx >= 0 && idx != entry)
--			panic("Unable to uniquify TLB entry %d", idx);
--
--		write_c0_index(entry);
-+		/* Prevent any large pages from overlapping regular ones.  */
-+		write_c0_pagemask(read_c0_pagemask() & PM_DEFAULT_MASK);
- 		mtc0_tlbw_hazard();
- 		tlb_write_indexed();
--		entry++;
-+		tlbw_use_hazard();
- 	}
- 
-+	sort(tlb_vpns, cnt, sizeof(tlb_vpns[0]), r4k_vpn_cmp, NULL);
+-	return of_genpd_add_provider_onecell(np, scmi_pd_data);
++	return 0;
++err_rm_genpds:
++	for (i = num_domains - 1; i >= 0; i--)
++		pm_genpd_remove(domains[i]);
 +
-+	write_c0_pagemask(PM_DEFAULT_MASK);
-+	write_c0_entrylo0(0);
-+	write_c0_entrylo1(0);
-+
-+	idx = 0;
-+	ent = tlbsize;
-+	for (i = start; i < tlbsize; i++)
-+		while (1) {
-+			unsigned long entryhi, vpn;
-+
-+			entryhi = UNIQUE_ENTRYHI(ent);
-+			vpn = entryhi & vpn_mask & PAGE_MASK;
-+
-+			if (idx >= cnt || vpn < tlb_vpns[idx]) {
-+				write_c0_entryhi(entryhi);
-+				write_c0_index(i);
-+				mtc0_tlbw_hazard();
-+				tlb_write_indexed();
-+				ent++;
-+				break;
-+			} else if (vpn == tlb_vpns[idx]) {
-+				ent++;
-+			} else {
-+				idx++;
-+			}
-+		}
-+
- 	tlbw_use_hazard();
- 	htw_start();
- 	flush_micro_tlb();
-@@ -602,6 +627,7 @@ static void r4k_tlb_configure(void)
- 
- 	/* From this point on the ARC firmware is dead.	 */
- 	r4k_tlb_uniquify();
-+	local_flush_tlb_all();
- 
- 	/* Did I tell you that ARC SUCKS?  */
++	return ret;
  }
+ 
+ static void scmi_pm_domain_remove(struct scmi_device *sdev)
 
 
 
