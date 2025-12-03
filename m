@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60363CA0E7C
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:21:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADCC2CA04E6
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:16:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 66B4533C7DC1
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:18:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 634433065028
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:03:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8532E3624A4;
-	Wed,  3 Dec 2025 16:52:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6AFE364EB0;
+	Wed,  3 Dec 2025 16:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BswQRcVJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PKq2bH73"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41D0F34F492;
-	Wed,  3 Dec 2025 16:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712E7364EA6;
+	Wed,  3 Dec 2025 16:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780770; cv=none; b=MOSKxDuUIYSgBaNM4nLtFNCAOGzuQ5BEX/vJxWAytGE9JnUlE2rQd69nYh+Fs5YxXCVK5dIdZYn5MkDV7qbbroJ0Ibo/HkWflzqy2V62FGEK1tFxJd6yrmfP4CH+gO4exR37EWnDZJOgJ1SrFK4dQ7r/9BLLv2/Cpb48lh9AHH4=
+	t=1764781040; cv=none; b=IMfnPda+PP+4uLVFGL8gcWyT+2ednL/X/cUbmQvd8vv4MUGVutvRjTwjJrrLx3cDkV8IjQ16izYpJAhgN3BFkYxTp3t9AiFDsoKkt/NHsuIBHWgMkEXot32kjHX9zDmqwJNVxs0/8N4z7Sq4cx8PaS8L/hE2shZVFaD2NII5vuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780770; c=relaxed/simple;
-	bh=ln6o8Q4SguIAz7CK36hZar5UyIzjFdh0m87wKOyvS3U=;
+	s=arc-20240116; t=1764781040; c=relaxed/simple;
+	bh=TyIuTT79uLMlcVRqHf/py2GH62sfXlyukGHfd+W7Dr4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fWe4lRKRJikiBD5JzuKLbYewV1GYwqfGDllVmURwMfAZRFB8m00rnQszlBw00+/YpFatXjeoGlvjpXd4WY8GULBf4kGbQ04O3q4FJJdKlx+S4+OrHL+oCZKPLNVMTVX6jYR57REqZeAQB10PkQKbX8hUoORlaV0fg/zYz6gccXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BswQRcVJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 640F4C4CEF5;
-	Wed,  3 Dec 2025 16:52:48 +0000 (UTC)
+	 MIME-Version; b=pRrBJJPAO7TO/69wLoreJWG/uDVtsI61S1ZTQpFUoLcjU4TiY8mu3EKnegqf4qgwQpYRgRLjQKX1XF7qVSh+iWIe5laH1hUlbZGgDUQMH2xsyayaFDEFDLpDenfOcA2d+zhlBXoafTwSM4sUiQ2jyiWLtkMP+bUO0UbUSvJpdC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PKq2bH73; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35075C4CEF5;
+	Wed,  3 Dec 2025 16:57:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780768;
-	bh=ln6o8Q4SguIAz7CK36hZar5UyIzjFdh0m87wKOyvS3U=;
+	s=korg; t=1764781039;
+	bh=TyIuTT79uLMlcVRqHf/py2GH62sfXlyukGHfd+W7Dr4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BswQRcVJE/byBkeUmaUL89ysCC6C8w2VkFdLRywAZzqws8u6hr7jCXy4ylFvuAzuh
-	 L/0uF/qYyWO1qJcz2KAVU1a3PZVnJVEhfjkXFKhKVZP0mrF+LueXbYntD8Q5ayqQPF
-	 6AG0NuQMEAIc3w9N7u6CPq1v2Duj/XdHVFu08e+A=
+	b=PKq2bH73vjw7xIa8gqd33hZmN6MNg3FzS6w0N0LZRTIa0UVs8PqZAA2gtv37knLdr
+	 KkvB2YS4wAmeTDYe2iK2GGAthOvXNYRPzfksek3/yknqjZOITPPCHWzvseHDtBSFmj
+	 +N9q9OJY6fdVAVwumnNufKeL3ZPRu068UGR/Su7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filip Pokryvka <fpokryvk@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 084/132] mptcp: clear scheduled subflows on retransmit
-Date: Wed,  3 Dec 2025 16:29:23 +0100
-Message-ID: <20251203152346.406433891@linuxfoundation.org>
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 31/93] spi: nxp-fspi: Support per spi-mem operation frequency switches
+Date: Wed,  3 Dec 2025 16:29:24 +0100
+Message-ID: <20251203152337.668290192@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
+References: <20251203152336.494201426@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +61,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-commit 27fd02860164bfa78cec2640dfad630d832e302c upstream.
+[ Upstream commit 26851cf65ffca2d3a8d529a125e54cf0084d69e7 ]
 
-When __mptcp_retrans() kicks-in, it schedules one or more subflows for
-retransmission, but such subflows could be actually left alone if there
-is no more data to retransmit and/or in case of concurrent fallback.
+Every ->exec_op() call correctly configures the spi bus speed to the
+maximum allowed frequency for the memory using the constant spi default
+parameter. Since we can now have per-operation constraints, let's use
+the value that comes from the spi-mem operation structure instead. In
+case there is no specific limitation for this operation, the default spi
+device value will be given anyway.
 
-Scheduled subflows could be processed much later in time, i.e. when new
-data will be transmitted, leading to bad subflow selection.
+The per-operation frequency capability is thus advertised to the spi-mem
+core.
 
-Explicitly clear all scheduled subflows before leaving the
-retransmission function.
-
-Fixes: ee2708aedad0 ("mptcp: use get_retrans wrapper")
-Cc: stable@vger.kernel.org
-Reported-by: Filip Pokryvka <fpokryvk@redhat.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251125-net-mptcp-clear-sched-rtx-v1-1-1cea4ad2165f@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://patch.msgid.link/20241224-winbond-6-11-rc1-quad-support-v2-12-ad218dbc406f@bootlin.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 40ad64ac25bb ("spi: nxp-fspi: Propagate fwnode in ACPI case as well")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/spi/spi-nxp-fspi.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2721,7 +2721,7 @@ static void __mptcp_retrans(struct sock
- 		}
+diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+index 731504ec7ef8b..5d631f8c593e3 100644
+--- a/drivers/spi/spi-nxp-fspi.c
++++ b/drivers/spi/spi-nxp-fspi.c
+@@ -711,9 +711,10 @@ static void nxp_fspi_dll_calibration(struct nxp_fspi *f)
+  * Value for rest of the CS FLSHxxCR0 register would be zero.
+  *
+  */
+-static void nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi)
++static void nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi,
++				const struct spi_mem_op *op)
+ {
+-	unsigned long rate = spi->max_speed_hz;
++	unsigned long rate = op->max_freq;
+ 	int ret;
+ 	uint64_t size_kb;
  
- 		if (!mptcp_send_head(sk))
--			return;
-+			goto clear_scheduled;
+@@ -938,7 +939,7 @@ static int nxp_fspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 				   FSPI_STS0_ARB_IDLE, 1, POLL_TOUT, true);
+ 	WARN_ON(err);
  
- 		goto reset_timer;
- 	}
-@@ -2752,7 +2752,7 @@ static void __mptcp_retrans(struct sock
- 			if (__mptcp_check_fallback(msk)) {
- 				spin_unlock_bh(&msk->fallback_lock);
- 				release_sock(ssk);
--				return;
-+				goto clear_scheduled;
- 			}
+-	nxp_fspi_select_mem(f, mem->spi);
++	nxp_fspi_select_mem(f, mem->spi, op);
  
- 			while (info.sent < info.limit) {
-@@ -2784,6 +2784,15 @@ reset_timer:
+ 	nxp_fspi_prepare_lut(f, op);
+ 	/*
+@@ -1156,6 +1157,10 @@ static const struct spi_controller_mem_ops nxp_fspi_mem_ops = {
+ 	.get_name = nxp_fspi_get_name,
+ };
  
- 	if (!mptcp_rtx_timer_pending(sk))
- 		mptcp_reset_rtx_timer(sk);
++static const struct spi_controller_mem_caps nxp_fspi_mem_caps = {
++	.per_op_freq = true,
++};
 +
-+clear_scheduled:
-+	/* If no rtx data was available or in case of fallback, there
-+	 * could be left-over scheduled subflows; clear them all
-+	 * or later xmit could use bad ones
-+	 */
-+	mptcp_for_each_subflow(msk, subflow)
-+		if (READ_ONCE(subflow->scheduled))
-+			mptcp_subflow_set_scheduled(subflow, false);
- }
+ static int nxp_fspi_probe(struct platform_device *pdev)
+ {
+ 	struct spi_controller *ctlr;
+@@ -1253,6 +1258,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+ 	ctlr->bus_num = -1;
+ 	ctlr->num_chipselect = NXP_FSPI_MAX_CHIPSELECT;
+ 	ctlr->mem_ops = &nxp_fspi_mem_ops;
++	ctlr->mem_caps = &nxp_fspi_mem_caps;
  
- /* schedule the timeout timer for the relevant event: either close timeout
+ 	nxp_fspi_default_setup(f);
+ 
+-- 
+2.51.0
+
 
 
 
