@@ -1,53 +1,51 @@
-Return-Path: <stable+bounces-199165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8DF6CA0943
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:43:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68F40CA0FD2
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:30:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 31C64319A759
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:23:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8DBBE3506BDE
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:29:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F491359FBE;
-	Wed,  3 Dec 2025 16:21:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A3F935A939;
+	Wed,  3 Dec 2025 16:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KQXMLtwf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sg1grwsK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B30C359FB9;
-	Wed,  3 Dec 2025 16:21:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA43535A936;
+	Wed,  3 Dec 2025 16:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778905; cv=none; b=lNjhXO7qpUemQBjV8rkYyadaf6VIml5qWf2zY8nI6bEgjbAbhIBazNQeQ/0M2x3lUqbvrLvri4zJa1iT32fL8cJ77FZwXN9axkkhN7W+7RTHXk/M50q8qU6keNDXJYhBHjh5e+k2ebqKjCJz215pIq/ZUNrcpe36vA9jVQqThC4=
+	t=1764778911; cv=none; b=Ocz/HeRO/LbBdohZUtdsZXGaJ7kqu9xtcN/AV+bro22byhpXM2UGfNuumtLJnztNyP2svrbPdnjGrcc5XBqODCO/oD6JqVj4O8q5YdSdWPn9eL002RsGEogHQa9Xse8gXFgI1i35EqtrZrhoQq612hG2lrVJcw/pP6d2cypO9tA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778905; c=relaxed/simple;
-	bh=QbnsS+krradYWdEKWMjZiGdrsG0U4gMbTWxqAMPX+8M=;
+	s=arc-20240116; t=1764778911; c=relaxed/simple;
+	bh=J70TTEiKF9c8C7OfF8ShswOOmjOxIxQHUL5ODBHflOg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s4BiEbiFmlGZoDh4+eV4NdODFLZS0tGcOBrBVSWGfyMgEgjv/2C+DO3Wp8ruCV4vrcaskw+LoajkRJyU3zr8YfqUwJVqd+6GBBflCLz8gB40P6Xr27vEmhcLEdfCdfvdcwbVXwlRBXbc1q/yGMaDE/p2+Cnh4r+5gcpAkNBOio8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KQXMLtwf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5FF7C4CEF5;
-	Wed,  3 Dec 2025 16:21:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dfJ87wxT/mlGnG1Z//OpVGtaqozV/7L0xVDAvjNsQ8Bukl9dC5uGhRCQO1XWJja1jzZHdD5g22P8IvRtuIIKIgx780zk0PkYOElzxo3B97hEkuQBj6l3IC//xQPG1dd0a/ZpSjy2hts7ei0kacLo/p7/PulmAosI/KLL/o2DUjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sg1grwsK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50D96C4CEF5;
+	Wed,  3 Dec 2025 16:21:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778905;
-	bh=QbnsS+krradYWdEKWMjZiGdrsG0U4gMbTWxqAMPX+8M=;
+	s=korg; t=1764778911;
+	bh=J70TTEiKF9c8C7OfF8ShswOOmjOxIxQHUL5ODBHflOg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KQXMLtwf4OncHjjpNEQxi3g0syByMxy+KVPM+mZJLv98VixtsO6EDuzI7Kz8MNy98
-	 MfLsUcO4YZC+QnGixTT4Y2nwABIvp7AEAoJRjWKkL/RCwoycalXSVoUlWTnBp7Rl7L
-	 2LospCL3C8FMD+pcsdv0bTOBsICuSqzjvZ3S7TH8=
+	b=Sg1grwsKpXbo83F8TdOrQMAzDdtUFyNBbxFaff4Keg6YkWEm7iOs+Zh1FF0tDESlH
+	 lPbyScSBbJ93UKlDX/guaSkMU9aQ2orRfouRSPGozbHVXE3RmvRDzJXWTBoavnd+yp
+	 AzgVoyh/2Ut+fyMEeD6da9oLFL+5439WksJFimTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Inochi Amaoto <inochiama@gmail.com>,
-	Nam Cao <namcao@linutronix.de>,
-	Chen Wang <unicorn_wang@outlook.com>,
+	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 095/568] irqchip/sifive-plic: Respect mask state when setting affinity
-Date: Wed,  3 Dec 2025 16:21:37 +0100
-Message-ID: <20251203152444.217386781@linuxfoundation.org>
+Subject: [PATCH 6.1 096/568] selftests/bpf: Fix bpf_prog_detach2 usage in test_lirc_mode2
+Date: Wed,  3 Dec 2025 16:21:38 +0100
+Message-ID: <20251203152444.255794937@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
 References: <20251203152440.645416925@linuxfoundation.org>
@@ -60,58 +58,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Inochi Amaoto <inochiama@gmail.com>
+From: Ricardo B. Marlière <rbm@suse.com>
 
-[ Upstream commit adecf78df945f4c7a1d29111b0002827f487df51 ]
+[ Upstream commit 98857d111c53954aa038fcbc4cf48873e4240f7c ]
 
-plic_set_affinity() always calls plic_irq_enable(), which clears up the
-priority setting even the interrupt is only masked. This unmasks the
-interrupt unexpectly.
+Commit e9fc3ce99b34 ("libbpf: Streamline error reporting for high-level
+APIs") redefined the way that bpf_prog_detach2() returns. Therefore, adapt
+the usage in test_lirc_mode2_user.c.
 
-Replace the plic_irq_enable/disable() with plic_irq_toggle() to avoid
-changing the priority setting.
-
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Nam Cao <namcao@linutronix.de> # VisionFive 2
-Tested-by: Chen Wang <unicorn_wang@outlook.com> # Pioneerbox
-Reviewed-by: Nam Cao <namcao@linutronix.de>
-Reviewed-by: Chen Wang <unicorn_wang@outlook.com>
-Link: https://lore.kernel.org/all/20250811002633.55275-1-inochiama@gmail.com
-Link: https://lore.kernel.org/lkml/20250722224513.22125-1-inochiama@gmail.com/
+Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20250828-selftests-bpf-v1-1-c7811cd8b98c@suse.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-sifive-plic.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ tools/testing/selftests/bpf/test_lirc_mode2_user.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/irqchip/irq-sifive-plic.c b/drivers/irqchip/irq-sifive-plic.c
-index 164c3e71ea70c..36de764ee2b61 100644
---- a/drivers/irqchip/irq-sifive-plic.c
-+++ b/drivers/irqchip/irq-sifive-plic.c
-@@ -172,12 +172,14 @@ static int plic_set_affinity(struct irq_data *d,
- 	if (cpu >= nr_cpu_ids)
- 		return -EINVAL;
+diff --git a/tools/testing/selftests/bpf/test_lirc_mode2_user.c b/tools/testing/selftests/bpf/test_lirc_mode2_user.c
+index 4694422aa76c3..88e4aeab21b7b 100644
+--- a/tools/testing/selftests/bpf/test_lirc_mode2_user.c
++++ b/tools/testing/selftests/bpf/test_lirc_mode2_user.c
+@@ -74,7 +74,7 @@ int main(int argc, char **argv)
  
--	plic_irq_disable(d);
-+	/* Invalidate the original routing entry */
-+	plic_irq_toggle(irq_data_get_effective_affinity_mask(d), d, 0);
- 
- 	irq_data_update_effective_affinity(d, cpumask_of(cpu));
- 
-+	/* Setting the new routing entry if irq is enabled */
- 	if (!irqd_irq_disabled(d))
--		plic_irq_enable(d);
-+		plic_irq_toggle(irq_data_get_effective_affinity_mask(d), d, 1);
- 
- 	return IRQ_SET_MASK_OK_DONE;
- }
+ 	/* Let's try detach it before it was ever attached */
+ 	ret = bpf_prog_detach2(progfd, lircfd, BPF_LIRC_MODE2);
+-	if (ret != -1 || errno != ENOENT) {
++	if (ret != -ENOENT) {
+ 		printf("bpf_prog_detach2 not attached should fail: %m\n");
+ 		return 1;
+ 	}
 -- 
 2.51.0
 
