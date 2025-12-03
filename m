@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7207CA0E34
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:19:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD24AC9FB0F
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:53:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1CB2D327A584
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:16:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EDAFE3081D76
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:46:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E851F350A3C;
-	Wed,  3 Dec 2025 16:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D05A31355A;
+	Wed,  3 Dec 2025 15:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UZNxCWII"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JByyHrUh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA33350A38;
-	Wed,  3 Dec 2025 16:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBCDF19C553;
+	Wed,  3 Dec 2025 15:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780050; cv=none; b=ngTnpbnsT6joVHHi663G5k+SS18o0BpllXVM1Kr1GbZhYJ/qp5Y2qe8yye5wGeufBgrWM2gw8HV58Z5rd0dLHOfRi/sn7OUhqKKHEjESY+1h3usSlZk1F194O3M6m6SKkgG6LaMetwRzbw0Yf3dQ1Ak1sJaLG2mdJHfc8VNGfIo=
+	t=1764776768; cv=none; b=tEefAgGJWhw6HDfJeg1/aO5RkAqxhJ71gKUuyErwr9jkl9TSWRvvH4Vx51BPfx31MP+Pa7VXtS9lEfoxFPeA2qhNp4zIybRhPXu5IHZGluEFiJK5EOOhsfRXpxjm45LF0bVWLMwiboA7oyHS9X9V0yTBjuY5m0Rx3nq2su2HYTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780050; c=relaxed/simple;
-	bh=TZvCw87iZ03au+RYzatvffGOK7QdEHSAfxtxSqiCIQA=;
+	s=arc-20240116; t=1764776768; c=relaxed/simple;
+	bh=4EZX7iYLctOqpnsCYth+hSt+msjJgosy+wtqmRw50wk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s1ES9WfPCTZ7ZKyVhBwP8gNRGon8ZPy2AcXSInpwADifbEjI4rLP9yYgJ2Oz5ZgvAmfoVdRgs7ty9TajJXfvAc+RGaAv9P6rmnAwvHjtJkzXoCyKkZqEpqYzYhs9A//bCYBW4CR/C+13DEL3g9kwhMfYOglZHQXUx2/7lkO+g/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UZNxCWII; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96D5EC116C6;
-	Wed,  3 Dec 2025 16:40:49 +0000 (UTC)
+	 MIME-Version; b=oW1tn0W5n9MSxinGYJjM6oHeuXvRt3LxHg0GywxKDH7TJuIfuUxBroUH697CoV/HT+C8azPcuQHtwRITsqTQkp18n8wdPAAX3vr5UhkaHUNy78QiXCDH8rtR55W2B1C1ryc7AN4lxdDoiUD1c6PQp7regBZ6sMUiIHoGqjGGCxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JByyHrUh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5264EC4CEF5;
+	Wed,  3 Dec 2025 15:46:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780050;
-	bh=TZvCw87iZ03au+RYzatvffGOK7QdEHSAfxtxSqiCIQA=;
+	s=korg; t=1764776767;
+	bh=4EZX7iYLctOqpnsCYth+hSt+msjJgosy+wtqmRw50wk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UZNxCWIIMJMo4vFEJyzDXrFK/hNvxm6VgEyP91TGJGsONsHP7yDn+pVexNF6JzNLR
-	 MzZ2cfbHFO+i3PTa74rhZDF9ETu3cCBWAQBwkhLicEnBz1/78HXu5pfA83qqQMScSU
-	 Pj/xe0FtL3zNn44BY0QJESJwkXrsNn5TyuR5RFGQ=
+	b=JByyHrUhllVSRfzMLZPih2BDrtlWkpt11PeLC4XeQ2AVEW8KvZ1KCBSF5l4/C2sUa
+	 pJGjekEyAz8AlDnCVMAxBNVn8bPQAnZR1G4Rya5SAbmOeQq1ddmO3EfxxdkJx5/8cP
+	 2vJ4SalCjrPJVz4CoBOp/2BFydt8t5kqqVRGAJp4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Allen Pais <apais@linux.microsoft.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 441/568] scsi: target: tcm_loop: Fix segfault in tcm_loop_tpg_address_show()
+	Bill Wendling <morbo@google.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 5.10 239/300] Makefile.compiler: replace cc-ifversion with compiler-specific macros
 Date: Wed,  3 Dec 2025 16:27:23 +0100
-Message-ID: <20251203152456.847759729@linuxfoundation.org>
+Message-ID: <20251203152409.479386789@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +61,219 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+From: Nick Desaulniers <ndesaulniers@google.com>
 
-commit e6965188f84a7883e6a0d3448e86b0cf29b24dfc upstream.
+commit 88b61e3bff93f99712718db785b4aa0c1165f35c upstream.
 
-If the allocation of tl_hba->sh fails in tcm_loop_driver_probe() and we
-attempt to dereference it in tcm_loop_tpg_address_show() we will get a
-segfault, see below for an example. So, check tl_hba->sh before
-dereferencing it.
+cc-ifversion is GCC specific. Replace it with compiler specific
+variants. Update the users of cc-ifversion to use these new macros.
 
-  Unable to allocate struct scsi_host
-  BUG: kernel NULL pointer dereference, address: 0000000000000194
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 0 P4D 0
-  Oops: 0000 [#1] PREEMPT SMP NOPTI
-  CPU: 1 PID: 8356 Comm: tokio-runtime-w Not tainted 6.6.104.2-4.azl3 #1
-  Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine, BIOS Hyper-V UEFI Release v4.1 09/28/2024
-  RIP: 0010:tcm_loop_tpg_address_show+0x2e/0x50 [tcm_loop]
-...
-  Call Trace:
-   <TASK>
-   configfs_read_iter+0x12d/0x1d0 [configfs]
-   vfs_read+0x1b5/0x300
-   ksys_read+0x6f/0xf0
-...
-
-Cc: stable@vger.kernel.org
-Fixes: 2628b352c3d4 ("tcm_loop: Show address of tpg in configfs")
-Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Reviewed-by: Allen Pais <apais@linux.microsoft.com>
-Link: https://patch.msgid.link/1762370746-6304-1-git-send-email-hamzamahfooz@linux.microsoft.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://github.com/ClangBuiltLinux/linux/issues/350
+Link: https://lore.kernel.org/llvm/CAGG=3QWSAUakO42kubrCap8fp-gm1ERJJAYXTnP1iHk_wrH=BQ@mail.gmail.com/
+Suggested-by: Bill Wendling <morbo@google.com>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+[nathan: Backport to 5.10 and eliminate instances of cc-ifversion that
+         did not exist upstream when this change was original created]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/target/loopback/tcm_loop.c |    3 +++
- 1 file changed, 3 insertions(+)
+ Documentation/kbuild/makefiles.rst            |   29 +++++++++++++++-----------
+ Makefile                                      |    4 ++-
+ arch/mips/loongson64/Platform                 |    2 -
+ arch/powerpc/Makefile                         |    4 ++-
+ arch/s390/Makefile                            |    4 +--
+ drivers/gpu/drm/amd/display/dc/calcs/Makefile |    2 -
+ drivers/gpu/drm/amd/display/dc/dcn20/Makefile |    2 -
+ drivers/gpu/drm/amd/display/dc/dcn21/Makefile |    2 -
+ drivers/gpu/drm/amd/display/dc/dcn30/Makefile |    2 -
+ drivers/gpu/drm/amd/display/dc/dml/Makefile   |    2 -
+ drivers/gpu/drm/amd/display/dc/dsc/Makefile   |    2 -
+ scripts/Kbuild.include                        |   10 ++++++--
+ 12 files changed, 39 insertions(+), 26 deletions(-)
 
---- a/drivers/target/loopback/tcm_loop.c
-+++ b/drivers/target/loopback/tcm_loop.c
-@@ -934,6 +934,9 @@ static ssize_t tcm_loop_tpg_address_show
- 			struct tcm_loop_tpg, tl_se_tpg);
- 	struct tcm_loop_hba *tl_hba = tl_tpg->tl_hba;
+--- a/Documentation/kbuild/makefiles.rst
++++ b/Documentation/kbuild/makefiles.rst
+@@ -552,22 +552,27 @@ more details, with real examples.
+ 	In the above example, -Wno-unused-but-set-variable will be added to
+ 	KBUILD_CFLAGS only if gcc really accepts it.
  
-+	if (!tl_hba->sh)
-+		return -ENODEV;
+-    cc-ifversion
+-	cc-ifversion tests the version of $(CC) and equals the fourth parameter
+-	if version expression is true, or the fifth (if given) if the version
+-	expression is false.
++    gcc-min-version
++	gcc-min-version tests if the value of $(CONFIG_GCC_VERSION) is greater than
++	or equal to the provided value and evaluates to y if so.
+ 
+ 	Example::
+ 
+-		#fs/reiserfs/Makefile
+-		ccflags-y := $(call cc-ifversion, -lt, 0402, -O1)
++		cflags-$(call gcc-min-version, 70100) := -foo
+ 
+-	In this example, ccflags-y will be assigned the value -O1 if the
+-	$(CC) version is less than 4.2.
+-	cc-ifversion takes all the shell operators:
+-	-eq, -ne, -lt, -le, -gt, and -ge
+-	The third parameter may be a text as in this example, but it may also
+-	be an expanded variable or a macro.
++	In this example, cflags-y will be assigned the value -foo if $(CC) is gcc and
++	$(CONFIG_GCC_VERSION) is >= 7.1.
 +
- 	return snprintf(page, PAGE_SIZE, "%d:0:%d\n",
- 			tl_hba->sh->host_no, tl_tpg->tl_tpgt);
- }
++    clang-min-version
++	clang-min-version tests if the value of $(CONFIG_CLANG_VERSION) is greater
++	than or equal to the provided value and evaluates to y if so.
++
++	Example::
++
++		cflags-$(call clang-min-version, 110000) := -foo
++
++	In this example, cflags-y will be assigned the value -foo if $(CC) is clang
++	and $(CONFIG_CLANG_VERSION) is >= 11.0.0.
+ 
+     cc-cross-prefix
+ 	cc-cross-prefix is used to check if there exists a $(CC) in path with
+--- a/Makefile
++++ b/Makefile
+@@ -855,7 +855,9 @@ DEBUG_CFLAGS	:=
+ # Workaround for GCC versions < 5.0
+ # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=61801
+ ifdef CONFIG_CC_IS_GCC
+-DEBUG_CFLAGS	+= $(call cc-ifversion, -lt, 0500, $(call cc-option, -fno-var-tracking-assignments))
++ifneq ($(call gcc-min-version, 50000),y)
++DEBUG_CFLAGS	+= $(call cc-option, -fno-var-tracking-assignments)
++endif
+ endif
+ 
+ ifdef CONFIG_DEBUG_INFO
+--- a/arch/mips/loongson64/Platform
++++ b/arch/mips/loongson64/Platform
+@@ -12,7 +12,7 @@ cflags-$(CONFIG_CPU_LOONGSON64)	+= -Wa,-
+ # by GAS.  The cc-option can't probe for this behaviour so -march=loongson3a
+ # can't easily be used safely within the kbuild framework.
+ #
+-ifeq ($(call cc-ifversion, -ge, 0409, y), y)
++ifeq ($(call gcc-min-version, 40900), y)
+   ifeq ($(call ld-ifversion, -ge, 225000000, y), y)
+     cflags-$(CONFIG_CPU_LOONGSON64)  += \
+       $(call cc-option,-march=loongson3a -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64)
+--- a/arch/powerpc/Makefile
++++ b/arch/powerpc/Makefile
+@@ -168,7 +168,9 @@ endif
+ # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=44199
+ # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=52828
+ ifndef CONFIG_CC_IS_CLANG
+-CC_FLAGS_FTRACE	+= $(call cc-ifversion, -lt, 0409, -mno-sched-epilog)
++ifneq ($(call gcc-min-version, 40900),y)
++CC_FLAGS_FTRACE	+= -mno-sched-epilog
++endif
+ endif
+ endif
+ 
+--- a/arch/s390/Makefile
++++ b/arch/s390/Makefile
+@@ -35,8 +35,8 @@ KBUILD_CFLAGS_DECOMPRESSOR += $(if $(CON
+ KBUILD_CFLAGS_DECOMPRESSOR += $(if $(CONFIG_DEBUG_INFO_DWARF4), $(call cc-option, -gdwarf-4,))
+ 
+ ifdef CONFIG_CC_IS_GCC
+-	ifeq ($(call cc-ifversion, -ge, 1200, y), y)
+-		ifeq ($(call cc-ifversion, -lt, 1300, y), y)
++	ifeq ($(call gcc-min-version, 120000), y)
++		ifneq ($(call gcc-min-version, 130000), y)
+ 			KBUILD_CFLAGS += $(call cc-disable-warning, array-bounds)
+ 			KBUILD_CFLAGS_DECOMPRESSOR += $(call cc-disable-warning, array-bounds)
+ 		endif
+--- a/drivers/gpu/drm/amd/display/dc/calcs/Makefile
++++ b/drivers/gpu/drm/amd/display/dc/calcs/Makefile
+@@ -34,7 +34,7 @@ calcs_ccflags := -mhard-float -maltivec
+ endif
+ 
+ ifdef CONFIG_CC_IS_GCC
+-ifeq ($(call cc-ifversion, -lt, 0701, y), y)
++ifneq ($(call gcc-min-version, 70100),y)
+ IS_OLD_GCC = 1
+ endif
+ endif
+--- a/drivers/gpu/drm/amd/display/dc/dcn20/Makefile
++++ b/drivers/gpu/drm/amd/display/dc/dcn20/Makefile
+@@ -18,7 +18,7 @@ CFLAGS_$(AMDDALPATH)/dc/dcn20/dcn20_reso
+ endif
+ 
+ ifdef CONFIG_CC_IS_GCC
+-ifeq ($(call cc-ifversion, -lt, 0701, y), y)
++ifneq ($(call gcc-min-version, 70100),y)
+ IS_OLD_GCC = 1
+ endif
+ endif
+--- a/drivers/gpu/drm/amd/display/dc/dcn21/Makefile
++++ b/drivers/gpu/drm/amd/display/dc/dcn21/Makefile
+@@ -14,7 +14,7 @@ CFLAGS_$(AMDDALPATH)/dc/dcn21/dcn21_reso
+ endif
+ 
+ ifdef CONFIG_CC_IS_GCC
+-ifeq ($(call cc-ifversion, -lt, 0701, y), y)
++ifneq ($(call gcc-min-version, 70100),y)
+ IS_OLD_GCC = 1
+ endif
+ endif
+--- a/drivers/gpu/drm/amd/display/dc/dcn30/Makefile
++++ b/drivers/gpu/drm/amd/display/dc/dcn30/Makefile
+@@ -47,7 +47,7 @@ CFLAGS_REMOVE_$(AMDDALPATH)/dc/dcn30/dcn
+ endif
+ 
+ ifdef CONFIG_CC_IS_GCC
+-ifeq ($(call cc-ifversion, -lt, 0701, y), y)
++ifneq ($(call gcc-min-version, 70100),y)
+ IS_OLD_GCC = 1
+ endif
+ endif
+--- a/drivers/gpu/drm/amd/display/dc/dml/Makefile
++++ b/drivers/gpu/drm/amd/display/dc/dml/Makefile
+@@ -35,7 +35,7 @@ dml_ccflags := -mhard-float -maltivec
+ endif
+ 
+ ifdef CONFIG_CC_IS_GCC
+-ifeq ($(call cc-ifversion, -lt, 0701, y), y)
++ifneq ($(call gcc-min-version, 70100),y)
+ IS_OLD_GCC = 1
+ endif
+ endif
+--- a/drivers/gpu/drm/amd/display/dc/dsc/Makefile
++++ b/drivers/gpu/drm/amd/display/dc/dsc/Makefile
+@@ -11,7 +11,7 @@ dsc_ccflags := -mhard-float -maltivec
+ endif
+ 
+ ifdef CONFIG_CC_IS_GCC
+-ifeq ($(call cc-ifversion, -lt, 0701, y), y)
++ifneq ($(call gcc-min-version, 70100),y)
+ IS_OLD_GCC = 1
+ endif
+ endif
+--- a/scripts/Kbuild.include
++++ b/scripts/Kbuild.include
+@@ -133,9 +133,13 @@ cc-option-yn = $(call try-run,\
+ cc-disable-warning = $(call try-run,\
+ 	$(CC) -Werror $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS) -W$(strip $(1)) -c -x c /dev/null -o "$$TMP",-Wno-$(strip $(1)))
+ 
+-# cc-ifversion
+-# Usage:  EXTRA_CFLAGS += $(call cc-ifversion, -lt, 0402, -O1)
+-cc-ifversion = $(shell [ $(CONFIG_GCC_VERSION)0 $(1) $(2)000 ] && echo $(3) || echo $(4))
++# gcc-min-version
++# Usage: cflags-$(call gcc-min-version, 70100) += -foo
++gcc-min-version = $(shell [ $(CONFIG_GCC_VERSION)0 -ge $(1)0 ] && echo y)
++
++# clang-min-version
++# Usage: cflags-$(call clang-min-version, 110000) += -foo
++clang-min-version = $(shell [ $(CONFIG_CLANG_VERSION)0 -ge $(1)0 ] && echo y)
+ 
+ # ld-option
+ # Usage: KBUILD_LDFLAGS += $(call ld-option, -X, -Y)
 
 
 
