@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-198359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68F33C9F878
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:38:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64BF9CA0E67
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:20:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D38A0300097A
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:38:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D65D7314ECC8
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:17:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7300314A8E;
-	Wed,  3 Dec 2025 15:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74E313148B5;
+	Wed,  3 Dec 2025 16:03:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BKxMnypU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oucD0o82"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A311C3148C1;
-	Wed,  3 Dec 2025 15:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B86C31352C;
+	Wed,  3 Dec 2025 16:03:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776279; cv=none; b=sUYtaP3PjSXJGCb1O9bRhKqAlS/M55Ch8jXnCDXs+0YlrFqww++I2GiHHDSjzKxxDp21l7+1fzPcd1MbyH1t1rxGZuIgdR1xYTot+TX97HExM4wjXgCYGu+oKcOmTDrOzv8Bz1omJufdSjXSuShb6UxhlRFXgPRFjL30n+AfFrs=
+	t=1764777818; cv=none; b=knbwPOxrl3vqb6llLSq7yu19t91bQ4xQNAIJH7+1iLtr8bL0n/J7zjs0jdMqO/JtKVjKwiQmBs1dkkfBZ3ACvBUtYC26QSEwSlL2o+cviapSDvM428ZAqv18S8mhxKkiPbWHWEB348aWH+GWuXbcHjLgqikQy2r6o45r7cvqXSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776279; c=relaxed/simple;
-	bh=BzOQ7YANzYQfaunqRrdZhHnNch4mFKLGDr4BGGj1gf4=;
+	s=arc-20240116; t=1764777818; c=relaxed/simple;
+	bh=wn/abU0bahT7Wf56sRxS9ejtZEiv3awvShuzJ1A4s6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KhKwVOHYLp4w0hiz9ZyXc5WMT4z4CAnq9P7qel8DI0S/ui/kZUkNEYMMa3Q+cqjO3tt69/xQFxI9LuUDCsy5GcSC9MapDJio/sIFKMjk7J1FlfZEfoSOaiGA9wAAwbarfzZkiaHtUtcc6RJ0PUQHmkrA/9JocIkM5Gs2QK7lY8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BKxMnypU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE587C4CEF5;
-	Wed,  3 Dec 2025 15:37:58 +0000 (UTC)
+	 MIME-Version; b=oBxIRgGiuzGnwTavtVGiWaaev9sITDm9mHsKK+13Q7d7uraayZLQ0d8qLDwFHQm+zMILjfH0bl1f5Cl9iHQjpTn/8lb9C9JH0sHKqccnd2sbOfFhn7mlWvejybJ3iFbhOOh82pqGuLwwlkaEAloPOgifPOIiuJJ9xHhqVJ5Rpi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oucD0o82; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A062C4CEF5;
+	Wed,  3 Dec 2025 16:03:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776279;
-	bh=BzOQ7YANzYQfaunqRrdZhHnNch4mFKLGDr4BGGj1gf4=;
+	s=korg; t=1764777818;
+	bh=wn/abU0bahT7Wf56sRxS9ejtZEiv3awvShuzJ1A4s6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BKxMnypU6E2XSSe63mi6BXQWgYGzhcAXm6BIXFKGvYZN59ibY98Pj7pN3/60WQq+G
-	 0UK5ZhM+AGMafaXXfBBLo+msmqUtnSFZk5qiyBhDepLOb6b5woyrmXm03UJtQ2HWZ0
-	 S/LRROAzi9Xqq8BwjZqtENjVDwoT84pS11PsgeTE=
+	b=oucD0o82Y2imlOcPOkOTh07mlRF7m3jXatztJtWzjFgUSC/unR65Hj3EVOMVOK/CF
+	 88gwE/gBcgZZfn3CN3BxPFrPfHvRbewGh2b3WFVhgevg9+8EKKU8NhYWfWBQsoMbLK
+	 8AGsaDN6gZwLQVVya5PpSfOsgn+24kwu9oIVq2vs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Devendra K Verma <devverma@amd.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Nai-Chen Cheng <bleach1827@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 102/300] dmaengine: dw-edma: Set status for callback_result
+Subject: [PATCH 5.15 156/392] selftests/Makefile: include $(INSTALL_DEP_TARGETS) in clean target to clean net/lib dependency
 Date: Wed,  3 Dec 2025 16:25:06 +0100
-Message-ID: <20251203152404.403643470@linuxfoundation.org>
+Message-ID: <20251203152419.820802926@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,76 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Devendra K Verma <devverma@amd.com>
+From: Nai-Chen Cheng <bleach1827@gmail.com>
 
-[ Upstream commit 5e742de97c806a4048418237ef1283e7d71eaf4b ]
+[ Upstream commit d3f7457da7b9527a06dbcbfaf666aa51ac2eeb53 ]
 
-DMA Engine has support for the callback_result which provides
-the status of the request and the residue. This helps in
-determining the correct status of the request and in
-efficient resource management of the request.
-The 'callback_result' method is preferred over the deprecated
-'callback' method.
+The selftests 'make clean' does not clean the net/lib because it only
+processes $(TARGETS) and ignores $(INSTALL_DEP_TARGETS). This leaves
+compiled objects in net/lib after cleaning, requiring manual cleanup.
 
-Signed-off-by: Devendra K Verma <devverma@amd.com>
-Link: https://lore.kernel.org/r/20250821121505.318179-1-devverma@amd.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Include $(INSTALL_DEP_TARGETS) in clean target to ensure net/lib
+dependency is properly cleaned.
+
+Signed-off-by: Nai-Chen Cheng <bleach1827@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Simon Horman <horms@kernel.org> # build-tested
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Link: https://patch.msgid.link/20250910-selftests-makefile-clean-v1-1-29e7f496cd87@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/dw-edma/dw-edma-core.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ tools/testing/selftests/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/dma/dw-edma/dw-edma-core.c b/drivers/dma/dw-edma/dw-edma-core.c
-index f91dbf43a5980..df2874f6f4620 100644
---- a/drivers/dma/dw-edma/dw-edma-core.c
-+++ b/drivers/dma/dw-edma/dw-edma-core.c
-@@ -488,6 +488,25 @@ dw_edma_device_prep_dma_cyclic(struct dma_chan *dchan, dma_addr_t paddr,
- 	return dw_edma_device_transfer(&xfer);
- }
+diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
+index c16e4da988257..8b71b7958effc 100644
+--- a/tools/testing/selftests/Makefile
++++ b/tools/testing/selftests/Makefile
+@@ -260,7 +260,7 @@ gen_tar: install
+ 	@echo "Created ${TAR_PATH}"
  
-+static void dw_hdma_set_callback_result(struct virt_dma_desc *vd,
-+					enum dmaengine_tx_result result)
-+{
-+	u32 residue = 0;
-+	struct dw_edma_desc *desc;
-+	struct dmaengine_result *res;
-+
-+	if (!vd->tx.callback_result)
-+		return;
-+
-+	desc = vd2dw_edma_desc(vd);
-+	if (desc)
-+		residue = desc->alloc_sz - desc->xfer_sz;
-+
-+	res = &vd->tx_result;
-+	res->result = result;
-+	res->residue = residue;
-+}
-+
- static void dw_edma_done_interrupt(struct dw_edma_chan *chan)
- {
- 	struct dw_edma_desc *desc;
-@@ -503,6 +522,8 @@ static void dw_edma_done_interrupt(struct dw_edma_chan *chan)
- 		case EDMA_REQ_NONE:
- 			desc = vd2dw_edma_desc(vd);
- 			if (!desc->chunks_alloc) {
-+				dw_hdma_set_callback_result(vd,
-+							    DMA_TRANS_NOERROR);
- 				list_del(&vd->node);
- 				vchan_cookie_complete(vd);
- 			}
-@@ -541,6 +562,7 @@ static void dw_edma_abort_interrupt(struct dw_edma_chan *chan)
- 	spin_lock_irqsave(&chan->vc.lock, flags);
- 	vd = vchan_next_desc(&chan->vc);
- 	if (vd) {
-+		dw_hdma_set_callback_result(vd, DMA_TRANS_ABORTED);
- 		list_del(&vd->node);
- 		vchan_cookie_complete(vd);
- 	}
+ clean:
+-	@for TARGET in $(TARGETS); do \
++	@for TARGET in $(TARGETS) $(INSTALL_DEP_TARGETS); do \
+ 		BUILD_TARGET=$$BUILD/$$TARGET;	\
+ 		$(MAKE) OUTPUT=$$BUILD_TARGET -C $$TARGET clean;\
+ 	done;
 -- 
 2.51.0
 
