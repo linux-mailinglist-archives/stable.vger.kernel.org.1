@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96D9FCA0806
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:34:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C66DCA04F2
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:16:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 549C43236C9B
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:16:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A78F2312FE20
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:03:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC5BF3AA1B5;
-	Wed,  3 Dec 2025 16:52:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 602AB3624C9;
+	Wed,  3 Dec 2025 16:57:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iK1YGe20"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yk9yk4wT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E5634CFC2;
-	Wed,  3 Dec 2025 16:52:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50AB0365A0B;
+	Wed,  3 Dec 2025 16:57:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780775; cv=none; b=fF6tYQovX4T4tu8X+6F/sg5sQBa5gNTYaeHxa5LWh4mt0cANwE7Egx0DqKJNnewAtAoDNTLydt4RQSLa4FGD2Gsk8jjHg/qA1dVyLsGSDdT/YIE5mARMwMAoljoeQ6u7RIxdDldwUWrS347RXtfvxyURL+JqgQYmx8NkC6C2+oE=
+	t=1764781047; cv=none; b=toMgMlp5FnyCRtwp+O2hu/dd3/Kc7mZ66aLhsE/bBbM5AzaU274tc5lFLkdbzilV3KpFZQHEJoJbRRCYp8j7YRI7wUcuOvB5mXNxNx31K+0pml9lGzSJ4/1j1yk5F6I5KMa5h3A4NuW334X/abB9/97LL23S8SV+lvhGP5q+3PQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780775; c=relaxed/simple;
-	bh=PoZ2tugIh26XDP/3wlLyhppgB9xDy760mUaFfaMHX3I=;
+	s=arc-20240116; t=1764781047; c=relaxed/simple;
+	bh=g2auZI9AnfEQc2s8TtDez6GZ8+DSTMfYWeti3CliWS0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u74f8IlPzmbDELlWhCUDAFpCsQ80gT5N5vqjM9mIuKMg29VCqm4V0S6LQO6l7SvWggOz2Nlhwinm4Zcql+Qs/hcm0dxWhP7GETTzw7Taa0K4YH3viS6LjzpZv7JESwVmyktB+h0AaWGj3Mxp5lw3F8adyqMQJ/O9tJd8ux7Aq5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iK1YGe20; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E263FC4CEF5;
-	Wed,  3 Dec 2025 16:52:54 +0000 (UTC)
+	 MIME-Version; b=bNGr9oBnIMzF+JtERCx4JtYKQDzU/HzkSthyHX8fozDR87REq05mLOmHKfJiKUd5jYpehrz+Ew0/etMiIQtqJA10EjLjqm/DuH83EOHrxd/rAlfc1x55Ww0VeQ6UMiKzHF7m3x9IYofzKU9YCfV2qR7bXF4szyAvDTrKC5Y6hXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yk9yk4wT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0573AC4CEF5;
+	Wed,  3 Dec 2025 16:57:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780775;
-	bh=PoZ2tugIh26XDP/3wlLyhppgB9xDy760mUaFfaMHX3I=;
+	s=korg; t=1764781046;
+	bh=g2auZI9AnfEQc2s8TtDez6GZ8+DSTMfYWeti3CliWS0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iK1YGe20Ik0LKa48lFXR5bZUaTipzPRhIm2cG0w47HQORWYRn4EJWWuFO71PjeBSI
-	 Zbag2sWZK5amwjk90luVA/NGMyU4KHBrVFxXgLYyhUDeeFaSB3i8U0M7lZ4oJkrIVC
-	 N/6FQYPPoj9cyt/XdTnhBQTgpzbiQ9AWcLbr5LWI=
+	b=Yk9yk4wTAbmQ2k4wIXtySJqsjhWYXzsdPuFYXQkE9Z/z/b2O0Im2EFGxOUSolYtnB
+	 UQo3NAJ3Uyaa4EL9nnKZ8iOyHL++rDfuWYqw4NSfPxllGGS6/5+iKHNy/9FIeMGCD7
+	 iuUshchKPZRgUOIFjoA35cEszJKC9WlBIMBRDnYQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>
-Subject: [PATCH 6.12 086/132] serial: amba-pl011: prefer dma_mapping_error() over explicit address checking
-Date: Wed,  3 Dec 2025 16:29:25 +0100
-Message-ID: <20251203152346.479383972@linuxfoundation.org>
+	Hang Zhou <929513338@qq.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 33/93] spi: bcm63xx: fix premature CS deassertion on RX-only transactions
+Date: Wed,  3 Dec 2025 16:29:26 +0100
+Message-ID: <20251203152337.740848256@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
+References: <20251203152336.494201426@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +60,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Hang Zhou <929513338@qq.com>
 
-commit eb4917f557d43c7a1c805dd73ffcdfddb2aba39a upstream.
+[ Upstream commit fd9862f726aedbc2f29a29916cabed7bcf5cadb6 ]
 
-Check for returned DMA addresses using specialized dma_mapping_error()
-helper which is generally recommended for this purpose by
-Documentation/core-api/dma-api.rst:
+On BCM6358 (and also observed on BCM6368) the controller appears to
+only generate as many SPI clocks as bytes that have been written into
+the TX FIFO. For RX-only transfers the driver programs the transfer
+length in SPI_MSG_CTL but does not write anything into the FIFO, so
+chip select is deasserted early and the RX transfer segment is never
+fully clocked in.
 
-  "In some circumstances dma_map_single(), ...
-will fail to create a mapping. A driver can check for these errors
-by testing the returned DMA address with dma_mapping_error()."
+A concrete failing case is a three-transfer MAC address read from
+SPI-NOR:
+  - TX 0x03 (read command)
+  - TX 3-byte address
+  - RX 6 bytes (MAC)
 
-Found via static analysis and this is similar to commit fa0308134d26
-("ALSA: memalloc: prefer dma_mapping_error() over explicit address checking")
+In contrast, a two-transfer JEDEC-ID read (0x9f + 6-byte RX) works
+because the driver uses prepend_len and writes dummy bytes into the
+TX FIFO for the RX part.
 
-Fixes: 58ac1b379979 ("ARM: PL011: Fix DMA support")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Reviewed-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Link: https://patch.msgid.link/20251027092053.87937-1-linmq006@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by writing 0xff dummy bytes into the TX FIFO for RX-only
+segments so that the number of bytes written to the FIFO matches the
+total message length seen by the controller.
+
+Fixes: b17de076062a ("spi/bcm63xx: work around inability to keep CS up")
+
+Signed-off-by: Hang Zhou <929513338@qq.com>
+Link: https://patch.msgid.link/tencent_7AC88FCB3076489A4A7E6C2163DF1ACF8D06@qq.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/amba-pl011.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-bcm63xx.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/drivers/tty/serial/amba-pl011.c
-+++ b/drivers/tty/serial/amba-pl011.c
-@@ -618,7 +618,7 @@ static int pl011_dma_tx_refill(struct ua
- 	dmatx->len = count;
- 	dmatx->dma = dma_map_single(dma_dev->dev, dmatx->buf, count,
- 				    DMA_TO_DEVICE);
--	if (dmatx->dma == DMA_MAPPING_ERROR) {
-+	if (dma_mapping_error(dma_dev->dev, dmatx->dma)) {
- 		uap->dmatx.queued = false;
- 		dev_dbg(uap->port.dev, "unable to map TX DMA\n");
- 		return -EBUSY;
+diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+index a95badb7b7114..ba66fe9f1f543 100644
+--- a/drivers/spi/spi-bcm63xx.c
++++ b/drivers/spi/spi-bcm63xx.c
+@@ -247,6 +247,20 @@ static int bcm63xx_txrx_bufs(struct spi_device *spi, struct spi_transfer *first,
+ 
+ 		if (t->rx_buf) {
+ 			do_rx = true;
++
++			/*
++			 * In certain hardware implementations, there appears to be a
++			 * hidden accumulator that tracks the number of bytes written into
++			 * the hardware FIFO, and this accumulator overrides the length in
++			 * the SPI_MSG_CTL register.
++			 *
++			 * Therefore, for read-only transfers, we need to write some dummy
++			 * value into the FIFO to keep the accumulator tracking the correct
++			 * length.
++			 */
++			if (!t->tx_buf)
++				memset_io(bs->tx_io + len, 0xFF, t->len);
++
+ 			/* prepend is half-duplex write only */
+ 			if (t == first)
+ 				prepend_len = 0;
+-- 
+2.51.0
+
 
 
 
