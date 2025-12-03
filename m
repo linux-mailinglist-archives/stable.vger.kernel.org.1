@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAB7DCA0CCA
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:10:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA59DC9FD8E
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:14:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DE27A3283158
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:06:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E530C3049B0B
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:05:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7D1B345751;
-	Wed,  3 Dec 2025 16:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD15A34F48B;
+	Wed,  3 Dec 2025 16:05:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DdxDzP0w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2T0tRLeN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F7BF3570DC;
-	Wed,  3 Dec 2025 16:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FDED313558;
+	Wed,  3 Dec 2025 16:05:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779742; cv=none; b=sxXCxwMu9QdSs1OwHtkrH62a1qzSeSq1zDYYTaI08N/lYXwsUG1jukC5iqS+Pg2aa9nka6Yh7gR/C69XPu5Eau/lFEt67DgXdF0OAxOvWkP0k8BVCH1FqPLSfeGxn5KKNqcbI7J542fsnJnifCzv/bB3GGycNaPiuiPA71Wut/U=
+	t=1764777958; cv=none; b=WC/DLQj/xgAaPwmv4BafR6vPQS2PrbF5XS69HnT2pvpD0Wylmr7R3/fNf/6X83REbzUvr8oRMwblim4e95SIAhGvZHmBNKSKhk0VcPqiMsMM1sCsePFHQxEis6sNKVKjxIbmtPk84+RqkU3oEpGx1Nlr9ggaGXsxrOUHX8uISLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779742; c=relaxed/simple;
-	bh=YFxltP81R4SABtb9im/Uyl0x7sfHWJLpg/HRbFh1PNo=;
+	s=arc-20240116; t=1764777958; c=relaxed/simple;
+	bh=fjCq8KnI6ByGbykD6rjoa7KoA9CHilp1EUiOscvZv5o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QNXN2WlIJwXGykAcJTQLzKo6AwaLly9IHZMca84HbrccL5aFansHhqhnu56IA++2FZWr/yp0KxZ2WK8izwD/f98k4apd760DAoIiZQAQiVmxAM+vVW0q8FqhPd9m4jLu3EyULgm/6I4OGTEFXS/D1IBeaoL4ESf6dbW3uyWS4B4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DdxDzP0w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDEB6C4CEF5;
-	Wed,  3 Dec 2025 16:35:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=p4KLReqHTx1/ju1h48AxfmewHsS+YzXjNmpAWZcifjH/tyuQO/HyGUjolm59QDK8UUoVDo12xrxrRiGt8vUC1g6r3dPs6QLFyBSF2nay8rhtrNjUlupcMk9s4yP11MU9Ccy0+v6y7CfDfTrvEO8HtQuZJHZ14FRWLTaL9PdCVDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2T0tRLeN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DADA5C4CEF5;
+	Wed,  3 Dec 2025 16:05:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779742;
-	bh=YFxltP81R4SABtb9im/Uyl0x7sfHWJLpg/HRbFh1PNo=;
+	s=korg; t=1764777958;
+	bh=fjCq8KnI6ByGbykD6rjoa7KoA9CHilp1EUiOscvZv5o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DdxDzP0w7OPaY/ARxLGc+EioMGu7w8oKPrCTo7mkcGwKPkrEOHQGEE30uJfZc9fm/
-	 5rEOqmHBCFp2dB1/lfiZnGIlJSThStMzF6O6v/PvDTL/TTVC5YHyocTutmv5oUyJaz
-	 /ArdaIJNX5JrWz79Ufhgx0wZatfiwk1elGyiu9h8=
+	b=2T0tRLeNuxhydSRq9uLm0vKcPNiZcfenmjASAylQWry/lJWJD9ItF10o1Uxh11MSY
+	 IOdR0Eikz691osjSvZ6bFkVtdLg3YX9Fdq3IhBIR7paE/Ne0m5C4XG+sqk3s2M+bc5
+	 f42q6aHYIi6+mzyGozfcOYREFwExUkajjBuWzFl4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sharique Mohammad <sharq0406@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	"Randall P. Embry" <rpembry@gmail.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 346/568] ASoC: max98090/91: fixed max98091 ALSA widget powering up/down
+Subject: [PATCH 5.15 198/392] 9p: fix /sys/fs/9p/caches overwriting itself
 Date: Wed,  3 Dec 2025 16:25:48 +0100
-Message-ID: <20251203152453.376699872@linuxfoundation.org>
+Message-ID: <20251203152421.360543764@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,47 +58,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sharique Mohammad <sharq0406@gmail.com>
+From: Randall P. Embry <rpembry@gmail.com>
 
-[ Upstream commit 7a37291ed40a33a5f6c3d370fdde5ee0d8f7d0e4 ]
+[ Upstream commit 86db0c32f16c5538ddb740f54669ace8f3a1f3d7 ]
 
-The widgets DMIC3_ENA and DMIC4_ENA must be defined in the DAPM
-suppy widget, just like DMICL_ENA and DMICR_ENA. Whenever they
-are turned on or off, the required startup or shutdown sequences
-must be taken care by the max98090_shdn_event.
+caches_show() overwrote its buffer on each iteration,
+so only the last cache tag was visible in sysfs output.
 
-Signed-off-by: Sharique Mohammad <sharq0406@gmail.com>
-Link: https://patch.msgid.link/20251015134215.750001-1-sharq0406@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Properly append with snprintf(buf + count, …).
+
+Signed-off-by: Randall P. Embry <rpembry@gmail.com>
+Message-ID: <20250926-v9fs_misc-v1-2-a8b3907fc04d@codewreck.org>
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/max98090.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/9p/v9fs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/max98090.c b/sound/soc/codecs/max98090.c
-index 06ed2a938108e..f5acf84ee20cc 100644
---- a/sound/soc/codecs/max98090.c
-+++ b/sound/soc/codecs/max98090.c
-@@ -1235,9 +1235,11 @@ static const struct snd_soc_dapm_widget max98091_dapm_widgets[] = {
- 	SND_SOC_DAPM_INPUT("DMIC4"),
- 
- 	SND_SOC_DAPM_SUPPLY("DMIC3_ENA", M98090_REG_DIGITAL_MIC_ENABLE,
--		 M98090_DIGMIC3_SHIFT, 0, NULL, 0),
-+		 M98090_DIGMIC3_SHIFT, 0, max98090_shdn_event,
-+			SND_SOC_DAPM_POST_PMU),
- 	SND_SOC_DAPM_SUPPLY("DMIC4_ENA", M98090_REG_DIGITAL_MIC_ENABLE,
--		 M98090_DIGMIC4_SHIFT, 0, NULL, 0),
-+		 M98090_DIGMIC4_SHIFT, 0, max98090_shdn_event,
-+			 SND_SOC_DAPM_POST_PMU),
- };
- 
- static const struct snd_soc_dapm_route max98090_dapm_routes[] = {
+diff --git a/fs/9p/v9fs.c b/fs/9p/v9fs.c
+index 141067379f5e4..52765f7a3375a 100644
+--- a/fs/9p/v9fs.c
++++ b/fs/9p/v9fs.c
+@@ -558,7 +558,7 @@ static ssize_t caches_show(struct kobject *kobj,
+ 	spin_lock(&v9fs_sessionlist_lock);
+ 	list_for_each_entry(v9ses, &v9fs_sessionlist, slist) {
+ 		if (v9ses->cachetag) {
+-			n = snprintf(buf, limit, "%s\n", v9ses->cachetag);
++			n = snprintf(buf + count, limit, "%s\n", v9ses->cachetag);
+ 			if (n < 0) {
+ 				count = n;
+ 				break;
 -- 
 2.51.0
 
