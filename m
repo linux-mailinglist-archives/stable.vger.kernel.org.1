@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 083A2CA0866
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:37:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE985CA02E6
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:53:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1427C33C5A5E
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:18:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 35C0830274FC
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:48:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 837263AA1B4;
-	Wed,  3 Dec 2025 16:52:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C789C313546;
+	Wed,  3 Dec 2025 16:48:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZF9QDi7+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XKeBk5Hp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F03234F492;
-	Wed,  3 Dec 2025 16:52:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E1AD36CE0F;
+	Wed,  3 Dec 2025 16:48:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780772; cv=none; b=rRahCGe7NOPyiSpD5faAIeqgoCvKqS4hPJkckTfwSQFbDtXYxpAfY2X/S8OT8t7o4LV/cs/45F0NNsOoHX8Spkcq1m561SgNVwHcypZKjfRAFYFkp07UDRYCrnxubcsjNXb+/yrFCkhlMe3yHsFszHkA12gZ9bAZtB5UACq7TNU=
+	t=1764780510; cv=none; b=FRzRAFniIx/gXTNYrHvfRs8WllsNwjy8xiEJu2GQhWLD+MKZS3cjPQyEz4YOrHS7Hv5AiF9i2qBMUQziktGVpcOhZKsEAuIi09ditunas1h5dKqA8OH/kqxxqBOpZFa6Smvh7cu8NHAhi+j54X6eACVkRbsmBmG1kfIDm7kMKYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780772; c=relaxed/simple;
-	bh=M3SO5curmb3Dzj+vjCCqvHw1tLDIDLwax8dlP9zhIvE=;
+	s=arc-20240116; t=1764780510; c=relaxed/simple;
+	bh=fPMG5KGNE/EgjNRVQEAUi/WXSI565X8IEvmzvzJun3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=geM7MzdkU1qVmGJdN1UbXAGCVmeKq3oa0AVKYsv94TKHggs5gRcWDZMLKDmJS61ggpmxgDWlEgZswhqsbh0jnMwHtkqoFwUKGH6ynoW0IdsHZbdzqrEi4R2g1P43AejiYnsE6q9PFtUAhS+wa7J5N8pqvYR3lLBFYq6dF942HAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZF9QDi7+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EE39C4CEF5;
-	Wed,  3 Dec 2025 16:52:51 +0000 (UTC)
+	 MIME-Version; b=r2G9HJilb5NgaiVueQhi4O/eex5nI+Mf6gO2aI//fmYI0MsusWMgFFRRFQ5Hq2n00Z1A1UhB7o72M8cSNHXvo2F+ifASRDgqWjAZRkdqFuHaHkRMRAJOZDY0hNWbJ4jDTnSROo0zukzUiXAdoxNvyrFAOOrUZz5QdMMqF0e8Q1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XKeBk5Hp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F16EBC116C6;
+	Wed,  3 Dec 2025 16:48:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780772;
-	bh=M3SO5curmb3Dzj+vjCCqvHw1tLDIDLwax8dlP9zhIvE=;
+	s=korg; t=1764780510;
+	bh=fPMG5KGNE/EgjNRVQEAUi/WXSI565X8IEvmzvzJun3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZF9QDi7+6LQ1UU0868gcabU82dbP86il3tBAwSiLX4hC+0EIIph0BA+74uqKtRnE3
-	 2sboXKvNKwgw3K0LZv1+ilitDgyVN4G9ZwrhcF6AwAjEQZTtxb/yvd9K9ETPXqStUI
-	 SHw6uFjUu7EGaXg7Ekhv3jJIcTVmiiMqtxUluCmg=
+	b=XKeBk5HpcPa4jj2dTUDZy2nR9VzSAUWUQ3omNhTAhxxqFCvbA/BF1RhuuG+fVLvAb
+	 kAoAiao0n7SdVThYUwF6ZxEpw8anHzNNlBXr0H4QjmG1lajo1exeEzxt9vHGKxToVM
+	 7wBQR77SYKLrlaM+RMHIf+38p956CD0BXINALXJc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3a92d359bc2ec6255a33@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.12 085/132] mptcp: Initialise rcv_mss before calling tcp_send_active_reset() in mptcp_do_fastclose().
+	Sean Heelan <seanheelan@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Nazar Kalashnikov <sivartiwe@gmail.com>
+Subject: [PATCH 6.1 562/568] ksmbd: fix use-after-free in session logoff
 Date: Wed,  3 Dec 2025 16:29:24 +0100
-Message-ID: <20251203152346.443025986@linuxfoundation.org>
+Message-ID: <20251203152501.328236895@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,95 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Sean Heelan <seanheelan@gmail.com>
 
-commit f07f4ea53e22429c84b20832fa098b5ecc0d4e35 upstream.
+commit 2fc9feff45d92a92cd5f96487655d5be23fb7e2b upstream.
 
-syzbot reported divide-by-zero in __tcp_select_window() by
-MPTCP socket. [0]
+The sess->user object can currently be in use by another thread, for
+example if another connection has sent a session setup request to
+bind to the session being free'd. The handler for that connection could
+be in the smb2_sess_setup function which makes use of sess->user.
 
-We had a similar issue for the bare TCP and fixed in commit
-499350a5a6e7 ("tcp: initialize rcv_mss to TCP_MIN_MSS instead
-of 0").
-
-Let's apply the same fix to mptcp_do_fastclose().
-
-[0]:
-Oops: divide error: 0000 [#1] SMP KASAN PTI
-CPU: 0 UID: 0 PID: 6068 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
-RIP: 0010:__tcp_select_window+0x824/0x1320 net/ipv4/tcp_output.c:3336
-Code: ff ff ff 44 89 f1 d3 e0 89 c1 f7 d1 41 01 cc 41 21 c4 e9 a9 00 00 00 e8 ca 49 01 f8 e9 9c 00 00 00 e8 c0 49 01 f8 44 89 e0 99 <f7> 7c 24 1c 41 29 d4 48 bb 00 00 00 00 00 fc ff df e9 80 00 00 00
-RSP: 0018:ffffc90003017640 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffff88807b469e40
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: ffffc90003017730 R08: ffff888033268143 R09: 1ffff1100664d028
-R10: dffffc0000000000 R11: ffffed100664d029 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-FS:  000055557faa0500(0000) GS:ffff888126135000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f64a1912ff8 CR3: 0000000072122000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- tcp_select_window net/ipv4/tcp_output.c:281 [inline]
- __tcp_transmit_skb+0xbc7/0x3aa0 net/ipv4/tcp_output.c:1568
- tcp_transmit_skb net/ipv4/tcp_output.c:1649 [inline]
- tcp_send_active_reset+0x2d1/0x5b0 net/ipv4/tcp_output.c:3836
- mptcp_do_fastclose+0x27e/0x380 net/mptcp/protocol.c:2793
- mptcp_disconnect+0x238/0x710 net/mptcp/protocol.c:3253
- mptcp_sendmsg_fastopen+0x2f8/0x580 net/mptcp/protocol.c:1776
- mptcp_sendmsg+0x1774/0x1980 net/mptcp/protocol.c:1855
- sock_sendmsg_nosec net/socket.c:727 [inline]
- __sock_sendmsg+0xe5/0x270 net/socket.c:742
- __sys_sendto+0x3bd/0x520 net/socket.c:2244
- __do_sys_sendto net/socket.c:2251 [inline]
- __se_sys_sendto net/socket.c:2247 [inline]
- __x64_sys_sendto+0xde/0x100 net/socket.c:2247
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f66e998f749
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffff9acedb8 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
-RAX: ffffffffffffffda RBX: 00007f66e9be5fa0 RCX: 00007f66e998f749
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000003
-RBP: 00007ffff9acee10 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000001
-R13: 00007f66e9be5fa0 R14: 00007f66e9be5fa0 R15: 0000000000000006
- </TASK>
-
-Fixes: ae155060247b ("mptcp: fix duplicate reset on fastclose")
-Reported-by: syzbot+3a92d359bc2ec6255a33@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/69260882.a70a0220.d98e3.00b4.GAE@google.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251125195331.309558-1-kuniyu@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sean Heelan <seanheelan@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Nazar Kalashnikov <sivartiwe@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+v2: Fix duplicate From: header
+Backport fix for CVE-2025-37899
+ fs/smb/server/smb2pdu.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2854,6 +2854,12 @@ static void mptcp_do_fastclose(struct so
- 			goto unlock;
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -2253,10 +2253,6 @@ int smb2_session_logoff(struct ksmbd_wor
+ 	sess->state = SMB2_SESSION_EXPIRED;
+ 	up_write(&conn->session_lock);
  
- 		subflow->send_fastclose = 1;
-+
-+		/* Initialize rcv_mss to TCP_MIN_MSS to avoid division by 0
-+		 * issue in __tcp_select_window(), see tcp_disconnect().
-+		 */
-+		inet_csk(ssk)->icsk_ack.rcv_mss = TCP_MIN_MSS;
-+
- 		tcp_send_active_reset(ssk, ssk->sk_allocation,
- 				      SK_RST_REASON_TCP_ABORT_ON_CLOSE);
- unlock:
+-	if (sess->user) {
+-		ksmbd_free_user(sess->user);
+-		sess->user = NULL;
+-	}
+ 	ksmbd_all_conn_set_status(sess_id, KSMBD_SESS_NEED_NEGOTIATE);
+ 
+ 	rsp->StructureSize = cpu_to_le16(4);
 
 
 
