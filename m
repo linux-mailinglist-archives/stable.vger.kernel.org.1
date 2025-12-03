@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-198427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9C00C9FA76
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:48:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72B54CA0337
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:55:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A4584302FA15
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:41:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C09F9306D5B6
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:48:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AB0B30F553;
-	Wed,  3 Dec 2025 15:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6335306D48;
+	Wed,  3 Dec 2025 16:38:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mccNDI0I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZaKVI+TF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B3830C37A;
-	Wed,  3 Dec 2025 15:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6066A252292;
+	Wed,  3 Dec 2025 16:38:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776508; cv=none; b=bEkJhKOGfI/rLBf0bD4twYJyjUfJemzhCNpEOKk2gcp3a51tsLcqNU9eQtdsQKj3HJD0frqkm8tmSaWU9/WbD2qSU22Y/f62VQW+XjdNwB4lJL6v1GEo40j1gwr7j+2ssXB4WbDKh7jqOB8XQqMSV83PNPrWjiyAltlvmSu9u+Y=
+	t=1764779925; cv=none; b=UvwCaWzF0q1rd7uhnZILnEJ1Yj60M5OJrGkLneR9auIIlqCMhk8GElMKm1t5vNp28qBRqrqu8AUpDmHtfjBd+9a2YS/KpwjCW9/Y33EAulwJdsLIQdta2GIciod4gt5CW6eqFcWmiQfGGUySwUSSnMdXKcM1Ym9PTfbsZcMEOk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776508; c=relaxed/simple;
-	bh=0mdgHva55B0ufUZJryJV4MjBI/X2jRZv4RS62yemxsY=;
+	s=arc-20240116; t=1764779925; c=relaxed/simple;
+	bh=6YFU/Nv6oKvqwN5+Fd2APeOkcJfPV0eQpTNcX8Yf0t4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QVtfFrNoRiwfGxZIEMCXnj6Brk5ly2phtQLJzd7+QYA0vtJ6A+tic09xAGXAyVtynSMBYoDgU3ZyIw/QSzrlkYpm70YRSLeZZhfUhYrW3ZFOEKSHesBjez5gxvchHfbm3rHLKd19udldVZkCg/TWVndtfwShEHC+S0hZjNePi+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mccNDI0I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F9A6C4CEF5;
-	Wed,  3 Dec 2025 15:41:47 +0000 (UTC)
+	 MIME-Version; b=WDJRZhepMx0B7UgBJgdXVaopQrHVBMY+EkVU/O6REJtEOBe0suwSLwkkhL2OJ4a1UgEJqVhvKyKaf60SKSLcgDIvq3eEzUMT5oZn77bVn5gNACrvenOIHM9p+16yCOxBnpVC08u8g7dcuQ/2cVwiNXUJFMSVAtoaBUXsKxUmYv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZaKVI+TF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78C7AC4CEF5;
+	Wed,  3 Dec 2025 16:38:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776507;
-	bh=0mdgHva55B0ufUZJryJV4MjBI/X2jRZv4RS62yemxsY=;
+	s=korg; t=1764779925;
+	bh=6YFU/Nv6oKvqwN5+Fd2APeOkcJfPV0eQpTNcX8Yf0t4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mccNDI0IbXGGCKheT7mRYB1iQHXpBis7NtxqkyGBUMwuliV9je0f7sg8yV5X6ek+B
-	 yvS+OzOGhMCpgaiZJcdAq10W57R27ulifMN58U4QlaSKVH5dOC8ABDzXzaUrWKU27P
-	 EDKE0L4dL1jGQoZW22/gRH7D7VmfCtWiSO0seaec=
+	b=ZaKVI+TFUCk5bflPM58Vy8U7Ji9UaKEX/19wlyI0Y4NtaEGPRmhPPwktBRTMsS4AM
+	 4+e9tfHsX3jLFNczzuGKW7KXEQN4WDAupl5UltP6itosaJbwKu8a1T9cdybDx4i8sr
+	 jCh3bubwA6yJ7anD/3kSRHBUfCMQ9heoQwSTlqLw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 202/300] lib/crypto: arm/curve25519: Disable on CPU_BIG_ENDIAN
+	Wei Yang <albinwyang@tencent.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	wangzijie <wangzijie1@honor.com>,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 404/568] fs/proc: fix uaf in proc_readdir_de()
 Date: Wed,  3 Dec 2025 16:26:46 +0100
-Message-ID: <20251203152408.108923884@linuxfoundation.org>
+Message-ID: <20251203152455.485490492@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +63,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Wei Yang <albinwyang@tencent.com>
 
-commit 44e8241c51f762aafa50ed116da68fd6ecdcc954 upstream.
+commit 895b4c0c79b092d732544011c3cecaf7322c36a1 upstream.
 
-On big endian arm kernels, the arm optimized Curve25519 code produces
-incorrect outputs and fails the Curve25519 test.  This has been true
-ever since this code was added.
+Pde is erased from subdir rbtree through rb_erase(), but not set the node
+to EMPTY, which may result in uaf access.  We should use RB_CLEAR_NODE()
+set the erased node to EMPTY, then pde_subdir_next() will return NULL to
+avoid uaf access.
 
-It seems that hardly anyone (or even no one?) actually uses big endian
-arm kernels.  But as long as they're ostensibly supported, we should
-disable this code on them so that it's not accidentally used.
+We found an uaf issue while using stress-ng testing, need to run testcase
+getdent and tun in the same time.  The steps of the issue is as follows:
 
-Note: for future-proofing, use !CPU_BIG_ENDIAN instead of
-CPU_LITTLE_ENDIAN.  Both of these are arch-specific options that could
-get removed in the future if big endian support gets dropped.
+1) use getdent to traverse dir /proc/pid/net/dev_snmp6/, and current
+   pde is tun3;
 
-Fixes: d8f1308a025f ("crypto: arm/curve25519 - wire up NEON implementation")
-Cc: stable@vger.kernel.org
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://lore.kernel.org/r/20251104054906.716914-1-ebiggers@kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+2) in the [time windows] unregister netdevice tun3 and tun2, and erase
+   them from rbtree.  erase tun3 first, and then erase tun2.  the
+   pde(tun2) will be released to slab;
+
+3) continue to getdent process, then pde_subdir_next() will return
+   pde(tun2) which is released, it will case uaf access.
+
+CPU 0                                      |    CPU 1
+-------------------------------------------------------------------------
+traverse dir /proc/pid/net/dev_snmp6/      |   unregister_netdevice(tun->dev)   //tun3 tun2
+sys_getdents64()                           |
+  iterate_dir()                            |
+    proc_readdir()                         |
+      proc_readdir_de()                    |     snmp6_unregister_dev()
+        pde_get(de);                       |       proc_remove()
+        read_unlock(&proc_subdir_lock);    |         remove_proc_subtree()
+                                           |           write_lock(&proc_subdir_lock);
+        [time window]                      |           rb_erase(&root->subdir_node, &parent->subdir);
+                                           |           write_unlock(&proc_subdir_lock);
+        read_lock(&proc_subdir_lock);      |
+        next = pde_subdir_next(de);        |
+        pde_put(de);                       |
+        de = next;    //UAF                |
+
+rbtree of dev_snmp6
+                        |
+                    pde(tun3)
+                     /    \
+                  NULL  pde(tun2)
+
+Link: https://lkml.kernel.org/r/20251025024233.158363-1-albin_yang@163.com
+Signed-off-by: Wei Yang <albinwyang@tencent.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: wangzijie <wangzijie1@honor.com>
+Cc: Alexey Dobriyan <adobriyan@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/crypto/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/proc/generic.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/crypto/Kconfig b/arch/arm/crypto/Kconfig
-index c46c05548080a..c5d676e7f16be 100644
---- a/arch/arm/crypto/Kconfig
-+++ b/arch/arm/crypto/Kconfig
-@@ -147,7 +147,7 @@ config CRYPTO_NHPOLY1305_NEON
+--- a/fs/proc/generic.c
++++ b/fs/proc/generic.c
+@@ -695,6 +695,12 @@ void pde_put(struct proc_dir_entry *pde)
+ 	}
+ }
  
- config CRYPTO_CURVE25519_NEON
- 	tristate "NEON accelerated Curve25519 scalar multiplication library"
--	depends on KERNEL_MODE_NEON
-+	depends on KERNEL_MODE_NEON && !CPU_BIG_ENDIAN
- 	select CRYPTO_LIB_CURVE25519_GENERIC
- 	select CRYPTO_ARCH_HAVE_LIB_CURVE25519
++static void pde_erase(struct proc_dir_entry *pde, struct proc_dir_entry *parent)
++{
++	rb_erase(&pde->subdir_node, &parent->subdir);
++	RB_CLEAR_NODE(&pde->subdir_node);
++}
++
+ /*
+  * Remove a /proc entry and free it if it's not currently in use.
+  */
+@@ -717,7 +723,7 @@ void remove_proc_entry(const char *name,
+ 			WARN(1, "removing permanent /proc entry '%s'", de->name);
+ 			de = NULL;
+ 		} else {
+-			rb_erase(&de->subdir_node, &parent->subdir);
++			pde_erase(de, parent);
+ 			if (S_ISDIR(de->mode))
+ 				parent->nlink--;
+ 		}
+@@ -761,7 +767,7 @@ int remove_proc_subtree(const char *name
+ 			root->parent->name, root->name);
+ 		return -EINVAL;
+ 	}
+-	rb_erase(&root->subdir_node, &parent->subdir);
++	pde_erase(root, parent);
  
--- 
-2.51.0
-
+ 	de = root;
+ 	while (1) {
+@@ -773,7 +779,7 @@ int remove_proc_subtree(const char *name
+ 					next->parent->name, next->name);
+ 				return -EINVAL;
+ 			}
+-			rb_erase(&next->subdir_node, &de->subdir);
++			pde_erase(next, de);
+ 			de = next;
+ 			continue;
+ 		}
 
 
 
