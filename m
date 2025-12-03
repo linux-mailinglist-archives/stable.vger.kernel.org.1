@@ -1,55 +1,79 @@
-Return-Path: <stable+bounces-199423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 154E1CA06A3
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:25:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11439C9FE34
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:19:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 720AC32F7E60
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:09:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1AA033077E57
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:08:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 951EA3570D4;
-	Wed,  3 Dec 2025 16:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4D9C34FF49;
+	Wed,  3 Dec 2025 16:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z7knAPUt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="idWiNWhB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52C1F3570DC;
-	Wed,  3 Dec 2025 16:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F5BE34F49C;
+	Wed,  3 Dec 2025 16:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779752; cv=none; b=FV1WIWtyOzX1yCES9WllEGsuPEygthXfJqRbPza8QGu5jLcXmouW3gSgRMQtPjNT++n2qSQp//QnvZuDfK9fpyiwD1wjA83wi0PdgSpl95G5IZew98ZFzXXlYc9lQTQTdLP/eyfGHiVWKOx/Bn4qaSbY7BMrfH2vFJvVG/kZolA=
+	t=1764778104; cv=none; b=i/POsD0yLZs0yamCcrO+XiySBkHwK46BHXIAzfHRKm1qdnHIp+djS5lHcAEUuG8VmjO64/2wUpoo2S63RF5XTuZifs6iKqVfm+RH2G14X1qsIzBEBlFm6/VrxGjCt82jddVCSs02HBOjSlRmOin4xQg7TcrXbqB8uT1Sw0qQeCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779752; c=relaxed/simple;
-	bh=lPFgs6eLo6bTO4Sq1WeeS+TQjV2nAOoGb5MiYLrzR38=;
+	s=arc-20240116; t=1764778104; c=relaxed/simple;
+	bh=GoUahgCZ2pC+WPHgw+sPS5D9SJ6RyDJtiRPS9xWl5Gg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p3osM4bR0qf6QDmDppWveuyzxmwozu4Ukd4N8/bUlpw0BTDWpy+v02EYBsY4z8BYq+2YtGWEjxYbUVjhq3LMrWD1ynqrM4apV39tzbcfgGL2muN6McrkDkoL/qMAhhyElxGLLHlkNepf8X64BaEPLLwgXheHfjBZbq5Gzw8ipr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z7knAPUt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8733C4CEF5;
-	Wed,  3 Dec 2025 16:35:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=H4F2DCjRa/obuLLPsLkTE0RR36ZRLRPGfo2zyyjcqSaOqWNoYHMNvrgc1YYE3oNOLRGMTSppmZzVasD5HvwU1e6eDwqKVqn8FTQupGj18J6JqJ0zdYGmGvWMy4UvJwdRfw5R6xAGX60TyURyfW2Ne+vaAxnlyuRDnzP32BSCPfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=idWiNWhB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CAA6C4CEF5;
+	Wed,  3 Dec 2025 16:08:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779752;
-	bh=lPFgs6eLo6bTO4Sq1WeeS+TQjV2nAOoGb5MiYLrzR38=;
+	s=korg; t=1764778104;
+	bh=GoUahgCZ2pC+WPHgw+sPS5D9SJ6RyDJtiRPS9xWl5Gg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z7knAPUtzk4a2jVJ88tWGccWdIwgFyd7+zRf//QBasiyKqRzdF6os6HNghLTF36Jo
-	 UPppj3TYVbmOh/lR1gHgX9h5A2dfsLX5huBWi4e4pIXuWiD8n2TkxSUzPI6gp6+oyW
-	 3As18vji7GGfsLIvr4yMpY3dEKAwkHipx3akpelk=
+	b=idWiNWhBaNhxktytq1xN5dUY7Hbc7HfNpDWaZpWPZztSVNkFmUCHA0c4Bj5gAZCcN
+	 Q/KiKQ+mxVPsAEPz5TjDM27mq9lvTt4CPZL34p6cvim0td/vFdKGCC1QZWME6zEgCO
+	 fPJx4EVYY7k1YZa2Ll1GrnzL4ZrMi9fRWVugV1aU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Ian Rogers <irogers@google.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	=?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Darren Hart <dvhart@infradead.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Ingo Molnar <mingo@redhat.com>,
 	Jakub Kicinski <kuba@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Jonas Gottlieb <jonas.gottlieb@stackit.cloud>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Maurice Lambert <mauricelambert434@gmail.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Petr Machata <petrm@nvidia.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Yuyang Huang <yuyanghuang@google.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 349/568] selftests: net: local_termination: Wait for interfaces to come up
-Date: Wed,  3 Dec 2025 16:25:51 +0100
-Message-ID: <20251203152453.487194056@linuxfoundation.org>
+Subject: [PATCH 5.15 202/392] tools bitmap: Add missing asm-generic/bitsperlong.h include
+Date: Wed,  3 Dec 2025 16:25:52 +0100
+Message-ID: <20251203152421.507110253@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,52 +83,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 57531b3416448d1ced36a2a974a4085ec43d57b0 ]
+[ Upstream commit f38ce0209ab4553906b44bd1159e35c740a84161 ]
 
-It seems that most of the tests prepare the interfaces once before the test
-run (setup_prepare()), rely on setup_wait() to wait for link and only then
-run the test(s).
+small_const_nbits is defined in asm-generic/bitsperlong.h which
+bitmap.h uses but doesn't include causing build failures in some build
+systems. Add the missing #include.
 
-local_termination brings the physical interfaces down and up during test
-run but never wait for them to come up. If the auto-negotiation takes
-some seconds, first test packets are being lost, which leads to
-false-negative test results.
+Note the bitmap.h in tools has diverged from that of the kernel, so no
+changes are made there.
 
-Use setup_wait() in run_test() to make sure auto-negotiation has been
-completed after all simple_if_init() calls on physical interfaces and test
-packets will not be lost because of the race against link establishment.
-
-Fixes: 90b9566aa5cd3f ("selftests: forwarding: add a test for local_termination.sh")
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Link: https://patch.msgid.link/20251106161213.459501-1-alexander.sverdlin@siemens.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Acked-by: Yury Norov <yury.norov@gmail.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: André Almeida <andrealmeid@igalia.com>
+Cc: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Darren Hart <dvhart@infradead.org>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Davidlohr Bueso <dave@stgolabs.net>
+Cc: Ido Schimmel <idosch@nvidia.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: Jason Xing <kerneljasonxing@gmail.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Jonas Gottlieb <jonas.gottlieb@stackit.cloud>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Maurice Lambert <mauricelambert434@gmail.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Petr Machata <petrm@nvidia.com>
+Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Yuyang Huang <yuyanghuang@google.com>
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/forwarding/local_termination.sh | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/include/linux/bitmap.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/net/forwarding/local_termination.sh b/tools/testing/selftests/net/forwarding/local_termination.sh
-index 9b5a63519b949..6cde61f10fd0e 100755
---- a/tools/testing/selftests/net/forwarding/local_termination.sh
-+++ b/tools/testing/selftests/net/forwarding/local_termination.sh
-@@ -108,6 +108,8 @@ run_test()
- 	local smac=$(mac_get $h1)
- 	local rcv_dmac=$(mac_get $rcv_if_name)
+diff --git a/tools/include/linux/bitmap.h b/tools/include/linux/bitmap.h
+index a83ffdf1e2117..e65a7e84c7541 100644
+--- a/tools/include/linux/bitmap.h
++++ b/tools/include/linux/bitmap.h
+@@ -3,6 +3,7 @@
+ #define _PERF_BITOPS_H
  
-+	setup_wait
-+
- 	tcpdump_start $rcv_if_name
- 
- 	mc_route_prepare $h1
+ #include <string.h>
++#include <asm-generic/bitsperlong.h>
+ #include <linux/align.h>
+ #include <linux/bitops.h>
+ #include <stdlib.h>
 -- 
 2.51.0
 
