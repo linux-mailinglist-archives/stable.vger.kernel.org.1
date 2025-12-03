@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F5FAC9F82D
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:36:39 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7BF7CA0120
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:44:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 33CB03027D95
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:32:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A6B483009860
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:38:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC95330C358;
-	Wed,  3 Dec 2025 15:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC66334DB7D;
+	Wed,  3 Dec 2025 16:29:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x7XTmgkr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EY948IQG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7555430C63C;
-	Wed,  3 Dec 2025 15:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F30C34D3B6;
+	Wed,  3 Dec 2025 16:29:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764775955; cv=none; b=hGiJyddubhtX3RG3mBRBNFHgaww2RhVd28L26fSq2Qq5JG50mS/UN5G26n0cya9tRkMcsHa+B21JQ0zgwU9bRbf3L0AyAlmMXQpvS2BQJTrfOQZ+MVf5tZjOof4iSZrdSGHexVANJn7S7iTiWwZlIayx+meHctM5TPTixiidCyk=
+	t=1764779386; cv=none; b=oc9mK+pKASN62BV9SMhotlGwkRWRpHeiLjaalhZ3WX9lB7L+7L2PLKnK4iOybsufbJq8NkIAYQfXrmigGL7KcOSnB5/AuPVRxir+DaJ5z+azfXD1bm82Y0g0YWMeGSJMO0jPU8IKcYmpwjDRluvtjKZjm7wmOTtqbU5xNmfqOCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764775955; c=relaxed/simple;
-	bh=zOzoyTwAQ6VvcCovnwBmvOkmQqbTYd00CnJLE9R5xTM=;
+	s=arc-20240116; t=1764779386; c=relaxed/simple;
+	bh=lny3wRn/F8N2QWYIgrkxg604UJB9elbRBetqx8Qh97U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cLYc3V3uLJWP6bnjJdTqYYL2y/FtYRpni3/CN3gUpevZaUAnBH5xjpg+TUBRGB40n1n518cpW7i/zLUUwe0PY9aBO2TClvUFBGmd0MIqLQP+Zi9Pzc43D67zK9CPrFLNlqtckVPZzIqe3M5KAMEJhBGuVx5XBNySWrG0V80rUc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x7XTmgkr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8EA9C116B1;
-	Wed,  3 Dec 2025 15:32:34 +0000 (UTC)
+	 MIME-Version; b=Pcm+o8y2qu5FtWVvyi7yyFIKb3eaZGk/7oeJwYxNtlWCIP2YdUDeKrmTG1J2JaRDNyH/cVZ7fZ9BCyvTg0vay14LPpLkdvwFF+8UBgb1nz1e31O02yd2WSsb1q7TU83eAKIso2km1nxPev0J8o5V2ZpQ6Amc6hgyYuazUDY3O0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EY948IQG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB244C116B1;
+	Wed,  3 Dec 2025 16:29:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764775955;
-	bh=zOzoyTwAQ6VvcCovnwBmvOkmQqbTYd00CnJLE9R5xTM=;
+	s=korg; t=1764779386;
+	bh=lny3wRn/F8N2QWYIgrkxg604UJB9elbRBetqx8Qh97U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x7XTmgkrrwKDbqAv41mgR/usE3yWkiB8qkEHM7Y/6uiDV4sffXpSNedmY4nuWggMt
-	 5DVRnOLGYzY2kAImZQtdPR14e4iVPeTKXwfjh4wj8rH22A8PAHFYv38aXVGctEM7N+
-	 E13upBFPwpyXSgRCVJmYePT5+x8xik6KTmntifXQ=
+	b=EY948IQGtSfgLuWHL2bLoWzrHZx8yI/73oNJOCbl9I3a41/FOdT1a7OuRhomFy2l+
+	 uoLCx0BlJzSBpoGJnJl0w0w0YD++n9CbnBPlW/imLVwfqY/4tKL15XRkRsZOT4RjXi
+	 J4Om2bxH6hiQM3CSetfO6aBpHtVUWnvV8LqM7FCM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Reidel <adrian@mainlining.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Alexey Klimov <alexey.klimov@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 038/300] soc: qcom: smem: Fix endian-unaware access of num_entries
-Date: Wed,  3 Dec 2025 16:24:02 +0100
-Message-ID: <20251203152401.878668198@linuxfoundation.org>
+Subject: [PATCH 6.1 241/568] ASoC: qcom: sc8280xp: explicitly set S16LE format in sc8280xp_be_hw_params_fixup()
+Date: Wed,  3 Dec 2025 16:24:03 +0100
+Message-ID: <20251203152449.546798355@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +60,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Reidel <adrian@mainlining.org>
+From: Alexey Klimov <alexey.klimov@linaro.org>
 
-[ Upstream commit 19e7aa0e9e46d0ad111a4af55b3d681b6ad945e0 ]
+[ Upstream commit 9565c9d53c5b440f0dde6fa731a99c1b14d879d2 ]
 
-Add a missing le32_to_cpu when accessing num_entries, which is always a
-little endian integer.
+Setting format to s16le is required for compressed playback on compatible
+soundcards.
 
-Fixes booting on Xiaomi Mi 9T (xiaomi-davinci) in big endian.
-
-Signed-off-by: Jens Reidel <adrian@mainlining.org>
-Link: https://lore.kernel.org/r/20250726235646.254730-1-adrian@mainlining.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
+Link: https://patch.msgid.link/20250911154340.2798304-1-alexey.klimov@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/smem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/qcom/sc8280xp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/soc/qcom/smem.c b/drivers/soc/qcom/smem.c
-index 28c19bcb2f205..d2d62d2b378b4 100644
---- a/drivers/soc/qcom/smem.c
-+++ b/drivers/soc/qcom/smem.c
-@@ -709,7 +709,7 @@ static u32 qcom_smem_get_item_count(struct qcom_smem *smem)
- 	if (IS_ERR_OR_NULL(ptable))
- 		return SMEM_ITEM_COUNT;
+diff --git a/sound/soc/qcom/sc8280xp.c b/sound/soc/qcom/sc8280xp.c
+index 14d9fea33d16a..8ae2fe917c370 100644
+--- a/sound/soc/qcom/sc8280xp.c
++++ b/sound/soc/qcom/sc8280xp.c
+@@ -7,6 +7,7 @@
+ #include <sound/soc.h>
+ #include <sound/soc-dapm.h>
+ #include <sound/pcm.h>
++#include <sound/pcm_params.h>
+ #include <linux/soundwire/sdw.h>
+ #include <sound/jack.h>
+ #include <linux/input-event-codes.h>
+@@ -39,8 +40,10 @@ static int sc8280xp_be_hw_params_fixup(struct snd_soc_pcm_runtime *rtd,
+ 					SNDRV_PCM_HW_PARAM_RATE);
+ 	struct snd_interval *channels = hw_param_interval(params,
+ 					SNDRV_PCM_HW_PARAM_CHANNELS);
++	struct snd_mask *fmt = hw_param_mask(params, SNDRV_PCM_HW_PARAM_FORMAT);
  
--	info = (struct smem_info *)&ptable->entry[ptable->num_entries];
-+	info = (struct smem_info *)&ptable->entry[le32_to_cpu(ptable->num_entries)];
- 	if (memcmp(info->magic, SMEM_INFO_MAGIC, sizeof(info->magic)))
- 		return SMEM_ITEM_COUNT;
- 
+ 	rate->min = rate->max = 48000;
++	snd_mask_set_format(fmt, SNDRV_PCM_FORMAT_S16_LE);
+ 	channels->min = 2;
+ 	channels->max = 2;
+ 	switch (cpu_dai->id) {
 -- 
 2.51.0
 
