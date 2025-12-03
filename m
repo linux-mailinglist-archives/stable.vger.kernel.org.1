@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 538C1CA0BC8
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:02:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FE49C9F833
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:36:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EA49D300BA00
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:00:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3BD133028F6B
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:32:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7806234D4D2;
-	Wed,  3 Dec 2025 16:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E3A1309F01;
+	Wed,  3 Dec 2025 15:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rJgjYXTr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WEnzQA8C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 347E734D4CE;
-	Wed,  3 Dec 2025 16:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC90F15ADB4;
+	Wed,  3 Dec 2025 15:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777757; cv=none; b=mH+wR+jLTcIGIGZxtR06Hx71tSX4lleHzbzJ+OO2y2Rm9FifFNaZpbPpaAS/GXqqyQTeniCAWjeRCZpzcH17ZwTgzgmUcdUag20IhrmqL47Rnyvtl4nVzHdWWqX9Xv7aDw4b2bwfcTPw+5YK+pcaA7W/+jCA1nrwmecBHvjBjXA=
+	t=1764775969; cv=none; b=tgPdbrnZb0I5NErEm6CxTuyXfEt5NXeV08v0UdOl0aoI2iWBjGjHrHtpObl+HzyVlPjx2n4hb2J8s2HixOQ1+0HrXzaRIAkVCPBAidH7+o8MMRfFmamLyrn4XUA2B7dz8q5GeEA1YmCBoAi5rueknlNZsxQdJsfA7UiBm2RZMds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777757; c=relaxed/simple;
-	bh=U1xv2y9oNdQTv3QNzndKwBVbuQWLSo/F5gjPVVaAcC4=;
+	s=arc-20240116; t=1764775969; c=relaxed/simple;
+	bh=8yrLxUipeICx4ofQkiWhICISu8NtYbTCzNOThM3VdZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a0QAgfUrW1AvK9Qvha6xnOrsLPggI4fUBKWfooyvvQAkXh7F7hOu+IzXvVgmGuMy1v6tawoAzdo+qQMaNTe0TCdeREtG3zywDNdlTXSQar59iD+nWDM8gc/bkMu4FswTANvqWIHRqXWrfEqH+NSZIrXb1F3KSYjx4pYokVS6S10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rJgjYXTr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A35B0C4CEF5;
-	Wed,  3 Dec 2025 16:02:36 +0000 (UTC)
+	 MIME-Version; b=l2zEv/beMdPFRkb8WBG+3FC71KBs2x9U9haUJQIli8H5B9kdPkyw+qPTquYa/akREY8kPe1fp45egUpmP6t/2HdjMusFXmgLfaH2torVbYjVltiqgKjbT9QsQ7Sxn6oIKCyuwtPHMOnbyjFW27gjg29jMepQl2SiA59DO5Vj1Xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WEnzQA8C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C592EC4CEF5;
+	Wed,  3 Dec 2025 15:32:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777757;
-	bh=U1xv2y9oNdQTv3QNzndKwBVbuQWLSo/F5gjPVVaAcC4=;
+	s=korg; t=1764775969;
+	bh=8yrLxUipeICx4ofQkiWhICISu8NtYbTCzNOThM3VdZ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rJgjYXTrmgZVR7emd+eUyvRvSqZXZc2igUz87m9eoUQO4mfDp+pE41eCWikbP0kZF
-	 B7uEqUNUNtXuvYezQpTYeKk1Nx/tJQuBNXmIT/TiTT5m5bCd5W6UY8qtSbvGHmyGOr
-	 K2uTJBa5x9+Ms3qiT5PMLF9K285jYPhB+uhE3Bw8=
+	b=WEnzQA8CkV5xG4qgOI1hT9acOq9UPTyqD1E19y+XI3ghdfXlnTpVRiYyDpqZzKy8+
+	 mimffJCk0p4cx0vAZyucKrgfZ1rl83t4N577py/c6L/xOqybqxrbnUdvv6e9sFsGpT
+	 RssePj4aV9yYlR1VvdW7mUdOimcokcSyDR/bnTu4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wake Liu <wakel@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Chi Zhang <chizhang@asrmicro.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 095/392] selftests/net: Replace non-standard __WORDSIZE with sizeof(long) * 8
-Date: Wed,  3 Dec 2025 16:24:05 +0100
-Message-ID: <20251203152417.597850352@linuxfoundation.org>
+Subject: [PATCH 5.10 042/300] pinctrl: single: fix bias pull up/down handling in pin_config_set
+Date: Wed,  3 Dec 2025 16:24:06 +0100
+Message-ID: <20251203152402.171444507@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +60,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wake Liu <wakel@google.com>
+From: Chi Zhang <chizhang@asrmicro.com>
 
-[ Upstream commit c36748e8733ef9c5f4cd1d7c4327994e5b88b8df ]
+[ Upstream commit 236152dd9b1675a35eee912e79e6c57ca6b6732f ]
 
-The `__WORDSIZE` macro, defined in the non-standard `<bits/wordsize.h>`
-header, is a GNU extension and not universally available with all
-toolchains, such as Clang when used with musl libc.
+In the pin_config_set function, when handling PIN_CONFIG_BIAS_PULL_DOWN or
+PIN_CONFIG_BIAS_PULL_UP, the function calls pcs_pinconf_clear_bias()
+which writes the register. However, the subsequent operations continue
+using the stale 'data' value from before the register write, effectively
+causing the bias clear operation to be overwritten and not take effect.
 
-This can lead to build failures in environments where this header is
-missing.
+Fix this by reading the 'data' value from the register after calling
+pcs_pinconf_clear_bias().
 
-The intention of the code is to determine the bit width of a C `long`.
-Replace the non-portable `__WORDSIZE` with the standard and portable
-`sizeof(long) * 8` expression to achieve the same result.
+This bug seems to have existed when this code was first merged in commit
+9dddb4df90d1 ("pinctrl: single: support generic pinconf").
 
-This change also removes the inclusion of the now-unused
-`<bits/wordsize.h>` header.
-
-Signed-off-by: Wake Liu <wakel@google.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Chi Zhang <chizhang@asrmicro.com>
+Link: https://lore.kernel.org/20250807062038.13610-1-chizhang@asrmicro.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/psock_tpacket.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/pinctrl/pinctrl-single.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/psock_tpacket.c b/tools/testing/selftests/net/psock_tpacket.c
-index 404a2ce759ab6..93092d13b3c59 100644
---- a/tools/testing/selftests/net/psock_tpacket.c
-+++ b/tools/testing/selftests/net/psock_tpacket.c
-@@ -33,7 +33,6 @@
- #include <ctype.h>
- #include <fcntl.h>
- #include <unistd.h>
--#include <bits/wordsize.h>
- #include <net/ethernet.h>
- #include <netinet/ip.h>
- #include <arpa/inet.h>
-@@ -785,7 +784,7 @@ static int test_kernel_bit_width(void)
- 
- static int test_user_bit_width(void)
- {
--	return __WORDSIZE;
-+	return sizeof(long) * 8;
- }
- 
- static const char *tpacket_str[] = {
+diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
+index 22fd7ebd5cf3f..9485737638b3c 100644
+--- a/drivers/pinctrl/pinctrl-single.c
++++ b/drivers/pinctrl/pinctrl-single.c
+@@ -586,8 +586,10 @@ static int pcs_pinconf_set(struct pinctrl_dev *pctldev,
+ 				break;
+ 			case PIN_CONFIG_BIAS_PULL_DOWN:
+ 			case PIN_CONFIG_BIAS_PULL_UP:
+-				if (arg)
++				if (arg) {
+ 					pcs_pinconf_clear_bias(pctldev, pin);
++					data = pcs->read(pcs->base + offset);
++				}
+ 				fallthrough;
+ 			case PIN_CONFIG_INPUT_SCHMITT_ENABLE:
+ 				data &= ~func->conf[i].mask;
 -- 
 2.51.0
 
