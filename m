@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-199324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82494CA1360
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:00:24 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5481DC9F792
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:32:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8747F32F1A99
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:44:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C33253000794
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:32:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 721343624D3;
-	Wed,  3 Dec 2025 16:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14D2330C63C;
+	Wed,  3 Dec 2025 15:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1STJ7btd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RnLZdjPR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB8E3624CA;
-	Wed,  3 Dec 2025 16:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D1130C358;
+	Wed,  3 Dec 2025 15:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779418; cv=none; b=rFz99Lhi3zZ5Xx7RgdOToRtuwm2BShKTfVhO66PpKcnYMFRH6vN8/Kf2r04ZioTvjLayW6BN2tUiRIQne/RDozWBpgIwYh+WzY7lw2feDpBGVSZ+HiOykgPHtRSRBoPZHQjlT9cTC3qwdrM/kfrq3MtSs/cQU8b3XAbaQwA+ydA=
+	t=1764775928; cv=none; b=KrCXfQAk/xP1eJQ9t9oNwDRXnAacR+sucZtUrwqC5Uf2HGIf5k4QvYoFCLpJAq7o+Wtm91m7/eE3/XHMXH9CIiiRFQzvR2MAAAIcisPF/bLHkovXKLkXhuDZHIAiAV28Iv87jxq5QF3HuiUv8TFupXaNNsvWBUO0XAH3EYRLtSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779418; c=relaxed/simple;
-	bh=N8EzhqkKKcN/FskV/Gj80wJEayTQY3JUYKoFXRIVlSs=;
+	s=arc-20240116; t=1764775928; c=relaxed/simple;
+	bh=rFbHk1t25LXjZE8L0Ia/o01BOmgC5DiSHSDE09Q9jls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FpjQurkjvLJf3GgURVDZuFKK4Tq41VdVgPEaxjK7wgmidBBszHki08SDSiNJnOiA3wUgMbk/3uJYDe620krPNYXSsyaEjl4IVi2FDB55GaKkAdHJHhdwVelcymWSjZaTcs7G04vbuW66sXVGkjC5MPUUt8Iha50L57uBqxlWFWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1STJ7btd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F8BFC4CEF5;
-	Wed,  3 Dec 2025 16:30:16 +0000 (UTC)
+	 MIME-Version; b=nGncNhYs+pFp1MPk5IZlvzNKCeQZ8wpP+u2kfmQA4Vy92clCmRFUOMKde4iJsH8fE9Qai+dEjn6dGLj4D3UkTGPRAqAkwEnJACBooCVtGu6F3JZVMNiWFnCokewdpf1cz5USsARTARGK2VqmNaSvdTppVxl7GUpnTRXgHOnrOQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RnLZdjPR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B62C4CEF5;
+	Wed,  3 Dec 2025 15:32:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779418;
-	bh=N8EzhqkKKcN/FskV/Gj80wJEayTQY3JUYKoFXRIVlSs=;
+	s=korg; t=1764775928;
+	bh=rFbHk1t25LXjZE8L0Ia/o01BOmgC5DiSHSDE09Q9jls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1STJ7btdjsWAKKb1jJbhawejIfdNwxde15P9O/bPojjoovnad8kWJfcMA7XICXZVl
-	 ly6qukMawAugD5Z9VaeYDJjwj79ooFRjXFOTMlqIGAijhNZFJYawtVZBSPTH/D0E8/
-	 qSJ3+SDv9aeMETmFkown35e98mwuPPFvKOxNaKrg=
+	b=RnLZdjPR3/F2dmegVqphJ8Alh7SQBUvPxLnOOgoZ+RuIgKqmfQywdZyTI0DAUZmJN
+	 MYSXNt9nFDq4HUCUF5a8p5RyvmSdJFijoRmYWZ5mAj5thffgr6+cZq5XuVhhjoA8E0
+	 Lka/a5NbYorLDfRP1B1aIOZGRKWT+iNjbVbXhlHE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 208/568] ntfs3: pretend $Extend records as regular files
-Date: Wed,  3 Dec 2025 16:23:30 +0100
-Message-ID: <20251203152448.343363744@linuxfoundation.org>
+	Daniel Palmer <daniel@0x0f.com>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.10 007/300] fbdev: atyfb: Check if pll_ops->init_pll failed
+Date: Wed,  3 Dec 2025 16:23:31 +0100
+Message-ID: <20251203152400.731769836@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +59,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Daniel Palmer <daniel@0x0f.com>
 
-[ Upstream commit 4e8011ffec79717e5fdac43a7e79faf811a384b7 ]
+commit 7073c7fc8d8ba47194e5fc58fcafc0efe7586e9b upstream.
 
-Since commit af153bb63a33 ("vfs: catch invalid modes in may_open()")
-requires any inode be one of S_IFDIR/S_IFLNK/S_IFREG/S_IFCHR/S_IFBLK/
-S_IFIFO/S_IFSOCK type, use S_IFREG for $Extend records.
+Actually check the return value from pll_ops->init_pll()
+as it can return an error.
 
-Reported-by: syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If the card's BIOS didn't run because it's not the primary VGA card
+the fact that the xclk source is unsupported is printed as shown
+below but the driver continues on regardless and on my machine causes
+a hard lock up.
+
+[   61.470088] atyfb 0000:03:05.0: enabling device (0080 -> 0083)
+[   61.476191] atyfb: using auxiliary register aperture
+[   61.481239] atyfb: 3D RAGE XL (Mach64 GR, PCI-33) [0x4752 rev 0x27]
+[   61.487569] atyfb: 512K SGRAM (1:1), 14.31818 MHz XTAL, 230 MHz PLL, 83 Mhz MCLK, 63 MHz XCLK
+[   61.496112] atyfb: Unsupported xclk source:  5.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Daniel Palmer <daniel@0x0f.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/inode.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/video/fbdev/aty/atyfb_base.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
-index 844113c3175c9..accff95baa847 100644
---- a/fs/ntfs3/inode.c
-+++ b/fs/ntfs3/inode.c
-@@ -456,6 +456,7 @@ static struct inode *ntfs_read_mft(struct inode *inode,
- 		   fname->home.seq == cpu_to_le16(MFT_REC_EXTEND)) {
- 		/* Records in $Extend are not a files or general directories. */
- 		inode->i_op = &ntfs_file_inode_operations;
-+		mode = S_IFREG;
- 	} else {
- 		err = -EINVAL;
- 		goto out;
--- 
-2.51.0
-
+--- a/drivers/video/fbdev/aty/atyfb_base.c
++++ b/drivers/video/fbdev/aty/atyfb_base.c
+@@ -2606,8 +2606,12 @@ static int aty_init(struct fb_info *info
+ 		pr_cont("\n");
+ 	}
+ #endif
+-	if (par->pll_ops->init_pll)
+-		par->pll_ops->init_pll(info, &par->pll);
++	if (par->pll_ops->init_pll) {
++		ret = par->pll_ops->init_pll(info, &par->pll);
++		if (ret)
++			return ret;
++	}
++
+ 	if (par->pll_ops->resume_pll)
+ 		par->pll_ops->resume_pll(info, &par->pll);
+ 
 
 
 
