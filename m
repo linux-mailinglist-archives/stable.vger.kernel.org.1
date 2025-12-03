@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-198762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C44ACA0640
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:23:35 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB2E2C9F839
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:36:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B249C319BD9B
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:08:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6ABA43007B41
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:34:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86F1D331A64;
-	Wed,  3 Dec 2025 16:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 832B130AAD0;
+	Wed,  3 Dec 2025 15:34:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WSRFjLgZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nlQO1QvW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2A6331A5F;
-	Wed,  3 Dec 2025 16:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 911FC1A2C25;
+	Wed,  3 Dec 2025 15:34:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777600; cv=none; b=EwgClta5mu6DGGTLUgs05pmYQ0aX9FfrQsbGJHsSjqCK5xSdUPi4sfAxBfxmWOO4S18138MFs/aLrNHmDvr4U5QkGBZKyxYD9zH83U/UJ7W4HyuIRyqP+dTfvuiBSrhQz6FhXEQo+NLVVD0fc3O+c7k3WfPy8rYezX/NKNgKYd8=
+	t=1764776057; cv=none; b=AdnAW79tNKUXuymlmsYzmU8DtLpf7ooCDnJA8KKzV7zFxg39CZbiomHIdmqDkC6H047RYYJ7+QH38KsH8z7BEdKGt7ZIhkjW44cxRCwyTFhl9GAZBIY64aUIcv30fl3OF8wmqfIbo39OebdJhZ15MnRh3zxVqGcxYe1/CPXAkco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777600; c=relaxed/simple;
-	bh=1b4Mi8qZZ/4UcGN8dc++SCAT6HC0tuxfwGHYTeb86aE=;
+	s=arc-20240116; t=1764776057; c=relaxed/simple;
+	bh=mygK41qAGbgLv0I9VrTwg/jn3fpp72IHgWAwvrZd0Xs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vdhl99z54jWsvlgILXsjMkt/2DUTm0+3IzuW2s37yr7JiqDsWCdpvpyY28NMnQYwfFyeoD0opuZCjfpPMDWjlLD/qWvT7PenCM78RnNsNnQW7ga6yM+iq5u3qOGk4NQpmK5IYyr35+jJroX2fwE948XGSbCzrsmjSVpOe/dGOxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WSRFjLgZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 835E0C4CEF5;
-	Wed,  3 Dec 2025 15:59:59 +0000 (UTC)
+	 MIME-Version; b=fnx3sQQkXUcfDMtEvNboLHEk+vaEx84k+6EgqoeJ4WrfnDw9aPO3HB1iAI3pHMtnBKGmQx3dYXxzoo3OMs9Hqi+V8F4prUq5Hnh/rezcUGjtTVkrMT+6yCWL+EXXRk1lm1dTXnk2V57vx3DPDbedz4FiLFDgSO0DRkJx7n48UeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nlQO1QvW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4695AC4CEF5;
+	Wed,  3 Dec 2025 15:34:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777599;
-	bh=1b4Mi8qZZ/4UcGN8dc++SCAT6HC0tuxfwGHYTeb86aE=;
+	s=korg; t=1764776056;
+	bh=mygK41qAGbgLv0I9VrTwg/jn3fpp72IHgWAwvrZd0Xs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WSRFjLgZPjSmX/R1ILO7w9j4CqSe4ucrtldo5DfypxlE3zLSHwbIova+hT/xkyBWP
-	 PoUSlgXoCiDHNxUg37AzqNYkjgPkuNUnryFXEGJT2r1C5zx2AMH1tUXEi45PiNtxn7
-	 7Bb9jYD+BXMR399ECcY7EhoTe7x8dHTx/eugEcWY=
+	b=nlQO1QvWk73zdn3mtJpbzMv/J0Z5y2UOyQNHx69hDfaMFPdnefy62yTMsJkAYhpCd
+	 6572DwLpzK13/y3Bdjug582mDVDlKJUQaDY4Rf8kh25LL+daxGdq2UWDfe9CwPXrr6
+	 mSOI7RlEv/R3l+O7NlIH65jWC4chlj1b07BapB2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 088/392] mfd: madera: Work around false-positive -Wininitialized warning
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 5.10 034/300] arch: back to -std=gnu89 in < v5.18
 Date: Wed,  3 Dec 2025 16:23:58 +0100
-Message-ID: <20251203152417.341199970@linuxfoundation.org>
+Message-ID: <20251203152401.725896224@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +62,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit 364752aa0c6ab0a06a2d5bfdb362c1ca407f1a30 ]
+Recent fixes have been backported to < v5.18 to fix build issues with
+GCC 5.15. They all force -std=gnu11 in the CFLAGS, "because [the kernel]
+requests the gnu11 standard via '-std=' in the main Makefile".
 
-clang-21 warns about one uninitialized variable getting dereferenced
-in madera_dev_init:
+This is true for >= 5.18 versions, but not before. This switch to
+-std=gnu11 has been done in commit e8c07082a810 ("Kbuild: move to
+-std=gnu11").
 
-drivers/mfd/madera-core.c:739:10: error: variable 'mfd_devs' is uninitialized when used here [-Werror,-Wuninitialized]
-  739 |                               mfd_devs, n_devs,
-      |                               ^~~~~~~~
-drivers/mfd/madera-core.c:459:33: note: initialize the variable 'mfd_devs' to silence this warning
-  459 |         const struct mfd_cell *mfd_devs;
-      |                                        ^
-      |                                         = NULL
+For a question of uniformity, force -std=gnu89, similar to what is done
+in the main Makefile.
 
-The code is actually correct here because n_devs is only nonzero
-when mfd_devs is a valid pointer, but this is impossible for the
-compiler to see reliably.
+Note: the fixes tags below refers to upstream commits, but this fix is
+only for kernels not having commit e8c07082a810 ("Kbuild: move to
+-std=gnu11").
 
-Change the logic to check for the pointer as well, to make this easier
-for the compiler to follow.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20250807071932.4085458-1-arnd@kernel.org
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7cbb015e2d3d ("parisc: fix building with gcc-15")
+Fixes: 3b8b80e99376 ("s390: Add '-std=gnu11' to decompressor and purgatory CFLAGS")
+Fixes: b3bee1e7c3f2 ("x86/boot: Compile boot code with -std=gnu11 too")
+Fixes: ee2ab467bddf ("x86/boot: Use '-std=gnu11' to fix build with GCC 15")
+Fixes: 8ba14d9f490a ("efi: libstub: Use '-std=gnu11' to fix build with GCC 15")
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Alexey Dobriyan <adobriyan@gmail.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/madera-core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/parisc/boot/compressed/Makefile  |    2 +-
+ arch/s390/Makefile                    |    2 +-
+ arch/s390/purgatory/Makefile          |    2 +-
+ arch/x86/Makefile                     |    2 +-
+ arch/x86/boot/compressed/Makefile     |    2 +-
+ drivers/firmware/efi/libstub/Makefile |    2 +-
+ 6 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/mfd/madera-core.c b/drivers/mfd/madera-core.c
-index a2abc0094def7..87797d77c9f0c 100644
---- a/drivers/mfd/madera-core.c
-+++ b/drivers/mfd/madera-core.c
-@@ -457,7 +457,7 @@ int madera_dev_init(struct madera *madera)
- 	struct device *dev = madera->dev;
- 	unsigned int hwid;
- 	int (*patch_fn)(struct madera *) = NULL;
--	const struct mfd_cell *mfd_devs;
-+	const struct mfd_cell *mfd_devs = NULL;
- 	int n_devs = 0;
- 	int i, ret;
+--- a/arch/parisc/boot/compressed/Makefile
++++ b/arch/parisc/boot/compressed/Makefile
+@@ -22,7 +22,7 @@ KBUILD_CFLAGS += -fno-PIE -mno-space-reg
+ ifndef CONFIG_64BIT
+ KBUILD_CFLAGS += -mfast-indirect-calls
+ endif
+-KBUILD_CFLAGS += -std=gnu11
++KBUILD_CFLAGS += -std=gnu89
  
-@@ -671,7 +671,7 @@ int madera_dev_init(struct madera *madera)
- 		goto err_reset;
- 	}
+ OBJECTS += $(obj)/head.o $(obj)/real2.o $(obj)/firmware.o $(obj)/misc.o $(obj)/piggy.o
  
--	if (!n_devs) {
-+	if (!n_devs || !mfd_devs) {
- 		dev_err(madera->dev, "Device ID 0x%x not a %s\n", hwid,
- 			madera->type_name);
- 		ret = -ENODEV;
--- 
-2.51.0
-
+--- a/arch/s390/Makefile
++++ b/arch/s390/Makefile
+@@ -23,7 +23,7 @@ endif
+ aflags_dwarf	:= -Wa,-gdwarf-2
+ KBUILD_AFLAGS_DECOMPRESSOR := $(CLANG_FLAGS) -m64 -D__ASSEMBLY__
+ KBUILD_AFLAGS_DECOMPRESSOR += $(if $(CONFIG_DEBUG_INFO),$(aflags_dwarf))
+-KBUILD_CFLAGS_DECOMPRESSOR := $(CLANG_FLAGS) -m64 -O2 -std=gnu11
++KBUILD_CFLAGS_DECOMPRESSOR := $(CLANG_FLAGS) -m64 -O2 -std=gnu89
+ KBUILD_CFLAGS_DECOMPRESSOR += -DDISABLE_BRANCH_PROFILING -D__NO_FORTIFY
+ KBUILD_CFLAGS_DECOMPRESSOR += -fno-delete-null-pointer-checks -msoft-float
+ KBUILD_CFLAGS_DECOMPRESSOR += -fno-asynchronous-unwind-tables
+--- a/arch/s390/purgatory/Makefile
++++ b/arch/s390/purgatory/Makefile
+@@ -20,7 +20,7 @@ GCOV_PROFILE := n
+ UBSAN_SANITIZE := n
+ KASAN_SANITIZE := n
+ 
+-KBUILD_CFLAGS := -std=gnu11 -fno-strict-aliasing -Wall -Wstrict-prototypes
++KBUILD_CFLAGS := -std=gnu89 -fno-strict-aliasing -Wall -Wstrict-prototypes
+ KBUILD_CFLAGS += -Wno-pointer-sign -Wno-sign-compare
+ KBUILD_CFLAGS += -fno-zero-initialized-in-bss -fno-builtin -ffreestanding
+ KBUILD_CFLAGS += -c -MD -Os -m64 -msoft-float -fno-common
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -31,7 +31,7 @@ endif
+ CODE16GCC_CFLAGS := -m32 -Wa,$(srctree)/arch/x86/boot/code16gcc.h
+ M16_CFLAGS	 := $(call cc-option, -m16, $(CODE16GCC_CFLAGS))
+ 
+-REALMODE_CFLAGS	:= -std=gnu11 $(M16_CFLAGS) -g -Os -DDISABLE_BRANCH_PROFILING -D__DISABLE_EXPORTS \
++REALMODE_CFLAGS	:= -std=gnu89 $(M16_CFLAGS) -g -Os -DDISABLE_BRANCH_PROFILING -D__DISABLE_EXPORTS \
+ 		   -Wall -Wstrict-prototypes -march=i386 -mregparm=3 \
+ 		   -fno-strict-aliasing -fomit-frame-pointer -fno-pic \
+ 		   -mno-mmx -mno-sse $(call cc-option,-fcf-protection=none)
+--- a/arch/x86/boot/compressed/Makefile
++++ b/arch/x86/boot/compressed/Makefile
+@@ -33,7 +33,7 @@ targets := vmlinux vmlinux.bin vmlinux.b
+ # avoid errors with '-march=i386', and future flags may depend on the target to
+ # be valid.
+ KBUILD_CFLAGS := -m$(BITS) -O2 $(CLANG_FLAGS)
+-KBUILD_CFLAGS += -std=gnu11
++KBUILD_CFLAGS += -std=gnu89
+ KBUILD_CFLAGS += -fno-strict-aliasing -fPIE
+ KBUILD_CFLAGS += -DDISABLE_BRANCH_PROFILING
+ cflags-$(CONFIG_X86_32) := -march=i386
+--- a/drivers/firmware/efi/libstub/Makefile
++++ b/drivers/firmware/efi/libstub/Makefile
+@@ -7,7 +7,7 @@
+ #
+ cflags-$(CONFIG_X86_32)		:= -march=i386
+ cflags-$(CONFIG_X86_64)		:= -mcmodel=small
+-cflags-$(CONFIG_X86)		+= -m$(BITS) -D__KERNEL__ -std=gnu11 \
++cflags-$(CONFIG_X86)		+= -m$(BITS) -D__KERNEL__ -std=gnu89 \
+ 				   -fPIC -fno-strict-aliasing -mno-red-zone \
+ 				   -mno-mmx -mno-sse -fshort-wchar \
+ 				   -Wno-pointer-sign \
 
 
 
