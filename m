@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-198816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B66FECA13D0
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:04:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54CA4CA001B
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:38:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 12EE33016BAE
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:03:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A26203047928
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:32:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 686CF34D93D;
-	Wed,  3 Dec 2025 16:02:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA4043A1D0C;
+	Wed,  3 Dec 2025 16:32:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NL6l2hY0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sjhGazAq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2183101DD;
-	Wed,  3 Dec 2025 16:02:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BCC23A1D0E;
+	Wed,  3 Dec 2025 16:32:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777774; cv=none; b=KuE0WvPJDH6kZmZYSFbyfzI76wrP/cO10GmNK0QzcH+2NhMMhue/jFpv4l/rcro2XVYsu0aY40xq2qZrMA4+qYS9L2xVTRBjPl7lsQE2GBrYygW/YjXAqtm1QaUfvDZrMxA/Jg5NeBFPdBg+yb+Mijc8MIuhVIG0x5B8Zy2gb74=
+	t=1764779549; cv=none; b=FB+IMs5jV0m0L4naZxvHbZ4BmKuzYaX7pay21OSLkorRyCvMKVT7zxv7Q7iZzvUZH/MHjkjrmDePxrJs35QjpvVxInthOK+pujDufbtNDMGQffGpd0xFs7eURLytSycU5nrxsn1AvU4JfPYNoxwn7JQCeYYp4eW214Qt8Nt2tkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777774; c=relaxed/simple;
-	bh=0y8DBJWniQxXtYmgEN8yF1+BvUzSZnb8qqUk3MHehok=;
+	s=arc-20240116; t=1764779549; c=relaxed/simple;
+	bh=a9sifBEolXAws7MSEukpQVsdbC2VciMbWVhxq73JZdU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fFruXE+fLZ6pi6kSCzxhOAAHEN7k07Q2PQWBLIdMDdAwZBzTBRZrxv9sbN5SrrEHcvhJR+vrtmnTTU9qyvNZSnMRqtG2iO5s30E1qA/V2BrdTHqe8SdFuNL56pfjSbHDeHZ9SqEYIuVL9m84zfTUb5Ob/7dHUZrjgkiSzOHp57M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NL6l2hY0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A852C4CEF5;
-	Wed,  3 Dec 2025 16:02:53 +0000 (UTC)
+	 MIME-Version; b=s4JgITz5KemkoylwxQCwWTphzKL+vySQSX3GnkFXpPwjOHizWKrV1marpefTnHKEaEfpdW8qXEtK3a3HeT37AzQ/Cq9hlMu2c6HyYJXF/ZXNGcAFLIkOz+zOb9uehTiLMry0qAGlmpvdrt8lyWzADQZywJSiy3i8mhAuS2uDNFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sjhGazAq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF3D1C4CEF5;
+	Wed,  3 Dec 2025 16:32:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777773;
-	bh=0y8DBJWniQxXtYmgEN8yF1+BvUzSZnb8qqUk3MHehok=;
+	s=korg; t=1764779549;
+	bh=a9sifBEolXAws7MSEukpQVsdbC2VciMbWVhxq73JZdU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NL6l2hY09UT8C5RfhkXEfpukt5JHzVK88MzMDtPRIUeBNwZw2WmUGg6D87bPz3k/C
-	 T4lV3Hr/pvH1XjnvT1sHNYv6ayRaGI+CFtu+GAfDIdd1FhanuwplVhS9sIreXTICWh
-	 8XQSy/mUsV+4+HVjS4MhejnlnRy6LanDYcdC81m4=
+	b=sjhGazAqIK4MXsK0tBdr3CfEo3Ld/UKi86froeN5LeUU9TUAlBOTANGtHkLfhUVp0
+	 1HsqWS8HoJDdYlE72OibPcr5NvbsUVyp5wqj9RJJQEwjFvJqfGl0he0It2oNQjVD30
+	 f5DVbWjDv3ySfDMTFeFsuKdsDf8DSSnziUl3xdqc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Michael Riesch <michael.riesch@collabora.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Mikko Perttunen <mperttunen@nvidia.com>,
+	Aaron Kling <webgeek1234@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 143/392] phy: rockchip: phy-rockchip-inno-csidphy: allow writes to grf register 0
+Subject: [PATCH 6.1 291/568] cpufreq: tegra186: Initialize all cores to max frequencies
 Date: Wed,  3 Dec 2025 16:24:53 +0100
-Message-ID: <20251203152419.349348482@linuxfoundation.org>
+Message-ID: <20251203152451.361308485@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +61,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Riesch <michael.riesch@collabora.com>
+From: Aaron Kling <webgeek1234@gmail.com>
 
-[ Upstream commit 8c7c19466c854fa86b82d2148eaa9bf0e6531423 ]
+[ Upstream commit ba6018929165fc914c665f071f8e8cdbac844a49 ]
 
-The driver for the Rockchip MIPI CSI-2 DPHY uses GRF register offset
-value 0 to sort out undefined registers. However, the RK3588 CSIDPHY GRF
-this offset is perfectly fine (in fact, register 0 is the only one in
-this register file).
-Introduce a boolean variable to indicate valid registers and allow writes
-to register 0.
+During initialization, the EDVD_COREx_VOLT_FREQ registers for some cores
+are still at reset values and not reflecting the actual frequency. This
+causes get calls to fail. Set all cores to their respective max
+frequency during probe to initialize the registers to working values.
 
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Michael Riesch <michael.riesch@collabora.com>
-Link: https://lore.kernel.org/r/20250616-rk3588-csi-dphy-v4-4-a4f340a7f0cf@collabora.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Suggested-by: Mikko Perttunen <mperttunen@nvidia.com>
+Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
+Reviewed-by: Mikko Perttunen <mperttunen@nvidia.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/rockchip/phy-rockchip-inno-csidphy.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/cpufreq/tegra186-cpufreq.c | 27 +++++++++++++++++++++------
+ 1 file changed, 21 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/phy/rockchip/phy-rockchip-inno-csidphy.c b/drivers/phy/rockchip/phy-rockchip-inno-csidphy.c
-index ca13a604ab4ff..286b38cc6f442 100644
---- a/drivers/phy/rockchip/phy-rockchip-inno-csidphy.c
-+++ b/drivers/phy/rockchip/phy-rockchip-inno-csidphy.c
-@@ -82,10 +82,11 @@ struct dphy_reg {
- 	u32 offset;
- 	u32 mask;
- 	u32 shift;
-+	u8 valid;
- };
+diff --git a/drivers/cpufreq/tegra186-cpufreq.c b/drivers/cpufreq/tegra186-cpufreq.c
+index ee57676bbee14..db27aa0e35074 100644
+--- a/drivers/cpufreq/tegra186-cpufreq.c
++++ b/drivers/cpufreq/tegra186-cpufreq.c
+@@ -132,13 +132,14 @@ static struct cpufreq_driver tegra186_cpufreq_driver = {
  
- #define PHY_REG(_offset, _width, _shift) \
--	{ .offset = _offset, .mask = BIT(_width) - 1, .shift = _shift, }
-+	{ .offset = _offset, .mask = BIT(_width) - 1, .shift = _shift, .valid = 1, }
+ static struct cpufreq_frequency_table *init_vhint_table(
+ 	struct platform_device *pdev, struct tegra_bpmp *bpmp,
+-	struct tegra186_cpufreq_cluster *cluster, unsigned int cluster_id)
++	struct tegra186_cpufreq_cluster *cluster, unsigned int cluster_id,
++	int *num_rates)
+ {
+ 	struct cpufreq_frequency_table *table;
+ 	struct mrq_cpu_vhint_request req;
+ 	struct tegra_bpmp_message msg;
+ 	struct cpu_vhint_data *data;
+-	int err, i, j, num_rates = 0;
++	int err, i, j;
+ 	dma_addr_t phys;
+ 	void *virt;
  
- static const struct dphy_reg rk1808_grf_dphy_regs[] = {
- 	[GRF_DPHY_CSIPHY_FORCERXMODE] = PHY_REG(RK1808_GRF_PD_VI_CON_OFFSET, 4, 0),
-@@ -134,7 +135,7 @@ static inline void write_grf_reg(struct rockchip_inno_csidphy *priv,
- 	const struct dphy_drv_data *drv_data = priv->drv_data;
- 	const struct dphy_reg *reg = &drv_data->grf_regs[index];
+@@ -168,6 +169,7 @@ static struct cpufreq_frequency_table *init_vhint_table(
+ 		goto free;
+ 	}
  
--	if (reg->offset)
-+	if (reg->valid)
- 		regmap_write(priv->grf, reg->offset,
- 			     HIWORD_UPDATE(value, reg->mask, reg->shift));
- }
++	*num_rates = 0;
+ 	for (i = data->vfloor; i <= data->vceil; i++) {
+ 		u16 ndiv = data->ndiv[i];
+ 
+@@ -178,10 +180,10 @@ static struct cpufreq_frequency_table *init_vhint_table(
+ 		if (i > 0 && ndiv == data->ndiv[i - 1])
+ 			continue;
+ 
+-		num_rates++;
++		(*num_rates)++;
+ 	}
+ 
+-	table = devm_kcalloc(&pdev->dev, num_rates + 1, sizeof(*table),
++	table = devm_kcalloc(&pdev->dev, *num_rates + 1, sizeof(*table),
+ 			     GFP_KERNEL);
+ 	if (!table) {
+ 		table = ERR_PTR(-ENOMEM);
+@@ -223,7 +225,9 @@ static int tegra186_cpufreq_probe(struct platform_device *pdev)
+ {
+ 	struct tegra186_cpufreq_data *data;
+ 	struct tegra_bpmp *bpmp;
+-	unsigned int i = 0, err;
++	unsigned int i = 0, err, edvd_offset;
++	int num_rates = 0;
++	u32 edvd_val, cpu;
+ 
+ 	data = devm_kzalloc(&pdev->dev, sizeof(*data), GFP_KERNEL);
+ 	if (!data)
+@@ -249,10 +253,21 @@ static int tegra186_cpufreq_probe(struct platform_device *pdev)
+ 	for (i = 0; i < TEGRA186_NUM_CLUSTERS; i++) {
+ 		struct tegra186_cpufreq_cluster *cluster = &data->clusters[i];
+ 
+-		cluster->table = init_vhint_table(pdev, bpmp, cluster, i);
++		cluster->table = init_vhint_table(pdev, bpmp, cluster, i, &num_rates);
+ 		if (IS_ERR(cluster->table)) {
+ 			err = PTR_ERR(cluster->table);
+ 			goto put_bpmp;
++		} else if (!num_rates) {
++			err = -EINVAL;
++			goto put_bpmp;
++		}
++
++		for (cpu = 0; cpu < ARRAY_SIZE(tegra186_cpus); cpu++) {
++			if (data->cpus[cpu].bpmp_cluster_id == i) {
++				edvd_val = cluster->table[num_rates - 1].driver_data;
++				edvd_offset = data->cpus[cpu].edvd_offset;
++				writel(edvd_val, data->regs + edvd_offset);
++			}
+ 		}
+ 	}
+ 
 -- 
 2.51.0
 
