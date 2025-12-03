@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-199050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54B16C9FDE5
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:16:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B6ACCA05C8
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:21:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B7CC8300094E
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:16:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2BFA13095E6B
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:07:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5C42350A0E;
-	Wed,  3 Dec 2025 16:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FA9A32FA06;
+	Wed,  3 Dec 2025 16:49:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AmCSc/Zr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GRH7vK0a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E21E350A00;
-	Wed,  3 Dec 2025 16:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B54632D420;
+	Wed,  3 Dec 2025 16:49:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778533; cv=none; b=S1YGCplcNTUPgZoi4kBlvkglRGm/HbDq5/5bdyCNqhYFX6fre+MXaALuicyLztQ0c5FpQomQDEoHxbd86JlqmKdDjq1j4+voyV0ShimrA/BZBXxoucFBu98xst+IQ1OSt3sP1d6B69sBmkuRGbEHM7BhJ9VRmQbwZhBr3P/tIRA=
+	t=1764780547; cv=none; b=eCmTZIQGM7EK0xku/cc6ZLnFZlUz4YsX1dhLLEEez6D7ljqKZ6HPg36ecz8+jDADxLm6jWg7dNFGEDqk7ivXZNEyK2cuSJHC2xuC9LunVdfroS2yQswsGOSsB+F8RlScEKFJZiA3E6R9aL6nHkFqsIjwd1F33uADBkkZioi/UKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778533; c=relaxed/simple;
-	bh=77FhJCdW4+o79GEnTOeS3Tvyg494AoBlogM+gPEoHuY=;
+	s=arc-20240116; t=1764780547; c=relaxed/simple;
+	bh=HVEZthPdF2VAEyxkRh5P01znPddS8WWQ1ivb1YQCRWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qayjxLwp1bI4aiplWbf59tdrK07oopz0ZY7YeoeIyIIkkzCo2g9CRpJc63H9HZruC7P+os74cLA0K4MZdZ+ZvaRHxFGO0ClQJjr9uJ2A2KdwQsR14B3+bLVQXy5Q1FncsqJAwOigweNdW1NKXp/hWaWx/6+YDrpfZcdRnYVM5Bw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AmCSc/Zr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AFD9C4CEF5;
-	Wed,  3 Dec 2025 16:15:32 +0000 (UTC)
+	 MIME-Version; b=uX2+V8mLwa+j0PuMlmJZHvABtw4PqinlKKrlGSUuzdSqoyUjdzR90QUwhP2Wyqs00pSdPt+9bJROEd/2HcSFgo9CP7Ixrjob8YROTBBV/5ti6xGN9sVP/SsWvFhg+HGfqoDwDgQ+AtfkQi84oF73fO17TTNVblSTUrAyi+2C6pY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GRH7vK0a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63DABC4CEF5;
+	Wed,  3 Dec 2025 16:49:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778533;
-	bh=77FhJCdW4+o79GEnTOeS3Tvyg494AoBlogM+gPEoHuY=;
+	s=korg; t=1764780543;
+	bh=HVEZthPdF2VAEyxkRh5P01znPddS8WWQ1ivb1YQCRWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AmCSc/ZrgapuRr0DKXXW+KxWLlIlQvtn+tjuAB52RP/Jbopd880dJa37/8axDj1Dj
-	 MeQP3OcmdYsQBXGXBoSIjdPrW7Kn8IubhtOQo9VP+O2FrJUNH/AAZKAqZq9DGwIe1b
-	 2dXkE25kP5A6U2VF0/OeMg1zrUJJR7yQ64v7nVto=
+	b=GRH7vK0aJuCM0pariVy1wzke8TMgeWZjP2fCakLAoI4eE6tZDrhZHKXDKZ6laZ7En
+	 nSxYP+lnGp2UpAxdVA0jEgjGVHPVYJ4smLXnm/pcBQB2VDPeQbvZ9zQIo2W8pcNMZz
+	 cvDiRGcJO81zo6qqtxN1MODRT84bi6qPZ0fS5fsE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+	Ashutosh Dixit <ashutosh.dixit@intel.com>,
+	Harish Chegondi <harish.chegondi@intel.com>,
+	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 347/392] mailbox: mailbox-test: Fix debugfs_create_dir error checking
+Subject: [PATCH 6.12 018/132] drm/xe: Fix conversion from clock ticks to milliseconds
 Date: Wed,  3 Dec 2025 16:28:17 +0100
-Message-ID: <20251203152426.936776750@linuxfoundation.org>
+Message-ID: <20251203152343.972130155@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Harish Chegondi <harish.chegondi@intel.com>
 
-[ Upstream commit 3acf1028f5003731977f750a7070f3321a9cb740 ]
+[ Upstream commit 7276878b069c57d9a9cca5db01d2f7a427b73456 ]
 
-The debugfs_create_dir() function returns ERR_PTR() on error, not NULL.
-The current null-check fails to catch errors.
+When tick counts are large and multiplication by MSEC_PER_SEC is larger
+than 64 bits, the conversion from clock ticks to milliseconds can go bad.
 
-Use IS_ERR() to correctly check for errors.
+Use mul_u64_u32_div() instead.
 
-Fixes: 8ea4484d0c2b ("mailbox: Add generic mechanism for testing Mailbox Controllers")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Signed-off-by: Harish Chegondi <harish.chegondi@intel.com>
+Suggested-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Fixes: 49cc215aad7f ("drm/xe: Add xe_gt_clock_interval_to_ms helper")
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Link: https://patch.msgid.link/1562f1b62d5be3fbaee100f09107f3cc49e40dd1.1763408584.git.harish.chegondi@intel.com
+(cherry picked from commit 96b93ac214f9dd66294d975d86c5dee256faef91)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/mailbox-test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_gt_clock.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
-index abcee58e851c2..29c04157b5e88 100644
---- a/drivers/mailbox/mailbox-test.c
-+++ b/drivers/mailbox/mailbox-test.c
-@@ -267,7 +267,7 @@ static int mbox_test_add_debugfs(struct platform_device *pdev,
- 		return 0;
+diff --git a/drivers/gpu/drm/xe/xe_gt_clock.c b/drivers/gpu/drm/xe/xe_gt_clock.c
+index 86c2d62b4bdc3..fa66295695c01 100644
+--- a/drivers/gpu/drm/xe/xe_gt_clock.c
++++ b/drivers/gpu/drm/xe/xe_gt_clock.c
+@@ -82,11 +82,6 @@ int xe_gt_clock_init(struct xe_gt *gt)
+ 	return 0;
+ }
  
- 	tdev->root_debugfs_dir = debugfs_create_dir(dev_name(&pdev->dev), NULL);
--	if (!tdev->root_debugfs_dir) {
-+	if (IS_ERR(tdev->root_debugfs_dir)) {
- 		dev_err(&pdev->dev, "Failed to create Mailbox debugfs\n");
- 		return -EINVAL;
- 	}
+-static u64 div_u64_roundup(u64 n, u32 d)
+-{
+-	return div_u64(n + d - 1, d);
+-}
+-
+ /**
+  * xe_gt_clock_interval_to_ms - Convert sampled GT clock ticks to msec
+  *
+@@ -97,5 +92,5 @@ static u64 div_u64_roundup(u64 n, u32 d)
+  */
+ u64 xe_gt_clock_interval_to_ms(struct xe_gt *gt, u64 count)
+ {
+-	return div_u64_roundup(count * MSEC_PER_SEC, gt->info.reference_clock);
++	return mul_u64_u32_div(count, MSEC_PER_SEC, gt->info.reference_clock);
+ }
 -- 
 2.51.0
 
