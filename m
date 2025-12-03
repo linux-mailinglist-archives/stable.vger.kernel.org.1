@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75361CA0123
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:44:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CBC8CA0F18
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:25:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D46D83009747
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:38:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 784093465F25
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:23:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 567ED30BF65;
-	Wed,  3 Dec 2025 16:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF21F336EF7;
+	Wed,  3 Dec 2025 15:56:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z7hMQh6I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w9U/TL+s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1068222579E;
-	Wed,  3 Dec 2025 16:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BEA3338597;
+	Wed,  3 Dec 2025 15:56:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779089; cv=none; b=Yl6gtUl44CwCWSCAKJNinAQ6YKJh3Z3V74rXB603vBmTBpGgMEBwZuYFiNOinG5xf0npo/t3nB4CA5/BBfRJmAHNLY18fmUKvx03yCOlvzDy15MHqzDdFokUarxM6AtJoV4B5GGNvnO9SJPwWUtmd1FGHkCjsl5f8cAcPXtGG14=
+	t=1764777396; cv=none; b=PSD9ebD0b3L9bByGoo6k0m7pnzj2CIzjcG9qxs9c87CkknxMCufbQ+d2Vnyolhw+AOBGo/TZcLFvPpNVrdNht6D5u/bi76JV9Nu9jIlmeipDU6Fvd+03bOS/qcs+on4APH1go81171X1BaNIvFlbTV/FF2k1/wBJmQa+21XSu1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779089; c=relaxed/simple;
-	bh=F/chLMgYdHGulz5efL7LpLOHK/t/MxmjyG2ZWvsFngk=;
+	s=arc-20240116; t=1764777396; c=relaxed/simple;
+	bh=lHPKFxlYS8iA/nElpmY00iFRyCM72zXY6GukvNpXIyM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jJV+dEmQR2bnRM0tV6lfcPv6iRXVlC/DvjenDbI094jfe6KzOA7xjPmuXwMlMPdd651unDVkUy1PumCSqgSL8UPSambLMbMyQfvQOg/IeXgyzkgtwFGE2V5zIaTbt1m060Vxm9qWyxOuccPj01cl3d5fYAK9vKsTNli/FIGU9hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z7hMQh6I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 727A9C4CEF5;
-	Wed,  3 Dec 2025 16:24:48 +0000 (UTC)
+	 MIME-Version; b=i9cw2fBLiTfrIP9DTTDozV8vU9C14K/ladfDaxWUTtC8ERcbe9m3QBx2PtA7mYnC0n08DCx/1Ryb5JyF6dvVNPHWCaK/rc6I/+cZkAXZ3l7UAKNlwWshg+yuijHnzebT1CPgPqMHxoweVuBR4qlPlG2Xuyrdd+sof7XP4cUjRGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w9U/TL+s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE734C4CEF5;
+	Wed,  3 Dec 2025 15:56:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779088;
-	bh=F/chLMgYdHGulz5efL7LpLOHK/t/MxmjyG2ZWvsFngk=;
+	s=korg; t=1764777396;
+	bh=lHPKFxlYS8iA/nElpmY00iFRyCM72zXY6GukvNpXIyM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z7hMQh6IKIFJXuVC/w6g5Rff6zbdvEwD3YVW16ZvlqBj7bV0XAZoiQAFzyiPDHzYS
-	 cPLlPCPTGgbxro9vwpNkE5nr6fO5TPvXjRhvahlAdn69LIl/6064MkMOyp6NfvuRSA
-	 QTMDDwv7bPn7tQpDjBzIaqlG4HQA8lXL5ZShj8PY=
+	b=w9U/TL+sJDw3mu1If4EkrNU6AQUIObj+Mry+BI2Jp1qIZRqv3mXfohQ6yUJJ4QU0Y
+	 IClFjd2Jnh1W3ehXTkCFEbvRJv6qaiBGsw1V5YsyaLYgJWtkwNwPfcxOv7NLAD/fLT
+	 9oNHmnoU895x8aYjpmkHaKQRfBluo3hYuUyt849I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Lukas Wunner <lukas@wunner.de>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 152/568] s390/pci: Use pci_uevent_ers() in PCI recovery
+Subject: [PATCH 5.15 004/392] btrfs: always drop log root tree reference in btrfs_replay_log()
 Date: Wed,  3 Dec 2025 16:22:34 +0100
-Message-ID: <20251203152446.293861123@linuxfoundation.org>
+Message-ID: <20251203152414.253071647@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +60,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Schnelle <schnelle@linux.ibm.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit dab32f2576a39d5f54f3dbbbc718d92fa5109ce9 ]
+[ Upstream commit 2f5b8095ea47b142c56c09755a8b1e14145a2d30 ]
 
-Issue uevents on s390 during PCI recovery using pci_uevent_ers() as done by
-EEH and AER PCIe recovery routines.
+Currently we have this odd behaviour:
 
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
-Link: https://patch.msgid.link/20250807-add_err_uevents-v5-2-adf85b0620b0@linux.ibm.com
+1) At btrfs_replay_log() we drop the reference of the log root tree if
+   the call to btrfs_recover_log_trees() failed;
+
+2) But if the call to btrfs_recover_log_trees() did not fail, we don't
+   drop the reference in btrfs_replay_log() - we expect that
+   btrfs_recover_log_trees() does it in case it returns success.
+
+Let's simplify this and make btrfs_replay_log() always drop the reference
+on the log root tree, not only this simplifies code as it's what makes
+sense since it's btrfs_replay_log() who grabbed the reference in the first
+place.
+
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/pci/pci_event.c |    3 +++
- drivers/pci/pci-driver.c  |    2 +-
- include/linux/pci.h       |    2 +-
- 3 files changed, 5 insertions(+), 2 deletions(-)
+ fs/btrfs/disk-io.c  | 2 +-
+ fs/btrfs/tree-log.c | 1 -
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
---- a/arch/s390/pci/pci_event.c
-+++ b/arch/s390/pci/pci_event.c
-@@ -83,6 +83,7 @@ static pci_ers_result_t zpci_event_notif
- 	pci_ers_result_t ers_res = PCI_ERS_RESULT_DISCONNECT;
+diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
+index 9c2d6f96f46da..136902f27e441 100644
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -2387,10 +2387,10 @@ static int btrfs_replay_log(struct btrfs_fs_info *fs_info,
+ 	}
+ 	/* returns with log_tree_root freed on success */
+ 	ret = btrfs_recover_log_trees(log_tree_root);
++	btrfs_put_root(log_tree_root);
+ 	if (ret) {
+ 		btrfs_handle_fs_error(fs_info, ret,
+ 				      "Failed to recover log tree");
+-		btrfs_put_root(log_tree_root);
+ 		return ret;
+ 	}
  
- 	ers_res = driver->err_handler->error_detected(pdev,  pdev->error_state);
-+	pci_uevent_ers(pdev, ers_res);
- 	if (ers_result_indicates_abort(ers_res))
- 		pr_info("%s: Automatic recovery failed after initial reporting\n", pci_name(pdev));
- 	else if (ers_res == PCI_ERS_RESULT_NEED_RESET)
-@@ -212,6 +213,7 @@ static pci_ers_result_t zpci_event_attem
- 		ers_res = zpci_event_do_reset(pdev, driver);
+diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
+index 34fedac4e1864..445c7a5641b62 100644
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -6513,7 +6513,6 @@ int btrfs_recover_log_trees(struct btrfs_root *log_root_tree)
  
- 	if (ers_res != PCI_ERS_RESULT_RECOVERED) {
-+		pci_uevent_ers(pdev, PCI_ERS_RESULT_DISCONNECT);
- 		pr_err("%s: Automatic recovery failed; operator intervention is required\n",
- 		       pci_name(pdev));
- 		goto out_unlock;
-@@ -220,6 +222,7 @@ static pci_ers_result_t zpci_event_attem
- 	pr_info("%s: The device is ready to resume operations\n", pci_name(pdev));
- 	if (driver->err_handler->resume)
- 		driver->err_handler->resume(pdev);
-+	pci_uevent_ers(pdev, PCI_ERS_RESULT_RECOVERED);
- out_unlock:
- 	device_unlock(&pdev->dev);
+ 	log_root_tree->log_root = NULL;
+ 	clear_bit(BTRFS_FS_LOG_RECOVERING, &fs_info->flags);
+-	btrfs_put_root(log_root_tree);
  
---- a/drivers/pci/pci-driver.c
-+++ b/drivers/pci/pci-driver.c
-@@ -1597,7 +1597,7 @@ static int pci_uevent(struct device *dev
  	return 0;
- }
- 
--#if defined(CONFIG_PCIEAER) || defined(CONFIG_EEH)
-+#if defined(CONFIG_PCIEAER) || defined(CONFIG_EEH) || defined(CONFIG_S390)
- /**
-  * pci_uevent_ers - emit a uevent during recovery path of PCI device
-  * @pdev: PCI device undergoing error recovery
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -2561,7 +2561,7 @@ static inline bool pci_is_thunderbolt_at
- 	return false;
- }
- 
--#if defined(CONFIG_PCIEPORTBUS) || defined(CONFIG_EEH)
-+#if defined(CONFIG_PCIEPORTBUS) || defined(CONFIG_EEH) || defined(CONFIG_S390)
- void pci_uevent_ers(struct pci_dev *pdev, enum  pci_ers_result err_type);
- #endif
- 
+ error:
+-- 
+2.51.0
+
 
 
 
