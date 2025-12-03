@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3370C9FD16
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:08:06 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49E12C9F755
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:31:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A862E3098F87
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:58:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 45D393000591
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:31:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A9E834404D;
-	Wed,  3 Dec 2025 15:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7CF330AD0B;
+	Wed,  3 Dec 2025 15:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WOAWyKBi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pCJoyE7K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EC3B3446C8;
-	Wed,  3 Dec 2025 15:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775963002B6;
+	Wed,  3 Dec 2025 15:30:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777496; cv=none; b=MHaIq3hJorPF4HaebwQKvLapFZzPzBWlZdQ7Fkc4fVP8ZoQ1wkbPSbru1v4oZmr3CdkEAI7PNE7CbvP1wzAJtaOgJ/BD+fy3wONN2kZYVasKDPD/Olw9xXtXWyBr1dkuCClZ+RwIfF8XBTuQeE4EkHI+0x2aPrFrLTcATHmqHlY=
+	t=1764775858; cv=none; b=Vsa6oZs4caCkz20fXmYM07DD9UfKE2ReIjZPrEUa8Xp3cqbc2GDdeIPjrV1vVqg78dQkigpM2sL1laG7ROJUV1iAWyuxWEXiXwF8hunwoX9dCcRFIvk/06sO292YPk9sE1U8OQYCHm1tessgk+Cb/r7uOzLnwUzctx3U5ED7LVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777496; c=relaxed/simple;
-	bh=RklfoSLQDebRLrMgAwdP+coalvTP1p1NEqdlTNZiWZk=;
+	s=arc-20240116; t=1764775858; c=relaxed/simple;
+	bh=xtY1PryIlibNqyK3Wtd2Ac362e2aLzCenUw0qbhF4W0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aGXaOaHWCf7HgmGpa8BPJMj3Ij6u28SgDFDWiCM+NgK+EteLcLb8C4JwFoW4tl68h9UHqlbZGdsbvM6WwR9FixrpLlfwpaxzIx1fWziWYpPY0jkBNkCynsv5BoenXi/mcrh7vRfos3b2E0sKANCPW5z2a0wr7HjZZCyXXSnm5No=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WOAWyKBi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 893A4C116C6;
-	Wed,  3 Dec 2025 15:58:15 +0000 (UTC)
+	 MIME-Version; b=UcxloM28Jrb7ZcWc0ufMdZqVhIbKyqONK9CLXJSiviij5vS3pRV6XswPYLiZhC9RWqT9aWa2yhXpAkDFhbMRz72K3YqCgPeqx0qvupQLXRIvsj5pJ3nuAQ370QZQOli49Pd3DKuw7RMlTSpeUHgCrrhJNtWMVKeYcay8jL9ybvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pCJoyE7K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C7A9C4CEF5;
+	Wed,  3 Dec 2025 15:30:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777495;
-	bh=RklfoSLQDebRLrMgAwdP+coalvTP1p1NEqdlTNZiWZk=;
+	s=korg; t=1764775857;
+	bh=xtY1PryIlibNqyK3Wtd2Ac362e2aLzCenUw0qbhF4W0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WOAWyKBi5HRpNhnL6FVWve0acXKw8HeMwd1qHkTeBuxvgEB2B/aabD5IpWEuPO6o9
-	 JIyQnFY3RH71t1AuokJNJVeO55XhlKOgMIkddVsIbkTj23Zkro36i6l5fqhUmkHVfT
-	 iQ3n1QLmhBQIaVleqSN7HiKb0zpnuopw3MAP1RuE=
+	b=pCJoyE7KhDr6zeVUz0ykHCGn/Ib0gZrJAkg2sr7JCG1IizI8ez7Ockbih9JmwwhUk
+	 1nhwrnALYjlZHi3VsAsNpZo8j7qum14D/j87oAaDqRAokqvIzptuvlLP55bHi+DUG5
+	 wWXMHhAYksaj2dzMXmeHYpMAuMlZ+HLGgQJc9p0o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 055/392] spi: loopback-test: Dont use %pK through printk
+	Xiang Mei <xmei5@asu.edu>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.10 001/300] net/sched: sch_qfq: Fix null-deref in agg_dequeue
 Date: Wed,  3 Dec 2025 16:23:25 +0100
-Message-ID: <20251203152416.138161687@linuxfoundation.org>
+Message-ID: <20251203152400.507656899@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,91 +58,136 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Xiang Mei <xmei5@asu.edu>
 
-[ Upstream commit b832b19318534bb4f1673b24d78037fee339c679 ]
+commit dd831ac8221e691e9e918585b1003c7071df0379 upstream.
 
-In the past %pK was preferable to %p as it would not leak raw pointer
-values into the kernel log.
-Since commit ad67b74d2469 ("printk: hash addresses printed with %p")
-the regular %p has been improved to avoid this issue.
-Furthermore, restricted pointers ("%pK") were never meant to be used
-through printk(). They can still unintentionally leak raw pointers or
-acquire sleeping locks in atomic contexts.
+To prevent a potential crash in agg_dequeue (net/sched/sch_qfq.c)
+when cl->qdisc->ops->peek(cl->qdisc) returns NULL, we check the return
+value before using it, similar to the existing approach in sch_hfsc.c.
 
-Switch to the regular pointer formatting which is safer and
-easier to reason about.
-There are still a few users of %pK left, but these use it through seq_file,
-for which its usage is safe.
+To avoid code duplication, the following changes are made:
 
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Link: https://patch.msgid.link/20250811-restricted-pointers-spi-v1-1-32c47f954e4d@linutronix.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+1. Changed qdisc_warn_nonwc(include/net/pkt_sched.h) into a static
+inline function.
+
+2. Moved qdisc_peek_len from net/sched/sch_hfsc.c to
+include/net/pkt_sched.h so that sch_qfq can reuse it.
+
+3. Applied qdisc_peek_len in agg_dequeue to avoid crashing.
+
+Signed-off-by: Xiang Mei <xmei5@asu.edu>
+Reviewed-by: Cong Wang <xiyou.wangcong@gmail.com>
+Link: https://patch.msgid.link/20250705212143.3982664-1-xmei5@asu.edu
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-loopback-test.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ include/net/pkt_sched.h |   25 ++++++++++++++++++++++++-
+ net/sched/sch_api.c     |   10 ----------
+ net/sched/sch_hfsc.c    |   16 ----------------
+ net/sched/sch_qfq.c     |    2 +-
+ 4 files changed, 25 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/spi/spi-loopback-test.c b/drivers/spi/spi-loopback-test.c
-index 89fccb9da1b8e..556118c931092 100644
---- a/drivers/spi/spi-loopback-test.c
-+++ b/drivers/spi/spi-loopback-test.c
-@@ -409,7 +409,7 @@ static void spi_test_dump_message(struct spi_device *spi,
- 	int i;
- 	u8 b;
+--- a/include/net/pkt_sched.h
++++ b/include/net/pkt_sched.h
+@@ -114,7 +114,6 @@ struct qdisc_rate_table *qdisc_get_rtab(
+ 					struct netlink_ext_ack *extack);
+ void qdisc_put_rtab(struct qdisc_rate_table *tab);
+ void qdisc_put_stab(struct qdisc_size_table *tab);
+-void qdisc_warn_nonwc(const char *txt, struct Qdisc *qdisc);
+ bool sch_direct_xmit(struct sk_buff *skb, struct Qdisc *q,
+ 		     struct net_device *dev, struct netdev_queue *txq,
+ 		     spinlock_t *root_lock, bool validate);
+@@ -190,4 +189,28 @@ static inline void skb_txtime_consumed(s
+ 	skb->tstamp = ktime_set(0, 0);
+ }
  
--	dev_info(&spi->dev, "  spi_msg@%pK\n", msg);
-+	dev_info(&spi->dev, "  spi_msg@%p\n", msg);
- 	if (msg->status)
- 		dev_info(&spi->dev, "    status:        %i\n",
- 			 msg->status);
-@@ -419,15 +419,15 @@ static void spi_test_dump_message(struct spi_device *spi,
- 		 msg->actual_length);
++static inline void qdisc_warn_nonwc(const char *txt, struct Qdisc *qdisc)
++{
++	if (!(qdisc->flags & TCQ_F_WARN_NONWC)) {
++		pr_warn("%s: %s qdisc %X: is non-work-conserving?\n",
++			txt, qdisc->ops->id, qdisc->handle >> 16);
++		qdisc->flags |= TCQ_F_WARN_NONWC;
++	}
++}
++
++static inline unsigned int qdisc_peek_len(struct Qdisc *sch)
++{
++	struct sk_buff *skb;
++	unsigned int len;
++
++	skb = sch->ops->peek(sch);
++	if (unlikely(skb == NULL)) {
++		qdisc_warn_nonwc("qdisc_peek_len", sch);
++		return 0;
++	}
++	len = qdisc_pkt_len(skb);
++
++	return len;
++}
++
+ #endif
+--- a/net/sched/sch_api.c
++++ b/net/sched/sch_api.c
+@@ -595,16 +595,6 @@ out:
+ 	qdisc_skb_cb(skb)->pkt_len = pkt_len;
+ }
  
- 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
--		dev_info(&spi->dev, "    spi_transfer@%pK\n", xfer);
-+		dev_info(&spi->dev, "    spi_transfer@%p\n", xfer);
- 		dev_info(&spi->dev, "      len:    %i\n", xfer->len);
--		dev_info(&spi->dev, "      tx_buf: %pK\n", xfer->tx_buf);
-+		dev_info(&spi->dev, "      tx_buf: %p\n", xfer->tx_buf);
- 		if (dump_data && xfer->tx_buf)
- 			spi_test_print_hex_dump("          TX: ",
- 						xfer->tx_buf,
- 						xfer->len);
- 
--		dev_info(&spi->dev, "      rx_buf: %pK\n", xfer->rx_buf);
-+		dev_info(&spi->dev, "      rx_buf: %p\n", xfer->rx_buf);
- 		if (dump_data && xfer->rx_buf)
- 			spi_test_print_hex_dump("          RX: ",
- 						xfer->rx_buf,
-@@ -521,7 +521,7 @@ static int spi_check_rx_ranges(struct spi_device *spi,
- 		/* if still not found then something has modified too much */
- 		/* we could list the "closest" transfer here... */
- 		dev_err(&spi->dev,
--			"loopback strangeness - rx changed outside of allowed range at: %pK\n",
-+			"loopback strangeness - rx changed outside of allowed range at: %p\n",
- 			addr);
- 		/* do not return, only set ret,
- 		 * so that we list all addresses
-@@ -659,7 +659,7 @@ static int spi_test_translate(struct spi_device *spi,
+-void qdisc_warn_nonwc(const char *txt, struct Qdisc *qdisc)
+-{
+-	if (!(qdisc->flags & TCQ_F_WARN_NONWC)) {
+-		pr_warn("%s: %s qdisc %X: is non-work-conserving?\n",
+-			txt, qdisc->ops->id, qdisc->handle >> 16);
+-		qdisc->flags |= TCQ_F_WARN_NONWC;
+-	}
+-}
+-EXPORT_SYMBOL(qdisc_warn_nonwc);
+-
+ static enum hrtimer_restart qdisc_watchdog(struct hrtimer *timer)
+ {
+ 	struct qdisc_watchdog *wd = container_of(timer, struct qdisc_watchdog,
+--- a/net/sched/sch_hfsc.c
++++ b/net/sched/sch_hfsc.c
+@@ -836,22 +836,6 @@ update_vf(struct hfsc_class *cl, unsigne
  	}
+ }
  
- 	dev_err(&spi->dev,
--		"PointerRange [%pK:%pK[ not in range [%pK:%pK[ or [%pK:%pK[\n",
-+		"PointerRange [%p:%p[ not in range [%p:%p[ or [%p:%p[\n",
- 		*ptr, *ptr + len,
- 		RX(0), RX(SPI_TEST_MAX_SIZE),
- 		TX(0), TX(SPI_TEST_MAX_SIZE));
--- 
-2.51.0
-
+-static unsigned int
+-qdisc_peek_len(struct Qdisc *sch)
+-{
+-	struct sk_buff *skb;
+-	unsigned int len;
+-
+-	skb = sch->ops->peek(sch);
+-	if (unlikely(skb == NULL)) {
+-		qdisc_warn_nonwc("qdisc_peek_len", sch);
+-		return 0;
+-	}
+-	len = qdisc_pkt_len(skb);
+-
+-	return len;
+-}
+-
+ static void
+ hfsc_adjust_levels(struct hfsc_class *cl)
+ {
+--- a/net/sched/sch_qfq.c
++++ b/net/sched/sch_qfq.c
+@@ -1007,7 +1007,7 @@ static struct sk_buff *agg_dequeue(struc
+ 
+ 	if (cl->qdisc->q.qlen == 0) /* no more packets, remove from list */
+ 		list_del_init(&cl->alist);
+-	else if (cl->deficit < qdisc_pkt_len(cl->qdisc->ops->peek(cl->qdisc))) {
++	else if (cl->deficit < qdisc_peek_len(cl->qdisc)) {
+ 		cl->deficit += agg->lmax;
+ 		list_move_tail(&cl->alist, &agg->active);
+ 	}
 
 
 
