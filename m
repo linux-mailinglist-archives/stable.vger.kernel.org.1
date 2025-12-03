@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-199382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95758CA0054
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:39:10 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7647EC9F87B
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:38:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 532E5300981F
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:33:33 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 54F673052C46
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:35:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 245073AA19C;
-	Wed,  3 Dec 2025 16:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92AD030BB9B;
+	Wed,  3 Dec 2025 15:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jf80XTUE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NdxBr4DF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3EEA3AA195;
-	Wed,  3 Dec 2025 16:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E04930FF3B;
+	Wed,  3 Dec 2025 15:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779612; cv=none; b=c0YdEoLstMEvSfYa4AwnAS2UHm8V0SWZOZleD7hbQNiG67UK4p4ZH4hEGxoJ2FKqwy4Kz62wWk0tpCVfhQJz3Rbr/YRats1gHiXAEynFdiCnKVwZQb5SdtVxMPJcYx2vpy3hPFNuHUMJyaZhfbiqqSVw0JEQPFIRd3YRe4dhyIc=
+	t=1764776097; cv=none; b=FCdLAP0P0byXCNx7STNHFrTJGsYYxJezzfAZA3E/ANi+ZJ8qMb2GNS8TTwk/XtnobMo5mgXhFtZXZdcLxJm9Pc1DdZ695F0wkSN/lDdJCdPm+ERQA5EROsVH8PNuVCtds9QQlKObtmvC9G52nH+JPw+VQQMx5vK3+F7FNaWX+kE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779612; c=relaxed/simple;
-	bh=f0moPgJyPpBhHND50mLSCHl+HrhAiY9tEmaj90TPVfk=;
+	s=arc-20240116; t=1764776097; c=relaxed/simple;
+	bh=hLDbOS5c5L1W9cRSSia9nw5bwnC1VXbMWyFNvWOWyr0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QJltx6YDsMjvxvPGPyLu11A5J9i40cl07GGDPbHDpil0l8maFIL283KD6LH0TF93NEBGyrPajtnntj1ufoeE22p+RVB0zkWQTvpyfuxl+P8YrEPJwlthvv6YXyjGOV8kgdumlmU6+H92t1oFlAAZBX91YLEw1YYM+sdUBZTwCm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jf80XTUE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5319BC4CEF5;
-	Wed,  3 Dec 2025 16:33:32 +0000 (UTC)
+	 MIME-Version; b=Z3u9O2DN584iSiSEvLiWGIVEoI6fwUyZEMgt4SxrKpWwdTFTHWyF6AS39Y9iu1UQDYfkaBxpF8PICY0MHn6KX+ls50RJ8/ASi5+mx9rQpncDGG4dLEKgH9XvyaFw4dqIn/9KvZfHqkp2ZotpXsWuCyaKshvggeK5Pz0JXVdFPV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NdxBr4DF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6367FC4CEF5;
+	Wed,  3 Dec 2025 15:34:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779612;
-	bh=f0moPgJyPpBhHND50mLSCHl+HrhAiY9tEmaj90TPVfk=;
+	s=korg; t=1764776096;
+	bh=hLDbOS5c5L1W9cRSSia9nw5bwnC1VXbMWyFNvWOWyr0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jf80XTUEq8b5KebmjY3tJDGsvwUL159eBBUBFC0ozWPeI8Tzj7RKijWWgVDR2fQuU
-	 Qr/zPqyfSAA31V381K34R+LXw+2UDL1wcnGZRV6aC+tOPXUp5Bbukm5kKNG3NAMQqV
-	 9RcRe6PxrUBYbivH033EYXb23ev/+oT3Kkd2mRNg=
+	b=NdxBr4DFDxjlr8IJeVB89PuBc3e+r2ogOiO0nmwvwiS67Gkm4G5YUx0oA412dFrJR
+	 AI0wmPhXcvuGDo8dPeW/JafGXsP2jzwazNzBmGBn+ojnvTgwa9k7fIC0WaD3SBtNwD
+	 B5KBMMkAhJszxf2OLSuLOssTM/5R5JTONrRWOosc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiwei Bie <tiwei.btw@antgroup.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 282/568] um: Fix help message for ssl-non-raw
+Subject: [PATCH 5.10 080/300] bridge: Redirect to backup port when port is administratively down
 Date: Wed,  3 Dec 2025 16:24:44 +0100
-Message-ID: <20251203152451.035480209@linuxfoundation.org>
+Message-ID: <20251203152403.589398118@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,38 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiwei Bie <tiwei.btw@antgroup.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 725e9d81868fcedaeef775948e699955b01631ae ]
+[ Upstream commit 3d05b24429e1de7a17c8fdccb04a04dbc8ad297b ]
 
-Add the missing option name in the help message. Additionally,
-switch to __uml_help(), because this is a global option rather
-than a per-channel option.
+If a backup port is configured for a bridge port, the bridge will
+redirect known unicast traffic towards the backup port when the primary
+port is administratively up but without a carrier. This is useful, for
+example, in MLAG configurations where a system is connected to two
+switches and there is a peer link between both switches. The peer link
+serves as the backup port in case one of the switches loses its
+connection to the multi-homed system.
 
-Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+In order to avoid flooding when the primary port loses its carrier, the
+bridge does not flush dynamic FDB entries pointing to the port upon STP
+disablement, if the port has a backup port.
+
+The above means that known unicast traffic destined to the primary port
+will be blackholed when the port is put administratively down, until the
+FDB entries pointing to it are aged-out.
+
+Given that the current behavior is quite weird and unlikely to be
+depended on by anyone, amend the bridge to redirect to the backup port
+also when the primary port is administratively down and not only when it
+does not have a carrier.
+
+The change is motivated by a report from a user who expected traffic to
+be redirected to the backup port when the primary port was put
+administratively down while debugging a network issue.
+
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20250812080213.325298-2-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/drivers/ssl.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/bridge/br_forward.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/um/drivers/ssl.c b/arch/um/drivers/ssl.c
-index 277cea3d30eb5..8006a5bd578c2 100644
---- a/arch/um/drivers/ssl.c
-+++ b/arch/um/drivers/ssl.c
-@@ -199,4 +199,7 @@ static int ssl_non_raw_setup(char *str)
- 	return 1;
- }
- __setup("ssl-non-raw", ssl_non_raw_setup);
--__channel_help(ssl_non_raw_setup, "set serial lines to non-raw mode");
-+__uml_help(ssl_non_raw_setup,
-+"ssl-non-raw\n"
-+"    Set serial lines to non-raw mode.\n\n"
-+);
+diff --git a/net/bridge/br_forward.c b/net/bridge/br_forward.c
+index ada03d49e7c1a..4db9a51438790 100644
+--- a/net/bridge/br_forward.c
++++ b/net/bridge/br_forward.c
+@@ -142,7 +142,8 @@ void br_forward(const struct net_bridge_port *to,
+ 		goto out;
+ 
+ 	/* redirect to backup link if the destination port is down */
+-	if (rcu_access_pointer(to->backup_port) && !netif_carrier_ok(to->dev)) {
++	if (rcu_access_pointer(to->backup_port) &&
++	    (!netif_carrier_ok(to->dev) || !netif_running(to->dev))) {
+ 		struct net_bridge_port *backup_port;
+ 
+ 		backup_port = rcu_dereference(to->backup_port);
 -- 
 2.51.0
 
