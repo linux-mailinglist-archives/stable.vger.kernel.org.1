@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54C27C9F9BF
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:45:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C789CA0971
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:44:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4C3E630038E4
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:44:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DFB38347243F
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:23:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAA27306D49;
-	Wed,  3 Dec 2025 15:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3ED5327BE6;
+	Wed,  3 Dec 2025 16:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2luO5gMs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vRludL3T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EE84308F1C;
-	Wed,  3 Dec 2025 15:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF4131A077;
+	Wed,  3 Dec 2025 16:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776647; cv=none; b=rARK7UOLadYqqbzG2oMuGWOtnflDtBgM+cVMH4Ik4BUtAKA9ys9mTVe/ACg6hnDVg6Mbkco2+IPNQVsnkHxMdjJ1G4aqh3TUX11RCbDqJuY8GsFKXmDcrT01K14kot8Shmpbg/2Gz6JVEPn+pxhpDhW9RmE4DkQSihEkeWir2xo=
+	t=1764779962; cv=none; b=smFuN2xdGeha9xaVyxX2aF1z6CTHTgvPv6DVuxjq8P00TYroFVJtozkNw4IFHLepGwFbOKo++28N3Aa2XydNeRSzmMihmYEL6ci7aqa90gKbCPcp3HUKcLBb8ki6Grrw/IkvDIR1o/EqovaF9SuyFBgc/AQ7LNTGvjPII2FWjX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776647; c=relaxed/simple;
-	bh=ofkhEjE7ewjU+pWUGQAJZKqTX2tXaQehQgGjUZf1G5I=;
+	s=arc-20240116; t=1764779962; c=relaxed/simple;
+	bh=ISVmKsGFflGMg7Ukkgt2WrHx+4ZVyaN1/0eKmzuwA5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HHxwrQ5UrhyTkkXwcwQiM1YsgXnAny3Kw9DxCCnrB8C+PsxdKSwAQLIdEwaMUeUQWYANA3zX0w7WXZnVCuy0Dh4cZsqvYG7sSg7qCriL1Mory27vO7k1FZZN27wIk4SEvbUimdl90VdSiPGvu8g5kWgoMLn459Gshusn2sLzOjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2luO5gMs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E034AC4CEF5;
-	Wed,  3 Dec 2025 15:44:06 +0000 (UTC)
+	 MIME-Version; b=H0ET2MlPo8uRUwiLyVw87u9OH1Bzrdo+hK0UrOhEDKYnvEFxnb3YMrneiMiSo5yio7GU2O0BSt6jiWYrPVgZkP97o1Fcog+M4yUpIM+S3DMD7q7p235AeTbB7fN05yQpeqLZiBN0q9zfsfJ/gxGP6Alpquzbp/uWTtN4uXpABWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vRludL3T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7931C4CEF5;
+	Wed,  3 Dec 2025 16:39:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776647;
-	bh=ofkhEjE7ewjU+pWUGQAJZKqTX2tXaQehQgGjUZf1G5I=;
+	s=korg; t=1764779962;
+	bh=ISVmKsGFflGMg7Ukkgt2WrHx+4ZVyaN1/0eKmzuwA5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2luO5gMs/vXEcM8r/hj1Yincw8v/NQo2J7PaRXyxqcDaLveoU21DnB+pdACJ6fJA6
-	 /2INiRIGsI4cuW9y614w8wkSYTi4xJXyzCs+xGS7yUL5NapiGpWmqz3WLqHGXbD1Tf
-	 i79Dt6VBuZZyQks31jiqX8yM8ktZl6H77//vSZL8=
+	b=vRludL3TwjXgCfR3y/4xoKYzv6LdsX+0a5FiwCVSKlhMyeTaCwE7y8cuCDXduyhqL
+	 p3J5Vol2Edql0SiNVf1ul0NKti0rPA0y+ETdiQqSe+5edwhTzUSPxrwv4JOK6l9sGC
+	 IjZsBlxKn1tu5v0N9Z4pd8MR9ywG4HcmXPpIbeMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Dinh Nguyen <dinguyen@kernel.org>
-Subject: [PATCH 5.10 212/300] EDAC/altera: Handle OCRAM ECC enable after warm reset
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 414/568] scsi: ufs: core: Add a quirk to suppress link_startup_again
 Date: Wed,  3 Dec 2025 16:26:56 +0100
-Message-ID: <20251203152408.476750650@linuxfoundation.org>
+Message-ID: <20251203152455.856124103@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +60,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-commit fd3ecda38fe0cb713d167b5477d25f6b350f0514 upstream.
+ufshcd_link_startup() has a facility (link_startup_again) to issue
+DME_LINKSTARTUP a 2nd time even though the 1st time was successful.
 
-The OCRAM ECC is always enabled either by the BootROM or by the Secure Device
-Manager (SDM) during a power-on reset on SoCFPGA.
+Some older hardware benefits from that, however the behaviour is
+non-standard, and has been found to cause link startup to be unreliable
+for some Intel Alder Lake based host controllers.
 
-However, during a warm reset, the OCRAM content is retained to preserve data,
-while the control and status registers are reset to their default values. As
-a result, ECC must be explicitly re-enabled after a warm reset.
+Add UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE to suppress
+link_startup_again, in preparation for setting the quirk for affected
+controllers.
 
-Fixes: 17e47dc6db4f ("EDAC/altera: Add Stratix10 OCRAM ECC support")
-Signed-off-by: Niravkumar L Rabara <niravkumarlaxmidas.rabara@altera.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Dinh Nguyen <dinguyen@kernel.org>
+Fixes: 7dc9fb47bc9a ("scsi: ufs: ufs-pci: Add support for Intel ADL")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251111080801.1279401-1-niravkumarlaxmidas.rabara@altera.com
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20251024085918.31825-3-adrian.hunter@intel.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/edac/altera_edac.c |   18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ drivers/ufs/core/ufshcd.c |    3 ++-
+ include/ufs/ufshcd.h      |    7 +++++++
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
---- a/drivers/edac/altera_edac.c
-+++ b/drivers/edac/altera_edac.c
-@@ -1147,10 +1147,22 @@ altr_check_ocram_deps_init(struct altr_e
- 	if (ret)
- 		return ret;
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -4778,7 +4778,8 @@ static int ufshcd_link_startup(struct uf
+ 	 * If UFS device isn't active then we will have to issue link startup
+ 	 * 2 times to make sure the device state move to active.
+ 	 */
+-	if (!ufshcd_is_ufs_dev_active(hba))
++	if (!(hba->quirks & UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE) &&
++	    !ufshcd_is_ufs_dev_active(hba))
+ 		link_startup_again = true;
  
--	/* Verify OCRAM has been initialized */
+ link_startup:
+--- a/include/ufs/ufshcd.h
++++ b/include/ufs/ufshcd.h
+@@ -592,6 +592,13 @@ enum ufshcd_quirks {
+ 	 * auto-hibernate capability but it's FASTAUTO only.
+ 	 */
+ 	UFSHCD_QUIRK_HIBERN_FASTAUTO			= 1 << 18,
++
 +	/*
-+	 * Verify that OCRAM has been initialized.
-+	 * During a warm reset, OCRAM contents are retained, but the control
-+	 * and status registers are reset to their default values. Therefore,
-+	 * ECC must be explicitly re-enabled in the control register.
-+	 * Error condition: if INITCOMPLETEA is clear and ECC_EN is already set.
++	 * This quirk indicates that DME_LINKSTARTUP should not be issued a 2nd
++	 * time (refer link_startup_again) after the 1st time was successful,
++	 * because it causes link startup to become unreliable.
 +	 */
- 	if (!ecc_test_bits(ALTR_A10_ECC_INITCOMPLETEA,
--			   (base + ALTR_A10_ECC_INITSTAT_OFST)))
--		return -ENODEV;
-+			   (base + ALTR_A10_ECC_INITSTAT_OFST))) {
-+		if (!ecc_test_bits(ALTR_A10_ECC_EN,
-+				   (base + ALTR_A10_ECC_CTRL_OFST)))
-+			ecc_set_bits(ALTR_A10_ECC_EN,
-+				     (base + ALTR_A10_ECC_CTRL_OFST));
-+		else
-+			return -ENODEV;
-+	}
++	UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE		= 1 << 19,
+ };
  
- 	/* Enable IRQ on Single Bit Error */
- 	writel(ALTR_A10_ECC_SERRINTEN, (base + ALTR_A10_ECC_ERRINTENS_OFST));
+ enum ufshcd_caps {
 
 
 
