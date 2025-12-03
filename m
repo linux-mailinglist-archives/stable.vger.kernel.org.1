@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-199250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E11ACCA0146
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:45:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BFFECA1119
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:40:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A5D0B3053EFC
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:39:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4D4643016936
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:39:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E8A535CB7A;
-	Wed,  3 Dec 2025 16:26:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2092315D36;
+	Wed,  3 Dec 2025 16:24:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lsd39qgv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LzKhJeJl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1272B35CB77;
-	Wed,  3 Dec 2025 16:26:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA50E330306;
+	Wed,  3 Dec 2025 16:24:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779179; cv=none; b=GzMXFBsSK3jqRWhK5wJWX+kMyGmmVzHdhH05BIlo52h3Ue1BiuiTIvzxkRNUM7NUqdzXtK4eHSBaGO5BmHeVhiu6+yiJdox8bbXaIP+FvOJNMPdRQeV+q5e4B+tyb6Maa1NefDlpLkSB+tK4jLaQDGp+wh7dRIVA9715RSUma64=
+	t=1764779072; cv=none; b=oVIZRQI0A/xPqVmLD4UGVlrIWgEQRBsBspsc52GKnnTqsHW7dhVYOsZbtuuYWkK25QShYpeK5A73uFRZJfthcO/rs9FJkMpoAMHvfrWR2I5Y/Iuevw6IegTkqZiaV2z5NDF04rJmEzFyYhFzlumUKEWEoOxrUIiv+1EHG57tIzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779179; c=relaxed/simple;
-	bh=8UNDcG8JeP2hs/EThdf8Xd1D+VQw6ek/x5gLzsmFbo0=;
+	s=arc-20240116; t=1764779072; c=relaxed/simple;
+	bh=ESPLBqYILFSB6sOxNCl9jtobpglS0qONy4R84NtoP3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YWTmzSrL7bq1J8THo5V16jS8ELX1ElKNPbv0Sx5igXJ9scuEjykCT75Hrs6tHXfEKcGY0gqRM8C8DMUGVDd8sGdvwjqgZ5CIXy4+ZG3ATgECjewk1Bs4YMlmZaBvhVhGj+9i3t9qiEs0eNMEd/O4elQCa0jOf/FlUepd2ghZfb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lsd39qgv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EE27C4CEF5;
-	Wed,  3 Dec 2025 16:26:18 +0000 (UTC)
+	 MIME-Version; b=VSku9+8/m4RzXKL3rhTlHylptFSLy2iKnNTQXBkPMdUfG7dMfTJxCw3UxrxyavtL2lZdhY1dMtPGsL5tDwzL7TOLHJEXnvW20c/51/MAXl9lJawMGgB1DpRM9VcHaP29tdPKJNccG3Qf5PeS2DPxewaZcXqjVFUpT5D+KOmU/F0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LzKhJeJl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A978BC4CEF5;
+	Wed,  3 Dec 2025 16:24:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779178;
-	bh=8UNDcG8JeP2hs/EThdf8Xd1D+VQw6ek/x5gLzsmFbo0=;
+	s=korg; t=1764779072;
+	bh=ESPLBqYILFSB6sOxNCl9jtobpglS0qONy4R84NtoP3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lsd39qgvfYt+rvsQt7lnDEJzdO9rfZlAUgSn4jold8hao2OFbFVMmo8x3DPI38DDn
-	 e3Kfiju1iLRjOJz9gPrfM3bT916Wd6tzSWly5S3gLJYa/FQGhfIybOAv10hqdSiQSt
-	 5rY7w0CUTzn9Zu8mQzG2a69IwN9UaXrm0GVoZQ24=
+	b=LzKhJeJllVusyAZ8r8gb2+S1nH6QMPSyYc0p0Uxa77ETZ5Vtd42uN372eePZsbXFh
+	 ub3S8XNia2eETva6NYG9sJXRMO6IwD1xOJJDXR5clvy0sM+i0etYajYuHnZxNQJW1C
+	 huFAzYtLXv/e3e1z6C/b5LjRqzo90fO2Z0R3D++k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mehdi Djait <mehdi.djait@linux.intel.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 146/568] media: i2c: Kconfig: Ensure a dependency on HAVE_CLK for VIDEO_CAMERA_SENSOR
-Date: Wed,  3 Dec 2025 16:22:28 +0100
-Message-ID: <20251203152446.077106628@linuxfoundation.org>
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Dave Hansen <dave.hansen@intel.com>
+Subject: [PATCH 6.1 147/568] x86/vsyscall: Do not require X86_PF_INSTR to emulate vsyscall
+Date: Wed,  3 Dec 2025 16:22:29 +0100
+Message-ID: <20251203152446.113507096@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
 References: <20251203152440.645416925@linuxfoundation.org>
@@ -66,39 +66,77 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mehdi Djait <mehdi.djait@linux.intel.com>
+From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
-[ Upstream commit 2d240b124cc9df62ccccee6054bc3d1d19018758 ]
+[ Upstream commit 8ba38a7a9a699905b84fa97578a8291010dec273 ]
 
-Both ACPI and DT-based systems are required to obtain the external
-camera sensor clock using the new devm_v4l2_sensor_clk_get() helper
-function.
+emulate_vsyscall() expects to see X86_PF_INSTR in PFEC on a vsyscall
+page fault, but the CPU does not report X86_PF_INSTR if neither
+X86_FEATURE_NX nor X86_FEATURE_SMEP are enabled.
 
-Ensure a dependency on HAVE_CLK when config VIDEO_CAMERA_SENSOR is
-enabled.
+X86_FEATURE_NX should be enabled on nearly all 64-bit CPUs, except for
+early P4 processors that did not support this feature.
 
-Signed-off-by: Mehdi Djait <mehdi.djait@linux.intel.com>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Instead of explicitly checking for X86_PF_INSTR, compare the fault
+address to RIP.
+
+On machines with X86_FEATURE_NX enabled, issue a warning if RIP is equal
+to fault address but X86_PF_INSTR is absent.
+
+[ dhansen: flesh out code comments ]
+
+Originally-by: Dave Hansen <dave.hansen@intel.com>
+Reported-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Link: https://lore.kernel.org/all/bd81a98b-f8d4-4304-ac55-d4151a1a77ab@intel.com
+Link: https://lore.kernel.org/all/20250624145918.2720487-1-kirill.shutemov%40linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/entry/vsyscall/vsyscall_64.c | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/i2c/Kconfig b/drivers/media/i2c/Kconfig
-index a34afb5217ebc..5c7ca13210871 100644
---- a/drivers/media/i2c/Kconfig
-+++ b/drivers/media/i2c/Kconfig
-@@ -27,7 +27,7 @@ config VIDEO_IR_I2C
+diff --git a/arch/x86/entry/vsyscall/vsyscall_64.c b/arch/x86/entry/vsyscall/vsyscall_64.c
+index 5d4ca8b942939..9404f9f416660 100644
+--- a/arch/x86/entry/vsyscall/vsyscall_64.c
++++ b/arch/x86/entry/vsyscall/vsyscall_64.c
+@@ -124,7 +124,12 @@ bool emulate_vsyscall(unsigned long error_code,
+ 	if ((error_code & (X86_PF_WRITE | X86_PF_USER)) != X86_PF_USER)
+ 		return false;
  
- menuconfig VIDEO_CAMERA_SENSOR
- 	bool "Camera sensor devices"
--	depends on MEDIA_CAMERA_SUPPORT && I2C
-+	depends on MEDIA_CAMERA_SUPPORT && I2C && HAVE_CLK
- 	select MEDIA_CONTROLLER
- 	select V4L2_FWNODE
- 	select VIDEO_V4L2_SUBDEV_API
+-	if (!(error_code & X86_PF_INSTR)) {
++	/*
++	 * Assume that faults at regs->ip are because of an
++	 * instruction fetch. Return early and avoid
++	 * emulation for faults during data accesses:
++	 */
++	if (address != regs->ip) {
+ 		/* Failed vsyscall read */
+ 		if (vsyscall_mode == EMULATE)
+ 			return false;
+@@ -136,13 +141,19 @@ bool emulate_vsyscall(unsigned long error_code,
+ 		return false;
+ 	}
+ 
++	/*
++	 * X86_PF_INSTR is only set when NX is supported.  When
++	 * available, use it to double-check that the emulation code
++	 * is only being used for instruction fetches:
++	 */
++	if (cpu_feature_enabled(X86_FEATURE_NX))
++		WARN_ON_ONCE(!(error_code & X86_PF_INSTR));
++
+ 	/*
+ 	 * No point in checking CS -- the only way to get here is a user mode
+ 	 * trap to a high address, which means that we're in 64-bit user code.
+ 	 */
+ 
+-	WARN_ON_ONCE(address != regs->ip);
+-
+ 	if (vsyscall_mode == NONE) {
+ 		warn_bad_vsyscall(KERN_INFO, regs,
+ 				  "vsyscall attempted with vsyscall=none");
 -- 
 2.51.0
 
