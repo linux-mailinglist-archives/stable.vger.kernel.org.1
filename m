@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-198522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE042CA09A4
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:45:14 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B76BACA0416
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:04:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 07BB732E5E57
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:24:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9A49F3002D49
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:04:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B0213176F2;
-	Wed,  3 Dec 2025 15:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58DC6336EE0;
+	Wed,  3 Dec 2025 16:49:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v9tWH4hV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q7phpftN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 329E515ADB4;
-	Wed,  3 Dec 2025 15:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1490932ED31;
+	Wed,  3 Dec 2025 16:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776825; cv=none; b=tL864vu1BtGEMtRFd/rAOwakTH7c+phUqkkhWeYF7JkkBok9q2hWJTM+cQlBl0IX4WQ1SKT0ZkZYuwqqhq7In/MnZAGh2ncl6Ko7ERiZH4KSzo7Xx1GsiE34RE5LboaU5xyJ1wHSSMMnH/ZnPiPRTeUnDmnGh7OV157ItSQ2NAw=
+	t=1764780565; cv=none; b=faNn3W4PBVbP9+KbphC7a2NYz/nOVpCnXhVJWUMFmDKRu+6MqmojyxKYu3dvMDTeqRVwkPul8Mullgjh8wKgfwneAtK5dGKRrAhmebbkbGBNX9VNyBuoOxxk5IL1bhiqJQPIfBDOmL9bw0qcsjpJ9TImSHWLuCMZPnfSwUchUa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776825; c=relaxed/simple;
-	bh=6udfINIVTAUx9sbLisajiNBNad4mkDxN0onYR7XVFGQ=;
+	s=arc-20240116; t=1764780565; c=relaxed/simple;
+	bh=XGFuerGFAykOzRSaVVJ1paw0EZBNsWgrLPPTI/P0vX0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UHQ8YGpOArfB7IJ1TTFY5A2qd+7B8VpRWdlKmKZj8GCNfwXanrXC7AoclwdkMJ13BeNMKd4nedTTWhZKYwpD4XwNZ44qwPoefrxJnioWJZK89ndqQGrPmpsWPrbDD3wXfhQ1/xCbCE1ZRRDbo/mh1hXTnlZRiFheccTQY0mkAYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v9tWH4hV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACA03C4CEF5;
-	Wed,  3 Dec 2025 15:47:04 +0000 (UTC)
+	 MIME-Version; b=TXHP2IYcpet2EgHKMnSoaejNuQLlP0DSkadv6O0ixTy84ctm4E6QM7VAVZGUH1lQueMMbo+ErhI3Qdu+juqOCYvpJ4TcO69PX7wTrl70qwqHYxWefia4Aiu+POqSIeOZPjEsdGoYxibUmVzSNOYBWaTwg06khbvuR+uMPyIOKa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q7phpftN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14572C4CEF5;
+	Wed,  3 Dec 2025 16:49:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776825;
-	bh=6udfINIVTAUx9sbLisajiNBNad4mkDxN0onYR7XVFGQ=;
+	s=korg; t=1764780564;
+	bh=XGFuerGFAykOzRSaVVJ1paw0EZBNsWgrLPPTI/P0vX0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v9tWH4hVmWTMwdzClnOSxRiywMdmnBBfP1o4VDloTCEmta03mYSRds+K2pS6gEIZu
-	 aWBgWuATWL0SapUrIHxQtkd7/T2FkM0tJVyxZkGSGaTQq8e971jXOJ3HPOgbNMODOk
-	 3JzKyKN0L0d3jDkYbGlm0NlyfXi4jAYADPokxQ24=
+	b=Q7phpftNWGPBIDRUU5mjovAIr/8DOWd9s6BsbLAoMutlwOjRvE83YHG7i9h0teK3q
+	 Fo9+h4kEtcG+MHIrW7yxzGOxz47TV4SAG7ascNW4ML3b78IjOuW5M3zGG/OVObJ4X3
+	 3rk8Tt2rIMU3aASgUcdZ5P79k+rlMNpdHSyOn02g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Yu Chen <chenyu45@xiaomi.com>,
-	Owen Gu <guhuinan@xiaomi.com>,
-	Oliver Neukum <oneukum@suse.com>,
+	Slark Xiao <slark_xiao@163.com>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 298/300] usb: uas: fix urb unmapping issue when the uas device is remove during ongoing data transfer
+Subject: [PATCH 6.12 023/132] net: wwan: mhi: Keep modem name match with Foxconn T99W640
 Date: Wed,  3 Dec 2025 16:28:22 +0100
-Message-ID: <20251203152411.662476099@linuxfoundation.org>
+Message-ID: <20251203152344.158452645@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Owen Gu <guhuinan@xiaomi.com>
+From: Slark Xiao <slark_xiao@163.com>
 
-[ Upstream commit 26d56a9fcb2014b99e654127960aa0a48a391e3c ]
+[ Upstream commit 4fcb8ab4a09b1855dbfd7062605dd13abd64c086 ]
 
-When a UAS device is unplugged during data transfer, there is
-a probability of a system panic occurring. The root cause is
-an access to an invalid memory address during URB callback handling.
-Specifically, this happens when the dma_direct_unmap_sg() function
-is called within the usb_hcd_unmap_urb_for_dma() interface, but the
-sg->dma_address field is 0 and the sg data structure has already been
-freed.
+Correct it since M.2 device T99W640 has updated from T99W515.
+We need to align it with MHI side otherwise this modem can't
+get the network.
 
-The SCSI driver sends transfer commands by invoking uas_queuecommand_lck()
-in uas.c, using the uas_submit_urbs() function to submit requests to USB.
-Within the uas_submit_urbs() implementation, three URBs (sense_urb,
-data_urb, and cmd_urb) are sequentially submitted. Device removal may
-occur at any point during uas_submit_urbs execution, which may result
-in URB submission failure. However, some URBs might have been successfully
-submitted before the failure, and uas_submit_urbs will return the -ENODEV
-error code in this case. The current error handling directly calls
-scsi_done(). In the SCSI driver, this eventually triggers scsi_complete()
-to invoke scsi_end_request() for releasing the sgtable. The successfully
-submitted URBs, when being unlinked to giveback, call
-usb_hcd_unmap_urb_for_dma() in hcd.c, leading to exceptions during sg
-unmapping operations since the sg data structure has already been freed.
-
-This patch modifies the error condition check in the uas_submit_urbs()
-function. When a UAS device is removed but one or more URBs have already
-been successfully submitted to USB, it avoids immediately invoking
-scsi_done() and save the cmnd to devinfo->cmnd array. If the successfully
-submitted URBs is completed before devinfo->resetting being set, then
-the scsi_done() function will be called within uas_try_complete() after
-all pending URB operations are finalized. Otherwise, the scsi_done()
-function will be called within uas_zap_pending(), which is executed after
-usb_kill_anchored_urbs().
-
-The error handling only takes effect when uas_queuecommand_lck() calls
-uas_submit_urbs() and returns the error value -ENODEV . In this case,
-the device is disconnected, and the flow proceeds to uas_disconnect(),
-where uas_zap_pending() is invoked to call uas_try_complete().
-
-Fixes: eb2a86ae8c54 ("USB: UAS: fix disconnect by unplugging a hub")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Yu Chen <chenyu45@xiaomi.com>
-Signed-off-by: Owen Gu <guhuinan@xiaomi.com>
-Acked-by: Oliver Neukum <oneukum@suse.com>
-Link: https://patch.msgid.link/20251120123336.3328-1-guhuinan@xiaomi.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ adapted scsi_done(cmnd) helper to older cmnd->scsi_done(cmnd) callback API ]
+Fixes: ae5a34264354 ("bus: mhi: host: pci_generic: Fix the modem name of Foxconn T99W640")
+Signed-off-by: Slark Xiao <slark_xiao@163.com>
+Reviewed-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251125070900.33324-1-slark_xiao@163.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/uas.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/wwan/mhi_wwan_mbim.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/storage/uas.c
-+++ b/drivers/usb/storage/uas.c
-@@ -705,7 +705,11 @@ static int uas_queuecommand_lck(struct s
- 	 * of queueing, no matter how fatal the error
- 	 */
- 	if (err == -ENODEV) {
--		set_host_byte(cmnd, DID_ERROR);
-+		if (cmdinfo->state & (COMMAND_INFLIGHT | DATA_IN_URB_INFLIGHT |
-+				DATA_OUT_URB_INFLIGHT))
-+			goto out;
-+
-+		set_host_byte(cmnd, DID_NO_CONNECT);
- 		cmnd->scsi_done(cmnd);
- 		goto zombie;
- 	}
-@@ -718,6 +722,7 @@ static int uas_queuecommand_lck(struct s
- 		uas_add_work(cmdinfo);
- 	}
+diff --git a/drivers/net/wwan/mhi_wwan_mbim.c b/drivers/net/wwan/mhi_wwan_mbim.c
+index c814fbd756a1e..f8bc9a39bfa30 100644
+--- a/drivers/net/wwan/mhi_wwan_mbim.c
++++ b/drivers/net/wwan/mhi_wwan_mbim.c
+@@ -98,7 +98,7 @@ static struct mhi_mbim_link *mhi_mbim_get_link_rcu(struct mhi_mbim_context *mbim
+ static int mhi_mbim_get_link_mux_id(struct mhi_controller *cntrl)
+ {
+ 	if (strcmp(cntrl->name, "foxconn-dw5934e") == 0 ||
+-	    strcmp(cntrl->name, "foxconn-t99w515") == 0)
++	    strcmp(cntrl->name, "foxconn-t99w640") == 0)
+ 		return WDS_BIND_MUX_DATA_PORT_MUX_ID;
  
-+out:
- 	devinfo->cmnd[idx] = cmnd;
- zombie:
- 	spin_unlock_irqrestore(&devinfo->lock, flags);
+ 	return 0;
+-- 
+2.51.0
+
 
 
 
