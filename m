@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85509C9FC8F
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:04:16 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF8E6CA0770
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:30:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A30A93062E17
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:56:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2149E30012E0
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:30:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F63633ADA2;
-	Wed,  3 Dec 2025 15:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D32B355800;
+	Wed,  3 Dec 2025 16:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dVbXQa9N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dm/HDQyK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3335631ED8D;
-	Wed,  3 Dec 2025 15:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55CDF34574D;
+	Wed,  3 Dec 2025 16:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777248; cv=none; b=ai+WEFI8Mmsbm3rbyNT89RPla0rPK7pWEMqh4JXRn0OtfBtGmuVqDTLqVAyA/FROTPJu6/t4o2oy4E9Cw5JevFFiDuY7upkIpqcTyyq8r5kI45KS58qUyudJ0wObLBDrqY1vofGyfcxVHhkT2+9STbHBHSIYDQCPMSYXAQHuGN8=
+	t=1764780260; cv=none; b=q9rIZ/PmKG7FbaIWysjiNYmFokhTNQpD4y8f/xSJc4skwkHXwuaWZxJu4vN6bDPcCWSpvtS3gzb6uVAXzAt5vLepRbP3RdEOsn7Ld+Au5zIvGhqENNGbOJ7dSs5DiY7vzw19Q5Y2QHi+fh1rDCDhmMYGJnxD5lOR4LOOC3SfUeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777248; c=relaxed/simple;
-	bh=dfPx3cIQEFqlR4iRW5NvppB6Ff2CWkYi9kBXcWgz1Hk=;
+	s=arc-20240116; t=1764780260; c=relaxed/simple;
+	bh=rifE517oxpvPMUogXkzhAyyUvN0+X+6Cj/IjJcyQ8IQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Z8Z/G3YdQasUTe2K2kjce3TTr6nBZblpmHPcpPLAkOy/pjpONWJ5EwDlXwIvwMvExCNXEn/E21oW1kFoh7RWvsAKGuPKBq2+AzL/MJBuKCR4iHySl7/K+Knj38zeUq0dZRI3oxjkhwezsnrLffyNL56NUKarTGcKq/dtVw2e3Oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dVbXQa9N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65A23C2BCB9;
-	Wed,  3 Dec 2025 15:54:07 +0000 (UTC)
+	 MIME-Version; b=O2+8BWpkltnYyB3CbvAE/U4AhenIbuQ6hgV00Cu/nHbwNr1psE2MogNWDch6gYD+kIRuHpWbnwCQFW06ybSsXf6pT4u1nxb6WBCqRxWhsFWiSiycpoxKE7ij366N7YnwifphYdK2cKvPS8vuMVVNKnaqSpfuhVBt5PWnMUp0TkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dm/HDQyK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B705DC116B1;
+	Wed,  3 Dec 2025 16:44:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777247;
-	bh=dfPx3cIQEFqlR4iRW5NvppB6Ff2CWkYi9kBXcWgz1Hk=;
+	s=korg; t=1764780260;
+	bh=rifE517oxpvPMUogXkzhAyyUvN0+X+6Cj/IjJcyQ8IQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dVbXQa9NpIT0ev1DG1+DaKeb2epNyWR5L50YFXn0fhDOtfW1TyIRgG3SxMmkkbuve
-	 QVdP59xCd5pzwoE8r6nTbpoRjnpr9rLHXuTNnfT5HEDKKjhHoPD9cQTsyI/rxKkBFY
-	 W8rkDwd78Z+K/QO+zeDY6b67byyBB3QpwqUu/mpo=
+	b=Dm/HDQyKTm+ZFxT8OOIgBvtYv/PeH5UkYSa0aJMdlj+xDy2HwifOeNWR7zzotU+t4
+	 eyXOiW6W+Hf7Sunnb7dMZhi+yNtHSOAs90gYl8OxWh1rt+mftRyr11sOXByyh/bKrR
+	 9HyHwa6NNpoOuL3ymx0G+6oqvXVq7YMXMr+WanRo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.17 127/146] drm/i915/psr: Reject async flips when selective fetch is enabled
-Date: Wed,  3 Dec 2025 16:28:25 +0100
-Message-ID: <20251203152351.108995964@linuxfoundation.org>
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 504/568] net: dsa: sja1105: fix SGMII linking at 10M or 100M but not passing traffic
+Date: Wed,  3 Dec 2025 16:28:26 +0100
+Message-ID: <20251203152459.173408822@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,74 +58,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-commit 7c373b3bd03c77fe8f6ea206ed49375eb4d43d13 upstream.
+[ Upstream commit da62abaaa268357b1aa66b372ace562189a05df1 ]
 
-The selective fetch code doesn't handle asycn flips correctly.
-There is a nonsense check for async flips in
-intel_psr2_sel_fetch_config_valid() but that only gets called
-for modesets/fastsets and thus does nothing for async flips.
+When using the SGMII PCS as a fixed-link chip-to-chip connection, it is
+easy to miss the fact that traffic passes only at 1G, since that's what
+any normal such connection would use.
 
-Currently intel_async_flip_check_hw() is very unhappy as the
-selective fetch code pulls in planes that are not even async
-flips capable.
+When using the SGMII PCS connected towards an on-board PHY or an SFP
+module, it is immediately noticeable that when the link resolves to a
+speed other than 1G, traffic from the MAC fails to pass: TX counters
+increase, but nothing gets decoded by the other end, and no local RX
+counters increase either.
 
-Reject async flips when selective fetch is enabled, until
-someone fixes this properly (ie. disable selective fetch while
-async flips are being issued).
+Artificially lowering a fixed-link rate to speed = <100> makes us able
+to see the same issue as in the case of having an SGMII PHY.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patch.msgid.link/20251105171015.22234-1-ville.syrjala@linux.intel.com
-Reviewed-by: Jouni Högander <jouni.hogander@intel.com>
-(cherry picked from commit a5f0cc8e0cd4007370af6985cb152001310cf20c)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Some debugging shows that the XPCS configuration is A-OK, but that the
+MAC Configuration Table entry for the port has the SPEED bits still set
+to 1000Mbps, due to a special condition in the driver. Deleting that
+condition, and letting the resolved link speed be programmed directly
+into the MAC speed field, results in a functional link at all 3 speeds.
+
+This piece of evidence, based on testing on both generations with SGMII
+support (SJA1105S and SJA1110A) directly contradicts the statement from
+the blamed commit that "the MAC is fixed at 1 Gbps and we need to
+configure the PCS only (if even that)". Worse, that statement is not
+backed by any documentation, and no one from NXP knows what it might
+refer to.
+
+I am unable to recall sufficient context regarding my testing from March
+2020 to understand what led me to draw such a braindead and factually
+incorrect conclusion. Yet, there is nothing of value regarding forcing
+the MAC speed, either for SGMII or 2500Base-X (introduced at a later
+stage), so remove all such logic.
+
+Fixes: ffe10e679cec ("net: dsa: sja1105: Add support for the SGMII port")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20251122111324.136761-1-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_display.c |    8 ++++++++
- drivers/gpu/drm/i915/display/intel_psr.c     |    6 ------
- 2 files changed, 8 insertions(+), 6 deletions(-)
+ drivers/net/dsa/sja1105/sja1105_main.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_display.c
-+++ b/drivers/gpu/drm/i915/display/intel_display.c
-@@ -5958,6 +5958,14 @@ static int intel_async_flip_check_uapi(s
- 		return -EINVAL;
- 	}
- 
-+	/* FIXME: selective fetch should be disabled for async flips */
-+	if (new_crtc_state->enable_psr2_sel_fetch) {
-+		drm_dbg_kms(display->drm,
-+			    "[CRTC:%d:%s] async flip disallowed with PSR2 selective fetch\n",
-+			    crtc->base.base.id, crtc->base.name);
-+		return -EINVAL;
-+	}
-+
- 	for_each_oldnew_intel_plane_in_state(state, plane, old_plane_state,
- 					     new_plane_state, i) {
- 		if (plane->pipe != crtc->pipe)
---- a/drivers/gpu/drm/i915/display/intel_psr.c
-+++ b/drivers/gpu/drm/i915/display/intel_psr.c
-@@ -1274,12 +1274,6 @@ static bool intel_psr2_sel_fetch_config_
- 		return false;
- 	}
- 
--	if (crtc_state->uapi.async_flip) {
--		drm_dbg_kms(display->drm,
--			    "PSR2 sel fetch not enabled, async flip enabled\n");
--		return false;
--	}
+diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
+index 8350696bdda5b..cb6f924b92ac0 100644
+--- a/drivers/net/dsa/sja1105/sja1105_main.c
++++ b/drivers/net/dsa/sja1105/sja1105_main.c
+@@ -1308,14 +1308,7 @@ static int sja1105_set_port_speed(struct sja1105_private *priv, int port,
+ 	 * table, since this will be used for the clocking setup, and we no
+ 	 * longer need to store it in the static config (already told hardware
+ 	 * we want auto during upload phase).
+-	 * Actually for the SGMII port, the MAC is fixed at 1 Gbps and
+-	 * we need to configure the PCS only (if even that).
+ 	 */
+-	if (priv->phy_mode[port] == PHY_INTERFACE_MODE_SGMII)
+-		speed = priv->info->port_speed[SJA1105_SPEED_1000MBPS];
+-	else if (priv->phy_mode[port] == PHY_INTERFACE_MODE_2500BASEX)
+-		speed = priv->info->port_speed[SJA1105_SPEED_2500MBPS];
 -
- 	return crtc_state->enable_psr2_sel_fetch = true;
- }
+ 	mac[port].speed = speed;
  
+ 	return 0;
+-- 
+2.51.0
+
 
 
 
