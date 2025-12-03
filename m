@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9456CA00AF
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:41:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73FA9C9F986
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:44:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DB13B3028C2C
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:37:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3D6FA307A9FE
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:38:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3504E35C18A;
-	Wed,  3 Dec 2025 16:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1D8931354A;
+	Wed,  3 Dec 2025 15:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EeC9omBO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="unjbJrvC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F5D35BDDB;
-	Wed,  3 Dec 2025 16:37:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE7D303A3D;
+	Wed,  3 Dec 2025 15:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779850; cv=none; b=Pke3c+5nDimAEyCQwTEwD6ZT3yjeoDUPqy5wmtk45KiBH8FaquOI4asMsRhfyege5G9F46lwON6bV+c/S8iOfKM8Pb5Clj5r1Lr6rDKWJCuzLFiqvS6NbH7j0cD9K5tRKq9wH4uWfOCbZZLxJQ3agQauAzkH4hugotbmsQLp+Vg=
+	t=1764776330; cv=none; b=P6s+ssJmdGHM2IHN+3bZP6G1XOw603sw1wBZFYar1HgD3k6sH0bVnpXNpDzSo8XEUOlN8YfveNBt2Fslp25Sdt8Unu0i3+ZNkMsSLvcCk74HLauBre9yv569rA+x2hr2HuCgJUpXZPysUWpVf10HUNApmhgM3k8uI11qrpSmEnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779850; c=relaxed/simple;
-	bh=EZlFj3InNuLfg+0RrRWorUUFP17ayXh7niEbYvBUvbc=;
+	s=arc-20240116; t=1764776330; c=relaxed/simple;
+	bh=wv9Mqq1Ljp54ZCB+o+xCIm9wxkY4BFsQnlLyj2ueupA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nwU474cFqlxa/rZ4H4eLFDIybBwLPGkwstphTPVjIseSXKOc5T+2W+gRj2Oo+XVlNjz8alBt7+Yu/KPHrTmekm31I/BsqQFg22t8u6jJAMtNvkXNa3h3q1vUer2XrII2H3YqfzMvvDwj3qDlSBqREWO369eyoww6kf5/MyklpNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EeC9omBO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25F78C116C6;
-	Wed,  3 Dec 2025 16:37:28 +0000 (UTC)
+	 MIME-Version; b=ABeMVaI93cRngW4znVT+12KSZnG5zcPcOgKMS2z2JZvqZqGacvAi96eeDbGcSQdLeSe1wHakSXGSgTPvF0nvrWhKxWW5XgTo2s47S46GltinYnPd//VcXBtm1lBzPNnwQ2iutnTfS0RebpVZ+N4gbwb/z1+XctP2yoB2uFsNxJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=unjbJrvC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08618C4CEF5;
+	Wed,  3 Dec 2025 15:38:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779849;
-	bh=EZlFj3InNuLfg+0RrRWorUUFP17ayXh7niEbYvBUvbc=;
+	s=korg; t=1764776330;
+	bh=wv9Mqq1Ljp54ZCB+o+xCIm9wxkY4BFsQnlLyj2ueupA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EeC9omBO71Q/L/46ej2ukhR8KHEypqlLmTUv6FhqLgA3cdxRqIiYlfjJuvD4oWZrk
-	 EHbtJqMyBiq7t7+wSvT0usr2nGNnqoR4dt6lV06/7wZLerDXZPriGQeVpFpcJOqaTv
-	 N/lj7JL8Om/4XDl9+XJAi8CETQDntIkxtskXuhCs=
+	b=unjbJrvC6z/e7aipWu0YNxCYxpq11Hik48vzrDG9XhP7ZtF1n/qKC2iOuRbJwWdXA
+	 AtXbuvFLAbCCZvCjKpMc+PHBD/dp6iEg+Ko82Zahx9auzH/c4bQGtqrxDEYzdQnYtw
+	 tlASPKOKhYtfpsUlmN+6UoP6g/qLpdxJKWbObtiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Pauli Virtanen <pav@iki.fi>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	"Randall P. Embry" <rpembry@gmail.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 353/568] Bluetooth: 6lowpan: reset link-local header on ipv6 recv path
+Subject: [PATCH 5.10 151/300] 9p: sysfs_init: dont hardcode error to ENOMEM
 Date: Wed,  3 Dec 2025 16:25:55 +0100
-Message-ID: <20251203152453.634372416@linuxfoundation.org>
+Message-ID: <20251203152406.211410624@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +60,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pauli Virtanen <pav@iki.fi>
+From: Randall P. Embry <rpembry@gmail.com>
 
-[ Upstream commit 3b78f50918276ab28fb22eac9aa49401ac436a3b ]
+[ Upstream commit 528f218b31aac4bbfc58914d43766a22ab545d48 ]
 
-Bluetooth 6lowpan.c netdev has header_ops, so it must set link-local
-header for RX skb, otherwise things crash, eg. with AF_PACKET SOCK_RAW
+v9fs_sysfs_init() always returned -ENOMEM on failure;
+return the actual sysfs_create_group() error instead.
 
-Add missing skb_reset_mac_header() for uncompressed ipv6 RX path.
-
-For the compressed one, it is done in lowpan_header_decompress().
-
-Log: (BlueZ 6lowpan-tester Client Recv Raw - Success)
-------
-kernel BUG at net/core/skbuff.c:212!
-Call Trace:
-<IRQ>
-...
-packet_rcv (net/packet/af_packet.c:2152)
-...
-<TASK>
-__local_bh_enable_ip (kernel/softirq.c:407)
-netif_rx (net/core/dev.c:5648)
-chan_recv_cb (net/bluetooth/6lowpan.c:294 net/bluetooth/6lowpan.c:359)
-------
-
-Fixes: 18722c247023 ("Bluetooth: Enable 6LoWPAN support for BT LE devices")
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Randall P. Embry <rpembry@gmail.com>
+Message-ID: <20250926-v9fs_misc-v1-3-a8b3907fc04d@codewreck.org>
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/6lowpan.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/9p/v9fs.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/net/bluetooth/6lowpan.c b/net/bluetooth/6lowpan.c
-index db119071a0ea0..003c8ae104f29 100644
---- a/net/bluetooth/6lowpan.c
-+++ b/net/bluetooth/6lowpan.c
-@@ -288,6 +288,7 @@ static int recv_pkt(struct sk_buff *skb, struct net_device *dev,
- 		local_skb->pkt_type = PACKET_HOST;
- 		local_skb->dev = dev;
+diff --git a/fs/9p/v9fs.c b/fs/9p/v9fs.c
+index b304e070139ca..1dd8a735bf7f6 100644
+--- a/fs/9p/v9fs.c
++++ b/fs/9p/v9fs.c
+@@ -594,13 +594,16 @@ static struct attribute_group v9fs_attr_group = {
  
-+		skb_reset_mac_header(local_skb);
- 		skb_set_transport_header(local_skb, sizeof(struct ipv6hdr));
+ static int __init v9fs_sysfs_init(void)
+ {
++	int ret;
++
+ 	v9fs_kobj = kobject_create_and_add("9p", fs_kobj);
+ 	if (!v9fs_kobj)
+ 		return -ENOMEM;
  
- 		if (give_skb_to_upper(local_skb, dev) != NET_RX_SUCCESS) {
+-	if (sysfs_create_group(v9fs_kobj, &v9fs_attr_group)) {
++	ret = sysfs_create_group(v9fs_kobj, &v9fs_attr_group);
++	if (ret) {
+ 		kobject_put(v9fs_kobj);
+-		return -ENOMEM;
++		return ret;
+ 	}
+ 
+ 	return 0;
 -- 
 2.51.0
 
