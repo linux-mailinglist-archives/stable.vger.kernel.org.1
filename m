@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36F53C9F75C
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:31:10 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDB03CA13A2
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:03:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 332C43001505
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:31:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 464DA30022CA
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:03:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53EF630C606;
-	Wed,  3 Dec 2025 15:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C97473491DE;
+	Wed,  3 Dec 2025 16:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dan0PAYY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="otvhQm2n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B883B3081D4;
-	Wed,  3 Dec 2025 15:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D393491CD;
+	Wed,  3 Dec 2025 16:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764775865; cv=none; b=eOIPnE8cI+C87VcoL+l0XBgvas6t4O8AhIzM8mD/EqRcMjxRxC5qmKQlOeDpemHAbWwlXcELBcBgQTj3DLdvWbpbHKHhVY6latlPNTJe0XkbAcWS4EMR/j0e0U+kaZtjw/Lp7YrkUvKvQDVgc1j7GSK5I1c3iqTHNF0GO/RqS2M=
+	t=1764777634; cv=none; b=ICo+An0zjb0hcNzFftur5h45jFtxs9wZKthi3BZ0JrDQZCdjEfzC/bohCZdAtUt0wpX3uPX1qcj/7TZezP/nqSxXt5C8myrkQUfXtoj7puOZTKy9hmmu5UcLGNV9vrKc11+25MDavF+nLfAeFsENprBcjnE9QyuuK/FyuZSdj7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764775865; c=relaxed/simple;
-	bh=f+T0wWBQ0F0u6PM4urc7GT9P4s3HtUONVu1wNjYjgFI=;
+	s=arc-20240116; t=1764777634; c=relaxed/simple;
+	bh=P5rVagIxg6QVGKDixSyULPIA1H+Dcan1Ez3sQoG/J0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TfnPBHpgOpFIwSpafIn/E47vMgkEuLZR3g97MUcNz5nP45RHdbWpO5pf83Hv0Hs0yKuUA/EYnvurUtoU4OMhlj5sxGb+ny9G9tPc5lfkhhBFKZj3D5j1eyTxZMT86smnJwC3FI8YxFuSBjOlMUAaQEoFjK2hkDLqEPZ92mIZ76I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dan0PAYY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71BB2C4CEF5;
-	Wed,  3 Dec 2025 15:31:04 +0000 (UTC)
+	 MIME-Version; b=G0YhCy3aGS1MFaq1eClVwSgOh31VZycntC8d95YTQHEtnlGcmDpBdGOH3mgeCW9ZoJwkf/hQiRf7mlporBpNT/77L+rxEeRSk0qU2Ndnzu7OXyTVusvpNyI6/CSTgplUaEY8pMkqnLpS5UEdZ9+Jkupji0+S6XAZ04BVZgJiaFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=otvhQm2n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02E91C4CEF5;
+	Wed,  3 Dec 2025 16:00:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764775864;
-	bh=f+T0wWBQ0F0u6PM4urc7GT9P4s3HtUONVu1wNjYjgFI=;
+	s=korg; t=1764777634;
+	bh=P5rVagIxg6QVGKDixSyULPIA1H+Dcan1Ez3sQoG/J0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dan0PAYYeTc39NY8fHdgpBaryw7+SnZKQ5UBn5PUv47Kmh9GQDUXezPwBODrRwfTB
-	 GgiffTllAnYdwlgycQhLgf5dbtmGQXPPDlFvSEQw3LkalL3IFaMj5/JI8TEbfMdB0w
-	 brOWa2I2UMZ5OWwjYtuqDd/fHCXwk798Fn9ZO3S8=
+	b=otvhQm2niPYD0LXbuCLYx1q+GWYEeNBln1XgWWCuCANAl2EWXoGmOknuV5Y7vIKLs
+	 ZHTIT8bPTND8JfMA86iBwz230gCuf61gg57Kbqbi9f91ZD24JYOi4nJ366nBONhcE3
+	 17zLx6mIYUOPBWI1ISCRtK5FstkzAyHX10XRdmCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fuchs <fuchsfl@gmail.com>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.10 011/300] fbdev: pvr2fb: Fix leftover reference to ONCHIP_NR_DMA_CHANNELS
+	Christian Bruel <christian.bruel@foss.st.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Marc Zyngier <maz@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 065/392] irqchip/gic-v2m: Handle Multiple MSI base IRQ Alignment
 Date: Wed,  3 Dec 2025 16:23:35 +0100
-Message-ID: <20251203152400.877418621@linuxfoundation.org>
+Message-ID: <20251203152416.502960633@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Fuchs <fuchsfl@gmail.com>
+From: Christian Bruel <christian.bruel@foss.st.com>
 
-commit 5f566c0ac51cd2474e47da68dbe719d3acf7d999 upstream.
+[ Upstream commit 2ef3886ce626dcdab0cbc452dbbebc19f57133d8 ]
 
-Commit e24cca19babe ("sh: Kill off MAX_DMA_ADDRESS leftovers.") removed
-the define ONCHIP_NR_DMA_CHANNELS. So that the leftover reference needs
-to be replaced by CONFIG_NR_ONCHIP_DMA_CHANNELS to compile successfully
-with CONFIG_PVR2_DMA enabled.
+The PCI Local Bus Specification 3.0 (section 6.8.1.6) allows modifying the
+low-order bits of the MSI Message DATA register to encode nr_irqs interrupt
+numbers in the log2(nr_irqs) bits for the domain.
 
-Signed-off-by: Florian Fuchs <fuchsfl@gmail.com>
-Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The problem arises if the base vector (GICV2m base spi) is not aligned with
+nr_irqs; in this case, the low-order log2(nr_irqs) bits from the base
+vector conflict with the nr_irqs masking, causing the wrong MSI interrupt
+to be identified.
+
+To fix this, use bitmap_find_next_zero_area_off() instead of
+bitmap_find_free_region() to align the initial base vector with nr_irqs.
+
+Signed-off-by: Christian Bruel <christian.bruel@foss.st.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/all/20250902091045.220847-1-christian.bruel@foss.st.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/pvr2fb.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/irqchip/irq-gic-v2m.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
---- a/drivers/video/fbdev/pvr2fb.c
-+++ b/drivers/video/fbdev/pvr2fb.c
-@@ -191,7 +191,7 @@ static unsigned long pvr2fb_map;
+diff --git a/drivers/irqchip/irq-gic-v2m.c b/drivers/irqchip/irq-gic-v2m.c
+index 9d99b19cd21b6..4d12f1b0a5394 100644
+--- a/drivers/irqchip/irq-gic-v2m.c
++++ b/drivers/irqchip/irq-gic-v2m.c
+@@ -179,14 +179,19 @@ static int gicv2m_irq_domain_alloc(struct irq_domain *domain, unsigned int virq,
+ {
+ 	msi_alloc_info_t *info = args;
+ 	struct v2m_data *v2m = NULL, *tmp;
+-	int hwirq, offset, i, err = 0;
++	int hwirq, i, err = 0;
++	unsigned long offset;
++	unsigned long align_mask = nr_irqs - 1;
  
- #ifdef CONFIG_PVR2_DMA
- static unsigned int shdma = PVR2_CASCADE_CHAN;
--static unsigned int pvr2dma = ONCHIP_NR_DMA_CHANNELS;
-+static unsigned int pvr2dma = CONFIG_NR_ONCHIP_DMA_CHANNELS;
- #endif
- 
- static struct fb_videomode pvr2_modedb[] = {
+ 	spin_lock(&v2m_lock);
+ 	list_for_each_entry(tmp, &v2m_nodes, entry) {
+-		offset = bitmap_find_free_region(tmp->bm, tmp->nr_spis,
+-						 get_count_order(nr_irqs));
+-		if (offset >= 0) {
++		unsigned long align_off = tmp->spi_start - (tmp->spi_start & ~align_mask);
++
++		offset = bitmap_find_next_zero_area_off(tmp->bm, tmp->nr_spis, 0,
++							nr_irqs, align_mask, align_off);
++		if (offset < tmp->nr_spis) {
+ 			v2m = tmp;
++			bitmap_set(v2m->bm, offset, nr_irqs);
+ 			break;
+ 		}
+ 	}
+-- 
+2.51.0
+
 
 
 
