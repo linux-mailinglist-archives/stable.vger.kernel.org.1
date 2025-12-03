@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-198291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81298C9F83C
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:36:59 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AD80C9FC2C
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:59:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 10429301556B
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:34:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EAE7F3002494
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:59:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7E7330C62A;
-	Wed,  3 Dec 2025 15:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AC9D32AAD4;
+	Wed,  3 Dec 2025 15:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dmmKWUdi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rfp0uQkc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D1130F535;
-	Wed,  3 Dec 2025 15:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9EC732AAC4;
+	Wed,  3 Dec 2025 15:59:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776060; cv=none; b=Fk21uUX9HL4Arj7Sq5go+pJ8g0qK1wUxeOJGQ000tb17/F1617SQkaFTP8GnIy7dDrD26O4EPweUo5rr+2IsZHzWyB/1qld+Rw01ezIX4sXcZSk1UaFss5cNGbFZl5xwbLEereT8rxd5vbLycu5rNd9mZTgCcZRnSFQL9ajzBx8=
+	t=1764777570; cv=none; b=GDSRKIQlA+eW0IyIQsrM9/YUkxE4QGCUN3Daw2yHwOqhqRbTrZfI4XuyHzw0HmVeevn1B3l9fcxp5146EaP3j+fhWL5dfGriK8pyJLvxJB50f02A5My7mz1xFR0FXT1tqOP+r7w1XLR6M3utpu6RBV9Ihu47OEomKhryCgpsvns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776060; c=relaxed/simple;
-	bh=gsqPRCnbnpKkpkf/CYXL+p6FYzJoJ0J696RS3Bzqm8M=;
+	s=arc-20240116; t=1764777570; c=relaxed/simple;
+	bh=4UfoMDj5eYQKGeInyz6HdrCNNReZ8jBJCn3kllMmQzQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V2nVivI0rZ8w+fgsNCuYYrOVDjhmv+d0neiAWulTpWKJgM4h+QjrJYdNbdmmr4NpP6CQ/aG3SDmS1wB8b6zyjhQ6D916em7KYf6SvCWokVOiUOYfbhmIo1gYbF2D0yMAnozf//e9lDJTHbMkjSdfjR5n76dDUTVWK7+MJahwr7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dmmKWUdi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B538AC4CEF5;
-	Wed,  3 Dec 2025 15:34:19 +0000 (UTC)
+	 MIME-Version; b=EfcZ5mVrWD0DkyWK9kqavGBi+SRUWMn+8R4OwAV2DfYUJ9i0OEvoiWWGLCY+Cx+3/00Vl6e32hkY3DAHUOg8oct6euPji2RqMXfAxbrR43XjBD7ZQW2YLB8Hn6XdthGTTb1ghO4f+qzBvkvtZL5/n/JVQFPI6uxzPP7NWAn7dGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rfp0uQkc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29A95C116B1;
+	Wed,  3 Dec 2025 15:59:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776060;
-	bh=gsqPRCnbnpKkpkf/CYXL+p6FYzJoJ0J696RS3Bzqm8M=;
+	s=korg; t=1764777570;
+	bh=4UfoMDj5eYQKGeInyz6HdrCNNReZ8jBJCn3kllMmQzQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dmmKWUdi9rk2pTwA9M2BVCDmMeynqVnTgI30DjgQF3e/O9gdM5Tyb6naD7bs8rCWk
-	 aCbMgeqxgvPWeiGkgYQjCR23h3j0Vv1nduVUodhA3qCqEwElh5heFdjs1AeScKHsM8
-	 g49UaDufW7MonwucNM0068Rx6js01/o82YwkcFI8=
+	b=rfp0uQkcSnPcHbHIjPbbs3fgZIeplBldgM0cTP+DUG+LHA+HA0D/Geo3nwCfp74tA
+	 d04h5x+8/iKttJnVSIw0VyRkrwxH5spaLEES6U0mYqydIFJNww7qPTg4ziXmB3zFhc
+	 9CNnaAyc7KdlkrhYuYlvwr337gSGClB8TTsBLUwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 025/300] net: phy: dp83867: Disable EEE support as not implemented
+Subject: [PATCH 5.15 079/392] clocksource/drivers/vf-pit: Replace raw_readl/writel to readl/writel
 Date: Wed,  3 Dec 2025 16:23:49 +0100
-Message-ID: <20251203152401.390045616@linuxfoundation.org>
+Message-ID: <20251203152417.011648117@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +60,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
 
-[ Upstream commit 84a905290cb4c3d9a71a9e3b2f2e02e031e7512f ]
+[ Upstream commit 0b781f527d6f99e68e5b3780ae03cd69a7cb5c0c ]
 
-While the DP83867 PHYs report EEE capability through their feature
-registers, the actual hardware does not support EEE (see Links).
-When the connected MAC enables EEE, it causes link instability and
-communication failures.
+The driver uses the raw_readl() and raw_writel() functions. Those are
+not for MMIO devices. Replace them with readl() and writel()
 
-The issue is reproducible with a iMX8MP and relevant stmmac ethernet port.
-Since the introduction of phylink-managed EEE support in the stmmac driver,
-EEE is now enabled by default, leading to issues on systems using the
-DP83867 PHY.
+[ dlezcano: Fixed typo in the subject s/reald/readl/ ]
 
-Call phy_disable_eee during phy initialization to prevent EEE from being
-enabled on DP83867 PHYs.
-
-Link: https://e2e.ti.com/support/interface-group/interface/f/interface-forum/1445244/dp83867ir-dp83867-disable-eee-lpi
-Link: https://e2e.ti.com/support/interface-group/interface/f/interface-forum/658638/dp83867ir-eee-energy-efficient-ethernet
-Fixes: 2a10154abcb7 ("net: phy: dp83867: Add TI dp83867 phy")
-Cc: stable@vger.kernel.org
-Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20251023144857.529566-1-ghidoliemanuele@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ replaced phy_disable_eee() call with direct eee_broken_modes assignment ]
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20250804152344.1109310-2-daniel.lezcano@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/dp83867.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/clocksource/timer-vf-pit.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
---- a/drivers/net/phy/dp83867.c
-+++ b/drivers/net/phy/dp83867.c
-@@ -664,6 +664,12 @@ static int dp83867_config_init(struct ph
- 			return ret;
- 	}
+diff --git a/drivers/clocksource/timer-vf-pit.c b/drivers/clocksource/timer-vf-pit.c
+index 911c92146eca6..8041a8f62d1fa 100644
+--- a/drivers/clocksource/timer-vf-pit.c
++++ b/drivers/clocksource/timer-vf-pit.c
+@@ -35,30 +35,30 @@ static unsigned long cycle_per_jiffy;
  
-+	/* Although the DP83867 reports EEE capability through the
-+	 * MDIO_PCS_EEE_ABLE and MDIO_AN_EEE_ADV registers, the feature
-+	 * is not actually implemented in hardware.
-+	 */
-+	phydev->eee_broken_modes = MDIO_EEE_100TX | MDIO_EEE_1000T;
-+
- 	if (phy_interface_is_rgmii(phydev) ||
- 	    phydev->interface == PHY_INTERFACE_MODE_SGMII) {
- 		val = phy_read(phydev, MII_DP83867_PHYCTRL);
+ static inline void pit_timer_enable(void)
+ {
+-	__raw_writel(PITTCTRL_TEN | PITTCTRL_TIE, clkevt_base + PITTCTRL);
++	writel(PITTCTRL_TEN | PITTCTRL_TIE, clkevt_base + PITTCTRL);
+ }
+ 
+ static inline void pit_timer_disable(void)
+ {
+-	__raw_writel(0, clkevt_base + PITTCTRL);
++	writel(0, clkevt_base + PITTCTRL);
+ }
+ 
+ static inline void pit_irq_acknowledge(void)
+ {
+-	__raw_writel(PITTFLG_TIF, clkevt_base + PITTFLG);
++	writel(PITTFLG_TIF, clkevt_base + PITTFLG);
+ }
+ 
+ static u64 notrace pit_read_sched_clock(void)
+ {
+-	return ~__raw_readl(clksrc_base + PITCVAL);
++	return ~readl(clksrc_base + PITCVAL);
+ }
+ 
+ static int __init pit_clocksource_init(unsigned long rate)
+ {
+ 	/* set the max load value and start the clock source counter */
+-	__raw_writel(0, clksrc_base + PITTCTRL);
+-	__raw_writel(~0UL, clksrc_base + PITLDVAL);
+-	__raw_writel(PITTCTRL_TEN, clksrc_base + PITTCTRL);
++	writel(0, clksrc_base + PITTCTRL);
++	writel(~0UL, clksrc_base + PITLDVAL);
++	writel(PITTCTRL_TEN, clksrc_base + PITTCTRL);
+ 
+ 	sched_clock_register(pit_read_sched_clock, 32, rate);
+ 	return clocksource_mmio_init(clksrc_base + PITCVAL, "vf-pit", rate,
+@@ -76,7 +76,7 @@ static int pit_set_next_event(unsigned long delta,
+ 	 * hardware requirement.
+ 	 */
+ 	pit_timer_disable();
+-	__raw_writel(delta - 1, clkevt_base + PITLDVAL);
++	writel(delta - 1, clkevt_base + PITLDVAL);
+ 	pit_timer_enable();
+ 
+ 	return 0;
+@@ -125,8 +125,8 @@ static struct clock_event_device clockevent_pit = {
+ 
+ static int __init pit_clockevent_init(unsigned long rate, int irq)
+ {
+-	__raw_writel(0, clkevt_base + PITTCTRL);
+-	__raw_writel(PITTFLG_TIF, clkevt_base + PITTFLG);
++	writel(0, clkevt_base + PITTCTRL);
++	writel(PITTFLG_TIF, clkevt_base + PITTFLG);
+ 
+ 	BUG_ON(request_irq(irq, pit_timer_interrupt, IRQF_TIMER | IRQF_IRQPOLL,
+ 			   "VF pit timer", &clockevent_pit));
+@@ -183,7 +183,7 @@ static int __init pit_timer_init(struct device_node *np)
+ 	cycle_per_jiffy = clk_rate / (HZ);
+ 
+ 	/* enable the pit module */
+-	__raw_writel(~PITMCR_MDIS, timer_base + PITMCR);
++	writel(~PITMCR_MDIS, timer_base + PITMCR);
+ 
+ 	ret = pit_clocksource_init(clk_rate);
+ 	if (ret)
+-- 
+2.51.0
+
 
 
 
