@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BCA2C9F9AA
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:44:42 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0C7FCA0072
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:39:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EF30C300451A
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:39:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BF61B302B31F
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:36:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC1FA30B520;
-	Wed,  3 Dec 2025 15:39:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0658C3596FA;
+	Wed,  3 Dec 2025 16:36:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m6omVpob"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ONtI4RRE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B4C30AD06;
-	Wed,  3 Dec 2025 15:39:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B448B35BDD6;
+	Wed,  3 Dec 2025 16:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776356; cv=none; b=ogvP7s3RXU9qaUKYaPwBrhKzqKNBiXpWSq55DCz6vKKIb39+jhax+4Q2QZReaetMDwYdrQuevwsZHJt6mDvZ9YW3MheCarTl9goIvbFcG5cck1J13P8Aa70VtPHWR4a7ZZnpHJsalu+NE4fx3A0/jLAbiWfATo5C7ptwKyTAJBc=
+	t=1764779782; cv=none; b=piQAN4l1Tzlm0F6T2gt2EnnKU3Uie7+7TQmbNwd+ZxhIioPrCYIOVYpjNenFGZOiDjty/FkACxO/taOxuUwpEesRT1sqT1w9cwTlu6wBi4jEKFSAIYzipDjz09I4xadhdoq+BVKPbYRzqDsxQMNk22mqQg/y8anb3RzguNI3/kU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776356; c=relaxed/simple;
-	bh=9LaLU9P4Q80+RXqlm7BTBprqzP0opA2K8PhSsQ3lZyI=;
+	s=arc-20240116; t=1764779782; c=relaxed/simple;
+	bh=CZrNPmct2ogEErAnea+NpStMZfDqUuDFYws0Z4YcMMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dYtguQiQQJ9YQ2p+oICNUaglHRTKBCBsfysSz7hiCjkijI4P3aezWwZvoaHXRaCroDakuyumg2P4l91rarxsFARWJD2Is9niuNn8wRAjf48kBvtgsQAhpjuV90gDkSZKAWo2iiAXVyoNYXblfy4rqeNIuCuodw3fKr1LCI3svMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m6omVpob; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE6F5C4CEF5;
-	Wed,  3 Dec 2025 15:39:15 +0000 (UTC)
+	 MIME-Version; b=efWShMfBYl4Z/3iJAjwss/m+CAX4CiKfsaOg6OT+nIhVZa8SUq2CsErhZio3XKCpj0pRKupyT+2mZKsd6Ol9zd2QIEyH9gCu3aprkE44+W367TRV4NsJOLRiqBxeC0kFnsKSlFhn9QN/c3pREwLvaPP3kGsrvqjKCv0r9/kyXAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ONtI4RRE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7EFAC4CEF5;
+	Wed,  3 Dec 2025 16:36:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776356;
-	bh=9LaLU9P4Q80+RXqlm7BTBprqzP0opA2K8PhSsQ3lZyI=;
+	s=korg; t=1764779782;
+	bh=CZrNPmct2ogEErAnea+NpStMZfDqUuDFYws0Z4YcMMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m6omVpob1ADtPm+SUGa90UZLw0AcJl9+Qw4AiwtAtJJdXEuvPWV3+b2dnYW4l/W23
-	 LVobj4bgAUYjYmyR1B+faouNYEzbePFz+iGFA5Lks1yO3gC83DH3F2bpf44Qs3FQOO
-	 BXRArkfTGXqljgN3JMgFwblMQiH6nzYXNHT8+IAA=
+	b=ONtI4RRE9gYbG2+ulCtXF67LoBVULY7RJA+d8tlzvDdKPXvr8wv3VadthUdXaxCzD
+	 I0+s/dsWJ2gKp+bzIGXaxoC+9oh7QqPNtJCFnTBVFbtUFpPnhenxanYQjqF0b0ydt3
+	 svt5ncarjGdfWjwe9KyVlY2HSngGcLM7ya+Zyuzc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josephine Pfeiffer <hi@josie.lol>,
-	Paul Walmsley <pjw@kernel.org>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 158/300] riscv: ptdump: use seq_puts() in pt_dump_seq_puts() macro
+Subject: [PATCH 6.1 360/568] wifi: mac80211: skip rate verification for not captured PSDUs
 Date: Wed,  3 Dec 2025 16:26:02 +0100
-Message-ID: <20251203152406.471428022@linuxfoundation.org>
+Message-ID: <20251203152453.887720695@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josephine Pfeiffer <hi@josie.lol>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-[ Upstream commit a74f038fa50e0d33b740f44f862fe856f16de6a8 ]
+[ Upstream commit 7fe0d21f5633af8c3fab9f0ef0706c6156623484 ]
 
-The pt_dump_seq_puts() macro incorrectly uses seq_printf() instead of
-seq_puts(). This is both a performance issue and conceptually wrong,
-as the macro name suggests plain string output (puts) but the
-implementation uses formatted output (printf).
+If for example the sniffer did not follow any AIDs in an MU frame, then
+some of the information may not be filled in or is even expected to be
+invalid. As an example, in that case it is expected that Nss is zero.
 
-The macro is used in ptdump.c:301 to output a newline character. Using
-seq_printf() adds unnecessary overhead for format string parsing when
-outputting this constant string.
-
-This bug was introduced in commit 59c4da8640cc ("riscv: Add support to
-dump the kernel page tables") in 2020, which copied the implementation
-pattern from other architectures that had the same bug.
-
-Fixes: 59c4da8640cc ("riscv: Add support to dump the kernel page tables")
-Signed-off-by: Josephine Pfeiffer <hi@josie.lol>
-Link: https://lore.kernel.org/r/20251018170451.3355496-1-hi@josie.lol
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
+Fixes: 2ff5e52e7836 ("radiotap: add 0-length PSDU "not captured" type")
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20251110142554.83a2858ee15b.I9f78ce7984872f474722f9278691ae16378f0a3e@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/mm/ptdump.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/rx.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/arch/riscv/mm/ptdump.c b/arch/riscv/mm/ptdump.c
-index ace74dec7492c..dddb1932ba8b6 100644
---- a/arch/riscv/mm/ptdump.c
-+++ b/arch/riscv/mm/ptdump.c
-@@ -22,7 +22,7 @@
- #define pt_dump_seq_puts(m, fmt)	\
- ({					\
- 	if (m)				\
--		seq_printf(m, fmt);	\
-+		seq_puts(m, fmt);	\
- })
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 776f9fcf05abe..1cd75c200cfe6 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -5228,10 +5228,14 @@ void ieee80211_rx_list(struct ieee80211_hw *hw, struct ieee80211_sta *pubsta,
+ 	if (WARN_ON(!local->started))
+ 		goto drop;
  
- /*
+-	if (likely(!(status->flag & RX_FLAG_FAILED_PLCP_CRC))) {
++	if (likely(!(status->flag & RX_FLAG_FAILED_PLCP_CRC) &&
++		   !(status->flag & RX_FLAG_NO_PSDU &&
++		     status->zero_length_psdu_type ==
++		     IEEE80211_RADIOTAP_ZERO_LEN_PSDU_NOT_CAPTURED))) {
+ 		/*
+-		 * Validate the rate, unless a PLCP error means that
+-		 * we probably can't have a valid rate here anyway.
++		 * Validate the rate, unless there was a PLCP error which may
++		 * have an invalid rate or the PSDU was not capture and may be
++		 * missing rate information.
+ 		 */
+ 
+ 		switch (status->encoding) {
 -- 
 2.51.0
 
