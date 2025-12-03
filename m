@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-199458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFE2FCA00C5
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:42:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8957CC9FA25
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:46:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 483953016F89
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:37:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C3FE33053B10
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:40:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 938E035C190;
-	Wed,  3 Dec 2025 16:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9857930ACE5;
+	Wed,  3 Dec 2025 15:40:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o0lFQtYD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JIo+Cmd6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4470735BDDB;
-	Wed,  3 Dec 2025 16:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C993DDAB;
+	Wed,  3 Dec 2025 15:40:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779865; cv=none; b=jGMa7TCNWWeBSKwBXEbH4n6CAd3mKBuPkaIzEMnPitHBb9tzCEfCLoigcxlEKpz+ZnYUKOfWZEMjjRiEMotFMnBxeuYcwUOAh6XnEok34glK0vKl3IGTOsFYvJ0S3QNnMo3Dh3+4Ktd5jHeImWjD6L5CIWnRZIhlfdwPfeEEq+Q=
+	t=1764776434; cv=none; b=pdvTFDBT9jUGSq3rosAEA3YXUyvX1NzlczdKvx1X4NFsmw7gpU9GjnOM2iz4dOUYmZ8shEsA0vNqwM9paR3nxXwCsAiU8J2WqJbYS2mx/XPM34Loads2MREeYkAW1sZF0Q28w3FMzJN565V8NHv9K6ixvAE4KuHaob6AhANTKyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779865; c=relaxed/simple;
-	bh=DrRNDl2Qcrfbr96v1/A0sq8BxEgTMA56xYV5ITNMANQ=;
+	s=arc-20240116; t=1764776434; c=relaxed/simple;
+	bh=goetRStgH6JuQtn16iQckdF0mLVLWkzwSA1PLIzoITM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c//bWCW2otrJv5ucfhi5QQ4D73rTfWRjUDq5fQZK9G+Xc2y7MKKm4k9gWtsfh5LdeQF3MMEukiSQiMCNANvj/W3Nlyr251JYOHgTe/uvXa7fLHGmbyBdiSr2WEgH3/Eek8uj25JOprvS3RCIwhzQ6/il841JydQIg8oB3KsFz/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o0lFQtYD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1E04C4CEF5;
-	Wed,  3 Dec 2025 16:37:44 +0000 (UTC)
+	 MIME-Version; b=ROVDzRwlI+RUpUUVwQt2c83SG71ABUeiCG95fTzCi7zkR52CFphP8cUp9lePAsDvhcYiXuAe/s1vN51c4jAKofV009vzdnkX2+gZdFTqV1l+CD+1Uuv04jLrmCiG6PKwMUpf+isJwXbqbFRWNLThwFuDIElxpaNCy5HeHmaJzQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JIo+Cmd6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADF2CC4CEF5;
+	Wed,  3 Dec 2025 15:40:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779865;
-	bh=DrRNDl2Qcrfbr96v1/A0sq8BxEgTMA56xYV5ITNMANQ=;
+	s=korg; t=1764776434;
+	bh=goetRStgH6JuQtn16iQckdF0mLVLWkzwSA1PLIzoITM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o0lFQtYDllFP3h12ACYBFT1N2PFDtfDaK/EtwozBVJjCtiKVCIC13Dy0zyAKDxNMO
-	 dT4oCojmtn21+NyPrpNaQfx8NEzVIpIuLF7h+zioLmigyLV9XHc3qh8J62Zs2SrORA
-	 l+rcI3DHTuTF90gWywlhnm9pl2E35yRkjBzfOKTU=
+	b=JIo+Cmd6Y3mIMmA13Q9WSn2E1GfZ0GA4wGvZ+b//Wn3v6Do5H/92abyzYgl8sJylx
+	 xeBV4iJCRwr/i2Ii6tA//BDJgOXyrR3zgoGOQpKxWOqeAkpQsVaPJQ0x/5dCA3yJ4w
+	 xb4SzDpL/AUeyGtL2sJGxCpfWBM8JVy5WHUHGGhk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rohit Keshri <rkeshri@redhat.com>,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	Maaz Mombasawala <maaz.mombasawala@broadcom.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
+	Pauli Virtanen <pav@iki.fi>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 384/568] drm/vmwgfx: Validate command header size against SVGA_CMD_MAX_DATASIZE
+Subject: [PATCH 5.10 182/300] Bluetooth: 6lowpan: Dont hold spin lock over sleeping functions
 Date: Wed,  3 Dec 2025 16:26:26 +0100
-Message-ID: <20251203152454.758959021@linuxfoundation.org>
+Message-ID: <20251203152407.370564212@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +60,151 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Forbes <ian.forbes@broadcom.com>
+From: Pauli Virtanen <pav@iki.fi>
 
-[ Upstream commit 32b415a9dc2c212e809b7ebc2b14bc3fbda2b9af ]
+[ Upstream commit 98454bc812f3611551e4b1f81732da4aa7b9597e ]
 
-This data originates from userspace and is used in buffer offset
-calculations which could potentially overflow causing an out-of-bounds
-access.
+disconnect_all_peers() calls sleeping function (l2cap_chan_close) under
+spinlock.  Holding the lock doesn't actually do any good -- we work on a
+local copy of the list, and the lock doesn't protect against peer->chan
+having already been freed.
 
-Fixes: 8ce75f8ab904 ("drm/vmwgfx: Update device includes for DX device functionality")
-Reported-by: Rohit Keshri <rkeshri@redhat.com>
-Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
-Reviewed-by: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patch.msgid.link/20251021190128.13014-1-ian.forbes@broadcom.com
+Fix by taking refcounts of peer->chan instead.  Clean up the code and
+old comments a bit.
+
+Take devices_lock instead of RCU, because the kfree_rcu();
+l2cap_chan_put(); construct in chan_close_cb() does not guarantee
+peer->chan is necessarily valid in RCU.
+
+Also take l2cap_chan_lock() which is required for l2cap_chan_close().
+
+Log: (bluez 6lowpan-tester Client Connect - Disable)
+------
+BUG: sleeping function called from invalid context at kernel/locking/mutex.c:575
+...
+<TASK>
+...
+l2cap_send_disconn_req (net/bluetooth/l2cap_core.c:938 net/bluetooth/l2cap_core.c:1495)
+...
+? __pfx_l2cap_chan_close (net/bluetooth/l2cap_core.c:809)
+do_enable_set (net/bluetooth/6lowpan.c:1048 net/bluetooth/6lowpan.c:1068)
+------
+
+Fixes: 90305829635d ("Bluetooth: 6lowpan: Converting rwlocks to use RCU")
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/bluetooth/6lowpan.c | 68 ++++++++++++++++++++++++++---------------
+ 1 file changed, 43 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-index 0d12d6af67c09..247ef293bf845 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-@@ -3669,6 +3669,11 @@ static int vmw_cmd_check(struct vmw_private *dev_priv,
+diff --git a/net/bluetooth/6lowpan.c b/net/bluetooth/6lowpan.c
+index d035bb927aec2..9486d66863264 100644
+--- a/net/bluetooth/6lowpan.c
++++ b/net/bluetooth/6lowpan.c
+@@ -52,6 +52,11 @@ static bool enable_6lowpan;
+ static struct l2cap_chan *listen_chan;
+ static DEFINE_MUTEX(set_lock);
  
++enum {
++	LOWPAN_PEER_CLOSING,
++	LOWPAN_PEER_MAXBITS
++};
++
+ struct lowpan_peer {
+ 	struct list_head list;
+ 	struct rcu_head rcu;
+@@ -60,6 +65,8 @@ struct lowpan_peer {
+ 	/* peer addresses in various formats */
+ 	unsigned char lladdr[ETH_ALEN];
+ 	struct in6_addr peer_addr;
++
++	DECLARE_BITMAP(flags, LOWPAN_PEER_MAXBITS);
+ };
  
- 	cmd_id = header->id;
-+	if (header->size > SVGA_CMD_MAX_DATASIZE) {
-+		VMW_DEBUG_USER("SVGA3D command: %d is too big.\n",
-+			       cmd_id + SVGA_3D_CMD_BASE);
-+		return -E2BIG;
-+	}
- 	*size = header->size + sizeof(SVGA3dCmdHeader);
+ struct lowpan_btle_dev {
+@@ -1051,41 +1058,52 @@ static int get_l2cap_conn(char *buf, bdaddr_t *addr, u8 *addr_type,
+ static void disconnect_all_peers(void)
+ {
+ 	struct lowpan_btle_dev *entry;
+-	struct lowpan_peer *peer, *tmp_peer, *new_peer;
+-	struct list_head peers;
+-
+-	INIT_LIST_HEAD(&peers);
++	struct lowpan_peer *peer;
++	int nchans;
  
- 	cmd_id -= SVGA_3D_CMD_BASE;
+-	/* We make a separate list of peers as the close_cb() will
+-	 * modify the device peers list so it is better not to mess
+-	 * with the same list at the same time.
++	/* l2cap_chan_close() cannot be called from RCU, and lock ordering
++	 * chan->lock > devices_lock prevents taking write side lock, so copy
++	 * then close.
+ 	 */
+ 
+ 	rcu_read_lock();
++	list_for_each_entry_rcu(entry, &bt_6lowpan_devices, list)
++		list_for_each_entry_rcu(peer, &entry->peers, list)
++			clear_bit(LOWPAN_PEER_CLOSING, peer->flags);
++	rcu_read_unlock();
+ 
+-	list_for_each_entry_rcu(entry, &bt_6lowpan_devices, list) {
+-		list_for_each_entry_rcu(peer, &entry->peers, list) {
+-			new_peer = kmalloc(sizeof(*new_peer), GFP_ATOMIC);
+-			if (!new_peer)
+-				break;
++	do {
++		struct l2cap_chan *chans[32];
++		int i;
+ 
+-			new_peer->chan = peer->chan;
+-			INIT_LIST_HEAD(&new_peer->list);
++		nchans = 0;
+ 
+-			list_add(&new_peer->list, &peers);
+-		}
+-	}
++		spin_lock(&devices_lock);
+ 
+-	rcu_read_unlock();
++		list_for_each_entry_rcu(entry, &bt_6lowpan_devices, list) {
++			list_for_each_entry_rcu(peer, &entry->peers, list) {
++				if (test_and_set_bit(LOWPAN_PEER_CLOSING,
++						     peer->flags))
++					continue;
+ 
+-	spin_lock(&devices_lock);
+-	list_for_each_entry_safe(peer, tmp_peer, &peers, list) {
+-		l2cap_chan_close(peer->chan, ENOENT);
++				l2cap_chan_hold(peer->chan);
++				chans[nchans++] = peer->chan;
+ 
+-		list_del_rcu(&peer->list);
+-		kfree_rcu(peer, rcu);
+-	}
+-	spin_unlock(&devices_lock);
++				if (nchans >= ARRAY_SIZE(chans))
++					goto done;
++			}
++		}
++
++done:
++		spin_unlock(&devices_lock);
++
++		for (i = 0; i < nchans; ++i) {
++			l2cap_chan_lock(chans[i]);
++			l2cap_chan_close(chans[i], ENOENT);
++			l2cap_chan_unlock(chans[i]);
++			l2cap_chan_put(chans[i]);
++		}
++	} while (nchans);
+ }
+ 
+ struct set_enable {
 -- 
 2.51.0
 
