@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-198724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2B41C9FBED
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:58:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E532CA06F7
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:27:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D183D3001C31
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:58:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CE72F31B5C01
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:11:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB930344035;
-	Wed,  3 Dec 2025 15:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F39D735F8AA;
+	Wed,  3 Dec 2025 16:27:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VAHteO97"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oH9kLxU5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6472B343D8C;
-	Wed,  3 Dec 2025 15:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B33235E55F;
+	Wed,  3 Dec 2025 16:27:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777478; cv=none; b=GPBBiJuwnXzk/A8oeXCNqYMaFTJb/S4R8y+M0MKBJEwLHj1x/ehZ1t/UO+YXJ204/jFQk7bek0K0thUrTOO1wEYTAZcrdDwwq9D5dGYrGmYfFXXNBn9kNTAhkz1FexpSCt5He3+2yS+OEACqhKmmyBDxAtJKSN2t2oCuOOieYMY=
+	t=1764779243; cv=none; b=V1CwGC8T21hu7lI+u7Km/z9P7m3greWgvtthOFpKd//Eg5WCdHOMmj2yGekfMr9jn47ejJ1keK4dIq0NllEagBIZhLvs+BIJsH9ICQ5yRMtIA7snBS6CqyhvKEL2wmR0eaRM/r3Zw0MlV04+FfUr6oOPsH5DQswhihWPhUs9Y/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777478; c=relaxed/simple;
-	bh=R2revpk2iQmIZAGPbwI41WGY4+9POVu/wEytarGLP/c=;
+	s=arc-20240116; t=1764779243; c=relaxed/simple;
+	bh=B4yZeH4/8uV239twcDjK+ttRRX4G4dAu7KaIf09/reI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r6wrcqA5yhr7i3bT83CIxdUZaSESplRrm8DXK1vFAXqEbl8GcVHGKIUMTEdVrLOo31C/rrh9WAb8KEf3ckUvQlmDz16hZEqadkARP6hboS8sdLL/2sCx0oWHr3Fx22ys/QMan1XHNqKWWzSCau63LBECu25jOIUYYPCPTEcA+Is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VAHteO97; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E514CC4CEF5;
-	Wed,  3 Dec 2025 15:57:57 +0000 (UTC)
+	 MIME-Version; b=GK5KhvHu0/pqr5ONnTsmoIMPPqR8UZPQ4Qg9+vfNXxG4n1YumGVSq/o10hXH+sckCY90eZzjipHxcHInq/Ckef9ylzEooegVikfzac9FIlIhFfvp0h2n/9L6n+MyuUadQfUOakg7vwCBY83AJTtqAJBwyhZL9iBDVzL562DFYEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oH9kLxU5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61457C4CEF5;
+	Wed,  3 Dec 2025 16:27:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777478;
-	bh=R2revpk2iQmIZAGPbwI41WGY4+9POVu/wEytarGLP/c=;
+	s=korg; t=1764779242;
+	bh=B4yZeH4/8uV239twcDjK+ttRRX4G4dAu7KaIf09/reI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VAHteO97gYf+lj917NlE9+4xETGiLoVDwSAeccUbKRTXOdwoIqHqe8t8lzY314GKI
-	 zS5fa6NHkC4ecsTzIrEa3nBAn8+c7HnVPx0MVEXauw2GJAYPWSHb0XqnC4JVVKtcol
-	 fBi0ZBpqGZ4GlKH1qdmbzWyv9D6Ysno+cOQRqhXg=
+	b=oH9kLxU5eRstB8WT7Rl1t36VuOvMl32JJYeAcOqSyMdMOQ2/+p3Hm5UKvmSANdcfB
+	 FU6C4Jn3N5DZyXb61QuxfTHj8BXjfDkKMl34ywJ+f7Y2wC5UtaaduZ5t3ByDHR5ilk
+	 GhxeM4DwwVZK5tAkpKS+u5sgz7o2I4uY9oIuz6So=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	Philipp Stanner <phasta@kernel.org>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Sairaj Kodilkar <sarunkod@amd.com>,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 050/392] drm/sched: Fix race in drm_sched_entity_select_rq()
+Subject: [PATCH 6.1 198/568] iommu/amd: Skip enabling command/event buffers for kdump
 Date: Wed,  3 Dec 2025 16:23:20 +0100
-Message-ID: <20251203152415.953895791@linuxfoundation.org>
+Message-ID: <20251203152447.978016598@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philipp Stanner <phasta@kernel.org>
+From: Ashish Kalra <ashish.kalra@amd.com>
 
-[ Upstream commit d25e3a610bae03bffc5c14b5d944a5d0cd844678 ]
+[ Upstream commit 9be15fbfc6c5c89c22cf6e209f66ea43ee0e58bb ]
 
-In a past bug fix it was forgotten that entity access must be protected
-by the entity lock. That's a data race and potentially UB.
+After a panic if SNP is enabled in the previous kernel then the kdump
+kernel boots with IOMMU SNP enforcement still enabled.
 
-Move the spin_unlock() to the appropriate position.
+IOMMU command buffers and event buffer registers remain locked and
+exclusive to the previous kernel. Attempts to enable command and event
+buffers in the kdump kernel will fail, as hardware ignores writes to
+the locked MMIO registers as per AMD IOMMU spec Section 2.12.2.1.
 
-Cc: stable@vger.kernel.org # v5.13+
-Fixes: ac4eb83ab255 ("drm/sched: select new rq even if there is only one v3")
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Signed-off-by: Philipp Stanner <phasta@kernel.org>
-Link: https://patch.msgid.link/20251022063402.87318-2-phasta@kernel.org
-[ adapted lock field name from entity->lock to entity->rq_lock ]
+Skip enabling command buffers and event buffers for kdump boot as they
+are already enabled in the previous kernel.
+
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Tested-by: Sairaj Kodilkar <sarunkod@amd.com>
+Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+Link: https://lore.kernel.org/r/576445eb4f168b467b0fc789079b650ca7c5b037.1756157913.git.ashish.kalra@amd.com
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/scheduler/sched_entity.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/iommu/amd/init.c | 28 +++++++++++++++++++---------
+ 1 file changed, 19 insertions(+), 9 deletions(-)
 
---- a/drivers/gpu/drm/scheduler/sched_entity.c
-+++ b/drivers/gpu/drm/scheduler/sched_entity.c
-@@ -456,10 +456,11 @@ void drm_sched_entity_select_rq(struct d
- 		drm_sched_rq_remove_entity(entity->rq, entity);
- 		entity->rq = rq;
- 	}
--	spin_unlock(&entity->rq_lock);
+diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
+index 23804270eda19..12bc854fd177f 100644
+--- a/drivers/iommu/amd/init.c
++++ b/drivers/iommu/amd/init.c
+@@ -805,11 +805,16 @@ static void iommu_enable_command_buffer(struct amd_iommu *iommu)
  
- 	if (entity->num_sched_list == 1)
- 		entity->sched_list = NULL;
-+
-+	spin_unlock(&entity->rq_lock);
+ 	BUG_ON(iommu->cmd_buf == NULL);
+ 
+-	entry = iommu_virt_to_phys(iommu->cmd_buf);
+-	entry |= MMIO_CMD_SIZE_512;
+-
+-	memcpy_toio(iommu->mmio_base + MMIO_CMD_BUF_OFFSET,
+-		    &entry, sizeof(entry));
++	if (!is_kdump_kernel()) {
++		/*
++		 * Command buffer is re-used for kdump kernel and setting
++		 * of MMIO register is not required.
++		 */
++		entry = iommu_virt_to_phys(iommu->cmd_buf);
++		entry |= MMIO_CMD_SIZE_512;
++		memcpy_toio(iommu->mmio_base + MMIO_CMD_BUF_OFFSET,
++			    &entry, sizeof(entry));
++	}
+ 
+ 	amd_iommu_reset_cmd_buffer(iommu);
  }
+@@ -858,10 +863,15 @@ static void iommu_enable_event_buffer(struct amd_iommu *iommu)
  
- /**
+ 	BUG_ON(iommu->evt_buf == NULL);
+ 
+-	entry = iommu_virt_to_phys(iommu->evt_buf) | EVT_LEN_MASK;
+-
+-	memcpy_toio(iommu->mmio_base + MMIO_EVT_BUF_OFFSET,
+-		    &entry, sizeof(entry));
++	if (!is_kdump_kernel()) {
++		/*
++		 * Event buffer is re-used for kdump kernel and setting
++		 * of MMIO register is not required.
++		 */
++		entry = iommu_virt_to_phys(iommu->evt_buf) | EVT_LEN_MASK;
++		memcpy_toio(iommu->mmio_base + MMIO_EVT_BUF_OFFSET,
++			    &entry, sizeof(entry));
++	}
+ 
+ 	/* set head and tail to zero manually */
+ 	writel(0x00, iommu->mmio_base + MMIO_EVT_HEAD_OFFSET);
+-- 
+2.51.0
+
 
 
 
