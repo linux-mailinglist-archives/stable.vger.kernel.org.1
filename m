@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-199621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B158DCA0212
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:50:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAFD7CA106B
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:36:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4360E300D49E
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:46:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 442E73015867
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:03:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FF44376BCC;
-	Wed,  3 Dec 2025 16:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B257C1EB5DB;
+	Wed,  3 Dec 2025 16:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qj8Fv74l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MgFhxOsQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEFCF3074B3;
-	Wed,  3 Dec 2025 16:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6568E255F2D;
+	Wed,  3 Dec 2025 16:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780396; cv=none; b=P2XchlAakEg/0kqM1KQgpa7CkD+qDJnyjBsoifEGO/hCTN8LfWvFYex5GNBba7jiFK8T6/ns+BrOPyZn+ZwErzpxTIS31KHj9N68pVRla6biNV3bcIcGEaxvw9Kwp+zGRRTWihC3jtfahZH/CDnvXcowQPrTEYQ9RktlmVwV4UE=
+	t=1764780826; cv=none; b=QVGPcGXnb9S29qel3sZ/xULuIxZGNpO8C4HgSLLYQU37UMnx7OF20UIqcHW2w8gjKRSdujmIZqehtTrCftUvbDsTzEc+17ySAJfIObRqw2Eelu8ugqPdcc8dKCyspia/xLU/FIf5MxHXEBuf333Q4IE/uGIN9sKjp1X/7v6rkzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780396; c=relaxed/simple;
-	bh=dTR7N+BS2p+GR9BK9nZgmYBxuLTjhg+hsdibaOPE5Ng=;
+	s=arc-20240116; t=1764780826; c=relaxed/simple;
+	bh=8APOHNfaa1KZAJekPXjoQvS6ferYjyAlC3fhoOCluEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eZCBleN2uK40z6xLpEQNmCmv9x+9QZZj9XNPJcshV5pAWHVGO0SN3uWBZVxux8hghHEqLM3kyahrpUyxD6YVbPWvT9C79BqxuO3DKTES3mYmzfGLsb7n1SGWSkX/K5Qj/OgAXnJOv30Lskgk9U/krh9blEWZreRcZIrsCXAutpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qj8Fv74l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A8BBC4CEF5;
-	Wed,  3 Dec 2025 16:46:36 +0000 (UTC)
+	 MIME-Version; b=mJbnpkAYT5c3QX6jCguc9kG5n6hEkxy8PenhfmrvW5ubNUX5i9+cyk4gByEGI5hcsnLulUZ67sj27WSgXjNNXB1PIBKAC/knaltWcpLP+uwjqahPmmMOwWYoz9u8VUUuxebkt7Bk9y4hXSXw1HW5FT2KU+cQyZthUGp+Y3LYH1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MgFhxOsQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D90FFC4CEF5;
+	Wed,  3 Dec 2025 16:53:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780396;
-	bh=dTR7N+BS2p+GR9BK9nZgmYBxuLTjhg+hsdibaOPE5Ng=;
+	s=korg; t=1764780826;
+	bh=8APOHNfaa1KZAJekPXjoQvS6ferYjyAlC3fhoOCluEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qj8Fv74l4irXh0npUIkbiZbmxu2PNt9Zz/4nDcqOdgaSJA1S3OLMf39PmdetU7RBk
-	 AJqdyiq7EUcfJoScVhrGSmb7NPRos6rM76p0U2kQ/pGg9VUZw+csodKflQpTjfJaTd
-	 CoGbD3Gh9m5bEgFxg+R4FLsEfrULczNROS112PaQ=
+	b=MgFhxOsQyQCILirM0pRgU+oWmCGjgEf4mmHiHs4iGJwZ8ZK4SHnJxMytXU3Pp6ukb
+	 7cdKetOJxun2YNJw321G60VKSRQFdCsUChaqFaMElC4DQxRP0cankxwHuNuRnBqd5+
+	 qHUMFUMGU+0HzDxXm+wiK9K5S/SkZJOfaD+5Gkic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksandr Suvorov <cryosay@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.1 545/568] USB: serial: ftdi_sio: add support for u-blox EVK-M101
+	Jun Li <jun.li@nxp.com>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: [PATCH 6.12 068/132] arm64: dts: imx8qm-mek: fix mux-controller select/enable-gpios polarity
 Date: Wed,  3 Dec 2025 16:29:07 +0100
-Message-ID: <20251203152500.672124327@linuxfoundation.org>
+Message-ID: <20251203152345.816488367@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,63 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksandr Suvorov <cryosay@gmail.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-commit 2d8ab771d5316de64f3bb920b82575c58eb00b1b upstream.
+commit e89ee35567d3d465ef0715953170be72f5ef1d4c upstream.
 
-The U-Blox EVK-M101 enumerates as 1546:0506 [1] with four FTDI interfaces:
-- EVK-M101 current sensors
-- EVK-M101 I2C
-- EVK-M101 UART
-- EVK-M101 port D
+According to the board design, set SEL to high means flipped
+connection (TX2/RX2). And the TCPM will output logical 1 if it needs
+flipped connection. So switch to active high for select-gpios.
+The EN pin on mux chip is low active, so switch to active low for
+enable-gpios too.
 
-Only the third USB interface is a UART. This change lets ftdi_sio probe
-the VID/PID and registers only interface #3 as a TTY, leaving the rest
-available for other drivers.
-
-[1]
-usb 5-1.3: new high-speed USB device number 11 using xhci_hcd
-usb 5-1.3: New USB device found, idVendor=1546, idProduct=0506, bcdDevice= 8.00
-usb 5-1.3: New USB device strings: Mfr=1, Product=2, SerialNumber=0
-usb 5-1.3: Product: EVK-M101
-usb 5-1.3: Manufacturer: u-blox AG
-
-Datasheet: https://content.u-blox.com/sites/default/files/documents/EVK-M10_UserGuide_UBX-21003949.pdf
-
-Signed-off-by: Oleksandr Suvorov <cryosay@gmail.com>
-Link: https://lore.kernel.org/20250926060235.3442748-1-cryosay@gmail.com/
+Fixes: b237975b2cd5 ("arm64: dts: imx8qm-mek: add usb 3.0 and related type C nodes")
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Jun Li <jun.li@nxp.com>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/ftdi_sio.c     |    1 +
- drivers/usb/serial/ftdi_sio_ids.h |    1 +
- 2 files changed, 2 insertions(+)
+ arch/arm64/boot/dts/freescale/imx8qm-mek.dts |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/serial/ftdi_sio.c
-+++ b/drivers/usb/serial/ftdi_sio.c
-@@ -1074,6 +1074,7 @@ static const struct usb_device_id id_tab
- 	/* U-Blox devices */
- 	{ USB_DEVICE(UBLOX_VID, UBLOX_C099F9P_ZED_PID) },
- 	{ USB_DEVICE(UBLOX_VID, UBLOX_C099F9P_ODIN_PID) },
-+	{ USB_DEVICE_INTERFACE_NUMBER(UBLOX_VID, UBLOX_EVK_M101_PID, 2) },
- 	/* FreeCalypso USB adapters */
- 	{ USB_DEVICE(FTDI_VID, FTDI_FALCONIA_JTAG_BUF_PID),
- 		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
---- a/drivers/usb/serial/ftdi_sio_ids.h
-+++ b/drivers/usb/serial/ftdi_sio_ids.h
-@@ -1614,6 +1614,7 @@
- #define UBLOX_VID			0x1546
- #define UBLOX_C099F9P_ZED_PID		0x0502
- #define UBLOX_C099F9P_ODIN_PID		0x0503
-+#define UBLOX_EVK_M101_PID		0x0506
+--- a/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
++++ b/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
+@@ -114,8 +114,8 @@
+ 		compatible = "nxp,cbdtu02043", "gpio-sbu-mux";
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pinctrl_typec_mux>;
+-		select-gpios = <&lsio_gpio4 6 GPIO_ACTIVE_LOW>;
+-		enable-gpios = <&lsio_gpio4 19 GPIO_ACTIVE_HIGH>;
++		select-gpios = <&lsio_gpio4 6 GPIO_ACTIVE_HIGH>;
++		enable-gpios = <&lsio_gpio4 19 GPIO_ACTIVE_LOW>;
+ 		orientation-switch;
  
- /*
-  * GMC devices
+ 		port {
 
 
 
