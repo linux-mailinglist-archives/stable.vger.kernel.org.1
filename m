@@ -1,53 +1,59 @@
-Return-Path: <stable+bounces-198620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAF0FCA11EE
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:44:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0D87CA021B
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:50:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4C19E300C35E
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:44:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B0574307A73D
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:42:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 611DA33122E;
-	Wed,  3 Dec 2025 15:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 351E935F8CA;
+	Wed,  3 Dec 2025 16:42:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AIzP2trR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z/zSEd2C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 148DD331227;
-	Wed,  3 Dec 2025 15:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3DED35F8B2;
+	Wed,  3 Dec 2025 16:42:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777144; cv=none; b=e5LGbKz4tATArotmE6ruGRCPGY/p1vEn+KBMJ+EIWZPTunFS8QiIve5Lq9hc45slJS9AmWICouJHP/2dU04nQfRjYByidkFvTHdbuRPq/Tg2eNlw3qGFA3vVe4CLGSRnJ+nuVb/dVkhoM4NpaTz5KKi7NvjE5aT89/XsvbiKu/A=
+	t=1764780149; cv=none; b=eKP1HjdSOMHyDIig7BF8RYzlfKBL4dTAA8Hc8YtgxLAI/ZINNWXgQJYg5LHp9wlBuPCJCf6eT13gb4GDRfWf+FFYf0f+grT1qE7oW3EE9wQmeV1oTB7TrlBvwVbZfSrYoUqqNK7thenMcXrvNN3RKCZFd4cwF9vUstmWMuCRylY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777144; c=relaxed/simple;
-	bh=L5bnergv5wMk1KBb0kAp6Na3I6ezO3ks/W2VjG+mJcs=;
+	s=arc-20240116; t=1764780149; c=relaxed/simple;
+	bh=2n5I/mDYhuQrkgpa/VyrtEP923Dgtf8bpJqZeY3UDYM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JvGSDKc2mtnmeRGcWsJcBOMqpRB7Dy+6c2bSRM8NTyGlk8rMwLPDH34i+IFv2oYeXE7RYTAWl5BTNR7OcVF2cOp8WX0/jyyVb1J4QqrxoUwqSs9bPIh7yCGUCOYSqNjGlxRTGpJx+qvoDUBjFlFDXXwd12LZR4aQ/RfMD54TN/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AIzP2trR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CDDCC116B1;
-	Wed,  3 Dec 2025 15:52:23 +0000 (UTC)
+	 MIME-Version; b=kkyf3UkAT5iWtL6WMJu2MRRNFv78V5PlmxWz3PLmfI5KLya6WTW85ggh3fHSsGA53CJgHe9r1tHQhGEL/kYzT8WngulnGeKivhWlDzHhCfFpS5a/ZLvBxVpFTVoOh2xbhfVZTO4y8egHuiKh5186ciJ0xunlbqtmgV3ohhxTWCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z/zSEd2C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F92EC4CEF5;
+	Wed,  3 Dec 2025 16:42:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777143;
-	bh=L5bnergv5wMk1KBb0kAp6Na3I6ezO3ks/W2VjG+mJcs=;
+	s=korg; t=1764780148;
+	bh=2n5I/mDYhuQrkgpa/VyrtEP923Dgtf8bpJqZeY3UDYM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AIzP2trRumDVO01pYbgJWBwc+683M10GFjz9wHzTKvCQThGaVXqk4tXjnIVwhYjVo
-	 1ZW87VV3oS1HydJfpiKjVAMekgtgTAoUFLILTVs4clvsJQEYosL/iP/aUE6TD5IoKS
-	 7LplK+jURwHaDE/ABvG/3A3Y3D1gVm2ivSaK7gOA=
+	b=Z/zSEd2CnPyaCiZEPtBtKbf8ae+o4zVB1OucPdFp08hwEF/P6aJVoUlHLWGLQ2dKN
+	 4rhtmrJhzXpEU5SsTccWGElpxWbWYDtI1fyeisVyZIn+rokoH141NgtNkN0GojyDiv
+	 J3st1qDqX1XBEHAdl9bcQ3MWId5rjErJNpbk4dOg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.17 095/146] pmdomain: tegra: Add GENPD_FLAG_NO_STAY_ON flag
+	Lance Yang <lance.yang@linux.dev>,
+	Google Big Sleep <big-sleep-vuln-reports@google.com>,
+	David Hildenbrand <david@redhat.com>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 471/568] mm/secretmem: fix use-after-free race in fault handler
 Date: Wed,  3 Dec 2025 16:27:53 +0100
-Message-ID: <20251203152349.937409097@linuxfoundation.org>
+Message-ID: <20251203152457.950870433@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,39 +65,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jon Hunter <jonathanh@nvidia.com>
+From: Lance Yang <lance.yang@linux.dev>
 
-commit c98c99d5dbdf9fb0063650594edfd7d49b5f4e29 upstream.
+[ Upstream commit 6f86d0534fddfbd08687fa0f01479d4226bc3c3d ]
 
-Commit 13a4b7fb6260 ("pmdomain: core: Leave powered-on genpds on until
-late_initcall_sync") kept power-domains on longer during boot which is
-causing some GPU related tests to fail on Tegra234. While this is being
-investigated, add the flag GENPD_FLAG_NO_STAY_ON for Tegra devices to
-restore the previous behaviour to fix this.
+When a page fault occurs in a secret memory file created with
+`memfd_secret(2)`, the kernel will allocate a new page for it, mark the
+underlying page as not-present in the direct map, and add it to the file
+mapping.
 
-Fixes: 13a4b7fb6260 ("pmdomain: core: Leave powered-on genpds on until late_initcall_sync")
-Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If two tasks cause a fault in the same page concurrently, both could end
+up allocating a page and removing the page from the direct map, but only
+one would succeed in adding the page to the file mapping.  The task that
+failed undoes the effects of its attempt by (a) freeing the page again
+and (b) putting the page back into the direct map.  However, by doing
+these two operations in this order, the page becomes available to the
+allocator again before it is placed back in the direct mapping.
+
+If another task attempts to allocate the page between (a) and (b), and the
+kernel tries to access it via the direct map, it would result in a
+supervisor not-present page fault.
+
+Fix the ordering to restore the direct map before the page is freed.
+
+Link: https://lkml.kernel.org/r/20251031120955.92116-1-lance.yang@linux.dev
+Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
+Signed-off-by: Lance Yang <lance.yang@linux.dev>
+Reported-by: Google Big Sleep <big-sleep-vuln-reports@google.com>
+Closes: https://lore.kernel.org/linux-mm/CAEXGt5QeDpiHTu3K9tvjUTPqo+d-=wuCNYPa+6sWKrdQJ-ATdg@mail.gmail.com/
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[rppt: replaced folio with page in the patch and in the changelog]
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pmdomain/tegra/powergate-bpmp.c |    1 +
- 1 file changed, 1 insertion(+)
+ mm/secretmem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pmdomain/tegra/powergate-bpmp.c
-+++ b/drivers/pmdomain/tegra/powergate-bpmp.c
-@@ -184,6 +184,7 @@ tegra_powergate_add(struct tegra_bpmp *b
- 	powergate->genpd.name = kstrdup(info->name, GFP_KERNEL);
- 	powergate->genpd.power_on = tegra_powergate_power_on;
- 	powergate->genpd.power_off = tegra_powergate_power_off;
-+	powergate->genpd.flags = GENPD_FLAG_NO_STAY_ON;
+diff --git a/mm/secretmem.c b/mm/secretmem.c
+index 18954eae995fc..b570a6e25b6be 100644
+--- a/mm/secretmem.c
++++ b/mm/secretmem.c
+@@ -82,13 +82,13 @@ static vm_fault_t secretmem_fault(struct vm_fault *vmf)
+ 		__SetPageUptodate(page);
+ 		err = add_to_page_cache_lru(page, mapping, offset, gfp);
+ 		if (unlikely(err)) {
+-			put_page(page);
+ 			/*
+ 			 * If a split of large page was required, it
+ 			 * already happened when we marked the page invalid
+ 			 * which guarantees that this call won't fail
+ 			 */
+ 			set_direct_map_default_noflush(page);
++			put_page(page);
+ 			if (err == -EEXIST)
+ 				goto retry;
  
- 	err = pm_genpd_init(&powergate->genpd, NULL, off);
- 	if (err < 0) {
+-- 
+2.51.0
+
 
 
 
