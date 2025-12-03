@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-199408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC46BCA06AC
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:25:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 397FDC9FD79
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:13:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 574C532F85B9
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:09:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4E650303F4FE
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:05:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F25B3451A9;
-	Wed,  3 Dec 2025 16:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6899434F49B;
+	Wed,  3 Dec 2025 16:05:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Et3g/4MM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BBmb+xUo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A31C3446CE;
-	Wed,  3 Dec 2025 16:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D05434F497;
+	Wed,  3 Dec 2025 16:05:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779702; cv=none; b=OE1xjzTCRESE6lAtYCJD5N+rRzjStuM4TULMhF8PEZPNS1CzxRXKOUjBk7n2qn0hlBN0U2l17/BR7MQCNQQMyJtZ5LpgTY54uqiEcPLzuaVAJIhVNAh9tyI1uQGsMCKHb0x/dVdGFOADLI89tsN4zFp9JraqBznfxvADwjPsIF8=
+	t=1764777918; cv=none; b=NeMHLgOhIB72/6fi1X+kOyvkQRSOWIjbhuOKqr9ZUoWOgEp/td+trybavU/U0Wf8CdsZE+VuUYD6OZE/6bfgwZ2o2UqyuTJXJQOsdf2E4oHAYQgUUjh4OS/kxWfi2Q8sbTLPH6XDwebQTC2sHhRVhDOVczvkg5LezrSM5iFg2Bw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779702; c=relaxed/simple;
-	bh=36ISm4nlkPAud1J38ihs+5B+w6q8p+8yirQCSjqWWEk=;
+	s=arc-20240116; t=1764777918; c=relaxed/simple;
+	bh=2NzWQgHekCkpf6Sd7L+HgrdCbI67Bgek8dMhrBV/RA0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FVJSbtuxCCU1PWRr7u1OQTgOCPSKo/3T6XpsXAgaE2bf24pFGYTQQy5SYScjLieo3USmMey42LZNf2XDGxbgPnAe+yJv08nnULp2vLUN/0hc3WW66m9h/4Mz4Ku6QovTMi6eOojho2YUBVHu2XQihyW7r6nhJEAciX5xQTqqcNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Et3g/4MM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB9A2C4CEF5;
-	Wed,  3 Dec 2025 16:35:01 +0000 (UTC)
+	 MIME-Version; b=fMAe+tI2Cszq4QdqV2PWR4oKGdN5S2DVMdSFzM4AapXeWo+YMf4xShSrtDyrX/qJaZBRc5XUvcbuxkvJGWCYSaM8JCnraTlMV4c/Clihl+/CBy/sSEeiD+u9om6EB6D6XCqh2hvleEU104UaG95WlG5E4opDyHq95N+voC2cYvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BBmb+xUo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 811ABC4CEF5;
+	Wed,  3 Dec 2025 16:05:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779702;
-	bh=36ISm4nlkPAud1J38ihs+5B+w6q8p+8yirQCSjqWWEk=;
+	s=korg; t=1764777917;
+	bh=2NzWQgHekCkpf6Sd7L+HgrdCbI67Bgek8dMhrBV/RA0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Et3g/4MMmSkvb+vTyTxOB53zYsdbJZNGXL0kHOMtnczjwqwz05oJBv4QM2UotDXEU
-	 f0uV9stCyJNk4IvD+MHiggz4GkXAsmWwlPzsrOi9keNlB/C2N1BauLqAapxdrB/21y
-	 q5l1zoe4sdKvZDzS7W4m/IdAnfMnv/R9aadkOQcg=
+	b=BBmb+xUolR6Oqfn80wdgP3fZp/YuI4WeHSUgjiV4Ce6HmK2VHTtxYoNzlmrvvrWWO
+	 B8ko4RzdO0ey/XbQyrKaN/9gYG3bCpuMnLMkjFsn0nMJ0W40m1tRMDH83rTK/RK1r0
+	 FMz8MeriRfnQdZloFnDOA9DUjWRv/RA+tnKcJvoA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henrique Carvalho <henrique.carvalho@suse.com>,
-	Shuhao Fu <sfual@cse.ust.hk>,
-	Steve French <stfrench@microsoft.com>,
+	Jacob Moroni <jmoroni@google.com>,
+	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 335/568] smb: client: fix refcount leak in smb2_set_path_attr
+Subject: [PATCH 5.15 187/392] RDMA/irdma: Fix SD index calculation
 Date: Wed,  3 Dec 2025 16:25:37 +0100
-Message-ID: <20251203152452.979666443@linuxfoundation.org>
+Message-ID: <20251203152420.960135445@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuhao Fu <sfual@cse.ust.hk>
+From: Jacob Moroni <jmoroni@google.com>
 
-[ Upstream commit b540de9e3b4fab3b9e10f30714a6f5c1b2a50ec3 ]
+[ Upstream commit 8d158f47f1f33d8747e80c3afbea5aa337e59d41 ]
 
-Fix refcount leak in `smb2_set_path_attr` when path conversion fails.
+In some cases, it is possible for pble_rsrc->next_fpm_addr to be
+larger than u32, so remove the u32 cast to avoid unintentional
+truncation.
 
-Function `cifs_get_writable_path` returns `cfile` with its reference
-counter `cfile->count` increased on success. Function `smb2_compound_op`
-would decrease the reference counter for `cfile`, as stated in its
-comment. By calling `smb2_rename_path`, the reference counter of `cfile`
-would leak if `cifs_convert_path_to_utf16` fails in `smb2_set_path_attr`.
+This fixes the following error that can be observed when registering
+massive memory regions:
 
-Fixes: 8de9e86c67ba ("cifs: create a helper to find a writeable handle by path name")
-Acked-by: Henrique Carvalho <henrique.carvalho@suse.com>
-Signed-off-by: Shuhao Fu <sfual@cse.ust.hk>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+[  447.227494] (NULL ib_device): cqp opcode = 0x1f maj_err_code = 0xffff min_err_code = 0x800c
+[  447.227505] (NULL ib_device): [Update PE SDs Cmd Error][op_code=21] status=-5 waiting=1 completion_err=1 maj=0xffff min=0x800c
+
+Fixes: e8c4dbc2fcac ("RDMA/irdma: Add PBLE resource manager")
+Signed-off-by: Jacob Moroni <jmoroni@google.com>
+Link: https://patch.msgid.link/20250923190850.1022773-1-jmoroni@google.com
+Acked-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2inode.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/infiniband/hw/irdma/pble.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
-index 7d3685cd345fd..452a60e09cbed 100644
---- a/fs/smb/client/smb2inode.c
-+++ b/fs/smb/client/smb2inode.c
-@@ -721,6 +721,8 @@ smb2_set_path_attr(const unsigned int xid, struct cifs_tcon *tcon,
- 	smb2_to_name = cifs_convert_path_to_utf16(to_name, cifs_sb);
- 	if (smb2_to_name == NULL) {
- 		rc = -ENOMEM;
-+		if (cfile)
-+			cifsFileInfo_put(cfile);
- 		goto smb2_rename_path;
- 	}
- 	rc = smb2_compound_op(xid, tcon, cifs_sb, from_name, access,
+diff --git a/drivers/infiniband/hw/irdma/pble.c b/drivers/infiniband/hw/irdma/pble.c
+index fed49da770f3b..6562592695b70 100644
+--- a/drivers/infiniband/hw/irdma/pble.c
++++ b/drivers/infiniband/hw/irdma/pble.c
+@@ -74,7 +74,7 @@ irdma_hmc_init_pble(struct irdma_sc_dev *dev,
+ static void get_sd_pd_idx(struct irdma_hmc_pble_rsrc *pble_rsrc,
+ 			  struct sd_pd_idx *idx)
+ {
+-	idx->sd_idx = (u32)pble_rsrc->next_fpm_addr / IRDMA_HMC_DIRECT_BP_SIZE;
++	idx->sd_idx = pble_rsrc->next_fpm_addr / IRDMA_HMC_DIRECT_BP_SIZE;
+ 	idx->pd_idx = (u32)(pble_rsrc->next_fpm_addr / IRDMA_HMC_PAGED_BP_SIZE);
+ 	idx->rel_pd_idx = (idx->pd_idx % IRDMA_HMC_PD_CNT_IN_SD);
+ }
 -- 
 2.51.0
 
