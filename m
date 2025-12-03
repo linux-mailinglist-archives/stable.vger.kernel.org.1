@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D739CA0F60
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:27:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AC64CA0DA2
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:15:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1323E32F6263
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:25:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 614E1333C76C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:12:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A062434F480;
-	Wed,  3 Dec 2025 16:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71AB73446D0;
+	Wed,  3 Dec 2025 16:59:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dSe1MO4O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iEvNA0M1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F2FA34C128;
-	Wed,  3 Dec 2025 16:55:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDECF346E6B;
+	Wed,  3 Dec 2025 16:59:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780925; cv=none; b=pvDUbQrJuqlB927fxVWhFnEY/98zDzeEi+YFcDCsvQylGvXewRUJ8M3NQ01iBTL2fNPpF2T1jEW0JSumbV4en2c/mmc87j2Z9MZzz2qxbdx0rTNR9R72R5SY1pFqbPUX/ru7T/tPTwGMP6qkfOsZwmAYuEoKv1bUOnz6ktqXphY=
+	t=1764781182; cv=none; b=QCFBnptbyGB4vLdBI2XgheHl0s92lyNrmMKIClBUNGmWpRI4h6CcN4dq1y9PIKy/K6W0h0FAmRV7tOLcJQ2nsy6NIqsFdyvp8V0S98SK+HrNSFUUvymyi4s9ORWRFXAe6cZZa2Mu9b4AIamb7nAsdhZLt0uiASmBLJ1zBccvTZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780925; c=relaxed/simple;
-	bh=5zeEjFiZ3q6rEF7W8TYE2rVpMeHn79p/RsOYyKTjLCI=;
+	s=arc-20240116; t=1764781182; c=relaxed/simple;
+	bh=wLMs2GY8SR0qKAFTC9nNjVcMwWunUp6Qp+x8DKAqgW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QtBKAbsdnFOIKfOhQypZWy1OmSb/KzKSYopbKI1RhDItxBc0wJwqJueBf5fbexWTKpQDWTaKZIe0tjVVn0Xm7hDkzCXij6YuGW+cycTU2YPczHROT+9s0SX0ZHLnVvuXSzG3N9RhqM9Vo/yY/6MzpE/Ba5qMht3e0RdiztXKOPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dSe1MO4O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A859C4CEF5;
-	Wed,  3 Dec 2025 16:55:24 +0000 (UTC)
+	 MIME-Version; b=RceuyggdI8xWclRGnqPctLxtltp4NQaHNNRnLSLyDy1cOvcLXh1laQkXlxRLWTknCm8J6oJNU/Z5fysKNjQJoiNJ11WMHO184bIUvbxJ4RX7OSxgpTaRYCYMD6PffIcOi1j4lgnXt9p0HoWpCHyCls9euBraA/TxwiMEt7tp5oM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iEvNA0M1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EB37C116C6;
+	Wed,  3 Dec 2025 16:59:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780925;
-	bh=5zeEjFiZ3q6rEF7W8TYE2rVpMeHn79p/RsOYyKTjLCI=;
+	s=korg; t=1764781182;
+	bh=wLMs2GY8SR0qKAFTC9nNjVcMwWunUp6Qp+x8DKAqgW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dSe1MO4OlSiobZz00yQwT9xW38a7zqCDNvHdB55vECI70Bn0TVoDnFxZo0nIoERGY
-	 E/JHTCoqYRlZZF1dOneW6ud+mQx8sDjKl3CLHYh7WxcN+MhtlRHbwpcGjq+NHugUGx
-	 jiXVIPYCxDY+/U9EgnyTeXuJ5HEWDJGFhnOXDj00=
+	b=iEvNA0M1JcO+noJ8P69t/PeddmCZrAl14GajEIHE7leKTZr6idPd9fOgnlWUWAtHu
+	 NL7TddTk6vGX6fSqtpG1F74YFpDnE01BIRPtBlIu92DRB74DkyvANtnA9IDw/Cd8AK
+	 A2veRQFzKov9a0EN70x3dU41ErU4vn52gKZl5H4A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sarika Sharma <quic_sarishar@quicinc.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Oliver Sedlbauer <os@dev.tdt.de>
-Subject: [PATCH 6.12 129/132] wifi: ath12k: correctly handle mcast packets for clients
+	David Howells <dhowells@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Subject: [PATCH 6.6 75/93] libceph: fix potential use-after-free in have_mon_and_osd_map()
 Date: Wed,  3 Dec 2025 16:30:08 +0100
-Message-ID: <20251203152348.095115509@linuxfoundation.org>
+Message-ID: <20251203152339.295379588@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
+References: <20251203152336.494201426@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +60,227 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sarika Sharma <quic_sarishar@quicinc.com>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-commit 4541b0c8c3c1b85564971d497224e57cf8076a02 upstream.
+commit 076381c261374c587700b3accf410bdd2dba334e upstream.
 
-Currently, RX is_mcbc bit is set for packets sent from client as
-destination address (DA) is multicast/broadcast address, but packets
-are actually unicast as receiver address (RA) is not multicast address.
-Hence, packets are not handled properly due to this is_mcbc bit.
+The wait loop in __ceph_open_session() can race with the client
+receiving a new monmap or osdmap shortly after the initial map is
+received.  Both ceph_monc_handle_map() and handle_one_map() install
+a new map immediately after freeing the old one
 
-Therefore, reset the is_mcbc bit if interface type is AP.
+    kfree(monc->monmap);
+    monc->monmap = monmap;
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+    ceph_osdmap_destroy(osdc->osdmap);
+    osdc->osdmap = newmap;
 
-Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250411061523.859387-3-quic_sarishar@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-[ Adjust context ]
-Signed-off-by: Oliver Sedlbauer <os@dev.tdt.de>
+under client->monc.mutex and client->osdc.lock respectively, but
+because neither is taken in have_mon_and_osd_map() it's possible for
+client->monc.monmap->epoch and client->osdc.osdmap->epoch arms in
+
+    client->monc.monmap && client->monc.monmap->epoch &&
+        client->osdc.osdmap && client->osdc.osdmap->epoch;
+
+condition to dereference an already freed map.  This happens to be
+reproducible with generic/395 and generic/397 with KASAN enabled:
+
+    BUG: KASAN: slab-use-after-free in have_mon_and_osd_map+0x56/0x70
+    Read of size 4 at addr ffff88811012d810 by task mount.ceph/13305
+    CPU: 2 UID: 0 PID: 13305 Comm: mount.ceph Not tainted 6.14.0-rc2-build2+ #1266
+    ...
+    Call Trace:
+    <TASK>
+    have_mon_and_osd_map+0x56/0x70
+    ceph_open_session+0x182/0x290
+    ceph_get_tree+0x333/0x680
+    vfs_get_tree+0x49/0x180
+    do_new_mount+0x1a3/0x2d0
+    path_mount+0x6dd/0x730
+    do_mount+0x99/0xe0
+    __do_sys_mount+0x141/0x180
+    do_syscall_64+0x9f/0x100
+    entry_SYSCALL_64_after_hwframe+0x76/0x7e
+    </TASK>
+
+    Allocated by task 13305:
+    ceph_osdmap_alloc+0x16/0x130
+    ceph_osdc_init+0x27a/0x4c0
+    ceph_create_client+0x153/0x190
+    create_fs_client+0x50/0x2a0
+    ceph_get_tree+0xff/0x680
+    vfs_get_tree+0x49/0x180
+    do_new_mount+0x1a3/0x2d0
+    path_mount+0x6dd/0x730
+    do_mount+0x99/0xe0
+    __do_sys_mount+0x141/0x180
+    do_syscall_64+0x9f/0x100
+    entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+    Freed by task 9475:
+    kfree+0x212/0x290
+    handle_one_map+0x23c/0x3b0
+    ceph_osdc_handle_map+0x3c9/0x590
+    mon_dispatch+0x655/0x6f0
+    ceph_con_process_message+0xc3/0xe0
+    ceph_con_v1_try_read+0x614/0x760
+    ceph_con_workfn+0x2de/0x650
+    process_one_work+0x486/0x7c0
+    process_scheduled_works+0x73/0x90
+    worker_thread+0x1c8/0x2a0
+    kthread+0x2ec/0x300
+    ret_from_fork+0x24/0x40
+    ret_from_fork_asm+0x1a/0x30
+
+Rewrite the wait loop to check the above condition directly with
+client->monc.mutex and client->osdc.lock taken as appropriate.  While
+at it, improve the timeout handling (previously mount_timeout could be
+exceeded in case wait_event_interruptible_timeout() slept more than
+once) and access client->auth_err under client->monc.mutex to match
+how it's set in finish_auth().
+
+monmap_show() and osdmap_show() now take the respective lock before
+accessing the map as well.
+
+Cc: stable@vger.kernel.org
+Reported-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath12k/dp_rx.c |    5 +++++
- drivers/net/wireless/ath/ath12k/peer.c  |    3 +++
- drivers/net/wireless/ath/ath12k/peer.h  |    2 ++
- 3 files changed, 10 insertions(+)
+ net/ceph/ceph_common.c |   53 +++++++++++++++++++++++++++++--------------------
+ net/ceph/debugfs.c     |   14 +++++++++---
+ 2 files changed, 42 insertions(+), 25 deletions(-)
 
---- a/drivers/net/wireless/ath/ath12k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
-@@ -2214,6 +2214,11 @@ static void ath12k_dp_rx_h_mpdu(struct a
- 	spin_lock_bh(&ar->ab->base_lock);
- 	peer = ath12k_dp_rx_h_find_peer(ar->ab, msdu);
- 	if (peer) {
-+		/* resetting mcbc bit because mcbc packets are unicast
-+		 * packets only for AP as STA sends unicast packets.
-+		 */
-+		rxcb->is_mcbc = rxcb->is_mcbc && !peer->ucast_ra_only;
+--- a/net/ceph/ceph_common.c
++++ b/net/ceph/ceph_common.c
+@@ -786,41 +786,52 @@ void ceph_reset_client_addr(struct ceph_
+ EXPORT_SYMBOL(ceph_reset_client_addr);
+ 
+ /*
+- * true if we have the mon map (and have thus joined the cluster)
+- */
+-static bool have_mon_and_osd_map(struct ceph_client *client)
+-{
+-	return client->monc.monmap && client->monc.monmap->epoch &&
+-	       client->osdc.osdmap && client->osdc.osdmap->epoch;
+-}
+-
+-/*
+  * mount: join the ceph cluster, and open root directory.
+  */
+ int __ceph_open_session(struct ceph_client *client, unsigned long started)
+ {
+-	unsigned long timeout = client->options->mount_timeout;
+-	long err;
++	DEFINE_WAIT_FUNC(wait, woken_wake_function);
++	long timeout = ceph_timeout_jiffies(client->options->mount_timeout);
++	bool have_monmap, have_osdmap;
++	int err;
+ 
+ 	/* open session, and wait for mon and osd maps */
+ 	err = ceph_monc_open_session(&client->monc);
+ 	if (err < 0)
+ 		return err;
+ 
+-	while (!have_mon_and_osd_map(client)) {
+-		if (timeout && time_after_eq(jiffies, started + timeout))
+-			return -ETIMEDOUT;
++	add_wait_queue(&client->auth_wq, &wait);
++	for (;;) {
++		mutex_lock(&client->monc.mutex);
++		err = client->auth_err;
++		have_monmap = client->monc.monmap && client->monc.monmap->epoch;
++		mutex_unlock(&client->monc.mutex);
 +
- 		if (rxcb->is_mcbc)
- 			enctype = peer->sec_type_grp;
- 		else
---- a/drivers/net/wireless/ath/ath12k/peer.c
-+++ b/drivers/net/wireless/ath/ath12k/peer.c
-@@ -331,6 +331,9 @@ int ath12k_peer_create(struct ath12k *ar
- 		arvif->ast_idx = peer->hw_peer_id;
++		down_read(&client->osdc.lock);
++		have_osdmap = client->osdc.osdmap && client->osdc.osdmap->epoch;
++		up_read(&client->osdc.lock);
++
++		if (err || (have_monmap && have_osdmap))
++			break;
++
++		if (signal_pending(current)) {
++			err = -ERESTARTSYS;
++			break;
++		}
++
++		if (!timeout) {
++			err = -ETIMEDOUT;
++			break;
++		}
+ 
+ 		/* wait */
+ 		dout("mount waiting for mon_map\n");
+-		err = wait_event_interruptible_timeout(client->auth_wq,
+-			have_mon_and_osd_map(client) || (client->auth_err < 0),
+-			ceph_timeout_jiffies(timeout));
+-		if (err < 0)
+-			return err;
+-		if (client->auth_err < 0)
+-			return client->auth_err;
++		timeout = wait_woken(&wait, TASK_INTERRUPTIBLE, timeout);
+ 	}
++	remove_wait_queue(&client->auth_wq, &wait);
++
++	if (err)
++		return err;
+ 
+ 	pr_info("client%llu fsid %pU\n", ceph_client_gid(client),
+ 		&client->fsid);
+--- a/net/ceph/debugfs.c
++++ b/net/ceph/debugfs.c
+@@ -36,8 +36,9 @@ static int monmap_show(struct seq_file *
+ 	int i;
+ 	struct ceph_client *client = s->private;
+ 
++	mutex_lock(&client->monc.mutex);
+ 	if (client->monc.monmap == NULL)
+-		return 0;
++		goto out_unlock;
+ 
+ 	seq_printf(s, "epoch %d\n", client->monc.monmap->epoch);
+ 	for (i = 0; i < client->monc.monmap->num_mon; i++) {
+@@ -48,6 +49,9 @@ static int monmap_show(struct seq_file *
+ 			   ENTITY_NAME(inst->name),
+ 			   ceph_pr_addr(&inst->addr));
+ 	}
++
++out_unlock:
++	mutex_unlock(&client->monc.mutex);
+ 	return 0;
+ }
+ 
+@@ -56,13 +60,14 @@ static int osdmap_show(struct seq_file *
+ 	int i;
+ 	struct ceph_client *client = s->private;
+ 	struct ceph_osd_client *osdc = &client->osdc;
+-	struct ceph_osdmap *map = osdc->osdmap;
++	struct ceph_osdmap *map;
+ 	struct rb_node *n;
+ 
++	down_read(&osdc->lock);
++	map = osdc->osdmap;
+ 	if (map == NULL)
+-		return 0;
++		goto out_unlock;
+ 
+-	down_read(&osdc->lock);
+ 	seq_printf(s, "epoch %u barrier %u flags 0x%x\n", map->epoch,
+ 			osdc->epoch_barrier, map->flags);
+ 
+@@ -131,6 +136,7 @@ static int osdmap_show(struct seq_file *
+ 		seq_printf(s, "]\n");
  	}
  
-+	if (arvif->vif->type == NL80211_IFTYPE_AP)
-+		peer->ucast_ra_only = true;
-+
- 	peer->sec_type = HAL_ENCRYPT_TYPE_OPEN;
- 	peer->sec_type_grp = HAL_ENCRYPT_TYPE_OPEN;
- 
---- a/drivers/net/wireless/ath/ath12k/peer.h
-+++ b/drivers/net/wireless/ath/ath12k/peer.h
-@@ -47,6 +47,8 @@ struct ath12k_peer {
- 
- 	/* protected by ab->data_lock */
- 	bool dp_setup_done;
-+
-+	bool ucast_ra_only;
- };
- 
- void ath12k_peer_unmap_event(struct ath12k_base *ab, u16 peer_id);
++out_unlock:
+ 	up_read(&osdc->lock);
+ 	return 0;
+ }
 
 
 
