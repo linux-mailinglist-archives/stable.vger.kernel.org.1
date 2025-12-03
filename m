@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A66FECA0397
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:58:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2B14CA090A
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:41:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2969E30124F8
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:50:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DA2773427802
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:21:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC5E934C811;
-	Wed,  3 Dec 2025 16:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C745930275E;
+	Wed,  3 Dec 2025 15:54:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oT2s1I3i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m9OqQimv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6187934E74B;
-	Wed,  3 Dec 2025 16:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F08633C539;
+	Wed,  3 Dec 2025 15:54:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780608; cv=none; b=FK7eVKplo9a+81rq0Am5zAljp289H70LZkkD7HJL1/D7zc9n5MUwuTcTbSvfxUv2doDAxNXNAi8yG4cMs2lMfZ4KV6f60NAY2cNVs53SG/U0bG0epPjNg875aenlxy6xY3VPIqaxvWliBoJyKa0NKixQYylXavSfOcyyteFq0ng=
+	t=1764777290; cv=none; b=f4iIWhFe77MmqSUJQxFBm8DV8qjCsUIaa6x0UK85gJGs4Vz9P33XuhlSTY1EPbABrj8GVouNgf3q5/ZSoGnUVFSm7V21j4gYtuwW25iChgRqhT+5UQRw8/9GPZIUz1Z8wCGIZVbr33v+0lu8WgL7XznQymPxuAkLuEW0IqYiZpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780608; c=relaxed/simple;
-	bh=yyRvzzfc1EHqfWPs9VPrn9bSIzdoX452680qPSW+j9k=;
+	s=arc-20240116; t=1764777290; c=relaxed/simple;
+	bh=bSdO3J8R/Mj6uLKJzrAOIHmwcRB+Hd2839nsTGTKTJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YuXRMkK7fg7NqdjaXdqY+KoVECmrn6xcI3gZI2FixUoV8I12eLEkMEW77+9gK9rt1XdB10DIEcKAPC/7dyr/FCPtWyGNx1U9TfBwa3rmV6N/BCusCiTgeDaNqdPdliRCrNe1MY4ot1IS4UiXAU6vlPbyVS+gvabgmLfSk/kIL2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oT2s1I3i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5980C4CEF5;
-	Wed,  3 Dec 2025 16:50:07 +0000 (UTC)
+	 MIME-Version; b=cGcpUSUN9Rx1bvqpTYPUhKeSHkglJUEbk3waTllA54rcKpeih4+NhGm5tJr1y5na1WY6KEPABDjRLJ2nNlez+Ku78Jv6ogMAB3lfbcppVM9L1n2y6gjpCCJJ91bHxjKrfI8V4esZcQBwJ17TIniCdgAM2ii7GjjXkiStmbBBfX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m9OqQimv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 025C0C4CEF5;
+	Wed,  3 Dec 2025 15:54:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780608;
-	bh=yyRvzzfc1EHqfWPs9VPrn9bSIzdoX452680qPSW+j9k=;
+	s=korg; t=1764777290;
+	bh=bSdO3J8R/Mj6uLKJzrAOIHmwcRB+Hd2839nsTGTKTJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oT2s1I3iph0XJlQvNyxUAEhFNgEiGGdYbMtAU9LExJu5BIllAn+1vbcgIUaZoIA6+
-	 K03NHF30lJa7FdFFjFMUGJwnu8I4dfnakQwfAyXaNpSDLR+4lF6j8d7pOKC3uc6r4T
-	 H/pPl39Mo5iORWz0+csoQb5xw1/HLjpOa5PMRggg=
+	b=m9OqQimveuYoiiHz212O72RUoivo3CT4dYBLNHigQbzlqLKzJu0XhSjjYZkCCL1Ik
+	 RjZ67g2BD/e3eH6CCIOtZag/Y6a9zRsHuqGk7suQUM7SHWRvjLR6gjJeti4j85q6Lb
+	 I04ImqeSQs4zoOCYZ5pDMa5ln79fa1CDbA/1xAl4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamie Iles <jamie.iles@oss.qualcomm.com>,
-	Punit Agrawal <punit.agrawal@oss.qualcomm.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 037/132] mailbox: pcc: dont zero error register
+	Andrew Lunn <andrew@lunn.ch>,
+	"Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.17 138/146] net: dsa: microchip: Fix symetry in ksz_ptp_msg_irq_{setup/free}()
 Date: Wed,  3 Dec 2025 16:28:36 +0100
-Message-ID: <20251203152344.670316234@linuxfoundation.org>
+Message-ID: <20251203152351.523524303@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +60,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamie Iles <jamie.iles@oss.qualcomm.com>
+From: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
 
-[ Upstream commit ff0e4d4c97c94af34cc9cad37b5a5cdbe597a3b0 ]
+commit d0b8fec8ae50525b57139393d0bb1f446e82ff7e upstream.
 
-The error status mask for a type 3/4 subspace is used for reading the
-error status, and the bitwise inverse is used for clearing the error
-with the intent being to preserve any of the non-error bits.  However,
-we were previously applying the mask to extract the status and then
-applying the inverse to the result which ended up clearing all bits.
+The IRQ numbers created through irq_create_mapping() are only assigned
+to ptpmsg_irq[n].num at the end of the IRQ setup. So if an error occurs
+between their creation and their assignment (for instance during the
+request_threaded_irq() step), we enter the error path and fail to
+release the newly created virtual IRQs because they aren't yet assigned
+to ptpmsg_irq[n].num.
 
-Instead, store the inverse mask in the preserve mask and then use that
-on the original value read from the error status so that only the error
-is cleared.
+Move the mapping creation to ksz_ptp_msg_irq_setup() to ensure symetry
+with what's released by ksz_ptp_msg_irq_free().
+In the error path, move the irq_dispose_mapping to the out_ptp_msg label
+so it will be called only on created IRQs.
 
-Fixes: c45ded7e1135 ("mailbox: pcc: Add support for PCCT extended PCC subspaces(type 3/4)")
-Signed-off-by: Jamie Iles <jamie.iles@oss.qualcomm.com>
-Signed-off-by: Punit Agrawal <punit.agrawal@oss.qualcomm.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: cc13ab18b201 ("net: dsa: microchip: ptp: enable interrupt for timestamping")
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
+Link: https://patch.msgid.link/20251120-ksz-fix-v6-5-891f80ae7f8f@bootlin.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mailbox/pcc.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/dsa/microchip/ksz_ptp.c |   18 +++++++-----------
+ 1 file changed, 7 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-index bb977cf8ad423..2b7d0bc920726 100644
---- a/drivers/mailbox/pcc.c
-+++ b/drivers/mailbox/pcc.c
-@@ -278,9 +278,8 @@ static int pcc_mbox_error_check_and_clear(struct pcc_chan_info *pchan)
- 	if (ret)
- 		return ret;
+--- a/drivers/net/dsa/microchip/ksz_ptp.c
++++ b/drivers/net/dsa/microchip/ksz_ptp.c
+@@ -1093,19 +1093,19 @@ static int ksz_ptp_msg_irq_setup(struct
+ 	static const char * const name[] = {"pdresp-msg", "xdreq-msg",
+ 					    "sync-msg"};
+ 	const struct ksz_dev_ops *ops = port->ksz_dev->dev_ops;
++	struct ksz_irq *ptpirq = &port->ptpirq;
+ 	struct ksz_ptp_irq *ptpmsg_irq;
  
--	val &= pchan->error.status_mask;
--	if (val) {
--		val &= ~pchan->error.status_mask;
-+	if (val & pchan->error.status_mask) {
-+		val &= pchan->error.preserve_mask;
- 		pcc_chan_reg_write(&pchan->error, val);
- 		return -EIO;
- 	}
-@@ -673,7 +672,8 @@ static int pcc_parse_subspace_db_reg(struct pcc_chan_info *pchan,
+ 	ptpmsg_irq = &port->ptpmsg_irq[n];
++	ptpmsg_irq->num = irq_create_mapping(ptpirq->domain, n);
++	if (!ptpmsg_irq->num)
++		return -EINVAL;
  
- 		ret = pcc_chan_reg_init(&pchan->error,
- 					&pcct_ext->error_status_register,
--					0, 0, pcct_ext->error_status_mask,
-+					~pcct_ext->error_status_mask, 0,
-+					pcct_ext->error_status_mask,
- 					"Error Status");
- 	}
+ 	ptpmsg_irq->port = port;
+ 	ptpmsg_irq->ts_reg = ops->get_port_addr(port->num, ts_reg[n]);
+ 
+ 	strscpy(ptpmsg_irq->name, name[n]);
+ 
+-	ptpmsg_irq->num = irq_find_mapping(port->ptpirq.domain, n);
+-	if (ptpmsg_irq->num < 0)
+-		return ptpmsg_irq->num;
+-
+ 	return request_threaded_irq(ptpmsg_irq->num, NULL,
+ 				    ksz_ptp_msg_thread_fn, IRQF_ONESHOT,
+ 				    ptpmsg_irq->name, ptpmsg_irq);
+@@ -1135,9 +1135,6 @@ int ksz_ptp_irq_setup(struct dsa_switch
+ 	if (!ptpirq->domain)
+ 		return -ENOMEM;
+ 
+-	for (irq = 0; irq < ptpirq->nirqs; irq++)
+-		irq_create_mapping(ptpirq->domain, irq);
+-
+ 	ptpirq->irq_num = irq_find_mapping(port->pirq.domain, PORT_SRC_PTP_INT);
+ 	if (!ptpirq->irq_num) {
+ 		ret = -EINVAL;
+@@ -1159,12 +1156,11 @@ int ksz_ptp_irq_setup(struct dsa_switch
+ 
+ out_ptp_msg:
+ 	free_irq(ptpirq->irq_num, ptpirq);
+-	while (irq--)
++	while (irq--) {
+ 		free_irq(port->ptpmsg_irq[irq].num, &port->ptpmsg_irq[irq]);
+-out:
+-	for (irq = 0; irq < ptpirq->nirqs; irq++)
+ 		irq_dispose_mapping(port->ptpmsg_irq[irq].num);
+-
++	}
++out:
+ 	irq_domain_remove(ptpirq->domain);
+ 
  	return ret;
--- 
-2.51.0
-
 
 
 
