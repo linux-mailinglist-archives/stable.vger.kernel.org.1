@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-198388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CB11C9F9CB
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:45:11 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AC39C9FFEB
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:36:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DFD8F3006F7C
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:39:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7C5C03000900
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:36:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B272D30AD06;
-	Wed,  3 Dec 2025 15:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1800635C185;
+	Wed,  3 Dec 2025 16:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GEkMXnPN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="POS4d9Re"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2B0303C91;
-	Wed,  3 Dec 2025 15:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86CA2FD1C5;
+	Wed,  3 Dec 2025 16:36:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776376; cv=none; b=rCacvbqAjZT+nZNqPlhV36yVQwAx1gEH6jHsByrrDiFW/7ePh+X6NOwJIATDoDJUsnHXcY+RpVY9t+c6b8/8Kz9yh3g1Muzub0XB/T8JoQ0A8uT3q8nh4/I7epKSTjrsZxocFBBUrVeKL2ZM6GkwVXuNcdO0hoTBbgdva1I06Mw=
+	t=1764779798; cv=none; b=txz/FGd6B2rQnR8b3zi6x+sefzQ7VNpeiHQRt0aavIMUtRmSXgI6qaWnAC/+rHx8DVvkBgaZSsmVy7r2vPhcE3Vv8dLiHWNA3S3aPM1bN9yYSg4t003gkuOuYkSSDJ7kdAkWYRMg56jWZjZ8r+jiaQ5ChxRHrj7s9cE4Csd5j5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776376; c=relaxed/simple;
-	bh=LacVSKRlina8GkFgBqGOzh49sQX3kAvMLWlbn42WQl8=;
+	s=arc-20240116; t=1764779798; c=relaxed/simple;
+	bh=4MLeSIG2iWejoMI+Lt+1ix5xqm5PLy+qhs7qn5johbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CO3GcqMn8eOczJSyRYofEYC0vHU88YDmp+z/dDTAzW/91tjy6EKAn13w1HASHBQ7BC2DnSEa37udZ6oIHf9/Jin8P7Lc9t+vpmyOrmlJSJBhgfW5lBkDS8MHFMIu1IhF0EwKijW3k9aTdyjBeip8VNAr7eo0bjGmCmNQQgisNgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GEkMXnPN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D134EC4CEF5;
-	Wed,  3 Dec 2025 15:39:35 +0000 (UTC)
+	 MIME-Version; b=CX1Pu+OMOz1uihsWxIEfN7+iGb4880U23d72DpYebd/Bt5FSrjvvpqMKSxT/we6JPuw/IuUNxvBUVAEUCtl0w95NcU4HkNqxhYYo14ld+gkzUpI+CpZHuknxDIYxO1+CyVui4okJTBpGM1D70UnIQZ4Lec8d+1G8cV3bOkKyGhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=POS4d9Re; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 507AAC4CEF5;
+	Wed,  3 Dec 2025 16:36:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776376;
-	bh=LacVSKRlina8GkFgBqGOzh49sQX3kAvMLWlbn42WQl8=;
+	s=korg; t=1764779798;
+	bh=4MLeSIG2iWejoMI+Lt+1ix5xqm5PLy+qhs7qn5johbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GEkMXnPNy5anVWUdem3fl2Ytpj1j0yztJB44OO4ZicZi9wCdt0xRRdd9FffLr2qHX
-	 rYHs7AjkwMPX3AsoZ/LW5vtx3I+NDJeKUfShSiJfVXrX7R6hdzCZmwVAsOaeb0sYC1
-	 j9vGKfg8iv8WxF6eajB3IBalIrSaWbdeRPbKA9S0=
+	b=POS4d9ReOPWuKV+K4ouUlkA5NbndL9/1XHRiv5XwMOLoy+mfzjWIJWBO3l3ssts8U
+	 D/b+m2iFajGWEACT3rDNGoS5Z5n8K9EzG2WZrJJwzdcltMTOWTkkU8oXSoz9MYjXOH
+	 h/SVtMREsCjwoez/7TI1OtKAiwHj3p629LmKpI00=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wiehler <stefan.wiehler@nokia.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com,
+	Ranganath V N <vnranganath.20@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 163/300] sctp: Hold RCU read lock while iterating over address list
+Subject: [PATCH 6.1 365/568] net: sched: act_ife: initialize struct tc_ife to fix KMSAN kernel-infoleak
 Date: Wed,  3 Dec 2025 16:26:07 +0100
-Message-ID: <20251203152406.656457132@linuxfoundation.org>
+Message-ID: <20251203152454.068556147@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,106 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wiehler <stefan.wiehler@nokia.com>
+From: Ranganath V N <vnranganath.20@gmail.com>
 
-[ Upstream commit 38f50242bf0f237cdc262308d624d333286ec3c5 ]
+[ Upstream commit ce50039be49eea9b4cd8873ca6eccded1b4a130a ]
 
-With CONFIG_PROVE_RCU_LIST=y and by executing
+Fix a KMSAN kernel-infoleak detected  by the syzbot .
 
-  $ netcat -l --sctp &
-  $ netcat --sctp localhost &
-  $ ss --sctp
+[net?] KMSAN: kernel-infoleak in __skb_datagram_iter
 
-one can trigger the following Lockdep-RCU splat(s):
+In tcf_ife_dump(), the variable 'opt' was partially initialized using a
+designatied initializer. While the padding bytes are reamined
+uninitialized. nla_put() copies the entire structure into a
+netlink message, these uninitialized bytes leaked to userspace.
 
-  WARNING: suspicious RCU usage
-  6.18.0-rc1-00093-g7f864458e9a6 #5 Not tainted
-  -----------------------------
-  net/sctp/diag.c:76 RCU-list traversed in non-reader section!!
+Initialize the structure with memset before assigning its fields
+to ensure all members and padding are cleared prior to beign copied.
 
-  other info that might help us debug this:
+This change silences the KMSAN report and prevents potential information
+leaks from the kernel memory.
 
-  rcu_scheduler_active = 2, debug_locks = 1
-  2 locks held by ss/215:
-   #0: ffff9c740828bec0 (nlk_cb_mutex-SOCK_DIAG){+.+.}-{4:4}, at: __netlink_dump_start+0x84/0x2b0
-   #1: ffff9c7401d72cd0 (sk_lock-AF_INET6){+.+.}-{0:0}, at: sctp_sock_dump+0x38/0x200
+This fix has been tested and validated by syzbot. This patch closes the
+bug reported at the following syzkaller link and ensures no infoleak.
 
-  stack backtrace:
-  CPU: 0 UID: 0 PID: 215 Comm: ss Not tainted 6.18.0-rc1-00093-g7f864458e9a6 #5 PREEMPT(voluntary)
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x5d/0x90
-   lockdep_rcu_suspicious.cold+0x4e/0xa3
-   inet_sctp_diag_fill.isra.0+0x4b1/0x5d0
-   sctp_sock_dump+0x131/0x200
-   sctp_transport_traverse_process+0x170/0x1b0
-   ? __pfx_sctp_sock_filter+0x10/0x10
-   ? __pfx_sctp_sock_dump+0x10/0x10
-   sctp_diag_dump+0x103/0x140
-   __inet_diag_dump+0x70/0xb0
-   netlink_dump+0x148/0x490
-   __netlink_dump_start+0x1f3/0x2b0
-   inet_diag_handler_cmd+0xcd/0x100
-   ? __pfx_inet_diag_dump_start+0x10/0x10
-   ? __pfx_inet_diag_dump+0x10/0x10
-   ? __pfx_inet_diag_dump_done+0x10/0x10
-   sock_diag_rcv_msg+0x18e/0x320
-   ? __pfx_sock_diag_rcv_msg+0x10/0x10
-   netlink_rcv_skb+0x4d/0x100
-   netlink_unicast+0x1d7/0x2b0
-   netlink_sendmsg+0x203/0x450
-   ____sys_sendmsg+0x30c/0x340
-   ___sys_sendmsg+0x94/0xf0
-   __sys_sendmsg+0x83/0xf0
-   do_syscall_64+0xbb/0x390
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-   ...
-   </TASK>
-
-Fixes: 8f840e47f190 ("sctp: add the sctp_diag.c file")
-Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/20251028161506.3294376-2-stefan.wiehler@nokia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0c85cae3350b7d486aee
+Tested-by: syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com
+Fixes: ef6980b6becb ("introduce IFE action")
+Signed-off-by: Ranganath V N <vnranganath.20@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20251109091336.9277-3-vnranganath.20@gmail.com
+Acked-by: Cong Wang <xiyou.wangcong@gmail.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/diag.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/sched/act_ife.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/net/sctp/diag.c b/net/sctp/diag.c
-index 07d0ada23bfd2..5f441a48e7aa3 100644
---- a/net/sctp/diag.c
-+++ b/net/sctp/diag.c
-@@ -73,19 +73,23 @@ static int inet_diag_msg_sctpladdrs_fill(struct sk_buff *skb,
- 	struct nlattr *attr;
- 	void *info = NULL;
+diff --git a/net/sched/act_ife.c b/net/sched/act_ife.c
+index 41d63b33461dc..a4505b926a1e4 100644
+--- a/net/sched/act_ife.c
++++ b/net/sched/act_ife.c
+@@ -643,13 +643,15 @@ static int tcf_ife_dump(struct sk_buff *skb, struct tc_action *a, int bind,
+ 	unsigned char *b = skb_tail_pointer(skb);
+ 	struct tcf_ife_info *ife = to_ife(a);
+ 	struct tcf_ife_params *p;
+-	struct tc_ife opt = {
+-		.index = ife->tcf_index,
+-		.refcnt = refcount_read(&ife->tcf_refcnt) - ref,
+-		.bindcnt = atomic_read(&ife->tcf_bindcnt) - bind,
+-	};
++	struct tc_ife opt;
+ 	struct tcf_t t;
  
-+	rcu_read_lock();
- 	list_for_each_entry_rcu(laddr, address_list, list)
- 		addrcnt++;
-+	rcu_read_unlock();
- 
- 	attr = nla_reserve(skb, INET_DIAG_LOCALS, addrlen * addrcnt);
- 	if (!attr)
- 		return -EMSGSIZE;
- 
- 	info = nla_data(attr);
-+	rcu_read_lock();
- 	list_for_each_entry_rcu(laddr, address_list, list) {
- 		memcpy(info, &laddr->a, sizeof(laddr->a));
- 		memset(info + sizeof(laddr->a), 0, addrlen - sizeof(laddr->a));
- 		info += addrlen;
- 	}
-+	rcu_read_unlock();
- 
- 	return 0;
- }
++	memset(&opt, 0, sizeof(opt));
++
++	opt.index = ife->tcf_index,
++	opt.refcnt = refcount_read(&ife->tcf_refcnt) - ref,
++	opt.bindcnt = atomic_read(&ife->tcf_bindcnt) - bind,
++
+ 	spin_lock_bh(&ife->tcf_lock);
+ 	opt.action = ife->tcf_action;
+ 	p = rcu_dereference_protected(ife->params,
 -- 
 2.51.0
 
