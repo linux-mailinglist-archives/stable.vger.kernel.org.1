@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-199022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DED90CA0EBB
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:23:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07B66C9FAEE
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:52:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2D879329CED4
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:21:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E003A301C908
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:44:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06B0934A3CE;
-	Wed,  3 Dec 2025 16:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9096330F931;
+	Wed,  3 Dec 2025 15:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LkdrEjSo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XSBDW/fi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71C234A3CB;
-	Wed,  3 Dec 2025 16:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 417A530F925;
+	Wed,  3 Dec 2025 15:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778441; cv=none; b=UHaRcGK1HUeRh1Rw6G9zFLmpEX235domxLIaNC6EpGmsXAm8E/eNZ0BbJywVfledmPfeAT1ARLf2mOoDuKnISm1i5W0JhhFSJfuLFcBnV2OpVpjw+43hb5db2tagCFgl55o6Cut7aPz0OrCyr9tHE7aRJzAlAc2hOFr8q2GfDGE=
+	t=1764776697; cv=none; b=QzA1kAQk8V2WQm0VKiy4b1gl/lDVJPqPAFfXmSm26u/XBEJq9HKBWLJn4jhHrWbFFzkAdJ6SVy8HWFXmHOficJHJ7+H5SZBA56aXBV8uUG2w3YSCx0ORDYm8p0cq0FABhw1wzuaiyfZ5ZELUbWzDeWHcejbpdfmFdRN0rLzjR3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778441; c=relaxed/simple;
-	bh=x/OmtOknhLVSipbcAOzrQ07XVgyf/tjN21Wn8EYkLqg=;
+	s=arc-20240116; t=1764776697; c=relaxed/simple;
+	bh=xm1RsrV5yGIWhYMexIc1/mef/biGtuCEOrDslIIW7ws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QRb/spPZnKDaiaNtctrybAxbALZEhNJiiVSTnlA6OV+3Hhy3xkzJhaEuGMRBM1siqrQY03e6QnvU26khrprG3tR22TfjH68epqEHzxenmn/ZqLuLTWER60gFuWHPm39sUd4U3f2OMf1RO7W50ih/aQujY1mTBxYduQ6NWrlw0CA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LkdrEjSo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD1FCC4CEF5;
-	Wed,  3 Dec 2025 16:14:00 +0000 (UTC)
+	 MIME-Version; b=p18p9mHl9m3lsOCMedPy08yoFEx3T/YG8euOxiR4Z6dOCMnOdSXXGqBZUdh8RX5ODv8hspIuRS13/k53AdCo7dcr1G10wv8UsMoL0eR0yql1709/unuqnKyl5lV5fczV3wKpBXREosbZUjAP7/at0U2LBGtZhO7cBT0SMCOEm2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XSBDW/fi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D30C4CEF5;
+	Wed,  3 Dec 2025 15:44:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778441;
-	bh=x/OmtOknhLVSipbcAOzrQ07XVgyf/tjN21Wn8EYkLqg=;
+	s=korg; t=1764776697;
+	bh=xm1RsrV5yGIWhYMexIc1/mef/biGtuCEOrDslIIW7ws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LkdrEjSo7FOhrQEuou65MtvugeXdtpnJYPkh9+tWBpkyHnz2ux0t1gNuPf4RZUorg
-	 pp6QwpNm5B4YJfuOt+tIeiGCNe/fvhLhOx6FgowYhp8M2loUPUMOrq5/gXMFJjrN1G
-	 0ho2DNDK2o7Kci+WYNHBs/L6K4WN+PW0guy0nS4o=
+	b=XSBDW/fiAgxZAEQcnBt0F9oAKJqMrvYaF/Qag9Y4G2Z9yjcytD4zUWNLxvhHVNXFz
+	 XWUkVdAoaWrAs/Jyt4jHsHcLT8uICqInC2H4OVFEz3EWaUGMk4Goa1x1syDezvqfyo
+	 +CGnglqJCozcMvqqFoPGZMd4ejw+lJfXnkzBUnI4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
-Subject: [PATCH 5.15 314/392] btrfs: add helper to truncate inode items when logging inode
+	Alexey Kodanev <aleksei.kodanev@bell-sw.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 260/300] net: sxgbe: fix potential NULL dereference in sxgbe_rx()
 Date: Wed,  3 Dec 2025 16:27:44 +0100
-Message-ID: <20251203152425.714866906@linuxfoundation.org>
+Message-ID: <20251203152410.270571402@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,97 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
 
-commit 8a2b3da191e5a167bba9776e109b775b21cb4d85 upstream.
+[ Upstream commit f5bce28f6b9125502abec4a67d68eabcd24b3b17 ]
 
-Move the call to btrfs_truncate_inode_items(), and the surrounding retry
-loop, into a local helper function. This avoids some repetition and avoids
-making the next change a bit awkward due to a bit of too much indentation.
+Currently, when skb is null, the driver prints an error and then
+dereferences skb on the next line.
 
-This patch is part of a patch set comprised of the following patches:
+To fix this, let's add a 'break' after the error message to switch
+to sxgbe_rx_refill(), which is similar to the approach taken by the
+other drivers in this particular case, e.g. calxeda with xgmac_rx().
 
-  btrfs: check if a log tree exists at inode_logged()
-  btrfs: remove no longer needed checks for NULL log context
-  btrfs: do not log new dentries when logging that a new name exists
-  btrfs: always update the logged transaction when logging new names
-  btrfs: avoid expensive search when dropping inode items from log
-  btrfs: add helper to truncate inode items when logging inode
-  btrfs: avoid expensive search when truncating inode items from the log
-  btrfs: avoid search for logged i_size when logging inode if possible
-  btrfs: avoid attempt to drop extents when logging inode for the first time
-  btrfs: do not commit delayed inode when logging a file in full sync mode
+Found during a code review.
 
-This is patch 6/10 and test results are listed in the change log of the
-last patch in the set.
-
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1edb9ca69e8a ("net: sxgbe: add basic framework for Samsung 10Gb ethernet driver")
+Signed-off-by: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251121123834.97748-1-aleksei.kodanev@bell-sw.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/tree-log.c |   32 +++++++++++++++++++-------------
- 1 file changed, 19 insertions(+), 13 deletions(-)
+ drivers/net/ethernet/samsung/sxgbe/sxgbe_main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -3955,6 +3955,21 @@ static int drop_objectid_items(struct bt
- 	return ret;
- }
+diff --git a/drivers/net/ethernet/samsung/sxgbe/sxgbe_main.c b/drivers/net/ethernet/samsung/sxgbe/sxgbe_main.c
+index b1dd6189638b3..9c745d48f54b0 100644
+--- a/drivers/net/ethernet/samsung/sxgbe/sxgbe_main.c
++++ b/drivers/net/ethernet/samsung/sxgbe/sxgbe_main.c
+@@ -1518,8 +1518,10 @@ static int sxgbe_rx(struct sxgbe_priv_data *priv, int limit)
  
-+static int truncate_inode_items(struct btrfs_trans_handle *trans,
-+				struct btrfs_root *log_root,
-+				struct btrfs_inode *inode,
-+				u64 new_size, u32 min_type)
-+{
-+	int ret;
-+
-+	do {
-+		ret = btrfs_truncate_inode_items(trans, log_root, inode,
-+						 new_size, min_type, NULL);
-+	} while (ret == -EAGAIN);
-+
-+	return ret;
-+}
-+
- static void fill_inode_item(struct btrfs_trans_handle *trans,
- 			    struct extent_buffer *leaf,
- 			    struct btrfs_inode_item *item,
-@@ -4548,13 +4563,9 @@ static int btrfs_log_prealloc_extents(st
- 			 * Avoid logging extent items logged in past fsync calls
- 			 * and leading to duplicate keys in the log tree.
- 			 */
--			do {
--				ret = btrfs_truncate_inode_items(trans,
--							 root->log_root,
--							 inode, truncate_offset,
--							 BTRFS_EXTENT_DATA_KEY,
--							 NULL);
--			} while (ret == -EAGAIN);
-+			ret = truncate_inode_items(trans, root->log_root, inode,
-+						   truncate_offset,
-+						   BTRFS_EXTENT_DATA_KEY);
- 			if (ret)
- 				goto out;
- 			dropped_extents = true;
-@@ -5531,12 +5542,7 @@ static int btrfs_log_inode(struct btrfs_
- 					  &inode->runtime_flags);
- 				clear_bit(BTRFS_INODE_COPY_EVERYTHING,
- 					  &inode->runtime_flags);
--				while(1) {
--					ret = btrfs_truncate_inode_items(trans,
--						log, inode, 0, 0, NULL);
--					if (ret != -EAGAIN)
--						break;
--				}
-+				ret = truncate_inode_items(trans, log, inode, 0, 0);
- 			}
- 		} else if (test_and_clear_bit(BTRFS_INODE_COPY_EVERYTHING,
- 					      &inode->runtime_flags) ||
+ 		skb = priv->rxq[qnum]->rx_skbuff[entry];
+ 
+-		if (unlikely(!skb))
++		if (unlikely(!skb)) {
+ 			netdev_err(priv->dev, "rx descriptor is not consistent\n");
++			break;
++		}
+ 
+ 		prefetch(skb->data - NET_IP_ALIGN);
+ 		priv->rxq[qnum]->rx_skbuff[entry] = NULL;
+-- 
+2.51.0
+
 
 
 
