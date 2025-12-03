@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-198609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2840CA11D9
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:44:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDD16CA0F9F
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:29:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C4AF9300214E
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:44:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 42CC5309C071
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:28:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C0B232FA16;
-	Wed,  3 Dec 2025 15:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 147F634B1AE;
+	Wed,  3 Dec 2025 16:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zYoNdTWl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HQWJEQEZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4823C32FA07;
-	Wed,  3 Dec 2025 15:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A28432ED4D;
+	Wed,  3 Dec 2025 16:43:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777108; cv=none; b=Mxwyrgt1WyL4FGJLlGHPyaAMRk8Hgjo1oF7kLalCOaTrRMpWg73w7G59NAqR1hCSZOUW37GUzkmvmeVWr6iol8jhAUlqGD2j7uMlSFz/hW9gnpXw3jvPTA21GQmwpm4EvRCotQRYxwo10AvReoOeDo1mChIriCY0SZzTHvz9Ths=
+	t=1764780226; cv=none; b=nmQy8u4DMEwY/ElXfRM4LuUZvXAzkgcFNMOf6jVUlTTWxbLsNA+5gkKNuObUCN/JIb2NcymR4+8srJS+4DA1ds+meRJZyZqeEPH111hu2hmBbFJKeNwakiQUSDFpS5ATMWn50QGWjE5eCe2HIVX6J84DYYt7qD5M/xyeumHxxNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777108; c=relaxed/simple;
-	bh=Nn67rhH3+VlOiSHlaP6SW5uCvBSF4OpFjQHlmUH+gQU=;
+	s=arc-20240116; t=1764780226; c=relaxed/simple;
+	bh=8Uxu+NFHa9q8noKCU1HQUsYeS4FMBEkWz5wZ9ZDVg/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OoJ2fOiY5jr7a4jMA9Lqroaj1eZV5yQzQkWA1AQ52J8nvTsXwQXkumgvvIBR03CVnX68ixbjyOJvVNYNBGJaEj3A65DPhcko5ylw4Fyzo0Hbaqhqi38qNoBs8YQc8jVU3mkQ1dlWra5PJFbY1HuHHEPNjCa2Wi/XuHEoOdpU1BY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zYoNdTWl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA65DC4CEF5;
-	Wed,  3 Dec 2025 15:51:47 +0000 (UTC)
+	 MIME-Version; b=OYXrNfUFijZeYqxSZU1njZk3lqYuonxhZt2Id7Wik5F+j9z3bevrxdS2+BYAGLc/6BY7ZYBFxtBSaadFPdFB02ZKbFjut+D3DxLbfq+r6Nu1gOJdyWxk1SuXI2yIl34bwzoH0SRDemd3MCQGoBD1Fp8j4r/DbxAKYltK5TREsEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HQWJEQEZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F5D2C116B1;
+	Wed,  3 Dec 2025 16:43:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777108;
-	bh=Nn67rhH3+VlOiSHlaP6SW5uCvBSF4OpFjQHlmUH+gQU=;
+	s=korg; t=1764780226;
+	bh=8Uxu+NFHa9q8noKCU1HQUsYeS4FMBEkWz5wZ9ZDVg/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zYoNdTWlX8aHklo1AbY8euVfrX6ugSwfWMo2wHiri0oCq8CNfa0nWmUhFnSxw0M60
-	 0yBtX9MSihB3Nnk4oqvvbSwQ65iNaEh2Gjp7LxgfKjbRGPwAcLJNpywD5axJfWAaSY
-	 saYTeP080As5diQTXgcbNnERpiDMXQB1j+ua7z00=
+	b=HQWJEQEZQuLODAdi7umHaLb4fJ/TvOp3mxB6S3DpV41LYcaXvh2gyjza+YIBO9Sia
+	 EDKNOKITiJEmrwHzaIJhNrkHEgOoQGXZOMK9cp5iBbTuVFGASRpt+4fy0+U+tjTqcJ
+	 id4g6zNz1oQY5dLJqox5ts7iOnWEkcKbO7j/5t/8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20M=C3=BChlbacher?= <tmuehlbacher@posteo.net>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.17 085/146] can: sun4i_can: sun4i_can_interrupt(): fix max irq loop handling
+	Alejandro Colomar <alx@kernel.org>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 461/568] kernel.h: Move ARRAY_SIZE() to a separate header
 Date: Wed,  3 Dec 2025 16:27:43 +0100
-Message-ID: <20251203152349.573255217@linuxfoundation.org>
+Message-ID: <20251203152457.589244778@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,50 +60,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Alejandro Colomar <alx@kernel.org>
 
-commit 76544beea7cfe5bcce6d60f53811657b88ec8be1 upstream.
+[ Upstream commit 3cd39bc3b11b8d34b7d7c961a35fdfd18b0ebf75 ]
 
-Reading the interrupt register `SUN4I_REG_INT_ADDR` causes all of its bits
-to be reset. If we ever reach the condition of handling more than
-`SUN4I_CAN_MAX_IRQ` IRQs, we will have read the register and reset all its
-bits but without actually handling the interrupt inside of the loop body.
+Touching files so used for the kernel,
+forces 'make' to recompile most of the kernel.
 
-This may, among other issues, cause us to never `netif_wake_queue()` again
-after a transmission interrupt.
+Having those definitions in more granular files
+helps avoid recompiling so much of the kernel.
 
-Fixes: 0738eff14d81 ("can: Allwinner A10/A20 CAN Controller support - Kernel module")
-Cc: stable@vger.kernel.org
-Co-developed-by: Thomas Mühlbacher <tmuehlbacher@posteo.net>
-Signed-off-by: Thomas Mühlbacher <tmuehlbacher@posteo.net>
-Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Link: https://patch.msgid.link/20251116-sun4i-fix-loop-v1-1-3d76d3f81950@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alejandro Colomar <alx@kernel.org>
+Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Link: https://lore.kernel.org/r/20230817143352.132583-2-lucas.segarra.fernandez@intel.com
+[andy: reduced to cover only string.h for now]
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Stable-dep-of: 896f1a2493b5 ("net: qlogic/qede: fix potential out-of-bounds read in qede_tpa_cont() and qede_tpa_end()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/sun4i_can.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/array_size.h | 13 +++++++++++++
+ include/linux/kernel.h     |  7 +------
+ include/linux/string.h     |  1 +
+ 3 files changed, 15 insertions(+), 6 deletions(-)
+ create mode 100644 include/linux/array_size.h
 
---- a/drivers/net/can/sun4i_can.c
-+++ b/drivers/net/can/sun4i_can.c
-@@ -657,8 +657,8 @@ static irqreturn_t sun4i_can_interrupt(i
- 	u8 isrc, status;
- 	int n = 0;
+diff --git a/include/linux/array_size.h b/include/linux/array_size.h
+new file mode 100644
+index 0000000000000..06d7d83196ca3
+--- /dev/null
++++ b/include/linux/array_size.h
+@@ -0,0 +1,13 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _LINUX_ARRAY_SIZE_H
++#define _LINUX_ARRAY_SIZE_H
++
++#include <linux/compiler.h>
++
++/**
++ * ARRAY_SIZE - get the number of elements in array @arr
++ * @arr: array to be sized
++ */
++#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]) + __must_be_array(arr))
++
++#endif  /* _LINUX_ARRAY_SIZE_H */
+diff --git a/include/linux/kernel.h b/include/linux/kernel.h
+index fe6efb24d151a..50254bb6b7a98 100644
+--- a/include/linux/kernel.h
++++ b/include/linux/kernel.h
+@@ -13,6 +13,7 @@
  
--	while ((isrc = readl(priv->base + SUN4I_REG_INT_ADDR)) &&
--	       (n < SUN4I_CAN_MAX_IRQ)) {
-+	while ((n < SUN4I_CAN_MAX_IRQ) &&
-+	       (isrc = readl(priv->base + SUN4I_REG_INT_ADDR))) {
- 		n++;
- 		status = readl(priv->base + SUN4I_REG_STA_ADDR);
+ #include <linux/stdarg.h>
+ #include <linux/align.h>
++#include <linux/array_size.h>
+ #include <linux/limits.h>
+ #include <linux/linkage.h>
+ #include <linux/stddef.h>
+@@ -48,12 +49,6 @@
+ #define READ			0
+ #define WRITE			1
  
+-/**
+- * ARRAY_SIZE - get the number of elements in array @arr
+- * @arr: array to be sized
+- */
+-#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]) + __must_be_array(arr))
+-
+ #define PTR_IF(cond, ptr)	((cond) ? (ptr) : NULL)
+ 
+ #define u64_to_user_ptr(x) (		\
+diff --git a/include/linux/string.h b/include/linux/string.h
+index 422606e98cc42..e7ade5223d422 100644
+--- a/include/linux/string.h
++++ b/include/linux/string.h
+@@ -2,6 +2,7 @@
+ #ifndef _LINUX_STRING_H_
+ #define _LINUX_STRING_H_
+ 
++#include <linux/array_size.h>
+ #include <linux/compiler.h>	/* for inline */
+ #include <linux/types.h>	/* for size_t */
+ #include <linux/stddef.h>	/* for NULL */
+-- 
+2.51.0
+
 
 
 
