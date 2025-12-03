@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-198773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B34BCA067C
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:25:03 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17034C9F75B
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:31:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B5C7E312C02A
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:09:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7D74230007AD
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:31:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ED35349AE5;
-	Wed,  3 Dec 2025 16:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D2C730C61E;
+	Wed,  3 Dec 2025 15:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qhouETtI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O8obn1ce"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D4B34887C;
-	Wed,  3 Dec 2025 16:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C4A30BF6F;
+	Wed,  3 Dec 2025 15:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777637; cv=none; b=hAq0aMlBRH8tw7TAenaXoLsV5fwO4qctD5UoRGh0ncdueomNj+3sVxP0rSbYht4vlGuMvxft++IqpSz3OrN6QL3pRQVR+E2v3LvkvuwC7ed9UKEE6vAywNfC2gVeTRB/03nVS1zc1dWEjyUBxwI4iWkwlxUl0HRmxiotmnBKlAw=
+	t=1764775868; cv=none; b=lnkr223XpPGTuvhG2uz39rAyeV9sH2FDochyQvomhiUDC1TJKuyww8HodQoOzUswoaidOxcUS8CJ34KTw6vSlwxs57jJwi1rgwFSQGDv2OLrO/c+sgk84XDB3YP5h1ZzGmuh72aSmChapl7RxXpB/3Xogp56xd4WiquRoIXfGcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777637; c=relaxed/simple;
-	bh=gHeQljv4VUMqtC4FK5hknlN7AXer1/6H0R4zWi8VQQY=;
+	s=arc-20240116; t=1764775868; c=relaxed/simple;
+	bh=NmQHDuLchgQlO00wh/iECx/eLc5OI0q38FMO6x6tIg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rjyGTDpK+9CdWdN1A4qV95ezvvlvPC5xV/wlr34IfWXYOWPUtP3j8y/p8AbtStYROjRhFg8DiBIH8Vxa+ljteP/bvgrlpilTpwnwKN4Xpe3JxAf9VTzSPGkiUV0d+/PNW9T2RJ9G7mk4gCEHT36o8qQ+Up4mbzNNSYGyVtNPDSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qhouETtI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6820C4CEF5;
-	Wed,  3 Dec 2025 16:00:36 +0000 (UTC)
+	 MIME-Version; b=CoJDx0gY+G2lOJgGB4AgZSkRnwozx/zZTGeccRMDnSxG8OEJ9kp0bwpamu63rKqDklfec7fevdmvMAILQoH7ovJkTH9oWfCoP8bTWpF5AYC+2bKI6uoliS3nqrHGCh+GbKC46atMfSG0js1vKafA5ygbrf7RlHKMHzsYQPg6i80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O8obn1ce; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1732C4CEF5;
+	Wed,  3 Dec 2025 15:31:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777637;
-	bh=gHeQljv4VUMqtC4FK5hknlN7AXer1/6H0R4zWi8VQQY=;
+	s=korg; t=1764775868;
+	bh=NmQHDuLchgQlO00wh/iECx/eLc5OI0q38FMO6x6tIg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qhouETtItW0Cmh8hS3sdArkUHqodUVdP6K8k6pJpGFEO1GBvcbDd3K3qhkzo8KMNc
-	 A4LWSNOH3hZ+Yx2IV+XUKL4RRSFgaM5kRnnnnS17bve3OHcOxKEmRZ4u6pXpT+M4Rx
-	 mjCg+HaIMag0QxX2pLLUAhgChDoLm9mznFReKvuk=
+	b=O8obn1ceqiQgVJcIOfiyiZuNn/bgnX0z/2PKWAqIRF+CznoEukTa0J9Zlq/5skMuV
+	 eIa0HybWfC1EzAKN4R3Y1DZzVm+00K/y3Nmwa1Kbxg1kLTz7GGC+AZV8Kji707OKwB
+	 vg/xZOE91mIERwGg4rN4HYAE6C2QpjrX62VseZtI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Shang song (Lenovo)" <shangsong2@foxmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 066/392] ACPI: PRM: Skip handlers with NULL handler_address or NULL VA
+	Miaoqian Lin <linmq006@gmail.com>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.10 012/300] fbdev: valkyriefb: Fix reference count leak in valkyriefb_init
 Date: Wed,  3 Dec 2025 16:23:36 +0100
-Message-ID: <20251203152416.539049391@linuxfoundation.org>
+Message-ID: <20251203152400.913498729@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,66 +59,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shang song (Lenovo) <shangsong2@foxmail.com>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-[ Upstream commit 311942ce763e21dacef7e53996d5a1e19b8adab1 ]
+commit eb53368f8d6e2dfba84c8a94d245719bcf9ae270 upstream.
 
-If handler_address or mapped VA is NULL, the related buffer address and
-VA can be ignored, so make acpi_parse_prmt() skip the current handler
-in those cases.
+The of_find_node_by_name() function returns a device tree node with its
+reference count incremented. The caller is responsible for calling
+of_node_put() to release this reference when done.
 
-Signed-off-by: Shang song (Lenovo) <shangsong2@foxmail.com>
-Link: https://patch.msgid.link/20250826030229.834901-1-shangsong2@foxmail.com
-[ rjw: Subject and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Found via static analysis.
+
+Fixes: cc5d0189b9ba ("[PATCH] powerpc: Remove device_node addrs/n_addr")
+Cc: stable@vger.kernel.org
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/prmt.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ drivers/video/fbdev/valkyriefb.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
-index 6290ed84c5950..04228582a1f56 100644
---- a/drivers/acpi/prmt.c
-+++ b/drivers/acpi/prmt.c
-@@ -138,15 +138,28 @@ acpi_parse_prmt(union acpi_subtable_headers *header, const unsigned long end)
- 		th = &tm->handlers[cur_handler];
+--- a/drivers/video/fbdev/valkyriefb.c
++++ b/drivers/video/fbdev/valkyriefb.c
+@@ -336,11 +336,13 @@ int __init valkyriefb_init(void)
  
- 		guid_copy(&th->guid, (guid_t *)handler_info->handler_guid);
-+
-+		/*
-+		 * Print an error message if handler_address is NULL, the parse of VA also
-+		 * can be skipped.
-+		 */
-+		if (unlikely(!handler_info->handler_address)) {
-+			pr_info("Skipping handler with NULL address for GUID: %pUL",
-+					(guid_t *)handler_info->handler_guid);
-+			continue;
-+		}
-+
- 		th->handler_addr =
- 			(void *)efi_pa_va_lookup(&th->guid, handler_info->handler_address);
- 		/*
--		 * Print a warning message if handler_addr is zero which is not expected to
--		 * ever happen.
-+		 * Print a warning message and skip the parse of VA if handler_addr is zero
-+		 * which is not expected to ever happen.
- 		 */
--		if (unlikely(!th->handler_addr))
-+		if (unlikely(!th->handler_addr)) {
- 			pr_warn("Failed to find VA of handler for GUID: %pUL, PA: 0x%llx",
- 				&th->guid, handler_info->handler_address);
-+			continue;
-+		}
+ 		if (of_address_to_resource(dp, 0, &r)) {
+ 			printk(KERN_ERR "can't find address for valkyrie\n");
++			of_node_put(dp);
+ 			return 0;
+ 		}
  
- 		th->static_data_buffer_addr =
- 			efi_pa_va_lookup(&th->guid, handler_info->static_data_buffer_address);
--- 
-2.51.0
-
+ 		frame_buffer_phys = r.start;
+ 		cmap_regs_phys = r.start + 0x304000;
++		of_node_put(dp);
+ 	}
+ #endif /* ppc (!CONFIG_MAC) */
+ 
 
 
 
