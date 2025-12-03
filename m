@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-199579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF8E6CA0770
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:30:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFAF0CA17D4
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:54:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2149E30012E0
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:30:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 196F03068004
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:48:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D32B355800;
-	Wed,  3 Dec 2025 16:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EFDE34B42F;
+	Wed,  3 Dec 2025 16:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dm/HDQyK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G/CBGI5y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55CDF34574D;
-	Wed,  3 Dec 2025 16:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F52734B417;
+	Wed,  3 Dec 2025 16:14:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780260; cv=none; b=q9rIZ/PmKG7FbaIWysjiNYmFokhTNQpD4y8f/xSJc4skwkHXwuaWZxJu4vN6bDPcCWSpvtS3gzb6uVAXzAt5vLepRbP3RdEOsn7Ld+Au5zIvGhqENNGbOJ7dSs5DiY7vzw19Q5Y2QHi+fh1rDCDhmMYGJnxD5lOR4LOOC3SfUeY=
+	t=1764778471; cv=none; b=nB0aVsM/r1XKioZyJvB/IxaWWrokDCWB0CLHhsfnzpOG+cyYeALjq9z5Tprg6/yXHPd8jAfXj64wqtRzJ44q0NjFwOWJlfvv/wioEkry28fLsDZy0XAVTjdXvKqW7KwykUAzP6CM1GpBrqPAom5VEbQGByAdNFG7U8FDDyoKQvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780260; c=relaxed/simple;
-	bh=rifE517oxpvPMUogXkzhAyyUvN0+X+6Cj/IjJcyQ8IQ=;
+	s=arc-20240116; t=1764778471; c=relaxed/simple;
+	bh=TatD9wd6PESc8TWB/WEWGXyUfe01wOHqJDh0kcPzHVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O2+8BWpkltnYyB3CbvAE/U4AhenIbuQ6hgV00Cu/nHbwNr1psE2MogNWDch6gYD+kIRuHpWbnwCQFW06ybSsXf6pT4u1nxb6WBCqRxWhsFWiSiycpoxKE7ij366N7YnwifphYdK2cKvPS8vuMVVNKnaqSpfuhVBt5PWnMUp0TkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dm/HDQyK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B705DC116B1;
-	Wed,  3 Dec 2025 16:44:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qCYpuX+oIXrUgfEnYt06sNZwHjNX5Gq5wl1BTU96woQlu62MTDc8ds8iaV30WWf5K+l43JbizoO9B6j0FJWWiXya+hworDo2szc5nSIX+eHsWKpXTG3II/EdyJapiChUHajjOcfOo97fPOp/DeKLoJAHnlAAV9yQ9JnEjDctrUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G/CBGI5y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 447B4C4CEF5;
+	Wed,  3 Dec 2025 16:14:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780260;
-	bh=rifE517oxpvPMUogXkzhAyyUvN0+X+6Cj/IjJcyQ8IQ=;
+	s=korg; t=1764778470;
+	bh=TatD9wd6PESc8TWB/WEWGXyUfe01wOHqJDh0kcPzHVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dm/HDQyKTm+ZFxT8OOIgBvtYv/PeH5UkYSa0aJMdlj+xDy2HwifOeNWR7zzotU+t4
-	 eyXOiW6W+Hf7Sunnb7dMZhi+yNtHSOAs90gYl8OxWh1rt+mftRyr11sOXByyh/bKrR
-	 9HyHwa6NNpoOuL3ymx0G+6oqvXVq7YMXMr+WanRo=
+	b=G/CBGI5y+G2zvJiqy924uc0xgF1ud5X/+c+hRxbEKlxxlcvm4oHxWMtH+A76gqJbY
+	 VpBGj7sXH6i9uO8rExGe+mMEqa55+ulpBKmlmAAuxyVL1l4WcfAF3MS+nvP49OThk/
+	 9NHZcBmIHjKNSqrR9/ReIDlYXhENa0q/DlX2pflI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 504/568] net: dsa: sja1105: fix SGMII linking at 10M or 100M but not passing traffic
+	=?UTF-8?q?Thomas=20M=C3=BChlbacher?= <tmuehlbacher@posteo.net>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 5.15 356/392] can: sja1000: fix max irq loop handling
 Date: Wed,  3 Dec 2025 16:28:26 +0100
-Message-ID: <20251203152459.173408822@linuxfoundation.org>
+Message-ID: <20251203152427.266961110@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,79 +58,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Thomas Mühlbacher <tmuehlbacher@posteo.net>
 
-[ Upstream commit da62abaaa268357b1aa66b372ace562189a05df1 ]
+commit 30db4451c7f6aabcada029b15859a76962ec0cf8 upstream.
 
-When using the SGMII PCS as a fixed-link chip-to-chip connection, it is
-easy to miss the fact that traffic passes only at 1G, since that's what
-any normal such connection would use.
+Reading the interrupt register `SJA1000_IR` causes all of its bits to be
+reset. If we ever reach the condition of handling more than
+`SJA1000_MAX_IRQ` IRQs, we will have read the register and reset all its
+bits but without actually handling the interrupt inside of the loop
+body.
 
-When using the SGMII PCS connected towards an on-board PHY or an SFP
-module, it is immediately noticeable that when the link resolves to a
-speed other than 1G, traffic from the MAC fails to pass: TX counters
-increase, but nothing gets decoded by the other end, and no local RX
-counters increase either.
+This may, among other issues, cause us to never `netif_wake_queue()`
+again after a transmission interrupt.
 
-Artificially lowering a fixed-link rate to speed = <100> makes us able
-to see the same issue as in the case of having an SGMII PHY.
-
-Some debugging shows that the XPCS configuration is A-OK, but that the
-MAC Configuration Table entry for the port has the SPEED bits still set
-to 1000Mbps, due to a special condition in the driver. Deleting that
-condition, and letting the resolved link speed be programmed directly
-into the MAC speed field, results in a functional link at all 3 speeds.
-
-This piece of evidence, based on testing on both generations with SGMII
-support (SJA1105S and SJA1110A) directly contradicts the statement from
-the blamed commit that "the MAC is fixed at 1 Gbps and we need to
-configure the PCS only (if even that)". Worse, that statement is not
-backed by any documentation, and no one from NXP knows what it might
-refer to.
-
-I am unable to recall sufficient context regarding my testing from March
-2020 to understand what led me to draw such a braindead and factually
-incorrect conclusion. Yet, there is nothing of value regarding forcing
-the MAC speed, either for SGMII or 2500Base-X (introduced at a later
-stage), so remove all such logic.
-
-Fixes: ffe10e679cec ("net: dsa: sja1105: Add support for the SGMII port")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20251122111324.136761-1-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 429da1cc841b ("can: Driver for the SJA1000 CAN controller")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Mühlbacher <tmuehlbacher@posteo.net>
+Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://patch.msgid.link/20251115153437.11419-1-tmuehlbacher@posteo.net
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/sja1105/sja1105_main.c | 7 -------
- 1 file changed, 7 deletions(-)
+ drivers/net/can/sja1000/sja1000.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
-index 8350696bdda5b..cb6f924b92ac0 100644
---- a/drivers/net/dsa/sja1105/sja1105_main.c
-+++ b/drivers/net/dsa/sja1105/sja1105_main.c
-@@ -1308,14 +1308,7 @@ static int sja1105_set_port_speed(struct sja1105_private *priv, int port,
- 	 * table, since this will be used for the clocking setup, and we no
- 	 * longer need to store it in the static config (already told hardware
- 	 * we want auto during upload phase).
--	 * Actually for the SGMII port, the MAC is fixed at 1 Gbps and
--	 * we need to configure the PCS only (if even that).
- 	 */
--	if (priv->phy_mode[port] == PHY_INTERFACE_MODE_SGMII)
--		speed = priv->info->port_speed[SJA1105_SPEED_1000MBPS];
--	else if (priv->phy_mode[port] == PHY_INTERFACE_MODE_2500BASEX)
--		speed = priv->info->port_speed[SJA1105_SPEED_2500MBPS];
--
- 	mac[port].speed = speed;
+--- a/drivers/net/can/sja1000/sja1000.c
++++ b/drivers/net/can/sja1000/sja1000.c
+@@ -508,8 +508,8 @@ irqreturn_t sja1000_interrupt(int irq, v
+ 	if (priv->read_reg(priv, SJA1000_IER) == IRQ_OFF)
+ 		goto out;
  
- 	return 0;
--- 
-2.51.0
-
+-	while ((isrc = priv->read_reg(priv, SJA1000_IR)) &&
+-	       (n < SJA1000_MAX_IRQ)) {
++	while ((n < SJA1000_MAX_IRQ) &&
++	       (isrc = priv->read_reg(priv, SJA1000_IR))) {
+ 
+ 		status = priv->read_reg(priv, SJA1000_SR);
+ 		/* check for absent controller due to hw unplug */
 
 
 
