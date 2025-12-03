@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-199645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BECEBCA02A6
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:52:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5669BCA0FE4
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:31:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E2CD3301EC5F
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:48:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6AE3530C7BEE
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:29:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE5E8376BCE;
-	Wed,  3 Dec 2025 16:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7053D3590A8;
+	Wed,  3 Dec 2025 16:56:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hwWVmOIH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Anqc3LGI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E3B36BCDB;
-	Wed,  3 Dec 2025 16:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 237B5358D12;
+	Wed,  3 Dec 2025 16:56:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780483; cv=none; b=c/ZeaPHioYhVDRK/fQ3uifQcZ5SBiz+dvumjH61GyCpL7iDSSptj0J4QkWCTRWqf86ZIWvOy2YdwOtEasMXUmRT/YC4KWqWjzX089egGqzfL7hiEhyp+CoBVdYEePMSZndIw4xtZcPBFDw2a6ciGCW7oEqCIskmQla8ooD6zjHg=
+	t=1764781005; cv=none; b=CsLHdc1uPEGfmJfF1Y7OPbwCaP6zOtyS6dVsQKaHyM1yFNw1h2DcYJji6KnA8h37V2Q1rTDCjWIJAhqh/XpJfkqAN5Oo3H4WEMF2gNK12iyJTqCFn6kcGN8J2qobe8SKJNPvD9eu7yCuJXNSj9xkaaCfh3VdM23f+e/BNw6rE6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780483; c=relaxed/simple;
-	bh=6wAX26u5FrY13PvbPzgJBF58SoX86r89k64uTRgva1U=;
+	s=arc-20240116; t=1764781005; c=relaxed/simple;
+	bh=8Rk3bu/rEH8foIaH+1PZuu8xMxgH+CRCeJ+AsHTBedA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qxrtp4PwEvVKuOuIj/Wro8O7DECW4/wRIDqMCTozm7mNFpUL9oFNwlq727w8C87lFpE3uDxH0NGUgm53GvWtpkSHFZ/jKNtFiy3cjBYOvo5v8cchLZqR4NDVaz4zOb0yv2lnFd7imYereLXaoCnyzPXUCHSwb6uHz2GRGkQsRf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hwWVmOIH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C838C4CEF5;
-	Wed,  3 Dec 2025 16:48:02 +0000 (UTC)
+	 MIME-Version; b=LqEfGRT38NyiLt0qfgsXidUNtyTdahSw84a4rt3Ubi4DnRtCanhpzhcFuVHIJJO+EXj1CE0BNWRpY7wXSuUjYt95fXX5JOVgf5AZbr5BswKy9F06AuPPYNwOC/y+EZVZrk5TjD7iqgrm5wqkyJx5r1E+363el1S2oxsemH/nbIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Anqc3LGI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98C53C4CEF5;
+	Wed,  3 Dec 2025 16:56:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780482;
-	bh=6wAX26u5FrY13PvbPzgJBF58SoX86r89k64uTRgva1U=;
+	s=korg; t=1764781005;
+	bh=8Rk3bu/rEH8foIaH+1PZuu8xMxgH+CRCeJ+AsHTBedA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hwWVmOIHz3G475/NsQgtl4HdsJwioJl3nmwNEPgwbBZuu9vhDTuER6f69HcWEObtS
-	 xy0PZf2Lbqbm+hl5y2ZdpQfbICr09+LgUmCRuutxnoWf+yJQsVvQ5aNs9xaRUPZ7m9
-	 D3c28A35fXgYeKoL0Thbfzi1AtnFKtcoqpqTNnW4=
+	b=Anqc3LGI7VkUsfOZfF6RQ8Aa+6xAm8xSA7b7e0NudptfxMiWymxQpMG9xfiRhjwxz
+	 f4XJ445hFt/QvUoQx8YbQXRsRLxYRNYF2MgttDus3Dylgxy3q3peju8H/bAZvV1xCn
+	 ZIbKwhV7Y6kRppvwi1XItV4sQl57DZd9TWDp9no8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Kuen-Han Tsai <khtsai@google.com>
-Subject: [PATCH 6.1 537/568] usb: gadget: f_eem: Fix memory leak in eem_unwrap
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 06/93] Bluetooth: SMP: Fix not generating mackey and ltk when repairing
 Date: Wed,  3 Dec 2025 16:28:59 +0100
-Message-ID: <20251203152500.381167810@linuxfoundation.org>
+Message-ID: <20251203152336.739182386@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
+References: <20251203152336.494201426@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,76 +59,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuen-Han Tsai <khtsai@google.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit e4f5ce990818d37930cd9fb0be29eee0553c59d9 upstream.
+[ Upstream commit 545d7827b2cd5de5eb85580cebeda6b35b3ff443 ]
 
-The existing code did not handle the failure case of usb_ep_queue in the
-command path, potentially leading to memory leaks.
+The change eed467b517e8 ("Bluetooth: fix passkey uninitialized when used")
+introduced a goto that bypasses the creation of temporary mackey and ltk
+which are later used by the likes of DHKey Check step.
 
-Improve error handling to free all allocated resources on usb_ep_queue
-failure. This patch continues to use goto logic for error handling, as the
-existing error handling is complex and not easily adaptable to auto-cleanup
-helpers.
+Later ffee202a78c2 ("Bluetooth: Always request for user confirmation for
+Just Works (LE SC)") which means confirm_hint is always set in case
+JUST_WORKS so the branch checking for an existing LTK becomes pointless
+as confirm_hint will always be set, so this just merge both cases of
+malicious or legitimate devices to be confirmed before continuing with the
+pairing procedure.
 
-kmemleak results:
-  unreferenced object 0xffffff895a512300 (size 240):
-    backtrace:
-      slab_post_alloc_hook+0xbc/0x3a4
-      kmem_cache_alloc+0x1b4/0x358
-      skb_clone+0x90/0xd8
-      eem_unwrap+0x1cc/0x36c
-  unreferenced object 0xffffff8a157f4000 (size 256):
-    backtrace:
-      slab_post_alloc_hook+0xbc/0x3a4
-      __kmem_cache_alloc_node+0x1b4/0x2dc
-      kmalloc_trace+0x48/0x140
-      dwc3_gadget_ep_alloc_request+0x58/0x11c
-      usb_ep_alloc_request+0x40/0xe4
-      eem_unwrap+0x204/0x36c
-  unreferenced object 0xffffff8aadbaac00 (size 128):
-    backtrace:
-      slab_post_alloc_hook+0xbc/0x3a4
-      __kmem_cache_alloc_node+0x1b4/0x2dc
-      __kmalloc+0x64/0x1a8
-      eem_unwrap+0x218/0x36c
-  unreferenced object 0xffffff89ccef3500 (size 64):
-    backtrace:
-      slab_post_alloc_hook+0xbc/0x3a4
-      __kmem_cache_alloc_node+0x1b4/0x2dc
-      kmalloc_trace+0x48/0x140
-      eem_unwrap+0x238/0x36c
-
-Fixes: 4249d6fbc10f ("usb: gadget: eem: fix echo command packet response issue")
-Cc: stable@kernel.org
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://patch.msgid.link/20251103121814.1559719-1-khtsai@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://github.com/bluez/bluez/issues/1622
+Fixes: eed467b517e8 ("Bluetooth: fix passkey uninitialized when used")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_eem.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/bluetooth/smp.c | 31 +++++++------------------------
+ 1 file changed, 7 insertions(+), 24 deletions(-)
 
---- a/drivers/usb/gadget/function/f_eem.c
-+++ b/drivers/usb/gadget/function/f_eem.c
-@@ -479,8 +479,13 @@ static int eem_unwrap(struct gether *por
- 				req->complete = eem_cmd_complete;
- 				req->zero = 1;
- 				req->context = ctx;
--				if (usb_ep_queue(port->in_ep, req, GFP_ATOMIC))
-+				if (usb_ep_queue(port->in_ep, req, GFP_ATOMIC)) {
- 					DBG(cdev, "echo response queue fail\n");
-+					kfree(ctx);
-+					kfree(req->buf);
-+					usb_ep_free_request(ep, req);
-+					dev_kfree_skb_any(skb2);
-+				}
- 				break;
+diff --git a/net/bluetooth/smp.c b/net/bluetooth/smp.c
+index 4c00bc50de811..e7ee13fe83a74 100644
+--- a/net/bluetooth/smp.c
++++ b/net/bluetooth/smp.c
+@@ -2137,7 +2137,7 @@ static u8 smp_cmd_pairing_random(struct l2cap_conn *conn, struct sk_buff *skb)
+ 	struct smp_chan *smp = chan->data;
+ 	struct hci_conn *hcon = conn->hcon;
+ 	u8 *pkax, *pkbx, *na, *nb, confirm_hint;
+-	u32 passkey;
++	u32 passkey = 0;
+ 	int err;
  
- 			case 1:  /* echo response */
+ 	bt_dev_dbg(hcon->hdev, "conn %p", conn);
+@@ -2189,24 +2189,6 @@ static u8 smp_cmd_pairing_random(struct l2cap_conn *conn, struct sk_buff *skb)
+ 		smp_send_cmd(conn, SMP_CMD_PAIRING_RANDOM, sizeof(smp->prnd),
+ 			     smp->prnd);
+ 		SMP_ALLOW_CMD(smp, SMP_CMD_DHKEY_CHECK);
+-
+-		/* Only Just-Works pairing requires extra checks */
+-		if (smp->method != JUST_WORKS)
+-			goto mackey_and_ltk;
+-
+-		/* If there already exists long term key in local host, leave
+-		 * the decision to user space since the remote device could
+-		 * be legitimate or malicious.
+-		 */
+-		if (hci_find_ltk(hcon->hdev, &hcon->dst, hcon->dst_type,
+-				 hcon->role)) {
+-			/* Set passkey to 0. The value can be any number since
+-			 * it'll be ignored anyway.
+-			 */
+-			passkey = 0;
+-			confirm_hint = 1;
+-			goto confirm;
+-		}
+ 	}
+ 
+ mackey_and_ltk:
+@@ -2227,11 +2209,12 @@ static u8 smp_cmd_pairing_random(struct l2cap_conn *conn, struct sk_buff *skb)
+ 	if (err)
+ 		return SMP_UNSPECIFIED;
+ 
+-	confirm_hint = 0;
+-
+-confirm:
+-	if (smp->method == JUST_WORKS)
+-		confirm_hint = 1;
++	/* Always require user confirmation for Just-Works pairing to prevent
++	 * impersonation attacks, or in case of a legitimate device that is
++	 * repairing use the confirmation as acknowledgment to proceed with the
++	 * creation of new keys.
++	 */
++	confirm_hint = smp->method == JUST_WORKS ? 1 : 0;
+ 
+ 	err = mgmt_user_confirm_request(hcon->hdev, &hcon->dst, hcon->type,
+ 					hcon->dst_type, passkey, confirm_hint);
+-- 
+2.51.0
+
 
 
 
