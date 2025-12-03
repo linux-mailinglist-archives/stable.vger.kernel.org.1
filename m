@@ -1,50 +1,53 @@
-Return-Path: <stable+bounces-199119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C07F5CA179E
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:52:40 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98D31CA02A3
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:52:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 12100305578A
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:48:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 176BF301B13D
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:44:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9054134CFC4;
-	Wed,  3 Dec 2025 16:19:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A13D34E771;
+	Wed,  3 Dec 2025 16:19:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r5lQEFnM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m7k+zzcX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AE6F34CFAB;
-	Wed,  3 Dec 2025 16:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1A5034EEF6;
+	Wed,  3 Dec 2025 16:19:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778756; cv=none; b=OsigCJRRjU+hGBF81E7hnJcBsl3Z0P4Yq6gthIGgSnI8YSiqXcJbp3aOBRe9shCdlPCBrpHuj6z++xv9oYEFHLOpK/jLP78h+TKH6oIDpwKmtvfiQu8lLcVI3fM6rE62JbI22KafHWXPXVZBdgQCRetZsFcNt5z97JU34045BNg=
+	t=1764778792; cv=none; b=GCXlpHtikqK0qdH2kubDBi1z8vzQg65SIxW0r+LhrdzuEK2fi4rs3LLS+pERv95yPInOPU3Ta2rzZgUtABgT+NqTJMd6GeywoQ/03zsb3IelJLBum5wpvtnSHwEZwhkzcL8ta8tXL/3bnXeOUr6YbcyeiOzxydFsuYzZEG7N9kI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778756; c=relaxed/simple;
-	bh=sAb63ZfE01PW/IxPAlnwTBiaY4jDoyEH4rb9DfCHtpM=;
+	s=arc-20240116; t=1764778792; c=relaxed/simple;
+	bh=bVvGPP6PHSgW3l4mFmqkaOLo6ABFPhT2AjY90VrCncE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SsXyr6IEmXGbisZBoI2uFsJY0u4z4fyWk6Dpl/4FGv69896oV2jmrkk1hemVgBdYtvgf4wXjzNM/LSQxX6v3ly5kSfLHaVzNtAc2XfXuGpH1mFrrcsoAwWhmiTPg14NuoJIp6AA0j6w+hRI+/h/t9hu2O16BaSHEpJKvvTaaLTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r5lQEFnM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7473AC4CEF5;
-	Wed,  3 Dec 2025 16:19:15 +0000 (UTC)
+	 MIME-Version; b=hWFJ+kqjRthWf1l9f9ZTNHn11VA1kIBzRx6raiof6aGi8OYNX6/3y3o/c5bW3LJ5w+sA7FB9K+igx5f1jUIKkjUGmefxR16nzrP7B4vzOZAzS185flgeI67B3d86b6COqBH+GlNYWY43uzEp3dN2HIQ3TSKFTNfnJ9fV/5kSjmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m7k+zzcX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 058DCC4CEF5;
+	Wed,  3 Dec 2025 16:19:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778755;
-	bh=sAb63ZfE01PW/IxPAlnwTBiaY4jDoyEH4rb9DfCHtpM=;
+	s=korg; t=1764778792;
+	bh=bVvGPP6PHSgW3l4mFmqkaOLo6ABFPhT2AjY90VrCncE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r5lQEFnMsJSdn1W4ukcyCkdKMNzbo5DC/NAPh59nVqIcFqREiJLfRQKPXwCFukwGg
-	 oVN7wbC56ih/ubTVnvpqkSxsRDFQWCuuwyoXoH6kSX/+fE6Z+06b2dDCM4D5Tfx1F1
-	 zas/JcQMGzQ0yV1RjXwPYmMy9rTIRGZ98P8XegMQ=
+	b=m7k+zzcXwq+NdjfpHIgfQfGfW3NLWTl9yO8x5Nfzz5gmgI7PuOyqIwVNdDyae0FEo
+	 8mn5dDkwb/HIauCCMmfBz8zBGqJqsqg8eS6kaH5NddnZmrX1ODxbSSQvPpeAKHDFeD
+	 cTxkQHbk1+L5Uug/Y8rKcsuDxLZOa/Gvnvg7TtZc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.1 032/568] fbdev: valkyriefb: Fix reference count leak in valkyriefb_init
-Date: Wed,  3 Dec 2025 16:20:34 +0100
-Message-ID: <20251203152441.847933534@linuxfoundation.org>
+	Geliang Tang <geliang@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 033/568] mptcp: restore window probe
+Date: Wed,  3 Dec 2025 16:20:35 +0100
+Message-ID: <20251203152441.884615959@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
 References: <20251203152440.645416925@linuxfoundation.org>
@@ -63,41 +66,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit eb53368f8d6e2dfba84c8a94d245719bcf9ae270 upstream.
+commit a824084b98d8a1dbd6e85d0842a8eb5e73467f59 upstream.
 
-The of_find_node_by_name() function returns a device tree node with its
-reference count incremented. The caller is responsible for calling
-of_node_put() to release this reference when done.
+Since commit 72377ab2d671 ("mptcp: more conservative check for zero
+probes") the MPTCP-level zero window probe check is always disabled, as
+the TCP-level write queue always contains at least the newly allocated
+skb.
 
-Found via static analysis.
+Refine the relevant check tacking in account that the above condition
+and that such skb can have zero length.
 
-Fixes: cc5d0189b9ba ("[PATCH] powerpc: Remove device_node addrs/n_addr")
+Fixes: 72377ab2d671 ("mptcp: more conservative check for zero probes")
 Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Reported-by: Geliang Tang <geliang@kernel.org>
+Closes: https://lore.kernel.org/d0a814c364e744ca6b836ccd5b6e9146882e8d42.camel@kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Tested-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251028-net-mptcp-send-timeout-v1-3-38ffff5a9ec8@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/valkyriefb.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/mptcp/protocol.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/video/fbdev/valkyriefb.c
-+++ b/drivers/video/fbdev/valkyriefb.c
-@@ -331,11 +331,13 @@ static int __init valkyriefb_init(void)
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -1391,7 +1391,12 @@ alloc_skb:
+ 	if (copy == 0) {
+ 		u64 snd_una = READ_ONCE(msk->snd_una);
  
- 		if (of_address_to_resource(dp, 0, &r)) {
- 			printk(KERN_ERR "can't find address for valkyrie\n");
-+			of_node_put(dp);
+-		if (snd_una != msk->snd_nxt || tcp_write_queue_tail(ssk)) {
++		/* No need for zero probe if there are any data pending
++		 * either at the msk or ssk level; skb is the current write
++		 * queue tail and can be empty at this point.
++		 */
++		if (snd_una != msk->snd_nxt || skb->len ||
++		    skb != tcp_send_head(ssk)) {
+ 			tcp_remove_empty_skb(ssk);
  			return 0;
  		}
- 
- 		frame_buffer_phys = r.start;
- 		cmap_regs_phys = r.start + 0x304000;
-+		of_node_put(dp);
- 	}
- #endif /* ppc (!CONFIG_MAC) */
- 
 
 
 
