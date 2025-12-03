@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-198424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C9D4C9F8FD
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:41:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E96BECA0E76
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:20:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7501C30024C0
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:41:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 838B133B9F43
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:17:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02B6130F553;
-	Wed,  3 Dec 2025 15:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1274026E6F8;
+	Wed,  3 Dec 2025 16:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IYVA8ABI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zMqS0HkO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B237A30C37A;
-	Wed,  3 Dec 2025 15:41:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C76725B2FA;
+	Wed,  3 Dec 2025 16:08:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776498; cv=none; b=cD3ghbeiliHHiiqJM82dpgWVIfoWXrgZE/YWCG0GYJDVxKWpGhVowL7Hj6kRlSWAM2FUWMLI4aDj/YxBGFnNCjlTctwgVlc15rqmktzw5I8HY7kDBqM7mfhyoSs5R7WBeXIfYdFpfEYWDEw3fAIoEWN4hi+QL+K8eVewt2sPzqA=
+	t=1764778130; cv=none; b=lWsiIqSwKnM60CDMBAUNeWoM7VFpNnRnRbJ3xG5I3Tg51RbfuUQZUxYN9dIDtV5WyjKQDLcEVToCkma/z9/Dbpvm0UoY9Ki8yoaAToSGooC1LMXseiqVjoqn4KepZjzt/F7kwd+jHzwjpXKNhjmya3Fr0XDZF8M6u334LCJF/R0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776498; c=relaxed/simple;
-	bh=skWwdF2yERqkcChDT0IL7CgMH4YgpDagwk7ZlLfcTsw=;
+	s=arc-20240116; t=1764778130; c=relaxed/simple;
+	bh=9k1y1nY2v0TEjj/GViovYi7jhA2tpoAZJVeQi+Z8HYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PqMrUPaRyay/sEv9pAbIQXwzNRrEmvc0GekBpRvK1JCdUfaQf0ltRn2C0E43sLlBut5pNBUTHr0ilT83d/iWD4oecncHOmUjBUqhqy97nGA89KasVNYucAajFv6qC0qgNrvgbzWSM0ztiOzKPGJDixirj51fosWyAoEH75nNTEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IYVA8ABI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E8FDC4CEF5;
-	Wed,  3 Dec 2025 15:41:37 +0000 (UTC)
+	 MIME-Version; b=jFShBt9zkQnNpA20woUQVuaqIh2MIjJkQB15RxKVOn4HRCbeP0r4vxyTrDeiMGlKw+WGl4xhODRJj53b1Qp1oHHVXNflCmCklipPclv3HWSGjg56SVb9mkbQkfLX2j1Uvr4G0vo5XYl1+SplvOw+/X95XLMlqfT/tCY39kbkyrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zMqS0HkO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 759ADC4CEF5;
+	Wed,  3 Dec 2025 16:08:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776498;
-	bh=skWwdF2yERqkcChDT0IL7CgMH4YgpDagwk7ZlLfcTsw=;
+	s=korg; t=1764778129;
+	bh=9k1y1nY2v0TEjj/GViovYi7jhA2tpoAZJVeQi+Z8HYE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IYVA8ABIY7LN90rnMe8K3dB98jCsyIuGE9xWeG6Bm8QirtyPYJvSmSLOnJH/Yizq/
-	 JQDD4NAut7+pKFOuRQhPPfNqMBsLGEDj26UpRH28NR1zcSE9Ilp3oq86HTNp7RnPBp
-	 4e42SLvvWndKVTpRThxUe6RPpCU3EWnayAe3Ek3w=
+	b=zMqS0HkOL+Glol0kFVM/qpl9HgmIRVSK5/2UXzcabXXEAfamS+XN6WnmMmDsYrnPF
+	 e1yUDMmDvcy/rpO8qhOuKYumrTVAsQM3Le63rz30K1geiSxWQJIpRYb5cwR0zBpxZK
+	 rHf+paqEQsQ0WBNgwAhI1gNyzJKZKBLsW6nUQkXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haein Lee <lhi0729@kaist.ac.kr>,
-	Takashi Iwai <tiwai@suse.de>,
+	Gal Pressman <gal@nvidia.com>,
+	Nimrod Oren <noren@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 199/300] ALSA: usb-audio: Fix NULL pointer dereference in snd_usb_mixer_controls_badd
+Subject: [PATCH 5.15 253/392] net/mlx5e: Fix maxrate wraparound in threshold between units
 Date: Wed,  3 Dec 2025 16:26:43 +0100
-Message-ID: <20251203152407.997164743@linuxfoundation.org>
+Message-ID: <20251203152423.479430206@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haein Lee <lhi0729@kaist.ac.kr>
+From: Gal Pressman <gal@nvidia.com>
 
-[ Upstream commit 632108ec072ad64c8c83db6e16a7efee29ebfb74 ]
+[ Upstream commit a7bf4d5063c7837096aab2853224eb23628514d9 ]
 
-In snd_usb_create_streams(), for UAC version 3 devices, the Interface
-Association Descriptor (IAD) is retrieved via usb_ifnum_to_if(). If this
-call fails, a fallback routine attempts to obtain the IAD from the next
-interface and sets a BADD profile. However, snd_usb_mixer_controls_badd()
-assumes that the IAD retrieved from usb_ifnum_to_if() is always valid,
-without performing a NULL check. This can lead to a NULL pointer
-dereference when usb_ifnum_to_if() fails to find the interface descriptor.
+The previous calculation used roundup() which caused an overflow for
+rates between 25.5Gbps and 26Gbps.
+For example, a rate of 25.6Gbps would result in using 100Mbps units with
+value of 256, which would overflow the 8 bits field.
 
-This patch adds a NULL pointer check after calling usb_ifnum_to_if() in
-snd_usb_mixer_controls_badd() to prevent the dereference.
+Simplify the upper_limit_mbps calculation by removing the
+unnecessary roundup, and adjust the comparison to use <= to correctly
+handle the boundary condition.
 
-This issue was discovered by syzkaller, which triggered the bug by sending
-a crafted USB device descriptor.
-
-Fixes: 17156f23e93c ("ALSA: usb: add UAC3 BADD profiles support")
-Signed-off-by: Haein Lee <lhi0729@kaist.ac.kr>
-Link: https://patch.msgid.link/vwhzmoba9j2f.vwhzmob9u9e2.g6@dooray.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: d8880795dabf ("net/mlx5e: Implement DCBNL IEEE max rate")
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Reviewed-by: Nimrod Oren <noren@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1762681073-1084058-4-git-send-email-tariqt@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
-index c84e25b2b1fb9..6b9a472ea43cb 100644
---- a/sound/usb/mixer.c
-+++ b/sound/usb/mixer.c
-@@ -2999,6 +2999,8 @@ static int snd_usb_mixer_controls_badd(struct usb_mixer_interface *mixer,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
+index f2862100d1a2e..51fadfcda35a5 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
+@@ -587,18 +587,19 @@ static int mlx5e_dcbnl_ieee_setmaxrate(struct net_device *netdev,
+ 	struct mlx5_core_dev *mdev = priv->mdev;
+ 	u8 max_bw_value[IEEE_8021QAZ_MAX_TCS];
+ 	u8 max_bw_unit[IEEE_8021QAZ_MAX_TCS];
+-	__u64 upper_limit_mbps = roundup(255 * MLX5E_100MB, MLX5E_1GB);
++	__u64 upper_limit_mbps;
  	int i;
  
- 	assoc = usb_ifnum_to_if(dev, ctrlif)->intf_assoc;
-+	if (!assoc)
-+		return -EINVAL;
+ 	memset(max_bw_value, 0, sizeof(max_bw_value));
+ 	memset(max_bw_unit, 0, sizeof(max_bw_unit));
++	upper_limit_mbps = 255 * MLX5E_100MB;
  
- 	/* Detect BADD capture/playback channels from AS EP descriptors */
- 	for (i = 0; i < assoc->bInterfaceCount; i++) {
+ 	for (i = 0; i <= mlx5_max_tc(mdev); i++) {
+ 		if (!maxrate->tc_maxrate[i]) {
+ 			max_bw_unit[i]  = MLX5_BW_NO_LIMIT;
+ 			continue;
+ 		}
+-		if (maxrate->tc_maxrate[i] < upper_limit_mbps) {
++		if (maxrate->tc_maxrate[i] <= upper_limit_mbps) {
+ 			max_bw_value[i] = div_u64(maxrate->tc_maxrate[i],
+ 						  MLX5E_100MB);
+ 			max_bw_value[i] = max_bw_value[i] ? max_bw_value[i] : 1;
 -- 
 2.51.0
 
