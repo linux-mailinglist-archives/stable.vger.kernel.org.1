@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69426CA17D7
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:54:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 558E8CA054E
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:18:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 546B530690D4
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:48:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 35D8C325B196
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:05:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77B4D33A6F3;
-	Wed,  3 Dec 2025 15:55:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AE4526F47D;
+	Wed,  3 Dec 2025 16:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yr2da4pX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rovz0JGS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30483303A35;
-	Wed,  3 Dec 2025 15:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D3D25A2BB;
+	Wed,  3 Dec 2025 16:48:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777313; cv=none; b=kkgk6nmMD/plmMqdofR7a49aRiSPZSa0jT2y0dCJt/Uj/NhCoY5zCJo7fCLoRnaB7o00eH5HPjScCnSPlb++FrZ4fJaPKofAs9s2Qeyux8Bs2/cZjLwRv+rnoruACjpsulJlY+Rrzskeczw3VSuHos7pfb2TCbi8j6nXErnkZuU=
+	t=1764780523; cv=none; b=TLEEM07yx9E6o6Flx+RpIOb+0YY1gOoQXNIMM5ZWxqRqgCxLEOoZdm7vlJWzizEjcvKl+eqYAPEcF/xpAqUzAa3L0UahMpp0HVHt3KZld8b8ouOPWBje/1CwdeJh1cIjAFh+TlaeDhsPeblwlYRBsqZti8aecZwVLKWC//c1uEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777313; c=relaxed/simple;
-	bh=1wsTpKpUelKvUIyuGtskxe6ryCyGoLz7ael0bfVAFbY=;
+	s=arc-20240116; t=1764780523; c=relaxed/simple;
+	bh=CE2gIy2H8od57d8YdgPd3Le6/VBp1IMvngrKIoo+pNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CFN5dKbpNrY3qREWHDHKPIH4rPJFvCOWeijnk5USHVp7nXGlb3HQ2J8xwIsuk1JgvrBOeU3/gD7l6lM7yiNDV0hGf+sSdP926Re/dHpU3/A9MNiM1DwRiUY5ibmFJHR7pgi06PC/jCo6t2FC/7V9QhWwUwm4XEbwjFUuvGXMvCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yr2da4pX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63BB9C4CEF5;
-	Wed,  3 Dec 2025 15:55:12 +0000 (UTC)
+	 MIME-Version; b=HpdD8Uu9wk7EHX7AY2ICsd8LoDFvcRNtghjiyB2kYkgkojyQKCNwnezc+X7u0A4xSB5vCpcZJpY/Cyj2FJFVVZLezmbv70KpOlUSRydNjfr0XCaYrMCeemtcqWGpZ3P5wpn7lnmIk6cRB4dp9WLLIyps/sSNNAD7TCTz5ccnQxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rovz0JGS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C8DEC4CEF5;
+	Wed,  3 Dec 2025 16:48:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777312;
-	bh=1wsTpKpUelKvUIyuGtskxe6ryCyGoLz7ael0bfVAFbY=;
+	s=korg; t=1764780523;
+	bh=CE2gIy2H8od57d8YdgPd3Le6/VBp1IMvngrKIoo+pNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yr2da4pXnXmvYrpMwi1U9HFfvJen5jhd6/axaO3sgN/dpPmkgPZi4nTgmatqn+3mZ
-	 9o33Ho1JSeB2G9BEOflbl9l/ZWDXfYf/O6sYiOEZ0AcCBgkTlIuc+u4RDpPZNW2Bl3
-	 cgcViOldMSlqwlgahCgIhpR6DsptYCi56295mhSY=
+	b=Rovz0JGScoKyVXd+tlrw7n85GWuvQNRRKRX4wL6hfGlGkVjIt+/YxDm/3Ow0zpDEI
+	 Ko4Pjb4ST9ZkbCxZq5gtmyFy5zEGEtn91ACcN8NvsQt/3DIa8+ONf83VJR2l0A+wzw
+	 pdqejgEY/VdzN7hRKDlXD1YRPTTSZuNiJRznlf/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Desnes Nunes <desnesn@redhat.com>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 6.17 113/146] usb: storage: Fix memory leak in USB bulk transport
+	Toshiaki Makita <toshiaki.makita1@gmail.com>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 012/132] veth: more robust handing of race to avoid txq getting stuck
 Date: Wed,  3 Dec 2025 16:28:11 +0100
-Message-ID: <20251203152350.600636800@linuxfoundation.org>
+Message-ID: <20251203152343.749274320@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,67 +61,157 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Desnes Nunes <desnesn@redhat.com>
+From: Jesper Dangaard Brouer <hawk@kernel.org>
 
-commit 41e99fe2005182139b1058db71f0d241f8f0078c upstream.
+[ Upstream commit 5442a9da69789741bfda39f34ee7f69552bf0c56 ]
 
-A kernel memory leak was identified by the 'ioctl_sg01' test from Linux
-Test Project (LTP). The following bytes were mainly observed: 0x53425355.
+Commit dc82a33297fc ("veth: apply qdisc backpressure on full ptr_ring to
+reduce TX drops") introduced a race condition that can lead to a permanently
+stalled TXQ. This was observed in production on ARM64 systems (Ampere Altra
+Max).
 
-When USB storage devices incorrectly skip the data phase with status data,
-the code extracts/validates the CSW from the sg buffer, but fails to clear
-it afterwards. This leaves status protocol data in srb's transfer buffer,
-such as the US_BULK_CS_SIGN 'USBS' signature observed here. Thus, this can
-lead to USB protocols leaks to user space through SCSI generic (/dev/sg*)
-interfaces, such as the one seen here when the LTP test requested 512 KiB.
+The race occurs in veth_xmit(). The producer observes a full ptr_ring and
+stops the queue (netif_tx_stop_queue()). The subsequent conditional logic,
+intended to re-wake the queue if the consumer had just emptied it (if
+(__ptr_ring_empty(...)) netif_tx_wake_queue()), can fail. This leads to a
+"lost wakeup" where the TXQ remains stopped (QUEUE_STATE_DRV_XOFF) and
+traffic halts.
 
-Fix the leak by zeroing the CSW data in srb's transfer buffer immediately
-after the validation of devices that skip data phase.
+This failure is caused by an incorrect use of the __ptr_ring_empty() API
+from the producer side. As noted in kernel comments, this check is not
+guaranteed to be correct if a consumer is operating on another CPU. The
+empty test is based on ptr_ring->consumer_head, making it reliable only for
+the consumer. Using this check from the producer side is fundamentally racy.
 
-Note: Differently from CVE-2018-1000204, which fixed a big leak by zero-
-ing pages at allocation time, this leak occurs after allocation, when USB
-protocol data is written to already-allocated sg pages.
+This patch fixes the race by adopting the more robust logic from an earlier
+version V4 of the patchset, which always flushed the peer:
 
-Fixes: a45b599ad808 ("scsi: sg: allocate with __GFP_ZERO in sg_build_indirect()")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Desnes Nunes <desnesn@redhat.com>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://patch.msgid.link/20251031043436.55929-1-desnesn@redhat.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+(1) In veth_xmit(), the racy conditional wake-up logic and its memory barrier
+are removed. Instead, after stopping the queue, we unconditionally call
+__veth_xdp_flush(rq). This guarantees that the NAPI consumer is scheduled,
+making it solely responsible for re-waking the TXQ.
+  This handles the race where veth_poll() consumes all packets and completes
+NAPI *before* veth_xmit() on the producer side has called netif_tx_stop_queue.
+The __veth_xdp_flush(rq) will observe rx_notify_masked is false and schedule
+NAPI.
+
+(2) On the consumer side, the logic for waking the peer TXQ is moved out of
+veth_xdp_rcv() and placed at the end of the veth_poll() function. This
+placement is part of fixing the race, as the netif_tx_queue_stopped() check
+must occur after rx_notify_masked is potentially set to false during NAPI
+completion.
+  This handles the race where veth_poll() consumes all packets, but haven't
+finished (rx_notify_masked is still true). The producer veth_xmit() stops the
+TXQ and __veth_xdp_flush(rq) will observe rx_notify_masked is true, meaning
+not starting NAPI.  Then veth_poll() change rx_notify_masked to false and
+stops NAPI.  Before exiting veth_poll() will observe TXQ is stopped and wake
+it up.
+
+Fixes: dc82a33297fc ("veth: apply qdisc backpressure on full ptr_ring to reduce TX drops")
+Reviewed-by: Toshiaki Makita <toshiaki.makita1@gmail.com>
+Signed-off-by: Jesper Dangaard Brouer <hawk@kernel.org>
+Link: https://patch.msgid.link/176295323282.307447.14790015927673763094.stgit@firesoul
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: a14602fcae17 ("veth: reduce XDP no_direct return section to fix race")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/storage/transport.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/net/veth.c | 38 ++++++++++++++++++++------------------
+ 1 file changed, 20 insertions(+), 18 deletions(-)
 
---- a/drivers/usb/storage/transport.c
-+++ b/drivers/usb/storage/transport.c
-@@ -1200,7 +1200,23 @@ int usb_stor_Bulk_transport(struct scsi_
- 						US_BULK_CS_WRAP_LEN &&
- 					bcs->Signature ==
- 						cpu_to_le32(US_BULK_CS_SIGN)) {
-+				unsigned char buf[US_BULK_CS_WRAP_LEN];
+diff --git a/drivers/net/veth.c b/drivers/net/veth.c
+index 25b43036cc08b..0f37e056b3dd7 100644
+--- a/drivers/net/veth.c
++++ b/drivers/net/veth.c
+@@ -391,14 +391,12 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, struct net_device *dev)
+ 		}
+ 		/* Restore Eth hdr pulled by dev_forward_skb/eth_type_trans */
+ 		__skb_push(skb, ETH_HLEN);
+-		/* Depend on prior success packets started NAPI consumer via
+-		 * __veth_xdp_flush(). Cancel TXQ stop if consumer stopped,
+-		 * paired with empty check in veth_poll().
+-		 */
+ 		netif_tx_stop_queue(txq);
+-		smp_mb__after_atomic();
+-		if (unlikely(__ptr_ring_empty(&rq->xdp_ring)))
+-			netif_tx_wake_queue(txq);
++		/* Makes sure NAPI peer consumer runs. Consumer is responsible
++		 * for starting txq again, until then ndo_start_xmit (this
++		 * function) will not be invoked by the netstack again.
++		 */
++		__veth_xdp_flush(rq);
+ 		break;
+ 	case NET_RX_DROP: /* same as NET_XMIT_DROP */
+ drop:
+@@ -900,17 +898,9 @@ static int veth_xdp_rcv(struct veth_rq *rq, int budget,
+ 			struct veth_xdp_tx_bq *bq,
+ 			struct veth_stats *stats)
+ {
+-	struct veth_priv *priv = netdev_priv(rq->dev);
+-	int queue_idx = rq->xdp_rxq.queue_index;
+-	struct netdev_queue *peer_txq;
+-	struct net_device *peer_dev;
+ 	int i, done = 0, n_xdpf = 0;
+ 	void *xdpf[VETH_XDP_BATCH];
+ 
+-	/* NAPI functions as RCU section */
+-	peer_dev = rcu_dereference_check(priv->peer, rcu_read_lock_bh_held());
+-	peer_txq = peer_dev ? netdev_get_tx_queue(peer_dev, queue_idx) : NULL;
+-
+ 	for (i = 0; i < budget; i++) {
+ 		void *ptr = __ptr_ring_consume(&rq->xdp_ring);
+ 
+@@ -959,9 +949,6 @@ static int veth_xdp_rcv(struct veth_rq *rq, int budget,
+ 	rq->stats.vs.xdp_packets += done;
+ 	u64_stats_update_end(&rq->stats.syncp);
+ 
+-	if (peer_txq && unlikely(netif_tx_queue_stopped(peer_txq)))
+-		netif_tx_wake_queue(peer_txq);
+-
+ 	return done;
+ }
+ 
+@@ -969,12 +956,20 @@ static int veth_poll(struct napi_struct *napi, int budget)
+ {
+ 	struct veth_rq *rq =
+ 		container_of(napi, struct veth_rq, xdp_napi);
++	struct veth_priv *priv = netdev_priv(rq->dev);
++	int queue_idx = rq->xdp_rxq.queue_index;
++	struct netdev_queue *peer_txq;
+ 	struct veth_stats stats = {};
++	struct net_device *peer_dev;
+ 	struct veth_xdp_tx_bq bq;
+ 	int done;
+ 
+ 	bq.count = 0;
+ 
++	/* NAPI functions as RCU section */
++	peer_dev = rcu_dereference_check(priv->peer, rcu_read_lock_bh_held());
++	peer_txq = peer_dev ? netdev_get_tx_queue(peer_dev, queue_idx) : NULL;
 +
- 				usb_stor_dbg(us, "Device skipped data phase\n");
+ 	xdp_set_return_frame_no_direct();
+ 	done = veth_xdp_rcv(rq, budget, &bq, &stats);
+ 
+@@ -996,6 +991,13 @@ static int veth_poll(struct napi_struct *napi, int budget)
+ 		veth_xdp_flush(rq, &bq);
+ 	xdp_clear_return_frame_no_direct();
+ 
++	/* Release backpressure per NAPI poll */
++	smp_rmb(); /* Paired with netif_tx_stop_queue set_bit */
++	if (peer_txq && netif_tx_queue_stopped(peer_txq)) {
++		txq_trans_cond_update(peer_txq);
++		netif_tx_wake_queue(peer_txq);
++	}
 +
-+				/*
-+				 * Devices skipping data phase might leave CSW data in srb's
-+				 * transfer buffer. Zero it to prevent USB protocol leakage.
-+				 */
-+				sg = NULL;
-+				offset = 0;
-+				memset(buf, 0, sizeof(buf));
-+				if (usb_stor_access_xfer_buf(buf,
-+						US_BULK_CS_WRAP_LEN, srb, &sg,
-+						&offset, TO_XFER_BUF) !=
-+							US_BULK_CS_WRAP_LEN)
-+					usb_stor_dbg(us, "Failed to clear CSW data\n");
-+
- 				scsi_set_resid(srb, transfer_length);
- 				goto skipped_data_phase;
- 			}
+ 	return done;
+ }
+ 
+-- 
+2.51.0
+
 
 
 
