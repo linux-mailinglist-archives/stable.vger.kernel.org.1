@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-198761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDB88CA0D27
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:12:44 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E24ECCA10ED
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:40:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7F94E32E9EFF
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:09:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6C5393008572
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:39:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EFC0331A49;
-	Wed,  3 Dec 2025 15:59:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65C57346A14;
+	Wed,  3 Dec 2025 16:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UASODjxA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ls6lZS3T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F09DE3314D9;
-	Wed,  3 Dec 2025 15:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2171D346A0D;
+	Wed,  3 Dec 2025 16:29:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777597; cv=none; b=pVtD3dtr8bYlVnU8dyMdNt2/euBQmjF33G5soZQnB23eDT9scIdxBBnVeRXuPg1Mlpzx67ISioEdIkIa/GoHTF+wOooJetMu/SyY1oIAAFazDwfFBCbbXM7qke/ORLTHd54wGlhdZCtkNInwp709U9uaKkE8lbYjD9Okpy8FTI0=
+	t=1764779363; cv=none; b=aBVULsc3Y4DazfrDtCDTcALeRjyOCsK6Z3IBH38v6W0TAOtAMI5IglzxzeHRH0R+5zs5uOzWHeuSWFfy0s1Gqea+1TyVqvM6hF0QpC+2cJmevVjE/IfjoXb78Q5YK03XqUstmAZKOzjgidBPtJY+rqLX2GtQPBPocTMXthagI3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777597; c=relaxed/simple;
-	bh=5J3ke9G2a6nFw2PmoJ97VPP/7D1pd4Tr45lFQdtOHnk=;
+	s=arc-20240116; t=1764779363; c=relaxed/simple;
+	bh=PnvPypbMy8fijhr/3blDO0zLw3BGeoVgs/kZHYaOOMQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jjvy0Cb8p38gUBTO4sJdMLvFkTyQQLuopL2y9JjJsyoOFeTMyhfkETrvyFJiRDkPcribIj1S5QlHo6fLAmYdEk0AYV3rK+xYgbC731Txeo0u7Gv+fsO2LY80CumpvhNlMdUw6sLZtV/uYrQ9Xg2x3JmRpEktv1Wii2shktgmt/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UASODjxA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B56DC4CEF5;
-	Wed,  3 Dec 2025 15:59:55 +0000 (UTC)
+	 MIME-Version; b=UUA/GimI3L76dCJ1XQ642HO4dmaGo72weBBhq9m6CY/8Xbm44FH5TMomVCwIuqGD8AWnkPIwJaFgHUPE7Sbkv3SEYZVirFO99r6ub/CjXapeq80kdw5jMwuZHhnbAz4jgECAUYkD5OytDuHdOODqxVAHLT1nqwH2YFUMb91/YvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ls6lZS3T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EBE0C4CEF5;
+	Wed,  3 Dec 2025 16:29:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777596;
-	bh=5J3ke9G2a6nFw2PmoJ97VPP/7D1pd4Tr45lFQdtOHnk=;
+	s=korg; t=1764779362;
+	bh=PnvPypbMy8fijhr/3blDO0zLw3BGeoVgs/kZHYaOOMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UASODjxAXs2DSmcE0IFYN4QnSrev2qG2YwB01Ev2dzj6boKNHgr5v3EEky7Si6Qyy
-	 EYoR90hvdR5Deh51kke5ZHH/V6Ep1xrWbpxbcct+wg7AQLDyJ5TOufsOQ/t3A/Fqtm
-	 m12Byc6G3LK6iKvO3wR5rXvm5HIAhwNUe1zERXto=
+	b=Ls6lZS3TodWXsxbV4Cafss5up2P9vygn00RmyaO+39FDxDdiO6g18iCmOCpszlvxf
+	 8YccIMl/tpvcTbo+Bkx2Gsumn2o8ozaoIBBwVgUavX/0ADzzFFGMPCrGP6WR+/wbAJ
+	 qT7FiY1rTUrxAradJQ8xswRN2ROQCQ2iPyN7vtvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Lee Jones <lee@kernel.org>,
+	NeilBrown <neil@brown.name>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 087/392] mfd: stmpe-i2c: Add missing MODULE_LICENSE
+Subject: [PATCH 6.1 235/568] allow finish_no_open(file, ERR_PTR(-E...))
 Date: Wed,  3 Dec 2025 16:23:57 +0100
-Message-ID: <20251203152417.304860933@linuxfoundation.org>
+Message-ID: <20251203152449.329354124@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,33 +60,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 00ea54f058cd4cb082302fe598cfe148e0aadf94 ]
+[ Upstream commit fe91e078b60d1beabf5cef4a37c848457a6d2dfb ]
 
-This driver is licensed GPL-2.0-only, so add the corresponding module flag.
+... allowing any ->lookup() return value to be passed to it.
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Link: https://lore.kernel.org/r/20250725071153.338912-3-alexander.stein@ew.tq-group.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Reviewed-by: NeilBrown <neil@brown.name>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/stmpe-i2c.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/open.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mfd/stmpe-i2c.c b/drivers/mfd/stmpe-i2c.c
-index cd2f45257dc16..d52bb3ea7fb6f 100644
---- a/drivers/mfd/stmpe-i2c.c
-+++ b/drivers/mfd/stmpe-i2c.c
-@@ -139,3 +139,4 @@ module_exit(stmpe_exit);
- MODULE_LICENSE("GPL v2");
- MODULE_DESCRIPTION("STMPE MFD I2C Interface Driver");
- MODULE_AUTHOR("Rabin Vincent <rabin.vincent@stericsson.com>");
-+MODULE_LICENSE("GPL");
+diff --git a/fs/open.c b/fs/open.c
+index 2f88454887986..85466cd40c407 100644
+--- a/fs/open.c
++++ b/fs/open.c
+@@ -978,18 +978,20 @@ EXPORT_SYMBOL(finish_open);
+  * finish_no_open - finish ->atomic_open() without opening the file
+  *
+  * @file: file pointer
+- * @dentry: dentry or NULL (as returned from ->lookup())
++ * @dentry: dentry, ERR_PTR(-E...) or NULL (as returned from ->lookup())
+  *
+- * This can be used to set the result of a successful lookup in ->atomic_open().
++ * This can be used to set the result of a lookup in ->atomic_open().
+  *
+  * NB: unlike finish_open() this function does consume the dentry reference and
+  * the caller need not dput() it.
+  *
+- * Returns "0" which must be the return value of ->atomic_open() after having
+- * called this function.
++ * Returns 0 or -E..., which must be the return value of ->atomic_open() after
++ * having called this function.
+  */
+ int finish_no_open(struct file *file, struct dentry *dentry)
+ {
++	if (IS_ERR(dentry))
++		return PTR_ERR(dentry);
+ 	file->f_path.dentry = dentry;
+ 	return 0;
+ }
 -- 
 2.51.0
 
