@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-199574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83D82CA0AC4
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:51:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1344C9FB66
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:55:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 18B28333F64B
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:30:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 78F123062BC9
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:45:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7BA1350D5D;
-	Wed,  3 Dec 2025 16:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B06D30BB9B;
+	Wed,  3 Dec 2025 15:45:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s8vEIRDH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lgAKtYWV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634C734C830;
-	Wed,  3 Dec 2025 16:44:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DADC130F925;
+	Wed,  3 Dec 2025 15:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780244; cv=none; b=RpUt7H855hoNNJvVDbcDs5LKK8TbFjimAJbdxsfab0IqPhW1SzQPlsovvd/TtJ0OodnL6tFzgxICO60jaj3nS4HMpZ9BB9QJ38CNnHzIMzRB68WCf2dd3p+22NEqNSTroJJfDc3EvilneMHjCoVtjXbo8qqmLdEgcaEOvz49rBs=
+	t=1764776715; cv=none; b=BXMpGyyyqgBjdeWn85ah+l8gm7Gc5/+ixmSRracbSCbcdBoJ2lLCHeiBVhq1fpSJ6Y6J2wF5+CiFm/FyGN9z0e06yYAwseKKd20CVLrF/gwt355/xZsZVRePfqZ5s0+sLh0ISDre0+RAXkSMc0pvxnQTOifOYNA7MGNpMgqFfaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780244; c=relaxed/simple;
-	bh=N3xxXNzM8mb7CBng+nPPHjPue2rrjIjE9+pTy3EdwRA=;
+	s=arc-20240116; t=1764776715; c=relaxed/simple;
+	bh=fs2g1LE46cI1eFImU53WiedkhBfpfoThgjfBkR5R0e0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IYSGkqtYSVk4UJcGrFoJFwOWpInZpTvXqcWXd6ffOuBgPfoHEveevZjWVrvGmQI/wTVGAY/FYAB7RUiHrKxl0s7eErO3aiS9qEE+toYWSj8gp732cBXLhozln0fUiFd02+VDVwGp1h7QmHApkzCG5/ho1mI+/66PmXauPXqn5ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s8vEIRDH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ACB8C4CEF5;
-	Wed,  3 Dec 2025 16:44:02 +0000 (UTC)
+	 MIME-Version; b=d4HsiQvn+ncYzQtCIgMmPIWL1nQsxFywc4DYhnRdiL1m6d5fiiUtPeTnoG6qqcQL8OXbfs97U4u5j2bidmtqiY0GUuFom4iqn8LvL+7DFs1bbclAplqMr031Uo2wSHYZpm9hr7rA3hUUMUCJKFWNIJppnujJKaNJVlxKVTQVgkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lgAKtYWV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49695C4CEF5;
+	Wed,  3 Dec 2025 15:45:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780242;
-	bh=N3xxXNzM8mb7CBng+nPPHjPue2rrjIjE9+pTy3EdwRA=;
+	s=korg; t=1764776714;
+	bh=fs2g1LE46cI1eFImU53WiedkhBfpfoThgjfBkR5R0e0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s8vEIRDHepwnpawii8G/F/SQRTReF5lXFI2l3zvde/gmpG63mBVdjbK727wDADkqE
-	 B8ttWG/DXPkv18o+gglEObtlDsJYJxi9aVUvKS/04V7e64pgIEqmoDkwkeUQybpQfb
-	 DyJpoZ/FrWnrvLgbINlb+21lZvHslUJ3+jgy+1lM=
+	b=lgAKtYWVREsA/ogEqSn6O6R/jcuSFxfksVk4DldD+CHjivh2sKLqV9AHKgjfv6ZHA
+	 0GDhM7y+8k5YzB2o+dWE3OVxN9LZi3QF2iWQ6n59Q/BGqx/1pIIAMbXStIDgYp1zfl
+	 GiH+YaRtJjnDvR/j1SWQnR90L1M8tDlyRGMbnL7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 466/568] scsi: core: Fix a regression triggered by scsi_host_busy()
-Date: Wed,  3 Dec 2025 16:27:48 +0100
-Message-ID: <20251203152457.769929771@linuxfoundation.org>
+	Francesco Lavra <flavra@baylibre.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.10 265/300] iio: imu: st_lsm6dsx: fix array size for st_lsm6dsx_settings fields
+Date: Wed,  3 Dec 2025 16:27:49 +0100
+Message-ID: <20251203152410.452946631@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +61,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Francesco Lavra <flavra@baylibre.com>
 
-[ Upstream commit a0b7780602b1b196f47e527fec82166a7e67c4d0 ]
+commit 3af0c1fb1cdc351b64ff1a4bc06d491490c1f10a upstream.
 
-Commit 995412e23bb2 ("blk-mq: Replace tags->lock with SRCU for tag
-iterators") introduced the following regression:
+The `decimator` and `batch` fields of struct st_lsm6dsx_settings
+are arrays indexed by sensor type, not by sensor hardware
+identifier; moreover, the `batch` field is only used for the
+accelerometer and gyroscope.
+Change the array size for `decimator` from ST_LSM6DSX_MAX_ID to
+ST_LSM6DSX_ID_MAX, and change the array size for `batch` from
+ST_LSM6DSX_MAX_ID to 2; move the enum st_lsm6dsx_sensor_id
+definition so that the ST_LSM6DSX_ID_MAX value is usable within
+the struct st_lsm6dsx_settings definition.
 
-Call trace:
- __srcu_read_lock+0x30/0x80 (P)
- blk_mq_tagset_busy_iter+0x44/0x300
- scsi_host_busy+0x38/0x70
- ufshcd_print_host_state+0x34/0x1bc
- ufshcd_link_startup.constprop.0+0xe4/0x2e0
- ufshcd_init+0x944/0xf80
- ufshcd_pltfrm_init+0x504/0x820
- ufs_rockchip_probe+0x2c/0x88
- platform_probe+0x5c/0xa4
- really_probe+0xc0/0x38c
- __driver_probe_device+0x7c/0x150
- driver_probe_device+0x40/0x120
- __driver_attach+0xc8/0x1e0
- bus_for_each_dev+0x7c/0xdc
- driver_attach+0x24/0x30
- bus_add_driver+0x110/0x230
- driver_register+0x68/0x130
- __platform_driver_register+0x20/0x2c
- ufs_rockchip_pltform_init+0x1c/0x28
- do_one_initcall+0x60/0x1e0
- kernel_init_freeable+0x248/0x2c4
- kernel_init+0x20/0x140
- ret_from_fork+0x10/0x20
-
-Fix this regression by making scsi_host_busy() check whether the SCSI
-host tag set has already been initialized. tag_set->ops is set by
-scsi_mq_setup_tags() just before blk_mq_alloc_tag_set() is called. This
-fix is based on the assumption that scsi_host_busy() and
-scsi_mq_setup_tags() calls are serialized. This is the case in the UFS
-driver.
-
-Reported-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Closes: https://lore.kernel.org/linux-block/pnezafputodmqlpumwfbn644ohjybouveehcjhz2hmhtcf2rka@sdhoiivync4y/
-Cc: Ming Lei <ming.lei@redhat.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Tested-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Link: https://patch.msgid.link/20251007214800.1678255-1-bvanassche@acm.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 801a6e0af0c6c ("iio: imu: st_lsm6dsx: add support to LSM6DSO")
+Signed-off-by: Francesco Lavra <flavra@baylibre.com>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/hosts.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h |   22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/scsi/hosts.c b/drivers/scsi/hosts.c
-index c785493b105c0..28cf473fcf96d 100644
---- a/drivers/scsi/hosts.c
-+++ b/drivers/scsi/hosts.c
-@@ -600,8 +600,9 @@ int scsi_host_busy(struct Scsi_Host *shost)
- {
- 	int cnt = 0;
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+@@ -221,6 +221,15 @@ struct st_lsm6dsx_event_settings {
+ 	u8 wakeup_src_x_mask;
+ };
  
--	blk_mq_tagset_busy_iter(&shost->tag_set,
--				scsi_host_check_in_flight, &cnt);
-+	if (shost->tag_set.ops)
-+		blk_mq_tagset_busy_iter(&shost->tag_set,
-+					scsi_host_check_in_flight, &cnt);
- 	return cnt;
- }
- EXPORT_SYMBOL(scsi_host_busy);
--- 
-2.51.0
-
++enum st_lsm6dsx_sensor_id {
++	ST_LSM6DSX_ID_GYRO,
++	ST_LSM6DSX_ID_ACC,
++	ST_LSM6DSX_ID_EXT0,
++	ST_LSM6DSX_ID_EXT1,
++	ST_LSM6DSX_ID_EXT2,
++	ST_LSM6DSX_ID_MAX
++};
++
+ enum st_lsm6dsx_ext_sensor_id {
+ 	ST_LSM6DSX_ID_MAGN,
+ };
+@@ -307,23 +316,14 @@ struct st_lsm6dsx_settings {
+ 	struct st_lsm6dsx_reg drdy_mask;
+ 	struct st_lsm6dsx_odr_table_entry odr_table[2];
+ 	struct st_lsm6dsx_fs_table_entry fs_table[2];
+-	struct st_lsm6dsx_reg decimator[ST_LSM6DSX_MAX_ID];
+-	struct st_lsm6dsx_reg batch[ST_LSM6DSX_MAX_ID];
++	struct st_lsm6dsx_reg decimator[ST_LSM6DSX_ID_MAX];
++	struct st_lsm6dsx_reg batch[2];
+ 	struct st_lsm6dsx_fifo_ops fifo_ops;
+ 	struct st_lsm6dsx_hw_ts_settings ts_settings;
+ 	struct st_lsm6dsx_shub_settings shub_settings;
+ 	struct st_lsm6dsx_event_settings event_settings;
+ };
+ 
+-enum st_lsm6dsx_sensor_id {
+-	ST_LSM6DSX_ID_GYRO,
+-	ST_LSM6DSX_ID_ACC,
+-	ST_LSM6DSX_ID_EXT0,
+-	ST_LSM6DSX_ID_EXT1,
+-	ST_LSM6DSX_ID_EXT2,
+-	ST_LSM6DSX_ID_MAX,
+-};
+-
+ enum st_lsm6dsx_fifo_mode {
+ 	ST_LSM6DSX_FIFO_BYPASS = 0x0,
+ 	ST_LSM6DSX_FIFO_CONT = 0x6,
 
 
 
