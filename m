@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-199671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 075EBCA0676
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:24:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0118CA0EB8
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:23:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 522B132EBBCB
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:09:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 79BC0329B6F3
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:21:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7745F338F39;
-	Wed,  3 Dec 2025 16:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02B6B352947;
+	Wed,  3 Dec 2025 16:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xq5bhKq4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MqT8WrFe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3483D338918;
-	Wed,  3 Dec 2025 16:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D052D5412;
+	Wed,  3 Dec 2025 16:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780561; cv=none; b=rvt5dsBs8TIiqq+ibdlxFWTsijENjXZ2QkfwFC8SYTwmxBziQrCnTHaWFnUhahxn3VhT+UuNQnT3JnffETVuWS8vJI2rfp2+S3hQQhT/X6ebS/G1mEtPFF7PNPGcW8iAiUDmnKywNTJyLsFXY8OcaMYPz/6nRmLKrIiHIxZX0Jg=
+	t=1764778562; cv=none; b=swqTW0TALV0WTQt2LVxxxnCfqEwHJKS/Q8aYVvto1poT4jbieI2JqqhsvGZqJ8CaKAaFSnrHXjAGi0UIR3BeeRiMtT+b6W9UUErpRyYfD0QFm54Fb9eYPsVhlfVijtxpwbG9vr3JAexwnWmpuRywSQmd7Up7kMVamY7bKj27p70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780561; c=relaxed/simple;
-	bh=1IJ4wYYKkqpaWU4SgpCm3Msvax5CTug+VAwS2nn+4bY=;
+	s=arc-20240116; t=1764778562; c=relaxed/simple;
+	bh=JQsNU53MhKtG78vxrPYFurcgMZNDMCYnjaF6TUEXJ00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vE+fvb+/t3FhLVOAZL5osi9AME3YrNBXe1l+Uzbqz+94KGFKHD/OeR2BW5AYdz9fLDD6E01WYUeJiF0xIgEMAEPKLIJiC5EWCpIkPsNP9bbtxyI4JDSjimjJVp8VO2muu4VRkyTRzRgSPajnXJ8DOz5HScNEY/UQictfbvgcobY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xq5bhKq4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F7E2C4CEF5;
-	Wed,  3 Dec 2025 16:49:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Lmpnu+JUbrJhvKTLOqs9tkoyt5ijbZzS2E6YsElmsXfV9VtzzuQLJgl0nbJgKAQ+Hid8yxhYW7cn3VXgA0dFS4pUtravHygSX46Peb70Jjxxcvb8icP5b4By1EvCHoOAXgPXx+yZcT2nd19UpY4gBkDqLcOi1C1V+3pZq0p4eMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MqT8WrFe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22049C116C6;
+	Wed,  3 Dec 2025 16:16:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780561;
-	bh=1IJ4wYYKkqpaWU4SgpCm3Msvax5CTug+VAwS2nn+4bY=;
+	s=korg; t=1764778562;
+	bh=JQsNU53MhKtG78vxrPYFurcgMZNDMCYnjaF6TUEXJ00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xq5bhKq4mpGLkZ0WfCqJ/LGhur0o5da1Vt7sbNgidlEvnbVFFbSkAYZhdd1sVB5qk
-	 HO40TJE2Mawg7pQ1TgkV/W9A8QUG2C/rmfb+hfdA5ps4AtjGhDI4Ce6vfZQX/T+zY+
-	 fxUHwRK649qwBDsSdfBNF7Uzn+KH/gNyBAeIxVw8=
+	b=MqT8WrFeXLZa4Fph4zPqY+8hLneAxuPT+TC7iMZZujekRZTtKGy/FHWDSABDiOVna
+	 aFONViogpmJc5XKZMCkSj0aODf50tqRqAjiMEcNIJxVOu0Bm4RU4OFEnZxF7PrMqN1
+	 bvvjW4UidQ4iFQYhl3LvUVaWZVclnLWmDl9QO420=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 022/132] drm/amdgpu: fix cyan_skillfish2 gpu info fw handling
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.15 351/392] iio:common:ssp_sensors: Fix an error handling path ssp_probe()
 Date: Wed,  3 Dec 2025 16:28:21 +0100
-Message-ID: <20251203152344.121738841@linuxfoundation.org>
+Message-ID: <20251203152427.082465155@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,46 +59,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 7fa666ab07ba9e08f52f357cb8e1aad753e83ac6 ]
+commit 21553258b94861a73d7f2cf15469d69240e1170d upstream.
 
-If the board supports IP discovery, we don't need to
-parse the gpu info firmware.
+If an error occurs after a successful mfd_add_devices() call, it should be
+undone by a corresponding mfd_remove_devices() call, as already done in the
+remove function.
 
-Backport to 6.18.
-
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4721
-Fixes: fa819e3a7c1e ("drm/amdgpu: add support for cyan skillfish gpu_info")
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 5427e32fa3a0ba9a016db83877851ed277b065fb)
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 50dd64d57eee ("iio: common: ssp_sensors: Add sensorhub driver")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/iio/common/ssp_sensors/ssp_dev.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index b93afd52a0094..9e1716a3f70ba 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -2414,6 +2414,8 @@ static int amdgpu_device_parse_gpu_info_fw(struct amdgpu_device *adev)
- 		chip_name = "navi12";
- 		break;
- 	case CHIP_CYAN_SKILLFISH:
-+		if (adev->mman.discovery_bin)
-+			return 0;
- 		chip_name = "cyan_skillfish";
- 		break;
+--- a/drivers/iio/common/ssp_sensors/ssp_dev.c
++++ b/drivers/iio/common/ssp_sensors/ssp_dev.c
+@@ -515,7 +515,7 @@ static int ssp_probe(struct spi_device *
+ 	ret = spi_setup(spi);
+ 	if (ret < 0) {
+ 		dev_err(&spi->dev, "Failed to setup spi\n");
+-		return ret;
++		goto err_setup_spi;
  	}
--- 
-2.51.0
-
+ 
+ 	data->fw_dl_state = SSP_FW_DL_STATE_NONE;
+@@ -580,6 +580,8 @@ err_read_reg:
+ err_setup_irq:
+ 	mutex_destroy(&data->pending_lock);
+ 	mutex_destroy(&data->comm_lock);
++err_setup_spi:
++	mfd_remove_devices(&spi->dev);
+ 
+ 	dev_err(&spi->dev, "Probe failed!\n");
+ 
 
 
 
