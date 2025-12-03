@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B454CA0554
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:18:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82494CA1360
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:00:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B4CBB317587D
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:05:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8747F32F1A99
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:44:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A22132471B;
-	Wed,  3 Dec 2025 15:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 721343624D3;
+	Wed,  3 Dec 2025 16:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rx9ZmUmu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1STJ7btd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 159B3314B76;
-	Wed,  3 Dec 2025 15:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB8E3624CA;
+	Wed,  3 Dec 2025 16:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777531; cv=none; b=GTywd/7GTBKMi8C1CN4eYTTzbDrVdGQbkT+iK8A3r6LW0e6k6uQ2J63Nl6nTdeNriZunUNVovuqv2AIBrKp3DHTWBUKSZ3Q4AdJRfTCxjj1MC9cb+b9C08bRkRgb9+x/Jctm2WXpO1U0MnGhax+ndpfmOJBx9RdGlTA2SkrTKa4=
+	t=1764779418; cv=none; b=rFz99Lhi3zZ5Xx7RgdOToRtuwm2BShKTfVhO66PpKcnYMFRH6vN8/Kf2r04ZioTvjLayW6BN2tUiRIQne/RDozWBpgIwYh+WzY7lw2feDpBGVSZ+HiOykgPHtRSRBoPZHQjlT9cTC3qwdrM/kfrq3MtSs/cQU8b3XAbaQwA+ydA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777531; c=relaxed/simple;
-	bh=ATvA/oZ0E3WDUs8LcyBPdWWNrFNqJMtgpMs23jU4E4c=;
+	s=arc-20240116; t=1764779418; c=relaxed/simple;
+	bh=N8EzhqkKKcN/FskV/Gj80wJEayTQY3JUYKoFXRIVlSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zq95E+7sU+bksBuAb8fXsxMeyev8/b1cxqoCC6MBMy3ZI+1M3wZ7/mYQwL7O6RvW0kY3HvklkFVtJrNuBmM7i5ChTAlMih4mxxv4VdBIlgJmGEeCllmBwXlW4yHvQw4GaCiOacI5KTjWO4q7dMDnqM/q7HtGMUXsH2IJwueDzaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rx9ZmUmu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1D0FC4CEF5;
-	Wed,  3 Dec 2025 15:58:49 +0000 (UTC)
+	 MIME-Version; b=FpjQurkjvLJf3GgURVDZuFKK4Tq41VdVgPEaxjK7wgmidBBszHki08SDSiNJnOiA3wUgMbk/3uJYDe620krPNYXSsyaEjl4IVi2FDB55GaKkAdHJHhdwVelcymWSjZaTcs7G04vbuW66sXVGkjC5MPUUt8Iha50L57uBqxlWFWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1STJ7btd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F8BFC4CEF5;
+	Wed,  3 Dec 2025 16:30:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777530;
-	bh=ATvA/oZ0E3WDUs8LcyBPdWWNrFNqJMtgpMs23jU4E4c=;
+	s=korg; t=1764779418;
+	bh=N8EzhqkKKcN/FskV/Gj80wJEayTQY3JUYKoFXRIVlSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rx9ZmUmu7VSvewmE4T/bOIFUowzC6ffCakBYAPkJpddtuiaVgQxFYJDga/WCP/SYE
-	 5BhV3zWrZKG9eeUcA5wTl/B9c8FrmMtmuTKg110goeCEpRna8DVNpoUO6WYC280vsX
-	 Rppm5qNVg0+VNK1J2YKhQjzhmcOfVZtr0l4PzB24=
+	b=1STJ7btdjsWAKKb1jJbhawejIfdNwxde15P9O/bPojjoovnad8kWJfcMA7XICXZVl
+	 ly6qukMawAugD5Z9VaeYDJjwj79ooFRjXFOTMlqIGAijhNZFJYawtVZBSPTH/D0E8/
+	 qSJ3+SDv9aeMETmFkown35e98mwuPPFvKOxNaKrg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayi Li <lijiayi@kylinos.cn>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 060/392] memstick: Add timeout to prevent indefinite waiting
+Subject: [PATCH 6.1 208/568] ntfs3: pretend $Extend records as regular files
 Date: Wed,  3 Dec 2025 16:23:30 +0100
-Message-ID: <20251203152416.321029562@linuxfoundation.org>
+Message-ID: <20251203152448.343363744@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayi Li <lijiayi@kylinos.cn>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit b65e630a55a490a0269ab1e4a282af975848064c ]
+[ Upstream commit 4e8011ffec79717e5fdac43a7e79faf811a384b7 ]
 
-Add timeout handling to wait_for_completion calls in memstick_set_rw_addr()
-and memstick_alloc_card() to prevent indefinite blocking in case of
-hardware or communication failures.
+Since commit af153bb63a33 ("vfs: catch invalid modes in may_open()")
+requires any inode be one of S_IFDIR/S_IFLNK/S_IFREG/S_IFCHR/S_IFBLK/
+S_IFIFO/S_IFSOCK type, use S_IFREG for $Extend records.
 
-Signed-off-by: Jiayi Li <lijiayi@kylinos.cn>
-Link: https://lore.kernel.org/r/20250804024825.1565078-1-lijiayi@kylinos.cn
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reported-by: syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/memstick/core/memstick.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/ntfs3/inode.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/memstick/core/memstick.c b/drivers/memstick/core/memstick.c
-index 9a2acf5c40143..fc9e6db3bb72b 100644
---- a/drivers/memstick/core/memstick.c
-+++ b/drivers/memstick/core/memstick.c
-@@ -367,7 +367,9 @@ int memstick_set_rw_addr(struct memstick_dev *card)
- {
- 	card->next_request = h_memstick_set_rw_addr;
- 	memstick_new_req(card->host);
--	wait_for_completion(&card->mrq_complete);
-+	if (!wait_for_completion_timeout(&card->mrq_complete,
-+			msecs_to_jiffies(500)))
-+		card->current_mrq.error = -ETIMEDOUT;
- 
- 	return card->current_mrq.error;
- }
-@@ -401,7 +403,9 @@ static struct memstick_dev *memstick_alloc_card(struct memstick_host *host)
- 
- 		card->next_request = h_memstick_read_dev_id;
- 		memstick_new_req(host);
--		wait_for_completion(&card->mrq_complete);
-+		if (!wait_for_completion_timeout(&card->mrq_complete,
-+				msecs_to_jiffies(500)))
-+			card->current_mrq.error = -ETIMEDOUT;
- 
- 		if (card->current_mrq.error)
- 			goto err_out;
+diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
+index 844113c3175c9..accff95baa847 100644
+--- a/fs/ntfs3/inode.c
++++ b/fs/ntfs3/inode.c
+@@ -456,6 +456,7 @@ static struct inode *ntfs_read_mft(struct inode *inode,
+ 		   fname->home.seq == cpu_to_le16(MFT_REC_EXTEND)) {
+ 		/* Records in $Extend are not a files or general directories. */
+ 		inode->i_op = &ntfs_file_inode_operations;
++		mode = S_IFREG;
+ 	} else {
+ 		err = -EINVAL;
+ 		goto out;
 -- 
 2.51.0
 
