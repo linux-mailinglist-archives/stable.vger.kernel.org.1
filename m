@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-198603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 772A7CA019A
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:47:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53BF4CA1134
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:41:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 497F6306A789
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:39:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0129932D0D1E
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:44:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45C7A32F756;
-	Wed,  3 Dec 2025 15:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D80BE345CB2;
+	Wed,  3 Dec 2025 16:11:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zNtELZRo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lSRj5b8Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F404B32ED5F;
-	Wed,  3 Dec 2025 15:51:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 938F4345759;
+	Wed,  3 Dec 2025 16:11:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777089; cv=none; b=dRsiSm77csvRK9UcEB75A9ufCuB+ntQcWvWccBpfDgrc5wNXEyFx2wwtdmTfW/7CzFgmbzisqwEAi00PQTkS9aYI4JGhqnqB484ngNNCQ7QKfpfDQ22v0cdZOe9HIK8FTMYq7o04ASFQZlW988l+okpSn36d3Z6IweK8WHh8wUg=
+	t=1764778288; cv=none; b=RwLppk4VupsJ0vkCZPrPSIcc8nA7GamsnUK6xhzqONUDyq0WLHLf5Mf2venhhUvOr+OTpIfsI6m3paWPYP6jaH+MfSHLHit7vQSUl7piugAWC6zs07puVlNjameq9yskBbht7ppqZPj6v2vUSjC9fPmNMCbcbPWB4mQVpajSWq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777089; c=relaxed/simple;
-	bh=hLqg8Wne/kJHo+4gdBJs6M0q4yUE09eShUW7PxXxn8g=;
+	s=arc-20240116; t=1764778288; c=relaxed/simple;
+	bh=wAE83PonktQGjM4+q7ajmTM53zDChG1ujQ6tFZhkRj4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=doeXIzminx17eL8IWBPU+g5xT2mPCa50Eahr55bqLAWm1K+Gg7SBFnZFV7Mx0zuuuOGD8eaHnWUn4Ip58uqGPXi8Sa88zFkoeJ2TkaZyeHlOoktQN42CxqJmqvPVeK+7XgMcpjABhfZFzBMBmYvdwEq8bH9roqJfoAP90ACmtfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zNtELZRo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AF56C4CEF5;
-	Wed,  3 Dec 2025 15:51:28 +0000 (UTC)
+	 MIME-Version; b=UL8S7zGCes5q9vspkgBysgsAw5pF5UP+CVQ7wmiSnWKApqYBawTa460dMKtNaGSgy6bLKxhSNN+INPLrAq0JzQLCliOtd3i5ZgBlHy7IOfh6t6UiejaIwYKQVeBcbVefR3DtYb1pdtyTq0vBhS2ECEixvXXiyW01rDerh5r+FLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lSRj5b8Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 015A7C4CEF5;
+	Wed,  3 Dec 2025 16:11:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777088;
-	bh=hLqg8Wne/kJHo+4gdBJs6M0q4yUE09eShUW7PxXxn8g=;
+	s=korg; t=1764778288;
+	bh=wAE83PonktQGjM4+q7ajmTM53zDChG1ujQ6tFZhkRj4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zNtELZRoGtRoHYRiGtb9+qR4dbAET6seFi2jgWjJFts3UAdS0PwDnxstCP8hbAPc0
-	 Hkns57nLxQiOXK39pLPSrNMhPKyLEjUlEQ7cMTHwItYe9fguEi13nBtwjmIc7sPC6p
-	 DHsUCz9HhrRIqDLSVNUuMC3693ZObHlXYOgG7edg=
+	b=lSRj5b8Z8nfQisqRSK9+edUcHWWRLVEi3hMVe173f5WwL2tcFjvNMYR0wl2Hfo9SU
+	 ZAhAsdW6Jo1ZIYjSxzmaJ4asBDiMmuLYtCKoq2s4ot3cwSdlNcuYUbMi1ibJbbFSQV
+	 HN0uqsl5AtPRPOqFF3Ab2lpSJj/yuZr2MTptWZm4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	Klara Modin <klarasmodin@gmail.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.17 071/146] MIPS: mm: kmalloc tlb_vpn array to avoid stack overflow
-Date: Wed,  3 Dec 2025 16:27:29 +0100
-Message-ID: <20251203152349.065219062@linuxfoundation.org>
+	Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 300/392] net: qlogic/qede: fix potential out-of-bounds read in qede_tpa_cont() and qede_tpa_end()
+Date: Wed,  3 Dec 2025 16:27:30 +0100
+Message-ID: <20251203152425.207984238@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,81 +60,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+From: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
 
-commit 841ecc979b18d3227fad5e2d6a1e6f92688776b5 upstream.
+[ Upstream commit 896f1a2493b59beb2b5ccdf990503dbb16cb2256 ]
 
-Owing to Config4.MMUSizeExt and VTLB/FTLB MMU features later MIPSr2+
-cores can have more than 64 TLB entries.  Therefore allocate an array
-for uniquification instead of placing too an small array on the stack.
+The loops in 'qede_tpa_cont()' and 'qede_tpa_end()', iterate
+over 'cqe->len_list[]' using only a zero-length terminator as
+the stopping condition. If the terminator was missing or
+malformed, the loop could run past the end of the fixed-size array.
 
-Fixes: 35ad7e181541 ("MIPS: mm: tlb-r4k: Uniquify TLB entries on init")
-Co-developed-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Cc: stable@vger.kernel.org # v6.17+: 9f048fa48740: MIPS: mm: Prevent a TLB shutdown on initial uniquification
-Cc: stable@vger.kernel.org # v6.17+
-Tested-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Tested-by: Klara Modin <klarasmodin@gmail.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add an explicit bound check using ARRAY_SIZE() in both loops to prevent
+a potential out-of-bounds access.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 55482edc25f0 ("qede: Add slowpath/fastpath support and enable hardware GRO")
+Signed-off-by: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
+Link: https://patch.msgid.link/20251113112757.4166625-1-Pavel.Zhigulin@kaspersky.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/mm/tlb-r4k.c |   18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/qlogic/qede/qede_fp.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/arch/mips/mm/tlb-r4k.c
-+++ b/arch/mips/mm/tlb-r4k.c
-@@ -12,6 +12,7 @@
- #include <linux/init.h>
- #include <linux/sched.h>
- #include <linux/smp.h>
-+#include <linux/memblock.h>
- #include <linux/mm.h>
- #include <linux/hugetlb.h>
- #include <linux/export.h>
-@@ -522,17 +523,26 @@ static int r4k_vpn_cmp(const void *a, co
-  * Initialise all TLB entries with unique values that do not clash with
-  * what we have been handed over and what we'll be using ourselves.
+diff --git a/drivers/net/ethernet/qlogic/qede/qede_fp.c b/drivers/net/ethernet/qlogic/qede/qede_fp.c
+index d67d4e74b326d..503ab11a5a33e 100644
+--- a/drivers/net/ethernet/qlogic/qede/qede_fp.c
++++ b/drivers/net/ethernet/qlogic/qede/qede_fp.c
+@@ -4,6 +4,7 @@
+  * Copyright (c) 2019-2020 Marvell International Ltd.
   */
--static void r4k_tlb_uniquify(void)
-+static void __ref r4k_tlb_uniquify(void)
+ 
++#include <linux/array_size.h>
+ #include <linux/netdevice.h>
+ #include <linux/etherdevice.h>
+ #include <linux/skbuff.h>
+@@ -961,7 +962,7 @@ static inline void qede_tpa_cont(struct qede_dev *edev,
  {
--	unsigned long tlb_vpns[1 << MIPS_CONF1_TLBS_SIZE];
- 	int tlbsize = current_cpu_data.tlbsize;
-+	bool use_slab = slab_is_available();
- 	int start = num_wired_entries();
-+	phys_addr_t tlb_vpn_size;
-+	unsigned long *tlb_vpns;
- 	unsigned long vpn_mask;
- 	int cnt, ent, idx, i;
+ 	int i;
  
- 	vpn_mask = GENMASK(cpu_vmbits - 1, 13);
- 	vpn_mask |= IS_ENABLED(CONFIG_64BIT) ? 3ULL << 62 : 1 << 31;
+-	for (i = 0; cqe->len_list[i]; i++)
++	for (i = 0; cqe->len_list[i] && i < ARRAY_SIZE(cqe->len_list); i++)
+ 		qede_fill_frag_skb(edev, rxq, cqe->tpa_agg_index,
+ 				   le16_to_cpu(cqe->len_list[i]));
  
-+	tlb_vpn_size = tlbsize * sizeof(*tlb_vpns);
-+	tlb_vpns = (use_slab ?
-+		    kmalloc(tlb_vpn_size, GFP_KERNEL) :
-+		    memblock_alloc_raw(tlb_vpn_size, sizeof(*tlb_vpns)));
-+	if (WARN_ON(!tlb_vpns))
-+		return; /* Pray local_flush_tlb_all() is good enough. */
-+
- 	htw_stop();
+@@ -986,7 +987,7 @@ static int qede_tpa_end(struct qede_dev *edev,
+ 		dma_unmap_page(rxq->dev, tpa_info->buffer.mapping,
+ 			       PAGE_SIZE, rxq->data_direction);
  
- 	for (i = start, cnt = 0; i < tlbsize; i++, cnt++) {
-@@ -585,6 +595,10 @@ static void r4k_tlb_uniquify(void)
- 	tlbw_use_hazard();
- 	htw_start();
- 	flush_micro_tlb();
-+	if (use_slab)
-+		kfree(tlb_vpns);
-+	else
-+		memblock_free(tlb_vpns, tlb_vpn_size);
- }
- 
- /*
+-	for (i = 0; cqe->len_list[i]; i++)
++	for (i = 0; cqe->len_list[i] && i < ARRAY_SIZE(cqe->len_list); i++)
+ 		qede_fill_frag_skb(edev, rxq, cqe->tpa_agg_index,
+ 				   le16_to_cpu(cqe->len_list[i]));
+ 	if (unlikely(i > 1))
+-- 
+2.51.0
+
 
 
 
