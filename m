@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AD0EC9F88A
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:38:21 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B857ECA1041
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:34:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 48042300E3DD
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:34:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 77D073002898
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:34:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D90D430ACF2;
-	Wed,  3 Dec 2025 15:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2D4436C0DB;
+	Wed,  3 Dec 2025 16:31:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I84kBFL3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f4HQdtxL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 946AD2FF179;
-	Wed,  3 Dec 2025 15:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6674236C0D9;
+	Wed,  3 Dec 2025 16:31:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776080; cv=none; b=Kr95u/10A+K87LLLIQTywjxu3VBKGOLTWfAiLcA4jmjlIhjiGml6q7cbcQpGiHonmDlF30bU5EFNPoe+zMm/NiihUMKWoXTihWk0QiKfluqytxTT+dxFi+KRNS5+5OMnSFh2/5JOm29sNbXFxi2qIMAtPXhiCu5p2a4rzJzMlmI=
+	t=1764779510; cv=none; b=SOxzpBOy/BG3AFGSZCs8QkByrufA0FT1TXOHCoR/k+XhILwC9i6mCl9OfH3yTBjpyb37i/r5wvI9+rxVwj+gw1fHV+78CoHwNbMcoFUvEXGlJbp25R+CqQf/BYm+GJsslTFHqKb+UCw4I0r2mY/SrB51kwsmc5oVRHyq0DFHB5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776080; c=relaxed/simple;
-	bh=NR1zJrqI6TCIeASz4G4oeLtImzyG171/LIgTXtGtiZc=;
+	s=arc-20240116; t=1764779510; c=relaxed/simple;
+	bh=uIR+ZsvJMG9ues0ptz+GKpP8YE38YAseydcxnFZFs2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fIS5JS6DgvKSNf/MNnuSdzqvbIPj0XCDTeZcnmpd9NCylLSiifMcvpLwELb5zjrLcvznjlO+hQ1TNw7OXvtfZlBazvULKM2oCQ5HMeeptjEIgVFNtC0jzswZiazTNkTUq4ZRdoHuU2mXfjXYHHy9pXHWfxoetxaAjzNJyN8UVpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I84kBFL3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6E53C4CEF5;
-	Wed,  3 Dec 2025 15:34:39 +0000 (UTC)
+	 MIME-Version; b=cobkSf1c7UgUNuFQgGLKMq4zhd9qgBDYcHflexwHr9teZ3RSqeN5TwD+KqZ+FHySwBsbDtAs0rIVOqBfM2FhWiCDOrvc1wvfDo++MDQvRSZRKS844vZSEReRp56QRuW7cbSrHDld3jE1tPwblEE/1ywdN1JNQdnzLBq/9VL2En4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f4HQdtxL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0D8CC4CEF5;
+	Wed,  3 Dec 2025 16:31:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776080;
-	bh=NR1zJrqI6TCIeASz4G4oeLtImzyG171/LIgTXtGtiZc=;
+	s=korg; t=1764779510;
+	bh=uIR+ZsvJMG9ues0ptz+GKpP8YE38YAseydcxnFZFs2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I84kBFL3P2aDDhH8EhZQrwO9XBaIpyIQoaBrOkC8kP4A+0VA2ykUYYkh6huuZr+CQ
-	 JsQAovtKuc8KH7rXDBb+8MlSVmzOtfj6iIdV4t4JE67SSn5COxjZV32Fw7cLCoQRYa
-	 7IQFAtbfhwKiJLEKiwPMG+qvOGQFrijxiku9AjMc=
+	b=f4HQdtxLQXGC953X/mhgGFeJJyG30fbt0SjWhxSvRfrTExX0v4p7OQpnv25FuPciB
+	 AbWgOK60ZuRDBH10UD1oOIzoOgyvbUH5ItUoC+UBVbnwcuYxRdkdoODIsRMRaMOTCV
+	 YT+SjYLYM/MfSRny4FEHwR6OqTEXyzMWJ7e6Sfy8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Jacob Moroni <jmoroni@google.com>,
+	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 075/300] media: pci: ivtv: Dont create fake v4l2_fh
+Subject: [PATCH 6.1 277/568] RDMA/irdma: Set irdma_cq cq_num field during CQ create
 Date: Wed,  3 Dec 2025 16:24:39 +0100
-Message-ID: <20251203152403.402111894@linuxfoundation.org>
+Message-ID: <20251203152450.854959373@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,182 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+From: Jacob Moroni <jmoroni@google.com>
 
-[ Upstream commit cc6e8d1ccea792d8550428e0831e3a35b0ccfddc ]
+[ Upstream commit 5575b7646b94c0afb0f4c0d86e00e13cf3397a62 ]
 
-The ivtv driver has a structure named ivtv_open_id that models an open
-file handle for the device. It embeds a v4l2_fh instance for file
-handles that correspond to a V4L2 video device, and stores a pointer to
-that v4l2_fh in struct ivtv_stream to identify which open file handle
-owns a particular stream.
+The driver maintains a CQ table that is used to ensure that a CQ is
+still valid when processing CQ related AEs. When a CQ is destroyed,
+the table entry is cleared, using irdma_cq.cq_num as the index. This
+field was never being set, so it was just always clearing out entry
+0.
 
-In addition to video devices, streams can be owned by ALSA PCM devices.
-Those devices do not make use of the v4l2_fh instance for obvious
-reasons, but the snd_ivtv_pcm_capture_open() function still initializes
-a "fake" v4l2_fh for the sole purpose of using it as an open file handle
-identifier. The v4l2_fh is not properly destroyed when the ALSA PCM
-device is closed, leading to possible resource leaks.
+Additionally, the cq_num field size was increased to accommodate HW
+supporting more than 64K CQs.
 
-Fortunately, the v4l2_fh instance pointed to by ivtv_stream is not
-accessed, only the pointer value is used for comparison. Replace it with
-a pointer to the ivtv_open_id structure that embeds the v4l2_fh, and
-don't initialize the v4l2_fh for ALSA PCM devices.
-
-Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Fixes: b48c24c2d710 ("RDMA/irdma: Implement device supported verb APIs")
+Signed-off-by: Jacob Moroni <jmoroni@google.com>
+Link: https://patch.msgid.link/20250923142439.943930-1-jmoroni@google.com
+Acked-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/ivtv/ivtv-alsa-pcm.c |  2 --
- drivers/media/pci/ivtv/ivtv-driver.h   |  3 ++-
- drivers/media/pci/ivtv/ivtv-fileops.c  | 18 +++++++++---------
- drivers/media/pci/ivtv/ivtv-irq.c      |  4 ++--
- 4 files changed, 13 insertions(+), 14 deletions(-)
+ drivers/infiniband/hw/irdma/verbs.c | 1 +
+ drivers/infiniband/hw/irdma/verbs.h | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/pci/ivtv/ivtv-alsa-pcm.c b/drivers/media/pci/ivtv/ivtv-alsa-pcm.c
-index 8f346d7da9c8d..269a799ec046c 100644
---- a/drivers/media/pci/ivtv/ivtv-alsa-pcm.c
-+++ b/drivers/media/pci/ivtv/ivtv-alsa-pcm.c
-@@ -148,14 +148,12 @@ static int snd_ivtv_pcm_capture_open(struct snd_pcm_substream *substream)
- 
- 	s = &itv->streams[IVTV_ENC_STREAM_TYPE_PCM];
- 
--	v4l2_fh_init(&item.fh, &s->vdev);
- 	item.itv = itv;
- 	item.type = s->type;
- 
- 	/* See if the stream is available */
- 	if (ivtv_claim_stream(&item, item.type)) {
- 		/* No, it's already in use */
--		v4l2_fh_exit(&item.fh);
- 		snd_ivtv_unlock(itvsc);
- 		return -EBUSY;
- 	}
-diff --git a/drivers/media/pci/ivtv/ivtv-driver.h b/drivers/media/pci/ivtv/ivtv-driver.h
-index 00caf60ff9890..7c3fc594cee56 100644
---- a/drivers/media/pci/ivtv/ivtv-driver.h
-+++ b/drivers/media/pci/ivtv/ivtv-driver.h
-@@ -324,6 +324,7 @@ struct ivtv_queue {
- };
- 
- struct ivtv;				/* forward reference */
-+struct ivtv_open_id;
- 
- struct ivtv_stream {
- 	/* These first four fields are always set, even if the stream
-@@ -333,7 +334,7 @@ struct ivtv_stream {
- 	const char *name;		/* name of the stream */
- 	int type;			/* stream type */
- 
--	struct v4l2_fh *fh;		/* pointer to the streaming filehandle */
-+	struct ivtv_open_id *id;	/* pointer to the streaming ivtv_open_id */
- 	spinlock_t qlock;		/* locks access to the queues */
- 	unsigned long s_flags;		/* status flags, see above */
- 	int dma;			/* can be PCI_DMA_TODEVICE, PCI_DMA_FROMDEVICE or PCI_DMA_NONE */
-diff --git a/drivers/media/pci/ivtv/ivtv-fileops.c b/drivers/media/pci/ivtv/ivtv-fileops.c
-index 4202c3a47d33e..7ed0d2d85253e 100644
---- a/drivers/media/pci/ivtv/ivtv-fileops.c
-+++ b/drivers/media/pci/ivtv/ivtv-fileops.c
-@@ -38,16 +38,16 @@ int ivtv_claim_stream(struct ivtv_open_id *id, int type)
- 
- 	if (test_and_set_bit(IVTV_F_S_CLAIMED, &s->s_flags)) {
- 		/* someone already claimed this stream */
--		if (s->fh == &id->fh) {
-+		if (s->id == id) {
- 			/* yes, this file descriptor did. So that's OK. */
- 			return 0;
- 		}
--		if (s->fh == NULL && (type == IVTV_DEC_STREAM_TYPE_VBI ||
-+		if (s->id == NULL && (type == IVTV_DEC_STREAM_TYPE_VBI ||
- 					 type == IVTV_ENC_STREAM_TYPE_VBI)) {
- 			/* VBI is handled already internally, now also assign
- 			   the file descriptor to this stream for external
- 			   reading of the stream. */
--			s->fh = &id->fh;
-+			s->id = id;
- 			IVTV_DEBUG_INFO("Start Read VBI\n");
- 			return 0;
- 		}
-@@ -55,7 +55,7 @@ int ivtv_claim_stream(struct ivtv_open_id *id, int type)
- 		IVTV_DEBUG_INFO("Stream %d is busy\n", type);
- 		return -EBUSY;
- 	}
--	s->fh = &id->fh;
-+	s->id = id;
- 	if (type == IVTV_DEC_STREAM_TYPE_VBI) {
- 		/* Enable reinsertion interrupt */
- 		ivtv_clear_irq_mask(itv, IVTV_IRQ_DEC_VBI_RE_INSERT);
-@@ -93,7 +93,7 @@ void ivtv_release_stream(struct ivtv_stream *s)
- 	struct ivtv *itv = s->itv;
- 	struct ivtv_stream *s_vbi;
- 
--	s->fh = NULL;
-+	s->id = NULL;
- 	if ((s->type == IVTV_DEC_STREAM_TYPE_VBI || s->type == IVTV_ENC_STREAM_TYPE_VBI) &&
- 		test_bit(IVTV_F_S_INTERNAL_USE, &s->s_flags)) {
- 		/* this stream is still in use internally */
-@@ -125,7 +125,7 @@ void ivtv_release_stream(struct ivtv_stream *s)
- 		/* was already cleared */
- 		return;
- 	}
--	if (s_vbi->fh) {
-+	if (s_vbi->id) {
- 		/* VBI stream still claimed by a file descriptor */
- 		return;
- 	}
-@@ -349,7 +349,7 @@ static ssize_t ivtv_read(struct ivtv_stream *s, char __user *ubuf, size_t tot_co
- 	size_t tot_written = 0;
- 	int single_frame = 0;
- 
--	if (atomic_read(&itv->capturing) == 0 && s->fh == NULL) {
-+	if (atomic_read(&itv->capturing) == 0 && s->id == NULL) {
- 		/* shouldn't happen */
- 		IVTV_DEBUG_WARN("Stream %s not initialized before read\n", s->name);
- 		return -EIO;
-@@ -819,7 +819,7 @@ void ivtv_stop_capture(struct ivtv_open_id *id, int gop_end)
- 		     id->type == IVTV_ENC_STREAM_TYPE_VBI) &&
- 		    test_bit(IVTV_F_S_INTERNAL_USE, &s->s_flags)) {
- 			/* Also used internally, don't stop capturing */
--			s->fh = NULL;
-+			s->id = NULL;
- 		}
- 		else {
- 			ivtv_stop_v4l2_encode_stream(s, gop_end);
-@@ -903,7 +903,7 @@ int ivtv_v4l2_close(struct file *filp)
- 	v4l2_fh_exit(fh);
- 
- 	/* Easy case first: this stream was never claimed by us */
--	if (s->fh != &id->fh)
-+	if (s->id != id)
- 		goto close_done;
- 
- 	/* 'Unclaim' this stream */
-diff --git a/drivers/media/pci/ivtv/ivtv-irq.c b/drivers/media/pci/ivtv/ivtv-irq.c
-index e39bf64c5c715..404335e5aff4e 100644
---- a/drivers/media/pci/ivtv/ivtv-irq.c
-+++ b/drivers/media/pci/ivtv/ivtv-irq.c
-@@ -305,7 +305,7 @@ static void dma_post(struct ivtv_stream *s)
- 			ivtv_process_vbi_data(itv, buf, 0, s->type);
- 			s->q_dma.bytesused += buf->bytesused;
- 		}
--		if (s->fh == NULL) {
-+		if (s->id == NULL) {
- 			ivtv_queue_move(s, &s->q_dma, NULL, &s->q_free, 0);
- 			return;
- 		}
-@@ -330,7 +330,7 @@ static void dma_post(struct ivtv_stream *s)
- 		set_bit(IVTV_F_I_HAVE_WORK, &itv->i_flags);
- 	}
- 
--	if (s->fh)
-+	if (s->id)
- 		wake_up(&s->waitq);
- }
- 
+diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
+index fb02017a1aa63..6fc622e3eb07a 100644
+--- a/drivers/infiniband/hw/irdma/verbs.c
++++ b/drivers/infiniband/hw/irdma/verbs.c
+@@ -2050,6 +2050,7 @@ static int irdma_create_cq(struct ib_cq *ibcq,
+ 	spin_lock_init(&iwcq->lock);
+ 	INIT_LIST_HEAD(&iwcq->resize_list);
+ 	INIT_LIST_HEAD(&iwcq->cmpl_generated);
++	iwcq->cq_num = cq_num;
+ 	info.dev = dev;
+ 	ukinfo->cq_size = max(entries, 4);
+ 	ukinfo->cq_id = cq_num;
+diff --git a/drivers/infiniband/hw/irdma/verbs.h b/drivers/infiniband/hw/irdma/verbs.h
+index b55d30df96261..8809465020e13 100644
+--- a/drivers/infiniband/hw/irdma/verbs.h
++++ b/drivers/infiniband/hw/irdma/verbs.h
+@@ -113,7 +113,7 @@ struct irdma_mr {
+ struct irdma_cq {
+ 	struct ib_cq ibcq;
+ 	struct irdma_sc_cq sc_cq;
+-	u16 cq_num;
++	u32 cq_num;
+ 	bool user_mode;
+ 	atomic_t armed;
+ 	enum irdma_cmpl_notify last_notify;
 -- 
 2.51.0
 
