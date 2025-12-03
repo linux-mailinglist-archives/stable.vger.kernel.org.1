@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35062CA0D90
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:15:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A91BECA08EB
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:41:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 328EB33354B2
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:12:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3BE25341B7E8
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:21:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F763341ACB;
-	Wed,  3 Dec 2025 16:59:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CF5134D918;
+	Wed,  3 Dec 2025 16:55:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CEMiT1+5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dXcO/65f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F816340D82;
-	Wed,  3 Dec 2025 16:59:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B2234E771;
+	Wed,  3 Dec 2025 16:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764781174; cv=none; b=cxotxKUYamAbiGzRKcbz0rkdZDMcMfNA3qUeALQQ4pb+mLSwmE650Ub+Sr556Ws45JvmlQORQQf3B+p4yxh+giapPLIye8twJHgOXKNR4vo1mHCfcYImfkQIqX+sQ2GT0gBMHPV7iewSJVIxWA4VX+0FRwdYJxNqIpcC9vRA1ek=
+	t=1764780915; cv=none; b=WAIwPd+5D0ys1/GEX+KDtwgXzFNVZVZgIfuwGk2KJPrrS5NfZNqv1D8bu9hg0ffr58fL3evI8PetlDL/GIRXXhotBq/SE9p6ik6RyVczQ44Iq6qL1vwggCCDEJJeEbudVMXhrynSGFyGInAqfg8YMCWIG+xndV+lWXYbQzfGj5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764781174; c=relaxed/simple;
-	bh=BGylPvOORLef03dHop1tMjX2zwrhsMAEQ6cRObpLt5E=;
+	s=arc-20240116; t=1764780915; c=relaxed/simple;
+	bh=poypeU4wGgrKSecdvPV+zNvICxTvccgRGEPbPJDw+HI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eTpKIJKX899EBkuc/1yxXf3hY+tgDUNYQbdEPC9wZ8/I4Zw9eV47hvqU95Egt4bEWfTsZnRma4G4HAAp9zzTV453MlJVyN5SZBlqxcrprN7jgrMDxmG4IbOPwKbjRGsPZ0ehlRB6uizQAktfcKJjyqb3rGvz9Pvt8FFg93lG2hU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CEMiT1+5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83A15C4CEF5;
-	Wed,  3 Dec 2025 16:59:33 +0000 (UTC)
+	 MIME-Version; b=kw7xcMEwXFxkANbeDTe/XUTQ15Hd0vq8wP1c4zi33QeXWixMYAYaI9EHrqcW+lLuPSOxBPYqK4/Qxw6AARUt3yusUrhZTIswELR/pZUJprHBasdsOEByY9zlFem02Fh+y7dBUH71yn4zuew96/S9jyF3sWAn5yrCnKQ+ibGvTRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dXcO/65f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6218C4CEF5;
+	Wed,  3 Dec 2025 16:55:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764781173;
-	bh=BGylPvOORLef03dHop1tMjX2zwrhsMAEQ6cRObpLt5E=;
+	s=korg; t=1764780915;
+	bh=poypeU4wGgrKSecdvPV+zNvICxTvccgRGEPbPJDw+HI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CEMiT1+54aFd7h8HvtFIjXFjshEOLhRYvdnI5VbI1hALOmKvEgjiEJQ8Q7K6NUY/z
-	 osjtRpwcY6HbDh2eaethXn5jV0HZpmnGwyjWuh40iAmxeUDITzwqo0W3mhBKjXKQTy
-	 MiSPZ9Oo2vU+O5qC1fo7xyDXzd7UTSwQbsOcvRsc=
+	b=dXcO/65fEg0zXRuNw2NGEXxMcrfMxpaDnu3iCCLu1DmTbhUJ4smlq3zyUjk1tIFd8
+	 qYgMEXdL438ziZHAElKqe7OCNIZ+DwMahfds6ezsOZcSGNx6IqYeTr5y0qS8SYoS3o
+	 bCt3cS3Yk+vhnMqz649oVFJ8dLdIZ+XM2fwfgeGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Alex Hung <alex.hung@amd.com>
-Subject: [PATCH 6.6 72/93] drm/amd/display: Check NULL before accessing
-Date: Wed,  3 Dec 2025 16:30:05 +0100
-Message-ID: <20251203152339.185528014@linuxfoundation.org>
+	Tristram Ha <tristram.ha@microchip.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 127/132] net: dsa: microchip: Do not execute PTP driver code for unsupported switches
+Date: Wed,  3 Dec 2025 16:30:06 +0100
+Message-ID: <20251203152348.020335051@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-References: <20251203152336.494201426@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+References: <20251203152343.285859633@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +60,182 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Tristram Ha <tristram.ha@microchip.com>
 
-commit 3ce62c189693e8ed7b3abe551802bbc67f3ace54 upstream.
+[ Upstream commit 6ed3472173c575cd8aaed6c62eb74f7728404ee6 ]
 
-[WHAT]
-IGT kms_cursor_legacy's long-nonblocking-modeset-vs-cursor-atomic
-fails with NULL pointer dereference. This can be reproduced with
-both an eDP panel and a DP monitors connected.
+The PTP driver code only works for certain KSZ switches like KSZ9477,
+KSZ9567, LAN937X and their varieties.  This code is enabled by kernel
+configuration CONFIG_NET_DSA_MICROCHIP_KSZ_PTP.  As the DSA driver is
+common to work with all KSZ switches this PTP code is not appropriate
+for other unsupported switches.  The ptp_capable indication is added to
+the chip data structure to signal whether to execute those code.
 
- BUG: kernel NULL pointer dereference, address: 0000000000000000
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 0 P4D 0
- Oops: Oops: 0000 [#1] SMP NOPTI
- CPU: 13 UID: 0 PID: 2960 Comm: kms_cursor_lega Not tainted
-6.16.0-99-custom #8 PREEMPT(voluntary)
- Hardware name: AMD ........
- RIP: 0010:dc_stream_get_scanoutpos+0x34/0x130 [amdgpu]
- Code: 57 4d 89 c7 41 56 49 89 ce 41 55 49 89 d5 41 54 49
- 89 fc 53 48 83 ec 18 48 8b 87 a0 64 00 00 48 89 75 d0 48 c7 c6 e0 41 30
- c2 <48> 8b 38 48 8b 9f 68 06 00 00 e8 8d d7 fd ff 31 c0 48 81 c3 e0 02
- RSP: 0018:ffffd0f3c2bd7608 EFLAGS: 00010292
- RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffd0f3c2bd7668
- RDX: ffffd0f3c2bd7664 RSI: ffffffffc23041e0 RDI: ffff8b32494b8000
- RBP: ffffd0f3c2bd7648 R08: ffffd0f3c2bd766c R09: ffffd0f3c2bd7760
- R10: ffffd0f3c2bd7820 R11: 0000000000000000 R12: ffff8b32494b8000
- R13: ffffd0f3c2bd7664 R14: ffffd0f3c2bd7668 R15: ffffd0f3c2bd766c
- FS:  000071f631b68700(0000) GS:ffff8b399f114000(0000)
-knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000000000000000 CR3: 00000001b8105000 CR4: 0000000000f50ef0
- PKRU: 55555554
- Call Trace:
- <TASK>
- dm_crtc_get_scanoutpos+0xd7/0x180 [amdgpu]
- amdgpu_display_get_crtc_scanoutpos+0x86/0x1c0 [amdgpu]
- ? __pfx_amdgpu_crtc_get_scanout_position+0x10/0x10[amdgpu]
- amdgpu_crtc_get_scanout_position+0x27/0x50 [amdgpu]
- drm_crtc_vblank_helper_get_vblank_timestamp_internal+0xf7/0x400
- drm_crtc_vblank_helper_get_vblank_timestamp+0x1c/0x30
- drm_crtc_get_last_vbltimestamp+0x55/0x90
- drm_crtc_next_vblank_start+0x45/0xa0
- drm_atomic_helper_wait_for_fences+0x81/0x1f0
- ...
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 621e55f1919640acab25383362b96e65f2baea3c)
-Cc: stable@vger.kernel.org
+Signed-off-by: Tristram Ha <tristram.ha@microchip.com>
+Link: https://patch.msgid.link/20241218020240.70601-1-Tristram.Ha@microchip.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 0f80e21bf622 ("net: dsa: microchip: Free previously initialized ports on init failures")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc_stream.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/net/dsa/microchip/ksz_common.c |   40 +++++++++++++++++++++++----------
+ drivers/net/dsa/microchip/ksz_common.h |    1 
+ 2 files changed, 30 insertions(+), 11 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
-@@ -634,9 +634,14 @@ bool dc_stream_get_scanoutpos(const stru
- {
- 	uint8_t i;
- 	bool ret = false;
--	struct dc  *dc = stream->ctx->dc;
--	struct resource_context *res_ctx =
--		&dc->current_state->res_ctx;
-+	struct dc  *dc;
-+	struct resource_context *res_ctx;
-+
-+	if (!stream->ctx)
-+		return false;
-+
-+	dc = stream->ctx->dc;
-+	res_ctx = &dc->current_state->res_ctx;
+--- a/drivers/net/dsa/microchip/ksz_common.c
++++ b/drivers/net/dsa/microchip/ksz_common.c
+@@ -1342,6 +1342,7 @@ const struct ksz_chip_data ksz_switch_ch
+ 		.supports_rgmii = {false, false, true},
+ 		.internal_phy = {true, true, false},
+ 		.gbit_capable = {false, false, true},
++		.ptp_capable = true,
+ 		.wr_table = &ksz8563_register_set,
+ 		.rd_table = &ksz8563_register_set,
+ 	},
+@@ -1553,6 +1554,7 @@ const struct ksz_chip_data ksz_switch_ch
+ 		.internal_phy	= {true, true, true, true,
+ 				   true, false, false},
+ 		.gbit_capable	= {true, true, true, true, true, true, true},
++		.ptp_capable = true,
+ 		.wr_table = &ksz9477_register_set,
+ 		.rd_table = &ksz9477_register_set,
+ 	},
+@@ -1680,6 +1682,7 @@ const struct ksz_chip_data ksz_switch_ch
+ 		.supports_rgmii = {false, false, true},
+ 		.internal_phy = {true, true, false},
+ 		.gbit_capable = {true, true, true},
++		.ptp_capable = true,
+ 	},
  
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		struct timing_generator *tg = res_ctx->pipe_ctx[i].stream_res.tg;
+ 	[KSZ8567] = {
+@@ -1715,6 +1718,7 @@ const struct ksz_chip_data ksz_switch_ch
+ 				   true, false, false},
+ 		.gbit_capable	= {false, false, false, false, false,
+ 				   true, true},
++		.ptp_capable = true,
+ 	},
+ 
+ 	[KSZ9567] = {
+@@ -1747,6 +1751,7 @@ const struct ksz_chip_data ksz_switch_ch
+ 		.internal_phy	= {true, true, true, true,
+ 				   true, false, false},
+ 		.gbit_capable	= {true, true, true, true, true, true, true},
++		.ptp_capable = true,
+ 	},
+ 
+ 	[LAN9370] = {
+@@ -1775,6 +1780,7 @@ const struct ksz_chip_data ksz_switch_ch
+ 		.supports_rmii = {false, false, false, false, true},
+ 		.supports_rgmii = {false, false, false, false, true},
+ 		.internal_phy = {true, true, true, true, false},
++		.ptp_capable = true,
+ 	},
+ 
+ 	[LAN9371] = {
+@@ -1803,6 +1809,7 @@ const struct ksz_chip_data ksz_switch_ch
+ 		.supports_rmii = {false, false, false, false, true, true},
+ 		.supports_rgmii = {false, false, false, false, true, true},
+ 		.internal_phy = {true, true, true, true, false, false},
++		.ptp_capable = true,
+ 	},
+ 
+ 	[LAN9372] = {
+@@ -1835,6 +1842,7 @@ const struct ksz_chip_data ksz_switch_ch
+ 				   true, true, false, false},
+ 		.internal_phy	= {true, true, true, true,
+ 				   false, false, true, true},
++		.ptp_capable = true,
+ 	},
+ 
+ 	[LAN9373] = {
+@@ -1867,6 +1875,7 @@ const struct ksz_chip_data ksz_switch_ch
+ 				   true, true, false, false},
+ 		.internal_phy	= {true, true, true, false,
+ 				   false, false, true, true},
++		.ptp_capable = true,
+ 	},
+ 
+ 	[LAN9374] = {
+@@ -1899,6 +1908,7 @@ const struct ksz_chip_data ksz_switch_ch
+ 				   true, true, false, false},
+ 		.internal_phy	= {true, true, true, true,
+ 				   false, false, true, true},
++		.ptp_capable = true,
+ 	},
+ };
+ EXPORT_SYMBOL_GPL(ksz_switch_chips);
+@@ -2556,16 +2566,21 @@ static int ksz_setup(struct dsa_switch *
+ 			if (ret)
+ 				goto out_girq;
+ 
+-			ret = ksz_ptp_irq_setup(ds, dp->index);
+-			if (ret)
+-				goto out_pirq;
++			if (dev->info->ptp_capable) {
++				ret = ksz_ptp_irq_setup(ds, dp->index);
++				if (ret)
++					goto out_pirq;
++			}
+ 		}
+ 	}
+ 
+-	ret = ksz_ptp_clock_register(ds);
+-	if (ret) {
+-		dev_err(dev->dev, "Failed to register PTP clock: %d\n", ret);
+-		goto out_ptpirq;
++	if (dev->info->ptp_capable) {
++		ret = ksz_ptp_clock_register(ds);
++		if (ret) {
++			dev_err(dev->dev, "Failed to register PTP clock: %d\n",
++				ret);
++			goto out_ptpirq;
++		}
+ 	}
+ 
+ 	ret = ksz_mdio_register(dev);
+@@ -2585,9 +2600,10 @@ static int ksz_setup(struct dsa_switch *
+ 	return 0;
+ 
+ out_ptp_clock_unregister:
+-	ksz_ptp_clock_unregister(ds);
++	if (dev->info->ptp_capable)
++		ksz_ptp_clock_unregister(ds);
+ out_ptpirq:
+-	if (dev->irq > 0)
++	if (dev->irq > 0 && dev->info->ptp_capable)
+ 		dsa_switch_for_each_user_port(dp, dev->ds)
+ 			ksz_ptp_irq_free(ds, dp->index);
+ out_pirq:
+@@ -2606,11 +2622,13 @@ static void ksz_teardown(struct dsa_swit
+ 	struct ksz_device *dev = ds->priv;
+ 	struct dsa_port *dp;
+ 
+-	ksz_ptp_clock_unregister(ds);
++	if (dev->info->ptp_capable)
++		ksz_ptp_clock_unregister(ds);
+ 
+ 	if (dev->irq > 0) {
+ 		dsa_switch_for_each_user_port(dp, dev->ds) {
+-			ksz_ptp_irq_free(ds, dp->index);
++			if (dev->info->ptp_capable)
++				ksz_ptp_irq_free(ds, dp->index);
+ 
+ 			ksz_irq_free(&dev->ports[dp->index].pirq);
+ 		}
+--- a/drivers/net/dsa/microchip/ksz_common.h
++++ b/drivers/net/dsa/microchip/ksz_common.h
+@@ -86,6 +86,7 @@ struct ksz_chip_data {
+ 	bool supports_rgmii[KSZ_MAX_NUM_PORTS];
+ 	bool internal_phy[KSZ_MAX_NUM_PORTS];
+ 	bool gbit_capable[KSZ_MAX_NUM_PORTS];
++	bool ptp_capable;
+ 	const struct regmap_access_table *wr_table;
+ 	const struct regmap_access_table *rd_table;
+ };
 
 
 
