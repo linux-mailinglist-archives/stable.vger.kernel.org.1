@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-199549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DACACA02D4
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:53:12 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9641FC9FA0D
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:46:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2701D307D40D
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:42:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 13EEB30022B5
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:46:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8840B35E544;
-	Wed,  3 Dec 2025 16:42:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7876C313E23;
+	Wed,  3 Dec 2025 15:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aHxB6UkE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zaTmayi+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4433735BDBF;
-	Wed,  3 Dec 2025 16:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B2A313E00;
+	Wed,  3 Dec 2025 15:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780165; cv=none; b=DDsnn3P0HP7I5bUqWVlAQMdrhZdWLM0KfQo4+dhSspfLPuNUUI9sLnkFYO+wLT4fE+GsHHAgoEZKZyCYn7R6D9d1VfbhcOYCAA8LhqQZ1eYXFLpJZXNLGpPZZuPVV2hcMkrCjDtO4CqV7X0h99iFTQDnfXOclXBfRor3ngOkkG8=
+	t=1764776771; cv=none; b=CqGSZvHSgBjWnFptcb0URqSIcEyJixyuCk3PbYI9Lohc+NGdSWUmaiM+7b3s7cpXW0DX7UMkJaJQixa0IiYwjHLnnLSEO5iTHu+3orO9gSMrAkpr4e69QNCN5wSgHyjKyPc3Jh7vsXflquyLlqN66uOSA381KkYDNXuVKpSBnPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780165; c=relaxed/simple;
-	bh=zCVJ1sSpHVeeCvGvQyECUH7VZSK1i8I8M9XN97V+8Jg=;
+	s=arc-20240116; t=1764776771; c=relaxed/simple;
+	bh=KakpE9ql+E08l1BOhbRQZrp2qjsr04ga2hDCTH55b1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l5CatKWFE6SvpXQGhguHbQDVwNcetHq7pXPjFc2gu6lRU1bCJdwlwo5GX61XPWZVWIhLgQugruNdHyawCJzM6QgGtvDdyHJ0PmEv4VY1jCqV1spS1AJ+e0ZvdKu98wr1phTZP8E25BZFcoSDcYEkF0WmlBEhhvnKl//tFKzb+8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aHxB6UkE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6332EC4CEF5;
-	Wed,  3 Dec 2025 16:42:44 +0000 (UTC)
+	 MIME-Version; b=KlMB90WEimsuvZmrrLKWsW18T0Fz3q06xxeu2DxlOEzmVCPrjiGPDYcKnQ7DOjB2G6XGBwoW+CxLZRvPw1/gL3mpW9VAh5FxXNiK9KFT2+nQdP3TIFAA8rKutRtxoHO/2DTvJwSU28z4IquGdi8rnIYBM9FhXdEDYl4SpPtOIXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zaTmayi+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96791C4CEF5;
+	Wed,  3 Dec 2025 15:46:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780164;
-	bh=zCVJ1sSpHVeeCvGvQyECUH7VZSK1i8I8M9XN97V+8Jg=;
+	s=korg; t=1764776771;
+	bh=KakpE9ql+E08l1BOhbRQZrp2qjsr04ga2hDCTH55b1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aHxB6UkEHq0uEbKKJZOOHs3Glz7Ye9mFisy7ezAQP8Mo4uJ2iJxOr4sCmRtJ3zc3c
-	 b7ODlX+uyICmXfRerO3ob60qk1U6ceJ1FFSTsgRmvUcstQ6Fww8XcmOfT298O93DIV
-	 kx1uZT/Q6fBzX9iaVJSYd87aSQ22foaTpVArFhOY=
+	b=zaTmayi++XuvzSDZMDBJcdjxtRk+z017qwfrbToEZaVQZTcQyQzha4Uuix1tns+E0
+	 bWMRJAm7/7FBoZo5HMJrFZQSUywDyCM/MfogjxkxIDqP2hxUPKygl6BykdZSCONvhW
+	 xga+9PihY665jR80UFcmCUTm9oL8opB8WWTmqzsU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <longli@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Naman Jain <namjain@linux.microsoft.com>
-Subject: [PATCH 6.1 476/568] uio_hv_generic: Set event for all channels on the device
-Date: Wed,  3 Dec 2025 16:27:58 +0100
-Message-ID: <20251203152458.131947054@linuxfoundation.org>
+	Ang Tien Sung <tiensung.ang@altera.com>,
+	Khairul Anuar Romli <khairul.anuar.romli@altera.com>,
+	Dinh Nguyen <dinguyen@kernel.org>
+Subject: [PATCH 5.10 275/300] firmware: stratix10-svc: fix bug in saving controller data
+Date: Wed,  3 Dec 2025 16:27:59 +0100
+Message-ID: <20251203152410.817393010@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +60,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <longli@microsoft.com>
+From: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
 
-commit d062463edf1770427dc2d637df4088df4835aa47 upstream.
+commit d0fcf70c680e4d1669fcb3a8632f41400b9a73c2 upstream.
 
-Hyper-V may offer a non latency sensitive device with subchannels without
-monitor bit enabled. The decision is entirely on the Hyper-V host not
-configurable within guest.
+Fix the incorrect usage of platform_set_drvdata and dev_set_drvdata. They
+both are of the same data and overrides each other. This resulted in the
+rmmod of the svc driver to fail and throw a kernel panic for kthread_stop
+and fifo free.
 
-When a device has subchannels, also signal events for the subchannel
-if its monitor bit is disabled.
-
-This patch also removes the memory barrier when monitor bit is enabled
-as it is not necessary. The memory barrier is only needed between
-setting up interrupt mask and calling vmbus_set_event() when monitor
-bit is disabled.
-
-Signed-off-by: Long Li <longli@microsoft.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Link: https://lore.kernel.org/r/1741644721-20389-1-git-send-email-longli@linuxonhyperv.com
-Fixes: b15b7d2a1b09 ("uio_hv_generic: Let userspace take care of interrupt mask")
-Closes: https://bugs.debian.org/1120602
-Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+Fixes: b5dc75c915cd ("firmware: stratix10-svc: extend svc to support new RSU features")
+Cc: stable@vger.kernel.org # 6.6+
+Signed-off-by: Ang Tien Sung <tiensung.ang@altera.com>
+Signed-off-by: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
+Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/uio/uio_hv_generic.c |   21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+ drivers/firmware/stratix10-svc.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/uio/uio_hv_generic.c
-+++ b/drivers/uio/uio_hv_generic.c
-@@ -80,9 +80,15 @@ hv_uio_irqcontrol(struct uio_info *info,
- {
- 	struct hv_uio_private_data *pdata = info->priv;
- 	struct hv_device *dev = pdata->device;
-+	struct vmbus_channel *primary, *sc;
+--- a/drivers/firmware/stratix10-svc.c
++++ b/drivers/firmware/stratix10-svc.c
+@@ -127,6 +127,7 @@ struct stratix10_svc_data {
+  * @complete_status: state for completion
+  * @svc_fifo_lock: protect access to service message data queue
+  * @invoke_fn: function to issue secure monitor call or hypervisor call
++ * @svc: manages the list of client svc drivers
+  *
+  * This struct is used to create communication channels for service clients, to
+  * handle secure monitor or hypervisor call.
+@@ -143,6 +144,7 @@ struct stratix10_svc_controller {
+ 	struct completion complete_status;
+ 	spinlock_t svc_fifo_lock;
+ 	svc_invoke_fn *invoke_fn;
++	struct stratix10_svc *svc;
+ };
  
--	dev->channel->inbound.ring_buffer->interrupt_mask = !irq_state;
--	virt_mb();
-+	primary = dev->channel;
-+	primary->inbound.ring_buffer->interrupt_mask = !irq_state;
-+
-+	mutex_lock(&vmbus_connection.channel_mutex);
-+	list_for_each_entry(sc, &primary->sc_list, sc_list)
-+		sc->inbound.ring_buffer->interrupt_mask = !irq_state;
-+	mutex_unlock(&vmbus_connection.channel_mutex);
+ /**
+@@ -1038,6 +1040,7 @@ static int stratix10_svc_drv_probe(struc
+ 		ret = -ENOMEM;
+ 		goto err_free_kfifo;
+ 	}
++	controller->svc = svc;
+ 
+ 	svc->stratix10_svc_rsu = platform_device_alloc(STRATIX10_RSU, 0);
+ 	if (!svc->stratix10_svc_rsu) {
+@@ -1050,8 +1053,6 @@ static int stratix10_svc_drv_probe(struc
+ 	if (ret)
+ 		goto err_put_device;
+ 
+-	dev_set_drvdata(dev, svc);
+-
+ 	pr_info("Intel Service Layer Driver Initialized\n");
  
  	return 0;
- }
-@@ -93,11 +99,18 @@ hv_uio_irqcontrol(struct uio_info *info,
- static void hv_uio_channel_cb(void *context)
+@@ -1065,8 +1066,8 @@ err_free_kfifo:
+ 
+ static int stratix10_svc_drv_remove(struct platform_device *pdev)
  {
- 	struct vmbus_channel *chan = context;
--	struct hv_device *hv_dev = chan->device_obj;
--	struct hv_uio_private_data *pdata = hv_get_drvdata(hv_dev);
-+	struct hv_device *hv_dev;
-+	struct hv_uio_private_data *pdata;
+-	struct stratix10_svc *svc = dev_get_drvdata(&pdev->dev);
+ 	struct stratix10_svc_controller *ctrl = platform_get_drvdata(pdev);
++	struct stratix10_svc *svc = ctrl->svc;
  
- 	virt_mb();
- 
-+	/*
-+	 * The callback may come from a subchannel, in which case look
-+	 * for the hv device in the primary channel
-+	 */
-+	hv_dev = chan->primary_channel ?
-+		 chan->primary_channel->device_obj : chan->device_obj;
-+	pdata = hv_get_drvdata(hv_dev);
- 	uio_event_notify(&pdata->info);
- }
+ 	platform_device_unregister(svc->stratix10_svc_rsu);
  
 
 
