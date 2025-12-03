@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-198555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35B81C9FC39
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:59:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 222C7CA0003
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:37:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3E7EA3009072
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:58:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 94CB7300097C
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:37:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B123E3242C8;
-	Wed,  3 Dec 2025 15:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0035335C18E;
+	Wed,  3 Dec 2025 16:37:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dls2rMtk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U1ANv74S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66871322DC1;
-	Wed,  3 Dec 2025 15:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B048035BDDB;
+	Wed,  3 Dec 2025 16:37:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776931; cv=none; b=BGz/InIrXwp4scpiCE8Jk3ZLkpglkTDY5zUCwr3C7YwH25pAGdF47qlJBgA39oETV29ubbyq4mxiWvPH1MP1+DY3GFpJXPhuYWHcOShUUrrQd+OUsdqRzpSH9exOx2JlWIA90qX/ADzBkvww16c14yPKM9lEtbXP1MgtongysEU=
+	t=1764779846; cv=none; b=Lr4aGgMHQs/BixWZw2I7+c5KoIYTpLC6bCOgrUZaphbXwDZUgON3gstVij3NCODUCwxqOgwM7HoRsp2kWhWlfFV3rSF3Qo+QMCuOr4+c1/+JayVSiYmhxpPzUp5d/qGtzZV2VB+d5HtfgxxfcH7udlQyRDE1AdZDcurngJsBd04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776931; c=relaxed/simple;
-	bh=gYiJFb53ThhYc0qUMPYfRulrVJ8mG74zj6dRb5sEiOc=;
+	s=arc-20240116; t=1764779846; c=relaxed/simple;
+	bh=Osa/5skVqXVfrvH4iRB+KMk+SvunucpO7YNCdwHM0/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LGzIim9w/YqzozGFg0gMTV8L0y2x8dl/jLHQJd3yibtzeTLKuA9LIQvhyoMgtFKC7lDgttdte14wqkM+WC8MDTeDisDzQC1QVpd6y0+A8BAwTuD/t8hjO3+/GCrYlboxXDUfMtDwXy2GnAKAVJdRAQPVrUB3hDALC9JGDFm1ys8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dls2rMtk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71842C4CEF5;
-	Wed,  3 Dec 2025 15:48:50 +0000 (UTC)
+	 MIME-Version; b=sFWcI2tDwwteFB27JrWsSdj7S/pX6vRqRXWDIpdNSOdknYiqZop6FInE438OPeyW/ruQPuQBEb7xIbHC0RgPXJQOCgEsi5BUDPKx2UBKtHgBfj2PzVWJz+UxVYPAl+4kz42bWsqWkPyABZExehnXHFXzw2B1eehlawU52siJUrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U1ANv74S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29B6CC4CEF5;
+	Wed,  3 Dec 2025 16:37:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776930;
-	bh=gYiJFb53ThhYc0qUMPYfRulrVJ8mG74zj6dRb5sEiOc=;
+	s=korg; t=1764779846;
+	bh=Osa/5skVqXVfrvH4iRB+KMk+SvunucpO7YNCdwHM0/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dls2rMtkHGibcdw2WivIAERJIXDsaxhSLPUaJcHQKMCXy435Znz8+HkXBngLbw3yW
-	 onCqffHrixuQlCgeQHlrm13RCl1RVQEAOuKqQfArjU5k26YihpUDCd9zGFwkRDiluH
-	 R8wU2nsvynWbQXxKtITwsHlc764jztLX1zok6MhY=
+	b=U1ANv74SVpwVwQ4T5Wf5bOYC68IMrwvdiaLo7MeBxH1BpoYK5oyIhZr0a/I0gSXDm
+	 4zXGM0egXrVo1vaWPyDLr7POIKA+gzIBuBaDrmHVEmD4bDGSJJUmZOVfB6XRzw0efF
+	 OVOE8tgRepktG6kpPshH//9E9Ogd1hTKjiusY/ug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Pauli Virtanen <pav@iki.fi>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 003/146] can: gs_usb: gs_usb_receive_bulk_callback(): check actual_length before accessing header
+Subject: [PATCH 6.1 379/568] Bluetooth: L2CAP: export l2cap_chan_hold for modules
 Date: Wed,  3 Dec 2025 16:26:21 +0100
-Message-ID: <20251203152346.588107764@linuxfoundation.org>
+Message-ID: <20251203152454.578188607@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,93 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Pauli Virtanen <pav@iki.fi>
 
-[ Upstream commit 6fe9f3279f7d2518439a7962c5870c6e9ecbadcf ]
+[ Upstream commit e060088db0bdf7932e0e3c2d24b7371c4c5b867c ]
 
-The driver expects to receive a struct gs_host_frame in
-gs_usb_receive_bulk_callback().
+l2cap_chan_put() is exported, so export also l2cap_chan_hold() for
+modules.
 
-Use struct_group to describe the header of the struct gs_host_frame and
-check that we have at least received the header before accessing any
-members of it.
+l2cap_chan_hold() has use case in net/bluetooth/6lowpan.c
 
-To resubmit the URB, do not dereference the pointer chain
-"dev->parent->hf_size_rx" but use "parent->hf_size_rx" instead. Since
-"urb->context" contains "parent", it is always defined, while "dev" is not
-defined if the URB it too short.
-
-Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
-Link: https://patch.msgid.link/20251114-gs_usb-fix-usb-callbacks-v1-2-a29b42eacada@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/usb/gs_usb.c | 26 +++++++++++++++++++-------
- 1 file changed, 19 insertions(+), 7 deletions(-)
+ net/bluetooth/l2cap_core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
-index fa9bab8c89aea..51f8d694104d9 100644
---- a/drivers/net/can/usb/gs_usb.c
-+++ b/drivers/net/can/usb/gs_usb.c
-@@ -262,13 +262,15 @@ struct canfd_quirk {
- } __packed;
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 8bb6d2690e2b9..ea82a468b314a 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -521,6 +521,7 @@ void l2cap_chan_hold(struct l2cap_chan *c)
  
- struct gs_host_frame {
--	u32 echo_id;
--	__le32 can_id;
-+	struct_group(header,
-+		u32 echo_id;
-+		__le32 can_id;
+ 	kref_get(&c->kref);
+ }
++EXPORT_SYMBOL_GPL(l2cap_chan_hold);
  
--	u8 can_dlc;
--	u8 channel;
--	u8 flags;
--	u8 reserved;
-+		u8 can_dlc;
-+		u8 channel;
-+		u8 flags;
-+		u8 reserved;
-+	);
- 
- 	union {
- 		DECLARE_FLEX_ARRAY(struct classic_can, classic_can);
-@@ -576,6 +578,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
- 	int rc;
- 	struct net_device_stats *stats;
- 	struct gs_host_frame *hf = urb->transfer_buffer;
-+	unsigned int minimum_length;
- 	struct gs_tx_context *txc;
- 	struct can_frame *cf;
- 	struct canfd_frame *cfd;
-@@ -594,6 +597,15 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
- 		return;
- 	}
- 
-+	minimum_length = sizeof(hf->header);
-+	if (urb->actual_length < minimum_length) {
-+		dev_err_ratelimited(&parent->udev->dev,
-+				    "short read (actual_length=%u, minimum_length=%u)\n",
-+				    urb->actual_length, minimum_length);
-+
-+		goto resubmit_urb;
-+	}
-+
- 	/* device reports out of range channel id */
- 	if (hf->channel >= parent->channel_cnt)
- 		goto device_detach;
-@@ -687,7 +699,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
- resubmit_urb:
- 	usb_fill_bulk_urb(urb, parent->udev,
- 			  parent->pipe_in,
--			  hf, dev->parent->hf_size_rx,
-+			  hf, parent->hf_size_rx,
- 			  gs_usb_receive_bulk_callback, parent);
- 
- 	rc = usb_submit_urb(urb, GFP_ATOMIC);
+ struct l2cap_chan *l2cap_chan_hold_unless_zero(struct l2cap_chan *c)
+ {
 -- 
 2.51.0
 
