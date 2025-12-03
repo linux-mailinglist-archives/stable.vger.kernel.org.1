@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-198808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54B08CA13BA
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:04:03 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA71BCA103C
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:34:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1D59E3005C7A
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:03:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A39B9300A9D3
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:33:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A66934D39F;
-	Wed,  3 Dec 2025 16:02:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D7DE36CDED;
+	Wed,  3 Dec 2025 16:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a/83n1cH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eAIa8tkg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 247AE34D398;
-	Wed,  3 Dec 2025 16:02:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B161C36CDE8;
+	Wed,  3 Dec 2025 16:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777748; cv=none; b=crPqy5Kn9eQ2yWNHeHakN4wJiP2CMO2tQzRYhpcmXqBgO1igzDdiPdqduYfwhMM5qXxKcLH6fud0jqLtBxVJko3hxiHg/eY05klqIb/dQ0FbRyTRNQi/ylfMHjfOSCr0yNv8D3qGcGzhU3SWsun8nJxxcrvkOZOlqnyQrtbyHNQ=
+	t=1764779526; cv=none; b=rN1xn+Q5gITiEQQmu9hopQab0v4jol4FcIIabNim9Vrbb4Jre9svqmDSrvnV9piUKxmmEm9wxRhTYyHkWxJ9iAaeen3JM20Mf2139u88jOEkTUOb7AR0Du9JA7MPFZYf9JMFEJWJCqF2OQwJOVvpKMcjyxlrglifOSc37MllNJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777748; c=relaxed/simple;
-	bh=ub61WnPxIRJXVut/vTJGQcG9QMrFEG/DLjXIu3arw74=;
+	s=arc-20240116; t=1764779526; c=relaxed/simple;
+	bh=huuoXbxNymkAoqXi5avKWHEIT9xd1v7AgLUN/O/tyNk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lSuyXMGHVYwBkFQ921Q/SFH14E4RKfv07GkV/+14d0zZMHYJHQ1iBCQT1IRy39/XjYVKBBYkFNl2QM5MBhEB2Vngc6z0dJEv1p1MezQHRdldRYE7niqZdZ9Rvr/ejoT0ZydCe1ZZnbZqN32Wpyd/QbJEQP9eh77xzlc3g1zjPfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a/83n1cH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 967AAC116B1;
-	Wed,  3 Dec 2025 16:02:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UEUrASKeDpTsHpRQN245B8ebFA+q9JzX+/0KMZrcMSSo/ukNhxA7/SeAD/FILMDBaWDcXnhHwgElX43hDk972hzeocgEPAqub9xPahh5JjlLhujdp4WncFM43Q5q5xSZmMyJlM6qnq0WjL+7B/p7nXc4Mw0+u+v4JNTm5nqAh98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eAIa8tkg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B58AC116B1;
+	Wed,  3 Dec 2025 16:32:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777748;
-	bh=ub61WnPxIRJXVut/vTJGQcG9QMrFEG/DLjXIu3arw74=;
+	s=korg; t=1764779526;
+	bh=huuoXbxNymkAoqXi5avKWHEIT9xd1v7AgLUN/O/tyNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a/83n1cHZUIHavSn2wExaQc+kFfFQYRwXxtJ+BDUkB2XodwX0RBAzwBQGrmeyCMlb
-	 Sh6kR4gDJlr/nX9CcZTZkZCaOq6y0XF4tx9EPnh5SNLdMpMTATNHi6SnS1pPGMJAhd
-	 qXyywhnf19GsYPne9ejVbRMLa0Nx8PvMCAO+QPV8=
+	b=eAIa8tkg5gyJX5uQdKg4R4HfVWdkHmiC2x8jYKzph3M0FBNXs2QVTg+A4DmkOF7ow
+	 ljAcGfI3hTYftYzMpGJuxt3jgE5Auj33FpJPxC+icmiPYS9f9hyQakkhrRuox+Gjzf
+	 9DMQBUM3i1O7Cfvk8eQNnUfe+08hnfg/ejpJEd2c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Lukas Wunner <lukas@wunner.de>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 102/392] net: stmmac: Check stmmac_hw_setup() in stmmac_resume()
-Date: Wed,  3 Dec 2025 16:24:12 +0100
-Message-ID: <20251203152417.852982573@linuxfoundation.org>
+Subject: [PATCH 6.1 251/568] PCI/PM: Skip resuming to D0 if device is disconnected
+Date: Wed,  3 Dec 2025 16:24:13 +0100
+Message-ID: <20251203152449.915048703@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 6896c2449a1858acb643014894d01b3a1223d4e5 ]
+[ Upstream commit 299fad4133677b845ce962f78c9cf75bded63f61 ]
 
-stmmac_hw_setup() may return 0 on success and an appropriate negative
-integer as defined in errno.h file on failure, just check it and then
-return early if failed in stmmac_resume().
+When a device is surprise-removed (e.g., due to a dock unplug), the PCI
+core unconfigures all downstream devices and sets their error state to
+pci_channel_io_perm_failure. This marks them as disconnected via
+pci_dev_is_disconnected().
 
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
-Link: https://patch.msgid.link/20250811073506.27513-2-yangtiezhu@loongson.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+During device removal, the runtime PM framework may attempt to resume the
+device to D0 via pm_runtime_get_sync(), which calls into pci_power_up().
+Since the device is already disconnected, this resume attempt is
+unnecessary and results in a predictable errors like this, typically when
+undocking from a TBT3 or USB4 dock with PCIe tunneling:
+
+  pci 0000:01:00.0: Unable to change power state from D3cold to D0, device inaccessible
+
+Avoid powering up disconnected devices by checking their status early in
+pci_power_up() and returning -EIO.
+
+Suggested-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+[bhelgaas: add typical message]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Acked-by: Rafael J. Wysocki <rafael@kernel.org>
+Link: https://patch.msgid.link/20250909031916.4143121-1-superm1@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/pci/pci.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 21cc8cd9e023a..973c60e013344 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -7487,7 +7487,14 @@ int stmmac_resume(struct device *dev)
- 	stmmac_free_tx_skbufs(priv);
- 	stmmac_clear_descriptors(priv);
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index d0e587ab23c6b..b4692c3f98d3b 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -1227,6 +1227,11 @@ int pci_power_up(struct pci_dev *dev)
+ 		return -EIO;
+ 	}
  
--	stmmac_hw_setup(ndev, false);
-+	ret = stmmac_hw_setup(ndev, false);
-+	if (ret < 0) {
-+		netdev_err(priv->dev, "%s: Hw setup failed\n", __func__);
-+		mutex_unlock(&priv->lock);
-+		rtnl_unlock();
-+		return ret;
++	if (pci_dev_is_disconnected(dev)) {
++		dev->current_state = PCI_D3cold;
++		return -EIO;
 +	}
 +
- 	stmmac_init_coalesce(priv);
- 	stmmac_set_rx_mode(ndev);
- 
+ 	pci_read_config_word(dev, dev->pm_cap + PCI_PM_CTRL, &pmcsr);
+ 	if (PCI_POSSIBLE_ERROR(pmcsr)) {
+ 		pci_err(dev, "Unable to change power state from %s to D0, device inaccessible\n",
 -- 
 2.51.0
 
