@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-198363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF949C9F941
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:43:07 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 075E3C9FFB8
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:35:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D966D303B7E3
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:38:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2272530249B8
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:32:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76FF4314A97;
-	Wed,  3 Dec 2025 15:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 798373AA199;
+	Wed,  3 Dec 2025 16:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JfLeZn/T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XVELz2YI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3338C314A78;
-	Wed,  3 Dec 2025 15:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3526A3AA194;
+	Wed,  3 Dec 2025 16:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776293; cv=none; b=qlDwpSKVXGoF3/tQtFt4QlYxII/aDi2O0EoLDpBMCfbSMXWlJgWaPq45VMSW/DpH9A+w8+QG+ltWAqctVnUtyqo2ANHplzTnW17235Jf0vevC5u1r0rYM9yj8+eZjaMRepzVQbWcpxLBnCoH/Q0hfNcIXsdLmsFsZtPb21+Q4p0=
+	t=1764779572; cv=none; b=V5E54F2n+uXckR5IMxqJWQmGIQsoZT5tVGgzvaoDxUf0BBv8Ly1jnJtQhf6ArcPiHtlb+YUcYPs16BAvlk+nQGXKKrNHwWYgOw51Vw/xwN15p4Bki0N5ppVdKziyEk1vmojquUrIDmUxzqwpDi1o6OWhvrfiNNqr1PocCUr7z24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776293; c=relaxed/simple;
-	bh=C0llxzNN3ONfJ87G87/EJK9/Oq5J9Vz1iRCLTLTbTqE=;
+	s=arc-20240116; t=1764779572; c=relaxed/simple;
+	bh=Br7FJ0pw0UFB7ALDXH8NlL6iBhrHrAHzxQ9uGAhlXfs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SnXmUsDKdCBFghcyuDqxv7c+XGSarj3tnsVSoVBcwVtwF5GmG5i9//1V4HgvEwMUSeTgv0mFfqE6g6M+16FT1HQQBnyxdaqqqU79Sqj+oh0UIhZW37yCIMy9d3HlZFOS17l75lPe+tHyUo2sromFwWAYyBWS4lK4Bk06U8VzxRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JfLeZn/T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94AE9C4CEF5;
-	Wed,  3 Dec 2025 15:38:12 +0000 (UTC)
+	 MIME-Version; b=uqLrQVmPmt2cMrJaNlL0kFPW6uQaqLQF0WdgU9mpsiAC4VMR2fFUK0O9FnjCJ8xnyHXKhLADX8PQq5AUOSThhxB8pya6ewPt0e+E4Kmdx62PLyW/RZVyX6rJRmtTNHCyg5BcRzLFFrjRzoBShC5A6TtIe2kR7gumKe4lF8oYxq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XVELz2YI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98CDDC4CEF5;
+	Wed,  3 Dec 2025 16:32:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776293;
-	bh=C0llxzNN3ONfJ87G87/EJK9/Oq5J9Vz1iRCLTLTbTqE=;
+	s=korg; t=1764779572;
+	bh=Br7FJ0pw0UFB7ALDXH8NlL6iBhrHrAHzxQ9uGAhlXfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JfLeZn/TqCHKFczUJGAq9W8Cl+xRkObsCuSf3Be/nXHSKy0kInnDbJ49pjlYg1Noo
-	 3ayf4xFaySXClReZZXVkViriJBMQnjYBqxxtFHHpb5D48ooaVSlLtGRzLIYO7Mq1a5
-	 89JWuMKkVP1/r9g3SG7TgWw2ziv9v7z1Nv6SVyvU=
+	b=XVELz2YI2j2uthGICVsgj1snUaIZuRPNVegDzt/c1RZXlghgV7uqhfMBlAWdyIG/k
+	 cSl9aSBdSW+bJEwyJh2KrhHNTgUQlpVnROsET9icS3kqGJJ2fw04yRQFra1bsNrGST
+	 WLlg5Ltvkh3UfqfSwyyUcmcit4Al50PLS3qDSX3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksander Jan Bajkowski <olek2@wp.pl>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	syzbot+48b0652a95834717f190@syzkaller.appspotmail.com,
+	Helge Deller <deller@gmx.de>,
+	Albin Babu Varghese <albinbabuvarghese20@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 096/300] mips: lantiq: danube: add missing properties to cpu node
+Subject: [PATCH 6.1 298/568] fbdev: Add bounds checking in bit_putcs to fix vmalloc-out-of-bounds
 Date: Wed,  3 Dec 2025 16:25:00 +0100
-Message-ID: <20251203152404.180266118@linuxfoundation.org>
+Message-ID: <20251203152451.622277599@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksander Jan Bajkowski <olek2@wp.pl>
+From: Albin Babu Varghese <albinbabuvarghese20@gmail.com>
 
-[ Upstream commit e8dee66c37085dc9858eb8608bc783c2900e50e7 ]
+[ Upstream commit 3637d34b35b287ab830e66048841ace404382b67 ]
 
-This fixes the following warnings:
-arch/mips/boot/dts/lantiq/danube_easy50712.dtb: cpus: '#address-cells' is a required property
-	from schema $id: http://devicetree.org/schemas/cpus.yaml#
-arch/mips/boot/dts/lantiq/danube_easy50712.dtb: cpus: '#size-cells' is a required property
-	from schema $id: http://devicetree.org/schemas/cpus.yaml#
-arch/mips/boot/dts/lantiq/danube_easy50712.dtb: cpu@0 (mips,mips24Kc): 'reg' is a required property
-	from schema $id: http://devicetree.org/schemas/mips/cpus.yaml#
+Add bounds checking to prevent writes past framebuffer boundaries when
+rendering text near screen edges. Return early if the Y position is off-screen
+and clip image height to screen boundary. Break from the rendering loop if the
+X position is off-screen. When clipping image width to fit the screen, update
+the character count to match the clipped width to prevent buffer size
+mismatches.
 
-Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Without the character count update, bit_putcs_aligned and bit_putcs_unaligned
+receive mismatched parameters where the buffer is allocated for the clipped
+width but cnt reflects the original larger count, causing out-of-bounds writes.
+
+Reported-by: syzbot+48b0652a95834717f190@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=48b0652a95834717f190
+Suggested-by: Helge Deller <deller@gmx.de>
+Tested-by: syzbot+48b0652a95834717f190@syzkaller.appspotmail.com
+Signed-off-by: Albin Babu Varghese <albinbabuvarghese20@gmail.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/boot/dts/lantiq/danube.dtsi | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/video/fbdev/core/bitblit.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/arch/mips/boot/dts/lantiq/danube.dtsi b/arch/mips/boot/dts/lantiq/danube.dtsi
-index 510be63c8bdf1..ff6ff9568e1bc 100644
---- a/arch/mips/boot/dts/lantiq/danube.dtsi
-+++ b/arch/mips/boot/dts/lantiq/danube.dtsi
-@@ -5,8 +5,12 @@
- 	compatible = "lantiq,xway", "lantiq,danube";
+diff --git a/drivers/video/fbdev/core/bitblit.c b/drivers/video/fbdev/core/bitblit.c
+index a4b4e1ec702e5..8563264d11fac 100644
+--- a/drivers/video/fbdev/core/bitblit.c
++++ b/drivers/video/fbdev/core/bitblit.c
+@@ -168,6 +168,11 @@ static void bit_putcs(struct vc_data *vc, struct fb_info *info,
+ 	image.height = vc->vc_font.height;
+ 	image.depth = 1;
  
- 	cpus {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
++	if (image.dy >= info->var.yres)
++		return;
 +
- 		cpu@0 {
- 			compatible = "mips,mips24Kc";
-+			reg = <0>;
- 		};
- 	};
++	image.height = min(image.height, info->var.yres - image.dy);
++
+ 	if (attribute) {
+ 		buf = kmalloc(cellsize, GFP_ATOMIC);
+ 		if (!buf)
+@@ -181,6 +186,18 @@ static void bit_putcs(struct vc_data *vc, struct fb_info *info,
+ 			cnt = count;
  
+ 		image.width = vc->vc_font.width * cnt;
++
++		if (image.dx >= info->var.xres)
++			break;
++
++		if (image.dx + image.width > info->var.xres) {
++			image.width = info->var.xres - image.dx;
++			cnt = image.width / vc->vc_font.width;
++			if (cnt == 0)
++				break;
++			image.width = cnt * vc->vc_font.width;
++		}
++
+ 		pitch = DIV_ROUND_UP(image.width, 8) + scan_align;
+ 		pitch &= ~scan_align;
+ 		size = pitch * image.height + buf_align;
 -- 
 2.51.0
 
