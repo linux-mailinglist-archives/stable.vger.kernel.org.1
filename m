@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-198807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E500CA0BB3
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:01:47 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2E30C9F7F7
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:34:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F2F653008557
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:59:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D5487300960F
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:33:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A2FA34D38B;
-	Wed,  3 Dec 2025 16:02:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70D6A30C62A;
+	Wed,  3 Dec 2025 15:33:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QK64p2g3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jARclX4Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9D0934D386;
-	Wed,  3 Dec 2025 16:02:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F84530C348;
+	Wed,  3 Dec 2025 15:33:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777745; cv=none; b=QvMruuUvykIS2kc96mjMqdChUdvG2IRyRbHdVN2Uza9+G9q5XO4yLQrCHb4u47BihSucI0FyggcE4/N88VDuVfaXLNs22hnxXKtpX5KaZDJKKbyrXehg3MQbhVcOWATJ/hG8kS4GNxGKpvnEx4hnL23AUPp/3usF+644o9Rnat0=
+	t=1764775989; cv=none; b=ngc75KcRT1CfILEburlmGsYAuJXZ5QuZyBCAUpmNvtiZb6tWisbIxF4ZlrT8YUkP8FZhGLFoMkGuOwNkIcNmiFUjemFo8OCjQQRK+LcC0Rl7m/BXdR7fGuBmYW7gZkf2ak9HUHx8r0OLiMqDRWmvVt15q1MIJTc2X1lLqKb6mwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777745; c=relaxed/simple;
-	bh=XIPsndvm7QWIcznKXmMYWBFswn6TGjAJQ6QZRmMutw0=;
+	s=arc-20240116; t=1764775989; c=relaxed/simple;
+	bh=hFWfRGNQ3O9zi9hsawHCHFdq+hC+zAKM4h7TqYbySeI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W3/OHc1qhk6RviaClARCBpdkI3g7z9KLxDzNNtFxHWS8vFm04IWhlVT/1jKd86p/RZ83UUcKoWjncZN7D5EGVgdQnAg10G6dovW8mMR8xo1kbIU0n+pXW08AMRli0Tzj6s9UVHwsOQ9gCtszdS3Bqr7IZIDnTDVgHMYOhccRLI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QK64p2g3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AB6FC4CEF5;
-	Wed,  3 Dec 2025 16:02:24 +0000 (UTC)
+	 MIME-Version; b=DWe12hI71YYXFJ8yEfTEJYoUyARZza5HQYth4TqmkrfdRK/wEmgDT/NHQdOyy7IVe8xBqD0yaWVwLhHMj9wVZ5+Qi58C1dRn4EmP5ME15wp9QSD40JPcow85zzL+u3Mem1+QLJB8mlHtVhTC/yz5BG/X2TGGhiL0OeGBDtwRmoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jARclX4Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C8F8C4CEF5;
+	Wed,  3 Dec 2025 15:33:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777744;
-	bh=XIPsndvm7QWIcznKXmMYWBFswn6TGjAJQ6QZRmMutw0=;
+	s=korg; t=1764775988;
+	bh=hFWfRGNQ3O9zi9hsawHCHFdq+hC+zAKM4h7TqYbySeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QK64p2g3L1eUjUhMId6/pSCoXpHygYp+SA4ZF+CTkwodc76kb7U53YfGULqHKnt6Y
-	 iaz7vNxoNBbdRqhVjuQqiXExPPZZWDRofu5gnrIAvIIuOL6v/0qX/4j7hqLLvaT5it
-	 UH5sn0A8sVYd9Kwz8/7FHoofJbzwUC/oCzD4NC8U=
+	b=jARclX4QDhXlcC3ckTT9XQKHYVhpgEalOGqRIvlxGuaPclGe9IBDGO8yi+ycoTYDm
+	 u+Pg88YFbSjf5xB1xiL81vPiZyYAo5E6jLFe7MqTSa59PIALcG6pchJ+Te35uXF+2r
+	 tVsP5ghr/G+mD5AaPlmKmvA7ohESVF8mH57zhotQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Dave Hansen <dave.hansen@intel.com>
-Subject: [PATCH 5.15 101/392] x86/vsyscall: Do not require X86_PF_INSTR to emulate vsyscall
+	Dennis Beier <nanovim@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 047/300] cpufreq/longhaul: handle NULL policy in longhaul_exit
 Date: Wed,  3 Dec 2025 16:24:11 +0100
-Message-ID: <20251203152417.814959588@linuxfoundation.org>
+Message-ID: <20251203152402.358160804@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+From: Dennis Beier <nanovim@gmail.com>
 
-[ Upstream commit 8ba38a7a9a699905b84fa97578a8291010dec273 ]
+[ Upstream commit 592532a77b736b5153e0c2e4c74aa50af0a352ab ]
 
-emulate_vsyscall() expects to see X86_PF_INSTR in PFEC on a vsyscall
-page fault, but the CPU does not report X86_PF_INSTR if neither
-X86_FEATURE_NX nor X86_FEATURE_SMEP are enabled.
+longhaul_exit() was calling cpufreq_cpu_get(0) without checking
+for a NULL policy pointer. On some systems, this could lead to a
+NULL dereference and a kernel warning or panic.
 
-X86_FEATURE_NX should be enabled on nearly all 64-bit CPUs, except for
-early P4 processors that did not support this feature.
+This patch adds a check using unlikely() and returns early if the
+policy is NULL.
 
-Instead of explicitly checking for X86_PF_INSTR, compare the fault
-address to RIP.
+Bugzilla: #219962
 
-On machines with X86_FEATURE_NX enabled, issue a warning if RIP is equal
-to fault address but X86_PF_INSTR is absent.
-
-[ dhansen: flesh out code comments ]
-
-Originally-by: Dave Hansen <dave.hansen@intel.com>
-Reported-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Link: https://lore.kernel.org/all/bd81a98b-f8d4-4304-ac55-d4151a1a77ab@intel.com
-Link: https://lore.kernel.org/all/20250624145918.2720487-1-kirill.shutemov%40linux.intel.com
+Signed-off-by: Dennis Beier <nanovim@gmail.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/entry/vsyscall/vsyscall_64.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ drivers/cpufreq/longhaul.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/x86/entry/vsyscall/vsyscall_64.c b/arch/x86/entry/vsyscall/vsyscall_64.c
-index ba3172d5b3286..99400d72c4e6c 100644
---- a/arch/x86/entry/vsyscall/vsyscall_64.c
-+++ b/arch/x86/entry/vsyscall/vsyscall_64.c
-@@ -124,7 +124,12 @@ bool emulate_vsyscall(unsigned long error_code,
- 	if ((error_code & (X86_PF_WRITE | X86_PF_USER)) != X86_PF_USER)
- 		return false;
+diff --git a/drivers/cpufreq/longhaul.c b/drivers/cpufreq/longhaul.c
+index 182a4dbca0952..7197b0daabea2 100644
+--- a/drivers/cpufreq/longhaul.c
++++ b/drivers/cpufreq/longhaul.c
+@@ -955,6 +955,9 @@ static void __exit longhaul_exit(void)
+ 	struct cpufreq_policy *policy = cpufreq_cpu_get(0);
+ 	int i;
  
--	if (!(error_code & X86_PF_INSTR)) {
-+	/*
-+	 * Assume that faults at regs->ip are because of an
-+	 * instruction fetch. Return early and avoid
-+	 * emulation for faults during data accesses:
-+	 */
-+	if (address != regs->ip) {
- 		/* Failed vsyscall read */
- 		if (vsyscall_mode == EMULATE)
- 			return false;
-@@ -136,13 +141,19 @@ bool emulate_vsyscall(unsigned long error_code,
- 		return false;
- 	}
- 
-+	/*
-+	 * X86_PF_INSTR is only set when NX is supported.  When
-+	 * available, use it to double-check that the emulation code
-+	 * is only being used for instruction fetches:
-+	 */
-+	if (cpu_feature_enabled(X86_FEATURE_NX))
-+		WARN_ON_ONCE(!(error_code & X86_PF_INSTR));
++	if (unlikely(!policy))
++		return;
 +
- 	/*
- 	 * No point in checking CS -- the only way to get here is a user mode
- 	 * trap to a high address, which means that we're in 64-bit user code.
- 	 */
- 
--	WARN_ON_ONCE(address != regs->ip);
--
- 	if (vsyscall_mode == NONE) {
- 		warn_bad_vsyscall(KERN_INFO, regs,
- 				  "vsyscall attempted with vsyscall=none");
+ 	for (i = 0; i < numscales; i++) {
+ 		if (mults[i] == maxmult) {
+ 			struct cpufreq_freqs freqs;
 -- 
 2.51.0
 
