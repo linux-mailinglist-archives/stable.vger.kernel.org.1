@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-199326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B178CA1033
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:34:04 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 966B6CA13C0
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:04:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DA4CB300339F
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:33:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E91D0300A9FB
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 19:03:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1A143644BB;
-	Wed,  3 Dec 2025 16:30:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 415EF349B1F;
+	Wed,  3 Dec 2025 16:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PL1I8qYd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jAYmJohd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CBBA3644A6;
-	Wed,  3 Dec 2025 16:30:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC81349B14;
+	Wed,  3 Dec 2025 16:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779424; cv=none; b=rblM5A9398BTbYACDVER25+6bG3err2w60FT4DpNo1Hidz0EsAvVuK9EG02zFHdxsGEXVGlwXkPBO0BBRx9OyPf6i+41dNeOzrd/kcDV4rBO3f37DLXyaheL5ASK72BbzNSY1mg5YXMWmT23HCUd73J4I2QSuSSYUni8sq6BRBE=
+	t=1764777657; cv=none; b=N21Zlbg7s3o9asLO+3kV/aVit1xg3In4+vPQdWuUOc6Gyyjko7liktoP8niJe78RvaCu+7bWbrPGNPr5PcySkrAU2LM6m7TlGHzCWaj5ix3+jEVQCZYak62H38yvmyYDajNL1q54LHJrmuFN1KCKyLPltKb8TRAUCIs72KvP/8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779424; c=relaxed/simple;
-	bh=s25iSyiWqe+08Zq7pu3lfwpf9epe4omVFDKkRIYbK0E=;
+	s=arc-20240116; t=1764777657; c=relaxed/simple;
+	bh=LtmO0lJ5BbqXzbuI7ylNgi8ZP6AaK0A35sl/AqY2tUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NmzEcCg8STOmDWFJHA3jBGMY4Z21l5SNiHfPpw5wJpILntJTH+/eF59vX8wp8eshDLj0WJ5nV9KNYASRitvS98ko7OrWPaEbHpYQcQwPmLfJ/m+kBkTlEcUBpYfKsDXmrqlzr3u2/XcYJeoLbneRwZVdABZ/MZBXajNZcZRuTbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PL1I8qYd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 178A4C4CEF5;
-	Wed,  3 Dec 2025 16:30:23 +0000 (UTC)
+	 MIME-Version; b=gncra26pVmsMckpEZz6NhvCTSbRymSb9WaDPDKZzcVdL01fTUQdqxvsgLNlCLnwLp67VSWB6a1b9ySUGLKg64LpRfUGjBZnsX2ypLDKMFmV8s77xOC0CWlU6RglVBRXFzLlXIFiiwS3+RtN0OcnC0IuT6p3Aq/1vB3D/iUPUKKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jAYmJohd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F08BC116C6;
+	Wed,  3 Dec 2025 16:00:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779424;
-	bh=s25iSyiWqe+08Zq7pu3lfwpf9epe4omVFDKkRIYbK0E=;
+	s=korg; t=1764777656;
+	bh=LtmO0lJ5BbqXzbuI7ylNgi8ZP6AaK0A35sl/AqY2tUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PL1I8qYdYohcxgPvnfOQazFkKeEfDhOmZYZeSty7XFHUE7LkhjvlwYowEBFuPjTN4
-	 TXoidMr6i3QwyFmus1XWbRyJYK9rl4rm9yY5K+KmtN5l5lyG+aLeh40+x+jI+jR1U1
-	 e3SXMCQT4RYzFjDpkc8nlffzxodVcmK3ri/sTAeo=
+	b=jAYmJohd+NdmpRr8ZChHic8r3lX4m3Nd0W5YaD4Qa1pxKHty0e50YptWT3qBr1+EP
+	 dGmSVjqRy2Hvo6bQ1mOYWnWWyEwTdPLQ6RFixW8o1gv0kUHgZgd05EP2uOz0x4yCmO
+	 hxsPCuQPY6XVoXov7p3EhaSGv+H3ioEAHw2bFxg0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anthony Iliopoulos <ailiop@suse.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	syzbot+01b0667934cdceb4451c@syzkaller.appspotmail.com,
+	Charalampos Mitrodimas <charmitro@posteo.net>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 254/568] NFSv4.1: fix mount hang after CREATE_SESSION failure
+Subject: [PATCH 5.15 106/392] net: ipv6: fix field-spanning memcpy warning in AH output
 Date: Wed,  3 Dec 2025 16:24:16 +0100
-Message-ID: <20251203152450.023765828@linuxfoundation.org>
+Message-ID: <20251203152417.999813239@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +61,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anthony Iliopoulos <ailiop@suse.com>
+From: Charalampos Mitrodimas <charmitro@posteo.net>
 
-[ Upstream commit bf75ad096820fee5da40e671ebb32de725a1c417 ]
+[ Upstream commit 2327a3d6f65ce2fe2634546dde4a25ef52296fec ]
 
-When client initialization goes through server trunking discovery, it
-schedules the state manager and then sleeps waiting for nfs_client
-initialization completion.
+Fix field-spanning memcpy warnings in ah6_output() and
+ah6_output_done() where extension headers are copied to/from IPv6
+address fields, triggering fortify-string warnings about writes beyond
+the 16-byte address fields.
 
-The state manager can fail during state recovery, and specifically in
-lease establishment as nfs41_init_clientid() will bail out in case of
-errors returned from nfs4_proc_create_session(), without ever marking
-the client ready. The session creation can fail for a variety of reasons
-e.g. during backchannel parameter negotiation, with status -EINVAL.
+  memcpy: detected field-spanning write (size 40) of single field "&top_iph->saddr" at net/ipv6/ah6.c:439 (size 16)
+  WARNING: CPU: 0 PID: 8838 at net/ipv6/ah6.c:439 ah6_output+0xe7e/0x14e0 net/ipv6/ah6.c:439
 
-The error status will propagate all the way to the nfs4_state_manager
-but the client status will not be marked, and thus the mount process
-will remain blocked waiting.
+The warnings are false positives as the extension headers are
+intentionally placed after the IPv6 header in memory. Fix by properly
+copying addresses and extension headers separately, and introduce
+helper functions to avoid code duplication.
 
-Fix it by adding -EINVAL error handling to nfs4_state_manager().
-
-Signed-off-by: Anthony Iliopoulos <ailiop@suse.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Reported-by: syzbot+01b0667934cdceb4451c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=01b0667934cdceb4451c
+Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4state.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/ipv6/ah6.c | 50 +++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 31 insertions(+), 19 deletions(-)
 
-diff --git a/fs/nfs/nfs4state.c b/fs/nfs/nfs4state.c
-index 80a7c5bd7a476..c30c6dbbf9254 100644
---- a/fs/nfs/nfs4state.c
-+++ b/fs/nfs/nfs4state.c
-@@ -2742,6 +2742,9 @@ static void nfs4_state_manager(struct nfs_client *clp)
- 	case -ENETUNREACH:
- 		nfs_mark_client_ready(clp, -EIO);
- 		break;
-+	case -EINVAL:
-+		nfs_mark_client_ready(clp, status);
-+		break;
- 	default:
- 		ssleep(1);
- 		break;
+diff --git a/net/ipv6/ah6.c b/net/ipv6/ah6.c
+index 828e62514260a..589f008dcee9c 100644
+--- a/net/ipv6/ah6.c
++++ b/net/ipv6/ah6.c
+@@ -46,6 +46,34 @@ struct ah_skb_cb {
+ 
+ #define AH_SKB_CB(__skb) ((struct ah_skb_cb *)&((__skb)->cb[0]))
+ 
++/* Helper to save IPv6 addresses and extension headers to temporary storage */
++static inline void ah6_save_hdrs(struct tmp_ext *iph_ext,
++				 struct ipv6hdr *top_iph, int extlen)
++{
++	if (!extlen)
++		return;
++
++#if IS_ENABLED(CONFIG_IPV6_MIP6)
++	iph_ext->saddr = top_iph->saddr;
++#endif
++	iph_ext->daddr = top_iph->daddr;
++	memcpy(&iph_ext->hdrs, top_iph + 1, extlen - sizeof(*iph_ext));
++}
++
++/* Helper to restore IPv6 addresses and extension headers from temporary storage */
++static inline void ah6_restore_hdrs(struct ipv6hdr *top_iph,
++				    struct tmp_ext *iph_ext, int extlen)
++{
++	if (!extlen)
++		return;
++
++#if IS_ENABLED(CONFIG_IPV6_MIP6)
++	top_iph->saddr = iph_ext->saddr;
++#endif
++	top_iph->daddr = iph_ext->daddr;
++	memcpy(top_iph + 1, &iph_ext->hdrs, extlen - sizeof(*iph_ext));
++}
++
+ static void *ah_alloc_tmp(struct crypto_ahash *ahash, int nfrags,
+ 			  unsigned int size)
+ {
+@@ -307,13 +335,7 @@ static void ah6_output_done(struct crypto_async_request *base, int err)
+ 	memcpy(ah->auth_data, icv, ahp->icv_trunc_len);
+ 	memcpy(top_iph, iph_base, IPV6HDR_BASELEN);
+ 
+-	if (extlen) {
+-#if IS_ENABLED(CONFIG_IPV6_MIP6)
+-		memcpy(&top_iph->saddr, iph_ext, extlen);
+-#else
+-		memcpy(&top_iph->daddr, iph_ext, extlen);
+-#endif
+-	}
++	ah6_restore_hdrs(top_iph, iph_ext, extlen);
+ 
+ 	kfree(AH_SKB_CB(skb)->tmp);
+ 	xfrm_output_resume(skb->sk, skb, err);
+@@ -384,12 +406,8 @@ static int ah6_output(struct xfrm_state *x, struct sk_buff *skb)
+ 	 */
+ 	memcpy(iph_base, top_iph, IPV6HDR_BASELEN);
+ 
++	ah6_save_hdrs(iph_ext, top_iph, extlen);
+ 	if (extlen) {
+-#if IS_ENABLED(CONFIG_IPV6_MIP6)
+-		memcpy(iph_ext, &top_iph->saddr, extlen);
+-#else
+-		memcpy(iph_ext, &top_iph->daddr, extlen);
+-#endif
+ 		err = ipv6_clear_mutable_options(top_iph,
+ 						 extlen - sizeof(*iph_ext) +
+ 						 sizeof(*top_iph),
+@@ -440,13 +458,7 @@ static int ah6_output(struct xfrm_state *x, struct sk_buff *skb)
+ 	memcpy(ah->auth_data, icv, ahp->icv_trunc_len);
+ 	memcpy(top_iph, iph_base, IPV6HDR_BASELEN);
+ 
+-	if (extlen) {
+-#if IS_ENABLED(CONFIG_IPV6_MIP6)
+-		memcpy(&top_iph->saddr, iph_ext, extlen);
+-#else
+-		memcpy(&top_iph->daddr, iph_ext, extlen);
+-#endif
+-	}
++	ah6_restore_hdrs(top_iph, iph_ext, extlen);
+ 
+ out_free:
+ 	kfree(iph_base);
 -- 
 2.51.0
 
