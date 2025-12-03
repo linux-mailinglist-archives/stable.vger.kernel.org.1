@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-198859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B040AC9FD73
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:13:04 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 285A9CA029D
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:52:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A3079303CF44
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:05:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 72EF7304E60B
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:44:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F71F34F488;
-	Wed,  3 Dec 2025 16:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F8E433EAF5;
+	Wed,  3 Dec 2025 16:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uDjwJ5qY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vI9Hs/tw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA9E34F482;
-	Wed,  3 Dec 2025 16:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07CCF33DEF4;
+	Wed,  3 Dec 2025 16:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777904; cv=none; b=gV392k825Lm/jrOMdMC580JXRFDl9pyjZlaSHGLm0xOv93X/+dlRhCEiYQIs3iRshrvbUc+i6q0insV/XpI8JFQsXsu4nnkz/kREyfuW8bhnkxVNCDMBe8u2o9rQNp4lDmCZxyqYmUB5Qg922zN3fkJQUuTzn8uSXEVs+cprL78=
+	t=1764779689; cv=none; b=JoHj8l7+/S0iwscTMRU109mTqrmwtt1Mh6HrwlLj3a809bCc3/nXnpzWEr6pudbxrx1vEJzcHutoqaahK2/r1IoagvP2V7bIrHf0ns4/2F4AaUr3qn3mqpfgDf0XkDmIqPsa2z2dyFvwtTOvsonC/FmQfws02MSNBdzhcZtOCys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777904; c=relaxed/simple;
-	bh=AR6YRxMlHOCvEp7FuERWs3G2R7Vsolppzv/5PUu7mas=;
+	s=arc-20240116; t=1764779689; c=relaxed/simple;
+	bh=Y9EgJwpmqdM9CQlkzqBDdwKIkPHvhAdc35CzgQCOZVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Td8OLRlVDThbCW8ylATPpVrVG34BpQHNmc36r+rZsLS5/3QOtBYgSbjl3MMcUzBePD3kJuO21a6RQlMOgyRl4DBQEHCumMTktRmAnq6tLwH3Lubf1jdmRPH+hk+2oC8sB8n3vy40dBchN+pfPlOxPQ88L2qjOGBtp06QP3hXHQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uDjwJ5qY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19E0FC4CEF5;
-	Wed,  3 Dec 2025 16:05:03 +0000 (UTC)
+	 MIME-Version; b=i2QEqTJnx59rqWUHn/1qTGz5bFRfAlE6bkXMTqGC1zxUQeaj1nIfU+t7zTzOzMQhF5WUcid06HRobM+TZ/lfl656+tuoEAvqZX2Bq3oWBwu4b4yaPzLVRw1YKTsVS8gKEdlcaCoz8Z6otCCeegngx2X0XrHypXgJ6nWzd3OwHRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vI9Hs/tw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E24EC4CEF5;
+	Wed,  3 Dec 2025 16:34:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777904;
-	bh=AR6YRxMlHOCvEp7FuERWs3G2R7Vsolppzv/5PUu7mas=;
+	s=korg; t=1764779688;
+	bh=Y9EgJwpmqdM9CQlkzqBDdwKIkPHvhAdc35CzgQCOZVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uDjwJ5qYA7umtuwAcebdt9DTXqxpW45hUCAMzKdIu772Rh1abdgAO+M69FRCzEvSN
-	 Oi0eKa+ALG2pb89qNr9kDqPp9Uq7iuvW/sLtuE5PuNpX5KVDryunmWUMtn/4CeKXND
-	 HBYLfiErXJGhuT113xszGBfat2M64JHylWxx9EvU=
+	b=vI9Hs/twxaTSPnvV2ikJ4n+CcGXuTGIHLzNcsp53t3ol8scUdD3Pgv3eZpo7sc/Qm
+	 FhUm/bDZ+NT0vN/ahZtutLLFmrdoCes0ubDjko3JWhTvivqkRTp0Y9leH+Ar4a1pyQ
+	 AFyr3dmXd3Hx+H8FFtlgQGOw1CujENqP8Hh+iXf0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 184/392] page_pool: Clamp pool size to max 16K pages
+	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.1 332/568] selftests: netdevsim: set test timeout to 10 minutes
 Date: Wed,  3 Dec 2025 16:25:34 +0100
-Message-ID: <20251203152420.851863740@linuxfoundation.org>
+Message-ID: <20251203152452.869235638@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +60,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dragos Tatulea <dtatulea@nvidia.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit a1b501a8c6a87c9265fd03bd004035199e2e8128 ]
+commit afbf75e8da8ce8a0698212953d350697bb4355a6 upstream.
 
-page_pool_init() returns E2BIG when the page_pool size goes above 32K
-pages. As some drivers are configuring the page_pool size according to
-the MTU and ring size, there are cases where this limit is exceeded and
-the queue creation fails.
+The longest running netdevsim test, nexthop.sh, currently takes
+5 min to finish. Around 260s to be exact, and 310s on a debug kernel.
+The default timeout in selftest is 45sec, so we need an explicit
+config. Give ourselves some headroom and use 10min.
 
-The page_pool size doesn't have to cover a full queue, especially for
-larger ring size. So clamp the size instead of returning an error. Do
-this in the core to avoid having each driver do the clamping.
+Commit under Fixes isn't really to "blame" but prior to that
+netdevsim tests weren't integrated with kselftest infra
+so blaming the tests themselves doesn't seem right, either.
 
-The current limit was deemed to high [1] so it was reduced to 16K to avoid
-page waste.
-
-[1] https://lore.kernel.org/all/1758532715-820422-3-git-send-email-tariqt@nvidia.com/
-
-Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20250926131605.2276734-2-dtatulea@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8ff25dac88f6 ("netdevsim: add Makefile for selftests")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/page_pool.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ tools/testing/selftests/drivers/net/netdevsim/settings |    1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 tools/testing/selftests/drivers/net/netdevsim/settings
 
-diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index 813d15a5593c6..4ec7e6229f697 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -61,11 +61,7 @@ static int page_pool_init(struct page_pool *pool,
- 		return -EINVAL;
- 
- 	if (pool->p.pool_size)
--		ring_qsize = pool->p.pool_size;
--
--	/* Sanity limit mem that can be pinned down */
--	if (ring_qsize > 32768)
--		return -E2BIG;
-+		ring_qsize = min(pool->p.pool_size, 16384);
- 
- 	/* DMA direction is either DMA_FROM_DEVICE or DMA_BIDIRECTIONAL.
- 	 * DMA_BIDIRECTIONAL is for allowing page used for DMA sending,
--- 
-2.51.0
-
+--- /dev/null
++++ b/tools/testing/selftests/drivers/net/netdevsim/settings
+@@ -0,0 +1 @@
++timeout=600
 
 
 
