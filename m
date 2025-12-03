@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-198665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25A56CA0A9F
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:50:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB86ECA0A57
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:49:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8F09C3020C0E
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:49:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 107D031BC455
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:28:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BCA533D6F0;
-	Wed,  3 Dec 2025 15:54:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02CD1358D24;
+	Wed,  3 Dec 2025 16:44:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EiHi7Brx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F2OZJTwn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2041A33C1A7;
-	Wed,  3 Dec 2025 15:54:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD8F5358D14;
+	Wed,  3 Dec 2025 16:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777287; cv=none; b=BXrQvkLb1zhl1ZRHw5LgaX3aYIpMLVW/sXSSE7fcO2VQ3+1S3ZA8h/9VE9tpWfg8TbZaW4YEcSgbywPmdm/H+t4qZzQcfu2zfHefRfNvkd7PJ010//WtrE0VN8AkQqJk5iArhOM81RqWNrqbMwYrOtyHHm92L2NPCmfy/0XMO3A=
+	t=1764780293; cv=none; b=kIpw4V0U6Dkr2pvUS8OBG+yfO8aJBeEk6rjHBD/MfuNwfNeRZaWxo5FtMFiqbMJFVLP4E1fC8pW3gtw7JQOZrkS5FGEHucRXFbw3MEmN1KPabN6hxIuDX2vxbn61Y2NFio3AEdo2dpouLvW9lYz8Ob9l8fG6DdzGWDyls2cMLnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777287; c=relaxed/simple;
-	bh=VNw7wHdOwtztxJGc3WZoBMO5gnETWkmv4hdVki85eB8=;
+	s=arc-20240116; t=1764780293; c=relaxed/simple;
+	bh=Ax/Tlx2NcB6dmTDtgPPXgvuTFaR5/YrVTJZxUffwstY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CTUv5WwOvxLxkQUbgLt7ngVGuw9MNIzYKNLS8CIaKRpxq3tnPqAp3udnmkpJWXep2dCRDgvH7yLB2lhSJnkZTbORP+tWoE+MUuSKtt6fxPEGI4ZFIUPrq8127cSem2Flwl9CCvupmmJzpN0N/sUHS3XwXFjRyf1o7iZZQODY17U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EiHi7Brx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8190AC4CEF5;
-	Wed,  3 Dec 2025 15:54:46 +0000 (UTC)
+	 MIME-Version; b=pHhLDWyux5Jl4Izr0/q3iiDLt/+bOG+mUVeCRg5+b/WtwCgkTidBAARmAFh6PYADRpd+DZBK4ap517aZW1Otdg7d8abjfblHn1pQUD1nugAVX5RROALeb5Yr7Za/xhrFlF1yAIuN8C7ADy9scX9uNY3l+pFuhLPYdRi1tc7H64A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F2OZJTwn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC23C4CEF5;
+	Wed,  3 Dec 2025 16:44:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777287;
-	bh=VNw7wHdOwtztxJGc3WZoBMO5gnETWkmv4hdVki85eB8=;
+	s=korg; t=1764780293;
+	bh=Ax/Tlx2NcB6dmTDtgPPXgvuTFaR5/YrVTJZxUffwstY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EiHi7BrxLlLFIOutc+VZxjHdPprOg3czFyTZwCORKOBzOh4GmFlhh+7+nzDFXNevh
-	 D9JZDdWbJ9mhkpnJt9eO/1FXkfj6aEal7Gb3cHWm3XHcN1fqSHPJ8+KFAkF3x5GsAt
-	 3fCqrKHxlqqN1aBRqODnVhaa6SmaKiz4kE8cZc9U=
+	b=F2OZJTwnmjNURnuxEJfyfWlWRjT++UUfpSF/Do/WuVFINNh2GFSxnUjzQKEL2RgQN
+	 pmkPss+IJrO8zQzHAUJTCy8WzL1xQrjRezvVGBDJqqGUsKb5V2AgM3090WWUr4Ek0y
+	 1Uw6N1h/iwQWx1XQhFkkEmTsCCzCAvR9hpWGL20Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.17 137/146] net: dsa: microchip: Free previously initialized ports on init failures
+	Huisong Li <lihuisong@huawei.com>,
+	Adam Young <admiyo@os.amperecomputing.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 513/568] mailbox: pcc: Refactor error handling in irq handler into separate function
 Date: Wed,  3 Dec 2025 16:28:35 +0100
-Message-ID: <20251203152351.487624673@linuxfoundation.org>
+Message-ID: <20251203152459.502640975@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,89 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
+From: Sudeep Holla <sudeep.holla@arm.com>
 
-commit 0f80e21bf6229637e193248fbd284c0ec44bc0fd upstream.
+[ Upstream commit 3a675f50415b95f2ae10bfd932e2154ba1a08ee7 ]
 
-If a port interrupt setup fails after at least one port has already been
-successfully initialized, the gotos miss some resource releasing:
-- the already initialized PTP IRQs aren't released
-- the already initialized port IRQs aren't released if the failure
-occurs in ksz_pirq_setup().
+The existing error handling logic in pcc_mbox_irq() is intermixed with the
+main flow of the function. The command complete check and the complete
+complete update/acknowledgment are nicely factored into separate functions.
 
-Merge 'out_girq' and 'out_ptpirq' into a single 'port_release' label.
-Behind this label, use the reverse loop to release all IRQ resources
-for all initialized ports.
-Jump in the middle of the reverse loop if an error occurs in
-ksz_ptp_irq_setup() to only release the port IRQ of the current
-iteration.
+Moves error detection and clearing logic into a separate function called:
+pcc_mbox_error_check_and_clear() by extracting error-handling logic from
+pcc_mbox_irq().
 
-Cc: stable@vger.kernel.org
-Fixes: c9cd961c0d43 ("net: dsa: microchip: lan937x: add interrupt support for port phy link")
-Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
-Link: https://patch.msgid.link/20251120-ksz-fix-v6-4-891f80ae7f8f@bootlin.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This ensures error checking and clearing are handled separately and it
+improves maintainability by keeping the IRQ handler focused on processing
+events.
+
+Acked-by: Huisong Li <lihuisong@huawei.com>
+Tested-by: Huisong Li <lihuisong@huawei.com>
+Tested-by: Adam Young <admiyo@os.amperecomputing.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Stable-dep-of: ff0e4d4c97c9 ("mailbox: pcc: don't zero error register")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/microchip/ksz_common.c |   23 +++++++++++------------
- 1 file changed, 11 insertions(+), 12 deletions(-)
+ drivers/mailbox/pcc.c | 30 ++++++++++++++++++++----------
+ 1 file changed, 20 insertions(+), 10 deletions(-)
 
---- a/drivers/net/dsa/microchip/ksz_common.c
-+++ b/drivers/net/dsa/microchip/ksz_common.c
-@@ -3038,12 +3038,12 @@ static int ksz_setup(struct dsa_switch *
- 		dsa_switch_for_each_user_port(dp, dev->ds) {
- 			ret = ksz_pirq_setup(dev, dp->index);
- 			if (ret)
--				goto out_girq;
-+				goto port_release;
- 
- 			if (dev->info->ptp_capable) {
- 				ret = ksz_ptp_irq_setup(ds, dp->index);
- 				if (ret)
--					goto out_pirq;
-+					goto pirq_release;
- 			}
- 		}
- 	}
-@@ -3053,7 +3053,7 @@ static int ksz_setup(struct dsa_switch *
- 		if (ret) {
- 			dev_err(dev->dev, "Failed to register PTP clock: %d\n",
- 				ret);
--			goto out_ptpirq;
-+			goto port_release;
- 		}
- 	}
- 
-@@ -3076,17 +3076,16 @@ static int ksz_setup(struct dsa_switch *
- out_ptp_clock_unregister:
- 	if (dev->info->ptp_capable)
- 		ksz_ptp_clock_unregister(ds);
--out_ptpirq:
--	if (dev->irq > 0 && dev->info->ptp_capable)
--		dsa_switch_for_each_user_port(dp, dev->ds)
--			ksz_ptp_irq_free(ds, dp->index);
--out_pirq:
--	if (dev->irq > 0)
--		dsa_switch_for_each_user_port_continue_reverse(dp, dev->ds)
-+port_release:
-+	if (dev->irq > 0) {
-+		dsa_switch_for_each_user_port_continue_reverse(dp, dev->ds) {
-+			if (dev->info->ptp_capable)
-+				ksz_ptp_irq_free(ds, dp->index);
-+pirq_release:
- 			ksz_irq_free(&dev->ports[dp->index].pirq);
--out_girq:
--	if (dev->irq > 0)
-+		}
- 		ksz_irq_free(&dev->girq);
-+	}
- 
- 	return ret;
+diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
+index 82102a4c5d688..94e99b87496d2 100644
+--- a/drivers/mailbox/pcc.c
++++ b/drivers/mailbox/pcc.c
+@@ -269,6 +269,25 @@ static bool pcc_mbox_cmd_complete_check(struct pcc_chan_info *pchan)
+ 	return !!val;
  }
+ 
++static int pcc_mbox_error_check_and_clear(struct pcc_chan_info *pchan)
++{
++	u64 val;
++	int ret;
++
++	ret = pcc_chan_reg_read(&pchan->error, &val);
++	if (ret)
++		return ret;
++
++	val &= pchan->error.status_mask;
++	if (val) {
++		val &= ~pchan->error.status_mask;
++		pcc_chan_reg_write(&pchan->error, val);
++		return -EIO;
++	}
++
++	return 0;
++}
++
+ static void check_and_ack(struct pcc_chan_info *pchan, struct mbox_chan *chan)
+ {
+ 	struct acpi_pcct_ext_pcc_shared_memory pcc_hdr;
+@@ -309,8 +328,6 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
+ {
+ 	struct pcc_chan_info *pchan;
+ 	struct mbox_chan *chan = p;
+-	u64 val;
+-	int ret;
+ 
+ 	pchan = chan->con_priv;
+ 	if (pchan->type == ACPI_PCCT_TYPE_EXT_PCC_MASTER_SUBSPACE &&
+@@ -320,15 +337,8 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
+ 	if (!pcc_mbox_cmd_complete_check(pchan))
+ 		return IRQ_NONE;
+ 
+-	ret = pcc_chan_reg_read(&pchan->error, &val);
+-	if (ret)
++	if (pcc_mbox_error_check_and_clear(pchan))
+ 		return IRQ_NONE;
+-	val &= pchan->error.status_mask;
+-	if (val) {
+-		val &= ~pchan->error.status_mask;
+-		pcc_chan_reg_write(&pchan->error, val);
+-		return IRQ_NONE;
+-	}
+ 
+ 	if (pcc_chan_reg_read_modify_write(&pchan->plat_irq_ack))
+ 		return IRQ_NONE;
+-- 
+2.51.0
+
 
 
 
