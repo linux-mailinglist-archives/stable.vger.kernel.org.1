@@ -1,53 +1,57 @@
-Return-Path: <stable+bounces-198672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3BBCCA0964
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:44:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08039CA0B32
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:58:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CF4B532D76E0
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:23:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0AE7E30573BE
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:53:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6743233C539;
-	Wed,  3 Dec 2025 15:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C95E362147;
+	Wed,  3 Dec 2025 16:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ObyEO/pV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LW1D5A6v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22FE033D6D4;
-	Wed,  3 Dec 2025 15:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DD3335C1B2;
+	Wed,  3 Dec 2025 16:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777310; cv=none; b=HFSgUpuDAaIWUUKQ8zAWgOvJi+GkSN5EAYu+1sfRntEAHfikCmJ19Bv41TTcwzWoZCzH88LiB3XS+GGEM17DURr0lF7FWG+JtLB9VrcWii5CZRd1s1zhQRUvJuCU6T/882HhvveNrhSi/QdQizvsTm+Y31L4adcK7OmafqVMEmE=
+	t=1764780213; cv=none; b=pDO63cIdtQxyizLmGYNoOgO5dW8k/ejKoXAY8iXVW2i6MzRvyzaX2QO0vjoXTMJs+3Zfr/tz63/iVMnVDJMCLfBBVAzfuTc7cg83rCH5PEDPJkMQwYl6vrd/a44gfSpM2zJhgk5FzeTTWn6WqluI9uFfbUUPPg02w12RPL1EKEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777310; c=relaxed/simple;
-	bh=+ss19NpzqJZu643Xr2KFA9rus7ycXRFop87zUBu+5uU=;
+	s=arc-20240116; t=1764780213; c=relaxed/simple;
+	bh=fSZ7THvPpiygu2IYWURCIOreVR95JbKES8572pb2kyc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YhpxJMpDZOOjrBUa00eiZRDSw7FHeelvooDviP/Bfmh4K10ap5h+J/HhAHL3+gFdtuCj1dtBVoOWtjlhsVrm3zw2VSxTwdfiro/Y95E+RKIBRzT9wbtuGBNtJzIBo0PWAYZZItwmv/IzSvNzJGDlpmBXUFrpM5+UTnt+vwmclOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ObyEO/pV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22EBAC116B1;
-	Wed,  3 Dec 2025 15:55:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Kyvz2Vonu/Lwj10FcBCyJRgp9iL1ekVbbuRiT5pgjBHySPRuqoFNzsG6/K2qxVhVPrfh2BpZzKO+3d2sEZwqnLZZoLkwJxUxJUJeAIJ7eerKmBKRSVJ/Qno5b9H1YG8p4T6j5i7vA8ocjJrRtpS8VJ34p7gYFjhGPJekkwXwaFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LW1D5A6v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2A0EC4CEF5;
+	Wed,  3 Dec 2025 16:43:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777309;
-	bh=+ss19NpzqJZu643Xr2KFA9rus7ycXRFop87zUBu+5uU=;
+	s=korg; t=1764780212;
+	bh=fSZ7THvPpiygu2IYWURCIOreVR95JbKES8572pb2kyc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ObyEO/pVyz6fN7WoNwmhcXflq1JrU6aoqnTwEh+MTwH3KldMIE8eP5EwGIXycIbUP
-	 QkW3bC2PmUxMJOricF44RDlKjaXlFjgrJ853tF9OWdUeD+gtEnHKpHfb1DaUc4tG4N
-	 vOC66NaWy96dIALNpuRCeuhUsBZm/XOHjOzmUrvQ=
+	b=LW1D5A6vjIV33dbC5g8bal/mbtXwmSlsGP5XRl7N8No8feYHdK5MBcfC77xzvDUdB
+	 yTU0AeV7+aqV9Ewue7CHWzryZOOl1bXwAUlDrjXcX3mMbdtafOsNFijnMwunITShT7
+	 kr4psttQM6OW2/VmnT+kRV+RZIAJ9NCaUabfPKIw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Subject: [PATCH 6.17 112/146] usb: renesas_usbhs: Fix synchronous external abort on unbind
+	Peter Griffin <peter.griffin@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 488/568] pmdomain: samsung: plug potential memleak during probe
 Date: Wed,  3 Dec 2025 16:28:10 +0100
-Message-ID: <20251203152350.564912729@linuxfoundation.org>
+Message-ID: <20251203152458.579432661@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,146 +61,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: André Draszik <andre.draszik@linaro.org>
 
-commit eb9ac779830b2235847b72cb15cf07c7e3333c5e upstream.
+[ Upstream commit 90c82941adf1986364e0f82c35cf59f2bf5f6a1d ]
 
-A synchronous external abort occurs on the Renesas RZ/G3S SoC if unbind is
-executed after the configuration sequence described above:
+of_genpd_add_provider_simple() could fail, in which case this code
+leaks the domain name, pd->pd.name.
 
-modprobe usb_f_ecm
-modprobe libcomposite
-modprobe configfs
-cd /sys/kernel/config/usb_gadget
-mkdir -p g1
-cd g1
-echo "0x1d6b" > idVendor
-echo "0x0104" > idProduct
-mkdir -p strings/0x409
-echo "0123456789" > strings/0x409/serialnumber
-echo "Renesas." > strings/0x409/manufacturer
-echo "Ethernet Gadget" > strings/0x409/product
-mkdir -p functions/ecm.usb0
-mkdir -p configs/c.1
-mkdir -p configs/c.1/strings/0x409
-echo "ECM" > configs/c.1/strings/0x409/configuration
+Use devm_kstrdup_const() to plug this leak. As a side-effect, we can
+simplify existing error handling.
 
-if [ ! -L configs/c.1/ecm.usb0 ]; then
-        ln -s functions/ecm.usb0 configs/c.1
-fi
-
-echo 11e20000.usb > UDC
-echo 11e20000.usb > /sys/bus/platform/drivers/renesas_usbhs/unbind
-
-The displayed trace is as follows:
-
- Internal error: synchronous external abort: 0000000096000010 [#1] SMP
- CPU: 0 UID: 0 PID: 188 Comm: sh Tainted: G M 6.17.0-rc7-next-20250922-00010-g41050493b2bd #55 PREEMPT
- Tainted: [M]=MACHINE_CHECK
- Hardware name: Renesas SMARC EVK version 2 based on r9a08g045s33 (DT)
- pstate: 604000c5 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
- pc : usbhs_sys_function_pullup+0x10/0x40 [renesas_usbhs]
- lr : usbhsg_update_pullup+0x3c/0x68 [renesas_usbhs]
- sp : ffff8000838b3920
- x29: ffff8000838b3920 x28: ffff00000d585780 x27: 0000000000000000
- x26: 0000000000000000 x25: 0000000000000000 x24: ffff00000c3e3810
- x23: ffff00000d5e5c80 x22: ffff00000d5e5d40 x21: 0000000000000000
- x20: 0000000000000000 x19: ffff00000d5e5c80 x18: 0000000000000020
- x17: 2e30303230316531 x16: 312d7968703a7968 x15: 3d454d414e5f4344
- x14: 000000000000002c x13: 0000000000000000 x12: 0000000000000000
- x11: ffff00000f358f38 x10: ffff00000f358db0 x9 : ffff00000b41f418
- x8 : 0101010101010101 x7 : 7f7f7f7f7f7f7f7f x6 : fefefeff6364626d
- x5 : 8080808000000000 x4 : 000000004b5ccb9d x3 : 0000000000000000
- x2 : 0000000000000000 x1 : ffff800083790000 x0 : ffff00000d5e5c80
- Call trace:
- usbhs_sys_function_pullup+0x10/0x40 [renesas_usbhs] (P)
- usbhsg_pullup+0x4c/0x7c [renesas_usbhs]
- usb_gadget_disconnect_locked+0x48/0xd4
- gadget_unbind_driver+0x44/0x114
- device_remove+0x4c/0x80
- device_release_driver_internal+0x1c8/0x224
- device_release_driver+0x18/0x24
- bus_remove_device+0xcc/0x10c
- device_del+0x14c/0x404
- usb_del_gadget+0x88/0xc0
- usb_del_gadget_udc+0x18/0x30
- usbhs_mod_gadget_remove+0x24/0x44 [renesas_usbhs]
- usbhs_mod_remove+0x20/0x30 [renesas_usbhs]
- usbhs_remove+0x98/0xdc [renesas_usbhs]
- platform_remove+0x20/0x30
- device_remove+0x4c/0x80
- device_release_driver_internal+0x1c8/0x224
- device_driver_detach+0x18/0x24
- unbind_store+0xb4/0xb8
- drv_attr_store+0x24/0x38
- sysfs_kf_write+0x7c/0x94
- kernfs_fop_write_iter+0x128/0x1b8
- vfs_write+0x2ac/0x350
- ksys_write+0x68/0xfc
- __arm64_sys_write+0x1c/0x28
- invoke_syscall+0x48/0x110
- el0_svc_common.constprop.0+0xc0/0xe0
- do_el0_svc+0x1c/0x28
- el0_svc+0x34/0xf0
- el0t_64_sync_handler+0xa0/0xe4
- el0t_64_sync+0x198/0x19c
- Code: 7100003f 1a9f07e1 531c6c22 f9400001 (79400021)
- ---[ end trace 0000000000000000 ]---
- note: sh[188] exited with irqs disabled
- note: sh[188] exited with preempt_count 1
-
-The issue occurs because usbhs_sys_function_pullup(), which accesses the IP
-registers, is executed after the USBHS clocks have been disabled. The
-problem is reproducible on the Renesas RZ/G3S SoC starting with the
-addition of module stop in the clock enable/disable APIs. With module stop
-functionality enabled, a bus error is expected if a master accesses a
-module whose clock has been stopped and module stop activated.
-
-Disable the IP clocks at the end of remove.
-
-Cc: stable <stable@kernel.org>
-Fixes: f1407d5c6624 ("usb: renesas_usbhs: Add Renesas USBHS common code")
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://patch.msgid.link/20251027140741.557198-1-claudiu.beznea.uj@bp.renesas.com
+Fixes: c09a3e6c97f0 ("soc: samsung: pm_domains: Convert to regular platform driver")
+Cc: stable@vger.kernel.org
+Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: André Draszik <andre.draszik@linaro.org>
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+[ drivers/pmdomain/samsung/exynos-pm-domains.c -> drivers/soc/samsung/pm_domains.c ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/renesas_usbhs/common.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/soc/samsung/pm_domains.c |   11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/renesas_usbhs/common.c
-+++ b/drivers/usb/renesas_usbhs/common.c
-@@ -809,18 +809,18 @@ static void usbhs_remove(struct platform
+--- a/drivers/soc/samsung/pm_domains.c
++++ b/drivers/soc/samsung/pm_domains.c
+@@ -91,13 +91,14 @@ static const struct of_device_id exynos_
+ 	{ },
+ };
  
- 	flush_delayed_work(&priv->notify_hotplug_work);
+-static const char *exynos_get_domain_name(struct device_node *node)
++static const char *exynos_get_domain_name(struct device *dev,
++					  struct device_node *node)
+ {
+ 	const char *name;
  
--	/* power off */
--	if (!usbhs_get_dparam(priv, runtime_pwctrl))
--		usbhsc_power_ctrl(priv, 0);
--
--	pm_runtime_disable(&pdev->dev);
--
- 	usbhs_platform_call(priv, hardware_exit, pdev);
--	usbhsc_clk_put(priv);
- 	reset_control_assert(priv->rsts);
- 	usbhs_mod_remove(priv);
- 	usbhs_fifo_remove(priv);
- 	usbhs_pipe_remove(priv);
-+
-+	/* power off */
-+	if (!usbhs_get_dparam(priv, runtime_pwctrl))
-+		usbhsc_power_ctrl(priv, 0);
-+
-+	usbhsc_clk_put(priv);
-+	pm_runtime_disable(&pdev->dev);
+ 	if (of_property_read_string(node, "label", &name) < 0)
+ 		name = kbasename(node->full_name);
+-	return kstrdup_const(name, GFP_KERNEL);
++	return devm_kstrdup_const(dev, name, GFP_KERNEL);
  }
  
- static int usbhsc_suspend(struct device *dev)
+ static int exynos_pd_probe(struct platform_device *pdev)
+@@ -114,15 +115,13 @@ static int exynos_pd_probe(struct platfo
+ 	if (!pd)
+ 		return -ENOMEM;
+ 
+-	pd->pd.name = exynos_get_domain_name(np);
++	pd->pd.name = exynos_get_domain_name(dev, np);
+ 	if (!pd->pd.name)
+ 		return -ENOMEM;
+ 
+ 	pd->base = of_iomap(np, 0);
+-	if (!pd->base) {
+-		kfree_const(pd->pd.name);
++	if (!pd->base)
+ 		return -ENODEV;
+-	}
+ 
+ 	pd->pd.power_off = exynos_pd_power_off;
+ 	pd->pd.power_on = exynos_pd_power_on;
 
 
 
