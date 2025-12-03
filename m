@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-199335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4E4ACA1402
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:06:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07ABFCA1347
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:59:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EBA5F32EC8DF
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:44:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E87C6330C919
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:45:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B89369226;
-	Wed,  3 Dec 2025 16:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76DC936997F;
+	Wed,  3 Dec 2025 16:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="03+4Spb7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zhG6fQbp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5AE369219;
-	Wed,  3 Dec 2025 16:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2809B369979;
+	Wed,  3 Dec 2025 16:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764779455; cv=none; b=dBQKFTzJHerJzCC7DcM1ytIZyo7QJ06eXSbGqXl4DNsT7FvgSiLbe8rK86HLwWroQh+8tHv6xUPOz8FUKVcLMvnwY+ofPMZTBr2VwolDjRId2KhkF+RRf1c9IyqgjMo5Z/4H+gPCK+AXBKZqlNbUAc7iIdp/GTijjZa/Kzd6QpA=
+	t=1764779462; cv=none; b=SI6R9VQTCqGs8pEhGq5oz4c35TOgG5kNm3MzbB8cmUDwnQS07b45AiFjyjx/JFpQvJeyPXqHq05n4av1BKwGfeYbKmVfDHQSc+FZ44IQuzkhGK5UN9VnKnJBa9nMXcvU25KpvFqKEbabSguNyIbx11g1XnIx8XH6W5jQsTQPqlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764779455; c=relaxed/simple;
-	bh=WIYqdB6zFR8eT5w93e/aNjiBjR4/tI0tgTzHllzuAtM=;
+	s=arc-20240116; t=1764779462; c=relaxed/simple;
+	bh=8LK4fkA9NxVAgExUN5L8adq0Xke9l4UtQ5MaMZKM/h8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JcAyqtts5gMgr7/uurSFZy8oL/RorPgs+pnpla4T8d1x0wq+9BBcFBw7IUuMBM0ZCal8BysH1w2UqTBsZVb6CHrhzMQ5vcn1BUIFixfE4VlioGXYNeRnIo+wlZOkVLzrd+3Bgpat3nYqIaVxiT0LxF0JAveiXrpHhVzgf9BpML4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=03+4Spb7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A27C7C4CEF5;
-	Wed,  3 Dec 2025 16:30:54 +0000 (UTC)
+	 MIME-Version; b=earRzJKD+FHKeXNuQDAvwEmRTILVpYJzhMv28C1geWVE56wiyXAOrWzrnDOLHzi2XoXbzrfX7STOSumuJa9QLsXy0ymPvPnRKkcPK1NXyCvK/DNwf/XZJSlDbtRJwF2qCzahW/niFLHQD/Pruv+XHxJIJDJBcjNMGWNHlMwfm98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zhG6fQbp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 809E0C4CEF5;
+	Wed,  3 Dec 2025 16:31:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764779455;
-	bh=WIYqdB6zFR8eT5w93e/aNjiBjR4/tI0tgTzHllzuAtM=;
+	s=korg; t=1764779462;
+	bh=8LK4fkA9NxVAgExUN5L8adq0Xke9l4UtQ5MaMZKM/h8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=03+4Spb7S+u4v8X9UhSLqDqqr1kvxC42QoQfylNt4xdlJi+5Hrl35JoI+xBH/eK6P
-	 K/EIoYzN+/okMI5wMrnQ4QFsRriUXIygdyZ8KGpBIiXBVrFvOeDpTQdcfbpP9JacOx
-	 swWKXkG3mlTEK1yBVDd0dp/qM4Z1yyxVyziZVvoU=
+	b=zhG6fQbpuHOD85lCwQ8tPFQPSp8CI5aRXfpFTJOwHrqWdL6RuRKeMSb/xWC5pY2k8
+	 T1DBdUHRGxoZzXilAOxot/sc0E1N9DzBPulJLsTQhDAFVGGgCWsfuvEcRztTqBLBDV
+	 kYaFlj2iD4DXpKk5YhwDrH6S2K7B4hTnOg10ua60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arkadiusz Bokowy <arkadiusz.bokowy@gmail.com>,
+	cen zhang <zzzccc427@gmail.com>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 263/568] Bluetooth: btusb: Check for unexpected bytes when defragmenting HCI frames
-Date: Wed,  3 Dec 2025 16:24:25 +0100
-Message-ID: <20251203152450.350040732@linuxfoundation.org>
+Subject: [PATCH 6.1 264/568] Bluetooth: SCO: Fix UAF on sco_conn_free
+Date: Wed,  3 Dec 2025 16:24:26 +0100
+Message-ID: <20251203152450.386086502@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
 References: <20251203152440.645416925@linuxfoundation.org>
@@ -64,119 +64,122 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Arkadiusz Bokowy <arkadiusz.bokowy@gmail.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 7722d6fb54e428a8f657fccf422095a8d7e2d72c ]
+[ Upstream commit ecb9a843be4d6fd710d7026e359f21015a062572 ]
 
-Some Barrot based USB Bluetooth dongles erroneously send one extra
-random byte for the HCI_OP_READ_LOCAL_EXT_FEATURES command. The
-consequence of that is that the next HCI transfer is misaligned by one
-byte causing undefined behavior. In most cases the response event for
-the next command fails with random error code.
+BUG: KASAN: slab-use-after-free in sco_conn_free net/bluetooth/sco.c:87 [inline]
+BUG: KASAN: slab-use-after-free in kref_put include/linux/kref.h:65 [inline]
+BUG: KASAN: slab-use-after-free in sco_conn_put+0xdd/0x410
+net/bluetooth/sco.c:107
+Write of size 8 at addr ffff88811cb96b50 by task kworker/u17:4/352
 
-Since the HCI_OP_READ_LOCAL_EXT_FEATURES command is used during HCI
-controller initialization, the initialization fails rendering the USB
-dongle not usable.
+CPU: 1 UID: 0 PID: 352 Comm: kworker/u17:4 Not tainted
+6.17.0-rc5-g717368f83676 #4 PREEMPT(voluntary)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+Workqueue: hci13 hci_cmd_sync_work
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x10b/0x170 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0x191/0x550 mm/kasan/report.c:482
+ kasan_report+0xc4/0x100 mm/kasan/report.c:595
+ sco_conn_free net/bluetooth/sco.c:87 [inline]
+ kref_put include/linux/kref.h:65 [inline]
+ sco_conn_put+0xdd/0x410 net/bluetooth/sco.c:107
+ sco_connect_cfm+0xb4/0xae0 net/bluetooth/sco.c:1441
+ hci_connect_cfm include/net/bluetooth/hci_core.h:2082 [inline]
+ hci_conn_failed+0x20a/0x2e0 net/bluetooth/hci_conn.c:1313
+ hci_conn_unlink+0x55f/0x810 net/bluetooth/hci_conn.c:1121
+ hci_conn_del+0xb6/0x1110 net/bluetooth/hci_conn.c:1147
+ hci_abort_conn_sync+0x8c5/0xbb0 net/bluetooth/hci_sync.c:5689
+ hci_cmd_sync_work+0x281/0x380 net/bluetooth/hci_sync.c:332
+ process_one_work kernel/workqueue.c:3236 [inline]
+ process_scheduled_works+0x77e/0x1040 kernel/workqueue.c:3319
+ worker_thread+0xbee/0x1200 kernel/workqueue.c:3400
+ kthread+0x3c7/0x870 kernel/kthread.c:463
+ ret_from_fork+0x13a/0x1e0 arch/x86/kernel/process.c:148
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
 
-> [59.464099] usb 1-1.3: new full-speed USB device number 11 using xhci_hcd
-> [59.561617] usb 1-1.3: New USB device found, idVendor=33fa, idProduct=0012, bcdDevice=88.91
-> [59.561642] usb 1-1.3: New USB device strings: Mfr=0, Product=2, SerialNumber=0
-> [59.561656] usb 1-1.3: Product: UGREEN BT6.0 Adapter
-> [61.720116] Bluetooth: hci1: command 0x1005 tx timeout
-> [61.720167] Bluetooth: hci1: Opcode 0x1005 failed: -110
+Allocated by task 31370:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x30/0x70 mm/kasan/common.c:68
+ poison_kmalloc_redzone mm/kasan/common.c:388 [inline]
+ __kasan_kmalloc+0x82/0x90 mm/kasan/common.c:405
+ kasan_kmalloc include/linux/kasan.h:260 [inline]
+ __do_kmalloc_node mm/slub.c:4382 [inline]
+ __kmalloc_noprof+0x22f/0x390 mm/slub.c:4394
+ kmalloc_noprof include/linux/slab.h:909 [inline]
+ sk_prot_alloc+0xae/0x220 net/core/sock.c:2239
+ sk_alloc+0x34/0x5a0 net/core/sock.c:2295
+ bt_sock_alloc+0x3c/0x330 net/bluetooth/af_bluetooth.c:151
+ sco_sock_alloc net/bluetooth/sco.c:562 [inline]
+ sco_sock_create+0xc0/0x350 net/bluetooth/sco.c:593
+ bt_sock_create+0x161/0x3b0 net/bluetooth/af_bluetooth.c:135
+ __sock_create+0x3ad/0x780 net/socket.c:1589
+ sock_create net/socket.c:1647 [inline]
+ __sys_socket_create net/socket.c:1684 [inline]
+ __sys_socket+0xd5/0x330 net/socket.c:1731
+ __do_sys_socket net/socket.c:1745 [inline]
+ __se_sys_socket net/socket.c:1743 [inline]
+ __x64_sys_socket+0x7a/0x90 net/socket.c:1743
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xc7/0x240 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-This patch was tested with the 33fa:0012 device. The info from the
-/sys/kernel/debug/usb/devices is shown below:
+Freed by task 31374:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x30/0x70 mm/kasan/common.c:68
+ kasan_save_free_info+0x40/0x50 mm/kasan/generic.c:576
+ poison_slab_object mm/kasan/common.c:243 [inline]
+ __kasan_slab_free+0x3d/0x50 mm/kasan/common.c:275
+ kasan_slab_free include/linux/kasan.h:233 [inline]
+ slab_free_hook mm/slub.c:2428 [inline]
+ slab_free mm/slub.c:4701 [inline]
+ kfree+0x199/0x3b0 mm/slub.c:4900
+ sk_prot_free net/core/sock.c:2278 [inline]
+ __sk_destruct+0x4aa/0x630 net/core/sock.c:2373
+ sco_sock_release+0x2ad/0x300 net/bluetooth/sco.c:1333
+ __sock_release net/socket.c:649 [inline]
+ sock_close+0xb8/0x230 net/socket.c:1439
+ __fput+0x3d1/0x9e0 fs/file_table.c:468
+ task_work_run+0x206/0x2a0 kernel/task_work.c:227
+ get_signal+0x1201/0x1410 kernel/signal.c:2807
+ arch_do_signal_or_restart+0x34/0x740 arch/x86/kernel/signal.c:337
+ exit_to_user_mode_loop+0x68/0xc0 kernel/entry/common.c:40
+ exit_to_user_mode_prepare include/linux/irq-entry-common.h:225 [inline]
+ syscall_exit_to_user_mode_work include/linux/entry-common.h:175 [inline]
+ syscall_exit_to_user_mode include/linux/entry-common.h:210 [inline]
+ do_syscall_64+0x1dd/0x240 arch/x86/entry/syscall_64.c:100
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-T:  Bus=01 Lev=02 Prnt=02 Port=02 Cnt=01 Dev#= 12 Spd=12   MxCh= 0
-D:  Ver= 2.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=33fa ProdID=0012 Rev=88.91
-S:  Product=UGREEN BT6.0 Adapter
-C:* #Ifs= 2 Cfg#= 1 Atr=c0 MxPwr=100mA
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-
-Now the device is initialized properly:
-
-> [43.329852] usb 1-1.4: new full-speed USB device number 4 using dwc_otg
-> [43.446790] usb 1-1.4: New USB device found, idVendor=33fa, idProduct=0012, bcdDevice=88.91
-> [43.446813] usb 1-1.4: New USB device strings: Mfr=0, Product=2, SerialNumber=0
-> [43.446821] usb 1-1.4: Product: UGREEN BT6.0 Adapter
-> [43.582024] Bluetooth: hci1: Unexpected continuation: 1 bytes
-> [43.703025] Bluetooth: hci1: Unexpected continuation: 1 bytes
-> [43.750141] Bluetooth: MGMT ver 1.23
-
-Link: https://github.com/bluez/bluez/issues/1326
-Signed-off-by: Arkadiusz Bokowy <arkadiusz.bokowy@gmail.com>
-Tested-by: Arkadiusz Bokowy <arkadiusz.bokowy@gmail.com>
+Reported-by: cen zhang <zzzccc427@gmail.com>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ net/bluetooth/sco.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 8bb1162031a6a..29130160066a5 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -64,6 +64,7 @@ static struct usb_driver btusb_driver;
- #define BTUSB_INTEL_BROKEN_INITIAL_NCMD BIT(25)
- #define BTUSB_INTEL_NO_WBS_SUPPORT	BIT(26)
- #define BTUSB_ACTIONS_SEMI		BIT(27)
-+#define BTUSB_BARROT			BIT(28)
+diff --git a/net/bluetooth/sco.c b/net/bluetooth/sco.c
+index fe8728041ad08..cf53d483dd071 100644
+--- a/net/bluetooth/sco.c
++++ b/net/bluetooth/sco.c
+@@ -434,6 +434,13 @@ static void sco_sock_kill(struct sock *sk)
  
- static const struct usb_device_id btusb_table[] = {
- 	/* Generic Bluetooth USB device */
-@@ -699,6 +700,10 @@ static const struct usb_device_id blacklist_table[] = {
- 	{ USB_DEVICE(0x0cb5, 0xc547), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
+ 	BT_DBG("sk %p state %d", sk, sk->sk_state);
  
-+	/* Barrot Technology Bluetooth devices */
-+	{ USB_DEVICE(0x33fa, 0x0010), .driver_info = BTUSB_BARROT },
-+	{ USB_DEVICE(0x33fa, 0x0012), .driver_info = BTUSB_BARROT },
++	/* Sock is dead, so set conn->sk to NULL to avoid possible UAF */
++	if (sco_pi(sk)->conn) {
++		sco_conn_lock(sco_pi(sk)->conn);
++		sco_pi(sk)->conn->sk = NULL;
++		sco_conn_unlock(sco_pi(sk)->conn);
++	}
 +
- 	/* Actions Semiconductor ATS2851 based devices */
- 	{ USB_DEVICE(0x10d7, 0xb012), .driver_info = BTUSB_ACTIONS_SEMI },
- 
-@@ -991,6 +996,18 @@ static int btusb_recv_intr(struct btusb_data *data, void *buffer, int count)
- 		}
- 
- 		if (!hci_skb_expect(skb)) {
-+			/* Each chunk should correspond to at least 1 or more
-+			 * events so if there are still bytes left that doesn't
-+			 * constitute a new event this is likely a bug in the
-+			 * controller.
-+			 */
-+			if (count && count < HCI_EVENT_HDR_SIZE) {
-+				bt_dev_warn(data->hdev,
-+					"Unexpected continuation: %d bytes",
-+					count);
-+				count = 0;
-+			}
-+
- 			/* Complete frame */
- 			btusb_recv_event(data, skb);
- 			skb = NULL;
+ 	/* Kill poor orphan */
+ 	bt_sock_unlink(&sco_sk_list, sk);
+ 	sock_set_flag(sk, SOCK_DEAD);
 -- 
 2.51.0
 
