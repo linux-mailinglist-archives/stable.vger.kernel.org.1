@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-198767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0557C9FF01
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:25:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F5FAC9F82D
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:36:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3B20B3014110
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:24:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 33CB03027D95
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:32:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55099346A12;
-	Wed,  3 Dec 2025 16:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC95330C358;
+	Wed,  3 Dec 2025 15:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AXbCAoj8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x7XTmgkr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C64346A09;
-	Wed,  3 Dec 2025 16:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7555430C63C;
+	Wed,  3 Dec 2025 15:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777619; cv=none; b=Jdez/kddUQsPtPU94IXD+jdD9J8Z7eH96bBMRLMT67XOWYK1wsJ8DSMwTKIXNXa4QGBF1aqpHhqDzNazn3tp7anTZdmL93sHw3pMVMBH3DVJKfDtw+0b8frfcxLDY09SNGQ7EFrv66BkwSr/msAxBIKGhxcl5SX4aB8VaksaqNI=
+	t=1764775955; cv=none; b=hGiJyddubhtX3RG3mBRBNFHgaww2RhVd28L26fSq2Qq5JG50mS/UN5G26n0cya9tRkMcsHa+B21JQ0zgwU9bRbf3L0AyAlmMXQpvS2BQJTrfOQZ+MVf5tZjOof4iSZrdSGHexVANJn7S7iTiWwZlIayx+meHctM5TPTixiidCyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777619; c=relaxed/simple;
-	bh=eC7iWINYk8ynF8TScypnfBZyvzFfOElfifgyCSTxxHo=;
+	s=arc-20240116; t=1764775955; c=relaxed/simple;
+	bh=zOzoyTwAQ6VvcCovnwBmvOkmQqbTYd00CnJLE9R5xTM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gJzOmLJeM8Q422NBszbc/t1a2eouJ1InN8mOm89QmZQqqIfvfZck3WaumPu3yPiluKqjt/jW9y1dquEI6j84fI50CW2GmxwzizQjQLFVxQJ35t/KOjrXcDB2Ez4usW3KrrLFmDPPEF3spoLW2rZHUse01jVhhwmO+ukULrCjtko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AXbCAoj8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AEF6C116B1;
-	Wed,  3 Dec 2025 16:00:17 +0000 (UTC)
+	 MIME-Version; b=cLYc3V3uLJWP6bnjJdTqYYL2y/FtYRpni3/CN3gUpevZaUAnBH5xjpg+TUBRGB40n1n518cpW7i/zLUUwe0PY9aBO2TClvUFBGmd0MIqLQP+Zi9Pzc43D67zK9CPrFLNlqtckVPZzIqe3M5KAMEJhBGuVx5XBNySWrG0V80rUc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x7XTmgkr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8EA9C116B1;
+	Wed,  3 Dec 2025 15:32:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777618;
-	bh=eC7iWINYk8ynF8TScypnfBZyvzFfOElfifgyCSTxxHo=;
+	s=korg; t=1764775955;
+	bh=zOzoyTwAQ6VvcCovnwBmvOkmQqbTYd00CnJLE9R5xTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AXbCAoj8i0UmnqHfDteNLxH2AFQcKPlB2duoUFRUB3OjqjLChLwYsFphiDUDzdp/n
-	 +xiZ9mU3dvDuvvP8V2qtp4C+RrmHK1gaX9zrSacMCPwc/vLcP0Rmm1KQd9j4/nir/I
-	 t4czl/r2KWQai1XXSL7x5fFRJZAzfTQmpIDuPT64=
+	b=x7XTmgkrrwKDbqAv41mgR/usE3yWkiB8qkEHM7Y/6uiDV4sffXpSNedmY4nuWggMt
+	 5DVRnOLGYzY2kAImZQtdPR14e4iVPeTKXwfjh4wj8rH22A8PAHFYv38aXVGctEM7N+
+	 E13upBFPwpyXSgRCVJmYePT5+x8xik6KTmntifXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sathishkumar S <sathishkumar.sundararaju@amd.com>,
-	Leo Liu <leo.liu@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Jens Reidel <adrian@mainlining.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 092/392] drm/amdgpu/jpeg: Hold pg_lock before jpeg poweroff
+Subject: [PATCH 5.10 038/300] soc: qcom: smem: Fix endian-unaware access of num_entries
 Date: Wed,  3 Dec 2025 16:24:02 +0100
-Message-ID: <20251203152417.488883330@linuxfoundation.org>
+Message-ID: <20251203152401.878668198@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +60,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sathishkumar S <sathishkumar.sundararaju@amd.com>
+From: Jens Reidel <adrian@mainlining.org>
 
-[ Upstream commit 0e7581eda8c76d1ca4cf519631a4d4eb9f82b94c ]
+[ Upstream commit 19e7aa0e9e46d0ad111a4af55b3d681b6ad945e0 ]
 
-Acquire jpeg_pg_lock before changes to jpeg power state
-and release it after power off from idle work handler.
+Add a missing le32_to_cpu when accessing num_entries, which is always a
+little endian integer.
 
-Signed-off-by: Sathishkumar S <sathishkumar.sundararaju@amd.com>
-Reviewed-by: Leo Liu <leo.liu@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes booting on Xiaomi Mi 9T (xiaomi-davinci) in big endian.
+
+Signed-off-by: Jens Reidel <adrian@mainlining.org>
+Link: https://lore.kernel.org/r/20250726235646.254730-1-adrian@mainlining.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_jpeg.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/soc/qcom/smem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_jpeg.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_jpeg.c
-index 9342aa23ebd26..902523af9865a 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_jpeg.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_jpeg.c
-@@ -85,10 +85,12 @@ static void amdgpu_jpeg_idle_work_handler(struct work_struct *work)
- 		fences += amdgpu_fence_count_emitted(&adev->jpeg.inst[i].ring_dec);
- 	}
+diff --git a/drivers/soc/qcom/smem.c b/drivers/soc/qcom/smem.c
+index 28c19bcb2f205..d2d62d2b378b4 100644
+--- a/drivers/soc/qcom/smem.c
++++ b/drivers/soc/qcom/smem.c
+@@ -709,7 +709,7 @@ static u32 qcom_smem_get_item_count(struct qcom_smem *smem)
+ 	if (IS_ERR_OR_NULL(ptable))
+ 		return SMEM_ITEM_COUNT;
  
--	if (!fences && !atomic_read(&adev->jpeg.total_submission_cnt))
-+	if (!fences && !atomic_read(&adev->jpeg.total_submission_cnt)) {
-+		mutex_lock(&adev->jpeg.jpeg_pg_lock);
- 		amdgpu_device_ip_set_powergating_state(adev, AMD_IP_BLOCK_TYPE_JPEG,
- 						       AMD_PG_STATE_GATE);
--	else
-+		mutex_unlock(&adev->jpeg.jpeg_pg_lock);
-+	} else
- 		schedule_delayed_work(&adev->jpeg.idle_work, JPEG_IDLE_TIMEOUT);
- }
+-	info = (struct smem_info *)&ptable->entry[ptable->num_entries];
++	info = (struct smem_info *)&ptable->entry[le32_to_cpu(ptable->num_entries)];
+ 	if (memcmp(info->magic, SMEM_INFO_MAGIC, sizeof(info->magic)))
+ 		return SMEM_ITEM_COUNT;
  
 -- 
 2.51.0
