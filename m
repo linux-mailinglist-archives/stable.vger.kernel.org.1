@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-198397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 643AAC9F9FB
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:46:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E98BC9FD82
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:13:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 585FB3007941
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:40:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6C0213026A98
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:05:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26B6E3081AF;
-	Wed,  3 Dec 2025 15:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B132313E03;
+	Wed,  3 Dec 2025 16:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vyWaM9/s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bFohm1OC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7375303A3D;
-	Wed,  3 Dec 2025 15:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB254313523;
+	Wed,  3 Dec 2025 16:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776406; cv=none; b=U+IyGnY2DnIXtOUe9D4tlwzm4qKRG0rMMsqErlUkJIPzNbD7rdYxj8sYZhRgQ/KycoRnYHIKMNJ1BfyJB03ym2WSAi+QyEQGZif/SIJjMElFByqqi/nibf6FJMpk0EgVNDWqIhvQYMrSmqBDpw1u+ebqzTnGT0NAoce3DNpK77I=
+	t=1764777946; cv=none; b=XW2jGtbK55aLH+RZc/CrpPUU3dgOKH1Vw1b7Vw3MMmPm184gwbFyKmv/pDki81r1iBQFZQW0I+5SpA1/NEKR7pimhtxEL/66OqnQtgSs18JrJURcX8fmBhw03P9TG+9l/eQUkLoZW61c8xeH/TDtiK66n+LKf3940uRBTTGsHww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776406; c=relaxed/simple;
-	bh=C0ncVdAkwDBCIOrWdmlg4xkqnjxsRCFK9KFdW5ULuWc=;
+	s=arc-20240116; t=1764777946; c=relaxed/simple;
+	bh=lCxFO2de/A9M4+iuOkl6krfbtltxn1QYy/63755dIjs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SIhRxCQTCgQp0XTnvuCvcNQdnuJJlNIsDw7oE/wucWC7MpWdts8ZthDBrLN6Hp3ly5fqXG1mpancUCBWC3Fc5zBuMvCD7RisjqbPA+hU/CKGjZMcfaEkV8aUaPA3HZywHj4GQ7usIBZ2URYaaSyxFtSaZyH124yrNKITuyAS7OY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vyWaM9/s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41FF6C4CEF5;
-	Wed,  3 Dec 2025 15:40:06 +0000 (UTC)
+	 MIME-Version; b=nOsuK8wUaYUPILZKVvlq3iyorxhLJZejA485JMiMeajXydx7mycZlYw3pE8bGosbqvvrYQd8bXkUg30+7hGtaQMCdHvyPoRtvPtujWAhDq9Plpo24+WcozvSdDWf9GonHInSwhAnr1B/7Z/n6My/HqmNiAw1Y5ful7JQ+W/WDrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bFohm1OC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58BF4C116C6;
+	Wed,  3 Dec 2025 16:05:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776406;
-	bh=C0ncVdAkwDBCIOrWdmlg4xkqnjxsRCFK9KFdW5ULuWc=;
+	s=korg; t=1764777945;
+	bh=lCxFO2de/A9M4+iuOkl6krfbtltxn1QYy/63755dIjs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vyWaM9/svZCQROrc2+zMco1KDMgjIBPxOF1zTuxDJDMeaf7JHN/REq8WVneQXw6t0
-	 dJy7I/m04CGhvg9iXhyKfZB/hszHkL5qcxgnaiUY6NW5jlhsITyQQHfJ+Soy3A6xBz
-	 OAo7T1vXv5H16AqIfQfhTfN6n7FOlyhuqJs5ryEw=
+	b=bFohm1OCulVYFJy2G0L/w3jWcsXMmJ6fiobVr9pDsh+jU5xDWirpT2VSts6jDsNS/
+	 AVWpaCBYHmpGNBzuEu/4CaJQVMuG1ij393bTpeneGo7NBjkA0RaStkcf5GabCQfexg
+	 zGdc5FYoSb21ZTvCuhXxwqk8F25FPLcY8b++mHKI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4ed6852d4da4606c93da@syzkaller.appspotmail.com,
-	Ivan Pravdin <ipravdin.official@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Cristian Birsan <cristian.birsan@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 140/300] Bluetooth: bcsp: receive data only if registered
-Date: Wed,  3 Dec 2025 16:25:44 +0100
-Message-ID: <20251203152405.805538695@linuxfoundation.org>
+Subject: [PATCH 5.15 195/392] ARM: at91: pm: save and restore ACR during PLL disable/enable
+Date: Wed,  3 Dec 2025 16:25:45 +0100
+Message-ID: <20251203152421.249494048@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Pravdin <ipravdin.official@gmail.com>
+From: Nicolas Ferre <nicolas.ferre@microchip.com>
 
-[ Upstream commit ca94b2b036c22556c3a66f1b80f490882deef7a6 ]
+[ Upstream commit 0c01fe49651d387776abed6a28541e80c8a93319 ]
 
-Currently, bcsp_recv() can be called even when the BCSP protocol has not
-been registered. This leads to a NULL pointer dereference, as shown in
-the following stack trace:
+Add a new word in assembly to store ACR value during the calls
+to at91_plla_disable/at91_plla_enable macros and use it.
 
-    KASAN: null-ptr-deref in range [0x0000000000000108-0x000000000000010f]
-    RIP: 0010:bcsp_recv+0x13d/0x1740 drivers/bluetooth/hci_bcsp.c:590
-    Call Trace:
-     <TASK>
-     hci_uart_tty_receive+0x194/0x220 drivers/bluetooth/hci_ldisc.c:627
-     tiocsti+0x23c/0x2c0 drivers/tty/tty_io.c:2290
-     tty_ioctl+0x626/0xde0 drivers/tty/tty_io.c:2706
-     vfs_ioctl fs/ioctl.c:51 [inline]
-     __do_sys_ioctl fs/ioctl.c:907 [inline]
-     __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:893
-     do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-     do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
-     entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-To prevent this, ensure that the HCI_UART_REGISTERED flag is set before
-processing received data. If the protocol is not registered, return
--EUNATCH.
-
-Reported-by: syzbot+4ed6852d4da4606c93da@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=4ed6852d4da4606c93da
-Tested-by: syzbot+4ed6852d4da4606c93da@syzkaller.appspotmail.com
-Signed-off-by: Ivan Pravdin <ipravdin.official@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+[cristian.birsan@microchip.com: remove ACR_DEFAULT_PLLA loading]
+Signed-off-by: Cristian Birsan <cristian.birsan@microchip.com>
+Link: https://lore.kernel.org/r/20250827145427.46819-4-nicolas.ferre@microchip.com
+Reviewed-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/hci_bcsp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm/mach-at91/pm_suspend.S | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/hci_bcsp.c b/drivers/bluetooth/hci_bcsp.c
-index 8055f63603f45..8ff69111ceede 100644
---- a/drivers/bluetooth/hci_bcsp.c
-+++ b/drivers/bluetooth/hci_bcsp.c
-@@ -582,6 +582,9 @@ static int bcsp_recv(struct hci_uart *hu, const void *data, int count)
- 	struct bcsp_struct *bcsp = hu->priv;
- 	const unsigned char *ptr;
+diff --git a/arch/arm/mach-at91/pm_suspend.S b/arch/arm/mach-at91/pm_suspend.S
+index 60f9d6f5f8229..1b8d1fbb41ef4 100644
+--- a/arch/arm/mach-at91/pm_suspend.S
++++ b/arch/arm/mach-at91/pm_suspend.S
+@@ -685,6 +685,10 @@ sr_dis_exit:
+ 	bic	tmp2, tmp2, #AT91_PMC_PLL_UPDT_ID
+ 	str	tmp2, [pmc, #AT91_PMC_PLL_UPDT]
  
-+	if (!test_bit(HCI_UART_REGISTERED, &hu->flags))
-+		return -EUNATCH;
++	/* save acr */
++	ldr	tmp2, [pmc, #AT91_PMC_PLL_ACR]
++	str	tmp2, .saved_acr
 +
- 	BT_DBG("hu %p count %d rx_state %d rx_count %ld",
- 	       hu, count, bcsp->rx_state, bcsp->rx_count);
+ 	/* save div. */
+ 	mov	tmp1, #0
+ 	ldr	tmp2, [pmc, #AT91_PMC_PLL_CTRL0]
+@@ -754,7 +758,7 @@ sr_dis_exit:
+ 	str	tmp1, [pmc, #AT91_PMC_PLL_UPDT]
  
+ 	/* step 2. */
+-	ldr	tmp1, =AT91_PMC_PLL_ACR_DEFAULT_PLLA
++	ldr	tmp1, .saved_acr
+ 	str	tmp1, [pmc, #AT91_PMC_PLL_ACR]
+ 
+ 	/* step 3. */
+@@ -1130,6 +1134,8 @@ ENDPROC(at91_pm_suspend_in_sram)
+ 	.word 0
+ .saved_mckr:
+ 	.word 0
++.saved_acr:
++	.word 0
+ .saved_pllar:
+ 	.word 0
+ .saved_sam9_lpr:
 -- 
 2.51.0
 
