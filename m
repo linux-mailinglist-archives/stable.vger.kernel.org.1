@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-198752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8938CCA069A
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:25:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53631CA10B0
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:39:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 88D54300722D
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:25:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A18DE3008D5E
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:38:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33C6F329C7D;
-	Wed,  3 Dec 2025 15:59:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E05A13612C1;
+	Wed,  3 Dec 2025 16:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TCBA01sO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uz3vyv/9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3711328634;
-	Wed,  3 Dec 2025 15:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2B335FF6B;
+	Wed,  3 Dec 2025 16:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777568; cv=none; b=Nu1EaBLyxHhmBcNMnCiRBR9Cr2JbEZGnvgclqG5JU8MQfCabRxbCrdZMeisdksMat8t0SX6XN6J7epQa9Bz+tiVaoE+72Tqm+FdgYJfuDxCUFms07WYfzdjYr7VxPzvE7L9K3KlKJhxPQZ2oRbIazmp3ku4JzvS4LyYmaZuyy0c=
+	t=1764779300; cv=none; b=rbqksqidex7L4sDQRE0APYhkiiUUck1VAMXqzc7ls+FCwGPo0cd9LlJm/PcjjLJ9wOY7JIT14zPyx1Qlh818O/SQ/NzICWQ9T7TCY9SL5np48wtqUJb2CUBXeOz/lFW+peezzPogbVtES4Mvx5KlSkAVkF19GAiNettSxN9xuX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777568; c=relaxed/simple;
-	bh=NaIXOlrbgq8Ensul24gnbCAwEWP7Ergguqm4AO9T2cQ=;
+	s=arc-20240116; t=1764779300; c=relaxed/simple;
+	bh=86mYzpP3M44yRL/wsD0GpeOp8afTTdLcCkYa2Zof84w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZuwU7GvVxDVyrgiTdDxhT2V6v+86jQJABNCFun6V1DpVzIwciuvu9/bUpDiGXEhVQqxfc04TEA04GfJN7HQZHRKQYlGAY9kpVvTouiOKjVaDgfiqEMBcOStZmdR+JFD3KfMYWOXfxKo4azfhO8aTKkboJdBH0njHTMZbeBhjRx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TCBA01sO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1FB5C4CEF5;
-	Wed,  3 Dec 2025 15:59:26 +0000 (UTC)
+	 MIME-Version; b=oXDNTa0QVZ45egJfvpuo7CVg72L1JaVHAZr6BsMfdycCO6xkg8x4uLSHXGZs8yo8RCBHp605F+CcKIILs1141VaZ2zHdVJC7YHKYPN0HIcOaWw5iFNUvVtxzeMQ1UsJ6JfOTIiOjOgi4R0At2A0u18Og4QMDEeAQG6IHrAdd9dY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uz3vyv/9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBA7DC4CEF5;
+	Wed,  3 Dec 2025 16:28:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777567;
-	bh=NaIXOlrbgq8Ensul24gnbCAwEWP7Ergguqm4AO9T2cQ=;
+	s=korg; t=1764779300;
+	bh=86mYzpP3M44yRL/wsD0GpeOp8afTTdLcCkYa2Zof84w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TCBA01sO048I7nDtUfPPtYLRQk49cvTqKj4bGAEg/uNcaS9FjiqdkuLw/sNRWNKNx
-	 PoE4yvoHiakS5qQ5trRwt4AYTGpAvV4l8wfar27FG0L9/72YIIWVEZCfmOiSivLWpO
-	 DbNmW1XYgN1PM46xr/F2qP62xQjrAmu+ImR5JvHE=
+	b=Uz3vyv/9rcDiElgVKlTpJoewFNXykRcgAeEFRLXn5w5fgwxRRuwjkEzXm1dKFp80d
+	 fBy9+r1yO1Js7Yq9OVZQyAL7lRiXFuIF67a2KHQGv82fvlkG7Bb+TNoT04I0rW7FMY
+	 zZmaoE5j9JZmZtiNUf31ver5eV8tlnBvzndmwhLw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wilson Alvarez <wilson.e.alvarez@rubonnek.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 061/392] ACPI: video: force native for Lenovo 82K8
+Subject: [PATCH 6.1 209/568] wifi: mac80211: Fix HE capabilities element check
 Date: Wed,  3 Dec 2025 16:23:31 +0100
-Message-ID: <20251203152416.357524007@linuxfoundation.org>
+Message-ID: <20251203152448.380094340@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello (AMD) <superm1@kernel.org>
+From: Ilan Peer <ilan.peer@intel.com>
 
-[ Upstream commit f144bc21befdcf8e54d2f19b23b4e84f13be01f9 ]
+[ Upstream commit ea928544f3215fdeac24d66bef85e10bb638b8c1 ]
 
-Lenovo 82K8 has a broken brightness control provided by nvidia_wmi_ec.
-Add a quirk to prevent using it.
+The element data length check did not account for the extra
+octet used for the extension ID. Fix it.
 
-Reported-by: Wilson Alvarez <wilson.e.alvarez@rubonnek.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4512
-Tested-by: Wilson Alvarez <wilson.e.alvarez@rubonnek.com>
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Link: https://patch.msgid.link/20250820170927.895573-1-superm1@kernel.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250907115109.8da0012e2286.I8c0c69a0011f7153c13b365b14dfef48cfe7c3e3@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/video_detect.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/mac80211/mlme.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-index 338e1f44906a9..0ecc47e273140 100644
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -635,6 +635,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
- 		DMI_MATCH(DMI_PRODUCT_NAME, "MS-7721"),
- 		},
- 	},
-+	/* https://gitlab.freedesktop.org/drm/amd/-/issues/4512 */
-+	{
-+	 .callback = video_detect_force_native,
-+	 .matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "82K8"),
-+		},
-+	},
- 	{ },
- };
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index cc47d6b88f04d..15826bbde70c2 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -4386,7 +4386,7 @@ static u8 ieee80211_max_rx_chains(struct ieee80211_link_data *link,
+ 	he_cap_elem = cfg80211_find_ext_elem(WLAN_EID_EXT_HE_CAPABILITY,
+ 					     ies->data, ies->len);
  
+-	if (!he_cap_elem || he_cap_elem->datalen < sizeof(*he_cap))
++	if (!he_cap_elem || he_cap_elem->datalen < sizeof(*he_cap) + 1)
+ 		return chains;
+ 
+ 	/* skip one byte ext_tag_id */
 -- 
 2.51.0
 
