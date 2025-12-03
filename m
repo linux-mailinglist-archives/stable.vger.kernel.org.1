@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-198372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DE5FC9F977
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:43:53 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9246C9FCEF
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:07:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8C2233041E11
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:38:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AD18F3000B3D
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:07:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CAE13101DE;
-	Wed,  3 Dec 2025 15:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA68E313E03;
+	Wed,  3 Dec 2025 16:07:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZMvJM9Di"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pPJOLUoU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39DB7303A3D;
-	Wed,  3 Dec 2025 15:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A10313546;
+	Wed,  3 Dec 2025 16:07:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764776324; cv=none; b=Ltk5B/+jBayDpa7LbnhIFcEb+tBigetZVSt3PSX6mVfoAr/5hG5JXNIVnHdx6V2fFH2dB+tLgjAYEdE9JU+4JPQ9O+kqY6KkV6JSS7+NzgeuSNHeWGNfjHgeogermSMeA7QWCUtx3yHgeW9EG176ZVdoMkuhmWtMk6mV37LHKV0=
+	t=1764778029; cv=none; b=s7pGp2HJ0p3KJTAtGap9JjdrzgC/WPlGA44Fmjhj3OLpJGlRfBdXZJ0mIV8hTB2ADPkH4sgUBSLDVSNL9F4FdauiP/i8hpLU0WDzTXoh10yWyHzAFpu6Q+dMSz6HWi/CXqQ1RT6r6kasgKCDgYHIRiL1kUaVoaho7NJkphgngf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764776324; c=relaxed/simple;
-	bh=OB8yzuLl1tcK+cqwFWFxlIeA7zIdAXTnJJmi1cRbems=;
+	s=arc-20240116; t=1764778029; c=relaxed/simple;
+	bh=S9w8J7XlmneRZmPWhI2MqTb+hGzZCilEXrE8Vgjr6Ec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yoql5OeDawGA0P4MNZM1wNrhGOV0V7At49OuCr97s2I3gM9hJqqbGbqyPDeeaWjk21Y9YSXDijego29v1TcoZ4Mp61W9VcvgXN7eck72GrZMyZj2Qvy2TKMjX2blcZYTvztoLVSSY6c3JciKFUwa45y0YAGCvxXNkjekUwA1Dx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZMvJM9Di; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AB18C4CEF5;
-	Wed,  3 Dec 2025 15:38:43 +0000 (UTC)
+	 MIME-Version; b=JQgCHGQiiW2EMFwzCmrUh7dlOsSz+GEsvqLb/d6NwvLq8WRCvTV6PCjxPXvo4xKz3wUs5zM0QXCwiAA94WnB/BiPseFp2QL/MFesDaBNzjjRY8f9BvQgUmwytVBNoysBKn+kEa1GqHG8ZtIxmUGXPP/kB2NWeRJpAyYv4vhgKbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pPJOLUoU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D31CC4CEF5;
+	Wed,  3 Dec 2025 16:07:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764776324;
-	bh=OB8yzuLl1tcK+cqwFWFxlIeA7zIdAXTnJJmi1cRbems=;
+	s=korg; t=1764778029;
+	bh=S9w8J7XlmneRZmPWhI2MqTb+hGzZCilEXrE8Vgjr6Ec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZMvJM9DiDqAJQX4wKxFs3VGmEeLsJWussH/7UNAEhrS+dIf72qjCSWHk7qOvriR/A
-	 Ch8vdF0gzvBenk0OA/btOQG8gOTOioJAzI7BQweHxf5/976Ibsqmv3NuWWCUAnUyHW
-	 chs01R9nnGS/sGMrioU8LXJzUTmxfbDgojKC5v74=
+	b=pPJOLUoUvLVSLxaE3XkJeAEx2tc1jHjZxSzKvGBYnDkqXrJ5UPni2teT/l4GKb5bk
+	 pf16wfw8USAwqqtN0ytTmWJC5Lyv2z39XAVSvUsOo2CSi7f4Q4YEpwkSSkVzqHf6NK
+	 YTUv/sHWzrZ1D3qRZdtk2rl2V25he8ZxZR6Z+s4M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Cristian Birsan <cristian.birsan@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Valerio Setti <vsetti@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 149/300] ARM: at91: pm: save and restore ACR during PLL disable/enable
-Date: Wed,  3 Dec 2025 16:25:53 +0100
-Message-ID: <20251203152406.137569309@linuxfoundation.org>
+Subject: [PATCH 5.15 204/392] ASoC: meson: aiu-encoder-i2s: fix bit clock polarity
+Date: Wed,  3 Dec 2025 16:25:54 +0100
+Message-ID: <20251203152421.580860849@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Ferre <nicolas.ferre@microchip.com>
+From: Valerio Setti <vsetti@baylibre.com>
 
-[ Upstream commit 0c01fe49651d387776abed6a28541e80c8a93319 ]
+[ Upstream commit 4c4ed5e073a923fb3323022e1131cb51ad8df7a0 ]
 
-Add a new word in assembly to store ACR value during the calls
-to at91_plla_disable/at91_plla_enable macros and use it.
+According to I2S specs audio data is sampled on the rising edge of the
+clock and it can change on the falling one. When operating in normal mode
+this SoC behaves the opposite so a clock polarity inversion is required
+in this case.
 
-Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-[cristian.birsan@microchip.com: remove ACR_DEFAULT_PLLA loading]
-Signed-off-by: Cristian Birsan <cristian.birsan@microchip.com>
-Link: https://lore.kernel.org/r/20250827145427.46819-4-nicolas.ferre@microchip.com
-Reviewed-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+This was tested on an OdroidC2 (Amlogic S905 SoC) board.
+
+Signed-off-by: Valerio Setti <vsetti@baylibre.com>
+Reviewed-by: Jerome Brunet <jbrunet@baylibre.com>
+Tested-by: Jerome Brunet <jbrunet@baylibre.com>
+Link: https://patch.msgid.link/20251007-fix-i2s-polarity-v1-1-86704d9cda10@baylibre.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-at91/pm_suspend.S | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ sound/soc/meson/aiu-encoder-i2s.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/mach-at91/pm_suspend.S b/arch/arm/mach-at91/pm_suspend.S
-index b683c2caa40b9..80494afb28a33 100644
---- a/arch/arm/mach-at91/pm_suspend.S
-+++ b/arch/arm/mach-at91/pm_suspend.S
-@@ -373,6 +373,10 @@ ENDPROC(at91_backup_mode)
- 	bic	tmp2, tmp2, #AT91_PMC_PLL_UPDT_ID
- 	str	tmp2, [pmc, #AT91_PMC_PLL_UPDT]
+diff --git a/sound/soc/meson/aiu-encoder-i2s.c b/sound/soc/meson/aiu-encoder-i2s.c
+index 67729de41a73e..a512cd49bc507 100644
+--- a/sound/soc/meson/aiu-encoder-i2s.c
++++ b/sound/soc/meson/aiu-encoder-i2s.c
+@@ -236,8 +236,12 @@ static int aiu_encoder_i2s_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
+ 	    inv == SND_SOC_DAIFMT_IB_IF)
+ 		val |= AIU_CLK_CTRL_LRCLK_INVERT;
  
-+	/* save acr */
-+	ldr	tmp2, [pmc, #AT91_PMC_PLL_ACR]
-+	str	tmp2, .saved_acr
-+
- 	/* save div. */
- 	mov	tmp1, #0
- 	ldr	tmp2, [pmc, #AT91_PMC_PLL_CTRL0]
-@@ -442,7 +446,7 @@ ENDPROC(at91_backup_mode)
- 	str	tmp1, [pmc, #AT91_PMC_PLL_UPDT]
+-	if (inv == SND_SOC_DAIFMT_IB_NF ||
+-	    inv == SND_SOC_DAIFMT_IB_IF)
++	/*
++	 * The SoC changes data on the rising edge of the bitclock
++	 * so an inversion of the bitclock is required in normal mode
++	 */
++	if (inv == SND_SOC_DAIFMT_NB_NF ||
++	    inv == SND_SOC_DAIFMT_NB_IF)
+ 		val |= AIU_CLK_CTRL_AOCLK_INVERT;
  
- 	/* step 2. */
--	ldr	tmp1, =AT91_PMC_PLL_ACR_DEFAULT_PLLA
-+	ldr	tmp1, .saved_acr
- 	str	tmp1, [pmc, #AT91_PMC_PLL_ACR]
- 
- 	/* step 3. */
-@@ -694,6 +698,8 @@ ENDPROC(at91_sramc_self_refresh)
- 	.word 0
- .saved_mckr:
- 	.word 0
-+.saved_acr:
-+	.word 0
- .saved_pllar:
- 	.word 0
- .saved_sam9_lpr:
+ 	/* Signal skew */
+@@ -328,4 +332,3 @@ const struct snd_soc_dai_ops aiu_encoder_i2s_dai_ops = {
+ 	.startup	= aiu_encoder_i2s_startup,
+ 	.shutdown	= aiu_encoder_i2s_shutdown,
+ };
+-
 -- 
 2.51.0
 
