@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-198615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8824ECA1077
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:37:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61B90C9FAFD
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:53:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7A0AB3267EBE
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:38:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8A79E301E5AF
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:45:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76D45330B01;
-	Wed,  3 Dec 2025 15:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5707830FF26;
+	Wed,  3 Dec 2025 15:45:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ih4A6LCo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sma23a/d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F34033033B;
-	Wed,  3 Dec 2025 15:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75A3B309EFF;
+	Wed,  3 Dec 2025 15:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777128; cv=none; b=kxtlL4Cl8kfG+MnNz5z/VygafykseJhs5wP5hf5d2GM0ttH8obBiMPHNvSePhEH+ijDS1Qsm+XEq94pdjp9SfAyCNeOcCZgFnkd4vxpF7WO2UO/Kl8TurBpKK1Jb4FmfSqSOp4P8hFNFZfW+f0iEkaPRMnax8LM3+i45o05JI8M=
+	t=1764776711; cv=none; b=oGC/oR/sZhkX/Qp4kxHa+aSscKJZiaugZyySdNWwdBIovbphqZEY5uqJwwp0a+XRrFsDJlR4iv//9hicoNtb3Hl+xmx5qWXf7euCBcXefOuHUqG5HLfYVRkieya18Abn3xhfBAHTktC0K8t9uKaCoF9ocgOdScKLvIfB8FBzSgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777128; c=relaxed/simple;
-	bh=YChEWkKxygULu9HXbwc6YSvoGwoyOh7/HA7GfIA3z60=;
+	s=arc-20240116; t=1764776711; c=relaxed/simple;
+	bh=zJrBVzJJj1J6bsd19bVy4Q+sv1pEguUSLTyYMu4j+II=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XkOS3F2xco5RZe5aK9noWCr+zPIRrhS9h2gZlL6qyBlif2TOUuzjbBo83GthjeZHbZmAzFBRUeeQMqwyvVr3i8EGYlE/mpae88WNfv0QPFHHGpahqZaCNqz8TGatR/x7ZLYki1I73Hf4e0jigKVv9dIibWb7jksZnXjd+WwMiTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ih4A6LCo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F894C4CEF5;
-	Wed,  3 Dec 2025 15:52:07 +0000 (UTC)
+	 MIME-Version; b=SXBKqRi2uFbsWLhUNjAHy91fYk5nxyDbuXOCJigBkZERFQoqO8OX9a0yBj5UAnPix48m5pjHuc/gxxLg/wp5qqoSEb6aG3t8KeWQM8xRJ4VvMGH97hIsFFPNbSsegqeeeEJCr4KBo8gRtucnbj/FbAVGyhhBnjsCf9tBSjXPfmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sma23a/d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAEA5C4CEF5;
+	Wed,  3 Dec 2025 15:45:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777128;
-	bh=YChEWkKxygULu9HXbwc6YSvoGwoyOh7/HA7GfIA3z60=;
+	s=korg; t=1764776711;
+	bh=zJrBVzJJj1J6bsd19bVy4Q+sv1pEguUSLTyYMu4j+II=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ih4A6LCor/zR3bo6gzm2i2uiMj1hEHR2GelGbhIHRC1ksnYtbwLVdiGk0LklEvfL2
-	 LVNTxKhwcswWDhu1J2FMo3I3ZOp9ZJzgmEY61vTU6lbBO8OaWzjWrj8aX5EBGqRwcz
-	 8yCLdtBD3gTpZyOYdRlKCNHW2eFEYjh4jic/wPUY=
+	b=sma23a/dHZ3XhZbDkN89K9z0ytTWMHZCZYJJ8Hu8hSjEE11AvnidiCa6BTclZLe4o
+	 CvVvJvMN3Nk3sYicYL8f34RtURj8m5Nvtammw/qmGMVZJvFdJF8gk7rJYK+LWe0oAV
+	 pdIXRmQt6U8Khj3ZwXrwjwamUR53QK3kxZdVbCDo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	dri-devel@lists.freedesktop.org,
-	nouveau@lists.freedesktop.org,
-	amd-gfx@lists.freedesktop.org,
-	linux-fbdev@vger.kernel.org
-Subject: [PATCH 6.17 090/146] drm, fbcon, vga_switcheroo: Avoid race condition in fbcon setup
+	Song Liu <song@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.10 264/300] Revert "perf/x86: Always store regs->ip in perf_callchain_kernel()"
 Date: Wed,  3 Dec 2025 16:27:48 +0100
-Message-ID: <20251203152349.753412961@linuxfoundation.org>
+Message-ID: <20251203152410.416857802@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
-References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,140 +61,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Jiri Olsa <jolsa@kernel.org>
 
-commit eb76d0f5553575599561010f24c277cc5b31d003 upstream.
+commit 6d08340d1e354787d6c65a8c3cdd4d41ffb8a5ed upstream.
 
-Protect vga_switcheroo_client_fb_set() with console lock. Avoids OOB
-access in fbcon_remap_all(). Without holding the console lock the call
-races with switching outputs.
+This reverts commit 83f44ae0f8afcc9da659799db8693f74847e66b3.
 
-VGA switcheroo calls fbcon_remap_all() when switching clients. The fbcon
-function uses struct fb_info.node, which is set by register_framebuffer().
-As the fb-helper code currently sets up VGA switcheroo before registering
-the framebuffer, the value of node is -1 and therefore not a legal value.
-For example, fbcon uses the value within set_con2fb_map() [1] as an index
-into an array.
+Currently we store initial stacktrace entry twice for non-HW ot_regs, which
+means callers that fail perf_hw_regs(regs) condition in perf_callchain_kernel.
 
-Moving vga_switcheroo_client_fb_set() after register_framebuffer() can
-result in VGA switching that does not switch fbcon correctly.
+It's easy to reproduce this bpftrace:
 
-Therefore move vga_switcheroo_client_fb_set() under fbcon_fb_registered(),
-which already holds the console lock. Fbdev calls fbcon_fb_registered()
-from within register_framebuffer(). Serializes the helper with VGA
-switcheroo's call to fbcon_remap_all().
+  # bpftrace -e 'tracepoint:sched:sched_process_exec { print(kstack()); }'
+  Attaching 1 probe...
 
-Although vga_switcheroo_client_fb_set() takes an instance of struct fb_info
-as parameter, it really only needs the contained fbcon state. Moving the
-call to fbcon initialization is therefore cleaner than before. Only amdgpu,
-i915, nouveau and radeon support vga_switcheroo. For all other drivers,
-this change does nothing.
+        bprm_execve+1767
+        bprm_execve+1767
+        do_execveat_common.isra.0+425
+        __x64_sys_execve+56
+        do_syscall_64+133
+        entry_SYSCALL_64_after_hwframe+118
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://elixir.bootlin.com/linux/v6.17/source/drivers/video/fbdev/core/fbcon.c#L2942 # [1]
-Fixes: 6a9ee8af344e ("vga_switcheroo: initial implementation (v15)")
-Acked-by: Javier Martinez Canillas <javierm@redhat.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: nouveau@lists.freedesktop.org
-Cc: amd-gfx@lists.freedesktop.org
-Cc: linux-fbdev@vger.kernel.org
-Cc: <stable@vger.kernel.org> # v2.6.34+
-Link: https://patch.msgid.link/20251105161549.98836-1-tzimmermann@suse.de
+When perf_callchain_kernel calls unwind_start with first_frame, AFAICS
+we do not skip regs->ip, but it's added as part of the unwind process.
+Hence reverting the extra perf_callchain_store for non-hw regs leg.
+
+I was not able to bisect this, so I'm not really sure why this was needed
+in v5.2 and why it's not working anymore, but I could see double entries
+as far as v5.10.
+
+I did the test for both ORC and framepointer unwind with and without the
+this fix and except for the initial entry the stacktraces are the same.
+
+Acked-by: Song Liu <song@kernel.org>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/r/20251104215405.168643-2-jolsa@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_fb_helper.c  |   14 --------------
- drivers/video/fbdev/core/fbcon.c |    9 +++++++++
- 2 files changed, 9 insertions(+), 14 deletions(-)
+ arch/x86/events/core.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/drm_fb_helper.c
-+++ b/drivers/gpu/drm/drm_fb_helper.c
-@@ -31,9 +31,7 @@
- 
- #include <linux/console.h>
- #include <linux/export.h>
--#include <linux/pci.h>
- #include <linux/sysrq.h>
--#include <linux/vga_switcheroo.h>
- 
- #include <drm/drm_atomic.h>
- #include <drm/drm_drv.h>
-@@ -566,11 +564,6 @@ EXPORT_SYMBOL(drm_fb_helper_release_info
-  */
- void drm_fb_helper_unregister_info(struct drm_fb_helper *fb_helper)
- {
--	struct fb_info *info = fb_helper->info;
--	struct device *dev = info->device;
--
--	if (dev_is_pci(dev))
--		vga_switcheroo_client_fb_set(to_pci_dev(dev), NULL);
- 	unregister_framebuffer(fb_helper->info);
- }
- EXPORT_SYMBOL(drm_fb_helper_unregister_info);
-@@ -1632,7 +1625,6 @@ static int drm_fb_helper_single_fb_probe
- 	struct drm_client_dev *client = &fb_helper->client;
- 	struct drm_device *dev = fb_helper->dev;
- 	struct drm_fb_helper_surface_size sizes;
--	struct fb_info *info;
- 	int ret;
- 
- 	if (drm_WARN_ON(dev, !dev->driver->fbdev_probe))
-@@ -1653,12 +1645,6 @@ static int drm_fb_helper_single_fb_probe
- 
- 	strcpy(fb_helper->fb->comm, "[fbcon]");
- 
--	info = fb_helper->info;
--
--	/* Set the fb info for vgaswitcheroo clients. Does nothing otherwise. */
--	if (dev_is_pci(info->device))
--		vga_switcheroo_client_fb_set(to_pci_dev(info->device), info);
--
- 	return 0;
- }
- 
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -66,6 +66,7 @@
- #include <linux/string.h>
- #include <linux/kd.h>
- #include <linux/panic.h>
-+#include <linux/pci.h>
- #include <linux/printk.h>
- #include <linux/slab.h>
- #include <linux/fb.h>
-@@ -78,6 +79,7 @@
- #include <linux/interrupt.h>
- #include <linux/crc32.h> /* For counting font checksums */
- #include <linux/uaccess.h>
-+#include <linux/vga_switcheroo.h>
- #include <asm/irq.h>
- 
- #include "fbcon.h"
-@@ -2906,6 +2908,9 @@ void fbcon_fb_unregistered(struct fb_inf
- 
- 	console_lock();
- 
-+	if (info->device && dev_is_pci(info->device))
-+		vga_switcheroo_client_fb_set(to_pci_dev(info->device), NULL);
-+
- 	fbcon_registered_fb[info->node] = NULL;
- 	fbcon_num_registered_fb--;
- 
-@@ -3039,6 +3044,10 @@ static int do_fb_registered(struct fb_in
- 		}
+--- a/arch/x86/events/core.c
++++ b/arch/x86/events/core.c
+@@ -2554,13 +2554,13 @@ perf_callchain_kernel(struct perf_callch
+ 		return;
  	}
  
-+	/* Set the fb info for vga_switcheroo clients. Does nothing otherwise. */
-+	if (info->device && dev_is_pci(info->device))
-+		vga_switcheroo_client_fb_set(to_pci_dev(info->device), info);
-+
- 	return ret;
- }
+-	if (perf_callchain_store(entry, regs->ip))
+-		return;
+-
+-	if (perf_hw_regs(regs))
++	if (perf_hw_regs(regs)) {
++		if (perf_callchain_store(entry, regs->ip))
++			return;
+ 		unwind_start(&state, current, regs, NULL);
+-	else
++	} else {
+ 		unwind_start(&state, current, NULL, (void *)regs->sp);
++	}
  
+ 	for (; !unwind_done(&state); unwind_next_frame(&state)) {
+ 		addr = unwind_get_return_address(&state);
 
 
 
