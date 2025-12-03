@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-198787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AC95CA0BB6
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:01:48 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AD6AC9F91A
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 16:42:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F285A3007195
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:59:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D5C583014416
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 15:36:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BD9634B1A1;
-	Wed,  3 Dec 2025 16:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E546311C10;
+	Wed,  3 Dec 2025 15:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r8ISNlYc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oROt8LTI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E129F34B193;
-	Wed,  3 Dec 2025 16:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCFAD313E1E;
+	Wed,  3 Dec 2025 15:36:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764777684; cv=none; b=BKNZKoUDCs8pW5wxanMTPAuqLZlcI0wABBTpfs6iSd4RwcPCWitLBYkHBEXuQFQnijnjs3ncLmZKRxLfkCspZdW2OvY0dJHnqR7cbfc/uHpAVayNQT0WDXWQiBlhfRfFSxx7Bgkhp8dI5fCT8ilqgdbd2QcEqwKmsC7QW+FVpSE=
+	t=1764776176; cv=none; b=UVNjdKeeWG+eDuMZ1ScTT7ZIJ+GyzmXjqPfXab8oB1dUS+wtuPZyavb6tNskvKPLVKDQHjHwzUILefH+Y6aHRf3FcdjrAkQn/dXHnjOedPmqDIb9TNP5lw0/Z93l9ttog8wxiOfk5Sgmxvea3k1Z87OK9TFaPkfwnrn1tnunces=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764777684; c=relaxed/simple;
-	bh=mH5AYjGNzZxFTLs5ObaIB1MJg+ZpODBaW1O+p65yO+g=;
+	s=arc-20240116; t=1764776176; c=relaxed/simple;
+	bh=Pc2HE2sTKb8JuLHtMAZ2OnnBlz/dNYKQlunuUd9bqUY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ckxuRkguZ7Bxc7OuuBDBqxy2D2r4zZ5kkADQW9mhtNIohR6mv3QeqK03zWHQXntQHExM61+HDscs3SRW/ETDW8Q+gejl1HAb1odu52sRWIhraRtgyfXoaEHJNob2kzIKSgwW3hieayXfn/5FDZrjtDX2vPq5/w5Iswe4rx8aS4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r8ISNlYc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52AA5C4CEF5;
-	Wed,  3 Dec 2025 16:01:23 +0000 (UTC)
+	 MIME-Version; b=uNJ6O9Wshnzf2opznTaJD02xjx0uIULYDaWsBE9ABejquTe7kFqBElovdx9JiFLGVbYlWlYAHWZveyZpnKCBgvVwV2afhg86jrBLnpNfdykY0t/ORnjReHG8km8f1p4Bd02D2zLs1INSOtMcEGWN1VEPTrBd2h10F17x3WKwagI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oROt8LTI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 325A1C4CEF5;
+	Wed,  3 Dec 2025 15:36:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764777683;
-	bh=mH5AYjGNzZxFTLs5ObaIB1MJg+ZpODBaW1O+p65yO+g=;
+	s=korg; t=1764776176;
+	bh=Pc2HE2sTKb8JuLHtMAZ2OnnBlz/dNYKQlunuUd9bqUY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r8ISNlYcZuYf9GfJKQswylMbzf85AZBrWhh/5+YH+pzD4UniBV5Za68lRz02dEfRo
-	 2UAVliGBU+Wyf4cp/cQrNSoCqrygLS5/wbRiT+u8U5yrchwb1wgbwclYHu7zbH4xyO
-	 T4h7MOwyMCO4fGCU7PhoVSqG1sa13bpj/iypbMYs=
+	b=oROt8LTIl1mNauMlmQRKzHi9FShhppTZ/AmHM/EEQRyxXq3Q7wyGljwXBJxfpEVFe
+	 3CKXrs2zUgWOhXTiMUUrKr7XGClnp+8QtT2ftZ1NeBqsWC89GVZCFnC42g85q6UrP4
+	 icT7QWzpAGMCKoUxGtE8xBjeFEo8S2yRqtoMxrjA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sungho Kim <sungho.kim@furiosa.ai>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
+	Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
+	Len Brown <len.brown@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 114/392] PCI/P2PDMA: Fix incorrect pointer usage in devm_kfree() call
-Date: Wed,  3 Dec 2025 16:24:24 +0100
-Message-ID: <20251203152418.293252004@linuxfoundation.org>
+Subject: [PATCH 5.10 061/300] tools/power x86_energy_perf_policy: Fix incorrect fopen mode usage
+Date: Wed,  3 Dec 2025 16:24:25 +0100
+Message-ID: <20251203152402.880928179@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152400.447697997@linuxfoundation.org>
+References: <20251203152400.447697997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +60,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sungho Kim <sungho.kim@furiosa.ai>
+From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
 
-[ Upstream commit 6238784e502b6a9fbeb3a6b77284b29baa4135cc ]
+[ Upstream commit 62127655b7ab7b8c2997041aca48a81bf5c6da0c ]
 
-The error handling path in pci_p2pdma_add_resource() contains a bug in its
-`pgmap_free` label.
+The fopen_or_die() function was previously hardcoded
+to open files in read-only mode ("r"), ignoring the
+mode parameter passed to it. This patch corrects
+fopen_or_die() to use the provided mode argument,
+allowing for flexible file access as intended.
 
-Memory is allocated for the `p2p_pgmap` struct, and the pointer is stored
-in `p2p_pgmap`. However, the error path calls devm_kfree() with `pgmap`,
-which is a pointer to a member field within the `p2p_pgmap` struct, not the
-base pointer of the allocation.
+Additionally, the call to fopen_or_die() in
+err_on_hypervisor() incorrectly used the mode
+"ro", which is not a valid fopen mode. This is
+fixed to use the correct "r" mode.
 
-Correct the bug by passing the correct base pointer, `p2p_pgmap`, to
-devm_kfree().
-
-Signed-off-by: Sungho Kim <sungho.kim@furiosa.ai>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
-Link: https://patch.msgid.link/20250820105714.2939896-1-sungho.kim@furiosa.ai
+Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+Signed-off-by: Len Brown <len.brown@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/p2pdma.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
-index 57654c82b08e8..e70993730728b 100644
---- a/drivers/pci/p2pdma.c
-+++ b/drivers/pci/p2pdma.c
-@@ -231,7 +231,7 @@ int pci_p2pdma_add_resource(struct pci_dev *pdev, int bar, size_t size,
- pages_free:
- 	devm_memunmap_pages(&pdev->dev, pgmap);
- pgmap_free:
--	devm_kfree(&pdev->dev, pgmap);
-+	devm_kfree(&pdev->dev, p2p_pgmap);
- 	return error;
- }
- EXPORT_SYMBOL_GPL(pci_p2pdma_add_resource);
+diff --git a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
+index 1c80aa498d543..60917e32ec853 100644
+--- a/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
++++ b/tools/power/x86/x86_energy_perf_policy/x86_energy_perf_policy.c
+@@ -627,7 +627,7 @@ void cmdline(int argc, char **argv)
+  */
+ FILE *fopen_or_die(const char *path, const char *mode)
+ {
+-	FILE *filep = fopen(path, "r");
++	FILE *filep = fopen(path, mode);
+ 
+ 	if (!filep)
+ 		err(1, "%s: open failed", path);
+@@ -641,7 +641,7 @@ void err_on_hypervisor(void)
+ 	char *buffer;
+ 
+ 	/* On VMs /proc/cpuinfo contains a "flags" entry for hypervisor */
+-	cpuinfo = fopen_or_die("/proc/cpuinfo", "ro");
++	cpuinfo = fopen_or_die("/proc/cpuinfo", "r");
+ 
+ 	buffer = malloc(4096);
+ 	if (!buffer) {
 -- 
 2.51.0
 
