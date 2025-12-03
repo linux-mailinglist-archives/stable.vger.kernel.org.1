@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-198973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-198595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51071CA0E5B
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:20:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4366CA1444
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 20:07:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 234C1306A509
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:17:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 27FBE32E9EDD
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 18:43:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E91F3451DF;
-	Wed,  3 Dec 2025 16:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C97E632E757;
+	Wed,  3 Dec 2025 15:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TKYtx1/D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zP4psUNm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D0A3451C1;
-	Wed,  3 Dec 2025 16:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8559C32E755;
+	Wed,  3 Dec 2025 15:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778279; cv=none; b=EdsUzhU3cCvXEHuyOZ+DX7TliyoIh+WLwHdmFW7B8dzw7nOhNh+hNK+8yr9E2sZOWKExKeEonLv5ptpyhgo9BQZKcVfeOm4fA7/l14o4/B6+I68wjfzuOG9JRBdLNWKJgFPNUeeNiaIyL/iLj1norna1j04CMu5v2ceh8I4MIIQ=
+	t=1764777061; cv=none; b=JMHbXOJrrvZ2IBLzlv3RIR51/3FM4Oq6hImtgpjxB0Uoy89h647s3TVdVmIJwQBD9v6VkiCEY/qzrE3eN7hqZVhq7ABeaNYB1KHDtLLELE/J7GuaBt7Kp0zdDBXrEzih9/pjv63vpEV0PfIbx0VFrrtA/msiSGDmNxLMP707keQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778279; c=relaxed/simple;
-	bh=aU1rOZJDMMYKJa/nDgNHrjYnqy6jbizy06YuQbeIzck=;
+	s=arc-20240116; t=1764777061; c=relaxed/simple;
+	bh=+BhPiWak2vFgolUsIr8akPEejOUklIVhLm7Hw9j6LBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lDl19Q6w8TAaqX7d5V6jeN2j7NT491KRP4QOLFgSKig8j0f0eyg/lNOZv31HrH9etWn76gAe6tiK+8gNLCbuEB7Ir5PPrEgSeMPvVaHwqOgb+oTcOVZFISqymIXE+IRbaFq62hSCLIUakxQ3PpU0wGvTEomLl3qglSWi7z4t/ek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TKYtx1/D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9259BC4CEF5;
-	Wed,  3 Dec 2025 16:11:18 +0000 (UTC)
+	 MIME-Version; b=NPwp38vUuXdjhhVO7t0BL4CYHhzVO1RIagz4GBmFdNCdH+oVT3vjXxyISdMfCeYpDh5VPl28yn6sr9Xwv0oyi4hTG68lM/FBeuSHchyUTjaYASdQ/T2CazlaoF4syZ8/xLipN0GwdQ1hVHf59Phfy6lBJkT+cdpBbLe3agDX0so=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zP4psUNm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1E34C4CEF5;
+	Wed,  3 Dec 2025 15:51:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778279;
-	bh=aU1rOZJDMMYKJa/nDgNHrjYnqy6jbizy06YuQbeIzck=;
+	s=korg; t=1764777061;
+	bh=+BhPiWak2vFgolUsIr8akPEejOUklIVhLm7Hw9j6LBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TKYtx1/DimpigI0eiWnNH/wx+6kjE53rDNdpDPA6xoj10m0FdDMaPhnrmZYhURQgj
-	 E8DUPVQwSygecoovgrHfHAXoJYouDKOgff+IHudON1XJ6kQBrDB4ylvxUscyjYC0Gy
-	 6EBP8MZbD34iFjDTl5fxVUQyoujOcxSnnex4TV+c=
+	b=zP4psUNmfdmQGnWdMr5ddK6Gdi4v+xP9k9yl54dJOo72c5l0YMqmHCIU15+5kkJLk
+	 uxJXF5Fu+wW6kAskpSPBHPb3y0/bqv9HkweJy1/JvPP/QWbOyonYJ6GHuxCR3IG0Zv
+	 0h/kuTtJ03oL/26DxJYL95Vu3mlSP9awnW7QKxI4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aswin Karuvally <aswin@linux.ibm.com>,
-	Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 297/392] s390/ctcm: Fix double-kfree
+	Andy Hsu <andy_ya_hsu@wiwynn.com>,
+	ChiYuan Huang <cy_huang@richtek.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.17 069/146] iio: adc: rtq6056: Correct the sign bit index
 Date: Wed,  3 Dec 2025 16:27:27 +0100
-Message-ID: <20251203152425.097283590@linuxfoundation.org>
+Message-ID: <20251203152348.991820924@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+References: <20251203152346.456176474@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>
+From: ChiYuan Huang <cy_huang@richtek.com>
 
-[ Upstream commit da02a1824884d6c84c5e5b5ac373b0c9e3288ec2 ]
+commit 9b45744bf09fc2a3287e05287141d6e123c125a7 upstream.
 
-The function 'mpc_rcvd_sweep_req(mpcginfo)' is called conditionally
-from function 'ctcmpc_unpack_skb'. It frees passed mpcginfo.
-After that a call to function 'kfree' in function 'ctcmpc_unpack_skb'
-frees it again.
+The vshunt/current reported register is a signed 16bit integer. The
+sign bit index should be '15', not '16'.
 
-Remove 'kfree' call in function 'mpc_rcvd_sweep_req(mpcginfo)'.
-
-Bug detected by the clang static analyzer.
-
-Fixes: 0c0b20587b9f25a2 ("s390/ctcm: fix potential memory leak")
-Reviewed-by: Aswin Karuvally <aswin@linux.ibm.com>
-Signed-off-by: Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>
-Signed-off-by: Aswin Karuvally <aswin@linux.ibm.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251112182724.1109474-1-aswin@linux.ibm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4396f45d211b ("iio: adc: Add rtq6056 support")
+Reported-by: Andy Hsu <andy_ya_hsu@wiwynn.com>
+Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/net/ctcm_mpc.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/iio/adc/rtq6056.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/s390/net/ctcm_mpc.c b/drivers/s390/net/ctcm_mpc.c
-index be03cb123ef48..cde36a3b6c03c 100644
---- a/drivers/s390/net/ctcm_mpc.c
-+++ b/drivers/s390/net/ctcm_mpc.c
-@@ -698,7 +698,6 @@ static void mpc_rcvd_sweep_req(struct mpcg_info *mpcginfo)
- 
- 	grp->sweep_req_pend_num--;
- 	ctcmpc_send_sweep_resp(ch);
--	kfree(mpcginfo);
- 	return;
- }
- 
--- 
-2.51.0
-
+--- a/drivers/iio/adc/rtq6056.c
++++ b/drivers/iio/adc/rtq6056.c
+@@ -300,7 +300,7 @@ static int rtq6056_adc_read_channel(stru
+ 		return IIO_VAL_INT;
+ 	case RTQ6056_REG_SHUNTVOLT:
+ 	case RTQ6056_REG_CURRENT:
+-		*val = sign_extend32(regval, 16);
++		*val = sign_extend32(regval, 15);
+ 		return IIO_VAL_INT;
+ 	default:
+ 		return -EINVAL;
 
 
 
