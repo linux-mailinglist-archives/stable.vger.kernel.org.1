@@ -1,54 +1,71 @@
-Return-Path: <stable+bounces-199062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1696ACA08DB
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 18:41:01 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F2C8CA016A
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:46:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D546434172F5
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:21:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DA20B30012F8
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:46:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4496D35293C;
-	Wed,  3 Dec 2025 16:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28B6736C597;
+	Wed,  3 Dec 2025 16:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CQ1jjlth"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DfSIKgLn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01EB42D5412;
-	Wed,  3 Dec 2025 16:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35E4368273;
+	Wed,  3 Dec 2025 16:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764778573; cv=none; b=JJ7zralYrHbhPofGRyHqKaPcx3TsyehAtDpCotw3i/jctgSxV2GFi1xaBl7t0xl1Wfe70904sIMnA6VQbNRxJSk8G3OuhYIOMKDlwi+7d5QEh+wJE7lC7VIbvYMhYc1lEWHXY1TLWCDuhm+rgiUmjRJZjUQS0CQugIx1ZQcYIfg=
+	t=1764780367; cv=none; b=mcl4reAuSKFcFa/BgLWZSNjwbT8KNeAIfIpA8U9IaKdIbMJvR3pHhTwQBxeLxjnGXeRHUbmxF2TqCrRFxqZACuJDGHenGwQA7vsxqQ9Uis6/6oVQzy+I+BQf//dgVrT8SODGz/p8hj8oSHdmdaXIYoZTvCPAkELbuP2H2MYzRGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764778573; c=relaxed/simple;
-	bh=3KzW+aLiUtnktDqMqeK/KnrmH01qpIPIfNkIvCeL+nk=;
+	s=arc-20240116; t=1764780367; c=relaxed/simple;
+	bh=ZFsRvhoeVRotGBEiCVQ/RXUniFXbWuLwUAO2uMCYKic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GnCwvp6xJyo4ccUphf2cu/rwh3PEL+gzbfguYRFPlVdcSk6aWqKM78HENreZxSCGJydUTVEbolIosBx463TufzJ/wZvptQy4ZpsCgdPHbKDwKkqeY3zUwSwHAxGCCom0OSokCZ99Yg0i3mH+uSWJ+T9pOBnPR1KD/9H7h1rn6Ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CQ1jjlth; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62433C4CEF5;
-	Wed,  3 Dec 2025 16:16:12 +0000 (UTC)
+	 MIME-Version; b=eDmahGGWD6tDsu73Nnzn3hodn3PqGuRZPOq2qHp15Apw/rZdmaZq8exyWofvq5IcBVYnBlQ9vineAyhXt1BE37ggXRihItoTaeN0nAu28PECenK1qlljCuAqq6iUtWFO46YthljIqzGACRTPU/NEIVUS7Q5m5PLTPzfH0SSaetE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DfSIKgLn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 410A0C4CEF5;
+	Wed,  3 Dec 2025 16:46:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764778572;
-	bh=3KzW+aLiUtnktDqMqeK/KnrmH01qpIPIfNkIvCeL+nk=;
+	s=korg; t=1764780366;
+	bh=ZFsRvhoeVRotGBEiCVQ/RXUniFXbWuLwUAO2uMCYKic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CQ1jjlthFSrJ1nYFPa+kjcbF3SWvkhZB+Cfn/OSBYMk0JDglAlA48Typ0I8+chv5s
-	 cxeRj3wYgqI9pr2/57hMP3qegf1ENZEQbdz3+DOwoVPDB8UjZ+9dkoYQsRgQdDckfa
-	 19j0qiumtceuVjW/o7bE3GriYmbnQsvdhZby7IOU=
+	b=DfSIKgLnf29VnezorjHBD7Yg24rgWe/MAM8tgUnX6vURK9Ks8l3nd2jTczNFULpxI
+	 Q5DJbpIv9A4HQVCJ1O3625Uvn0Q4QAsBRpMXlN0eQHwxCXhx5g3hxgUCAXsV1hFXz+
+	 OWUIrmHtAXos7oqDld8k3AzgLEbE4Vozidl2uiEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Dave Chinner <david@fromorbit.com>,
+	David Hildenbrand <david@redhat.com>,
+	Hugh Dickins <hughd@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Rik van Riel <riel@surriel.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 344/392] net: dsa: sja1105: simplify static configuration reload
+Subject: [PATCH 6.1 492/568] mm/memory: do not populate page table entries beyond i_size
 Date: Wed,  3 Dec 2025 16:28:14 +0100
-Message-ID: <20251203152426.827801150@linuxfoundation.org>
+Message-ID: <20251203152458.735215257@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+References: <20251203152440.645416925@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,161 +77,208 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+From: Kiryl Shutsemau <kas@kernel.org>
 
-[ Upstream commit a18891b55703a45b700618ef40edd5e9aaecc345 ]
+[ Upstream commit 74207de2ba10c2973334906822dc94d2e859ffc5 ]
 
-The static configuration reload saves the port speed in the static
-configuration tables by first converting it from the internal
-respresentation to the SPEED_xxx ethtool representation, and then
-converts it back to restore the setting. This is because
-sja1105_adjust_port_config() takes the speed as SPEED_xxx.
+Patch series "Fix SIGBUS semantics with large folios", v3.
 
-However, this is unnecessarily complex. If we split
-sja1105_adjust_port_config() up, we can simply save and restore the
-mac[port].speed member in the static configuration tables.
+Accessing memory within a VMA, but beyond i_size rounded up to the next
+page size, is supposed to generate SIGBUS.
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://patch.msgid.link/E1svfMa-005ZIX-If@rmk-PC.armlinux.org.uk
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: da62abaaa268 ("net: dsa: sja1105: fix SGMII linking at 10M or 100M but not passing traffic")
+Darrick reported[1] an xfstests regression in v6.18-rc1.  generic/749
+failed due to missing SIGBUS.  This was caused by my recent changes that
+try to fault in the whole folio where possible:
+
+        19773df031bc ("mm/fault: try to map the entire file folio in finish_fault()")
+        357b92761d94 ("mm/filemap: map entire large folio faultaround")
+
+These changes did not consider i_size when setting up PTEs, leading to
+xfstest breakage.
+
+However, the problem has been present in the kernel for a long time -
+since huge tmpfs was introduced in 2016.  The kernel happily maps
+PMD-sized folios as PMD without checking i_size.  And huge=always tmpfs
+allocates PMD-size folios on any writes.
+
+I considered this corner case when I implemented a large tmpfs, and my
+conclusion was that no one in their right mind should rely on receiving a
+SIGBUS signal when accessing beyond i_size.  I cannot imagine how it could
+be useful for the workload.
+
+But apparently filesystem folks care a lot about preserving strict SIGBUS
+semantics.
+
+Generic/749 was introduced last year with reference to POSIX, but no real
+workloads were mentioned.  It also acknowledged the tmpfs deviation from
+the test case.
+
+POSIX indeed says[3]:
+
+        References within the address range starting at pa and
+        continuing for len bytes to whole pages following the end of an
+        object shall result in delivery of a SIGBUS signal.
+
+The patchset fixes the regression introduced by recent changes as well as
+more subtle SIGBUS breakage due to split failure on truncation.
+
+This patch (of 2):
+
+Accesses within VMA, but beyond i_size rounded up to PAGE_SIZE are
+supposed to generate SIGBUS.
+
+Recent changes attempted to fault in full folio where possible.  They did
+not respect i_size, which led to populating PTEs beyond i_size and
+breaking SIGBUS semantics.
+
+Darrick reported generic/749 breakage because of this.
+
+However, the problem existed before the recent changes.  With huge=always
+tmpfs, any write to a file leads to PMD-size allocation.  Following the
+fault-in of the folio will install PMD mapping regardless of i_size.
+
+Fix filemap_map_pages() and finish_fault() to not install:
+  - PTEs beyond i_size;
+  - PMD mappings across i_size;
+
+Make an exception for shmem/tmpfs that for long time intentionally
+mapped with PMDs across i_size.
+
+Link: https://lkml.kernel.org/r/20251027115636.82382-1-kirill@shutemov.name
+Link: https://lkml.kernel.org/r/20251027115636.82382-2-kirill@shutemov.name
+Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+Fixes: 6795801366da ("xfs: Support large folios")
+Reported-by: "Darrick J. Wong" <djwong@kernel.org>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Dave Chinner <david@fromorbit.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/sja1105/sja1105_main.c | 65 ++++++++++++++------------
- 1 file changed, 34 insertions(+), 31 deletions(-)
+ mm/filemap.c | 20 +++++++++++++++-----
+ mm/memory.c  | 24 +++++++++++++++++++++++-
+ 2 files changed, 38 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
-index 5c37478a7e822..5773d5e72b06f 100644
---- a/drivers/net/dsa/sja1105/sja1105_main.c
-+++ b/drivers/net/dsa/sja1105/sja1105_main.c
-@@ -1192,29 +1192,11 @@ static int sja1105_parse_dt(struct sja1105_private *priv)
- 	return rc;
- }
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 40c186c7210bf..4088d1a5360fa 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3467,13 +3467,27 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
+ 	struct page *page;
+ 	unsigned int mmap_miss = READ_ONCE(file->f_ra.mmap_miss);
+ 	vm_fault_t ret = 0;
++	bool can_map_large;
  
--/* Convert link speed from SJA1105 to ethtool encoding */
--static int sja1105_port_speed_to_ethtool(struct sja1105_private *priv,
--					 u64 speed)
--{
--	if (speed == priv->info->port_speed[SJA1105_SPEED_10MBPS])
--		return SPEED_10;
--	if (speed == priv->info->port_speed[SJA1105_SPEED_100MBPS])
--		return SPEED_100;
--	if (speed == priv->info->port_speed[SJA1105_SPEED_1000MBPS])
--		return SPEED_1000;
--	if (speed == priv->info->port_speed[SJA1105_SPEED_2500MBPS])
--		return SPEED_2500;
--	return SPEED_UNKNOWN;
--}
+ 	rcu_read_lock();
+ 	folio = first_map_page(mapping, &xas, end_pgoff);
+ 	if (!folio)
+ 		goto out;
+ 
+-	if (filemap_map_pmd(vmf, &folio->page)) {
++	file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
++	end_pgoff = min(end_pgoff, file_end);
++
++	/*
++	 * Do not allow to map with PTEs beyond i_size and with PMD
++	 * across i_size to preserve SIGBUS semantics.
++	 *
++	 * Make an exception for shmem/tmpfs that for long time
++	 * intentionally mapped with PMDs across i_size.
++	 */
++	can_map_large = shmem_mapping(mapping) ||
++		file_end >= folio_next_index(folio);
++
++	if (can_map_large && filemap_map_pmd(vmf, &folio->page)) {
+ 		ret = VM_FAULT_NOPAGE;
+ 		goto out;
+ 	}
+@@ -3481,10 +3495,6 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
+ 	addr = vma->vm_start + ((start_pgoff - vma->vm_pgoff) << PAGE_SHIFT);
+ 	vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd, addr, &vmf->ptl);
+ 
+-	file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE) - 1;
+-	if (end_pgoff > file_end)
+-		end_pgoff = file_end;
 -
--/* Set link speed in the MAC configuration for a specific port. */
--static int sja1105_adjust_port_config(struct sja1105_private *priv, int port,
--				      int speed_mbps)
-+static int sja1105_set_port_speed(struct sja1105_private *priv, int port,
-+				  int speed_mbps)
+ 	do {
+ again:
+ 		page = folio_file_page(folio, xas.xa_index);
+diff --git a/mm/memory.c b/mm/memory.c
+index 454d918449b3a..f0b506acfcc5d 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -67,6 +67,7 @@
+ #include <linux/gfp.h>
+ #include <linux/migrate.h>
+ #include <linux/string.h>
++#include <linux/shmem_fs.h>
+ #include <linux/memory-tiers.h>
+ #include <linux/debugfs.h>
+ #include <linux/userfaultfd_k.h>
+@@ -4452,6 +4453,8 @@ static bool vmf_pte_changed(struct vm_fault *vmf)
+ vm_fault_t finish_fault(struct vm_fault *vmf)
  {
- 	struct sja1105_mac_config_entry *mac;
--	struct device *dev = priv->ds->dev;
- 	u64 speed;
--	int rc;
+ 	struct vm_area_struct *vma = vmf->vma;
++	bool needs_fallback = false;
++	struct folio *folio;
+ 	struct page *page;
+ 	vm_fault_t ret;
  
- 	/* On P/Q/R/S, one can read from the device via the MAC reconfiguration
- 	 * tables. On E/T, MAC reconfig tables are not readable, only writable.
-@@ -1248,7 +1230,7 @@ static int sja1105_adjust_port_config(struct sja1105_private *priv, int port,
- 		speed = priv->info->port_speed[SJA1105_SPEED_2500MBPS];
- 		break;
- 	default:
--		dev_err(dev, "Invalid speed %iMbps\n", speed_mbps);
-+		dev_err(priv->ds->dev, "Invalid speed %iMbps\n", speed_mbps);
- 		return -EINVAL;
+@@ -4461,6 +4464,8 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
+ 	else
+ 		page = vmf->page;
+ 
++	folio = page_folio(page);
++
+ 	/*
+ 	 * check even for read faults because we might have lost our CoWed
+ 	 * page
+@@ -4471,8 +4476,25 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
+ 			return ret;
  	}
  
-@@ -1260,11 +1242,31 @@ static int sja1105_adjust_port_config(struct sja1105_private *priv, int port,
- 	 * we need to configure the PCS only (if even that).
- 	 */
- 	if (priv->phy_mode[port] == PHY_INTERFACE_MODE_SGMII)
--		mac[port].speed = priv->info->port_speed[SJA1105_SPEED_1000MBPS];
-+		speed = priv->info->port_speed[SJA1105_SPEED_1000MBPS];
- 	else if (priv->phy_mode[port] == PHY_INTERFACE_MODE_2500BASEX)
--		mac[port].speed = priv->info->port_speed[SJA1105_SPEED_2500MBPS];
--	else
--		mac[port].speed = speed;
-+		speed = priv->info->port_speed[SJA1105_SPEED_2500MBPS];
++	if (!needs_fallback && vma->vm_file) {
++		struct address_space *mapping = vma->vm_file->f_mapping;
++		pgoff_t file_end;
 +
-+	mac[port].speed = speed;
++		file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE);
 +
-+	return 0;
-+}
++		/*
++		 * Do not allow to map with PTEs beyond i_size and with PMD
++		 * across i_size to preserve SIGBUS semantics.
++		 *
++		 * Make an exception for shmem/tmpfs that for long time
++		 * intentionally mapped with PMDs across i_size.
++		 */
++		needs_fallback = !shmem_mapping(mapping) &&
++			file_end < folio_next_index(folio);
++	}
 +
-+/* Write the MAC Configuration Table entry and, if necessary, the CGU settings,
-+ * after a link speedchange for this port.
-+ */
-+static int sja1105_set_port_config(struct sja1105_private *priv, int port)
-+{
-+	struct sja1105_mac_config_entry *mac;
-+	struct device *dev = priv->ds->dev;
-+	int rc;
-+
-+	/* On P/Q/R/S, one can read from the device via the MAC reconfiguration
-+	 * tables. On E/T, MAC reconfig tables are not readable, only writable.
-+	 * We have to *know* what the MAC looks like.  For the sake of keeping
-+	 * the code common, we'll use the static configuration tables as a
-+	 * reasonable approximation for both E/T and P/Q/R/S.
-+	 */
-+	mac = priv->static_config.tables[BLK_IDX_MAC_CONFIG].entries;
- 
- 	/* Write to the dynamic reconfiguration tables */
- 	rc = sja1105_dynamic_config_write(priv, BLK_IDX_MAC_CONFIG, port,
-@@ -1335,7 +1337,8 @@ static void sja1105_mac_link_up(struct dsa_switch *ds, int port,
- {
- 	struct sja1105_private *priv = ds->priv;
- 
--	sja1105_adjust_port_config(priv, port, speed);
-+	if (!sja1105_set_port_speed(priv, port, speed))
-+		sja1105_set_port_config(priv, port);
- 
- 	sja1105_inhibit_tx(priv, BIT(port), false);
- }
-@@ -2161,8 +2164,8 @@ int sja1105_static_config_reload(struct sja1105_private *priv,
- {
- 	struct ptp_system_timestamp ptp_sts_before;
- 	struct ptp_system_timestamp ptp_sts_after;
--	int speed_mbps[SJA1105_MAX_NUM_PORTS];
- 	u16 bmcr[SJA1105_MAX_NUM_PORTS] = {0};
-+	u64 mac_speed[SJA1105_MAX_NUM_PORTS];
- 	struct sja1105_mac_config_entry *mac;
- 	struct dsa_switch *ds = priv->ds;
- 	s64 t1, t2, t3, t4;
-@@ -2174,14 +2177,13 @@ int sja1105_static_config_reload(struct sja1105_private *priv,
- 
- 	mac = priv->static_config.tables[BLK_IDX_MAC_CONFIG].entries;
- 
--	/* Back up the dynamic link speed changed by sja1105_adjust_port_config
-+	/* Back up the dynamic link speed changed by sja1105_set_port_speed()
- 	 * in order to temporarily restore it to SJA1105_SPEED_AUTO - which the
- 	 * switch wants to see in the static config in order to allow us to
- 	 * change it through the dynamic interface later.
- 	 */
- 	for (i = 0; i < ds->num_ports; i++) {
--		speed_mbps[i] = sja1105_port_speed_to_ethtool(priv,
--							      mac[i].speed);
-+		mac_speed[i] = mac[i].speed;
- 		mac[i].speed = priv->info->port_speed[SJA1105_SPEED_AUTO];
- 
- 		if (priv->xpcs[i])
-@@ -2244,7 +2246,8 @@ int sja1105_static_config_reload(struct sja1105_private *priv,
- 		struct dw_xpcs *xpcs = priv->xpcs[i];
- 		unsigned int mode;
- 
--		rc = sja1105_adjust_port_config(priv, i, speed_mbps[i]);
-+		mac[i].speed = mac_speed[i];
-+		rc = sja1105_set_port_config(priv, i);
- 		if (rc < 0)
- 			goto out;
- 
+ 	if (pmd_none(*vmf->pmd)) {
+-		if (PageTransCompound(page)) {
++		if (!needs_fallback && PageTransCompound(page)) {
+ 			ret = do_set_pmd(vmf, page);
+ 			if (ret != VM_FAULT_FALLBACK)
+ 				return ret;
 -- 
 2.51.0
 
