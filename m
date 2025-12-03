@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-199599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E652CA0EAC
-	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 19:23:22 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54B16C9FDE5
+	for <lists+stable@lfdr.de>; Wed, 03 Dec 2025 17:16:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2D37632931EF
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 17:20:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B7CC8300094E
+	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 16:16:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F932366DAF;
-	Wed,  3 Dec 2025 16:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5C42350A0E;
+	Wed,  3 Dec 2025 16:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VEeLwl/d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AmCSc/Zr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE37B2F7ADF;
-	Wed,  3 Dec 2025 16:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E21E350A00;
+	Wed,  3 Dec 2025 16:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764780324; cv=none; b=V0r7h9KO2FgDY05Vdx27KNTgY+O+O6ALNisrcrfwrmdJcF6w8KuG6WReOYV7PUCywpuQMqWMPmbQJ1niyeiX4md2HugQh1w65t5fa5//m1O93MEVIGHnuiWt2ShzC6howWka+17w6KkXZ/vp90d9gGIxc9hrmronZNM7D8qUfOk=
+	t=1764778533; cv=none; b=S1YGCplcNTUPgZoi4kBlvkglRGm/HbDq5/5bdyCNqhYFX6fre+MXaALuicyLztQ0c5FpQomQDEoHxbd86JlqmKdDjq1j4+voyV0ShimrA/BZBXxoucFBu98xst+IQ1OSt3sP1d6B69sBmkuRGbEHM7BhJ9VRmQbwZhBr3P/tIRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764780324; c=relaxed/simple;
-	bh=rU0bQKg7HhRWfgYcjt+d/j+m67Zu/zb9U8mAg+Mvn/w=;
+	s=arc-20240116; t=1764778533; c=relaxed/simple;
+	bh=77FhJCdW4+o79GEnTOeS3Tvyg494AoBlogM+gPEoHuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nm+2LxuCI6HdqmI63Amo406p2UX8slrJIp9pQcp9pTyL63axjJwwE9UUQpjch0W8/dfqceShV2KBeaQy17p8BwMHEeM90ZRchHrqeRcaTTDgKTNajs3pPq8xQLmMqHnBJKGSaKqdmYtnaEKyIgnpi1MGcVuKOORErYcwao/ZeWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VEeLwl/d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE506C4CEF5;
-	Wed,  3 Dec 2025 16:45:22 +0000 (UTC)
+	 MIME-Version; b=qayjxLwp1bI4aiplWbf59tdrK07oopz0ZY7YeoeIyIIkkzCo2g9CRpJc63H9HZruC7P+os74cLA0K4MZdZ+ZvaRHxFGO0ClQJjr9uJ2A2KdwQsR14B3+bLVQXy5Q1FncsqJAwOigweNdW1NKXp/hWaWx/6+YDrpfZcdRnYVM5Bw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AmCSc/Zr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AFD9C4CEF5;
+	Wed,  3 Dec 2025 16:15:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764780323;
-	bh=rU0bQKg7HhRWfgYcjt+d/j+m67Zu/zb9U8mAg+Mvn/w=;
+	s=korg; t=1764778533;
+	bh=77FhJCdW4+o79GEnTOeS3Tvyg494AoBlogM+gPEoHuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VEeLwl/d2wn4y329W+bMRGOiYYRct/DRIGDzOPS2M2BHGVfK4GsuhU0olAdV34Hkm
-	 wCbsW5QOhJh0MqxMg2UKcG0gybGMxgPpMUi34WO30nUzWSaPWrOdD2pu0AHc2Xs3hu
-	 WdACq563Cj/ojbURz0ndYoc1z3TM9UIKH6TVXnPk=
+	b=AmCSc/ZrgapuRr0DKXXW+KxWLlIlQvtn+tjuAB52RP/Jbopd880dJa37/8axDj1Dj
+	 MeQP3OcmdYsQBXGXBoSIjdPrW7Kn8IubhtOQo9VP+O2FrJUNH/AAZKAqZq9DGwIe1b
+	 2dXkE25kP5A6U2VF0/OeMg1zrUJJR7yQ64v7nVto=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 495/568] can: gs_usb: gs_usb_receive_bulk_callback(): check actual_length before accessing header
+Subject: [PATCH 5.15 347/392] mailbox: mailbox-test: Fix debugfs_create_dir error checking
 Date: Wed,  3 Dec 2025 16:28:17 +0100
-Message-ID: <20251203152458.845320922@linuxfoundation.org>
+Message-ID: <20251203152426.936776750@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+References: <20251203152414.082328008@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,93 +60,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 6fe9f3279f7d2518439a7962c5870c6e9ecbadcf ]
+[ Upstream commit 3acf1028f5003731977f750a7070f3321a9cb740 ]
 
-The driver expects to receive a struct gs_host_frame in
-gs_usb_receive_bulk_callback().
+The debugfs_create_dir() function returns ERR_PTR() on error, not NULL.
+The current null-check fails to catch errors.
 
-Use struct_group to describe the header of the struct gs_host_frame and
-check that we have at least received the header before accessing any
-members of it.
+Use IS_ERR() to correctly check for errors.
 
-To resubmit the URB, do not dereference the pointer chain
-"dev->parent->hf_size_rx" but use "parent->hf_size_rx" instead. Since
-"urb->context" contains "parent", it is always defined, while "dev" is not
-defined if the URB it too short.
-
-Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
-Link: https://patch.msgid.link/20251114-gs_usb-fix-usb-callbacks-v1-2-a29b42eacada@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Fixes: 8ea4484d0c2b ("mailbox: Add generic mechanism for testing Mailbox Controllers")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/usb/gs_usb.c | 26 +++++++++++++++++++-------
- 1 file changed, 19 insertions(+), 7 deletions(-)
+ drivers/mailbox/mailbox-test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
-index 7fe9d497491d1..5d0cee57ab970 100644
---- a/drivers/net/can/usb/gs_usb.c
-+++ b/drivers/net/can/usb/gs_usb.c
-@@ -252,13 +252,15 @@ struct canfd_quirk {
- } __packed;
+diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
+index abcee58e851c2..29c04157b5e88 100644
+--- a/drivers/mailbox/mailbox-test.c
++++ b/drivers/mailbox/mailbox-test.c
+@@ -267,7 +267,7 @@ static int mbox_test_add_debugfs(struct platform_device *pdev,
+ 		return 0;
  
- struct gs_host_frame {
--	u32 echo_id;
--	__le32 can_id;
-+	struct_group(header,
-+		u32 echo_id;
-+		__le32 can_id;
- 
--	u8 can_dlc;
--	u8 channel;
--	u8 flags;
--	u8 reserved;
-+		u8 can_dlc;
-+		u8 channel;
-+		u8 flags;
-+		u8 reserved;
-+	);
- 
- 	union {
- 		DECLARE_FLEX_ARRAY(struct classic_can, classic_can);
-@@ -528,6 +530,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
- 	int rc;
- 	struct net_device_stats *stats;
- 	struct gs_host_frame *hf = urb->transfer_buffer;
-+	unsigned int minimum_length;
- 	struct gs_tx_context *txc;
- 	struct can_frame *cf;
- 	struct canfd_frame *cfd;
-@@ -546,6 +549,15 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
- 		return;
+ 	tdev->root_debugfs_dir = debugfs_create_dir(dev_name(&pdev->dev), NULL);
+-	if (!tdev->root_debugfs_dir) {
++	if (IS_ERR(tdev->root_debugfs_dir)) {
+ 		dev_err(&pdev->dev, "Failed to create Mailbox debugfs\n");
+ 		return -EINVAL;
  	}
- 
-+	minimum_length = sizeof(hf->header);
-+	if (urb->actual_length < minimum_length) {
-+		dev_err_ratelimited(&parent->udev->dev,
-+				    "short read (actual_length=%u, minimum_length=%u)\n",
-+				    urb->actual_length, minimum_length);
-+
-+		goto resubmit_urb;
-+	}
-+
- 	/* device reports out of range channel id */
- 	if (hf->channel >= parent->channel_cnt)
- 		goto device_detach;
-@@ -642,7 +654,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
- resubmit_urb:
- 	usb_fill_bulk_urb(urb, parent->udev,
- 			  parent->pipe_in,
--			  hf, dev->parent->hf_size_rx,
-+			  hf, parent->hf_size_rx,
- 			  gs_usb_receive_bulk_callback, parent);
- 
- 	rc = usb_submit_urb(urb, GFP_ATOMIC);
 -- 
 2.51.0
 
