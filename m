@@ -1,431 +1,246 @@
-Return-Path: <stable+bounces-199957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82176CA260A
-	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 06:02:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E480CA2648
+	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 06:09:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E8F6E30434D6
-	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 05:01:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1699C301A711
+	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 05:06:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19234306B01;
-	Thu,  4 Dec 2025 05:01:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D00282C0299;
+	Thu,  4 Dec 2025 05:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ibqba481"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="WtuQH4lH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+Received: from mail-yx1-f97.google.com (mail-yx1-f97.google.com [74.125.224.97])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86AD304BB3
-	for <stable@vger.kernel.org>; Thu,  4 Dec 2025 05:01:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10AC3198E91
+	for <stable@vger.kernel.org>; Thu,  4 Dec 2025 05:06:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764824474; cv=none; b=FblE3tt4ux2og4eYDOFbZkAKxefc5Q68oadOp1kRkYs3mPg8ViI8xcsE0G510BNhTbSeRpPNx3fvPblOFc0X3x3SwC5QYLssn1RBgrTSH2+3hN7z1RDINQrvqZLK0jw8w/2VzuvJNnkbbGRTG+WDz3r0BfFBeU72j79FZ24yF0E=
+	t=1764824780; cv=none; b=f/bPU/gF0HNoMbeVMoinvV+SEbt2k9HY7/cEO3UDe8/cCAYa5I5fyLeNfxuuHIONVCMB2lkRcE4DZ0lc0SgM3nClONfjbKIUCzlivu83vkbmyF2hWmuS5Q/oilF+yYa5C9awupuxXD2US3kZ8z4sP44WvcuS0gNoEHhBwP15p0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764824474; c=relaxed/simple;
-	bh=h+SsofwZUC6HHHUEGGsDwWbigfLFJlyhD5zXfZWg7WU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=lkVPXeG4P+BreClyWIv1LMh8sF2HMhivjLfs8WmWVfboSJbOJZmNN4bBwHIsEVVRXz+sWMH4MZIAmamzp1WwLNAQrLcZWJsJN/AE8NfXbNP67EEMKOc2vXjsSHdoxj/6NGgUfBxqkEh4V5c5Datmm6yqBVv/XNazPEugcYpBt3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ibqba481; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-3410c86070dso374564a91.1
-        for <stable@vger.kernel.org>; Wed, 03 Dec 2025 21:01:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764824471; x=1765429271; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kzubs5IauHk/nAj1ysw/i0kR+ISPkcjNfWdKzDf2z5U=;
-        b=Ibqba4816Pl5xrZ2ULx/j8rOYP0jTMs3LrlLH2xMVnairWjwdJTV9InGDCcdc7zHAK
-         4HAMFz14mbyUfIACe+EJw9hkBiwiV17xdpgehSlJDkEhLH/qcH5cXhKGSxzneqmF3i5B
-         /+Xk6+IHKkPEzYJfFVOgPeyIixoOXWMlP5rGf3yhAuosE/7d08CDQRAKYnwPp3OqXbSA
-         c2H/sJsJ8pH7d4e7l4TPUkzZFRQUFLfrcDiWmsgZNF/3PHLtRQaDGD48hmBaUfK+9NOR
-         8TW/2311eSPyGyBOUNI4jxWyrKgHhGAx5+wZsVAU5uzMXXlu4oUFCEQYFcsgdRuBlUVy
-         btvg==
+	s=arc-20240116; t=1764824780; c=relaxed/simple;
+	bh=Ko7er0ytImledpl4/p7GJHH+mS070MPSSjCYInQlaF4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=di4NDZraNVCSPtmAEXumSAMI6FMmIHF+3ZeffvM6mhAITF103nGdN2cbquj5+IVNyUuB4cdek2uRi9Bi5U4AvJz7jtkdyH4w4Q6puwOO7Ue/eBPCg5MlMjufCtKs/P9QMU9GO/NWAZPGK58uR8TX4U9g//fmveqXfhJv4B2bVKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=WtuQH4lH; arc=none smtp.client-ip=74.125.224.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-yx1-f97.google.com with SMTP id 956f58d0204a3-641e942242cso559090d50.1
+        for <stable@vger.kernel.org>; Wed, 03 Dec 2025 21:06:18 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764824471; x=1765429271;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=kzubs5IauHk/nAj1ysw/i0kR+ISPkcjNfWdKzDf2z5U=;
-        b=VEjIkU0iDewcKZqf1YaP1O6M+R4fRc1c28CtGVs3/wJU9BYskuZQtG4fcwiPAake1Y
-         0EGRnMdYLqSbA2Q4mDqSzR9lCk+8gGatP+jacoNtfDTI8P8M7rXN+eAzsv9FPRJfE327
-         IoMIHC+jZ8WURR81MOaJr0798doDwq8zv4YOs1MTJiXGdcHRF2gOPTdurXKe2Q8i37+b
-         VlW8Pt7Mm654sS2gPR0zqku5KoKhcdsmKdVvnafyTCAFrpYg2wBfNW9PjVTRCIkZTwDl
-         trkTbHhDvG0Yt1/s0aCVN7wKhMwbsRO0juJ5wC0hBkh3MBntmR1Ei64xFbAM8Bo4O/cA
-         404Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXD3R9UqkFYCuedvq+bUxhPkuFdIDQkF/6ZmGIVQ5qxfi+b/VwOXLfHNPd5pUfzJOVEy41u8v8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy5wvzwsqb9KUJ/n5EuOahnD4SolC9L791v6cqEEcIwj+NY93kP
-	46gxtRxwFWQ4oG5PFlZqZV/0jL3x6NBjnqMUlOXSznb4NwQHREUYMLkA
-X-Gm-Gg: ASbGncv1eKXw4EabwpjQnabkPrb6X7Bzhmq/b0N/OQWknvuzTC3CaMd+Y27vejsFA5S
-	fOBMYzcZMgwGdigB/Fo40aOcHdklDv0qPpJQZrf1A/lLpzDco+5rscFLBvwpREqkhzMoqMrJiRq
-	1yESqDG+YxzKSKi35sKqA+V7BuoCpitzhLIADsUM1wu9DL0LaXyjLk5EoR7Vk75dDaAYWkOt7el
-	L2KUE8u+tPkQmTMaJb8nRNWIRIi8ozFK1dyyba2YUTsKuHB4wL1dgwFi/VMgWcu0i8cZ+doPZLy
-	owBAhuW4LT00Da/6WUFdJO1+DE9MIYxg22cjT3WYjZ7zjedn54xaA5J8XE5mUGkiDOZUJ6vne7w
-	h3cS87hZr4fl0ImHV4ZJEyC+ha14I5Gr8O7NraGrtL2s6wkRl1xxsUULa68Q52HoNq4jmXcinvN
-	bLsQRKteN8y0eYaN5bARNkGH1RS2blbg==
-X-Google-Smtp-Source: AGHT+IHvVa2gOEpNGRYSdHAlmeic8g/wSjxYvPRnhd0qjegdQdGaQ4vVcVURP/2X1RJ9nm+or3BF0w==
-X-Received: by 2002:a17:90b:2f03:b0:343:6108:1706 with SMTP id 98e67ed59e1d1-349126895a7mr5846558a91.17.1764824470864;
-        Wed, 03 Dec 2025 21:01:10 -0800 (PST)
-Received: from localhost.localdomain ([121.190.139.95])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-bf681738a34sm419440a12.4.2025.12.03.21.01.08
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 03 Dec 2025 21:01:10 -0800 (PST)
-From: Minseong Kim <ii4gsp@gmail.com>
-To: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Minseong Kim <ii4gsp@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net v2 1/1] atm: mpoa: Fix UAF on qos_head list in procfs
-Date: Thu,  4 Dec 2025 14:00:39 +0900
-Message-Id: <20251204050039.93278-2-ii4gsp@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20251204050039.93278-1-ii4gsp@gmail.com>
-References: <20251204050039.93278-1-ii4gsp@gmail.com>
+        d=1e100.net; s=20230601; t=1764824778; x=1765429578;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+3HpMMahHcu5pa9O1OGW1WOvG6ODQZNTxJ3CeJQD+Y8=;
+        b=Q67eVx8h3ugwBchrU92f2pZ0cnrzRl9i6gGfzy2TPu3qe5vadnXTQTofWWYysPgWhP
+         iBaRdyrzgf9XBE/4WPEdn93CFFbbVc79mi23oLYgxsac4w5/lW7anoUdZKDDeIhcfuh2
+         AfyK4X2Z6GFuOp6oLiEdsijjZfZdun+UihR5xkkxZlrJwppIxQhjUoGaybvdL8jwJpdv
+         rSbmb9eSSkwDAX215lJ84NTByCA7wMI9e4NAhPsxsVBxElChVw63iOD3IRoBX4mTzmb4
+         2ZnkiB3KIVMuXykrXCYZIbks/YvUvNPHFvrqrEmqT2KtQ3MiLbZorE13rM+UiDZqMi1J
+         OtKA==
+X-Gm-Message-State: AOJu0YyWX9fdmKXni+ZDPE11tOJXDZ1xyeUPQRSuF5lgdsCP195GKNS0
+	ARGetl2ghRldymy3pGvKFAEZyRDUN42vn6IDTZkJM6A9Oi3+gi6bewdjqWYg7tQVZ/UIBKm/SQI
+	pt0H5qB7S8u4N0oDP+eFzWpnXqdF4hZ8318ZZI3KZQEgA8K+V7R4+mSl+qOTEfSaExBeOkxt0Lq
+	E4QfAzoXe9ZXnrVSckbAUoIHHNEgFPdfleDxxaKeuJxQT1tNMTp6SExjzYfu/SXj5NB/TCR7Xkj
+	KL0P3sHuU8=
+X-Gm-Gg: ASbGncvRP9BqNwUA4lo4URT+X19oUhzNiIKoKd4v/0RSxp8XdCZh4sf4ksIVbAeE4ke
+	H9EbXgd7mfv1pEVjVOQZAxDgjk7QT/mvjyaRs3xosYrhcw37/MyEMym/yaoo273DA/rscVolVn6
+	fDAc50z5timaooDDZWqRLDXKgarW39eQb1ilSyPyNNOR7pQwa00eRBKisto+jTef74se/Kd5YFA
+	BjpKmABI6E2wlbpL9ayqzz4K4PVxcaREfVTFj8QOOe/l0JAhe1344k4UeWIFxjaFbcw7bar6pop
+	Jc0HbkNGv2db5nDAhfHDrW8YO6v2l0rGRCwlAoTF3ACBm8HBOYKcbH9G8AZEOj20h2SQMk8+Ldq
+	guMJ2tr50lX+z2Pd+0QLzOv7CIotZmTvaYAoyYyBuu8kX1aV2G6qRu3oyK3sWZabwzyF2AVv4Fn
+	cO/WJsqyujp0M1yfjnm6OS6dIiliwGRYbSJMaA1VSAPL0Y
+X-Google-Smtp-Source: AGHT+IFn+uP3FeZo74DHgP/21Q73ffSZfUAB9jO1gZAZeLV8KwCEAnd7o4DjvNiwECRnb666ccgx24ZyNRt4
+X-Received: by 2002:a53:ac9d:0:b0:641:f5bc:6993 with SMTP id 956f58d0204a3-64437097080mr3596903d50.79.1764824777824;
+        Wed, 03 Dec 2025 21:06:17 -0800 (PST)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-103.dlp.protect.broadcom.com. [144.49.247.103])
+        by smtp-relay.gmail.com with ESMTPS id 00721157ae682-78c1b77fc77sm340367b3.15.2025.12.03.21.06.17
+        for <stable@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 03 Dec 2025 21:06:17 -0800 (PST)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-vs1-f69.google.com with SMTP id ada2fe7eead31-5e3e7dce304so1071521137.1
+        for <stable@vger.kernel.org>; Wed, 03 Dec 2025 21:06:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1764824777; x=1765429577; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=+3HpMMahHcu5pa9O1OGW1WOvG6ODQZNTxJ3CeJQD+Y8=;
+        b=WtuQH4lHMG7gz8HVl8gz7SWvPwOrBjVUSHJd7z2xqWcPk40EninTrFcsJH1qd+de7P
+         ZSjeNpEPd8/UP0Xx6/2EEndf54DMH60X5RzQ0heB0WeMPGsB5PSnlVFTFOgq70Erm6ym
+         HHA1QYXdSM2qJaNE7dijZ/P6BkUvteDB1egp8=
+X-Received: by 2002:a05:6102:2929:b0:5d6:27c7:e6b2 with SMTP id ada2fe7eead31-5e48e2229e4mr1958165137.3.1764824777004;
+        Wed, 03 Dec 2025 21:06:17 -0800 (PST)
+X-Received: by 2002:a05:6102:2929:b0:5d6:27c7:e6b2 with SMTP id
+ ada2fe7eead31-5e48e2229e4mr1958151137.3.1764824776720; Wed, 03 Dec 2025
+ 21:06:16 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251203112027.1738141-1-ajay.kaher@broadcom.com>
+ <CAD2QZ9bGLRL5NyUak-=dDPyTkmrzu-22Q2tURfxUmM9Rs+c72Q@mail.gmail.com> <2025120310-likeness-subscript-f811@gregkh>
+In-Reply-To: <2025120310-likeness-subscript-f811@gregkh>
+From: Ajay Kaher <ajay.kaher@broadcom.com>
+Date: Thu, 4 Dec 2025 10:36:02 +0530
+X-Gm-Features: AWmQ_bkIY5TJAz08FSpbSLSoY0CC03ILAkvf6OjAaRk2GpRi4dDoDT4NTOCAk4U
+Message-ID: <CAD2QZ9YieLCTC2Xmo_f3VDgyFOYTbOMbvW8QCWMoHjf6Co17nQ@mail.gmail.com>
+Subject: Re: [PATCH v6.12 0/4] sched: The newidle balance regression
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, mingo@redhat.com, peterz@infradead.org, 
+	juri.lelli@redhat.com, vincent.guittot@linaro.org, dietmar.eggemann@arm.com, 
+	rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de, vschneid@redhat.com, 
+	linux-kernel@vger.kernel.org, alexey.makhalov@broadcom.com, 
+	yin.ding@broadcom.com, tapas.kundu@broadcom.com
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="000000000000f1f25d06451949ee"
 
-The global QoS list 'qos_head' in net/atm/mpc.c is accessed from the
-/proc/net/atm/mpc procfs interface without proper synchronization.
-The read-side seq_file show path (mpc_show() -> atm_mpoa_disp_qos())
-walks qos_head without any lock, while the write-side path
-(proc_mpc_write() -> parse_qos() -> atm_mpoa_delete_qos()) can unlink
-and kfree() entries immediately. Concurrent read/write therefore
-leads to a use-after-free.
+--000000000000f1f25d06451949ee
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This risk is already called out in-tree:
-  /* this is buggered - we need locking for qos_head */
+On Wed, Dec 3, 2025 at 6:46=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org>=
+ wrote:
+>
+> On Wed, Dec 03, 2025 at 05:23:05PM +0530, Ajay Kaher wrote:
+> > Greg, following upstream patches will directly apply to v6.17, so I am
+> > not sending for v6.17:
+> >
+> > https://github.com/torvalds/linux/commit/d206fbad9328ddb68ebabd7cf74133=
+92acd38081.patch
+> > https://github.com/torvalds/linux/commit/e78e70dbf603c1425f15f32b455ca1=
+48c932f6c1.patch
+> > https://github.com/torvalds/linux/commit/08d473dd8718e4a4d698b1113a14a4=
+0ad64a909b.patch
+> > https://github.com/torvalds/linux/commit/33cf66d88306663d16e4759e9d2476=
+6b0aaa2e17.patch
+>
+> Please don't use github for kernel stuff....
 
-Fix this by adding a mutex to protect all qos_head list operations.
-A mutex is used (instead of a spinlock) because atm_mpoa_disp_qos()
-invokes seq_printf(), which may sleep.
+ok.
 
-KASAN report:
+> Anyway, these are not in a -rc kernel yet, so I really shouldn't be
+> taking them unless the author/maintainer agrees they should go in
+> "right now".  And given that these weren't even marked as cc: stable in
+> the first place, why the rush?
 
-==================================================================
-[   15.911538] BUG: KASAN: slab-use-after-free in atm_mpoa_disp_qos+0x202/0x380
-[   15.911988] Read of size 8 at addr ffff888007517380 by task mpoa_uaf_poc/89
-[   15.912123]
-[   15.912717] CPU: 0 UID: 0 PID: 89 Comm: mpoa_uaf_poc Not tainted 6.17.8 #1 PREEMPT(voluntary)
-[   15.912950] Hardware name: QEMU Ubuntu 25.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[   15.913110] Call Trace:
-[   15.913167]  <TASK>
-[   15.913247]  dump_stack_lvl+0x4e/0x70
-[   15.913343]  ? atm_mpoa_disp_qos+0x202/0x380
-[   15.913364]  print_report+0x174/0x4f6
-[   15.913386]  ? __pfx__raw_spin_lock_irqsave+0x10/0x10
-[   15.913412]  ? atm_mpoa_disp_qos+0x202/0x380
-[   15.913430]  kasan_report+0xce/0x100
-[   15.913453]  ? atm_mpoa_disp_qos+0x202/0x380
-[   15.913475]  atm_mpoa_disp_qos+0x202/0x380
-[   15.913496]  mpc_show+0x575/0x700
-[   15.913515]  ? kasan_save_track+0x14/0x30
-[   15.913532]  ? __pfx_mpc_show+0x10/0x10
-[   15.913550]  ? __pfx_mutex_lock+0x10/0x10
-[   15.913565]  ? seq_read_iter+0x697/0x1110
-[   15.913584]  seq_read_iter+0x2bc/0x1110
-[   15.913607]  seq_read+0x267/0x3d0
-[   15.913623]  ? __pfx_seq_read+0x10/0x10
-[   15.913650]  proc_reg_read+0x1ab/0x270
-[   15.913669]  vfs_read+0x175/0xa10
-[   15.913687]  ? do_sys_openat2+0x103/0x170
-[   15.913701]  ? kmem_cache_free+0xc4/0x360
-[   15.913718]  ? getname_flags.part.0+0xf3/0x470
-[   15.913734]  ? __pfx_vfs_read+0x10/0x10
-[   15.913751]  ? mutex_lock+0x81/0xe0
-[   15.913766]  ? __pfx_mutex_lock+0x10/0x10
-[   15.913782]  ? __rseq_handle_notify_resume+0x4c4/0xac0
-[   15.913802]  ? fdget_pos+0x24d/0x4b0
-[   15.913829]  ksys_read+0xf7/0x1c0
-[   15.913850]  ? __pfx_ksys_read+0x10/0x10
-[   15.913877]  do_syscall_64+0xa4/0x290
-[   15.913917]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-[   15.913981] RIP: 0033:0x45c982
-[   15.914171] Code: 08 0f 85 71 ea ff ff 49 89 fb 48 89 f0 48 89 d7 48 89 ce 4c 89 c2 4d 89 ca 4c 8b 44 24 08 4c 8b 4c 24 10 4c 89 5c 24 08 0f 05 <c3> 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 f3 0f 1e fa 55 48 89 e5
-[   15.914239] RSP: 002b:00007f4b2b2cb0d8 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
-[   15.914315] RAX: ffffffffffffffda RBX: 00007f4b2b2cc6c0 RCX: 000000000045c982
-[   15.914352] RDX: 0000000000000fff RSI: 00007f4b2b2cb220 RDI: 0000000000000014
-[   15.914382] RBP: 00007f4b2b2cb100 R08: 0000000000000000 R09: 0000000000000000
-[   15.914413] R10: 0000000000000000 R11: 0000000000000246 R12: 000000000000000a
-[   15.914445] R13: ffffffffffffffd0 R14: 0000000000000000 R15: 00007ffd386450c0
-[   15.914483]  </TASK>
-[   15.914533]
-[   15.916812] Allocated by task 78:
-[   15.916975]  kasan_save_stack+0x30/0x50
-[   15.917047]  kasan_save_track+0x14/0x30
-[   15.917105]  __kasan_kmalloc+0x8f/0xa0
-[   15.917162]  atm_mpoa_add_qos+0x1bb/0x3c0
-[   15.917220]  parse_qos.cold+0x73/0x7d
-[   15.917276]  proc_mpc_write+0xf4/0x150
-[   15.917331]  proc_reg_write+0x1ab/0x270
-[   15.917379]  vfs_write+0x1ce/0xd30
-[   15.917431]  ksys_write+0xf7/0x1c0
-[   15.917476]  do_syscall_64+0xa4/0x290
-[   15.917523]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-[   15.917586]
-[   15.917628] Freed by task 78:
-[   15.917665]  kasan_save_stack+0x30/0x50
-[   15.917714]  kasan_save_track+0x14/0x30
-[   15.917762]  kasan_save_free_info+0x3b/0x70
-[   15.917811]  __kasan_slab_free+0x3e/0x50
-[   15.918058]  kfree+0x121/0x340
-[   15.918135]  atm_mpoa_delete_qos+0xad/0xd0
-[   15.918196]  parse_qos+0x1e5/0x1f0
-[   15.918339]  proc_mpc_write+0xf4/0x150
-[   15.918438]  proc_reg_write+0x1ab/0x270
-[   15.918494]  vfs_write+0x1ce/0xd30
-[   15.918538]  ksys_write+0xf7/0x1c0
-[   15.918589]  do_syscall_64+0xa4/0x290
-[   15.918634]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-[   15.918694]
-[   15.918751] The buggy address belongs to the object at ffff888007517380
-[   15.918751]  which belongs to the cache kmalloc-96 of size 96
-[   15.918911] The buggy address is located 0 bytes inside of
-[   15.918911]  freed 96-byte region [ffff888007517380, ffff8880075173e0)
-[   15.919027]
-[   15.919101] The buggy address belongs to the physical page:
-[   15.919416] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xffff888007517300 pfn:0x7517
-[   15.919679] anon flags: 0x100000000000000(node=0|zone=1)
-[   15.920064] page_type: f5(slab)
-[   15.920361] raw: 0100000000000000 ffff888006c41280 0000000000000000 dead000000000001
-[   15.920460] raw: ffff888007517300 0000000080200007 00000000f5000000 0000000000000000
-[   15.920577] page dumped because: kasan: bad access detected
-[   15.920634]
-[   15.920663] Memory state around the buggy address:
-[   15.920860]  ffff888007517280: fa fb fb fb fb fb fb fb fb fb fb fb fc fc fc fc
-[   15.920944]  ffff888007517300: fa fb fb fb fb fb fb fb fb fb fb fb fc fc fc fc
-[   15.921017] >ffff888007517380: fa fb fb fb fb fb fb fb fb fb fb fb fc fc fc fc
-[   15.921088]                    ^
-[   15.921163]  ffff888007517400: fa fb fb fb fb fb fb fb fb fb fb fb fc fc fc fc
-[   15.921222]  ffff888007517480: fa fb fb fb fb fb fb fb fb fb fb fb fc fc fc fc
-[   15.921313] ==================================================================
+Agree. No rush.
 
-Reported-by: Minseong Kim <ii4gsp@gmail.com>
-Closes: https://lore.kernel.org/netdev/CAKrymDR1X3XTX_1ZW3XXXnuYH+kzsnv7Av5uivzR1sto+5BFQg@mail.gmail.com/
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Minseong Kim <ii4gsp@gmail.com>
----
- net/atm/mpc.c | 117 ++++++++++++++++++++++++++++++++++++--------------
- 1 file changed, 85 insertions(+), 32 deletions(-)
+> Also, you forgot about 6.18.y, right?
 
-diff --git a/net/atm/mpc.c b/net/atm/mpc.c
-index f6b447bba329..c268b5f4a266 100644
---- a/net/atm/mpc.c
-+++ b/net/atm/mpc.c
-@@ -9,6 +9,7 @@
- #include <linux/bitops.h>
- #include <linux/capability.h>
- #include <linux/seq_file.h>
-+#include <linux/mutex.h>
- 
- /* We are an ethernet device */
- #include <linux/if_ether.h>
-@@ -122,6 +123,7 @@ static struct notifier_block mpoa_notifier = {
- 
- struct mpoa_client *mpcs = NULL; /* FIXME */
- static struct atm_mpoa_qos *qos_head = NULL;
-+static DEFINE_MUTEX(qos_mutex); /* Protect qos_head list */
- static DEFINE_TIMER(mpc_timer, mpc_cache_check);
- 
- 
-@@ -171,74 +173,120 @@ static struct mpoa_client *find_mpc_by_lec(struct net_device *dev)
-  * Functions for managing QoS list
-  */
- 
-+/*
-+ * Search for a QoS entry. Caller must hold qos_mutex.
-+ * Returns pointer to entry if found, NULL otherwise.
-+ */
-+static struct atm_mpoa_qos *__atm_mpoa_search_qos(__be32 dst_ip)
-+{
-+	struct atm_mpoa_qos *qos = qos_head;
-+
-+	while (qos) {
-+		if (qos->ipaddr == dst_ip)
-+			return qos;
-+		qos = qos->next;
-+	}
-+	return NULL;
-+}
-+
-+/*
-+ * Search for a QoS entry.
-+ * WARNING: The returned pointer is not protected. The caller must ensure
-+ * that the entry is not freed while using it, or hold qos_mutex during use.
-+ */
-+struct atm_mpoa_qos *atm_mpoa_search_qos(__be32 dst_ip)
-+{
-+	struct atm_mpoa_qos *qos;
-+
-+	mutex_lock(&qos_mutex);
-+	qos = __atm_mpoa_search_qos(dst_ip);
-+	mutex_unlock(&qos_mutex);
-+
-+	return qos;
-+}
-+
- /*
-  * Overwrites the old entry or makes a new one.
-  */
- struct atm_mpoa_qos *atm_mpoa_add_qos(__be32 dst_ip, struct atm_qos *qos)
- {
- 	struct atm_mpoa_qos *entry;
-+	struct atm_mpoa_qos *new;
- 
--	entry = atm_mpoa_search_qos(dst_ip);
--	if (entry != NULL) {
-+	/* Fast path: update existing entry */
-+	mutex_lock(&qos_mutex);
-+	entry = __atm_mpoa_search_qos(dst_ip);
-+	if (entry) {
- 		entry->qos = *qos;
-+		mutex_unlock(&qos_mutex);
- 		return entry;
- 	}
-+	mutex_unlock(&qos_mutex);
- 
--	entry = kmalloc(sizeof(struct atm_mpoa_qos), GFP_KERNEL);
--	if (entry == NULL) {
-+	/* Allocate outside lock */
-+	new = kmalloc(sizeof(*new), GFP_KERNEL);
-+	if (!new) {
- 		pr_info("mpoa: out of memory\n");
--		return entry;
-+		return NULL;
- 	}
- 
--	entry->ipaddr = dst_ip;
--	entry->qos = *qos;
-+	new->ipaddr = dst_ip;
-+	new->qos = *qos;
- 
--	entry->next = qos_head;
--	qos_head = entry;
--
--	return entry;
--}
--
--struct atm_mpoa_qos *atm_mpoa_search_qos(__be32 dst_ip)
--{
--	struct atm_mpoa_qos *qos;
--
--	qos = qos_head;
--	while (qos) {
--		if (qos->ipaddr == dst_ip)
--			break;
--		qos = qos->next;
-+	/* Re-check under lock to avoid duplicates */
-+	mutex_lock(&qos_mutex);
-+	entry = __atm_mpoa_search_qos(dst_ip);
-+	if (entry) {
-+		entry->qos = *qos;
-+		mutex_unlock(&qos_mutex);
-+		kfree(new);
-+		return entry;
- 	}
- 
--	return qos;
-+	new->next = qos_head;
-+	qos_head = new;
-+	mutex_unlock(&qos_mutex);
-+
-+	return new;
- }
- 
- /*
-- * Returns 0 for failure
-+ * Returns 0 for failure, 1 for success
-  */
- int atm_mpoa_delete_qos(struct atm_mpoa_qos *entry)
- {
- 	struct atm_mpoa_qos *curr;
-+	int ret = 0;
- 
- 	if (entry == NULL)
- 		return 0;
-+
-+	mutex_lock(&qos_mutex);
-+
- 	if (entry == qos_head) {
- 		qos_head = qos_head->next;
--		kfree(entry);
--		return 1;
-+		ret = 1;
-+		goto out_free;
- 	}
- 
- 	curr = qos_head;
--	while (curr != NULL) {
-+	while (curr) {
- 		if (curr->next == entry) {
- 			curr->next = entry->next;
--			kfree(entry);
--			return 1;
-+			ret = 1;
-+			goto out_free;
- 		}
- 		curr = curr->next;
- 	}
- 
--	return 0;
-+out:
-+	mutex_unlock(&qos_mutex);
-+	return ret;
-+
-+out_free:
-+	mutex_unlock(&qos_mutex);
-+	kfree(entry);
-+	return ret;
- }
- 
- /* this is buggered - we need locking for qos_head */
-@@ -246,10 +294,12 @@ void atm_mpoa_disp_qos(struct seq_file *m)
- {
- 	struct atm_mpoa_qos *qos;
- 
--	qos = qos_head;
- 	seq_printf(m, "QoS entries for shortcuts:\n");
--	seq_printf(m, "IP address\n  TX:max_pcr pcr     min_pcr max_cdv max_sdu\n  RX:max_pcr pcr     min_pcr max_cdv max_sdu\n");
-+	seq_printf(m, "IP address\n  TX:max_pcr pcr     min_pcr max_cdv max_sdu\n"
-+		   "  RX:max_pcr pcr     min_pcr max_cdv max_sdu\n");
- 
-+	mutex_lock(&qos_mutex);
-+	qos = qos_head;
- 	while (qos != NULL) {
- 		seq_printf(m, "%pI4\n     %-7d %-7d %-7d %-7d %-7d\n     %-7d %-7d %-7d %-7d %-7d\n",
- 			   &qos->ipaddr,
-@@ -265,6 +315,7 @@ void atm_mpoa_disp_qos(struct seq_file *m)
- 			   qos->qos.rxtp.max_sdu);
- 		qos = qos->next;
- 	}
-+	mutex_unlock(&qos_mutex);
- }
- 
- static struct net_device *find_lec_by_itfnum(int itf)
-@@ -1521,8 +1572,10 @@ static void __exit atm_mpoa_cleanup(void)
- 		mpc = tmp;
- 	}
- 
-+	mutex_lock(&qos_mutex);
- 	qos = qos_head;
- 	qos_head = NULL;
-+	mutex_unlock(&qos_mutex);
- 	while (qos != NULL) {
- 		nextqos = qos->next;
- 		dprintk("freeing qos entry %p\n", qos);
--- 
-2.39.5 (Apple Git-154)
+Yes. However, upstream patches will directly apply till v6.17.
 
+-Ajay
+
+--000000000000f1f25d06451949ee
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+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
+fEfjRz/Z5b6J+pnCj2dzb2Wir3qx4rt1/aShjQasncmTZ0r8rOk2G3RmKolDmTmWPMeCgzL2KeQs
+QRXTsKFFi0np4iUyWo+MDCofsswor1HkoXwlmoIAdrFL+cw3qvOowpOB0pe3+G1rWNvJvYsOAzG6
+2a8X0kwMSTEGjJgAX+jQjqwdP8C4ZxmE7n236E9GiM8kfhFFAgMBAAGjggHYMIIB1DAOBgNVHQ8B
+Af8EBAMCBaAwgZMGCCsGAQUFBwEBBIGGMIGDMEYGCCsGAQUFBzAChjpodHRwOi8vc2VjdXJlLmds
+b2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3I2c21pbWVjYTIwMjMuY3J0MDkGCCsGAQUFBzABhi1o
+dHRwOi8vb2NzcC5nbG9iYWxzaWduLmNvbS9nc2djY3I2c21pbWVjYTIwMjMwZQYDVR0gBF4wXDAJ
+BgdngQwBBQMBMAsGCSsGAQQBoDIBKDBCBgorBgEEAaAyCgMCMDQwMgYIKwYBBQUHAgEWJmh0dHBz
+Oi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAkGA1UdEwQCMAAwQQYDVR0fBDowODA2
+oDSgMoYwaHR0cDovL2NybC5nbG9iYWxzaWduLmNvbS9nc2djY3I2c21pbWVjYTIwMjMuY3JsMCIG
+A1UdEQQbMBmBF2FqYXkua2FoZXJAYnJvYWRjb20uY29tMBMGA1UdJQQMMAoGCCsGAQUFBwMEMB8G
+A1UdIwQYMBaAFAApNp5ceroPry1QLdugI4UYsKCSMB0GA1UdDgQWBBQkdXtSp1Dzqn1C33ctprG/
+nnkbNDANBgkqhkiG9w0BAQsFAAOCAgEAQbg6h5rEci8mKF65wFYkl7cvu+zaAia4d24Ef/05x2/P
+WAuBmkkDNwevol3iJzQNwlOuR4yR0sZchzw7mXSsqBhq1dgSNbReQ0qJU0YWze48y5rGlyZvCB1Q
+Z8FbyfrHGx4ZQJcjB1zeXJqqW6DPE5O8XOw+xTEKzIQxJFLgBF71RT5Jg4kJIY560kzMLBYKzS1f
+7fRmy20PR3frP6J2SwKPhNCsXVDP3t0KC5dUnlUf/1Ux2sVe/6G8+G7lBCG3A1TaN4j9woYHN7Y/
+U0LCVM46Gf7bFsu7RzwcrKtSOnfJ3Fs7V+IWCrTMvbCSQylAy3+BMkMGFZ0WwtXNLxbYIEhKAZmH
+npugOtDKS6j4LkLxkHr/dTYZvfdOXZXTIlz8qTfkTKw4ES4KW3EGzfnRZCL2VD27/GAtt0hwPWrY
+HL087+VQLA9RUVdfnigRjZOPWo//78ZaDd9PPWbLKqa6EIboR2nSV5miF9fQinDnxToBGplQEcXG
+WwCF8syc/0n0xzLlb/IOwxmkzMizN/3/vVp5eGh64OGdhSwzZDBQuVS08Wgfd3nVHT6zh1F0jBgZ
+ACv82jjjtABB+Tg1VZ0vcRr5ZzTC1WylB7ik6soemgWAgbrQfhNh0uHr9jq+NAbTA4wqUK6gA5LP
+kPwzH0/UqVP+eM3EQII1r4Uiee8YifwxggJXMIICUwIBATBiMFIxCzAJBgNVBAYTAkJFMRkwFwYD
+VQQKExBHbG9iYWxTaWduIG52LXNhMSgwJgYDVQQDEx9HbG9iYWxTaWduIEdDQyBSNiBTTUlNRSBD
+QSAyMDIzAgwc6GO95nPh0DhXVGYwDQYJYIZIAWUDBAIBBQCggccwLwYJKoZIhvcNAQkEMSIEILj8
+nnCCkOBlr9R+LXZtV8jpo6BViHCsyB92JMvHb8WbMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEw
+HAYJKoZIhvcNAQkFMQ8XDTI1MTIwNDA1MDYxN1owXAYJKoZIhvcNAQkPMU8wTTALBglghkgBZQME
+ASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQcwCwYJ
+YIZIAWUDBAIBMA0GCSqGSIb3DQEBAQUABIIBAEhe3eWFHmJa2ywGDTiiBK1hxfFzaxXdh17SfNtp
+FKNgs6snSt83AffyxjqLmCRtm+zLLGntL+/6ZcUAMu2nyQIbgFqKd8klf/Syv9l917IElhjof0Tr
+wInnLZt5gExt62hFmJ5zwLv6+u3EoafJiqvdOzqVW1N2HMpcR52CjCgq6Ao07p0jR/h79lzXGb4R
+yvLgZvw9sM68E5r8/vAWAcs9vY8JdV5AKcOJ+lH3GgRRxiLy4JI9POgXUg5rn/wt5FL57xgYCubU
+DcM3K9JBB3uH/3ebJSV8bvyoMd0j31bo7uF1IOe79gIfFj4nVPGjjM369t0RqivQxHW9As+KJS8=
+--000000000000f1f25d06451949ee--
 
