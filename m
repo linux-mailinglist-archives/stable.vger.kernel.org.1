@@ -1,193 +1,192 @@
-Return-Path: <stable+bounces-200063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F122CCA5034
-	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 19:57:23 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C34DBCA5095
+	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 20:00:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D07A63053242
-	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 18:56:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A6BDD3050CCD
+	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 19:00:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1AEA3451B4;
-	Thu,  4 Dec 2025 18:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D882F2F5461;
+	Thu,  4 Dec 2025 19:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FFTuQf0X"
+	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="rtyWO8Mh"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-106118.protonmail.ch (mail-106118.protonmail.ch [79.135.106.118])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B314A345722;
-	Thu,  4 Dec 2025 18:49:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9411629C323;
+	Thu,  4 Dec 2025 19:00:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.118
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764874190; cv=none; b=pGF9hrz8rFmMib/buvuPbNharRWYR98r0pH4jDWD2Z7v3bRnEUJw5hs+Dq/sw6GYd9kjg1uw8v6mlZNNmgwC5f0tjMOpui3j6JvhtcTLfAIPc+tq/tpVfcsdXyOpvJLVmBp0aXvj4QnMlKBGZ4NsSQRGEkz1eBIhbnt94Irhea8=
+	t=1764874813; cv=none; b=rjqLhtWpT8xdmlRp94coTY4xd3heFGW1h4AVXpWe0hKn74oCKLR9dvseUDdQ8abszTszaXkv0H/Qen6AocqZfCJ2QFukYXqmDEoctjGGyzMK4u9euP1/sT7UaBXgQYfhbbfVYTB/li6UjqI5Ryak3aM92uLW1KMwPyOeE0EUG00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764874190; c=relaxed/simple;
-	bh=ntEGzVbu3Nc47Kvk7Gkh2aUK/xS/Fh3L15HEk7QQ/fA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Xl8ki4kxfqmdy2Z3yiekZg/zqrW/9P7tcynztybDlVleZqeEWz8GcXqhkPc7+dff08hbOZ2I0+2JnRVPzpPi00k1Z5MKLL1qHhdU1sl5ZtuLginatwx81xnV8Yk5XRPJHAj5XjpDGxqSc+Jj6dE2MG9uHzB88Zlr1wu3Og4MmO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FFTuQf0X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66C6BC116C6;
-	Thu,  4 Dec 2025 18:49:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764874189;
-	bh=ntEGzVbu3Nc47Kvk7Gkh2aUK/xS/Fh3L15HEk7QQ/fA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FFTuQf0Xv5R/jjyuqnqEglHAhN+0CDjLXH+2yQ2BkhdlNHsiYYTU22QD/xEo2rqBC
-	 KRxEBB+c+/F/fvgaFkrHC7htj+I+eARYgr60d0JBIZd0ZZe5qPpfJB6r96J48OhvBg
-	 MSXOWUgSNWBkaI+buWMNUIuADy98xN8bGX+UbFE4wuEmy2TLB0O65tZJxGPuHB2iuv
-	 ntH1fColfdd46Fo/c+oUBcelcKjM0dbLNo/w4wLbZxImA+eobbHzolgClZkjmOeQ1Z
-	 Uua5CGsq+S+93gUhV70Tbys6ZkybROlVt3YlgTpzTJphLh98DdGitcWKjxMmHnIOAF
-	 CzVuNDnMxIahA==
-Date: Thu, 4 Dec 2025 20:49:46 +0200
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Jonathan McDowell <noodles@earth.li>
-Cc: linux-integrity@vger.kernel.org, Peter Huewe <peterhuewe@gmx.de>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	open list <linux-kernel@vger.kernel.org>, stable@vger.kernel.org,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: Re: [PATCH v3 2/4] tpm2-sessions: Fix tpm2_read_public range checks
-Message-ID: <aTHXyjlI06n_7K2e@kernel.org>
-References: <20251203221215.536031-1-jarkko@kernel.org>
- <20251203221215.536031-3-jarkko@kernel.org>
- <aTGmuhRCbHANjjzV@earth.li>
+	s=arc-20240116; t=1764874813; c=relaxed/simple;
+	bh=hwQ0hFNswBQ3R/fPEPYmghV/Mw4YmlpGWO2uf5Kcms4=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YQP4fKhL+vjybGnTPXVjtvbHuk7/lcW0XY/PvMSPw96bhELDuEIQLkhgFb38KlhgQIoJNO9w32uUgbetAtevSf881A++TTu9Et90RTeHgirncHinex8ZYti5a2q2tNYMzE7voj/dA2IkUNWQxGRy61/Axk9fZ1R3aE21LTpjPq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=rtyWO8Mh; arc=none smtp.client-ip=79.135.106.118
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1764874809; x=1765134009;
+	bh=IkyiGHAPhFI7mnPUmSkIC1C5JfoL+QfGKczkbPsXbcs=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=rtyWO8Mhp0k18ZcQhE62dU64ZWyjWu8gN4X48g8L7vsLbz32pen4vX2yR817pv5nq
+	 UR/DJUVaJVGf1bfG1/ykN0eJQ4sDYYb5PEPyTVVi2VqWnMDFG7HqizX9h4BRSVYHy+
+	 eltUby5UQqhC/4NhV5za0t/SkcGg5cZm/OA96J6Qk12U91Va9FC19YF8ueSVubUIAy
+	 duTz/653G7dC15XWOBSwTkf/Si9UYE1w2DliI/x0CvNxxYkY3WJG7guCxZiKWkcg4S
+	 c33NbGc7cAxKHLjIp4qUt7Siq939KZEJ3PTx7ASwE+XXkLee4Mjq8qy1R6V0b2VWa0
+	 YsmXZfQBkLZZA==
+Date: Thu, 04 Dec 2025 19:00:04 +0000
+To: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, Marco Elver <elver@google.com>
+From: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
+Cc: m.wieczorretman@pm.me, jiayuan.chen@linux.dev, stable@vger.kernel.org, Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: [PATCH v3 2/3] kasan: Refactor pcpu kasan vmalloc unpoison
+Message-ID: <eb61d93b907e262eefcaa130261a08bcb6c5ce51.1764874575.git.m.wieczorretman@pm.me>
+In-Reply-To: <cover.1764874575.git.m.wieczorretman@pm.me>
+References: <cover.1764874575.git.m.wieczorretman@pm.me>
+Feedback-ID: 164464600:user:proton
+X-Pm-Message-ID: 258475af37f58ec18af8ccf0e0fabf0466575111
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aTGmuhRCbHANjjzV@earth.li>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Dec 04, 2025 at 03:20:26PM +0000, Jonathan McDowell wrote:
-> On Thu, Dec 04, 2025 at 12:12:12AM +0200, Jarkko Sakkinen wrote:
-> > 'tpm2_read_public' has some rudimentary range checks but the function
-> > does not ensure that the response buffer has enough bytes for the full
-> > TPMT_HA payload.
-> > 
-> > Re-implement the function with necessary checks and validation.
-> > 
-> > Cc: stable@vger.kernel.org # v6.10+
-> > Fixes: d0a25bb961e6 ("tpm: Add HMAC session name/handle append")
-> > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> 
-> A minor nit about variable naming, but:
-> 
-> Reviewed-by: Jonathan McDowell <noodles@meta.com>
-> 
-> > v2:
-> > - Made the fix localized instead of spread all over the place.
-> > ---
-> > drivers/char/tpm/tpm2-cmd.c      |  3 ++
-> > drivers/char/tpm/tpm2-sessions.c | 77 +++++++++++++++++---------------
-> > 2 files changed, 44 insertions(+), 36 deletions(-)
-> > 
-> > diff --git a/drivers/char/tpm/tpm2-cmd.c b/drivers/char/tpm/tpm2-cmd.c
-> > index be4a9c7f2e1a..34e3599f094f 100644
-> > --- a/drivers/char/tpm/tpm2-cmd.c
-> > +++ b/drivers/char/tpm/tpm2-cmd.c
-> > @@ -11,8 +11,11 @@
-> >  * used by the kernel internally.
-> >  */
-> > 
-> > +#include "linux/dev_printk.h"
-> > +#include "linux/tpm.h"
-> > #include "tpm.h"
-> > #include <crypto/hash_info.h>
-> > +#include <linux/unaligned.h>
-> > 
-> > static bool disable_pcr_integrity;
-> > module_param(disable_pcr_integrity, bool, 0444);
-> > diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
-> > index a265e9752a5e..e9f439be3916 100644
-> > --- a/drivers/char/tpm/tpm2-sessions.c
-> > +++ b/drivers/char/tpm/tpm2-sessions.c
-> > @@ -163,54 +163,59 @@ static int name_size(const u8 *name)
-> > 	}
-> > }
-> > 
-> > -static int tpm2_parse_read_public(char *name, struct tpm_buf *buf)
-> > +static int tpm2_read_public(struct tpm_chip *chip, u32 handle, void *name)
-> > {
-> > -	struct tpm_header *head = (struct tpm_header *)buf->data;
-> > +	u32 mso = tpm2_handle_mso(handle);
-> > 	off_t offset = TPM_HEADER_SIZE;
-> > -	u32 tot_len = be32_to_cpu(head->length);
-> > -	int ret;
-> > -	u32 val;
-> > -
-> > -	/* we're starting after the header so adjust the length */
-> > -	tot_len -= TPM_HEADER_SIZE;
-> > -
-> > -	/* skip public */
-> > -	val = tpm_buf_read_u16(buf, &offset);
-> > -	if (val > tot_len)
-> > -		return -EINVAL;
-> > -	offset += val;
-> > -	/* name */
-> > -
-> > -	val = tpm_buf_read_u16(buf, &offset);
-> > -	ret = name_size(&buf->data[offset]);
-> > -	if (ret < 0)
-> > -		return ret;
-> > +	struct tpm_buf buf;
-> > +	int rc, rc2;
-> > 
-> > -	if (val != ret)
-> > +	if (mso != TPM2_MSO_PERSISTENT && mso != TPM2_MSO_VOLATILE &&
-> > +	    mso != TPM2_MSO_NVRAM)
-> > 		return -EINVAL;
-> > 
-> > -	memcpy(name, &buf->data[offset], val);
-> > -	/* forget the rest */
-> > -	return 0;
-> > -}
-> > -
-> > -static int tpm2_read_public(struct tpm_chip *chip, u32 handle, char *name)
-> > -{
-> > -	struct tpm_buf buf;
-> > -	int rc;
-> > -
-> > 	rc = tpm_buf_init(&buf, TPM2_ST_NO_SESSIONS, TPM2_CC_READ_PUBLIC);
-> > 	if (rc)
-> > 		return rc;
-> > 
-> > 	tpm_buf_append_u32(&buf, handle);
-> > -	rc = tpm_transmit_cmd(chip, &buf, 0, "read public");
-> > -	if (rc == TPM2_RC_SUCCESS)
-> > -		rc = tpm2_parse_read_public(name, &buf);
-> > 
-> > -	tpm_buf_destroy(&buf);
-> > +	rc = tpm_transmit_cmd(chip, &buf, 0, "TPM2_ReadPublic");
-> > +	if (rc) {
-> > +		tpm_buf_destroy(&buf);
-> > +		return tpm_ret_to_err(rc);
-> > +	}
-> > 
-> > -	return rc;
-> > +	/* Skip TPMT_PUBLIC: */
-> > +	offset += tpm_buf_read_u16(&buf, &offset);
-> > +
-> > +	/*
-> > +	 * Ensure space for the length field of TPM2B_NAME and hashAlg field of
-> > +	 * TPMT_HA (the extra four bytes).
-> > +	 */
-> > +	if (offset + 4 > tpm_buf_length(&buf)) {
-> > +		tpm_buf_destroy(&buf);
-> > +		return -EIO;
-> > +	}
-> > +
-> > +	rc = tpm_buf_read_u16(&buf, &offset);
-> > +	rc2 = name_size(&buf.data[offset]);
-> 
-> rc2 is not great naming. We only use it for this, so perhaps name_len?
+From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 
-I'll rename it as 'name_size_alg' for the sake of clarity. It is TPM
-name size mapped from algorithm ID. That should make the means and
-purpose dead obvious.
+A KASAN tag mismatch, possibly causing a kernel panic, can be observed
+on systems with a tag-based KASAN enabled and with multiple NUMA nodes.
+It was reported on arm64 and reproduced on x86. It can be explained in
+the following points:
 
-BR, Jarkko
+=091. There can be more than one virtual memory chunk.
+=092. Chunk's base address has a tag.
+=093. The base address points at the first chunk and thus inherits
+=09   the tag of the first chunk.
+=094. The subsequent chunks will be accessed with the tag from the
+=09   first chunk.
+=095. Thus, the subsequent chunks need to have their tag set to
+=09   match that of the first chunk.
+
+Refactor code by reusing __kasan_unpoison_vmalloc in a new helper in
+preparation for the actual fix.
+
+Changelog v1 (after splitting of from the KASAN series):
+- Rewrite first paragraph of the patch message to point at the user
+  impact of the issue.
+- Move helper to common.c so it can be compiled in all KASAN modes.
+
+Fixes: 1d96320f8d53 ("kasan, vmalloc: add vmalloc tagging for SW_TAGS")
+Cc: <stable@vger.kernel.org> # 6.1+
+Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+---
+Changelog v3:
+- Redo the patch after applying Andrey's comments to align the code more
+  with what's already in include/linux/kasan.h
+
+Changelog v2:
+- Redo the whole patch so it's an actual refactor.
+
+ include/linux/kasan.h | 15 +++++++++++++++
+ mm/kasan/common.c     | 17 +++++++++++++++++
+ mm/vmalloc.c          |  4 +---
+ 3 files changed, 33 insertions(+), 3 deletions(-)
+
+diff --git a/include/linux/kasan.h b/include/linux/kasan.h
+index 6d7972bb390c..cde493cb7702 100644
+--- a/include/linux/kasan.h
++++ b/include/linux/kasan.h
+@@ -615,6 +615,16 @@ static __always_inline void kasan_poison_vmalloc(const=
+ void *start,
+ =09=09__kasan_poison_vmalloc(start, size);
+ }
+=20
++void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms,
++=09=09=09=09 kasan_vmalloc_flags_t flags);
++static __always_inline void
++kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms,
++=09=09=09  kasan_vmalloc_flags_t flags)
++{
++=09if (kasan_enabled())
++=09=09__kasan_unpoison_vmap_areas(vms, nr_vms, flags);
++}
++
+ #else /* CONFIG_KASAN_VMALLOC */
+=20
+ static inline void kasan_populate_early_vm_area_shadow(void *start,
+@@ -639,6 +649,11 @@ static inline void *kasan_unpoison_vmalloc(const void =
+*start,
+ static inline void kasan_poison_vmalloc(const void *start, unsigned long s=
+ize)
+ { }
+=20
++static __always_inline void
++kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms,
++=09=09=09  kasan_vmalloc_flags_t flags)
++{ }
++
+ #endif /* CONFIG_KASAN_VMALLOC */
+=20
+ #if (defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)) && \
+diff --git a/mm/kasan/common.c b/mm/kasan/common.c
+index d4c14359feaf..1ed6289d471a 100644
+--- a/mm/kasan/common.c
++++ b/mm/kasan/common.c
+@@ -28,6 +28,7 @@
+ #include <linux/string.h>
+ #include <linux/types.h>
+ #include <linux/bug.h>
++#include <linux/vmalloc.h>
+=20
+ #include "kasan.h"
+ #include "../slab.h"
+@@ -582,3 +583,19 @@ bool __kasan_check_byte(const void *address, unsigned =
+long ip)
+ =09}
+ =09return true;
+ }
++
++#ifdef CONFIG_KASAN_VMALLOC
++void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms,
++=09=09=09=09 kasan_vmalloc_flags_t flags)
++{
++=09unsigned long size;
++=09void *addr;
++=09int area;
++
++=09for (area =3D 0 ; area < nr_vms ; area++) {
++=09=09size =3D vms[area]->size;
++=09=09addr =3D vms[area]->addr;
++=09=09vms[area]->addr =3D __kasan_unpoison_vmalloc(addr, size, flags);
++=09}
++}
++#endif
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 22a73a087135..33e705ccafba 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -4872,9 +4872,7 @@ struct vm_struct **pcpu_get_vm_areas(const unsigned l=
+ong *offsets,
+ =09 * With hardware tag-based KASAN, marking is skipped for
+ =09 * non-VM_ALLOC mappings, see __kasan_unpoison_vmalloc().
+ =09 */
+-=09for (area =3D 0; area < nr_vms; area++)
+-=09=09vms[area]->addr =3D kasan_unpoison_vmalloc(vms[area]->addr,
+-=09=09=09=09vms[area]->size, KASAN_VMALLOC_PROT_NORMAL);
++=09kasan_unpoison_vmap_areas(vms, nr_vms, KASAN_VMALLOC_PROT_NORMAL);
+=20
+ =09kfree(vas);
+ =09return vms;
+--=20
+2.52.0
+
+
 
