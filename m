@@ -1,113 +1,96 @@
-Return-Path: <stable+bounces-200005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56645CA36CA
-	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 12:24:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B46BCA372F
+	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 12:31:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D4F3C3129CC9
-	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 11:22:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 97F93312BF93
+	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 11:30:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9428E33CEB7;
-	Thu,  4 Dec 2025 11:22:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E97B72EC096;
+	Thu,  4 Dec 2025 11:30:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pKC9hEMo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F4733CEA0;
-	Thu,  4 Dec 2025 11:22:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F9D2D97B5;
+	Thu,  4 Dec 2025 11:30:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764847372; cv=none; b=mJTI5AFmeQ7XYAiRw2kdPDzAvcEVEVDJ1PtMYmu+EXBbKomILRxWXf1Eb2CkwBIyqzIEJbRr428/L5/X+3PYiOMhpoZe5D2QvXlte3yzGX5eAL/Y47yk6cfsV/dXBY8w0Xnmc45/wnFnpwZUp+KyGKfh7ok5InJXtDa0l6Y3Qcw=
+	t=1764847806; cv=none; b=d2IHcHTswRtSHUQZKiWK1gFzDeYq3gE+HtzqjrK7Qq6LzS9RKm8I1lXApR/taA/AauL9p8bU67y47ok+mcIq7AA+kN+6T4marXRtCFpHaTIwIP/dwLs1oSDVGbcQNqsXKWGs/wg/+3ZEFPdWejmFgF5NujYXnRHcTmUpZAenzwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764847372; c=relaxed/simple;
-	bh=axFeB5AGtm4ctuPeBj98KVyxc3v6+YysraVuMzX/nKE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TwCisshEiSWA1CVawSez+iThS7PHCbiBHqcdxKIJtjphhIsm6gqxX3VUwp6O/jhY6P+089DOsA4Lc9XbL7U0DXnjuA0Bjj5mWrst0R/YABFOSqKmVD3+tHUXzl3oZj5iiRAHAic1nKF7oLihfaoPlHvVpHD9w+FBIPT/QiYTrZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.2.5.213])
-	by gateway (Coremail) with SMTP id _____8Dx+tH3bjFp8gkrAA--.28164S3;
-	Thu, 04 Dec 2025 19:22:31 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
-	by front1 (Coremail) with SMTP id qMiowJCxG8HzbjFp1mpFAQ--.17590S3;
-	Thu, 04 Dec 2025 19:22:30 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Gonglei <arei.gonglei@huawei.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	wangyangxin <wangyangxin1@huawei.com>
-Cc: stable@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/9] crypto: virtio: Add spinlock protection with virtqueue notification
-Date: Thu,  4 Dec 2025 19:22:18 +0800
-Message-Id: <20251204112227.2659404-2-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20251204112227.2659404-1-maobibo@loongson.cn>
-References: <20251204112227.2659404-1-maobibo@loongson.cn>
+	s=arc-20240116; t=1764847806; c=relaxed/simple;
+	bh=VKslpOJkN84PbE3DCM3aeDTtlghsIvaV9Ws/MM83kwk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gfwRCy/grKgifo203Ajm4jjaZQQLfcItkKpNg41H4OVwJpDOO25MlUEN7OZUCok/YsVDFid/P85cYb7eLMU5/etsYEIc/qfM9BEJy06HtisAtfnUERStFfDO+m0/6JHX5NBpIWjpAy8nHKBKPHuFWv8aOVqGO4NdtJG56xcSA9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pKC9hEMo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 371C0C4CEFB;
+	Thu,  4 Dec 2025 11:30:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764847804;
+	bh=VKslpOJkN84PbE3DCM3aeDTtlghsIvaV9Ws/MM83kwk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pKC9hEMoj9xhekfJ/Jbg6uFZPw2KHxRixi9VfEtdl4qDkgJgURdw1hjxaDfxJHpg1
+	 YzKLW/DCdU6lkW7woXc2A9I8K+IBUKU8ma5GllBXp/6sIWxmlS5kI0K4zZCKCJYoE6
+	 Nqy5EnVAg8c1L1neztbWp8fVWIQveVEyjcqVi81sK5WK+iHvNcCyqLRKL7lFDQFPV8
+	 1OWzNyoUAxfTxuGTrDEnHv6LWZfrTCb6Qc61M/krQyoKHdNgjPNeXb8rZbVBvfkzxS
+	 tBfNrFf7aROd9ZcVLbS+Xi1Z903KUtl/z8JnzYKUwvbnSuea8MrV1J16qhdEMTfroR
+	 6+4WnScNNdliQ==
+Date: Thu, 4 Dec 2025 11:29:57 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
+Subject: Re: [PATCH 6.17 000/146] 6.17.11-rc1 review
+Message-ID: <bd672737-55eb-4832-bd54-a03d9576e11e@sirena.org.uk>
+References: <20251203152346.456176474@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJCxG8HzbjFp1mpFAQ--.17590S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
-	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
-	nUUI43ZEXa7xR_UUUUUUUUU==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="CUqYYpTjzmhAe8gF"
+Content-Disposition: inline
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+X-Cookie: volcano, n.:
 
-When VM boots with one virtio-crypto PCI device and builtin backend,
-run openssl benchmark command with multiple processes, such as
-  openssl speed -evp aes-128-cbc -engine afalg  -seconds 10 -multi 32
 
-openssl processes will hangup and there is error reported like this:
- virtio_crypto virtio0: dataq.0:id 3 is not a head!
+--CUqYYpTjzmhAe8gF
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-It seems that the data virtqueue need protection when it is handled
-for virtio done notification. If the spinlock protection is added
-in virtcrypto_done_task(), openssl benchmark with multiple processes
-works well.
+On Wed, Dec 03, 2025 at 04:26:18PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.17.11 release.
+> There are 146 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Fixes: fed93fb62e05 ("crypto: virtio - Handle dataq logic with tasklet")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
----
- drivers/crypto/virtio/virtio_crypto_core.c | 5 +++++
- 1 file changed, 5 insertions(+)
+Tested-by: Mark Brown <broonie@kernel.org>
 
-diff --git a/drivers/crypto/virtio/virtio_crypto_core.c b/drivers/crypto/virtio/virtio_crypto_core.c
-index 3d241446099c..ccc6b5c1b24b 100644
---- a/drivers/crypto/virtio/virtio_crypto_core.c
-+++ b/drivers/crypto/virtio/virtio_crypto_core.c
-@@ -75,15 +75,20 @@ static void virtcrypto_done_task(unsigned long data)
- 	struct data_queue *data_vq = (struct data_queue *)data;
- 	struct virtqueue *vq = data_vq->vq;
- 	struct virtio_crypto_request *vc_req;
-+	unsigned long flags;
- 	unsigned int len;
- 
-+	spin_lock_irqsave(&data_vq->lock, flags);
- 	do {
- 		virtqueue_disable_cb(vq);
- 		while ((vc_req = virtqueue_get_buf(vq, &len)) != NULL) {
-+			spin_unlock_irqrestore(&data_vq->lock, flags);
- 			if (vc_req->alg_cb)
- 				vc_req->alg_cb(vc_req, len);
-+			spin_lock_irqsave(&data_vq->lock, flags);
- 		}
- 	} while (!virtqueue_enable_cb(vq));
-+	spin_unlock_irqrestore(&data_vq->lock, flags);
- }
- 
- static void virtcrypto_dataq_callback(struct virtqueue *vq)
--- 
-2.39.3
+--CUqYYpTjzmhAe8gF
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmkxcLQACgkQJNaLcl1U
+h9B5+Af+ObhR7IoTGAmxQ5/accai6vlWaFslNUc+KQr1LVpokMKU4YyohTVwwJHJ
+Qf7FbD28dJD6BlIyfPny5bY+6Y7cxUP1k3e7KYmKqVoJhyu5kZ0uQTdYt4lxhA55
+DmEgM9F48ZERxObi/8L4Zb7nEpLp9SqFECaomyJHAo9nci9hy32RocSNcX6eHrz3
+9TlaY6fy3uS31PCnd5ZpCG9AFFHSyv0Ux/Ttbx6L51VsjwfUSyT9j1WShPYU4X0A
+g7zNTC1uzcsHpeqQkPmcRdkweAtvwjGpu3dointFdykDE7QHMKdOBaSsSbV/+KUb
+261Y5AR4UrXA+eNXuysraQmRuIx0Kw==
+=lHVL
+-----END PGP SIGNATURE-----
+
+--CUqYYpTjzmhAe8gF--
 
