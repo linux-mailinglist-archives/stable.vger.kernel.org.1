@@ -1,158 +1,140 @@
-Return-Path: <stable+bounces-200076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BDC8CA589B
-	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 22:45:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ACEFCA58BC
+	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 22:52:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C466E3011B1B
-	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 21:45:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3ED833085B3B
+	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 21:51:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE2F4315D42;
-	Thu,  4 Dec 2025 21:45:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CDDC2512E6;
+	Thu,  4 Dec 2025 21:51:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hF103HMQ"
 X-Original-To: stable@vger.kernel.org
-Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 188FB3081C2;
-	Thu,  4 Dec 2025 21:45:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7FB734CDD
+	for <stable@vger.kernel.org>; Thu,  4 Dec 2025 21:51:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764884726; cv=none; b=D8TgcRjAk+yEyWCd1wpXqyuG5wBBGP0Qzo9jolCdnzKNEzU2JQ+DKRJQjbXAO/GpW9Bnvhw8jInEKujGvMxqAhhy3I5ZTxtX35x5h3DPDlL8kLaPvBY90ufIgqdReC0OT0CCS3siICRX/4s6tHDcNgkMpcYd7+w8ggTNoICv9tI=
+	t=1764885115; cv=none; b=pGcHiuwC2+k8v9rUZEno/wAP+5I/kiMB9hRbWDiHJZNjY4ZDp87DNRfqS5hQJ9BEDrnHIwQtmKkyE+jlSzCfjsd0qkoBxTrHpFLMc4wDIkreDcVvHWws0eYU1ZdgxciQoESzxFJUkzfcDcXPuGzp94qAtiQlTtGS4I3/ixzCqBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764884726; c=relaxed/simple;
-	bh=JacmcE2VUtvgotHA9Ha1QmmeZf8PhTpLq2/q5wacEM8=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=CuNVA+zKmxiA4AXqXmTRuoB6D8LjtgDd54/OeMru5D7MQz2TyEjk0jRt63OAkZr/Su5Ahud2XA54apRcXsvsyVI2kBxW7acTYLK0PhpLEcecsAkod7y2cLGqpgITN8sZqJJ1hjNY/hgVMBwe/Ih0iIvwitZFKkXtLZ+IkN70eVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
-Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
-	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1vRH8Y-006EDn-33;
-	Thu, 04 Dec 2025 21:45:18 +0000
-Received: from ben by deadeye with local (Exim 4.99)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1vRH8X-000000003fY-3RBb;
-	Thu, 04 Dec 2025 22:45:17 +0100
-Message-ID: <21524ff157007f80e5b0b4dfb130736c034f0c56.camel@decadent.org.uk>
-Subject: Re: [PATCH 5.10 044/300] memstick: Add timeout to prevent
- indefinite waiting
-From: Ben Hutchings <ben@decadent.org.uk>
-To: Jiayi Li <lijiayi@kylinos.cn>
-Cc: patches@lists.linux.dev, Ulf Hansson <ulf.hansson@linaro.org>, Sasha
- Levin	 <sashal@kernel.org>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, stable	 <stable@vger.kernel.org>
-Date: Thu, 04 Dec 2025 22:45:12 +0100
-In-Reply-To: <20251203152402.246628462@linuxfoundation.org>
-References: <20251203152400.447697997@linuxfoundation.org>
-	 <20251203152402.246628462@linuxfoundation.org>
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-+LSVuDIfcuX0+Wk0nIPU"
-User-Agent: Evolution 3.56.2-7 
+	s=arc-20240116; t=1764885115; c=relaxed/simple;
+	bh=f86TfBhxSWen9/l8SlQALzJr44Fl7HRfBZ35Fh8g/pc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Sq7/Esb9l5j9j+yOEnwg38dpcZBvwEJJK35HRsIPrXDogP+cW2SljLaqfu873zmHNk70n7Tqzt+oqvCtjt/5tYMqKMmoJiSDos98/ThUBzj6S8iC4DDbyM3efw705mdTu0QkGmyexaNR7M63hJhhoBo9v/PReNpt2MktmqoE7LI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hF103HMQ; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-7aae5f2633dso1639796b3a.3
+        for <stable@vger.kernel.org>; Thu, 04 Dec 2025 13:51:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764885113; x=1765489913; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FAvfkDU3ZExZEkW+970sZ77IFU75i0OENqUmSqwulkA=;
+        b=hF103HMQHSJogxShgz2PrwYpuJ1OEnPHCd1m+JE9kXrQ5YIii06DnG8ftqCHhg/cv/
+         TBOOb5VMRtsSNCus7XqLvutljIKupYuNz97sj+/5nXbB7vhsio79G/z9dCvsqT+hKmTF
+         ZyYSzDmie18lWO6yCH8oFEUe5tpsAv/fKkcoWb+vLVn34X7MTmppfiy/yiGyJGCzJfnZ
+         AIa26+Z7viTXtQEQ+pj9J5n/LGqCDhh3ZiCEv6yFhsFqF4/VwnvF3mtvtLZ1OKmvXzyN
+         TRD+Cm4Pyf5iQ5PZMT+7UxJbebRUYaKORdbD2RxbM48BNC3RGXLO/DPnWWNICJzUN8XF
+         MlqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764885113; x=1765489913;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=FAvfkDU3ZExZEkW+970sZ77IFU75i0OENqUmSqwulkA=;
+        b=kL1gsyeDEEXy5kz8vT2Q22vxM5RQqnb44lwNmvs8UgLgkhp0auBFnrFvBlBeTJxm+M
+         DKZIca47BhqyjbTxwBD4aOVY+4qxMqjpGeZgHnwnKgJWj9OdoqBFGxPuFnjjJWkduPqI
+         xQqzprmn4UuyCEu3gi8J0yUboXqWXmNoKosGraYhbAhf1OD+Oo7JDhMpTOLCatYblk5M
+         DEaNgdau+jn+8jG3DbaSbFgJ69WSLphyec8qERyf5VuqOAY7Mc5ddvu3pAiSbHk6kOjj
+         SvbybD+Dv/9izleZuTERKJ5A7/OzMcl8Qw0M8SMliHP1KuXRxA3kX0pwWwXPzjpRe6Hd
+         fwmA==
+X-Forwarded-Encrypted: i=1; AJvYcCW2mUbAx6ZinmyAvkxRjmA13qDFP5cPIyPF2nIKxCrXsP9BwCKIZs/ubN9Gj7Iwy+zbCISUkUo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyprNrKWGZowDsmfRW63YbZpFKwO8GasRIcClWJOYja7pV6RFsN
+	RyM1LIsCDHU36KPnwBNBhHm767nKLMacdH9f7zr5nRPUWjzeMqtdM1AO
+X-Gm-Gg: ASbGnct2grdQYcT7YX8ugdt6hV7lll8tNRpgDURQUwsYQw+Sk+aT+kMD0olFpzwGBEk
+	4/z0kV8VjR1pes1FyxhyeeyivK8V9zahE4m+UFD9qYBsflll3PApwmyR0wxSQzxI35nJgCSqelS
+	QyHCSv5F50fFJSXcB8RMdjbnocJWYS2hEBmdZ4tMmvT3svsX43aasK9bPBLa5124Dajj4IWGDQt
+	mfi9hepMCtdhNhuyYVGifUs3nz4La3Ukc7KOXQSpVAcRZbU1vKl1z5Fg+MX8U3jZ7D6hebefSQS
+	uvu3mHODj9xDyTS9cvcOL8t1EJjWaykfKo4oBEkStYjdEiEFuOiJmXMbQN3TWJVDIBNQxZb8+r+
+	HAA3qovurv5mrBNz+q5DVVxkF2y38bnRQVF4QZnTlEHjkC47rip3xvTcnoMKIKCzVuq7Gk8oDN1
+	D0DrQHUmJo3C+8pm3Q8w==
+X-Google-Smtp-Source: AGHT+IFLywY9i1U+WFpfKnu6JXKAIn+zY7KfL8wOKIIB6nHSNIr3UwY8z/FYZFbnFSEIlLc7SnSndA==
+X-Received: by 2002:a05:6a20:3d82:b0:35e:7605:56a4 with SMTP id adf61e73a8af0-363f5e94b35mr9784241637.51.1764885112920;
+        Thu, 04 Dec 2025 13:51:52 -0800 (PST)
+Received: from localhost ([2a03:2880:ff:52::])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7e29f2ecf89sm3131563b3a.12.2025.12.04.13.51.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Dec 2025 13:51:52 -0800 (PST)
+From: Joanne Koong <joannelkoong@gmail.com>
+To: axboe@kernel.dk
+Cc: io-uring@vger.kernel.org,
+	asml.silence@gmail.com,
+	csander@purestorage.com,
+	stable@vger.kernel.org
+Subject: [PATCH v1 3/3] io_uring/rsrc: fix lost entries after cloned range
+Date: Thu,  4 Dec 2025 13:51:16 -0800
+Message-ID: <20251204215116.2642044-3-joannelkoong@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251204215116.2642044-1-joannelkoong@gmail.com>
+References: <20251204215116.2642044-1-joannelkoong@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
+Content-Transfer-Encoding: 8bit
 
+When cloning with node replacements (IORING_REGISTER_DST_REPLACE),
+destination entries after the cloned range are not copied over.
 
---=-+LSVuDIfcuX0+Wk0nIPU
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Add logic to copy them over to the new destination table.
 
-On Wed, 2025-12-03 at 16:24 +0100, Greg Kroah-Hartman wrote:
-> 5.10-stable review patch.  If anyone has any objections, please let me kn=
-ow.
->=20
-> ------------------
->=20
-> From: Jiayi Li <lijiayi@kylinos.cn>
->=20
-> [ Upstream commit b65e630a55a490a0269ab1e4a282af975848064c ]
->=20
-> Add timeout handling to wait_for_completion calls in memstick_set_rw_addr=
-()
-> and memstick_alloc_card() to prevent indefinite blocking in case of
-> hardware or communication failures.
+Fixes: c1329532d5aa ("io_uring/rsrc: allow cloning with node replacements")
+Cc: stable@vger.kernel.org
+Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+---
+ io_uring/rsrc.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-However, if the card does respond after the timeout, it appears that
-there can be a data race and UAF of the memstick_dev structure in
-memstick_next_req() and the callback function.  It looks like some (but
-not all) host drivers implement command timeouts themselves, so perhaps
-that is where this should actually be fixed.
+diff --git a/io_uring/rsrc.c b/io_uring/rsrc.c
+index 04f56212398a..a63474b331bf 100644
+--- a/io_uring/rsrc.c
++++ b/io_uring/rsrc.c
+@@ -1205,7 +1205,7 @@ static int io_clone_buffers(struct io_ring_ctx *ctx, struct io_ring_ctx *src_ctx
+ 	if (ret)
+ 		return ret;
+ 
+-	/* Fill entries in data from dst that won't overlap with src */
++	/* Copy original dst nodes from before the cloned range */
+ 	for (i = 0; i < min(arg->dst_off, ctx->buf_table.nr); i++) {
+ 		struct io_rsrc_node *node = ctx->buf_table.nodes[i];
+ 
+@@ -1238,6 +1238,16 @@ static int io_clone_buffers(struct io_ring_ctx *ctx, struct io_ring_ctx *src_ctx
+ 		i++;
+ 	}
+ 
++	/* Copy original dst nodes from after the cloned range */
++	for (i = nbufs; i < ctx->buf_table.nr; i++) {
++		struct io_rsrc_node *node = ctx->buf_table.nodes[i];
++
++		if (node) {
++			data.nodes[i] = node;
++			node->refs++;
++		}
++	}
++
+ 	/*
+ 	 * If asked for replace, put the old table. data->nodes[] holds both
+ 	 * old and new nodes at this point.
+-- 
+2.47.3
 
-Ben.
-
-> Signed-off-by: Jiayi Li <lijiayi@kylinos.cn>
-> Link: https://lore.kernel.org/r/20250804024825.1565078-1-lijiayi@kylinos.=
-cn
-> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  drivers/memstick/core/memstick.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/memstick/core/memstick.c b/drivers/memstick/core/mem=
-stick.c
-> index e24ab362e51a9..7b8483f8d6f4f 100644
-> --- a/drivers/memstick/core/memstick.c
-> +++ b/drivers/memstick/core/memstick.c
-> @@ -369,7 +369,9 @@ int memstick_set_rw_addr(struct memstick_dev *card)
->  {
->  	card->next_request =3D h_memstick_set_rw_addr;
->  	memstick_new_req(card->host);
-> -	wait_for_completion(&card->mrq_complete);
-> +	if (!wait_for_completion_timeout(&card->mrq_complete,
-> +			msecs_to_jiffies(500)))
-> +		card->current_mrq.error =3D -ETIMEDOUT;
-> =20
->  	return card->current_mrq.error;
->  }
-> @@ -403,7 +405,9 @@ static struct memstick_dev *memstick_alloc_card(struc=
-t memstick_host *host)
-> =20
->  		card->next_request =3D h_memstick_read_dev_id;
->  		memstick_new_req(host);
-> -		wait_for_completion(&card->mrq_complete);
-> +		if (!wait_for_completion_timeout(&card->mrq_complete,
-> +				msecs_to_jiffies(500)))
-> +			card->current_mrq.error =3D -ETIMEDOUT;
-> =20
->  		if (card->current_mrq.error)
->  			goto err_out;
-
---=20
-Ben Hutchings
-It is easier to change the specification to fit the program
-than vice versa.
-
---=-+LSVuDIfcuX0+Wk0nIPU
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmkyAOkACgkQ57/I7JWG
-EQlW3xAAqHPMd/uPqFBPveJ8hRD4sQiGDVpXlq6RPzAIdMR7p7a8d5MmEq6y3wsu
-AedY5f9pgWmpxTcRuEnn84R6dLzp7/jfD8CiZwfg/UxVaP+UriB6cmi+r+tIabMk
-NJgwpG9ciMCr1xI7sXxc7vNF+nKKPf4nOsJtgYFLYTehjAOPGxPjJcYWEitF1C8C
-febciNVcFlGf882+4tHpEO8kA7HhUUvkjLpeVsY1qdvPw6O4kUwjakGBkLVoCNxL
-ZmAOuu3UUFmsYPk2/HHrez7M0L3dXJwAObxxyzQ8X/MJ47wNtnNe7kcU6niP6nFy
-/TsLO2zhUM5krAqtmsBdEeVZ1IX+plWhTBuRuccs3YE0sjJGh3XBIGBqCqfInKn3
-pRM+GN5yKAA3rUIS2hFkxz+tCsCrSypdUtA2kGjmVSNJyelwxwEA1B6K9FrVjknE
-PbL3YZ4uQRrczTcSQUENxXFT+SyWhF5SYBKUuph2yg2BIi1/yRQ4bj4xJjuzIL5m
-IDXqtkc70WoPXFyDKLQpdU7Qdue89Ny+/qqzOycdCUUKXnHTBVGmHRf8i4+DrV/q
-LL028JpAdy6ZcSef56Mnnvmfc6h2HXNceVsAsX4ZtkCbKK+DsHRmLbiCbwp4qQcC
-pOf/o3Ot9aGNeGk1l2JZ5RNq3hci/idZ9hZIrJVvje4md6KX3E4=
-=lEf5
------END PGP SIGNATURE-----
-
---=-+LSVuDIfcuX0+Wk0nIPU--
 
