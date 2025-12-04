@@ -1,159 +1,97 @@
-Return-Path: <stable+bounces-200061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BAE9CA4F33
-	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 19:32:06 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2AB5CA5025
+	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 19:56:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 985373075FBA
-	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 18:31:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 00B8C30467A1
+	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 18:56:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 862F31684BE;
-	Thu,  4 Dec 2025 18:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B31F833A013;
+	Thu,  4 Dec 2025 18:47:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mlvLWs2o"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IGYrVcBu"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61E101B6527
-	for <stable@vger.kernel.org>; Thu,  4 Dec 2025 18:06:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C6641D63F0;
+	Thu,  4 Dec 2025 18:47:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764871615; cv=none; b=VeciqG6h59nftlOKXivFKd9GrScEY34puK51w5giJFjxZmVwvH1KfQRu+Wh/+6KE/Pc+7HObyKbXNNVgdTwZ2SfHXaV6kv6V5tDCtZHKx5S10RQV7BlDMf/hc4vKrsfDfrWO2/jBMJRY9mYn+2pzZlsuiNAD21BfJpmMzMGAR38=
+	t=1764874059; cv=none; b=I1aZluz2DmAL3emODDML8BVpjA1ELr1YErX6JW2QHD+o7b+IdSGPko9IvoTehvi70BCQxLQeNHEFpjhrAAB1S6ZUvcHc22EI8wIUKt5/oJSHNg3qqsOFpOzA/Etr5NCShs9t0diXPoJjPksUwLz4LkXtPv0VDZTN/PWijVGE9t4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764871615; c=relaxed/simple;
-	bh=Rrdp+Zf9csQrPT16ROUyOy+alatztNf+KHjGfCRhUpY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PLVTo57j1SRjwXsHEt+3z9jgYggStF2syPlvS+KEWxHEO9xTQCFBcGm0FHXts4qTOxyTMf4MukbdvNFRvLVkslyeaL5AOJEIGf/qmTO6pegq8ZXcNs6/K6ZYkh7MeRJiQ1nH03wjbRm03JdLvOhBf/b/DHWABT3RDFfmC9TGpRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mlvLWs2o; arc=none smtp.client-ip=209.85.160.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4ed9c19248bso10432461cf.1
-        for <stable@vger.kernel.org>; Thu, 04 Dec 2025 10:06:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764871612; x=1765476412; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Rrdp+Zf9csQrPT16ROUyOy+alatztNf+KHjGfCRhUpY=;
-        b=mlvLWs2oAs8twkhd3Rng+ZiWWbt1jx2Twlo7ZtCJ+4JM7CFWcB+8gP3DdRQxP7WZ8Z
-         ZLur0dZ9S8e60MiymR/SpBImHZLXT0g//rFOW3UfNTxrJRpBuXsGT3I0UEv4mSaWcf6K
-         Dml49fYz4xdmhMkiwvlkM3Yj5NBFJ+R19A3zO7dX2lpl1uXK7mkxaAsTMkMb/lrDEpuN
-         JHRiCoivYfELQ+alMqvlB2XQ7zDrW/2SN0bKrAvfTdK0rp7DxCI0Xgw0i15dWAToZlyU
-         5hYga04h5zqkk4dZdgCLvGohw9Ih0xI6ADfwakwE9NdWzT+6zFo0AQsGuobJcIpTXiwg
-         Q6kA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764871612; x=1765476412;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Rrdp+Zf9csQrPT16ROUyOy+alatztNf+KHjGfCRhUpY=;
-        b=hoopNt/cHsdxf483vig7a0wl7WvSFiwTcxmD+7tJk2+1hf4YyiDHKZHdY4XktXufJC
-         GzpDy/vAl2KAtirwW69O9ZZ6g4s85mEh4hho/yNj5ZWwOB82uAhvfePX5Nbou14kbb0t
-         sUPUvQscMeRfODMEZD9rrfO8e7SQCcDZGtBVtdv8bnQiTiGaBbXGe6kyIJQ9N/SDiPKF
-         U7cZ1HnStyt2ZdNv4f/e44XWK4Kx/5AL67OluqPScADwKwtZgHNs/QGupidwKOEeBHiI
-         LWDbVbsrcCBdVvyQb4x4++ngh3GoEDXZ3egpeGGonit0iymDBoOnKwr0zR1DVkHTC91v
-         9c2g==
-X-Forwarded-Encrypted: i=1; AJvYcCUHB1wCogJ8bJf0/n7J4bcaWqIqagwNrUFUFCOk5JWPkBqhID6HowQuwmpv601zDqK947e36Z0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxu+9Mu7eoHEJYioJJwJFVKV7toUwxXtpojGEoMWerGJ8bZOPQd
-	WRkFCwLHLNiCESYRrlHYqsQum3tqQeJxTMfX2aiNw6xx8ujYOrOvhQNhanJ32HEWcadhsipfdeq
-	R4VBuK6fx82jyjN0dDGW7Dqmmmr8Wk9U=
-X-Gm-Gg: ASbGncuP5vcq5rz14tDELMtoPId+LmYn4fMMBqJ0zwGLNfGQQHdpxKjJT1v076QZ+Qr
-	Z3ow+LZv2E1/yBhYUBjKOVfcj7677fD4+j1vtW/hR391qUtHyUP5Ows2YNk1pbfyHYHaRFuI+Ah
-	7vSM3PkKRILKCoHO4TIFT47Q0NN1lN0BmKXzIwE8V2NULvrHxq3Zn/BvgGlOqPBuDqKni4qpkmT
-	JPT0PvjvqFvRJJqJrzGajAmQPyTD+/+2P1IF03QKxB29BS9D5RxcngoLBkg8mAKL0DYzQ==
-X-Google-Smtp-Source: AGHT+IG3fjIllf1M6OCTBTd4dSunSkyg52cMugpNYk6tQ4JIDEp/Anl2MiBIRm+2Hyasb11VlNQQzK6UXmCqQNXT5qw=
-X-Received: by 2002:a05:622a:554:b0:4ee:2bfb:1658 with SMTP id
- d75a77b69052e-4f017655416mr83408181cf.45.1764871612155; Thu, 04 Dec 2025
- 10:06:52 -0800 (PST)
+	s=arc-20240116; t=1764874059; c=relaxed/simple;
+	bh=aBxY+yeXb15BcB6Xl5bDbKq9uRhz1HRl79Z86J6Ybu4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eTeWQ45DasXDi5mH+fWyfQrScOmIQJBlZ2ZS64mBTn/gyklt3ipeV0Nz8biSkTt03Ziy7qsb4eMmlgrMgE43EFCc5UfOsfcq8nd9qcVCyc3gj1SX0/7i1BJm4UpBkH7RfKKMCd94b6V5185szBOk1tznS6wtHmmZ2/tE4fmOPs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IGYrVcBu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7199BC116C6;
+	Thu,  4 Dec 2025 18:47:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764874059;
+	bh=aBxY+yeXb15BcB6Xl5bDbKq9uRhz1HRl79Z86J6Ybu4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IGYrVcBuE68nPW1f8ynVRAwgA597ivDkxHiMwvaNGKPBwsWiVxo1jaiEjKVGS2iCW
+	 I68+t3ERUCIAMJdKMzxH9AS8WzmDQkateiJeF/wpFjqL8w5WTrH8KkhSnsyqKGUkmr
+	 9esKVfbQpMj/2NH+RB7PmaPkfjjd8rIlHw5OhELkVQb2yX/ByyP73Srqg3IreRo2IX
+	 546D/K8CseJD+5FvvVSsLe73uUY5e/hu7RmVstFn1Y+XH2JXDeuYqtdlAig2nbtqsv
+	 cv4mLKJiIcQLZgHSVJVJyeYE8Q1D+bhiAbBwe9p7MhcKH/WLCIyRetdcPanJNCAvk7
+	 sgVMWjqcgZiow==
+Date: Thu, 4 Dec 2025 20:47:34 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Jonathan McDowell <noodles@earth.li>
+Cc: linux-integrity@vger.kernel.org, Peter Huewe <peterhuewe@gmx.de>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	open list <linux-kernel@vger.kernel.org>, stable@vger.kernel.org,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	David Howells <dhowells@redhat.com>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	"open list:KEYS-TRUSTED" <keyrings@vger.kernel.org>,
+	"open list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>
+Subject: Re: [PATCH v3 1/4] tpm2-sessions: fix out of range indexing in
+ name_size
+Message-ID: <aTHXRuvbUkCiQQAL@kernel.org>
+References: <20251203221215.536031-1-jarkko@kernel.org>
+ <20251203221215.536031-2-jarkko@kernel.org>
+ <aTGkno0fzQMHXc7X@earth.li>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251120184211.2379439-1-joannelkoong@gmail.com>
- <20251120184211.2379439-3-joannelkoong@gmail.com> <5c1630ac-d304-4854-9ba6-5c9cc1f78be5@kernel.org>
- <CAJnrk1Zsdw9Uvb44ynkfWLBvs2vw7he-opVu6mzJqokphMiLSQ@mail.gmail.com>
- <f8da9ee0-f136-4366-b63a-1812fda11304@kernel.org> <CAJnrk1aJeNmQLd99PuzWVp8EycBBNBf1NZEE+sM6BY_gS64DCw@mail.gmail.com>
- <504d100d-b8f3-475b-b575-3adfd17627b5@kernel.org> <CAJnrk1a1XsA9u1W-b4GLcyFXvZP41z7kWbJsdnEh7khcoco==A@mail.gmail.com>
- <CAJfpegv7_UyTht-W9pimE-G6tZQ0nKU6fYo1K2hcoNSHYC3tpw@mail.gmail.com>
-In-Reply-To: <CAJfpegv7_UyTht-W9pimE-G6tZQ0nKU6fYo1K2hcoNSHYC3tpw@mail.gmail.com>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Thu, 4 Dec 2025 10:06:40 -0800
-X-Gm-Features: AWmQ_bkfmaBxtqNiCodT9gGB1wJnTwkgc9tefeZRB6rVjqiHpy8rJCyBAd9v5hc
-Message-ID: <CAJnrk1bUrL5z=K-yKGXRX8W0RtXrnnwiidrCyboLrr+9RFwnww@mail.gmail.com>
-Subject: Re: [PATCH v1 2/2] fs/writeback: skip inodes with potential writeback
- hang in wait_sb_inodes()
-To: Miklos Szeredi <miklos@szeredi.hu>
-Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	shakeel.butt@linux.dev, athul.krishna.kr@protonmail.com, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aTGkno0fzQMHXc7X@earth.li>
 
-On Wed, Dec 3, 2025 at 1:28=E2=80=AFAM Miklos Szeredi <miklos@szeredi.hu> w=
-rote:
->
-> On Wed, 26 Nov 2025 at 18:58, Joanne Koong <joannelkoong@gmail.com> wrote=
-:
-> >
-> > On Wed, Nov 26, 2025 at 2:55=E2=80=AFAM David Hildenbrand (Red Hat)
-> > <david@kernel.org> wrote:
-> > > >
-> > > >> having a flag that states something like that that
-> > > >> "AS_NO_WRITEBACK_WAIT_ON_DATA_SYNC" would probable be what we woul=
-d want
-> > > >> to add to avoid waiting for writeback with clear semantics why it =
-is ok
-> > > >> in that specific scenario.
-> > > >
-> > > > Having a separate AS_NO_WRITEBACK_WAIT_ON_DATA_SYNC mapping flag
-> > > > sounds reasonable to me and I agree is more clearer semantically.
-> > >
-> > > Good. Then it's clear that we are not waiting because writeback is
-> > > shaky, but because even if it would be working, because we don't have=
- to
-> > > because there are no such guarantees.
-> > >
-> > > Maybe
-> > >
-> > > AS_NO_DATA_INTEGRITY
-> > >
-> > > or similar would be cleaner, I'll have to leave that to you and Miklo=
-s
-> > > to decide what exactly the semantics are that fuse currently doesn't
-> > > provide.
-> >
-> > After reading Miklos's reply, I must have misunderstood this then - my
-> > understanding was that the reason we couldn't guarantee data integrity
-> > in fuse was because of the temp pages design where checking the
-> > writeback flag on the real folio doesn't reflect writeback state, but
-> > that removing the temp pages and using the real folio now does
-> > guarantee this. But it seems like it's not as simple as that and
-> > there's no data integrity guarantees for other reasons.
-> >
-> > Changing this to AS_NO_DATA_INTEGRITY sounds good to me, if that
-> > sounds good to Miklos as well. Or do you have another preference,
-> > Miklos?
->
-> Sure, sounds good.
->
-> (Sorry about the delay, missed this.)
+On Thu, Dec 04, 2025 at 03:11:26PM +0000, Jonathan McDowell wrote:
+> On Thu, Dec 04, 2025 at 12:12:11AM +0200, Jarkko Sakkinen wrote:
+> > 'name_size' does not have any range checks, and it just directly indexes
+> > with TPM_ALG_ID, which could lead into memory corruption at worst.
+> > 
+> > Address the issue by only processing known values and returning -EINVAL for
+> > unrecognized values.
+> > 
+> > Make also 'tpm_buf_append_name' and 'tpm_buf_fill_hmac_session' fallible so
+> > that errors are detected before causing any spurious TPM traffic.
+> > 
+> > End also the authorization session on failure in both of the functions, as
+> > the session state would be then by definition corrupted.
+> > 
+> > Cc: stable@vger.kernel.org # v6.10+
+> > Fixes: 1085b8276bb4 ("tpm: Add the rest of the session HMAC API")
+> > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+> 
+> A minor whitespace query below, but:
+> 
+> Reviewed-by: Jonathan McDowell <noodles@meta.com>
 
-Is the reason we can't guarantee data integrity because the server
-ultimately controls disk persistence whereby it can claim to have
-written data even if it didn't? If so, it seems like NFS / the other
-network-based filesystems would also have to set that
-AS_NO_DATA_INTEGRITY mapping flag too to be consistent? Or is there
-some other reason?
+Thanks. I updated the commit and removed the extra whitespace.
 
-Thanks,
-Joanne
-
-
->
-> Thanks,
-> Miklos
+BR, Jarkko
 
