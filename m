@@ -1,160 +1,243 @@
-Return-Path: <stable+bounces-199980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28008CA30EE
-	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 10:44:44 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DF33CA3158
+	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 10:50:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 551BF3009698
-	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 09:44:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1900F300A736
+	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 09:50:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC4A334C0B;
-	Thu,  4 Dec 2025 09:44:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2608F335BAD;
+	Thu,  4 Dec 2025 09:50:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="EOXRvqVR";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="CPpsENVv"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="i4GcK4nw"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90E091A9FAF
-	for <stable@vger.kernel.org>; Thu,  4 Dec 2025 09:44:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DBDD230BDF
+	for <stable@vger.kernel.org>; Thu,  4 Dec 2025 09:50:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764841463; cv=none; b=iB1U2t2OdpFzhYIYtjNfnytdtc4CdZ59MOI44C5Gark3/85sgZy7CYCW7ZJx1JxJH8Re+v98UTGUOPgfh2OHjIrz/uitO3ij/m6cKHJdSmG1YArGTIe7EpC1HA1K8pHmBjBsAe6Oz73CUjY9LogAaP10tj5QTRwHY1ORfe8Jf1w=
+	t=1764841825; cv=none; b=jFs9K0hPCFsfjDkSLffYxZJzYdJWJne0zYjAFedOAK5nb2vCTjzc20zFCNpEw5FQI48PimlO7tL7J4XJFQ+SoGwrweBoPYQAM1pet+Ri0XEE27ghYA3giIpR5UPN7egXBkbEgbyvoNHqoGIh+feWIEJHsyXDou7uKHC0IrIrVLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764841463; c=relaxed/simple;
-	bh=vXblevtqTt4/ExqMNMsLHoKBrEeogH8uHzyxwjnr7n0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jfRFaYGt7A9lRUOEBbpB9F5950a1Bi4gmDK7IN9iLJHudpfAJ91YLhV8CRIqLWra60L0hPkRQnhvNojasZEsbS2dpe61x8ZDs8ditBIJKuZybazrd4objmipSSajH4dFvd9HuClQdmty/qBW46wiNiNPxTPgEQoT0e00ScfxtJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=EOXRvqVR; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=CPpsENVv; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5B468ip1560144
-	for <stable@vger.kernel.org>; Thu, 4 Dec 2025 09:44:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=0brUBNo2+3OsIrwv8UuAtu44g7X1/MXs8D1
-	JRheaSsk=; b=EOXRvqVR7amOZGb1xkLKhXW+0S/68TINUQWS8q2m4j+EVuJJ1In
-	Sz5MSyxqmZncc7hQRL+2wFqmBySziUfVmo6uOatCKswyuhddrfaa880Nk16Vz97/
-	aI/e/X+pyeE7zd3XUfr1YtiWaCBPzWI8WgrSFP2eUY38ITsUMR9WKdY5MOfA0+Em
-	un/AUhKAQfYShwBv3p9FVCsYnx6TLZM+NBnLwzUzbKpjQqitl4ZINEhoR8TueuYx
-	TA5dcvl5ddbcCYbI/eaP//6BSfOgKxnWX2VhD9eVrria6J4YgRUA3etItCCdrm+1
-	a/NItvUq/wk2nUBIb/Aj78gDED5uIMe0yRg==
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4attmhadfp-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Thu, 04 Dec 2025 09:44:21 +0000 (GMT)
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-8b245c49d0cso143947885a.3
-        for <stable@vger.kernel.org>; Thu, 04 Dec 2025 01:44:21 -0800 (PST)
+	s=arc-20240116; t=1764841825; c=relaxed/simple;
+	bh=paEnSubsEM1IlX4Fx8BGns84K+slnryUulk62N9zV60=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bHndoKjpazzR46e63h92QW2gzcwIwXS00W+4qVRMFJeZE8tb41iACdpds6iM+EA4FuLaihDjYWevmFKJj6k94ASjyT2StbIr+fX0bUPugwiS9f+FQDYnmK+5OIwM3Mb32iKBW8DNhx+CJ4gZgI6/wyXVHrJ84izNsWH88HbXtvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=i4GcK4nw; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2953e415b27so8408055ad.2
+        for <stable@vger.kernel.org>; Thu, 04 Dec 2025 01:50:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1764841461; x=1765446261; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=0brUBNo2+3OsIrwv8UuAtu44g7X1/MXs8D1JRheaSsk=;
-        b=CPpsENVvZeG59itlaXxTmN14boIxpXUV/K234d0Uzqh4O8x/iNuj0cmlhl1m1e9k+L
-         dNLdsrtzfkdFeF6IHTveudk55rTLdeacbGsc7NNWZIDV00YGMcz5+OvhWtJ72M9mBHYl
-         YVIw/IvEXFKlrWMpQpF4WS8PV1F5JMRwM/CobdMj6Kw24hevGJNHBlJUJzjnmi82Zmc+
-         d2BFOYO2kZ8l9PPIRl5mp3ZTrjwZJ050GGDPzNclv3DqY8Bm2+QzZHgH5AWdFo0T6J46
-         SLT4Jd12+Jy0OUydbbP3/H11h14tKrwWK2zyhF7wOQ0q9S2DyAcFDex9wweDp5mXxscc
-         nuBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764841461; x=1765446261;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=linaro.org; s=google; t=1764841821; x=1765446621; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=0brUBNo2+3OsIrwv8UuAtu44g7X1/MXs8D1JRheaSsk=;
-        b=UzCg/Cbvqbp2LE/znEhM/ueeTjYmlHFt5GUSt8sdy3KMirpmtEEDsi42zsnNsQU05v
-         Pvst7XvtuQvv+lICi0M56qJpOFitLGOqFD2eP8Y1q7XtndRZQ6iw51riSx+oG5/hBPvV
-         qZI1p/31aKNLKzBG+yatpGOC+VcV2N5ySFrvH1Gkh7fZyJ7US6a4/tRxu8j6fLyVN0cA
-         gOFGVQjUywIrTvol50pfyNuO9rgLQeB/xCfTib3rdeEf5FD6Io9pNAf6CbMdgk3fRT2g
-         XA9/FP7BJbbNcw/FmCB9SUd5FuH+S4KCVESl8+o5/3xnOExHcq8gstrn/euXqBj1A08M
-         MGEw==
-X-Forwarded-Encrypted: i=1; AJvYcCWMrIQBu7Duc06pjw6suMokY2eFXLppLYFgLdBkK4SGccqAw8lyVVi0JEF4X7UzMJ7Fpf01lw4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzTVbLtjUS706z9uGiUciSP7DCvFP5QCcCCDrLHqwhf/9cxmw5a
-	qixEkcuwO51dgHMz4P53pwoHoSlaM84XoHkpIZK/Xzd3ZlR/08Y5Bcf+Yist/nmR/PxPNrrCigA
-	hQ4nJ9VUtXfxZjN4l0P/JB5SkLoRTLZgpGk36q+u30552/CvYhvZqcg0Ho48=
-X-Gm-Gg: ASbGncuntGAv+IlLiCkHkTeCFEGdsKqOsKStT9NbNaHe/5ScWpLjG+S6P2/BpK7VuFp
-	vQ8q+JuTaxHZ5UeSScl9HrQnZzoQrL91g5y8JAm3oPqrJCcfbYMyuKuWfuqSOtv/ispV4mfvPxx
-	gD3CFUVvD4M3BtNi4zPQFlpyvF2ieoBnvaUaUxyr76Dw/K5EkndBhM7qdpVCWxxRjw9D/97xQuo
-	ocT+pCC7WHaGFTDouvPE8xtiwmpr+aVLqMcspyFu0Ql7TyLXjz4naVPF4yZZfSNt/d5Z1yURqT8
-	47LyGwY1+DgPs49xLdxoAnXWJTiiLY9blFrDKpWmvw0PNn2GO7PwlXJXc5Uj3P60rPJDR/aHF5B
-	khB1VqGRTxPuXCp0GJg==
-X-Received: by 2002:a05:620a:4709:b0:8b2:f1f7:b867 with SMTP id af79cd13be357-8b5e535e20cmr705025485a.11.1764841460798;
-        Thu, 04 Dec 2025 01:44:20 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEzQBFsGx9JpmMIqL9fCWT9ejZtveihFlSFVoGDQUzSfiK6jjc+GzBWGLMYRlYLQAQSyY4C5Q==
-X-Received: by 2002:a05:620a:4709:b0:8b2:f1f7:b867 with SMTP id af79cd13be357-8b5e535e20cmr705021685a.11.1764841459884;
-        Thu, 04 Dec 2025 01:44:19 -0800 (PST)
-Received: from brgl-uxlite ([2a01:cb1d:dc:7e00:74f:3ed7:4831:5695])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42f7d2226e7sm2239669f8f.27.2025.12.04.01.44.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Dec 2025 01:44:19 -0800 (PST)
-From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-To: Philipp Zabel <p.zabel@pengutronix.de>,
-        Krzysztof Kozlowski <krzk@kernel.org>
-Cc: linux-kernel@vger.kernel.org,
-        Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-        stable@vger.kernel.org
-Subject: [PATCH] reset: gpio: suppress bind attributes in sysfs
-Date: Thu,  4 Dec 2025 10:44:12 +0100
-Message-ID: <20251204094412.17116-1-bartosz.golaszewski@oss.qualcomm.com>
-X-Mailer: git-send-email 2.51.0
+        bh=0xQCdKxxIzlGDW/pad8bOskN9bo38tocSPqJ0Sm/bO4=;
+        b=i4GcK4nwphXF6/XKRxdBNqX37UFyGSTJCOtVzD+i8E8bbOfcY3t/2wsIiK4cKTG5dj
+         oMiiKgw2DUGJyfZlVcjqy9mKxGsgAV1X10WGS8PQBoNUARG9NseTHVA+c8HevcuCDBYr
+         ToIX4DaqoaxFmBoX3jQin0t61SKOAuhcC/ruFYqh7flHxeSu/i+HQS0dElIzHBIl6Pv+
+         sX3V8LcFckTk0YS1eEBzhLWT1cTVRx3SSMPGR+h0CPqMVTPTFARt7jKY8vfbKX+e690z
+         BWHUqicy9cNwWe2/OykqXwj7C9E/TxgZZwJ5h/J7zlinEXUAQVQVs9hUSPjYqXJzlRzG
+         2nrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764841821; x=1765446621;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=0xQCdKxxIzlGDW/pad8bOskN9bo38tocSPqJ0Sm/bO4=;
+        b=NqJrwcqreip4j9v4/WZrxdEKyubJW4Mpqje6Dv+flBDRH11JTQYLQXLa66djAcncDy
+         Fo31r8OPsKErXGkpFkrpAv8FEz0bSFCQ8O2cNTHfElciU9TLAdsBHIOqpcv9FDMLGTqF
+         aLT8EebzXD4eWhyr2Vtxkioh/qjQLrvkf7B7iubrBhL80SZYylZsDpGizrGgwHlezC9I
+         /1tw4pOiLOiszGv/UpsiXvUzmOKlRS0FFb9IVDD2i9RJG4oLFCUBj6mbkJ2NzpQVl1Hp
+         I+LvHaGRaAkEwU9CvbK/+3yOxE0hi9ZbBCJDRpuqLf43+9UBZI+sTJLYsH4I33u0JHQy
+         F+mw==
+X-Gm-Message-State: AOJu0YyriGfMKJ7raqrl7iCnAlvAd2/k3h5BxwMxwSJeegCvSdbbOm7r
+	fJ+4fAHK2EYua0Cdbi20bHUNHVd1nn37K3hqVj3UnAZDhGql23e+Gcn6nx4ApLacgEfqyzg0ESt
+	Gu0R0h5ukLiiEcD6r0+afjmLxOCd3ahJAEdrinbH06Q==
+X-Gm-Gg: ASbGncvSbsSVQ0m1FcSJdj+0gfZAIfYta9s1+aLlM2NrsG6MRF+ungrOHvHrh0Hpfje
+	X+hBFrgJhtl2i4fLtQWCYQs5hC3g5SIX2eIxzaL1GoZsRZnhnodlq0jFXdQ8uMdbVaDPkjkyqR0
+	9m1L9VVSfzSqmFUj04WH/KghaL1Gb1sQQhpIa4F0PWj1yTtebUvVIf5pDX55NPqCkVAMNn7hlH2
+	Ibz1GVvzBQmt6SFqs+Gsox379ErAdlO+caatLQ/U+BswO+E6r6dIhuM6o3NCUgcespCBRAnWdui
+	dpXzEsIUkTlYLUQPBZalfvFSER24
+X-Google-Smtp-Source: AGHT+IH/MuYsoPNwU3yqMF6glHHl/rGRMPC2ltPLwOqcYJ5es3WIKFs3Nw4GaKMGeFuySPMsiNHb6ZwWyb4dnOc4Mvw=
+X-Received: by 2002:a05:693c:394b:b0:2a4:3592:cf74 with SMTP id
+ 5a478bee46e88-2aba42fe05bmr1983435eec.24.1764841820649; Thu, 04 Dec 2025
+ 01:50:20 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: KPl6eo4oengYvoAzWImwdQ6SJ_xjCuo0
-X-Authority-Analysis: v=2.4 cv=NcTrFmD4 c=1 sm=1 tr=0 ts=693157f5 cx=c_pps
- a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=xqWC_Br6kY4A:10 a=wP3pNCr1ah4A:10
- a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
- a=UvoPXoD5CY4mxSsR51IA:9 a=PEH46H7Ffwr30OY-TuGO:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA0MDA3OCBTYWx0ZWRfXzUPIGVgfhU6D
- v1vIKmUf81IynP7hMEFVaiDx4rfyem5lFMPl5Qa+9lQR05KjHJCjppu8HvaDE09wyaY2oNsvxzM
- hDX0Glnii5N+QV3z6iSpvRYwtIOFI//ftPIbnRsEuysW+UNlDW/GgBeB/QMwcYAWon3icqX0xoo
- EhLdu1LLi0Vh7NxcuvaimbsPHTGBwzIFejdDL8FyEwLyC0yt2wCqMDuQxc8nhAPNfZ5aq0MlJJw
- 6R7HfJQSsjNlMAUixw291r1X65UqwIIIKl9RG8AWCtXrWNfQ8STWXx8ooz8AQTfnM/oV8Q8Jonx
- bu6ur3aN+XjD6sKhAu66JYKZ1ulYmSrFMCY8SrTPp2D2Co/1BI1YyUQA5AZamgr9QUyvDvlwJv1
- /vXI0+S39NC9Xc1pWZ2NQWpdh3p2sg==
-X-Proofpoint-ORIG-GUID: KPl6eo4oengYvoAzWImwdQ6SJ_xjCuo0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-04_02,2025-12-03_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 suspectscore=0 priorityscore=1501 impostorscore=0
- malwarescore=0 bulkscore=0 phishscore=0 adultscore=0 lowpriorityscore=0
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
- definitions=main-2512040078
+References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Thu, 4 Dec 2025 15:20:08 +0530
+X-Gm-Features: AWmQ_blZgGVdRz_MNdiWwG7ey1yZJ5o0Yjq-9lxTgtnmoqzXUZJVXJa_tbKBRbc
+Message-ID: <CA+G9fYv+7+8r7Gqv2y9LTs+JOzzOP6sCsNZ_3oz=EzgZUkKN7g@mail.gmail.com>
+Subject: Re: [PATCH 6.17 000/146] 6.17.11-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org, sr@sladewatkins.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This is a special device that's created dynamically and is supposed to
-stay in memory forever. We also currently don't have a devlink between
-it and the actual reset consumer. Suppress sysfs bind attributes so that
-user-space can't unbind the device because - as of now - it will cause a
-use-after-free splat from any user that puts the reset control handle.
+On Wed, 3 Dec 2025 at 21:19, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.17.11 release.
+> There are 146 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 05 Dec 2025 15:23:16 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.17.11-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.17.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Fixes: cee544a40e44 ("reset: gpio: Add GPIO-based reset controller")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
----
- drivers/reset/reset-gpio.c | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/reset/reset-gpio.c b/drivers/reset/reset-gpio.c
-index e5512b3b596b..626c4c639c15 100644
---- a/drivers/reset/reset-gpio.c
-+++ b/drivers/reset/reset-gpio.c
-@@ -111,6 +111,7 @@ static struct auxiliary_driver reset_gpio_driver = {
- 	.id_table	= reset_gpio_ids,
- 	.driver	= {
- 		.name = "reset-gpio",
-+		.suppress_bind_attrs = true,
- 	},
- };
- module_auxiliary_driver(reset_gpio_driver);
--- 
-2.51.0
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+## Build
+* kernel: 6.17.11-rc1
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git commit: c434a9350a1d08ea6dff3ed87c9a6104e0641ecf
+* git describe: v6.17.10-147-gc434a9350a1d
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.17.y/build/v6.17=
+.10-147-gc434a9350a1d
+
+## Test Regressions (compared to v6.17.9-177-g6c8c6a34f518)
+
+## Metric Regressions (compared to v6.17.9-177-g6c8c6a34f518)
+
+## Test Fixes (compared to v6.17.9-177-g6c8c6a34f518)
+
+## Metric Fixes (compared to v6.17.9-177-g6c8c6a34f518)
+
+## Test result summary
+total: 123996, pass: 104773, fail: 4209, skip: 15014, xfail: 0
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 139 total, 139 passed, 0 failed
+* arm64: 57 total, 54 passed, 3 failed
+* i386: 18 total, 18 passed, 0 failed
+* mips: 34 total, 33 passed, 1 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 40 total, 39 passed, 1 failed
+* riscv: 25 total, 25 passed, 0 failed
+* s390: 22 total, 22 passed, 0 failed
+* sh: 5 total, 5 passed, 0 failed
+* sparc: 4 total, 3 passed, 1 failed
+* x86_64: 49 total, 48 passed, 1 failed
+
+## Test suites summary
+* boot
+* commands
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-kcmp
+* kselftest-kvm
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-mincore
+* kselftest-mm
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-mptcp
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-rust
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-x86
+* kunit
+* kvm-unit-tests
+* lava
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-build-clang
+* log-parser-build-gcc
+* log-parser-test
+* ltp-capability
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+* rt-tests-cyclicdeadline
+* rt-tests-pi-stress
+* rt-tests-pmqtest
+* rt-tests-rt-migrate-test
+* rt-tests-signaltest
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
