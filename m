@@ -1,52 +1,58 @@
-Return-Path: <stable+bounces-199950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C5E8CA2099
-	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 01:25:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7F0DCA20D8
+	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 01:43:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 59C903010E44
-	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 00:25:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3A0533015840
+	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 00:43:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D78E818871F;
-	Thu,  4 Dec 2025 00:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18B461DA61B;
+	Thu,  4 Dec 2025 00:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YncNwaY2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OmeFWs/9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90032398F8E;
-	Thu,  4 Dec 2025 00:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C205B1D416E;
+	Thu,  4 Dec 2025 00:43:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764807921; cv=none; b=m3Bqiu7SX8Jzf1VUuCZYkZMBbBRTLkfg5cIId0Wbh7cC9PfXVuS1MnH0Z9Ba4FwAssFiL6O9+b5CjeQX++PWkbYPWgoNYMOAtmCL9F+fDZ6zECzrWfJ32vKMk4uXySAEpyF9N/LYBaB3Q2RbDPQRxp62T6m4lz8OdFiPTxPmvAk=
+	t=1764808998; cv=none; b=L8wQ6g9c5od9abKopl2l90ieu1XviXsFoLhppkEoyPPbymYtY+LJnOrjn85+sSge9b5hSOJwow4UmmUESzWfCAKw3O6ymVODv6gV1XgMXEY24/a7k90FIv+IRlMiSHUlmYjEq4b23BzLc/duXSXc9SHqpZ4RQ6nReBW1fU15fvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764807921; c=relaxed/simple;
-	bh=eBv2KLILAAwrsekBAwnhrnIS3X/u71HS4CiL3wf36u8=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=gqV5W6uM5pII4ud0UrDYDuVYq7mBbqc8TS8IoqByjl4zJ9OpkoJo3sDfF+k8kHTJBEZxzNYg8ZCNiVk6CUQU+Cq7YUW9IQOUYf40T7pLbAb/1Ypa5nt3A4r65hptXj0Qr0fS2J7fbhB1fAQxBDD2SanhHiqHxF4GXDhZLIhgxnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YncNwaY2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5428C4CEF5;
-	Thu,  4 Dec 2025 00:25:19 +0000 (UTC)
+	s=arc-20240116; t=1764808998; c=relaxed/simple;
+	bh=AAY4jeuMiOcb62fXqwWLqSABPojz23dlDR+d/WfhJVs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S81lAFltERNtzDgD7+XO1Wk/wln+ACl3Em7nQd1rJ5WSDGWjAQe7N+gVIefBD3ZpiA0jBHFFgSfGvGEOVgwqDdPpJjzx1ksuRe1TASm7GrZr+FWHOlalA+l9HGIkzrGaGOhImFAr/B8kZasSa3hEAJj6TUfD2Uf07kxMh+CbTcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OmeFWs/9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2219C4CEF5;
+	Thu,  4 Dec 2025 00:43:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764807921;
-	bh=eBv2KLILAAwrsekBAwnhrnIS3X/u71HS4CiL3wf36u8=;
-	h=Date:From:To:Cc:Subject:From;
-	b=YncNwaY2HWeKWEtFNeLkcvnNju7vECirG0PodmEOnWdHwGs7cq/U67M+shVS13dY8
-	 vzDJRiv+RBYtMc9UFiojTU4OrPGH+uAKgyfWgD7vVw7sr8UcEtEKPmq480UvSrCV/c
-	 P3XQMC10FEFz44escQ3nNnkyv7mNfI1J2Yt1Lanm53x5dLJQrvXEno0pCmYLZzKyeP
-	 PWN4PPxW4XwTtnPlnF9L6HGgzzS0rVyk4sdGX3zJQcokvfxSjvN0dS3x1dgsYHNXLm
-	 VRmDD2i3rO5EndRI+fqW7AvadlN8z1RnFHzrQCJSZeZgDPfw2XknV7peUOgqtJdycd
-	 qFa02RZ/8vspw==
-Date: Wed, 3 Dec 2025 17:25:17 -0700
+	s=k20201202; t=1764808998;
+	bh=AAY4jeuMiOcb62fXqwWLqSABPojz23dlDR+d/WfhJVs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OmeFWs/9wztfT7HqX5hzewUlKZ6xzlHbopfhUW8GteDTDule5KVozT2r9FpLWarua
+	 oRZsDlQ7QTxYukVUxLitUJ6Au8Wpolyx/eqSVf/n77Qfcf2L3ctEa0eiU7uMcS1Dt+
+	 nOSlhrtxW99fuxOnoaplBfftVborEwsICrVNBRl+EqP3W4LB8zqsYdxnYXAfbh3N4M
+	 ierRL7GlKCL/X6wHqyjlttkGzHkQLNXfxsn+BzBzALfiDBmpb5mDhJQB1TIRochMQ6
+	 iuYEJ25llhmCPZvLk9rIehTxYxAqv71ajYeSHlPP0RvMLQ+SiaWrdf6aaaZfUhjGxx
+	 hKlOmJX7k7BpA==
+Date: Wed, 3 Dec 2025 17:43:14 -0700
 From: Nathan Chancellor <nathan@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, netdev@vger.kernel.org,
-	Ioana Ciornei <ioana.ciornei@nxp.com>
-Subject: Please apply 5b1e38c0792cc7a44997328de37d393f81b2501a to 5.15
-Message-ID: <20251204002517.GC468348@ax162>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Guenter Roeck <groeck@google.com>, kernelci@lists.linux.dev,
+	kernelci-results@groups.io, gus@collabora.com,
+	stable@vger.kernel.org, linux-staging@lists.linux.dev
+Subject: Re: [REGRESSION] stable-rc/linux-6.12.y: (build) variable 'val' is
+ uninitialized when passed as a const pointer arg...
+Message-ID: <20251204004314.GA1390678@ax162>
+References: <176398914850.89.13888454130518102455@f771fd7c9232>
+ <20251124220404.GA2853001@ax162>
+ <CABXOdTfbsoNdv6xMCppMq=JsfNBarp6YyFV4por3eA3cSWdT7g@mail.gmail.com>
+ <20251124224046.GA3142687@ax162>
+ <2025112730-sterilize-roaming-5c71@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,31 +61,14 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <2025112730-sterilize-roaming-5c71@gregkh>
 
-Hi stable folks,
+On Thu, Nov 27, 2025 at 02:22:46PM +0100, Greg Kroah-Hartman wrote:
+> No objection from me to delete the driver from all of the stable trees :)
 
-Please apply commit 5b1e38c0792c ("dpaa2-mac: bail if the dpmacs fwnode
-is not found") to 5.15, where it addresses an instance of
--Wsometimes-uninitialized with clang-21 and newer, introduced by commit
-3264f599c1a8 ("net: dpaa2-mac: Add ACPI support for DPAA2 MAC driver")
-in 5.14.
-
-  drivers/net/ethernet/freescale/dpaa2/dpaa2-mac.c:54:13: error: variable 'parent' is used uninitialized whenever 'if' condition is false [-Werror,-Wsometimes-uninitialized]
-     54 |         } else if (is_acpi_node(fwnode)) {
-        |                    ^~~~~~~~~~~~~~~~~~~~
-  drivers/net/ethernet/freescale/dpaa2/dpaa2-mac.c:58:29: note: uninitialized use occurs here
-     58 |         fwnode_for_each_child_node(parent, child) {
-        |                                    ^~~~~~
-  drivers/net/ethernet/freescale/dpaa2/dpaa2-mac.c:54:9: note: remove the 'if' if its condition is always true
-     54 |         } else if (is_acpi_node(fwnode)) {
-        |                ^~~~~~~~~~~~~~~~~~~~~~~~~
-  drivers/net/ethernet/freescale/dpaa2/dpaa2-mac.c:43:39: note: initialize the variable 'parent' to silence this warning
-     43 |         struct fwnode_handle *fwnode, *parent, *child  = NULL;
-        |                                              ^
-        |                                               = NULL
-
-It applies and builds cleanly for me. If there are any issues, please
-let me know.
+Sounds rather nuclear for the issue at hand :) but I can send the
+backports for that change and we can see who complains before trying a
+more localized (even if wrong) fix.
 
 Cheers,
 Nathan
