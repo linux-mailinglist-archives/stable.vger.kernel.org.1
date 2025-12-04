@@ -1,125 +1,185 @@
-Return-Path: <stable+bounces-199946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D06BCA2008
-	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 00:57:07 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FE20CA2026
+	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 01:00:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1C967300EE52
-	for <lists+stable@lfdr.de>; Wed,  3 Dec 2025 23:55:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EEF2B3002B02
+	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 00:00:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7226F2F25E7;
-	Wed,  3 Dec 2025 23:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A12D2F0C6F;
+	Thu,  4 Dec 2025 00:00:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q3kXn5XO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VSsZIlEl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70AB92EA14E
-	for <stable@vger.kernel.org>; Wed,  3 Dec 2025 23:55:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 890A1257423;
+	Thu,  4 Dec 2025 00:00:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764806124; cv=none; b=s3wdWp2dfVFZUgzKgWGErsiVUNfI+ldp9N9Kdt57XjGqZwAOY8BPLBArf3DqjfV5iw61oPc0C/GsHNy1xNefodtD9DiOhtq7o1RNoGNkGEPwLTYy5STkFcbwgdCbUu+8Q6H0jnf2xVr7pZMIomNzERwpuAA6Qgm2SzkAdbdGpF4=
+	t=1764806431; cv=none; b=czFhGogZG4p+0s4YvSm/bWZXtAcqQLRqeS/GDD0fAphCpe97OU4GMNrphcIUu911oQgGFzllqWdIMS8keF+u6vU5hb7WjY3JtR5k5e5dGPfvfSoQ3xVHBG24oDGCpfjJOgLXOCN7d9vpPES7Hj/CBqcDS5vV3vU99EoE+GOpoL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764806124; c=relaxed/simple;
-	bh=TI2fK4uIvAg0wDiX9zvQGGRTrBKJrR/dr0pn6GaiD3s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UMJpd69EPVcC9Ht6Rgi2PmfR9Y1O1xrpv3nQ/e9TmjLPHnOhE87BZ/SpWi/7XyYDrVkA99MAFtDBbuC7LcBGICnE52Ypivkt1WYirD3V2I75puYRvoD5hf4i2QjxdQUi2zqMfqSPEYfrjQFiIHIGB6MALFm8x+kakuE5HqHItlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q3kXn5XO; arc=none smtp.client-ip=209.85.210.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-7c6cc366884so169949a34.1
-        for <stable@vger.kernel.org>; Wed, 03 Dec 2025 15:55:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1764806121; x=1765410921; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=um5TvcK5XxLxS4nCrV10IJfKpreOaPQmAH0ISfnvY/4=;
-        b=Q3kXn5XOnLIdLE5m4JITDrQpHCBe5+lB9i+g6oNQ5jmv0sghfd2k9UFf6WsTbyDhx4
-         WYdL83pe3DIZaChEeejmaUBkbiPER/hlqcaGlMFPQLBmnBZrp2cKLCSsaOWgjcckimXv
-         fMwTW3bI5kpybDtgOTOvNuI6ZARJNba9jexjc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764806121; x=1765410921;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=um5TvcK5XxLxS4nCrV10IJfKpreOaPQmAH0ISfnvY/4=;
-        b=nVPMOHowrkCRuPw8sCSSKPO81eFhl1WKHONfw79K+uGIT4Xu8VWv+EqiOop97J/dMT
-         YhRe3vsEu0Xzx3Sk8g1iOD0WxrGgMsU+YUOAx8ZcBCMFzC6YmZf/nzAO9ufbDcAIWMGW
-         zWBszy4+KqhqGa5hcbkoGdXV6/kXwUCIwgDN/hQKhGsZe2qDlrUvtpmGyfCNWmPY0QNj
-         E5UmrnrA8yARkeIqltHV7Fh8WXhz/vNgNf6IE3EJozJJRooT4tjdRkiu0jzDF7dQL20a
-         pwGgPUKfg5DwrfUv3OviBpYLzUaZjr5Hx4ROCgwNcbaqXfBeGEUwQRxaA0vZK41q1gr6
-         EKfw==
-X-Forwarded-Encrypted: i=1; AJvYcCUJPsKdGTb9tuFzIaQ49OBcWhCSJdGtu58d01yxBjC8L6ZDCgUseWc8vaGQaAQOdX8X3gD8DRA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwLqdDhoDss72qVItHQ/uBBKQQyHubmsrl8Pum1SO+WkTuCi2PQ
-	ovWv8RqMdoyHQpuGiNx9B221hThdWb+NWAcNdGH7QRdANacpJgXmB8r93u+hRU1Hrko=
-X-Gm-Gg: ASbGncsM3UtYLvCvFJxbpRCNzh1xzX1os+ee7mM+nKrwYdA3FMGr69y1kDAojjsqbmb
-	gnJ67/ATOqpRWmpnB9dUQs0AkuAxRgjBFNEu4Gw4I5RrKoHcucPj1WSG2MW0XhjBWml3JOeRC7O
-	+ArAmsigajMCOV6Ot8jCFtWqryOsvd2tb34d0Bwc5f6bvUe/EQvDJCZyAdLmR1SVsweHdPKpriR
-	wkdAIDDcp2TXXgxDOSxMOaHSMzk5+/GX6R+BaoJTjJWkT1ZK01Zl9RNRxz3Q0TOxVkeWZ4xCffR
-	Fo1lDRvleOaPZspmMY2x95DiXMUkQe/Qnvb/t/izADZWcmyhL5gLDrQCWiiA09msO0JYFIxkG1n
-	l+jYDnpHflw81dEQtW/Za6RzcR0O+vp7FYXKJqzvzTermKinB8ho558RGtlh2sV/O/SUXJyEvqP
-	0n0RUlfdoWAlh0z1YQPj9/tmc=
-X-Google-Smtp-Source: AGHT+IEUp+ZDnKfcWMM2+K6BqrUk9DPE8wqWpq75W8szfOEgMKPkZovh9najOUi2FHBPAkVEK54MsQ==
-X-Received: by 2002:a05:6830:6502:b0:7c5:3045:6c6f with SMTP id 46e09a7af769-7c94dc04ca3mr3907160a34.20.1764806121487;
-        Wed, 03 Dec 2025 15:55:21 -0800 (PST)
-Received: from [192.168.1.14] ([38.175.187.108])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-65933cc2b36sm6629525eaf.12.2025.12.03.15.55.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Dec 2025 15:55:21 -0800 (PST)
-Message-ID: <4ca25a40-ef8f-4190-931d-c44c7800e5de@linuxfoundation.org>
-Date: Wed, 3 Dec 2025 16:55:19 -0700
+	s=arc-20240116; t=1764806431; c=relaxed/simple;
+	bh=RmzqbENcigN+/N9ttogRVF3nlDiwJKyUSgVC/gXr80c=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=JaNICc7QumU5dXVhFXFTZ6/yCO/pMDvocnFDYReTsUSY5Ao67DDt/CDQaBPVL0/DvrI4M/7h8nFgxy2Z00JHyJyBL0MlYKte2SaZYxdj9dy9iqDqxIFBQIdbo7jRXqfEym2+LoD4tmxyJeMUpuNLbzjGiRezaYFtwVd0gARaqpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VSsZIlEl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56699C4CEF5;
+	Thu,  4 Dec 2025 00:00:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764806431;
+	bh=RmzqbENcigN+/N9ttogRVF3nlDiwJKyUSgVC/gXr80c=;
+	h=Date:From:To:Cc:Subject:From;
+	b=VSsZIlElMOBGSBxuC5nfA+wjbZoyzgQHzvZ1W4UK6z2fM2CmSbo4hgdzmyrB3XwvS
+	 zrQdtPGMqTkT3VTWbNDDvljh5H/7vAaeIue9U6cnfOjimDccWOpIVGW4JRUbCGRi7x
+	 s6dgQnzU0/fwD6MmJmI2zsVPwaWsO2BHSSCDi5q+dsTIPew9/ocebV8W/iamnKcT4Y
+	 BSf4SzTd9/17houGpc//Ajf8LN5nGvCmjutDxxK8OX3MyAitbtAQUUH3wC7GD7I2K3
+	 +Jks/pGoaOYyLAECSF/JPpDNp/y6DfEuDq1aDiME5osnCBDDtjeT3bBwEnF4e1T/cj
+	 8ZbKGARwq9uag==
+Date: Wed, 3 Dec 2025 17:00:25 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, Lee Jones <lee@kernel.org>,
+	Pavel Machek <pavel@kernel.org>, linux-leds@vger.kernel.org,
+	Stefan Kalscheuer <stefan@stklcode.de>
+Subject: Apply ccc35ff2fd2911986b716a87fe65e03fac2312c9 to 5.15, 6.1, and 6.6
+Message-ID: <20251204000025.GA468348@ax162>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 000/568] 6.1.159-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <20251203152440.645416925@linuxfoundation.org>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="Hz+hp81qPmbwKaze"
+Content-Disposition: inline
 
-On 12/3/25 08:20, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.159 release.
-> There are 568 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Fri, 05 Dec 2025 15:23:16 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.159-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
 
-Compiled and booted on my test system. No dmesg regressions.
+--Hz+hp81qPmbwKaze
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
+Hi stable folks,
 
-thanks,
--- Shuah
+Please apply commit ccc35ff2fd29 ("leds: spi-byte: Use
+devm_led_classdev_register_ext()") to 5.15, 6.1, and 6.6. It
+inadvertently addresses an instance of -Wuninitialized visible with
+clang-21 and newer:
+
+  drivers/leds/leds-spi-byte.c:99:26: error: variable 'child' is uninitialized when used here [-Werror,-Wuninitialized]
+     99 |         of_property_read_string(child, "label", &name);
+        |                                 ^~~~~
+  drivers/leds/leds-spi-byte.c:83:27: note: initialize the variable 'child' to silence this warning
+     83 |         struct device_node *child;
+        |                                  ^
+        |                                   = NULL
+
+It applies cleanly to 6.6. I have attached a backport for 6.1 and 5.15,
+which can be generated locally with:
+
+  $ git format-patch -1 --stdout ccc35ff2fd2911986b716a87fe65e03fac2312c9 | sed 's;strscpy;strlcpy;' | patch -p1
+
+This change seems safe to me but if I am missing a massive dependency
+chain, an alternative would be moving child's initialization up in these
+stable branches.
+
+Cheers,
+Nathan
+
+diff --git a/drivers/leds/leds-spi-byte.c b/drivers/leds/leds-spi-byte.c
+index 82696e0607a5..7dd876df8b36 100644
+--- a/drivers/leds/leds-spi-byte.c
++++ b/drivers/leds/leds-spi-byte.c
+@@ -96,6 +96,7 @@ static int spi_byte_probe(struct spi_device *spi)
+ 	if (!led)
+ 		return -ENOMEM;
+ 
++	child = of_get_next_available_child(dev_of_node(dev), NULL);
+ 	of_property_read_string(child, "label", &name);
+ 	strlcpy(led->name, name, sizeof(led->name));
+ 	led->spi = spi;
+@@ -106,7 +107,6 @@ static int spi_byte_probe(struct spi_device *spi)
+ 	led->ldev.max_brightness = led->cdef->max_value - led->cdef->off_value;
+ 	led->ldev.brightness_set_blocking = spi_byte_brightness_set_blocking;
+ 
+-	child = of_get_next_available_child(dev_of_node(dev), NULL);
+ 	state = of_get_property(child, "default-state", NULL);
+ 	if (state) {
+ 		if (!strcmp(state, "on")) {
+
+--Hz+hp81qPmbwKaze
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment;
+	filename=ccc35ff2fd2911986b716a87fe65e03fac2312c9-5.15-6.1.patch
+
+From 45fa848142bf47813b7b08679f28f2ddc6b3ad82 Mon Sep 17 00:00:00 2001
+From: Stefan Kalscheuer <stefan@stklcode.de>
+Date: Sun, 4 Feb 2024 16:07:26 +0100
+Subject: [PATCH 5.15 and 6.1] leds: spi-byte: Use
+ devm_led_classdev_register_ext()
+
+commit ccc35ff2fd2911986b716a87fe65e03fac2312c9 upstream.
+
+Use extended classdev registration to generate generic device names from
+color and function enums instead of reading only the label from the
+device tree.
+
+Signed-off-by: Stefan Kalscheuer <stefan@stklcode.de>
+Link: https://lore.kernel.org/r/20240204150726.29783-1-stefan@stklcode.de
+Signed-off-by: Lee Jones <lee@kernel.org>
+[nathan: Fix conflict due to lack of bf4a35e9201d]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+ drivers/leds/leds-spi-byte.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/leds/leds-spi-byte.c b/drivers/leds/leds-spi-byte.c
+index 6883d3ba382f..eb6481df5997 100644
+--- a/drivers/leds/leds-spi-byte.c
++++ b/drivers/leds/leds-spi-byte.c
+@@ -83,7 +83,7 @@ static int spi_byte_probe(struct spi_device *spi)
+ 	struct device_node *child;
+ 	struct device *dev = &spi->dev;
+ 	struct spi_byte_led *led;
+-	const char *name = "leds-spi-byte::";
++	struct led_init_data init_data = {};
+ 	const char *state;
+ 	int ret;
+ 
+@@ -96,12 +96,9 @@ static int spi_byte_probe(struct spi_device *spi)
+ 	if (!led)
+ 		return -ENOMEM;
+ 
+-	of_property_read_string(child, "label", &name);
+-	strlcpy(led->name, name, sizeof(led->name));
+ 	led->spi = spi;
+ 	mutex_init(&led->mutex);
+ 	led->cdef = device_get_match_data(dev);
+-	led->ldev.name = led->name;
+ 	led->ldev.brightness = LED_OFF;
+ 	led->ldev.max_brightness = led->cdef->max_value - led->cdef->off_value;
+ 	led->ldev.brightness_set_blocking = spi_byte_brightness_set_blocking;
+@@ -121,7 +118,11 @@ static int spi_byte_probe(struct spi_device *spi)
+ 	spi_byte_brightness_set_blocking(&led->ldev,
+ 					 led->ldev.brightness);
+ 
+-	ret = devm_led_classdev_register(&spi->dev, &led->ldev);
++	init_data.fwnode = of_fwnode_handle(child);
++	init_data.devicename = "leds-spi-byte";
++	init_data.default_label = ":";
++
++	ret = devm_led_classdev_register_ext(&spi->dev, &led->ldev, &init_data);
+ 	if (ret) {
+ 		of_node_put(child);
+ 		mutex_destroy(&led->mutex);
+
+base-commit: f6e38ae624cf7eb96fb444a8ca2d07caa8d9c8fe
+-- 
+2.52.0
+
+
+--Hz+hp81qPmbwKaze--
 
