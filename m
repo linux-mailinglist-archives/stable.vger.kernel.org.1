@@ -1,139 +1,344 @@
-Return-Path: <stable+bounces-199969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF54FCA2CDD
-	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 09:25:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC9B2CA2D86
+	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 09:38:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 29510309395E
-	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 08:23:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 283563050CCE
+	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 08:38:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85A9A32E131;
-	Thu,  4 Dec 2025 08:22:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7EFF2F25FE;
+	Thu,  4 Dec 2025 08:38:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="e1SoAm+u"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QaO9nUzK"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-111.mail.139.com (n169-111.mail.139.com [120.232.169.111])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5157932AAC6
-	for <stable@vger.kernel.org>; Thu,  4 Dec 2025 08:22:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.111
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5ED7309EFF
+	for <stable@vger.kernel.org>; Thu,  4 Dec 2025 08:38:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764836572; cv=none; b=ZAl8GfeyL5T4G+YWWYd/2juY+1WiAjV6LVYnTNIom+JaclhhjW76DXdoOnYAn6osdWG7BbGFqoaHGwZ7xFy66OQ0sjdjcJp2CqGD9CY8kErn75ymeOjcx5Q6BahdktcLkZk4cmfCCcT2D1NVmKCuRQAI7CLpTtMgBO1fPDPhkKg=
+	t=1764837519; cv=none; b=IKPYEIhKUyMP1in6PFqrSQSImZBsXnYTrfi0Q1aExqoGhzoWwkhxKvhYU7MkYneSYr7QodrDEEnBwxXU19976lXu4Y/YJSA3rxknQl0HLM5FAL3PJ184Cb2tobcLnxpow9LcecDoRuXyVyzBLzASi5fO11DcJNfKrSx/Zap5l3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764836572; c=relaxed/simple;
-	bh=xdTPsxDqasjcQWQjMv8HrdNTpttgpfDh99JRpT8MphA=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=DzorvG34C2MDyFM+QLY57YoSvM6GNOHrftURsZmkNXghNI35bQApriQmVdQiSfed4ueud4uzfDekZIX6PiXL66GabxLDBKPu/lJ3L+IT8sEh6LGIaHNlaD1HDNVYZLZopXXEMrKNycBzaJGdOeurDCMYHQFbTH7lTrWwg3zTses=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=e1SoAm+u; arc=none smtp.client-ip=120.232.169.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
+	s=arc-20240116; t=1764837519; c=relaxed/simple;
+	bh=mqhXiD/NpVQgpF5pRnCUAPxzIeECRU0KQVh4dg8DiKU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Y/0k7Cd1K4yPxRk4sGmoLRQ5PyIfrQLjHkIB9Gz98wvDeWoKgr+iUtPrNPNRcIN5FGEBOE4zWwQ7IaXXgcaRAxfGakwhphHVeSu9ZOhcbLON6cjn8GZ6FNOsjENrs9KGZUR6r+uVBsCpeHs8RGmByonLkWRTCm9xjEzHTOCwaAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QaO9nUzK; arc=none smtp.client-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-bd610f4425fso373097a12.3
+        for <stable@vger.kernel.org>; Thu, 04 Dec 2025 00:38:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to:cc;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=e1SoAm+u5JZJHUs4oINwejcmFvaFEBKs3oENQy3ziQA1yg3kHdoJUp1rVxMsbtYCrrcFq+KmzNdWW
-	 8tsuSkeL6dJzLPcSCnAvNPaOMJlFfbwI0Lvn41vTAAiED4OmamT8nWwy0F/SHLKLg1ggsQBwPI89mL
-	 QtUX4JVkM3EVu9uo=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from NTT-kernel-dev (unknown[183.241.245.185])
-	by rmsmtp-lg-appmail-13-12002 (RichMail) with SMTP id 2ee2693144184c8-b4cff;
-	Thu, 04 Dec 2025 16:19:37 +0800 (CST)
-X-RM-TRANSID:2ee2693144184c8-b4cff
-From: Rajani Kantha <681739313@139.com>
-To: seanjc@google.com
-Cc: stable@vger.kernel.org
-Subject: [PATCH 5.15.y] KVM: x86: Acquire kvm->srcu when handling KVM_SET_VCPU_EVENTS
-Date: Thu,  4 Dec 2025 16:19:31 +0800
-Message-Id: <20251204081931.14728-1-681739313@139.com>
-X-Mailer: git-send-email 2.17.1
+        d=linaro.org; s=google; t=1764837517; x=1765442317; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=0JlKi5Mxej8/+ZcumeV18Yc+KKJCP9ofTFD7HkIbArE=;
+        b=QaO9nUzKXLmW5DjnepNYuJFMmVJGSTqsSkR3dzx1VMm5rH4Wupe157F5H1G9ZCL3Go
+         OEq2qlEOpO2bi+J/R5mgX/Gm2/d/u4QgazmWp7PsF4QecgwkzEd2vSrbz79r5zSXThkr
+         ZHyvUpufah7xWA0vyaRR8+Q0jUJp3EDTQAo/2ZaLPM0NB+ysnvs22pkalZr1fgcOS28+
+         88mQcorzLZ7EIYeuNquUtcK0ZOltiOXWVfxKG2d4q8LYMx0k9otU31zTTv/PUi57RbKk
+         Cq8qkZfwyNV7MSro/FsvXXljFZJzZ5rV1JhEPA8tbamo41v6ZhPLJs6sJ+lNDgzNEciQ
+         HoKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764837517; x=1765442317;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0JlKi5Mxej8/+ZcumeV18Yc+KKJCP9ofTFD7HkIbArE=;
+        b=hOgk7VdKqdmDRVmrJ3imFnk6yzHS8LxGrSWCgVJovx8FGR7bmwSNj+FaEWQPOZlBkI
+         oyDuZIhkEZHxO7FA/lA0PJFeNakH7rAD0Z0iHmkk1NQIhuwf271IiIwWK/uTtrMNoouW
+         l0djpfn+OS4Ie3j5mKKKyo5tLuk2/Z6SLKcvDYTqxJxG/iAAxyeaf33XkRatw0Yv8A/k
+         GEYrc3+Nlp5BvYznoH/B0vaYNBOBTFCL83YfYjFtgPGULAdFhgWsqJ8hj31nLvDJpwmH
+         H9XYsQ5F2Ww8dITjNqlumoLh5+pgdlvM5+53oiP1rvbgRwY1/hLWSfXZ3eOX5ZAan0BW
+         wEBQ==
+X-Gm-Message-State: AOJu0YxYKNFfdpAE9WFkvcox186O960k+Kf/lRSTjCv/Fj30rPIB9a1E
+	iKJm+Ma1mumcbQorkDZzXTjJX5fyBmsU2U24rcOtiNrjILxCt8Xa+c3/GWIjPI7F5iASK5kcnAA
+	IrTIpDS4vm9lb/UKuCqdPmNo3ff8K4NBADV6Y0LkEYQ==
+X-Gm-Gg: ASbGncsfqtU53vkTN2685+mlIhGui54o5MrIeql6AR34E83RB9VTpnBS3mmGpUeVvA3
+	prUp5XtaZdTPtjCoiSBZsZW3PqC7TA0pQojCl31M0eNuncwvAtgeVKWvuGY9dkMO80ZO1UlqsB4
+	t0lV/Uy5Qzre9nhgdu1lOUkk3po1wiex5B+WbjaPMx9po0l5qA82N6lYAnnqtwJ1U2EDXqxctJJ
+	H4B5dAWrf1R7Szsklh5ZTZTbOGTwmXbPgW2muL1biNknWhB/0QU9ELlmVL116Hk46qdyJSXfQ+T
+	Ry4oS02TnY3qhOFotpev2C7z8o2G
+X-Google-Smtp-Source: AGHT+IFZEAv1ezVPCker9GLaQZImi3N5jH6VXIGomJJWxOm3zS/LZIZssrCOD1GSIIbrPIuYSxinKKQkE6vNP8MxkPE=
+X-Received: by 2002:a05:693c:3111:b0:2a4:3592:c5fb with SMTP id
+ 5a478bee46e88-2aba424d110mr1567722eec.12.1764837517021; Thu, 04 Dec 2025
+ 00:38:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20251203152414.082328008@linuxfoundation.org>
+In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Thu, 4 Dec 2025 14:08:24 +0530
+X-Gm-Features: AWmQ_bnogH29i6myZ_z674xGj0T3c_RPNdGl1-x_I57yUAyVvG1sIUwN6973xXs
+Message-ID: <CA+G9fYvmhQs9qx-XpLiaOUZQKj=gR=-X5MoJ1auRmbC7cC+AXw@mail.gmail.com>
+Subject: Re: [PATCH 5.15 000/392] 5.15.197-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org, sr@sladewatkins.com, Vlastimil Babka <vbabka@suse.cz>, 
+	"Fabio M. De Francesco" <fabio.maria.de.francesco@linux.intel.com>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Svyatoslav Ryhel <clamor95@gmail.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Dan Carpenter <dan.carpenter@linaro.org>, 
+	Anders Roxell <anders.roxell@linaro.org>, Ben Copeland <benjamin.copeland@linaro.org>, 
+	Ian Rogers <irogers@google.com>, linux-mips@vger.kernel.org, 
+	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Content-Type: text/plain; charset="UTF-8"
 
-From: Sean Christopherson <seanjc@google.com>
+On Wed, 3 Dec 2025 at 21:27, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 5.15.197 release.
+> There are 392 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 05 Dec 2025 15:23:16 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.197-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-commit 4bcdd831d9d01e0fb64faea50732b59b2ee88da1 upstream.
+The arm, mips and powerpc builds failed on the stable-rc 5.15.197-rc1.
 
-Grab kvm->srcu when processing KVM_SET_VCPU_EVENTS, as KVM will forcibly
-leave nested VMX/SVM if SMM mode is being toggled, and leaving nested VMX
-reads guest memory.
+Build regressions: arm, fuse-tegra30.c:250:10: error: 'const struct
+tegra_fuse_soc' has no member named 'cells'
+Build regressions: arm, fuse-tegra30.c:250:18: error: initialization
+of 'const struct attribute_group *' from incompatible pointer type
+'const struct nvmem_cell_info *' [-Werror=incompatible-pointer-types]
+Build regressions: arm, fuse-tegra30.c:251:10: error: 'const struct
+tegra_fuse_soc' has no member named 'num_cells'
 
-Note, kvm_vcpu_ioctl_x86_set_vcpu_events() can also be called from KVM_RUN
-via sync_regs(), which already holds SRCU.  I.e. trying to precisely use
-kvm_vcpu_srcu_read_lock() around the problematic SMM code would cause
-problems.  Acquiring SRCU isn't all that expensive, so for simplicity,
-grab it unconditionally for KVM_SET_VCPU_EVENTS.
+Build regressions: mips, tlb-r4k.c:591:31: error: passing argument 1
+of 'memblock_free' makes integer from pointer without a cast
+[-Werror=int-conversion]
 
- =============================
- WARNING: suspicious RCU usage
- 6.10.0-rc7-332d2c1d713e-next-vm #552 Not tainted
- -----------------------------
- include/linux/kvm_host.h:1027 suspicious rcu_dereference_check() usage!
+Build regressions: powerpc, mm/mempool.c:68:17: error: 'for' loop
+initial declarations are only allowed in C99 or C11 mode
 
- other info that might help us debug this:
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
- rcu_scheduler_active = 2, debug_locks = 1
- 1 lock held by repro/1071:
-  #0: ffff88811e424430 (&vcpu->mutex){+.+.}-{3:3}, at: kvm_vcpu_ioctl+0x7d/0x970 [kvm]
+ARM build regressions are due to,
 
- stack backtrace:
- CPU: 15 PID: 1071 Comm: repro Not tainted 6.10.0-rc7-332d2c1d713e-next-vm #552
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x7f/0x90
-  lockdep_rcu_suspicious+0x13f/0x1a0
-  kvm_vcpu_gfn_to_memslot+0x168/0x190 [kvm]
-  kvm_vcpu_read_guest+0x3e/0x90 [kvm]
-  nested_vmx_load_msr+0x6b/0x1d0 [kvm_intel]
-  load_vmcs12_host_state+0x432/0xb40 [kvm_intel]
-  vmx_leave_nested+0x30/0x40 [kvm_intel]
-  kvm_vcpu_ioctl_x86_set_vcpu_events+0x15d/0x2b0 [kvm]
-  kvm_arch_vcpu_ioctl+0x1107/0x1750 [kvm]
-  ? mark_held_locks+0x49/0x70
-  ? kvm_vcpu_ioctl+0x7d/0x970 [kvm]
-  ? kvm_vcpu_ioctl+0x497/0x970 [kvm]
-  kvm_vcpu_ioctl+0x497/0x970 [kvm]
-  ? lock_acquire+0xba/0x2d0
-  ? find_held_lock+0x2b/0x80
-  ? do_user_addr_fault+0x40c/0x6f0
-  ? lock_release+0xb7/0x270
-  __x64_sys_ioctl+0x82/0xb0
-  do_syscall_64+0x6c/0x170
-  entry_SYSCALL_64_after_hwframe+0x4b/0x53
- RIP: 0033:0x7ff11eb1b539
-  </TASK>
+  soc/tegra: fuse: Add Tegra114 nvmem cells and fuse lookups
+  [ Upstream commit b9c01adedf38c69abb725a60a05305ef70dbce03 ]
 
-Fixes: f7e570780efc ("KVM: x86: Forcibly leave nested virt when SMM state is toggled")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240723232055.3643811-1-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-[ Based on kernel 5.15 available functions, using srcu_read_lock/srcu_read_unlock instead of
-kvm_vcpu_srcu_read_lock/kvm_vcpu_srcu_read_unlock ]
-Signed-off-by: Rajani Kantha <681739313@139.com>
----
- arch/x86/kvm/x86.c | 2 ++
- 1 file changed, 2 insertions(+)
+MIPS build regressions are due to,
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 648f80f73e66..785cd9b4283a 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -5294,7 +5294,9 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
- 		if (copy_from_user(&events, argp, sizeof(struct kvm_vcpu_events)))
- 			break;
- 
-+		vcpu->srcu_idx = srcu_read_lock(&vcpu->kvm->srcu);
- 		r = kvm_vcpu_ioctl_x86_set_vcpu_events(vcpu, &events);
-+		srcu_read_unlock(&vcpu->kvm->srcu, vcpu->srcu_idx);
- 		break;
- 	}
- 	case KVM_GET_DEBUGREGS: {
--- 
-2.17.1
+  MIPS: mm: kmalloc tlb_vpn array to avoid stack overflow
+  commit 841ecc979b18d3227fad5e2d6a1e6f92688776b5 upstream.
+
+Powerpc build regressions are due to,
+
+  mm/mempool: replace kmap_atomic() with kmap_local_page()
+  [ Upstream commit f2bcc99a5e901a13b754648d1dbab60f4adf9375 ]
+
+### arm build error
+drivers/soc/tegra/fuse/fuse-tegra30.c:250:10: error: 'const struct
+tegra_fuse_soc' has no member named 'cells'
+  250 |         .cells = tegra114_fuse_cells,
+      |          ^~~~~
+drivers/soc/tegra/fuse/fuse-tegra30.c:250:18: error: initialization of
+'const struct attribute_group *' from incompatible pointer type 'const
+struct nvmem_cell_info *' [-Werror=incompatible-pointer-types]
+  250 |         .cells = tegra114_fuse_cells,
+      |                  ^~~~~~~~~~~~~~~~~~~
+drivers/soc/tegra/fuse/fuse-tegra30.c:250:18: note: (near
+initialization for 'tegra114_fuse_soc.soc_attr_group')
+drivers/soc/tegra/fuse/fuse-tegra30.c:251:10: error: 'const struct
+tegra_fuse_soc' has no member named 'num_cells'
+  251 |         .num_cells = ARRAY_SIZE(tegra114_fuse_cells),
+      |          ^~~~~~~~~
+cc1: some warnings being treated as errors
+
+### mips Build error
+arch/mips/mm/tlb-r4k.c: In function 'r4k_tlb_uniquify':
+arch/mips/mm/tlb-r4k.c:591:31: error: passing argument 1 of
+'memblock_free' makes integer from pointer without a cast
+[-Werror=int-conversion]
+  591 |                 memblock_free(tlb_vpns, tlb_vpn_size);
+      |                               ^~~~~~~~
+      |                               |
+      |                               long unsigned int *
+In file included from arch/mips/mm/tlb-r4k.c:15:
+include/linux/memblock.h:107:31: note: expected 'phys_addr_t' {aka
+'unsigned int'} but argument is of type 'long unsigned int *'
+  107 | int memblock_free(phys_addr_t base, phys_addr_t size);
+      |                   ~~~~~~~~~~~~^~~~
+cc1: all warnings being treated as errors
+
+### powerpc build error
+mm/mempool.c: In function 'check_element':
+mm/mempool.c:68:17: error: 'for' loop initial declarations are only
+allowed in C99 or C11 mode
+   68 |                 for (int i = 0; i < (1 << order); i++) {
+      |                 ^~~
+mm/mempool.c:68:17: note: use option '-std=c99', '-std=gnu99',
+'-std=c11' or '-std=gnu11' to compile your code
+mm/mempool.c: In function 'poison_element':
+mm/mempool.c:101:17: error: 'for' loop initial declarations are only
+allowed in C99 or C11 mode
+  101 |                 for (int i = 0; i < (1 << order); i++) {
+      |                 ^~~
+make[2]: *** [scripts/Makefile.build:289: mm/mempool.o] Error 1
+
+## Build
+* kernel: 5.15.197-rc1
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+* git commit: d6138097171ea16c4b0e51c3414d51c473f820cc
+* git describe: v5.15.196-393-gd6138097171e
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15.196-393-gd6138097171e
+
+## Test Regressions (compared to v5.15.195-118-g59a59821e6b5)
+* arm, build
+  - clang-21-defconfig
+  - clang-21-lkftconfig
+  - clang-21-lkftconfig-no-kselftest-frag
+  - clang-nightly-lkftconfig-kselftest
+  - gcc-12-defconfig
+  - gcc-12-lkftconfig
+  - gcc-12-lkftconfig-debug
+  - gcc-12-lkftconfig-kasan
+  - gcc-12-lkftconfig-kunit
+  - gcc-12-lkftconfig-libgpiod
+  - gcc-12-lkftconfig-no-kselftest-frag
+  - gcc-12-lkftconfig-perf
+  - gcc-12-lkftconfig-rcutorture
+  - gcc-8-defconfig
+
+* mips, build
+  - clang-21-allnoconfig
+  - clang-21-defconfig
+  - clang-21-tinyconfig
+  - gcc-12-allnoconfig
+  - gcc-12-ath79_defconfig
+  - gcc-12-bcm47xx_defconfig
+  - gcc-12-bcm63xx_defconfig
+  - gcc-12-cavium_octeon_defconfig
+  - gcc-12-defconfig
+  - gcc-12-e55_defconfig
+  - gcc-12-malta_defconfig
+  - gcc-12-rt305x_defconfig
+  - gcc-12-tinyconfig
+  - gcc-8-allnoconfig
+  - gcc-8-ath79_defconfig
+  - gcc-8-bcm47xx_defconfig
+  - gcc-8-bcm63xx_defconfig
+  - gcc-8-cavium_octeon_defconfig
+  - gcc-8-defconfig
+  - gcc-8-malta_defconfig
+  - gcc-8-rt305x_defconfig
+  - gcc-8-tinyconfig
+
+* powerpc, build
+  - gcc-12-ppc6xx_defconfig
+  - gcc-8-allnoconfig
+  - gcc-8-ppc6xx_defconfig
 
 
+## Metric Regressions (compared to v5.15.195-118-g59a59821e6b5)
+
+## Test Fixes (compared to v5.15.195-118-g59a59821e6b5)
+
+## Metric Fixes (compared to v5.15.195-118-g59a59821e6b5)
+
+## Test result summary
+total: 28764, pass: 21862, fail: 2212, skip: 4511, xfail: 179
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 101 total, 86 passed, 15 failed
+* arm64: 28 total, 28 passed, 0 failed
+* i386: 18 total, 18 passed, 0 failed
+* mips: 22 total, 0 passed, 22 failed
+* parisc: 3 total, 3 passed, 0 failed
+* powerpc: 22 total, 19 passed, 3 failed
+* riscv: 8 total, 8 passed, 0 failed
+* s390: 9 total, 9 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 6 total, 6 passed, 0 failed
+* x86_64: 24 total, 24 passed, 0 failed
+
+## Test suites summary
+* boot
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-exec
+* kselftest-fpu
+* kselftest-futex
+* kselftest-intel_pstate
+* kselftest-kcmp
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-mincore
+* kselftest-mqueue
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-x86
+* kunit
+* lava
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-build-clang
+* log-parser-build-gcc
+* log-parser-test
+* ltp-capability
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
