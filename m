@@ -1,111 +1,104 @@
-Return-Path: <stable+bounces-199997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 397EFCA3407
-	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 11:39:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE135CA347C
+	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 11:46:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 283643027715
-	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 10:39:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3B72A30A7781
+	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 10:44:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B78E1329E6D;
-	Thu,  4 Dec 2025 10:39:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DFD3339708;
+	Thu,  4 Dec 2025 10:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="ksmECPAJ"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WWNBZD3G"
 X-Original-To: stable@vger.kernel.org
-Received: from omta38.uswest2.a.cloudfilter.net (omta38.uswest2.a.cloudfilter.net [35.89.44.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB8042E06EA
-	for <stable@vger.kernel.org>; Thu,  4 Dec 2025 10:39:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA5F3396FA
+	for <stable@vger.kernel.org>; Thu,  4 Dec 2025 10:44:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764844788; cv=none; b=FvgdAf4u2UV6dPVzfaZeVo8reEbZlYJ3LXU+8C7e8ztjdwS7hVm15yIhHkS4cXmT5wdZZQ+pTHLB4lPw1R3NQbfrkR06GaCBDIMBgwzOuWl5glW5D1Z1NanOcINQaqqDGdJpqD5gkN9K7GT/j637tDI0V4xFZD3Q65xhRcUI73k=
+	t=1764845053; cv=none; b=He5ikYFi8p+uAUW9EPeexLVzDOmJAaNtCJg/5f12LCmJf4vaIclucG5Cw0ffPMsov7rvhnPkJAJ2CUDg/amNByyTxOQcEY0KviR5pY+hIMexZP7XCwOmjGmVfFsFRJVqvUbNLIln4hEQkJ8tELNQR7I2lY5xeTsqjGZh0Q+7KGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764844788; c=relaxed/simple;
-	bh=nTF5dXyJXcZmBo8sfznGNyeFPTJIxBUFGUsLSHEAdwA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=I6GB38QFE29PEMAbbq8KrqUd8N3kK+O9FYLD3e7bT3IcEG8KHz8gUmaEgA+dFtbvCUArkzExgREugFQaeFmzwJCOUJDDCJs4DHMdfT3u185a2rxe3DDNDQlmI0z0w/Q8SM5EDJ2ujVaG8y/88jilHfbz9Ifrwzeb/mlQtvef7zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=ksmECPAJ; arc=none smtp.client-ip=35.89.44.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-6003b.ext.cloudfilter.net ([10.0.30.175])
-	by cmsmtp with ESMTPS
-	id R5I9v9nJoipkCR6kTvxrBz; Thu, 04 Dec 2025 10:39:45 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id R6kTvhZjihoT4R6kTvDUOC; Thu, 04 Dec 2025 10:39:45 +0000
-X-Authority-Analysis: v=2.4 cv=XZyJzJ55 c=1 sm=1 tr=0 ts=693164f1
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
- a=nmWuMzfKamIsx3l42hEX:22 a=Wh1V8bzkS9CpCxOpQUxp:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=E9a5hM8EkPK/t7TaD0teulCvjz/eWSTm+mJSdQrACXQ=; b=ksmECPAJeFW3tnNwYueDC9qn1N
-	STqY5hMxBNLhODH6qPZj57cC4RcCzscOvjJPPZLDYmtx3z+MfB/GIFShjWFWgMPnZZUQeAT+N5oTK
-	n5erNovecXao5S7X0cbe2gkjJpsCNOWhG/8a0j5mT0OwlOxxS4x0Sr7I7ATYGL0LGt09ckKolvf7u
-	KAshY0JHLi+26KipS+FeMJcKe9KsLvw5S+PJkUKXpmVKAM4nnOIiLHssf711bUlAdOpyY/A9z1fQ0
-	itkTYtLBxTokL99uD6Ky9PoZXrhDz0UVOxyqLl15Vd7k/ugd5Xm3NFOuYhjFUkFuTfdAskpKRe04r
-	aoQ7iyRg==;
-Received: from c-73-92-56-26.hsd1.ca.comcast.net ([73.92.56.26]:60538 helo=[10.0.1.180])
-	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-	(Exim 4.98.2)
-	(envelope-from <re@w6rz.net>)
-	id 1vR6kS-00000001ZBt-30ow;
-	Thu, 04 Dec 2025 03:39:44 -0700
-Message-ID: <30edad97-faec-43a8-a855-d20bed99a29a@w6rz.net>
-Date: Thu, 4 Dec 2025 02:39:42 -0800
+	s=arc-20240116; t=1764845053; c=relaxed/simple;
+	bh=BJRTTdVX0u2pUTv+Q/CvQHvi7Ihop9MWNqXE8mrGea4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jDa+eLudGU4jhsU0WU9Egz1wHBrCiyGWc0Fry695AeE4dOOLwAibfeMSHGv8BbD86/jMtTkE3EdcGQQO3YWTkhdCi5rRah7mXjHy2KAE0lEl/fQotfxbaWXjEafKXpUgSlhvHatJpnsD5xs2jHqt6WF3YpC5lhub47COu2tf2jI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=WWNBZD3G; arc=none smtp.client-ip=209.85.215.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-bdb6f9561f9so723924a12.3
+        for <stable@vger.kernel.org>; Thu, 04 Dec 2025 02:44:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1764845051; x=1765449851; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=WtF+Aqjzm/WYE3KEy+g02XpY1h+HydEs9u2HSJlkEPE=;
+        b=WWNBZD3GsIhBT/Boc8H6tu++0yschRBKfd5SA9XaL/46txbXwlAkVt9hiDYkW14NrT
+         hsnfeb9AYSHP2lejYcDpiauOAEgpJw468seuv+SkZVm5otgbvHGdzb4exSD/J5k1o+Ug
+         9Buv4cZ1SlazJztpOzbCf0GFWhH67lkslaYLuq2rWXpmi2t7dpB70g7pKoswYAXVKtCL
+         M5NmpWBrKSXSZHQFITarGEDgbCodGOi3VAiUsixVpVVtRiqMpDhJjwVGQ1yox+TzEhil
+         878JaBdQELY1va33bBncxL4TgJzURspS+rk99WmQbY5wQYAERKDhv88UIHUlpDK0OxpD
+         TIgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764845051; x=1765449851;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WtF+Aqjzm/WYE3KEy+g02XpY1h+HydEs9u2HSJlkEPE=;
+        b=snU1z3vZNH9B7L8PJXPRzbCj5vYFDfIAsRz4h5gPhK4oka4A7NT7RZr/uCRaEcaa+7
+         u9G76tQvPIxEaqL4fvpqfvl4/kG6WrUUvdXw1hUckNXhHGirep3x67otG1dQOTQ75KIx
+         RmWE+HcgRA6WqNedgLALc7vR/e3nJMze68/MTnw0jYu573crP9T8lH5F/i0iGXr/ZDt2
+         bs20aeJB5kI0wbTV8JxtT6B1MEjS/ZuL6jEa8uymWCOwX23N+1U8VqNTjlexHMrPcvBs
+         dgMmNRE42s/0l0k564Jresf2TgONEj1Sj3JznuP5aWQ22xpTf8XPsPivOiygIYe7epsS
+         enCg==
+X-Gm-Message-State: AOJu0Yz+Oq1e7wL9a+KVSq3Dta8a7j3qx2lVzCY4VEkFGDt3bGCEsjgJ
+	xoe3au3Ct0pAUKR9ouYTcnWc2xg/CVVdBsfk6BH0BNkON0Ivgi2+dvxuf7h5FwozO1C7jOeverl
+	WLXcbIoH107cSZst+rIaUz6R01hoJTrpezbKUuh/Vgw==
+X-Gm-Gg: ASbGncstyu4ClQjyvk2TiGHlAB5cIMs8+W7sinTLH+R8K6TQ6irq/zxcDNdG1HBu40m
+	lvc/JJJlklAlGS8eSWSVADT6CVcW3Kpyx3ECS5JFmv4wLXwfVrMLrFjr0tOYaWU7lMNRke8A6XD
+	R9KCzCXai/U9DQ1aZCp5WhqOWu+75fmQEIFSRVA3mqQ83B7HybdzPEz3x68tYreXQcSvVrXK9VK
+	E5tPHW8diIDEMvWCGFbYbqlHBIUuOyWDY6YLfgjZdqU0X3G8Qph/ulzXzPaPS8VOaaNfR54aX+R
+	yof/6B5EBoD0JnQKP2Ki9Nbkw6kQbPuXZPhtC/c=
+X-Google-Smtp-Source: AGHT+IFAJ2CZUznrTFksDW3w5GvNMalFr+CO3O+rhD4mQ2hBBJxciRTwnpIYSDAZP9MnugFZU/REHnR47Wfk0IfeNA8=
+X-Received: by 2002:a05:7301:319:b0:2a4:3593:969f with SMTP id
+ 5a478bee46e88-2ab92e2ba76mr3921689eec.28.1764845050451; Thu, 04 Dec 2025
+ 02:44:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 00/93] 6.6.119-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20251203152336.494201426@linuxfoundation.org>
-Content-Language: en-US
-From: Ron Economos <re@w6rz.net>
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.92.56.26
-X-Source-L: No
-X-Exim-ID: 1vR6kS-00000001ZBt-30ow
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-92-56-26.hsd1.ca.comcast.net ([10.0.1.180]) [73.92.56.26]:60538
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 59
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfDLw3xGirUxVFnYL4F1j4iSkjxanAHL9xJjTsG1t39Fy1J+MHaNA64Hpxqv1Vc+aYSZOvuCxmzb9PJnpBwt+Jod/7K+gvUTH6PeOAk/h83wKaEJpseNp
- kyaQQlNsWuUY0w0eweZOodAk4Sw9ng47GTVfZo7TdTp7i4wXLkpjXJzvP4UfmY/mqX0UTQ21+0aV0g==
+References: <20251203152440.645416925@linuxfoundation.org>
+In-Reply-To: <20251203152440.645416925@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Thu, 4 Dec 2025 16:13:58 +0530
+X-Gm-Features: AWmQ_bmAl-hgydOnhau6L7BFlOrYmCn60oaNj2eL9o7iZX9XrB1YzBpcG_aGkNs
+Message-ID: <CA+G9fYuoT9s1cx3tOoczbCJDf2rtrmT1xSg-wut5ii6LG6ieMg@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/568] 6.1.159-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org, sr@sladewatkins.com, 
+	Adrian Hunter <adrian.hunter@intel.com>, Svyatoslav Ryhel <clamor95@gmail.com>, 
+	Mikko Perttunen <mperttunen@nvidia.com>, Thierry Reding <treding@nvidia.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Dan Carpenter <dan.carpenter@linaro.org>, 
+	Anders Roxell <anders.roxell@linaro.org>, Ben Copeland <benjamin.copeland@linaro.org>, 
+	sparclinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 12/3/25 07:28, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.119 release.
-> There are 93 patches in this series, all will be posted as a response
+On Wed, 3 Dec 2025 at 21:48, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.1.159 release.
+> There are 568 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 >
@@ -113,17 +106,178 @@ On 12/3/25 07:28, Greg Kroah-Hartman wrote:
 > Anything received after that time might be too late.
 >
 > The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.119-rc1.gz
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.159-rc1.gz
 > or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
 > and the diffstat can be found below.
 >
 > thanks,
 >
 > greg k-h
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+The arm and sparc builds failed on the stable-rc 6.1.159-rc1.
 
-Tested-by: Ron Economos <re@w6rz.net>
+Build regressions: arm, fuse-tegra30.c:250:10: error: 'const struct
+tegra_fuse_soc' has no member named 'cells'
+Build regressions: arm, fuse-tegra30.c:250:18: error: initialization
+of 'const struct attribute_group *' from incompatible pointer type
+'const struct nvmem_cell_info *' [-Wincompatible-pointer-types]
+Build regressions: arm, fuse-tegra30.c:251:10: error: 'const struct
+tegra_fuse_soc' has no member named 'num_cells'
 
+Build regressions: sparc, allmodconfig, ERROR: modpost:
+"pm_suspend_target_state" [drivers/ufs/host/ufshcd-pci.ko] undefined!
+
+### arm build error
+drivers/soc/tegra/fuse/fuse-tegra30.c:250:10: error: 'const struct
+tegra_fuse_soc' has no member named 'cells'
+  250 |         .cells = tegra114_fuse_cells,
+      |          ^~~~~
+drivers/soc/tegra/fuse/fuse-tegra30.c:250:18: error: initialization of
+'const struct attribute_group *' from incompatible pointer type 'const
+struct nvmem_cell_info *' [-Wincompatible-pointer-types]
+  250 |         .cells = tegra114_fuse_cells,
+      |                  ^~~~~~~~~~~~~~~~~~~
+drivers/soc/tegra/fuse/fuse-tegra30.c:250:18: note: (near
+initialization for 'tegra114_fuse_soc.soc_attr_group')
+drivers/soc/tegra/fuse/fuse-tegra30.c:251:10: error: 'const struct
+tegra_fuse_soc' has no member named 'num_cells'
+  251 |         .num_cells = ARRAY_SIZE(tegra114_fuse_cells),
+      |          ^~~~~~~~~
+
+### sparc build error
+ERROR: modpost: "pm_suspend_target_state"
+[drivers/ufs/host/ufshcd-pci.ko] undefined!
+
+### Commit pointing to arm build errors
+  soc/tegra: fuse: Add Tegra114 nvmem cells and fuse lookups
+  [ Upstream commit b9c01adedf38c69abb725a60a05305ef70dbce03 ]
+
+### commit pointing to sparc build errors
+  scsi: ufs: ufs-pci: Fix S0ix/S3 for Intel controllers
+  commit bb44826c3bdbf1fa3957008a04908f45e5666463 upstream.
+
+## Build
+* kernel: 6.1.159-rc1
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+* git commit: abd89c70c9382759c14c5e7e0b383c2a19594c5c
+* git describe: v6.1.158-569-gabd89c70c938
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.158-569-gabd89c70c938
+
+## Test Regressions (compared to v6.1.157-158-gf6fcaf2c6b7f)
+* arm, build
+  - clang-21-defconfig
+  - clang-21-lkftconfig
+  - clang-21-lkftconfig-no-kselftest-frag
+  - clang-nightly-defconfig
+  - clang-nightly-lkftconfig
+  - gcc-14-allmodconfig
+  - gcc-14-defconfig
+  - gcc-14-lkftconfig
+  - gcc-14-lkftconfig-debug
+  - gcc-14-lkftconfig-kasan
+  - gcc-14-lkftconfig-kunit
+  - gcc-14-lkftconfig-libgpiod
+  - gcc-14-lkftconfig-no-kselftest-frag
+  - gcc-14-lkftconfig-perf
+  - gcc-14-lkftconfig-rcutorture
+  - gcc-8-defconfig
+
+* sparc, build
+  - gcc-11-allmodconfig
+
+
+## Metric Regressions (compared to v6.1.157-158-gf6fcaf2c6b7f)
+
+
+## Test Fixes (compared to v6.1.157-158-gf6fcaf2c6b7f)
+
+
+## Metric Fixes (compared to v6.1.157-158-gf6fcaf2c6b7f)
+
+## Test result summary
+total: 80660, pass: 60774, fail: 9871, skip: 9886, xfail: 129
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 133 total, 115 passed, 18 failed
+* arm64: 41 total, 38 passed, 3 failed
+* i386: 21 total, 21 passed, 0 failed
+* mips: 26 total, 25 passed, 1 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 32 total, 31 passed, 1 failed
+* riscv: 11 total, 10 passed, 1 failed
+* s390: 14 total, 13 passed, 1 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 7 total, 6 passed, 1 failed
+* x86_64: 33 total, 32 passed, 1 failed
+
+## Test suites summary
+* boot
+* commands
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-exec
+* kselftest-fpu
+* kselftest-futex
+* kselftest-intel_pstate
+* kselftest-kcmp
+* kselftest-kvm
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-mincore
+* kselftest-mqueue
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-x86
+* kunit
+* kvm-unit-tests
+* lava
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-build-clang
+* log-parser-build-gcc
+* log-parser-test
+* ltp-capability
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
