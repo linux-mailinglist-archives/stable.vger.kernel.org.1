@@ -1,124 +1,135 @@
-Return-Path: <stable+bounces-199962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD3A4CA2900
-	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 07:47:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A05CCA2968
+	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 08:00:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9FF7F3005683
-	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 06:47:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4C9B93020CE3
+	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 07:00:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 866D52882BE;
-	Thu,  4 Dec 2025 06:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F1592B9BA;
+	Thu,  4 Dec 2025 07:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="bhPSllaq"
+	dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b="BGbIey11"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp153-162.sina.com.cn (smtp153-162.sina.com.cn [61.135.153.162])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF162C027F
-	for <stable@vger.kernel.org>; Thu,  4 Dec 2025 06:47:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CE32E413
+	for <stable@vger.kernel.org>; Thu,  4 Dec 2025 07:00:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=61.135.153.162
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764830870; cv=none; b=BJ6BT7J/wwrXeRwWsIFkFeJPuuiAFU3eF6Kq+OBytp4ZAVLf6xgH/6iyKHnXqYUvOM+jMBjNRnPHEuublYnzVmJUWprZcpgIWig9WrXhm4smCbYPFVzdIJt3ICAzP8Vn/q9PDylt0i38gd6FpmPFat/1idmwAwPHjD9rR82M03o=
+	t=1764831629; cv=none; b=UPgcT9LkCocXZyE2lo2cXQtfxpUDhdZdF70TLYM1DZnZWsBXVjEkFAaK+Y73plm1z9hPmNV3RUmdSJpluz0PnFEkWUGiax70g20j3Kwkg2YKZuLEtQmLuqbi5ikAgh4PzJ4d+c78BHAuEg6tkZnZS23rvwmLRAnLPiMn20syWFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764830870; c=relaxed/simple;
-	bh=5TH8jSxgRBK0Mx4NU+4zrUT3lUcr1yryUkNy8igJ/qc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bYcdAD/Y6k9dH4dalzMKNx/lphMrdhU8IyRSFsUoX/gyihd0AhD8NnHw8M6YcNGUxmI3jf5+5mB7GbXYPk0rCqE7lJhmh+pwij1R9qoz8xVdncpMWxLB7vjd0L9dBndGiJr6/KltqMEL0eEsULksULCPvnB3q5r/XRtMooug+9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=bhPSllaq; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-47796a837c7so3798815e9.0
-        for <stable@vger.kernel.org>; Wed, 03 Dec 2025 22:47:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1764830867; x=1765435667; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=TdcU8Ukz/TGTW7HeVVp4M3/aeghpwjrkW7iKaooXt1g=;
-        b=bhPSllaq21bJIOSBxdcWlqUPWBPMBYHfEBjyJsLTi1huBAjR+Czh70PFGmesOk4Ecx
-         6Vi40Vm4fL/6I4pHYMnzqMjGtSW8XCPJUMgzDS82dI7NzdBRXU4OdINyN8/rkSAMinNN
-         7GtTb+iW7Ql4fUsrlAN5t9KQ5TYY9Mnz5/M+WTsbKgSDFU2oXdcp5yql0e6GUSbhJW06
-         7DJeRtYjDxuD/ktmY3kmCOVeZUb2yCi9+7kt0FuRg2+AHAy0JfSkeeqIvS4lRTgjNhCI
-         Jhsr/lj3Npl12Xv892AcRP8h5c4I0YV9hY/2cdySIyT+k2bTdRDA+XWK9qmSKJM/FW4I
-         9q2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764830867; x=1765435667;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TdcU8Ukz/TGTW7HeVVp4M3/aeghpwjrkW7iKaooXt1g=;
-        b=ckYhbbBP7qqIOQXFlf5R/0D0sLeoqGbg7449b705RfM/Fv/+SIGWDaXedzyZpldz3P
-         P27JadqdK8DXMmJU4F/RPzKIeS+8iY66cO3ljL0I2XtFyvx6f4ErSME3fp9wB0agALx+
-         EEHvvjA04DmVB8M3xzoDlm7cDsiENeyrCVPdH3SNN+fnvKqJSgqSoCEadW8aB3hrC/Rq
-         LHJcmIZV1/oMRIEEkvNxEY9slr6HdC3S8i0x0SnXvqZmPm/dxoNAM0EnNX4KugfZH0LT
-         ko9iSqQnl4n7/QWeYg5qf7Uo+9UIzje11eonWO14C+3b0WPibFbU6N5PT6hyJ6DWMGOV
-         951g==
-X-Forwarded-Encrypted: i=1; AJvYcCX7/HIoAO98J6g2kJFF/3OiHGYiVOjx/+YUzT3RnkSRGXFOoiU0WAZJkgA2dPa95QetvPo6UoU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxw/3JJagmD/GDX7khpi301Tv/MMiRkpylFv3SiRbEeBM101bPr
-	EBmjmA7mTv/28ryIxx/b3K+xlrnEeXxGrI+PKlxt03Xe7DfS1Uv7TDI=
-X-Gm-Gg: ASbGnctI46wApH46o4kCYHeZrrWDpqmKWJCZNwPhyqa+okeuCl3uJAlklOc2/jOS/Dc
-	02zI3yuLXSZksWOPoQkqCGiXfDRaUv7QZus9iwXChbmr9TpISRCvKMMfuBKAJz23EeBfDr1Rc0O
-	M6x3UidjAtHoqbPiWGuEfKytItqff0Dx8e81veRF2cP2v6k3AbDTejQi26yGKZBUX/HuAhqEZ10
-	uWJbJEr3yJy+RL64wc4C2hKOa5HrR89XvGecqo3cBgbxP6qrJLJ+2OwQXei54U/Ty3tTmNJ49aW
-	xJUubn5mk3bJbyqMYOoDhC6dr/YZOOcoxDEDyUT3R90n/ICvP0E1oxLclcSVL1Q2Q8+P9E+Z+VV
-	excBHJTJp+h14h7nMl0uSi6F6Chj4k3UOAiMSZuEemZV4lwUxF701OVF4Fzs8UjBiNs5oq0DKlt
-	Bv3r3zUa+Dster1tOL3+KS3jSdvG3Yd0S6xV/YpmGElSjb8litelEObuzUenkoAmA+
-X-Google-Smtp-Source: AGHT+IGG/8T5jNcj/rl93miCheVqoRkg7y2S7lTb3oL9kLEJt+kpGHnDxsLtXY4t2LVXrkLJLEG0KQ==
-X-Received: by 2002:a05:600c:3513:b0:477:7bd2:693f with SMTP id 5b1f17b1804b1-4792aee39a1mr44542175e9.6.1764830866832;
-        Wed, 03 Dec 2025 22:47:46 -0800 (PST)
-Received: from [192.168.1.3] (p5b2ac6aa.dip0.t-ipconnect.de. [91.42.198.170])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4793093a9dcsm17206015e9.7.2025.12.03.22.47.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Dec 2025 22:47:46 -0800 (PST)
-Message-ID: <efd5a144-21eb-484a-b0f9-9d0d46f68652@googlemail.com>
-Date: Thu, 4 Dec 2025 07:47:45 +0100
+	s=arc-20240116; t=1764831629; c=relaxed/simple;
+	bh=TGumV486UZSTAG9s+J/o2EFLLt7SBm+tS9oSmIVoPGU=;
+	h=From:To:Subject:Date:Message-Id; b=imkTxPeGSAuMKg7zq2D4H2rCeqb8fTvy/PzjrjtHg33FTttScOLuMDqqVWUwQJxhfZGUuYUWWHlDYCd/gsC2DGY3KKhM+mzRxnwqXOxP9qubSPUPwj+yFBoJeU9zrhy2Am215HLuZtscwEN8oPXIL/Ep9cxsMTFNAHTreP6kq2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=BGbIey11; arc=none smtp.client-ip=61.135.153.162
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.cn
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1764831613;
+	bh=4T4Hu8CcUXR/xo+769PMdbdAAMZyE0jOz+3W1ANfS7A=;
+	h=From:Subject:Date:Message-Id;
+	b=BGbIey115tLYRD7PwKSYNmecZY8gEygwWq86SSoNT2OPMzhgyFjUd3sSQOsBLGyuR
+	 9M5CWOKBUXMLap9yiH0ixXogJklZqzM7BwJnVTiRu/zuSbWZKtRUAoA1nwvm1DPzIj
+	 jdw5Q8OwKzTmhflbdSnvhjsMg+nduBTuD0QbrPjo=
+X-SMAIL-HELO: sina-kernel-team
+Received: from unknown (HELO sina-kernel-team)([183.241.245.185])
+	by sina.cn (10.54.253.31) with ESMTP
+	id 693130DD00000B52; Thu, 4 Dec 2025 14:57:40 +0800 (CST)
+X-Sender: xnguchen@sina.cn
+X-Auth-ID: xnguchen@sina.cn
+Authentication-Results: sina.cn;
+	 spf=none smtp.mailfrom=xnguchen@sina.cn;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=xnguchen@sina.cn
+X-SMAIL-MID: 1850976816217
+X-SMAIL-UIID: C40E6E1353034B1887A75AB51243CAEA-20251204-145740-1
+From: Chen Yu <xnguchen@sina.cn>
+To: libaokun1@huawei.com,
+	dhowells@redhat.com,
+	brauner@kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH 6.1] fscache: delete fscache_cookie_lru_timer when fscache exits to avoid UAF
+Date: Thu,  4 Dec 2025 14:57:33 +0800
+Message-Id: <20251204065733.21270-1-xnguchen@sina.cn>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.6 00/93] 6.6.119-rc1 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20251203152336.494201426@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20251203152336.494201426@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
-Am 03.12.2025 um 16:28 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.6.119 release.
-> There are 93 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+From: Baokun Li <libaokun1@huawei.com>
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
+commit 72a6e22c604c95ddb3b10b5d3bb85b6ff4dbc34f upstream.
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+The fscache_cookie_lru_timer is initialized when the fscache module
+is inserted, but is not deleted when the fscache module is removed.
+If timer_reduce() is called before removing the fscache module,
+the fscache_cookie_lru_timer will be added to the timer list of
+the current cpu. Afterwards, a use-after-free will be triggered
+in the softIRQ after removing the fscache module, as follows:
 
+==================================================================
+BUG: unable to handle page fault for address: fffffbfff803c9e9
+ PF: supervisor read access in kernel mode
+ PF: error_code(0x0000) - not-present page
+PGD 21ffea067 P4D 21ffea067 PUD 21ffe6067 PMD 110a7c067 PTE 0
+Oops: Oops: 0000 [#1] PREEMPT SMP KASAN PTI
+CPU: 1 UID: 0 PID: 0 Comm: swapper/1 Tainted: G W 6.11.0-rc3 #855
+Tainted: [W]=WARN
+RIP: 0010:__run_timer_base.part.0+0x254/0x8a0
+Call Trace:
+ <IRQ>
+ tmigr_handle_remote_up+0x627/0x810
+ __walk_groups.isra.0+0x47/0x140
+ tmigr_handle_remote+0x1fa/0x2f0
+ handle_softirqs+0x180/0x590
+ irq_exit_rcu+0x84/0xb0
+ sysvec_apic_timer_interrupt+0x6e/0x90
+ </IRQ>
+ <TASK>
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20
+RIP: 0010:default_idle+0xf/0x20
+ default_idle_call+0x38/0x60
+ do_idle+0x2b5/0x300
+ cpu_startup_entry+0x54/0x60
+ start_secondary+0x20d/0x280
+ common_startup_64+0x13e/0x148
+ </TASK>
+Modules linked in: [last unloaded: netfs]
+==================================================================
 
-Beste Grüße,
-Peter Schneider
+Therefore delete fscache_cookie_lru_timer when removing the fscahe module.
 
+Fixes: 12bb21a29c19 ("fscache: Implement cookie user counting and resource pinning")
+Cc: stable@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Link: https://lore.kernel.org/r/20240826112056.2458299-1-libaokun@huaweicloud.com
+Acked-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+[ Changed the file path due to missing commit:47757ea83a54 ("netfs,
+fscache: Move fs/fscache/* into fs/netfs/") ]
+Signed-off-by: Chen Yu <xnguchen@sina.cn>
+---
+ fs/fscache/main.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/fs/fscache/main.c b/fs/fscache/main.c
+index dad85fd84f6f..7a60cd96e87e 100644
+--- a/fs/fscache/main.c
++++ b/fs/fscache/main.c
+@@ -114,6 +114,7 @@ static void __exit fscache_exit(void)
+ 
+ 	kmem_cache_destroy(fscache_cookie_jar);
+ 	fscache_proc_cleanup();
++	timer_shutdown_sync(&fscache_cookie_lru_timer);
+ 	destroy_workqueue(fscache_wq);
+ 	pr_notice("Unloaded\n");
+ }
 -- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+2.17.1
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
