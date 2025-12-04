@@ -1,145 +1,184 @@
-Return-Path: <stable+bounces-200029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F5EBCA402A
-	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 15:28:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8134CCA431C
+	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 16:16:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DACCB300B364
-	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 14:28:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 58C4331DB9AD
+	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 15:09:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92C7133ADB2;
-	Thu,  4 Dec 2025 14:28:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 436DB2D876B;
+	Thu,  4 Dec 2025 15:09:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="PGbxNXo8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TrqS/EOY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E20933508C
-	for <stable@vger.kernel.org>; Thu,  4 Dec 2025 14:28:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EB9F2D3EF1
+	for <stable@vger.kernel.org>; Thu,  4 Dec 2025 15:09:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764858514; cv=none; b=TXynpmFOTHKOcAc1URvYC3GTydb3NNnLrkwxajHeajGjK3IuFnWZpIbFuzxrmdWPOk6ri1CgEWwWt5B7Z77dwi3PE2QgVAioESmoI2ZeP5XCg6Y2bCVu+ETygz1mWYeRY/+qAGJlao/LRU/3WCGrpzgj/XkJNbzkm5PIYayVjh4=
+	t=1764860945; cv=none; b=W6AVgBJr1DfPF4GyTQpbdYVPFqW9IYbMnn/82BldtzDsqd1ZncEcb6rDE+6GBADTVrG/TKlv8bYvLvRGL+pViv4F6p8lkVNv2PqnPyLZziRBwqgYThTn1VcHPYXclLXtYnROV/4g725bHq1kbX1zqLrM1bQjoCEovJrBZAmwWEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764858514; c=relaxed/simple;
-	bh=ygGX5DRVdgd5dLe/iOuU6yem4lta/9b6Dvr2u0yD4QM=;
+	s=arc-20240116; t=1764860945; c=relaxed/simple;
+	bh=5v9szWJGeDjjmm5BmESzhqY5NC+TLr6VLOtjJwfkMBc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=n42h6thDnVPheg3UQZzOYnloOpDwgVGMS6SRy/ishXP9T9vvXjo3IQEiSuYXjk+T/5whnIzqZTz7AEFvSAOr1feksZA4HHMYfxLub6tbrwJIsFdbXO2n3DwbZZgSFBDxqNp3qtEA8paL3SjKRGUFYB+f+G9bKCYLOMAFyW2qu1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=PGbxNXo8; arc=none smtp.client-ip=209.85.215.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-bd1ce1b35e7so646751a12.0
-        for <stable@vger.kernel.org>; Thu, 04 Dec 2025 06:28:32 -0800 (PST)
+	 To:Cc:Content-Type; b=UeUUr9ibUnMUFgnXzsamSuEQoOlrEFtOeVDHK1nRliwl1rIRromTVUlP7VbS6TSGrEtMWXKC730ADtORNeQDAvFexs6f1EdDct+1yBJwAFAqzsxjI1hZDCep03OwCENEPKvVlgJb+KuFO6Ld2cCBg6AfP0HFaNwc9zQFjDOa7Rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TrqS/EOY; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-47796a837c7so8698755e9.0
+        for <stable@vger.kernel.org>; Thu, 04 Dec 2025 07:09:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1764858511; x=1765463311; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1764860940; x=1765465740; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=J5up34gv2Eh3c5muVgE2++/qr8omKiRvDmGaTH+Q9zA=;
-        b=PGbxNXo8e92AkfwxeOs2ymEeibZliz6cqtRmRoz9nSWVtL67mvaeTc9f0pKYpIDcs/
-         LhOWZhnBHdEjV+F+mBhpjqhrqXsIqRf1o3XzVs9M95XDmYjRHchF1TjPFp+s1monwO48
-         SjaZPNVOtZ7Gb9TLNNwD6czYt2IMSvzNblVKfPRjYC9Z66fy7fZyaqk882jiKJeRZtQu
-         kErrprfxbRY4OknAaBxqTcztsa0zo4scIeWEtTCyXVlf4BTzmWGM4l5rdYl+BQcZPPXJ
-         TEBGzbOWFk1Weyph0g3ndnfnf8hLQyrx+gKMUXHGOkBvd+IpsG4KFyquZfmNwMDDlUKz
-         hs/Q==
+        bh=SuUcWJogoj5Zy6UaFHm38nZ24EUypEOSoXHBrVrDbNA=;
+        b=TrqS/EOYmJ7VRiFbcnv06bQKPhFw9RJJnIK3rMWTtmrtpetjix7grmJu23fFm6BQRd
+         9AvFWIZDAG8/BdgyBYB5pNMlRKWdOB0pNTb31HcTFJA/ZYPEQCoiLal1ISovIQ49HP2l
+         wSwNFuNa4AX5/Lw8onu7uGjhVWsmHwkfdzFo7iqMT06F5KAH1LqYyiKDZdSdFJtbjJXv
+         wJWijpKiTwSfKQ85iW8U2tJo8wW6i5UKXfPlWTrlPLVvpSFuC5DIi0w5/8Z1GXw6UpAZ
+         EqcxU41KUKiFZP2LdNIO6ACohM7NMpG9C6oxXUEHtK3/Amd/oBw8ACWuGkyRlR5CBcb5
+         30Zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764858511; x=1765463311;
+        d=1e100.net; s=20230601; t=1764860940; x=1765465740;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=J5up34gv2Eh3c5muVgE2++/qr8omKiRvDmGaTH+Q9zA=;
-        b=J2KyG5nnt/M7I4rOZWFtmSoIqXeaQ9elWyX54wvF+gjfHJkZAGc5B1nICChZLNOIYK
-         e67M838NKK9WU+wECY2CoeC8kf+aS33+Tr+wRg2hlNvvvuTgookL6Ua4X+DqFbdsvwVH
-         PhlW2ETJ74H5fCIdR2kU3uoQ0kfj8D4/3tJVhQ6UQ3sC2OegNH32vX2XbAtAxbJYlWY6
-         C0LOscBMBGH7MNdVNmT4OlcGg6xwlvPEwnF4LkF75JkD2cH9SWgK1Pe3nGeHE2wwAwkH
-         3yMqmwt8mKlnGEaiWpUKSFjRpOZAxZni1lB3fhkFYEcrXIWLvGj2h6688IGu9SPy6lCY
-         pFfQ==
-X-Gm-Message-State: AOJu0YwEQ9xHB/IVhA0ULNguBkXbtnBuvPslZBy+2jaYL64R5HyOyhID
-	8Aj4P3Nt3beT/SbGF6Lnwggcu0OK5rUpX+MSJZimz4tS9i3WN1AvmSJDlfkLzRARBPRXjGscjtC
-	c7COkh6rDVLsrnMq8xClc4l6+aJcxSBvk4PJhc31e+g==
-X-Gm-Gg: ASbGncuo5p55A5FlnIz4edD7zvuI0WNToIVLoSSnkamK/jXwOpmSYNXTu8h81VHbHQf
-	U1HnDoRMPZjN22mEl+I0ObbJtDuah247gbxfI8hVI0xRGs/Z8bzSeg56S2NLSLNL2WBufhyHa9p
-	3q0omHTDdUidgPhNYsv1hhRsIltO5n+CmEY6b0Gkz2c9vybcwG7C5AGMAWiSo0iuAU5NjBWLRDw
-	rySa1u73oXLPBnDIsmDYCCPz0DZ7hfR7Tbov//PQZHs2QQK6/vSXWMuKF5/9YR9cJ5rcX8xZDw/
-	iro0vyLrBNogLIYwXwM9yZfu2yLr
-X-Google-Smtp-Source: AGHT+IGvf+0II+wCeaY/bk6moaweTqQfAx9HpwRUNg9PFuETthocLz+dz0I6QUZFETK+n517X8mTaGfxo8rZn98tvdY=
-X-Received: by 2002:a05:693c:2c09:b0:2a4:3594:72d5 with SMTP id
- 5a478bee46e88-2ab92d545d2mr4733118eec.4.1764858510778; Thu, 04 Dec 2025
- 06:28:30 -0800 (PST)
+        bh=SuUcWJogoj5Zy6UaFHm38nZ24EUypEOSoXHBrVrDbNA=;
+        b=XV8650V2zIxf4WuXgsrz2fOuqvei13BUiqHrZrVyT76br/XV88fMFjx+ZY5pFbY3CG
+         qxigAg3mgV+ozR7pop9cveJHib3p+X+vhTD/dkhVguH6NykCXvtCy3l3G5sOOgfooEcp
+         fCUFOF1/SYPvZ3yn4UmHQ+WviWe/aBuK1JJGoT5BX16ICVL7KGBdN2AXUvlQoRAi2S8G
+         NwzV13NWz780/fSPGc7jl8VAHUJD9vZgizG0MrZ3Szrx/0M54EiAjnzwtyiIGq6Pd+VK
+         6F8avBQ8DB+G9Ni58U4puLTFjDZnsXR0g/VwlLU/jjwlabuLo9oXlWJD28hTKcP97GO+
+         ms+A==
+X-Forwarded-Encrypted: i=1; AJvYcCV6yn17ORFXSR8YPKweoR499i/jRfu9Ee7G4IaSn2KIyNHwAdof1wxm/pO1H2pO5riDKjFR/oE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxTjEuqDlkIsuUsrKQXka8p4kUD9jprJflI3fJRAEm+nZZwLjK+
+	ktH+BnG++ODKhnp3+1nCAh0HFdJNIGlxsIAi8ymAw9ZUyVWuh9WsRDpJ50ghuMGhNulEbvL7eu0
+	XYYNAlekdlkwuBmk1VV4bsG83sM7QEJQ=
+X-Gm-Gg: ASbGncuarVFFCtKldo1wnwrva3dKXvPOBXcSxWQbUJVhCwl0xcmp0XxlNLNnqIg0rFV
+	+J2o39WL9YSKuMxohYWpMiMyK2/YCBSacDC4oj16BcMjHX/VEn8sG1iTGTmksidloyeXd1OoDlT
+	jJZJB3eVKISOkvo5eDBjCQEdle+alg7/qdps7FLxhXuF5H6vFrreveACjC61Dn6JP9VnmSVTKhT
+	md3Sj68ElM1AHtN/Pgczs927oECosumUHjrpI5viF3LXpWWwbUacRksH2locu0mFLTSBU3dKzsF
+	CpgPnepCDS05q079MppDiEdouX4o
+X-Google-Smtp-Source: AGHT+IG8ZNIqkG+ruavtPJNLq/7WMSVxHMUln0iX3Nef6xsc00ik27GsBe6pzlL0EJfSOb1mXAdcaDwF7df//rfefjc=
+X-Received: by 2002:a05:600c:4443:b0:477:7f4a:44ba with SMTP id
+ 5b1f17b1804b1-4792aee3a05mr61970655e9.4.1764860939413; Thu, 04 Dec 2025
+ 07:08:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251203152440.645416925@linuxfoundation.org> <bae0cb4e-9498-4ceb-945c-55a00725d10e@sirena.org.uk>
-In-Reply-To: <bae0cb4e-9498-4ceb-945c-55a00725d10e@sirena.org.uk>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Thu, 4 Dec 2025 19:58:19 +0530
-X-Gm-Features: AWmQ_bm3taM1NWauArG_gpQ8u40YrUi0hDis2k3qrsTCqWX97CPc3VDwIDYXxvU
-Message-ID: <CA+G9fYuhFziYBuXS1URXVgFmUahMVfL5uaT0a75yFOTjZsOPvg@mail.gmail.com>
-Subject: Re: [PATCH 6.1 000/568] 6.1.159-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	Mark Brown <broonie@kernel.org>, akpm@linux-foundation.org, linux@roeck-us.net, 
-	shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, 
-	pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org, 
-	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com, 
-	Kiryl Shutsemau <kas@kernel.org>, Dan Carpenter <dan.carpenter@linaro.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Anders Roxell <anders.roxell@linaro.org>, Ben Copeland <benjamin.copeland@linaro.org>
+References: <20251128185523.B995CC4CEFB@smtp.kernel.org> <CA+fCnZeKm4uZuv2hhnSE0RrBvjw26eZFNXC6S+SPDMD0O1vvvA@mail.gmail.com>
+ <2f817f0ba6bc68d5e70309858d946597d64bac8b@linux.dev>
+In-Reply-To: <2f817f0ba6bc68d5e70309858d946597d64bac8b@linux.dev>
+From: Andrey Konovalov <andreyknvl@gmail.com>
+Date: Thu, 4 Dec 2025 16:08:48 +0100
+X-Gm-Features: AWmQ_bmRB-ksejN_0Sq4l24XGjc90aU-UQEIYgag1iEv7qWtJahCQTEp5QO-pZ4
+Message-ID: <CA+fCnZeizRWUFs2k_7wbhJ5v+LdD8H77C0vrP6jp52qp0G_6zw@mail.gmail.com>
+Subject: Re: + mm-kasan-fix-incorrect-unpoisoning-in-vrealloc-for-kasan.patch
+ added to mm-hotfixes-unstable branch
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: Kees Cook <kees@kernel.org>, mm-commits@vger.kernel.org, vincenzo.frascino@arm.com, 
+	urezki@gmail.com, stable@vger.kernel.org, ryabinin.a.a@gmail.com, 
+	glider@google.com, dvyukov@google.com, dakr@kernel.org, 
+	kasan-dev <kasan-dev@googlegroups.com>, 
+	Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, Andrew Morton <akpm@linux-foundation.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, 4 Dec 2025 at 17:36, Mark Brown <broonie@kernel.org> wrote:
+On Thu, Dec 4, 2025 at 2:00=E2=80=AFPM Jiayuan Chen <jiayuan.chen@linux.dev=
+> wrote:
 >
-> On Wed, Dec 03, 2025 at 04:20:02PM +0100, Greg Kroah-Hartman wrote:
-> > This is the start of the stable review cycle for the 6.1.159 release.
-> > There are 568 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
+> December 3, 2025 at 23:18, "Andrey Konovalov" <andreyknvl@gmail.com mailt=
+o:andreyknvl@gmail.com?to=3D%22Andrey%20Konovalov%22%20%3Candreyknvl%40gmai=
+l.com%3E > wrote:
 >
-> I'm seeing a bunch of systems start failing with this release, they
-> start OOMing when previously they ran OK.  Most of them aren't exactly
-> overburned with memory.  These failures bisect to 61717acddadf66
-> (mm/memory: do not populate page table entries beyond i_size), sample
-> bisect from one of the systems including links to test jobs (the bisects
-> for other systems/test sets look very similar):
+>
+> >
+>
+> > >  ------------------------------------------------------
+> > >  From: Jiayuan Chen <jiayuan.chen@linux.dev>
+> > >  Subject: mm/kasan: fix incorrect unpoisoning in vrealloc for KASAN
+> > >  Date: Fri, 28 Nov 2025 19:15:14 +0800
+> > >
+> > Hi Jiayuan,
+> >
+> > Please CC kasan-dev@googlegroups.com when sending KASAN patches.
+> >
+>
+> Sorry about that. I missed it.
+>
+> > >
+> > > Syzkaller reported a memory out-of-bounds bug [1]. This patch fixes t=
+wo
+> > >  issues:
+> > >
+> > >  1. In vrealloc, we were missing the KASAN_VMALLOC_VM_ALLOC flag when
+> > >  unpoisoning the extended region. This flag is required to correctly
+> > >  associate the allocation with KASAN's vmalloc tracking.
+> > >
+> > >  Note: In contrast, vzalloc (via __vmalloc_node_range_noprof) explici=
+tly
+> > >  sets KASAN_VMALLOC_VM_ALLOC and calls kasan_unpoison_vmalloc() with =
+it.
+> > >  vrealloc must behave consistently =E2=80=94 especially when reusing =
+existing
+> > >  vmalloc regions =E2=80=94 to ensure KASAN can track allocations corr=
+ectly.
+> > >
+> > >  2. When vrealloc reuses an existing vmalloc region (without allocati=
+ng new
+> > >  pages), KASAN previously generated a new tag, which broke tag-based
+> > >  memory access tracking. We now add a 'reuse_tag' parameter to
+> > >  __kasan_unpoison_vmalloc() to preserve the original tag in such case=
+s.
+> > >
+> > I think we actually could assign a new tag to detect accesses through
+> > the old pointer. Just gotta retag the whole region with this tag. But
+> > this is a separate thing; filed
+> > https://bugzilla.kernel.org/show_bug.cgi?id=3D220829 for this.
+> >
+>
+> Thank you for your advice. I tested the following modification, and it wo=
+rks.
+>
+>         if (size <=3D alloced_size) {
+> -               kasan_unpoison_vmalloc(p + old_size, size - old_size,
+> -                                      KASAN_VMALLOC_PROT_NORMAL);
+> +               p =3D kasan_unpoison_vmalloc(p, size,
+> +                                          KASAN_VMALLOC_PROT_NORMAL | KA=
+SAN_VMALLOC_VM_ALLOC);
+>                 /*
+>                  * No need to zero memory here, as unused memory will hav=
+e
+>                  * already been zeroed at initial allocation time or duri=
+ng
+>                  * realloc shrink time.
+>                  */
+>                 vm->requested_size =3D size;
+>                 return (void *)p;
+>         }
+>
+>
+> > >
+> [...]
+> > Would be good to have tests for vrealloc too. Filed
+> > https://bugzilla.kernel.org/show_bug.cgi?id=3D220830 for this.
+> >
+>
+> Thanks, I will add test for vrealloc in kasan_test_c.c.
 
-As Mark=E2=80=99s reported, the LKFT reproduced the same regression on Juno=
--r2,
-FVP and qemu-arm64 during boot.
+Awesome!
 
-### boot log
-<0>[   42.433802] Internal error: Oops: 0000000096000046 [#1] PREEMPT SMP"}
-<4>[   42.434147] Modules linked in: fuse drm ip_tables x_tables"}
-<4>[   42.434573] CPU: 1 PID: 374 Comm: skipgen Not tainted 6.1.159-rc1 #1"=
-}
-<4>[   42.435344] Hardware name: linux,dummy-virt (DT)"}
-<4>[   42.436140] pstate: 42402009 (nZcv daif +PAN -UAO +TCO -DIT
--SSBS BTYPE=3D--)"}
-<4>[   42.437004] pc : _raw_spin_lock+0x3c/0x8c"}
-<4>[   42.438173] lr : _raw_spin_lock+0x28/0x8c"}
+But as mentioned in the other thread, let's first implement a
+standalone fix for the original issue (that can be backported) and all
+these extra additions can come as separate patches on top.
 
-Boot regression: Juno-r2, FVP, Internal error: Oops: _raw_spin_lock
-filemap_map_pages
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-## commit point to,
-  mm/memory: do not populate page table entries beyond i_size
-  [ Upstream commit 74207de2ba10c2973334906822dc94d2e859ffc5 ]
-
-### Links,
- - https://regressions.linaro.org/lkft/linux-stable-rc-linux-6.1.y/v6.1.158=
--569-gabd89c70c938/log-parser-test/internal-error-oops-Oops_PREEMPT_SMP___r=
-aw_spin_lock-a94221fb/
- - https://lkft.validation.linaro.org/scheduler/job/8540690#L1835
- - https://tuxapi.tuxsuite.com/v1/groups/linaro/projects/lkft/tests/36LJeld=
-PNf0LMr3PSr7WYaPqCFa
-
---
-Linaro LKFT
-https://lkft.linaro.org
+Thank you!
 
