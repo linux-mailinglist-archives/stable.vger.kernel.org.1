@@ -1,80 +1,57 @@
-Return-Path: <stable+bounces-199977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B9F6CA2ECE
-	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 10:13:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D684CA2F3E
+	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 10:21:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 013DE30E0B48
-	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 09:09:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4E437310EF6C
+	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 09:17:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABC6B33469A;
-	Thu,  4 Dec 2025 09:09:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eVAYf5ER"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08D2D33B6E7;
+	Thu,  4 Dec 2025 09:11:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D08DF30749E;
-	Thu,  4 Dec 2025 09:09:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+Received: from cmccmta2.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 342B433B6D8;
+	Thu,  4 Dec 2025 09:11:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=111.22.67.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764839359; cv=none; b=TV+3gIduRw475WdXsI92ZynCC30ZfTRhKif2Ooo/PnzmsoB63wNith40k2MHVnhvIFJTOjKdWcjSobWepbwDpEmYwQSMjGy6QFcGAExqK6eYTwcf+0AcdRk2Ao/2u91HhaAJG37RnDmQ5W6gGSCnlALP04D6Xqj5utScRqnl+r4=
+	t=1764839502; cv=none; b=ELM83qaM8naDaULkYfQGLG+796fi/euYKhz0fkwtR93qxFhfY7Gu9WLZg4j3hAU8RNVI/HODPszUUceDBLsaiDSEN+6GCzMpdg0cHz1fpOOn8ueZypNiUVozMtmsAfpj5tsdlza2qdgPNB3xag6VfdpW9azntYW/ot+qaRpuY/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764839359; c=relaxed/simple;
-	bh=ceVTwUwv7SOgVYfzDyF4kbX79Mjy/d2SAjUpMvlvoGQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f4/5nqxjyOal70mtbcr4KkOB/fsl+oUVkG/ZzGiAz0njMEIFvwOt5wWIiJi7CA36TNZkNiTfTk3T+19lFhWxgz3xb94wLJrEEa+fQiuacofH+HkhbDkoTCbmmRXsvLXmXVSLnZG0GZTAzah4BnPem5scUbqRghGLTkXRS1K/nAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eVAYf5ER; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764839358; x=1796375358;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=ceVTwUwv7SOgVYfzDyF4kbX79Mjy/d2SAjUpMvlvoGQ=;
-  b=eVAYf5ERtVbBS/gzX4E9jTGkOkCJuJlLh3Lgzs+t/nWN46q1tR9ENPUc
-   C3g0yfjv0TIJjuqk8NjyqkZRF24oAQPcEX64odeEg5Hbyv3Irno3aCuXB
-   5hHhqOCR19I4ZEkYvL1lR4jpHaQGoOaVUP2StSZxldu/4D+MoDnmFhf/E
-   Gz+5ER4OAZUGFrDKT3rHPOpYVFAhA9nisPzxImnEfQ2KOuRV476qBtotx
-   VF25sDH32n0Tnt/FKym0vHUtq92upqKzk8bXEnEbL1D+iUK8+AEUZIssP
-   X1qi9MfoO7dg0nJOWO1uZMNyD+2zalypHRupQNa5GDusxnx9cI8z2tHbO
-   Q==;
-X-CSE-ConnectionGUID: 9g5vzhVkTgOcTQ4Ri8sIRw==
-X-CSE-MsgGUID: doLSfQ39RTmtImOCshTmqA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="67014044"
-X-IronPort-AV: E=Sophos;i="6.20,248,1758610800"; 
-   d="scan'208";a="67014044"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2025 01:09:17 -0800
-X-CSE-ConnectionGUID: fje5WMxUTjyfWHTtGSl6pA==
-X-CSE-MsgGUID: jQ0odubiR6y0Af37o7jWFw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,248,1758610800"; 
-   d="scan'208";a="195724389"
-Received: from junjie-nuc14rvs.bj.intel.com ([10.238.152.23])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2025 01:09:13 -0800
-From: Junjie Cao <junjie.cao@intel.com>
-To: pabeni@redhat.com,
-	davem@davemloft.net,
+	s=arc-20240116; t=1764839502; c=relaxed/simple;
+	bh=viIUBCUxUrQIU+KRE+rcobyjD9sts35NOjZEYvyj3fA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BtdMiKD2mvhQ5/Xt5qtPQhqXvR7Q1Ifl+iHp+yzo5Rn6Anl2U+iwtRAulxVd08NlKeaFAdcSJsSU9POlY7Jt7vYWDDFFd+7KLnAxGg+GJl1KqrUW4qTlfR87HP6OtigBOHkJmaN2V5ErpRujhUY8Gyte2gimBtwHmzncJ3zvOlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com; spf=pass smtp.mailfrom=cmss.chinamobile.com; arc=none smtp.client-ip=111.22.67.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app05-12005 (RichMail) with SMTP id 2ee569315049525-ac64e;
+	Thu, 04 Dec 2025 17:11:37 +0800 (CST)
+X-RM-TRANSID:2ee569315049525-ac64e
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from localhost.localdomain (unknown[10.55.1.72])
+	by rmsmtp-syy-appsvr01-12001 (RichMail) with SMTP id 2ee169315046302-d1b52;
+	Thu, 04 Dec 2025 17:11:37 +0800 (CST)
+X-RM-TRANSID:2ee169315046302-d1b52
+From: caoping <caoping@cmss.chinamobile.com>
+To: chuck.lever@oracle.com
+Cc: davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
-	syzbot+14afda08dc3484d5db82@syzkaller.appspotmail.com
-Cc: horms@kernel.org,
-	linux-hams@vger.kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	kernel-tls-handshake@lists.linux.dev,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	syzkaller-bugs@googlegroups.com,
 	stable@vger.kernel.org,
-	junjie.cao@intel.com
-Subject: [PATCH 2/2] netrom: fix reference count leak in nr_rt_device_down
-Date: Thu,  4 Dec 2025 17:09:05 +0800
-Message-ID: <20251204090905.28663-3-junjie.cao@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251204090905.28663-1-junjie.cao@intel.com>
-References: <20251204090905.28663-1-junjie.cao@intel.com>
+	caoping <caoping@cmss.chinamobile.com>
+Subject: [PATCH v3] net/handshake: restore destructor on submit failure
+Date: Thu,  4 Dec 2025 01:10:58 -0800
+Message-ID: <20251204091058.1545151-1-caoping@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,37 +60,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When a device goes down, nr_rt_device_down() clears the routes that
-use this device. However, it fails to drop the per-route reference to
-the neighbour (nr_neigh): neither nr_neigh->count nor its refcount
-is decremented when the route is removed.
+handshake_req_submit() replaces sk->sk_destruct but never restores it when
+submission fails before the request is hashed. handshake_sk_destruct() then
+returns early and the original destructor never runs, leaking the socket.
+Restore sk_destruct on the error path.
 
-Mirror the behaviour of nr_dec_obs() / nr_del_node() by decrementing
-nr_neigh->count and calling nr_neigh_put(), so that the neighbour
-reference is properly released when a device goes down.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: 3b3009ea8abb ("net/handshake: Create a NETLINK service for handling handshake requests")
+Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Junjie Cao <junjie.cao@intel.com>
+Signed-off-by: caoping <caoping@cmss.chinamobile.com>
 ---
- net/netrom/nr_route.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/handshake/request.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/netrom/nr_route.c b/net/netrom/nr_route.c
-index 20aacfdfccd4..35d10985fd7a 100644
---- a/net/netrom/nr_route.c
-+++ b/net/netrom/nr_route.c
-@@ -517,6 +517,9 @@ void nr_rt_device_down(struct net_device *dev)
- 		for (i = 0; i < t->count; i++) {
- 			s = t->routes[i].neighbour;
- 			if (s->dev == dev) {
-+				s->count--;
-+				nr_neigh_put(s);
-+
- 				t->count--;
- 
- 				switch (i) {
+diff --git a/net/handshake/request.c b/net/handshake/request.c
+index 274d2c89b6b2..89435ed755cd 100644
+--- a/net/handshake/request.c
++++ b/net/handshake/request.c
+@@ -276,6 +276,8 @@ int handshake_req_submit(struct socket *sock, struct handshake_req *req,
+ out_unlock:
+ 	spin_unlock(&hn->hn_lock);
+ out_err:
++	/* Restore original destructor so socket teardown still runs on failure */
++	req->hr_sk->sk_destruct = req->hr_odestruct;
+ 	trace_handshake_submit_err(net, req, req->hr_sk, ret);
+ 	handshake_req_destroy(req);
+ 	return ret;
+
+base-commit: 4a26e7032d7d57c998598c08a034872d6f0d3945
 -- 
-2.43.0
+2.47.3
+
+
 
 
