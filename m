@@ -1,99 +1,198 @@
-Return-Path: <stable+bounces-200023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2D4CCA3DFF
-	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 14:45:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0D87CA3E61
+	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 14:52:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2784730202D5
-	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 13:45:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BDE8D30505D8
+	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 13:51:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 304303451DA;
-	Thu,  4 Dec 2025 13:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A66C933C189;
+	Thu,  4 Dec 2025 13:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ouzZrBsc"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="A13cCdci"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from omta033.useast.a.cloudfilter.net (omta033.useast.a.cloudfilter.net [44.202.169.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7253431F8;
-	Thu,  4 Dec 2025 13:44:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99F61229B36
+	for <stable@vger.kernel.org>; Thu,  4 Dec 2025 13:51:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764855888; cv=none; b=KS6mrWvwI7i5XOxdVPeZhZPUEzyWyYTejfJ5RV9uH07P67h4Li93OrcfuYDnrfr860UHqlhxFYZOYNz8gZmlzV5toowUHI+IhzcdDR4MbHRntDEwhZYnH9NPZb6FyehUcIGVYwIQvqWj2aPjMVBaKkTmw5/tdzZ8O0sy8vBxg6g=
+	t=1764856289; cv=none; b=UBp6Rit8QUOYXOBCH5cYgw1jmZeIkVFT1biB5VQdfJvOUFMCdkkTKf9i7TybFtASmF0zOn1GQdyZ3CehJ3FMWKWVd+aprZvgz1DXn2CeOfQD60VzhznwlVl08rxn0aPNX1sDmB8P6AXze9w00m1YCubQgvM6xmX8ut3A4G+vMlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764855888; c=relaxed/simple;
-	bh=tbqLmUwodPJEVURPT1ocoZ5j3L68dUBXFjTtWeWA6eM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kq1bnuyM5y8tBsI8td5wIVl2iUkvNBzw9u0zvnqCM5K+6JTVhTudzqVPhCRrc55LiYw/BUvy78YhtuSj59UdXAsSG5RKYes/ANpXeng09KWhaLJVDeJOZtAhOPncLvQTm4iK7dd1gI3hcuGUVBqXD4qJPHBVm/OxLKFIfXXIyNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ouzZrBsc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B662C4CEFB;
-	Thu,  4 Dec 2025 13:44:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764855888;
-	bh=tbqLmUwodPJEVURPT1ocoZ5j3L68dUBXFjTtWeWA6eM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ouzZrBsc08OLp+PFWnoBGw2xrsv5ma4Ug1kVNUqiEt4f74SHj1Q2LyJobR0wrhIzc
-	 +jem3Ks8X5VcKg8hsal8fuALS37jGj+ls82TZCU1U7KD7cYM3I2r52lQ9L26xtjXNS
-	 Ae+HHDsXFig85vh0h6WChSlQtJrCczl+fzwX1lKdT7NeEGfnar2gsOGkItWfYvyNOV
-	 X2bAPHdCAVdTZsxPfY9LR7H1PDyXpqQZtHG0XOVFX2bTHAN1JfchR6vo4yg7FVYEea
-	 VPkB3/F/DlsTwS0/xac9K6TuR82V+aTlKihLgD1F/zNh68g8FwcysIiXcO9u3Iu0DD
-	 lPaN4OYRpv4kw==
-Date: Thu, 4 Dec 2025 13:44:44 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Siddharth Vadapalli <s-vadapalli@ti.com>, Anurag Dutta <a-dutta@ti.com>,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] spi: cadence-quadspi: Fix clock enable underflows due to
- runtime PM
-Message-ID: <8c6b5d14-ffc9-41e6-94ff-431f381a39cd@sirena.org.uk>
-References: <20251202-spi-cadence-qspi-runtime-pm-imbalance-v1-1-aee8c7fa21f2@kernel.org>
- <aTFQv157O-wJjVrZ@gaggiata.pivistrello.it>
- <555e9f6b-b8b6-4cc5-900b-63aaff8b4e6c@sirena.org.uk>
+	s=arc-20240116; t=1764856289; c=relaxed/simple;
+	bh=bupgnj4eix4x94suWheCvcMabbqLLNHSRCzXm3iZpPs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cgP92ZOmR9b6WkdndjwUgxQtjLp668Hl3ZHnnNj2DsKkNtthiwwZlW2/CjXoWtsvXT6VTJoW/PnKNSJQsUx2MAKdfK//pPH3QZkmdYHRctgWsJv3UNqubDeCWAgX49EH7P+j6ebhsfyF6c+X/vyX34swdaF/hB29eejBhGSG06Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=A13cCdci; arc=none smtp.client-ip=44.202.169.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-6002b.ext.cloudfilter.net ([10.0.30.203])
+	by cmsmtp with ESMTPS
+	id QspjvkQLNqgL9R9jtvTm2U; Thu, 04 Dec 2025 13:51:21 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id R9jsvQlDEfjs1R9jsvfvYO; Thu, 04 Dec 2025 13:51:21 +0000
+X-Authority-Analysis: v=2.4 cv=So+Q6OO0 c=1 sm=1 tr=0 ts=693191d9
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=7vwVE5O1G3EA:10 a=qNABUOcEAAAA:8
+ a=b0U1OSKS18AjNlxaXoUA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=Ytm653ucTKQjCvbzLygB:22 a=Wh1V8bzkS9CpCxOpQUxp:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=zsTMf+3paPYKZ3qzmg3aD8jj3/6WtZjggw+ud/4Gbzo=; b=A13cCdciE9MAOZtl0L9S4BoJmq
+	oFt/NyB7gcKb7cFFfJUkmLpOtnp0oN3yco9mRBWXqqSeVvnU9RIjbDrLctNP7TWvTLoIWeBzZcSFL
+	QqfYczWkjWdDKh+44ZFQKrOI1Dn8A3f2GmW+SdTr0s5RLbiVivNquD5IvgzCXEA4P7x4FvhYfpUIn
+	LEs6av9SVlunjC7yusfI2YMaBkc7CTMYStBmJQtRLHZ6bjYs7NkjGsD4ejy4ngAjFuDa7QOy/Ji7s
+	cCAlzgnclV/sHsGhuGglYDPoBKYwZ086WESq8jc20ZwOy/XpVjYzKZbfOs9EMyxnqJLIVtLQVA8B/
+	lOUoZbJA==;
+Received: from c-73-92-56-26.hsd1.ca.comcast.net ([73.92.56.26]:47320 helo=[10.0.1.180])
+	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.98.2)
+	(envelope-from <re@w6rz.net>)
+	id 1vR9js-00000002pKn-1DiJ;
+	Thu, 04 Dec 2025 06:51:20 -0700
+Message-ID: <481f5985-da16-4b06-912d-dbc831504068@w6rz.net>
+Date: Thu, 4 Dec 2025 05:51:18 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="igA9GEpDYmAcrB0O"
-Content-Disposition: inline
-In-Reply-To: <555e9f6b-b8b6-4cc5-900b-63aaff8b4e6c@sirena.org.uk>
-X-Cookie: volcano, n.:
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1 000/568] 6.1.159-rc1 review
+To: Mark Brown <broonie@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+ linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+ akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+ patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+ jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, achill@achill.org,
+ sr@sladewatkins.com, Kiryl Shutsemau <kas@kernel.org>
+References: <20251203152440.645416925@linuxfoundation.org>
+ <bae0cb4e-9498-4ceb-945c-55a00725d10e@sirena.org.uk>
+Content-Language: en-US
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <bae0cb4e-9498-4ceb-945c-55a00725d10e@sirena.org.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.92.56.26
+X-Source-L: No
+X-Exim-ID: 1vR9js-00000002pKn-1DiJ
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-92-56-26.hsd1.ca.comcast.net ([10.0.1.180]) [73.92.56.26]:47320
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 19
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfKIlLVueC397ztSY1iia/y2wTSsVeYb8GmQV7nWmM8xL2TflpzN5m/GymesoVOOX07RKxQmzmCoUBsE2Dup9I5uXeK1YbL+lsw777O9nkFu5aZ2chKlB
+ YWQ9AF3crJsZd17lVyv1yUPR4EJtcdnX2gW7+ipst3Q2sp9FfYWw7raGH6RUsjHPuSuLuXVlh7HukA==
 
+On 12/4/25 04:06, Mark Brown wrote:
+> On Wed, Dec 03, 2025 at 04:20:02PM +0100, Greg Kroah-Hartman wrote:
+>> This is the start of the stable review cycle for the 6.1.159 release.
+>> There are 568 patches in this series, all will be posted as a response
+>> to this one.  If anyone has any issues with these being applied, please
+>> let me know.
+> I'm seeing a bunch of systems start failing with this release, they
+> start OOMing when previously they ran OK.  Most of them aren't exactly
+> overburned with memory.  These failures bisect to 61717acddadf66
+> (mm/memory: do not populate page table entries beyond i_size), sample
+> bisect from one of the systems including links to test jobs (the bisects
+> for other systems/test sets look very similar):
+>
+> # bad: [abd89c70c9382759c14c5e7e0b383c2a19594c5c] Linux 6.1.159-rc1
+> # good: [f6e38ae624cf7eb96fb444a8ca2d07caa8d9c8fe] Linux 6.1.158
+> git bisect start 'abd89c70c9382759c14c5e7e0b383c2a19594c5c' 'f6e38ae624cf7eb96fb444a8ca2d07caa8d9c8fe'
+> # test job: [abd89c70c9382759c14c5e7e0b383c2a19594c5c] https://lava.sirena.org.uk/scheduler/job/2168338
+> # bad: [abd89c70c9382759c14c5e7e0b383c2a19594c5c] Linux 6.1.159-rc1
+> git bisect bad abd89c70c9382759c14c5e7e0b383c2a19594c5c
+> # test job: [43c650106e8558fa7cfec5a2e9c8de29233b6552] https://lava.sirena.org.uk/scheduler/job/2168373
+> # good: [43c650106e8558fa7cfec5a2e9c8de29233b6552] rtc: pcf2127: clear minute/second interrupt
+> git bisect good 43c650106e8558fa7cfec5a2e9c8de29233b6552
+> # test job: [b56fbe428919e8c1a548f331d20b8c4608008845] https://lava.sirena.org.uk/scheduler/job/2168393
+> # good: [b56fbe428919e8c1a548f331d20b8c4608008845] net/mlx5e: Preserve shared buffer capacity during headroom updates
+> git bisect good b56fbe428919e8c1a548f331d20b8c4608008845
+> # test job: [445097729a995f87ff7c80d5a161c7e1b5456628] https://lava.sirena.org.uk/scheduler/job/2169640
+> # bad: [445097729a995f87ff7c80d5a161c7e1b5456628] platform/x86: intel: punit_ipc: fix memory corruption
+> git bisect bad 445097729a995f87ff7c80d5a161c7e1b5456628
+> # test job: [ad3b2ce45cce79ddaff01c977d0867d079fa8349] https://lava.sirena.org.uk/scheduler/job/2169710
+> # good: [ad3b2ce45cce79ddaff01c977d0867d079fa8349] kernel.h: Move ARRAY_SIZE() to a separate header
+> git bisect good ad3b2ce45cce79ddaff01c977d0867d079fa8349
+> # test job: [de07228674e9cee27f679ebcf8562f7e3b2cda21] https://lava.sirena.org.uk/scheduler/job/2169731
+> # good: [de07228674e9cee27f679ebcf8562f7e3b2cda21] mptcp: decouple mptcp fastclose from tcp close
+> git bisect good de07228674e9cee27f679ebcf8562f7e3b2cda21
+> # test job: [dca2a95e4ed753ed33da11d7bb78157441d69bad] https://lava.sirena.org.uk/scheduler/job/2169741
+> # good: [dca2a95e4ed753ed33da11d7bb78157441d69bad] pmdomain: samsung: plug potential memleak during probe
+> git bisect good dca2a95e4ed753ed33da11d7bb78157441d69bad
+> # test job: [61717acddadf660fa6969027bfa0d6fd38f8e3e2] https://lava.sirena.org.uk/scheduler/job/2170912
+> # bad: [61717acddadf660fa6969027bfa0d6fd38f8e3e2] mm/memory: do not populate page table entries beyond i_size
+> git bisect bad 61717acddadf660fa6969027bfa0d6fd38f8e3e2
+> # test job: [0de5c14c8e753a547d158530c37efb245f7b40ec] https://lava.sirena.org.uk/scheduler/job/2171171
+> # good: [0de5c14c8e753a547d158530c37efb245f7b40ec] pmdomain: imx: Fix reference count leak in imx_gpc_remove
+> git bisect good 0de5c14c8e753a547d158530c37efb245f7b40ec
+> # test job: [1457e122dd70574a0ca895eea6d6c12ba91312bf] https://lava.sirena.org.uk/scheduler/job/2171268
+> # good: [1457e122dd70574a0ca895eea6d6c12ba91312bf] filemap: cap PTE range to be created to allowed zero fill in folio_map_range()
+> git bisect good 1457e122dd70574a0ca895eea6d6c12ba91312bf
+> # first bad commit: [61717acddadf660fa6969027bfa0d6fd38f8e3e2] mm/memory: do not populate page table entries beyond i_size
 
---igA9GEpDYmAcrB0O
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+This patch "mm/memory: do not populate page table entries beyond i_size" 
+also causes an Oops on RISC-V.
 
-On Thu, Dec 04, 2025 at 01:28:05PM +0000, Mark Brown wrote:
+[    5.940397] Unable to handle kernel paging request at virtual address 
+ffffffc6fe000028
+[    5.947616] Oops [#1]
+[    5.949814] Modules linked in:
+[    5.952857] CPU: 0 PID: 147 Comm: exe Not tainted 6.1.158 #2
+[    5.958500] Hardware name: SiFive HiFive Unmatched A00 (DT)
+[    5.964060] epc : _raw_spin_lock+0x12/0x84
+[    5.968141]  ra : filemap_map_pages+0x23e/0x524
+[    5.972658] epc : ffffffff80b4d500 ra : ffffffff801e3d60 sp : 
+ffffffd88c923c80
+[    5.979870]  gp : ffffffff81a3f228 tp : ffffffd88c8c1a80 t0 : 
+0000000000000000
+[    5.987078]  t1 : 0000000000000000 t2 : 0000000000000000 s0 : 
+ffffffd88c923c90
+[    5.994287]  s1 : 0000000000000000 a0 : ffffffc6fe000028 a1 : 
+ffffffc800000000
+[    6.001497]  a2 : 0000000100000000 a3 : 0000000000080000 a4 : 
+0000000000000ff8
+[    6.008706]  a5 : 0000000000010000 a6 : ffffffff813d5858 a7 : 
+0000000000000000
+[    6.015915]  s2 : 0000003f807ff000 s3 : ffffffd88c923d98 s4 : 
+0000000000000000
+[    6.023125]  s5 : ffffffd77fe00ff8 s6 : 0000000000000000 s7 : 
+0000000000000000
+[    6.030333]  s8 : 0000003f80829008 s9 : fffffffffffffffe s10: 
+ffffffd880f866f8
+[    6.037543]  s11: ffffffc7020b67c0 t3 : ffffffffffffffff t4 : 
+0000003f807ff000
+[    6.044752]  t5 : 0000000000000000 t6 : 0000000000000000
+[    6.050047] status: 0000000200000120 badaddr: ffffffc6fe000028 cause: 
+000000000000000f
+[    6.057957] [<ffffffff80b4d500>] _raw_spin_lock+0x12/0x84
+[    6.063338] [<ffffffff801e3d60>] filemap_map_pages+0x23e/0x524
+[    6.069157] [<ffffffff80229ffc>] __handle_mm_fault+0xd44/0x1818
+[    6.075064] [<ffffffff8022ab84>] handle_mm_fault+0xb4/0x1b8
+[    6.080622] [<ffffffff8000cd54>] do_page_fault+0x142/0x462
+[    6.086095] [<ffffffff80003f20>] ret_from_exception+0x0/0x16
+[    6.091798] ---[ end trace 0000000000000000 ]---
 
-> issue and test directly rather than working blind, I've also noticed
-> that we're getting
-
-> [   15.430306] cadence-qspi 13010000.spi: Runtime PM usage count underflow!
-
-> even in normal operation (on that system anyway) so the runtime PM
-> handling is definitely unhappy.
-
-Ah, I applied a patch the other day fixing that one.
-
---igA9GEpDYmAcrB0O
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmkxkEsACgkQJNaLcl1U
-h9DPsgf/Z1MsE7NuwgfNjzwYJ2Bpwd9QJ00FtVhPX4LUUopdopsQFx0oGJD6xweM
-SP1SZ3fSe6gp1bhIgHsaJFdRAxLiV16fLNHsO0MmVoroMkRXEAim1WLLJwHzo68C
-oQp/79o4+FQVDyvOUiM1AUxelgqrCL1vLylbOOb3V4p+7O9wzo81Ha5OWRbPfKPN
-WCkpvdYzdVEdgSXlx3RXplQXUMQO9lq8kbnIT+02qqGPaOjqV5+/kr4NaxUer1dz
-B6rcOzxrEMpx1/ahgFtwslKjQojdlxycXvd54j+yb1MkXC1mdrYLsd2/2uanydWs
-DERnvsMOiWKVat0L8On/bXgo/4ZoXA==
-=s5qt
------END PGP SIGNATURE-----
-
---igA9GEpDYmAcrB0O--
 
