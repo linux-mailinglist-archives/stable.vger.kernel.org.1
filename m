@@ -1,120 +1,113 @@
-Return-Path: <stable+bounces-200004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B433CA36C1
-	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 12:23:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56645CA36CA
+	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 12:24:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DE8E030145BA
-	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 11:22:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D4F3C3129CC9
+	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 11:22:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25C0D33C1A7;
-	Thu,  4 Dec 2025 11:22:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MmVh/C0u"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9428E33CEB7;
+	Thu,  4 Dec 2025 11:22:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCDD23321B9
-	for <stable@vger.kernel.org>; Thu,  4 Dec 2025 11:22:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F4733CEA0;
+	Thu,  4 Dec 2025 11:22:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764847345; cv=none; b=BGiGplZQsyWpPmmNJQvb88mNLlh36JXbQJD41UcVHRxUcdRkt7co/387EsN5A7+W7GpErwxDQAumPbfoK2CDQYMwq/B7hpIhvrBC8H/WmGp0pmsyO7urkTWqINnVpQJV0FjKshpiLhPRZqBUMeu+7xM8poDNSLc6JT1YFdXXk2Q=
+	t=1764847372; cv=none; b=mJTI5AFmeQ7XYAiRw2kdPDzAvcEVEVDJ1PtMYmu+EXBbKomILRxWXf1Eb2CkwBIyqzIEJbRr428/L5/X+3PYiOMhpoZe5D2QvXlte3yzGX5eAL/Y47yk6cfsV/dXBY8w0Xnmc45/wnFnpwZUp+KyGKfh7ok5InJXtDa0l6Y3Qcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764847345; c=relaxed/simple;
-	bh=2IXCVg1v/j1YucPzSMIWBwmiut4HTbsSoCXz9IRXBtg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rUCorRTl//+lobyeUBjES2QVBcar9N74EKfJQ65g93uMee6xCFefaXOMV/0TPakv3zIB/GP3kMx2RLiVG5WhT3SXLXFUBDbUz0F4yr7UGzdsVT9vAl10H6A4Pznstu1MHIo2Cbq2FmXqMSCqHGFIgwsgHFXUeegCNg9nTCethbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MmVh/C0u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 675F6C4AF09
-	for <stable@vger.kernel.org>; Thu,  4 Dec 2025 11:22:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764847345;
-	bh=2IXCVg1v/j1YucPzSMIWBwmiut4HTbsSoCXz9IRXBtg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=MmVh/C0ud8Is2c14hPn+Q8VfxhpaTVDn8HB5MF7s34kSA7jAgJXX3qli4TC1pEaTs
-	 GEMVESPiuEwzmJ87dtOmCBk5cF9v8UrL/bPHqz+f54QeXBaHhxVWAtNinOlrknyvwR
-	 lodMPVb+ry+vFBh3r11ONVZB6HWh2R1baDaq5t6Y1YaL5x4I0Nu7wuWtf9exoWxyQa
-	 vfDHon1EoqBSSQqvSiUO9qZYZQwIQhdCbpcFB2gUxQtRfLfwckBdu4ZmnvYnlmm/yL
-	 jWYpXTCmokthozLr/eWt2pznEV1BWAKyMmERbQ2+Wmn0DFB4+q/aUpJzEVSDCyhfBX
-	 rY+3NHZDBwxgQ==
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-594285c6509so837560e87.0
-        for <stable@vger.kernel.org>; Thu, 04 Dec 2025 03:22:25 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUup5pM58eJWFuTBKsBY8pbmpDgccOcw/Uf812nn9E2RWNQkvfnG3B/FTusp2YayOborldQQv8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxRh+R9b8bICmMz6iE4a/UqNhrUuAx9VZ8Q5ttzzVW/TqP9o9pr
-	n8VlhoVy8tdORzA9zB0WrvrBPixMuVuff0EM11G0gbPB1itALCZ8HhUvzfSDSnki/WzwJdeImrE
-	fDA9pmcd7jhKNTTM3bmkdajemFiPb6uFYdWA+FK1dmQ==
-X-Google-Smtp-Source: AGHT+IEf5gfM8sjb1N0TBJ7d8IJLdzQ9cdr16tjDoUas1H9x+UpUR2QFR/4FzXLIIzqAnnafcIfYTqO9ApEZnZMIV0I=
-X-Received: by 2002:a05:6512:3d2a:b0:592:f48e:c725 with SMTP id
- 2adb3069b0e04-597d3fb96fdmr2290153e87.34.1764847344082; Thu, 04 Dec 2025
- 03:22:24 -0800 (PST)
+	s=arc-20240116; t=1764847372; c=relaxed/simple;
+	bh=axFeB5AGtm4ctuPeBj98KVyxc3v6+YysraVuMzX/nKE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=TwCisshEiSWA1CVawSez+iThS7PHCbiBHqcdxKIJtjphhIsm6gqxX3VUwp6O/jhY6P+089DOsA4Lc9XbL7U0DXnjuA0Bjj5mWrst0R/YABFOSqKmVD3+tHUXzl3oZj5iiRAHAic1nKF7oLihfaoPlHvVpHD9w+FBIPT/QiYTrZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.2.5.213])
+	by gateway (Coremail) with SMTP id _____8Dx+tH3bjFp8gkrAA--.28164S3;
+	Thu, 04 Dec 2025 19:22:31 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+	by front1 (Coremail) with SMTP id qMiowJCxG8HzbjFp1mpFAQ--.17590S3;
+	Thu, 04 Dec 2025 19:22:30 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Gonglei <arei.gonglei@huawei.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	wangyangxin <wangyangxin1@huawei.com>
+Cc: stable@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/9] crypto: virtio: Add spinlock protection with virtqueue notification
+Date: Thu,  4 Dec 2025 19:22:18 +0800
+Message-Id: <20251204112227.2659404-2-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20251204112227.2659404-1-maobibo@loongson.cn>
+References: <20251204112227.2659404-1-maobibo@loongson.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251204094412.17116-1-bartosz.golaszewski@oss.qualcomm.com> <75004da5-1ff6-4391-9839-2d134709eea0@kernel.org>
-In-Reply-To: <75004da5-1ff6-4391-9839-2d134709eea0@kernel.org>
-From: Bartosz Golaszewski <brgl@kernel.org>
-Date: Thu, 4 Dec 2025 12:22:12 +0100
-X-Gmail-Original-Message-ID: <CAMRc=McEX6y_9JF=ji_TQ0aSMaQYe4kjq8Tj1S=vOcbawyXw3w@mail.gmail.com>
-X-Gm-Features: AWmQ_bmiz31iFWg-Dr5WhAY1WG09Wx9MI-cKyH_LahqxsXvX6spLaYjJPBQRcXQ
-Message-ID: <CAMRc=McEX6y_9JF=ji_TQ0aSMaQYe4kjq8Tj1S=vOcbawyXw3w@mail.gmail.com>
-Subject: Re: [PATCH] reset: gpio: suppress bind attributes in sysfs
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, 
-	Philipp Zabel <p.zabel@pengutronix.de>, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJCxG8HzbjFp1mpFAQ--.17590S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+	nUUI43ZEXa7xR_UUUUUUUUU==
 
-On Thu, Dec 4, 2025 at 12:14=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.or=
-g> wrote:
->
-> On 04/12/2025 10:44, Bartosz Golaszewski wrote:
-> > This is a special device that's created dynamically and is supposed to
-> > stay in memory forever. We also currently don't have a devlink between
->
-> Not forever. If every consumer is unloaded, this can be unloaded too, no?
->
-> > it and the actual reset consumer. Suppress sysfs bind attributes so tha=
-t
->
-> With that reasoning every reset consumer should have suppress binds.
-> Devlink should be created by reset controller framework so it is not
-> this driver's fault.
->
+When VM boots with one virtio-crypto PCI device and builtin backend,
+run openssl benchmark command with multiple processes, such as
+  openssl speed -evp aes-128-cbc -engine afalg  -seconds 10 -multi 32
 
-Here's my reasoning: I will add a devlink but Phillipp requested some
-changes so I still need to resend it. It will be a bigger change than
-this one-liner. The reset-gpio device was also converted to auxiliary
-bus for v6.19 and I will also convert reset core to using fwnodes for
-v6.20 so we'll significantly diverge in stable branches, while this
-issue is present ever since the reset-gpio driver exists. It's not the
-driver's fault but it's easier to fix it here and it very much is a
-special case - it's a software based device rammed in between two
-firmware-described devices.
+openssl processes will hangup and there is error reported like this:
+ virtio_crypto virtio0: dataq.0:id 3 is not a head!
 
->
-> > user-space can't unbind the device because - as of now - it will cause =
-a
-> > use-after-free splat from any user that puts the reset control handle.
-> >
-> > Fixes: cee544a40e44 ("reset: gpio: Add GPIO-based reset controller")
->
-> Nothing to be fixed here, unless you claim that every reset provider is
-> broken as well? What is exactly different in handling devlinks between
-> this driver and every other reset provider?
->
+It seems that the data virtqueue need protection when it is handled
+for virtio done notification. If the spinlock protection is added
+in virtcrypto_done_task(), openssl benchmark with multiple processes
+works well.
 
-I don't care if we keep the tag, it's just that this commit introduced
-a way for user-space to crash the system by simply unbinding
-reset-gpio and then its active consumers.
+Fixes: fed93fb62e05 ("crypto: virtio - Handle dataq logic with tasklet")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+---
+ drivers/crypto/virtio/virtio_crypto_core.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-And the difference here is that there is no devlink between reset-gpio
-and its consumers. We need to first agree how to add it.
+diff --git a/drivers/crypto/virtio/virtio_crypto_core.c b/drivers/crypto/virtio/virtio_crypto_core.c
+index 3d241446099c..ccc6b5c1b24b 100644
+--- a/drivers/crypto/virtio/virtio_crypto_core.c
++++ b/drivers/crypto/virtio/virtio_crypto_core.c
+@@ -75,15 +75,20 @@ static void virtcrypto_done_task(unsigned long data)
+ 	struct data_queue *data_vq = (struct data_queue *)data;
+ 	struct virtqueue *vq = data_vq->vq;
+ 	struct virtio_crypto_request *vc_req;
++	unsigned long flags;
+ 	unsigned int len;
+ 
++	spin_lock_irqsave(&data_vq->lock, flags);
+ 	do {
+ 		virtqueue_disable_cb(vq);
+ 		while ((vc_req = virtqueue_get_buf(vq, &len)) != NULL) {
++			spin_unlock_irqrestore(&data_vq->lock, flags);
+ 			if (vc_req->alg_cb)
+ 				vc_req->alg_cb(vc_req, len);
++			spin_lock_irqsave(&data_vq->lock, flags);
+ 		}
+ 	} while (!virtqueue_enable_cb(vq));
++	spin_unlock_irqrestore(&data_vq->lock, flags);
+ }
+ 
+ static void virtcrypto_dataq_callback(struct virtqueue *vq)
+-- 
+2.39.3
 
-Bartosz
 
