@@ -1,140 +1,200 @@
-Return-Path: <stable+bounces-200077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ACEFCA58BC
-	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 22:52:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8D52CA5942
+	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 22:59:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3ED833085B3B
-	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 21:51:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9F53E3086E86
+	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 21:59:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CDDC2512E6;
-	Thu,  4 Dec 2025 21:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 569CC2E6CA8;
+	Thu,  4 Dec 2025 21:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hF103HMQ"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="VJJrflVW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7FB734CDD
-	for <stable@vger.kernel.org>; Thu,  4 Dec 2025 21:51:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF7B27CB35;
+	Thu,  4 Dec 2025 21:59:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764885115; cv=none; b=pGcHiuwC2+k8v9rUZEno/wAP+5I/kiMB9hRbWDiHJZNjY4ZDp87DNRfqS5hQJ9BEDrnHIwQtmKkyE+jlSzCfjsd0qkoBxTrHpFLMc4wDIkreDcVvHWws0eYU1ZdgxciQoESzxFJUkzfcDcXPuGzp94qAtiQlTtGS4I3/ixzCqBo=
+	t=1764885579; cv=none; b=pruFtvBbHSrsqqkmx+is1RpAiJsbedsk5+Hh91ayljtBONxpISsIUR3gW3YbVvP7eAz48B0F+hLm92+8Fc6t14OsDg0g+0zn2dE60SHP7iQTrD41Rp1rdffzg//MUb0S3DOd3+YJbS6j2kgWmBEtOXny+43D3XR2SKFh+e5ZgT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764885115; c=relaxed/simple;
-	bh=f86TfBhxSWen9/l8SlQALzJr44Fl7HRfBZ35Fh8g/pc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sq7/Esb9l5j9j+yOEnwg38dpcZBvwEJJK35HRsIPrXDogP+cW2SljLaqfu873zmHNk70n7Tqzt+oqvCtjt/5tYMqKMmoJiSDos98/ThUBzj6S8iC4DDbyM3efw705mdTu0QkGmyexaNR7M63hJhhoBo9v/PReNpt2MktmqoE7LI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hF103HMQ; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-7aae5f2633dso1639796b3a.3
-        for <stable@vger.kernel.org>; Thu, 04 Dec 2025 13:51:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764885113; x=1765489913; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FAvfkDU3ZExZEkW+970sZ77IFU75i0OENqUmSqwulkA=;
-        b=hF103HMQHSJogxShgz2PrwYpuJ1OEnPHCd1m+JE9kXrQ5YIii06DnG8ftqCHhg/cv/
-         TBOOb5VMRtsSNCus7XqLvutljIKupYuNz97sj+/5nXbB7vhsio79G/z9dCvsqT+hKmTF
-         ZyYSzDmie18lWO6yCH8oFEUe5tpsAv/fKkcoWb+vLVn34X7MTmppfiy/yiGyJGCzJfnZ
-         AIa26+Z7viTXtQEQ+pj9J5n/LGqCDhh3ZiCEv6yFhsFqF4/VwnvF3mtvtLZ1OKmvXzyN
-         TRD+Cm4Pyf5iQ5PZMT+7UxJbebRUYaKORdbD2RxbM48BNC3RGXLO/DPnWWNICJzUN8XF
-         MlqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764885113; x=1765489913;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=FAvfkDU3ZExZEkW+970sZ77IFU75i0OENqUmSqwulkA=;
-        b=kL1gsyeDEEXy5kz8vT2Q22vxM5RQqnb44lwNmvs8UgLgkhp0auBFnrFvBlBeTJxm+M
-         DKZIca47BhqyjbTxwBD4aOVY+4qxMqjpGeZgHnwnKgJWj9OdoqBFGxPuFnjjJWkduPqI
-         xQqzprmn4UuyCEu3gi8J0yUboXqWXmNoKosGraYhbAhf1OD+Oo7JDhMpTOLCatYblk5M
-         DEaNgdau+jn+8jG3DbaSbFgJ69WSLphyec8qERyf5VuqOAY7Mc5ddvu3pAiSbHk6kOjj
-         SvbybD+Dv/9izleZuTERKJ5A7/OzMcl8Qw0M8SMliHP1KuXRxA3kX0pwWwXPzjpRe6Hd
-         fwmA==
-X-Forwarded-Encrypted: i=1; AJvYcCW2mUbAx6ZinmyAvkxRjmA13qDFP5cPIyPF2nIKxCrXsP9BwCKIZs/ubN9Gj7Iwy+zbCISUkUo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyprNrKWGZowDsmfRW63YbZpFKwO8GasRIcClWJOYja7pV6RFsN
-	RyM1LIsCDHU36KPnwBNBhHm767nKLMacdH9f7zr5nRPUWjzeMqtdM1AO
-X-Gm-Gg: ASbGnct2grdQYcT7YX8ugdt6hV7lll8tNRpgDURQUwsYQw+Sk+aT+kMD0olFpzwGBEk
-	4/z0kV8VjR1pes1FyxhyeeyivK8V9zahE4m+UFD9qYBsflll3PApwmyR0wxSQzxI35nJgCSqelS
-	QyHCSv5F50fFJSXcB8RMdjbnocJWYS2hEBmdZ4tMmvT3svsX43aasK9bPBLa5124Dajj4IWGDQt
-	mfi9hepMCtdhNhuyYVGifUs3nz4La3Ukc7KOXQSpVAcRZbU1vKl1z5Fg+MX8U3jZ7D6hebefSQS
-	uvu3mHODj9xDyTS9cvcOL8t1EJjWaykfKo4oBEkStYjdEiEFuOiJmXMbQN3TWJVDIBNQxZb8+r+
-	HAA3qovurv5mrBNz+q5DVVxkF2y38bnRQVF4QZnTlEHjkC47rip3xvTcnoMKIKCzVuq7Gk8oDN1
-	D0DrQHUmJo3C+8pm3Q8w==
-X-Google-Smtp-Source: AGHT+IFLywY9i1U+WFpfKnu6JXKAIn+zY7KfL8wOKIIB6nHSNIr3UwY8z/FYZFbnFSEIlLc7SnSndA==
-X-Received: by 2002:a05:6a20:3d82:b0:35e:7605:56a4 with SMTP id adf61e73a8af0-363f5e94b35mr9784241637.51.1764885112920;
-        Thu, 04 Dec 2025 13:51:52 -0800 (PST)
-Received: from localhost ([2a03:2880:ff:52::])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7e29f2ecf89sm3131563b3a.12.2025.12.04.13.51.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Dec 2025 13:51:52 -0800 (PST)
-From: Joanne Koong <joannelkoong@gmail.com>
-To: axboe@kernel.dk
-Cc: io-uring@vger.kernel.org,
-	asml.silence@gmail.com,
-	csander@purestorage.com,
-	stable@vger.kernel.org
-Subject: [PATCH v1 3/3] io_uring/rsrc: fix lost entries after cloned range
-Date: Thu,  4 Dec 2025 13:51:16 -0800
-Message-ID: <20251204215116.2642044-3-joannelkoong@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251204215116.2642044-1-joannelkoong@gmail.com>
-References: <20251204215116.2642044-1-joannelkoong@gmail.com>
+	s=arc-20240116; t=1764885579; c=relaxed/simple;
+	bh=zoYG0yRVSPL0YEgb8/GpcZlSckKNZ+ksq2fCX+Ste9I=;
+	h=Date:To:From:Subject:Message-Id; b=sAuJyaOFu8FKg/9VBcytYnHv/KBLYHazkj03KaWSeZxllv2NgR5gyyJwwoPkc1yDgUzZjQyCwS3/i39J8ZW+GKrllmlNHms4ulrxosxlyBXXq7uvVNykvyOD2Xdf+jWAOLDx6qtUjtYs0DcYM1nuO/IhEJRIZ4hmiJpPPKMPkeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=VJJrflVW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 750D3C4CEFB;
+	Thu,  4 Dec 2025 21:59:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1764885578;
+	bh=zoYG0yRVSPL0YEgb8/GpcZlSckKNZ+ksq2fCX+Ste9I=;
+	h=Date:To:From:Subject:From;
+	b=VJJrflVWIVUAgDwzv9JilEpXrk2Ze8Tjt5NCHFDpjGzOiZ4fLTRLMj1FkXf1/ry7H
+	 FuM0MX8Dc2qe7Bxth00I5ZJPmZc8ZiVNLhgd15e88z1ihu93vzFpYSfBgzsM9UTQIf
+	 m0deI5jTNH1IypeWm+u3K3lf815q55EnQ89Y3WAM=
+Date: Thu, 04 Dec 2025 13:59:37 -0800
+To: mm-commits@vger.kernel.org,vbabka@suse.cz,torvalds@linuxfoundation.org,surenb@google.com,stable@vger.kernel.org,rppt@kernel.org,npiggin@gmail.com,mpe@ellerman.id.au,mhocko@suse.com,masahiroy@kernel.org,maddy@linux.ibm.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,christophe.leroy@csgroup.eu,skhan@linuxfoundation.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + revert-mm-fix-max_folio_order-on-powerpc-configs-with-hugetlb.patch added to mm-hotfixes-unstable branch
+Message-Id: <20251204215938.750D3C4CEFB@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-When cloning with node replacements (IORING_REGISTER_DST_REPLACE),
-destination entries after the cloned range are not copied over.
 
-Add logic to copy them over to the new destination table.
+The patch titled
+     Subject: Revert "mm: fix MAX_FOLIO_ORDER on powerpc configs with hugetlb"
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     revert-mm-fix-max_folio_order-on-powerpc-configs-with-hugetlb.patch
 
-Fixes: c1329532d5aa ("io_uring/rsrc: allow cloning with node replacements")
-Cc: stable@vger.kernel.org
-Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/revert-mm-fix-max_folio_order-on-powerpc-configs-with-hugetlb.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Shuah Khan <skhan@linuxfoundation.org>
+Subject: Revert "mm: fix MAX_FOLIO_ORDER on powerpc configs with hugetlb"
+Date: Wed, 3 Dec 2025 19:33:56 -0700
+
+This reverts commit 39231e8d6ba7f794b566fd91ebd88c0834a23b98.
+
+Enabling HAVE_GIGANTIC_FOLIOS broke kernel build and git clone on two
+systems.  git fetch-pack fails when cloning large repos and make hangs or
+errors out of Makefile.build with Error: 139.  These failures are random
+with git clone failing after fetching 1% of the objects, and make hangs
+while compiling random files.
+
+Below is is one of the git clone failures:
+
+git clone git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git linux_6.19
+Cloning into 'linux_6.19'...
+remote: Enumerating objects: 11173575, done.
+remote: Counting objects: 100% (785/785), done.
+remote: Compressing objects: 100% (373/373), done.
+remote: Total 11173575 (delta 534), reused 505 (delta 411), pack-reused 11172790 (from 1)
+Receiving objects: 100% (11173575/11173575), 3.00 GiB | 7.08 MiB/s, done.
+Resolving deltas: 100% (9195212/9195212), done.
+fatal: did not receive expected object 0002003e951b5057c16de5a39140abcbf6e44e50
+fatal: fetch-pack: invalid index-pack output
+
+(akpm: reverting this probably just hides a bug, but let's do that for now
+while the bug is being worked on).
+
+Link: https://lkml.kernel.org/r/20251204023358.54107-1-skhan@linuxfoundation.org
+Fixes: 39231e8d6ba7 ("mm: fix MAX_FOLIO_ORDER on powerpc configs with hugetlb")
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Linus Torvalds <torvalds@linuxfoundation.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- io_uring/rsrc.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/io_uring/rsrc.c b/io_uring/rsrc.c
-index 04f56212398a..a63474b331bf 100644
---- a/io_uring/rsrc.c
-+++ b/io_uring/rsrc.c
-@@ -1205,7 +1205,7 @@ static int io_clone_buffers(struct io_ring_ctx *ctx, struct io_ring_ctx *src_ctx
- 	if (ret)
- 		return ret;
+ arch/powerpc/Kconfig                   |    1 -
+ arch/powerpc/platforms/Kconfig.cputype |    1 +
+ include/linux/mm.h                     |   13 +++----------
+ mm/Kconfig                             |    7 -------
+ 4 files changed, 4 insertions(+), 18 deletions(-)
+
+--- a/arch/powerpc/Kconfig~revert-mm-fix-max_folio_order-on-powerpc-configs-with-hugetlb
++++ a/arch/powerpc/Kconfig
+@@ -137,7 +137,6 @@ config PPC
+ 	select ARCH_HAS_DMA_OPS			if PPC64
+ 	select ARCH_HAS_FORTIFY_SOURCE
+ 	select ARCH_HAS_GCOV_PROFILE_ALL
+-	select ARCH_HAS_GIGANTIC_PAGE		if ARCH_SUPPORTS_HUGETLBFS
+ 	select ARCH_HAS_KCOV
+ 	select ARCH_HAS_KERNEL_FPU_SUPPORT	if PPC64 && PPC_FPU
+ 	select ARCH_HAS_MEMBARRIER_CALLBACKS
+--- a/arch/powerpc/platforms/Kconfig.cputype~revert-mm-fix-max_folio_order-on-powerpc-configs-with-hugetlb
++++ a/arch/powerpc/platforms/Kconfig.cputype
+@@ -423,6 +423,7 @@ config PPC_64S_HASH_MMU
+ config PPC_RADIX_MMU
+ 	bool "Radix MMU Support"
+ 	depends on PPC_BOOK3S_64
++	select ARCH_HAS_GIGANTIC_PAGE
+ 	default y
+ 	help
+ 	  Enable support for the Power ISA 3.0 Radix style MMU. Currently this
+--- a/include/linux/mm.h~revert-mm-fix-max_folio_order-on-powerpc-configs-with-hugetlb
++++ a/include/linux/mm.h
+@@ -2074,7 +2074,7 @@ static inline unsigned long folio_nr_pag
+ 	return folio_large_nr_pages(folio);
+ }
  
--	/* Fill entries in data from dst that won't overlap with src */
-+	/* Copy original dst nodes from before the cloned range */
- 	for (i = 0; i < min(arg->dst_off, ctx->buf_table.nr); i++) {
- 		struct io_rsrc_node *node = ctx->buf_table.nodes[i];
+-#if !defined(CONFIG_HAVE_GIGANTIC_FOLIOS)
++#if !defined(CONFIG_ARCH_HAS_GIGANTIC_PAGE)
+ /*
+  * We don't expect any folios that exceed buddy sizes (and consequently
+  * memory sections).
+@@ -2087,17 +2087,10 @@ static inline unsigned long folio_nr_pag
+  * pages are guaranteed to be contiguous.
+  */
+ #define MAX_FOLIO_ORDER		PFN_SECTION_SHIFT
+-#elif defined(CONFIG_HUGETLB_PAGE)
+-/*
+- * There is no real limit on the folio size. We limit them to the maximum we
+- * currently expect (see CONFIG_HAVE_GIGANTIC_FOLIOS): with hugetlb, we expect
+- * no folios larger than 16 GiB on 64bit and 1 GiB on 32bit.
+- */
+-#define MAX_FOLIO_ORDER		get_order(IS_ENABLED(CONFIG_64BIT) ? SZ_16G : SZ_1G)
+ #else
+ /*
+- * Without hugetlb, gigantic folios that are bigger than a single PUD are
+- * currently impossible.
++ * There is no real limit on the folio size. We limit them to the maximum we
++ * currently expect (e.g., hugetlb, dax).
+  */
+ #define MAX_FOLIO_ORDER		PUD_ORDER
+ #endif
+--- a/mm/Kconfig~revert-mm-fix-max_folio_order-on-powerpc-configs-with-hugetlb
++++ a/mm/Kconfig
+@@ -908,13 +908,6 @@ config PAGE_MAPCOUNT
+ config PGTABLE_HAS_HUGE_LEAVES
+ 	def_bool TRANSPARENT_HUGEPAGE || HUGETLB_PAGE
  
-@@ -1238,6 +1238,16 @@ static int io_clone_buffers(struct io_ring_ctx *ctx, struct io_ring_ctx *src_ctx
- 		i++;
- 	}
- 
-+	/* Copy original dst nodes from after the cloned range */
-+	for (i = nbufs; i < ctx->buf_table.nr; i++) {
-+		struct io_rsrc_node *node = ctx->buf_table.nodes[i];
-+
-+		if (node) {
-+			data.nodes[i] = node;
-+			node->refs++;
-+		}
-+	}
-+
- 	/*
- 	 * If asked for replace, put the old table. data->nodes[] holds both
- 	 * old and new nodes at this point.
--- 
-2.47.3
+-#
+-# We can end up creating gigantic folio.
+-#
+-config HAVE_GIGANTIC_FOLIOS
+-	def_bool (HUGETLB_PAGE && ARCH_HAS_GIGANTIC_PAGE) || \
+-		 (ZONE_DEVICE && HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
+-
+ # TODO: Allow to be enabled without THP
+ config ARCH_SUPPORTS_HUGE_PFNMAP
+ 	def_bool n
+_
+
+Patches currently in -mm which might be from skhan@linuxfoundation.org are
+
+revert-mm-fix-max_folio_order-on-powerpc-configs-with-hugetlb.patch
 
 
