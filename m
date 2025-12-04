@@ -1,338 +1,138 @@
-Return-Path: <stable+bounces-200003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C515CA3694
-	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 12:20:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCA27CA395E
+	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 13:21:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EC17A3034EC9
-	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 11:19:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E1E94306A514
+	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 12:20:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66C093148BB;
-	Thu,  4 Dec 2025 11:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAD0633D6E4;
+	Thu,  4 Dec 2025 12:20:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TFk9sSvQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qh3btHLf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FFA72E7F00
-	for <stable@vger.kernel.org>; Thu,  4 Dec 2025 11:19:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91850338937
+	for <stable@vger.kernel.org>; Thu,  4 Dec 2025 12:20:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764847185; cv=none; b=cqW1c8nzOzp6jqAjuBhH6w4XIeVnZkrF8W7B0cZDgscNBhHu1EToDS3/kgP1aJI7YCKs2YZbikn3t0HkLt17qBfXRTmV2csFWiTDCmEjcj8DiZJ92OqP+iFKur5OPKZfEJ6KW2aAEpodtv/RmfNxdb1wndSUgy4NPklrZy3Q4QA=
+	t=1764850806; cv=none; b=Nn08Ub/MPMCik2EaJ/608QVCp4uDDkGasrGAICP3mHCwt1j56QtEsqWKavUJEiF6P32VfjjvvTSlzyu2XLsOd8G+zrnYBfUv7+L0Ym7ZtnwJHgyhZzvnDlFScORlXPeH87J3xfhXIoqm/9qmJxK4pnRtb4AoleDdiwB+EnVAqfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764847185; c=relaxed/simple;
-	bh=WvWscm3N0CLn6M85vSbAydGeABjO0HO9GfKwvOQSNPI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ckm95veWL7CX3tIAUlWdVosL6NEgwQ2ScFLJbSOKYZyYypkgIKGzD1oFvCY3saoOvtzfdcGDTquDsho11czppzX0leH2jxMV/v09vgp8crrlJ3BBjf70soW1ULKhNJSD3n3eCXtoDBE/PEmIPnTFe8ZZLVBRvNYbL3ZvzcetpGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TFk9sSvQ; arc=none smtp.client-ip=209.85.128.48
+	s=arc-20240116; t=1764850806; c=relaxed/simple;
+	bh=Sm+2aIqqw/aJL0UULdrPGtoo9777nMIW6rAyg//L9Es=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pLbUtqXTPT3xRn5FK6KNLIg8Mk5iS+6uHshArAf3IImxGexqOjYgdIiU+SHaKrspnIgMmumO10Tjbw3sDTCwYgCgzBI3X0IQnJFBIm1PJWpYPCfV9vJYMIDTH16qh4I8ZMCFIyW7I8mdzDFSMNQn/F0L813vKmtfgzK9L9+b6P8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qh3btHLf; arc=none smtp.client-ip=209.85.167.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4779b49d724so1691935e9.0
-        for <stable@vger.kernel.org>; Thu, 04 Dec 2025 03:19:42 -0800 (PST)
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-59428d2d975so833852e87.3
+        for <stable@vger.kernel.org>; Thu, 04 Dec 2025 04:20:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764847181; x=1765451981; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=X2hKqtZ8qRJCylrwPhE3PF073DcXkJTYdnB19/D32AM=;
-        b=TFk9sSvQzIOn9UWTY9FsvJvpD1wI6i0VvfQ/F2aZm3kaJxobCsyr1Ce4k6Ywv5YSEg
-         /o5mo81Y1knFR5FJcSq2X6uqPR/heh/I/mum3Z2dRpOLGY8apbxiImEf16p+CBhCT8dd
-         X8SD/vZZBjyd+jMF1DhJqXW2HuIIkHp1q4zYFnEkXBWYMvzd1LaoJF49NJRFe4JUrXxD
-         zUq88/d7U7FpcjJy2wdMLc+12awFI3AL82cNUMb4Lr2LJ2ukqGeUTrYnp2+wngs5Twar
-         /xffgseARru3Ye3czFsXqxrYwU2iCRbMGl0Ypw33kIUqDUVMlj1j9pBZIX9dA5gTlBRK
-         WWvA==
+        d=gmail.com; s=20230601; t=1764850803; x=1765455603; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PVE6hBdJYPcwOdHbdSZFSWUTtXmvEkPiG0rIieF7pLo=;
+        b=Qh3btHLfylpomHJmWfUcdGLx6Z36zu5EGHeRIhqZ5Y6Cs6KEjv3bkRWEN6Is35kMcO
+         UrowiAVSwPoN5eDqzu9ldmpV7vuR8GSJ7iMGmFl1MRwxYyM3QDzwdLFi4XlXBX7xomB5
+         Lhfz8CrfGavr8X3QuJQIOxGlMLJKWwWZSQuS4TSx0ovxU/g2puiMFxXmb56jBg4IceHk
+         I+rOUemnbqMfdMWa8zLNMn2H+dQpJoflIypPC8kV0b6bdMNQ7JLkTWd8/i7HvVvuBVz4
+         uBhdFWTH5YY0Eanz7K9hz0Zip/srBwUjSW1Qy1dJ6N0iMKeRnWAR9fBG7z6W79Sb4XEu
+         KhYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764847181; x=1765451981;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=X2hKqtZ8qRJCylrwPhE3PF073DcXkJTYdnB19/D32AM=;
-        b=W5rvcZFnIFhr/5isdcOxU9oL1l6jGuB8LJqAupmjFMteifCGo0HtaiXzUGa5ab4L9D
-         YYKgqgCSl1La5Avt+crrSN28nqQWjvmKt0AQa3dQpHxFafDi+CTcdTK6N064pdFUDLeU
-         Iw0ZVD7RE4KUOQfKesaydBb8QUojlNEvLsrISQQ9II6MiM9z6BRVZYV0l7tjb1yXYHXE
-         z9RcuoauOqM6T4DekRaqR+lafbch/rVteUVCDd0C1azyuHf1ISGUDCe4bnEcyDsfnDnL
-         bGwabrcQ9/2GSDCOeSRLHUI58/at+HBu6iuq8t85meJjtEhGltzo8BG7yxBGT2nVjMkT
-         du/A==
-X-Forwarded-Encrypted: i=1; AJvYcCWo+Xzkz41bmKeoIsf5zFGhf0jxkQqlb3F+XZHHavsjYx1grdcZ1vBYVD6G9x9jBnA32byNNZY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwK+y5Lmq3pdUOpPfqmTLdEItaLfxfgBZTZ5JfQGBlwphcwaPmu
-	M8tTcGFy6Hf7RO9bruUNClxbmraY0m4J/d/U4RS/31SgwE39WXgobTkV
-X-Gm-Gg: ASbGncvy65UPFpxaJBYiknVoaivMYiXG1ZdV3rOc0dmMns+ysnxlS4pKh+1vukpX62C
-	RYk7XdC7OE506DAv9mdEbsqzNZUXuqdhiCIXO67sQOIfxRC5GOU8rbRBeACXZXRqIIrm7EUmIQ6
-	/79kB44AIY6DfwzXBPlJq8jU25c9NE0V/ByN7inxHDojHCIFP58k43xwdjXuTcwBAPh5/kSgD5c
-	lOfXslgXmcF/a2TVfb+N65t6jCpjx2E8+FX/Piq/3rAU3l4s4kQcEe+Q+Irg+41s6U9g0S/IPah
-	HwjoBqFQ8BSTOEcHMnUfOAsMoCveJH11FDaykfihfHgM+95CYtzLzuoc3HGbfyryT3eDE2ysjv9
-	8YTTA/VbFZvoCOfihc5FqQH8gBWVoyB5Ow4l4AHAIaRVtZsUX4AmgsfbBjHOboV0JedFjZ5MlYe
-	BKjYDhJGnAMk31YZtVrs3p0+c9dM/kmvq++OhGy9w=
-X-Google-Smtp-Source: AGHT+IHKGaDGgUu/hfwTgcpCX6n2PEp9miiG+arZ8x+lwbdliZVRvTkAtNbXyE16s9JREheiCryq8w==
-X-Received: by 2002:a05:600c:c4b7:b0:477:5b01:7d42 with SMTP id 5b1f17b1804b1-4792c8e4c60mr29672955e9.5.1764847181177;
-        Thu, 04 Dec 2025 03:19:41 -0800 (PST)
-Received: from [192.168.1.105] ([165.50.56.69])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42f7d353f8bsm2691904f8f.43.2025.12.04.03.19.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Dec 2025 03:19:40 -0800 (PST)
-Message-ID: <3237e199-2375-4064-9a28-134836b00606@gmail.com>
-Date: Thu, 4 Dec 2025 13:19:36 +0100
+        d=1e100.net; s=20230601; t=1764850803; x=1765455603;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=PVE6hBdJYPcwOdHbdSZFSWUTtXmvEkPiG0rIieF7pLo=;
+        b=mFPnXPoEdV/4BPXQ28+PX1NWwS3wh915/EbLg2n8DQAyxsiM6RjJoIwu23CuCw492F
+         66N+FxqQ3axK29IKH93z+gmoj4WaRkprPIe3+benBz70VSnJSzkS2+WKJZmu1DlaIa4w
+         jzNNJkb7rjEHp+CBEf5boZ2+ys3SEKl4vj3Kkn90Ipjd1XucpjVFv2EtZzTVkUIfUD8r
+         54PrYqZK92Hy/WlCfW8MtUoTWY89X9V9phAC9vqPL4HVxRU5DhE91pmjf77uLvKBeQbD
+         m0qxY/fUo4o9l3g8sbtMQ9NwyN9J0trMR1VB7qb4QVBWlh0WVcwPGvjxDDA/TVHan7AT
+         XzkA==
+X-Gm-Message-State: AOJu0YzykhvRMvIlr3ibaw1rBZxoihNopYdSVPTFDVtxN5nQWW3heUKE
+	roI1/iqp+iZr6MAzKK2jLnVKbjxKJ4rjo8R8LM/wwFSdxkt2K6ItF13mxcHLA5ybO2HJiOLzYxk
+	PoqmNHTHMVyoMqluw9Fcb2tt53YVUWW+5xPti
+X-Gm-Gg: ASbGnctiT0zyAEt9A1M2jeVwnAmdI1OJD4t84eGnzqU+0g39hOqGp925ObEy1LwzYvJ
+	FIi0TTqR2xTEyyDar9QHU/v3OdvMJQoQnN8JBs5dm0NkhvHURhaWylnjUPEr2xyQ/ORlygapWzQ
+	kzXJV8CBlm3wtJ79Jg3PgNVvLw/6l587ESorBj2e7bUQro6ua8b7fbpBChbkqCYYXJ2DyP/7od1
+	Btyxi3LbhNjsMLckHcAbv+gP04OEKRrVSfUsMBPDtt5xAbi5yrsaFhQ6U4Pi2yLhHhCZ3lIb12H
+	q9IFwEpxyl8tdsoY5zbC8iqEOxQ=
+X-Google-Smtp-Source: AGHT+IGLvxVV/M97ZmEkGVvfo4Tf9FL4xyhf//LVP5ERW2nQ+Ke3B00ZYe6M3S+hezXlFm8a8YvGZNIvlr6TcLp6yAE=
+X-Received: by 2002:a05:6512:1304:b0:594:341a:ab1e with SMTP id
+ 2adb3069b0e04-597d66bf1b8mr991213e87.31.1764850802355; Thu, 04 Dec 2025
+ 04:20:02 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] hfs: ensure sb->s_fs_info is always cleaned up
-To: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
- "glaubitz@physik.fu-berlin.de" <glaubitz@physik.fu-berlin.de>,
- "frank.li@vivo.com" <frank.li@vivo.com>,
- "brauner@kernel.org" <brauner@kernel.org>,
- "slava@dubeyko.com" <slava@dubeyko.com>,
- "sandeen@redhat.com" <sandeen@redhat.com>, "jack@suse.cz" <jack@suse.cz>
-Cc: "khalid@kernel.org" <khalid@kernel.org>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- "david.hunter.linux@gmail.com" <david.hunter.linux@gmail.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-kernel-mentees@lists.linuxfoundation.org"
- <linux-kernel-mentees@lists.linuxfoundation.org>,
- "skhan@linuxfoundation.org" <skhan@linuxfoundation.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "syzbot+ad45f827c88778ff7df6@syzkaller.appspotmail.com"
- <syzbot+ad45f827c88778ff7df6@syzkaller.appspotmail.com>
-References: <20251201222843.82310-1-mehdi.benhadjkhelifa@gmail.com>
- <20251201222843.82310-2-mehdi.benhadjkhelifa@gmail.com>
- <4b620e91b43f86dceed88ed2f73b1ff1e72bff6c.camel@ibm.com>
- <4047dad6-d7f8-4630-896a-68d4b224f6c6@gmail.com>
- <32a2196b93ccdac0623175180a26c690e97536f6.camel@ibm.com>
-Content-Language: en-US
-From: Mehdi Ben Hadj Khelifa <mehdi.benhadjkhelifa@gmail.com>
-In-Reply-To: <32a2196b93ccdac0623175180a26c690e97536f6.camel@ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20251203152343.285859633@linuxfoundation.org>
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+From: Dileep malepu <dileep.debian@gmail.com>
+Date: Thu, 4 Dec 2025 17:49:50 +0530
+X-Gm-Features: AWmQ_bk0f6iYX6aUaNOnG7cxZkVHJ86386Sxl9-0SaNSWSqrFCgcFoUdQC02II0
+Message-ID: <CAC-m1roWM-JydNvmrt0+8XJH4ovapPjO6oe8V0XwA2=xV=Xw=A@mail.gmail.com>
+Subject: Re: [PATCH 6.12 000/132] 6.12.61-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org, sr@sladewatkins.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 12/4/25 12:19 AM, Viacheslav Dubeyko wrote:
-> On Tue, 2025-12-02 at 11:16 +0100, Mehdi Ben Hadj Khelifa wrote:
->> On 12/2/25 12:04 AM, Viacheslav Dubeyko wrote:
->>> On Mon, 2025-12-01 at 23:23 +0100, Mehdi Ben Hadj Khelifa wrote:
->>>> When hfs was converted to the new mount api a bug was introduced by
->>>> changing the allocation pattern of sb->s_fs_info. If setup_bdev_super()
->>>> fails after a new superblock has been allocated by sget_fc(), but before
->>>> hfs_fill_super() takes ownership of the filesystem-specific s_fs_info
->>>> data it was leaked.
->>>>
->>>> Fix this by freeing sb->s_fs_info in hfs_kill_super().
->>>>
->>>> Cc: stable@vger.kernel.org
->>>> Fixes: ffcd06b6d13b ("hfs: convert hfs to use the new mount api")
->>>> Reported-by: syzbot+ad45f827c88778ff7df6@syzkaller.appspotmail.com
->>>> Closes: https://syzkaller.appspot.com/bug?extid=ad45f827c88778ff7df6
->>>> Tested-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
->>>> Signed-off-by: Christian Brauner <brauner@kernel.org>
->>>> Signed-off-by: Mehdi Ben Hadj Khelifa <mehdi.benhadjkhelifa@gmail.com>
->>>> ---
->>>>    fs/hfs/mdb.c   | 35 ++++++++++++++---------------------
->>>>    fs/hfs/super.c | 10 +++++++++-
->>>>    2 files changed, 23 insertions(+), 22 deletions(-)
->>>>
->>>> diff --git a/fs/hfs/mdb.c b/fs/hfs/mdb.c
->>>> index 53f3fae60217..f28cd24dee84 100644
->>>> --- a/fs/hfs/mdb.c
->>>> +++ b/fs/hfs/mdb.c
->>>> @@ -92,7 +92,7 @@ int hfs_mdb_get(struct super_block *sb)
->>>>    		/* See if this is an HFS filesystem */
->>>>    		bh = sb_bread512(sb, part_start + HFS_MDB_BLK, mdb);
->>>>    		if (!bh)
->>>> -			goto out;
->>>> +			return -EIO;
->>>
->>> Frankly speaking, I don't see the point to rework the hfs_mdb_get() method so
->>> intensively. We had pretty good pattern before:
->>>
->>> int hfs_mdb_get(struct super_block *sb) {
->>>           if (something_happens)
->>>                goto out;
->>>
->>>           if (something_happens_and_we_need_free_buffer)
->>>               goto out_bh;
->>>
->>>    	return 0;
->>>
->>> out_bh:
->>> 	brelse(bh);
->>> out:
->>> 	return -EIO;
->>>    }
->>>
->>> The point here that we have error management logic in one place. Now you have
->>> spread this logic through the whole function. It makes function more difficult
->>> to manage and we can introduce new bugs. Could you please localize your change
->>> without reworking this pattern of error situation management? Also, it will make
->>> the patch more compact. Could you please rework the patch?
->>>
->> This change in particular is made by christian. As he mentionned in one
->> of his emails to my patches[1], his logic was that hfs_mdb_put() should
->> only be called in fill_super() which cleans everything up and that the
->> cleanup labels don't make sense here which is why he spread the logic of
->> cleanup across the function. Maybe he can give us more input on this
->> since it wasn't my code.
->>
->> [1]:https://lore.kernel.org/all/20251119-delfin-bioladen-6bf291941d4f@brauner/
->>>
-> 
-> I am not against of not calling the hfs_mdb_put() in hfs_mdb_get(). But if I am
-> trying to rework some method significantly, guys are not happy at all about it.
-> :) I am slightly worried about such significant rework of hfs_mdb_get() because
-> we potentially could introduce some new bugs. And I definitely will have the
-> conflict with another patch under review. :)
-> 
+On Wed, Dec 3, 2025 at 10:27=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.12.61 release.
+> There are 132 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 05 Dec 2025 15:23:16 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.12.61-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.12.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Totally understandable. If I was to make that change I would probably 
-seperate it from the fix (except the part where we delete freeing the 
-s_fs_info struct). But I guess christian wanted to do the whole 
-refactoring since it was related and it made more sense as he explained it.
-> I've spent some more time for reviewing the patch again. And I think I can
-> accept it as it is. Currently, I don't see any serious issue in hfs_mdb_get().
-> It is simply my code style preferences. :) But people can see it in different
-> ways.
-> 
-Thanks for you time and effort!
->>>
->>>>    
->>>>    		if (mdb->drSigWord == cpu_to_be16(HFS_SUPER_MAGIC))
->>>>    			break;
->>>> @@ -102,13 +102,14 @@ int hfs_mdb_get(struct super_block *sb)
->>>>    		 * (should do this only for cdrom/loop though)
->>>>    		 */
->>>>    		if (hfs_part_find(sb, &part_start, &part_size))
->>>> -			goto out;
->>>> +			return -EIO;
->>>>    	}
->>>>    
->>>>    	HFS_SB(sb)->alloc_blksz = size = be32_to_cpu(mdb->drAlBlkSiz);
->>>>    	if (!size || (size & (HFS_SECTOR_SIZE - 1))) {
->>>>    		pr_err("bad allocation block size %d\n", size);
->>>> -		goto out_bh;
->>>> +		brelse(bh);
->>>> +		return -EIO;
->>>>    	}
->>>>    
->>>>    	size = min(HFS_SB(sb)->alloc_blksz, (u32)PAGE_SIZE);
->>>> @@ -125,14 +126,16 @@ int hfs_mdb_get(struct super_block *sb)
->>>>    	brelse(bh);
->>>>    	if (!sb_set_blocksize(sb, size)) {
->>>>    		pr_err("unable to set blocksize to %u\n", size);
->>>> -		goto out;
->>>> +		return -EIO;
->>>>    	}
->>>>    
->>>>    	bh = sb_bread512(sb, part_start + HFS_MDB_BLK, mdb);
->>>>    	if (!bh)
->>>> -		goto out;
->>>> -	if (mdb->drSigWord != cpu_to_be16(HFS_SUPER_MAGIC))
->>>> -		goto out_bh;
->>>> +		return -EIO;
->>>> +	if (mdb->drSigWord != cpu_to_be16(HFS_SUPER_MAGIC)) {
->>>> +		brelse(bh);
->>>> +		return -EIO;
->>>> +	}
->>>>    
->>>>    	HFS_SB(sb)->mdb_bh = bh;
->>>>    	HFS_SB(sb)->mdb = mdb;
->>>> @@ -174,7 +177,7 @@ int hfs_mdb_get(struct super_block *sb)
->>>>    
->>>>    	HFS_SB(sb)->bitmap = kzalloc(8192, GFP_KERNEL);
->>>>    	if (!HFS_SB(sb)->bitmap)
->>>> -		goto out;
->>>> +		return -EIO;
->>>>    
->>>>    	/* read in the bitmap */
->>>>    	block = be16_to_cpu(mdb->drVBMSt) + part_start;
->>>> @@ -185,7 +188,7 @@ int hfs_mdb_get(struct super_block *sb)
->>>>    		bh = sb_bread(sb, off >> sb->s_blocksize_bits);
->>>>    		if (!bh) {
->>>>    			pr_err("unable to read volume bitmap\n");
->>>> -			goto out;
->>>> +			return -EIO;
->>>>    		}
->>>>    		off2 = off & (sb->s_blocksize - 1);
->>>>    		len = min((int)sb->s_blocksize - off2, size);
->>>> @@ -199,12 +202,12 @@ int hfs_mdb_get(struct super_block *sb)
->>>>    	HFS_SB(sb)->ext_tree = hfs_btree_open(sb, HFS_EXT_CNID, hfs_ext_keycmp);
->>>>    	if (!HFS_SB(sb)->ext_tree) {
->>>>    		pr_err("unable to open extent tree\n");
->>>> -		goto out;
->>>> +		return -EIO;
->>>>    	}
->>>>    	HFS_SB(sb)->cat_tree = hfs_btree_open(sb, HFS_CAT_CNID, hfs_cat_keycmp);
->>>>    	if (!HFS_SB(sb)->cat_tree) {
->>>>    		pr_err("unable to open catalog tree\n");
->>>> -		goto out;
->>>> +		return -EIO;
->>>>    	}
->>>>    
->>>>    	attrib = mdb->drAtrb;
->>>> @@ -229,12 +232,6 @@ int hfs_mdb_get(struct super_block *sb)
->>>>    	}
->>>>    
->>>>    	return 0;
->>>> -
->>>> -out_bh:
->>>> -	brelse(bh);
->>>> -out:
->>>> -	hfs_mdb_put(sb);
->>>> -	return -EIO;
->>>>    }
->>>>    
->>>>    /*
->>>> @@ -359,8 +356,6 @@ void hfs_mdb_close(struct super_block *sb)
->>>>     * Release the resources associated with the in-core MDB.  */
->>>>    void hfs_mdb_put(struct super_block *sb)
->>>>    {
->>>> -	if (!HFS_SB(sb))
->>>> -		return;
->>>>    	/* free the B-trees */
->>>>    	hfs_btree_close(HFS_SB(sb)->ext_tree);
->>>>    	hfs_btree_close(HFS_SB(sb)->cat_tree);
->>>> @@ -373,6 +368,4 @@ void hfs_mdb_put(struct super_block *sb)
->>>>    	unload_nls(HFS_SB(sb)->nls_disk);
->>>>    
->>>>    	kfree(HFS_SB(sb)->bitmap);
->>>> -	kfree(HFS_SB(sb));
->>>> -	sb->s_fs_info = NULL;
->>>>    }
->>>> diff --git a/fs/hfs/super.c b/fs/hfs/super.c
->>>> index 47f50fa555a4..df289cbdd4e8 100644
->>>> --- a/fs/hfs/super.c
->>>> +++ b/fs/hfs/super.c
->>>> @@ -431,10 +431,18 @@ static int hfs_init_fs_context(struct fs_context *fc)
->>>>    	return 0;
->>>>    }
->>>>    
->>>> +static void hfs_kill_super(struct super_block *sb)
->>>> +{
->>>> +	struct hfs_sb_info *hsb = HFS_SB(sb);
->>>> +
->>>> +	kill_block_super(sb);
->>>> +	kfree(hsb);
->>>> +}
->>>> +
->>>>    static struct file_system_type hfs_fs_type = {
->>>>    	.owner		= THIS_MODULE,
->>>>    	.name		= "hfs",
->>>> -	.kill_sb	= kill_block_super,
->>>> +	.kill_sb	= hfs_kill_super,
->>>>    	.fs_flags	= FS_REQUIRES_DEV,
->>>>    	.init_fs_context = hfs_init_fs_context,
->>>>    };
-> 
-> Looks good. Thanks a lot for the fix.
-> 
-> Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
-> 
-> Thanks,
-> Slava.
+Build and Boot Report for 6.12.61-rc1
 
-Best Regards,
-Mehdi Ben Hadj khelifa
+The kernel version 6.12.61 was built and boot-tested using qemu-x86_64
+and qemu-arm64 with the default configuration (defconfig). The build and bo=
+ot
+processes completed successfully, and the kernel operated as expected
+in the virtualized environments without any issues.
+No dmesg regressions found.
 
+Build Details :
+Builds : arm64, x86_64
+Kernel Version: 6.12.61
+Configuration : defconfig
+Source: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git
+Commit : 8402b87f21e8163831f70759368ad9a87192eb40
+
+Tested-by: Dileep Malepu <dileep.debian@gmail.com>
+
+Best regards,
+Dileep Malepu
 
