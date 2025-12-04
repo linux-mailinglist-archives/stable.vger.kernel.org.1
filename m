@@ -1,92 +1,138 @@
-Return-Path: <stable+bounces-199995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ABF3CA33EC
-	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 11:36:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA39FCA33FE
+	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 11:37:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 41EFB300D738
-	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 10:36:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 294753041991
+	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 10:37:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D3722E8B75;
-	Thu,  4 Dec 2025 10:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CD5E2E06EA;
+	Thu,  4 Dec 2025 10:37:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="BmAkfKu3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EUoOxsNr"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B61330D42;
-	Thu,  4 Dec 2025 10:36:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1EAA2E5D17
+	for <stable@vger.kernel.org>; Thu,  4 Dec 2025 10:36:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764844602; cv=none; b=JGPe1c8dFzdZ59tQGxR/c44JAi/GT1sfDkjpYWWuQAZO/3tn+lF2AzFs+nPJc6tc/xJS0Z1njFzCnnVIRrHiQOYnGdI9b6WheoFbLz5hkrEWZ55ptDIWL+mV/Vx1m7qVPBjpr2gFPJk9X48PURtuaMJSmwC7rd0XbKD/7DBBiKM=
+	t=1764844620; cv=none; b=UdfC5zU6GnKRsYIvLNM//jvv41mPCPOvVN+/KOAM+DuH81PDKohy5UQ91IyTNERonRygPRgiRSEC+6zeRODChrsHl/gb+V3Ma6EbEgaElTCd6OP3SFQ3MPGy6gZivUqL/cszaM3Y6maFT9s1HDK8mxxkp0kEfvlPQ4qsPbSF00I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764844602; c=relaxed/simple;
-	bh=fDCHHZJqIp9+W1uBLN2zJjCthaFOMIGNO84Nv6A45fQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Zt3sguakcTsGnPnWYg5j4AOliKTFTSJNO46x9rqK22fMuWUx4AZUEGmW8I8jNa666z87RmtKNWxOSBrhZAdRi2rPrebrLSaoZovlaKn+O+RgDCokAwvyM9bw3H5RoK3lpCBw+GvRW7yjD74G+jdshxRfRyZai3F58xmhIhMHBSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=BmAkfKu3; arc=none smtp.client-ip=220.197.31.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Cm
-	zqckVJvah7udT3yIBjJcnBiLMTxqxe1XiOcD84Kzs=; b=BmAkfKu3lLGQXm17nr
-	ClwkSfnJ13XnXSLMbJTC/mnAdqzI7U3jPQmHcVwOGagj+a8ti9swF7Vx+vcExKXU
-	VqdC4CR6XiYtFFBqpGe5pkhv4LhVY3PYaWiC6hO7xCD9frOy74DLqPuwaYae5fof
-	9WE+zv2B+ZADAZSpre5hujaZU=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wDXrxckZDFp6eTIEg--.48716S4;
-	Thu, 04 Dec 2025 18:36:22 +0800 (CST)
-From: Haoxiang Li <haoxiang_li2024@163.com>
-To: tsbogend@alpha.franken.de,
-	haoxiang_li2024@163.com,
-	FlorianSchandinat@gmx.de
-Cc: linux-mips@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] MIPS: Fix a reference leak bug in ip22_check_gio()
-Date: Thu,  4 Dec 2025 18:36:18 +0800
-Message-Id: <20251204103618.89502-1-haoxiang_li2024@163.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1764844620; c=relaxed/simple;
+	bh=lrjZPFjgyVL44DP0moQzfy6qI7PEQfOdr5dPz8u7Tv0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RG9CWCM+TgqVaVkCLK1c7TnQNDyjJ7HargqhZXG9laVEU46g/7LH+MKwCJNr0Ukhp5nwW0bELyBwENzViuaP14umfa/0JBYOypY15gE+gvrvzi6cz6p+a/iDfoxaH8+ebges+8Qwi2eIdCceZepKokTSpsZPt7OWCGbEdWxMEYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EUoOxsNr; arc=none smtp.client-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5957c929a5eso950046e87.1
+        for <stable@vger.kernel.org>; Thu, 04 Dec 2025 02:36:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764844617; x=1765449417; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rz/DUdZu/VR0x2tWVsO5f455WgB1CFxzk30p+t2jHuU=;
+        b=EUoOxsNrv2icb+kRa3gvr70vmiQR+1ChdYMAcCKZY+NTBLVjWja4ZQhyehjEUEgpYe
+         3rsZpaXIymcG8kazZQigPYTbOfY9N/7PF90RfZbStr5MjcIvCyeOAzF0ds8okKRarpVc
+         lT+UgpEJB1O06T3KRcc9THZLZE0s/c+OTCXkERkWZKM9Yv+MZGRum4WumSfSYZWJVKRt
+         bPQIyWeneIrGqaT4D1/q+ZStIVGmtgvgwuDhLEonAtz1tll6xHy6rt7J0OcyzvliGSWC
+         Rj9DlgTSI48xBHGNnKvidHQQE9LfIAuV837B+9bN+yjeXSv/LAsIY44V/7CODuV/4Uer
+         DagQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764844617; x=1765449417;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=rz/DUdZu/VR0x2tWVsO5f455WgB1CFxzk30p+t2jHuU=;
+        b=VUmNy3yA0ZdlFvcoeiDMhu5lDRdHWqhYA2P8S2rfBXWV3EkvGPAZw954w3tTWr0KkW
+         4NbQVTbTXL49512qyVODKwDkax9WbEZ70WoII8MkwOt7vF804GA4pE4mCz3fqQvbKCeS
+         8SjlL11b7wQwT8A+Y+b/HCcP74ukmIXr+br0xRLilKnsAI7YY6IcxycpEUN4PZg2ieF8
+         VNNG5EZLXepFfewBshC38naj9bb87kpEyk+jkQSqn9uTErQ9aA+vpR67OstXqLPjG71+
+         FU1NOSZdoEftaB9UQJ7qpUbzmPdfSFOADENVFFm30uwtAM7vrQXBxTxJUoyQAFGck0zS
+         nB9w==
+X-Gm-Message-State: AOJu0YyPDfMTnTSvYspqOM50btMwxuMB/dc+Xm6nUP931crxWi5QttRO
+	HMcdWl3fG0Z01uoinfRPBBa/O1Rewsk6wnKlpA3nCjulITZAoOqGyAg4b+UyW4Dnva/jHMlbF+2
+	LD/Xjjfkjhe/soTlu/oNVqFeVr/uIWRZJqM0D
+X-Gm-Gg: ASbGnctm0hF+ppuyKZ7CYn1BI82UagCy9o55vkUIbWa+HDKAXM11Fb3QpNzJqu29QhI
+	aaWYvFu5uG6qRJ1jLFUHrrw8OhNaVACn8idJAFWLSaCmpfLLCAHhXCmd/VnCH2NiOpk5Q3Tb06J
+	Aqlhy2+6R5KvaMNIe2rAfWwQvJgBpl6c3Cl42lwfa01RD4/CaNlYBjYdyOjFqpU35tEJ6GsFh6c
+	2WY9X38bC/Z+aonhe0fQbOMOk2zmCY0gbXx2vnuVHxFRQAZpBPqkKueLBapTiA6jpa4JbqbWaBr
+	tsnAu0ru1xL44/UdrKyqAY62hqI=
+X-Google-Smtp-Source: AGHT+IGCDplgOWSHwWEUtYZYEpDzV8McadoBxWWzIbpwjt53uVEbDGIeTBPh1m7eaEHjlgibDwuIGfHYvo7rYHhEvsU=
+X-Received: by 2002:ac2:4f0e:0:b0:592:f818:9bde with SMTP id
+ 2adb3069b0e04-597d66828eemr855045e87.1.1764844616416; Thu, 04 Dec 2025
+ 02:36:56 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDXrxckZDFp6eTIEg--.48716S4
-X-Coremail-Antispam: 1Uf129KBjvdXoWrtF4kWr1rurW8XF4kJFy8uFg_yoWfuFXE9a
-	4vya4DZas5Jr1IyrW3X3WfZr1fAwnFgF4fCr17JFn5CrWrZrZxWrWDXw15Jr15WF1akr4Y
-	v3yrCF1UurWfGjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRAAwIUUUUUU==
-X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbCxgbIN2kxZCYOEgAA35
+References: <20251203152346.456176474@linuxfoundation.org>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+From: Dileep malepu <dileep.debian@gmail.com>
+Date: Thu, 4 Dec 2025 16:06:44 +0530
+X-Gm-Features: AWmQ_bnG3sVwyWhsRMRVaD9us28WTWuQXY2pjHQwmf455QkfvCZNcKk-6fGTdts
+Message-ID: <CAC-m1rpCXmbMOS0AgZYq_f40om-UK2r=RCh=k-TfhGYhUtHm5g@mail.gmail.com>
+Subject: Re: [PATCH 6.17 000/146] 6.17.11-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org, sr@sladewatkins.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-If gio_device_register fails, gio_dev_put() is required to
-drop the gio_dev device reference.
+On Wed, Dec 3, 2025 at 9:44=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.17.11 release.
+> There are 146 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 05 Dec 2025 15:23:16 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.17.11-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.17.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Fixes: e84de0c61905 ("MIPS: GIO bus support for SGI IP22/28")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
----
- arch/mips/sgi-ip22/ip22-gio.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Build and Boot Report for 6.17.11-rc1
 
-diff --git a/arch/mips/sgi-ip22/ip22-gio.c b/arch/mips/sgi-ip22/ip22-gio.c
-index 5893ea4e382c..19b70928d6dc 100644
---- a/arch/mips/sgi-ip22/ip22-gio.c
-+++ b/arch/mips/sgi-ip22/ip22-gio.c
-@@ -372,7 +372,8 @@ static void ip22_check_gio(int slotno, unsigned long addr, int irq)
- 		gio_dev->resource.flags = IORESOURCE_MEM;
- 		gio_dev->irq = irq;
- 		dev_set_name(&gio_dev->dev, "%d", slotno);
--		gio_device_register(gio_dev);
-+		if (gio_device_register(gio_dev))
-+			gio_dev_put(gio_dev);
- 	} else
- 		printk(KERN_INFO "GIO: slot %d : Empty\n", slotno);
- }
--- 
-2.25.1
+The kernel version 6.17.11 was built and boot-tested using qemu-x86_64
+and qemu-arm64 with the default configuration (defconfig). The build and bo=
+ot
+processes completed successfully, and the kernel operated as expected
+in the virtualized environments without any issues.
+No dmesg regressions found.
 
+Build Details :
+Builds : arm64, x86_64
+Kernel Version: 6.17.11
+Configuration : defconfig
+Source: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git
+Commit :
+
+Tested-by: Dileep Malepu <dileep.debian@gmail.com>
+
+Best regards,
+Dileep Malepu.
 
