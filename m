@@ -1,200 +1,403 @@
-Return-Path: <stable+bounces-200078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8D52CA5942
-	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 22:59:41 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BAB5CA595A
+	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 23:05:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9F53E3086E86
-	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 21:59:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 092E8306A306
+	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 22:05:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 569CC2E6CA8;
-	Thu,  4 Dec 2025 21:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2833D3081C2;
+	Thu,  4 Dec 2025 22:05:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="VJJrflVW"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sTIJSdVe"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF7B27CB35;
-	Thu,  4 Dec 2025 21:59:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2186C1C862E
+	for <stable@vger.kernel.org>; Thu,  4 Dec 2025 22:05:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764885579; cv=none; b=pruFtvBbHSrsqqkmx+is1RpAiJsbedsk5+Hh91ayljtBONxpISsIUR3gW3YbVvP7eAz48B0F+hLm92+8Fc6t14OsDg0g+0zn2dE60SHP7iQTrD41Rp1rdffzg//MUb0S3DOd3+YJbS6j2kgWmBEtOXny+43D3XR2SKFh+e5ZgT4=
+	t=1764885922; cv=none; b=rLmRQwnxBuQJhP8b1ZlhZPjg3GZ2wTwZA5DXJfZpgEJsdiJS264x71v7rGHUQ98uIoKw8VGuniCee6qWe5Ddzktq8JWfEH6b9oUObX8ETjgUnrn054/f6fDrDPiFDBXVwJrfv2sU0ZFSDfxBkqckVOAZkO6UP7WFNPOhSBRHuRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764885579; c=relaxed/simple;
-	bh=zoYG0yRVSPL0YEgb8/GpcZlSckKNZ+ksq2fCX+Ste9I=;
-	h=Date:To:From:Subject:Message-Id; b=sAuJyaOFu8FKg/9VBcytYnHv/KBLYHazkj03KaWSeZxllv2NgR5gyyJwwoPkc1yDgUzZjQyCwS3/i39J8ZW+GKrllmlNHms4ulrxosxlyBXXq7uvVNykvyOD2Xdf+jWAOLDx6qtUjtYs0DcYM1nuO/IhEJRIZ4hmiJpPPKMPkeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=VJJrflVW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 750D3C4CEFB;
-	Thu,  4 Dec 2025 21:59:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1764885578;
-	bh=zoYG0yRVSPL0YEgb8/GpcZlSckKNZ+ksq2fCX+Ste9I=;
-	h=Date:To:From:Subject:From;
-	b=VJJrflVWIVUAgDwzv9JilEpXrk2Ze8Tjt5NCHFDpjGzOiZ4fLTRLMj1FkXf1/ry7H
-	 FuM0MX8Dc2qe7Bxth00I5ZJPmZc8ZiVNLhgd15e88z1ihu93vzFpYSfBgzsM9UTQIf
-	 m0deI5jTNH1IypeWm+u3K3lf815q55EnQ89Y3WAM=
-Date: Thu, 04 Dec 2025 13:59:37 -0800
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,torvalds@linuxfoundation.org,surenb@google.com,stable@vger.kernel.org,rppt@kernel.org,npiggin@gmail.com,mpe@ellerman.id.au,mhocko@suse.com,masahiroy@kernel.org,maddy@linux.ibm.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,christophe.leroy@csgroup.eu,skhan@linuxfoundation.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + revert-mm-fix-max_folio_order-on-powerpc-configs-with-hugetlb.patch added to mm-hotfixes-unstable branch
-Message-Id: <20251204215938.750D3C4CEFB@smtp.kernel.org>
+	s=arc-20240116; t=1764885922; c=relaxed/simple;
+	bh=O/p9f+fGjb5JRyj7xXiW6sdlvwqkCxGcca77LTKi/t0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aKEcoltzFctZ5BMmEoEy8vw4SVnaDari7uUdJtsVoJY7vGXH+pws1ePymewUYnYlBxgQbXZvL46t5ghSEsib0z/A64uQD02XPvBylaHDTzPOlxKcIqY1l6cSDTlsI0ge3hlGWxZgXm+k2p57M0Bdom1+CY+QinHYoRAmfoatLUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sTIJSdVe; arc=none smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4ee243b98caso48291cf.1
+        for <stable@vger.kernel.org>; Thu, 04 Dec 2025 14:05:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1764885919; x=1765490719; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BlMojaibJswZ58Md6lSPxnF32xXnO1Wd7Xx7hEEyCgs=;
+        b=sTIJSdVeuZIfKnNYVehnINy05oNNxDggxDHygpiYzlSBfE3b/rzchZxz7JAL1gt5ZQ
+         JX/qfMU1BGda2JOuZrywxAreZHR91hKHO1bizFd2C4l9HpauOzghFkfhv4gTgy6OCxHD
+         KXzPp4Cu2TjADeeWutYXEokaDAJUiDwf+RT/iQa3jVEPzvEcgjhowEBKi6pKUKhtLkWa
+         XCgTGGId+IYUCzKNvhlHokVVw9bleQU/J8zpHYkTTjD0s4dgyIcaHDslmgz08xyvy4YU
+         M6i3hXZyiiIBlrhC9EjRQOEPurbZyp88X85A7qPLKDoTYZA2T2QwnC/5KNY02Ionq+Us
+         wBVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764885919; x=1765490719;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=BlMojaibJswZ58Md6lSPxnF32xXnO1Wd7Xx7hEEyCgs=;
+        b=sIWe8OMhp0otEp/0J5UYaqdJPareJGEAzx0sHxBHDQ6dB+YLz6bSz2YnvJirawiTmr
+         PgZNAQuEdzwRCdpw8PBhHXFr8Av8L9g546rKcWrtC5lrsox8rJQJZc3Sks49Iq8Mj9SL
+         h9wRyfni3H4rZyT96YpbPIvgATiC0ItQHVGN7Qjqoz8pmpbRMbqP6DRZhKFQm92JXC8F
+         qstAvYNmLdVqojbmu5ZIcGZuqyxm25s8CLxBPmpN0V9+I7f7sgPrEAR2q3Ndx39hHZ5N
+         44SaM9Ufu7iQrzR+KX3RWrWTKejA2e2JiGnv2BVvLVeZ15ZRBLnwf6PMzxn3FyxoKBy0
+         8AYA==
+X-Forwarded-Encrypted: i=1; AJvYcCVGEPPZFcqGY4XGM6djCsV9h6v/GtfHlM8k/rh4+KjpFC8zpHnuDtDCwPel+eh6GDZP39WoSfU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQVA0iDbRcyS6v6HM5huKVmPmZomI4bzDS7V3SsFzVL2eCt0mu
+	iqJ4hBlB4infCcOQWqZzXkRI8xxNCYnxdbfI0nyu0P/KbCZ2kqVVre2obYSclWpI57LLN21ZlC2
+	RoiHNSW4cqaHDzV08M7F8Ei0Yakr4L2eROOM/EKNm
+X-Gm-Gg: ASbGncviZWu9SVv/TJqv7Bj13/9AsdlMURjC8i/uClRcB2ftHW4ZMfUWqw1AZOG08fI
+	TCsn3MGc+LE75HNo+MWg6I8nAVU5UFhBoBhBrHXIoN10p+5bktlTOX5/pB5JLjPFe4ALaWMoRSi
+	PG5Q/wm0NSu40aK6+PejA9n/xsjuvdURzX+HIKWEkL0p5bJhdY+0fQGq/t30FWIfHeAdYQqAXZd
+	AZq+u/lJZzAmUhNQcj1+IkcX/ZIg8dxzt47bkkbIW3XAGRLV1jdoM8F63+XuxNDBMziHD6OxE5Y
+	uWXEegJSlUD/UaiZkqX8OOi8bw==
+X-Google-Smtp-Source: AGHT+IFPNi1Qq6VnpviOUxpKZr81dFMcXNcb6T+4p6OQ/SGAOQNaW0ByA8FKshNAIkMbBHJmIRv/I4XWmKWNYD2+UjQ=
+X-Received: by 2002:a05:622a:11c7:b0:4b7:9c77:6ba5 with SMTP id
+ d75a77b69052e-4f0328c27f7mr986761cf.15.1764885918541; Thu, 04 Dec 2025
+ 14:05:18 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20251202101626.783736-1-harry.yoo@oracle.com>
+In-Reply-To: <20251202101626.783736-1-harry.yoo@oracle.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Thu, 4 Dec 2025 14:05:07 -0800
+X-Gm-Features: AQt7F2p0K1ADlvbRPKyMu031QLfpqGn6xZ7XRfN7KMrquLJSUSvofoLyz0mVl2M
+Message-ID: <CAJuCfpE+g65Dm8-r=psDJQf_O1rfBG62DOzx4mE1mb+ottUKmQ@mail.gmail.com>
+Subject: Re: [PATCH V2] mm/slab: introduce kvfree_rcu_barrier_on_cache() for
+ cache destruction
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: vbabka@suse.cz, Liam.Howlett@oracle.com, cl@gentwo.org, 
+	rientjes@google.com, roman.gushchin@linux.dev, urezki@gmail.com, 
+	sidhartha.kumar@oracle.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	rcu@vger.kernel.org, maple-tree@lists.infradead.org, 
+	linux-modules@vger.kernel.org, mcgrof@kernel.org, petr.pavlu@suse.com, 
+	samitolvanen@google.com, atomlin@atomlin.com, lucas.demarchi@intel.com, 
+	akpm@linux-foundation.org, jonathanh@nvidia.com, stable@vger.kernel.org, 
+	Daniel Gomez <da.gomez@samsung.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Tue, Dec 2, 2025 at 2:16=E2=80=AFAM Harry Yoo <harry.yoo@oracle.com> wro=
+te:
+>
+> Currently, kvfree_rcu_barrier() flushes RCU sheaves across all slab
+> caches when a cache is destroyed. This is unnecessary; only the RCU
+> sheaves belonging to the cache being destroyed need to be flushed.
+>
+> As suggested by Vlastimil Babka, introduce a weaker form of
+> kvfree_rcu_barrier() that operates on a specific slab cache.
+>
+> Factor out flush_rcu_sheaves_on_cache() from flush_all_rcu_sheaves() and
+> call it from flush_all_rcu_sheaves() and kvfree_rcu_barrier_on_cache().
+>
+> Call kvfree_rcu_barrier_on_cache() instead of kvfree_rcu_barrier() on
+> cache destruction.
+>
+> The performance benefit is evaluated on a 12 core 24 threads AMD Ryzen
+> 5900X machine (1 socket), by loading slub_kunit module.
+>
+> Before:
+>   Total calls: 19
+>   Average latency (us): 18127
+>   Total time (us): 344414
+>
+> After:
+>   Total calls: 19
+>   Average latency (us): 10066
+>   Total time (us): 191264
+>
+> Two performance regression have been reported:
+>   - stress module loader test's runtime increases by 50-60% (Daniel)
+>   - internal graphics test's runtime on Tegra23 increases by 35% (Jon)
+>
+> They are fixed by this change.
+>
+> Suggested-by: Vlastimil Babka <vbabka@suse.cz>
+> Fixes: ec66e0d59952 ("slab: add sheaf support for batching kfree_rcu() op=
+erations")
+> Cc: <stable@vger.kernel.org>
+> Link: https://lore.kernel.org/linux-mm/1bda09da-93be-4737-aef0-d47f8c5c93=
+01@suse.cz
+> Reported-and-tested-by: Daniel Gomez <da.gomez@samsung.com>
+> Closes: https://lore.kernel.org/linux-mm/0406562e-2066-4cf8-9902-b2b0616d=
+d742@kernel.org
+> Reported-and-tested-by: Jon Hunter <jonathanh@nvidia.com>
+> Closes: https://lore.kernel.org/linux-mm/e988eff6-1287-425e-a06c-805af5bb=
+f262@nvidia.com
+> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+> ---
+>
+> No code change, added proper tags and updated changelog.
+>
+>  include/linux/slab.h |  5 ++++
+>  mm/slab.h            |  1 +
+>  mm/slab_common.c     | 52 +++++++++++++++++++++++++++++------------
+>  mm/slub.c            | 55 ++++++++++++++++++++++++--------------------
+>  4 files changed, 73 insertions(+), 40 deletions(-)
+>
+> diff --git a/include/linux/slab.h b/include/linux/slab.h
+> index cf443f064a66..937c93d44e8c 100644
+> --- a/include/linux/slab.h
+> +++ b/include/linux/slab.h
+> @@ -1149,6 +1149,10 @@ static inline void kvfree_rcu_barrier(void)
+>  {
+>         rcu_barrier();
+>  }
+> +static inline void kvfree_rcu_barrier_on_cache(struct kmem_cache *s)
+> +{
+> +       rcu_barrier();
+> +}
+>
+>  static inline void kfree_rcu_scheduler_running(void) { }
+>  #else
+> @@ -1156,6 +1160,7 @@ void kvfree_rcu_barrier(void);
+>
+>  void kfree_rcu_scheduler_running(void);
+>  #endif
+> +void kvfree_rcu_barrier_on_cache(struct kmem_cache *s);
 
-The patch titled
-     Subject: Revert "mm: fix MAX_FOLIO_ORDER on powerpc configs with hugetlb"
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     revert-mm-fix-max_folio_order-on-powerpc-configs-with-hugetlb.patch
+Should the above line be before the #endif? I was expecting something like =
+this:
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/revert-mm-fix-max_folio_order-on-powerpc-configs-with-hugetlb.patch
+#ifndef CONFIG_KVFREE_RCU_BATCHED
+...
+static inline void kvfree_rcu_barrier_on_cache(struct kmem_cache *s)
+{
+    rcu_barrier();
+}
+#else
+...
+void kvfree_rcu_barrier_on_cache(struct kmem_cache *s);
+#endif
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+but when I apply this patch on mm-new I get this:
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+#ifndef CONFIG_KVFREE_RCU_BATCHED
+...
+static inline void kvfree_rcu_barrier_on_cache(struct kmem_cache *s)
+{
+    rcu_barrier();
+}
+#else
+...
+#endif
+void kvfree_rcu_barrier_on_cache(struct kmem_cache *s);
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+Other than that LGTM
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Shuah Khan <skhan@linuxfoundation.org>
-Subject: Revert "mm: fix MAX_FOLIO_ORDER on powerpc configs with hugetlb"
-Date: Wed, 3 Dec 2025 19:33:56 -0700
-
-This reverts commit 39231e8d6ba7f794b566fd91ebd88c0834a23b98.
-
-Enabling HAVE_GIGANTIC_FOLIOS broke kernel build and git clone on two
-systems.  git fetch-pack fails when cloning large repos and make hangs or
-errors out of Makefile.build with Error: 139.  These failures are random
-with git clone failing after fetching 1% of the objects, and make hangs
-while compiling random files.
-
-Below is is one of the git clone failures:
-
-git clone git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git linux_6.19
-Cloning into 'linux_6.19'...
-remote: Enumerating objects: 11173575, done.
-remote: Counting objects: 100% (785/785), done.
-remote: Compressing objects: 100% (373/373), done.
-remote: Total 11173575 (delta 534), reused 505 (delta 411), pack-reused 11172790 (from 1)
-Receiving objects: 100% (11173575/11173575), 3.00 GiB | 7.08 MiB/s, done.
-Resolving deltas: 100% (9195212/9195212), done.
-fatal: did not receive expected object 0002003e951b5057c16de5a39140abcbf6e44e50
-fatal: fetch-pack: invalid index-pack output
-
-(akpm: reverting this probably just hides a bug, but let's do that for now
-while the bug is being worked on).
-
-Link: https://lkml.kernel.org/r/20251204023358.54107-1-skhan@linuxfoundation.org
-Fixes: 39231e8d6ba7 ("mm: fix MAX_FOLIO_ORDER on powerpc configs with hugetlb")
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Linus Torvalds <torvalds@linuxfoundation.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- arch/powerpc/Kconfig                   |    1 -
- arch/powerpc/platforms/Kconfig.cputype |    1 +
- include/linux/mm.h                     |   13 +++----------
- mm/Kconfig                             |    7 -------
- 4 files changed, 4 insertions(+), 18 deletions(-)
-
---- a/arch/powerpc/Kconfig~revert-mm-fix-max_folio_order-on-powerpc-configs-with-hugetlb
-+++ a/arch/powerpc/Kconfig
-@@ -137,7 +137,6 @@ config PPC
- 	select ARCH_HAS_DMA_OPS			if PPC64
- 	select ARCH_HAS_FORTIFY_SOURCE
- 	select ARCH_HAS_GCOV_PROFILE_ALL
--	select ARCH_HAS_GIGANTIC_PAGE		if ARCH_SUPPORTS_HUGETLBFS
- 	select ARCH_HAS_KCOV
- 	select ARCH_HAS_KERNEL_FPU_SUPPORT	if PPC64 && PPC_FPU
- 	select ARCH_HAS_MEMBARRIER_CALLBACKS
---- a/arch/powerpc/platforms/Kconfig.cputype~revert-mm-fix-max_folio_order-on-powerpc-configs-with-hugetlb
-+++ a/arch/powerpc/platforms/Kconfig.cputype
-@@ -423,6 +423,7 @@ config PPC_64S_HASH_MMU
- config PPC_RADIX_MMU
- 	bool "Radix MMU Support"
- 	depends on PPC_BOOK3S_64
-+	select ARCH_HAS_GIGANTIC_PAGE
- 	default y
- 	help
- 	  Enable support for the Power ISA 3.0 Radix style MMU. Currently this
---- a/include/linux/mm.h~revert-mm-fix-max_folio_order-on-powerpc-configs-with-hugetlb
-+++ a/include/linux/mm.h
-@@ -2074,7 +2074,7 @@ static inline unsigned long folio_nr_pag
- 	return folio_large_nr_pages(folio);
- }
- 
--#if !defined(CONFIG_HAVE_GIGANTIC_FOLIOS)
-+#if !defined(CONFIG_ARCH_HAS_GIGANTIC_PAGE)
- /*
-  * We don't expect any folios that exceed buddy sizes (and consequently
-  * memory sections).
-@@ -2087,17 +2087,10 @@ static inline unsigned long folio_nr_pag
-  * pages are guaranteed to be contiguous.
-  */
- #define MAX_FOLIO_ORDER		PFN_SECTION_SHIFT
--#elif defined(CONFIG_HUGETLB_PAGE)
--/*
-- * There is no real limit on the folio size. We limit them to the maximum we
-- * currently expect (see CONFIG_HAVE_GIGANTIC_FOLIOS): with hugetlb, we expect
-- * no folios larger than 16 GiB on 64bit and 1 GiB on 32bit.
-- */
--#define MAX_FOLIO_ORDER		get_order(IS_ENABLED(CONFIG_64BIT) ? SZ_16G : SZ_1G)
- #else
- /*
-- * Without hugetlb, gigantic folios that are bigger than a single PUD are
-- * currently impossible.
-+ * There is no real limit on the folio size. We limit them to the maximum we
-+ * currently expect (e.g., hugetlb, dax).
-  */
- #define MAX_FOLIO_ORDER		PUD_ORDER
- #endif
---- a/mm/Kconfig~revert-mm-fix-max_folio_order-on-powerpc-configs-with-hugetlb
-+++ a/mm/Kconfig
-@@ -908,13 +908,6 @@ config PAGE_MAPCOUNT
- config PGTABLE_HAS_HUGE_LEAVES
- 	def_bool TRANSPARENT_HUGEPAGE || HUGETLB_PAGE
- 
--#
--# We can end up creating gigantic folio.
--#
--config HAVE_GIGANTIC_FOLIOS
--	def_bool (HUGETLB_PAGE && ARCH_HAS_GIGANTIC_PAGE) || \
--		 (ZONE_DEVICE && HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
--
- # TODO: Allow to be enabled without THP
- config ARCH_SUPPORTS_HUGE_PFNMAP
- 	def_bool n
-_
-
-Patches currently in -mm which might be from skhan@linuxfoundation.org are
-
-revert-mm-fix-max_folio_order-on-powerpc-configs-with-hugetlb.patch
-
+>
+>  /**
+>   * kmalloc_size_roundup - Report allocation bucket size for the given si=
+ze
+> diff --git a/mm/slab.h b/mm/slab.h
+> index f730e012553c..e767aa7e91b0 100644
+> --- a/mm/slab.h
+> +++ b/mm/slab.h
+> @@ -422,6 +422,7 @@ static inline bool is_kmalloc_normal(struct kmem_cach=
+e *s)
+>
+>  bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj);
+>  void flush_all_rcu_sheaves(void);
+> +void flush_rcu_sheaves_on_cache(struct kmem_cache *s);
+>
+>  #define SLAB_CORE_FLAGS (SLAB_HWCACHE_ALIGN | SLAB_CACHE_DMA | \
+>                          SLAB_CACHE_DMA32 | SLAB_PANIC | \
+> diff --git a/mm/slab_common.c b/mm/slab_common.c
+> index 84dfff4f7b1f..dd8a49d6f9cc 100644
+> --- a/mm/slab_common.c
+> +++ b/mm/slab_common.c
+> @@ -492,7 +492,7 @@ void kmem_cache_destroy(struct kmem_cache *s)
+>                 return;
+>
+>         /* in-flight kfree_rcu()'s may include objects from our cache */
+> -       kvfree_rcu_barrier();
+> +       kvfree_rcu_barrier_on_cache(s);
+>
+>         if (IS_ENABLED(CONFIG_SLUB_RCU_DEBUG) &&
+>             (s->flags & SLAB_TYPESAFE_BY_RCU)) {
+> @@ -2038,25 +2038,13 @@ void kvfree_call_rcu(struct rcu_head *head, void =
+*ptr)
+>  }
+>  EXPORT_SYMBOL_GPL(kvfree_call_rcu);
+>
+> -/**
+> - * kvfree_rcu_barrier - Wait until all in-flight kvfree_rcu() complete.
+> - *
+> - * Note that a single argument of kvfree_rcu() call has a slow path that
+> - * triggers synchronize_rcu() following by freeing a pointer. It is done
+> - * before the return from the function. Therefore for any single-argumen=
+t
+> - * call that will result in a kfree() to a cache that is to be destroyed
+> - * during module exit, it is developer's responsibility to ensure that a=
+ll
+> - * such calls have returned before the call to kmem_cache_destroy().
+> - */
+> -void kvfree_rcu_barrier(void)
+> +static inline void __kvfree_rcu_barrier(void)
+>  {
+>         struct kfree_rcu_cpu_work *krwp;
+>         struct kfree_rcu_cpu *krcp;
+>         bool queued;
+>         int i, cpu;
+>
+> -       flush_all_rcu_sheaves();
+> -
+>         /*
+>          * Firstly we detach objects and queue them over an RCU-batch
+>          * for all CPUs. Finally queued works are flushed for each CPU.
+> @@ -2118,8 +2106,43 @@ void kvfree_rcu_barrier(void)
+>                 }
+>         }
+>  }
+> +
+> +/**
+> + * kvfree_rcu_barrier - Wait until all in-flight kvfree_rcu() complete.
+> + *
+> + * Note that a single argument of kvfree_rcu() call has a slow path that
+> + * triggers synchronize_rcu() following by freeing a pointer. It is done
+> + * before the return from the function. Therefore for any single-argumen=
+t
+> + * call that will result in a kfree() to a cache that is to be destroyed
+> + * during module exit, it is developer's responsibility to ensure that a=
+ll
+> + * such calls have returned before the call to kmem_cache_destroy().
+> + */
+> +void kvfree_rcu_barrier(void)
+> +{
+> +       flush_all_rcu_sheaves();
+> +       __kvfree_rcu_barrier();
+> +}
+>  EXPORT_SYMBOL_GPL(kvfree_rcu_barrier);
+>
+> +/**
+> + * kvfree_rcu_barrier_on_cache - Wait for in-flight kvfree_rcu() calls o=
+n a
+> + *                               specific slab cache.
+> + * @s: slab cache to wait for
+> + *
+> + * See the description of kvfree_rcu_barrier() for details.
+> + */
+> +void kvfree_rcu_barrier_on_cache(struct kmem_cache *s)
+> +{
+> +       if (s->cpu_sheaves)
+> +               flush_rcu_sheaves_on_cache(s);
+> +       /*
+> +        * TODO: Introduce a version of __kvfree_rcu_barrier() that works
+> +        * on a specific slab cache.
+> +        */
+> +       __kvfree_rcu_barrier();
+> +}
+> +EXPORT_SYMBOL_GPL(kvfree_rcu_barrier_on_cache);
+> +
+>  static unsigned long
+>  kfree_rcu_shrink_count(struct shrinker *shrink, struct shrink_control *s=
+c)
+>  {
+> @@ -2215,4 +2238,3 @@ void __init kvfree_rcu_init(void)
+>  }
+>
+>  #endif /* CONFIG_KVFREE_RCU_BATCHED */
+> -
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 785e25a14999..7cec2220712b 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -4118,42 +4118,47 @@ static void flush_rcu_sheaf(struct work_struct *w=
+)
+>
+>
+>  /* needed for kvfree_rcu_barrier() */
+> -void flush_all_rcu_sheaves(void)
+> +void flush_rcu_sheaves_on_cache(struct kmem_cache *s)
+>  {
+>         struct slub_flush_work *sfw;
+> -       struct kmem_cache *s;
+>         unsigned int cpu;
+>
+> -       cpus_read_lock();
+> -       mutex_lock(&slab_mutex);
+> +       mutex_lock(&flush_lock);
+>
+> -       list_for_each_entry(s, &slab_caches, list) {
+> -               if (!s->cpu_sheaves)
+> -                       continue;
+> +       for_each_online_cpu(cpu) {
+> +               sfw =3D &per_cpu(slub_flush, cpu);
+>
+> -               mutex_lock(&flush_lock);
+> +               /*
+> +                * we don't check if rcu_free sheaf exists - racing
+> +                * __kfree_rcu_sheaf() might have just removed it.
+> +                * by executing flush_rcu_sheaf() on the cpu we make
+> +                * sure the __kfree_rcu_sheaf() finished its call_rcu()
+> +                */
+>
+> -               for_each_online_cpu(cpu) {
+> -                       sfw =3D &per_cpu(slub_flush, cpu);
+> +               INIT_WORK(&sfw->work, flush_rcu_sheaf);
+> +               sfw->s =3D s;
+> +               queue_work_on(cpu, flushwq, &sfw->work);
+> +       }
+>
+> -                       /*
+> -                        * we don't check if rcu_free sheaf exists - raci=
+ng
+> -                        * __kfree_rcu_sheaf() might have just removed it=
+.
+> -                        * by executing flush_rcu_sheaf() on the cpu we m=
+ake
+> -                        * sure the __kfree_rcu_sheaf() finished its call=
+_rcu()
+> -                        */
+> +       for_each_online_cpu(cpu) {
+> +               sfw =3D &per_cpu(slub_flush, cpu);
+> +               flush_work(&sfw->work);
+> +       }
+>
+> -                       INIT_WORK(&sfw->work, flush_rcu_sheaf);
+> -                       sfw->s =3D s;
+> -                       queue_work_on(cpu, flushwq, &sfw->work);
+> -               }
+> +       mutex_unlock(&flush_lock);
+> +}
+>
+> -               for_each_online_cpu(cpu) {
+> -                       sfw =3D &per_cpu(slub_flush, cpu);
+> -                       flush_work(&sfw->work);
+> -               }
+> +void flush_all_rcu_sheaves(void)
+> +{
+> +       struct kmem_cache *s;
+> +
+> +       cpus_read_lock();
+> +       mutex_lock(&slab_mutex);
+>
+> -               mutex_unlock(&flush_lock);
+> +       list_for_each_entry(s, &slab_caches, list) {
+> +               if (!s->cpu_sheaves)
+> +                       continue;
+> +               flush_rcu_sheaves_on_cache(s);
+>         }
+>
+>         mutex_unlock(&slab_mutex);
+> --
+> 2.43.0
+>
 
