@@ -1,135 +1,215 @@
-Return-Path: <stable+bounces-199963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A05CCA2968
-	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 08:00:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0CA3CA29B6
+	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 08:12:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4C9B93020CE3
-	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 07:00:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3C8F23023549
+	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 07:12:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F1592B9BA;
-	Thu,  4 Dec 2025 07:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 261872741B6;
+	Thu,  4 Dec 2025 07:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b="BGbIey11"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="WXmTWvgR"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp153-162.sina.com.cn (smtp153-162.sina.com.cn [61.135.153.162])
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011007.outbound.protection.outlook.com [40.93.194.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CE32E413
-	for <stable@vger.kernel.org>; Thu,  4 Dec 2025 07:00:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=61.135.153.162
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764831629; cv=none; b=UPgcT9LkCocXZyE2lo2cXQtfxpUDhdZdF70TLYM1DZnZWsBXVjEkFAaK+Y73plm1z9hPmNV3RUmdSJpluz0PnFEkWUGiax70g20j3Kwkg2YKZuLEtQmLuqbi5ikAgh4PzJ4d+c78BHAuEg6tkZnZS23rvwmLRAnLPiMn20syWFM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764831629; c=relaxed/simple;
-	bh=TGumV486UZSTAG9s+J/o2EFLLt7SBm+tS9oSmIVoPGU=;
-	h=From:To:Subject:Date:Message-Id; b=imkTxPeGSAuMKg7zq2D4H2rCeqb8fTvy/PzjrjtHg33FTttScOLuMDqqVWUwQJxhfZGUuYUWWHlDYCd/gsC2DGY3KKhM+mzRxnwqXOxP9qubSPUPwj+yFBoJeU9zrhy2Am215HLuZtscwEN8oPXIL/Ep9cxsMTFNAHTreP6kq2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=BGbIey11; arc=none smtp.client-ip=61.135.153.162
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.cn
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1764831613;
-	bh=4T4Hu8CcUXR/xo+769PMdbdAAMZyE0jOz+3W1ANfS7A=;
-	h=From:Subject:Date:Message-Id;
-	b=BGbIey115tLYRD7PwKSYNmecZY8gEygwWq86SSoNT2OPMzhgyFjUd3sSQOsBLGyuR
-	 9M5CWOKBUXMLap9yiH0ixXogJklZqzM7BwJnVTiRu/zuSbWZKtRUAoA1nwvm1DPzIj
-	 jdw5Q8OwKzTmhflbdSnvhjsMg+nduBTuD0QbrPjo=
-X-SMAIL-HELO: sina-kernel-team
-Received: from unknown (HELO sina-kernel-team)([183.241.245.185])
-	by sina.cn (10.54.253.31) with ESMTP
-	id 693130DD00000B52; Thu, 4 Dec 2025 14:57:40 +0800 (CST)
-X-Sender: xnguchen@sina.cn
-X-Auth-ID: xnguchen@sina.cn
-Authentication-Results: sina.cn;
-	 spf=none smtp.mailfrom=xnguchen@sina.cn;
-	 dkim=none header.i=none;
-	 dmarc=none action=none header.from=xnguchen@sina.cn
-X-SMAIL-MID: 1850976816217
-X-SMAIL-UIID: C40E6E1353034B1887A75AB51243CAEA-20251204-145740-1
-From: Chen Yu <xnguchen@sina.cn>
-To: libaokun1@huawei.com,
-	dhowells@redhat.com,
-	brauner@kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH 6.1] fscache: delete fscache_cookie_lru_timer when fscache exits to avoid UAF
-Date: Thu,  4 Dec 2025 14:57:33 +0800
-Message-Id: <20251204065733.21270-1-xnguchen@sina.cn>
-X-Mailer: git-send-email 2.17.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BC7B1DE894;
+	Thu,  4 Dec 2025 07:12:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.7
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764832337; cv=fail; b=aQvOiNWuluaDi/ZOvm2++TMclPZfQBhFn696AOksw3DjPztfSvwkRWFkFFCinbLeaZPX+2JBQzEM1giak0zj1FkljWPN2qC8Qkag6TVlI37d6sOv7WC1z8JgJ3+p27iY7NsvBw/wiALgTiJFWqHbyQWaN2klwz9bq9b3M5srUWU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764832337; c=relaxed/simple;
+	bh=1DP2M8GgMf9A0Xo/p0nkidmJvf6LdGxu/vmva9a0fZw=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=lYDFUg3GWzf+gfrcSZyiv1S3ibi+jP3/tEmWQ2E3fItZ0nWqjaTN14iPceNJsk7sD4mevW+bLncSz8PnNOUbRNIueVSefunDvfI0q57zwOu5PTcwzAxzTNNhjILKvEqsed2yn5GDvNafAf/l9W4dP0KDwrv1phBHLwRjTtg51pY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=WXmTWvgR; arc=fail smtp.client-ip=40.93.194.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FAKhI3Ye5UGp0YGvJSaOex9WKXp+ogY00LH6SytHzcOPsk5KHTELIgA+0Oc/Q23VuV+u9vPs0goximjEw4/cD5q7k35W5O+pCoy/lFf8AgKM2eOhkO8wrkJMCrSVE1z8SYhJ9iBSWk26hFtl6/2zyRbUz8YDmlq3YW5bL0ebIm6Po/1Dv56cFQoJgYtGCSyIYi5DqS2Hf+qNAvLRDE+E9OAYGrbQJHCQDtHbsYtLc3GwjlvJlWDgJ8ONVYvJIne/KZF0wQkkQGFcbJpNB8+HYWIerznRYhUKuQ3O7pyiT6xA9uP2cOlWhvutan1eXfdYRdWxK4TkwtogLOxNzZ8Iyg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ClYUetRolTO+uoUjQ125IJA/RZ+oc0eCdehr4KcYIJg=;
+ b=wixgiYked88Fj/hYETjrEsiUrolqLO5lizWtopgVb+VFFWp6bArXN6QJXilMIpyQOHKN7bXYWjBgY07dugiyYrZNIqz+O7fey9EqTx5b8UMrciiXgjZhr3g5ik9UvPYf3cClIxFELajjrxs0hHglg5rxdus9hfY9G/MaNMypWfw7PoI3I6BVgkxpCRWkKQUuatLASN0fwXkQ9MZ4sLozrLEw2xe4ONB/DhwFEfwM3Qotv3Xiq2EmNgbc/nSEw66HKBTVjUAWP6B9TIjmUnGzwX1NYfG5o3NGGPmMq91/Blcwfa1D5HTB8Nk0u+HqSrU1/JGZEi+Yw3HUC4GzU56tDg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ClYUetRolTO+uoUjQ125IJA/RZ+oc0eCdehr4KcYIJg=;
+ b=WXmTWvgRIytZ7AUENjl3TPRmecmTCq/ri6ROg6LrMumw+7Qc2fTNcwC585q1xtai/0LRFJiAs5cvSqZVf/CGB6TwNLDov0kBSInETU3wfi2+u/aEVH22C6PgqSOhNCnx3OdOMRCARVMTMhDo+fsWFbIBow0Smoy6/NMySH7eTUiNQC4I0uvIDEZtCguBa8OqUp2tEpmqWKfJZzbdhQUv4h2/j4dwtuq0Y1PNwmnzx/2K1vVV54dPMmY8wOXG2Gh0Vn/AkwVyjYOxGe/GMAHqWghi+kJrNHxsHJ1ue2H+0cWyfajEecRtd4q+Ya6JtA4hF7oFT7lZ5zozwhJZFc4X0g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BN9PR12MB5195.namprd12.prod.outlook.com (2603:10b6:408:11c::19)
+ by SA1PR12MB5660.namprd12.prod.outlook.com (2603:10b6:806:238::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Thu, 4 Dec
+ 2025 07:12:13 +0000
+Received: from BN9PR12MB5195.namprd12.prod.outlook.com
+ ([fe80::de30:34bc:cb2e:1ec1]) by BN9PR12MB5195.namprd12.prod.outlook.com
+ ([fe80::de30:34bc:cb2e:1ec1%3]) with mapi id 15.20.9388.003; Thu, 4 Dec 2025
+ 07:12:13 +0000
+Message-ID: <7d3c711a-bc33-4dbb-a8e5-bcb420d5b536@nvidia.com>
+Date: Thu, 4 Dec 2025 15:12:03 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] phy: tegra: xusb: Fix UTMI AO sleepwalk trigger
+ programming sequence
+To: Wayne Chang <waynec@nvidia.com>, vkoul@kernel.org, kishon@kernel.org,
+ thierry.reding@gmail.com, jonathanh@nvidia.com
+Cc: haotienh@nvidia.com, linux-phy@lists.infradead.org,
+ linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20251203024752.2335916-1-waynec@nvidia.com>
+Content-Language: en-US
+From: JC Kuo <jckuo@nvidia.com>
+Organization: NVIDIA
+In-Reply-To: <20251203024752.2335916-1-waynec@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SG2PR01CA0147.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:8f::27) To BN9PR12MB5195.namprd12.prod.outlook.com
+ (2603:10b6:408:11c::19)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN9PR12MB5195:EE_|SA1PR12MB5660:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6c1d935a-d252-43da-de57-08de3304725c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?bGN5cjdrME80MzFoeUk0eGtJZDIybkx1bmtmY1U1SDRHa3hERG1jcjRXaEs1?=
+ =?utf-8?B?em42c3lQNDVvaHczQjdxQnl6YndLUzBQZUREVE5TYkdVTWZtSm4xMXFHd3Fk?=
+ =?utf-8?B?UWFhblA2d2doZjQyUDlZZ1VOTHRydFJUaEJHZUoyb3JZc0tuaHgrTzRYVUgr?=
+ =?utf-8?B?S0poV3MvVTFDVkJVWWltc3ZvVmVGa1NPV1FBWHJVWldOem1lTkhZSXpjZTZJ?=
+ =?utf-8?B?YWdXY1FpN0dBMGRsdTRRZWl1bDg1bnZtNldiUUM0bDA1QU50M1FjcnpzK3Q1?=
+ =?utf-8?B?YTlRZS8zamFhcUFzU1FzR0lkemY4Kzd5NFFod1Yyd2huYmpORytVU2FZcjhK?=
+ =?utf-8?B?eDdKSlI1Q3E2cnRwRUwvWG05aGhaM0w3cHl5amlzcjk5QlVhejI2VXpwQWFN?=
+ =?utf-8?B?WTFrS1drcFovTjYwbXBiQVpGejh4ZFp2dTFkeldQN09mbk4zeDV6OW0xWDZO?=
+ =?utf-8?B?YVU2UzhuZXMrMTk1dW1XSnFEK1c0ckNIcmRCTi9SS3pRcnIzVmdPQzIvVkkw?=
+ =?utf-8?B?c0ZkRmdkMmFrOTZHUmxZamNXTVZMdE1SQjdaaXVib0wxSURhRFo4RlVjZWlW?=
+ =?utf-8?B?RlBTNTliMHBjNVM0N29aYVVldCsvbDNwVmhUNjc4OXE3eVE1TTlaMXdIU2JL?=
+ =?utf-8?B?V2Y5dmFnMUh1a0EvdzF0MXNRNjIxd2cwN3R1OHRJbk1sZ2tOTFlUTGVSci9X?=
+ =?utf-8?B?Q08xemxZbDBXV2V0WkhxMHdEdU5OMEdMdE9jbCtqZnA2MTVFeEhVdUdnMStR?=
+ =?utf-8?B?OWpxamxERFJkTUJ6ZldqdU9jdk5wZ1dab0pDamZQVTIydWxFUXpmTmI0OW1E?=
+ =?utf-8?B?SGVCRGlVYndHTzBlZlFpR0lJT09FNi9ZVjJMVDNSZ3BVOWpvQ09Za0UxMHpJ?=
+ =?utf-8?B?QmxLMVIrc3I3OWlSNTk0ZXlueWh4RitjdmMwK1g4RTdKWGtDc0pPUGREU2FF?=
+ =?utf-8?B?N3ZxNWQ3eEZJUTl1cDdnRnp6WHJLTFpZNzhTOTUvZk1qRkFXQ3pUdU9kZStq?=
+ =?utf-8?B?S0FHQzRCYVlOeTlRdS8zNGJZQVdRVlF6OTJvMnBCcVNEV3dYdnMyM1gvTjUy?=
+ =?utf-8?B?VmZKdENtRmFSRG5jOXRsZDFmSDRPM1ZQbTJhZTRacXlRRVUrcUc3OHFDLytr?=
+ =?utf-8?B?bDd0WlNlUW5YUmUrUzQ5R29ZNHp1K0VlZUkrSHlEVDViYUtkMmN5b1hYUlpL?=
+ =?utf-8?B?NFlTYUZFcUVSQ1pVM1A1YmRCNGp6dWN5eW83WFRxZHlJSWgwdUJKd0tvY0d1?=
+ =?utf-8?B?c0l1a09Pd3ZMNGJ0dkcvS0REa2orUGErU3lXeDNUT0MwTGdwZDFJL2tGamRr?=
+ =?utf-8?B?NldtRUNWWmpxRmsySEN0WFU4YnVvYWliUk9vbCs5bldrUWlLbmYwVHZLajJW?=
+ =?utf-8?B?ZnpVc1JncGhmWTkxTlgwMlEzR25vaUdnYVp0SHg2TjRnUGxBWkZxRXdDR21Q?=
+ =?utf-8?B?bXNXM1U2elB6bllnVkxybzR1eEZFZisrSDAxQ0t4MTRzK1BGV1hxcDRMQzBk?=
+ =?utf-8?B?YkFROS8wazVCeWNWWmpFNDNlZWxZNndvS2lZcGNmWlI0UkVZbjJodjlLbHkx?=
+ =?utf-8?B?OS9OL2lrdVc3cnpxSjNzOG9Ma3dMZGxBZE9yV01ZdWxDUVB0VGxYNmNKblQ0?=
+ =?utf-8?B?Z2JDTG8zZllFQ1hqS2pIdTM2NEIrWHJPaERkSzl1blowZFloMHl3NnJpa1Nx?=
+ =?utf-8?B?TnllUVAraWpNbkhKUHZQMzZQRi92Mm15MXZYbXdhN3EvSXBINDRDbjFkTW9W?=
+ =?utf-8?B?SU0vZHhLVFN6NEt0a2l6UmpOMU1PNERwN3VycFJNWVU4NHZGM1JCbXJsN1dW?=
+ =?utf-8?B?eVFnbUppNHVxV2huNzgwb0tCcjNqRTFNMVhYSDdnRmlkM1hpV1E2azM1eWZO?=
+ =?utf-8?B?ZDZYYkdHRUYycWVOZ0J0UlFUVVBxcXk2L3Buc1lLZDFmWHZtZjRTVXZJUmoy?=
+ =?utf-8?Q?jMGj0BIK53xjE2sGFqGZokNwY3Y750ia?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR12MB5195.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?YWpsTExqRU0vaWl6MEtCM25RbUg4cnF3MjFLL09CWThmOGNmVjRtQlNiK2Va?=
+ =?utf-8?B?bUQ5V25VOEdqdTJSRU8zc1FFaVBOdkxId3VyVEh1UmpDWUNVZzRsQW9CamFv?=
+ =?utf-8?B?dlZkL1FiS1RXTVBnK1J0ZTZVU1dwY0lZQmR5SHVYVDB3c0hiYzlvbG9Xcnp3?=
+ =?utf-8?B?dlFQaURiOEpGallkVmUvWjBGV1htNGVIQUlFMzlZNFlJN2xVdExmRW40ZWxP?=
+ =?utf-8?B?K2luanpGM2tXbUJ1R2c0SXdqelQwUFptUmo5L1g4MGtaMTRVaGNMNmw5Q0pR?=
+ =?utf-8?B?anBmUzloazkyMzl2dkFLUzhhUzIrS3BhYm1zWi9zRVhwaC9UMmw5WnBzZ2h4?=
+ =?utf-8?B?MFk2Q0lxRWx3Y2JGQ1EwRGlmT0cvZEthV2RZTHFoVFNOOHRpQllSREN6dTV1?=
+ =?utf-8?B?eHRhN3A4UWFqalJ3M2R1UVlrTnUxTEJoc2ovdlFJZEtPV0NES2dDMVNMUGxY?=
+ =?utf-8?B?TzB1eWNiYWMrbnNrMnNVamdySW9jREtuOFREZ3hiY2x5N2N1clhjMGVuNTRt?=
+ =?utf-8?B?c2lGVGRoSVBaSVpyaHpteGNpUHNrL0FFb1FMK3hCdVdndHh3NC9UWnBoMmxM?=
+ =?utf-8?B?ZlZEbU5WY1hieFVhRGV6QUtXOVNEcHdsNFZQM1hZdm5TalM3RmgyS2FISjBT?=
+ =?utf-8?B?dGxpaEhnK1pwZEo0REdHK3BIVHZocmd1RzVNbkppQUl4TVhNVWVVc0NKc3ZN?=
+ =?utf-8?B?QktQVHovVmQzQjc0WUVacmlKdnBCTnJsZEN2V25kay9zV2JPTkJTRXd2ZC9B?=
+ =?utf-8?B?bjZqWTlNaUN4dUlNWlFFKzlYaWJ4YW1ob284QkpvTm0rQUFjemNaa1M4dnhz?=
+ =?utf-8?B?L0dzVG1kRnNLTmMzZzIzbVZmQmZNNzJQYjNmVE50MjFEY2M5cXlENjU0MGU0?=
+ =?utf-8?B?L1g2b2J2TmxObXduV1JXeGV2L1B6U3ZwZkl0VFVhci8rbEgyN0RwTzFERmtW?=
+ =?utf-8?B?eGQ1TWZHdUdBQ0xCNk5ZcjZCQ3o3NEVMTXhOVXNRTU9RaDNOZUQ0TGVCQjhM?=
+ =?utf-8?B?TGR5SnVqQ2QrTnpwUEc1QmljSlRrTktQb2E3Mkd0VWFUZG96QVZ4ZmxUT3kz?=
+ =?utf-8?B?ZTZ3b1dhSzZkbjc1VFU5TTJWSElGZEZEVEtkdmI5TlFIa09mVWN0TnZQOHor?=
+ =?utf-8?B?Y2M1RXZWOVVJT0FWOWwrR2N2K2ROczU3RFdQQVcyaXVIYkJrbk9EcU9JVXZp?=
+ =?utf-8?B?UWU2V0U2WTlzRzVWMzdyOHlYMTRhR2FJVUZmK05NTm9LVmY3dWs2cCsyOUV3?=
+ =?utf-8?B?NGtyOXRHVWdxUGtUZzV6ZExBMGNvVXUvYVJBRTBEUkRCeWRoOFNhaDZrd3po?=
+ =?utf-8?B?cXRqMXRzVFFjMTdYRnNTTWVQVEd4WitEVkV1RzR5b1NId0lFZU5hRVRzR0xY?=
+ =?utf-8?B?dUtRalptTnJsZHpNZ1BnVkFhQ3pHTkNOTm8ya0JZY2NPOGFQRDUxeXFtUUNK?=
+ =?utf-8?B?ZXJVa3A0U25hd1QrZGVuclBYcmZlK1FOMURydDNHblV1WnR6TU5GNjZudmRW?=
+ =?utf-8?B?RGFnOXBMbWVSdW5YOFdLVTFIMDhXTDA0ckx0ZHlrOUpLYlIvTG1QYlp2aXpI?=
+ =?utf-8?B?WXRxQUVqT2hFOUNtNVdlSDZWTEJKWXZZc0xUeGNRd0d2OGxIZ1hRZ3pQUzhs?=
+ =?utf-8?B?TmlJSkEwcDNsbGFuQ3RabmRSZDBxMFNGNjJoQmpjOXgyMlVFdzFDU2RUY1k4?=
+ =?utf-8?B?Kzh0TFExWkIrdXpoQzNrWUxPSXdmUmtrdDBTSDdPQVBKVGZtVG00SmhQbkFn?=
+ =?utf-8?B?WkxwYldWaWFYZHZ2c2ppeVFFaTZLbzVmTjcycXJJdkU1U3pwNnBia3ZIYmVK?=
+ =?utf-8?B?UzA2RUs2TmxWcjAzMmRqdXczdlpXYThoOE1VTTh4QUJWT0lBaXBlWjZvL0VN?=
+ =?utf-8?B?amRGUTU2bkR5VHBVSEFSc1hIQXZKUnZyaE1rdFRKQXZjbjdTMlVrdFRYYU5Y?=
+ =?utf-8?B?emtSU2RNcno3V1hyVnE0TTFLVnJlWksrUG9NUk1GaUNtZlJTdWlwbWxBNWNT?=
+ =?utf-8?B?dzVuZmtuSVZUc01OWTJNN3FLdzlkRnU3c1haQzhwdlRQVGUwZlBvcTBCTVpT?=
+ =?utf-8?B?NDhrSmlWTHFGalc4RnZVUU54V1JYOHZZMExvTzhKalRJbVR0SW5mOFA1TE1F?=
+ =?utf-8?Q?tAnv37GfNbNCziA/zl4yfLF1b?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6c1d935a-d252-43da-de57-08de3304725c
+X-MS-Exchange-CrossTenant-AuthSource: BN9PR12MB5195.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Dec 2025 07:12:12.8476
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: OGlUm1jNNrrbzZBqXWPX9Ctptob9MYAM6z1EnHlajf9U//14ESGxTWhkb9+Of6iw4Mg2BtRWZzfOGGY6xorw1A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB5660
 
-From: Baokun Li <libaokun1@huawei.com>
+Hi Wayne
 
-commit 72a6e22c604c95ddb3b10b5d3bb85b6ff4dbc34f upstream.
+On 12/3/25 10:47, Wayne Chang wrote:
+> From: Haotien Hsu <haotienh@nvidia.com>
+> 
+> The UTMIP sleepwalk programming sequence requires asserting both
+> LINEVAL_WALK_EN and WAKE_WALK_EN when enabling the sleepwalk logic.
+> However, the current code mistakenly cleared WAKE_WALK_EN, which
+> prevents the sleepwalk trigger from operating correctly.
+> 
+> Fix this by asserting WAKE_WALK_EN together with LINEVAL_WALK_EN.
+> 
+> Fixes: 1f9cab6cc20c ("phy: tegra: xusb: Add wake/sleepwalk for Tegra186")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Haotien Hsu <haotienh@nvidia.com>
+> Signed-off-by: Wayne Chang <waynec@nvidia.com>
+> ---
+>  drivers/phy/tegra/xusb-tegra186.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/drivers/phy/tegra/xusb-tegra186.c b/drivers/phy/tegra/xusb-tegra186.c
+> index e818f6c3980e..b2a76710c0c4 100644
+> --- a/drivers/phy/tegra/xusb-tegra186.c
+> +++ b/drivers/phy/tegra/xusb-tegra186.c
+> @@ -401,8 +401,7 @@ static int tegra186_utmi_enable_phy_sleepwalk(struct tegra_xusb_lane *lane,
+>  
+>  	/* enable the trigger of the sleepwalk logic */
+>  	value = ao_readl(priv, XUSB_AO_UTMIP_SLEEPWALK_CFG(index));
+> -	value |= LINEVAL_WALK_EN;
+> -	value &= ~WAKE_WALK_EN;
+> +	value |= LINEVAL_WALK_EN | WAKE_WALK_EN;
+>  	ao_writel(priv, value, XUSB_AO_UTMIP_SLEEPWALK_CFG(index));
+>  
+>  	/* reset the walk pointer and clear the alarm of the sleepwalk logic,
+WAKE_WALK_EN has to be set with '0' according to the ASIC designers. Tegra234
+and Tegra239 TRMs have been updated. We will get Tegra264 document updated as well.
 
-The fscache_cookie_lru_timer is initialized when the fscache module
-is inserted, but is not deleted when the fscache module is removed.
-If timer_reduce() is called before removing the fscache module,
-the fscache_cookie_lru_timer will be added to the timer list of
-the current cpu. Afterwards, a use-after-free will be triggered
-in the softIRQ after removing the fscache module, as follows:
-
-==================================================================
-BUG: unable to handle page fault for address: fffffbfff803c9e9
- PF: supervisor read access in kernel mode
- PF: error_code(0x0000) - not-present page
-PGD 21ffea067 P4D 21ffea067 PUD 21ffe6067 PMD 110a7c067 PTE 0
-Oops: Oops: 0000 [#1] PREEMPT SMP KASAN PTI
-CPU: 1 UID: 0 PID: 0 Comm: swapper/1 Tainted: G W 6.11.0-rc3 #855
-Tainted: [W]=WARN
-RIP: 0010:__run_timer_base.part.0+0x254/0x8a0
-Call Trace:
- <IRQ>
- tmigr_handle_remote_up+0x627/0x810
- __walk_groups.isra.0+0x47/0x140
- tmigr_handle_remote+0x1fa/0x2f0
- handle_softirqs+0x180/0x590
- irq_exit_rcu+0x84/0xb0
- sysvec_apic_timer_interrupt+0x6e/0x90
- </IRQ>
- <TASK>
- asm_sysvec_apic_timer_interrupt+0x1a/0x20
-RIP: 0010:default_idle+0xf/0x20
- default_idle_call+0x38/0x60
- do_idle+0x2b5/0x300
- cpu_startup_entry+0x54/0x60
- start_secondary+0x20d/0x280
- common_startup_64+0x13e/0x148
- </TASK>
-Modules linked in: [last unloaded: netfs]
-==================================================================
-
-Therefore delete fscache_cookie_lru_timer when removing the fscahe module.
-
-Fixes: 12bb21a29c19 ("fscache: Implement cookie user counting and resource pinning")
-Cc: stable@kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Link: https://lore.kernel.org/r/20240826112056.2458299-1-libaokun@huaweicloud.com
-Acked-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-[ Changed the file path due to missing commit:47757ea83a54 ("netfs,
-fscache: Move fs/fscache/* into fs/netfs/") ]
-Signed-off-by: Chen Yu <xnguchen@sina.cn>
----
- fs/fscache/main.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/fs/fscache/main.c b/fs/fscache/main.c
-index dad85fd84f6f..7a60cd96e87e 100644
---- a/fs/fscache/main.c
-+++ b/fs/fscache/main.c
-@@ -114,6 +114,7 @@ static void __exit fscache_exit(void)
- 
- 	kmem_cache_destroy(fscache_cookie_jar);
- 	fscache_proc_cleanup();
-+	timer_shutdown_sync(&fscache_cookie_lru_timer);
- 	destroy_workqueue(fscache_wq);
- 	pr_notice("Unloaded\n");
- }
--- 
-2.17.1
-
+Thanks,
+JC
 
