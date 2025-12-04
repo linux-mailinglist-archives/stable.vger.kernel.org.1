@@ -1,98 +1,129 @@
-Return-Path: <stable+bounces-199990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42395CA3326
-	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 11:22:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3040DCA3392
+	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 11:29:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9A24D303AEBF
-	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 10:21:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 86B8E305E35A
+	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 10:27:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80BF533B97D;
-	Thu,  4 Dec 2025 10:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED041331A46;
+	Thu,  4 Dec 2025 10:27:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="CK7uQmx7"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="3ulW9f+P"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+Received: from omta033.useast.a.cloudfilter.net (omta033.useast.a.cloudfilter.net [44.202.169.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBC3533BBAC;
-	Thu,  4 Dec 2025 10:21:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5210B307AD9
+	for <stable@vger.kernel.org>; Thu,  4 Dec 2025 10:27:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764843706; cv=none; b=H9/XGrHk3GlY7hRYvJA64P2z/sH8BtFepOdUKBO7rcH6+8VBuT2DVIvumH1vq6gkbPMKBEpK8DDGRR8HEWqnxmFtN/Uh2lf/NhOFDaMjNzplR8VTmeZNwQV6YpCtlpzeL2N1SnjGTgk7LhnEbTgiGBiwglvDVSYuYkwecuoNG7Y=
+	t=1764844040; cv=none; b=hma1kPNyK2D+VnYh2mj7Z39lhVvPcJr57mfuYCEDS6LY/nYjQrXKapmP7rcoKigD7j4Kk5WOjlkG2q3GxDSOgpkZIcXjs5F/nOEmPKgbGJpfbgmFF45jJO/8WGrQfXrq+LN6R+3Cdy2BSRcH9zDJOGgaMV5G/tGDMuV3mz9eGk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764843706; c=relaxed/simple;
-	bh=sucnQt2jT43ByAJx+Qi2HrPDbpEPn3zqa3a+eQbWNiQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mvWHK/vYDZsHXeTTwKACitE2CRQeyD6SIq7UF3a9kAa5UMAJxRoxCb7sNrO6c1bryBcWlIVME4I36azOBKul1DCSoeNKmvk8BhPMfPm5Y5eZZ/soiuI4hfdpKxBHmfUz1b8+VuuRbtzQRl8zF8yRqiRuNLF3doADOD6DA8Rn54s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=CK7uQmx7; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=oO
-	bGAmjdi3JvAty33o5ujX20oFjqkuDLoWzF8n+fhio=; b=CK7uQmx7goPzoD/MiE
-	tDBXU7gEFOEACEFRZYgWqstqOaA2sLL0iRnpVLxSirNbIjCB22s8YR+g0qhHqM7E
-	EBj1J8GFfsde7zG9lf1Qfu+q19ANLxGJKxs5lNT46Y5UT3Drg/SXj1iLUxbsUfyh
-	eF8cQXHX0bMhLV/4KJV6x9dls=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wAXcVyBYDFph89sEg--.16629S4;
-	Thu, 04 Dec 2025 18:20:50 +0800 (CST)
-From: Haoxiang Li <haoxiang_li2024@163.com>
-To: maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	christophe.leroy@csgroup.eu,
-	haoxiang_li2024@163.com,
-	kay.sievers@vrfy.org,
-	gregkh@suse.de
-Cc: linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] powerpc: cell: Fix a reference leak bug in create_spu()
-Date: Thu,  4 Dec 2025 18:20:47 +0800
-Message-Id: <20251204102047.85545-1-haoxiang_li2024@163.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1764844040; c=relaxed/simple;
+	bh=r+6AWt77fcDf6gqoDqDOFOrjB7sihLKMHX8TUNUIZlc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ALhlyQ8WhwksdA7mungZNHOu29wcqpB5r5Hix9lrTK34QjFNPWea7i8qHyi4BnIzGnpTGPHUFt+9Obvt/pfk7K+pLYoRCGePc/UHieH3cGEp8bncIFq89kyEKSvN6jB2yq4dMr35eHOh2c0dJPlvgUSnliZWMarVI43le258gwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=3ulW9f+P; arc=none smtp.client-ip=44.202.169.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-5006b.ext.cloudfilter.net ([10.0.29.217])
+	by cmsmtp with ESMTPS
+	id R5xBvmkK4qgL9R6YJvS4m9; Thu, 04 Dec 2025 10:27:11 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id R6YIvrH2cOs9RR6YJvDsHS; Thu, 04 Dec 2025 10:27:11 +0000
+X-Authority-Analysis: v=2.4 cv=HPPDFptv c=1 sm=1 tr=0 ts=693161ff
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=Wh1V8bzkS9CpCxOpQUxp:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=J0gk378wmRlM6jpbPcKmXR3sdiw8XWzMuTan+A06LyY=; b=3ulW9f+PHE6iasf5DLvMDxjmli
+	lHBbcw5XtOyB3qNUH/oxzs8DNrSA8GYP8hqK1HfclQwbtM7PhnnekvjeCUSK4sAZI+vI5u2+A7XtU
+	XWg1shAqqFalPfoG7fdz3ZXcJV0poWoGer0pAD1tmGLdhKXlDay3ejWW5GzVQU4OjZviIS8xTuICt
+	5GTQCfVBZgh9/BAfU5HRj90Ae+qlw+1bFfZcIce6zz/htoN8QRTtnjtVTZbV7h/kURRaB5Zu/EoF5
+	joqpq9U3XVgB6CHJ9LoxBIiixmjKjHdu0nfn8NhkX71EkEA8NIuvMSYNUvHBqmOzWuXkqMn2zgO6A
+	2ik6Wqqg==;
+Received: from c-73-92-56-26.hsd1.ca.comcast.net ([73.92.56.26]:36244 helo=[10.0.1.180])
+	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.98.2)
+	(envelope-from <re@w6rz.net>)
+	id 1vR6YI-00000001Tar-1u9M;
+	Thu, 04 Dec 2025 03:27:10 -0700
+Message-ID: <c04a92b1-75d5-4fba-91e1-ecf27cae6c44@w6rz.net>
+Date: Thu, 4 Dec 2025 02:27:08 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wAXcVyBYDFph89sEg--.16629S4
-X-Coremail-Antispam: 1Uf129KBjvdXoW7JrWDAr43GFyruFWfZFW3trb_yoWDGwc_Kw
-	1xu3WDWr48Grs2vrnIya4fXr1UAws2gr48Kw4Iqa17Jay5Xan0gr4fZFW3GF13Wa1Ikrsx
-	JF4kGF9rAa4S9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRMxR67UUUUU==
-X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbCxgLeTWkxYIJyvAAA3j
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.17 000/146] 6.17.11-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20251203152346.456176474@linuxfoundation.org>
+Content-Language: en-US
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20251203152346.456176474@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.92.56.26
+X-Source-L: No
+X-Exim-ID: 1vR6YI-00000001Tar-1u9M
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-92-56-26.hsd1.ca.comcast.net ([10.0.1.180]) [73.92.56.26]:36244
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 19
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfFSDXbNJ8HhxU62i4VtdgJZ9oxfUD5TVeVxKQN8VT7H5la/icJ4wgXWI3QoCViMZn9/xjVZAWQJ6rasYQsXBL7qrV2Duzzd4ehxWzUyzPr23souRmkIx
+ /IcHxTLzo/2U/rXjPPGUmKJTIICfxvQSYeWdLXshxTE6qMUmCja0w3ywW/pNjRhgjAEs/sArenWX+g==
 
-spu_create_dev() calls device_register(), if it fails, put_device()
-is required to drop the device reference.
+On 12/3/25 07:26, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.17.11 release.
+> There are 146 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 05 Dec 2025 15:23:16 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.17.11-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.17.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Fixes: 8a25a2fd126c ("cpu: convert 'cpu' and 'machinecheck' sysdev_class to a regular subsystem")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
----
- arch/powerpc/platforms/cell/spu_base.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-diff --git a/arch/powerpc/platforms/cell/spu_base.c b/arch/powerpc/platforms/cell/spu_base.c
-index 2c07387201d0..18145142d3ac 100644
---- a/arch/powerpc/platforms/cell/spu_base.c
-+++ b/arch/powerpc/platforms/cell/spu_base.c
-@@ -581,8 +581,10 @@ static int __init create_spu(void *data)
- 		goto out_destroy;
- 
- 	ret = spu_create_dev(spu);
--	if (ret)
-+	if (ret) {
-+		put_device(&spu->dev);
- 		goto out_free_irqs;
-+	}
- 
- 	mutex_lock(&cbe_spu_info[spu->node].list_mutex);
- 	list_add(&spu->cbe_list, &cbe_spu_info[spu->node].spus);
--- 
-2.25.1
+Tested-by: Ron Economos <re@w6rz.net>
 
 
