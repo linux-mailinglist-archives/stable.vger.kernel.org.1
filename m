@@ -1,248 +1,96 @@
-Return-Path: <stable+bounces-200007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9C38CA3735
-	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 12:33:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE9C6CA3750
+	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 12:36:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4CD063014DB8
-	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 11:30:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E1D5D3036C92
+	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 11:33:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EBB32F12C5;
-	Thu,  4 Dec 2025 11:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB3292DAFAC;
+	Thu,  4 Dec 2025 11:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UUkw8q1x"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vPOcqIGV"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3AE2264DB
-	for <stable@vger.kernel.org>; Thu,  4 Dec 2025 11:30:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CAB2DCF61;
+	Thu,  4 Dec 2025 11:33:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764847834; cv=none; b=UOYAdIr5drCpQqg/lYXFotKeD2lwQkTDkCwMxNqvGDp+VXhleTXd+h913KvvL+fXnwHHZx+L0wt8pkMor/bnt8kxCwsJzqaHN9fSLSvRUCKreT74XHUXgD57KwRsNdBIFjGkDbNl8Daw+A+8X2x3SSGTa6RiQPmcZnw4f6g7jQ8=
+	t=1764847996; cv=none; b=sYCAkDXK8HXh2Uv6E3Tuy6mISbf2L9wIcb1+aucrCAwBWEYtBK0R/qhYu8d65TjpE8Pu6BV4u8d7WzGpU+ypLMViy/scY5+vJcXHadAWu/35LQrKMWTobEg8pbWJAs3V5bQPBAv15Lh1iPxDWAZQD9OUtFaBlF27vL5Y34xwyJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764847834; c=relaxed/simple;
-	bh=D0l9gtT8mdPrjBEpLLTAq2Mfr4JEZv9nEfbaayguj+s=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=SJdvrpJMiYnYMF13K+k2lCaL+m8srpie49A0XWNlYGIItk65rY/hXHteuK1+GEaS3Jl8rqxldFP7FTNvpQi8hh3JcYPRQDpeso1pPx6IsXkB9XMsivN7DrMsWp/sXU4SA7zG4ZxBPPHB0JcoTEAYdz41BDmKMd4JJYfGP/t9+vs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UUkw8q1x; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764847834; x=1796383834;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=D0l9gtT8mdPrjBEpLLTAq2Mfr4JEZv9nEfbaayguj+s=;
-  b=UUkw8q1xTFFAv7hcQU9JLw2FYvwC52XMftfTWKDaTt8yL7xdLdI7bFb5
-   Y99Ex88mpzz19z2pnDzKhpCMn8YbyCUAE470z0NpK5919Qns7uirXhdbA
-   rMh3fLxvGkDI+gWx8/gghECRkv8saKQgC41VN2l4xp1lwMD98G0RaekyQ
-   gbNIvWNUuLvgNPw3pxsmahCxpAuhqbDFycwcNn6IGlXyQX/QeoGbn47AW
-   bupFAVi0xdPbAKnbUJjYRTJHl2Ii/ALDvCvVTQ5MEE5WMylM7S7Ok7KI5
-   WP3Ts7bCNrB64NET5R8YO97RwWqMP4XQ5eIFv5jSyQ0s8QrqOTWBSaciB
-   g==;
-X-CSE-ConnectionGUID: 6/YXPWYBTtCbWqcEIc89sQ==
-X-CSE-MsgGUID: UKZchdAIQ7SR26gD7AtHJg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="66796307"
-X-IronPort-AV: E=Sophos;i="6.20,248,1758610800"; 
-   d="scan'208";a="66796307"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2025 03:30:33 -0800
-X-CSE-ConnectionGUID: JUWMXRFnSyaO0+bJ9zqH2A==
-X-CSE-MsgGUID: aFqby5KlQ/G80DxOi72TQw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,248,1758610800"; 
-   d="scan'208";a="232295373"
-Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.246.11])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2025 03:30:31 -0800
-From: Jani Nikula <jani.nikula@intel.com>
-To: imre.deak@intel.com
-Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- Mohammed Thasleem <mohammed.thasleem@intel.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] drm/i915/dmc: fix an unlikely NULL pointer deference at
- probe
-In-Reply-To: <aTATMrp6oysYUecR@ideak-desk>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20251202183950.2450315-1-jani.nikula@intel.com>
- <aS9ZGmXG_n0IXv-N@ideak-desk> <aS9bj8RRYYc01Rzs@ideak-desk>
- <43c4d7f0d9fe4ba6acac828306b41d612dd4f085@intel.com>
- <aTATMrp6oysYUecR@ideak-desk>
-Date: Thu, 04 Dec 2025 13:30:27 +0200
-Message-ID: <7bfb6dabe5bf83028f695d4d248597b721ce0e0c@intel.com>
+	s=arc-20240116; t=1764847996; c=relaxed/simple;
+	bh=ii4gz3F5U1EuqSJuk7pJKqCMrIY0NS4JF0digmAF7J4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZOWWbJsWw5rWqyeiF5JtOq/+rhABDe0gRrQHDFQzVM2t9A7/pbrNYAi32pXP3lCdccv1zEvRbv01ZoGM5lahTnDa0dMUsAZ1lu3bSoyPg8gUEessOOU2fIR+axBpZWT/aM1LreCkdsziyA/0544h3kJcszxu2kY2z3YRcvmYo/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vPOcqIGV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76895C4CEFB;
+	Thu,  4 Dec 2025 11:33:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764847995;
+	bh=ii4gz3F5U1EuqSJuk7pJKqCMrIY0NS4JF0digmAF7J4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vPOcqIGV5E8i4WuodG00HOs1JzLYDSL5ftkiIi/IWkHwnxeNIUt71xsll/PfCjl9V
+	 BJz7pot5XMK6pECXSvHQd89MV5WyZ9lQx4Zir5eLW40knnRUT+oI7NSSWnykUx0SJk
+	 45XI0FRXpR7GeVgNWMkgwiFc7n8iCZdD/GSlE6O4oard5i3/dhFp2yYmM/qNT7CTNo
+	 VK8Oknc+I/MOwhP8Akbgq+1wE5HPG8FehT/AyuxCDPA3Ya105IF4T1Ge16dFfhhhPN
+	 GAvzz2OSlvw4YToGsywW3IeUqIHEK4g7xT3RMBukObPf8S4qwQyQcnf8MIxIG8SbZa
+	 hr2B0X2a3f3tA==
+Date: Thu, 4 Dec 2025 11:33:09 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
+Subject: Re: [PATCH 6.12 000/132] 6.12.61-rc1 review
+Message-ID: <6d9bde6e-4c37-4946-8554-afa259b59dd6@sirena.org.uk>
+References: <20251203152343.285859633@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="mqFkTYrizb3FVz66"
+Content-Disposition: inline
+In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
+X-Cookie: volcano, n.:
 
-On Wed, 03 Dec 2025, Imre Deak <imre.deak@intel.com> wrote:
-> On Wed, Dec 03, 2025 at 10:13:44AM +0200, Jani Nikula wrote:
->> On Tue, 02 Dec 2025, Imre Deak <imre.deak@intel.com> wrote:
->> > On Tue, Dec 02, 2025 at 11:24:42PM +0200, Imre Deak wrote:
->> >> On Tue, Dec 02, 2025 at 08:39:50PM +0200, Jani Nikula wrote:
->> >> > intel_dmc_update_dc6_allowed_count() oopses when DMC hasn't been
->> >> > initialized, and dmc is thus NULL.
->> >> > 
->> >> > That would be the case when the call path is
->> >> > intel_power_domains_init_hw() -> {skl,bxt,icl}_display_core_init() ->
->> >> > gen9_set_dc_state() -> intel_dmc_update_dc6_allowed_count(), as
->> >> > intel_power_domains_init_hw() is called *before* intel_dmc_init().
->> >> > 
->> >> > However, gen9_set_dc_state() calls intel_dmc_update_dc6_allowed_count()
->> >> > conditionally, depending on the current and target DC states. At probe,
->> >> > the target is disabled, but if DC6 is enabled, the function is called,
->> >> > and an oops follows. Apparently it's quite unlikely that DC6 is enabled
->> >> > at probe, as we haven't seen this failure mode before.
->> >> > 
->> >> > Add NULL checks and switch the dmc->display references to just display.
->> >> > 
->> >> > Fixes: 88c1f9a4d36d ("drm/i915/dmc: Create debugfs entry for dc6 counter")
->> >> > Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>
->> >> > Cc: Imre Deak <imre.deak@intel.com>
->> >> > Cc: <stable@vger.kernel.org> # v6.16+
->> >> > Signed-off-by: Jani Nikula <jani.nikula@intel.com>
->> >> > 
->> >> > ---
->> >> > 
->> >> > Rare case, but this may also throw off the rc6 counting in debugfs when
->> >> > it does happen.
->> >> 
->> >> Yes, I missed the case where the driver is being loaded while DC6 is
->> >> enabled, this is what happens for the reporter:
->> >> 
->> >> i915 0000:00:04.0: [drm] *ERROR* DC state mismatch (0x0 -> 0x2)
->> >> 
->> >> That's odd, as DC6 requires the DMC firmware, which - if it's indeed
->> >> loaded by BIOS for instance - will be overwritten by the driver, not a
->> >> well specified sequence (even though the driver is trying to handle it
->> >> correctly by disabling any active firmware handler).
->> >> 
->> >> But as you pointed out this would also throw off the cooked-up DC6
->> >> counter tracking,
->> >
->> > Actually the patch would keep the counter working, as the counter
->> > wouldn't be updated in the dmc==NULL case. However I still think the
->> > correct fix would be to check the correct DC state, which from the POV
->> > of the counter tracking is the driver's version of the state, not the HW
->> > state.
->> 
->> One thing I failed to mention is that this happens in a KASAN run in
->> QEMU. So I'm kind of not surprised we haven't hit this before. And it
->> impacts the deductions about the DC state.
->
-> Ok, it's strange why QEMU decides to initialize the DC_STATE_EN register
-> to a non-zero value then. But in any case the driver should handle it.
->
->> I'm not quite sure what exactly you're suggesting, maybe a draft patch
->> would communicate the idea better than plain English? ;)
->
-> intel_dmc_get_dc6_allowed_count() still needs to check for dmc==NULL, as
-> the debugfs entry can be read at any point. With that, what I meant is:
->
-> in gen9_set_dc_state():
-> ...
-> -       dc6_was_enabled = val & DC_STATE_EN_UPTO_DC6;
-> +       dc6_was_enabled = power_domains->dc_state & DC_STATE_EN_UPTO_DC6;
 
-I still don't understand why we can trust our own value rather than
-what's in the hardware in this case.
+--mqFkTYrizb3FVz66
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-For resume, we even call gen9_sanitize_dc_state(), but not for probe.
+On Wed, Dec 03, 2025 at 04:27:59PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.61 release.
+> There are 132 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-> ...
->
-> in intel_dmc_get_dc6_allowed_count():
-> ...
->         if (DISPLAY_VER(display) < 14)
->                 return false;
->  
-> +       if (!dmc) {
-> +               *count = 0;
-> +               return true;
-> +       }
-> +
+Tested-by: Mark Brown <broonie@kernel.org>
 
-This seems neat but is overkill. dmc is never NULL here, but I added the
-check for completeness.
+--mqFkTYrizb3FVz66
+Content-Type: application/pgp-signature; name="signature.asc"
 
-It's the intel_dmc_update_dc6_allowed_count() that's more fragile, and I
-want that to have the !dmc check, instead of relying on the subtle
-dependency on power_domains->dc_state.
+-----BEGIN PGP SIGNATURE-----
 
->         mutex_lock(&power_domains->lock);
-> -       dc6_enabled = intel_de_read(display, DC_STATE_EN) &
-> -                     DC_STATE_EN_UPTO_DC6;
-> +       dc6_enabled = power_domains->dc_state & DC_STATE_EN_UPTO_DC6;
-> ...
->
->> Anyway, I think "not oopsing" is a lot better than "inaccurate DC
->> counters in debugfs".
->
-> Agreed, the above would ensure both.
->
->> 
->> BR,
->> Jani.
->> 
->> 
->> >
->> >> so could instead the counter update depend on the
->> >> driver's DC state instead of the HW state? I.e. set
->> >> gen9_set_dc_state()/dc6_was_enabled,
->> >> intel_dmc_get_dc6_allowed_count()/dc6_enable if power_domains->dc_state
->> >> says that DC6 was indeed enabled by the driver (instead of checking the
->> >> HW state).
->> >> 
->> >> That would fix the reporter's oops when calling
->> >> intel_dmc_update_dc6_allowed_count(start_tracking=false), by not calling
->> >> it if the driver hasn't actually enabled DC6 and it would also keep the
->> >> DC6 counter tracking correct.
->> >> 
->> >> intel_dmc_update_dc6_allowed_count(start_tracking=true) would be also
->> >> guaranteed to be called only once the firmware is loaded, as until that
->> >> point enabling DC6 is blocked (by holding a reference on the DC_off
->> >> power well).
->> >> 
->> >> > ---
->> >> >  drivers/gpu/drm/i915/display/intel_dmc.c | 6 +++---
->> >> >  1 file changed, 3 insertions(+), 3 deletions(-)
->> >> > 
->> >> > diff --git a/drivers/gpu/drm/i915/display/intel_dmc.c b/drivers/gpu/drm/i915/display/intel_dmc.c
->> >> > index 2fb6fec6dc99..169bbbc91f6d 100644
->> >> > --- a/drivers/gpu/drm/i915/display/intel_dmc.c
->> >> > +++ b/drivers/gpu/drm/i915/display/intel_dmc.c
->> >> > @@ -1570,10 +1570,10 @@ void intel_dmc_update_dc6_allowed_count(struct intel_display *display,
->> >> >  	struct intel_dmc *dmc = display_to_dmc(display);
->> >> >  	u32 dc5_cur_count;
->> >> >  
->> >> > -	if (DISPLAY_VER(dmc->display) < 14)
->> >> > +	if (!dmc || DISPLAY_VER(display) < 14)
->> >> >  		return;
->> >> >  
->> >> > -	dc5_cur_count = intel_de_read(dmc->display, DG1_DMC_DEBUG_DC5_COUNT);
->> >> > +	dc5_cur_count = intel_de_read(display, DG1_DMC_DEBUG_DC5_COUNT);
->> >> >  
->> >> >  	if (!start_tracking)
->> >> >  		dmc->dc6_allowed.count += dc5_cur_count - dmc->dc6_allowed.dc5_start;
->> >> > @@ -1587,7 +1587,7 @@ static bool intel_dmc_get_dc6_allowed_count(struct intel_display *display, u32 *
->> >> >  	struct intel_dmc *dmc = display_to_dmc(display);
->> >> >  	bool dc6_enabled;
->> >> >  
->> >> > -	if (DISPLAY_VER(display) < 14)
->> >> > +	if (!dmc || DISPLAY_VER(display) < 14)
->> >> >  		return false;
->> >> >  
->> >> >  	mutex_lock(&power_domains->lock);
->> >> > -- 
->> >> > 2.47.3
->> >> > 
->> 
->> -- 
->> Jani Nikula, Intel
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmkxcXQACgkQJNaLcl1U
+h9CAWwf/ScByOgZ9cEE+esVFWiL4oArYrtMZ5fgakDQEQmxvTYLUFe5QvzVbvNW3
+1Tq+ODe2/gVMb06+Lk48zj1maEFilfiNcL7MG8nQm6oDZBfIKbecnyOVlJ5EdcSY
+o6s5zgfslZSCYUKyurez7XDORLTbZwOC6H154p6yJR6fMA2MJYN03ixnhtodFSno
+4Gop1yicP2D+qWJgiqj4juvUha+H0v/V5InGOjLAEVCTdgDpls4zR6Ue9XnaXvgD
+w0SxhkuxIOXJXayAjiDziPrtJ3k9OSMBcO6C5QI1qZ6DbN1aFMTLOtzzJihv77+9
+O+9jiOyi+jR22d/7zZOkom5ZD0LdMw==
+=jNyh
+-----END PGP SIGNATURE-----
 
--- 
-Jani Nikula, Intel
+--mqFkTYrizb3FVz66--
 
