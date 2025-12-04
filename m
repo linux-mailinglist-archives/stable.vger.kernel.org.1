@@ -1,184 +1,108 @@
-Return-Path: <stable+bounces-200030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8134CCA431C
-	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 16:16:41 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCE11CA4329
+	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 16:17:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 58C4331DB9AD
-	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 15:09:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 33F4C300D5CE
+	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 15:16:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 436DB2D876B;
-	Thu,  4 Dec 2025 15:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 540802E1C7C;
+	Thu,  4 Dec 2025 15:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TrqS/EOY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AWrktubN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EB9F2D3EF1
-	for <stable@vger.kernel.org>; Thu,  4 Dec 2025 15:09:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 056A72DE6EF;
+	Thu,  4 Dec 2025 15:11:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764860945; cv=none; b=W6AVgBJr1DfPF4GyTQpbdYVPFqW9IYbMnn/82BldtzDsqd1ZncEcb6rDE+6GBADTVrG/TKlv8bYvLvRGL+pViv4F6p8lkVNv2PqnPyLZziRBwqgYThTn1VcHPYXclLXtYnROV/4g725bHq1kbX1zqLrM1bQjoCEovJrBZAmwWEs=
+	t=1764861087; cv=none; b=RTUDQOXnvlH1PtKthIpLndo2MzvEYPOSH9xowXLSgHRt4gKfZynRDAyGCUESEl52iQZmRTGTlBVB/mt1gc+Ryw58IyGWWPYboeXxw92PATOwTmD42kIJ3Xgnzf+MdROfkPSQ4bx7i4dUKjeJX+OGv52knUf7UE66zOt+DzwmPWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764860945; c=relaxed/simple;
-	bh=5v9szWJGeDjjmm5BmESzhqY5NC+TLr6VLOtjJwfkMBc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UeUUr9ibUnMUFgnXzsamSuEQoOlrEFtOeVDHK1nRliwl1rIRromTVUlP7VbS6TSGrEtMWXKC730ADtORNeQDAvFexs6f1EdDct+1yBJwAFAqzsxjI1hZDCep03OwCENEPKvVlgJb+KuFO6Ld2cCBg6AfP0HFaNwc9zQFjDOa7Rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TrqS/EOY; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-47796a837c7so8698755e9.0
-        for <stable@vger.kernel.org>; Thu, 04 Dec 2025 07:09:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764860940; x=1765465740; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SuUcWJogoj5Zy6UaFHm38nZ24EUypEOSoXHBrVrDbNA=;
-        b=TrqS/EOYmJ7VRiFbcnv06bQKPhFw9RJJnIK3rMWTtmrtpetjix7grmJu23fFm6BQRd
-         9AvFWIZDAG8/BdgyBYB5pNMlRKWdOB0pNTb31HcTFJA/ZYPEQCoiLal1ISovIQ49HP2l
-         wSwNFuNa4AX5/Lw8onu7uGjhVWsmHwkfdzFo7iqMT06F5KAH1LqYyiKDZdSdFJtbjJXv
-         wJWijpKiTwSfKQ85iW8U2tJo8wW6i5UKXfPlWTrlPLVvpSFuC5DIi0w5/8Z1GXw6UpAZ
-         EqcxU41KUKiFZP2LdNIO6ACohM7NMpG9C6oxXUEHtK3/Amd/oBw8ACWuGkyRlR5CBcb5
-         30Zg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764860940; x=1765465740;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=SuUcWJogoj5Zy6UaFHm38nZ24EUypEOSoXHBrVrDbNA=;
-        b=XV8650V2zIxf4WuXgsrz2fOuqvei13BUiqHrZrVyT76br/XV88fMFjx+ZY5pFbY3CG
-         qxigAg3mgV+ozR7pop9cveJHib3p+X+vhTD/dkhVguH6NykCXvtCy3l3G5sOOgfooEcp
-         fCUFOF1/SYPvZ3yn4UmHQ+WviWe/aBuK1JJGoT5BX16ICVL7KGBdN2AXUvlQoRAi2S8G
-         NwzV13NWz780/fSPGc7jl8VAHUJD9vZgizG0MrZ3Szrx/0M54EiAjnzwtyiIGq6Pd+VK
-         6F8avBQ8DB+G9Ni58U4puLTFjDZnsXR0g/VwlLU/jjwlabuLo9oXlWJD28hTKcP97GO+
-         ms+A==
-X-Forwarded-Encrypted: i=1; AJvYcCV6yn17ORFXSR8YPKweoR499i/jRfu9Ee7G4IaSn2KIyNHwAdof1wxm/pO1H2pO5riDKjFR/oE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTjEuqDlkIsuUsrKQXka8p4kUD9jprJflI3fJRAEm+nZZwLjK+
-	ktH+BnG++ODKhnp3+1nCAh0HFdJNIGlxsIAi8ymAw9ZUyVWuh9WsRDpJ50ghuMGhNulEbvL7eu0
-	XYYNAlekdlkwuBmk1VV4bsG83sM7QEJQ=
-X-Gm-Gg: ASbGncuarVFFCtKldo1wnwrva3dKXvPOBXcSxWQbUJVhCwl0xcmp0XxlNLNnqIg0rFV
-	+J2o39WL9YSKuMxohYWpMiMyK2/YCBSacDC4oj16BcMjHX/VEn8sG1iTGTmksidloyeXd1OoDlT
-	jJZJB3eVKISOkvo5eDBjCQEdle+alg7/qdps7FLxhXuF5H6vFrreveACjC61Dn6JP9VnmSVTKhT
-	md3Sj68ElM1AHtN/Pgczs927oECosumUHjrpI5viF3LXpWWwbUacRksH2locu0mFLTSBU3dKzsF
-	CpgPnepCDS05q079MppDiEdouX4o
-X-Google-Smtp-Source: AGHT+IG8ZNIqkG+ruavtPJNLq/7WMSVxHMUln0iX3Nef6xsc00ik27GsBe6pzlL0EJfSOb1mXAdcaDwF7df//rfefjc=
-X-Received: by 2002:a05:600c:4443:b0:477:7f4a:44ba with SMTP id
- 5b1f17b1804b1-4792aee3a05mr61970655e9.4.1764860939413; Thu, 04 Dec 2025
- 07:08:59 -0800 (PST)
+	s=arc-20240116; t=1764861087; c=relaxed/simple;
+	bh=s8RwynxFSobSHFiYg6apsiIzFrd9hwGiYn1dp7L7tiE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cIL/BYwMQDG7xRk3xQn3XSvx2Ml8NaWUR87n80qe6CTZ+g+JareorNEK5a+v5TH3w5vFQgRLJktn9qsAub96oQ5ipxWz4H1InrPwC/c/jZ87C0QP9e42G0dOGP82ZCg7zH3qChT1+dfmC+RGnCHv+l8Tbn/gXqwa/Qhbs/p/akg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AWrktubN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AC0FC4CEFB;
+	Thu,  4 Dec 2025 15:11:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764861086;
+	bh=s8RwynxFSobSHFiYg6apsiIzFrd9hwGiYn1dp7L7tiE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AWrktubNcNgYiCf093EJiWNLLDny7SZD9Lk++GZ0QXgt6aTDgZOt/VAyW6wwLxVcf
+	 I4dU421pgedMmWPLHfS79AEdhg73obtZhHl6oh0Bax6YAX6pFDXSZCm1Go+Nx3fXTt
+	 WCcdtY4IoM4YmpZBY5EGYZO/OiysHzRo5L2tazZCWHUtMFX5tj0YoPrwYU1yi/fxnl
+	 eSwJzBx2+/dQj675DVnzHeZUl8gwmCOLGJ93LPBB8yq7ihtFljlIyT79dXfqLcir7g
+	 h7MPPU7uRY9h/YI3z5RcQeUsJJ1Dt1EeO3GF3K542CDmdF3oet1sFAl5MdW+MRDcdM
+	 JOvX7qCwJHwzA==
+Date: Thu, 4 Dec 2025 15:11:22 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Nishanth Menon <nm@ti.com>
+Cc: Francesco Dolcini <francesco@dolcini.it>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Anurag Dutta <a-dutta@ti.com>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] spi: cadence-quadspi: Fix clock enable underflows due to
+ runtime PM
+Message-ID: <4d6b857e-4bfe-45ef-a428-6e92f218f0c5@sirena.org.uk>
+References: <20251202-spi-cadence-qspi-runtime-pm-imbalance-v1-1-aee8c7fa21f2@kernel.org>
+ <aTFQv157O-wJjVrZ@gaggiata.pivistrello.it>
+ <555e9f6b-b8b6-4cc5-900b-63aaff8b4e6c@sirena.org.uk>
+ <20251204140530.xax5didvuc7auzcd@problem>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251128185523.B995CC4CEFB@smtp.kernel.org> <CA+fCnZeKm4uZuv2hhnSE0RrBvjw26eZFNXC6S+SPDMD0O1vvvA@mail.gmail.com>
- <2f817f0ba6bc68d5e70309858d946597d64bac8b@linux.dev>
-In-Reply-To: <2f817f0ba6bc68d5e70309858d946597d64bac8b@linux.dev>
-From: Andrey Konovalov <andreyknvl@gmail.com>
-Date: Thu, 4 Dec 2025 16:08:48 +0100
-X-Gm-Features: AWmQ_bmRB-ksejN_0Sq4l24XGjc90aU-UQEIYgag1iEv7qWtJahCQTEp5QO-pZ4
-Message-ID: <CA+fCnZeizRWUFs2k_7wbhJ5v+LdD8H77C0vrP6jp52qp0G_6zw@mail.gmail.com>
-Subject: Re: + mm-kasan-fix-incorrect-unpoisoning-in-vrealloc-for-kasan.patch
- added to mm-hotfixes-unstable branch
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: Kees Cook <kees@kernel.org>, mm-commits@vger.kernel.org, vincenzo.frascino@arm.com, 
-	urezki@gmail.com, stable@vger.kernel.org, ryabinin.a.a@gmail.com, 
-	glider@google.com, dvyukov@google.com, dakr@kernel.org, 
-	kasan-dev <kasan-dev@googlegroups.com>, 
-	Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, Andrew Morton <akpm@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="t9U0UkLkOfzEnkeG"
+Content-Disposition: inline
+In-Reply-To: <20251204140530.xax5didvuc7auzcd@problem>
+X-Cookie: volcano, n.:
 
-On Thu, Dec 4, 2025 at 2:00=E2=80=AFPM Jiayuan Chen <jiayuan.chen@linux.dev=
-> wrote:
->
-> December 3, 2025 at 23:18, "Andrey Konovalov" <andreyknvl@gmail.com mailt=
-o:andreyknvl@gmail.com?to=3D%22Andrey%20Konovalov%22%20%3Candreyknvl%40gmai=
-l.com%3E > wrote:
->
->
-> >
->
-> > >  ------------------------------------------------------
-> > >  From: Jiayuan Chen <jiayuan.chen@linux.dev>
-> > >  Subject: mm/kasan: fix incorrect unpoisoning in vrealloc for KASAN
-> > >  Date: Fri, 28 Nov 2025 19:15:14 +0800
-> > >
-> > Hi Jiayuan,
-> >
-> > Please CC kasan-dev@googlegroups.com when sending KASAN patches.
-> >
->
-> Sorry about that. I missed it.
->
-> > >
-> > > Syzkaller reported a memory out-of-bounds bug [1]. This patch fixes t=
-wo
-> > >  issues:
-> > >
-> > >  1. In vrealloc, we were missing the KASAN_VMALLOC_VM_ALLOC flag when
-> > >  unpoisoning the extended region. This flag is required to correctly
-> > >  associate the allocation with KASAN's vmalloc tracking.
-> > >
-> > >  Note: In contrast, vzalloc (via __vmalloc_node_range_noprof) explici=
-tly
-> > >  sets KASAN_VMALLOC_VM_ALLOC and calls kasan_unpoison_vmalloc() with =
-it.
-> > >  vrealloc must behave consistently =E2=80=94 especially when reusing =
-existing
-> > >  vmalloc regions =E2=80=94 to ensure KASAN can track allocations corr=
-ectly.
-> > >
-> > >  2. When vrealloc reuses an existing vmalloc region (without allocati=
-ng new
-> > >  pages), KASAN previously generated a new tag, which broke tag-based
-> > >  memory access tracking. We now add a 'reuse_tag' parameter to
-> > >  __kasan_unpoison_vmalloc() to preserve the original tag in such case=
-s.
-> > >
-> > I think we actually could assign a new tag to detect accesses through
-> > the old pointer. Just gotta retag the whole region with this tag. But
-> > this is a separate thing; filed
-> > https://bugzilla.kernel.org/show_bug.cgi?id=3D220829 for this.
-> >
->
-> Thank you for your advice. I tested the following modification, and it wo=
-rks.
->
->         if (size <=3D alloced_size) {
-> -               kasan_unpoison_vmalloc(p + old_size, size - old_size,
-> -                                      KASAN_VMALLOC_PROT_NORMAL);
-> +               p =3D kasan_unpoison_vmalloc(p, size,
-> +                                          KASAN_VMALLOC_PROT_NORMAL | KA=
-SAN_VMALLOC_VM_ALLOC);
->                 /*
->                  * No need to zero memory here, as unused memory will hav=
-e
->                  * already been zeroed at initial allocation time or duri=
-ng
->                  * realloc shrink time.
->                  */
->                 vm->requested_size =3D size;
->                 return (void *)p;
->         }
->
->
-> > >
-> [...]
-> > Would be good to have tests for vrealloc too. Filed
-> > https://bugzilla.kernel.org/show_bug.cgi?id=3D220830 for this.
-> >
->
-> Thanks, I will add test for vrealloc in kasan_test_c.c.
 
-Awesome!
+--t9U0UkLkOfzEnkeG
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-But as mentioned in the other thread, let's first implement a
-standalone fix for the original issue (that can be backported) and all
-these extra additions can come as separate patches on top.
+On Thu, Dec 04, 2025 at 08:05:30AM -0600, Nishanth Menon wrote:
 
-Thank you!
+> The clock is already turned off by the runtime-PM suspend callback, so an
+> extra clk_disable*_unprepare() is only correct when runtime-PM support is
+> not in use.
+
+Right, I'm pretty sure that's where the extra disable is coming from.
+The pm_runtime_set_active() further up the function is looking rather
+suspect here.
+
+> -	clk_disable_unprepare(cqspi->clk);
+> +	/* Runtime-PM suspend already disables the core clock. */
+> +	if (ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))
+> +		clk_disable_unprepare(cqspi->clk);
+
+This will leak the reference if runtime PM isn't enabled unfortunately,
+no runtime PM operations will get called.  Life would be vastly simpler
+were that mandatory :(
+
+--t9U0UkLkOfzEnkeG
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmkxpJkACgkQJNaLcl1U
+h9C28Af+OMR9uVsQM4j51CaK4qIVO/f+4Cf60EexZIetalNBr4M7Yv9ra9WACfDe
+muQD5LEGSN1C+EnsNv9ie7J3Llx+rMDzcMqpYyXGddeTKeneNdoKSR4zNPGgf4Nf
+ImkbQZ7CiKK3OPh0gu6PgZekIxdNiUHPJB2X5WjbGWp7BWNLZDTJKYUTXxzpJHtw
+AVKQqqpgC4GgOSvbb9CwgZXbj7LGGo/E5WCkDkriQb6D0DUTPN5YShvU0yg5uu0o
+KkA23VfIwQcbyCL6dG0HU1nzuXZhhG4aImuuU3bcBZl8pCPTBbFPEHtWtVl9HQfP
+MiCYLcqqTAFpQmmB0k9LMIHEVbmPeg==
+=6bCa
+-----END PGP SIGNATURE-----
+
+--t9U0UkLkOfzEnkeG--
 
