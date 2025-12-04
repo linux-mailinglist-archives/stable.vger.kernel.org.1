@@ -1,217 +1,160 @@
-Return-Path: <stable+bounces-199979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-199980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60949CA2F9E
-	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 10:26:43 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28008CA30EE
+	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 10:44:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BB63E30CFAA2
-	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 09:21:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 551BF3009698
+	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 09:44:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE39333C503;
-	Thu,  4 Dec 2025 09:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC4A334C0B;
+	Thu,  4 Dec 2025 09:44:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="b/1v/zaS"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="EOXRvqVR";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="CPpsENVv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4732D33C1B9;
-	Thu,  4 Dec 2025 09:13:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90E091A9FAF
+	for <stable@vger.kernel.org>; Thu,  4 Dec 2025 09:44:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764839628; cv=none; b=j6+/UHfl2pnMkbRIrsLcoR+bS40uKLP6JoJMQPM86wSeYdIIBEW3d6dp9Ehtov974nAcK1T6g/gQk6Kve+ePID7x16MxlMTpERJRLdIF5M8dHfVVY25vzMDglW2YGHVzYxDG3dKLW7miNK6wH1Dz5hQluaPoxaOHdvw18b7ceGU=
+	t=1764841463; cv=none; b=iB1U2t2OdpFzhYIYtjNfnytdtc4CdZ59MOI44C5Gark3/85sgZy7CYCW7ZJx1JxJH8Re+v98UTGUOPgfh2OHjIrz/uitO3ij/m6cKHJdSmG1YArGTIe7EpC1HA1K8pHmBjBsAe6Oz73CUjY9LogAaP10tj5QTRwHY1ORfe8Jf1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764839628; c=relaxed/simple;
-	bh=wfbSbaWyFFBGRDhQAIbjUUHVQuhqP/UeP0JJDwjJiWk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Br2CM/I4Aydo/OE1RssHidEaKfr5DKjWOm+OoFbRRPvcChpFhirwzyvsQd+kVpTCALH5wW9TxOclEbPfmGdyGn/NfZD5y/Yca8DWlIRBi6ta9+3oJ/6gYUgIPEUxULQQlyK8Qi4LqQBONmvddsXj907l730n+e7v0KshRBEYkxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=b/1v/zaS; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
-Received: from gaggiata.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 920C21FB70;
-	Thu,  4 Dec 2025 10:13:35 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1764839615;
-	bh=FCvm8NB2mjkwoFh/137wbYHLyhq16Db2hwU6duYeg6U=;
-	h=Received:From:To:Subject;
-	b=b/1v/zaSyY7KoLQLKkAH0+IJLeyvgCUfoQiQlRxcxtmE/CFrU2pN7kjdadk2oZL8G
-	 arjyIJvhCrchmb/3ON1ObO1ovvJWzbjH7ZAKPVNM84xNDUSOtI7uKRPeR820JaPfiK
-	 ij4j++PZRqHgwF/PCCvMaN87YhXPfyq7mXeTZFfr7ln+od18T+rFsUM6GTM33yFsWp
-	 OMSP881uRV8+f0iP4rE9+1LoAYgzUf0/4U/ecRkFf9BYl4hLIkA/fhk0j8bjN7QuTI
-	 vB5XGO5XPreTUWTFhjQ6yH8NuadknYvfn3F358Lf8QXW3JU3AjFPopJEDbPp0CiV/b
-	 hG6mBVOFB2gIQ==
-Received: by gaggiata.pivistrello.it (Postfix, from userid 1000)
-	id 4C9507FA27; Thu,  4 Dec 2025 10:13:35 +0100 (CET)
-Date: Thu, 4 Dec 2025 10:13:35 +0100
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Mark Brown <broonie@kernel.org>
-Cc: Francesco Dolcini <francesco@dolcini.it>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Anurag Dutta <a-dutta@ti.com>, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] spi: cadence-quadspi: Fix clock enable underflows due to
- runtime PM
-Message-ID: <aTFQv157O-wJjVrZ@gaggiata.pivistrello.it>
-References: <20251202-spi-cadence-qspi-runtime-pm-imbalance-v1-1-aee8c7fa21f2@kernel.org>
+	s=arc-20240116; t=1764841463; c=relaxed/simple;
+	bh=vXblevtqTt4/ExqMNMsLHoKBrEeogH8uHzyxwjnr7n0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jfRFaYGt7A9lRUOEBbpB9F5950a1Bi4gmDK7IN9iLJHudpfAJ91YLhV8CRIqLWra60L0hPkRQnhvNojasZEsbS2dpe61x8ZDs8ditBIJKuZybazrd4objmipSSajH4dFvd9HuClQdmty/qBW46wiNiNPxTPgEQoT0e00ScfxtJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=EOXRvqVR; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=CPpsENVv; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5B468ip1560144
+	for <stable@vger.kernel.org>; Thu, 4 Dec 2025 09:44:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=0brUBNo2+3OsIrwv8UuAtu44g7X1/MXs8D1
+	JRheaSsk=; b=EOXRvqVR7amOZGb1xkLKhXW+0S/68TINUQWS8q2m4j+EVuJJ1In
+	Sz5MSyxqmZncc7hQRL+2wFqmBySziUfVmo6uOatCKswyuhddrfaa880Nk16Vz97/
+	aI/e/X+pyeE7zd3XUfr1YtiWaCBPzWI8WgrSFP2eUY38ITsUMR9WKdY5MOfA0+Em
+	un/AUhKAQfYShwBv3p9FVCsYnx6TLZM+NBnLwzUzbKpjQqitl4ZINEhoR8TueuYx
+	TA5dcvl5ddbcCYbI/eaP//6BSfOgKxnWX2VhD9eVrria6J4YgRUA3etItCCdrm+1
+	a/NItvUq/wk2nUBIb/Aj78gDED5uIMe0yRg==
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4attmhadfp-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Thu, 04 Dec 2025 09:44:21 +0000 (GMT)
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-8b245c49d0cso143947885a.3
+        for <stable@vger.kernel.org>; Thu, 04 Dec 2025 01:44:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1764841461; x=1765446261; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=0brUBNo2+3OsIrwv8UuAtu44g7X1/MXs8D1JRheaSsk=;
+        b=CPpsENVvZeG59itlaXxTmN14boIxpXUV/K234d0Uzqh4O8x/iNuj0cmlhl1m1e9k+L
+         dNLdsrtzfkdFeF6IHTveudk55rTLdeacbGsc7NNWZIDV00YGMcz5+OvhWtJ72M9mBHYl
+         YVIw/IvEXFKlrWMpQpF4WS8PV1F5JMRwM/CobdMj6Kw24hevGJNHBlJUJzjnmi82Zmc+
+         d2BFOYO2kZ8l9PPIRl5mp3ZTrjwZJ050GGDPzNclv3DqY8Bm2+QzZHgH5AWdFo0T6J46
+         SLT4Jd12+Jy0OUydbbP3/H11h14tKrwWK2zyhF7wOQ0q9S2DyAcFDex9wweDp5mXxscc
+         nuBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764841461; x=1765446261;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0brUBNo2+3OsIrwv8UuAtu44g7X1/MXs8D1JRheaSsk=;
+        b=UzCg/Cbvqbp2LE/znEhM/ueeTjYmlHFt5GUSt8sdy3KMirpmtEEDsi42zsnNsQU05v
+         Pvst7XvtuQvv+lICi0M56qJpOFitLGOqFD2eP8Y1q7XtndRZQ6iw51riSx+oG5/hBPvV
+         qZI1p/31aKNLKzBG+yatpGOC+VcV2N5ySFrvH1Gkh7fZyJ7US6a4/tRxu8j6fLyVN0cA
+         gOFGVQjUywIrTvol50pfyNuO9rgLQeB/xCfTib3rdeEf5FD6Io9pNAf6CbMdgk3fRT2g
+         XA9/FP7BJbbNcw/FmCB9SUd5FuH+S4KCVESl8+o5/3xnOExHcq8gstrn/euXqBj1A08M
+         MGEw==
+X-Forwarded-Encrypted: i=1; AJvYcCWMrIQBu7Duc06pjw6suMokY2eFXLppLYFgLdBkK4SGccqAw8lyVVi0JEF4X7UzMJ7Fpf01lw4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTVbLtjUS706z9uGiUciSP7DCvFP5QCcCCDrLHqwhf/9cxmw5a
+	qixEkcuwO51dgHMz4P53pwoHoSlaM84XoHkpIZK/Xzd3ZlR/08Y5Bcf+Yist/nmR/PxPNrrCigA
+	hQ4nJ9VUtXfxZjN4l0P/JB5SkLoRTLZgpGk36q+u30552/CvYhvZqcg0Ho48=
+X-Gm-Gg: ASbGncuntGAv+IlLiCkHkTeCFEGdsKqOsKStT9NbNaHe/5ScWpLjG+S6P2/BpK7VuFp
+	vQ8q+JuTaxHZ5UeSScl9HrQnZzoQrL91g5y8JAm3oPqrJCcfbYMyuKuWfuqSOtv/ispV4mfvPxx
+	gD3CFUVvD4M3BtNi4zPQFlpyvF2ieoBnvaUaUxyr76Dw/K5EkndBhM7qdpVCWxxRjw9D/97xQuo
+	ocT+pCC7WHaGFTDouvPE8xtiwmpr+aVLqMcspyFu0Ql7TyLXjz4naVPF4yZZfSNt/d5Z1yURqT8
+	47LyGwY1+DgPs49xLdxoAnXWJTiiLY9blFrDKpWmvw0PNn2GO7PwlXJXc5Uj3P60rPJDR/aHF5B
+	khB1VqGRTxPuXCp0GJg==
+X-Received: by 2002:a05:620a:4709:b0:8b2:f1f7:b867 with SMTP id af79cd13be357-8b5e535e20cmr705025485a.11.1764841460798;
+        Thu, 04 Dec 2025 01:44:20 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEzQBFsGx9JpmMIqL9fCWT9ejZtveihFlSFVoGDQUzSfiK6jjc+GzBWGLMYRlYLQAQSyY4C5Q==
+X-Received: by 2002:a05:620a:4709:b0:8b2:f1f7:b867 with SMTP id af79cd13be357-8b5e535e20cmr705021685a.11.1764841459884;
+        Thu, 04 Dec 2025 01:44:19 -0800 (PST)
+Received: from brgl-uxlite ([2a01:cb1d:dc:7e00:74f:3ed7:4831:5695])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42f7d2226e7sm2239669f8f.27.2025.12.04.01.44.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Dec 2025 01:44:19 -0800 (PST)
+From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+To: Philipp Zabel <p.zabel@pengutronix.de>,
+        Krzysztof Kozlowski <krzk@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+        Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+        stable@vger.kernel.org
+Subject: [PATCH] reset: gpio: suppress bind attributes in sysfs
+Date: Thu,  4 Dec 2025 10:44:12 +0100
+Message-ID: <20251204094412.17116-1-bartosz.golaszewski@oss.qualcomm.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251202-spi-cadence-qspi-runtime-pm-imbalance-v1-1-aee8c7fa21f2@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: KPl6eo4oengYvoAzWImwdQ6SJ_xjCuo0
+X-Authority-Analysis: v=2.4 cv=NcTrFmD4 c=1 sm=1 tr=0 ts=693157f5 cx=c_pps
+ a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=xqWC_Br6kY4A:10 a=wP3pNCr1ah4A:10
+ a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
+ a=UvoPXoD5CY4mxSsR51IA:9 a=PEH46H7Ffwr30OY-TuGO:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA0MDA3OCBTYWx0ZWRfXzUPIGVgfhU6D
+ v1vIKmUf81IynP7hMEFVaiDx4rfyem5lFMPl5Qa+9lQR05KjHJCjppu8HvaDE09wyaY2oNsvxzM
+ hDX0Glnii5N+QV3z6iSpvRYwtIOFI//ftPIbnRsEuysW+UNlDW/GgBeB/QMwcYAWon3icqX0xoo
+ EhLdu1LLi0Vh7NxcuvaimbsPHTGBwzIFejdDL8FyEwLyC0yt2wCqMDuQxc8nhAPNfZ5aq0MlJJw
+ 6R7HfJQSsjNlMAUixw291r1X65UqwIIIKl9RG8AWCtXrWNfQ8STWXx8ooz8AQTfnM/oV8Q8Jonx
+ bu6ur3aN+XjD6sKhAu66JYKZ1ulYmSrFMCY8SrTPp2D2Co/1BI1YyUQA5AZamgr9QUyvDvlwJv1
+ /vXI0+S39NC9Xc1pWZ2NQWpdh3p2sg==
+X-Proofpoint-ORIG-GUID: KPl6eo4oengYvoAzWImwdQ6SJ_xjCuo0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-04_02,2025-12-03_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 suspectscore=0 priorityscore=1501 impostorscore=0
+ malwarescore=0 bulkscore=0 phishscore=0 adultscore=0 lowpriorityscore=0
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
+ definitions=main-2512040078
 
-Hello Mark,
+This is a special device that's created dynamically and is supposed to
+stay in memory forever. We also currently don't have a devlink between
+it and the actual reset consumer. Suppress sysfs bind attributes so that
+user-space can't unbind the device because - as of now - it will cause a
+use-after-free splat from any user that puts the reset control handle.
 
-On Tue, Dec 02, 2025 at 10:53:44PM +0000, Mark Brown wrote:
-> The recent refactoring of where runtime PM is enabled done in commit
-> f1eb4e792bb1 ("spi: spi-cadence-quadspi: Enable pm runtime earlier to
-> avoid imbalance") made the fact that when we do a pm_runtime_disable()
-> in the error paths of probe() we can trigger a runtime disable which in
-> turn results in duplicate clock disables. Early on in the probe function
-> we do a pm_runtime_get_noresume() since the probe function leaves the
-> device in a powered up state but in the error path we can't assume that PM
-> is enabled so we also manually disable everything, including clocks. This
-> means that when runtime PM is active both it and the probe function release
-> the same reference to the main clock for the IP, triggering warnings from
-> the clock subsystem:
-> 
-> [    8.693719] clk:75:7 already disabled
-> [    8.693791] WARNING: CPU: 1 PID: 185 at /usr/src/kernel/drivers/clk/clk.c:1188 clk_core_disable+0xa0/0xb
-> ...
-> [    8.694261]  clk_core_disable+0xa0/0xb4 (P)
-> [    8.694272]  clk_disable+0x38/0x60
-> [    8.694283]  cqspi_probe+0x7c8/0xc5c [spi_cadence_quadspi]
-> [    8.694309]  platform_probe+0x5c/0xa4
-> 
-> Avoid this confused ownership by moving the pm_runtime_get_noresume() to
-> after the last point at which the probe() function can fail.
-> 
-> Reported-by: Francesco Dolcini <francesco@dolcini.it>
-> Closes: https://lore.kernel.org/r/20251201072844.GA6785@francesco-nb
-> Signed-off-by: Mark Brown <broonie@kernel.org>
-> Cc: stable@vger.kernel.org
+Fixes: cee544a40e44 ("reset: gpio: Add GPIO-based reset controller")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+---
+ drivers/reset/reset-gpio.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Unless I did some stupid mistake testing the patch, it does not fix the issue.
-Here the log with v6.18 + this patch
-
-
-[    6.347380] ------------[ cut here ]------------
-[    6.352025] clk:75:7 already disabled
-[    6.355727] WARNING: CPU: 2 PID: 180 at drivers/clk/clk.c:1188 clk_core_disable+0xa4/0xac
-[    6.363921] Modules linked in: aes_ce_blk aes_ce_cipher ghash_ce gf128mul snd_soc_simple_card(+) 
-snd_soc_simple_card_utils spi_cadence_quadspi(+) optee(+) display_connector tee tps65219_pwrbutton u
-sb_conn_gpio gpio_keys dwc3_am62 roles k3_j72xx_bandgap ti_ads1015 industrialio_triggered_buffer kfi
-fo_buf sa2ul hci_uart sha512 bluetooth rtc_ti_k3 ecdh_generic libsha512 sha256 ecc snd_soc_davinci_m
-casp snd_soc_ti_udma rfkill sha1 authenc snd_soc_ti_edma wave5 libaes snd_soc_ti_sdma cdns_dsi cdns_
-dphy omap_hwspinlock lm75 omap_mailbox snd_soc_nau8822 i3c ina2xx lontium_lt8912b m_can_platform m_c
-an can_dev pwm_tiehrpwm spi_omap2_mcspi fuse ipv6 libsha1 autofs4
-[    6.421984] CPU: 2 UID: 0 PID: 180 Comm: (udev-worker) Not tainted 6.18.0+ #2 PREEMPT 
-[    6.429902] Hardware name: Toradex Verdin AM62P WB on Verdin Development Board (DT)
-[    6.437555] pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[    6.444515] pc : clk_core_disable+0xa4/0xac
-[    6.448708] lr : clk_core_disable+0xa4/0xac
-[    6.452896] sp : ffff800080bd37f0
-[    6.456234] x29: ffff800080bd37f0 x28: 0000000000000000 x27: ffff000001924810
-[    6.463406] x26: ffff000001924810 x25: ffffd9bd273e0408 x24: ffff000001924800
-[    6.470554] x23: 0000000000000000 x22: ffff000001439800 x21: 00000000ffffffed
-[    6.477693] x20: ffff000002476c00 x19: ffff000002476c00 x18: 0000000000000006
-[    6.484831] x17: 0000000000000000 x16: ffffd9bd3f665260 x15: 0720072007200720
-[    6.491970] x14: 0720072007200720 x13: 0720072007200720 x12: ffffd9bd401ee538
-[    6.499108] x11: 0000000000000058 x10: 0000000000000018 x9 : ffffd9bd401ee538
-[    6.506242] x8 : 0000000000000194 x7 : ffffd9bd40246538 x6 : ffffd9bd40246538
-[    6.513380] x5 : ffff00007fb886c8 x4 : 0000000000000000 x3 : 0000000000000027
-[    6.520518] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff000005504300
-[    6.527656] Call trace:
-[    6.530104]  clk_core_disable+0xa4/0xac (P)
-[    6.534296]  clk_disable+0x30/0x4c
-[    6.537706]  cqspi_probe+0x7c0/0xc64 [spi_cadence_quadspi]
-[    6.543209]  platform_probe+0x5c/0xa4
-[    6.546885]  really_probe+0xc0/0x39c
-[    6.550467]  __driver_probe_device+0x7c/0x14c
-[    6.554831]  driver_probe_device+0x3c/0x120
-[    6.559022]  __driver_attach+0xc4/0x200
-[    6.559387] lt8912 1-0048: supply vccmipirx not found, using dummy regulator
-[    6.562855]  bus_for_each_dev+0x7c/0xdc
-[    6.573734]  driver_attach+0x24/0x30
-[    6.577315]  bus_add_driver+0x110/0x240
-[    6.581158]  driver_register+0x68/0x130
-[    6.585001]  __platform_driver_register+0x24/0x30
-[    6.589714]  cqspi_platform_driver_init+0x20/0x1000 [spi_cadence_quadspi]
-[    6.596516]  do_one_initcall+0x60/0x1e0
-[    6.600363]  do_init_module+0x54/0x23c
-[    6.604126]  load_module+0x1810/0x1f14
-[    6.607886]  init_module_from_file+0x88/0xcc
-[    6.612168]  __arm64_sys_finit_module+0x264/0x358
-[    6.616883]  invoke_syscall.constprop.0+0x50/0xe0
-[    6.619334] lt8912 1-0048: supply vccsysclk not found, using dummy regulator
-[    6.621583]  do_el0_svc+0xa8/0xe0
-[    6.631945]  el0_svc+0x3c/0x148
-[    6.635095]  el0t_64_sync_handler+0xa0/0xf0
-[    6.639285]  el0t_64_sync+0x198/0x19c
-[    6.642955] ---[ end trace 0000000000000000 ]---
-[    6.655277] ------------[ cut here ]------------
-[    6.659991] clk:75:7 already unprepared
-[    6.667941] WARNING: CPU: 2 PID: 180 at drivers/clk/clk.c:1047 clk_core_unprepare+0xe4/0x104
-[    6.668689] lt8912 1-0048: supply vcclvdstx not found, using dummy regulator
-[    6.676411] Modules linked in: spidev evdev(+) rng_core aes_ce_blk aes_ce_cipher ghash_ce gf128mu
-l snd_soc_simple_card snd_soc_simple_card_utils spi_cadence_quadspi(+) optee display_connector tee t
-ps65219_pwrbutton usb_conn_gpio gpio_keys dwc3_am62 roles k3_j72xx_bandgap ti_ads1015 industrialio_t
-riggered_buffer kfifo_buf sa2ul hci_uart sha512 bluetooth rtc_ti_k3 ecdh_generic libsha512 sha256 ec
-c snd_soc_davinci_mcasp snd_soc_ti_udma rfkill sha1 authenc snd_soc_ti_edma wave5 libaes snd_soc_ti_
-sdma cdns_dsi cdns_dphy omap_hwspinlock lm75 omap_mailbox snd_soc_nau8822 i3c ina2xx lontium_lt8912b
- m_can_platform m_can can_dev pwm_tiehrpwm spi_omap2_mcspi fuse ipv6 libsha1 autofs4
-[    6.699332] lt8912 1-0048: supply vcchdmitx not found, using dummy regulator
-[    6.743120] CPU: 2 UID: 0 PID: 180 Comm: (udev-worker) Tainted: G        W           6.18.0+ #2 P
-REEMPT 
-[    6.743139] Tainted: [W]=WARN
-[    6.743142] Hardware name: Toradex Verdin AM62P WB on Verdin Development Board (DT)
-[    6.743147] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[    6.743153] pc : clk_core_unprepare+0xe4/0x104
-[    6.743168] lr : clk_core_unprepare+0xe4/0x104
-[    6.743175] sp : ffff800080bd37f0
-[    6.743178] x29: ffff800080bd37f0 x28: 0000000000000000 x27: ffff000001924810
-[    6.796577] x26: ffff000001924810 x25: ffffd9bd273e0408 x24: ffff000001924800
-[    6.799311] lt8912 1-0048: supply vcclvdspll not found, using dummy regulator
-[    6.803704] x23: 0000000000000000 x22: ffff000001439800 x21: 00000000ffffffed
-[    6.803713] x20: 0000000000000000 x19: ffff000002476c00 x18: 0000000000000000
-[    6.803723] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
-[    6.803731] x14: 000000000000008f x13: 00000000efe4b99a x12: 00009b471872c248
-[    6.803740] x11: 00000000000000c0 x10: 00000000000009e0 x9 : ffff800080bd3660
-[    6.803749] x8 : ffff000005504d40 x7 : 000000000000b67e x6 : 000000000000ba61
-[    6.803758] x5 : 0000000078b6e217 x4 : 0000000000000818 x3 : 0000000000800000
-[    6.803767] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff000005504300
-[    6.803777] Call trace:
-[    6.803781]  clk_core_unprepare+0xe4/0x104 (P)
-[    6.825908] lt8912 1-0048: supply vcchdmipll not found, using dummy regulator
-[    6.832255]  clk_unprepare+0x2c/0x44
-[    6.832266]  cqspi_probe+0x7c8/0xc64 [spi_cadence_quadspi]
-[    6.832286]  platform_probe+0x5c/0xa4
-[    6.894596]  really_probe+0xc0/0x39c
-[    6.898176]  __driver_probe_device+0x7c/0x14c
-[    6.902534]  driver_probe_device+0x3c/0x120
-[    6.906715]  __driver_attach+0xc4/0x200
-[    6.910548]  bus_for_each_dev+0x7c/0xdc
-[    6.914380]  driver_attach+0x24/0x30
-[    6.917954]  bus_add_driver+0x110/0x240
-[    6.921789]  driver_register+0x68/0x130
-[    6.925627]  __platform_driver_register+0x24/0x30
-[    6.930333]  cqspi_platform_driver_init+0x20/0x1000 [spi_cadence_quadspi]
-[    6.937128]  do_one_initcall+0x60/0x1e0
-[    6.940968]  do_init_module+0x54/0x23c
-[    6.944720]  load_module+0x1810/0x1f14
-[    6.948471]  init_module_from_file+0x88/0xcc
-[    6.952740]  __arm64_sys_finit_module+0x264/0x358
-[    6.957445]  invoke_syscall.constprop.0+0x50/0xe0
-[    6.962149]  do_el0_svc+0xa8/0xe0
-[    6.965463]  el0_svc+0x3c/0x148
-[    6.968605]  el0t_64_sync_handler+0xa0/0xf0
-[    6.972785]  el0t_64_sync+0x198/0x19c
-[    6.976447] ---[ end trace 0000000000000000 ]---
-
+diff --git a/drivers/reset/reset-gpio.c b/drivers/reset/reset-gpio.c
+index e5512b3b596b..626c4c639c15 100644
+--- a/drivers/reset/reset-gpio.c
++++ b/drivers/reset/reset-gpio.c
+@@ -111,6 +111,7 @@ static struct auxiliary_driver reset_gpio_driver = {
+ 	.id_table	= reset_gpio_ids,
+ 	.driver	= {
+ 		.name = "reset-gpio",
++		.suppress_bind_attrs = true,
+ 	},
+ };
+ module_auxiliary_driver(reset_gpio_driver);
+-- 
+2.51.0
 
 
