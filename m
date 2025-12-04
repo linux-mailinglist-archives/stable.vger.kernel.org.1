@@ -1,129 +1,145 @@
-Return-Path: <stable+bounces-200028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7691ACA3F3F
-	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 15:13:04 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F5EBCA402A
+	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 15:28:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 58C1330DA5CC
-	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 14:07:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DACCB300B364
+	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 14:28:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75713331A65;
-	Thu,  4 Dec 2025 14:07:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92C7133ADB2;
+	Thu,  4 Dec 2025 14:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="FqjaSwIz"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="PGbxNXo8"
 X-Original-To: stable@vger.kernel.org
-Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D5EC398F90
-	for <stable@vger.kernel.org>; Thu,  4 Dec 2025 14:07:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E20933508C
+	for <stable@vger.kernel.org>; Thu,  4 Dec 2025 14:28:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764857248; cv=none; b=laIeZN9/pGZHR8VyUBMdndddoVmIYeD3E2iEwlB/u3DIp6d/JZb5ow0igx7Tp8AErMMRsH/c2bdlquqS7E+5FfpKHkZs025Yzsk+cYX0lrFBl1zgDMPmyLFhjoHWKyuW2H6UsKr3i3mVZRVT1StEyIBXthV+JMcgZla1Cu++DPg=
+	t=1764858514; cv=none; b=TXynpmFOTHKOcAc1URvYC3GTydb3NNnLrkwxajHeajGjK3IuFnWZpIbFuzxrmdWPOk6ri1CgEWwWt5B7Z77dwi3PE2QgVAioESmoI2ZeP5XCg6Y2bCVu+ETygz1mWYeRY/+qAGJlao/LRU/3WCGrpzgj/XkJNbzkm5PIYayVjh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764857248; c=relaxed/simple;
-	bh=hm3iMf0+33S7vc286HevhmPqkcPFII87NwXwIVUdZMM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VoN9pYdVk/JYn0swR3VPUb2Qf3CS2t28hHEGSfAmILJre5JIHMjuhCs4bC6gLe9JR8oFM5TwVQDHI4aoZftlmQjFZ6yB5i/QFfYw2Fx96XSYgJkCkYClAhxA0Gs+wceNAzoq5BLAYm9rX74rUneemKGwZqjc/4M/24vTXkU0/RI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=FqjaSwIz; arc=none smtp.client-ip=44.202.169.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-6006b.ext.cloudfilter.net ([10.0.30.211])
-	by cmsmtp with ESMTPS
-	id QsTIvAeSSSkcfR9zRvOeuI; Thu, 04 Dec 2025 14:07:25 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id R9zQvaxgYvXvHR9zQvhF4N; Thu, 04 Dec 2025 14:07:24 +0000
-X-Authority-Analysis: v=2.4 cv=e4IGSbp/ c=1 sm=1 tr=0 ts=6931959c
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
- a=nmWuMzfKamIsx3l42hEX:22 a=Wh1V8bzkS9CpCxOpQUxp:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=sBCNlkS6UWxVZiUaAkd433hnAHFe+ILFalql2KHHBys=; b=FqjaSwIzFlyjiXdfTjtiIVu+Ww
-	DnUqqjbGaGP9j9mc2f6bE9bFCbLlNjhqu1WyzsGTZpOrBScQsd/ufFjqFszsCGfv7mZkh/t3wxdHF
-	rQco2bx85KMtwYhGO3TZ9uzi8+sn4p7xShNORHEZLU2erJgxaf4NI6OrvllatcgWUNw0yRUKmxukz
-	bM+I7/aHUbjExg07+lqwXnG+ukHuTN8cbC4hh2snFC2muUxg/r7GiORv3DZ40WbzHQZJLUBQH2rVq
-	Kt0p5nJtbP3Jg9+yXjH1YDyuAfJez4K8zzzL9Ab0WkkTirTKA1GYSA0i8l/2E2rhFwAGJk2/g4lOj
-	Fuy42KOA==;
-Received: from c-73-92-56-26.hsd1.ca.comcast.net ([73.92.56.26]:41488 helo=[10.0.1.180])
-	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-	(Exim 4.98.2)
-	(envelope-from <re@w6rz.net>)
-	id 1vR9zQ-00000002w6v-0k0s;
-	Thu, 04 Dec 2025 07:07:24 -0700
-Message-ID: <39328e93-8ffc-41c3-9f63-4418f13e1157@w6rz.net>
-Date: Thu, 4 Dec 2025 06:07:22 -0800
+	s=arc-20240116; t=1764858514; c=relaxed/simple;
+	bh=ygGX5DRVdgd5dLe/iOuU6yem4lta/9b6Dvr2u0yD4QM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=n42h6thDnVPheg3UQZzOYnloOpDwgVGMS6SRy/ishXP9T9vvXjo3IQEiSuYXjk+T/5whnIzqZTz7AEFvSAOr1feksZA4HHMYfxLub6tbrwJIsFdbXO2n3DwbZZgSFBDxqNp3qtEA8paL3SjKRGUFYB+f+G9bKCYLOMAFyW2qu1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=PGbxNXo8; arc=none smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-bd1ce1b35e7so646751a12.0
+        for <stable@vger.kernel.org>; Thu, 04 Dec 2025 06:28:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1764858511; x=1765463311; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=J5up34gv2Eh3c5muVgE2++/qr8omKiRvDmGaTH+Q9zA=;
+        b=PGbxNXo8e92AkfwxeOs2ymEeibZliz6cqtRmRoz9nSWVtL67mvaeTc9f0pKYpIDcs/
+         LhOWZhnBHdEjV+F+mBhpjqhrqXsIqRf1o3XzVs9M95XDmYjRHchF1TjPFp+s1monwO48
+         SjaZPNVOtZ7Gb9TLNNwD6czYt2IMSvzNblVKfPRjYC9Z66fy7fZyaqk882jiKJeRZtQu
+         kErrprfxbRY4OknAaBxqTcztsa0zo4scIeWEtTCyXVlf4BTzmWGM4l5rdYl+BQcZPPXJ
+         TEBGzbOWFk1Weyph0g3ndnfnf8hLQyrx+gKMUXHGOkBvd+IpsG4KFyquZfmNwMDDlUKz
+         hs/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764858511; x=1765463311;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=J5up34gv2Eh3c5muVgE2++/qr8omKiRvDmGaTH+Q9zA=;
+        b=J2KyG5nnt/M7I4rOZWFtmSoIqXeaQ9elWyX54wvF+gjfHJkZAGc5B1nICChZLNOIYK
+         e67M838NKK9WU+wECY2CoeC8kf+aS33+Tr+wRg2hlNvvvuTgookL6Ua4X+DqFbdsvwVH
+         PhlW2ETJ74H5fCIdR2kU3uoQ0kfj8D4/3tJVhQ6UQ3sC2OegNH32vX2XbAtAxbJYlWY6
+         C0LOscBMBGH7MNdVNmT4OlcGg6xwlvPEwnF4LkF75JkD2cH9SWgK1Pe3nGeHE2wwAwkH
+         3yMqmwt8mKlnGEaiWpUKSFjRpOZAxZni1lB3fhkFYEcrXIWLvGj2h6688IGu9SPy6lCY
+         pFfQ==
+X-Gm-Message-State: AOJu0YwEQ9xHB/IVhA0ULNguBkXbtnBuvPslZBy+2jaYL64R5HyOyhID
+	8Aj4P3Nt3beT/SbGF6Lnwggcu0OK5rUpX+MSJZimz4tS9i3WN1AvmSJDlfkLzRARBPRXjGscjtC
+	c7COkh6rDVLsrnMq8xClc4l6+aJcxSBvk4PJhc31e+g==
+X-Gm-Gg: ASbGncuo5p55A5FlnIz4edD7zvuI0WNToIVLoSSnkamK/jXwOpmSYNXTu8h81VHbHQf
+	U1HnDoRMPZjN22mEl+I0ObbJtDuah247gbxfI8hVI0xRGs/Z8bzSeg56S2NLSLNL2WBufhyHa9p
+	3q0omHTDdUidgPhNYsv1hhRsIltO5n+CmEY6b0Gkz2c9vybcwG7C5AGMAWiSo0iuAU5NjBWLRDw
+	rySa1u73oXLPBnDIsmDYCCPz0DZ7hfR7Tbov//PQZHs2QQK6/vSXWMuKF5/9YR9cJ5rcX8xZDw/
+	iro0vyLrBNogLIYwXwM9yZfu2yLr
+X-Google-Smtp-Source: AGHT+IGvf+0II+wCeaY/bk6moaweTqQfAx9HpwRUNg9PFuETthocLz+dz0I6QUZFETK+n517X8mTaGfxo8rZn98tvdY=
+X-Received: by 2002:a05:693c:2c09:b0:2a4:3594:72d5 with SMTP id
+ 5a478bee46e88-2ab92d545d2mr4733118eec.4.1764858510778; Thu, 04 Dec 2025
+ 06:28:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15 000/392] 5.15.197-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20251203152414.082328008@linuxfoundation.org>
-Content-Language: en-US
-From: Ron Economos <re@w6rz.net>
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.92.56.26
-X-Source-L: No
-X-Exim-ID: 1vR9zQ-00000002w6v-0k0s
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-92-56-26.hsd1.ca.comcast.net ([10.0.1.180]) [73.92.56.26]:41488
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 19
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfNrPYUt+EDn6w/LcqPzf/3AeEtJrA1YusO1TmsUGq3Tio18NEugbwyarJB5PnIFzdZ6wxDv4AoL3NJwrjN1U0cMRRzObeu1l/5HFCbNCKJ/69tvSMcDR
- 3mLBzQW3Z3SwlPx+5cYa/ioF9Js8zabClcVdcygAI/IMJY40K0sFnNNnY9U7Tx/qIVAFLGDbWlgKmQ==
+References: <20251203152440.645416925@linuxfoundation.org> <bae0cb4e-9498-4ceb-945c-55a00725d10e@sirena.org.uk>
+In-Reply-To: <bae0cb4e-9498-4ceb-945c-55a00725d10e@sirena.org.uk>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Thu, 4 Dec 2025 19:58:19 +0530
+X-Gm-Features: AWmQ_bm3taM1NWauArG_gpQ8u40YrUi0hDis2k3qrsTCqWX97CPc3VDwIDYXxvU
+Message-ID: <CA+G9fYuhFziYBuXS1URXVgFmUahMVfL5uaT0a75yFOTjZsOPvg@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/568] 6.1.159-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	Mark Brown <broonie@kernel.org>, akpm@linux-foundation.org, linux@roeck-us.net, 
+	shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, 
+	pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org, 
+	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com, 
+	Kiryl Shutsemau <kas@kernel.org>, Dan Carpenter <dan.carpenter@linaro.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Anders Roxell <anders.roxell@linaro.org>, Ben Copeland <benjamin.copeland@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 12/3/25 07:22, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.197 release.
-> There are 392 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Thu, 4 Dec 2025 at 17:36, Mark Brown <broonie@kernel.org> wrote:
 >
-> Responses should be made by Fri, 05 Dec 2025 15:23:16 +0000.
-> Anything received after that time might be too late.
+> On Wed, Dec 03, 2025 at 04:20:02PM +0100, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 6.1.159 release.
+> > There are 568 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
 >
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.197-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+> I'm seeing a bunch of systems start failing with this release, they
+> start OOMing when previously they ran OK.  Most of them aren't exactly
+> overburned with memory.  These failures bisect to 61717acddadf66
+> (mm/memory: do not populate page table entries beyond i_size), sample
+> bisect from one of the systems including links to test jobs (the bisects
+> for other systems/test sets look very similar):
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+As Mark=E2=80=99s reported, the LKFT reproduced the same regression on Juno=
+-r2,
+FVP and qemu-arm64 during boot.
 
-Tested-by: Ron Economos <re@w6rz.net>
+### boot log
+<0>[   42.433802] Internal error: Oops: 0000000096000046 [#1] PREEMPT SMP"}
+<4>[   42.434147] Modules linked in: fuse drm ip_tables x_tables"}
+<4>[   42.434573] CPU: 1 PID: 374 Comm: skipgen Not tainted 6.1.159-rc1 #1"=
+}
+<4>[   42.435344] Hardware name: linux,dummy-virt (DT)"}
+<4>[   42.436140] pstate: 42402009 (nZcv daif +PAN -UAO +TCO -DIT
+-SSBS BTYPE=3D--)"}
+<4>[   42.437004] pc : _raw_spin_lock+0x3c/0x8c"}
+<4>[   42.438173] lr : _raw_spin_lock+0x28/0x8c"}
 
+Boot regression: Juno-r2, FVP, Internal error: Oops: _raw_spin_lock
+filemap_map_pages
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+## commit point to,
+  mm/memory: do not populate page table entries beyond i_size
+  [ Upstream commit 74207de2ba10c2973334906822dc94d2e859ffc5 ]
+
+### Links,
+ - https://regressions.linaro.org/lkft/linux-stable-rc-linux-6.1.y/v6.1.158=
+-569-gabd89c70c938/log-parser-test/internal-error-oops-Oops_PREEMPT_SMP___r=
+aw_spin_lock-a94221fb/
+ - https://lkft.validation.linaro.org/scheduler/job/8540690#L1835
+ - https://tuxapi.tuxsuite.com/v1/groups/linaro/projects/lkft/tests/36LJeld=
+PNf0LMr3PSr7WYaPqCFa
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
