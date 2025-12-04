@@ -1,124 +1,221 @@
-Return-Path: <stable+bounces-200033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4702CCA439B
-	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 16:21:46 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9481CA43BF
+	for <lists+stable@lfdr.de>; Thu, 04 Dec 2025 16:23:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7B6CC30546C0
-	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 15:18:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 97261306B649
+	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 15:20:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A3D82D6E78;
-	Thu,  4 Dec 2025 15:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6155028980F;
+	Thu,  4 Dec 2025 15:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b="QYKevMbG"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=earth.li header.i=@earth.li header.b="VYqrjUQc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from the.earth.li (the.earth.li [93.93.131.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE4F2D77E6
-	for <stable@vger.kernel.org>; Thu,  4 Dec 2025 15:18:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E73C921D3F2;
+	Thu,  4 Dec 2025 15:20:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.93.131.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764861513; cv=none; b=llO8o19J8VQo1MLBRNYgY3iv4knoX1Rgtjsd8VzRuSDGv5ewpmLMxcSCyinNSfJR3PgSQM1QP6xy7r7xwxb4gG1N8QSTwJ/N/jHB0lfqmGmOM47tSABLyeAdy2H391opWcTq4QwyTle6ZSvBPXUYG3sn4tJZVuAvTP4YTdAdmE4=
+	t=1764861631; cv=none; b=KELUq36hIgB3PjPqrIwcY4M/qgrPE4sYi1zLs9DFUhuDIydz1sDpphxGKZGr14zPc+N6CoeMdNbvwoY+jxfKlnl8cuD+UsTif1CcW1paF5r5QsowmR0xkoPAcw4OR5iRLTjR2rSABpoghimb9p9FyYn9Fge4oRpsQ6znIhKGS1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764861513; c=relaxed/simple;
-	bh=VljNe5kMd4ad3e+pYU1/5fLSVCmcsaeKxPnxedcvUQQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qksaXhx2ilfv8/JcLZEVGMs4r3C37mHKb6SXxEh+yUXy3BySeVHloQ4rI+ZsYuO9vivy7r/iZk324MrXQGCdk3y9wZy8a2BjWzTEDi7jpOKNC8iG1WVOsZJoQaiM1Mw13KkByOxGePhzMqbcWBU4ZS1GlVsCcwyIdKTXotiLa44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com; spf=pass smtp.mailfrom=ciq.com; dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b=QYKevMbG; arc=none smtp.client-ip=209.85.222.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ciq.com
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-8b2d7c38352so234772185a.0
-        for <stable@vger.kernel.org>; Thu, 04 Dec 2025 07:18:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ciq.com; s=s1; t=1764861507; x=1765466307; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=j/9FWMESgsQl8uoBJaRGwa5dScY1SoVkx5/E2nLopaQ=;
-        b=QYKevMbGVzbkXmp3RVIeJAJtHfvGKj5WjZV9zb4OigMsmkb7Jn4p986c9QXvj85KVk
-         vaKAx89u0xknvTwzEB0G72hdeFUgWCRMVooT9/VeYCSw4A5HVSDu3sHcrzsD/CRHnr5c
-         6xAfmZIEy0nwiaXsixPR1yfHcTxnd3361RFBrfgxWO+rpRMjWGWKhYlNooMwcS/Wwzj8
-         T2JBPQI94gzNGhDTi6HK/880E/VULnUPO3mJrAfcg40x9y6R6NfxsEX3Lib2h/z+3mGJ
-         mMHDVp5cEjhDS3wnFTdFK7czQvKPSrfvzoOnBJw+Hkfl/qwP5YrEjbgOW2vJIuj8Qko3
-         nD3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764861507; x=1765466307;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=j/9FWMESgsQl8uoBJaRGwa5dScY1SoVkx5/E2nLopaQ=;
-        b=SGTMtxEr+pComAeEE6ItSto4sCOSF6EOyIxwM3UdfDlwmdzUJxlD/1Zxonej//xUOq
-         cjSvGYodESPzhAx2S4+24OgyZW4k5SuBiXymh03ldOAtauAMHh5uFjOXuxOqbXyTepna
-         aK0Z46I2MhGDSaxhCs0D1WirYu4ySmRJ6cjjsLbYLtix4v9TdOFKb+LoDEi+apUaq8sW
-         SUnDzhnKbsNtnac1vTaJsRegSJSVenZWrpHVvElRaN3ri7KaOLQd9Woy1taj3p1mMTFY
-         2tZdPzLDn7w26KICjAWFQfbXFlCXXqX1T3V80uuq5042b55W+cm1JuMIZBdgAYnoSnCR
-         LDdg==
-X-Gm-Message-State: AOJu0Yyr/fAJhGp8Oj/7RqDqx4n6eKF6aMoLK0j8mp8yO+MTKhGZhX7c
-	4/ciKKYm7ssmcel9zULRBy0oQgb90Nt+b7t/rzmgBI9kYzswaRO21I8NrLoE8XlF5WCN2PPna2b
-	uHZKaeUU2qll2LJxL9QIUxlSEe6B2P5NwFmG0rNB3Dw==
-X-Gm-Gg: ASbGncvcoBuX0OnpIQDbn2p1SIMyuG8EKyAA3ubkjfY4aUXDgu3ijQU3gTslNO3icc+
-	feWkE+tMcAmOl/Cp9y50eWApkeLsd6Q60MkfEOCv2OYHloAbQch6PW3HsJzwurGhYCfSFH4uxnN
-	XnDLz9368JN0K6MqVPSWYiJ2+NsEbx7qEIqG1LyK/jEvjzK/BcLCJsQFTl+gNV8nbQpTRl4NTMK
-	j4s4MrtJSUSautnmuRPkFdsiFWoY1d1pcFGOF9UOL8eyna1Jd0lUwZ3Yhk10R5ywCFEh0gy
-X-Google-Smtp-Source: AGHT+IGm02XUs++uw0N5zGWmXXo4/VUiNw0mAFpraa/ViGGwYBq+xKaSkX9JCx4Nux3M73pq/yF/AjNQk9F0NUbB/DI=
-X-Received: by 2002:a05:620a:2904:b0:8b2:eebc:64bc with SMTP id
- af79cd13be357-8b6153ed26emr645155785a.35.1764861507550; Thu, 04 Dec 2025
- 07:18:27 -0800 (PST)
+	s=arc-20240116; t=1764861631; c=relaxed/simple;
+	bh=Iej+RoNCH0jjx3xqFOgTpaEt6k00Gvg14HwpumJeaTc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=g85wsj/lw57A2r4IO0RnD2p7j5jdw4PVnJuRRHuP0wjbVc3u9EcbE+axzpLZU599f1i0CjhZY2P1D8Iddo/gXCzeBPcTyYU4SwHdWmENQowPp7Wj6rhqBgOJ1nnOpuaEQcdSOAH6M+Q8Se5itBHeXnvvre416D+0DYLANmSsYq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=earth.li; spf=pass smtp.mailfrom=earth.li; dkim=pass (2048-bit key) header.d=earth.li header.i=@earth.li header.b=VYqrjUQc; arc=none smtp.client-ip=93.93.131.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=earth.li
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=earth.li
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=earth.li;
+	s=the; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:
+	Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=CXDf7uns5ggUWepKyDj26VzDX2KZ8c1McwOyOQroig0=; b=VYqrjUQc3hhpEHo/gxO1QqgHAl
+	qou/G3IRJFL/l9cElwWLdHeyFdjHISplJKBcY9ss0CoiMIW5I0pvR5hV+hoMDrKEvhrdvv29KurBP
+	4wwS15JI8abWntCxrdkSuzPjiKkoa0IvzrjfzUdLsE8zR3t4QcShpGcQAOIi0Z1a4rr0t//13/xZO
+	YpOPyzm/7PRjUijSNUGYU/oPaqF38TENnfmAx4hscV+sRjuSilpclpgaGSWEUieKC2lRohW6DU2Ok
+	nAvWm22evVo+EB+1aNRmvic8xuuuY32gfgwC5A25s1+kErDWoCl5T3gXMMYJ53NkyRX2tdaknEFT8
+	xNGq1Cig==;
+Received: from noodles by the.earth.li with local (Exim 4.96)
+	(envelope-from <noodles@earth.li>)
+	id 1vRB86-0060ww-26;
+	Thu, 04 Dec 2025 15:20:26 +0000
+Date: Thu, 4 Dec 2025 15:20:26 +0000
+From: Jonathan McDowell <noodles@earth.li>
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: linux-integrity@vger.kernel.org, Peter Huewe <peterhuewe@gmx.de>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	open list <linux-kernel@vger.kernel.org>, stable@vger.kernel.org,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: Re: [PATCH v3 2/4] tpm2-sessions: Fix tpm2_read_public range checks
+Message-ID: <aTGmuhRCbHANjjzV@earth.li>
+References: <20251203221215.536031-1-jarkko@kernel.org>
+ <20251203221215.536031-3-jarkko@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251203152343.285859633@linuxfoundation.org>
-In-Reply-To: <20251203152343.285859633@linuxfoundation.org>
-From: Brett Mastbergen <bmastbergen@ciq.com>
-Date: Thu, 4 Dec 2025 10:18:16 -0500
-X-Gm-Features: AWmQ_bngTnQXvzs1qHGyxtus6wGI_96aRQmrOtbqZh7KJohylKIV3GIllDA8pmw
-Message-ID: <CAOBMUvjGxXhw+QMBQa_NH8iQLJ7MUE-A3w0rzWGSBmj3j6PsOg@mail.gmail.com>
-Subject: Re: [PATCH 6.12 000/132] 6.12.61-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org, sr@sladewatkins.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20251203221215.536031-3-jarkko@kernel.org>
 
-On Wed, Dec 3, 2025 at 11:50=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On Thu, Dec 04, 2025 at 12:12:12AM +0200, Jarkko Sakkinen wrote:
+>'tpm2_read_public' has some rudimentary range checks but the function
+>does not ensure that the response buffer has enough bytes for the full
+>TPMT_HA payload.
 >
-> This is the start of the stable review cycle for the 6.12.61 release.
-> There are 132 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+>Re-implement the function with necessary checks and validation.
 >
-> Responses should be made by Fri, 05 Dec 2025 15:23:16 +0000.
-> Anything received after that time might be too late.
+>Cc: stable@vger.kernel.org # v6.10+
+>Fixes: d0a25bb961e6 ("tpm: Add HMAC session name/handle append")
+>Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+
+A minor nit about variable naming, but:
+
+Reviewed-by: Jonathan McDowell <noodles@meta.com>
+
+>v2:
+>- Made the fix localized instead of spread all over the place.
+>---
+> drivers/char/tpm/tpm2-cmd.c      |  3 ++
+> drivers/char/tpm/tpm2-sessions.c | 77 +++++++++++++++++---------------
+> 2 files changed, 44 insertions(+), 36 deletions(-)
 >
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.12.61-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.12.y
-> and the diffstat can be found below.
+>diff --git a/drivers/char/tpm/tpm2-cmd.c b/drivers/char/tpm/tpm2-cmd.c
+>index be4a9c7f2e1a..34e3599f094f 100644
+>--- a/drivers/char/tpm/tpm2-cmd.c
+>+++ b/drivers/char/tpm/tpm2-cmd.c
+>@@ -11,8 +11,11 @@
+>  * used by the kernel internally.
+>  */
 >
-> thanks,
+>+#include "linux/dev_printk.h"
+>+#include "linux/tpm.h"
+> #include "tpm.h"
+> #include <crypto/hash_info.h>
+>+#include <linux/unaligned.h>
 >
-> greg k-h
+> static bool disable_pcr_integrity;
+> module_param(disable_pcr_integrity, bool, 0444);
+>diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
+>index a265e9752a5e..e9f439be3916 100644
+>--- a/drivers/char/tpm/tpm2-sessions.c
+>+++ b/drivers/char/tpm/tpm2-sessions.c
+>@@ -163,54 +163,59 @@ static int name_size(const u8 *name)
+> 	}
+> }
+>
+>-static int tpm2_parse_read_public(char *name, struct tpm_buf *buf)
+>+static int tpm2_read_public(struct tpm_chip *chip, u32 handle, void *name)
+> {
+>-	struct tpm_header *head = (struct tpm_header *)buf->data;
+>+	u32 mso = tpm2_handle_mso(handle);
+> 	off_t offset = TPM_HEADER_SIZE;
+>-	u32 tot_len = be32_to_cpu(head->length);
+>-	int ret;
+>-	u32 val;
+>-
+>-	/* we're starting after the header so adjust the length */
+>-	tot_len -= TPM_HEADER_SIZE;
+>-
+>-	/* skip public */
+>-	val = tpm_buf_read_u16(buf, &offset);
+>-	if (val > tot_len)
+>-		return -EINVAL;
+>-	offset += val;
+>-	/* name */
+>-
+>-	val = tpm_buf_read_u16(buf, &offset);
+>-	ret = name_size(&buf->data[offset]);
+>-	if (ret < 0)
+>-		return ret;
+>+	struct tpm_buf buf;
+>+	int rc, rc2;
+>
+>-	if (val != ret)
+>+	if (mso != TPM2_MSO_PERSISTENT && mso != TPM2_MSO_VOLATILE &&
+>+	    mso != TPM2_MSO_NVRAM)
+> 		return -EINVAL;
+>
+>-	memcpy(name, &buf->data[offset], val);
+>-	/* forget the rest */
+>-	return 0;
+>-}
+>-
+>-static int tpm2_read_public(struct tpm_chip *chip, u32 handle, char *name)
+>-{
+>-	struct tpm_buf buf;
+>-	int rc;
+>-
+> 	rc = tpm_buf_init(&buf, TPM2_ST_NO_SESSIONS, TPM2_CC_READ_PUBLIC);
+> 	if (rc)
+> 		return rc;
+>
+> 	tpm_buf_append_u32(&buf, handle);
+>-	rc = tpm_transmit_cmd(chip, &buf, 0, "read public");
+>-	if (rc == TPM2_RC_SUCCESS)
+>-		rc = tpm2_parse_read_public(name, &buf);
+>
+>-	tpm_buf_destroy(&buf);
+>+	rc = tpm_transmit_cmd(chip, &buf, 0, "TPM2_ReadPublic");
+>+	if (rc) {
+>+		tpm_buf_destroy(&buf);
+>+		return tpm_ret_to_err(rc);
+>+	}
+>
+>-	return rc;
+>+	/* Skip TPMT_PUBLIC: */
+>+	offset += tpm_buf_read_u16(&buf, &offset);
+>+
+>+	/*
+>+	 * Ensure space for the length field of TPM2B_NAME and hashAlg field of
+>+	 * TPMT_HA (the extra four bytes).
+>+	 */
+>+	if (offset + 4 > tpm_buf_length(&buf)) {
+>+		tpm_buf_destroy(&buf);
+>+		return -EIO;
+>+	}
+>+
+>+	rc = tpm_buf_read_u16(&buf, &offset);
+>+	rc2 = name_size(&buf.data[offset]);
+
+rc2 is not great naming. We only use it for this, so perhaps name_len?
+
+>+
+>+	if (rc2 < 0)
+>+		return rc2;
+>+
+>+	if (rc != rc2) {
+>+		tpm_buf_destroy(&buf);
+>+		return -EIO;
+>+	}
+>+
+>+	if (offset + rc > tpm_buf_length(&buf)) {
+>+		tpm_buf_destroy(&buf);
+>+		return -EIO;
+>+	}
+>+
+>+	memcpy(name, &buf.data[offset], rc);
+>+	return 0;
+> }
+> #endif /* CONFIG_TCG_TPM2_HMAC */
+>
+>-- 
+>2.52.0
 >
 
-Builds successfully.  Boots and works on qemu and Dell XPS 15 9520 w/
-Intel Core i7-12600H
+J.
 
-Tested-by: Brett Mastbergen <bmastbergen@ciq.com>
-
-Thanks,
-Brett
+-- 
+Web [   Pretty please, with sugar on top, clean the f**king car.   ]
+site: https:// [                                          ]      Made by
+www.earth.li/~noodles/  [                      ]         HuggieTag 0.0.24
 
