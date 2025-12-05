@@ -1,99 +1,77 @@
-Return-Path: <stable+bounces-200200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F19D2CA93CA
-	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 21:17:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17145CA950B
+	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 21:57:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 28BF430F071F
-	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 20:16:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 843FF3081811
+	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 20:57:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47B0B26A1A4;
-	Fri,  5 Dec 2025 20:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2C562DF128;
+	Fri,  5 Dec 2025 20:57:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=mail.tikatika.nl header.i=@mail.tikatika.nl header.b="cfXty5bP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PjzsSdtq"
 X-Original-To: stable@vger.kernel.org
-Received: from tika.stderr.nl (tika.stderr.nl [94.142.244.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 531A625A2A2;
-	Fri,  5 Dec 2025 20:16:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.142.244.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4642D227B8E;
+	Fri,  5 Dec 2025 20:57:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764965814; cv=none; b=YSHjRzKMFN3bTTwqwuBkK+i375qPDAQu4BG0T2+SKhBSSYWiWX1sLkAI/WL9a88LBfxCm6KWrRHbQV/yUA1SQ1fqFVdy4pA4bh53949RCTEyyzm7Ecd24Oy8doPDNxGgqp/ZgTgpTVmpz0FICVQ/fYH/1KMaxDMGWcIWpbw4wN4=
+	t=1764968232; cv=none; b=alk7EJdhkuEUtE4JWr/MPjfbcF5q4DK1/fFkTipCwX7b2Buh8NCFBCs6oCtczgBpZzMp0jRENddINnxE6moR3MUY2nNF2Qt0lhZiR1Dlh5D3hBk5vUiyIzTUZrhf+RAzj8c+1es70/LVYGyaExMBxWMLFlVGZEBdyq74TC419jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764965814; c=relaxed/simple;
-	bh=H1pkqbtnAmubRqF3JPbkkpaISz3BW4qCIPShfd2Y2tM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pf0j0L2CIA8iboQ2aTOlIF19MDgGvBZaGsuqYPPBPxyiVkuyjz7j4L5z7YJq2GjhIxqBjLIN2/1xK/3IMJxlQxTFT1YeSXa1sDa0iHx1QWv6PyiUP4JPxiKYGQBCc0XAK/fIz+I3bpMy1Lp7Gonfe0aJWARXvu7/g5MSjFKV2yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=stdin.nl; spf=none smtp.mailfrom=tika.stderr.nl; dkim=pass (1024-bit key) header.d=mail.tikatika.nl header.i=@mail.tikatika.nl header.b=cfXty5bP; arc=none smtp.client-ip=94.142.244.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=stdin.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=tika.stderr.nl
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=mail.tikatika.nl; s=201709.tika; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=XIoqhX0typcqboX+DkDTWXgWFYzdfO7UAmIx4Qh4ho8=; b=cfXty5bPbjRvDtG0+5c2vXuNPt
-	azWCtZeHSTE0EyUhRsoQZjiHOn53/wtNPZvdTbdgbsT4ep9e6Ywkrsm63TbOpH7rc5hZmkD/5loaB
-	29sq5MqsDKcaZfa0BpRU4JxpnyGAGRdf3xJmnjaNgp3IY1WxfdT310U3IWTM6OzwZtTY=;
-X-Preliminary-Spam-Score: -4.3 (----)
-Received: from [45.142.19.84] (helo=zozo)
-	by tika.stderr.nl with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <matthijs@tika.stderr.nl>)
-	id 1vRcEN-00DDbS-2H;
-	Fri, 05 Dec 2025 21:16:46 +0100
-Received: (nullmailer pid 2868408 invoked by uid 1000);
-	Fri, 05 Dec 2025 20:16:43 -0000
-From: Matthijs Kooijman <matthijs@stdin.nl>
-To: Heiko Stuebner <heiko@sntech.de>
-Cc: linux-rockchip@lists.infradead.org, linux-gpio@vger.kernel.org, Matthijs Kooijman <matthijs@stdin.nl>, stable@vger.kernel.org
-Subject: [PATCH 1/2] gpio: rockchip: Call pinctrl for gpio config
-Date: Fri,  5 Dec 2025 21:06:52 +0100
-Message-ID: <20251205201254.2865179-4-matthijs@stdin.nl>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20251205201254.2865179-2-matthijs@stdin.nl>
-References: <20251205201254.2865179-2-matthijs@stdin.nl>
+	s=arc-20240116; t=1764968232; c=relaxed/simple;
+	bh=q62v9+SE3ud4yC02TCCUnwXe58LvFZ9q8Ei57GAee7E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dXKCR+aThM0CAoZ3Gt2sVF1KqCj1k1RAhhpskHzWKr2lcMPFd9IK9cTQy3gOGYlpwKXDDmKOcqY0U+UbfJnIWLw15hMl9yU05PCPVCrOj5C3aRL8zuLG8T2qOM7DvzatoN1Oacqfp9jTyp4EoX+C7Xo5csL483SsJpEG/V4/jh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PjzsSdtq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D8C6C4CEF1;
+	Fri,  5 Dec 2025 20:57:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1764968231;
+	bh=q62v9+SE3ud4yC02TCCUnwXe58LvFZ9q8Ei57GAee7E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PjzsSdtqHM3mR6zWFIoKlW58tX3BdGuLbubrDsGl+bpAOTTI9SQx9eEBMG0gZx/aH
+	 vujO5uDnXVdYBTBRXHd2WDhCNqwXUQJinlIQ82QcKo1yACU+NY1kACTcnCQgFaZBym
+	 fi0TAK1y+nRdpjEZBvDzICHXlluN/z18lHxBNf0w=
+Date: Fri, 5 Dec 2025 15:57:08 -0500
+From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+To: Kurt Borja <kuurtb@gmail.com>
+Cc: Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, 
+	Hans de Goede <hansg@kernel.org>, platform-driver-x86@vger.kernel.org, Dell.Client.Kernel@dell.com, 
+	LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH 0/3] platform/x86: alienware-wmi-wmax: Add support for
+ some newly released models
+Message-ID: <20251205-masked-classy-ferret-9bb445@lemur>
+References: <20251205-area-51-v1-0-d2cb13530851@gmail.com>
+ <49c9bab4-520f-42ca-5041-8a008b55f188@linux.intel.com>
+ <DEQIPUKHDQYB.2LLGMK25N40VN@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <DEQIPUKHDQYB.2LLGMK25N40VN@gmail.com>
 
-Pinctrl is responsible for bias settings and possibly other pin config,
-so call gpiochip_generic_config to apply such config values. This might
-also include settings that pinctrl does not support, but then it can
-return ENOTSUPP as appropriate.
+On Fri, Dec 05, 2025 at 02:08:52PM -0500, Kurt Borja wrote:
+> >> Thanks for all your latest reviews!
+> >> 
+> >> Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+> >
+> > You don't need to signoff the coverletter. :-) (Hopefully it won't 
+> > confuse any tools but I guess they should handle duplicate tags sensibly 
+> > so likely no problem in this case).
+> 
+> Actually, unless I messed up something, this is b4's default settings
+> :-). I'll take a look.
 
-This makes sure any bias and other pin config set by userspace (via
-gpiod) actually takes effect.
+This is intentional, because some subsystems use the cover letter as the
+content of the merge commit.
 
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Matthijs Kooijman <matthijs@stdin.nl>
-
----
- drivers/gpio/gpio-rockchip.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/gpio/gpio-rockchip.c b/drivers/gpio/gpio-rockchip.c
-index 47174eb3ba76f..106f7f734b4ff 100644
---- a/drivers/gpio/gpio-rockchip.c
-+++ b/drivers/gpio/gpio-rockchip.c
-@@ -303,7 +303,7 @@ static int rockchip_gpio_set_config(struct gpio_chip *gc, unsigned int offset,
- 		 */
- 		return -ENOTSUPP;
- 	default:
--		return -ENOTSUPP;
-+		return gpiochip_generic_config(gc, offset, config);
- 	}
- }
- 
--- 
-2.48.1
-
+-K
 
