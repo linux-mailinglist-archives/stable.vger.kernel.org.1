@@ -1,77 +1,109 @@
-Return-Path: <stable+bounces-200100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B38DCA5F4A
-	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 04:04:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D69B4CA5F89
+	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 04:14:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EC07F315113E
-	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 03:04:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B7EBD315ACA2
+	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 03:13:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9BA02BEC2E;
-	Fri,  5 Dec 2025 03:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AC5E246BD2;
+	Fri,  5 Dec 2025 03:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e2sp4tge"
+	dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b="Sy0CTuo2"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from r3-18.sinamail.sina.com.cn (r3-18.sinamail.sina.com.cn [202.108.3.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E47D18D658;
-	Fri,  5 Dec 2025 03:04:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ABDC27EFFA
+	for <stable@vger.kernel.org>; Fri,  5 Dec 2025 03:13:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.108.3.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764903855; cv=none; b=puUOyQYoPvR6tox0T7BWlhEPg2+9wwLooRgZxYxIUTfsDKlvwrvhQ2rlG6Ss56XgcqlCUwQ9f+B9aVcmnqrS5c3pvkVFOqMZy+KVZqvG2RpT9MVSs22x4sP03TPk5/3f/VcjZM+ZNFKbf6dEy8B+GbThF5u3xDqneOWLA45UPo8=
+	t=1764904430; cv=none; b=jjQSgiou+DwsTtJypCFx9xjLWoAErz5SVM3YFi1ElKrNjAEIre+ao5Bp0Ii1FxLBfc/zMVWOnHu+4rXsxQi4rIxmSFFLZJpIqWcQah8I7oXJcdNS1JOICbI8IP4po1HpuwcyCU2a1Rs5tOTCs/ToG9cM6CqrF7DePv4jRyvnPxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764903855; c=relaxed/simple;
-	bh=/JQhc3V/qRD89UuPy9qhr18vhsDsM0Qv0lDC34gPhfA=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=MxF5zuq0gERheM5iTc/OWpCkMr5VikUvtCZ8Qx1xIYPT/lMMsfZuTeNxOnP0ZC2cRIh0weQK9bYh6EIym/yEu+AUkEmUDSVHDXBf2Mf/xmhLqUh+w83KcUddRaFBWD2DHR0HuydKF0XheIL/5ujnHp14fx3GKKTQ4pmRvcqNV5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e2sp4tge; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C6C6C4CEFB;
-	Fri,  5 Dec 2025 03:04:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764903855;
-	bh=/JQhc3V/qRD89UuPy9qhr18vhsDsM0Qv0lDC34gPhfA=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=e2sp4tgeeJSkYr5EtF9YWosF6pstypUhquLr0xATJAoeMJypK13d62wtPyE/BuuF2
-	 bZaSzllReiPlqMfZZmouqsVIvKWlVpN1cL4vRQwzLDXi3xmuxYrKGhl8eAIoHvCDcu
-	 zmzzh73fg+2vjcuhHvW/xc3Dt5ikfOOnftACx5gd1w6pSUNtf5TQA6fGXV8ADClTSG
-	 NAW3lqtVtP9ZVI4qsNh5OMz9eGo/AYL2vkEFI0NzbiY2PgylwHiZHugcS6u5oKtYsi
-	 5Exje65zuax5F9jfiUdULVcy6LI15e57oknLU5rpo5aRXyU1E2CMm3JSAeZgnQB/tc
-	 IOkM0rBuyRj3Q==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 78B043AA9A89;
-	Fri,  5 Dec 2025 03:01:14 +0000 (UTC)
-Subject: Re: [GIT PULL] virtio,vhost: fixes, cleanups
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20251202150721-mutt-send-email-mst@kernel.org>
-References: <20251202150721-mutt-send-email-mst@kernel.org>
-X-PR-Tracked-List-Id: <virtualization.lists.linux.dev>
-X-PR-Tracked-Message-Id: <20251202150721-mutt-send-email-mst@kernel.org>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
-X-PR-Tracked-Commit-Id: 205dd7a5d6ad6f4c8e8fcd3c3b95a7c0e7067fee
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: bc69ed975203c3ffe34f873531f3052914d4e497
-Message-Id: <176490367301.1073302.8927903391156784773.pr-tracker-bot@kernel.org>
-Date: Fri, 05 Dec 2025 03:01:13 +0000
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, kvm@vger.kernel.org, virtualization@lists.linux-foundation.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, alex.williamson@redhat.com, alok.a.tiwari@oracle.com, jasowang@redhat.com, kriish.sharma2006@gmail.com, linmq006@gmail.com, marco.crivellari@suse.com, michael.christie@oracle.com, mst@redhat.com, pabeni@redhat.com, stable@vger.kernel.org, yishaih@nvidia.com
+	s=arc-20240116; t=1764904430; c=relaxed/simple;
+	bh=sF1qIao+TYn7SW75G70+AU4lV0vjhqkP6LJXt4lvhnI=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=DjPsjBvZGGdi+KX2HjJd+VxTHI2303bl7wThqiF5kQOPUGCLFhjmoLh4qceqf5otf4YIm6kCGcuXhLjk0FkdB4NpFXqbd0cIlJZREHZLtExhMnxa6GoOpS7NAyyJwVYwI+qHfl3jlUaKipFbZrqwFlgRP75IzA5mucGAMGQGYgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=Sy0CTuo2; arc=none smtp.client-ip=202.108.3.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.cn
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1764904426;
+	bh=B11YdCxnfX3eA2fZ53RtkZVR+/TU7c6yKHbU0cgE2fI=;
+	h=From:Subject:Date:Message-Id;
+	b=Sy0CTuo2P1ZCpp4KFVO6X3uNDaT9v+5s1jq5RASYr2x18MOwm1PF+EWFqHycrx/hg
+	 ntRBhgJW5J8Usu9gv8Jec6P0C2lpLFxi3cZSq1YVbFl/qLAeWI2jGJkSzjrJD+xSM1
+	 SYCv8IdEsHwftntzgFtov6MIx1xDbg7K66cPq1g4=
+X-SMAIL-HELO: sina-kernel-team
+Received: from unknown (HELO sina-kernel-team)([183.241.245.185])
+	by sina.cn (10.54.253.32) with ESMTP
+	id 69324D9C00003924; Fri, 5 Dec 2025 11:13:01 +0800 (CST)
+X-Sender: xnguchen@sina.cn
+X-Auth-ID: xnguchen@sina.cn
+Authentication-Results: sina.cn;
+	 spf=none smtp.mailfrom=xnguchen@sina.cn;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=xnguchen@sina.cn
+X-SMAIL-MID: 4535734456880
+X-SMAIL-UIID: 4A48157AEE4B48349AB0D9F1F7B4BF0A-20251205-111301-1
+From: Chen Yu <xnguchen@sina.cn>
+To: vladimir.oltean@nxp.com,
+	horms@kernel.org,
+	kuba@kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH 6.6] net: dsa: sja1105: fix kasan out-of-bounds warning in sja1105_table_delete_entry()
+Date: Fri,  5 Dec 2025 11:12:23 +0800
+Message-Id: <20251205031223.2563-1-xnguchen@sina.cn>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
-The pull request you sent on Tue, 2 Dec 2025 15:07:21 -0500:
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
+[ Upstream commit 5f2b28b79d2d1946ee36ad8b3dc0066f73c90481 ]
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/bc69ed975203c3ffe34f873531f3052914d4e497
+There are actually 2 problems:
+- deleting the last element doesn't require the memmove of elements
+  [i + 1, end) over it. Actually, element i+1 is out of bounds.
+- The memmove itself should move size - i - 1 elements, because the last
+  element is out of bounds.
 
-Thank you!
+The out-of-bounds element still remains out of bounds after being
+accessed, so the problem is only that we touch it, not that it becomes
+in active use. But I suppose it can lead to issues if the out-of-bounds
+element is part of an unmapped page.
 
+Fixes: 6666cebc5e30 ("net: dsa: sja1105: Add support for VLAN operations")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250318115716.2124395-4-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Chen Yu <xnguchen@sina.cn>
+---
+ drivers/net/dsa/sja1105/sja1105_static_config.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/dsa/sja1105/sja1105_static_config.c b/drivers/net/dsa/sja1105/sja1105_static_config.c
+index baba204ad62f..2ac91fe2a79b 100644
+--- a/drivers/net/dsa/sja1105/sja1105_static_config.c
++++ b/drivers/net/dsa/sja1105/sja1105_static_config.c
+@@ -1921,8 +1921,10 @@ int sja1105_table_delete_entry(struct sja1105_table *table, int i)
+ 	if (i > table->entry_count)
+ 		return -ERANGE;
+ 
+-	memmove(entries + i * entry_size, entries + (i + 1) * entry_size,
+-		(table->entry_count - i) * entry_size);
++	if (i + 1 < table->entry_count) {
++		memmove(entries + i * entry_size, entries + (i + 1) * entry_size,
++			(table->entry_count - i - 1) * entry_size);
++	}
+ 
+ 	table->entry_count--;
+ 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+2.17.1
+
 
