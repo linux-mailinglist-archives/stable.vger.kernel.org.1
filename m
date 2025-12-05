@@ -1,329 +1,125 @@
-Return-Path: <stable+bounces-200118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0374CA61CF
-	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 05:37:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4466CCA6233
+	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 06:09:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 760F532125FE
-	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 04:34:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 898D93158C56
+	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 05:08:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC9022DCBE0;
-	Fri,  5 Dec 2025 04:34:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9A5A2DF6E3;
+	Fri,  5 Dec 2025 05:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eXV9kLEu"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="V7NrCuDG"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FBF4261B8C;
-	Fri,  5 Dec 2025 04:34:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED362DF141
+	for <stable@vger.kernel.org>; Fri,  5 Dec 2025 05:08:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764909258; cv=none; b=SSpl1mU1i1gE3bjbDBSphDFdhfZqaEPelZkbD47cWdbIiIh37NW+/OouXEehZN0r0hRvIe8Z58UYP3HVPsD7zWYQdYbInenTwyencuvUGRwobMB8nY/9T0APZZ/mVZibHINKf8ZWdpjfSF4bh4RNH7ydNma3FWYIwDf16DVzGxU=
+	t=1764911338; cv=none; b=RKqCFMdh7N8va0EoI2R7/zeKOjZLgJceif5tluHpxWvAoMY/K3UGzmPJANCoJaM+Q4yc2qXS4WePUT5OWQmgKYDNisuMKgSMpPSp4Igj5IJNMNDIqzXUMWftrUQ2D2HLqdPnwLcvIHuCYgKKTR8emGgR6fotmkz7RI12TECkiQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764909258; c=relaxed/simple;
-	bh=BTTO7S67pYrc+iPyi8vMbS7klQBdOJREUyOK/N4z6iw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oh0p1/gxs7Tlq9EZghewmLQ/+RsnpOblU0msc/tgz5L2OQzC+BIbBag+7jGKrXROwJoeZ9ByXlH0PLr6qkJp/LBb79xyP51Yy5r24Y/pA9WqACxzWSo2TtU1wUSZH+dPtVczjrCjmhghXCegCwcU1/MwfQ3kQgFmUcHxZA1MXO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eXV9kLEu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 614CBC4CEF1;
-	Fri,  5 Dec 2025 04:34:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764909258;
-	bh=BTTO7S67pYrc+iPyi8vMbS7klQBdOJREUyOK/N4z6iw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eXV9kLEuRIotvwDvo5BcIaPnh/Ofrm1+uo2fArb9bZlSvbLv1evwW93z3CTC09N70
-	 XhtoTb14v0vSBdjdXxDntmnN0TyYHqf3198pUlLnVUXmCAg4jE/EVk83d22stwH7ki
-	 DN1uW5LycFw3dFAa1bRjc3Qh8R8LE4bPA1RfaBfM+xj3VXiv+qY+HOJqrl6vBpQ+88
-	 Bdu31kYYr2x9rsNv+aL8Fep7q8KlYB4no5H6GBWT5NvDzxU8TLv6zpQA8Nf6UcysWX
-	 dDLhfeBZWr8mJg1Ra0KTtB3lCtk7512Nxm6pnWA2HHi042eFFJi0XkA10/eehsoSwr
-	 dN5qN89PTY/kg==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Song Liu <song@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Petr Mladek <pmladek@suse.com>,
-	Sasha Levin <sashal@kernel.org>,
-	jikos@kernel.org,
-	mbenes@suse.cz,
-	live-patching@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-5.10] livepatch: Match old_sympos 0 and 1 in klp_find_func()
-Date: Thu,  4 Dec 2025 23:33:44 -0500
-Message-ID: <20251205043401.528993-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251205043401.528993-1-sashal@kernel.org>
-References: <20251205043401.528993-1-sashal@kernel.org>
+	s=arc-20240116; t=1764911338; c=relaxed/simple;
+	bh=0mosFK9wUrWmPpbImUrx67eiKJ87H4+FqqaRIiZgNIw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MGhvL7EAsUgY41/n966xwLGCw6pPc6fJNcJDyvnf6nFgcTzIGm1MUDFk1FfhMr+1nzqlj3JkZh+w4TZESSBPIOlA3J0Agni+78XptI+rNPFa0PaRUVs5SM/T158JswrVM9oJbBSkvmU4K5G29lYeKYtx1+IzDCAZeT+HsAm8LlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=V7NrCuDG; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-47795f6f5c0so11301045e9.1
+        for <stable@vger.kernel.org>; Thu, 04 Dec 2025 21:08:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1764911335; x=1765516135; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qQ/QcU+pdySkeU/ShhAyFWrRXwd2eVI/9oBv8X3jXNM=;
+        b=V7NrCuDGNGB+6XeX/DoLmFw50NV3+BuP9qxLxMkKP2pUojz3VlrXa8x1/TnhKIcFR1
+         oP6V5hLrV2KcvVw2mGD1uWrixPOmswgf6SVTfyxT//IsFaMlCoSLy92ga9v2sYYoddXG
+         g3gu/ecnFpV6KZUhnt/yxp9dfrqFUOurt5xm/HAjEtDp61+dQNuIZ2BKFGo9BVvZKLcH
+         yZnLECa/VaxlYH0pApf17JHSGLdo4dMJYBb9DsL/56aWBFasluqDCM7SUwAaAv4E3yEL
+         lgjG0jzjb5QxSSDoewh1pvHsi+s19+iEMhUvE9hICnkyxWN8g2wFfm3YAGrLdTQZrfDl
+         re6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764911335; x=1765516135;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qQ/QcU+pdySkeU/ShhAyFWrRXwd2eVI/9oBv8X3jXNM=;
+        b=VoolfI8Ocvr+EOZYyTr2GRyV8SWdPevAW0PIQfhiA7MHEFqqhEtVuLn12V9WqLbeZW
+         Jp+hIh/OwKjyA0tYDA5hNOpnsRRCEI2o+qZSdEQg0Kq7thxgV4qRcxTsPS/BAJywiPvD
+         idIBSkcCjfnzrHeoGBNt0ZtpyJWygu7/KkpSTD3yYcV/KF/sROyZyrL/ViYlYeWb6ilY
+         r/cxc4qIrbAoT1u561d8TwiSHywTPONP0P6Q9+Ry5OnWiV0eXq41tvq3Wn0bp4jKxb6P
+         3F34BR11AVi1Yc3Nsrh5+uixUPPwAQfIETPZ9YQibZjOgyQpi/MMZo/eVsoqsDNxap/9
+         paIQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW1pGblx6mpRqp8naD5lEGLpE9Kf0fP2BXzp7NMIzLe0U5IwooXB1SR5xxGHHPXTVsDfAzYClc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLoM4/oBAnNd/3KtSbWT+AGDWrY8bW4p7NBR4RHdIvDppmuENq
+	2MTHFDQE1jZt9poqgmPXbaP9tZyEqpmIs88aQQojMuUWjp3TGpGvGKg=
+X-Gm-Gg: ASbGncv6Dkxk7GWkAnrUeeaeP3zon9K2KUd8okGMoVVsrxd6tdX8dgDpQsqoYq6N4Wj
+	+zzM6X0LJIpijMMzf/0ORAKdEbwIWv+lJ6viTKaeFCOfl2v4zab7Y44jmG+z8hD6EOlpRSGxPFM
+	IpWwTMhHGa8x6gBu2f11UQAAqVCi5Q73atH8zNRPS8Omcm9Zm50NxicQEAM3wBJIFK34QtMeLD1
+	6XBAZR+oVJfbCTg9ahQ7RHdPu/2zhQvGaCWriE9NML32IiwJFaOe4PkycwydkzvKsoqb83AvoGP
+	meBuQbLr7lAkXJpR5enFmqDl+RUDL0WfkoJG6xD4Egi7IyPmVU3hR2ifZb0fTTUckABAYNQ4460
+	6JO6ITfZ5dUULgOyoOg5TMGHUuB3umL64pnHYDXlugliE6bF4+GLjLsj8mwxKaTLUcH2Bdlkdwx
+	q/D2VhWf+TGsrJQHnPcxmIfWAa1ogQ36HcL6gniv2ecSF2JiDxMMtN90X9wn27ajZazyAZIekdr
+	g==
+X-Google-Smtp-Source: AGHT+IFuy+KM+jSzlsBMxRWNLMk24D+Ii3BDvGvDvIPansVEZ/vl5jS5fISZUowndW7O7145yPP0Vw==
+X-Received: by 2002:a05:600c:1ca4:b0:477:63dc:be00 with SMTP id 5b1f17b1804b1-4792af404d2mr91038825e9.25.1764911334883;
+        Thu, 04 Dec 2025 21:08:54 -0800 (PST)
+Received: from [192.168.1.3] (p5b2ac20f.dip0.t-ipconnect.de. [91.42.194.15])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-479311e7142sm64715515e9.11.2025.12.04.21.08.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 04 Dec 2025 21:08:54 -0800 (PST)
+Message-ID: <36a31d9d-cb38-43db-94d1-d40129ca4bc9@googlemail.com>
+Date: Fri, 5 Dec 2025 06:08:53 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.18
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.1 000/567] 6.1.159-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20251204163841.693429967@linuxfoundation.org>
+Content-Language: de-DE
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20251204163841.693429967@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-From: Song Liu <song@kernel.org>
+Am 04.12.2025 um 17:44 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.1.159 release.
+> There are 567 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-[ Upstream commit 139560e8b973402140cafeb68c656c1374bd4c20 ]
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
 
-When there is only one function of the same name, old_sympos of 0 and 1
-are logically identical. Match them in klp_find_func().
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-This is to avoid a corner case with different toolchain behavior.
 
-In this specific issue, two versions of kpatch-build were used to
-build livepatch for the same kernel. One assigns old_sympos == 0 for
-unique local functions, the other assigns old_sympos == 1 for unique
-local functions. Both versions work fine by themselves. (PS: This
-behavior change was introduced in a downstream version of kpatch-build.
-This change does not exist in upstream kpatch-build.)
+Beste Grüße,
+Peter Schneider
 
-However, during livepatch upgrade (with the replace flag set) from a
-patch built with one version of kpatch-build to the same fix built with
-the other version of kpatch-build, livepatching fails with errors like:
-
-[   14.218706] sysfs: cannot create duplicate filename 'xxx/somefunc,1'
-...
-[   14.219466] Call Trace:
-[   14.219468]  <TASK>
-[   14.219469]  dump_stack_lvl+0x47/0x60
-[   14.219474]  sysfs_warn_dup.cold+0x17/0x27
-[   14.219476]  sysfs_create_dir_ns+0x95/0xb0
-[   14.219479]  kobject_add_internal+0x9e/0x260
-[   14.219483]  kobject_add+0x68/0x80
-[   14.219485]  ? kstrdup+0x3c/0xa0
-[   14.219486]  klp_enable_patch+0x320/0x830
-[   14.219488]  patch_init+0x443/0x1000 [ccc_0_6]
-[   14.219491]  ? 0xffffffffa05eb000
-[   14.219492]  do_one_initcall+0x2e/0x190
-[   14.219494]  do_init_module+0x67/0x270
-[   14.219496]  init_module_from_file+0x75/0xa0
-[   14.219499]  idempotent_init_module+0x15a/0x240
-[   14.219501]  __x64_sys_finit_module+0x61/0xc0
-[   14.219503]  do_syscall_64+0x5b/0x160
-[   14.219505]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
-[   14.219507] RIP: 0033:0x7f545a4bd96d
-...
-[   14.219516] kobject: kobject_add_internal failed for somefunc,1 with
-    -EEXIST, don't try to register things with the same name ...
-
-This happens because klp_find_func() thinks somefunc with old_sympos==0
-is not the same as somefunc with old_sympos==1, and klp_add_object_nops
-adds another xxx/func,1 to the list of functions to patch.
-
-Signed-off-by: Song Liu <song@kernel.org>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-[pmladek@suse.com: Fixed some typos.]
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Tested-by: Petr Mladek <pmladek@suse.com>
-Signed-off-by: Petr Mladek <pmladek@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-
-LLM Generated explanations, may be completely bogus:
-
-## Analysis
-
-### 1. COMMIT MESSAGE ANALYSIS
-
-**Subject:** `livepatch: Match old_sympos 0 and 1 in klp_find_func()`
-
-**Key indicators:**
-- Fixes a bug: livepatch upgrade failures with replace flag
-- Real-world impact: sysfs duplicate filename error causing patch
-  enablement to fail
-- Clear problem description with error logs
-- Tested-by: Petr Mladek
-- Reviewed-by: Petr Mladek, Josh Poimboeuf
-
-**Root cause:** Different versions of kpatch-build assign `old_sympos` 0
-vs 1 for unique functions. During livepatch upgrade with replace,
-`klp_find_func()` doesn't match them, leading to duplicate sysfs
-entries.
-
-### 2. CODE CHANGE ANALYSIS
-
-**Files changed:** 1 file (`kernel/livepatch/core.c`)
-**Lines changed:** 7 lines added, 1 line modified
-
-**Change:**
-```c
-// Before:
-if ((strcmp(old_func->old_name, func->old_name) == 0) &&
-    (old_func->old_sympos == func->old_sympos)) {
-
-// After:
-if ((strcmp(old_func->old_name, func->old_name) == 0) &&
-    ((old_func->old_sympos == func->old_sympos) ||
-     (old_func->old_sympos == 0 && func->old_sympos == 1) ||
-     (old_func->old_sympos == 1 && func->old_sympos == 0))) {
-```
-
-**Technical explanation:**
-- For unique symbols, `old_sympos` 0 and 1 both refer to the first
-  occurrence
-- `klp_find_object_symbol()` treats `sympos == 0` as "unique symbol"
-  (see lines 170-175)
-- Sysfs displays `old_sympos == 0` as `1` (line 820: `func->old_sympos ?
-  func->old_sympos : 1`)
-- The fix makes `klp_find_func()` treat 0 and 1 as equivalent for
-  matching
-
-**Why this fixes the bug:**
-- During replace upgrade, `klp_add_object_nops()` calls
-  `klp_find_func()` to check if a function already exists
-- Without the fix, `old_sympos==0` and `old_sympos==1` don't match
-- This causes duplicate sysfs entries, leading to `-EEXIST` and patch
-  enablement failure
-
-### 3. CLASSIFICATION
-
-**Type:** Bug fix (not a feature)
-
-**Exception categories:** None needed — this is a bug fix
-
-**Security:** No security impact, but prevents a reliability issue
-
-### 4. SCOPE AND RISK ASSESSMENT
-
-**Scope:**
-- Single function (`klp_find_func()`)
-- Localized change
-- No architectural changes
-
-**Risk:** Low
-- Small, targeted change
-- Clear logic
-- No new code paths
-- Only affects matching logic for unique symbols
-
-**Potential issues:**
-- None identified
-- Change is conservative (adds equivalence, doesn't remove checks)
-
-### 5. USER IMPACT
-
-**Severity:** High for affected users
-- Prevents livepatch upgrades with replace flag
-- Causes kernel errors and patch enablement failure
-- Affects users upgrading between different kpatch-build versions
-
-**Affected users:**
-- Users performing livepatch upgrades with replace
-- Users mixing kpatch-build versions
-- Enterprise users relying on livepatch for updates
-
-**Impact assessment:**
-- Core livepatch functionality (upgrade path)
-- Real-world scenario (different toolchain versions)
-- User-visible failure (error messages, failed upgrades)
-
-### 6. STABILITY INDICATORS
-
-**Testing:**
-- Tested-by: Petr Mladek
-- Reviewed-by: Petr Mladek, Josh Poimboeuf
-- Real-world scenario documented
-
-**Code maturity:**
-- Function exists since atomic replace (Jan 2019)
-- Present in stable trees (5.1+)
-- Mature code path
-
-### 7. DEPENDENCY CHECK
-
-**Dependencies:**
-1. `klp_find_func()` — introduced with atomic replace (commit
-   e1452b607c48c, Jan 2019)
-2. `klp_add_object_nops()` — same commit
-3. Replace functionality — present since ~5.1
-
-**Backport compatibility:**
-- Applies cleanly to any stable tree with atomic replace
-- No other commits required
-- Self-contained fix
-
-**Affected stable versions:**
-- Any stable tree with atomic replace (~5.1+)
-- All current LTS trees (6.1.y, 6.6.y, etc.)
-
-### 8. STABLE KERNEL RULES COMPLIANCE
-
-**Meets criteria:**
-1. Obviously correct: Yes — clear equivalence for unique symbols
-2. Fixes real bug: Yes — documented failure case
-3. Important issue: Yes — breaks livepatch upgrades
-4. Small and contained: Yes — 7 lines, 1 function
-5. No new features: Yes — bug fix only
-6. Applies cleanly: Yes — no conflicts expected
-
-**No violations:**
-- No new features
-- No API changes
-- No architectural changes
-- No new dependencies
-
-### 9. RISK VS BENEFIT TRADE-OFF
-
-**Benefit:**
-- Fixes upgrade failures
-- Low risk, high value
-- Addresses real user issue
-
-**Risk:**
-- Minimal — localized change
-- Conservative logic
-- Well-tested
-
-**Conclusion:** Strong benefit, minimal risk
-
-### 10. FINAL ASSESSMENT
-
-This commit should be backported to stable kernel trees.
-
-**Reasons:**
-1. Fixes a real bug that breaks livepatch upgrades
-2. Small, localized change (7 lines)
-3. Low risk, clear logic
-4. Well-tested and reviewed
-5. No new features or dependencies
-6. Applies cleanly to stable trees with atomic replace
-7. High user impact for affected users
-
-**Recommendation:** Backport to all stable trees that include atomic
-replace functionality (approximately 5.1.y and later).
-
-**YES**
-
- kernel/livepatch/core.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/kernel/livepatch/core.c b/kernel/livepatch/core.c
-index 0e73fac55f8eb..4e7a5cbc40a91 100644
---- a/kernel/livepatch/core.c
-+++ b/kernel/livepatch/core.c
-@@ -88,8 +88,14 @@ static struct klp_func *klp_find_func(struct klp_object *obj,
- 	struct klp_func *func;
- 
- 	klp_for_each_func(obj, func) {
-+		/*
-+		 * Besides identical old_sympos, also consider old_sympos
-+		 * of 0 and 1 are identical.
-+		 */
- 		if ((strcmp(old_func->old_name, func->old_name) == 0) &&
--		    (old_func->old_sympos == func->old_sympos)) {
-+		    ((old_func->old_sympos == func->old_sympos) ||
-+		     (old_func->old_sympos == 0 && func->old_sympos == 1) ||
-+		     (old_func->old_sympos == 1 && func->old_sympos == 0))) {
- 			return func;
- 		}
- 	}
 -- 
-2.51.0
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
