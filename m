@@ -1,126 +1,195 @@
-Return-Path: <stable+bounces-200183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42480CA8B58
-	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 18:56:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CB73CA8B8B
+	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 19:04:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 01C28300A9E1
-	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 17:56:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 095943024039
+	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 18:04:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C81C2DEA70;
-	Fri,  5 Dec 2025 17:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 328262E0415;
+	Fri,  5 Dec 2025 18:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m+2TeGC8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JPXeeHni"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC8227A12B
-	for <stable@vger.kernel.org>; Fri,  5 Dec 2025 17:56:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E806D239570;
+	Fri,  5 Dec 2025 18:04:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764957388; cv=none; b=hzkd6RGVzRjQGiFWurkgeSiqc53jbIcqKtsG0sRjmt9XQtmxBkw5P3+cxGCPm3Ef2JMo9UG2KkTIz08GdyWz4D7vOgZ2ePYyZ3i8D3Z1PfkGYFVvtVvVub9o2/lFzifwAo/lstB07l40Js9lYjz/ESsvTWPh6wCGp5V63t4+sAI=
+	t=1764957854; cv=none; b=R7VjKeOesopC/ECACw+3mdMHHcz69LycjLr2p8iHU0E/Yzd+ZjtknG5KVo6NDgVVTeesOQE71cjuiGo+WOAHOw3SiSlv06Kh7FiaA25RAznZIlU1vUEQLPlgmvA4PW+UHNbEe5c0/fljnYKVmdl+WHmA4tzshdoyjWm5LFc9b2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764957388; c=relaxed/simple;
-	bh=bmISz4wUHFCj2fNIPw8dlmlYdcyJ4m7YE6ev17DazPc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QcEptuenhLeCyFjtvTOSwXi4e6FvegFMlnjO/7u3oNeD+s5CeB7xRU3THaAXKysn55OLk8WR8t05XqNHR84BScaSMpuO6nHuxMCFD8o1uWZo+UnFxeI830bmEZz6S35wX0BBEwY8wJNR7B/3+GvGIzDuXnbXsRuPYQfpjmo7gIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m+2TeGC8; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-42e2b78d45bso1153509f8f.0
-        for <stable@vger.kernel.org>; Fri, 05 Dec 2025 09:56:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764957385; x=1765562185; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=kEgKo/l9HOuNeryVXSYMwjnWbEw58DLyjo3pfWvSHQE=;
-        b=m+2TeGC8N9cllUvoblUUVMH3gaD0e298rjQi8yhxwcbAuP2EXSoQaT9rgpQKqoJ1v6
-         eOxBcmnqh1deYPk5q1YLO+zzS7QG/nsxbBreGyyfekd12VTIcOGuyPaNe8K4+Ar78dpg
-         iKZch7mJ/N6l7OO5vWPz4Afc48gBWEC5lnLFk+OIu96I803YdYIO5mUOfTcLvjGtkuld
-         MHMWU4Rv6MCcy22rRPXXzAqeD/Szq5XNNci7VcCHFkjQadX31wsWm6Cx0lQ9hLdNFtO6
-         FEsjGTvBG7TD85nd1ivEv69j/G595A6S6PenBrJ4x/ImvH67/HfMrTGYMahRzmtJpWyJ
-         YUug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764957385; x=1765562185;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=kEgKo/l9HOuNeryVXSYMwjnWbEw58DLyjo3pfWvSHQE=;
-        b=T6/a6fe2r+sXfMSTgj/TVRqW1Agwz1BvMcy+jHamEKNJVkqMjJwgvqeOD0IpztgiVR
-         UxLrt5eMO1FAjEJV2PXtNrAaSroARlXPccAF8DGuDqMR8FaIVlGj8tQBC7xYCvvs+OC2
-         G2q3CBhmcuSGCi1MPJBWlc2lUCJ6K605LYoYGTjJgsR6GredJRPPc35fpG1PLGXQUkYl
-         4wV+Kq3kEiDOdLEdgKxkBaVecRjIoNOdSmSWrXPTNreVcf6+JiIOFtmCNT7Sop1JUt0I
-         c4ooVp7UEln6mVDZUUEX6vnQbfg52IXZA1cy/udb72mY6Y6uJHnQpvULasmkg64Mm7V0
-         A19A==
-X-Forwarded-Encrypted: i=1; AJvYcCVlbnjjiGwLHdszTtZwBQXkgUt88SqLukhqlB8EKsFs+1+xI3yXisHXneyEru7P5+EHPM/QXtA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzIKem0tdVrbs3syI8B+0m2+YLJWAUl3vYwbcjbI7BT8QP2HZc6
-	x7McedU9iWPiyD8TY2Fcm18IHAhmx2U1Awa4GIv1zhBkO3OXi3wu1YJZ
-X-Gm-Gg: ASbGncu82uirKFqIlstjviAqIBqx0sTdFoWh4r19IQTOdyMmNqUEPfAWVcrAB2FQAwI
-	iYsQYejl67tZDJ+WAUpTm8smIRNlX/N12Lg1uQlSGxKx894IRyOIkO0/Kz1q1nfUAdCLds1SGqA
-	frwjjA4s0g8Dyrhy4TZYVkG0kE1iYlYlDp6iWooNiR+P7kvoJtvXgb43w70mZa3RjU6D0FtAo8q
-	UdmmKqMSaIPW0+rAj9YO4ycxxY2YCFIjdCuXy1xKdJDypWyx5XTNnFNapcTksecim7jry8oBQWw
-	sOxQ+p3olqifWzNRdu2+YBgqJJsvGHGAhnTytdGcFa2cfi4km4Xa3x6dwvG3mOWHgCkTZqnb74v
-	JV7BaSrSPo0+nZ7tg50TTtVuF9jj0kGXWbjjZQ4u3tj6JbJ5b+IDIfsmsfktgWx7Dt3/LWnkvTw
-	ccswtM1t8Mu/KVAmOnufqvZWxGKSXztq7fQDqcdd0yaI6TMzFb
-X-Google-Smtp-Source: AGHT+IENm9zx8V7Tz0VXVGQhR9hdKMItPaS3QDNcTYQiQgg6kiMV16jXfg5TmA44Yga6DhrQU/Zk5w==
-X-Received: by 2002:a05:6000:22c9:b0:42b:30d4:e3f0 with SMTP id ffacd0b85a97d-42f89f0e237mr49229f8f.22.1764957384592;
-        Fri, 05 Dec 2025 09:56:24 -0800 (PST)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42f7d353be1sm9479087f8f.39.2025.12.05.09.56.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 05 Dec 2025 09:56:22 -0800 (PST)
-Message-ID: <198f8eb4-18a9-414b-bcec-fe44ea508e58@gmail.com>
-Date: Fri, 5 Dec 2025 09:56:17 -0800
+	s=arc-20240116; t=1764957854; c=relaxed/simple;
+	bh=BH6xV9/J5hx6yiAh2CkYhVZTVuRgIhQCcCO8xrPzx9Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=t2ET0GNV0KmmFAodqsenZxHteUHjPo2T36a+8KqHPqnASPrX0mumN1PI7p1LJRtJt/CTztrmGKScrQXQscGN7agBx8NL/i7LC32no+/+7spUqNxrgf/MCLt25SDCbLclwcdPGV86Gm8pe6l6hTyJccemiG/SDuURCeqI2QbaT8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JPXeeHni; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F3F1C4CEF1;
+	Fri,  5 Dec 2025 18:04:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1764957851;
+	bh=BH6xV9/J5hx6yiAh2CkYhVZTVuRgIhQCcCO8xrPzx9Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JPXeeHnizb42wE0tyCF96D7eRChHWfxacU/yMT3fUbB3e0b3DlVwXpbjLBf5zs3N9
+	 b6pTurSxXB7a0F/Q8eIj7OWeb+SL9cDlQdBK3M6e9EPqL70npH1XXBjgMqYGtjvlsx
+	 V8gp8PtZGvB1VRj8laPAB/dGcetF7Vv30iIBCPXU=
+Date: Fri, 5 Dec 2025 19:04:01 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Naresh Kamboju <naresh.kamboju@linaro.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+	achill@achill.org, sr@sladewatkins.com,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Anders Roxell <anders.roxell@linaro.org>,
+	Ben Copeland <benjamin.copeland@linaro.org>
+Subject: Re: [PATCH 5.15 000/387] 5.15.197-rc2 review
+Message-ID: <2025120546-booted-twins-04bc@gregkh>
+References: <20251204163821.402208337@linuxfoundation.org>
+ <CA+G9fYvz4R6SRM0ZZ6xDtnFcHo-RdQkrE3b9WTM0RCgWNiuieQ@mail.gmail.com>
+ <2025120553-sulphate-cancel-0f77@gregkh>
+ <20251205173947.GA2484770@ax162>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 000/567] 6.1.159-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
- sr@sladewatkins.com
-References: <20251204163841.693429967@linuxfoundation.org>
-Content-Language: en-US, fr-FR
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20251204163841.693429967@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251205173947.GA2484770@ax162>
 
-On 12/4/25 08:44, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.159 release.
-> There are 567 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Fri, Dec 05, 2025 at 10:39:47AM -0700, Nathan Chancellor wrote:
+> On Fri, Dec 05, 2025 at 05:33:19PM +0100, Greg Kroah-Hartman wrote:
+> > On Fri, Dec 05, 2025 at 12:59:37PM +0530, Naresh Kamboju wrote:
+> > > On Thu, 4 Dec 2025 at 22:14, Greg Kroah-Hartman
+> > > <gregkh@linuxfoundation.org> wrote:
+> > > >
+> > > > This is the start of the stable review cycle for the 5.15.197 release.
+> > > > There are 387 patches in this series, all will be posted as a response
+> > > > to this one.  If anyone has any issues with these being applied, please
+> > > > let me know.
+> > > >
+> > > > Responses should be made by Sat, 06 Dec 2025 16:37:24 +0000.
+> > > > Anything received after that time might be too late.
+> > > >
+> > > > The whole patch series can be found in one patch at:
+> > > >         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.197-rc2.gz
+> > > > or in the git tree and branch at:
+> > > >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> > > > and the diffstat can be found below.
+> > > >
+> > > > thanks,
+> > > >
+> > > > greg k-h
+> > > 
+> > > 
+> > > The powerpc allnoconfig failed with gcc-8 but passed with gcc-12.
+> > > 
+> > > Build regression: powerpc: allnoconfig: gcc-8: Inconsistent kallsyms data
+> > > 
+> > > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> > > 
+> > > ### Build error Powerpc
+> > > Inconsistent kallsyms data
+> > > Try make KALLSYMS_EXTRA_PASS=1 as a workaround
+> > > make[1]: *** [Makefile:1244: vmlinux] Error 1
+> > > 
+> > > ### Commit pointing to,
+> > >   Makefile.compiler: replace cc-ifversion with compiler-specific macros
+> > >   commit 88b61e3bff93f99712718db785b4aa0c1165f35c upstream.
+> > > 
+> > > ### Build
+> > >  - https://storage.tuxsuite.com/public/linaro/lkft/builds/36OCnVeYGpKUCXtxVdz6gezHjcQ/
+> > >  - https://storage.tuxsuite.com/public/linaro/lkft/builds/36OCnVeYGpKUCXtxVdz6gezHjcQ/config
+> > > 
+> > > ### Steps to reproduce
+> > >  - tuxmake --runtime podman --target-arch powerpc --toolchain gcc-8
+> > > --kconfig allnoconfig
+> > 
+> > Odd, this works on 5.10 ok?  What is different about 5.15 that keeps
+> > this from working?
 > 
-> Responses should be made by Sat, 06 Dec 2025 16:37:18 +0000.
-> Anything received after that time might be too late.
+> This issue does reproduce for me locally but only with gcc-8 from TuxMake (i.e., a
+> version from Debian), not with GCC 8.5.0 from kernel.org.
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.159-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
+>   $ git show -s --pretty=kernel
+>   869807d760ee ("libbpf: Fix invalid return address register in s390")
 > 
-> thanks,
+>   $ tuxmake -r podman -a powerpc -t gcc-8 -k allnoconfig default
+>   ...
+>   Inconsistent kallsyms data
+>   Try make KALLSYMS_EXTRA_PASS=1 as a workaround
+>   ...
 > 
-> greg k-h
+> However, reverting the backport of 88b61e3bff93 ("Makefile.compiler:
+> replace cc-ifversion with compiler-specific macros") does not resolve
+> the issue for me:
+> 
+>   $ git revert --no-edit c8dad7eb1e6221e0363ee468dc46700bfbad6dd2
+>   [detached HEAD 1669da6455e4] Revert "Makefile.compiler: replace cc-ifversion with compiler-specific macros"
+>    Date: Fri Dec 5 10:30:10 2025 -0700
+>    13 files changed, 30 insertions(+), 37 deletions(-)
+> 
+>   $ tuxmake -r podman -a powerpc -t gcc-8 -k allnoconfig default
+>   ...
+>   Inconsistent kallsyms data
+>   Try make KALLSYMS_EXTRA_PASS=1 as a workaround
+>   ...
+> 
+> My bisect landed on the backport of 19de03b312d6 ("block: make
+> REQ_OP_ZONE_OPEN a write operation") and reverting that actually
+> resolves the error.
+> 
+>   $ git bisect log
+>   # bad: [869807d760eeef0e0132eed3f1be6be16d084401] libbpf: Fix invalid return address register in s390
+>   # good: [cc5ec87693063acebb60f587e8a019ba9b94ae0e] Linux 5.15.196
+>   git bisect start '869807d760eeef0e0132eed3f1be6be16d084401' 'cc5ec87693063acebb60f587e8a019ba9b94ae0e'
+>   # bad: [ffd15ced026694355243064968a3b84269e0ee09] ARM: at91: pm: save and restore ACR during PLL disable/enable
+>   git bisect bad ffd15ced026694355243064968a3b84269e0ee09
+>   # bad: [1ba52b54e5f45e982d61b4eeabbf28d78a5f9e75] drm/amdkfd: return -ENOTTY for unsupported IOCTLs
+>   git bisect bad 1ba52b54e5f45e982d61b4eeabbf28d78a5f9e75
+>   # good: [8966a057d07281a5e65eaa3225cb072713921b25] Revert "docs/process/howto: Replace C89 with C11"
+>   git bisect good 8966a057d07281a5e65eaa3225cb072713921b25
+>   # bad: [27df52e05f7dd606e18e869cb4f52ce1fbfe699f] tee: allow a driver to allocate a tee_device without a pool
+>   git bisect bad 27df52e05f7dd606e18e869cb4f52ce1fbfe699f
+>   # bad: [2b426fa49ef76bbe04671b3a861352b924a01b96] memstick: Add timeout to prevent indefinite waiting
+>   git bisect bad 2b426fa49ef76bbe04671b3a861352b924a01b96
+>   # bad: [c126c39dc662661531c96acbbf5fc129ed7f535a] soc: qcom: smem: Fix endian-unaware access of num_entries
+>   git bisect bad c126c39dc662661531c96acbbf5fc129ed7f535a
+>   # good: [c142f0d16766ab7189af4b9128a2c81c56f7a01f] drm/sysfb: Do not dereference NULL pointer in plane reset
+>   git bisect good c142f0d16766ab7189af4b9128a2c81c56f7a01f
+>   # bad: [02dc541fc61c3e2dabc3574fe46a19f554ea5d8c] soc: aspeed: socinfo: Add AST27xx silicon IDs
+>   git bisect bad 02dc541fc61c3e2dabc3574fe46a19f554ea5d8c
+>   # bad: [23e0fecb7be5010e96b2948490799ef59ac4bea6] block: make REQ_OP_ZONE_OPEN a write operation
+>   git bisect bad 23e0fecb7be5010e96b2948490799ef59ac4bea6
+>   # first bad commit: [23e0fecb7be5010e96b2948490799ef59ac4bea6] block: make REQ_OP_ZONE_OPEN a write operation
+> 
+>   $ git revert --no-edit 23e0fecb7be5010e96b2948490799ef59ac4bea6
+>   [detached HEAD ddf3a34910b0] Revert "block: make REQ_OP_ZONE_OPEN a write operation"
+>    Date: Fri Dec 5 10:26:26 2025 -0700
+>     1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+>   $ tuxmake -r podman -a powerpc -t gcc-8 -k allnoconfig default
+>   ...
+>   I: config: PASS in 0:00:01.410526
+>   I: default: PASS in 0:00:04.933923
+>   ...
+> 
+> No idea why that commit would cause such an issue... but it does not
+> appear to be 88b61e3bff93 so I guess I am off the hook ;)
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+Great, thanks for looking into this and the information.  I'll leave
+your patch in :)
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+greg k-h
 
