@@ -1,223 +1,173 @@
-Return-Path: <stable+bounces-200142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DC17CA7270
-	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 11:28:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B40ACCA72AF
+	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 11:31:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4A3B3301458C
-	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 10:26:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6DA2B300EE62
+	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 10:31:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E218831BCAE;
-	Fri,  5 Dec 2025 10:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BB113093C3;
+	Fri,  5 Dec 2025 10:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="im/b7/M6"
+	dkim=pass (1024-bit key) header.d=zohomail.cn header.i=zyc199902@zohomail.cn header.b="ZVUOCcBc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender3-pp-o92.zoho.com.cn (sender3-pp-o92.zoho.com.cn [124.251.121.251])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB16311C37
-	for <stable@vger.kernel.org>; Fri,  5 Dec 2025 10:26:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.181
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764930369; cv=none; b=RZyml0rq4mmnSYYXhkbQ5+iaEaEg72ONFHTQJbUxhkQRGrjHiQeUSfS2mhx5GRGbaW5G+ngGR7VbKS3dQNQvfORNagDivLLSFTp37UZAZlhmlxJsWixEXlpLF0GjErF81awDrDM3+hVbZAa42dWGr0raur7hdC0a40RH44S9bxg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764930369; c=relaxed/simple;
-	bh=0X44rTBFoZxC528+irDpQ7IbGw+Sw+8vgkxtYkeRM54=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Nw/lhr6TKTQ6s7/mlMe5we3Ki4ExWcnPaGvqZo2wQHyJ6buTGDptCLpZJgJPeXHk9O8PLhEaT8bNhEygUMwK2DLr+Gmc7tjPBXTDNwO4Q2Bl6zOA0WrUSQL5Mh1N3bcWssfvdvc/V1S7eOTFSV8rbRGgydV900ZN6angqNV2x9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=im/b7/M6; arc=none smtp.client-ip=74.125.82.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-2a45877bd5eso3944550eec.0
-        for <stable@vger.kernel.org>; Fri, 05 Dec 2025 02:26:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1764930357; x=1765535157; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OdDYSUXbreK3nnvrwRaDva3mvj8fpQE8bz0YdLVbpgI=;
-        b=im/b7/M68WbdekfVyXVko0/yrv2ijAur4kZyef5PICVRbJnuU7C4IX31P5TntDH4Vp
-         UxlSiNv0B9QyhlDjWug0222H690WgV22YC9rtoa2FKrljO7Rnpz0fB8KvwP2j4nAxmCm
-         4HJQTWKQijNgyExSzEJnH7hObGe4EQlFpFwoL5I92emgdZ4PfjAVNoRb10h69Inyh5k8
-         /pGPUPDsEZ9mKTD8Hw0XogFKPwM6AFY8+oredjuxdecpjNc415hNi+G8x7uRjlE7vk6R
-         VOctOep4nRs67L1Zk6QSk2USXJz1UNXRBn2EsbbHBAYB5aFN+un/4kYBBEygp+ocTGCM
-         /gkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764930357; x=1765535157;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=OdDYSUXbreK3nnvrwRaDva3mvj8fpQE8bz0YdLVbpgI=;
-        b=jSR2IPvSQB81SUJ9/D/074mEmTttE6tDn5tDVhLiyHzTWifzlhIN3eK6cGDZgOfU4A
-         72nUjaolmZVVsOIX4imr9iYsmQ9ApgG7FUeqOMKHB7ovJ8RXUKXQLm0wEzAZDPtUiLIk
-         jk2S6+0L9jEK7qYMRE/2HGgvHWjswfyR33R5eqVI9ceioijent2zAo5dRf8lrQgPSrCq
-         LVjXXLil/akK1q9zEwlaY2pgRlOASbxiCMLMoPP5pw0BZRVYrcMbeJUjoYoiEsAbV9GP
-         Y+tDB6d0T+O/e7XHz5APNNZmyzU4p6EcSfnqOtEsHS7Cu27ziDOMsYjuk8o3rRBxPN2d
-         iBGA==
-X-Gm-Message-State: AOJu0YyTYZkfDy8PC42CVFe0FR0fVi6nPrr45YMNkMwAt8klPj94D33d
-	1Ml9y+Pz8whZvGKmbC936jz+Ks0bDHS/7q6BTHsHhphaW9bsgCiof9liOIa0i6WLO4agBDCCh0p
-	hDcMOddOX3oZOQG6YIEYiJu8s74Y2Wq/Z+kr2Fxcd3w==
-X-Gm-Gg: ASbGncu00b+vDXTG3hk975GcLuxoFnDjyPwPWNYmFm3UqwtZtCExwqRfG0ghLbnBszR
-	J0JyG8lR/o9b6+KYkzs5KTDx9fatKBnyzc0HFeLuc+z7ki2aMnIfci1tGgKuxLnLbSr3y++QL0l
-	2mFtgyhHqQRzAw2QrFDL/SsjoPIHTt7XSqLKmKzouDpmxlq+/H132xRWxMB4xBy6xvaYbY/UxC/
-	B1buZO0z/ZQeM+bernIfPy2NYKsAFZMfW9ucJpBA1Ocx7Keo6mgAT6qkZx5IM/iQG+yD4vK
-X-Google-Smtp-Source: AGHT+IGgJz5h9CNdhQnno2YzTuv99mFlBnV8wRHbHHIQaHsCuf7EysXn8e17W7rmAS+9f2bw/nXBejCaiWufe/9G7ac=
-X-Received: by 2002:a05:7300:7b94:b0:2a4:3593:ccba with SMTP id
- 5a478bee46e88-2aba33eb71cmr4631451eec.1.1764930356732; Fri, 05 Dec 2025
- 02:25:56 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84CC230147D
+	for <stable@vger.kernel.org>; Fri,  5 Dec 2025 10:31:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=124.251.121.251
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764930705; cv=pass; b=n7KRMyXDdhp1oQGSppM+vsl5mWOp1XqDvbEQ4A6fIi92JoaYXqnpYH1JVZHAVD1nALR7aOGogMQT/dmgQ57gJJF2iqVejbSTcggorT6MV0HCsWO/9B1vlUOj7UaW8HFPh5rtNg8MhinJI1xxup5q3CRD0VeDvHepKTfM4DbY8Qo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764930705; c=relaxed/simple;
+	bh=zwBs3fisBvLlD1fCu7/2kxD1Az8TyePsnTK3KzD4FWo=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=rPvM9/tf1noy3YGmDBIXkm1a7y3ESowJU4AqN4jRKD4eRlHm/mVB8owScm5DN8nxZegxiFrdeORQJeSSnvmguNMP4UlIaXniv+ozTvNw10cdnc/Bexe+Hd1yaccsnUV2i69fC2Cl31xQKjdPtJHajG4+Pnb86GMTUdQ6enultHk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.cn; spf=pass smtp.mailfrom=zohomail.cn; dkim=pass (1024-bit key) header.d=zohomail.cn header.i=zyc199902@zohomail.cn header.b=ZVUOCcBc; arc=pass smtp.client-ip=124.251.121.251
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=zohomail.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zohomail.cn
+ARC-Seal: i=1; a=rsa-sha256; t=1764930664; cv=none; 
+	d=zoho.com.cn; s=zohoarc; 
+	b=ZT+MUW4IQSEuCcp44Acn6m+X0Zy6Q6RPZVGJRvQZ5Wh9kmaUjkPgQ6CAfhKbbLGQFAoT79PWvpaYLdK6Em1XZWX6TgPVp/K7xeVFl6zNPuZYubok+1xSYtM+DnSpli+EenZrBVOhEIXluK8Ln28cOVzTnJ9WZ4eiz+U6Nu0XuPM=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zoho.com.cn; s=zohoarc; 
+	t=1764930664; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=geBg6pPjR6gSrWNei1UHgSbTtTOZYyZu8RQG+hGqSZA=; 
+	b=X1eHp9r9hkgw1PjfpXa09PkaglQx2bwWKfMA29HuolrEqTsC8Vt/HumqkJxnFT2H3u/b9m1vOuHAWqfIlWrOrRhkH+EgdxXF2OsJj4oXzdMrScQbopAkz5Ql1m86saC4ECCGmpc9ngeHSOyxbnh3cmtNfIh1ZhvhGg+R5q8jodM=
+ARC-Authentication-Results: i=1; mx.zoho.com.cn;
+	dkim=pass  header.i=zohomail.cn;
+	spf=pass  smtp.mailfrom=zyc199902@zohomail.cn;
+	dmarc=pass header.from=<zyc199902@zohomail.cn>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1764930664;
+	s=zoho; d=zohomail.cn; i=zyc199902@zohomail.cn;
+	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=geBg6pPjR6gSrWNei1UHgSbTtTOZYyZu8RQG+hGqSZA=;
+	b=ZVUOCcBcq4AgSkq/c0WkqLg5UHTknrd4g4u+QWGMOTg/7bCzjBCsfDxvm2CfXU0q
+	d1l4uNziS/LnXDZ1fY4ZMsBCfjobAXyqQW2HoM5TBJX4GEWLarGsXqyW4jAo2fskLny
+	h7v5rxJrnK+PrlKJ2RpbP3lviYoU6+7bEDdFRzQY=
+Received: from mail.baihui.com by mx.zoho.com.cn
+	with SMTP id 1764930660473848.3504375560245; Fri, 5 Dec 2025 18:31:00 +0800 (CST)
+Received: from  [73.170.62.200] by mail.zoho.com.cn
+	with HTTP;Fri, 5 Dec 2025 14:21:18 +0800 (CST)
+Date: Fri, 05 Dec 2025 18:31:00 +0800
+From: zyc zyc <zyc199902@zohomail.cn>
+To: "Greg KH" <gregkh@linuxfoundation.org>
+Cc: "stable" <stable@vger.kernel.org>, "will" <will@willsroot.io>
+Message-ID: <19aed2c0e0e.136fee88813945.4542830906609965797@zohomail.cn>
+In-Reply-To: <2025120350-encourage-possible-b043@gregkh>
+References: <19ace674022.114eb26e714992.3171091003233609170@zohomail.cn>
+ <19adda5a1e2.12410b78222774.9191120410578703463@zohomail.cn>
+ <2025120248-operation-explain-1991@gregkh>
+ <19ae2d0c40c.1304ed0542955.1614492155671387965@zohomail.cn> <2025120350-encourage-possible-b043@gregkh>
+Subject: =?UTF-8?Q?Re:_=E5=9B=9E=E5=A4=8D:6.12.50_regression:_netem:_cannot_mix_?=
+ =?UTF-8?Q?duplicating_netems_with_other_netems_in_tree.?=
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251204163841.693429967@linuxfoundation.org>
-In-Reply-To: <20251204163841.693429967@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Fri, 5 Dec 2025 15:55:44 +0530
-X-Gm-Features: AQt7F2pXdOQvj13bd5jjoOZPeEBtuzEGfrQaH4valfbj9TAZee-tH0PkAeLKvEM
-Message-ID: <CA+G9fYsPdOY3U8rMcBHOvKz1JVjApCfZxry2GvO6bE6sKGbedg@mail.gmail.com>
-Subject: Re: [PATCH 6.1 000/567] 6.1.159-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org, sr@sladewatkins.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+Importance: Medium
+User-Agent: ZohoCN Mail
+X-Mailer: ZohoCN Mail
+X-ZohoCNMail-Sender: zyc zyc
 
-On Thu, 4 Dec 2025 at 22:14, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.1.159 release.
-> There are 567 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sat, 06 Dec 2025 16:37:18 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.1.159-rc2.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+---- Greg KH <gregkh@linuxfoundation.org> =E5=9C=A8 Wed, 2025-12-03 19:30:4=
+2 =E5=86=99=E5=88=B0=EF=BC=9A---
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+ > On Wed, Dec 03, 2025 at 07:05:00PM +0800, zyc zyc wrote:=20
+ > > ---- Greg KH <gregkh@linuxfoundation.org> =E5=9C=A8 Tue, 2025-12-02 19=
+:30:09 =E5=86=99=E5=88=B0=EF=BC=9A---=20
+ > >=20
+ > >  > On Tue, Dec 02, 2025 at 06:39:00PM +0800, zyc zyc wrote:=20
+ > >  > > Hello,=20
+ > >  > >=20
+ > >  > > Resend my last email without HTML.=20
+ > >  > >=20
+ > >  > > ---- zyc zyc <zyc199902@zohomail.cn> =E5=9C=A8 Sat, 2025-11-29 18=
+:57:01 =E5=86=99=E5=88=B0=EF=BC=9A---=20
+ > >  > >=20
+ > >  > >  > Hello, maintainer=20
+ > >  > >  >=20
+ > >  > >  > I would like to report what appears to be a regression in 6.12=
+.50 kernel release related to netem.=20
+ > >  > >  > It rejects our configuration with the message:=20
+ > >  > >  > Error: netem: cannot mix duplicating netems with other netems =
+in tree.=20
+ > >  > >  >=20
+ > >  > >  > This breaks setups that previously worked correctly for many y=
+ears.=20
+ > >  > >  >=20
+ > >  > >  >=20
+ > >  > >  > Our team uses multiple netem qdiscs in the same HTB branch, ar=
+ranged in a parallel fashion using a prio fan-out. Each branch of the prio =
+qdisc has its own distinct netem instance with different duplication charac=
+teristics.=20
+ > >  > >  >=20
+ > >  > >  > This is used to emulate our production conditions where a sing=
+le logical path fans out into two downstream segments, for example:=20
+ > >  > >  >=20
+ > >  > >  > two ECMP next hops with different misbehaviour characteristics=
+, or=20
+ > >  > >  >=20
+ > >  > >  >=20
+ > >  > >  > an HA firewall cluster where only one node is replaying frames=
+, or=20
+ > >  > >  >=20
+ > >  > >  >=20
+ > >  > >  > two LAG / ToR paths where one path intermittently duplicates p=
+ackets.=20
+ > >  > >  >=20
+ > >  > >  >=20
+ > >  > >  > In our environments, only a subset of flows are affected, and =
+different downstream devices may cause different styles of duplication.=20
+ > >  > >  > This regression breaks existing automated tests, training envi=
+ronments, and network simulation pipelines.=20
+ > >  > >  >=20
+ > >  > >  > I would be happy to provide our reproducer if needed.=20
+ > >  > >  >=20
+ > >  > >  > Thank you for your time and for maintaining Linux kernel.=20
+ > >  >=20
+ > >  > Can you use 'git bisect' to find the offending commit?=20
+ > >  >=20
+ > >  > thanks,=20
+ > >  >=20
+ > >  > greg k-h=20
+ > >  >=20
+ > >=20
+ > > Hi Greg,=20
+ > >=20
+ > > The error came from this commit:=20
+ > >=20
+ > > commit 795cb393e38977aa991e70a9363da0ee734b2114=20
+ > > Author: William Liu <will@willsroot.io>=20
+ > > Date:   Tue Jul 8 16:43:26 2025 +0000=20
+ > >=20
+ > >     net/sched: Restrict conditions for adding duplicating netems to qd=
+isc tree=20
+ > >=20
+ > >     [ Upstream commit ec8e0e3d7adef940cdf9475e2352c0680189d14e ]=20
+ > =20
+ > So is this also an issue for you in the latest 6.17 release (or 6.18)?=
+=20
+ > If not, what commit fixed this issue?  If so, please contact all of the=
+=20
+ > developers involved and they will be glad to work to resolve this=20
+ > regression in the mainline tree first.=20
+ > =20
+ > thanks,=20
+ > =20
+ > greg k-h=20
+ >=20
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Hi Greg,
 
-## Build
-* kernel: 6.1.159-rc2
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: 2ee6aa0943a7e281eb5db51475b9c7e47d30be9f
-* git describe: v6.1.158-568-g2ee6aa0943a7
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.1=
-58-568-g2ee6aa0943a7
+I can only test 6.12 stable kernels. Let me add Will.
 
-## Test Regressions (compared to v6.1.157-158-gf6fcaf2c6b7f)
-
-## Metric Regressions (compared to v6.1.157-158-gf6fcaf2c6b7f)
-
-## Test Fixes (compared to v6.1.157-158-gf6fcaf2c6b7f)
-
-## Metric Fixes (compared to v6.1.157-158-gf6fcaf2c6b7f)
-
-## Test result summary
-total: 87788, pass: 72727, fail: 2957, skip: 11908, xfail: 196
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 133 total, 132 passed, 1 failed
-* arm64: 41 total, 38 passed, 3 failed
-* i386: 21 total, 21 passed, 0 failed
-* mips: 26 total, 25 passed, 1 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 32 total, 31 passed, 1 failed
-* riscv: 11 total, 10 passed, 1 failed
-* s390: 14 total, 13 passed, 1 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 7 total, 7 passed, 0 failed
-* x86_64: 33 total, 32 passed, 1 failed
-
-## Test suites summary
-* boot
-* commands
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-exec
-* kselftest-fpu
-* kselftest-futex
-* kselftest-intel_pstate
-* kselftest-kcmp
-* kselftest-kvm
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-mincore
-* kselftest-mqueue
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* lava
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-build-clang
-* log-parser-build-gcc
-* log-parser-test
-* ltp-capability
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
+Best,
+zyc
 
