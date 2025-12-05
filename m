@@ -1,150 +1,125 @@
-Return-Path: <stable+bounces-200211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F6C1CA996E
-	for <lists+stable@lfdr.de>; Sat, 06 Dec 2025 00:13:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0935ACA9856
+	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 23:39:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0BBA2301BC47
-	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 23:13:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6FDE831F82FD
+	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 22:36:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A134B2F692C;
-	Fri,  5 Dec 2025 23:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AB9F2D8767;
+	Fri,  5 Dec 2025 22:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="By68nouB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M4zQviDM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F9D2DF128
-	for <stable@vger.kernel.org>; Fri,  5 Dec 2025 23:13:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5A32ED871;
+	Fri,  5 Dec 2025 22:36:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764976401; cv=none; b=NGVdrwdlX4ONeWTdduiVftFiyykp+DlQt4MG4ZpoumsiZhf9LWumwz0P5JtRtxXDia1Cm2kQUr9oHzQKK+Zduwvh2LnaQOx4+kjQA32fHJqFHu35PdjbOCYE8qdmBu7J19Uh+CY0/yBBCJqEPpkPcZESfcodmEhPN48E9Xm8nmU=
+	t=1764974210; cv=none; b=ORRRsLxJNm6ndcrtnfI0FFkAwzBElGrKMphMvHxfWNOkqeKaVj/ZNhuPE6mJPfN3mS3qpkD9VAm1z0ObfKsT0TT1MrKcPlQ7CEcHNvIil4KOWYlhHFqHOJDaqdVDqmjwzilIXv7DFd3ycXcgFlCSv5WCqR83LknsoxIWOGJeqwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764976401; c=relaxed/simple;
-	bh=Z2TnggYnSPNTQQA0qeFMaIKiMc/QIExFwLuHda2smVU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lBc1t3vzi8VKWk/d4jNBTu4EvLDYYu/NJ/XAaihyZ8aVYn1pwtzhjohaB2XLlbw8FS2zcB22kF2VgmBLD1q5kkGz68XiiWeI7FqN6lY+LYadVEXXlkbD/n44MNZt2PSzwnoZgNG3m61Is+Hrm1w6p4gdBHBGnhWW53OBnTU3W1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=By68nouB; arc=none smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5957c929a5eso3473586e87.1
-        for <stable@vger.kernel.org>; Fri, 05 Dec 2025 15:13:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764976398; x=1765581198; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ok3XVC2kEB7d6LX2W7MFJKuf7Db93yAzAqWhVXvqPiI=;
-        b=By68nouBGABZzZpDHHPfiQKoWSJIfkh9HRFeKVufKIhFcf/6Nfi7+gl50e75zXgh9J
-         up9YTfO5T6MeQSqtFwTgm+PjOUVIj8AuX/tuMgoSjBBPY89tDxsFFGJgC6sDFlGSISXl
-         teZQYe5X1vaFL52WoTZqrDs2tHmLS8btykVC8U0Scz7LAGA/kXFXshUt7b4XPk2G8ybs
-         /tdb6xEuF09fB7POS9v+IWuWb/puLOVWKU/1zffiTdNnaqK+wq/waqirFHn4A8F7rIx6
-         1qIXQpN4E8X2iE1uVy3KFgWKxVhMfOYxE0qXuXFOgnuyOXJF620Jlda5Q5eMCZAfLrIf
-         0ZZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764976398; x=1765581198;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ok3XVC2kEB7d6LX2W7MFJKuf7Db93yAzAqWhVXvqPiI=;
-        b=N+LNMgrM3so3CTc/sdWH2tzlOlJdncmAtk6UEfdRxGH9bNPx3qCsVvCbIawLkuQIcB
-         OdJqRJ1ZrEssdSaMtr/Et4SCLgX3WmpcJYe0UC/jMxtZdBhXI2UBZx7EWd1LDL1o61o2
-         r1qvSfLaGfD/9zA+vCA+9CwRUH0hJ31v9z8E288eK7uV4I3Lzv1YPIeQehUul/rvZQV0
-         h3PytaV065+n9RmQZZhg6ph45DRblPZH7ORbcnudI+oXQ4d69TF2BT+g1el4XWpengfS
-         FnOAUthS7LI2j/ZIejEAXjDfh/KR63t44nYvBpMP9mgfeMdrk64dibk3zV7pPxbqkypR
-         7BsA==
-X-Forwarded-Encrypted: i=1; AJvYcCUoFHs4kF5fR+zUZTPcAqblawRLhuwnOqrhcL54qmT7WhaX6Dp+a/+7Z1TzhJ6j0XfSQiJPK28=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwoxhnJOdQaLeHb+M4ivdvaQt5idSUvZFfAvq/VjKO9lQ2aLXnx
-	PbCIVE1DSf9uFJ4e1xaDsy3wIaoPBZJfFWp6p9Y/fKxVA8ejn2SvAHOE
-X-Gm-Gg: ASbGncuTaEzvTQ8y8hk69bsJAY+0wg3+C+9O2HgCakZOFD9sYaor8hdpGWD4XSFztT3
-	mvR9dDwqci4MQuARvIHZ7I++wCWSicsnfNlJAerbUUJCvsH70FePlflKqysSb6FsoKn41dg64GT
-	I4V12WUeNFUEG86Bsxtbagpe9mC3MQC4qbSDl+dg3jCW2jp+HEjMkuV6CsU3Zr2zdOEPGmns5wo
-	d4r2d8HPeoeeYDKJRf3rcLlNRF/hMJSBNYEQRVyrQLyYVAjKXfG1lvevnHw3JnsrTviMWfRIsiT
-	1I+a3+QQ5BvXsFCvctu/+oFwEQklWwEP4r3TMZ1mkzb09zr3TK3IaLPTS+91CU34Phwvx/VGvTS
-	/TtVc3u8PAw4wRA0S3KS8HD7wGZ9wjRSNQLdstbsvudjPF2c8/WN3uRvRZkzYnnhxtGYzIcL7PT
-	fgOTD379MXD/mVHCKNQ2Y=
-X-Google-Smtp-Source: AGHT+IHw+siol0Y/HCUauT594fFSjA/LYfEXRKCDELP7T7smqU9LZ6s7uqmUidrRDZEZmBY4flxMEA==
-X-Received: by 2002:a05:6512:2353:b0:595:8200:9f7e with SMTP id 2adb3069b0e04-5987e8af414mr145380e87.20.1764976397518;
-        Fri, 05 Dec 2025 15:13:17 -0800 (PST)
-Received: from localhost ([194.190.17.114])
-        by smtp.gmail.com with UTF8SMTPSA id 2adb3069b0e04-597d7c1e2efsm1918614e87.56.2025.12.05.15.13.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 05 Dec 2025 15:13:17 -0800 (PST)
-From: Askar Safin <safinaskar@gmail.com>
-To: Mika Westerberg <westeri@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: regressions@lists.linux.dev,
-	Dell.Client.Kernel@dell.com,
-	Mario Limonciello <superm1@kernel.org>,
-	patches@lists.linux.dev,
-	Askar Safin <safinaskar@zohomail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] gpiolib: acpi: Add quirk for Dell Precision 7780
-Date: Fri,  5 Dec 2025 22:32:42 +0000
-Message-ID: <20251205230724.2374682-1-safinaskar@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1764974210; c=relaxed/simple;
+	bh=a+i6OuMIceb2KmmLexgRXeIiGsHIMcZGP0HUwSar5+U=;
+	h=From:Date:Content-Type:MIME-Version:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=sBWxOwKJGswWJfri/luCG/FC7mwAcuZ0W+5gAEzikC5RuJ9Mtv8pP2DwO5FTiBa2SZBaUqtQHpEiA191uM84RILJKJ1gTu5RB7UOCHZtNnAcQC6V9VnoB8ptvejaJ+3knD7vpb9DgeRoY64k+FZstMakSJWsczAA2KqKnLab5Ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M4zQviDM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 352C8C4CEF1;
+	Fri,  5 Dec 2025 22:36:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764974207;
+	bh=a+i6OuMIceb2KmmLexgRXeIiGsHIMcZGP0HUwSar5+U=;
+	h=From:Date:Cc:To:In-Reply-To:References:Subject:From;
+	b=M4zQviDM94cwfYTDIH84VqYAmVj0dqH0Tk/7q54eVs17XLFKBu0T7B5q5YuhobEmB
+	 hK1PEvvEroUi5XELMncX3pmEso7mVWTfkJBrQT2EYpkYwuUvhYmsz9WK294W1rGCuf
+	 EYWznZ7HduZdpML6Q9dCylQGrRGYRNxSESl0qxi/aipNWSoGfdC29HlZXiEUXost5Y
+	 /swkuERMh3CQO4L3iwT+ZV55vBa9OjS6/JozBH7oM7r4+oMJSBBNbJnZXeCgZppeJr
+	 wUpOdRAWO5GQWlr0jUn1zISlX3L6Ba73qmGpV0s23INhHhLNuhXxWnw5vEJPBgG0uM
+	 Z+MyP2N8q9IyA==
+From: Rob Herring <robh@kernel.org>
+Date: Fri, 05 Dec 2025 16:36:46 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Cc: linus.walleij@linaro.org, conor+dt@kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ arnd@arndb.de, devicetree@vger.kernel.org, stable@vger.kernel.org, 
+ krzk+dt@kernel.org, jserv@ccns.ncku.edu.tw
+To: Kuan-Wei Chiu <visitorckw@gmail.com>
+In-Reply-To: <20251204164228.113587-1-visitorckw@gmail.com>
+References: <20251204164228.113587-1-visitorckw@gmail.com>
+Message-Id: <176497381720.863571.13455719382013086980.robh@kernel.org>
+Subject: Re: [PATCH] ARM: dts: integrator: Fix DMA ranges mismatch warning
+ on IM-PD1
 
-Dell Precision 7780 often wakes up on its own from suspend. Sometimes
-wake up happens immediately (i. e. within 7 seconds), sometimes it happens
-after, say, 30 minutes.
 
-Fixes: 1796f808e4bb ("HID: i2c-hid: acpi: Stop setting wakeup_capable")
-Reported-by: Askar Safin <safinaskar@zohomail.com>
-Link: https://lore.kernel.org/linux-i2c/197ae95ffd8.dc819e60457077.7692120488609091556@zohomail.com/
-Cc: <stable@vger.kernel.org>
-Tested-by: Askar Safin <safinaskar@gmail.com>
-Signed-off-by: Askar Safin <safinaskar@gmail.com>
----
- drivers/gpio/gpiolib-acpi-quirks.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+On Thu, 04 Dec 2025 16:42:28 +0000, Kuan-Wei Chiu wrote:
+> When compiling the device tree for the Integrator/AP with IM-PD1, the
+> following warning is observed regarding the display controller node:
+> 
+> arch/arm/boot/dts/arm/integratorap-im-pd1.dts:251.3-14: Warning
+> (dma_ranges_format):
+> /bus@c0000000/bus@c0000000/display@1000000:dma-ranges: empty
+> "dma-ranges" property but its #address-cells (2) differs from
+> /bus@c0000000/bus@c0000000 (1)
+> 
+> The display node specifies an empty "dma-ranges" property, intended to
+> describe a 1:1 identity mapping. However, the node lacks explicit
+> "#address-cells" and "#size-cells" properties. In this case, the device
+> tree compiler defaults the address cells to 2 (64-bit), which conflicts
+> with the parent bus configuration (32-bit, 1 cell).
+> 
+> Fix this by explicitly defining "#address-cells" and "#size-cells" as
+> 1. This matches the 32-bit architecture of the Integrator platform and
+> ensures the address translation range is correctly parsed by the
+> compiler.
+> 
+> Fixes: 7bea67a99430 ("ARM: dts: integrator: Fix DMA ranges")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+> ---
+>  arch/arm/boot/dts/arm/integratorap-im-pd1.dts | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
 
-diff --git a/drivers/gpio/gpiolib-acpi-quirks.c b/drivers/gpio/gpiolib-acpi-quirks.c
-index 7b95d1b03361..a0116f004975 100644
---- a/drivers/gpio/gpiolib-acpi-quirks.c
-+++ b/drivers/gpio/gpiolib-acpi-quirks.c
-@@ -370,6 +370,28 @@ static const struct dmi_system_id gpiolib_acpi_quirks[] __initconst = {
- 			.ignore_wake = "ASCP1A00:00@8",
- 		},
- 	},
-+	{
-+		/*
-+		 * Spurious wakeups, likely from touchpad controller
-+		 * Dell Precision 7780
-+		 * Found in BIOS 1.24.1
-+		 *
-+		 * Found in touchpad firmware, installed by Dell Touchpad Firmware Update Utility version 1160.4196.9, A01
-+		 * ( Dell-Touchpad-Firmware-Update-Utility_VYGNN_WIN64_1160.4196.9_A00.EXE ),
-+		 * released on 11 Jul 2024
-+		 *
-+		 * https://lore.kernel.org/linux-i2c/197ae95ffd8.dc819e60457077.7692120488609091556@zohomail.com/
-+		 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-+			DMI_MATCH(DMI_PRODUCT_FAMILY, "Precision"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Precision 7780"),
-+			DMI_MATCH(DMI_BOARD_NAME, "0C6JVW"),
-+		},
-+		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
-+			.ignore_wake = "VEN_0488:00@355",
-+		},
-+	},
- 	{} /* Terminating entry */
- };
- 
-base-commit: 7d0a66e4bb9081d75c82ec4957c50034cb0ea449 (v6.18)
--- 
-2.47.3
+
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
+
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
+
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+This patch series was applied (using b4) to base:
+ Base: attempting to guess base-commit...
+ Base: tags/v6.18-rc6-2004-g29bce9c8b41d (exact match)
+ Base: tags/v6.18-rc6-2004-g29bce9c8b41d (use --merge-base to override)
+
+If this is not the correct base, please add 'base-commit' tag
+(or use b4 which does this automatically)
+
+New warnings running 'make CHECK_DTBS=y for arch/arm/boot/dts/arm/' for 20251204164228.113587-1-visitorckw@gmail.com:
+
+arch/arm/boot/dts/arm/integratorap-im-pd1.dtb: display@1000000 (arm,pl110): '#address-cells', '#size-cells', 'dma-ranges', 'port@0' do not match any of the regexes: '^pinctrl-[0-9]+$'
+	from schema $id: http://devicetree.org/schemas/display/arm,pl11x.yaml
+
+
+
+
 
 
