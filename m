@@ -1,156 +1,238 @@
-Return-Path: <stable+bounces-200132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01B8ECA714F
-	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 11:07:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 119ACCA6DEF
+	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 10:20:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 258CD36B4B1B
-	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 08:48:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A87A731923F7
+	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 09:18:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F5A13081D7;
-	Fri,  5 Dec 2025 08:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55F60313282;
+	Fri,  5 Dec 2025 09:07:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="IFuh0Fhf";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Ev02OXpH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qE6foBF7"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A20F430E0C3
-	for <stable@vger.kernel.org>; Fri,  5 Dec 2025 08:33:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6CAB2F9DAB;
+	Fri,  5 Dec 2025 09:07:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764923599; cv=none; b=Owg7f0gjr9YdMjl9hRA8XVp8EXKjIxxXJUFjYmteRnlFFCVQW3UHC50ZLBHKLxthHLAquOK0BfzPxzy97IZkYy5tNecKxojd4NVTRiOmrOMlxBk8faXTLlBYLOFmSu5qpV4KINsnaq3GCj9kUYhDgLquvlal8OlsaW4uqkeuLF8=
+	t=1764925628; cv=none; b=GByRQcIfUlbGliayuXrDeVdMIPOdMlYk6nKH+AcikKGvO1C9VsoGzdMsJ8hRE4dwlyaSzvqkwA8TA6cCj7T3UE3AcBgKansRgk1lj4uPt0ZtTYwcWAfsDhN8mRIP1aOPEaQzBenVBbeQwkI4Q68rhExcd3CpEg3kapU268n/JGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764923599; c=relaxed/simple;
-	bh=MMGuL1vI04W6tUU6AIQeCC2kd4KIozOfeyw6PVUXtuM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t5+GTP1pwfehYpPKGPjclLRMqMLlt1iJlDakDS0p43vEE2FpLodq/E4YDzjsM4z3mIFfcsQXzgQOfTt8rzAJZxYNPADHiKZDdoLD0Jg4qBY2epDjpFHSinG4rVZOqS0jWmZzb74LlLcJaUmav9pp5/AMLEXIU5oLbp6Y5Npd5eA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=IFuh0Fhf; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Ev02OXpH; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5B52ec393172949
-	for <stable@vger.kernel.org>; Fri, 5 Dec 2025 08:33:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	eC5PNHDlygWpLQKznc8XPdUOqSVo8sJKvA6Tip9r02k=; b=IFuh0FhfJPqL8HrP
-	FMH6mppvIXUjzkVH7RZozpfq+T9A8IkOZn9bNmLXdrNuMMXcXPhkCKMQ5zX+LW1z
-	78oy9wnBQxV8nPl+8kSvsqQ2rhVUPgHRn5Mm5iQrmd+C6nydbdlj2mniAJgFw4V6
-	Nk9FnnW9Ok5KULmUFVwDmTjpyQ955MtGw5fXlR2XOFCsrH/iNfaNT1/HnGVY6ktO
-	1fjUzfaHShwR8HQcr7G0wohl2a54pQvKRztw0bA9W2Gbi8LTZfhNsx65U/OsSZSb
-	p6W5cBRItMgZTNW1B9LQOtTfHVbDDQbVJS+T1/4KcT0Bb5WtDPiQWfw8hYIWyq9t
-	msFeGw==
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4auptqruc7-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Fri, 05 Dec 2025 08:33:11 +0000 (GMT)
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-8b2657cfcdaso243120685a.3
-        for <stable@vger.kernel.org>; Fri, 05 Dec 2025 00:33:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1764923591; x=1765528391; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eC5PNHDlygWpLQKznc8XPdUOqSVo8sJKvA6Tip9r02k=;
-        b=Ev02OXpHHA0Kt4CLevsy84+c8DQBS/HPONfzsJlPajUS5LAxFiyswQusK/TDDE+Yh6
-         Xgk9UuPTNb7SYsYaPYMN27MuQDKVUMM/unw5cVGWRk04g7o90otL2T3WXxvXvxRQWMTs
-         EdcfLyexvtKMGGIOihJq8B5ZMZj7+hBu26gDGxvMWTjl+lUWPCmV2fqzfJwnIJVA9nHu
-         pOzZPWf2HzGBj5/XYiAywaARUBq9pSJprUwKBdu9zZWAhtXTVzzpspAqZ/oESMZtvZAL
-         xtFWaUoEchv43pQrDkfKT9bA+pDOVj1ExyIRabdyBFMfj89dgOUJnUPrSufISXTrk08O
-         lYlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764923591; x=1765528391;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=eC5PNHDlygWpLQKznc8XPdUOqSVo8sJKvA6Tip9r02k=;
-        b=cdgOwbbilm9Wi6npy00YMY6aPOHnU0+woE9XYwZiCffczAUQ1qfBOB3Qxj7IbR0e+L
-         D0HnbfDJh63t95t33b7TxyQ37aLgTMaryIlCwqcOVNjtEh9S96s0Vu9jm165zJg7BngI
-         S3ZTmF9pPv6A9BU3Ds0GzcUJ/9xljZW4lyAw5ZF0GRtx8tA4TJ6VzJ/zZ9eTJ/MFYrC/
-         9JgM4qpv316CRArx80+PLsJK/j8jCZednWwgK/udRWb7aBABkuqrNFPGL6whscUX7BPE
-         ExMuKbadjNbrd9V7pqhx+gjLKnmOqeqqK8QtEI5CqPTl+LmWajHS3EwxDLjB/dtBevx8
-         dSXg==
-X-Forwarded-Encrypted: i=1; AJvYcCVEWG6rVi6F40kaIq5JpE4heu7gvM3d9eN83tVZKwiQ/R5oyobrswo/1l5FSfMGbTb5KYfPUs4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzeUsXWaCcXUzhXNtfMh56zlC/dt+U+i37r2U8kjVgcrf00tJq1
-	K7GV4if7Cch+NmMdhISddioNsEasy4OkCZl7gd0Ntf8cPAQ5a7zKYvBhT9jVZ9TPyUrQoGNfLok
-	ThZzjqj/P+MOju2wLxT+1HdbPSF7RfqcCBKDXvU0AJRjFGpO8uvFlr/0rW8k=
-X-Gm-Gg: ASbGncuMO5S1520LcQM5yz98bu08bTry9emIQzue1nAlabUbGjSuQ9XE+bZNfhLMCWz
-	5T/KxzA7AZVBrKHTWsMRvK7xPw+VLK2+FKkfqmEymyAZDw32rjGzGkhExosf1Mc97togToCyiBE
-	lUwq/mxTQvVVzpVicJeFNeTQlQJ5L83sjdkfLqq34fDQEzIOvPTmnLItgUQdy1nbQxy0FstA/9H
-	2678qCs472JHVeC8qtaCDbnW0N4/7boZhbQZmusi1n1Zf7uBV/qlMjHXM1C2PWdsipg/tbnFmgt
-	Mwh2mJ+4BNj0n66kER/ep7Tcc22xFeCmNJVeuWSpcRfqVtA1fFTg51HvbsvnFS7c+0H6BCEcVbA
-	640fQfnRhKw4txF2US5eS550Y2+Yin+IU
-X-Received: by 2002:a05:620a:408d:b0:8b1:1585:225d with SMTP id af79cd13be357-8b61822c8ddmr761339485a.82.1764923590862;
-        Fri, 05 Dec 2025 00:33:10 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFvCTznjuLTd687VjM6qtxYI9yUJOjuyMNTDmIuSFHO+nw/t8MIdWeZTeXTyfuTr7AAid7ttA==
-X-Received: by 2002:a05:620a:408d:b0:8b1:1585:225d with SMTP id af79cd13be357-8b61822c8ddmr761337285a.82.1764923590357;
-        Fri, 05 Dec 2025 00:33:10 -0800 (PST)
-Received: from brgl-uxlite ([2a01:cb1d:dc:7e00:53a3:2e30:5d7:1bde])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-479310b693csm69356755e9.4.2025.12.05.00.33.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Dec 2025 00:33:09 -0800 (PST)
-From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-To: brgl@kernel.org, Wentao Guan <guanwentao@uniontech.com>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-        andriy.shevchenko@linux.intel.com, mathieu.dubois-briand@bootlin.com,
-        ioana.ciornei@nxp.com, linux-gpio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, zhanjun@uniontech.com,
-        niecheng1@uniontech.com, stable@vger.kernel.org,
-        WangYuli <wangyl5933@chinaunicom.cn>
-Subject: Re: [PATCH v3] gpio: regmap: Fix memleak in gpio_remap_register
-Date: Fri,  5 Dec 2025 09:33:08 +0100
-Message-ID: <176492353839.12178.12868945450381013529.b4-ty@oss.qualcomm.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251204101303.30353-1-guanwentao@uniontech.com>
-References: <20251204101303.30353-1-guanwentao@uniontech.com>
+	s=arc-20240116; t=1764925628; c=relaxed/simple;
+	bh=Up+JpXnF6bqnElM5UaXR1PHTj+UdVqX+sMq7pwyZg+o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fhH/3Kzyg4tvcNMj8hJsIIrXUCOZNKWCqcgGAGNrXsbmW5eE9ywaFOka2Q3EKV+hCQRoJx/+7xStA5lvmaP4Nxg2TjDHl7PpSz9coPLP6JAxm2/tNHglqAZvp7Y/3lfCnA3Vmr9cAHZx0qj/JYi3iR8cpql2vOrI/QpkiqbxbZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qE6foBF7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B303C4CEF1;
+	Fri,  5 Dec 2025 09:07:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764925623;
+	bh=Up+JpXnF6bqnElM5UaXR1PHTj+UdVqX+sMq7pwyZg+o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qE6foBF7gguZ4ppJs+3tn1QfSJpLUh8tqNXrC6zLLhjiy1vAVnhlDrpS5qM6s5kWV
+	 d6shksSWPrp8ASPrS8VqXoHEOCvJbewldS/zKkkACqt27saME8NzaRKIZe/5Ro8H/s
+	 FNn4f61qKMgDVpj+CbCgv2bUP/32Zpm1HQKU2cNr/Gcd8gf6D1kFxjAu/Y5IDz0PgM
+	 vgWfP1BP8u+if++SufznESMpSz59A9ZZ2liYvePn4tndu1GmXNhUHHIvOPd7DT9JGU
+	 ENK1tTxhgSGaa7g1jOPHYvdk+8+WiBuhrCurcW5ncytpGZqTloopb0X5RtuHkbT/WG
+	 cQ0iEmKMZAZKw==
+Date: Fri, 5 Dec 2025 10:07:00 +0100
+From: Maxime Ripard <mripard@kernel.org>
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Emanuele Ghidoli <ghidoliemanuele@gmail.com>, 
+	=?utf-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <jpaulo.silvagoncalves@gmail.com>, Francesco Dolcini <francesco@dolcini.it>, 
+	Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Robert Foss <rfoss@kernel.org>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+	Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Philippe Schenker <philippe.schenker@impulsing.ch>, Hui Pu <Hui.Pu@gehealthcare.com>, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, =?utf-8?B?SGVydsOp?= Codina <herve.codina@bootlin.com>
+Subject: Re: [PATCH] drm/bridge: ti-sn65dsi83: ignore PLL_UNLOCK errors
+Message-ID: <20251205-courageous-tortoise-of-abracadabra-2efeee@houat>
+References: <20251127-drm-ti-sn65dsi83-ignore-pll-unlock-v1-1-8a03fdf562e9@bootlin.com>
+ <cd607656-90d3-4821-98ea-4dad48288fc9@gmail.com>
+ <DEORF6XCJEOG.3BGTKVL2QFQKN@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: geUMu5n-ueJEmSQ3JZleAHSSt4BiX0aI
-X-Proofpoint-ORIG-GUID: geUMu5n-ueJEmSQ3JZleAHSSt4BiX0aI
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA1MDA2MCBTYWx0ZWRfXzaceCbHvYBJ8
- ab2MkGQlkRjCWTAXn/WV+UvktQ9kU+O8IaOVLjpBnFQ53JhsON9r5+fjtgJhkNtmn74Xfjbu4lV
- q5E4ejAYCa0loJJensfyhQ0vuD3CaDHcIIDPbkm0ql/uRtD0BtZWZTsJqhMReJvGIujNMGMQz1L
- e1xnnlC5QlPn7NVeeNO6EQEBB0fskyfyP3O9nTBqaLC5JdKpHf9NWM6ZUK2wOcd2PjL2+r8mS9x
- pxPp/uYAw8LLbQr8KEYS69S+tzuU45BskwEOayYGwOO3B9PiNoOjZFPZQfDASGZMRizWxUHNPTS
- Q6PUYRJTwyL7Keg6umwY8vcuvAbAZrPUxnB67Cqda1ZW81xjHdSBkJSd6nNOUd76NB9ZBxnHvlv
- PTVHhfK0VyN+FZQGw1mwjxQ9tBpxbw==
-X-Authority-Analysis: v=2.4 cv=fKQ0HJae c=1 sm=1 tr=0 ts=693298c7 cx=c_pps
- a=qKBjSQ1v91RyAK45QCPf5w==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=vzvxVwKKtc5QML-hEyEA:9 a=QEXdDO2ut3YA:10
- a=NFOGd7dJGGMPyQGDc5-O:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-05_03,2025-12-04_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 bulkscore=0 priorityscore=1501 malwarescore=0
- lowpriorityscore=0 adultscore=0 phishscore=0 impostorscore=0 spamscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
- definitions=main-2512050060
+Content-Type: multipart/signed; micalg=pgp-sha384;
+	protocol="application/pgp-signature"; boundary="v662r6mq73hc7gsk"
+Content-Disposition: inline
+In-Reply-To: <DEORF6XCJEOG.3BGTKVL2QFQKN@bootlin.com>
 
 
-On Thu, 04 Dec 2025 18:13:04 +0800, Wentao Guan wrote:
-> We should call gpiochip_remove(chip) to free the resource
-> alloced by gpiochip_add_data(chip, gpio) after the err path.
-> 
-> 
+--v662r6mq73hc7gsk
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] drm/bridge: ti-sn65dsi83: ignore PLL_UNLOCK errors
+MIME-Version: 1.0
 
-Fixed typos, reworked the commit message and queued for fixes.
+On Wed, Dec 03, 2025 at 06:32:47PM +0100, Luca Ceresoli wrote:
+> On Tue Dec 2, 2025 at 12:19 PM CET, Emanuele Ghidoli wrote:
+> >
+> >
+> > On 27/11/2025 09:42, Luca Ceresoli wrote:
+> >> On hardware based on Toradex Verdin AM62 the recovery mechanism added =
+by
+> >> commit ad5c6ecef27e ("drm: bridge: ti-sn65dsi83: Add error recovery
+> >> mechanism") has been reported [0] to make the display turn on and off =
+and
+> >> and the kernel logging "Unexpected link status 0x01".
+> >>
+> >> According to the report, the error recovery mechanism is triggered by =
+the
+> >> PLL_UNLOCK error going active. Analysis suggested the board is unable =
+to
+> >> provide the correct DSI clock neede by the SN65DSI84, to which the TI
+> >> SN65DSI84 reacts by raising the PLL_UNLOCK, while the display still wo=
+rks
+> >> apparently without issues.
+> >>
+> >> On other hardware, where all the clocks are within the components
+> >> specifications, the PLL_UNLOCK bit does not trigger while the display =
+is in
+> >> normal use. It can trigger for e.g. electromagnetic interference, whic=
+h is
+> >> a transient event and exactly the reason why the error recovery mechan=
+ism
+> >> has been implemented.
+> >>
+> >> Idelly the PLL_UNLOCK bit could be ignored when working out of
+> >> specification, but this requires to detect in software whether it trig=
+gers
+> >> because the device is working out of specification but visually correc=
+tly
+> >> for the user or for good reasons (e.g. EMI, or even because working ou=
+t of
+> >> specifications but compromising the visual output).
+> >>
+> >> The ongoing analysis as of this writing [1][2] has not yet found a way=
+ for
+> >> the driver to discriminate among the two cases. So as a temporary meas=
+ure
+> >> mask the PLL_UNLOCK error bit unconditionally.
+> >>
+> >> [0] https://lore.kernel.org/r/bhkn6hley4xrol5o3ytn343h4unkwsr26p6s6ltc=
+wexnrsjsdx@mgkdf6ztow42
+> >> [1] https://lore.kernel.org/all/b71e941c-fc8a-4ac1-9407-0fe7df73b412@g=
+mail.com/
+> >> [2] https://lore.kernel.org/all/20251125103900.31750-1-francesco@dolci=
+ni.it/
+> >>
+> >> Closes: https://lore.kernel.org/r/bhkn6hley4xrol5o3ytn343h4unkwsr26p6s=
+6ltcwexnrsjsdx@mgkdf6ztow42
+> >> Cc: stable@vger.kernel.org # 6.15+
+> >> Co-developed-by: Herv=E9 Codina <herve.codina@bootlin.com>
+> >> Signed-off-by: Herv=E9 Codina <herve.codina@bootlin.com>
+> >> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+> >> ---
+> >> Francesco, Emanuele, Jo=E3o: can you please apply this patch and report
+> >> whether the display on the affected boards gets back to working as bef=
+ore?
+> >>
+> >> Cc: Jo=E3o Paulo Gon=E7alves <jpaulo.silvagoncalves@gmail.com>
+> >> Cc: Francesco Dolcini <francesco@dolcini.it>
+> >> Cc: Emanuele Ghidoli <ghidoliemanuele@gmail.com>
+> >> ---
+> >>  drivers/gpu/drm/bridge/ti-sn65dsi83.c | 11 +++++++++--
+> >>  1 file changed, 9 insertions(+), 2 deletions(-)
+> >>
+> >> diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi83.c b/drivers/gpu/drm/b=
+ridge/ti-sn65dsi83.c
+> >> index 033c44326552..fffb47b62f43 100644
+> >> --- a/drivers/gpu/drm/bridge/ti-sn65dsi83.c
+> >> +++ b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
+> >> @@ -429,7 +429,14 @@ static void sn65dsi83_handle_errors(struct sn65ds=
+i83 *ctx)
+> >>  	 */
+> >>
+> >>  	ret =3D regmap_read(ctx->regmap, REG_IRQ_STAT, &irq_stat);
+> >> -	if (ret || irq_stat) {
+> >> +
+> >> +	/*
+> >> +	 * Some hardware (Toradex Verdin AM62) is known to report the
+> >> +	 * PLL_UNLOCK error interrupt while working without visible
+> >> +	 * problems. In lack of a reliable way to discriminate such cases
+> >> +	 * from user-visible PLL_UNLOCK cases, ignore that bit entirely.
+> >> +	 */
+> >> +	if (ret || irq_stat & ~REG_IRQ_STAT_CHA_PLL_UNLOCK) {
+> >>  		/*
+> >>  		 * IRQ acknowledged is not always possible (the bridge can be in
+> >>  		 * a state where it doesn't answer anymore). To prevent an
+> >> @@ -654,7 +661,7 @@ static void sn65dsi83_atomic_enable(struct drm_bri=
+dge *bridge,
+> >>  	if (ctx->irq) {
+> >>  		/* Enable irq to detect errors */
+> >>  		regmap_write(ctx->regmap, REG_IRQ_GLOBAL, REG_IRQ_GLOBAL_IRQ_EN);
+> >> -		regmap_write(ctx->regmap, REG_IRQ_EN, 0xff);
+> >> +		regmap_write(ctx->regmap, REG_IRQ_EN, 0xff & ~REG_IRQ_EN_CHA_PLL_UN=
+LOCK_EN);
+> >>  	} else {
+> >>  		/* Use the polling task */
+> >>  		sn65dsi83_monitor_start(ctx);
+> >>
+> >> ---
+> >> base-commit: c884ee70b15a8d63184d7c1e02eba99676a6fcf7
+> >> change-id: 20251126-drm-ti-sn65dsi83-ignore-pll-unlock-4a28aa29eb5c
+> >>
+> >> Best regards,
+>=20
+> Thanks for testing!
+>=20
+> We'll still need a R-by from a maintainer, after that this patch can be a=
+pplied.
+>=20
+> > I would suggest a couple of tags, thanks.
+> > Emanuele
+> >
+> > Fixes: ad5c6ecef27e ("drm: bridge: ti-sn65dsi83: Add error recovery mec=
+hanism")
+>=20
+> I'm not sure about this one. There is no known bug in that commit, right?
+> It's rather exposing a pre-existing issue. I thought about adding it for
+> stable branches pickup, but the 'Cc: stable...v6.15+' line is for that.
 
-[1/1] gpio: regmap: Fix memleak in gpio_remap_register
-      https://git.kernel.org/brgl/linux/c/52721cfc78c76b09c66e092b52617006390ae96a
+Sigh. We had that discussion already. Wouldn't you consider "the display
+doesn't work" a bug on any platform? A real world device wasn't behaving
+the way the driver expected it to be. The root cause of it doesn't
+really matter: it was a bug.
 
-Best regards,
--- 
-Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+And whether it's technically correct or not isn't relevant: we only care
+about what actually happens, not what the datasheet is saying.
+>=20
+> So apart from blaming someone I don't see much point.
+>=20
+> That said, if there is a valid reason I'm not seeing for the Fixes: line,
+> I'll be OK in adding it while applying.
+
+It's not about blaming someone, it's about tracking that there was a
+regression, and it got fixed. Who's to blame is not relevant either, and
+I don't think anyone blamed anyone in that thread.
+
+Anyway, patch applied.
+
+Maxime
+
+--v662r6mq73hc7gsk
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaTKgswAKCRAnX84Zoj2+
+diSkAYCmmn/2I4sqcz/3/bVyNEbC/4O+JjBqXWlokK1+dcdI36gwxH5h1C4iKzWh
+Ui+6ElcBfi8I3cEvML0Qsq8PLiCMjIjk7qOHVwwr5NHAvMO/yPEtNRgAU+SBEEOK
+FVafVBLVRg==
+=eFIm
+-----END PGP SIGNATURE-----
+
+--v662r6mq73hc7gsk--
 
