@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-200086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79990CA5B45
-	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 00:45:33 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F2DDCA5B8C
+	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 01:03:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1815930BE2FF
-	for <lists+stable@lfdr.de>; Thu,  4 Dec 2025 23:45:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4F6E93080AF9
+	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 00:03:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3D982E8B84;
-	Thu,  4 Dec 2025 23:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E58C1096F;
+	Fri,  5 Dec 2025 00:03:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cFxoNdun"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NOKE/KYO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37AAD2E091B;
-	Thu,  4 Dec 2025 23:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E72E938D;
+	Fri,  5 Dec 2025 00:03:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764891928; cv=none; b=RPwwNdh3a+K5vz/qfuvkmBrVgIb1js+Op5ZID5CqE8COZCqf4RCq0LjPXxHuo39YotMmgTdUWAk0e9fMYNMb8hAESdvuc+VEpfNNzbe8OvoL0gUXE069pDGboLRDII9K2mafJ0wj0VgZYmM2r0yFedf+J6Gq2ChvMtgNMb2ASBw=
+	t=1764892995; cv=none; b=VE93//dxxj3KJieLTJqYLFg0c4NlOTLwaCpjGwYqHo8miD4DmD1e6ANG190Rfcwo6tZycVt98vDY9ZL+ccQGWDFUSW8N3dHxa6t/68GeHjeOIl3i09QMlt9D9B6rV/PY8rQE9fvZPRO8se3+l5dS8yH81AUBGvspwh1EclpzJl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764891928; c=relaxed/simple;
-	bh=YIuuNYilXTvWMYhoAXfIbIGu7LsHdxSPU1LWhwPHs6s=;
+	s=arc-20240116; t=1764892995; c=relaxed/simple;
+	bh=7xZOHa1uWVWWOcDXuhi8IIxst4cg/SaFIAADJg3TPhw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L8LVVgeWB3xV/t/hOnXZLQ+Rsrqh8Gl6/c839aAr5L4RXg1o/Dr/IwwTAMSfZfwj1DZlQi6GqPLwDNWsvBp7C8BHPMUSrRGvKLujrL7IudvJXHhv6tUW9gMq+aLzN7fDy3sUQJkuc6vs7ZIsy0JSnlj4BTDHwOIoZkkgzmupy1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cFxoNdun; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 424B8C4CEFB;
-	Thu,  4 Dec 2025 23:45:24 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=LZbn4ZDDoonDgtoFHVoeqGfdfaO7/u/g144Su9Jl3ZE4uiVv7IzxCom8TU40Z8zAOYxGzlh56csbXTej75g+viFfjBPteXQLmZvgUm/1aQKIUhFXLQeGOCc5EvyT84maaVyuIYrDcs53xQzTXrxEO+4qphUumyZz/hiVR5dJclY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NOKE/KYO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E04D6C4CEFB;
+	Fri,  5 Dec 2025 00:03:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764891927;
-	bh=YIuuNYilXTvWMYhoAXfIbIGu7LsHdxSPU1LWhwPHs6s=;
+	s=k20201202; t=1764892994;
+	bh=7xZOHa1uWVWWOcDXuhi8IIxst4cg/SaFIAADJg3TPhw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cFxoNdunX0cNPQo5ZbipKKDjSpTYYcIkzqrQT7LATV8+wTA6GkFknEYFFgu+bf9lR
-	 0F6IdCy9m1pqXM1HnSQ/Q8gd1aEFNf12uMtVMFD8Rw34bCYbeA9ZOACpq/Ibisvg7S
-	 AM1pkO1ujV8IHXmm0bSLjZmYXei6SkAEw5mD9q/BMF3naOePGBMY87f10ASfY6628l
-	 uk5II5JZRdN+xqZtKwugtDitpqiILx7DGgLt81Wwk1e/jqozyv598zzWmW5WrRog7D
-	 oGabdxS1yEQrtk4folwOL4F/l/EUeUmYmeDxgssoJGiWtOYt09NVnD6MCFnffQFTa0
-	 IIfTxsbFh5Nzw==
-Date: Thu, 4 Dec 2025 23:45:21 +0000
+	b=NOKE/KYOFUT+94lImOY5oBlErREiSRUQ8WyoF3aHoqx4nrqstDJlJI9K+vONquYk6
+	 wBSNzkYeOHo8ni0gtE6HmRSwrHRDSDLK9BZhbadhseVpXSBVky2SWBdtQVDM7bumfp
+	 WnQztlM+V3eamV61N2KrNHgAF4MccT0p2jHo6U4Ho4lC/ituor/90hfDeVYMpTwU9A
+	 kFsR/lIA0TgnBdJ+6ByXgkeNEh9ObjTjYq/Wqqp7I7+htO21cEUARE4e2qRsPW35Up
+	 W1Ix/I6GduXIWl+YJUXA9m5ulw55ucxYEhjMEVJndJhXQ5ZQ4Zksrwty3pxXmuTlQX
+	 6e5zD6Y+dKW8g==
+Date: Fri, 5 Dec 2025 00:03:10 +0000
 From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
-Subject: Re: [PATCH 5.15 000/387] 5.15.197-rc2 review
-Message-ID: <74a8e607-3549-428d-9322-3d69d4d600a9@sirena.org.uk>
-References: <20251204163821.402208337@linuxfoundation.org>
+To: Nishanth Menon <nm@ti.com>
+Cc: Francesco Dolcini <francesco@dolcini.it>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Anurag Dutta <a-dutta@ti.com>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] spi: cadence-quadspi: Parse DT for flashes with the
+ rest of the DT parsing
+Message-ID: <1f8b3c12-acf9-4828-818d-3526c7675e14@sirena.org.uk>
+References: <20251204-spi-cadence-qspi-runtime-pm-imbalance-v2-1-10af9115d531@kernel.org>
+ <20251204200027.p4osjcj67bcmsvck@skipper>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,38 +58,131 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="VP46MTmk881CP7Vq"
+	protocol="application/pgp-signature"; boundary="IlY1Ynf3ryy/wQKH"
 Content-Disposition: inline
-In-Reply-To: <20251204163821.402208337@linuxfoundation.org>
+In-Reply-To: <20251204200027.p4osjcj67bcmsvck@skipper>
 X-Cookie: volcano, n.:
 
 
---VP46MTmk881CP7Vq
+--IlY1Ynf3ryy/wQKH
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Dec 04, 2025 at 05:44:20PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.197 release.
-> There are 387 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Thu, Dec 04, 2025 at 02:00:27PM -0600, Nishanth Menon wrote:
+> On 19:13-20251204, Mark Brown wrote:
 
-Tested-by: Mark Brown <broonie@kernel.org>
+> > The recent refactoring of where runtime PM is enabled done in commit
+> > f1eb4e792bb1 ("spi: spi-cadence-quadspi: Enable pm runtime earlier to
+> > avoid imbalance") made the fact that when we do a pm_runtime_disable()
 
---VP46MTmk881CP7Vq
+> https://gist.github.com/nmenon/5ca89b617113e9dbb31d4630586af945#file-gist=
+file1-txt-L1004
+> next-20251204 + this patch -> The issue still exists at least on my
+> platform.
+
+Right, so from the log this is the one I think I mentioned earlier that
+the error path isn't being triggered by cqspi_setup_flash() but by
+something else which doesn't log anything:
+
+[    1.489445] 2840000.serial: ttyS4 at MMIO 0x2840000 (irq =3D 210, base_b=
+aud =3D 3000000) is a 8250
+[    1.498635] ------------[ cut here ]------------
+[    1.503239] clk:104:0 already disabled
+[    1.507019] WARNING: drivers/clk/clk.c:1188 at clk_core_disable+0x80/0xa=
+0, CPU#0: kworker/u8:2/55
+
+so I'd not expect this to help in that case, it's specifically avoiding
+the issue Francesco reported where it's the DT parse.  Can you put some
+debug statements in or something to confirm what triggers the error
+handling?  Sorry, I'd not remembered that we'd got other triggers when I
+sent this.
+
+Also, I wonder if the below completely untested change will help with
+that issue?  I'm a bit nervous that this might mess up some power domain
+handling.
+
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-qu=
+adspi.c
+index bdbeef05cd72..ff7beacbc085 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -1884,11 +1884,6 @@ static int cqspi_probe(struct platform_device *pdev)
+ 	if (irq < 0)
+ 		return -ENXIO;
+=20
+-	ret =3D pm_runtime_set_active(dev);
+-	if (ret)
+-		return ret;
+-
+-
+ 	ret =3D clk_prepare_enable(cqspi->clk);
+ 	if (ret) {
+ 		dev_err(dev, "Cannot enable QSPI clock.\n");
+@@ -1987,13 +1982,6 @@ static int cqspi_probe(struct platform_device *pdev)
+ 	cqspi->current_cs =3D -1;
+ 	cqspi->sclk =3D 0;
+=20
+-	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
+-		pm_runtime_enable(dev);
+-		pm_runtime_set_autosuspend_delay(dev, CQSPI_AUTOSUSPEND_TIMEOUT);
+-		pm_runtime_use_autosuspend(dev);
+-		pm_runtime_get_noresume(dev);
+-	}
+-
+ 	host->num_chipselect =3D cqspi->num_chipselect;
+=20
+ 	if (ddata && (ddata->quirks & CQSPI_SUPPORT_DEVICE_RESET))
+@@ -2005,10 +1993,21 @@ static int cqspi_probe(struct platform_device *pdev)
+ 			goto probe_setup_failed;
+ 	}
+=20
++	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
++		ret =3D pm_runtime_set_active(dev);
++		if (ret)
++			goto err_probe_setup_failed;
++
++		pm_runtime_enable(dev);
++		pm_runtime_set_autosuspend_delay(dev, CQSPI_AUTOSUSPEND_TIMEOUT);
++		pm_runtime_use_autosuspend(dev);
++		pm_runtime_get_noresume(dev);
++	}
++
+ 	ret =3D spi_register_controller(host);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to register SPI ctlr %d\n", ret);
+-		goto probe_setup_failed;
++		goto probe_pm_failed;
+ 	}
+=20
+ 	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
+@@ -2017,9 +2016,10 @@ static int cqspi_probe(struct platform_device *pdev)
+ 	}
+=20
+ 	return 0;
+-probe_setup_failed:
++probe_pm_failed:
+ 	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM)))
+ 		pm_runtime_disable(dev);
++probe_setup_failed:
+ 	cqspi_controller_enable(cqspi, 0);
+ probe_reset_failed:
+ 	if (cqspi->is_jh7110)
+
+--IlY1Ynf3ryy/wQKH
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmkyHRAACgkQJNaLcl1U
-h9DNjAf+NvL69nEVlJnNa83veA5aEveKx1iqx0FBbbHuFmbO01BsPCLcbrVA1QxX
-XURIMh9f5ZlM4jxf0IDf1W1FI2xae/lv/l5zLGu+cl0booiupQJH9E8EAenNGBk+
-H+XRF7RcufigGk9cbA+HRq5zwVRmekx3NJyD8FTVGE0tSMCYNi4UipZ7pvDNbuQj
-ou2x7a5pw2jmJuBrxXjC6ja+7erPJ9qRTK3uO7Uti8hcrKzU2+LKHbN9KaXPF/Pk
-VIzWgokzrCHiO6sTTuGaUxEwC0/4JDcIyyhMvPZR1mlNJN05ZMg2kZ55HnTkP6mD
-jWZgr31cBAV/48fDHRFrW1osCcJj7w==
-=+Ae+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmkyIT0ACgkQJNaLcl1U
+h9DCvQf+KnFt00B9LHSqG3EblHOQi2QzU6vvui7LXoSAC9ndDAVgQeJgHYoMVE6X
+lTnBC2ZRlvOWTVO36xxRgUukehA3wQQYyy4f25W07+pn9WI4Fxrk6plVLl0vUnyJ
+leQtMnTM73zhpedS+FTfBVCLXV69fXM3xK0MVAngAj2aUerYz4vd6c5PKf5vebyC
+2VC2kA4s2l/kp+ilRnSznNAWz8Wxv5X3U1aySIw07PGa7N4DR1HM76nzssoSlIqV
+Y8NDsqEQRJ2Y8oLSEULb8cdLPULoi7hGEzj3pP9mkIB+d4yqMUFX+PHkTz3Eh6vZ
+p1tmMkBQW/lxXz+yuGnNvgAS09yyvQ==
+=WuF4
 -----END PGP SIGNATURE-----
 
---VP46MTmk881CP7Vq--
+--IlY1Ynf3ryy/wQKH--
 
