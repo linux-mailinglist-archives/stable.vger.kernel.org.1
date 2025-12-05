@@ -1,244 +1,128 @@
-Return-Path: <stable+bounces-200126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04F1ACA67F3
-	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 08:41:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95776CA752E
+	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 12:12:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B80A33117006
-	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 07:34:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1820233163D1
+	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 08:09:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3730D350D77;
-	Fri,  5 Dec 2025 07:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2626B346E7E;
+	Fri,  5 Dec 2025 07:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vWQ76CVO"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="Da94QJXe"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B2E434FF7F
-	for <stable@vger.kernel.org>; Fri,  5 Dec 2025 07:29:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
+Received: from n169-113.mail.139.com (n169-113.mail.139.com [120.232.169.113])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 692BD286405
+	for <stable@vger.kernel.org>; Fri,  5 Dec 2025 07:38:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.113
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764919804; cv=none; b=iwBKebVwH85clR2APJEb5asWXY3L75ezhrMPcuh5PuV3VMAlRJ5009aeb1dUsDFtPAvSHAz0vMiQA3SFbJXOE8esyhJ/frMgvJTwr9wBaDRZ17ydo27E0G+6xqZy0QA9AO6DQMRmvh8OQsUt5fMvLnoiOrqsnDltno+7mUvW4l0=
+	t=1764920322; cv=none; b=lGSuvdQCKUDv93jJfFTcBAV6xerULzhc+SoYTs3R0PMGA7jM0huOcOFZTbXN9ZHR16EPruvfR8fboH0Zcfo9YnRN26d5hnrgwoZRenQmRm5rQ12TmOEkLv4U8ELxxQci73PpfWM99JZgjqsQAcauOLiQOf4xIoTugWuoHYs6Bqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764919804; c=relaxed/simple;
-	bh=bu3z0sYuFgAI3jnyoHwx9hy3reIbpBfRjF6TOJos6zo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tskkLvvqnO9thnIxwV9kQodloXald1YJgW2DDlxRkP/T8NBhQ1C1eb7NdwhLo21QiFNdFw2VfgLGgYRciRzcEwtMU8DNNHPcXC85G3rTh13zYW+lia+C4oIg3y6J9pqbzoO2QOYV1hg3IfDy2h4trd4UOPaTCjSpp8OquelCIbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=vWQ76CVO; arc=none smtp.client-ip=209.85.215.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-b6ce6d1d3dcso1447617a12.3
-        for <stable@vger.kernel.org>; Thu, 04 Dec 2025 23:29:51 -0800 (PST)
+	s=arc-20240116; t=1764920322; c=relaxed/simple;
+	bh=aDlWSE6gEYQMGoorTOmHgsuBmbcCn7/649Gc3d3fS2c=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=C7AIMqBXQaalnGkSyWpfzT4YhvAtr1FYqdGhS67Ccjx3oypH7UodkYAZN/6jApNpgfVl+coOvVCfAaxhAdazjnxNWsmjilgj1jZKq5x9XrbZTalh8bK70nh8n5vXMkVMdg80YMEQUmkVyEYyENwpXloVbB93Dg230h1aMmNWDjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=Da94QJXe; arc=none smtp.client-ip=120.232.169.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1764919789; x=1765524589; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=UahO3NU1ywZFNUrFNPD9TI07fUnqlVn56j/RsJpQWL4=;
-        b=vWQ76CVOb9aI/AASXvZKW1tfZFmQYEsLybc689wPwhm9bwpCNo0Bx4JHZSmVTTvyTj
-         UZw/YMT3b1ovQeIMmggkYXV40d97RCXCJY6r6bLfn2aA7kk0T/t6wdxKh7mEsQmZVcvZ
-         2MRmhmIbaQhZW54SugEX1dahmlvCs3MnK6Yv8+OHzKBAL1fOUZ3IsvYLbUDt8kA/HFTP
-         /xQmuR9pJ7oLVZyyWlaGfMJM4W6CnGhSjDszqSrRsAIVd1tTvn1xRDaZ8yoyYb0RYCWn
-         2log91ts8w9sxO4x4Ivn9iEtX7GIuAZF+AIeYKuxgIp9cGAme4UKbchIrgycyTSzPj0D
-         OoFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764919789; x=1765524589;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UahO3NU1ywZFNUrFNPD9TI07fUnqlVn56j/RsJpQWL4=;
-        b=Mcs/1GhLeATYUCRQGmQ45UKBMU6vBxMBriDv7ET5YGVp7/HKgWx0Ah0NwTu4GZK/OE
-         jTuFetqC/IxlI8fsixz7BsJzZDruF7QqD+EYWwzM1r6fn9OTf0rVXc+GSssuZ4zvA3cb
-         tYBk3T2DMu7N2U35jx7bBKVejuH9qKDFXZN0N2CbCVedN9aaIxz/IC71Szrdr0ujoyVl
-         5d8a3hlNethZviRMGXQhYdm/coNS3+mahBC9ktw3dKpZaqmPGnlC1n4HbOBqMCYfquvi
-         lwLBMTvo8i2+/dfdvU633VNGR5pDzzqUuWkwqfCY7UpbC5fPPbcogdj/lVYuHeyPX+IM
-         004A==
-X-Gm-Message-State: AOJu0Yw5pXZo52hltY+kKktGJnogI/dgUPucDUPv7ZchAJpC2O6S8J9b
-	ySriUmp5Gr7sINGjMPlqoPh3Rq36arg/XrQs501OolhoJJEUN5CbV5ypQ+5ZeGHnWuNdiy5kG6u
-	SM+3QhM9+tz44yW3hgQ33J/LGZSQLvnKAZ+5Os4U8og==
-X-Gm-Gg: ASbGncv7zhFgMYXf5UkpZ1RmQuSs+I4Wqa1xRyVFx4DPoMMMS1V/8Gh5uAsIj5Wic8B
-	4pyK2as8Oqff7SxeliZM1WThLSaETpq8Ncl/wElIg/eatvOdDYywr1zrqWo7IBLBu+jTUZc5O1j
-	SkU7fnOfl7ENr3JzY34SAx320nGbE5g9eI2+WuQ0EIW9411Nc5Fj67siQwtPCv+VsZBk5HL89iv
-	naNF0C9wu84xSSiYF6q/JVrE1YeHUwfMbHJdkEy0K7l2KELVLI7U85TGiZK3i7J4ZdDPel9gXgp
-	GEC2XCETblhtLsJtdCSn+FS6Pv18
-X-Google-Smtp-Source: AGHT+IHuL+oIcjQZ4wcxldh0cmXKonJ+cSVNcTlZOBGSI7LHuQ3p6WyyrJz/Vvr0NtdfDBhEDzBs3U9jWqBlQ1QbjpA=
-X-Received: by 2002:a05:7300:2a8e:b0:2a4:3593:6476 with SMTP id
- 5a478bee46e88-2ab92ed29bdmr4438176eec.38.1764919788530; Thu, 04 Dec 2025
- 23:29:48 -0800 (PST)
+	d=139.com; s=dkim; l=0;
+	h=from:subject:message-id:to:cc;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=Da94QJXeboHdhHvbK2SdTeYJdFZF4BK/pL/6e5UjSkzqv2tbByir125rBMUiXFPtdh/8ipr05QMN3
+	 //PSAzIIFDw4EUJ5kcF7F3qRsQiPfeJY5QgZCPOWhvu2ZjGQL9lwKgf0eGYRTrPiSIngCggZN3pEE1
+	 rEOxSv59RQSUaVOA=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM:                                                                                        
+X-RM-SPAM-FLAG:00000000
+Received:from NTT-kernel-dev (unknown[183.241.245.185])
+	by rmsmtp-lg-appmail-35-12049 (RichMail) with SMTP id 2f1169328b2c733-1586b;
+	Fri, 05 Dec 2025 15:35:10 +0800 (CST)
+X-RM-TRANSID:2f1169328b2c733-1586b
+From: Rajani Kantha <681739313@139.com>
+To: norbert@doyensec.com,
+	linkinjeon@kernel.org,
+	stfrench@microsoft.com
+Cc: stable@vger.kernel.org
+Subject: [PATCH 6.1.y] ksmbd: fix out-of-bounds in parse_sec_desc()
+Date: Fri,  5 Dec 2025 15:35:08 +0800
+Message-Id: <20251205073508.4650-1-681739313@139.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20251204163821.402208337@linuxfoundation.org>
-In-Reply-To: <20251204163821.402208337@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Fri, 5 Dec 2025 12:59:37 +0530
-X-Gm-Features: AQt7F2p61xA3vxDJr5nQjj2q6XgpicN80z9X8VqKCA8Ij1U1GuY_k5HOmUEJ-rw
-Message-ID: <CA+G9fYvz4R6SRM0ZZ6xDtnFcHo-RdQkrE3b9WTM0RCgWNiuieQ@mail.gmail.com>
-Subject: Re: [PATCH 5.15 000/387] 5.15.197-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org, sr@sladewatkins.com, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Nathan Chancellor <nathan@kernel.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Dan Carpenter <dan.carpenter@linaro.org>, 
-	Anders Roxell <anders.roxell@linaro.org>, Ben Copeland <benjamin.copeland@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
 
-On Thu, 4 Dec 2025 at 22:14, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 5.15.197 release.
-> There are 387 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sat, 06 Dec 2025 16:37:24 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.197-rc2.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+From: Namjae Jeon <linkinjeon@kernel.org>
+
+commit d6e13e19063db24f94b690159d0633aaf72a0f03 upstream.
+
+If osidoffset, gsidoffset and dacloffset could be greater than smb_ntsd
+struct size. If it is smaller, It could cause slab-out-of-bounds.
+And when validating sid, It need to check it included subauth array size.
+
+Cc: stable@vger.kernel.org
+Reported-by: Norbert Szetei <norbert@doyensec.com>
+Tested-by: Norbert Szetei <norbert@doyensec.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Rajani Kantha <681739313@139.com>
+---
+ fs/smb/server/smbacl.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/fs/smb/server/smbacl.c b/fs/smb/server/smbacl.c
+index 90c5e3edbf46..5c05f0e8b6ea 100644
+--- a/fs/smb/server/smbacl.c
++++ b/fs/smb/server/smbacl.c
+@@ -815,6 +815,13 @@ static int parse_sid(struct smb_sid *psid, char *end_of_acl)
+ 		return -EINVAL;
+ 	}
+ 
++	if (!psid->num_subauth)
++		return 0;
++
++	if (psid->num_subauth > SID_MAX_SUB_AUTHORITIES ||
++	    end_of_acl < (char *)psid + 8 + sizeof(__le32) * psid->num_subauth)
++		return -EINVAL;
++
+ 	return 0;
+ }
+ 
+@@ -856,6 +863,9 @@ int parse_sec_desc(struct user_namespace *user_ns, struct smb_ntsd *pntsd,
+ 	pntsd->type = cpu_to_le16(DACL_PRESENT);
+ 
+ 	if (pntsd->osidoffset) {
++		if (le32_to_cpu(pntsd->osidoffset) < sizeof(struct smb_ntsd))
++			return -EINVAL;
++
+ 		rc = parse_sid(owner_sid_ptr, end_of_acl);
+ 		if (rc) {
+ 			pr_err("%s: Error %d parsing Owner SID\n", __func__, rc);
+@@ -871,6 +881,9 @@ int parse_sec_desc(struct user_namespace *user_ns, struct smb_ntsd *pntsd,
+ 	}
+ 
+ 	if (pntsd->gsidoffset) {
++		if (le32_to_cpu(pntsd->gsidoffset) < sizeof(struct smb_ntsd))
++			return -EINVAL;
++
+ 		rc = parse_sid(group_sid_ptr, end_of_acl);
+ 		if (rc) {
+ 			pr_err("%s: Error %d mapping Owner SID to gid\n",
+@@ -892,6 +905,9 @@ int parse_sec_desc(struct user_namespace *user_ns, struct smb_ntsd *pntsd,
+ 		pntsd->type |= cpu_to_le16(DACL_PROTECTED);
+ 
+ 	if (dacloffset) {
++		if (dacloffset < sizeof(struct smb_ntsd))
++			return -EINVAL;
++
+ 		parse_dacl(user_ns, dacl_ptr, end_of_acl,
+ 			   owner_sid_ptr, group_sid_ptr, fattr);
+ 	}
+-- 
+2.17.1
 
 
-The powerpc allnoconfig failed with gcc-8 but passed with gcc-12.
-
-Build regression: powerpc: allnoconfig: gcc-8: Inconsistent kallsyms data
-
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-### Build error Powerpc
-Inconsistent kallsyms data
-Try make KALLSYMS_EXTRA_PASS=1 as a workaround
-make[1]: *** [Makefile:1244: vmlinux] Error 1
-
-### Commit pointing to,
-  Makefile.compiler: replace cc-ifversion with compiler-specific macros
-  commit 88b61e3bff93f99712718db785b4aa0c1165f35c upstream.
-
-### Build
- - https://storage.tuxsuite.com/public/linaro/lkft/builds/36OCnVeYGpKUCXtxVdz6gezHjcQ/
- - https://storage.tuxsuite.com/public/linaro/lkft/builds/36OCnVeYGpKUCXtxVdz6gezHjcQ/config
-
-### Steps to reproduce
- - tuxmake --runtime podman --target-arch powerpc --toolchain gcc-8
---kconfig allnoconfig
-
-## Build
-* kernel: 5.15.197-rc2
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-* git commit: 19afef1f91d735ad63a7caa2e406e6379ede166b
-* git describe: v5.15.196-388-g19afef1f91d7
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15.196-388-g19afef1f91d7
-
-## Test Regressions (compared to v5.15.195-118-g59a59821e6b5)
-* powerpc, build
-  - gcc-8-allnoconfig
-
-## Metric Regressions (compared to v5.15.195-118-g59a59821e6b5)
-
-## Test Fixes (compared to v5.15.195-118-g59a59821e6b5)
-
-## Metric Fixes (compared to v5.15.195-118-g59a59821e6b5)
-
-## Test result summary
-total: 32860, pass: 25148, fail: 2537, skip: 4848, xfail: 327
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 101 total, 101 passed, 0 failed
-* arm64: 28 total, 28 passed, 0 failed
-* i386: 18 total, 18 passed, 0 failed
-* mips: 22 total, 22 passed, 0 failed
-* parisc: 3 total, 3 passed, 0 failed
-* powerpc: 22 total, 21 passed, 1 failed
-* riscv: 8 total, 8 passed, 0 failed
-* s390: 9 total, 9 passed, 0 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 6 total, 6 passed, 0 failed
-* x86_64: 24 total, 24 passed, 0 failed
-
-## Test suites summary
-* boot
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-exec
-* kselftest-fpu
-* kselftest-futex
-* kselftest-intel_pstate
-* kselftest-kcmp
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-mincore
-* kselftest-mm
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-x86
-* kunit
-* lava
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-build-clang
-* log-parser-build-gcc
-* log-parser-test
-* ltp-capability
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
