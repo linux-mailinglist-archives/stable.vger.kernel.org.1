@@ -1,114 +1,156 @@
-Return-Path: <stable+bounces-200131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE8A2CA6BD7
-	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 09:43:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01B8ECA714F
+	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 11:07:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E613830084A9
-	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 08:43:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 258CD36B4B1B
+	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 08:48:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC09B32B9A8;
-	Fri,  5 Dec 2025 08:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F5A13081D7;
+	Fri,  5 Dec 2025 08:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b="2yOCMlQ3"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="IFuh0Fhf";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Ev02OXpH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 813FE30B50B
-	for <stable@vger.kernel.org>; Fri,  5 Dec 2025 08:21:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A20F430E0C3
+	for <stable@vger.kernel.org>; Fri,  5 Dec 2025 08:33:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764922907; cv=none; b=hk4b06RnGaLDG7KfeNBMGXkwLk33KsXi5QGLhESFdsaGM2CZv9DZyC2KLiB9jBbGzdnWNOOPnZw4TRtH7b19AukIHk67B6g/m9Ie+ErXMN58//fCUvNHKkzSHXrOTj+Hmx/Vd/tO15z/0dQz1w3MaSov6L8RcD5dh1qgmQJSx7k=
+	t=1764923599; cv=none; b=Owg7f0gjr9YdMjl9hRA8XVp8EXKjIxxXJUFjYmteRnlFFCVQW3UHC50ZLBHKLxthHLAquOK0BfzPxzy97IZkYy5tNecKxojd4NVTRiOmrOMlxBk8faXTLlBYLOFmSu5qpV4KINsnaq3GCj9kUYhDgLquvlal8OlsaW4uqkeuLF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764922907; c=relaxed/simple;
-	bh=r/FEYp9G7BrUaKaqwcSpDLY7KkubmezBOfuvt/6isEU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=f9nN85zM6mKd8i1rszEe9Y0Qm2ecPOm9GRPM6TKRxX4cWptteaoop6rk8k3rYEgZ2Y/BkNQ+dP9OxncWeX0RQLkjXM3cl5ViAlX9yiPlwPzagbGuHXsG2LoXEcFb254dPNXveRs+Co8aih7pMbFQshdIVWjQ2btSVwhoEa5gHBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in; spf=none smtp.mailfrom=rajagiritech.edu.in; dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b=2yOCMlQ3; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=rajagiritech.edu.in
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b7697e8b01aso82976666b.2
-        for <stable@vger.kernel.org>; Fri, 05 Dec 2025 00:21:30 -0800 (PST)
+	s=arc-20240116; t=1764923599; c=relaxed/simple;
+	bh=MMGuL1vI04W6tUU6AIQeCC2kd4KIozOfeyw6PVUXtuM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=t5+GTP1pwfehYpPKGPjclLRMqMLlt1iJlDakDS0p43vEE2FpLodq/E4YDzjsM4z3mIFfcsQXzgQOfTt8rzAJZxYNPADHiKZDdoLD0Jg4qBY2epDjpFHSinG4rVZOqS0jWmZzb74LlLcJaUmav9pp5/AMLEXIU5oLbp6Y5Npd5eA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=IFuh0Fhf; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Ev02OXpH; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5B52ec393172949
+	for <stable@vger.kernel.org>; Fri, 5 Dec 2025 08:33:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	eC5PNHDlygWpLQKznc8XPdUOqSVo8sJKvA6Tip9r02k=; b=IFuh0FhfJPqL8HrP
+	FMH6mppvIXUjzkVH7RZozpfq+T9A8IkOZn9bNmLXdrNuMMXcXPhkCKMQ5zX+LW1z
+	78oy9wnBQxV8nPl+8kSvsqQ2rhVUPgHRn5Mm5iQrmd+C6nydbdlj2mniAJgFw4V6
+	Nk9FnnW9Ok5KULmUFVwDmTjpyQ955MtGw5fXlR2XOFCsrH/iNfaNT1/HnGVY6ktO
+	1fjUzfaHShwR8HQcr7G0wohl2a54pQvKRztw0bA9W2Gbi8LTZfhNsx65U/OsSZSb
+	p6W5cBRItMgZTNW1B9LQOtTfHVbDDQbVJS+T1/4KcT0Bb5WtDPiQWfw8hYIWyq9t
+	msFeGw==
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4auptqruc7-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Fri, 05 Dec 2025 08:33:11 +0000 (GMT)
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-8b2657cfcdaso243120685a.3
+        for <stable@vger.kernel.org>; Fri, 05 Dec 2025 00:33:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rajagiritech-edu-in.20230601.gappssmtp.com; s=20230601; t=1764922888; x=1765527688; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=oss.qualcomm.com; s=google; t=1764923591; x=1765528391; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=CFTqnO/Fd2sawQQhIPcCoLFvSOoCx15UbnxbNG9nqpA=;
-        b=2yOCMlQ3v3lIDkADH+lN8/RKb0AQ7DRS3IswrTVdWaXTRiTeLSGAYRtbTilSVXz8LW
-         OSxi7zv1mzFDz6VXxkbCbuoNzPWMdLXPtoYQvGpB6sLUF2toj24KWjeqzJz3sXB9EaBE
-         jDdME7YFtwEIvKXx9C07lUy/vGrxc7IW3+fA8uerKKkkrEfu6I1v4l93TuFQ+w+ZUwbf
-         lD7gDyKm7VhSEAa2wXZ4nFjlUWlUkdP41ooyEO6kNM18pmxRRjQ3ub8zruuE9jSn/vcE
-         zMC99SMpck84JsKTNU3eai/m9JakXsqZpiBE0bQADMs2azJTrxsUCS8uu7AWdAoNDmFi
-         GoIw==
+        bh=eC5PNHDlygWpLQKznc8XPdUOqSVo8sJKvA6Tip9r02k=;
+        b=Ev02OXpHHA0Kt4CLevsy84+c8DQBS/HPONfzsJlPajUS5LAxFiyswQusK/TDDE+Yh6
+         Xgk9UuPTNb7SYsYaPYMN27MuQDKVUMM/unw5cVGWRk04g7o90otL2T3WXxvXvxRQWMTs
+         EdcfLyexvtKMGGIOihJq8B5ZMZj7+hBu26gDGxvMWTjl+lUWPCmV2fqzfJwnIJVA9nHu
+         pOzZPWf2HzGBj5/XYiAywaARUBq9pSJprUwKBdu9zZWAhtXTVzzpspAqZ/oESMZtvZAL
+         xtFWaUoEchv43pQrDkfKT9bA+pDOVj1ExyIRabdyBFMfj89dgOUJnUPrSufISXTrk08O
+         lYlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764922888; x=1765527688;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1764923591; x=1765528391;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=CFTqnO/Fd2sawQQhIPcCoLFvSOoCx15UbnxbNG9nqpA=;
-        b=k8ll4WbvbxrsFaOTgsTYdDitpGiY7u0eq1IMxIDJecM8DGNpmxWYLe1xVT0mCTC+vZ
-         uQSlwG30Y7FeUdH8RoOzdyzNMjdUiknaRP0QodH1zw6vLiZ+rkuZnYkPBDGItKM3OR/Y
-         S4x7PR6+1gX5oJaPjb967UCIu9WJM5zY3IabeZ8VfCa/DUGg/TfoKWLi7xA7iBFdfV6U
-         vSJcXa8+q+3BAHOtYaml6a+kr0gobBkj3z7MFTEzs0726SoFJQ1AIBiJElJwUH2xs69r
-         VLKf27AP2cDUixOP1pWLkFrrqoqIEIYYPTxB6vBU4ERvcjHtZpSbAe4cjQVlWUPv0eOj
-         w8wA==
-X-Gm-Message-State: AOJu0YyUaqePAJ0NvhrhoyOM9xCPfa9ECYTT6sPfVqSfQL7jZdNWjZks
-	k+AIUGET8l7VApCdkZAtOsFn8uE8+z9QQgSR27yavXOWoy/quE6q4GKUjkxTJEoshA+k0GOZE+K
-	PMcP3VUsv2bMvkD968Zql3xKUXjusrWtOXbJAi1tE6HudaEljsdw6bKovdQ==
-X-Gm-Gg: ASbGncuOFFl7eW3Uph2gp1AXQ5sZZmBqtYHz1w91bwukagYcKg7NB/yb8liLeoQkLn0
-	IUzdMPaGW9lqN0P4QwrLmiSNmxV4Z3xyjqXTBoGlhgokWj9nMJwsLTIQhAiPuNyzsK7mi/UMWeu
-	6/71QFflLwnQ4Tde0Q4uqYwvEnaezdPakWmsbpEifge3aE9HfE1w2qULvCCrixkk0eOiYXgl3lS
-	7de+AEyA6oWPAbqC4VwNXaxbgFu6s2R9P7H5VSZ8dqar+pLBIRew///2PxNOoJ5e2NuhoQ=
-X-Google-Smtp-Source: AGHT+IEhwwxVHvBzGnvcRs1ZBsC6V2SXb5WppN3WR1olH3vWXdyabaLt9X81lmdZJ3z1dsJ5nsyoiNdGQcjQaOVSH5w=
-X-Received: by 2002:a17:907:1c27:b0:b73:848b:34ae with SMTP id
- a640c23a62f3a-b79dbea8994mr919780966b.18.1764922888243; Fri, 05 Dec 2025
- 00:21:28 -0800 (PST)
+        bh=eC5PNHDlygWpLQKznc8XPdUOqSVo8sJKvA6Tip9r02k=;
+        b=cdgOwbbilm9Wi6npy00YMY6aPOHnU0+woE9XYwZiCffczAUQ1qfBOB3Qxj7IbR0e+L
+         D0HnbfDJh63t95t33b7TxyQ37aLgTMaryIlCwqcOVNjtEh9S96s0Vu9jm165zJg7BngI
+         S3ZTmF9pPv6A9BU3Ds0GzcUJ/9xljZW4lyAw5ZF0GRtx8tA4TJ6VzJ/zZ9eTJ/MFYrC/
+         9JgM4qpv316CRArx80+PLsJK/j8jCZednWwgK/udRWb7aBABkuqrNFPGL6whscUX7BPE
+         ExMuKbadjNbrd9V7pqhx+gjLKnmOqeqqK8QtEI5CqPTl+LmWajHS3EwxDLjB/dtBevx8
+         dSXg==
+X-Forwarded-Encrypted: i=1; AJvYcCVEWG6rVi6F40kaIq5JpE4heu7gvM3d9eN83tVZKwiQ/R5oyobrswo/1l5FSfMGbTb5KYfPUs4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzeUsXWaCcXUzhXNtfMh56zlC/dt+U+i37r2U8kjVgcrf00tJq1
+	K7GV4if7Cch+NmMdhISddioNsEasy4OkCZl7gd0Ntf8cPAQ5a7zKYvBhT9jVZ9TPyUrQoGNfLok
+	ThZzjqj/P+MOju2wLxT+1HdbPSF7RfqcCBKDXvU0AJRjFGpO8uvFlr/0rW8k=
+X-Gm-Gg: ASbGncuMO5S1520LcQM5yz98bu08bTry9emIQzue1nAlabUbGjSuQ9XE+bZNfhLMCWz
+	5T/KxzA7AZVBrKHTWsMRvK7xPw+VLK2+FKkfqmEymyAZDw32rjGzGkhExosf1Mc97togToCyiBE
+	lUwq/mxTQvVVzpVicJeFNeTQlQJ5L83sjdkfLqq34fDQEzIOvPTmnLItgUQdy1nbQxy0FstA/9H
+	2678qCs472JHVeC8qtaCDbnW0N4/7boZhbQZmusi1n1Zf7uBV/qlMjHXM1C2PWdsipg/tbnFmgt
+	Mwh2mJ+4BNj0n66kER/ep7Tcc22xFeCmNJVeuWSpcRfqVtA1fFTg51HvbsvnFS7c+0H6BCEcVbA
+	640fQfnRhKw4txF2US5eS550Y2+Yin+IU
+X-Received: by 2002:a05:620a:408d:b0:8b1:1585:225d with SMTP id af79cd13be357-8b61822c8ddmr761339485a.82.1764923590862;
+        Fri, 05 Dec 2025 00:33:10 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFvCTznjuLTd687VjM6qtxYI9yUJOjuyMNTDmIuSFHO+nw/t8MIdWeZTeXTyfuTr7AAid7ttA==
+X-Received: by 2002:a05:620a:408d:b0:8b1:1585:225d with SMTP id af79cd13be357-8b61822c8ddmr761337285a.82.1764923590357;
+        Fri, 05 Dec 2025 00:33:10 -0800 (PST)
+Received: from brgl-uxlite ([2a01:cb1d:dc:7e00:53a3:2e30:5d7:1bde])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-479310b693csm69356755e9.4.2025.12.05.00.33.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Dec 2025 00:33:09 -0800 (PST)
+From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+To: brgl@kernel.org, Wentao Guan <guanwentao@uniontech.com>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+        andriy.shevchenko@linux.intel.com, mathieu.dubois-briand@bootlin.com,
+        ioana.ciornei@nxp.com, linux-gpio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, zhanjun@uniontech.com,
+        niecheng1@uniontech.com, stable@vger.kernel.org,
+        WangYuli <wangyl5933@chinaunicom.cn>
+Subject: Re: [PATCH v3] gpio: regmap: Fix memleak in gpio_remap_register
+Date: Fri,  5 Dec 2025 09:33:08 +0100
+Message-ID: <176492353839.12178.12868945450381013529.b4-ty@oss.qualcomm.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251204101303.30353-1-guanwentao@uniontech.com>
+References: <20251204101303.30353-1-guanwentao@uniontech.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251203152346.456176474@linuxfoundation.org> <CAG=yYw=7i7O7nLLDQ5hdP03wHFSQ04QEXtP8dX-2ytBmiJWsaw@mail.gmail.com>
- <2025120413-impotence-cornfield-16aa@gregkh>
-In-Reply-To: <2025120413-impotence-cornfield-16aa@gregkh>
-From: Jeffrin Thalakkottoor <jeffrin@rajagiritech.edu.in>
-Date: Fri, 5 Dec 2025 13:50:51 +0530
-X-Gm-Features: AWmQ_bnFM0yAOGrLLgGAq_Fa0ruYEvV3PENXxVfn2W7oaTqf_5z9_nXm-BZquAA
-Message-ID: <CAG=yYw=8ZXmf3KE8QDAOJrJ8VtRWgMtCNv6=6FNJw1P_jFw+Rw@mail.gmail.com>
-Subject: Re: [PATCH 6.17 000/146] 6.17.11-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org, sr@sladewatkins.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: geUMu5n-ueJEmSQ3JZleAHSSt4BiX0aI
+X-Proofpoint-ORIG-GUID: geUMu5n-ueJEmSQ3JZleAHSSt4BiX0aI
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA1MDA2MCBTYWx0ZWRfXzaceCbHvYBJ8
+ ab2MkGQlkRjCWTAXn/WV+UvktQ9kU+O8IaOVLjpBnFQ53JhsON9r5+fjtgJhkNtmn74Xfjbu4lV
+ q5E4ejAYCa0loJJensfyhQ0vuD3CaDHcIIDPbkm0ql/uRtD0BtZWZTsJqhMReJvGIujNMGMQz1L
+ e1xnnlC5QlPn7NVeeNO6EQEBB0fskyfyP3O9nTBqaLC5JdKpHf9NWM6ZUK2wOcd2PjL2+r8mS9x
+ pxPp/uYAw8LLbQr8KEYS69S+tzuU45BskwEOayYGwOO3B9PiNoOjZFPZQfDASGZMRizWxUHNPTS
+ Q6PUYRJTwyL7Keg6umwY8vcuvAbAZrPUxnB67Cqda1ZW81xjHdSBkJSd6nNOUd76NB9ZBxnHvlv
+ PTVHhfK0VyN+FZQGw1mwjxQ9tBpxbw==
+X-Authority-Analysis: v=2.4 cv=fKQ0HJae c=1 sm=1 tr=0 ts=693298c7 cx=c_pps
+ a=qKBjSQ1v91RyAK45QCPf5w==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=vzvxVwKKtc5QML-hEyEA:9 a=QEXdDO2ut3YA:10
+ a=NFOGd7dJGGMPyQGDc5-O:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-05_03,2025-12-04_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 bulkscore=0 priorityscore=1501 malwarescore=0
+ lowpriorityscore=0 adultscore=0 phishscore=0 impostorscore=0 spamscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
+ definitions=main-2512050060
 
-On Thu, Dec 4, 2025 at 9:46=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> Are these new from 6.17.10?  if so, can you bisect to find the offending
-> commit?
->
-> thanks,
->
-> greg k-h
-i Have not  compiled 6.17.10
-This machine  is not the normal machine i compile  for kernek testin
-THis is a typically old  processor and motherboard
-But let me try to compile 6.17.10.
-and see if i can do git bisec ( i kind of forgot .. i have to learn again)
 
-anyway THANKSt
+On Thu, 04 Dec 2025 18:13:04 +0800, Wentao Guan wrote:
+> We should call gpiochip_remove(chip) to free the resource
+> alloced by gpiochip_add_data(chip, gpio) after the err path.
+> 
+> 
 
---=20
-software engineer
-rajagiri school of engineering and technology
+Fixed typos, reworked the commit message and queued for fixes.
+
+[1/1] gpio: regmap: Fix memleak in gpio_remap_register
+      https://git.kernel.org/brgl/linux/c/52721cfc78c76b09c66e092b52617006390ae96a
+
+Best regards,
+-- 
+Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
