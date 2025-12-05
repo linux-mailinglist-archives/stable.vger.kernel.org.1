@@ -1,125 +1,127 @@
-Return-Path: <stable+bounces-200198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50666CA90E1
-	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 20:25:14 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91181CA9099
+	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 20:19:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A6E2F311039D
-	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 19:20:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D54DB30287FE
+	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 19:18:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 270F33559EA;
-	Fri,  5 Dec 2025 19:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F3FE3570B1;
+	Fri,  5 Dec 2025 19:09:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LcK3E/X5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bVVLwHnL"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f41.google.com (mail-yx1-f41.google.com [74.125.224.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 659993559D0
-	for <stable@vger.kernel.org>; Fri,  5 Dec 2025 19:08:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F0D43570A4
+	for <stable@vger.kernel.org>; Fri,  5 Dec 2025 19:08:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764961711; cv=none; b=X736tdjtB53xcrd5B0rj699zZCC5auyqbsbPGTSpZT24bKZE+aBNjLIl4LtL72DsSsA+5jyJAPtYdwdGRF6Px6FWgjJQhftc2AOx4D+44DMysqk1Sqk2DrbFR2C8pAY4we/czGtWUMGYxmETre8LaqD6HF8pW8hPi6paj84GnW0=
+	t=1764961738; cv=none; b=mE6Ji25NQeocw981gQs1GbLMAqbuF6dORvaN0yg38EXv554DZHGQ6qGdjI+YE8xrzM3REiNQr/bRb7c8ss9lG0e16h32RwsJe5qK8aGiLskGHO66UuLtAlotOj6s544qQ6woVSatxhYZCxWUyV1/XvvVKFMzrV7lk2J1DJMzQzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764961711; c=relaxed/simple;
-	bh=u42wK1az0gCoHe9aH0PjWo1sXXSoVFANde/vGryaKEM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kYxayeYJH4oTQYK5lVu0el/LZdzzB3neEOZfLEulcBcf50BLPICQour1a2+b9Ip+/HvD0W/bZm5vYkKBtNSA+s8tAfxcKE3nvPAXDQ1Lbj6Vgj0tKqqxtotXrYjiuspPJN7uew39Na5oEpUC7HZ9nberKPJ+Wch4RdJD0GbM5ZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LcK3E/X5; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764961710; x=1796497710;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=u42wK1az0gCoHe9aH0PjWo1sXXSoVFANde/vGryaKEM=;
-  b=LcK3E/X5n25XxASOLlDZES+/mGiKmUbZi5YUXNgIVSNTatQCLy1m6b8n
-   9hxnLOScFz5rqdzLwIumCNsq3yPgvXa1EExzg74ctymlh6jMi8ZD44p9q
-   EcqR/G04uCjdXDeK4hU2YhaZaXBwLoSWQmR659T9Wym5vyORSFzFvS+wn
-   /sOR1e9nAWZAkv1VRDFgIOEgbFfk06iqi/FxZ1FwBJTppmp0vzICDQHrD
-   13tHkvcNL6y+QJvsjH85tTIP3sYQiPx3YRZyxwBjW64JDeFRcAfD1e3et
-   C2IPQlIbe8pz6Q3ZByBW5vImb/MUIp3s7kU6dy0Anu6TCHY6XKRkBMP/z
-   A==;
-X-CSE-ConnectionGUID: /e6vDFxMRk+VGpV+5SaP3Q==
-X-CSE-MsgGUID: L8GEM44wQ+WeJ7OJsx8Exg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11633"; a="66188653"
-X-IronPort-AV: E=Sophos;i="6.20,252,1758610800"; 
-   d="scan'208";a="66188653"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2025 11:08:29 -0800
-X-CSE-ConnectionGUID: YNjFN725SJKQj4nBXfYSNQ==
-X-CSE-MsgGUID: su5TX8CYTVyFduF5/gD/tw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,252,1758610800"; 
-   d="scan'208";a="226013764"
-Received: from osgc-linux-buildserver.sh.intel.com ([10.112.232.103])
-  by orviesa002.jf.intel.com with ESMTP; 05 Dec 2025 11:08:27 -0800
-From: Shuicheng Lin <shuicheng.lin@intel.com>
-To: intel-xe@lists.freedesktop.org
-Cc: Shuicheng Lin <shuicheng.lin@intel.com>,
-	stable@vger.kernel.org,
-	Matthew Brost <matthew.brost@intel.com>,
-	Michal Mrozek <michal.mrozek@intel.com>,
-	Carl Zhang <carl.zhang@intel.com>,
-	=?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>,
-	Lionel Landwerlin <lionel.g.landwerlin@intel.com>,
-	Ivan Briano <ivan.briano@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Ashutosh Dixit <ashutosh.dixit@intel.com>
-Subject: [PATCH 2/3] drm/xe/vm: Limit num_syncs to prevent oversized allocations
-Date: Fri,  5 Dec 2025 19:05:09 +0000
-Message-ID: <20251205190506.2426471-7-shuicheng.lin@intel.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20251205190506.2426471-5-shuicheng.lin@intel.com>
-References: <20251205190506.2426471-5-shuicheng.lin@intel.com>
+	s=arc-20240116; t=1764961738; c=relaxed/simple;
+	bh=/grqmQu1VT4OJGmtEwd0eouKcRmgcIoQ7v05Ao7XrHk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=gDr8RhUPBUMAGJVm97p+IqxHkNnp2yvQOtrOCAtPTUZ4GCkElrO8xjbHsuxPm6QRJU5PwOCsCv1Zzt7LWlTwS3+IWIPAibvhIJbt0wHhk1epwXr9pvUhqzaDDBJiCtty1SE6yq0YGtuqgDNPbSzBDzJ6HPUlPpdfBaHCNCdVUGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bVVLwHnL; arc=none smtp.client-ip=74.125.224.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-63fc72db706so2265192d50.2
+        for <stable@vger.kernel.org>; Fri, 05 Dec 2025 11:08:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764961734; x=1765566534; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/grqmQu1VT4OJGmtEwd0eouKcRmgcIoQ7v05Ao7XrHk=;
+        b=bVVLwHnLTYKJQZNIlx+t6t90LNRc+tTZtPCvj2mhOStKwEgBsrlcZi56AdWSnGQ/Gy
+         B9J0irioHnS34HSM31wASI5pBc60IEHF83Shr88sNBhqPxo5WIcWh/fxZyA/QvQEQw6U
+         rCsert9vOxVDxcq71jRzqi8w8xtPzNvVBNB5hLfd6voYbp4jDcKzIniHJrEsbGFWhE4T
+         8u/MgHZc5iWU2t2+yenKvEDdRoiKFxbXZr+BXiy5MSkIEl0l1oybsW7MNXOfKUDB/ilt
+         dIf9/xEiUj7zjj+Jr2CsVI2uW2wPXlIxUui9VLbnzJqbK7xNkkAlAghMiD+eQXOZIexm
+         mIoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764961734; x=1765566534;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/grqmQu1VT4OJGmtEwd0eouKcRmgcIoQ7v05Ao7XrHk=;
+        b=lFKJFxW8wnPlpwA5UX7RA/7cNvywJ+z35s9cLTkp2WXIFyJ84Z8/mu5m/Zu39yNfqD
+         cLLPzMyXIm9gkcB9hjy4+GYa34GPIl6UzficoXsCr0RW6L8DaWITvvX1HgY15+lA24Qh
+         FtAnuj2vP2s+LgyUHMwkEqRDYNpj5YqB33YDEp0lGzQzEoYKlyv9cpli0/BBcJxuLtvP
+         BWkGJuaW0WGSTfbp0U0lW06HKsLpq5YdClnnz9xvP0oNWEj60C9w2MqjA8tQzA4aByDO
+         SaolAhXyGoe8LjxuwUsrI/5ZHhWJSpkAunPVG3lUn/+R1QhC15N0wgYFmNnJ0SerVWuS
+         LL+A==
+X-Forwarded-Encrypted: i=1; AJvYcCV+Oog/ox2qn9qr8WjJO9bwvGG/+mAjMdYckzI/mAeVViof5FThgmrHFfzp+BdtytgRylZED+I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxB0YGquPSM7Ix1HB2GiXcjYz9fuFwIiCJ+x1Doq8/loAl3lFdX
+	EhTI6eYpZN7FO0XsTNa/EqoC7AyvRE9cHgVvKQ6r3ReZj2m7bAhHWGxw
+X-Gm-Gg: ASbGncsNiTT3AIdGHa9nyQ0F35LUSDavbjnCQ522UfXH2BMj/oufOM2h5b1w25UdcMY
+	WqIErku0n3OdlRL/6EFkHgk6WJqivx1KKd4AKiaB0tW5C0mPo8kLGawIc3b/ydxmCYzkTNNNE1D
+	SyVU8pcFCwAsCi9GIUQC/Nvq2nBpFTaFkRLTX50y8Zdi/FvCn2GuHqG7qCS/7q3gaUm4KPOQzsH
+	/3/izB6pZi6tOQaQxa3nhCOeYChYnSIQzB9W3xPx2tQmfThXwPb+LFb47nHIJeZKBy0/w04ZFQF
+	Yk7MWNSQOnXHlvYL67YyfN2Am+/M3jmVKa50zpUUspKk6YN/dXrN6b26qc/6KCthuxg2LWZOcY1
+	2p17MMq9Mr4pziWqEo76c6ID0rsYxpsglEf0V9+n+7kgYsiGWGLdwUXKOD253+Dnt34hMla0lgE
+	gmy+Y=
+X-Google-Smtp-Source: AGHT+IEX7oWGtpUVsXXjxR9P+Xx3Cp/SwqG6uIJhXg9cHA93n4Hs0R07hsL3LJEP/Kf8W8TPpPaznA==
+X-Received: by 2002:a05:690e:2506:20b0:63f:9937:6cce with SMTP id 956f58d0204a3-6444e7ce92bmr6669d50.61.1764961734438;
+        Fri, 05 Dec 2025 11:08:54 -0800 (PST)
+Received: from localhost ([2800:bf0:82:3d2:875c:6c76:e06b:3095])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6443f5a3e81sm2114261d50.16.2025.12.05.11.08.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 05 Dec 2025 11:08:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Fri, 05 Dec 2025 14:08:52 -0500
+Message-Id: <DEQIPUKHDQYB.2LLGMK25N40VN@gmail.com>
+Cc: "Hans de Goede" <hansg@kernel.org>,
+ <platform-driver-x86@vger.kernel.org>, <Dell.Client.Kernel@dell.com>,
+ "LKML" <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 0/3] platform/x86: alienware-wmi-wmax: Add support for
+ some newly released models
+From: "Kurt Borja" <kuurtb@gmail.com>
+To: =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, "Kurt
+ Borja" <kuurtb@gmail.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20251205-area-51-v1-0-d2cb13530851@gmail.com>
+ <49c9bab4-520f-42ca-5041-8a008b55f188@linux.intel.com>
+In-Reply-To: <49c9bab4-520f-42ca-5041-8a008b55f188@linux.intel.com>
 
-The VM_BIND ioctl did not validate args->num_syncs, allowing userspace
-to pass excessively large values that could lead to oversized allocations
-or other unexpected behavior.
+On Fri Dec 5, 2025 at 2:04 PM -05, Ilpo J=C3=A4rvinen wrote:
+> On Fri, 5 Dec 2025, Kurt Borja wrote:
+>
+>> I managed to get my hands on acpidumps for these models so this is
+>> verified against those.
+>>=20
+>> Thanks for all your latest reviews!
+>>=20
+>> Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+>
+> You don't need to signoff the coverletter. :-) (Hopefully it won't=20
+> confuse any tools but I guess they should handle duplicate tags sensibly=
+=20
+> so likely no problem in this case).
 
-Add a check to ensure num_syncs does not exceed XE_MAX_SYNCS,
-returning -EINVAL when the limit is violated.
+Actually, unless I messed up something, this is b4's default settings
+:-). I'll take a look.
 
-Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-Cc: <stable@vger.kernel.org> # v6.12+
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Michal Mrozek <michal.mrozek@intel.com>
-Cc: Carl Zhang <carl.zhang@intel.com>
-Cc: José Roberto de Souza <jose.souza@intel.com>
-Cc: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Cc: Ivan Briano <ivan.briano@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
----
- drivers/gpu/drm/xe/xe_vm.c | 3 +++
- 1 file changed, 3 insertions(+)
+>
+> For the series,
+>
+> Reviewed-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
 
-diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
-index c2012d20faa6..2ada14ed1f3c 100644
---- a/drivers/gpu/drm/xe/xe_vm.c
-+++ b/drivers/gpu/drm/xe/xe_vm.c
-@@ -3341,6 +3341,9 @@ static int vm_bind_ioctl_check_args(struct xe_device *xe, struct xe_vm *vm,
- 	if (XE_IOCTL_DBG(xe, args->extensions))
- 		return -EINVAL;
- 
-+	if (XE_IOCTL_DBG(xe, args->num_syncs > XE_MAX_SYNCS))
-+		return -EINVAL;
-+
- 	if (args->num_binds > 1) {
- 		u64 __user *bind_user =
- 			u64_to_user_ptr(args->vector_of_binds);
--- 
-2.50.1
+Thanks!
+
+
+--=20
+ ~ Kurt
 
 
