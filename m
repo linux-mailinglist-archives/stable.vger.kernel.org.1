@@ -1,102 +1,114 @@
-Return-Path: <stable+bounces-200129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA96ECA6F63
-	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 10:42:36 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE8A2CA6BD7
+	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 09:43:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 28F3B34315C4
-	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 08:31:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E613830084A9
+	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 08:43:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AC3E25F797;
-	Fri,  5 Dec 2025 08:01:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC09B32B9A8;
+	Fri,  5 Dec 2025 08:21:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="mwzwteWz"
+	dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b="2yOCMlQ3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-24418.protonmail.ch (mail-24418.protonmail.ch [109.224.244.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69E9B33C19C
-	for <stable@vger.kernel.org>; Fri,  5 Dec 2025 08:01:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 813FE30B50B
+	for <stable@vger.kernel.org>; Fri,  5 Dec 2025 08:21:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764921708; cv=none; b=Dgf2CCDhEJOnZ3E0s4SKakalfrvtaPMEkx25+88Q6rSQSMoEJlZ/clyftYKscdvn9zdkrRpLP2EQqrYsY5Y50lLQWoBGk+OCBODnWPD7259cyKSI4a780u6hudZkFtTLaNO370M7v67b9vpkuXfOFfaFJDGzHd07T1gK0uv8KXY=
+	t=1764922907; cv=none; b=hk4b06RnGaLDG7KfeNBMGXkwLk33KsXi5QGLhESFdsaGM2CZv9DZyC2KLiB9jBbGzdnWNOOPnZw4TRtH7b19AukIHk67B6g/m9Ie+ErXMN58//fCUvNHKkzSHXrOTj+Hmx/Vd/tO15z/0dQz1w3MaSov6L8RcD5dh1qgmQJSx7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764921708; c=relaxed/simple;
-	bh=2b55B9Zjp61SytwW9T/Q+2xWGHAGJN9kgM34pLYbqGs=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IigE3gknc7apB9KASwCCDX5YOu2WTtMfTgOn5B1Ww/B270hZXtqAo1ZviqB5xgDKZqQehB1yhIumK/O+cnjqkqZeAMaFn/99xlOGpBDfz5ROqnBuD+mZB3JdAsrVDKcjpf/0S4CWycW4kT3o/r/AEdOUCb3c42TMMryz7mKS0ME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=mwzwteWz; arc=none smtp.client-ip=109.224.244.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1764921698; x=1765180898;
-	bh=Zgc5Bfim5kR7lSEF9D/3QfXneWnjNYTl3zLRKpUUg0w=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=mwzwteWzQ4+P+0EheVmeVZVyCucCeGcOdcgEVReGyJxazYbDrOdG1S7D0jCMUamfp
-	 iydGU9+1EY6vFnlYBpjho6eu3YGlllfWJ2wa5oMcArU7QaC4un+wOMvnB64rlc5+XJ
-	 jD70CbVLek+OcQzYRzDcZlWFx9rDEpOdvdynAg3HLrrWJiXfjcMU4iK849dVdORqy5
-	 dWiuL1WI0jK7e3Bu8kDH2yay9JzGxXcB672cRzePhHmBO0oT0hxTGqCWsV4m7XNQ1y
-	 q8gAdM8XXoCsHgwaEKlsUZ5QtgnUFQP4VR21r1c4Nl68QPGh59rwJvpxYkxGC+j5ud
-	 WZbdLoJpZ6M5g==
-Date: Fri, 05 Dec 2025 08:01:34 +0000
-To: Andrey Konovalov <andreyknvl@gmail.com>
-From: =?utf-8?Q?Maciej_Wiecz=C3=B3r-Retman?= <m.wieczorretman@pm.me>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, Marco Elver <elver@google.com>, jiayuan.chen@linux.dev, stable@vger.kernel.org, Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 2/3] kasan: Refactor pcpu kasan vmalloc unpoison
-Message-ID: <mtfitb3vqbcqzezrckjlo2vyszb3ufqgimmpmfhnybrkjt7m6f@3ovjldsuitwc>
-In-Reply-To: <CA+fCnZfRTyNbRcU9jNB2O2EeXuoT0T2dY9atFyXy5P0jT1-QWw@mail.gmail.com>
-References: <cover.1764874575.git.m.wieczorretman@pm.me> <eb61d93b907e262eefcaa130261a08bcb6c5ce51.1764874575.git.m.wieczorretman@pm.me> <CA+fCnZfRTyNbRcU9jNB2O2EeXuoT0T2dY9atFyXy5P0jT1-QWw@mail.gmail.com>
-Feedback-ID: 164464600:user:proton
-X-Pm-Message-ID: 2cea9ea5c467759ad35e9323c2a7e8e0c5500488
+	s=arc-20240116; t=1764922907; c=relaxed/simple;
+	bh=r/FEYp9G7BrUaKaqwcSpDLY7KkubmezBOfuvt/6isEU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=f9nN85zM6mKd8i1rszEe9Y0Qm2ecPOm9GRPM6TKRxX4cWptteaoop6rk8k3rYEgZ2Y/BkNQ+dP9OxncWeX0RQLkjXM3cl5ViAlX9yiPlwPzagbGuHXsG2LoXEcFb254dPNXveRs+Co8aih7pMbFQshdIVWjQ2btSVwhoEa5gHBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in; spf=none smtp.mailfrom=rajagiritech.edu.in; dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b=2yOCMlQ3; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=rajagiritech.edu.in
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b7697e8b01aso82976666b.2
+        for <stable@vger.kernel.org>; Fri, 05 Dec 2025 00:21:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rajagiritech-edu-in.20230601.gappssmtp.com; s=20230601; t=1764922888; x=1765527688; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CFTqnO/Fd2sawQQhIPcCoLFvSOoCx15UbnxbNG9nqpA=;
+        b=2yOCMlQ3v3lIDkADH+lN8/RKb0AQ7DRS3IswrTVdWaXTRiTeLSGAYRtbTilSVXz8LW
+         OSxi7zv1mzFDz6VXxkbCbuoNzPWMdLXPtoYQvGpB6sLUF2toj24KWjeqzJz3sXB9EaBE
+         jDdME7YFtwEIvKXx9C07lUy/vGrxc7IW3+fA8uerKKkkrEfu6I1v4l93TuFQ+w+ZUwbf
+         lD7gDyKm7VhSEAa2wXZ4nFjlUWlUkdP41ooyEO6kNM18pmxRRjQ3ub8zruuE9jSn/vcE
+         zMC99SMpck84JsKTNU3eai/m9JakXsqZpiBE0bQADMs2azJTrxsUCS8uu7AWdAoNDmFi
+         GoIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764922888; x=1765527688;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=CFTqnO/Fd2sawQQhIPcCoLFvSOoCx15UbnxbNG9nqpA=;
+        b=k8ll4WbvbxrsFaOTgsTYdDitpGiY7u0eq1IMxIDJecM8DGNpmxWYLe1xVT0mCTC+vZ
+         uQSlwG30Y7FeUdH8RoOzdyzNMjdUiknaRP0QodH1zw6vLiZ+rkuZnYkPBDGItKM3OR/Y
+         S4x7PR6+1gX5oJaPjb967UCIu9WJM5zY3IabeZ8VfCa/DUGg/TfoKWLi7xA7iBFdfV6U
+         vSJcXa8+q+3BAHOtYaml6a+kr0gobBkj3z7MFTEzs0726SoFJQ1AIBiJElJwUH2xs69r
+         VLKf27AP2cDUixOP1pWLkFrrqoqIEIYYPTxB6vBU4ERvcjHtZpSbAe4cjQVlWUPv0eOj
+         w8wA==
+X-Gm-Message-State: AOJu0YyUaqePAJ0NvhrhoyOM9xCPfa9ECYTT6sPfVqSfQL7jZdNWjZks
+	k+AIUGET8l7VApCdkZAtOsFn8uE8+z9QQgSR27yavXOWoy/quE6q4GKUjkxTJEoshA+k0GOZE+K
+	PMcP3VUsv2bMvkD968Zql3xKUXjusrWtOXbJAi1tE6HudaEljsdw6bKovdQ==
+X-Gm-Gg: ASbGncuOFFl7eW3Uph2gp1AXQ5sZZmBqtYHz1w91bwukagYcKg7NB/yb8liLeoQkLn0
+	IUzdMPaGW9lqN0P4QwrLmiSNmxV4Z3xyjqXTBoGlhgokWj9nMJwsLTIQhAiPuNyzsK7mi/UMWeu
+	6/71QFflLwnQ4Tde0Q4uqYwvEnaezdPakWmsbpEifge3aE9HfE1w2qULvCCrixkk0eOiYXgl3lS
+	7de+AEyA6oWPAbqC4VwNXaxbgFu6s2R9P7H5VSZ8dqar+pLBIRew///2PxNOoJ5e2NuhoQ=
+X-Google-Smtp-Source: AGHT+IEhwwxVHvBzGnvcRs1ZBsC6V2SXb5WppN3WR1olH3vWXdyabaLt9X81lmdZJ3z1dsJ5nsyoiNdGQcjQaOVSH5w=
+X-Received: by 2002:a17:907:1c27:b0:b73:848b:34ae with SMTP id
+ a640c23a62f3a-b79dbea8994mr919780966b.18.1764922888243; Fri, 05 Dec 2025
+ 00:21:28 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20251203152346.456176474@linuxfoundation.org> <CAG=yYw=7i7O7nLLDQ5hdP03wHFSQ04QEXtP8dX-2ytBmiJWsaw@mail.gmail.com>
+ <2025120413-impotence-cornfield-16aa@gregkh>
+In-Reply-To: <2025120413-impotence-cornfield-16aa@gregkh>
+From: Jeffrin Thalakkottoor <jeffrin@rajagiritech.edu.in>
+Date: Fri, 5 Dec 2025 13:50:51 +0530
+X-Gm-Features: AWmQ_bnFM0yAOGrLLgGAq_Fa0ruYEvV3PENXxVfn2W7oaTqf_5z9_nXm-BZquAA
+Message-ID: <CAG=yYw=8ZXmf3KE8QDAOJrJ8VtRWgMtCNv6=6FNJw1P_jFw+Rw@mail.gmail.com>
+Subject: Re: [PATCH 6.17 000/146] 6.17.11-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org, sr@sladewatkins.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 2025-12-05 at 02:09:02 +0100, Andrey Konovalov wrote:
->On Thu, Dec 4, 2025 at 8:00=E2=80=AFPM Maciej Wieczor-Retman
-><m.wieczorretman@pm.me> wrote:
->>
->> From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
->>
->> A KASAN tag mismatch, possibly causing a kernel panic, can be observed
->> on systems with a tag-based KASAN enabled and with multiple NUMA nodes.
->> It was reported on arm64 and reproduced on x86. It can be explained in
->> the following points:
->>
->>         1. There can be more than one virtual memory chunk.
->>         2. Chunk's base address has a tag.
->>         3. The base address points at the first chunk and thus inherits
->>            the tag of the first chunk.
->>         4. The subsequent chunks will be accessed with the tag from the
->>            first chunk.
->>         5. Thus, the subsequent chunks need to have their tag set to
->>            match that of the first chunk.
->>
->> Refactor code by reusing __kasan_unpoison_vmalloc in a new helper in
->> preparation for the actual fix.
->>
->> Changelog v1 (after splitting of from the KASAN series):
->> - Rewrite first paragraph of the patch message to point at the user
->>   impact of the issue.
->> - Move helper to common.c so it can be compiled in all KASAN modes.
+On Thu, Dec 4, 2025 at 9:46=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
->Nit: Can put this part after ---.
+> Are these new from 6.17.10?  if so, can you bisect to find the offending
+> commit?
+>
+> thanks,
+>
+> greg k-h
+i Have not  compiled 6.17.10
+This machine  is not the normal machine i compile  for kernek testin
+THis is a typically old  processor and motherboard
+But let me try to compile 6.17.10.
+and see if i can do git bisec ( i kind of forgot .. i have to learn again)
 
-Thanks for noticing that, guess I need to revise my script that moves
-these under the three dashes
-
-...
+anyway THANKSt
 
 --=20
-Kind regards
-Maciej Wiecz=C3=B3r-Retman
-
+software engineer
+rajagiri school of engineering and technology
 
