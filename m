@@ -1,384 +1,122 @@
-Return-Path: <stable+bounces-200113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B419CA60CC
-	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 04:53:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1547CA6135
+	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 05:03:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D34F930C502F
-	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 03:52:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 23753319B6F9
+	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 04:03:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DF88286D4B;
-	Fri,  5 Dec 2025 03:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C1C32741AC;
+	Fri,  5 Dec 2025 04:03:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UChwGJbe"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dT5KEUWm"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28BA31E572F;
-	Fri,  5 Dec 2025 03:52:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 695F21F4CB3
+	for <stable@vger.kernel.org>; Fri,  5 Dec 2025 04:02:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764906778; cv=none; b=lE10De5OoMJC/whaFMORIvCVoh85a3geRtgKXCzCSrnVTLCjdS4mb7FPZ9ZxswM3tJfMuE/iJ6K5vo+6YeX+6LN+UUMBZWxuT8/LdRr18RVoQTmyX4k7r+2fFceTWEtqyIKm39+fLpsXHRJ4jbQlon5jz20oKLvZK5oT1PdMINw=
+	t=1764907380; cv=none; b=ZEzOjCINTS6BB7MofG1ycrqvgk9+ybFB+Stg5/66OVgkuS13CS0C0NBs+Ywx2qEaPv4FlDvpKzGxWZJzR8/bjz7OKWB/D1Vxuk5ha2YVLUf442bv3gjuFWT2UYzZlXlDZ1iNB73vJyR3yy9y2EO7vM0E5zl7VANS4Dk8XYvq3jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764906778; c=relaxed/simple;
-	bh=Epvpa2owJvVaP5f+at6JugZc8mEhPiJMHBO2buzfa70=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Nttct7XZr9rD391T066oZCyBr4D488D2ggo8BA1K/CLsFuT8C0z+wYdjZMEmewLgyt3PxR+2vbjY3LNOkqviPapFruedMHFN0l0zvSffJv4pz2a4XA9CbggAz4wGuzj9TlXTYfJO6dfvO9/pUc2Op/qgQn+saUvZmjjBq8zXFvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UChwGJbe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69B52C116B1;
-	Fri,  5 Dec 2025 03:52:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764906777;
-	bh=Epvpa2owJvVaP5f+at6JugZc8mEhPiJMHBO2buzfa70=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UChwGJbegO3yOXgytP2j9W/R4lhUpFt003kPPyPTd0lW6K3/6M6o5S4gaIY5XTj13
-	 C4Oqm/ymm03KTM0JcqlNib9+9STbI0fjiImBBAlt0X2kd7UlHgpYXMX0iciArUUh7h
-	 ZUClGUkgey/ARqTcMO/RC6Ha21IHVqlwr/2ooDmUGgB5hVAZz3ilaUTW3L3CCO0pMJ
-	 nlxdKWItQLhxmK+3NLcaumC4vK2wYg2xxBv+04uAmh8PyppX5/Sln9y+FdDBRF8cDy
-	 9NupCsTKjEJsMahKEAKR/6Cs6fyy4L56b5IsIsuyVHknVA+vwpiAkJlaHq9dn2ONHa
-	 ROxIYHJgsVeWQ==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Armin Wolf <W_Armin@gmx.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-6.12] ACPI: fan: Workaround for 64-bit firmware bug
-Date: Thu,  4 Dec 2025 22:52:36 -0500
-Message-ID: <20251205035239.341989-7-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251205035239.341989-1-sashal@kernel.org>
-References: <20251205035239.341989-1-sashal@kernel.org>
+	s=arc-20240116; t=1764907380; c=relaxed/simple;
+	bh=v2f72S6WC3OgKeDBLfDdT93apuWtvOkHlHqzmDzoFNk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jvFEHuLZvT4bNYyjCfvAL4KdigO0DnBSahqT02O3Wd8xHhoJUojuJQzNS3QiJUZJr7Hd2lgQ9yQnmsxB4c7IpPwx7rQrMPmoWhLe4LbuAETvCFVs1tk0Xv1u1RsKDOb/W1uv1d2c7E0Y7SCzbFPXz/lgjEuUhD9YBFMuzPFnbGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dT5KEUWm; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-7b9c17dd591so1465251b3a.3
+        for <stable@vger.kernel.org>; Thu, 04 Dec 2025 20:02:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764907378; x=1765512178; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=b4YLFHYaO1RuaqL4oQw18x4A8MtrlyjgwaPdq7ZKVVI=;
+        b=dT5KEUWm/tAcwROe18z4NJpi0ML8xkVQCXLkZLaqhpV/nvWwcngx3MDirivE1o/b8s
+         K/qokgvl6GmzSuZ9lAHzr35Tc1Vk11GPQCgo7c8nZJpv+BN/31QgqKefY3Iky0aScvVK
+         wvijFitmRQCtlhIgF7Du5jv14BiBauUjWpIMNSA/uCMGY8Cz9jVtg29Knnqd9Npykshq
+         Ejm5tV4qEm02PaLHG6+Yw6w8Os6cUc9svSB/T5YUN7O+dA3tjT8CjFad9a3kGpo+C8wh
+         I0PPiYu7G7gY0l8YJHptqr4ad9VuhAnmSNYhhGsD183gaa++ab/mvX+kNcK+rzD4Ji80
+         jrRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764907378; x=1765512178;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=b4YLFHYaO1RuaqL4oQw18x4A8MtrlyjgwaPdq7ZKVVI=;
+        b=jJhHmfSFVvZ5T4sfNK8qQW1NncjuNza1/0kwlFZegN3k/Ui/3lOSdqAAqr9DbidTgd
+         X5/oLF9kB5mWoB/x+1hco+EyIWNO7mUIL4SobUnlG2DqfCD6M/hP8IjjDVp9/EVUzY87
+         EfkfwAmSoCxMOOdp3Ry92MFSjkVMyA8ZBifB/x7vuOY6lHteCuOlAn9r/0i/Clc1a5T8
+         /km6u09LfqH5xWF4cwrgha/LP8eErfV/KKYdNbyHacwXYRBTmnsmcAvnZuVbhh3+nHbf
+         Uqx8CtZ3CF5HBdu+/nxGtlHDxQgloBXSDGb77Zx9KdpRU3es4fbkcwVV61eO6Wq4CFcQ
+         DYRQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWe2LjG7isFyigssPCxYc0Fc7G0naItZPN7/OrcqbJ2IciAJUuPhBUCBXQ+B3G/rMnBkRtCAS8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxv8Y9pKUXw+KGEi9mCbyXkbAWf70D7GNX9c72WSmThXFcnXZrB
+	X8FDSUUaNrfYmGGsTYzPH71z0XuXxVlaIKJ/PW/4YuuqAR0svh4HZZRR
+X-Gm-Gg: ASbGnct8f4TycXzlKpkxQahX8ao3pXNxSR7AI2tdKFmjHJetQDpOqrBCLsauneA59IP
+	UdvHEP67pYAtEG+nglCoDzrCa0bw0D/I1X/omJE3Of3RFg/VqnnTMp7Hn6uS6ypekuwHyPojE+8
+	keeVsL8EJLOQltUCjoR1vPE+GXPtzxfs33CZaZQf7MoVlQb1/dpitvXk1qC06ae9xKr+CcFJAu6
+	BNzpGznZ8XqAiDZr16N6SRP4yLd3cSj9S6AcV08weBtbnmEiBtA3RFoDFz1fvjhR2Z97QWocNri
+	We6iAffe9ecV/va0TEckEIJEjUY0YIl3+EBA4zno3Ya855zooIn8Yo/ACb4ApsKG+hKraRSViJr
+	iYlC1BN2IyzuHqrA+arciacDiJGDrebf7yowXg/P52WK2LmB0JCHW2rzdd0KrmTX/E11BD63YLV
+	jsstFtRBMRnpThA5ErWlNBdp9lh9hjqFju3w==
+X-Google-Smtp-Source: AGHT+IHXAGXujCRF6rIxwM8aJ1WracKjtS2/TUVdygTygDYAdtAS1Iw877vhq37ZfiJWLSvsiX+qaw==
+X-Received: by 2002:a05:6a21:32aa:b0:35b:4f5c:4adf with SMTP id adf61e73a8af0-3640387708dmr6434214637.43.1764907377601;
+        Thu, 04 Dec 2025 20:02:57 -0800 (PST)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7e2ae032627sm3624503b3a.44.2025.12.04.20.02.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Dec 2025 20:02:56 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Thu, 4 Dec 2025 20:02:54 -0800
+From: Guenter Roeck <linux@roeck-us.net>
+To: Gui-Dong Han <hanguidong02@gmail.com>
+Cc: m.hulsman@tudelft.nl, linux-hwmon@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] hwmon: (w83791d) Convert macros to functions to avoid
+ TOCTOU
+Message-ID: <695c582d-308f-4960-84fa-cbf6f08c909b@roeck-us.net>
+References: <20251202180105.12842-1-hanguidong02@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.18
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251202180105.12842-1-hanguidong02@gmail.com>
 
-From: Armin Wolf <W_Armin@gmx.de>
+On Wed, Dec 03, 2025 at 02:01:05AM +0800, Gui-Dong Han wrote:
+> The macro FAN_FROM_REG evaluates its arguments multiple times. When used
+> in lockless contexts involving shared driver data, this leads to
+> Time-of-Check to Time-of-Use (TOCTOU) race conditions, potentially
+> causing divide-by-zero errors.
+> 
+> Convert the macro to a static function. This guarantees that arguments
+> are evaluated only once (pass-by-value), preventing the race
+> conditions.
+> 
+> Additionally, in store_fan_div, move the calculation of the minimum
+> limit inside the update lock. This ensures that the read-modify-write
+> sequence operates on consistent data.
+> 
+> Adhere to the principle of minimal changes by only converting macros
+> that evaluate arguments multiple times and are used in lockless
+> contexts.
+> 
+> Link: https://lore.kernel.org/all/CALbr=LYJ_ehtp53HXEVkSpYoub+XYSTU8Rg=o1xxMJ8=5z8B-g@mail.gmail.com/
+> Fixes: 9873964d6eb2 ("[PATCH] HWMON: w83791d: New hardware monitoring driver for the Winbond W83791D") 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
 
-[ Upstream commit 2e00f7a4bb0ac25ec7477b55fe482da39fb4dce8 ]
+Applied.
 
-Some firmware implementations use the "Ones" ASL opcode to produce
-an integer with all bits set in order to indicate missing speed or
-power readings. This however only works when using 32-bit integers,
-as the ACPI spec requires a 32-bit integer (0xFFFFFFFF) to be
-returned for missing speed/power readings. With 64-bit integers the
-"Ones" opcode produces a 64-bit integer with all bits set, violating
-the ACPI spec regarding the placeholder value for missing readings.
-
-Work around such buggy firmware implementation by also checking for
-64-bit integers with all bits set when reading _FST.
-
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-[ rjw: Typo fix in the changelog ]
-Link: https://patch.msgid.link/20251007234149.2769-3-W_Armin@gmx.de
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-
-LLM Generated explanations, may be completely bogus:
-
-## Analysis: ACPI fan 64-bit firmware bug workaround
-
-### 1. COMMIT MESSAGE ANALYSIS
-
-**Subject:** `ACPI: fan: Workaround for 64-bit firmware bug`
-
-**Key points:**
-- Addresses firmware returning 64-bit all-bits-set (0xFFFFFFFFFFFFFFFF)
-  instead of the spec-compliant 32-bit placeholder (0xFFFFFFFF) for
-  missing readings
-- No `Cc: stable@vger.kernel.org` tag
-- No `Fixes:` tag
-- Signed by Rafael J. Wysocki (ACPI maintainer)
-- Commit date: October 8, 2025
-
-### 2. CODE CHANGE ANALYSIS
-
-**Files modified:** 2 files, ~40 lines added, 7 lines removed
-
-**Changes:**
-
-1. **`drivers/acpi/fan.h`:**
-   - Adds `#include <linux/limits.h>`
-   - Adds `acpi_fan_speed_valid()` and `acpi_fan_power_valid()` inline
-     helpers
-   - Both check `value < U32_MAX` (catches both 0xFFFFFFFF and
-     0xFFFFFFFFFFFFFFFF)
-
-2. **`drivers/acpi/fan_hwmon.c`:**
-   - Removes `FAN_SPEED_UNAVAILABLE` and `FAN_POWER_UNAVAILABLE` macros
-   - Replaces equality checks (`== FAN_SPEED_UNAVAILABLE`) with
-     validation calls (`!acpi_fan_speed_valid()`)
-   - Updates 3 locations: `is_visible()` power check, `hwmon_read()`
-     speed check, `hwmon_read()` power check
-
-**Technical mechanism:**
-- ACPI spec requires 0xFFFFFFFF (32-bit) for missing readings
-- Some firmware uses "Ones" ASL opcode with 64-bit integers, producing
-  0xFFFFFFFFFFFFFFFF
-- Current code only checks for 0xFFFFFFFF, so the 64-bit value is
-  treated as valid
-- Impact: incorrect readings (e.g., 18446744073709551615) reported via
-  hwmon
-
-**Why the fix works:**
-- `speed < U32_MAX` correctly rejects both 0xFFFFFFFF and
-  0xFFFFFFFFFFFFFFFF
-- Returns `-ENODEV` (not available) instead of `-EOVERFLOW` for missing
-  readings
-- Centralizes validation logic
-
-### 3. CLASSIFICATION
-
-**Type:** Bug fix (firmware workaround)
-
-**Exception category:** Hardware/firmware quirk/workaround — allowed in
-stable per stable-kernel-rules
-
-**Not a new feature:** Only improves validation; no new APIs or behavior
-changes
-
-### 4. SCOPE AND RISK ASSESSMENT
-
-**Scope:**
-- Small, localized change
-- Only affects hwmon interface validation
-- No architectural changes
-
-**Risk:**
-- Very low
-- Defensive validation that doesn't change behavior for correct firmware
-- Simple bounds check (`< U32_MAX`)
-- No new code paths or complex logic
-
-**Potential concerns:**
-- `fan_attr.c` still prints `fst.speed` directly without validation
-  (different code path, not addressed here)
-- Overflow check (`fst.speed > LONG_MAX`) would catch it but returns the
-  wrong error code
-
-### 5. USER IMPACT
-
-**Who is affected:**
-- Users with buggy ACPI firmware returning 64-bit placeholder values
-- Users relying on hwmon for fan monitoring
-
-**Severity:**
-- Medium — causes incorrect readings, not crashes
-- Monitoring tools may show invalid values
-- User confusion from huge numbers
-
-**Real-world impact:**
-- Fixes a real firmware bug
-- Improves error semantics (ENODEV vs EOVERFLOW)
-
-### 6. STABILITY INDICATORS
-
-**Testing:**
-- No explicit `Tested-by:` or `Reviewed-by:` tags
-- Signed by ACPI maintainer (Rafael J. Wysocki)
-
-**Age:**
-- Commit is recent (October 2025)
-- No indication of long-term testing in mainline
-
-### 7. DEPENDENCY CHECK
-
-**Critical dependency:**
-- Requires hwmon support (`drivers/acpi/fan_hwmon.c`)
-- Hwmon support added in commit `35c50d853adc0` (May 2024, "ACPI: fan:
-  Add hwmon support")
-
-**Backport implications:**
-- Only applies to stable trees that have hwmon support
-- For trees without hwmon, this commit doesn't apply (no functional
-  impact)
-- If hwmon exists, the fix applies cleanly
-
-**Other dependencies:**
-- `linux/limits.h` (U32_MAX) — standard header, available in all stable
-  trees
-- No other code dependencies
-
-### 8. STABLE KERNEL RULES COMPLIANCE
-
-**Meets criteria:**
-1. Obviously correct — simple bounds check
-2. Fixes a real bug — incorrect readings from buggy firmware
-3. Important issue — affects monitoring accuracy
-4. Small and contained — ~40 lines, 2 files
-5. No new features — only validation improvement
-6. Applies cleanly — straightforward change
-
-**Exception applies:**
-- Hardware/firmware workaround — explicitly allowed
-
-**Missing signals:**
-- No `Cc: stable@vger.kernel.org` tag
-- No `Fixes:` tag
-- No bug report link in commit message
-
-### 9. RISK VS BENEFIT TRADE-OFF
-
-**Benefits:**
-- Fixes incorrect readings from buggy firmware
-- Improves error semantics
-- Low risk, defensive change
-- Better compatibility with non-compliant firmware
-
-**Risks:**
-- Very low — simple validation logic
-- No behavior change for correct firmware
-- No new code paths
-
-**Verdict:** Benefits outweigh risks
-
-### 10. ADDITIONAL CONSIDERATIONS
-
-**Incomplete fix:**
-- `fan_attr.c:show_fan_speed()` still prints `fst.speed` without
-  validation
-- This commit only fixes hwmon, not sysfs attributes
-- Not a blocker for backport, but a limitation
-
-**Error code improvement:**
-- Current code would return `-EOVERFLOW` for 0xFFFFFFFFFFFFFFFF
-- Fix returns `-ENODEV` (more accurate)
-
-**Firmware compatibility:**
-- Works with both spec-compliant and buggy firmware
-- No regressions expected
-
-### FINAL ASSESSMENT
-
-**Should this be backported to stable?** YES
-
-**Reasoning:**
-1. Fixes a real bug affecting users with buggy firmware
-2. Small, contained, low-risk change
-3. Qualifies as a firmware workaround (allowed exception)
-4. Improves error handling semantics
-5. No new features or APIs
-6. Applies cleanly to trees with hwmon support
-
-**Recommendations:**
-- Backport to stable trees that include hwmon support (likely 6.6.y and
-  newer)
-- For older trees without hwmon, not applicable (no functional impact)
-- Consider fixing `fan_attr.c` in a follow-up commit
-
-**YES**
-
- drivers/acpi/fan.h       | 33 +++++++++++++++++++++++++++++++++
- drivers/acpi/fan_hwmon.c | 10 +++-------
- 2 files changed, 36 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/acpi/fan.h b/drivers/acpi/fan.h
-index bedbab0e8e4e9..0d73433c38892 100644
---- a/drivers/acpi/fan.h
-+++ b/drivers/acpi/fan.h
-@@ -11,6 +11,7 @@
- #define _ACPI_FAN_H_
- 
- #include <linux/kconfig.h>
-+#include <linux/limits.h>
- 
- #define ACPI_FAN_DEVICE_IDS	\
- 	{"INT3404", }, /* Fan */ \
-@@ -60,6 +61,38 @@ struct acpi_fan {
- 	struct device_attribute fine_grain_control;
- };
- 
-+/**
-+ * acpi_fan_speed_valid - Check if fan speed value is valid
-+ * @speeed: Speed value returned by the ACPI firmware
-+ *
-+ * Check if the fan speed value returned by the ACPI firmware is valid. This function is
-+ * necessary as ACPI firmware implementations can return 0xFFFFFFFF to signal that the
-+ * ACPI fan does not support speed reporting. Additionally, some buggy ACPI firmware
-+ * implementations return a value larger than the 32-bit integer value defined by
-+ * the ACPI specification when using placeholder values. Such invalid values are also
-+ * detected by this function.
-+ *
-+ * Returns: True if the fan speed value is valid, false otherwise.
-+ */
-+static inline bool acpi_fan_speed_valid(u64 speed)
-+{
-+	return speed < U32_MAX;
-+}
-+
-+/**
-+ * acpi_fan_power_valid - Check if fan power value is valid
-+ * @power: Power value returned by the ACPI firmware
-+ *
-+ * Check if the fan power value returned by the ACPI firmware is valid.
-+ * See acpi_fan_speed_valid() for details.
-+ *
-+ * Returns: True if the fan power value is valid, false otherwise.
-+ */
-+static inline bool acpi_fan_power_valid(u64 power)
-+{
-+	return power < U32_MAX;
-+}
-+
- int acpi_fan_get_fst(acpi_handle handle, struct acpi_fan_fst *fst);
- int acpi_fan_create_attributes(struct acpi_device *device);
- void acpi_fan_delete_attributes(struct acpi_device *device);
-diff --git a/drivers/acpi/fan_hwmon.c b/drivers/acpi/fan_hwmon.c
-index 4b2c2007f2d7f..47a02ef5a6067 100644
---- a/drivers/acpi/fan_hwmon.c
-+++ b/drivers/acpi/fan_hwmon.c
-@@ -15,10 +15,6 @@
- 
- #include "fan.h"
- 
--/* Returned when the ACPI fan does not support speed reporting */
--#define FAN_SPEED_UNAVAILABLE	U32_MAX
--#define FAN_POWER_UNAVAILABLE	U32_MAX
--
- static struct acpi_fan_fps *acpi_fan_get_current_fps(struct acpi_fan *fan, u64 control)
- {
- 	unsigned int i;
-@@ -77,7 +73,7 @@ static umode_t acpi_fan_hwmon_is_visible(const void *drvdata, enum hwmon_sensor_
- 			 * when the associated attribute should not be created.
- 			 */
- 			for (i = 0; i < fan->fps_count; i++) {
--				if (fan->fps[i].power != FAN_POWER_UNAVAILABLE)
-+				if (acpi_fan_power_valid(fan->fps[i].power))
- 					return 0444;
- 			}
- 
-@@ -106,7 +102,7 @@ static int acpi_fan_hwmon_read(struct device *dev, enum hwmon_sensor_types type,
- 	case hwmon_fan:
- 		switch (attr) {
- 		case hwmon_fan_input:
--			if (fst.speed == FAN_SPEED_UNAVAILABLE)
-+			if (!acpi_fan_speed_valid(fst.speed))
- 				return -ENODEV;
- 
- 			if (fst.speed > LONG_MAX)
-@@ -134,7 +130,7 @@ static int acpi_fan_hwmon_read(struct device *dev, enum hwmon_sensor_types type,
- 			if (!fps)
- 				return -EIO;
- 
--			if (fps->power == FAN_POWER_UNAVAILABLE)
-+			if (!acpi_fan_power_valid(fps->power))
- 				return -ENODEV;
- 
- 			if (fps->power > LONG_MAX / MICROWATT_PER_MILLIWATT)
--- 
-2.51.0
-
+Thanks,
+Guenter
 
