@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-200172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6926FCA80F2
-	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 16:01:20 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92F71CA80E6
+	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 16:00:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 273993065032
-	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 15:00:12 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7CF263025811
+	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 15:00:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B70033B6E8;
-	Fri,  5 Dec 2025 15:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ED8E33B6DC;
+	Fri,  5 Dec 2025 15:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="ZOWGS/m8"
+	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="N+3AZIRl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-07.mail-europe.com (mail-0701.mail-europe.com [51.83.17.38])
+Received: from mail-24417.protonmail.ch (mail-24417.protonmail.ch [109.224.244.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9601624BBE4
-	for <stable@vger.kernel.org>; Fri,  5 Dec 2025 15:00:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.83.17.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E4E33ADA5;
+	Fri,  5 Dec 2025 15:00:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764946806; cv=none; b=Lxz1Ozv8kfu88W0rKAWMJKQrTaS3WMYtakgnP44U8kvZIpRQIGTONselat+FMCXtE4YlKtObm383cYpEIEaXwM+FWMvwqg2ZOVyZltQfWFPM1EF7XVDshSUWhwZzpUVzLIl2RXLt1JEsuvlfcfAlDDf3qq/HA8grdqR3h/yBAOY=
+	t=1764946810; cv=none; b=CUX2xXfyRFJmk2EynMqg4KHF7nJvGAeyVpjXEzeKj5aCGn2VfJJvKcku78tC3hbSOGj/gTf84PzrjRbSV6tN5mj3dv6AtafeREFSGf5suCRQEX9l76t3PYsRiY+AK1VZ4G4c1db+hgs19I1xgxFjgqoLDnLdlcY7XAVG1OihAgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764946806; c=relaxed/simple;
-	bh=rPqFBGoEOYKVDFdJQgymk3wZJ11qBG9RpIIfItAPJcU=;
+	s=arc-20240116; t=1764946810; c=relaxed/simple;
+	bh=BTYlCktS5S4g7Exg0JxgMp8sNaVVb77iH5bFN/oFR3A=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UHFQEyUOsFfz7nig71wW3XgIQiFJsfbdXNOhwQMw+4D6jwTR38nksWHfRuzhfUaDy51J8nC4zB4sD4CMCaxHv8GUE8yfhrZkNGljB2xAz8h4u2Ofcb+mqjM4LrOWPWN7MFoQXAUCYOL76tfTrkxzSje5TvmRvS/UZVquCor9xw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=fail smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=ZOWGS/m8; arc=none smtp.client-ip=51.83.17.38
+	 MIME-Version:Content-Type; b=DmXkwj88xtXNh/VjanVJCqiD2wHXZPs88g6eTXkJIbNFcOs1vlpqD/+y32sRD8FivqxMQ/I+OW4YOuD1UkmbTP62FQonjGYeKsxBu/JNFCV75iv5NjKiXjzQ/uQsbqdIHJjBym/LiMbQpHJbILP0GWsGpsevMVtu0cLKc6rFshE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=N+3AZIRl; arc=none smtp.client-ip=109.224.244.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=pm.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1764946784; x=1765205984;
-	bh=qIyabYfRYXeVwZVp9LPPfWirGseEPkYszpblk/XZ5Dw=;
+	s=protonmail3; t=1764946798; x=1765205998;
+	bh=L0KdqaoEvJRt9/c4L5Rt4JS2SHbqfjLO2UUM/bE4AmE=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=ZOWGS/m8tzXkiQ5rMpz2nfSazNtDRqiAV7taCW/XZHvZinRh0fuzw1xalMJyHG1ab
-	 NmmS8SF6qxmpWheZnvotMSLFiKUAd6yB7OkYE4RINBY50RpB3Jni5l6u6ztRjB5TuB
-	 5MugaFAEwCTF3DX1z800bHR88KfVIs0venVyLJnnKESz6+oIoxGVkyzuUgnWk1aAj3
-	 Dodl/LWeB2nlQwDFotSW08UdY0skGH/FgEbdT/rtmxXXUyWdlpTwLTtx2WEC+1eqW1
-	 VyE2NqB0hE9sZwNkvYPvhe/tk3WFgas7LfcQAvvuytTAoczZXR+1Cvxj3pOaKfz5xf
-	 DeOLp3gaajH0w==
-Date: Fri, 05 Dec 2025 14:59:17 +0000
-To: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, Marco Elver <elver@google.com>
+	b=N+3AZIRlFffP95lEsDGcJwonEwcbmnmiP+y9G7XIZ4CFhPqE12ntUM7VqVh8YDUHr
+	 6BJW7IfSW9jwX6j3p+t5RY5+0ZEg+L6wKYKw9NKULxp3VFb2cXmz604zMCbYqwA+V5
+	 Uc/Y4JAt9Qklgc14X5IqwNYWQwjAAI3CipzqUjHEO/4J1FgCRc4nrGXFgX7anR/7gF
+	 hu++oTotuKns356sfhzGjNvViiiYwVN2nam8yAPQSzrQ7f/kvvB1In/ps2JXOFIcJA
+	 70YVK1WzmHJ9gRvB8H7RqV+iK5AgWStUXVHjnR8fMAeH0ZfefZcy+sv+UVxUM4WgLW
+	 Z/OZs+EMukOBg==
+Date: Fri, 05 Dec 2025 14:59:26 +0000
+To: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, Andrew Morton <akpm@linux-foundation.org>, Marco Elver <elver@google.com>
 From: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
-Cc: jiayuan.chen@linux.dev, m.wieczorretman@pm.me, stable@vger.kernel.org, Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: [PATCH v4 2/3] kasan: Refactor pcpu kasan vmalloc unpoison
-Message-ID: <6dd6a10f94241cef935fec58c312cb846d352490.1764945396.git.m.wieczorretman@pm.me>
+Cc: jiayuan.chen@linux.dev, m.wieczorretman@pm.me, stable@vger.kernel.org, Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, kasan-dev@googlegroups.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v4 3/3] kasan: Unpoison vms[area] addresses with a common tag
+Message-ID: <919897daaaa3c982a27762a2ee038769ad033991.1764945396.git.m.wieczorretman@pm.me>
 In-Reply-To: <cover.1764945396.git.m.wieczorretman@pm.me>
 References: <cover.1764945396.git.m.wieczorretman@pm.me>
 Feedback-ID: 164464600:user:proton
-X-Pm-Message-ID: 948f454a99eeea8eab949328f562c02766404396
+X-Pm-Message-ID: 1f0ff2af25c0def600917e4f386d03b302b45161
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,116 +76,73 @@ the following points:
 =095. Thus, the subsequent chunks need to have their tag set to
 =09   match that of the first chunk.
 
-Refactor code by reusing __kasan_unpoison_vmalloc in a new helper in
-preparation for the actual fix.
+Use the new vmalloc flag that disables random tag assignment in
+__kasan_unpoison_vmalloc() - pass the same random tag to all the
+vm_structs by tagging the pointers before they go inside
+__kasan_unpoison_vmalloc(). Assigning a common tag resolves the pcpu
+chunk address mismatch.
 
 Fixes: 1d96320f8d53 ("kasan, vmalloc: add vmalloc tagging for SW_TAGS")
 Cc: stable@vger.kernel.org # 6.1+
 Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
 ---
-Changelog v1: (after splitting of from the KASAN series)
-- Rewrite first paragraph of the patch message to point at the user
-  impact of the issue.
-- Move helper to common.c so it can be compiled in all KASAN modes.
-
-Changelog v2:
-- Redo the whole patch so it's an actual refactor.
+Changelog v4:
+- Add WARN_ON_ONCE() if the new flag is already set in the helper.
+  (Andrey)
+- Remove pr_warn() since the comment should be enough. (Andrey)
 
 Changelog v3:
-- Redo the patch after applying Andrey's comments to align the code more
-  with what's already in include/linux/kasan.h
+- Redo the patch by using a flag instead of a new argument in
+  __kasan_unpoison_vmalloc() (Andrey Konovalov)
 
- include/linux/kasan.h | 15 +++++++++++++++
- mm/kasan/common.c     | 17 +++++++++++++++++
- mm/vmalloc.c          |  4 +---
- 3 files changed, 33 insertions(+), 3 deletions(-)
+Changelog v2:
+- Revise the whole patch to match the fixed refactorization from the
+  first patch.
 
-diff --git a/include/linux/kasan.h b/include/linux/kasan.h
-index 6d7972bb390c..cde493cb7702 100644
---- a/include/linux/kasan.h
-+++ b/include/linux/kasan.h
-@@ -615,6 +615,16 @@ static __always_inline void kasan_poison_vmalloc(const=
- void *start,
- =09=09__kasan_poison_vmalloc(start, size);
- }
-=20
-+void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms,
-+=09=09=09=09 kasan_vmalloc_flags_t flags);
-+static __always_inline void
-+kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms,
-+=09=09=09  kasan_vmalloc_flags_t flags)
-+{
-+=09if (kasan_enabled())
-+=09=09__kasan_unpoison_vmap_areas(vms, nr_vms, flags);
-+}
-+
- #else /* CONFIG_KASAN_VMALLOC */
-=20
- static inline void kasan_populate_early_vm_area_shadow(void *start,
-@@ -639,6 +649,11 @@ static inline void *kasan_unpoison_vmalloc(const void =
-*start,
- static inline void kasan_poison_vmalloc(const void *start, unsigned long s=
-ize)
- { }
-=20
-+static __always_inline void
-+kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms,
-+=09=09=09  kasan_vmalloc_flags_t flags)
-+{ }
-+
- #endif /* CONFIG_KASAN_VMALLOC */
-=20
- #if (defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)) && \
+Changelog v1:
+- Rewrite the patch message to point at the user impact of the issue.
+- Move helper to common.c so it can be compiled in all KASAN modes.
+
+ mm/kasan/common.c | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
+
 diff --git a/mm/kasan/common.c b/mm/kasan/common.c
-index d4c14359feaf..1ed6289d471a 100644
+index 1ed6289d471a..589be3d86735 100644
 --- a/mm/kasan/common.c
 +++ b/mm/kasan/common.c
-@@ -28,6 +28,7 @@
- #include <linux/string.h>
- #include <linux/types.h>
- #include <linux/bug.h>
-+#include <linux/vmalloc.h>
+@@ -591,11 +591,26 @@ void __kasan_unpoison_vmap_areas(struct vm_struct **v=
+ms, int nr_vms,
+ =09unsigned long size;
+ =09void *addr;
+ =09int area;
++=09u8 tag;
++
++=09/*
++=09 * If KASAN_VMALLOC_KEEP_TAG was set at this point, all vms[] pointers
++=09 * would be unpoisoned with the KASAN_TAG_KERNEL which would disable
++=09 * KASAN checks down the line.
++=09 */
++=09if (WARN_ON_ONCE(flags & KASAN_VMALLOC_KEEP_TAG))
++=09=09return;
++
++=09size =3D vms[0]->size;
++=09addr =3D vms[0]->addr;
++=09vms[0]->addr =3D __kasan_unpoison_vmalloc(addr, size, flags);
++=09tag =3D get_tag(vms[0]->addr);
 =20
- #include "kasan.h"
- #include "../slab.h"
-@@ -582,3 +583,19 @@ bool __kasan_check_byte(const void *address, unsigned =
-long ip)
+-=09for (area =3D 0 ; area < nr_vms ; area++) {
++=09for (area =3D 1 ; area < nr_vms ; area++) {
+ =09=09size =3D vms[area]->size;
+-=09=09addr =3D vms[area]->addr;
+-=09=09vms[area]->addr =3D __kasan_unpoison_vmalloc(addr, size, flags);
++=09=09addr =3D set_tag(vms[area]->addr, tag);
++=09=09vms[area]->addr =3D
++=09=09=09__kasan_unpoison_vmalloc(addr, size, flags | KASAN_VMALLOC_KEEP_T=
+AG);
  =09}
- =09return true;
  }
-+
-+#ifdef CONFIG_KASAN_VMALLOC
-+void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms,
-+=09=09=09=09 kasan_vmalloc_flags_t flags)
-+{
-+=09unsigned long size;
-+=09void *addr;
-+=09int area;
-+
-+=09for (area =3D 0 ; area < nr_vms ; area++) {
-+=09=09size =3D vms[area]->size;
-+=09=09addr =3D vms[area]->addr;
-+=09=09vms[area]->addr =3D __kasan_unpoison_vmalloc(addr, size, flags);
-+=09}
-+}
-+#endif
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 22a73a087135..33e705ccafba 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -4872,9 +4872,7 @@ struct vm_struct **pcpu_get_vm_areas(const unsigned l=
-ong *offsets,
- =09 * With hardware tag-based KASAN, marking is skipped for
- =09 * non-VM_ALLOC mappings, see __kasan_unpoison_vmalloc().
- =09 */
--=09for (area =3D 0; area < nr_vms; area++)
--=09=09vms[area]->addr =3D kasan_unpoison_vmalloc(vms[area]->addr,
--=09=09=09=09vms[area]->size, KASAN_VMALLOC_PROT_NORMAL);
-+=09kasan_unpoison_vmap_areas(vms, nr_vms, KASAN_VMALLOC_PROT_NORMAL);
-=20
- =09kfree(vas);
- =09return vms;
+ #endif
 --=20
 2.52.0
 
