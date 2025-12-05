@@ -1,81 +1,47 @@
-Return-Path: <stable+bounces-200190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC90ACA8F58
-	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 19:59:30 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05C6DCA8FB7
+	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 20:05:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 43C6D303886F
-	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 18:59:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AF1A6301F3B0
+	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 19:05:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 901F036479E;
-	Fri,  5 Dec 2025 18:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3BDB38D3CC;
+	Fri,  5 Dec 2025 18:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BUyhvI59"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="evAwOiv8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80054364771
-	for <stable@vger.kernel.org>; Fri,  5 Dec 2025 18:50:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B18D38A8BF;
+	Fri,  5 Dec 2025 18:55:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764960650; cv=none; b=RMpmuWN+4afFhgVbP4yl28wMEskwa5hl8xuZoQhcYbNwDRm4x+fe1JdxxPgJpVazaxuJGt04wm/UgzVMEaYGTIWTiu+cGt6zxbLjfUdGu5ERKRpusrwLEN74scxbavLgDqFSkXm2nDUncODQ2xft7oAJfnz/IWxseqnXfa53M5w=
+	t=1764960930; cv=none; b=aPvDieZ0nSJFvfVsAo4CRJuIpth+BhdYPURn5G35qmEaAbYDk9XU7qKaeYSK02hWuvmBu4fzLVHs0mnPrQBS4lsCpIvc5kem7FEZ+H5OitIxDsisfJ/8+Eme2RFBkMA9/4P73kkPZbfWHg2geJkHZyyiwSGMOP5PSaeowcZKLLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764960650; c=relaxed/simple;
-	bh=imTl+fYR7wmHW3q5go+m1SIRr7DeAZJpMv0X/PMlExY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=SAtlkBnZYxACc2j0SPQ6CZMh3wx0rSZgGdcym8ODXVL04mUY12A3FpX1DVZNYRfFTqFHvg8g2W0FzEzL3KW2qH2+vh34tSLpUiqXTNWz2VVPdDOKmIevLyv/l9xQ5vC99Qgx4zgNKDydTU+vYsnwOGi1HK+GpgXzzq3jyZEy9o8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BUyhvI59; arc=none smtp.client-ip=74.125.224.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-63f996d4e1aso2785602d50.0
-        for <stable@vger.kernel.org>; Fri, 05 Dec 2025 10:50:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764960647; x=1765565447; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=NQfjZT7hVjg/85ZYWWQWD1RSKOBJZiM/njkF1tgTNp4=;
-        b=BUyhvI59yh+yIUi9TOFZPy2Rf4NpuMGncapqCxLGOkPRGem4w5iU9H1O+eBRVCE+jR
-         KRFQ7AVDpj3bpSiThszFSwTHUlAOMIQCCj1O37mygo4MG/4W3EQ9DYg1N7TTFqL+ujda
-         s7euPCJLZdVNwORc1iADK75Sc99lPAB8xC+HvANTccOBdyNpaJaQpBVEEGR9LrErshAs
-         9nz8d1vCKa5+Z9au+zJufHgFq9RneiWA+6vO869+MKnuZSEdfnAW1GJXpaJY+eUPS6t/
-         f/P9yUpxqcQPdVexai9mWxCIgv9/iUV+Bs9Dt60AE8zC5ebQEepweEnwyvYQJx+kZL8X
-         4o8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764960647; x=1765565447;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=NQfjZT7hVjg/85ZYWWQWD1RSKOBJZiM/njkF1tgTNp4=;
-        b=uBPraKr2fIMMNKUPejX+3a5YZrZ86XMg6E890z5lgIP/rWACY+9ySQElP5yYhwboZM
-         mGVBoVfjWKeNKhCeuui1Rleh8O25GGIAQ97MV330+TZA8ZkojkIyZ4wmUK/9ZaqYC1Hb
-         oN2zEi1M02wYuyKXEScxrdsiRXOX+58NZLGnQpzbasUNk0XOU2mgX3z9DGUDxplvIKYf
-         7LAllZl33ofW1HZMpNaTP+sBzBqW3I4+Srpz8Zr0z77HKeHPpVECyWEvZM64tM7a5RrI
-         Xr1tkpdbUf/Oo4+ndrYL23riCtEyga9nit0/Y6bpNmLZRxz7uNFqm56XBzxV1e5dCk9D
-         MG/g==
-X-Forwarded-Encrypted: i=1; AJvYcCULJfgFtKPjSiz3gneRoyGO07/6j4uwmcDmrkBLG2OoWetIADGnn43ESKglVBOdYZeQebEJeDU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqD0eKgmFZg4TnOQAeo5kXa8LUsGFjUTTOLcrlt5lX3sJtsnRM
-	venkBYpKF0pEk6t3lU4gNm5rbfxeUMDFVTXwgCl6uMK0LQ8cdrvqBErQ
-X-Gm-Gg: ASbGncv0vagTOwzs1UrveFDTIjz7evY7o5ieS3QaDytOcRUSB2kG4LqGwQirx+mXrSk
-	PFLSvl617iEuLj0UZY1wAIGEZRKp5dibQxCoOrP7kZXUlV/mrI46JsEQ9l0lJn84GFy3D3GpLeU
-	RTxPHGen/H3g+CqyEW8tiroVLughX6xyOWhQ8tN+MHCvs9IoAgnr5ctxGb1FFiogdJkqajcUMbI
-	TavMnLMBy7xyWpDelWaCQPF0eVkPBvHIEhpW53hKah3G+bQaGV+pzN3p4bhsB8uumgcmrnAKChL
-	bHQgU1lQ97Jl/yXT0ml4n45QV8BHVxmyn7w8NnNoLPQxs/98/gO7BtpMhegJ0R3uO8fFFMWAr0R
-	iixJG0IIzN2OYu8D1/tACtKy6rFqnNGxcsgvxp//2+aeT3QBDOImZOh4C9L4xAT4DZMEmK2nV7x
-	lAmlmj619/s+lM
-X-Google-Smtp-Source: AGHT+IEPliYwiX/DRTmJXV2njV5vxO4ybaXR9NFasvDgVyAUKKQQy4c7fR+5+GIz4Oj0Zb+ZHq3iUA==
-X-Received: by 2002:a05:690e:1904:b0:640:dd53:71aa with SMTP id 956f58d0204a3-644370403ddmr8803178d50.46.1764960646879;
-        Fri, 05 Dec 2025 10:50:46 -0800 (PST)
-Received: from [192.168.100.70] ([2800:bf0:82:3d2:875c:6c76:e06b:3095])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-78c2f0aaf83sm4586407b3.32.2025.12.05.10.50.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Dec 2025 10:50:46 -0800 (PST)
-From: Kurt Borja <kuurtb@gmail.com>
-Date: Fri, 05 Dec 2025 13:50:12 -0500
-Subject: [PATCH 3/3] platform/x86: alienware-wmi-wmax: Add support for
- Alienware 16X Aurora
+	s=arc-20240116; t=1764960930; c=relaxed/simple;
+	bh=udUijXuETKnIGzHe+MmBVFZg8mzS9bLLknKz5JyqiE8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=QAJAHQEyD8C3McpHwNsHK8UdyAmLIQySkkVKbf7+F4AT7027Bj/hGz1qCX4wLKazFRnH/XOJeXoAY2ySFVj1kn4le+24PkCbyJYZadZQ8anOVJ/a6u0X80fGySngF6lNMpmnpthR2gzUAaRSQKBBXk2wJi8n0vdcK4Gqdcu+bQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=evAwOiv8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6459DC4CEF1;
+	Fri,  5 Dec 2025 18:55:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764960930;
+	bh=udUijXuETKnIGzHe+MmBVFZg8mzS9bLLknKz5JyqiE8=;
+	h=From:Subject:Date:To:Cc:From;
+	b=evAwOiv8AEvRaQnfrhNimPz7tKJe3nJrPCOJPlWRc61/O3OSPLYyUL0SbxxblJSWX
+	 JLwIRqQuO75MSJYSvX+3gt3stjV261ADmkL+wMzbOjTbwtJJS9/ccJHanpJN6UCmYw
+	 7rBS5s85rwaqRf8CByBYiyVmbM4G6vpEhcA9/MTLiWcTRnIE8hpf8c8MU0GP5uli0V
+	 GB+57baNPnE76lxD7+sb5MSzls3gl9mqZDKmd9DYy5cltOCF933BsQ2/mTaivz6JDX
+	 F5aWGkoHBFJygQ2lzotgfunGGOizmlueCbd303RpK7cg6JEEXgL02dmG8dVPtLCE7U
+	 msdq5Z/1N49zA==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH net 0/4] mptcp: misc fixes for v6.19-rc1
+Date: Fri, 05 Dec 2025 19:55:13 +0100
+Message-Id: <20251205-net-mptcp-misc-fixes-6-19-rc1-v1-0-9e4781a6c1b8@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -84,53 +50,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251205-area-51-v1-3-d2cb13530851@gmail.com>
-References: <20251205-area-51-v1-0-d2cb13530851@gmail.com>
-In-Reply-To: <20251205-area-51-v1-0-d2cb13530851@gmail.com>
-To: Hans de Goede <hansg@kernel.org>, 
- =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: platform-driver-x86@vger.kernel.org, Dell.Client.Kernel@dell.com, 
- linux-kernel@vger.kernel.org, Kurt Borja <kuurtb@gmail.com>, 
- stable@vger.kernel.org
+X-B4-Tracking: v=1; b=H4sIAJEqM2kC/x2MwQrCMBAFf6Xs2QfdaNT6K+KhJlvdQ2PIFhFK/
+ 72Lx4GZWcmkqRjdupWafNX0Uxz40FF6j+Ul0OxMoQ+RQx9RZMFcl1QxqyVM+hPDGTygJUbky+m
+ Zj3karkz+qE3+hi/u5Ck9tm0HltN0uHQAAAA=
+X-Change-ID: 20251205-net-mptcp-misc-fixes-6-19-rc1-5174bd3df981
+To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+ Kuniyuki Iwashima <kuniyu@google.com>, Dmytro Shytyi <dmytro@shytyi.net>
+Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=915; i=kuurtb@gmail.com;
- h=from:subject:message-id; bh=imTl+fYR7wmHW3q5go+m1SIRr7DeAZJpMv0X/PMlExY=;
- b=owGbwMvMwCUmluBs8WX+lTTG02pJDJnGmo2qJu3sgnv3z6jzDjnyVP2jWoVnXmLenfkztwguW
- 979ycWyo5SFQYyLQVZMkaU9YdG3R1F5b/0OhN6HmcPKBDKEgYtTACby9BrDHx7eC5tPz02PXLnx
- 4Y0Dtgq5rNpSryo58w8GSfJu79g17S/D/4qW5mrzrXVLC05dCb3Bu6BW5L7VlLiANXssWoP+Mv3
- IZgYA
-X-Developer-Key: i=kuurtb@gmail.com; a=openpgp;
- fpr=54D3BE170AEF777983C3C63B57E3B6585920A69A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1247; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=udUijXuETKnIGzHe+MmBVFZg8mzS9bLLknKz5JyqiE8=;
+ b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDKNtWauO9947ZrY08PyRZZ5pTEOm+QerE5T9TRQ/b0z9
+ ke1ffrhjlIWBjEuBlkxRRbptsj8mc+reEu8/Cxg5rAygQxh4OIUgIloTWD4zR7Beywj5tc6v8Ot
+ cyboKQmFrDH3XrbS9NZ/bdcrti9WWzL8D+a1O7/1UcTO7tu70w9/6ruZZpay7oG3wvO8j997Q7l
+ 82AE=
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-Add AWCC support for Alienware 16X Aurora laptops.
+Here are various unrelated fixes:
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+- Patches 1-2: ignore unknown in-kernel PM endpoint flags instead of
+  pretending they are supported. A fix for v5.7.
+
+- Patch 3: avoid potential unnecessary rtx timer expiration. A fix for
+  v5.15.
+
+- Patch 4: avoid a deadlock on fallback in case of SKB creation failure
+  while re-injecting.
+
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
- drivers/platform/x86/dell/alienware-wmi-wmax.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Matthieu Baerts (NGI0) (2):
+      mptcp: pm: ignore unknown endpoint flags
+      selftests: mptcp: pm: ensure unknown flags are ignored
 
-diff --git a/drivers/platform/x86/dell/alienware-wmi-wmax.c b/drivers/platform/x86/dell/alienware-wmi-wmax.c
-index baea397e0530..01af6dde9057 100644
---- a/drivers/platform/x86/dell/alienware-wmi-wmax.c
-+++ b/drivers/platform/x86/dell/alienware-wmi-wmax.c
-@@ -97,6 +97,14 @@ static const struct dmi_system_id awcc_dmi_table[] __initconst = {
- 		},
- 		.driver_data = &g_series_quirks,
- 	},
-+	{
-+		.ident = "Alienware 16X Aurora",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware 16X Aurora"),
-+		},
-+		.driver_data = &g_series_quirks,
-+	},
- 	{
- 		.ident = "Alienware 18 Area-51",
- 		.matches = {
+Paolo Abeni (2):
+      mptcp: schedule rtx timer only after pushing data
+      mptcp: avoid deadlock on fallback while reinjecting
 
+ include/uapi/linux/mptcp.h                      |  1 +
+ net/mptcp/pm_netlink.c                          |  3 ++-
+ net/mptcp/protocol.c                            | 22 ++++++++++++++--------
+ tools/testing/selftests/net/mptcp/pm_netlink.sh |  4 ++++
+ tools/testing/selftests/net/mptcp/pm_nl_ctl.c   | 11 +++++++++++
+ 5 files changed, 32 insertions(+), 9 deletions(-)
+---
+base-commit: 0373d5c387f24de749cc22e694a14b3a7c7eb515
+change-id: 20251205-net-mptcp-misc-fixes-6-19-rc1-5174bd3df981
+
+Best regards,
 -- 
-2.52.0
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
 
