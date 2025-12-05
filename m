@@ -1,77 +1,75 @@
-Return-Path: <stable+bounces-200203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6DFECA9645
-	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 22:32:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8A09CA9672
+	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 22:38:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7C00E30EC09D
-	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 21:32:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F3DB7305E35A
+	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 21:36:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B5AA23E35F;
-	Fri,  5 Dec 2025 21:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44DD024E4A1;
+	Fri,  5 Dec 2025 21:36:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XKazOrxz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TQScRciw"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C8B19922D
-	for <stable@vger.kernel.org>; Fri,  5 Dec 2025 21:32:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3EFD23D7C7;
+	Fri,  5 Dec 2025 21:36:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764970352; cv=none; b=R5VQ6WCQQ5aJ2ETV5mcmt6SG7mEuxCptXTD/Ny30gyKf/hp34crzpB3xyXNaSEwFcWOOahflJUpxMFAq3z3pEu54a1FOPnbB6ccF/sQi140HzE22TBBkpi8hcsxCmerTEyf2i8tjVAq047TDaOaJzVNg2bfYcT6V7IrdDp0LR0o=
+	t=1764970573; cv=none; b=ceCrSXlI6p1yEJiBrfuiXDefRvePMG+UEFOjJFS6/h2Xibx4gRw6DU2J8uQF7JYfCU41popLBD6VadxcWdWzrHAeA0UD77Tp0t52UAv58EJfhdEAZSWeZ0JwOPH9pRIPlyFW4xam4ozCwDqm5TwkaYVv/5FR3dUsdRi8OlXtfNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764970352; c=relaxed/simple;
-	bh=IaiBrvAi+CP+EqjoOTrAQtLut/KItU+Sbxv+OlUrDZA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KnFKVF9E3ax07Igh1KTQrAK2ejPR8MdIExCVGf5NE5wNO0JnV8CUKYDjXhDtaz4BJM0ZFKsiPzkLTDT+FfYiitHfKCLqV0Ra75YtwdkZ+I203KuJaG0d/f/kmVbee0zTHyXan/cimW10BZ22Tuots3lDfaA/KmYV8Mfpx6Tve+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XKazOrxz; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764970347;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=kxmueX5biLhJ2TR2gDtyWx7oPUcxnAg7QJk2s9ppvBo=;
-	b=XKazOrxzUJIDZkHtOJS62dKfFLbAAU/Rl6sD+4y4gvHt9lmEtFwLfb+kpleCpVT45bE+6t
-	2pqhdIHT/9voBZCfVwZ6h1WfzSUkL7/HCPFI43OWoQe7Ol4OEcGGnQQBzCxraOpoos7cAm
-	3o3tgNcedxGysQIewTIpfk6eG7sYluk=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-148-XHl9Sl5aOy2ePqdoMvtIvw-1; Fri,
- 05 Dec 2025 16:32:22 -0500
-X-MC-Unique: XHl9Sl5aOy2ePqdoMvtIvw-1
-X-Mimecast-MFC-AGG-ID: XHl9Sl5aOy2ePqdoMvtIvw_1764970340
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BC2E119560B3;
-	Fri,  5 Dec 2025 21:32:19 +0000 (UTC)
-Received: from chopper.lan (unknown [10.22.64.189])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 565F51953986;
-	Fri,  5 Dec 2025 21:32:15 +0000 (UTC)
-From: Lyude Paul <lyude@redhat.com>
-To: dri-devel@lists.freedesktop.org
-Cc: linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1764970573; c=relaxed/simple;
+	bh=8+3PE0lZoghyFccjBGOORkbaZfzCOnFQSwGHJ0dG7Nw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=OUuK3B5H1mLciX7ihkVSHcfLPlMn3XMeBNw1LlWkIyWS7odnwe2mvbhoIkkU6xTsZLyODO6RzdLMhEfiAiqxdAnzDRmeTtaI0yZL0gog7qcqKnfMSNAPwX+/a7aQCX7Dmf0uCMaPB34bYD7ZVG16a2tVoI2ToLziNbPHew2p8nU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TQScRciw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC0B6C116B1;
+	Fri,  5 Dec 2025 21:36:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764970572;
+	bh=8+3PE0lZoghyFccjBGOORkbaZfzCOnFQSwGHJ0dG7Nw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=TQScRciweFV75igopSCBmTYjX821Laicmf3q6LqdAmvGFsMgieDUeLyMJKTNyrRYe
+	 14C+OFiYJOluVspijOX35hj+jk8gyjZ59Ucz+6I4aQOZatMBrZQKLb+dZyy37FM+S/
+	 YQTpa+5Kzde0Anbrnzy++QjCyc3np0ZFFzQId6uUmAEctUdV3ytc4Wh9Wb4zdtwEjx
+	 sYRJpo0fxMhOISmPIQ36l4iU5dNKgMl8rWuJEPCumdeuzFoCfChdaJf1O0usLZNWZ8
+	 QbSSqVSFC7cYd0iLNCZBRVhF6exH3C7y65890AB0OCZX4t68AhGw904+jMXiEQBY36
+	 FSZreQdP747uw==
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+To: linux-kernel@vger.kernel.org
+Cc: linux-arch@vger.kernel.org,
+	linux-mm@kvack.org,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Nick Piggin <npiggin@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Rik van Riel <riel@surriel.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Laurence Oberman <loberman@redhat.com>,
+	Prakash Sangappa <prakash.sangappa@oracle.com>,
+	Nadav Amit <nadav.amit@gmail.com>,
 	stable@vger.kernel.org,
-	nouveau@lists.freedesktop.org,
-	"Faith Ekstrand" <faith.ekstrand@collabora.com>,
-	"Dave Airlie" <airlied@redhat.com>,
-	"Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>,
-	"Ben Skeggs" <bskeggs@nvidia.com>,
-	"Simona Vetter" <simona@ffwll.ch>,
-	"David Airlie" <airlied@gmail.com>,
-	"Thomas Zimmermann" <tzimmermann@suse.de>,
-	"Maxime Ripard" <mripard@kernel.org>,
-	"Danilo Krummrich" <dakr@kernel.org>,
-	"James Jones" <jajones@nvidia.com>,
-	"Lyude Paul" <lyude@redhat.com>
-Subject: [PATCH] drm/nouveau/dispnv50: Don't call drm_atomic_get_crtc_state() in prepare_fb
-Date: Fri,  5 Dec 2025 16:31:53 -0500
-Message-ID: <20251205213156.2847867-1-lyude@redhat.com>
+	Liu Shixin <liushixin2@huawei.com>
+Subject: [PATCH v1 1/4] mm/hugetlb: fix hugetlb_pmd_shared()
+Date: Fri,  5 Dec 2025 22:35:55 +0100
+Message-ID: <20251205213558.2980480-2-david@kernel.org>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20251205213558.2980480-1-david@kernel.org>
+References: <20251205213558.2980480-1-david@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -79,65 +77,45 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Since we recently started warning about uses of this function after the
-atomic check phase completes, we've started getting warnings about this in
-nouveau. It appears a misplaced drm_atomic_get_crtc_state() call has been
-hiding in our .prepare_fb callback for a while.
+We switched from (wrongly) using the page count to an independent
+shared count. Now, shared page tables have a refcount of 1 (excluding
+speculative references) and instead use ptdesc->pt_share_count to
+identify sharing.
 
-So, fix this by adding a new nv50_head_atom_get_new() function and use that
-in our .prepare_fb callback instead.
+We didn't convert hugetlb_pmd_shared(), so right now, we would never
+detect a shared PMD table as such, because sharing/unsharing no longer
+touches the refcount of a PMD table.
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
+Page migration, like mbind() or migrate_pages() would allow for migrating
+folios mapped into such shared PMD tables, even though the folios are
+not exclusive. In smaps we would account them as "private" although they
+are "shared", and we would be wrongly setting the PM_MMAP_EXCLUSIVE in the
+pagemap interface.
 
-Fixes: 1590700d94ac ("drm/nouveau/kms/nv50-: split each resource type into their own source files")
-Cc: <stable@vger.kernel.org> # v4.18+
-Signed-off-by: Lyude Paul <lyude@redhat.com>
+Fix it by properly using ptdesc_pmd_is_shared() in hugetlb_pmd_shared().
+
+Fixes: 59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count")
+Cc: <stable@vger.kernel.org>
+Cc: Liu Shixin <liushixin2@huawei.com>
+Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
 ---
- drivers/gpu/drm/nouveau/dispnv50/atom.h | 13 +++++++++++++
- drivers/gpu/drm/nouveau/dispnv50/wndw.c |  2 +-
- 2 files changed, 14 insertions(+), 1 deletion(-)
+ include/linux/hugetlb.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/nouveau/dispnv50/atom.h b/drivers/gpu/drm/nouveau/dispnv50/atom.h
-index 93f8f4f645784..85b7cf70d13c4 100644
---- a/drivers/gpu/drm/nouveau/dispnv50/atom.h
-+++ b/drivers/gpu/drm/nouveau/dispnv50/atom.h
-@@ -152,8 +152,21 @@ static inline struct nv50_head_atom *
- nv50_head_atom_get(struct drm_atomic_state *state, struct drm_crtc *crtc)
+diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+index 019a1c5281e4e..03c8725efa289 100644
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -1326,7 +1326,7 @@ static inline __init void hugetlb_cma_reserve(int order)
+ #ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
+ static inline bool hugetlb_pmd_shared(pte_t *pte)
  {
- 	struct drm_crtc_state *statec = drm_atomic_get_crtc_state(state, crtc);
-+
- 	if (IS_ERR(statec))
- 		return (void *)statec;
-+
-+	return nv50_head_atom(statec);
-+}
-+
-+static inline struct nv50_head_atom *
-+nv50_head_atom_get_new(struct drm_atomic_state *state, struct drm_crtc *crtc)
-+{
-+	struct drm_crtc_state *statec = drm_atomic_get_new_crtc_state(state, crtc);
-+
-+	if (IS_ERR(statec))
-+		return (void*)statec;
-+
- 	return nv50_head_atom(statec);
+-	return page_count(virt_to_page(pte)) > 1;
++	return ptdesc_pmd_is_shared(virt_to_ptdesc(pte));
  }
- 
-diff --git a/drivers/gpu/drm/nouveau/dispnv50/wndw.c b/drivers/gpu/drm/nouveau/dispnv50/wndw.c
-index ef9e410babbfb..9a2c20fce0f3e 100644
---- a/drivers/gpu/drm/nouveau/dispnv50/wndw.c
-+++ b/drivers/gpu/drm/nouveau/dispnv50/wndw.c
-@@ -583,7 +583,7 @@ nv50_wndw_prepare_fb(struct drm_plane *plane, struct drm_plane_state *state)
- 	asyw->image.offset[0] = nvbo->offset;
- 
- 	if (wndw->func->prepare) {
--		asyh = nv50_head_atom_get(asyw->state.state, asyw->state.crtc);
-+		asyh = nv50_head_atom_get_new(asyw->state.state, asyw->state.crtc);
- 		if (IS_ERR(asyh))
- 			return PTR_ERR(asyh);
- 
+ #else
+ static inline bool hugetlb_pmd_shared(pte_t *pte)
 -- 
 2.52.0
 
