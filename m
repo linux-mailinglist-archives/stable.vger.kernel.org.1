@@ -1,143 +1,264 @@
-Return-Path: <stable+bounces-200106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BD5BCA6062
-	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 04:39:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7833CA60AE
+	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 04:52:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E0BFE31A5E7A
-	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 03:38:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BE97831A85B0
+	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 03:52:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EEE21F7580;
-	Fri,  5 Dec 2025 03:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 891B3286D40;
+	Fri,  5 Dec 2025 03:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A07dJgtv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ftpDCE9P"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE9DB18DB1E
-	for <stable@vger.kernel.org>; Fri,  5 Dec 2025 03:38:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE8B7081E;
+	Fri,  5 Dec 2025 03:52:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764905922; cv=none; b=FrMLT2l+d42dk1m5/SXukeAQXWL7+mPl1hNM7vlkZvVF9/R1Tc7VT8UZGja0OICCPGRmXVoBP5zwL+UPuHX46Rf3MOVB/mTv2W+mBNYU1pVH0vKLLXYG05Q9WSYEWrMJj5TCaxA8Kwo3LnmY51iZDtgCqyRYS0wNafZPNgTdN5g=
+	t=1764906763; cv=none; b=NhGQ3Fu/zmuWZGHA0Kz/f4FQjsrH2tTZS/3H7hOo51iBBrcf8eyq0v9jMM1MJRnURRMTmx3U9Hee4Raozn7GyhsY4dU/oxOE+g1kby9lMe3ungxxZbs6ityS8afp7UK5shhGpOu6hUWCA77mL0TBe8NGOp4Kx52bZzMmILwQnYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764905922; c=relaxed/simple;
-	bh=eW/YtLuM2UUzYzSHFqhs/ko8bA3Co6m2PyRiA1ibHis=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pQTOSz8GZSpCINP15eiPok0lxfy9X+kA6Rk1gunEzcR1beenk1CXiWkJt3uJaS2DkoQLC7hOGwfCLfTSPGsti1JDzDAtAGMMORj6T690jAnnCenmwlHRqMTGLfUwKEkrinpdZ22MLocRTPwIeiKk5XYqZYIM5S3i5MYRp0/YKa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A07dJgtv; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-42f762198cbso1077764f8f.3
-        for <stable@vger.kernel.org>; Thu, 04 Dec 2025 19:38:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764905919; x=1765510719; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fl+caqWL5n0dvFbZchH+YmZ4xMTXCKbX5vTDeE5p1t4=;
-        b=A07dJgtvejiGazXNfGLajYep3jmpJWpcLHnU2okbhKfV5BLlPr4KMUnufunRd5sV4f
-         ZU9RzNNqVGwKUxsq1TpHNoa19f6D8YP4i/OkGXh+M/GzOFCE9+TflJjIcKk6OOzRma3u
-         i32Cr4+LTt+CACwKpfddZQgXyWOYP6ObyQYVQkjZha910pWH78ToiSLCPIYyf15kb0R3
-         +8dEtxqkhvfb3DPcnmMCObVF94qHf+7Vs5U/riH3TTzVLUhPkzytYtPiHexzTyrXC9RC
-         6aBDjkEHLFx27Oh1NUAC/eP8gQt3U5ug70ViINBtqvoLBva2Fa9qLpUYAbCV+fyJSgOu
-         BJ1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764905919; x=1765510719;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=fl+caqWL5n0dvFbZchH+YmZ4xMTXCKbX5vTDeE5p1t4=;
-        b=G+J2pIzAI+cgrLF2sqipJ1MX32cNE7s2iTlGJmG7rTsESCTndZWs34qX2ZP0HsHbNN
-         jYAdt03QM/IqALpIdFnp82tygKe3PpDjlAmoWydb8DFkMCjgbZcHaMnV9F6Y9RC24kcs
-         dIrpaaPJ7Pmut8/0dQzpfBhdnxJYPxt0cPPRJNNSNOgEo/Y5gOcNS1dRiRILgi9K/3dl
-         /n1NneAGMCatSrrATkMKFD00+noW4Af/Kb3j0jNWaGiEEqskMVpvc+/DhDTPVmS/sJa3
-         YxjcOglMnwMrBZpFLVBZCmTqyBB4q7heIKHgvmzr76P3oandloan2T9iOa8DAtoHOnkG
-         1fNQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW6OzjxZ1IajyqGcw7Nb22DVOd/dnAMFiMQKON3YhImM1PJ8XatH3kjcLQ7Egjbdc7Hd4NlaFY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwuuAoeSufcbKLL7QXKwnY9LgUvHYcFCida6Jx1q5KzeXsCY+dV
-	mQe43ZkpJeAMSPhAuuMu4bEMrXrx6Qxb8HDiWNtJA6t2PQHJoXoVrYptHvnHRsNWRgJ8o4O551V
-	ye5k+b159nGS5ZAQoV7D6/1NjoD2XV7A=
-X-Gm-Gg: ASbGncummZyQNsOI2bupv4rUVWwo22CG9c/6OoRehKS1VNIinBxIIOuOCwmTCcet+vQ
-	NG7VtWY/ZJWq6GE+t3BrE+GhFV697b0J5PSjkKbDu48K9JboHcssbiHCMVN9SSgUb0sWws61XBd
-	iVsYqgK9IzqYKUTvt3nibPA6HHKnQ0Bh1ZIrztw390M/x3gJyFZjH2uiaCIQs1JEqa09dIyssVz
-	h/kN4LNxBdoZR4FVv7iUn0mC9OMAHOBEpAhCMhulKvd69Q9gp06ruNjBcIXqV6wWLQ0Qpg5beG0
-	ySJXGa2z4F48ZCr1Y3b6sxkFvaZNCIJLC0LV5MA40+U=
-X-Google-Smtp-Source: AGHT+IEb0cv8ajRkhP7gPEE04bA4LbLhiR6KMPX5vUsECmsEKi+k2NDEA1RGG2g6E2/gLEUu60VXhRWF46TPGjbxI7g=
-X-Received: by 2002:a05:6000:18a6:b0:42b:4069:428a with SMTP id
- ffacd0b85a97d-42f79514c50mr5364434f8f.12.1764905919003; Thu, 04 Dec 2025
- 19:38:39 -0800 (PST)
+	s=arc-20240116; t=1764906763; c=relaxed/simple;
+	bh=uhAu0R4lnraS00WX9uVrJqv2qbPtIH5Aet9UvnWAK7E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eFpYabtTNq+BjwacWcrMMm70QasUwW1vmS9KJaNZdx7HWoe/yNHoFG1/MpoLC7ht270OzVQHuEovvVKxzYA14yPl4Bs1bT+lG79iPSaYbEB3KABRZvAY3Kzotgj7wbvocJjGWc7floQHnv4PXQpzwI+j3PS5lLxla26CzAhatos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ftpDCE9P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7481BC4CEF1;
+	Fri,  5 Dec 2025 03:52:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764906763;
+	bh=uhAu0R4lnraS00WX9uVrJqv2qbPtIH5Aet9UvnWAK7E=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ftpDCE9PVQs9TNhOb1A3Imxm2lyIunnW7YAWCuj2YMnRLH7aGqBfymQD6pGbHDBiB
+	 2iBzXkeW7HJeFjC+sYM7LZ01Wq7MPYhzA4e90PO2WGu6pA5xdPGd800OMkqzM4hnyz
+	 SMY5Y5aFd3rLi5c13hkk3EVmOcjINNLgaOim/n6cSsKkWzEOlyQzdgyjeSIKQ/mHDP
+	 87LNy9JSRBUYulYDR+aF7qNQT+SjJCqYA702ac6y4K7Jax+5bPwgu5Phv4LOWsJW6G
+	 LKFG4i/CqoUYjy4U4Ax+a0d9duAKOzreBlT/V1v/Bm49LAJvHU/y3edTemIxdbzbtI
+	 9ievSOIl3P+dQ==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	rafael@kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.18-5.10] ACPI: property: Use ACPI functions in acpi_graph_get_next_endpoint() only
+Date: Thu,  4 Dec 2025 22:52:30 -0500
+Message-ID: <20251205035239.341989-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1764874575.git.m.wieczorretman@pm.me> <873821114a9f722ffb5d6702b94782e902883fdf.1764874575.git.m.wieczorretman@pm.me>
- <CA+fCnZeuGdKSEm11oGT6FS71_vGq1vjq-xY36kxVdFvwmag2ZQ@mail.gmail.com> <20251204192237.0d7a07c9961843503c08ebab@linux-foundation.org>
-In-Reply-To: <20251204192237.0d7a07c9961843503c08ebab@linux-foundation.org>
-From: Andrey Konovalov <andreyknvl@gmail.com>
-Date: Fri, 5 Dec 2025 04:38:27 +0100
-X-Gm-Features: AQt7F2r4SDeGe1uHCJN0ZI3Zd_JW0xi9yGmGe6DkXMc4yWVA8HXcBjqiziEEKSE
-Message-ID: <CA+fCnZfBqNKAkwKmdu7YAPWjPDWY=wRkUiWuYjEzK4_tNhSGFA@mail.gmail.com>
-Subject: Re: [PATCH v3 3/3] kasan: Unpoison vms[area] addresses with a common tag
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Maciej Wieczor-Retman <m.wieczorretman@pm.me>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
-	Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, Marco Elver <elver@google.com>, jiayuan.chen@linux.dev, 
-	stable@vger.kernel.org, 
-	Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, kasan-dev@googlegroups.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.18
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, Dec 5, 2025 at 4:22=E2=80=AFAM Andrew Morton <akpm@linux-foundation=
-.org> wrote:
->
-> On Fri, 5 Dec 2025 02:09:06 +0100 Andrey Konovalov <andreyknvl@gmail.com>=
- wrote:
->
-> > > --- a/mm/kasan/common.c
-> > > +++ b/mm/kasan/common.c
-> > > @@ -591,11 +591,28 @@ void __kasan_unpoison_vmap_areas(struct vm_stru=
-ct **vms, int nr_vms,
-> > >         unsigned long size;
-> > >         void *addr;
-> > >         int area;
-> > > +       u8 tag;
-> > > +
-> > > +       /*
-> > > +        * If KASAN_VMALLOC_KEEP_TAG was set at this point, all vms[]=
- pointers
-> > > +        * would be unpoisoned with the KASAN_TAG_KERNEL which would =
-disable
-> > > +        * KASAN checks down the line.
-> > > +        */
-> > > +       if (flags & KASAN_VMALLOC_KEEP_TAG) {
-> >
-> > I think we can do a WARN_ON() here: passing KASAN_VMALLOC_KEEP_TAG to
-> > this function would be a bug in KASAN annotations and thus a kernel
-> > bug. Therefore, printing a WARNING seems justified.
->
-> This?
->
-> --- a/mm/kasan/common.c~kasan-unpoison-vms-addresses-with-a-common-tag-fi=
-x
-> +++ a/mm/kasan/common.c
-> @@ -598,7 +598,7 @@ void __kasan_unpoison_vmap_areas(struct
->          * would be unpoisoned with the KASAN_TAG_KERNEL which would disa=
-ble
->          * KASAN checks down the line.
->          */
-> -       if (flags & KASAN_VMALLOC_KEEP_TAG) {
-> +       if (WARN_ON_ONCE(flags & KASAN_VMALLOC_KEEP_TAG)) {
->                 pr_warn("KASAN_VMALLOC_KEEP_TAG flag shouldn't be already=
- set!\n");
->                 return;
->         }
-> _
->
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-Can also drop pr_warn(), but this is fine too. Thanks!
+[ Upstream commit 5d010473cdeaabf6a2d3a9e2aed2186c1b73c213 ]
+
+Calling fwnode_get_next_child_node() in ACPI implementation of the fwnode
+property API is somewhat problematic as the latter is used in the
+impelementation of the former. Instead of using
+fwnode_get_next_child_node() in acpi_graph_get_next_endpoint(), call
+acpi_get_next_subnode() directly instead.
+
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Link: https://patch.msgid.link/20251001104320.1272752-3-sakari.ailus@linux.intel.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+
+LLM Generated explanations, may be completely bogus:
+
+## Analysis
+
+### 1. COMMIT MESSAGE ANALYSIS
+
+The commit message states:
+- Problem: `acpi_graph_get_next_endpoint()` calls
+  `fwnode_get_next_child_node()`, which dispatches back to ACPI code,
+  creating unnecessary indirection.
+- Solution: Call `acpi_get_next_subnode()` directly instead.
+
+No "Cc: stable@vger.kernel.org" tag, no "Fixes:" tag, no explicit bug
+report link. The message says "somewhat problematic," indicating an
+architectural issue rather than a critical bug.
+
+### 2. CODE CHANGE ANALYSIS
+
+The diff shows 4 replacements in `acpi_graph_get_next_endpoint()`:
+- Line 1475: `fwnode_get_next_child_node(fwnode, port)` →
+  `acpi_get_next_subnode(fwnode, port)`
+- Line 1493: `fwnode_get_next_child_node(port, prev)` →
+  `acpi_get_next_subnode(port, prev)`
+- Line 1495: `fwnode_get_next_child_node(fwnode, port)` →
+  `acpi_get_next_subnode(fwnode, port)`
+- Line 1499: `fwnode_get_next_child_node(port, NULL)` →
+  `acpi_get_next_subnode(port, NULL)`
+
+Call chain:
+1. `fwnode_get_next_child_node()` dispatches via `fwnode_call_ptr_op()`
+   to the fwnode-specific implementation.
+2. For ACPI fwnodes, it calls `acpi_get_next_present_subnode()`
+   (registered at line 1747).
+3. `acpi_get_next_present_subnode()` filters non-present device nodes
+   and calls `acpi_get_next_subnode()`.
+
+Why the change is safe:
+- Graph endpoints are ACPI data nodes (checked by `is_acpi_graph_node()`
+  at line 1448: `is_acpi_data_node(fwnode)`).
+- `acpi_get_next_present_subnode()` only filters non-present device
+  nodes (lines 1407-1408), not data nodes.
+- Therefore, for graph endpoints, `acpi_get_next_subnode()` and
+  `fwnode_get_next_child_node()` behave the same.
+
+### 3. CLASSIFICATION
+
+This is a bug fix addressing an architectural issue:
+- Removes unnecessary indirection in ACPI-specific code.
+- Avoids a circular dependency pattern (ACPI → generic → ACPI).
+- Functionally equivalent for graph endpoints.
+
+Not a feature addition, not a new API, not a refactor.
+
+### 4. SCOPE AND RISK ASSESSMENT
+
+- Scope: 4 lines changed in one function in one file.
+- Risk: Very low — same behavior for graph endpoints, cleaner
+  architecture.
+- Complexity: Low — direct function call replacement.
+
+### 5. USER IMPACT
+
+- Who is affected: Users of ACPI graph endpoints (e.g., camera/media
+  drivers, device tree-like ACPI usage).
+- Severity: Low — architectural improvement, not a visible bug fix.
+- Likelihood: The "somewhat problematic" wording suggests no immediate
+  user-visible issue.
+
+### 6. STABILITY INDICATORS
+
+- Reviewed-by: Laurent Pinchart, Jonathan Cameron
+- Signed-off-by: Rafael J. Wysocki (ACPI maintainer)
+- No "Tested-by:" tags
+- Commit date: October 1, 2025 (recent)
+
+### 7. DEPENDENCY CHECK
+
+- `acpi_get_next_subnode()` exists in the same file and has been present
+  for years.
+- No external dependencies introduced.
+- Should apply cleanly to stable trees that have this code.
+
+### 8. HISTORICAL CONTEXT
+
+Related commits:
+- `79389a83bc388`: Introduced `acpi_graph_get_next_endpoint()` with
+  `fwnode_get_next_child_node()` calls.
+- `48698e6cf44c3`: Introduced `acpi_get_next_present_subnode()` to
+  filter non-present devices.
+- `5d010473cdeaa` (this commit): Removes the indirection.
+
+The pattern existed since the function was introduced; this commit
+cleans it up.
+
+### 9. STABLE KERNEL CRITERIA EVALUATION
+
+- Obviously correct: Yes — direct call instead of indirection.
+- Fixes a real bug: Yes — architectural issue that could cause problems.
+- Important issue: Moderate — architectural improvement, not a critical
+  bug.
+- Small and contained: Yes — 4 lines, single function.
+- No new features: Yes — same behavior, cleaner code.
+- Applies cleanly: Yes — should apply without conflicts.
+
+### 10. RISK VS BENEFIT
+
+Benefits:
+- Removes unnecessary indirection.
+- Avoids circular dependency pattern.
+- Improves code clarity.
+- No functional change for graph endpoints.
+
+Risks:
+- Very low — functionally equivalent change.
+- No new code paths or logic changes.
+
+### 11. CONCERNS AND CONSIDERATIONS
+
+- No "Cc: stable" tag, but that alone doesn't disqualify.
+- Recent commit (Oct 2025) — hasn't been in mainline long.
+- No explicit bug report or user complaint mentioned.
+- Architectural improvement rather than a critical fix.
+
+### CONCLUSION
+
+This is a small, correct fix that removes unnecessary indirection in
+ACPI code. It fixes an architectural issue and is functionally
+equivalent for graph endpoints. It meets stable kernel criteria:
+correct, fixes a real issue, small scope, no new features, and should
+apply cleanly.
+
+However, it's an architectural improvement rather than a critical bug
+fix, and there's no explicit stable tag or user-visible bug report. The
+"somewhat problematic" wording suggests it may not cause immediate
+visible problems.
+
+Given the conservative nature of stable trees and the lack of evidence
+of user-visible impact, this is borderline but leans toward acceptable
+for stable backporting due to its correctness, small scope, and
+architectural benefit.
+
+**YES**
+
+ drivers/acpi/property.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+index 43d5e457814e1..76158b1399029 100644
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -1472,7 +1472,7 @@ static struct fwnode_handle *acpi_graph_get_next_endpoint(
+ 
+ 	if (!prev) {
+ 		do {
+-			port = fwnode_get_next_child_node(fwnode, port);
++			port = acpi_get_next_subnode(fwnode, port);
+ 			/*
+ 			 * The names of the port nodes begin with "port@"
+ 			 * followed by the number of the port node and they also
+@@ -1490,13 +1490,13 @@ static struct fwnode_handle *acpi_graph_get_next_endpoint(
+ 	if (!port)
+ 		return NULL;
+ 
+-	endpoint = fwnode_get_next_child_node(port, prev);
++	endpoint = acpi_get_next_subnode(port, prev);
+ 	while (!endpoint) {
+-		port = fwnode_get_next_child_node(fwnode, port);
++		port = acpi_get_next_subnode(fwnode, port);
+ 		if (!port)
+ 			break;
+ 		if (is_acpi_graph_node(port, "port"))
+-			endpoint = fwnode_get_next_child_node(port, NULL);
++			endpoint = acpi_get_next_subnode(port, NULL);
+ 	}
+ 
+ 	/*
+-- 
+2.51.0
+
 
