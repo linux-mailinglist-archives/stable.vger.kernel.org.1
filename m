@@ -1,124 +1,138 @@
-Return-Path: <stable+bounces-200159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7712ECA795A
-	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 13:36:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE225CA797E
+	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 13:40:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DFE923022E30
-	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 12:36:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8ACA631A26D6
+	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 12:38:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82FF232FA3D;
-	Fri,  5 Dec 2025 12:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A5C3329378;
+	Fri,  5 Dec 2025 12:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kA9jAiXM"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="r9peK8Bb"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74EA13254B5
-	for <stable@vger.kernel.org>; Fri,  5 Dec 2025 12:36:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C985F330B1C
+	for <stable@vger.kernel.org>; Fri,  5 Dec 2025 12:38:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764938188; cv=none; b=rtw8hsSL2O/28bF9jnNq0tvmoX4537LJPk3nW8vrHwM7LTYC7kxHUWgO8wupwnOW30F49J3tdkAcbFRFJTezbQ5C48h2tK+XwrlesyvARDlVEHvrkq5dtcmY6wu7i51NKv5E00o2UD1tP/3FiX6VNx0/BBr525HgCi15RtL7wgg=
+	t=1764938312; cv=none; b=jgQLWRz4qADTb5XsnNgi3FT06s+j/cJRAVqHVa5EQpZd7H5sPFOBn8WycRJR4bKn7ixjuB0mT3fWsMJGD7KMPCfhnz2WkYOnkz1ZK7YOPyVzxQ224TkHFzss5zUp/mGjDyebAzt5+yZZt2RnQpx+tAWdj7mEgDj6td+MYlDHvNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764938188; c=relaxed/simple;
-	bh=40WaPL3xSyqPdfQ0BAFTST386p7tT1HulIdRWXHJkKo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oRDGHAqSvcnIZZnn39ft6oOBkrJfi0JKC3RJN6IEA6VRX1VkdilYQej9kyHzxE+26+xZeZmU/CfBt4d9PZJys5ictJ0tBofeMmELAkErv1L7e88o+2DmXWZMqQq/FzbtH6fkialNNJIID/hFxf+GUedOcxLJ765MZ4k+OxGtW8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kA9jAiXM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F337FC2BCB0
-	for <stable@vger.kernel.org>; Fri,  5 Dec 2025 12:36:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764938188;
-	bh=40WaPL3xSyqPdfQ0BAFTST386p7tT1HulIdRWXHJkKo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=kA9jAiXM5XfELxuKU9/l9OpMOt7HLiUaJi/7R5aGry/eGkBeBaRtm1w9auQ3EGkDk
-	 daZ1xEFxRCUxO2MhMrxLlHdzG/9Cu39Wj9QBJ5/OF0sQfGnnx7a4bL0FWzsUaRCSxr
-	 GMcrXuuIOSvQDiqpufJzCiIGhx0LiwbHjB8F1SFsWyde9l4ZKQzGdkljBmfTpIPDTC
-	 4xkAZ58K5JMAiu3XuGb36DJ6WypdTSVnzfpxILFJJKVOd2AJZH+tgSvVDBrx/j1dAt
-	 TlNwWkvcoEH28P/xAPkWqu/tbBWQw+fvin+z6lcsIWsGHpn75h1HSrTV9aQWP99VJr
-	 5h8spjUvoS/mg==
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-78a6a7654a4so21446357b3.0
-        for <stable@vger.kernel.org>; Fri, 05 Dec 2025 04:36:27 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCV93Gm+b5SqH6XwTCSD2ItXW4MSUEjc+4rL3wkpEUTkEh6EH2Qdrd/NZxuy268Cr+xqL8bMAqQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxcuqV/hWwNJS3bLH/l67iV/nrONLgb1SNopw5QFCRP8xco1YrS
-	fiGEAn3tc0nhye9i1c7i9i7GoTGfr1PSlu/zAe9bCFfzxMZS9gXL59x1SpFLTlHj72a8X39mCF0
-	pxwZWZFpxw/TCBCpWuVd0vD22fEfHO1U=
-X-Google-Smtp-Source: AGHT+IFJmlLvuUNZfx9GIfUBDjC2grftRlFjbvDqqrPRzj/oZgXVOMBUT7kbSYooxA8gr0guXcBsmXxXrD2+uuIJcXg=
-X-Received: by 2002:a05:690c:6007:b0:784:883c:a88d with SMTP id
- 00721157ae682-78c0c18ea37mr70979807b3.52.1764938187032; Fri, 05 Dec 2025
- 04:36:27 -0800 (PST)
+	s=arc-20240116; t=1764938312; c=relaxed/simple;
+	bh=q2UnUWAWebxnuNlmemGTqFff20tXaiN4RcdNYvzk4vY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DcCmL5bUyQej9nMENbTn1yVEmyM6o2vs22h5B3IUd8qCERRy8znIO9E+4UCQaLMcbglSK/20JesH2hKVR0E7p//y736X7qYqHECzLtRozCz0PCgipGCqiPG5Jn0NX/hsuStCykKybcNDBvsaoIM+HjCMXcyNIbhgSZGf9XI/nvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=r9peK8Bb; arc=none smtp.client-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5959da48139so2175734e87.1
+        for <stable@vger.kernel.org>; Fri, 05 Dec 2025 04:38:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1764938307; x=1765543107; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=om/cMeG15+uH3BDN4RH9PI4d5N4TSJ2+dVbkHS9xaeo=;
+        b=r9peK8BbfusciDKr9oDSGuziQhZbMyj5dLWQ/6xFG6O2/i7DaGpgy8OzfYDK48YFg+
+         L6ClmGbbgNgYJPySoTen7UV6os5IOONNGuUKdB27GhB3ogVV9h0tqx63yCT5Oqnaad/j
+         1Q+6RDktHnqeS7PTdQtJDuuLEoqJyd+ickabVPIp9vIl6qgf4vmN2WJxeOznVXHClgre
+         0fmcyzzumUMlF5iY4LUm83yPh5w2lQO+qhpEHgHfTSxkaCIEQnAfRYbGYTlnQwtprZNf
+         Z6jq2Y5veKOr9TW5VF7DZYGypDPxBWMTgsdGyGTnfUbjuwG581AZVrfUMaazxshyt1xe
+         3wnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764938307; x=1765543107;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=om/cMeG15+uH3BDN4RH9PI4d5N4TSJ2+dVbkHS9xaeo=;
+        b=rXu9Oa/Z0DkmRJNdixH6cWNAgKDo+lJQanOJuMy3rTd1TMfjDOEzH6uhnSFKiVDLjP
+         57tVnEBqwlPGidu9Q8IJdCLJ6uqCLyTEapiEyUQqwvRrd80M8ejQxPI2G6Lw++4DnFC7
+         A3oD7t45/pyxIYUuFdM1CfjCcKKHVTfeg6sRglH1MUrPRnrEHEtVgWyERFsa0o0jP98I
+         HrlbNUDtBnWtJWKKuTnbHNRG3LEtIIQO8MGQyJVpdZL0sVTtg4+XnZck6812qmyJGEf4
+         m39Rq3VqqYLKU/PTLYeN+KiFbQRU7rknFrS6ct3b+MVrvi5Vf3lEQCkirOaw0EB/C6SE
+         wcSw==
+X-Forwarded-Encrypted: i=1; AJvYcCViHWxArGyVd7GpG9kbo9d86i8wFgul/kNc31RmQ/uuncwqsJs8jgzo5In6ItYs6LCUrHDGuRY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz4WePGul16l7qEUrlYH3h6TET9gs7J2AM+c3Q9INTccR8Emtf5
+	f3v0XOfrPkKHD/7+7o76rvoXlCEJl6IJKa6qyJ1X51nrFeQTtskhIklgOHBsIBe2/oo=
+X-Gm-Gg: ASbGncshY+9M0GSMTq6wXZii3bIzHqc2Yszw9rcQuLTL9PRqIZsI5VdiTqs3s0el2lx
+	JMWjRTLCiR+/2ILFEemd7jFWBW2jlAb6kQFRR7ChoiuGAkI8Q0ind5yB9x4Jqq/mEa40lNBeeyJ
+	3vvys9XLjITY/hhbWDJKm5rrjJxT4TJ9StdLSrrOY1nSHTY9wOtXOJB4Ruewd/8NKsUiboW6zH2
+	2ca+HoUulFEga7N1YOYNPLmqSROy4Q7kbHX7srGijQUhC8IXDLgTx0l6wkLFINuEGYc0gRr2QTQ
+	N6a5q7n19HG0/yy+ZnuvVjFC5PqDm1LW8c46WICWB9sPt11liyK/ZC6hOngMTHEu4lGiiFULgQq
+	MsGBDTcB+oloZV9FVFeJhlx0iEKGpyrMCdo+nc8xMtIvTZDQIV/ShSvD5GEXfEfiCunDWACiVTn
+	4F1mSrj2lmhU3uiSt/R1C/hhKaqTZus+9yQir/pZjpHlGj
+X-Google-Smtp-Source: AGHT+IGtYnj9jiu7muloz7dbfG4ZFq4BxsOy0KSiABI/FVyASbXwFy6IXZLRiaF5QzQ0YklTxWXgoA==
+X-Received: by 2002:a05:6512:1558:b0:597:ddd8:cce9 with SMTP id 2adb3069b0e04-597ddd8cea8mr420850e87.25.1764938306636;
+        Fri, 05 Dec 2025 04:38:26 -0800 (PST)
+Received: from nuoska (87-100-249-247.bb.dnainternet.fi. [87.100.249.247])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-597d7b1a3d9sm1462351e87.4.2025.12.05.04.38.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Dec 2025 04:38:26 -0800 (PST)
+From: Mikko Rapeli <mikko.rapeli@linaro.org>
+To: dri-devel@lists.freedesktop.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Michal Simek <michal.simek@amd.com>,
+	Bill Mills <bill.mills@linaro.org>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Anatoliy Klymenko <anatoliy.klymenko@amd.com>,
+	stable@vger.kernel.org,
+	Mikko Rapeli <mikko.rapeli@linaro.org>
+Subject: [PATCH 1/2] drm: xlnx: zynqmp_kms: Init fbdev with 16 bit color
+Date: Fri,  5 Dec 2025 14:37:50 +0200
+Message-ID: <20251205123751.2257694-2-mikko.rapeli@linaro.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251205123751.2257694-1-mikko.rapeli@linaro.org>
+References: <20251205123751.2257694-1-mikko.rapeli@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251205-drm-seq-fix-v1-0-fda68fa1b3de@ideasonboard.com>
-In-Reply-To: <20251205-drm-seq-fix-v1-0-fda68fa1b3de@ideasonboard.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Fri, 5 Dec 2025 13:36:15 +0100
-X-Gmail-Original-Message-ID: <CAD++jLkpWoHe5qYSABF1GeDq-9hZh7ZdL-+8Xqu5MA_erzNqsA@mail.gmail.com>
-X-Gm-Features: AQt7F2rYtL9k7rH39ohC1dih2VUr1gAYC2XO7dYs8vpOSbzH63P91fhZJWxLMZY
-Message-ID: <CAD++jLkpWoHe5qYSABF1GeDq-9hZh7ZdL-+8Xqu5MA_erzNqsA@mail.gmail.com>
-Subject: Re: [PATCH 0/4] drm: Revert and fix enable/disable sequence
-To: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Robert Foss <rfoss@kernel.org>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
-	Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Dmitry Baryshkov <lumag@kernel.org>, Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
-	Philipp Zabel <p.zabel@pengutronix.de>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Jyri Sarha <jyri.sarha@iki.fi>, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>, 
-	Aradhya Bhatia <aradhya.bhatia@linux.dev>, Chaoyi Chen <chaoyi.chen@rock-chips.com>, 
-	Vicente Bergas <vicencb@gmail.com>, Marek Vasut <marek.vasut+renesas@mailbox.org>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Dec 5, 2025 at 10:52=E2=80=AFAM Tomi Valkeinen
-<tomi.valkeinen@ideasonboard.com> wrote:
+From: Anatoliy Klymenko <anatoliy.klymenko@amd.com>
 
-> Changing the enable/disable sequence in commit c9b1150a68d9
-> ("drm/atomic-helper: Re-order bridge chain pre-enable and post-disable")
-> has caused regressions on multiple platforms: R-Car, MCDE, Rockchip.
->
-> This is an alternate series to Linus' series:
->
-> https://lore.kernel.org/all/20251202-mcde-drm-regression-thirdfix-v6-0-f1=
-bffd4ec0fa%40kernel.org/
->
-> This series first reverts the original commit and reverts a fix for
-> mediatek which is no longer needed. It then exposes helper functions
-> from DRM core, and finally implements the new sequence only in the tidss
-> driver.
->
-> There is one more fix in upstream for the original commit, commit
-> 5d91394f2361 ("drm/exynos: fimd: Guard display clock control with
-> runtime PM calls"), but I have not reverted that one as it looks like a
-> valid patch in its own.
->
-> I added Cc stable v6.17+ to all patches, but I didn't add Fixes tags, as
-> I wasn't sure what should they point to. But I could perhaps add Fixes:
-> <original commit> to all of these.
->
-> Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Use RG16 buffer format for fbdev emulation. Fbdev backend is being used
+by Mali 400 userspace driver which expects 16 bit RGB pixel color format.
+This change should not affect console or other fbdev applications as we
+still have plenty of colors left.
 
-The series:
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Tested-by: Linus Walleij <linusw@kernel.org>
+Cc: Bill Mills <bill.mills@linaro.org>
+Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Anatoliy Klymenko <anatoliy.klymenko@amd.com>
+Signed-off-by: Mikko Rapeli <mikko.rapeli@linaro.org>
+---
+ drivers/gpu/drm/xlnx/zynqmp_kms.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-In my opinion Laurent is the more senior maintainer and my
-trust level in him is the highest of all the maintainers, so
-I think we should apply this revert series if
-Laurent ACKs that this is what he thinks is best for DRI.
+diff --git a/drivers/gpu/drm/xlnx/zynqmp_kms.c b/drivers/gpu/drm/xlnx/zynqmp_kms.c
+index 2bee0a2275ede..ccc35cacd10cb 100644
+--- a/drivers/gpu/drm/xlnx/zynqmp_kms.c
++++ b/drivers/gpu/drm/xlnx/zynqmp_kms.c
+@@ -525,7 +525,7 @@ int zynqmp_dpsub_drm_init(struct zynqmp_dpsub *dpsub)
+ 		goto err_poll_fini;
+ 
+ 	/* Initialize fbdev generic emulation. */
+-	drm_client_setup_with_fourcc(drm, DRM_FORMAT_RGB888);
++	drm_client_setup_with_fourcc(drm, DRM_FORMAT_RGB565);
+ 
+ 	return 0;
+ 
+-- 
+2.34.1
 
-Yours,
-Linus Walleij
 
