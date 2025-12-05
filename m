@@ -1,108 +1,316 @@
-Return-Path: <stable+bounces-200089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FE07CA5BE4
-	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 01:22:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CAD6CA5C11
+	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 01:37:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 28DD3304EB0B
-	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 00:22:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 410AE30F1AEA
+	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 00:37:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F3D61E8337;
-	Fri,  5 Dec 2025 00:22:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78B0519CD0A;
+	Fri,  5 Dec 2025 00:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j5rk6J6l"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p8JuYBEZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8507800;
-	Fri,  5 Dec 2025 00:22:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32CBB1D6187;
+	Fri,  5 Dec 2025 00:37:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764894172; cv=none; b=S8dk9hXiafJ/3RMmb01aY2Vxx6PES0Qp8nXXx60tj/uX3fpCCg2xLRRoY5TWgG1SwhcZGHicly5fX4j7AZOXTelaFyjra2B/AxPPWWmWY79H5TQXnmU6xOxKjIgD8wc+zna8UtxUMs8YLaSYD1uQn3XsrSWpYp90S2fHEcl7b60=
+	t=1764895050; cv=none; b=t6L6PFVQq+5PYQxQZ6VbUtd9nRI/KijAsgfNAjrWW3SbpZsC4qifBHUXoNXGnn6tbg1kTQAdrZs3/CllIUO1nyZJE1s6cr/WuEwCh2bKSipCyYePqOhe3YIiKMRUcUusvfBl8HpCYYXv576pROvnwgjzNSf/C0xsbhq7jhd5a7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764894172; c=relaxed/simple;
-	bh=Mv/Yf5qUPtaJ+aXcJ/pliKz7h14XmR4v8kreCWxmRwI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E7EsdbDI2/Acl24WQ/x+iKwNUCoJkmCvp+ZOreOUWjKQqVpu7eaV6HtKbLkLy67wgBNQGOLp81O43Akv3NrmnycC5P8gA8V8S4JlMNflQai/p8FPo2kbl/YpzYAtp7CIXqF/lkNayp2DSr7T2Nnf/ME02ZqpyzrN5d2l8XCHQ/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j5rk6J6l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37F5EC4CEFB;
-	Fri,  5 Dec 2025 00:22:48 +0000 (UTC)
+	s=arc-20240116; t=1764895050; c=relaxed/simple;
+	bh=d/JdkQOrROvJEWTv7daI78o+wlt+53CAhIu914LQyLo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=N1SndWW8dpCj6rOUItb+OSo2TokpOhpo41lfubFP+iTkEOA6hU94RwGdtnDfNsYlneXVC5HA1xGfogtlLx7KO2DD7sfZ/HRHZQV5atV7GXwTOzYfDj1gfBqOJRnTnaLaU9VGc+ACdVcLlWmWv1ivQZglmBazetaSe8MeJ4kJzok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p8JuYBEZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C5F6C4CEFB;
+	Fri,  5 Dec 2025 00:37:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764894171;
-	bh=Mv/Yf5qUPtaJ+aXcJ/pliKz7h14XmR4v8kreCWxmRwI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=j5rk6J6lTzRISrAwoAwJgTUZbMxT8I62mUOi5bcG93chxim95JlY5LgZux9mVWlRm
-	 4RlWhPPOdn304R+xD5eDL4A+klPwg4VS/uDJrBwPDkmjFY1P09X5kG83NvGqehc/Vd
-	 H3J2YotrvaHjoWF9M15As0+O+rKZAEAT7InUb/SoBPBNh0WdgeqOQQQ+JG79Xe8gG6
-	 /tjafZLzdx+G/xSBlicYtCsBUqr/6etTZ/nfC0V6W7ToEYh1JEU1Z860vwEZFB4QZ/
-	 ui6TZpELIRa4dYjvDEWR4z/8zmYUJQYcXvi7qmt/m90x1uQZMN0xa/ji7kJJbF+kSS
-	 PpNhsE1DnVygw==
-Date: Thu, 4 Dec 2025 17:22:45 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Justin Stitt <justinstitt@google.com>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>, Will Deacon <will@kernel.org>,
-	Christopher Covington <cov@codeaurora.org>,
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.cs.columbia.edu,
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+	s=k20201202; t=1764895049;
+	bh=d/JdkQOrROvJEWTv7daI78o+wlt+53CAhIu914LQyLo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=p8JuYBEZi9bjmwn0ts8vP5CaAeaJanBBedphpmnbwUAW+YKHdiGO/pgv7eKw468ZR
+	 uxXNTjx7uhYdHheF8CVgnmhaP5NPAxNq+JPDGLztSKSlmdtjzqa74/HDv9rPQf7X4w
+	 GX/0vmYFFrsQOqAJWkPukX7tdGQuWKJalRZy6BgXMFQTsP19cPI5T8C4kdJaZogW7I
+	 axnoDJeSNJXpU1/0/6puv9S4nqJXpmSrQZc1eyRFIk649qRXhcgQZ0T3taU5wQ8RJD
+	 nTMRfMFOe/zqqu108VqpJ9ry7J3FyrUHG3EAlOr/PWUNZLqhANAV2DSG+KlNWjuWaH
+	 80iRClD1xEF+Q==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Subject: Re: [PATCH 6.1.y RESEND] KVM: arm64: silence
- -Wuninitialized-const-pointer warning
-Message-ID: <20251205002245.GA3463270@ax162>
-References: <20251204-b4-clidr-unint-const-ptr-v1-1-95161315ad92@google.com>
- <2lse2swdqrovimdsakgtriadki2fsvikhuetjzxztoui5hpsai@6mmc64ugt22k>
+Cc: Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	oleg@redhat.com
+Subject: [PATCH AUTOSEL 6.18-5.10] x86/ptrace: Always inline trivial accessors
+Date: Thu,  4 Dec 2025 19:37:26 -0500
+Message-ID: <20251205003726.21504-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2lse2swdqrovimdsakgtriadki2fsvikhuetjzxztoui5hpsai@6mmc64ugt22k>
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.18
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Dec 04, 2025 at 12:53:58PM -0800, Justin Stitt wrote:
-> Quick correction:
-> 
-> On Thu, Dec 04, 2025 at 12:50:11PM -0800, Justin Stitt wrote:
-> > A new warning in Clang 22 [1] complains that @clidr passed to
-> > get_clidr_el1() is an uninitialized const pointer. get_clidr_el1()
-> > doesn't really care since it casts away the const-ness anyways.
-> > 
-> > Silence the warning by initializing the struct.
-> > 
-> > This patch won't apply to anything past v6.1 as this code section was
-> > reworked in Commit 7af0c2534f4c ("KVM: arm64: Normalize cache
-> > configuration"). There is no upstream equivalent so this patch only
-> > needs to be applied (stable only) to 6.1.
-> > 
-> > Cc: stable@vger.kernel.org
-> > Fixes: 7c8c5e6a9101e ("arm64: KVM: system register handling")
-> > Link: https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd091d441f19b319e [1]
-> > Signed-off-by: Justin Stitt <justinstitt@google.com>
-> > ---
-> > Resending this with Nathan's RB tag, an updated commit log and better
-> > recipients from checkpatch.pl.
-> 
-> My usage of $ b4 trailers must've not been correct because this 6.1
-> version didn't pick up Nathan's RB tag. Whoops! Hopefully whoever picks
-> this up can add that for me :)
+From: Peter Zijlstra <peterz@infradead.org>
 
-Looks like you resent the first iteration of this change [1] instead of
-the second [2], hence why 'b4 trailers -u' did not work, since I never
-reviewed the first iteration after Marc rejected it :)
+[ Upstream commit 1fe4002cf7f23d70c79bda429ca2a9423ebcfdfa ]
 
-Your 5.15 resend looks correct though.
+A KASAN build bloats these single load/store helpers such that
+it fails to inline them:
 
-[1]: https://lore.kernel.org/20250724-b4-clidr-unint-const-ptr-v1-1-67c4d620b6b6@google.com/
-[2]: https://lore.kernel.org/20250728-stable-disable-unit-ptr-warn-v1-1-958be9b66520@google.com/
+  vmlinux.o: error: objtool: irqentry_exit+0x5e8: call to instruction_pointer_set() with UACCESS enabled
 
-Cheers,
-Nathan
+Make sure the compiler isn't allowed to do stupid.
+
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://patch.msgid.link/20251031105435.GU4068168@noisy.programming.kicks-ass.net
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+
+LLM Generated explanations, may be completely bogus:
+
+## Comprehensive Analysis: x86/ptrace: Always inline trivial accessors
+
+### 1. COMMIT MESSAGE ANALYSIS
+
+**Subject:** `x86/ptrace: Always inline trivial accessors`
+
+**Key points from the commit message:**
+- A **KASAN build** bloats these single load/store helpers such that
+  they fail to inline
+- The result is an **objtool ERROR**: `vmlinux.o: error: objtool:
+  irqentry_exit+0x5e8: call to instruction_pointer_set() with UACCESS
+  enabled`
+- The commit ensures "the compiler isn't allowed to do stupid"
+
+**Author:** Peter Zijlstra (Intel) - a highly respected kernel developer
+and maintainer
+**Committer:** Ingo Molnar - x86 subsystem maintainer
+
+**Missing tags:**
+- No `Cc: stable@vger.kernel.org` tag
+- No `Fixes:` tag
+
+### 2. CODE CHANGE ANALYSIS
+
+The diff changes 8 trivial accessor functions from `static inline` to
+`static __always_inline`:
+
+| Function | Purpose | Complexity |
+|----------|---------|------------|
+| `regs_return_value()` | Returns `regs->ax` | 1 line |
+| `regs_set_return_value()` | Sets `regs->ax = rc` | 1 line |
+| `kernel_stack_pointer()` | Returns `regs->sp` | 1 line |
+| `instruction_pointer()` | Returns `regs->ip` | 1 line |
+| `instruction_pointer_set()` | Sets `regs->ip = val` | 1 line |
+| `frame_pointer()` | Returns `regs->bp` | 1 line |
+| `user_stack_pointer()` | Returns `regs->sp` | 1 line |
+| `user_stack_pointer_set()` | Sets `regs->sp = val` | 1 line |
+
+**Technical mechanism of the bug:**
+1. KASAN adds memory sanitization instrumentation to functions
+2. Even trivial one-liner functions get bloated with KASAN checks
+3. The compiler decides the bloated functions are "too big" to inline
+4. These functions get called from `irqentry_exit()` in contexts where
+   UACCESS is enabled (SMAP disabled via STAC)
+5. Objtool validates that no unexpected function calls happen with
+   UACCESS enabled (security/correctness requirement)
+6. Result: **BUILD FAILURE** (error, not warning)
+
+**Why `__always_inline` fixes it:**
+```c
+#define __always_inline                 inline
+__attribute__((__always_inline__))
+```
+This compiler attribute forces inlining regardless of any optimization
+settings or instrumentation, ensuring these trivial accessors always
+become inline code rather than function calls.
+
+### 3. CLASSIFICATION
+
+- **Category:** BUILD FIX
+- **Type:** Fixes compilation error with KASAN on x86
+- **Not a feature:** Simply enforces behavior that was intended
+  (functions should always inline)
+- **Not a quirk/device ID/DT:** N/A
+
+### 4. SCOPE AND RISK ASSESSMENT
+
+**Scope:**
+- 1 file changed: `arch/x86/include/asm/ptrace.h`
+- 10 insertions, 10 deletions (only adding `__always_` prefix)
+- Changes are purely compile-time
+
+**Risk: VERY LOW**
+- Zero runtime functional change when compiler already inlines
+- Only forces the compiler to do what it was supposed to do
+- Same pattern already successfully applied to other functions in the
+  same file:
+  - `user_mode()` - already `__always_inline`
+  - `v8086_mode()` - commit b008893b08dcc
+  - `ip_within_syscall_gap()` - commit c6b01dace2cd7
+  - `regs_irqs_disabled()` - already `__always_inline`
+
+### 5. USER IMPACT
+
+**Who is affected:**
+- Anyone building x86 kernels with `CONFIG_KASAN=y`
+- KASAN is used for memory debugging, commonly in development and CI
+  systems
+- Enterprise distributions often enable KASAN in debug/test builds
+
+**Severity:** HIGH (build failure = kernel cannot be compiled)
+
+### 6. STABILITY INDICATORS
+
+- **Reviewed-by:** None explicit, but committed through tip tree
+- **Tested-by:** None explicit, but the error message shows it was
+  reproduced
+- **Author credibility:** Peter Zijlstra is a top kernel maintainer
+- **Committer credibility:** Ingo Molnar is the x86 maintainer
+
+### 7. DEPENDENCY CHECK
+
+**Dependencies:** NONE
+- This is a standalone fix
+- Does not depend on any other commits
+- The affected code exists unchanged in all stable kernels (5.10, 5.15,
+  6.1, 6.6)
+
+**Backport applicability verified:**
+```
+v5.10: static inline void instruction_pointer_set(...) ✓
+v5.15: static inline void instruction_pointer_set(...) ✓
+v6.1:  static inline void instruction_pointer_set(...) ✓
+v6.6:  static inline void instruction_pointer_set(...) ✓
+```
+The patch should apply cleanly to all stable trees.
+
+### 8. HISTORICAL CONTEXT
+
+Similar fixes have been applied to this same file and other kernel
+files:
+
+| Commit | Description | Pattern |
+|--------|-------------|---------|
+| c6b01dace2cd7 | x86: Always inline ip_within_syscall_gap() | Same |
+| b008893b08dcc | x86/ptrace: Always inline v8086_mode() | Same |
+| cb0ca08b326aa | kcov: mark in_softirq_really() as __always_inline |
+Same (backported to stable) |
+
+The KASAN + objtool UACCESS validation issue is a known pattern that has
+been addressed multiple times with `__always_inline`.
+
+### SUMMARY
+
+**Strong YES signals:**
+- ✅ Fixes a build failure (compilation error, not warning)
+- ✅ Small, surgical fix with clear scope (only adds `__always_inline`)
+- ✅ Obviously correct - trivial accessors should always inline
+- ✅ Zero functional/runtime change
+- ✅ No dependencies, applies cleanly to all stable trees
+- ✅ Well-established fix pattern used elsewhere in kernel
+- ✅ Authored by highly trusted maintainer (Peter Zijlstra)
+- ✅ Committed through the proper channel (tip tree via Ingo Molnar)
+
+**Weak NO signals:**
+- ⚠️ No explicit `Cc: stable` tag
+- ⚠️ No `Fixes:` tag
+
+The absence of stable tags is not disqualifying for build fixes. The
+stable kernel rules explicitly state that "build fixes that prevent
+compilation" are acceptable. This is a clear-cut build fix that prevents
+KASAN-enabled x86 kernels from compiling.
+
+### CONCLUSION
+
+This commit **should be backported** to stable kernel trees. It's a
+textbook example of a build fix:
+- Small, contained, obviously correct
+- Fixes a real build failure affecting KASAN users
+- Zero risk of regression (only forces intended behavior)
+- No dependencies, clean backport
+- Follows established patterns from similar successful fixes
+
+**YES**
+
+ arch/x86/include/asm/ptrace.h | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/arch/x86/include/asm/ptrace.h b/arch/x86/include/asm/ptrace.h
+index 50f75467f73d0..b5dec859bc75a 100644
+--- a/arch/x86/include/asm/ptrace.h
++++ b/arch/x86/include/asm/ptrace.h
+@@ -187,12 +187,12 @@ convert_ip_to_linear(struct task_struct *child, struct pt_regs *regs);
+ extern void send_sigtrap(struct pt_regs *regs, int error_code, int si_code);
+ 
+ 
+-static inline unsigned long regs_return_value(struct pt_regs *regs)
++static __always_inline unsigned long regs_return_value(struct pt_regs *regs)
+ {
+ 	return regs->ax;
+ }
+ 
+-static inline void regs_set_return_value(struct pt_regs *regs, unsigned long rc)
++static __always_inline void regs_set_return_value(struct pt_regs *regs, unsigned long rc)
+ {
+ 	regs->ax = rc;
+ }
+@@ -277,34 +277,34 @@ static __always_inline bool ip_within_syscall_gap(struct pt_regs *regs)
+ }
+ #endif
+ 
+-static inline unsigned long kernel_stack_pointer(struct pt_regs *regs)
++static __always_inline unsigned long kernel_stack_pointer(struct pt_regs *regs)
+ {
+ 	return regs->sp;
+ }
+ 
+-static inline unsigned long instruction_pointer(struct pt_regs *regs)
++static __always_inline unsigned long instruction_pointer(struct pt_regs *regs)
+ {
+ 	return regs->ip;
+ }
+ 
+-static inline void instruction_pointer_set(struct pt_regs *regs,
+-		unsigned long val)
++static __always_inline
++void instruction_pointer_set(struct pt_regs *regs, unsigned long val)
+ {
+ 	regs->ip = val;
+ }
+ 
+-static inline unsigned long frame_pointer(struct pt_regs *regs)
++static __always_inline unsigned long frame_pointer(struct pt_regs *regs)
+ {
+ 	return regs->bp;
+ }
+ 
+-static inline unsigned long user_stack_pointer(struct pt_regs *regs)
++static __always_inline unsigned long user_stack_pointer(struct pt_regs *regs)
+ {
+ 	return regs->sp;
+ }
+ 
+-static inline void user_stack_pointer_set(struct pt_regs *regs,
+-		unsigned long val)
++static __always_inline
++void user_stack_pointer_set(struct pt_regs *regs, unsigned long val)
+ {
+ 	regs->sp = val;
+ }
+-- 
+2.51.0
+
 
