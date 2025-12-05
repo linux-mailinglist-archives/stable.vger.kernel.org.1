@@ -1,93 +1,102 @@
-Return-Path: <stable+bounces-200105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2EDACA6008
-	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 04:24:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C5C4CA5FDE
+	for <lists+stable@lfdr.de>; Fri, 05 Dec 2025 04:22:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D736A31D91B4
-	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 03:23:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1CB623151442
+	for <lists+stable@lfdr.de>; Fri,  5 Dec 2025 03:22:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 669E92C21D0;
-	Fri,  5 Dec 2025 03:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 226A226A0D5;
+	Fri,  5 Dec 2025 03:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XvDcl2bN"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="AXGCPgWd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE6882C11E5;
-	Fri,  5 Dec 2025 03:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C2323D7E6;
+	Fri,  5 Dec 2025 03:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764905002; cv=none; b=W1uDFaD0lIuRxVDleFwTblyeQ5Exn9fCfvcXbKIWkmvJuRFZyM78K3Lm5s7bo4vm9R7+kpjuexUEpMwUp7g5Guk6vVtuBcr/1F9qpmw04PzsCMZYPAuTQCDZ8dfYgtukZa5K2x87kfQRXYs1+2RkZGWjQtHY8hNiLkGw+bTd6PU=
+	t=1764904958; cv=none; b=Va0+cn/F+xwyqNMbL40pifIUMHku4iWpVg/gzuHsQGJiCgTsWaIeUjGRych6b86wjo/HMXa2Dm68+Gln5iikwIzW45nhnZUYnoZ2UwkRepQDSkxSsfY8V5GahYtZ1rq4hEr0FFEMGcCP6o+HAMpNPu9R+btOJ9ErRJg8J5Ljl3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764905002; c=relaxed/simple;
-	bh=or9yP6M1EmYLSR6Zpjjpmw84zohg9WpXWhR4V9Shztw=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=AOoxIKuVaOhfrMdDgZ7tw1Yl8Pmzf7BdMGW/Q+WQKkIqqFRzt010ekhB1vP9lmde+nILJiBJ8XJKvHytHYNQqM1F/TVe2Mo8qqHLFnHd9VGoMpleS+/KOCQKQ+ohSo5zVJwzNEt1DkW/qBKaWo3MS4NWxA3+3+ttlI+2xLQ476E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XvDcl2bN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2B79C116B1;
-	Fri,  5 Dec 2025 03:23:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764905001;
-	bh=or9yP6M1EmYLSR6Zpjjpmw84zohg9WpXWhR4V9Shztw=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=XvDcl2bNkuHldDNmt4I6SeqJtyGyFbLhIsLywOyGmeTC0RXJJunGsV3wUiM2ARK9V
-	 Ab+lsXgkWiq4imgRTgtn15cLQM0c1jqazpI9iYmS3U+4nQJWLzO+6T0VnMekumb1J2
-	 MQuYbQaSTXd5gymuiTOCT4qzBN0MqzSHyRv0G2ITmHsiDPtJr+d2msUwFYOma8TgdQ
-	 6TZnR7SFa8kyM/Bu9PjIURJbzDHi7shSV1dU00xe2uUGmaATIV+T1X4DIhoyP/zXVb
-	 ez0FixPox2kcZbYc0FHNNZCJw36eSJ2XFwQPhwmkTL4sxuBSlYDYTnwN75OBW6ZVYr
-	 E6Nq7B5Qjagig==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F2A2F3AA9A89;
-	Fri,  5 Dec 2025 03:20:20 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1764904958; c=relaxed/simple;
+	bh=QBrTDsRqo/yw2j45O40D+5dX5EYnM1bJwpbdQGzAzdQ=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=mhhbJ+WsWAvQm0Ns7Ve8M+QbCX/gIM+buXAd6Dn/zvYx0V9hE2T/lBd2aMZkQrWz9bKe6Jgsb/JOgPrAelpdH5QWEQrN+IDapxr8jYw5IMjcjPpMF4ExmWgruRb3AoqI/NEHxCodqL7lrKJnsTjOxux8nnw+K5Innbst0BNin+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=AXGCPgWd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C737FC4CEFB;
+	Fri,  5 Dec 2025 03:22:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1764904958;
+	bh=QBrTDsRqo/yw2j45O40D+5dX5EYnM1bJwpbdQGzAzdQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=AXGCPgWd4mydusswaGZKqx4kEvlENRvG/I3+tUFWa0XByeiLMpFRYIlajA9z/nRJr
+	 OlYuonufde9e5Fdl6T5Jf96rlSRlq5NLs/fKAvUS2+aIDY2nF+a4qvHLrT5ZwCgzld
+	 q4v4GbSKtg0dLAjab3P3ybv7nvWbSbKQ2XgDr0YM=
+Date: Thu, 4 Dec 2025 19:22:37 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Maciej Wieczor-Retman <m.wieczorretman@pm.me>, Andrey Ryabinin
+ <ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, Dmitry
+ Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ Marco Elver <elver@google.com>, jiayuan.chen@linux.dev,
+ stable@vger.kernel.org, Maciej Wieczor-Retman
+ <maciej.wieczor-retman@intel.com>, kasan-dev@googlegroups.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 3/3] kasan: Unpoison vms[area] addresses with a
+ common tag
+Message-Id: <20251204192237.0d7a07c9961843503c08ebab@linux-foundation.org>
+In-Reply-To: <CA+fCnZeuGdKSEm11oGT6FS71_vGq1vjq-xY36kxVdFvwmag2ZQ@mail.gmail.com>
+References: <cover.1764874575.git.m.wieczorretman@pm.me>
+	<873821114a9f722ffb5d6702b94782e902883fdf.1764874575.git.m.wieczorretman@pm.me>
+	<CA+fCnZeuGdKSEm11oGT6FS71_vGq1vjq-xY36kxVdFvwmag2ZQ@mail.gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: phy: marvell-88q2xxx: Fix clamped value in
- mv88q2xxx_hwmon_write
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176490481952.1084773.3572547538634420670.git-patchwork-notify@kernel.org>
-Date: Fri, 05 Dec 2025 03:20:19 +0000
-References: <20251202172743.453055-3-thorsten.blum@linux.dev>
-In-Reply-To: <20251202172743.453055-3-thorsten.blum@linux.dev>
-To: Thorsten Blum <thorsten.blum@linux.dev>
-Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- linux@roeck-us.net, dima.fedrau@gmail.com, stable@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Fri, 5 Dec 2025 02:09:06 +0100 Andrey Konovalov <andreyknvl@gmail.com> wrote:
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Tue,  2 Dec 2025 18:27:44 +0100 you wrote:
-> The local variable 'val' was never clamped to -75000 or 180000 because
-> the return value of clamp_val() was not used. Fix this by assigning the
-> clamped value back to 'val', and use clamp() instead of clamp_val().
+> > --- a/mm/kasan/common.c
+> > +++ b/mm/kasan/common.c
+> > @@ -591,11 +591,28 @@ void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms,
+> >         unsigned long size;
+> >         void *addr;
+> >         int area;
+> > +       u8 tag;
+> > +
+> > +       /*
+> > +        * If KASAN_VMALLOC_KEEP_TAG was set at this point, all vms[] pointers
+> > +        * would be unpoisoned with the KASAN_TAG_KERNEL which would disable
+> > +        * KASAN checks down the line.
+> > +        */
+> > +       if (flags & KASAN_VMALLOC_KEEP_TAG) {
 > 
-> Cc: stable@vger.kernel.org
-> Fixes: a557a92e6881 ("net: phy: marvell-88q2xxx: add support for temperature sensor")
-> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-> 
-> [...]
+> I think we can do a WARN_ON() here: passing KASAN_VMALLOC_KEEP_TAG to
+> this function would be a bug in KASAN annotations and thus a kernel
+> bug. Therefore, printing a WARNING seems justified.
 
-Here is the summary with links:
-  - [net] net: phy: marvell-88q2xxx: Fix clamped value in mv88q2xxx_hwmon_write
-    https://git.kernel.org/netdev/net/c/c4cdf7376271
+This?
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+--- a/mm/kasan/common.c~kasan-unpoison-vms-addresses-with-a-common-tag-fix
++++ a/mm/kasan/common.c
+@@ -598,7 +598,7 @@ void __kasan_unpoison_vmap_areas(struct
+ 	 * would be unpoisoned with the KASAN_TAG_KERNEL which would disable
+ 	 * KASAN checks down the line.
+ 	 */
+-	if (flags & KASAN_VMALLOC_KEEP_TAG) {
++	if (WARN_ON_ONCE(flags & KASAN_VMALLOC_KEEP_TAG)) {
+ 		pr_warn("KASAN_VMALLOC_KEEP_TAG flag shouldn't be already set!\n");
+ 		return;
+ 	}
+_
 
 
