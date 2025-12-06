@@ -1,110 +1,96 @@
-Return-Path: <stable+bounces-200259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61B5BCAAD03
-	for <lists+stable@lfdr.de>; Sat, 06 Dec 2025 20:45:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 401E4CAADDD
+	for <lists+stable@lfdr.de>; Sat, 06 Dec 2025 22:11:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 72808302533D
-	for <lists+stable@lfdr.de>; Sat,  6 Dec 2025 19:45:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C50E2306D8CD
+	for <lists+stable@lfdr.de>; Sat,  6 Dec 2025 21:11:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 756DF2D948A;
-	Sat,  6 Dec 2025 19:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC5401D61A3;
+	Sat,  6 Dec 2025 21:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cachyos.org header.i=@cachyos.org header.b="XY0bA0Xp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sd64rUId"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ptr1337.dev (mail.ptr1337.dev [202.61.224.105])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 625F32D47E8;
-	Sat,  6 Dec 2025 19:45:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.61.224.105
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E5EEEB3;
+	Sat,  6 Dec 2025 21:11:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765050314; cv=none; b=G27fd1+8OeqS1Nmg4qNwEBfNwNT24J0a7UxWb6/dZBXFDfO5X5YHKiGA5cDESa2ywJseWScO2Memg5eCnhD8uILRraeG6RKYcO61wF82HOWbo34bxcgShnelVA9BvE2/WJ4yI+Opd2SCie+Vr6tDWnA8AxibNp+g5fcjBwP/ZfA=
+	t=1765055486; cv=none; b=ojs+1MW/KhYZEFkxBCUMrUyREgdXYC7Rb6ONZUeq1JTZXWF8uQCm9XEE5kBMmGSTCBQFt6rM0oN7A6f41evKDkJqkg2DxIGJNFOaXYj8vRwovGrQbXp/NHadQFSb+dqkDXblffUJ1mCAcSnMV0Phr5QbUZZppsgOzRSM6jLDZTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765050314; c=relaxed/simple;
-	bh=FTrBCyfqDBEsjEjcAz6bo8YApO6xaBl7D0QY7b7BKag=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UvJTRMwQGh/3mg0RPsgKU6aGVHHvrcOUjJ/gKinPmd6f7b1B+W57vUp9lxG3aGWrFd8SGUFMHsbk6/7Vj+XwMgeJcVji6odbSowysUs3psW6CcW0cj26X2V4KQZvesdFnk35L0cqUtMXq9L08vC4yhHhXzPf8pK5XB/hS8aoPHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cachyos.org; spf=pass smtp.mailfrom=cachyos.org; dkim=pass (2048-bit key) header.d=cachyos.org header.i=@cachyos.org header.b=XY0bA0Xp; arc=none smtp.client-ip=202.61.224.105
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cachyos.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cachyos.org
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 08F0B28515E;
-	Sat,  6 Dec 2025 20:38:41 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cachyos.org; s=dkim;
-	t=1765049928; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=Cwllb3bLUf192JLNRbDuLArgEnvmfsJIhvqnHs2xnfQ=;
-	b=XY0bA0XpTDOfALq78kFnaa5k9v4BYf0WP1LpO9UJ40XhZO4zIQQzD7f+2/lfga7gMtQ033
-	fHvP0lTxs61cDsSinoKDfJXsyAR87SanjKvm1I4ZRwuUI09F9u5tqY3oGfWmx1f4GNEPTX
-	/0Oa0lXHFDzhFOZ+pqL8G5FVWWOxEk70SvlPM9LyAdwN0p1FD6V0PH57bNWIEzc/Blnfmd
-	GXC+S1VApJm8AHloIDyfkJBmbgqfq7jIR3HzJo38bMjXr3ITZrjLYxGBdTOlRNNP3mOFUX
-	s7ToipHMGGb2SQMAZVwXXCD1FPjjEXaNziJtke8rVa0CTfkY+zrlSE54Lr2Sog==
-From: Eric Naim <dnaim@cachyos.org>
-To: David Rhodes <david.rhodes@cirrus.com>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Stefan Binding <sbinding@opensource.cirrus.com>
-Cc: Eric Naim <dnaim@cachyos.org>,
-	stable@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	patches@opensource.cirrus.com,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] ASoC: cs35l41: Always return 0 when a subsystem ID is found
-Date: Sun,  7 Dec 2025 03:38:12 +0800
-Message-ID: <20251206193813.56955-1-dnaim@cachyos.org>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1765055486; c=relaxed/simple;
+	bh=3HV0mr7oIZvawRTMKXqkblIV1Io1yttrUfiUmN7U3+k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gs3FkPCn/4OmKCaiLT1BFlpgbUOGxaWxZJcrr3lC4S48V95KKNzBT/oWvZdUk5Ujv2m3LAo1QRiFHqNgFoPth22kTfhkqawX8DTmRH3XQCSQB/si4gphiMCwX0HherFHISI5886Wy99n5Uffysxv+2obevezVJQ5njcG3+xaouc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sd64rUId; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E9A7C113D0;
+	Sat,  6 Dec 2025 21:11:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1765055486;
+	bh=3HV0mr7oIZvawRTMKXqkblIV1Io1yttrUfiUmN7U3+k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Sd64rUId+al9Cn6FZm0G9+y7cLj8RfA7eC07KK4U+5pWz2s1wepYvbrcdflTaJJK/
+	 8LPt4qZGwQHoXEftbCgUkDE9O0AodD9/9+IegEAPXoCMyMdXNcTg6+rD87ZE/MOKrg
+	 9edbjEN2JTwXwIdgP/NyWzOFl4Bpk4davpnR6dJY=
+Date: Sun, 7 Dec 2025 06:11:20 +0900
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: "Barry K. Nathan" <barryn@pobox.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: Re: [PATCH 6.1 414/568] scsi: ufs: core: Add a quirk to suppress
+ link_startup_again
+Message-ID: <2025120709-corner-puritan-90ae@gregkh>
+References: <20251203152440.645416925@linuxfoundation.org>
+ <20251203152455.856124103@linuxfoundation.org>
+ <2fa15075-56a3-4afe-b59a-1a78f4b7f971@pobox.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2fa15075-56a3-4afe-b59a-1a78f4b7f971@pobox.com>
 
-When trying to get the system name in the _HID path, after successfully
-retrieving the subsystem ID the return value isn't set to 0 but instead
-still kept at -ENODATA, leading to a false negative:
+On Thu, Dec 04, 2025 at 08:53:12AM -0800, Barry K. Nathan wrote:
+> On 12/3/25 07:26, Greg Kroah-Hartman wrote:
+> > 6.1-stable review patch.  If anyone has any objections, please let me know.
+> > 
+> > ------------------
+> > 
+> > From: Adrian Hunter <adrian.hunter@intel.com>
+> > 
+> > ufshcd_link_startup() has a facility (link_startup_again) to issue
+> > DME_LINKSTARTUP a 2nd time even though the 1st time was successful.
+> > 
+> > Some older hardware benefits from that, however the behaviour is
+> > non-standard, and has been found to cause link startup to be unreliable
+> > for some Intel Alder Lake based host controllers.
+> > 
+> > Add UFSHCD_QUIRK_PERFORM_LINK_STARTUP_ONCE to suppress
+> > link_startup_again, in preparation for setting the quirk for affected
+> > controllers.
+> > 
+> > Fixes: 7dc9fb47bc9a ("scsi: ufs: ufs-pci: Add support for Intel ADL")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+> > Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+> > Link: https://patch.msgid.link/20251024085918.31825-3-adrian.hunter@intel.com
+> > Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > ---
+> 
+> This backport's commit message is missing the corresponding upstream commit
+> (which is d34caa89a132cd69efc48361d4772251546fdb88).
 
-[   12.382507] cs35l41 spi-VLV1776:00: Subsystem ID: VLV1776
-[   12.382521] cs35l41 spi-VLV1776:00: probe with driver cs35l41 failed with error -61
+Ah, good catch, don't know how I missed that, thanks!
 
-Always return 0 when a subsystem ID is found to mitigate these false
-negatives.
-
-Link: https://github.com/CachyOS/CachyOS-Handheld/issues/83
-Fixes: 46c8b4d2a693 ("ASoC: cs35l41: Fallback to reading Subsystem ID property if not ACPI")
-Cc: stable@vger.kernel.org # 6.18
-Signed-off-by: Eric Naim <dnaim@cachyos.org>
----
- sound/soc/codecs/cs35l41.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/sound/soc/codecs/cs35l41.c b/sound/soc/codecs/cs35l41.c
-index 173d7c59b725..5001a546a3e7 100644
---- a/sound/soc/codecs/cs35l41.c
-+++ b/sound/soc/codecs/cs35l41.c
-@@ -1188,13 +1188,14 @@ static int cs35l41_get_system_name(struct cs35l41_private *cs35l41)
- 		}
- 	}
- 
--err:
- 	if (sub) {
- 		cs35l41->dsp.system_name = sub;
- 		dev_info(cs35l41->dev, "Subsystem ID: %s\n", cs35l41->dsp.system_name);
--	} else
--		dev_warn(cs35l41->dev, "Subsystem ID not found\n");
-+		return 0;
-+	}
- 
-+err:
-+	dev_warn(cs35l41->dev, "Subsystem ID not found\n");
- 	return ret;
- }
- 
--- 
-2.52.0
-
+greg k-h
 
