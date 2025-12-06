@@ -1,259 +1,142 @@
-Return-Path: <stable+bounces-200250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8033CAA82E
-	for <lists+stable@lfdr.de>; Sat, 06 Dec 2025 15:09:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE086CAA8A3
+	for <lists+stable@lfdr.de>; Sat, 06 Dec 2025 15:38:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ABD9B32956A0
-	for <lists+stable@lfdr.de>; Sat,  6 Dec 2025 14:04:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CBC973083305
+	for <lists+stable@lfdr.de>; Sat,  6 Dec 2025 14:38:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 969692FE598;
-	Sat,  6 Dec 2025 14:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B2F52FF66C;
+	Sat,  6 Dec 2025 14:38:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XbDKM5qs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SmKE1cIz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513852FE58C;
-	Sat,  6 Dec 2025 14:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996172FE06F
+	for <stable@vger.kernel.org>; Sat,  6 Dec 2025 14:38:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765029834; cv=none; b=oYoff0I2Dty98+hZF5bxymi4zZBioqV8ohOTkxuaTeOgK1RPvUHVd9hn5bSoMv+rx1c6vu0grZjugsKHaoW2CRRvz7Nlfc0UxIdJ7OZv4+lHyC1mY8jVopxB5fKS6O5VnzlAOMzMPlBOPjbSIYGov1lLl7C/vYf5i/YKBp6MuUo=
+	t=1765031886; cv=none; b=CkloYlB7xNnuSVQA5gKIPDs6MwfV1LvEgj0Zs5Zr4EAI3MD9zmJVtVw9nyBoAy9x9/u3uEDONED7At69s64wfUSX7bX3U/D4ET+yWEIv6TmQzL0nSATU6o7vr3KRucfMSlsZ0uhWDmcV1gvA104xq2jJ1a2SlMZDOGchr7LZf7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765029834; c=relaxed/simple;
-	bh=X0iKf/mzWfXeAmjBbHV4DqH7woOS//wu71pCfbmSVjs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mIVp8e6XQp1zKv1jTajsjaHj3fQ34NwM2f0oCBRCjteR3JE+o+4ABP4/f1ffXBG4hs3p9Y89OLqRgnN4MZYMdFIxbCg0RNjLTiTfdq5c7RBWORLkIKLKgdTTBO0GQkbwqzn62KhzUW3kXQiGQdfr8vIVZICwj5Oh9NFIjszO3nA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XbDKM5qs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B49E7C113D0;
-	Sat,  6 Dec 2025 14:03:52 +0000 (UTC)
+	s=arc-20240116; t=1765031886; c=relaxed/simple;
+	bh=r1kaDwMLovXRYSkG9s6VRxQxezI7Zw0GWjAl7S5cIQQ=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=qp3HMoKQejuNWRDcv3gcBa7MKYDFjyLgsmezVo9uhNMQiQ+Ud2a0GD40Gan5pbw5tEGpm6tyiZ60tw2hcwl84tAN/aT0S4EXgF/s9ZUj4wzM1UG4TcsaTGW+OfBak2MUA5dZcBoCDOBMmNRhpmCJdb+8ZXLSXUKGtGBLR3F7x9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SmKE1cIz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6409BC116B1;
+	Sat,  6 Dec 2025 14:38:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765029834;
-	bh=X0iKf/mzWfXeAmjBbHV4DqH7woOS//wu71pCfbmSVjs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XbDKM5qsWGPeCQHtpBM3rxzCPiSJqo6dOlbMfIBYHlld1s0milSVnRO9ELTwge2W0
-	 /mzAs+v3e4V+x3mTM5SLuNLfr9SyKsxgCilkU3Cy1gnHhWphE4+X0+ZUZOyeRmSpAP
-	 +0YilCWUQ0dVTxY2FMS8nlSg8fkM60BtEA+auPcZaVfgnv2Q2vW+iB5i/vPg1jGv88
-	 etrGoJGK9JyLvbVaFtbqG1Wbtdr6Ap5VuJUhpvPUku7GhpVRkRaV7xWCVCI/Un52t7
-	 fiTz4nd3FsQDbBLFz5j5C8+iCwHW1Z4tei2ZXSM7B8NPzpzgN7yOqQR6XEbERZg40c
-	 hBYdw9NB3kXcg==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Qianchang Zhao <pioooooooooip@gmail.com>,
-	Zhitong Liu <liuzhitong1993@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>,
-	smfrench@gmail.com,
-	linux-cifs@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-6.6] ksmbd: vfs: fix race on m_flags in vfs_cache
-Date: Sat,  6 Dec 2025 09:02:32 -0500
-Message-ID: <20251206140252.645973-27-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251206140252.645973-1-sashal@kernel.org>
-References: <20251206140252.645973-1-sashal@kernel.org>
+	s=k20201202; t=1765031885;
+	bh=r1kaDwMLovXRYSkG9s6VRxQxezI7Zw0GWjAl7S5cIQQ=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=SmKE1cIzOiXizNctUkAfiFqzJZostVOvbsWDRr5/PXOOdMl4DJqK215RIfrJ/rRDY
+	 bMTq1Uq+PU8IMGRz4fr6NHxIUB0Xck6TTx+kfzrQCxDF/kmuEvxeWr7kQdWS8Cnkyd
+	 6j0f3z36aanr3tk75iu5n647MQg4A0mmmWfPIgngzxaQmMLDkuJL1Hes194POPcRUj
+	 4yemntXJN4A501tBZW791HdpWP4GAHk77EBP+e1bvZsXjjyYrPhiApKo2Ubalpha35
+	 EVExoNB/LUueg3kF5so5jPbQ2+q4Z1nsjiDxD87Hvuq8f17eSBz8neEsNwOAkL7fy/
+	 nLIya1qI/uGLg==
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 6DC18F40076;
+	Sat,  6 Dec 2025 09:38:04 -0500 (EST)
+Received: from phl-imap-15 ([10.202.2.104])
+  by phl-compute-10.internal (MEProxy); Sat, 06 Dec 2025 09:38:04 -0500
+X-ME-Sender: <xms:zD80abwByXW_LZESxY_s8cKvvAYwy8FQeZLTU5xgvhZ_VwxwtQ9pyA>
+    <xme:zD80aeF4Azvnj3KoskdERSVVzQeiR3BwPl15XrVeQIkIwE8JjAuuIrTjN8g_4f-cF
+    wQUJ5RmIEl6caYjUKIg_UX9bOX3O6cHsvqiaQ5MlMHNJ6LYvMq3oWc>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduuddulecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdevhhhutghk
+    ucfnvghvvghrfdcuoegtvghlsehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvghrnh
+    ephfffkefffedtgfehieevkeduuefhvdejvdefvdeuuddvgeelkeegtefgudfhfeelnecu
+    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheptghhuhgtkh
+    hlvghvvghrodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieefgeelleel
+    heelqdefvdelkeeggedvfedqtggvlheppehkvghrnhgvlhdrohhrghesfhgrshhtmhgrih
+    hlrdgtohhmpdhnsggprhgtphhtthhopeduuddpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtohepnhgvihhlsegsrhhofihnrdhnrghmvgdprhgtphhtthhopegsfhhivghlughsse
+    hfihgvlhgushgvshdrohhrghdprhgtphhtthhopehlihhhrghogihirghnghesihhsrhgt
+    rdhishgtrghsrdgrtgdrtghnpdhrtghpthhtohepjhhlrgihthhonheskhgvrhhnvghlrd
+    horhhgpdhrtghpthhtohepuggrihdrnhhgohesohhrrggtlhgvrdgtohhmpdhrtghpthht
+    oheptghhuhgtkhdrlhgvvhgvrhesohhrrggtlhgvrdgtohhmpdhrtghpthhtohepohhkoh
+    hrnhhivghvsehrvgguhhgrthdrtghomhdprhgtphhtthhopehtohhmsehtrghlphgvhidr
+    tghomhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlh
+    drohhrgh
+X-ME-Proxy: <xmx:zD80aTrTzL1n64HIlxYJKhTgfC7eS9cqbkBYBemAizq62b2uV6DuiQ>
+    <xmx:zD80aVzdcgYTvu3rYScZfIEMnWDZLHTc6ITiRFr0Lm3yaz5s-p3caw>
+    <xmx:zD80afv1MZS79T5-ogvB1-dACAb30GJ4BfMMIo5rXuQi0jq8-d9pTg>
+    <xmx:zD80aW28E7ylYxVMOFZC3VPzrkWUO04mjpm5UjxubxXRTn8z1jIniQ>
+    <xmx:zD80afBJHYeMurzNrH6b0O7QeZRjoqMox7aJ-tGtML-bKg2jCXcels40>
+Feedback-ID: ifa6e4810:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 483A1780054; Sat,  6 Dec 2025 09:38:04 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.18
-Content-Transfer-Encoding: 8bit
-
-From: Qianchang Zhao <pioooooooooip@gmail.com>
-
-[ Upstream commit 991f8a79db99b14c48d20d2052c82d65b9186cad ]
-
-ksmbd maintains delete-on-close and pending-delete state in
-ksmbd_inode->m_flags. In vfs_cache.c this field is accessed under
-inconsistent locking: some paths read and modify m_flags under
-ci->m_lock while others do so without taking the lock at all.
-
-Examples:
-
- - ksmbd_query_inode_status() and __ksmbd_inode_close() use
-   ci->m_lock when checking or updating m_flags.
- - ksmbd_inode_pending_delete(), ksmbd_set_inode_pending_delete(),
-   ksmbd_clear_inode_pending_delete() and ksmbd_fd_set_delete_on_close()
-   used to read and modify m_flags without ci->m_lock.
-
-This creates a potential data race on m_flags when multiple threads
-open, close and delete the same file concurrently. In the worst case
-delete-on-close and pending-delete bits can be lost or observed in an
-inconsistent state, leading to confusing delete semantics (files that
-stay on disk after delete-on-close, or files that disappear while still
-in use).
-
-Fix it by:
-
- - Making ksmbd_query_inode_status() look at m_flags under ci->m_lock
-   after dropping inode_hash_lock.
- - Adding ci->m_lock protection to all helpers that read or modify
-   m_flags (ksmbd_inode_pending_delete(), ksmbd_set_inode_pending_delete(),
-   ksmbd_clear_inode_pending_delete(), ksmbd_fd_set_delete_on_close()).
- - Keeping the existing ci->m_lock protection in __ksmbd_inode_close(),
-   and moving the actual unlink/xattr removal outside the lock.
-
-This unifies the locking around m_flags and removes the data race while
-preserving the existing delete-on-close behaviour.
-
-Reported-by: Qianchang Zhao <pioooooooooip@gmail.com>
-Reported-by: Zhitong Liu <liuzhitong1993@gmail.com>
-Signed-off-by: Qianchang Zhao <pioooooooooip@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-
-LLM Generated explanations, may be completely bogus:
+X-ThreadId: ARL2P0UxYAB3
+Date: Sat, 06 Dec 2025 09:37:44 -0500
+From: "Chuck Lever" <cel@kernel.org>
+To: "Haoxiang Li" <lihaoxiang@isrc.iscas.ac.cn>,
+ "Chuck Lever" <chuck.lever@oracle.com>, "Jeff Layton" <jlayton@kernel.org>,
+ NeilBrown <neil@brown.name>, "Olga Kornievskaia" <okorniev@redhat.com>,
+ "Dai Ngo" <Dai.Ngo@oracle.com>, "Tom Talpey" <tom@talpey.com>,
+ bfields@fieldses.org
+Cc: linux-nfs@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Message-Id: <0ec5a1be-372b-4a0a-9b64-099b1d8bf710@app.fastmail.com>
+In-Reply-To: <20251206073842.196835-1-lihaoxiang@isrc.iscas.ac.cn>
+References: <20251206073842.196835-1-lihaoxiang@isrc.iscas.ac.cn>
+Subject: Re: [PATCH] nfsd: Drop the client reference in client_states_open()
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
 
 
- fs/smb/server/vfs_cache.c | 88 +++++++++++++++++++++++++++------------
- 1 file changed, 62 insertions(+), 26 deletions(-)
+On Sat, Dec 6, 2025, at 2:38 AM, Haoxiang Li wrote:
+> In error path, call drop_client() to drop the reference
+> obtained by get_nfsdfs_clp().
+>
+> Fixes: a204f25e372d ("nfsd: create get_nfsdfs_clp helper")
 
-diff --git a/fs/smb/server/vfs_cache.c b/fs/smb/server/vfs_cache.c
-index dfed6fce89049..6ef116585af64 100644
---- a/fs/smb/server/vfs_cache.c
-+++ b/fs/smb/server/vfs_cache.c
-@@ -112,40 +112,62 @@ int ksmbd_query_inode_status(struct dentry *dentry)
- 
- 	read_lock(&inode_hash_lock);
- 	ci = __ksmbd_inode_lookup(dentry);
--	if (ci) {
--		ret = KSMBD_INODE_STATUS_OK;
--		if (ci->m_flags & (S_DEL_PENDING | S_DEL_ON_CLS))
--			ret = KSMBD_INODE_STATUS_PENDING_DELETE;
--		atomic_dec(&ci->m_count);
--	}
- 	read_unlock(&inode_hash_lock);
-+	if (!ci)
-+		return ret;
-+
-+	down_read(&ci->m_lock);
-+	if (ci->m_flags & (S_DEL_PENDING | S_DEL_ON_CLS))
-+		ret = KSMBD_INODE_STATUS_PENDING_DELETE;
-+	else
-+		ret = KSMBD_INODE_STATUS_OK;
-+	up_read(&ci->m_lock);
-+
-+	atomic_dec(&ci->m_count);
- 	return ret;
- }
- 
- bool ksmbd_inode_pending_delete(struct ksmbd_file *fp)
- {
--	return (fp->f_ci->m_flags & (S_DEL_PENDING | S_DEL_ON_CLS));
-+	struct ksmbd_inode *ci = fp->f_ci;
-+	int ret;
-+
-+	down_read(&ci->m_lock);
-+	ret = (ci->m_flags & (S_DEL_PENDING | S_DEL_ON_CLS));
-+	up_read(&ci->m_lock);
-+
-+	return ret;
- }
- 
- void ksmbd_set_inode_pending_delete(struct ksmbd_file *fp)
- {
--	fp->f_ci->m_flags |= S_DEL_PENDING;
-+	struct ksmbd_inode *ci = fp->f_ci;
-+
-+	down_write(&ci->m_lock);
-+	ci->m_flags |= S_DEL_PENDING;
-+	up_write(&ci->m_lock);
- }
- 
- void ksmbd_clear_inode_pending_delete(struct ksmbd_file *fp)
- {
--	fp->f_ci->m_flags &= ~S_DEL_PENDING;
-+	struct ksmbd_inode *ci = fp->f_ci;
-+
-+	down_write(&ci->m_lock);
-+	ci->m_flags &= ~S_DEL_PENDING;
-+	up_write(&ci->m_lock);
- }
- 
- void ksmbd_fd_set_delete_on_close(struct ksmbd_file *fp,
- 				  int file_info)
- {
--	if (ksmbd_stream_fd(fp)) {
--		fp->f_ci->m_flags |= S_DEL_ON_CLS_STREAM;
--		return;
--	}
-+	struct ksmbd_inode *ci = fp->f_ci;
- 
--	fp->f_ci->m_flags |= S_DEL_ON_CLS;
-+	down_write(&ci->m_lock);
-+	if (ksmbd_stream_fd(fp))
-+		ci->m_flags |= S_DEL_ON_CLS_STREAM;
-+	else
-+		ci->m_flags |= S_DEL_ON_CLS;
-+	up_write(&ci->m_lock);
- }
- 
- static void ksmbd_inode_hash(struct ksmbd_inode *ci)
-@@ -257,27 +279,41 @@ static void __ksmbd_inode_close(struct ksmbd_file *fp)
- 	struct file *filp;
- 
- 	filp = fp->filp;
--	if (ksmbd_stream_fd(fp) && (ci->m_flags & S_DEL_ON_CLS_STREAM)) {
--		ci->m_flags &= ~S_DEL_ON_CLS_STREAM;
--		err = ksmbd_vfs_remove_xattr(file_mnt_idmap(filp),
--					     &filp->f_path,
--					     fp->stream.name,
--					     true);
--		if (err)
--			pr_err("remove xattr failed : %s\n",
--			       fp->stream.name);
-+
-+	if (ksmbd_stream_fd(fp)) {
-+		bool remove_stream_xattr = false;
-+
-+		down_write(&ci->m_lock);
-+		if (ci->m_flags & S_DEL_ON_CLS_STREAM) {
-+			ci->m_flags &= ~S_DEL_ON_CLS_STREAM;
-+			remove_stream_xattr = true;
-+		}
-+		up_write(&ci->m_lock);
-+
-+		if (remove_stream_xattr) {
-+			err = ksmbd_vfs_remove_xattr(file_mnt_idmap(filp),
-+						     &filp->f_path,
-+						     fp->stream.name,
-+						     true);
-+			if (err)
-+				pr_err("remove xattr failed : %s\n",
-+				       fp->stream.name);
-+		}
- 	}
- 
- 	if (atomic_dec_and_test(&ci->m_count)) {
-+		bool do_unlink = false;
-+
- 		down_write(&ci->m_lock);
- 		if (ci->m_flags & (S_DEL_ON_CLS | S_DEL_PENDING)) {
- 			ci->m_flags &= ~(S_DEL_ON_CLS | S_DEL_PENDING);
--			up_write(&ci->m_lock);
--			ksmbd_vfs_unlink(filp);
--			down_write(&ci->m_lock);
-+			do_unlink = true;
- 		}
- 		up_write(&ci->m_lock);
- 
-+		if (do_unlink)
-+			ksmbd_vfs_unlink(filp);
-+
- 		ksmbd_inode_free(ci);
- 	}
- }
+An argument could be made that 78599c42ae3c ("nfsd4: add file
+to display list of client's opens") is where the reference
+counting was first broken. Would you mind if I updated the
+Fixes: tag when I apply this?
+
+
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+> ---
+>  fs/nfsd/nfs4state.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+> index 8a6960500217..caa0756b6914 100644
+> --- a/fs/nfsd/nfs4state.c
+> +++ b/fs/nfsd/nfs4state.c
+> @@ -3097,8 +3097,10 @@ static int client_states_open(struct inode 
+> *inode, struct file *file)
+>  		return -ENXIO;
+> 
+>  	ret = seq_open(file, &states_seq_ops);
+> -	if (ret)
+> +	if (ret) {
+> +		drop_client(clp);
+>  		return ret;
+> +	}
+>  	s = file->private_data;
+>  	s->private = clp;
+>  	return 0;
+> -- 
+> 2.25.1
+
 -- 
-2.51.0
-
+Chuck Lever
 
