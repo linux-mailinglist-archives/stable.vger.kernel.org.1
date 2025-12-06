@@ -1,141 +1,94 @@
-Return-Path: <stable+bounces-200222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F950CAA453
-	for <lists+stable@lfdr.de>; Sat, 06 Dec 2025 11:47:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AA60CAA60F
+	for <lists+stable@lfdr.de>; Sat, 06 Dec 2025 13:16:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E64D430A5EBB
-	for <lists+stable@lfdr.de>; Sat,  6 Dec 2025 10:46:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9381A30656E6
+	for <lists+stable@lfdr.de>; Sat,  6 Dec 2025 12:16:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F3F8288510;
-	Sat,  6 Dec 2025 10:46:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PXk2bDX7"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A225D28643A;
+	Sat,  6 Dec 2025 12:16:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C598156677
-	for <stable@vger.kernel.org>; Sat,  6 Dec 2025 10:46:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3D317640E;
+	Sat,  6 Dec 2025 12:16:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765018009; cv=none; b=TvqhfCAQ20a+DU4hi9WNd/pfhRrEiw1B1slZBsJ66fKE7+ia4ijGuDaT6i7Mi5WEzmJKk6GFXJhozeGpXcUlU8agi479+EVsC8AEW6slGY5X7l5w2tgaxuR7iMSy4/omJx2E/ZvcUrmd3RudUFJX3T1EsXmI/8s4uj1LVG8hU70=
+	t=1765023373; cv=none; b=MY8Kj3rAHxG64NytLT6wZLYSbWhxDSbYtDq/z8KficLQYNbkCEszStaXYYjhX/f8doZih3b4PNW/Y1VsrVlgKM3IuvO9nmnvwTw4F2UMBGgMm1PWywYMxYbP1kWLyIn1DXDU6U/YLxjOxx5g8MgsXaADqOrkosE+2GPHgZMWieY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765018009; c=relaxed/simple;
-	bh=3Ne55HYvIGzsxE6lBs+J9kvbp/auKRJ4342PVym7TfI=;
-	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NeOHwPhoUVq6KafzYcKEsnC9V1wF4m6SVS6bubDc+CE+DVgmBiL7LODAfkniX1a95Jc4S5r8z5idC3MJzXz8t+luQ8pzCEl2a4niNlmMW2rkGqL0qUrNWozydOzyBc9/bJX6itr1Kn42SQshfAatU45lnX28jnzfCKJI67HKFkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PXk2bDX7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E98E6C116C6
-	for <stable@vger.kernel.org>; Sat,  6 Dec 2025 10:46:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765018008;
-	bh=3Ne55HYvIGzsxE6lBs+J9kvbp/auKRJ4342PVym7TfI=;
-	h=From:In-Reply-To:References:Date:Subject:To:Cc:From;
-	b=PXk2bDX7KdAbJQCo/RoiJHfPdbpC9vrxGKemcap4xb3fWP5yXDUqKJkw/ZsQMGM5k
-	 dVXrnFaR2Y95oDVgcabaEqot4tL2SD+iiU7jNgyrGWKPIxqYJRK4sHqo0WuvWG5+69
-	 VHYcM71S6ZTquS+OZtfulO7D2wmbh0NH0TskKYn27QdeoFDmIs5YWhLhNVYLXM+2Mf
-	 TfKLOrO5m5d/uwRLU3Q17UUQYHIMRTjbwAB89212sxOtc7Sls3XtVwzUXzVUi7YrUx
-	 Zvv0sUP3CiXc2bqW1i0rTW+HMAOLEQrBmBGxJwE0s8wTFzJHOz+0U28NZmDuIgu3LC
-	 tL6vxWH6ya1gA==
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5957f617ff0so2956549e87.2
-        for <stable@vger.kernel.org>; Sat, 06 Dec 2025 02:46:48 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVA/hcXNG7u+H/VfmXi5rWeyI11Fa8kj7ZvHBxZhve9nOTmyfieotKXan6isAqGFDo3ZmYjnF0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yydg3dqTc5RQF4gSLoZfA4MqXf95Ip8XilQEyG8cSDIGntLO2lr
-	TFH/wOBJPiF0NzcBWwoIN0h3KN3axvl0/wt1vPMX82uZYEY/sGQD21vzBoKmYDysjwQEPIMe12G
-	SM6CqqCl1ig+LWxX5UtU4Q50aQdN0xghtMGRGMi9otA==
-X-Google-Smtp-Source: AGHT+IHjoTCsoXdOpEYFwbC11jycFi+lPXHBD3lo6btqHsUrnQCOleubWzoKMCLteiJ+hJuRMdyLLJxIfO2MOTTbpPY=
-X-Received: by 2002:a05:6512:a96:b0:595:7e9c:ce00 with SMTP id
- 2adb3069b0e04-5987e8be416mr630010e87.25.1765018007594; Sat, 06 Dec 2025
- 02:46:47 -0800 (PST)
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Sat, 6 Dec 2025 02:46:46 -0800
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Sat, 6 Dec 2025 02:46:46 -0800
-From: Bartosz Golaszewski <brgl@kernel.org>
-In-Reply-To: <20251205230724.2374682-1-safinaskar@gmail.com>
+	s=arc-20240116; t=1765023373; c=relaxed/simple;
+	bh=LkDCvvL6U9KtHZxahqydoL/wCBOC+QSRFAS/dQdxtzs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Qynbe5sWfrAjy/pcGW082tHMBDbHxsVYsDKQcQHCdR6YJ5r9cIY1mX0iA0QlrQx2XBJgBonYpIIbcM2hTZmWKKPOoR6trNIr78tFT1ZIFiscLOIbXIpE2wS0sZmYbqviOvuR2Mzx7dYG61gebGSybnDApPHWMzUAcP3Dg2Ecp/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn; spf=pass smtp.mailfrom=isrc.iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isrc.iscas.ac.cn
+Received: from localhost.localdomain (unknown [36.112.3.17])
+	by APP-01 (Coremail) with SMTP id qwCowAB3CMh5HjRpA+NGAw--.6628S2;
+	Sat, 06 Dec 2025 20:15:55 +0800 (CST)
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+To: cem@kernel.org,
+	darrick.wong@oracle.com
+Cc: linux-xfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] xfs: Fix a memory leak bug in xfs_buf_item_init()
+Date: Sat,  6 Dec 2025 20:15:52 +0800
+Message-Id: <20251206121552.212455-1-lihaoxiang@isrc.iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251205230724.2374682-1-safinaskar@gmail.com>
-Date: Sat, 6 Dec 2025 02:46:46 -0800
-X-Gmail-Original-Message-ID: <CAMRc=MfN_gak+b2hmaZQKno1ehCKPDrH0UvGcXDsdye-MjDVow@mail.gmail.com>
-X-Gm-Features: AQt7F2p5gAad-Rcjwp1NtHEEbD32fqDeg8j4vtF6lmcmVkYXUW6ISuG07Qo4dTw
-Message-ID: <CAMRc=MfN_gak+b2hmaZQKno1ehCKPDrH0UvGcXDsdye-MjDVow@mail.gmail.com>
-Subject: Re: [PATCH] gpiolib: acpi: Add quirk for Dell Precision 7780
-To: Askar Safin <safinaskar@gmail.com>
-Cc: Mika Westerberg <westeri@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@kernel.org>, linux-gpio@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	regressions@lists.linux.dev, Dell.Client.Kernel@dell.com, 
-	Mario Limonciello <superm1@kernel.org>, patches@lists.linux.dev, 
-	Askar Safin <safinaskar@zohomail.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowAB3CMh5HjRpA+NGAw--.6628S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7JF13ur4fuw18Ar4kXrWDArb_yoW3KFg_Ka
+	1xtF1xCayUAry7Gw47AF1vvFWjk3y3Ars3CrZrCa4Fqry0q3Z2yr929rs8ZrnrWrnIqry8
+	Ar97WrWaqry7CjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUb48FF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6r1j6r18M7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Jr0_
+	Gr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr
+	1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r12
+	6r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
+	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y
+	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
+	WUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
+	IxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUjuHq7UUUU
+	U==
+X-CM-SenderInfo: 5olkt0x0ld0ww6lv2u4olvutnvoduhdfq/1tbiCQ4IE2kzkKPt5gAAs+
 
-Hi!
+xfs_buf_item_get_format() may allocate memory for bip->bli_formats,
+free the memory in the error path.
 
-Thanks for the patch.
+Fixes: c3d5f0c2fb85 ("xfs: complain if anyone tries to create a too-large buffer log item")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+---
+ fs/xfs/xfs_buf_item.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-On Fri, 5 Dec 2025 23:32:42 +0100, Askar Safin <safinaskar@gmail.com> said:
-> Dell Precision 7780 often wakes up on its own from suspend. Sometimes
-> wake up happens immediately (i. e. within 7 seconds), sometimes it happens
-> after, say, 30 minutes.
->
-> Fixes: 1796f808e4bb ("HID: i2c-hid: acpi: Stop setting wakeup_capable")
-> Reported-by: Askar Safin <safinaskar@zohomail.com>
-> Link: https://lore.kernel.org/linux-i2c/197ae95ffd8.dc819e60457077.7692120488609091556@zohomail.com/
-> Cc: <stable@vger.kernel.org>
-> Tested-by: Askar Safin <safinaskar@gmail.com>
-> Signed-off-by: Askar Safin <safinaskar@gmail.com>
+diff --git a/fs/xfs/xfs_buf_item.c b/fs/xfs/xfs_buf_item.c
+index 8d85b5eee444..f4c5be67826e 100644
+--- a/fs/xfs/xfs_buf_item.c
++++ b/fs/xfs/xfs_buf_item.c
+@@ -896,6 +896,7 @@ xfs_buf_item_init(
+ 		map_size = DIV_ROUND_UP(chunks, NBWORD);
+ 
+ 		if (map_size > XFS_BLF_DATAMAP_SIZE) {
++			xfs_buf_item_free_format(bip);
+ 			kmem_cache_free(xfs_buf_item_cache, bip);
+ 			xfs_err(mp,
+ 	"buffer item dirty bitmap (%u uints) too small to reflect %u bytes!",
+-- 
+2.25.1
 
-Please don't add Tested-by, Reported-by, etc. if you're the author of the.
-Tested-by should be added by someone else who tested your patch, it doesn't
-make much sense otherwise because I sure do expect you test your changes if
-you have access to the right hardware. :)
-
-> ---
->  drivers/gpio/gpiolib-acpi-quirks.c | 22 ++++++++++++++++++++++
->  1 file changed, 22 insertions(+)
->
-> diff --git a/drivers/gpio/gpiolib-acpi-quirks.c b/drivers/gpio/gpiolib-acpi-quirks.c
-> index 7b95d1b03361..a0116f004975 100644
-> --- a/drivers/gpio/gpiolib-acpi-quirks.c
-> +++ b/drivers/gpio/gpiolib-acpi-quirks.c
-> @@ -370,6 +370,28 @@ static const struct dmi_system_id gpiolib_acpi_quirks[] __initconst = {
->  			.ignore_wake = "ASCP1A00:00@8",
->  		},
->  	},
-> +	{
-> +		/*
-> +		 * Spurious wakeups, likely from touchpad controller
-> +		 * Dell Precision 7780
-> +		 * Found in BIOS 1.24.1
-> +		 *
-> +		 * Found in touchpad firmware, installed by Dell Touchpad Firmware Update Utility version 1160.4196.9, A01
-> +		 * ( Dell-Touchpad-Firmware-Update-Utility_VYGNN_WIN64_1160.4196.9_A00.EXE ),
-> +		 * released on 11 Jul 2024
-> +		 *
-> +		 * https://lore.kernel.org/linux-i2c/197ae95ffd8.dc819e60457077.7692120488609091556@zohomail.com/
-> +		 */
-> +		.matches = {
-> +			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-> +			DMI_MATCH(DMI_PRODUCT_FAMILY, "Precision"),
-> +			DMI_MATCH(DMI_PRODUCT_NAME, "Precision 7780"),
-> +			DMI_MATCH(DMI_BOARD_NAME, "0C6JVW"),
-> +		},
-> +		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
-> +			.ignore_wake = "VEN_0488:00@355",
-> +		},
-> +	},
->  	{} /* Terminating entry */
->  };
->
-
-Looks good to me, but I'll give GPIO ACPI maintainers time to chime in.
-
-Bart
 
