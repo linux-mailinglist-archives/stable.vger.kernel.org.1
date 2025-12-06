@@ -1,126 +1,139 @@
-Return-Path: <stable+bounces-200254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9864CCAA986
-	for <lists+stable@lfdr.de>; Sat, 06 Dec 2025 16:55:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44870CAA9A1
+	for <lists+stable@lfdr.de>; Sat, 06 Dec 2025 17:02:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E7CFF30E1AD5
-	for <lists+stable@lfdr.de>; Sat,  6 Dec 2025 15:55:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 840B7309E2BF
+	for <lists+stable@lfdr.de>; Sat,  6 Dec 2025 16:02:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45B78381C4;
-	Sat,  6 Dec 2025 15:55:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6D328D8F1;
+	Sat,  6 Dec 2025 16:02:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UYP6xl/x"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mC1WvCt4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 570AB2F5307
-	for <stable@vger.kernel.org>; Sat,  6 Dec 2025 15:55:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D23BA1E1A3B;
+	Sat,  6 Dec 2025 16:02:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765036513; cv=none; b=AqYNpvcx6xAoYi94u2rVEVADJV+IJE8JsgNoCyrOKxpYA6eXm+vAjA/iverM8dFqSiG9+vzofL/b7+CqHe/9RtJ+MZ2ohFDVrMQMx7zomVUbQWh/n3KEOHT42JGCJLu2h0tq0gzEk7ls+RZw4Ho7EJ9d/FBMCb57A5qbG3Y1Pcg=
+	t=1765036954; cv=none; b=KgII1jQOSwF46T25bSKyDebyXweMp1cqv7XBjUsdK5Z5fdjWa3mdPeNQQuAqhTUnWFDpR/Gr+21yVRECYbA9im0HPqL3pLLIn2fuoT0kvBQi6qChhnWEQ/cqLQ4OEasBjWfEAZ7bQACHU0TegfNomwadJhgj9VQpNlK23WHgg/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765036513; c=relaxed/simple;
-	bh=qHpFPKknypA0ah2igyAH5y08BG2rl6SyKPYcke6Zjys=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=IH05iQsByx4R0ggj7UD2j17JL86a6XOVSqaPRGM3cKMKqQrljTa6wTBTJ6zzQY4wh/rEXNrPYI025rnKebpg/eb9cZt93A95r8AT837ucnHdGpuBpWNSMYD2qEZe7Gb2VKys1P3ciZKsKy/fJLCdWh2jH1AmqdWGuRgMMBSTu6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UYP6xl/x; arc=none smtp.client-ip=209.85.221.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-55b0d4b560aso2830830e0c.0
-        for <stable@vger.kernel.org>; Sat, 06 Dec 2025 07:55:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765036510; x=1765641310; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qHpFPKknypA0ah2igyAH5y08BG2rl6SyKPYcke6Zjys=;
-        b=UYP6xl/xu4yOwYCehn628FZG/CpT/DYIxxatVScaj8m7DV4SVdRQ/sFDmlsIPtVLq9
-         rzXEaWPvXRZBbWu3NTcfJ+ZQFj1MS+F9dzUL6gtOWhEk0G2Oj3bi5UfZg9TIosGyzmoq
-         hOwmuAkc3Y6QM5uKUf+/f8br1fDh9qaSjMp1AwePmoTgnlEk+QRFCdXtSf9Njq3+XwLC
-         bw1OEPX+wfm+s3T1eLxhpoLcw1WTkMrsYZMOiAWsByGHbyRQLwGc5dq9Azo4zJXvuxtb
-         GRuo1jDIF97WI7xnzuSfMxcZl9bAIk1OeDD8b/VYZYrRn6i9cQV4T5b1m7k5lH+9ahAt
-         pVEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765036510; x=1765641310;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qHpFPKknypA0ah2igyAH5y08BG2rl6SyKPYcke6Zjys=;
-        b=Qp6sXzkxFPqH460VNGIw0+KzI12DXPPp85BpR582n81/X5B7hia2D8C+GDrLUv4Htb
-         6/fPoKYACDWX6PDqr33QLbqDebVdrqt8e7Pef7oRFOeQzuSq+WWZfuQLdc550+FxeaHk
-         8NHs6rB7xJ2/ZZOzK6pyOQ/dEQy+sB5ky4vUyk8MHHdsB2q/hS7Id9oLo1U7Hy2DiYI5
-         7Y4Z+ulUSJpnB2nBdbW5umq3Fp+M/TCuMQhOHL9SBvuhrIukh/fKQgco4/1QRenontoA
-         ZzLR0/BoL1etVj9nzw2iQrYjIpAprCnPADPcCODAV9NzpldO7jNke67ZvHGavhKPwgnJ
-         reOg==
-X-Forwarded-Encrypted: i=1; AJvYcCUbmRIPrsAgBWVB6IRGViZpZrAmAEFoEAS/QM7ZTbLfakye5rcV/TGI9Qv9zfSYl3/oG8fVYCQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywl9T2uuCSCE/vC8W5CxWTmDijkG8wWAp8O6y4w7zPSD0y2ptcC
-	jVirmkTgKIjECLOuLt4qdhBwW5zsP/n51Y51gy2rDBusxPuBDTu74s5Q
-X-Gm-Gg: ASbGncuomP6hpUhCEHBTPQAVXdSKhim/dSnE/e5G7AZRfYPeRLg44PzVqbVBySk0Mba
-	ZbYZsAg8zxBNIc/NDA4Yrd0L9hXRoqhzdxIEEm8PySX+ychnfxYqJm2cYLZamUYjHVBb3ibtP8Y
-	MZNlAnF2bimqc7tdDfpn+bLFHilUUapq4bxiU7vSqVwmm+Y3m/sWEUPtL1fAu56nNWVjJcsmjHy
-	ctG2j0xmEBxWwPKdb/qcW9DcH4CHBEfT7sLuZ77ccdFERv/IWAsjX6H7vAD6bxijowAQvNtD41g
-	ksa4ix/mxzJ52k2yVxlIzC+Mi7ggJPL2Qy6jh6WrtjCSzvUcm/c8PHwFYss5NCKtZTVmXSt0S4q
-	UOp67BF/b2U9anww6yKwD4eDsHmRCJE1LMPqbaosvMR5ithb4ncOqu0k+JA1wBevJRl+jD7nD5f
-	8ugU4=
-X-Google-Smtp-Source: AGHT+IEvRv+kygrTplD6p7uaH0hNC2+/LeFm8cJChsnRJhKxJnVtaAvlqNfs/qdzkRiP1g8V6Doe0A==
-X-Received: by 2002:a05:6122:2194:b0:559:14e2:9fc7 with SMTP id 71dfb90a1353d-55e8443b290mr987345e0c.0.1765036509721;
-        Sat, 06 Dec 2025 07:55:09 -0800 (PST)
-Received: from localhost ([2800:bf0:82:3d2:875c:6c76:e06b:3095])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-55e6c939f42sm3717810e0c.11.2025.12.06.07.55.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 06 Dec 2025 07:55:09 -0800 (PST)
+	s=arc-20240116; t=1765036954; c=relaxed/simple;
+	bh=94q+qc1TplBd7hHy3zyI7SGEZwWr3jlomXhia+UB3uM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jSuKSSFcg15KGkizjUBxzMPmMGAj/P3nwYc/b8/TPSxmSr2wSGDaH1hveKDR3qsFYGz/ebsU2DjQp175X3y4bIxAPwy8+5WKP29umm82LW1pj71ntH5yTrruBQPVlojtwO3B7QdcnNPErg5cQ8siYFkEOwQk1R+PMtxSh3yUff0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mC1WvCt4; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765036953; x=1796572953;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=94q+qc1TplBd7hHy3zyI7SGEZwWr3jlomXhia+UB3uM=;
+  b=mC1WvCt4A+fs45rtfYYqxiINnOSsL+TMSJrkrh+pjF4uQRF7iqx7wCZ5
+   pNtDpn01fUBkzGLNNpfFN7VNDUT8tucROtKw2A3Ry1sdXWJ7dbrp+Ghuy
+   Vq8+2wvbxQQyjcuFofyo8uEfB48p27OMLEpj69sy9A9R1ABd0Z5bnhjcr
+   zFS1pSC4BnEaxKd1bHT/FSogUV4c1tFBem62lpKxbbd+vvSZNZmnT84pW
+   p/4FHBiAQiXA026AAjU+FGazJQzzDKNkoZJheAtMGNEvihxeKAhfT7bgZ
+   b3dmIw86A+TegHIbt/ZCyv6/KiApCi+3/2KBcIS5QtTUmgAos8JLwR8jX
+   Q==;
+X-CSE-ConnectionGUID: UhEEOAvZQHuhyeObLwCgUA==
+X-CSE-MsgGUID: odjSeQ/1SB+UhiL1nNQzkw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11634"; a="54591193"
+X-IronPort-AV: E=Sophos;i="6.20,255,1758610800"; 
+   d="scan'208";a="54591193"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2025 08:02:32 -0800
+X-CSE-ConnectionGUID: T3T0pLcrTICNHj2wfo7sMA==
+X-CSE-MsgGUID: ZMiITB9HSMGuGIBz///18A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,255,1758610800"; 
+   d="scan'208";a="199995427"
+Received: from dhhellew-desk2.ger.corp.intel.com (HELO localhost) ([10.245.244.204])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2025 08:02:29 -0800
+Date: Sat, 6 Dec 2025 18:02:25 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Askar Safin <safinaskar@gmail.com>
+Cc: Mika Westerberg <westeri@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@kernel.org>, linux-gpio@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	regressions@lists.linux.dev, Dell.Client.Kernel@dell.com,
+	Mario Limonciello <superm1@kernel.org>, patches@lists.linux.dev,
+	Askar Safin <safinaskar@zohomail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] gpiolib: acpi: Add quirk for Dell Precision 7780
+Message-ID: <aTRTkYMuA279jXD3@smile.fi.intel.com>
+References: <20251205230724.2374682-1-safinaskar@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 06 Dec 2025 10:55:07 -0500
-Message-Id: <DER981UI3N4S.1TN7U3YSJ4LXG@gmail.com>
-Cc: =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, "Hans de
- Goede" <hansg@kernel.org>, <platform-driver-x86@vger.kernel.org>,
- <Dell.Client.Kernel@dell.com>, "LKML" <linux-kernel@vger.kernel.org>,
- <stable@vger.kernel.org>
-Subject: Re: [PATCH 0/3] platform/x86: alienware-wmi-wmax: Add support for
- some newly released models
-From: "Kurt Borja" <kuurtb@gmail.com>
-To: "Konstantin Ryabitsev" <konstantin@linuxfoundation.org>, "Kurt Borja"
- <kuurtb@gmail.com>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20251205-area-51-v1-0-d2cb13530851@gmail.com>
- <49c9bab4-520f-42ca-5041-8a008b55f188@linux.intel.com>
- <DEQIPUKHDQYB.2LLGMK25N40VN@gmail.com>
- <20251205-masked-classy-ferret-9bb445@lemur>
-In-Reply-To: <20251205-masked-classy-ferret-9bb445@lemur>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251205230724.2374682-1-safinaskar@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Fri Dec 5, 2025 at 3:57 PM -05, Konstantin Ryabitsev wrote:
-> On Fri, Dec 05, 2025 at 02:08:52PM -0500, Kurt Borja wrote:
->> >> Thanks for all your latest reviews!
->> >>=20
->> >> Signed-off-by: Kurt Borja <kuurtb@gmail.com>
->> >
->> > You don't need to signoff the coverletter. :-) (Hopefully it won't=20
->> > confuse any tools but I guess they should handle duplicate tags sensib=
-ly=20
->> > so likely no problem in this case).
->>=20
->> Actually, unless I messed up something, this is b4's default settings
->> :-). I'll take a look.
->
-> This is intentional, because some subsystems use the cover letter as the
-> content of the merge commit.
->
-> -K
+On Fri, Dec 05, 2025 at 10:32:42PM +0000, Askar Safin wrote:
+> Dell Precision 7780 often wakes up on its own from suspend. Sometimes
+> wake up happens immediately (i. e. within 7 seconds), sometimes it happens
+> after, say, 30 minutes.
 
-Makes sense. Thanks for clarifying!
+Thanks for the patch, it looks quite good. See my comments below.
 
+...
 
---=20
- ~ Kurt
+> Reported-by: Askar Safin <safinaskar@zohomail.com>
+> Tested-by: Askar Safin <safinaskar@gmail.com>
+
+I believe it's the same person in both cases as the author of the patch.
+As Bart said, just drop these tags, it makes little sense to have them.
+
+...
+
+> +		/*
+> +		 * Spurious wakeups, likely from touchpad controller
+> +		 * Dell Precision 7780
+> +		 * Found in BIOS 1.24.1
+
+Not sure if we also want BIOS version, probably it's more important than Board
+Name, but okay, we may not know without trying if any other users need the same
+quirk or will suffer from it (if BIOS version is different).
+
+> +		 * Found in touchpad firmware, installed by Dell Touchpad Firmware Update Utility version 1160.4196.9, A01
+> +		 * ( Dell-Touchpad-Firmware-Update-Utility_VYGNN_WIN64_1160.4196.9_A00.EXE ),
+> +		 * released on 11 Jul 2024
+> +		 *
+> +		 * https://lore.kernel.org/linux-i2c/197ae95ffd8.dc819e60457077.7692120488609091556@zohomail.com/
+> +		 */
+> +		.matches = {
+> +			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+> +			DMI_MATCH(DMI_PRODUCT_FAMILY, "Precision"),
+> +			DMI_MATCH(DMI_PRODUCT_NAME, "Precision 7780"),
+> +			DMI_MATCH(DMI_BOARD_NAME, "0C6JVW"),
+> +		},
+> +		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
+> +			.ignore_wake = "VEN_0488:00@355",
+> +		},
+> +	},
+
+With tags removed, feel free to add my
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+
+Note, it's your responsibility to carry the given tags as long as there were
+no significant changes in the patch. That said, I expect to see a v2
+without your 2 tags and with mine that I gave above. No code changes for now.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
 
