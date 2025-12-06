@@ -1,148 +1,141 @@
-Return-Path: <stable+bounces-200221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A9B7CAA2FF
-	for <lists+stable@lfdr.de>; Sat, 06 Dec 2025 09:46:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F950CAA453
+	for <lists+stable@lfdr.de>; Sat, 06 Dec 2025 11:47:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EB6C530651B3
-	for <lists+stable@lfdr.de>; Sat,  6 Dec 2025 08:46:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E64D430A5EBB
+	for <lists+stable@lfdr.de>; Sat,  6 Dec 2025 10:46:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55C842D949C;
-	Sat,  6 Dec 2025 08:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F3F8288510;
+	Sat,  6 Dec 2025 10:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ncOiKQCx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PXk2bDX7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 132C31C5D57
-	for <stable@vger.kernel.org>; Sat,  6 Dec 2025 08:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C598156677
+	for <stable@vger.kernel.org>; Sat,  6 Dec 2025 10:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765010772; cv=none; b=NoFuNMqgtkXyZoeSwltuGWr4obWCCwcqePyJANdQGhGGgKmPKvWwiyKnAUZaM1aiiUFH6eynnbGpGfA0ms4Bk56HzKI2t4PgqlUYjcFSdMDL2h8ED/pjWbxiEvEZ25YkIn+SzciGlP9rf4+6udqS5MYPZSf8LnOtGNo4o8lzP8k=
+	t=1765018009; cv=none; b=TvqhfCAQ20a+DU4hi9WNd/pfhRrEiw1B1slZBsJ66fKE7+ia4ijGuDaT6i7Mi5WEzmJKk6GFXJhozeGpXcUlU8agi479+EVsC8AEW6slGY5X7l5w2tgaxuR7iMSy4/omJx2E/ZvcUrmd3RudUFJX3T1EsXmI/8s4uj1LVG8hU70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765010772; c=relaxed/simple;
-	bh=l23eQBxowLDUkwKLSW3NdG/SYFfNTBJlr47OR+Xy0Mw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VWfAjHwSUolDcHx0k1lyJSbXM7nD81lZ9MUN3/5bwX0z4SQFX/0qwj/9uK1ONHL86H1uT65Yv+Mm4A/Xdg4SJRg1NrPr1nyMAApiho/krD3bHVrXj9ode86YaXfSLXljD7FLxzAqNGOL9tdzydo5zA2hbuPrGMS59sQocd032yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ncOiKQCx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B83C116D0
-	for <stable@vger.kernel.org>; Sat,  6 Dec 2025 08:46:11 +0000 (UTC)
+	s=arc-20240116; t=1765018009; c=relaxed/simple;
+	bh=3Ne55HYvIGzsxE6lBs+J9kvbp/auKRJ4342PVym7TfI=;
+	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NeOHwPhoUVq6KafzYcKEsnC9V1wF4m6SVS6bubDc+CE+DVgmBiL7LODAfkniX1a95Jc4S5r8z5idC3MJzXz8t+luQ8pzCEl2a4niNlmMW2rkGqL0qUrNWozydOzyBc9/bJX6itr1Kn42SQshfAatU45lnX28jnzfCKJI67HKFkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PXk2bDX7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E98E6C116C6
+	for <stable@vger.kernel.org>; Sat,  6 Dec 2025 10:46:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765010771;
-	bh=l23eQBxowLDUkwKLSW3NdG/SYFfNTBJlr47OR+Xy0Mw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ncOiKQCxmDj7RpevkyIEsjv+Bt8caYUfp9Lcx1K/gROI8LpfpsGQA4gwlt62PzMV6
-	 Z8EXzc8B0Oegga4Bpa0BZI3fsoaMEYB0kBIXommQn8wfykvwNFiFm19Hy+zZrV2u+q
-	 8xJ8xSQhGh8luP5HaYG1r4XNxf7nfFZegDKfDLCLKmkbzij2fhlcZfE1c5/2v2BXkv
-	 NWl9+Q2nU/QWilShZTiVdPzTSZTG5j0r0PZokjSO6Hhebkrqing7lzSimM5uQYTH1q
-	 djnVfLXukjOL9TPJJKUfowu1JQUvtigkfyxb0Jl4xeckiO7sekCM2lvIzv9kyBA8p0
-	 dRe2shg3yYFWA==
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-597de27b241so1517413e87.2
-        for <stable@vger.kernel.org>; Sat, 06 Dec 2025 00:46:11 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWchG81wyKcYq20r20XkXUAC4IRmBhvWfNwi+8DOl0x5+IOWP/T+BYdMC65eLl9WMNMNToAYpw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxR1H7L5lDc+Kb8HN6Pw5LG3ptEm8qyUcacgZ+e+MP4F7Dch6wT
-	OvleX2qqUGXgFAS36ryfFJqlC1HlF/Ef/0jaK0QPI0JHFcM+dyxVsAU3vF/E9uSUFrKc1u6zvm/
-	5pyKhybMK9J0nZHqZs20nXikrESTrLrvtmaujFj+9Ug==
-X-Google-Smtp-Source: AGHT+IGucR2/tx3mm4e04rNJ6GQ+QKyOmuN/v4P5oTZGEahPIPDthPlIHk8CD9vXn21vuftEEXo7+53EV8RUxK11y6Q=
-X-Received: by 2002:a05:6512:2341:b0:594:4b3c:bbf with SMTP id
- 2adb3069b0e04-5986cdd4c06mr515656e87.0.1765010770144; Sat, 06 Dec 2025
- 00:46:10 -0800 (PST)
+	s=k20201202; t=1765018008;
+	bh=3Ne55HYvIGzsxE6lBs+J9kvbp/auKRJ4342PVym7TfI=;
+	h=From:In-Reply-To:References:Date:Subject:To:Cc:From;
+	b=PXk2bDX7KdAbJQCo/RoiJHfPdbpC9vrxGKemcap4xb3fWP5yXDUqKJkw/ZsQMGM5k
+	 dVXrnFaR2Y95oDVgcabaEqot4tL2SD+iiU7jNgyrGWKPIxqYJRK4sHqo0WuvWG5+69
+	 VHYcM71S6ZTquS+OZtfulO7D2wmbh0NH0TskKYn27QdeoFDmIs5YWhLhNVYLXM+2Mf
+	 TfKLOrO5m5d/uwRLU3Q17UUQYHIMRTjbwAB89212sxOtc7Sls3XtVwzUXzVUi7YrUx
+	 Zvv0sUP3CiXc2bqW1i0rTW+HMAOLEQrBmBGxJwE0s8wTFzJHOz+0U28NZmDuIgu3LC
+	 tL6vxWH6ya1gA==
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5957f617ff0so2956549e87.2
+        for <stable@vger.kernel.org>; Sat, 06 Dec 2025 02:46:48 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVA/hcXNG7u+H/VfmXi5rWeyI11Fa8kj7ZvHBxZhve9nOTmyfieotKXan6isAqGFDo3ZmYjnF0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yydg3dqTc5RQF4gSLoZfA4MqXf95Ip8XilQEyG8cSDIGntLO2lr
+	TFH/wOBJPiF0NzcBWwoIN0h3KN3axvl0/wt1vPMX82uZYEY/sGQD21vzBoKmYDysjwQEPIMe12G
+	SM6CqqCl1ig+LWxX5UtU4Q50aQdN0xghtMGRGMi9otA==
+X-Google-Smtp-Source: AGHT+IHjoTCsoXdOpEYFwbC11jycFi+lPXHBD3lo6btqHsUrnQCOleubWzoKMCLteiJ+hJuRMdyLLJxIfO2MOTTbpPY=
+X-Received: by 2002:a05:6512:a96:b0:595:7e9c:ce00 with SMTP id
+ 2adb3069b0e04-5987e8be416mr630010e87.25.1765018007594; Sat, 06 Dec 2025
+ 02:46:47 -0800 (PST)
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Sat, 6 Dec 2025 02:46:46 -0800
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Sat, 6 Dec 2025 02:46:46 -0800
+From: Bartosz Golaszewski <brgl@kernel.org>
+In-Reply-To: <20251205230724.2374682-1-safinaskar@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251204094412.17116-1-bartosz.golaszewski@oss.qualcomm.com>
- <75004da5-1ff6-4391-9839-2d134709eea0@kernel.org> <CAMRc=McEX6y_9JF=ji_TQ0aSMaQYe4kjq8Tj1S=vOcbawyXw3w@mail.gmail.com>
- <0fc5c657-4edf-474f-9df7-3c3473b5f458@kernel.org>
-In-Reply-To: <0fc5c657-4edf-474f-9df7-3c3473b5f458@kernel.org>
-From: Bartosz Golaszewski <brgl@kernel.org>
-Date: Sat, 6 Dec 2025 09:45:58 +0100
-X-Gmail-Original-Message-ID: <CAMRc=MfNP4=PB5DwFJijTffW2uBa+k6=2F0=VT87uD7LPfusjg@mail.gmail.com>
-X-Gm-Features: AWmQ_blQ-RhJj7QWYCX5wa5888qO9adziKaeA1O67PzPVpl12psuN-92m3OAetE
-Message-ID: <CAMRc=MfNP4=PB5DwFJijTffW2uBa+k6=2F0=VT87uD7LPfusjg@mail.gmail.com>
-Subject: Re: [PATCH] reset: gpio: suppress bind attributes in sysfs
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, 
-	Philipp Zabel <p.zabel@pengutronix.de>, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
+References: <20251205230724.2374682-1-safinaskar@gmail.com>
+Date: Sat, 6 Dec 2025 02:46:46 -0800
+X-Gmail-Original-Message-ID: <CAMRc=MfN_gak+b2hmaZQKno1ehCKPDrH0UvGcXDsdye-MjDVow@mail.gmail.com>
+X-Gm-Features: AQt7F2p5gAad-Rcjwp1NtHEEbD32fqDeg8j4vtF6lmcmVkYXUW6ISuG07Qo4dTw
+Message-ID: <CAMRc=MfN_gak+b2hmaZQKno1ehCKPDrH0UvGcXDsdye-MjDVow@mail.gmail.com>
+Subject: Re: [PATCH] gpiolib: acpi: Add quirk for Dell Precision 7780
+To: Askar Safin <safinaskar@gmail.com>
+Cc: Mika Westerberg <westeri@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@kernel.org>, linux-gpio@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	regressions@lists.linux.dev, Dell.Client.Kernel@dell.com, 
+	Mario Limonciello <superm1@kernel.org>, patches@lists.linux.dev, 
+	Askar Safin <safinaskar@zohomail.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Dec 4, 2025 at 12:53=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.or=
-g> wrote:
+Hi!
+
+Thanks for the patch.
+
+On Fri, 5 Dec 2025 23:32:42 +0100, Askar Safin <safinaskar@gmail.com> said:
+> Dell Precision 7780 often wakes up on its own from suspend. Sometimes
+> wake up happens immediately (i. e. within 7 seconds), sometimes it happens
+> after, say, 30 minutes.
 >
-> On 04/12/2025 12:22, Bartosz Golaszewski wrote:
-> > On Thu, Dec 4, 2025 at 12:14=E2=80=AFPM Krzysztof Kozlowski <krzk@kerne=
-l.org> wrote:
-> >>
-> >> On 04/12/2025 10:44, Bartosz Golaszewski wrote:
-> >>> This is a special device that's created dynamically and is supposed t=
-o
-> >>> stay in memory forever. We also currently don't have a devlink betwee=
-n
-> >>
-> >> Not forever. If every consumer is unloaded, this can be unloaded too, =
-no?
-> >>
-> >>> it and the actual reset consumer. Suppress sysfs bind attributes so t=
-hat
-> >>
-> >> With that reasoning every reset consumer should have suppress binds.
-> >> Devlink should be created by reset controller framework so it is not
-> >> this driver's fault.
-> >>
-> >
-> > Here's my reasoning: I will add a devlink but Phillipp requested some
-> > changes so I still need to resend it. It will be a bigger change than
-> > this one-liner. The reset-gpio device was also converted to auxiliary
-> > bus for v6.19 and I will also convert reset core to using fwnodes for
-> > v6.20 so we'll significantly diverge in stable branches, while this
-> > issue is present ever since the reset-gpio driver exists. It's not the
-> > driver's fault but it's easier to fix it here and it very much is a
-> > special case - it's a software based device rammed in between two
-> > firmware-described devices.
->
-> That's not the answer to my question. You can unbind every other reset
-> controller. Why is this special although maybe you mentioned below?
->
+> Fixes: 1796f808e4bb ("HID: i2c-hid: acpi: Stop setting wakeup_capable")
+> Reported-by: Askar Safin <safinaskar@zohomail.com>
+> Link: https://lore.kernel.org/linux-i2c/197ae95ffd8.dc819e60457077.7692120488609091556@zohomail.com/
+> Cc: <stable@vger.kernel.org>
+> Tested-by: Askar Safin <safinaskar@gmail.com>
+> Signed-off-by: Askar Safin <safinaskar@gmail.com>
 
-Well, for one: when you unbind the device, it's never removed from the
-reset-gpio lookup list, the next consumer will never be able to get
-its reset control again. I recall seeing either a comment, an email or
-a commit message saying that this device stays in memory forever so my
-point stands: there's no reason to allow unbinding it. The kernel will
-never do it, nor should user-space.
+Please don't add Tested-by, Reported-by, etc. if you're the author of the.
+Tested-by should be added by someone else who tested your patch, it doesn't
+make much sense otherwise because I sure do expect you test your changes if
+you have access to the right hardware. :)
 
-> > I don't care if we keep the tag, it's just that this commit introduced
-> > a way for user-space to crash the system by simply unbinding
-> > reset-gpio and then its active consumers.
-> >
-> > And the difference here is that there is no devlink between reset-gpio
-> > and its consumers. We need to first agree how to add it.
+> ---
+>  drivers/gpio/gpiolib-acpi-quirks.c | 22 ++++++++++++++++++++++
+>  1 file changed, 22 insertions(+)
 >
-> So you mean that between every other reset consumer and reset provider
-> there is a devlink? And here there is no devlink?
+> diff --git a/drivers/gpio/gpiolib-acpi-quirks.c b/drivers/gpio/gpiolib-acpi-quirks.c
+> index 7b95d1b03361..a0116f004975 100644
+> --- a/drivers/gpio/gpiolib-acpi-quirks.c
+> +++ b/drivers/gpio/gpiolib-acpi-quirks.c
+> @@ -370,6 +370,28 @@ static const struct dmi_system_id gpiolib_acpi_quirks[] __initconst = {
+>  			.ignore_wake = "ASCP1A00:00@8",
+>  		},
+>  	},
+> +	{
+> +		/*
+> +		 * Spurious wakeups, likely from touchpad controller
+> +		 * Dell Precision 7780
+> +		 * Found in BIOS 1.24.1
+> +		 *
+> +		 * Found in touchpad firmware, installed by Dell Touchpad Firmware Update Utility version 1160.4196.9, A01
+> +		 * ( Dell-Touchpad-Firmware-Update-Utility_VYGNN_WIN64_1160.4196.9_A00.EXE ),
+> +		 * released on 11 Jul 2024
+> +		 *
+> +		 * https://lore.kernel.org/linux-i2c/197ae95ffd8.dc819e60457077.7692120488609091556@zohomail.com/
+> +		 */
+> +		.matches = {
+> +			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+> +			DMI_MATCH(DMI_PRODUCT_FAMILY, "Precision"),
+> +			DMI_MATCH(DMI_PRODUCT_NAME, "Precision 7780"),
+> +			DMI_MATCH(DMI_BOARD_NAME, "0C6JVW"),
+> +		},
+> +		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
+> +			.ignore_wake = "VEN_0488:00@355",
+> +		},
+> +	},
+>  	{} /* Terminating entry */
+>  };
 >
 
-Effectively: yes, but only because reset is OF-only (as of commit
-8bffbfdc01df ("reset: remove legacy reset lookup code")) so device
-links are created from device-tree. If you look at any device using
-reset-gpio in sysfs, you'll see a supplier:gpiochipX entry but no
-entry for the reset. So the answer is: yes, there's no devlink between
-the reset-gpio provider and its consumers unless we create them
-explicitly, which we should eventually do but I need to rethink the
-patch because we should possibly also remove the devlink between the
-gpiochip and the reset consumer as well.
+Looks good to me, but I'll give GPIO ACPI maintainers time to chime in.
 
-Of course, here we could mention a different story: reset seems like
-one of these subsystems suffering from object lifetime issues: if you
-remove the supplier and the consumer tries to use the reset, you'll
-crash because of the dangling rstc->rcdev pointer. That should be
-addressed as well eventually.
-
-Bartosz
+Bart
 
