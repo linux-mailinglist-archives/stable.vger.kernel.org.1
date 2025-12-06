@@ -1,142 +1,103 @@
-Return-Path: <stable+bounces-200251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE086CAA8A3
-	for <lists+stable@lfdr.de>; Sat, 06 Dec 2025 15:38:12 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1152DCAA8B5
+	for <lists+stable@lfdr.de>; Sat, 06 Dec 2025 15:55:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CBC973083305
-	for <lists+stable@lfdr.de>; Sat,  6 Dec 2025 14:38:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5CE5030119D4
+	for <lists+stable@lfdr.de>; Sat,  6 Dec 2025 14:55:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B2F52FF66C;
-	Sat,  6 Dec 2025 14:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D94426C384;
+	Sat,  6 Dec 2025 14:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SmKE1cIz"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="AuFF85v/"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996172FE06F
-	for <stable@vger.kernel.org>; Sat,  6 Dec 2025 14:38:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0BC822A7E4;
+	Sat,  6 Dec 2025 14:55:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765031886; cv=none; b=CkloYlB7xNnuSVQA5gKIPDs6MwfV1LvEgj0Zs5Zr4EAI3MD9zmJVtVw9nyBoAy9x9/u3uEDONED7At69s64wfUSX7bX3U/D4ET+yWEIv6TmQzL0nSATU6o7vr3KRucfMSlsZ0uhWDmcV1gvA104xq2jJ1a2SlMZDOGchr7LZf7w=
+	t=1765032948; cv=none; b=ZXYbZ/RztKXjRrsPP7UiPJwfRdQeVIx41v9piq51bEnnem180juBbUC6vz/+58Zp4CinbkSEGsUzicYFZcK8vq0ej2nTZKva3cs3sqK+nHoUyvsXr6ALRL8hXXNdtBpktqh1BRTulIs/ZBIMvLx73PlQDl50tHoEmDITaosS02g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765031886; c=relaxed/simple;
-	bh=r1kaDwMLovXRYSkG9s6VRxQxezI7Zw0GWjAl7S5cIQQ=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=qp3HMoKQejuNWRDcv3gcBa7MKYDFjyLgsmezVo9uhNMQiQ+Ud2a0GD40Gan5pbw5tEGpm6tyiZ60tw2hcwl84tAN/aT0S4EXgF/s9ZUj4wzM1UG4TcsaTGW+OfBak2MUA5dZcBoCDOBMmNRhpmCJdb+8ZXLSXUKGtGBLR3F7x9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SmKE1cIz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6409BC116B1;
-	Sat,  6 Dec 2025 14:38:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765031885;
-	bh=r1kaDwMLovXRYSkG9s6VRxQxezI7Zw0GWjAl7S5cIQQ=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=SmKE1cIzOiXizNctUkAfiFqzJZostVOvbsWDRr5/PXOOdMl4DJqK215RIfrJ/rRDY
-	 bMTq1Uq+PU8IMGRz4fr6NHxIUB0Xck6TTx+kfzrQCxDF/kmuEvxeWr7kQdWS8Cnkyd
-	 6j0f3z36aanr3tk75iu5n647MQg4A0mmmWfPIgngzxaQmMLDkuJL1Hes194POPcRUj
-	 4yemntXJN4A501tBZW791HdpWP4GAHk77EBP+e1bvZsXjjyYrPhiApKo2Ubalpha35
-	 EVExoNB/LUueg3kF5so5jPbQ2+q4Z1nsjiDxD87Hvuq8f17eSBz8neEsNwOAkL7fy/
-	 nLIya1qI/uGLg==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 6DC18F40076;
-	Sat,  6 Dec 2025 09:38:04 -0500 (EST)
-Received: from phl-imap-15 ([10.202.2.104])
-  by phl-compute-10.internal (MEProxy); Sat, 06 Dec 2025 09:38:04 -0500
-X-ME-Sender: <xms:zD80abwByXW_LZESxY_s8cKvvAYwy8FQeZLTU5xgvhZ_VwxwtQ9pyA>
-    <xme:zD80aeF4Azvnj3KoskdERSVVzQeiR3BwPl15XrVeQIkIwE8JjAuuIrTjN8g_4f-cF
-    wQUJ5RmIEl6caYjUKIg_UX9bOX3O6cHsvqiaQ5MlMHNJ6LYvMq3oWc>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduuddulecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdevhhhutghk
-    ucfnvghvvghrfdcuoegtvghlsehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvghrnh
-    ephfffkefffedtgfehieevkeduuefhvdejvdefvdeuuddvgeelkeegtefgudfhfeelnecu
-    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheptghhuhgtkh
-    hlvghvvghrodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieefgeelleel
-    heelqdefvdelkeeggedvfedqtggvlheppehkvghrnhgvlhdrohhrghesfhgrshhtmhgrih
-    hlrdgtohhmpdhnsggprhgtphhtthhopeduuddpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtohepnhgvihhlsegsrhhofihnrdhnrghmvgdprhgtphhtthhopegsfhhivghlughsse
-    hfihgvlhgushgvshdrohhrghdprhgtphhtthhopehlihhhrghogihirghnghesihhsrhgt
-    rdhishgtrghsrdgrtgdrtghnpdhrtghpthhtohepjhhlrgihthhonheskhgvrhhnvghlrd
-    horhhgpdhrtghpthhtohepuggrihdrnhhgohesohhrrggtlhgvrdgtohhmpdhrtghpthht
-    oheptghhuhgtkhdrlhgvvhgvrhesohhrrggtlhgvrdgtohhmpdhrtghpthhtohepohhkoh
-    hrnhhivghvsehrvgguhhgrthdrtghomhdprhgtphhtthhopehtohhmsehtrghlphgvhidr
-    tghomhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlh
-    drohhrgh
-X-ME-Proxy: <xmx:zD80aTrTzL1n64HIlxYJKhTgfC7eS9cqbkBYBemAizq62b2uV6DuiQ>
-    <xmx:zD80aVzdcgYTvu3rYScZfIEMnWDZLHTc6ITiRFr0Lm3yaz5s-p3caw>
-    <xmx:zD80afv1MZS79T5-ogvB1-dACAb30GJ4BfMMIo5rXuQi0jq8-d9pTg>
-    <xmx:zD80aW28E7ylYxVMOFZC3VPzrkWUO04mjpm5UjxubxXRTn8z1jIniQ>
-    <xmx:zD80afBJHYeMurzNrH6b0O7QeZRjoqMox7aJ-tGtML-bKg2jCXcels40>
-Feedback-ID: ifa6e4810:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 483A1780054; Sat,  6 Dec 2025 09:38:04 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1765032948; c=relaxed/simple;
+	bh=lnrI9FwDsoG6g+BjjUPB5AIspT3lty4yaQxZYRaEsBA=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=M/s+3bA6jHY/laBhGfLa/MGdS86DTczCvJI2AXrjrJM8pm2xbVeYEhv8QXTWXpVzT7xkRAM0zDcnT1ntVpJcVFGc82KjoNYI+o5XHQNcCfJy6zpmEWoZhaApo5jpTV7dpwfVGGNBkEgPVlBX6/06uLzjbgWSf08Xbw75lD8lyVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=AuFF85v/; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=0kAXJZEewlerPHknWg4+2tgbiuI3s3sxNcCervQa4AE=;
+	t=1765032946; x=1766242546; b=AuFF85v/yGTlkZPqM8vlZchHVVit2YwOfT/dFvqm8kavH6e
+	8LHfUsuUa6sc2D0YXZGVnymn70s44ESzuqIO4i8nbryEMzNyhdxJHC3J44UlXujN7SHSTm7mvVMf7
+	ro39jO7kw05UoWYs3EHQZ9QgnwE7jy2bYlYj9M76PnkkbQM8V2dSWiva0fCIKi2nyHqtPV83vFLCR
+	s9jmZaGu4bmXYt44m5GgTgysPlP/NnL7/pCHVwAfidlMujw1z9B4s1cgKZxu8o9rT8JHT9bgNnwn3
+	/7Jt5q3yaz3b2wDLx1XfXztGDy2xT6TogZ4vDw/VKjP6yT3q1D2+l21oG4Bor9Fg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1vRthC-0000000B0V3-1s7p;
+	Sat, 06 Dec 2025 15:55:38 +0100
+Message-ID: <e883efe1f9e4bccb144400b82a35110c79451b37.camel@sipsolutions.net>
+Subject: Re: [PATCH AUTOSEL 6.18-6.12] wifi: cfg80211: stop radar detection
+ in cfg80211_leave()
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Sasha Levin <sashal@kernel.org>, patches@lists.linux.dev, 
+	stable@vger.kernel.org
+Cc: linux-wireless@vger.kernel.org
+Date: Sat, 06 Dec 2025 15:55:37 +0100
+In-Reply-To: <20251206140252.645973-26-sashal@kernel.org>
+References: <20251206140252.645973-1-sashal@kernel.org>
+	 <20251206140252.645973-26-sashal@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: ARL2P0UxYAB3
-Date: Sat, 06 Dec 2025 09:37:44 -0500
-From: "Chuck Lever" <cel@kernel.org>
-To: "Haoxiang Li" <lihaoxiang@isrc.iscas.ac.cn>,
- "Chuck Lever" <chuck.lever@oracle.com>, "Jeff Layton" <jlayton@kernel.org>,
- NeilBrown <neil@brown.name>, "Olga Kornievskaia" <okorniev@redhat.com>,
- "Dai Ngo" <Dai.Ngo@oracle.com>, "Tom Talpey" <tom@talpey.com>,
- bfields@fieldses.org
-Cc: linux-nfs@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Message-Id: <0ec5a1be-372b-4a0a-9b64-099b1d8bf710@app.fastmail.com>
-In-Reply-To: <20251206073842.196835-1-lihaoxiang@isrc.iscas.ac.cn>
-References: <20251206073842.196835-1-lihaoxiang@isrc.iscas.ac.cn>
-Subject: Re: [PATCH] nfsd: Drop the client reference in client_states_open()
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 
+On Sat, 2025-12-06 at 09:02 -0500, Sasha Levin wrote:
+>=20
+> ### Conclusion
+>=20
+> This commit fixes a legitimate bug but does **not** meet stable kernel
+> criteria:
+> - The maintainer did not request stable backporting
+> - The affected code only exists in kernel 6.12+, making it only relevant
+>   to the most recent stable branch if any
+> - The bug severity (warnings, not crashes/corruption/security) does not
+>   warrant the backporting effort
+> - It cannot be cleanly applied to most stable trees due to structural
+>   code differences
+>=20
+> **NO**
 
+:)
 
-On Sat, Dec 6, 2025, at 2:38 AM, Haoxiang Li wrote:
-> In error path, call drop_client() to drop the reference
-> obtained by get_nfsdfs_clp().
->
-> Fixes: a204f25e372d ("nfsd: create get_nfsdfs_clp helper")
+To be fair, it's kind of a corner case that happened mostly during tests
+as far as I know, when two mesh peers getting radar detection happen to
+pick two incompatible channels and then give up, causing wpa_s to bring
+down the interface.
 
-An argument could be made that 78599c42ae3c ("nfsd4: add file
-to display list of client's opens") is where the reference
-counting was first broken. Would you mind if I updated the
-Fixes: tag when I apply this?
+The thing that makes this interesting is that they both detect radar at
+*precisely* the same time because they're actually simulated on a single
+Linux system, and our regulatory code tells each and every radio if any
+of them detects radar.
 
+Anyway, either way is reasonable, it's probably a much older issue than
+6.12 (then we just shuffled things around due to MLO), but the issue
+would've been around before that, and nobody really seems to have
+noticed outside this specific test.
 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-> ---
->  fs/nfsd/nfs4state.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-> index 8a6960500217..caa0756b6914 100644
-> --- a/fs/nfsd/nfs4state.c
-> +++ b/fs/nfsd/nfs4state.c
-> @@ -3097,8 +3097,10 @@ static int client_states_open(struct inode 
-> *inode, struct file *file)
->  		return -ENXIO;
-> 
->  	ret = seq_open(file, &states_seq_ops);
-> -	if (ret)
-> +	if (ret) {
-> +		drop_client(clp);
->  		return ret;
-> +	}
->  	s = file->private_data;
->  	s->private = clp;
->  	return 0;
-> -- 
-> 2.25.1
-
--- 
-Chuck Lever
+johannes
 
