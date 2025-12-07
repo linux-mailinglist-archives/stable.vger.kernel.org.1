@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-200279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25EADCAAFCB
-	for <lists+stable@lfdr.de>; Sun, 07 Dec 2025 01:37:48 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7410ACAAFD4
+	for <lists+stable@lfdr.de>; Sun, 07 Dec 2025 01:38:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 231F130090A0
-	for <lists+stable@lfdr.de>; Sun,  7 Dec 2025 00:37:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id ADCF630093A7
+	for <lists+stable@lfdr.de>; Sun,  7 Dec 2025 00:37:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C8221DF246;
-	Sun,  7 Dec 2025 00:37:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A3331DF246;
+	Sun,  7 Dec 2025 00:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rIo3SETA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T7ngEJ45"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C071D5ABF;
-	Sun,  7 Dec 2025 00:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 264AF1D130E
+	for <stable@vger.kernel.org>; Sun,  7 Dec 2025 00:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765067866; cv=none; b=VQ1g+b9opPlhwmj6MCuizbpy9/3arn+8BH+vnm5Xkx2hsPLalCUMsyE10rsZVLR7OlD3kaF+VZBEDnpZY983ZALf54k/v3DC+eTJMV2jIah4152WRjzDX7V2swjXjGPzOzO4gNsgslqONLumZn1Bewad0nVezA/oA1NtA+Vd9yQ=
+	t=1765067878; cv=none; b=kLT7fBolMgwTpzVVHtmMNZnnOomS75DTtgXgOZ3dBuFdvBcYR8onVPLFlZeDV0ln9n1qCaR7I/wdH8u9mF8EdlmJndZ2XeQylP5i2OTAWZi9OklZdYHtaYyAmASYnK7v8mvXIEo1CBJBZ72/fDi/ORI7cVJ77+lDn458/1OJQyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765067866; c=relaxed/simple;
-	bh=r7gYtfssY56Xn6buD1OxmqHdEFBHTAJfL6NFw/5gMEg=;
+	s=arc-20240116; t=1765067878; c=relaxed/simple;
+	bh=lkfmwv7bjDBKFQgW2WUnqJdUlq2yXVeM3ri/uSUpAUQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y9Ua4PvO5/O7zQVo4QhWe/D89oXvoACBdidFmXphsDQn79u5y7A84k+8Ynkr66WSx1zor3J62TFeKdyGpP+I5Vs2mu5Fydd2vA63Z6ncIrnZ5tcL7/sxbbVkO1bPvLVN7EGJMdWo7/2VPXHX/vqXxaPg4l0TyMAAUUzcAhv/byk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rIo3SETA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F1FDC113D0;
-	Sun,  7 Dec 2025 00:37:45 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=WZrcmy83OAEMGVGnA/ck31QxTxKI8jYApCDMFXyboacVZn0os7DNr3zjeyciB1bX+sw93tHL++Q+sRdQdE6fxbrUtvC/XbvmaYwUFvnLzaKD2yQJ+iQ30MbFcTqFh+TolUew/B/3M81WkTHFb57O2kR/ut+nWQVrDIjmm8VhcvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T7ngEJ45; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B906AC4CEF5;
+	Sun,  7 Dec 2025 00:37:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765067865;
-	bh=r7gYtfssY56Xn6buD1OxmqHdEFBHTAJfL6NFw/5gMEg=;
+	s=k20201202; t=1765067878;
+	bh=lkfmwv7bjDBKFQgW2WUnqJdUlq2yXVeM3ri/uSUpAUQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rIo3SETARYzfwXu5dNPM4XOV6sSwLWQ5w0ti20oGy46PKgblQ7fRUiZIKY9ltEHB/
-	 lu8MAUGe55rQNPuyZiuxKzuWFY1QAOoZqePIOgFbdK3+AAUVKWLNE79nDEe1tVUMIh
-	 NY/ggPxIMpodzFH5PB0dIXOt7NpN9FagATIWK82+bNfO4L/u2snxtMLg9Gfly+aqnw
-	 UdkCKo9LqTOcmM4kxx8C1L3wRVY9TinJOVBfMHs3aWq8S/yAkM0ixBCL6qGh0cYoo9
-	 X+2gvqn2QsHPCXx2dfcDt6JVNCHjxM9PbAHAaLUg0/8yXY/PoP1OolUz7sMNrrPnQH
-	 o4835jGpN74hA==
-Date: Sat, 6 Dec 2025 19:37:43 -0500
+	b=T7ngEJ45t30yyPTbPxk2lUJmQGOrI6owZl4y0Xeqm/7ZlfWM0bdD0nLkCGGwiuHTg
+	 efaKqghaw4fUM0ZKbaDmjPW01+MBBVu/gLk6BYM/1555QVgN+wJIpAvRGa6Obi3UjA
+	 M290DtJYb/kDrY5NfMeNV2L2Go6zPDXWVa5Ze8PMQAPCx/W/qf7xEH0yJlp5cqDltx
+	 cqFViX4/n7XRdOg8MyvZhqNf5ZmE2LvHImj/krEq3fEqDJWlkmg3/KGu92zKC6KsR7
+	 mwBjRC83WoGU4wRLxnxb+npZvD32wPEoeeYVLQUAP/poMJCSCnD72P2khEezolOquT
+	 a5yr5+rDDs4Sw==
+Date: Sat, 6 Dec 2025 19:37:55 -0500
 From: Sasha Levin <sashal@kernel.org>
 To: Nathan Chancellor <nathan@kernel.org>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
-	Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>,
-	linux-leds@vger.kernel.org, Stefan Kalscheuer <stefan@stklcode.de>
-Subject: Re: Apply ccc35ff2fd2911986b716a87fe65e03fac2312c9 to 5.15, 6.1, and
- 6.6
-Message-ID: <aTTMV34MPzGJc6TK@laps>
-References: <20251204000025.GA468348@ax162>
+	intel-gfx@lists.freedesktop.org
+Subject: Re: Apply fc7bf4c0d65a342b29fe38c332db3fe900b481b9 to 5.15
+Message-ID: <aTTMYz_n-9ck-tSo@laps>
+References: <20251204001352.GB468348@ax162>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,30 +55,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20251204000025.GA468348@ax162>
+In-Reply-To: <20251204001352.GB468348@ax162>
 
-On Wed, Dec 03, 2025 at 05:00:25PM -0700, Nathan Chancellor wrote:
+On Wed, Dec 03, 2025 at 05:13:52PM -0700, Nathan Chancellor wrote:
 >Hi stable folks,
 >
->Please apply commit ccc35ff2fd29 ("leds: spi-byte: Use
->devm_led_classdev_register_ext()") to 5.15, 6.1, and 6.6. It
->inadvertently addresses an instance of -Wuninitialized visible with
->clang-21 and newer:
+>Please apply commit fc7bf4c0d65a ("drm/i915/selftests: Fix inconsistent
+>IS_ERR and PTR_ERR") to 5.15, where it resolves a couple of instances of
+>-Wuninitialized with clang-21 or newer that were introduced by commit
+>cdb35d1ed6d2 ("drm/i915/gem: Migrate to system at dma-buf attach time
+>(v7)") in 5.15.
 >
->  drivers/leds/leds-spi-byte.c:99:26: error: variable 'child' is uninitialized when used here [-Werror,-Wuninitialized]
->     99 |         of_property_read_string(child, "label", &name);
->        |                                 ^~~~~
->  drivers/leds/leds-spi-byte.c:83:27: note: initialize the variable 'child' to silence this warning
->     83 |         struct device_node *child;
->        |                                  ^
->        |                                   = NULL
+>  In file included from drivers/gpu/drm/i915/gem/i915_gem_dmabuf.c:329:
+>  drivers/gpu/drm/i915/gem/selftests/i915_gem_dmabuf.c:105:18: error: variable 'dmabuf' is uninitialized when used here [-Werror,-Wuninitialized]
+>    105 |                        PTR_ERR(dmabuf));
+>        |                                ^~~~~~
+>  drivers/gpu/drm/i915/gem/selftests/i915_gem_dmabuf.c:94:24: note: initialize the variable 'dmabuf' to silence this warning
+>     94 |         struct dma_buf *dmabuf;
+>        |                               ^
+>        |                                = NULL
+>  drivers/gpu/drm/i915/gem/selftests/i915_gem_dmabuf.c:161:18: error: variable 'dmabuf' is uninitialized when used here [-Werror,-Wuninitialized]
+>    161 |                        PTR_ERR(dmabuf));
+>        |                                ^~~~~~
+>  drivers/gpu/drm/i915/gem/selftests/i915_gem_dmabuf.c:149:24: note: initialize the variable 'dmabuf' to silence this warning
+>    149 |         struct dma_buf *dmabuf;
+>        |                               ^
+>        |                                = NULL
 >
->It applies cleanly to 6.6. I have attached a backport for 6.1 and 5.15,
->which can be generated locally with:
->
->  $ git format-patch -1 --stdout ccc35ff2fd2911986b716a87fe65e03fac2312c9 | sed 's;strscpy;strlcpy;' | patch -p1
+>It applies and builds cleanly for me. If there are any issues, please
+>let me know.
 
-Queued up. I just picked up the dependency instead of changing the patch.
+Queued up, thanks.
 
 -- 
 Thanks,
