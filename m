@@ -1,111 +1,94 @@
-Return-Path: <stable+bounces-200283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3FB8CAB1C2
-	for <lists+stable@lfdr.de>; Sun, 07 Dec 2025 06:23:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4CECCAB259
+	for <lists+stable@lfdr.de>; Sun, 07 Dec 2025 08:12:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EB4F0309664E
-	for <lists+stable@lfdr.de>; Sun,  7 Dec 2025 05:23:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2AE1630656CB
+	for <lists+stable@lfdr.de>; Sun,  7 Dec 2025 07:12:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B42102E041D;
-	Sun,  7 Dec 2025 05:23:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4D78DF49;
+	Sun,  7 Dec 2025 07:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OwT5MXT9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ex4NWSYE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BFA12E03F0;
-	Sun,  7 Dec 2025 05:23:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C4022DFA5
+	for <stable@vger.kernel.org>; Sun,  7 Dec 2025 07:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765085029; cv=none; b=LZdFuDym9Uid0jev27bvlrM0qkpiUmXUxOt22cVGG4SBifWnXFHE5PF/bUOpuODyPk27TXCHW8X+HJcBlZF/ss4SqTtsX+v1BflmKSC/z8zSMLnsX8WWTrIxBWy1Kn3PdMr/ecCa5DFXtB7ZtwCH1nBXar69cy2R5kJHlImZXyM=
+	t=1765091546; cv=none; b=RIhoi/cMTj7bdNcxcZrfBfA4Ac4D3vvxSHGns7Y7zIj5SvuGsyYOegzpn79Bku36lVFz2M3eKQ1s73nba2nR/WQmiYC5CDysSUel9W1RtrTXQbgKKasXjpxghznbbzfAE3FujSf3sNxGqa1Q8j+c5IIGscpF5D0ZrOiv8poC+GU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765085029; c=relaxed/simple;
-	bh=h0u3ccSp7RgQuIj96S6xEAYHUUQSKllyQ70WaTCES2Q=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=aY5zazXSPkSNAu4sv6Ix9jeW3ERqyFV5plzt07R9j3UnaPnFfnbClNnIcTqw/wp51z2pYHaAqbhijuTSqEjvonEd6RwGVGkr8y2VA7X5I3Cwflu+0SgYPWfUZvqS+qcdT9KaxQkdkQtXrzwK4KAinux1a0IJn4qLzz6ReiWeBrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OwT5MXT9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DF99C4CEFB;
-	Sun,  7 Dec 2025 05:23:48 +0000 (UTC)
+	s=arc-20240116; t=1765091546; c=relaxed/simple;
+	bh=K6FeuAm/mO+v9ibQ+qp/z1st3bgFBU83eGp0V676s0Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TiQ3h9G0BXfKetHzRsISrlbt8sOINE62JG55qNq/AfNhAQtw0ntauQzbQp21yB8iJp/qpVVa52LYzhxDhmbTWZcU22TgguEOv35aR5E1e8Ph4FYNfev7P3yH3+vvH+38rORxsNSTB+Iy+pl8X1Y3fIhopCiRo+v1uOg7zZQ7GXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ex4NWSYE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C09CC16AAE
+	for <stable@vger.kernel.org>; Sun,  7 Dec 2025 07:12:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765085028;
-	bh=h0u3ccSp7RgQuIj96S6xEAYHUUQSKllyQ70WaTCES2Q=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=OwT5MXT9IdqUL6qZ10/vYecnl/BmGJ53qjmSYzAt6l1Pu5Sd3vx4pcF0GfW2342dH
-	 qWQIG2lTgFEtiIgsuFlvteys5VtavNejm7GZcWAW2XKB4iyx7D5C7R2M39bE0mHOtv
-	 4exV8OOtoff5XtW9DmncneX68IYEj3AumdaFI5yY8iLqdAdB5J50YlfA/qg4DVgibz
-	 SC7C7gTWDC5qWnJ5QaQ1a8tgbuzxawjaLydmdRncfEEq+5qPeuBJ2fQ20PFwlSwhod
-	 OcPxygC2BLVH3pZuBvQXs0WcHAshxxU6OTtjYHm3FuQdsD2p8PnP6i2b7EZvHb5LaR
-	 /XsZVt3Tj33Xw==
-Message-ID: <96a0e826081846120d98e3ca5ec5c001b50ed989.camel@kernel.org>
-Subject: Re: [PATCH] nfs/localio: fix regression due to out-of-order
- __put_cred
-From: Trond Myklebust <trondmy@kernel.org>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, Mike Snitzer <snitzer@kernel.org>, Zorro Lang
-	 <zlang@redhat.com>, linux-nfs@vger.kernel.org
-Date: Sun, 07 Dec 2025 00:23:47 -0500
-In-Reply-To: <2025120753-cycling-shifty-4967@gregkh>
-References: 
-	<30a4385509b4daa55512058c02685314adda85d7.1765066510.git.trond.myklebust@hammerspace.com>
-	 <2025120753-cycling-shifty-4967@gregkh>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
+	s=k20201202; t=1765091546;
+	bh=K6FeuAm/mO+v9ibQ+qp/z1st3bgFBU83eGp0V676s0Y=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ex4NWSYEnHhMsq6r8TidPeVwAPE0XKrkaYSrJGtp/tZZJDKgcEPzghYkczDR3BR/x
+	 KnqXa7f1mAHiGZocfq7YQAGhzkjYTWi8wxh7O0Rq+jTaVhqSvdKNoHy6+UFa209OAs
+	 7PKMhIYCF7uEw8Zh6gpbpmp6qFbvBIm7USXBpFWhH5ipMJjGisTKasLWZRyC3VAETJ
+	 pBIzeMzVP2+62Kseo6/LICseqcAuuGUvs16QglOY++zqSjgWkPOGqgj/bWIm90duSP
+	 gD5kys07tqIy9qNoCXLiZe/2ajE2kGx22RFH463FxwpCCAwPrpr2bMPXMvlapshjaI
+	 ZHUSGNtpmScSA==
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5942bac322dso3507146e87.0
+        for <stable@vger.kernel.org>; Sat, 06 Dec 2025 23:12:26 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWRQOMDzG4XXQgiTA6r8ahSSyHW967H9KDcxo/ZEvJGWkGCmqV1yYUH9EXzxmkF6MjEW7sUCZ0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwksNMCAv8yHU0WNcMPxV68/uxBaHkMEltVQzEw/QcB+UOcg5Xw
+	TAUNKgZVoudp+BGsKGpkdekGV2sQxK8HODfopHatTxp7Qk0KjCkqU4aiFYsseN1UmSfBsxH8y7u
+	sJIHGYbgayYC0zylgZNpLucxfp9EJ9XCc7FbC19glTA==
+X-Google-Smtp-Source: AGHT+IHUttufN04TX+XB2v0nOmX+t22Dxwuaj+k3gvEz9+koC25RuVv5nOSo4819NIVrwVOSN2atPSMlelCVlQoOaAY=
+X-Received: by 2002:a05:6512:3e0a:b0:595:9152:b90e with SMTP id
+ 2adb3069b0e04-598853ddf93mr1339182e87.44.1765091544827; Sat, 06 Dec 2025
+ 23:12:24 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20251206180414.3183334-1-safinaskar@gmail.com>
+ <20251206180414.3183334-2-safinaskar@gmail.com> <aTSlgoK0PcE937l1@smile.fi.intel.com>
+In-Reply-To: <aTSlgoK0PcE937l1@smile.fi.intel.com>
+From: Bartosz Golaszewski <brgl@kernel.org>
+Date: Sun, 7 Dec 2025 08:12:13 +0100
+X-Gmail-Original-Message-ID: <CAMRc=Mca8oi7JpEiNajP+CbHhBhSb9fS4NqFz-aojcX1qmEzcA@mail.gmail.com>
+X-Gm-Features: AQt7F2qf48qgC5abnj9AO2dJG-JdHRcmEsnizopJoLSVxgbYQ23fiVmZ1lHXbrI
+Message-ID: <CAMRc=Mca8oi7JpEiNajP+CbHhBhSb9fS4NqFz-aojcX1qmEzcA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] gpiolib: acpi: Add quirk for Dell Precision 7780
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Askar Safin <safinaskar@gmail.com>, Mika Westerberg <westeri@kernel.org>, 
+	Linus Walleij <linus.walleij@linaro.org>, linux-gpio@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	regressions@lists.linux.dev, Dell.Client.Kernel@dell.com, 
+	Mario Limonciello <superm1@kernel.org>, patches@lists.linux.dev, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, 2025-12-07 at 09:42 +0900, Greg KH wrote:
-> On Sat, Dec 06, 2025 at 07:24:14PM -0500, Trond Myklebust wrote:
-> > From: Mike Snitzer <snitzer@kernel.org>
-> >=20
-> > commit 3af870aedbff10bfed220e280b57a405e972229f upstream.
-> >=20
-> > Commit f2060bdc21d7 ("nfs/localio: add refcounting for each iocb IO
-> > associated with NFS pgio header") inadvertantly reintroduced the
-> > same
-> > potential for __put_cred() triggering BUG_ON(cred =3D=3D current->cred)
-> > that commit 992203a1fba5 ("nfs/localio: restore creds before
-> > releasing
-> > pageio data") fixed.
-> >=20
-> > Fix this by saving and restoring the cred around each
-> > {read,write}_iter
-> > call within the respective for loop of nfs_local_call_{read,write}.
-> >=20
-> > Reported-by: Zorro Lang <zlang@redhat.com>
-> > Fixes: f2060bdc21d7 ("nfs/localio: add refcounting for each iocb IO
-> > associated with NFS pgio header")
-> > Cc: <stable@vger.kernel.org> # 6.18.x
-> > Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-> > Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-> > ---
->=20
-> What kernel is this for, just 6.18.y?=C2=A0 And why was the changelog
-> rewritten/formatted from the original?
->=20
+On Sat, Dec 6, 2025 at 10:52=E2=80=AFPM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> On Sat, Dec 06, 2025 at 06:04:13PM +0000, Askar Safin wrote:
+> > Dell Precision 7780 often wakes up on its own from suspend. Sometimes
+> > wake up happens immediately (i. e. within 7 seconds), sometimes it happ=
+ens
+> > after, say, 30 minutes.
+>
+> Bart, up to you, if you want to take this. But I can do with a usual rout=
+e via
+> my tree.
+>
 
-The patch is just for 6.18.y. It is actually the original patch that
-was submitted in the last week of the 6.18-rc series. That patch didn't
-make it in before 6.18 was released due to the Thanksgiving holiday,
-etc.
+I already have a bunch of fixes queued for next week so I guess it'll
+be less hassle and the fastest option if I take it.
 
-When commits 94afb627dfc2 and bff3c841f7bd were merged early in the
-6.19 merge window, a port was required in order to match up the fix to
-the new "scoped_with_creds()" paradigm. While that port could be
-backported as is, it would require pulling in the full framework for
-"scoped_with_creds()", hence the preference for just submitting the
-original patch.
-
-
---=20
-Trond Myklebust
-Linux NFS client maintainer, Hammerspace
-trondmy@kernel.org, trond.myklebust@hammerspace.com
+Bartosz
 
