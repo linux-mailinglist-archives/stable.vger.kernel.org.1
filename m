@@ -1,111 +1,109 @@
-Return-Path: <stable+bounces-200289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3521ECAB47A
-	for <lists+stable@lfdr.de>; Sun, 07 Dec 2025 13:39:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E90C3CAB595
+	for <lists+stable@lfdr.de>; Sun, 07 Dec 2025 14:46:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 91EB23046EE8
-	for <lists+stable@lfdr.de>; Sun,  7 Dec 2025 12:39:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BBDC63015850
+	for <lists+stable@lfdr.de>; Sun,  7 Dec 2025 13:46:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AB3A2EC0B4;
-	Sun,  7 Dec 2025 12:39:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C297F21D3E8;
+	Sun,  7 Dec 2025 13:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j0MPFla5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NJvmZs3e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DFD619049B;
-	Sun,  7 Dec 2025 12:39:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 411E52877DE;
+	Sun,  7 Dec 2025 13:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765111161; cv=none; b=gNvcBvtfHlvo+9gQVig9hsE41zl23zJWiYu7AllD2BDA2PAdX2YWCpyjO402oHQ3rQ92GtnLrK/XB3v48pPyR+JwdfhfJHTbCeixVsphsAFzvlp3Hz0hx2h815EVy7U278TAYYFn1wtjP3NcWOhbEqZ4MR0DF4P5gmsGmXE1S6Y=
+	t=1765115169; cv=none; b=nAXYI1l1Pq+fxavpBP24xolT6Zao6yWas0ZTkdihm4+dsKVNOo0hw7/lV1oJcEgZrZS/U4J+qZd2RrVEJLgqtSv8Ad9+zlWJ70hwGX1kzxM1p6DTbOTKH/nIRXAczFU9CtA8LOBM2m3iWo2xnCH+dncdYkPHPTKTKLzhu6IRkGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765111161; c=relaxed/simple;
-	bh=EDc/Ngb1HhThAXOD7k5e16o4L5UdHvj6G/GaIzURyHE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RnyXOrtnRVPEHGbVOpa+2pXfaoz3PJSrHDa5Z3kzfVHnePPuAlnjYwXm3VygFTcgdGz+FII2T293LQJwNcaXk1XLSWLQ+jzz1IA4CodxX7uu1zkuMrppTfI8QcZZnAF2bwmQTxmlk94+i+afuVmb+AXw5oXqpRqDEpoecA6FDuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j0MPFla5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3E14C4CEFB;
-	Sun,  7 Dec 2025 12:39:14 +0000 (UTC)
+	s=arc-20240116; t=1765115169; c=relaxed/simple;
+	bh=r/00iAWlY7SLMd+fAHNLHF5/Y87k58WdddwUGmEqjmM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FJZrmnKVnvU0S3Y+FTUx5FGD3d1wIRkZ1ZVA6UynFqstTRGNUEZA/+yLKQTtiK0A3yjefIJeub9ZQSoUKVFsS/p3QfgrHlh6zwKj2+isgCokPCqmaE0fPgXKFeqUvQhFh2IW3rB6EXpOgUdXMMex7sjYGoqABfZqxpOHe81KqNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NJvmZs3e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E24D3C4CEFB;
+	Sun,  7 Dec 2025 13:46:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765111160;
-	bh=EDc/Ngb1HhThAXOD7k5e16o4L5UdHvj6G/GaIzURyHE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=j0MPFla55Igf6JYotD4zn3bR76m/U/xQjs3q3ZMqJopt9AYI0rPAlbxo+C0QqslCv
-	 eKPyvW19I4GQDtiTkAhTrQD5nDqmh3RthlxWAf8lKyoagQbNXZFQ+xaJAuR/946JXI
-	 4LhPNsW6osRoKI5nbkX68Lcndo7tXjSmvrR+hJONbEJtOoV4m0O8mr8cEx0vxOqxVM
-	 F6IBzsyRzU0IlQNIcCB4WT9GU/1A913ajVoi1VzTGcPNcnviFPdZ5tpzSv2hMFkjOx
-	 j3cGSrwa0orHQroytDD03PY2FkvYDWoPXLv7Whw72v1O1riVVO300gsqy1Ccvt8B6a
-	 nw/aLSciIFdBw==
-Message-ID: <3a408dd9-a38c-4202-b79f-91bff843ee82@kernel.org>
-Date: Sun, 7 Dec 2025 13:39:10 +0100
+	s=k20201202; t=1765115168;
+	bh=r/00iAWlY7SLMd+fAHNLHF5/Y87k58WdddwUGmEqjmM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=NJvmZs3e8R/05oavHx11wtwRSUV2q9Lc7kg4swMmDaURdBFWgxVeES5NjG2jgYc/3
+	 g+c3++HEPHFe8QQ+RgFclDS+9RvUn02+yL8Y7xSdZjW69Vw4mscT4Y+gmHzFYOosRI
+	 yucEX5co+JGbeY5m6vcMaqibxW+Mlrsh2AB+QxaL/2tQtplHtL8GYoo3ewWsNllRKD
+	 VlW5Yghl8x5WDRYwfDtmmug5CciVcDN37jiFa/4zihw/b0Szpcgn/MlnwBSchHMERs
+	 0ftEhu6ulhDHpK6HyJsHi3TYotd108LscrEsVmnv422lUZAXFKgNCyIqGhkVgpemE8
+	 6t8aMMfuPJwqQ==
+Date: Sun, 7 Dec 2025 13:46:00 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Thorsten Blum <thorsten.blum@linux.dev>, Marius Cristea
+ <marius.cristea@microchip.com>, David Lechner <dlechner@baylibre.com>, Nuno
+ =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ stable@vger.kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: PAC1934: Fix clamped value in
+ pac1934_reg_snapshot
+Message-ID: <20251207134600.1afee57e@jic23-huawei>
+In-Reply-To: <CAHp75VebjUo2JH49tmuOvgjKUbsUmZg0C461wwvL-bRaDd5C9Q@mail.gmail.com>
+References: <20251202181307.510970-2-thorsten.blum@linux.dev>
+	<CAHp75VebjUo2JH49tmuOvgjKUbsUmZg0C461wwvL-bRaDd5C9Q@mail.gmail.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 4/4] mm/hugetlb: fix excessive IPI broadcasts when
- unsharing PMD tables using mmu_gather
-To: Nadav Amit <nadav.amit@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-mm@kvack.org, Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Nick Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Arnd Bergmann <arnd@arndb.de>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>,
- Harry Yoo <harry.yoo@oracle.com>, Laurence Oberman <loberman@redhat.com>,
- Prakash Sangappa <prakash.sangappa@oracle.com>, stable@vger.kernel.org
-References: <20251205213558.2980480-1-david@kernel.org>
- <20251205213558.2980480-5-david@kernel.org>
- <0914A8DB-447C-4E62-B151-62E5E4E99749@gmail.com>
- <C9D5EFFF-05D9-435C-96C1-4B13134E2904@gmail.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <C9D5EFFF-05D9-435C-96C1-4B13134E2904@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On 12/7/25 13:24, Nadav Amit wrote:
-> 
-> 
->> On 7 Dec 2025, at 14:15, Nadav Amit <nadav.amit@gmail.com> wrote:
->>
->>
->>> On 5 Dec 2025, at 23:35, David Hildenbrand (Red Hat) <david@kernel.org> wrote:
->>>
->>> @@ -400,6 +411,7 @@ static inline void __tlb_reset_range(struct mmu_gather *tlb)
->>>
->>
->> @@ -400,6 +411,7 @@ static inline void __tlb_reset_range(struct mmu_gather *tlb)
->> 	tlb->cleared_pmds = 0;
->> 	tlb->cleared_puds = 0;
->> 	tlb->cleared_p4ds = 0;
->> +	tlb->unshared_tables = 0;
->> 	/*
->> 	 * Do not reset mmu_gather::vma_* fields here, we do not
->> 	 * call into tlb_start_vma() again to set them if there is an
->>
->> I understand you don’t want to initialize fully_unshared_tables here, but
->> tlb_gather_mmu() needs to happen somewhere. So you probably want it to
->> take place in tlb_gather_mmu(), no?
-> 
-> To clarify my messed up response: the code needs to initialize fully_unshared_tables
-> somewhere during tlb_gather_mmu() invocation.
+On Tue, 2 Dec 2025 20:47:37 +0200
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-Good point, __tlb_gather_mmu() needs to initialize it explicitly!
+> On Tue, Dec 2, 2025 at 8:13=E2=80=AFPM Thorsten Blum <thorsten.blum@linux=
+.dev> wrote:
+> >
+> > The local variable 'curr_energy' was never clamped to
+> > PAC_193X_MIN_POWER_ACC or PAC_193X_MAX_POWER_ACC because the return
+> > value of clamp() was not used. Fix this by assigning the clamped value
+> > back to 'curr_energy'. =20
+>=20
+> ...
+>=20
+> >                         /* add the power_acc field */
+> >                         curr_energy +=3D inc;
+> >
+> > -                       clamp(curr_energy, PAC_193X_MIN_POWER_ACC, PAC_=
+193X_MAX_POWER_ACC);
+> > +                       curr_energy =3D clamp(curr_energy, PAC_193X_MIN=
+_POWER_ACC,
+> > +                                           PAC_193X_MAX_POWER_ACC);
+> >
+> >                         reg_data->energy_sec_acc[cnt] =3D curr_energy; =
+=20
+>=20
+> Hmm... Maybe
+>=20
+>                        reg_data->energy_sec_acc[cnt] =3D clamp(curr_energ=
+y,
+>                                            PAC_193X_MIN_POWER_ACC,
+>                                            PAC_193X_MAX_POWER_ACC);
+I went with aligning after ( and slightly longer than 80 char lines.
+other combinations didn't seem to read quite as well to me.
 
-Thanks a lot for the review, appreciated!
+Applied to the fixes-togreg branch of iio.git.  I'll probably sit on pushing
+that out until I can rebase on rc1 however.
 
--- 
-Cheers
+Jonathan
 
-David
+>=20
+> ?
+>=20
+
 
