@@ -1,81 +1,64 @@
-Return-Path: <stable+bounces-200300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E723CABAC1
-	for <lists+stable@lfdr.de>; Mon, 08 Dec 2025 00:20:26 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65B75CABADE
+	for <lists+stable@lfdr.de>; Mon, 08 Dec 2025 00:23:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7063A30124D8
-	for <lists+stable@lfdr.de>; Sun,  7 Dec 2025 23:20:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EEF813003531
+	for <lists+stable@lfdr.de>; Sun,  7 Dec 2025 23:23:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95A642D46C0;
-	Sun,  7 Dec 2025 23:20:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 230212D877E;
+	Sun,  7 Dec 2025 23:23:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZFXSCtEz"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Anct7lth"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A100E1F8691
-	for <stable@vger.kernel.org>; Sun,  7 Dec 2025 23:20:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0567A1E834E;
+	Sun,  7 Dec 2025 23:23:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765149623; cv=none; b=AL4RckFUDqeBx50U8VkrYVCSVKqKirvp/njsdXlpR4lnEjljucRnnMfdt+Ewd6D8u/1AZTHl2u0VhAH4xB0uVhKi7kN+gEjo0SfxdXM08q3kJRuj7PssKggKEyPUu40/74ZyuEJNfYtOdE1xFTXlUfYoRSUmszovy9dYjHjkvZs=
+	t=1765149823; cv=none; b=RCgZkhkCsVBwMgvFUtIDm4U6f6u7KTIWec422vPgR7lUxQNN66dOBeyrum+20Ks8HVGJ6KbeT9LGfir5NkcMgXDR0T+wQYNx9NlVHxCKubFArArsYmnF94EB4iQLFBKkp8v+2SfUhAtbHAuhN81E/av3Al+a+dWrzZ1eR7f2bK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765149623; c=relaxed/simple;
-	bh=K7K8kLgktoCQJlZfSz2PNoxhKwL/tnUIrNINBUqa2Yg=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AK+EsWse9mooKeL2hBAdD31e3eEbiVcInUxbMDeFCB1zoyUWepvVXZ8pzylXUzUExCkDABNo8BSgWGNkFQTIQ+SXyafujBwbowhloVTjScLmbdKE3T9oDBvjZHczxhFuu+q/p8sv7HY8ub6pFYXlN0cgtm0lHFqZnzS7+sn9sNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZFXSCtEz; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-477619f8ae5so30506285e9.3
-        for <stable@vger.kernel.org>; Sun, 07 Dec 2025 15:20:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765149620; x=1765754420; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=5paoOuipX6CDOKZd5F9sxfZv4tczxFMvBMVeQOzwHRc=;
-        b=ZFXSCtEzwwy7JvHtwZwhxhQv7AQMJdcBexksVvdp5iXBcrGi3sd15nkANjuqrVyYMt
-         ztPp3L1MKeNUL/aDNJfqAQrFp3vFWM9VYx0eBzIpGmYOH8CoFCSeh8iHqpAmwYx31DXF
-         kmIBvUX/cTvv0smHdiyW7KOqJIkk10FHUN0YxWSm3OUAmx62mEsHmidUNMmoHQYgV9wZ
-         vYKZ/JD0AoHZbUyhPXxFAM9B2Pva9IjRCQJiQ5u95Y1SP+yvGUFCt8sf6fwoCwKdmc41
-         8b/w0vxJqgLXM5MYivPQ49DDprJBZnwJ75DDHmehFc9zLykj9odyZygaVpKBGhG1wxR2
-         FqXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765149620; x=1765754420;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5paoOuipX6CDOKZd5F9sxfZv4tczxFMvBMVeQOzwHRc=;
-        b=itYiUFbMt5t1ZlB6qQ/TfNnkFaEZdVLmQkAPjAZnAh36yQo8m+h+3ygc9/DwbqvKFU
-         pLPCuiSapqTE/ekYWUS8UfG8i22fPXlC/4+LZMBT4CV2MsHZ7amPQgnZJqR1UL0Oc+Fk
-         /jmR+xZP4NjMERDALagJBUzeNTM0yOh4qQD+l5J2dUeCLiKiWmFw7O9y1z7iX0likSE5
-         aDMEbXN0pYrgRVQEgiR3J6sS05ZSTqcCWrrd0AzmGojV/JSZiG9XcUwYBz1LUXBN4rjE
-         SbezFjwf+4BV3Re5oN437rsszAwZOVd/83k7+sdEtlRWtE69/UdbDt4y94MDJRH2W3mn
-         a3eQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU/qasJfL0sIp9i/uqelrxBKxk792mcQADdck0xLY/NUv85uCk4BmabdeJp6Pp2MnNl/uGGjXk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQQe15nL6Jk+2JGnTP5nJ0zJ/a1czVl3P7GG7l+kR4bdk1QWN0
-	z0KfO3RNqp1OiX1cxnXpqDY9PUyoqsouBaeICRRKPNCtxBgg+eCuZOQs
-X-Gm-Gg: ASbGncvrjXhj65DccmL/wdIn1go1SzCLxw+RoERDivo6jcahSb+vWvSlwM7HboPLCvX
-	9gcEQ581abpdln38VuDJXh7DQkH5qS3srN8XQNdDGrj9fO/cqOCwpYFFumMLWnYXQWAovi8MYce
-	Lk+OffbTh1j9qabWhlZXRxbXxP1N0i0uPfKj7cmJ2cUC9GHQaw7rPyhj9VSOsVHL6derz73+83Z
-	YqvUwuavb+q6qurS+sP1cWr7qggnxCMy2yRosesvR394wYLnB/MbYNfwPmBWnl2Zl/ZZvz0AAGF
-	SuYd1WdbVCp+ENiV+hn6fqKvIuzR89XWoqPe/X8QQu0clSVN+VYwvLBfkcjqp90RRUrxs2kwjnc
-	TT0ENzaAH7leK4hApE9SAoDSOd9zYyRHhTVWKa0F2+zfl51G/mqcnJobytZUuEKj+J5G7Vb/dH+
-	Qlz0OK4v9hDLd+K7lqR2GJ8AvfUtSP50nXDVtoqIY=
-X-Google-Smtp-Source: AGHT+IFOdnJiLL/JMffiuz9Ux0l8wH9PbEO+vHlBcTdWKS42c74i5DiqwI0Q7QA6ru41WJWInUN5eA==
-X-Received: by 2002:a05:600c:3b9d:b0:477:7b16:5fa6 with SMTP id 5b1f17b1804b1-47939dec75bmr67002805e9.3.1765149619761;
-        Sun, 07 Dec 2025 15:20:19 -0800 (PST)
-Received: from Ansuel-XPS. (93-34-88-81.ip49.fastwebnet.it. [93.34.88.81])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4792b02ba67sm127870165e9.2.2025.12.07.15.20.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 07 Dec 2025 15:20:19 -0800 (PST)
-Message-ID: <69360bb3.7b0a0220.46cd2.4675@mx.google.com>
-X-Google-Original-Message-ID: <aTYLsGP82GJTFVrp@Ansuel-XPS.>
-Date: Mon, 8 Dec 2025 00:20:16 +0100
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+	s=arc-20240116; t=1765149823; c=relaxed/simple;
+	bh=srB4iPLR8Swk0rQfFDIvdFNncTDG6I2jY9ADM89qvA8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Cb+a4JdAxZP3FfbumqxV2XT3O/QV5S6ohM7asNJ6eYk5R4CDr+K+hpzBm8/Qqbv2TdOA5zNsuP6kuyYLHCTjP4JHc7mXFK1Jl8/zxvS/BYKZLlXpFm2cZp+fKpRsl73lgv4VaxA5ock2qVEdqsOqMmcy5XSE+DV4f1EvdBqVlQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Anct7lth; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765149822; x=1796685822;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=srB4iPLR8Swk0rQfFDIvdFNncTDG6I2jY9ADM89qvA8=;
+  b=Anct7lthv6lR2Y2WHINN8sGDAvHzxCS6R5QlUPpIfThIh1npLqsQX9Z7
+   BJE7Cf7TjJiHqrQbG0Z4IJhn9CLtm4ZIk0JW4whgyTIjJH97FKnr4q8Bs
+   1C0uEngCL2tiTlCco9ApPrCeu15Vjj8lSWuuuY0VfllzXcUSCGwRmS7X4
+   7uqpg2F0sbr3qKXbfSiBkcjVLtlk080rv/EMH08Z5CmmDYgSpwmgXzB9c
+   +2omaU7xtQvgoAwj8CqULkJzshk5sjbozh3zSdwv4mbHkaI2WmMg2Rct+
+   T3m3byVlF/Bpg1sKiuPRCmCAb0RriFq/fXFKUNSgNud8l+aTi4C4V4iXr
+   g==;
+X-CSE-ConnectionGUID: HpF80cK5SRq6qsWhTGJshA==
+X-CSE-MsgGUID: f2PA0HeQTTG8hF3SN9i8gQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11635"; a="66097618"
+X-IronPort-AV: E=Sophos;i="6.20,257,1758610800"; 
+   d="scan'208";a="66097618"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2025 15:23:41 -0800
+X-CSE-ConnectionGUID: 8a+TGpGOSFGmheo+tzKTyQ==
+X-CSE-MsgGUID: 4UJr3q/JSL67PZ3h4kHBMA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,257,1758610800"; 
+   d="scan'208";a="226795565"
+Received: from abityuts-desk.ger.corp.intel.com (HELO localhost) ([10.245.244.218])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2025 15:23:39 -0800
+Date: Mon, 8 Dec 2025 01:23:37 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Christian Marangi <ansuelsmth@gmail.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Dan Williams <dan.j.williams@intel.com>,
 	Jonathan Cameron <jonathan.cameron@huawei.com>,
@@ -83,6 +66,7 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	"Rob Herring (Arm)" <robh@kernel.org>, stable@vger.kernel.org
 Subject: Re: [PATCH] resource: handle wrong resource_size value on zero
  start/end resource
+Message-ID: <aTYMeY1AsprPwC_9@smile.fi.intel.com>
 References: <20251207215359.28895-1-ansuelsmth@gmail.com>
  <aTYJw9lNfHxQI_Ag@smile.fi.intel.com>
 Precedence: bulk
@@ -94,8 +78,10 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <aTYJw9lNfHxQI_Ag@smile.fi.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Mon, Dec 08, 2025 at 01:12:03AM +0200, Andy Shevchenko wrote:
+On Mon, Dec 08, 2025 at 01:12:08AM +0200, Andy Shevchenko wrote:
 > On Sun, Dec 07, 2025 at 10:53:48PM +0100, Christian Marangi wrote:
 > > Commit 900730dc4705 ("wifi: ath: Use
 > > of_reserved_mem_region_to_resource() for "memory-region"") uncovered a
@@ -116,7 +102,12 @@ On Mon, Dec 08, 2025 at 01:12:03AM +0200, Andy Shevchenko wrote:
 > > 
 > > BUT this is actually not the case. On further inspection on
 > > resource_size() it was found that it NEVER actually returns 0.
-> > 
+
+Actually this not true. Obviously if the end == start - 1, it will return 0.
+So, you really need _carefully_ check users one-by-one and see how resource
+is filled, before judging the test. It might or might not be broken. Each
+case is individual, but the observation you made is quite valuable, thanks!
+
 > > Even if the resource value of start and end are 0, the return value of
 > > resource_size() will ALWAYS be 1, resulting in the broken if-else
 > > condition ALWAYS going in the first if condition.
@@ -168,11 +159,7 @@ On Mon, Dec 08, 2025 at 01:12:03AM +0200, Andy Shevchenko wrote:
 > may be directly affected (and regress) is the amount of IRQs calculation (which
 > on some platforms may start from 0). However, in practice I think it's none
 > nowadays in the upstream kernel.
->
-
-One common usage of this is with address size. So if start and end is
-the same, then it's ok to have size 1? 
-
+> 
 > >  	return res->end - res->start + 1;
 > >  }
 > 
@@ -180,36 +167,11 @@ the same, then it's ok to have size 1?
 > patch is incorrect as it brings inconsistency to the logic (1 occupied address
 > whatever unit it has may still be valid resource).
 > 
-
-Yep but probably never aligned? I don't think there is an arch in the
-world that is aligned to 1 byte?
-
 > Also a good start is to add test cases and add/update documentation.
-> 
-
-I hoped this was simple enough to have the condition. The more
-articulate and safe change might be to:
-1. rename this to __resource_size
-2. rename every entry of resource_size to __resource_size
-3. introduce a new resource_size commented and with the check
-4. Use the new helper where it's actually needed?
-
-From my search there are various place where the condition is like:
-
-if (resource_size(&res)) 
-   ...
-
-And this condition doesn't make any sense since it's always true (I
-highly suspect these case all fall in what I described)
-
-For sure this needs to be discussed and we need to gather more info.
-
-> -- 
-> With Best Regards,
-> Andy Shevchenko
-> 
-> 
 
 -- 
-	Ansuel
+With Best Regards,
+Andy Shevchenko
+
+
 
