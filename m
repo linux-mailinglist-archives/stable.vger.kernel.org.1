@@ -1,182 +1,263 @@
-Return-Path: <stable+bounces-200375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5871ACAE525
-	for <lists+stable@lfdr.de>; Mon, 08 Dec 2025 23:22:59 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50BFFCAE549
+	for <lists+stable@lfdr.de>; Mon, 08 Dec 2025 23:36:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BBCFC30AE9B7
-	for <lists+stable@lfdr.de>; Mon,  8 Dec 2025 22:21:33 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 474A3300B908
+	for <lists+stable@lfdr.de>; Mon,  8 Dec 2025 22:36:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F6DB2F2605;
-	Mon,  8 Dec 2025 22:21:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86FCD2D7DE2;
+	Mon,  8 Dec 2025 22:36:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="lZ2RQJiD"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="e4nvfd6V"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E81B2EDD6C
-	for <stable@vger.kernel.org>; Mon,  8 Dec 2025 22:21:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E22F3B8D63
+	for <stable@vger.kernel.org>; Mon,  8 Dec 2025 22:36:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765232490; cv=none; b=rjBjgUbRKa8ORBCl9zalM4LC5eH9Z8cOD5wiFbhKgdcy1RgBLJHzpagZxVGCcaNZMzK6FudqWLeVyV+CtUxg/OO9iOrKttmxw66+GZl/7/COi8TpYnPEEdTjZ+d5/27oqIy6Blfa3wyn3Yab4yxgbup3gMkBPmUK34AZ+6vj600=
+	t=1765233384; cv=none; b=ANqrpZddtAbMf6w4kbwPP0u4pEYUTL94tv84DSnZiQdYRy08g4p77ravxrcVdeXPqUwjCNKsost8TkthMpejnl7HMBH25s7yqQh9DQl28WUYotjq6jxcgv8kgfqnXZEJ0aPvGMKMBNMO7y5Ov15c9rOucuzaJc/WejflyKCtaRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765232490; c=relaxed/simple;
-	bh=WRmoQ6pWMEvMOTnAjHDA37jWJJOombCuEyG1Z9F2hec=;
+	s=arc-20240116; t=1765233384; c=relaxed/simple;
+	bh=Q2G/MZtVBoEaCJauZ/cHmYZaRZTZNUt7d4RLedJ+aMU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=L5hQ74kp8jzZbx8uwPxyLXlckmHkvGzyW89CP+1kaDVLJepoC9ADt1lzgFzIEU6Jd9dH9G8sMlbFOPeEW5barApKXaTQycgvIb+7gKK1zN89VpexB5GEL9mqKKnAOYJQvOSSp9o/5OGJANmqe7j80Svwx+rlM3n1Z72LXT7wkEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=lZ2RQJiD; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-64166a57f3bso8309636a12.1
-        for <stable@vger.kernel.org>; Mon, 08 Dec 2025 14:21:28 -0800 (PST)
+	 To:Cc:Content-Type; b=mZPr0028iE5Xi+0kFnqvG7eqqg1TSeccWWCy0rWLEuKH7I2Hpo/OubPn+ZwloE/r/cUXHA7j1Py2HqfEu5Kv7s5tF/hNWxiTkLbWiVDQtcqG+mBumRPq3AcRez/7kSuUjVbBRvWWCW8M8khBnG1X98dh5M6Lfl9ExnNamTJWxgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=e4nvfd6V; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4775ae77516so59627325e9.1
+        for <stable@vger.kernel.org>; Mon, 08 Dec 2025 14:36:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1765232482; x=1765837282; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1765233381; x=1765838181; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hJAf24FuHQe95NZr/O9DtfATOUEp5YWLsl/0nDh2TTA=;
-        b=lZ2RQJiDYMSgg/0uc1ACT+AMuSwkKu/eYfJ09DlY4wD1vueN/5R66PVrmUMwWBmbNz
-         pBWcLCSQJf54fMrrFgf7v5ELu0MgfV/HCYZQGlkcAD1FM1pcczEhG6EIqkacSX5SqWSy
-         2j+qghjJ2N7814uNcPIKBRmK3Z6WJDlKUi/1E=
+        bh=D4KD06lq2sAdPsV4RkTZMMEkkcHicyQ03NbVW7+GTqc=;
+        b=e4nvfd6V20myoyx4sPbWfL/RXP1rQwdmAdq2qF8mYdpLIh62GRQVcC3qZmJsVNs0ZT
+         uhfXlCn1Q/1vOm+PKY7kabAAXGhG/u6swFcnKnZMssTWtaAa0v9F+FzU8Uoxx5CNXi4x
+         FhbUWb60nBjum44ZsVEysnD20tJVsotnFiEALa9rcDQaTIQc4IoPSevYFWwa1/3bKweT
+         Wdb3djLiXPLqzDuZvPCHIlciRnDOPQ3eVcd8t58RNBjj1/1Yc8VJeluNEROlbRK9JVKM
+         l9d6QJOrDkj4kanm7TJC7wrmIRWPbCg1n3eb9s8WOArCX7odCy1xAmK7v0dpM/Vri2iE
+         0UHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765232482; x=1765837282;
+        d=1e100.net; s=20230601; t=1765233381; x=1765838181;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=hJAf24FuHQe95NZr/O9DtfATOUEp5YWLsl/0nDh2TTA=;
-        b=R0NzjdRSqXczCfjYsuq8i3dgkmD0RD/j+RdoA6miO2hvE8Xrad9eI3wbLXeR7ZgVfF
-         ixkgZevipaDLTCzW2FHw1E2BNj+UUKe8BgZ9UK946B+x7kVjXGRPV3CPQlo22b2S9l/N
-         hSqdkU9bB4KKm+nRyN8+IUR73PhICYR5KxSgUsmyk5dM13bB5/i/OzS61NV1X7IWmetJ
-         sKpIlEB8j/JMBLpnlnGBoDdqDQ6tBrq6A5LN0DS60fHIPxICqsjvigdldNV6jVi2cnSX
-         8dDYmFMQDB+ETIvRjm4WN6ietLy/32FyFSojjW/TLTktq3yEcr94jdba+ptpZQN90U6n
-         LkSA==
-X-Forwarded-Encrypted: i=1; AJvYcCU+hlu8eHUHD8QEHHRvZTgKWUdQyX5XWFgw50/E0mO8ecZEL9BzIFdwtfUAKiIjM2sua3LkWlA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxxM1BuOZf98oz+8IfK2buIIFUbjxeT8m3dt0vZdzqjTYxA3wLx
-	gzy8uLl4DzfbfbyAYGd7rfsqK4McI6HKCHuTWVgBuIYXaav9xpUcyWSM5a+Np2fCi6SRnVNFC6i
-	CSGnTEg==
-X-Gm-Gg: ASbGncv4dwvH6dDFpcPwbWUuy4lRc0EGn58Ey1l4vIXbdFO/iBOQSLzVLeJmBwT0kmb
-	dlPCb0l3kz3pYXx00+vV6i3OSo0AtsLNJz2RpGXnra0of2GqgRH6jjL98GwbDiRf/zlZfXngs8w
-	vbs7VLkBWWuyVDtMhvlk+T/9Kq9zDvcQNg1+1oquKKVPW2FCQ3ZnNM4bzMDj5zGSOH7Qfg8FEeA
-	mG5+60cbIIJhXcTIkiSMRxyq8sC4OPkN6yOAx0vYw1i4B/W//ZitXF7rAr4Z8qspDypdxm0IWiC
-	9E2UfLYGTr6jSxuWWto+iscKan/epfXJa+TDGM5qtNBO8gBlW1OlfkGKNQuO5rZtLYVUD3l5cAe
-	Urds13iRVBRfPH7x0hhr223DlTX1l9Ed0Ym7ciEe8FLX7ok4t4COqlfeNze0LKgYcydTLeKKD2x
-	w49HKUEQVfe/0cioUakzy4mW9ovw76NOt5GhGmDOxXQn8CTurAZQ==
-X-Google-Smtp-Source: AGHT+IF8HVGscmjbYavb5C711Be4y4cV8GtzcgEewMAh8Rg7/U/HubrCHtA3IGhTbOvFxAjfgB6vfg==
-X-Received: by 2002:a05:6402:1475:b0:640:f1ea:8d1b with SMTP id 4fb4d7f45d1cf-6491a432967mr7789343a12.16.1765232482343;
-        Mon, 08 Dec 2025 14:21:22 -0800 (PST)
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com. [209.85.221.43])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-647b412146bsm11875947a12.23.2025.12.08.14.21.20
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Dec 2025 14:21:22 -0800 (PST)
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-42b3d7c1321so2998825f8f.3
-        for <stable@vger.kernel.org>; Mon, 08 Dec 2025 14:21:20 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXr8tU07dNFibInimLj6H3e7dJ7UmvXrAe/I33TQTvrNotUD8KtXds3Y4gJBokQOPK2FwQpyFM=@vger.kernel.org
-X-Received: by 2002:a05:6000:184e:b0:42f:8816:6e53 with SMTP id
- ffacd0b85a97d-42f89f5b7a9mr9262105f8f.61.1765232480155; Mon, 08 Dec 2025
- 14:21:20 -0800 (PST)
+        bh=D4KD06lq2sAdPsV4RkTZMMEkkcHicyQ03NbVW7+GTqc=;
+        b=WX2C4by1V2xVM5U3/9ESrmbtoUkl4aOJEPeINhJXJ/AcHhVIo2vKQu9UKNa3zuSFOJ
+         +f9K2qGhP9QoFrCWaK8VXekPffkihRNrISxRdmjRUVHgyQQXQ2g9AHB8FWFd/RYa2kpc
+         iJOR9XQES8b0i1vmLxJzpuCu3yddKHfL2fJ6iwASA+yalgjxR4gdP/6bc608Ai8Po5nh
+         eLuFi+S48UXhDDGgEI5D3s7gZjviVehuMIGQbr1lfm6NFaZP/5SNwAnWb/P6mU/no4LJ
+         8dfMTAXJOXr3Z1+gLDwN/nK7F86C2EMPFH580Y9KqVju8PdTI4WR6XE5EgC5cjcb42Do
+         MCag==
+X-Forwarded-Encrypted: i=1; AJvYcCXRgUy2LMDJVezGSwmcP7El7XICe8hpUy8HS6xOVdnq2VgCTTVA51eThLdMjaGFLuwVV0/fIXE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzcJ9KPS8hl4h+2Xf5o1LSySjYDjUW4HJMNgWuvwF579LV5y/Uo
+	vATihaL73en+aNCrA1VJpeexHid/X2ekEd4njt4RxvqLpYf2XO36BAim0x0eO2jI0N0dZJEruZ7
+	vI59nnRvG0xogzjSwN4WagCFtoIH8Cv47bqErYHOpJg==
+X-Gm-Gg: ASbGncurO05l0qFpxVWjAk7raN05fmbS5iXAsZKDxXjYnF9YmUUGsXVnIQgRBpBUeqh
+	EkSe597AOp1fpRF4/cA6dvz9bG+3qMG5PRrszeSmv/H6HMjOwOMVzVK41RwQmLYfSTVcNdSherT
+	oAC+Tv8TowVmzm50qG2QowdrUlh0EnCOhfEiFh19wm27Qs2N05h4cn59uan11c6BvE2Lth5jm0z
+	3rG6AIuPLbSL81ls4JbspZXhX+F5t+InyGknzybihcV931fcoJ9tVM1j2ZhnVafSrELeHc=
+X-Google-Smtp-Source: AGHT+IHdENdqQ5ZpfGKlDmPBmXNvBchycFRz1S91lwgqXoJLXzAP6AzIRd2MqCvVDm4uYekNJP736gqsi3Ttoiy1uEE=
+X-Received: by 2002:a05:6000:26ca:b0:3ff:17ac:a34b with SMTP id
+ ffacd0b85a97d-42f89f7f743mr10799228f8f.42.1765233380524; Mon, 08 Dec 2025
+ 14:36:20 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251125090546.137193-1-kory.maincent@bootlin.com> <CAD=FV=WikKrpLKvaxD22H0s3XHeG=WUiRrLJ0eQMM2pqvXJhuw@mail.gmail.com>
-In-Reply-To: <CAD=FV=WikKrpLKvaxD22H0s3XHeG=WUiRrLJ0eQMM2pqvXJhuw@mail.gmail.com>
-From: Doug Anderson <dianders@chromium.org>
-Date: Mon, 8 Dec 2025 14:21:09 -0800
-X-Gmail-Original-Message-ID: <CAD=FV=WrQpa3G0ggSMiJG8RnT45zCLug2YKTTgPfNrzAoQU98Q@mail.gmail.com>
-X-Gm-Features: AQt7F2qfhZ_9C3ny6GB_ztDzwr2hF0lEcdFjQq7wCKYlX1JiOVwhYtW82bJNjiA
-Message-ID: <CAD=FV=WrQpa3G0ggSMiJG8RnT45zCLug2YKTTgPfNrzAoQU98Q@mail.gmail.com>
-Subject: Re: [PATCH v4] drm/tilcdc: Fix removal actions in case of failed probe
-To: Kory Maincent <kory.maincent@bootlin.com>
-Cc: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Maxime Ripard <mripard@kernel.org>, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	Bajjuri Praneeth <praneeth@ti.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	Louis Chauvet <louis.chauvet@bootlin.com>, stable@vger.kernel.org, 
-	thomas.petazzoni@bootlin.com, Jyri Sarha <jyri.sarha@iki.fi>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+References: <20251202-wip-obbardc-qcom-msm8096-clk-cpu-fix-downclock-v1-1-90208427e6b1@linaro.org>
+ <8d769fb3-cd2a-492c-8aa3-064ebbc5eee4@oss.qualcomm.com>
+In-Reply-To: <8d769fb3-cd2a-492c-8aa3-064ebbc5eee4@oss.qualcomm.com>
+From: Christopher Obbard <christopher.obbard@linaro.org>
+Date: Mon, 8 Dec 2025 22:36:09 +0000
+X-Gm-Features: AQt7F2pyLxXm2GWb6gtwnpa1Ns2Gi_xPr5Pdfa1W2vBee9eceYgn1z1DZ-WxUWw
+Message-ID: <CACr-zFD_Nd=r1Giu2A0h9GHgh-GYPbT1PrwBq7n7JN2AWkXMrw@mail.gmail.com>
+Subject: Re: [PATCH] Revert "clk: qcom: cpu-8996: simplify the cpu_clk_notifier_cb"
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Dmitry Baryshkov <lumag@kernel.org>, linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi,
+Hi Konrad,
 
-On Mon, Dec 1, 2025 at 10:10=E2=80=AFAM Doug Anderson <dianders@chromium.or=
-g> wrote:
+On Wed, 3 Dec 2025 at 10:52, Konrad Dybcio
+<konrad.dybcio@oss.qualcomm.com> wrote:
 >
-> Hi,
->
-> On Tue, Nov 25, 2025 at 1:06=E2=80=AFAM Kory Maincent <kory.maincent@boot=
-lin.com> wrote:
+> On 12/2/25 10:24 PM, Christopher Obbard wrote:
+> > This reverts commit b3b274bc9d3d7307308aeaf75f70731765ac999a.
 > >
-> > From: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>
+> > On the DragonBoard 820c (which uses APQ8096/MSM8996) this change causes
+> > the CPUs to downclock to roughly half speed under sustained load. The
+> > regression is visible both during boot and when running CPU stress
+> > workloads such as stress-ng: the CPUs initially ramp up to the expected
+> > frequency, then drop to a lower OPP even though the system is clearly
+> > CPU-bound.
 > >
-> > The drm_kms_helper_poll_fini() and drm_atomic_helper_shutdown() helpers
-> > should only be called when the device has been successfully registered.
-> > Currently, these functions are called unconditionally in tilcdc_fini(),
-> > which causes warnings during probe deferral scenarios.
+> > Bisecting points to this commit and reverting it restores the expected
+> > behaviour on the DragonBoard 820c - the CPUs track the cpufreq policy
+> > and run at full performance under load.
 > >
-> > [    7.972317] WARNING: CPU: 0 PID: 23 at drivers/gpu/drm/drm_atomic_st=
-ate_helper.c:175 drm_atomic_helper_crtc_duplicate_state+0x60/0x68
-> > ...
-> > [    8.005820]  drm_atomic_helper_crtc_duplicate_state from drm_atomic_=
-get_crtc_state+0x68/0x108
-> > [    8.005858]  drm_atomic_get_crtc_state from drm_atomic_helper_disabl=
-e_all+0x90/0x1c8
-> > [    8.005885]  drm_atomic_helper_disable_all from drm_atomic_helper_sh=
-utdown+0x90/0x144
-> > [    8.005911]  drm_atomic_helper_shutdown from tilcdc_fini+0x68/0xf8 [=
-tilcdc]
-> > [    8.005957]  tilcdc_fini [tilcdc] from tilcdc_pdev_probe+0xb0/0x6d4 =
-[tilcdc]
+> > The exact interaction with the ACD is not yet fully understood and we
+> > would like to keep ACD in use to avoid possible SoC reliability issues.
+> > Until we have a better fix that preserves ACD while avoiding this
+> > performance regression, revert the bisected patch to restore the
+> > previous behaviour.
 > >
-> > Fix this by rewriting the failed probe cleanup path using the standard
-> > goto error handling pattern, which ensures that cleanup functions are
-> > only called on successfully initialized resources. Additionally, remove
-> > the now-unnecessary is_registered flag.
-> >
-> > Cc: stable@vger.kernel.org
-> > Fixes: 3c4babae3c4a ("drm: Call drm_atomic_helper_shutdown() at shutdow=
-n/remove time for misc drivers")
-> > Signed-off-by: Kory Maincent (TI.com) <kory.maincent@bootlin.com>
+> > Fixes: b3b274bc9d3d ("clk: qcom: cpu-8996: simplify the cpu_clk_notifie=
+r_cb")
+> > Cc: stable@vger.kernel.org # v6.3+
+> > Link: https://lore.kernel.org/linux-arm-msm/20230113120544.59320-8-dmit=
+ry.baryshkov@linaro.org/
+> > Cc: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+> > Signed-off-by: Christopher Obbard <christopher.obbard@linaro.org>
 > > ---
-> >
-> > I'm working on removing the usage of deprecated functions as well as
-> > general improvements to this driver, but it will take some time so for
-> > now this is a simple fix to a functional bug.
-> >
-> > Change in v4:
-> > - Fix an unused label warning reported by the kernel test robot.
-> >
-> > Change in v3:
-> > - Rewrite the failed probe clean up path using goto
-> > - Remove the is_registered flag
-> >
-> > Change in v2:
-> > - Add missing cc: stable tag
-> > - Add Swamil reviewed-by
-> > ---
-> >  drivers/gpu/drm/tilcdc/tilcdc_crtc.c |  2 +-
-> >  drivers/gpu/drm/tilcdc/tilcdc_drv.c  | 53 ++++++++++++++++++----------
-> >  drivers/gpu/drm/tilcdc/tilcdc_drv.h  |  2 +-
-> >  3 files changed, 37 insertions(+), 20 deletions(-)
->
-> Seems reasonable to me. I did a once-over and based on code inspection
-> it looks like things are being reversed properly. I agree this should
-> probably land to fix the regression while waiting for a bigger
-> cleanup.
->
-> Reviewed-by: Douglas Anderson <dianders@chromium.org>
->
-> This fixup has been sitting out there for a while. Who is the right
-> person to apply it? If nobody else does and there are no objections, I
-> can apply it to "fixes" next week...
 
-Pushed to drm-misc-fixes:
 
-[1/1] drm/tilcdc: Fix removal actions in case of failed probe
-      commit: a585c7ef9cabda58088916baedc6573e9a5cd2a7
+Apologies for the late response, I was in the process of setting some
+more msm8096 boards up again in my new workspace to test this
+properly.
+
+
+> It may be that your board really has a MSM/APQ8x96*SG* which is another
+> name for the PRO SKU, which happens to have a 2 times wider divider, try
+>
+> `cat /sys/bus/soc/devices/soc0/soc_id`
+
+I read the soc_id from both of the msm8096 boards I have:
+
+Open-Q=E2=84=A2 820 =C2=B5SOM Development Kit (APQ8096)
+```
+$ cat /sys/bus/soc/devices/soc0/soc_id
+291
+```
+(FWIW this board is not in mainline yet; but boots with a DT similar
+enough to the db820c. I have a patch in my upstream backlog enabling
+that board; watch this space)
+
+DragonBoard=E2=84=A2 820c (APQ8096)
+```
+$ cat /sys/bus/soc/devices/soc0/soc_id
+291
+```
+
+
+> see:
+>
+> https://lore.kernel.org/linux-arm-msm/20251111-db820c-pro-v1-0-6eece16c5c=
+23@oss.qualcomm.com/
+>
+> https://lore.kernel.org/linux-arm-msm/kXrAkKv7RZct22X0wivLWqOAiLKpFuDCAY1=
+KY_KSx649kn7BNmJ2IFFMrsYPAyDlcxIjbQCQ1PHb5KaNFawm9IGIXUbch-DI9OI_l73BAaM=3D=
+@protonmail.com/
+
+Thanks for the pointers. Interesting, but it does look like my boards
+are msm8096 (and not the pro SKU). Can you confirm that at all from
+the soc_id above?
+
+Another bit of (hopefully useful) information is that the db820c boot
+firmware log sthe following, which is different to the logs I saw from
+the pro SKU (BUT the firmware could also be outdated?):
+```
+S - QC_IMAGE_VERSION_STRING=3DBOOT.XF.1.0-00301
+S - IMAGE_VARIANT_STRING=3DM8996LAB
+S - OEM_IMAGE_VERSION_STRING=3Dcrm-ubuntu68
+S - Boot Interface: UFS
+S - Secure Boot: Off
+S - Boot Config @ 0x00076044 =3D 0x000001c9
+S - JTAG ID @ 0x000760f4 =3D 0x4003e0e1
+S - OEM ID @ 0x000760f8 =3D 0x00000000
+S - Serial Number @ 0x00074138 =3D 0x14d6d024
+S - OEM Config Row 0 @ 0x00074188 =3D 0x0000000000000000
+S - OEM Config Row 1 @ 0x00074190 =3D 0x0000000000000000
+S - Feature Config Row 0 @ 0x000741a0 =3D 0x0050000010000100
+S - Feature Config Row 1 @ 0x000741a8 =3D 0x00fff00001ffffff
+S - Core 0 Frequency, 1228 MHz
+B -         0 - PBL, Start
+B -     10414 - bootable_media_detect_entry, Start
+B -     50197 - bootable_media_detect_success, Start
+B -     50197 - elf_loader_entry, Start
+B -     51760 - auth_hash_seg_entry, Start
+B -     51863 - auth_hash_seg_exit, Start
+B -     85147 - elf_segs_hash_verify_entry, Start
+B -     87651 - PBL, End
+B -     89700 - SBL1, Start
+B -    185684 - usb: hs_phy_nondrive_start
+B -    186050 - usb: PLL lock success - 0x3
+B -    189039 - usb: hs_phy_nondrive_finish
+B -    193156 - boot_flash_init, Start
+D -        30 - boot_flash_init, Delta
+B -    200263 - sbl1_ddr_set_default_params, Start
+D -        30 - sbl1_ddr_set_default_params, Delta
+B -    208254 - boot_config_data_table_init, Start
+D -    317169 - boot_config_data_table_init, Delta - (60 Bytes)
+B -    529968 - CDT Version:3,Platform ID:24,Major ID:1,Minor ID:0,Subtype:=
+0
+B -    534665 - Image Load, Start
+D -     22448 - PMIC Image Loaded, Delta - (37272 Bytes)
+B -    557143 - pm_device_init, Start
+B -    562908 - PON REASON:PM0:0x60 PM1:0x20
+B -    599294 - PM_SET_VAL:Skip
+D -     40016 - pm_device_init, Delta
+B -    601216 - pm_driver_init, Start
+D -      2897 - pm_driver_init, Delta
+B -    607834 - pm_sbl_chg_init, Start
+D -        91 - pm_sbl_chg_init, Delta
+B -    614575 - vsense_init, Start
+D -         0 - vsense_init, Delta
+B -    624670 - Pre_DDR_clock_init, Start
+D -       396 - Pre_DDR_clock_init, Delta
+B -    628208 - ddr_initialize_device, Start
+B -    631899 - 8996 v3.x detected, Max frequency =3D 1.8 GHz
+B -    641537 - ddr_initialize_device, Delta
+B -    641567 - DDR ID, Rank 0, Rank 1, 0x6, 0x300, 0x300
+B -    645410 - Basic DDR tests done
+B -    714157 - clock_init, Start
+D -       274 - clock_init, Delta
+B -    717543 - Image Load, Start
+D -      4331 - QSEE Dev Config Image Loaded, Delta - (46008 Bytes)
+B -    723002 - Image Load, Start
+D -      5307 - APDP Image Loaded, Delta - (0 Bytes)
+B -    731603 - usb: UFS Serial - a28415ce
+B -    735965 - usb: fedl, vbus_low
+B -    739594 - Image Load, Start
+D -     55449 - QSEE Image Loaded, Delta - (1640572 Bytes)
+B -    795043 - Image Load, Start
+D -      2043 - SEC Image Loaded, Delta - (4096 Bytes)
+B -    802607 - sbl1_efs_handle_cookies, Start
+D -       488 - sbl1_efs_handle_cookies, Delta
+B -    811117 - Image Load, Start
+D -     14365 - QHEE Image Loaded, Delta - (254184 Bytes)
+B -    825482 - Image Load, Start
+D -     14091 - RPM Image Loaded, Delta - (223900 Bytes)
+B -    840397 - Image Load, Start
+D -      3172 - STI Image Loaded, Delta - (0 Bytes)
+B -    847107 - Image Load, Start
+D -     34800 - APPSBL Image Loaded, Delta - (748620 Bytes)
+B -    881999 - SBL1, End
+D -    796569 - SBL1, Delta
+S - Flash Throughput, 94000 KB/s  (2958928 Bytes,  31192 us)
+S - DDR Frequency, 1017 MHz
+Android Bootloader - UART_DM Initialized!!!
+[0] BUILD_VERSION=3D
+[0] BUILD_DATE=3D00:29:31 - Dec  4 2023
+[0] welcome to lk
+...
+```
+
+
+Cheers!
+
+Chris
 
