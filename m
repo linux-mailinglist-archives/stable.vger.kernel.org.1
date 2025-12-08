@@ -1,160 +1,176 @@
-Return-Path: <stable+bounces-200371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FE69CAE219
-	for <lists+stable@lfdr.de>; Mon, 08 Dec 2025 21:05:11 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87F23CAE2E0
+	for <lists+stable@lfdr.de>; Mon, 08 Dec 2025 22:02:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EE813301698D
-	for <lists+stable@lfdr.de>; Mon,  8 Dec 2025 20:04:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4CEB330173A9
+	for <lists+stable@lfdr.de>; Mon,  8 Dec 2025 21:02:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D06DF2FD1DB;
-	Mon,  8 Dec 2025 20:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A63E2169AD2;
+	Mon,  8 Dec 2025 21:02:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MeEIS0G7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UFDeiO5w"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D24AC238C2F
-	for <stable@vger.kernel.org>; Mon,  8 Dec 2025 20:04:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 615BB13AA2F
+	for <stable@vger.kernel.org>; Mon,  8 Dec 2025 21:02:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765224294; cv=none; b=Pts/fNm9XvkhnremIL/W3SABkAJOLAFy2ijmatnXnwYLxwapNUQTIDKhIeLWEpHJzmmFZcbIv9EZ/zGcmFlPBmOsRF0dP5GUphQ0bCz5Ixj2eaiqk6fOPE03hAWztxybDseyL9vbGGHW15olBEJfM9CVGqBBXWikyMWn0oUnGa4=
+	t=1765227745; cv=none; b=LdM8/6uScUGc46fKqYxh+nQSouj3mGgjNlx1Qgbxij3/OBwOrXpJkj/t2yttx+garUCbTb6xwt49t64gLrHmQh1LtFQW/tz/ED1CQ70SAb1F401BOS7ZdKMQCwd1LYq5BHZseT1OnXoU9Sjzky6q+5jhbfAybmhw6z40t8GPw+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765224294; c=relaxed/simple;
-	bh=skKjEfBaMU6Lqt5vjsIobNng9NkDUQtxDFU5ZUjwvRo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SvwpyaI23Xl2k3Zlw/Hd1tRQM3n+AFsHG0GKS25pChvfZ0gXU+jaiVkBooZbAEOx1jbbGUruuqMC8tuwjSq7TvsBHcVhVtF/UptO4ibgMfzvFzr/S+TuQivG3rYvcqHy60K9piTe2vH9xGqGxz+fRllTxija6ik8gU1ZaNVQG78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MeEIS0G7; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4779a637712so36193845e9.1
-        for <stable@vger.kernel.org>; Mon, 08 Dec 2025 12:04:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765224291; x=1765829091; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=d9WaSQQ0PkGqeHp9LL2kJRaAe2H4lpRnuEoZ98r23rw=;
-        b=MeEIS0G7PiMgjbTOTLGE6XhhpJGtxjfb37lIXHx8l1yWXKyfcRu7DTqlNUR6T225Vk
-         vOjbrWKOfZPeUSIr+mbYGZbRAUlCJUoo1SWWZHm2CjpAYUMXy/HDI1wK+3m5pfKqSzLZ
-         kYmPGgsTku7Q8Yf3Lr2YOT9yhIE2pbqVzrpX+zjLlkt8Xw08+30/muL3qx8adXiTcpxv
-         f9NYz7iIFI0CYwicFBCarscDQyM4CZ/Vk+DkRdygPDIKorAym6JtXna46bgjEyyudtHY
-         I/u9EVhO+Q7o6mb6v2+LWmfw72JI95MLKyBag2tD/nZOWYWEK4Hs6R8MBTIwpdKBrPQL
-         nxGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765224291; x=1765829091;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=d9WaSQQ0PkGqeHp9LL2kJRaAe2H4lpRnuEoZ98r23rw=;
-        b=H04pGqy93Iw7f2E6pbzLfUrbITmZaXH8ZvZhlfZn2V2vR4j9N6uprKGo3ZX9CHiVmY
-         LGvz6qnolFkgij/myNAQjYpaEZo1L1ci4adQ34SN/+TmVReUZAihS495fP96yzjymLyz
-         sK0CZASU6N+8sGrhSiK1Kr86cd78RIQQOK+VHlvPDc5WfnE+aEgKJUPijSju44uoV2yC
-         c0lR3+hxDVgSvNUK9byhhmhw80qGuW+LMYP+zr3EsR7rqJ3HYouqyYuIExM95d901yT0
-         BWFphrXzIZrOHyjk6F2aqEvsfm+mlgqlX4K33fCOr4gNkOj1lhID6+Ls94nd15kRxjbD
-         ghKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX9lCyaQsBcBKkdPDtqc0E7IhHgINww79mMIucOVaMTLyU+VQu8RWRAkUTUSgbevsfG0CHUwII=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNgEkB85Bu01k7MBPz0SFrUNyOkPM2KEAsq+KqxVpHXaUcoE4l
-	E0l+t2omt6VlZR05zfrszrlq0Yw0DjQB1NbHBh6leH3IYBNFIo3TE0hYYtILXw==
-X-Gm-Gg: ASbGncvU+TifgoN3/ErYGUadgP9nvD3yW8a83BAZ9+rRUWdXfUdQlnYPAEyIqdA2WX1
-	OsAgiewNAZIjqgZZ73NFBnpyLDSmDqKnvXLWck1PP5pbwXrCCSE4NGZGOA1Whcx8Rwu7tlCALfj
-	n7DKlSkqmdBfooK5gVhVv1Em7l3it95v8uXnMfwC0GRju15g82HjR2eM/52hjOzRWYQYM4lct4k
-	6OF2lgzopcGJbPzt8x1wAp9MJe5TAtf5obfPSckHLRDvIIej4e77djH+t7+z3cAkfQK5OMjHOQm
-	cxlyeJtMRKHuy91cucD6HuZ16fo5G6S8PNPIpHegOr+lNvZfK1vYcQBaK9vZE/5GLNyFJIeGbbL
-	Mu/hZ/j7/7KZYt9iodXfzPe62+6MTRnrAwIdZeSN6L7IO7LsmwC1yP/PXdmfQ465BUB8HxzZxXh
-	XmQ9FjevVSuBCrgDpiP+ctnsdGNyW1uzI+FyIwDNAXXVg5ip7a2pY=
-X-Google-Smtp-Source: AGHT+IELJ4QWyLI18G+CslWw8CT4fzH53HDJS5AGtq1akWXecKkPf5nz0AOnRqyw1ggDtLTR6UltQg==
-X-Received: by 2002:a05:600c:3b8b:b0:477:af07:dd17 with SMTP id 5b1f17b1804b1-47939e3897cmr134757755e9.24.1765224290994;
-        Mon, 08 Dec 2025 12:04:50 -0800 (PST)
-Received: from Ansuel-XPS24 (93-34-88-81.ip49.fastwebnet.it. [93.34.88.81])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-47a7d6eb1f1sm1906885e9.2.2025.12.08.12.04.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Dec 2025 12:04:50 -0800 (PST)
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Jeff Johnson <jjohnson@kernel.org>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	linux-wireless@vger.kernel.org,
-	ath11k@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: Christian Marangi <ansuelsmth@gmail.com>,
-	stable@vger.kernel.org,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [net PATCH] wifi: ath11k: fix wrong usage of resource_size() causing firmware panic
-Date: Mon,  8 Dec 2025 21:04:32 +0100
-Message-ID: <20251208200437.14199-1-ansuelsmth@gmail.com>
+	s=arc-20240116; t=1765227745; c=relaxed/simple;
+	bh=RruIVTd22STSlEM9gz2fXyqGcZit/Bx0tkq+3J0CXBk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=lnwE3NiiGZeW5OTvuEglPkbN+zSYgmrYRTT2C5a8J07Zh16DeYWb1nqtiFzvVGEpLWcD4FbPKqHONmWrgILViYbg6GRChZuzYbwYInVoNuGyGiml9rE81E8OPEt9FrKEdAkiBFLXRHY+O/ciMNis8aZIL9ry3vMnkIygpUDwrE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UFDeiO5w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F332BC4CEF1;
+	Mon,  8 Dec 2025 21:02:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765227744;
+	bh=RruIVTd22STSlEM9gz2fXyqGcZit/Bx0tkq+3J0CXBk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=UFDeiO5waZE6KFD94ioBn4ca74yNrAeBHpn3jT742fbkJQx7aFhM3uIiANZoh/Cxa
+	 7YkxLbm/6Bug2ubmuCmS/TVJlwtbLs2StTCtrQkCfFklDI0cOJ45VSv4O8Rqcz0iNO
+	 mjJz3ic0v/hB/4lt0hCFjPrNC5iJ9K9w+OFfWh1w6Tk2l3Gu2md3Zkhn5CPf2TEFVW
+	 p9Ahxp1iNXkKxnqA/j9xWo4UPm/+PpZJRxh0LaeZJIox46oSAk/vtHZNEeyFlRajR6
+	 Fa89c9aFcj7HpghzECQmnATjSSs+Gk107P1BroXS1Izl6DaqjN6zYn8RgY9zLgwfca
+	 Xfxe6gBv/vcWQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Jimmy Hu <hhhuuu@google.com>,
+	stable <stable@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] usb: gadget: udc: fix use-after-free in usb_gadget_state_work
+Date: Mon,  8 Dec 2025 16:02:21 -0500
+Message-ID: <20251208210221.397543-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025120123-borax-cut-5c52@gregkh>
+References: <2025120123-borax-cut-5c52@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On converting to the of_reserved_mem_region_to_resource() helper with
-commit 900730dc4705 ("wifi: ath: Use
-of_reserved_mem_region_to_resource() for "memory-region"") a logic error
-was introduced in the ath11k_core_coldboot_cal_support() if condition.
+From: Jimmy Hu <hhhuuu@google.com>
 
-The original code checked for hremote_node presence and skipped
-ath11k_core_coldboot_cal_support() in the other switch case but now
-everything is driven entirely on the values of the resource struct.
+[ Upstream commit baeb66fbd4201d1c4325074e78b1f557dff89b5b ]
 
-resource_size() (in this case) is wrongly assumed to return a size of
-zero if the passed resource struct is init to zero. This is not the case
-as a resource struct should be always init with correct values (or at
-best set the end value to -1 to signal it's not configured)
-(the return value of resource_size() for a resource struct with start
-and end set to zero is 1)
+A race condition during gadget teardown can lead to a use-after-free
+in usb_gadget_state_work(), as reported by KASAN:
 
-On top of this, using resource_size() to check if a resource struct is
-initialized or not is generally wrong and other measure should be used
-instead.
+  BUG: KASAN: invalid-access in sysfs_notify+0x2c/0xd0
+  Workqueue: events usb_gadget_state_work
 
-To better handle this, use the DEFINE_RES macro to initialize the
-resource struct and set the IORESOURCE_UNSET flag by default.
+The fundamental race occurs because a concurrent event (e.g., an
+interrupt) can call usb_gadget_set_state() and schedule gadget->work
+at any time during the cleanup process in usb_del_gadget().
 
-Replace the resource_size() check with checking for the resource struct
-flags and check if it's IORESOURCE_UNSET.
+Commit 399a45e5237c ("usb: gadget: core: flush gadget workqueue after
+device removal") attempted to fix this by moving flush_work() to after
+device_del(). However, this does not fully solve the race, as a new
+work item can still be scheduled *after* flush_work() completes but
+before the gadget's memory is freed, leading to the same use-after-free.
 
-This change effectively restore the original logic and restore correct
-loading of the ath11k firmware (restoring correct functionality of
-Wi-Fi)
+This patch fixes the race condition robustly by introducing a 'teardown'
+flag and a 'state_lock' spinlock to the usb_gadget struct. The flag is
+set during cleanup in usb_del_gadget() *before* calling flush_work() to
+prevent any new work from being scheduled once cleanup has commenced.
+The scheduling site, usb_gadget_set_state(), now checks this flag under
+the lock before queueing the work, thus safely closing the race window.
 
-Cc: stable@vger.kernel.org
-Fixes: 900730dc4705 ("wifi: ath: Use of_reserved_mem_region_to_resource() for "memory-region"")
-Link: https://lore.kernel.org/all/20251207215359.28895-1-ansuelsmth@gmail.com/T/#m990492684913c5a158ff0e5fc90697d8ad95351b
-Cc: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Fixes: 5702f75375aa9 ("usb: gadget: udc-core: move sysfs_notify() to a workqueue")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Jimmy Hu <hhhuuu@google.com>
+Link: https://patch.msgid.link/20251023054945.233861-1-hhhuuu@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/qmi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/gadget/udc/core.c | 17 ++++++++++++++++-
+ include/linux/usb/gadget.h    |  5 +++++
+ 2 files changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
-index ff6a97e328b8..afa663c00620 100644
---- a/drivers/net/wireless/ath/ath11k/qmi.c
-+++ b/drivers/net/wireless/ath/ath11k/qmi.c
-@@ -2039,8 +2039,8 @@ static int ath11k_qmi_alloc_target_mem_chunk(struct ath11k_base *ab)
- 
- static int ath11k_qmi_assign_target_mem_chunk(struct ath11k_base *ab)
+diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
+index b59b6900e7051..06ed816638b9f 100644
+--- a/drivers/usb/gadget/udc/core.c
++++ b/drivers/usb/gadget/udc/core.c
+@@ -1066,8 +1066,13 @@ static void usb_gadget_state_work(struct work_struct *work)
+ void usb_gadget_set_state(struct usb_gadget *gadget,
+ 		enum usb_device_state state)
  {
-+	struct resource res = DEFINE_RES(0, 0, IORESOURCE_UNSET);
- 	struct device *dev = ab->dev;
--	struct resource res = {};
- 	u32 host_ddr_sz;
- 	int i, idx, ret;
++	unsigned long flags;
++
++	spin_lock_irqsave(&gadget->state_lock, flags);
+ 	gadget->state = state;
+-	schedule_work(&gadget->work);
++	if (!gadget->teardown)
++		schedule_work(&gadget->work);
++	spin_unlock_irqrestore(&gadget->state_lock, flags);
+ }
+ EXPORT_SYMBOL_GPL(usb_gadget_set_state);
  
-@@ -2086,7 +2086,7 @@ static int ath11k_qmi_assign_target_mem_chunk(struct ath11k_base *ab)
- 			}
+@@ -1298,6 +1303,8 @@ void usb_initialize_gadget(struct device *parent, struct usb_gadget *gadget,
+ 		void (*release)(struct device *dev))
+ {
+ 	dev_set_name(&gadget->dev, "gadget");
++	spin_lock_init(&gadget->state_lock);
++	gadget->teardown = false;
+ 	INIT_WORK(&gadget->work, usb_gadget_state_work);
+ 	gadget->dev.parent = parent;
  
- 			if (ath11k_core_coldboot_cal_support(ab)) {
--				if (resource_size(&res)) {
-+				if (res.flags != IORESOURCE_UNSET) {
- 					ab->qmi.target_mem[idx].paddr =
- 							res.start + host_ddr_sz;
- 					ab->qmi.target_mem[idx].iaddr =
+@@ -1478,6 +1485,7 @@ static void usb_gadget_remove_driver(struct usb_udc *udc)
+ void usb_del_gadget(struct usb_gadget *gadget)
+ {
+ 	struct usb_udc *udc = gadget->udc;
++	unsigned long flags;
+ 
+ 	if (!udc)
+ 		return;
+@@ -1496,6 +1504,13 @@ void usb_del_gadget(struct usb_gadget *gadget)
+ 	mutex_unlock(&udc_lock);
+ 
+ 	kobject_uevent(&udc->dev.kobj, KOBJ_REMOVE);
++	/*
++	 * Set the teardown flag before flushing the work to prevent new work
++	 * from being scheduled while we are cleaning up.
++	 */
++	spin_lock_irqsave(&gadget->state_lock, flags);
++	gadget->teardown = true;
++	spin_unlock_irqrestore(&gadget->state_lock, flags);
+ 	flush_work(&gadget->work);
+ 	device_unregister(&udc->dev);
+ 	device_del(&gadget->dev);
+diff --git a/include/linux/usb/gadget.h b/include/linux/usb/gadget.h
+index 78f78dfbf92a9..36fb243fd83e6 100644
+--- a/include/linux/usb/gadget.h
++++ b/include/linux/usb/gadget.h
+@@ -375,6 +375,9 @@ struct usb_gadget_ops {
+  *	can handle. The UDC must support this and all slower speeds and lower
+  *	number of lanes.
+  * @state: the state we are now (attached, suspended, configured, etc)
++ * @state_lock: Spinlock protecting the `state` and `teardown` members.
++ * @teardown: True if the device is undergoing teardown, used to prevent
++ *	new work from being scheduled during cleanup.
+  * @name: Identifies the controller hardware type.  Used in diagnostics
+  *	and sometimes configuration.
+  * @dev: Driver model state for this abstract device.
+@@ -449,6 +452,8 @@ struct usb_gadget {
+ 	enum usb_ssp_rate		max_ssp_rate;
+ 
+ 	enum usb_device_state		state;
++	spinlock_t			state_lock;
++	bool				teardown;
+ 	const char			*name;
+ 	struct device			dev;
+ 	unsigned			isoch_delay;
 -- 
 2.51.0
 
