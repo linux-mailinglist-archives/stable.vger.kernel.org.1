@@ -1,124 +1,239 @@
-Return-Path: <stable+bounces-200346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DAA2CAD039
-	for <lists+stable@lfdr.de>; Mon, 08 Dec 2025 12:40:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2228CAD32B
+	for <lists+stable@lfdr.de>; Mon, 08 Dec 2025 13:49:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E7A003036CAA
-	for <lists+stable@lfdr.de>; Mon,  8 Dec 2025 11:40:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EE54D3049D00
+	for <lists+stable@lfdr.de>; Mon,  8 Dec 2025 12:47:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6E572FE560;
-	Mon,  8 Dec 2025 11:40:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TN6+RYgh"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB4843128A0;
+	Mon,  8 Dec 2025 12:47:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72CE82798E6
-	for <stable@vger.kernel.org>; Mon,  8 Dec 2025 11:40:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8D3D221FCF;
+	Mon,  8 Dec 2025 12:47:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765194003; cv=none; b=Q7Fp9B0YuiaWUJbNxNrs6j/iiXHqsKp5b56yhuOsscUar8dQpcH7lRAgPnwYQRCtFhp58vJAViHhrQYVzv1sGSIuVoMi2E8SY0wLX9vaR4FR2/ap9R3MxaLXcHy1QkZMKKuxJKN/QIfaGKj+CKxjAfZ2rzslVNa5zJq++FUb15o=
+	t=1765198038; cv=none; b=fIo6yRDNujnyqOpqPAIcANZ5uS9WaNz0IEggUtUvVc3c9/ZyeeWVQI+glBpkwbr6+Iu6vb4+RgGbXwLxiBBU2ZEKAth0r2JbXXRzOQnKyQ6ZgtHc3sfh47xCuopcUxkXKB+y2geFX6nw+F9h/QoDENf4B3a6wOlZPI4R2vkyY2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765194003; c=relaxed/simple;
-	bh=+VedepN79/o44F1baJsCXwt32JjhjzqveqI+A5ID6IM=;
+	s=arc-20240116; t=1765198038; c=relaxed/simple;
+	bh=P0ubJJKxEVDXiytzW+1D+A2oljwWKuKAhLPU2XzbyTw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BBDQfg88s83nJHyHxPniH/JH5XWIiPaW1pwpLRRviG3DFqQZui7uS4qrQfWuhDfevmTCGhFQHDiELWZQ8ltL+R90SZW/TG+bwz6I/bGavh9YJOeqpHTZe5HVDg3iUYoqGPxmegXuas7b0exeav5y4EKsI7J4TuYAKDi1W8ZDahE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TN6+RYgh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD8A4C4CEF1;
-	Mon,  8 Dec 2025 11:40:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765194001;
-	bh=+VedepN79/o44F1baJsCXwt32JjhjzqveqI+A5ID6IM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=TN6+RYghR8zGOLKuSd3feWR1F3vsCgjxDdO+58UcpBNgS78FnOrZ60OqxxUTds9jE
-	 m/+In2uMEhuT/XFZudwc3u7wj495Pm27e3MQJcpbnlOz9Ahzz6bT6fdXcrT1O25cHf
-	 roMmf6uzATf5vwwzkZVNbKtZj9zT2c61oCKiSLzGeGMaPKe+WqChXkoTbes690XBEj
-	 Yc7amLyDXXjnQ+m5j7fuFL1zTz/UNtqW3GoRXeKxnlGj/9RjptZEUE5pBnG6uMKu1s
-	 KOO/KU/xbeXBFqyRmQev+NIRENOO7JtGDGzlKixLLfezlxWsQD0WQRmzuMtGKlCO9d
-	 hRULy430FSl9Q==
-Message-ID: <431b7386-25c8-47ec-a6d2-c742606f9cac@kernel.org>
-Date: Mon, 8 Dec 2025 12:39:58 +0100
+	 In-Reply-To:Content-Type; b=QTanAc6nkL28e15+iIlPjFjjG3Yr+YzNTxg8QQ9uooRpK0V8oZEP0g8bn4J+FGiqVMwy/ygl1afm/eXXIW+idKPAbSV7MnzfISWeYfcW1eEezyAQzC/m5oGwR3X+et1n25BqME7ZbQp0LYt3jnlg3pzEgLRbl8WORsbL6GlN+OI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DDE931691;
+	Mon,  8 Dec 2025 04:47:07 -0800 (PST)
+Received: from [10.1.31.65] (e127648.arm.com [10.1.31.65])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8840F3F740;
+	Mon,  8 Dec 2025 04:47:13 -0800 (PST)
+Message-ID: <6347bf83-545b-4e85-a5af-1d0c7ea24844@arm.com>
+Date: Mon, 8 Dec 2025 12:47:11 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH 6.6.y] mptcp: Initialise rcv_mss before calling
- tcp_send_active_reset() in mptcp_do_fastclose().
-Content-Language: en-GB, fr-BE
-To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
-Cc: Kuniyuki Iwashima <kuniyu@google.com>,
- syzbot+3a92d359bc2ec6255a33@syzkaller.appspotmail.com,
- Paolo Abeni <pabeni@redhat.com>
-References: <2025120334-preamble-cobalt-4ca0@gregkh>
- <20251208113600.277918-1-sashal@kernel.org>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20251208113600.277918-1-sashal@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: Performance regressions introduced via Revert "cpuidle: menu:
+ Avoid discarding useful information" on 5.15 LTS
+To: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>,
+ Doug Smythies <dsmythies@telus.net>
+Cc: 'Sasha Levin' <sashal@kernel.org>,
+ 'Greg Kroah-Hartman' <gregkh@linuxfoundation.org>, linux-pm@vger.kernel.org,
+ stable@vger.kernel.org, "'Rafael J. Wysocki'" <rafael@kernel.org>,
+ 'Daniel Lezcano' <daniel.lezcano@linaro.org>
+References: <d4690be7-9b81-498e-868b-fb4f1d558e08@oracle.com>
+ <39c7d882-6711-4178-bce6-c1e4fc909b84@arm.com>
+ <005401dc64a4$75f1d770$61d58650$@telus.net>
+ <b36a7037-ca96-49ec-9b39-6e9808d6718c@oracle.com>
+Content-Language: en-US
+From: Christian Loehle <christian.loehle@arm.com>
+In-Reply-To: <b36a7037-ca96-49ec-9b39-6e9808d6718c@oracle.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi Sasha,
-
-On 08/12/2025 12:36, Sasha Levin wrote:
-> From: Kuniyuki Iwashima <kuniyu@google.com>
+On 12/8/25 11:33, Harshvardhan Jha wrote:
+> Hi Doug,
 > 
-> [ Upstream commit f07f4ea53e22429c84b20832fa098b5ecc0d4e35 ]
+> On 04/12/25 4:00 AM, Doug Smythies wrote:
+>> On 2025.12.03 08:45 Christian Loehle wrote:
+>>> On 12/3/25 16:18, Harshvardhan Jha wrote:
+>>>> Hi there,
+>>>>
+>>>> While running performance benchmarks for the 5.15.196 LTS tags , it was
+>>>> observed that several regressions across different benchmarks is being
+>>>> introduced when compared to the previous 5.15.193 kernel tag. Running an
+>>>> automated bisect on both of them narrowed down the culprit commit to:
+>>>> - 5666bcc3c00f7 Revert "cpuidle: menu: Avoid discarding useful
+>>>> information" for 5.15
+>>>>
+>>>> Regressions on 5.15.196 include:
+>>>> -9.3% : Phoronix pts/sqlite using 2 processes on OnPrem X6-2
+>>>> -6.3% : Phoronix system/sqlite on OnPrem X6-2
+>>>> -18%  : rds-stress -M 1 (readonly rdma-mode) metrics with 1 depth & 1
+>>>> thread & 1M buffer size on OnPrem X6-2
+>>>> -4 -> -8% : rds-stress -M 2 (writeonly rdma-mode) metrics with 1 depth &
+>>>> 1 thread & 1M buffer size on OnPrem X6-2
+>>>> Up to -30% : Some Netpipe metrics on OnPrem X5-2
+>>>>
+>>>> The culprit commits' messages mention that these reverts were done due
+>>>> to performance regressions introduced in Intel Jasper Lake systems but
+>>>> this revert is causing issues in other systems unfortunately. I wanted
+>>>> to know the maintainers' opinion on how we should proceed in order to
+>>>> fix this. If we reapply it'll bring back the previous regressions on
+>>>> Jasper Lake systems and if we don't revert it then it's stuck with
+>>>> current regressions. If this problem has been reported before and a fix
+>>>> is in the works then please let me know I shall follow developments to
+>>>> that mail thread.
+>>> The discussion regarding this can be found here:
+>>> https://urldefense.com/v3/__https://lore.kernel.org/lkml/36iykr223vmcfsoysexug6s274nq2oimcu55ybn6ww4il3g3cv@cohflgdbpnq7/__;!!ACWV5N9M2RV99hQ!MWXEz_wRbaLyJxDign2EXci2qNzAPpCyhi8qIORMdReh0g_yIVIt-Oqov23KT23A_rGBRRxJ4bHb_e6UQA-b9PW7hw$ 
+>>> we explored an alternative to the full revert here:
+>>> https://urldefense.com/v3/__https://lore.kernel.org/lkml/4687373.LvFx2qVVIh@rafael.j.wysocki/__;!!ACWV5N9M2RV99hQ!MWXEz_wRbaLyJxDign2EXci2qNzAPpCyhi8qIORMdReh0g_yIVIt-Oqov23KT23A_rGBRRxJ4bHb_e6UQA9PSf_uMQ$ 
+>>> unfortunately that didn't lead anywhere useful, so Rafael went with the
+>>> full revert you're seeing now.
+>>>
+>>> Ultimately it seems to me that this "aggressiveness" on deep idle tradeoffs
+>>> will highly depend on your platform, but also your workload, Jasper Lake
+>>> in particular seems to favor deep idle states even when they don't seem
+>>> to be a 'good' choice from a purely cpuidle (governor) perspective, so
+>>> we're kind of stuck with that.
+>>>
+>>> For teo we've discussed a tunable knob in the past, which comes naturally with
+>>> the logic, for menu there's nothing obvious that would be comparable.
+>>> But for teo such a knob didn't generate any further interest (so far).
+>>>
+>>> That's the status, unless I missed anything?
+>> By reading everything in the links Chrsitian provided, you can see
+>> that we had difficulties repeating test results on other platforms.
+>>
+>> Of the tests listed herein, the only one that was easy to repeat on my
+>> test server, was the " Phoronix pts/sqlite" one. I got (summary: no difference):
+>>
+>> Kernel 6.18									Reverted			
+>> pts/sqlite-2.3.0			menu rc4		menu rc1		menu rc1		menu rc3	
+>> 				performance		performance		performance		performance	
+>> test	what			ave			ave			ave			ave	
+>> 1	T/C 1			2.147	-0.2%		2.143	0.0%		2.16	-0.8%		2.156	-0.6%
+>> 2	T/C 2			3.468	0.1%		3.473	0.0%		3.486	-0.4%		3.478	-0.1%
+>> 3	T/C 4			4.336	0.3%		4.35	0.0%		4.355	-0.1%		4.354	-0.1%
+>> 4	T/C 8			5.438	-0.1%		5.434	0.0%		5.456	-0.4%		5.45	-0.3%
+>> 5	T/C 12			6.314	-0.2%		6.299	0.0%		6.307	-0.1%		6.29	0.1%
+>>
+>> Where:
+>> T/C means: Threads / Copies
+>> performance means: intel_pstate CPU frequency scaling driver and the performance CPU frequencay scaling governor.
+>> Data points are in Seconds.
+>> Ave means the average test result. The number of runs per test was increased from the default of 3 to 10.
+>> The reversion was manually applied to kernel 6.18-rc1 for that test.
+>> The reversion was included in kernel 6.18-rc3.
+>> Kernel 6.18-rc4 had another code change to menu.c
+>>
+>> In case the formatting gets messed up, the table is also attached.
+>>
+>> Processor: Intel(R) Core(TM) i5-10600K CPU @ 4.10GHz, 6 cores 12 CPUs.
+>> HWP: Enabled.
+> 
+> I was able to recover performance on 5.15 and 5.4 LTS based kernels
+> after reapplying the revert on X6-2 systems.
+> 
+> Architecture:                x86_64
+>   CPU op-mode(s):            32-bit, 64-bit
+>   Address sizes:             46 bits physical, 48 bits virtual
+>   Byte Order:                Little Endian
+> CPU(s):                      56
+>   On-line CPU(s) list:       0-55
+> Vendor ID:                   GenuineIntel
+>   Model name:                Intel(R) Xeon(R) CPU E5-2690 v4 @ 2.60GHz
+>     CPU family:              6
+>     Model:                   79
+>     Thread(s) per core:      2
+>     Core(s) per socket:      14
+>     Socket(s):               2
+>     Stepping:                1
+>     CPU(s) scaling MHz:      98%
+>     CPU max MHz:             2600.0000
+>     CPU min MHz:             1200.0000
+>     BogoMIPS:                5188.26
+>     Flags:                   fpu vme de pse tsc msr pae mce cx8 apic sep
+> mtrr pg
+>                              e mca cmov pat pse36 clflush dts acpi mmx
+> fxsr sse 
+>                              sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp
+> lm cons
+>                              tant_tsc arch_perfmon pebs bts rep_good
+> nopl xtopol
+>                              ogy nonstop_tsc cpuid aperfmperf pni
+> pclmulqdq dtes
+>                              64 monitor ds_cpl vmx smx est tm2 ssse3
+> sdbg fma cx
+>                              16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic
+> movbe po
+>                              pcnt tsc_deadline_timer aes xsave avx f16c
+> rdrand l
+>                              ahf_lm abm 3dnowprefetch cpuid_fault epb
+> cat_l3 cdp
+>                              _l3 pti intel_ppin ssbd ibrs ibpb stibp
+> tpr_shadow 
+>                              flexpriority ept vpid ept_ad fsgsbase
+> tsc_adjust bm
+>                              i1 hle avx2 smep bmi2 erms invpcid rtm cqm
+> rdt_a rd
+>                              seed adx smap intel_pt xsaveopt cqm_llc
+> cqm_occup_l
+>                              lc cqm_mbm_total cqm_mbm_local dtherm arat
+> pln pts 
+>                              vnmi md_clear flush_l1d
+> Virtualization features:     
+>   Virtualization:            VT-x
+> Caches (sum of all):         
+>   L1d:                       896 KiB (28 instances)
+>   L1i:                       896 KiB (28 instances)
+>   L2:                        7 MiB (28 instances)
+>   L3:                        70 MiB (2 instances)
+> NUMA:                        
+>   NUMA node(s):              2
+>   NUMA node0 CPU(s):         0-13,28-41
+>   NUMA node1 CPU(s):         14-27,42-55
+> Vulnerabilities:             
+>   Gather data sampling:      Not affected
+>   Indirect target selection: Not affected
+>   Itlb multihit:             KVM: Mitigation: Split huge pages
+>   L1tf:                      Mitigation; PTE Inversion; VMX conditional
+> cache fl
+>                              ushes, SMT vulnerable
+>   Mds:                       Mitigation; Clear CPU buffers; SMT vulnerable
+>   Meltdown:                  Mitigation; PTI
+>   Mmio stale data:           Mitigation; Clear CPU buffers; SMT vulnerable
+>   Reg file data sampling:    Not affected
+>   Retbleed:                  Not affected
+>   Spec rstack overflow:      Not affected
+>   Spec store bypass:         Mitigation; Speculative Store Bypass
+> disabled via p
+>                              rctl
+>   Spectre v1:                Mitigation; usercopy/swapgs barriers and
+> __user poi
+>                              nter sanitization
+>   Spectre v2:                Mitigation; Retpolines; IBPB conditional;
+> IBRS_FW; 
+>                              STIBP conditional; RSB filling; PBRSB-eIBRS
+> Not aff
+>                              ected; BHI Not affected
+>   Srbds:                     Not affected
+>   Tsa:                       Not affected
+>   Tsx async abort:           Mitigation; Clear CPU buffers; SMT vulnerable
+>   Vmscape:                   Mitigation; IBPB before exit to userspace
+> 
 
-Thank you for this backport (and all the others), I was just going to
-send the exact same patch :)
-
-Cheers,
-Matt
--- 
-Sponsored by the NGI0 Core fund.
-
+It would be nice to get the idle states here, ideally how the states' usage changed
+from base to revert.
+The mentioned thread did this and should show how it can be done, but a dump of
+cat /sys/devices/system/cpu/cpu*/cpuidle/state*/*
+before and after the workload is usually fine to work with:
+https://lore.kernel.org/linux-pm/8da42386-282e-4f97-af93-4715ae206361@arm.com/
 
