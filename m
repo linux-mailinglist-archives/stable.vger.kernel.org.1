@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-200322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6751CAC211
-	for <lists+stable@lfdr.de>; Mon, 08 Dec 2025 07:17:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4034ACAC214
+	for <lists+stable@lfdr.de>; Mon, 08 Dec 2025 07:17:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 35F4D3011B1C
+	by sea.lore.kernel.org (Postfix) with ESMTP id D484D301B2D9
 	for <lists+stable@lfdr.de>; Mon,  8 Dec 2025 06:17:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 635C22192E4;
-	Mon,  8 Dec 2025 06:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3315255E53;
+	Mon,  8 Dec 2025 06:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uqNtA8MV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yp0loFka"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22FAF2046BA
-	for <stable@vger.kernel.org>; Mon,  8 Dec 2025 06:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62FD221E091
+	for <stable@vger.kernel.org>; Mon,  8 Dec 2025 06:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765174651; cv=none; b=tzrzRjqXNfW9mLcpY7MeDRE2NlqcnX+vS9JjEgdR2CbtkOxKws8pnvN/rDgRFct0HKRb7n/m3KABTEpDaI5AHkhsFx3DxAkQufgL+cyDn0VI6ihmrqwDmtgbpbTE+NzujuU5eu3l8y/qybTntZk5fNlEh82IPpGk5Dk87/ehTKc=
+	t=1765174652; cv=none; b=AJkc5V88+ua9xmINKh+Y0QOMa3aXguY8h4tMfhSu55M/OajouhAhfYWC6WTCIFhamJUyWmsSxuaxqeA4aFJ0H0mkrMWxdb77UL221fFlNLKAPIv+nfi4t65CaA5LNz3RsBqIzagMr62xKeFR78V47Go5gkkamLZrnc/2ESdSpKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765174651; c=relaxed/simple;
-	bh=IdY8X621cUlBimp5gv2audKL21hwswTr0tINH8HyE2A=;
+	s=arc-20240116; t=1765174652; c=relaxed/simple;
+	bh=DCYB8lK9EPOHyz8o6uelO1HD8V1i1DQUChH6o5wwzl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jrOkKYzB3vh80XAjonNlMzGNdsesu3e/10L9HUhfkefzAS++ZhAOtjN1YMARH5K5PgwTgYRBvwrXd2UDPfE00Kcu3S68DgYqodSgo+KrNefUl5Ma9Pi6BbMUGw2tzMPQldno+dXrNZfZMl5OvcCmR2sBn3q77B0IyiFvD1Sr3ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uqNtA8MV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D803EC4CEF1;
-	Mon,  8 Dec 2025 06:17:29 +0000 (UTC)
+	 MIME-Version; b=fHHDj9+LpiNxkaAg/zlXOmC3v0cWDE4LpklhoA6p1yxXviwAWrVDJYB9pYqRBwNvDXm4t7hm/O06CRbVSylb9e7V4EJQCopKqqJDHTJ0M+vWftaJ0PDNYSmBR/BGWdGRqwhEY8viILwKaMaC9ovpGt4yg3Q/qh1pTCxGd9gDbX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yp0loFka; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A20EC116B1;
+	Mon,  8 Dec 2025 06:17:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765174650;
-	bh=IdY8X621cUlBimp5gv2audKL21hwswTr0tINH8HyE2A=;
+	s=k20201202; t=1765174651;
+	bh=DCYB8lK9EPOHyz8o6uelO1HD8V1i1DQUChH6o5wwzl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uqNtA8MVCoGX5nXtepDTvNrmfluctQMwKFZQ8bWP5lXWPtQgGcZyr1ySVJnaLS1vo
-	 PwT4HYZoeRLB2297jz/Weue+hsjjm6fIiIHUeQs3u58vwAPv7wn0Ox7RIBmrHHiBO4
-	 vzGABZ/JuIc9l7rGljYu/kwEMvaV2HsGHq7a4XfU7Lp2bHAG9hcm23i0fngUYKxidH
-	 6KekQlHGPH0/P4XjwVNSccisIi0qIPtsoOV3r0+PUElNu/N5zKflXUR/gSUHUab+q5
-	 QoxLcyc6fDHLHhP7AJwOkhp8JByVb98lSaaVqPj5XYoq/U2RWA4qkU4Evc2j+op2hO
-	 ZoiHAdw70Xk1w==
+	b=Yp0loFkam5pI2XuQMWeVPXmAAxMuIJIIqCqV71zsmArbwu569mcq0clob5NhQALQj
+	 DnTHJRfXsv9qOoDxRhdrHEHTTw6Dr3CEzIujLNgwFXQredRlAbbnCuGPXI4tQDf+WJ
+	 eO+88aixz7VVfMAgFCfj0lUXz7hyDaaRxPhbgkR2xMIEi+tf3zrrZzIdXXOk0ePCTj
+	 BPPm8LbUPwggv2FbIKl6kzSkpsNBGumOvdh8fSkU+1J+5yBDAJU6/ZwfnHQ1mUCwZU
+	 wCEgcd1QVW7xXnrTdvkG2ElC8us2c43mnCjwLD/nbJ2O7cOrcDOlVhfux3tdtXcSHl
+	 3YQERBIE9VznQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
+Cc: Omar Sandoval <osandov@fb.com>,
+	Sean Christopherson <seanjc@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 1/2] KVM: x86/mmu: Use EMULTYPE flag to track write #PFs to shadow pages
-Date: Mon,  8 Dec 2025 01:17:26 -0500
-Message-ID: <20251208061727.249698-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y 2/2] KVM: SVM: Don't skip unrelated instruction if INT3/INTO is replaced
+Date: Mon,  8 Dec 2025 01:17:27 -0500
+Message-ID: <20251208061727.249698-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025120802-remedy-glimmer-fc9d@gregkh>
+In-Reply-To: <20251208061727.249698-1-sashal@kernel.org>
 References: <2025120802-remedy-glimmer-fc9d@gregkh>
+ <20251208061727.249698-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,237 +59,205 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Sean Christopherson <seanjc@google.com>
+From: Omar Sandoval <osandov@fb.com>
 
-[ Upstream commit 258d985f6eb360c9c7aacd025d0dbc080a59423f ]
+[ Upstream commit 4da3768e1820cf15cced390242d8789aed34f54d ]
 
-Use a new EMULTYPE flag, EMULTYPE_WRITE_PF_TO_SP, to track page faults
-on self-changing writes to shadowed page tables instead of propagating
-that information to the emulator via a semi-persistent vCPU flag.  Using
-a flag in "struct kvm_vcpu_arch" is confusing, especially as implemented,
-as it's not at all obvious that clearing the flag only when emulation
-actually occurs is correct.
+When re-injecting a soft interrupt from an INT3, INT0, or (select) INTn
+instruction, discard the exception and retry the instruction if the code
+stream is changed (e.g. by a different vCPU) between when the CPU
+executes the instruction and when KVM decodes the instruction to get the
+next RIP.
 
-E.g. if KVM sets the flag and then retries the fault without ever getting
-to the emulator, the flag will be left set for future calls into the
-emulator.  But because the flag is consumed if and only if both
-EMULTYPE_PF and EMULTYPE_ALLOW_RETRY_PF are set, and because
-EMULTYPE_ALLOW_RETRY_PF is deliberately not set for direct MMUs, emulated
-MMIO, or while L2 is active, KVM avoids false positives on a stale flag
-since FNAME(page_fault) is guaranteed to be run and refresh the flag
-before it's ultimately consumed by the tail end of reexecute_instruction().
+As effectively predicted by commit 6ef88d6e36c2 ("KVM: SVM: Re-inject
+INT3/INTO instead of retrying the instruction"), failure to verify that
+the correct INTn instruction was decoded can effectively clobber guest
+state due to decoding the wrong instruction and thus specifying the
+wrong next RIP.
 
+The bug most often manifests as "Oops: int3" panics on static branch
+checks in Linux guests.  Enabling or disabling a static branch in Linux
+uses the kernel's "text poke" code patching mechanism.  To modify code
+while other CPUs may be executing that code, Linux (temporarily)
+replaces the first byte of the original instruction with an int3 (opcode
+0xcc), then patches in the new code stream except for the first byte,
+and finally replaces the int3 with the first byte of the new code
+stream.  If a CPU hits the int3, i.e. executes the code while it's being
+modified, then the guest kernel must look up the RIP to determine how to
+handle the #BP, e.g. by emulating the new instruction.  If the RIP is
+incorrect, then this lookup fails and the guest kernel panics.
+
+The bug reproduces almost instantly by hacking the guest kernel to
+repeatedly check a static branch[1] while running a drgn script[2] on
+the host to constantly swap out the memory containing the guest's TSS.
+
+[1]: https://gist.github.com/osandov/44d17c51c28c0ac998ea0334edf90b5a
+[2]: https://gist.github.com/osandov/10e45e45afa29b11e0c7209247afc00b
+
+Fixes: 6ef88d6e36c2 ("KVM: SVM: Re-inject INT3/INTO instead of retrying the instruction")
+Cc: stable@vger.kernel.org
+Co-developed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Omar Sandoval <osandov@fb.com>
+Link: https://patch.msgid.link/1cc6dcdf36e3add7ee7c8d90ad58414eeb6c3d34.1762278762.git.osandov@fb.com
 Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-Id: <20230202182817.407394-2-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Stable-dep-of: 4da3768e1820 ("KVM: SVM: Don't skip unrelated instruction if INT3/INTO is replaced")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/kvm_host.h | 37 ++++++++++++++++++---------------
- arch/x86/kvm/mmu/mmu.c          |  5 +++--
- arch/x86/kvm/mmu/mmu_internal.h | 12 ++++++++++-
- arch/x86/kvm/mmu/paging_tmpl.h  |  4 +---
- arch/x86/kvm/x86.c              | 15 ++-----------
- 5 files changed, 37 insertions(+), 36 deletions(-)
+ arch/x86/include/asm/kvm_host.h |  9 +++++++++
+ arch/x86/kvm/svm/svm.c          | 24 +++++++++++++-----------
+ arch/x86/kvm/x86.c              | 21 +++++++++++++++++++++
+ 3 files changed, 43 insertions(+), 11 deletions(-)
 
 diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index d0229323ca634..dd7b4c5f5436c 100644
+index dd7b4c5f5436c..fe5c0f86ae389 100644
 --- a/arch/x86/include/asm/kvm_host.h
 +++ b/arch/x86/include/asm/kvm_host.h
-@@ -890,23 +890,6 @@ struct kvm_vcpu_arch {
- 
- 	u64 msr_kvm_poll_control;
- 
--	/*
--	 * Indicates the guest is trying to write a gfn that contains one or
--	 * more of the PTEs used to translate the write itself, i.e. the access
--	 * is changing its own translation in the guest page tables.  KVM exits
--	 * to userspace if emulation of the faulting instruction fails and this
--	 * flag is set, as KVM cannot make forward progress.
--	 *
--	 * If emulation fails for a write to guest page tables, KVM unprotects
--	 * (zaps) the shadow page for the target gfn and resumes the guest to
--	 * retry the non-emulatable instruction (on hardware).  Unprotecting the
--	 * gfn doesn't allow forward progress for a self-changing access because
--	 * doing so also zaps the translation for the gfn, i.e. retrying the
--	 * instruction will hit a !PRESENT fault, which results in a new shadow
--	 * page and sends KVM back to square one.
--	 */
--	bool write_fault_to_shadow_pgtable;
--
- 	/* set at EPT violation at this point */
- 	unsigned long exit_qualification;
- 
-@@ -1825,6 +1808,25 @@ u64 vcpu_tsc_khz(struct kvm_vcpu *vcpu);
-  * EMULTYPE_COMPLETE_USER_EXIT - Set when the emulator should update interruptibility
-  *				 state and inject single-step #DBs after skipping
-  *				 an instruction (after completing userspace I/O).
+@@ -1827,6 +1827,11 @@ u64 vcpu_tsc_khz(struct kvm_vcpu *vcpu);
+  *			     the gfn, i.e. retrying the instruction will hit a
+  *			     !PRESENT fault, which results in a new shadow page
+  *			     and sends KVM back to square one.
 + *
-+ * EMULTYPE_WRITE_PF_TO_SP - Set when emulating an intercepted page fault that
-+ *			     is attempting to write a gfn that contains one or
-+ *			     more of the PTEs used to translate the write itself,
-+ *			     and the owning page table is being shadowed by KVM.
-+ *			     If emulation of the faulting instruction fails and
-+ *			     this flag is set, KVM will exit to userspace instead
-+ *			     of retrying emulation as KVM cannot make forward
-+ *			     progress.
-+ *
-+ *			     If emulation fails for a write to guest page tables,
-+ *			     KVM unprotects (zaps) the shadow page for the target
-+ *			     gfn and resumes the guest to retry the non-emulatable
-+ *			     instruction (on hardware).  Unprotecting the gfn
-+ *			     doesn't allow forward progress for a self-changing
-+ *			     access because doing so also zaps the translation for
-+ *			     the gfn, i.e. retrying the instruction will hit a
-+ *			     !PRESENT fault, which results in a new shadow page
-+ *			     and sends KVM back to square one.
++ * EMULTYPE_SKIP_SOFT_INT - Set in combination with EMULTYPE_SKIP to only skip
++ *                          an instruction if it could generate a given software
++ *                          interrupt, which must be encoded via
++ *                          EMULTYPE_SET_SOFT_INT_VECTOR().
   */
  #define EMULTYPE_NO_DECODE	    (1 << 0)
  #define EMULTYPE_TRAP_UD	    (1 << 1)
-@@ -1834,6 +1836,7 @@ u64 vcpu_tsc_khz(struct kvm_vcpu *vcpu);
- #define EMULTYPE_VMWARE_GP	    (1 << 5)
+@@ -1837,6 +1842,10 @@ u64 vcpu_tsc_khz(struct kvm_vcpu *vcpu);
  #define EMULTYPE_PF		    (1 << 6)
  #define EMULTYPE_COMPLETE_USER_EXIT (1 << 7)
-+#define EMULTYPE_WRITE_PF_TO_SP	    (1 << 8)
+ #define EMULTYPE_WRITE_PF_TO_SP	    (1 << 8)
++#define EMULTYPE_SKIP_SOFT_INT	    (1 << 9)
++
++#define EMULTYPE_SET_SOFT_INT_VECTOR(v)	((u32)((v) & 0xff) << 16)
++#define EMULTYPE_GET_SOFT_INT_VECTOR(e)	(((e) >> 16) & 0xff)
  
  int kvm_emulate_instruction(struct kvm_vcpu *vcpu, int emulation_type);
  int kvm_emulate_instruction_from_buffer(struct kvm_vcpu *vcpu,
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 2fa130c4c1734..04d060f370535 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -4152,7 +4152,7 @@ void kvm_arch_async_page_ready(struct kvm_vcpu *vcpu, struct kvm_async_pf *work)
- 	      work->arch.cr3 != kvm_mmu_get_guest_pgd(vcpu, vcpu->arch.mmu))
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 00fb1c18e23a8..a2706b49ffa3d 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -370,6 +370,7 @@ static bool svm_can_emulate_instruction(struct kvm_vcpu *vcpu, int emul_type,
+ 					void *insn, int insn_len);
+ 
+ static int __svm_skip_emulated_instruction(struct kvm_vcpu *vcpu,
++					   int emul_type,
+ 					   bool commit_side_effects)
+ {
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+@@ -399,7 +400,7 @@ static int __svm_skip_emulated_instruction(struct kvm_vcpu *vcpu,
+ 		if (unlikely(!commit_side_effects))
+ 			old_rflags = svm->vmcb->save.rflags;
+ 
+-		if (!kvm_emulate_instruction(vcpu, EMULTYPE_SKIP))
++		if (!kvm_emulate_instruction(vcpu, emul_type))
+ 			return 0;
+ 
+ 		if (unlikely(!commit_side_effects))
+@@ -417,11 +418,13 @@ static int __svm_skip_emulated_instruction(struct kvm_vcpu *vcpu,
+ 
+ static int svm_skip_emulated_instruction(struct kvm_vcpu *vcpu)
+ {
+-	return __svm_skip_emulated_instruction(vcpu, true);
++	return __svm_skip_emulated_instruction(vcpu, EMULTYPE_SKIP, true);
+ }
+ 
+-static int svm_update_soft_interrupt_rip(struct kvm_vcpu *vcpu)
++static int svm_update_soft_interrupt_rip(struct kvm_vcpu *vcpu, u8 vector)
+ {
++	const int emul_type = EMULTYPE_SKIP | EMULTYPE_SKIP_SOFT_INT |
++			      EMULTYPE_SET_SOFT_INT_VECTOR(vector);
+ 	unsigned long rip, old_rip = kvm_rip_read(vcpu);
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+ 
+@@ -437,7 +440,7 @@ static int svm_update_soft_interrupt_rip(struct kvm_vcpu *vcpu)
+ 	 * in use, the skip must not commit any side effects such as clearing
+ 	 * the interrupt shadow or RFLAGS.RF.
+ 	 */
+-	if (!__svm_skip_emulated_instruction(vcpu, !nrips))
++	if (!__svm_skip_emulated_instruction(vcpu, emul_type, !nrips))
+ 		return -EIO;
+ 
+ 	rip = kvm_rip_read(vcpu);
+@@ -473,7 +476,7 @@ static void svm_inject_exception(struct kvm_vcpu *vcpu)
+ 	kvm_deliver_exception_payload(vcpu, ex);
+ 
+ 	if (kvm_exception_is_soft(ex->vector) &&
+-	    svm_update_soft_interrupt_rip(vcpu))
++	    svm_update_soft_interrupt_rip(vcpu, ex->vector))
  		return;
  
--	kvm_mmu_do_page_fault(vcpu, work->cr2_or_gpa, 0, true);
-+	kvm_mmu_do_page_fault(vcpu, work->cr2_or_gpa, 0, true, NULL);
+ 	svm->vmcb->control.event_inj = ex->vector
+@@ -3523,11 +3526,12 @@ static void svm_inject_nmi(struct kvm_vcpu *vcpu)
+ 
+ static void svm_inject_irq(struct kvm_vcpu *vcpu, bool reinjected)
+ {
++	struct kvm_queued_interrupt *intr = &vcpu->arch.interrupt;
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+ 	u32 type;
+ 
+-	if (vcpu->arch.interrupt.soft) {
+-		if (svm_update_soft_interrupt_rip(vcpu))
++	if (intr->soft) {
++		if (svm_update_soft_interrupt_rip(vcpu, intr->nr))
+ 			return;
+ 
+ 		type = SVM_EVTINJ_TYPE_SOFT;
+@@ -3535,12 +3539,10 @@ static void svm_inject_irq(struct kvm_vcpu *vcpu, bool reinjected)
+ 		type = SVM_EVTINJ_TYPE_INTR;
+ 	}
+ 
+-	trace_kvm_inj_virq(vcpu->arch.interrupt.nr,
+-			   vcpu->arch.interrupt.soft, reinjected);
++	trace_kvm_inj_virq(intr->nr, intr->soft, reinjected);
+ 	++vcpu->stat.irq_injections;
+ 
+-	svm->vmcb->control.event_inj = vcpu->arch.interrupt.nr |
+-				       SVM_EVTINJ_VALID | type;
++	svm->vmcb->control.event_inj = intr->nr | SVM_EVTINJ_VALID | type;
  }
  
- static int kvm_faultin_pfn(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
-@@ -5580,7 +5580,8 @@ int noinline kvm_mmu_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa, u64 err
- 
- 	if (r == RET_PF_INVALID) {
- 		r = kvm_mmu_do_page_fault(vcpu, cr2_or_gpa,
--					  lower_32_bits(error_code), false);
-+					  lower_32_bits(error_code), false,
-+					  &emulation_type);
- 		if (KVM_BUG_ON(r == RET_PF_INVALID, vcpu->kvm))
- 			return -EIO;
- 	}
-diff --git a/arch/x86/kvm/mmu/mmu_internal.h b/arch/x86/kvm/mmu/mmu_internal.h
-index 0a9d5f2925c33..5e4be3bb3624c 100644
---- a/arch/x86/kvm/mmu/mmu_internal.h
-+++ b/arch/x86/kvm/mmu/mmu_internal.h
-@@ -223,6 +223,13 @@ struct kvm_page_fault {
- 	kvm_pfn_t pfn;
- 	hva_t hva;
- 	bool map_writable;
-+
-+	/*
-+	 * Indicates the guest is trying to write a gfn that contains one or
-+	 * more of the PTEs used to translate the write itself, i.e. the access
-+	 * is changing its own translation in the guest page tables.
-+	 */
-+	bool write_fault_to_shadow_pgtable;
- };
- 
- int kvm_tdp_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault);
-@@ -256,7 +263,7 @@ enum {
- };
- 
- static inline int kvm_mmu_do_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
--					u32 err, bool prefetch)
-+					u32 err, bool prefetch, int *emulation_type)
- {
- 	struct kvm_page_fault fault = {
- 		.addr = cr2_or_gpa,
-@@ -290,6 +297,9 @@ static inline int kvm_mmu_do_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
- 	else
- 		r = vcpu->arch.mmu->page_fault(vcpu, &fault);
- 
-+	if (fault.write_fault_to_shadow_pgtable && emulation_type)
-+		*emulation_type |= EMULTYPE_WRITE_PF_TO_SP;
-+
- 	/*
- 	 * Similar to above, prefetch faults aren't truly spurious, and the
- 	 * async #PF path doesn't do emulation.  Do count faults that are fixed
-diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmpl.h
-index 685560a45bf60..1c7d73b8081c6 100644
---- a/arch/x86/kvm/mmu/paging_tmpl.h
-+++ b/arch/x86/kvm/mmu/paging_tmpl.h
-@@ -829,10 +829,8 @@ static int FNAME(page_fault)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
- 	if (r)
- 		return r;
- 
--	vcpu->arch.write_fault_to_shadow_pgtable = false;
--
- 	is_self_change_mapping = FNAME(is_self_change_mapping)(vcpu,
--	      &walker, fault->user, &vcpu->arch.write_fault_to_shadow_pgtable);
-+	      &walker, fault->user, &fault->write_fault_to_shadow_pgtable);
- 
- 	if (is_self_change_mapping)
- 		fault->max_level = PG_LEVEL_4K;
+ void svm_complete_interrupt_delivery(struct kvm_vcpu *vcpu, int delivery_mode,
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index b349e1fbf9dbc..562ca89ceb638 100644
+index 562ca89ceb638..355c3e52f68cb 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -8527,7 +8527,6 @@ static int handle_emulation_failure(struct kvm_vcpu *vcpu, int emulation_type)
+@@ -8835,6 +8835,23 @@ static bool is_vmware_backdoor_opcode(struct x86_emulate_ctxt *ctxt)
+ 	return false;
  }
  
- static bool reexecute_instruction(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
--				  bool write_fault_to_shadow_pgtable,
- 				  int emulation_type)
- {
- 	gpa_t gpa = cr2_or_gpa;
-@@ -8598,7 +8597,7 @@ static bool reexecute_instruction(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
- 	 * be fixed by unprotecting shadow page and it should
- 	 * be reported to userspace.
++static bool is_soft_int_instruction(struct x86_emulate_ctxt *ctxt,
++				    int emulation_type)
++{
++	u8 vector = EMULTYPE_GET_SOFT_INT_VECTOR(emulation_type);
++
++	switch (ctxt->b) {
++	case 0xcc:
++		return vector == BP_VECTOR;
++	case 0xcd:
++		return vector == ctxt->src.val;
++	case 0xce:
++		return vector == OF_VECTOR;
++	default:
++		return false;
++	}
++}
++
+ /*
+  * Decode an instruction for emulation.  The caller is responsible for handling
+  * code breakpoints.  Note, manually detecting code breakpoints is unnecessary
+@@ -8925,6 +8942,10 @@ int x86_emulate_instruction(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+ 	 * injecting single-step #DBs.
  	 */
--	return !write_fault_to_shadow_pgtable;
-+	return !(emulation_type & EMULTYPE_WRITE_PF_TO_SP);
- }
- 
- static bool retry_instruction(struct x86_emulate_ctxt *ctxt,
-@@ -8869,20 +8868,12 @@ int x86_emulate_instruction(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
- 	int r;
- 	struct x86_emulate_ctxt *ctxt = vcpu->arch.emulate_ctxt;
- 	bool writeback = true;
--	bool write_fault_to_spt;
- 
- 	if (unlikely(!kvm_can_emulate_insn(vcpu, emulation_type, insn, insn_len)))
- 		return 1;
- 
- 	vcpu->arch.l1tf_flush_l1d = true;
- 
--	/*
--	 * Clear write_fault_to_shadow_pgtable here to ensure it is
--	 * never reused.
--	 */
--	write_fault_to_spt = vcpu->arch.write_fault_to_shadow_pgtable;
--	vcpu->arch.write_fault_to_shadow_pgtable = false;
--
- 	if (!(emulation_type & EMULTYPE_NO_DECODE)) {
- 		kvm_clear_exception_queue(vcpu);
- 
-@@ -8903,7 +8894,6 @@ int x86_emulate_instruction(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
- 				return 1;
- 			}
- 			if (reexecute_instruction(vcpu, cr2_or_gpa,
--						  write_fault_to_spt,
- 						  emulation_type))
- 				return 1;
- 
-@@ -8989,8 +8979,7 @@ int x86_emulate_instruction(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
- 		return 1;
- 
- 	if (r == EMULATION_FAILED) {
--		if (reexecute_instruction(vcpu, cr2_or_gpa, write_fault_to_spt,
--					emulation_type))
-+		if (reexecute_instruction(vcpu, cr2_or_gpa, emulation_type))
- 			return 1;
- 
- 		return handle_emulation_failure(vcpu, emulation_type);
+ 	if (emulation_type & EMULTYPE_SKIP) {
++		if (emulation_type & EMULTYPE_SKIP_SOFT_INT &&
++		    !is_soft_int_instruction(ctxt, emulation_type))
++			return 0;
++
+ 		if (ctxt->mode != X86EMUL_MODE_PROT64)
+ 			ctxt->eip = (u32)ctxt->_eip;
+ 		else
 -- 
 2.51.0
 
