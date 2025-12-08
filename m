@@ -1,177 +1,209 @@
-Return-Path: <stable+bounces-200332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F0AFCACB6E
-	for <lists+stable@lfdr.de>; Mon, 08 Dec 2025 10:43:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF204CACC46
+	for <lists+stable@lfdr.de>; Mon, 08 Dec 2025 10:56:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CB1E43005527
-	for <lists+stable@lfdr.de>; Mon,  8 Dec 2025 09:43:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A692C300B80F
+	for <lists+stable@lfdr.de>; Mon,  8 Dec 2025 09:51:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 525EE322B60;
-	Mon,  8 Dec 2025 09:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 459F925F995;
+	Mon,  8 Dec 2025 09:51:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PuMUtBkg"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C3933218B3;
-	Mon,  8 Dec 2025 09:43:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F068C2D3EDE;
+	Mon,  8 Dec 2025 09:51:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765186993; cv=none; b=fEgioEhDk94gUvxOA+n/s970DR1j3U7GZBLGvYjD/PC6YcXsIPQ2HjRYxa5k2USHYytrP9+uYiP0gn0znbllIIMmHXKbGz0M0PiFTi9V4AgDc+47H8HKVzs7Z6Wr+HRctdzsfLDnbfrQ8db5yZRw+T/WWu2iCajKPz2/vHwA6q0=
+	t=1765187518; cv=none; b=uU6TXM1zHiLsWecn4UxfybJOTMdXyWUiBZ1cqbeaN+22M2FhX7hihtouuyFcVoAGenl0Y3Qd0U56WgsGthwY5pR8D4cPurY0TP9T6G8XsfZWiE1qNxDVFGVj2RBlIFuidcAWvJRnjJ43XFEMkd4T/KTi9cpYd8kIc6uGWAHArCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765186993; c=relaxed/simple;
-	bh=78Dl1vQ2yaBh7z6ugJ5fq/4fwesJC059Jr3yD3ti/O4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=uejwoWmheU41qTqI/lN00t4m6QndAlm/DOXIzd92LeTEllDhuCAtU/aGlB6MKCYsC/2B/ngqVaoC2lnlXV/vNlUB21uXF/bCFODiuNQjUnRiar7w4lWQ8q7eMRI1BVrTabaFHsH+DIS+YOC2wFQC+L2Qt4Dt90peAvO7BPtfvYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from dfae2b116770.home.arpa (unknown [124.16.138.129])
-	by APP-03 (Coremail) with SMTP id rQCowAB3muGVnTZpnbsAAA--.961S2;
-	Mon, 08 Dec 2025 17:42:45 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: ulf.hansson@linaro.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com
-Cc: linux-pm@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] pmdomain: imx: Fix reference count leak in imx_gpc_probe()
-Date: Mon,  8 Dec 2025 09:42:42 +0000
-Message-Id: <20251208094242.17821-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1765187518; c=relaxed/simple;
+	bh=Xw2iBNxEsfLHLYyj6T0lr2n/XtvbD3HgfDh5pPer8o8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IFbcFtO6zoPgiNRMYBsCshKDN/7oGxXmFA1IjeST9cjnmwpLYAZhUoVNxIA7Lh5KIhFUIShdjdyDL+11fwrjX4EqKok2gIvhXn8ebuDcT/dlt25hR7vOxRROW3wq3WFyFjKOUR4LiMobxymSfM2gqQPfwOOPd/gJ1qceUdYGCXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PuMUtBkg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5641C4CEF1;
+	Mon,  8 Dec 2025 09:51:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765187517;
+	bh=Xw2iBNxEsfLHLYyj6T0lr2n/XtvbD3HgfDh5pPer8o8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=PuMUtBkgJmK2N/lYUA6rXhSho+XhXUj7z2cCr09/jqzhoWg5gDniMfiNROJfvZ1iy
+	 TJe9IBxYz6Nbde9qN65QrmpsAZcXJo98IHbL/xQAk69hQk779zfA/ZlRNPF+rsUp8t
+	 KElBdQ1B5xb6EUYbGrwOJ4lNFhgmNrZvzB5DAnLFi1v09+uADuZxwB9txGKuSWitS3
+	 6MPzJYpbs8FaCfhDYflPXx4e8wPiezixCU3bAeDSCqoHw17BNiZzIQZOYGu+vaESMP
+	 /vhDYRME776fHY8F066zFwnEI8NKdOCIzPdSexVIubRamIItNAfvC8Mrvg+JeU4hwd
+	 0zcrDAdE8f+EA==
+Message-ID: <d5691fc8-df8c-4c85-999c-ba6f848e64ed@kernel.org>
+Date: Mon, 8 Dec 2025 10:51:53 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAB3muGVnTZpnbsAAA--.961S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxCF4fWF4ftF47WFyftr4DXFb_yoW5Xw15pF
-	ZrGFWakrWxGF47Ga4xtr1DZas0k3y2yw4jgw47G3WxZFn8tr9rur1Sva4UKr4SkFWkW3W5
-	AF43JFy09F1UZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9C14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
-	n2IY04v7MxkF7I0En4kS14v26r1q6r43MxkIecxEwVAFwVW8uwCF04k20xvY0x0EwIxGrw
-	CFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE
-	14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2
-	IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxK
-	x2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI
-	0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUhmiiUUUUU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAYKA2k2dlSkkAAAsK
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] media: uvcvideo: Fix support for
+ V4L2_CTRL_FLAG_HAS_WHICH_MIN_MAX
+To: Ricardo Ribalda <ribalda@chromium.org>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Hans Verkuil <hverkuil@kernel.org>, Yunke Cao <yunkec@google.com>
+Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20251119-uvc-fix-which-v2-1-67d1520d0ee8@chromium.org>
+Content-Language: en-US, nl
+From: Hans de Goede <hansg@kernel.org>
+In-Reply-To: <20251119-uvc-fix-which-v2-1-67d1520d0ee8@chromium.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-of_get_child_by_name() returns a node pointer with refcount incremented,
-we should use of_node_put() on it when not needed anymore. Add missing
-of_node_put() calls in imx_gpc_probe() to avoid reference count leak.
+Hi,
 
-This commit fixes the following issues:
-1. Add of_node_put(pgc_node) before returning from imx_gpc_probe()
-2. Use goto pattern to consolidate error handling
+On 19-Nov-25 9:17 PM, Ricardo Ribalda wrote:
+> The VIDIOC_G_EXT_CTRLS with which V4L2_CTRL_WHICH_(MIN|MAX)_VAL can only
+> work for controls that have previously announced support for it.
+> 
+> This patch fixes the following v4l2-compliance error:
+> 
+>   info: checking extended control 'User Controls' (0x00980001)
+>   fail: v4l2-test-controls.cpp(980): ret != EINVAL (got 13)
+>         test VIDIOC_G/S/TRY_EXT_CTRLS: FAIL
+> 
+> Fixes: 39d2c891c96e ("media: uvcvideo: support V4L2_CTRL_WHICH_MIN/MAX_VAL")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 
-Fixes: 721cabf6c660 ("soc: imx: move PGC handling to a new GPC driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
- drivers/pmdomain/imx/gpc.c | 31 +++++++++++++++++++++----------
- 1 file changed, 21 insertions(+), 10 deletions(-)
+Thanks patch looks good to me:
 
-diff --git a/drivers/pmdomain/imx/gpc.c b/drivers/pmdomain/imx/gpc.c
-index f18c7e6e75dd..754c60effc8a 100644
---- a/drivers/pmdomain/imx/gpc.c
-+++ b/drivers/pmdomain/imx/gpc.c
-@@ -416,8 +416,10 @@ static int imx_gpc_probe(struct platform_device *pdev)
- 		return 0;
- 
- 	base = devm_platform_ioremap_resource(pdev, 0);
--	if (IS_ERR(base))
--		return PTR_ERR(base);
-+	if (IS_ERR(base)) {
-+		ret = PTR_ERR(base);
-+		goto err_free;
-+	}
- 
- 	regmap = devm_regmap_init_mmio_clk(&pdev->dev, NULL, base,
- 					   &imx_gpc_regmap_config);
-@@ -425,7 +427,7 @@ static int imx_gpc_probe(struct platform_device *pdev)
- 		ret = PTR_ERR(regmap);
- 		dev_err(&pdev->dev, "failed to init regmap: %d\n",
- 			ret);
--		return ret;
-+		goto err_free;
- 	}
- 
- 	/*
-@@ -460,29 +462,33 @@ static int imx_gpc_probe(struct platform_device *pdev)
- 		int domain_index;
- 
- 		ipg_clk = devm_clk_get(&pdev->dev, "ipg");
--		if (IS_ERR(ipg_clk))
--			return PTR_ERR(ipg_clk);
-+		if (IS_ERR(ipg_clk)) {
-+			ret = PTR_ERR(ipg_clk);
-+			goto err_free;
-+		}
- 		ipg_rate_mhz = clk_get_rate(ipg_clk) / 1000000;
- 
- 		for_each_child_of_node_scoped(pgc_node, np) {
- 			ret = of_property_read_u32(np, "reg", &domain_index);
- 			if (ret)
--				return ret;
-+				goto err_free;
- 
- 			if (domain_index >= of_id_data->num_domains)
- 				continue;
- 
- 			pd_pdev = platform_device_alloc("imx-pgc-power-domain",
- 							domain_index);
--			if (!pd_pdev)
--				return -ENOMEM;
-+			if (!pd_pdev) {
-+				ret = -ENOMEM;
-+				goto err_free;
-+			}
- 
- 			ret = platform_device_add_data(pd_pdev,
- 						       &imx_gpc_domains[domain_index],
- 						       sizeof(imx_gpc_domains[domain_index]));
- 			if (ret) {
- 				platform_device_put(pd_pdev);
--				return ret;
-+				goto err_free;
- 			}
- 			domain = pd_pdev->dev.platform_data;
- 			domain->regmap = regmap;
-@@ -495,12 +501,17 @@ static int imx_gpc_probe(struct platform_device *pdev)
- 			ret = platform_device_add(pd_pdev);
- 			if (ret) {
- 				platform_device_put(pd_pdev);
--				return ret;
-+				goto err_free;
- 			}
- 		}
- 	}
- 
-+	of_node_put(pgc_node);
- 	return 0;
-+
-+err_free:
-+	of_node_put(pgc_node);
-+	return ret;
- }
- 
- static void imx_gpc_remove(struct platform_device *pdev)
--- 
-2.34.1
+Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+
+I've merged this into my local uvc/for-next branch which I will push out later
+today.
+
+Note: I've also rebased uvc/for-next on top of the latest media-committers/next
+so this will be a forced push.
+
+Regards,
+
+Hans
+
+
+
+> ---
+> Changes in v2, Thanks Laurent:
+> - Remove redundant ioctl check
+> - CodeStyle
+> - Link to v1: https://lore.kernel.org/r/20251028-uvc-fix-which-v1-1-a7e6b82672a3@chromium.org
+> ---
+>  drivers/media/usb/uvc/uvc_ctrl.c | 14 ++++++++++++--
+>  drivers/media/usb/uvc/uvc_v4l2.c | 10 ++++++----
+>  drivers/media/usb/uvc/uvcvideo.h |  2 +-
+>  3 files changed, 19 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
+> index 2905505c240c060e5034ea12d33b59d5702f2e1f..2738ef74c7373b185b67611da57610fd0b442080 100644
+> --- a/drivers/media/usb/uvc/uvc_ctrl.c
+> +++ b/drivers/media/usb/uvc/uvc_ctrl.c
+> @@ -1432,7 +1432,7 @@ static bool uvc_ctrl_is_readable(u32 which, struct uvc_control *ctrl,
+>   * auto_exposure=1, exposure_time_absolute=251.
+>   */
+>  int uvc_ctrl_is_accessible(struct uvc_video_chain *chain, u32 v4l2_id,
+> -			   const struct v4l2_ext_controls *ctrls,
+> +			   const struct v4l2_ext_controls *ctrls, u32 which,
+>  			   unsigned long ioctl)
+>  {
+>  	struct uvc_control_mapping *master_map = NULL;
+> @@ -1442,14 +1442,24 @@ int uvc_ctrl_is_accessible(struct uvc_video_chain *chain, u32 v4l2_id,
+>  	s32 val;
+>  	int ret;
+>  	int i;
+> +	/*
+> +	 * There is no need to check the ioctl, all the ioctls except
+> +	 * VIDIOC_G_EXT_CTRLS use which=V4L2_CTRL_WHICH_CUR_VAL.
+> +	 */
+> +	bool is_which_min_max = which == V4L2_CTRL_WHICH_MIN_VAL ||
+> +				which == V4L2_CTRL_WHICH_MAX_VAL;
+>  
+>  	if (__uvc_query_v4l2_class(chain, v4l2_id, 0) >= 0)
+> -		return -EACCES;
+> +		return is_which_min_max ? -EINVAL : -EACCES;
+>  
+>  	ctrl = uvc_find_control(chain, v4l2_id, &mapping);
+>  	if (!ctrl)
+>  		return -EINVAL;
+>  
+> +	if ((!(ctrl->info.flags & UVC_CTRL_FLAG_GET_MIN) ||
+> +	     !(ctrl->info.flags & UVC_CTRL_FLAG_GET_MAX)) && is_which_min_max)
+> +		return -EINVAL;
+> +
+>  	if (ioctl == VIDIOC_G_EXT_CTRLS)
+>  		return uvc_ctrl_is_readable(ctrls->which, ctrl, mapping);
+>  
+> diff --git a/drivers/media/usb/uvc/uvc_v4l2.c b/drivers/media/usb/uvc/uvc_v4l2.c
+> index 9e4a251eca88085a1b4e0e854370015855be92ee..30c160daed8cb057b31ec00d665107dfdf4be1dc 100644
+> --- a/drivers/media/usb/uvc/uvc_v4l2.c
+> +++ b/drivers/media/usb/uvc/uvc_v4l2.c
+> @@ -765,14 +765,15 @@ static int uvc_ioctl_query_ext_ctrl(struct file *file, void *priv,
+>  
+>  static int uvc_ctrl_check_access(struct uvc_video_chain *chain,
+>  				 struct v4l2_ext_controls *ctrls,
+> -				 unsigned long ioctl)
+> +				 u32 which, unsigned long ioctl)
+>  {
+>  	struct v4l2_ext_control *ctrl = ctrls->controls;
+>  	unsigned int i;
+>  	int ret = 0;
+>  
+>  	for (i = 0; i < ctrls->count; ++ctrl, ++i) {
+> -		ret = uvc_ctrl_is_accessible(chain, ctrl->id, ctrls, ioctl);
+> +		ret = uvc_ctrl_is_accessible(chain, ctrl->id, ctrls, which,
+> +					     ioctl);
+>  		if (ret)
+>  			break;
+>  	}
+> @@ -806,7 +807,7 @@ static int uvc_ioctl_g_ext_ctrls(struct file *file, void *priv,
+>  		which = V4L2_CTRL_WHICH_CUR_VAL;
+>  	}
+>  
+> -	ret = uvc_ctrl_check_access(chain, ctrls, VIDIOC_G_EXT_CTRLS);
+> +	ret = uvc_ctrl_check_access(chain, ctrls, which, VIDIOC_G_EXT_CTRLS);
+>  	if (ret < 0)
+>  		return ret;
+>  
+> @@ -840,7 +841,8 @@ static int uvc_ioctl_s_try_ext_ctrls(struct uvc_fh *handle,
+>  	if (!ctrls->count)
+>  		return 0;
+>  
+> -	ret = uvc_ctrl_check_access(chain, ctrls, ioctl);
+> +	ret = uvc_ctrl_check_access(chain, ctrls, V4L2_CTRL_WHICH_CUR_VAL,
+> +				    ioctl);
+>  	if (ret < 0)
+>  		return ret;
+>  
+> diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
+> index ed7bad31f75ca474c1037d666d5310c78dd764df..d583425893a5f716185153a07aae9bfe20182964 100644
+> --- a/drivers/media/usb/uvc/uvcvideo.h
+> +++ b/drivers/media/usb/uvc/uvcvideo.h
+> @@ -786,7 +786,7 @@ int uvc_ctrl_get(struct uvc_video_chain *chain, u32 which,
+>  		 struct v4l2_ext_control *xctrl);
+>  int uvc_ctrl_set(struct uvc_fh *handle, struct v4l2_ext_control *xctrl);
+>  int uvc_ctrl_is_accessible(struct uvc_video_chain *chain, u32 v4l2_id,
+> -			   const struct v4l2_ext_controls *ctrls,
+> +			   const struct v4l2_ext_controls *ctrls, u32 which,
+>  			   unsigned long ioctl);
+>  
+>  int uvc_xu_ctrl_query(struct uvc_video_chain *chain,
+> 
+> ---
+> base-commit: c218ce4f98eccf5a40de64c559c52d61e9cc78ee
+> change-id: 20251028-uvc-fix-which-c3ba1fb68ed5
+> 
+> Best regards,
 
 
