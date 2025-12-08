@@ -1,45 +1,55 @@
-Return-Path: <stable+bounces-200321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D598DCABF90
-	for <lists+stable@lfdr.de>; Mon, 08 Dec 2025 04:36:35 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6751CAC211
+	for <lists+stable@lfdr.de>; Mon, 08 Dec 2025 07:17:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8ABA33017386
-	for <lists+stable@lfdr.de>; Mon,  8 Dec 2025 03:36:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 35F4D3011B1C
+	for <lists+stable@lfdr.de>; Mon,  8 Dec 2025 06:17:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E1522F7AC5;
-	Mon,  8 Dec 2025 03:36:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 635C22192E4;
+	Mon,  8 Dec 2025 06:17:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uqNtA8MV"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D179233704;
-	Mon,  8 Dec 2025 03:36:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22FAF2046BA
+	for <stable@vger.kernel.org>; Mon,  8 Dec 2025 06:17:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765164991; cv=none; b=TeGuHlQJsay0i5zyYLGMwq7b+YciqmrXdWfbL35562Aian7oEZ1M5uZq1A2VlQNQ2PPCFaAbUK/WyzLjYMwr2l6dcAKalGuwNrk3OP/MBX4X3OaZfN2Wr0jgEBIK7O8VFZwFlatBEuPB8JXXkuMGgZQnnOrUzluJunbaCdpVYd0=
+	t=1765174651; cv=none; b=tzrzRjqXNfW9mLcpY7MeDRE2NlqcnX+vS9JjEgdR2CbtkOxKws8pnvN/rDgRFct0HKRb7n/m3KABTEpDaI5AHkhsFx3DxAkQufgL+cyDn0VI6ihmrqwDmtgbpbTE+NzujuU5eu3l8y/qybTntZk5fNlEh82IPpGk5Dk87/ehTKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765164991; c=relaxed/simple;
-	bh=VI3aERMVwqpqhU7buuiP4rZeSCQxAapxIHYZ9H7nXx8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YuXWw6PXu9g9Gxk7hDAXDb5vYdEOy4UdXlKOpwGyhmmllwvXst5ZfKDIv/p0RprGMk6ihvxhXZxcxkZUW/pyjVA52k/H4AUt56HdiNdBrKeepyypGk5R9u1FKg1oMt0OGyRIsPPCyb3zfK1Bn7X+vpMcSKX1tax49lAcpZ9yDUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from dfae2b116770.home.arpa (unknown [124.16.138.129])
-	by APP-03 (Coremail) with SMTP id rQCowABH2NqsRzZpQkGGAw--.10984S2;
-	Mon, 08 Dec 2025 11:36:12 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: eajames@linux.ibm.com,
-	ninad@linux.ibm.com
-Cc: linux-fsi@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] fsi: master-gpio: Fix reference count leak in probe error path
-Date: Mon,  8 Dec 2025 03:36:06 +0000
-Message-Id: <20251208033606.10647-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1765174651; c=relaxed/simple;
+	bh=IdY8X621cUlBimp5gv2audKL21hwswTr0tINH8HyE2A=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jrOkKYzB3vh80XAjonNlMzGNdsesu3e/10L9HUhfkefzAS++ZhAOtjN1YMARH5K5PgwTgYRBvwrXd2UDPfE00Kcu3S68DgYqodSgo+KrNefUl5Ma9Pi6BbMUGw2tzMPQldno+dXrNZfZMl5OvcCmR2sBn3q77B0IyiFvD1Sr3ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uqNtA8MV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D803EC4CEF1;
+	Mon,  8 Dec 2025 06:17:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765174650;
+	bh=IdY8X621cUlBimp5gv2audKL21hwswTr0tINH8HyE2A=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=uqNtA8MVCoGX5nXtepDTvNrmfluctQMwKFZQ8bWP5lXWPtQgGcZyr1ySVJnaLS1vo
+	 PwT4HYZoeRLB2297jz/Weue+hsjjm6fIiIHUeQs3u58vwAPv7wn0Ox7RIBmrHHiBO4
+	 vzGABZ/JuIc9l7rGljYu/kwEMvaV2HsGHq7a4XfU7Lp2bHAG9hcm23i0fngUYKxidH
+	 6KekQlHGPH0/P4XjwVNSccisIi0qIPtsoOV3r0+PUElNu/N5zKflXUR/gSUHUab+q5
+	 QoxLcyc6fDHLHhP7AJwOkhp8JByVb98lSaaVqPj5XYoq/U2RWA4qkU4Evc2j+op2hO
+	 ZoiHAdw70Xk1w==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y 1/2] KVM: x86/mmu: Use EMULTYPE flag to track write #PFs to shadow pages
+Date: Mon,  8 Dec 2025 01:17:26 -0500
+Message-ID: <20251208061727.249698-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025120802-remedy-glimmer-fc9d@gregkh>
+References: <2025120802-remedy-glimmer-fc9d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -47,53 +57,239 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowABH2NqsRzZpQkGGAw--.10984S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrtr17Gry7tFy5CrWkCF4Uurg_yoWDXrcEkF
-	18WF97X3yUCF1DGrs0yrWavrZFgr9xWFZ7GFykta1Sqw18AryYqF1avrs5J3WrXr4fJFsY
-	yr97Gw1fWr43ZjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbsxFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_
-	Gr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AKxVWU
-	AVWUtwCY02Avz4vE14v_Gr4l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr
-	1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE
-	14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7
-	IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E
-	87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0x
-	ZFpf9x0JUoKZXUUUUU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAYKA2k2L0FkiAAAse
 
-The function of_node_get() returns a node pointer with its refcount
-incremented, but in the error path of the fsi_master_gpio_probe(),
-this reference is not released before freeing the master structure,
-causing a refcount leak.
+From: Sean Christopherson <seanjc@google.com>
 
-Add the missing of_node_put() in the error handling path to properly
-release the device tree node reference.
+[ Upstream commit 258d985f6eb360c9c7aacd025d0dbc080a59423f ]
 
-Fixes: 8ef9ccf81044 ("fsi: master-gpio: Add missing release function")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Use a new EMULTYPE flag, EMULTYPE_WRITE_PF_TO_SP, to track page faults
+on self-changing writes to shadowed page tables instead of propagating
+that information to the emulator via a semi-persistent vCPU flag.  Using
+a flag in "struct kvm_vcpu_arch" is confusing, especially as implemented,
+as it's not at all obvious that clearing the flag only when emulation
+actually occurs is correct.
+
+E.g. if KVM sets the flag and then retries the fault without ever getting
+to the emulator, the flag will be left set for future calls into the
+emulator.  But because the flag is consumed if and only if both
+EMULTYPE_PF and EMULTYPE_ALLOW_RETRY_PF are set, and because
+EMULTYPE_ALLOW_RETRY_PF is deliberately not set for direct MMUs, emulated
+MMIO, or while L2 is active, KVM avoids false positives on a stale flag
+since FNAME(page_fault) is guaranteed to be run and refresh the flag
+before it's ultimately consumed by the tail end of reexecute_instruction().
+
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-Id: <20230202182817.407394-2-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Stable-dep-of: 4da3768e1820 ("KVM: SVM: Don't skip unrelated instruction if INT3/INTO is replaced")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/fsi/fsi-master-gpio.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/include/asm/kvm_host.h | 37 ++++++++++++++++++---------------
+ arch/x86/kvm/mmu/mmu.c          |  5 +++--
+ arch/x86/kvm/mmu/mmu_internal.h | 12 ++++++++++-
+ arch/x86/kvm/mmu/paging_tmpl.h  |  4 +---
+ arch/x86/kvm/x86.c              | 15 ++-----------
+ 5 files changed, 37 insertions(+), 36 deletions(-)
 
-diff --git a/drivers/fsi/fsi-master-gpio.c b/drivers/fsi/fsi-master-gpio.c
-index 69de0b5b9cbd..ae9e156284d0 100644
---- a/drivers/fsi/fsi-master-gpio.c
-+++ b/drivers/fsi/fsi-master-gpio.c
-@@ -861,6 +861,7 @@ static int fsi_master_gpio_probe(struct platform_device *pdev)
- 	}
- 	return 0;
-  err_free:
-+	of_node_put(master->master.dev.of_node);
- 	kfree(master);
- 	return rc;
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index d0229323ca634..dd7b4c5f5436c 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -890,23 +890,6 @@ struct kvm_vcpu_arch {
+ 
+ 	u64 msr_kvm_poll_control;
+ 
+-	/*
+-	 * Indicates the guest is trying to write a gfn that contains one or
+-	 * more of the PTEs used to translate the write itself, i.e. the access
+-	 * is changing its own translation in the guest page tables.  KVM exits
+-	 * to userspace if emulation of the faulting instruction fails and this
+-	 * flag is set, as KVM cannot make forward progress.
+-	 *
+-	 * If emulation fails for a write to guest page tables, KVM unprotects
+-	 * (zaps) the shadow page for the target gfn and resumes the guest to
+-	 * retry the non-emulatable instruction (on hardware).  Unprotecting the
+-	 * gfn doesn't allow forward progress for a self-changing access because
+-	 * doing so also zaps the translation for the gfn, i.e. retrying the
+-	 * instruction will hit a !PRESENT fault, which results in a new shadow
+-	 * page and sends KVM back to square one.
+-	 */
+-	bool write_fault_to_shadow_pgtable;
+-
+ 	/* set at EPT violation at this point */
+ 	unsigned long exit_qualification;
+ 
+@@ -1825,6 +1808,25 @@ u64 vcpu_tsc_khz(struct kvm_vcpu *vcpu);
+  * EMULTYPE_COMPLETE_USER_EXIT - Set when the emulator should update interruptibility
+  *				 state and inject single-step #DBs after skipping
+  *				 an instruction (after completing userspace I/O).
++ *
++ * EMULTYPE_WRITE_PF_TO_SP - Set when emulating an intercepted page fault that
++ *			     is attempting to write a gfn that contains one or
++ *			     more of the PTEs used to translate the write itself,
++ *			     and the owning page table is being shadowed by KVM.
++ *			     If emulation of the faulting instruction fails and
++ *			     this flag is set, KVM will exit to userspace instead
++ *			     of retrying emulation as KVM cannot make forward
++ *			     progress.
++ *
++ *			     If emulation fails for a write to guest page tables,
++ *			     KVM unprotects (zaps) the shadow page for the target
++ *			     gfn and resumes the guest to retry the non-emulatable
++ *			     instruction (on hardware).  Unprotecting the gfn
++ *			     doesn't allow forward progress for a self-changing
++ *			     access because doing so also zaps the translation for
++ *			     the gfn, i.e. retrying the instruction will hit a
++ *			     !PRESENT fault, which results in a new shadow page
++ *			     and sends KVM back to square one.
+  */
+ #define EMULTYPE_NO_DECODE	    (1 << 0)
+ #define EMULTYPE_TRAP_UD	    (1 << 1)
+@@ -1834,6 +1836,7 @@ u64 vcpu_tsc_khz(struct kvm_vcpu *vcpu);
+ #define EMULTYPE_VMWARE_GP	    (1 << 5)
+ #define EMULTYPE_PF		    (1 << 6)
+ #define EMULTYPE_COMPLETE_USER_EXIT (1 << 7)
++#define EMULTYPE_WRITE_PF_TO_SP	    (1 << 8)
+ 
+ int kvm_emulate_instruction(struct kvm_vcpu *vcpu, int emulation_type);
+ int kvm_emulate_instruction_from_buffer(struct kvm_vcpu *vcpu,
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 2fa130c4c1734..04d060f370535 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -4152,7 +4152,7 @@ void kvm_arch_async_page_ready(struct kvm_vcpu *vcpu, struct kvm_async_pf *work)
+ 	      work->arch.cr3 != kvm_mmu_get_guest_pgd(vcpu, vcpu->arch.mmu))
+ 		return;
+ 
+-	kvm_mmu_do_page_fault(vcpu, work->cr2_or_gpa, 0, true);
++	kvm_mmu_do_page_fault(vcpu, work->cr2_or_gpa, 0, true, NULL);
  }
+ 
+ static int kvm_faultin_pfn(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
+@@ -5580,7 +5580,8 @@ int noinline kvm_mmu_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa, u64 err
+ 
+ 	if (r == RET_PF_INVALID) {
+ 		r = kvm_mmu_do_page_fault(vcpu, cr2_or_gpa,
+-					  lower_32_bits(error_code), false);
++					  lower_32_bits(error_code), false,
++					  &emulation_type);
+ 		if (KVM_BUG_ON(r == RET_PF_INVALID, vcpu->kvm))
+ 			return -EIO;
+ 	}
+diff --git a/arch/x86/kvm/mmu/mmu_internal.h b/arch/x86/kvm/mmu/mmu_internal.h
+index 0a9d5f2925c33..5e4be3bb3624c 100644
+--- a/arch/x86/kvm/mmu/mmu_internal.h
++++ b/arch/x86/kvm/mmu/mmu_internal.h
+@@ -223,6 +223,13 @@ struct kvm_page_fault {
+ 	kvm_pfn_t pfn;
+ 	hva_t hva;
+ 	bool map_writable;
++
++	/*
++	 * Indicates the guest is trying to write a gfn that contains one or
++	 * more of the PTEs used to translate the write itself, i.e. the access
++	 * is changing its own translation in the guest page tables.
++	 */
++	bool write_fault_to_shadow_pgtable;
+ };
+ 
+ int kvm_tdp_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault);
+@@ -256,7 +263,7 @@ enum {
+ };
+ 
+ static inline int kvm_mmu_do_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+-					u32 err, bool prefetch)
++					u32 err, bool prefetch, int *emulation_type)
+ {
+ 	struct kvm_page_fault fault = {
+ 		.addr = cr2_or_gpa,
+@@ -290,6 +297,9 @@ static inline int kvm_mmu_do_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+ 	else
+ 		r = vcpu->arch.mmu->page_fault(vcpu, &fault);
+ 
++	if (fault.write_fault_to_shadow_pgtable && emulation_type)
++		*emulation_type |= EMULTYPE_WRITE_PF_TO_SP;
++
+ 	/*
+ 	 * Similar to above, prefetch faults aren't truly spurious, and the
+ 	 * async #PF path doesn't do emulation.  Do count faults that are fixed
+diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmpl.h
+index 685560a45bf60..1c7d73b8081c6 100644
+--- a/arch/x86/kvm/mmu/paging_tmpl.h
++++ b/arch/x86/kvm/mmu/paging_tmpl.h
+@@ -829,10 +829,8 @@ static int FNAME(page_fault)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
+ 	if (r)
+ 		return r;
+ 
+-	vcpu->arch.write_fault_to_shadow_pgtable = false;
+-
+ 	is_self_change_mapping = FNAME(is_self_change_mapping)(vcpu,
+-	      &walker, fault->user, &vcpu->arch.write_fault_to_shadow_pgtable);
++	      &walker, fault->user, &fault->write_fault_to_shadow_pgtable);
+ 
+ 	if (is_self_change_mapping)
+ 		fault->max_level = PG_LEVEL_4K;
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index b349e1fbf9dbc..562ca89ceb638 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -8527,7 +8527,6 @@ static int handle_emulation_failure(struct kvm_vcpu *vcpu, int emulation_type)
+ }
+ 
+ static bool reexecute_instruction(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+-				  bool write_fault_to_shadow_pgtable,
+ 				  int emulation_type)
+ {
+ 	gpa_t gpa = cr2_or_gpa;
+@@ -8598,7 +8597,7 @@ static bool reexecute_instruction(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+ 	 * be fixed by unprotecting shadow page and it should
+ 	 * be reported to userspace.
+ 	 */
+-	return !write_fault_to_shadow_pgtable;
++	return !(emulation_type & EMULTYPE_WRITE_PF_TO_SP);
+ }
+ 
+ static bool retry_instruction(struct x86_emulate_ctxt *ctxt,
+@@ -8869,20 +8868,12 @@ int x86_emulate_instruction(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+ 	int r;
+ 	struct x86_emulate_ctxt *ctxt = vcpu->arch.emulate_ctxt;
+ 	bool writeback = true;
+-	bool write_fault_to_spt;
+ 
+ 	if (unlikely(!kvm_can_emulate_insn(vcpu, emulation_type, insn, insn_len)))
+ 		return 1;
+ 
+ 	vcpu->arch.l1tf_flush_l1d = true;
+ 
+-	/*
+-	 * Clear write_fault_to_shadow_pgtable here to ensure it is
+-	 * never reused.
+-	 */
+-	write_fault_to_spt = vcpu->arch.write_fault_to_shadow_pgtable;
+-	vcpu->arch.write_fault_to_shadow_pgtable = false;
+-
+ 	if (!(emulation_type & EMULTYPE_NO_DECODE)) {
+ 		kvm_clear_exception_queue(vcpu);
+ 
+@@ -8903,7 +8894,6 @@ int x86_emulate_instruction(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+ 				return 1;
+ 			}
+ 			if (reexecute_instruction(vcpu, cr2_or_gpa,
+-						  write_fault_to_spt,
+ 						  emulation_type))
+ 				return 1;
+ 
+@@ -8989,8 +8979,7 @@ int x86_emulate_instruction(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+ 		return 1;
+ 
+ 	if (r == EMULATION_FAILED) {
+-		if (reexecute_instruction(vcpu, cr2_or_gpa, write_fault_to_spt,
+-					emulation_type))
++		if (reexecute_instruction(vcpu, cr2_or_gpa, emulation_type))
+ 			return 1;
+ 
+ 		return handle_emulation_failure(vcpu, emulation_type);
 -- 
-2.34.1
+2.51.0
 
 
