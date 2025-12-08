@@ -1,239 +1,154 @@
-Return-Path: <stable+bounces-200347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2228CAD32B
-	for <lists+stable@lfdr.de>; Mon, 08 Dec 2025 13:49:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76957CAD353
+	for <lists+stable@lfdr.de>; Mon, 08 Dec 2025 14:01:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EE54D3049D00
-	for <lists+stable@lfdr.de>; Mon,  8 Dec 2025 12:47:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F2AC330213D0
+	for <lists+stable@lfdr.de>; Mon,  8 Dec 2025 13:01:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB4843128A0;
-	Mon,  8 Dec 2025 12:47:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C9C315667D;
+	Mon,  8 Dec 2025 13:01:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hZv3FLSa"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8D3D221FCF;
-	Mon,  8 Dec 2025 12:47:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C04C979DA
+	for <stable@vger.kernel.org>; Mon,  8 Dec 2025 13:00:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765198038; cv=none; b=fIo6yRDNujnyqOpqPAIcANZ5uS9WaNz0IEggUtUvVc3c9/ZyeeWVQI+glBpkwbr6+Iu6vb4+RgGbXwLxiBBU2ZEKAth0r2JbXXRzOQnKyQ6ZgtHc3sfh47xCuopcUxkXKB+y2geFX6nw+F9h/QoDENf4B3a6wOlZPI4R2vkyY2k=
+	t=1765198859; cv=none; b=I3f7Ckvzq/Pb41z5o6qy2KX2Wjaffkeje0c2vmJYRPbZoU7yjxkl621r+cxNxGcPBxIBOXsapG7yy5Vty+T+8rYXIgHueRyTlvOfv4PywOIsuRxGtagg/iJtCjMy1Oroi79pv88xTP8aJBmqRtSauo9HOwCwSoJSuUpFgVgGdXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765198038; c=relaxed/simple;
-	bh=P0ubJJKxEVDXiytzW+1D+A2oljwWKuKAhLPU2XzbyTw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QTanAc6nkL28e15+iIlPjFjjG3Yr+YzNTxg8QQ9uooRpK0V8oZEP0g8bn4J+FGiqVMwy/ygl1afm/eXXIW+idKPAbSV7MnzfISWeYfcW1eEezyAQzC/m5oGwR3X+et1n25BqME7ZbQp0LYt3jnlg3pzEgLRbl8WORsbL6GlN+OI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DDE931691;
-	Mon,  8 Dec 2025 04:47:07 -0800 (PST)
-Received: from [10.1.31.65] (e127648.arm.com [10.1.31.65])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8840F3F740;
-	Mon,  8 Dec 2025 04:47:13 -0800 (PST)
-Message-ID: <6347bf83-545b-4e85-a5af-1d0c7ea24844@arm.com>
-Date: Mon, 8 Dec 2025 12:47:11 +0000
+	s=arc-20240116; t=1765198859; c=relaxed/simple;
+	bh=FLcXXaN6kA3/p1I9Jd5pGkSFj0VWP/dfWSkvirqBluY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=oEn67D0vL9CkhDU8JphakQw1DQWQyyugvhBVOIfDFlvvQPHH/TI4Z+Sb3YjROJiGn8TEqgvhHw2/aXfFAWGOD4lJ2YTT20dv9YCXrnJnzJQdandTFPNOtrn0qooAPmAj2Trpm6zxaGGM0xRqtZjLLORW7iC6psSidyFBGeBjQS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hZv3FLSa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4C54C4CEF1;
+	Mon,  8 Dec 2025 13:00:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765198859;
+	bh=FLcXXaN6kA3/p1I9Jd5pGkSFj0VWP/dfWSkvirqBluY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=hZv3FLSakjQHE0DZOC1v9FEXtJl5sF2qWtnKhKDUEIpmcYBaPmOjoGK4CtLsXfvrL
+	 UdVN6FKhF04rsS2/exGFD65H2pv80VqB0eyO2MzwAQPVRUnBEq8kwOUqS/FQm0aAWG
+	 wE5wpv/PkIOPzn+5PlktLiW5Ugutbc5tSFOSZl4PtThGfZSJ1rAKkKdD0SBiY3R9/T
+	 SaFyKEM8xcKVo6ItxoYy2ios3G1KDw+DQTv1InZ80nro+gZpMG18s/2kjxYk7myUjP
+	 3yg7KdjZcdZVeTaEGYotsistBzE60ycbW9D+F9lkz9Ia5wS0I7TVZHVSwPw1zHqGZZ
+	 ie9PDBO+srUBg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Kuniyuki Iwashima <kuniyu@google.com>,
+	syzbot+3a92d359bc2ec6255a33@syzkaller.appspotmail.com,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] mptcp: Initialise rcv_mss before calling tcp_send_active_reset() in mptcp_do_fastclose().
+Date: Mon,  8 Dec 2025 08:00:54 -0500
+Message-ID: <20251208130054.296171-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025120333-undamaged-punctual-31dc@gregkh>
+References: <2025120333-undamaged-punctual-31dc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Performance regressions introduced via Revert "cpuidle: menu:
- Avoid discarding useful information" on 5.15 LTS
-To: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>,
- Doug Smythies <dsmythies@telus.net>
-Cc: 'Sasha Levin' <sashal@kernel.org>,
- 'Greg Kroah-Hartman' <gregkh@linuxfoundation.org>, linux-pm@vger.kernel.org,
- stable@vger.kernel.org, "'Rafael J. Wysocki'" <rafael@kernel.org>,
- 'Daniel Lezcano' <daniel.lezcano@linaro.org>
-References: <d4690be7-9b81-498e-868b-fb4f1d558e08@oracle.com>
- <39c7d882-6711-4178-bce6-c1e4fc909b84@arm.com>
- <005401dc64a4$75f1d770$61d58650$@telus.net>
- <b36a7037-ca96-49ec-9b39-6e9808d6718c@oracle.com>
-Content-Language: en-US
-From: Christian Loehle <christian.loehle@arm.com>
-In-Reply-To: <b36a7037-ca96-49ec-9b39-6e9808d6718c@oracle.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 12/8/25 11:33, Harshvardhan Jha wrote:
-> Hi Doug,
-> 
-> On 04/12/25 4:00 AM, Doug Smythies wrote:
->> On 2025.12.03 08:45 Christian Loehle wrote:
->>> On 12/3/25 16:18, Harshvardhan Jha wrote:
->>>> Hi there,
->>>>
->>>> While running performance benchmarks for the 5.15.196 LTS tags , it was
->>>> observed that several regressions across different benchmarks is being
->>>> introduced when compared to the previous 5.15.193 kernel tag. Running an
->>>> automated bisect on both of them narrowed down the culprit commit to:
->>>> - 5666bcc3c00f7 Revert "cpuidle: menu: Avoid discarding useful
->>>> information" for 5.15
->>>>
->>>> Regressions on 5.15.196 include:
->>>> -9.3% : Phoronix pts/sqlite using 2 processes on OnPrem X6-2
->>>> -6.3% : Phoronix system/sqlite on OnPrem X6-2
->>>> -18%  : rds-stress -M 1 (readonly rdma-mode) metrics with 1 depth & 1
->>>> thread & 1M buffer size on OnPrem X6-2
->>>> -4 -> -8% : rds-stress -M 2 (writeonly rdma-mode) metrics with 1 depth &
->>>> 1 thread & 1M buffer size on OnPrem X6-2
->>>> Up to -30% : Some Netpipe metrics on OnPrem X5-2
->>>>
->>>> The culprit commits' messages mention that these reverts were done due
->>>> to performance regressions introduced in Intel Jasper Lake systems but
->>>> this revert is causing issues in other systems unfortunately. I wanted
->>>> to know the maintainers' opinion on how we should proceed in order to
->>>> fix this. If we reapply it'll bring back the previous regressions on
->>>> Jasper Lake systems and if we don't revert it then it's stuck with
->>>> current regressions. If this problem has been reported before and a fix
->>>> is in the works then please let me know I shall follow developments to
->>>> that mail thread.
->>> The discussion regarding this can be found here:
->>> https://urldefense.com/v3/__https://lore.kernel.org/lkml/36iykr223vmcfsoysexug6s274nq2oimcu55ybn6ww4il3g3cv@cohflgdbpnq7/__;!!ACWV5N9M2RV99hQ!MWXEz_wRbaLyJxDign2EXci2qNzAPpCyhi8qIORMdReh0g_yIVIt-Oqov23KT23A_rGBRRxJ4bHb_e6UQA-b9PW7hw$ 
->>> we explored an alternative to the full revert here:
->>> https://urldefense.com/v3/__https://lore.kernel.org/lkml/4687373.LvFx2qVVIh@rafael.j.wysocki/__;!!ACWV5N9M2RV99hQ!MWXEz_wRbaLyJxDign2EXci2qNzAPpCyhi8qIORMdReh0g_yIVIt-Oqov23KT23A_rGBRRxJ4bHb_e6UQA9PSf_uMQ$ 
->>> unfortunately that didn't lead anywhere useful, so Rafael went with the
->>> full revert you're seeing now.
->>>
->>> Ultimately it seems to me that this "aggressiveness" on deep idle tradeoffs
->>> will highly depend on your platform, but also your workload, Jasper Lake
->>> in particular seems to favor deep idle states even when they don't seem
->>> to be a 'good' choice from a purely cpuidle (governor) perspective, so
->>> we're kind of stuck with that.
->>>
->>> For teo we've discussed a tunable knob in the past, which comes naturally with
->>> the logic, for menu there's nothing obvious that would be comparable.
->>> But for teo such a knob didn't generate any further interest (so far).
->>>
->>> That's the status, unless I missed anything?
->> By reading everything in the links Chrsitian provided, you can see
->> that we had difficulties repeating test results on other platforms.
->>
->> Of the tests listed herein, the only one that was easy to repeat on my
->> test server, was the " Phoronix pts/sqlite" one. I got (summary: no difference):
->>
->> Kernel 6.18									Reverted			
->> pts/sqlite-2.3.0			menu rc4		menu rc1		menu rc1		menu rc3	
->> 				performance		performance		performance		performance	
->> test	what			ave			ave			ave			ave	
->> 1	T/C 1			2.147	-0.2%		2.143	0.0%		2.16	-0.8%		2.156	-0.6%
->> 2	T/C 2			3.468	0.1%		3.473	0.0%		3.486	-0.4%		3.478	-0.1%
->> 3	T/C 4			4.336	0.3%		4.35	0.0%		4.355	-0.1%		4.354	-0.1%
->> 4	T/C 8			5.438	-0.1%		5.434	0.0%		5.456	-0.4%		5.45	-0.3%
->> 5	T/C 12			6.314	-0.2%		6.299	0.0%		6.307	-0.1%		6.29	0.1%
->>
->> Where:
->> T/C means: Threads / Copies
->> performance means: intel_pstate CPU frequency scaling driver and the performance CPU frequencay scaling governor.
->> Data points are in Seconds.
->> Ave means the average test result. The number of runs per test was increased from the default of 3 to 10.
->> The reversion was manually applied to kernel 6.18-rc1 for that test.
->> The reversion was included in kernel 6.18-rc3.
->> Kernel 6.18-rc4 had another code change to menu.c
->>
->> In case the formatting gets messed up, the table is also attached.
->>
->> Processor: Intel(R) Core(TM) i5-10600K CPU @ 4.10GHz, 6 cores 12 CPUs.
->> HWP: Enabled.
-> 
-> I was able to recover performance on 5.15 and 5.4 LTS based kernels
-> after reapplying the revert on X6-2 systems.
-> 
-> Architecture:                x86_64
->   CPU op-mode(s):            32-bit, 64-bit
->   Address sizes:             46 bits physical, 48 bits virtual
->   Byte Order:                Little Endian
-> CPU(s):                      56
->   On-line CPU(s) list:       0-55
-> Vendor ID:                   GenuineIntel
->   Model name:                Intel(R) Xeon(R) CPU E5-2690 v4 @ 2.60GHz
->     CPU family:              6
->     Model:                   79
->     Thread(s) per core:      2
->     Core(s) per socket:      14
->     Socket(s):               2
->     Stepping:                1
->     CPU(s) scaling MHz:      98%
->     CPU max MHz:             2600.0000
->     CPU min MHz:             1200.0000
->     BogoMIPS:                5188.26
->     Flags:                   fpu vme de pse tsc msr pae mce cx8 apic sep
-> mtrr pg
->                              e mca cmov pat pse36 clflush dts acpi mmx
-> fxsr sse 
->                              sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp
-> lm cons
->                              tant_tsc arch_perfmon pebs bts rep_good
-> nopl xtopol
->                              ogy nonstop_tsc cpuid aperfmperf pni
-> pclmulqdq dtes
->                              64 monitor ds_cpl vmx smx est tm2 ssse3
-> sdbg fma cx
->                              16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic
-> movbe po
->                              pcnt tsc_deadline_timer aes xsave avx f16c
-> rdrand l
->                              ahf_lm abm 3dnowprefetch cpuid_fault epb
-> cat_l3 cdp
->                              _l3 pti intel_ppin ssbd ibrs ibpb stibp
-> tpr_shadow 
->                              flexpriority ept vpid ept_ad fsgsbase
-> tsc_adjust bm
->                              i1 hle avx2 smep bmi2 erms invpcid rtm cqm
-> rdt_a rd
->                              seed adx smap intel_pt xsaveopt cqm_llc
-> cqm_occup_l
->                              lc cqm_mbm_total cqm_mbm_local dtherm arat
-> pln pts 
->                              vnmi md_clear flush_l1d
-> Virtualization features:     
->   Virtualization:            VT-x
-> Caches (sum of all):         
->   L1d:                       896 KiB (28 instances)
->   L1i:                       896 KiB (28 instances)
->   L2:                        7 MiB (28 instances)
->   L3:                        70 MiB (2 instances)
-> NUMA:                        
->   NUMA node(s):              2
->   NUMA node0 CPU(s):         0-13,28-41
->   NUMA node1 CPU(s):         14-27,42-55
-> Vulnerabilities:             
->   Gather data sampling:      Not affected
->   Indirect target selection: Not affected
->   Itlb multihit:             KVM: Mitigation: Split huge pages
->   L1tf:                      Mitigation; PTE Inversion; VMX conditional
-> cache fl
->                              ushes, SMT vulnerable
->   Mds:                       Mitigation; Clear CPU buffers; SMT vulnerable
->   Meltdown:                  Mitigation; PTI
->   Mmio stale data:           Mitigation; Clear CPU buffers; SMT vulnerable
->   Reg file data sampling:    Not affected
->   Retbleed:                  Not affected
->   Spec rstack overflow:      Not affected
->   Spec store bypass:         Mitigation; Speculative Store Bypass
-> disabled via p
->                              rctl
->   Spectre v1:                Mitigation; usercopy/swapgs barriers and
-> __user poi
->                              nter sanitization
->   Spectre v2:                Mitigation; Retpolines; IBPB conditional;
-> IBRS_FW; 
->                              STIBP conditional; RSB filling; PBRSB-eIBRS
-> Not aff
->                              ected; BHI Not affected
->   Srbds:                     Not affected
->   Tsa:                       Not affected
->   Tsx async abort:           Mitigation; Clear CPU buffers; SMT vulnerable
->   Vmscape:                   Mitigation; IBPB before exit to userspace
-> 
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-It would be nice to get the idle states here, ideally how the states' usage changed
-from base to revert.
-The mentioned thread did this and should show how it can be done, but a dump of
-cat /sys/devices/system/cpu/cpu*/cpuidle/state*/*
-before and after the workload is usually fine to work with:
-https://lore.kernel.org/linux-pm/8da42386-282e-4f97-af93-4715ae206361@arm.com/
+[ Upstream commit f07f4ea53e22429c84b20832fa098b5ecc0d4e35 ]
+
+syzbot reported divide-by-zero in __tcp_select_window() by
+MPTCP socket. [0]
+
+We had a similar issue for the bare TCP and fixed in commit
+499350a5a6e7 ("tcp: initialize rcv_mss to TCP_MIN_MSS instead
+of 0").
+
+Let's apply the same fix to mptcp_do_fastclose().
+
+[0]:
+Oops: divide error: 0000 [#1] SMP KASAN PTI
+CPU: 0 UID: 0 PID: 6068 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
+RIP: 0010:__tcp_select_window+0x824/0x1320 net/ipv4/tcp_output.c:3336
+Code: ff ff ff 44 89 f1 d3 e0 89 c1 f7 d1 41 01 cc 41 21 c4 e9 a9 00 00 00 e8 ca 49 01 f8 e9 9c 00 00 00 e8 c0 49 01 f8 44 89 e0 99 <f7> 7c 24 1c 41 29 d4 48 bb 00 00 00 00 00 fc ff df e9 80 00 00 00
+RSP: 0018:ffffc90003017640 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffff88807b469e40
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: ffffc90003017730 R08: ffff888033268143 R09: 1ffff1100664d028
+R10: dffffc0000000000 R11: ffffed100664d029 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+FS:  000055557faa0500(0000) GS:ffff888126135000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f64a1912ff8 CR3: 0000000072122000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ tcp_select_window net/ipv4/tcp_output.c:281 [inline]
+ __tcp_transmit_skb+0xbc7/0x3aa0 net/ipv4/tcp_output.c:1568
+ tcp_transmit_skb net/ipv4/tcp_output.c:1649 [inline]
+ tcp_send_active_reset+0x2d1/0x5b0 net/ipv4/tcp_output.c:3836
+ mptcp_do_fastclose+0x27e/0x380 net/mptcp/protocol.c:2793
+ mptcp_disconnect+0x238/0x710 net/mptcp/protocol.c:3253
+ mptcp_sendmsg_fastopen+0x2f8/0x580 net/mptcp/protocol.c:1776
+ mptcp_sendmsg+0x1774/0x1980 net/mptcp/protocol.c:1855
+ sock_sendmsg_nosec net/socket.c:727 [inline]
+ __sock_sendmsg+0xe5/0x270 net/socket.c:742
+ __sys_sendto+0x3bd/0x520 net/socket.c:2244
+ __do_sys_sendto net/socket.c:2251 [inline]
+ __se_sys_sendto net/socket.c:2247 [inline]
+ __x64_sys_sendto+0xde/0x100 net/socket.c:2247
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f66e998f749
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffff9acedb8 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 00007f66e9be5fa0 RCX: 00007f66e998f749
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000003
+RBP: 00007ffff9acee10 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000001
+R13: 00007f66e9be5fa0 R14: 00007f66e9be5fa0 R15: 0000000000000006
+ </TASK>
+
+Fixes: ae155060247b ("mptcp: fix duplicate reset on fastclose")
+Reported-by: syzbot+3a92d359bc2ec6255a33@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/69260882.a70a0220.d98e3.00b4.GAE@google.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251125195331.309558-1-kuniyu@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/mptcp/protocol.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index 10844f08752cb..3baef30bb2f81 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2806,6 +2806,12 @@ static void mptcp_do_fastclose(struct sock *sk)
+ 			goto unlock;
+ 
+ 		subflow->send_fastclose = 1;
++
++		/* Initialize rcv_mss to TCP_MIN_MSS to avoid division by 0
++		 * issue in __tcp_select_window(), see tcp_disconnect().
++		 */
++		inet_csk(ssk)->icsk_ack.rcv_mss = TCP_MIN_MSS;
++
+ 		tcp_send_active_reset(ssk, ssk->sk_allocation);
+ unlock:
+ 		release_sock(ssk);
+-- 
+2.51.0
+
 
