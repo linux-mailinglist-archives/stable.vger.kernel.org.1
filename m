@@ -1,263 +1,431 @@
-Return-Path: <stable+bounces-200376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50BFFCAE549
-	for <lists+stable@lfdr.de>; Mon, 08 Dec 2025 23:36:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89F81CAE63C
+	for <lists+stable@lfdr.de>; Tue, 09 Dec 2025 00:13:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 474A3300B908
-	for <lists+stable@lfdr.de>; Mon,  8 Dec 2025 22:36:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D908B3024E55
+	for <lists+stable@lfdr.de>; Mon,  8 Dec 2025 23:13:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86FCD2D7DE2;
-	Mon,  8 Dec 2025 22:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B30022D3EDF;
+	Mon,  8 Dec 2025 23:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="e4nvfd6V"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dZ5DMln0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E22F3B8D63
-	for <stable@vger.kernel.org>; Mon,  8 Dec 2025 22:36:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEE7B2D5A14
+	for <stable@vger.kernel.org>; Mon,  8 Dec 2025 23:13:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765233384; cv=none; b=ANqrpZddtAbMf6w4kbwPP0u4pEYUTL94tv84DSnZiQdYRy08g4p77ravxrcVdeXPqUwjCNKsost8TkthMpejnl7HMBH25s7yqQh9DQl28WUYotjq6jxcgv8kgfqnXZEJ0aPvGMKMBNMO7y5Ov15c9rOucuzaJc/WejflyKCtaRI=
+	t=1765235614; cv=none; b=Rt3c81KUovIWjqgdRJ+AzGMHVj/qHqUl330DGsC67vAe2R09QZ1ZWojGoNB9PwUBi7yqivGBHdhZR83mUoVrgI8Y921y6LTH/SPghOKCREPq9l6EUDEaqvQwiz8KzNHHtdaTJSOQfGtwTnTSmZveaTWsrhIQcGAAwM1Vdvf9dpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765233384; c=relaxed/simple;
-	bh=Q2G/MZtVBoEaCJauZ/cHmYZaRZTZNUt7d4RLedJ+aMU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mZPr0028iE5Xi+0kFnqvG7eqqg1TSeccWWCy0rWLEuKH7I2Hpo/OubPn+ZwloE/r/cUXHA7j1Py2HqfEu5Kv7s5tF/hNWxiTkLbWiVDQtcqG+mBumRPq3AcRez/7kSuUjVbBRvWWCW8M8khBnG1X98dh5M6Lfl9ExnNamTJWxgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=e4nvfd6V; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4775ae77516so59627325e9.1
-        for <stable@vger.kernel.org>; Mon, 08 Dec 2025 14:36:22 -0800 (PST)
+	s=arc-20240116; t=1765235614; c=relaxed/simple;
+	bh=sCuYg/i8Zn5qmYz6s1tkarVebpCmEojScJUUpBsYWWk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qZyyyh/dv6A+oEQTBAptXWkRi6Yi19kkFRzldoZbDxV5QW7VDrLunvTy/37sS4d0iiP4HvCTucSuoJW6rZ3gd/mx3yxEVq+ror/anzh0DbGnvla35BIjHNnrSuNXJQx1VH+C+zS8q6tZL8k/gu410+SOQx0ZVTjWtdc4oM5I8JI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dZ5DMln0; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7b7828bf7bcso5739108b3a.2
+        for <stable@vger.kernel.org>; Mon, 08 Dec 2025 15:13:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1765233381; x=1765838181; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=D4KD06lq2sAdPsV4RkTZMMEkkcHicyQ03NbVW7+GTqc=;
-        b=e4nvfd6V20myoyx4sPbWfL/RXP1rQwdmAdq2qF8mYdpLIh62GRQVcC3qZmJsVNs0ZT
-         uhfXlCn1Q/1vOm+PKY7kabAAXGhG/u6swFcnKnZMssTWtaAa0v9F+FzU8Uoxx5CNXi4x
-         FhbUWb60nBjum44ZsVEysnD20tJVsotnFiEALa9rcDQaTIQc4IoPSevYFWwa1/3bKweT
-         Wdb3djLiXPLqzDuZvPCHIlciRnDOPQ3eVcd8t58RNBjj1/1Yc8VJeluNEROlbRK9JVKM
-         l9d6QJOrDkj4kanm7TJC7wrmIRWPbCg1n3eb9s8WOArCX7odCy1xAmK7v0dpM/Vri2iE
-         0UHg==
+        d=gmail.com; s=20230601; t=1765235612; x=1765840412; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=7cNkudiHBLvbO1BAbAlJ5UuS7KUF5P5v2oxjto4jk7E=;
+        b=dZ5DMln0FLpqA0c99xH6JqFgXByVitX269oJzubAls1hWjf1Mx1Rn5NTIJ4Sj9YY5l
+         8eNYR9lVNBTiGxrS0KKkQPqMBi0ZRqQudAWtVzZt8P8TKrL1ymBXe3XqnhWRbPy5Y3Ad
+         abg8OUnzDogRIj+tFDOGtUAYsCGM2FIiJ+4yzSbS4/aMiPuJuAiS4kkUUsZ2i10eZ5Dn
+         TOW83pjIJbvtyRCDvg7hYcTnmD/QGHncUq9GlkrZkSkpXokKWTwZB+wV48Y2Zf0hMwv1
+         eJ1DWTxEK+kHUBmezvF2NHb7BOJpmyLDxLF8PiS5xUUhiG3j6zAV7NSX0qniIqv+d+p2
+         x8hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765233381; x=1765838181;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=D4KD06lq2sAdPsV4RkTZMMEkkcHicyQ03NbVW7+GTqc=;
-        b=WX2C4by1V2xVM5U3/9ESrmbtoUkl4aOJEPeINhJXJ/AcHhVIo2vKQu9UKNa3zuSFOJ
-         +f9K2qGhP9QoFrCWaK8VXekPffkihRNrISxRdmjRUVHgyQQXQ2g9AHB8FWFd/RYa2kpc
-         iJOR9XQES8b0i1vmLxJzpuCu3yddKHfL2fJ6iwASA+yalgjxR4gdP/6bc608Ai8Po5nh
-         eLuFi+S48UXhDDGgEI5D3s7gZjviVehuMIGQbr1lfm6NFaZP/5SNwAnWb/P6mU/no4LJ
-         8dfMTAXJOXr3Z1+gLDwN/nK7F86C2EMPFH580Y9KqVju8PdTI4WR6XE5EgC5cjcb42Do
-         MCag==
-X-Forwarded-Encrypted: i=1; AJvYcCXRgUy2LMDJVezGSwmcP7El7XICe8hpUy8HS6xOVdnq2VgCTTVA51eThLdMjaGFLuwVV0/fIXE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzcJ9KPS8hl4h+2Xf5o1LSySjYDjUW4HJMNgWuvwF579LV5y/Uo
-	vATihaL73en+aNCrA1VJpeexHid/X2ekEd4njt4RxvqLpYf2XO36BAim0x0eO2jI0N0dZJEruZ7
-	vI59nnRvG0xogzjSwN4WagCFtoIH8Cv47bqErYHOpJg==
-X-Gm-Gg: ASbGncurO05l0qFpxVWjAk7raN05fmbS5iXAsZKDxXjYnF9YmUUGsXVnIQgRBpBUeqh
-	EkSe597AOp1fpRF4/cA6dvz9bG+3qMG5PRrszeSmv/H6HMjOwOMVzVK41RwQmLYfSTVcNdSherT
-	oAC+Tv8TowVmzm50qG2QowdrUlh0EnCOhfEiFh19wm27Qs2N05h4cn59uan11c6BvE2Lth5jm0z
-	3rG6AIuPLbSL81ls4JbspZXhX+F5t+InyGknzybihcV931fcoJ9tVM1j2ZhnVafSrELeHc=
-X-Google-Smtp-Source: AGHT+IHdENdqQ5ZpfGKlDmPBmXNvBchycFRz1S91lwgqXoJLXzAP6AzIRd2MqCvVDm4uYekNJP736gqsi3Ttoiy1uEE=
-X-Received: by 2002:a05:6000:26ca:b0:3ff:17ac:a34b with SMTP id
- ffacd0b85a97d-42f89f7f743mr10799228f8f.42.1765233380524; Mon, 08 Dec 2025
- 14:36:20 -0800 (PST)
+        d=1e100.net; s=20230601; t=1765235612; x=1765840412;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7cNkudiHBLvbO1BAbAlJ5UuS7KUF5P5v2oxjto4jk7E=;
+        b=BFOkIwQcsdblTIkNO9JUBxVbE9Td2S4Akmi0DVPrqPPsldDY3iJCJd3u4hvfQiYK1C
+         ATxn/aLxs7IU4VmJ89t/Z3jIo4pGsXonxnwLyq3R5qw4LKXxCGT4Shbb9MrLE21wsEi2
+         N1cp2UskVSb4RI6XtAFWY0tHzrOP7ZJChroxzqE1r9zcgEGAGBPqJZGlrG/2TaWnj7eG
+         HAX9AaJY43SbZcpqVCqioDsLVGlVeMxWYdxHFXFBkPx39dgBTPGFAIAR9ScaHc3zVBBs
+         ZfKnwJNZXYXws80vrPhf687pkVeMZX5qVnPQmSBaIbNxtMBrsto8gLyvokATtq70XCVJ
+         nWVA==
+X-Forwarded-Encrypted: i=1; AJvYcCVsSX07zfIxbnT7MO79CIc4R8noaYsHDJe7MBVPwWfHyghi6FiiiSBhGwnv9qquNVM1tzupUcA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx7inCoAbIhU6owUlWn6JFuCuHblqeBs/E5dgce99x25amEnUtR
+	7oD4GLwFOZj/+kvMOdGhRf9fnlkuQd9L1F5wHL7yZZIcF22QZ++vCvZC
+X-Gm-Gg: ASbGncu9PgADXPSQNkGjmITuHWuizVFyLFUmwIbKih+ShLMS1H6WyLVhlMYt/8HITzj
+	brNocs9TqQfu/FbFPmAhd1r1/2zuKw8LYm+ubhlGnlFrbYNR+OGcms9txCdHCNWICzCXxFZNfiy
+	qCLKR3YiHFPrqZdwEy8h7ho4YCKC4oFyFNCGlEgN7e7bPfwgiQkyf/rjK0ci8hcuRmTilP+0sl7
+	2TqoVBAFWiyp0EXCQFBxuCXfc5thhzAuyh0rKk99Y9pSmZYkQVovz70EKPJ0rikUISwD/vcQR3w
+	8D66WY/UD2Ut7UbU+JgqvmqSozO/NOiHHREBoB2XvyVbQikcLrzPLT8ZLeldR5abtGSPEz5mJCX
+	JbpEmHTvt08hKND7WTv8zF+pVQIRyIXSUCOvF9/EWZvTLuW4mc8XDBwNfYWdE4wn1nS5uEz5HYl
+	Rn28nNZQaNjh4=
+X-Google-Smtp-Source: AGHT+IENI8piQgxp7BPJwYHC2wEim4PgmyRYNo8uvtRwTtLeTNSPYOAZs1mD+ZS6wM1lTT6oQ+n41Q==
+X-Received: by 2002:a05:6a20:7f81:b0:334:912f:acea with SMTP id adf61e73a8af0-366180175c0mr8791792637.59.1765235611666;
+        Mon, 08 Dec 2025 15:13:31 -0800 (PST)
+Received: from archie.me ([210.87.74.117])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-bf6817397d0sm13136853a12.6.2025.12.08.15.13.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Dec 2025 15:13:31 -0800 (PST)
+Received: by archie.me (Postfix, from userid 1000)
+	id 24242421DA23; Tue, 09 Dec 2025 06:13:28 +0700 (WIB)
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Documentation <linux-doc@vger.kernel.org>,
+	Linux Kernel Tracing <linux-trace-kernel@vger.kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Crystal Wood <crwood@redhat.com>,
+	Tomas Glozar <tglozar@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Bagas Sanjaya <bagasdotme@gmail.com>,
+	stable@vger.kernel.org,
+	Gopi Krishna Menon <krishnagopi487@gmail.com>,
+	Randy Dunlap <rdunlap@infradead.org>
+Subject: [PATCH 6.18.y] Documentation/rtla: rename common_xxx.rst files to common_xxx.txt
+Date: Tue,  9 Dec 2025 06:13:00 +0700
+Message-ID: <20251208231300.9386-2-bagasdotme@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251202-wip-obbardc-qcom-msm8096-clk-cpu-fix-downclock-v1-1-90208427e6b1@linaro.org>
- <8d769fb3-cd2a-492c-8aa3-064ebbc5eee4@oss.qualcomm.com>
-In-Reply-To: <8d769fb3-cd2a-492c-8aa3-064ebbc5eee4@oss.qualcomm.com>
-From: Christopher Obbard <christopher.obbard@linaro.org>
-Date: Mon, 8 Dec 2025 22:36:09 +0000
-X-Gm-Features: AQt7F2pyLxXm2GWb6gtwnpa1Ns2Gi_xPr5Pdfa1W2vBee9eceYgn1z1DZ-WxUWw
-Message-ID: <CACr-zFD_Nd=r1Giu2A0h9GHgh-GYPbT1PrwBq7n7JN2AWkXMrw@mail.gmail.com>
-Subject: Re: [PATCH] Revert "clk: qcom: cpu-8996: simplify the cpu_clk_notifier_cb"
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Dmitry Baryshkov <lumag@kernel.org>, linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Developer-Signature: v=1; a=openpgp-sha256; l=13847; i=bagasdotme@gmail.com; h=from:subject; bh=4yDdjpvK5UYgmsBWh3Cf2nkLEypdnAasaE0SdB09688=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDJnmUbOOc/556++80l3r8p+v1V8TJjjXxVxZW2dSazTJV WuNhMvzjlIWBjEuBlkxRZZJiXxNp3cZiVxoX+sIM4eVCWQIAxenAEwkUJ/hr/yTjQ9l2lYuU564 vXSt3o2tdbMn+53KSUkJ5djj+fPgvRiG/66HrewvnPjCd6W9WOjNxvSQ/3uj/u9M1+Vfbzvl9YR jb1kA
+X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
+Content-Transfer-Encoding: 8bit
 
-Hi Konrad,
+From: Gopi Krishna Menon <krishnagopi487@gmail.com>
 
-On Wed, 3 Dec 2025 at 10:52, Konrad Dybcio
-<konrad.dybcio@oss.qualcomm.com> wrote:
->
-> On 12/2/25 10:24 PM, Christopher Obbard wrote:
-> > This reverts commit b3b274bc9d3d7307308aeaf75f70731765ac999a.
-> >
-> > On the DragonBoard 820c (which uses APQ8096/MSM8996) this change causes
-> > the CPUs to downclock to roughly half speed under sustained load. The
-> > regression is visible both during boot and when running CPU stress
-> > workloads such as stress-ng: the CPUs initially ramp up to the expected
-> > frequency, then drop to a lower OPP even though the system is clearly
-> > CPU-bound.
-> >
-> > Bisecting points to this commit and reverting it restores the expected
-> > behaviour on the DragonBoard 820c - the CPUs track the cpufreq policy
-> > and run at full performance under load.
-> >
-> > The exact interaction with the ACD is not yet fully understood and we
-> > would like to keep ACD in use to avoid possible SoC reliability issues.
-> > Until we have a better fix that preserves ACD while avoiding this
-> > performance regression, revert the bisected patch to restore the
-> > previous behaviour.
-> >
-> > Fixes: b3b274bc9d3d ("clk: qcom: cpu-8996: simplify the cpu_clk_notifie=
-r_cb")
-> > Cc: stable@vger.kernel.org # v6.3+
-> > Link: https://lore.kernel.org/linux-arm-msm/20230113120544.59320-8-dmit=
-ry.baryshkov@linaro.org/
-> > Cc: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-> > Signed-off-by: Christopher Obbard <christopher.obbard@linaro.org>
-> > ---
+commit 96b546c241b11a97ba1247580208c554458e7866 upstream.
 
+Sphinx reports htmldocs errors:
 
-Apologies for the late response, I was in the process of setting some
-more msm8096 boards up again in my new workspace to test this
-properly.
+Documentation/tools/rtla/common_options.rst:58: ERROR: Undefined substitution referenced: "threshold".
+Documentation/tools/rtla/common_options.rst:88: ERROR: Undefined substitution referenced: "tool".
+Documentation/tools/rtla/common_options.rst:88: ERROR: Undefined substitution referenced: "thresharg".
+Documentation/tools/rtla/common_options.rst:88: ERROR: Undefined substitution referenced: "tracer".
+Documentation/tools/rtla/common_options.rst:92: ERROR: Undefined substitution referenced: "tracer".
+Documentation/tools/rtla/common_options.rst:98: ERROR: Undefined substitution referenced: "actionsperf".
+Documentation/tools/rtla/common_options.rst:113: ERROR: Undefined substitution referenced: "tool".
 
+common_*.rst files are snippets that are intended to be included by rtla
+docs (rtla*.rst). common_options.rst in particular contains
+substitutions which depend on other common_* includes, so building it
+independently as reST source results in above errors.
 
-> It may be that your board really has a MSM/APQ8x96*SG* which is another
-> name for the PRO SKU, which happens to have a 2 times wider divider, try
->
-> `cat /sys/bus/soc/devices/soc0/soc_id`
+Rename all common_*.rst files to common_*.txt to prevent Sphinx from
+building these snippets as standalone reST source and update all include
+references accordingly.
 
-I read the soc_id from both of the msm8096 boards I have:
+Cc: stable@vger.kernel.org
+Link: https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html#substitutions
+Suggested-by: Tomas Glozar <tglozar@redhat.com>
+Suggested-by: Bagas Sanjaya <bagasdotme@gmail.com>
+Signed-off-by: Gopi Krishna Menon <krishnagopi487@gmail.com>
+Reviewed-by: Tomas Glozar <tglozar@redhat.com>
+Fixes: 05b7e10687c6 ("tools/rtla: Add remaining support for osnoise actions")
+Reviewed-by: Bagas Sanjaya <bagasdotme@gmail.com>
+Link: https://lore.kernel.org/r/20251008184522.13201-1-krishnagopi487@gmail.com
+[Bagas: massage commit message and apply trailers]
+Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Jonathan Corbet <corbet@lwn.net>
+Message-ID: <20251013092719.30780-2-bagasdotme@gmail.com>
+Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
+---
+Note: The warnings were present in 6.18 cycle but unfortunately the original
+96b546c241b11a97ba1247580208c554458e7866 got instead queued up for 6.19
+merge window.
 
-Open-Q=E2=84=A2 820 =C2=B5SOM Development Kit (APQ8096)
-```
-$ cat /sys/bus/soc/devices/soc0/soc_id
-291
-```
-(FWIW this board is not in mainline yet; but boots with a DT similar
-enough to the db820c. I have a patch in my upstream backlog enabling
-that board; watch this space)
+ .../{common_appendix.rst => common_appendix.txt}     |  0
+ ...mmon_hist_options.rst => common_hist_options.txt} |  0
+ .../rtla/{common_options.rst => common_options.txt}  |  0
+ ...escription.rst => common_osnoise_description.txt} |  0
+ ...snoise_options.rst => common_osnoise_options.txt} |  0
+ ...common_timerlat_aa.rst => common_timerlat_aa.txt} |  0
+ ...scription.rst => common_timerlat_description.txt} |  0
+ ...erlat_options.rst => common_timerlat_options.txt} |  0
+ ...common_top_options.rst => common_top_options.txt} |  0
+ Documentation/tools/rtla/rtla-hwnoise.rst            |  8 ++++----
+ Documentation/tools/rtla/rtla-osnoise-hist.rst       | 10 +++++-----
+ Documentation/tools/rtla/rtla-osnoise-top.rst        | 10 +++++-----
+ Documentation/tools/rtla/rtla-osnoise.rst            |  4 ++--
+ Documentation/tools/rtla/rtla-timerlat-hist.rst      | 12 ++++++------
+ Documentation/tools/rtla/rtla-timerlat-top.rst       | 12 ++++++------
+ Documentation/tools/rtla/rtla-timerlat.rst           |  4 ++--
+ Documentation/tools/rtla/rtla.rst                    |  2 +-
+ 17 files changed, 31 insertions(+), 31 deletions(-)
+ rename Documentation/tools/rtla/{common_appendix.rst => common_appendix.txt} (100%)
+ rename Documentation/tools/rtla/{common_hist_options.rst => common_hist_options.txt} (100%)
+ rename Documentation/tools/rtla/{common_options.rst => common_options.txt} (100%)
+ rename Documentation/tools/rtla/{common_osnoise_description.rst => common_osnoise_description.txt} (100%)
+ rename Documentation/tools/rtla/{common_osnoise_options.rst => common_osnoise_options.txt} (100%)
+ rename Documentation/tools/rtla/{common_timerlat_aa.rst => common_timerlat_aa.txt} (100%)
+ rename Documentation/tools/rtla/{common_timerlat_description.rst => common_timerlat_description.txt} (100%)
+ rename Documentation/tools/rtla/{common_timerlat_options.rst => common_timerlat_options.txt} (100%)
+ rename Documentation/tools/rtla/{common_top_options.rst => common_top_options.txt} (100%)
 
-DragonBoard=E2=84=A2 820c (APQ8096)
-```
-$ cat /sys/bus/soc/devices/soc0/soc_id
-291
-```
+diff --git a/Documentation/tools/rtla/common_appendix.rst b/Documentation/tools/rtla/common_appendix.txt
+similarity index 100%
+rename from Documentation/tools/rtla/common_appendix.rst
+rename to Documentation/tools/rtla/common_appendix.txt
+diff --git a/Documentation/tools/rtla/common_hist_options.rst b/Documentation/tools/rtla/common_hist_options.txt
+similarity index 100%
+rename from Documentation/tools/rtla/common_hist_options.rst
+rename to Documentation/tools/rtla/common_hist_options.txt
+diff --git a/Documentation/tools/rtla/common_options.rst b/Documentation/tools/rtla/common_options.txt
+similarity index 100%
+rename from Documentation/tools/rtla/common_options.rst
+rename to Documentation/tools/rtla/common_options.txt
+diff --git a/Documentation/tools/rtla/common_osnoise_description.rst b/Documentation/tools/rtla/common_osnoise_description.txt
+similarity index 100%
+rename from Documentation/tools/rtla/common_osnoise_description.rst
+rename to Documentation/tools/rtla/common_osnoise_description.txt
+diff --git a/Documentation/tools/rtla/common_osnoise_options.rst b/Documentation/tools/rtla/common_osnoise_options.txt
+similarity index 100%
+rename from Documentation/tools/rtla/common_osnoise_options.rst
+rename to Documentation/tools/rtla/common_osnoise_options.txt
+diff --git a/Documentation/tools/rtla/common_timerlat_aa.rst b/Documentation/tools/rtla/common_timerlat_aa.txt
+similarity index 100%
+rename from Documentation/tools/rtla/common_timerlat_aa.rst
+rename to Documentation/tools/rtla/common_timerlat_aa.txt
+diff --git a/Documentation/tools/rtla/common_timerlat_description.rst b/Documentation/tools/rtla/common_timerlat_description.txt
+similarity index 100%
+rename from Documentation/tools/rtla/common_timerlat_description.rst
+rename to Documentation/tools/rtla/common_timerlat_description.txt
+diff --git a/Documentation/tools/rtla/common_timerlat_options.rst b/Documentation/tools/rtla/common_timerlat_options.txt
+similarity index 100%
+rename from Documentation/tools/rtla/common_timerlat_options.rst
+rename to Documentation/tools/rtla/common_timerlat_options.txt
+diff --git a/Documentation/tools/rtla/common_top_options.rst b/Documentation/tools/rtla/common_top_options.txt
+similarity index 100%
+rename from Documentation/tools/rtla/common_top_options.rst
+rename to Documentation/tools/rtla/common_top_options.txt
+diff --git a/Documentation/tools/rtla/rtla-hwnoise.rst b/Documentation/tools/rtla/rtla-hwnoise.rst
+index 3a7163c02ac8e8..26512b15fe7ba5 100644
+--- a/Documentation/tools/rtla/rtla-hwnoise.rst
++++ b/Documentation/tools/rtla/rtla-hwnoise.rst
+@@ -29,11 +29,11 @@ collection of the tracer output.
+ 
+ OPTIONS
+ =======
+-.. include:: common_osnoise_options.rst
++.. include:: common_osnoise_options.txt
+ 
+-.. include:: common_top_options.rst
++.. include:: common_top_options.txt
+ 
+-.. include:: common_options.rst
++.. include:: common_options.txt
+ 
+ EXAMPLE
+ =======
+@@ -106,4 +106,4 @@ AUTHOR
+ ======
+ Written by Daniel Bristot de Oliveira <bristot@kernel.org>
+ 
+-.. include:: common_appendix.rst
++.. include:: common_appendix.txt
+diff --git a/Documentation/tools/rtla/rtla-osnoise-hist.rst b/Documentation/tools/rtla/rtla-osnoise-hist.rst
+index 1fc60ef2610677..007521c865d97e 100644
+--- a/Documentation/tools/rtla/rtla-osnoise-hist.rst
++++ b/Documentation/tools/rtla/rtla-osnoise-hist.rst
+@@ -15,7 +15,7 @@ SYNOPSIS
+ 
+ DESCRIPTION
+ ===========
+-.. include:: common_osnoise_description.rst
++.. include:: common_osnoise_description.txt
+ 
+ The **rtla osnoise hist** tool collects all **osnoise:sample_threshold**
+ occurrence in a histogram, displaying the results in a user-friendly way.
+@@ -24,11 +24,11 @@ collection of the tracer output.
+ 
+ OPTIONS
+ =======
+-.. include:: common_osnoise_options.rst
++.. include:: common_osnoise_options.txt
+ 
+-.. include:: common_hist_options.rst
++.. include:: common_hist_options.txt
+ 
+-.. include:: common_options.rst
++.. include:: common_options.txt
+ 
+ EXAMPLE
+ =======
+@@ -65,4 +65,4 @@ AUTHOR
+ ======
+ Written by Daniel Bristot de Oliveira <bristot@kernel.org>
+ 
+-.. include:: common_appendix.rst
++.. include:: common_appendix.txt
+diff --git a/Documentation/tools/rtla/rtla-osnoise-top.rst b/Documentation/tools/rtla/rtla-osnoise-top.rst
+index b1cbd7bcd4aed2..6ccadae3894570 100644
+--- a/Documentation/tools/rtla/rtla-osnoise-top.rst
++++ b/Documentation/tools/rtla/rtla-osnoise-top.rst
+@@ -15,7 +15,7 @@ SYNOPSIS
+ 
+ DESCRIPTION
+ ===========
+-.. include:: common_osnoise_description.rst
++.. include:: common_osnoise_description.txt
+ 
+ **rtla osnoise top** collects the periodic summary from the *osnoise* tracer,
+ including the counters of the occurrence of the interference source,
+@@ -26,11 +26,11 @@ collection of the tracer output.
+ 
+ OPTIONS
+ =======
+-.. include:: common_osnoise_options.rst
++.. include:: common_osnoise_options.txt
+ 
+-.. include:: common_top_options.rst
++.. include:: common_top_options.txt
+ 
+-.. include:: common_options.rst
++.. include:: common_options.txt
+ 
+ EXAMPLE
+ =======
+@@ -60,4 +60,4 @@ AUTHOR
+ ======
+ Written by Daniel Bristot de Oliveira <bristot@kernel.org>
+ 
+-.. include:: common_appendix.rst
++.. include:: common_appendix.txt
+diff --git a/Documentation/tools/rtla/rtla-osnoise.rst b/Documentation/tools/rtla/rtla-osnoise.rst
+index c129b206ce3484..540d2bf6c15247 100644
+--- a/Documentation/tools/rtla/rtla-osnoise.rst
++++ b/Documentation/tools/rtla/rtla-osnoise.rst
+@@ -14,7 +14,7 @@ SYNOPSIS
+ DESCRIPTION
+ ===========
+ 
+-.. include:: common_osnoise_description.rst
++.. include:: common_osnoise_description.txt
+ 
+ The *osnoise* tracer outputs information in two ways. It periodically prints
+ a summary of the noise of the operating system, including the counters of
+@@ -56,4 +56,4 @@ AUTHOR
+ ======
+ Written by Daniel Bristot de Oliveira <bristot@kernel.org>
+ 
+-.. include:: common_appendix.rst
++.. include:: common_appendix.txt
+diff --git a/Documentation/tools/rtla/rtla-timerlat-hist.rst b/Documentation/tools/rtla/rtla-timerlat-hist.rst
+index 4923a362129bbd..f56fe546411bd4 100644
+--- a/Documentation/tools/rtla/rtla-timerlat-hist.rst
++++ b/Documentation/tools/rtla/rtla-timerlat-hist.rst
+@@ -16,7 +16,7 @@ SYNOPSIS
+ DESCRIPTION
+ ===========
+ 
+-.. include:: common_timerlat_description.rst
++.. include:: common_timerlat_description.txt
+ 
+ The **rtla timerlat hist** displays a histogram of each tracer event
+ occurrence. This tool uses the periodic information, and the
+@@ -25,13 +25,13 @@ occurrence. This tool uses the periodic information, and the
+ OPTIONS
+ =======
+ 
+-.. include:: common_timerlat_options.rst
++.. include:: common_timerlat_options.txt
+ 
+-.. include:: common_hist_options.rst
++.. include:: common_hist_options.txt
+ 
+-.. include:: common_options.rst
++.. include:: common_options.txt
+ 
+-.. include:: common_timerlat_aa.rst
++.. include:: common_timerlat_aa.txt
+ 
+ EXAMPLE
+ =======
+@@ -110,4 +110,4 @@ AUTHOR
+ ======
+ Written by Daniel Bristot de Oliveira <bristot@kernel.org>
+ 
+-.. include:: common_appendix.rst
++.. include:: common_appendix.txt
+diff --git a/Documentation/tools/rtla/rtla-timerlat-top.rst b/Documentation/tools/rtla/rtla-timerlat-top.rst
+index 50968cdd2095a1..7dbe625d0c4243 100644
+--- a/Documentation/tools/rtla/rtla-timerlat-top.rst
++++ b/Documentation/tools/rtla/rtla-timerlat-top.rst
+@@ -16,7 +16,7 @@ SYNOPSIS
+ DESCRIPTION
+ ===========
+ 
+-.. include:: common_timerlat_description.rst
++.. include:: common_timerlat_description.txt
+ 
+ The **rtla timerlat top** displays a summary of the periodic output
+ from the *timerlat* tracer. It also provides information for each
+@@ -26,13 +26,13 @@ seem with the option **-T**.
+ OPTIONS
+ =======
+ 
+-.. include:: common_timerlat_options.rst
++.. include:: common_timerlat_options.txt
+ 
+-.. include:: common_top_options.rst
++.. include:: common_top_options.txt
+ 
+-.. include:: common_options.rst
++.. include:: common_options.txt
+ 
+-.. include:: common_timerlat_aa.rst
++.. include:: common_timerlat_aa.txt
+ 
+ **--aa-only** *us*
+ 
+@@ -133,4 +133,4 @@ AUTHOR
+ ------
+ Written by Daniel Bristot de Oliveira <bristot@kernel.org>
+ 
+-.. include:: common_appendix.rst
++.. include:: common_appendix.txt
+diff --git a/Documentation/tools/rtla/rtla-timerlat.rst b/Documentation/tools/rtla/rtla-timerlat.rst
+index 20e2d259467fd0..ce9f57e038c37f 100644
+--- a/Documentation/tools/rtla/rtla-timerlat.rst
++++ b/Documentation/tools/rtla/rtla-timerlat.rst
+@@ -14,7 +14,7 @@ SYNOPSIS
+ DESCRIPTION
+ ===========
+ 
+-.. include:: common_timerlat_description.rst
++.. include:: common_timerlat_description.txt
+ 
+ The **rtla timerlat top** mode displays a summary of the periodic output
+ from the *timerlat* tracer. The **rtla timerlat hist** mode displays
+@@ -51,4 +51,4 @@ AUTHOR
+ ======
+ Written by Daniel Bristot de Oliveira <bristot@kernel.org>
+ 
+-.. include:: common_appendix.rst
++.. include:: common_appendix.txt
+diff --git a/Documentation/tools/rtla/rtla.rst b/Documentation/tools/rtla/rtla.rst
+index fc0d233efcd5df..2a5fb7004ad448 100644
+--- a/Documentation/tools/rtla/rtla.rst
++++ b/Documentation/tools/rtla/rtla.rst
+@@ -45,4 +45,4 @@ AUTHOR
+ ======
+ Daniel Bristot de Oliveira <bristot@kernel.org>
+ 
+-.. include:: common_appendix.rst
++.. include:: common_appendix.txt
 
+base-commit: a66aab4b0ed2ca786d5512e843f32d96942ff311
+-- 
+An old man doll... just what I always wanted! - Clara
 
-> see:
->
-> https://lore.kernel.org/linux-arm-msm/20251111-db820c-pro-v1-0-6eece16c5c=
-23@oss.qualcomm.com/
->
-> https://lore.kernel.org/linux-arm-msm/kXrAkKv7RZct22X0wivLWqOAiLKpFuDCAY1=
-KY_KSx649kn7BNmJ2IFFMrsYPAyDlcxIjbQCQ1PHb5KaNFawm9IGIXUbch-DI9OI_l73BAaM=3D=
-@protonmail.com/
-
-Thanks for the pointers. Interesting, but it does look like my boards
-are msm8096 (and not the pro SKU). Can you confirm that at all from
-the soc_id above?
-
-Another bit of (hopefully useful) information is that the db820c boot
-firmware log sthe following, which is different to the logs I saw from
-the pro SKU (BUT the firmware could also be outdated?):
-```
-S - QC_IMAGE_VERSION_STRING=3DBOOT.XF.1.0-00301
-S - IMAGE_VARIANT_STRING=3DM8996LAB
-S - OEM_IMAGE_VERSION_STRING=3Dcrm-ubuntu68
-S - Boot Interface: UFS
-S - Secure Boot: Off
-S - Boot Config @ 0x00076044 =3D 0x000001c9
-S - JTAG ID @ 0x000760f4 =3D 0x4003e0e1
-S - OEM ID @ 0x000760f8 =3D 0x00000000
-S - Serial Number @ 0x00074138 =3D 0x14d6d024
-S - OEM Config Row 0 @ 0x00074188 =3D 0x0000000000000000
-S - OEM Config Row 1 @ 0x00074190 =3D 0x0000000000000000
-S - Feature Config Row 0 @ 0x000741a0 =3D 0x0050000010000100
-S - Feature Config Row 1 @ 0x000741a8 =3D 0x00fff00001ffffff
-S - Core 0 Frequency, 1228 MHz
-B -         0 - PBL, Start
-B -     10414 - bootable_media_detect_entry, Start
-B -     50197 - bootable_media_detect_success, Start
-B -     50197 - elf_loader_entry, Start
-B -     51760 - auth_hash_seg_entry, Start
-B -     51863 - auth_hash_seg_exit, Start
-B -     85147 - elf_segs_hash_verify_entry, Start
-B -     87651 - PBL, End
-B -     89700 - SBL1, Start
-B -    185684 - usb: hs_phy_nondrive_start
-B -    186050 - usb: PLL lock success - 0x3
-B -    189039 - usb: hs_phy_nondrive_finish
-B -    193156 - boot_flash_init, Start
-D -        30 - boot_flash_init, Delta
-B -    200263 - sbl1_ddr_set_default_params, Start
-D -        30 - sbl1_ddr_set_default_params, Delta
-B -    208254 - boot_config_data_table_init, Start
-D -    317169 - boot_config_data_table_init, Delta - (60 Bytes)
-B -    529968 - CDT Version:3,Platform ID:24,Major ID:1,Minor ID:0,Subtype:=
-0
-B -    534665 - Image Load, Start
-D -     22448 - PMIC Image Loaded, Delta - (37272 Bytes)
-B -    557143 - pm_device_init, Start
-B -    562908 - PON REASON:PM0:0x60 PM1:0x20
-B -    599294 - PM_SET_VAL:Skip
-D -     40016 - pm_device_init, Delta
-B -    601216 - pm_driver_init, Start
-D -      2897 - pm_driver_init, Delta
-B -    607834 - pm_sbl_chg_init, Start
-D -        91 - pm_sbl_chg_init, Delta
-B -    614575 - vsense_init, Start
-D -         0 - vsense_init, Delta
-B -    624670 - Pre_DDR_clock_init, Start
-D -       396 - Pre_DDR_clock_init, Delta
-B -    628208 - ddr_initialize_device, Start
-B -    631899 - 8996 v3.x detected, Max frequency =3D 1.8 GHz
-B -    641537 - ddr_initialize_device, Delta
-B -    641567 - DDR ID, Rank 0, Rank 1, 0x6, 0x300, 0x300
-B -    645410 - Basic DDR tests done
-B -    714157 - clock_init, Start
-D -       274 - clock_init, Delta
-B -    717543 - Image Load, Start
-D -      4331 - QSEE Dev Config Image Loaded, Delta - (46008 Bytes)
-B -    723002 - Image Load, Start
-D -      5307 - APDP Image Loaded, Delta - (0 Bytes)
-B -    731603 - usb: UFS Serial - a28415ce
-B -    735965 - usb: fedl, vbus_low
-B -    739594 - Image Load, Start
-D -     55449 - QSEE Image Loaded, Delta - (1640572 Bytes)
-B -    795043 - Image Load, Start
-D -      2043 - SEC Image Loaded, Delta - (4096 Bytes)
-B -    802607 - sbl1_efs_handle_cookies, Start
-D -       488 - sbl1_efs_handle_cookies, Delta
-B -    811117 - Image Load, Start
-D -     14365 - QHEE Image Loaded, Delta - (254184 Bytes)
-B -    825482 - Image Load, Start
-D -     14091 - RPM Image Loaded, Delta - (223900 Bytes)
-B -    840397 - Image Load, Start
-D -      3172 - STI Image Loaded, Delta - (0 Bytes)
-B -    847107 - Image Load, Start
-D -     34800 - APPSBL Image Loaded, Delta - (748620 Bytes)
-B -    881999 - SBL1, End
-D -    796569 - SBL1, Delta
-S - Flash Throughput, 94000 KB/s  (2958928 Bytes,  31192 us)
-S - DDR Frequency, 1017 MHz
-Android Bootloader - UART_DM Initialized!!!
-[0] BUILD_VERSION=3D
-[0] BUILD_DATE=3D00:29:31 - Dec  4 2023
-[0] welcome to lk
-...
-```
-
-
-Cheers!
-
-Chris
 
