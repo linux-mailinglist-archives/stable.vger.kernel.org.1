@@ -1,76 +1,76 @@
-Return-Path: <stable+bounces-200306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0984CCABD8B
-	for <lists+stable@lfdr.de>; Mon, 08 Dec 2025 03:30:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A122CABD94
+	for <lists+stable@lfdr.de>; Mon, 08 Dec 2025 03:30:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 367B83000924
-	for <lists+stable@lfdr.de>; Mon,  8 Dec 2025 02:30:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3C95E3006F54
+	for <lists+stable@lfdr.de>; Mon,  8 Dec 2025 02:30:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A83B274B51;
-	Mon,  8 Dec 2025 02:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C0FE2727EE;
+	Mon,  8 Dec 2025 02:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="uZtkDBul"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="PMQ/5SMP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21328237713
-	for <stable@vger.kernel.org>; Mon,  8 Dec 2025 02:30:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C12257844
+	for <stable@vger.kernel.org>; Mon,  8 Dec 2025 02:30:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765161006; cv=none; b=WNK2MqPNLS+4DRMEx8y2OEFtNq8TiIHZdJ5JD2KLIppLVs6Dm7+wi29RSLXGipNVqstXscURSAb23qb0FhBDNkn/kBWSE89/4CbUgNjhR0zw3lKKhqgDKQYGbB3Q1+4BMoYDIrLxPUxqzZYxIPOgQ6lRNJF2wCD/ijklNRgpSDE=
+	t=1765161008; cv=none; b=MTP+G4U2AquCcLtFuCqqCKD3jXzy93fGHxRhRiROIzxjYvGOMXb3UD7MQaYh0Ei8Jv7Y+JalU9VY4c69fHtwr01lhnLUyC4LWB+6MwDuVovCZRVGSqNCh0v0uRx78MxTTz2VPE2Ge2TRoGXYks9m89YIDV88Lgdfr0Tv+lNgxu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765161006; c=relaxed/simple;
-	bh=xiJZPms0PiP/upw21jd6j2Ylg8fEjw8wjWhupiPUvas=;
-	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=XwDwDdhNFJv1/0r+HosshbQAEEj7qerVF+xT0kS3tuFf2dkkakr00nDu5xlO9MfWUQFIRTae6x9Ub0tWOZ5pmacC5XNTKAYRisaVIXH/AcYH4ZXJX+ZOdC48uYC46sCU/6N4dhBnpEgXzTiFmklpE651O/7P+HWwIZXotNaPNBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=uZtkDBul; arc=none smtp.client-ip=209.85.215.173
+	s=arc-20240116; t=1765161008; c=relaxed/simple;
+	bh=u0mRaKs1I2lHnNAOENXeXd3nXeWnmIoy1+mZdAUJrdU=;
+	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=m9t8eCROjZxJvdo8glx7uZlceVKGaMDwRZyx6vCcbYHCc0ogit2ck3q0Km9Tw3PTsfpVZmqRC/lK6G1QoULg/Uw+K8wYnNYqfviysUripgreRRVIa38Q/zoZ0eJe6ZJkhDPqxgZlUBmI63x2rB2ad9V86DS7zb1obELhEQ9+j+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=PMQ/5SMP; arc=none smtp.client-ip=74.125.82.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-bc09b3d3afeso2160323a12.0
-        for <stable@vger.kernel.org>; Sun, 07 Dec 2025 18:30:03 -0800 (PST)
+Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-2a45877bd5eso6085172eec.0
+        for <stable@vger.kernel.org>; Sun, 07 Dec 2025 18:30:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1765161003; x=1765765803; darn=vger.kernel.org;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1765161005; x=1765765805; darn=vger.kernel.org;
         h=message-id:date:reply-to:cc:to:from:subject
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=q0ZnmUTJp5LGs3m3+7yqvfIp4B01nzjSXhUBc9KqWdI=;
-        b=uZtkDBuluoRGUZ8eTepGKbyKz/ayMvi7MdzxiWIIVAuC7f0C+AMlQ6mgE1hS7HlXMa
-         sFQaDYbrMO4WJJiTxBNji18i6azytwwrkrIrYWGcaQw+RamsvrhUSqGPCidhaLQY7ehr
-         qn2bUZR9l57TTpe/U8KLj0ch+QadEVT8WPyJmFq+d+q0C4xP1IyZYpvkmRJ2O3zjGDwq
-         bstx6ue7tlbrqnp7ePoImYscS7DouiArF5+8Zdbld2qYbNuAXZSuFIMQYca815U+UXXh
-         Z+nU4Z3nNRcouKgVW8ol0FaMBnCqCL8WmF2VlfTOSLu33P1EJKo7A2DbVDg5T59umZxN
-         jcPg==
+        bh=uwk5EKq/m+wkf3Lsn3Io60KCeysrkd0YtBb0WbZlb1Q=;
+        b=PMQ/5SMPRn/d5NXAbo3+xL43hZuRjBvRt52miDL55RVSqd5drLoRa47IiiTSSNTVHU
+         3mnw7d0CeMSJfKz2R0drnkW6hj83e4iDg8BbyFsr311S7FsmSX05fhyvZkq07U/kdTB0
+         ASpOr20EPSUirbXvRP+duBH8dVRux582YLIt61h8QOXqLtAbkuFpAcKLGRYqAc38OiCn
+         9YFSvjsMvtVw0PM4l/XGL7KdyPZqLCx3MpundflVCCZ+ZplkvKwE4ux5Ax1AgyZo8VUo
+         s73Maq/YS1aVn8A4HkK/NCWHn6TiPCc6mLolTE6MCoS+SJa7aBzZwnZ5nCBWJOStFpQa
+         YKzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765161003; x=1765765803;
+        d=1e100.net; s=20230601; t=1765161005; x=1765765805;
         h=message-id:date:reply-to:cc:to:from:subject
          :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=q0ZnmUTJp5LGs3m3+7yqvfIp4B01nzjSXhUBc9KqWdI=;
-        b=VmSBwfnDz0qP5HyrNDft0+RS407dkUfXyKaoTsFaBcyjPeus9iNGK6e9Z7Q4I/3aB6
-         02qdt+AX5r29g7tFC46+37vsAJ8BTlVT6iSUyt0/hD5mBBFhdqgMKg8S6hqIQiSloaKw
-         XjI4yyfEm3LgoP0DlLDPTnwybSOOAFahFqsXwU4mOTTjDW5iDRBhI1T+lAqKBhrpg8gP
-         N6BW9D0OWoThGZwjOp651ag5b/BFjcPfyrZZCza1SvHlKa59vsW0WQsN2ujD+7t3ETYa
-         XslPDrhyoBh9A18bRdogilqtJh/w+Y6MhzczHvXaDOsmfwGEQ4LtxHfeWCZd0va3VkUR
-         x4hQ==
-X-Gm-Message-State: AOJu0YwnZCdR3TGRyaODApr9WD9UhKWRGKIg4kDLZUqbC29hnieeUJIG
-	KmqRxtgq7FY2fdHgejS33OryQNbbyYNFOzYzDC/6hT0uDzV1wI5f8DoZk55cjNoO6OlVGJH0LD8
-	0Sw7hlAA=
-X-Gm-Gg: ASbGncvV3LEN0qfDLH6EL3/r15RXxSnmd1rDWizh9IPmGsd9MpN0CAkOO5rJUNqsgef
-	SQIUiQ9wGWCFOuwitbWusANFrBJKkVogdVkd4ifv3EIBZUdf8/aIwa4AJRK9wg6nhR04FvWbxWK
-	S6bdpOIkS52Z8l9Tw/FeVbxwghSp0yQeuPlBhSn/f3Wa1B9z4Oac+WpAfbnCCjzJSt9p0j+Vm6u
-	QRf+JuM1i2f9HwClDLoFAwd59bsUUa6GjB/3fxPn8FhYLFk1JDMlKMOqZr1rclElyCQYvS1VWOm
-	Qzkv7f8Jpq7bs3k9ET1hxQSwDWk/09KlaQM9NVehuUhGl4UA26KAQevk63pnMY0dql+4sNepGJW
-	P7XB5tmrx1iowUHxGpLmFVCnawJYX06eting1atbQ4ZELzeSoTZMSYC+C89JoxnqtePNumAZovU
-	/aBA0u
-X-Google-Smtp-Source: AGHT+IGhWEPsaz3hgND4i0UF/wm80MW10guGlA3ugkhm2lGcHUeDGPLKmAftcTeSEKF5I6SJPj6Rng==
-X-Received: by 2002:a05:7301:4291:b0:2ab:9418:977c with SMTP id 5a478bee46e88-2abc71f562dmr3392908eec.28.1765161003099;
-        Sun, 07 Dec 2025 18:30:03 -0800 (PST)
+        bh=uwk5EKq/m+wkf3Lsn3Io60KCeysrkd0YtBb0WbZlb1Q=;
+        b=a/qgDKmJ9aaiCyi/sQ4zLMNOggXAXXUjyr0wAkbrNWhdRXDaJi+gTPMshC6noZn9fg
+         ihDznsmECs4fArb3erDHHwCuGn18st6RKy9ssYu9MydVdTk9Ww2WwOfpojwpU/h+gOOI
+         xOxYoeb3SbfBdGsjcIZ5u9C9wP9czBuHSf5H1CkPI/+h9gBr9+xWRVDMdrDcTPuq0yaD
+         FZQWofsSQpNp7uqChwlF4IsmKhRK/ysLc4Ayz/Vr+mZWievV1H30f8uVlhqMQLPuobHP
+         bRpIktJatn/zrx4nl2c2Y9htDYPvH51BWQwhuT36LlDLgZr5yrTvXosNtSTyAYvbhPY+
+         ww+A==
+X-Gm-Message-State: AOJu0Yx02TobQNIQAfGRSRfyky5NqiKJpAJPSAspaQarE/TtbfHhxTEr
+	w7iAqcAbCTqF0yn4RXrXVSDQ/md8qCjj3jU6hcbO7ANAsiuqD6pp5HP6uWMlIF14Y3PRwsCg/Kq
+	O/9zpywQ=
+X-Gm-Gg: ASbGncu42MHAc5qdBJmrDnC5a5iKJzF+FikfGaCVrV5F3bJ16Ek0cZa3Hp3pLph4I0a
+	7/Dy4t8J8Wk766rP/1t71ngzbgbeFWDXNnv1tRu+0R7u8EIGLDopuKDMtO/gVrtFHKIHSBC1k3c
+	WscAOIifiCrtkrf9pkh+e8ScZQvzu9QXWMIQjIKLT77iAGpulNwk1j5oeRR7/GjH4QDu2IRcJUg
+	7k/OMBklCdp7h5TmiEjmGPiIMiXVWZjsceSjHWGhcDW+xjD/yDr1ZFZ7e+IhxaQTyQvg4psu7Xg
+	eZoPnKNxHloJGgsivhSlqXdPfTFdXigTEFGXiyvkkkTj3sAVZU/JLlRgIp19GJjSRYOKZ6Vsipq
+	9VeTzzNrd6HOj0YcxUat1JAUHpr7tA+vnPFClbVqWYSZGG925GN833gM2QV9ELcDXrbne/9RwFq
+	ZEJusc
+X-Google-Smtp-Source: AGHT+IEnOFva5+wGIc7xNMWzY81xxodqTgH02Tvm8n7WZF0G8pl2jd4Mg0N/hhuDvY8Rx3wMadOb0g==
+X-Received: by 2002:a05:693c:2181:b0:2a4:646c:e096 with SMTP id 5a478bee46e88-2aba316e26fmr6624629eec.0.1765161004966;
+        Sun, 07 Dec 2025 18:30:04 -0800 (PST)
 Received: from 1ece3ece63ba ([20.38.40.137])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2aba87aa5fcsm31861380eec.3.2025.12.07.18.30.02
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2aba87d7b9dsm43329246eec.4.2025.12.07.18.30.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 07 Dec 2025 18:30:02 -0800 (PST)
+        Sun, 07 Dec 2025 18:30:04 -0800 (PST)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -79,14 +79,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: [STATUS] stable/linux-6.1.y -
- 50cbba13faa294918f0e1a9cb2b0aba19f4e6fba
+Subject: [STATUS] stable/linux-6.6.y -
+ 5fa4793a2d2d70ad08b85387b41020f1fcc2d19e
 From: KernelCI bot <bot@kernelci.org>
 To: kernelci-results@groups.io
 Cc: stable@vger.kernel.org
 Reply-To: kernelci@lists.linux.dev
-Date: Mon, 08 Dec 2025 02:30:02 -0000
-Message-ID: <176516100180.6076.946683599491537468@1ece3ece63ba>
+Date: Mon, 08 Dec 2025 02:30:04 -0000
+Message-ID: <176516100399.6076.9654441713029194097@1ece3ece63ba>
 
 
 
@@ -94,20 +94,20 @@ Message-ID: <176516100180.6076.946683599491537468@1ece3ece63ba>
 
 Hello,
 
-Status summary for stable/linux-6.1.y
+Status summary for stable/linux-6.6.y
 
 Dashboard:
-https://d.kernelci.org/c/stable/linux-6.1.y/50cbba13faa294918f0e1a9cb2b0aba19f4e6fba/
+https://d.kernelci.org/c/stable/linux-6.6.y/5fa4793a2d2d70ad08b85387b41020f1fcc2d19e/
 
 giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
-branch: linux-6.1.y
-commit hash: 50cbba13faa294918f0e1a9cb2b0aba19f4e6fba
+branch: linux-6.6.y
+commit hash: 5fa4793a2d2d70ad08b85387b41020f1fcc2d19e
 origin: maestro
-test start time: 2025-12-06 22:05:23.711000+00:00
+test start time: 2025-12-06 22:05:24.119000+00:00
 
 Builds:	   35 ✅    4 ❌    0 ⚠️
-Boots: 	   47 ✅    0 ❌    0 ⚠️
-Tests: 	 2078 ✅  242 ❌ 1351 ⚠️
+Boots: 	   92 ✅    0 ❌    0 ⚠️
+Tests: 	 4404 ✅  350 ❌ 1689 ⚠️
 
 ### POSSIBLE REGRESSIONS
 
@@ -120,7 +120,7 @@ Hardware: beaglebone-black
   > Config: multi_v7_defconfig
     - Architecture/compiler: arm/gcc-14
       - ltp
-      last run: https://d.kernelci.org/test/maestro:6934b8381ca5bf9d0fd66360
+      last run: https://d.kernelci.org/test/maestro:6934b2071ca5bf9d0fd63f8f
       history:  > ❌  > ❌  > ❌  > ✅  > ✅  
             
 
