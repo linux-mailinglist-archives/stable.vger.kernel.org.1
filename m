@@ -1,147 +1,161 @@
-Return-Path: <stable+bounces-200370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71039CAE0E5
-	for <lists+stable@lfdr.de>; Mon, 08 Dec 2025 20:12:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FE69CAE219
+	for <lists+stable@lfdr.de>; Mon, 08 Dec 2025 21:05:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 26B0B30A9119
-	for <lists+stable@lfdr.de>; Mon,  8 Dec 2025 19:12:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EE813301698D
+	for <lists+stable@lfdr.de>; Mon,  8 Dec 2025 20:04:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27B5C2E92D6;
-	Mon,  8 Dec 2025 19:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D06DF2FD1DB;
+	Mon,  8 Dec 2025 20:04:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Sopcv5NL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MeEIS0G7"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D819242D79;
-	Mon,  8 Dec 2025 19:12:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D24AC238C2F
+	for <stable@vger.kernel.org>; Mon,  8 Dec 2025 20:04:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765221123; cv=none; b=eBKD7B3XCJzxjBlbDswHOU9Z+c5yry92DI8P4FeBWL1V/4WFUQCMPTikYfVXcVMHLcSKSR/t9IculEZ1q4dM1Nbqb79TiI3zJYQAx6BR5XTlgnuJsiijFhKGBzQw2g+taADTci4KJ68ZhlACprXdLEoL7jU5IWQVTUvdSGD2AQo=
+	t=1765224294; cv=none; b=Pts/fNm9XvkhnremIL/W3SABkAJOLAFy2ijmatnXnwYLxwapNUQTIDKhIeLWEpHJzmmFZcbIv9EZ/zGcmFlPBmOsRF0dP5GUphQ0bCz5Ixj2eaiqk6fOPE03hAWztxybDseyL9vbGGHW15olBEJfM9CVGqBBXWikyMWn0oUnGa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765221123; c=relaxed/simple;
-	bh=4GJXL/LoLHx7N2a8v5VWshnzbRCiIknwAktZdBjLWzs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qrBBp6yquQN3jXfK8MF6aWZt8QkIWiKB71XBK1nDV+fTyOwkM4tTEett5DAYxU3NLwGzyy/apMI0ZdHyc5vIifmi3BAeQF5Mb29dXWdlpRu0uTE+2stdw4TWiwLFOPUG1fbifHBhLL3qycYBd5fBqlwHHBgxL+lqFwTSoGDKxfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Sopcv5NL; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765221123; x=1796757123;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=4GJXL/LoLHx7N2a8v5VWshnzbRCiIknwAktZdBjLWzs=;
-  b=Sopcv5NLGSAHPJNKJBXF3ygP9IXpr/r/OdnG9uqyHhCfkQGzbEDG4Bx6
-   am4VG6TUw/3+36BjyWa05C1OojY9Rgow/ZXhKXo6iB0crN8jqE1EHcPz6
-   1PTtt3ceo5sl31ElLzOzX3VwqSHarTfzFEJ/P3MzqGwMHxwIUMrbGpVRZ
-   +b7IUpofFVZjQ3VN6k7aLt2LRPmCrR6jBfn/pcqnT7SSgbrUcTr7DPvgN
-   iymPCKXwmf72Slj53deR9LoESf52Ra++I5u9dDB116sgzHPJA1rGjcQIM
-   B8UTT2L82JtOZLh0TF+F00hGB3p/3SUYfwBeCWIJ+hS5peWzXMKE5X/l8
-   A==;
-X-CSE-ConnectionGUID: 8y1Zdu/iRWiekjjPwNfphg==
-X-CSE-MsgGUID: 4YIA7WshRmCep0LF1DEaBA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11636"; a="54711470"
-X-IronPort-AV: E=Sophos;i="6.20,259,1758610800"; 
-   d="scan'208";a="54711470"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2025 11:12:02 -0800
-X-CSE-ConnectionGUID: dIpHVU1eQw2pTfwkXgE9tQ==
-X-CSE-MsgGUID: K8sgQq9xRsiatQ/7I2vP3g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,259,1758610800"; 
-   d="scan'208";a="200177196"
-Received: from lkp-server01.sh.intel.com (HELO d335e3c6db51) ([10.239.97.150])
-  by orviesa003.jf.intel.com with ESMTP; 08 Dec 2025 11:11:58 -0800
-Received: from kbuild by d335e3c6db51 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vSgeJ-000000000kR-0L12;
-	Mon, 08 Dec 2025 19:11:55 +0000
-Date: Tue, 9 Dec 2025 03:11:32 +0800
-From: kernel test robot <lkp@intel.com>
-To: Prithvi Tambewagh <activprithvi@gmail.com>, mark@fasheh.com,
-	jlbec@evilplan.org, joseph.qi@linux.alibaba.com
-Cc: oe-kbuild-all@lists.linux.dev, ocfs2-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-kernel-mentees@lists.linux.dev,
-	skhan@linuxfoundation.org, david.hunter.linux@gmail.com,
-	khalid@kernel.org, Prithvi Tambewagh <activprithvi@gmail.com>,
-	syzbot+c818e5c4559444f88aa0@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] ocfs2: Fix kernel BUG in ocfs2_write_block
-Message-ID: <202512090210.evJEJv5b-lkp@intel.com>
-References: <20251206154819.175479-1-activprithvi@gmail.com>
+	s=arc-20240116; t=1765224294; c=relaxed/simple;
+	bh=skKjEfBaMU6Lqt5vjsIobNng9NkDUQtxDFU5ZUjwvRo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SvwpyaI23Xl2k3Zlw/Hd1tRQM3n+AFsHG0GKS25pChvfZ0gXU+jaiVkBooZbAEOx1jbbGUruuqMC8tuwjSq7TvsBHcVhVtF/UptO4ibgMfzvFzr/S+TuQivG3rYvcqHy60K9piTe2vH9xGqGxz+fRllTxija6ik8gU1ZaNVQG78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MeEIS0G7; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4779a637712so36193845e9.1
+        for <stable@vger.kernel.org>; Mon, 08 Dec 2025 12:04:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765224291; x=1765829091; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=d9WaSQQ0PkGqeHp9LL2kJRaAe2H4lpRnuEoZ98r23rw=;
+        b=MeEIS0G7PiMgjbTOTLGE6XhhpJGtxjfb37lIXHx8l1yWXKyfcRu7DTqlNUR6T225Vk
+         vOjbrWKOfZPeUSIr+mbYGZbRAUlCJUoo1SWWZHm2CjpAYUMXy/HDI1wK+3m5pfKqSzLZ
+         kYmPGgsTku7Q8Yf3Lr2YOT9yhIE2pbqVzrpX+zjLlkt8Xw08+30/muL3qx8adXiTcpxv
+         f9NYz7iIFI0CYwicFBCarscDQyM4CZ/Vk+DkRdygPDIKorAym6JtXna46bgjEyyudtHY
+         I/u9EVhO+Q7o6mb6v2+LWmfw72JI95MLKyBag2tD/nZOWYWEK4Hs6R8MBTIwpdKBrPQL
+         nxGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765224291; x=1765829091;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=d9WaSQQ0PkGqeHp9LL2kJRaAe2H4lpRnuEoZ98r23rw=;
+        b=H04pGqy93Iw7f2E6pbzLfUrbITmZaXH8ZvZhlfZn2V2vR4j9N6uprKGo3ZX9CHiVmY
+         LGvz6qnolFkgij/myNAQjYpaEZo1L1ci4adQ34SN/+TmVReUZAihS495fP96yzjymLyz
+         sK0CZASU6N+8sGrhSiK1Kr86cd78RIQQOK+VHlvPDc5WfnE+aEgKJUPijSju44uoV2yC
+         c0lR3+hxDVgSvNUK9byhhmhw80qGuW+LMYP+zr3EsR7rqJ3HYouqyYuIExM95d901yT0
+         BWFphrXzIZrOHyjk6F2aqEvsfm+mlgqlX4K33fCOr4gNkOj1lhID6+Ls94nd15kRxjbD
+         ghKQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX9lCyaQsBcBKkdPDtqc0E7IhHgINww79mMIucOVaMTLyU+VQu8RWRAkUTUSgbevsfG0CHUwII=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxNgEkB85Bu01k7MBPz0SFrUNyOkPM2KEAsq+KqxVpHXaUcoE4l
+	E0l+t2omt6VlZR05zfrszrlq0Yw0DjQB1NbHBh6leH3IYBNFIo3TE0hYYtILXw==
+X-Gm-Gg: ASbGncvU+TifgoN3/ErYGUadgP9nvD3yW8a83BAZ9+rRUWdXfUdQlnYPAEyIqdA2WX1
+	OsAgiewNAZIjqgZZ73NFBnpyLDSmDqKnvXLWck1PP5pbwXrCCSE4NGZGOA1Whcx8Rwu7tlCALfj
+	n7DKlSkqmdBfooK5gVhVv1Em7l3it95v8uXnMfwC0GRju15g82HjR2eM/52hjOzRWYQYM4lct4k
+	6OF2lgzopcGJbPzt8x1wAp9MJe5TAtf5obfPSckHLRDvIIej4e77djH+t7+z3cAkfQK5OMjHOQm
+	cxlyeJtMRKHuy91cucD6HuZ16fo5G6S8PNPIpHegOr+lNvZfK1vYcQBaK9vZE/5GLNyFJIeGbbL
+	Mu/hZ/j7/7KZYt9iodXfzPe62+6MTRnrAwIdZeSN6L7IO7LsmwC1yP/PXdmfQ465BUB8HxzZxXh
+	XmQ9FjevVSuBCrgDpiP+ctnsdGNyW1uzI+FyIwDNAXXVg5ip7a2pY=
+X-Google-Smtp-Source: AGHT+IELJ4QWyLI18G+CslWw8CT4fzH53HDJS5AGtq1akWXecKkPf5nz0AOnRqyw1ggDtLTR6UltQg==
+X-Received: by 2002:a05:600c:3b8b:b0:477:af07:dd17 with SMTP id 5b1f17b1804b1-47939e3897cmr134757755e9.24.1765224290994;
+        Mon, 08 Dec 2025 12:04:50 -0800 (PST)
+Received: from Ansuel-XPS24 (93-34-88-81.ip49.fastwebnet.it. [93.34.88.81])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-47a7d6eb1f1sm1906885e9.2.2025.12.08.12.04.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Dec 2025 12:04:50 -0800 (PST)
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: Jeff Johnson <jjohnson@kernel.org>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	linux-wireless@vger.kernel.org,
+	ath11k@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Christian Marangi <ansuelsmth@gmail.com>,
+	stable@vger.kernel.org,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [net PATCH] wifi: ath11k: fix wrong usage of resource_size() causing firmware panic
+Date: Mon,  8 Dec 2025 21:04:32 +0100
+Message-ID: <20251208200437.14199-1-ansuelsmth@gmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251206154819.175479-1-activprithvi@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Prithvi,
+On converting to the of_reserved_mem_region_to_resource() helper with
+commit 900730dc4705 ("wifi: ath: Use
+of_reserved_mem_region_to_resource() for "memory-region"") a logic error
+was introduced in the ath11k_core_coldboot_cal_support() if condition.
 
-kernel test robot noticed the following build warnings:
+The original code checked for hremote_node presence and skipped
+ath11k_core_coldboot_cal_support() in the other switch case but now
+everything is driven entirely on the values of the resource struct.
 
-[auto build test WARNING on 24172e0d79900908cf5ebf366600616d29c9b417]
+resource_size() (in this case) is wrongly assumed to return a size of
+zero if the passed resource struct is init to zero. This is not the case
+as a resource struct should be always init with correct values (or at
+best set the end value to -1 to signal it's not configured)
+(the return value of resource_size() for a resource struct with start
+and end set to zero is 1)
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Prithvi-Tambewagh/ocfs2-Fix-kernel-BUG-in-ocfs2_write_block/20251206-235042
-base:   24172e0d79900908cf5ebf366600616d29c9b417
-patch link:    https://lore.kernel.org/r/20251206154819.175479-1-activprithvi%40gmail.com
-patch subject: [PATCH] ocfs2: Fix kernel BUG in ocfs2_write_block
-config: loongarch-randconfig-r112-20251207 (https://download.01.org/0day-ci/archive/20251209/202512090210.evJEJv5b-lkp@intel.com/config)
-compiler: loongarch64-linux-gcc (GCC) 12.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251209/202512090210.evJEJv5b-lkp@intel.com/reproduce)
+On top of this, using resource_size() to check if a resource struct is
+initialized or not is generally wrong and other measure should be used
+instead.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512090210.evJEJv5b-lkp@intel.com/
+To better handle this, use the DEFINE_RES macro to initialize the
+resource struct and set the IORESOURCE_UNSET flag by default.
 
-sparse warnings: (new ones prefixed by >>)
->> fs/ocfs2/slot_map.c:197:26: sparse: sparse: cast to restricted __le16
->> fs/ocfs2/slot_map.c:197:26: sparse: sparse: cast to restricted __le16
+Replace the resource_size() check with checking for the resource struct
+flags and check if it's IORESOURCE_UNSET.
 
-vim +197 fs/ocfs2/slot_map.c
+This change effectively restore the original logic and restore correct
+loading of the ath11k firmware (restoring correct functionality of
+Wi-Fi)
 
-   182	
-   183	static int ocfs2_update_disk_slot(struct ocfs2_super *osb,
-   184					  struct ocfs2_slot_info *si,
-   185					  int slot_num)
-   186	{
-   187		int status;
-   188		struct buffer_head *bh;
-   189	
-   190		spin_lock(&osb->osb_lock);
-   191		if (si->si_extended)
-   192			ocfs2_update_disk_slot_extended(si, slot_num, &bh);
-   193		else
-   194			ocfs2_update_disk_slot_old(si, slot_num, &bh);
-   195		spin_unlock(&osb->osb_lock);
-   196		if (bh->b_blocknr < OCFS2_SUPER_BLOCK_BLKNO) {
- > 197			status = ocfs2_error(osb->sb,
-   198					     "Invalid Slot Map Buffer Head "
-   199					     "Block Number : %llu, Should be >= %d",
-   200					     le16_to_cpu(bh->b_blocknr),
-   201					     le16_to_cpu((int)OCFS2_SUPER_BLOCK_BLKNO));
-   202			if (!status)
-   203				return -EIO;
-   204			return status;
-   205		}
-   206	
-   207		status = ocfs2_write_block(osb, bh, INODE_CACHE(si->si_inode));
-   208		if (status < 0)
-   209			mlog_errno(status);
-   210	
-   211		return status;
-   212	}
-   213	
+Cc: stable@vger.kernel.org
+Fixes: 900730dc4705 ("wifi: ath: Use of_reserved_mem_region_to_resource() for "memory-region"")
+Link: https://lore.kernel.org/all/20251207215359.28895-1-ansuelsmth@gmail.com/T/#m990492684913c5a158ff0e5fc90697d8ad95351b
+Cc: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+---
+ drivers/net/wireless/ath/ath11k/qmi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
+index ff6a97e328b8..afa663c00620 100644
+--- a/drivers/net/wireless/ath/ath11k/qmi.c
++++ b/drivers/net/wireless/ath/ath11k/qmi.c
+@@ -2039,8 +2039,8 @@ static int ath11k_qmi_alloc_target_mem_chunk(struct ath11k_base *ab)
+ 
+ static int ath11k_qmi_assign_target_mem_chunk(struct ath11k_base *ab)
+ {
++	struct resource res = DEFINE_RES(0, 0, IORESOURCE_UNSET);
+ 	struct device *dev = ab->dev;
+-	struct resource res = {};
+ 	u32 host_ddr_sz;
+ 	int i, idx, ret;
+ 
+@@ -2086,7 +2086,7 @@ static int ath11k_qmi_assign_target_mem_chunk(struct ath11k_base *ab)
+ 			}
+ 
+ 			if (ath11k_core_coldboot_cal_support(ab)) {
+-				if (resource_size(&res)) {
++				if (res.flags != IORESOURCE_UNSET) {
+ 					ab->qmi.target_mem[idx].paddr =
+ 							res.start + host_ddr_sz;
+ 					ab->qmi.target_mem[idx].iaddr =
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.51.0
+
 
