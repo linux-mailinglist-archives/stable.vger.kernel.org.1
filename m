@@ -1,121 +1,99 @@
-Return-Path: <stable+bounces-200320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7796ACABF60
-	for <lists+stable@lfdr.de>; Mon, 08 Dec 2025 04:26:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D598DCABF90
+	for <lists+stable@lfdr.de>; Mon, 08 Dec 2025 04:36:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D5E173017936
-	for <lists+stable@lfdr.de>; Mon,  8 Dec 2025 03:25:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8ABA33017386
+	for <lists+stable@lfdr.de>; Mon,  8 Dec 2025 03:36:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43A1F274B51;
-	Mon,  8 Dec 2025 03:25:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Un/IZLfQ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E1522F7AC5;
+	Mon,  8 Dec 2025 03:36:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0272243954;
-	Mon,  8 Dec 2025 03:25:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D179233704;
+	Mon,  8 Dec 2025 03:36:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765164350; cv=none; b=A55L1wKmxIfoNw9YiW5Zl8BEWSEVAskseUXrgyinAh4auwrcki8nkHd3x6aDTFEsfhyLyngKFXyUl0XNUlDDfRIQNaB2zOsRQY+EV0mMBmmRQWwJGu+5d78EkaO549yQXNGrl2wxhOvxwfvE/0Qt8TTBcpg+Lm2ikaJGsiJVxus=
+	t=1765164991; cv=none; b=TeGuHlQJsay0i5zyYLGMwq7b+YciqmrXdWfbL35562Aian7oEZ1M5uZq1A2VlQNQ2PPCFaAbUK/WyzLjYMwr2l6dcAKalGuwNrk3OP/MBX4X3OaZfN2Wr0jgEBIK7O8VFZwFlatBEuPB8JXXkuMGgZQnnOrUzluJunbaCdpVYd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765164350; c=relaxed/simple;
-	bh=JbduDDkLQ46io1rnDf0vXzxeQyYTvj1xom1cGE2Q18U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ryca3D+Ex0dSKf6ZCjPycb75G62Qw4WC4c8l/CKIKeDm3KWxEWKpL+JpTX9Ww4Qhm9kz8ZY8xCwoAo4tR0Gj/+70XpDyBTzI6/MjmVLeLOIKUj/1HZZnQazvxzGejlYgh47NhIBzm0l2kn+lK38XHzWpZOI8vPKe/D/yaUvYn8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Un/IZLfQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EADBEC4CEFB;
-	Mon,  8 Dec 2025 03:25:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765164349;
-	bh=JbduDDkLQ46io1rnDf0vXzxeQyYTvj1xom1cGE2Q18U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Un/IZLfQv9olPoJrI6TWqNgjbvpYgBOKTIBnL4oKy99jQ4uCu0eFmC6cQbk2+cBdp
-	 8XlfVRYM+9OCTO5JavQ1ZyZtvhbxjV8YeGtIJRH8XQlYrDTE0YCTbH6q0c/+xcQP/2
-	 kLTB4PDrlScRnH1Je1X8Wa3iKgWo2rzTgdXCYVeEcMuuUeViV3MjOJO+vo5GPm+SVh
-	 Eb4nI0S3+HsijkBXa1Ixq3mzDYocIxrlXXLZ2Ys3zjTGv9mAa6BTIyFf++DmsaSWDc
-	 4x/0aIZ9IBGFIoAExNbFYOEjovCdOkLgt+yIb37kao8OznttxW1xBVLXqdVCiAULp8
-	 s5A7n5F4DQPxA==
-Date: Sun, 7 Dec 2025 19:25:45 -0800
-From: Nathan Chancellor <nathan@kernel.org>
-To: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>, iommu@lists.linux.dev,
+	s=arc-20240116; t=1765164991; c=relaxed/simple;
+	bh=VI3aERMVwqpqhU7buuiP4rZeSCQxAapxIHYZ9H7nXx8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YuXWw6PXu9g9Gxk7hDAXDb5vYdEOy4UdXlKOpwGyhmmllwvXst5ZfKDIv/p0RprGMk6ihvxhXZxcxkZUW/pyjVA52k/H4AUt56HdiNdBrKeepyypGk5R9u1FKg1oMt0OGyRIsPPCyb3zfK1Bn7X+vpMcSKX1tax49lAcpZ9yDUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from dfae2b116770.home.arpa (unknown [124.16.138.129])
+	by APP-03 (Coremail) with SMTP id rQCowABH2NqsRzZpQkGGAw--.10984S2;
+	Mon, 08 Dec 2025 11:36:12 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: eajames@linux.ibm.com,
+	ninad@linux.ibm.com
+Cc: linux-fsi@lists.ozlabs.org,
 	linux-kernel@vger.kernel.org,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	James Clark <james.clark@linaro.org>, stable@vger.kernel.org
-Subject: Re: [PATCH 6.18 regression fix] dma-mapping: Fix DMA_BIT_MASK()
- macro being broken
-Message-ID: <20251208032545.GB1356249@ax162>
-References: <20251207184756.97904-1-johannes.goede@oss.qualcomm.com>
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] fsi: master-gpio: Fix reference count leak in probe error path
+Date: Mon,  8 Dec 2025 03:36:06 +0000
+Message-Id: <20251208033606.10647-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251207184756.97904-1-johannes.goede@oss.qualcomm.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowABH2NqsRzZpQkGGAw--.10984S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrtr17Gry7tFy5CrWkCF4Uurg_yoWDXrcEkF
+	18WF97X3yUCF1DGrs0yrWavrZFgr9xWFZ7GFykta1Sqw18AryYqF1avrs5J3WrXr4fJFsY
+	yr97Gw1fWr43ZjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbsxFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_
+	Gr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AKxVWU
+	AVWUtwCY02Avz4vE14v_Gr4l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr
+	1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE
+	14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7
+	IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E
+	87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0x
+	ZFpf9x0JUoKZXUUUUU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAYKA2k2L0FkiAAAse
 
-On Sun, Dec 07, 2025 at 07:47:56PM +0100, Hans de Goede wrote:
-> After commit a50f7456f853 ("dma-mapping: Allow use of DMA_BIT_MASK(64) in
-> global scope"), the DMA_BIT_MASK() macro is broken when passed non trivial
-> statements for the value of 'n'. This is caused by the new version missing
-> parenthesis around 'n' when evaluating 'n'.
-> 
-> One example of this breakage is the IPU6 driver now crashing due to
-> it getting DMA-addresses with address bit 32 set even though it has
-> tried to set a 32 bit DMA mask.
-> 
-> The IPU6 CSI2 engine has a DMA mask of either 31 or 32 bits depending
-> on if it is in secure mode or not and it sets this masks like this:
-> 
->         mmu_info->aperture_end =
->                 (dma_addr_t)DMA_BIT_MASK(isp->secure_mode ?
->                                          IPU6_MMU_ADDR_BITS :
->                                          IPU6_MMU_ADDR_BITS_NON_SECURE);
-> 
-> So the 'n' argument here is "isp->secure_mode ? IPU6_MMU_ADDR_BITS :
-> IPU6_MMU_ADDR_BITS_NON_SECURE" which gets expanded into:
-> 
-> isp->secure_mode ? IPU6_MMU_ADDR_BITS : IPU6_MMU_ADDR_BITS_NON_SECURE - 1
-> 
-> With the -1 only being applied in the non secure case, causing
-> the secure mode mask to be one 1 bit too large.
-> 
-> Fixes: a50f7456f853 ("dma-mapping: Allow use of DMA_BIT_MASK(64) in global scope")
-> Cc: Sakari Ailus <sakari.ailus@linux.intel.com>
-> Cc: James Clark <james.clark@linaro.org>
-> Cc: Nathan Chancellor <nathan@kernel.org>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+The function of_node_get() returns a node pointer with its refcount
+incremented, but in the error path of the fsi_master_gpio_probe(),
+this reference is not released before freeing the master structure,
+causing a refcount leak.
 
-Yeah, the parentheses definitely should have been kept.
+Add the missing of_node_put() in the error handling path to properly
+release the device tree node reference.
 
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Fixes: 8ef9ccf81044 ("fsi: master-gpio: Add missing release function")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+ drivers/fsi/fsi-master-gpio.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-> ---
->  include/linux/dma-mapping.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
-> index 2ceda49c609f..aa36a0d1d9df 100644
-> --- a/include/linux/dma-mapping.h
-> +++ b/include/linux/dma-mapping.h
-> @@ -90,7 +90,7 @@
->   */
->  #define DMA_MAPPING_ERROR		(~(dma_addr_t)0)
->  
-> -#define DMA_BIT_MASK(n)	GENMASK_ULL(n - 1, 0)
-> +#define DMA_BIT_MASK(n)	GENMASK_ULL((n) - 1, 0)
->  
->  struct dma_iova_state {
->  	dma_addr_t addr;
-> -- 
-> 2.52.0
-> 
+diff --git a/drivers/fsi/fsi-master-gpio.c b/drivers/fsi/fsi-master-gpio.c
+index 69de0b5b9cbd..ae9e156284d0 100644
+--- a/drivers/fsi/fsi-master-gpio.c
++++ b/drivers/fsi/fsi-master-gpio.c
+@@ -861,6 +861,7 @@ static int fsi_master_gpio_probe(struct platform_device *pdev)
+ 	}
+ 	return 0;
+  err_free:
++	of_node_put(master->master.dev.of_node);
+ 	kfree(master);
+ 	return rc;
+ }
+-- 
+2.34.1
+
 
