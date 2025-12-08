@@ -1,437 +1,177 @@
-Return-Path: <stable+bounces-200360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DF98CAD871
-	for <lists+stable@lfdr.de>; Mon, 08 Dec 2025 16:05:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98113CAD88C
+	for <lists+stable@lfdr.de>; Mon, 08 Dec 2025 16:12:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1AD133054C9E
-	for <lists+stable@lfdr.de>; Mon,  8 Dec 2025 15:03:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 713E5301F264
+	for <lists+stable@lfdr.de>; Mon,  8 Dec 2025 15:12:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AE3A279DB4;
-	Mon,  8 Dec 2025 15:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3663724677A;
+	Mon,  8 Dec 2025 15:12:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MkNXsxUF"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="ifC3SRLX"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from mout.web.de (mout.web.de [212.227.15.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AE31DDAB;
-	Mon,  8 Dec 2025 15:03:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8598C15CD7E;
+	Mon,  8 Dec 2025 15:12:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765206211; cv=none; b=LO9m3cmyYNSwosTmEqXHJxKmK64CKQEaklEAk2GJ5B/bYZTfbhNUl+Y2FYXaTk0zibsiIfS2CopGZSSE9PH9ovDBUkb0tSlS6T4oFbQk89hfK43QtGIy9R2g75gUUDS0i1TuFJjDsVPIPQll694KIOqng9DsUaU1UnfxbZIfkGU=
+	t=1765206732; cv=none; b=nekcz6M6wsCjH7eHAOZMKVQgrgCmq6P5zmYLSF31KDp5t7AUNdP+TbhfLmbhwaFMPWxapoHH4MfLaGiVqnyVDoRlK3pYwOQ6aU7aDiKNpPXjZi1TeNRphmPA5juDl/Hexz2wp6nquGHAfjDvnpOBbRFPF8zzukeDMStb2/HBhJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765206211; c=relaxed/simple;
-	bh=5vPJncbtLYap/wSlTQmsZDhyykhPwyETQQqrK9SPjek=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=HWNKjD7nJVin4ypOuEROlzC87589R0WIIXSEkkGBWbLuj438AoTg7F2W2iOh2saXdaNHVGBIKd3cxH+rUCbjqg8M8uosSSikxM9zsacfeQ7hNzAScNUlCBWCSZTSt9JKk9OqpzA/pzwYjLQ1JDJxeIg7o3O9R4Fc34fa7bKu8Vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MkNXsxUF; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765206209; x=1796742209;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=5vPJncbtLYap/wSlTQmsZDhyykhPwyETQQqrK9SPjek=;
-  b=MkNXsxUFXX2fRHXutcFvPGmCrbCowN3x/k4xyqFDrubketPtLmTvvhru
-   fGvcAkjxXDtsauaQ2cnQ7Uig3WEp+qBfFXcoEBrSDoKMiRRv789lGySl4
-   YAfVFY7AjLLhx3O6pMj7lR+dT4RjWfcRfahGlLQfQSiNzaS4qxiLeFm6s
-   StT2sZKPau5xiYhAi3HNNK67h6QE+nJ9TSSttKcOmv+aYyAlbelgIeS7I
-   CIAX0TsNChK87WQal+Gf/KB/+P0F7VCKzoU74u07TMZ4hBTxne2HcZuKG
-   xa53ATSO6KOLL4kFcDAz7rIKY7iAfJKNkWOFaUYgNFHKN2nbZhQi1/3GQ
-   Q==;
-X-CSE-ConnectionGUID: xeCi7x9TRK6MrUnskbJwtw==
-X-CSE-MsgGUID: kEX5bdXiSDKU/KQOvbd49g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11636"; a="84554296"
-X-IronPort-AV: E=Sophos;i="6.20,259,1758610800"; 
-   d="scan'208";a="84554296"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2025 07:03:28 -0800
-X-CSE-ConnectionGUID: xGuQG+DOS6qnHiDZbW7kTw==
-X-CSE-MsgGUID: tL4x0/u9S1eBbXiSoX3HpQ==
-X-ExtLoop1: 1
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.61])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2025 07:03:24 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Mon, 8 Dec 2025 17:03:21 +0200 (EET)
-To: Christian Marangi <ansuelsmth@gmail.com>
-cc: Andrew Morton <akpm@linux-foundation.org>, 
-    Dan Williams <dan.j.williams@intel.com>, 
-    Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-    Jonathan Cameron <jonathan.cameron@huawei.com>, 
-    Magnus Damm <damm@igel.co.jp>, LKML <linux-kernel@vger.kernel.org>, 
-    "Rob Herring (Arm)" <robh@kernel.org>, stable@vger.kernel.org, 
-    linux-pci@vger.kernel.org
-Subject: Re: [PATCH] resource: handle wrong resource_size value on zero
- start/end resource
-In-Reply-To: <6936d6f9.5d0a0220.2a4b1f.ab28@mx.google.com>
-Message-ID: <f77507b6-dfe5-919a-2682-9e7d5831ee0d@linux.intel.com>
-References: <20251207215359.28895-1-ansuelsmth@gmail.com> <9c126c75-1d50-6315-4a15-e58e1adf20e4@linux.intel.com> <6936d6f9.5d0a0220.2a4b1f.ab28@mx.google.com>
+	s=arc-20240116; t=1765206732; c=relaxed/simple;
+	bh=9fd8on0sWsR+/Mz32IvXebQnxgwGaosrWmNNbbTqvlg=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=pt1ZXEUElThxjmTNOcJWZnweKTLd9GXk733xYYZNMQN6bRWyq8lujLvHqm5+blNFNEyLFbq4UKslEV2cZ9+SGKjXTWxmX5BKyfl6OLjPGtTvtGzWbBp3YR1EEg1gVJgqIg7OkN/FHhsmW6Zs6qYF7TzSLAxbc6njftmeCI1SrUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=ifC3SRLX; arc=none smtp.client-ip=212.227.15.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1765206674; x=1765811474; i=markus.elfring@web.de;
+	bh=giF+OBbi8CXEOWJ01FRk++G4kAEFRu+LoLGT8bUfVa8=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=ifC3SRLXvKOklUrvKeAD1uWad2lfBqnpuRfnIl7S3bcb6PkECDwDFAYrcDY6MvqU
+	 BwpY0WfP8hBI7ukn1OI2RP4z4lpuXGUpBBI00XBNsr1RW7bMOApmisemNdarF/o8Y
+	 br8eME2o/tjWTCCSRKutFhrEEq2JV8ya7lTulcX9VD6o9kfW4wYzW87NHL3bv1poI
+	 kouo6sfec6TR1KCVODfeQl3k7EHB/pZ4Z0TNLm3Di5DD01+5oeQQ5rU89+I9MPDK7
+	 r9Hg9c+YN//E+cj9YDUg7lQ4iZ6mU65kjUVVM+TS13shNfPjzyVcwm1SxcXxqlxOc
+	 9swfdH6d6iqYbd7pgQ==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.69.237]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MREzA-1veg7y2Lw4-00Qjbo; Mon, 08
+ Dec 2025 16:11:14 +0100
+Message-ID: <2c9af5ae-c250-4760-a9bb-aeec61c61eb1@web.de>
+Date: Mon, 8 Dec 2025 16:10:50 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323328-2039098437-1765206201=:971"
+User-Agent: Mozilla Thunderbird
+To: vulab@iscas.ac.cn, linux-fsi@lists.ozlabs.org,
+ Eddie James <eajames@linux.ibm.com>, Ninad Palsule <ninad@linux.ibm.com>
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
+References: <20251208033606.10647-1-vulab@iscas.ac.cn>
+Subject: Re: [PATCH] fsi: master-gpio: Fix reference count leak in probe error
+ path
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20251208033606.10647-1-vulab@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:0bdjpkgo1gEiDS1P1PFvr9pGURFq7p3D4lL3KY/8W4EUGm4+rQi
+ DyBpQt2pGicM4NynwS6TeGPW5dngtNV0ZjHuRwtGsyOoYl72gOCK/WLGCmcxnEkzufHMRa4
+ agf1hm6BgG5HL6mosZBW6+pYgyLgMQdjVT8SBSiO07LT5Xwxcz4V/EWD2kGEUYbtcl5evEA
+ ziqqhlkZSMhDYcL31z9vw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:X5qp+wK+Zag=;kmzH+0kRelzwu2k/fXZ/ypDAY/9
+ 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
+ Nph6VEa9VFlHCsnZj/2rvtm3bOssyGxOMB2apP
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+=E2=80=A6
+> Add the missing of_node_put() in the error handling path to properly
+> release the device tree node reference.
+=E2=80=A6
+> +++ b/drivers/fsi/fsi-master-gpio.c
+> @@ -861,6 +861,7 @@ static int fsi_master_gpio_probe(struct platform_dev=
+ice *pdev)
+>  	}
+>  	return 0;
+>   err_free:
+> +	of_node_put(master->master.dev.of_node);
 
---8323328-2039098437-1765206201=:971
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-
-On Mon, 8 Dec 2025, Christian Marangi wrote:
-> On Mon, Dec 08, 2025 at 03:29:01PM +0200, Ilpo J=E4rvinen wrote:
-> > On Sun, 7 Dec 2025, Christian Marangi wrote:
-> >=20
-> > > Commit 900730dc4705 ("wifi: ath: Use
-> > > of_reserved_mem_region_to_resource() for "memory-region"") uncovered =
-a
-> > > massive problem with the usage of resource_size() helper.
-> > >=20
-> > > The reported commit caused a regression with ath11k WiFi firmware
-> > > loading and the change was just a simple replacement of duplicate cod=
-e
-> > > with a new helper of_reserved_mem_region_to_resource().
-> > >=20
-> > > On reworking this, in the commit also a check for the presence of the
-> > > node was replaced with resource_size(&res). This was done following t=
-he
-> > > logic that if the node wasn't present then it's expected that also th=
-e
-> > > resource_size is zero, mimicking the same if-else logic.
-> >=20
-> > So what's the actual resource that causes this ath11 regression? You se=
-em=20
-> > possess that knowledge as you knew to create this patch.
->=20
-> I'm not gatekeeping the information. Just trying to get involved as much
-> people as possible in checking this.
->=20
-> This helper is used in generic OF and PCI code and since there is the
-> combo 2008 code + no comments, then it's sensible to make sure no
-> confusion was applied across the year.
->=20
-> > of_reserved_mem_region_to_resource() does use resource_set_range() so h=
-ow=20
-> > did the end address become 0? Is there perhaps some other bug being=20
-> > covered up with this patch to resource_size()?
-> >=20
->=20
-> This IS EXACTLY the problem HERE. There is the assumption that
-> resource_size() MUST be used ALWAYS after a resource struct is used.
->=20
-> But this is not alywas the case... nothing stops to call resource_size()
-> on a a local
->=20
-> struct resource res =3D {}
->=20
-> and assume resource_size() returning 0 (as struct resource is all zero
-> and assuming logically the size to be zero) (this assumption has been
-> already proved to be wrong by the previous message but it's very common
-> to assume that an helper called on an all zero struct returns 0 if the
-> subject is about size or range of address)
-
-I guess you might have written this before reading the entire email as
-the WARN_ON_ONCE() I suggested would have caught the caller side bug(s).
-
-The ath11k assumes res was setup by of_reserved_mem_region_to_resource()=20
-that appearently wasn't the case (a logic bug introduced in the commit=20
-900730dc4705 ("wifi: ath: Use of_reserved_mem_region_to_resource() for=20
-"memory-region""), and then calls resource_size() without first making=20
-sure the resource is valid.
-
-There are at least two, if not three, problems on the caller side here.=20
-
-> > > This was also the reason the regression was mostly hard to catch at
-> > > first sight as the rework is correctly done given the assumption on t=
-he
-> > > used helpers.
-> > >=20
-> > > BUT this is actually not the case. On further inspection on
-> > > resource_size() it was found that it NEVER actually returns 0.
-> > >
-> > > Even if the resource value of start and end are 0, the return value o=
-f
-> > > resource_size() will ALWAYS be 1, resulting in the broken if-else
-> > > condition ALWAYS going in the first if condition.
-> > >=20
-> > > This was simply confirmed by reading the resource_size() logic:
-> > >=20
-> > > =09return res->end - res->start + 1;
-> >=20
-> > ???
-> >=20
-> > resource_size() does return 0 when ->start =3D 0 and ->end =3D - 1 whic=
-h is=20
-> > the correctly setup of a zero-sized resource (when flags are non-zero).
-> >=20
->=20
-> Again IF the resource struct is correctly init, in the case of
-> kmalloc-ed stuff or local variables init to zero, then you quickly
-> trigger the bug as both start and end will be zero.
->=20
-> Also I honestly found some difficulties finding where end is set to -1.
-
-git grep -e '->end =3D .* - 1'
-
-A more complex pattern or Coccinelle can find more for you if you want to=
-=20
-find multiline or other more complex constructs.
-
-Those mostly predate the init helpers (I did have a series to convert them=
-=20
-to resource_set_range() but DEFINE_RES() got introduced in the meantime=20
-too so I'd have needed to adapt many of the changes so I left the series=20
-to rotten as it was always a cleanup side-project to me and I've more=20
-on my plate than I've time for currently even in the main resource=20
-assignment algorithm).
-
-> I actually found case in OF code where both start and end are set to -1
-> resulting.
->=20
-> Can you point me where is this init code?
-
-As noted below, DEFINE_RES*(), resource_set_range() and=20
-resource_set_size() in include/linux/ioport.h are your friends here.
-In general, DEFINE_RES is preferred but when only addresses of a resource=
-=20
-are adjusted dynamically, those C functions are better suited for the=20
-task.
-
-> > > Given the confusion,
-> >=20
-> > There's lots of resource setup code which does set resource end address=
-=20
-> > properly by applying -1 to it.
-> >=20
-> > > also other case of such usage were searched in the
-> > > kernel and with great suprise it seems LOTS of place assume
-> > > resource_size() should return zero in the context of the resource sta=
-rt
-> > > and end set to 0.
-> > >
-> > > Quoting for example comments in drivers/vfio/pci/vfio_pci_core.c:
-> > >=20
-> > > =09=09/*
-> > > =09=09 * The PCI core shouldn't set up a resource with a
-> > > =09=09 * type but zero size. But there may be bugs that
-> > > =09=09 * cause us to do that.
-> > > =09=09 */
-> > > =09=09if (!resource_size(res))
-> > > =09=09=09goto no_mmap;
-> >=20
-> > This place does not tell you what ->end is expected to be set? Where di=
-d=20
-> > you infer that information?
-> >=20
-> > I suspect this code would want to do resource_is_assigned() (which does=
-n't=20
-> > exists yet but would check only res->parent !=3D NULL) or base the chec=
-k on=20
-> > IORESOURCE_UNSET|IORESOURCE_DISABLED.
-> >=20
-> > Often using resourse_size() (or a few other address based checks) in=20
-> > drivers is misguided, what drivers are more interested in is if the=20
-> > resource is valid and/or properly in the resource tree (assigned by=20
-> > the PCI core which implies it's valid too and has a non-zero size), not=
- so=20
-> > much about it's size. As you can see, size itself not even used here at=
-=20
-> > all, that is, this place never was interested in size but uses it as a=
-=20
-> > proxy for something else (like also many other drivers do)!
-> >=20
->=20
-> Yes I agree that resource_size() is not the correct way to check if a
-> resource is valid but it seems to be used for this task in some code.
->
-> > > It really seems resource_size() was tought with the assumption that
-> > > resource struct was always correctly initialized before calling it an=
-d
-> > > never set to zero.
-> > >=20
-> > > But across the year this got lost and now there are lots of driver th=
-at
-> > > assume resource_size() returns 0 if start and end are also 0.
-> >=20
-> > Who creates such resources?
-> >=20
->=20
-> It's more a matter of using resource_size() in place where struct
-> resource is optionally used.=20
-
-Yes but it is a latent logic bug (using the resource size as the proxy=20
-for proper validity check in the logic).
-
-Using these proxies (in general) is what makes it hard to make some=20
-resource change I'd actually want to do in the PCI core so I don't have=20
-have much love for it (I'll probably eventually have to audit them all=20
-myself :-(). As a result, we currently have the unfortunate situation that=
-=20
-a resizable BAR that cannot be initially assigned is lost forever. The=20
-resource had to be reset on assignment failure to keep these proxies=20
-agreeing with the state of the resource, as endpoint drivers would be=20
-confused otherwise, so making space by resizing other BARs will not bring=
-=20
-the other BAR back.
-
-This proxy problem actually extends beyond mere resource_size(). There are=
-=20
-also start and end address checks and pci_resource_len() checks similarly=
-=20
-used as proxies. None of those proxies remain valid if PCI core stops to=20
-reset resource addresses and flags.
-
-> > If flags are non-zero, those places should be fixed (I'm currently fixi=
-ng=20
-> > one case from drivers/pci/probe.c thanks to you bringing this up :-)) b=
-ut=20
-> > I think the number of places to fix are fewer than you seem to think. I=
-=20
-> > read though all end assignments in PCI core and found only this single(=
-!)=20
-> > problem there.
-> >=20
->=20
-> Thanks a lot for checking the PCI code, that is one of my concern
-> subsystem where this might be problematic. The other is the OF code.
-
-Unfortunately I'm no OF expert but at least drivers/of/ didn't have=20
-anything interesting when grepping with:
-
-git grep -e '->end =3D ' -e '\.end =3D ' -- drivers/of
-
-> > > To better handle this and make resource_size() returns correct value =
-in
-> > > such case, add a simple check and return 0 if both resource start and
-> > > resource end are zero.
-> > >
-> > > Cc: Rob Herring (Arm) <robh@kernel.org>
-> > > Cc: stable@vger.kernel.org
-> > > Fixes: 1a4e564b7db9 ("resource: add resource_size()")
-> > > Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-> > > ---
-> > >  include/linux/ioport.h | 3 +++
-> > >  1 file changed, 3 insertions(+)
-> > >=20
-> > > diff --git a/include/linux/ioport.h b/include/linux/ioport.h
-> > > index 9afa30f9346f..1b8ce62255db 100644
-> > > --- a/include/linux/ioport.h
-> > > +++ b/include/linux/ioport.h
-> > > @@ -288,6 +288,9 @@ static inline void resource_set_range(struct reso=
-urce *res,
-> > > =20
-> > >  static inline resource_size_t resource_size(const struct resource *r=
-es)
-> > >  {
-> > > +=09if (!res->start && !res->end)
-> > > +=09=09return 0;
-> >=20
-> > This looks wrong to me.
-> >=20
->=20
-> Yes it's indded wrong as I didn't think of case where start and end can
-> match and correctly return a size of 1.
->=20
-> > Lets try to fix the resource setup side instead. The real problem is in=
-=20
-> > any code that sets ->end to zero when it wanted to set resource size to=
-=20
-> > zero, which are not the same thing. To make it simpler (no need to=20
-> > manually apply -1 to the end address) and less error prone, we have=20
-> > helpers resource_set_range/size() and DEFINE_RES() that handle applying=
- -1=20
-> > correctly.
-> >=20
->=20
-> OK! Thanks for the pointer so there is a DEFINE_RES() for local
-> variables!
->=20
-> > > +
-> > >  =09return res->end - res->start + 1;
-> > >  }
-> > >  static inline unsigned long resource_type(const struct resource *res=
-)
-> >=20
-> >=20
-> > Taking this suggestion from your other email:
-> >=20
-> > > if (!res.flags && !res.start && !res.end)
-> > > =09return 0;
-> >=20
-> > IMO, the caller shouldn't be calling resource_size() at all when=20
-> > !res.flags as that indicates the caller is confused and doesn't really=
-=20
-> > know what it is even checking for. If a driver does even know if the=20
-> > resource is valid (has a valid type) or not, it should be checking that=
-=20
-> > _first_ (it might needs the size for valid resources but it should IMO=
-=20
-> > still check validity of the resource first).
-> >=20
-> > Also, as mentioned above, some/many drivers are not fundamentally=20
-> > interested in validity itself but whether the resource is assigned to t=
-he=20
-> > resource tree.
-> >=20
-> > For valid resources, this extra check is entirely unnecessary.
-> >=20
-> > I'd be supportive of adding
-> >=20
-> > WARN_ON_ONCE(!res.flags)
-> >=20
-> > ...here but that will be likely a bit too noisy without first auditting=
-=20
-> > many places (from stable people's perspective a triggering WARN_ON() =
-=3D>=20
-> > DoS). But that's IMO the direction kernel code should be heading.
-> >=20
->=20
-> I'm more than happy to send a v2 of this fixing ath11k and adding the
-> WARN_ON_ONCE with res.flags.
->=20
-> Seems the only correct way to track this down and improve this in the
-> next kernel versions.
->=20
-> Also thanks to Andy and you for explaining this and reasurme me there
-> wasn't a big bug around this helper but just some minor logical
-> confusion.
->=20
-> Do you agree on the plan for v2? (we can assume the noise won't be so
-> much as I expect only SOME driver to be affected by this problem) (I
-> hope)
-
-Yes please to fixing ath11k!
-
-And if you're fine with dealing all the reports that will get directed to=
-=20
-you because of adding that WARN_ON_ONCE() into resource_size() I'd be very=
-=20
-happy of having to not do it myself eventually but please do realize it
-may be more than a few reports over a few next kernel releases. ;-)
-
-That being said, I just tested on one machine here and it seems to not=20
-fire even once so we could get more lucky than I was assuming.
-
-It might also be helpful to add kernel doc to resource_size() and mention=
-=20
-it should not be used as a proxy for other things as we've discussed here.
+Is there a need to rename the label accordingly?
 
 
-On contrary to what I said earlier, I just realized the series adding
-resource_assigned() got accepted [1] in this cycle so it's now available=20
-in Linus' tree.
+>  	kfree(master);
 
-[1] https://lore.kernel.org/all/69339e215b09f_1e0210057@dwillia2-mobl4.notm=
-uch/
+Can it be helpful to move the statement =E2=80=9Crc =3D PTR_ERR(gpio);=E2=
+=80=9D
+also into the exception handling of this function implementation?
 
---=20
- i.
 
---8323328-2039098437-1765206201=:971--
+>  	return rc;
+>  }
+=E2=80=A6
+
+
+Regards,
+Markus
 
