@@ -1,153 +1,106 @@
-Return-Path: <stable+bounces-200348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76957CAD353
-	for <lists+stable@lfdr.de>; Mon, 08 Dec 2025 14:01:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF680CAD356
+	for <lists+stable@lfdr.de>; Mon, 08 Dec 2025 14:01:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F2AC330213D0
-	for <lists+stable@lfdr.de>; Mon,  8 Dec 2025 13:01:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ED8223020687
+	for <lists+stable@lfdr.de>; Mon,  8 Dec 2025 13:01:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C9C315667D;
-	Mon,  8 Dec 2025 13:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03D061ADC7E;
+	Mon,  8 Dec 2025 13:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hZv3FLSa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kqgRG5nx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C04C979DA
-	for <stable@vger.kernel.org>; Mon,  8 Dec 2025 13:00:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B397779DA
+	for <stable@vger.kernel.org>; Mon,  8 Dec 2025 13:01:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765198859; cv=none; b=I3f7Ckvzq/Pb41z5o6qy2KX2Wjaffkeje0c2vmJYRPbZoU7yjxkl621r+cxNxGcPBxIBOXsapG7yy5Vty+T+8rYXIgHueRyTlvOfv4PywOIsuRxGtagg/iJtCjMy1Oroi79pv88xTP8aJBmqRtSauo9HOwCwSoJSuUpFgVgGdXM=
+	t=1765198901; cv=none; b=RbxmTzw2Mv1HSLjIWklWUZdG16wPw2ukkr4RvgMu2LtWzTiab3Mx04XAaFT4SLDgjLU69AD6VJ+Wn0iZ5Ivbw5AMZ/U0VTGXuSPgwXnCebVpUp+xu72DcYhvdQevOcXDCN2dEvAIPrKfIzkFXvFXmr83wTT3lHBpUzTwDyd6cxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765198859; c=relaxed/simple;
-	bh=FLcXXaN6kA3/p1I9Jd5pGkSFj0VWP/dfWSkvirqBluY=;
+	s=arc-20240116; t=1765198901; c=relaxed/simple;
+	bh=2z9EaWkbPv4FMRtgOzbsp8f/6Na3FFtIZFoQD1Ajkjk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oEn67D0vL9CkhDU8JphakQw1DQWQyyugvhBVOIfDFlvvQPHH/TI4Z+Sb3YjROJiGn8TEqgvhHw2/aXfFAWGOD4lJ2YTT20dv9YCXrnJnzJQdandTFPNOtrn0qooAPmAj2Trpm6zxaGGM0xRqtZjLLORW7iC6psSidyFBGeBjQS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hZv3FLSa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4C54C4CEF1;
-	Mon,  8 Dec 2025 13:00:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Yt1+RX9IT9hO7oDKAo5DJEvrgaUa3PAdgLli74cjDyVpKuwFcNEW8sPngbueSoSiwwlcZXQvZg062zAbBQgZQZib93t+J0Vz3jmDYRfFCZmPLNfV7E8wxTwSHXsLmT1M2oyi4qQTs+B7UBBnqf1aN7PK1ot54v4tfJ458ND6uzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kqgRG5nx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D675C4CEF1;
+	Mon,  8 Dec 2025 13:01:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765198859;
-	bh=FLcXXaN6kA3/p1I9Jd5pGkSFj0VWP/dfWSkvirqBluY=;
+	s=k20201202; t=1765198901;
+	bh=2z9EaWkbPv4FMRtgOzbsp8f/6Na3FFtIZFoQD1Ajkjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hZv3FLSakjQHE0DZOC1v9FEXtJl5sF2qWtnKhKDUEIpmcYBaPmOjoGK4CtLsXfvrL
-	 UdVN6FKhF04rsS2/exGFD65H2pv80VqB0eyO2MzwAQPVRUnBEq8kwOUqS/FQm0aAWG
-	 wE5wpv/PkIOPzn+5PlktLiW5Ugutbc5tSFOSZl4PtThGfZSJ1rAKkKdD0SBiY3R9/T
-	 SaFyKEM8xcKVo6ItxoYy2ios3G1KDw+DQTv1InZ80nro+gZpMG18s/2kjxYk7myUjP
-	 3yg7KdjZcdZVeTaEGYotsistBzE60ycbW9D+F9lkz9Ia5wS0I7TVZHVSwPw1zHqGZZ
-	 ie9PDBO+srUBg==
+	b=kqgRG5nxnINs3XubJqwf5Twm2T1LQMSBTO7soynsf4AkhSDGPTItFPyU1bep6ERxR
+	 Ox2VF05QFhVgEzUp2ZlDFcZs0+p4BePF3ptqMaW1IasKo4fNmOTa7LIstY6FJw9ggO
+	 KE1OKQBaPm4XjRQXj20NcxgyDAw1A1UMUszmTjZ3WLBGDcCNH+sHgjangqS6gE1b7h
+	 BUOP6zCvpD7Msx2ZyYI500xgw2DSq9/NsZO53fMu+pGen1IqKxkMQvaIfgFOgG69bT
+	 7OxlE56Y8VXuir5ZStwNLojlKHAjt9ID+sumevmSCBWBkPviGW0UA5PYK8xGfaJ+Jt
+	 KC9sIzQ75uySA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Kuniyuki Iwashima <kuniyu@google.com>,
-	syzbot+3a92d359bc2ec6255a33@syzkaller.appspotmail.com,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+Cc: =?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
+	stable <stable@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] mptcp: Initialise rcv_mss before calling tcp_send_active_reset() in mptcp_do_fastclose().
-Date: Mon,  8 Dec 2025 08:00:54 -0500
-Message-ID: <20251208130054.296171-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y] xhci: dbgtty: fix device unregister
+Date: Mon,  8 Dec 2025 08:01:36 -0500
+Message-ID: <20251208130137.296454-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025120333-undamaged-punctual-31dc@gregkh>
-References: <2025120333-undamaged-punctual-31dc@gregkh>
+In-Reply-To: <2025120110-coastal-litigator-8952@gregkh>
+References: <2025120110-coastal-litigator-8952@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Łukasz Bartosik <ukaszb@chromium.org>
 
-[ Upstream commit f07f4ea53e22429c84b20832fa098b5ecc0d4e35 ]
+[ Upstream commit 1f73b8b56cf35de29a433aee7bfff26cea98be3f ]
 
-syzbot reported divide-by-zero in __tcp_select_window() by
-MPTCP socket. [0]
+When DbC is disconnected then xhci_dbc_tty_unregister_device()
+is called. However if there is any user space process blocked
+on write to DbC terminal device then it will never be signalled
+and thus stay blocked indifinitely.
 
-We had a similar issue for the bare TCP and fixed in commit
-499350a5a6e7 ("tcp: initialize rcv_mss to TCP_MIN_MSS instead
-of 0").
+This fix adds a tty_vhangup() call in xhci_dbc_tty_unregister_device().
+The tty_vhangup() wakes up any blocked writers and causes subsequent
+write attempts to DbC terminal device to fail.
 
-Let's apply the same fix to mptcp_do_fastclose().
-
-[0]:
-Oops: divide error: 0000 [#1] SMP KASAN PTI
-CPU: 0 UID: 0 PID: 6068 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
-RIP: 0010:__tcp_select_window+0x824/0x1320 net/ipv4/tcp_output.c:3336
-Code: ff ff ff 44 89 f1 d3 e0 89 c1 f7 d1 41 01 cc 41 21 c4 e9 a9 00 00 00 e8 ca 49 01 f8 e9 9c 00 00 00 e8 c0 49 01 f8 44 89 e0 99 <f7> 7c 24 1c 41 29 d4 48 bb 00 00 00 00 00 fc ff df e9 80 00 00 00
-RSP: 0018:ffffc90003017640 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffff88807b469e40
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: ffffc90003017730 R08: ffff888033268143 R09: 1ffff1100664d028
-R10: dffffc0000000000 R11: ffffed100664d029 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-FS:  000055557faa0500(0000) GS:ffff888126135000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f64a1912ff8 CR3: 0000000072122000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- tcp_select_window net/ipv4/tcp_output.c:281 [inline]
- __tcp_transmit_skb+0xbc7/0x3aa0 net/ipv4/tcp_output.c:1568
- tcp_transmit_skb net/ipv4/tcp_output.c:1649 [inline]
- tcp_send_active_reset+0x2d1/0x5b0 net/ipv4/tcp_output.c:3836
- mptcp_do_fastclose+0x27e/0x380 net/mptcp/protocol.c:2793
- mptcp_disconnect+0x238/0x710 net/mptcp/protocol.c:3253
- mptcp_sendmsg_fastopen+0x2f8/0x580 net/mptcp/protocol.c:1776
- mptcp_sendmsg+0x1774/0x1980 net/mptcp/protocol.c:1855
- sock_sendmsg_nosec net/socket.c:727 [inline]
- __sock_sendmsg+0xe5/0x270 net/socket.c:742
- __sys_sendto+0x3bd/0x520 net/socket.c:2244
- __do_sys_sendto net/socket.c:2251 [inline]
- __se_sys_sendto net/socket.c:2247 [inline]
- __x64_sys_sendto+0xde/0x100 net/socket.c:2247
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f66e998f749
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffff9acedb8 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
-RAX: ffffffffffffffda RBX: 00007f66e9be5fa0 RCX: 00007f66e998f749
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000003
-RBP: 00007ffff9acee10 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000001
-R13: 00007f66e9be5fa0 R14: 00007f66e9be5fa0 R15: 0000000000000006
- </TASK>
-
-Fixes: ae155060247b ("mptcp: fix duplicate reset on fastclose")
-Reported-by: syzbot+3a92d359bc2ec6255a33@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/69260882.a70a0220.d98e3.00b4.GAE@google.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251125195331.309558-1-kuniyu@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Cc: stable <stable@kernel.org>
+Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
+Signed-off-by: Łukasz Bartosik <ukaszb@chromium.org>
+Link: https://patch.msgid.link/20251119212910.1245694-1-ukaszb@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 [ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c | 6 ++++++
+ drivers/usb/host/xhci-dbgtty.c | 6 ++++++
  1 file changed, 6 insertions(+)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 10844f08752cb..3baef30bb2f81 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2806,6 +2806,12 @@ static void mptcp_do_fastclose(struct sock *sk)
- 			goto unlock;
+diff --git a/drivers/usb/host/xhci-dbgtty.c b/drivers/usb/host/xhci-dbgtty.c
+index 980235169d811..d03eea7beeca0 100644
+--- a/drivers/usb/host/xhci-dbgtty.c
++++ b/drivers/usb/host/xhci-dbgtty.c
+@@ -468,6 +468,12 @@ static void xhci_dbc_tty_unregister_device(struct xhci_dbc *dbc)
  
- 		subflow->send_fastclose = 1;
+ 	if (!port->registered)
+ 		return;
++	/*
++	 * Hang up the TTY. This wakes up any blocked
++	 * writers and causes subsequent writes to fail.
++	 */
++	tty_vhangup(port->port.tty);
 +
-+		/* Initialize rcv_mss to TCP_MIN_MSS to avoid division by 0
-+		 * issue in __tcp_select_window(), see tcp_disconnect().
-+		 */
-+		inet_csk(ssk)->icsk_ack.rcv_mss = TCP_MIN_MSS;
-+
- 		tcp_send_active_reset(ssk, ssk->sk_allocation);
- unlock:
- 		release_sock(ssk);
+ 	tty_unregister_device(dbc_tty_driver, 0);
+ 	xhci_dbc_tty_exit_port(port);
+ 	port->registered = false;
 -- 
 2.51.0
 
