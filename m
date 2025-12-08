@@ -1,81 +1,112 @@
-Return-Path: <stable+bounces-200340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4114ECACF3C
-	for <lists+stable@lfdr.de>; Mon, 08 Dec 2025 12:06:20 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18BCFCACFB8
+	for <lists+stable@lfdr.de>; Mon, 08 Dec 2025 12:23:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 25956301DE19
-	for <lists+stable@lfdr.de>; Mon,  8 Dec 2025 11:06:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9EF503005693
+	for <lists+stable@lfdr.de>; Mon,  8 Dec 2025 11:23:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D27E30F94A;
-	Mon,  8 Dec 2025 11:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43E442E5B09;
+	Mon,  8 Dec 2025 11:23:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IOm4weY7"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="TEEGn4kA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDDDB29B8E0;
-	Mon,  8 Dec 2025 11:06:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D5E97262B
+	for <stable@vger.kernel.org>; Mon,  8 Dec 2025 11:23:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765191975; cv=none; b=dZ8YOAjR9YbC+SkZCvLidwCbEpg5VIrC3Ro5W6+UfI+5/O/qS+9ngeUxYDUhgm/X0ZXsI0cU96dXykQlUjX7z3FmR7jq6AGsaom/tTVtuoNH1fkGFpnkDY9+eyftj9QCPyzadvYM8fVAW0mVJTBXaYX6lf/+4j+gmxlX6kiy7FQ=
+	t=1765193008; cv=none; b=iom5n4n7EQ1xObCnRTn1bvhF/1P/cIXSbd/xZSCnazPTyk3NE7zsQeDLkeAo0EgvOHWeLeCNUssVqUkibpbhAl16Tb2uvTgx7S/FDQCslw9WdMxNN8QLSiu2NA9FcnVqdvCA7nMCXCJjgw31SdtcpWV7Tx34MHAhRyoXRfrurG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765191975; c=relaxed/simple;
-	bh=+Sg4+xUyee1JdQ9aNzal0X1KGSxSHxdpxDRWre8j8BY=;
-	h=Message-ID:Date:From:To:Subject:In-Reply-To:References:Cc; b=bsSdoX3mDV0YTC22FfmK909bP11Db10z1C++wzSCGMoeimZVknYUa+xx1hEjOQ1S4deIFufa2on3DWXwJPXZ/5b24Zsrj/w+Yu1ki6jGISSJHgRtBrOEQgInkLRmR7dSwMraOrQxNwPlfU64PbB4l0UrbDXDgEPaoU+UQghIo3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IOm4weY7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4F8BC4CEF1;
-	Mon,  8 Dec 2025 11:06:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765191973;
-	bh=+Sg4+xUyee1JdQ9aNzal0X1KGSxSHxdpxDRWre8j8BY=;
-	h=Date:From:To:Subject:In-Reply-To:References:Cc:From;
-	b=IOm4weY7TQGzaGOq9hS9L4Rw5s5O2X4t18f++QMBkFetLbd9WX4JEk2F+x+p39to0
-	 wki37JFXH/Zr+f+T5z7MmQA6fpjGF6GUrATz9sWrHV2JAaUU395O7VU43JpztG1mpq
-	 KgVegQPaV2r4vuEohxqhODX7VQvhZALfdSCINStSM393Ks9noAyLTs32hY6a1GuXn7
-	 yiV3kozVHZ+bi5cIxv/qX678bSnWrNEWTjOBlveCzJ6mqgF1vJT+bPm8xt11xBhCq4
-	 lh9I8oBTDygDeM06pa8UJiO8dMlR5jz+yOYrFtOtsnlt6OT2+1dOiOrV6/fPDZHdCc
-	 6YWWBMQ7lv40A==
-Message-ID: <b2cd921b3682355b0c64d107f1dae998@kernel.org>
-Date: Mon, 08 Dec 2025 11:06:10 +0000
-From: "Maxime Ripard" <mripard@kernel.org>
-To: "Tomi Valkeinen" <tomi.valkeinen@ideasonboard.com>
-Subject: Re: [PATCH 0/4] drm: Revert and fix enable/disable sequence
-In-Reply-To: <20251205-drm-seq-fix-v1-0-fda68fa1b3de@ideasonboard.com>
-References: <20251205-drm-seq-fix-v1-0-fda68fa1b3de@ideasonboard.com>
-Cc: dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org, stable@vger.kernel.org, "Andrzej
- Hajda" <andrzej.hajda@intel.com>, "AngeloGioacchino Del Regno" <angelogioacchino.delregno@collabora.com>, "Aradhya
- Bhatia" <aradhya.bhatia@linux.dev>, "Chaoyi Chen" <chaoyi.chen@rock-chips.com>, "Chun-Kuang
- Hu" <chunkuang.hu@kernel.org>, "David Airlie" <airlied@gmail.com>, "Dmitry
- Baryshkov" <lumag@kernel.org>, "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Jonas
- Karlman" <jonas@kwiboo.se>, "Jyri Sarha" <jyri.sarha@iki.fi>, "Laurent
- Pinchart" <Laurent.pinchart@ideasonboard.com>, "Linus Walleij" <linusw@kernel.org>, "Louis-Alexis
- Eyraud" <louisalexis.eyraud@collabora.com>, "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Marek
- Szyprowski" <m.szyprowski@samsung.com>, "Marek Vasut" <marek.vasut+renesas@mailbox.org>, "Matthias
- Brugger" <matthias.bgg@gmail.com>, "Maxime Ripard" <mripard@kernel.org>, "Neil
- Armstrong" <neil.armstrong@linaro.org>, "Philipp Zabel" <p.zabel@pengutronix.de>, "Robert
- Foss" <rfoss@kernel.org>, "Simona Vetter" <simona@ffwll.ch>, "Thomas
- Zimmermann" <tzimmermann@suse.de>, "Vicente Bergas" <vicencb@gmail.com>
-Content-Transfer-Encoding: 7bit
+	s=arc-20240116; t=1765193008; c=relaxed/simple;
+	bh=Zlarpza6LKHMQ/Nj6Se8tqYuZTzEmNS4BPPMPYTmOuw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NuoeCJeyr9eYugOBtIYAx8Sjs0sB93laIXeRh7RliamSJ7cAtRU1K9fV3xPahbWBt2hreN4cM7gKAD3/eOwlC9CfNn/QG1kOs170LixEHXBU5xcDSiJYDPwXdg6HBKEIQP2O/yRvi0RrAmQ95PrvAROlQxCytS53sZPvayIxTws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=TEEGn4kA; arc=none smtp.client-ip=91.218.175.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <6af17c1e-32fc-478a-8493-6c754c3020f0@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1765193003;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AZslY/w57YIKP0V/RVk3ghb2uRO3E+hID8DGKnBOyko=;
+	b=TEEGn4kAEneIFuOzRw5wMg1cnqgB7SFPVHa6cs4XPSb4GH5HySo343N5A1sYyvFvTqrYTy
+	r2/l8gNPjmiD36xIvKFCcExTvKy4FQaMcH7l2RZ+uwpSiUPOR8+rMy75j8Z9KLum6no+a+
+	zEkPnTpYrcBBvxOc3tzGsPzmrLXR3jI=
+Date: Mon, 8 Dec 2025 11:23:17 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Subject: Re: [PATCH 1/4] Revert "drm/atomic-helper: Re-order bridge chain
+ pre-enable and post-disable"
+To: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Dmitry Baryshkov <lumag@kernel.org>, Chun-Kuang Hu
+ <chunkuang.hu@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Jyri Sarha <jyri.sarha@iki.fi>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
+ Linus Walleij <linusw@kernel.org>, Chaoyi Chen <chaoyi.chen@rock-chips.com>,
+ Vicente Bergas <vicencb@gmail.com>,
+ Marek Vasut <marek.vasut+renesas@mailbox.org>, stable@vger.kernel.org
+References: <20251205-drm-seq-fix-v1-0-fda68fa1b3de@ideasonboard.com>
+ <20251205-drm-seq-fix-v1-1-fda68fa1b3de@ideasonboard.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Aradhya Bhatia <aradhya.bhatia@linux.dev>
+In-Reply-To: <20251205-drm-seq-fix-v1-1-fda68fa1b3de@ideasonboard.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On Fri, 5 Dec 2025 11:51:47 +0200, Tomi Valkeinen wrote:
-> Changing the enable/disable sequence in commit c9b1150a68d9
-> ("drm/atomic-helper: Re-order bridge chain pre-enable and post-disable")
-> has caused regressions on multiple platforms: R-Car, MCDE, Rockchip.
+Hi Tomi,
+
+Thank you for posting this series.
+
+It makes sense to change the order in tidss _commit_tail(), than to
+undo the order changes in the regressed drivers.
+
+On 05/12/2025 09:51, Tomi Valkeinen wrote:
+> This reverts commit c9b1150a68d9362a0827609fc0dc1664c0d8bfe1.
 > 
-> This is an alternate series to Linus' series:
+> Changing the enable/disable sequence has caused regressions on multiple
+> platforms: R-Car, MCDE, Rockchip. A series (see link below)  was sent to
+> fix these, but it was decided that it's better to revert the original
+> patch and change the enable/disable sequence only in the tidss driver.
 > 
-> [ ... ]
+> Reverting this commit breaks tidss's DSI and OLDI outputs, which will be
+> fixed in the following commits.
+> 
+> Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+> Link: https://lore.kernel.org/all/20251202-mcde-drm-regression-thirdfix-v6-0-f1bffd4ec0fa%40kernel.org/
+> Fixes: c9b1150a68d9 ("drm/atomic-helper: Re-order bridge chain pre-enable and post-disable")
+> Cc: stable@vger.kernel.org # v6.17+
+> ---
+>  drivers/gpu/drm/drm_atomic_helper.c |   8 +-
+>  include/drm/drm_bridge.h            | 249 ++++++++++--------------------------
+>  2 files changed, 70 insertions(+), 187 deletions(-)
+> 
 
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Reviewed-by: Aradhya Bhatia <aradhya.bhatia@linux.dev>
 
-Thanks!
-Maxime
 
