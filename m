@@ -1,59 +1,70 @@
-Return-Path: <stable+bounces-200358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49379CAD80D
-	for <lists+stable@lfdr.de>; Mon, 08 Dec 2025 15:56:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56CC5CAD825
+	for <lists+stable@lfdr.de>; Mon, 08 Dec 2025 15:58:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B10213033DC5
-	for <lists+stable@lfdr.de>; Mon,  8 Dec 2025 14:54:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1A0D4305D780
+	for <lists+stable@lfdr.de>; Mon,  8 Dec 2025 14:57:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 161B62DC349;
-	Mon,  8 Dec 2025 14:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 015622E7F0A;
+	Mon,  8 Dec 2025 14:57:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V4jL4Xaq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jfuvNvTV"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9452127F19F;
-	Mon,  8 Dec 2025 14:54:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6ED02DF14C;
+	Mon,  8 Dec 2025 14:57:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765205683; cv=none; b=AbXBggJpeuPD3tD6geJY5krQWylFuvuFV+Te4uJOMnEjR/+s1hBHAUds/wWplPQDvHom6HZwTIM76pNO0uVq2daVF7M9Vu3LhBHbFUUqd8USpBUtfik12lIRlDUcNYer8DvlEUBktxOHCzRr0RGWrjlu59+q6QoG9Il+hbFGlZA=
+	t=1765205828; cv=none; b=Cgm13WuSkmAUcfrVNfZAJA19c4SCmYfeRW+YVHdg2bm3IAFVLs+6nJ6TklHWPeQVhQDuRXnt6JyOpcIFMRw0wTUOIT/pk9aCNtcTuUWmbRa6wEy6zxvh3a6eSkwtxs6ooAHKritgs1HBHWiVUHHf5J2f2Kd7C3bxiCY8HwZj1Kc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765205683; c=relaxed/simple;
-	bh=GvW6n/lAGt/LmYRllNamSKK/+4hnPj7HQYQ86EXpy1I=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sj4au4MLBKNLKra14xx/oBYhPfQYRpe3GBQEt/8XoJ7gJHHY2WFSzY0OnGz5O7ZLrxv66Qe/Md1KG1tEBkqfW0yWWeDOlnV0BjVgHi1XuKhl0LpaC2P9y3GQHPErCYK/THdF/y8EDoJ0rgSkEBUMA9izzD5hbDsynanmM1d0r2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V4jL4Xaq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCBB4C19425;
-	Mon,  8 Dec 2025 14:54:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765205683;
-	bh=GvW6n/lAGt/LmYRllNamSKK/+4hnPj7HQYQ86EXpy1I=;
-	h=From:To:Cc:Subject:Date:From;
-	b=V4jL4Xaqx+i7JzCIckp9tElRYrKwL2c7BeNTskQkYHKCrlRiPwckz5uVcDhRw093R
-	 bftrWkL/+sJCYZGoQ5I98STSTDK+XAjJ79Q89UpPPIJRU+WDZTb4cXljiB5fm+J3wg
-	 uFxgr+QSvf2Xqeyb+EY9pBi4xjboU2Eozv9sShywW+9sS4lhXYDDy4Gb6L3DYFOHP4
-	 OgEudsFm7wiLy0n6cJwcs9UH+r+qqcSQ0sDHKwEqT7OAcNDfw7YtOIxxm7uvWvy1nZ
-	 UeV8W0dNCa1fX0Xbrf4EdCyifsOtqdSXGQ1YA0hXxExN4pYeZTO3aKJioAt98v1xkD
-	 txxO6JY9QToYw==
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: linux-integrity@vger.kernel.org
-Cc: Jarkko Sakkinen <jarkko@kernel.org>,
+	s=arc-20240116; t=1765205828; c=relaxed/simple;
+	bh=3asNEtGegEGQ06PL+zShSLnxGOlyzglhTNrW5ddlvHA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=WU9mrNypUxG2vgnw3g0xkGPpibrbeBu9nSpBRkSzKZIbpk/SGedNhaMhpamlBpVUGkyq7RBqXVB+xCEumOId7/cCTSWW1J/o0vwA06m3Lx6FhBVRsOoLubvEO7lPfWhQtTcHtQE+Td2hqYGoObfxJS6F9es2j5/+vyIvelqFC0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jfuvNvTV; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765205826; x=1796741826;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=3asNEtGegEGQ06PL+zShSLnxGOlyzglhTNrW5ddlvHA=;
+  b=jfuvNvTVwrEanJLi7BMhs8zQX++6mUATE3HK9UEAD5ItWrA9jVVl2Lro
+   +tjTbMIRVMSnscB7EQMrsIJo84snuia2BhKB78M0F/rrpe1AQBkcCvCMu
+   nTrFNcTdbsAasOu5OCqGGWiMmKK1nlFVJcPi3iUm1O6xAYOnBzRzZP2sc
+   MPTAJKj+vgDBWNWtodpMaZMbFzamf0H4ybYRPgt9+j2dTFr+ka40GYxgY
+   duC3HVVDs+ubp7tHZQLQ8rDTEpvVAb9CVFBKMXC7IxP6Ow38+TfxOkB8V
+   8Zhc2D2izpx2McAyxNFmokRfDsIrxQza/IcqF475HcniN7V9c9/5JOmCa
+   A==;
+X-CSE-ConnectionGUID: EWqOfU9LQC+PBFtY71WsVw==
+X-CSE-MsgGUID: QBJGC1EaTNG7BnUlDRr44Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11636"; a="67310479"
+X-IronPort-AV: E=Sophos;i="6.20,259,1758610800"; 
+   d="scan'208";a="67310479"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2025 06:57:04 -0800
+X-CSE-ConnectionGUID: bGCW+LtRSR+ypOX2toH/oQ==
+X-CSE-MsgGUID: YepLxwhbQIOshTvqHX0wUw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,259,1758610800"; 
+   d="scan'208";a="196718108"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.61])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2025 06:57:01 -0800
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To: Bjorn Helgaas <bhelgaas@google.com>,
+	linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	stable@vger.kernel.org,
-	James Bottomley <James.Bottomley@HansenPartnership.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	David Howells <dhowells@redhat.com>,
-	Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	keyrings@vger.kernel.org (open list:KEYS-TRUSTED),
-	linux-security-module@vger.kernel.org (open list:SECURITY SUBSYSTEM),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH] KEYS: trusted: Fix overwrite of keyhandle parameter
-Date: Mon,  8 Dec 2025 16:54:35 +0200
-Message-Id: <20251208145436.21519-1-jarkko@kernel.org>
+	Christian Marangi <ansuelsmth@gmail.com>
+Subject: [PATCH 1/1] PCI: Use resource_set_range() that correctly sets ->end
+Date: Mon,  8 Dec 2025 16:56:54 +0200
+Message-Id: <20251208145654.5294-1-ilpo.jarvinen@linux.intel.com>
 X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -61,35 +72,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-tpm2_key_decode() overrides the explicit keyhandle parameter, which can
-lead to problems, if the loaded parent handle does not match the handle
-stored to the key file. This can easily happen as handle by definition
-is an ambiguous attribute.
+__pci_read_base() sets resource start and end addresses when resource
+is larger than 4G but pci_bus_addr_t or resource_size_t are not capable
+of representing 64-bit PCI addresses. This creates a problematic
+resource that has non-zero flags but the start and end addresses do not
+yield to resource size of 0 but 1.
 
-Cc: stable@vger.kernel.org # v5.13+
-Fixes: f2219745250f ("security: keys: trusted: use ASN.1 TPM2 key format for the blobs")
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Replace custom resource addresses setup with resource_set_range()
+that correctly sets end address as -1 which results in resource_size()
+returning 0.
+
+For consistency, also use resource_set_range() in the other branch that
+does size based resource setup.
+
+Fixes: 23b13bc76f35 ("PCI: Fail safely if we can't handle BARs larger than 4GB")
+Link: https://lore.kernel.org/all/20251207215359.28895-1-ansuelsmth@gmail.com/T/#m990492684913c5a158ff0e5fc90697d8ad95351b
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Cc: stable@vger.kernel.org
+Cc: Christian Marangi <ansuelsmth@gmail.com>
 ---
- security/keys/trusted-keys/trusted_tpm2.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/pci/probe.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
-index fb76c4ea496f..950684e54c71 100644
---- a/security/keys/trusted-keys/trusted_tpm2.c
-+++ b/security/keys/trusted-keys/trusted_tpm2.c
-@@ -121,7 +121,9 @@ static int tpm2_key_decode(struct trusted_key_payload *payload,
- 		return -ENOMEM;
- 
- 	*buf = blob;
--	options->keyhandle = ctx.parent;
-+
-+	if (!options->keyhandle)
-+		options->keyhandle = ctx.parent;
- 
- 	memcpy(blob, ctx.priv, ctx.priv_len);
- 	blob += ctx.priv_len;
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index 124d2d309c58..b8294a2f11f9 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -287,8 +287,7 @@ int __pci_read_base(struct pci_dev *dev, enum pci_bar_type type,
+ 		if ((sizeof(pci_bus_addr_t) < 8 || sizeof(resource_size_t) < 8)
+ 		    && sz64 > 0x100000000ULL) {
+ 			res->flags |= IORESOURCE_UNSET | IORESOURCE_DISABLED;
+-			res->start = 0;
+-			res->end = 0;
++			resource_set_range(res, 0, 0);
+ 			pci_err(dev, "%s: can't handle BAR larger than 4GB (size %#010llx)\n",
+ 				res_name, (unsigned long long)sz64);
+ 			goto out;
+@@ -297,8 +296,7 @@ int __pci_read_base(struct pci_dev *dev, enum pci_bar_type type,
+ 		if ((sizeof(pci_bus_addr_t) < 8) && l) {
+ 			/* Above 32-bit boundary; try to reallocate */
+ 			res->flags |= IORESOURCE_UNSET;
+-			res->start = 0;
+-			res->end = sz64 - 1;
++			resource_set_range(res, 0, sz64);
+ 			pci_info(dev, "%s: can't handle BAR above 4GB (bus address %#010llx)\n",
+ 				 res_name, (unsigned long long)l64);
+ 			goto out;
+
+base-commit: 43dfc13ca972988e620a6edb72956981b75ab6b0
 -- 
 2.39.5
 
