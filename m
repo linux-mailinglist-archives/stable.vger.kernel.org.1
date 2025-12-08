@@ -1,126 +1,117 @@
-Return-Path: <stable+bounces-200338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DFF7CACE21
-	for <lists+stable@lfdr.de>; Mon, 08 Dec 2025 11:32:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA1CACACF12
+	for <lists+stable@lfdr.de>; Mon, 08 Dec 2025 12:02:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9C89D3034EDC
-	for <lists+stable@lfdr.de>; Mon,  8 Dec 2025 10:32:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 89583303E020
+	for <lists+stable@lfdr.de>; Mon,  8 Dec 2025 11:02:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E08EB2F6915;
-	Mon,  8 Dec 2025 10:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 187A7246BD5;
+	Mon,  8 Dec 2025 11:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=dev.tdt.de header.i=@dev.tdt.de header.b="NDJzF6Sh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ghs95GrY"
 X-Original-To: stable@vger.kernel.org
-Received: from mxout70.expurgate.net (mxout70.expurgate.net [194.37.255.70])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47622DF125;
-	Mon,  8 Dec 2025 10:32:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.37.255.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C221E2E54D1;
+	Mon,  8 Dec 2025 11:01:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765189950; cv=none; b=Vy+UotTW1Q/tHHrHBXlXIMgZ4G8yzyA67GYnBbB/G7vuPsYnAbV3/xi2HxdH4HIOYtumg775P2JsdMFzl81JY3r3/mnqxDFgG9T9aYRFcLtT+oagrnnMUmwh0NIZLEy9qWky8MZbPiLfvHx7fX9zojoz/+6JyrJ8G2hJ5drO3to=
+	t=1765191720; cv=none; b=niU4F10EHeT1uADDD6J4HfuQfAdp6/AOBhsokyECvNH6+rHOZr4EgBfb3b8bn+1Wxog6uo/V56t6gWkxZTpqYbxy+yYPZYmUW4Z4AsZUtgpSFiVB1sjgpFKFL0wMBaHOplr4SGpH1Doj4A3sgr8zhkDDTjrPMPTZ9TJyCk3PfsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765189950; c=relaxed/simple;
-	bh=r+2jMQFzU9+NoNZmLEzpEBGBeob89jC8EU4XtkCLq78=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=u6Yu9OOaBu7tZbpk4VA1M/fncKzqL8unLiY+1jmwQpuw2RM9K/4YxsxYNmeWqDjYx9z7h64nvw68C8WvHLBeWSSZ5PKj0dwxZdwwXYWXi6JOFVnre2VmRN4efy7GTwqtIiVSyu+Oc0q0KIj1iq5Y0Q3XKTUj6H94/dEPFl2zYts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dev.tdt.de; spf=pass smtp.mailfrom=dev.tdt.de; dkim=temperror (0-bit key) header.d=dev.tdt.de header.i=@dev.tdt.de header.b=NDJzF6Sh; arc=none smtp.client-ip=194.37.255.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dev.tdt.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dev.tdt.de
-Received: from [194.37.255.9] (helo=mxout.expurgate.net)
-	by relay.expurgate.net with smtp (Exim 4.92)
-	(envelope-from <prvs=145192da8d=os@dev.tdt.de>)
-	id 1vSYXL-00EEcV-7c; Mon, 08 Dec 2025 11:32:11 +0100
-Received: from [195.243.126.94] (helo=securemail.tdt.de)
-	by relay.expurgate.net with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <os@dev.tdt.de>)
-	id 1vSYXJ-00DfeR-SF; Mon, 08 Dec 2025 11:32:09 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dev.tdt.de;
-	s=z1-selector1; t=1765189929;
-	bh=V2LuImD69vBgHSzkMExG2GJJ4r6pVKhCiiWXxSYDJBM=;
-	h=From:To:Cc:Subject:Date:From;
-	b=NDJzF6ShOuTsWdFh433cFknxb8sDj2TU/2Z6Dr0zQUDR+uRxFpl5mz65hop2gavNo
-	 gCASGNlPQ282V1shzC6B6zj9xoriIPaXVr9vgZP5gvM98OjpavNULE47iIKMH2o5Gr
-	 0x6ZjonLMFBbZqXCMMUKQb5rDI4Sib3oBcfJN61sdTd2o63CuzLRWMI+gpzb2XkwA6
-	 895zPZcCTUX3pDIWTHdjT1T/rI027hFmJVcwLfGObKuDhFq5R3U+wxcYzwPOs32laX
-	 NFkgl0ixssUP2hmWmuSIRqz4m26/G3RAy5t6NFszYEvhPJ1xUoVnqsktn2mbb9LDV8
-	 tPJX3oGiO8s2g==
-Received: from securemail.tdt.de (localhost [127.0.0.1])
-	by securemail.tdt.de (Postfix) with ESMTP id 5974F240040;
-	Mon,  8 Dec 2025 11:32:09 +0100 (CET)
-Received: from mail.dev.tdt.de (unknown [10.2.4.42])
-	by securemail.tdt.de (Postfix) with ESMTP id 53377240036;
-	Mon,  8 Dec 2025 11:32:09 +0100 (CET)
-Received: from osedlbauer1.dev.tdt.de (unknown [10.2.3.165])
-	by mail.dev.tdt.de (Postfix) with ESMTPSA id 1FCAA215E8;
-	Mon,  8 Dec 2025 11:32:05 +0100 (CET)
-From: Oliver Sedlbauer <os@dev.tdt.de>
-To: stable@vger.kernel.org
-Cc: quic_rajkbhag@quicinc.com, Oliver Sedlbauer <os@dev.tdt.de>,
-	Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] Revert "wifi: ath12k: Enable REO queue lookup table feature on QCN9274 hw2.0"
-Date: Mon,  8 Dec 2025 11:31:52 +0100
-Message-ID: <20251208103152.236840-1-os@dev.tdt.de>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1765191720; c=relaxed/simple;
+	bh=R/IYT/sJW+5X1kFREBNtpFtBsBV21sa2yHFx+ZlhqgU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KY5KiYpY+nQd9awk1XXAZZS4BPBPFdPqhCekiJ7dlyvILStGyZnZ8fqqs/QHcaKHmUcve3oE1Tap21by1T7uGbQrdfm+RJt5J+mtUjXfP826+ieytUY152YEpkiQ6kC9J8q0Kdxw/DZIuN7sjPZvHByMEeofvXDrYmdVWVlcgPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ghs95GrY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 327EDC4CEF1;
+	Mon,  8 Dec 2025 11:01:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765191718;
+	bh=R/IYT/sJW+5X1kFREBNtpFtBsBV21sa2yHFx+ZlhqgU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ghs95GrY5ScohXYjFvZ3Pct4IVKtbIQFTq16pcDwX0qW1JK1QBau1Eh4h8ro3QLRI
+	 Vz6R82+4uv53h+UH3QRrhJB5mpkhVo60A2ypV5I1iR9JCpnv6XrgnmBVoaQtx6t0Ta
+	 knH69Qdc29CMD4l9ax37fvZFgvqN/+wT4qDRiFSKNeoPyaem5QpFlDzNboEj81qbmH
+	 WsF7g6QNw08rWLujeDvsJVWNi7TpHJIYm+kk55N9KQLCaYuD7mrkg9dZec9HuGXtyh
+	 Yt4Hp1p5GtbhjiElQrv/r70VZeUDKIro4myDjeGBfi1ch2sh0BpSY80y8tSes4XpjX
+	 ASvRwt7YDTwxA==
+Message-ID: <246da543-58a9-4b61-8c88-5ceaca9dc12a@kernel.org>
+Date: Mon, 8 Dec 2025 12:01:49 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-purgate-ID: 151534::1765189930-3B70406F-E4D17473/0/0
-X-purgate: clean
-X-purgate-type: clean
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/4] mm/hugetlb: fix hugetlb_pmd_shared()
+To: Lance Yang <ioworker0@gmail.com>
+Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org,
+ aneesh.kumar@kernel.org, arnd@arndb.de, harry.yoo@oracle.com,
+ jannh@google.com, linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, liushixin2@huawei.com, loberman@redhat.com,
+ lorenzo.stoakes@oracle.com, muchun.song@linux.dev, nadav.amit@gmail.com,
+ npiggin@gmail.com, osalvador@suse.de, peterz@infradead.org,
+ pfalcato@suse.de, prakash.sangappa@oracle.com, riel@surriel.com,
+ stable@vger.kernel.org, vbabka@suse.cz, will@kernel.org,
+ Lance Yang <lance.yang@linux.dev>
+References: <20251205213558.2980480-2-david@kernel.org>
+ <20251208023231.1257-1-ioworker0@gmail.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20251208023231.1257-1-ioworker0@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-This reverts commit 3b5e5185881edf4ee5a1af575e3aedac4a38a764.
+On 12/8/25 03:32, Lance Yang wrote:
+> From: Lance Yang <lance.yang@linux.dev>
+> 
+> 
+> On Fri,  5 Dec 2025 22:35:55 +0100, David Hildenbrand (Red Hat) wrote:
+>> We switched from (wrongly) using the page count to an independent
+>> shared count. Now, shared page tables have a refcount of 1 (excluding
+>> speculative references) and instead use ptdesc->pt_share_count to
+>> identify sharing.
+>>
+>> We didn't convert hugetlb_pmd_shared(), so right now, we would never
+>> detect a shared PMD table as such, because sharing/unsharing no longer
+>> touches the refcount of a PMD table.
+>>
+>> Page migration, like mbind() or migrate_pages() would allow for migrating
+>> folios mapped into such shared PMD tables, even though the folios are
+>> not exclusive. In smaps we would account them as "private" although they
+>> are "shared", and we would be wrongly setting the PM_MMAP_EXCLUSIVE in the
+>> pagemap interface.
+>>
+>> Fix it by properly using ptdesc_pmd_is_shared() in hugetlb_pmd_shared().
+>>
+>> Fixes: 59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count")
+>> Cc: <stable@vger.kernel.org>
+>> Cc: Liu Shixin <liushixin2@huawei.com>
+>> Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
+>> ---
+> 
+> Tested on x86 with two independent processes sharing a 1GiB hugetlbfs file
+> (aligned a 1GiB boundary).
+> 
+> Before the fix, even though PMD sharing worked (pt_share_count=1),
+> hugetlb_pmd_shared() returned false because page_count() was still 1,
+> causing smaps to report it as "Private" and pagemap to set it
+> PM_MMAP_EXCLUSIVE incorrectly :(
+> 
+> After the fix, hugetlb_pmd_shared() correctly detects the sharing, smaps
+> reports it as "Shared", and PM_MMAP_EXCLUSIVE is cleared ;)
+> 
+> Tested-by: Lance Yang <lance.yang@linux.dev>
 
-The REO queue lookup table feature was enabled in 6.12.y due to an
-upstream backport, but it causes severe RX performance degradation on
-QCN9274 hw2.0 devices.
+Thanks a lot Lance for the testing and thanks to everybody for the review!
 
-With this feature enabled, the vast majority of received packets are
-dropped, reducing throughput drastically and making the device nearly
-unusable.
+-- 
+Cheers
 
-Reverting this change restores full RX performance.
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.5-01651-QCAHKSWPL_SILICONZ-1
-
-Fixes: 3b5e5185881e ("wifi: ath12k: Enable REO queue lookup table feature=
- on QCN9274 hw2.0")
-Signed-off-by: Oliver Sedlbauer <os@dev.tdt.de>
----
-Note:
-This commit reverts a backport that was not a fix. The backported change
-breaks previously working behavior on QCN9274 hw2.0 devices and should
-not have been applied to the 6.12.y stable kernel.
-
- drivers/net/wireless/ath/ath12k/hw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/hw.c b/drivers/net/wireless/=
-ath/ath12k/hw.c
-index 057ef2d282b2..e3eb22bb9e1c 100644
---- a/drivers/net/wireless/ath/ath12k/hw.c
-+++ b/drivers/net/wireless/ath/ath12k/hw.c
-@@ -1084,7 +1084,7 @@ static const struct ath12k_hw_params ath12k_hw_para=
-ms[] =3D {
- 		.download_calib =3D true,
- 		.supports_suspend =3D false,
- 		.tcl_ring_retry =3D true,
--		.reoq_lut_support =3D true,
-+		.reoq_lut_support =3D false,
- 		.supports_shadow_regs =3D false,
-=20
- 		.num_tcl_banks =3D 48,
---=20
-2.39.5
-
+David
 
