@@ -1,112 +1,106 @@
-Return-Path: <stable+bounces-200426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FC27CAE931
-	for <lists+stable@lfdr.de>; Tue, 09 Dec 2025 02:02:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D345ACAE93D
+	for <lists+stable@lfdr.de>; Tue, 09 Dec 2025 02:06:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C57D930210E2
-	for <lists+stable@lfdr.de>; Tue,  9 Dec 2025 01:02:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 135EF301FA53
+	for <lists+stable@lfdr.de>; Tue,  9 Dec 2025 01:06:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6A93257855;
-	Tue,  9 Dec 2025 01:02:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDA7F25CC79;
+	Tue,  9 Dec 2025 01:06:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="byAVSqdt"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jPBLqesM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-pj1-f66.google.com (mail-pj1-f66.google.com [209.85.216.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E2523ABA8
-	for <stable@vger.kernel.org>; Tue,  9 Dec 2025 01:02:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 447C724EAB1
+	for <stable@vger.kernel.org>; Tue,  9 Dec 2025 01:06:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765242129; cv=none; b=WESjKXEywCizs8qTZdu2jZTk9c2MMabQR8EiIyqTGARHPJ6dpT6+1+p2nOd8rpSakRON54PGkQFGQNxN7Y+XOxBPBXDI7I31l6uXmFblLtGmKBJ6dNgzpUnmlueLnLRKqR4WlSjfzKkYPFaLKuQpMO1O1iwdxx/g9ynzu2CGbds=
+	t=1765242395; cv=none; b=lvo+mZ0DBmthQr/smpx5xx70Pb8yDicAS+2qAgJY0h+SbgniZYDJFSTqJ81i40B/d5FFDR/4RPWia7Zp+XupwjrOrM6H6Hw5nTb29IqaEpIt/8PTMUIqG7E6A0I5UdAPEFbFAxvBI6zeMGYwLlsXIq3Va2VqtJR0WbgVM8Q/ORQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765242129; c=relaxed/simple;
-	bh=uGDKEPLMykAWOcUlNHu4PNNG58YAB3acR8KWNtoonC0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=epv3RVh907BA1K5uRnIQDDboQKR8/V4Do04jqYMorRXDg1+XZ/mQuzFb0JRMJEjVG/iUGIcWBAjGVbvST3mg3w6Pt7q8yrT8rVCcQn1pfs/us6xu2yAs1i7OpOAWPzrGTKUrJFAtiq2lRwVTTl8rBNoWD5HYrq+9ix4AYlV8GLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=byAVSqdt; arc=none smtp.client-ip=209.85.214.177
+	s=arc-20240116; t=1765242395; c=relaxed/simple;
+	bh=+snQBG7CbmrfNDlhb75QHY3hvT5yBZoez4IFQwYK420=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=eDBznKR21ar/05aolrdZIJ4ZTHHNj0C/YUnLEXFlShiRC+lB+WP5lzGzyLBllj1HB9PTDDCvJYXjG2x772K63zN+nLXDEbvVZMTt4Jfc/vBR91SHO6uCPwTzopjnFdKfcAl18tHYhm8ItdMAsxFmt++SflmzOFwqSpn0MZ2SjRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jPBLqesM; arc=none smtp.client-ip=209.85.216.66
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-29dffdad925so1675715ad.0
-        for <stable@vger.kernel.org>; Mon, 08 Dec 2025 17:02:07 -0800 (PST)
+Received: by mail-pj1-f66.google.com with SMTP id 98e67ed59e1d1-34372216275so5123932a91.2
+        for <stable@vger.kernel.org>; Mon, 08 Dec 2025 17:06:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765242127; x=1765846927; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1765242393; x=1765847193; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=uGDKEPLMykAWOcUlNHu4PNNG58YAB3acR8KWNtoonC0=;
-        b=byAVSqdtMQ9nrVS6QpEwAX6eH3lpYalHkUTfEoAnSlr9bXFTEftqFp7E16N2zzQDnO
-         GdwytJmuzM1lac2lRtc2n2oXlfcH1sfDhAenNzfGESrMmiJFnHmQqW5DapD59Yir+jPV
-         Ov/gPhXap6KFW2sEyjRTM+Z8rABH3ppzwfx0ZRNh7/6361BuF3risKfUM9hmBniPcB+0
-         9NIlt4BZ07aOQx3Mb+s9S3wZbXQJJXvbYDKCSxAItynaPEvcpl8B02cG2iAkqAKvhlLZ
-         GoBBGORaEmxmtoAuoU/CcQiCuJQ93F2CJ8D1dp/9S/rx+YyzpqIZsiQHtD6DWnvrcxdg
-         jWjQ==
+        bh=9ozqCtn6sHiDj5BY/ISqjH/nU8F0CWU/yCHS8wMGPQU=;
+        b=jPBLqesMYS2jw6ibnqs3HxAVazYQAN/zGda4WN1EnDziFkhup2KlmHWPOw5mxII65j
+         MWx8iXXwmO3EYfwZ/slNG7b2/Ec8E1LQ+WzAKTMXDXASp0ZSk8Pj7O/xD+CHn9Xwl74W
+         pcCpUC46Gr9TTfh975PpzW9oQEg8ebBtBlRbK+7qSjk0j74BiJ2IHb+jsst+heK17CBd
+         cep61gz5iX8dSg5bwhpLrISaBl8H6n3m9zgVxcvsfoRSJnuvx0kGGiri1ADohYO8rm4i
+         iOfC4ewbzipISlb4msC88DK5cEY+SPxMaKY0DKE2pjbgKHJUAQ4jVTRO5PPhIWxVFhcK
+         nSvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765242127; x=1765846927;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1765242393; x=1765847193;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=uGDKEPLMykAWOcUlNHu4PNNG58YAB3acR8KWNtoonC0=;
-        b=Zr7rKEb9nAX+8eiyON5oVLbFIiV9hKQzQ62unVtMGbv8n63SDPC/HP8vzGp9TReNuW
-         OIzg/OXXxQvq2J3Q8lV+QBLQBK+X8Yk9mooOQj9uX4ckxWX06QjE4da9z3bzyKqYVmyl
-         b6zKnyUH/xNOi26mBWKapjn5j02nxRvleEtlONHotaKvj9g0av+lk55APlDjhWP4p+ye
-         uDkKKjfszxsxhc4EZg88MmDjbhwQ5SiQg1tzRr9Z5zJkl0mlDTe7QgSbQOwGK6ODG6RK
-         xWn+qJcwkN6a7ciLoVwLQNeS3HimDFQgX4wbq4wFP192Eus+Hutc3YXlCxTuB0XDYbmX
-         9ung==
-X-Forwarded-Encrypted: i=1; AJvYcCVg8UyPkpI0nh+8QJ25/1Ko3mdoL4eCHY8zXNtiJb3fS97FoilTKoyZpumy8tYkfOfM9u3TxF0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwO0z/Q+x3wySUu9V1+ETaA17THfIRcGl2SUDbyCucDiqmXpRvk
-	1TujDU2kVgi86chWsxvKpkMcUjSSW/A7qEc9z4bMq7sDbaCEUf3NWb3XKKtyl5Pn74QbNJoaxjx
-	0CYnHu4n8iqnAKyI1WsJlRdZ154V6CV4=
-X-Gm-Gg: ASbGncvncM50T5JXO4wuTWg5HmmV2ilRTbhLsVNZpDyILWu61d8T9IxaZHORtv7hBqy
-	Itw22Q2IJE8AL2k10ZxqdBD47wnvceCkfIZnCZSOAlS153Nkf7NBEF9ALeZbQo1QuoPrxdmQQl8
-	NApNpAwAPd00Y3wGMxlp3POjbMGeQ4fFAAyEaEdAha4u4lsY5ematbxmlUqf8oQMEvszpBCRgm9
-	FUwpfMzBE1lTklVEyG8mIQQRbgHzAJUNxWbTk7dYDDcx4l7PqucZ4MRBNi45zrCSBglmaBdc9Fl
-	xwrUJPJpUNK+UwGzvhZUJQsjqTb2b0GaGMrclOaRYSPOeHeVfSDdQhJr6uwSzkeJAoqQn4n/zYx
-	rTbqq6hKgzpvP
-X-Google-Smtp-Source: AGHT+IFrO5rf8fm5a9jJFe7v3vjVPwVESbCkXsoFTsGXBEpHYY8KdvibjzeUj8jNBuYb3/OZTmby9/KV/YRy3eFlwR8=
-X-Received: by 2002:a05:7300:b0aa:b0:2ab:ca55:89cb with SMTP id
- 5a478bee46e88-2abca55980emr2194053eec.6.1765242127202; Mon, 08 Dec 2025
- 17:02:07 -0800 (PST)
+        bh=9ozqCtn6sHiDj5BY/ISqjH/nU8F0CWU/yCHS8wMGPQU=;
+        b=p3WdR4tR6huAuXkjGMxvbkKghmF62QZNBh3MA6uzf5OR63xiAIWapLthUkW0VTfYph
+         UewJW02/i9+ciqxZfJFWII2o+om4K4Hjpva8LZI21Zwp+eHrlCfP08NyCszN7RaVpM7l
+         l36xf6RmlUUio8LwEOJ7637udl9Eig6PD7J4ceVbSOfnIyOxsmLW+kvLq8zKGhg0Avj+
+         mm2Y9Yw9859O/4PbU62fVFCspCg9sPZSoM8USPGMeKiBCTuM0PihZV1Rh3zkPgsK1hxY
+         /FCGPuPaNSWHnN7DUIrfyPMXJQkr9f2xThYgmIwji+sbb43R3hsdQQT3fRHfwT34dgL1
+         Hjpg==
+X-Gm-Message-State: AOJu0YwvcxC85LwN//8xpDBqrN6ASP1q/0i1bMA96XRMTA7ncjSzvD9u
+	n1KUmJ51Yyi65ZjlxztCKlAga1igZ1pFKdSfHBSiudAeI0ZyWEXMUDSZ
+X-Gm-Gg: ASbGncuSJC5WDitU6sS+uuFsQHJAcCWRlhNFpoYdCKIfRcu08rG1/wLl1w5fxCJvmK4
+	RjO20hV+er0DuIIQdRn8XCtFJw55INxr6ijcHr/aFumiL1EvrNlqkfnBTuFaO9JjRDzxnYnvMvr
+	l4YO1CmbMPvFrXOc4cU9iT4SkX+SVxOWmhdq/jWCk7fwkITC2JY9qNgD62GCXzKbRok85GvK0hZ
+	AhvEvCTTPGlH4AMHIJY5aRknaxXpR7dNdvH3wqGe2wmEWcDJuF3ep7eyd5bO+Hxjij+Yg/pRJjt
+	2jkb4CjtxKxpj4o1FvQWzq0lJMU1MA1s035gWynvX+ztgt8xoW6LjJhle6M37sNxYp+fYiSLGwo
+	VKv/GZlqOm4w2qHfBv/hvXf3KXKGWSGDhVkbuc6UNWsC3sluQOogCSJuxQOLKLuDFVvaqqPaK0g
+	CYfuKC8PIAOQjYm+V1yxW/fvVvUGRvMCU=
+X-Google-Smtp-Source: AGHT+IEZZ3GvrJg5xqvHNrqBFG7XdQNQXgOkKotztjE06kjRiztG71gYUs0kxY3kgvlFfpicRcW6vA==
+X-Received: by 2002:a17:90b:562d:b0:340:c4dc:4b8b with SMTP id 98e67ed59e1d1-349a24f21f1mr7533005a91.10.1765242393269;
+        Mon, 08 Dec 2025 17:06:33 -0800 (PST)
+Received: from LAPTOP-PN4ROLEJ.localdomain ([223.160.153.18])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34a47aa570fsm339440a91.0.2025.12.08.17.06.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Dec 2025 17:06:32 -0800 (PST)
+From: Slavin Liu <slavin452@gmail.com>
+To: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: stable@vger.kernel.org,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: Re: [BUG] Missing backport for commit b441cf3f8c4b ("xfrm: delete x->tunnel as we delete x")
+Date: Tue,  9 Dec 2025 09:06:26 +0800
+Message-Id: <20251209010626.1080-1-slavin452@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <aS14lT5jZKpwAg4N@secunet.com>
+References: <aS14lT5jZKpwAg4N@secunet.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251208-io-build-assert-v3-0-98aded02c1ea@nvidia.com>
- <20251208-io-build-assert-v3-3-98aded02c1ea@nvidia.com> <20251208135521.5d1dd7f6.gary@garyguo.net>
-In-Reply-To: <20251208135521.5d1dd7f6.gary@garyguo.net>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 9 Dec 2025 02:01:53 +0100
-X-Gm-Features: AQt7F2pcCQwCzQQDDMpHjtqZugmca2-gRsmgHNhTBVCuGzfGkmQoYCkGIWj-Dlc
-Message-ID: <CANiq72ksg4Ad8vk1tjH-fVAhUQUcRpuzR2cogKnGHPTax-fc9Q@mail.gmail.com>
-Subject: Re: [PATCH v3 3/7] rust: cpufreq: always inline functions using
- build_assert with arguments
-To: Gary Guo <gary@garyguo.net>
-Cc: Alexandre Courbot <acourbot@nvidia.com>, Danilo Krummrich <dakr@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Viresh Kumar <viresh.kumar@linaro.org>, Will Deacon <will@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-pm@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Dec 8, 2025 at 2:55=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
->
-> ? If so, I can send a patch that adds this feature.
+Thanks for the clarification.
 
-Sounds like `consteval` in C++20, which is useful from time to time.
+In that case, I would like to request backporting both of the following 
+commits to the LTS kernels to resolve the UAF issue:
 
-If we add it, then the attribute form may make a bit more "sense"
-conceptually (and we already also added the `export` one).
+Commit b441cf3f8c4b ("xfrm: delete x->tunnel as we delete x")
+Commit 10deb6986484 ("xfrm: also call xfrm_state_delete_tunnel at destroy 
+time for states that were never added")
 
-Cheers,
-Miguel
+Please consider queuing them up together.
+
+Thanks, 
+Slavin
 
