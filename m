@@ -1,217 +1,198 @@
-Return-Path: <stable+bounces-200468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A114DCB082C
-	for <lists+stable@lfdr.de>; Tue, 09 Dec 2025 17:10:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9210BCB0850
+	for <lists+stable@lfdr.de>; Tue, 09 Dec 2025 17:14:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DF8873105566
-	for <lists+stable@lfdr.de>; Tue,  9 Dec 2025 16:06:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 468313010FD1
+	for <lists+stable@lfdr.de>; Tue,  9 Dec 2025 16:14:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F9563009D9;
-	Tue,  9 Dec 2025 16:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4536B3002D4;
+	Tue,  9 Dec 2025 16:14:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="SW5GfTEp";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="gOkv0d4w"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="knEDgeQu"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013029.outbound.protection.outlook.com [52.101.72.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C2C92FFFA4
-	for <stable@vger.kernel.org>; Tue,  9 Dec 2025 16:06:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765296395; cv=none; b=rwobM5uOyM2n64qVjsYS9oa2dJcsVsy6lBZOxjQnYeClJ1hAw8fS02akG9Uv+mbb3NrNg2HmMKfdIVYM8xoJVYWw6TnVSasA9OhpQ1zA6fk6NrYrA7vGJ5v9P9NiIbhrf7jbmSR1vES5K8esiye7JkUXtQ9NR5t9a0QjzpeVeEU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765296395; c=relaxed/simple;
-	bh=L174GWmru7ZF4OjbWwGfFdgE5zDp10ar9lX5+CU/Pw0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VqnaeaxgCoBVCOsBRUYRrp6RfVZm7T7VEEqdNcUXf6Pe0YKz5NKAS1lY0kZVCVvsFGSzI0nNJ7ebKthcaWb6XpIaInUQoYaHyEiOWfucikpdcWgl2EUW+ZWRFii2sjEir49lFD6bQoFrgNvGD7xQ8wJKR2NySWMqcygy0GHUHNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=SW5GfTEp; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=gOkv0d4w; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5B9Fha1R4145244
-	for <stable@vger.kernel.org>; Tue, 9 Dec 2025 16:06:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	PcgKvC7JRfGFnDl4d1cl7qh9ZdiZ08n1nj3k1pmly2E=; b=SW5GfTEpkBMHYiF+
-	ComXj80omqehfxrg9TY3284G4vDdb+Ezgn3VcD3y9QJ2xYTshmIPzolrQfchVIvM
-	yKB9nsrUlyFODnTmaxS9keP1Qxen8LW3nYUesAEyT00Kj7KLSVJmZLYqDjUIiexd
-	i9aV0/dNF/fhflENYRo4AKF8uJVKxSo3/1TxJGCzwxBh9iiqRww/ImrFLk1Dly2M
-	4JpwnVwQ81xmdQGF9NLmPca7TbMbnr38w9iaO0b8WR0m69K2YsVaSjN7xuuQjuJE
-	Vi5PgMzHTyRS7TqSlvoy4mw2DRamDqS+3uxcWa98TIUpik35jHNtTPTBTImymfjf
-	kDKCWA==
-Received: from mail-vk1-f200.google.com (mail-vk1-f200.google.com [209.85.221.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4axherh6c7-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Tue, 09 Dec 2025 16:06:32 +0000 (GMT)
-Received: by mail-vk1-f200.google.com with SMTP id 71dfb90a1353d-55b099d692dso3129577e0c.0
-        for <stable@vger.kernel.org>; Tue, 09 Dec 2025 08:06:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1765296391; x=1765901191; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PcgKvC7JRfGFnDl4d1cl7qh9ZdiZ08n1nj3k1pmly2E=;
-        b=gOkv0d4w0HwaK/HsK9bYboW+JCKVzez6kttiJ0AVIVm6X1ujTPZuTKr+lNvPHt2d7x
-         YRp520jxs7TueaFBD0ueslCxcnZ/9yRl5Qjk+BrJDVW25ugu79LtZBQ1tLScpDhQlGUZ
-         lXPbsJ00RDNz0W1e397tsBlpF3xNsDZumJBXWfVJvh7SG74BcIoTSu00+Lk9iRGDy+tC
-         nns4WHq/N0bZBsykYRzYlacCRZDisrRnsINhLjTIfjPqeh3+yKVXwJK8M2fvvsiLvdPX
-         OTHzNG49thUhXGPjRGE6JncJ5xZGkXPwoizw8QfLTysLpUawBAQTorvxenMmdXOAI+23
-         Q/rg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765296391; x=1765901191;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=PcgKvC7JRfGFnDl4d1cl7qh9ZdiZ08n1nj3k1pmly2E=;
-        b=PuFrO5xjbvoDEBg39Nyoaz7jEzVSwlaHSAIFdtSs7xy/Ng0gqVdPxuq0hRCg+tenMr
-         VKRUvzx2KlJvzD0OAkX7OWD6/QdoDJHJVmQo8AX8Vb0Ralo8IytOYCZE48MCXABZNJbs
-         OHpVzLENH7jc9Q/YjGelLTwwzAZ8DZEYZS2Pro2VWYaAquJwpx9CRdlggsWXHk/3U5wM
-         vjyHxsFg48rdeMvifeXnh07FcAfaHjcno7LbpBR5cPRJ/1FM0Odg29tccX67kZ0Lj3TD
-         gSWzS9cCuULqp2aiU3jiknr//XWtQIMSQYmX8ln3oUII8RWvpNc0POAuKKAAF/9ofC9Z
-         lGfA==
-X-Forwarded-Encrypted: i=1; AJvYcCU33sGR4pakkfta726/bXeGB9SxOrQz9S44ZxgyTrZMNbX4a4LQKnltIIUtCJ7U3o6d96BAAy0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/HB886WofzfO+v39IWk8DJHnO2suAgf0bxUFDbUCXVOSBNbqv
-	z0LpRp9O1MKZGLKXSb1v/6JEryvFVNtXa448KeKHTgx1XbXoD8+MwcldhFpTiby+Qu87s77DDzS
-	4j9uWBVpWf17lSdo3QTFvNG5SJP2c4XVr2/LnpYhmK3RsD7hUADfB8GEoh34=
-X-Gm-Gg: ASbGncuKhJj3cOGWaIp+/vrXwcuLg94wLNQwY43gBIoeH1uY7x4wGbyquMabzHlOnnc
-	sgA4QpfbwrhMtahooiTPH9gfNcDl0lE4Wste5VPs1K38IEVHluVBHcLu9AEmXKEsF+/tkvWxG/a
-	7cveSI6eR7VDcyJSaaSiehRmeKZhWLsxQg4CJQdi9kfl5OGI48fYfLj23qt7z9m7/n2jCotJ2vi
-	exbtsIO9GF/0X+dXTla/FHdzp0RxCaEIfvp5vPwKAz60rtEhpa0XAsRryy9qWsqqmc/Uf5nNmAU
-	FHjjhg9rH0MqFGbWOu08z97HESCd0Lb4aD9PFUxzNxluoxG11LwWj2JRR14u3/o6hcaoVzIIGwl
-	TVukz41+606jSqXutyju34LkttUl/XzOrZ98df6kz6WYJJiYu0P8Ak9GWxiceVsxjq/c5A93oiu
-	4NVeax5fsVlOzYxbOOeciukPwI6nLND8FPm+zV1TJIVW2MPQ==
-X-Received: by 2002:a05:6122:1d54:b0:559:5ef5:b196 with SMTP id 71dfb90a1353d-55e846974a2mr2928937e0c.13.1765296391278;
-        Tue, 09 Dec 2025 08:06:31 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE8y8i6NIi/zLZoGQSXP19HWfbFC9YOHgJWNAUSeP81T3aN0pu44z0EHfMAC4QIBv/bGEookw==
-X-Received: by 2002:a05:6122:1d54:b0:559:5ef5:b196 with SMTP id 71dfb90a1353d-55e846974a2mr2928870e0c.13.1765296390559;
-        Tue, 09 Dec 2025 08:06:30 -0800 (PST)
-Received: from t14s.space.revspace.nl (2001-1c00-2a07-3a01-8e96-3679-0b9c-de47.cable.dynamic.v6.ziggo.nl. [2001:1c00:2a07:3a01:8e96:3679:b9c:de47])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-647b3599050sm14324838a12.17.2025.12.09.08.06.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Dec 2025 08:06:29 -0800 (PST)
-From: Hans de Goede <johannes.goede@oss.qualcomm.com>
-To: Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Bryan O'Donoghue <bod@kernel.org>
-Cc: Hans de Goede <johannes.goede@oss.qualcomm.com>,
-        Heimir Thor Sverrisson <heimir.sverrisson@gmail.com>,
-        linux-media@vger.kernel.org, stable@vger.kernel.org
-Subject: [PATCH 4/5] media: ipu-bridge: Add DMI quirk for Dell XPS laptops with upside down sensors
-Date: Tue,  9 Dec 2025 17:06:20 +0100
-Message-ID: <20251209160621.6854-5-johannes.goede@oss.qualcomm.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251209160621.6854-1-johannes.goede@oss.qualcomm.com>
-References: <20251209160621.6854-1-johannes.goede@oss.qualcomm.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29C0F2EC55C;
+	Tue,  9 Dec 2025 16:14:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.29
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765296874; cv=fail; b=t/YcJSajytLa6uwCXK8jFpqVhvkfocDKN+Lsb6YI3nTaFr9q6x/X883ay9VSWaSvcavcrQjvqoa3MfyNJP7GFu98vx60YeMV684Z2ih71hVC3MRjjEQfPfkUsd0vGI4YWP0MbDBZRD2Ca9DEuMxgj9wVs6UDBgs+fSg3P8Ywa4A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765296874; c=relaxed/simple;
+	bh=drYALEu9xqulKYkV2JDSk5ciHVwxVPNfV+IUPaB8+IQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=GEOwoZmgC7Xp0QbkpJn/DSbJFajZWhVlnVqKVI37pHES65aXxL6QFhfKaxtzQviHl/lpH8YCffWbkwHqs6e2uu1FrzXJok5EaxGMcsF0TBfXlQBBrNXsrMWKbH/Bi1pos4UeuAFr035JgSLPxbnUjYHQnYj+uyMdYfcYRBatrmQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=knEDgeQu; arc=fail smtp.client-ip=52.101.72.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ljqvSw29deZbTCH3wrm4rZ/BVOpjCcGYD5H8xATR0XUG6e54Q7v8IIZx/zp4rFN+iuDDvx7cmMqSL4aW2+AKyRRJnCjYZQ+Px3tz57CH53tvu844ABCCIIAVnQXnXQxt7qF4wCmY6/Y6a7E//PM58UNwjAevvY6dSq4Q2pNM5aS/qLrFA5U2+IlZiQaVSD44cuDUxYOwIQMf4yy/kSCv2PUnNfxcC/Iq64cvj8+BQ0f/w7bXi5slSqKQiMe2zb9T2rSpipF4RrIRRXj0kxZEjQ19OeBQ9ElZLsI1wHcsLTdhjZdIYeYdbL6D0FxLXOUedmJljd+r9ETFIYoBkLBrFg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=AypGCGsmD2lV7ELFX0/5nOMQZHSv6FDU+K9J7m0D95s=;
+ b=A7JTeUqZ2IIAg/hSIOcFhIsOF1kVH9rsRh2XwEosOXMEHvw7jjYotWQvhNwotgSgh/7DCTeEGKzlLX+oBuC0biK3YIzW5mSxXptl4ammnfVNMegdNbQBIEpYTgYAysQt6lKw2r3mjcvN1dm+/2/o09IaCJrWeEUxbhCCZkTOIy4Ej7AOW74IKF9i3UKyCCVGLtbLJQ7hC0cs4Ipn9+YeTb5bt5eqWqtl2dj7wqMSHjW+ZmO/SvdfKNv1dsHqhbK+4TPUmgG1yn2blC/0ARP4atSN0hGgJTD0pnA5/QmZ31pRVZ2lpRA0GRzuFYCT4heQKzfEg6Q7cjuXrKNHmqEkgQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=AypGCGsmD2lV7ELFX0/5nOMQZHSv6FDU+K9J7m0D95s=;
+ b=knEDgeQuvdC0V6VubAbKwcMdyg9RFp5cnW10+mLnx0UxZI8Cp0+NYAIbknRXSHlGr9lzLu25930RiwhvLk0nEKt6fqpQUJR4ZXpY4DBj3aXSvjAm/ck4qL5OGlh3WqLilyCYDRs+RmHBI3ULGxT9XhmJZGTt7JPtroY0L4pH6UmSd45LGqN/V6rWPobidYC3OzEyNqPmNgZeLwu6XRtkYJRx4cZSk0j5YpJO+Cdkiqn/tepe9lvtGVHdbsbpQoHuGRyhqr5WfFQnKGJzItkbUplIeAkT2Cc2npArTZqq2OcWaNuy6cwgvjakDediF/VKqkMapGxgfrwmR/BcIJeqYA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU2PR04MB8951.eurprd04.prod.outlook.com (2603:10a6:10:2e2::22)
+ by DB8PR04MB6827.eurprd04.prod.outlook.com (2603:10a6:10:f8::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.6; Tue, 9 Dec
+ 2025 16:14:29 +0000
+Received: from DU2PR04MB8951.eurprd04.prod.outlook.com
+ ([fe80::753c:468d:266:196]) by DU2PR04MB8951.eurprd04.prod.outlook.com
+ ([fe80::753c:468d:266:196%4]) with mapi id 15.20.9388.013; Tue, 9 Dec 2025
+ 16:14:29 +0000
+Date: Tue, 9 Dec 2025 11:14:20 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Wentao Liang <vulab@iscas.ac.cn>
+Cc: ulf.hansson@linaro.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, linux-pm@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] pmdomain: imx: Fix reference count leak in
+ imx_gpc_probe()
+Message-ID: <aThK3DwGFY1xhvyN@lizhi-Precision-Tower-5810>
+References: <20251209081909.24982-1-vulab@iscas.ac.cn>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251209081909.24982-1-vulab@iscas.ac.cn>
+X-ClientProxiedBy: BYAPR08CA0032.namprd08.prod.outlook.com
+ (2603:10b6:a03:100::45) To DU2PR04MB8951.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e2::22)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA5MDEyMSBTYWx0ZWRfX6sn6DaEeWLRR
- ASfAW6irWNhjg5TG91no05FtXXqHs2RrVEtgJ3SbognphTZkAItZMvawp6idqk2d+fzTnFfiOP2
- yJntGOYvXwuXHD+aVxFShHSZupkgvHl49h3xcF9NaYA+1Q8dTOrA3Fw1NuJAmVmKb31erwC3iDH
- HId+vRc438ELLaz70y4PWY5/uJjYuZW1hsBzPUkofBjwtEGMgLuVkZUu0qay8iWb+zAlgdKVKhW
- q301umPHnUfSmn41nBEyOFxiBHI86LlUjlQvsxCe2+MqMvZVtAeylMbVTcTtqGuQvv+7Tnj1Ctf
- 8bpaxA7+XklVQrxQFObhE/BB8MJF4lL/RI79zSix4Shcmb1IPcLkrt3VrjOdUCu4FIKOm0oF9Ms
- LrhUkd498IcGKTWOrSkOnGomDr76iQ==
-X-Proofpoint-ORIG-GUID: pw2iqAavJj8UjVnfOuXq309iq8e79DYK
-X-Proofpoint-GUID: pw2iqAavJj8UjVnfOuXq309iq8e79DYK
-X-Authority-Analysis: v=2.4 cv=P7M3RyAu c=1 sm=1 tr=0 ts=69384908 cx=c_pps
- a=wuOIiItHwq1biOnFUQQHKA==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=GbN0NnZvFBoPmIocWywA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=XD7yVLdPMpWraOa8Un9W:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-09_04,2025-12-09_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 priorityscore=1501 bulkscore=0 phishscore=0 spamscore=0
- lowpriorityscore=0 malwarescore=0 clxscore=1015 suspectscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512090121
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8951:EE_|DB8PR04MB6827:EE_
+X-MS-Office365-Filtering-Correlation-Id: a1e20252-6323-4fa7-0245-08de373e07a5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|52116014|376014|7416014|366016|19092799006|38350700014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?gtuCywk7LbpbCBWrP9jY6Fw3qSiUFc6uNs2EeEw7K/qlqwp1Th7sESXEhK+d?=
+ =?us-ascii?Q?ZRtrGwRFFPJSISLd+EIHjwrEKuLdEEgLxgUM9ghIZl7hhEENF+EkPYESk2q4?=
+ =?us-ascii?Q?3SARPjyFjpJf7ui8W0jkjcqCp3RIXdcMfC9Zh88g6ay1ZSzORYFt9BbVesKs?=
+ =?us-ascii?Q?PI9kbOSaHW/aSV2Nw7U0BuIn3AblViWT0dFm81scFn/VvgeG2nN869w34C/b?=
+ =?us-ascii?Q?sI+hl7JupxI9V7m9zSiLbqf+0GuYX9ZCF5gtUk7laUyrEXJoqezfD/81jdME?=
+ =?us-ascii?Q?cn/cXd7MktKJo8I8Rq3ed3qggV1mEiF+r0mDbtbopl7qYiHG9+anpx4oZrOL?=
+ =?us-ascii?Q?iPReyYnfqdnTcaP1IO5jAOskOcwWEqrjTF8PGULte4Ex2qWSebfv6s02Wh1h?=
+ =?us-ascii?Q?vwfXbSl7Aig7c8BVDewqBg8maWEw87AU4XwqFi+PQsixW4PbvaqaGY/G468n?=
+ =?us-ascii?Q?Y5tkYmUnd5RuhK7NHv7nLgOSszO9KhFn4bnqGDAKhCe9cNXSdJ38u70D2vkB?=
+ =?us-ascii?Q?AuWFGWQBgN1qIPxUb4d6sJCvydtQMaUxJLDg137c5WkeKw1kQ/1Ctvc6ptFf?=
+ =?us-ascii?Q?+nRZYpqUMaMH89DfxlEHaau1/WCbyatnnVPecwoqM5V3TymL52DNx2z4n+Qr?=
+ =?us-ascii?Q?/zkYegAKdcrHUdvJ5ZSHymUbGF2w8ksyOrIN9m2qClKR50okeg47uOw9ONTV?=
+ =?us-ascii?Q?IZzfUEmBCQ+9eat5iLgx0EaP8HGq3Oqtc1TTBbnCNU+5OrFPMr154KeFurH/?=
+ =?us-ascii?Q?GROixPLsOoGcTVko6BKxpI6x5jbqDxRXU+xutp7TX8zbhYBHq0m51vPRuHrl?=
+ =?us-ascii?Q?Tbe5FRq7IrktcbJw4RzLlB6xc6ifs1WUnoIyWeewaE2ayc6EDj3SDYduC8Dm?=
+ =?us-ascii?Q?l4SPKnjybkPlPnlsquK3vVVpKBFMyviyHFYK9eL7i9LWL7wWHd1k4ERidWOv?=
+ =?us-ascii?Q?Xqp1wL9Jq7/rQccQacbba3rk0k8qfjy2bCqG4bsZ5WxeaakO9RKb4AnlgwbS?=
+ =?us-ascii?Q?YnKmRYbrOB/13tNZ52/TafDIjpRXylm4YXtPoLbYPiFqbAFB7599qmId1HXV?=
+ =?us-ascii?Q?GqrN1Eb60Fe0aJuCiR98Cbw1Uk4GLrYbrdUF6T8MI5ygQ9ynGiupy53zPe0W?=
+ =?us-ascii?Q?vSNbBW9DbQtbO/VqGfLN2AbYOnC7bnV90TqbrrCux53cVdXC5UBvkDnc5BU8?=
+ =?us-ascii?Q?n3r4js5C0HlBly6uuvSo03eV8ywOVijMUTaCoCm/GjFRnpKi85CMN1/vYaDL?=
+ =?us-ascii?Q?y6WARz4yTsx2mJxueKxXiuOwjNwOpzORft8QG9yK0CXShop8fa7DiRJXcJoo?=
+ =?us-ascii?Q?GTs1Up3rULTEo+/ZjtC3xvY7sE42Y9SWrGcwouPLqTE9m3Baf2qK/EWTjUZK?=
+ =?us-ascii?Q?qjoX91tdN/mjvJ/gQjswkxoS1YV0m+33HyyYga3IiyjhBDNmfcVmToWphACX?=
+ =?us-ascii?Q?Y969iPyqdST/ZMZR7x1FJW5MZxsI1VkpYVKf1Vyt8+w8MJcQrTV96ZNUgSu+?=
+ =?us-ascii?Q?tlGhz7KqPlIMBSHeNdsZ3KbidIeS/BbCDFh/?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8951.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(376014)(7416014)(366016)(19092799006)(38350700014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Y9BsU2tY8kjFven1yhltsRrODbU3dYN3Yo+xx5itpy/tpYXYSMHPjHGFRM0t?=
+ =?us-ascii?Q?mPZYmnNInJ77n6dug+aQeIr9ix6DM7si+hOWr8oORFLakbgM5o69cgoEbQW7?=
+ =?us-ascii?Q?6/+uy6Oq4emhxMWjO/A1IlkGZdXf0xgMH2yZxZwYVVNk3BSNiABXwrYZT7Nm?=
+ =?us-ascii?Q?/aaisM//lDVmntFSw3HgTj3ags0lPMi5YKZB28qj2Pr+zG3m0QUvEn9qIoz4?=
+ =?us-ascii?Q?QUlwjuBSdYu3ww4pm0/olcPBtXWZtihrmnPkxkv1jvCYlyB13wly0qr/Pyu/?=
+ =?us-ascii?Q?4qSPqX8d0+lkmpWLY9XYpWld34Olw3t68A/U09fyoGoebGqW3ybqEcTn17x/?=
+ =?us-ascii?Q?TcMP/mrr6J5W4LHod33PdqTr6oJzSo4Ncs9SXEVPltvbUGBGELlWhiB9HzAR?=
+ =?us-ascii?Q?YdgEygXAHuFgeCDAQsL4oVYaTudWA0fkdmSwRNBBJh1qLvyJ9b4t47qbhJVV?=
+ =?us-ascii?Q?K5u9VTJ8fIEETQRuulkojSI/74cGWvaBzr79LcvmEIlSTyn1KoTLZlYgjPEv?=
+ =?us-ascii?Q?IxjKmciOunBBxfV/bGZcUQJmPtDz51IjzY2korS0kBKxzA9x4ko/hItCa3ai?=
+ =?us-ascii?Q?UhAiCM1rgoNUKu1ZqdbL5mBH0LCyhTijQzNo6OF58MeAwAD00326eh3lciFA?=
+ =?us-ascii?Q?NjzvTcKDGPi5UYMplA1H8L5CH5w+jpUumF3wXtGUhWYUN47mwCtZ8N+ytqEZ?=
+ =?us-ascii?Q?YhG0SRZm1M3UMCuTIrWAqwrKryGu03Tkvo8XhUXE20kRFd8DWNLYKTYSXSv4?=
+ =?us-ascii?Q?RXfbe3hETBlMaPIEgLRlFCCYpjKdjLo0aXOTCEds/DpjOZhYD59MPe0aStXQ?=
+ =?us-ascii?Q?QiGWIaGcyBzguO+2tq+4FW3URjJYdZvuKco7KXzY5dEh95hIATfVhwFIcPup?=
+ =?us-ascii?Q?SODm3b+xHKdzI/iFLnVixSfDMOqZZKmYgT/kF1kRE+IPxMlsJ4IpmCEiooCD?=
+ =?us-ascii?Q?Z0LzyGAAJnZgeHaGbSkyvKtAWbrsta+72+JVq0HRmjKBSZSlsY+H4dR8ybP/?=
+ =?us-ascii?Q?bUamM6Dt/wAt3HjBF8lgdcETagJU5DcM69aG+03QU34zMtJJTpl8dS231zmV?=
+ =?us-ascii?Q?5OKcQzOBgCFk8lhvL8Wn0zQYLu7jDyNG5NUh4Gvzonw9mHioPy0mIiV/n4fp?=
+ =?us-ascii?Q?eqjRzzQUaCdNTvpin+QJp6MmoOrCFCFRLlBkjgMW3Y+OLkSKaGkTaEKilwoh?=
+ =?us-ascii?Q?yZYqT3ByyKrnTgIq77Yr3b5TSob/DeIt5lrSMhxQ/c7BAm3ToS3EWt/jvjmD?=
+ =?us-ascii?Q?n4EBdCkF2Ge4F+KhYzUt9OMUu13LBILKlOw0GPPXykQTHVyln8y1HgHGqUbb?=
+ =?us-ascii?Q?/3vWoeEyhdzXZTdxdOsUf0S500Rtof/9DAtbqLKhxuMgz46+/ErM+saHr7Qh?=
+ =?us-ascii?Q?P9dgNj7hOCmDDc+elIHexeHEbFa+r0xudtUhtath6uJUWJv9G5EihB4Q+KgY?=
+ =?us-ascii?Q?wVwwFAVfeIJfKIblNal0BfYW/lqweHpmS9HxyCvEyvcBT9l79khKB6+dOgzl?=
+ =?us-ascii?Q?Id6ttLegas2JGuqzQOrjlt0UxQHnX4GW5XmGEvsbG8wO6GSClx/I3aMjbIEK?=
+ =?us-ascii?Q?9SA3cuRupnD1sFZCcHgJZeMu7lEYqvHLIcBuyjRn?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a1e20252-6323-4fa7-0245-08de373e07a5
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8951.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Dec 2025 16:14:29.0208
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: OkEYyAx/FvdVKJLkulzBEJ+x5NTlVGSVPoSA7PiW6E8hRswX2moIfHuJ8I+5hK0DRqM0tq2wFJDco0F/yNCkpA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB6827
 
-The Dell XPS 13 9350 and XPS 16 9640 both have an upside-down mounted
-OV02C10 sensor. This rotation of 180° is reported in neither the SSDB nor
-the _PLD for the sensor (both report a rotation of 0°).
+On Tue, Dec 09, 2025 at 08:19:09AM +0000, Wentao Liang wrote:
+> of_get_child_by_name() returns a node pointer with refcount incremented,
+> we should use the __free() attribute to manage the pgc_node reference.
+> This ensures automatic of_node_put() cleanup when pgc_node goes out of
+> scope, eliminating the need for explicit error handling paths and
+> avoiding reference count leaks.
+>
+> Fixes: 721cabf6c660 ("soc: imx: move PGC handling to a new GPC driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+>
+> ---
+> Change in V2:
+> - Use __free() attribute instead of explicit of_node_put() calls
+> ---
+>  drivers/pmdomain/imx/gpc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/pmdomain/imx/gpc.c b/drivers/pmdomain/imx/gpc.c
+> index f18c7e6e75dd..89d5d68c055d 100644
+> --- a/drivers/pmdomain/imx/gpc.c
+> +++ b/drivers/pmdomain/imx/gpc.c
+> @@ -403,7 +403,7 @@ static int imx_gpc_old_dt_init(struct device *dev, struct regmap *regmap,
+>  static int imx_gpc_probe(struct platform_device *pdev)
+>  {
+>  	const struct imx_gpc_dt_data *of_id_data = device_get_match_data(&pdev->dev);
+> -	struct device_node *pgc_node;
+> +	struct device_node *pgc_node __free(pgc_node);
 
-Add a DMI quirk mechanism for upside-down sensors and add 2 initial entries
-to the DMI quirk list for these 2 laptops.
+struct device_node *pgc_node __free(pgc_node)
+	= of_get_child_by_name(pdev->dev.of_node, "pgc");
 
-Note the OV02C10 driver was originally developed on a XPS 16 9640 which
-resulted in inverted vflip + hflip settings making it look like the sensor
-was upright on the XPS 16 9640 and upside down elsewhere this has been
-fixed in commit 69fe27173396 ("media: ov02c10: Fix default vertical flip").
-This makes this commit a regression fix since now the video is upside down
-on these Dell XPS models where it was not before.
+Make sure pgc_node value assigned when use cleanup. Please see cleanup.h
 
-Fixes: 69fe27173396 ("media: ov02c10: Fix default vertical flip")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
----
- drivers/media/pci/intel/ipu-bridge.c | 29 ++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
-
-diff --git a/drivers/media/pci/intel/ipu-bridge.c b/drivers/media/pci/intel/ipu-bridge.c
-index 58ea01d40c0d..6463b2a47d78 100644
---- a/drivers/media/pci/intel/ipu-bridge.c
-+++ b/drivers/media/pci/intel/ipu-bridge.c
-@@ -5,6 +5,7 @@
- #include <acpi/acpi_bus.h>
- #include <linux/cleanup.h>
- #include <linux/device.h>
-+#include <linux/dmi.h>
- #include <linux/i2c.h>
- #include <linux/mei_cl_bus.h>
- #include <linux/platform_device.h>
-@@ -99,6 +100,28 @@ static const struct ipu_sensor_config ipu_supported_sensors[] = {
- 	IPU_SENSOR_CONFIG("XMCC0003", 1, 321468000),
- };
- 
-+/*
-+ * DMI matches for laptops which have their sensor mounted upside-down
-+ * without reporting a rotation of 180° in neither the SSDB nor the _PLD.
-+ */
-+static const struct dmi_system_id upside_down_sensor_dmi_ids[] = {
-+	{
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "XPS 13 9350"),
-+		},
-+		.driver_data = "OVTI02C1",
-+	},
-+	{
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "XPS 16 9640"),
-+		},
-+		.driver_data = "OVTI02C1",
-+	},
-+	{} /* Terminating entry */
-+};
-+
- static const struct ipu_property_names prop_names = {
- 	.clock_frequency = "clock-frequency",
- 	.rotation = "rotation",
-@@ -249,6 +272,12 @@ static int ipu_bridge_read_acpi_buffer(struct acpi_device *adev, char *id,
- static u32 ipu_bridge_parse_rotation(struct acpi_device *adev,
- 				     struct ipu_sensor_ssdb *ssdb)
- {
-+	const struct dmi_system_id *dmi_id;
-+
-+	dmi_id = dmi_first_match(upside_down_sensor_dmi_ids);
-+	if (dmi_id && acpi_dev_hid_match(adev, dmi_id->driver_data))
-+		return 180;
-+
- 	switch (ssdb->degree) {
- 	case IPU_SENSOR_ROTATION_NORMAL:
- 		return 0;
--- 
-2.52.0
-
+Frank
+>  	struct regmap *regmap;
+>  	void __iomem *base;
+>  	int ret;
+> --
+> 2.34.1
+>
 
