@@ -1,50 +1,61 @@
-Return-Path: <stable+bounces-200441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08C86CAF44A
-	for <lists+stable@lfdr.de>; Tue, 09 Dec 2025 09:20:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA929CAF504
+	for <lists+stable@lfdr.de>; Tue, 09 Dec 2025 09:41:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D6C5E30053F7
-	for <lists+stable@lfdr.de>; Tue,  9 Dec 2025 08:20:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 87F3B302D28A
+	for <lists+stable@lfdr.de>; Tue,  9 Dec 2025 08:41:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9226719006B;
-	Tue,  9 Dec 2025 08:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA3AE29C325;
+	Tue,  9 Dec 2025 08:41:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="tsOl2uc9"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C536B202963;
-	Tue,  9 Dec 2025 08:20:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0213826A0DD;
+	Tue,  9 Dec 2025 08:41:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765268408; cv=none; b=dLqCsZIMgAcwwdA2vYHM45KfHZiniPnpN9ageYj69S2ChaP5FK6BMknhJ4uTEJIMeEFHiOIIvo/1H0/JSCIuXyQy2lcPJMDXWzTudNwfomZfY+bokXdpakjlB6dVJrE418AH4WPWDlCT5eJdXudLSIr4b/y+YRO3kwutfgz9jIU=
+	t=1765269706; cv=none; b=JHNVvLxjVbBDsyIz/MrUddwyMRGgvjQa50xCdSVqX78iJQYSCgjvwYeaCkMykZn0lE0v7WTJ1pEP9zkBtPbWvsBvdqWe03xh/yfjCHeQHUfyOsJgUl9c9L0mPgF7wDWqSHjGRCUIueYkL5r0eXf4vI3Kd1FEPTbOHRd/XhkWxJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765268408; c=relaxed/simple;
-	bh=Je31Vvn8gJ3ohzlZ2ypGKiH0qZ95j/Z4ZrUmZTsKYQY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DD08203XdlGyEEwRDy5oz20H8hOEJnVVptc4hNM1fETzFjqp9iZ/tC9bP42RAc74jfpgA1snOWleI4ix+wuTR6fncz4iRzLSxnIenkA9NXVXU15A8wRGfZEby2i0DJt264bOZ5XkaCteA2wPzTWu+p8S/z0te5yGi4aaBy2lu1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from dfae2b116770.home.arpa (unknown [124.16.138.129])
-	by APP-03 (Coremail) with SMTP id rQCowAC309qk2zdpTRcXAA--.1979S2;
-	Tue, 09 Dec 2025 16:19:48 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: ulf.hansson@linaro.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com
-Cc: linux-pm@vger.kernel.org,
-	imx@lists.linux.dev,
+	s=arc-20240116; t=1765269706; c=relaxed/simple;
+	bh=WedzksBl0cQPgpTL2cdr7phBhYXwQE6EId6jPl+bGaU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PMUe8HkzmJOHbQ8KaKLYXB7/MLryLwCkR0oFXmtYDlLZFO66spXsW4XZSXJ7i4DRee2FPRdVup2xIVAOxj6v41Zqo0jSBDIOunqwF5EEmy04ajcPNdFGTO+iQEw70oWxoDYvFo5Z2Rf2TYDldxSGIrQ6piF6rzp5eATiWSlwXEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=tsOl2uc9; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Received: from localhost.localdomain (xcpe-178-82-120-96.dyn.res.sunrise.net [178.82.120.96])
+	by mail11.truemail.it (Postfix) with ESMTPA id 8C1191FD35;
+	Tue,  9 Dec 2025 09:41:33 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1765269694;
+	bh=1VHTUXl3gc+91mo15pIRbZ3NIRKVtsGczrD/Bl81o6k=; h=From:To:Subject;
+	b=tsOl2uc9wCitwZsMNcL9p38pZW303QuaAHYLlQ8kCvOi7+sDaKM5czd9qH1GoqGeX
+	 nr0QqhB4E6lCrxxzV767GRSL6iUnGPedZOzoipX+Qt/5xzSz1fcFQP6nBHHbWJjDho
+	 iFMoPA6taDB4O9ye1dON//V7eaXDUJuzzJWiA3H3A1uMVLhUSAIWeRmkkFId5WUoHA
+	 wNrr5QZ14e4CT8wDCKOg25rqt97EyO5LT2l2TuMfsDlEYwxy7GxYRJXFaLDUz02rPp
+	 A8NGeI/xj7MRI99pF2m70kXvvMe/oPIDvGXiP/Y2KAUMek8JLvX0JFMJd4m0YAiMC7
+	 rKuZJh5lqTg5g==
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Nishanth Menon <nm@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Tero Kristo <kristo@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
 	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH v2] pmdomain: imx: Fix reference count leak in imx_gpc_probe()
-Date: Tue,  9 Dec 2025 08:19:09 +0000
-Message-Id: <20251209081909.24982-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+Subject: [PATCH v1] arm64: dts: ti: am62p-verdin: Fix SD regulator startup delay
+Date: Tue,  9 Dec 2025 09:41:25 +0100
+Message-ID: <20251209084126.33282-1-francesco@dolcini.it>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,56 +63,34 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAC309qk2zdpTRcXAA--.1979S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Xr45Zr4xtr47XF48XrWUurg_yoW8JrW7pF
-	W7GFWYkrWxGF47Kayktr18ZFy5K347A3yakr4UKayIvrn5tFyxXry5Z34jkwsIyFy8Ga15
-	tr17KryrC3W29FJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBj14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAFwI0_Gr1j6F4UJwAm72CE4IkC6x0Yz7v_Jr
-	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E
-	8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxkIecxEwVAFwVW8ZwCF04k20xvY0x0EwI
-	xGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480
-	Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7
-	IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k2
-	6cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxV
-	AFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUyE__UUUUU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwoLA2k3qEfCLAAAsa
 
-of_get_child_by_name() returns a node pointer with refcount incremented,
-we should use the __free() attribute to manage the pgc_node reference.
-This ensures automatic of_node_put() cleanup when pgc_node goes out of
-scope, eliminating the need for explicit error handling paths and
-avoiding reference count leaks.
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-Fixes: 721cabf6c660 ("soc: imx: move PGC handling to a new GPC driver")
+The power switch used to power the SD card interface might have
+more than 2ms turn-on time, increase the startup delay to 20ms to
+prevent failures.
+
+Fixes: 87f95ea316ac ("arm64: dts: ti: Add Toradex Verdin AM62P")
 Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 ---
-Change in V2:
-- Use __free() attribute instead of explicit of_node_put() calls
----
- drivers/pmdomain/imx/gpc.c | 2 +-
+ arch/arm64/boot/dts/ti/k3-am62p-verdin.dtsi | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pmdomain/imx/gpc.c b/drivers/pmdomain/imx/gpc.c
-index f18c7e6e75dd..89d5d68c055d 100644
---- a/drivers/pmdomain/imx/gpc.c
-+++ b/drivers/pmdomain/imx/gpc.c
-@@ -403,7 +403,7 @@ static int imx_gpc_old_dt_init(struct device *dev, struct regmap *regmap,
- static int imx_gpc_probe(struct platform_device *pdev)
- {
- 	const struct imx_gpc_dt_data *of_id_data = device_get_match_data(&pdev->dev);
--	struct device_node *pgc_node;
-+	struct device_node *pgc_node __free(pgc_node);
- 	struct regmap *regmap;
- 	void __iomem *base;
- 	int ret;
+diff --git a/arch/arm64/boot/dts/ti/k3-am62p-verdin.dtsi b/arch/arm64/boot/dts/ti/k3-am62p-verdin.dtsi
+index 5e050cbb9eaf..ec9dd931fe92 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62p-verdin.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62p-verdin.dtsi
+@@ -112,7 +112,7 @@ reg_sd1_vmmc: regulator-sdhci1-vmmc {
+ 		regulator-max-microvolt = <3300000>;
+ 		regulator-min-microvolt = <3300000>;
+ 		regulator-name = "+V3.3_SD";
+-		startup-delay-us = <2000>;
++		startup-delay-us = <20000>;
+ 	};
+ 
+ 	reg_sd1_vqmmc: regulator-sdhci1-vqmmc {
 -- 
-2.34.1
+2.47.3
 
 
