@@ -1,130 +1,100 @@
-Return-Path: <stable+bounces-200487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8638ACB11EA
-	for <lists+stable@lfdr.de>; Tue, 09 Dec 2025 22:12:11 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 203ADCB121A
+	for <lists+stable@lfdr.de>; Tue, 09 Dec 2025 22:14:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CBF9530E5A64
-	for <lists+stable@lfdr.de>; Tue,  9 Dec 2025 21:11:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9DC14301D1BC
+	for <lists+stable@lfdr.de>; Tue,  9 Dec 2025 21:14:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59ABF30C354;
-	Tue,  9 Dec 2025 21:04:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AAD22FDC49;
+	Tue,  9 Dec 2025 21:14:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fCc0dr+p"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YX+ngi9x"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DE2630C342;
-	Tue,  9 Dec 2025 21:04:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F5523081C0
+	for <stable@vger.kernel.org>; Tue,  9 Dec 2025 21:14:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765314275; cv=none; b=qM20+RMfUhUPp57PZ9DWuwNVFNXFMdtGqCnOiQTvUghhe9smgMwjDO9HqNNiQ8JSOT3nAIDn7u+GFzjtQ5zvv/83ZSfu2PPNwtzrNKYua94dPnW/8oNkUoXPimSsYSOuBeE21ViM1MWxhvnoi0EBeQnNnoyh8oF8giYf44dHemg=
+	t=1765314851; cv=none; b=KysPBKTWepvV2ItiAANX89Xq1BF/kwMYCthc0G1kmuDCVMWcWR5cRjZT8nXKW3gH7pkDDvatftdvQfhqxsyX7buI3R19I/yg1TJctCpqACaCplmMSzZI8WAsWImxg6TGbopicMuFPOwh89uXbLL66rSgnSmX0OigvbECMxSe0V8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765314275; c=relaxed/simple;
-	bh=a39aZRYG4GuuNjVKn0c9PuWXsD2hsaYYnAPxt3wMqHI=;
-	h=Date:Message-ID:From:To:Cc:Subject; b=f3zGN1aUGpc4nQEY530GJ0h0tHviPqcN2h+BO124mFGy7etUB0Lz5Cg9iW/l2+ZHcatVoR0CRB1cj36evNUJ9zLx+pCzxymJMaM7YuwzBGvjOmcz2j+cMxUQM6WlAH+RgD3YJCpgQlGZn8ergu/iAW9VhdgTW6t9oKWtkcV3hno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fCc0dr+p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77EC9C4CEF5;
-	Tue,  9 Dec 2025 21:04:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765314274;
-	bh=a39aZRYG4GuuNjVKn0c9PuWXsD2hsaYYnAPxt3wMqHI=;
-	h=Date:From:To:Cc:Subject:From;
-	b=fCc0dr+pvO612rC42KadLOL7coWJjNsR7Qto5AsgMYTViQMfYwoCugECEny0F1DLH
-	 SSHUzINWZ/gjvZZg+9K4qyjwbAFopJuz2ho7NPPgFfyasQta9+E4ZxRa20A8OFmWoI
-	 YAqMVba7ZW1o5eK+wfDhk4Gm6EUYc2BnodCEWXsSb6bJqSH7WmvJTAto7BFv/w0+Sv
-	 VfhY9azJ4fBnlPJpt+goyXRUdkav6AhScM2bvKgkqbuQzmm2mD5Lj017Yyh3LG2ULI
-	 VdaJwhzmDZnaeEUKOedeA7JQfZ9txZMw0SP6KleaRnyX0pgL4QYqrTltPWstvk2Mul
-	 D2xYAKfQIbYKA==
-Date: Tue, 09 Dec 2025 11:04:33 -1000
-Message-ID: <286e6f7787a81239e1ce2989b52391ce@kernel.org>
-From: Tejun Heo <tj@kernel.org>
-To: David Vernet <void@manifault.com>,
- Andrea Righi <arighi@nvidia.com>,
- Changwoo Min <changwoo@igalia.com>
-Cc: Chris Mason <clm@meta.com>,
- sched-ext@lists.linux.dev,
- linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: [PATCH sched_ext/for-6.19-fixes] sched_ext: Fix bypass depth leak on
- scx_enable() failure
+	s=arc-20240116; t=1765314851; c=relaxed/simple;
+	bh=y+nKCCGtegI3QnwAkd/hkQIIGXS2/x3mSykgUgZA43w=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=a4/5qKewvoUc/5iXtOadO+cZXLGn0LYHflsVV/zqK92rT1lacX8E7D/aJsw8RDgKJXXYzRSEapPb86STBVcs1BrMR+gmbP2nzoT5HE3phAtICVfIZ7BCeqviouhUElKIhJZqFt3cmyYPBPe1Jij2hydEoSAq/5yOsV2hVRcGs2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YX+ngi9x; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765314850; x=1796850850;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=y+nKCCGtegI3QnwAkd/hkQIIGXS2/x3mSykgUgZA43w=;
+  b=YX+ngi9xz3Q6BJhN5ZVgBm23CDL+IHB0W6HxLrKr1ckatiI+atcaAVld
+   on6xqs2AwCcljPm/NVmEomDTruX5cZavWOYCqNJVpCSm7JmYwErw8ParL
+   Fi6jwcAbwfXcLj5ANYS06USVsQIjOJG450ehx5TO+dNiJY82gDp0r9TM5
+   l38xXKNMwTxi0coCf1F3EpI6VkpsVDgRxIZ+1LVZx/Uno1RJ9zczV9pIF
+   JSoCfOgdqwa2w3FvwPqd15CG8wIVXQC2w0RR5IUKK4GPFfL+HrUDYHnKx
+   GDmNMsWGbRGgLiT15X4FUemNu/ZDTGFDdszbBUo3Q39hVFQNPlPX79vN7
+   g==;
+X-CSE-ConnectionGUID: TgjWoF0vQ7icc+4rXQhAVA==
+X-CSE-MsgGUID: zHbFab1lTQSjmRRKw77PRw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11637"; a="54825775"
+X-IronPort-AV: E=Sophos;i="6.20,262,1758610800"; 
+   d="scan'208";a="54825775"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2025 13:14:10 -0800
+X-CSE-ConnectionGUID: NMauCMy8TTuh9v2F08NlhQ==
+X-CSE-MsgGUID: i2JGLv9dRfqFghSPLx2HPg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,262,1758610800"; 
+   d="scan'208";a="201255830"
+Received: from lkp-server01.sh.intel.com (HELO d335e3c6db51) ([10.239.97.150])
+  by fmviesa004.fm.intel.com with ESMTP; 09 Dec 2025 13:14:08 -0800
+Received: from kbuild by d335e3c6db51 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vT526-000000002GL-1WYE;
+	Tue, 09 Dec 2025 21:14:06 +0000
+Date: Wed, 10 Dec 2025 05:13:38 +0800
+From: kernel test robot <lkp@intel.com>
+To: Tejun Heo <tj@kernel.org>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH sched_ext/for-6.19-fixes] sched_ext: Fix bypass depth
+ leak on scx_enable() failure
+Message-ID: <aTiRApl5-FFwVSVp@a281ed4ccb28>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <286e6f7787a81239e1ce2989b52391ce@kernel.org>
 
-scx_enable() calls scx_bypass(true) to initialize in bypass mode and then
-scx_bypass(false) on success to exit. If scx_enable() fails during task
-initialization - e.g. scx_cgroup_init() or scx_init_task() returns an error -
-it jumps to err_disable while bypass is still active. scx_disable_workfn()
-then calls scx_bypass(true/false) for its own bypass, leaving the bypass depth
-at 1 instead of 0. This causes the system to remain permanently in bypass mode
-after a failed scx_enable().
+Hi,
 
-Failures after task initialization is complete - e.g. scx_tryset_enable_state()
-at the end - already call scx_bypass(false) before reaching the error path and
-are not affected. This only affects a subset of failure modes.
+Thanks for your patch.
 
-Fix it by tracking whether scx_enable() called scx_bypass(true) in a bool and
-having scx_disable_workfn() call an extra scx_bypass(false) to clear it. This
-is a temporary measure as the bypass depth will be moved into the sched
-instance, which will make this tracking unnecessary.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Fixes: 8c2090c504e9 ("sched_ext: Initialize in bypass mode")
-Cc: stable@vger.kernel.org # v6.12+
-Reported-by: Chris Mason <clm@meta.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
----
- kernel/sched/ext.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
 
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -41,6 +41,13 @@ static bool scx_init_task_enabled;
- static bool scx_switching_all;
- DEFINE_STATIC_KEY_FALSE(__scx_switched_all);
+Rule: The upstream commit ID must be specified with a separate line above the commit text.
+Subject: [PATCH sched_ext/for-6.19-fixes] sched_ext: Fix bypass depth leak on scx_enable() failure
+Link: https://lore.kernel.org/stable/286e6f7787a81239e1ce2989b52391ce%40kernel.org
 
-+/*
-+ * Tracks whether scx_enable() called scx_bypass(true). Used to balance bypass
-+ * depth on enable failure. Will be removed when bypass depth is moved into the
-+ * sched instance.
-+ */
-+static bool scx_bypassed_for_enable;
-+
- static atomic_long_t scx_nr_rejected = ATOMIC_LONG_INIT(0);
- static atomic_long_t scx_hotplug_seq = ATOMIC_LONG_INIT(0);
+Please ignore this mail if the patch is not relevant for upstream.
 
-@@ -4318,6 +4325,11 @@ static void scx_disable_workfn(struct kt
- 	scx_dsp_max_batch = 0;
- 	free_kick_syncs();
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
-+	if (scx_bypassed_for_enable) {
-+		scx_bypassed_for_enable = false;
-+		scx_bypass(false);
-+	}
-+
- 	mutex_unlock(&scx_enable_mutex);
 
- 	WARN_ON_ONCE(scx_set_enable_state(SCX_DISABLED) != SCX_DISABLING);
-@@ -4970,6 +4982,7 @@ static int scx_enable(struct sched_ext_o
- 	 * Init in bypass mode to guarantee forward progress.
- 	 */
- 	scx_bypass(true);
-+	scx_bypassed_for_enable = true;
 
- 	for (i = SCX_OPI_NORMAL_BEGIN; i < SCX_OPI_NORMAL_END; i++)
- 		if (((void (**)(void))ops)[i])
-@@ -5067,6 +5080,7 @@ static int scx_enable(struct sched_ext_o
- 	scx_task_iter_stop(&sti);
- 	percpu_up_write(&scx_fork_rwsem);
-
-+	scx_bypassed_for_enable = false;
- 	scx_bypass(false);
-
- 	if (!scx_tryset_enable_state(SCX_ENABLED, SCX_ENABLING)) {
---
-tejun
 
