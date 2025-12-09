@@ -1,129 +1,116 @@
-Return-Path: <stable+bounces-200453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 637D0CAF8F1
-	for <lists+stable@lfdr.de>; Tue, 09 Dec 2025 11:09:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E296CAF9B8
+	for <lists+stable@lfdr.de>; Tue, 09 Dec 2025 11:19:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D511230B0275
-	for <lists+stable@lfdr.de>; Tue,  9 Dec 2025 10:05:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3ECC130C04AC
+	for <lists+stable@lfdr.de>; Tue,  9 Dec 2025 10:15:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30A97327C10;
-	Tue,  9 Dec 2025 10:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4497A2F6582;
+	Tue,  9 Dec 2025 10:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hjhqe/72"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="QOxbIGad"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6250326D63;
-	Tue,  9 Dec 2025 10:05:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 833E926AA93
+	for <stable@vger.kernel.org>; Tue,  9 Dec 2025 10:15:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765274706; cv=none; b=pDTfrR8M1P90x1ggqHzMteCw4ojlzevQ/X2p88UL940NbXxDRTsfIACZ9GIXzWxIsjllyge4drcxcK30UIBN3BkImNCd23HJYMS+mcFPZTwP15THKhnMvpb5VYLOjtkkAFk7GjtDbc5UsvaeF3JbSpqa6HS11t3stpiURj0NlYY=
+	t=1765275345; cv=none; b=UTqTYPgGqm0iY2diCMd/wderG8XcSaSO7wc7+r1OfThDvhP6xVfAZmRqn16ePAxz1m6dh5SROmKpZQOsWzD8+LotGXejVnDjctVwRuAedl+TsBf4uzvVtMlHYAf2EO6P5yJ2MgRtNofb2nh1/QLylFwMiu4JLtI4aAzl4j/buP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765274706; c=relaxed/simple;
-	bh=91hUbJvY6ZGTi0uV89SCx4Rd0OaoIOWRMu57EeKv0q4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VjD3WTjRawfxkD14KQVRV1hq7drVPpiLY54shGj1/0zNeh7RLWVY1ZVXvvE2pFEGOZFbpz195U6TvtbE5NboYSDR2fuIfcsA7U9YDV0LjP5GMq2TKPHa93vE71UEj6Xvs1bA12EQ981YmaeRtlZi8qO8qNerg65lc/VNMF4HQck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hjhqe/72; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F729C4CEF5;
-	Tue,  9 Dec 2025 10:05:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765274703;
-	bh=91hUbJvY6ZGTi0uV89SCx4Rd0OaoIOWRMu57EeKv0q4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=hjhqe/72bfI3wS6JmfVOWc9BStaBwZn/IY6D+9WNd4j5ak1ZWKz8KoLXz7+JWOJ78
-	 yx/8obdl7w7GiN0rYWndiSoC1VE1uDaedw6gAYeTkzI6NwuQ2ahqngtk3XY8cAHUXn
-	 dUKM0RQC+pb/mFWG6ENoKDxfgHTdyt+1/GNsaHBxU2Ep5Jpl9jQtCvWGoH9pKZP++F
-	 u0nWqVao0+iDsYesQxoAkpg73cbOkBmU33xleSYPPZ00Cy/4vYfJj4miBNoW9yb0Dv
-	 mr0j9hr2v1PWo9JfotXLLByhCeBWVqDxHUr/mMdiOXQHjTaxJJEfEB78IEVnDpXYER
-	 N/zORyZoGMlgw==
-From: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
-To: johannes@sipsolutions.net
-Cc: linux-kernel@vger.kernel.org,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Vincent Danjean <vdanjean@debian.org>,
-	stable@vger.kernel.org,
-	1119093@bugs.debian.org,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Nick Kossifidis <mickflemm@gmail.com>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH v2] wifi: ath5k: do not access array OOB
-Date: Tue,  9 Dec 2025 11:04:59 +0100
-Message-ID: <20251209100459.2253198-1-jirislaby@kernel.org>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1765275345; c=relaxed/simple;
+	bh=KPjrS6GxnPYzHDMYAk6YLBITqRSwjAmUJFXSpNs2EAI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Hv2DMpfm2/wriogJ3fSj2j2fuo0Rw+owjd5ugmH3xqy9Of1f1tZDzAjpfOUPSM0VY6ED0g2umJZFfR53FKNfPnASMeO/jI+BSFXK7KGpuSlqF2kCVVnndxDoSubRKrFrGUswljmr+/42+UB56sj4XeTapOif6L7JIU7nH5EQ0pE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=QOxbIGad; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 88BBE4E41B1F;
+	Tue,  9 Dec 2025 10:15:40 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 4FA71606E2;
+	Tue,  9 Dec 2025 10:15:40 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6A40D119303C5;
+	Tue,  9 Dec 2025 11:15:35 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1765275339; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=4au7Cml72l2Aobo8eDvZUTdmfZek/y9FC5ZuTwey5gQ=;
+	b=QOxbIGadVzDsKQpR0ymqhWpOYmOpGFmE3Oqr5CcYvGSSM5OdbEm8hC7IF5GBurQj/3TGBp
+	38HLxKZnVfJUm64F+csENXDWnqcFc+Cx9MElPSt9jnNiUprkiNpKasFNGGUnFhPmWgQFhH
+	hV+JAdjf/zgLN9JN0Sa0bvR+vGZtUQM9dgA0q/BagIT98GpjC8BS/p0tvEuIWmsLKQtih8
+	0SkHFkpbg5KfCyatzPNAq9wZZ3A0hRfueL4JD1g5JsB/+cUMW6TzAfAOB5poPWdXFxCTwf
+	Gtp75XIUm1WcCWyZ46jykdL0stwU0qgqMxrqvo3IQ4PD3iPm/osl1YcVCt9alw==
+Date: Tue, 9 Dec 2025 11:15:34 +0100
+From: Kory Maincent <kory.maincent@bootlin.com>
+To: Kevin Hilman <khilman@baylibre.com>
+Cc: Aaro Koskinen <aaro.koskinen@iki.fi>, Andreas Kemnade
+ <andreas@kemnade.info>, Roger Quadros <rogerq@kernel.org>, Tony Lindgren
+ <tony@atomide.com>, Lee Jones <lee@kernel.org>, Shree Ramamoorthy
+ <s-ramamoorthy@ti.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Andrew Davis
+ <afd@ti.com>, Bajjuri Praneeth <praneeth@ti.com>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>, linux-omap@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH v4 0/2] Enable 1GHz OPP am335x-bonegreen-eco
+Message-ID: <20251209111534.0f871a04@kmaincent-XPS-13-7390>
+In-Reply-To: <7hsedk73ly.fsf@baylibre.com>
+References: <20251112-fix_tps65219-v4-0-696a0f55d5d8@bootlin.com>
+	<20251127144138.400d1dcd@kmaincent-XPS-13-7390>
+	<7hsedk73ly.fsf@baylibre.com>
+Organization: bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-Vincent reports:
-> The ath5k driver seems to do an array-index-out-of-bounds access as
-> shown by the UBSAN kernel message:
-> UBSAN: array-index-out-of-bounds in drivers/net/wireless/ath/ath5k/base.c:1741:20
-> index 4 is out of range for type 'ieee80211_tx_rate [4]'
-> ...
-> Call Trace:
->  <TASK>
->  dump_stack_lvl+0x5d/0x80
->  ubsan_epilogue+0x5/0x2b
->  __ubsan_handle_out_of_bounds.cold+0x46/0x4b
->  ath5k_tasklet_tx+0x4e0/0x560 [ath5k]
->  tasklet_action_common+0xb5/0x1c0
+On Mon, 08 Dec 2025 19:09:45 -0800
+Kevin Hilman <khilman@baylibre.com> wrote:
 
-It is real. 'ts->ts_final_idx' can be 3 on 5212, so:
-   info->status.rates[ts->ts_final_idx + 1].idx = -1;
-with the array defined as:
-   struct ieee80211_tx_rate rates[IEEE80211_TX_MAX_RATES];
-while the size is:
-   #define IEEE80211_TX_MAX_RATES  4
-is indeed bogus.
+> Kory Maincent <kory.maincent@bootlin.com> writes:
+>=20
+> > On Wed, 12 Nov 2025 16:14:19 +0100
+> > "Kory Maincent (TI.com)" <kory.maincent@bootlin.com> wrote:
+> > =20
+> >> The vdd_mpu regulator maximum voltage was previously limited to 1.2985=
+V,
+> >> which prevented the CPU from reaching the 1GHz operating point. This
+> >> limitation was put in place because voltage changes were not working
+> >> correctly, causing the board to stall when attempting higher frequenci=
+es.
+> >> Increase the maximum voltage to 1.3515V to allow the full 1GHz OPP to =
+be
+> >> used.
+> >>=20
+> >> Add a TPS65219 PMIC driver fixes that properly implement the LOCK regi=
+ster
+> >> handling, to make voltage transitions work reliably. =20
+> >
+> > Hello,
+> >
+> > What is the status on this series?
+> > Is there anything that could prevent it from being merged? =20
+>=20
+> Nothing technical.  I'll start queuing things up after the merge window
+> closes and -rc1 (or maybe -rc2) is out.
 
-Set this 'idx = -1' sentinel only if the array index is less than the
-array size. As mac80211 will not look at rates beyond the size
-(IEEE80211_TX_MAX_RATES).
+Ok, thank you!
 
-Note: The effect of the OOB write is negligible. It just overwrites the
-next member of info->status, i.e. ack_signal.
-
-Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-Reported-by: Vincent Danjean <vdanjean@debian.org>
-Link: https://lore.kernel.org/all/aQYUkIaT87ccDCin@eldamar.lan
-Closes: https://bugs.debian.org/1119093
-Fixes: 6d7b97b23e11 ("ath5k: fix tx status reporting issues")
-Cc: stable@vger.kernel.org
-
----
-[v2] added Fixes + Cc: stable
-
-Cc: 1119093@bugs.debian.org
-Cc: Salvatore Bonaccorso <carnil@debian.org>
-Cc: Nick Kossifidis <mickflemm@gmail.com>,
-Cc: Luis Chamberlain <mcgrof@kernel.org>
-Cc: linux-wireless@vger.kernel.org
----
- drivers/net/wireless/ath/ath5k/base.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ath/ath5k/base.c b/drivers/net/wireless/ath/ath5k/base.c
-index 4d88b02ffa79..917e1b087924 100644
---- a/drivers/net/wireless/ath/ath5k/base.c
-+++ b/drivers/net/wireless/ath/ath5k/base.c
-@@ -1738,7 +1738,8 @@ ath5k_tx_frame_completed(struct ath5k_hw *ah, struct sk_buff *skb,
- 	}
- 
- 	info->status.rates[ts->ts_final_idx].count = ts->ts_final_retry;
--	info->status.rates[ts->ts_final_idx + 1].idx = -1;
-+	if (ts->ts_final_idx + 1 < IEEE80211_TX_MAX_RATES)
-+		info->status.rates[ts->ts_final_idx + 1].idx = -1;
- 
- 	if (unlikely(ts->ts_status)) {
- 		ah->stats.ack_fail++;
--- 
-2.52.0
-
+Regards,
+--=20
+K=C3=B6ry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
 
