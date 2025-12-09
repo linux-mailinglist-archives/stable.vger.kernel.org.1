@@ -1,311 +1,321 @@
-Return-Path: <stable+bounces-200472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0E28CB0B20
-	for <lists+stable@lfdr.de>; Tue, 09 Dec 2025 18:18:44 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C044CB0C0F
+	for <lists+stable@lfdr.de>; Tue, 09 Dec 2025 18:39:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B93AC300E3DA
-	for <lists+stable@lfdr.de>; Tue,  9 Dec 2025 17:18:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B3C61300D674
+	for <lists+stable@lfdr.de>; Tue,  9 Dec 2025 17:39:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B130D3002A6;
-	Tue,  9 Dec 2025 17:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD461224B0D;
+	Tue,  9 Dec 2025 17:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="DSB+ovJM"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TZ6lHMdv"
 X-Original-To: stable@vger.kernel.org
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010043.outbound.protection.outlook.com [52.101.61.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF69A2D46C0
-	for <stable@vger.kernel.org>; Tue,  9 Dec 2025 17:18:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765300714; cv=fail; b=VMcVRJ2X0NR5dj/1cr7qChEOg/S2r53Ru0jnUfXHlTaKV4lvwoTUVNgzrkl2bOVkSht3PE0vioB42+u1oJmesrKeQD0jzodvoWg7jODUxIr/uvVDkZWqOEXaDwRcYsZ3V0RX64qbkBXGj0sIQMYO7Q2mZw0sLSP1PX/FyPf+SYE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765300714; c=relaxed/simple;
-	bh=HWkB6I31gF+35SsgqtRozy4KHblGe835QkCj1+CDE2U=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fy1oQR0f7R/Huj+BPexHYmjH/As0eUiFwiDQr30nRO7lgdakd5mAWjLgyONP4+q/jSs5kXNrNlzKtShJenls0hgRMTy6BuH5p57IGkdtYhNrxYwcDpBaiXfDBiTOY8DjmAtQrhoCzLkRT4wJ8eBkj/uvD16ghl5YTUlzHj4kDOo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=DSB+ovJM; arc=fail smtp.client-ip=52.101.61.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Vs18QraY+bsZPwNDJazkmj9CdoY3CCR3Gdcynm0zepTwrb3BhFpXLBoRcuLOKWDJTR+LycXVFZ+V7mTtwSh4jvYOlj2/glSxa7unN1GwX4CPi7cPqU0sSF1CH7LA13C7w7jdYrYVjqbLERLraMBeFusP4OgKXEvnkDkYMN6nKFGnGaOrom7ggTXMhMzVDWOqOwuyQ2f6lh0HK5xm9FI1C8CcnfttuXdRaRObKxm6zQDUfnrL483dv9XTFQA35dLoZEMunrP3uhLFErm6VI/vBq8xtHQ1C3BImje+5u5BPR+fYXqHF5aYFOHBYgUGsdpOtyE/KILtqEhlciGEh9rH/g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Fx/mVnqImnAHTwDx3p+gETW/3rAZs7ztUvNccVLdBNw=;
- b=VZxnne59ShBoXpEJkjHprActZnlzPfBRtzgyBYcxdJ/oQzk18TGjGPY8XcDlG5KRfS6SRHWIVVAKz+ZhnxwTlfjpzJnSu2L8RB0+e3Tvja99MnsSQriS4KONLzGur6M85uCPn4bvqzcxoaNXQ/caXNoEN5e0fQlHMnzI9Xr67iqys5EQqFH7RqARq1GG2GzvxHESLUCygTuKUsI8ksFDYlINJM6WIn5+gn8SiVOxSe4dOZK8bMx0RCDRiUDv7IFEBnNcCjaiISOEJby6PKF3efLWJkyer/21ffWBv2ps56gTsCXadJ60gGWtyWQOOoDLcaGZl2O7+MuAfLW9AdJu8w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Fx/mVnqImnAHTwDx3p+gETW/3rAZs7ztUvNccVLdBNw=;
- b=DSB+ovJMTrBoYXuGNNEOVT/mXoxPL/cK5Kck+nMyko9gVAiUI9VCUoRaKzDSadirdj5SFBQc8azCE6d8OvJcdHlzfWoVEJ8LH8BisiDlAIwAVnOnmzJ7wz0p2q4TV6KZ+XKNn4I2iLsUfELFeYRTWwvbUip8WhMXpqXXl56c8qg=
-Received: from MW4PR04CA0055.namprd04.prod.outlook.com (2603:10b6:303:6a::30)
- by PH0PR12MB7814.namprd12.prod.outlook.com (2603:10b6:510:288::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.6; Tue, 9 Dec
- 2025 17:18:26 +0000
-Received: from CO1PEPF000042AA.namprd03.prod.outlook.com
- (2603:10b6:303:6a:cafe::a5) by MW4PR04CA0055.outlook.office365.com
- (2603:10b6:303:6a::30) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9388.14 via Frontend Transport; Tue,
- 9 Dec 2025 17:18:26 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- CO1PEPF000042AA.mail.protection.outlook.com (10.167.243.39) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9388.8 via Frontend Transport; Tue, 9 Dec 2025 17:18:25 +0000
-Received: from dogwood-dvt-marlim.amd.com (10.180.168.240) by
- satlexmb07.amd.com (10.181.42.216) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Tue, 9 Dec 2025 11:18:25 -0600
-From: Mario Limonciello <mario.limonciello@amd.com>
-To: <amd-gfx@lists.freedesktop.org>
-CC: Mario Limonciello <mario.limonciello@amd.com>, Jerry Zuo
-	<jerry.zuo@amd.com>, <stable@vger.kernel.org>, <nat@nullable.se>
-Subject: [PATCH] Revert "drm/amd/display: Fix pbn to kbps Conversion"
-Date: Tue, 9 Dec 2025 11:18:10 -0600
-Message-ID: <20251209171810.2514240-1-mario.limonciello@amd.com>
-X-Mailer: git-send-email 2.51.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F18CA2BE7AB
+	for <stable@vger.kernel.org>; Tue,  9 Dec 2025 17:39:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765301948; cv=none; b=cpOKLNrnTZPVboR0HPHhzD9m1ZDR/8v9AW79okGEXWnw8IC/y/nAfTDT1aIOCkC1BfoT92AwwcqjcMao6I+FqRlBEZsbqqj9f8v2jPE7nVI51BRl4EvGdOd39oE7mkjP7VZ18qxOzAAcmqJ7NxkjpujbZX3dWLxYZL0iDC6dfys=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765301948; c=relaxed/simple;
+	bh=Ye11IcuWXdM9+xpR/jtMzNKSNPpLwCGfQHPzvnziZhc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oFJtyBv2h+V9BwoV4ulez5jce+M+sTf1Ie0XHW6uJEbU2r3fKrqB2fJE7hMT6Ppir3Jj2ytVD5J1YrDP8OXZyMSbj0HTZhGQt1SxGd4X2fxvEa5aWq9tIaifIn5826BkPyb7Fn/gv1VotI+okGb87rMI2waR5LSP2Ha0nYsGZoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TZ6lHMdv; arc=none smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-7ba92341f07so490637b3a.1
+        for <stable@vger.kernel.org>; Tue, 09 Dec 2025 09:39:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765301946; x=1765906746; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=scf5q+0s3wMyzUYRgD/IWOZ3a3fw8fKvdmukhDzBXTg=;
+        b=TZ6lHMdvLTjetFzlvANWZji4zp2tLl/1ylCDjXIKI4I+yqdXNP9doxnKbnWE/OgAGQ
+         28WLKDOc/szqH0B1z0ipal36X0MDRPALuMJ620wXI0pi/Sl+/rrVUqb634+5RTe+nq7M
+         R3zLxTm1+DgSi3vajo6A1O9LGJyHtEHJenSMZLoN/ZHeiuZjUbH/VwAC8yphF9FYaxcd
+         X8er0gcOLoVAmUP2ZjFdoYLF+Bmqwh1UbovZVAxZi4GFAn+rjD3YThnJTyYQQbURP+jo
+         sUpH8zpShJ5p/Aa7h3cEIFRvCZ+kWqjFPWqVvqfQN/ZkDcvB8oOGUAj2XX8qfnVSF/+Y
+         oSFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765301946; x=1765906746;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=scf5q+0s3wMyzUYRgD/IWOZ3a3fw8fKvdmukhDzBXTg=;
+        b=r7H374y3fH1GdzBlY2hEjH9O4q3HSenwxp96JtLZ+5R0nicVx+AJnH/oYtNH/v+IUI
+         R0Qs8vy0hJLhC0P0DwT6pCh8UV34/OooyTQZ1vJjDLLJDMKXhaKyb3yeMuYyZMOWnkIW
+         iz8iThfyGJtWHqPFNeWnDsSeYbfhL3zdkCHnSoz48dKEnEiINEYj3GsKJX4dX3xDbLis
+         zb512/otLpfLw2DCnmfExiTxKVapNieAGUUiGp3PNQmL0yErQBxv2KW0rWHWRz0gk5c5
+         K0v/W4uyB/oKsJPBekywqVsMUJP7cntyV/Jzh6n+75m3R9bQOYiX2Aexi3vk+x36+Iee
+         dS6g==
+X-Forwarded-Encrypted: i=1; AJvYcCU6GX9bNH4FZ31Nr6n0N/fKwpJOi6ZxELu5ybJfWt3lqbahG9Zw1Cy/GJ11d+XUspMdMDwh/g8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxgWvQ0oU6CW4V56+BNO1bC4WHBRLo/zvYCYB4PE4n0sFBvwyu2
+	1Zs6rekmDDckrVO5Jok5tJ5NSc+IeudXztdMfbvfIrQBfPbMh4VrlUGlVlaBvyNRkZZDRNB31xV
+	web7cto0RndlPQ6EbeVupUrDmJvA74VTvrQ==
+X-Gm-Gg: ASbGnctTuHyi+7bNxZT4nP4C1X9Sp5xpsC1CM77dq+yfYlA25lF+41aY+e8JI/3cnpP
+	m0s6gKkowdOu7efTrZ6wIftcet3JWwHd7KTy7j6iTX+S2e2P9Tx6JD6qKq9/osC5ZZHg5DdKg4+
+	THHvDEheHKX/DtLtUJV+pXMQK6dICMTJeVv8Qly7c5yflwpBNLhEHGXcWCthoeAjLug19gx8m1o
+	UPOeHwNluQb8oeBaTzuSL0Lw08NycaoMOThSuW+rZ14/qnl0NN0Iwo6+azfPzb/PMCUCm8=
+X-Google-Smtp-Source: AGHT+IEIfMnZrDOZIAZizXLjusBYlysHvqTBGVTJ6O/RM4zJA3/NW94DtI1gvOTIrZxr7Y7e2YvUsJESl4t5jkmQCcQ=
+X-Received: by 2002:a05:7022:323:b0:11b:65e:f33 with SMTP id
+ a92af1059eb24-11e03168cb3mr4783691c88.1.1765301945900; Tue, 09 Dec 2025
+ 09:39:05 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000042AA:EE_|PH0PR12MB7814:EE_
-X-MS-Office365-Filtering-Correlation-Id: aacb39b9-e5ff-481d-0566-08de3746f69e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|376014|82310400026|1800799024|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?maytGvJ+7AkuHcAJWDy5KkwkZ8weiL8RKAsKe5KG7F/r301F/KgLPSAXYTGO?=
- =?us-ascii?Q?5WfX43OiCgRGawsfSBIZIJ0AyNhAcYlv7ce/VCYO883jle+IXizI/P7+Xxsa?=
- =?us-ascii?Q?MDfQ7oc07zUVPcY6aQe3GSA8DPzNQdHeuqeulFLrKbluaWHMcTch0Q8V/gtH?=
- =?us-ascii?Q?9E+dwToeGQKSfcL37q/Lm8pQvOgu0g8U8b39PjLrSJwvCxN/pW/XUikCgoiY?=
- =?us-ascii?Q?z2L9kC6/MV3o0YgdUMoF4YoU145KyxFCSBR/S6e+DP+vgD0vdB2kBuKIWGg7?=
- =?us-ascii?Q?KWQfs8QtQ1CXgdHlOb007edZfgVo0VqDV555DgYe8xPxUhsmgKNbYJwChuuz?=
- =?us-ascii?Q?Ns/+FRGVfxHrSnSxvd5mDa+JeDXL3clY1MB0edyxo7VoL50JGtuJPWNh3Wog?=
- =?us-ascii?Q?xfVxEMgs/gZZHZMRIiLFB5x/siyrnTB7nP5boajVDfKWrlyKySA1VFaVq2Sq?=
- =?us-ascii?Q?PChgKAZH4VWDF8OvrCG+pIUox4IhPTBdJhTu9X6kRTWAfsYEIwQZGpg6xhMm?=
- =?us-ascii?Q?IgOjSi2vPug5SbghZzQVVjouBWB52NBLjZPKIVIV3QqETlZGBefmcUypjpT5?=
- =?us-ascii?Q?uuBSiw8D7o5MBtO4qPjGNX08wl7IJDXsVY/XFSRuT4osht+pHh3URxv69cta?=
- =?us-ascii?Q?X9NLZVcISzjG2ESyT6gp2FogXZDWbnRVkIOqloBUKP6WCDsV1XybcUw8yJdx?=
- =?us-ascii?Q?astf8hCp6JkQuknWHv2ecOlUION54fFCaT5moqqe08SJGU6QbHzRGm2zeeuO?=
- =?us-ascii?Q?ivQIKnNca4HI8xa+pVpfN1wH6F/2rbklLhA9fP4zPstNTbuDFtqDRypVsiqu?=
- =?us-ascii?Q?Dr/Xo1/tjnYb8RWrU38HKfuBV9RQV4qB/sAXUm9X69OpggJtWl6LvcQCHqvr?=
- =?us-ascii?Q?54+Z1WSD1pq94/UinpcRltZet13KNiJcI2rO8vfN7amYSCjnWfXyxw2DXC67?=
- =?us-ascii?Q?XHmZe7cifSCIFTkiZSTsWaN5k0aKL750tEG4yK+qCXermfzIP+mC78/2DXIY?=
- =?us-ascii?Q?LrhPRghsK+Sl8Qv4oxEQmLYN3qhKbAauMj/xr1CHV95yDdONtWe8mnSS0vPW?=
- =?us-ascii?Q?9xP6AQMl+nSB4rTpNPQ9SIxnK0Pq98+/PiRhbO9B3iJ7ydIDpd24H20uVGsu?=
- =?us-ascii?Q?KI6JYBTzqKbw33KY1bqn1TKaRlr00bV9Rloj5pOJ8I4Ph8z9NMVWn3sU2gl/?=
- =?us-ascii?Q?3baIHwWwnkoufjnIe6rHXta0Qxnago45eGJgoNm2JUfxIyAhiwGbpFZQafaC?=
- =?us-ascii?Q?tpoMu3cI33Sg8cKu4g7u8voRsvioppWB8aEtKDC8JJKBklv/l03iT+qcHaPn?=
- =?us-ascii?Q?w/OmKqHuGFo3fAIFfAlQ7Psqw+VO9weN4f8HdODg1QQZa5YcForF4tr248ZH?=
- =?us-ascii?Q?3uLQw6mDT5xHcPK8CAGq2Izhzamr15zvL3TD0xTEv624rf3oL9n68uiDdP2N?=
- =?us-ascii?Q?4g+YuGPVA43ZjhHOdtFebz7MPyFXBgR3cb8phKcATFkmBRs2rgsmPuZDJQqG?=
- =?us-ascii?Q?E8mElyTdSW4MtN0oimiDzDHiY53kztTQ4bkmy/ucydsYGP/p2ZQX3VhZvGE4?=
- =?us-ascii?Q?vb6xXELUZy0RGt7o/1E=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(376014)(82310400026)(1800799024)(13003099007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Dec 2025 17:18:25.6648
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: aacb39b9-e5ff-481d-0566-08de3746f69e
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF000042AA.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7814
+References: <20251209171810.2514240-1-mario.limonciello@amd.com>
+In-Reply-To: <20251209171810.2514240-1-mario.limonciello@amd.com>
+From: Alex Deucher <alexdeucher@gmail.com>
+Date: Tue, 9 Dec 2025 12:38:54 -0500
+X-Gm-Features: AQt7F2pipxZirUMos8ZVYZFNY1h1cynbTdEfFCmkqLomC9hSeF8U4RhYwDuXNHo
+Message-ID: <CADnq5_NPH4NEnTKJLhA9jU8YLo=JdOsqNjCG4YZvut4j6BpFsw@mail.gmail.com>
+Subject: Re: [PATCH] Revert "drm/amd/display: Fix pbn to kbps Conversion"
+To: Mario Limonciello <mario.limonciello@amd.com>
+Cc: amd-gfx@lists.freedesktop.org, Jerry Zuo <jerry.zuo@amd.com>, 
+	stable@vger.kernel.org, nat@nullable.se
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Deeply daisy chained DP/MST displays are no longer able to light
-up. This reverts commit 1788ef30725da53face7e311cdf62ad65fababcd.
+On Tue, Dec 9, 2025 at 12:34=E2=80=AFPM Mario Limonciello
+<mario.limonciello@amd.com> wrote:
+>
+> Deeply daisy chained DP/MST displays are no longer able to light
+> up. This reverts commit 1788ef30725da53face7e311cdf62ad65fababcd.
+>
+> Cc: Jerry Zuo <jerry.zuo@amd.com>
+> Cc: stable@vger.kernel.org # 6.17+
+> Reported-by: nat@nullable.se
+> Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4756
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 
-Cc: Jerry Zuo <jerry.zuo@amd.com>
-Cc: stable@vger.kernel.org # 6.17+
-Reported-by: nat@nullable.se
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4756
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
----
- .../display/amdgpu_dm/amdgpu_dm_mst_types.c   | 59 +++++++++++--------
- 1 file changed, 36 insertions(+), 23 deletions(-)
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-index dbd1da4d85d3..5e92eaa67aa3 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-@@ -884,28 +884,26 @@ struct dsc_mst_fairness_params {
- };
- 
- #if defined(CONFIG_DRM_AMD_DC_FP)
--static uint64_t kbps_to_pbn(int kbps, bool is_peak_pbn)
-+static uint16_t get_fec_overhead_multiplier(struct dc_link *dc_link)
- {
--	uint64_t effective_kbps = (uint64_t)kbps;
-+	u8 link_coding_cap;
-+	uint16_t fec_overhead_multiplier_x1000 = PBN_FEC_OVERHEAD_MULTIPLIER_8B_10B;
- 
--	if (is_peak_pbn) {	// add 0.6% (1006/1000) overhead into effective kbps
--		effective_kbps *= 1006;
--		effective_kbps = div_u64(effective_kbps, 1000);
--	}
-+	link_coding_cap = dc_link_dp_mst_decide_link_encoding_format(dc_link);
-+	if (link_coding_cap == DP_128b_132b_ENCODING)
-+		fec_overhead_multiplier_x1000 = PBN_FEC_OVERHEAD_MULTIPLIER_128B_132B;
- 
--	return (uint64_t) DIV64_U64_ROUND_UP(effective_kbps * 64, (54 * 8 * 1000));
-+	return fec_overhead_multiplier_x1000;
- }
- 
--static uint32_t pbn_to_kbps(unsigned int pbn, bool with_margin)
-+static int kbps_to_peak_pbn(int kbps, uint16_t fec_overhead_multiplier_x1000)
- {
--	uint64_t pbn_effective = (uint64_t)pbn;
--
--	if (with_margin)	// deduct 0.6% (994/1000) overhead from effective pbn
--		pbn_effective *= (1000000 / PEAK_FACTOR_X1000);
--	else
--		pbn_effective *= 1000;
-+	u64 peak_kbps = kbps;
- 
--	return DIV_U64_ROUND_UP(pbn_effective * 8 * 54, 64);
-+	peak_kbps *= 1006;
-+	peak_kbps *= fec_overhead_multiplier_x1000;
-+	peak_kbps = div_u64(peak_kbps, 1000 * 1000);
-+	return (int) DIV64_U64_ROUND_UP(peak_kbps * 64, (54 * 8 * 1000));
- }
- 
- static void set_dsc_configs_from_fairness_vars(struct dsc_mst_fairness_params *params,
-@@ -976,7 +974,7 @@ static int bpp_x16_from_pbn(struct dsc_mst_fairness_params param, int pbn)
- 	dc_dsc_get_default_config_option(param.sink->ctx->dc, &dsc_options);
- 	dsc_options.max_target_bpp_limit_override_x16 = drm_connector->display_info.max_dsc_bpp * 16;
- 
--	kbps = pbn_to_kbps(pbn, false);
-+	kbps = div_u64((u64)pbn * 994 * 8 * 54, 64);
- 	dc_dsc_compute_config(
- 			param.sink->ctx->dc->res_pool->dscs[0],
- 			&param.sink->dsc_caps.dsc_dec_caps,
-@@ -1005,11 +1003,12 @@ static int increase_dsc_bpp(struct drm_atomic_state *state,
- 	int link_timeslots_used;
- 	int fair_pbn_alloc;
- 	int ret = 0;
-+	uint16_t fec_overhead_multiplier_x1000 = get_fec_overhead_multiplier(dc_link);
- 
- 	for (i = 0; i < count; i++) {
- 		if (vars[i + k].dsc_enabled) {
- 			initial_slack[i] =
--			kbps_to_pbn(params[i].bw_range.max_kbps, false) - vars[i + k].pbn;
-+			kbps_to_peak_pbn(params[i].bw_range.max_kbps, fec_overhead_multiplier_x1000) - vars[i + k].pbn;
- 			bpp_increased[i] = false;
- 			remaining_to_increase += 1;
- 		} else {
-@@ -1105,6 +1104,7 @@ static int try_disable_dsc(struct drm_atomic_state *state,
- 	int next_index;
- 	int remaining_to_try = 0;
- 	int ret;
-+	uint16_t fec_overhead_multiplier_x1000 = get_fec_overhead_multiplier(dc_link);
- 	int var_pbn;
- 
- 	for (i = 0; i < count; i++) {
-@@ -1137,7 +1137,7 @@ static int try_disable_dsc(struct drm_atomic_state *state,
- 
- 		DRM_DEBUG_DRIVER("MST_DSC index #%d, try no compression\n", next_index);
- 		var_pbn = vars[next_index].pbn;
--		vars[next_index].pbn = kbps_to_pbn(params[next_index].bw_range.stream_kbps, true);
-+		vars[next_index].pbn = kbps_to_peak_pbn(params[next_index].bw_range.stream_kbps, fec_overhead_multiplier_x1000);
- 		ret = drm_dp_atomic_find_time_slots(state,
- 						    params[next_index].port->mgr,
- 						    params[next_index].port,
-@@ -1197,6 +1197,7 @@ static int compute_mst_dsc_configs_for_link(struct drm_atomic_state *state,
- 	int count = 0;
- 	int i, k, ret;
- 	bool debugfs_overwrite = false;
-+	uint16_t fec_overhead_multiplier_x1000 = get_fec_overhead_multiplier(dc_link);
- 	struct drm_connector_state *new_conn_state;
- 
- 	memset(params, 0, sizeof(params));
-@@ -1277,7 +1278,7 @@ static int compute_mst_dsc_configs_for_link(struct drm_atomic_state *state,
- 	DRM_DEBUG_DRIVER("MST_DSC Try no compression\n");
- 	for (i = 0; i < count; i++) {
- 		vars[i + k].aconnector = params[i].aconnector;
--		vars[i + k].pbn = kbps_to_pbn(params[i].bw_range.stream_kbps, false);
-+		vars[i + k].pbn = kbps_to_peak_pbn(params[i].bw_range.stream_kbps, fec_overhead_multiplier_x1000);
- 		vars[i + k].dsc_enabled = false;
- 		vars[i + k].bpp_x16 = 0;
- 		ret = drm_dp_atomic_find_time_slots(state, params[i].port->mgr, params[i].port,
-@@ -1299,7 +1300,7 @@ static int compute_mst_dsc_configs_for_link(struct drm_atomic_state *state,
- 	DRM_DEBUG_DRIVER("MST_DSC Try max compression\n");
- 	for (i = 0; i < count; i++) {
- 		if (params[i].compression_possible && params[i].clock_force_enable != DSC_CLK_FORCE_DISABLE) {
--			vars[i + k].pbn = kbps_to_pbn(params[i].bw_range.min_kbps, false);
-+			vars[i + k].pbn = kbps_to_peak_pbn(params[i].bw_range.min_kbps, fec_overhead_multiplier_x1000);
- 			vars[i + k].dsc_enabled = true;
- 			vars[i + k].bpp_x16 = params[i].bw_range.min_target_bpp_x16;
- 			ret = drm_dp_atomic_find_time_slots(state, params[i].port->mgr,
-@@ -1307,7 +1308,7 @@ static int compute_mst_dsc_configs_for_link(struct drm_atomic_state *state,
- 			if (ret < 0)
- 				return ret;
- 		} else {
--			vars[i + k].pbn = kbps_to_pbn(params[i].bw_range.stream_kbps, false);
-+			vars[i + k].pbn = kbps_to_peak_pbn(params[i].bw_range.stream_kbps, fec_overhead_multiplier_x1000);
- 			vars[i + k].dsc_enabled = false;
- 			vars[i + k].bpp_x16 = 0;
- 			ret = drm_dp_atomic_find_time_slots(state, params[i].port->mgr,
-@@ -1762,6 +1763,18 @@ int pre_validate_dsc(struct drm_atomic_state *state,
- 	return ret;
- }
- 
-+static uint32_t kbps_from_pbn(unsigned int pbn)
-+{
-+	uint64_t kbps = (uint64_t)pbn;
-+
-+	kbps *= (1000000 / PEAK_FACTOR_X1000);
-+	kbps *= 8;
-+	kbps *= 54;
-+	kbps /= 64;
-+
-+	return (uint32_t)kbps;
-+}
-+
- static bool is_dsc_common_config_possible(struct dc_stream_state *stream,
- 					  struct dc_dsc_bw_range *bw_range)
- {
-@@ -1860,7 +1873,7 @@ enum dc_status dm_dp_mst_is_port_support_mode(
- 			dc_link_get_highest_encoding_format(stream->link));
- 	cur_link_settings = stream->link->verified_link_cap;
- 	root_link_bw_in_kbps = dc_link_bandwidth_kbps(aconnector->dc_link, &cur_link_settings);
--	virtual_channel_bw_in_kbps = pbn_to_kbps(aconnector->mst_output_port->full_pbn, true);
-+	virtual_channel_bw_in_kbps = kbps_from_pbn(aconnector->mst_output_port->full_pbn);
- 
- 	/* pick the end to end bw bottleneck */
- 	end_to_end_bw_in_kbps = min(root_link_bw_in_kbps, virtual_channel_bw_in_kbps);
-@@ -1913,7 +1926,7 @@ enum dc_status dm_dp_mst_is_port_support_mode(
- 				immediate_upstream_port = aconnector->mst_output_port->parent->port_parent;
- 
- 			if (immediate_upstream_port) {
--				virtual_channel_bw_in_kbps = pbn_to_kbps(immediate_upstream_port->full_pbn, true);
-+				virtual_channel_bw_in_kbps = kbps_from_pbn(immediate_upstream_port->full_pbn);
- 				virtual_channel_bw_in_kbps = min(root_link_bw_in_kbps, virtual_channel_bw_in_kbps);
- 			} else {
- 				/* For topology LCT 1 case - only one mstb*/
--- 
-2.51.2
-
+> ---
+>  .../display/amdgpu_dm/amdgpu_dm_mst_types.c   | 59 +++++++++++--------
+>  1 file changed, 36 insertions(+), 23 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c =
+b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+> index dbd1da4d85d3..5e92eaa67aa3 100644
+> --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+> +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+> @@ -884,28 +884,26 @@ struct dsc_mst_fairness_params {
+>  };
+>
+>  #if defined(CONFIG_DRM_AMD_DC_FP)
+> -static uint64_t kbps_to_pbn(int kbps, bool is_peak_pbn)
+> +static uint16_t get_fec_overhead_multiplier(struct dc_link *dc_link)
+>  {
+> -       uint64_t effective_kbps =3D (uint64_t)kbps;
+> +       u8 link_coding_cap;
+> +       uint16_t fec_overhead_multiplier_x1000 =3D PBN_FEC_OVERHEAD_MULTI=
+PLIER_8B_10B;
+>
+> -       if (is_peak_pbn) {      // add 0.6% (1006/1000) overhead into eff=
+ective kbps
+> -               effective_kbps *=3D 1006;
+> -               effective_kbps =3D div_u64(effective_kbps, 1000);
+> -       }
+> +       link_coding_cap =3D dc_link_dp_mst_decide_link_encoding_format(dc=
+_link);
+> +       if (link_coding_cap =3D=3D DP_128b_132b_ENCODING)
+> +               fec_overhead_multiplier_x1000 =3D PBN_FEC_OVERHEAD_MULTIP=
+LIER_128B_132B;
+>
+> -       return (uint64_t) DIV64_U64_ROUND_UP(effective_kbps * 64, (54 * 8=
+ * 1000));
+> +       return fec_overhead_multiplier_x1000;
+>  }
+>
+> -static uint32_t pbn_to_kbps(unsigned int pbn, bool with_margin)
+> +static int kbps_to_peak_pbn(int kbps, uint16_t fec_overhead_multiplier_x=
+1000)
+>  {
+> -       uint64_t pbn_effective =3D (uint64_t)pbn;
+> -
+> -       if (with_margin)        // deduct 0.6% (994/1000) overhead from e=
+ffective pbn
+> -               pbn_effective *=3D (1000000 / PEAK_FACTOR_X1000);
+> -       else
+> -               pbn_effective *=3D 1000;
+> +       u64 peak_kbps =3D kbps;
+>
+> -       return DIV_U64_ROUND_UP(pbn_effective * 8 * 54, 64);
+> +       peak_kbps *=3D 1006;
+> +       peak_kbps *=3D fec_overhead_multiplier_x1000;
+> +       peak_kbps =3D div_u64(peak_kbps, 1000 * 1000);
+> +       return (int) DIV64_U64_ROUND_UP(peak_kbps * 64, (54 * 8 * 1000));
+>  }
+>
+>  static void set_dsc_configs_from_fairness_vars(struct dsc_mst_fairness_p=
+arams *params,
+> @@ -976,7 +974,7 @@ static int bpp_x16_from_pbn(struct dsc_mst_fairness_p=
+arams param, int pbn)
+>         dc_dsc_get_default_config_option(param.sink->ctx->dc, &dsc_option=
+s);
+>         dsc_options.max_target_bpp_limit_override_x16 =3D drm_connector->=
+display_info.max_dsc_bpp * 16;
+>
+> -       kbps =3D pbn_to_kbps(pbn, false);
+> +       kbps =3D div_u64((u64)pbn * 994 * 8 * 54, 64);
+>         dc_dsc_compute_config(
+>                         param.sink->ctx->dc->res_pool->dscs[0],
+>                         &param.sink->dsc_caps.dsc_dec_caps,
+> @@ -1005,11 +1003,12 @@ static int increase_dsc_bpp(struct drm_atomic_sta=
+te *state,
+>         int link_timeslots_used;
+>         int fair_pbn_alloc;
+>         int ret =3D 0;
+> +       uint16_t fec_overhead_multiplier_x1000 =3D get_fec_overhead_multi=
+plier(dc_link);
+>
+>         for (i =3D 0; i < count; i++) {
+>                 if (vars[i + k].dsc_enabled) {
+>                         initial_slack[i] =3D
+> -                       kbps_to_pbn(params[i].bw_range.max_kbps, false) -=
+ vars[i + k].pbn;
+> +                       kbps_to_peak_pbn(params[i].bw_range.max_kbps, fec=
+_overhead_multiplier_x1000) - vars[i + k].pbn;
+>                         bpp_increased[i] =3D false;
+>                         remaining_to_increase +=3D 1;
+>                 } else {
+> @@ -1105,6 +1104,7 @@ static int try_disable_dsc(struct drm_atomic_state =
+*state,
+>         int next_index;
+>         int remaining_to_try =3D 0;
+>         int ret;
+> +       uint16_t fec_overhead_multiplier_x1000 =3D get_fec_overhead_multi=
+plier(dc_link);
+>         int var_pbn;
+>
+>         for (i =3D 0; i < count; i++) {
+> @@ -1137,7 +1137,7 @@ static int try_disable_dsc(struct drm_atomic_state =
+*state,
+>
+>                 DRM_DEBUG_DRIVER("MST_DSC index #%d, try no compression\n=
+", next_index);
+>                 var_pbn =3D vars[next_index].pbn;
+> -               vars[next_index].pbn =3D kbps_to_pbn(params[next_index].b=
+w_range.stream_kbps, true);
+> +               vars[next_index].pbn =3D kbps_to_peak_pbn(params[next_ind=
+ex].bw_range.stream_kbps, fec_overhead_multiplier_x1000);
+>                 ret =3D drm_dp_atomic_find_time_slots(state,
+>                                                     params[next_index].po=
+rt->mgr,
+>                                                     params[next_index].po=
+rt,
+> @@ -1197,6 +1197,7 @@ static int compute_mst_dsc_configs_for_link(struct =
+drm_atomic_state *state,
+>         int count =3D 0;
+>         int i, k, ret;
+>         bool debugfs_overwrite =3D false;
+> +       uint16_t fec_overhead_multiplier_x1000 =3D get_fec_overhead_multi=
+plier(dc_link);
+>         struct drm_connector_state *new_conn_state;
+>
+>         memset(params, 0, sizeof(params));
+> @@ -1277,7 +1278,7 @@ static int compute_mst_dsc_configs_for_link(struct =
+drm_atomic_state *state,
+>         DRM_DEBUG_DRIVER("MST_DSC Try no compression\n");
+>         for (i =3D 0; i < count; i++) {
+>                 vars[i + k].aconnector =3D params[i].aconnector;
+> -               vars[i + k].pbn =3D kbps_to_pbn(params[i].bw_range.stream=
+_kbps, false);
+> +               vars[i + k].pbn =3D kbps_to_peak_pbn(params[i].bw_range.s=
+tream_kbps, fec_overhead_multiplier_x1000);
+>                 vars[i + k].dsc_enabled =3D false;
+>                 vars[i + k].bpp_x16 =3D 0;
+>                 ret =3D drm_dp_atomic_find_time_slots(state, params[i].po=
+rt->mgr, params[i].port,
+> @@ -1299,7 +1300,7 @@ static int compute_mst_dsc_configs_for_link(struct =
+drm_atomic_state *state,
+>         DRM_DEBUG_DRIVER("MST_DSC Try max compression\n");
+>         for (i =3D 0; i < count; i++) {
+>                 if (params[i].compression_possible && params[i].clock_for=
+ce_enable !=3D DSC_CLK_FORCE_DISABLE) {
+> -                       vars[i + k].pbn =3D kbps_to_pbn(params[i].bw_rang=
+e.min_kbps, false);
+> +                       vars[i + k].pbn =3D kbps_to_peak_pbn(params[i].bw=
+_range.min_kbps, fec_overhead_multiplier_x1000);
+>                         vars[i + k].dsc_enabled =3D true;
+>                         vars[i + k].bpp_x16 =3D params[i].bw_range.min_ta=
+rget_bpp_x16;
+>                         ret =3D drm_dp_atomic_find_time_slots(state, para=
+ms[i].port->mgr,
+> @@ -1307,7 +1308,7 @@ static int compute_mst_dsc_configs_for_link(struct =
+drm_atomic_state *state,
+>                         if (ret < 0)
+>                                 return ret;
+>                 } else {
+> -                       vars[i + k].pbn =3D kbps_to_pbn(params[i].bw_rang=
+e.stream_kbps, false);
+> +                       vars[i + k].pbn =3D kbps_to_peak_pbn(params[i].bw=
+_range.stream_kbps, fec_overhead_multiplier_x1000);
+>                         vars[i + k].dsc_enabled =3D false;
+>                         vars[i + k].bpp_x16 =3D 0;
+>                         ret =3D drm_dp_atomic_find_time_slots(state, para=
+ms[i].port->mgr,
+> @@ -1762,6 +1763,18 @@ int pre_validate_dsc(struct drm_atomic_state *stat=
+e,
+>         return ret;
+>  }
+>
+> +static uint32_t kbps_from_pbn(unsigned int pbn)
+> +{
+> +       uint64_t kbps =3D (uint64_t)pbn;
+> +
+> +       kbps *=3D (1000000 / PEAK_FACTOR_X1000);
+> +       kbps *=3D 8;
+> +       kbps *=3D 54;
+> +       kbps /=3D 64;
+> +
+> +       return (uint32_t)kbps;
+> +}
+> +
+>  static bool is_dsc_common_config_possible(struct dc_stream_state *stream=
+,
+>                                           struct dc_dsc_bw_range *bw_rang=
+e)
+>  {
+> @@ -1860,7 +1873,7 @@ enum dc_status dm_dp_mst_is_port_support_mode(
+>                         dc_link_get_highest_encoding_format(stream->link)=
+);
+>         cur_link_settings =3D stream->link->verified_link_cap;
+>         root_link_bw_in_kbps =3D dc_link_bandwidth_kbps(aconnector->dc_li=
+nk, &cur_link_settings);
+> -       virtual_channel_bw_in_kbps =3D pbn_to_kbps(aconnector->mst_output=
+_port->full_pbn, true);
+> +       virtual_channel_bw_in_kbps =3D kbps_from_pbn(aconnector->mst_outp=
+ut_port->full_pbn);
+>
+>         /* pick the end to end bw bottleneck */
+>         end_to_end_bw_in_kbps =3D min(root_link_bw_in_kbps, virtual_chann=
+el_bw_in_kbps);
+> @@ -1913,7 +1926,7 @@ enum dc_status dm_dp_mst_is_port_support_mode(
+>                                 immediate_upstream_port =3D aconnector->m=
+st_output_port->parent->port_parent;
+>
+>                         if (immediate_upstream_port) {
+> -                               virtual_channel_bw_in_kbps =3D pbn_to_kbp=
+s(immediate_upstream_port->full_pbn, true);
+> +                               virtual_channel_bw_in_kbps =3D kbps_from_=
+pbn(immediate_upstream_port->full_pbn);
+>                                 virtual_channel_bw_in_kbps =3D min(root_l=
+ink_bw_in_kbps, virtual_channel_bw_in_kbps);
+>                         } else {
+>                                 /* For topology LCT 1 case - only one mst=
+b*/
+> --
+> 2.51.2
+>
 
