@@ -1,118 +1,248 @@
-Return-Path: <stable+bounces-200435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E10A6CAECB1
-	for <lists+stable@lfdr.de>; Tue, 09 Dec 2025 04:22:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C184CAEDCE
+	for <lists+stable@lfdr.de>; Tue, 09 Dec 2025 05:26:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A54F43081D49
-	for <lists+stable@lfdr.de>; Tue,  9 Dec 2025 03:21:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C47DC300F89F
+	for <lists+stable@lfdr.de>; Tue,  9 Dec 2025 04:26:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 116EA301486;
-	Tue,  9 Dec 2025 03:21:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 824442DF132;
+	Tue,  9 Dec 2025 04:26:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="dXuPcGjz"
+	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="FE2a4X8b"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FC9D30146C;
-	Tue,  9 Dec 2025 03:21:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5438029D289
+	for <stable@vger.kernel.org>; Tue,  9 Dec 2025 04:26:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765250487; cv=none; b=eEzod+8dcBdU5pNeYwnas9yzoMQtIgdDEEgKVmf85Bz5b5njquEwzuedgYnQiIbejR1dIqFS0Yyck6jaY8bQpo6F3l0XV37E0dfUs5mWot7i01PIxdIEowuerbbpUHvZY8VX249+eGKio7DomVJddyH+LCVA/ZEh1UQO8yXpDt0=
+	t=1765254389; cv=none; b=SUkZDm4ArOkfy1z3lP/wSuu9GVUd9sgfRcFLNuFAvYGZBCpAoq7jFBFfheT1Jf7y1KW/NXgXY4kBNTl6yDdMNxw3T6ZsgvFm5uN73+Zz6Hh8lNGhhM3uTl5Ra8r5CcWOndiu4/fBhIv6zHUxQnyrLABdtKpAVhXB2ufqsnZPkg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765250487; c=relaxed/simple;
-	bh=1uKzdL+7291xLk02/UwsVPxNOoBC6RW0QT8AUviuRKg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i0OVUrZ17ALekJTPib0sEBE5YML/XnFr6YNpBEUwlo1H90haM7ea0tngnjyL4qTFCwnITKRg3eTz9ixxmS5axi81ju7PZAWVY+SvpIIOO91kvfhMn+eOGV1aGSYxV5TB6pXwcKhU3zEFlvzxe3jtxDenpn4ohhhK2w/K77Za+GU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=dXuPcGjz; arc=none smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5B91vJ1f3883315;
-	Tue, 9 Dec 2025 03:21:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=Fh9Yf5aMPzzQWV6DqYkZ3Z4x0vfjCRcp4nB+XAvfXDo=; b=
-	dXuPcGjz96Er2c3ug65LTbKoklC+SydYMQGye0MsPcHLlmnfC5L1ISCOw/baacpe
-	KavrNWsUkTQOJ/cd2G/7o7g8+C96eFKqHhf4o/m+GReXD0k/naGPfrCkwDaKqjDW
-	3bwqKDlmWkPzVCmHvxl0kN3QRckJxvHzgauoB8O53SCx016NfLulHOKFRbridUEE
-	+qd1+NV2fyvtPHt1Dp1pFCMxQCCu+W5cbPM5IMR44hwi4MudrcZ9k5z0AXtUATP5
-	k66K5rhuBw+0ptE/bxxTDuHNiUTtdjrPhJcK9eH3k3MPikZT+uSZXKaGErkWgC42
-	Piy9BVYmlFny6sU/6QNx0w==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4axaj6g1yw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 09 Dec 2025 03:21:23 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5B91WAu5038445;
-	Tue, 9 Dec 2025 03:21:22 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4avax8j02c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 09 Dec 2025 03:21:22 +0000
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5B93I4Fc022652;
-	Tue, 9 Dec 2025 03:21:22 GMT
-Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4avax8hyys-8;
-	Tue, 09 Dec 2025 03:21:22 +0000
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-To: linux-scsi@vger.kernel.org, stable@vger.kernel.org,
-        Suganath Prabu S <suganath-prabu.subramani@broadcom.com>
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
-        sathya.prakash@broadcom.com, ranjan.kumar@broadcom.com,
-        chandrakanth.patil@broadcom.com
-Subject: Re: [PATCH] mpi3mr: Prevent duplicate SAS/SATA device entries in channel 1
-Date: Mon,  8 Dec 2025 22:21:07 -0500
-Message-ID: <176524933124.418581.4165861558099763589.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251120071955.463475-1-suganath-prabu.subramani@broadcom.com>
-References: <20251120071955.463475-1-suganath-prabu.subramani@broadcom.com>
+	s=arc-20240116; t=1765254389; c=relaxed/simple;
+	bh=+jXp364WAzM9xwWFBvHkY3DKUklTKUVYtX/u2Wc/OxM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QLSc5ii/3SbxX11Ol8bGQc1WX86HtiZTjZZFwASEBNc9Qz57Dz4zh+cxiqDCh0qXXwqt7kAnO4c0q02F6ja1RpZNIC7PWKSKxzdHnRISkR2tCVClHLD+8nB3yW3jSAoEQwEifQEja/+X8AzVOafoBujkLZMLY/Y9g5M8IyfVYc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=FE2a4X8b; arc=none smtp.client-ip=209.85.208.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-37b999d0c81so39075581fa.2
+        for <stable@vger.kernel.org>; Mon, 08 Dec 2025 20:26:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sifive.com; s=google; t=1765254385; x=1765859185; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QTHKBpK1r9/QXVkfGq5Zpqp+C9e4nuUAoI+dJvTTj8c=;
+        b=FE2a4X8bpf3ZujUCxafspWlWGP6IBX9KUZmYzROHQTw/WapmCiSMOutlGnPv/5/Zmd
+         nB8A75BuwUIWlPzz/4HMUb+cGjF8G3NtFPZ97o8Ujtc5UXzJ8ltyjoZ26H6xWdcImJpH
+         txYJ0y//StgYMoxLoBLrlDTPK+WQeFYBUZyJ0YLRes/ePZCt25LpCJ0FAg2ZsKP8IZI6
+         8ZJLN5ed+8tqEOU3hJp1OMXMeuHitnvi052tVT/4dtRgrRU9yLQMnHTB6c9KvZQZ3aAw
+         YHBpEW2ktaiYRiG694DVE0Yu4Se+gSiCj0GgHM239WHrrqToc3sVAS+jzZV6Q3etWXeo
+         atig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765254385; x=1765859185;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=QTHKBpK1r9/QXVkfGq5Zpqp+C9e4nuUAoI+dJvTTj8c=;
+        b=aJjL7Rt5859FZpGOwZ60PYGWE5Br4v5ptZPN1x9x3UR3lD1hua48NnCmMBkWBIPTFv
+         qzpxxTdIQVLbhzYgyBrsr34yqCG6+TYEagCN1Kmt/D2k9UCBXz5R8GZbpA5ayKgdAoEU
+         by6X2rIr0N6Vq4bYz2vnVAEt1nwywLTBFNrTVB4vMMY2Otnt/kVzOH6PQ6R/glwRTK9f
+         a0DYMSLXhrrXsAu092lEvBIfX+LJny2LZ6j9WoO5rxF0MosHuvboCruKecq7+53qVdxH
+         yQgzbCpcaHIw+JLHCJepOXcI1F028/YXqedUb9BhvbVAyZCKujpIEiR/U1fGtsb81E36
+         esqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXGUnLxKkwVHNQpF2jSet817LlzU5sf77lQEhxWiVOqqJyNFI+egg5A+HGV2IGEYwb4I9TeFL4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyXllsIODR9sPzxip9vSCn2VeJzKJhVrELON+qdWxqYEwV2wsIZ
+	jfyPTQf8iD5ko0nTZNusnEjaiDB7LCKUU+rdxAgcqidzcxeVSSLaEsPRDzi/NAbwBlyv9Ypf9jf
+	7ZXEeXKmdum59qaIzfdbpSvlcehERPJO1M6HMIytdVg==
+X-Gm-Gg: ASbGncvGy/W4pMt1lc37AuXWhDd6/7oT+b/dklNwmgqEw65ABpzmLl/T/YHaQ2+Fh31
+	EStvAoGkb0YvhXdwxHnfqn1gh5FscFn+n5+4G3+GWEOznN4U5+6xOxjAHgGwIJhP9JZMK3pZbVB
+	qR4iwtqY/wkLHERaeosoBY0yT03feLq1hZb3R2m1jEoG0dUoNisgdY4U7fW5C7jxwE5zbn097RB
+	YVImNsTay/3xREezGSfueVxHF0PY4wbDRjIwKdM1N4M87/agw7MQ2PAc9r+KmT2ohDiJZFUGL8t
+	ty8MhQnippVD/ydYQfEZs7wuDomULfve3FOMIA3t4bYRGlAjYRimb7a9rh8=
+X-Google-Smtp-Source: AGHT+IEuwzsJ4iV/hppl7a+6AO2kFJTb1s8y+TSbQtxey/3zGokRC7kaOoo9yRzyTlRYxagbo5MXAG+kmUtRs73p+UA=
+X-Received: by 2002:a05:651c:254c:20b0:37b:a981:102c with SMTP id
+ 38308e7fff4ca-37ed200a5admr22604601fa.18.1765254385419; Mon, 08 Dec 2025
+ 20:26:25 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-08_07,2025-12-04_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0
- mlxlogscore=876 bulkscore=0 spamscore=0 adultscore=0 phishscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2510240000 definitions=main-2512090023
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA5MDAyMyBTYWx0ZWRfX8Hp38NQwZw7u
- eoFsoaNg3zUcnkDZBYdob3LPMHmbZcIojcsgawy82GaUhN7AqyGle985k2edkN+vP0XtGuMzyCx
- vflAbFBkrGf3ACSpIaYfBoya5zO2nJ9VonEk76B752ATeUC1CKG4CDwKhtyoDwK0/R+jJeLA2Z7
- oAb7VvBMuAIVUcVV7/yGQ8NUBP1H5ZcXKbl7ElmcHHpFzIbB/48vciT7Q7lFzJTCSgZkKq30zOl
- apr6WcNisg1jaR5M2hJ8D/gWJXy2Q3cCDSHWrsJnfDswIx3pWp8jNvoqxu4E5LqYuEiVI9VxSb8
- EdwBUZjZJwElG6Mz17atEIhBkiuibLunEMO7vNTPRd5NM0hghSA+eoaGoyJetTSmGWJebL0mFq6
- EHVDzezamCqIhvN/l7gTPtv0ghzsSw==
-X-Proofpoint-ORIG-GUID: Schw4QMt3R6OpI48h3RcDiJvPkpc8NsH
-X-Authority-Analysis: v=2.4 cv=cs+WUl4i c=1 sm=1 tr=0 ts=693795b3 b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=bwOc7vOLZU9KT1K-0XsA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: Schw4QMt3R6OpI48h3RcDiJvPkpc8NsH
+References: <20251206213750.81474-1-ebiggers@kernel.org>
+In-Reply-To: <20251206213750.81474-1-ebiggers@kernel.org>
+From: Jerry Shih <jerry.shih@sifive.com>
+Date: Tue, 9 Dec 2025 12:26:13 +0800
+X-Gm-Features: AQt7F2rTqXUuqCjvRaHnuo7-SDbJXdxT1X5i9wZAPz9F_2e7btemAb2GuvQSqHI
+Message-ID: <CABO+C-AfQ6PV-NJpCD86sdx7zSPcPQMsOasDKc_s2Qqtq60FNQ@mail.gmail.com>
+Subject: Re: [PATCH] lib/crypto: riscv: Depend on RISCV_EFFICIENT_VECTOR_UNALIGNED_ACCESS
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Ard Biesheuvel <ardb@kernel.org>, "Jason A . Donenfeld" <Jason@zx2c4.com>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, Vivian Wang <wangruikang@iscas.ac.cn>, 
+	"David S . Miller" <davem@davemloft.net>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>, 
+	Alexandre Ghiti <alex@ghiti.fr>, "Martin K . Petersen" <martin.petersen@oracle.com>, Han Gao <gaohan@iscas.ac.cn>, 
+	linux-riscv@lists.infradead.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 20 Nov 2025 12:49:55 +0530, Suganath Prabu S wrote:
+On Sun, Dec 7, 2025 at 5:39=E2=80=AFAM Eric Biggers <ebiggers@kernel.org> w=
+rote:
+>
+> Replace the RISCV_ISA_V dependency of the RISC-V crypto code with
+> RISCV_EFFICIENT_VECTOR_UNALIGNED_ACCESS, which implies RISCV_ISA_V as
+> well as vector unaligned accesses being efficient.
+>
+> This is necessary because this code assumes that vector unaligned
+> accesses are supported and are efficient.  (It does so to avoid having
+> to use lots of extra vsetvli instructions to switch the element width
+> back and forth between 8 and either 32 or 64.)
+>
+> This was omitted from the code originally just because the RISC-V kernel
+> support for detecting this feature didn't exist yet.  Support has now
+> been added, but it's fragmented into per-CPU runtime detection, a
+> command-line parameter, and a kconfig option.  The kconfig option is the
+> only reasonable way to do it, though, so let's just rely on that.
+>
+> Fixes: eb24af5d7a05 ("crypto: riscv - add vector crypto accelerated AES-{=
+ECB,CBC,CTR,XTS}")
+> Fixes: bb54668837a0 ("crypto: riscv - add vector crypto accelerated ChaCh=
+a20")
+> Fixes: 600a3853dfa0 ("crypto: riscv - add vector crypto accelerated GHASH=
+")
+> Fixes: 8c8e40470ffe ("crypto: riscv - add vector crypto accelerated SHA-{=
+256,224}")
+> Fixes: b3415925a08b ("crypto: riscv - add vector crypto accelerated SHA-{=
+512,384}")
+> Fixes: 563a5255afa2 ("crypto: riscv - add vector crypto accelerated SM3")
+> Fixes: b8d06352bbf3 ("crypto: riscv - add vector crypto accelerated SM4")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+> ---
+>  arch/riscv/crypto/Kconfig | 12 ++++++++----
+>  lib/crypto/Kconfig        |  9 ++++++---
+>  2 files changed, 14 insertions(+), 7 deletions(-)
+>
+> diff --git a/arch/riscv/crypto/Kconfig b/arch/riscv/crypto/Kconfig
+> index a75d6325607b..14c5acb935e9 100644
+> --- a/arch/riscv/crypto/Kconfig
+> +++ b/arch/riscv/crypto/Kconfig
+> @@ -2,11 +2,12 @@
+>
+>  menu "Accelerated Cryptographic Algorithms for CPU (riscv)"
+>
+>  config CRYPTO_AES_RISCV64
+>         tristate "Ciphers: AES, modes: ECB, CBC, CTS, CTR, XTS"
+> -       depends on 64BIT && RISCV_ISA_V && TOOLCHAIN_HAS_VECTOR_CRYPTO
+> +       depends on 64BIT && TOOLCHAIN_HAS_VECTOR_CRYPTO && \
+> +                  RISCV_EFFICIENT_VECTOR_UNALIGNED_ACCESS
+>         select CRYPTO_ALGAPI
+>         select CRYPTO_LIB_AES
+>         select CRYPTO_SKCIPHER
+>         help
+>           Block cipher: AES cipher algorithms
+> @@ -18,21 +19,23 @@ config CRYPTO_AES_RISCV64
+>           - Zvkb vector crypto extension (CTR)
+>           - Zvkg vector crypto extension (XTS)
+>
+>  config CRYPTO_GHASH_RISCV64
+>         tristate "Hash functions: GHASH"
+> -       depends on 64BIT && RISCV_ISA_V && TOOLCHAIN_HAS_VECTOR_CRYPTO
+> +       depends on 64BIT && TOOLCHAIN_HAS_VECTOR_CRYPTO && \
+> +                  RISCV_EFFICIENT_VECTOR_UNALIGNED_ACCESS
+>         select CRYPTO_GCM
+>         help
+>           GCM GHASH function (NIST SP 800-38D)
+>
+>           Architecture: riscv64 using:
+>           - Zvkg vector crypto extension
+>
+>  config CRYPTO_SM3_RISCV64
+>         tristate "Hash functions: SM3 (ShangMi 3)"
+> -       depends on 64BIT && RISCV_ISA_V && TOOLCHAIN_HAS_VECTOR_CRYPTO
+> +       depends on 64BIT && TOOLCHAIN_HAS_VECTOR_CRYPTO && \
+> +                  RISCV_EFFICIENT_VECTOR_UNALIGNED_ACCESS
+>         select CRYPTO_HASH
+>         select CRYPTO_LIB_SM3
+>         help
+>           SM3 (ShangMi 3) secure hash function (OSCCA GM/T 0004-2012)
+>
+> @@ -40,11 +43,12 @@ config CRYPTO_SM3_RISCV64
+>           - Zvksh vector crypto extension
+>           - Zvkb vector crypto extension
+>
+>  config CRYPTO_SM4_RISCV64
+>         tristate "Ciphers: SM4 (ShangMi 4)"
+> -       depends on 64BIT && RISCV_ISA_V && TOOLCHAIN_HAS_VECTOR_CRYPTO
+> +       depends on 64BIT && TOOLCHAIN_HAS_VECTOR_CRYPTO && \
+> +                  RISCV_EFFICIENT_VECTOR_UNALIGNED_ACCESS
+>         select CRYPTO_ALGAPI
+>         select CRYPTO_SM4
+>         help
+>           SM4 block cipher algorithm (OSCCA GB/T 32907-2016,
+>           ISO/IEC 18033-3:2010/Amd 1:2021)
+> diff --git a/lib/crypto/Kconfig b/lib/crypto/Kconfig
+> index a3647352bff6..6871a41e5069 100644
+> --- a/lib/crypto/Kconfig
+> +++ b/lib/crypto/Kconfig
+> @@ -59,11 +59,12 @@ config CRYPTO_LIB_CHACHA_ARCH
+>         depends on CRYPTO_LIB_CHACHA && !UML && !KMSAN
+>         default y if ARM
+>         default y if ARM64 && KERNEL_MODE_NEON
+>         default y if MIPS && CPU_MIPS32_R2
+>         default y if PPC64 && CPU_LITTLE_ENDIAN && VSX
+> -       default y if RISCV && 64BIT && RISCV_ISA_V && TOOLCHAIN_HAS_VECTO=
+R_CRYPTO
+> +       default y if RISCV && 64BIT && TOOLCHAIN_HAS_VECTOR_CRYPTO && \
+> +                    RISCV_EFFICIENT_VECTOR_UNALIGNED_ACCESS
+>         default y if S390
+>         default y if X86_64
+>
+>  config CRYPTO_LIB_CURVE25519
+>         tristate
+> @@ -182,11 +183,12 @@ config CRYPTO_LIB_SHA256_ARCH
+>         depends on CRYPTO_LIB_SHA256 && !UML
+>         default y if ARM && !CPU_V7M
+>         default y if ARM64
+>         default y if MIPS && CPU_CAVIUM_OCTEON
+>         default y if PPC && SPE
+> -       default y if RISCV && 64BIT && RISCV_ISA_V && TOOLCHAIN_HAS_VECTO=
+R_CRYPTO
+> +       default y if RISCV && 64BIT && TOOLCHAIN_HAS_VECTOR_CRYPTO && \
+> +                    RISCV_EFFICIENT_VECTOR_UNALIGNED_ACCESS
+>         default y if S390
+>         default y if SPARC64
+>         default y if X86_64
+>
+>  config CRYPTO_LIB_SHA512
+> @@ -200,11 +202,12 @@ config CRYPTO_LIB_SHA512_ARCH
+>         bool
+>         depends on CRYPTO_LIB_SHA512 && !UML
+>         default y if ARM && !CPU_V7M
+>         default y if ARM64
+>         default y if MIPS && CPU_CAVIUM_OCTEON
+> -       default y if RISCV && 64BIT && RISCV_ISA_V && TOOLCHAIN_HAS_VECTO=
+R_CRYPTO
+> +       default y if RISCV && 64BIT && TOOLCHAIN_HAS_VECTOR_CRYPTO && \
+> +                    RISCV_EFFICIENT_VECTOR_UNALIGNED_ACCESS
+>         default y if S390
+>         default y if SPARC64
+>         default y if X86_64
+>
+>  config CRYPTO_LIB_SHA3
+>
+> base-commit: 43dfc13ca972988e620a6edb72956981b75ab6b0
+> --
+> 2.52.0
+>
 
->  This fix avoids scanning of SAS/SATA devices in channel 1
->  when SAS transport is enabled as the SAS/SATA devices are
->  exposed through channel 0 when SAS transport is enabled.
-> 
-> 
+Reviewed-by: Jerry Shih <jerry.shih@sifive.com>
 
-Applied to 6.19/scsi-queue, thanks!
-
-[1/1] mpi3mr: Prevent duplicate SAS/SATA device entries in channel 1
-      https://git.kernel.org/mkp/scsi/c/4588e65cfd66
-
--- 
-Martin K. Petersen
+Thanks,
+-Jerry
 
