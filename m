@@ -1,123 +1,118 @@
-Return-Path: <stable+bounces-200434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31973CAEC68
-	for <lists+stable@lfdr.de>; Tue, 09 Dec 2025 04:09:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E10A6CAECB1
+	for <lists+stable@lfdr.de>; Tue, 09 Dec 2025 04:22:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CEC583027187
-	for <lists+stable@lfdr.de>; Tue,  9 Dec 2025 03:09:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A54F43081D49
+	for <lists+stable@lfdr.de>; Tue,  9 Dec 2025 03:21:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01BDB2DD60E;
-	Tue,  9 Dec 2025 03:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 116EA301486;
+	Tue,  9 Dec 2025 03:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="HgCGdRc2"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="dXuPcGjz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F6A33B8D67
-	for <stable@vger.kernel.org>; Tue,  9 Dec 2025 03:09:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FC9D30146C;
+	Tue,  9 Dec 2025 03:21:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765249789; cv=none; b=a+JDn5thwLnXqDCF9BfxvRevz0LRnQR/uvOyohA+LibD834feO7v9nf6A3BKLay7JLk3EKzYNc1zblBf53bh2tJTCQ8teL2HrAwKhhvz5CABfg76dlfMvXgr+zFvdKR1lrNQk7vZTr+0vzvBLRTbKb/JOankFw+Wu4zQqCuV3gc=
+	t=1765250487; cv=none; b=eEzod+8dcBdU5pNeYwnas9yzoMQtIgdDEEgKVmf85Bz5b5njquEwzuedgYnQiIbejR1dIqFS0Yyck6jaY8bQpo6F3l0XV37E0dfUs5mWot7i01PIxdIEowuerbbpUHvZY8VX249+eGKio7DomVJddyH+LCVA/ZEh1UQO8yXpDt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765249789; c=relaxed/simple;
-	bh=j9T9qc8kv4Wu2R0NYry0ZY+FxQqLZIT+LQK8My5CDoE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=MNZQ3XCGU78tEvHkzs6Or2ZPG1YRlBJdP2+f/KEIlUGGzjJ+xGY1weI64a7xDf0Arkpa597JH1hpDmVrVFMkJeBKcr3s3bQ9VFZ96nCvdij02YjPpvXTH2SGi9gk9tEd6w8SlovNKuVTl9mGaMOKonFaz0aDCjeT6uRwEQvgBr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=HgCGdRc2; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-29555b384acso52725385ad.1
-        for <stable@vger.kernel.org>; Mon, 08 Dec 2025 19:09:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1765249787; x=1765854587; darn=vger.kernel.org;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=MTpghPmOCPM19OYgMgbGT5qXtYNK79xgvXC2Ue5PK3k=;
-        b=HgCGdRc2d0z39IbfwMvEcrxUWaw5AjkywRLoDO90tRJHPO8zgmyUQ03AnYYYQ6FjHr
-         Yc9O5k58cd3qARgGT+0Vtwc6FAsNZYJuZcOCS2sgJ8I3X2/OtnpayyXW7JS6tTaKMfRa
-         2ZeUyd1/hsyM3tg7pfdwjM66F6Q9CAjPPUTKl8kq0rmEyAOAUhC/ruQqCs9K4rCsk7Ju
-         b+O9sI0NMIMdkIN/eVF5OzcS+i5luyV95IzMYzU5sfW3eTIQDwkysBragsuImEmAAs4d
-         f+/PJhGPay/miO2A5IFMOzBSzV5p7Wjw7zSTCeHCJraRREje+2SJmoYyCDeVUX1ZIIym
-         c3pA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765249787; x=1765854587;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MTpghPmOCPM19OYgMgbGT5qXtYNK79xgvXC2Ue5PK3k=;
-        b=DfWrvvWcRqgmJCjN0wwhIUPnb0f0F8eOsReX2QGAvc2DdRPG4Z5z7JqIBAATHTLd5U
-         RbIBlR4Xfh7EEQ/X/MWM/WhTM3jhVy/0mFn3qOU2OrpLMFoOF/WHAoZirC+0p+rQwuSs
-         EW+VOL0J/4hL7VquGfpMrHn84025k14IymlYFEqluM9mThXEi8dOG86M0/HPgJ2SS3Wo
-         cvBMqodK9iYtyhckr0g+p00yI3zeDugdxi9PadfLelgfo9YZBACKz27/CnFQ2kEGZPxy
-         c6s++Sv+ax+12gT21AEOXBWzfoSyXYTZ8RRK3zs9YWKbsYGoWN0jpqOay9kAMk6CnTZu
-         LPKA==
-X-Forwarded-Encrypted: i=1; AJvYcCVHzooV3ZFATcUUMHvPXv7w6wPYYfIVrt4S6YgL+O82NiMFZDHdUAIlguFNvujH1uio6ZKGEzU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwL+pC0XIReWSxmJaf/N2YxrWODt2Z5kR3lGgDpdczl0eI1DGs0
-	VR+wNF1Wa/E+aKymd1tqahw2JwkVx5wD1wsu8Elg75fAy+6XiuujQaN8u5WMXsgeGAA=
-X-Gm-Gg: ASbGncs8J5wfSU8YL+xCYvjs8ciy3vZLeCVAdDfys3ofWPhNzSB22CRPdjPzuNyv9D8
-	r1u7uRBc4yUJnR31RdfAjl7Tr1hCArhqbOa/BpXZ1lSHw/mcr0jQKZP6EkESCDdSEjLYFTHc2jI
-	b6qcMoxaTbQSg8T9kAOZfGX9I+mUIV9CELcn72Vs95wSUz25tiVqZYjivdYSsE7BathGsgyUR53
-	tcRo5zXLsEQtOhyQYAGgTU7E53oa8ZU5092N4JmNNMUp2n7V+SlpkWdHd1AUrV47h7DeC79Xdpw
-	9rlGykOw9PCYq8BW8r/CbTr/8Dv/46fRRVcL4hxdAf9hWn9IdqIT1mcGsZKNS+Rq/U0HLjJejZ3
-	LvZ1mR431AwXyScTqjeamcODEeiqDves3PGH9HrCBAHqplATWbqULXkSoCvvG9ZThzsOLdF7SgQ
-	qO1tGe7v8xXDP6YEXJazM=
-X-Google-Smtp-Source: AGHT+IH2WHVFwA78UMJtgEIT3W0hF7oDSenZgK9PqDDhWa2l7fUr6FMBMW4Hhj3UAdOKbbG/n2COrg==
-X-Received: by 2002:a17:902:cf0e:b0:295:96bc:868c with SMTP id d9443c01a7336-29df546f962mr89029595ad.5.1765249786761;
-        Mon, 08 Dec 2025 19:09:46 -0800 (PST)
-Received: from localhost ([71.212.208.158])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29e4f15accfsm40755175ad.35.2025.12.08.19.09.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Dec 2025 19:09:46 -0800 (PST)
-From: Kevin Hilman <khilman@baylibre.com>
-To: Kory Maincent <kory.maincent@bootlin.com>, Aaro Koskinen
- <aaro.koskinen@iki.fi>, Andreas Kemnade <andreas@kemnade.info>, Roger
- Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, Lee Jones
- <lee@kernel.org>, Shree Ramamoorthy <s-ramamoorthy@ti.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>
-Cc: Andrew Davis <afd@ti.com>, Bajjuri Praneeth <praneeth@ti.com>, Thomas
- Petazzoni <thomas.petazzoni@bootlin.com>, linux-omap@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH v4 0/2] Enable 1GHz OPP am335x-bonegreen-eco
-In-Reply-To: <20251127144138.400d1dcd@kmaincent-XPS-13-7390>
-References: <20251112-fix_tps65219-v4-0-696a0f55d5d8@bootlin.com>
- <20251127144138.400d1dcd@kmaincent-XPS-13-7390>
-Date: Mon, 08 Dec 2025 19:09:45 -0800
-Message-ID: <7hsedk73ly.fsf@baylibre.com>
+	s=arc-20240116; t=1765250487; c=relaxed/simple;
+	bh=1uKzdL+7291xLk02/UwsVPxNOoBC6RW0QT8AUviuRKg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=i0OVUrZ17ALekJTPib0sEBE5YML/XnFr6YNpBEUwlo1H90haM7ea0tngnjyL4qTFCwnITKRg3eTz9ixxmS5axi81ju7PZAWVY+SvpIIOO91kvfhMn+eOGV1aGSYxV5TB6pXwcKhU3zEFlvzxe3jtxDenpn4ohhhK2w/K77Za+GU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=dXuPcGjz; arc=none smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5B91vJ1f3883315;
+	Tue, 9 Dec 2025 03:21:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=Fh9Yf5aMPzzQWV6DqYkZ3Z4x0vfjCRcp4nB+XAvfXDo=; b=
+	dXuPcGjz96Er2c3ug65LTbKoklC+SydYMQGye0MsPcHLlmnfC5L1ISCOw/baacpe
+	KavrNWsUkTQOJ/cd2G/7o7g8+C96eFKqHhf4o/m+GReXD0k/naGPfrCkwDaKqjDW
+	3bwqKDlmWkPzVCmHvxl0kN3QRckJxvHzgauoB8O53SCx016NfLulHOKFRbridUEE
+	+qd1+NV2fyvtPHt1Dp1pFCMxQCCu+W5cbPM5IMR44hwi4MudrcZ9k5z0AXtUATP5
+	k66K5rhuBw+0ptE/bxxTDuHNiUTtdjrPhJcK9eH3k3MPikZT+uSZXKaGErkWgC42
+	Piy9BVYmlFny6sU/6QNx0w==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4axaj6g1yw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 09 Dec 2025 03:21:23 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5B91WAu5038445;
+	Tue, 9 Dec 2025 03:21:22 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4avax8j02c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 09 Dec 2025 03:21:22 +0000
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5B93I4Fc022652;
+	Tue, 9 Dec 2025 03:21:22 GMT
+Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4avax8hyys-8;
+	Tue, 09 Dec 2025 03:21:22 +0000
+From: "Martin K. Petersen" <martin.petersen@oracle.com>
+To: linux-scsi@vger.kernel.org, stable@vger.kernel.org,
+        Suganath Prabu S <suganath-prabu.subramani@broadcom.com>
+Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
+        sathya.prakash@broadcom.com, ranjan.kumar@broadcom.com,
+        chandrakanth.patil@broadcom.com
+Subject: Re: [PATCH] mpi3mr: Prevent duplicate SAS/SATA device entries in channel 1
+Date: Mon,  8 Dec 2025 22:21:07 -0500
+Message-ID: <176524933124.418581.4165861558099763589.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <20251120071955.463475-1-suganath-prabu.subramani@broadcom.com>
+References: <20251120071955.463475-1-suganath-prabu.subramani@broadcom.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-08_07,2025-12-04_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0
+ mlxlogscore=876 bulkscore=0 spamscore=0 adultscore=0 phishscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2510240000 definitions=main-2512090023
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA5MDAyMyBTYWx0ZWRfX8Hp38NQwZw7u
+ eoFsoaNg3zUcnkDZBYdob3LPMHmbZcIojcsgawy82GaUhN7AqyGle985k2edkN+vP0XtGuMzyCx
+ vflAbFBkrGf3ACSpIaYfBoya5zO2nJ9VonEk76B752ATeUC1CKG4CDwKhtyoDwK0/R+jJeLA2Z7
+ oAb7VvBMuAIVUcVV7/yGQ8NUBP1H5ZcXKbl7ElmcHHpFzIbB/48vciT7Q7lFzJTCSgZkKq30zOl
+ apr6WcNisg1jaR5M2hJ8D/gWJXy2Q3cCDSHWrsJnfDswIx3pWp8jNvoqxu4E5LqYuEiVI9VxSb8
+ EdwBUZjZJwElG6Mz17atEIhBkiuibLunEMO7vNTPRd5NM0hghSA+eoaGoyJetTSmGWJebL0mFq6
+ EHVDzezamCqIhvN/l7gTPtv0ghzsSw==
+X-Proofpoint-ORIG-GUID: Schw4QMt3R6OpI48h3RcDiJvPkpc8NsH
+X-Authority-Analysis: v=2.4 cv=cs+WUl4i c=1 sm=1 tr=0 ts=693795b3 b=1 cx=c_pps
+ a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
+ a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=bwOc7vOLZU9KT1K-0XsA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: Schw4QMt3R6OpI48h3RcDiJvPkpc8NsH
 
-Kory Maincent <kory.maincent@bootlin.com> writes:
+On Thu, 20 Nov 2025 12:49:55 +0530, Suganath Prabu S wrote:
 
-> On Wed, 12 Nov 2025 16:14:19 +0100
-> "Kory Maincent (TI.com)" <kory.maincent@bootlin.com> wrote:
->
->> The vdd_mpu regulator maximum voltage was previously limited to 1.2985V,
->> which prevented the CPU from reaching the 1GHz operating point. This
->> limitation was put in place because voltage changes were not working
->> correctly, causing the board to stall when attempting higher frequencies.
->> Increase the maximum voltage to 1.3515V to allow the full 1GHz OPP to be
->> used.
->> 
->> Add a TPS65219 PMIC driver fixes that properly implement the LOCK register
->> handling, to make voltage transitions work reliably.
->
-> Hello,
->
-> What is the status on this series?
-> Is there anything that could prevent it from being merged?
+>  This fix avoids scanning of SAS/SATA devices in channel 1
+>  when SAS transport is enabled as the SAS/SATA devices are
+>  exposed through channel 0 when SAS transport is enabled.
+> 
+> 
 
-Nothing technical.  I'll start queuing things up after the merge window
-closes and -rc1 (or maybe -rc2) is out.
+Applied to 6.19/scsi-queue, thanks!
 
-Kevin
+[1/1] mpi3mr: Prevent duplicate SAS/SATA device entries in channel 1
+      https://git.kernel.org/mkp/scsi/c/4588e65cfd66
+
+-- 
+Martin K. Petersen
 
