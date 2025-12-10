@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-200619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20619CB24D5
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:42:23 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B495ACB2340
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:32:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0BE2A30E5DDB
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:41:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C06A8300AC45
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:32:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42701302768;
-	Wed, 10 Dec 2025 07:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA96F273D8D;
+	Wed, 10 Dec 2025 07:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bpeGNLM7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="onQcc3vw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB34D302759;
-	Wed, 10 Dec 2025 07:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A726126A0A7;
+	Wed, 10 Dec 2025 07:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765352048; cv=none; b=uhnhrVw7XetwZxafThh6WVY1LSik57uhUScK/x/kw1PCxAxL170H9X6Eta1eiMS5jEFfqz3fbpWJgzDo98g+13WZKj7l9bHptyIuvGQSoM465AUbI2yZ1nNcC5zUa12dlEN/qXITfzcF+aUJBVzCfIyNTLIO0k4Z0FoecpsPA2U=
+	t=1765351920; cv=none; b=hr3cNRP0/wtLOqOWFa+lbQ8uY5zwLva46SiGKAbwUgaxI+D2Yw3e6++8Q7CCiNNc1iFlLHqs/dSWnCTb+Ae1ePinLlIMPylprf/ImQ16yUYA+Wy9uP7yUJYjQyQsbt/HuVeJale9UeRupvPSUB/ZzC6N9MjiqFR0W0CvRPDehzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765352048; c=relaxed/simple;
-	bh=XW+4KC43yOTbfWO78ZY9rboKktEhSXrJefdvE3e900g=;
+	s=arc-20240116; t=1765351920; c=relaxed/simple;
+	bh=R7GuYolVgF7zuyHcJ0Ntz9vCbLNdSd2rFedpkT6k7yY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bw+9/JwzptRjZ16x+Lvz7fhG/gaMcAbqmmRVYh6Yts88l3/2OWs4nSI9y56bRdvgIfe+QWp0ti03L4t64zblTcjhDEX2QFmfd0Z2p3E4HWlf9thttGisVBdtCTJJWI8iWYZpR58HKUq0heDAC1hMgU4T0GnOvtnmexcw/CIvP4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bpeGNLM7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55FA8C4CEF1;
-	Wed, 10 Dec 2025 07:34:08 +0000 (UTC)
+	 MIME-Version; b=sF5qMg9UX0nZqae7k0VlW0WCXd4c/OOKr6IQTgX9+cdstWcK0ViXP09zNKkmnKf12i+VKVKyYKcBq2GkOxS38zy4XYxkZJgbu/pUowdKEEnDmFzTLpzgI/qnTt150RS6IdAj3F6l6Q4nBMuPryVinmfbavQb7A3v8PwQVaFIviU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=onQcc3vw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3D63C4CEF1;
+	Wed, 10 Dec 2025 07:31:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765352048;
-	bh=XW+4KC43yOTbfWO78ZY9rboKktEhSXrJefdvE3e900g=;
+	s=korg; t=1765351920;
+	bh=R7GuYolVgF7zuyHcJ0Ntz9vCbLNdSd2rFedpkT6k7yY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bpeGNLM7RP1Ek3wPH0lGtHAkTTlp0ItMF7sCbAPOg33SZhb4kQ/eQ1PTIqDt8kpPf
-	 eDm61KImOZ0N1abx6qknCP/Z+5noTgaB8lqzAXbcWfxH8XqOOH5NuCrXwl0RhMVyl9
-	 sA9qg3hXQ6rP3m+fcx0nHn06E/PJJPerPpN0fEA8=
+	b=onQcc3vwKm/vPfWtedk3nyCM9QrY6EOokKPnJWGkuevPDfMzzgLzZDJmnQfdAn+92
+	 hZKeWGBHiBX7Vp/ozjxzwteuYDaQp5ltTi2MO892/0fzQ1337Zu+7dGaJHQtC8zODh
+	 9fACXMoELFMS4Rug5L6VGsKPFcWn7leCzbYMWXuo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lushih Hsieh <bruce@mail.kh.edu.tw>,
-	Takashi Iwai <tiwai@suse.de>,
+	Prasad Sodagudi <prasad.sodagudi@oss.qualcomm.com>,
+	Praveen Talari <praveen.talari@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 30/60] ALSA: usb-audio: Add native DSD quirks for PureAudio DAC series
-Date: Wed, 10 Dec 2025 16:30:00 +0900
-Message-ID: <20251210072948.576445467@linuxfoundation.org>
+Subject: [PATCH 6.12 31/49] pinctrl: qcom: msm: Fix deadlock in pinmux configuration
+Date: Wed, 10 Dec 2025 16:30:01 +0900
+Message-ID: <20251210072948.936250433@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
-References: <20251210072947.850479903@linuxfoundation.org>
+In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
+References: <20251210072948.125620687@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,67 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lushih Hsieh <bruce@mail.kh.edu.tw>
+From: Praveen Talari <praveen.talari@oss.qualcomm.com>
 
-[ Upstream commit 21a9ab5b90b3716a631d559e62818029b4e7f5b7 ]
+[ Upstream commit 1c2e70397b4125022dba80f6111271a37fb36bae ]
 
-The PureAudio APA DAC and Lotus DAC5 series are USB Audio
-2.0 Class devices that support native Direct Stream Digital (DSD)
-playback via specific vendor protocols.
+Replace disable_irq() with disable_irq_nosync() in msm_pinmux_set_mux()
+to prevent deadlock when wakeup IRQ is triggered on the same
+GPIO being reconfigured.
 
-Without these quirks, the devices may only function in standard
-PCM mode, or fail to correctly report their DSD format capabilities
-to the ALSA framework, preventing native DSD playback under Linux.
+The issue occurs when a wakeup IRQ is triggered on a GPIO and the IRQ
+handler attempts to reconfigure the same GPIO's pinmux. In this scenario,
+msm_pinmux_set_mux() calls disable_irq() which waits for the currently
+running IRQ handler to complete, creating a circular dependency that
+results in deadlock.
 
-This commit adds new quirk entries for the mentioned DAC models
-based on their respective Vendor/Product IDs (VID:PID), for example:
-0x16d0:0x0ab1 (APA DAC), 0x16d0:0xeca1 (DAC5 series), etc.
+Using disable_irq_nosync() avoids waiting for the IRQ handler to
+complete, preventing the deadlock condition while still properly
+disabling the interrupt during pinmux reconfiguration.
 
-The quirk ensures correct DSD format handling by setting the required
-SNDRV_PCM_FMTBIT_DSD_U32_BE format bit and defining the DSD-specific
-Audio Class 2.0 (AC2.0) endpoint configurations. This allows the ALSA
-DSD API to correctly address the device for high-bitrate DSD streams,
-bypassing the need for DoP (DSD over PCM).
-
-Test on APA DAC and Lotus DAC5 SE under Arch Linux.
-
-Tested-by: Lushih Hsieh <bruce@mail.kh.edu.tw>
-Signed-off-by: Lushih Hsieh <bruce@mail.kh.edu.tw>
-Link: https://patch.msgid.link/20251114052053.54989-1-bruce@mail.kh.edu.tw
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Suggested-by: Prasad Sodagudi <prasad.sodagudi@oss.qualcomm.com>
+Signed-off-by: Praveen Talari <praveen.talari@oss.qualcomm.com>
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/pinctrl/qcom/pinctrl-msm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
-index b04f52adb1f48..70f9e0cc28fac 100644
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -2022,6 +2022,8 @@ u64 snd_usb_interface_dsd_format_quirks(struct snd_usb_audio *chip,
- 	case USB_ID(0x16d0, 0x09d8): /* NuPrime IDA-8 */
- 	case USB_ID(0x16d0, 0x09db): /* NuPrime Audio DAC-9 */
- 	case USB_ID(0x16d0, 0x09dd): /* Encore mDSD */
-+	case USB_ID(0x16d0, 0x0ab1): /* PureAudio APA DAC */
-+	case USB_ID(0x16d0, 0xeca1): /* PureAudio Lotus DAC5, DAC5 SE, DAC5 Pro */
- 	case USB_ID(0x1db5, 0x0003): /* Bryston BDA3 */
- 	case USB_ID(0x20a0, 0x4143): /* WaveIO USB Audio 2.0 */
- 	case USB_ID(0x22e1, 0xca01): /* HDTA Serenade DSD */
-@@ -2289,6 +2291,10 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
- 		   QUIRK_FLAG_IGNORE_CLOCK_SOURCE),
- 	DEVICE_FLG(0x1686, 0x00dd, /* Zoom R16/24 */
- 		   QUIRK_FLAG_TX_LENGTH | QUIRK_FLAG_CTL_MSG_DELAY_1M),
-+	DEVICE_FLG(0x16d0, 0x0ab1, /* PureAudio APA DAC */
-+		   QUIRK_FLAG_DSD_RAW),
-+	DEVICE_FLG(0x16d0, 0xeca1, /* PureAudio Lotus DAC5, DAC5 SE and DAC5 Pro */
-+		   QUIRK_FLAG_DSD_RAW),
- 	DEVICE_FLG(0x17aa, 0x1046, /* Lenovo ThinkStation P620 Rear Line-in, Line-out and Microphone */
- 		   QUIRK_FLAG_DISABLE_AUTOSUSPEND),
- 	DEVICE_FLG(0x17aa, 0x104d, /* Lenovo ThinkStation P620 Internal Speaker + Front Headset */
+diff --git a/drivers/pinctrl/qcom/pinctrl-msm.c b/drivers/pinctrl/qcom/pinctrl-msm.c
+index 5532328097894..27eb585bf42df 100644
+--- a/drivers/pinctrl/qcom/pinctrl-msm.c
++++ b/drivers/pinctrl/qcom/pinctrl-msm.c
+@@ -214,7 +214,7 @@ static int msm_pinmux_set_mux(struct pinctrl_dev *pctldev,
+ 	 */
+ 	if (d && i != gpio_func &&
+ 	    !test_and_set_bit(d->hwirq, pctrl->disabled_for_mux))
+-		disable_irq(irq);
++		disable_irq_nosync(irq);
+ 
+ 	raw_spin_lock_irqsave(&pctrl->lock, flags);
+ 
 -- 
 2.51.0
 
