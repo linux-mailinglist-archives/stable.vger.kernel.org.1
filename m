@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-200554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C8E7CB2310
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:31:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DD68CB23A0
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:34:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E10C33022640
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:31:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 326CE302A96F
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:33:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35AF41DE8A4;
-	Wed, 10 Dec 2025 07:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0A332FB965;
+	Wed, 10 Dec 2025 07:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dPoTUFkI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bOBJ+BBq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E31381DD0EF;
-	Wed, 10 Dec 2025 07:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7198627A47F;
+	Wed, 10 Dec 2025 07:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765351881; cv=none; b=NiXuRzxlesF9lSQSHHEooBtOf238g1AG3IvSXknKtcdwdSTvf4Oz9e46cULVoLPTO/oexSQaIdwDoPTq8CkjFRJpZt5mlH03bmXYEZ3Cg0FYoUmoCUrG62w4GcN3GBTznsvustGnbNjZb++069zHbPpXjGTfdQ70+PVM+AznuV0=
+	t=1765352000; cv=none; b=OzbyF4iwUuzoItcxxi67DkA7vskQA/SqOeQdc8rH7+I3pyC7EFH7+mwguJ/nmT6lSMuA/UPf1v/M9xD8EmkwEiQMMS9t5wTtBZjDOwxaa/wpqT9/CxM6NhslzCe7/kwDKy79Oj0VK8eesygRS6e0UNKyQNcP1J2kvS6RB/SKThg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765351881; c=relaxed/simple;
-	bh=wyX0BMdyABLKu/UJ6q4xHpqCrGEboy1b07y7Bdj68zM=;
+	s=arc-20240116; t=1765352000; c=relaxed/simple;
+	bh=farnGNvUZhA+66HxVOV+pxG3ILySs26IXoZgm1ygARM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U4q0/RPILYekNF7t0O6SrA/ierIjGnqcJJ/1ZWugy3h9YcVNFf1kpOBLL35m9AS1fYfTn4oPz2RWCfMsxFGpllW5STclevZ69S4nFQunbFqAr/MpL0kt97/lQO3enEjORBMazbB96kBajh1Ey5MwTaaNhliCqvsOYCQv80BU6eQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dPoTUFkI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35EE0C4CEF1;
-	Wed, 10 Dec 2025 07:31:20 +0000 (UTC)
+	 MIME-Version; b=lcTyPl3y+yQY75siseHnxr0yA74oitHZSGOx0M3H5aogwWXq++91Ms/l+cl2hMyKZ2drv/6shCKqaWbmGK3U2vCqy+yNX82vHhN1YlDaSZTD4NH8KVlAG0isusEz5j61873k5ARjum3WG2gr9Dp5/66T2Bls/CRxcsxTnfv/mjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bOBJ+BBq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FA4BC4CEF1;
+	Wed, 10 Dec 2025 07:33:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765351880;
-	bh=wyX0BMdyABLKu/UJ6q4xHpqCrGEboy1b07y7Bdj68zM=;
+	s=korg; t=1765352000;
+	bh=farnGNvUZhA+66HxVOV+pxG3ILySs26IXoZgm1ygARM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dPoTUFkIN9HjNEuz/64QP0+LRCHi8MeOGf9AzKW0qDAgtRfY3GZk12NKbZ8hEdNqb
-	 1p7vtGQyR3g0oC1Zuj7K90uZfhM0Fb5Vk136eWI7LNI2UsxMD/4h3xfg4MgnqlljBz
-	 H/tvyc0+Nr30woEsWFCN4GXdHqGiPSaFlMui9dPQ=
+	b=bOBJ+BBqUhU1tev2b8jQSxsuN88ehwldF3mvAeGH6XZiNKphrWhFvA6Z6Ws7uZsht
+	 x15bTjfEXs0Bpa1cOJQ12d5YLH1z93GdByt1i1UfbYWlMdKRdvuFjE3BKG5lGf7Gm2
+	 ZxDdBN/f65UpI5VbCDL9KNtbQ3rMjCfIJN6Xp2TE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+999eb23467f83f9bf9bf@syzkaller.appspotmail.com,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 03/49] xfrm: also call xfrm_state_delete_tunnel at destroy time for states that were never added
-Date: Wed, 10 Dec 2025 16:29:33 +0900
-Message-ID: <20251210072948.210334736@linuxfoundation.org>
+	Qianchang Zhao <pioooooooooip@gmail.com>,
+	Zhitong Liu <liuzhitong1993@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.17 04/60] ksmbd: ipc: fix use-after-free in ipc_msg_send_request
+Date: Wed, 10 Dec 2025 16:29:34 +0900
+Message-ID: <20251210072947.955740226@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
-References: <20251210072948.125620687@linuxfoundation.org>
+In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
+References: <20251210072947.850479903@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +61,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Qianchang Zhao <pioooooooooip@gmail.com>
 
-[ Upstream commit 10deb69864840ccf96b00ac2ab3a2055c0c04721 ]
+commit 1fab1fa091f5aa97265648b53ea031deedd26235 upstream.
 
-In commit b441cf3f8c4b ("xfrm: delete x->tunnel as we delete x"), I
-missed the case where state creation fails between full
-initialization (->init_state has been called) and being inserted on
-the lists.
+ipc_msg_send_request() waits for a generic netlink reply using an
+ipc_msg_table_entry on the stack. The generic netlink handler
+(handle_generic_event()/handle_response()) fills entry->response under
+ipc_msg_table_lock, but ipc_msg_send_request() used to validate and free
+entry->response without holding the same lock.
 
-In this situation, ->init_state has been called, so for IPcomp
-tunnels, the fallback tunnel has been created and added onto the
-lists, but the user state never gets added, because we fail before
-that. The user state doesn't go through __xfrm_state_delete, so we
-don't call xfrm_state_delete_tunnel for those states, and we end up
-leaking the FB tunnel.
+Under high concurrency this allows a race where handle_response() is
+copying data into entry->response while ipc_msg_send_request() has just
+freed it, leading to a slab-use-after-free reported by KASAN in
+handle_generic_event():
 
-There are several codepaths affected by this: the add/update paths, in
-both net/key and xfrm, and the migrate code (xfrm_migrate,
-xfrm_state_migrate). A "proper" rollback of the init_state work would
-probably be doable in the add/update code, but for migrate it gets
-more complicated as multiple states may be involved.
+  BUG: KASAN: slab-use-after-free in handle_generic_event+0x3c4/0x5f0 [ksmbd]
+  Write of size 12 at addr ffff888198ee6e20 by task pool/109349
+  ...
+  Freed by task:
+    kvfree
+    ipc_msg_send_request [ksmbd]
+    ksmbd_rpc_open -> ksmbd_session_rpc_open [ksmbd]
 
-At some point, the new (not-inserted) state will be destroyed, so call
-xfrm_state_delete_tunnel during xfrm_state_gc_destroy. Most states
-will have their fallback tunnel cleaned up during __xfrm_state_delete,
-which solves the issue that b441cf3f8c4b (and other patches before it)
-aimed at. All states (including FB tunnels) will be removed from the
-lists once xfrm_state_fini has called flush_work(&xfrm_state_gc_work).
+Fix by:
+- Taking ipc_msg_table_lock in ipc_msg_send_request() while validating
+  entry->response, freeing it when invalid, and removing the entry from
+  ipc_msg_table.
+- Returning the final entry->response pointer to the caller only after
+  the hash entry is removed under the lock.
+- Returning NULL in the error path, preserving the original API
+  semantics.
 
-Reported-by: syzbot+999eb23467f83f9bf9bf@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=999eb23467f83f9bf9bf
-Fixes: b441cf3f8c4b ("xfrm: delete x->tunnel as we delete x")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This makes all accesses to entry->response consistent with
+handle_response(), which already updates and fills the response buffer
+under ipc_msg_table_lock, and closes the race that allowed the UAF.
+
+Cc: stable@vger.kernel.org
+Reported-by: Qianchang Zhao <pioooooooooip@gmail.com>
+Reported-by: Zhitong Liu <liuzhitong1993@gmail.com>
+Signed-off-by: Qianchang Zhao <pioooooooooip@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xfrm/xfrm_state.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/smb/server/transport_ipc.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index 9cd747cfcc34c..3a79ebcbbc369 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -531,6 +531,7 @@ void xfrm_state_free(struct xfrm_state *x)
- }
- EXPORT_SYMBOL(xfrm_state_free);
+--- a/fs/smb/server/transport_ipc.c
++++ b/fs/smb/server/transport_ipc.c
+@@ -553,12 +553,16 @@ static void *ipc_msg_send_request(struct
+ 	up_write(&ipc_msg_table_lock);
  
-+static void xfrm_state_delete_tunnel(struct xfrm_state *x);
- static void xfrm_state_gc_destroy(struct xfrm_state *x)
- {
- 	hrtimer_cancel(&x->mtimer);
-@@ -545,6 +546,7 @@ static void xfrm_state_gc_destroy(struct xfrm_state *x)
- 	kfree(x->preplay_esn);
- 	if (x->type_offload)
- 		xfrm_put_type_offload(x->type_offload);
-+	xfrm_state_delete_tunnel(x);
- 	if (x->type) {
- 		x->type->destructor(x);
- 		xfrm_put_type(x->type);
-@@ -743,7 +745,6 @@ void __xfrm_state_destroy(struct xfrm_state *x)
- }
- EXPORT_SYMBOL(__xfrm_state_destroy);
+ 	ret = ipc_msg_send(msg);
+-	if (ret)
++	if (ret) {
++		down_write(&ipc_msg_table_lock);
+ 		goto out;
++	}
  
--static void xfrm_state_delete_tunnel(struct xfrm_state *x);
- int __xfrm_state_delete(struct xfrm_state *x)
- {
- 	struct net *net = xs_net(x);
--- 
-2.51.0
-
+ 	ret = wait_event_interruptible_timeout(entry.wait,
+ 					       entry.response != NULL,
+ 					       IPC_WAIT_TIMEOUT);
++
++	down_write(&ipc_msg_table_lock);
+ 	if (entry.response) {
+ 		ret = ipc_validate_msg(&entry);
+ 		if (ret) {
+@@ -567,7 +571,6 @@ static void *ipc_msg_send_request(struct
+ 		}
+ 	}
+ out:
+-	down_write(&ipc_msg_table_lock);
+ 	hash_del(&entry.ipc_table_hlist);
+ 	up_write(&ipc_msg_table_lock);
+ 	return entry.response;
 
 
 
