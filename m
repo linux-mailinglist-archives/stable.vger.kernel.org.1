@@ -1,157 +1,243 @@
-Return-Path: <stable+bounces-200578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36336CB236A
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:32:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46FE1CB24A5
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:40:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DC7A930133DD
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:32:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 777143035E75
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:36:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77A2A1DD0EF;
-	Wed, 10 Dec 2025 07:32:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7078C302CBD;
+	Wed, 10 Dec 2025 07:36:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fI9EGCri"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VCa8LTQc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3418C26E17A;
-	Wed, 10 Dec 2025 07:32:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26F752FF16C;
+	Wed, 10 Dec 2025 07:36:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765351943; cv=none; b=FXOL58HqQd5lBakh2XkB7vi+NKavXiM+Ho5co04M1lhXK9J92pO/HJzakd0YVsHL99Rr0334hUqt/m7f500qdTF7KgOK8qWqNETAT8xORZM48NTbx3FbsPepbq7hZGEX6yoSkc5hi/KNcvn93j19UqCw6RfdsI7z5tnx4HMQ66g=
+	t=1765352168; cv=none; b=aqwls8+Eb6GQ6b/cliFuvnt4Wk3x9nXgunODUWv7kx3Pdxll0NhHqhDLgEip+fU+tLD0buE2Bf2TTwyNTxYDLIeyTV9ov7UjqtQvoeKKGf4ikIFQPypDVOP5i7OC+PBidwEqOQWQqkuxGxViLGoWYDfw8uEjgLSyBAGBE/mOo8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765351943; c=relaxed/simple;
-	bh=si1qhpYWkaILpPDtBiKvZPJ1ZlF7eB7LH/h1PmvZe7U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jFGYXjNE7KplmTamPUgTrnI32RvLc1j66iUjdTa5ijwZiX7z4nlbU+ZijFDs0/ILfoAKIlK227CuW4B3Dv1gw9WMTE1eiuyzJkq62A0z9c57d8dra7YCmO92xyYuYtFA541QkXCi1hs04Mo4XKCk03gvhNiaQtZ32gfvoLiL9Gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fI9EGCri; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C49B1C4CEF1;
-	Wed, 10 Dec 2025 07:32:22 +0000 (UTC)
+	s=arc-20240116; t=1765352168; c=relaxed/simple;
+	bh=Qyj65oagwPZw4EirhXXN9lPBZR8mwRWQrnTYZ4z1Bfg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ePL8B7V/fatSsRGNphAaCfOiO2/ELcFpxtaau2QNji5BV8TxdEOIaE2s+PKQUgGaUdAJSfYcdz5qMzV53X5r5+hA4x/W13uLz4OJQnnt7yx9k6sObF4m13Qs7bnhoWEBJgBwlyTzpDqkJ4WeT6p9B7/9ZBRO29dgRe+3yl9GdCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VCa8LTQc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A739C4CEF1;
+	Wed, 10 Dec 2025 07:36:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765351943;
-	bh=si1qhpYWkaILpPDtBiKvZPJ1ZlF7eB7LH/h1PmvZe7U=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fI9EGCriibinWYgKSD8t88n8LPc4j44tBqeRQpEVkr7Y8ZydsNude0K/da4XIbDZk
-	 HaDZfIMM0RcJn9q7s2tiFYFh3mFY87nujL9riqyaFrdCSIWQgL4jZ6YWBwQD8xttw+
-	 TjP5ypQwHcS3g2NeZtWeiaOeHPCyAbNnUJaCQ5mI=
+	s=korg; t=1765352167;
+	bh=Qyj65oagwPZw4EirhXXN9lPBZR8mwRWQrnTYZ4z1Bfg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=VCa8LTQcKUJxWLE6A4w1qm7/uwkm1YacfYf4Ee5Pp38hKVX0ulcsZhhFLWLXAwmYP
+	 KsSeLucXpq3Bf2FF3rXSj3JW6Rj4QxS8yPQpOl8crBb09vywgUfQiGAlVuIZ+laqKY
+	 X5QKhPDR83cBCX7yw5V/9APxQ/Ihc6iK8DZjnzXw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 39/49] samples: work around glibc redefining some of our defines wrong
-Date: Wed, 10 Dec 2025 16:30:09 +0900
-Message-ID: <20251210072949.137758264@linuxfoundation.org>
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	hargar@microsoft.com,
+	broonie@kernel.org,
+	achill@achill.org,
+	sr@sladewatkins.com
+Subject: [PATCH 6.18 00/29] 6.18.1-rc1 review
+Date: Wed, 10 Dec 2025 16:30:10 +0900
+Message-ID: <20251210072944.363788552@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
-References: <20251210072948.125620687@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.18.1-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-6.18.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 6.18.1-rc1
+X-KernelTest-Deadline: 2025-12-12T07:29+00:00
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+This is the start of the stable review cycle for the 6.18.1 release.
+There are 29 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-------------------
+Responses should be made by Fri, 12 Dec 2025 07:29:36 +0000.
+Anything received after that time might be too late.
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.18.1-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.18.y
+and the diffstat can be found below.
 
-[ Upstream commit a48f822908982353c3256e35a089e9e7d0d61580 ]
+thanks,
 
-Apparently as of version 2.42, glibc headers define AT_RENAME_NOREPLACE
-and some of the other flags for renameat2() and friends in <stdio.h>.
+greg k-h
 
-Which would all be fine, except for inexplicable reasons glibc decided
-to define them _differently_ from the kernel definitions, which then
-makes some of our sample code that includes both kernel headers and user
-space headers unhappy, because the compiler will (correctly) complain
-about redefining things.
+-------------
+Pseudo-Shortlog of commits:
 
-Now, mixing kernel headers and user space headers is always a somewhat
-iffy proposition due to namespacing issues, but it's kind of inevitable
-in our sample and selftest code.  And this is just glibc being stupid.
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 6.18.1-rc1
 
-Those defines come from the kernel, glibc is exposing the kernel
-interfaces, and glibc shouldn't make up some random new expressions for
-these values.
+Navaneeth K <knavaneeth786@gmail.com>
+    staging: rtl8723bs: fix out-of-bounds read in OnBeacon ESR IE parsing
 
-It's not like glibc headers changed the actual result values, but they
-arbitrarily just decided to use a different expression to describe those
-values.  The kernel just does
+Navaneeth K <knavaneeth786@gmail.com>
+    staging: rtl8723bs: fix stack buffer overflow in OnAssocReq IE parsing
 
-    #define AT_RENAME_NOREPLACE  0x0001
+Navaneeth K <knavaneeth786@gmail.com>
+    staging: rtl8723bs: fix out-of-bounds read in rtw_get_ie() parser
 
-while glibc does
+Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+    comedi: check device's attached status in compat ioctls
 
-    # define RENAME_NOREPLACE (1 << 0)
-    # define AT_RENAME_NOREPLACE RENAME_NOREPLACE
+Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+    comedi: multiq3: sanitize config options in multiq3_attach()
 
-instead.  Same value in the end, but very different macro definition.
+Ian Abbott <abbotti@mev.co.uk>
+    comedi: c6xdigio: Fix invalid PNP driver unregistration
 
-For absolutely no reason.
+Antoniu Miclaus <antoniu.miclaus@analog.com>
+    iio: adc: ad4080: fix chip identification
 
-This has since been fixed in the glibc development tree, so eventually
-we'll end up with the canonical expressions and no clashes.  But in the
-meantime the broken headers are in the glibc-2.42 release and have made
-it out into distributions.
+Zenm Chen <zenmchen@gmail.com>
+    wifi: rtw88: Add USB ID 2001:3329 for D-Link AC13U rev. A1
 
-Do a minimal work-around to make the samples build cleanly by just
-undefining the affected macros in between the user space header include
-and the kernel header includes.
+Zenm Chen <zenmchen@gmail.com>
+    wifi: rtl8xxxu: Add USB ID 2001:3328 for D-Link AN3U rev. A1
 
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- samples/vfs/test-statx.c         | 6 ++++++
- samples/watch_queue/watch_test.c | 6 ++++++
- 2 files changed, 12 insertions(+)
+Gopi Krishna Menon <krishnagopi487@gmail.com>
+    Documentation/rtla: rename common_xxx.rst files to common_xxx.txt
 
-diff --git a/samples/vfs/test-statx.c b/samples/vfs/test-statx.c
-index 49c7a46cee073..424a6fa15723c 100644
---- a/samples/vfs/test-statx.c
-+++ b/samples/vfs/test-statx.c
-@@ -19,6 +19,12 @@
- #include <time.h>
- #include <sys/syscall.h>
- #include <sys/types.h>
-+
-+// Work around glibc header silliness
-+#undef AT_RENAME_NOREPLACE
-+#undef AT_RENAME_EXCHANGE
-+#undef AT_RENAME_WHITEOUT
-+
- #include <linux/stat.h>
- #include <linux/fcntl.h>
- #define statx foo
-diff --git a/samples/watch_queue/watch_test.c b/samples/watch_queue/watch_test.c
-index 8c6cb57d5cfc5..24cf7d7a19725 100644
---- a/samples/watch_queue/watch_test.c
-+++ b/samples/watch_queue/watch_test.c
-@@ -16,6 +16,12 @@
- #include <errno.h>
- #include <sys/ioctl.h>
- #include <limits.h>
-+
-+// Work around glibc header silliness
-+#undef AT_RENAME_NOREPLACE
-+#undef AT_RENAME_EXCHANGE
-+#undef AT_RENAME_WHITEOUT
-+
- #include <linux/watch_queue.h>
- #include <linux/unistd.h>
- #include <linux/keyctl.h>
--- 
-2.51.0
+Johan Hovold <johan@kernel.org>
+    USB: serial: kobil_sct: fix TIOCMBIS and TIOCMBIC
 
+Johan Hovold <johan@kernel.org>
+    USB: serial: belkin_sa: fix TIOCMBIS and TIOCMBIC
+
+Biju Das <biju.das.jz@bp.renesas.com>
+    serial: sh-sci: Fix deadlock during RSCI FIFO overrun error
+
+Biju Das <biju.das.jz@bp.renesas.com>
+    dt-bindings: serial: rsci: Drop "uart-has-rtscts: false"
+
+Magne Bruno <magne.bruno@addi-data.com>
+    serial: add support of CPCI cards
+
+Johan Hovold <johan@kernel.org>
+    USB: serial: ftdi_sio: match on interface number for jtag
+
+Fabio Porcedda <fabio.porcedda@gmail.com>
+    USB: serial: option: move Telit 0x10c7 composition in the right place
+
+Fabio Porcedda <fabio.porcedda@gmail.com>
+    USB: serial: option: add Telit Cinterion FE910C04 new compositions
+
+Slark Xiao <slark_xiao@163.com>
+    USB: serial: option: add Foxconn T99W760
+
+Omar Sandoval <osandov@fb.com>
+    KVM: SVM: Don't skip unrelated instruction if INT3/INTO is replaced
+
+Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+    comedi: pcl818: fix null-ptr-deref in pcl818_ai_cancel()
+
+Alice Ryhl <aliceryhl@google.com>
+    rust_binder: fix race condition on death_list
+
+Alexey Nepomnyashih <sdl@nppct.ru>
+    ext4: add i_data_sem protection in ext4_destroy_inline_data_nolock()
+
+Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+    crypto: zstd - fix double-free in per-CPU stream cleanup
+
+Alexander Sverdlin <alexander.sverdlin@gmail.com>
+    locking/spinlock/debug: Fix data-race in do_raw_write_lock
+
+Qianchang Zhao <pioooooooooip@gmail.com>
+    ksmbd: ipc: fix use-after-free in ipc_msg_send_request
+
+Deepanshu Kartikey <kartikey406@gmail.com>
+    ext4: refresh inline data size before write operations
+
+Ye Bin <yebin10@huawei.com>
+    jbd2: avoid bug_on in jbd2_journal_get_create_access() when file system corrupted
+
+Bagas Sanjaya <bagasdotme@gmail.com>
+    Documentation: process: Also mention Sasha Levin as stable tree maintainer
+
+
+-------------
+
+Diffstat:
+
+ .../devicetree/bindings/serial/renesas,rsci.yaml   |  2 -
+ Documentation/process/2.Process.rst                |  6 +-
+ .../{common_appendix.rst => common_appendix.txt}   |  0
+ ...on_hist_options.rst => common_hist_options.txt} |  0
+ .../{common_options.rst => common_options.txt}     |  0
+ ...cription.rst => common_osnoise_description.txt} |  0
+ ...oise_options.rst => common_osnoise_options.txt} |  0
+ ...mmon_timerlat_aa.rst => common_timerlat_aa.txt} |  0
+ ...ription.rst => common_timerlat_description.txt} |  0
+ ...lat_options.rst => common_timerlat_options.txt} |  0
+ ...mmon_top_options.rst => common_top_options.txt} |  0
+ Documentation/tools/rtla/rtla-hwnoise.rst          |  8 +--
+ Documentation/tools/rtla/rtla-osnoise-hist.rst     | 10 +--
+ Documentation/tools/rtla/rtla-osnoise-top.rst      | 10 +--
+ Documentation/tools/rtla/rtla-osnoise.rst          |  4 +-
+ Documentation/tools/rtla/rtla-timerlat-hist.rst    | 12 ++--
+ Documentation/tools/rtla/rtla-timerlat-top.rst     | 12 ++--
+ Documentation/tools/rtla/rtla-timerlat.rst         |  4 +-
+ Documentation/tools/rtla/rtla.rst                  |  2 +-
+ Makefile                                           |  4 +-
+ arch/x86/include/asm/kvm_host.h                    |  9 +++
+ arch/x86/kvm/svm/svm.c                             | 24 ++++----
+ arch/x86/kvm/x86.c                                 | 21 +++++++
+ crypto/zstd.c                                      |  7 +--
+ drivers/android/binder/node.rs                     |  6 +-
+ drivers/comedi/comedi_fops.c                       | 42 +++++++++++--
+ drivers/comedi/drivers/c6xdigio.c                  | 46 ++++++++++----
+ drivers/comedi/drivers/multiq3.c                   |  9 +++
+ drivers/comedi/drivers/pcl818.c                    |  5 +-
+ drivers/iio/adc/ad4080.c                           |  9 ++-
+ drivers/net/wireless/realtek/rtl8xxxu/core.c       |  3 +
+ drivers/net/wireless/realtek/rtw88/rtw8822cu.c     |  2 +
+ drivers/staging/rtl8723bs/core/rtw_ieee80211.c     | 14 +++--
+ drivers/staging/rtl8723bs/core/rtw_mlme_ext.c      | 13 ++--
+ drivers/tty/serial/8250/8250_pci.c                 | 37 +++++++++++
+ drivers/tty/serial/sh-sci.c                        | 12 +++-
+ drivers/usb/serial/belkin_sa.c                     | 28 +++++----
+ drivers/usb/serial/ftdi_sio.c                      | 72 ++++++++--------------
+ drivers/usb/serial/kobil_sct.c                     | 18 +++---
+ drivers/usb/serial/option.c                        | 22 ++++++-
+ fs/ext4/inline.c                                   | 14 ++++-
+ fs/jbd2/transaction.c                              | 19 ++++--
+ fs/smb/server/transport_ipc.c                      |  7 ++-
+ kernel/locking/spinlock_debug.c                    |  4 +-
+ 44 files changed, 343 insertions(+), 174 deletions(-)
 
 
 
