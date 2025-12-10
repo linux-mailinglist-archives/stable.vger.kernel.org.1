@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-200717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3EA4CB2DE2
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 13:15:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C53DCB2DE5
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 13:16:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AF04D30053F7
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 12:15:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1AFEB301D654
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 12:16:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA4C3277CBF;
-	Wed, 10 Dec 2025 12:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 773DE1E9906;
+	Wed, 10 Dec 2025 12:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aliyun.com header.i=@aliyun.com header.b="QVONNFFj"
+	dkim=pass (1024-bit key) header.d=aliyun.com header.i=@aliyun.com header.b="Z1SYZ5WI"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-83.freemail.mail.aliyun.com (out30-83.freemail.mail.aliyun.com [115.124.30.83])
+Received: from out30-84.freemail.mail.aliyun.com (out30-84.freemail.mail.aliyun.com [115.124.30.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1EF8322C8A
-	for <stable@vger.kernel.org>; Wed, 10 Dec 2025 12:15:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.83
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D65277CBF
+	for <stable@vger.kernel.org>; Wed, 10 Dec 2025 12:16:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765368913; cv=none; b=AsikeQwdOXP8UaC1yQAFxXDq5KxlS9xt9TdvCusz0aYQw5Y1JEhIZNEnNVWxDfvGjgATyuM1LaQKzHJc7pKHO/Duq5rVK3Yvjehe0auajfIMsTiCukR0ZJ6eWGGfWpP3EC36HItr4fLKVa0yUJyhSgnIX4tNxAmvmnAk6ggGe80=
+	t=1765368975; cv=none; b=iGpTrEvP2tytCAFSTrM6lg6xGUEuZC9bpzCbYhPjN27HQ3mYaLdXogehonm5FLOtIl4TDfk/kAvaKmLnAWNd9cUPfhnI8ITG6Yl3Z51jz3lqB8v8HDXPWLGUgZYuzQz+tv+dHYf0Fi3YewPOQl1QW8WzFmDZA6lbJJPAJn2WR2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765368913; c=relaxed/simple;
-	bh=1U2FS0994iEx9XQMUXiu8OlslfWJ+WeAvuLTpFeClbE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mQ0PGGStx6KWaxm7cBXmzERtsNot3QB8QK/UZW3j7AumvKYpOKfr4fgUKwChAhrqfbUW1W6B92Viu9ZtD2pGjl4BH3ZlfIWVpxJyMdBKOTxz5rxGw1wWqA8eHvEZsl2vc4QiL6QwRhC7e/vxt95f6FyXR2p0RtCa25iKrhkXRXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliyun.com; spf=pass smtp.mailfrom=aliyun.com; dkim=pass (1024-bit key) header.d=aliyun.com header.i=@aliyun.com header.b=QVONNFFj; arc=none smtp.client-ip=115.124.30.83
+	s=arc-20240116; t=1765368975; c=relaxed/simple;
+	bh=FH+AmxQ73azXYNPJCbG3kWs7G6sIevlHceRqlJODigQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=f0+TDNuUhcXDS7IHF+i859zCN9bl5PEaTPhCLJkZMYUY+P+vQZMXkwjSrZdIHAQeL1+7MIKiU30Jwl1d40KKKocOPBVJrA3emBRw47EDaRzy99d5R1BrP2vGZXV+9wFn+fPRFSYfr7QYi3L/3D6vt9XQiQVJKk5+9hNjeCOpLfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliyun.com; spf=pass smtp.mailfrom=aliyun.com; dkim=pass (1024-bit key) header.d=aliyun.com header.i=@aliyun.com header.b=Z1SYZ5WI; arc=none smtp.client-ip=115.124.30.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliyun.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliyun.com
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=aliyun.com; s=s1024;
-	t=1765368908; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=Ny35wQsgbuU1MmiPhP2Gq4AIxMtONEByC6YKi+/CbZA=;
-	b=QVONNFFjo2pPEJrTK/kp7U3au5o0Xib4LuxnL+9JqCkDen7Sjd0OKezMWlgF/IqdPu65yfjiW4NSoS2R/TsBaF1jYmaA1V7cEOgBe4w9nySpEUzR7BdS103x96IDnzyJQ+sXoP2OUbOOQOzLv99J9LsDJMs9sBayFy/M+xVtFlU=
-Received: from ubuntu24..(mailfrom:ruohanlan@aliyun.com fp:SMTPD_---0WuWl7Qh_1765368903 cluster:ay36)
+	t=1765368968; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=oRqqRD/ugCzkvoWwW0TRtd/4xk0lkbO/Cre0x1NnAvs=;
+	b=Z1SYZ5WIq9nLAJ2vghu0npfj6Nh7e6gcrE1SlBRKBO+DHIi7GwYGuVkMES//grfJCrjo0VH0dcl7qrVEK2Hj7GfaKoB6rhSLmQl66RrckOiTWfJs8tPE+vLgwQNM2MrVC72ja7H9zPXSMbFa0wgzP6YrAH5NT3qqQ4Nj/GDjy00=
+Received: from ubuntu24..(mailfrom:ruohanlan@aliyun.com fp:SMTPD_---0WuWgmCL_1765368965 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Wed, 10 Dec 2025 20:15:07 +0800
+          Wed, 10 Dec 2025 20:16:08 +0800
 From: ruohanlan@aliyun.com
 To: stable@vger.kernel.org
 Cc: Dong Chenchen <dongchenchen2@huawei.com>,
@@ -44,9 +44,9 @@ Cc: Dong Chenchen <dongchenchen2@huawei.com>,
 	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
 	Mina Almasry <almasrymina@google.com>,
 	Ruohan Lan <ruohanlan@aliyun.com>
-Subject: [PATCH 6.6.y] page_pool: Fix use-after-free in page_pool_recycle_in_ring
-Date: Wed, 10 Dec 2025 12:15:02 +0000
-Message-ID: <20251210121502.5066-1-ruohanlan@aliyun.com>
+Subject: [PATCH 6.1.y] page_pool: Fix use-after-free in page_pool_recycle_in_ring
+Date: Wed, 10 Dec 2025 12:15:55 +0000
+Message-ID: <20251210121555.5106-1-ruohanlan@aliyun.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -138,10 +138,10 @@ Signed-off-by: Ruohan Lan <ruohanlan@aliyun.com>
  1 file changed, 14 insertions(+), 13 deletions(-)
 
 diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index 0188d7f00785..c8e92a12af35 100644
+index 5c66092f9580..4a3abd86f8ce 100644
 --- a/net/core/page_pool.c
 +++ b/net/core/page_pool.c
-@@ -140,9 +140,9 @@ u64 *page_pool_ethtool_stats_get(u64 *data, void *stats)
+@@ -128,9 +128,9 @@ u64 *page_pool_ethtool_stats_get(u64 *data, void *stats)
  EXPORT_SYMBOL(page_pool_ethtool_stats_get);
  
  #else
@@ -154,7 +154,7 @@ index 0188d7f00785..c8e92a12af35 100644
  #endif
  
  static bool page_pool_producer_lock(struct page_pool *pool)
-@@ -549,19 +549,16 @@ static void page_pool_return_page(struct page_pool *pool, struct page *page)
+@@ -539,19 +539,16 @@ static void page_pool_return_page(struct page_pool *pool, struct page *page)
  
  static bool page_pool_recycle_in_ring(struct page_pool *pool, struct page *page)
  {
@@ -181,7 +181,7 @@ index 0188d7f00785..c8e92a12af35 100644
  }
  
  /* Only allow direct recycling in special circumstances, into the
-@@ -850,10 +847,14 @@ static void page_pool_scrub(struct page_pool *pool)
+@@ -826,10 +823,14 @@ static void page_pool_scrub(struct page_pool *pool)
  
  static int page_pool_release(struct page_pool *pool)
  {
