@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-200583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05DE5CB236D
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:32:51 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2D23CB2478
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:39:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8D8DB3022643
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:32:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D701A301C666
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:35:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAF54280329;
-	Wed, 10 Dec 2025 07:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9833E303C81;
+	Wed, 10 Dec 2025 07:35:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NKBVHEDY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QbkejCWU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97F6D26A0A7;
-	Wed, 10 Dec 2025 07:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 529543019C7;
+	Wed, 10 Dec 2025 07:35:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765351956; cv=none; b=DBk6Qmz99APA9GC00XKDz8FARPm4GqVaYLm/kRhlhYoGLhjQSp/cX9Jxi0sBQ8dnT0OVqG3fI+vcgHFqMX4wFfeexdGnxnB20aE8/7Q46Y46B3Si5yuo+cdl3W/ySlO4jnVH5YcFSGLqRZ00BRe6yB3+wVHk2vpO0tNs1rIqHog=
+	t=1765352133; cv=none; b=Gp9bbfI6jq1x+Jd+dVHf479hTHer6YIkiltPsHWrXwe32lmuPX4Ryfo00gk8TXY4J4oD8QIR6rANpbkaR783IQVfwtX0yRR7P9YUUksbuFR5G6lu4PmYCzmSsr/aQlzIX1Q2jN+oaccB46QRziswUjb9cDl7EP6PsexKJpfPjXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765351956; c=relaxed/simple;
-	bh=wLehWlJ/IUlLKCAKhPP2+8jwvR3xT/cMthRVpupa7rs=;
+	s=arc-20240116; t=1765352133; c=relaxed/simple;
+	bh=d45qxoSJ8ljS6Wav8vwK6GCOM4u7dFBs9p6KXWC1gjw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iJH3gvdA/P25A2cu5pJk8K7Gqthzi6arjo/QhbI+x7CGHRlvMb+bsHfUi/uUgMhTgGjQFEKcejsr3Yv4cTFibq+I10wHq/+DECGrJyGIzb5sGj90WSKH2ROcCPyTkM76fBimMFJPyMceT3i5UpezBAZ7Z0s9n734TknQ/8+NcpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NKBVHEDY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AC60C4CEF1;
-	Wed, 10 Dec 2025 07:32:35 +0000 (UTC)
+	 MIME-Version; b=O+asWwuPUJJVS3k7cZjITuVucNR1mvxtdhjkpRJA4uPdOJTSNM1NsWrnm+uLz56kuGAfENiqU3FdDBF19XPsXKMuaAuRg79gGWtS4xhZXRP2dyTCUmEyK82uKM0jweGOtjredIFJE+cChCX/ea8LjQDVhc/YqO8ETeuzJ7svJgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QbkejCWU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBF0DC4CEF1;
+	Wed, 10 Dec 2025 07:35:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765351956;
-	bh=wLehWlJ/IUlLKCAKhPP2+8jwvR3xT/cMthRVpupa7rs=;
+	s=korg; t=1765352133;
+	bh=d45qxoSJ8ljS6Wav8vwK6GCOM4u7dFBs9p6KXWC1gjw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NKBVHEDYRryzvOt3gyTkuKa820rPJxN9VwfHBqzzlFjmO3Q/PetlrpRSnQHj/y5C8
-	 eIbl7tdrcwhOcwMZ3nbGAPS6LRuyp21LfGRXTAhMiFodTTpC/3ow7H9psAkCMQ1Jj4
-	 WGoAHKWE+fH+qoMKVvba0uSYxTbeagkFzHy4elLU=
+	b=QbkejCWUgSErcNC4tPxQK1S8JgfUYxXpvDabVd/iBoH3078M/WaoHBtRYwD4suSDf
+	 alLiUFwlv3aO6pNRpE0nO5SuiHW8OReUatq2vdxRsaCn1gMlE4jYIYb/UJ1Ny1wN8l
+	 jz06Vmy3L58U7Ggs/KMgxJa0UWeyW8nHSthJz76M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+ab8008c24e84adee93ff@syzkaller.appspotmail.com,
-	stable <stable@kernel.org>,
-	Ian Abbott <abbotti@mev.co.uk>,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Subject: [PATCH 6.12 44/49] comedi: check devices attached status in compat ioctls
+	Zqiang <qiang.zhang@linux.dev>,
+	Tejun Heo <tj@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 44/60] sched_ext: Fix possible deadlock in the deferred_irq_workfn()
 Date: Wed, 10 Dec 2025 16:30:14 +0900
-Message-ID: <20251210072949.261238934@linuxfoundation.org>
+Message-ID: <20251210072948.960218513@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
-References: <20251210072948.125620687@linuxfoundation.org>
+In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
+References: <20251210072947.850479903@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,151 +60,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Zqiang <qiang.zhang@linux.dev>
 
-commit 0de7d9cd07a2671fa6089173bccc0b2afe6b93ee upstream.
+[ Upstream commit a257e974210320ede524f340ffe16bf4bf0dda1e ]
 
-Syzbot identified an issue [1] that crashes kernel, seemingly due to
-unexistent callback dev->get_valid_routes(). By all means, this should
-not occur as said callback must always be set to
-get_zero_valid_routes() in __comedi_device_postconfig().
+For PREEMPT_RT=y kernels, the deferred_irq_workfn() is executed in
+the per-cpu irq_work/* task context and not disable-irq, if the rq
+returned by container_of() is current CPU's rq, the following scenarios
+may occur:
 
-As the crash seems to appear exclusively in i386 kernels, at least,
-judging from [1] reports, the blame lies with compat versions
-of standard IOCTL handlers. Several of them are modified and
-do not use comedi_unlocked_ioctl(). While functionality of these
-ioctls essentially copy their original versions, they do not
-have required sanity check for device's attached status. This,
-in turn, leads to a possibility of calling select IOCTLs on a
-device that has not been properly setup, even via COMEDI_DEVCONFIG.
+lock(&rq->__lock);
+<Interrupt>
+  lock(&rq->__lock);
 
-Doing so on unconfigured devices means that several crucial steps
-are missed, for instance, specifying dev->get_valid_routes()
-callback.
+This commit use IRQ_WORK_INIT_HARD() to replace init_irq_work() to
+initialize rq->scx.deferred_irq_work, make the deferred_irq_workfn()
+is always invoked in hard-irq context.
 
-Fix this somewhat crudely by ensuring device's attached status before
-performing any ioctls, improving logic consistency between modern
-and compat functions.
-
-[1] Syzbot report:
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-...
-CR2: ffffffffffffffd6 CR3: 000000006c717000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- get_valid_routes drivers/comedi/comedi_fops.c:1322 [inline]
- parse_insn+0x78c/0x1970 drivers/comedi/comedi_fops.c:1401
- do_insnlist_ioctl+0x272/0x700 drivers/comedi/comedi_fops.c:1594
- compat_insnlist drivers/comedi/comedi_fops.c:3208 [inline]
- comedi_compat_ioctl+0x810/0x990 drivers/comedi/comedi_fops.c:3273
- __do_compat_sys_ioctl fs/ioctl.c:695 [inline]
- __se_compat_sys_ioctl fs/ioctl.c:638 [inline]
- __ia32_compat_sys_ioctl+0x242/0x370 fs/ioctl.c:638
- do_syscall_32_irqs_on arch/x86/entry/syscall_32.c:83 [inline]
-...
-
-Reported-by: syzbot+ab8008c24e84adee93ff@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=ab8008c24e84adee93ff
-Fixes: 3fbfd2223a27 ("comedi: get rid of compat_alloc_user_space() mess in COMEDI_CHANINFO compat")
-Cc: stable <stable@kernel.org>
-Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Link: https://patch.msgid.link/20251023132234.395794-1-n.zhandarovich@fintech.ru
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Zqiang <qiang.zhang@linux.dev>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/comedi/comedi_fops.c |   42 ++++++++++++++++++++++++++++++++++++------
- 1 file changed, 36 insertions(+), 6 deletions(-)
+ kernel/sched/ext.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/comedi/comedi_fops.c
-+++ b/drivers/comedi/comedi_fops.c
-@@ -2971,7 +2971,12 @@ static int compat_chaninfo(struct file *
- 	chaninfo.rangelist = compat_ptr(chaninfo32.rangelist);
+diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
+index 1e4740de66c28..16a7ae9b29ae4 100644
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -5377,7 +5377,7 @@ void __init init_sched_ext_class(void)
+ 		BUG_ON(!zalloc_cpumask_var_node(&rq->scx.cpus_to_kick_if_idle, GFP_KERNEL, n));
+ 		BUG_ON(!zalloc_cpumask_var_node(&rq->scx.cpus_to_preempt, GFP_KERNEL, n));
+ 		BUG_ON(!zalloc_cpumask_var_node(&rq->scx.cpus_to_wait, GFP_KERNEL, n));
+-		init_irq_work(&rq->scx.deferred_irq_work, deferred_irq_workfn);
++		rq->scx.deferred_irq_work = IRQ_WORK_INIT_HARD(deferred_irq_workfn);
+ 		init_irq_work(&rq->scx.kick_cpus_irq_work, kick_cpus_irq_workfn);
  
- 	mutex_lock(&dev->mutex);
--	err = do_chaninfo_ioctl(dev, &chaninfo);
-+	if (!dev->attached) {
-+		dev_dbg(dev->class_dev, "no driver attached\n");
-+		err = -ENODEV;
-+	} else {
-+		err = do_chaninfo_ioctl(dev, &chaninfo);
-+	}
- 	mutex_unlock(&dev->mutex);
- 	return err;
- }
-@@ -2992,7 +2997,12 @@ static int compat_rangeinfo(struct file
- 	rangeinfo.range_ptr = compat_ptr(rangeinfo32.range_ptr);
- 
- 	mutex_lock(&dev->mutex);
--	err = do_rangeinfo_ioctl(dev, &rangeinfo);
-+	if (!dev->attached) {
-+		dev_dbg(dev->class_dev, "no driver attached\n");
-+		err = -ENODEV;
-+	} else {
-+		err = do_rangeinfo_ioctl(dev, &rangeinfo);
-+	}
- 	mutex_unlock(&dev->mutex);
- 	return err;
- }
-@@ -3068,7 +3078,12 @@ static int compat_cmd(struct file *file,
- 		return rc;
- 
- 	mutex_lock(&dev->mutex);
--	rc = do_cmd_ioctl(dev, &cmd, &copy, file);
-+	if (!dev->attached) {
-+		dev_dbg(dev->class_dev, "no driver attached\n");
-+		rc = -ENODEV;
-+	} else {
-+		rc = do_cmd_ioctl(dev, &cmd, &copy, file);
-+	}
- 	mutex_unlock(&dev->mutex);
- 	if (copy) {
- 		/* Special case: copy cmd back to user. */
-@@ -3093,7 +3108,12 @@ static int compat_cmdtest(struct file *f
- 		return rc;
- 
- 	mutex_lock(&dev->mutex);
--	rc = do_cmdtest_ioctl(dev, &cmd, &copy, file);
-+	if (!dev->attached) {
-+		dev_dbg(dev->class_dev, "no driver attached\n");
-+		rc = -ENODEV;
-+	} else {
-+		rc = do_cmdtest_ioctl(dev, &cmd, &copy, file);
-+	}
- 	mutex_unlock(&dev->mutex);
- 	if (copy) {
- 		err = put_compat_cmd(compat_ptr(arg), &cmd);
-@@ -3153,7 +3173,12 @@ static int compat_insnlist(struct file *
- 	}
- 
- 	mutex_lock(&dev->mutex);
--	rc = do_insnlist_ioctl(dev, insns, insnlist32.n_insns, file);
-+	if (!dev->attached) {
-+		dev_dbg(dev->class_dev, "no driver attached\n");
-+		rc = -ENODEV;
-+	} else {
-+		rc = do_insnlist_ioctl(dev, insns, insnlist32.n_insns, file);
-+	}
- 	mutex_unlock(&dev->mutex);
- 	kfree(insns);
- 	return rc;
-@@ -3172,7 +3197,12 @@ static int compat_insn(struct file *file
- 		return rc;
- 
- 	mutex_lock(&dev->mutex);
--	rc = do_insn_ioctl(dev, &insn, file);
-+	if (!dev->attached) {
-+		dev_dbg(dev->class_dev, "no driver attached\n");
-+		rc = -ENODEV;
-+	} else {
-+		rc = do_insn_ioctl(dev, &insn, file);
-+	}
- 	mutex_unlock(&dev->mutex);
- 	return rc;
- }
+ 		if (cpu_online(cpu))
+-- 
+2.51.0
+
 
 
 
