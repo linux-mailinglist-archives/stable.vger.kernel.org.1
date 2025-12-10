@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-200569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B495ACB2340
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:32:09 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id F30C2CB24C9
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:41:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C06A8300AC45
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:32:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0C8EC3023B7B
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:41:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA96F273D8D;
-	Wed, 10 Dec 2025 07:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85C80303CA8;
+	Wed, 10 Dec 2025 07:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="onQcc3vw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e2EiTLOj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A726126A0A7;
-	Wed, 10 Dec 2025 07:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F96303A1B;
+	Wed, 10 Dec 2025 07:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765351920; cv=none; b=hr3cNRP0/wtLOqOWFa+lbQ8uY5zwLva46SiGKAbwUgaxI+D2Yw3e6++8Q7CCiNNc1iFlLHqs/dSWnCTb+Ae1ePinLlIMPylprf/ImQ16yUYA+Wy9uP7yUJYjQyQsbt/HuVeJale9UeRupvPSUB/ZzC6N9MjiqFR0W0CvRPDehzQ=
+	t=1765352052; cv=none; b=GN908LtPAgI4wT4L9pLkeft8yplesTUyFFz2H3N6OGsFQJwTiZhtk7fWZFiBT16pKFZz2dUQw9lHFAfk1uBljP+9D2zq22P6BcdfaKSdqiHot7vFADeoi33yLXNQRzzk+K2CEfYirZGsWYyBbSIDrDe/8HMtfNtsGx/DzvOpR3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765351920; c=relaxed/simple;
-	bh=R7GuYolVgF7zuyHcJ0Ntz9vCbLNdSd2rFedpkT6k7yY=;
+	s=arc-20240116; t=1765352052; c=relaxed/simple;
+	bh=4m2CvxuS8oemmv17ubMzF1jaQSBcsujoZ9UgkaLFSHE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sF5qMg9UX0nZqae7k0VlW0WCXd4c/OOKr6IQTgX9+cdstWcK0ViXP09zNKkmnKf12i+VKVKyYKcBq2GkOxS38zy4XYxkZJgbu/pUowdKEEnDmFzTLpzgI/qnTt150RS6IdAj3F6l6Q4nBMuPryVinmfbavQb7A3v8PwQVaFIviU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=onQcc3vw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3D63C4CEF1;
-	Wed, 10 Dec 2025 07:31:59 +0000 (UTC)
+	 MIME-Version; b=qWzKQVbWTcyYm4f5fAepwJUZdx81k8ChJ11SBayeojAVTMYgqjx5BgXjmFtnQ04NyQDN61B0GoohH0Lqv02kPYbwGnfqLi+JS42grtKAAWjlSV6GMqEpY/qjspy/vvlsTPOV97X56ba6MS91od1/kCjN2ThwduNWD+sC1ehWM40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e2EiTLOj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FD9FC116B1;
+	Wed, 10 Dec 2025 07:34:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765351920;
-	bh=R7GuYolVgF7zuyHcJ0Ntz9vCbLNdSd2rFedpkT6k7yY=;
+	s=korg; t=1765352052;
+	bh=4m2CvxuS8oemmv17ubMzF1jaQSBcsujoZ9UgkaLFSHE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=onQcc3vwKm/vPfWtedk3nyCM9QrY6EOokKPnJWGkuevPDfMzzgLzZDJmnQfdAn+92
-	 hZKeWGBHiBX7Vp/ozjxzwteuYDaQp5ltTi2MO892/0fzQ1337Zu+7dGaJHQtC8zODh
-	 9fACXMoELFMS4Rug5L6VGsKPFcWn7leCzbYMWXuo=
+	b=e2EiTLOjoj5vZmBqwqbHQUeFJ4JYVyk8VL57ZsQdTu3Vp3j5/u11l2gpfhIgAkm4y
+	 mr0iszafJBCuqfk02vQo4jQbpZZkLvVNN0bhJrnYwKgRKf/gMCZztg2GKFifGs6Dt2
+	 /3cRalH3fyyOsnncb7toqUOjgvu+eOaI7W1/u9Q8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prasad Sodagudi <prasad.sodagudi@oss.qualcomm.com>,
-	Praveen Talari <praveen.talari@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Lauri Tirkkonen <lauri@hacktheplanet.fi>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 31/49] pinctrl: qcom: msm: Fix deadlock in pinmux configuration
+Subject: [PATCH 6.17 31/60] HID: lenovo: fixup Lenovo Yoga Slim 7x Keyboard rdesc
 Date: Wed, 10 Dec 2025 16:30:01 +0900
-Message-ID: <20251210072948.936250433@linuxfoundation.org>
+Message-ID: <20251210072948.601340830@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
-References: <20251210072948.125620687@linuxfoundation.org>
+In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
+References: <20251210072947.850479903@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +60,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Praveen Talari <praveen.talari@oss.qualcomm.com>
+From: Lauri Tirkkonen <lauri@hacktheplanet.fi>
 
-[ Upstream commit 1c2e70397b4125022dba80f6111271a37fb36bae ]
+[ Upstream commit a45f15808fb753a14c6041fd1e5bef5d552bd2e3 ]
 
-Replace disable_irq() with disable_irq_nosync() in msm_pinmux_set_mux()
-to prevent deadlock when wakeup IRQ is triggered on the same
-GPIO being reconfigured.
+The keyboard of this device has the following in its report description
+for Usage (Keyboard) in Collection (Application):
 
-The issue occurs when a wakeup IRQ is triggered on a GPIO and the IRQ
-handler attempts to reconfigure the same GPIO's pinmux. In this scenario,
-msm_pinmux_set_mux() calls disable_irq() which waits for the currently
-running IRQ handler to complete, creating a circular dependency that
-results in deadlock.
+	# 0x15, 0x00,                    //  Logical Minimum (0)                52
+	# 0x25, 0x65,                    //  Logical Maximum (101)              54
+	# 0x05, 0x07,                    //  Usage Page (Keyboard)              56
+	# 0x19, 0x00,                    //  Usage Minimum (0)                  58
+	# 0x29, 0xdd,                    //  Usage Maximum (221)                60
+	# 0x81, 0x00,                    //  Input (Data,Arr,Abs)               62
 
-Using disable_irq_nosync() avoids waiting for the IRQ handler to
-complete, preventing the deadlock condition while still properly
-disabling the interrupt during pinmux reconfiguration.
+Since the Usage Min/Max range exceeds the Logical Min/Max range,
+keypresses outside the Logical range are not recognized. This includes,
+for example, the Japanese language keyboard variant's keys for |, _ and
+\.
 
-Suggested-by: Prasad Sodagudi <prasad.sodagudi@oss.qualcomm.com>
-Signed-off-by: Praveen Talari <praveen.talari@oss.qualcomm.com>
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixup the report description to make the Logical range match the Usage
+range, fixing the interpretation of keypresses above 101 on this device.
+
+Signed-off-by: Lauri Tirkkonen <lauri@hacktheplanet.fi>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/qcom/pinctrl-msm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hid/hid-ids.h    |  1 +
+ drivers/hid/hid-lenovo.c | 17 +++++++++++++++++
+ 2 files changed, 18 insertions(+)
 
-diff --git a/drivers/pinctrl/qcom/pinctrl-msm.c b/drivers/pinctrl/qcom/pinctrl-msm.c
-index 5532328097894..27eb585bf42df 100644
---- a/drivers/pinctrl/qcom/pinctrl-msm.c
-+++ b/drivers/pinctrl/qcom/pinctrl-msm.c
-@@ -214,7 +214,7 @@ static int msm_pinmux_set_mux(struct pinctrl_dev *pctldev,
- 	 */
- 	if (d && i != gpio_func &&
- 	    !test_and_set_bit(d->hwirq, pctrl->disabled_for_mux))
--		disable_irq(irq);
-+		disable_irq_nosync(irq);
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 52ae7c29f9e08..85db279baa72e 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -718,6 +718,7 @@
+ #define USB_DEVICE_ID_ITE_LENOVO_YOGA2  0x8350
+ #define I2C_DEVICE_ID_ITE_LENOVO_LEGION_Y720	0x837a
+ #define USB_DEVICE_ID_ITE_LENOVO_YOGA900	0x8396
++#define I2C_DEVICE_ID_ITE_LENOVO_YOGA_SLIM_7X_KEYBOARD	0x8987
+ #define USB_DEVICE_ID_ITE8595		0x8595
+ #define USB_DEVICE_ID_ITE_MEDION_E1239T	0xce50
  
- 	raw_spin_lock_irqsave(&pctrl->lock, flags);
+diff --git a/drivers/hid/hid-lenovo.c b/drivers/hid/hid-lenovo.c
+index 654879814f97a..9cc3e029e9f61 100644
+--- a/drivers/hid/hid-lenovo.c
++++ b/drivers/hid/hid-lenovo.c
+@@ -148,6 +148,14 @@ static const __u8 lenovo_tpIIbtkbd_need_fixup_collection[] = {
+ 	0x81, 0x01,		/*   Input (Const,Array,Abs,No Wrap,Linear,Preferred State,No Null Position) */
+ };
+ 
++static const __u8 lenovo_yoga7x_kbd_need_fixup_collection[] = {
++	0x15, 0x00,	// Logical Minimum (0)
++	0x25, 0x65,	// Logical Maximum (101)
++	0x05, 0x07,	// Usage Page (Keyboard)
++	0x19, 0x00,	// Usage Minimum (0)
++	0x29, 0xDD,	// Usage Maximum (221)
++};
++
+ static const __u8 *lenovo_report_fixup(struct hid_device *hdev, __u8 *rdesc,
+ 		unsigned int *rsize)
+ {
+@@ -177,6 +185,13 @@ static const __u8 *lenovo_report_fixup(struct hid_device *hdev, __u8 *rdesc,
+ 			rdesc[260] = 0x01; /* report count (2) = 0x01 */
+ 		}
+ 		break;
++	case I2C_DEVICE_ID_ITE_LENOVO_YOGA_SLIM_7X_KEYBOARD:
++		if (*rsize == 176 &&
++		    memcmp(&rdesc[52], lenovo_yoga7x_kbd_need_fixup_collection,
++			  sizeof(lenovo_yoga7x_kbd_need_fixup_collection)) == 0) {
++			rdesc[55] = rdesc[61]; // logical maximum = usage maximum
++		}
++		break;
+ 	}
+ 	return rdesc;
+ }
+@@ -1538,6 +1553,8 @@ static const struct hid_device_id lenovo_devices[] = {
+ 		     USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_X12_TAB) },
+ 	{ HID_DEVICE(BUS_USB, HID_GROUP_GENERIC,
+ 		     USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_X12_TAB2) },
++	{ HID_DEVICE(BUS_I2C, HID_GROUP_GENERIC,
++		     USB_VENDOR_ID_ITE, I2C_DEVICE_ID_ITE_LENOVO_YOGA_SLIM_7X_KEYBOARD) },
+ 	{ }
+ };
  
 -- 
 2.51.0
