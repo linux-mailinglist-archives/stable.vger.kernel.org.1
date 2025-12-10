@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-200593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57BF6CB239D
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:34:02 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 749D0CB2439
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:37:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D870A30269B9
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:33:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2917B303459E
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:34:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 753362DA74D;
-	Wed, 10 Dec 2025 07:33:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE1E7302CCD;
+	Wed, 10 Dec 2025 07:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j2/1dOe9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K+Kg2tbO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015C526A0A7;
-	Wed, 10 Dec 2025 07:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A59C2FF16C;
+	Wed, 10 Dec 2025 07:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765351984; cv=none; b=RClsxIOY/kklOY/z36tiwUUDSZhkitUtJM1u2EZcjogiFC/j7+LEpGd6004jw9BGq8OQ7fcQiowujNuewldt1n1l506jLHBqYkZ+0FQInejF73K8bqBGVDGwZd1F+6EuPDEBKPQmQ89QeDlJqDWMqD4zOBKK2gSrjegPoJQHDRY=
+	t=1765352086; cv=none; b=qzBCIsVcqOkc96kz7Muj0qD4qxH4X+swVFWsDmLQiMdetjKfP4iB6nf9prPd9RdwAKKRiPJiN0C1YRN4V+6tes3gXacezYP3DLDuaE6yP/5zLdhbk9IItOD1m1AWXtIX4DB4or2B/S3FJHH+gEAfV4kGZo0Tj0Tlh0+Lw8ii3SU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765351984; c=relaxed/simple;
-	bh=chPDOxs6m60lcmzv6aL+pF+XdUeX/Ecvp/B4bujh2QA=;
+	s=arc-20240116; t=1765352086; c=relaxed/simple;
+	bh=mKv86J3aCkI386PkxxDgoDHpTjF3xccfCQ3shWdptdE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OQOro33AHC5v8YZZEE3TRKLghnAe9Cji2N/4BJzYuLm9r0xN+zkSv+dhTmOqdgVFVEL9pFTrGstLYdqaJIbk8Qfe02Hx1Df5CEMHll1G1H75e7ToTHSfIwu4apSRPchQE16J7UXi9ynBL0fIXoMOYc9KpuK3ttWTJoIdJ+N+7bQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j2/1dOe9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0704CC4CEF1;
-	Wed, 10 Dec 2025 07:33:02 +0000 (UTC)
+	 MIME-Version; b=i33BWVKkvfvByfLKdLf15McWLW61+51HAw6pRVzKTpcm6U9wEvRJ9d1UxJV+J3BSKEJFMAQjxv+BgHvV6U25he6AIcWGzRHsEhWWuLJOU9CU4qms2ZpZsg/e0VyEGgNA9JU8gyslho6yFThAMDXgLvcMpnZiqNOtfxpGL/31cbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K+Kg2tbO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B8C7C4CEF1;
+	Wed, 10 Dec 2025 07:34:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765351983;
-	bh=chPDOxs6m60lcmzv6aL+pF+XdUeX/Ecvp/B4bujh2QA=;
+	s=korg; t=1765352086;
+	bh=mKv86J3aCkI386PkxxDgoDHpTjF3xccfCQ3shWdptdE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j2/1dOe9b/y/xVcFIusP5k+baJB4Nchg0ZyUzBHSBSc5QHGAYnN7eiUqWPdhs8Cou
-	 lSjSX5JYYhr3faCl/+cSnclp4+Lfd36vlxX7hVEmeiQI/0d/jwjyMqWIruzLfZByhC
-	 Qpdm5DthlYFUhCwq43QicwiPESZAQ1KL3nexPJnc=
+	b=K+Kg2tbONFpVhjWDEDxMbTcFxJqW3vIIGNu9TqHZ4rVqpPL51aYG/BSa5LsshmLF6
+	 ZHcFiOuN8EK31m3XK2cUfvO6J/6cQNrTvGXh7dwRFSzJ6bXvL768NlWz/jmtfYIazI
+	 hUQznWzRPdVEVLn/KxML5KwZbN8WgED/h6vLwI+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Porcedda <fabio.porcedda@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.12 15/49] USB: serial: option: move Telit 0x10c7 composition in the right place
+	stable@kernel.org,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Biju Das <biju.das.jz@bp.renesas.com>
+Subject: [PATCH 6.17 15/60] dt-bindings: serial: rsci: Drop "uart-has-rtscts: false"
 Date: Wed, 10 Dec 2025 16:29:45 +0900
-Message-ID: <20251210072948.505634733@linuxfoundation.org>
+Message-ID: <20251210072948.216940888@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
-References: <20251210072948.125620687@linuxfoundation.org>
+In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
+References: <20251210072947.850479903@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,47 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-commit 072f2c49572547f4b0776fe2da6b8f61e4b34699 upstream.
+commit a6cdfd69ad38997108b862f9aafc547891506701 upstream.
 
-Move Telit 0x10c7 composition right after 0x10c6 composition and
-before 0x10c8 composition.
+Drop "uart-has-rtscts: false" from binding as the IP supports hardware
+flow control on all SoCs.
 
-Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Cc: stable@kernel.org
+Fixes: 25422e8f46c1 ("dt-bindings: serial: Add compatible for Renesas RZ/T2H SoC in sci")
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Link: https://patch.msgid.link/20251114101350.106699-2-biju.das.jz@bp.renesas.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ Documentation/devicetree/bindings/serial/renesas,rsci.yaml |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1445,6 +1445,9 @@ static const struct usb_device_id option
- 	  .driver_info = NCTRL(4) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c6, 0xff),	/* Telit FE910C04 (MBIM) */
- 	  .driver_info = NCTRL(4) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10c7, 0xff, 0xff, 0x30),	/* Telit FE910C04 (ECM) */
-+	  .driver_info = NCTRL(4) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10c7, 0xff, 0xff, 0x40) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c8, 0xff),	/* Telit FE910C04 (rmnet) */
- 	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c9, 0xff),	/* Telit FE910C04 (MBIM) */
-@@ -1455,9 +1458,6 @@ static const struct usb_device_id option
- 	  .driver_info = NCTRL(5) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x60) },
--	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10c7, 0xff, 0xff, 0x30),	/* Telit FE910C04 (ECM) */
--	  .driver_info = NCTRL(4) },
--	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10c7, 0xff, 0xff, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x30),	/* Telit FN990B (MBIM) */
- 	  .driver_info = NCTRL(6) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x40) },
+--- a/Documentation/devicetree/bindings/serial/renesas,rsci.yaml
++++ b/Documentation/devicetree/bindings/serial/renesas,rsci.yaml
+@@ -54,8 +54,6 @@ properties:
+   power-domains:
+     maxItems: 1
+ 
+-  uart-has-rtscts: false
+-
+ required:
+   - compatible
+   - reg
 
 
 
