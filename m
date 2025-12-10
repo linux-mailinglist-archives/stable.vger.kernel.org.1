@@ -1,118 +1,294 @@
-Return-Path: <stable+bounces-200511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2FB9CB1CCF
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 04:36:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4628CCB1D08
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 04:49:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B66513025533
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 03:36:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A3B0B30181B9
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 03:49:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3DD430EF6C;
-	Wed, 10 Dec 2025 03:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E21C423B63E;
+	Wed, 10 Dec 2025 03:49:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BQ/tx/RA"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 038A319F115;
-	Wed, 10 Dec 2025 03:35:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A9E672618;
+	Wed, 10 Dec 2025 03:49:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765337768; cv=none; b=d/97emVmT2kZfrGkbHOj7oKmYi4zEYCZdV8QgA3G2c4OxEBMo0/DvVehA1Tcio3Spiu/hs3WGANurLPOkMWASl7NHfhO8A+uifI/dlIOLDbbL5RKmg4M7AGku6ggx0/40ifVi4vlfiRg8Wd4FjGd7OpA8nr5IkmjNBSAG309nVg=
+	t=1765338559; cv=none; b=aKy6i2rcDzj7GjwSQt/R5aiiSHohZKs+gpcm08Lj569T41G+NHpYChaH0zlLjAFyeNv6bfbf6lPJAuKe9GdqjF9QgSC0Kz+a1R2MhME5hXtuystpHIjskYO8GmhyWkTEaEgO/+AMGTmlLP0YeM/0vx8NNJ7UDouN+Jpi0ObS+PA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765337768; c=relaxed/simple;
-	bh=T/nc6k6Js1pTwDVkqExgf4KiK6XjnKnzvr7QGEW1+HY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YUM/DxnAL07Nc9lW8SJ5LKu7ky+g4ygTBSg0eMTZQ3iEJph03p1P0cdEkESxpQImd3zzDXfrh8wkjmuR9pXoOthGt6aLSOnoXlZrRtxIcoUIFqHeBdGhpdKAp4xJ0fnnetgu6/QvOKhPieELu5tytcOJItMnTqkplweQ2movSYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from dfae2b116770.home.arpa (unknown [124.16.138.129])
-	by APP-05 (Coremail) with SMTP id zQCowADHWg6Q6jhp914sAA--.20763S2;
-	Wed, 10 Dec 2025 11:35:44 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: ulf.hansson@linaro.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com
-Cc: linux-pm@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
+	s=arc-20240116; t=1765338559; c=relaxed/simple;
+	bh=EdoTQBVOSnfL3adtSB4OmKmM0oMbsG9LjOfOgavoKus=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=AmZIzV0qXgLRec777DoAwYZ8MZTkOcmwcp7YDbWuGmIrsjVy7qnE5pH/XihX+OoIWaL3U38qYEyO1Pjqei7EqhkoDFDmhOx86SNHgGP9K7ovhilqRNkvlY1iLVE+P2qvMdk1H3RaqyYKs+JUj2a7xZcBaXpr9w2aAJL6bdoGoVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BQ/tx/RA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 541C0C4CEF1;
+	Wed, 10 Dec 2025 03:49:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765338559;
+	bh=EdoTQBVOSnfL3adtSB4OmKmM0oMbsG9LjOfOgavoKus=;
+	h=From:To:Cc:Subject:Date:From;
+	b=BQ/tx/RAIthZ91x7MqIa5xHl+LjySTlxrhfZHOJ9E8wLFwOrBWcisF81MLCyP9I92
+	 LRdmEJ/CJgKxOsyNxJ7Y5m4JMlP3Yuvz5At2AHZC5itbSC7GA3Rc2lY0pUH4uuvN8O
+	 89zlVrv0ZmqXrfOMYo6HwqBtjL7T4WeyWPMN9acKC1E1du4JE7pM/BP6884ybMXAdV
+	 BM8/nNwDR+Tun1JLr+u0O29j21MbtcGYuJJ1Kr+8aCREkYQxYUKSUds8NktkRUzEdy
+	 mVlkrzZhs8xtUuU9yuIv56hhY7JNxeU3Gw+4NGAc0XhdG7UygY4mzX4uliR7ykqzui
+	 O1SQYN3qr9L/w==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Subject: [PATCH v3] pmdomain: imx: Fix reference count leak in imx_gpc_probe()
-Date: Wed, 10 Dec 2025 03:35:24 +0000
-Message-Id: <20251210033524.34600-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+Cc: Al Viro <viro@zeniv.linux.org.uk>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	brauner@kernel.org,
+	ingo.rohloff@lauterbach.com,
+	nichen@iscas.ac.cn,
+	mjguzik@gmail.com,
+	guhuinan@xiaomi.com,
+	liangjie@lixiang.com,
+	akash.m5@samsung.com
+Subject: [PATCH AUTOSEL 6.18-6.17] functionfs: fix the open/removal races
+Date: Tue,  9 Dec 2025 22:48:42 -0500
+Message-ID: <20251210034915.2268617-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.18
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowADHWg6Q6jhp914sAA--.20763S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Ww13Kw4fAw45ZFyDZryxKrg_yoW8Wry3pF
-	W7GFWakrW7CF4xGaykKr4UZFy5K3yrA3y7tF4jkay3Zr15tF97XFy5Z34jkrna9Fy8Ja15
-	trWjkryrZa4xCaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBj14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Gr1j6F4UJwAm72CE4IkC6x0Yz7v_Jr
-	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E
-	8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxkIecxEwVAFwVW8GwCF04k20xvY0x0EwI
-	xGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480
-	Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7
-	IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k2
-	6cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxV
-	AFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUSeHgUUUUU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwoMA2k4uBvRBgAAsn
 
-of_get_child_by_name() returns a node pointer with refcount incremented.
-Use the __free() attribute to manage the pgc_node reference, ensuring
-automatic of_node_put() cleanup when pgc_node goes out of scope.
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-This eliminates the need for explicit error handling paths and avoids
-reference count leaks.
+[ Upstream commit e5bf5ee266633cb18fff6f98f0b7d59a62819eee ]
 
-Fixes: 721cabf6c660 ("soc: imx: move PGC handling to a new GPC driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+ffs_epfile_open() can race with removal, ending up with file->private_data
+pointing to freed object.
 
+There is a total count of opened files on functionfs (both ep0 and
+dynamic ones) and when it hits zero, dynamic files get removed.
+Unfortunately, that removal can happen while another thread is
+in ffs_epfile_open(), but has not incremented the count yet.
+In that case open will succeed, leaving us with UAF on any subsequent
+read() or write().
+
+The root cause is that ffs->opened is misused; atomic_dec_and_test() vs.
+atomic_add_return() is not a good idea, when object remains visible all
+along.
+
+To untangle that
+	* serialize openers on ffs->mutex (both for ep0 and for dynamic files)
+	* have dynamic ones use atomic_inc_not_zero() and fail if we had
+zero ->opened; in that case the file we are opening is doomed.
+	* have the inodes of dynamic files marked on removal (from the
+callback of simple_recursive_removal()) - clear ->i_private there.
+	* have open of dynamic ones verify they hadn't been already removed,
+along with checking that state is FFS_ACTIVE.
+
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-Change in V3:
-- Ensure variable is assigned when using cleanup attribute
 
-Change in V2:
-- Use __free() attribute instead of explicit of_node_put() calls
----
- drivers/pmdomain/imx/gpc.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+LLM Generated explanations, may be completely bogus:
 
-diff --git a/drivers/pmdomain/imx/gpc.c b/drivers/pmdomain/imx/gpc.c
-index f18c7e6e75dd..0fb3250dbf5f 100644
---- a/drivers/pmdomain/imx/gpc.c
-+++ b/drivers/pmdomain/imx/gpc.c
-@@ -403,13 +403,12 @@ static int imx_gpc_old_dt_init(struct device *dev, struct regmap *regmap,
- static int imx_gpc_probe(struct platform_device *pdev)
- {
- 	const struct imx_gpc_dt_data *of_id_data = device_get_match_data(&pdev->dev);
--	struct device_node *pgc_node;
-+	struct device_node *pgc_node __free(pgc_node)
-+		= of_get_child_by_name(pdev->dev.of_node, "pgc");
- 	struct regmap *regmap;
- 	void __iomem *base;
- 	int ret;
+## Summary
+
+### What the Commit Fixes
+
+This commit fixes a **Use-After-Free (UAF)** vulnerability in USB gadget
+functionfs. The race condition occurs between `ffs_epfile_open()` and
+file removal:
+
+1. Thread A is in `ffs_epfile_open()` but hasn't incremented
+   `ffs->opened` yet
+2. Thread B closes the last file handle, triggering removal (since
+   `opened` is 0)
+3. Thread A's open succeeds with `file->private_data` pointing to freed
+   memory
+4. Subsequent `read()`/`write()` operations cause UAF
+
+### Fix Mechanism
+
+The fix implements proper synchronization:
+- Serializes openers using `ffs->mutex`
+- Uses `atomic_inc_not_zero()` to fail if counter already zero
+- Uses `smp_load_acquire()`/`smp_store_release()` for memory ordering
+- Clears `i_private` during removal via `simple_recursive_removal()`
+  callback
+- Uses `file->private_data` instead of `inode->i_private` in release
+  path
+
+### Stable Kernel Criteria Assessment
+
+| Criterion | Assessment |
+|-----------|------------|
+| Obviously correct | ✅ Uses standard kernel primitives, proper locking
+patterns |
+| Fixes real bug | ✅ UAF vulnerability, security-relevant |
+| Important issue | ✅ Security bug, potential for crashes/exploitation |
+| Small and contained | ✅ Single file, +43/-10 lines, localized changes
+|
+| No new features | ✅ Pure bug fix, no new APIs |
+
+### Risk vs Benefit
+
+**Benefits:**
+- Fixes serious UAF vulnerability
+- USB gadget functionfs used in Android, embedded systems
+- Reviewed by Greg Kroah-Hartman (USB maintainer, stable maintainer)
+- Written by Al Viro (highly respected kernel developer)
+
+**Risks:**
+- Moderate complexity (changes locking behavior)
+- Recent commit (November 2025), limited mainline soak time
+- No explicit `Cc: stable@vger.kernel.org` tag
+
+### Dependencies
+
+- `ffs_mutex_lock()` - exists in functionfs since early versions
+- `simple_recursive_removal()` with callback - available since ~5.x
+  kernels
+- Standard kernel APIs (`atomic_inc_not_zero`, memory barriers) -
+  universally available
+
+### Concerns
+
+1. **No Fixes: tag** - Makes it harder to determine which stable trees
+   need this fix
+2. **No Cc: stable tag** - May indicate maintainers wanted soak time, or
+   an oversight given Greg KH reviewed it
+3. **Backport effort** - May need adjustment for older stable trees
+   depending on functionfs evolution
+
+### Conclusion
+
+This is a legitimate UAF security fix that affects real-world users
+(Android, embedded USB gadgets). Despite moderate complexity, the fix:
+- Addresses a serious vulnerability class (UAF)
+- Uses correct synchronization patterns
+- Has been reviewed by the appropriate maintainer who also maintains
+  stable trees
+- Is self-contained with no feature additions
+
+The lack of explicit stable tags appears to be an oversight given the
+security nature of the bug and Greg KH's review. UAF vulnerabilities
+typically warrant expedited backporting.
+
+**YES**
+
+ drivers/usb/gadget/function/f_fs.c | 53 ++++++++++++++++++++++++------
+ 1 file changed, 43 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/function/f_fs.c
+index 47cfbe41fdff8..69f6e3c0f7e00 100644
+--- a/drivers/usb/gadget/function/f_fs.c
++++ b/drivers/usb/gadget/function/f_fs.c
+@@ -640,13 +640,22 @@ static ssize_t ffs_ep0_read(struct file *file, char __user *buf,
  
--	pgc_node = of_get_child_by_name(pdev->dev.of_node, "pgc");
+ static int ffs_ep0_open(struct inode *inode, struct file *file)
+ {
+-	struct ffs_data *ffs = inode->i_private;
++	struct ffs_data *ffs = inode->i_sb->s_fs_info;
++	int ret;
+ 
+-	if (ffs->state == FFS_CLOSING)
+-		return -EBUSY;
++	/* Acquire mutex */
++	ret = ffs_mutex_lock(&ffs->mutex, file->f_flags & O_NONBLOCK);
++	if (ret < 0)
++		return ret;
+ 
+-	file->private_data = ffs;
+ 	ffs_data_opened(ffs);
++	if (ffs->state == FFS_CLOSING) {
++		ffs_data_closed(ffs);
++		mutex_unlock(&ffs->mutex);
++		return -EBUSY;
++	}
++	mutex_unlock(&ffs->mutex);
++	file->private_data = ffs;
+ 
+ 	return stream_open(inode, file);
+ }
+@@ -1193,14 +1202,33 @@ static ssize_t ffs_epfile_io(struct file *file, struct ffs_io_data *io_data)
+ static int
+ ffs_epfile_open(struct inode *inode, struct file *file)
+ {
+-	struct ffs_epfile *epfile = inode->i_private;
++	struct ffs_data *ffs = inode->i_sb->s_fs_info;
++	struct ffs_epfile *epfile;
++	int ret;
+ 
+-	if (WARN_ON(epfile->ffs->state != FFS_ACTIVE))
++	/* Acquire mutex */
++	ret = ffs_mutex_lock(&ffs->mutex, file->f_flags & O_NONBLOCK);
++	if (ret < 0)
++		return ret;
++
++	if (!atomic_inc_not_zero(&ffs->opened)) {
++		mutex_unlock(&ffs->mutex);
++		return -ENODEV;
++	}
++	/*
++	 * we want the state to be FFS_ACTIVE; FFS_ACTIVE alone is
++	 * not enough, though - we might have been through FFS_CLOSING
++	 * and back to FFS_ACTIVE, with our file already removed.
++	 */
++	epfile = smp_load_acquire(&inode->i_private);
++	if (unlikely(ffs->state != FFS_ACTIVE || !epfile)) {
++		mutex_unlock(&ffs->mutex);
++		ffs_data_closed(ffs);
+ 		return -ENODEV;
++	}
++	mutex_unlock(&ffs->mutex);
+ 
+ 	file->private_data = epfile;
+-	ffs_data_opened(epfile->ffs);
 -
- 	/* bail out if DT too old and doesn't provide the necessary info */
- 	if (!of_property_present(pdev->dev.of_node, "#power-domain-cells") &&
- 	    !pgc_node)
+ 	return stream_open(inode, file);
+ }
+ 
+@@ -1332,7 +1360,7 @@ static void ffs_dmabuf_put(struct dma_buf_attachment *attach)
+ static int
+ ffs_epfile_release(struct inode *inode, struct file *file)
+ {
+-	struct ffs_epfile *epfile = inode->i_private;
++	struct ffs_epfile *epfile = file->private_data;
+ 	struct ffs_dmabuf_priv *priv, *tmp;
+ 	struct ffs_data *ffs = epfile->ffs;
+ 
+@@ -2352,6 +2380,11 @@ static int ffs_epfiles_create(struct ffs_data *ffs)
+ 	return 0;
+ }
+ 
++static void clear_one(struct dentry *dentry)
++{
++	smp_store_release(&dentry->d_inode->i_private, NULL);
++}
++
+ static void ffs_epfiles_destroy(struct ffs_epfile *epfiles, unsigned count)
+ {
+ 	struct ffs_epfile *epfile = epfiles;
+@@ -2359,7 +2392,7 @@ static void ffs_epfiles_destroy(struct ffs_epfile *epfiles, unsigned count)
+ 	for (; count; --count, ++epfile) {
+ 		BUG_ON(mutex_is_locked(&epfile->mutex));
+ 		if (epfile->dentry) {
+-			simple_recursive_removal(epfile->dentry, NULL);
++			simple_recursive_removal(epfile->dentry, clear_one);
+ 			epfile->dentry = NULL;
+ 		}
+ 	}
 -- 
-2.34.1
+2.51.0
 
 
