@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-200602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A98DCCB23E8
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:35:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE096CB2343
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:32:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E7F223043442
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:33:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EFE7F30C8C5F
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:31:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FC702E22BF;
-	Wed, 10 Dec 2025 07:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5875022578D;
+	Wed, 10 Dec 2025 07:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RRfKTZwc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sMpZE+D7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C81D27B4E1;
-	Wed, 10 Dec 2025 07:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10B5D2135AD;
+	Wed, 10 Dec 2025 07:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765352005; cv=none; b=sHZHwfwzUDG7fP/MbukhDN+5341Dzp+Ii1IuADpdTjr0tpjauLiAP+mpPH4zyWMyvtOsBpqIleFgJZCCQvzlhU5jiR3A2qiN1eSkwPAvSgLBZCOHgr9Yu11jSCMcVrIi0uJfolq72nu7W+jyv6QnpV74bZNL9AJk7NtM+4sDXq4=
+	t=1765351889; cv=none; b=JmDvz0LgZOKS63Nzky+uVRnI8jgCYIQr7sFwHvb/j/iwXt07u84Uijtn8/rcVilR2KBCE5NTf4RZZZMeSPuElYfsQ9K+VTaHnkI/88s3ScHgL22QC5AmtCkCVhVyNfG3uuEyqY+LR5rT6/L2eT89czH+o9nrK9s9duDhBrkv3kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765352005; c=relaxed/simple;
-	bh=e+S388PRkdtZ0W2dDSjx4KOLipXYBFDs7TrM70mgKhg=;
+	s=arc-20240116; t=1765351889; c=relaxed/simple;
+	bh=wQamju5wcDuKJ16nRFsrCVJ4edQ9Ypl6/BOq10iEpv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=faxcIAnXXvD7GP1GkCc1i8zEM3Tpo2ayFrabCyAhSwk/gYtg3L5TTHe/8ShjRsecilr5PjllYiqPwdz0ruF9AHVi5nwSrqOlIYiOuIEN1aBP2dOq5sD4RSBmkcOtWBID28tinaK6PPJll4AocCHH/OGrnlU/0EVbYlb++taz+JY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RRfKTZwc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42953C4CEF1;
-	Wed, 10 Dec 2025 07:33:24 +0000 (UTC)
+	 MIME-Version; b=OYzGZAmOZpMov8EmVgcg811XahrrkzGs3xGz77kgvE20TO0x0sgNTFaTCKm/QXAyb1gJ/MqpGuhAnONPogq2/WGEirz+4c3wRLL237olf+d4Krab2IP/MfoYvtFdvlNbquFX00ZuvrZF1jxmrhhtL7N8Bxz0tiTUwHZyTJi/6E8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sMpZE+D7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 632C4C4CEF1;
+	Wed, 10 Dec 2025 07:31:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765352004;
-	bh=e+S388PRkdtZ0W2dDSjx4KOLipXYBFDs7TrM70mgKhg=;
+	s=korg; t=1765351888;
+	bh=wQamju5wcDuKJ16nRFsrCVJ4edQ9Ypl6/BOq10iEpv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RRfKTZwcw7XXnol3yfFpkbPZldbvjQoBFeBDXGhZ4BzpRBwLFIcqVV18uu2RNqgBg
-	 LwBiNuJBw1ndTiRC+M6vFwGLP7phiD9mkaVYJ4SbEOO/u19qbgt/uw82RefRFq3rJy
-	 8/u2p9oQQ6gQ1BN9+dAWH9aX3sBe5333AtKUDGlo=
+	b=sMpZE+D7NiTQczLkebjNgajWrlR+IDDy74phE+c9nAS0YiJ5K/USQm7vYPYqPOa/z
+	 OBS1Mk+AY3OiU/Ma+8S+W192t4GMRORE93yG40sSeVxlUfeZPWF/5jWmTKjwikYjWl
+	 Rt5O8IH+DrcCUg7ZEhaDROfntKFH2V7sMn8SFi0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.17 06/60] crypto: zstd - fix double-free in per-CPU stream cleanup
+	Ye Bin <yebin10@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.12 06/49] jbd2: avoid bug_on in jbd2_journal_get_create_access() when file system corrupted
 Date: Wed, 10 Dec 2025 16:29:36 +0900
-Message-ID: <20251210072948.004709340@linuxfoundation.org>
+Message-ID: <20251210072948.285003017@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
-References: <20251210072947.850479903@linuxfoundation.org>
+In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
+References: <20251210072948.125620687@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,94 +61,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+From: Ye Bin <yebin10@huawei.com>
 
-commit 48bc9da3c97c15f1ea24934bcb3b736acd30163d upstream.
+commit 986835bf4d11032bba4ab8414d18fce038c61bb4 upstream.
 
-The crypto/zstd module has a double-free bug that occurs when multiple
-tfms are allocated and freed.
+There's issue when file system corrupted:
+------------[ cut here ]------------
+kernel BUG at fs/jbd2/transaction.c:1289!
+Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
+CPU: 5 UID: 0 PID: 2031 Comm: mkdir Not tainted 6.18.0-rc1-next
+RIP: 0010:jbd2_journal_get_create_access+0x3b6/0x4d0
+RSP: 0018:ffff888117aafa30 EFLAGS: 00010202
+RAX: 0000000000000000 RBX: ffff88811a86b000 RCX: ffffffff89a63534
+RDX: 1ffff110200ec602 RSI: 0000000000000004 RDI: ffff888100763010
+RBP: ffff888100763000 R08: 0000000000000001 R09: ffff888100763028
+R10: 0000000000000003 R11: 0000000000000000 R12: 0000000000000000
+R13: ffff88812c432000 R14: ffff88812c608000 R15: ffff888120bfc000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f91d6970c99 CR3: 00000001159c4000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ __ext4_journal_get_create_access+0x42/0x170
+ ext4_getblk+0x319/0x6f0
+ ext4_bread+0x11/0x100
+ ext4_append+0x1e6/0x4a0
+ ext4_init_new_dir+0x145/0x1d0
+ ext4_mkdir+0x326/0x920
+ vfs_mkdir+0x45c/0x740
+ do_mkdirat+0x234/0x2f0
+ __x64_sys_mkdir+0xd6/0x120
+ do_syscall_64+0x5f/0xfa0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-The issue happens because zstd_streams (per-CPU contexts) are freed in
-zstd_exit() during every tfm destruction, rather than being managed at
-the module level.  When multiple tfms exist, each tfm exit attempts to
-free the same shared per-CPU streams, resulting in a double-free.
+The above issue occurs with us in errors=continue mode when accompanied by
+storage failures. There have been many inconsistencies in the file system
+data.
+In the case of file system data inconsistency, for example, if the block
+bitmap of a referenced block is not set, it can lead to the situation where
+a block being committed is allocated and used again. As a result, the
+following condition will not be satisfied then trigger BUG_ON. Of course,
+it is entirely possible to construct a problematic image that can trigger
+this BUG_ON through specific operations. In fact, I have constructed such
+an image and easily reproduced this issue.
+Therefore, J_ASSERT() holds true only under ideal conditions, but it may
+not necessarily be satisfied in exceptional scenarios. Using J_ASSERT()
+directly in abnormal situations would cause the system to crash, which is
+clearly not what we want. So here we directly trigger a JBD abort instead
+of immediately invoking BUG_ON.
 
-This leads to a stack trace similar to:
-
-  BUG: Bad page state in process kworker/u16:1  pfn:106fd93
-  page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x106fd93
-  flags: 0x17ffffc0000000(node=0|zone=2|lastcpupid=0x1fffff)
-  page_type: 0xffffffff()
-  raw: 0017ffffc0000000 dead000000000100 dead000000000122 0000000000000000
-  raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
-  page dumped because: nonzero entire_mapcount
-  Modules linked in: ...
-  CPU: 3 UID: 0 PID: 2506 Comm: kworker/u16:1 Kdump: loaded Tainted: G    B
-  Hardware name: ...
-  Workqueue: btrfs-delalloc btrfs_work_helper
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x5d/0x80
-   bad_page+0x71/0xd0
-   free_unref_page_prepare+0x24e/0x490
-   free_unref_page+0x60/0x170
-   crypto_acomp_free_streams+0x5d/0xc0
-   crypto_acomp_exit_tfm+0x23/0x50
-   crypto_destroy_tfm+0x60/0xc0
-   ...
-
-Change the lifecycle management of zstd_streams to free the streams only
-once during module cleanup.
-
-Fixes: f5ad93ffb541 ("crypto: zstd - convert to acomp")
-Cc: stable@vger.kernel.org
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Reviewed-by: Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 470decc613ab ("[PATCH] jbd2: initial copy of files from jbd")
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Message-ID: <20251025072657.307851-1-yebin@huaweicloud.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/zstd.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ fs/jbd2/transaction.c |   19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/crypto/zstd.c b/crypto/zstd.c
-index dc5b36141ff8..cbbd0413751a 100644
---- a/crypto/zstd.c
-+++ b/crypto/zstd.c
-@@ -75,11 +75,6 @@ static int zstd_init(struct crypto_acomp *acomp_tfm)
- 	return ret;
- }
+--- a/fs/jbd2/transaction.c
++++ b/fs/jbd2/transaction.c
+@@ -1288,14 +1288,23 @@ int jbd2_journal_get_create_access(handl
+ 	 * committing transaction's lists, but it HAS to be in Forget state in
+ 	 * that case: the transaction must have deleted the buffer for it to be
+ 	 * reused here.
++	 * In the case of file system data inconsistency, for example, if the
++	 * block bitmap of a referenced block is not set, it can lead to the
++	 * situation where a block being committed is allocated and used again.
++	 * As a result, the following condition will not be satisfied, so here
++	 * we directly trigger a JBD abort instead of immediately invoking
++	 * bugon.
+ 	 */
+ 	spin_lock(&jh->b_state_lock);
+-	J_ASSERT_JH(jh, (jh->b_transaction == transaction ||
+-		jh->b_transaction == NULL ||
+-		(jh->b_transaction == journal->j_committing_transaction &&
+-			  jh->b_jlist == BJ_Forget)));
++	if (!(jh->b_transaction == transaction || jh->b_transaction == NULL ||
++	      (jh->b_transaction == journal->j_committing_transaction &&
++	       jh->b_jlist == BJ_Forget)) || jh->b_next_transaction != NULL) {
++		err = -EROFS;
++		spin_unlock(&jh->b_state_lock);
++		jbd2_journal_abort(journal, err);
++		goto out;
++	}
  
--static void zstd_exit(struct crypto_acomp *acomp_tfm)
--{
--	crypto_acomp_free_streams(&zstd_streams);
--}
--
- static int zstd_compress_one(struct acomp_req *req, struct zstd_ctx *ctx,
- 			     const void *src, void *dst, unsigned int *dlen)
- {
-@@ -297,7 +292,6 @@ static struct acomp_alg zstd_acomp = {
- 		.cra_module = THIS_MODULE,
- 	},
- 	.init = zstd_init,
--	.exit = zstd_exit,
- 	.compress = zstd_compress,
- 	.decompress = zstd_decompress,
- };
-@@ -310,6 +304,7 @@ static int __init zstd_mod_init(void)
- static void __exit zstd_mod_fini(void)
- {
- 	crypto_unregister_acomp(&zstd_acomp);
-+	crypto_acomp_free_streams(&zstd_streams);
- }
+-	J_ASSERT_JH(jh, jh->b_next_transaction == NULL);
+ 	J_ASSERT_JH(jh, buffer_locked(jh2bh(jh)));
  
- module_init(zstd_mod_init);
--- 
-2.52.0
-
+ 	if (jh->b_transaction == NULL) {
 
 
 
