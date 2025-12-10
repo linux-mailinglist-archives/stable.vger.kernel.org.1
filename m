@@ -1,53 +1,57 @@
-Return-Path: <stable+bounces-200605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88C70CB24C3
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:41:45 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25B56CB2323
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:31:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4DA933023FBC
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:41:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C2BB53007281
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:31:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 449D630170A;
-	Wed, 10 Dec 2025 07:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FE42221F2F;
+	Wed, 10 Dec 2025 07:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j2NfBoZ3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="scy3P1+E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0024C3016F3;
-	Wed, 10 Dec 2025 07:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 573AE1DD0EF;
+	Wed, 10 Dec 2025 07:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765352013; cv=none; b=lXHe0j35Q5T0i+tgUe41Acd+2MIni0WPRx3t9Y/5Crb6IFyy2fETxdCFYJo6pvie5XAySoPV2Gq1FGAU3oz61S7ocNeVbnOx0Ey9UFqlxaJwDvLhObVvtTfZUvrrFL+j95jqVSzOQhDD64nzMEDtWO4pQCLUry2PY/hZ9EVLZdQ=
+	t=1765351896; cv=none; b=qFcpijoK7PDlNviIMgmYBVmIkN5EDpyhOHgutr+iJfObzDkb3RaPmxK2/fN2JyG0aqmxd8DBtv59A85AScNNzNpGydsT/JV8wL9aSify7+BMm/RMvdwAYZkS5XQakZ92P+yCU9mQ1lx03el8RHVXnYX4s3xZe7jBLBjvqyfM7cI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765352013; c=relaxed/simple;
-	bh=plBNLf9J0XI30JkOyXwYUNM/jxN2KB2hD5KjSvLrIo4=;
+	s=arc-20240116; t=1765351896; c=relaxed/simple;
+	bh=UobY8J9ysCSh4UMR0svHhPkKtuvR7otwji7HK/MVUz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NdqVvs9sWowpYEs28oM2Nk1W3FxXhdxld+j8ueQaktveqAsPbIBlo9jZbMRraP/XGuL48iKK2sfH2goih2jegkaV9nHx7Iy9jRM1/5QWO6Eq3276nw5vH8C569LeVimSpivynTKezNJCEvdu+UvorVxkd7xVO7/i9jp2enDO8nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j2NfBoZ3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B163C4CEF1;
-	Wed, 10 Dec 2025 07:33:32 +0000 (UTC)
+	 MIME-Version; b=OL6WPMOH3hyQn1KyNGMCzB4iEChp4Q0t6axDvoHS8Ju9pTSlj4W3JKA9gSrtiM2F+CcZoS5nVl5wyaInO+uE+4IlhLda4CckMMLD+dtfh2t7qr7EgW/XLuYeIl4Pb28pQSfj1IiAYN+CpM87beefYWzmFLHIne/KacaNxI0weT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=scy3P1+E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE1B6C116B1;
+	Wed, 10 Dec 2025 07:31:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765352012;
-	bh=plBNLf9J0XI30JkOyXwYUNM/jxN2KB2hD5KjSvLrIo4=;
+	s=korg; t=1765351896;
+	bh=UobY8J9ysCSh4UMR0svHhPkKtuvR7otwji7HK/MVUz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j2NfBoZ3ybJnixZvjSthXOpuaIc+UM0KPvbU5fcjKx9hamKxA4KNJ+pu6Qv/ithv7
-	 fdc9rG1fWPg/gxumq7OXxT2nRLh6/CPYOox06ZrRAzVPxS65dmLkduS09TRkVn0wsd
-	 dVp6Yivi90r/Oj4ihl9SbjI18VVtkShDJAoQD0iM=
+	b=scy3P1+ENVKBvBuSpcva4PfiAJQ4qr3Ce5hy4eADtEtWOUCDcbt2p3difn+GGUA8K
+	 qCtGJM8Mj5/2oOYpiSUDbv2YDFNZyrfcYqmK/cmxDIXo34A9Mgi0wd9ayCGf/gxiaA
+	 NCClY35KHQEwkthgzWKGhbI53uUKypOukAO54lUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Omar Sandoval <osandov@fb.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.17 09/60] KVM: SVM: Dont skip unrelated instruction if INT3/INTO is replaced
+	Adrian Freihofer <adrian.freihofer@siemens.com>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Waiman Long <longman@redhat.com>
+Subject: [PATCH 6.12 09/49] locking/spinlock/debug: Fix data-race in do_raw_write_lock
 Date: Wed, 10 Dec 2025 16:29:39 +0900
-Message-ID: <20251210072948.077073066@linuxfoundation.org>
+Message-ID: <20251210072948.356454895@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
-References: <20251210072947.850479903@linuxfoundation.org>
+In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
+References: <20251210072948.125620687@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,203 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Omar Sandoval <osandov@fb.com>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-commit 4da3768e1820cf15cced390242d8789aed34f54d upstream.
+commit c14ecb555c3ee80eeb030a4e46d00e679537f03a upstream.
 
-When re-injecting a soft interrupt from an INT3, INT0, or (select) INTn
-instruction, discard the exception and retry the instruction if the code
-stream is changed (e.g. by a different vCPU) between when the CPU
-executes the instruction and when KVM decodes the instruction to get the
-next RIP.
+KCSAN reports:
 
-As effectively predicted by commit 6ef88d6e36c2 ("KVM: SVM: Re-inject
-INT3/INTO instead of retrying the instruction"), failure to verify that
-the correct INTn instruction was decoded can effectively clobber guest
-state due to decoding the wrong instruction and thus specifying the
-wrong next RIP.
+BUG: KCSAN: data-race in do_raw_write_lock / do_raw_write_lock
 
-The bug most often manifests as "Oops: int3" panics on static branch
-checks in Linux guests.  Enabling or disabling a static branch in Linux
-uses the kernel's "text poke" code patching mechanism.  To modify code
-while other CPUs may be executing that code, Linux (temporarily)
-replaces the first byte of the original instruction with an int3 (opcode
-0xcc), then patches in the new code stream except for the first byte,
-and finally replaces the int3 with the first byte of the new code
-stream.  If a CPU hits the int3, i.e. executes the code while it's being
-modified, then the guest kernel must look up the RIP to determine how to
-handle the #BP, e.g. by emulating the new instruction.  If the RIP is
-incorrect, then this lookup fails and the guest kernel panics.
+write (marked) to 0xffff800009cf504c of 4 bytes by task 1102 on cpu 1:
+ do_raw_write_lock+0x120/0x204
+ _raw_write_lock_irq
+ do_exit
+ call_usermodehelper_exec_async
+ ret_from_fork
 
-The bug reproduces almost instantly by hacking the guest kernel to
-repeatedly check a static branch[1] while running a drgn script[2] on
-the host to constantly swap out the memory containing the guest's TSS.
+read to 0xffff800009cf504c of 4 bytes by task 1103 on cpu 0:
+ do_raw_write_lock+0x88/0x204
+ _raw_write_lock_irq
+ do_exit
+ call_usermodehelper_exec_async
+ ret_from_fork
 
-[1]: https://gist.github.com/osandov/44d17c51c28c0ac998ea0334edf90b5a
-[2]: https://gist.github.com/osandov/10e45e45afa29b11e0c7209247afc00b
+value changed: 0xffffffff -> 0x00000001
 
-Fixes: 6ef88d6e36c2 ("KVM: SVM: Re-inject INT3/INTO instead of retrying the instruction")
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 0 PID: 1103 Comm: kworker/u4:1 6.1.111
+
+Commit 1a365e822372 ("locking/spinlock/debug: Fix various data races") has
+adressed most of these races, but seems to be not consistent/not complete.
+
+>From do_raw_write_lock() only debug_write_lock_after() part has been
+converted to WRITE_ONCE(), but not debug_write_lock_before() part.
+Do it now.
+
+Fixes: 1a365e822372 ("locking/spinlock/debug: Fix various data races")
+Reported-by: Adrian Freihofer <adrian.freihofer@siemens.com>
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Acked-by: Waiman Long <longman@redhat.com>
 Cc: stable@vger.kernel.org
-Co-developed-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Omar Sandoval <osandov@fb.com>
-Link: https://patch.msgid.link/1cc6dcdf36e3add7ee7c8d90ad58414eeb6c3d34.1762278762.git.osandov@fb.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/kvm_host.h |    9 +++++++++
- arch/x86/kvm/svm/svm.c          |   24 +++++++++++++-----------
- arch/x86/kvm/x86.c              |   21 +++++++++++++++++++++
- 3 files changed, 43 insertions(+), 11 deletions(-)
+ kernel/locking/spinlock_debug.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -2123,6 +2123,11 @@ u64 vcpu_tsc_khz(struct kvm_vcpu *vcpu);
-  *			     the gfn, i.e. retrying the instruction will hit a
-  *			     !PRESENT fault, which results in a new shadow page
-  *			     and sends KVM back to square one.
-+ *
-+ * EMULTYPE_SKIP_SOFT_INT - Set in combination with EMULTYPE_SKIP to only skip
-+ *                          an instruction if it could generate a given software
-+ *                          interrupt, which must be encoded via
-+ *                          EMULTYPE_SET_SOFT_INT_VECTOR().
-  */
- #define EMULTYPE_NO_DECODE	    (1 << 0)
- #define EMULTYPE_TRAP_UD	    (1 << 1)
-@@ -2133,6 +2138,10 @@ u64 vcpu_tsc_khz(struct kvm_vcpu *vcpu);
- #define EMULTYPE_PF		    (1 << 6)
- #define EMULTYPE_COMPLETE_USER_EXIT (1 << 7)
- #define EMULTYPE_WRITE_PF_TO_SP	    (1 << 8)
-+#define EMULTYPE_SKIP_SOFT_INT	    (1 << 9)
-+
-+#define EMULTYPE_SET_SOFT_INT_VECTOR(v)	((u32)((v) & 0xff) << 16)
-+#define EMULTYPE_GET_SOFT_INT_VECTOR(e)	(((e) >> 16) & 0xff)
- 
- static inline bool kvm_can_emulate_event_vectoring(int emul_type)
+--- a/kernel/locking/spinlock_debug.c
++++ b/kernel/locking/spinlock_debug.c
+@@ -184,8 +184,8 @@ void do_raw_read_unlock(rwlock_t *lock)
+ static inline void debug_write_lock_before(rwlock_t *lock)
  {
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -280,6 +280,7 @@ static void svm_set_interrupt_shadow(str
+ 	RWLOCK_BUG_ON(lock->magic != RWLOCK_MAGIC, lock, "bad magic");
+-	RWLOCK_BUG_ON(lock->owner == current, lock, "recursion");
+-	RWLOCK_BUG_ON(lock->owner_cpu == raw_smp_processor_id(),
++	RWLOCK_BUG_ON(READ_ONCE(lock->owner) == current, lock, "recursion");
++	RWLOCK_BUG_ON(READ_ONCE(lock->owner_cpu) == raw_smp_processor_id(),
+ 							lock, "cpu recursion");
  }
  
- static int __svm_skip_emulated_instruction(struct kvm_vcpu *vcpu,
-+					   int emul_type,
- 					   bool commit_side_effects)
- {
- 	struct vcpu_svm *svm = to_svm(vcpu);
-@@ -301,7 +302,7 @@ static int __svm_skip_emulated_instructi
- 		if (unlikely(!commit_side_effects))
- 			old_rflags = svm->vmcb->save.rflags;
- 
--		if (!kvm_emulate_instruction(vcpu, EMULTYPE_SKIP))
-+		if (!kvm_emulate_instruction(vcpu, emul_type))
- 			return 0;
- 
- 		if (unlikely(!commit_side_effects))
-@@ -319,11 +320,13 @@ done:
- 
- static int svm_skip_emulated_instruction(struct kvm_vcpu *vcpu)
- {
--	return __svm_skip_emulated_instruction(vcpu, true);
-+	return __svm_skip_emulated_instruction(vcpu, EMULTYPE_SKIP, true);
- }
- 
--static int svm_update_soft_interrupt_rip(struct kvm_vcpu *vcpu)
-+static int svm_update_soft_interrupt_rip(struct kvm_vcpu *vcpu, u8 vector)
- {
-+	const int emul_type = EMULTYPE_SKIP | EMULTYPE_SKIP_SOFT_INT |
-+			      EMULTYPE_SET_SOFT_INT_VECTOR(vector);
- 	unsigned long rip, old_rip = kvm_rip_read(vcpu);
- 	struct vcpu_svm *svm = to_svm(vcpu);
- 
-@@ -339,7 +342,7 @@ static int svm_update_soft_interrupt_rip
- 	 * in use, the skip must not commit any side effects such as clearing
- 	 * the interrupt shadow or RFLAGS.RF.
- 	 */
--	if (!__svm_skip_emulated_instruction(vcpu, !nrips))
-+	if (!__svm_skip_emulated_instruction(vcpu, emul_type, !nrips))
- 		return -EIO;
- 
- 	rip = kvm_rip_read(vcpu);
-@@ -375,7 +378,7 @@ static void svm_inject_exception(struct
- 	kvm_deliver_exception_payload(vcpu, ex);
- 
- 	if (kvm_exception_is_soft(ex->vector) &&
--	    svm_update_soft_interrupt_rip(vcpu))
-+	    svm_update_soft_interrupt_rip(vcpu, ex->vector))
- 		return;
- 
- 	svm->vmcb->control.event_inj = ex->vector
-@@ -3662,11 +3665,12 @@ static bool svm_set_vnmi_pending(struct
- 
- static void svm_inject_irq(struct kvm_vcpu *vcpu, bool reinjected)
- {
-+	struct kvm_queued_interrupt *intr = &vcpu->arch.interrupt;
- 	struct vcpu_svm *svm = to_svm(vcpu);
- 	u32 type;
- 
--	if (vcpu->arch.interrupt.soft) {
--		if (svm_update_soft_interrupt_rip(vcpu))
-+	if (intr->soft) {
-+		if (svm_update_soft_interrupt_rip(vcpu, intr->nr))
- 			return;
- 
- 		type = SVM_EVTINJ_TYPE_SOFT;
-@@ -3674,12 +3678,10 @@ static void svm_inject_irq(struct kvm_vc
- 		type = SVM_EVTINJ_TYPE_INTR;
- 	}
- 
--	trace_kvm_inj_virq(vcpu->arch.interrupt.nr,
--			   vcpu->arch.interrupt.soft, reinjected);
-+	trace_kvm_inj_virq(intr->nr, intr->soft, reinjected);
- 	++vcpu->stat.irq_injections;
- 
--	svm->vmcb->control.event_inj = vcpu->arch.interrupt.nr |
--				       SVM_EVTINJ_VALID | type;
-+	svm->vmcb->control.event_inj = intr->nr | SVM_EVTINJ_VALID | type;
- }
- 
- void svm_complete_interrupt_delivery(struct kvm_vcpu *vcpu, int delivery_mode,
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -9021,6 +9021,23 @@ static bool is_vmware_backdoor_opcode(st
- 	return false;
- }
- 
-+static bool is_soft_int_instruction(struct x86_emulate_ctxt *ctxt,
-+				    int emulation_type)
-+{
-+	u8 vector = EMULTYPE_GET_SOFT_INT_VECTOR(emulation_type);
-+
-+	switch (ctxt->b) {
-+	case 0xcc:
-+		return vector == BP_VECTOR;
-+	case 0xcd:
-+		return vector == ctxt->src.val;
-+	case 0xce:
-+		return vector == OF_VECTOR;
-+	default:
-+		return false;
-+	}
-+}
-+
- /*
-  * Decode an instruction for emulation.  The caller is responsible for handling
-  * code breakpoints.  Note, manually detecting code breakpoints is unnecessary
-@@ -9131,6 +9148,10 @@ int x86_emulate_instruction(struct kvm_v
- 	 * injecting single-step #DBs.
- 	 */
- 	if (emulation_type & EMULTYPE_SKIP) {
-+		if (emulation_type & EMULTYPE_SKIP_SOFT_INT &&
-+		    !is_soft_int_instruction(ctxt, emulation_type))
-+			return 0;
-+
- 		if (ctxt->mode != X86EMUL_MODE_PROT64)
- 			ctxt->eip = (u32)ctxt->_eip;
- 		else
 
 
 
