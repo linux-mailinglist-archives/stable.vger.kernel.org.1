@@ -1,140 +1,104 @@
-Return-Path: <stable+bounces-200533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AD9FCB1EAE
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 05:41:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5806DCB1EEE
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 06:01:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 89BBE3007C88
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 04:41:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9746D302FA32
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 05:01:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEE3E30E0D8;
-	Wed, 10 Dec 2025 04:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F39DD20A5EA;
+	Wed, 10 Dec 2025 05:01:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c3LtonPF"
+	dkim=pass (2048-bit key) header.d=darkrefraction-com.20230601.gappssmtp.com header.i=@darkrefraction-com.20230601.gappssmtp.com header.b="xJKj53xP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A7E7200110
-	for <stable@vger.kernel.org>; Wed, 10 Dec 2025 04:40:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528861E86E
+	for <stable@vger.kernel.org>; Wed, 10 Dec 2025 05:01:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765341659; cv=none; b=amfHtUDIat23/OgxypQ58LctW0/DjdfTpsB8aZk0nKFW6SZh0htmyTiUsUfKu5wwXcT8firg/nma0nogR2xb3r10tr8EPGEGY6HVqcdE2kaMy00ritpiXiXrPrOfDPDQ64A4305jLtbD8AnWQfVWhmzFKecvV0R5GPhl9rTbbP8=
+	t=1765342897; cv=none; b=diaAWVYHuxYZtQlQICbcqjJ04FRzKRtpCBqHCeRlsS5auVIRwpIQUMPQY2KBNnw3EZyPvOCAPL/plIFpC8inqgbBEePhSSfgpy0Jqz8lGI44dwXmFg+Y4WRwGXAcUMZSNIs/6ouC6n89E3E9GT9xRnChisP1kv+gj0CY7xxaqso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765341659; c=relaxed/simple;
-	bh=UEb+Um//Pm0bjMP+ZKyco+iZ//oYpZeuCk3k7Wl9Llw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h9OGIWNu8nVdS867mkecoqzpKwCVq39HWR4RhKpbU4zmwwCzazyrBv+MGJ45RH8xFdwJUgu202ThDh6t/Xagh4+qUWcAN7BB64wZj8JTHEfF1fp/5SLYaoaGjycQ8eHsI52vgDhATCexZlEGoYt8wTvtJG3JrkCtvNXk6MrZGos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c3LtonPF; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-c05d66dbab2so1315625a12.0
-        for <stable@vger.kernel.org>; Tue, 09 Dec 2025 20:40:58 -0800 (PST)
+	s=arc-20240116; t=1765342897; c=relaxed/simple;
+	bh=WXxD719dy2hjGMO3wbw17ffA0XyC2Fpi8GIIpwbBhBM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=raC1bEgM6BPuFloSuaSHYkVTwo/PlgK5qgXHZqHueIknHVb8K6vo//11TjJuA3kA0YnGBPVV0Npqs/vQ7ZYbc6YSrmvXSXfVxaTc2nV+khGRA2CuCHrIOlYcqiyGmyCGJdeL78JUEA5k1o3FzrbVxtb91tSW+jOc8e/kRYkCZUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=darkrefraction.com; spf=none smtp.mailfrom=darkrefraction.com; dkim=pass (2048-bit key) header.d=darkrefraction-com.20230601.gappssmtp.com header.i=@darkrefraction-com.20230601.gappssmtp.com header.b=xJKj53xP; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=darkrefraction.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=darkrefraction.com
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-640c1fda178so11126258a12.1
+        for <stable@vger.kernel.org>; Tue, 09 Dec 2025 21:01:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765341657; x=1765946457; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=uby50kMfOF3sIrvqM4zL9wyiF7T878kqTyY1aG3DrgQ=;
-        b=c3LtonPFZn4VpfAw3TSZKfGR3LVIX9gb6u/AKW1yCPq0aeqQzRSQBJKxxUzkvrISJ/
-         eF95UmjBlXH3j+R3O06srkbDBaVsCH2bvJM46y4/3K2AhIoCyGYl2+jxTYOdCs60HNmx
-         oI+lCXbUWNSGIyCcKWEFCU00gAGWxX7+VzEQPudpDdFXCbe1V2wYdVDS8vT4Ed31kpSZ
-         coBjh86F4r20+C5s1zgD2NVI122uHIzpUQNiL3e7rT7hs3zV9BH9XePLGhV4iwtX8aiN
-         WxiVyXtqM01HT6/0GUvpqJiZW9C6Mnx2+CIpdQPPw6bNSvsPYqbkZ5/dAc11u0a67ipp
-         bKFw==
+        d=darkrefraction-com.20230601.gappssmtp.com; s=20230601; t=1765342895; x=1765947695; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WXxD719dy2hjGMO3wbw17ffA0XyC2Fpi8GIIpwbBhBM=;
+        b=xJKj53xPD4fjtUVM4Hfdao9yZ9Ez0pWaKgIrrK/0VBxlZOSz/bwga4vlm8WsDTeLXz
+         KmJt3IEzp8j2C2+3fW/fN6oFWngm4ITFsQBw6440MKMvCLMJX4VF2RqgKcz90hXV32f9
+         OfubTk+Yycj2ojgllJb5TmsH5cmMgReKFWMjwPmP8PpB06618ljE/pI3pVGt5BaFytYR
+         xtzDQHJ7fiY71dBKCTWEFnuR3ssQF49NkNIF8geKx5RIOHvp2EYU5pBtvoV7mRHu14RH
+         GTi4zgDb29UR08MWdU5QEMhyc0OIzzJSC7DMwQHTTyjwxsd+e0GtOJjZRkf90HhBlUZa
+         TJaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765341657; x=1765946457;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uby50kMfOF3sIrvqM4zL9wyiF7T878kqTyY1aG3DrgQ=;
-        b=vxnkoMBll5Fw/8HoQv6Kkr5Ya/jb7ew8lIVYrZDG6NI2Xw0HqEmXwbRj6RV7tySgbF
-         0jmuYjCE11R7FNggtK8iuAZCtyNldt+7jlJlhxUJCW8kpWSQ1veD7/3rJp/p7PYSHIas
-         uv9O4TLyT8ers2wlEpITIvkVEshRNJOrZlhylq1eDIP8wWv8gA7WMINGWBxzMjD0TZ5p
-         Ee8WCr8WDh+IFjzYszgIuyKGv3GGmtuMGckXuPVqbO/13K/bV7uOYftnFQwiPDSRB3KI
-         X0B6FbTSA4mT9cLGvinDLxV+oJGCpYp1LUqYRoIjH2i4nrlgsaAuGaARfg3tVUuewTEq
-         spfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVBwToZfKbxB2SYElNjiK4bDC1rYddKAtwbQTEcX/za/5p4AkzRJ+kZLnnNQIPNiDevEqZmHuA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWOOk2zwZjnFvM5JGHhOw23np6Y85o7lDgs7O8A8q33xw0jB8r
-	2pe+/IGiFgRda0sKWElYhA7FzVv9lisqyPzArlbz1BasOSInmWAN3s6m
-X-Gm-Gg: ASbGncswuJXUe6pP81QHaLL3d3XJ1XDCqDTpk/DtgPCPLXT6AYpB18AOOzqCbl3HGg6
-	XuhfZUpBxHhQ7dYAniTfxuNBjIh71gY7lhDKMCRuirGisg8MYMez4ZyO6WJ3t+io5OGijM+l/yp
-	qnrDyCasj4rPPAs/Psxu9/E50TjV0D5aycl+Q1ZvangE14vvn27+A2Q5Jg29RhubeHYqk6rftxC
-	7M/BSs9c9XICaYe9lE4sst6Xf8SfxRdS4vqjRM/H5HgMSXu2/cm7w9xkk4e5oIhq81VFol4NKCR
-	CtKqav8cwj2/M0T34t1puYkmxtAh6JfAdW21u8BDqmaKxrQJv2OKC4ksd9SQ0KuDSeQRfTPssk/
-	9AuRTOqSINO8LsSukPXLWIlUTViLxTTpqGORZmSjQwu6VhZG0/9LKycbQ/fk4D8ej3H5w86xh2G
-	a4EcvdsA9dnwbWVy3R194iTpegNwCZK+xCLSuUAp2MKrunchv1El1Z
-X-Google-Smtp-Source: AGHT+IENwAUsJ/s7bl0LcpXSQ+18il49/uHtdiDPbHYi/5wurUfmmxGJ90zEdCrpp2ByAgRva1UfOQ==
-X-Received: by 2002:a05:7023:b0b:b0:11c:b397:2657 with SMTP id a92af1059eb24-11f2969792bmr895812c88.22.1765341657338;
-        Tue, 09 Dec 2025 20:40:57 -0800 (PST)
-Received: from google.com ([2a00:79e0:2ebe:8:205a:5a0a:c468:f44f])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11df76e2eefsm81337463c88.6.2025.12.09.20.40.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Dec 2025 20:40:56 -0800 (PST)
-Date: Tue, 9 Dec 2025 20:40:54 -0800
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Minseong Kim <ii4gsp@gmail.com>, Mike Rapoport <rppt@kernel.org>
-Cc: linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] input: synaptics_i2c - cancel delayed work before
- freeing device
-Message-ID: <xeski4dr32zbxvupofis5azlq2s6fwtnuya7f3kjfz5t7c2wnq@jbvlajechlrd>
-References: <20251210032027.11700-1-ii4gsp@gmail.com>
+        d=1e100.net; s=20230601; t=1765342895; x=1765947695;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=WXxD719dy2hjGMO3wbw17ffA0XyC2Fpi8GIIpwbBhBM=;
+        b=YZrrOk+038qq7hNgZ9oFVMftNsCSv2fLH1s05Hlnhn6Cq/rRcwF5UadFp4q+j+HVjx
+         8iuvJ6hREoF2006uEphU+uASF3kIuI3Qfuf/4xQx/TVfBor+SYoABrSdSiHapRpTFA5H
+         D/rD0gCgjskhDcogR0H69VU0i8wtmig/TJgAs+aaLwIwNW+nrG6AWa6cxuHuMfUv80Vt
+         KtJuf6NrdJK4fzf9xRfuufVoHmwDAkDsD8nYEZkRaG7V0/zq86q5SZt/+nda46eTJjd/
+         8a10OoKf5kVjN1LwBKYlJo7lBr96JtxAny2cBkiTNx42hJY1cqMXtKlvf9ZjpveQ+s5R
+         A7mg==
+X-Forwarded-Encrypted: i=1; AJvYcCW9eM8TnjKZUUiYG/2lHHiWPww7L7cgZP/tVoL+uOykntPxMyy91rVvX5BdwAxyK1PxZ1nWArE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyyvjgygbG/8bdV9SwfiTGyYbsHVxOQIKAM9xtslF3ytE2HkmcH
+	eKVlvlFuwaHU8BcUD+AGyHc6h1SJ8aZEvllztzf7VsPdxk3QYs8FOVkQTbqUdB+FBLzzPln7Ili
+	qfCbVmSsAuN2BipwRchjW2o/HQbaPpA+LjqWDZHHtYXxA5zSA/zmTeUOU3w==
+X-Gm-Gg: AY/fxX5L/xHFzrjPAj9QlhIcGDUmmI2cP6T/LYRWOVbEeFrYJoMd1dMinFNtkn3lvTZ
+	GCeAiRXssmjCHnOhHogRCpjsD/q26NwI8s30EeHWwsG92AhCk1ZWVCAokuUwdccqUath5CkPdVP
+	OhYs93pew7xXSz33oiJXV/pwKCss2CzOOegPPKSmT2okYD8whesxgGXEOOlKQt7dPeSQYQXqn3w
+	HTj+LywLn9rBwz71hlYMNTVxmScSZIg2vtNUpninfXA5wGAktvXLpkODPuS5GfYI4XLsNmVeXEY
+	fe1QSQ==
+X-Google-Smtp-Source: AGHT+IEonKudisdXsoUX6nwqgYRT7I8OYV2s5URNsD7bwkXAsmrKaErN0y2xgAY1HKoxTGOxIyLbu4hZobhy/CLJrZw=
+X-Received: by 2002:a05:6402:350c:b0:641:4b82:10c9 with SMTP id
+ 4fb4d7f45d1cf-6496d5d0fcfmr1132873a12.27.1765342894506; Tue, 09 Dec 2025
+ 21:01:34 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251210032027.11700-1-ii4gsp@gmail.com>
+References: <20251205213156.2847867-1-lyude@redhat.com> <CAPM=9txpeYNrGEd=KbHe0mLbrG+vucwdQYRMfmcXcXwWoeCkWA@mail.gmail.com>
+In-Reply-To: <CAPM=9txpeYNrGEd=KbHe0mLbrG+vucwdQYRMfmcXcXwWoeCkWA@mail.gmail.com>
+From: M Henning <mhenning@darkrefraction.com>
+Date: Wed, 10 Dec 2025 00:01:08 -0500
+X-Gm-Features: AQt7F2qfGPcnwhJI4UUlXnZS397JFiGDANTdLTmA6Amc3DZHfva7fmE76SbOb6Q
+Message-ID: <CAAgWFh1DDq4BdGUTR7RGpWZzi3ky0GoAoof7Z21XA6uVNNWvfw@mail.gmail.com>
+Subject: Re: [PATCH] drm/nouveau/dispnv50: Don't call drm_atomic_get_crtc_state()
+ in prepare_fb
+To: Dave Airlie <airlied@gmail.com>
+Cc: Lyude Paul <lyude@redhat.com>, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	nouveau@lists.freedesktop.org, Faith Ekstrand <faith.ekstrand@collabora.com>, 
+	Dave Airlie <airlied@redhat.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Ben Skeggs <bskeggs@nvidia.com>, Simona Vetter <simona@ffwll.ch>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, Maxime Ripard <mripard@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, James Jones <jajones@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Minseong,
+On Tue, Dec 9, 2025 at 7:40=E2=80=AFPM Dave Airlie <airlied@gmail.com> wrot=
+e:
+> get_new_crtc_state only returns NULL not an error.
 
-On Wed, Dec 10, 2025 at 12:20:27PM +0900, Minseong Kim wrote:
-> synaptics_i2c_irq() schedules touch->dwork via mod_delayed_work().
-> The delayed work performs I2C transactions and may still be running
-> (or get queued) when the device is removed.
-> 
-> synaptics_i2c_remove() currently frees 'touch' without canceling
-> touch->dwork. If removal happens while the work is pending/running,
-> the work handler may dereference freed memory, leading to a potential
-> use-after-free.
-> 
-> Cancel the delayed work synchronously before unregistering/freeing
-> the device.
-> 
-> Fixes: eef3e4cab72e Input: add driver for Synaptics I2C touchpad
-> Reported-by: Minseong Kim <ii4gsp@gmail.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Minseong Kim <ii4gsp@gmail.com>
-> ---
->  drivers/input/mouse/synaptics_i2c.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/input/mouse/synaptics_i2c.c b/drivers/input/mouse/synaptics_i2c.c
-> index a0d707e47d93..fe30bf9aea3a 100644
-> --- a/drivers/input/mouse/synaptics_i2c.c
-> +++ b/drivers/input/mouse/synaptics_i2c.c
-> @@ -593,6 +593,8 @@ static void synaptics_i2c_remove(struct i2c_client *client)
->  	if (!polling_req)
->  		free_irq(client->irq, touch);
->  
-> +	cancel_delayed_work_sync(&touch->dwork);
-> +
-
-The call to cancel_delayed_work_sync() happens in the close() handler
-for the device. I see that in resume we restart the polling without
-checking if the device is opened, so if we want to fix it we should add
-the checks there.
-
-However support for the PXA board using in the device with this touch
-controller (eXeda) was removed a while ago. Mike, you're one of the
-authors, any objections to simply removing the driver? 
-
-Thanks.
-
--- 
-Dmitry
+In case anyone other than me gets a sense of d=C3=A9j=C3=A0 vu while readin=
+g
+this: https://lists.freedesktop.org/archives/nouveau/2025-December/050813.h=
+tml
 
