@@ -1,94 +1,129 @@
-Return-Path: <stable+bounces-200696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CE37CB28A8
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 10:24:32 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F119CCB2884
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 10:22:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EA8F7312A576
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 09:23:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EF9853025E9A
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 09:22:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76091312814;
-	Wed, 10 Dec 2025 09:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F16F0267729;
+	Wed, 10 Dec 2025 09:22:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="unzZsm74"
+	dkim=pass (2048-bit key) header.d=cknow-tech.com header.i=@cknow-tech.com header.b="WRWSPyLe"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2722130DEB5;
-	Wed, 10 Dec 2025 09:23:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A8F302157
+	for <stable@vger.kernel.org>; Wed, 10 Dec 2025 09:22:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765358601; cv=none; b=Dj6UEUtYRuC9WoSbf65cDTE375AElyO7VFJxg2i5kKmv0AHl8FZUZMS4wLO7YuBcfqckqJxJjUHTyBzuvDqlC56MAhd5wuy6dlcs8yHhteqU5TaB4VUP/qmwd/e5T6e754IApPJBvTUdUH+XBwD4SPJgIRJLHoZS8QstmYxaNd8=
+	t=1765358555; cv=none; b=RDVYlJRgElhZJdu2yjHtK/RbQqacWGW0EkITLbTz45OrMiCvprBVthh5tid2WAJZHR0knLRVvSQHteYnzPzu1hQ15ZNpzmY9bxJsSem5rwt6Oka3U8h3zA3+GvYEYFlHDwsF6c+vSAmab1rIrXC4CM3a22ijN/wdbGo0mA8mEiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765358601; c=relaxed/simple;
-	bh=fQE8Piz7TeTd5PSXjii+oX+LMW5oTzgNtn7GW5Zzx4w=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=FW1ekb+q75P/1/P9nFbiM3lXk1vx5zrwQZF9Ma1Td01aL+zREH4WhywgeRxqGS2GpUVs15ubAudKZFMM0xDFqFu6BH2TY3ulVFyqKIJEoJ6MwZ+7UISnT0rQfJNj7g5gKWbjkddxubJ5N7wgdAKYWOl/eTVMxnEUvp2eSfemxhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=unzZsm74; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90BC6C4CEF1;
-	Wed, 10 Dec 2025 09:23:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765358600;
-	bh=fQE8Piz7TeTd5PSXjii+oX+LMW5oTzgNtn7GW5Zzx4w=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=unzZsm74oKaQ1xYbDLy2aiBkW1E17idwIMGYJCXkCMzs603QGnnJIptlSBQzuTQEz
-	 xG2IT28SxDOP8aD74l5+hJKfLW1DN8zxR+Q9tD5AMrI2IqqjTgqg8pBpMgru/vIYF2
-	 DpJh5qgHwSDbyE43yDyMTiQVwjRa7RAmm/idj2dMIqp7ELYvSrngOz8wPyxoaHWycU
-	 TFiNIflwTbNBmXn/cenC/ZW+vphWeoNysVZxn/2spkLGY+yLDAapyfM19kR3ipEdjg
-	 ot5TiKv+Na7dKyRVBh5QdFesWTLmPBa3U2bpqF3K/OECwlZ5GpyOfoxlwtNixvzDbM
-	 /P+6mCY55Obig==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 788683809A18;
-	Wed, 10 Dec 2025 09:20:16 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1765358555; c=relaxed/simple;
+	bh=xDn6vgH0y+81dV1xaEzoN5dR3FfdGbOvHNtaRBpYzz8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=TCmwrWiMAsz0u34JV7+wTtaGk7YIys5Kr9I6IWZc0XYd+MesMylekj5ORIUHLZ5N3j1/GSr7pOnmrF8nMG/OyJzcVFdY2oJ2hm9SGY89wgwhzDjnrmS1bjXRNLDuY/8GFn22rQAyoDt08fgQTuw50kzzqthHKf+nPrYmGG92FOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cknow-tech.com; spf=pass smtp.mailfrom=cknow-tech.com; dkim=pass (2048-bit key) header.d=cknow-tech.com header.i=@cknow-tech.com header.b=WRWSPyLe; arc=none smtp.client-ip=91.218.175.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cknow-tech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cknow-tech.com
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v3] net/handshake: restore destructor on submit failure
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176535841527.523551.15411391386973921361.git-patchwork-notify@kernel.org>
-Date: Wed, 10 Dec 2025 09:20:15 +0000
-References: <20251204091058.1545151-1-caoping@cmss.chinamobile.com>
-In-Reply-To: <20251204091058.1545151-1-caoping@cmss.chinamobile.com>
-To: caoping <caoping@cmss.chinamobile.com>
-Cc: chuck.lever@oracle.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- kernel-tls-handshake@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Mime-Version: 1.0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cknow-tech.com;
+	s=key1; t=1765358541;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PklN9qjVdwXRT0hpbQhT8EuFAzT1yIiMNZYzqBnPsj4=;
+	b=WRWSPyLejzpcnsjbUS08zjmJcLC7hMYcMhs/SL9T6pBBLDpre9306yWY4ZjEpr9h/NvvSR
+	R8lfjIeYm5jwRb+9NMQqme1ADcMJ14BBnEXRTSCA8WUD3g20jXDNuS8TYQW8+WMYrl0XSN
+	rGw6LAcn0QbZQPjeW9wUmrBDEX9gBEDCx2diLWpqH12+PuKUYQmrWNdRUeD1L5x4LG3WZS
+	xIVvfOicoUi7UXQn1EW2NL58PN9XRSthDATP82JQtOodLZjootXhCdaHr7GAvNuZ9A8d4w
+	TysBhi/Rk4lS6OlUG2WCKMTD2hU6Nn37kW5aYYHLqE8XnxKYM05y8lYrvS9hOQ==
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 10 Dec 2025 10:22:19 +0100
+Message-Id: <DEUFDH7FJURL.3J0FN5I19VV8F@cknow-tech.com>
+Subject: Re: [PATCH] crypto: arm64/ghash - Fix incorrect output from
+ ghash-neon
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Diederik de Haas" <diederik@cknow-tech.com>
+To: "Eric Biggers" <ebiggers@kernel.org>, <linux-crypto@vger.kernel.org>
+Cc: <linux-kernel@vger.kernel.org>, "Ard Biesheuvel" <ardb@kernel.org>,
+ "Jason A . Donenfeld" <Jason@zx2c4.com>, "Herbert Xu"
+ <herbert@gondor.apana.org.au>, <linux-arm-kernel@lists.infradead.org>,
+ <stable@vger.kernel.org>, "Diederik de Haas" <diederik@cknow-tech.com>
+References: <DETXT7QI62KE.F3CGH2VWX1SC@cknow-tech.com>
+ <20251209223417.112294-1-ebiggers@kernel.org>
+In-Reply-To: <20251209223417.112294-1-ebiggers@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 
-Hello:
+On Tue Dec 9, 2025 at 11:34 PM CET, Eric Biggers wrote:
+> Commit 9a7c987fb92b ("crypto: arm64/ghash - Use API partial block
+> handling") made ghash_finup() pass the wrong buffer to
+> ghash_do_simd_update().  As a result, ghash-neon now produces incorrect
+> outputs when the message length isn't divisible by 16 bytes.  Fix this.
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+I was hoping to not have to do a 'git bisect', but this is much better
+:-D I can confirm that this patch fixes the error I was seeing, so
 
-On Thu,  4 Dec 2025 01:10:58 -0800 you wrote:
-> handshake_req_submit() replaces sk->sk_destruct but never restores it when
-> submission fails before the request is hashed. handshake_sk_destruct() then
-> returns early and the original destructor never runs, leaking the socket.
-> Restore sk_destruct on the error path.
-> 
-> Fixes: 3b3009ea8abb ("net/handshake: Create a NETLINK service for handling handshake requests")
-> Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
+Tested-by: Diederik de Haas <diederik@cknow-tech.com>
+
+> (I didn't notice this earlier because this code is reached only on CPUs
+> that support NEON but not PMULL.  I haven't yet found a way to get
+> qemu-system-aarch64 to emulate that configuration.)
+
+https://www.qemu.org/docs/master/system/arm/raspi.html indicates it can
+emulate various Raspberry Pi models. I've only tested it with RPi 3B+
+(bc of its wifi+bt chip), but I wouldn't be surprised if all RPi models
+would have this problem? Dunno if QEMU emulates that though.
+
+Thanks for the quick fix!
+
+Cheers,
+  Diederik
+
+> Fixes: 9a7c987fb92b ("crypto: arm64/ghash - Use API partial block handlin=
+g")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: caoping <caoping@cmss.chinamobile.com>
-> 
-> [...]
-
-Here is the summary with links:
-  - [v3] net/handshake: restore destructor on submit failure
-    https://git.kernel.org/netdev/net/c/6af2a01d65f8
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+> Reported-by: Diederik de Haas <diederik@cknow-tech.com>
+> Closes: https://lore.kernel.org/linux-crypto/DETXT7QI62KE.F3CGH2VWX1SC@ck=
+now-tech.com/
+> Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+> ---
+>
+> If it's okay, I'd like to just take this via libcrypto-fixes.
+>
+>  arch/arm64/crypto/ghash-ce-glue.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/arm64/crypto/ghash-ce-glue.c b/arch/arm64/crypto/ghash-=
+ce-glue.c
+> index 7951557a285a..ef249d06c92c 100644
+> --- a/arch/arm64/crypto/ghash-ce-glue.c
+> +++ b/arch/arm64/crypto/ghash-ce-glue.c
+> @@ -131,11 +131,11 @@ static int ghash_finup(struct shash_desc *desc, con=
+st u8 *src,
+> =20
+>  	if (len) {
+>  		u8 buf[GHASH_BLOCK_SIZE] =3D {};
+> =20
+>  		memcpy(buf, src, len);
+> -		ghash_do_simd_update(1, ctx->digest, src, key, NULL,
+> +		ghash_do_simd_update(1, ctx->digest, buf, key, NULL,
+>  				     pmull_ghash_update_p8);
+>  		memzero_explicit(buf, sizeof(buf));
+>  	}
+>  	return ghash_export(desc, dst);
+>  }
+>
+> base-commit: 7a3984bbd69055898add0fe22445f99435f33450
 
 
