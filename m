@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-200575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16280CB235E
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:32:37 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E240ACB2409
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:36:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F04F4300CA27
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:32:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C08363029515
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:34:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47261274B5F;
-	Wed, 10 Dec 2025 07:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80ECE303CB0;
+	Wed, 10 Dec 2025 07:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bkNLlind"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rV/cDJzz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E3D2264DC;
-	Wed, 10 Dec 2025 07:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D22327A47F;
+	Wed, 10 Dec 2025 07:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765351937; cv=none; b=FUMd+KbQVwk7XxvYhVp7Bf6GsQo9JGUOMGm7QvEa6IvSeFgh9IZ5yVp+ZKDtWE8zp8c/55Ka+f0frX+a5/GJyXlS1MulEyXc8wD6hnX9qoyubDUslK/sqx09kFM9fSxpHRmQvMe740sZlBynG0gydaXLqTcbmJqH/Cgo1vfZ+ok=
+	t=1765352066; cv=none; b=khZHH2Gpec1eNia0HGwwdZn0H9exRUJrimzY7ad1u6b7sOK6v4l/iImM9xUenpHDha5rG1heEACuh5cC6m+Nh5E1Zx/47yThwoVLA9xduAgQh111AfZW8Su8dTj3DkFWYfRov3F3kAtDUJy0YArMPsx/NP4l5McF/sCaW/XpmJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765351937; c=relaxed/simple;
-	bh=iovQSvgZCmw3a3IM8vn4Mm45h0k0vnrpHMOwi0sJdeE=;
+	s=arc-20240116; t=1765352066; c=relaxed/simple;
+	bh=sc0hFifiwaK1+uvrGRO6J6DpsU8lA4RqVeh5BQ/UDgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tXyjaqDEHslcjJZfyBTQSwyODAL1J9vnMgTDgUa67qt0JOgL9jZkyHNCDoPCEd7OiC68YlXxZPD18nr/YUn7IeiJ0P1PUlfQzPnrHymkUbYf/fcgYDVmAdqiJVH5G2xlWcT8T1IMOLSHPp37VoMa9QSK8mQ1ftLQBYQFq8bCPCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bkNLlind; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35290C4CEF1;
-	Wed, 10 Dec 2025 07:32:16 +0000 (UTC)
+	 MIME-Version; b=OvDFe7Ma0FnZl4q35qTYGuJvHLMRIsNt9BXn4mHB/yZP5xpdtW3YMXgeFoKFUUV5gvDxlNS0U8mnSY3wYmHrPYr7U61YzcteKp14oVwE1hSTz1imlIiGplzuGOk66jnM0YiTBVsbrAJ29SQxSjCP9Ii6Lrajh5U7SOHRa8RlH/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rV/cDJzz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E2B0C4CEF1;
+	Wed, 10 Dec 2025 07:34:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765351936;
-	bh=iovQSvgZCmw3a3IM8vn4Mm45h0k0vnrpHMOwi0sJdeE=;
+	s=korg; t=1765352066;
+	bh=sc0hFifiwaK1+uvrGRO6J6DpsU8lA4RqVeh5BQ/UDgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bkNLlindFdgx6xIYwWZl4iwH61d/af+eCCaYDLr4yuTpTKg0OhhenrHI9/jJWMKg8
-	 kv/WgnJNOP/+pfVPzWLkDb+/0A/8AflFM1bfLaDuX1/G52IkZUSFS/t+CtYQp31s/9
-	 UrLoX7xL9wDbYqnChioiQt7YkHQidLHyyVHmNnlg=
+	b=rV/cDJzzyjhESbvo4+Evrjj0AcnjKdYDt2bAXIUnNFmOTo+doDWhJMcDr2PMjgXXM
+	 pT3hDEsInLti9aMtiig8xUCv1mGgBFesFyHcqEEspNfpdlk4b8Vx27QEhjt5+k7Xgi
+	 LE8eZa1uvzLL5kWmwRCe8qj/+Q154riKuVUQ4PLM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antheas Kapenekakis <lkml@antheas.dev>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Casey Chen <cachen@purestorage.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Hannes Reinecke <hare@suse.de>,
+	Ming Lei <ming.lei@redhat.com>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 36/49] platform/x86/amd/pmc: Add spurious_8042 to Xbox Ally
+Subject: [PATCH 6.17 36/60] nvme: fix admin request_queue lifetime
 Date: Wed, 10 Dec 2025 16:30:06 +0900
-Message-ID: <20251210072949.061864686@linuxfoundation.org>
+Message-ID: <20251210072948.763845767@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
-References: <20251210072948.125620687@linuxfoundation.org>
+In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
+References: <20251210072947.850479903@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,56 +62,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antheas Kapenekakis <lkml@antheas.dev>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit c0ddc54016636dd8dedfaf1a3b482a95058e1db2 ]
+[ Upstream commit 03b3bcd319b3ab5182bc9aaa0421351572c78ac0 ]
 
-The Xbox Ally features a Van Gogh SoC that has spurious interrupts
-during resume. We get the following logs:
+The namespaces can access the controller's admin request_queue, and
+stale references on the namespaces may exist after tearing down the
+controller. Ensure the admin request_queue is active by moving the
+controller's 'put' to after all controller references have been released
+to ensure no one is can access the request_queue. This fixes a reported
+use-after-free bug:
 
-atkbd_receive_byte: 20 callbacks suppressed
-atkbd serio0: Spurious ACK on isa0060/serio0. Some program might be trying to access hardware directly.
+  BUG: KASAN: slab-use-after-free in blk_queue_enter+0x41c/0x4a0
+  Read of size 8 at addr ffff88c0a53819f8 by task nvme/3287
+  CPU: 67 UID: 0 PID: 3287 Comm: nvme Tainted: G            E       6.13.2-ga1582f1a031e #15
+  Tainted: [E]=UNSIGNED_MODULE
+  Hardware name: Jabil /EGS 2S MB1, BIOS 1.00 06/18/2025
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x4f/0x60
+   print_report+0xc4/0x620
+   ? _raw_spin_lock_irqsave+0x70/0xb0
+   ? _raw_read_unlock_irqrestore+0x30/0x30
+   ? blk_queue_enter+0x41c/0x4a0
+   kasan_report+0xab/0xe0
+   ? blk_queue_enter+0x41c/0x4a0
+   blk_queue_enter+0x41c/0x4a0
+   ? __irq_work_queue_local+0x75/0x1d0
+   ? blk_queue_start_drain+0x70/0x70
+   ? irq_work_queue+0x18/0x20
+   ? vprintk_emit.part.0+0x1cc/0x350
+   ? wake_up_klogd_work_func+0x60/0x60
+   blk_mq_alloc_request+0x2b7/0x6b0
+   ? __blk_mq_alloc_requests+0x1060/0x1060
+   ? __switch_to+0x5b7/0x1060
+   nvme_submit_user_cmd+0xa9/0x330
+   nvme_user_cmd.isra.0+0x240/0x3f0
+   ? force_sigsegv+0xe0/0xe0
+   ? nvme_user_cmd64+0x400/0x400
+   ? vfs_fileattr_set+0x9b0/0x9b0
+   ? cgroup_update_frozen_flag+0x24/0x1c0
+   ? cgroup_leave_frozen+0x204/0x330
+   ? nvme_ioctl+0x7c/0x2c0
+   blkdev_ioctl+0x1a8/0x4d0
+   ? blkdev_common_ioctl+0x1930/0x1930
+   ? fdget+0x54/0x380
+   __x64_sys_ioctl+0x129/0x190
+   do_syscall_64+0x5b/0x160
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+  RIP: 0033:0x7f765f703b0b
+  Code: ff ff ff 85 c0 79 9b 49 c7 c4 ff ff ff ff 5b 5d 4c 89 e0 41 5c c3 66 0f 1f 84 00 00 00 00 00 f3 0f 1e fa b8 10 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d dd 52 0f 00 f7 d8 64 89 01 48
+  RSP: 002b:00007ffe2cefe808 EFLAGS: 00000202 ORIG_RAX: 0000000000000010
+  RAX: ffffffffffffffda RBX: 00007ffe2cefe860 RCX: 00007f765f703b0b
+  RDX: 00007ffe2cefe860 RSI: 00000000c0484e41 RDI: 0000000000000003
+  RBP: 0000000000000000 R08: 0000000000000003 R09: 0000000000000000
+  R10: 00007f765f611d50 R11: 0000000000000202 R12: 0000000000000003
+  R13: 00000000c0484e41 R14: 0000000000000001 R15: 00007ffe2cefea60
+   </TASK>
 
-So, add the spurious_8042 quirk for it. It does not have a keyboard, so
-this does not result in any functional loss.
-
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4659
-Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Link: https://patch.msgid.link/20251024152152.3981721-3-lkml@antheas.dev
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reported-by: Casey Chen <cachen@purestorage.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/amd/pmc/pmc-quirks.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/nvme/host/core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/amd/pmc/pmc-quirks.c b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-index 271cbeaa59af3..a5031339dac8c 100644
---- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
-+++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-@@ -116,6 +116,14 @@ static const struct dmi_system_id fwbug_list[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "21A1"),
- 		}
- 	},
-+	{
-+		.ident = "ROG Xbox Ally RC73YA",
-+		.driver_data = &quirk_spurious_8042,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "RC73YA"),
-+		}
-+	},
- 	/* https://bugzilla.kernel.org/show_bug.cgi?id=218024 */
- 	{
- 		.ident = "V14 G4 AMN",
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 5714d49932822..28c598008124c 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -4896,7 +4896,6 @@ void nvme_remove_admin_tag_set(struct nvme_ctrl *ctrl)
+ 	 */
+ 	nvme_stop_keep_alive(ctrl);
+ 	blk_mq_destroy_queue(ctrl->admin_q);
+-	blk_put_queue(ctrl->admin_q);
+ 	if (ctrl->ops->flags & NVME_F_FABRICS) {
+ 		blk_mq_destroy_queue(ctrl->fabrics_q);
+ 		blk_put_queue(ctrl->fabrics_q);
+@@ -5040,6 +5039,8 @@ static void nvme_free_ctrl(struct device *dev)
+ 		container_of(dev, struct nvme_ctrl, ctrl_device);
+ 	struct nvme_subsystem *subsys = ctrl->subsys;
+ 
++	if (ctrl->admin_q)
++		blk_put_queue(ctrl->admin_q);
+ 	if (!subsys || ctrl->instance != subsys->instance)
+ 		ida_free(&nvme_instance_ida, ctrl->instance);
+ 	nvme_free_cels(ctrl);
 -- 
 2.51.0
 
