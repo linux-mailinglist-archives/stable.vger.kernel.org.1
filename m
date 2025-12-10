@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-200647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E1EFCB2472
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:38:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA9F6CB24E4
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:42:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5E52D3041F7D
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:35:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C01D43111C04
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:41:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEB79303CB0;
-	Wed, 10 Dec 2025 07:35:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 021E8305958;
+	Wed, 10 Dec 2025 07:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GjbMuF7k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LKrnWhXE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE38302CCD;
-	Wed, 10 Dec 2025 07:35:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB15D3054E6;
+	Wed, 10 Dec 2025 07:36:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765352123; cv=none; b=IbaB+i5TMxFeL8GKb4sSQ/vcMjd3R2Azn4Rc1hS/XmZ04xIdEDJmWEVbGoW38uHRAncyuhimIrlMM+wAEL1iC208gPsELsigDL9xWnNDuTgXVjY3YOHr6yOrpJYzIf9pvJeUVLv2HdyI2+dsItarYxq55TjkUFJ7C72xfBDi6r0=
+	t=1765352176; cv=none; b=GKAvBhXnpL2CbDEilw9WojqJTbp6SD1pwMzl7l/euMGtRS2glDiwzpFR8gcKdVL0yERmRXJUYtz9RVvx3YtyLskNV/UM8y/Ft/KLm1UiOu5oLGGROn7pm15nPpAIAnX80tW9IZr37rr+WSEGlAkenkW3aEtVByBBe7mXkOz9oJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765352123; c=relaxed/simple;
-	bh=MBQN3zAPEJOslfYtb7P3sJ0dcCHSCcBKZ1DkBPjUNjI=;
+	s=arc-20240116; t=1765352176; c=relaxed/simple;
+	bh=Lt0+a+Fz9SRzdEd2WMjITQXTjhx6Nzb5Fq2M/2uzwtU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mZsffEKkWYUED1uOcCPt6KNz57OQJVIHwfdnk8FwV8lkcg5QZAC8kJwiC7eCIiITjinMsuDHmlxe98A3yJjRypjkI8s/v17Owmf0bjokLeoIzzQV3XSY6QfbERLVWFIQVVsn6Sd0eeEnTdEiVn47qkH+YLMrannyPcgyfSsQaqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GjbMuF7k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02A1CC4CEF1;
-	Wed, 10 Dec 2025 07:35:21 +0000 (UTC)
+	 MIME-Version; b=qg2jxX+gH4V/lrSz+SSfFhJuw8ClRdewUUWjydA0NlgYk888vg1m0f8NpZ4fyk5uvtlS10SZvIdNU555Ljsw6v7h9H+gyrHrhL90b5lE9m9LGcavyX7yA/43wwdBgHWWr7VPhINoT5Qzw1XvszG7JSamcGCdOkMdUZ2jSbgtMrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LKrnWhXE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 552BEC4CEF1;
+	Wed, 10 Dec 2025 07:36:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765352122;
-	bh=MBQN3zAPEJOslfYtb7P3sJ0dcCHSCcBKZ1DkBPjUNjI=;
+	s=korg; t=1765352176;
+	bh=Lt0+a+Fz9SRzdEd2WMjITQXTjhx6Nzb5Fq2M/2uzwtU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GjbMuF7kz6DVJHTJw/Q8ExjMt1YWgMPUCFEZk/C5l0Xb6cUNaN+3AF0sN26whZLi5
-	 gfSbl7l46neoP57yzUwHvQ6XPaVzJlgcJlVe/Zyam3dSmQ36Ww0XmudnfGwjBpF0Lh
-	 f1MXCyC7vCCneLBwYhQXOKn59/ElIPsLKa1EsWB8=
+	b=LKrnWhXEgnzki6+MRxC0/4K40zbsV950fWUvzAY0b74zT5xOliQG5zmR8AVHAIJ8U
+	 oVZ/d0gQ0DAnVKacaeovKg+LpTTxsxw131FVFnLzlP/q7pBRY/kjY+osAczSPs/J6d
+	 zdz8wqP3cqQwoKn8GqV8hCRZmu1KcvpSHBkkIhj0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Navaneeth K <knavaneeth786@gmail.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.17 59/60] staging: rtl8723bs: fix stack buffer overflow in OnAssocReq IE parsing
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.18 19/29] USB: serial: kobil_sct: fix TIOCMBIS and TIOCMBIC
 Date: Wed, 10 Dec 2025 16:30:29 +0900
-Message-ID: <20251210072949.334782839@linuxfoundation.org>
+Message-ID: <20251210072944.887708437@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
-References: <20251210072947.850479903@linuxfoundation.org>
+In-Reply-To: <20251210072944.363788552@linuxfoundation.org>
+References: <20251210072944.363788552@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,54 +58,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Navaneeth K <knavaneeth786@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 6ef0e1c10455927867cac8f0ed6b49f328f8cf95 upstream.
+commit d432df758f92c4c28aac409bc807fd1716167577 upstream.
 
-The Supported Rates IE length from an incoming Association Request frame
-was used directly as the memcpy() length when copying into a fixed-size
-16-byte stack buffer (supportRate). A malicious station can advertise an
-IE length larger than 16 bytes, causing a stack buffer overflow.
+Asserting or deasserting a modem control line using TIOCMBIS or TIOCMBIC
+should not deassert any lines that are not in the mask.
 
-Clamp ie_len to the buffer size before copying the Supported Rates IE,
-and correct the bounds check when merging Extended Supported Rates to
-prevent a second potential overflow.
+Fix this long-standing issue dating back to 2003 when the support for
+these ioctls was added with the introduction of the tiocmset() callback.
 
-This prevents kernel stack corruption triggered by malformed association
-requests.
-
-Signed-off-by: Navaneeth K <knavaneeth786@gmail.com>
-Cc: stable <stable@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/rtl8723bs/core/rtw_mlme_ext.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/usb/serial/kobil_sct.c |   18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
---- a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
-+++ b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
-@@ -1033,6 +1033,9 @@ unsigned int OnAssocReq(struct adapter *
- 		status = WLAN_STATUS_CHALLENGE_FAIL;
- 		goto OnAssocReqFail;
- 	} else {
-+		if (ie_len > sizeof(supportRate))
-+			ie_len = sizeof(supportRate);
-+
- 		memcpy(supportRate, p+2, ie_len);
- 		supportRateNum = ie_len;
+--- a/drivers/usb/serial/kobil_sct.c
++++ b/drivers/usb/serial/kobil_sct.c
+@@ -418,7 +418,7 @@ static int kobil_tiocmset(struct tty_str
+ 	struct usb_serial_port *port = tty->driver_data;
+ 	struct device *dev = &port->dev;
+ 	struct kobil_private *priv;
+-	int result;
++	int result = 0;
+ 	int dtr = 0;
+ 	int rts = 0;
  
-@@ -1040,7 +1043,7 @@ unsigned int OnAssocReq(struct adapter *
- 				pkt_len - WLAN_HDR_A3_LEN - ie_offset);
- 		if (p) {
+@@ -435,12 +435,12 @@ static int kobil_tiocmset(struct tty_str
+ 	if (set & TIOCM_DTR)
+ 		dtr = 1;
+ 	if (clear & TIOCM_RTS)
+-		rts = 0;
++		rts = 1;
+ 	if (clear & TIOCM_DTR)
+-		dtr = 0;
++		dtr = 1;
  
--			if (supportRateNum <= sizeof(supportRate)) {
-+			if (supportRateNum + ie_len <= sizeof(supportRate)) {
- 				memcpy(supportRate+supportRateNum, p+2, ie_len);
- 				supportRateNum += ie_len;
- 			}
+-	if (priv->device_type == KOBIL_ADAPTER_B_PRODUCT_ID) {
+-		if (dtr != 0)
++	if (dtr && priv->device_type == KOBIL_ADAPTER_B_PRODUCT_ID) {
++		if (set & TIOCM_DTR)
+ 			dev_dbg(dev, "%s - Setting DTR\n", __func__);
+ 		else
+ 			dev_dbg(dev, "%s - Clearing DTR\n", __func__);
+@@ -448,13 +448,13 @@ static int kobil_tiocmset(struct tty_str
+ 			  usb_sndctrlpipe(port->serial->dev, 0),
+ 			  SUSBCRequest_SetStatusLinesOrQueues,
+ 			  USB_TYPE_VENDOR | USB_RECIP_ENDPOINT | USB_DIR_OUT,
+-			  ((dtr != 0) ? SUSBCR_SSL_SETDTR : SUSBCR_SSL_CLRDTR),
++			  ((set & TIOCM_DTR) ? SUSBCR_SSL_SETDTR : SUSBCR_SSL_CLRDTR),
+ 			  0,
+ 			  NULL,
+ 			  0,
+ 			  KOBIL_TIMEOUT);
+-	} else {
+-		if (rts != 0)
++	} else if (rts) {
++		if (set & TIOCM_RTS)
+ 			dev_dbg(dev, "%s - Setting RTS\n", __func__);
+ 		else
+ 			dev_dbg(dev, "%s - Clearing RTS\n", __func__);
+@@ -462,7 +462,7 @@ static int kobil_tiocmset(struct tty_str
+ 			usb_sndctrlpipe(port->serial->dev, 0),
+ 			SUSBCRequest_SetStatusLinesOrQueues,
+ 			USB_TYPE_VENDOR | USB_RECIP_ENDPOINT | USB_DIR_OUT,
+-			((rts != 0) ? SUSBCR_SSL_SETRTS : SUSBCR_SSL_CLRRTS),
++			((set & TIOCM_RTS) ? SUSBCR_SSL_SETRTS : SUSBCR_SSL_CLRRTS),
+ 			0,
+ 			NULL,
+ 			0,
 
 
 
