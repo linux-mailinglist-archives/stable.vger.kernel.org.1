@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-200650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64F68CB23F7
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:36:18 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CA6DCB2496
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:39:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E80E630378A4
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:35:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 149203047CBE
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:36:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9BAE302CBA;
-	Wed, 10 Dec 2025 07:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97BF427FB2E;
+	Wed, 10 Dec 2025 07:35:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ceusD6Aw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lxcAa4tg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D4E75C613;
-	Wed, 10 Dec 2025 07:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6D4303C81;
+	Wed, 10 Dec 2025 07:35:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765352131; cv=none; b=Cww+YVTihHLNfQ87bnrUdx7fcvea9qb4UjFqujT0dqzOdBN88/2opp7OwE/E1oMxDpLBTT/uiIb/WSpmcmbtWtoVAVFwYo6xD1tWb4oj9CzCkGxtAr8Wiu/jcT5rg3WzFbwjtdk6mh/s2AftykNYPfvxTMI0BEmsWHjUyAh2hPE=
+	t=1765352159; cv=none; b=a7o+EYtw1JLk4wSeWkz8Wap3kmP4pzYCj98KvAoiY4lXLRoR0G4DvDpISh0JrOoLKzUabxFXvglC4HwhmznFQFP8Youi9HhlZVt8GNVVpq8rrEfyvEYItgosMF/AA3sZNcvJwFyTtEazY81rZ49Sr26VSNvFC2z2Homn5rwCkKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765352131; c=relaxed/simple;
-	bh=H0lnGXpFwzdL4yvn7ZWYRZOiGj9SHukd/+9ifpENOVI=;
+	s=arc-20240116; t=1765352159; c=relaxed/simple;
+	bh=5zysFCDzAt6873wtAewPic96DchaPhVyEN6KWMcTnk8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iP4WNyIhlXa2QwTYk9vPNZUUjOsYBybYq7gEF3KirOrX5ahSpiji6LKM+ClKmusP2CTT49BY9OVFWvqCqLBtaszR2iYoMLuBq+LtnDcHahqN5CaIFW5BcN9C3JgGsGEb7396pl7R9TO3ePBB09NRyn75VWZj73IkBbCB/gy9g5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ceusD6Aw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 162F4C4CEF1;
-	Wed, 10 Dec 2025 07:35:30 +0000 (UTC)
+	 MIME-Version; b=sidZTjavu0KWWKtpJmhqVfCnRevAkJ5G3PuCsd8NHfEpI3N+AFvcJ0YcKN0fJqnclNayt5vi7vZcDZmw7Pd9hbYqBMqkAEQ/Z8lwsqKG0+bWs+XCKr92IQqSCiPz6+/7boHTbNqjt4G+jAAAeC4AQRXGbbDfDSO6YvvubmTerNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lxcAa4tg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DE88C4CEF1;
+	Wed, 10 Dec 2025 07:35:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765352131;
-	bh=H0lnGXpFwzdL4yvn7ZWYRZOiGj9SHukd/+9ifpENOVI=;
+	s=korg; t=1765352159;
+	bh=5zysFCDzAt6873wtAewPic96DchaPhVyEN6KWMcTnk8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ceusD6AwpxQycKLfwEpFs4rnHHesq3fViwDPDG9N/wwNSjj/GN1v43LQiMmbA2tfB
-	 nlPlb2cO5xLQFz3NVqSv35lFLdJackyFDSCxtND7F3ea13yLc88B1UP8bT2dmpnGdj
-	 jX8t/VAs7ttbzgsUNPfnXZApn8kNSHyRZ8oAwQ2s=
+	b=lxcAa4tg8Kcu4HmFVma922x7WBEVkXrFCKRCSGXHGj3ZX9sTmzGf8P4r9rE1HSWtt
+	 gmr2dY0NgnreY0nZEO0wYjBFlP14bxJhf7c3a1LUnsCOSOxRkuS5OV6b9sCZmG6PJl
+	 6wur1QtJLFqMlTTp1/4jScRC5+IOxrAS2xGkYdtg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antheas Kapenekakis <lkml@antheas.dev>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 43/60] platform/x86/amd/pmc: Add spurious_8042 to Xbox Ally
-Date: Wed, 10 Dec 2025 16:30:13 +0900
-Message-ID: <20251210072948.935887118@linuxfoundation.org>
+	Qianchang Zhao <pioooooooooip@gmail.com>,
+	Zhitong Liu <liuzhitong1993@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.18 04/29] ksmbd: ipc: fix use-after-free in ipc_msg_send_request
+Date: Wed, 10 Dec 2025 16:30:14 +0900
+Message-ID: <20251210072944.491410534@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
-References: <20251210072947.850479903@linuxfoundation.org>
+In-Reply-To: <20251210072944.363788552@linuxfoundation.org>
+References: <20251210072944.363788552@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,59 +59,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antheas Kapenekakis <lkml@antheas.dev>
+From: Qianchang Zhao <pioooooooooip@gmail.com>
 
-[ Upstream commit c0ddc54016636dd8dedfaf1a3b482a95058e1db2 ]
+commit 1fab1fa091f5aa97265648b53ea031deedd26235 upstream.
 
-The Xbox Ally features a Van Gogh SoC that has spurious interrupts
-during resume. We get the following logs:
+ipc_msg_send_request() waits for a generic netlink reply using an
+ipc_msg_table_entry on the stack. The generic netlink handler
+(handle_generic_event()/handle_response()) fills entry->response under
+ipc_msg_table_lock, but ipc_msg_send_request() used to validate and free
+entry->response without holding the same lock.
 
-atkbd_receive_byte: 20 callbacks suppressed
-atkbd serio0: Spurious ACK on isa0060/serio0. Some program might be trying to access hardware directly.
+Under high concurrency this allows a race where handle_response() is
+copying data into entry->response while ipc_msg_send_request() has just
+freed it, leading to a slab-use-after-free reported by KASAN in
+handle_generic_event():
 
-So, add the spurious_8042 quirk for it. It does not have a keyboard, so
-this does not result in any functional loss.
+  BUG: KASAN: slab-use-after-free in handle_generic_event+0x3c4/0x5f0 [ksmbd]
+  Write of size 12 at addr ffff888198ee6e20 by task pool/109349
+  ...
+  Freed by task:
+    kvfree
+    ipc_msg_send_request [ksmbd]
+    ksmbd_rpc_open -> ksmbd_session_rpc_open [ksmbd]
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4659
-Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Link: https://patch.msgid.link/20251024152152.3981721-3-lkml@antheas.dev
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix by:
+- Taking ipc_msg_table_lock in ipc_msg_send_request() while validating
+  entry->response, freeing it when invalid, and removing the entry from
+  ipc_msg_table.
+- Returning the final entry->response pointer to the caller only after
+  the hash entry is removed under the lock.
+- Returning NULL in the error path, preserving the original API
+  semantics.
+
+This makes all accesses to entry->response consistent with
+handle_response(), which already updates and fills the response buffer
+under ipc_msg_table_lock, and closes the race that allowed the UAF.
+
+Cc: stable@vger.kernel.org
+Reported-by: Qianchang Zhao <pioooooooooip@gmail.com>
+Reported-by: Zhitong Liu <liuzhitong1993@gmail.com>
+Signed-off-by: Qianchang Zhao <pioooooooooip@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/amd/pmc/pmc-quirks.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/smb/server/transport_ipc.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/x86/amd/pmc/pmc-quirks.c b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-index 0fadcf5f288ac..404e62ad293a9 100644
---- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
-+++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-@@ -122,6 +122,14 @@ static const struct dmi_system_id fwbug_list[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "21A1"),
+--- a/fs/smb/server/transport_ipc.c
++++ b/fs/smb/server/transport_ipc.c
+@@ -553,12 +553,16 @@ static void *ipc_msg_send_request(struct
+ 	up_write(&ipc_msg_table_lock);
+ 
+ 	ret = ipc_msg_send(msg);
+-	if (ret)
++	if (ret) {
++		down_write(&ipc_msg_table_lock);
+ 		goto out;
++	}
+ 
+ 	ret = wait_event_interruptible_timeout(entry.wait,
+ 					       entry.response != NULL,
+ 					       IPC_WAIT_TIMEOUT);
++
++	down_write(&ipc_msg_table_lock);
+ 	if (entry.response) {
+ 		ret = ipc_validate_msg(&entry);
+ 		if (ret) {
+@@ -567,7 +571,6 @@ static void *ipc_msg_send_request(struct
  		}
- 	},
-+	{
-+		.ident = "ROG Xbox Ally RC73YA",
-+		.driver_data = &quirk_spurious_8042,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "RC73YA"),
-+		}
-+	},
- 	/* https://bugzilla.kernel.org/show_bug.cgi?id=218024 */
- 	{
- 		.ident = "V14 G4 AMN",
--- 
-2.51.0
-
+ 	}
+ out:
+-	down_write(&ipc_msg_table_lock);
+ 	hash_del(&entry.ipc_table_hlist);
+ 	up_write(&ipc_msg_table_lock);
+ 	return entry.response;
 
 
 
