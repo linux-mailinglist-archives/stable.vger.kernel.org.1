@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-200652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 912A0CB23FA
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:36:21 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 029F2CB249C
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:39:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2B8093043900
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:35:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 495DB304880F
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:36:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C489B5C613;
-	Wed, 10 Dec 2025 07:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1881303CAF;
+	Wed, 10 Dec 2025 07:36:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oMhT4mR+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qc/Jmprz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CF64302CC0;
-	Wed, 10 Dec 2025 07:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF7D302CBD;
+	Wed, 10 Dec 2025 07:36:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765352135; cv=none; b=XBERPoicIpbuDL2oH6DvvycBWnGL9kSnQLbRUxt4MvzKMUgeiMdBIu7w1GzioepnzKGBlWC24STCAYbF0WOn4biEBaNd4Oxiq3bYeBnihCYGR+yPmhYwwACDsLd5jwtbOrrGQMvfb3Z43wn12GxxGIlePQ1zxD9LheNT2KuQfc0=
+	t=1765352161; cv=none; b=uYnqcmK7pN3JRsIoPYjqjRpt18Z6lx2ysFgNL6FK7Ax0Z1ULhIwThSEVdKDWhycc2TnmgJkSrfpODi2sIjmQnHxZ1+zdYFpiDtVgBTE5F4jJW7rLOEKhJOitP0zmgviowzf3DfVXV7IOkX3WfNUtdvfx1oLGjHkNE74/exhQaAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765352135; c=relaxed/simple;
-	bh=casnYKAum16yEH39nX7746zwUGQxwwdOKN8iljmn/4E=;
+	s=arc-20240116; t=1765352161; c=relaxed/simple;
+	bh=Eysv9DBpgRoWd6vmegNNgYWJ5gRuvCGMrWkVB1u5DKY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g6VhdSAykKaaMBMu7tTMLrw8d5VWXJ1wCnhar+U+zfnVWx9rrrVxgCsuCt7IxPFM6DujfO3znzVico9I+ahQnTlDEJjAONyVSX1ZuGYYx2Ey6BhMYQE4YttVK8gzq0hVyQIyYCFS9+6ngYOpfSCerjR1hXMbaVao/M+rlvwKbCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oMhT4mR+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24979C4CEF1;
-	Wed, 10 Dec 2025 07:35:35 +0000 (UTC)
+	 MIME-Version; b=SdqsyhJmfdZk8wfMcD7b0npejmFtDAZ4dqmrRyxI50tmDtlw6ThkU3a0RwDrZ7X98E7L7FK1Vbb5V+O8b32TbsD5hh6UPEJ09uGX6hL4NdHSO8bChWaUhwmnZssXf/UFl+0damBb8RQ2vxp4anml39uppeiUVZVo9iV5WwKTlBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qc/Jmprz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27EEAC4CEF1;
+	Wed, 10 Dec 2025 07:36:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765352135;
-	bh=casnYKAum16yEH39nX7746zwUGQxwwdOKN8iljmn/4E=;
+	s=korg; t=1765352161;
+	bh=Eysv9DBpgRoWd6vmegNNgYWJ5gRuvCGMrWkVB1u5DKY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oMhT4mR+vuHy07SADg33ggVPJqLuDMhJS1ncgogEH5UQuEqVSAwl47yntOtRsqXzM
-	 6gC5Y2LMlz9Td8uEf6hIkL0WjZeahyUzIwn5Bd4x0wvEcxnFsWRJ8OD9skGF5l3bKi
-	 T7JH0UnKr8TAmLobvBKsEPusWYDIIpcGE5qhAktw=
+	b=qc/JmprzxOrdyRpw8LiFl3rYzipTQr90rhJq1SFvJ1GLaayVNxOF5c8DjRbrsS3wP
+	 tkVKXFLIe/AEzb39W65mKkBfAr+iJgGk4wmw/DwJM7J9EzPg8tqd0hDvbqIDTQkiFW
+	 l6UPchCh/srEkBbR7uFC+lhVuAM32wqKN+OIkjd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 45/60] platform/x86/intel/hid: Add Nova Lake support
+	Adrian Freihofer <adrian.freihofer@siemens.com>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Waiman Long <longman@redhat.com>
+Subject: [PATCH 6.18 05/29] locking/spinlock/debug: Fix data-race in do_raw_write_lock
 Date: Wed, 10 Dec 2025 16:30:15 +0900
-Message-ID: <20251210072948.984310073@linuxfoundation.org>
+Message-ID: <20251210072944.515624386@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
-References: <20251210072947.850479903@linuxfoundation.org>
+In-Reply-To: <20251210072944.363788552@linuxfoundation.org>
+References: <20251210072944.363788552@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,43 +61,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-[ Upstream commit ddf5ffff3a5fe95bed178f5554596b93c52afbc9 ]
+commit c14ecb555c3ee80eeb030a4e46d00e679537f03a upstream.
 
-Add ACPI ID for Nova Lake.
+KCSAN reports:
 
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Link: https://patch.msgid.link/20251110235041.123685-1-srinivas.pandruvada@linux.intel.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+BUG: KCSAN: data-race in do_raw_write_lock / do_raw_write_lock
+
+write (marked) to 0xffff800009cf504c of 4 bytes by task 1102 on cpu 1:
+ do_raw_write_lock+0x120/0x204
+ _raw_write_lock_irq
+ do_exit
+ call_usermodehelper_exec_async
+ ret_from_fork
+
+read to 0xffff800009cf504c of 4 bytes by task 1103 on cpu 0:
+ do_raw_write_lock+0x88/0x204
+ _raw_write_lock_irq
+ do_exit
+ call_usermodehelper_exec_async
+ ret_from_fork
+
+value changed: 0xffffffff -> 0x00000001
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 0 PID: 1103 Comm: kworker/u4:1 6.1.111
+
+Commit 1a365e822372 ("locking/spinlock/debug: Fix various data races") has
+adressed most of these races, but seems to be not consistent/not complete.
+
+>From do_raw_write_lock() only debug_write_lock_after() part has been
+converted to WRITE_ONCE(), but not debug_write_lock_before() part.
+Do it now.
+
+Fixes: 1a365e822372 ("locking/spinlock/debug: Fix various data races")
+Reported-by: Adrian Freihofer <adrian.freihofer@siemens.com>
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Acked-by: Waiman Long <longman@redhat.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/intel/hid.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/locking/spinlock_debug.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/x86/intel/hid.c b/drivers/platform/x86/intel/hid.c
-index f25a427cccdac..9c07a7faf18fe 100644
---- a/drivers/platform/x86/intel/hid.c
-+++ b/drivers/platform/x86/intel/hid.c
-@@ -55,6 +55,7 @@ static const struct acpi_device_id intel_hid_ids[] = {
- 	{ "INTC10CB" },
- 	{ "INTC10CC" },
- 	{ "INTC10F1" },
-+	{ "INTC10F2" },
- 	{ }
- };
- MODULE_DEVICE_TABLE(acpi, intel_hid_ids);
--- 
-2.51.0
-
+--- a/kernel/locking/spinlock_debug.c
++++ b/kernel/locking/spinlock_debug.c
+@@ -184,8 +184,8 @@ void do_raw_read_unlock(rwlock_t *lock)
+ static inline void debug_write_lock_before(rwlock_t *lock)
+ {
+ 	RWLOCK_BUG_ON(lock->magic != RWLOCK_MAGIC, lock, "bad magic");
+-	RWLOCK_BUG_ON(lock->owner == current, lock, "recursion");
+-	RWLOCK_BUG_ON(lock->owner_cpu == raw_smp_processor_id(),
++	RWLOCK_BUG_ON(READ_ONCE(lock->owner) == current, lock, "recursion");
++	RWLOCK_BUG_ON(READ_ONCE(lock->owner_cpu) == raw_smp_processor_id(),
+ 							lock, "cpu recursion");
+ }
+ 
 
 
 
