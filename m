@@ -1,126 +1,147 @@
-Return-Path: <stable+bounces-200545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90954CB218F
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:39:13 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 070D9CB22F2
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:26:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B4D2B302CA70
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 06:39:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E0D2430076B0
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:26:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FC293126B8;
-	Wed, 10 Dec 2025 06:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604352F3C3E;
+	Wed, 10 Dec 2025 07:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="lIF+U8II"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="qpJAzXI3";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="uRMFTElf"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
+Received: from fhigh-b2-smtp.messagingengine.com (fhigh-b2-smtp.messagingengine.com [202.12.124.153])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D612F8BD1
-	for <stable@vger.kernel.org>; Wed, 10 Dec 2025 06:39:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E111DE8A4;
+	Wed, 10 Dec 2025 07:25:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765348749; cv=none; b=m6Vas2GZRlwdfBQDWZnkRLVn+4sSKJiwNTydr6uXbDBAXKpWoOjvuls6otQOIVl3Y+gz+H/fXaGOU5GvCilBwZ73uCX5FIA81526IM9e2rexb0P7Q9WMzaCq1ZGGnpIjsKEg80cQDSmBTBUmxs72FWCp68+1zV0/QKb4Kwkcv5A=
+	t=1765351562; cv=none; b=uzW1E2ae4d0EKXHtxsn8Z6kI7VfbwJOi5FJ69gZYTdj6/gnETjBqAqj6HPvw02uRWvtUDPfRKDEp+9EfVACHm36cKlMn7tJJqTBxEASmuTzrhUHnPb3sBfxJWjAITO2OX4KaWk1xxDsAPmWj6yfUNXqaYBOZxDHj541hZctXDqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765348749; c=relaxed/simple;
-	bh=Kz859QFqaTjFiTHmrk3Yej0UWmo4u+H2a+DUHXEGifU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:MIME-Version:
-	 Content-Type:References; b=hGhNCPasiL4iVwMVOrRjSosqHnViTeMjq2y1gezxkf+8p2M6LOhU3Yhp4h+R1rv4AZFSXIMUo8NiKZa/nF0hCg1jSb/hRtkLlukiI8KoHD5cttWQJeJ9rqr7So0gwsXSK60gBI3ZJWMqYiMbwsUp3Izf1H0MpJ4lp2XWpmZlMjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=lIF+U8II; arc=none smtp.client-ip=203.254.224.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from epcas1p3.samsung.com (unknown [182.195.41.47])
-	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20251210063904epoutp0106c5cbc1d02bdf684f154ff82cffa87d~-x1RommTU2227822278epoutp01J
-	for <stable@vger.kernel.org>; Wed, 10 Dec 2025 06:39:04 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20251210063904epoutp0106c5cbc1d02bdf684f154ff82cffa87d~-x1RommTU2227822278epoutp01J
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1765348744;
-	bh=4UpQQu60XCHY8zQhF5/tqP6wgLjIJizjaVn9/DDpb9Q=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lIF+U8IIsbZxP12KcPQVCPvCPl5CUWlf+SRiJNFZ1MFr+kI+ZHyh5X9TdmptBUvwZ
-	 V7oXtfHPq9KGvBPePDvahVouLFin9Z9QzUFt5e9E7IpUIIo63NfuGD1p6df3HVv4wX
-	 TRy0NuTJsiH62rYjEHIRq5yPZUN9MllnVhIRMJjU=
-Received: from epsnrtp01.localdomain (unknown [182.195.42.153]) by
-	epcas1p2.samsung.com (KnoxPortal) with ESMTPS id
-	20251210063903epcas1p233735f9f8f0947601800ce6ae7db9f24~-x1RLwUk02707827078epcas1p2J;
-	Wed, 10 Dec 2025 06:39:03 +0000 (GMT)
-Received: from epcas1p3.samsung.com (unknown [182.195.38.196]) by
-	epsnrtp01.localdomain (Postfix) with ESMTP id 4dR5fH3s3tz6B9mD; Wed, 10 Dec
-	2025 06:39:03 +0000 (GMT)
-Received: from epsmtip2.samsung.com (unknown [182.195.34.31]) by
-	epcas1p3.samsung.com (KnoxPortal) with ESMTPA id
-	20251210063902epcas1p3651acbf49d4f8c456d4f3419f4649371~-x1QVPOtZ1892418924epcas1p3u;
-	Wed, 10 Dec 2025 06:39:02 +0000 (GMT)
-Received: from baek-500TGA-500SGA.. (unknown [10.253.99.239]) by
-	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20251210063902epsmtip2b742042cd6b78dcf7a43a53a5eee0899~-x1QOqNuG0421904219epsmtip21;
-	Wed, 10 Dec 2025 06:39:02 +0000 (GMT)
-From: Seunghwan Baek <sh8267.baek@samsung.com>
-To: alim.akhtar@samsung.com, avri.altman@wdc.com, bvanassche@acm.org,
-	James.Bottomley@HansenPartnership.com, martin.petersen@oracle.com,
-	peter.wang@mediatek.com, beanhuo@micron.com, adrian.hunter@intel.com,
-	quic_nguyenb@quicinc.com, linux-scsi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, sh8267.baek@samsung.com
-Cc: stable@vger.kernel.org
-Subject: [PATCH v1 1/1] scsi: ufs : core: Add ufshcd_update_evt_hist for ufs
- suspend error.
-Date: Wed, 10 Dec 2025 15:38:54 +0900
-Message-ID: <20251210063854.1483899-2-sh8267.baek@samsung.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251210063854.1483899-1-sh8267.baek@samsung.com>
+	s=arc-20240116; t=1765351562; c=relaxed/simple;
+	bh=bTTD0yXMByZPOP8+hdWDWK4xGqiPnLzoGKPg3Sl3eLA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dZbE6aLOlIBihEJgutImmE3anVnxESTBfjHJ3OIX7mjrYjL0l+HdvuJfUtFNO/OHHqqSUS5ehjJPkmqgl4iqaL4P2SRLvKE4pD0RpyshBhQtUElpFLzKlDDg5Vs/mVFSwacT8Ba+iYtdHvUintvj9hgZCo2+l/CkFGpFt4UG5/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=qpJAzXI3; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=uRMFTElf; arc=none smtp.client-ip=202.12.124.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id D27467A00BC;
+	Wed, 10 Dec 2025 02:25:58 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-12.internal (MEProxy); Wed, 10 Dec 2025 02:25:59 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm1; t=1765351558; x=1765437958; bh=eiAG7rKOgQ
+	x9Py8b1gKm28FLJBvTyIIjz9fg6XYAf7k=; b=qpJAzXI3OP5xBwbh8V0kV8P+H4
+	pbkCANc4xDW+mwM9Yimj29GlBpl+YB/yHxlHQOfH4eKqbCfQCaw7oW60m3ij1aYr
+	MuNQSG5S/iXhhv0QsJJXAbuFWkZZuYyAX2Qj9GF/Nytl2EKHyAdtm8FBSFzOPnwV
+	/I0BzK17o4FbN8w2WUd3GHFuDr156/0KonQPSXXWHn5JvHiWMSNIDKC3sfLigAG5
+	f1quTKpdMSMO6khsn5gciQL459lteDnNbEdfpFH+0/huLdb8skdqZgRTzv30WphE
+	QjdVTndC904eTy9qN1yN9H6dX3IQhI2VSt4x7w54G8o9tv9KaniIcNbP8VKQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1765351558; x=1765437958; bh=eiAG7rKOgQx9Py8b1gKm28FLJBvTyIIjz9f
+	g6XYAf7k=; b=uRMFTElfEn67yC5g+9vcK4/Oz4VNu31rXNWq8D7a7LdAClyO1F4
+	gLCKB9u28D92NNO/7M+W0JiGDvDvB50yRR4pPJac36fsqkCRz7drEiqX/AIIutlX
+	1RAY0KrvCljlICtGzpSiBRZAIWUi6yEIBmbYtCrrCPAsEXhVxK8zZu6Dnm/BSVPo
+	anqmyxGRtnlP9mU/zDbTWhak+9BKSj41A0HTiELVdme50eoA59UZrGV9i1c1XLNq
+	nncjxWXhnLgbxqPB8yVcYODvY/j9XdeYHev3tNRYRtPwQSxBsFfSqaUNx42qJ+es
+	yUw9agaGQbsRmSY3saE1EHOROS1P/EJx3Nw==
+X-ME-Sender: <xms:hiA5acyW-wdlZnQxZMpJi3iNgK8v4Htlu9b0poCRf3xweIjK8VMD6A>
+    <xme:hiA5aZAY0_iV1IHB6WaRIuVcAL9CclP4sHNUSmgZZfLLaKb7i5qR9wfJwwW_c5C2Z
+    jwVD_A4xbCAz5vFr5QAZ6qm5ESA0oa8uDVTYzFLCdWi3UHqUA>
+X-ME-Received: <xmr:hiA5adD0UWkJEatnkhSpqRH7krqtqLNcpbpBFYhjgpLkElwuyPQNKxoovEFF757gqIwgNQSPQxU0d_lpaJf0LvTNdQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvudekvdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcumffj
+    uceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeegheeuhefgtd
+    eluddtleekfeegjeetgeeikeehfeduieffvddufeefleevtddtvdenucffohhmrghinhep
+    khgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrg
+    hilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhmpdhnsggprhgtphhtthhopedukedp
+    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepnhgrthhhrghnsehkvghrnhgvlhdroh
+    hrghdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgt
+    phhtthhopehsthgrsghlvgdqtghomhhmihhtshesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+    dprhgtphhtthhopehjrghmvghsrdgtlhgrrhhksehlihhnrghrohdrohhrghdprhgtphht
+    thhopehmrdhsiiihphhrohifshhkihesshgrmhhsuhhnghdrtghomhdprhgtphhtthhope
+    hrohgsihhnrdhmuhhrphhhhiesrghrmhdrtghomhdprhgtphhtthhopehnihgtkhdruggv
+    shgruhhlnhhivghrshdolhhkmhhlsehgmhgrihhlrdgtohhmpdhrtghpthhtohepmhhorh
+    gsohesghhoohhglhgvrdgtohhmpdhrtghpthhtohepjhhushhtihhnshhtihhtthesghho
+    ohhglhgvrdgtohhm
+X-ME-Proxy: <xmx:hiA5ac6zsutDHZ-d6OMb2F0cYWB9hboq4zceN-4uPi5Yp5H5P3rNqQ>
+    <xmx:hiA5aR1iQOoZ9iXCe0Stcn8R2FAhS_Yt-jzoxWoPUn3n0aezB9571A>
+    <xmx:hiA5aQCLQjIv1KKUZmkuehcZk7M0EZyMaGSuMt8mAPZ-inJoiKol0A>
+    <xmx:hiA5aZE43Whjnuo1U2i3oOPoOYG3BytdrSXDGct6-sSk3gXCsGnhug>
+    <xmx:hiA5abA5zmMWxo2ee0dUWnsVLtWiun_qBKSwx8FCJCrtMCOMLUx9tKIQ>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 10 Dec 2025 02:25:57 -0500 (EST)
+Date: Wed, 10 Dec 2025 16:25:51 +0900
+From: Greg KH <greg@kroah.com>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
+	james.clark@linaro.org, Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>
+Subject: Re: Patch "dma-mapping: Allow use of DMA_BIT_MASK(64) in global
+ scope" has been added to the 6.17-stable tree
+Message-ID: <2025121043-retool-judo-5f1d@gregkh>
+References: <20251208030749.190427-1-sashal@kernel.org>
+ <20251208032256.GA1356249@ax162>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20251210063902epcas1p3651acbf49d4f8c456d4f3419f4649371
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-CMS-TYPE: 101P
-cpgsPolicy: CPGSC10-711,Y
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20251210063902epcas1p3651acbf49d4f8c456d4f3419f4649371
-References: <20251210063854.1483899-1-sh8267.baek@samsung.com>
-	<CGME20251210063902epcas1p3651acbf49d4f8c456d4f3419f4649371@epcas1p3.samsung.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251208032256.GA1356249@ax162>
 
-If the ufs resume fails, the event history is updated in ufshcd_resume,
-but there is no code anywhere to record ufs suspend. Therefore, add code
-to record ufs suspend error event history.
+On Sun, Dec 07, 2025 at 07:22:56PM -0800, Nathan Chancellor wrote:
+> On Sun, Dec 07, 2025 at 10:07:49PM -0500, Sasha Levin wrote:
+> > This is a note to let you know that I've just added the patch titled
+> > 
+> >     dma-mapping: Allow use of DMA_BIT_MASK(64) in global scope
+> > 
+> > to the 6.17-stable tree which can be found at:
+> >     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> > 
+> > The filename of the patch is:
+> >      dma-mapping-allow-use-of-dma_bit_mask-64-in-global-s.patch
+> > and it can be found in the queue-6.17 subdirectory.
+> > 
+> > If you, or anyone else, feels it should not be added to the stable tree,
+> > please let <stable@vger.kernel.org> know about it.
+> > 
+> > 
+> > 
+> > commit 51a1912d46ceb70602de50c167e440966b9836f1
+> > Author: James Clark <james.clark@linaro.org>
+> > Date:   Thu Oct 30 14:05:27 2025 +0000
+> > 
+> >     dma-mapping: Allow use of DMA_BIT_MASK(64) in global scope
+> >     
+> >     [ Upstream commit a50f7456f853ec3a6f07cbe1d16ad8a8b2501320 ]
+> 
+> This change has a pending bug fix, consider waiting to apply this to the
+> stable trees.
+> 
+>   https://lore.kernel.org/20251207184756.97904-1-johannes.goede@oss.qualcomm.com/
 
-Fixes: dd11376b9f1b ("scsi: ufs: Split the drivers/scsi/ufs directory")
-Cc: stable@vger.kernel.org
+Now dropped from everywhere, thanks.
 
-Signed-off-by: Seunghwan Baek <sh8267.baek@samsung.com>
----
- drivers/ufs/core/ufshcd.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 040a0ceb170a..6bb2781aefc7 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -10337,7 +10337,7 @@ static int ufshcd_suspend(struct ufs_hba *hba)
- 	ret = ufshcd_setup_clocks(hba, false);
- 	if (ret) {
- 		ufshcd_enable_irq(hba);
--		return ret;
-+		goto out;
- 	}
- 	if (ufshcd_is_clkgating_allowed(hba)) {
- 		hba->clk_gating.state = CLKS_OFF;
-@@ -10349,6 +10349,9 @@ static int ufshcd_suspend(struct ufs_hba *hba)
- 	/* Put the host controller in low power mode if possible */
- 	ufshcd_hba_vreg_set_lpm(hba);
- 	ufshcd_pm_qos_update(hba, false);
-+out:
-+	if (ret)
-+		ufshcd_update_evt_hist(hba, UFS_EVT_SUSPEND_ERR, (u32)ret);
- 	return ret;
- }
- 
--- 
-2.43.0
-
+greg k-h
 
