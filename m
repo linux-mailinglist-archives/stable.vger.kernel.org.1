@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-200612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 242BACB24EA
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:42:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5322CB2379
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:33:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 692DB3119119
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:41:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A3BF7310BA9A
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:31:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12A0B302146;
-	Wed, 10 Dec 2025 07:33:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F11512741BC;
+	Wed, 10 Dec 2025 07:31:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="chSoz/7/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="haHLaXMc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3756302140;
-	Wed, 10 Dec 2025 07:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB7AF271462;
+	Wed, 10 Dec 2025 07:31:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765352030; cv=none; b=EjNBY2ExINC4xoWuSetjlSL3k/Zx0YgZHvRkMKbnJEkFGAVjcxfGtgcCJiX8LrEGpN95mpB0xRp23jSeUmd06mwpGRmUcWndvZ4PqWk7cg7pK1J+jeKIRXyqpz33h+Tb7xUTHyqgsXEexG7oycrPNW+yMQejWzWK7SedPGYXoAo=
+	t=1765351905; cv=none; b=rkaaqaanVpZpWQl/Zg61RFzmLrqmkAL+YS3kJA4MaA86Xjyth9STvJxyWmRSbpNRO6Rd7bAT5WS3MSgsBjZLZbBDDnD34zNFmi0RQpFHJULpvQ3Qhu0huMx2WwzU658LcDbnR+U8iOfy3rrHoBtEz9+NbivZ25Po/vhC4jfXzn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765352030; c=relaxed/simple;
-	bh=wmhiGEJAXX+TqCFMTWT3udon4yc5VmRV51WSvl1gOqc=;
+	s=arc-20240116; t=1765351905; c=relaxed/simple;
+	bh=8H3yXVXMpz5xb54qFosG/fhO+XA3ozXk+uweaxQYpNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u/X9iJiLikxeybJsvurhauutVfZN4nrKNhUViGL78Oo6rGXiLlF1AJOPEzlxecvnliTltfCvViOvIku3qiSAT9b56wMmeaFSPmOg2Z5yBd+pH1RFuBY+1neRzfOmpTLqm/eikCybtEEp0XhdZJukU/ufHBx8tGpqKZkTL6qLwX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=chSoz/7/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16C54C4CEF1;
-	Wed, 10 Dec 2025 07:33:49 +0000 (UTC)
+	 MIME-Version; b=cpwj4XyHVdQaWZKWWptIV2FbzfoEPI2ERd9hQt3Jes6TWXwNRVXGOqfVS3kBfzaiG1JISZ2rYm+Ilh+p/eYAGkT8N0uc4x5rJ5MdAfcdE+zgNg9oL4tYbrIv/7wp0xKRjoQ2r1BH4+SHhoaY+6HFtI+XxVM7z2O/XeMWXxosUWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=haHLaXMc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31E88C19423;
+	Wed, 10 Dec 2025 07:31:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765352030;
-	bh=wmhiGEJAXX+TqCFMTWT3udon4yc5VmRV51WSvl1gOqc=;
+	s=korg; t=1765351905;
+	bh=8H3yXVXMpz5xb54qFosG/fhO+XA3ozXk+uweaxQYpNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=chSoz/7/0x8fDwj9nMMlyCWP2DRbAd6qbGX3iqHvpTuCXqgFZkMRJStbvfWSICyoK
-	 XKw6TBajzv7MvKaL2jsN1Bj7ahTfSV+CAUkg+lJsh76X7rNnYgHwHSWrP7b5yUA19/
-	 MqMDOHh1VH3fpAZS0oH0sKStk5hGYTBHWIyDoWls=
+	b=haHLaXMceonIxSmgtGmAUNCK1Jl9xM/slOdW4xvCY3BPpK/fdFoTOpfb5lv1FoTSV
+	 7plsakwqxHOtJDJkU0DR81kwZDq6R0NNWnvbfLimKd16TZRU6IqLb7xhIoHwDZHoFs
+	 4bocPtM5hWLuypyYJlubDhFnkxvu7NRseAuUVWLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fanqin Cui <cuifq1@chinatelecom.cn>,
-	=?UTF-8?q?Adrian=20Barna=C5=9B?= <abarnas@google.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Will Deacon <will@kernel.org>,
+	Yiqi Sun <sunyiqixm@gmail.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 24/60] arm64: Reject modules with internal alternative callbacks
-Date: Wed, 10 Dec 2025 16:29:54 +0900
-Message-ID: <20251210072948.432673793@linuxfoundation.org>
+Subject: [PATCH 6.12 25/49] smb: fix invalid username check in smb3_fs_context_parse_param()
+Date: Wed, 10 Dec 2025 16:29:55 +0900
+Message-ID: <20251210072948.789535436@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
-References: <20251210072947.850479903@linuxfoundation.org>
+In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
+References: <20251210072948.125620687@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,134 +58,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Barnaś <abarnas@google.com>
+From: Yiqi Sun <sunyiqixm@gmail.com>
 
-[ Upstream commit 8e8ae788964aa2573b4335026db4068540fa6a86 ]
+[ Upstream commit ed6612165b74f09db00ef0abaf9831895ab28b7f ]
 
-During module loading, check if a callback function used by the
-alternatives specified in the '.altinstruction' ELF section (if present)
-is located in core kernel .text. If not fail module loading before
-callback is called.
+Since the maximum return value of strnlen(..., CIFS_MAX_USERNAME_LEN)
+is CIFS_MAX_USERNAME_LEN, length check in smb3_fs_context_parse_param()
+is always FALSE and invalid.
 
-Reported-by: Fanqin Cui <cuifq1@chinatelecom.cn>
-Closes: https://lore.kernel.org/all/20250807072700.348514-1-fanqincui@163.com/
-Signed-off-by: Adrian Barnaś <abarnas@google.com>
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-[will: Folded in 'noinstr' tweak from Mark]
-Signed-off-by: Will Deacon <will@kernel.org>
+Fix the comparison in if statement.
+
+Signed-off-by: Yiqi Sun <sunyiqixm@gmail.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/alternative.h |  7 +++++--
- arch/arm64/kernel/alternative.c      | 19 ++++++++++++-------
- arch/arm64/kernel/module.c           |  9 +++++++--
- 3 files changed, 24 insertions(+), 11 deletions(-)
+ fs/smb/client/fs_context.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/include/asm/alternative.h b/arch/arm64/include/asm/alternative.h
-index 00d97b8a757f4..51746005239bc 100644
---- a/arch/arm64/include/asm/alternative.h
-+++ b/arch/arm64/include/asm/alternative.h
-@@ -26,9 +26,12 @@ void __init apply_alternatives_all(void);
- bool alternative_is_applied(u16 cpucap);
+diff --git a/fs/smb/client/fs_context.c b/fs/smb/client/fs_context.c
+index 9a4492106c25f..17133adfe798b 100644
+--- a/fs/smb/client/fs_context.c
++++ b/fs/smb/client/fs_context.c
+@@ -1415,7 +1415,7 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
+ 			break;
+ 		}
  
- #ifdef CONFIG_MODULES
--void apply_alternatives_module(void *start, size_t length);
-+int apply_alternatives_module(void *start, size_t length);
- #else
--static inline void apply_alternatives_module(void *start, size_t length) { }
-+static inline int apply_alternatives_module(void *start, size_t length)
-+{
-+	return 0;
-+}
- #endif
- 
- void alt_cb_patch_nops(struct alt_instr *alt, __le32 *origptr,
-diff --git a/arch/arm64/kernel/alternative.c b/arch/arm64/kernel/alternative.c
-index 8ff6610af4966..f5ec7e7c1d3fd 100644
---- a/arch/arm64/kernel/alternative.c
-+++ b/arch/arm64/kernel/alternative.c
-@@ -139,9 +139,9 @@ static noinstr void clean_dcache_range_nopatch(u64 start, u64 end)
- 	} while (cur += d_size, cur < end);
- }
- 
--static void __apply_alternatives(const struct alt_region *region,
--				 bool is_module,
--				 unsigned long *cpucap_mask)
-+static int __apply_alternatives(const struct alt_region *region,
-+				bool is_module,
-+				unsigned long *cpucap_mask)
- {
- 	struct alt_instr *alt;
- 	__le32 *origptr, *updptr;
-@@ -166,10 +166,13 @@ static void __apply_alternatives(const struct alt_region *region,
- 		updptr = is_module ? origptr : lm_alias(origptr);
- 		nr_inst = alt->orig_len / AARCH64_INSN_SIZE;
- 
--		if (ALT_HAS_CB(alt))
-+		if (ALT_HAS_CB(alt)) {
- 			alt_cb  = ALT_REPL_PTR(alt);
--		else
-+			if (is_module && !core_kernel_text((unsigned long)alt_cb))
-+				return -ENOEXEC;
-+		} else {
- 			alt_cb = patch_alternative;
-+		}
- 
- 		alt_cb(alt, origptr, updptr, nr_inst);
- 
-@@ -193,6 +196,8 @@ static void __apply_alternatives(const struct alt_region *region,
- 		bitmap_and(applied_alternatives, applied_alternatives,
- 			   system_cpucaps, ARM64_NCAPS);
- 	}
-+
-+	return 0;
- }
- 
- static void __init apply_alternatives_vdso(void)
-@@ -277,7 +282,7 @@ void __init apply_boot_alternatives(void)
- }
- 
- #ifdef CONFIG_MODULES
--void apply_alternatives_module(void *start, size_t length)
-+int apply_alternatives_module(void *start, size_t length)
- {
- 	struct alt_region region = {
- 		.begin	= start,
-@@ -287,7 +292,7 @@ void apply_alternatives_module(void *start, size_t length)
- 
- 	bitmap_fill(all_capabilities, ARM64_NCAPS);
- 
--	__apply_alternatives(&region, true, &all_capabilities[0]);
-+	return __apply_alternatives(&region, true, &all_capabilities[0]);
- }
- #endif
- 
-diff --git a/arch/arm64/kernel/module.c b/arch/arm64/kernel/module.c
-index d6d443c4a01ac..0b15c57285add 100644
---- a/arch/arm64/kernel/module.c
-+++ b/arch/arm64/kernel/module.c
-@@ -489,8 +489,13 @@ int module_finalize(const Elf_Ehdr *hdr,
- 	int ret;
- 
- 	s = find_section(hdr, sechdrs, ".altinstructions");
--	if (s)
--		apply_alternatives_module((void *)s->sh_addr, s->sh_size);
-+	if (s) {
-+		ret = apply_alternatives_module((void *)s->sh_addr, s->sh_size);
-+		if (ret < 0) {
-+			pr_err("module %s: error occurred when applying alternatives\n", me->name);
-+			return ret;
-+		}
-+	}
- 
- 	if (scs_is_dynamic()) {
- 		s = find_section(hdr, sechdrs, ".init.eh_frame");
+-		if (strnlen(param->string, CIFS_MAX_USERNAME_LEN) >
++		if (strnlen(param->string, CIFS_MAX_USERNAME_LEN) ==
+ 		    CIFS_MAX_USERNAME_LEN) {
+ 			pr_warn("username too long\n");
+ 			goto cifs_parse_mount_err;
 -- 
 2.51.0
 
