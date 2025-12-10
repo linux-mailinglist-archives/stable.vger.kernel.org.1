@@ -1,225 +1,216 @@
-Return-Path: <stable+bounces-200509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F938CB1CB4
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 04:23:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64FFFCB1CC3
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 04:31:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6B941301A1AD
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 03:22:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1F736301B2FC
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 03:31:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03B6D3002DA;
-	Wed, 10 Dec 2025 03:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 847EF3081C8;
+	Wed, 10 Dec 2025 03:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="b+j1W407"
+	dkim=pass (2048-bit key) header.d=willsroot.io header.i=@willsroot.io header.b="Ap1Hz5Z+"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from mail-07.mail-europe.com (mail-0701.mail-europe.com [51.83.17.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D483F2F6909;
-	Wed, 10 Dec 2025 03:22:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB9E304BA8
+	for <stable@vger.kernel.org>; Wed, 10 Dec 2025 03:31:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.83.17.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765336971; cv=none; b=gF/AthBHf2/0BQBJtrxP+VtoVaBvjx1/necJhTf+h43ae9y2JfhFYfvGXyVpEfhFxPq8DobvFQIvphSXXkvT1VRpr9gPVjs//TbE+YvoBEsR3cobozxEH5Hub6jD5wnDj7RPtYWuNbjhWzWoFTW3MBPjiOg5SVCuRmvi6JK6DEs=
+	t=1765337485; cv=none; b=FMFzo85O4xPLrkgdUIWLyIT67BtYKkuKzwUiJVDaPnjS/rM84L//Mb9eI4EsqzmVAl3bbEEZTj23CHPA0v3APB3FUgIALekBCR8FV+tSrR6Kqq5AKKcXuM1ibgtGnV7sVJf7GSmR2jbNzI/wZe7qNe1bR+xoTbgSc1Jwp5ayglc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765336971; c=relaxed/simple;
-	bh=sbK6QaAAL/wmX/O+pHRM7+O7HDJ2oB98YPlC02WA7ZY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IaRh6EBwSTO8nElX6wFO1sqf9HFnIi3CxRZ5uOPFwXqBb6dxZqMflgrkfgHo0ZjasPYtnRW7rI34qc15q/H5X9SEhtz63azwGW9p818hpR4LrNXlsCZA3rd08/4ikebyJYcJS/R0pVGfOJxfMet0vTUqWgbCr4X+sEK8a0IQMOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=b+j1W407; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765336967; x=1796872967;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=sbK6QaAAL/wmX/O+pHRM7+O7HDJ2oB98YPlC02WA7ZY=;
-  b=b+j1W407Ro4OThHBBqKflklENeUGLSob6oqGJlTlH1+YVjS2n9EmSVOD
-   iBAhE57on8707m+0Z17ZnjyBZXnjRZBXyjKyoewMtkKdPZY13ErL3wY2v
-   6NodNLXGWu7nxedcuIzefdaA/9fQBfgoYqFuB7PkuZHK4EPBPDJ7MMvP4
-   OoU2PsB/ZVPa04rJbsSUBoWNQxIXMbwQs/kHGqcCTlTIJI7nrP9krP5vl
-   +lrdvlaz/qNdhVA6Ft74JIObLVg1EXvnKiF1W9Y6uCaquXOnrPGea/QUS
-   e0d/2iOw8yz5qY+gyn2jzmHuyT1flRHXATzQU642odA4jcQpkUNou9O1Z
-   w==;
-X-CSE-ConnectionGUID: VS6AsWNpTry2VfJpd+QMUw==
-X-CSE-MsgGUID: z5PgvTbXRWOGOZrd3m2xzA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11637"; a="70924152"
-X-IronPort-AV: E=Sophos;i="6.20,263,1758610800"; 
-   d="scan'208";a="70924152"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2025 19:22:40 -0800
-X-CSE-ConnectionGUID: WYKkJPvESyiVYjKEhqmbCg==
-X-CSE-MsgGUID: fLPQvF/0QWWiF2ZdVeX+ig==
-X-ExtLoop1: 1
-Received: from lkp-server01.sh.intel.com (HELO d335e3c6db51) ([10.239.97.150])
-  by fmviesa003.fm.intel.com with ESMTP; 09 Dec 2025 19:22:37 -0800
-Received: from kbuild by d335e3c6db51 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vTAmg-000000002bh-3uju;
-	Wed, 10 Dec 2025 03:22:34 +0000
-Date: Wed, 10 Dec 2025 11:21:47 +0800
-From: kernel test robot <lkp@intel.com>
-To: Wentao Liang <vulab@iscas.ac.cn>, ulf.hansson@linaro.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com
-Cc: oe-kbuild-all@lists.linux.dev, linux-pm@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] pmdomain: imx: Fix reference count leak in
- imx_gpc_probe()
-Message-ID: <202512101101.zAlerEtu-lkp@intel.com>
-References: <20251209081909.24982-1-vulab@iscas.ac.cn>
+	s=arc-20240116; t=1765337485; c=relaxed/simple;
+	bh=A0mqf7E8mfIpRkXJLknPSiLEpeEgaE3gaxx8Zgf2Ahc=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BKozsXtjpa9X3rXo7bj+bFBC9tMjMlD+2WD7OJmbGC3tgteISW70XWhbW9GQ0RuwhIXHUEg2FfPGF4oJhXU0HSS2ATdJEi/nJL0OlXXB96QU+jsRV89AVw3eY1sRhdjZMib1L/PG43x66K4jRjjsO1C5LwvHlXt3QOgJFrFMJRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=willsroot.io; spf=fail smtp.mailfrom=willsroot.io; dkim=pass (2048-bit key) header.d=willsroot.io header.i=@willsroot.io header.b=Ap1Hz5Z+; arc=none smtp.client-ip=51.83.17.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=willsroot.io
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=willsroot.io
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=willsroot.io;
+	s=protonmail2; t=1765337465; x=1765596665;
+	bh=A0mqf7E8mfIpRkXJLknPSiLEpeEgaE3gaxx8Zgf2Ahc=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=Ap1Hz5Z+W6JQ+cZlWiGkSRyW4iFlVBJNdihSaPMJKFnKSO9JOxXBCMfs73aVMw0jQ
+	 X+cBSH4DOd69pKuRKgQJaflZtyF3c7KstnMP2+Xpc+3xR+iTrQvr9cpIGobDGlVjW1
+	 ZcTFNsglNZ9mm77T0ddDUBl9pwmLYLyu0SiP93NY4FyACF+Pdti6NQFx69lCchJB5G
+	 lW5g1wkCragoa+/Tgn6EJNpaTDoByGMH4JWb4+PBoO7cXQeeI2o64/3DJOpslOdzep
+	 SjivxQCMZLH1suq37F9MjT8O0sNjMZq9+PuEwuTHDheF4B/Ul8dgT1cVlgVXk9nta+
+	 JolIyb/oFvcHg==
+Date: Wed, 10 Dec 2025 03:31:02 +0000
+To: zyc zyc <zyc199902@zohomail.cn>
+From: William Liu <will@willsroot.io>
+Cc: Greg KH <gregkh@linuxfoundation.org>, stable <stable@vger.kernel.org>
+Subject: =?utf-8?Q?Re:_=E5=9B=9E=E5=A4=8D:6.12.50_regression:_netem:_cannot_mix_duplicating_netems_with_other_netems_in_tree.?=
+Message-ID: <_7sb1wYlX1079sj77KxpLIUjYMEqn-J_b431OKc-v1aPiWhfSnwYZ9_C6BAOLW-a2cdngID0Nxqdip95EedRWtV7iMDeIVzFTBTvFbEKczA=@willsroot.io>
+In-Reply-To: <19af9ef2e7c.cd495a2b18809.5502831741554587778@zohomail.cn>
+References: <19ace674022.114eb26e714992.3171091003233609170@zohomail.cn> <19adda5a1e2.12410b78222774.9191120410578703463@zohomail.cn> <2025120248-operation-explain-1991@gregkh> <19ae2d0c40c.1304ed0542955.1614492155671387965@zohomail.cn> <2025120350-encourage-possible-b043@gregkh> <19aed2c0e0e.136fee88813945.4542830906609965797@zohomail.cn> <19af9ef2e7c.cd495a2b18809.5502831741554587778@zohomail.cn>
+Feedback-ID: 42723359:user:proton
+X-Pm-Message-ID: 3b046f99b68503db359d970a8348cf08d69699e5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251209081909.24982-1-vulab@iscas.ac.cn>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi Wentao,
+Hi zyc,
 
-kernel test robot noticed the following build errors:
+The netdev maintainers and I are aware of this issue. This change was made =
+to prevent a local DOS bug in netem that was extremely trivial to trigger, =
+and some maintainers considered your type of configuration as an extremely =
+rare use case (but imo still a very valid one). I provided a summary of thi=
+s fix as well as other proposed fixes in both the commit log and [1].
 
-[auto build test ERROR on shawnguo/for-next]
-[also build test ERROR on linus/master v6.18 next-20251209]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+There is currently a patch proposed in [2] to resolve this which technicall=
+y obeys man page semantics but was previously rejected. Basically, the DOS =
+can be easily resolved by enqueuing duplicated packets to the same netem qd=
+isc, but other maintainers presented valid concerns about changing user vis=
+ible behavior from the past 2 decades and the original commit message menti=
+oned enqueuing from root was necessary to "avoid problems with qlen account=
+ing with nested qdisc."
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Wentao-Liang/pmdomain-imx-Fix-reference-count-leak-in-imx_gpc_probe/20251209-162152
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git for-next
-patch link:    https://lore.kernel.org/r/20251209081909.24982-1-vulab%40iscas.ac.cn
-patch subject: [PATCH v2] pmdomain: imx: Fix reference count leak in imx_gpc_probe()
-config: arm-randconfig-003-20251210 (https://download.01.org/0day-ci/archive/20251210/202512101101.zAlerEtu-lkp@intel.com/config)
-compiler: arm-linux-gnueabi-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251210/202512101101.zAlerEtu-lkp@intel.com/reproduce)
+tc_skb_extensions sounds like a reasonable solution to me that changes no e=
+xisting behavior and adds no additional restrictions [3], but it has not be=
+en further explored or checked for soundness. Hypothetically, it would fix =
+both the DOS bug and allow packets to retain the behavior of enqueuing from=
+ root.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512101101.zAlerEtu-lkp@intel.com/
+You can follow the status of the fix in [2] - I do not plan to further volu=
+nteer myself and my free time in this specific fix process due to the consi=
+stent pattern of unprofessional and patronizing emails from Cong Wang. I am=
+ confident the other netdev maintainers should reach a resolution soon.
 
-All errors (new ones prefixed by >>):
+Best,
+Will
 
-   drivers/pmdomain/imx/gpc.c: In function 'imx_gpc_probe':
->> drivers/pmdomain/imx/gpc.c:405:9: error: cleanup argument not a function
-     struct device_node *pgc_node __free(pgc_node);
-            ^~~~~~~~~~~
+[1] https://lore.kernel.org/netdev/PKMd5btHYmJcKSiIJdtxQvZBEfuS4RQkBnE4M-TZ=
+kjUq_Rdj6Wgm8wDmX-p6rIkSRGDJN8ufn0HcDI6-r2lgibdSk7cn1mHIdbZEohJFKMg=3D@will=
+sroot.io/
+[2] https://lore.kernel.org/netdev/20251126195244.88124-4-xiyou.wangcong@gm=
+ail.com/
+[3] https://lore.kernel.org/netdev/CAM0EoMmBdZBzfUAms5-0hH5qF5ODvxWfgqrbHaG=
+T6p3-uOD6vg@mail.gmail.com/
 
+On Monday, December 8th, 2025 at 9:59 AM, zyc zyc <zyc199902@zohomail.cn> w=
+rote:
 
-vim +405 drivers/pmdomain/imx/gpc.c
-
-   401	
-   402	static int imx_gpc_probe(struct platform_device *pdev)
-   403	{
-   404		const struct imx_gpc_dt_data *of_id_data = device_get_match_data(&pdev->dev);
- > 405		struct device_node *pgc_node __free(pgc_node);
-   406		struct regmap *regmap;
-   407		void __iomem *base;
-   408		int ret;
-   409	
-   410		pgc_node = of_get_child_by_name(pdev->dev.of_node, "pgc");
-   411	
-   412		/* bail out if DT too old and doesn't provide the necessary info */
-   413		if (!of_property_present(pdev->dev.of_node, "#power-domain-cells") &&
-   414		    !pgc_node)
-   415			return 0;
-   416	
-   417		base = devm_platform_ioremap_resource(pdev, 0);
-   418		if (IS_ERR(base))
-   419			return PTR_ERR(base);
-   420	
-   421		regmap = devm_regmap_init_mmio_clk(&pdev->dev, NULL, base,
-   422						   &imx_gpc_regmap_config);
-   423		if (IS_ERR(regmap)) {
-   424			ret = PTR_ERR(regmap);
-   425			dev_err(&pdev->dev, "failed to init regmap: %d\n",
-   426				ret);
-   427			return ret;
-   428		}
-   429	
-   430		/*
-   431		 * Disable PU power down by runtime PM if ERR009619 is present.
-   432		 *
-   433		 * The PRE clock will be paused for several cycles when turning on the
-   434		 * PU domain LDO from power down state. If PRE is in use at that time,
-   435		 * the IPU/PRG cannot get the correct display data from the PRE.
-   436		 *
-   437		 * This is not a concern when the whole system enters suspend state, so
-   438		 * it's safe to power down PU in this case.
-   439		 */
-   440		if (of_id_data->err009619_present)
-   441			imx_gpc_domains[GPC_PGC_DOMAIN_PU].base.flags |=
-   442					GENPD_FLAG_RPM_ALWAYS_ON;
-   443	
-   444		/* Keep DISP always on if ERR006287 is present */
-   445		if (of_id_data->err006287_present)
-   446			imx_gpc_domains[GPC_PGC_DOMAIN_DISPLAY].base.flags |=
-   447					GENPD_FLAG_ALWAYS_ON;
-   448	
-   449		if (!pgc_node) {
-   450			ret = imx_gpc_old_dt_init(&pdev->dev, regmap,
-   451						  of_id_data->num_domains);
-   452			if (ret)
-   453				return ret;
-   454		} else {
-   455			struct imx_pm_domain *domain;
-   456			struct platform_device *pd_pdev;
-   457			struct clk *ipg_clk;
-   458			unsigned int ipg_rate_mhz;
-   459			int domain_index;
-   460	
-   461			ipg_clk = devm_clk_get(&pdev->dev, "ipg");
-   462			if (IS_ERR(ipg_clk))
-   463				return PTR_ERR(ipg_clk);
-   464			ipg_rate_mhz = clk_get_rate(ipg_clk) / 1000000;
-   465	
-   466			for_each_child_of_node_scoped(pgc_node, np) {
-   467				ret = of_property_read_u32(np, "reg", &domain_index);
-   468				if (ret)
-   469					return ret;
-   470	
-   471				if (domain_index >= of_id_data->num_domains)
-   472					continue;
-   473	
-   474				pd_pdev = platform_device_alloc("imx-pgc-power-domain",
-   475								domain_index);
-   476				if (!pd_pdev)
-   477					return -ENOMEM;
-   478	
-   479				ret = platform_device_add_data(pd_pdev,
-   480							       &imx_gpc_domains[domain_index],
-   481							       sizeof(imx_gpc_domains[domain_index]));
-   482				if (ret) {
-   483					platform_device_put(pd_pdev);
-   484					return ret;
-   485				}
-   486				domain = pd_pdev->dev.platform_data;
-   487				domain->regmap = regmap;
-   488				domain->ipg_rate_mhz = ipg_rate_mhz;
-   489	
-   490				pd_pdev->dev.parent = &pdev->dev;
-   491				pd_pdev->dev.of_node = np;
-   492				pd_pdev->dev.fwnode = of_fwnode_handle(np);
-   493	
-   494				ret = platform_device_add(pd_pdev);
-   495				if (ret) {
-   496					platform_device_put(pd_pdev);
-   497					return ret;
-   498				}
-   499			}
-   500		}
-   501	
-   502		return 0;
-   503	}
-   504	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+>=20
+>=20
+> ---- zyc zyc zyc199902@zohomail.cn =E5=9C=A8 Fri, 2025-12-05 18:31:00 =
+=E5=86=99=E5=88=B0=EF=BC=9A---
+>=20
+> > ---- Greg KH gregkh@linuxfoundation.org =E5=9C=A8 Wed, 2025-12-03 19:30=
+:42 =E5=86=99=E5=88=B0=EF=BC=9A---
+>=20
+> > > On Wed, Dec 03, 2025 at 07:05:00PM +0800, zyc zyc wrote:
+>=20
+> > > > ---- Greg KH gregkh@linuxfoundation.org =E5=9C=A8 Tue, 2025-12-02 1=
+9:30:09 =E5=86=99=E5=88=B0=EF=BC=9A---
+>=20
+> > > > > On Tue, Dec 02, 2025 at 06:39:00PM +0800, zyc zyc wrote:
+>=20
+> > > > > > Hello,
+>=20
+> > > > > > Resend my last email without HTML.
+>=20
+> > > > > > ---- zyc zyc zyc199902@zohomail.cn =E5=9C=A8 Sat, 2025-11-29 18=
+:57:01 =E5=86=99=E5=88=B0=EF=BC=9A---
+>=20
+> > > > > > > Hello, maintainer
+>=20
+> > > > > > > I would like to report what appears to be a regression in 6.1=
+2.50 kernel release related to netem.
+>=20
+> > > > > > > It rejects our configuration with the message:
+>=20
+> > > > > > > Error: netem: cannot mix duplicating netems with other netems=
+ in tree.
+>=20
+> > > > > > > This breaks setups that previously worked correctly for many =
+years.
+>=20
+> > > > > > > Our team uses multiple netem qdiscs in the same HTB branch, a=
+rranged in a parallel fashion using a prio fan-out. Each branch of the prio=
+ qdisc has its own distinct netem instance with different duplication chara=
+cteristics.
+>=20
+> > > > > > > This is used to emulate our production conditions where a sin=
+gle logical path fans out into two downstream segments, for example:
+>=20
+> > > > > > > two ECMP next hops with different misbehaviour characteristic=
+s, or
+>=20
+> > > > > > > an HA firewall cluster where only one node is replaying frame=
+s, or
+>=20
+> > > > > > > two LAG / ToR paths where one path intermittently duplicates =
+packets.
+>=20
+> > > > > > > In our environments, only a subset of flows are affected, and=
+ different downstream devices may cause different styles of duplication.
+>=20
+> > > > > > > This regression breaks existing automated tests, training env=
+ironments, and network simulation pipelines.
+>=20
+> > > > > > > I would be happy to provide our reproducer if needed.
+>=20
+> > > > > > > Thank you for your time and for maintaining Linux kernel.
+>=20
+> > > > > Can you use 'git bisect' to find the offending commit?
+>=20
+> > > > > thanks,
+>=20
+> > > > > greg k-h
+>=20
+> > > > Hi Greg,
+>=20
+> > > > The error came from this commit:
+>=20
+> > > > commit 795cb393e38977aa991e70a9363da0ee734b2114
+>=20
+> > > > Author: William Liu will@willsroot.io
+>=20
+> > > > Date: Tue Jul 8 16:43:26 2025 +0000
+>=20
+> > > > net/sched: Restrict conditions for adding duplicating netems to qdi=
+sc tree
+>=20
+> > > > [ Upstream commit ec8e0e3d7adef940cdf9475e2352c0680189d14e ]
+>=20
+> > > So is this also an issue for you in the latest 6.17 release (or 6.18)=
+?
+>=20
+> > > If not, what commit fixed this issue? If so, please contact all of th=
+e
+>=20
+> > > developers involved and they will be glad to work to resolve this
+>=20
+> > > regression in the mainline tree first.
+>=20
+> > > thanks,
+>=20
+> > > greg k-h
+>=20
+> > Hi Greg,
+>=20
+> > I can only test 6.12 stable kernels. Let me add Will.
+>=20
+> > Best,
+>=20
+> > zyc
+>=20
+>=20
+> Hello Will
+>=20
+> Could you help? This breaks our lab simulation.
+>=20
+> Best,
+> Zhang Yang Chao
 
