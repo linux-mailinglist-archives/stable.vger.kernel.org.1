@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-200628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7891DCB241C
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:37:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C671CB2367
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:32:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7D9E8302A759
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:34:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C3F5E300DBA7
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:32:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 150FC302CBA;
-	Wed, 10 Dec 2025 07:34:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5550B2741BC;
+	Wed, 10 Dec 2025 07:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M22bamGY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kCdcW85/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C45305C613;
-	Wed, 10 Dec 2025 07:34:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11D0C1DD0EF;
+	Wed, 10 Dec 2025 07:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765352073; cv=none; b=bEeOdZwuEtE2QSR//dQgSoyJsxzz5xI64/8ZBGiUmQBkzhizi48jfNeK8wzwrac6sW5MzTXs9AhN2maSf5/+8qi6+XFTnemhhYLyLnK/am+xWrN0YPev2GMEkR/v3ZQTM/9KM2ViLDBPME9SC7HXme0/vmqosnfIGW778m1mXSw=
+	t=1765351941; cv=none; b=XSzpnZuQIAlpUPT0NT32FDZrJGN0ugy2zxoJQQvnotBHAJ8qPhsKj4HqVTfNEIUdU9FsNCaaEOKymzvzDyv2nuwN2e1U9HcDNETIw75IwhiaVxcSiOnr1qczvmCshvdLeLDlVJHpfxwg65R7KWoyRuSeYQzSUe0FyRjnHN16FGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765352073; c=relaxed/simple;
-	bh=X5bP54gA1HbStLUk1tfBIxH2CyNd6RqqdaPPAqTJlbI=;
+	s=arc-20240116; t=1765351941; c=relaxed/simple;
+	bh=tgZziLNnEL7fzH4WHtBohMQSEOKaQcQP07wuRAgJs5Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UwYtne7R9owCdhFTDY3ib4R/5ulvQjXAzG3MX4+v6Mezpn0gZYO9VID3GsRmWFQTnU2pUQVELOcTOMOYJPWQu7Em3Lf407MOtVk01B3F+NWWZ4NkRY5ThRhGTCrOXOb6EPjStCbFCujxGYFKmRL7f2w6jjnwVLIaaA/Rl4yBmGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M22bamGY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B3B4C4CEF1;
-	Wed, 10 Dec 2025 07:34:33 +0000 (UTC)
+	 MIME-Version; b=IahEHsziIGO3FrdX+HRDRMGAggERDKGdmccUjPIkUJ+69sVrOsaEkSyUfQFtdORHbpI/45lmuScDTliIjX2XePvWS99y/wMiNc3cNEj/Ab/8MjFirXrb7yPT/PD6aSGnMbYY2TynOoPDYfr3ACIk/5PIB2q3DMChsDAidQb//Nw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kCdcW85/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7154C4CEF1;
+	Wed, 10 Dec 2025 07:32:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765352073;
-	bh=X5bP54gA1HbStLUk1tfBIxH2CyNd6RqqdaPPAqTJlbI=;
+	s=korg; t=1765351940;
+	bh=tgZziLNnEL7fzH4WHtBohMQSEOKaQcQP07wuRAgJs5Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M22bamGYZA3fZiL68P8z3qKOGTmL2uZi/vU8HU6o3vfFNFJXn6hlucOwlwGfBZkQK
-	 PiHLZVr51WjBbUFdvdT6oMN6idHUwYTvwjgicrSevMKmFDbhj2vxehSrucOeWfOPGH
-	 41crvUNhaa0tuqqdrKXHYg/WfL66x7QrplAq0MPw=
+	b=kCdcW85/V0Q8NDsivo+nEUevNrxIHerWiKAdixi7cIE7nnloQ+8e9n6hiqIlib1F2
+	 kbPhi+B5R3vq3mixFEXxbLJK8luq90uahnkZkKrEJGWyUk+xuxVvMMwOyefE2xXpjx
+	 D37byxYQXCQr26JBYNFwgy0wIEnQ9LcK4RhBF9LA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bugaddr <Bugaddr@protonmail.com>,
-	Armin Wolf <W_Armin@gmx.de>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Tianyang Zhang <zhangtianyang@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 38/60] platform/x86: acer-wmi: Ignore backlight event
+Subject: [PATCH 6.12 38/49] LoongArch: Mask all interrupts during kexec/kdump
 Date: Wed, 10 Dec 2025 16:30:08 +0900
-Message-ID: <20251210072948.815639473@linuxfoundation.org>
+Message-ID: <20251210072949.111871502@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
-References: <20251210072947.850479903@linuxfoundation.org>
+In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
+References: <20251210072948.125620687@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,56 +58,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit 444a9256f8d106e08a6bc2dc8ef28a8699e4b3ba ]
+[ Upstream commit 863a320dc6fd7c855f47da4bb82a8de2d9102ea2 ]
 
-On the Acer Nitro AN515-58, the event 4 - 0 is send by the ACPI
-firmware when the backlight up/down keys are pressed. Ignore this
-event to avoid spamming the kernel log with error messages, as the
-acpi-video driver already handles brightness up/down events.
+If the default state of the interrupt controllers in the first kernel
+don't mask any interrupts, it may cause the second kernel to potentially
+receive interrupts (which were previously allocated by the first kernel)
+immediately after a CPU becomes online during its boot process. These
+interrupts cannot be properly routed, leading to bad IRQ issues.
 
-Reported-by: Bugaddr <Bugaddr@protonmail.com>
-Closes: https://bugaddr.tech/posts/2025-11-16-debugging-the-acer-nitro-5-an515-58-fn-f10-keyboard-backlight-bug-on-linux/#wmi-interface-issues
-Tested-by: Bugaddr <Bugaddr@protonmail.com>
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://patch.msgid.link/20251117155938.3030-1-W_Armin@gmx.de
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+This patch calls machine_kexec_mask_interrupts() to mask all interrupts
+during the kexec/kdump process.
+
+Signed-off-by: Tianyang Zhang <zhangtianyang@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/acer-wmi.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/loongarch/kernel/machine_kexec.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/platform/x86/acer-wmi.c b/drivers/platform/x86/acer-wmi.c
-index 13eb22b35aa8f..d848afc91f87d 100644
---- a/drivers/platform/x86/acer-wmi.c
-+++ b/drivers/platform/x86/acer-wmi.c
-@@ -102,6 +102,7 @@ MODULE_ALIAS("wmi:676AA15E-6A47-4D9F-A2CC-1E6D18D14026");
+diff --git a/arch/loongarch/kernel/machine_kexec.c b/arch/loongarch/kernel/machine_kexec.c
+index f9381800e291c..8ef4e4595d61a 100644
+--- a/arch/loongarch/kernel/machine_kexec.c
++++ b/arch/loongarch/kernel/machine_kexec.c
+@@ -249,6 +249,7 @@ void machine_crash_shutdown(struct pt_regs *regs)
+ #ifdef CONFIG_SMP
+ 	crash_smp_send_stop();
+ #endif
++	machine_kexec_mask_interrupts();
+ 	cpumask_set_cpu(crashing_cpu, &cpus_in_crash);
  
- enum acer_wmi_event_ids {
- 	WMID_HOTKEY_EVENT = 0x1,
-+	WMID_BACKLIGHT_EVENT = 0x4,
- 	WMID_ACCEL_OR_KBD_DOCK_EVENT = 0x5,
- 	WMID_GAMING_TURBO_KEY_EVENT = 0x7,
- 	WMID_AC_EVENT = 0x8,
-@@ -2369,6 +2370,9 @@ static void acer_wmi_notify(union acpi_object *obj, void *context)
- 			sparse_keymap_report_event(acer_wmi_input_dev, scancode, 1, true);
- 		}
- 		break;
-+	case WMID_BACKLIGHT_EVENT:
-+		/* Already handled by acpi-video */
-+		break;
- 	case WMID_ACCEL_OR_KBD_DOCK_EVENT:
- 		acer_gsensor_event();
- 		acer_kbd_dock_event(&return_value);
+ 	pr_info("Starting crashdump kernel...\n");
+@@ -286,6 +287,7 @@ void machine_kexec(struct kimage *image)
+ 
+ 	/* We do not want to be bothered. */
+ 	local_irq_disable();
++	machine_kexec_mask_interrupts();
+ 
+ 	pr_notice("EFI boot flag 0x%lx\n", efi_boot);
+ 	pr_notice("Command line at 0x%lx\n", cmdline_ptr);
 -- 
 2.51.0
 
