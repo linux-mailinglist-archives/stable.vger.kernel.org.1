@@ -1,147 +1,354 @@
-Return-Path: <stable+bounces-200546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 070D9CB22F2
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:26:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B706CB23EB
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:35:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E0D2430076B0
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:26:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0475C301CDBD
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:33:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604352F3C3E;
-	Wed, 10 Dec 2025 07:26:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 221C72FF165;
+	Wed, 10 Dec 2025 07:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="qpJAzXI3";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="uRMFTElf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Orf5B6M8"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b2-smtp.messagingengine.com (fhigh-b2-smtp.messagingengine.com [202.12.124.153])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E111DE8A4;
-	Wed, 10 Dec 2025 07:25:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.153
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE98922578D;
+	Wed, 10 Dec 2025 07:33:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765351562; cv=none; b=uzW1E2ae4d0EKXHtxsn8Z6kI7VfbwJOi5FJ69gZYTdj6/gnETjBqAqj6HPvw02uRWvtUDPfRKDEp+9EfVACHm36cKlMn7tJJqTBxEASmuTzrhUHnPb3sBfxJWjAITO2OX4KaWk1xxDsAPmWj6yfUNXqaYBOZxDHj541hZctXDqg=
+	t=1765352010; cv=none; b=Ee/VkcoX5taaAfBzHHNcMQ/KzMTsnVnLjX++gzLcyRsNt7bEIHu1c+X1IggC9u1Ixkqf/jg+nNw/hFKsl4EMivlnnmS/8+2KNpblpY/X03D4TsWN2KRzJ+918B/43KED74jynggKYYqt/IOV46KUnUE281yozJuAcV2j3t0dF+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765351562; c=relaxed/simple;
-	bh=bTTD0yXMByZPOP8+hdWDWK4xGqiPnLzoGKPg3Sl3eLA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dZbE6aLOlIBihEJgutImmE3anVnxESTBfjHJ3OIX7mjrYjL0l+HdvuJfUtFNO/OHHqqSUS5ehjJPkmqgl4iqaL4P2SRLvKE4pD0RpyshBhQtUElpFLzKlDDg5Vs/mVFSwacT8Ba+iYtdHvUintvj9hgZCo2+l/CkFGpFt4UG5/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=qpJAzXI3; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=uRMFTElf; arc=none smtp.client-ip=202.12.124.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id D27467A00BC;
-	Wed, 10 Dec 2025 02:25:58 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-12.internal (MEProxy); Wed, 10 Dec 2025 02:25:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1765351558; x=1765437958; bh=eiAG7rKOgQ
-	x9Py8b1gKm28FLJBvTyIIjz9fg6XYAf7k=; b=qpJAzXI3OP5xBwbh8V0kV8P+H4
-	pbkCANc4xDW+mwM9Yimj29GlBpl+YB/yHxlHQOfH4eKqbCfQCaw7oW60m3ij1aYr
-	MuNQSG5S/iXhhv0QsJJXAbuFWkZZuYyAX2Qj9GF/Nytl2EKHyAdtm8FBSFzOPnwV
-	/I0BzK17o4FbN8w2WUd3GHFuDr156/0KonQPSXXWHn5JvHiWMSNIDKC3sfLigAG5
-	f1quTKpdMSMO6khsn5gciQL459lteDnNbEdfpFH+0/huLdb8skdqZgRTzv30WphE
-	QjdVTndC904eTy9qN1yN9H6dX3IQhI2VSt4x7w54G8o9tv9KaniIcNbP8VKQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1765351558; x=1765437958; bh=eiAG7rKOgQx9Py8b1gKm28FLJBvTyIIjz9f
-	g6XYAf7k=; b=uRMFTElfEn67yC5g+9vcK4/Oz4VNu31rXNWq8D7a7LdAClyO1F4
-	gLCKB9u28D92NNO/7M+W0JiGDvDvB50yRR4pPJac36fsqkCRz7drEiqX/AIIutlX
-	1RAY0KrvCljlICtGzpSiBRZAIWUi6yEIBmbYtCrrCPAsEXhVxK8zZu6Dnm/BSVPo
-	anqmyxGRtnlP9mU/zDbTWhak+9BKSj41A0HTiELVdme50eoA59UZrGV9i1c1XLNq
-	nncjxWXhnLgbxqPB8yVcYODvY/j9XdeYHev3tNRYRtPwQSxBsFfSqaUNx42qJ+es
-	yUw9agaGQbsRmSY3saE1EHOROS1P/EJx3Nw==
-X-ME-Sender: <xms:hiA5acyW-wdlZnQxZMpJi3iNgK8v4Htlu9b0poCRf3xweIjK8VMD6A>
-    <xme:hiA5aZAY0_iV1IHB6WaRIuVcAL9CclP4sHNUSmgZZfLLaKb7i5qR9wfJwwW_c5C2Z
-    jwVD_A4xbCAz5vFr5QAZ6qm5ESA0oa8uDVTYzFLCdWi3UHqUA>
-X-ME-Received: <xmr:hiA5adD0UWkJEatnkhSpqRH7krqtqLNcpbpBFYhjgpLkElwuyPQNKxoovEFF757gqIwgNQSPQxU0d_lpaJf0LvTNdQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvudekvdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcumffj
-    uceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeegheeuhefgtd
-    eluddtleekfeegjeetgeeikeehfeduieffvddufeefleevtddtvdenucffohhmrghinhep
-    khgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrg
-    hilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhmpdhnsggprhgtphhtthhopedukedp
-    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepnhgrthhhrghnsehkvghrnhgvlhdroh
-    hrghdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgt
-    phhtthhopehsthgrsghlvgdqtghomhhmihhtshesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-    dprhgtphhtthhopehjrghmvghsrdgtlhgrrhhksehlihhnrghrohdrohhrghdprhgtphht
-    thhopehmrdhsiiihphhrohifshhkihesshgrmhhsuhhnghdrtghomhdprhgtphhtthhope
-    hrohgsihhnrdhmuhhrphhhhiesrghrmhdrtghomhdprhgtphhtthhopehnihgtkhdruggv
-    shgruhhlnhhivghrshdolhhkmhhlsehgmhgrihhlrdgtohhmpdhrtghpthhtohepmhhorh
-    gsohesghhoohhglhgvrdgtohhmpdhrtghpthhtohepjhhushhtihhnshhtihhtthesghho
-    ohhglhgvrdgtohhm
-X-ME-Proxy: <xmx:hiA5ac6zsutDHZ-d6OMb2F0cYWB9hboq4zceN-4uPi5Yp5H5P3rNqQ>
-    <xmx:hiA5aR1iQOoZ9iXCe0Stcn8R2FAhS_Yt-jzoxWoPUn3n0aezB9571A>
-    <xmx:hiA5aQCLQjIv1KKUZmkuehcZk7M0EZyMaGSuMt8mAPZ-inJoiKol0A>
-    <xmx:hiA5aZE43Whjnuo1U2i3oOPoOYG3BytdrSXDGct6-sSk3gXCsGnhug>
-    <xmx:hiA5abA5zmMWxo2ee0dUWnsVLtWiun_qBKSwx8FCJCrtMCOMLUx9tKIQ>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 10 Dec 2025 02:25:57 -0500 (EST)
-Date: Wed, 10 Dec 2025 16:25:51 +0900
-From: Greg KH <greg@kroah.com>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
-	james.clark@linaro.org, Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>
-Subject: Re: Patch "dma-mapping: Allow use of DMA_BIT_MASK(64) in global
- scope" has been added to the 6.17-stable tree
-Message-ID: <2025121043-retool-judo-5f1d@gregkh>
-References: <20251208030749.190427-1-sashal@kernel.org>
- <20251208032256.GA1356249@ax162>
+	s=arc-20240116; t=1765352010; c=relaxed/simple;
+	bh=WaU8CB+keO7tGquzhNUmzKphso7QZVUTw0nW+6rRSOs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NibCcdy1jH9ob62ePONbrQvbBWfGf8ZSCzR6Iiue86u5aSOZscNlwJpxIHB/xPX5yZFl+M1qfuLhrMO9icVN+rtuz+LH5kXoW1AKS0RlMefKJkCjnAbWJ/RmSGAXWWxZsr7VRVI1nHmzTrbHggbdZnsb1PenkO3sq3LlC2QxeaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Orf5B6M8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67EBAC4CEF1;
+	Wed, 10 Dec 2025 07:33:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1765352010;
+	bh=WaU8CB+keO7tGquzhNUmzKphso7QZVUTw0nW+6rRSOs=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Orf5B6M8UV2k1Aur8J2k1VNvvOW9iBY7F+Y+zrJoLEtNNyVDhXMl3ZyfjkiZ5lMKM
+	 kTinYhx7tk0e8gxRuil1numjnDDllqurb96qkoswFXP3el7MYPCyc0sv49bBEAvrwn
+	 1LxZQZkyNLdGBe6YvWsnNAsyzIHT2IUOUdJrmSEA=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	hargar@microsoft.com,
+	broonie@kernel.org,
+	achill@achill.org,
+	sr@sladewatkins.com
+Subject: [PATCH 6.17 00/60] 6.17.12-rc1 review
+Date: Wed, 10 Dec 2025 16:29:30 +0900
+Message-ID: <20251210072947.850479903@linuxfoundation.org>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251208032256.GA1356249@ax162>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.17.12-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-6.17.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 6.17.12-rc1
+X-KernelTest-Deadline: 2025-12-12T07:29+00:00
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Sun, Dec 07, 2025 at 07:22:56PM -0800, Nathan Chancellor wrote:
-> On Sun, Dec 07, 2025 at 10:07:49PM -0500, Sasha Levin wrote:
-> > This is a note to let you know that I've just added the patch titled
-> > 
-> >     dma-mapping: Allow use of DMA_BIT_MASK(64) in global scope
-> > 
-> > to the 6.17-stable tree which can be found at:
-> >     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> > 
-> > The filename of the patch is:
-> >      dma-mapping-allow-use-of-dma_bit_mask-64-in-global-s.patch
-> > and it can be found in the queue-6.17 subdirectory.
-> > 
-> > If you, or anyone else, feels it should not be added to the stable tree,
-> > please let <stable@vger.kernel.org> know about it.
-> > 
-> > 
-> > 
-> > commit 51a1912d46ceb70602de50c167e440966b9836f1
-> > Author: James Clark <james.clark@linaro.org>
-> > Date:   Thu Oct 30 14:05:27 2025 +0000
-> > 
-> >     dma-mapping: Allow use of DMA_BIT_MASK(64) in global scope
-> >     
-> >     [ Upstream commit a50f7456f853ec3a6f07cbe1d16ad8a8b2501320 ]
-> 
-> This change has a pending bug fix, consider waiting to apply this to the
-> stable trees.
-> 
->   https://lore.kernel.org/20251207184756.97904-1-johannes.goede@oss.qualcomm.com/
+This is the start of the stable review cycle for the 6.17.12 release.
+There are 60 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-Now dropped from everywhere, thanks.
+Responses should be made by Fri, 12 Dec 2025 07:29:37 +0000.
+Anything received after that time might be too late.
+
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.17.12-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.17.y
+and the diffstat can be found below.
+
+thanks,
 
 greg k-h
+
+-------------
+Pseudo-Shortlog of commits:
+
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 6.17.12-rc1
+
+Navaneeth K <knavaneeth786@gmail.com>
+    staging: rtl8723bs: fix out-of-bounds read in OnBeacon ESR IE parsing
+
+Navaneeth K <knavaneeth786@gmail.com>
+    staging: rtl8723bs: fix stack buffer overflow in OnAssocReq IE parsing
+
+Navaneeth K <knavaneeth786@gmail.com>
+    staging: rtl8723bs: fix out-of-bounds read in rtw_get_ie() parser
+
+Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+    comedi: check device's attached status in compat ioctls
+
+Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+    comedi: multiq3: sanitize config options in multiq3_attach()
+
+Ian Abbott <abbotti@mev.co.uk>
+    comedi: c6xdigio: Fix invalid PNP driver unregistration
+
+Antoniu Miclaus <antoniu.miclaus@analog.com>
+    iio: adc: ad4080: fix chip identification
+
+Zenm Chen <zenmchen@gmail.com>
+    wifi: rtw88: Add USB ID 2001:3329 for D-Link AC13U rev. A1
+
+Zenm Chen <zenmchen@gmail.com>
+    wifi: rtl8xxxu: Add USB ID 2001:3328 for D-Link AN3U rev. A1
+
+Marcos Vega <marcosmola2@gmail.com>
+    platform/x86: hp-wmi: Add Omen MAX 16-ah0xx fan support and thermal profile
+
+Krishna Chomal <krishna.chomal108@gmail.com>
+    platform/x86: hp-wmi: Add Omen 16-wf1xxx fan support
+
+Linus Torvalds <torvalds@linux-foundation.org>
+    samples: work around glibc redefining some of our defines wrong
+
+Huacai Chen <chenhuacai@kernel.org>
+    LoongArch: Mask all interrupts during kexec/kdump
+
+Zqiang <qiang.zhang@linux.dev>
+    sched_ext: Use IRQ_WORK_INIT_HARD() to initialize rq->scx.kick_cpus_irq_work
+
+Naoki Ueki <naoki25519@gmail.com>
+    HID: elecom: Add support for ELECOM M-XT3URBK (018F)
+
+Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+    platform/x86/intel/hid: Add Nova Lake support
+
+Zqiang <qiang.zhang@linux.dev>
+    sched_ext: Fix possible deadlock in the deferred_irq_workfn()
+
+Antheas Kapenekakis <lkml@antheas.dev>
+    platform/x86/amd/pmc: Add spurious_8042 to Xbox Ally
+
+Antheas Kapenekakis <lkml@antheas.dev>
+    platform/x86/amd: pmc: Add Lenovo Legion Go 2 to pmc quirk list
+
+Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+    platform/x86: intel-uncore-freq: Add additional client processors
+
+Jia Ston <ston.jia@outlook.com>
+    platform/x86: huawei-wmi: add keys for HONOR models
+
+April Grimoire <april@aprilg.moe>
+    HID: apple: Add SONiX AK870 PRO to non_apple_keyboards quirk list
+
+Armin Wolf <W_Armin@gmx.de>
+    platform/x86: acer-wmi: Ignore backlight event
+
+Praveen Talari <praveen.talari@oss.qualcomm.com>
+    pinctrl: qcom: msm: Fix deadlock in pinmux configuration
+
+Keith Busch <kbusch@kernel.org>
+    nvme: fix admin request_queue lifetime
+
+Edip Hazuri <edip@medip.dev>
+    platform/x86: hp-wmi: mark Victus 16-r0 and 16-s0 for victus_s fan and thermal profile support
+
+Antheas Kapenekakis <lkml@antheas.dev>
+    platform/x86/amd/pmc: Add support for Van Gogh SoC
+
+Mario Limonciello (AMD) <superm1@kernel.org>
+    HID: hid-input: Extend Elan ignore battery quirk to USB
+
+Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+    bfs: Reconstruct file type when loading from disk
+
+Lauri Tirkkonen <lauri@hacktheplanet.fi>
+    HID: lenovo: fixup Lenovo Yoga Slim 7x Keyboard rdesc
+
+Lushih Hsieh <bruce@mail.kh.edu.tw>
+    ALSA: usb-audio: Add native DSD quirks for PureAudio DAC series
+
+Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+    drm/amdkfd: Fix GPU mappings for APU after prefetch
+
+Yiqi Sun <sunyiqixm@gmail.com>
+    smb: fix invalid username check in smb3_fs_context_parse_param()
+
+Niranjan H Y <niranjan.hy@ti.com>
+    ASoC: SDCA: bug fix while parsing mipi-sdca-control-cn-list
+
+Max Chou <max.chou@realtek.com>
+    Bluetooth: btrtl: Avoid loading the config file on security chips
+
+Baojun Xu <baojun.xu@ti.com>
+    ALSA: hda/tas2781: Add new quirk for HP new projects
+
+Adrian Barnaś <abarnas@google.com>
+    arm64: Reject modules with internal alternative callbacks
+
+Ian Forbes <ian.forbes@broadcom.com>
+    drm/vmwgfx: Use kref in vmw_bo_dirty
+
+Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+    ACPI: MRRM: Fix memory leaks and improve error handling
+
+Robin Gong <yibin.gong@nxp.com>
+    spi: imx: keep dma request disabled before dma transfer setup
+
+Alvaro Gamez Machado <alvaro.gamez@hazent.com>
+    spi: xilinx: increase number of retries before declaring stall
+
+Song Liu <song@kernel.org>
+    ftrace: bpf: Fix IPMODIFY + DIRECT in modify_ftrace_direct()
+
+Johan Hovold <johan@kernel.org>
+    USB: serial: kobil_sct: fix TIOCMBIS and TIOCMBIC
+
+Johan Hovold <johan@kernel.org>
+    USB: serial: belkin_sa: fix TIOCMBIS and TIOCMBIC
+
+Biju Das <biju.das.jz@bp.renesas.com>
+    serial: sh-sci: Fix deadlock during RSCI FIFO overrun error
+
+Biju Das <biju.das.jz@bp.renesas.com>
+    dt-bindings: serial: rsci: Drop "uart-has-rtscts: false"
+
+Magne Bruno <magne.bruno@addi-data.com>
+    serial: add support of CPCI cards
+
+Johan Hovold <johan@kernel.org>
+    USB: serial: ftdi_sio: match on interface number for jtag
+
+Fabio Porcedda <fabio.porcedda@gmail.com>
+    USB: serial: option: move Telit 0x10c7 composition in the right place
+
+Fabio Porcedda <fabio.porcedda@gmail.com>
+    USB: serial: option: add Telit Cinterion FE910C04 new compositions
+
+Slark Xiao <slark_xiao@163.com>
+    USB: serial: option: add Foxconn T99W760
+
+Omar Sandoval <osandov@fb.com>
+    KVM: SVM: Don't skip unrelated instruction if INT3/INTO is replaced
+
+Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+    comedi: pcl818: fix null-ptr-deref in pcl818_ai_cancel()
+
+Alexey Nepomnyashih <sdl@nppct.ru>
+    ext4: add i_data_sem protection in ext4_destroy_inline_data_nolock()
+
+Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+    crypto: zstd - fix double-free in per-CPU stream cleanup
+
+Alexander Sverdlin <alexander.sverdlin@gmail.com>
+    locking/spinlock/debug: Fix data-race in do_raw_write_lock
+
+Qianchang Zhao <pioooooooooip@gmail.com>
+    ksmbd: ipc: fix use-after-free in ipc_msg_send_request
+
+Deepanshu Kartikey <kartikey406@gmail.com>
+    ext4: refresh inline data size before write operations
+
+Ye Bin <yebin10@huawei.com>
+    jbd2: avoid bug_on in jbd2_journal_get_create_access() when file system corrupted
+
+Bagas Sanjaya <bagasdotme@gmail.com>
+    Documentation: process: Also mention Sasha Levin as stable tree maintainer
+
+
+-------------
+
+Diffstat:
+
+ .../devicetree/bindings/serial/renesas,rsci.yaml   |  2 -
+ Documentation/process/2.Process.rst                |  6 +-
+ Makefile                                           |  4 +-
+ arch/arm64/include/asm/alternative.h               |  7 ++-
+ arch/arm64/kernel/alternative.c                    | 19 +++---
+ arch/arm64/kernel/module.c                         |  9 ++-
+ arch/loongarch/kernel/machine_kexec.c              |  2 +
+ arch/x86/include/asm/kvm_host.h                    |  9 +++
+ arch/x86/kvm/svm/svm.c                             | 24 ++++----
+ arch/x86/kvm/x86.c                                 | 21 +++++++
+ crypto/zstd.c                                      |  7 +--
+ drivers/acpi/acpi_mrrm.c                           | 51 ++++++++++-----
+ drivers/bluetooth/btrtl.c                          | 24 ++++----
+ drivers/comedi/comedi_fops.c                       | 42 +++++++++++--
+ drivers/comedi/drivers/c6xdigio.c                  | 46 ++++++++++----
+ drivers/comedi/drivers/multiq3.c                   |  9 +++
+ drivers/comedi/drivers/pcl818.c                    |  5 +-
+ drivers/gpu/drm/amd/amdkfd/kfd_svm.c               |  2 +
+ drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c         | 12 ++--
+ drivers/hid/hid-apple.c                            |  1 +
+ drivers/hid/hid-elecom.c                           |  6 +-
+ drivers/hid/hid-ids.h                              |  4 +-
+ drivers/hid/hid-input.c                            |  5 +-
+ drivers/hid/hid-lenovo.c                           | 17 +++++
+ drivers/hid/hid-quirks.c                           |  3 +-
+ drivers/iio/adc/ad4080.c                           |  9 ++-
+ drivers/net/wireless/realtek/rtl8xxxu/core.c       |  3 +
+ drivers/net/wireless/realtek/rtw88/rtw8822cu.c     |  2 +
+ drivers/nvme/host/core.c                           |  3 +-
+ drivers/pinctrl/qcom/pinctrl-msm.c                 |  2 +-
+ drivers/platform/x86/acer-wmi.c                    |  4 ++
+ drivers/platform/x86/amd/pmc/pmc-quirks.c          | 25 ++++++++
+ drivers/platform/x86/amd/pmc/pmc.c                 |  3 +
+ drivers/platform/x86/amd/pmc/pmc.h                 |  1 +
+ drivers/platform/x86/hp/hp-wmi.c                   |  6 +-
+ drivers/platform/x86/huawei-wmi.c                  |  4 ++
+ drivers/platform/x86/intel/hid.c                   |  1 +
+ .../x86/intel/uncore-frequency/uncore-frequency.c  |  4 ++
+ drivers/spi/spi-imx.c                              | 15 +++--
+ drivers/spi/spi-xilinx.c                           |  2 +-
+ drivers/staging/rtl8723bs/core/rtw_ieee80211.c     | 14 +++--
+ drivers/staging/rtl8723bs/core/rtw_mlme_ext.c      | 13 ++--
+ drivers/tty/serial/8250/8250_pci.c                 | 37 +++++++++++
+ drivers/tty/serial/sh-sci.c                        | 12 +++-
+ drivers/usb/serial/belkin_sa.c                     | 28 +++++----
+ drivers/usb/serial/ftdi_sio.c                      | 72 ++++++++--------------
+ drivers/usb/serial/kobil_sct.c                     | 18 +++---
+ drivers/usb/serial/option.c                        | 22 ++++++-
+ fs/bfs/inode.c                                     | 19 +++++-
+ fs/ext4/inline.c                                   | 14 ++++-
+ fs/jbd2/transaction.c                              | 19 ++++--
+ fs/smb/client/fs_context.c                         |  2 +-
+ fs/smb/server/transport_ipc.c                      |  7 ++-
+ kernel/locking/spinlock_debug.c                    |  4 +-
+ kernel/sched/ext.c                                 |  4 +-
+ kernel/trace/ftrace.c                              | 40 +++++++++---
+ samples/vfs/test-statx.c                           |  6 ++
+ samples/watch_queue/watch_test.c                   |  6 ++
+ sound/hda/codecs/realtek/alc269.c                  |  9 +++
+ sound/soc/sdca/sdca_functions.c                    |  3 +-
+ sound/usb/quirks.c                                 |  6 ++
+ 61 files changed, 564 insertions(+), 212 deletions(-)
+
+
 
