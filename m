@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-200581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14B67CB2388
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:33:36 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CCFACB2485
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:39:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 67F1D3073158
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:32:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DF8E93047C2C
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:35:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 377E42773F4;
-	Wed, 10 Dec 2025 07:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A05302CBD;
+	Wed, 10 Dec 2025 07:35:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EB6LYVEC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hqWR4rLU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71322264DC;
-	Wed, 10 Dec 2025 07:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 308675C613;
+	Wed, 10 Dec 2025 07:35:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765351951; cv=none; b=K1r/NtIgP8S752M4ZLZLhHmzbEijm8762VuDMk2v9HMIpoWV7Us+NFvRz4S1YCLExFbezzrnAaRmb4i4iKPPIJNKTElPhecsk07pwpGdeWWjROINLU+pMFSzVjnpJ4Vt8+diu7xlYy7f+hQk8fFVEHxyYpn1l63Z45ntjrMFy6E=
+	t=1765352153; cv=none; b=Z9BGc+0JDn0ZQ9vKwu7kU/TOh3LomA/wDWoT+Oiscp6zfxNAbcKDWZoM4s8QUV5AtYb2B7uEOgO6p1pi6EFS4giUQdED+uHt40bPLmj3J87DvhUG3MTWTCYdVDpIt0u5Go32CvjBURP+om4JkFnV7ccb3v2/T87RZVnT5cFeCBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765351951; c=relaxed/simple;
-	bh=Ixgi54sW1JSWLXc0lNz7F8J29FRlWOWnK+sMGRTt0jo=;
+	s=arc-20240116; t=1765352153; c=relaxed/simple;
+	bh=RN13y1MmYhAPtCDRXs/fRaYKTRV0BGh1KNVrh+8fEO0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mN5/omFhhrAbBpMOSeo3jQVVG4P9VYgH3X9TUGfsMquIt/om09tvVeCyrVYga/GRfZNBzmxW4lcrtTcBuZUb9RWDG0Ha3J1xTL7CRFHvTGHqh1yOl5o0JbeWj5Sw0rxeIGmXw7OgZylBSR9dwuomaMHaucgQCVLsVNc7WsZYjd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EB6LYVEC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79DB1C4CEF1;
-	Wed, 10 Dec 2025 07:32:31 +0000 (UTC)
+	 MIME-Version; b=G8sJFplzC37kqFNmLMJaui+aHewmM/ufyaeB/fdFw2b6YgUw5AOPkqtOjv+H3Pr5C1e2/+JYWevNDKVcLIknIXhR5yscRYxULV0yvpsEc3FObGzEtSyGYy0UCVOhQIgjSswYSVToYB9/b34kVjm4LJPL/6JYoz/L3xfOylqO3aI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hqWR4rLU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CE68C4CEF1;
+	Wed, 10 Dec 2025 07:35:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765351951;
-	bh=Ixgi54sW1JSWLXc0lNz7F8J29FRlWOWnK+sMGRTt0jo=;
+	s=korg; t=1765352152;
+	bh=RN13y1MmYhAPtCDRXs/fRaYKTRV0BGh1KNVrh+8fEO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EB6LYVECfcy/10T7kcvrQ+QYtwCw0NZAKUUrgeVXOSqDEfjbA+0/yn6uFGyJ6TqK7
-	 pQgOjBChmowbwa3XBsUyTs1327UJhQWWc6IznNqJaeEhZhoBpGgMU7Uq2erVJwPZ/t
-	 Agus/I71qBVANINZmKUM/F4P1pPVNGu2PQde4QYs=
+	b=hqWR4rLUzH8fIfdHODtZoAbXMHVOlpffKnoEZIudtQNUv4WMAb/Ta+5/SATBipO/4
+	 Tx5m4Cj6dLBlmFIMyNiHtzr9f0vd/SSvJ9QSQFSjAgxdVq2vs/tKUHdwautRuujxe7
+	 ckfKb0DkYehzXr6uKA5F3TTmA0WMENIUdKBv+wFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6616bba359cec7a1def1@syzkaller.appspotmail.com,
-	stable <stable@kernel.org>,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 6.12 42/49] comedi: c6xdigio: Fix invalid PNP driver unregistration
+	Ye Bin <yebin10@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.18 02/29] jbd2: avoid bug_on in jbd2_journal_get_create_access() when file system corrupted
 Date: Wed, 10 Dec 2025 16:30:12 +0900
-Message-ID: <20251210072949.210567228@linuxfoundation.org>
+Message-ID: <20251210072944.435115763@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
-References: <20251210072948.125620687@linuxfoundation.org>
+In-Reply-To: <20251210072944.363788552@linuxfoundation.org>
+References: <20251210072944.363788552@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,171 +61,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Ye Bin <yebin10@huawei.com>
 
-commit 72262330f7b3ad2130e800cecf02adcce3c32c77 upstream.
+commit 986835bf4d11032bba4ab8414d18fce038c61bb4 upstream.
 
-The Comedi low-level driver "c6xdigio" seems to be for a parallel port
-connected device.  When the Comedi core calls the driver's Comedi
-"attach" handler `c6xdigio_attach()` to configure a Comedi to use this
-driver, it tries to enable the parallel port PNP resources by
-registering a PNP driver with `pnp_register_driver()`, but ignores the
-return value.  (The `struct pnp_driver` it uses has only the `name` and
-`id_table` members filled in.)  The driver's Comedi "detach" handler
-`c6xdigio_detach()` unconditionally unregisters the PNP driver with
-`pnp_unregister_driver()`.
-
-It is possible for `c6xdigio_attach()` to return an error before it
-calls `pnp_register_driver()` and it is possible for the call to
-`pnp_register_driver()` to return an error (that is ignored).  In both
-cases, the driver should not be calling `pnp_unregister_driver()` as it
-does in `c6xdigio_detach()`.  (Note that `c6xdigio_detach()` will be
-called by the Comedi core if `c6xdigio_attach()` returns an error, or if
-the Comedi core decides to detach the Comedi device from the driver for
-some other reason.)
-
-The unconditional call to `pnp_unregister_driver()` without a previous
-successful call to `pnp_register_driver()` will cause
-`driver_unregister()` to issue a warning "Unexpected driver
-unregister!".  This was detected by Syzbot [1].
-
-Also, the PNP driver registration and unregistration should be done at
-module init and exit time, respectively, not when attaching or detaching
-Comedi devices to the driver.  (There might be more than one Comedi
-device being attached to the driver, although that is unlikely.)
-
-Change the driver to do the PNP driver registration at module init time,
-and the unregistration at module exit time.  Since `c6xdigio_detach()`
-now only calls `comedi_legacy_detach()`, remove the function and change
-the Comedi driver "detach" handler to `comedi_legacy_detach`.
-
--------------------------------------------
-[1] Syzbot sample crash report:
-Unexpected driver unregister!
-WARNING: CPU: 0 PID: 5970 at drivers/base/driver.c:273 driver_unregister drivers/base/driver.c:273 [inline]
-WARNING: CPU: 0 PID: 5970 at drivers/base/driver.c:273 driver_unregister+0x90/0xb0 drivers/base/driver.c:270
-Modules linked in:
-CPU: 0 UID: 0 PID: 5970 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/02/2025
-RIP: 0010:driver_unregister drivers/base/driver.c:273 [inline]
-RIP: 0010:driver_unregister+0x90/0xb0 drivers/base/driver.c:270
-Code: 48 89 ef e8 c2 e6 82 fc 48 89 df e8 3a 93 ff ff 5b 5d e9 c3 6d d9 fb e8 be 6d d9 fb 90 48 c7 c7 e0 f8 1f 8c e8 51 a2 97 fb 90 <0f> 0b 90 90 5b 5d e9 a5 6d d9 fb e8 e0 f4 41 fc eb 94 e8 d9 f4 41
-RSP: 0018:ffffc9000373f9a0 EFLAGS: 00010282
-RAX: 0000000000000000 RBX: ffffffff8ff24720 RCX: ffffffff817b6ee8
-RDX: ffff88807c932480 RSI: ffffffff817b6ef5 RDI: 0000000000000001
-RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000001 R12: ffffffff8ff24660
-R13: dffffc0000000000 R14: 0000000000000000 R15: ffff88814cca0000
-FS:  000055556dab1500(0000) GS:ffff8881249d9000(0000) knlGS:0000000000000000
+There's issue when file system corrupted:
+------------[ cut here ]------------
+kernel BUG at fs/jbd2/transaction.c:1289!
+Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
+CPU: 5 UID: 0 PID: 2031 Comm: mkdir Not tainted 6.18.0-rc1-next
+RIP: 0010:jbd2_journal_get_create_access+0x3b6/0x4d0
+RSP: 0018:ffff888117aafa30 EFLAGS: 00010202
+RAX: 0000000000000000 RBX: ffff88811a86b000 RCX: ffffffff89a63534
+RDX: 1ffff110200ec602 RSI: 0000000000000004 RDI: ffff888100763010
+RBP: ffff888100763000 R08: 0000000000000001 R09: ffff888100763028
+R10: 0000000000000003 R11: 0000000000000000 R12: 0000000000000000
+R13: ffff88812c432000 R14: ffff88812c608000 R15: ffff888120bfc000
 CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000055f77f285cd0 CR3: 000000007d871000 CR4: 00000000003526f0
+CR2: 00007f91d6970c99 CR3: 00000001159c4000 CR4: 00000000000006f0
 Call Trace:
  <TASK>
- comedi_device_detach_locked+0x12f/0xa50 drivers/comedi/drivers.c:207
- comedi_device_detach+0x67/0xb0 drivers/comedi/drivers.c:215
- comedi_device_attach+0x43d/0x900 drivers/comedi/drivers.c:1011
- do_devconfig_ioctl+0x1b1/0x710 drivers/comedi/comedi_fops.c:872
- comedi_unlocked_ioctl+0x165d/0x2f00 drivers/comedi/comedi_fops.c:2178
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl fs/ioctl.c:583 [inline]
- __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:583
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcd/0xfa0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fc05798eec9
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffcf8184238 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007fc057be5fa0 RCX: 00007fc05798eec9
-RDX: 0000200000000080 RSI: 0000000040946400 RDI: 0000000000000003
-RBP: 00007fc057a11f91 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fc057be5fa0 R14: 00007fc057be5fa0 R15: 0000000000000003
- </TASK>
--------------------------------------------
+ __ext4_journal_get_create_access+0x42/0x170
+ ext4_getblk+0x319/0x6f0
+ ext4_bread+0x11/0x100
+ ext4_append+0x1e6/0x4a0
+ ext4_init_new_dir+0x145/0x1d0
+ ext4_mkdir+0x326/0x920
+ vfs_mkdir+0x45c/0x740
+ do_mkdirat+0x234/0x2f0
+ __x64_sys_mkdir+0xd6/0x120
+ do_syscall_64+0x5f/0xfa0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Reported-by: syzbot+6616bba359cec7a1def1@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=6616bba359cec7a1def1
-Fixes: 2c89e159cd2f ("Staging: comedi: add c6xdigio driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://patch.msgid.link/20251023123141.6537-1-abbotti@mev.co.uk
+The above issue occurs with us in errors=continue mode when accompanied by
+storage failures. There have been many inconsistencies in the file system
+data.
+In the case of file system data inconsistency, for example, if the block
+bitmap of a referenced block is not set, it can lead to the situation where
+a block being committed is allocated and used again. As a result, the
+following condition will not be satisfied then trigger BUG_ON. Of course,
+it is entirely possible to construct a problematic image that can trigger
+this BUG_ON through specific operations. In fact, I have constructed such
+an image and easily reproduced this issue.
+Therefore, J_ASSERT() holds true only under ideal conditions, but it may
+not necessarily be satisfied in exceptional scenarios. Using J_ASSERT()
+directly in abnormal situations would cause the system to crash, which is
+clearly not what we want. So here we directly trigger a JBD abort instead
+of immediately invoking BUG_ON.
+
+Fixes: 470decc613ab ("[PATCH] jbd2: initial copy of files from jbd")
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Message-ID: <20251025072657.307851-1-yebin@huaweicloud.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/drivers/c6xdigio.c |   46 ++++++++++++++++++++++++++++----------
- 1 file changed, 35 insertions(+), 11 deletions(-)
+ fs/jbd2/transaction.c |   19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
---- a/drivers/comedi/drivers/c6xdigio.c
-+++ b/drivers/comedi/drivers/c6xdigio.c
-@@ -249,9 +249,6 @@ static int c6xdigio_attach(struct comedi
- 	if (ret)
- 		return ret;
- 
--	/*  Make sure that PnP ports get activated */
--	pnp_register_driver(&c6xdigio_pnp_driver);
--
- 	s = &dev->subdevices[0];
- 	/* pwm output subdevice */
- 	s->type		= COMEDI_SUBD_PWM;
-@@ -278,19 +275,46 @@ static int c6xdigio_attach(struct comedi
- 	return 0;
- }
- 
--static void c6xdigio_detach(struct comedi_device *dev)
--{
--	comedi_legacy_detach(dev);
--	pnp_unregister_driver(&c6xdigio_pnp_driver);
--}
--
- static struct comedi_driver c6xdigio_driver = {
- 	.driver_name	= "c6xdigio",
- 	.module		= THIS_MODULE,
- 	.attach		= c6xdigio_attach,
--	.detach		= c6xdigio_detach,
-+	.detach		= comedi_legacy_detach,
- };
--module_comedi_driver(c6xdigio_driver);
-+
-+static bool c6xdigio_pnp_registered = false;
-+
-+static int __init c6xdigio_module_init(void)
-+{
-+	int ret;
-+
-+	ret = comedi_driver_register(&c6xdigio_driver);
-+	if (ret)
-+		return ret;
-+
-+	if (IS_ENABLED(CONFIG_PNP)) {
-+		/*  Try to activate the PnP ports */
-+		ret = pnp_register_driver(&c6xdigio_pnp_driver);
-+		if (ret) {
-+			pr_warn("failed to register pnp driver - err %d\n",
-+				ret);
-+			ret = 0;	/* ignore the error. */
-+		} else {
-+			c6xdigio_pnp_registered = true;
-+		}
+--- a/fs/jbd2/transaction.c
++++ b/fs/jbd2/transaction.c
+@@ -1284,14 +1284,23 @@ int jbd2_journal_get_create_access(handl
+ 	 * committing transaction's lists, but it HAS to be in Forget state in
+ 	 * that case: the transaction must have deleted the buffer for it to be
+ 	 * reused here.
++	 * In the case of file system data inconsistency, for example, if the
++	 * block bitmap of a referenced block is not set, it can lead to the
++	 * situation where a block being committed is allocated and used again.
++	 * As a result, the following condition will not be satisfied, so here
++	 * we directly trigger a JBD abort instead of immediately invoking
++	 * bugon.
+ 	 */
+ 	spin_lock(&jh->b_state_lock);
+-	J_ASSERT_JH(jh, (jh->b_transaction == transaction ||
+-		jh->b_transaction == NULL ||
+-		(jh->b_transaction == journal->j_committing_transaction &&
+-			  jh->b_jlist == BJ_Forget)));
++	if (!(jh->b_transaction == transaction || jh->b_transaction == NULL ||
++	      (jh->b_transaction == journal->j_committing_transaction &&
++	       jh->b_jlist == BJ_Forget)) || jh->b_next_transaction != NULL) {
++		err = -EROFS;
++		spin_unlock(&jh->b_state_lock);
++		jbd2_journal_abort(journal, err);
++		goto out;
 +	}
-+
-+	return 0;
-+}
-+module_init(c6xdigio_module_init);
-+
-+static void __exit c6xdigio_module_exit(void)
-+{
-+	if (c6xdigio_pnp_registered)
-+		pnp_unregister_driver(&c6xdigio_pnp_driver);
-+	comedi_driver_unregister(&c6xdigio_driver);
-+}
-+module_exit(c6xdigio_module_exit);
  
- MODULE_AUTHOR("Comedi https://www.comedi.org");
- MODULE_DESCRIPTION("Comedi driver for the C6x_DIGIO DSP daughter card");
+-	J_ASSERT_JH(jh, jh->b_next_transaction == NULL);
+ 	J_ASSERT_JH(jh, buffer_locked(jh2bh(jh)));
+ 
+ 	if (jh->b_transaction == NULL) {
 
 
 
