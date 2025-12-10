@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-200570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 613E7CB2346
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:32:12 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E0A7CB23FD
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:36:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 936A4300A376
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:32:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C2470300C35A
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:34:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E3B26F443;
-	Wed, 10 Dec 2025 07:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AE73302CC0;
+	Wed, 10 Dec 2025 07:34:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kmrwVQz2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ks9sM/St"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C1AB2741BC;
-	Wed, 10 Dec 2025 07:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 167DF302CBD;
+	Wed, 10 Dec 2025 07:34:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765351923; cv=none; b=YiFchPg7pOEJi9DS9Ig4wRLwZlw7kgNjZuWN00Ho3Ep2UEVU0qvwqO14Mk1u/VXjkwfR4frrfd0ezQev4TB2h1rFQarXTX/QcJuoqNeRThxq28Hz7iszjCFAGg+GfkujYg+p5Xd2KYp5iEcNMpcfEO0u7g04/OUtoUemLuI8yFk=
+	t=1765352058; cv=none; b=G6tTKrLYomhpYvgd4bP44kEV1NbIZy+2J2aRXp0zlMGwrNZQdrmhywq3GzcKGXtlKqr+J6Gq/aNFadK0fdB/w0L9mpvGdZy9FaD0ReATOrZh+FlXuA2lx/a6gvOasxVb80CZR/LKVdc0E+LI5FrgWDYjekx2pg+wjciaaqyHjDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765351923; c=relaxed/simple;
-	bh=zahdaIMMkrMYTIfFTkFMk0LfHBOap0IscxYQhzEmreE=;
+	s=arc-20240116; t=1765352058; c=relaxed/simple;
+	bh=dE76XS3AKDBd7s7cQisW6e5eY6MsqPIz+8IZtheSOk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g6z+pyKOmZBsH7Cp73RvH0Dx8Inasyl9nlLXjC4GL4xlL5xZnZR09F+0X65/oczzBpuCpBBaXyiNJT6vmm7pEtw8I2NduANxi4Ooh79GKlsR9P81ntBBhAEjvmOVhvGj9zEbXTm7DBZv7IE+eiLaShx5MnjiU3YdicAGtk/AdBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kmrwVQz2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75CDAC4CEF1;
-	Wed, 10 Dec 2025 07:32:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tgmvfH7NCuV2wfq/YJpLlfZhKHb5hW4Dh1oTjKDe68vugTvm07adDvkuVfQw4re5wErwI0jtJcZCFMENKI+ya3seO0QAKbjU089vQjA6YX4B5AgtzpUjg+f37dPCiZ5jZB/X7yiK01nGEAEwcc3lCtO/kpjmXyOxh2ym1y39YDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ks9sM/St; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF6BFC4CEF1;
+	Wed, 10 Dec 2025 07:34:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765351922;
-	bh=zahdaIMMkrMYTIfFTkFMk0LfHBOap0IscxYQhzEmreE=;
+	s=korg; t=1765352058;
+	bh=dE76XS3AKDBd7s7cQisW6e5eY6MsqPIz+8IZtheSOk0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kmrwVQz2uk5HojsUqdDgM0+DdR8xltUR5qjTLHLZ9aUI7euyeht8x0tzT/1j95W0s
-	 pyK2eKkK7fz68P9TFgJmMuoopIheAFTIebnmQ8l7eD8K4MkItoCd+HM9MGZ81bfeEM
-	 wEPCEgwcW+XT3ykmhqmaM57tcHP4eHUyNv5PR3m4=
+	b=Ks9sM/StF5mWIAKSzYb+rJH7OKaIkRwAxEW0epC9L5TrxDYdCsbcP+Vajs/IVs9Tk
+	 uDDt/+rrUhzvnZ7thSDhQ5MPm9Dl5U5iU0Cvy1638FIQs8J58lbXUHP9erXXUpnUAB
+	 zOzioivrPPYs3P6pXpvhVJapx9AnloxZdhXkzT6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bugaddr <Bugaddr@protonmail.com>,
-	Armin Wolf <W_Armin@gmx.de>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Hans de Goede <hansg@kernel.org>,
+	=?UTF-8?q?Andr=C3=A9=20Barata?= <andretiagob@protonmail.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 32/49] platform/x86: acer-wmi: Ignore backlight event
-Date: Wed, 10 Dec 2025 16:30:02 +0900
-Message-ID: <20251210072948.959326849@linuxfoundation.org>
+Subject: [PATCH 6.17 33/60] HID: hid-input: Extend Elan ignore battery quirk to USB
+Date: Wed, 10 Dec 2025 16:30:03 +0900
+Message-ID: <20251210072948.649915759@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
-References: <20251210072948.125620687@linuxfoundation.org>
+In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
+References: <20251210072947.850479903@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,45 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Mario Limonciello (AMD) <superm1@kernel.org>
 
-[ Upstream commit 444a9256f8d106e08a6bc2dc8ef28a8699e4b3ba ]
+[ Upstream commit 534ca75e8e3b713514b3f2da85dab96831cf5b2a ]
 
-On the Acer Nitro AN515-58, the event 4 - 0 is send by the ACPI
-firmware when the backlight up/down keys are pressed. Ignore this
-event to avoid spamming the kernel log with error messages, as the
-acpi-video driver already handles brightness up/down events.
+USB Elan devices have the same problem as the I2C ones with a fake
+battery device showing up.
 
-Reported-by: Bugaddr <Bugaddr@protonmail.com>
-Closes: https://bugaddr.tech/posts/2025-11-16-debugging-the-acer-nitro-5-an515-58-fn-f10-keyboard-backlight-bug-on-linux/#wmi-interface-issues
-Tested-by: Bugaddr <Bugaddr@protonmail.com>
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://patch.msgid.link/20251117155938.3030-1-W_Armin@gmx.de
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Hans de Goede <hansg@kernel.org>
+Reported-by: André Barata <andretiagob@protonmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220722
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/acer-wmi.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/hid/hid-input.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/x86/acer-wmi.c b/drivers/platform/x86/acer-wmi.c
-index c5679e4a58a76..d7602962b3cad 100644
---- a/drivers/platform/x86/acer-wmi.c
-+++ b/drivers/platform/x86/acer-wmi.c
-@@ -93,6 +93,7 @@ MODULE_ALIAS("wmi:676AA15E-6A47-4D9F-A2CC-1E6D18D14026");
+diff --git a/drivers/hid/hid-input.c b/drivers/hid/hid-input.c
+index 2c743e35c1d33..bc7de9ef45ecd 100644
+--- a/drivers/hid/hid-input.c
++++ b/drivers/hid/hid-input.c
+@@ -386,10 +386,11 @@ static const struct hid_device_id hid_battery_quirks[] = {
+ 	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_CHROMEBOOK_TROGDOR_POMPOM),
+ 	  HID_BATTERY_QUIRK_AVOID_QUERY },
+ 	/*
+-	 * Elan I2C-HID touchscreens seem to all report a non present battery,
+-	 * set HID_BATTERY_QUIRK_IGNORE for all Elan I2C-HID devices.
++	 * Elan HID touchscreens seem to all report a non present battery,
++	 * set HID_BATTERY_QUIRK_IGNORE for all Elan I2C and USB HID devices.
+ 	 */
+ 	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, HID_ANY_ID), HID_BATTERY_QUIRK_IGNORE },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_ELAN, HID_ANY_ID), HID_BATTERY_QUIRK_IGNORE },
+ 	{}
+ };
  
- enum acer_wmi_event_ids {
- 	WMID_HOTKEY_EVENT = 0x1,
-+	WMID_BACKLIGHT_EVENT = 0x4,
- 	WMID_ACCEL_OR_KBD_DOCK_EVENT = 0x5,
- 	WMID_GAMING_TURBO_KEY_EVENT = 0x7,
- 	WMID_AC_EVENT = 0x8,
-@@ -2317,6 +2318,9 @@ static void acer_wmi_notify(union acpi_object *obj, void *context)
- 			sparse_keymap_report_event(acer_wmi_input_dev, scancode, 1, true);
- 		}
- 		break;
-+	case WMID_BACKLIGHT_EVENT:
-+		/* Already handled by acpi-video */
-+		break;
- 	case WMID_ACCEL_OR_KBD_DOCK_EVENT:
- 		acer_gsensor_event();
- 		acer_kbd_dock_event(&return_value);
 -- 
 2.51.0
 
