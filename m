@@ -1,312 +1,260 @@
-Return-Path: <stable+bounces-200561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 673CFCB235B
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:32:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83B49CB2313
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:31:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4226D30DB810
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:31:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BE19130671CE
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:31:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EC1B2264DC;
-	Wed, 10 Dec 2025 07:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15FCB20102B;
+	Wed, 10 Dec 2025 07:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j69s7w0s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tHUlC56X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D93FB20102B;
-	Wed, 10 Dec 2025 07:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B82E979DA;
+	Wed, 10 Dec 2025 07:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765351899; cv=none; b=tGcHjxIxhJgye0ltkx23jftge6sY4IAqICFxsg8UxTufhS6YzyWc4l1vhupjaI297WCoE+Gq3DJTY6auHqoTC1AI+nSoJ4GJAEqSsxGsOzQF2zLsb6KoOCp9uklOI0tsbsEi/HwGt9KrrtJT5hlalMA3yLEekanvGS/IEo1evJU=
+	t=1765351861; cv=none; b=i9nRHhiiNM2VBbmotcD4akuSxiFnvO5KOqVFhoCXUWcB/IvaNnf2CKV51uv04pDws98SMbVXQUdfXUXzYTbt6RiTLaK4s5+u8Xh2fV8Qr8RzcmXYUCXKoPdypqYv4FESGGZh35o2UN7HYlb6btYbv4nvIS2p+XB8Q7DEq+TkHBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765351899; c=relaxed/simple;
-	bh=OzirUe8Ps3wt8uzTut46rPEI+8P8UHybNVej/xoYs/M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ceXWO+s/56KkEN2onoHB47KUR88FL2cE18ZsEFUsY4X0Je0woRaEhGXNbmHTghlGmpHNA4v/Jk75ub7LZ1C4dehGbtWbCgpRleGXiBVkYsNj9bgQTDYXM3LKNmpeQPFEZrIhFSfGUMy8gCrFF9fRdBMtB0oFfaOjUxVVlXTbPVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j69s7w0s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C021C4CEF1;
-	Wed, 10 Dec 2025 07:31:38 +0000 (UTC)
+	s=arc-20240116; t=1765351861; c=relaxed/simple;
+	bh=eyJk1yRxffey3bNdsBEoU2lWLXucrAM/RHlA+gZ1Adk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=AQxyT9bWC0TuRb9DTxaQrHo4gX+jXCZpGUbuCWmi3xtX1m0UQmDwzCHLa/OfrgsAWUwv93+pUI5ZVjO2L2/CkNw+QnsubNBjtA/S8Cb8J2tkl/beaTcK+j4H0AfrfYP5v2CMhfV/srZ0ZOf+qMHOovf6CRFfH2MLOO15do0qiuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tHUlC56X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43067C4CEF1;
+	Wed, 10 Dec 2025 07:31:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765351898;
-	bh=OzirUe8Ps3wt8uzTut46rPEI+8P8UHybNVej/xoYs/M=;
-	h=From:To:Cc:Subject:Date:From;
-	b=j69s7w0sKq3shPtRYz2Qca/J/ZOgi9r7Uk92jevvnrygJKIAKc/5bjGVOpl9YvY/V
-	 Pm8I1AgdYDATSjhAJoO5bLt7NVwkNgtOxVVp7kNVHmOFwnE7MuXrMa5asmpkgvbCpP
-	 EuPJJ24HGXtSg2G6ODDWj6YIh7F6EJu13C/XI/Fc=
+	s=korg; t=1765351861;
+	bh=eyJk1yRxffey3bNdsBEoU2lWLXucrAM/RHlA+gZ1Adk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=tHUlC56X61mbpMj7whi3ynBmv317BYXSK9rwUIwwS+v+bl7LanbLa10ozZr5jMfyz
+	 zQFfGW8qtI0fvIFKwJp1aFs7Zp/lDBt6lSBKVR791bWApUuwEApOjn6a/prRmAV/w0
+	 tYHsmx2WMOZEVmofQu0TKHEhO4voE+Au75Q6qCpk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org,
-	achill@achill.org,
-	sr@sladewatkins.com
-Subject: [PATCH 6.12 00/49] 6.12.62-rc1 review
-Date: Wed, 10 Dec 2025 16:29:30 +0900
-Message-ID: <20251210072948.125620687@linuxfoundation.org>
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 01/49] xfrm: delete x->tunnel as we delete x
+Date: Wed, 10 Dec 2025 16:29:31 +0900
+Message-ID: <20251210072948.163659491@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
+References: <20251210072948.125620687@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.62-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-6.12.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 6.12.62-rc1
-X-KernelTest-Deadline: 2025-12-12T07:29+00:00
 Content-Transfer-Encoding: 8bit
 
-This is the start of the stable review cycle for the 6.12.62 release.
-There are 49 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
-Responses should be made by Fri, 12 Dec 2025 07:29:38 +0000.
-Anything received after that time might be too late.
+------------------
 
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.62-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-and the diffstat can be found below.
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-thanks,
+[ Upstream commit b441cf3f8c4b8576639d20c8eb4aa32917602ecd ]
 
-greg k-h
+The ipcomp fallback tunnels currently get deleted (from the various
+lists and hashtables) as the last user state that needed that fallback
+is destroyed (not deleted). If a reference to that user state still
+exists, the fallback state will remain on the hashtables/lists,
+triggering the WARN in xfrm_state_fini. Because of those remaining
+references, the fix in commit f75a2804da39 ("xfrm: destroy xfrm_state
+synchronously on net exit path") is not complete.
 
--------------
-Pseudo-Shortlog of commits:
+We recently fixed one such situation in TCP due to defered freeing of
+skbs (commit 9b6412e6979f ("tcp: drop secpath at the same time as we
+currently drop dst")). This can also happen due to IP reassembly: skbs
+with a secpath remain on the reassembly queue until netns
+destruction. If we can't guarantee that the queues are flushed by the
+time xfrm_state_fini runs, there may still be references to a (user)
+xfrm_state, preventing the timely deletion of the corresponding
+fallback state.
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 6.12.62-rc1
+Instead of chasing each instance of skbs holding a secpath one by one,
+this patch fixes the issue directly within xfrm, by deleting the
+fallback state as soon as the last user state depending on it has been
+deleted. Destruction will still happen when the final reference is
+dropped.
 
-Daniele Palmas <dnlplm@gmail.com>
-    bus: mhi: host: pci_generic: Add Telit FN990B40 modem support
+A separate lockdep class for the fallback state is required since
+we're going to lock x->tunnel while x is locked.
 
-Daniele Palmas <dnlplm@gmail.com>
-    bus: mhi: host: pci_generic: Add Telit FN920C04 modem support
+Fixes: 9d4139c76905 ("netns xfrm: per-netns xfrm_state_all list")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ include/net/xfrm.h      |  1 -
+ net/ipv4/ipcomp.c       |  2 ++
+ net/ipv6/ipcomp6.c      |  2 ++
+ net/ipv6/xfrm6_tunnel.c |  2 +-
+ net/xfrm/xfrm_ipcomp.c  |  1 -
+ net/xfrm/xfrm_state.c   | 19 ++++++++-----------
+ 6 files changed, 13 insertions(+), 14 deletions(-)
 
-Navaneeth K <knavaneeth786@gmail.com>
-    staging: rtl8723bs: fix out-of-bounds read in OnBeacon ESR IE parsing
+diff --git a/include/net/xfrm.h b/include/net/xfrm.h
+index caaff61601a07..d51204041bf7d 100644
+--- a/include/net/xfrm.h
++++ b/include/net/xfrm.h
+@@ -424,7 +424,6 @@ int xfrm_input_register_afinfo(const struct xfrm_input_afinfo *afinfo);
+ int xfrm_input_unregister_afinfo(const struct xfrm_input_afinfo *afinfo);
+ 
+ void xfrm_flush_gc(void);
+-void xfrm_state_delete_tunnel(struct xfrm_state *x);
+ 
+ struct xfrm_type {
+ 	struct module		*owner;
+diff --git a/net/ipv4/ipcomp.c b/net/ipv4/ipcomp.c
+index 5a4fb2539b08b..9a45aed508d19 100644
+--- a/net/ipv4/ipcomp.c
++++ b/net/ipv4/ipcomp.c
+@@ -54,6 +54,7 @@ static int ipcomp4_err(struct sk_buff *skb, u32 info)
+ }
+ 
+ /* We always hold one tunnel user reference to indicate a tunnel */
++static struct lock_class_key xfrm_state_lock_key;
+ static struct xfrm_state *ipcomp_tunnel_create(struct xfrm_state *x)
+ {
+ 	struct net *net = xs_net(x);
+@@ -62,6 +63,7 @@ static struct xfrm_state *ipcomp_tunnel_create(struct xfrm_state *x)
+ 	t = xfrm_state_alloc(net);
+ 	if (!t)
+ 		goto out;
++	lockdep_set_class(&t->lock, &xfrm_state_lock_key);
+ 
+ 	t->id.proto = IPPROTO_IPIP;
+ 	t->id.spi = x->props.saddr.a4;
+diff --git a/net/ipv6/ipcomp6.c b/net/ipv6/ipcomp6.c
+index 72d4858dec18a..8607569de34f3 100644
+--- a/net/ipv6/ipcomp6.c
++++ b/net/ipv6/ipcomp6.c
+@@ -71,6 +71,7 @@ static int ipcomp6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
+ 	return 0;
+ }
+ 
++static struct lock_class_key xfrm_state_lock_key;
+ static struct xfrm_state *ipcomp6_tunnel_create(struct xfrm_state *x)
+ {
+ 	struct net *net = xs_net(x);
+@@ -79,6 +80,7 @@ static struct xfrm_state *ipcomp6_tunnel_create(struct xfrm_state *x)
+ 	t = xfrm_state_alloc(net);
+ 	if (!t)
+ 		goto out;
++	lockdep_set_class(&t->lock, &xfrm_state_lock_key);
+ 
+ 	t->id.proto = IPPROTO_IPV6;
+ 	t->id.spi = xfrm6_tunnel_alloc_spi(net, (xfrm_address_t *)&x->props.saddr);
+diff --git a/net/ipv6/xfrm6_tunnel.c b/net/ipv6/xfrm6_tunnel.c
+index bf140ef781c1f..7fd8bc08e6eb1 100644
+--- a/net/ipv6/xfrm6_tunnel.c
++++ b/net/ipv6/xfrm6_tunnel.c
+@@ -334,8 +334,8 @@ static void __net_exit xfrm6_tunnel_net_exit(struct net *net)
+ 	struct xfrm6_tunnel_net *xfrm6_tn = xfrm6_tunnel_pernet(net);
+ 	unsigned int i;
+ 
+-	xfrm_flush_gc();
+ 	xfrm_state_flush(net, 0, false, true);
++	xfrm_flush_gc();
+ 
+ 	for (i = 0; i < XFRM6_TUNNEL_SPI_BYADDR_HSIZE; i++)
+ 		WARN_ON_ONCE(!hlist_empty(&xfrm6_tn->spi_byaddr[i]));
+diff --git a/net/xfrm/xfrm_ipcomp.c b/net/xfrm/xfrm_ipcomp.c
+index 9c0fa0e1786a2..f2e70e918f114 100644
+--- a/net/xfrm/xfrm_ipcomp.c
++++ b/net/xfrm/xfrm_ipcomp.c
+@@ -315,7 +315,6 @@ void ipcomp_destroy(struct xfrm_state *x)
+ 	struct ipcomp_data *ipcd = x->data;
+ 	if (!ipcd)
+ 		return;
+-	xfrm_state_delete_tunnel(x);
+ 	mutex_lock(&ipcomp_resource_mutex);
+ 	ipcomp_free_data(ipcd);
+ 	mutex_unlock(&ipcomp_resource_mutex);
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index f8cb033f102ed..e4500d481e26b 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -748,6 +748,7 @@ void __xfrm_state_destroy(struct xfrm_state *x, bool sync)
+ }
+ EXPORT_SYMBOL(__xfrm_state_destroy);
+ 
++static void xfrm_state_delete_tunnel(struct xfrm_state *x);
+ int __xfrm_state_delete(struct xfrm_state *x)
+ {
+ 	struct net *net = xs_net(x);
+@@ -775,6 +776,8 @@ int __xfrm_state_delete(struct xfrm_state *x)
+ 
+ 		xfrm_dev_state_delete(x);
+ 
++		xfrm_state_delete_tunnel(x);
++
+ 		/* All xfrm_state objects are created by xfrm_state_alloc.
+ 		 * The xfrm_state_alloc call gives a reference, and that
+ 		 * is what we are dropping here.
+@@ -878,10 +881,7 @@ int xfrm_state_flush(struct net *net, u8 proto, bool task_valid, bool sync)
+ 				err = xfrm_state_delete(x);
+ 				xfrm_audit_state_delete(x, err ? 0 : 1,
+ 							task_valid);
+-				if (sync)
+-					xfrm_state_put_sync(x);
+-				else
+-					xfrm_state_put(x);
++				xfrm_state_put(x);
+ 				if (!err)
+ 					cnt++;
+ 
+@@ -3008,20 +3008,17 @@ void xfrm_flush_gc(void)
+ }
+ EXPORT_SYMBOL(xfrm_flush_gc);
+ 
+-/* Temporarily located here until net/xfrm/xfrm_tunnel.c is created */
+-void xfrm_state_delete_tunnel(struct xfrm_state *x)
++static void xfrm_state_delete_tunnel(struct xfrm_state *x)
+ {
+ 	if (x->tunnel) {
+ 		struct xfrm_state *t = x->tunnel;
+ 
+-		if (atomic_read(&t->tunnel_users) == 2)
++		if (atomic_dec_return(&t->tunnel_users) == 1)
+ 			xfrm_state_delete(t);
+-		atomic_dec(&t->tunnel_users);
+-		xfrm_state_put_sync(t);
++		xfrm_state_put(t);
+ 		x->tunnel = NULL;
+ 	}
+ }
+-EXPORT_SYMBOL(xfrm_state_delete_tunnel);
+ 
+ u32 xfrm_state_mtu(struct xfrm_state *x, int mtu)
+ {
+@@ -3221,8 +3218,8 @@ void xfrm_state_fini(struct net *net)
+ 	unsigned int sz;
+ 
+ 	flush_work(&net->xfrm.state_hash_work);
+-	flush_work(&xfrm_state_gc_work);
+ 	xfrm_state_flush(net, 0, false, true);
++	flush_work(&xfrm_state_gc_work);
+ 
+ 	WARN_ON(!list_empty(&net->xfrm.state_all));
+ 
+-- 
+2.51.0
 
-Navaneeth K <knavaneeth786@gmail.com>
-    staging: rtl8723bs: fix stack buffer overflow in OnAssocReq IE parsing
-
-Navaneeth K <knavaneeth786@gmail.com>
-    staging: rtl8723bs: fix out-of-bounds read in rtw_get_ie() parser
-
-Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-    comedi: check device's attached status in compat ioctls
-
-Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-    comedi: multiq3: sanitize config options in multiq3_attach()
-
-Ian Abbott <abbotti@mev.co.uk>
-    comedi: c6xdigio: Fix invalid PNP driver unregistration
-
-Zenm Chen <zenmchen@gmail.com>
-    wifi: rtw88: Add USB ID 2001:3329 for D-Link AC13U rev. A1
-
-Zenm Chen <zenmchen@gmail.com>
-    wifi: rtl8xxxu: Add USB ID 2001:3328 for D-Link AN3U rev. A1
-
-Linus Torvalds <torvalds@linux-foundation.org>
-    samples: work around glibc redefining some of our defines wrong
-
-Huacai Chen <chenhuacai@kernel.org>
-    LoongArch: Mask all interrupts during kexec/kdump
-
-Naoki Ueki <naoki25519@gmail.com>
-    HID: elecom: Add support for ELECOM M-XT3URBK (018F)
-
-Antheas Kapenekakis <lkml@antheas.dev>
-    platform/x86/amd/pmc: Add spurious_8042 to Xbox Ally
-
-Antheas Kapenekakis <lkml@antheas.dev>
-    platform/x86/amd: pmc: Add Lenovo Legion Go 2 to pmc quirk list
-
-Jia Ston <ston.jia@outlook.com>
-    platform/x86: huawei-wmi: add keys for HONOR models
-
-April Grimoire <april@aprilg.moe>
-    HID: apple: Add SONiX AK870 PRO to non_apple_keyboards quirk list
-
-Armin Wolf <W_Armin@gmx.de>
-    platform/x86: acer-wmi: Ignore backlight event
-
-Praveen Talari <praveen.talari@oss.qualcomm.com>
-    pinctrl: qcom: msm: Fix deadlock in pinmux configuration
-
-Keith Busch <kbusch@kernel.org>
-    nvme: fix admin request_queue lifetime
-
-Mario Limonciello (AMD) <superm1@kernel.org>
-    HID: hid-input: Extend Elan ignore battery quirk to USB
-
-Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-    bfs: Reconstruct file type when loading from disk
-
-Lushih Hsieh <bruce@mail.kh.edu.tw>
-    ALSA: usb-audio: Add native DSD quirks for PureAudio DAC series
-
-Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
-    drm/amdkfd: Fix GPU mappings for APU after prefetch
-
-Yiqi Sun <sunyiqixm@gmail.com>
-    smb: fix invalid username check in smb3_fs_context_parse_param()
-
-Max Chou <max.chou@realtek.com>
-    Bluetooth: btrtl: Avoid loading the config file on security chips
-
-Ian Forbes <ian.forbes@broadcom.com>
-    drm/vmwgfx: Use kref in vmw_bo_dirty
-
-Robin Gong <yibin.gong@nxp.com>
-    spi: imx: keep dma request disabled before dma transfer setup
-
-Alvaro Gamez Machado <alvaro.gamez@hazent.com>
-    spi: xilinx: increase number of retries before declaring stall
-
-Song Liu <song@kernel.org>
-    ftrace: bpf: Fix IPMODIFY + DIRECT in modify_ftrace_direct()
-
-Johan Hovold <johan@kernel.org>
-    USB: serial: kobil_sct: fix TIOCMBIS and TIOCMBIC
-
-Johan Hovold <johan@kernel.org>
-    USB: serial: belkin_sa: fix TIOCMBIS and TIOCMBIC
-
-Magne Bruno <magne.bruno@addi-data.com>
-    serial: add support of CPCI cards
-
-Johan Hovold <johan@kernel.org>
-    USB: serial: ftdi_sio: match on interface number for jtag
-
-Fabio Porcedda <fabio.porcedda@gmail.com>
-    USB: serial: option: move Telit 0x10c7 composition in the right place
-
-Fabio Porcedda <fabio.porcedda@gmail.com>
-    USB: serial: option: add Telit Cinterion FE910C04 new compositions
-
-Slark Xiao <slark_xiao@163.com>
-    USB: serial: option: add Foxconn T99W760
-
-Omar Sandoval <osandov@fb.com>
-    KVM: SVM: Don't skip unrelated instruction if INT3/INTO is replaced
-
-Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-    comedi: pcl818: fix null-ptr-deref in pcl818_ai_cancel()
-
-Alexey Nepomnyashih <sdl@nppct.ru>
-    ext4: add i_data_sem protection in ext4_destroy_inline_data_nolock()
-
-Alexander Sverdlin <alexander.sverdlin@siemens.com>
-    locking/spinlock/debug: Fix data-race in do_raw_write_lock
-
-Qianchang Zhao <pioooooooooip@gmail.com>
-    ksmbd: ipc: fix use-after-free in ipc_msg_send_request
-
-Deepanshu Kartikey <kartikey406@gmail.com>
-    ext4: refresh inline data size before write operations
-
-Ye Bin <yebin10@huawei.com>
-    jbd2: avoid bug_on in jbd2_journal_get_create_access() when file system corrupted
-
-Bagas Sanjaya <bagasdotme@gmail.com>
-    Documentation: process: Also mention Sasha Levin as stable tree maintainer
-
-Sabrina Dubroca <sd@queasysnail.net>
-    xfrm: flush all states in xfrm_state_fini
-
-Sabrina Dubroca <sd@queasysnail.net>
-    xfrm: also call xfrm_state_delete_tunnel at destroy time for states that were never added
-
-Sabrina Dubroca <sd@queasysnail.net>
-    Revert "xfrm: destroy xfrm_state synchronously on net exit path"
-
-Sabrina Dubroca <sd@queasysnail.net>
-    xfrm: delete x->tunnel as we delete x
-
-
--------------
-
-Diffstat:
-
- Documentation/process/2.Process.rst            |  6 ++-
- Makefile                                       |  4 +-
- arch/loongarch/kernel/machine_kexec.c          |  2 +
- arch/x86/include/asm/kvm_host.h                |  9 ++++
- arch/x86/kvm/svm/svm.c                         | 24 +++++----
- arch/x86/kvm/x86.c                             | 21 ++++++++
- drivers/bluetooth/btrtl.c                      | 24 +++++----
- drivers/bus/mhi/host/pci_generic.c             | 52 +++++++++++++++++++
- drivers/comedi/comedi_fops.c                   | 42 ++++++++++++---
- drivers/comedi/drivers/c6xdigio.c              | 46 ++++++++++++----
- drivers/comedi/drivers/multiq3.c               |  9 ++++
- drivers/comedi/drivers/pcl818.c                |  5 +-
- drivers/gpu/drm/amd/amdkfd/kfd_svm.c           |  2 +
- drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c     | 12 ++---
- drivers/hid/hid-apple.c                        |  1 +
- drivers/hid/hid-elecom.c                       |  6 ++-
- drivers/hid/hid-ids.h                          |  3 +-
- drivers/hid/hid-input.c                        |  5 +-
- drivers/hid/hid-quirks.c                       |  3 +-
- drivers/net/wireless/realtek/rtl8xxxu/core.c   |  3 ++
- drivers/net/wireless/realtek/rtw88/rtw8822cu.c |  2 +
- drivers/nvme/host/core.c                       |  3 +-
- drivers/pinctrl/qcom/pinctrl-msm.c             |  2 +-
- drivers/platform/x86/acer-wmi.c                |  4 ++
- drivers/platform/x86/amd/pmc/pmc-quirks.c      | 25 +++++++++
- drivers/platform/x86/huawei-wmi.c              |  4 ++
- drivers/spi/spi-imx.c                          | 15 ++++--
- drivers/spi/spi-xilinx.c                       |  2 +-
- drivers/staging/rtl8723bs/core/rtw_ieee80211.c | 14 ++---
- drivers/staging/rtl8723bs/core/rtw_mlme_ext.c  | 13 +++--
- drivers/tty/serial/8250/8250_pci.c             | 37 +++++++++++++
- drivers/usb/serial/belkin_sa.c                 | 28 ++++++----
- drivers/usb/serial/ftdi_sio.c                  | 72 +++++++++-----------------
- drivers/usb/serial/kobil_sct.c                 | 18 +++----
- drivers/usb/serial/option.c                    | 22 ++++++--
- fs/bfs/inode.c                                 | 19 ++++++-
- fs/ext4/inline.c                               | 14 ++++-
- fs/jbd2/transaction.c                          | 19 +++++--
- fs/smb/client/fs_context.c                     |  2 +-
- fs/smb/server/transport_ipc.c                  |  7 ++-
- include/net/xfrm.h                             | 13 ++---
- kernel/locking/spinlock_debug.c                |  4 +-
- kernel/trace/ftrace.c                          | 40 ++++++++++----
- net/ipv4/ipcomp.c                              |  2 +
- net/ipv6/ipcomp6.c                             |  2 +
- net/ipv6/xfrm6_tunnel.c                        |  2 +-
- net/key/af_key.c                               |  2 +-
- net/xfrm/xfrm_ipcomp.c                         |  1 -
- net/xfrm/xfrm_state.c                          | 41 ++++++---------
- net/xfrm/xfrm_user.c                           |  2 +-
- samples/vfs/test-statx.c                       |  6 +++
- samples/watch_queue/watch_test.c               |  6 +++
- sound/usb/quirks.c                             |  6 +++
- 53 files changed, 521 insertions(+), 207 deletions(-)
 
 
 
