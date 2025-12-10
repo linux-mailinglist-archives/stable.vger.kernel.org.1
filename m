@@ -1,117 +1,160 @@
-Return-Path: <stable+bounces-200749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3812CB4108
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 22:30:08 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35311CB417D
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 22:49:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B5C59305BFE4
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 21:30:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8426A300A8DB
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 21:49:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADC6F327BFD;
-	Wed, 10 Dec 2025 21:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB56832A3C1;
+	Wed, 10 Dec 2025 21:49:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J3ELAxdY"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="kMMcw7/3"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B722F8BD1;
-	Wed, 10 Dec 2025 21:30:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CADC32BF3A;
+	Wed, 10 Dec 2025 21:49:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765402204; cv=none; b=HF3IAFi2HBJBFSZY4BadZ7I5VVjYhz0n+dLGqh1J0dSsAN61Ye4XrZ7hl2ceWlgv8K4nOLxOkQs5HAVAR0W1eoHt2zq/sLMUzunesqNIGPHrRUHk4SNZPEuc9qRJocWLmHUZJEaBKh4pMIGv9IqlsliR+tmHmLVKV2skr4r5+80=
+	t=1765403392; cv=none; b=BTzngaZ6OTn3//RI28GjTogFvoE/cOUMwk51OVVE+pr5Q3ep9So6xuuwfZajMnHkTR3S4hL55HF6uCC9deOpNjF6gSmYr8DB2jtxuLcStXb2FIoheivlTFx6InWmxjkikW5lyCpCF+sZ7pJ/psybMLtjT8d/hIaA+8Iv+KSvaQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765402204; c=relaxed/simple;
-	bh=/p4vU9wPYlH2uVTHiPk+j/EvZ4vL7UAVHTXYH0qeE5Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=ZMvHwAOQRhsSoaTq1ABj3jlzvcBkhMaR/WX47kopX/X2g9KnBPTAcM/xbMUunYecW51gqzblsOFQmOmchGjY2R9c61AozVXdLyCnJboEgOh1JUAfNpcVWhkzOebnqXKM2bmRHpMFx/d1RU4A5IOwslQ5roGLS53aHy0Yk8o1Sqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J3ELAxdY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCA06C4CEF1;
-	Wed, 10 Dec 2025 21:30:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765402203;
-	bh=/p4vU9wPYlH2uVTHiPk+j/EvZ4vL7UAVHTXYH0qeE5Y=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=J3ELAxdYGsD/BqpTvio1oCkPfYBC0uVZe8OKhZVK9wWQHQfF1Z5uWXaDXqrUgDVcn
-	 QvfnUGv6Rb5xtnKNzH/Kbrg2f0QXGpWvxobMb01Fre2iHJxjhql2omSCxhcWhS9k8V
-	 wefkegR8fikoqzaZH63SkyXvuYsI2cy6z+4FlndiIgQt2+wIYra1rVGknA9uO6wj9H
-	 yRhFNGO5sUWtiMSY+VFMPhpWLvm4T/vS5qSsEK6aD0Jmwv4Di07jObBt1ED9a+zufp
-	 YDtUBFX4xOLNLligMDKmTUpBbTJgM5zPF320I8erQXiCPNd1oNFOaSTN1+1Tt59+/7
-	 mfUp3GvTYdZ2A==
-Date: Wed, 10 Dec 2025 15:30:02 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Christian Marangi <ansuelsmth@gmail.com>
-Subject: Re: [PATCH 1/1] PCI: Use resource_set_range() that correctly sets
- ->end
-Message-ID: <20251210213002.GA3540876@bhelgaas>
+	s=arc-20240116; t=1765403392; c=relaxed/simple;
+	bh=W5ID3OY7yfWGGgbtnZevjVWj3uINdDq2sxdewYF9kdo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Mu807R1eVkQvSqfZPs1ktKr9nsCujJAxCTGkjfZMr0bhjjXdCpXGfTgVDdEiIBnlAUQSTl4bBTJN1mLMt8LXhS4B29bYwLcOWaJ1KQYOVcZmWu/Z6+DeRBtJmvHPYh7xVzVYHqbAtEWcBAzG+ex9Zfic5wegjX1RibwNDP+9nQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=kMMcw7/3; arc=none smtp.client-ip=212.227.17.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1765403374; x=1766008174; i=rwarsow@gmx.de;
+	bh=W5ID3OY7yfWGGgbtnZevjVWj3uINdDq2sxdewYF9kdo=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=kMMcw7/3tEUvm+TklNgCjpMyk/nWFF3YF9dXtD0753Py9HejcooTTJAO0jMYssyN
+	 vBXfCEjpUMkA4QxyfKujzSF2ai7SKulgMzL3b86pPsLEsiowNNihxjvvq3AwY1abJ
+	 XHdJPSeKtp+USts3wa90qCDGa4Ni4AD2W4HjOly5znb0KQ+COcok4lHffOrePmfYK
+	 KMeTyHg9HpdxmCrw46lvTHrLBtIhFQCE+ZqzmXfKpmrFOMYsdF+H94+0Gb+ECwTPT
+	 99gGoJEep0mi31T9GIf3/Du07PfzdQ53nG6/zFvI3bOSqDyfWFN7HtShBE+2jPWHV
+	 xF1F8yNGOqdlZr2Tgw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.200.20] ([46.142.35.251]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1M3UZG-1vU01k16Sg-00ACcj; Wed, 10
+ Dec 2025 22:49:34 +0100
+Message-ID: <0dc3b7db-fbb2-45b0-b4bd-146fe2ec4286@gmx.de>
+Date: Wed, 10 Dec 2025 22:49:32 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251208145654.5294-1-ilpo.jarvinen@linux.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.18 00/29] 6.18.1-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, conor@kernel.org, hargar@microsoft.com,
+ broonie@kernel.org, achill@achill.org, sr@sladewatkins.com
+References: <20251210072944.363788552@linuxfoundation.org>
+ <4b1a256f-5d1d-489a-9c87-c38b4465a6bc@gmail.com>
+From: Ronald Warsow <rwarsow@gmx.de>
+Content-Language: de-DE, en-US
+In-Reply-To: <4b1a256f-5d1d-489a-9c87-c38b4465a6bc@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:ji13FcTrYryXUcIov6CA3VAHNMEdMXm0kKX2TsxfOmZ8hiuD5NU
+ dSiGZVB7E+WfeNWbyRmBMzbVUMKe3Bej7G8htNrBP9uTeFce0K7rKi7tl/6H5CTisup1vKm
+ idVr4nLX+r3nZgdh+qJT7ekvLN8HNyZKyoPbUPrnPuLvIKE/AjcIlKTATs4qHZUzhuGudrB
+ r+x6Bq+badu2mkDS2qoLA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:ychKxEQFJ+Q=;a3Do05M6/reZuMarlzISQHyJMV6
+ 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
+ vDgQ3xrLzpzHsMQ6MAKPHB8Zag=
 
-On Mon, Dec 08, 2025 at 04:56:54PM +0200, Ilpo Järvinen wrote:
-> __pci_read_base() sets resource start and end addresses when resource
-> is larger than 4G but pci_bus_addr_t or resource_size_t are not capable
-> of representing 64-bit PCI addresses. This creates a problematic
-> resource that has non-zero flags but the start and end addresses do not
-> yield to resource size of 0 but 1.
-> 
-> Replace custom resource addresses setup with resource_set_range()
-> that correctly sets end address as -1 which results in resource_size()
-> returning 0.
-> 
-> For consistency, also use resource_set_range() in the other branch that
-> does size based resource setup.
-> 
-> Fixes: 23b13bc76f35 ("PCI: Fail safely if we can't handle BARs larger than 4GB")
-> Link: https://lore.kernel.org/all/20251207215359.28895-1-ansuelsmth@gmail.com/T/#m990492684913c5a158ff0e5fc90697d8ad95351b
-> Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-> Cc: stable@vger.kernel.org
-> Cc: Christian Marangi <ansuelsmth@gmail.com>
+Hi
 
-Applied to pci/resource for v6.20, thanks!
+no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
 
-> ---
->  drivers/pci/probe.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-> index 124d2d309c58..b8294a2f11f9 100644
-> --- a/drivers/pci/probe.c
-> +++ b/drivers/pci/probe.c
-> @@ -287,8 +287,7 @@ int __pci_read_base(struct pci_dev *dev, enum pci_bar_type type,
->  		if ((sizeof(pci_bus_addr_t) < 8 || sizeof(resource_size_t) < 8)
->  		    && sz64 > 0x100000000ULL) {
->  			res->flags |= IORESOURCE_UNSET | IORESOURCE_DISABLED;
-> -			res->start = 0;
-> -			res->end = 0;
-> +			resource_set_range(res, 0, 0);
->  			pci_err(dev, "%s: can't handle BAR larger than 4GB (size %#010llx)\n",
->  				res_name, (unsigned long long)sz64);
->  			goto out;
-> @@ -297,8 +296,7 @@ int __pci_read_base(struct pci_dev *dev, enum pci_bar_type type,
->  		if ((sizeof(pci_bus_addr_t) < 8) && l) {
->  			/* Above 32-bit boundary; try to reallocate */
->  			res->flags |= IORESOURCE_UNSET;
-> -			res->start = 0;
-> -			res->end = sz64 - 1;
-> +			resource_set_range(res, 0, sz64);
->  			pci_info(dev, "%s: can't handle BAR above 4GB (bus address %#010llx)\n",
->  				 res_name, (unsigned long long)l64);
->  			goto out;
-> 
-> base-commit: 43dfc13ca972988e620a6edb72956981b75ab6b0
-> -- 
-> 2.39.5
-> 
+Thanks
+
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
+
 
