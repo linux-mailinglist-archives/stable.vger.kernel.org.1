@@ -1,50 +1,51 @@
-Return-Path: <stable+bounces-200596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7704BCB23B2
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:34:17 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 438EBCB23A3
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:34:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 729C73029F5F
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:33:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 22E4C3028532
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:33:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0663327B359;
-	Wed, 10 Dec 2025 07:33:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F2AD28B40E;
+	Wed, 10 Dec 2025 07:33:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I3UHr6Ec"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YJF6Xvry"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE9D127380A;
-	Wed, 10 Dec 2025 07:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0AB427B359;
+	Wed, 10 Dec 2025 07:33:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765351990; cv=none; b=pcp+I3mf6Jt5RJad57el0PFkjkOHytaxEoUZkeptuIhGL2MK4LS8Gy+F8O1ci8pvdPAWQpZWXzVUQICsnWPT3mB6WAzgO6TDf9YWNoC5bsiT5ydo5U3BuEITiBo/sMVd1vtx4tAk5z0cHJyEfTQjai9/Q8+AJA7DDA7M3N0KHM4=
+	t=1765351986; cv=none; b=qqhN7ZC8DC8pMVWwuF0rndHERJCfCTMYwST8j/wWg8hCicFGqLJWrdEGQ/Hd4KGSgMyHh1ddypPjnoCAOElhabID+q42C0nY7Kew+4GPCP+UjlHWbnh9YXJ19H/kTzCzEeeSx/PaBDzP8Jt3TTb/LfZWjtPozSS6EMxboIpbmTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765351990; c=relaxed/simple;
-	bh=yJcL+t+XK8A8YrbEAErUF6TTOSrgv3syNiN/MPmRxGQ=;
+	s=arc-20240116; t=1765351986; c=relaxed/simple;
+	bh=0labSrNkX8RhGQHMaf0QEfoum/+TvDAcuhrI4kGVBIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pma7DXR9IZRlkY2vQ2B+FQK1plhIkRysmeVCO4ARgO5MQq62e8D2E5o1FUBWEFZFTyURor1swLpF3cY/GaB/BkIVdkzVmQVQ4nFhZyyuz22BOUEtz5LXFrPNA89VwhjQORO68gvTb0+jTYYm646Ry9vOEep9oZVpqqfTaKdc7iM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I3UHr6Ec; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2860C4CEF1;
-	Wed, 10 Dec 2025 07:33:09 +0000 (UTC)
+	 MIME-Version; b=l/nM3Rf6BaPbspSbFYtRrJPh6WW/imIvzbRoaX2yU+4sgvjw4scaI3h3iPn7oIxlyo0rhscSMi0vHPUkbXFo0kdb18/bIvzxx0XnBsIhhbUJ+s/7MuSOVllysxDEvxJb9PKHxjjdSTvbpserAUdmrz0HEvMMo93mTbkX3NNK59Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YJF6Xvry; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 460B3C4CEF1;
+	Wed, 10 Dec 2025 07:33:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765351990;
-	bh=yJcL+t+XK8A8YrbEAErUF6TTOSrgv3syNiN/MPmRxGQ=;
+	s=korg; t=1765351985;
+	bh=0labSrNkX8RhGQHMaf0QEfoum/+TvDAcuhrI4kGVBIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I3UHr6EcELTGGlvjZu77FjEM+y4Fc/mvv4vy9hqwraGaDyUywYeL3Rrwl8xboI0Lt
-	 H9YDPoDQ3N0W5UpvvqxfZa4bhnz84NqUTyl+I0Djdo6Xje6JJ02w+UyM5IFEjMH9RH
-	 BZTu0A8CTHB1AmsHI5RudfSMQVBLFaCR3IpdmRhQ=
+	b=YJF6XvryJIDe9xEWS75ytDGV2BNeql4DR/ecq29kPG1ryw8g2RtCEcQ+5I3FgGJok
+	 2DoysLQfUqTBWPNsCnYC4ZHLdWVLjhdkGtlII0DIrqV8HW0FBHVwHUssfLpGUPTU2q
+	 fodXwLMWv4S2IE/cLYfx7CXu9VisJa78VyVdN+NY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Navaneeth K <knavaneeth786@gmail.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.12 47/49] staging: rtl8723bs: fix out-of-bounds read in OnBeacon ESR IE parsing
-Date: Wed, 10 Dec 2025 16:30:17 +0900
-Message-ID: <20251210072949.334692604@linuxfoundation.org>
+	Daniele Palmas <dnlplm@gmail.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Fabio Porcedda <fabio.porcedda@gmail.com>
+Subject: [PATCH 6.12 48/49] bus: mhi: host: pci_generic: Add Telit FN920C04 modem support
+Date: Wed, 10 Dec 2025 16:30:18 +0900
+Message-ID: <20251210072949.359329136@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
 References: <20251210072948.125620687@linuxfoundation.org>
@@ -63,46 +64,81 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Navaneeth K <knavaneeth786@gmail.com>
+From: Daniele Palmas <dnlplm@gmail.com>
 
-commit 502ddcc405b69fa92e0add6c1714d654504f6fd7 upstream.
+commit 6348f62ef7ecc5855b710a7d4ea682425c38bb80 upstream.
 
-The Extended Supported Rates (ESR) IE handling in OnBeacon accessed
-*(p + 1 + ielen) and *(p + 2 + ielen) without verifying that these
-offsets lie within the received frame buffer. A malformed beacon with
-an ESR IE positioned at the end of the buffer could cause an
-out-of-bounds read, potentially triggering a kernel panic.
+Add SDX35 based modem Telit FN920C04.
 
-Add a boundary check to ensure that the ESR IE body and the subsequent
-bytes are within the limits of the frame before attempting to access
-them.
+$ lspci -vv
+01:00.0 Unassigned class [ff00]: Qualcomm Device 011a
+        Subsystem: Device 1c5d:2020
 
-This prevents OOB reads caused by malformed beacon frames.
-
-Signed-off-by: Navaneeth K <knavaneeth786@gmail.com>
-Cc: stable <stable@kernel.org>
+Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://patch.msgid.link/20250401093458.2953872-1-dnlplm@gmail.com
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/rtl8723bs/core/rtw_mlme_ext.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/bus/mhi/host/pci_generic.c |   39 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
 
---- a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
-+++ b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
-@@ -579,9 +579,11 @@ unsigned int OnBeacon(struct adapter *pa
+--- a/drivers/bus/mhi/host/pci_generic.c
++++ b/drivers/bus/mhi/host/pci_generic.c
+@@ -698,6 +698,42 @@ static const struct mhi_pci_dev_info mhi
+ 	.mru_default = 32768,
+ };
  
- 	p = rtw_get_ie(pframe + sizeof(struct ieee80211_hdr_3addr) + _BEACON_IE_OFFSET_, WLAN_EID_EXT_SUPP_RATES, &ielen, precv_frame->u.hdr.len - sizeof(struct ieee80211_hdr_3addr) - _BEACON_IE_OFFSET_);
- 	if (p && ielen > 0) {
--		if ((*(p + 1 + ielen) == 0x2D) && (*(p + 2 + ielen) != 0x2D))
--			/* Invalid value 0x2D is detected in Extended Supported Rates (ESR) IE. Try to fix the IE length to avoid failed Beacon parsing. */
--			*(p + 1) = ielen - 1;
-+		if (p + 2 + ielen < pframe + len) {
-+			if ((*(p + 1 + ielen) == 0x2D) && (*(p + 2 + ielen) != 0x2D))
-+				/* Invalid value 0x2D is detected in Extended Supported Rates (ESR) IE. Try to fix the IE length to avoid failed Beacon parsing. */
-+				*(p + 1) = ielen - 1;
-+		}
- 	}
++static const struct mhi_channel_config mhi_telit_fn920c04_channels[] = {
++	MHI_CHANNEL_CONFIG_UL_SBL(2, "SAHARA", 32, 0),
++	MHI_CHANNEL_CONFIG_DL_SBL(3, "SAHARA", 32, 0),
++	MHI_CHANNEL_CONFIG_UL(4, "DIAG", 64, 1),
++	MHI_CHANNEL_CONFIG_DL(5, "DIAG", 64, 1),
++	MHI_CHANNEL_CONFIG_UL(14, "QMI", 32, 0),
++	MHI_CHANNEL_CONFIG_DL(15, "QMI", 32, 0),
++	MHI_CHANNEL_CONFIG_UL(32, "DUN", 32, 0),
++	MHI_CHANNEL_CONFIG_DL(33, "DUN", 32, 0),
++	MHI_CHANNEL_CONFIG_UL_FP(34, "FIREHOSE", 32, 0),
++	MHI_CHANNEL_CONFIG_DL_FP(35, "FIREHOSE", 32, 0),
++	MHI_CHANNEL_CONFIG_UL(92, "DUN2", 32, 1),
++	MHI_CHANNEL_CONFIG_DL(93, "DUN2", 32, 1),
++	MHI_CHANNEL_CONFIG_HW_UL(100, "IP_HW0", 128, 2),
++	MHI_CHANNEL_CONFIG_HW_DL(101, "IP_HW0", 128, 3),
++};
++
++static const struct mhi_controller_config modem_telit_fn920c04_config = {
++	.max_channels = 128,
++	.timeout_ms = 50000,
++	.num_channels = ARRAY_SIZE(mhi_telit_fn920c04_channels),
++	.ch_cfg = mhi_telit_fn920c04_channels,
++	.num_events = ARRAY_SIZE(mhi_telit_fn990_events),
++	.event_cfg = mhi_telit_fn990_events,
++};
++
++static const struct mhi_pci_dev_info mhi_telit_fn920c04_info = {
++	.name = "telit-fn920c04",
++	.config = &modem_telit_fn920c04_config,
++	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
++	.dma_data_width = 32,
++	.sideband_wake = false,
++	.mru_default = 32768,
++	.edl_trigger = true,
++};
++
+ static const struct mhi_pci_dev_info mhi_netprisma_lcur57_info = {
+ 	.name = "netprisma-lcur57",
+ 	.edl = "qcom/prog_firehose_sdx24.mbn",
+@@ -720,6 +756,9 @@ static const struct mhi_pci_dev_info mhi
  
- 	if (pmlmeext->sitesurvey_res.state == SCAN_PROCESS) {
+ /* Keep the list sorted based on the PID. New VID should be added as the last entry */
+ static const struct pci_device_id mhi_pci_id_table[] = {
++	/* Telit FN920C04 (sdx35) */
++	{PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x011a, 0x1c5d, 0x2020),
++		.driver_data = (kernel_ulong_t) &mhi_telit_fn920c04_info },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x0304),
+ 		.driver_data = (kernel_ulong_t) &mhi_qcom_sdx24_info },
+ 	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0306, PCI_VENDOR_ID_QCOM, 0x010c),
 
 
 
