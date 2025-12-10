@@ -1,99 +1,114 @@
-Return-Path: <stable+bounces-200693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AD49CB27E9
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 10:08:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EB5BCB284A
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 10:17:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EB4B63036A13
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 09:06:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 72DEF3028F60
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 09:16:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD62C3054F8;
-	Wed, 10 Dec 2025 09:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8517F302157;
+	Wed, 10 Dec 2025 09:16:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HhjA/1Ck"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6CAC3054E6;
-	Wed, 10 Dec 2025 09:06:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5995285C99
+	for <stable@vger.kernel.org>; Wed, 10 Dec 2025 09:16:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765357575; cv=none; b=EBRjlDVUSyHy7YGgWRUNdnhnXNI5inhi4eEWyKomA39NAJ2TxJp7+Hxtr4rLf0mCI3LATJiZZaW71KBoWSHeqkkO7y1KHNIOzbXPboj59JMt9Z4rSFj2+jCKk7cSS657f1oxDK/dWy8wt6fTFCoK/WnnlQzL1jSqJ5lvTSQ5VE0=
+	t=1765358200; cv=none; b=hdJsjnMUdmuJrG15Z9X0JXL3hNGQn9vC23sMaI56Wl8iPFZwuxTSi22z02BE4HPHkLCJA96WIjeqk97Pdlc9lrTffQSp7Mvb0s6/M9as1bWUnVcGt+YyBVubkQG2JHVfN9CaK4jdMXQQL2BSiuhAr4cXYxcNjKx2lBK+SQHmVVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765357575; c=relaxed/simple;
-	bh=OOejXCBuI0Crdw0FWGs6iTeIGhmiz/bRN4+393gUd3g=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WrGQNaKpPzrPqBdKCbMHK7c6Vc6MhXpT/bNyFLB+J6MalcA8CkaNEylnnBfJ034Iolz7+UFkwJHjsEWGXa1NkdvFWL9Ch8QDebmZCAqPTPILigHFsjBLHUuBD3MRSgyr00SGEvyAoqSCkmMmOvFxXB7kTwdMA2srl+4+LYw4wTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn; spf=pass smtp.mailfrom=isrc.iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isrc.iscas.ac.cn
-Received: from localhost.localdomain (unknown [36.112.3.239])
-	by APP-05 (Coremail) with SMTP id zQCowABn+g36NzlpJqkyAA--.23118S2;
-	Wed, 10 Dec 2025 17:06:02 +0800 (CST)
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-To: cem@kernel.org,
-	darrick.wong@oracle.com
-Cc: linux-xfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
-	stable@vger.kernel.org,
-	Christoph Hellwig <hch@lst.de>
-Subject: [PATCH v2] xfs: Fix a memory leak in xfs_buf_item_init()
-Date: Wed, 10 Dec 2025 17:06:01 +0800
-Message-Id: <20251210090601.69688-1-lihaoxiang@isrc.iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1765358200; c=relaxed/simple;
+	bh=VDY4U8F63J2NPwqdtQB6bVl86jPB9Pbu/bg8g4qtCKo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cFFXzsarmZmr7q0JOESKwGwEqxLve7Naej7DbCIrfp1LcK9LGvw+2KgSwVtBaRGDh6Wck63q2U/6lxJZyiwtUaMeRofWAldR8CayZUOMtBkh/5Q9VlU5XxEkNc1OIh8O9rgF9rNpuAwvCKRRfVfoeUBbtWX6DmFQzRfRnDMHvu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HhjA/1Ck; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765358198; x=1796894198;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=VDY4U8F63J2NPwqdtQB6bVl86jPB9Pbu/bg8g4qtCKo=;
+  b=HhjA/1Ck8s2GdaCNlBURie2Q5wXOuCHFQgDz81yE+ouZ6UlwZnYhSizY
+   nKiMl3xlyyN8vfHFxpr1njrnkSslCZbAtE6p6GNmGTIAtnfqmmGiQHhTg
+   FT5QbmWIIcRu5M0OsTun/INg180Ft7XS71ClQSMN3l/ejYw+tOEXNLw/2
+   bAAAfFtiN0qaNL7F4T/UHaOPFdkau8G9jp4vPm6IC+bFOdV4JKxdfHCrv
+   1dW7dbhKrkpbkRGetEJIAFNAvA73RsQlaWF91mAa9JEVasiBl7e3tUtxy
+   7/t+yt891qobA8doj4vnakUbbS+xAC+6FVP7Z0pHKfqkrpS79trNcLTO9
+   Q==;
+X-CSE-ConnectionGUID: /kmlr/hcTaa6IyA29JPgTA==
+X-CSE-MsgGUID: uhDcxkk1R0yNigqLPQP08w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11637"; a="71173552"
+X-IronPort-AV: E=Sophos;i="6.20,263,1758610800"; 
+   d="scan'208";a="71173552"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2025 01:16:37 -0800
+X-CSE-ConnectionGUID: GP5SwBbWTFOQ8MOPoINDbQ==
+X-CSE-MsgGUID: au5j3sN7TE6yCnyjgKc9vA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,263,1758610800"; 
+   d="scan'208";a="195533229"
+Received: from unknown (HELO [10.102.88.36]) ([10.102.88.36])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2025 01:16:35 -0800
+Message-ID: <4983e4d2-7c07-4c55-92c8-c4441af4b2f2@linux.intel.com>
+Date: Wed, 10 Dec 2025 10:16:32 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: drm/xe/bo: Don't include the CCS metadata in the dma-buf sg-table
+To: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ intel-xe@lists.freedesktop.org
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, stable@vger.kernel.org
+References: <20251209204920.224374-1-thomas.hellstrom@linux.intel.com>
+Content-Language: en-US
+From: Karol Wachowski <karol.wachowski@linux.intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
+ Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <20251209204920.224374-1-thomas.hellstrom@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowABn+g36NzlpJqkyAA--.23118S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7JF13ur4fuw18Ar4kGryDWrg_yoWfKrc_Ka
-	yxtF1fCayUAry7Ca12yF1vvFW0k3y3Ars3CrZrGa4FqryUX3Z2yr97urs8ZrnrWrsIyry8
-	ZF9rWrWaqry7CjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUb48FF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6r1F6r1fM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr
-	1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r12
-	6r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
-	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y
-	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
-	W8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
-	IxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VU18sqtUUUU
-	U==
-X-CM-SenderInfo: 5olkt0x0ld0ww6lv2u4olvutnvoduhdfq/1tbiBwsME2k495f0YAAAs2
 
-xfs_buf_item_get_format() may allocate memory for bip->bli_formats,
-free the memory in the error path.
-
-Fixes: c3d5f0c2fb85 ("xfs: complain if anyone tries to create a too-large buffer log item")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
----
-Changes in v2:
-- Modify the patch subject. Thanks, Christoph!
----
- fs/xfs/xfs_buf_item.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/fs/xfs/xfs_buf_item.c b/fs/xfs/xfs_buf_item.c
-index 8d85b5eee444..f4c5be67826e 100644
---- a/fs/xfs/xfs_buf_item.c
-+++ b/fs/xfs/xfs_buf_item.c
-@@ -896,6 +896,7 @@ xfs_buf_item_init(
- 		map_size = DIV_ROUND_UP(chunks, NBWORD);
- 
- 		if (map_size > XFS_BLF_DATAMAP_SIZE) {
-+			xfs_buf_item_free_format(bip);
- 			kmem_cache_free(xfs_buf_item_cache, bip);
- 			xfs_err(mp,
- 	"buffer item dirty bitmap (%u uints) too small to reflect %u bytes!",
--- 
-2.25.1
-
+On 12/9/2025 9:49 PM, Thomas Hellström wrote:
+> Some Xe bos are allocated with extra backing-store for the CCS
+> metadata. It's never been the intention to share the CCS metadata
+> when exporting such bos as dma-buf. Don't include it in the
+> dma-buf sg-table.
+> 
+> Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> Cc: <stable@vger.kernel.org> # v6.8+
+> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+> Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+> ---
+>  drivers/gpu/drm/xe/xe_dma_buf.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/xe/xe_dma_buf.c b/drivers/gpu/drm/xe/xe_dma_buf.c
+> index 54e42960daad..7c74a31d4486 100644
+> --- a/drivers/gpu/drm/xe/xe_dma_buf.c
+> +++ b/drivers/gpu/drm/xe/xe_dma_buf.c
+> @@ -124,7 +124,7 @@ static struct sg_table *xe_dma_buf_map(struct dma_buf_attachment *attach,
+>  	case XE_PL_TT:
+>  		sgt = drm_prime_pages_to_sg(obj->dev,
+>  					    bo->ttm.ttm->pages,
+> -					    bo->ttm.ttm->num_pages);
+> +					    obj->size >> PAGE_SHIFT);
+>  		if (IS_ERR(sgt))
+>  			return sgt;
+>  
+Reviewed-by: Karol Wachowski <karol.wachowski@linux.intel.com>
 
