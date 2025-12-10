@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-200632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89B37CB2436
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:37:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57BF6CB239D
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:34:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0898830331F1
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:34:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D870A30269B9
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:33:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA31D3019C7;
-	Wed, 10 Dec 2025 07:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 753362DA74D;
+	Wed, 10 Dec 2025 07:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qEQdVjJw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j2/1dOe9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A77255C613;
-	Wed, 10 Dec 2025 07:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015C526A0A7;
+	Wed, 10 Dec 2025 07:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765352083; cv=none; b=daPtu0+7UNL+A+126pOAvAGKlfDhXTs46h2DtTYmJM5HOAAfhyYqXLL/ayEZk+W7jPRLUIiBk2hGAshiStpUUhBSB5HqGrezz/bx0tAQsiuHH3S/OdkRFqRYSespqKbQmBDgTosN9/+S8ZIdyezT2Na/rDFyg0jvjh63neux8QY=
+	t=1765351984; cv=none; b=RClsxIOY/kklOY/z36tiwUUDSZhkitUtJM1u2EZcjogiFC/j7+LEpGd6004jw9BGq8OQ7fcQiowujNuewldt1n1l506jLHBqYkZ+0FQInejF73K8bqBGVDGwZd1F+6EuPDEBKPQmQ89QeDlJqDWMqD4zOBKK2gSrjegPoJQHDRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765352083; c=relaxed/simple;
-	bh=WaRNHxYvDgk2Ti7IK6mJ0ELVkEejGQJog+NW0OxJFuo=;
+	s=arc-20240116; t=1765351984; c=relaxed/simple;
+	bh=chPDOxs6m60lcmzv6aL+pF+XdUeX/Ecvp/B4bujh2QA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DtYNfB45bbjUuc5krSaCrBtIAmc1TovtZQYGYxi7N9F+l2+8dUhmjyPKJirlQ5w0X80fdUYXht1P62d/4e7f0caOUAIqapCHrGG4rJLbSnnnc/6gZTwL/MDGlqtOpA0uaAGkKlDr8RM01Z1NqBVGVheto1Jt5kz3CghwsHGkxfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qEQdVjJw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E81FC4CEF1;
-	Wed, 10 Dec 2025 07:34:42 +0000 (UTC)
+	 MIME-Version; b=OQOro33AHC5v8YZZEE3TRKLghnAe9Cji2N/4BJzYuLm9r0xN+zkSv+dhTmOqdgVFVEL9pFTrGstLYdqaJIbk8Qfe02Hx1Df5CEMHll1G1H75e7ToTHSfIwu4apSRPchQE16J7UXi9ynBL0fIXoMOYc9KpuK3ttWTJoIdJ+N+7bQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j2/1dOe9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0704CC4CEF1;
+	Wed, 10 Dec 2025 07:33:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765352083;
-	bh=WaRNHxYvDgk2Ti7IK6mJ0ELVkEejGQJog+NW0OxJFuo=;
+	s=korg; t=1765351983;
+	bh=chPDOxs6m60lcmzv6aL+pF+XdUeX/Ecvp/B4bujh2QA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qEQdVjJwJN+e001u9OWdYawkbCN+fP22/B9uLqW3hcssS4+gfRVkEWoKp9GM6hfpB
-	 aY3Sl8bMgJAZQr9AhtUn/pMdDfuTtjeGCkLw0WW9uau8C+BmLHV4pUxf1kSdtyCyhw
-	 JgaOZGN9fTghXTryWp8f2VgLyYbQ+ovjmV1aspWQ=
+	b=j2/1dOe9b/y/xVcFIusP5k+baJB4Nchg0ZyUzBHSBSc5QHGAYnN7eiUqWPdhs8Cou
+	 lSjSX5JYYhr3faCl/+cSnclp4+Lfd36vlxX7hVEmeiQI/0d/jwjyMqWIruzLfZByhC
+	 Qpdm5DthlYFUhCwq43QicwiPESZAQ1KL3nexPJnc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Magne Bruno <magne.bruno@addi-data.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.17 14/60] serial: add support of CPCI cards
-Date: Wed, 10 Dec 2025 16:29:44 +0900
-Message-ID: <20251210072948.193724371@linuxfoundation.org>
+	Fabio Porcedda <fabio.porcedda@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.12 15/49] USB: serial: option: move Telit 0x10c7 composition in the right place
+Date: Wed, 10 Dec 2025 16:29:45 +0900
+Message-ID: <20251210072948.505634733@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
-References: <20251210072947.850479903@linuxfoundation.org>
+In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
+References: <20251210072948.125620687@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,79 +59,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Magne Bruno <magne.bruno@addi-data.com>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
 
-commit 0e5a99e0e5f50353b86939ff6e424800d769c818 upstream.
+commit 072f2c49572547f4b0776fe2da6b8f61e4b34699 upstream.
 
-Addi-Data GmbH is manufacturing multi-serial ports cards supporting CompactPCI (known as CPCI).
-Those cards are identified with different DeviceIds. Those cards integrating standard UARTs
-work the same way as PCI/PCIe models already supported in the serial driver.
+Move Telit 0x10c7 composition right after 0x10c6 composition and
+before 0x10c8 composition.
 
-Signed-off-by: Magne Bruno <magne.bruno@addi-data.com>
-Link: https://patch.msgid.link/20251110162456.341029-1-magne.bruno@addi-data.com
-Cc: stable <stable@kernel.org>
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_pci.c |   37 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
+ drivers/usb/serial/option.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_pci.c
-+++ b/drivers/tty/serial/8250/8250_pci.c
-@@ -95,6 +95,11 @@
- #define PCI_DEVICE_ID_MOXA_CP138E_A	0x1381
- #define PCI_DEVICE_ID_MOXA_CP168EL_A	0x1683
- 
-+#define PCI_DEVICE_ID_ADDIDATA_CPCI7500        0x7003
-+#define PCI_DEVICE_ID_ADDIDATA_CPCI7500_NG     0x7024
-+#define PCI_DEVICE_ID_ADDIDATA_CPCI7420_NG     0x7025
-+#define PCI_DEVICE_ID_ADDIDATA_CPCI7300_NG     0x7026
-+
- /* Unknown vendors/cards - this should not be in linux/pci_ids.h */
- #define PCI_SUBDEVICE_ID_UNKNOWN_0x1584	0x1584
- #define PCI_SUBDEVICE_ID_UNKNOWN_0x1588	0x1588
-@@ -5996,6 +6001,38 @@ static const struct pci_device_id serial
- 		0,
- 		pbn_ADDIDATA_PCIe_8_3906250 },
- 
-+	{	PCI_VENDOR_ID_ADDIDATA,
-+		PCI_DEVICE_ID_ADDIDATA_CPCI7500,
-+		PCI_ANY_ID,
-+		PCI_ANY_ID,
-+		0,
-+		0,
-+		pbn_b0_4_115200 },
-+
-+	{	PCI_VENDOR_ID_ADDIDATA,
-+		PCI_DEVICE_ID_ADDIDATA_CPCI7500_NG,
-+		PCI_ANY_ID,
-+		PCI_ANY_ID,
-+		0,
-+		0,
-+		pbn_b0_4_115200 },
-+
-+	{	PCI_VENDOR_ID_ADDIDATA,
-+		PCI_DEVICE_ID_ADDIDATA_CPCI7420_NG,
-+		PCI_ANY_ID,
-+		PCI_ANY_ID,
-+		0,
-+		0,
-+		pbn_b0_2_115200 },
-+
-+	{	PCI_VENDOR_ID_ADDIDATA,
-+		PCI_DEVICE_ID_ADDIDATA_CPCI7300_NG,
-+		PCI_ANY_ID,
-+		PCI_ANY_ID,
-+		0,
-+		0,
-+		pbn_b0_1_115200 },
-+
- 	{	PCI_VENDOR_ID_NETMOS, PCI_DEVICE_ID_NETMOS_9835,
- 		PCI_VENDOR_ID_IBM, 0x0299,
- 		0, 0, pbn_b0_bt_2_115200 },
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1445,6 +1445,9 @@ static const struct usb_device_id option
+ 	  .driver_info = NCTRL(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c6, 0xff),	/* Telit FE910C04 (MBIM) */
+ 	  .driver_info = NCTRL(4) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10c7, 0xff, 0xff, 0x30),	/* Telit FE910C04 (ECM) */
++	  .driver_info = NCTRL(4) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10c7, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c8, 0xff),	/* Telit FE910C04 (rmnet) */
+ 	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c9, 0xff),	/* Telit FE910C04 (MBIM) */
+@@ -1455,9 +1458,6 @@ static const struct usb_device_id option
+ 	  .driver_info = NCTRL(5) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x60) },
+-	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10c7, 0xff, 0xff, 0x30),	/* Telit FE910C04 (ECM) */
+-	  .driver_info = NCTRL(4) },
+-	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10c7, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x30),	/* Telit FN990B (MBIM) */
+ 	  .driver_info = NCTRL(6) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x40) },
 
 
 
