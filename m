@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-200585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C54DCB2382
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:33:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 912A0CB23FA
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:36:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BEA62301876A
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:32:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2B8093043900
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:35:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A35A2C2364;
-	Wed, 10 Dec 2025 07:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C489B5C613;
+	Wed, 10 Dec 2025 07:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eZwzYU7o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oMhT4mR+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3999221F2F;
-	Wed, 10 Dec 2025 07:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CF64302CC0;
+	Wed, 10 Dec 2025 07:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765351962; cv=none; b=h756XQR8s4/iOGTOD2iQ3VRMglF7qaK0P8gHbacrfG7DN2t6++1eJpYRaKr3ooDrGVrbjZ0MNW7cFKsKCS/f0slzvdUAZYn/YwQvNrOobTKmvRhLLi3VGcU+agLlj8ZXtOPLHLpWvCuWpHVTwb+eRwxe2x4bC2PwB2zGUVmd+ag=
+	t=1765352135; cv=none; b=XBERPoicIpbuDL2oH6DvvycBWnGL9kSnQLbRUxt4MvzKMUgeiMdBIu7w1GzioepnzKGBlWC24STCAYbF0WOn4biEBaNd4Oxiq3bYeBnihCYGR+yPmhYwwACDsLd5jwtbOrrGQMvfb3Z43wn12GxxGIlePQ1zxD9LheNT2KuQfc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765351962; c=relaxed/simple;
-	bh=To7u7B92qt5SosqUisV3ywjVpPSNB+/6AP+JAx11P3U=;
+	s=arc-20240116; t=1765352135; c=relaxed/simple;
+	bh=casnYKAum16yEH39nX7746zwUGQxwwdOKN8iljmn/4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TDLhz8w1EfLk74+vBRe69Tz+c+Bk/u3wlE/q17FEKz4R/4dgQmIbMUsnrrgubzxf0R8WO6myfJpdWl5EGvY/lpr6q7slVl1qkmNr87+k7CAZkwvHHArwMJZ2MjIWjbChdgKNrEV7fkfcHYsmiP0ck4SubCIE0vAi6tDbMloYhK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eZwzYU7o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1E7CC4CEF1;
-	Wed, 10 Dec 2025 07:32:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=g6VhdSAykKaaMBMu7tTMLrw8d5VWXJ1wCnhar+U+zfnVWx9rrrVxgCsuCt7IxPFM6DujfO3znzVico9I+ahQnTlDEJjAONyVSX1ZuGYYx2Ey6BhMYQE4YttVK8gzq0hVyQIyYCFS9+6ngYOpfSCerjR1hXMbaVao/M+rlvwKbCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oMhT4mR+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24979C4CEF1;
+	Wed, 10 Dec 2025 07:35:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765351962;
-	bh=To7u7B92qt5SosqUisV3ywjVpPSNB+/6AP+JAx11P3U=;
+	s=korg; t=1765352135;
+	bh=casnYKAum16yEH39nX7746zwUGQxwwdOKN8iljmn/4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eZwzYU7oH3VJ1ocpGZjj3khYJqcEjfugSy6nvxFEbbeHSNolTyHWA5P7ucRRTm/6Q
-	 j9wBuUxJHvphRwEhcr9kljJmMOymSa3IjscWfdIRwls+imES71Ha1U3uU6BVyf8jo+
-	 9Q0meHEbYiC5cAeRwUGtu3ULXO+xXhqTHF19A16Q=
+	b=oMhT4mR+vuHy07SADg33ggVPJqLuDMhJS1ncgogEH5UQuEqVSAwl47yntOtRsqXzM
+	 6gC5Y2LMlz9Td8uEf6hIkL0WjZeahyUzIwn5Bd4x0wvEcxnFsWRJ8OD9skGF5l3bKi
+	 T7JH0UnKr8TAmLobvBKsEPusWYDIIpcGE5qhAktw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Navaneeth K <knavaneeth786@gmail.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.12 45/49] staging: rtl8723bs: fix out-of-bounds read in rtw_get_ie() parser
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 45/60] platform/x86/intel/hid: Add Nova Lake support
 Date: Wed, 10 Dec 2025 16:30:15 +0900
-Message-ID: <20251210072949.284753464@linuxfoundation.org>
+Message-ID: <20251210072948.984310073@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
-References: <20251210072948.125620687@linuxfoundation.org>
+In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
+References: <20251210072947.850479903@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,69 +58,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Navaneeth K <knavaneeth786@gmail.com>
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-commit 154828bf9559b9c8421fc2f0d7f7f76b3683aaed upstream.
+[ Upstream commit ddf5ffff3a5fe95bed178f5554596b93c52afbc9 ]
 
-The Information Element (IE) parser rtw_get_ie() trusted the length
-byte of each IE without validating that the IE body (len bytes after
-the 2-byte header) fits inside the remaining frame buffer. A malformed
-frame can advertise an IE length larger than the available data, causing
-the parser to increment its pointer beyond the buffer end. This results
-in out-of-bounds reads or, depending on the pattern, an infinite loop.
+Add ACPI ID for Nova Lake.
 
-Fix by validating that (offset + 2 + len) does not exceed the limit
-before accepting the IE or advancing to the next element.
-
-This prevents OOB reads and ensures the parser terminates safely on
-malformed frames.
-
-Signed-off-by: Navaneeth K <knavaneeth786@gmail.com>
-Cc: stable <stable@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Link: https://patch.msgid.link/20251110235041.123685-1-srinivas.pandruvada@linux.intel.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/rtl8723bs/core/rtw_ieee80211.c |   14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/platform/x86/intel/hid.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/staging/rtl8723bs/core/rtw_ieee80211.c
-+++ b/drivers/staging/rtl8723bs/core/rtw_ieee80211.c
-@@ -140,22 +140,24 @@ u8 *rtw_get_ie(u8 *pbuf, signed int inde
- 	signed int tmp, i;
- 	u8 *p;
- 
--	if (limit < 1)
-+	if (limit < 2)
- 		return NULL;
- 
- 	p = pbuf;
- 	i = 0;
- 	*len = 0;
--	while (1) {
-+	while (i + 2 <= limit) {
-+		tmp = *(p + 1);
-+		if (i + 2 + tmp > limit)
-+			break;
-+
- 		if (*p == index) {
--			*len = *(p + 1);
-+			*len = tmp;
- 			return p;
- 		}
--		tmp = *(p + 1);
-+
- 		p += (tmp + 2);
- 		i += (tmp + 2);
--		if (i >= limit)
--			break;
- 	}
- 	return NULL;
- }
+diff --git a/drivers/platform/x86/intel/hid.c b/drivers/platform/x86/intel/hid.c
+index f25a427cccdac..9c07a7faf18fe 100644
+--- a/drivers/platform/x86/intel/hid.c
++++ b/drivers/platform/x86/intel/hid.c
+@@ -55,6 +55,7 @@ static const struct acpi_device_id intel_hid_ids[] = {
+ 	{ "INTC10CB" },
+ 	{ "INTC10CC" },
+ 	{ "INTC10F1" },
++	{ "INTC10F2" },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(acpi, intel_hid_ids);
+-- 
+2.51.0
+
 
 
 
