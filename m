@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-200549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B9A6CB231F
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:31:36 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FFE3CB2428
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:37:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3A6493074ABF
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:31:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 68C13302E94E
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:34:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEA4D21578D;
-	Wed, 10 Dec 2025 07:31:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2686C2FF16C;
+	Wed, 10 Dec 2025 07:34:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eOzAhzgs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vD7d1fs6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9602279DA;
-	Wed, 10 Dec 2025 07:31:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE01727FB2E;
+	Wed, 10 Dec 2025 07:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765351866; cv=none; b=o42+PgiFqhJaJo6sGCjYUkf/TTmxRPrqfyPJoCJUPyqIqr1pWfLoezmp0SZmhFjpNN41Ul3+T0NJCZiTTgp1SStnzdlCYgYIfZKpI05ouEY0YJKM62h50c1gvpHM7h//Pi32PpiPu29H+9LL6i/MPO98P9EQxkgaige5/goCjQo=
+	t=1765352077; cv=none; b=Hv/ak/3MfoFfTX3rgXdKh4fqT4OlIfUqPVeglqZZt7Si0/7mAp9S4ms6GmWrb30erfMsopYl+D310XD4cmpR9xUOhr6yXPRhgj5fdGZxhtWAvCY6k8oGnoZCz4Zj3lYLjVMcuZHg1bJMteN2ymnm+CBi5hei6bZlUxg3VamRJH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765351866; c=relaxed/simple;
-	bh=L595N5ZxRojycExYNf6cNvB3tHfZRkxszETKKpC5peo=;
+	s=arc-20240116; t=1765352077; c=relaxed/simple;
+	bh=mLsw0VZcBsqwH3tntMuDPNbu/zm/YdtbvMRqewZTeZk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=auHi3ayOQEoLQv35DvnAXtpf6cf2TcnVbkdmgjNEtLWVio+xUW2NhNJRcbe08bQrwpuUjn3gCAP+CBIr0ADco7aU7P1Bz5dhmVHHu9dsJSu+DYn72j/EQZFxSyEDts4nNC3xeCdr8EV3n/SIADIfxou5jc/xTs3YDmJYEIo12yM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eOzAhzgs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F5D4C4CEF1;
-	Wed, 10 Dec 2025 07:31:06 +0000 (UTC)
+	 MIME-Version; b=C18J5/o+JctMfIPvHGYX9ydfUPpMdKa37aOw/VL7pcgzFdnXLcpxnZWTh6ObSprWeDZINsyQpoJ1KvibV16npa44C7RlWtGzZ4cGmHoNOVdv9QjK3au6AI7h+tuZRvtFr6voU5wAZsaKsB4bGkyXtZmU/DjSNiyhqjTwdsKFnpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vD7d1fs6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71B4CC4CEF1;
+	Wed, 10 Dec 2025 07:34:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765351866;
-	bh=L595N5ZxRojycExYNf6cNvB3tHfZRkxszETKKpC5peo=;
+	s=korg; t=1765352077;
+	bh=mLsw0VZcBsqwH3tntMuDPNbu/zm/YdtbvMRqewZTeZk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eOzAhzgsrpnLBmbfRAVUawoaU4KVJEltB7eR/zAIKh9f5hF9frjxS4QFDqIblffko
-	 9iMgL8SaM4KmOkEUJXgDWX/ibcTn7PbfJZLJSZzCLsOStrE1BQ5NY2KJlxTHI29gYV
-	 F0pIlpzoH85lXjYNthzBn4VNtFsJpp44eJtNq19o=
+	b=vD7d1fs6soyXDA36atT/AQ5Ve942vso9F9tr4KxrKFKq5QowGc1HMtMIb8VEwkj0c
+	 ww1KIuAEhs6/dGZlWp/vzh8T7uchNTd7e0qvagsS3/Bddt+Zz9aY3z6FTGHCTvN0QP
+	 WSsC+2m/f0VYnZkjxEb92L+w8tjaQRO+tz+Doc+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+fce5d9d5bd067d6fbe9b@syzkaller.appspotmail.com,
-	stable <stable@kernel.org>,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 6.12 11/49] comedi: pcl818: fix null-ptr-deref in pcl818_ai_cancel()
-Date: Wed, 10 Dec 2025 16:29:41 +0900
-Message-ID: <20251210072948.406530574@linuxfoundation.org>
+	Fabio Porcedda <fabio.porcedda@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.17 12/60] USB: serial: option: move Telit 0x10c7 composition in the right place
+Date: Wed, 10 Dec 2025 16:29:42 +0900
+Message-ID: <20251210072948.149015300@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
-References: <20251210072948.125620687@linuxfoundation.org>
+In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
+References: <20251210072947.850479903@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +59,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
 
-commit a51f025b5038abd3d22eed2ede4cd46793d89565 upstream.
+commit 072f2c49572547f4b0776fe2da6b8f61e4b34699 upstream.
 
-Syzbot identified an issue [1] in pcl818_ai_cancel(), which stems from
-the fact that in case of early device detach via pcl818_detach(),
-subdevice dev->read_subdev may not have initialized its pointer to
-&struct comedi_async as intended. Thus, any such dereferencing of
-&s->async->cmd will lead to general protection fault and kernel crash.
+Move Telit 0x10c7 composition right after 0x10c6 composition and
+before 0x10c8 composition.
 
-Mitigate this problem by removing a call to pcl818_ai_cancel() from
-pcl818_detach() altogether. This way, if the subdevice setups its
-support for async commands, everything async-related will be
-handled via subdevice's own ->cancel() function in
-comedi_device_detach_locked() even before pcl818_detach(). If no
-support for asynchronous commands is provided, there is no need
-to cancel anything either.
-
-[1] Syzbot crash:
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000005: 0000 [#1] SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x0000000000000028-0x000000000000002f]
-CPU: 1 UID: 0 PID: 6050 Comm: syz.0.18 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/18/2025
-RIP: 0010:pcl818_ai_cancel+0x69/0x3f0 drivers/comedi/drivers/pcl818.c:762
-...
-Call Trace:
- <TASK>
- pcl818_detach+0x66/0xd0 drivers/comedi/drivers/pcl818.c:1115
- comedi_device_detach_locked+0x178/0x750 drivers/comedi/drivers.c:207
- do_devconfig_ioctl drivers/comedi/comedi_fops.c:848 [inline]
- comedi_unlocked_ioctl+0xcde/0x1020 drivers/comedi/comedi_fops.c:2178
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
-...
-
-Reported-by: syzbot+fce5d9d5bd067d6fbe9b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=fce5d9d5bd067d6fbe9b
-Fixes: 00aba6e7b565 ("staging: comedi: pcl818: remove 'neverending_ai' from private data")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://patch.msgid.link/20251023141457.398685-1-n.zhandarovich@fintech.ru
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/drivers/pcl818.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/usb/serial/option.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/comedi/drivers/pcl818.c
-+++ b/drivers/comedi/drivers/pcl818.c
-@@ -1111,10 +1111,9 @@ static void pcl818_detach(struct comedi_
- {
- 	struct pcl818_private *devpriv = dev->private;
- 
--	if (devpriv) {
--		pcl818_ai_cancel(dev, dev->read_subdev);
-+	if (devpriv)
- 		pcl818_reset(dev);
--	}
-+
- 	pcl818_free_dma(dev);
- 	comedi_legacy_detach(dev);
- }
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1445,6 +1445,9 @@ static const struct usb_device_id option
+ 	  .driver_info = NCTRL(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c6, 0xff),	/* Telit FE910C04 (MBIM) */
+ 	  .driver_info = NCTRL(4) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10c7, 0xff, 0xff, 0x30),	/* Telit FE910C04 (ECM) */
++	  .driver_info = NCTRL(4) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10c7, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c8, 0xff),	/* Telit FE910C04 (rmnet) */
+ 	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c9, 0xff),	/* Telit FE910C04 (MBIM) */
+@@ -1455,9 +1458,6 @@ static const struct usb_device_id option
+ 	  .driver_info = NCTRL(5) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x60) },
+-	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10c7, 0xff, 0xff, 0x30),	/* Telit FE910C04 (ECM) */
+-	  .driver_info = NCTRL(4) },
+-	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10c7, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x30),	/* Telit FN990B (MBIM) */
+ 	  .driver_info = NCTRL(6) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x40) },
 
 
 
