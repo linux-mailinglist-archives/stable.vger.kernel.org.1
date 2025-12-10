@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-200548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59103CB231C
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:31:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5920CCB24E1
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:42:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F2D50306CF5D
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:31:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A9432310DD9D
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:41:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B613E1DD0EF;
-	Wed, 10 Dec 2025 07:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0526430171E;
+	Wed, 10 Dec 2025 07:34:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VGX4Wp8n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y5j9e82p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59066221721;
-	Wed, 10 Dec 2025 07:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76A83016FA;
+	Wed, 10 Dec 2025 07:34:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765351864; cv=none; b=Hs5YVOFHB4Y4xWMuv7PJvVjTAKFNjXA4Gvz9WXPv04B6+NduWLWB4DBNfQvq8AsPi7N/jjVJXJmhbv9AuLFBKycq5spVh5dvMAYEJzMdOFxSEs42HeNpVAhRZHyT9/0iMsmcba7qvq2HEfO/IJGtgtuNQWOrd2ZYtfNNvNvpmvE=
+	t=1765352041; cv=none; b=RJHbQ7svzOHjjJzqhYkyI/GPZfkdqb7K+6amJCumx3Xk9bR9hT5TCjkIagMhWAoNA2itzrZZLl8WhK0LDjPrOgMMLlQRBzoPR6gu7f8yzDny6yetzAjSKqwl6fwyZq9yFo0toZ/t+Hke6t1qnQvFsbwOcxkrePKw5xrWbzEzVe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765351864; c=relaxed/simple;
-	bh=2e1YBmzaAPKmTEYp6cK4dml4RUTZDKjAlCJkLrVaMlY=;
+	s=arc-20240116; t=1765352041; c=relaxed/simple;
+	bh=4W1jR0NG5oJnP2Uz8DSJRUd+KnHrBfanwfKrb7J787g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YA6KFfPkAH+UIsXyq1Gc865dqQ+AnOxAVHvJ3Z8uXhJHNqETsItO7+SIhyuLZVv5o3wpOBZ+Lrqwj4mK+FWxpMyOKMuaOHjghKq5uey2yUJPqBU0K16QtN5vFlQYJkdjQtfmH9TCaXtcmEjaSzRXuVG2zNrMU59LrmPaJx0l4yM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VGX4Wp8n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D77AC4CEF1;
-	Wed, 10 Dec 2025 07:31:03 +0000 (UTC)
+	 MIME-Version; b=VmT54gUCwufrocXPrkxi0rXEDQSnfzTwzAN3VpehuASLxW3RPXTB9Dpg6uXF3k2Le7OikUGlnGp8W7qI4HHr7oJYZRaDAaF0yOIyvvYeFgF8gSY5ICmYJzvAv9RfjJ5zrNz/YGWT3eoJNJrhz62BDDn061ICyO9E/aP+drMrtfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y5j9e82p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A5E8C4CEF1;
+	Wed, 10 Dec 2025 07:34:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765351863;
-	bh=2e1YBmzaAPKmTEYp6cK4dml4RUTZDKjAlCJkLrVaMlY=;
+	s=korg; t=1765352041;
+	bh=4W1jR0NG5oJnP2Uz8DSJRUd+KnHrBfanwfKrb7J787g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VGX4Wp8n+0Yb3tIKgVHqxwqBqYiwRnGRtfJ2JjeaMXT8v7JK6aR+H+0ZZdd0OCT4l
-	 evh3JThScXbnHq9YKKRiPMQPeYFsces54rn3XscSTdqvhYyU6Js1NWosRY1DJ5FoQt
-	 rYo5kC4nz1Uog4Atw5k4vIiA/HNkFTpSqyqP4BTU=
+	b=y5j9e82pITl8Eosj/eIfjDBFn4dcx0CRFQ+4dpxXRe/+icgC848O0bUSanLvatOOO
+	 AdUKofnLYob0y4QdtE3JswZn/4HEjUcxHonpIgPe2MiXCmSA4ODxn79MoUVstBkkdE
+	 Ljok6mcHkp44BNGlQV0jP82EZVJMLgmc4FF84jZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Nepomnyashih <sdl@nppct.ru>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.12 10/49] ext4: add i_data_sem protection in ext4_destroy_inline_data_nolock()
+	Slark Xiao <slark_xiao@163.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.17 10/60] USB: serial: option: add Foxconn T99W760
 Date: Wed, 10 Dec 2025 16:29:40 +0900
-Message-ID: <20251210072948.381433369@linuxfoundation.org>
+Message-ID: <20251210072948.099363487@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
-References: <20251210072948.125620687@linuxfoundation.org>
+In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
+References: <20251210072947.850479903@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,93 +59,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Nepomnyashih <sdl@nppct.ru>
+From: Slark Xiao <slark_xiao@163.com>
 
-commit 0cd8feea8777f8d9b9a862b89c688b049a5c8475 upstream.
+commit 7970b4969c4c99bcdaf105f9f39c6d2021f6d244 upstream.
 
-Fix a race between inline data destruction and block mapping.
+T99W760 is designed based on Qualcomm SDX35 (5G redcap) chip. There are
+three serial ports to be enumerated: Modem, NMEA and Diag.
 
-The function ext4_destroy_inline_data_nolock() changes the inode data
-layout by clearing EXT4_INODE_INLINE_DATA and setting EXT4_INODE_EXTENTS.
-At the same time, another thread may execute ext4_map_blocks(), which
-tests EXT4_INODE_EXTENTS to decide whether to call ext4_ext_map_blocks()
-or ext4_ind_map_blocks().
+test evidence as below:
+T:  Bus=03 Lev=01 Prnt=01 Port=03 Cnt=01 Dev#=  4 Spd=5000  MxCh= 0
+D:  Ver= 3.20 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=0489 ProdID=e123 Rev=05.15
+S:  Manufacturer=QCOM
+S:  Product=SDXBAAGHA-IDP _SN:39A8D3E4
+S:  SerialNumber=39a8d3e4
+C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=896mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
+E:  Ad=85(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=88(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
 
-Without i_data_sem protection, ext4_ind_map_blocks() may receive inode
-with EXT4_INODE_EXTENTS flag and triggering assert.
+0&1: MBIM, 2:Modem, 3:GNSS(non-serial port), 4: NMEA, 5:Diag
 
-kernel BUG at fs/ext4/indirect.c:546!
-EXT4-fs (loop2): unmounting filesystem.
-invalid opcode: 0000 [#1] PREEMPT SMP KASAN NOPTI
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
-RIP: 0010:ext4_ind_map_blocks.cold+0x2b/0x5a fs/ext4/indirect.c:546
-
-Call Trace:
- <TASK>
- ext4_map_blocks+0xb9b/0x16f0 fs/ext4/inode.c:681
- _ext4_get_block+0x242/0x590 fs/ext4/inode.c:822
- ext4_block_write_begin+0x48b/0x12c0 fs/ext4/inode.c:1124
- ext4_write_begin+0x598/0xef0 fs/ext4/inode.c:1255
- ext4_da_write_begin+0x21e/0x9c0 fs/ext4/inode.c:3000
- generic_perform_write+0x259/0x5d0 mm/filemap.c:3846
- ext4_buffered_write_iter+0x15b/0x470 fs/ext4/file.c:285
- ext4_file_write_iter+0x8e0/0x17f0 fs/ext4/file.c:679
- call_write_iter include/linux/fs.h:2271 [inline]
- do_iter_readv_writev+0x212/0x3c0 fs/read_write.c:735
- do_iter_write+0x186/0x710 fs/read_write.c:861
- vfs_iter_write+0x70/0xa0 fs/read_write.c:902
- iter_file_splice_write+0x73b/0xc90 fs/splice.c:685
- do_splice_from fs/splice.c:763 [inline]
- direct_splice_actor+0x10f/0x170 fs/splice.c:950
- splice_direct_to_actor+0x33a/0xa10 fs/splice.c:896
- do_splice_direct+0x1a9/0x280 fs/splice.c:1002
- do_sendfile+0xb13/0x12c0 fs/read_write.c:1255
- __do_sys_sendfile64 fs/read_write.c:1323 [inline]
- __se_sys_sendfile64 fs/read_write.c:1309 [inline]
- __x64_sys_sendfile64+0x1cf/0x210 fs/read_write.c:1309
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x35/0x80 arch/x86/entry/common.c:81
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-Fixes: c755e251357a ("ext4: fix deadlock between inline_data and ext4_expand_extra_isize_ea()")
-Cc: stable@vger.kernel.org # v4.11+
-Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
-Message-ID: <20251104093326.697381-1-sdl@nppct.ru>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Slark Xiao <slark_xiao@163.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/inline.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/usb/serial/option.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/ext4/inline.c
-+++ b/fs/ext4/inline.c
-@@ -446,9 +446,13 @@ static int ext4_destroy_inline_data_nolo
- 	if (!ei->i_inline_off)
- 		return 0;
- 
-+	down_write(&ei->i_data_sem);
-+
- 	error = ext4_get_inode_loc(inode, &is.iloc);
--	if (error)
-+	if (error) {
-+		up_write(&ei->i_data_sem);
- 		return error;
-+	}
- 
- 	error = ext4_xattr_ibody_find(inode, &i, &is);
- 	if (error)
-@@ -487,6 +491,7 @@ out:
- 	brelse(is.iloc.bh);
- 	if (error == -ENODATA)
- 		error = 0;
-+	up_write(&ei->i_data_sem);
- 	return error;
- }
- 
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2376,6 +2376,8 @@ static const struct usb_device_id option
+ 	  .driver_info = RSVD(3) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe0f0, 0xff),			/* Foxconn T99W373 MBIM */
+ 	  .driver_info = RSVD(3) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe123, 0xff),			/* Foxconn T99W760 MBIM */
++	  .driver_info = RSVD(3) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe145, 0xff),			/* Foxconn T99W651 RNDIS */
+ 	  .driver_info = RSVD(5) | RSVD(6) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe15f, 0xff),                     /* Foxconn T99W709 */
 
 
 
