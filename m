@@ -1,120 +1,229 @@
-Return-Path: <stable+bounces-200734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FBD0CB3870
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 17:51:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2912CB38C1
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 17:59:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 680DC31497B4
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 16:49:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EAAC53024342
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 16:58:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3078E32692A;
-	Wed, 10 Dec 2025 16:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48BC2266B6B;
+	Wed, 10 Dec 2025 16:58:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b="sq5/L6EL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WMfxfJ5d"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DCD83254BD
-	for <stable@vger.kernel.org>; Wed, 10 Dec 2025 16:49:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B6521771C
+	for <stable@vger.kernel.org>; Wed, 10 Dec 2025 16:58:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765385355; cv=none; b=HaZT3wBxRvJwB051apKthYBcrE/LpjKpOl3XwvFH0Ynjvy/xnaNLjZPCfPtQJOMTuSWFYl5GeCTpcj46bFVmWd8HHvKzmChp69VNfokVV9PSYrn29rIHP6J7UPy9iLw3Fya0WNf19xU+545OPFKt87UJCm6Gk+qVbPfjFRRuo4A=
+	t=1765385904; cv=none; b=OIT4nHTfRdbePBtriozoxM60vP9UhWmytWJkx3Jxn1LSIy/qyFS8MGT06eBLYZJ2n9+30TpDJ1jZ0+xZiBzjtRLZvxisy9AcBvEYglkZu2JbpxmMmPHlwhWO0wSqF4ccGnWZ5qNldVXcV2EdZ77B0VLQKqD8iCoPtFljLZcIuL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765385355; c=relaxed/simple;
-	bh=WjryKRyGSADBuvbSpI7v7yfJSchEyUut33/C1V128gY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=grMcSSrnu45DX/5q3qCL1kTR7m1fvcOgSmg9moTa/HiiWhx381Rq9y2vfu2e6pmhoMDhmKmKzw0a5YncIaQezTYGHTNdWMBq8yG3ErO2QzCjO5FNl52/+VtEEJ4Bld4xFr9cVFExHEmcnNBBJqpWWUCEa8dRCpBzj3r3SEZufik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in; spf=none smtp.mailfrom=rajagiritech.edu.in; dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b=sq5/L6EL; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=rajagiritech.edu.in
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b77030ffad9so1024479266b.0
-        for <stable@vger.kernel.org>; Wed, 10 Dec 2025 08:49:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rajagiritech-edu-in.20230601.gappssmtp.com; s=20230601; t=1765385343; x=1765990143; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=7aRZ2LeZjgs+oT8fLSX3wAeN/zXbQNp1vbBsVzoBojU=;
-        b=sq5/L6ELRHM3ewD6alqzKmJiC5mpuWH+6qJsJBgZjQmc5qARd0MAblQ4QgiVC5IzEy
-         eTLYYCtvXlSiqrUPpEs3cuJy4v6udSvXbxrgwrJGJtbQxbZojAW9Hy4eZV5g+qgLArfM
-         BC9BhFs+78KYp7b4EIeEybbxNI/VJUYI+Qj9LqQgS3DU4Wtl8VOKZinW7fRPvm1vuqE3
-         VZ7ivADv1e1rlj5fbyo//GWVJUs7xk742PDAR7MSYBDUDx/EZp142D3Ym+CeYBCCbd/s
-         s2tdYZj6n3S62EJMSkPAH3jpcB8hF5vwq6PlTDwerRRaof7tPM/Z0QmfecIxtq/79BbP
-         mhzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765385343; x=1765990143;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7aRZ2LeZjgs+oT8fLSX3wAeN/zXbQNp1vbBsVzoBojU=;
-        b=ioTTsmh9VT5kj4lzw67ajDivq7uFwRBOuOM7aSv3KVHmohMTSUR7n4G56rZQuoZW+h
-         Omx9JRx+oV7gfcb1Iewcvc+XdO8pQOwhZu9HQd/XMQxkgHBm73FtQUFV+VhyvrpcSoQC
-         64hkMxXcvngIaqGqQYfuP/V9SOHpVjZEe0kb6QyTw/jIDxgg9IA7akiFszl2RyIcHY2Y
-         vRznids+1VdL1k/rn7VkK8XTuAaOxL3vzD5C1ye+1oBCNENtwKshezkShxHYjna+t+MG
-         HXWC9ZWnb5SIfPkZE3Fk4CotVhPP5Q4MoRVZs2dzs+lwnS1ENK91A1ykN/XMCTPNneQk
-         UAgg==
-X-Gm-Message-State: AOJu0Yw6EodRqQFdx9tQZk7zfsKcd90Bb2gHwXS0qGsP6s7Oyn+IB2kJ
-	D4TlgdTgx8DAWuJU1VLk8LkrB8lhr3bJjP5qdcZKQFPvpfPprf3B+T7+d9BJwO35cKcy/hb+Bwf
-	YjBbxhEypEX5l4YWM9zKxjx48DyHJj/3J0LrPEooDaQ==
-X-Gm-Gg: ASbGncukNOKizmrle/jS6RSsCPvgtnQePboog1VsvyGPDdB1MRofREx3+I1PHRt3EzP
-	tl9Y6tae/LLC4e+t2SmoZgfkh5PssLef6ycoLK7m8CYFNDPKDuHC5l67gY1IGU1gay8K6QaCPYS
-	ig59XoJ1crhuHI8dqKRg5lBCC7+2TQNc1HffqSBp+mIVZBkvCulTlJrDRpvzSqozQUhDFbV8mH3
-	1QtktizCj1d0Gbf8jKI/+DOOzRExikn09e0s/OOC5LFi6p2eFu4NEkVUYwbggsSKURQ5exW/ugS
-	woN94g==
-X-Google-Smtp-Source: AGHT+IHG3EATL/ftGHhQuFqxHwYTnzohbFRvs6w9NLW+Dk/26SkKGS0IjJ5H1uKtdDVFnNpnL//uU/iFq950dlrLdvY=
-X-Received: by 2002:a17:907:a08a:b0:b71:29f7:47ef with SMTP id
- a640c23a62f3a-b7ce85308bemr296913166b.61.1765385342687; Wed, 10 Dec 2025
- 08:49:02 -0800 (PST)
+	s=arc-20240116; t=1765385904; c=relaxed/simple;
+	bh=gFIo+KrdG+RVSEy6pKRA/YU+jj0wbAaFXvoD2Nd9d9k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kXzQCG5tbOFu9uoVjhmIZHorOB/01QBXHFeJQH2rBD8FBwQVAegROYU6j13PXN/f+Vj2i2Z+l8xHAA3UUk5gtIY+Y3k4B2rkqRvOlE1SRP9VnsIXLUudlBcgOS8nt0isgQwk18lQrNXOHCSIbg48fwdnLVhBeokLncu1DS7n8qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WMfxfJ5d; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765385902; x=1796921902;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=gFIo+KrdG+RVSEy6pKRA/YU+jj0wbAaFXvoD2Nd9d9k=;
+  b=WMfxfJ5dyXYDlH+xjugqUmpGIHe3Tt1GxQIYsN6uy/RbYJSbTjrBuwzX
+   zP/ZzYhuoVwq0RAgu9ufonHe0bZlIb1Par/Lx6sBtxffG9Jg3lALt2MYW
+   048D4nbGYP9Om5hld9EJD7pAJ4RsGRJoVdj20hSWiniz9IFr79aXGMaq4
+   Od2R/5/8Tj++u2JOqd5HJGXrFbJL2IeuCKdthxPFF0AEGGJhuQAoNpqeQ
+   lQKYYYDVaSDvFxgrHv96IYs2JMJ+sLDop/nBdb6Eu76KbkgpICSv6Cntb
+   w2wcuI7L3b+nVOlzfvNGs2uonFpiGu9KvHJFrof+lxeqNHDBDRtdDYS9p
+   A==;
+X-CSE-ConnectionGUID: goDBIMZuQ8q0cLazzxxS9A==
+X-CSE-MsgGUID: r0FYHT8rRCWLjVTwqu+RRA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11638"; a="67399125"
+X-IronPort-AV: E=Sophos;i="6.20,264,1758610800"; 
+   d="scan'208";a="67399125"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2025 08:58:21 -0800
+X-CSE-ConnectionGUID: +zd/yn2BSlqPrunie5ua7w==
+X-CSE-MsgGUID: NLtEGS1jRBWieKEMmttjpw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,264,1758610800"; 
+   d="scan'208";a="200727964"
+Received: from kniemiec-mobl1.ger.corp.intel.com (HELO intel.com) ([10.245.246.224])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2025 08:58:17 -0800
+From: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+To: dri-devel@lists.freedesktop.org,
+	intel-gfx@lists.freedesktop.org
+Cc: stable@vger.kernel.org,
+	=?UTF-8?q?=EA=B9=80=EA=B0=95=EB=AF=BC?= <km.kim1503@gmail.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Chris Wilson <chris.p.wilson@linux.intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+	Krzysztof Karas <krzysztof.karas@intel.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
+	Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+Subject: [PATCH v3] drm/i915/gem: Zero-initialize the eb.vma array in i915_gem_do_execbuffer()
+Date: Wed, 10 Dec 2025 17:57:01 +0100
+Message-ID: <20251210165659.29349-3-krzysztof.niemiec@intel.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251203152414.082328008@linuxfoundation.org>
-In-Reply-To: <20251203152414.082328008@linuxfoundation.org>
-From: Jeffrin Thalakkottoor <jeffrin@rajagiritech.edu.in>
-Date: Wed, 10 Dec 2025 22:18:26 +0530
-X-Gm-Features: AQt7F2poqMWU986okgWXaQ_Uv3mpP3y-4c97KhwqKkvBqKbjtGSV7ZSeV6nJIyo
-Message-ID: <CAG=yYwmkjqHZbSDN3z00G2O=zDar5pR4GKAE-w-Ur7MYCgTmWQ@mail.gmail.com>
-Subject: Re: [PATCH 5.15 000/392] 5.15.197-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org, sr@sladewatkins.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Version: AMD Ryzen 3 3250U with Radeon Graphics
-compiled and booted  5.15.198-rc1+
+Initialize the eb.vma array with values of 0 when the eb structure is
+first set up. In particular, this sets the eb->vma[i].vma pointers to
+NULL, simplifying cleanup and getting rid of the bug described below.
 
+During the execution of eb_lookup_vmas(), the eb->vma array is
+successively filled up with struct eb_vma objects. This process includes
+calling eb_add_vma(), which might fail; however, even in the event of
+failure, eb->vma[i].vma is set for the currently processed buffer.
 
-warning  related  to   dmesg
+If eb_add_vma() fails, eb_lookup_vmas() returns with an error, which
+prompts a call to eb_release_vmas() to clean up the mess. Since
+eb_lookup_vmas() might fail during processing any (possibly not first)
+buffer, eb_release_vmas() checks whether a buffer's vma is NULL to know
+at what point did the lookup function fail.
 
- [   13.924408] block nvme0n1: No UUID available providing old NGUID
-[   13.927216] block nvme0n1: No UUID available providing old NGUID
-[   13.930683] block nvme0n1: No UUID available providing old NGUID
-[   13.934469] block nvme0n1: No UUID available providing old NGUID
-[   13.935844] block nvme0n1: No UUID available providing old NGUID
-[   13.937880] block nvme0n1: No UUID available providing old NGUID
-[   13.939234] block nvme0n1: No UUID available providing old NGUID
-[   13.946032] block nvme0n1: No UUID available providing old NGUID
-[   13.948137] block nvme0n1: No UUID available providing old NGUID
-[   13.950842] block nvme0n1: No UUID available providing old NGUID
-[   21.906207] kauditd_printk_skb: 126 callbacks suppressed
-[   38.522153] uuid_show: 4 callbacks suppressed
-[   38.522159] block nvme0n1: No UUID available providing old NGUID
-[   38.557254] block nvme0n1: No UUID available providing old NGUID
-[   38.589733] block nvme0n1: No UUID available providing old NGUID
+In eb_lookup_vmas(), eb->vma[i].vma is set to NULL if either the helper
+function eb_lookup_vma() or eb_validate_vma() fails. eb->vma[i+1].vma is
+set to NULL in case i915_gem_object_userptr_submit_init() fails; the
+current one needs to be cleaned up by eb_release_vmas() at this point,
+so the next one is set. If eb_add_vma() fails, neither the current nor
+the next vma is nullified, which is a source of a NULL deref bug
+described in the issue linked in the Closes tag.
 
+When entering eb_lookup_vmas(), the vma pointers are set to the slab
+poison value, instead of NULL. This doesn't matter for the actual
+lookup, since it gets overwritten anyway, however the eb_release_vmas()
+function only recognizes NULL as the stopping value, hence the pointers
+are being nullified as they go in case of intermediate failure. This
+patch changes the approach to filling them all with NULL at the start
+instead, rather than handling that manually during failure.
 
-Tested-by: Jeffrin Jose T <jeffrin@rajagiritech.edu.in>
+Reported-by: Gangmin Kim <km.kim1503@gmail.com>
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15062
+Fixes: 544460c33821 ("drm/i915: Multi-BB execbuf")
+Cc: <stable@vger.kernel.org> # 5.16.x
+Signed-off-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+---
 
---
-software engineer
-rajagiri school of engineering and technology
+I messed up the continuity in previous revisions; the original patch
+was sent as [1], and the first revision (which I didn't mark as v2 due
+to the title change) was sent as [2].
+
+This is the full current changelog:
+
+v3:
+   - use memset() to fill the entire eb.vma array with zeros instead of
+   looping through the elements (Janusz)
+   - add a comment clarifying the mechanism of the initial allocation (Janusz)
+   - change the commit log again, including title
+   - rearrange the tags to keep checkpatch happy
+v2:
+   - set the eb->vma[i].vma pointers to NULL during setup instead of
+     ad-hoc at failure (Janusz)
+   - romanize the reporter's name (Andi, offline)
+   - change the commit log, including title
+
+[1] https://patchwork.freedesktop.org/series/156832/
+[2] https://patchwork.freedesktop.org/series/158036/
+
+ .../gpu/drm/i915/gem/i915_gem_execbuffer.c    | 36 +++++++++----------
+ 1 file changed, 16 insertions(+), 20 deletions(-)
+
+diff --git a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
+index b057c2fa03a4..5f2b736b53ab 100644
+--- a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
+@@ -951,13 +951,13 @@ static int eb_lookup_vmas(struct i915_execbuffer *eb)
+ 		vma = eb_lookup_vma(eb, eb->exec[i].handle);
+ 		if (IS_ERR(vma)) {
+ 			err = PTR_ERR(vma);
+-			goto err;
++			return err;
+ 		}
+ 
+ 		err = eb_validate_vma(eb, &eb->exec[i], vma);
+ 		if (unlikely(err)) {
+ 			i915_vma_put(vma);
+-			goto err;
++			return err;
+ 		}
+ 
+ 		err = eb_add_vma(eb, &current_batch, i, vma);
+@@ -966,19 +966,8 @@ static int eb_lookup_vmas(struct i915_execbuffer *eb)
+ 
+ 		if (i915_gem_object_is_userptr(vma->obj)) {
+ 			err = i915_gem_object_userptr_submit_init(vma->obj);
+-			if (err) {
+-				if (i + 1 < eb->buffer_count) {
+-					/*
+-					 * Execbuffer code expects last vma entry to be NULL,
+-					 * since we already initialized this entry,
+-					 * set the next value to NULL or we mess up
+-					 * cleanup handling.
+-					 */
+-					eb->vma[i + 1].vma = NULL;
+-				}
+-
++			if (err)
+ 				return err;
+-			}
+ 
+ 			eb->vma[i].flags |= __EXEC_OBJECT_USERPTR_INIT;
+ 			eb->args->flags |= __EXEC_USERPTR_USED;
+@@ -986,10 +975,6 @@ static int eb_lookup_vmas(struct i915_execbuffer *eb)
+ 	}
+ 
+ 	return 0;
+-
+-err:
+-	eb->vma[i].vma = NULL;
+-	return err;
+ }
+ 
+ static int eb_lock_vmas(struct i915_execbuffer *eb)
+@@ -3375,7 +3360,9 @@ i915_gem_do_execbuffer(struct drm_device *dev,
+ 
+ 	eb.exec = exec;
+ 	eb.vma = (struct eb_vma *)(exec + args->buffer_count + 1);
+-	eb.vma[0].vma = NULL;
++
++	memset(eb.vma, 0x00, args->buffer_count * sizeof(struct eb_vma));
++
+ 	eb.batch_pool = NULL;
+ 
+ 	eb.invalid_flags = __EXEC_OBJECT_UNKNOWN_FLAGS;
+@@ -3584,7 +3571,16 @@ i915_gem_execbuffer2_ioctl(struct drm_device *dev, void *data,
+ 	if (err)
+ 		return err;
+ 
+-	/* Allocate extra slots for use by the command parser */
++	/*
++	 * Allocate extra slots for use by the command parser.
++	 *
++	 * Note that this allocation handles two different arrays (the
++	 * exec2_list array, and the eventual eb.vma array introduced in
++	 * i915_gem_do_execubuffer()), that reside in virtually contiguous
++	 * memory. Also note that the allocation doesn't fill the area with
++	 * zeros (the first part doesn't need to be), but the second part only
++	 * is explicitly zeroed later in i915_gem_do_execbuffer().
++	 */
+ 	exec2_list = kvmalloc_array(count + 2, eb_element_size(),
+ 				    __GFP_NOWARN | GFP_KERNEL);
+ 	if (exec2_list == NULL) {
+-- 
+2.45.2
+
 
