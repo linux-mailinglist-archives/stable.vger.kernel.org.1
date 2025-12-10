@@ -1,64 +1,45 @@
-Return-Path: <stable+bounces-200691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD68ACB2728
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 09:41:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BF8ECB2765
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 09:52:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4864F313B449
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:35:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4BB6E30334DC
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:52:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ABA930EF82;
-	Wed, 10 Dec 2025 08:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5418030217E;
+	Wed, 10 Dec 2025 08:52:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80AEE306490
-	for <stable@vger.kernel.org>; Wed, 10 Dec 2025 08:35:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A9CE242D60;
+	Wed, 10 Dec 2025 08:52:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765355703; cv=none; b=ncjeU+jqZGR0KVT/w7uWWXixgylgTG4brUdA3er+b9/qVdVnf47/7OE72iWRzhoQe6KfiP2zXzPyUJhsijuVOMM/9FD+LIi/R4ewyxXzLRUe/6RydAIOlDrsL2j8k3jkwjhIc+BWNxEC4oS/WjLCzQmHrjTk2bPupEoDP7Qi09Y=
+	t=1765356767; cv=none; b=bTTQiFvp6vvcMztyyrRkJ9EaC45mDDazqSBfuSS22Gt7g0BY5d24WwyMppvKdqUq1ROi4pCNUNRAL+nA8vYWGeP8gH2e1EXchXr/6vPyDeVAfWNFg2pZ/HXAMSqKeXcyMY5N+b6zlZhYMKNFChFhAOy2znWu6sxHbUpoZHSA4kU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765355703; c=relaxed/simple;
-	bh=h66wVx+pDZR9CBJkShCYbUTT6AFbZOddLraapcW4ung=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dIqK2tepADu5rc5/uhXTFQhf7Z97Unp3/TuP9ciVTkrJJ0/HSHeM5QbvYaZ/VZwpN07EUsDGbMej6V9kV+RchYtoloaW0DMKn9grwgt2Uw6rVeaYwI+0+MF1PksDmO/dcYjNjD1tBX0zgHNzv8ha6prTg0SRpENemEiUxETkRbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vTFet-0007fZ-N1; Wed, 10 Dec 2025 09:34:51 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vTFes-004vMi-2X;
-	Wed, 10 Dec 2025 09:34:50 +0100
-Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 6EF164B3B25;
-	Wed, 10 Dec 2025 08:34:50 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	linux-can@vger.kernel.org,
-	kernel@pengutronix.de,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	s=arc-20240116; t=1765356767; c=relaxed/simple;
+	bh=4JAEFzOvbqzvSCkk/X0VDc7q0EdtoYeExC/T2EmYNkY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=af0U1GvKp680pEjdjlBQ5Hyg0tt/4+CDwqy1BQgPwQAG96Yyk44nlzI5f5ywjMLbPQUSYLZq3GnStgnybRtAgX3cAR0VX3/0kpa/ZAtI9E0UBbpPWJ1L87tuqfealNpKAdQ9ZCTbJZ9Zt0WgtinSI1mYBh+swDELXIdsEvM4SIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn; spf=pass smtp.mailfrom=isrc.iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isrc.iscas.ac.cn
+Received: from localhost.localdomain (unknown [36.112.3.239])
+	by APP-05 (Coremail) with SMTP id zQCowAAHnA_PNDlp62QyAA--.976S2;
+	Wed, 10 Dec 2025 16:52:31 +0800 (CST)
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+To: mchehab@kernel.org,
+	lihaoxiang@isrc.iscas.ac.cn,
+	hans.verkuil@cisco.com
+Cc: linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH net 2/2] can: gs_usb: gs_can_open(): fix error handling
-Date: Wed, 10 Dec 2025 09:32:24 +0100
-Message-ID: <20251210083448.2116869-3-mkl@pengutronix.de>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251210083448.2116869-1-mkl@pengutronix.de>
-References: <20251210083448.2116869-1-mkl@pengutronix.de>
+Subject: [PATCH v2] media: cx25821: Add missing unmap in snd_cx25821_hw_params()
+Date: Wed, 10 Dec 2025 16:52:30 +0800
+Message-Id: <20251210085230.67448-1-lihaoxiang@isrc.iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,47 +47,51 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+X-CM-TRANSID:zQCowAAHnA_PNDlp62QyAA--.976S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7Xw4rtF4fXw4xJr1DArWUJwb_yoWDJFXEgF
+	9Fq39rur4UCr4vyr48tr4S934UtFZ8uFs7Z3W3tFyYya4UCF1UJr90v34rJ3yqqrW5A3s0
+	yry7GFyUArWDAjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUb48FF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6r1F6r1fM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Jr0_
+	Gr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr
+	1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r12
+	6r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
+	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y
+	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
+	WUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
+	IxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUjuHq7UUUU
+	U==
+X-CM-SenderInfo: 5olkt0x0ld0ww6lv2u4olvutnvoduhdfq/1tbiBgsME2k49dzpxgAAsF
 
-Commit 2603be9e8167 ("can: gs_usb: gs_can_open(): improve error handling")
-added missing error handling to the gs_can_open() function.
+In error path, add cx25821_alsa_dma_unmap() to release the
+resource acquired by cx25821_alsa_dma_map()
 
-The driver uses 2 USB anchors to track the allocated URBs: the TX URBs in
-struct gs_can::tx_submitted for each netdev and the RX URBs in struct
-gs_usb::rx_submitted for the USB device. gs_can_open() allocates the RX
-URBs, while TX URBs are allocated during gs_can_start_xmit().
-
-The cleanup in gs_can_open() kills all anchored dev->tx_submitted
-URBs (which is not necessary since the netdev is not yet registered), but
-misses the parent->rx_submitted URBs.
-
-Fix the problem by killing the rx_submitted instead of the tx_submitted.
-
-Fixes: 2603be9e8167 ("can: gs_usb: gs_can_open(): improve error handling")
+Fixes: 8d8e6d6005de ("[media] cx28521: drop videobuf abuse in cx25821-alsa")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251210-gs_usb-fix-error-handling-v1-1-d6a5a03f10bb@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 ---
- drivers/net/can/usb/gs_usb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes in v2:
+- Fix the "Fixes" tag error.
+---
+ drivers/media/pci/cx25821/cx25821-alsa.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
-index e29e85b67fd4..a0233e550a5a 100644
---- a/drivers/net/can/usb/gs_usb.c
-+++ b/drivers/net/can/usb/gs_usb.c
-@@ -1074,7 +1074,7 @@ static int gs_can_open(struct net_device *netdev)
- 	usb_free_urb(urb);
- out_usb_kill_anchored_urbs:
- 	if (!parent->active_channels) {
--		usb_kill_anchored_urbs(&dev->tx_submitted);
-+		usb_kill_anchored_urbs(&parent->rx_submitted);
+diff --git a/drivers/media/pci/cx25821/cx25821-alsa.c b/drivers/media/pci/cx25821/cx25821-alsa.c
+index a42f0c03a7ca..f463365163b7 100644
+--- a/drivers/media/pci/cx25821/cx25821-alsa.c
++++ b/drivers/media/pci/cx25821/cx25821-alsa.c
+@@ -535,6 +535,7 @@ static int snd_cx25821_hw_params(struct snd_pcm_substream *substream,
+ 			chip->period_size, chip->num_periods, 1);
+ 	if (ret < 0) {
+ 		pr_info("DEBUG: ERROR after cx25821_risc_databuffer_audio()\n");
++		cx25821_alsa_dma_unmap(chip);
+ 		goto error;
+ 	}
  
- 		if (dev->feature & GS_CAN_FEATURE_HW_TIMESTAMP)
- 			gs_usb_timestamp_stop(parent);
 -- 
-2.51.0
+2.25.1
 
 
