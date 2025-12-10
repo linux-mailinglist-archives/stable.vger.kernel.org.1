@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-200648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8197CB23F4
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:36:13 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 624DCCB2490
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:39:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A8E68300ACD6
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:35:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 666263048620
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:35:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 245A4302CBA;
-	Wed, 10 Dec 2025 07:35:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06F00302CCD;
+	Wed, 10 Dec 2025 07:35:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZSnf9qeS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GiiKuOq0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4E245C613;
-	Wed, 10 Dec 2025 07:35:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A910C303C81;
+	Wed, 10 Dec 2025 07:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765352124; cv=none; b=dGFmnG517IkxBaW439tij8zPR7hW0a5evEfIXsHR3AJw4DmsIJtesNf1mEUilOZ6DtDwpnNDSf2X1VBwkE3XOHuyb41P7bG7033KIWTD0FjPBGz09n9QiFxaZNvmdEjO1IdM0pQ7fhBzLokGxFdj3KwsOHqPAcvn8nU47YPB0ss=
+	t=1765352155; cv=none; b=hBVAlv50eXm9UeH6MNWIFPd0ihONhXQYHrS4vPkNW56wzTEUhT3ZzrTDifrhNI510bEKsXYnJPQ/GpCpR/pZd/7BYx2XP4HZQ9VjnQnp/dUM34packL0345iH3WAvaCsHFRCNzWCFI4bsCv7+anM/DVT8V7Bs2PG0ulfrS1dTLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765352124; c=relaxed/simple;
-	bh=jsBFkMDlBh8o8/OESQPOmc9Epn3KmyLAHeV8BrPQFoU=;
+	s=arc-20240116; t=1765352155; c=relaxed/simple;
+	bh=G6YZ6IL3bv/JeJz/su0d0QG/WFM9zT4AWeOE1tQoLxg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lCeOMY1peyeUatPQI7w3O1t039Jgx4z3YKnzs9wRJ9MBosvu3CYheWUx0ev9lOYpgnIoytqX54T1K/L3LFp2GiInSbyp3hH3piSLR4hmw52VWPivVe8hhmTUp9ZUNC9Dq5aJT5Fm/+XrHY6eVDiVWGU4uLC5Cmi9fy0/Fqp0dfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZSnf9qeS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FA57C4CEF1;
-	Wed, 10 Dec 2025 07:35:24 +0000 (UTC)
+	 MIME-Version; b=beVoieqlLWcIm5W+3/x2N2DvkYvT+2BNt+ila6PJVDJNYMg33xEiaZLuXzgAYPViSffdvYgBIEEd3SHBc172xt5/zJTp3dfcW1/dZp2KrDBzbE0df9TDodhOvmqTwARTD0bFoE1Q6SKF/hGN0KY5Nq9QNQkjmP4mbwhIkANZqbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GiiKuOq0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17D78C116B1;
+	Wed, 10 Dec 2025 07:35:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765352124;
-	bh=jsBFkMDlBh8o8/OESQPOmc9Epn3KmyLAHeV8BrPQFoU=;
+	s=korg; t=1765352155;
+	bh=G6YZ6IL3bv/JeJz/su0d0QG/WFM9zT4AWeOE1tQoLxg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZSnf9qeSg6UKwxsmvaupzr+yJq2naE4e1MBVG8aymkop1rDf1mL0Q18+u6Tk0la1I
-	 14QNKNAPIk9vM8wNta6Pu5cMJSPBFWybL2CWnDxzy/mQ139fI4MuNVqv9IuUzA1cFk
-	 VT1HDELa1fy9iMhAOkehITyfr480Nd/zRkycHo/8=
+	b=GiiKuOq0z84q3Pn8UlMP4CaLAYph0kFCSfF5OKr8c52zSzCQ9sUcoWgZJ5DGLaKFT
+	 +MbwfiVf/UH07LYoUSEncnAYXQuDr1+YqW9l47ULJdmpTocNMF6pJYwDNm+VjpGdEa
+	 GF7g/KffKC/s3wMtdFv+QJEKOZPCWbWNFAF065tg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Antheas Kapenekakis <lkml@antheas.dev>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 42/60] platform/x86/amd: pmc: Add Lenovo Legion Go 2 to pmc quirk list
-Date: Wed, 10 Dec 2025 16:30:12 +0900
-Message-ID: <20251210072948.910954949@linuxfoundation.org>
+	syzbot+f3185be57d7e8dda32b8@syzkaller.appspotmail.com,
+	stable@kernel.org,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.18 03/29] ext4: refresh inline data size before write operations
+Date: Wed, 10 Dec 2025 16:30:13 +0900
+Message-ID: <20251210072944.463475676@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
-References: <20251210072947.850479903@linuxfoundation.org>
+In-Reply-To: <20251210072944.363788552@linuxfoundation.org>
+References: <20251210072944.363788552@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +59,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antheas Kapenekakis <lkml@antheas.dev>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit f945afe01c6768dcfed7868c671a26e1164c2284 ]
+commit 892e1cf17555735e9d021ab036c36bc7b58b0e3b upstream.
 
-The Lenovo Legion Go 2 takes a long time to resume from suspend.
-This is due to it having an nvme resume handler that interferes
-with IOMMU mappings. It is a common issue with older Lenovo
-laptops. Adding it to that quirk list fixes this issue.
+The cached ei->i_inline_size can become stale between the initial size
+check and when ext4_update_inline_data()/ext4_create_inline_data() use
+it. Although ext4_get_max_inline_size() reads the correct value at the
+time of the check, concurrent xattr operations can modify i_inline_size
+before ext4_write_lock_xattr() is acquired.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4618
-Suggested-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Link: https://patch.msgid.link/20251008135057.731928-1-lkml@antheas.dev
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This causes ext4_update_inline_data() and ext4_create_inline_data() to
+work with stale capacity values, leading to a BUG_ON() crash in
+ext4_write_inline_data():
+
+  kernel BUG at fs/ext4/inline.c:1331!
+  BUG_ON(pos + len > EXT4_I(inode)->i_inline_size);
+
+The race window:
+1. ext4_get_max_inline_size() reads i_inline_size = 60 (correct)
+2. Size check passes for 50-byte write
+3. [Another thread adds xattr, i_inline_size changes to 40]
+4. ext4_write_lock_xattr() acquires lock
+5. ext4_update_inline_data() uses stale i_inline_size = 60
+6. Attempts to write 50 bytes but only 40 bytes actually available
+7. BUG_ON() triggers
+
+Fix this by recalculating i_inline_size via ext4_find_inline_data_nolock()
+immediately after acquiring xattr_sem. This ensures ext4_update_inline_data()
+and ext4_create_inline_data() work with current values that are protected
+from concurrent modifications.
+
+This is similar to commit a54c4613dac1 ("ext4: fix race writing to an
+inline_data file while its xattrs are changing") which fixed i_inline_off
+staleness. This patch addresses the related i_inline_size staleness issue.
+
+Reported-by: syzbot+f3185be57d7e8dda32b8@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=f3185be57d7e8dda32b8
+Cc: stable@kernel.org
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Message-ID: <20251020060936.474314-1-kartikey406@gmail.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/amd/pmc/pmc-quirks.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ fs/ext4/inline.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/amd/pmc/pmc-quirks.c b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-index d63aaad7ef599..0fadcf5f288ac 100644
---- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
-+++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-@@ -204,6 +204,23 @@ static const struct dmi_system_id fwbug_list[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "82ND"),
- 		}
- 	},
-+	/* https://gitlab.freedesktop.org/drm/amd/-/issues/4618 */
-+	{
-+		.ident = "Lenovo Legion Go 2",
-+		.driver_data = &quirk_s2idle_bug,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83N0"),
-+		}
-+	},
-+	{
-+		.ident = "Lenovo Legion Go 2",
-+		.driver_data = &quirk_s2idle_bug,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83N1"),
-+		}
-+	},
- 	/* https://gitlab.freedesktop.org/drm/amd/-/issues/2684 */
- 	{
- 		.ident = "HP Laptop 15s-eq2xxx",
--- 
-2.51.0
-
+--- a/fs/ext4/inline.c
++++ b/fs/ext4/inline.c
+@@ -418,7 +418,12 @@ static int ext4_prepare_inline_data(hand
+ 		return -ENOSPC;
+ 
+ 	ext4_write_lock_xattr(inode, &no_expand);
+-
++	/*
++	 * ei->i_inline_size may have changed since the initial check
++	 * if other xattrs were added. Recalculate to ensure
++	 * ext4_update_inline_data() validates against current capacity.
++	 */
++	(void) ext4_find_inline_data_nolock(inode);
+ 	if (ei->i_inline_off)
+ 		ret = ext4_update_inline_data(handle, inode, len);
+ 	else
 
 
 
