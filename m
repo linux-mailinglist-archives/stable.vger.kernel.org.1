@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-200614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 708D9CB24DE
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:42:45 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9059BCB232E
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:31:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8B4EC3064545
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:41:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8499A300A29C
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:31:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07F06302140;
-	Wed, 10 Dec 2025 07:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2433D27B50C;
+	Wed, 10 Dec 2025 07:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="drKS7are"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nV8x2hzl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A861F301702;
-	Wed, 10 Dec 2025 07:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D358B1DD0EF;
+	Wed, 10 Dec 2025 07:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765352035; cv=none; b=QyrR4RDLOLeCKQBHuJ6CG+rixoSIaOpF+Ri5OnyLMV2XT7gewezi4ARpNhyeHje4BRJK5F4gMRWMAHZbGwTcTiqpXFogoTemp9L732u8aAw3DmE9ZXgs1SsS8/6bsNJoZMyw+Vhhv/5QGO4fZk7GZRxPgKEe5ioUSkRnGcbt2Ck=
+	t=1765351907; cv=none; b=eLVOsG3BDgtNzA1Wuv78wFAjWA3gXzTwyPYPv1j1ZpkEPwjgIT482LoNxm4KblMfzM2m+PKsOl1laGJIQHp2z+EdNglyG805DMKf9NdKomeBwCqIb0kk5aLszg4r24951QFHjK6I/Zats4SNFNqECti00KFyWalfe367WRrQSJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765352035; c=relaxed/simple;
-	bh=9au1OswdeyviRUuJ4KEHQCPSed5fosWdkiS6E69BveI=;
+	s=arc-20240116; t=1765351907; c=relaxed/simple;
+	bh=HfsRtB3lA0a7zzXHmU5vRuRTXZ7+NfjLP9LYQ1AsHAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pt63DZN/k7RcPHryjYRA2xc+5UswLNRuLbXPmmyDHLNfuxtwfKSEX8hAja08P9OXC3I7dMGt+8tNSrmd2xFAXTlPXWBgVHVFZLre1zfBzbUDeJFy/kMthssFkYls0C8QdbNTJJP29m0edM4VdEq/95/2ob/u8PsXEKnZhWqMQRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=drKS7are; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFA50C4CEF1;
-	Wed, 10 Dec 2025 07:33:54 +0000 (UTC)
+	 MIME-Version; b=FdZPxmT7ouZYq24nYz9Z0L0Bi98s3h0NY5kmcjFCi/7SFIeIi6CiHW3PrEu0KGszSPllxqzkmp5HL+ylOuqDdup+w+F1aokonq3BdjbGHQgNnM3VNOLURwDry4JQcrvl5k8o0mm49yTyodHSPjZO04tMWyCMrNS9auXnqJlS+wE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nV8x2hzl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18646C4CEF1;
+	Wed, 10 Dec 2025 07:31:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765352035;
-	bh=9au1OswdeyviRUuJ4KEHQCPSed5fosWdkiS6E69BveI=;
+	s=korg; t=1765351907;
+	bh=HfsRtB3lA0a7zzXHmU5vRuRTXZ7+NfjLP9LYQ1AsHAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=drKS7are9CtjGw2GPoCrvGW8fWJXW7XRBO0arvEjICDsQoefeGjJ2rXe3pupX7Ck3
-	 cgoYCgXzQ0qHpy/ZJmVdiS0qRZkT8U2tGL/jnTwSblmer6yDyAgPjVgFX2H5vi67/U
-	 xKzPeaxhJhPi9q1/ffdeLMPWgilZygbucP+7Hp0Y=
+	b=nV8x2hzlx7hCfahAHeBa7iIsvmWmgCdUxJMQQz72tWOfE0lQJWcJ26yNLLivLqik5
+	 aTb5KVIRnNh5HiSmh3QtjdqLIfBYFhYyz+yjNS69wOUyuDnV7PZLHnXlp8rSMBXLk9
+	 ghInLSszJ/jqAXqFIY8ZavtebKUUEGLeTrO40pmE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hilda Wu <hildawu@realtek.com>,
-	Nial Ni <niall_ni@realsil.com.cn>,
-	Max Chou <max.chou@realtek.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Philip Yang <Philip.Yang@amd.com>,
+	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 26/60] Bluetooth: btrtl: Avoid loading the config file on security chips
+Subject: [PATCH 6.12 26/49] drm/amdkfd: Fix GPU mappings for APU after prefetch
 Date: Wed, 10 Dec 2025 16:29:56 +0900
-Message-ID: <20251210072948.481641719@linuxfoundation.org>
+Message-ID: <20251210072948.814639764@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
-References: <20251210072947.850479903@linuxfoundation.org>
+In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
+References: <20251210072948.125620687@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,119 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Chou <max.chou@realtek.com>
+From: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
 
-[ Upstream commit cd8dbd9ef600435439bb0e70af0a1d9e2193aecb ]
+[ Upstream commit eac32ff42393efa6657efc821231b8d802c1d485 ]
 
-For chips with security enabled, it's only possible to load firmware
-with a valid signature pattern.
-If key_id is not zero, it indicates a security chip, and the driver will
-not load the config file.
+Fix the following corner case:-
+ Consider a 2M huge page SVM allocation, followed by prefetch call for
+the first 4K page. The whole range is initially mapped with single PTE.
+After the prefetch, this range gets split to first page + rest of the
+pages. Currently, the first page mapping is not updated on MI300A (APU)
+since page hasn't migrated. However, after range split PTE mapping it not
+valid.
 
-- Example log for a security chip.
+Fix this by forcing page table update for the whole range when prefetch
+is called.  Calling prefetch on APU doesn't improve performance. If all
+it deteriotes. However, functionality has to be supported.
 
-Bluetooth: hci0: RTL: examining hci_ver=0c hci_rev=000a
-  lmp_ver=0c lmp_subver=8922
-Bluetooth: hci0: RTL: rom_version status=0 version=1
-Bluetooth: hci0: RTL: btrtl_initialize: key id 1
-Bluetooth: hci0: RTL: loading rtl_bt/rtl8922au_fw.bin
-Bluetooth: hci0: RTL: cfg_sz 0, total sz 71301
-Bluetooth: hci0: RTL: fw version 0x41c0c905
+v2: Use apu_prefer_gtt as this issue doesn't apply to APUs with carveout
+VRAM
 
-- Example log for a normal chip.
+v3: Simplify by setting the flag for all ASICs as it doesn't affect dGPU
 
-Bluetooth: hci0: RTL: examining hci_ver=0c hci_rev=000a
-  lmp_ver=0c lmp_subver=8922
-Bluetooth: hci0: RTL: rom_version status=0 version=1
-Bluetooth: hci0: RTL: btrtl_initialize: key id 0
-Bluetooth: hci0: RTL: loading rtl_bt/rtl8922au_fw.bin
-Bluetooth: hci0: RTL: loading rtl_bt/rtl8922au_config.bin
-Bluetooth: hci0: RTL: cfg_sz 6, total sz 71307
-Bluetooth: hci0: RTL: fw version 0x41c0c905
+v4: Remove v2 and v3 changes. Force update_mapping when range is split
+at a size that is not aligned to prange granularity
 
-Tested-by: Hilda Wu <hildawu@realtek.com>
-Signed-off-by: Nial Ni <niall_ni@realsil.com.cn>
-Signed-off-by: Max Chou <max.chou@realtek.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Suggested-by: Philip Yang <Philip.Yang@amd.com>
+Signed-off-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+Reviewed-by: Philip Yang<Philip.Yang@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 076470b9f6f8d9c7c8ca73a9f054942a686f9ba7)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btrtl.c | 24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_svm.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/bluetooth/btrtl.c b/drivers/bluetooth/btrtl.c
-index 1d4a7887abccf..52794db2739bf 100644
---- a/drivers/bluetooth/btrtl.c
-+++ b/drivers/bluetooth/btrtl.c
-@@ -50,7 +50,7 @@
- 
- #define	RTL_CHIP_SUBVER (&(struct rtl_vendor_cmd) {{0x10, 0x38, 0x04, 0x28, 0x80}})
- #define	RTL_CHIP_REV    (&(struct rtl_vendor_cmd) {{0x10, 0x3A, 0x04, 0x28, 0x80}})
--#define	RTL_SEC_PROJ    (&(struct rtl_vendor_cmd) {{0x10, 0xA4, 0x0D, 0x00, 0xb0}})
-+#define	RTL_SEC_PROJ    (&(struct rtl_vendor_cmd) {{0x10, 0xA4, 0xAD, 0x00, 0xb0}})
- 
- #define RTL_PATCH_SNIPPETS		0x01
- #define RTL_PATCH_DUMMY_HEADER		0x02
-@@ -534,7 +534,6 @@ static int rtlbt_parse_firmware_v2(struct hci_dev *hdev,
- {
- 	struct rtl_epatch_header_v2 *hdr;
- 	int rc;
--	u8 reg_val[2];
- 	u8 key_id;
- 	u32 num_sections;
- 	struct rtl_section *section;
-@@ -549,14 +548,7 @@ static int rtlbt_parse_firmware_v2(struct hci_dev *hdev,
- 		.len  = btrtl_dev->fw_len - 7, /* Cut the tail */
- 	};
- 
--	rc = btrtl_vendor_read_reg16(hdev, RTL_SEC_PROJ, reg_val);
--	if (rc < 0)
--		return -EIO;
--	key_id = reg_val[0];
--
--	rtl_dev_dbg(hdev, "%s: key id %u", __func__, key_id);
--
--	btrtl_dev->key_id = key_id;
-+	key_id = btrtl_dev->key_id;
- 
- 	hdr = rtl_iov_pull_data(&iov, sizeof(*hdr));
- 	if (!hdr)
-@@ -1070,6 +1062,8 @@ struct btrtl_device_info *btrtl_initialize(struct hci_dev *hdev,
- 	u16 hci_rev, lmp_subver;
- 	u8 hci_ver, lmp_ver, chip_type = 0;
- 	int ret;
-+	int rc;
-+	u8 key_id;
- 	u8 reg_val[2];
- 
- 	btrtl_dev = kzalloc(sizeof(*btrtl_dev), GFP_KERNEL);
-@@ -1180,6 +1174,14 @@ struct btrtl_device_info *btrtl_initialize(struct hci_dev *hdev,
- 		goto err_free;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+index 0d950a20741d8..99ce4fe5eb170 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+@@ -3675,6 +3675,8 @@ svm_range_set_attr(struct kfd_process *p, struct mm_struct *mm,
+ 		svm_range_apply_attrs(p, prange, nattr, attrs, &update_mapping);
+ 		/* TODO: unmap ranges from GPU that lost access */
  	}
- 
-+	rc = btrtl_vendor_read_reg16(hdev, RTL_SEC_PROJ, reg_val);
-+	if (rc < 0)
-+		goto err_free;
++	update_mapping |= !p->xnack_enabled && !list_empty(&remap_list);
 +
-+	key_id = reg_val[0];
-+	btrtl_dev->key_id = key_id;
-+	rtl_dev_info(hdev, "%s: key id %u", __func__, key_id);
-+
- 	btrtl_dev->fw_len = -EIO;
- 	if (lmp_subver == RTL_ROM_LMP_8852A && hci_rev == 0x000c) {
- 		snprintf(fw_name, sizeof(fw_name), "%s_v2.bin",
-@@ -1202,7 +1204,7 @@ struct btrtl_device_info *btrtl_initialize(struct hci_dev *hdev,
- 		goto err_free;
- 	}
- 
--	if (btrtl_dev->ic_info->cfg_name) {
-+	if (btrtl_dev->ic_info->cfg_name && !btrtl_dev->key_id) {
- 		if (postfix) {
- 			snprintf(cfg_name, sizeof(cfg_name), "%s-%s.bin",
- 				 btrtl_dev->ic_info->cfg_name, postfix);
+ 	list_for_each_entry_safe(prange, next, &remove_list, update_list) {
+ 		pr_debug("unlink old 0x%p prange 0x%p [0x%lx 0x%lx]\n",
+ 			 prange->svms, prange, prange->start,
 -- 
 2.51.0
 
