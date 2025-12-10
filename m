@@ -1,229 +1,125 @@
-Return-Path: <stable+bounces-200735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2912CB38C1
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 17:59:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0B42CB3910
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 18:13:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EAAC53024342
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 16:58:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 06D0E304229D
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 17:13:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48BC2266B6B;
-	Wed, 10 Dec 2025 16:58:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D231326947;
+	Wed, 10 Dec 2025 17:13:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WMfxfJ5d"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G88BvYO1"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B6521771C
-	for <stable@vger.kernel.org>; Wed, 10 Dec 2025 16:58:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF49217F31;
+	Wed, 10 Dec 2025 17:13:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765385904; cv=none; b=OIT4nHTfRdbePBtriozoxM60vP9UhWmytWJkx3Jxn1LSIy/qyFS8MGT06eBLYZJ2n9+30TpDJ1jZ0+xZiBzjtRLZvxisy9AcBvEYglkZu2JbpxmMmPHlwhWO0wSqF4ccGnWZ5qNldVXcV2EdZ77B0VLQKqD8iCoPtFljLZcIuL4=
+	t=1765386802; cv=none; b=nDAFYVjcDQgHGnbBfkR1tYKbiutLos1spTgiWiCJGBnq1Ulz0mLaKa1dYIVU4uk3RprwvAL8FS0lKBw8Cn7wzk/17P1ArY2JuKCEIauESZXg3kYqIvka6Y+al4ItSL91MhdGYg2Jo8oABiP7OSwyL2D/bfw3aaXBYsy1T3IHu2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765385904; c=relaxed/simple;
-	bh=gFIo+KrdG+RVSEy6pKRA/YU+jj0wbAaFXvoD2Nd9d9k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kXzQCG5tbOFu9uoVjhmIZHorOB/01QBXHFeJQH2rBD8FBwQVAegROYU6j13PXN/f+Vj2i2Z+l8xHAA3UUk5gtIY+Y3k4B2rkqRvOlE1SRP9VnsIXLUudlBcgOS8nt0isgQwk18lQrNXOHCSIbg48fwdnLVhBeokLncu1DS7n8qs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WMfxfJ5d; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765385902; x=1796921902;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=gFIo+KrdG+RVSEy6pKRA/YU+jj0wbAaFXvoD2Nd9d9k=;
-  b=WMfxfJ5dyXYDlH+xjugqUmpGIHe3Tt1GxQIYsN6uy/RbYJSbTjrBuwzX
-   zP/ZzYhuoVwq0RAgu9ufonHe0bZlIb1Par/Lx6sBtxffG9Jg3lALt2MYW
-   048D4nbGYP9Om5hld9EJD7pAJ4RsGRJoVdj20hSWiniz9IFr79aXGMaq4
-   Od2R/5/8Tj++u2JOqd5HJGXrFbJL2IeuCKdthxPFF0AEGGJhuQAoNpqeQ
-   lQKYYYDVaSDvFxgrHv96IYs2JMJ+sLDop/nBdb6Eu76KbkgpICSv6Cntb
-   w2wcuI7L3b+nVOlzfvNGs2uonFpiGu9KvHJFrof+lxeqNHDBDRtdDYS9p
-   A==;
-X-CSE-ConnectionGUID: goDBIMZuQ8q0cLazzxxS9A==
-X-CSE-MsgGUID: r0FYHT8rRCWLjVTwqu+RRA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11638"; a="67399125"
-X-IronPort-AV: E=Sophos;i="6.20,264,1758610800"; 
-   d="scan'208";a="67399125"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2025 08:58:21 -0800
-X-CSE-ConnectionGUID: +zd/yn2BSlqPrunie5ua7w==
-X-CSE-MsgGUID: NLtEGS1jRBWieKEMmttjpw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,264,1758610800"; 
-   d="scan'208";a="200727964"
-Received: from kniemiec-mobl1.ger.corp.intel.com (HELO intel.com) ([10.245.246.224])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2025 08:58:17 -0800
-From: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-To: dri-devel@lists.freedesktop.org,
-	intel-gfx@lists.freedesktop.org
-Cc: stable@vger.kernel.org,
-	=?UTF-8?q?=EA=B9=80=EA=B0=95=EB=AF=BC?= <km.kim1503@gmail.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Chris Wilson <chris.p.wilson@linux.intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
-	Krzysztof Karas <krzysztof.karas@intel.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
-	Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-Subject: [PATCH v3] drm/i915/gem: Zero-initialize the eb.vma array in i915_gem_do_execbuffer()
-Date: Wed, 10 Dec 2025 17:57:01 +0100
-Message-ID: <20251210165659.29349-3-krzysztof.niemiec@intel.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1765386802; c=relaxed/simple;
+	bh=pJS26ygWKx0BxFMDuxBlj7ePrti1NRj9FoI83CGRq6g=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=shc8fzoQCHAF3hNsLZuSweio2SzLqmD+BrqOLZyzHBNK0bSCtS/lIf5dJRUJorzAlbhxDHvNwbFgzYie1SDqxp0BX+QeINQAAbkh/L5PtVrZS5QQUy0MMZ+Mxyd6Wx7bzGAuHKkLLHIm/S1MSwLqf6RppwqbaPUvrEpYMgLQoK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G88BvYO1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 396F3C116B1;
+	Wed, 10 Dec 2025 17:13:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765386801;
+	bh=pJS26ygWKx0BxFMDuxBlj7ePrti1NRj9FoI83CGRq6g=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=G88BvYO13k++ceLZOusrkKFuwb0efwFVR07wP7OUaQGI1alYOkWjjMsOMlsxjVEBT
+	 ESPj7ZYLrQYXEKqqYEaw2zCsIvWHZBPRkzX59WmY160LTBl1sOoGxUlpx2NrrMWiyx
+	 2K2CzfGaglEaWE/jdAx1RvHEuHQNCg+B2OH9oFHx9Gt/aPzZCb4uvhtPG41HAfa/oR
+	 4NRzJDaHJ3d5XFh2WOZeb1Opd9VEKTnQH9ieBNFoeGGCj19nxGXjb/VzHdGIS7SM0C
+	 nBEyP6ZQkbFfYN3IfuARMmvJ9FIaPcFsV+dUB5lmczL40ttoZFvLogIiQUntK142st
+	 GDVXyr/bVAI3A==
+Date: Wed, 10 Dec 2025 11:13:19 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Christian Marangi <ansuelsmth@gmail.com>
+Subject: Re: [PATCH 1/1] PCI: Use resource_set_range() that correctly sets
+ ->end
+Message-ID: <20251210171319.GA3530931@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251208145654.5294-1-ilpo.jarvinen@linux.intel.com>
 
-Initialize the eb.vma array with values of 0 when the eb structure is
-first set up. In particular, this sets the eb->vma[i].vma pointers to
-NULL, simplifying cleanup and getting rid of the bug described below.
+On Mon, Dec 08, 2025 at 04:56:54PM +0200, Ilpo Järvinen wrote:
+> __pci_read_base() sets resource start and end addresses when resource
+> is larger than 4G but pci_bus_addr_t or resource_size_t are not capable
+> of representing 64-bit PCI addresses. This creates a problematic
+> resource that has non-zero flags but the start and end addresses do not
+> yield to resource size of 0 but 1.
+> 
+> Replace custom resource addresses setup with resource_set_range()
+> that correctly sets end address as -1 which results in resource_size()
+> returning 0.
+> 
+> For consistency, also use resource_set_range() in the other branch that
+> does size based resource setup.
 
-During the execution of eb_lookup_vmas(), the eb->vma array is
-successively filled up with struct eb_vma objects. This process includes
-calling eb_add_vma(), which might fail; however, even in the event of
-failure, eb->vma[i].vma is set for the currently processed buffer.
+IIUC this fixes an ath11k regression (and probably others).  And
+typically when booting a 32-bit kernel with a device with a BAR larger
+than 4GB?
 
-If eb_add_vma() fails, eb_lookup_vmas() returns with an error, which
-prompts a call to eb_release_vmas() to clean up the mess. Since
-eb_lookup_vmas() might fail during processing any (possibly not first)
-buffer, eb_release_vmas() checks whether a buffer's vma is NULL to know
-at what point did the lookup function fail.
+Christian, is there any dmesg snippet we could include here to help
+users diagnose the problem?  I guess the "can't handle BAR larger than
+4GB" message is probably one clue.
 
-In eb_lookup_vmas(), eb->vma[i].vma is set to NULL if either the helper
-function eb_lookup_vma() or eb_validate_vma() fails. eb->vma[i+1].vma is
-set to NULL in case i915_gem_object_userptr_submit_init() fails; the
-current one needs to be cleaned up by eb_release_vmas() at this point,
-so the next one is set. If eb_add_vma() fails, neither the current nor
-the next vma is nullified, which is a source of a NULL deref bug
-described in the issue linked in the Closes tag.
+Are you able to test this and verify that it fixes the regression you
+saw?
 
-When entering eb_lookup_vmas(), the vma pointers are set to the slab
-poison value, instead of NULL. This doesn't matter for the actual
-lookup, since it gets overwritten anyway, however the eb_release_vmas()
-function only recognizes NULL as the stopping value, hence the pointers
-are being nullified as they go in case of intermediate failure. This
-patch changes the approach to filling them all with NULL at the start
-instead, rather than handling that manually during failure.
-
-Reported-by: Gangmin Kim <km.kim1503@gmail.com>
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15062
-Fixes: 544460c33821 ("drm/i915: Multi-BB execbuf")
-Cc: <stable@vger.kernel.org> # 5.16.x
-Signed-off-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
----
-
-I messed up the continuity in previous revisions; the original patch
-was sent as [1], and the first revision (which I didn't mark as v2 due
-to the title change) was sent as [2].
-
-This is the full current changelog:
-
-v3:
-   - use memset() to fill the entire eb.vma array with zeros instead of
-   looping through the elements (Janusz)
-   - add a comment clarifying the mechanism of the initial allocation (Janusz)
-   - change the commit log again, including title
-   - rearrange the tags to keep checkpatch happy
-v2:
-   - set the eb->vma[i].vma pointers to NULL during setup instead of
-     ad-hoc at failure (Janusz)
-   - romanize the reporter's name (Andi, offline)
-   - change the commit log, including title
-
-[1] https://patchwork.freedesktop.org/series/156832/
-[2] https://patchwork.freedesktop.org/series/158036/
-
- .../gpu/drm/i915/gem/i915_gem_execbuffer.c    | 36 +++++++++----------
- 1 file changed, 16 insertions(+), 20 deletions(-)
-
-diff --git a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-index b057c2fa03a4..5f2b736b53ab 100644
---- a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-@@ -951,13 +951,13 @@ static int eb_lookup_vmas(struct i915_execbuffer *eb)
- 		vma = eb_lookup_vma(eb, eb->exec[i].handle);
- 		if (IS_ERR(vma)) {
- 			err = PTR_ERR(vma);
--			goto err;
-+			return err;
- 		}
- 
- 		err = eb_validate_vma(eb, &eb->exec[i], vma);
- 		if (unlikely(err)) {
- 			i915_vma_put(vma);
--			goto err;
-+			return err;
- 		}
- 
- 		err = eb_add_vma(eb, &current_batch, i, vma);
-@@ -966,19 +966,8 @@ static int eb_lookup_vmas(struct i915_execbuffer *eb)
- 
- 		if (i915_gem_object_is_userptr(vma->obj)) {
- 			err = i915_gem_object_userptr_submit_init(vma->obj);
--			if (err) {
--				if (i + 1 < eb->buffer_count) {
--					/*
--					 * Execbuffer code expects last vma entry to be NULL,
--					 * since we already initialized this entry,
--					 * set the next value to NULL or we mess up
--					 * cleanup handling.
--					 */
--					eb->vma[i + 1].vma = NULL;
--				}
--
-+			if (err)
- 				return err;
--			}
- 
- 			eb->vma[i].flags |= __EXEC_OBJECT_USERPTR_INIT;
- 			eb->args->flags |= __EXEC_USERPTR_USED;
-@@ -986,10 +975,6 @@ static int eb_lookup_vmas(struct i915_execbuffer *eb)
- 	}
- 
- 	return 0;
--
--err:
--	eb->vma[i].vma = NULL;
--	return err;
- }
- 
- static int eb_lock_vmas(struct i915_execbuffer *eb)
-@@ -3375,7 +3360,9 @@ i915_gem_do_execbuffer(struct drm_device *dev,
- 
- 	eb.exec = exec;
- 	eb.vma = (struct eb_vma *)(exec + args->buffer_count + 1);
--	eb.vma[0].vma = NULL;
-+
-+	memset(eb.vma, 0x00, args->buffer_count * sizeof(struct eb_vma));
-+
- 	eb.batch_pool = NULL;
- 
- 	eb.invalid_flags = __EXEC_OBJECT_UNKNOWN_FLAGS;
-@@ -3584,7 +3571,16 @@ i915_gem_execbuffer2_ioctl(struct drm_device *dev, void *data,
- 	if (err)
- 		return err;
- 
--	/* Allocate extra slots for use by the command parser */
-+	/*
-+	 * Allocate extra slots for use by the command parser.
-+	 *
-+	 * Note that this allocation handles two different arrays (the
-+	 * exec2_list array, and the eventual eb.vma array introduced in
-+	 * i915_gem_do_execubuffer()), that reside in virtually contiguous
-+	 * memory. Also note that the allocation doesn't fill the area with
-+	 * zeros (the first part doesn't need to be), but the second part only
-+	 * is explicitly zeroed later in i915_gem_do_execbuffer().
-+	 */
- 	exec2_list = kvmalloc_array(count + 2, eb_element_size(),
- 				    __GFP_NOWARN | GFP_KERNEL);
- 	if (exec2_list == NULL) {
--- 
-2.45.2
-
+> Fixes: 23b13bc76f35 ("PCI: Fail safely if we can't handle BARs larger than 4GB")
+> Link: https://lore.kernel.org/all/20251207215359.28895-1-ansuelsmth@gmail.com/T/#m990492684913c5a158ff0e5fc90697d8ad95351b
+> Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+> Cc: stable@vger.kernel.org
+> Cc: Christian Marangi <ansuelsmth@gmail.com>
+> ---
+>  drivers/pci/probe.c | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+> index 124d2d309c58..b8294a2f11f9 100644
+> --- a/drivers/pci/probe.c
+> +++ b/drivers/pci/probe.c
+> @@ -287,8 +287,7 @@ int __pci_read_base(struct pci_dev *dev, enum pci_bar_type type,
+>  		if ((sizeof(pci_bus_addr_t) < 8 || sizeof(resource_size_t) < 8)
+>  		    && sz64 > 0x100000000ULL) {
+>  			res->flags |= IORESOURCE_UNSET | IORESOURCE_DISABLED;
+> -			res->start = 0;
+> -			res->end = 0;
+> +			resource_set_range(res, 0, 0);
+>  			pci_err(dev, "%s: can't handle BAR larger than 4GB (size %#010llx)\n",
+>  				res_name, (unsigned long long)sz64);
+>  			goto out;
+> @@ -297,8 +296,7 @@ int __pci_read_base(struct pci_dev *dev, enum pci_bar_type type,
+>  		if ((sizeof(pci_bus_addr_t) < 8) && l) {
+>  			/* Above 32-bit boundary; try to reallocate */
+>  			res->flags |= IORESOURCE_UNSET;
+> -			res->start = 0;
+> -			res->end = sz64 - 1;
+> +			resource_set_range(res, 0, sz64);
+>  			pci_info(dev, "%s: can't handle BAR above 4GB (bus address %#010llx)\n",
+>  				 res_name, (unsigned long long)l64);
+>  			goto out;
+> 
+> base-commit: 43dfc13ca972988e620a6edb72956981b75ab6b0
+> -- 
+> 2.39.5
+> 
 
