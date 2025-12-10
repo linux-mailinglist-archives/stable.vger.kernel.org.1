@@ -1,188 +1,114 @@
-Return-Path: <stable+bounces-200503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C24BCB1AA0
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 02:53:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E554CB1B86
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 03:33:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C08623019B6E
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 01:52:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8B5F73080ADD
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 02:33:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 510681A9F90;
-	Wed, 10 Dec 2025 01:52:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="msmCws/q"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2204F26CE2D;
+	Wed, 10 Dec 2025 02:33:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71521C6B4;
-	Wed, 10 Dec 2025 01:52:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D965F2686A0;
+	Wed, 10 Dec 2025 02:33:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765331554; cv=none; b=U+mK6AkHyn5zU178pkslBB7oOMGnlU32M4SyfK1j0hTSjblrNSIp2XGktAG3gggZ1ZGacJKtowL4kIEq9nvNFE9Y2MPNYBTNkcT136I7gRvCEJjz0a5sXhC9GyNLGko7drcFpxR/Nn09d4YFqKcXU6jdueqT3DYS6mOevE0DhgY=
+	t=1765333991; cv=none; b=jB8iSdU0UbEnX0S2GcWmLChFVFCK27MLqZByGgJbxuPPOZidOomAIrUOTuWlhx1c2mAbWTeI4/0uPhxD4FLp1L4YwNmxffFc6EJM7cEK7xiZIF7rFxP1a3QB/Mo8vj/aUcoaNbviFCBdDbhuPhuVBlhpdkrmeVBeS+hTRmlK3og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765331554; c=relaxed/simple;
-	bh=AgJe5J0QJDmJlbF7iup5O79NcgLId5mfje5CT+C/ZMg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VzA5d9Cuav+huNA8045yoSVd0xOuLosSXZsyq7mYjy9BStiFNyCe/rVRfVpeUqzPdgLNnsC3QQ4eM89Dz+jLAKrx8hA2G98zHGkFyuU1W6IoM8CUtOx8HxHf7oZszjpp+mYKfeGBhfeclqhnxIeni9u4VhyILhxwsIZpYHzd4Us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=msmCws/q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B8A8C4CEF5;
-	Wed, 10 Dec 2025 01:52:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765331553;
-	bh=AgJe5J0QJDmJlbF7iup5O79NcgLId5mfje5CT+C/ZMg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=msmCws/qdAQneeQA18DN78cwmSX/XedgeZS2BtkRoEOd7Um5sHhuwbuV568HxC6p9
-	 AGiWVc3x1V5wSBWovLgbyKFGrt4p5XJon1aEduZe+8JDCMtuMqyxo4OYZD4ftZsy0l
-	 bRva6upg/pZIVcbDDic9Hgw3GV7brTUnSdjlOEKw5kFkoI13pPQQ3c4kYOV+6U1gkc
-	 hNJzbtLISmsanwf5hmtTImgrz23XpqVOtKXFCcFzNW/mUiAfl8M5d7NlFSSHfYJ9UM
-	 etqM6lAXGBLZaSz2MFz9B2JkdwMVqNNfQ1LcTK/xN9Mkud4Q3vO4dUjFu1IVBV37+/
-	 FtClnkdn49CVw==
-Message-ID: <0b3458ab-e419-4ec2-9cba-eb9fd2cd8de9@kernel.org>
-Date: Tue, 9 Dec 2025 17:52:33 -0800
+	s=arc-20240116; t=1765333991; c=relaxed/simple;
+	bh=ag80Eo7W0tTquSre16KVgyzlL2w8cbwSMmdYxHMnsw0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jA3tQqjCsOljBch0QwvGmFOSqyrwwMoxyc74PkbpC/b9+moSFABewQeim9oEhxaxfIePrGXh158qJnx5NAO7GD7U5Y38nSRslZfLlr7p2fhjdWSAhe76ZFkibNrB1fUoULf6Jb9jwM/DxDb/Y9qjeKNCxgtMlDYKl1fvl16WE5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn; spf=pass smtp.mailfrom=isrc.iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isrc.iscas.ac.cn
+Received: from localhost.localdomain (unknown [36.112.3.239])
+	by APP-01 (Coremail) with SMTP id qwCowAD3nmrM2zhpn84nAA--.13800S2;
+	Wed, 10 Dec 2025 10:32:46 +0800 (CST)
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	lihaoxiang@isrc.iscas.ac.cn,
+	izumi.taku@jp.fujitsu.com
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] fjes: Add missing iounmap in fjes_hw_init()
+Date: Wed, 10 Dec 2025 10:32:43 +0800
+Message-Id: <20251210023243.47945-1-lihaoxiang@isrc.iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] scsi: sd: fix write_same(16/10) to enable sector size
- > PAGE_SIZE
-To: sw.prabhu6@gmail.com, James.Bottomley@HansenPartnership.com,
- martin.petersen@oracle.com, linux-scsi@vger.kernel.org
-Cc: bvanassche@acm.org, linux-kernel@vger.kernel.org, mcgrof@kernel.org,
- kernel@pankajraghav.com, stable@vger.kernel.org,
- Swarna Prabhu <s.prabhu@samsung.com>, Pankaj Raghav <p.raghav@samsung.com>
-References: <20251210014136.2549405-1-sw.prabhu6@gmail.com>
- <20251210014136.2549405-3-sw.prabhu6@gmail.com>
-Content-Language: en-US
-From: Damien Le Moal <dlemoal@kernel.org>
-Organization: Western Digital Research
-In-Reply-To: <20251210014136.2549405-3-sw.prabhu6@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowAD3nmrM2zhpn84nAA--.13800S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrZF1xCr43Gr18WF47KF48Zwb_yoWkWrbE9r
+	1SgFsrW3WUCr15tF1UCrW3Zry2vF4DWrySg3W7tFWftasxCF9FyryIkFsxX348Xw45Zr93
+	A34UXr13Jw13ZjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUb38FF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6r1F6r1fM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr
+	1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
+	n2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
+	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
+	17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
+	IF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
+	IxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWI
+	evJa73UjIFyTuYvjfUonmRUUUUU
+X-CM-SenderInfo: 5olkt0x0ld0ww6lv2u4olvutnvoduhdfq/1tbiBgoLE2k35laN1wABsh
 
-On 2025/12/09 17:41, sw.prabhu6@gmail.com wrote:
-> From: Swarna Prabhu <sw.prabhu6@gmail.com>
-> 
-> The WRITE SAME(16) and WRITE SAME(10) scsi commands uses
-> a page from a dedicated mempool('sd_page_pool') for its
-> payload. This pool was initialized to allocate single
-> pages, which was sufficient as long as the device sector
-> size did not exceed the PAGE_SIZE.
-> 
-> Given that block layer now supports block size upto
-> 64K ie beyond PAGE_SIZE, adapt sd_set_special_bvec()
-> to accommodate that.
-> 
-> With the above fix, enable sector sizes > PAGE_SIZE in
-> scsi sd driver.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Swarna Prabhu <s.prabhu@samsung.com>
-> Co-developed-by: Pankaj Raghav <p.raghav@samsung.com>
-> Signed-off-by: Pankaj Raghav <p.raghav@samsung.com>
-> ---
-> Note: We are allocating pages of order aligned to 
-> BLK_MAX_BLOCK_SIZE for the mempool page allocator
-> 'sd_page_pool' all the time. This is because we only
-> know that a bigger sector size device is attached at
-> sd_probe and it might be too late to reallocate mempool
-> with order >0.
+In error paths, add fjes_hw_iounmap() to release the
+resource acquired by fjes_hw_iomap().
 
-That is a lot heavier on the memory for the vast majority of devices which are
-512B or 4K block size... It may be better to have the special "large block"
-mempool attached to the scsi disk struct and keep the default single page
-mempool for all other regular devices.
+Fixes: 8cdc3f6c5d22 ("fjes: Hardware initialization routine")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+---
+ drivers/net/fjes/fjes_hw.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-> 
->  drivers/scsi/sd.c | 27 +++++++++++++++++----------
->  1 file changed, 17 insertions(+), 10 deletions(-)
-> 
-> diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
-> index 0252d3f6bed1..17b5c1589eb2 100644
-> --- a/drivers/scsi/sd.c
-> +++ b/drivers/scsi/sd.c
-> @@ -892,14 +892,24 @@ static void sd_config_discard(struct scsi_disk *sdkp, struct queue_limits *lim,
->  		(logical_block_size >> SECTOR_SHIFT);
->  }
->  
-> -static void *sd_set_special_bvec(struct request *rq, unsigned int data_len)
-> +static void *sd_set_special_bvec(struct scsi_cmnd *cmd, unsigned int data_len)
->  {
->  	struct page *page;
-> +	struct request *rq = scsi_cmd_to_rq(cmd);
-> +	struct scsi_device *sdp = cmd->device;
-> +	unsigned sector_size = sdp->sector_size;
-> +	unsigned int nr_pages = DIV_ROUND_UP(sector_size, PAGE_SIZE);
-> +	int n = 0;
->  
->  	page = mempool_alloc(sd_page_pool, GFP_ATOMIC);
->  	if (!page)
->  		return NULL;
-> -	clear_highpage(page);
-> +
-> +	do {
-> +		clear_highpage(page + n);
-> +		n++;
-> +	} while (n < nr_pages);
-> +
->  	bvec_set_page(&rq->special_vec, page, data_len, 0);
->  	rq->rq_flags |= RQF_SPECIAL_PAYLOAD;
->  	return bvec_virt(&rq->special_vec);
-> @@ -915,7 +925,7 @@ static blk_status_t sd_setup_unmap_cmnd(struct scsi_cmnd *cmd)
->  	unsigned int data_len = 24;
->  	char *buf;
->  
-> -	buf = sd_set_special_bvec(rq, data_len);
-> +	buf = sd_set_special_bvec(cmd, data_len);
->  	if (!buf)
->  		return BLK_STS_RESOURCE;
->  
-> @@ -1004,7 +1014,7 @@ static blk_status_t sd_setup_write_same16_cmnd(struct scsi_cmnd *cmd,
->  	u32 nr_blocks = sectors_to_logical(sdp, blk_rq_sectors(rq));
->  	u32 data_len = sdp->sector_size;
->  
-> -	if (!sd_set_special_bvec(rq, data_len))
-> +	if (!sd_set_special_bvec(cmd, data_len))
->  		return BLK_STS_RESOURCE;
->  
->  	cmd->cmd_len = 16;
-> @@ -1031,7 +1041,7 @@ static blk_status_t sd_setup_write_same10_cmnd(struct scsi_cmnd *cmd,
->  	u32 nr_blocks = sectors_to_logical(sdp, blk_rq_sectors(rq));
->  	u32 data_len = sdp->sector_size;
->  
-> -	if (!sd_set_special_bvec(rq, data_len))
-> +	if (!sd_set_special_bvec(cmd, data_len))
->  		return BLK_STS_RESOURCE;
->  
->  	cmd->cmd_len = 10;
-> @@ -2880,10 +2890,7 @@ sd_read_capacity(struct scsi_disk *sdkp, struct queue_limits *lim,
->  			  "assuming 512.\n");
->  	}
->  
-> -	if (sector_size != 512 &&
-> -	    sector_size != 1024 &&
-> -	    sector_size != 2048 &&
-> -	    sector_size != 4096) {
-> +	if (blk_validate_block_size(sector_size)) {
->  		sd_printk(KERN_NOTICE, sdkp, "Unsupported sector size %d.\n",
->  			  sector_size);
->  		/*
-> @@ -4368,7 +4375,7 @@ static int __init init_sd(void)
->  	if (err)
->  		goto err_out;
->  
-> -	sd_page_pool = mempool_create_page_pool(SD_MEMPOOL_SIZE, 0);
-> +	sd_page_pool = mempool_create_page_pool(SD_MEMPOOL_SIZE, get_order(BLK_MAX_BLOCK_SIZE));
->  	if (!sd_page_pool) {
->  		printk(KERN_ERR "sd: can't init discard page pool\n");
->  		err = -ENOMEM;
-
-
+diff --git a/drivers/net/fjes/fjes_hw.c b/drivers/net/fjes/fjes_hw.c
+index b9b5554ea862..a2e89ffa6f70 100644
+--- a/drivers/net/fjes/fjes_hw.c
++++ b/drivers/net/fjes/fjes_hw.c
+@@ -333,8 +333,10 @@ int fjes_hw_init(struct fjes_hw *hw)
+ 		return -EIO;
+ 
+ 	ret = fjes_hw_reset(hw);
+-	if (ret)
++	if (ret) {
++		fjes_hw_iounmap(hw);
+ 		return ret;
++	}
+ 
+ 	fjes_hw_set_irqmask(hw, REG_ICTL_MASK_ALL, true);
+ 
+@@ -347,8 +349,10 @@ int fjes_hw_init(struct fjes_hw *hw)
+ 	hw->max_epid = fjes_hw_get_max_epid(hw);
+ 	hw->my_epid = fjes_hw_get_my_epid(hw);
+ 
+-	if ((hw->max_epid == 0) || (hw->my_epid >= hw->max_epid))
++	if ((hw->max_epid == 0) || (hw->my_epid >= hw->max_epid)) {
++		fjes_hw_iounmap(hw);
+ 		return -ENXIO;
++	}
+ 
+ 	ret = fjes_hw_setup(hw);
+ 
 -- 
-Damien Le Moal
-Western Digital Research
+2.25.1
+
 
