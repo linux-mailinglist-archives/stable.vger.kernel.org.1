@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-200574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23E77CB234C
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:32:16 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9DCCCB2406
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:36:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 93B7830262F3
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:32:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 26A2E3027FDE
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:34:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EA9A26A0A7;
-	Wed, 10 Dec 2025 07:32:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B52BE303C81;
+	Wed, 10 Dec 2025 07:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NOYE2d88"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CrjVLtgG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF2BB1DD0EF;
-	Wed, 10 Dec 2025 07:32:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 713E727FB2E;
+	Wed, 10 Dec 2025 07:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765351934; cv=none; b=aVV8M3kwSvJufXzZGWFvKVo59tDFGmtdJ4ftbk1+BPlukvoRtk6bJrRJS41wDY9KSvCfZFBrb0eQ9UcSCAYILpO8aZEgq5zF20XNqpTxcOeEAopYtOV4hB40IGVJ7xa10MNOxrzPJukBXvVV26EhYPyl8X+q4gq6vc4aIppStG8=
+	t=1765352063; cv=none; b=MqcSQtNv8DzbxbQizSFNojz76ZEEOiN+e1lGOCLZyREpoZymbsS/qmZylD+k3+omC2OfztFTWm3nO8aVQwpTwwbxve0ki+j/5cQsKor50zbGw//kZZQ5FXG5C0OdnXXD5M9HzF9ia+lMTE905z4k0TLINqR26gMb9/w+xLEkR0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765351934; c=relaxed/simple;
-	bh=pAzztpPNS8jucRURTcamD3jqsKvv3EJDrr3kai1FDv8=;
+	s=arc-20240116; t=1765352063; c=relaxed/simple;
+	bh=H4JkXgK5DNhb84wfkk4yq8WwJfgvCsOQX+avdPa6HdE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OIM67sUurndvy1AifzeTExipnppbW6gOsT9K9JR3tXfElr427+iTfZtBnwgFqGiERXHWzB1xDUkYELvVd4QWW61mViNeGxj1/CY2oQdY4YMpHTKYSkwXDjOzjaebULbe2qwLhLcPEkfTVccKKUCDRmDfyz3TF4kKGdLgE8x6qGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NOYE2d88; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44362C4CEF1;
-	Wed, 10 Dec 2025 07:32:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ukvfqCxQu4kTDYeUtcAkeg9wJV6vtY8vvnTWy1piYGQCkoIeoa+iVLu1fnPThNb7uwZkxPsm/e6oe1vUSP2KdWuzZe8f9H5LYGrjW+VBWHWakZTNgDcK8ROB51MCYON7ntgvjK6pzAWA2GzxwwgEVKTICH/hUUpJPLh/3WWtd18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CrjVLtgG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C571CC4CEF1;
+	Wed, 10 Dec 2025 07:34:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765351933;
-	bh=pAzztpPNS8jucRURTcamD3jqsKvv3EJDrr3kai1FDv8=;
+	s=korg; t=1765352063;
+	bh=H4JkXgK5DNhb84wfkk4yq8WwJfgvCsOQX+avdPa6HdE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NOYE2d88CMjsS+7HBwh8227E3KCZ9e7smOXrTECrOZ/ELvZQ0Gqjy8kRBXHQ/goAH
-	 LE8HnFMGw/PdCI2GaCzLc451NFyor0u5fHzTb/5rHYIXT3CPJVBaY9tjNxEKvj4qPv
-	 gPGLha8+bEBXYI0/+GyOP27a6ceX6ETJEYt6e4Pk=
+	b=CrjVLtgGcOzFiFCg80nl75TlGp6nkYwv+aSysn4bjmdLIWEo8AgAGKKaQaxCayEk1
+	 lIKhjPmP9eVeBmDHx8AXwSMJglom2qz9pbS+YtfMKrHmVea2J9y0B6L1zI0qR2+LPJ
+	 m4MS6UcgqeWuoPsOqnPN+8IgNPOw4B63nSlbQu7s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Antheas Kapenekakis <lkml@antheas.dev>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Edip Hazuri <edip@medip.dev>,
 	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 35/49] platform/x86/amd: pmc: Add Lenovo Legion Go 2 to pmc quirk list
+Subject: [PATCH 6.17 35/60] platform/x86: hp-wmi: mark Victus 16-r0 and 16-s0 for victus_s fan and thermal profile support
 Date: Wed, 10 Dec 2025 16:30:05 +0900
-Message-ID: <20251210072949.038004651@linuxfoundation.org>
+Message-ID: <20251210072948.725649051@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
-References: <20251210072948.125620687@linuxfoundation.org>
+In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
+References: <20251210072947.850479903@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +61,41 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antheas Kapenekakis <lkml@antheas.dev>
+From: Edip Hazuri <edip@medip.dev>
 
-[ Upstream commit f945afe01c6768dcfed7868c671a26e1164c2284 ]
+[ Upstream commit 54afb047cd7eb40149f3fc42d69fd4ddde2be9f0 ]
 
-The Lenovo Legion Go 2 takes a long time to resume from suspend.
-This is due to it having an nvme resume handler that interferes
-with IOMMU mappings. It is a common issue with older Lenovo
-laptops. Adding it to that quirk list fixes this issue.
+This patch adds Victus 16-r0 (8bbe) and Victus 16-s0(8bd4, 8bd5) laptop
+DMI board name into existing list
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4618
-Suggested-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Link: https://patch.msgid.link/20251008135057.731928-1-lkml@antheas.dev
+Signed-off-by: Edip Hazuri <edip@medip.dev>
+Link: https://patch.msgid.link/20251015181042.23961-3-edip@medip.dev
 Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/amd/pmc/pmc-quirks.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/platform/x86/hp/hp-wmi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/amd/pmc/pmc-quirks.c b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-index 9fd2829ee2ab4..271cbeaa59af3 100644
---- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
-+++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-@@ -198,6 +198,23 @@ static const struct dmi_system_id fwbug_list[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "82ND"),
- 		}
- 	},
-+	/* https://gitlab.freedesktop.org/drm/amd/-/issues/4618 */
-+	{
-+		.ident = "Lenovo Legion Go 2",
-+		.driver_data = &quirk_s2idle_bug,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83N0"),
-+		}
-+	},
-+	{
-+		.ident = "Lenovo Legion Go 2",
-+		.driver_data = &quirk_s2idle_bug,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83N1"),
-+		}
-+	},
- 	/* https://gitlab.freedesktop.org/drm/amd/-/issues/2684 */
- 	{
- 		.ident = "HP Laptop 15s-eq2xxx",
+diff --git a/drivers/platform/x86/hp/hp-wmi.c b/drivers/platform/x86/hp/hp-wmi.c
+index 8b3533d6ba091..9a668e2587952 100644
+--- a/drivers/platform/x86/hp/hp-wmi.c
++++ b/drivers/platform/x86/hp/hp-wmi.c
+@@ -92,8 +92,9 @@ static const char * const victus_thermal_profile_boards[] = {
+ 	"8A25"
+ };
+ 
+-/* DMI Board names of Victus 16-r1000 and Victus 16-s1000 laptops */
++/* DMI Board names of Victus 16-r and Victus 16-s laptops */
+ static const char * const victus_s_thermal_profile_boards[] = {
++	"8BBE", "8BD4", "8BD5",
+ 	"8C99", "8C9C"
+ };
+ 
 -- 
 2.51.0
 
