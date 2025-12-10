@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-200661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CA6DCB2496
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:39:54 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05DE5CB236D
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:32:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 149203047CBE
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:36:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8D8DB3022643
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:32:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97BF427FB2E;
-	Wed, 10 Dec 2025 07:35:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAF54280329;
+	Wed, 10 Dec 2025 07:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lxcAa4tg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NKBVHEDY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6D4303C81;
-	Wed, 10 Dec 2025 07:35:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97F6D26A0A7;
+	Wed, 10 Dec 2025 07:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765352159; cv=none; b=a7o+EYtw1JLk4wSeWkz8Wap3kmP4pzYCj98KvAoiY4lXLRoR0G4DvDpISh0JrOoLKzUabxFXvglC4HwhmznFQFP8Youi9HhlZVt8GNVVpq8rrEfyvEYItgosMF/AA3sZNcvJwFyTtEazY81rZ49Sr26VSNvFC2z2Homn5rwCkKc=
+	t=1765351956; cv=none; b=DBk6Qmz99APA9GC00XKDz8FARPm4GqVaYLm/kRhlhYoGLhjQSp/cX9Jxi0sBQ8dnT0OVqG3fI+vcgHFqMX4wFfeexdGnxnB20aE8/7Q46Y46B3Si5yuo+cdl3W/ySlO4jnVH5YcFSGLqRZ00BRe6yB3+wVHk2vpO0tNs1rIqHog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765352159; c=relaxed/simple;
-	bh=5zysFCDzAt6873wtAewPic96DchaPhVyEN6KWMcTnk8=;
+	s=arc-20240116; t=1765351956; c=relaxed/simple;
+	bh=wLehWlJ/IUlLKCAKhPP2+8jwvR3xT/cMthRVpupa7rs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sidZTjavu0KWWKtpJmhqVfCnRevAkJ5G3PuCsd8NHfEpI3N+AFvcJ0YcKN0fJqnclNayt5vi7vZcDZmw7Pd9hbYqBMqkAEQ/Z8lwsqKG0+bWs+XCKr92IQqSCiPz6+/7boHTbNqjt4G+jAAAeC4AQRXGbbDfDSO6YvvubmTerNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lxcAa4tg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DE88C4CEF1;
-	Wed, 10 Dec 2025 07:35:58 +0000 (UTC)
+	 MIME-Version; b=iJH3gvdA/P25A2cu5pJk8K7Gqthzi6arjo/QhbI+x7CGHRlvMb+bsHfUi/uUgMhTgGjQFEKcejsr3Yv4cTFibq+I10wHq/+DECGrJyGIzb5sGj90WSKH2ROcCPyTkM76fBimMFJPyMceT3i5UpezBAZ7Z0s9n734TknQ/8+NcpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NKBVHEDY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AC60C4CEF1;
+	Wed, 10 Dec 2025 07:32:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765352159;
-	bh=5zysFCDzAt6873wtAewPic96DchaPhVyEN6KWMcTnk8=;
+	s=korg; t=1765351956;
+	bh=wLehWlJ/IUlLKCAKhPP2+8jwvR3xT/cMthRVpupa7rs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lxcAa4tg8Kcu4HmFVma922x7WBEVkXrFCKRCSGXHGj3ZX9sTmzGf8P4r9rE1HSWtt
-	 gmr2dY0NgnreY0nZEO0wYjBFlP14bxJhf7c3a1LUnsCOSOxRkuS5OV6b9sCZmG6PJl
-	 6wur1QtJLFqMlTTp1/4jScRC5+IOxrAS2xGkYdtg=
+	b=NKBVHEDYRryzvOt3gyTkuKa820rPJxN9VwfHBqzzlFjmO3Q/PetlrpRSnQHj/y5C8
+	 eIbl7tdrcwhOcwMZ3nbGAPS6LRuyp21LfGRXTAhMiFodTTpC/3ow7H9psAkCMQ1Jj4
+	 WGoAHKWE+fH+qoMKVvba0uSYxTbeagkFzHy4elLU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qianchang Zhao <pioooooooooip@gmail.com>,
-	Zhitong Liu <liuzhitong1993@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.18 04/29] ksmbd: ipc: fix use-after-free in ipc_msg_send_request
+	syzbot+ab8008c24e84adee93ff@syzkaller.appspotmail.com,
+	stable <stable@kernel.org>,
+	Ian Abbott <abbotti@mev.co.uk>,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Subject: [PATCH 6.12 44/49] comedi: check devices attached status in compat ioctls
 Date: Wed, 10 Dec 2025 16:30:14 +0900
-Message-ID: <20251210072944.491410534@linuxfoundation.org>
+Message-ID: <20251210072949.261238934@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072944.363788552@linuxfoundation.org>
-References: <20251210072944.363788552@linuxfoundation.org>
+In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
+References: <20251210072948.125620687@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +61,151 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qianchang Zhao <pioooooooooip@gmail.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-commit 1fab1fa091f5aa97265648b53ea031deedd26235 upstream.
+commit 0de7d9cd07a2671fa6089173bccc0b2afe6b93ee upstream.
 
-ipc_msg_send_request() waits for a generic netlink reply using an
-ipc_msg_table_entry on the stack. The generic netlink handler
-(handle_generic_event()/handle_response()) fills entry->response under
-ipc_msg_table_lock, but ipc_msg_send_request() used to validate and free
-entry->response without holding the same lock.
+Syzbot identified an issue [1] that crashes kernel, seemingly due to
+unexistent callback dev->get_valid_routes(). By all means, this should
+not occur as said callback must always be set to
+get_zero_valid_routes() in __comedi_device_postconfig().
 
-Under high concurrency this allows a race where handle_response() is
-copying data into entry->response while ipc_msg_send_request() has just
-freed it, leading to a slab-use-after-free reported by KASAN in
-handle_generic_event():
+As the crash seems to appear exclusively in i386 kernels, at least,
+judging from [1] reports, the blame lies with compat versions
+of standard IOCTL handlers. Several of them are modified and
+do not use comedi_unlocked_ioctl(). While functionality of these
+ioctls essentially copy their original versions, they do not
+have required sanity check for device's attached status. This,
+in turn, leads to a possibility of calling select IOCTLs on a
+device that has not been properly setup, even via COMEDI_DEVCONFIG.
 
-  BUG: KASAN: slab-use-after-free in handle_generic_event+0x3c4/0x5f0 [ksmbd]
-  Write of size 12 at addr ffff888198ee6e20 by task pool/109349
-  ...
-  Freed by task:
-    kvfree
-    ipc_msg_send_request [ksmbd]
-    ksmbd_rpc_open -> ksmbd_session_rpc_open [ksmbd]
+Doing so on unconfigured devices means that several crucial steps
+are missed, for instance, specifying dev->get_valid_routes()
+callback.
 
-Fix by:
-- Taking ipc_msg_table_lock in ipc_msg_send_request() while validating
-  entry->response, freeing it when invalid, and removing the entry from
-  ipc_msg_table.
-- Returning the final entry->response pointer to the caller only after
-  the hash entry is removed under the lock.
-- Returning NULL in the error path, preserving the original API
-  semantics.
+Fix this somewhat crudely by ensuring device's attached status before
+performing any ioctls, improving logic consistency between modern
+and compat functions.
 
-This makes all accesses to entry->response consistent with
-handle_response(), which already updates and fills the response buffer
-under ipc_msg_table_lock, and closes the race that allowed the UAF.
+[1] Syzbot report:
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+...
+CR2: ffffffffffffffd6 CR3: 000000006c717000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ get_valid_routes drivers/comedi/comedi_fops.c:1322 [inline]
+ parse_insn+0x78c/0x1970 drivers/comedi/comedi_fops.c:1401
+ do_insnlist_ioctl+0x272/0x700 drivers/comedi/comedi_fops.c:1594
+ compat_insnlist drivers/comedi/comedi_fops.c:3208 [inline]
+ comedi_compat_ioctl+0x810/0x990 drivers/comedi/comedi_fops.c:3273
+ __do_compat_sys_ioctl fs/ioctl.c:695 [inline]
+ __se_compat_sys_ioctl fs/ioctl.c:638 [inline]
+ __ia32_compat_sys_ioctl+0x242/0x370 fs/ioctl.c:638
+ do_syscall_32_irqs_on arch/x86/entry/syscall_32.c:83 [inline]
+...
 
-Cc: stable@vger.kernel.org
-Reported-by: Qianchang Zhao <pioooooooooip@gmail.com>
-Reported-by: Zhitong Liu <liuzhitong1993@gmail.com>
-Signed-off-by: Qianchang Zhao <pioooooooooip@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Reported-by: syzbot+ab8008c24e84adee93ff@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=ab8008c24e84adee93ff
+Fixes: 3fbfd2223a27 ("comedi: get rid of compat_alloc_user_space() mess in COMEDI_CHANINFO compat")
+Cc: stable <stable@kernel.org>
+Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Link: https://patch.msgid.link/20251023132234.395794-1-n.zhandarovich@fintech.ru
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/transport_ipc.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/comedi/comedi_fops.c |   42 ++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 36 insertions(+), 6 deletions(-)
 
---- a/fs/smb/server/transport_ipc.c
-+++ b/fs/smb/server/transport_ipc.c
-@@ -553,12 +553,16 @@ static void *ipc_msg_send_request(struct
- 	up_write(&ipc_msg_table_lock);
+--- a/drivers/comedi/comedi_fops.c
++++ b/drivers/comedi/comedi_fops.c
+@@ -2971,7 +2971,12 @@ static int compat_chaninfo(struct file *
+ 	chaninfo.rangelist = compat_ptr(chaninfo32.rangelist);
  
- 	ret = ipc_msg_send(msg);
--	if (ret)
-+	if (ret) {
-+		down_write(&ipc_msg_table_lock);
- 		goto out;
+ 	mutex_lock(&dev->mutex);
+-	err = do_chaninfo_ioctl(dev, &chaninfo);
++	if (!dev->attached) {
++		dev_dbg(dev->class_dev, "no driver attached\n");
++		err = -ENODEV;
++	} else {
++		err = do_chaninfo_ioctl(dev, &chaninfo);
 +	}
+ 	mutex_unlock(&dev->mutex);
+ 	return err;
+ }
+@@ -2992,7 +2997,12 @@ static int compat_rangeinfo(struct file
+ 	rangeinfo.range_ptr = compat_ptr(rangeinfo32.range_ptr);
  
- 	ret = wait_event_interruptible_timeout(entry.wait,
- 					       entry.response != NULL,
- 					       IPC_WAIT_TIMEOUT);
-+
-+	down_write(&ipc_msg_table_lock);
- 	if (entry.response) {
- 		ret = ipc_validate_msg(&entry);
- 		if (ret) {
-@@ -567,7 +571,6 @@ static void *ipc_msg_send_request(struct
- 		}
+ 	mutex_lock(&dev->mutex);
+-	err = do_rangeinfo_ioctl(dev, &rangeinfo);
++	if (!dev->attached) {
++		dev_dbg(dev->class_dev, "no driver attached\n");
++		err = -ENODEV;
++	} else {
++		err = do_rangeinfo_ioctl(dev, &rangeinfo);
++	}
+ 	mutex_unlock(&dev->mutex);
+ 	return err;
+ }
+@@ -3068,7 +3078,12 @@ static int compat_cmd(struct file *file,
+ 		return rc;
+ 
+ 	mutex_lock(&dev->mutex);
+-	rc = do_cmd_ioctl(dev, &cmd, &copy, file);
++	if (!dev->attached) {
++		dev_dbg(dev->class_dev, "no driver attached\n");
++		rc = -ENODEV;
++	} else {
++		rc = do_cmd_ioctl(dev, &cmd, &copy, file);
++	}
+ 	mutex_unlock(&dev->mutex);
+ 	if (copy) {
+ 		/* Special case: copy cmd back to user. */
+@@ -3093,7 +3108,12 @@ static int compat_cmdtest(struct file *f
+ 		return rc;
+ 
+ 	mutex_lock(&dev->mutex);
+-	rc = do_cmdtest_ioctl(dev, &cmd, &copy, file);
++	if (!dev->attached) {
++		dev_dbg(dev->class_dev, "no driver attached\n");
++		rc = -ENODEV;
++	} else {
++		rc = do_cmdtest_ioctl(dev, &cmd, &copy, file);
++	}
+ 	mutex_unlock(&dev->mutex);
+ 	if (copy) {
+ 		err = put_compat_cmd(compat_ptr(arg), &cmd);
+@@ -3153,7 +3173,12 @@ static int compat_insnlist(struct file *
  	}
- out:
--	down_write(&ipc_msg_table_lock);
- 	hash_del(&entry.ipc_table_hlist);
- 	up_write(&ipc_msg_table_lock);
- 	return entry.response;
+ 
+ 	mutex_lock(&dev->mutex);
+-	rc = do_insnlist_ioctl(dev, insns, insnlist32.n_insns, file);
++	if (!dev->attached) {
++		dev_dbg(dev->class_dev, "no driver attached\n");
++		rc = -ENODEV;
++	} else {
++		rc = do_insnlist_ioctl(dev, insns, insnlist32.n_insns, file);
++	}
+ 	mutex_unlock(&dev->mutex);
+ 	kfree(insns);
+ 	return rc;
+@@ -3172,7 +3197,12 @@ static int compat_insn(struct file *file
+ 		return rc;
+ 
+ 	mutex_lock(&dev->mutex);
+-	rc = do_insn_ioctl(dev, &insn, file);
++	if (!dev->attached) {
++		dev_dbg(dev->class_dev, "no driver attached\n");
++		rc = -ENODEV;
++	} else {
++		rc = do_insn_ioctl(dev, &insn, file);
++	}
+ 	mutex_unlock(&dev->mutex);
+ 	return rc;
+ }
 
 
 
