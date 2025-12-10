@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-200550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08BBBCB2322
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:31:41 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 819E7CB2430
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:37:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C59C13082347
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:31:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 180CF305464E
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:34:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F87C2264DC;
-	Wed, 10 Dec 2025 07:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C83ED30498D;
+	Wed, 10 Dec 2025 07:34:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ylmKiwBa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F4WVObjk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B74D8221721;
-	Wed, 10 Dec 2025 07:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 828A027FB2E;
+	Wed, 10 Dec 2025 07:34:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765351869; cv=none; b=mEUBjDltn78FTKL9pg/FXmaNd49QNjSVN4tPYSVAcOJBazxKehTU95S5ZG3xDwn6rnXE5ciPbKDlV8pRYnAQec1fv9cG/nc4/FxAZt0kcZF3KTTVph3uaBtA8QGnkbnoDyzTfu7HASrZqcxD1A4sMkE6HUcciuCxzKYzzoxlals=
+	t=1765352080; cv=none; b=R/7rBjK1eFsAKz5bBa3xIR32NG544pAjWLbHTAPUOHAnD+d6Wv918e/Svn5XwEQhosGqAjypQAL/dWymKxtVyTq+KL0MmWF6TyzshdS3YwJnjN9p4OKzc0vabcRtbiFbA4UQXHz7GdJ2N4I83lWUqMP5CKfjlYRVzGawo6rNdgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765351869; c=relaxed/simple;
-	bh=7WKXxyWZUcafNV5wt2amGajlyE6pu09e2E2CPIeOiwk=;
+	s=arc-20240116; t=1765352080; c=relaxed/simple;
+	bh=53HkFRphyBhNzSJrIraZap2xlIcCT/aBgWeTQVFBkfo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ho2Lfv2NgPBKfYq6dlAceRmF3Sye19ST8tl2aTd0usrUBNkuh/t8MxDZ2T8B/kmS6z0CyBAHqT7g78XcDCpfPhYl1G5vnKLmKoTs6mKM8gddkiO8vCWG6ZEDOCLl9a5k+0kEzFEyRs3G77/r1J3vpFfUq6bSy0nsyEBcvsq1Zb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ylmKiwBa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E36B5C4CEF1;
-	Wed, 10 Dec 2025 07:31:08 +0000 (UTC)
+	 MIME-Version; b=c5dGf1yny4iqBGWxXsYgG2/DdJAVOec6jj+GMLSOaMzceIQqsn+FDGNhlsMlBky0EewtPnzq9ZbPnFr6Nh5sqUCjfcEcBFYVVTKxoH1sLhBqPw7ZO0J95HWjrpgWPnlTF4XnYJECN2U6u7TG124PRHk5dFscHZQpZEQk4JatM1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F4WVObjk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF90EC4CEF1;
+	Wed, 10 Dec 2025 07:34:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765351869;
-	bh=7WKXxyWZUcafNV5wt2amGajlyE6pu09e2E2CPIeOiwk=;
+	s=korg; t=1765352080;
+	bh=53HkFRphyBhNzSJrIraZap2xlIcCT/aBgWeTQVFBkfo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ylmKiwBaRBnwSTn9ULZ6bi/UZ5599kL4ubTCex5k0hcoKIyyuZBiX6PlRZSS6oDlr
-	 +fDIjPsnNXcSrnkkvsa3bLaH8RbP5Gvi3DvqYOahHwfLNjl95lyBpAFhYpRTfzKBei
-	 rw8z/rouCh0zJzKqCcg+O89tBjNwMb/WCmnVS1vk=
+	b=F4WVObjkA4nxV/YJXmN0WDGf0q+VC0iakdJAZLVDlZJeTVUErRd/GI3wCS6ulMhgK
+	 vzP/Ti4ln0kIEmwOgkBRwtvBtIGOW92SRf5O0TG7/DHufZaYgRxi163wkTMwqZ2RGl
+	 W0KCAyGlZMkWbmuWhy+ns6YYAnJURVIVZ5GceNto=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Omar Sandoval <osandov@fb.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.12 12/49] KVM: SVM: Dont skip unrelated instruction if INT3/INTO is replaced
-Date: Wed, 10 Dec 2025 16:29:42 +0900
-Message-ID: <20251210072948.432859012@linuxfoundation.org>
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.17 13/60] USB: serial: ftdi_sio: match on interface number for jtag
+Date: Wed, 10 Dec 2025 16:29:43 +0900
+Message-ID: <20251210072948.170111294@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
-References: <20251210072948.125620687@linuxfoundation.org>
+In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
+References: <20251210072947.850479903@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,203 +58,181 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Omar Sandoval <osandov@fb.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 4da3768e1820cf15cced390242d8789aed34f54d upstream.
+commit 4e31a5d0a9ee672f708fc993c1d5520643f769fd upstream.
 
-When re-injecting a soft interrupt from an INT3, INT0, or (select) INTn
-instruction, discard the exception and retry the instruction if the code
-stream is changed (e.g. by a different vCPU) between when the CPU
-executes the instruction and when KVM decodes the instruction to get the
-next RIP.
+Some FTDI devices have the first port reserved for JTAG and have been
+using a dedicated quirk to prevent binding to it.
 
-As effectively predicted by commit 6ef88d6e36c2 ("KVM: SVM: Re-inject
-INT3/INTO instead of retrying the instruction"), failure to verify that
-the correct INTn instruction was decoded can effectively clobber guest
-state due to decoding the wrong instruction and thus specifying the
-wrong next RIP.
+As can be inferred directly or indirectly from the commit messages,
+almost all of these devices are dual port devices which means that the
+more recently added macro for matching on interface number can be used
+instead (and some such devices do so already).
 
-The bug most often manifests as "Oops: int3" panics on static branch
-checks in Linux guests.  Enabling or disabling a static branch in Linux
-uses the kernel's "text poke" code patching mechanism.  To modify code
-while other CPUs may be executing that code, Linux (temporarily)
-replaces the first byte of the original instruction with an int3 (opcode
-0xcc), then patches in the new code stream except for the first byte,
-and finally replaces the int3 with the first byte of the new code
-stream.  If a CPU hits the int3, i.e. executes the code while it's being
-modified, then the guest kernel must look up the RIP to determine how to
-handle the #BP, e.g. by emulating the new instruction.  If the RIP is
-incorrect, then this lookup fails and the guest kernel panics.
+This avoids probing interfaces that will never be bound and cleans up
+the match table somewhat.
 
-The bug reproduces almost instantly by hacking the guest kernel to
-repeatedly check a static branch[1] while running a drgn script[2] on
-the host to constantly swap out the memory containing the guest's TSS.
+Note that the JTAG quirk is kept for quad port devices, which would
+otherwise require three match entries.
 
-[1]: https://gist.github.com/osandov/44d17c51c28c0ac998ea0334edf90b5a
-[2]: https://gist.github.com/osandov/10e45e45afa29b11e0c7209247afc00b
-
-Fixes: 6ef88d6e36c2 ("KVM: SVM: Re-inject INT3/INTO instead of retrying the instruction")
 Cc: stable@vger.kernel.org
-Co-developed-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Omar Sandoval <osandov@fb.com>
-Link: https://patch.msgid.link/1cc6dcdf36e3add7ee7c8d90ad58414eeb6c3d34.1762278762.git.osandov@fb.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/kvm_host.h |    9 +++++++++
- arch/x86/kvm/svm/svm.c          |   24 +++++++++++++-----------
- arch/x86/kvm/x86.c              |   21 +++++++++++++++++++++
- 3 files changed, 43 insertions(+), 11 deletions(-)
+ drivers/usb/serial/ftdi_sio.c |   72 ++++++++++++++----------------------------
+ 1 file changed, 24 insertions(+), 48 deletions(-)
 
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -2059,6 +2059,11 @@ u64 vcpu_tsc_khz(struct kvm_vcpu *vcpu);
-  *			     the gfn, i.e. retrying the instruction will hit a
-  *			     !PRESENT fault, which results in a new shadow page
-  *			     and sends KVM back to square one.
-+ *
-+ * EMULTYPE_SKIP_SOFT_INT - Set in combination with EMULTYPE_SKIP to only skip
-+ *                          an instruction if it could generate a given software
-+ *                          interrupt, which must be encoded via
-+ *                          EMULTYPE_SET_SOFT_INT_VECTOR().
-  */
- #define EMULTYPE_NO_DECODE	    (1 << 0)
- #define EMULTYPE_TRAP_UD	    (1 << 1)
-@@ -2069,6 +2074,10 @@ u64 vcpu_tsc_khz(struct kvm_vcpu *vcpu);
- #define EMULTYPE_PF		    (1 << 6)
- #define EMULTYPE_COMPLETE_USER_EXIT (1 << 7)
- #define EMULTYPE_WRITE_PF_TO_SP	    (1 << 8)
-+#define EMULTYPE_SKIP_SOFT_INT	    (1 << 9)
-+
-+#define EMULTYPE_SET_SOFT_INT_VECTOR(v)	((u32)((v) & 0xff) << 16)
-+#define EMULTYPE_GET_SOFT_INT_VECTOR(e)	(((e) >> 16) & 0xff)
- 
- int kvm_emulate_instruction(struct kvm_vcpu *vcpu, int emulation_type);
- int kvm_emulate_instruction_from_buffer(struct kvm_vcpu *vcpu,
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -369,6 +369,7 @@ static void svm_set_interrupt_shadow(str
- }
- 
- static int __svm_skip_emulated_instruction(struct kvm_vcpu *vcpu,
-+					   int emul_type,
- 					   bool commit_side_effects)
- {
- 	struct vcpu_svm *svm = to_svm(vcpu);
-@@ -390,7 +391,7 @@ static int __svm_skip_emulated_instructi
- 		if (unlikely(!commit_side_effects))
- 			old_rflags = svm->vmcb->save.rflags;
- 
--		if (!kvm_emulate_instruction(vcpu, EMULTYPE_SKIP))
-+		if (!kvm_emulate_instruction(vcpu, emul_type))
- 			return 0;
- 
- 		if (unlikely(!commit_side_effects))
-@@ -408,11 +409,13 @@ done:
- 
- static int svm_skip_emulated_instruction(struct kvm_vcpu *vcpu)
- {
--	return __svm_skip_emulated_instruction(vcpu, true);
-+	return __svm_skip_emulated_instruction(vcpu, EMULTYPE_SKIP, true);
- }
- 
--static int svm_update_soft_interrupt_rip(struct kvm_vcpu *vcpu)
-+static int svm_update_soft_interrupt_rip(struct kvm_vcpu *vcpu, u8 vector)
- {
-+	const int emul_type = EMULTYPE_SKIP | EMULTYPE_SKIP_SOFT_INT |
-+			      EMULTYPE_SET_SOFT_INT_VECTOR(vector);
- 	unsigned long rip, old_rip = kvm_rip_read(vcpu);
- 	struct vcpu_svm *svm = to_svm(vcpu);
- 
-@@ -428,7 +431,7 @@ static int svm_update_soft_interrupt_rip
- 	 * in use, the skip must not commit any side effects such as clearing
- 	 * the interrupt shadow or RFLAGS.RF.
- 	 */
--	if (!__svm_skip_emulated_instruction(vcpu, !nrips))
-+	if (!__svm_skip_emulated_instruction(vcpu, emul_type, !nrips))
- 		return -EIO;
- 
- 	rip = kvm_rip_read(vcpu);
-@@ -464,7 +467,7 @@ static void svm_inject_exception(struct
- 	kvm_deliver_exception_payload(vcpu, ex);
- 
- 	if (kvm_exception_is_soft(ex->vector) &&
--	    svm_update_soft_interrupt_rip(vcpu))
-+	    svm_update_soft_interrupt_rip(vcpu, ex->vector))
- 		return;
- 
- 	svm->vmcb->control.event_inj = ex->vector
-@@ -3743,11 +3746,12 @@ static bool svm_set_vnmi_pending(struct
- 
- static void svm_inject_irq(struct kvm_vcpu *vcpu, bool reinjected)
- {
-+	struct kvm_queued_interrupt *intr = &vcpu->arch.interrupt;
- 	struct vcpu_svm *svm = to_svm(vcpu);
- 	u32 type;
- 
--	if (vcpu->arch.interrupt.soft) {
--		if (svm_update_soft_interrupt_rip(vcpu))
-+	if (intr->soft) {
-+		if (svm_update_soft_interrupt_rip(vcpu, intr->nr))
- 			return;
- 
- 		type = SVM_EVTINJ_TYPE_SOFT;
-@@ -3755,12 +3759,10 @@ static void svm_inject_irq(struct kvm_vc
- 		type = SVM_EVTINJ_TYPE_INTR;
- 	}
- 
--	trace_kvm_inj_virq(vcpu->arch.interrupt.nr,
--			   vcpu->arch.interrupt.soft, reinjected);
-+	trace_kvm_inj_virq(intr->nr, intr->soft, reinjected);
- 	++vcpu->stat.irq_injections;
- 
--	svm->vmcb->control.event_inj = vcpu->arch.interrupt.nr |
--				       SVM_EVTINJ_VALID | type;
-+	svm->vmcb->control.event_inj = intr->nr | SVM_EVTINJ_VALID | type;
- }
- 
- void svm_complete_interrupt_delivery(struct kvm_vcpu *vcpu, int delivery_mode,
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -9055,6 +9055,23 @@ static bool is_vmware_backdoor_opcode(st
- 	return false;
- }
- 
-+static bool is_soft_int_instruction(struct x86_emulate_ctxt *ctxt,
-+				    int emulation_type)
-+{
-+	u8 vector = EMULTYPE_GET_SOFT_INT_VECTOR(emulation_type);
-+
-+	switch (ctxt->b) {
-+	case 0xcc:
-+		return vector == BP_VECTOR;
-+	case 0xcd:
-+		return vector == ctxt->src.val;
-+	case 0xce:
-+		return vector == OF_VECTOR;
-+	default:
-+		return false;
-+	}
-+}
-+
- /*
-  * Decode an instruction for emulation.  The caller is responsible for handling
-  * code breakpoints.  Note, manually detecting code breakpoints is unnecessary
-@@ -9156,6 +9173,10 @@ int x86_emulate_instruction(struct kvm_v
- 	 * injecting single-step #DBs.
- 	 */
- 	if (emulation_type & EMULTYPE_SKIP) {
-+		if (emulation_type & EMULTYPE_SKIP_SOFT_INT &&
-+		    !is_soft_int_instruction(ctxt, emulation_type))
-+			return 0;
-+
- 		if (ctxt->mode != X86EMUL_MODE_PROT64)
- 			ctxt->eip = (u32)ctxt->_eip;
- 		else
+--- a/drivers/usb/serial/ftdi_sio.c
++++ b/drivers/usb/serial/ftdi_sio.c
+@@ -628,10 +628,8 @@ static const struct usb_device_id id_tab
+ 	{ USB_DEVICE(FTDI_VID, FTDI_IBS_PEDO_PID) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_IBS_PROD_PID) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_TAVIR_STK500_PID) },
+-	{ USB_DEVICE(FTDI_VID, FTDI_TIAO_UMPA_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+-	{ USB_DEVICE(FTDI_VID, FTDI_NT_ORIONLXM_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, FTDI_TIAO_UMPA_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, FTDI_NT_ORIONLXM_PID, 1) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_NT_ORIONLX_PLUS_PID) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_NT_ORION_IO_PID) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_NT_ORIONMX_PID) },
+@@ -842,24 +840,17 @@ static const struct usb_device_id id_tab
+ 	{ USB_DEVICE(FTDI_VID, FTDI_ELSTER_UNICOM_PID) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_PROPOX_JTAGCABLEII_PID) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_PROPOX_ISPCABLEIII_PID) },
+-	{ USB_DEVICE(FTDI_VID, CYBER_CORTEX_AV_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, CYBER_CORTEX_AV_PID, 1) },
+ 	{ USB_DEVICE_INTERFACE_NUMBER(OLIMEX_VID, OLIMEX_ARM_USB_OCD_PID, 1) },
+ 	{ USB_DEVICE_INTERFACE_NUMBER(OLIMEX_VID, OLIMEX_ARM_USB_OCD_H_PID, 1) },
+ 	{ USB_DEVICE_INTERFACE_NUMBER(OLIMEX_VID, OLIMEX_ARM_USB_TINY_PID, 1) },
+ 	{ USB_DEVICE_INTERFACE_NUMBER(OLIMEX_VID, OLIMEX_ARM_USB_TINY_H_PID, 1) },
+-	{ USB_DEVICE(FIC_VID, FIC_NEO1973_DEBUG_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+-	{ USB_DEVICE(FTDI_VID, FTDI_OOCDLINK_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+-	{ USB_DEVICE(FTDI_VID, LMI_LM3S_DEVEL_BOARD_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+-	{ USB_DEVICE(FTDI_VID, LMI_LM3S_EVAL_BOARD_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+-	{ USB_DEVICE(FTDI_VID, LMI_LM3S_ICDI_BOARD_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+-	{ USB_DEVICE(FTDI_VID, FTDI_TURTELIZER_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	{ USB_DEVICE_INTERFACE_NUMBER(FIC_VID, FIC_NEO1973_DEBUG_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, FTDI_OOCDLINK_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, LMI_LM3S_DEVEL_BOARD_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, LMI_LM3S_EVAL_BOARD_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, LMI_LM3S_ICDI_BOARD_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, FTDI_TURTELIZER_PID, 1) },
+ 	{ USB_DEVICE(RATOC_VENDOR_ID, RATOC_PRODUCT_ID_USB60F) },
+ 	{ USB_DEVICE(RATOC_VENDOR_ID, RATOC_PRODUCT_ID_SCU18) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_REU_TINY_PID) },
+@@ -901,17 +892,14 @@ static const struct usb_device_id id_tab
+ 	{ USB_DEVICE(ATMEL_VID, STK541_PID) },
+ 	{ USB_DEVICE(DE_VID, STB_PID) },
+ 	{ USB_DEVICE(DE_VID, WHT_PID) },
+-	{ USB_DEVICE(ADI_VID, ADI_GNICE_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+-	{ USB_DEVICE(ADI_VID, ADI_GNICEPLUS_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	{ USB_DEVICE_INTERFACE_NUMBER(ADI_VID, ADI_GNICE_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(ADI_VID, ADI_GNICEPLUS_PID, 1) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MICROCHIP_VID, MICROCHIP_USB_BOARD_PID,
+ 					USB_CLASS_VENDOR_SPEC,
+ 					USB_SUBCLASS_VENDOR_SPEC, 0x00) },
+ 	{ USB_DEVICE_INTERFACE_NUMBER(ACTEL_VID, MICROSEMI_ARROW_SF2PLUS_BOARD_PID, 2) },
+ 	{ USB_DEVICE(JETI_VID, JETI_SPC1201_PID) },
+-	{ USB_DEVICE(MARVELL_VID, MARVELL_SHEEVAPLUG_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	{ USB_DEVICE_INTERFACE_NUMBER(MARVELL_VID, MARVELL_SHEEVAPLUG_PID, 1) },
+ 	{ USB_DEVICE(LARSENBRUSGAARD_VID, LB_ALTITRACK_PID) },
+ 	{ USB_DEVICE(GN_OTOMETRICS_VID, AURICAL_USB_PID) },
+ 	{ USB_DEVICE(FTDI_VID, PI_C865_PID) },
+@@ -934,10 +922,8 @@ static const struct usb_device_id id_tab
+ 	{ USB_DEVICE(PI_VID, PI_1016_PID) },
+ 	{ USB_DEVICE(KONDO_VID, KONDO_USB_SERIAL_PID) },
+ 	{ USB_DEVICE(BAYER_VID, BAYER_CONTOUR_CABLE_PID) },
+-	{ USB_DEVICE(FTDI_VID, MARVELL_OPENRD_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+-	{ USB_DEVICE(FTDI_VID, TI_XDS100V2_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, MARVELL_OPENRD_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, TI_XDS100V2_PID, 1) },
+ 	{ USB_DEVICE(FTDI_VID, HAMEG_HO820_PID) },
+ 	{ USB_DEVICE(FTDI_VID, HAMEG_HO720_PID) },
+ 	{ USB_DEVICE(FTDI_VID, HAMEG_HO730_PID) },
+@@ -946,18 +932,14 @@ static const struct usb_device_id id_tab
+ 	{ USB_DEVICE(FTDI_VID, MJSG_SR_RADIO_PID) },
+ 	{ USB_DEVICE(FTDI_VID, MJSG_HD_RADIO_PID) },
+ 	{ USB_DEVICE(FTDI_VID, MJSG_XM_RADIO_PID) },
+-	{ USB_DEVICE(FTDI_VID, XVERVE_SIGNALYZER_ST_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+-	{ USB_DEVICE(FTDI_VID, XVERVE_SIGNALYZER_SLITE_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+-	{ USB_DEVICE(FTDI_VID, XVERVE_SIGNALYZER_SH2_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, XVERVE_SIGNALYZER_ST_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, XVERVE_SIGNALYZER_SLITE_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, XVERVE_SIGNALYZER_SH2_PID, 1) },
+ 	{ USB_DEVICE(FTDI_VID, XVERVE_SIGNALYZER_SH4_PID),
+ 		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+ 	{ USB_DEVICE(FTDI_VID, SEGWAY_RMP200_PID) },
+ 	{ USB_DEVICE(FTDI_VID, ACCESIO_COM4SM_PID) },
+-	{ USB_DEVICE(IONICS_VID, IONICS_PLUGCOMPUTER_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	{ USB_DEVICE_INTERFACE_NUMBER(IONICS_VID, IONICS_PLUGCOMPUTER_PID, 1) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_CHAMSYS_24_MASTER_WING_PID) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_CHAMSYS_PC_WING_PID) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_CHAMSYS_USB_DMX_PID) },
+@@ -972,15 +954,12 @@ static const struct usb_device_id id_tab
+ 	{ USB_DEVICE(FTDI_VID, FTDI_CINTERION_MC55I_PID) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_FHE_PID) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_DOTEC_PID) },
+-	{ USB_DEVICE(QIHARDWARE_VID, MILKYMISTONE_JTAGSERIAL_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+-	{ USB_DEVICE(ST_VID, ST_STMCLT_2232_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	{ USB_DEVICE_INTERFACE_NUMBER(QIHARDWARE_VID, MILKYMISTONE_JTAGSERIAL_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(ST_VID, ST_STMCLT_2232_PID, 1) },
+ 	{ USB_DEVICE(ST_VID, ST_STMCLT_4232_PID),
+ 		.driver_info = (kernel_ulong_t)&ftdi_stmclite_quirk },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_RF_R106) },
+-	{ USB_DEVICE(FTDI_VID, FTDI_DISTORTEC_JTAG_LOCK_PICK_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, FTDI_DISTORTEC_JTAG_LOCK_PICK_PID, 1) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_LUMEL_PD12_PID) },
+ 	/* Crucible Devices */
+ 	{ USB_DEVICE(FTDI_VID, FTDI_CT_COMET_PID) },
+@@ -1055,8 +1034,7 @@ static const struct usb_device_id id_tab
+ 	{ USB_DEVICE(ICPDAS_VID, ICPDAS_I7561U_PID) },
+ 	{ USB_DEVICE(ICPDAS_VID, ICPDAS_I7563U_PID) },
+ 	{ USB_DEVICE(WICED_VID, WICED_USB20706V2_PID) },
+-	{ USB_DEVICE(TI_VID, TI_CC3200_LAUNCHPAD_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	{ USB_DEVICE_INTERFACE_NUMBER(TI_VID, TI_CC3200_LAUNCHPAD_PID, 1) },
+ 	{ USB_DEVICE(CYPRESS_VID, CYPRESS_WICED_BT_USB_PID) },
+ 	{ USB_DEVICE(CYPRESS_VID, CYPRESS_WICED_WL_USB_PID) },
+ 	{ USB_DEVICE(AIRBUS_DS_VID, AIRBUS_DS_P8GR) },
+@@ -1076,10 +1054,8 @@ static const struct usb_device_id id_tab
+ 	{ USB_DEVICE(UBLOX_VID, UBLOX_C099F9P_ODIN_PID) },
+ 	{ USB_DEVICE_INTERFACE_NUMBER(UBLOX_VID, UBLOX_EVK_M101_PID, 2) },
+ 	/* FreeCalypso USB adapters */
+-	{ USB_DEVICE(FTDI_VID, FTDI_FALCONIA_JTAG_BUF_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+-	{ USB_DEVICE(FTDI_VID, FTDI_FALCONIA_JTAG_UNBUF_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, FTDI_FALCONIA_JTAG_BUF_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, FTDI_FALCONIA_JTAG_UNBUF_PID, 1) },
+ 	/* GMC devices */
+ 	{ USB_DEVICE(GMC_VID, GMC_Z216C_PID) },
+ 	/* Altera USB Blaster 3 */
 
 
 
