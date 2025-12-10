@@ -1,52 +1,55 @@
-Return-Path: <stable+bounces-200587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAD05CB2385
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:33:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 876D9CB23B5
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:34:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1FD7D3009776
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:32:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D1AD2308FCC6
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:34:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B6DB27A47F;
-	Wed, 10 Dec 2025 07:32:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E0EA3019CD;
+	Wed, 10 Dec 2025 07:33:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0u063yx0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QGfbc+1z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0855D221F2F;
-	Wed, 10 Dec 2025 07:32:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCFEF3019B2;
+	Wed, 10 Dec 2025 07:33:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765351968; cv=none; b=cdw4ErxDbDII3Sg0urNytN2wT3d+voceSkKGil5MpaYGcfzHaAm2sWkbSnS1md620ccSs8M6wsQcc4D8SM4/0YJKBCeoAJMDXD4df9lGmrim55pqmB2aROo3mYBHvlXsh1fNgqGwVLnZgwtQWaA8dx0q2FTQkFoMtptkdWgKpMo=
+	t=1765352020; cv=none; b=Ga1Mdy6s2bnxrWDSq72K8DxETyvb9P/gXdXa1WniQ5eX9acN7Hj8DenGdrtb5Zbma2Sxg7NcgNGXcSoQ6ELWVRXtaoox7YKBVLcoRuMxGwsK4tiEPwnFEzh/XGcmz51AOBrAskQEUR2dYvZKg3IyfOqlAyO805YJkGhTQtHNins=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765351968; c=relaxed/simple;
-	bh=n6XNPyVpBG0KgObwaB++6OLwUdrZ5tKAQmhbEFvU3K8=;
+	s=arc-20240116; t=1765352020; c=relaxed/simple;
+	bh=bU4zy7QDvAZYAxmDys7OsaInxECFqjvZ2ql0TVBsSk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B3pB+gsmT7wtR6ytyV38wbw1Pln1UpfyGgmL0hrG29+DydTpn4uJb65a7noK+Zfp/C1UUV6zhrTQrmSxf8J7kCjtx3FbTMjkuKt2uzNjq/dIsSZNjSL+v6MdAujQOUb5U+RvObWHokFN4MxeNeoGniBdUuY5QeGQw2mi2NP/IgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0u063yx0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4C2FC4CEF1;
-	Wed, 10 Dec 2025 07:32:47 +0000 (UTC)
+	 MIME-Version; b=LXNCDq5wlPhQe3SlLc9O6tSNN6NCqLO6/7o06XAO6iUe2WCQfvlgN1EKZUtgSd0mFA1fUJTP0n5ohHpUvnV+VEPrRb7O5T5fOdg6zq1N8Vlx7pOVC9lfyABuPHMZ3hYAqOrLoGwEEnq1XkNzzrmk94h9Wr2MlAtHTIn/Mm4Etd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QGfbc+1z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1E91C4CEF1;
+	Wed, 10 Dec 2025 07:33:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765351967;
-	bh=n6XNPyVpBG0KgObwaB++6OLwUdrZ5tKAQmhbEFvU3K8=;
+	s=korg; t=1765352019;
+	bh=bU4zy7QDvAZYAxmDys7OsaInxECFqjvZ2ql0TVBsSk0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0u063yx0ljjM9oQlMWixwdMPaDkF2d2fvRzFKuRc/JcIPNV5JPL+2VIF+ItjJfQcQ
-	 5mm6/4EWedYmjNgvM9ucvegT200HVfnbBgci0rxCpCQC1xopCBKk3oDbL/bGF+Jxxo
-	 A/RNeuOvY/Zcd+tKKOvmhdnKa4iGNObiqS9eKHpk=
+	b=QGfbc+1zFYC8cGCF4KmNv8yTfq8gPyc60/6gfWW3uZHlxF90mp/YYwaOdK9y1Hoj8
+	 0dKpFhZbh5VqzM3XNpidv1wsQvRR1SlO1PGWyA/ZEk2aTFokq+Y7fAN3gbXqDOQOd4
+	 T+O3tALq3bNnRWJ40ygTm5yfUmVaz0iQdz7Hi9Lw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.12 19/49] USB: serial: kobil_sct: fix TIOCMBIS and TIOCMBIC
-Date: Wed, 10 Dec 2025 16:29:49 +0900
-Message-ID: <20251210072948.601086748@linuxfoundation.org>
+	Alvaro Gamez Machado <alvaro.gamez@hazent.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 20/60] spi: xilinx: increase number of retries before declaring stall
+Date: Wed, 10 Dec 2025 16:29:50 +0900
+Message-ID: <20251210072948.333339298@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
-References: <20251210072948.125620687@linuxfoundation.org>
+In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
+References: <20251210072947.850479903@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,83 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Alvaro Gamez Machado <alvaro.gamez@hazent.com>
 
-commit d432df758f92c4c28aac409bc807fd1716167577 upstream.
+[ Upstream commit 939edfaa10f1d22e6af6a84bf4bd96dc49c67302 ]
 
-Asserting or deasserting a modem control line using TIOCMBIS or TIOCMBIC
-should not deassert any lines that are not in the mask.
+SPI devices using a (relative) slow frequency need a larger time.
 
-Fix this long-standing issue dating back to 2003 when the support for
-these ioctls was added with the introduction of the tiocmset() callback.
+For instance, microblaze running at 83.25MHz and performing a
+3 bytes transaction using a 10MHz/16 = 625kHz needed this stall
+value increased to at least 20. The SPI device is quite slow, but
+also is the microblaze, so set this value to 32 to give it even
+more margin.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alvaro Gamez Machado <alvaro.gamez@hazent.com>
+Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
+Link: https://patch.msgid.link/20251106134545.31942-1-alvaro.gamez@hazent.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/kobil_sct.c |   18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/spi/spi-xilinx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/serial/kobil_sct.c
-+++ b/drivers/usb/serial/kobil_sct.c
-@@ -418,7 +418,7 @@ static int kobil_tiocmset(struct tty_str
- 	struct usb_serial_port *port = tty->driver_data;
- 	struct device *dev = &port->dev;
- 	struct kobil_private *priv;
--	int result;
-+	int result = 0;
- 	int dtr = 0;
- 	int rts = 0;
+diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
+index d59cc8a184846..c86dc56f38b45 100644
+--- a/drivers/spi/spi-xilinx.c
++++ b/drivers/spi/spi-xilinx.c
+@@ -300,7 +300,7 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
  
-@@ -435,12 +435,12 @@ static int kobil_tiocmset(struct tty_str
- 	if (set & TIOCM_DTR)
- 		dtr = 1;
- 	if (clear & TIOCM_RTS)
--		rts = 0;
-+		rts = 1;
- 	if (clear & TIOCM_DTR)
--		dtr = 0;
-+		dtr = 1;
- 
--	if (priv->device_type == KOBIL_ADAPTER_B_PRODUCT_ID) {
--		if (dtr != 0)
-+	if (dtr && priv->device_type == KOBIL_ADAPTER_B_PRODUCT_ID) {
-+		if (set & TIOCM_DTR)
- 			dev_dbg(dev, "%s - Setting DTR\n", __func__);
- 		else
- 			dev_dbg(dev, "%s - Clearing DTR\n", __func__);
-@@ -448,13 +448,13 @@ static int kobil_tiocmset(struct tty_str
- 			  usb_sndctrlpipe(port->serial->dev, 0),
- 			  SUSBCRequest_SetStatusLinesOrQueues,
- 			  USB_TYPE_VENDOR | USB_RECIP_ENDPOINT | USB_DIR_OUT,
--			  ((dtr != 0) ? SUSBCR_SSL_SETDTR : SUSBCR_SSL_CLRDTR),
-+			  ((set & TIOCM_DTR) ? SUSBCR_SSL_SETDTR : SUSBCR_SSL_CLRDTR),
- 			  0,
- 			  NULL,
- 			  0,
- 			  KOBIL_TIMEOUT);
--	} else {
--		if (rts != 0)
-+	} else if (rts) {
-+		if (set & TIOCM_RTS)
- 			dev_dbg(dev, "%s - Setting RTS\n", __func__);
- 		else
- 			dev_dbg(dev, "%s - Clearing RTS\n", __func__);
-@@ -462,7 +462,7 @@ static int kobil_tiocmset(struct tty_str
- 			usb_sndctrlpipe(port->serial->dev, 0),
- 			SUSBCRequest_SetStatusLinesOrQueues,
- 			USB_TYPE_VENDOR | USB_RECIP_ENDPOINT | USB_DIR_OUT,
--			((rts != 0) ? SUSBCR_SSL_SETRTS : SUSBCR_SSL_CLRRTS),
-+			((set & TIOCM_RTS) ? SUSBCR_SSL_SETRTS : SUSBCR_SSL_CLRRTS),
- 			0,
- 			NULL,
- 			0,
+ 		/* Read out all the data from the Rx FIFO */
+ 		rx_words = n_words;
+-		stalled = 10;
++		stalled = 32;
+ 		while (rx_words) {
+ 			if (rx_words == n_words && !(stalled--) &&
+ 			    !(sr & XSPI_SR_TX_EMPTY_MASK) &&
+-- 
+2.51.0
+
 
 
 
