@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-200643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87410CB2463
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:38:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C2C1CB2454
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:38:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 54259306ABF4
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:35:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5C25E30E1776
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:36:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D36D2302CC0;
-	Wed, 10 Dec 2025 07:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DB9631354D;
+	Wed, 10 Dec 2025 07:36:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pdnn8n7y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iMN4EVaF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D49B2FF16C;
-	Wed, 10 Dec 2025 07:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0819219303;
+	Wed, 10 Dec 2025 07:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765352112; cv=none; b=YfoQu8MUL6s2oUT43w5Q8ZnLwlZ0x0eqTEfqkoKvxYupxvJUpLKa6Fpd9iEYuH7YRJVhclUl1ahN3AcYhIJEkpAmt3LCrHEtxoWCepWwWxx/xYrc/HGmb7egkPLLCf2bTU2rn9+od8aEfZ4C8cCZflQkVpeFOt7terZJmTnV8wg=
+	t=1765352216; cv=none; b=N8uejBufnwYenK//hMu+1+yeM6jI+r3ewfsaO7PXChHyIJZyBkFFfLW4teAcXMKSNuJKPWCMwf9LDJ+Z+n5G6yelkmz22Z/2o9+kikPPVnJ/wRpjt813413yVXdBgNiOxIZ3yXBC0HOKyaJUVfRCGD2cKw55K3N8fUYM5QVF4Ig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765352112; c=relaxed/simple;
-	bh=jsndtBgbEaUhbyFVy65Awc1fpRLPRKih6ugsOBC9kqY=;
+	s=arc-20240116; t=1765352216; c=relaxed/simple;
+	bh=cC+NT+q68hWposyL6RMkifkG8vQvf81HCbxot1lrtik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jNrrH1L5nNsEWI9fh7bala4kIoiG3w6nsQWFzPEd0iL4b9yi9FeKM1QxW4EZNE72SHH1jaDJc3wB/cQhEsDsg1lQbX+dCvtW8OnKNq8qYflCqnZ7Y3levB/JDa0sJxqahKhJ0pa5KL+mz4hdFFz03LuqN2yl7XCsMwAOYnFDSGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pdnn8n7y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06DB8C4CEF1;
-	Wed, 10 Dec 2025 07:35:11 +0000 (UTC)
+	 MIME-Version; b=Y3sNRgz1mNxQwhX5KW8QnsOrm5tyhb6qQJUMF6lS6WjCIrsYCvkDXo2YUX6KRnWMil6l9T5WQuODaiHocv96AN7rOPTxV8qoSHRQp1HDbA7OPmzJ9pczC2R47xNvhxt80WhU5+dFHO+LX1wMipdPpbrGB7d+fznYjQN7bBQiJWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iMN4EVaF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B6B5C4CEF1;
+	Wed, 10 Dec 2025 07:36:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765352112;
-	bh=jsndtBgbEaUhbyFVy65Awc1fpRLPRKih6ugsOBC9kqY=;
+	s=korg; t=1765352215;
+	bh=cC+NT+q68hWposyL6RMkifkG8vQvf81HCbxot1lrtik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pdnn8n7yaqGJ8gFCY7zuWqYBI6olE0Kt7uyE1+Ls/hM9ddiDDZ0dCOe5Ns3ITGjLo
-	 tjgsNjWSTYE0VOC5WdjY73fsx75nddKefKo2xJAJKL9/dDnyB9JYjxkugkHggWwzVl
-	 QVOBnx6j5VAbPCHzK6vFzrt/i+XjHqx0PZUzYMVc=
+	b=iMN4EVaFh6+O2JhvAVBNeBICoAaMRI/rrifgOBTfAp+G8tCunJRudQ2OUxw5Qr2fZ
+	 1SbA3yG2yv9gQBMnP+QO6ijxzEzlZhNIOEVhm1m4e0NbeYVQ5pblQbNvd5MHUID1L2
+	 FhyWc/9f0TyKqhzcnR8bIs7ck7L0FZPnvh+2W5rs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6616bba359cec7a1def1@syzkaller.appspotmail.com,
-	stable <stable@kernel.org>,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 6.17 55/60] comedi: c6xdigio: Fix invalid PNP driver unregistration
+	Magne Bruno <magne.bruno@addi-data.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.18 15/29] serial: add support of CPCI cards
 Date: Wed, 10 Dec 2025 16:30:25 +0900
-Message-ID: <20251210072949.235444782@linuxfoundation.org>
+Message-ID: <20251210072944.782245085@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
-References: <20251210072947.850479903@linuxfoundation.org>
+In-Reply-To: <20251210072944.363788552@linuxfoundation.org>
+References: <20251210072944.363788552@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,171 +59,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Magne Bruno <magne.bruno@addi-data.com>
 
-commit 72262330f7b3ad2130e800cecf02adcce3c32c77 upstream.
+commit 0e5a99e0e5f50353b86939ff6e424800d769c818 upstream.
 
-The Comedi low-level driver "c6xdigio" seems to be for a parallel port
-connected device.  When the Comedi core calls the driver's Comedi
-"attach" handler `c6xdigio_attach()` to configure a Comedi to use this
-driver, it tries to enable the parallel port PNP resources by
-registering a PNP driver with `pnp_register_driver()`, but ignores the
-return value.  (The `struct pnp_driver` it uses has only the `name` and
-`id_table` members filled in.)  The driver's Comedi "detach" handler
-`c6xdigio_detach()` unconditionally unregisters the PNP driver with
-`pnp_unregister_driver()`.
+Addi-Data GmbH is manufacturing multi-serial ports cards supporting CompactPCI (known as CPCI).
+Those cards are identified with different DeviceIds. Those cards integrating standard UARTs
+work the same way as PCI/PCIe models already supported in the serial driver.
 
-It is possible for `c6xdigio_attach()` to return an error before it
-calls `pnp_register_driver()` and it is possible for the call to
-`pnp_register_driver()` to return an error (that is ignored).  In both
-cases, the driver should not be calling `pnp_unregister_driver()` as it
-does in `c6xdigio_detach()`.  (Note that `c6xdigio_detach()` will be
-called by the Comedi core if `c6xdigio_attach()` returns an error, or if
-the Comedi core decides to detach the Comedi device from the driver for
-some other reason.)
-
-The unconditional call to `pnp_unregister_driver()` without a previous
-successful call to `pnp_register_driver()` will cause
-`driver_unregister()` to issue a warning "Unexpected driver
-unregister!".  This was detected by Syzbot [1].
-
-Also, the PNP driver registration and unregistration should be done at
-module init and exit time, respectively, not when attaching or detaching
-Comedi devices to the driver.  (There might be more than one Comedi
-device being attached to the driver, although that is unlikely.)
-
-Change the driver to do the PNP driver registration at module init time,
-and the unregistration at module exit time.  Since `c6xdigio_detach()`
-now only calls `comedi_legacy_detach()`, remove the function and change
-the Comedi driver "detach" handler to `comedi_legacy_detach`.
-
--------------------------------------------
-[1] Syzbot sample crash report:
-Unexpected driver unregister!
-WARNING: CPU: 0 PID: 5970 at drivers/base/driver.c:273 driver_unregister drivers/base/driver.c:273 [inline]
-WARNING: CPU: 0 PID: 5970 at drivers/base/driver.c:273 driver_unregister+0x90/0xb0 drivers/base/driver.c:270
-Modules linked in:
-CPU: 0 UID: 0 PID: 5970 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/02/2025
-RIP: 0010:driver_unregister drivers/base/driver.c:273 [inline]
-RIP: 0010:driver_unregister+0x90/0xb0 drivers/base/driver.c:270
-Code: 48 89 ef e8 c2 e6 82 fc 48 89 df e8 3a 93 ff ff 5b 5d e9 c3 6d d9 fb e8 be 6d d9 fb 90 48 c7 c7 e0 f8 1f 8c e8 51 a2 97 fb 90 <0f> 0b 90 90 5b 5d e9 a5 6d d9 fb e8 e0 f4 41 fc eb 94 e8 d9 f4 41
-RSP: 0018:ffffc9000373f9a0 EFLAGS: 00010282
-RAX: 0000000000000000 RBX: ffffffff8ff24720 RCX: ffffffff817b6ee8
-RDX: ffff88807c932480 RSI: ffffffff817b6ef5 RDI: 0000000000000001
-RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000001 R12: ffffffff8ff24660
-R13: dffffc0000000000 R14: 0000000000000000 R15: ffff88814cca0000
-FS:  000055556dab1500(0000) GS:ffff8881249d9000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000055f77f285cd0 CR3: 000000007d871000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- comedi_device_detach_locked+0x12f/0xa50 drivers/comedi/drivers.c:207
- comedi_device_detach+0x67/0xb0 drivers/comedi/drivers.c:215
- comedi_device_attach+0x43d/0x900 drivers/comedi/drivers.c:1011
- do_devconfig_ioctl+0x1b1/0x710 drivers/comedi/comedi_fops.c:872
- comedi_unlocked_ioctl+0x165d/0x2f00 drivers/comedi/comedi_fops.c:2178
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl fs/ioctl.c:583 [inline]
- __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:583
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcd/0xfa0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fc05798eec9
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffcf8184238 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007fc057be5fa0 RCX: 00007fc05798eec9
-RDX: 0000200000000080 RSI: 0000000040946400 RDI: 0000000000000003
-RBP: 00007fc057a11f91 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fc057be5fa0 R14: 00007fc057be5fa0 R15: 0000000000000003
- </TASK>
--------------------------------------------
-
-Reported-by: syzbot+6616bba359cec7a1def1@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=6616bba359cec7a1def1
-Fixes: 2c89e159cd2f ("Staging: comedi: add c6xdigio driver")
+Signed-off-by: Magne Bruno <magne.bruno@addi-data.com>
+Link: https://patch.msgid.link/20251110162456.341029-1-magne.bruno@addi-data.com
 Cc: stable <stable@kernel.org>
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://patch.msgid.link/20251023123141.6537-1-abbotti@mev.co.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/drivers/c6xdigio.c |   46 ++++++++++++++++++++++++++++----------
- 1 file changed, 35 insertions(+), 11 deletions(-)
+ drivers/tty/serial/8250/8250_pci.c |   37 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 37 insertions(+)
 
---- a/drivers/comedi/drivers/c6xdigio.c
-+++ b/drivers/comedi/drivers/c6xdigio.c
-@@ -249,9 +249,6 @@ static int c6xdigio_attach(struct comedi
- 	if (ret)
- 		return ret;
+--- a/drivers/tty/serial/8250/8250_pci.c
++++ b/drivers/tty/serial/8250/8250_pci.c
+@@ -95,6 +95,11 @@
+ #define PCI_DEVICE_ID_MOXA_CP138E_A	0x1381
+ #define PCI_DEVICE_ID_MOXA_CP168EL_A	0x1683
  
--	/*  Make sure that PnP ports get activated */
--	pnp_register_driver(&c6xdigio_pnp_driver);
--
- 	s = &dev->subdevices[0];
- 	/* pwm output subdevice */
- 	s->type		= COMEDI_SUBD_PWM;
-@@ -278,19 +275,46 @@ static int c6xdigio_attach(struct comedi
- 	return 0;
- }
++#define PCI_DEVICE_ID_ADDIDATA_CPCI7500        0x7003
++#define PCI_DEVICE_ID_ADDIDATA_CPCI7500_NG     0x7024
++#define PCI_DEVICE_ID_ADDIDATA_CPCI7420_NG     0x7025
++#define PCI_DEVICE_ID_ADDIDATA_CPCI7300_NG     0x7026
++
+ /* Unknown vendors/cards - this should not be in linux/pci_ids.h */
+ #define PCI_SUBDEVICE_ID_UNKNOWN_0x1584	0x1584
+ #define PCI_SUBDEVICE_ID_UNKNOWN_0x1588	0x1588
+@@ -5996,6 +6001,38 @@ static const struct pci_device_id serial
+ 		0,
+ 		pbn_ADDIDATA_PCIe_8_3906250 },
  
--static void c6xdigio_detach(struct comedi_device *dev)
--{
--	comedi_legacy_detach(dev);
--	pnp_unregister_driver(&c6xdigio_pnp_driver);
--}
--
- static struct comedi_driver c6xdigio_driver = {
- 	.driver_name	= "c6xdigio",
- 	.module		= THIS_MODULE,
- 	.attach		= c6xdigio_attach,
--	.detach		= c6xdigio_detach,
-+	.detach		= comedi_legacy_detach,
- };
--module_comedi_driver(c6xdigio_driver);
++	{	PCI_VENDOR_ID_ADDIDATA,
++		PCI_DEVICE_ID_ADDIDATA_CPCI7500,
++		PCI_ANY_ID,
++		PCI_ANY_ID,
++		0,
++		0,
++		pbn_b0_4_115200 },
 +
-+static bool c6xdigio_pnp_registered = false;
++	{	PCI_VENDOR_ID_ADDIDATA,
++		PCI_DEVICE_ID_ADDIDATA_CPCI7500_NG,
++		PCI_ANY_ID,
++		PCI_ANY_ID,
++		0,
++		0,
++		pbn_b0_4_115200 },
 +
-+static int __init c6xdigio_module_init(void)
-+{
-+	int ret;
++	{	PCI_VENDOR_ID_ADDIDATA,
++		PCI_DEVICE_ID_ADDIDATA_CPCI7420_NG,
++		PCI_ANY_ID,
++		PCI_ANY_ID,
++		0,
++		0,
++		pbn_b0_2_115200 },
 +
-+	ret = comedi_driver_register(&c6xdigio_driver);
-+	if (ret)
-+		return ret;
++	{	PCI_VENDOR_ID_ADDIDATA,
++		PCI_DEVICE_ID_ADDIDATA_CPCI7300_NG,
++		PCI_ANY_ID,
++		PCI_ANY_ID,
++		0,
++		0,
++		pbn_b0_1_115200 },
 +
-+	if (IS_ENABLED(CONFIG_PNP)) {
-+		/*  Try to activate the PnP ports */
-+		ret = pnp_register_driver(&c6xdigio_pnp_driver);
-+		if (ret) {
-+			pr_warn("failed to register pnp driver - err %d\n",
-+				ret);
-+			ret = 0;	/* ignore the error. */
-+		} else {
-+			c6xdigio_pnp_registered = true;
-+		}
-+	}
-+
-+	return 0;
-+}
-+module_init(c6xdigio_module_init);
-+
-+static void __exit c6xdigio_module_exit(void)
-+{
-+	if (c6xdigio_pnp_registered)
-+		pnp_unregister_driver(&c6xdigio_pnp_driver);
-+	comedi_driver_unregister(&c6xdigio_driver);
-+}
-+module_exit(c6xdigio_module_exit);
- 
- MODULE_AUTHOR("Comedi https://www.comedi.org");
- MODULE_DESCRIPTION("Comedi driver for the C6x_DIGIO DSP daughter card");
+ 	{	PCI_VENDOR_ID_NETMOS, PCI_DEVICE_ID_NETMOS_9835,
+ 		PCI_VENDOR_ID_IBM, 0x0299,
+ 		0, 0, pbn_b0_bt_2_115200 },
 
 
 
