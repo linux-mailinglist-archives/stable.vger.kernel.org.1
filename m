@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-200677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC132CB2433
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:37:30 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EE7FCB244E
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:38:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 188E530056D9
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:36:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D81E9303875B
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:35:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64945311C2E;
-	Wed, 10 Dec 2025 07:36:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 680D9302CC0;
+	Wed, 10 Dec 2025 07:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nPLZxesd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QWHVty41"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C9F830F930;
-	Wed, 10 Dec 2025 07:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A043019C7;
+	Wed, 10 Dec 2025 07:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765352199; cv=none; b=VjwKsyXnEiQCDY1bjSxDYfocY/Otnw8eatDYQ97sAZSp2FzKEexlVqMna538qQd4bjcQXCG1zryyuBOpjcJO6H4XPScmm8s8jBSUahtVqIP6A/ZN1svwPwkfdDu61cF+Vgsfa/AfOpP7wIZLvGxHcIGYhRY4pTPoy3nQsn8dKaQ=
+	t=1765352100; cv=none; b=Whk1kQEw1Z3ABoL0ebQRptGcmN8Mf6KNeO+UcB7a77arN6qcKlQVIgx/xmsyCB/uhTosuRYeDvtWaF5M/DWe9ZfGACjpHkHYf1LaWxhAACCMhM8doOZ7/i1lGuqxmNHaIsiXVJmjBu12L8cSE3PQzZvQNUJzGmqgL3t2pH6myh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765352199; c=relaxed/simple;
-	bh=Ox81b4uOyer0zHM1ZLTCigFyTIdp362o1BaHJuDLKNQ=;
+	s=arc-20240116; t=1765352100; c=relaxed/simple;
+	bh=EbwX7zJcsWcgJJE94/fQPU8oAsjKXW+RhbOja9QDxGo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qk5kDxfLW+/TJrgg4A1ihXLlF1kJeDK3wu3NNi2pqka3Z4ovIekaVCY57fRZZd88UucraUl23e3g4cTBd81tQNZhEZkKO6ExAiQWYqQqLS7cR8IgJo9nZKipAdDLXWauI1tzism6NyVq+atgU0+x72QHxHydLj51Vwnx4A7tQVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nPLZxesd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6413BC4CEF1;
-	Wed, 10 Dec 2025 07:36:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YhMft5+AH/4Jzbp+XTJk0mnwsu7sDKX0CQhVW+JVAqu+lxk71Cq+22Uga8TGUH5F9SYpDKT11yd5+5cF0bIEmk3M9y6UtmIgSo9U7KgT0Md1eSX0Y1CBg3Ga1S3vaQPAXyFDfd/1WPP1Yidxb7wycqHcQ9q5ACh5tbsp6Az39H8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QWHVty41; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EA52C4CEF1;
+	Wed, 10 Dec 2025 07:34:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765352198;
-	bh=Ox81b4uOyer0zHM1ZLTCigFyTIdp362o1BaHJuDLKNQ=;
+	s=korg; t=1765352100;
+	bh=EbwX7zJcsWcgJJE94/fQPU8oAsjKXW+RhbOja9QDxGo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nPLZxesdRhbbIpsL9hD3RHB0DD26UodVGK5YW6Ufo51bldALkLExtcH2S0KWnmp9o
-	 /7/6KCmqz0WhteHQDZcsW0BvqNd5OzaszAtmsAFb4uTdAUVZYBkWowJ9T0wlTOaWBW
-	 KktSU61A4bngMkPkuWrZQ6HG2gCeON+ipZkyXWVo=
+	b=QWHVty41BIvBzh2yTdakQ/oENz+8q+W9W9gTdbvgZ1pLUwxEnFPwMBRcX4r8gQEoq
+	 3KxBhGFh+5V4TtUisTBudC0QX0xsEPr3CMjsKPjfxHkZdptRRWOaX+Bh8Jr//SdvOo
+	 Iqs1jnp+VUTpbEvXkzHlNxP5ZmPQiCVX45gwUp8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Omar Sandoval <osandov@fb.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.18 10/29] KVM: SVM: Dont skip unrelated instruction if INT3/INTO is replaced
+	Krishna Chomal <krishna.chomal108@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 50/60] platform/x86: hp-wmi: Add Omen 16-wf1xxx fan support
 Date: Wed, 10 Dec 2025 16:30:20 +0900
-Message-ID: <20251210072944.652611812@linuxfoundation.org>
+Message-ID: <20251210072949.113616837@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072944.363788552@linuxfoundation.org>
-References: <20251210072944.363788552@linuxfoundation.org>
+In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
+References: <20251210072947.850479903@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,205 +58,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Omar Sandoval <osandov@fb.com>
+From: Krishna Chomal <krishna.chomal108@gmail.com>
 
-commit 4da3768e1820cf15cced390242d8789aed34f54d upstream.
+[ Upstream commit fb146a38cb119c8d69633851c7a2ce2c8d34861a ]
 
-When re-injecting a soft interrupt from an INT3, INT0, or (select) INTn
-instruction, discard the exception and retry the instruction if the code
-stream is changed (e.g. by a different vCPU) between when the CPU
-executes the instruction and when KVM decodes the instruction to get the
-next RIP.
+The newer HP Omen laptops, such as Omen 16-wf1xxx, use the same
+WMI-based thermal profile interface as Victus 16-r1000 and 16-s1000
+models.
 
-As effectively predicted by commit 6ef88d6e36c2 ("KVM: SVM: Re-inject
-INT3/INTO instead of retrying the instruction"), failure to verify that
-the correct INTn instruction was decoded can effectively clobber guest
-state due to decoding the wrong instruction and thus specifying the
-wrong next RIP.
+Add the DMI board name "8C78" to the victus_s_thermal_profile_boards
+list to enable proper fan and thermal mode control.
 
-The bug most often manifests as "Oops: int3" panics on static branch
-checks in Linux guests.  Enabling or disabling a static branch in Linux
-uses the kernel's "text poke" code patching mechanism.  To modify code
-while other CPUs may be executing that code, Linux (temporarily)
-replaces the first byte of the original instruction with an int3 (opcode
-0xcc), then patches in the new code stream except for the first byte,
-and finally replaces the int3 with the first byte of the new code
-stream.  If a CPU hits the int3, i.e. executes the code while it's being
-modified, then the guest kernel must look up the RIP to determine how to
-handle the #BP, e.g. by emulating the new instruction.  If the RIP is
-incorrect, then this lookup fails and the guest kernel panics.
+Tested on: HP Omen 16-wf1xxx (board 8C78)
+Result:
+* Fan RPMs are readable
+* echo 0 | sudo tee /sys/devices/platform/hp-wmi/hwmon/*/pwm1_enable
+  allows the fans to run on max RPM.
 
-The bug reproduces almost instantly by hacking the guest kernel to
-repeatedly check a static branch[1] while running a drgn script[2] on
-the host to constantly swap out the memory containing the guest's TSS.
-
-[1]: https://gist.github.com/osandov/44d17c51c28c0ac998ea0334edf90b5a
-[2]: https://gist.github.com/osandov/10e45e45afa29b11e0c7209247afc00b
-
-Fixes: 6ef88d6e36c2 ("KVM: SVM: Re-inject INT3/INTO instead of retrying the instruction")
-Cc: stable@vger.kernel.org
-Co-developed-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Omar Sandoval <osandov@fb.com>
-Link: https://patch.msgid.link/1cc6dcdf36e3add7ee7c8d90ad58414eeb6c3d34.1762278762.git.osandov@fb.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Krishna Chomal <krishna.chomal108@gmail.com>
+Link: https://patch.msgid.link/20251018111001.56625-1-krishna.chomal108@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/kvm_host.h |    9 +++++++++
- arch/x86/kvm/svm/svm.c          |   24 +++++++++++++-----------
- arch/x86/kvm/x86.c              |   21 +++++++++++++++++++++
- 3 files changed, 43 insertions(+), 11 deletions(-)
+ drivers/platform/x86/hp/hp-wmi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -2143,6 +2143,11 @@ u64 vcpu_tsc_khz(struct kvm_vcpu *vcpu);
-  *			     the gfn, i.e. retrying the instruction will hit a
-  *			     !PRESENT fault, which results in a new shadow page
-  *			     and sends KVM back to square one.
-+ *
-+ * EMULTYPE_SKIP_SOFT_INT - Set in combination with EMULTYPE_SKIP to only skip
-+ *                          an instruction if it could generate a given software
-+ *                          interrupt, which must be encoded via
-+ *                          EMULTYPE_SET_SOFT_INT_VECTOR().
-  */
- #define EMULTYPE_NO_DECODE	    (1 << 0)
- #define EMULTYPE_TRAP_UD	    (1 << 1)
-@@ -2153,6 +2158,10 @@ u64 vcpu_tsc_khz(struct kvm_vcpu *vcpu);
- #define EMULTYPE_PF		    (1 << 6)
- #define EMULTYPE_COMPLETE_USER_EXIT (1 << 7)
- #define EMULTYPE_WRITE_PF_TO_SP	    (1 << 8)
-+#define EMULTYPE_SKIP_SOFT_INT	    (1 << 9)
-+
-+#define EMULTYPE_SET_SOFT_INT_VECTOR(v)	((u32)((v) & 0xff) << 16)
-+#define EMULTYPE_GET_SOFT_INT_VECTOR(e)	(((e) >> 16) & 0xff)
+diff --git a/drivers/platform/x86/hp/hp-wmi.c b/drivers/platform/x86/hp/hp-wmi.c
+index 9a668e2587952..e10c75d91f248 100644
+--- a/drivers/platform/x86/hp/hp-wmi.c
++++ b/drivers/platform/x86/hp/hp-wmi.c
+@@ -95,7 +95,7 @@ static const char * const victus_thermal_profile_boards[] = {
+ /* DMI Board names of Victus 16-r and Victus 16-s laptops */
+ static const char * const victus_s_thermal_profile_boards[] = {
+ 	"8BBE", "8BD4", "8BD5",
+-	"8C99", "8C9C"
++	"8C78", "8C99", "8C9C",
+ };
  
- static inline bool kvm_can_emulate_event_vectoring(int emul_type)
- {
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -272,6 +272,7 @@ static void svm_set_interrupt_shadow(str
- }
- 
- static int __svm_skip_emulated_instruction(struct kvm_vcpu *vcpu,
-+					   int emul_type,
- 					   bool commit_side_effects)
- {
- 	struct vcpu_svm *svm = to_svm(vcpu);
-@@ -293,7 +294,7 @@ static int __svm_skip_emulated_instructi
- 		if (unlikely(!commit_side_effects))
- 			old_rflags = svm->vmcb->save.rflags;
- 
--		if (!kvm_emulate_instruction(vcpu, EMULTYPE_SKIP))
-+		if (!kvm_emulate_instruction(vcpu, emul_type))
- 			return 0;
- 
- 		if (unlikely(!commit_side_effects))
-@@ -311,11 +312,13 @@ done:
- 
- static int svm_skip_emulated_instruction(struct kvm_vcpu *vcpu)
- {
--	return __svm_skip_emulated_instruction(vcpu, true);
-+	return __svm_skip_emulated_instruction(vcpu, EMULTYPE_SKIP, true);
- }
- 
--static int svm_update_soft_interrupt_rip(struct kvm_vcpu *vcpu)
-+static int svm_update_soft_interrupt_rip(struct kvm_vcpu *vcpu, u8 vector)
- {
-+	const int emul_type = EMULTYPE_SKIP | EMULTYPE_SKIP_SOFT_INT |
-+			      EMULTYPE_SET_SOFT_INT_VECTOR(vector);
- 	unsigned long rip, old_rip = kvm_rip_read(vcpu);
- 	struct vcpu_svm *svm = to_svm(vcpu);
- 
-@@ -331,7 +334,7 @@ static int svm_update_soft_interrupt_rip
- 	 * in use, the skip must not commit any side effects such as clearing
- 	 * the interrupt shadow or RFLAGS.RF.
- 	 */
--	if (!__svm_skip_emulated_instruction(vcpu, !nrips))
-+	if (!__svm_skip_emulated_instruction(vcpu, emul_type, !nrips))
- 		return -EIO;
- 
- 	rip = kvm_rip_read(vcpu);
-@@ -367,7 +370,7 @@ static void svm_inject_exception(struct
- 	kvm_deliver_exception_payload(vcpu, ex);
- 
- 	if (kvm_exception_is_soft(ex->vector) &&
--	    svm_update_soft_interrupt_rip(vcpu))
-+	    svm_update_soft_interrupt_rip(vcpu, ex->vector))
- 		return;
- 
- 	svm->vmcb->control.event_inj = ex->vector
-@@ -3633,11 +3636,12 @@ static bool svm_set_vnmi_pending(struct
- 
- static void svm_inject_irq(struct kvm_vcpu *vcpu, bool reinjected)
- {
-+	struct kvm_queued_interrupt *intr = &vcpu->arch.interrupt;
- 	struct vcpu_svm *svm = to_svm(vcpu);
- 	u32 type;
- 
--	if (vcpu->arch.interrupt.soft) {
--		if (svm_update_soft_interrupt_rip(vcpu))
-+	if (intr->soft) {
-+		if (svm_update_soft_interrupt_rip(vcpu, intr->nr))
- 			return;
- 
- 		type = SVM_EVTINJ_TYPE_SOFT;
-@@ -3645,12 +3649,10 @@ static void svm_inject_irq(struct kvm_vc
- 		type = SVM_EVTINJ_TYPE_INTR;
- 	}
- 
--	trace_kvm_inj_virq(vcpu->arch.interrupt.nr,
--			   vcpu->arch.interrupt.soft, reinjected);
-+	trace_kvm_inj_virq(intr->nr, intr->soft, reinjected);
- 	++vcpu->stat.irq_injections;
- 
--	svm->vmcb->control.event_inj = vcpu->arch.interrupt.nr |
--				       SVM_EVTINJ_VALID | type;
-+	svm->vmcb->control.event_inj = intr->nr | SVM_EVTINJ_VALID | type;
- }
- 
- void svm_complete_interrupt_delivery(struct kvm_vcpu *vcpu, int delivery_mode,
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -9337,6 +9337,23 @@ static bool is_vmware_backdoor_opcode(st
- 	return false;
- }
- 
-+static bool is_soft_int_instruction(struct x86_emulate_ctxt *ctxt,
-+				    int emulation_type)
-+{
-+	u8 vector = EMULTYPE_GET_SOFT_INT_VECTOR(emulation_type);
-+
-+	switch (ctxt->b) {
-+	case 0xcc:
-+		return vector == BP_VECTOR;
-+	case 0xcd:
-+		return vector == ctxt->src.val;
-+	case 0xce:
-+		return vector == OF_VECTOR;
-+	default:
-+		return false;
-+	}
-+}
-+
- /*
-  * Decode an instruction for emulation.  The caller is responsible for handling
-  * code breakpoints.  Note, manually detecting code breakpoints is unnecessary
-@@ -9447,6 +9464,10 @@ int x86_emulate_instruction(struct kvm_v
- 	 * injecting single-step #DBs.
- 	 */
- 	if (emulation_type & EMULTYPE_SKIP) {
-+		if (emulation_type & EMULTYPE_SKIP_SOFT_INT &&
-+		    !is_soft_int_instruction(ctxt, emulation_type))
-+			return 0;
-+
- 		if (ctxt->mode != X86EMUL_MODE_PROT64)
- 			ctxt->eip = (u32)ctxt->_eip;
- 		else
+ enum hp_wmi_radio {
+-- 
+2.51.0
+
 
 
 
