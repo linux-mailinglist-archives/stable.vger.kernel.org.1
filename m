@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-200639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63400CB2451
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:38:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 619B3CB2445
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:37:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 700F23064501
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:35:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 990D23074765
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:36:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1EAD303C81;
-	Wed, 10 Dec 2025 07:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF359313556;
+	Wed, 10 Dec 2025 07:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iSAfcHAZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u0LVRLIn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C3632FE04C;
-	Wed, 10 Dec 2025 07:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A975031355E;
+	Wed, 10 Dec 2025 07:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765352102; cv=none; b=U8OzTFrDYE3vLsp6OCrIMxoQUfO1ek80Ya14yVwU7SgbV/4eTOheHd4iHt/QaEy0CApZFrBiVeWo9fYe1xX9upQ72/XcRM9clBytB7DX7r8896fpUtd33YuuAHIO+kTecB/qxz6JeCrS0OF4b9l+cPJnwSNv11ZhnH8Xh+HGeY4=
+	t=1765352207; cv=none; b=pTVCgCsr6jyKkIS8u7rPi5ZsVXMzk1K4q86r835TTy+mOlCW7MTMFfh78pUj+Njpzqaxfd7lPTjAe0dggvpvUhMZMECB4cuUyOUxWp58oNahsKOz4yAreCBSNRyE9b6zhb5FA5qJJD401weKaPD7ncubkstDI36pCHRu8AZUDOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765352102; c=relaxed/simple;
-	bh=hsr++WdnqnAmb1w2m0h/elNZgp0XMIdQdfDFA6G8FIc=;
+	s=arc-20240116; t=1765352207; c=relaxed/simple;
+	bh=9o4wvrSnwhN1uuUjKMTeQcKG6uhBiPJaGd4sPpUy7J0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uuxMnMhjqhE9XHJTJlurx9yaKGUQD/M1FDeMDUwPYulBL36Snt7TsfUt2yOC0/PAmIACS0Rn79AjbA1WJMGPpVJt55KyfukrRrO5C6z2rPAHMMpmgOdxhRAW/f6H8GH7uQKQyIZ+9Q208pcNWlgy/QlPXmZfwpd6By6OMKauxCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iSAfcHAZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B04FC4CEF1;
-	Wed, 10 Dec 2025 07:35:01 +0000 (UTC)
+	 MIME-Version; b=Tfm72vvD9ftpPfFkzNpjFIFdbqwjAIIyjTrRMdgninTjFp/1D+bwfCd80K2emVNd2et87mXAm2WZp/Go0F+LDVJ0yMxT+NxQ6BW4dDXsxujm/DcmDuJ4aop/A0WTvme68T26jGUdnAMLl54w/k/1yHjigafD6PN0LSVCKm197L0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u0LVRLIn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 115E9C4CEF1;
+	Wed, 10 Dec 2025 07:36:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765352102;
-	bh=hsr++WdnqnAmb1w2m0h/elNZgp0XMIdQdfDFA6G8FIc=;
+	s=korg; t=1765352207;
+	bh=9o4wvrSnwhN1uuUjKMTeQcKG6uhBiPJaGd4sPpUy7J0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iSAfcHAZXqFqFYjho8ADq1bt/snaSrY2/Q2d7aw7qHmjcrHElAxynuLtn72OHWbmS
-	 6hqsv6kGENe8PD16r61dMbGfPB4KEKAJgvi4NOcqhluM8hDak83KO0xdXq2M5i/eh2
-	 Er4kKUTk58gs7GzgAL5hxWs9kdjbRZ/4hn2bccss=
+	b=u0LVRLInk5GgAS00AepKaot4tOiaa5WCdpibhEPC1XgD2RnM7KP9hSa6XlFqAAkbn
+	 Mh5P+qYiwZLz/r0XfgYdaHnIYiTCfnjClLB8tJ3QM0cPaYFmI5c97ChsbUEKIxtqn3
+	 ThlgmmCspiuxjPmmCS3tfxraTO9Lcdg5ujvzqpXE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcos Vega <marcosmola2@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 51/60] platform/x86: hp-wmi: Add Omen MAX 16-ah0xx fan support and thermal profile
+	Slark Xiao <slark_xiao@163.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.18 11/29] USB: serial: option: add Foxconn T99W760
 Date: Wed, 10 Dec 2025 16:30:21 +0900
-Message-ID: <20251210072949.137335584@linuxfoundation.org>
+Message-ID: <20251210072944.676768673@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
-References: <20251210072947.850479903@linuxfoundation.org>
+In-Reply-To: <20251210072944.363788552@linuxfoundation.org>
+References: <20251210072944.363788552@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,47 +57,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcos Vega <marcosmola2@gmail.com>
+From: Slark Xiao <slark_xiao@163.com>
 
-[ Upstream commit fa0498f8047536b877819ce4ab154d332b243d43 ]
+commit 7970b4969c4c99bcdaf105f9f39c6d2021f6d244 upstream.
 
-New HP Omen laptops follow the same WMI thermal profile as Victus
-16-r1000 and 16-s1000.
+T99W760 is designed based on Qualcomm SDX35 (5G redcap) chip. There are
+three serial ports to be enumerated: Modem, NMEA and Diag.
 
-Add DMI board 8D41 to victus_s_thermal_profile_boards.
+test evidence as below:
+T:  Bus=03 Lev=01 Prnt=01 Port=03 Cnt=01 Dev#=  4 Spd=5000  MxCh= 0
+D:  Ver= 3.20 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=0489 ProdID=e123 Rev=05.15
+S:  Manufacturer=QCOM
+S:  Product=SDXBAAGHA-IDP _SN:39A8D3E4
+S:  SerialNumber=39a8d3e4
+C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=896mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
+E:  Ad=85(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=88(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
 
-Signed-off-by: Marcos Vega <marcosmola2@gmail.com>
-Link: https://patch.msgid.link/20251108114739.9255-3-marcosmola2@gmail.com
-[ij: changelog taken partially from v1]
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+0&1: MBIM, 2:Modem, 3:GNSS(non-serial port), 4: NMEA, 5:Diag
+
+Signed-off-by: Slark Xiao <slark_xiao@163.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/hp/hp-wmi.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/serial/option.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/platform/x86/hp/hp-wmi.c b/drivers/platform/x86/hp/hp-wmi.c
-index e10c75d91f248..ad9d9f97960f2 100644
---- a/drivers/platform/x86/hp/hp-wmi.c
-+++ b/drivers/platform/x86/hp/hp-wmi.c
-@@ -96,6 +96,7 @@ static const char * const victus_thermal_profile_boards[] = {
- static const char * const victus_s_thermal_profile_boards[] = {
- 	"8BBE", "8BD4", "8BD5",
- 	"8C78", "8C99", "8C9C",
-+	"8D41",
- };
- 
- enum hp_wmi_radio {
--- 
-2.51.0
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2376,6 +2376,8 @@ static const struct usb_device_id option
+ 	  .driver_info = RSVD(3) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe0f0, 0xff),			/* Foxconn T99W373 MBIM */
+ 	  .driver_info = RSVD(3) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe123, 0xff),			/* Foxconn T99W760 MBIM */
++	  .driver_info = RSVD(3) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe145, 0xff),			/* Foxconn T99W651 RNDIS */
+ 	  .driver_info = RSVD(5) | RSVD(6) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe15f, 0xff),                     /* Foxconn T99W709 */
 
 
 
