@@ -1,123 +1,102 @@
-Return-Path: <stable+bounces-200709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCDE6CB2CCE
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 12:17:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F01DBCB2CEC
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 12:22:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2970330647B5
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 11:17:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 37DE230A299F
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 11:22:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BE18225779;
-	Wed, 10 Dec 2025 11:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B1A52F6587;
+	Wed, 10 Dec 2025 11:22:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="nTnfrDNW"
+	dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b="xh/TnW8u"
 X-Original-To: stable@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4CA2AEF5;
-	Wed, 10 Dec 2025 11:17:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1982D6E6A
+	for <stable@vger.kernel.org>; Wed, 10 Dec 2025 11:22:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765365438; cv=none; b=lX4C/pI0PiNNk67q8KtBgUoSSrNlQblopb8wovvsfMPcqZJrg94YK7xOG9bwhOm/yQYnmU5OtFhiU/AD6OJG68Z1w3CoSkwUarKlzAHOFAKYpX/OheaRs9/ssH1AKnMZSm7Pl6J6kEqYPiteU5ua8aORuBK9dB7GBiNGOWVOghg=
+	t=1765365765; cv=none; b=M/mK9ONIflRu50pmVVQDr+HTbkD7Il9F+J0KEgt/l1IBmX84zKKYZzaxb9hStgO9zT3Gu6Dd/eKwEK6yFknX3TC/zOwCN5qsMrdnDth1NN9JdK9HR2tmMi5kQygIPxcNVcChQJA3jpR06hqDNIKe/Fg6pM+ydalAFTPq0sSkGrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765365438; c=relaxed/simple;
-	bh=ZzMI9Yz+prlZhwZGR1FXlY/yFrWepGXV2CWoNm4Nbmg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AjEWTOaCceahiQz5hRn68g79mcuWXM/iMIh05oDwMOb2AGz3nQJzwvZWXRv9r27Nhyhp7l6xhdcRg2NhwFzuw8kPH9iW1p+/uPuAIpiOStzmeAsDIfn4bFQBGFIi5CYpZMgawuT8qsoAIDhoVmjoQm3bqUigAl/FQRbC6pQhvX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=nTnfrDNW; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=ks6k3NdN4uI/TI255dpKtGcQF9B19neoPARrlPX/NQQ=; b=nTnfrDNWSdURYmE2rWVunzXOdS
-	hpzJqUHwCDVl9R1Mfza1ipT8VhcslIf769cwm5/MzRyrNJBUWekmSZFMFn3DWBaUVwtYpjuA/tDbs
-	vqJwr0tuFI5aBRUgaiIBDXF1W8rbykUh0iyRF2WZeCauSUyuKskSK/QL8zU4BsuWBXJpTAxWs2xFP
-	m7zTxGNmP1QHADSF1tGeR0OdUZRN+WxGsIX+AzQe4Qfpk7CIGbII/esDArnKMHorlb/ZKTNA0Na1f
-	tqF0ZwKDj/Nj4cpoZBtZxRiaDd0biCsHWeX0e1WH0gvZ96vQKsJWiHcPVmRzWP+NCr+WkD93jfd5C
-	ULMtWVjA==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vTIBk-0000000ClU1-37Dx;
-	Wed, 10 Dec 2025 11:16:56 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 8765A302EC2; Wed, 10 Dec 2025 12:16:55 +0100 (CET)
-Date: Wed, 10 Dec 2025 12:16:55 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Fernand Sieber <sieberf@amazon.com>
-Cc: abusse@amazon.de, bp@alien8.de, dave.hansen@linux.intel.com,
-	dwmw@amazon.co.uk, hborghor@amazon.de, hpa@zytor.com,
-	jschoenh@amazon.de, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, mingo@redhat.com,
-	nh-open-source@amazon.com, nsaenz@amazon.com, pbonzini@redhat.com,
-	seanjc@google.com, stable@vger.kernel.org, tglx@linutronix.de,
-	x86@kernel.org
-Subject: Re: [PATCH] KVM: x86/pmu: Do not accidentally create BTS events
-Message-ID: <20251210111655.GB3911114@noisy.programming.kicks-ass.net>
-References: <20251201142359.344741-1-sieberf@amazon.com>
- <20251202100311.GB2458571@noisy.programming.kicks-ass.net>
- <20251202124423.GC2458571@noisy.programming.kicks-ass.net>
- <20251210101147.139674-1-sieberf@amazon.com>
+	s=arc-20240116; t=1765365765; c=relaxed/simple;
+	bh=RwJqEKrjOHmef3MWEP1ZSzKUDTRwliaRL3I4knFEl/g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RHrn9L3R+gubrjK4rRv8Ni/IQ7t06vvvSQ1/A+pRX77aIzBpC5k4P90Ug2tg1AKRDaqhb1iy7Y9eGe7pKloptArdY+NeFtu3zJvm34bO7R4ffZIfTsvvpSwWkXVxT955zpIoLUBELT6sBeCYDqCmqlscM/dtJvw9nHCY/YI+o4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in; spf=none smtp.mailfrom=rajagiritech.edu.in; dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b=xh/TnW8u; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=rajagiritech.edu.in
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-b72b495aa81so1021242166b.2
+        for <stable@vger.kernel.org>; Wed, 10 Dec 2025 03:22:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rajagiritech-edu-in.20230601.gappssmtp.com; s=20230601; t=1765365763; x=1765970563; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=y3fR6ViPsGqU8MfdXZ3Af4k0ImLkw2v66K7RQbWl7oE=;
+        b=xh/TnW8uYohX8CtrUKqZGUptjvja1s++yVk6grsnVIAq0kuvgi00gjXhTTJT73kJu9
+         KMoCjy/smfn16FvyajQH5XKTzrqxyJGmcNjxHfVwSqTsksSTgIBhVT3yoXdRYZm4ed9u
+         jy7nbEPhJaZKPdNMpl7mCtzWGOYZiPPsbIyZQ07tBPE/iR46HdulPzveqfqHjfznoi7/
+         qnyxevv9BKkAfsBiynKohj2Fjh/xCBDxcZS7mYnVGNgwKB51A2KLStRLUf7HLSVAPDcZ
+         OqzxmXv05yTY6QmP8DWUS2t9CqHqZPqv0RGMji9SZQOF/dh1m0oGl1Ao5ZUcCFF8YaBO
+         CKyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765365763; x=1765970563;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=y3fR6ViPsGqU8MfdXZ3Af4k0ImLkw2v66K7RQbWl7oE=;
+        b=oqAJNTigplLAw5SgzC4w6AVatETNEu704BOgGVLFJfkf1SlLtJOx78mID6rcxtbduJ
+         ebOjHg/KirhR9jCIwP02ZQbvb5whfQHp1/eJj6W6cNlh4XBJpNUHriFer9zoRV3FEP1y
+         Sd5yCxw+5OiCLxYWaoWEmC1uPZXtSopsQL4/w10Rnvz4W12U2muzvZhuNQFTLO0PUcFE
+         K8o+46FziiScQ9ahn/TG/HnIgxD+TMfEMdyL7GDRVHVImmlBm9MBGi1ucx1g6Z4RimxS
+         6hT4G0HbU2wFQz552XOJz+Fr6+P9WRIbd6QuFfSULJ0jhDiS+TEhOUhgMsXLlpcOz4Q7
+         c4HQ==
+X-Gm-Message-State: AOJu0Yy2JeS5584N9Yd3z5pPnZOzf2k6gqowJnlkJvNemvf2iqZTDmnW
+	gniOFQ44NcE7vzTRD9lnEBmsIFHU+ylEt6pstfCsmlEfcxtUBS7QHmrQiO0m9KjeJPFCcd7zVeH
+	GcvSMGM/x14QnqeMd+bSXQzxk0dEoiZ4ONWPkiL6rLg==
+X-Gm-Gg: ASbGncv663DPyHYMauMMltRsoEvhSjFjtjnAaNSGCbJyNAb9gmtL/9lWJfF7H/rkpKy
+	rcZe67K8r2GOOUidGSlbZUS2yEaJJ7deAXCz57blL5kNPHjpdoIpLt6pNhPEyCuKQo7uGa+kLtz
+	jgPBY6WkeNlhOLt8LljYd5cvPAN+r8wrQCUKuwzW/GNcJjjTsDUJshSyhziDUXN2ZZMWle18eMr
+	9Txldsu5NSUI+VD53iq4ndFsTwYTJyrWJm/pFn4pmXjWBTgPooMaj21YpoHhYmsn4uE+SrBclLa
+	xRPgGg==
+X-Google-Smtp-Source: AGHT+IGpkdTQkei/z+CfKPvwYo4nremFkFGY5G/hzKyLEiR07JwWYOd21PmvfRI5FQr2rguFgg0RpN/HWyzj145KWPo=
+X-Received: by 2002:a17:906:c103:b0:b73:4b22:19c5 with SMTP id
+ a640c23a62f3a-b7ce851c42emr213067466b.44.1765365762765; Wed, 10 Dec 2025
+ 03:22:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251210101147.139674-1-sieberf@amazon.com>
+References: <20251210072948.125620687@linuxfoundation.org>
+In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
+From: Jeffrin Thalakkottoor <jeffrin@rajagiritech.edu.in>
+Date: Wed, 10 Dec 2025 16:52:05 +0530
+X-Gm-Features: AQt7F2qBf88HbQYd-YGXwdQSek9eban_IwWQ9i4SEquMn5zl2qXNvQTqRH1acrk
+Message-ID: <CAG=yYwnRwG+uD0mS17X0cvzruY=nRUyK_HvQhtxJQCCmi1YF=A@mail.gmail.com>
+Subject: Re: [PATCH 6.12 00/49] 6.12.62-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org, sr@sladewatkins.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Dec 10, 2025 at 12:11:47PM +0200, Fernand Sieber wrote:
+ compiled and booted  6.12.62-rc1+
+Version: AMD Ryzen 3 3250U with Radeon Graphics
 
-> > Does something like so work? It is still terrible, but perhaps slightly
-> > less so.
-> >
-> > diff --git a/arch/x86/events/perf_event.h b/arch/x86/events/perf_event.h
-> > index 2b969386dcdd..493e6ba51e06 100644
-> > --- a/arch/x86/events/perf_event.h
-> > +++ b/arch/x86/events/perf_event.h
-> > @@ -1558,13 +1558,22 @@ static inline bool intel_pmu_has_bts_period(struct perf_event *event, u64 period
-> >  	struct hw_perf_event *hwc = &event->hw;
-> >  	unsigned int hw_event, bts_event;
-> >
-> > -	if (event->attr.freq)
-> > +	/*
-> > +	 * Only use BTS for fixed rate period==1 events.
-> > +	 */
-> > +	if (event->attr.freq || period != 1)
-> > +		return false;
-> > +
-> > +	/*
-> > +	 * BTS doesn't virtualize.
-> > +	 */
-> > +	if (event->attr.exclude_host)
-> >  		return false;
-> >
-> >  	hw_event = hwc->config & INTEL_ARCH_EVENT_MASK;
-> >  	bts_event = x86_pmu.event_map(PERF_COUNT_HW_BRANCH_INSTRUCTIONS);
-> >
-> > -	return hw_event == bts_event && period == 1;
-> > +	return hw_event == bts_event;
-> >  }
-> >
-> >  static inline bool intel_pmu_has_bts(struct perf_event *event)
-> 
-> Hi Peter,
-> 
-> I've pulled your changes and confirmed that they address the original
-> bug report.
-> 
-> The repro I use is running on host, with a guest running:
-> `perf record -e branches:u -c 2 -a &`
-> `perf record -e branches:u -c 2 -a &`
-> Then I monitor the enablement of BTS on the host and verify that without
-> the change BTS is enabled, and with the change it's not.
-> 
-> This looks good to me, should we go ahead with your changes then?
+dmesg related  no  typical   regressions
 
-Yeah, I suppose. Please stick a coherent changelog on and repost.
+Tested-by: Jeffrin Jose T <jeffrin@rajagiritech.edu.in>
+
+--
+software engineer
+rajagiri school of engineering and technology
 
