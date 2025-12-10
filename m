@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-200641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0DFDCB2457
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:38:16 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A25D2CB244B
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:38:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7A401301840F
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:35:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 80BD430DB810
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:36:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 142F92FE04C;
-	Wed, 10 Dec 2025 07:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52ECB313E1C;
+	Wed, 10 Dec 2025 07:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D1TXzNOw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YjF68Y+I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C45BA2FF16C;
-	Wed, 10 Dec 2025 07:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10ADF31353D;
+	Wed, 10 Dec 2025 07:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765352106; cv=none; b=efpLfBfKue+7mKTTmahrfZaCOcaFcKIyx4/KB5uD33EQrD82YiUpG0QAGSsNORWKWLBXY1qENvtoxzp45s0QicAIUKRud7AHOYUmNxtDuvTq+emwVifdhH1djsmVtiIi/DJxr5w1ZdI9FPxM2rnGWSorFLajP5QKdPS802SkO6o=
+	t=1765352211; cv=none; b=NFF4XbL7BubBx2TGONDv76qlUFyM2AGKZyNdHlWFlvh3OnYOVvBGGMBKjPTXBrThhJOFzTorHTVotdowjZGXg2HNekJIvCwrHiyX3TJR/B368VkqmptobGN1RqNX2eN8bLERgNRQs6hyECYuC6VGKNNnbHODHv1rcxRrm32XefM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765352106; c=relaxed/simple;
-	bh=cl+Fv2j3s9xPUMLOqNmNV6TI+n6vXwWDqwpBe1O4yu0=;
+	s=arc-20240116; t=1765352211; c=relaxed/simple;
+	bh=XfDn1plZ2RH2AKMRYNTGMZj67XSBqzI8reVF6gEJf9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HDCPZo22dVEoFmZD7oR5hTcj0UlU2SnVwcJb3UuJPGLxbmHPp4ZKLMBhwjpWPZft5A5xO0sxT3h5MUojDG3FXs7V/t1e0OO1z7ShDvKzvVgeONHDCRc/Hvn5bxWnmkZpIj9TAmQnRSWtZG4tliE9skRLWpHEOquwuGYQXVTfiK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D1TXzNOw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F4A7C4CEF1;
-	Wed, 10 Dec 2025 07:35:06 +0000 (UTC)
+	 MIME-Version; b=WEAX7lfIsLFfQZG+kbuK4WPtImD/RGt4c0S1n0HQv1z5QnMo2JwAnHW9vRPiEk4FagPr3lH4HCrBHXzI85Th3ygwePE03Y8shd5V7Jd2AIC8VTA/9CIYPalpNug+ptWZKHdLbx/7sZ9s9sEkRxR8a04hpXqWYh/9nsqZ/97hZV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YjF68Y+I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B014EC4CEF1;
+	Wed, 10 Dec 2025 07:36:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765352106;
-	bh=cl+Fv2j3s9xPUMLOqNmNV6TI+n6vXwWDqwpBe1O4yu0=;
+	s=korg; t=1765352210;
+	bh=XfDn1plZ2RH2AKMRYNTGMZj67XSBqzI8reVF6gEJf9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D1TXzNOw1mukqN0oz5OLOWMA3kogKOWDvsw4fbP6F8LYGa66IwNUyX3UdWNTNp87n
-	 ty2MZtUj1H8ys9AOTUsYPZHwjQy9cXL20ZGhco4lQGbu3W9yEr8uUZ/hYlzC90pCks
-	 QlfO8vH2l0O10teyvRIzUXbtEAXLEwBtLgYwHWhU=
+	b=YjF68Y+IOCCGZUIBpIztjFZQvZDHNIzxu8plGs+mTDBR5VGLLgvK0IFg3jymlG8GQ
+	 qNXyEZyzIgFseOKnkqUuLBTs2DAhWsH6eleFc8odqfs8lvFlrPySYJoAtXMebis5lm
+	 lvMCEd+tmqO6aVXQOFJbvYYm4u0DwkefcXPQZHyg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zenm Chen <zenmchen@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 6.17 53/60] wifi: rtw88: Add USB ID 2001:3329 for D-Link AC13U rev. A1
+	Fabio Porcedda <fabio.porcedda@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.18 13/29] USB: serial: option: move Telit 0x10c7 composition in the right place
 Date: Wed, 10 Dec 2025 16:30:23 +0900
-Message-ID: <20251210072949.186596774@linuxfoundation.org>
+Message-ID: <20251210072944.730330274@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
-References: <20251210072947.850479903@linuxfoundation.org>
+In-Reply-To: <20251210072944.363788552@linuxfoundation.org>
+References: <20251210072944.363788552@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,40 +59,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zenm Chen <zenmchen@gmail.com>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
 
-commit b377dcd9a286a6f81922ae442cd1c743bc4a2b35 upstream.
+commit 072f2c49572547f4b0776fe2da6b8f61e4b34699 upstream.
 
-Add USB ID 2001:3329 for D-Link AC13U rev. A1 which is a RTL8812CU-based
-Wi-Fi adapter.
+Move Telit 0x10c7 composition right after 0x10c6 composition and
+before 0x10c8 composition.
 
-Compile tested only.
-
-Cc: stable@vger.kernel.org # 6.6.x
-Signed-off-by: Zenm Chen <zenmchen@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250929035719.6172-2-zenmchen@gmail.com
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtw88/rtw8822cu.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/serial/option.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/net/wireless/realtek/rtw88/rtw8822cu.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822cu.c
-@@ -21,6 +21,8 @@ static const struct usb_device_id rtw_88
- 	  .driver_info = (kernel_ulong_t)&(rtw8822c_hw_spec) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x13b1, 0x0043, 0xff, 0xff, 0xff),
- 	  .driver_info = (kernel_ulong_t)&(rtw8822c_hw_spec) }, /* Alpha - Alpha */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x3329, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8822c_hw_spec) }, /* D-Link AC13U rev. A1 */
- 	{},
- };
- MODULE_DEVICE_TABLE(usb, rtw_8822cu_id_table);
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1445,6 +1445,9 @@ static const struct usb_device_id option
+ 	  .driver_info = NCTRL(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c6, 0xff),	/* Telit FE910C04 (MBIM) */
+ 	  .driver_info = NCTRL(4) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10c7, 0xff, 0xff, 0x30),	/* Telit FE910C04 (ECM) */
++	  .driver_info = NCTRL(4) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10c7, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c8, 0xff),	/* Telit FE910C04 (rmnet) */
+ 	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c9, 0xff),	/* Telit FE910C04 (MBIM) */
+@@ -1455,9 +1458,6 @@ static const struct usb_device_id option
+ 	  .driver_info = NCTRL(5) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d0, 0xff, 0xff, 0x60) },
+-	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10c7, 0xff, 0xff, 0x30),	/* Telit FE910C04 (ECM) */
+-	  .driver_info = NCTRL(4) },
+-	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10c7, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x30),	/* Telit FN990B (MBIM) */
+ 	  .driver_info = NCTRL(6) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x10d1, 0xff, 0xff, 0x40) },
 
 
 
