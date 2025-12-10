@@ -1,81 +1,92 @@
-Return-Path: <stable+bounces-200741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73B8DCB3DDB
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 20:31:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 368EBCB3DF0
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 20:34:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F22B7300FA06
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 19:31:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6B13030184F9
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 19:33:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 636742E7BDD;
-	Wed, 10 Dec 2025 19:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5D17326947;
+	Wed, 10 Dec 2025 19:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="CUUyc3ib"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DhtbgHgZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD2F718C2C
-	for <stable@vger.kernel.org>; Wed, 10 Dec 2025 19:31:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA83D30EF89
+	for <stable@vger.kernel.org>; Wed, 10 Dec 2025 19:33:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765395084; cv=none; b=iMWrM9oNSm8bajAap2J7v+CeGun1t3+Yg7FtDSvCblrq24ZSYa1gX9ZucxWJnX8NBWwQi90JSMWK+iQ98Z14nWA6cZMue+mEq00TByQfkWjPkV+bj3WZMVINbilK98wCwvlwDvPf+/0r5kr9SuIO4V+jPrzK6tov/fx1V4T6VHA=
+	t=1765395224; cv=none; b=e7inyhtUDWERFu5vUrLqcwKrS8BbPjQE7o7UFO89v8gimf0KI5BBLNH1Ss9fBvEPzZ0R7gQPu+OPloyoLmWX94a06Z65NZqv6fmVD/q6Ne4YjyXGaMj52UseZvbvdEOm6eAmwTeVvjv+orCqrMX4/0480QUxpaAblKg2HeyvilU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765395084; c=relaxed/simple;
-	bh=jAI/cZ8/Risj2obasGTbiOljtvLuJxNQ2nILXsO9Bxg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ADEI3Wa+k+MEpaoHUZAy8UwYynFqbFAq7j8biEyla32zwGouukVvEv69eRXbwdvfrC4yRAPMlUTpJvf5IqISBOms0PB2hmGGZHAz5obbb2dM1yAmkir4DgqWUz2ypodCp2wXROHUSLeozy3zGnv8adj1CMIBdMqY0MlxXdsg5GY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=CUUyc3ib; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-7aa9be9f03aso110035b3a.2
-        for <stable@vger.kernel.org>; Wed, 10 Dec 2025 11:31:22 -0800 (PST)
+	s=arc-20240116; t=1765395224; c=relaxed/simple;
+	bh=8UjBTc/l5QErbH4PdB/3AyuN4ByBmBhkEBcnEF8mCkQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oX/HtaGCcPGcOL4FbVGETp2BO5THuE7JYXHJSMCHo3H5T7XBbYG3cxtleSuAttSoTXZvLt5BVUd0itprS9SMvGHA1cHbRrDt1OiU5MS2HUkBnn6NnswWVTvllmpSY0nCeQA7xC1rEf2GLKJRDYrrzKPtZ2utkEyE/mANhCLLCWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DhtbgHgZ; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-7b8e49d8b35so164440b3a.3
+        for <stable@vger.kernel.org>; Wed, 10 Dec 2025 11:33:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1765395082; x=1765999882; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1765395222; x=1766000022; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=F6ybH5P0ZqP5MXm6M6ozs1e/SZAmwiNIl7gbv5z43yI=;
-        b=CUUyc3ibGLDMI7LX2Jc5Iqs1fvDvfpERE667yXBBlcD/THB9Zf8s7CR+65F9jsYE+h
-         nNn27DFBmNOPjlSA/oG3rMKHIjh16JncQwNhrU7zoXnWhY5QI4+ldFZSGCW1QNcE2gLE
-         j+HHPP7IW+mpCsG3YxnF1SWHDlFiOE6efFFvs=
+        bh=I/RcrEPeLqKl6bQA60QkstM/GSbzDgJ1lLxqTexZoic=;
+        b=DhtbgHgZ+7sSiv5+qawseouOqruy86dngVXvOPN5hG0m9LLqMLYN4JmHKErgK6nnbo
+         F/hEKQZ1sXPUp+soNfNhbcJk23tP0nNdfI+3qwTZtwi7/Kc5fSN1vG4wZ2liFzk/ZrCk
+         73ymBtDNlDBVqdvSIZN6g3Cqxew4LlCHgXAGpC0ZWYqiHderD3x7OMvNMNa05agwmuqR
+         DXLEkPOQzkUnGSn0+b3z7EMj2YZLjjxcMd5NuE0b+tpf3Eq5rE3+c5uEb2QDdY6Xk6r6
+         DZcouNYMhdq6eRM/D8q6MfhMcd3i5qgRkV/cVdWOQwW5WADfabjBG+LHDwuqZSZrWyiH
+         1jLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765395082; x=1765999882;
+        d=1e100.net; s=20230601; t=1765395222; x=1766000022;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=F6ybH5P0ZqP5MXm6M6ozs1e/SZAmwiNIl7gbv5z43yI=;
-        b=oCyqeCzngD4hkMnVeEnQblclLDVxIM59q8dWSaeg9d0bLHAm6hgz/Q789EYURyKHgy
-         BjTBM3k6fMsEedKo1JWSpwoXlzR8apAtObEP2szXGqP7u2WBUuPLzUCalZT2AfdCFPW4
-         Y3cHEe7wor2AVkmNFPrddjRyEWta2HbXE5vHanpreEg7Mr3G2gU6mKzg1pjvtZV4HTFW
-         icGu22aZSUb9Vn0Lw/UtY73NzBHAFMcbrSrPdfmHHnnY+5iHG2oMrpylxuZRi73bnbKL
-         rm798x8D2bG4K34eiBHaU/8YBAuds95qwS5uTQ79mdgV0cF7NIjrOLatGyynBZoE7Po1
-         3Rzg==
-X-Forwarded-Encrypted: i=1; AJvYcCWUF2nLPfAe7h42V9iYYR1RP7SsUNEp+U/U/SMWKVDjUe7jmsyvVYoC/K09fOsZV3F0C7ST0ZQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxktIH0NSngyNLjlKZcRrlozdt7vt99xSj9sriAowi+e+vrjlnJ
-	Gba6t+O5WkgbNN+udRgGM/Oiq2HdqxkX3kmW/FxrrsT0giL+TvVKkC/sbf1J76FQWw==
-X-Gm-Gg: ASbGncteUlW2NpQCUIVUIn+i4FUDGRfiKixI6Jb0C09KFqz7PsFn2XxJRAgfLTWrrEP
-	bBoZlu13LI8kB5uBBrTZ+pefOgwMdcks17HXt1AnLlZF1zTIzwMj8/7A4yJitMMPAcDjMlf5al6
-	S4tTOYWkL20vcMHbUCV9ucLAH+Xvh3uDCpjotRLxjN0qhJKVEFYmFsWqP85tcOEKd6CY7aH2LWC
-	k6k7gLkvSevP00Zj7+IcSKEuFw8Hi0N6NLkZQPwvxvOcV2mm4am45tyS35u+7/xLHducQzsRBHK
-	aGnK3IPsNbF05zNnKjlfJWk6JOFsCGtl5IgsceqlYDG9ZKN/w882+5Z27O1ylBoRssugJP5n8o0
-	0S2y0QRcy+KM5wIRKJ1tSybfQweAZVAhR29fbLJSVH9fimlVjCPO3s7IK9GefzxEGysiC3VMnA4
-	tTfGB8jR4SfcDaWY9H5eMzD/96PjERm95jgd0AiPwDvodzGym5V7JNKKEXX3uLlehQeBTR+u4=
-X-Google-Smtp-Source: AGHT+IHfmJbB7s5a1YoDz1FXkh0zlCZli9b00q9Np/CI/Vyd9tLtbPt7EUsePWimkahEhv0KewcvFQ==
-X-Received: by 2002:a05:7022:128d:b0:11b:9386:8255 with SMTP id a92af1059eb24-11f296b4370mr2779334c88.42.1765395081844;
-        Wed, 10 Dec 2025 11:31:21 -0800 (PST)
-Received: from dianders.sjc.corp.google.com ([2a00:79e0:2e7c:8:2eae:c894:7aaa:937f])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11f2e1bb2f4sm972592c88.3.2025.12.10.11.31.20
+        bh=I/RcrEPeLqKl6bQA60QkstM/GSbzDgJ1lLxqTexZoic=;
+        b=IFDs3CDZRGsBL/CeCs07KY61gQ1/1Timj9xlFlILgpf0lXzCJySJV5sCfs6R/9jLOr
+         3q9q1EwAQHnEJDu4CFUSDe6ify22ULX/kD0TT7K86pDffraZsgHSRagNHAg2B2Ohw0XD
+         xYbbF4PZ7H+IY77mSIkUcG97lfhguIl3zzwN8kbQ6bC6HK2syKZhnEC6xSS3klcPxyXk
+         NPc9J0dfwOA2OyaNOYQggYPNeDo+qbRwqLuSXw3js4035yGc717s5Ff3Rq+VQ1oZ4v77
+         9XC629I8fgjpS4jt5KHI81+16hDcKqxEXrLCRZR87+UetbAmyzK+p7DjLw1FNz0wNRHd
+         vXFw==
+X-Forwarded-Encrypted: i=1; AJvYcCWf2cFrpI4jIccpJY8IY4LB4U+0u/TjhmdpHHAoCKcqHLoHecqcqDxY9CHDq7V47dVym8Dhz3A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzAEqvTtGyvjisR7yrw9q++obOBCzAcDxlNvvdMAQhrIbOuclx4
+	DmJcMiyPQCYJMehA4t9HxuIHfaN/FVUw73f4HqoFoM/W/x1BTiy2sFOz
+X-Gm-Gg: AY/fxX7jCO0TmLo9I6kvkBbXN0oj7B8LZZn7iZhL2sCBd5DJy+eKwfxZbxeXsubZcQX
+	hLaWEOxZ7VHUtDiagi2bgSkdEihKMYuH6IPBLITn09d9zVb6ihAAB0rZRi7v/H5aPT0ZmJwfGBq
+	dHPt02UKLQ5d/m1IRPzmgVVQJ57XNVb6sJVxeXnspiMvECjCkEKsU82Ruequ1GKtc9mvGlYQGt5
+	LVHEurSZ/QhtEghuCbqJLzSHwe1rl1TgvQLfN5l/rbUge3hX7Lg5jfvjDCXLOlZ4oGpWfKqA5+H
+	bUNC/LjyyNUqDRD2iYV1a5ERgcmnLYTjlJ6jb4ukO/hoEtwr9MKvNNfcB8UtjkO1oPxJ//q1tId
+	rLJf1yb4P6t6Nel7Bw29clgK81LlXF1mhsW3UYwiN2gRtE8PI0TQ7SazFWzuTrvFeUZiJiAzhqL
+	/R6KueA09UUTaBQdDuldKSJKeJxpgx9PGC26q56A==
+X-Google-Smtp-Source: AGHT+IH/7AZHVflGDIAmJDUB8km9duB1spqmtxvC8h5wY8EGyhYSwMmwBdGOw/GUihrZdBUrNpWeqQ==
+X-Received: by 2002:a05:6a00:94f1:b0:7e8:43f5:bd0c with SMTP id d2e1a72fcca58-7f22f716104mr3793601b3a.33.1765395222112;
+        Wed, 10 Dec 2025 11:33:42 -0800 (PST)
+Received: from localhost.localdomain ([111.125.240.40])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7f4c27771b3sm304828b3a.27.2025.12.10.11.33.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Dec 2025 11:31:20 -0800 (PST)
-From: Douglas Anderson <dianders@chromium.org>
-To: Lee Jones <lee@kernel.org>
-Cc: Douglas Anderson <dianders@chromium.org>,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] mfd: core: Add locking around `mfd_of_node_list`
-Date: Wed, 10 Dec 2025 11:30:03 -0800
-Message-ID: <20251210113002.1.I6ceaca2cfb7eb25737012b166671f516696be4fd@changeid>
-X-Mailer: git-send-email 2.52.0.223.gf5cc29aaa4-goog
+        Wed, 10 Dec 2025 11:33:41 -0800 (PST)
+From: Prithvi Tambewagh <activprithvi@gmail.com>
+To: mark@fasheh.com,
+	jlbec@evilplan.org,
+	joseph.qi@linux.alibaba.com
+Cc: ocfs2-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-kernel-mentees@lists.linux.dev,
+	skhan@linuxfoundation.org,
+	david.hunter.linux@gmail.com,
+	khalid@kernel.org,
+	Prithvi Tambewagh <activprithvi@gmail.com>,
+	syzbot+c818e5c4559444f88aa0@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH v2] ocfs2: fix kernel BUG in ocfs2_write_block
+Date: Thu, 11 Dec 2025 01:02:55 +0530
+Message-ID: <20251210193257.25500-1-activprithvi@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -84,97 +95,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Manipulating a list in the kernel isn't safe without some sort of
-mutual exclusion. Add a mutex any time we access / modify
-`mfd_of_node_list` to prevent possible crashes.
+When the filesystem is being mounted, the kernel panics while the data
+regarding slot map allocation to the local node, is being written to the
+disk. This occurs because the value of slot map buffer head block
+number, which should have been greater than or equal to
+`OCFS2_SUPER_BLOCK_BLKNO` (evaluating to 2) is less than it, indicative
+of disk metadata corruption. This triggers
+BUG_ON(bh->b_blocknr < OCFS2_SUPER_BLOCK_BLKNO) in ocfs2_write_block(),
+causing the kernel to panic.
 
-Cc: <stable@vger.kernel.org>
-Fixes: 466a62d7642f ("mfd: core: Make a best effort attempt to match devices with the correct of_nodes")
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
+This is fixed by introducing an if condition block in
+ocfs2_update_disk_slot(), right before calling ocfs2_write_block(), which
+checks if `bh->b_blocknr` is lesser than `OCFS2_SUPER_BLOCK_BLKNO`; if
+yes, then ocfs2_error is called, which prints the error log, for
+debugging purposes, and the return value of ocfs2_error() is returned
+back to caller of ocfs2_update_disk_slot() i.e. ocfs2_find_slot(). If
+the return value is zero. then error code EIO is returned.
+
+Reported-by: syzbot+c818e5c4559444f88aa0@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c818e5c4559444f88aa0
+Tested-by: syzbot+c818e5c4559444f88aa0@syzkaller.appspotmail.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Prithvi Tambewagh <activprithvi@gmail.com>
 ---
-While I have no definitive way to reproduce the crash we've been
-seeing, it's clear that the `mfd_of_node_list` isn't right at the time
-of the crash. Code inspection shows the lack of locking.
+v1->v2:
+ - Remove usage of le16_to_cpu() from ocfs2_error()
+ - Cast bh->b_blocknr to unsigned long long
+ - Remove type casting for OCFS2_SUPER_BLOCK_BLKNO
+ - Fix Sparse warnings reported in v1 by kernel test robot
+ - Update title from 'ocfs2: Fix kernel BUG in ocfs2_write_block' to
+   'ocfs2: fix kernel BUG in ocfs2_write_block'
 
- drivers/mfd/mfd-core.c | 36 ++++++++++++++++++++++--------------
- 1 file changed, 22 insertions(+), 14 deletions(-)
+v1 link: https://lore.kernel.org/all/20251206154819.175479-1-activprithvi@gmail.com/T/
 
-diff --git a/drivers/mfd/mfd-core.c b/drivers/mfd/mfd-core.c
-index 7d14a1e7631e..c55223ce4327 100644
---- a/drivers/mfd/mfd-core.c
-+++ b/drivers/mfd/mfd-core.c
-@@ -22,6 +22,7 @@
- #include <linux/regulator/consumer.h>
- 
- static LIST_HEAD(mfd_of_node_list);
-+static DEFINE_MUTEX(mfd_of_node_mutex);
- 
- struct mfd_of_node_entry {
- 	struct list_head list;
-@@ -105,9 +106,11 @@ static int mfd_match_of_node_to_dev(struct platform_device *pdev,
- 	u64 of_node_addr;
- 
- 	/* Skip if OF node has previously been allocated to a device */
--	list_for_each_entry(of_entry, &mfd_of_node_list, list)
--		if (of_entry->np == np)
--			return -EAGAIN;
-+	scoped_guard(mutex, &mfd_of_node_mutex) {
-+		list_for_each_entry(of_entry, &mfd_of_node_list, list)
-+			if (of_entry->np == np)
-+				return -EAGAIN;
+ fs/ocfs2/slot_map.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/fs/ocfs2/slot_map.c b/fs/ocfs2/slot_map.c
+index e544c704b583..e916a2e8f92d 100644
+--- a/fs/ocfs2/slot_map.c
++++ b/fs/ocfs2/slot_map.c
+@@ -193,6 +193,16 @@ static int ocfs2_update_disk_slot(struct ocfs2_super *osb,
+ 	else
+ 		ocfs2_update_disk_slot_old(si, slot_num, &bh);
+ 	spin_unlock(&osb->osb_lock);
++	if (bh->b_blocknr < OCFS2_SUPER_BLOCK_BLKNO) {
++		status = ocfs2_error(osb->sb,
++				     "Invalid Slot Map Buffer Head "
++				     "Block Number : %llu, Should be >= %d",
++				     (unsigned long long)bh->b_blocknr,
++				     OCFS2_SUPER_BLOCK_BLKNO);
++		if (!status)
++			return -EIO;
++		return status;
 +	}
  
- 	if (!cell->use_of_reg)
- 		/* No of_reg defined - allocate first free compatible match */
-@@ -129,7 +132,8 @@ static int mfd_match_of_node_to_dev(struct platform_device *pdev,
- 
- 	of_entry->dev = &pdev->dev;
- 	of_entry->np = np;
--	list_add_tail(&of_entry->list, &mfd_of_node_list);
-+	scoped_guard(mutex, &mfd_of_node_mutex)
-+		list_add_tail(&of_entry->list, &mfd_of_node_list);
- 
- 	of_node_get(np);
- 	device_set_node(&pdev->dev, of_fwnode_handle(np));
-@@ -286,11 +290,13 @@ static int mfd_add_device(struct device *parent, int id,
- 	if (cell->swnode)
- 		device_remove_software_node(&pdev->dev);
- fail_of_entry:
--	list_for_each_entry_safe(of_entry, tmp, &mfd_of_node_list, list)
--		if (of_entry->dev == &pdev->dev) {
--			list_del(&of_entry->list);
--			kfree(of_entry);
--		}
-+	scoped_guard(mutex, &mfd_of_node_mutex) {
-+		list_for_each_entry_safe(of_entry, tmp, &mfd_of_node_list, list)
-+			if (of_entry->dev == &pdev->dev) {
-+				list_del(&of_entry->list);
-+				kfree(of_entry);
-+			}
-+	}
- fail_alias:
- 	regulator_bulk_unregister_supply_alias(&pdev->dev,
- 					       cell->parent_supplies,
-@@ -360,11 +366,13 @@ static int mfd_remove_devices_fn(struct device *dev, void *data)
- 	if (cell->swnode)
- 		device_remove_software_node(&pdev->dev);
- 
--	list_for_each_entry_safe(of_entry, tmp, &mfd_of_node_list, list)
--		if (of_entry->dev == &pdev->dev) {
--			list_del(&of_entry->list);
--			kfree(of_entry);
--		}
-+	scoped_guard(mutex, &mfd_of_node_mutex) {
-+		list_for_each_entry_safe(of_entry, tmp, &mfd_of_node_list, list)
-+			if (of_entry->dev == &pdev->dev) {
-+				list_del(&of_entry->list);
-+				kfree(of_entry);
-+			}
-+	}
- 
- 	regulator_bulk_unregister_supply_alias(dev, cell->parent_supplies,
- 					       cell->num_parent_supplies);
+ 	status = ocfs2_write_block(osb, bh, INODE_CACHE(si->si_inode));
+ 	if (status < 0)
+
+base-commit: 24172e0d79900908cf5ebf366600616d29c9b417
 -- 
-2.52.0.223.gf5cc29aaa4-goog
+2.43.0
 
 
