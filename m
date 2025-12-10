@@ -1,377 +1,273 @@
-Return-Path: <stable+bounces-200706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B379ACB2C82
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 12:09:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ABADCB2CBE
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 12:16:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D6CCD305D40B
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 11:08:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6235E3044687
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 11:16:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C8F13148B1;
-	Wed, 10 Dec 2025 11:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F12720FAAB;
+	Wed, 10 Dec 2025 11:16:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DzAKE3j7"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="meXAr2xQ";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="y7hMG+H0"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB4883115B1
-	for <stable@vger.kernel.org>; Wed, 10 Dec 2025 11:08:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765364906; cv=none; b=HKtZtbUMxmCD4k1/0aKK5bg8WN0akoBfLbTtyIc5UtMGnkL8H1BWjScdP1Zd6na0VOEqI8tR1MKrVfHmv7mLPp7U8HVewseiVJDAZeNXtaiiRlBANnxwhVnrilCSKVh1pRh+lkcPmZCW2+BakEB+jYVPoEr8Jq+6XgmM98L/z6c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765364906; c=relaxed/simple;
-	bh=3loAR+8B7itrRGdZVg31I09E0F/iG/wNWI3Eh+Bw3zQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DlJxtdqURTAUhsmeTmu/kn9yeKGAbWs0dXGQoVJ+NvIeEDwBQAarnRWTJ04VHLQfxdU/WWtMs1Z7Q88pipOS6OYDhMbo5BSIEYYpnZJBUeWp6FzhC/zuekC2/agJ2N3hHT7AgLRlWy5ExqD3g1lt4dW3qX/FHXRZoDVIPp2Iw5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DzAKE3j7; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765364903; x=1796900903;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=3loAR+8B7itrRGdZVg31I09E0F/iG/wNWI3Eh+Bw3zQ=;
-  b=DzAKE3j7TEdJPTNE6F/07JMY97aGymJr79xceKQgtrNzsKOBGlPIj7e1
-   58MlX5RApv4/ruNj4IxstXcQeV5+G2GNk23qnvZnrF/qzxUd/d5dBGUdA
-   rv23TODiuLKJZgnw88trH1mwWItXDJQFzu9fC0pb7iJ0KoBqYP9Z0LJoW
-   ufZQwx5csDK2zJBexMSKo792HXO8TlFRDZWI1BQ/TZ47AaPfuuNZybyOL
-   KdSddply37szl8PiREEVlSYu3G80hiBUk+6XNBgduhHmvEo2lT/nFZnjl
-   QK9fi7CIEzpfsXsyFP7YBQV1u+r+rFBLB5aV6DnDY4uHTr6wiuMD9axzd
-   A==;
-X-CSE-ConnectionGUID: oJLilDjRTBSiEzXFVW224g==
-X-CSE-MsgGUID: N/5Go1J0RseF1+OHTa962w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11637"; a="67221736"
-X-IronPort-AV: E=Sophos;i="6.20,263,1758610800"; 
-   d="scan'208";a="67221736"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2025 03:08:23 -0800
-X-CSE-ConnectionGUID: iCT0491ZRYiV2BUerkx46Q==
-X-CSE-MsgGUID: s+iLweilSNmzjzHyU8BeHw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,263,1758610800"; 
-   d="scan'208";a="196486935"
-Received: from rvuia-mobl.ger.corp.intel.com (HELO fedora) ([10.245.244.44])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2025 03:08:20 -0800
-From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-To: intel-xe@lists.freedesktop.org
-Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	stable@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	himal.prasad.ghimiray@intel.com,
-	apopple@nvidia.com,
-	airlied@gmail.com,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	felix.kuehling@amd.com,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	dakr@kernel.org,
-	"Mrozek, Michal" <michal.mrozek@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH v3 02/22] drm/pagemap, drm/xe: Ensure that the devmem allocation is idle before use
-Date: Wed, 10 Dec 2025 12:07:22 +0100
-Message-ID: <20251210110742.107575-3-thomas.hellstrom@linux.intel.com>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251210110742.107575-1-thomas.hellstrom@linux.intel.com>
-References: <20251210110742.107575-1-thomas.hellstrom@linux.intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18A532AEF5;
+	Wed, 10 Dec 2025 11:16:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765365365; cv=fail; b=dr9eDm5ZGlQivc5Yr4BJWCz/iRopD31TH50g5Qeah0M96VV6C5v/nzX9jZx0ebAVpui67rfz9+py3Y6fORii4w6wz+QUWjqUm6gn1bH9ABDuQ7boZWhQQNOvu6xhcBdZr9/UwiRtIFYbLsY3mMkDwrnbRv0t86fw7+Zi3Lae8qQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765365365; c=relaxed/simple;
+	bh=5/NUfdgsoJ7uUU/9W2ZATLZsOd/zaFFR8DugDkaOBbQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=fEKZ1OhGKBnAWL4SDpbgWCIIlb4aI7rLal7ToCbzNqQjCOvXG7CNXZV8vferz+xt8H+MD62PicGPZiyOHedB37QRG4M8VSIRm1eivaLlCS3ghNzg9gu7VwvU+zcEoGeXfB7SnYqjDdgMUQBzyiuaZi6UrC0Lczb0xOnkuoADRR0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=meXAr2xQ; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=y7hMG+H0; arc=fail smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BAAvVx82961716;
+	Wed, 10 Dec 2025 11:15:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=bf5kjDDGt7oRqBLVg1
+	ZcLdgrEGOuPID/SU767+X+96M=; b=meXAr2xQq9HaTh0mvPqSpUKaWnssMq2Zfp
+	dlauDnlEHA+8DXr7LMSGBAZ6EhzUeC/BAs+WGFIDSBomvwqpdNakAOhSBGoQTEjP
+	0IRVTyJrblaAjQBn6R0DTB9hp8V6VpRsIM5yYKEYom45Sqd9hOHP+cTPttKjg/A2
+	FiNrxX3dPYRqphuaE9nDUtBXd1QQO7jCWt8NDO3RTzfy75X42e+TdjoFFmC3ojZw
+	2FzRwbuzLHWbxDi5ZjUTg9TnI4tWMcce6MgmpA8gCabzmE/6q36LQPT0fPK4DkgL
+	//uGrkcmTuHdUqdBOsT0YTRUjRNp/Xc8AfURHtCzgNsz5x5LADYQ==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4ay7jnr0j5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 10 Dec 2025 11:15:23 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5BAB0CWD038127;
+	Wed, 10 Dec 2025 11:15:22 GMT
+Received: from sn4pr0501cu005.outbound.protection.outlook.com (mail-southcentralusazon11011022.outbound.protection.outlook.com [40.93.194.22])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4avaxac25h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 10 Dec 2025 11:15:22 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yMxN9Wm8IOk8+TMhqY0aZXQkF5IyTFCv+hgA4n47wwjJgXUlw9V4vElqBMEM4duisFIRFbxkT7Ez+3KtgD6IccokNeYQbl9dGqwD2YwFP40HksbdMT7g2n0HcX54ODfnFW9V0JmMS9iQx/BjK6vj6irYJCr0qYo1zWF2xTN8UmA+FEOFziBxRuhqUMV5Uyy3BV04NZO9UxYre8pC5kxCeDcgrtkM2FmRIP/jhXW84ztqmKKhkXaiFO+gOj3w29rWEHSjLDZbaOWeTC+vSGkmDVP233QUvlb394dTi228tY16eD7Xc92k12ImHng4Vfee9uMi8VxtLcbqLXt+Ro/aYA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bf5kjDDGt7oRqBLVg1ZcLdgrEGOuPID/SU767+X+96M=;
+ b=vnURlrmVHPmNuK0n32pJR75ogcxjGKLgfop6qkKaNz6mcE9/MFM/iR1z+Nhjlm+OH49ZsljrgExzjGNk6MZbcLeVRKcPst0VmIS3HvuTHqcNbshr2VbYOtmrxwOCJqAYEgUrbU0zYDdPrYfQxyZjJzJoeh1oG/+78qtDv1RJmODYlAd3L35QO1EgVBlXbjceLJ5HAdMZrRGThxM+P9Ir8gLzeTMiZVxco0/Nce+z8IQqAtm1vw+rVs8VuFcxUOt2OxSbj75lBQBz+RUbgLIAL5UNC7RAoENxNLm17LjAGVzsHzAvA82fqw2JKmP+2dBag1FU4J4q2Kok9uIxfxjHlw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bf5kjDDGt7oRqBLVg1ZcLdgrEGOuPID/SU767+X+96M=;
+ b=y7hMG+H0tTNAeklyOysS+ufM5Zgj0erLmDgK6qTrxx/caQbqTHeL5em/OQhmzLZEX2a2ddKp3BU/+mwBXRpZQgJUYlwGsRSEeQ2hFWfzoU1x5+UH8muNLJ+zexBeumByEH5zjp0c09HR30kkmXO26rwI48r2MsYGZ6JhaVAf9vE=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by CY8PR10MB6561.namprd10.prod.outlook.com (2603:10b6:930:5b::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.14; Wed, 10 Dec
+ 2025 11:15:19 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2%7]) with mapi id 15.20.9412.005; Wed, 10 Dec 2025
+ 11:15:19 +0000
+Date: Wed, 10 Dec 2025 11:15:17 +0000
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Lance Yang <ioworker0@gmail.com>
+Cc: david@kernel.org, Liam.Howlett@oracle.com, akpm@linux-foundation.org,
+        aneesh.kumar@kernel.org, arnd@arndb.de, harry.yoo@oracle.com,
+        jannh@google.com, linux-arch@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        liushixin2@huawei.com, loberman@redhat.com, muchun.song@linux.dev,
+        nadav.amit@gmail.com, npiggin@gmail.com, osalvador@suse.de,
+        peterz@infradead.org, pfalcato@suse.de, prakash.sangappa@oracle.com,
+        riel@surriel.com, stable@vger.kernel.org, vbabka@suse.cz,
+        will@kernel.org, Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH v1 1/4] mm/hugetlb: fix hugetlb_pmd_shared()
+Message-ID: <66418122-5fcc-483c-a7e2-e3a0e6977cb3@lucifer.local>
+References: <20251205213558.2980480-2-david@kernel.org>
+ <20251208023231.1257-1-ioworker0@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251208023231.1257-1-ioworker0@gmail.com>
+X-ClientProxiedBy: LO3P123CA0017.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:ba::22) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|CY8PR10MB6561:EE_
+X-MS-Office365-Filtering-Correlation-Id: c209be3d-92a1-4808-dad6-08de37dd6716
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?stsiJcyFoM+Vpt3poMo1SXsts6zTH+bZ3qYle7X+vN/dhfEzpHS7b3TLYMDB?=
+ =?us-ascii?Q?eJFaHfGpdLiLabVlL8fBlxx0jl29gB602eIqzVjmEco4hHvhQI3IpVariITg?=
+ =?us-ascii?Q?YDvKQsLUpknWoFs95kgKT+JTv72mO4Xsi+nEEhuPHV+uGQimxMSzityNvSKC?=
+ =?us-ascii?Q?CmY7NhuTXQhuMVzHl2K18LLcgzJAuAu+dPTX8PGsXefs3bVs3djAPS7ltf3A?=
+ =?us-ascii?Q?dr/KqDVVNRBwWmCWyHnIe3mGkku5/aZzeWEgBbl2jFvAmMtYgDUYGDSQxJum?=
+ =?us-ascii?Q?q9ic/gqmo4NR/mtLCKPC91+rDYjqGy4CwQVxRWK7fCkYu3rNY62fbKrXPXMg?=
+ =?us-ascii?Q?KY6/Q6mFns+nKrvTaJ4bSkn2jEnWMyovy0Y6M8s9lMXC3iA5X/q7OSM5jTCU?=
+ =?us-ascii?Q?zvsi8KqHUmf859DzT4sIrX41xMSQGROjR6Myuw63OZV5LYvCTXZCwcetEczM?=
+ =?us-ascii?Q?SBNOoesX5vZheT1u5q75PS6l9ha7We/2IfT0+hRLdGjEhIcF28AKfkSCrof5?=
+ =?us-ascii?Q?EnfBn86Bmz/SUObP3LMzM78B687ptYE30rI37pmasW489rXgmAlqmesHfALd?=
+ =?us-ascii?Q?7/0ExhDxkEI6FWC7GVKM2XhUR0FNwVGgLsf6WUkYBkX7tnZAOevE5w9AxdWK?=
+ =?us-ascii?Q?Jb9M23lURMIGZtAuGp9KrdqxaKHfyfDs1qR3VskA3CTYL41idehucowiWqeL?=
+ =?us-ascii?Q?0AgYj43BScOVZqolPldGYmKOiX1YP0PZCIuAqIV17naweZ7MuE6gxhROZ4Sc?=
+ =?us-ascii?Q?vu39ZHA9SdFgR1t1/h5Kv1RqwnyKgwDjB9zMbwF4uScSPHCVmeFkINRmGKUb?=
+ =?us-ascii?Q?zKFqn9nlTv7isCcuby7N27iMoILgwoejs826G9jkzaPjzqq+aKomKaw5MFwX?=
+ =?us-ascii?Q?O1NMxSKIYr6ppHNjwf+b+Kvme6xTU0guomKpsHj7Ra8ArwpDKVE45dIf5O9u?=
+ =?us-ascii?Q?Bki7vVD8jIyPmRm3As9FEuRF5FGJtOsAjJNuXw0d2coX7uc59t9xrZJRmXBJ?=
+ =?us-ascii?Q?aZIlNJ3PhdddA0VgpqqmsS7O/0BAxIXzUVZHxBbxwVUx8vJyUgREVYfvj+Rf?=
+ =?us-ascii?Q?/r9IN2WLnfa0JQcC1bCS1TFFArHNz1CLFIfFF6KLnQ8nJXp/pqO4rkw0WvSt?=
+ =?us-ascii?Q?fvaNpBbecP7AHvQCf64RWLQA+4rabDsbbMB9Wvc12wvesRYy3Qz/NtvByT+F?=
+ =?us-ascii?Q?rurdO7+ftrCh8Dk1P6Yg9X9irUcqzTzNvYMjdyXEtyOVJZHyRH8s3d6i8mlI?=
+ =?us-ascii?Q?+WcFVKE/jYx8gnGeieNz59AZM0ttiG7OEzpferp22tiJU+hYSKiWziWjHycF?=
+ =?us-ascii?Q?EiCBYQrs/z14cIKl0gysMOVvPU3SwIarLmiFOJ+DMvEAj3VWWtVXigGcvDXd?=
+ =?us-ascii?Q?HEwAQPoBf3/SsAkZIJ31GY/k1CVWXwJF8WR/8iTKMEKt/24vrSB24in6U1Ka?=
+ =?us-ascii?Q?0+/Ru4BRqDdp1gqLNGEPPTctVg5gFmAF?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?4ulcKG/R7e2LW9Zzw260P9F/gdCmTCtsKGbAeN0fjqsIZTNILjbn0H5xkUg7?=
+ =?us-ascii?Q?7bxaRaqr1eF8vIJZviUfd3AwmwnGnTAWppGfKhP5yJmdOrZgzmvTGufQSBek?=
+ =?us-ascii?Q?C1PwZNbuuVcmCPHqVCoyT3MzYjnuWMb+w6fHmuaFHNQ44on3p7aNmYfzdsp7?=
+ =?us-ascii?Q?4QHPaU9JXMvZE3di2/cciLW65TXzkPBTPxOnUYdzejnjrKLH4m2h06iDz7yn?=
+ =?us-ascii?Q?rLWZSiHbpEpCzbbexafS5lAUfYEYce1W8tNQEU/LOq+VKNYlnqjVwprBFyFB?=
+ =?us-ascii?Q?xQWmCxzPHL6bEG56Y7MROFMU/40/C6+tKgUgbbzLw021PLkFhS39mJEgsjfB?=
+ =?us-ascii?Q?GRevvX3LZR8MKFwTM1ofsXmjKewqzQf0esKWKHis6IO/LnDOFmXw/zFw151K?=
+ =?us-ascii?Q?E01umQ2lYaJK9d4EKh3jsTNCx6j2wZngF/qZj2fV45gMCPJIbrMr+T1515in?=
+ =?us-ascii?Q?c5r4IIVOWpDu7iPcw2363MSmTFcEBlKAjYsMiHw/6x88i4lsD6tAAESDLiaK?=
+ =?us-ascii?Q?uNSA3JxKW88EIzi4xqWPrFiqwmlfVR4v5W8jfLyGlsYC9Ek8bdTBXI2SkBDf?=
+ =?us-ascii?Q?ZKkB3HXM+oCR1aGx6oanoMSTy+al8BDuuDgsYYjuuILIgjLqDRlsK/Ao/rRO?=
+ =?us-ascii?Q?meK4yBZaeWoi/jqmUsTRUkM0vCXznhe2h7vK32HFQKNp4mZmwbFFL7FtyqmJ?=
+ =?us-ascii?Q?59FvUOIR//Txg0Y3LrLHhUqO8FHGZ2w1CXvWKrMxa97iRYm/Q5oKxCVmGZx0?=
+ =?us-ascii?Q?IvtIQuXBPZFoLtkEJe2roE81igc065hoClmYzA+DnR/TNJz+Q+EEpJuOU5z8?=
+ =?us-ascii?Q?nVdAHOx9LJc9VEUgfiGAOO+eKlQxlq5Gv9rNUjIHDgFFvVFibJ4MAimNNZnb?=
+ =?us-ascii?Q?LqzKHj7kU4/c0dqbZzpkOtWdmabUeTs/Agsv2s8d9pYv9UZdT/lfwyx9Sqzp?=
+ =?us-ascii?Q?aOTlkfIkaxujv+7miHriZCUqUEXP4Msw5LO5oeWTTQ7HDyfUgz45XikNk/zB?=
+ =?us-ascii?Q?NmKIpXVHNOGyNAXQouJv1CeJH4TD+nhiTKHA2kcNdADPaDclPVHywwqtINoJ?=
+ =?us-ascii?Q?wPMQesQxgV5U0bw9c66L+ZDnW816azeY/HMsDvmNmE/Yy3xg0A4qB7LbEEKQ?=
+ =?us-ascii?Q?E9Js5xpDeHAhHPuwcG6uVqdAw0Lxdk0MwUQudbRK/oDQF9jY01dx6oD9JAfq?=
+ =?us-ascii?Q?f12y+l1Eh9V9Fg1v2i7641gC/hOy6swxfBPnwV7OnaBFv2H6duEeEt2/lyIc?=
+ =?us-ascii?Q?sUqImvlyAWt0jXRCDn3+b+OU2IQyENjxm1SCWXk91YlYImCl9LHFP0Mzlxsx?=
+ =?us-ascii?Q?XnyqSO31xArBEonCMcyVw3Dc8sKbqiMHt/jw0xL7JCPyzXnKHnkGWY7Y3gQJ?=
+ =?us-ascii?Q?TnCvkA5IgTGzq77TwN9uwO6C1owIeJ4TrSsKVhv+tdpb+siSwnkFl/X7vvQ/?=
+ =?us-ascii?Q?qK6FuFRWjLjhbu+dKKPsgVcRPr7i+mSPjM1X6ljjgtrgZlouyOe05tBfzXkU?=
+ =?us-ascii?Q?zdutBq8nD2nkmRa+lF6l150L8eKo+SKXt2bOfpA9VweDCd7gUtji79bnnrU+?=
+ =?us-ascii?Q?j/MqrrK27AyCUZFK2y+KDhYp4H7Hx52uMVotUeetQfsEkC6f2ZEEAwd4+gF4?=
+ =?us-ascii?Q?FQ=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	sy+lwsHq1bEc729Aoq5kYKknFFG0XrPN65teosgUb/kBM5/Kr8UCbsdnIedfnx7Ng4VTQXmFCn/6eCylOIMyThCcU4d27guyUDknhHJx0mPvwKN8q9aIvn+iRiyWTyeUXgPIrbSJdmiPCA9uaRFdj4QaS4Mm9qN59EmFx9mxXB3nF4loCMfv+7MF4fB3DmElGO2Wt9CO7CBcf0Vpk3X6N8led/SX056iCyh1Vrx28i6VahfQJAfOAe4jEyogI/YtxPWwifr4VgeD4zX5C+NnT1hxPB+Ojwula68eqLBIYChMePph+pI2xSLQi/DqMUbKC0f1rXnviFstExodKhhPHBxMDirFypHjDR/FDB9cYocKnKq5O30j3frRMPbykIz9o8nH7h6hhBWOPRzi76oEOZMnFoDkzACARG9ViiN0F5Tttd6hxCDp1Szai2v+LSDiCf+xO3gsj7Uc71NGKskfo6eDzZ9rMKHMeCFGCd3fI0CRGcajri+78M9K+gNZD/Nfuc6mXBH9VkvrmRj5eAbw8g2252RYRqxXX1BaNsDein/5KwetaBf3UUZiPhjYQhg2F96Zmksp1Bz0xt4l728mN3WDnmjzqtua73h15SOEGnk=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c209be3d-92a1-4808-dad6-08de37dd6716
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Dec 2025 11:15:19.1363
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +Fj1pOAJdZSiN4eoRXx35vCdR+vIcgcO1jsVd+f8IVjHCEYA1RJub81MbCqRZi9flpskLCQrufZbRr+QzfafugzoHiVnXNmO0qfRRVOv3aA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR10MB6561
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-09_05,2025-12-09_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0
+ mlxlogscore=745 bulkscore=0 spamscore=0 adultscore=0 phishscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2510240000 definitions=main-2512100090
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjEwMDA5MCBTYWx0ZWRfXzPNNjGFHbQJi
+ 28vIsp5UOCdaz9JQWqNXxyNWgqmwsSBdK++We+ClxWGOCOkP0GZWexx6jhoQAxfLXwmzchSYkmn
+ j6m2d1if2KiS2Fv/hLU7pj31tGb4QBpsNHXU++4hZO9IeU5idxHEBgwF/r1v6iKofzSm+kRo36R
+ Qaav3jkfQ+EZT2D711LQKphhOYbqwdn/f7kGOqDWRtSxNeeeZ74cccNVNJdZSxKpiw2gCTJlqEN
+ dQqvm5L5+0pERLZlwEpLscdVRXnaTkvZc9ZxKXC40nPwREPhJIsqtn28Nf6IASXJSQGAYlDNe4c
+ TnebwcI+/DJr33ACYJCLYBNY1i0WgBuHackOROakA+cNyZYy1VTdMreYWEchxZ5DyKtFnIqonR6
+ vsmDZmdaFMsEEnkgQgc+D/u9pS0NKA==
+X-Proofpoint-GUID: uKXvYmolvx3lTMTPoJc5_pKEMikCj8Cn
+X-Authority-Analysis: v=2.4 cv=SvidKfO0 c=1 sm=1 tr=0 ts=6939564b b=1 cx=c_pps
+ a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=wP3pNCr1ah4A:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=i0EeH86SAAAA:8 a=VzCGGaeLlvMk78a2bswA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-ORIG-GUID: uKXvYmolvx3lTMTPoJc5_pKEMikCj8Cn
 
-In situations where no system memory is migrated to devmem, and in
-upcoming patches where another GPU is performing the migration to
-the newly allocated devmem buffer, there is nothing to ensure any
-ongoing clear to the devmem allocation or async eviction from the
-devmem allocation is complete.
+On Mon, Dec 08, 2025 at 10:32:31AM +0800, Lance Yang wrote:
+> From: Lance Yang <lance.yang@linux.dev>
+>
+>
+> On Fri,  5 Dec 2025 22:35:55 +0100, David Hildenbrand (Red Hat) wrote:
+> > We switched from (wrongly) using the page count to an independent
+> > shared count. Now, shared page tables have a refcount of 1 (excluding
+> > speculative references) and instead use ptdesc->pt_share_count to
+> > identify sharing.
+> >
+> > We didn't convert hugetlb_pmd_shared(), so right now, we would never
+> > detect a shared PMD table as such, because sharing/unsharing no longer
+> > touches the refcount of a PMD table.
+> >
+> > Page migration, like mbind() or migrate_pages() would allow for migrating
+> > folios mapped into such shared PMD tables, even though the folios are
+> > not exclusive. In smaps we would account them as "private" although they
+> > are "shared", and we would be wrongly setting the PM_MMAP_EXCLUSIVE in the
+> > pagemap interface.
+> >
+> > Fix it by properly using ptdesc_pmd_is_shared() in hugetlb_pmd_shared().
+> >
+> > Fixes: 59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count")
+> > Cc: <stable@vger.kernel.org>
+> > Cc: Liu Shixin <liushixin2@huawei.com>
+> > Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
+> > ---
+>
+> Tested on x86 with two independent processes sharing a 1GiB hugetlbfs file
+> (aligned a 1GiB boundary).
+>
+> Before the fix, even though PMD sharing worked (pt_share_count=1),
+> hugetlb_pmd_shared() returned false because page_count() was still 1,
+> causing smaps to report it as "Private" and pagemap to set it
+> PM_MMAP_EXCLUSIVE incorrectly :(
+>
+> After the fix, hugetlb_pmd_shared() correctly detects the sharing, smaps
+> reports it as "Shared", and PM_MMAP_EXCLUSIVE is cleared ;)
 
-Address that by passing a struct dma_fence down to the copy
-functions, and ensure it is waited for before migration is marked
-complete.
+Yikes yikes yikes...
 
-v3:
-- New patch.
+I wonder what else might be broken in this stuff :/
 
-Fixes: c5b3eb5a906c ("drm/xe: Add GPUSVM device memory copy vfunc functions")
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: <stable@vger.kernel.org> # v6.15+
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
----
- drivers/gpu/drm/drm_pagemap.c | 13 ++++---
- drivers/gpu/drm/xe/xe_svm.c   | 65 ++++++++++++++++++++++++++++++-----
- include/drm/drm_pagemap.h     | 17 +++++++--
- 3 files changed, 79 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/gpu/drm/drm_pagemap.c b/drivers/gpu/drm/drm_pagemap.c
-index 22c44807e3fe..864a73d019ed 100644
---- a/drivers/gpu/drm/drm_pagemap.c
-+++ b/drivers/gpu/drm/drm_pagemap.c
-@@ -408,7 +408,8 @@ int drm_pagemap_migrate_to_devmem(struct drm_pagemap_devmem *devmem_allocation,
- 		drm_pagemap_get_devmem_page(page, zdd);
- 	}
- 
--	err = ops->copy_to_devmem(pages, pagemap_addr, npages);
-+	err = ops->copy_to_devmem(pages, pagemap_addr, npages,
-+				  devmem_allocation->pre_migrate_fence);
- 	if (err)
- 		goto err_finalize;
- 
-@@ -596,7 +597,7 @@ int drm_pagemap_evict_to_ram(struct drm_pagemap_devmem *devmem_allocation)
- 	for (i = 0; i < npages; ++i)
- 		pages[i] = migrate_pfn_to_page(src[i]);
- 
--	err = ops->copy_to_ram(pages, pagemap_addr, npages);
-+	err = ops->copy_to_ram(pages, pagemap_addr, npages, NULL);
- 	if (err)
- 		goto err_finalize;
- 
-@@ -732,7 +733,7 @@ static int __drm_pagemap_migrate_to_ram(struct vm_area_struct *vas,
- 	for (i = 0; i < npages; ++i)
- 		pages[i] = migrate_pfn_to_page(migrate.src[i]);
- 
--	err = ops->copy_to_ram(pages, pagemap_addr, npages);
-+	err = ops->copy_to_ram(pages, pagemap_addr, npages, NULL);
- 	if (err)
- 		goto err_finalize;
- 
-@@ -813,11 +814,14 @@ EXPORT_SYMBOL_GPL(drm_pagemap_pagemap_ops_get);
-  * @ops: Pointer to the operations structure for GPU SVM device memory
-  * @dpagemap: The struct drm_pagemap we're allocating from.
-  * @size: Size of device memory allocation
-+ * @pre_migrate_fence: Fence to wait for or pipeline behind before migration starts.
-+ * (May be NULL).
-  */
- void drm_pagemap_devmem_init(struct drm_pagemap_devmem *devmem_allocation,
- 			     struct device *dev, struct mm_struct *mm,
- 			     const struct drm_pagemap_devmem_ops *ops,
--			     struct drm_pagemap *dpagemap, size_t size)
-+			     struct drm_pagemap *dpagemap, size_t size,
-+			     struct dma_fence *pre_migrate_fence)
- {
- 	init_completion(&devmem_allocation->detached);
- 	devmem_allocation->dev = dev;
-@@ -825,6 +829,7 @@ void drm_pagemap_devmem_init(struct drm_pagemap_devmem *devmem_allocation,
- 	devmem_allocation->ops = ops;
- 	devmem_allocation->dpagemap = dpagemap;
- 	devmem_allocation->size = size;
-+	devmem_allocation->pre_migrate_fence = pre_migrate_fence;
- }
- EXPORT_SYMBOL_GPL(drm_pagemap_devmem_init);
- 
-diff --git a/drivers/gpu/drm/xe/xe_svm.c b/drivers/gpu/drm/xe/xe_svm.c
-index 36634c84d148..34b4585412ef 100644
---- a/drivers/gpu/drm/xe/xe_svm.c
-+++ b/drivers/gpu/drm/xe/xe_svm.c
-@@ -483,11 +483,12 @@ static void xe_svm_copy_us_stats_incr(struct xe_gt *gt,
- 
- static int xe_svm_copy(struct page **pages,
- 		       struct drm_pagemap_addr *pagemap_addr,
--		       unsigned long npages, const enum xe_svm_copy_dir dir)
-+		       unsigned long npages, const enum xe_svm_copy_dir dir,
-+		       struct dma_fence *pre_migrate_fence)
- {
- 	struct xe_vram_region *vr = NULL;
- 	struct xe_gt *gt = NULL;
--	struct xe_device *xe;
-+	struct xe_device *xe = NULL;
- 	struct dma_fence *fence = NULL;
- 	unsigned long i;
- #define XE_VRAM_ADDR_INVALID	~0x0ull
-@@ -496,6 +497,17 @@ static int xe_svm_copy(struct page **pages,
- 	bool sram = dir == XE_SVM_COPY_TO_SRAM;
- 	ktime_t start = xe_svm_stats_ktime_get();
- 
-+	if (sram && pre_migrate_fence) {
-+		/*
-+		 * This would typically be a p2p migration from source.
-+		 * Ensure that any other GPU operation on the destination
-+		 * is complete.
-+		 */
-+		err = dma_fence_wait(pre_migrate_fence, true);
-+		if (err)
-+			return err;
-+	}
-+
- 	/*
- 	 * This flow is complex: it locates physically contiguous device pages,
- 	 * derives the starting physical address, and performs a single GPU copy
-@@ -632,10 +644,27 @@ static int xe_svm_copy(struct page **pages,
- 
- err_out:
- 	/* Wait for all copies to complete */
--	if (fence) {
-+	if (fence)
- 		dma_fence_wait(fence, false);
--		dma_fence_put(fence);
-+
-+	/*
-+	 * If migrating to devmem, we should have pipelined the migration behind
-+	 * the pre_migrate_fence. Verify that this is indeed likely. If we
-+	 * didn't perform any copying, just wait for the pre_migrate_fence.
-+	 */
-+	if (!sram && pre_migrate_fence) {
-+		if (!dma_fence_is_signaled(pre_migrate_fence)) {
-+			if (xe && fence &&
-+			    drm_WARN_ON(&xe->drm, "Unsignaled pre-migrate fence"))
-+				drm_warn(&xe->drm, "fence contexts: %llu %llu. container %d\n",
-+					 (unsigned long long)fence->context,
-+					 (unsigned long long)pre_migrate_fence->context,
-+					 dma_fence_is_container(pre_migrate_fence));
-+
-+			dma_fence_wait(pre_migrate_fence, false);
-+		}
- 	}
-+	dma_fence_put(fence);
- 
- 	/*
- 	 * XXX: We can't derive the GT here (or anywhere in this functions, but
-@@ -652,16 +681,20 @@ static int xe_svm_copy(struct page **pages,
- 
- static int xe_svm_copy_to_devmem(struct page **pages,
- 				 struct drm_pagemap_addr *pagemap_addr,
--				 unsigned long npages)
-+				 unsigned long npages,
-+				 struct dma_fence *pre_migrate_fence)
- {
--	return xe_svm_copy(pages, pagemap_addr, npages, XE_SVM_COPY_TO_VRAM);
-+	return xe_svm_copy(pages, pagemap_addr, npages, XE_SVM_COPY_TO_VRAM,
-+			   pre_migrate_fence);
- }
- 
- static int xe_svm_copy_to_ram(struct page **pages,
- 			      struct drm_pagemap_addr *pagemap_addr,
--			      unsigned long npages)
-+			      unsigned long npages,
-+			      struct dma_fence *pre_migrate_fence)
- {
--	return xe_svm_copy(pages, pagemap_addr, npages, XE_SVM_COPY_TO_SRAM);
-+	return xe_svm_copy(pages, pagemap_addr, npages, XE_SVM_COPY_TO_SRAM,
-+			   pre_migrate_fence);
- }
- 
- static struct xe_bo *to_xe_bo(struct drm_pagemap_devmem *devmem_allocation)
-@@ -676,6 +709,7 @@ static void xe_svm_devmem_release(struct drm_pagemap_devmem *devmem_allocation)
- 
- 	xe_bo_put_async(bo);
- 	xe_pm_runtime_put(xe);
-+	dma_fence_put(devmem_allocation->pre_migrate_fence);
- }
- 
- static u64 block_offset_to_pfn(struct xe_vram_region *vr, u64 offset)
-@@ -868,6 +902,7 @@ static int xe_drm_pagemap_populate_mm(struct drm_pagemap *dpagemap,
- 				      unsigned long timeslice_ms)
- {
- 	struct xe_vram_region *vr = container_of(dpagemap, typeof(*vr), dpagemap);
-+	struct dma_fence *pre_migrate_fence = NULL;
- 	struct xe_device *xe = vr->xe;
- 	struct device *dev = xe->drm.dev;
- 	struct drm_buddy_block *block;
-@@ -894,8 +929,20 @@ static int xe_drm_pagemap_populate_mm(struct drm_pagemap *dpagemap,
- 			break;
- 		}
- 
-+		/* Ensure that any clearing or async eviction will complete before migration. */
-+		if (!dma_resv_test_signaled(bo->ttm.base.resv, DMA_RESV_USAGE_KERNEL)) {
-+			err = dma_resv_get_singleton(bo->ttm.base.resv, DMA_RESV_USAGE_KERNEL,
-+						     &pre_migrate_fence);
-+			if (err)
-+				dma_resv_wait_timeout(bo->ttm.base.resv, DMA_RESV_USAGE_KERNEL,
-+						      false, MAX_SCHEDULE_TIMEOUT);
-+			else if (pre_migrate_fence)
-+				dma_fence_enable_sw_signaling(pre_migrate_fence);
-+		}
-+
- 		drm_pagemap_devmem_init(&bo->devmem_allocation, dev, mm,
--					&dpagemap_devmem_ops, dpagemap, end - start);
-+					&dpagemap_devmem_ops, dpagemap, end - start,
-+					pre_migrate_fence);
- 
- 		blocks = &to_xe_ttm_vram_mgr_resource(bo->ttm.resource)->blocks;
- 		list_for_each_entry(block, blocks, link)
-diff --git a/include/drm/drm_pagemap.h b/include/drm/drm_pagemap.h
-index f6e7e234c089..70a7991f784f 100644
---- a/include/drm/drm_pagemap.h
-+++ b/include/drm/drm_pagemap.h
-@@ -8,6 +8,7 @@
- 
- #define NR_PAGES(order) (1U << (order))
- 
-+struct dma_fence;
- struct drm_pagemap;
- struct drm_pagemap_zdd;
- struct device;
-@@ -174,6 +175,8 @@ struct drm_pagemap_devmem_ops {
- 	 * @pages: Pointer to array of device memory pages (destination)
- 	 * @pagemap_addr: Pointer to array of DMA information (source)
- 	 * @npages: Number of pages to copy
-+	 * @pre_migrate_fence: dma-fence to wait for before migration start.
-+	 * May be NULL.
- 	 *
- 	 * Copy pages to device memory. If the order of a @pagemap_addr entry
- 	 * is greater than 0, the entry is populated but subsequent entries
-@@ -183,13 +186,16 @@ struct drm_pagemap_devmem_ops {
- 	 */
- 	int (*copy_to_devmem)(struct page **pages,
- 			      struct drm_pagemap_addr *pagemap_addr,
--			      unsigned long npages);
-+			      unsigned long npages,
-+			      struct dma_fence *pre_migrate_fence);
- 
- 	/**
- 	 * @copy_to_ram: Copy to system RAM (required for migration)
- 	 * @pages: Pointer to array of device memory pages (source)
- 	 * @pagemap_addr: Pointer to array of DMA information (destination)
- 	 * @npages: Number of pages to copy
-+	 * @pre_migrate_fence: dma-fence to wait for before migration start.
-+	 * May be NULL.
- 	 *
- 	 * Copy pages to system RAM. If the order of a @pagemap_addr entry
- 	 * is greater than 0, the entry is populated but subsequent entries
-@@ -199,7 +205,8 @@ struct drm_pagemap_devmem_ops {
- 	 */
- 	int (*copy_to_ram)(struct page **pages,
- 			   struct drm_pagemap_addr *pagemap_addr,
--			   unsigned long npages);
-+			   unsigned long npages,
-+			   struct dma_fence *pre_migrate_fence);
- };
- 
- /**
-@@ -212,6 +219,8 @@ struct drm_pagemap_devmem_ops {
-  * @dpagemap: The struct drm_pagemap of the pages this allocation belongs to.
-  * @size: Size of device memory allocation
-  * @timeslice_expiration: Timeslice expiration in jiffies
-+ * @pre_migrate_fence: Fence to wait for or pipeline behind before migration starts.
-+ * (May be NULL).
-  */
- struct drm_pagemap_devmem {
- 	struct device *dev;
-@@ -221,6 +230,7 @@ struct drm_pagemap_devmem {
- 	struct drm_pagemap *dpagemap;
- 	size_t size;
- 	u64 timeslice_expiration;
-+	struct dma_fence *pre_migrate_fence;
- };
- 
- int drm_pagemap_migrate_to_devmem(struct drm_pagemap_devmem *devmem_allocation,
-@@ -238,7 +248,8 @@ struct drm_pagemap *drm_pagemap_page_to_dpagemap(struct page *page);
- void drm_pagemap_devmem_init(struct drm_pagemap_devmem *devmem_allocation,
- 			     struct device *dev, struct mm_struct *mm,
- 			     const struct drm_pagemap_devmem_ops *ops,
--			     struct drm_pagemap *dpagemap, size_t size);
-+			     struct drm_pagemap *dpagemap, size_t size,
-+			     struct dma_fence *pre_migrate_fence);
- 
- int drm_pagemap_populate_mm(struct drm_pagemap *dpagemap,
- 			    unsigned long start, unsigned long end,
--- 
-2.51.1
-
+>
+> Tested-by: Lance Yang <lance.yang@linux.dev>
+>
+> Cheers!
+>
+> >  include/linux/hugetlb.h | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+> > index 019a1c5281e4e..03c8725efa289 100644
+> > --- a/include/linux/hugetlb.h
+> > +++ b/include/linux/hugetlb.h
+> > @@ -1326,7 +1326,7 @@ static inline __init void hugetlb_cma_reserve(int order)
+> >  #ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
+> >  static inline bool hugetlb_pmd_shared(pte_t *pte)
+> >  {
+> > -	return page_count(virt_to_page(pte)) > 1;
+> > +	return ptdesc_pmd_is_shared(virt_to_ptdesc(pte));
+> >  }
+> >  #else
+> >  static inline bool hugetlb_pmd_shared(pte_t *pte)
 
