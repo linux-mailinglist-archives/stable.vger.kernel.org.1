@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-200591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7087CCB2391
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:33:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73C59CB24E7
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:42:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6AADC30B3FD0
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:33:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5396C3117FF6
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:41:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F6C122578D;
-	Wed, 10 Dec 2025 07:32:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 150C5302149;
+	Wed, 10 Dec 2025 07:33:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bLAz3XIR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PIHwlyOI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC6126A0A7;
-	Wed, 10 Dec 2025 07:32:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4B8E302145;
+	Wed, 10 Dec 2025 07:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765351978; cv=none; b=qPvAAAKzsNhEZI0i66LN+Lds8SgeCh1hjU4ANqfLXb2oP38yrRTpAP2vRluGJenA+xbciExz0u2LGSXI9KDUtXVBmk9MLJ4qmVixSI60F1hy5TVHhP9IcXAFHQVwzzIaRkGQLLXFtFYUDxhNhIXCxugrT2hlgO8K1GfLUjv+iMY=
+	t=1765352028; cv=none; b=qeVRduUItT95bkBQnEKjc0SxTUsePKgsSLnTOdStBU8B3nPYG0p4QDKVpT5wJY3yV2oGPLQWp/wqOUvYTHA7MxkEHD4nYMfhlKdLrd+LQQTv8NV1Fyb2rQGnBcS+URUzDg2vNTgX0jjd2YUeziFQf+RkzfrIDGLc+NRRKLJwRgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765351978; c=relaxed/simple;
-	bh=ydm7EofrMjYIdqVmswDoQQlxQgFz9czY/bMphPYgMGE=;
+	s=arc-20240116; t=1765352028; c=relaxed/simple;
+	bh=R7ox0CV7/dYXgJzCIazQ8HEpOuzCyakphemutEfWz68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b6DW9nd39gLxAHwRc1ZOfI+uMZy5cvWmd8f7hCnllrvbC0dvlvZrE/cfvRd0f1RUapncDnaAFjBJPEF9OnhLAbFsnFYEd36oAjEIA6rgUEaOpImi4GZDjAEogqLypCCnKI0auCV0S8sv62Ke/xyi6RAEHhLPCHUvQ2mhr152uIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bLAz3XIR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C321FC4CEF1;
-	Wed, 10 Dec 2025 07:32:57 +0000 (UTC)
+	 MIME-Version; b=cBmKNSLzDCdNxYaaH7taAMrNSFvHgO/nYd3vVQs95kjbiR78XGHhPDmMHlsSe8G5hpakfsYExMulIkS7QxRvNXMvdEjM/7FgGHzcL22IEJdZjoA46Fp11K1cUYRsZhWVnaGW6+mUzquKvu2vxcgT231fKRn1yq7Ru0WdFYQ/1Do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PIHwlyOI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26FFDC4CEF1;
+	Wed, 10 Dec 2025 07:33:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765351978;
-	bh=ydm7EofrMjYIdqVmswDoQQlxQgFz9czY/bMphPYgMGE=;
+	s=korg; t=1765352028;
+	bh=R7ox0CV7/dYXgJzCIazQ8HEpOuzCyakphemutEfWz68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bLAz3XIRH8kTgscnp3hhCh5kMXfFoRbyCaohNgFR6+HnRltaiTJyKBf2pUVTHopuV
-	 YwJYVQD2g9As0LC7InrA85vORwV4ecfDSq1LHCPG+xlC2T0bH4V5Lv9nwPnWLn6kTA
-	 RVUCEbUsoLcpCuBSDphVGcQ0rhgzztopOlzyRENM=
+	b=PIHwlyOIrhCp/QBfpjyKjVP5TN7ARsUlbW8JPXP+ufKZRrAhDb8aL1G/6BPVAYrKv
+	 xZ48iTL+XCQI6M7PuWtlr58BTMRd6MVBOrXHkDKeZ/jzh6RgMmhNePLVe102qcy/AF
+	 nyxz3RlioX55ewocNjbcF2GFyJAPZyCdtrm4gkd4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -43,12 +43,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Ian Forbes <ian.forbes@broadcom.com>,
 	Zack Rusin <zack.rusin@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 23/49] drm/vmwgfx: Use kref in vmw_bo_dirty
+Subject: [PATCH 6.17 23/60] drm/vmwgfx: Use kref in vmw_bo_dirty
 Date: Wed, 10 Dec 2025 16:29:53 +0900
-Message-ID: <20251210072948.725394968@linuxfoundation.org>
+Message-ID: <20251210072948.407278575@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
-References: <20251210072948.125620687@linuxfoundation.org>
+In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
+References: <20251210072947.850479903@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,7 +60,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -80,10 +80,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 5 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c b/drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c
-index 74ff2812d66a1..de2498749e276 100644
+index 7de20e56082c8..fd4e76486f2d1 100644
 --- a/drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c
 +++ b/drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c
-@@ -51,22 +51,22 @@ enum vmw_bo_dirty_method {
+@@ -32,22 +32,22 @@ enum vmw_bo_dirty_method {
  
  /**
   * struct vmw_bo_dirty - Dirty information for buffer objects
@@ -108,7 +108,7 @@ index 74ff2812d66a1..de2498749e276 100644
  	unsigned long bitmap_size;
  	unsigned long bitmap[];
  };
-@@ -235,7 +235,7 @@ int vmw_bo_dirty_add(struct vmw_bo *vbo)
+@@ -221,7 +221,7 @@ int vmw_bo_dirty_add(struct vmw_bo *vbo)
  	int ret;
  
  	if (dirty) {
@@ -117,7 +117,7 @@ index 74ff2812d66a1..de2498749e276 100644
  		return 0;
  	}
  
-@@ -249,7 +249,7 @@ int vmw_bo_dirty_add(struct vmw_bo *vbo)
+@@ -235,7 +235,7 @@ int vmw_bo_dirty_add(struct vmw_bo *vbo)
  	dirty->bitmap_size = num_pages;
  	dirty->start = dirty->bitmap_size;
  	dirty->end = 0;
@@ -126,7 +126,7 @@ index 74ff2812d66a1..de2498749e276 100644
  	if (num_pages < PAGE_SIZE / sizeof(pte_t)) {
  		dirty->method = VMW_BO_DIRTY_PAGETABLE;
  	} else {
-@@ -288,10 +288,8 @@ void vmw_bo_dirty_release(struct vmw_bo *vbo)
+@@ -274,10 +274,8 @@ void vmw_bo_dirty_release(struct vmw_bo *vbo)
  {
  	struct vmw_bo_dirty *dirty = vbo->dirty;
  
