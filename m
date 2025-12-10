@@ -1,204 +1,126 @@
-Return-Path: <stable+bounces-200544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2402CB2185
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:36:51 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90954CB218F
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:39:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B1AC230EF1AC
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 06:35:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B4D2B302CA70
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 06:39:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 446D53054D0;
-	Wed, 10 Dec 2025 06:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FC293126B8;
+	Wed, 10 Dec 2025 06:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lfEU8ZKR"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="lIF+U8II"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3B1305058;
-	Wed, 10 Dec 2025 06:35:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D612F8BD1
+	for <stable@vger.kernel.org>; Wed, 10 Dec 2025 06:39:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.24
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765348518; cv=none; b=Rc8er4PaA6jIPH46Hj9rkzk9qcbcqp+DQ8XkdgfXPsBAC1gpol0x8eER6dAcM6I3MjrQa94sSkGnrpTOQTcEhfr6xtkJ7A88lnniVJDaL4lhvtsM8wz7wbjc+0SxG8SevwuF92XSag319fIC2HUrijNQfxWysxaAIpDZbhphl08=
+	t=1765348749; cv=none; b=m6Vas2GZRlwdfBQDWZnkRLVn+4sSKJiwNTydr6uXbDBAXKpWoOjvuls6otQOIVl3Y+gz+H/fXaGOU5GvCilBwZ73uCX5FIA81526IM9e2rexb0P7Q9WMzaCq1ZGGnpIjsKEg80cQDSmBTBUmxs72FWCp68+1zV0/QKb4Kwkcv5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765348518; c=relaxed/simple;
-	bh=fA+B30h0YeaX0w+Bbx8pzkya4tRo/QUCwnmrtws7R5o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pe2HB60wQluh5tB4wr5Yehj2mvj0HD4zxzyZWFe9d+ppU15J2JfMkrkcE99wRkRzLi18q8bBlv0TQQWvYBGRyp6rQI7KF7t1GC5p7KF6ljGZ9P/y6a2cjrqN1JmsgBA3WVC4Z34JtAV5qgtNhlSW/WFp6EELozDyFXDhNeP1nO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lfEU8ZKR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89205C19422;
-	Wed, 10 Dec 2025 06:35:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765348517;
-	bh=fA+B30h0YeaX0w+Bbx8pzkya4tRo/QUCwnmrtws7R5o=;
+	s=arc-20240116; t=1765348749; c=relaxed/simple;
+	bh=Kz859QFqaTjFiTHmrk3Yej0UWmo4u+H2a+DUHXEGifU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:MIME-Version:
+	 Content-Type:References; b=hGhNCPasiL4iVwMVOrRjSosqHnViTeMjq2y1gezxkf+8p2M6LOhU3Yhp4h+R1rv4AZFSXIMUo8NiKZa/nF0hCg1jSb/hRtkLlukiI8KoHD5cttWQJeJ9rqr7So0gwsXSK60gBI3ZJWMqYiMbwsUp3Izf1H0MpJ4lp2XWpmZlMjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=lIF+U8II; arc=none smtp.client-ip=203.254.224.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from epcas1p3.samsung.com (unknown [182.195.41.47])
+	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20251210063904epoutp0106c5cbc1d02bdf684f154ff82cffa87d~-x1RommTU2227822278epoutp01J
+	for <stable@vger.kernel.org>; Wed, 10 Dec 2025 06:39:04 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20251210063904epoutp0106c5cbc1d02bdf684f154ff82cffa87d~-x1RommTU2227822278epoutp01J
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1765348744;
+	bh=4UpQQu60XCHY8zQhF5/tqP6wgLjIJizjaVn9/DDpb9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lfEU8ZKRs6WzzaKDzwrPBW5FP2hpJoyCdtGWhp5O/cgbRtTZ6Cn/3gZf0tZDsJxPL
-	 ZlsJyJUzSbmtM/QyhI3azONWjElRwkx/DBcpAzKouCQNqWS3QTCcb6nZ/Q1hpVn4Px
-	 C4IOsSMBy5AsFUrbjLs7hfctk2xzv2yjjGKk5zyIW5t1dgZ5kjqBiwSSvFQ38Z7ps8
-	 S/AbuzqnaZzRG5aNQ1PswZZFBd0stYu3Joy+IxZNBpi0hkMt1OwyGnmBRNB2y25J+e
-	 +alTTxvSIoijMm49SnyzeGcPMTnUuPp3mNbFnHz2Y9Px+++4qoSx1LztcH47oE9MDS
-	 uvzqjdcSE0WUw==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Chen Changcheng <chenchangcheng@kylinos.cn>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	stern@rowland.harvard.edu,
-	linux-usb@vger.kernel.org,
-	usb-storage@lists.one-eyed-alien.net
-Subject: [PATCH AUTOSEL 6.18-5.10] usb: usb-storage: No additional quirks need to be added to the EL-R12 optical drive.
-Date: Wed, 10 Dec 2025 01:34:37 -0500
-Message-ID: <20251210063446.2513466-8-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251210063446.2513466-1-sashal@kernel.org>
-References: <20251210063446.2513466-1-sashal@kernel.org>
+	b=lIF+U8IIsbZxP12KcPQVCPvCPl5CUWlf+SRiJNFZ1MFr+kI+ZHyh5X9TdmptBUvwZ
+	 V7oXtfHPq9KGvBPePDvahVouLFin9Z9QzUFt5e9E7IpUIIo63NfuGD1p6df3HVv4wX
+	 TRy0NuTJsiH62rYjEHIRq5yPZUN9MllnVhIRMJjU=
+Received: from epsnrtp01.localdomain (unknown [182.195.42.153]) by
+	epcas1p2.samsung.com (KnoxPortal) with ESMTPS id
+	20251210063903epcas1p233735f9f8f0947601800ce6ae7db9f24~-x1RLwUk02707827078epcas1p2J;
+	Wed, 10 Dec 2025 06:39:03 +0000 (GMT)
+Received: from epcas1p3.samsung.com (unknown [182.195.38.196]) by
+	epsnrtp01.localdomain (Postfix) with ESMTP id 4dR5fH3s3tz6B9mD; Wed, 10 Dec
+	2025 06:39:03 +0000 (GMT)
+Received: from epsmtip2.samsung.com (unknown [182.195.34.31]) by
+	epcas1p3.samsung.com (KnoxPortal) with ESMTPA id
+	20251210063902epcas1p3651acbf49d4f8c456d4f3419f4649371~-x1QVPOtZ1892418924epcas1p3u;
+	Wed, 10 Dec 2025 06:39:02 +0000 (GMT)
+Received: from baek-500TGA-500SGA.. (unknown [10.253.99.239]) by
+	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20251210063902epsmtip2b742042cd6b78dcf7a43a53a5eee0899~-x1QOqNuG0421904219epsmtip21;
+	Wed, 10 Dec 2025 06:39:02 +0000 (GMT)
+From: Seunghwan Baek <sh8267.baek@samsung.com>
+To: alim.akhtar@samsung.com, avri.altman@wdc.com, bvanassche@acm.org,
+	James.Bottomley@HansenPartnership.com, martin.petersen@oracle.com,
+	peter.wang@mediatek.com, beanhuo@micron.com, adrian.hunter@intel.com,
+	quic_nguyenb@quicinc.com, linux-scsi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, sh8267.baek@samsung.com
+Cc: stable@vger.kernel.org
+Subject: [PATCH v1 1/1] scsi: ufs : core: Add ufshcd_update_evt_hist for ufs
+ suspend error.
+Date: Wed, 10 Dec 2025 15:38:54 +0900
+Message-ID: <20251210063854.1483899-2-sh8267.baek@samsung.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251210063854.1483899-1-sh8267.baek@samsung.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.18
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20251210063902epcas1p3651acbf49d4f8c456d4f3419f4649371
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 101P
+cpgsPolicy: CPGSC10-711,Y
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20251210063902epcas1p3651acbf49d4f8c456d4f3419f4649371
+References: <20251210063854.1483899-1-sh8267.baek@samsung.com>
+	<CGME20251210063902epcas1p3651acbf49d4f8c456d4f3419f4649371@epcas1p3.samsung.com>
 
-From: Chen Changcheng <chenchangcheng@kylinos.cn>
+If the ufs resume fails, the event history is updated in ufshcd_resume,
+but there is no code anywhere to record ufs suspend. Therefore, add code
+to record ufs suspend error event history.
 
-[ Upstream commit 955a48a5353f4fe009704a9a4272a3adf627cd35 ]
+Fixes: dd11376b9f1b ("scsi: ufs: Split the drivers/scsi/ufs directory")
+Cc: stable@vger.kernel.org
 
-The optical drive of EL-R12 has the same vid and pid as INIC-3069,
-as follows:
-T:  Bus=02 Lev=02 Prnt=02 Port=01 Cnt=01 Dev#=  3 Spd=5000 MxCh= 0
-D:  Ver= 3.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=13fd ProdID=3940 Rev= 3.10
-S:  Manufacturer=HL-DT-ST
-S:  Product= DVD+-RW GT80N
-S:  SerialNumber=423349524E4E38303338323439202020
-C:* #Ifs= 1 Cfg#= 1 Atr=80 MxPwr=144mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=08(stor.) Sub=02 Prot=50 Driver=usb-storage
-E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=0a(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-
-This will result in the optical drive device also adding
-the quirks of US_FL_NO_ATA_1X. When performing an erase operation,
-it will fail, and the reason for the failure is as follows:
-[  388.967742] sr 5:0:0:0: [sr0] tag#0 Send: scmd 0x00000000d20c33a7
-[  388.967742] sr 5:0:0:0: [sr0] tag#0 CDB: ATA command pass through(12)/Blank a1 11 00 00 00 00 00 00 00 00 00 00
-[  388.967773] sr 5:0:0:0: [sr0] tag#0 Done: SUCCESS Result: hostbyte=DID_TARGET_FAILURE driverbyte=DRIVER_OK cmd_age=0s
-[  388.967773] sr 5:0:0:0: [sr0] tag#0 CDB: ATA command pass through(12)/Blank a1 11 00 00 00 00 00 00 00 00 00 00
-[  388.967803] sr 5:0:0:0: [sr0] tag#0 Sense Key : Illegal Request [current]
-[  388.967803] sr 5:0:0:0: [sr0] tag#0 Add. Sense: Invalid field in cdb
-[  388.967803] sr 5:0:0:0: [sr0] tag#0 scsi host busy 1 failed 0
-[  388.967803] sr 5:0:0:0: Notifying upper driver of completion (result 8100002)
-[  388.967834] sr 5:0:0:0: [sr0] tag#0 0 sectors total, 0 bytes done.
-
-For the EL-R12 standard optical drive, all operational commands
-and usage scenarios were tested without adding the IGNORE_RESIDUE quirks,
-and no issues were encountered. It can be reasonably concluded
-that removing the IGNORE_RESIDUE quirks has no impact.
-
-Signed-off-by: Chen Changcheng <chenchangcheng@kylinos.cn>
-Link: https://patch.msgid.link/20251121064020.29332-1-chenchangcheng@kylinos.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Seunghwan Baek <sh8267.baek@samsung.com>
 ---
+ drivers/ufs/core/ufshcd.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-LLM Generated explanations, may be completely bogus:
-
-## Summary
-
-**What the commit does:**
-This commit fixes a device conflict where the EL-R12 optical drive (HL-
-DT-ST DVD+-RW GT80N) with firmware revision 3.10 incorrectly receives
-USB quirks intended for the INIC-3069 controller because they share the
-same VID:PID (0x13fd:0x3940). The fix narrows the firmware revision
-range from "all revisions" (0x0000-0x9999) to only revision 3.09
-(0x0309-0x0309).
-
-**History context:**
-- Original quirk added in 2015 (commit bda13e35d584d) - was marked `Cc:
-  stable@vger.kernel.org # 3.16`
-- IGNORE_RESIDUE added in 2017 (commit 89f23d51defcb) - also marked for
-  stable
-- The quirk entry has existed in stable trees for years
-
-## Meets Stable Criteria Assessment
-
-| Criterion | Assessment |
-|-----------|------------|
-| Obviously correct | ✅ Yes - simple revision range narrowing |
-| Fixes real bug | ✅ Yes - disc erase operations fail completely |
-| Small and contained | ✅ Yes - 1 line change |
-| No new features | ✅ Yes - just fixes quirk scope |
-| Important issue | ✅ Yes - device operations completely fail |
-
-## Risk vs Benefit
-
-**Benefits:**
-- Fixes real functional failure (disc erase operations)
-- Users with EL-R12 optical drives can use them properly
-- Minimal change, low regression risk
-
-**Risks:**
-- Could theoretically affect INIC-3069 devices with firmware versions
-  other than 3.09 if they exist and need these quirks
-- However, the original report was from a specific device/tester, and no
-  evidence suggests other firmware versions need the quirks
-
-**Mitigating factors:**
-- The quirk was originally based on a single reporter's device (Benjamin
-  Tissoires)
-- If multiple firmware versions needed quirks, we'd likely have seen
-  additional reports over the ~10 years since the original quirk was
-  added
-- The commit author thoroughly tested the EL-R12 without the quirks
-
-## Concerns
-
-1. **No explicit Cc: stable tag** - The maintainer didn't explicitly
-   request stable backport
-2. **No Fixes: tag** - No specific commit is pointed to as introducing
-   the bug
-3. **Revision specificity** - We don't have absolute confirmation that
-   0x0309 was the original reporter's exact firmware revision
-
-## Conclusion
-
-This is a standard USB quirk adjustment that fixes a real user-facing
-bug (optical drive operations failing). USB device quirks are routinely
-backported to stable. The change is minimal (single line), surgical, and
-addresses documented hardware compatibility issues. The risk of
-regression is low since the original quirk was based on a single
-reporter's device, and narrowing the scope shouldn't affect other users.
-
-While the lack of a Cc: stable tag is notable, USB quirk fixes of this
-nature are commonly backported because they enable proper hardware
-operation. The fix allows the EL-R12 optical drive to work correctly
-without impacting the original INIC-3069 devices that need the quirks.
-
-**YES**
-
- drivers/usb/storage/unusual_uas.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/usb/storage/unusual_uas.h b/drivers/usb/storage/unusual_uas.h
-index 1477e31d77632..b695f5ba9a409 100644
---- a/drivers/usb/storage/unusual_uas.h
-+++ b/drivers/usb/storage/unusual_uas.h
-@@ -98,7 +98,7 @@ UNUSUAL_DEV(0x125f, 0xa94a, 0x0160, 0x0160,
- 		US_FL_NO_ATA_1X),
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 040a0ceb170a..6bb2781aefc7 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -10337,7 +10337,7 @@ static int ufshcd_suspend(struct ufs_hba *hba)
+ 	ret = ufshcd_setup_clocks(hba, false);
+ 	if (ret) {
+ 		ufshcd_enable_irq(hba);
+-		return ret;
++		goto out;
+ 	}
+ 	if (ufshcd_is_clkgating_allowed(hba)) {
+ 		hba->clk_gating.state = CLKS_OFF;
+@@ -10349,6 +10349,9 @@ static int ufshcd_suspend(struct ufs_hba *hba)
+ 	/* Put the host controller in low power mode if possible */
+ 	ufshcd_hba_vreg_set_lpm(hba);
+ 	ufshcd_pm_qos_update(hba, false);
++out:
++	if (ret)
++		ufshcd_update_evt_hist(hba, UFS_EVT_SUSPEND_ERR, (u32)ret);
+ 	return ret;
+ }
  
- /* Reported-by: Benjamin Tissoires <benjamin.tissoires@redhat.com> */
--UNUSUAL_DEV(0x13fd, 0x3940, 0x0000, 0x9999,
-+UNUSUAL_DEV(0x13fd, 0x3940, 0x0309, 0x0309,
- 		"Initio Corporation",
- 		"INIC-3069",
- 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
 -- 
-2.51.0
+2.43.0
 
 
