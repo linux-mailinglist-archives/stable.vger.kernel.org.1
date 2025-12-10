@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-200600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DD68CB23A0
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:34:06 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54D51CB2316
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:31:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 326CE302A96F
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:33:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5979E3007217
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:31:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0A332FB965;
-	Wed, 10 Dec 2025 07:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9B8326E17A;
+	Wed, 10 Dec 2025 07:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bOBJ+BBq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ucw+0hOC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7198627A47F;
-	Wed, 10 Dec 2025 07:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 661FF1DE8A4;
+	Wed, 10 Dec 2025 07:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765352000; cv=none; b=OzbyF4iwUuzoItcxxi67DkA7vskQA/SqOeQdc8rH7+I3pyC7EFH7+mwguJ/nmT6lSMuA/UPf1v/M9xD8EmkwEiQMMS9t5wTtBZjDOwxaa/wpqT9/CxM6NhslzCe7/kwDKy79Oj0VK8eesygRS6e0UNKyQNcP1J2kvS6RB/SKThg=
+	t=1765351883; cv=none; b=Sy+TY4IaKPJCI+NA0sdRW3R/bsWsQ+q9KIdlQ+FgsT8woXx1JVv6yOiDfOijyVLjm5hYjUH/fVEUpb5vxKbhTqDfO46zp0OgJY9rSK4MDsOx5pJZuJYnc2VBOQw688Ef8Ssw7n1tAGa+b0SREmIrdhtkmvqiinrZwVqNExfmCDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765352000; c=relaxed/simple;
-	bh=farnGNvUZhA+66HxVOV+pxG3ILySs26IXoZgm1ygARM=;
+	s=arc-20240116; t=1765351883; c=relaxed/simple;
+	bh=47n44DkD2tXjbSpVeQAkhYTHq2tGq+1GEUuvfP8K030=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lcTyPl3y+yQY75siseHnxr0yA74oitHZSGOx0M3H5aogwWXq++91Ms/l+cl2hMyKZ2drv/6shCKqaWbmGK3U2vCqy+yNX82vHhN1YlDaSZTD4NH8KVlAG0isusEz5j61873k5ARjum3WG2gr9Dp5/66T2Bls/CRxcsxTnfv/mjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bOBJ+BBq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FA4BC4CEF1;
-	Wed, 10 Dec 2025 07:33:19 +0000 (UTC)
+	 MIME-Version; b=nPFoiOY5mKsTCU3YMRKhR+pEbdMTuTBvaKq0SMbUzMPArkD+cvIE0fCGCx6V/SaC3EeZHTwzdmD/EpawWcWQO6AxcCXP5geLc2dYZZ0wtZeJ/Ccc952AYPBv81ogbLB7MU/tffDWggf+fBg9JUlCe5XyEzPJ18IfjwILzGCYRZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ucw+0hOC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8396C4CEF1;
+	Wed, 10 Dec 2025 07:31:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765352000;
-	bh=farnGNvUZhA+66HxVOV+pxG3ILySs26IXoZgm1ygARM=;
+	s=korg; t=1765351882;
+	bh=47n44DkD2tXjbSpVeQAkhYTHq2tGq+1GEUuvfP8K030=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bOBJ+BBqUhU1tev2b8jQSxsuN88ehwldF3mvAeGH6XZiNKphrWhFvA6Z6Ws7uZsht
-	 x15bTjfEXs0Bpa1cOJQ12d5YLH1z93GdByt1i1UfbYWlMdKRdvuFjE3BKG5lGf7Gm2
-	 ZxDdBN/f65UpI5VbCDL9KNtbQ3rMjCfIJN6Xp2TE=
+	b=Ucw+0hOCilJlEvqwLHwvl4FLN6tIcw8cBjIqWCRaaCvlUQa+yBrMbt1q6m7tOSJ95
+	 HJmPkmnw0JEcetbGY++vkQShuXHl4g2lf3uRUII37Gmnz2Ih4gekog/CjdhZmABzOd
+	 galTILkcwkFQuoN9QL+umB2EfdfvU1f2sExJebXE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qianchang Zhao <pioooooooooip@gmail.com>,
-	Zhitong Liu <liuzhitong1993@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.17 04/60] ksmbd: ipc: fix use-after-free in ipc_msg_send_request
+	syzbot+6641a61fe0e2e89ae8c5@syzkaller.appspotmail.com,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Simon Horman <horms@kernel.org>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 04/49] xfrm: flush all states in xfrm_state_fini
 Date: Wed, 10 Dec 2025 16:29:34 +0900
-Message-ID: <20251210072947.955740226@linuxfoundation.org>
+Message-ID: <20251210072948.235574417@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
-References: <20251210072947.850479903@linuxfoundation.org>
+In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
+References: <20251210072948.125620687@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qianchang Zhao <pioooooooooip@gmail.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-commit 1fab1fa091f5aa97265648b53ea031deedd26235 upstream.
+[ Upstream commit 42e42562c9cfcdacf000f1b42284a4fad24f8546 ]
 
-ipc_msg_send_request() waits for a generic netlink reply using an
-ipc_msg_table_entry on the stack. The generic netlink handler
-(handle_generic_event()/handle_response()) fills entry->response under
-ipc_msg_table_lock, but ipc_msg_send_request() used to validate and free
-entry->response without holding the same lock.
+While reverting commit f75a2804da39 ("xfrm: destroy xfrm_state
+synchronously on net exit path"), I incorrectly changed
+xfrm_state_flush's "proto" argument back to IPSEC_PROTO_ANY. This
+reverts some of the changes in commit dbb2483b2a46 ("xfrm: clean up
+xfrm protocol checks"), and leads to some states not being removed
+when we exit the netns.
 
-Under high concurrency this allows a race where handle_response() is
-copying data into entry->response while ipc_msg_send_request() has just
-freed it, leading to a slab-use-after-free reported by KASAN in
-handle_generic_event():
+Pass 0 instead of IPSEC_PROTO_ANY from both xfrm_state_fini
+xfrm6_tunnel_net_exit, so that xfrm_state_flush deletes all states.
 
-  BUG: KASAN: slab-use-after-free in handle_generic_event+0x3c4/0x5f0 [ksmbd]
-  Write of size 12 at addr ffff888198ee6e20 by task pool/109349
-  ...
-  Freed by task:
-    kvfree
-    ipc_msg_send_request [ksmbd]
-    ksmbd_rpc_open -> ksmbd_session_rpc_open [ksmbd]
-
-Fix by:
-- Taking ipc_msg_table_lock in ipc_msg_send_request() while validating
-  entry->response, freeing it when invalid, and removing the entry from
-  ipc_msg_table.
-- Returning the final entry->response pointer to the caller only after
-  the hash entry is removed under the lock.
-- Returning NULL in the error path, preserving the original API
-  semantics.
-
-This makes all accesses to entry->response consistent with
-handle_response(), which already updates and fills the response buffer
-under ipc_msg_table_lock, and closes the race that allowed the UAF.
-
-Cc: stable@vger.kernel.org
-Reported-by: Qianchang Zhao <pioooooooooip@gmail.com>
-Reported-by: Zhitong Liu <liuzhitong1993@gmail.com>
-Signed-off-by: Qianchang Zhao <pioooooooooip@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2a198bbec691 ("Revert "xfrm: destroy xfrm_state synchronously on net exit path"")
+Reported-by: syzbot+6641a61fe0e2e89ae8c5@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6641a61fe0e2e89ae8c5
+Tested-by: syzbot+6641a61fe0e2e89ae8c5@syzkaller.appspotmail.com
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/transport_ipc.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/ipv6/xfrm6_tunnel.c | 2 +-
+ net/xfrm/xfrm_state.c   | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/smb/server/transport_ipc.c
-+++ b/fs/smb/server/transport_ipc.c
-@@ -553,12 +553,16 @@ static void *ipc_msg_send_request(struct
- 	up_write(&ipc_msg_table_lock);
+diff --git a/net/ipv6/xfrm6_tunnel.c b/net/ipv6/xfrm6_tunnel.c
+index 5120a763da0d9..0a0eeaed05910 100644
+--- a/net/ipv6/xfrm6_tunnel.c
++++ b/net/ipv6/xfrm6_tunnel.c
+@@ -334,7 +334,7 @@ static void __net_exit xfrm6_tunnel_net_exit(struct net *net)
+ 	struct xfrm6_tunnel_net *xfrm6_tn = xfrm6_tunnel_pernet(net);
+ 	unsigned int i;
  
- 	ret = ipc_msg_send(msg);
--	if (ret)
-+	if (ret) {
-+		down_write(&ipc_msg_table_lock);
- 		goto out;
-+	}
+-	xfrm_state_flush(net, IPSEC_PROTO_ANY, false);
++	xfrm_state_flush(net, 0, false);
+ 	xfrm_flush_gc();
  
- 	ret = wait_event_interruptible_timeout(entry.wait,
- 					       entry.response != NULL,
- 					       IPC_WAIT_TIMEOUT);
-+
-+	down_write(&ipc_msg_table_lock);
- 	if (entry.response) {
- 		ret = ipc_validate_msg(&entry);
- 		if (ret) {
-@@ -567,7 +571,6 @@ static void *ipc_msg_send_request(struct
- 		}
- 	}
- out:
--	down_write(&ipc_msg_table_lock);
- 	hash_del(&entry.ipc_table_hlist);
- 	up_write(&ipc_msg_table_lock);
- 	return entry.response;
+ 	for (i = 0; i < XFRM6_TUNNEL_SPI_BYADDR_HSIZE; i++)
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index 3a79ebcbbc369..b9bac68364527 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -3214,7 +3214,7 @@ void xfrm_state_fini(struct net *net)
+ 	unsigned int sz;
+ 
+ 	flush_work(&net->xfrm.state_hash_work);
+-	xfrm_state_flush(net, IPSEC_PROTO_ANY, false);
++	xfrm_state_flush(net, 0, false);
+ 	flush_work(&xfrm_state_gc_work);
+ 
+ 	WARN_ON(!list_empty(&net->xfrm.state_all));
+-- 
+2.51.0
+
 
 
 
