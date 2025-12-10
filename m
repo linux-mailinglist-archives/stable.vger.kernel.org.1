@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-200663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEFBCCB249F
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:40:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA228CB238E
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:33:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D2B6F30146EF
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:36:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 449CB307F8C6
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:32:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E33F7302CBA;
-	Wed, 10 Dec 2025 07:36:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A9062E92B4;
+	Wed, 10 Dec 2025 07:32:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zjp0QkzQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UxhwApt0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BEC62FF16C;
-	Wed, 10 Dec 2025 07:36:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7B1D221F2F;
+	Wed, 10 Dec 2025 07:32:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765352163; cv=none; b=pycbLux4k7RAiOTaHG6FvyJHMIgJvNWTjCrbSy7WGhOuku1xJ7WG/uQhNyTo+H275/4ba6Q2R7adEeScdRrrKbLwiK0OSpiZXG1buaVN1TlpdLQOcwxzPHyAoWEmZdiyyu0vRNE81tf0IrrREGliBohrRSACunaTuc02u7dBJgA=
+	t=1765351966; cv=none; b=ipHL2xbnnKZQBx4+sl1k0NAtb5S4oaM6/V74HY+vVcPnwN/HKBNihJRnm3Swu5KDPzpK5LeT1C8XPzFh9N6x4YOCq1KwN55+WpyfyaY0A14mHwA2SeGaybdzVeY1sKwuqXvP5P+r+hzh78tOsIcL+uje2Ztw7BHtrgvEXj7vfNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765352163; c=relaxed/simple;
-	bh=ekPyhSUzDrvz4KRBkNTx+0j2+2Im1+eNtSKUM/CTiwg=;
+	s=arc-20240116; t=1765351966; c=relaxed/simple;
+	bh=Hs6jecCTp8R1n2BgTbWkiMNRBeUaYgATJLuGHJkfaBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RRMwq5RsxGTQ2Ay9caRzyoZn2+F+0W3Yg7WEnEL7C/fOBmmFEeMmHkHNq3O1zq2zOXcDIphhlIVEQcmre5WPOQhHSt8K1gYWwWLXH6DRGLGttx8bZWcIPA9FWpiGPHL0FjUvHtdPZV3pcNPGKwAy/dI7BULBAGIp9Rn8a9F5rxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zjp0QkzQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42294C4CEF1;
-	Wed, 10 Dec 2025 07:36:03 +0000 (UTC)
+	 MIME-Version; b=m2f5SXGPZY0r4puCPVRp8jgNZ3em40YAy8HnMdKYlfjaD5/P6oO/azfox98wHAvQH1CmwkTSbh/52JVe0sO7X2zwPpDeNm/mq8iV6ysp9LMM6LBzdXt1sh8rL/8V9pM9awvbqvjKxwGb3rwKqgIXhpx/Agev8EnH+c4M+xAocDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UxhwApt0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80DD8C4CEF1;
+	Wed, 10 Dec 2025 07:32:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765352163;
-	bh=ekPyhSUzDrvz4KRBkNTx+0j2+2Im1+eNtSKUM/CTiwg=;
+	s=korg; t=1765351965;
+	bh=Hs6jecCTp8R1n2BgTbWkiMNRBeUaYgATJLuGHJkfaBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zjp0QkzQssOveq89Qgayw8LlouZt/oVJQCIP7eLsgFi2g/NSv885gGQ2L/OmlB4T8
-	 dZ2H+W342vUby7aFSHlQOM35NbhhXfuvYLdGHlPFaPoVVwqIgCUZzdxi1cZETRHSC6
-	 QOjzvsCMAKFkfCctqJklfuJwDKKi0DZG0SRcf9Rs=
+	b=UxhwApt0tFUjLbOAwtwsRnV6sY7+rz43DjBwBk72wy1+Ks/TEC94647yhOdDRAfx5
+	 nDiBq+/wiSqa4hZsD4hIoKQYzM3SM6x/zvshIPyYCV0L+Lev0qXT/FhlZw7jje5raQ
+	 bYJaA/qDFgBTrlsd8eNNaugtoZ0/sQVTqrS3tMjs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.18 06/29] crypto: zstd - fix double-free in per-CPU stream cleanup
+	Navaneeth K <knavaneeth786@gmail.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.12 46/49] staging: rtl8723bs: fix stack buffer overflow in OnAssocReq IE parsing
 Date: Wed, 10 Dec 2025 16:30:16 +0900
-Message-ID: <20251210072944.542909790@linuxfoundation.org>
+Message-ID: <20251210072949.310527432@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072944.363788552@linuxfoundation.org>
-References: <20251210072944.363788552@linuxfoundation.org>
+In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
+References: <20251210072948.125620687@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,89 +59,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+From: Navaneeth K <knavaneeth786@gmail.com>
 
-commit 48bc9da3c97c15f1ea24934bcb3b736acd30163d upstream.
+commit 6ef0e1c10455927867cac8f0ed6b49f328f8cf95 upstream.
 
-The crypto/zstd module has a double-free bug that occurs when multiple
-tfms are allocated and freed.
+The Supported Rates IE length from an incoming Association Request frame
+was used directly as the memcpy() length when copying into a fixed-size
+16-byte stack buffer (supportRate). A malicious station can advertise an
+IE length larger than 16 bytes, causing a stack buffer overflow.
 
-The issue happens because zstd_streams (per-CPU contexts) are freed in
-zstd_exit() during every tfm destruction, rather than being managed at
-the module level.  When multiple tfms exist, each tfm exit attempts to
-free the same shared per-CPU streams, resulting in a double-free.
+Clamp ie_len to the buffer size before copying the Supported Rates IE,
+and correct the bounds check when merging Extended Supported Rates to
+prevent a second potential overflow.
 
-This leads to a stack trace similar to:
+This prevents kernel stack corruption triggered by malformed association
+requests.
 
-  BUG: Bad page state in process kworker/u16:1  pfn:106fd93
-  page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x106fd93
-  flags: 0x17ffffc0000000(node=0|zone=2|lastcpupid=0x1fffff)
-  page_type: 0xffffffff()
-  raw: 0017ffffc0000000 dead000000000100 dead000000000122 0000000000000000
-  raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
-  page dumped because: nonzero entire_mapcount
-  Modules linked in: ...
-  CPU: 3 UID: 0 PID: 2506 Comm: kworker/u16:1 Kdump: loaded Tainted: G    B
-  Hardware name: ...
-  Workqueue: btrfs-delalloc btrfs_work_helper
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x5d/0x80
-   bad_page+0x71/0xd0
-   free_unref_page_prepare+0x24e/0x490
-   free_unref_page+0x60/0x170
-   crypto_acomp_free_streams+0x5d/0xc0
-   crypto_acomp_exit_tfm+0x23/0x50
-   crypto_destroy_tfm+0x60/0xc0
-   ...
-
-Change the lifecycle management of zstd_streams to free the streams only
-once during module cleanup.
-
-Fixes: f5ad93ffb541 ("crypto: zstd - convert to acomp")
-Cc: stable@vger.kernel.org
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Reviewed-by: Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Navaneeth K <knavaneeth786@gmail.com>
+Cc: stable <stable@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/zstd.c |    7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ drivers/staging/rtl8723bs/core/rtw_mlme_ext.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/crypto/zstd.c
-+++ b/crypto/zstd.c
-@@ -75,11 +75,6 @@ static int zstd_init(struct crypto_acomp
- 	return ret;
- }
+--- a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
++++ b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
+@@ -1033,6 +1033,9 @@ unsigned int OnAssocReq(struct adapter *
+ 		status = WLAN_STATUS_CHALLENGE_FAIL;
+ 		goto OnAssocReqFail;
+ 	} else {
++		if (ie_len > sizeof(supportRate))
++			ie_len = sizeof(supportRate);
++
+ 		memcpy(supportRate, p+2, ie_len);
+ 		supportRateNum = ie_len;
  
--static void zstd_exit(struct crypto_acomp *acomp_tfm)
--{
--	crypto_acomp_free_streams(&zstd_streams);
--}
--
- static int zstd_compress_one(struct acomp_req *req, struct zstd_ctx *ctx,
- 			     const void *src, void *dst, unsigned int *dlen)
- {
-@@ -297,7 +292,6 @@ static struct acomp_alg zstd_acomp = {
- 		.cra_module = THIS_MODULE,
- 	},
- 	.init = zstd_init,
--	.exit = zstd_exit,
- 	.compress = zstd_compress,
- 	.decompress = zstd_decompress,
- };
-@@ -310,6 +304,7 @@ static int __init zstd_mod_init(void)
- static void __exit zstd_mod_fini(void)
- {
- 	crypto_unregister_acomp(&zstd_acomp);
-+	crypto_acomp_free_streams(&zstd_streams);
- }
+@@ -1040,7 +1043,7 @@ unsigned int OnAssocReq(struct adapter *
+ 				pkt_len - WLAN_HDR_A3_LEN - ie_offset);
+ 		if (p) {
  
- module_init(zstd_mod_init);
+-			if (supportRateNum <= sizeof(supportRate)) {
++			if (supportRateNum + ie_len <= sizeof(supportRate)) {
+ 				memcpy(supportRate+supportRateNum, p+2, ie_len);
+ 				supportRateNum += ie_len;
+ 			}
 
 
 
