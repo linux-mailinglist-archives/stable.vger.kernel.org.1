@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-200603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A753CB23A4
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:34:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63086CB234F
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:32:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1E16E301625B
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:34:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1F680306EECA
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:31:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AA5F2FF16C;
-	Wed, 10 Dec 2025 07:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAC05221721;
+	Wed, 10 Dec 2025 07:31:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jPkiG54O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YxBgU4c0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574CC2FE05B;
-	Wed, 10 Dec 2025 07:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A474520102B;
+	Wed, 10 Dec 2025 07:31:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765352008; cv=none; b=eY0+QL2/dd/ZxEv0dEdIuTJNNFPyTzgqvt1oM37kaJLV5nzS8zOn55pXrpdNrvWsJ5h9ERZ6iQUgzELxXxRSf8BR9dhryuwdYu/PWITepkN39J0lMZdOute6y4DRsr844Rke77oPW3Wzf4jtauk48B73RIFWX6WB1ALB/5dWsXA=
+	t=1765351892; cv=none; b=P7ASFNMyNBW563GCEBW/20sHLv7N+HchpddL1RDmHS1mMnMcca46dWBhbbuqZp8MoCakklmB1XB1DlrJ4Ouio9SYtT6LPe1K92MOtY7mc1TLO3bRX9zL7stdtE5Xg6/8GglI3F0JZEHuLCYg/p4Iy4kYohumA6rFLu0gd7t3kfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765352008; c=relaxed/simple;
-	bh=xL04P6ZpFCjwTIsfxO5CYOLD9dGKu9zM8ghou5JL5Bk=;
+	s=arc-20240116; t=1765351892; c=relaxed/simple;
+	bh=GRPMl+L6o44aLUepFDjWCMLgDDzOXA731HQYyy8ORpE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qq2EtGegyqCSZFF5hpCyCJtGBYXu9mUd6CPIslok9eGOcEgusQgu+pLhMk/6a/GKrJg4bLo0yylm29I9UCE6+UmGbpur7knS+HL8yH3xKcJj/xg/+ceG5zm2mF/tiOqiPEbtGa37XwUJOs1NgG9iNWSmkfDbfSM8w2BTk0Pc8D0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jPkiG54O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5B7FC4CEF1;
-	Wed, 10 Dec 2025 07:33:27 +0000 (UTC)
+	 MIME-Version; b=tZ4G5pTUp1T0z7gF0Jgxe/wAG3Yq7NNiDJ/umvZLPwyE3Ldg4/S0TC98n+HC9WS3Kd+pLXscPq6s4bdlJ/Mnu6GIp7IblBc9v80JnErQ+lvHUobXoAzgO0CgF/PeFyswCXOW+7bK0XJwy/e5WqqxAb7rUHaOmZhx1zojXmZ6IMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YxBgU4c0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE7F4C4CEF1;
+	Wed, 10 Dec 2025 07:31:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765352008;
-	bh=xL04P6ZpFCjwTIsfxO5CYOLD9dGKu9zM8ghou5JL5Bk=;
+	s=korg; t=1765351892;
+	bh=GRPMl+L6o44aLUepFDjWCMLgDDzOXA731HQYyy8ORpE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jPkiG54OFpmxEdlTg8ycKbaFya7cNPxaecmwCx2vSJE5YbvJ5suczu9DIp9HoiHhD
-	 aoPjKF01/DOvJcW0bL+AMH81Q2EMB405CIbrgJeGiviBl8v1VS3FDmngu/jB/bF38e
-	 x9b4HtQhY5h9C5hVWAwSn8cHACWBFLlVC6rlect4=
+	b=YxBgU4c0Ot45n0CtouJs6bAEpfpcKK6r9eNFLG2gV2OOHWpI4uCjjAk6R1w9d4LDA
+	 m527N6i5wmJMCkx/DJBdrVdENXU+hFyrdUT9vKKazQhLROCAWxVeGcrd50mZrvVogA
+	 B3pmpgDbC0ko3ki4wB9Ll6dvPu8r5M6/GzoPpyvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Nepomnyashih <sdl@nppct.ru>,
+	syzbot+f3185be57d7e8dda32b8@syzkaller.appspotmail.com,
+	stable@kernel.org,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
 	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.17 07/60] ext4: add i_data_sem protection in ext4_destroy_inline_data_nolock()
+Subject: [PATCH 6.12 07/49] ext4: refresh inline data size before write operations
 Date: Wed, 10 Dec 2025 16:29:37 +0900
-Message-ID: <20251210072948.027392758@linuxfoundation.org>
+Message-ID: <20251210072948.309152754@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
-References: <20251210072947.850479903@linuxfoundation.org>
+In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
+References: <20251210072948.125620687@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,62 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Nepomnyashih <sdl@nppct.ru>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-commit 0cd8feea8777f8d9b9a862b89c688b049a5c8475 upstream.
+commit 892e1cf17555735e9d021ab036c36bc7b58b0e3b upstream.
 
-Fix a race between inline data destruction and block mapping.
+The cached ei->i_inline_size can become stale between the initial size
+check and when ext4_update_inline_data()/ext4_create_inline_data() use
+it. Although ext4_get_max_inline_size() reads the correct value at the
+time of the check, concurrent xattr operations can modify i_inline_size
+before ext4_write_lock_xattr() is acquired.
 
-The function ext4_destroy_inline_data_nolock() changes the inode data
-layout by clearing EXT4_INODE_INLINE_DATA and setting EXT4_INODE_EXTENTS.
-At the same time, another thread may execute ext4_map_blocks(), which
-tests EXT4_INODE_EXTENTS to decide whether to call ext4_ext_map_blocks()
-or ext4_ind_map_blocks().
+This causes ext4_update_inline_data() and ext4_create_inline_data() to
+work with stale capacity values, leading to a BUG_ON() crash in
+ext4_write_inline_data():
 
-Without i_data_sem protection, ext4_ind_map_blocks() may receive inode
-with EXT4_INODE_EXTENTS flag and triggering assert.
+  kernel BUG at fs/ext4/inline.c:1331!
+  BUG_ON(pos + len > EXT4_I(inode)->i_inline_size);
 
-kernel BUG at fs/ext4/indirect.c:546!
-EXT4-fs (loop2): unmounting filesystem.
-invalid opcode: 0000 [#1] PREEMPT SMP KASAN NOPTI
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
-RIP: 0010:ext4_ind_map_blocks.cold+0x2b/0x5a fs/ext4/indirect.c:546
+The race window:
+1. ext4_get_max_inline_size() reads i_inline_size = 60 (correct)
+2. Size check passes for 50-byte write
+3. [Another thread adds xattr, i_inline_size changes to 40]
+4. ext4_write_lock_xattr() acquires lock
+5. ext4_update_inline_data() uses stale i_inline_size = 60
+6. Attempts to write 50 bytes but only 40 bytes actually available
+7. BUG_ON() triggers
 
-Call Trace:
- <TASK>
- ext4_map_blocks+0xb9b/0x16f0 fs/ext4/inode.c:681
- _ext4_get_block+0x242/0x590 fs/ext4/inode.c:822
- ext4_block_write_begin+0x48b/0x12c0 fs/ext4/inode.c:1124
- ext4_write_begin+0x598/0xef0 fs/ext4/inode.c:1255
- ext4_da_write_begin+0x21e/0x9c0 fs/ext4/inode.c:3000
- generic_perform_write+0x259/0x5d0 mm/filemap.c:3846
- ext4_buffered_write_iter+0x15b/0x470 fs/ext4/file.c:285
- ext4_file_write_iter+0x8e0/0x17f0 fs/ext4/file.c:679
- call_write_iter include/linux/fs.h:2271 [inline]
- do_iter_readv_writev+0x212/0x3c0 fs/read_write.c:735
- do_iter_write+0x186/0x710 fs/read_write.c:861
- vfs_iter_write+0x70/0xa0 fs/read_write.c:902
- iter_file_splice_write+0x73b/0xc90 fs/splice.c:685
- do_splice_from fs/splice.c:763 [inline]
- direct_splice_actor+0x10f/0x170 fs/splice.c:950
- splice_direct_to_actor+0x33a/0xa10 fs/splice.c:896
- do_splice_direct+0x1a9/0x280 fs/splice.c:1002
- do_sendfile+0xb13/0x12c0 fs/read_write.c:1255
- __do_sys_sendfile64 fs/read_write.c:1323 [inline]
- __se_sys_sendfile64 fs/read_write.c:1309 [inline]
- __x64_sys_sendfile64+0x1cf/0x210 fs/read_write.c:1309
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x35/0x80 arch/x86/entry/common.c:81
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+Fix this by recalculating i_inline_size via ext4_find_inline_data_nolock()
+immediately after acquiring xattr_sem. This ensures ext4_update_inline_data()
+and ext4_create_inline_data() work with current values that are protected
+from concurrent modifications.
 
-Fixes: c755e251357a ("ext4: fix deadlock between inline_data and ext4_expand_extra_isize_ea()")
-Cc: stable@vger.kernel.org # v4.11+
-Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
-Message-ID: <20251104093326.697381-1-sdl@nppct.ru>
+This is similar to commit a54c4613dac1 ("ext4: fix race writing to an
+inline_data file while its xattrs are changing") which fixed i_inline_off
+staleness. This patch addresses the related i_inline_size staleness issue.
+
+Reported-by: syzbot+f3185be57d7e8dda32b8@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=f3185be57d7e8dda32b8
+Cc: stable@kernel.org
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Message-ID: <20251020060936.474314-1-kartikey406@gmail.com>
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
@@ -123,29 +113,20 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/fs/ext4/inline.c
 +++ b/fs/ext4/inline.c
-@@ -451,9 +451,13 @@ static int ext4_destroy_inline_data_nolo
- 	if (!ei->i_inline_off)
- 		return 0;
+@@ -413,7 +413,12 @@ static int ext4_prepare_inline_data(hand
+ 		return -ENOSPC;
  
-+	down_write(&ei->i_data_sem);
-+
- 	error = ext4_get_inode_loc(inode, &is.iloc);
--	if (error)
-+	if (error) {
-+		up_write(&ei->i_data_sem);
- 		return error;
-+	}
- 
- 	error = ext4_xattr_ibody_find(inode, &i, &is);
- 	if (error)
-@@ -492,6 +496,7 @@ out:
- 	brelse(is.iloc.bh);
- 	if (error == -ENODATA)
- 		error = 0;
-+	up_write(&ei->i_data_sem);
- 	return error;
- }
- 
+ 	ext4_write_lock_xattr(inode, &no_expand);
+-
++	/*
++	 * ei->i_inline_size may have changed since the initial check
++	 * if other xattrs were added. Recalculate to ensure
++	 * ext4_update_inline_data() validates against current capacity.
++	 */
++	(void) ext4_find_inline_data_nolock(inode);
+ 	if (ei->i_inline_off)
+ 		ret = ext4_update_inline_data(handle, inode, len);
+ 	else
 
 
 
