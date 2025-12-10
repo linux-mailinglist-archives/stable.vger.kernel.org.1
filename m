@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-200567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71ED6CB233A
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:32:00 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88591CB24CF
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:42:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 893203008D66
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:31:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5366C300E44C
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:41:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A5141DD0EF;
-	Wed, 10 Dec 2025 07:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96A1230214F;
+	Wed, 10 Dec 2025 07:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yf9c0xtg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zHQYyS/Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0725921578D;
-	Wed, 10 Dec 2025 07:31:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53018302171;
+	Wed, 10 Dec 2025 07:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765351914; cv=none; b=NKs3iMAp/qSgZVIObU01JG25EEYdHYRh6iJNjRrFB56KKWWtYHDxL3DrLgHxPuOq4XmCigY/nbCCZJUHtczk3J3LNFhhKPom+tx2GStdZmncjIwVrKyMZru0xTNQ8Etzz3P6X+UW/gQZeeXXCjK/z/9yAvMXGOzo61esE8jXyQA=
+	t=1765352046; cv=none; b=ZNANBWOzqpOXNu3SPDrkil6/jophY7oqaJ2wwH03ifqb7UjYqi6PkZaTR8RBZt1Vw+I958qOjGYMjS90wVKQJ1iRZjlR6RtB8thuC41LmIFMxmNU6WeHuk1vO7q9J+7xameInZM3WLs9NIMOeuL2HHUegLlwXKIPQdnqZJSbF0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765351914; c=relaxed/simple;
-	bh=yR8anhAKa3WNu3yp4tLkr0iY0LWHUTefHnMEj7qGerU=;
+	s=arc-20240116; t=1765352046; c=relaxed/simple;
+	bh=+yiC4N0u49wqunlHm/890LGi8nhJgGYiq0xbSrlI3uQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WWC4e3YLBp6nkH+W5aH5oGOvZ/u0pPR7xdsZW8PFUMOHqA0joND40TCHb7alXIupjiM+bgnnKQtKmcs6q8uZmE8gutjn0NDjeAJOlDTs4SxjT9LKCRq/cwoyJRGizh2k/CwPXvvu9OlGMYLhrK/xi5OGaR5LCHThF80jh7M1nNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yf9c0xtg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57B21C4CEF1;
-	Wed, 10 Dec 2025 07:31:53 +0000 (UTC)
+	 MIME-Version; b=KmIDEzxQx27cb9debpnW/WTghFedWH9ZBhhcmbRcM0rbjp0irDZU14NuCuagYhHTZ55/q+GCOaKRxfBkJUlS5flUoXsWF8C9Pqa1sQEM+nI9QGsc5JZkx31+5JOB8OfZpQ/oL/gnhjEAk2B9+rxuqt5OKcwVl9Kfrn2GdHtz81k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zHQYyS/Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF2F3C4CEF1;
+	Wed, 10 Dec 2025 07:34:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765351913;
-	bh=yR8anhAKa3WNu3yp4tLkr0iY0LWHUTefHnMEj7qGerU=;
+	s=korg; t=1765352046;
+	bh=+yiC4N0u49wqunlHm/890LGi8nhJgGYiq0xbSrlI3uQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yf9c0xtgWMhyyDQbZDGuXy2dque2rG4uobWJVeG35Fe4m6G04dUqzEIbdJSmeUg9A
-	 5CZuzgPvsMBO4oCGZ8kQFMiYfHULUq4N003EjW55L8/0GFLCKXYVfw07qt0CYmTXoQ
-	 gGkjw1wCNTLKhfJqhYnjI+qFFuGzS9JXk9TU9j8U=
+	b=zHQYyS/ZWDxd6gHVsL+pBm1k0IJ+otno4Wyk61nn0D4pfc00Q9xTq9aBHsY3GW+Ds
+	 cczwkv5ksOTJGVUP7a1bl2OFIXmujuYurTyU009/qmiycCqfgTCTDKUj1QFuCtENso
+	 KZ2bnx/oBeQqY/6y9IFN/w/5bKV3Wb8ysCW5+was=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hansg@kernel.org>,
-	=?UTF-8?q?Andr=C3=A9=20Barata?= <andretiagob@protonmail.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Jiri Kosina <jkosina@suse.com>,
+	Philip Yang <Philip.Yang@amd.com>,
+	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 29/49] HID: hid-input: Extend Elan ignore battery quirk to USB
+Subject: [PATCH 6.17 29/60] drm/amdkfd: Fix GPU mappings for APU after prefetch
 Date: Wed, 10 Dec 2025 16:29:59 +0900
-Message-ID: <20251210072948.886357598@linuxfoundation.org>
+Message-ID: <20251210072948.553012860@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
-References: <20251210072948.125620687@linuxfoundation.org>
+In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
+References: <20251210072947.850479903@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +60,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello (AMD) <superm1@kernel.org>
+From: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
 
-[ Upstream commit 534ca75e8e3b713514b3f2da85dab96831cf5b2a ]
+[ Upstream commit eac32ff42393efa6657efc821231b8d802c1d485 ]
 
-USB Elan devices have the same problem as the I2C ones with a fake
-battery device showing up.
+Fix the following corner case:-
+ Consider a 2M huge page SVM allocation, followed by prefetch call for
+the first 4K page. The whole range is initially mapped with single PTE.
+After the prefetch, this range gets split to first page + rest of the
+pages. Currently, the first page mapping is not updated on MI300A (APU)
+since page hasn't migrated. However, after range split PTE mapping it not
+valid.
 
-Reviewed-by: Hans de Goede <hansg@kernel.org>
-Reported-by: André Barata <andretiagob@protonmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220722
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fix this by forcing page table update for the whole range when prefetch
+is called.  Calling prefetch on APU doesn't improve performance. If all
+it deteriotes. However, functionality has to be supported.
+
+v2: Use apu_prefer_gtt as this issue doesn't apply to APUs with carveout
+VRAM
+
+v3: Simplify by setting the flag for all ASICs as it doesn't affect dGPU
+
+v4: Remove v2 and v3 changes. Force update_mapping when range is split
+at a size that is not aligned to prange granularity
+
+Suggested-by: Philip Yang <Philip.Yang@amd.com>
+Signed-off-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+Reviewed-by: Philip Yang<Philip.Yang@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 076470b9f6f8d9c7c8ca73a9f054942a686f9ba7)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-input.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_svm.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/hid/hid-input.c b/drivers/hid/hid-input.c
-index f073d5621050a..fa3efe9701c96 100644
---- a/drivers/hid/hid-input.c
-+++ b/drivers/hid/hid-input.c
-@@ -386,10 +386,11 @@ static const struct hid_device_id hid_battery_quirks[] = {
- 	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_CHROMEBOOK_TROGDOR_POMPOM),
- 	  HID_BATTERY_QUIRK_AVOID_QUERY },
- 	/*
--	 * Elan I2C-HID touchscreens seem to all report a non present battery,
--	 * set HID_BATTERY_QUIRK_IGNORE for all Elan I2C-HID devices.
-+	 * Elan HID touchscreens seem to all report a non present battery,
-+	 * set HID_BATTERY_QUIRK_IGNORE for all Elan I2C and USB HID devices.
- 	 */
- 	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, HID_ANY_ID), HID_BATTERY_QUIRK_IGNORE },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_ELAN, HID_ANY_ID), HID_BATTERY_QUIRK_IGNORE },
- 	{}
- };
- 
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+index 827507cfed7aa..fab6e7721c803 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+@@ -3688,6 +3688,8 @@ svm_range_set_attr(struct kfd_process *p, struct mm_struct *mm,
+ 		svm_range_apply_attrs(p, prange, nattr, attrs, &update_mapping);
+ 		/* TODO: unmap ranges from GPU that lost access */
+ 	}
++	update_mapping |= !p->xnack_enabled && !list_empty(&remap_list);
++
+ 	list_for_each_entry_safe(prange, next, &remove_list, update_list) {
+ 		pr_debug("unlink old 0x%p prange 0x%p [0x%lx 0x%lx]\n",
+ 			 prange->svms, prange, prange->start,
 -- 
 2.51.0
 
