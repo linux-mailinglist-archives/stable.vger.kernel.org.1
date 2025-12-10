@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-200624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9DCCCB2406
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:36:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16280CB235E
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:32:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 26A2E3027FDE
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:34:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F04F4300CA27
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:32:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B52BE303C81;
-	Wed, 10 Dec 2025 07:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47261274B5F;
+	Wed, 10 Dec 2025 07:32:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CrjVLtgG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bkNLlind"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 713E727FB2E;
-	Wed, 10 Dec 2025 07:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E3D2264DC;
+	Wed, 10 Dec 2025 07:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765352063; cv=none; b=MqcSQtNv8DzbxbQizSFNojz76ZEEOiN+e1lGOCLZyREpoZymbsS/qmZylD+k3+omC2OfztFTWm3nO8aVQwpTwwbxve0ki+j/5cQsKor50zbGw//kZZQ5FXG5C0OdnXXD5M9HzF9ia+lMTE905z4k0TLINqR26gMb9/w+xLEkR0Q=
+	t=1765351937; cv=none; b=FUMd+KbQVwk7XxvYhVp7Bf6GsQo9JGUOMGm7QvEa6IvSeFgh9IZ5yVp+ZKDtWE8zp8c/55Ka+f0frX+a5/GJyXlS1MulEyXc8wD6hnX9qoyubDUslK/sqx09kFM9fSxpHRmQvMe740sZlBynG0gydaXLqTcbmJqH/Cgo1vfZ+ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765352063; c=relaxed/simple;
-	bh=H4JkXgK5DNhb84wfkk4yq8WwJfgvCsOQX+avdPa6HdE=;
+	s=arc-20240116; t=1765351937; c=relaxed/simple;
+	bh=iovQSvgZCmw3a3IM8vn4Mm45h0k0vnrpHMOwi0sJdeE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ukvfqCxQu4kTDYeUtcAkeg9wJV6vtY8vvnTWy1piYGQCkoIeoa+iVLu1fnPThNb7uwZkxPsm/e6oe1vUSP2KdWuzZe8f9H5LYGrjW+VBWHWakZTNgDcK8ROB51MCYON7ntgvjK6pzAWA2GzxwwgEVKTICH/hUUpJPLh/3WWtd18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CrjVLtgG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C571CC4CEF1;
-	Wed, 10 Dec 2025 07:34:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tXyjaqDEHslcjJZfyBTQSwyODAL1J9vnMgTDgUa67qt0JOgL9jZkyHNCDoPCEd7OiC68YlXxZPD18nr/YUn7IeiJ0P1PUlfQzPnrHymkUbYf/fcgYDVmAdqiJVH5G2xlWcT8T1IMOLSHPp37VoMa9QSK8mQ1ftLQBYQFq8bCPCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bkNLlind; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35290C4CEF1;
+	Wed, 10 Dec 2025 07:32:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765352063;
-	bh=H4JkXgK5DNhb84wfkk4yq8WwJfgvCsOQX+avdPa6HdE=;
+	s=korg; t=1765351936;
+	bh=iovQSvgZCmw3a3IM8vn4Mm45h0k0vnrpHMOwi0sJdeE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CrjVLtgGcOzFiFCg80nl75TlGp6nkYwv+aSysn4bjmdLIWEo8AgAGKKaQaxCayEk1
-	 lIKhjPmP9eVeBmDHx8AXwSMJglom2qz9pbS+YtfMKrHmVea2J9y0B6L1zI0qR2+LPJ
-	 m4MS6UcgqeWuoPsOqnPN+8IgNPOw4B63nSlbQu7s=
+	b=bkNLlindFdgx6xIYwWZl4iwH61d/af+eCCaYDLr4yuTpTKg0OhhenrHI9/jJWMKg8
+	 kv/WgnJNOP/+pfVPzWLkDb+/0A/8AflFM1bfLaDuX1/G52IkZUSFS/t+CtYQp31s/9
+	 UrLoX7xL9wDbYqnChioiQt7YkHQidLHyyVHmNnlg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edip Hazuri <edip@medip.dev>,
+	Antheas Kapenekakis <lkml@antheas.dev>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
 	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 35/60] platform/x86: hp-wmi: mark Victus 16-r0 and 16-s0 for victus_s fan and thermal profile support
-Date: Wed, 10 Dec 2025 16:30:05 +0900
-Message-ID: <20251210072948.725649051@linuxfoundation.org>
+Subject: [PATCH 6.12 36/49] platform/x86/amd/pmc: Add spurious_8042 to Xbox Ally
+Date: Wed, 10 Dec 2025 16:30:06 +0900
+Message-ID: <20251210072949.061864686@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
-References: <20251210072947.850479903@linuxfoundation.org>
+In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
+References: <20251210072948.125620687@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,53 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edip Hazuri <edip@medip.dev>
+From: Antheas Kapenekakis <lkml@antheas.dev>
 
-[ Upstream commit 54afb047cd7eb40149f3fc42d69fd4ddde2be9f0 ]
+[ Upstream commit c0ddc54016636dd8dedfaf1a3b482a95058e1db2 ]
 
-This patch adds Victus 16-r0 (8bbe) and Victus 16-s0(8bd4, 8bd5) laptop
-DMI board name into existing list
+The Xbox Ally features a Van Gogh SoC that has spurious interrupts
+during resume. We get the following logs:
 
-Signed-off-by: Edip Hazuri <edip@medip.dev>
-Link: https://patch.msgid.link/20251015181042.23961-3-edip@medip.dev
+atkbd_receive_byte: 20 callbacks suppressed
+atkbd serio0: Spurious ACK on isa0060/serio0. Some program might be trying to access hardware directly.
+
+So, add the spurious_8042 quirk for it. It does not have a keyboard, so
+this does not result in any functional loss.
+
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4659
+Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
+Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Link: https://patch.msgid.link/20251024152152.3981721-3-lkml@antheas.dev
 Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/hp/hp-wmi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/platform/x86/amd/pmc/pmc-quirks.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/platform/x86/hp/hp-wmi.c b/drivers/platform/x86/hp/hp-wmi.c
-index 8b3533d6ba091..9a668e2587952 100644
---- a/drivers/platform/x86/hp/hp-wmi.c
-+++ b/drivers/platform/x86/hp/hp-wmi.c
-@@ -92,8 +92,9 @@ static const char * const victus_thermal_profile_boards[] = {
- 	"8A25"
- };
- 
--/* DMI Board names of Victus 16-r1000 and Victus 16-s1000 laptops */
-+/* DMI Board names of Victus 16-r and Victus 16-s laptops */
- static const char * const victus_s_thermal_profile_boards[] = {
-+	"8BBE", "8BD4", "8BD5",
- 	"8C99", "8C9C"
- };
- 
+diff --git a/drivers/platform/x86/amd/pmc/pmc-quirks.c b/drivers/platform/x86/amd/pmc/pmc-quirks.c
+index 271cbeaa59af3..a5031339dac8c 100644
+--- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
++++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
+@@ -116,6 +116,14 @@ static const struct dmi_system_id fwbug_list[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "21A1"),
+ 		}
+ 	},
++	{
++		.ident = "ROG Xbox Ally RC73YA",
++		.driver_data = &quirk_spurious_8042,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "RC73YA"),
++		}
++	},
+ 	/* https://bugzilla.kernel.org/show_bug.cgi?id=218024 */
+ 	{
+ 		.ident = "V14 G4 AMN",
 -- 
 2.51.0
 
