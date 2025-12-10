@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-200653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B55DCB247B
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:39:19 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEFBCCB249F
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:40:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7907030946F4
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:35:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D2B6F30146EF
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:36:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3483A302CBA;
-	Wed, 10 Dec 2025 07:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E33F7302CBA;
+	Wed, 10 Dec 2025 07:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H70eO8gF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zjp0QkzQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD65D2FE04C;
-	Wed, 10 Dec 2025 07:35:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BEC62FF16C;
+	Wed, 10 Dec 2025 07:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765352138; cv=none; b=UBQM63GnDiZ5GwzQZVtEVCANKa97he0MIEm+aDIJ3gxz+ovjOu+KnLQqAuoFstFBAWN2W0Qdw7t4RTcE/fs9LKf/kHmqX2Rb612d/9nYLJzhDF80blcer5BqBfuCQyOHpLY+bMvAXgG3KhhR5ZKnMEt2otvSeHcb4qowdmTGj/s=
+	t=1765352163; cv=none; b=pycbLux4k7RAiOTaHG6FvyJHMIgJvNWTjCrbSy7WGhOuku1xJ7WG/uQhNyTo+H275/4ba6Q2R7adEeScdRrrKbLwiK0OSpiZXG1buaVN1TlpdLQOcwxzPHyAoWEmZdiyyu0vRNE81tf0IrrREGliBohrRSACunaTuc02u7dBJgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765352138; c=relaxed/simple;
-	bh=FvkiRIsKijbKgnHK5OF/bkbLEyOCLadm9njnMsVx9kY=;
+	s=arc-20240116; t=1765352163; c=relaxed/simple;
+	bh=ekPyhSUzDrvz4KRBkNTx+0j2+2Im1+eNtSKUM/CTiwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E9oIRIpbUaOorfdDgWjCojO8acPLZtiGt3YVKb0NigztI4VVVfWMcz5r1UOQJAKyd4OCCNk3NoXPIt9NJXCtg4NaojbTj/6cIF33FcvvVKX5CgSNPFJD5E+9ZPjLskSwCmhmg8GiQb3gaLlPMsfotQt2Mujjx2RdCx8oaE3VdV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H70eO8gF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D486C4CEF1;
-	Wed, 10 Dec 2025 07:35:37 +0000 (UTC)
+	 MIME-Version; b=RRMwq5RsxGTQ2Ay9caRzyoZn2+F+0W3Yg7WEnEL7C/fOBmmFEeMmHkHNq3O1zq2zOXcDIphhlIVEQcmre5WPOQhHSt8K1gYWwWLXH6DRGLGttx8bZWcIPA9FWpiGPHL0FjUvHtdPZV3pcNPGKwAy/dI7BULBAGIp9Rn8a9F5rxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zjp0QkzQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42294C4CEF1;
+	Wed, 10 Dec 2025 07:36:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765352137;
-	bh=FvkiRIsKijbKgnHK5OF/bkbLEyOCLadm9njnMsVx9kY=;
+	s=korg; t=1765352163;
+	bh=ekPyhSUzDrvz4KRBkNTx+0j2+2Im1+eNtSKUM/CTiwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H70eO8gFxsOrhT1vKGGcbByvlCQ1JAJGLahpIiL87h5d+ooO033LhS9hsYS2d3+7L
-	 oYHa+YEumoLbhKfDQt0309lIlhMvVWPmk97tnr5mNfN+dNAZAsZ1ow89iTJwzOrNTT
-	 Ci/Ln/jyytcZNdGiGeP81TsO4gVDHy3eMzPwQOe8=
+	b=zjp0QkzQssOveq89Qgayw8LlouZt/oVJQCIP7eLsgFi2g/NSv885gGQ2L/OmlB4T8
+	 dZ2H+W342vUby7aFSHlQOM35NbhhXfuvYLdGHlPFaPoVVwqIgCUZzdxi1cZETRHSC6
+	 QOjzvsCMAKFkfCctqJklfuJwDKKi0DZG0SRcf9Rs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naoki Ueki <naoki25519@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 46/60] HID: elecom: Add support for ELECOM M-XT3URBK (018F)
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.18 06/29] crypto: zstd - fix double-free in per-CPU stream cleanup
 Date: Wed, 10 Dec 2025 16:30:16 +0900
-Message-ID: <20251210072949.012094144@linuxfoundation.org>
+Message-ID: <20251210072944.542909790@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
-References: <20251210072947.850479903@linuxfoundation.org>
+In-Reply-To: <20251210072944.363788552@linuxfoundation.org>
+References: <20251210072944.363788552@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,85 +60,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naoki Ueki <naoki25519@gmail.com>
+From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
 
-[ Upstream commit cdcbb8e8d10f656642380ee13516290437b52b36 ]
+commit 48bc9da3c97c15f1ea24934bcb3b736acd30163d upstream.
 
-The ELECOM M-XT3URBK trackball has an additional device ID (0x018F), which
-shares the same report descriptor as the existing device (0x00FB). However,
-the driver does not currently recognize this new ID, resulting in only five
-buttons being functional.
+The crypto/zstd module has a double-free bug that occurs when multiple
+tfms are allocated and freed.
 
-This patch adds the new device ID so that all six buttons work properly.
+The issue happens because zstd_streams (per-CPU contexts) are freed in
+zstd_exit() during every tfm destruction, rather than being managed at
+the module level.  When multiple tfms exist, each tfm exit attempts to
+free the same shared per-CPU streams, resulting in a double-free.
 
-Signed-off-by: Naoki Ueki <naoki25519@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This leads to a stack trace similar to:
+
+  BUG: Bad page state in process kworker/u16:1  pfn:106fd93
+  page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x106fd93
+  flags: 0x17ffffc0000000(node=0|zone=2|lastcpupid=0x1fffff)
+  page_type: 0xffffffff()
+  raw: 0017ffffc0000000 dead000000000100 dead000000000122 0000000000000000
+  raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
+  page dumped because: nonzero entire_mapcount
+  Modules linked in: ...
+  CPU: 3 UID: 0 PID: 2506 Comm: kworker/u16:1 Kdump: loaded Tainted: G    B
+  Hardware name: ...
+  Workqueue: btrfs-delalloc btrfs_work_helper
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x5d/0x80
+   bad_page+0x71/0xd0
+   free_unref_page_prepare+0x24e/0x490
+   free_unref_page+0x60/0x170
+   crypto_acomp_free_streams+0x5d/0xc0
+   crypto_acomp_exit_tfm+0x23/0x50
+   crypto_destroy_tfm+0x60/0xc0
+   ...
+
+Change the lifecycle management of zstd_streams to free the streams only
+once during module cleanup.
+
+Fixes: f5ad93ffb541 ("crypto: zstd - convert to acomp")
+Cc: stable@vger.kernel.org
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Reviewed-by: Suman Kumar Chakraborty <suman.kumar.chakraborty@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-elecom.c | 6 ++++--
- drivers/hid/hid-ids.h    | 3 ++-
- drivers/hid/hid-quirks.c | 3 ++-
- 3 files changed, 8 insertions(+), 4 deletions(-)
+ crypto/zstd.c |    7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/drivers/hid/hid-elecom.c b/drivers/hid/hid-elecom.c
-index 69771fd350060..981d1b6e96589 100644
---- a/drivers/hid/hid-elecom.c
-+++ b/drivers/hid/hid-elecom.c
-@@ -75,7 +75,8 @@ static const __u8 *elecom_report_fixup(struct hid_device *hdev, __u8 *rdesc,
- 		 */
- 		mouse_button_fixup(hdev, rdesc, *rsize, 20, 28, 22, 14, 8);
- 		break;
--	case USB_DEVICE_ID_ELECOM_M_XT3URBK:
-+	case USB_DEVICE_ID_ELECOM_M_XT3URBK_00FB:
-+	case USB_DEVICE_ID_ELECOM_M_XT3URBK_018F:
- 	case USB_DEVICE_ID_ELECOM_M_XT3DRBK:
- 	case USB_DEVICE_ID_ELECOM_M_XT4DRBK:
- 		/*
-@@ -119,7 +120,8 @@ static const __u8 *elecom_report_fixup(struct hid_device *hdev, __u8 *rdesc,
- static const struct hid_device_id elecom_devices[] = {
- 	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_BM084) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XGL20DLBK) },
--	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3URBK) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3URBK_00FB) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3URBK_018F) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3DRBK) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT4DRBK) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_DT1URBK) },
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 85db279baa72e..c4589075a5ed6 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -449,7 +449,8 @@
- #define USB_VENDOR_ID_ELECOM		0x056e
- #define USB_DEVICE_ID_ELECOM_BM084	0x0061
- #define USB_DEVICE_ID_ELECOM_M_XGL20DLBK	0x00e6
--#define USB_DEVICE_ID_ELECOM_M_XT3URBK	0x00fb
-+#define USB_DEVICE_ID_ELECOM_M_XT3URBK_00FB	0x00fb
-+#define USB_DEVICE_ID_ELECOM_M_XT3URBK_018F	0x018f
- #define USB_DEVICE_ID_ELECOM_M_XT3DRBK	0x00fc
- #define USB_DEVICE_ID_ELECOM_M_XT4DRBK	0x00fd
- #define USB_DEVICE_ID_ELECOM_M_DT1URBK	0x00fe
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index 22760ac50f2d9..c89a015686c07 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -410,7 +410,8 @@ static const struct hid_device_id hid_have_special_driver[] = {
- #if IS_ENABLED(CONFIG_HID_ELECOM)
- 	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_BM084) },
- 	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XGL20DLBK) },
--	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3URBK) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3URBK_00FB) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3URBK_018F) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3DRBK) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT4DRBK) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_DT1URBK) },
--- 
-2.51.0
-
+--- a/crypto/zstd.c
++++ b/crypto/zstd.c
+@@ -75,11 +75,6 @@ static int zstd_init(struct crypto_acomp
+ 	return ret;
+ }
+ 
+-static void zstd_exit(struct crypto_acomp *acomp_tfm)
+-{
+-	crypto_acomp_free_streams(&zstd_streams);
+-}
+-
+ static int zstd_compress_one(struct acomp_req *req, struct zstd_ctx *ctx,
+ 			     const void *src, void *dst, unsigned int *dlen)
+ {
+@@ -297,7 +292,6 @@ static struct acomp_alg zstd_acomp = {
+ 		.cra_module = THIS_MODULE,
+ 	},
+ 	.init = zstd_init,
+-	.exit = zstd_exit,
+ 	.compress = zstd_compress,
+ 	.decompress = zstd_decompress,
+ };
+@@ -310,6 +304,7 @@ static int __init zstd_mod_init(void)
+ static void __exit zstd_mod_fini(void)
+ {
+ 	crypto_unregister_acomp(&zstd_acomp);
++	crypto_acomp_free_streams(&zstd_streams);
+ }
+ 
+ module_init(zstd_mod_init);
 
 
 
