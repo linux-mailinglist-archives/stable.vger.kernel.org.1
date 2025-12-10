@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-200621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7258CB23C4
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:34:28 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 613E7CB2346
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:32:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C54253065782
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:34:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 936A4300A376
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:32:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0E7F303CAF;
-	Wed, 10 Dec 2025 07:34:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E3B26F443;
+	Wed, 10 Dec 2025 07:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r2wWij8v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kmrwVQz2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521B8302CC0;
-	Wed, 10 Dec 2025 07:34:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C1AB2741BC;
+	Wed, 10 Dec 2025 07:32:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765352055; cv=none; b=HpkKwzJm6WaC+hGiaPLOFtTq/KQffkCdBs8gXQq/8MnnmedtMXCeET4tTbAN+kZ7d87Wp65egSA/UKuTaVTjN1ohfxYUXrKV13r0O7S4618uQUsMQ5dsGHmvS95JbqgmuAKpGzTTzmDpH5GX3RNlGmvYRPxWSh1WZvIF/DGKfvE=
+	t=1765351923; cv=none; b=YiFchPg7pOEJi9DS9Ig4wRLwZlw7kgNjZuWN00Ho3Ep2UEVU0qvwqO14Mk1u/VXjkwfR4frrfd0ezQev4TB2h1rFQarXTX/QcJuoqNeRThxq28Hz7iszjCFAGg+GfkujYg+p5Xd2KYp5iEcNMpcfEO0u7g04/OUtoUemLuI8yFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765352055; c=relaxed/simple;
-	bh=xqADyT7muJh2QoNey8DBi9r8mjm4jtYAH48lj8zV7F0=;
+	s=arc-20240116; t=1765351923; c=relaxed/simple;
+	bh=zahdaIMMkrMYTIfFTkFMk0LfHBOap0IscxYQhzEmreE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i92I9ZQQwAgJJCM9GGVBiiUTribpLIwDlMiGCwm0Yu+n3jRjjXc2s0kLFWOEK0d0qU+EuO4xgyIhIYsb1/hskwXwKr+li6wx1o+OP5iK9Yr5tS4WzGT5fO0UQ2q4U+6dwhl6szVcobtU4stADh9lde37w+vsOv2VQX0Y3g2M3fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r2wWij8v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8D65C4CEF1;
-	Wed, 10 Dec 2025 07:34:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=g6z+pyKOmZBsH7Cp73RvH0Dx8Inasyl9nlLXjC4GL4xlL5xZnZR09F+0X65/oczzBpuCpBBaXyiNJT6vmm7pEtw8I2NduANxi4Ooh79GKlsR9P81ntBBhAEjvmOVhvGj9zEbXTm7DBZv7IE+eiLaShx5MnjiU3YdicAGtk/AdBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kmrwVQz2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75CDAC4CEF1;
+	Wed, 10 Dec 2025 07:32:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765352055;
-	bh=xqADyT7muJh2QoNey8DBi9r8mjm4jtYAH48lj8zV7F0=;
+	s=korg; t=1765351922;
+	bh=zahdaIMMkrMYTIfFTkFMk0LfHBOap0IscxYQhzEmreE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r2wWij8vwTr0C8UN+v/wXNNpeGpXquQxrQoQEPC2KWJMp8uZCWdmc4YSKg/1KzMmD
-	 fPitPmit+yrhNoi/2eVcOZXx41AhaJu8iK4k/x2CG58UdnmdykOVPKCtxmpi5Pmd1/
-	 RlWzXuwc0fzVySWFIIA1vo8I66JSrvycFrx7BkJk=
+	b=kmrwVQz2uk5HojsUqdDgM0+DdR8xltUR5qjTLHLZ9aUI7euyeht8x0tzT/1j95W0s
+	 pyK2eKkK7fz68P9TFgJmMuoopIheAFTIebnmQ8l7eD8K4MkItoCd+HM9MGZ81bfeEM
+	 wEPCEgwcW+XT3ykmhqmaM57tcHP4eHUyNv5PR3m4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Tigran Aivazian <aivazian.tigran@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Bugaddr <Bugaddr@protonmail.com>,
+	Armin Wolf <W_Armin@gmx.de>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 32/60] bfs: Reconstruct file type when loading from disk
+Subject: [PATCH 6.12 32/49] platform/x86: acer-wmi: Ignore backlight event
 Date: Wed, 10 Dec 2025 16:30:02 +0900
-Message-ID: <20251210072948.625297037@linuxfoundation.org>
+Message-ID: <20251210072948.959326849@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
-References: <20251210072947.850479903@linuxfoundation.org>
+In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
+References: <20251210072948.125620687@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,77 +59,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 34ab4c75588c07cca12884f2bf6b0347c7a13872 ]
+[ Upstream commit 444a9256f8d106e08a6bc2dc8ef28a8699e4b3ba ]
 
-syzbot is reporting that S_IFMT bits of inode->i_mode can become bogus when
-the S_IFMT bits of the 32bits "mode" field loaded from disk are corrupted
-or when the 32bits "attributes" field loaded from disk are corrupted.
+On the Acer Nitro AN515-58, the event 4 - 0 is send by the ACPI
+firmware when the backlight up/down keys are pressed. Ignore this
+event to avoid spamming the kernel log with error messages, as the
+acpi-video driver already handles brightness up/down events.
 
-A documentation says that BFS uses only lower 9 bits of the "mode" field.
-But I can't find an explicit explanation that the unused upper 23 bits
-(especially, the S_IFMT bits) are initialized with 0.
-
-Therefore, ignore the S_IFMT bits of the "mode" field loaded from disk.
-Also, verify that the value of the "attributes" field loaded from disk is
-either BFS_VREG or BFS_VDIR (because BFS supports only regular files and
-the root directory).
-
-Reported-by: syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Link: https://patch.msgid.link/fabce673-d5b9-4038-8287-0fd65d80203b@I-love.SAKURA.ne.jp
-Reviewed-by: Tigran Aivazian <aivazian.tigran@gmail.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Reported-by: Bugaddr <Bugaddr@protonmail.com>
+Closes: https://bugaddr.tech/posts/2025-11-16-debugging-the-acer-nitro-5-an515-58-fn-f10-keyboard-backlight-bug-on-linux/#wmi-interface-issues
+Tested-by: Bugaddr <Bugaddr@protonmail.com>
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://patch.msgid.link/20251117155938.3030-1-W_Armin@gmx.de
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/bfs/inode.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+ drivers/platform/x86/acer-wmi.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/bfs/inode.c b/fs/bfs/inode.c
-index 1d41ce477df58..984b365df0460 100644
---- a/fs/bfs/inode.c
-+++ b/fs/bfs/inode.c
-@@ -61,7 +61,19 @@ struct inode *bfs_iget(struct super_block *sb, unsigned long ino)
- 	off = (ino - BFS_ROOT_INO) % BFS_INODES_PER_BLOCK;
- 	di = (struct bfs_inode *)bh->b_data + off;
+diff --git a/drivers/platform/x86/acer-wmi.c b/drivers/platform/x86/acer-wmi.c
+index c5679e4a58a76..d7602962b3cad 100644
+--- a/drivers/platform/x86/acer-wmi.c
++++ b/drivers/platform/x86/acer-wmi.c
+@@ -93,6 +93,7 @@ MODULE_ALIAS("wmi:676AA15E-6A47-4D9F-A2CC-1E6D18D14026");
  
--	inode->i_mode = 0x0000FFFF & le32_to_cpu(di->i_mode);
-+	/*
-+	 * https://martin.hinner.info/fs/bfs/bfs-structure.html explains that
-+	 * BFS in SCO UnixWare environment used only lower 9 bits of di->i_mode
-+	 * value. This means that, although bfs_write_inode() saves whole
-+	 * inode->i_mode bits (which include S_IFMT bits and S_IS{UID,GID,VTX}
-+	 * bits), middle 7 bits of di->i_mode value can be garbage when these
-+	 * bits were not saved by bfs_write_inode().
-+	 * Since we can't tell whether middle 7 bits are garbage, use only
-+	 * lower 12 bits (i.e. tolerate S_IS{UID,GID,VTX} bits possibly being
-+	 * garbage) and reconstruct S_IFMT bits for Linux environment from
-+	 * di->i_vtype value.
-+	 */
-+	inode->i_mode = 0x00000FFF & le32_to_cpu(di->i_mode);
- 	if (le32_to_cpu(di->i_vtype) == BFS_VDIR) {
- 		inode->i_mode |= S_IFDIR;
- 		inode->i_op = &bfs_dir_inops;
-@@ -71,6 +83,11 @@ struct inode *bfs_iget(struct super_block *sb, unsigned long ino)
- 		inode->i_op = &bfs_file_inops;
- 		inode->i_fop = &bfs_file_operations;
- 		inode->i_mapping->a_ops = &bfs_aops;
-+	} else {
-+		brelse(bh);
-+		printf("Unknown vtype=%u %s:%08lx\n",
-+		       le32_to_cpu(di->i_vtype), inode->i_sb->s_id, ino);
-+		goto error;
- 	}
- 
- 	BFS_I(inode)->i_sblock =  le32_to_cpu(di->i_sblock);
+ enum acer_wmi_event_ids {
+ 	WMID_HOTKEY_EVENT = 0x1,
++	WMID_BACKLIGHT_EVENT = 0x4,
+ 	WMID_ACCEL_OR_KBD_DOCK_EVENT = 0x5,
+ 	WMID_GAMING_TURBO_KEY_EVENT = 0x7,
+ 	WMID_AC_EVENT = 0x8,
+@@ -2317,6 +2318,9 @@ static void acer_wmi_notify(union acpi_object *obj, void *context)
+ 			sparse_keymap_report_event(acer_wmi_input_dev, scancode, 1, true);
+ 		}
+ 		break;
++	case WMID_BACKLIGHT_EVENT:
++		/* Already handled by acpi-video */
++		break;
+ 	case WMID_ACCEL_OR_KBD_DOCK_EVENT:
+ 		acer_gsensor_event();
+ 		acer_kbd_dock_event(&return_value);
 -- 
 2.51.0
 
