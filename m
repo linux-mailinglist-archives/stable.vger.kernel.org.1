@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-200610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8295DCB24F9
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:43:23 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E659CB2376
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:32:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 905C8312407F
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:41:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 25F4E302265B
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:32:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FD573019D1;
-	Wed, 10 Dec 2025 07:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 638B2283FD6;
+	Wed, 10 Dec 2025 07:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rrpv7P/+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wLCrnTiL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BFEC1DD0EF;
-	Wed, 10 Dec 2025 07:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2034E27A47F;
+	Wed, 10 Dec 2025 07:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765352026; cv=none; b=LIR5D/QAzDIm6Tm5XOC9EvOJND9JUTqstxhySrXkWHH+aN5IJxlF+D+ZIiyBKpL8Pv30DBR/DY4www09IFbjf565Aj7ge8OkANcTSFLIh08bryXlkb3yaKApPivdwMRtL71xJvilt876a+eCGiMLMx+5wnrXFEPoq0Ku09M6/nw=
+	t=1765351975; cv=none; b=fVwxThx9P2Q/hetiAFsp9NFhCe9Mr/xBJPW6L0usf3wImfmYejuvpuxMC6oWMCms2DaOr6CCiUjZ/1zrLgz/fYhMNun47Cy4vZgXZv9te5jTgdxbcc7/PVcRcAbx88unM9jloGC7s/GgCa1U314hHALUTw35FQeSzxowbwBACdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765352026; c=relaxed/simple;
-	bh=Fezubit/8lfRERW07QmQVQrahmdEEeXolXmLq0VlrKU=;
+	s=arc-20240116; t=1765351975; c=relaxed/simple;
+	bh=wvbAgglQP9mHqmmNIY4tdsko6UzQjHeczrga5OOcTZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CRqco81cUX5iT6x/lPgBrYyZhCalY93FeDFFj+Qq2bq3yZAtxx8Le4mR4HIrn4F7lxLoaXwVNGSGP8pd1dSYSyGUiSszjEE3MZMdkeuTmcsphUafJhOyYTtaDe01nn+RO12tO99/Xq3mY9hwqtYR6xq9Dkut8LnvNjW5EPLp7oQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rrpv7P/+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F610C4CEF1;
-	Wed, 10 Dec 2025 07:33:45 +0000 (UTC)
+	 MIME-Version; b=bhT1oE40gdcf1GGne36Sih5tZUWYiQOwuVCdAGja88nL1sTXfkM7ywO30jKUz3ZitU++2upPfYK2siNa3/bcpSBzyOnfQmAJ/p7cZB4HlTveJF0rrfUQ+XiJ9IxaXc5FPVJ9icPSUySvNHxowcw6aIH92KF7ZtMMLDrkgvWiD8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wLCrnTiL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 813DCC4CEF1;
+	Wed, 10 Dec 2025 07:32:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765352025;
-	bh=Fezubit/8lfRERW07QmQVQrahmdEEeXolXmLq0VlrKU=;
+	s=korg; t=1765351975;
+	bh=wvbAgglQP9mHqmmNIY4tdsko6UzQjHeczrga5OOcTZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rrpv7P/+jF1pDeU8V1LftyxrbjurYrne64CCBjZtNo63sGaIqA5VeUS4/LYMQGXmh
-	 PWUsMyymGiFJlKLzBIW0tU67EcszRGn7ApU7jrs07WkyJlVkU+y9POYJ9wkT+3FzQN
-	 1t3d2G91cTj5Kw6oXkfSFP7frtiJsAsni3GOxAhU=
+	b=wLCrnTiLPSpxXi7xA+hyS5bThAza5C+X/VJmhx7/CxeneSx3uGsqCdIPflzs3MqR8
+	 GfdS8LPVk7kBD3iWU6vUwp0Z9CprjyJeLb/57V3AJO2ig1f4x7T7FAlftEiQ+3o/pn
+	 cb6Ao6WO8OnW4/STAiaEK6VozTXOgHHHoVz3f0rM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
-	Tony Luck <tony.luck@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Carlos Song <carlos.song@nxp.com>,
+	Robin Gong <yibin.gong@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 22/60] ACPI: MRRM: Fix memory leaks and improve error handling
+Subject: [PATCH 6.12 22/49] spi: imx: keep dma request disabled before dma transfer setup
 Date: Wed, 10 Dec 2025 16:29:52 +0900
-Message-ID: <20251210072948.381340760@linuxfoundation.org>
+Message-ID: <20251210072948.675275358@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
-References: <20251210072947.850479903@linuxfoundation.org>
+In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
+References: <20251210072948.125620687@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,96 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+From: Robin Gong <yibin.gong@nxp.com>
 
-[ Upstream commit 4b93d211bbffd3dce76664d95f2306d23e7215ce ]
+[ Upstream commit 86d57d9c07d54e8cb385ffe800930816ccdba0c1 ]
 
-Add proper error handling and resource cleanup to prevent memory leaks
-in add_boot_memory_ranges(). The function now checks for NULL return
-from kobject_create_and_add(), uses local buffer for range names to
-avoid dynamic allocation, and implements a cleanup path that removes
-previously created sysfs groups and kobjects on failure.
+Since sdma hardware configure postpone to transfer phase, have to disable
+dma request before dma transfer setup because there is a hardware
+limitation on sdma event enable(ENBLn) as below:
 
-This prevents resource leaks when kobject creation or sysfs group
-creation fails during boot memory range initialization.
+"It is thus essential for the Arm platform to program them before any DMA
+ request is triggered to the SDMA, otherwise an unpredictable combination
+ of channels may be started."
 
-Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Link: https://patch.msgid.link/20251030023228.3956296-1-kaushlendra.kumar@intel.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Carlos Song <carlos.song@nxp.com>
+Signed-off-by: Robin Gong <yibin.gong@nxp.com>
+Link: https://patch.msgid.link/20251024055320.408482-1-carlos.song@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpi_mrrm.c | 43 ++++++++++++++++++++++++++++++----------
- 1 file changed, 33 insertions(+), 10 deletions(-)
+ drivers/spi/spi-imx.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/acpi/acpi_mrrm.c b/drivers/acpi/acpi_mrrm.c
-index a6dbf623e5571..6d69554c940ed 100644
---- a/drivers/acpi/acpi_mrrm.c
-+++ b/drivers/acpi/acpi_mrrm.c
-@@ -152,26 +152,49 @@ ATTRIBUTE_GROUPS(memory_range);
- 
- static __init int add_boot_memory_ranges(void)
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 810541eed213e..94d0f7695d07a 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -503,9 +503,15 @@ static void mx51_ecspi_trigger(struct spi_imx_data *spi_imx)
  {
--	struct kobject *pkobj, *kobj;
-+	struct kobject *pkobj, *kobj, **kobjs;
- 	int ret = -EINVAL;
--	char *name;
-+	char name[16];
-+	int i;
+ 	u32 reg;
  
- 	pkobj = kobject_create_and_add("memory_ranges", acpi_kobj);
-+	if (!pkobj)
-+		return -ENOMEM;
- 
--	for (int i = 0; i < mrrm_mem_entry_num; i++) {
--		name = kasprintf(GFP_KERNEL, "range%d", i);
--		if (!name) {
--			ret = -ENOMEM;
--			break;
--		}
-+	kobjs = kcalloc(mrrm_mem_entry_num, sizeof(*kobjs), GFP_KERNEL);
-+	if (!kobjs) {
-+		kobject_put(pkobj);
-+		return -ENOMEM;
+-	reg = readl(spi_imx->base + MX51_ECSPI_CTRL);
+-	reg |= MX51_ECSPI_CTRL_XCH;
+-	writel(reg, spi_imx->base + MX51_ECSPI_CTRL);
++	if (spi_imx->usedma) {
++		reg = readl(spi_imx->base + MX51_ECSPI_DMA);
++		reg |= MX51_ECSPI_DMA_TEDEN | MX51_ECSPI_DMA_RXDEN;
++		writel(reg, spi_imx->base + MX51_ECSPI_DMA);
++	} else {
++		reg = readl(spi_imx->base + MX51_ECSPI_CTRL);
++		reg |= MX51_ECSPI_CTRL_XCH;
++		writel(reg, spi_imx->base + MX51_ECSPI_CTRL);
 +	}
- 
-+	for (i = 0; i < mrrm_mem_entry_num; i++) {
-+		scnprintf(name, sizeof(name), "range%d", i);
- 		kobj = kobject_create_and_add(name, pkobj);
-+		if (!kobj) {
-+			ret = -ENOMEM;
-+			goto cleanup;
-+		}
- 
- 		ret = sysfs_create_groups(kobj, memory_range_groups);
--		if (ret)
--			return ret;
-+		if (ret) {
-+			kobject_put(kobj);
-+			goto cleanup;
-+		}
-+		kobjs[i] = kobj;
- 	}
- 
-+	kfree(kobjs);
-+	return 0;
-+
-+cleanup:
-+	for (int j = 0; j < i; j++) {
-+		if (kobjs[j]) {
-+			sysfs_remove_groups(kobjs[j], memory_range_groups);
-+			kobject_put(kobjs[j]);
-+		}
-+	}
-+	kfree(kobjs);
-+	kobject_put(pkobj);
- 	return ret;
  }
  
+ static void mx51_ecspi_disable(struct spi_imx_data *spi_imx)
+@@ -699,7 +705,6 @@ static void mx51_setup_wml(struct spi_imx_data *spi_imx)
+ 	writel(MX51_ECSPI_DMA_RX_WML(spi_imx->wml - 1) |
+ 		MX51_ECSPI_DMA_TX_WML(tx_wml) |
+ 		MX51_ECSPI_DMA_RXT_WML(spi_imx->wml) |
+-		MX51_ECSPI_DMA_TEDEN | MX51_ECSPI_DMA_RXDEN |
+ 		MX51_ECSPI_DMA_RXTDEN, spi_imx->base + MX51_ECSPI_DMA);
+ }
+ 
+@@ -1458,6 +1463,8 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
+ 	reinit_completion(&spi_imx->dma_tx_completion);
+ 	dma_async_issue_pending(controller->dma_tx);
+ 
++	spi_imx->devtype_data->trigger(spi_imx);
++
+ 	transfer_timeout = spi_imx_calculate_timeout(spi_imx, transfer->len);
+ 
+ 	/* Wait SDMA to finish the data transfer.*/
 -- 
 2.51.0
 
