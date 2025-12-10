@@ -1,51 +1,49 @@
-Return-Path: <stable+bounces-200686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24A9ECB2460
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:38:29 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11107CB24A8
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:40:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1514730B211A
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:37:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 26926304E987
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:36:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DACE6313E1C;
-	Wed, 10 Dec 2025 07:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DB65305064;
+	Wed, 10 Dec 2025 07:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gsLPIS3x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FKKQhUMh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 988322F5A01;
-	Wed, 10 Dec 2025 07:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2849F304BBF;
+	Wed, 10 Dec 2025 07:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765352221; cv=none; b=vARFdrr8VCxRQBwPQJSOq7Dxzov7IDWHgXchGkrv+/C7jXjDPPEAK5zcrlkAw1F0rHv5Pw8FBk/ygG9KjggQSUxyIBHmFWNahb8YzMLftDYQA7/LK97FCyC498yqPfIjplgMfmZQJbDq4W6oP9qoe9JdXuZLv00G4fLpz+kvUG8=
+	t=1765352174; cv=none; b=qY7oOrdx+FGhOc6u9Mf7XmAWDEu4f1025YXUoOvxnmQsKZ6JUcVqD3eK647y7iFOHQ//Q08WcZUHqLiB+D3Wfaa4j+YFHkkHE6jUdugZz+CcmdQQSGaEpMips2Qiw8ooJy7Fkz7zpn5HOzRf1QFAxepNEhKXmK/1/bRL/sIEAOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765352221; c=relaxed/simple;
-	bh=MxwMokhJf6U475DQlI/KVnP91lHicjz4AnvkafD2+bA=;
+	s=arc-20240116; t=1765352174; c=relaxed/simple;
+	bh=Xw2mJ96CqwdIqzVpQ0SNeoLwEemTZg1L9h7cp0RiRW0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RCNTl2rsvBGMZJOAsQLtT6nn/AfcP//SSicez1xCXCqe5yxPzrQK5IGu8/jGvcxBvYao2Gv3S5fdW5hT3sTZBUwrEiDao2o6Wf3/DqruTKkLylttDoUP1oYXxYwcM1hMGGAr96MrauT6NUkJybR/MIqeQf3ad7dInZKIdDsYSsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gsLPIS3x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 425E4C19422;
-	Wed, 10 Dec 2025 07:37:01 +0000 (UTC)
+	 MIME-Version; b=c429I5UOLW9ffBiQuxxXg/gxqebr5p4/1VXjLl4LJkvjyVBuygTdsc38FpYhfab1qSCsiKXjLm2S6mEzMD9KaTEucQ4EnHZ+gzIG+dXr7h2g1H7WVfSkrDWVTAgTWmficspjC8NzrMtLM0f+CmtOwRTnBkvPGxrFdwQgjHAsaDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FKKQhUMh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78715C4CEF1;
+	Wed, 10 Dec 2025 07:36:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765352221;
-	bh=MxwMokhJf6U475DQlI/KVnP91lHicjz4AnvkafD2+bA=;
+	s=korg; t=1765352174;
+	bh=Xw2mJ96CqwdIqzVpQ0SNeoLwEemTZg1L9h7cp0RiRW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gsLPIS3xVIxkZrb0URQWQaZsuehZclimMXgEWIv87QEryQuOw4NA9EEarm7aF1yDe
-	 3fKgJ0aPKex/+B6ATI2gFi6aPQfMBdSgnCQzGMRIb50TgThUPm5H3A8Q1GGDnKuwGm
-	 ulCgPlnLxuZFkFb0Y787XffR9WgkHV3ibVlhi5+4=
+	b=FKKQhUMhAH0y6dt9kAt0jpiuc1JlYy7YZJu+L0ki8IV+EZrj0pc1sJ0B+4bb9BXtJ
+	 88fEmzAednti4LMImM5QJjJwf0Bm2WjV/NPDirb5BoEu8LIQPyWZKyurSOzi3frE/j
+	 1VOomlo5IoE4XBVmhLaaEKGUw4gq8FgvxHGKLpwc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 6.18 17/29] serial: sh-sci: Fix deadlock during RSCI FIFO overrun error
-Date: Wed, 10 Dec 2025 16:30:27 +0900
-Message-ID: <20251210072944.837838161@linuxfoundation.org>
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.18 18/29] USB: serial: belkin_sa: fix TIOCMBIS and TIOCMBIC
+Date: Wed, 10 Dec 2025 16:30:28 +0900
+Message-ID: <20251210072944.861607961@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251210072944.363788552@linuxfoundation.org>
 References: <20251210072944.363788552@linuxfoundation.org>
@@ -64,44 +62,79 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 75a9f4c54770f062f4b3813a83667452b326dda3 upstream.
+commit b6e0b3016187446ddef9edac03cd9d544ac63f11 upstream.
 
-On RSCI IP, a deadlock occurs during a FIFO overrun error, as it uses a
-different register to clear the FIFO overrun error status.
+Asserting or deasserting a modem control line using TIOCMBIS or TIOCMBIC
+should not deassert any lines that are not in the mask.
 
-Cc: stable@kernel.org
-Fixes: 0666e3fe95ab ("serial: sh-sci: Add support for RZ/T2H SCI")
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/20251114101350.106699-3-biju.das.jz@bp.renesas.com
+Fix this long-standing regression dating back to 2003 when the
+tiocmset() callback was introduced.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/sh-sci.c |   12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/usb/serial/belkin_sa.c |   28 +++++++++++++++++-----------
+ 1 file changed, 17 insertions(+), 11 deletions(-)
 
---- a/drivers/tty/serial/sh-sci.c
-+++ b/drivers/tty/serial/sh-sci.c
-@@ -1024,8 +1024,16 @@ static int sci_handle_fifo_overrun(struc
+--- a/drivers/usb/serial/belkin_sa.c
++++ b/drivers/usb/serial/belkin_sa.c
+@@ -435,7 +435,7 @@ static int belkin_sa_tiocmset(struct tty
+ 	struct belkin_sa_private *priv = usb_get_serial_port_data(port);
+ 	unsigned long control_state;
+ 	unsigned long flags;
+-	int retval;
++	int retval = 0;
+ 	int rts = 0;
+ 	int dtr = 0;
  
- 	status = s->ops->read_reg(port, s->params->overrun_reg);
- 	if (status & s->params->overrun_mask) {
--		status &= ~s->params->overrun_mask;
--		s->ops->write_reg(port, s->params->overrun_reg, status);
-+		if (s->type == SCI_PORT_RSCI) {
-+			/*
-+			 * All of the CFCLR_*C clearing bits match the corresponding
-+			 * CSR_*status bits. So, reuse the overrun mask for clearing.
-+			 */
-+			s->ops->clear_SCxSR(port, s->params->overrun_mask);
-+		} else {
-+			status &= ~s->params->overrun_mask;
-+			s->ops->write_reg(port, s->params->overrun_reg, status);
+@@ -452,26 +452,32 @@ static int belkin_sa_tiocmset(struct tty
+ 	}
+ 	if (clear & TIOCM_RTS) {
+ 		control_state &= ~TIOCM_RTS;
+-		rts = 0;
++		rts = 1;
+ 	}
+ 	if (clear & TIOCM_DTR) {
+ 		control_state &= ~TIOCM_DTR;
+-		dtr = 0;
++		dtr = 1;
+ 	}
+ 
+ 	priv->control_state = control_state;
+ 	spin_unlock_irqrestore(&priv->lock, flags);
+ 
+-	retval = BSA_USB_CMD(BELKIN_SA_SET_RTS_REQUEST, rts);
+-	if (retval < 0) {
+-		dev_err(&port->dev, "Set RTS error %d\n", retval);
+-		goto exit;
++	if (rts) {
++		retval = BSA_USB_CMD(BELKIN_SA_SET_RTS_REQUEST,
++					!!(control_state & TIOCM_RTS));
++		if (retval < 0) {
++			dev_err(&port->dev, "Set RTS error %d\n", retval);
++			goto exit;
 +		}
+ 	}
  
- 		port->icount.overrun++;
- 
+-	retval = BSA_USB_CMD(BELKIN_SA_SET_DTR_REQUEST, dtr);
+-	if (retval < 0) {
+-		dev_err(&port->dev, "Set DTR error %d\n", retval);
+-		goto exit;
++	if (dtr) {
++		retval = BSA_USB_CMD(BELKIN_SA_SET_DTR_REQUEST,
++					!!(control_state & TIOCM_DTR));
++		if (retval < 0) {
++			dev_err(&port->dev, "Set DTR error %d\n", retval);
++			goto exit;
++		}
+ 	}
+ exit:
+ 	return retval;
 
 
 
