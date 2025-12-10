@@ -1,202 +1,136 @@
-Return-Path: <stable+bounces-200718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C53DCB2DE5
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 13:16:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7F22CB2DE9
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 13:17:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1AFEB301D654
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 12:16:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 95FDB303B2FC
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 12:17:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 773DE1E9906;
-	Wed, 10 Dec 2025 12:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B406C322B73;
+	Wed, 10 Dec 2025 12:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aliyun.com header.i=@aliyun.com header.b="Z1SYZ5WI"
+	dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b="UTWhx6d6"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-84.freemail.mail.aliyun.com (out30-84.freemail.mail.aliyun.com [115.124.30.84])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D65277CBF
-	for <stable@vger.kernel.org>; Wed, 10 Dec 2025 12:16:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 096A61E9906
+	for <stable@vger.kernel.org>; Wed, 10 Dec 2025 12:17:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765368975; cv=none; b=iGpTrEvP2tytCAFSTrM6lg6xGUEuZC9bpzCbYhPjN27HQ3mYaLdXogehonm5FLOtIl4TDfk/kAvaKmLnAWNd9cUPfhnI8ITG6Yl3Z51jz3lqB8v8HDXPWLGUgZYuzQz+tv+dHYf0Fi3YewPOQl1QW8WzFmDZA6lbJJPAJn2WR2Y=
+	t=1765369041; cv=none; b=QASwF0qo62QImC77QlaQEZ6xJhV1rj7wuF3BEPV/xewOtPxSb+VeIedBwhCny5m5y0AEtWZ3uCGM2dRJAjfIeCcATDP38ew8QKEczOrc+iUmkAjwiXAYP2B0oQT+X70rmZpE0xHhsUXyN2XuN9UdpmtOxqcQijvHvFdyHCUv/E4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765368975; c=relaxed/simple;
-	bh=FH+AmxQ73azXYNPJCbG3kWs7G6sIevlHceRqlJODigQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=f0+TDNuUhcXDS7IHF+i859zCN9bl5PEaTPhCLJkZMYUY+P+vQZMXkwjSrZdIHAQeL1+7MIKiU30Jwl1d40KKKocOPBVJrA3emBRw47EDaRzy99d5R1BrP2vGZXV+9wFn+fPRFSYfr7QYi3L/3D6vt9XQiQVJKk5+9hNjeCOpLfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliyun.com; spf=pass smtp.mailfrom=aliyun.com; dkim=pass (1024-bit key) header.d=aliyun.com header.i=@aliyun.com header.b=Z1SYZ5WI; arc=none smtp.client-ip=115.124.30.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliyun.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliyun.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=aliyun.com; s=s1024;
-	t=1765368968; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=oRqqRD/ugCzkvoWwW0TRtd/4xk0lkbO/Cre0x1NnAvs=;
-	b=Z1SYZ5WIq9nLAJ2vghu0npfj6Nh7e6gcrE1SlBRKBO+DHIi7GwYGuVkMES//grfJCrjo0VH0dcl7qrVEK2Hj7GfaKoB6rhSLmQl66RrckOiTWfJs8tPE+vLgwQNM2MrVC72ja7H9zPXSMbFa0wgzP6YrAH5NT3qqQ4Nj/GDjy00=
-Received: from ubuntu24..(mailfrom:ruohanlan@aliyun.com fp:SMTPD_---0WuWgmCL_1765368965 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 10 Dec 2025 20:16:08 +0800
-From: ruohanlan@aliyun.com
-To: stable@vger.kernel.org
-Cc: Dong Chenchen <dongchenchen2@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	syzbot+204a4382fcb3311f3858@syzkaller.appspotmail.com,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Mina Almasry <almasrymina@google.com>,
-	Ruohan Lan <ruohanlan@aliyun.com>
-Subject: [PATCH 6.1.y] page_pool: Fix use-after-free in page_pool_recycle_in_ring
-Date: Wed, 10 Dec 2025 12:15:55 +0000
-Message-ID: <20251210121555.5106-1-ruohanlan@aliyun.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1765369041; c=relaxed/simple;
+	bh=CqddzwXfg+iqUA6B+bgarDhsZ2CwkeqjbcD6pMA7Ges=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OhR/sUPayO7wb178E4yCSLqo7H8pDtbW8jO1t4o8QYUfdgNlh1+bpJEiBkeBHHVkN2zVLQgIQePP4EUbSRYJ3GVK9fgBSVx+airFA/HySiraiSmbgZB5OxHWdvwRPnUnqD+phIxt05yOoT8VPIa7tHvjHEsUq/+expIVn0appYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b=UTWhx6d6; arc=none smtp.client-ip=209.85.215.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-bc2abdcfc6fso3968591a12.2
+        for <stable@vger.kernel.org>; Wed, 10 Dec 2025 04:17:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=futuring-girl.com; s=google; t=1765369039; x=1765973839; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=O1xwdwbZyc6XmBBbHWBkpSZmTvfwzWj9ylDCyZwxUU0=;
+        b=UTWhx6d6Bu0hQVXvNFWDL602RXzKoJzq8a4MoLwNbrf+lKuKhlk/YO7ZLvJWfsk5Az
+         eqFXXBjmUFOLHW1I/ku+Y+dqzmdT2Jz7w2MLqAKvG2LpCCJm/joVgevmK0wLhY4hmtQi
+         CJFnk9txZCXcZXSOvTgFf6A3IzEy98JMB3utw8W6WZvXK3FgjYHssbEkZpBAVKV7osco
+         zWLsfZOvp/AP0nUFt1rVgXI7iH9DS9632y864ceDwwdtrqYWk9M4dKV/jtxEAxi7XtMC
+         BVU6ciN5CpiLl+wHH35vIPeiSWYwKF3N8Nzv2vGCcg2lPCDu1qMwh+nI5rfu2EuJPbdP
+         dz6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765369039; x=1765973839;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=O1xwdwbZyc6XmBBbHWBkpSZmTvfwzWj9ylDCyZwxUU0=;
+        b=fMNrJOnDeww+DekKtCWPmEWXSoI6hrO9fAZLCmK2A7WUGhphoxlQLCo0q1zs7oaX0V
+         f/eEf0HDkvsQBrxzdwFDyFo2Lesz9EgcOZdH7jo6TeEFHi+39SaTETSVh3lFiSAtcZ+r
+         8zPU1/e5IXp+8JoSBWrLzcS6W3ZQgyH77I2Gc+S8xtvqSD1B1PdRmv7vrla1OkaBRaQb
+         OUFWaKztms5eVIdkUnGQzreesxibywDnZAFLpYUMLYr2l7Zvty1V5t20GbUB6T3Cwy9+
+         7boOIX8OlJqFPkoHYsAqx6f/P5a6edgQgjX0LVtLQI983zabTsIYbhArTt+BvyPnPHeE
+         Ingg==
+X-Gm-Message-State: AOJu0YyrAs4NR/wgqhokUQmCBo5pZTE6CqzEdI2WX5DDH+wrD52ll/Hm
+	CgmOuUgV+UYnBEztSlnOoDM0pDJjrSjwbpSTJs0NZU3FFygtNEAM3iAhib2w5NTZJ8hiiQavgxC
+	s6q3W4jd58lXhSmELFnQd/fv6ktY1B5lOfNOrBqjztQ==
+X-Gm-Gg: ASbGncsf/3NiwuvVOuWbVcL+GUkA2JZ8fCJuiZl6QRX7F/qZx9MbcrU9COf0CrBfPx9
+	0QGll6uP6+FkFMuaug9exXdKTMOvoeFo9TNMdLb/bxdZP78HpZ7t2aUySJHsKgdGfLQPXi1RVnC
+	Pey42NkAifVH1hDx1svnt1edWfUhvwJzSX12PQKC3sHV0lwvIHTJ+LWtCDDOpiDZAiiiRY188ZG
+	E6TqaDOR99YiN/OkS0OthpObrCBnNgO9SNV65WW4VUmyQ37YsmYNkuPVyFqZ21OM8CClAWNEQ==
+X-Google-Smtp-Source: AGHT+IHBgz+FmtVPvJu3SCy7tALN1FAmhPzb18VCi3/4ZrVRGY+kOcv5Fz+irwsD+vLtWKOs0MzTStN2UBe7MMegzfo=
+X-Received: by 2002:a05:7022:4381:b0:11b:9386:825b with SMTP id
+ a92af1059eb24-11f296c4100mr1746123c88.48.1765369039130; Wed, 10 Dec 2025
+ 04:17:19 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20251210072944.363788552@linuxfoundation.org>
+In-Reply-To: <20251210072944.363788552@linuxfoundation.org>
+From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Date: Wed, 10 Dec 2025 21:17:03 +0900
+X-Gm-Features: AQt7F2pTA2Cii6t8rtYmLN11BKTetwmg6gtStkBaVhUsG8qqSyx6V4L8IpnnnJY
+Message-ID: <CAKL4bV6LnoRjoyqss+5DBOC+SCa+bKbyyS4wCA6tTRaDpqUgWA@mail.gmail.com>
+Subject: Re: [PATCH 6.18 00/29] 6.18.1-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org, sr@sladewatkins.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Dong Chenchen <dongchenchen2@huawei.com>
+Hi Greg
 
-[ Upstream commit 271683bb2cf32e5126c592b5d5e6a756fa374fd9 ]
+On Wed, Dec 10, 2025 at 4:36=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.18.1 release.
+> There are 29 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 12 Dec 2025 07:29:36 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.18.1-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.18.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
-syzbot reported a uaf in page_pool_recycle_in_ring:
+6.18.1-rc1 tested.
 
-BUG: KASAN: slab-use-after-free in lock_release+0x151/0xa30 kernel/locking/lockdep.c:5862
-Read of size 8 at addr ffff8880286045a0 by task syz.0.284/6943
+Build successfully completed.
+Boot successfully completed.
+No dmesg regressions.
+Video output normal.
+Sound output normal.
 
-CPU: 0 UID: 0 PID: 6943 Comm: syz.0.284 Not tainted 6.13.0-rc3-syzkaller-gdfa94ce54f41 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0x169/0x550 mm/kasan/report.c:489
- kasan_report+0x143/0x180 mm/kasan/report.c:602
- lock_release+0x151/0xa30 kernel/locking/lockdep.c:5862
- __raw_spin_unlock_bh include/linux/spinlock_api_smp.h:165 [inline]
- _raw_spin_unlock_bh+0x1b/0x40 kernel/locking/spinlock.c:210
- spin_unlock_bh include/linux/spinlock.h:396 [inline]
- ptr_ring_produce_bh include/linux/ptr_ring.h:164 [inline]
- page_pool_recycle_in_ring net/core/page_pool.c:707 [inline]
- page_pool_put_unrefed_netmem+0x748/0xb00 net/core/page_pool.c:826
- page_pool_put_netmem include/net/page_pool/helpers.h:323 [inline]
- page_pool_put_full_netmem include/net/page_pool/helpers.h:353 [inline]
- napi_pp_put_page+0x149/0x2b0 net/core/skbuff.c:1036
- skb_pp_recycle net/core/skbuff.c:1047 [inline]
- skb_free_head net/core/skbuff.c:1094 [inline]
- skb_release_data+0x6c4/0x8a0 net/core/skbuff.c:1125
- skb_release_all net/core/skbuff.c:1190 [inline]
- __kfree_skb net/core/skbuff.c:1204 [inline]
- sk_skb_reason_drop+0x1c9/0x380 net/core/skbuff.c:1242
- kfree_skb_reason include/linux/skbuff.h:1263 [inline]
- __skb_queue_purge_reason include/linux/skbuff.h:3343 [inline]
+Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
 
-root cause is:
+[    0.000000] Linux version 6.18.1-rc1rv-g7d4c06f4000f
+(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 15.2.1 20251112, GNU ld (GNU
+Binutils) 2.45.1) #1 SMP PREEMPT_DYNAMIC Wed Dec 10 20:19:12 JST 2025
 
-page_pool_recycle_in_ring
-  ptr_ring_produce
-    spin_lock(&r->producer_lock);
-    WRITE_ONCE(r->queue[r->producer++], ptr)
-      //recycle last page to pool
-				page_pool_release
-				  page_pool_scrub
-				    page_pool_empty_ring
-				      ptr_ring_consume
-				      page_pool_return_page  //release all page
-				  __page_pool_destroy
-				     free_percpu(pool->recycle_stats);
-				     free(pool) //free
+Thanks
 
-     spin_unlock(&r->producer_lock); //pool->ring uaf read
-  recycle_stat_inc(pool, ring);
-
-page_pool can be free while page pool recycle the last page in ring.
-Add producer-lock barrier to page_pool_release to prevent the page
-pool from being free before all pages have been recycled.
-
-recycle_stat_inc() is empty when CONFIG_PAGE_POOL_STATS is not
-enabled, which will trigger Wempty-body build warning. Add definition
-for pool stat macro to fix warning.
-
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Link: https://lore.kernel.org/netdev/20250513083123.3514193-1-dongchenchen2@huawei.com
-Fixes: ff7d6b27f894 ("page_pool: refurbish version of page_pool code")
-Reported-by: syzbot+204a4382fcb3311f3858@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=204a4382fcb3311f3858
-Signed-off-by: Dong Chenchen <dongchenchen2@huawei.com>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-Link: https://patch.msgid.link/20250527114152.3119109-1-dongchenchen2@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Minor context change fixed. ]
-Signed-off-by: Ruohan Lan <ruohanlan@aliyun.com>
----
- net/core/page_pool.c | 27 ++++++++++++++-------------
- 1 file changed, 14 insertions(+), 13 deletions(-)
-
-diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index 5c66092f9580..4a3abd86f8ce 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -128,9 +128,9 @@ u64 *page_pool_ethtool_stats_get(u64 *data, void *stats)
- EXPORT_SYMBOL(page_pool_ethtool_stats_get);
- 
- #else
--#define alloc_stat_inc(pool, __stat)
--#define recycle_stat_inc(pool, __stat)
--#define recycle_stat_add(pool, __stat, val)
-+#define alloc_stat_inc(...)	do { } while (0)
-+#define recycle_stat_inc(...)	do { } while (0)
-+#define recycle_stat_add(...)	do { } while (0)
- #endif
- 
- static bool page_pool_producer_lock(struct page_pool *pool)
-@@ -539,19 +539,16 @@ static void page_pool_return_page(struct page_pool *pool, struct page *page)
- 
- static bool page_pool_recycle_in_ring(struct page_pool *pool, struct page *page)
- {
--	int ret;
--	/* BH protection not needed if current is softirq */
--	if (in_softirq())
--		ret = ptr_ring_produce(&pool->ring, page);
--	else
--		ret = ptr_ring_produce_bh(&pool->ring, page);
-+	bool in_softirq, ret;
- 
--	if (!ret) {
-+	/* BH protection not needed if current is softirq */
-+	in_softirq = page_pool_producer_lock(pool);
-+	ret = !__ptr_ring_produce(&pool->ring, page);
-+	if (ret)
- 		recycle_stat_inc(pool, ring);
--		return true;
--	}
-+	page_pool_producer_unlock(pool, in_softirq);
- 
--	return false;
-+	return ret;
- }
- 
- /* Only allow direct recycling in special circumstances, into the
-@@ -826,10 +823,14 @@ static void page_pool_scrub(struct page_pool *pool)
- 
- static int page_pool_release(struct page_pool *pool)
- {
-+	bool in_softirq;
- 	int inflight;
- 
- 	page_pool_scrub(pool);
- 	inflight = page_pool_inflight(pool);
-+	/* Acquire producer lock to make sure producers have exited. */
-+	in_softirq = page_pool_producer_lock(pool);
-+	page_pool_producer_unlock(pool, in_softirq);
- 	if (!inflight)
- 		page_pool_free(pool);
- 
--- 
-2.43.0
-
+Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
 
