@@ -1,36 +1,36 @@
-Return-Path: <stable+bounces-200733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83C82CB3646
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 16:56:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FA1ACB3643
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 16:56:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CD233301E58F
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 15:55:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4FA7B3014592
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 15:55:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17EB225392C;
-	Wed, 10 Dec 2025 15:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 775E42798F3;
+	Wed, 10 Dec 2025 15:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
 	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="mdcTGguI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f66.google.com (mail-ed1-f66.google.com [209.85.208.66])
+Received: from mail-ed1-f68.google.com (mail-ed1-f68.google.com [209.85.208.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E242B1917F0
-	for <stable@vger.kernel.org>; Wed, 10 Dec 2025 15:55:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE821917F0
+	for <stable@vger.kernel.org>; Wed, 10 Dec 2025 15:55:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.68
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765382150; cv=none; b=b+OAUCk9U1PxKJLKvS13XrCrY5zi+YDvST5CvnnaHLPDWKRpBARaq9qlOQyaeEytTZCzQq3rNl2b6rb+QRyit88lkWWZRYXJk1SIukN3z18CFZBzTfO7+d6HjzdCE81p5CQaWXGFmjHnZZyopHebc86ZRzHas54CpjyNDCd4AhQ=
+	t=1765382146; cv=none; b=B0hcPVoj8dqYGJXeJH/KslQtl0sN3mq/TCzEPc7aL5TnDxpoXLCNrEnRnlFimrq6kb4IyzcxvsGPeMjqfSfBZIkRez61wmVxBihijL9gj6a9uqZk7jFlVvYH3VPSJsXtFOcozBavuhpsyRqtv1/Z7A4pFwjK1EJDGwMu0kFm0Cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765382150; c=relaxed/simple;
+	s=arc-20240116; t=1765382146; c=relaxed/simple;
 	bh=G8Q2u2sVOOsXSr7qFY2KLbIPxq/0nI2Nn65kA8r7YQ4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uWpCGO/S0jP4LWCcLy9vhkDGfUKYJa1Hbjtf5wRw6wq3UB5IruBwdm2pffP9YWlJ76NXUuBLX3aixOOXnKnp8GrSATCrYHG+OrhdAsX92wxvXr6D0Ek30E0CRu2OJDpIR8PUPE62FOJKixJ7hZMIssXyx6VH2W/h5ekjAwjftg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=mdcTGguI; arc=none smtp.client-ip=209.85.208.66
+	 Content-Type:Content-Disposition:In-Reply-To; b=uRLtzy5hQATCWFv6MLPTUycDZb+XoEMgOw6qq6WwNkJdYlJ0UIX4+CZzyY+twdaVujjEsSIa34lrVr9JBUkIQrJ48eTxFsH1VshoIH3u956xq4HXIRHe8VgLgGYJN1hV+yIk3M7QTQWOhvlt3cP51eRlA/ZnuuVFxJvBacKRXxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=mdcTGguI; arc=none smtp.client-ip=209.85.208.68
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ed1-f66.google.com with SMTP id 4fb4d7f45d1cf-647a3bca834so1733a12.2
-        for <stable@vger.kernel.org>; Wed, 10 Dec 2025 07:55:46 -0800 (PST)
+Received: by mail-ed1-f68.google.com with SMTP id 4fb4d7f45d1cf-640d0ec9651so12310516a12.3
+        for <stable@vger.kernel.org>; Wed, 10 Dec 2025 07:55:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1765382142; x=1765986942; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
