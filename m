@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-200618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88591CB24CF
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:42:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E19C6CB233D
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:32:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5366C300E44C
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:41:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4AE94300975C
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:32:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96A1230214F;
-	Wed, 10 Dec 2025 07:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBBF41DD0EF;
+	Wed, 10 Dec 2025 07:31:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zHQYyS/Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WVhpMihZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53018302171;
-	Wed, 10 Dec 2025 07:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85A0B2264DC;
+	Wed, 10 Dec 2025 07:31:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765352046; cv=none; b=ZNANBWOzqpOXNu3SPDrkil6/jophY7oqaJ2wwH03ifqb7UjYqi6PkZaTR8RBZt1Vw+I958qOjGYMjS90wVKQJ1iRZjlR6RtB8thuC41LmIFMxmNU6WeHuk1vO7q9J+7xameInZM3WLs9NIMOeuL2HHUegLlwXKIPQdnqZJSbF0Q=
+	t=1765351917; cv=none; b=qMdMXEAKb0XfBUc7eNpHY1xFggHVwPX8RV1VWCgO7JJrynQS+KSu0MQIHHjDTOYTiVJWdtRBDB5VNR1T/LOy2b6m7ImLfJ+OcTjk1TV1MCZsWO3MJ7k0YKXXpncO2fjdjOBWfSvTttN8rT/I7azEoePkEaJjySG7usthxT9z90U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765352046; c=relaxed/simple;
-	bh=+yiC4N0u49wqunlHm/890LGi8nhJgGYiq0xbSrlI3uQ=;
+	s=arc-20240116; t=1765351917; c=relaxed/simple;
+	bh=zZEF3vJmuw9AFdRSNBrp112O7iv7Apyr12HDr41zAtc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KmIDEzxQx27cb9debpnW/WTghFedWH9ZBhhcmbRcM0rbjp0irDZU14NuCuagYhHTZ55/q+GCOaKRxfBkJUlS5flUoXsWF8C9Pqa1sQEM+nI9QGsc5JZkx31+5JOB8OfZpQ/oL/gnhjEAk2B9+rxuqt5OKcwVl9Kfrn2GdHtz81k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zHQYyS/Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF2F3C4CEF1;
-	Wed, 10 Dec 2025 07:34:05 +0000 (UTC)
+	 MIME-Version; b=t+QeIKNo0o9u6gkW3OvV9k2L9dZp0gd6nCVO1vu7TncoWWB5DX1kdJYNM9daD+zKGzeG2a7E1dPcAGMeKqG7bfVrbpqwceSpctSLHxRpvMGhYAJdEkHYR3ZnE8lXMzorERM2+OC01VbVDPPb/f0b+4VNx2RsevQoe3XbL6IJHAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WVhpMihZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F0D8C4CEF1;
+	Wed, 10 Dec 2025 07:31:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765352046;
-	bh=+yiC4N0u49wqunlHm/890LGi8nhJgGYiq0xbSrlI3uQ=;
+	s=korg; t=1765351917;
+	bh=zZEF3vJmuw9AFdRSNBrp112O7iv7Apyr12HDr41zAtc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zHQYyS/ZWDxd6gHVsL+pBm1k0IJ+otno4Wyk61nn0D4pfc00Q9xTq9aBHsY3GW+Ds
-	 cczwkv5ksOTJGVUP7a1bl2OFIXmujuYurTyU009/qmiycCqfgTCTDKUj1QFuCtENso
-	 KZ2bnx/oBeQqY/6y9IFN/w/5bKV3Wb8ysCW5+was=
+	b=WVhpMihZYTNui26h1gC+7fMpiGmvV3Rf2i2l+PM1CuUqQN1880LDq+8W8LDHMFuVy
+	 cmb94oyS7cAqQoS+N/S0LMArN34/cWCJm4Zrma/3UuzcccPeiE6VdK36+WF/oX/rIY
+	 qHrHNWaSP1Hfxzs6Ouhfn4it/1/mkKiKx+BwwynI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philip Yang <Philip.Yang@amd.com>,
-	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Casey Chen <cachen@purestorage.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Hannes Reinecke <hare@suse.de>,
+	Ming Lei <ming.lei@redhat.com>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 29/60] drm/amdkfd: Fix GPU mappings for APU after prefetch
-Date: Wed, 10 Dec 2025 16:29:59 +0900
-Message-ID: <20251210072948.553012860@linuxfoundation.org>
+Subject: [PATCH 6.12 30/49] nvme: fix admin request_queue lifetime
+Date: Wed, 10 Dec 2025 16:30:00 +0900
+Message-ID: <20251210072948.910291246@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
-References: <20251210072947.850479903@linuxfoundation.org>
+In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
+References: <20251210072948.125620687@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +64,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit eac32ff42393efa6657efc821231b8d802c1d485 ]
+[ Upstream commit 03b3bcd319b3ab5182bc9aaa0421351572c78ac0 ]
 
-Fix the following corner case:-
- Consider a 2M huge page SVM allocation, followed by prefetch call for
-the first 4K page. The whole range is initially mapped with single PTE.
-After the prefetch, this range gets split to first page + rest of the
-pages. Currently, the first page mapping is not updated on MI300A (APU)
-since page hasn't migrated. However, after range split PTE mapping it not
-valid.
+The namespaces can access the controller's admin request_queue, and
+stale references on the namespaces may exist after tearing down the
+controller. Ensure the admin request_queue is active by moving the
+controller's 'put' to after all controller references have been released
+to ensure no one is can access the request_queue. This fixes a reported
+use-after-free bug:
 
-Fix this by forcing page table update for the whole range when prefetch
-is called.  Calling prefetch on APU doesn't improve performance. If all
-it deteriotes. However, functionality has to be supported.
+  BUG: KASAN: slab-use-after-free in blk_queue_enter+0x41c/0x4a0
+  Read of size 8 at addr ffff88c0a53819f8 by task nvme/3287
+  CPU: 67 UID: 0 PID: 3287 Comm: nvme Tainted: G            E       6.13.2-ga1582f1a031e #15
+  Tainted: [E]=UNSIGNED_MODULE
+  Hardware name: Jabil /EGS 2S MB1, BIOS 1.00 06/18/2025
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x4f/0x60
+   print_report+0xc4/0x620
+   ? _raw_spin_lock_irqsave+0x70/0xb0
+   ? _raw_read_unlock_irqrestore+0x30/0x30
+   ? blk_queue_enter+0x41c/0x4a0
+   kasan_report+0xab/0xe0
+   ? blk_queue_enter+0x41c/0x4a0
+   blk_queue_enter+0x41c/0x4a0
+   ? __irq_work_queue_local+0x75/0x1d0
+   ? blk_queue_start_drain+0x70/0x70
+   ? irq_work_queue+0x18/0x20
+   ? vprintk_emit.part.0+0x1cc/0x350
+   ? wake_up_klogd_work_func+0x60/0x60
+   blk_mq_alloc_request+0x2b7/0x6b0
+   ? __blk_mq_alloc_requests+0x1060/0x1060
+   ? __switch_to+0x5b7/0x1060
+   nvme_submit_user_cmd+0xa9/0x330
+   nvme_user_cmd.isra.0+0x240/0x3f0
+   ? force_sigsegv+0xe0/0xe0
+   ? nvme_user_cmd64+0x400/0x400
+   ? vfs_fileattr_set+0x9b0/0x9b0
+   ? cgroup_update_frozen_flag+0x24/0x1c0
+   ? cgroup_leave_frozen+0x204/0x330
+   ? nvme_ioctl+0x7c/0x2c0
+   blkdev_ioctl+0x1a8/0x4d0
+   ? blkdev_common_ioctl+0x1930/0x1930
+   ? fdget+0x54/0x380
+   __x64_sys_ioctl+0x129/0x190
+   do_syscall_64+0x5b/0x160
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+  RIP: 0033:0x7f765f703b0b
+  Code: ff ff ff 85 c0 79 9b 49 c7 c4 ff ff ff ff 5b 5d 4c 89 e0 41 5c c3 66 0f 1f 84 00 00 00 00 00 f3 0f 1e fa b8 10 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d dd 52 0f 00 f7 d8 64 89 01 48
+  RSP: 002b:00007ffe2cefe808 EFLAGS: 00000202 ORIG_RAX: 0000000000000010
+  RAX: ffffffffffffffda RBX: 00007ffe2cefe860 RCX: 00007f765f703b0b
+  RDX: 00007ffe2cefe860 RSI: 00000000c0484e41 RDI: 0000000000000003
+  RBP: 0000000000000000 R08: 0000000000000003 R09: 0000000000000000
+  R10: 00007f765f611d50 R11: 0000000000000202 R12: 0000000000000003
+  R13: 00000000c0484e41 R14: 0000000000000001 R15: 00007ffe2cefea60
+   </TASK>
 
-v2: Use apu_prefer_gtt as this issue doesn't apply to APUs with carveout
-VRAM
-
-v3: Simplify by setting the flag for all ASICs as it doesn't affect dGPU
-
-v4: Remove v2 and v3 changes. Force update_mapping when range is split
-at a size that is not aligned to prange granularity
-
-Suggested-by: Philip Yang <Philip.Yang@amd.com>
-Signed-off-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
-Reviewed-by: Philip Yang<Philip.Yang@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 076470b9f6f8d9c7c8ca73a9f054942a686f9ba7)
+Reported-by: Casey Chen <cachen@purestorage.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_svm.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/nvme/host/core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-index 827507cfed7aa..fab6e7721c803 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-@@ -3688,6 +3688,8 @@ svm_range_set_attr(struct kfd_process *p, struct mm_struct *mm,
- 		svm_range_apply_attrs(p, prange, nattr, attrs, &update_mapping);
- 		/* TODO: unmap ranges from GPU that lost access */
- 	}
-+	update_mapping |= !p->xnack_enabled && !list_empty(&remap_list);
-+
- 	list_for_each_entry_safe(prange, next, &remove_list, update_list) {
- 		pr_debug("unlink old 0x%p prange 0x%p [0x%lx 0x%lx]\n",
- 			 prange->svms, prange, prange->start,
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index a3b9f8ea235f7..a766290b1ee89 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -4645,7 +4645,6 @@ void nvme_remove_admin_tag_set(struct nvme_ctrl *ctrl)
+ 	 */
+ 	nvme_stop_keep_alive(ctrl);
+ 	blk_mq_destroy_queue(ctrl->admin_q);
+-	blk_put_queue(ctrl->admin_q);
+ 	if (ctrl->ops->flags & NVME_F_FABRICS) {
+ 		blk_mq_destroy_queue(ctrl->fabrics_q);
+ 		blk_put_queue(ctrl->fabrics_q);
+@@ -4790,6 +4789,8 @@ static void nvme_free_ctrl(struct device *dev)
+ 		container_of(dev, struct nvme_ctrl, ctrl_device);
+ 	struct nvme_subsystem *subsys = ctrl->subsys;
+ 
++	if (ctrl->admin_q)
++		blk_put_queue(ctrl->admin_q);
+ 	if (!subsys || ctrl->instance != subsys->instance)
+ 		ida_free(&nvme_instance_ida, ctrl->instance);
+ 	nvme_free_cels(ctrl);
 -- 
 2.51.0
 
