@@ -1,110 +1,156 @@
-Return-Path: <stable+bounces-200535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D7A9CB1F28
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 06:17:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C342BCB20A3
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 06:57:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1549E3064797
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 05:17:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 49273302A968
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 05:56:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 436D222FE0A;
-	Wed, 10 Dec 2025 05:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 939D7311955;
+	Wed, 10 Dec 2025 05:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ev31/y3J"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J9XEo5rx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23EA286A4
-	for <stable@vger.kernel.org>; Wed, 10 Dec 2025 05:17:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFA3727B32D
+	for <stable@vger.kernel.org>; Wed, 10 Dec 2025 05:56:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765343853; cv=none; b=qv/OOqCdbhHNSNzVDXmSFmwQkna7RBFpGBMF/N86WcJhPGyPeKl5p/0P2CHnb/xqPbZMkHrgLdm262Voru2mKvBYxquTBNsxjZtguAJGoq/qAPPCy7VSBVMbfE4I6k6zrKKh7ye5hYVKBlxnSFNykty3slzBLZKox1G9Gk7LNQA=
+	t=1765346206; cv=none; b=AbYKYoEYBQJYCT4NTZ0pZw61T3nlVkwoGF9rRvbn0RR/BqNgROOF6YAjF5zKl8BEEy7IzH1lKHm+OTfQPDxPIc/m/rYQTBFNYctjrcXMbdIWdeky52OuIf6wvWISdeWldnJSX4xNLtkrivF3A/uwhwB+mR4CU9yednbGfKFtgiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765343853; c=relaxed/simple;
-	bh=qExcs/8cNN5eagvc96t1kzVCjlrfymwy5INWit9g7qI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=g7r77lP79XMQ3ev+nwtj3b7yRiu1eOScOlLk3YZ8oDy3xr/2sIgQ5e1peQV7YV7PR2nylDCtso93sZaB5dDG+dWzlH89Lbs1NJLXdk4ZoTfshZZf+hBfWnbOckI2W2sFZiWyfW8eimiXmsvz53b6pTXipPDZ1+S0dtrobFFLpRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ev31/y3J; arc=none smtp.client-ip=209.85.210.178
+	s=arc-20240116; t=1765346206; c=relaxed/simple;
+	bh=3VrvE79aK98YEd8Nk0OCa9UWFkNGSHnO3fUoP8RMrCY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QwP/DkpL7gCoqrio+ovwJPObAbMJwCCO5kPzfkThC3WHtoQPMc1U/3dFUanbGo3y+E3CYYjnTmPxVjB2WuI3g+1yvxS5EFpZ6uoinsP8FfDzyogoYVEZbfOQ6PR8Rsn93LpxO4380jJ08qiadgiKL6SHIVsiTSsRWDZKFSnvOB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J9XEo5rx; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-7ade456b6abso5529578b3a.3
-        for <stable@vger.kernel.org>; Tue, 09 Dec 2025 21:17:31 -0800 (PST)
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-29e93ab7ff5so19281115ad.3
+        for <stable@vger.kernel.org>; Tue, 09 Dec 2025 21:56:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765343851; x=1765948651; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qExcs/8cNN5eagvc96t1kzVCjlrfymwy5INWit9g7qI=;
-        b=Ev31/y3JtN0kTpRzSGzbY8HCzLfJjL3fuIHVLCFFnfp3BsRYMdF9CmRPoWf77h8yUS
-         4tv1N6dGXxr0oKm17MNsOy5w1qq5rRY6dmwdBb11+TkjeXwQdGMEZITgkh71hMBf6+0S
-         U4Uv/kI9Wnv3+EUDI5B+ESxcI7/ZG7N6bGORBFTB16q8N07enurlRMZmvZW+IYBakh5h
-         98wOoXWjuCxt0NZnRNZSPblr+QaFGHZ74VqDVx+Q/VIFb6cC9q8XErmFkLosd2tfq92T
-         G8VR23+Xa4N0EznkIgFiDrMwzpBuz2SapAJ3OqysiGFTmJf9WN49hIO0WclaFF0pPgco
-         s4CQ==
+        d=gmail.com; s=20230601; t=1765346204; x=1765951004; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=8IDQig3y5Ta7nqnpRczp5de7VIJ3mi4WA81mEUrsxxk=;
+        b=J9XEo5rxGF5KFgzMmyvWeFzuicpLzrz6pNdV5F0NnRrGHYJCLGTud/I5SUGaxRWL3K
+         rJKc7+N1XKm/TOWeaKOb1c9rnGSF8XRPhCmwxJlM1onwHvQKvHyb2gWIXQ9ndnNThaUk
+         wpFmNN2Qw0/5FeZnEKN2nFC5CvFWecpuyuaKv18iqyACUZJv9J8edRuej6uZQWI81gbn
+         391EBV1IvidZrrGlDgzVgaFCrdVlEB8R8npGfxjY1w33lzPv4yG+oMfJZO3zdYTNOR3z
+         LeEmmaHd+wdYzOgemIno7p3Y9CUR7VTiWGlCh9VrBXeqomDeGjP3F7nqzr1+3Y76qWP/
+         674g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765343851; x=1765948651;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=qExcs/8cNN5eagvc96t1kzVCjlrfymwy5INWit9g7qI=;
-        b=f6ETJ40xg+nYngSXXlsPJXR75avQxtmh1sP0N0rmhMZA2kWwlyOgleF2/wvG1/cIOv
-         a6WZZQwEAr80RZtwwT/WUiU6ke8RjL8OtSSi0k6XZdxS8BIbUlVwp49LUvNx0oAECCkS
-         M62ZOXSXsTXMETU17C38MiyBd3InFOGREyhc91jrtf0fUolJaEY2CUC0zhCey4Qj4Z1o
-         Gl4N4CeNaWXMExUet/PHIlBYBMJ7O3z99URT0MIkYW51zpLODfWZuBp0dMKMG3N82g9V
-         y+pozMP2p1qbkwGfmn44SG+su/gp2HUgzDM4TOLedj6DX7Iwpqot7FZYrtCYTDVbLMam
-         Rj4A==
-X-Forwarded-Encrypted: i=1; AJvYcCVPVei0+8pd3FJQxuVzXGo/vOixLYgO01Om6bjhy4jOd5eKJqTjWpRKfx4edvq6fE/XQ0mGdwM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyRLcYWtstFKA72bMp4QCpUKXN1Ae5KvOpaERIsAOIyjHgdw/Hu
-	DGHqm18IgUN2mZo+z41Beuc8klD3TvKfvdJpuOCiS3oKwqAGsK7dITLc
-X-Gm-Gg: ASbGnctMP6xPxZ4Wr+I51RgPU6JcQK6Vmu61J6R3p/BfNvOo9IAHGVmqnl3DJ4rT1CE
-	oPoQ/KVQfHh46DPEeo60D8h9aHAYzBcV7Wq80J8OrNGo2JaKyjN9DSsVhSRYh+i/2sCO2ECUZCt
-	EEtNark9h8Qy4yaxR27OqgI68fxN3d0+EWD1T4tzeIufVLsARMQIj9S52FUCXkjqIku9ZVGPCAJ
-	PwqVWAANJLSJX+zfUbdwrvIak1jtNH+DNK2dg1f8ZQCTl4H4kXdLGO6cznbrdmQUovKY4SSuEKI
-	cKVeaEsP3PM8bbwN5MzPq7g9DLC7IXISM0RiWpRjMUSQVagNO0yUzzVEdBAqiuLtVoCORou2yvQ
-	6M4eQmlqQsSPnCHsNq+45huu2EAiEiu0Xasf97CezYz5OuG58Mg1XSZ0zQ/a96w/+73XOtT3Dt8
-	18VI/JIkn8OviXN7yrz0/zolckAzYScLlF6GtHxXJw
-X-Google-Smtp-Source: AGHT+IE7dAyrhHFXDV0DqTye5pV+Kje0+qShbKFX11hx5UetNm9KCsnU9gUS/FqIteY29lCKfQuyRQ==
-X-Received: by 2002:a05:6a21:328a:b0:366:19a5:e122 with SMTP id adf61e73a8af0-366e1006f05mr1239285637.2.1765343850958;
-        Tue, 09 Dec 2025 21:17:30 -0800 (PST)
-Received: from localhost.localdomain ([121.190.139.95])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29dae99f046sm172108995ad.61.2025.12.09.21.17.28
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 09 Dec 2025 21:17:30 -0800 (PST)
-From: Minseong Kim <ii4gsp@gmail.com>
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: linux-input@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mike Rapoport <rppt@kernel.org>,
-	stable@vger.kernel.org,
-	Minseong Kim <ii4gsp@gmail.com>
-Subject: Re: [PATCH] input: synaptics_i2c - cancel delayed work before freeing device
-Date: Wed, 10 Dec 2025 14:17:24 +0900
-Message-Id: <20251210051724.13564-1-ii4gsp@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <xeski4dr32zbxvupofis5azlq2s6fwtnuya7f3kjfz5t7c2wnq@jbvlajechlrd>
-References: <20251210032027.11700-1-ii4gsp@gmail.com> <xeski4dr32zbxvupofis5azlq2s6fwtnuya7f3kjfz5t7c2wnq@jbvlajechlrd>
+        d=1e100.net; s=20230601; t=1765346204; x=1765951004;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8IDQig3y5Ta7nqnpRczp5de7VIJ3mi4WA81mEUrsxxk=;
+        b=oF4v5zsHcU31OXxHcc+0aTJ0b1LxCrsHQFxa+XMGaOw+lg6mFH/RXLdaLE/DKrUXN4
+         wKkjIewqUS8+q7EypUU2lB20noUJBL2VfQ2gjMAyiFCnxYzSZlrrNcY9c8b6TY9j5oCu
+         Clknzv8rFFh7nAW8Gt9tLwJQdw8XvN8IwwXK1fWqmbGSdq5zOAWYuYHtRLA7KP41Hvhx
+         i9eN3g8q9PBygxO+7lb//vd/eHupXfHjmKe8ew0jxRX5Ez3JTK0NEDtQjrl6bkae4jSd
+         C7JNvFBBB9sfePFJyFKEJ9tObKXuPWcTwt+yT9qX/5bpw+FmjWLiyUqI3aBLcSKedaC1
+         tUuA==
+X-Forwarded-Encrypted: i=1; AJvYcCUztJQvnBOqv493YNn4uMPDinWlS4zmuWcHd+dOo6DmFRVkvwASofGTGTnPoD2MdtOao/qUSrk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLEqQgHkgQui4qDY5z/JGAMO76UGiKeKyunB5GZ/kQdIh6VgoT
+	yxgDxOl+F/U7Q2ax0n5evjhVSvnkfjs8wjz+rNem/oTh+/xqLA0D3CWSBinRRiWv
+X-Gm-Gg: AY/fxX7XWjXFTNwTp7gfvFwPHh8DlJca8Ro5MvlkpURbem7YSTy8FKJTiYQEj8llhAh
+	IXhXhF2rUSBstT2TppnPgwlqVZLiGqxdJNJ27GXVU0nCVrIWH+X0OC6UOSREqySs1rUYPBx41tW
+	07VI1TZQdXkeLpROZGM1RNT92Y+mYH50whcT9bXCmbmaq0KHtKCkv05i9ddrp3QHuCSR7Kk2bBT
+	nenpN4fSiFftUQNkBAQhG/JKAkt9jJqNejDZDpGF/JtpxbT4JMxv3szVGAomQhTbvE3H+Rj5JWb
+	FtHkhyLRp0UqegVyAk09UHvHQVORODhDVsUWG53ofbNjGEW4R6WEoT/paasaNybdUzBgkBTdx+b
+	iEgxoqqt/FRJFAXuCKmD2y5qdfw0El925dPEyCAJm8blacYiXaUIU2ew6k9UI0RjcJ6I0Fs+gsj
+	N5F4laFi9PajvSI1jXzQiY3JlzRcSMrbuY
+X-Google-Smtp-Source: AGHT+IEt5LhlIKtAeP5QvPrTGN2SDdkW9Yk6hicFPvLxo0MckItbfuwnVdzVsDPTVn7BhFWCHNsR5A==
+X-Received: by 2002:a17:903:2347:b0:295:395c:ebf9 with SMTP id d9443c01a7336-29ec27f1742mr12787495ad.55.1765346204228;
+        Tue, 09 Dec 2025 21:56:44 -0800 (PST)
+Received: from localhost.localdomain ([38.134.139.135])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29dae49caa4sm173741385ad.15.2025.12.09.21.56.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Dec 2025 21:56:43 -0800 (PST)
+From: Dharanitharan R <dharanitharan725@gmail.com>
+To: linux-media@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	mchehab@kernel.org,
+	micha@freedict.org,
+	syzkaller-bugs@googlegroups.com,
+	syzbot+d99f3a288cc7d8ef60fb@syzkaller.appspotmail.com,
+	dharanitharan725@gmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH v2] media: dw2102: validate I2C messages in su3000_i2c_transfer()
+Date: Wed, 10 Dec 2025 05:55:33 +0000
+Message-ID: <20251210055532.25737-2-dharanitharan725@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Hi Dmitry,
+syzbot reports a general protection fault caused by su3000_i2c_transfer()
+dereferencing msg->buf without validating the message length or buffer
+pointer. Although i2c-dev blocks zero-length messages, malformed I²C
+messages can still reach the driver through the DVB USB subsystem.
 
-Thanks for the review.
+Add strict validation of each message to prevent NULL-pointer
+dereferences.
 
-Understood that cancel_delayed_work_sync() is already called from the
-close() handler, and that resume() can restart polling regardless of
-open state. If we keep this driver, I can send a v2 that adds an open-state
-guard in resume().
+Reported-by: syzbot+d99f3a288cc7d8ef60fb@syzkaller.appspotmail.com
+Fixes: 0e148a522b84 ("media: dw2102: Don't translate i2c read into write")
+Closes: https://syzkaller.appspot.com/bug?extid=d99f3a288cc7d8ef60fb
+Cc: stable@vger.kernel.org
+Signed-off-by: Dharanitharan R <dharanitharan725@gmail.com>
+---
+ drivers/media/usb/dvb-usb/dw2102.c | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-However, if this driver is no longer used and Mike confirms there are no
-remaining users, I have no objections to removing it instead.
+diff --git a/drivers/media/usb/dvb-usb/dw2102.c b/drivers/media/usb/dvb-usb/dw2102.c
+index 4fecf2f965e9..0dd210ea16f3 100644
+--- a/drivers/media/usb/dvb-usb/dw2102.c
++++ b/drivers/media/usb/dvb-usb/dw2102.c
+@@ -733,6 +733,36 @@ static int su3000_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 		return -EAGAIN;
+ 	}
+ 
++	/* Validate incoming I²C messages */
++	if (!msg || num <= 0) {
++		mutex_unlock(&d->data_mutex);
++        	mutex_unlock(&d->i2c_mutex);
++		return -EINVAL;
++	}
++
++	for (j = 0; j < num; j++) {
++		/* msg buffer must exist */
++		if (!msg[j].buf) {
++			mutex_unlock(&d->data_mutex);
++            		mutex_unlock(&d->i2c_mutex);
++			return -EINVAL;
++		}
++
++		/* zero or negative length is invalid */
++		if (msg[j].len <= 0) {
++			mutex_unlock(&d->data_mutex);
++            		mutex_unlock(&d->i2c_mutex);
++			return -EINVAL;
++		}
++
++		/* protect against unreasonable sizes */
++		if (msg[j].len > 256) {
++			mutex_unlock(&d->data_mutex);
++            		mutex_unlock(&d->i2c_mutex);
++			return -EOPNOTSUPP;
++		}
++	}
++
+ 	j = 0;
+ 	while (j < num) {
+ 		switch (msg[j].addr) {
+-- 
+2.43.0
 
-Thanks,
-Minseong
 
