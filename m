@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-200651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2D23CB2478
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:39:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C54DCB2382
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:33:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D701A301C666
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:35:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BEA62301876A
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:32:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9833E303C81;
-	Wed, 10 Dec 2025 07:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A35A2C2364;
+	Wed, 10 Dec 2025 07:32:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QbkejCWU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eZwzYU7o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 529543019C7;
-	Wed, 10 Dec 2025 07:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3999221F2F;
+	Wed, 10 Dec 2025 07:32:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765352133; cv=none; b=Gp9bbfI6jq1x+Jd+dVHf479hTHer6YIkiltPsHWrXwe32lmuPX4Ryfo00gk8TXY4J4oD8QIR6rANpbkaR783IQVfwtX0yRR7P9YUUksbuFR5G6lu4PmYCzmSsr/aQlzIX1Q2jN+oaccB46QRziswUjb9cDl7EP6PsexKJpfPjXI=
+	t=1765351962; cv=none; b=h756XQR8s4/iOGTOD2iQ3VRMglF7qaK0P8gHbacrfG7DN2t6++1eJpYRaKr3ooDrGVrbjZ0MNW7cFKsKCS/f0slzvdUAZYn/YwQvNrOobTKmvRhLLi3VGcU+agLlj8ZXtOPLHLpWvCuWpHVTwb+eRwxe2x4bC2PwB2zGUVmd+ag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765352133; c=relaxed/simple;
-	bh=d45qxoSJ8ljS6Wav8vwK6GCOM4u7dFBs9p6KXWC1gjw=;
+	s=arc-20240116; t=1765351962; c=relaxed/simple;
+	bh=To7u7B92qt5SosqUisV3ywjVpPSNB+/6AP+JAx11P3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O+asWwuPUJJVS3k7cZjITuVucNR1mvxtdhjkpRJA4uPdOJTSNM1NsWrnm+uLz56kuGAfENiqU3FdDBF19XPsXKMuaAuRg79gGWtS4xhZXRP2dyTCUmEyK82uKM0jweGOtjredIFJE+cChCX/ea8LjQDVhc/YqO8ETeuzJ7svJgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QbkejCWU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBF0DC4CEF1;
-	Wed, 10 Dec 2025 07:35:32 +0000 (UTC)
+	 MIME-Version; b=TDLhz8w1EfLk74+vBRe69Tz+c+Bk/u3wlE/q17FEKz4R/4dgQmIbMUsnrrgubzxf0R8WO6myfJpdWl5EGvY/lpr6q7slVl1qkmNr87+k7CAZkwvHHArwMJZ2MjIWjbChdgKNrEV7fkfcHYsmiP0ck4SubCIE0vAi6tDbMloYhK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eZwzYU7o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1E7CC4CEF1;
+	Wed, 10 Dec 2025 07:32:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765352133;
-	bh=d45qxoSJ8ljS6Wav8vwK6GCOM4u7dFBs9p6KXWC1gjw=;
+	s=korg; t=1765351962;
+	bh=To7u7B92qt5SosqUisV3ywjVpPSNB+/6AP+JAx11P3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QbkejCWUgSErcNC4tPxQK1S8JgfUYxXpvDabVd/iBoH3078M/WaoHBtRYwD4suSDf
-	 alLiUFwlv3aO6pNRpE0nO5SuiHW8OReUatq2vdxRsaCn1gMlE4jYIYb/UJ1Ny1wN8l
-	 jz06Vmy3L58U7Ggs/KMgxJa0UWeyW8nHSthJz76M=
+	b=eZwzYU7oH3VJ1ocpGZjj3khYJqcEjfugSy6nvxFEbbeHSNolTyHWA5P7ucRRTm/6Q
+	 j9wBuUxJHvphRwEhcr9kljJmMOymSa3IjscWfdIRwls+imES71Ha1U3uU6BVyf8jo+
+	 9Q0meHEbYiC5cAeRwUGtu3ULXO+xXhqTHF19A16Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zqiang <qiang.zhang@linux.dev>,
-	Tejun Heo <tj@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.17 44/60] sched_ext: Fix possible deadlock in the deferred_irq_workfn()
-Date: Wed, 10 Dec 2025 16:30:14 +0900
-Message-ID: <20251210072948.960218513@linuxfoundation.org>
+	Navaneeth K <knavaneeth786@gmail.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.12 45/49] staging: rtl8723bs: fix out-of-bounds read in rtw_get_ie() parser
+Date: Wed, 10 Dec 2025 16:30:15 +0900
+Message-ID: <20251210072949.284753464@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
-References: <20251210072947.850479903@linuxfoundation.org>
+In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
+References: <20251210072948.125620687@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +59,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.17-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zqiang <qiang.zhang@linux.dev>
+From: Navaneeth K <knavaneeth786@gmail.com>
 
-[ Upstream commit a257e974210320ede524f340ffe16bf4bf0dda1e ]
+commit 154828bf9559b9c8421fc2f0d7f7f76b3683aaed upstream.
 
-For PREEMPT_RT=y kernels, the deferred_irq_workfn() is executed in
-the per-cpu irq_work/* task context and not disable-irq, if the rq
-returned by container_of() is current CPU's rq, the following scenarios
-may occur:
+The Information Element (IE) parser rtw_get_ie() trusted the length
+byte of each IE without validating that the IE body (len bytes after
+the 2-byte header) fits inside the remaining frame buffer. A malformed
+frame can advertise an IE length larger than the available data, causing
+the parser to increment its pointer beyond the buffer end. This results
+in out-of-bounds reads or, depending on the pattern, an infinite loop.
 
-lock(&rq->__lock);
-<Interrupt>
-  lock(&rq->__lock);
+Fix by validating that (offset + 2 + len) does not exceed the limit
+before accepting the IE or advancing to the next element.
 
-This commit use IRQ_WORK_INIT_HARD() to replace init_irq_work() to
-initialize rq->scx.deferred_irq_work, make the deferred_irq_workfn()
-is always invoked in hard-irq context.
+This prevents OOB reads and ensures the parser terminates safely on
+malformed frames.
 
-Signed-off-by: Zqiang <qiang.zhang@linux.dev>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Navaneeth K <knavaneeth786@gmail.com>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/ext.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/staging/rtl8723bs/core/rtw_ieee80211.c |   14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
-index 1e4740de66c28..16a7ae9b29ae4 100644
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -5377,7 +5377,7 @@ void __init init_sched_ext_class(void)
- 		BUG_ON(!zalloc_cpumask_var_node(&rq->scx.cpus_to_kick_if_idle, GFP_KERNEL, n));
- 		BUG_ON(!zalloc_cpumask_var_node(&rq->scx.cpus_to_preempt, GFP_KERNEL, n));
- 		BUG_ON(!zalloc_cpumask_var_node(&rq->scx.cpus_to_wait, GFP_KERNEL, n));
--		init_irq_work(&rq->scx.deferred_irq_work, deferred_irq_workfn);
-+		rq->scx.deferred_irq_work = IRQ_WORK_INIT_HARD(deferred_irq_workfn);
- 		init_irq_work(&rq->scx.kick_cpus_irq_work, kick_cpus_irq_workfn);
+--- a/drivers/staging/rtl8723bs/core/rtw_ieee80211.c
++++ b/drivers/staging/rtl8723bs/core/rtw_ieee80211.c
+@@ -140,22 +140,24 @@ u8 *rtw_get_ie(u8 *pbuf, signed int inde
+ 	signed int tmp, i;
+ 	u8 *p;
  
- 		if (cpu_online(cpu))
--- 
-2.51.0
-
+-	if (limit < 1)
++	if (limit < 2)
+ 		return NULL;
+ 
+ 	p = pbuf;
+ 	i = 0;
+ 	*len = 0;
+-	while (1) {
++	while (i + 2 <= limit) {
++		tmp = *(p + 1);
++		if (i + 2 + tmp > limit)
++			break;
++
+ 		if (*p == index) {
+-			*len = *(p + 1);
++			*len = tmp;
+ 			return p;
+ 		}
+-		tmp = *(p + 1);
++
+ 		p += (tmp + 2);
+ 		i += (tmp + 2);
+-		if (i >= limit)
+-			break;
+ 	}
+ 	return NULL;
+ }
 
 
 
