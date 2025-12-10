@@ -1,52 +1,56 @@
-Return-Path: <stable+bounces-200584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49434CB237F
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:33:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63999CB23BC
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:34:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E3BBC3016FBE
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:32:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5BBF2309D40D
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:34:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DBF927C866;
-	Wed, 10 Dec 2025 07:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F0FB3019BE;
+	Wed, 10 Dec 2025 07:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YqpKDFss"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fcZlgXMf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39373221F2F;
-	Wed, 10 Dec 2025 07:32:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B86122578D;
+	Wed, 10 Dec 2025 07:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765351959; cv=none; b=JyQePphhq2ygJg2IaarYPDWUKk6lkI1G284kie+GcrvpiNeVMmmjPM+JYqQ0saqkrNXUNEegfMuxRCoJNa4e2on5MonyoVINt4EYZB3CGD4wbeDAGTg4k8dMLWB3ojYzp7/bcDuO8p3JneBaD8tCk9Xxh0cy4ydPsJ1kAQEI8pA=
+	t=1765352017; cv=none; b=Pq4IZKwTUg/+2TmQeFlu/044dbkO/NaYbpSHoR4oURAfcdD+Jl1W2JicJsbJxnReoblJ0DLjlOuGA2K4wbTa+rjXkSZIcYtAuJt381UVo7eDIFINACvpN02udrkXnUwTLtnOonb5MUBOJGyVp9ZA/UYq6OSY80+C5aN3ashfK9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765351959; c=relaxed/simple;
-	bh=EkBn5PJo+yNmz9gaaxip4yMu3TifRJTfoNwSeem2wPo=;
+	s=arc-20240116; t=1765352017; c=relaxed/simple;
+	bh=/Rgpoak1hZAOKx98MSSeVvjG+pkrywrAfXy6/kRyxsU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GG1V6sN3b0SM8fTpu55x3ZIvl32rTkuZnaq4OTwMR6RdF/ed1m0hKRSwCeYJlHpIQ5FHE3hiPCcSygBLHERbQSfCNt3LPiq5usQGvbUqqHOAdqnNGp2BMk+ZuL6nJgVNKpzDJFjpPgOvKFUA824aVjDudU5+6ipE5Y45b4ICqlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YqpKDFss; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 888D6C4CEF1;
-	Wed, 10 Dec 2025 07:32:38 +0000 (UTC)
+	 MIME-Version; b=kXmwMYGd6hpXMBSygRXAUpCD90kFL8mWI8NiDM4cetlIZeX36TjygY/GDk1bI5eqcDoQKFGRaIOgX1VTxaz9KuHM0ROFTgh2BOOx9+CTEwzeKLmgEdI7WUGAVne0T+EKTReUPrFEalnHWRuHWrjndQtHEAnvFJf0MSKBxgZTTFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fcZlgXMf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABC57C4CEF1;
+	Wed, 10 Dec 2025 07:33:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765351958;
-	bh=EkBn5PJo+yNmz9gaaxip4yMu3TifRJTfoNwSeem2wPo=;
+	s=korg; t=1765352017;
+	bh=/Rgpoak1hZAOKx98MSSeVvjG+pkrywrAfXy6/kRyxsU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YqpKDFssipksnMftx6OMTbDocPHPR084ormO2pNs2DeB4Tjg8wQrSTe0xX0BUyL/W
-	 1nKeH9bpx2QqX52GO+MyoUaqwNN7iSk6lz1/tbq7vOafMQk4WqxS5NFfX/Qxx+hLyv
-	 pbmWTlWtMxW3GeiQWEHKs+PXjJ17yd/IHjV2UuPM=
+	b=fcZlgXMfJ+tzEgYB5zrRoxjDNy1NPtkvstZtU5+f6/Nq+eckloesF9qeo7aRTA/8D
+	 lUDqbJeF807vPXYrjKFt7sMwvLokylbcJa58MjZiEpqwiFBC+FL+NbrLRdjyw/K8Fi
+	 7yfCKhBXCfPp7mgK/5oEiO5DuBuq4VrpuXKFVuVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.12 18/49] USB: serial: belkin_sa: fix TIOCMBIS and TIOCMBIC
-Date: Wed, 10 Dec 2025 16:29:48 +0900
-Message-ID: <20251210072948.576445467@linuxfoundation.org>
+	Song Liu <song@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.17 19/60] ftrace: bpf: Fix IPMODIFY + DIRECT in modify_ftrace_direct()
+Date: Wed, 10 Dec 2025 16:29:49 +0900
+Message-ID: <20251210072948.309522005@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
-References: <20251210072948.125620687@linuxfoundation.org>
+In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
+References: <20251210072947.850479903@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,83 +62,161 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Song Liu <song@kernel.org>
 
-commit b6e0b3016187446ddef9edac03cd9d544ac63f11 upstream.
+[ Upstream commit 3e9a18e1c3e931abecf501cbb23d28d69f85bb56 ]
 
-Asserting or deasserting a modem control line using TIOCMBIS or TIOCMBIC
-should not deassert any lines that are not in the mask.
+ftrace_hash_ipmodify_enable() checks IPMODIFY and DIRECT ftrace_ops on
+the same kernel function. When needed, ftrace_hash_ipmodify_enable()
+calls ops->ops_func() to prepare the direct ftrace (BPF trampoline) to
+share the same function as the IPMODIFY ftrace (livepatch).
 
-Fix this long-standing regression dating back to 2003 when the
-tiocmset() callback was introduced.
+ftrace_hash_ipmodify_enable() is called in register_ftrace_direct() path,
+but not called in modify_ftrace_direct() path. As a result, the following
+operations will break livepatch:
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+1. Load livepatch to a kernel function;
+2. Attach fentry program to the kernel function;
+3. Attach fexit program to the kernel function.
+
+After 3, the kernel function being used will not be the livepatched
+version, but the original version.
+
+Fix this by adding __ftrace_hash_update_ipmodify() to
+__modify_ftrace_direct() and adjust some logic around the call.
+
+Signed-off-by: Song Liu <song@kernel.org>
+Reviewed-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/r/20251027175023.1521602-3-song@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/belkin_sa.c |   28 +++++++++++++++++-----------
- 1 file changed, 17 insertions(+), 11 deletions(-)
+ kernel/trace/ftrace.c | 40 +++++++++++++++++++++++++++++++---------
+ 1 file changed, 31 insertions(+), 9 deletions(-)
 
---- a/drivers/usb/serial/belkin_sa.c
-+++ b/drivers/usb/serial/belkin_sa.c
-@@ -435,7 +435,7 @@ static int belkin_sa_tiocmset(struct tty
- 	struct belkin_sa_private *priv = usb_get_serial_port_data(port);
- 	unsigned long control_state;
- 	unsigned long flags;
--	int retval;
-+	int retval = 0;
- 	int rts = 0;
- 	int dtr = 0;
+diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
+index cbeb7e8331310..59cfacb8a5bbd 100644
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -1971,7 +1971,8 @@ static void ftrace_hash_rec_enable_modify(struct ftrace_ops *ops)
+  */
+ static int __ftrace_hash_update_ipmodify(struct ftrace_ops *ops,
+ 					 struct ftrace_hash *old_hash,
+-					 struct ftrace_hash *new_hash)
++					 struct ftrace_hash *new_hash,
++					 bool update_target)
+ {
+ 	struct ftrace_page *pg;
+ 	struct dyn_ftrace *rec, *end = NULL;
+@@ -2006,10 +2007,13 @@ static int __ftrace_hash_update_ipmodify(struct ftrace_ops *ops,
+ 		if (rec->flags & FTRACE_FL_DISABLED)
+ 			continue;
  
-@@ -452,26 +452,32 @@ static int belkin_sa_tiocmset(struct tty
- 	}
- 	if (clear & TIOCM_RTS) {
- 		control_state &= ~TIOCM_RTS;
--		rts = 0;
-+		rts = 1;
- 	}
- 	if (clear & TIOCM_DTR) {
- 		control_state &= ~TIOCM_DTR;
--		dtr = 0;
-+		dtr = 1;
- 	}
+-		/* We need to update only differences of filter_hash */
++		/*
++		 * Unless we are updating the target of a direct function,
++		 * we only need to update differences of filter_hash
++		 */
+ 		in_old = !!ftrace_lookup_ip(old_hash, rec->ip);
+ 		in_new = !!ftrace_lookup_ip(new_hash, rec->ip);
+-		if (in_old == in_new)
++		if (!update_target && (in_old == in_new))
+ 			continue;
  
- 	priv->control_state = control_state;
- 	spin_unlock_irqrestore(&priv->lock, flags);
+ 		if (in_new) {
+@@ -2020,7 +2024,16 @@ static int __ftrace_hash_update_ipmodify(struct ftrace_ops *ops,
+ 				if (is_ipmodify)
+ 					goto rollback;
  
--	retval = BSA_USB_CMD(BELKIN_SA_SET_RTS_REQUEST, rts);
--	if (retval < 0) {
--		dev_err(&port->dev, "Set RTS error %d\n", retval);
--		goto exit;
-+	if (rts) {
-+		retval = BSA_USB_CMD(BELKIN_SA_SET_RTS_REQUEST,
-+					!!(control_state & TIOCM_RTS));
-+		if (retval < 0) {
-+			dev_err(&port->dev, "Set RTS error %d\n", retval);
-+			goto exit;
-+		}
- 	}
+-				FTRACE_WARN_ON(rec->flags & FTRACE_FL_DIRECT);
++				/*
++				 * If this is called by __modify_ftrace_direct()
++				 * then it is only changing where the direct
++				 * pointer is jumping to, and the record already
++				 * points to a direct trampoline. If it isn't,
++				 * then it is a bug to update ipmodify on a direct
++				 * caller.
++				 */
++				FTRACE_WARN_ON(!update_target &&
++					       (rec->flags & FTRACE_FL_DIRECT));
  
--	retval = BSA_USB_CMD(BELKIN_SA_SET_DTR_REQUEST, dtr);
--	if (retval < 0) {
--		dev_err(&port->dev, "Set DTR error %d\n", retval);
--		goto exit;
-+	if (dtr) {
-+		retval = BSA_USB_CMD(BELKIN_SA_SET_DTR_REQUEST,
-+					!!(control_state & TIOCM_DTR));
-+		if (retval < 0) {
-+			dev_err(&port->dev, "Set DTR error %d\n", retval);
-+			goto exit;
-+		}
- 	}
- exit:
- 	return retval;
+ 				/*
+ 				 * Another ops with IPMODIFY is already
+@@ -2076,7 +2089,7 @@ static int ftrace_hash_ipmodify_enable(struct ftrace_ops *ops)
+ 	if (ftrace_hash_empty(hash))
+ 		hash = NULL;
+ 
+-	return __ftrace_hash_update_ipmodify(ops, EMPTY_HASH, hash);
++	return __ftrace_hash_update_ipmodify(ops, EMPTY_HASH, hash, false);
+ }
+ 
+ /* Disabling always succeeds */
+@@ -2087,7 +2100,7 @@ static void ftrace_hash_ipmodify_disable(struct ftrace_ops *ops)
+ 	if (ftrace_hash_empty(hash))
+ 		hash = NULL;
+ 
+-	__ftrace_hash_update_ipmodify(ops, hash, EMPTY_HASH);
++	__ftrace_hash_update_ipmodify(ops, hash, EMPTY_HASH, false);
+ }
+ 
+ static int ftrace_hash_ipmodify_update(struct ftrace_ops *ops,
+@@ -2101,7 +2114,7 @@ static int ftrace_hash_ipmodify_update(struct ftrace_ops *ops,
+ 	if (ftrace_hash_empty(new_hash))
+ 		new_hash = NULL;
+ 
+-	return __ftrace_hash_update_ipmodify(ops, old_hash, new_hash);
++	return __ftrace_hash_update_ipmodify(ops, old_hash, new_hash, false);
+ }
+ 
+ static void print_ip_ins(const char *fmt, const unsigned char *p)
+@@ -6114,7 +6127,7 @@ EXPORT_SYMBOL_GPL(unregister_ftrace_direct);
+ static int
+ __modify_ftrace_direct(struct ftrace_ops *ops, unsigned long addr)
+ {
+-	struct ftrace_hash *hash;
++	struct ftrace_hash *hash = ops->func_hash->filter_hash;
+ 	struct ftrace_func_entry *entry, *iter;
+ 	static struct ftrace_ops tmp_ops = {
+ 		.func		= ftrace_stub,
+@@ -6134,13 +6147,21 @@ __modify_ftrace_direct(struct ftrace_ops *ops, unsigned long addr)
+ 	if (err)
+ 		return err;
+ 
++	/*
++	 * Call __ftrace_hash_update_ipmodify() here, so that we can call
++	 * ops->ops_func for the ops. This is needed because the above
++	 * register_ftrace_function_nolock() worked on tmp_ops.
++	 */
++	err = __ftrace_hash_update_ipmodify(ops, hash, hash, true);
++	if (err)
++		goto out;
++
+ 	/*
+ 	 * Now the ftrace_ops_list_func() is called to do the direct callers.
+ 	 * We can safely change the direct functions attached to each entry.
+ 	 */
+ 	mutex_lock(&ftrace_lock);
+ 
+-	hash = ops->func_hash->filter_hash;
+ 	size = 1 << hash->size_bits;
+ 	for (i = 0; i < size; i++) {
+ 		hlist_for_each_entry(iter, &hash->buckets[i], hlist) {
+@@ -6155,6 +6176,7 @@ __modify_ftrace_direct(struct ftrace_ops *ops, unsigned long addr)
+ 
+ 	mutex_unlock(&ftrace_lock);
+ 
++out:
+ 	/* Removing the tmp_ops will add the updated direct callers to the functions */
+ 	unregister_ftrace_function(&tmp_ops);
+ 
+-- 
+2.51.0
+
 
 
 
