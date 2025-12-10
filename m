@@ -1,211 +1,161 @@
-Return-Path: <stable+bounces-200731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84998CB3519
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 16:29:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83C82CB3646
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 16:56:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 90F533181200
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 15:24:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CD233301E58F
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 15:55:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3713330CD82;
-	Wed, 10 Dec 2025 15:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17EB225392C;
+	Wed, 10 Dec 2025 15:55:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="chyatg21"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="mdcTGguI"
 X-Original-To: stable@vger.kernel.org
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013045.outbound.protection.outlook.com [40.107.162.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f66.google.com (mail-ed1-f66.google.com [209.85.208.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18A6826738D;
-	Wed, 10 Dec 2025 15:24:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765380271; cv=fail; b=VBFrw37kEZrk0QFdrLCNR6wGqEsZ2djkkhRBqpXjnTl3lz3RZWkG+h5i96H4i7LP7XPmo+8H57vPx0n44sp5mP8iTkXt/6U6nNZFiHrTjqS5lJ9Xw9WrEisFblBmkIbvmfSkSXAmZe/k7izEFU3AQeJ+tNcpfmgx3t+TkGzjVNA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765380271; c=relaxed/simple;
-	bh=zo4cMQP/d19fK6JkYw3reQzjNpZ0MK81EOisRF8DnkQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Ps6TH18OUtX2daxvGEhf6MzRLvvEFG9YgNl61i3WuygRyLfg/5c8FaCZoltE78XhI6EfAB0ISwbvU55eTvoK5SZHM7cUN4WNwp4ClIe34puUzXJVfpZsm99d974I4PzFhkD+mOeazPvreaAUXISt4CR9Qvvpk65apyP1V4fl7iE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=chyatg21; arc=fail smtp.client-ip=40.107.162.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XGmUP27h8KgBh5BmC9lrE+yGJuU6n/4Hc9TmjIP1QbqKaOvDvW7XyY+j4cf2xMcpd8XZ9lOjcmvR/4Nscs/5P9j0CoXe0kYMk6q6YsBC7IXldzAA5JQX0q/ArYThH1mNjASYnzQ8dtQddQmLxCp7qP8/jdpiXGNreRxf/hjRzxNtTBRWPMZKK/G4dSGY19QdYX2jO7alYLKqC4Y0EdNrVEKez81pAzdgIdPXq8Hq/FkwD/9MkrH9a2DpkT9W204h/Hisyv+ZPsBSLIYknNojWp67+Bn0lM8rvWxxlzJmXwo3fbAS57mO24S8TQItPT7ri22e9ME8pCEqgDiBCHZ3FA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5UQvzWk765SAQZvXHAtTHMHgTYskLRLxG2/Nb8QoU9g=;
- b=cNVVF3CpU3CuUXcpNs76NBAXeCjHqyHu0GioD9RVAs+ZVMHMgllOIn1PPP7we+lG6K3qN8EOSjI0bxTObptkarS/DDtrC1YghVs9Rh4uM7gkddqsjywxtK4qfyLxUPEZ6ClYBJBxwHZ9JSw3RgiJpIuifeB/ydXuoAs2+krjhW+HDk19qpITUGSixLK2ey/VPO4K6clAufAT0amzY5yJ7qG82ttTQ2JTUB7Ks1tYFBa01m91EcubfZt2GHKUAHaVOYODunp7SZuOaQXhibka1LcqIdUlu890cz9lYIAY6LTEtAN7KL48awBX1yfwIktHY30pUvjV1wssZbEUt2l4ng==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5UQvzWk765SAQZvXHAtTHMHgTYskLRLxG2/Nb8QoU9g=;
- b=chyatg21IakaCe9fyOrB1EhEwEOosbW2mQYI0QC2mvvw0/ytvwVexgwWnCOqyE93gK1F/56UMGmwc/zyV7MgfYgN36O9IN4h1O0n2g7V5TjoLBj2taZTHjU/DhNDzt8SPTjKhPGjwEUe8bDNB3ZyAsRYhYqgdvWvuPGI0ahiEHbqrkKrgVOuwIMR2HYEpCKx1hEjc8rIJUW+9rION2o4tZWVAYzmDIZCX1KbtzhpQTEtvxFKF2zns6SVrESMevWcl6QwmpMZfnpmOVgA4tn6JVA3NXcF0EjllyRxFYh0nRRt4OOtxeBLNEZDCioJ+Lll3yCLp46J8JmXysMWugcVxA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8951.eurprd04.prod.outlook.com (2603:10a6:10:2e2::22)
- by AM0PR04MB11931.eurprd04.prod.outlook.com (2603:10a6:20b:6fd::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.7; Wed, 10 Dec
- 2025 15:24:26 +0000
-Received: from DU2PR04MB8951.eurprd04.prod.outlook.com
- ([fe80::753c:468d:266:196]) by DU2PR04MB8951.eurprd04.prod.outlook.com
- ([fe80::753c:468d:266:196%4]) with mapi id 15.20.9412.005; Wed, 10 Dec 2025
- 15:24:26 +0000
-Date: Wed, 10 Dec 2025 10:24:19 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: ulf.hansson@linaro.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com, linux-pm@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3] pmdomain: imx: Fix reference count leak in
- imx_gpc_probe()
-Message-ID: <aTmQo6L96/PcpVq0@lizhi-Precision-Tower-5810>
-References: <20251210033524.34600-1-vulab@iscas.ac.cn>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251210033524.34600-1-vulab@iscas.ac.cn>
-X-ClientProxiedBy: PH8PR20CA0011.namprd20.prod.outlook.com
- (2603:10b6:510:23c::14) To DU2PR04MB8951.eurprd04.prod.outlook.com
- (2603:10a6:10:2e2::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E242B1917F0
+	for <stable@vger.kernel.org>; Wed, 10 Dec 2025 15:55:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.66
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765382150; cv=none; b=b+OAUCk9U1PxKJLKvS13XrCrY5zi+YDvST5CvnnaHLPDWKRpBARaq9qlOQyaeEytTZCzQq3rNl2b6rb+QRyit88lkWWZRYXJk1SIukN3z18CFZBzTfO7+d6HjzdCE81p5CQaWXGFmjHnZZyopHebc86ZRzHas54CpjyNDCd4AhQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765382150; c=relaxed/simple;
+	bh=G8Q2u2sVOOsXSr7qFY2KLbIPxq/0nI2Nn65kA8r7YQ4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uWpCGO/S0jP4LWCcLy9vhkDGfUKYJa1Hbjtf5wRw6wq3UB5IruBwdm2pffP9YWlJ76NXUuBLX3aixOOXnKnp8GrSATCrYHG+OrhdAsX92wxvXr6D0Ek30E0CRu2OJDpIR8PUPE62FOJKixJ7hZMIssXyx6VH2W/h5ekjAwjftg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=mdcTGguI; arc=none smtp.client-ip=209.85.208.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ed1-f66.google.com with SMTP id 4fb4d7f45d1cf-647a3bca834so1733a12.2
+        for <stable@vger.kernel.org>; Wed, 10 Dec 2025 07:55:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1765382142; x=1765986942; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=G8Q2u2sVOOsXSr7qFY2KLbIPxq/0nI2Nn65kA8r7YQ4=;
+        b=mdcTGguIyFR1vKLpq8co0Cewkm0zXuDtAi+B4oz4OjEG0gCtmlsjrM/apzuWne8ghQ
+         ChSG834BtKt2UJ7VGH8Xq7tThyyDB1Z8WUoY1p/cPGCxmfHE0UCGhFjDjk/aMu1zuAGV
+         WLpc7JRLAjsPwfQtJz1QvXuXrCwLReFq5ZPWEf0XJbcCyvEiqNeYE98XEfeWUuZjspUq
+         yspR4Pql6aaTdnp8OBaUCHAJzjLdlW2sW6B+5ouSZsz2ZICauCN8XxnzCHhCw/VtwXJg
+         xsxicfTzlHYPqF3DmB0tSFcieGETjV6zkbOs7YJQ5lx2mHu7jiKdW780zjoM6kSWTjz2
+         zVfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765382142; x=1765986942;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=G8Q2u2sVOOsXSr7qFY2KLbIPxq/0nI2Nn65kA8r7YQ4=;
+        b=BW6vnFfhDa5UjZXP55pDuZBYRy0m9xlg4/U5eUebYJ8YbrMkAGueLTXIlml7w8nu+Q
+         FFRjNjPFfX4PSOwadJcXgo+fIdFZoK3jNU0CvAQ+TU+fKJ6J2kSFAKWv/EDxP2wUOuZS
+         tXeZFopxA/TdwfbMoP7LmBBo286SQANUPmw0dSKYUgH997xbu5tMnat6uCD0PIsc7RbI
+         uoBKTZQhjEG3opc07cMniC77+cZ6nt2h+0c6ebyE5hyXEo9ygMGJ3HYpOSPfq3TVeHqh
+         fS1w7RGByqBZGP6KaEpRLDWeLak539w6WbD9Jona5vhCRK5spektA+d7WAYe5zfknKbT
+         Zhwg==
+X-Forwarded-Encrypted: i=1; AJvYcCX7x7XMKmANcRh9H4gIOREmBWIHuDaDr2Xsz4i+QC+fmxHPFFsk8WjGRwkvhiK+fImegyqXUS4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzPr8b2eoiS4Q0wLS7NmyG3deRVC4PK8PpL0hSTeVIDhnbCe3U8
+	DrigyG3EDnNf+XOEd+4rruAmUxqPH3/q4V3ghPNxYRlDVnbFUZYZITXbnWeGEf00gj8=
+X-Gm-Gg: AY/fxX76LVOarch0vZgqW0Vc65zNek11cT48wgwNEJxcbppDHWhVH0XEwYm202W2E5u
+	XwWKqVCKTeiIoYDIuHmMu8GzfRH51K1sSc/XwqEUL0BQzKhXPzUEcZbLsqbnwwdnJKnMFQVHGbX
+	8CEC8r42NWixto3Q+anzAb1ZhkvDlu1yi42WHqfIO+O/kA2kQZnxcjSvT1v6rBaTysZYhSK6Rst
+	ufWnTKFUMzMHtZmtBLqMZkydiACDyiqxiMsLcVp6Zu+uhOkn4fOT7EOJAg8gPyl83QyVdWawHx4
+	Y11K4X/b1Pu2J+MU1U+40dbIT/rzxlfdKOipCdvkm0g0PfqQuq6MgumXSBJsuBn549DY3pWt6er
+	jbHnZ/2X1osFZLJPBgC+R4kQ5z4+yUqUVWeC9rMyoa1jfqquEywDzmZloaoJ2m4Qrph99OL94GY
+	IqwreEvOdaEQdQ5rgq63d4cb9Xtiin/akm3cYNERircr1ZiATuRzRYN261tIzPQxML5OZBQw8NQ
+	lI=
+X-Google-Smtp-Source: AGHT+IFtdITBVw1NZitBnhjXDJRgjHCxhXPtM8OwdVYIEA/FLrKfi71V/nkBsKrYDqpjS32YGuufCQ==
+X-Received: by 2002:a05:6402:51cc:b0:647:62e1:300e with SMTP id 4fb4d7f45d1cf-6496d5ec98dmr2866969a12.33.1765382142381;
+        Wed, 10 Dec 2025 07:55:42 -0800 (PST)
+Received: from localhost (p200300f65f00660850b8fa1cfb7adf67.dip0.t-ipconnect.de. [2003:f6:5f00:6608:50b8:fa1c:fb7a:df67])
+        by smtp.gmail.com with UTF8SMTPSA id 4fb4d7f45d1cf-647b41219c1sm18676323a12.27.2025.12.10.07.55.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Dec 2025 07:55:41 -0800 (PST)
+Date: Wed, 10 Dec 2025 16:55:40 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Fernando Fernandez Mancera <fmancera@suse.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, dsahern@kernel.org, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	Garri Djavadyan <g.djavadyan@gmail.com>, stable@vger.kernel.org, 1117959@bugs.debian.org
+Subject: Re: [PATCH 1/2 net-next v2] ipv6: clear RA flags when adding a
+ static route
+Message-ID: <zmqrhsroqfgqgyn5bvybhfppruv2wsghokmpzkz64mpalwaajq@kv4pazae6uwi>
+References: <20251115095939.6967-1-fmancera@suse.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8951:EE_|AM0PR04MB11931:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5413c80e-e5f0-4fdb-f055-08de3800341f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|19092799006|1800799024|52116014|376014|7416014|7053199007|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?LxYdAwoGlXYr1vPPDaOc7q3CNHLY9GtlUgneYJ0h1FQqerRFtcKzIPzD8qBV?=
- =?us-ascii?Q?VXnXheh9VMCIETBaFzB5ugB/i/+0LHGXTuvxVbwaKtL+8s9unqH4ZTBKu24s?=
- =?us-ascii?Q?fF9E/fKhmMUNhSHvqSph/KvlhtJfxBf24iQ/xcJwS6jxTKW0njjxEedvyiyY?=
- =?us-ascii?Q?syq9CkcvA1yGWqYZabjGpoLKCqoOQtbWBGRQs9xSb2yTKUICoyTnsQ9pZcL0?=
- =?us-ascii?Q?5gPoA05l4lCTtEQuVbnUWylUkwVmkfogMBFa8yedhwQrG5NERSMpBVAtjqGf?=
- =?us-ascii?Q?AmZ3bbDnsNVkFRG7WsPCwHrsGhR3ZBEFEQRY4NIt2G39L7WsDcB2612Fwaum?=
- =?us-ascii?Q?Ae7M6+QKlzTIX2JVnKMb3lsGKdwQoED/ERD2Omo5A0SrAgU4dlBRGrFZgl2M?=
- =?us-ascii?Q?RC8BWngxsvXV1wZHqq5Y77DNne6a8RpzSLXKaUt8Rr9obyKmqSM5lJ0z/2CP?=
- =?us-ascii?Q?hEXgwRqr3gVrQ3BwhyGgKS9/3jAiiqJgZS5hWZJwghVIntv5g0JMYYoC8lq3?=
- =?us-ascii?Q?5r7yIC04arets76rTiE1T9gy1eNtdiJawmSQ68utktrSq/01y3DHQlls9TTT?=
- =?us-ascii?Q?YiGvWpDB37Owwtm6F4HPqPs1mAo3lfxZD4cHL+HIaiyLhkxQzEM6IAcaslBK?=
- =?us-ascii?Q?GvF3QnW5yb53fR9QlNg/F2MoanG/5V7UD3UvIdsO3drgZ+/rsZ16L2JG9I06?=
- =?us-ascii?Q?tpPX2C0V6HOZtMRY/9dvKvXS+Z+qNIrLCWWjSxjVrptyBzwskxGV65ngiQ6z?=
- =?us-ascii?Q?PgVWK8IkEK2v9SQpzq7clevgOXlJvjqH+L8uG7ReBlPN4cdiC3ioM9Vm5oO9?=
- =?us-ascii?Q?v+xyKam3Lr0PmztCBNIcRPFQpgLuUVTxbwASydQaA2azIJRcnGwlXCkfXEKp?=
- =?us-ascii?Q?JV9pxF7eS0dLJGUltoCPaiSyhVFiVgaHjwxAuvfNZoaVerYFgXwEBEW8Fg5X?=
- =?us-ascii?Q?eo5drxebrHDeCijVDxJi4Z4okZHu/QOvpOp6S4K4MI3nekEPc3ONE5nlJN3Q?=
- =?us-ascii?Q?qHyFNqyg5VvpGtl9ILEGyrxoAjMoAbr99G0jy6WgCQxOtI6SOLx18j7vkqk7?=
- =?us-ascii?Q?oHrIRdlEnipGVI5MbP55r5I9eljf8NqD/LdhuWAxex+ljuU+K5E1Y90TDLMa?=
- =?us-ascii?Q?KFZIkSn97PcYXQ6QWSfmjP1h5aznZkwWgMFwVuvsiNb2GQtrs3T+vIsFEr+G?=
- =?us-ascii?Q?PqBTIxEiS/LGP7TO8ohOtO6hzeXgnbrzcLo5IfuzUMiwOMu4vxYefQhquVVB?=
- =?us-ascii?Q?Vj/Xpi7XVhLmV+SeCCFfIHTOwk5uFL4+yIcItUXM0/xbTtKorvbXCz4HNWjF?=
- =?us-ascii?Q?zfw+DC5swZ9nsS4dV8IUFYZBcrF3gLbqc5ALbn3ExOa/xTZH6+Gndyq8JWgy?=
- =?us-ascii?Q?4tH3IN2HvIdTlUzUEY6Dvt8g9eD1AWOcH8ur4n7KfT7SMlOkE5xFO2a9z3jt?=
- =?us-ascii?Q?mVOF3WpyUmT7YnM80SeE71z4t4RfDo+3CTvWWTB/yf0/leuOblQGnvYHvTo6?=
- =?us-ascii?Q?W51WrvtkfOR6yptacEeqCHtRIvHdlOFflaki?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8951.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(1800799024)(52116014)(376014)(7416014)(7053199007)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?6fK1yasb0Ys8Seom0nJIO9Ar5UrfOpDvfpo9W7w/TrBTuHib7GJUKsRklUzg?=
- =?us-ascii?Q?jMFnWJJUT7ltXLOzAxr/zXtKHxqlrPElerOH3rZXF901NSQBdXSMEM6q2tJc?=
- =?us-ascii?Q?447MNubseWyLmuxaEADjxvlpyvoTa9ZUWFsQR90q1tIn5q4p4uTlxebxfhTn?=
- =?us-ascii?Q?BIP7CO8SMDcOa5B5MOnZBPjFWyydWsOENnVNWANrEYEu6LRIf86A034Atq+z?=
- =?us-ascii?Q?wCAvU37q9jjLXHSmpe/1C4xHJ4yzXhJuLvom45l8gSwQSXxdWB2SAazRg5ku?=
- =?us-ascii?Q?2VpPa2E3G4KpXo2+s8E93JQqggXNBCjPnfKBw/ZQmAZ/w6JClObGSzc7jgsF?=
- =?us-ascii?Q?B3wfh2kMYPEdgYpfYE7PzeWd0HUtL81c5lMZ7x8si8c84q/2is3pM5IlCA59?=
- =?us-ascii?Q?StgqjyjfamnZ9K/KIFJMi8t4DSeRg6ZXXmnkwberLnBoKbF0rrmKwvjvITXD?=
- =?us-ascii?Q?QNK8SyQY1yXWIo14UxBQL5yxOTJcw25Pg8TmvYu6AKpmXWREjMW63KALsNFg?=
- =?us-ascii?Q?pgLNTy8Dxcr9vyyO71l11Ikw47OVqHF2pg31c+Xvi/YmkMzggg2YizjxONk1?=
- =?us-ascii?Q?EDXGMBjGcc0rvVWHvNPMsFbJkclWbzfbgUTu9vQ+cEQquNxiUlUDzekWIrmx?=
- =?us-ascii?Q?O7mgJpk/Ib7dVugv11KGSDiJ+PpUsjwmDcH7/rDot/iyFOXsutWFlJLuX6bj?=
- =?us-ascii?Q?A7yIO//5fKrMeZAtvrdyqDQ/QLHkGnI8X9aDWMiHYYSoOhR6+wMu/BHCXmK4?=
- =?us-ascii?Q?Rl8T0ZJB7YW8BCVQq/9U6XlMSjskSDk6L7jkiJFWVXcXrpBL/gos0r8/nowU?=
- =?us-ascii?Q?zGSqKYw5bKmNhyU2mkbBQ7wdGOjquRZ4unJBCWSnEDQcUl49fG4Qphl/T3oq?=
- =?us-ascii?Q?+JZyWDiMNh3przVKVRDilAa30SeQakl5hPMbzGQE5o3SGrkO9UJ0U+gSqaEA?=
- =?us-ascii?Q?pDGkKlk9VsdINJGX4N5VfiRdjIIvWjS4C7hXEiaaMzRKjTSm9y0t64Ega1aG?=
- =?us-ascii?Q?r25x4fsqxh+hzgIbi7fzozIufZHdoJQnBzuWgwcMKk0DAnVUhpWj1llBYtx6?=
- =?us-ascii?Q?Sgkvjn4yPEDHWsjFBraVIBNrcQT+OygCEYbLCPuXlC0AM3lQU7KghEMgkiMn?=
- =?us-ascii?Q?Db273CdMG51FccpcuM3Q5KWCUOYnjaeeR8i7UrGaIbxXiper6jEpZysU++eT?=
- =?us-ascii?Q?EEJMkDTNf1q2X2S85s/meWcEknsOQu9DJ1ojrlS8XDQCqCRpcafLHE7rbtjI?=
- =?us-ascii?Q?sgEkaupngIPdC8/8dVnwDil3rCbHgTg0X13VhWLOrtUEIMphO6Mt246q5LHQ?=
- =?us-ascii?Q?LQVR+X++GAYHGj6YhxOL7rgT0SO/Nc1tqEZn+J0Jd41OfWyRRfPo7ccIUXpL?=
- =?us-ascii?Q?M9j+OhtBs99gwhdVDTmoUY+at/Z3cq3jhfYLQTOJWxc0n7/fSsNCGOJrgsIC?=
- =?us-ascii?Q?JSExrg4F0POYCJMC7Z2/W0Tq0+SPWdeHt+N9kCAWs6k6dPkAfNl7bSrLwLq8?=
- =?us-ascii?Q?NHt+zdye5WW4UvpB436YXuMBhCS+YfTQ0uafYdIaDg5xFppLJz6TKzcIsyZJ?=
- =?us-ascii?Q?wcPLr87Azb0F64wXrQl5l5tbQLtQkwMbhYxFKSTj?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5413c80e-e5f0-4fdb-f055-08de3800341f
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8951.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Dec 2025 15:24:26.0089
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: j/fA8wVz+Jjw1R2y8bYlqb8Z2FmiA7OC74Kg/GUR/Tip0ePVyCDYVdwiqLGcfdnZ7PeI1e2H0H1OfBlHvGtUaQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB11931
-
-On Wed, Dec 10, 2025 at 03:35:24AM +0000, Wentao Liang wrote:
-> of_get_child_by_name() returns a node pointer with refcount incremented.
-> Use the __free() attribute to manage the pgc_node reference, ensuring
-> automatic of_node_put() cleanup when pgc_node goes out of scope.
->
-> This eliminates the need for explicit error handling paths and avoids
-> reference count leaks.
->
-> Fixes: 721cabf6c660 ("soc: imx: move PGC handling to a new GPC driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
->
-> ---
-> Change in V3:
-> - Ensure variable is assigned when using cleanup attribute
->
-> Change in V2:
-> - Use __free() attribute instead of explicit of_node_put() calls
-> ---
->  drivers/pmdomain/imx/gpc.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/pmdomain/imx/gpc.c b/drivers/pmdomain/imx/gpc.c
-> index f18c7e6e75dd..0fb3250dbf5f 100644
-> --- a/drivers/pmdomain/imx/gpc.c
-> +++ b/drivers/pmdomain/imx/gpc.c
-> @@ -403,13 +403,12 @@ static int imx_gpc_old_dt_init(struct device *dev, struct regmap *regmap,
->  static int imx_gpc_probe(struct platform_device *pdev)
->  {
->  	const struct imx_gpc_dt_data *of_id_data = device_get_match_data(&pdev->dev);
-> -	struct device_node *pgc_node;
-> +	struct device_node *pgc_node __free(pgc_node)
-> +		= of_get_child_by_name(pdev->dev.of_node, "pgc");
-
-Does it pass build? Sorry I have typo at previous comments.
-
-struct device_node *pgc_node __free(device_node) = of_get_child_by_name(pdev->dev.of_node, "pgc");
-                                    ^^^^^^^^^^^
-
-Frank
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="urotfrqmzkqody4u"
+Content-Disposition: inline
+In-Reply-To: <20251115095939.6967-1-fmancera@suse.de>
 
 
->  	struct regmap *regmap;
->  	void __iomem *base;
->  	int ret;
->
-> -	pgc_node = of_get_child_by_name(pdev->dev.of_node, "pgc");
-> -
->  	/* bail out if DT too old and doesn't provide the necessary info */
->  	if (!of_property_present(pdev->dev.of_node, "#power-domain-cells") &&
->  	    !pgc_node)
-> --
-> 2.34.1
->
+--urotfrqmzkqody4u
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 1/2 net-next v2] ipv6: clear RA flags when adding a
+ static route
+MIME-Version: 1.0
+
+Hello,
+
+On Sat, Nov 15, 2025 at 10:59:38AM +0100, Fernando Fernandez Mancera wrote:
+> When an IPv6 Router Advertisement (RA) is received for a prefix, the
+> kernel creates the corresponding on-link route with flags RTF_ADDRCONF
+> and RTF_PREFIX_RT configured and RTF_EXPIRES if lifetime is set.
+>=20
+> If later a user configures a static IPv6 address on the same prefix the
+> kernel clears the RTF_EXPIRES flag but it doesn't clear the RTF_ADDRCONF
+> and RTF_PREFIX_RT. When the next RA for that prefix is received, the
+> kernel sees the route as RA-learned and wrongly configures back the
+> lifetime. This is problematic because if the route expires, the static
+> address won't have the corresponding on-link route.
+>=20
+> This fix clears the RTF_ADDRCONF and RTF_PREFIX_RT flags preventing that
+> the lifetime is configured when the next RA arrives. If the static
+> address is deleted, the route becomes RA-learned again.
+>=20
+> Fixes: 14ef37b6d00e ("ipv6: fix route lookup in addrconf_prefix_rcv()")
+> Reported-by: Garri Djavadyan <g.djavadyan@gmail.com>
+> Closes: https://lore.kernel.org/netdev/ba807d39aca5b4dcf395cc11dca61a130a=
+52cfd3.camel@gmail.com/
+> Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+
+this commit is in the mainline now as
+f72514b3c5698e4b900b25345e09f9ed33123de6 and is supposed to fix
+https://bugs.debian.org/1117959.
+
+I would have expected this to get backported to stable (here: 6.12.x),
+but it's not in the list for 6.12.62-rc1[1].
+
+Can we please have this patch backported?
+
+[1] https://lore.kernel.org/all/20251210072948.125620687@linuxfoundation.or=
+g/
+
+Thanks
+Uwe
+
+--urotfrqmzkqody4u
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmk5l/kACgkQj4D7WH0S
+/k6erAf/T4zGWs/IRkIPbPpr00LTGWPYtn2Ll1dmur0IDmYi45DzRTETSfw3U9NK
+NkrcoS2nZA1aK3h2HW6rHhVP0NQ++U3FfPT0o4zlZUdgEem8RVef+xvf+AyQbIxF
+uhX8Wja0nVW3QLtj190wqcsvhTzcOTBISrK9EoUPJRdYEFv0yBiM12fmDuIPitv8
+wfRGK6GXMW5+3s2c9TJoxDtvDZt+45xauImuou+t68PhoFi4bwhcKlifobjcPVII
+O126RfhvdSqBX0lXiyaG+sH+eDdH1/JBSHIl0vCCqaO38MWPPtRFt9jib0tk281V
+P/FJQ94VGR1g6KkDPFeR1ScMg9ZysQ==
+=yAus
+-----END PGP SIGNATURE-----
+
+--urotfrqmzkqody4u--
 
