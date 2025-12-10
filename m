@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-200553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 341A3CB2332
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:31:53 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F3EFCB23E2
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:35:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1186730A0664
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:31:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 189E6301B13D
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:33:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5E1622578D;
-	Wed, 10 Dec 2025 07:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10E353016FA;
+	Wed, 10 Dec 2025 07:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="phXHLDs4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z1YPRh5A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E75A1DD0EF;
-	Wed, 10 Dec 2025 07:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF66B274B5F;
+	Wed, 10 Dec 2025 07:33:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765351878; cv=none; b=LM5K8jF1RoweBWBD2qJGA7nZWzw2O7xrVf+3ZHzGnhOKAI5g+QQncvw6M1HY1et8bCYEgn6rRnSMO44o1jaGkqg43OLsR7m66qzxJxEsUwEWaFb6RRjKPj+i9LLJMwVobJBvfS7tpP74BjSSM1s+lrTwToyZgr2kbh0TDMmeWh8=
+	t=1765351998; cv=none; b=TxMzR9hr+yB4S+OborOqEtISkVSknQRl1vjzbXtJxPJR9H2soPcrZeNmXo+OdJmmYQYYVM81nQ/12EaRgd93/U++BehyvN03OYXtK5d81+JRsKb4N5DNY4DizFSBzvpB7GlqJVMdSo0A/t5k4W8f1IcXkb601LLAvEc1fi7OxLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765351878; c=relaxed/simple;
-	bh=9x4WJKOiTl8mBw3v+lnsc9ZsuT0ZmKk3+FOMC5pmvs4=;
+	s=arc-20240116; t=1765351998; c=relaxed/simple;
+	bh=uZP+RyBbA/9h0tiBq1OwCRLn5FNalZ1c/YTE9oNm6+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fKWmhvxScLS0oKPOyo3HQa9lMODJVt/fX14whrXpd1dUmrp7tKC504OWwujWVvaRI8/wDXnIj7LdIuIY+WIFxotIBJ9LUp+L4KpVnxLW+oRVysy05cKNoDvjF4S/v2Zu8klg/alPKNAnvtCwXIydD4jspJcFtEqbtTcuhi6g3h4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=phXHLDs4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E4B3C4CEF1;
-	Wed, 10 Dec 2025 07:31:18 +0000 (UTC)
+	 MIME-Version; b=Xk4ODYoY8mks7wTH/uH8jt8syjVc8nvBlV7glpZb63M72foJhpfd2yZDyp+Qd3K6v6Z1vUiEf7y2aAai0mKWh3OHw9LHA0gr5x7gQwGiEpYAXJQcBxVPJ+fOM+gg7QQF7ZjKJH2Byykx8ybNqSWM1l03M4H2QNEVKI93eE6Xg8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z1YPRh5A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 184C3C4CEF1;
+	Wed, 10 Dec 2025 07:33:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765351878;
-	bh=9x4WJKOiTl8mBw3v+lnsc9ZsuT0ZmKk3+FOMC5pmvs4=;
+	s=korg; t=1765351998;
+	bh=uZP+RyBbA/9h0tiBq1OwCRLn5FNalZ1c/YTE9oNm6+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=phXHLDs4oKdqbfayigmteoevd8cWhd8N91HQpExNyfME/nR0V3ypp/ck6AtkQpo6q
-	 zCSDRoDfsNIjxxZxEtkJ8DDrl+GIgSxfEDoyhpKN/8sCg7+90ty2WzVANvLqyu9dXP
-	 AVhlNRlLLuKsqXjv0XLemifT5LfUMCwWihk1+ENQ=
+	b=Z1YPRh5AXKygec1SDDwG2THOIfTtzalGt8ORuzY86CbyUoEx9MvMmyWz5LyMjyvXV
+	 Jz1ZtamTnmUXoP+qTv3YTTMJgBNkOgEAHH8/+JK8L5KPFJdahF7WLUapyDKJXLus4I
+	 zAVf3EvAB1FIbYvFcGWAmF0hb787Yad1W2Gt6Efw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 02/49] Revert "xfrm: destroy xfrm_state synchronously on net exit path"
-Date: Wed, 10 Dec 2025 16:29:32 +0900
-Message-ID: <20251210072948.187291565@linuxfoundation.org>
+	syzbot+f3185be57d7e8dda32b8@syzkaller.appspotmail.com,
+	stable@kernel.org,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.17 03/60] ext4: refresh inline data size before write operations
+Date: Wed, 10 Dec 2025 16:29:33 +0900
+Message-ID: <20251210072947.933236090@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
-References: <20251210072948.125620687@linuxfoundation.org>
+In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
+References: <20251210072947.850479903@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,181 +61,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit 2a198bbec6913ae1c90ec963750003c6213668c7 ]
+commit 892e1cf17555735e9d021ab036c36bc7b58b0e3b upstream.
 
-This reverts commit f75a2804da391571563c4b6b29e7797787332673.
+The cached ei->i_inline_size can become stale between the initial size
+check and when ext4_update_inline_data()/ext4_create_inline_data() use
+it. Although ext4_get_max_inline_size() reads the correct value at the
+time of the check, concurrent xattr operations can modify i_inline_size
+before ext4_write_lock_xattr() is acquired.
 
-With all states (whether user or kern) removed from the hashtables
-during deletion, there's no need for synchronous destruction of
-states. xfrm6_tunnel states still need to have been destroyed (which
-will be the case when its last user is deleted (not destroyed)) so
-that xfrm6_tunnel_free_spi removes it from the per-netns hashtable
-before the netns is destroyed.
+This causes ext4_update_inline_data() and ext4_create_inline_data() to
+work with stale capacity values, leading to a BUG_ON() crash in
+ext4_write_inline_data():
 
-This has the benefit of skipping one synchronize_rcu per state (in
-__xfrm_state_destroy(sync=true)) when we exit a netns.
+  kernel BUG at fs/ext4/inline.c:1331!
+  BUG_ON(pos + len > EXT4_I(inode)->i_inline_size);
 
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The race window:
+1. ext4_get_max_inline_size() reads i_inline_size = 60 (correct)
+2. Size check passes for 50-byte write
+3. [Another thread adds xattr, i_inline_size changes to 40]
+4. ext4_write_lock_xattr() acquires lock
+5. ext4_update_inline_data() uses stale i_inline_size = 60
+6. Attempts to write 50 bytes but only 40 bytes actually available
+7. BUG_ON() triggers
+
+Fix this by recalculating i_inline_size via ext4_find_inline_data_nolock()
+immediately after acquiring xattr_sem. This ensures ext4_update_inline_data()
+and ext4_create_inline_data() work with current values that are protected
+from concurrent modifications.
+
+This is similar to commit a54c4613dac1 ("ext4: fix race writing to an
+inline_data file while its xattrs are changing") which fixed i_inline_off
+staleness. This patch addresses the related i_inline_size staleness issue.
+
+Reported-by: syzbot+f3185be57d7e8dda32b8@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=f3185be57d7e8dda32b8
+Cc: stable@kernel.org
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Message-ID: <20251020060936.474314-1-kartikey406@gmail.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/xfrm.h      | 12 +++---------
- net/ipv6/xfrm6_tunnel.c |  2 +-
- net/key/af_key.c        |  2 +-
- net/xfrm/xfrm_state.c   | 23 +++++++++--------------
- net/xfrm/xfrm_user.c    |  2 +-
- 5 files changed, 15 insertions(+), 26 deletions(-)
+ fs/ext4/inline.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/xfrm.h b/include/net/xfrm.h
-index d51204041bf7d..b6fff506bf30c 100644
---- a/include/net/xfrm.h
-+++ b/include/net/xfrm.h
-@@ -851,7 +851,7 @@ static inline void xfrm_pols_put(struct xfrm_policy **pols, int npols)
- 		xfrm_pol_put(pols[i]);
- }
+--- a/fs/ext4/inline.c
++++ b/fs/ext4/inline.c
+@@ -418,7 +418,12 @@ static int ext4_prepare_inline_data(hand
+ 		return -ENOSPC;
  
--void __xfrm_state_destroy(struct xfrm_state *, bool);
-+void __xfrm_state_destroy(struct xfrm_state *);
- 
- static inline void __xfrm_state_put(struct xfrm_state *x)
- {
-@@ -861,13 +861,7 @@ static inline void __xfrm_state_put(struct xfrm_state *x)
- static inline void xfrm_state_put(struct xfrm_state *x)
- {
- 	if (refcount_dec_and_test(&x->refcnt))
--		__xfrm_state_destroy(x, false);
--}
+ 	ext4_write_lock_xattr(inode, &no_expand);
 -
--static inline void xfrm_state_put_sync(struct xfrm_state *x)
--{
--	if (refcount_dec_and_test(&x->refcnt))
--		__xfrm_state_destroy(x, true);
-+		__xfrm_state_destroy(x);
- }
- 
- static inline void xfrm_state_hold(struct xfrm_state *x)
-@@ -1705,7 +1699,7 @@ struct xfrmk_spdinfo {
- 
- struct xfrm_state *xfrm_find_acq_byseq(struct net *net, u32 mark, u32 seq, u32 pcpu_num);
- int xfrm_state_delete(struct xfrm_state *x);
--int xfrm_state_flush(struct net *net, u8 proto, bool task_valid, bool sync);
-+int xfrm_state_flush(struct net *net, u8 proto, bool task_valid);
- int xfrm_dev_state_flush(struct net *net, struct net_device *dev, bool task_valid);
- int xfrm_dev_policy_flush(struct net *net, struct net_device *dev,
- 			  bool task_valid);
-diff --git a/net/ipv6/xfrm6_tunnel.c b/net/ipv6/xfrm6_tunnel.c
-index 7fd8bc08e6eb1..5120a763da0d9 100644
---- a/net/ipv6/xfrm6_tunnel.c
-+++ b/net/ipv6/xfrm6_tunnel.c
-@@ -334,7 +334,7 @@ static void __net_exit xfrm6_tunnel_net_exit(struct net *net)
- 	struct xfrm6_tunnel_net *xfrm6_tn = xfrm6_tunnel_pernet(net);
- 	unsigned int i;
- 
--	xfrm_state_flush(net, 0, false, true);
-+	xfrm_state_flush(net, IPSEC_PROTO_ANY, false);
- 	xfrm_flush_gc();
- 
- 	for (i = 0; i < XFRM6_TUNNEL_SPI_BYADDR_HSIZE; i++)
-diff --git a/net/key/af_key.c b/net/key/af_key.c
-index c56bb4f451e6d..9dea2b26e5069 100644
---- a/net/key/af_key.c
-+++ b/net/key/af_key.c
-@@ -1766,7 +1766,7 @@ static int pfkey_flush(struct sock *sk, struct sk_buff *skb, const struct sadb_m
- 	if (proto == 0)
- 		return -EINVAL;
- 
--	err = xfrm_state_flush(net, proto, true, false);
-+	err = xfrm_state_flush(net, proto, true);
- 	err2 = unicast_flush_resp(sk, hdr);
- 	if (err || err2) {
- 		if (err == -ESRCH) /* empty table - go quietly */
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index e4500d481e26b..9cd747cfcc34c 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -531,7 +531,7 @@ void xfrm_state_free(struct xfrm_state *x)
- }
- EXPORT_SYMBOL(xfrm_state_free);
- 
--static void ___xfrm_state_destroy(struct xfrm_state *x)
-+static void xfrm_state_gc_destroy(struct xfrm_state *x)
- {
- 	hrtimer_cancel(&x->mtimer);
- 	del_timer_sync(&x->rtimer);
-@@ -569,7 +569,7 @@ static void xfrm_state_gc_task(struct work_struct *work)
- 	synchronize_rcu();
- 
- 	hlist_for_each_entry_safe(x, tmp, &gc_list, gclist)
--		___xfrm_state_destroy(x);
-+		xfrm_state_gc_destroy(x);
- }
- 
- static enum hrtimer_restart xfrm_timer_handler(struct hrtimer *me)
-@@ -732,19 +732,14 @@ void xfrm_dev_state_free(struct xfrm_state *x)
- }
- #endif
- 
--void __xfrm_state_destroy(struct xfrm_state *x, bool sync)
-+void __xfrm_state_destroy(struct xfrm_state *x)
- {
- 	WARN_ON(x->km.state != XFRM_STATE_DEAD);
- 
--	if (sync) {
--		synchronize_rcu();
--		___xfrm_state_destroy(x);
--	} else {
--		spin_lock_bh(&xfrm_state_gc_lock);
--		hlist_add_head(&x->gclist, &xfrm_state_gc_list);
--		spin_unlock_bh(&xfrm_state_gc_lock);
--		schedule_work(&xfrm_state_gc_work);
--	}
-+	spin_lock_bh(&xfrm_state_gc_lock);
-+	hlist_add_head(&x->gclist, &xfrm_state_gc_list);
-+	spin_unlock_bh(&xfrm_state_gc_lock);
-+	schedule_work(&xfrm_state_gc_work);
- }
- EXPORT_SYMBOL(__xfrm_state_destroy);
- 
-@@ -859,7 +854,7 @@ xfrm_dev_state_flush_secctx_check(struct net *net, struct net_device *dev, bool
- }
- #endif
- 
--int xfrm_state_flush(struct net *net, u8 proto, bool task_valid, bool sync)
-+int xfrm_state_flush(struct net *net, u8 proto, bool task_valid)
- {
- 	int i, err = 0, cnt = 0;
- 
-@@ -3218,7 +3213,7 @@ void xfrm_state_fini(struct net *net)
- 	unsigned int sz;
- 
- 	flush_work(&net->xfrm.state_hash_work);
--	xfrm_state_flush(net, 0, false, true);
-+	xfrm_state_flush(net, IPSEC_PROTO_ANY, false);
- 	flush_work(&xfrm_state_gc_work);
- 
- 	WARN_ON(!list_empty(&net->xfrm.state_all));
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index 3d0fdeebaf3c8..1a4d2fac08594 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -2571,7 +2571,7 @@ static int xfrm_flush_sa(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	struct xfrm_usersa_flush *p = nlmsg_data(nlh);
- 	int err;
- 
--	err = xfrm_state_flush(net, p->proto, true, false);
-+	err = xfrm_state_flush(net, p->proto, true);
- 	if (err) {
- 		if (err == -ESRCH) /* empty table */
- 			return 0;
--- 
-2.51.0
-
++	/*
++	 * ei->i_inline_size may have changed since the initial check
++	 * if other xattrs were added. Recalculate to ensure
++	 * ext4_update_inline_data() validates against current capacity.
++	 */
++	(void) ext4_find_inline_data_nolock(inode);
+ 	if (ei->i_inline_off)
+ 		ret = ext4_update_inline_data(handle, inode, len);
+ 	else
 
 
 
