@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-200676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53481CB24C6
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:41:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85B91CB2514
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:46:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 67EC83025852
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:41:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 58425306D58B
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:46:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DEFA303CB0;
-	Wed, 10 Dec 2025 07:36:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D8FA305E14;
+	Wed, 10 Dec 2025 07:36:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nmhkVdLC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U5FVkf7/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B70119CD06;
-	Wed, 10 Dec 2025 07:36:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04BC2305E0D;
+	Wed, 10 Dec 2025 07:36:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765352196; cv=none; b=YLyv99yuvJBlycAecealeQvG+weONd4QZN2vR/hUqyA0ZUmS8OITzKvhxxt7AhsujWHh7PJ49G5swURJIVMwqFFpSrgfpzopTvYKecKbErsXWZBV85tLhF7FBL6Z2McRQKJGyikY2gYxDdqoTGxcUsWv5v4R9OzLgBMevOdwI5k=
+	t=1765352202; cv=none; b=GUd8pzy3XEBiszGf9V3nIUPBzmBcj4BE1pTACXo6zB25giejetJiVm4nJoXMkCu8Tavoi3wjbPifQTBnfZpAU+OKiQqSWOdvg65GUYz2soy4xd9Ys6oStPJoWd1A6t0QzKYwccLEDNO1buObpme17ALcjjMY99gkIOnR5g7sLwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765352196; c=relaxed/simple;
-	bh=x2Q6PGyRYAoNlsgkRbjGZ7ju1O5TzTRO7TjX4D8/mOQ=;
+	s=arc-20240116; t=1765352202; c=relaxed/simple;
+	bh=VjMAG9igzG3FeUzKMqxO09k75aRrXVoyppKf0Wjeib0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NFSbSIMvuRnJussZ7KCZJyFVlfzzpoqEznCb1Y4YzZH9bSrTFYijcyG1dVeFLpMXUd2brt3FEywV+7Ag64a9Cooe5lBfBWtc0NnGHaVWziwbA/xeQQWD/6Q8wCVHktemMdm29zKqr+zMVIogZP2QRtyLBRJbcGvjHS7XtSSCSVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nmhkVdLC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C789FC4CEF1;
-	Wed, 10 Dec 2025 07:36:35 +0000 (UTC)
+	 MIME-Version; b=e8c6w8/LPatMx8YDNZZ6nxL6K627wyKyNF+x1FlSxPrDT955dZ0Eb5p9R8kkVSb1VRNZKDkPOjJ53Pxotzwy+0QqHU8Lc+E3IFg+EUivrC1yc7TeZ32mF2XHIepyNQh7Quk1l4MhOenZ9plKyQxvM9RU182KhfHl1RRUeAkCDJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U5FVkf7/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72EE6C19422;
+	Wed, 10 Dec 2025 07:36:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765352196;
-	bh=x2Q6PGyRYAoNlsgkRbjGZ7ju1O5TzTRO7TjX4D8/mOQ=;
+	s=korg; t=1765352201;
+	bh=VjMAG9igzG3FeUzKMqxO09k75aRrXVoyppKf0Wjeib0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nmhkVdLCFk5IsxtpPxW5HO5u/mNj5bbL+BM+hEaaw3Q+iadV8hH+mcMppQgH45PAt
-	 DfVMSgeBdtUVINfg6x2EEJdY1LvzWcGmPBBnqXLvh+Ytm/0yok+jWG0L/vonSxvzKl
-	 P8l7FOCyY0i2AN8JhMpWRnCL1ZTPLqSWpF7GLgsE=
+	b=U5FVkf7/JlIYLboDFdx/DAVtRKnKucPkBH/LDJQmGodbx4M6V+aaNnHaQvJmCgLD3
+	 lvNqtI/cVuoC3WisHEOnm9LGX9CYMjt8T4IUxZN38l7Y/OqyewglIQB6f2rgyub+cg
+	 /EjoRRnBN2FrflfhBupPz67Gi+Erl/90NHRDlYyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Navaneeth K <knavaneeth786@gmail.com>,
 	stable <stable@kernel.org>
-Subject: [PATCH 6.18 27/29] staging: rtl8723bs: fix out-of-bounds read in rtw_get_ie() parser
-Date: Wed, 10 Dec 2025 16:30:37 +0900
-Message-ID: <20251210072945.102463004@linuxfoundation.org>
+Subject: [PATCH 6.18 28/29] staging: rtl8723bs: fix stack buffer overflow in OnAssocReq IE parsing
+Date: Wed, 10 Dec 2025 16:30:38 +0900
+Message-ID: <20251210072945.128283276@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251210072944.363788552@linuxfoundation.org>
 References: <20251210072944.363788552@linuxfoundation.org>
@@ -65,61 +65,48 @@ Content-Transfer-Encoding: 8bit
 
 From: Navaneeth K <knavaneeth786@gmail.com>
 
-commit 154828bf9559b9c8421fc2f0d7f7f76b3683aaed upstream.
+commit 6ef0e1c10455927867cac8f0ed6b49f328f8cf95 upstream.
 
-The Information Element (IE) parser rtw_get_ie() trusted the length
-byte of each IE without validating that the IE body (len bytes after
-the 2-byte header) fits inside the remaining frame buffer. A malformed
-frame can advertise an IE length larger than the available data, causing
-the parser to increment its pointer beyond the buffer end. This results
-in out-of-bounds reads or, depending on the pattern, an infinite loop.
+The Supported Rates IE length from an incoming Association Request frame
+was used directly as the memcpy() length when copying into a fixed-size
+16-byte stack buffer (supportRate). A malicious station can advertise an
+IE length larger than 16 bytes, causing a stack buffer overflow.
 
-Fix by validating that (offset + 2 + len) does not exceed the limit
-before accepting the IE or advancing to the next element.
+Clamp ie_len to the buffer size before copying the Supported Rates IE,
+and correct the bounds check when merging Extended Supported Rates to
+prevent a second potential overflow.
 
-This prevents OOB reads and ensures the parser terminates safely on
-malformed frames.
+This prevents kernel stack corruption triggered by malformed association
+requests.
 
 Signed-off-by: Navaneeth K <knavaneeth786@gmail.com>
 Cc: stable <stable@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/rtl8723bs/core/rtw_ieee80211.c |   14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/staging/rtl8723bs/core/rtw_mlme_ext.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/staging/rtl8723bs/core/rtw_ieee80211.c
-+++ b/drivers/staging/rtl8723bs/core/rtw_ieee80211.c
-@@ -140,22 +140,24 @@ u8 *rtw_get_ie(u8 *pbuf, signed int inde
- 	signed int tmp, i;
- 	u8 *p;
- 
--	if (limit < 1)
-+	if (limit < 2)
- 		return NULL;
- 
- 	p = pbuf;
- 	i = 0;
- 	*len = 0;
--	while (1) {
-+	while (i + 2 <= limit) {
-+		tmp = *(p + 1);
-+		if (i + 2 + tmp > limit)
-+			break;
+--- a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
++++ b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
+@@ -1042,6 +1042,9 @@ unsigned int OnAssocReq(struct adapter *
+ 		status = WLAN_STATUS_CHALLENGE_FAIL;
+ 		goto OnAssocReqFail;
+ 	} else {
++		if (ie_len > sizeof(supportRate))
++			ie_len = sizeof(supportRate);
 +
- 		if (*p == index) {
--			*len = *(p + 1);
-+			*len = tmp;
- 			return p;
- 		}
--		tmp = *(p + 1);
-+
- 		p += (tmp + 2);
- 		i += (tmp + 2);
--		if (i >= limit)
--			break;
- 	}
- 	return NULL;
- }
+ 		memcpy(supportRate, p+2, ie_len);
+ 		supportRateNum = ie_len;
+ 
+@@ -1049,7 +1052,7 @@ unsigned int OnAssocReq(struct adapter *
+ 				pkt_len - WLAN_HDR_A3_LEN - ie_offset);
+ 		if (p) {
+ 
+-			if (supportRateNum <= sizeof(supportRate)) {
++			if (supportRateNum + ie_len <= sizeof(supportRate)) {
+ 				memcpy(supportRate+supportRateNum, p+2, ie_len);
+ 				supportRateNum += ie_len;
+ 			}
 
 
 
