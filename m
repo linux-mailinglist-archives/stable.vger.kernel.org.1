@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-200592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29391CB239A
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:33:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 242BACB24EA
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 08:42:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 07099300911D
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:33:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 692DB3119119
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 07:41:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97FF427C866;
-	Wed, 10 Dec 2025 07:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12A0B302146;
+	Wed, 10 Dec 2025 07:33:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gxlDQKur"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="chSoz/7/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 557A1221F2F;
-	Wed, 10 Dec 2025 07:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3756302140;
+	Wed, 10 Dec 2025 07:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765351981; cv=none; b=Ec0LGJdtaQTUHUP57D3rTd0nWz8EssaxgjyZ1jLyhRMs2Xqfq3m0eG1+b887iyxGmJ2VIdyCs1F3mV61MSkGY/drbvKTCo/PhXrzvVETdcoxeye2qSAgHnsFSkkYizyuPrQ3TYGeyCtndqxfM7KjKTPKZzxcj/MKwQSanWqcLCs=
+	t=1765352030; cv=none; b=EjNBY2ExINC4xoWuSetjlSL3k/Zx0YgZHvRkMKbnJEkFGAVjcxfGtgcCJiX8LrEGpN95mpB0xRp23jSeUmd06mwpGRmUcWndvZ4PqWk7cg7pK1J+jeKIRXyqpz33h+Tb7xUTHyqgsXEexG7oycrPNW+yMQejWzWK7SedPGYXoAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765351981; c=relaxed/simple;
-	bh=nbQJ5YdjZy75JSnuE7qIwXyUNi4dAb4z8OZ6s8oWl80=;
+	s=arc-20240116; t=1765352030; c=relaxed/simple;
+	bh=wmhiGEJAXX+TqCFMTWT3udon4yc5VmRV51WSvl1gOqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TcFmYH2T0kgDR4O3MSP2oMZYTbRjsznU6V0100o+nXHhWmpSswjiPVMYh87rQCroS7Z/wwBor+v0l7/5ZI2RJ25gXc1CDQDl1fJ5ouWQAthvuCiI8mLsXl8tw51f1NikOvvTDFdJbdBEQ3Z8pKCOEAexc32M7/u7kjAjIYnIqKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gxlDQKur; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E411BC4CEF1;
-	Wed, 10 Dec 2025 07:33:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=u/X9iJiLikxeybJsvurhauutVfZN4nrKNhUViGL78Oo6rGXiLlF1AJOPEzlxecvnliTltfCvViOvIku3qiSAT9b56wMmeaFSPmOg2Z5yBd+pH1RFuBY+1neRzfOmpTLqm/eikCybtEEp0XhdZJukU/ufHBx8tGpqKZkTL6qLwX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=chSoz/7/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16C54C4CEF1;
+	Wed, 10 Dec 2025 07:33:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765351981;
-	bh=nbQJ5YdjZy75JSnuE7qIwXyUNi4dAb4z8OZ6s8oWl80=;
+	s=korg; t=1765352030;
+	bh=wmhiGEJAXX+TqCFMTWT3udon4yc5VmRV51WSvl1gOqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gxlDQKurx5Sw9ezbdUdHheidY+6OQpn1CFsvN1Ykk8y1kDSqkJRyX7vRrm2FvcqN6
-	 QF8o+PLDfv0/uyJkXk5WfMha6M6YGmm/CuM8W0IMx6ZUJs53BAIz6SJwTTKAttxXTt
-	 Z7Ux9RkH8skfCWlo4twVZ4U1hmGtM0KF77IpMp0w=
+	b=chSoz/7/0x8fDwj9nMMlyCWP2DRbAd6qbGX3iqHvpTuCXqgFZkMRJStbvfWSICyoK
+	 XKw6TBajzv7MvKaL2jsN1Bj7ahTfSV+CAUkg+lJsh76X7rNnYgHwHSWrP7b5yUA19/
+	 MqMDOHh1VH3fpAZS0oH0sKStk5hGYTBHWIyDoWls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hilda Wu <hildawu@realtek.com>,
-	Nial Ni <niall_ni@realsil.com.cn>,
-	Max Chou <max.chou@realtek.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Fanqin Cui <cuifq1@chinatelecom.cn>,
+	=?UTF-8?q?Adrian=20Barna=C5=9B?= <abarnas@google.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 24/49] Bluetooth: btrtl: Avoid loading the config file on security chips
+Subject: [PATCH 6.17 24/60] arm64: Reject modules with internal alternative callbacks
 Date: Wed, 10 Dec 2025 16:29:54 +0900
-Message-ID: <20251210072948.764142592@linuxfoundation.org>
+Message-ID: <20251210072948.432673793@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
-References: <20251210072948.125620687@linuxfoundation.org>
+In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
+References: <20251210072947.850479903@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,121 +60,134 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.17-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Chou <max.chou@realtek.com>
+From: Adrian Barnaś <abarnas@google.com>
 
-[ Upstream commit cd8dbd9ef600435439bb0e70af0a1d9e2193aecb ]
+[ Upstream commit 8e8ae788964aa2573b4335026db4068540fa6a86 ]
 
-For chips with security enabled, it's only possible to load firmware
-with a valid signature pattern.
-If key_id is not zero, it indicates a security chip, and the driver will
-not load the config file.
+During module loading, check if a callback function used by the
+alternatives specified in the '.altinstruction' ELF section (if present)
+is located in core kernel .text. If not fail module loading before
+callback is called.
 
-- Example log for a security chip.
-
-Bluetooth: hci0: RTL: examining hci_ver=0c hci_rev=000a
-  lmp_ver=0c lmp_subver=8922
-Bluetooth: hci0: RTL: rom_version status=0 version=1
-Bluetooth: hci0: RTL: btrtl_initialize: key id 1
-Bluetooth: hci0: RTL: loading rtl_bt/rtl8922au_fw.bin
-Bluetooth: hci0: RTL: cfg_sz 0, total sz 71301
-Bluetooth: hci0: RTL: fw version 0x41c0c905
-
-- Example log for a normal chip.
-
-Bluetooth: hci0: RTL: examining hci_ver=0c hci_rev=000a
-  lmp_ver=0c lmp_subver=8922
-Bluetooth: hci0: RTL: rom_version status=0 version=1
-Bluetooth: hci0: RTL: btrtl_initialize: key id 0
-Bluetooth: hci0: RTL: loading rtl_bt/rtl8922au_fw.bin
-Bluetooth: hci0: RTL: loading rtl_bt/rtl8922au_config.bin
-Bluetooth: hci0: RTL: cfg_sz 6, total sz 71307
-Bluetooth: hci0: RTL: fw version 0x41c0c905
-
-Tested-by: Hilda Wu <hildawu@realtek.com>
-Signed-off-by: Nial Ni <niall_ni@realsil.com.cn>
-Signed-off-by: Max Chou <max.chou@realtek.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reported-by: Fanqin Cui <cuifq1@chinatelecom.cn>
+Closes: https://lore.kernel.org/all/20250807072700.348514-1-fanqincui@163.com/
+Signed-off-by: Adrian Barnaś <abarnas@google.com>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+[will: Folded in 'noinstr' tweak from Mark]
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btrtl.c | 24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
+ arch/arm64/include/asm/alternative.h |  7 +++++--
+ arch/arm64/kernel/alternative.c      | 19 ++++++++++++-------
+ arch/arm64/kernel/module.c           |  9 +++++++--
+ 3 files changed, 24 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/bluetooth/btrtl.c b/drivers/bluetooth/btrtl.c
-index c4431c5976b40..5e332b30696f6 100644
---- a/drivers/bluetooth/btrtl.c
-+++ b/drivers/bluetooth/btrtl.c
-@@ -50,7 +50,7 @@
+diff --git a/arch/arm64/include/asm/alternative.h b/arch/arm64/include/asm/alternative.h
+index 00d97b8a757f4..51746005239bc 100644
+--- a/arch/arm64/include/asm/alternative.h
++++ b/arch/arm64/include/asm/alternative.h
+@@ -26,9 +26,12 @@ void __init apply_alternatives_all(void);
+ bool alternative_is_applied(u16 cpucap);
  
- #define	RTL_CHIP_SUBVER (&(struct rtl_vendor_cmd) {{0x10, 0x38, 0x04, 0x28, 0x80}})
- #define	RTL_CHIP_REV    (&(struct rtl_vendor_cmd) {{0x10, 0x3A, 0x04, 0x28, 0x80}})
--#define	RTL_SEC_PROJ    (&(struct rtl_vendor_cmd) {{0x10, 0xA4, 0x0D, 0x00, 0xb0}})
-+#define	RTL_SEC_PROJ    (&(struct rtl_vendor_cmd) {{0x10, 0xA4, 0xAD, 0x00, 0xb0}})
+ #ifdef CONFIG_MODULES
+-void apply_alternatives_module(void *start, size_t length);
++int apply_alternatives_module(void *start, size_t length);
+ #else
+-static inline void apply_alternatives_module(void *start, size_t length) { }
++static inline int apply_alternatives_module(void *start, size_t length)
++{
++	return 0;
++}
+ #endif
  
- #define RTL_PATCH_SNIPPETS		0x01
- #define RTL_PATCH_DUMMY_HEADER		0x02
-@@ -534,7 +534,6 @@ static int rtlbt_parse_firmware_v2(struct hci_dev *hdev,
+ void alt_cb_patch_nops(struct alt_instr *alt, __le32 *origptr,
+diff --git a/arch/arm64/kernel/alternative.c b/arch/arm64/kernel/alternative.c
+index 8ff6610af4966..f5ec7e7c1d3fd 100644
+--- a/arch/arm64/kernel/alternative.c
++++ b/arch/arm64/kernel/alternative.c
+@@ -139,9 +139,9 @@ static noinstr void clean_dcache_range_nopatch(u64 start, u64 end)
+ 	} while (cur += d_size, cur < end);
+ }
+ 
+-static void __apply_alternatives(const struct alt_region *region,
+-				 bool is_module,
+-				 unsigned long *cpucap_mask)
++static int __apply_alternatives(const struct alt_region *region,
++				bool is_module,
++				unsigned long *cpucap_mask)
  {
- 	struct rtl_epatch_header_v2 *hdr;
- 	int rc;
--	u8 reg_val[2];
- 	u8 key_id;
- 	u32 num_sections;
- 	struct rtl_section *section;
-@@ -549,14 +548,7 @@ static int rtlbt_parse_firmware_v2(struct hci_dev *hdev,
- 		.len  = btrtl_dev->fw_len - 7, /* Cut the tail */
- 	};
+ 	struct alt_instr *alt;
+ 	__le32 *origptr, *updptr;
+@@ -166,10 +166,13 @@ static void __apply_alternatives(const struct alt_region *region,
+ 		updptr = is_module ? origptr : lm_alias(origptr);
+ 		nr_inst = alt->orig_len / AARCH64_INSN_SIZE;
  
--	rc = btrtl_vendor_read_reg16(hdev, RTL_SEC_PROJ, reg_val);
--	if (rc < 0)
--		return -EIO;
--	key_id = reg_val[0];
--
--	rtl_dev_dbg(hdev, "%s: key id %u", __func__, key_id);
--
--	btrtl_dev->key_id = key_id;
-+	key_id = btrtl_dev->key_id;
+-		if (ALT_HAS_CB(alt))
++		if (ALT_HAS_CB(alt)) {
+ 			alt_cb  = ALT_REPL_PTR(alt);
+-		else
++			if (is_module && !core_kernel_text((unsigned long)alt_cb))
++				return -ENOEXEC;
++		} else {
+ 			alt_cb = patch_alternative;
++		}
  
- 	hdr = rtl_iov_pull_data(&iov, sizeof(*hdr));
- 	if (!hdr)
-@@ -1070,6 +1062,8 @@ struct btrtl_device_info *btrtl_initialize(struct hci_dev *hdev,
- 	u16 hci_rev, lmp_subver;
- 	u8 hci_ver, lmp_ver, chip_type = 0;
+ 		alt_cb(alt, origptr, updptr, nr_inst);
+ 
+@@ -193,6 +196,8 @@ static void __apply_alternatives(const struct alt_region *region,
+ 		bitmap_and(applied_alternatives, applied_alternatives,
+ 			   system_cpucaps, ARM64_NCAPS);
+ 	}
++
++	return 0;
+ }
+ 
+ static void __init apply_alternatives_vdso(void)
+@@ -277,7 +282,7 @@ void __init apply_boot_alternatives(void)
+ }
+ 
+ #ifdef CONFIG_MODULES
+-void apply_alternatives_module(void *start, size_t length)
++int apply_alternatives_module(void *start, size_t length)
+ {
+ 	struct alt_region region = {
+ 		.begin	= start,
+@@ -287,7 +292,7 @@ void apply_alternatives_module(void *start, size_t length)
+ 
+ 	bitmap_fill(all_capabilities, ARM64_NCAPS);
+ 
+-	__apply_alternatives(&region, true, &all_capabilities[0]);
++	return __apply_alternatives(&region, true, &all_capabilities[0]);
+ }
+ #endif
+ 
+diff --git a/arch/arm64/kernel/module.c b/arch/arm64/kernel/module.c
+index d6d443c4a01ac..0b15c57285add 100644
+--- a/arch/arm64/kernel/module.c
++++ b/arch/arm64/kernel/module.c
+@@ -489,8 +489,13 @@ int module_finalize(const Elf_Ehdr *hdr,
  	int ret;
-+	int rc;
-+	u8 key_id;
- 	u8 reg_val[2];
  
- 	btrtl_dev = kzalloc(sizeof(*btrtl_dev), GFP_KERNEL);
-@@ -1180,6 +1174,14 @@ struct btrtl_device_info *btrtl_initialize(struct hci_dev *hdev,
- 		goto err_free;
- 	}
+ 	s = find_section(hdr, sechdrs, ".altinstructions");
+-	if (s)
+-		apply_alternatives_module((void *)s->sh_addr, s->sh_size);
++	if (s) {
++		ret = apply_alternatives_module((void *)s->sh_addr, s->sh_size);
++		if (ret < 0) {
++			pr_err("module %s: error occurred when applying alternatives\n", me->name);
++			return ret;
++		}
++	}
  
-+	rc = btrtl_vendor_read_reg16(hdev, RTL_SEC_PROJ, reg_val);
-+	if (rc < 0)
-+		goto err_free;
-+
-+	key_id = reg_val[0];
-+	btrtl_dev->key_id = key_id;
-+	rtl_dev_info(hdev, "%s: key id %u", __func__, key_id);
-+
- 	btrtl_dev->fw_len = -EIO;
- 	if (lmp_subver == RTL_ROM_LMP_8852A && hci_rev == 0x000c) {
- 		snprintf(fw_name, sizeof(fw_name), "%s_v2.bin",
-@@ -1202,7 +1204,7 @@ struct btrtl_device_info *btrtl_initialize(struct hci_dev *hdev,
- 		goto err_free;
- 	}
- 
--	if (btrtl_dev->ic_info->cfg_name) {
-+	if (btrtl_dev->ic_info->cfg_name && !btrtl_dev->key_id) {
- 		if (postfix) {
- 			snprintf(cfg_name, sizeof(cfg_name), "%s-%s.bin",
- 				 btrtl_dev->ic_info->cfg_name, postfix);
+ 	if (scs_is_dynamic()) {
+ 		s = find_section(hdr, sechdrs, ".init.eh_frame");
 -- 
 2.51.0
 
