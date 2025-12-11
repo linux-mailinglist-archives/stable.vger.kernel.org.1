@@ -1,385 +1,232 @@
-Return-Path: <stable+bounces-200811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6C36CB6990
-	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 18:00:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7E46CB6A05
+	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 18:12:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 375BB30194F0
-	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 16:59:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1A8E8300C6FB
+	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 17:12:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9414B2C1595;
-	Thu, 11 Dec 2025 16:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BE732D8DA4;
+	Thu, 11 Dec 2025 17:12:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XLuFbNQc"
+	dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b="vXadY63q"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A96280A51
-	for <stable@vger.kernel.org>; Thu, 11 Dec 2025 16:59:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A97621771C
+	for <stable@vger.kernel.org>; Thu, 11 Dec 2025 17:12:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765472387; cv=none; b=fvjafptPFkwR5+pytnvToEfd9MDHsYV8wTLTme1teNauiP7ex7F/PWntJeMyOvRdewIIS/9hCpSR5M7hlDHzstzyCWS7hUrMjt47YgJxjd4sw3w4HTNKo7nu4UZnVnxWQ2GKL/QyCHlUh/nO1WYpVzXa85EOiqWDTvMggqIHZQk=
+	t=1765473155; cv=none; b=NZuF0LES2tBT8Ubn53Goi/AMsHs/1JoedeMjwlYeQp/25URu+t8jefXISlj9vi2VOMJHXXRKuz/o8F11Fi3xX7nnF8hQwxrJwtjRxYm/uMe3B+vVRNCWU+6gOZy63T6ruBrNpR8KbsO9mtTUx225ub7u5tNNiGVvzY+cKd6u9q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765472387; c=relaxed/simple;
-	bh=vVUlADV4/X+GbQGTdK1FR8fFm6NSs3j+tKnbajQkQEE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DCEupbAI6I8tVVXuMPsGWxcFbuYKKIpeGi6E3GsmzrNgmBtazcCclSjup7F2yzuguhAiv0PmdqHbb7qaB95a/pz8Mvk2D3JfRcNwsnfG+WENUaZ7EYdD7v4eVyzsqg80k1TdHcKg5qP+26AXA/XxQLui4YLb0ISsn9yhqEW/4P8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XLuFbNQc; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765472385; x=1797008385;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=vVUlADV4/X+GbQGTdK1FR8fFm6NSs3j+tKnbajQkQEE=;
-  b=XLuFbNQcQ9JO/fSBUgMWLEwfgVqR1qpfhKd9YxvfeToXuCUTJCZ/nfE6
-   ymevjI4Pi8YScfciLJVjGno9LhBiOerTyGcZ//HbA/6vMPq91fLA7DH1Y
-   ZP6OMNMPYo1NOmlJfUHzOezrOxIvCZrVAZheyCkezrLwyEUroO++lEc4q
-   9oDx2ktpNszY13lk7E9zXXweUTrc5TjFE1FgtN+X/1ngqjgN/sPm+6Ppg
-   YN21C/Wo3IhmDsEccNcC89B+hhZ2G5e8TuQTYVDVTBPbNbekAhd/Gf+zl
-   hYmJYNUcS2Xr6xUoAIUvZDS+cDNCx3cYbKl4HzVUicCR7sdI48nM7aFVD
-   w==;
-X-CSE-ConnectionGUID: EGlmMdpsRj2+RLHfNjIpZg==
-X-CSE-MsgGUID: 3w0jLRiiRM6AzABfG6gSvw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11639"; a="71083008"
-X-IronPort-AV: E=Sophos;i="6.21,141,1763452800"; 
-   d="scan'208";a="71083008"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2025 08:59:45 -0800
-X-CSE-ConnectionGUID: 0cmYbep2RZaJLgOODZbA9w==
-X-CSE-MsgGUID: Bw4oPdm4SKGa0830DDBB9g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,141,1763452800"; 
-   d="scan'208";a="196849448"
-Received: from egrumbac-mobl6.ger.corp.intel.com (HELO fedora) ([10.245.244.197])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2025 08:59:41 -0800
-From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-To: intel-xe@lists.freedesktop.org
-Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	stable@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	himal.prasad.ghimiray@intel.com,
-	apopple@nvidia.com,
-	airlied@gmail.com,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	felix.kuehling@amd.com,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	dakr@kernel.org,
-	"Mrozek, Michal" <michal.mrozek@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH v4 02/22] drm/pagemap, drm/xe: Ensure that the devmem allocation is idle before use
-Date: Thu, 11 Dec 2025 17:58:49 +0100
-Message-ID: <20251211165909.219710-3-thomas.hellstrom@linux.intel.com>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251211165909.219710-1-thomas.hellstrom@linux.intel.com>
-References: <20251211165909.219710-1-thomas.hellstrom@linux.intel.com>
+	s=arc-20240116; t=1765473155; c=relaxed/simple;
+	bh=LCBArnabRQFMZVjlBsPXwG8CAa4MoJfM1+Gbv0GxRhE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VBM/ajtSOo/soMlupi1Uku8mzj8BdvhfETcBlzMsp7m433STlrN5vYZTVP0fXeobbaQ2GSRTvBJQePQVCjOqvK07racb+879cn8YbAqkdwb7J+s7Va3x5NqTvKiMr20UYg/l1hChfl+6yxsh95dpan4k+xpRz5CkEi6LcX8Iwns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in; spf=none smtp.mailfrom=rajagiritech.edu.in; dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b=vXadY63q; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=rajagiritech.edu.in
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b770f4accc0so58776766b.1
+        for <stable@vger.kernel.org>; Thu, 11 Dec 2025 09:12:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rajagiritech-edu-in.20230601.gappssmtp.com; s=20230601; t=1765473152; x=1766077952; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YluR+HMy8tJ6YWi/6IjZPi5ROhpB0HU8qs5yyDUOcKk=;
+        b=vXadY63qfU/yEZMkHhYC1ruFOtyWgtlN7QkmE6h2qVcVShhkI7jRv/mbAyYEbx0cJu
+         5BAT9yYOP4UsDOI5VtbPTGYYIzrxIZ7C4tHisASflipMihmwh3jW7M3B2zmbYbis7vah
+         HlVC7q00RvN2+BKV+QFNDYnGbHrdJkA4SuXGOooX+iuDpHbKOBBAA1X0CwY2Lu/O+Rz/
+         W2whJjGwnzcSmXR3BMM/Qig+Zm0hwcylOCzbB+ITMoJDElR42TatghDqgD82fT43rYK7
+         MZenjPhSfFXik0NV3nPegc+rj/S/P6g7kpMw8PBcojh0ZKUN6xhg6EZrZlmng412xlbZ
+         cRMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765473152; x=1766077952;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=YluR+HMy8tJ6YWi/6IjZPi5ROhpB0HU8qs5yyDUOcKk=;
+        b=qer3XuqgWbq1sj3af/WkANzS9yXsRAd6lCjqf5vfIl0pEHNtRtdX0yrlOLQ95l5BPH
+         pgYNJFzxfvx2XFeXBaePQONK4K4tVlvEvOUgje0nyNeccAVHyTaLOcMLy6DwDJxjDpl0
+         PawGcFcoIOCXpEnzXhf3+qH8hmWXrGLBhkJJGMopZ2lwcfGrtEGhK9Q9zNlLV8K8fDOV
+         gQVGWnrFJw+gK6XGJgrrb4DMs4PTIhxz7+1fEGPO9vLpQWwxPQhnKDDEA2hWmFFdMkfA
+         cS60bDLHMETL9bRJ1eCZw4oy2VNg97dSuMtekwozdZUk6WP3ftY+SswkvjRScFUJ4ple
+         Ik/g==
+X-Forwarded-Encrypted: i=1; AJvYcCXYYSQxyfuXt3H4aAQz1wRolbayw0zXzlfkXaSltZ+3W1zuH0a76ydgRkYw/axld51BCU96zGs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOloIny8qdR8gqZX8bu+CyyrmTrENzu86deD7ilJ5vj0by/RNB
+	TlisQlAzERxwv/+YXUl1orCaBRGjYjZ8oBnHLKA0hLhGZAw+C54bpLpU2mrKzbCwFEUhI/N/wno
+	cYvhCryNPtVrtxPy4RnRjjnoWxP4ZlR1vVMIXIRLRzYNPWOuRv+MgCqKYBg==
+X-Gm-Gg: AY/fxX5oTpWUCSPWDXMvR3pdpSoSX1FQAYb+/0e2oErmqotqCizSFVVAyoIcaZwYVXl
+	07svZXJOLUxsT1FxV7A/DIPREWQQ74ZDxtBJZn8gWjlyiH6ZRyzH01AYPP++oAiHm/3ckpVeh0A
+	rhOxZjPHXlsrUMrR6zwG5jBrmqsr1ehHKl1S/c3nydledHORX9F2mpF6VxPKeOZfNLmW/S4x5Kl
+	UZZPAf1L/nw5WTnAwJNILVSEe40vqeKiqIS930lIhwZmIH1PPNAAQtsW74J4H8a7ei0Yb9f
+X-Google-Smtp-Source: AGHT+IHxujA97LFKbJtJbuGheZkwmUxCCwGNJTvfmx+MVC6q9VIKG4ivl+R79GTx2IchlThH9PpjBCAb5t2jcFPjKRc=
+X-Received: by 2002:a17:907:3e11:b0:b6d:3fc9:e60c with SMTP id
+ a640c23a62f3a-b7ce8348a1cmr847912766b.20.1765473151939; Thu, 11 Dec 2025
+ 09:12:31 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20251210072947.850479903@linuxfoundation.org> <CAG=yYwm==BjqjJWtgc0+WzbiGTsKsHV3e4Lvk60fcartrrABDw@mail.gmail.com>
+ <2025121046-satchel-concise-1077@gregkh> <CAG=yYwm0bVzYoccKKcdheGOc-exuxVCPeXSftDixS68qZZ7W7w@mail.gmail.com>
+ <aTnET5C2PGiKsW_2@auntie> <CAG=yYwnYgw-MYea3yEfwSRiLL+PsKPdQdejotyFTpme0LXc-Pg@mail.gmail.com>
+ <aTr0NpEHWSCrGNTS@auntie>
+In-Reply-To: <aTr0NpEHWSCrGNTS@auntie>
+From: Jeffrin Thalakkottoor <jeffrin@rajagiritech.edu.in>
+Date: Thu, 11 Dec 2025 22:41:54 +0530
+X-Gm-Features: AQt7F2oxX7qofuTdMKfB-KdQYtphHJCDKdH8cG92r0Z36jIIutp4FudW9w5kxD8
+Message-ID: <CAG=yYwmoUfdV1yR5j6Q6pmENagwFWpP9nn2FX-QKnrgUepHyTg@mail.gmail.com>
+Subject: Re: [PATCH 6.17 00/60] 6.17.12-rc1 review
+To: Brett A C Sheffield <bacs@librecast.net>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, 
+	shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, 
+	pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org, 
+	hargar@microsoft.com, broonie@kernel.org, achill@achill.org, 
+	sr@sladewatkins.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-In situations where no system memory is migrated to devmem, and in
-upcoming patches where another GPU is performing the migration to
-the newly allocated devmem buffer, there is nothing to ensure any
-ongoing clear to the devmem allocation or async eviction from the
-devmem allocation is complete.
+On Thu, Dec 11, 2025 at 10:11=E2=80=AFPM Brett A C Sheffield <bacs@librecas=
+t.net> wrote:
+>
+> On 2025-12-11 21:09, Jeffrin Thalakkottoor wrote:
+> > On Thu, Dec 11, 2025 at 12:35=E2=80=AFAM Brett A C Sheffield <bacs@libr=
+ecast.net> wrote:
+> > >
+> > > On 2025-12-10 19:13, Jeffrin Thalakkottoor wrote:
+> > > > On Wed, Dec 10, 2025 at 6:17=E2=80=AFPM Greg Kroah-Hartman
+> > > > <gregkh@linuxfoundation.org> wrote:
+> > > > >
+> > > > > On Wed, Dec 10, 2025 at 04:22:21PM +0530, Jeffrin Thalakkottoor w=
+rote:
+> > > > > >  compiled and booted 6.17.12-rc1+
+> > > > > > Version: AMD A4-4000 APU with Radeon(tm) HD Graphics
+> > > > > >
+> > > > > > sudo dmesg -l errr  shows  error
+> > > > > >
+> > > > > > j$sudo dmesg -l err
+> > > > > > [   39.915487] Error: Driver 'pcspkr' is already registered, ab=
+orting...
+> > > > > > $
+> > > > >
+> > > > > Is ths new?  if so, can you bisect?
+> > > >
+> > > > this is new related. Previous stable release err and warn disappear=
+ed
+> > > > (i think i changed  .config)
+> > > >
+> > > > can you give me a  step by step tutorial  for git bisect
+> > >
+> > > 1) cd to wherever you have your kernel checked out
+> > >
+> > > 2) `git bisect start`
+> > >
+> > > 3) if you're already on a known-bad commit, then mark it as such:
+> > >
+> > >   `git bisect bad`
+> > >
+> > > 4) Mark the last known good commit as such:
+> > >
+> > >   `git bisect good <commit / tag>`
+> > >
+> > > git bisect will choose a commit to test.
+> > >
+> > > 5) Build, install and boot your kernel as you usually do
+> > >
+> > > 6) Run whatever test you need to determine if the booted kernel is go=
+od or bad
+> > > (check dmesg in this case)
+> > >
+> > > 7) Mark the commit as good or bad. Git will choose another commit for=
+ you.
+> > >
+> > > 8) Goto 5.
+> > >
+> > > `git help bisect` will give you more information.
+> > >
+> > > At the end of the process git will tell you the first bad commit foun=
+d.  You can
+> > > dump the bisection log with:
+> > >
+> > > `git bisect log`
+> > >
+> > > which you can reply here with.
+> > >
+> > > HTH.
+> > >
+> > > Cheers,
+> > >
+> > >
+> > > Brett
+> > Thnaks for the tutorial  :)
+> > 1. should i start with the bad commit first ?
+>
+> You start by marking one good (past) commit and one bad commit. It doesn'=
+t
+> matter what order.
+>
+> You have at least one "bad" commit you know of: 4112049d7836ad4233321c3d2=
+b6853db1627c49c
+>
+> This is the 6.12.62-rc1 commit that you reported had the error.
+>
+> So, in your kernel worktree:
+>
+> `git bisect start`
+> `git bisect bad 4112049d7836ad4233321c3d2b6853db1627c49c`
+>
+> Now we need to tell git bisect the most recent "good" commit we know of (=
+where
+> the error didn't occur).
+>
+> If you already know the commit or tag of a previous version where you did=
+ not get the
+> error, mark that as good. If not, pick a previous release, check it out, =
+and go
+> to step 5.
+>
+> > 2. how to move forward or backward in commits ?
+>
+> git bisect will do that for you as soon as you mark a good and bad commit=
+. If
+> you want to manually test a specific commit, just `git checkout <ref>` as=
+ usual, and
+> continue at step 5 in the instructions I gave you.
+>
+> > 3. what is the point in re-compiling the kernel  if it cannot narrow
+> > down and  test news lines of code
+>
+> We're narrowing down the error to a specific kernel commit. Once we know =
+which
+> specific commit introduced the error, we can look at the lines changed an=
+d try
+> to understand why.  We need your help to find that commit, because it's
+> happening on your system.
+>
+> Please do read `git help bisect` (man 1 git-bisect). It explains all this=
+ better
+> than I can.
+>
+> Thanks for testing and good luck!
+>
+>
+> Brett
+>
+Now i  have a much clearer vision. Thanks a  ton  !
 
-Address that by passing a struct dma_fence down to the copy
-functions, and ensure it is waited for before migration is marked
-complete.
 
-v3:
-- New patch.
-v4:
-- Update the logic used for determining when to wait for the
-  pre_migrate_fence.
-- Update the logic used for determining when to warn for the
-  pre_migrate_fence since the scheduler fences apparently
-  can signal out-of-order.
 
-Fixes: c5b3eb5a906c ("drm/xe: Add GPUSVM device memory copy vfunc functions")
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: <stable@vger.kernel.org> # v6.15+
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
----
- drivers/gpu/drm/drm_pagemap.c | 13 ++++---
- drivers/gpu/drm/xe/xe_svm.c   | 67 ++++++++++++++++++++++++++++++-----
- include/drm/drm_pagemap.h     | 17 +++++++--
- 3 files changed, 81 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_pagemap.c b/drivers/gpu/drm/drm_pagemap.c
-index 22c44807e3fe..864a73d019ed 100644
---- a/drivers/gpu/drm/drm_pagemap.c
-+++ b/drivers/gpu/drm/drm_pagemap.c
-@@ -408,7 +408,8 @@ int drm_pagemap_migrate_to_devmem(struct drm_pagemap_devmem *devmem_allocation,
- 		drm_pagemap_get_devmem_page(page, zdd);
- 	}
- 
--	err = ops->copy_to_devmem(pages, pagemap_addr, npages);
-+	err = ops->copy_to_devmem(pages, pagemap_addr, npages,
-+				  devmem_allocation->pre_migrate_fence);
- 	if (err)
- 		goto err_finalize;
- 
-@@ -596,7 +597,7 @@ int drm_pagemap_evict_to_ram(struct drm_pagemap_devmem *devmem_allocation)
- 	for (i = 0; i < npages; ++i)
- 		pages[i] = migrate_pfn_to_page(src[i]);
- 
--	err = ops->copy_to_ram(pages, pagemap_addr, npages);
-+	err = ops->copy_to_ram(pages, pagemap_addr, npages, NULL);
- 	if (err)
- 		goto err_finalize;
- 
-@@ -732,7 +733,7 @@ static int __drm_pagemap_migrate_to_ram(struct vm_area_struct *vas,
- 	for (i = 0; i < npages; ++i)
- 		pages[i] = migrate_pfn_to_page(migrate.src[i]);
- 
--	err = ops->copy_to_ram(pages, pagemap_addr, npages);
-+	err = ops->copy_to_ram(pages, pagemap_addr, npages, NULL);
- 	if (err)
- 		goto err_finalize;
- 
-@@ -813,11 +814,14 @@ EXPORT_SYMBOL_GPL(drm_pagemap_pagemap_ops_get);
-  * @ops: Pointer to the operations structure for GPU SVM device memory
-  * @dpagemap: The struct drm_pagemap we're allocating from.
-  * @size: Size of device memory allocation
-+ * @pre_migrate_fence: Fence to wait for or pipeline behind before migration starts.
-+ * (May be NULL).
-  */
- void drm_pagemap_devmem_init(struct drm_pagemap_devmem *devmem_allocation,
- 			     struct device *dev, struct mm_struct *mm,
- 			     const struct drm_pagemap_devmem_ops *ops,
--			     struct drm_pagemap *dpagemap, size_t size)
-+			     struct drm_pagemap *dpagemap, size_t size,
-+			     struct dma_fence *pre_migrate_fence)
- {
- 	init_completion(&devmem_allocation->detached);
- 	devmem_allocation->dev = dev;
-@@ -825,6 +829,7 @@ void drm_pagemap_devmem_init(struct drm_pagemap_devmem *devmem_allocation,
- 	devmem_allocation->ops = ops;
- 	devmem_allocation->dpagemap = dpagemap;
- 	devmem_allocation->size = size;
-+	devmem_allocation->pre_migrate_fence = pre_migrate_fence;
- }
- EXPORT_SYMBOL_GPL(drm_pagemap_devmem_init);
- 
-diff --git a/drivers/gpu/drm/xe/xe_svm.c b/drivers/gpu/drm/xe/xe_svm.c
-index 36634c84d148..2152d20049e4 100644
---- a/drivers/gpu/drm/xe/xe_svm.c
-+++ b/drivers/gpu/drm/xe/xe_svm.c
-@@ -483,11 +483,12 @@ static void xe_svm_copy_us_stats_incr(struct xe_gt *gt,
- 
- static int xe_svm_copy(struct page **pages,
- 		       struct drm_pagemap_addr *pagemap_addr,
--		       unsigned long npages, const enum xe_svm_copy_dir dir)
-+		       unsigned long npages, const enum xe_svm_copy_dir dir,
-+		       struct dma_fence *pre_migrate_fence)
- {
- 	struct xe_vram_region *vr = NULL;
- 	struct xe_gt *gt = NULL;
--	struct xe_device *xe;
-+	struct xe_device *xe = NULL;
- 	struct dma_fence *fence = NULL;
- 	unsigned long i;
- #define XE_VRAM_ADDR_INVALID	~0x0ull
-@@ -496,6 +497,18 @@ static int xe_svm_copy(struct page **pages,
- 	bool sram = dir == XE_SVM_COPY_TO_SRAM;
- 	ktime_t start = xe_svm_stats_ktime_get();
- 
-+	if (pre_migrate_fence && (sram || dma_fence_is_container(pre_migrate_fence))) {
-+		/*
-+		 * This would typically be a p2p migration from source, or
-+		 * a composite fence operation on the destination memory.
-+		 * Ensure that any other GPU operation on the destination
-+		 * is complete.
-+		 */
-+		err = dma_fence_wait(pre_migrate_fence, true);
-+		if (err)
-+			return err;
-+	}
-+
- 	/*
- 	 * This flow is complex: it locates physically contiguous device pages,
- 	 * derives the starting physical address, and performs a single GPU copy
-@@ -632,10 +645,28 @@ static int xe_svm_copy(struct page **pages,
- 
- err_out:
- 	/* Wait for all copies to complete */
--	if (fence) {
-+	if (fence)
- 		dma_fence_wait(fence, false);
--		dma_fence_put(fence);
-+
-+	/*
-+	 * If migrating to devmem, we should have pipelined the migration behind
-+	 * the pre_migrate_fence. Verify that this is indeed likely. If we
-+	 * didn't perform any copying, just wait for the pre_migrate_fence.
-+	 */
-+	if (!sram && pre_migrate_fence && !dma_fence_is_signaled(pre_migrate_fence)) {
-+		if (xe && fence &&
-+		    (pre_migrate_fence->context != fence->context ||
-+		     dma_fence_is_later(pre_migrate_fence, fence))) {
-+			drm_WARN(&xe->drm, true, "Unsignaled pre-migrate fence");
-+			drm_warn(&xe->drm, "fence contexts: %llu %llu. container %d\n",
-+				 (unsigned long long)fence->context,
-+				 (unsigned long long)pre_migrate_fence->context,
-+				 dma_fence_is_container(pre_migrate_fence));
-+		}
-+
-+		dma_fence_wait(pre_migrate_fence, false);
- 	}
-+	dma_fence_put(fence);
- 
- 	/*
- 	 * XXX: We can't derive the GT here (or anywhere in this functions, but
-@@ -652,16 +683,20 @@ static int xe_svm_copy(struct page **pages,
- 
- static int xe_svm_copy_to_devmem(struct page **pages,
- 				 struct drm_pagemap_addr *pagemap_addr,
--				 unsigned long npages)
-+				 unsigned long npages,
-+				 struct dma_fence *pre_migrate_fence)
- {
--	return xe_svm_copy(pages, pagemap_addr, npages, XE_SVM_COPY_TO_VRAM);
-+	return xe_svm_copy(pages, pagemap_addr, npages, XE_SVM_COPY_TO_VRAM,
-+			   pre_migrate_fence);
- }
- 
- static int xe_svm_copy_to_ram(struct page **pages,
- 			      struct drm_pagemap_addr *pagemap_addr,
--			      unsigned long npages)
-+			      unsigned long npages,
-+			      struct dma_fence *pre_migrate_fence)
- {
--	return xe_svm_copy(pages, pagemap_addr, npages, XE_SVM_COPY_TO_SRAM);
-+	return xe_svm_copy(pages, pagemap_addr, npages, XE_SVM_COPY_TO_SRAM,
-+			   pre_migrate_fence);
- }
- 
- static struct xe_bo *to_xe_bo(struct drm_pagemap_devmem *devmem_allocation)
-@@ -676,6 +711,7 @@ static void xe_svm_devmem_release(struct drm_pagemap_devmem *devmem_allocation)
- 
- 	xe_bo_put_async(bo);
- 	xe_pm_runtime_put(xe);
-+	dma_fence_put(devmem_allocation->pre_migrate_fence);
- }
- 
- static u64 block_offset_to_pfn(struct xe_vram_region *vr, u64 offset)
-@@ -868,6 +904,7 @@ static int xe_drm_pagemap_populate_mm(struct drm_pagemap *dpagemap,
- 				      unsigned long timeslice_ms)
- {
- 	struct xe_vram_region *vr = container_of(dpagemap, typeof(*vr), dpagemap);
-+	struct dma_fence *pre_migrate_fence = NULL;
- 	struct xe_device *xe = vr->xe;
- 	struct device *dev = xe->drm.dev;
- 	struct drm_buddy_block *block;
-@@ -894,8 +931,20 @@ static int xe_drm_pagemap_populate_mm(struct drm_pagemap *dpagemap,
- 			break;
- 		}
- 
-+		/* Ensure that any clearing or async eviction will complete before migration. */
-+		if (!dma_resv_test_signaled(bo->ttm.base.resv, DMA_RESV_USAGE_KERNEL)) {
-+			err = dma_resv_get_singleton(bo->ttm.base.resv, DMA_RESV_USAGE_KERNEL,
-+						     &pre_migrate_fence);
-+			if (err)
-+				dma_resv_wait_timeout(bo->ttm.base.resv, DMA_RESV_USAGE_KERNEL,
-+						      false, MAX_SCHEDULE_TIMEOUT);
-+			else if (pre_migrate_fence)
-+				dma_fence_enable_sw_signaling(pre_migrate_fence);
-+		}
-+
- 		drm_pagemap_devmem_init(&bo->devmem_allocation, dev, mm,
--					&dpagemap_devmem_ops, dpagemap, end - start);
-+					&dpagemap_devmem_ops, dpagemap, end - start,
-+					pre_migrate_fence);
- 
- 		blocks = &to_xe_ttm_vram_mgr_resource(bo->ttm.resource)->blocks;
- 		list_for_each_entry(block, blocks, link)
-diff --git a/include/drm/drm_pagemap.h b/include/drm/drm_pagemap.h
-index f6e7e234c089..70a7991f784f 100644
---- a/include/drm/drm_pagemap.h
-+++ b/include/drm/drm_pagemap.h
-@@ -8,6 +8,7 @@
- 
- #define NR_PAGES(order) (1U << (order))
- 
-+struct dma_fence;
- struct drm_pagemap;
- struct drm_pagemap_zdd;
- struct device;
-@@ -174,6 +175,8 @@ struct drm_pagemap_devmem_ops {
- 	 * @pages: Pointer to array of device memory pages (destination)
- 	 * @pagemap_addr: Pointer to array of DMA information (source)
- 	 * @npages: Number of pages to copy
-+	 * @pre_migrate_fence: dma-fence to wait for before migration start.
-+	 * May be NULL.
- 	 *
- 	 * Copy pages to device memory. If the order of a @pagemap_addr entry
- 	 * is greater than 0, the entry is populated but subsequent entries
-@@ -183,13 +186,16 @@ struct drm_pagemap_devmem_ops {
- 	 */
- 	int (*copy_to_devmem)(struct page **pages,
- 			      struct drm_pagemap_addr *pagemap_addr,
--			      unsigned long npages);
-+			      unsigned long npages,
-+			      struct dma_fence *pre_migrate_fence);
- 
- 	/**
- 	 * @copy_to_ram: Copy to system RAM (required for migration)
- 	 * @pages: Pointer to array of device memory pages (source)
- 	 * @pagemap_addr: Pointer to array of DMA information (destination)
- 	 * @npages: Number of pages to copy
-+	 * @pre_migrate_fence: dma-fence to wait for before migration start.
-+	 * May be NULL.
- 	 *
- 	 * Copy pages to system RAM. If the order of a @pagemap_addr entry
- 	 * is greater than 0, the entry is populated but subsequent entries
-@@ -199,7 +205,8 @@ struct drm_pagemap_devmem_ops {
- 	 */
- 	int (*copy_to_ram)(struct page **pages,
- 			   struct drm_pagemap_addr *pagemap_addr,
--			   unsigned long npages);
-+			   unsigned long npages,
-+			   struct dma_fence *pre_migrate_fence);
- };
- 
- /**
-@@ -212,6 +219,8 @@ struct drm_pagemap_devmem_ops {
-  * @dpagemap: The struct drm_pagemap of the pages this allocation belongs to.
-  * @size: Size of device memory allocation
-  * @timeslice_expiration: Timeslice expiration in jiffies
-+ * @pre_migrate_fence: Fence to wait for or pipeline behind before migration starts.
-+ * (May be NULL).
-  */
- struct drm_pagemap_devmem {
- 	struct device *dev;
-@@ -221,6 +230,7 @@ struct drm_pagemap_devmem {
- 	struct drm_pagemap *dpagemap;
- 	size_t size;
- 	u64 timeslice_expiration;
-+	struct dma_fence *pre_migrate_fence;
- };
- 
- int drm_pagemap_migrate_to_devmem(struct drm_pagemap_devmem *devmem_allocation,
-@@ -238,7 +248,8 @@ struct drm_pagemap *drm_pagemap_page_to_dpagemap(struct page *page);
- void drm_pagemap_devmem_init(struct drm_pagemap_devmem *devmem_allocation,
- 			     struct device *dev, struct mm_struct *mm,
- 			     const struct drm_pagemap_devmem_ops *ops,
--			     struct drm_pagemap *dpagemap, size_t size);
-+			     struct drm_pagemap *dpagemap, size_t size,
-+			     struct dma_fence *pre_migrate_fence);
- 
- int drm_pagemap_populate_mm(struct drm_pagemap *dpagemap,
- 			    unsigned long start, unsigned long end,
--- 
-2.51.1
-
+--=20
+software engineer
+rajagiri school of engineering and technology
 
