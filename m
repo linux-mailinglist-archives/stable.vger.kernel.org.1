@@ -1,131 +1,125 @@
-Return-Path: <stable+bounces-200825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27F0ACB76B5
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 00:47:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3A45CB76BB
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 00:53:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EEA65300B68B
-	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 23:47:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6F724301584A
+	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 23:53:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56FEA2D5408;
-	Thu, 11 Dec 2025 23:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E5E72D5948;
+	Thu, 11 Dec 2025 23:53:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SNkUhi0v"
+	dkim=pass (2048-bit key) header.d=pankajraghav.com header.i=@pankajraghav.com header.b="kyncJVek"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15499286D72
-	for <stable@vger.kernel.org>; Thu, 11 Dec 2025 23:47:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6337267729;
+	Thu, 11 Dec 2025 23:53:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765496853; cv=none; b=j6LAGqkIj4+Cw1qZSRI2YtnPx6Cs41QvvJ5/RW19iZ7roEwEI86eI60BzKn7AVXtSzQeo7hzjSw4IExqZwf138lS1RVUDNoJA49limnvqI3UYe0kTqAAb+Q1eNA6Ln8iCXraoyLW7e2k6HmJFsf5Pk4HFyk3Cf7l80zdTWu8w4k=
+	t=1765497222; cv=none; b=lt725TrKHAjXOKwh5C3snZApdL+MTGXHsWLe7LQpweSHI4gqQ/jgMfMWhd24USoTg5CrQQtS56f5MxkBE8bDVYalxrz4gCSeck/3Oqd8L7ggUb59/yUZPH5URUKdjk15N7HIjz5YAVSz/d0jpss3QPO552EqoP1WSJDX1XDhO/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765496853; c=relaxed/simple;
-	bh=bje5S2tO81LcR3oEMnuyNXK8MCzYbRCVPpr/63ZWRy4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=L4A/Ig7I5rUZUw2oKTX67H39QQa553P7iNnCdNOyUxIg7zZHvYj+wMB4bpwDzrnESHM1i4dWKSt8IUBeMoIi5t51gPkQJQDPdUN+A1SDmDxBS4rcSiF0jWdk+FeDgJDek3JtfPh0H7wPO7k8feMO+Bb5cUGVQzpH2tXFon8Mres=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SNkUhi0v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB507C2BC9E
-	for <stable@vger.kernel.org>; Thu, 11 Dec 2025 23:47:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765496852;
-	bh=bje5S2tO81LcR3oEMnuyNXK8MCzYbRCVPpr/63ZWRy4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=SNkUhi0vsFDkEFIDfZxCrKAjqVeRqvOyZSo6pxD6CVg4rMq9qSAIbjSxD/ITtWyaM
-	 EnJL3KBqMXuSrWqNE0bMN9U/+DOL8qiD+UbrOQArKHhgFEtCUKkAJX3roHiqkPHEpN
-	 TEjdNMHc0bp0xqBPZuWzfYMxBeeD3UDoYcX8ZJZ0b+mfH9IKqQERdsJHLRW+XB2z+B
-	 6iQAfzob7H0O5MBgwxrH65b6FRP/vlx3DQ+2R+G2zfFhmfKMArhF8Wyr2Hdawq3mAs
-	 FSdoRFpsuyJwX4YiJQcQkdL7XAvsYra4dii4cDafnR5MpMSAnVnw+6pqQSUQUK5St4
-	 RAQ6O/vZs+/AA==
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5957c929a5eso937342e87.1
-        for <stable@vger.kernel.org>; Thu, 11 Dec 2025 15:47:32 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVDFb6C6Mhyxbagm3ZKGpqdw8iXpShHA8wIg16Z2/pDSFCiynzK8x+RNXCvuxfDYtcC745DQC4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwqXddqHA+SRux2Az9wC2G8w/UTSFiTEThzPANtcsUKz6m9y/Y6
-	9gPohsnF91SR0LlFNWvoj9+kK0WQYDtlbSN111b3G00SIdsXEz1M8tavQsY98Xtl3gK9QS5Qbbg
-	pcirFkvcRBye9BgyJudR2N//jF9fWmfY=
-X-Google-Smtp-Source: AGHT+IG+tynJrEuFVmI9CGQVNWs1wGZ9mj2gwDEXwVEvTcf/I9XnBHIRwne+P0Qk/JsMpdmNrWEUtWaXp3jTSpSY9bs=
-X-Received: by 2002:a05:6512:3da8:b0:598:853e:72fa with SMTP id
- 2adb3069b0e04-598faa996cemr6981e87.52.1765496850964; Thu, 11 Dec 2025
- 15:47:30 -0800 (PST)
+	s=arc-20240116; t=1765497222; c=relaxed/simple;
+	bh=hOdfs+WEfqci97B3SH/qnpDChq0ECuUBByFcaSbF3t0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HpTZwgdrYrI38Yur06H3Y2fObrO88CKU7Wvj4lmd20zySZ1KBKEYhKxfPU0D6oxjHn2yP1ZeT9pxQJ/8QjYUOVNhseaJMioGzl/CBv+PRdboFcrxYmVASdH8zZ4mACa9edpTl4wNDkLllTsKlrPGwfX70flvwXHNrCttw8Hl/MQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pankajraghav.com; spf=pass smtp.mailfrom=pankajraghav.com; dkim=pass (2048-bit key) header.d=pankajraghav.com header.i=@pankajraghav.com header.b=kyncJVek; arc=none smtp.client-ip=80.241.56.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pankajraghav.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pankajraghav.com
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4dS8YX5kXcz9tCQ;
+	Fri, 12 Dec 2025 00:53:36 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pankajraghav.com;
+	s=MBO0001; t=1765497216;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uXed7TuLkDi/ADOnoI/WKx542ut9oPDV/eIIhHsFN24=;
+	b=kyncJVek5sDxnTuC7zyaJgpMbFLUQY1eXiy1h6PYgfR8ne80886LoY+UiyIQ7Kugftc1h6
+	9ls7cI5hWYAcLHIrMQWkBik4g9tQ12PbhbhjIvlots5kqR8UNj7WOv+ix/EVGIWKiVeHDk
+	hhg7q+c9iDUD0jb68OUVWkaDs4zdJZyPRtQKrrbiFAJVnhh0R7VWUKIPhRtThmQW0XCiLj
+	nTvN2FxXS8O9u8eTCWeqjCM26fmKddAcneJdie143WtDtyO8ScUhIcwfujAlm95G7kqq6C
+	zCr5Ptn9HjjcHIkZ5MJk8sRacTG3uI4DrV1woOA/NKPwQ5o9geH2RNC9sGy7fw==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=none;
+	spf=pass (outgoing_mbo_mout: domain of kernel@pankajraghav.com designates 2001:67c:2050:b231:465::202 as permitted sender) smtp.mailfrom=kernel@pankajraghav.com
+Message-ID: <934c62d1-c800-4b31-9774-1e9dfe661877@pankajraghav.com>
+Date: Fri, 12 Dec 2025 05:23:24 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <d5960fbced0beaf33c30203f7f8fb91d0899c87b.1764228973.git.quan.zhou@mediatek.com>
-In-Reply-To: <d5960fbced0beaf33c30203f7f8fb91d0899c87b.1764228973.git.quan.zhou@mediatek.com>
-From: Sean Wang <sean.wang@kernel.org>
-Date: Thu, 11 Dec 2025 17:47:19 -0600
-X-Gmail-Original-Message-ID: <CAGp9LzrvD+Go=StCU=iU4KERyXfK5VB_xvonHNFkGxDyy7p6mg@mail.gmail.com>
-X-Gm-Features: AQt7F2rPOclLMuFQPaVaug5PVxJnxqf4ihQeSo3tetqH5UXKLK7pgKOl-k9a8rM
-Message-ID: <CAGp9LzrvD+Go=StCU=iU4KERyXfK5VB_xvonHNFkGxDyy7p6mg@mail.gmail.com>
-Subject: Re: [PATCH v2] wifi: mt76: mt7925: fix AMPDU state handling in mt7925_tx_check_aggr
-To: Quan Zhou <quan.zhou@mediatek.com>
-Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@mediatek.com>, 
-	Deren Wu <Deren.Wu@mediatek.com>, Ryder Lee <ryder.lee@mediatek.com>, 
-	Shayne Chen <shayne.chen@mediatek.com>, Leon Yen <Leon.Yen@mediatek.com>, 
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>, Allan Wang <allan.wang@mediatek.com>, 
-	KM Lin <km.lin@mediatek.com>, Posh Sun <posh.sun@mediatek.com>, 
-	Shengxi Xu <shengxi.xu@mediatek.com>, Eric-SY Chang <Eric-SY.Chang@mediatek.com>, 
-	CH Yeh <ch.yeh@mediatek.com>, Robin Chiu <robin.chiu@mediatek.com>, 
-	linux-wireless <linux-wireless@vger.kernel.org>, 
-	linux-mediatek <linux-mediatek@lists.infradead.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 1/2] scsi: sd: fix write_same(16/10) to enable sector size
+ > PAGE_SIZE
+To: Damien Le Moal <dlemoal@kernel.org>, sw.prabhu6@gmail.com,
+ James.Bottomley@HansenPartnership.com, martin.petersen@oracle.com,
+ linux-scsi@vger.kernel.org
+Cc: bvanassche@acm.org, linux-kernel@vger.kernel.org, mcgrof@kernel.org,
+ stable@vger.kernel.org, Swarna Prabhu <s.prabhu@samsung.com>,
+ Pankaj Raghav <p.raghav@samsung.com>
+References: <20251210014136.2549405-1-sw.prabhu6@gmail.com>
+ <20251210014136.2549405-3-sw.prabhu6@gmail.com>
+ <0b3458ab-e419-4ec2-9cba-eb9fd2cd8de9@kernel.org>
+Content-Language: en-US
+From: Pankaj Raghav <kernel@pankajraghav.com>
+In-Reply-To: <0b3458ab-e419-4ec2-9cba-eb9fd2cd8de9@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 4dS8YX5kXcz9tCQ
 
-On Thu, Nov 27, 2025 at 1:55=E2=80=AFAM Quan Zhou <quan.zhou@mediatek.com> =
-wrote:
->
-> Previously, the AMPDU state bit for a given TID was set before attempting
-> to start a BA session, which could result in the AMPDU state being marked
-> active even if ieee80211_start_tx_ba_session() failed. This patch changes
-> the logic to only set the AMPDU state bit after successfully starting a B=
-A
-> session, ensuring proper synchronization between AMPDU state and BA sessi=
-on
-> status.
->
-> This fixes potential issues with aggregation state tracking and improves
-> compatibility with mac80211 BA session management.
->
-> Fixes: 44eb173bdd4f ("wifi: mt76: mt7925: add link handling in mt7925_txw=
-i_free")
-> Cc: stable@vger.kernel.org
->
-> Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
-> ---
-> v2: modify to avoid weakening atomicity
-> ---
->  drivers/net/wireless/mediatek/mt76/mt7925/mac.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c b/drivers/ne=
-t/wireless/mediatek/mt76/mt7925/mac.c
-> index 871b67101976..5e5b1df78633 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
-> @@ -881,8 +881,10 @@ static void mt7925_tx_check_aggr(struct ieee80211_st=
-a *sta, struct sk_buff *skb,
->         else
->                 mlink =3D &msta->deflink;
->
-> -       if (!test_and_set_bit(tid, &mlink->wcid.ampdu_state))
-> -               ieee80211_start_tx_ba_session(sta, tid, 0);
-> +       if (!test_and_set_bit(tid, &mlink->wcid.ampdu_state)) {
-> +               if (ieee80211_start_tx_ba_session(sta, tid, 0))
-> +                       clear_bit(tid, &mlink->wcid.ampdu_state);
-> +       }
->  }
->
 
-Reviewed-by: Sean Wang <sean.wang@mediatek.com>
+On 12/10/25 07:22, Damien Le Moal wrote:
+> On 2025/12/09 17:41, sw.prabhu6@gmail.com wrote:
+>> From: Swarna Prabhu <sw.prabhu6@gmail.com>
+>>
+>> The WRITE SAME(16) and WRITE SAME(10) scsi commands uses
+>> a page from a dedicated mempool('sd_page_pool') for its
+>> payload. This pool was initialized to allocate single
+>> pages, which was sufficient as long as the device sector
+>> size did not exceed the PAGE_SIZE.
+>>
+>> Given that block layer now supports block size upto
+>> 64K ie beyond PAGE_SIZE, adapt sd_set_special_bvec()
+>> to accommodate that.
+>>
+>> With the above fix, enable sector sizes > PAGE_SIZE in
+>> scsi sd driver.
+>>
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Swarna Prabhu <s.prabhu@samsung.com>
+>> Co-developed-by: Pankaj Raghav <p.raghav@samsung.com>
+>> Signed-off-by: Pankaj Raghav <p.raghav@samsung.com>
+>> ---
+>> Note: We are allocating pages of order aligned to 
+>> BLK_MAX_BLOCK_SIZE for the mempool page allocator
+>> 'sd_page_pool' all the time. This is because we only
+>> know that a bigger sector size device is attached at
+>> sd_probe and it might be too late to reallocate mempool
+>> with order >0.
+> 
+> That is a lot heavier on the memory for the vast majority of devices which are
+> 512B or 4K block size... It may be better to have the special "large block"
+> mempool attached to the scsi disk struct and keep the default single page
+> mempool for all other regular devices.
+> 
 
->  static bool
-> --
-> 2.45.2
->
->
+We had the same feeling as well and we mentioned it in the 1st RFC.
+
+But when will you initialize the mempool for the large block devices? I don't think it
+makes sense to unconditionally initialize it in init_sd.
+Do we do it during the sd_probe() when we first encounter a large block device? That way
+we may not waste any memory if no large block devices are attached.
+
+--
+Pankaj
+
 
