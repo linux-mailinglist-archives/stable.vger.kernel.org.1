@@ -1,121 +1,196 @@
-Return-Path: <stable+bounces-200767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1043CB4AA3
-	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 05:03:30 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C75CCB4C68
+	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 06:38:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 29E2430102A2
-	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 04:03:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2C48830012DD
+	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 05:38:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9F4D275844;
-	Thu, 11 Dec 2025 04:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D9482874E6;
+	Thu, 11 Dec 2025 05:38:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="RzKDUUTv";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="enhJYY3w";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="GeSjbtlv";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="wnSsMKH1"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E32754A23;
-	Thu, 11 Dec 2025 04:03:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE72D225390
+	for <stable@vger.kernel.org>; Thu, 11 Dec 2025 05:38:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765425805; cv=none; b=AVhKdZXX8s8GIu+kX7qkwZWmy0dnhFghRvXEPkIA3xUqg3ot+LPgsPJJ+WRvRt+kfUZzmndzlr7OLkN/qc0fHHEC261ET9LPMaU101pHG+uYNBMsOSg5hShew2PdPFAqJ3FC1VMeyNgVqxKGtLYPSCYsKfKwJto+Te77GwtnHdw=
+	t=1765431491; cv=none; b=Pr3ih0S2P5fz10FBVfJuVvhU0Na+aNd+8VUEK6sqLKiKDUu42rOA5IItwgUTsRLNHH1HF1muL2+dW5Ev2vGkbuR2sGxQBSwdLnksUydEoPaqSErrebPTsrQxEveWLKpLD6vDj68n5Y8kpmhMKadAFaLKPGfEUQr+VxyfIoSz/8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765425805; c=relaxed/simple;
-	bh=ym5Zf98E+O3li35Q3eae+JPTiuNUaQ3tPxY/mcTQ63o=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dC6iMm3S23WZcX217YKPr9fBFjae7ez263Nu8700BkdUCyEmZiTKEagnqnuzSf+kT/DEnfmrB0b3QszOK4O0lxOMkaYBiLlKpGyvUHrbnFYnxasUNj+sBPg6fePasOAzh3Rkp3a+xxxUQnzuKiPyImsQDMQiU0iAqGxcUaLtwIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from dfae2b116770.home.arpa (unknown [124.16.138.129])
-	by APP-05 (Coremail) with SMTP id zQCowACnOQ1uQjpprjhGAA--.25317S2;
-	Thu, 11 Dec 2025 12:02:55 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: ulf.hansson@linaro.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com
-Cc: linux-pm@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v4] pmdomain: imx: Fix reference count leak in imx_gpc_probe()
-Date: Thu, 11 Dec 2025 04:02:52 +0000
-Message-Id: <20251211040252.497759-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1765431491; c=relaxed/simple;
+	bh=yJHDLHWkAIeaHbJweUWq+dIRmmHcEXV9nPFwuwW4glA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=l/trWmGwNe8iicis5BG2xlovFjpze+F1VE94DIeGNrrt/L4wb+sj1mda1ptPF/Y9Yos0iR+0bXPtxO2jkdoTIfLhExeCbPmdiYZqxifg6whcYwIwYPNKm54d12z9gorAKJRyZy9ATydi18+MgYGrTKQxuWMrM1hqCqxE8Zqqn1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=RzKDUUTv; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=enhJYY3w; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=GeSjbtlv; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=wnSsMKH1; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 864105BDA6;
+	Thu, 11 Dec 2025 05:38:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1765431487; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JPZrLEmjQ4PxA/58AozD92W3ErV/wZxGz5NUQYproPQ=;
+	b=RzKDUUTvktb6lu4JXR3lHWXoaWHxP2wTZGqQgbFD3xDriMqu6T4saOyqou9uV02lpE6aOu
+	S3WX5pcqjd8ZgSoXS2lsfEFNObYyWhI/Id1+mFWvlNrA63JOBfPr/5l2v23upkAcrDiZ82
+	+Dz0D2vwO15nDzDVlt5V8Lp/BPkVm4A=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1765431487;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JPZrLEmjQ4PxA/58AozD92W3ErV/wZxGz5NUQYproPQ=;
+	b=enhJYY3wXxqj14AbSbTlday5ZXhDXMxtnh7uphmTAr7wJFIVbDfHLbq9upeDMjHgbUOUzg
+	eQc1Ic/BhfKK9hDg==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1765431486; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JPZrLEmjQ4PxA/58AozD92W3ErV/wZxGz5NUQYproPQ=;
+	b=GeSjbtlvbpFSEkYqxK/4MCNW46dr2r39hdVHZsWc1Ja/5wGht0GP2mRrH4+M38jGMrX2sn
+	8UGnwPJ74asGzaTRh0bn/dFKLJPiwiSUyeH3rOK0NaPLP4wd75wX6AsGFsrsfg0zbx7J+e
+	6RkUB1/DXfkQZrcf1lR9hEtdMUYV32c=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1765431486;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JPZrLEmjQ4PxA/58AozD92W3ErV/wZxGz5NUQYproPQ=;
+	b=wnSsMKH1sAnyC1qqq1pPo9t5dEHQP3gNip9KHlpJzy97LupYGirH5A1RZ7dr/vhQbhiOfs
+	hgVDQuoyDZcb0gCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4020B3EA63;
+	Thu, 11 Dec 2025 05:38:05 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id fuLNC71YOmkmLwAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Thu, 11 Dec 2025 05:38:05 +0000
+Date: Thu, 11 Dec 2025 06:38:03 +0100
+From: Oscar Salvador <osalvador@suse.de>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-mm@kvack.org, Will Deacon <will@kernel.org>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Nick Piggin <npiggin@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnd Bergmann <arnd@arndb.de>, Muchun Song <muchun.song@linux.dev>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Laurence Oberman <loberman@redhat.com>,
+	Prakash Sangappa <prakash.sangappa@oracle.com>,
+	Nadav Amit <nadav.amit@gmail.com>, stable@vger.kernel.org,
+	Liu Shixin <liushixin2@huawei.com>
+Subject: Re: [PATCH v1 1/4] mm/hugetlb: fix hugetlb_pmd_shared()
+Message-ID: <aTpYu4gQmFCFh69X@localhost.localdomain>
+References: <20251205213558.2980480-1-david@kernel.org>
+ <20251205213558.2980480-2-david@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowACnOQ1uQjpprjhGAA--.25317S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Ww13Kw4fAw45ZFyDZryxKrg_yoW8WF4kpF
-	WxGayakrW7CF47KaykKr4UZFy5K3y5A3y7tF40kay3Zr15tF97JFy5Z34jkrnakry8Ja15
-	trWUKryrXas7CaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
-	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
-	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
-	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
-	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1x
-	MIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIda
-	VFxhVjvjDU0xZFpf9x0JUd-B_UUUUU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAYNA2k6CZbaQgAAsQ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251205213558.2980480-2-david@kernel.org>
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[23];
+	ARC_NA(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	RCVD_TLS_ALL(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kvack.org,kernel.org,linux-foundation.org,gmail.com,infradead.org,arndb.de,linux.dev,oracle.com,suse.cz,google.com,suse.de,surriel.com,redhat.com,huawei.com];
+	RCVD_COUNT_TWO(0.00)[2];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,localhost.localdomain:mid,imap1.dmz-prg2.suse.org:helo,suse.de:email]
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Spam-Score: -2.80
 
-of_get_child_by_name() returns a node pointer with refcount incremented.
-Use the __free() attribute to manage the pgc_node reference, ensuring
-automatic of_node_put() cleanup when pgc_node goes out of scope.
+On Fri, Dec 05, 2025 at 10:35:55PM +0100, David Hildenbrand (Red Hat) wrote:
+> We switched from (wrongly) using the page count to an independent
+> shared count. Now, shared page tables have a refcount of 1 (excluding
+> speculative references) and instead use ptdesc->pt_share_count to
+> identify sharing.
+> 
+> We didn't convert hugetlb_pmd_shared(), so right now, we would never
+> detect a shared PMD table as such, because sharing/unsharing no longer
+> touches the refcount of a PMD table.
+> 
+> Page migration, like mbind() or migrate_pages() would allow for migrating
+> folios mapped into such shared PMD tables, even though the folios are
+> not exclusive. In smaps we would account them as "private" although they
+> are "shared", and we would be wrongly setting the PM_MMAP_EXCLUSIVE in the
+> pagemap interface.
+> 
+> Fix it by properly using ptdesc_pmd_is_shared() in hugetlb_pmd_shared().
+> 
+> Fixes: 59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count")
+> Cc: <stable@vger.kernel.org>
+> Cc: Liu Shixin <liushixin2@huawei.com>
+> Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
-This eliminates the need for explicit error handling paths and avoids
-reference count leaks.
+Good catch David,
 
-Fixes: 721cabf6c660 ("soc: imx: move PGC handling to a new GPC driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Acked-by: Oscar Salvador <osalvador@suse.de>
 
----
-Change in V4:
-- Fix typo error in code
+> ---
+>  include/linux/hugetlb.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+> index 019a1c5281e4e..03c8725efa289 100644
+> --- a/include/linux/hugetlb.h
+> +++ b/include/linux/hugetlb.h
+> @@ -1326,7 +1326,7 @@ static inline __init void hugetlb_cma_reserve(int order)
+>  #ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
+>  static inline bool hugetlb_pmd_shared(pte_t *pte)
+>  {
+> -	return page_count(virt_to_page(pte)) > 1;
+> +	return ptdesc_pmd_is_shared(virt_to_ptdesc(pte));
+>  }
+>  #else
+>  static inline bool hugetlb_pmd_shared(pte_t *pte)
+> -- 
+> 2.52.0
+> 
+> 
 
-Change in V3:
-- Ensure variable is assigned when using cleanup attribute
-
-Change in V2:
-- Use __free() attribute instead of explicit of_node_put() calls
----
- drivers/pmdomain/imx/gpc.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/pmdomain/imx/gpc.c b/drivers/pmdomain/imx/gpc.c
-index f18c7e6e75dd..56a78cc86584 100644
---- a/drivers/pmdomain/imx/gpc.c
-+++ b/drivers/pmdomain/imx/gpc.c
-@@ -403,13 +403,12 @@ static int imx_gpc_old_dt_init(struct device *dev, struct regmap *regmap,
- static int imx_gpc_probe(struct platform_device *pdev)
- {
- 	const struct imx_gpc_dt_data *of_id_data = device_get_match_data(&pdev->dev);
--	struct device_node *pgc_node;
-+	struct device_node *pgc_node __free(device_node)
-+		= of_get_child_by_name(pdev->dev.of_node, "pgc");
- 	struct regmap *regmap;
- 	void __iomem *base;
- 	int ret;
- 
--	pgc_node = of_get_child_by_name(pdev->dev.of_node, "pgc");
--
- 	/* bail out if DT too old and doesn't provide the necessary info */
- 	if (!of_property_present(pdev->dev.of_node, "#power-domain-cells") &&
- 	    !pgc_node)
 -- 
-2.34.1
-
+Oscar Salvador
+SUSE Labs
 
