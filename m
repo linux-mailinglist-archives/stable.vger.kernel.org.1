@@ -1,137 +1,98 @@
-Return-Path: <stable+bounces-200777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3E95CB515C
-	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 09:19:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26A5CCB54D8
+	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 10:05:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8C5ED300C297
-	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 08:13:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0495C301459E
+	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 09:02:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60E682DA762;
-	Thu, 11 Dec 2025 08:13:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A6BA2F5A0D;
+	Thu, 11 Dec 2025 09:02:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NlfLN/PI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TW23bRbx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D963E279DC3
-	for <stable@vger.kernel.org>; Thu, 11 Dec 2025 08:13:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A1BF25F96B;
+	Thu, 11 Dec 2025 09:02:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765440812; cv=none; b=P4YdmVeA/G/s50LDyXo5j6LmKKJQDRLrfbOdrOFPfbGXUr4AwwYnP87v+sD3Mvy/u5NpC1e6VWo5EgzofHlNKUWwQ2s0D8GIOFbldVMuuoZgt/2fhDuhl0ipnFmG/XcBKsfBAhEP0q7h8c93lH/m8+YlNithwLyJcV/2uUP7Gj0=
+	t=1765443739; cv=none; b=kjMk5/rJ4SaHt2pNCq8DylzBm+KJBZUFSKqJxiuFxpeDKUZvdPphqaubXbSm1DzHxJpzWPqH/je4uEs5Z/OAWG8KNvBrGGsC+vg5LOeHv6tBJ4ILOWYs3oJ+4bwCrD62enKEbqCXYQekRGRcaqsFLNn93V3cA7wqQbOSTYjbmLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765440812; c=relaxed/simple;
-	bh=CRdQskgW/O6U/RpBs/bh42YAt536V9Rswk+rIj7pjMU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=belaczfBUTo6095QPR0zDGLF5lf7YylQ/9VJOxrb9DawkrnAItOBXMeWUpQfH6IZRd+klE8zYGovJI+QZgJo3uOyCY5BAV0XxM2qV2jqHahs0MfphjlcrMaaf63OtznH7JLTQidxHLHj97PMfaG60cmA0yu2SP7nMKcF1ytGfLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NlfLN/PI; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-297dd95ffe4so6898105ad.3
-        for <stable@vger.kernel.org>; Thu, 11 Dec 2025 00:13:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765440810; x=1766045610; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=trUfnuuHzLWg0hqtTbFZbrBapbqubE16vGf51eAqUyI=;
-        b=NlfLN/PInJl3l93OXCX/IrY6gg8tW2yrkeDFDYQ75GGNEGfhf61rtrqglE0t7tFr/e
-         OkRBc1lkaFE/q2IGYbP16CwLYiWAc95IffbvIR5pvYBNGr+48ZTc4koCbVgnJnK89tQu
-         DjF++058N2d8Kpl9FIUiKbdGbWk10xK21EjG2IW09EoEDOLvRe+isNwC6Z3OFx0wpjSv
-         JfoRwjY84Wy8BgUw1rSiqshv8fqS2o77QYG77MbusJsreJx8lPfpYvcXZkfOi+2WtQ20
-         YUJEaYXHwCPfMUxQ64JozbC+B2SnYg9jlKbjOQ5051BV8k+HQ/gg4nxWkhLi3nlQhgGB
-         hlkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765440810; x=1766045610;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=trUfnuuHzLWg0hqtTbFZbrBapbqubE16vGf51eAqUyI=;
-        b=PQ6/ya+FMVWhPOIa7hXn0tmz7XNH7tFfnXV+IwP2qTZZDOOumrZUVvydPtZwwRPBEV
-         QBUwhywHZQr4gqjR8q9qK4wit2ywG/ltRzMCkrl18s8Lsbn1LssVKtfyatc0SEWuragY
-         lz/1cfL8MV6Su9psXN4OJCGgEvkLLutKjA/ZWt18MYny6chX+dBvsudN0PARCrb5CP10
-         RX/SmLZiKBJ6TV7aoPfyZW5VT9OiRzgiF1973YzGD8CMcgaEIQZFFuROMuL4mkfqiepk
-         MI858kbsVJhXS3P0WXUuJffgT/maPRax/qXrYDGv+4z9JXW+ULmmzhwssXXvp0kuSl5j
-         yn9A==
-X-Forwarded-Encrypted: i=1; AJvYcCUeG3/kznYb1/wtzIr8EZs+5TIcJRM54lWlRBWeEb+P78G6o+nDh2D9qrXHxedunazkociwtTY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxOOpbz6/d0pn7bj6cJPfGvwEBGqHGltQxP2I01LoVpTbFonq+I
-	QeLiiVt+IqGL+RI6kcMizbOedJV8IGFVR+8b4xe0mgvV/Gb7bvjwhhvy
-X-Gm-Gg: AY/fxX5Gp+iAvahle3RAhC9gVo6EfNjhAH+nP/iUt+SwuL0OBYoDDxCx4bLZNz2+TMT
-	tpH4HwlH8gw5EMB9JPrU9+57nW3nc64t0fXzUMR0W/kvNQ/ZNO6zj3LCahvOtRiypROUZUVA87a
-	6F1cNusej+553oFyRvivoD0/bJJ6suLx9UXMFHEtce4zPlXoG1e6+iUAQWF8XQweWacdGSfl/tp
-	iC6dt4mqqmX3JEA57JEnZgJkZ1eZPafnoI6V2jnlSCEBfKn6t6qAep3txC1bMrWo9S3LmrXB/4C
-	LDIOEAFOTKSY870EMDj9LLcxRNDxIc+35sp1MPyXZTS8uB22s4WDaa78+cRn04n9lMkvzAHS1nb
-	xOAPUBk0YY0eoeVrYO9stoONk9UypEKxJlVSsRETGCLTOiGYoB9oh4UYS6IrJEw1GnZwm7TmKTZ
-	9qfGumoesD
-X-Google-Smtp-Source: AGHT+IGpU0Pf7s9UlmMW8EGY8yYMuomHFnlX0/Df9bPI6JMt8uShHZ+gMWWhZpAR4wob/58V/qG9Zw==
-X-Received: by 2002:a17:903:2c7:b0:295:6a69:4ad5 with SMTP id d9443c01a7336-29ec2803d18mr60221255ad.56.1765440810038;
-        Thu, 11 Dec 2025 00:13:30 -0800 (PST)
-Received: from c45b92c47440.. ([202.120.234.58])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-29eea04036bsm16048855ad.78.2025.12.11.00.13.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Dec 2025 00:13:29 -0800 (PST)
-From: Miaoqian Lin <linmq006@gmail.com>
-To: Daniel Golle <daniel@makrotopia.org>,
-	Qingfang Deng <dqfext@gmail.com>,
-	SkyLake Huang <SkyLake.Huang@mediatek.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Cc: linmq006@gmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH] net: phy: mediatek: fix nvmem cell reference leak in mt798x_phy_calibration
-Date: Thu, 11 Dec 2025 12:13:13 +0400
-Message-Id: <20251211081313.2368460-1-linmq006@gmail.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1765443739; c=relaxed/simple;
+	bh=nkq1ZXiB49UyB3y6+lIE0f7UqwJlWmJTtNCh5bPPlSs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i6pDqJUBGWaDLtkpbzyERHL1a0sfC0X0snGHNjRg4IrQfduurk24V2+xlPtiDuRgkVntAMx0MFPFMVP/Iz3ohRTdxeMK2hLyL61cEVe/zYeuMeanRXJ5hOuUIQlN8/qPuaGWLdKK8HGN1wA/N8XPE5+NiYJc9wyVFK3fE9TFnR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TW23bRbx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6762AC4CEFB;
+	Thu, 11 Dec 2025 09:02:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765443737;
+	bh=nkq1ZXiB49UyB3y6+lIE0f7UqwJlWmJTtNCh5bPPlSs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TW23bRbxay5k2LC8n36ZkDcoNEfMKZklmUORF5C45+R7AAi79BpizK59UdSasTbPp
+	 o1kiqtwzH1qHZNdYrkBdqrzK+n61YUmpvXsjGI2SMPBCQ5f09j1+dOS9cp6oUyPSvf
+	 OK5VHNRaPXTCvfQgBQAmEiwas+q5oWo8HCQkcMa5//8qPfx8Ve74Lviull4EkyVcSP
+	 Bul22WEnMd7m5UjOn3rfQgOkjGzpq8NCOeKxhIGhgE6xTTfe4xnUf853Y95A4IS0Gn
+	 5i/R1dml6AT5NQUdS8JEAEbBvQGvKKsnGCSU6+qAGmCOlgvyrYfyUUMoNf/IBoatae
+	 Z63mf5VUrmg0Q==
+Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
+	id E2B431ACB974; Thu, 11 Dec 2025 09:02:13 +0000 (GMT)
+Date: Thu, 11 Dec 2025 18:02:13 +0900
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
+Subject: Re: [PATCH 6.18 00/29] 6.18.1-rc1 review
+Message-ID: <aTqIlTvqHS0rocte@sirena.co.uk>
+References: <20251210072944.363788552@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="UdWITBtXkyHyz5zJ"
+Content-Disposition: inline
+In-Reply-To: <20251210072944.363788552@linuxfoundation.org>
+X-Cookie: It's clever, but is it art?
 
-When nvmem_cell_read() fails in mt798x_phy_calibration(), the function
-returns without calling nvmem_cell_put(), leaking the cell reference.
 
-Move nvmem_cell_put() right after nvmem_cell_read() to ensure the cell
-reference is always released regardless of the read result.
+--UdWITBtXkyHyz5zJ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Found via static analysis and code review.
+On Wed, Dec 10, 2025 at 04:30:10PM +0900, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.18.1 release.
+> There are 29 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Fixes: 98c485eaf509 ("net: phy: add driver for MediaTek SoC built-in GE PHYs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
----
- drivers/net/phy/mediatek/mtk-ge-soc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Tested-by: Mark Brown <broonie@kernel.org>
 
-diff --git a/drivers/net/phy/mediatek/mtk-ge-soc.c b/drivers/net/phy/mediatek/mtk-ge-soc.c
-index cd09fbf92ef2..2c4bbc236202 100644
---- a/drivers/net/phy/mediatek/mtk-ge-soc.c
-+++ b/drivers/net/phy/mediatek/mtk-ge-soc.c
-@@ -1167,9 +1167,9 @@ static int mt798x_phy_calibration(struct phy_device *phydev)
- 	}
- 
- 	buf = (u32 *)nvmem_cell_read(cell, &len);
-+	nvmem_cell_put(cell);
- 	if (IS_ERR(buf))
- 		return PTR_ERR(buf);
--	nvmem_cell_put(cell);
- 
- 	if (!buf[0] || !buf[1] || !buf[2] || !buf[3] || len < 4 * sizeof(u32)) {
- 		phydev_err(phydev, "invalid efuse data\n");
--- 
-2.25.1
+--UdWITBtXkyHyz5zJ
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmk6iJIACgkQJNaLcl1U
+h9DYDAf9FbVQDnsKh2WTzU0FNIVUNt3cgEarYdT+L21oKkDvb2K7q2VJr7aiswyx
+U1aanSh2emBYIp5+qsFMN+d37IPJ/q2FcS6crQpx+DGdZrI+6L7876aT91dalfNE
+jVT33Ll+LvMMpNiFe8Cr6iM0o0rCR0AVwGUmpVyVLse1BIMLw///Xv2O9ohJp7+8
+cRBNcUs0bwXvhtriC8OJBUwBxslp1f8fQDSYV4CmUpzCI173iqsUJIMMqks+WUuV
+i3kSTEvb1yx0Vs8X4OYJHmfYcwD93SSi/uzfzbmHDMlrPK2/u3yVXAWgN9ptGx4O
+FxvCdSid+SJs8bngQU0moRBQkL0gtA==
+=u4N3
+-----END PGP SIGNATURE-----
+
+--UdWITBtXkyHyz5zJ--
 
