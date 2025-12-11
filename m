@@ -1,256 +1,247 @@
-Return-Path: <stable+bounces-200794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 552EFCB5A13
-	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 12:24:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBFFACB5A19
+	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 12:27:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0A84030084C4
-	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 11:24:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4E7693008FA2
+	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 11:27:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A89833081CC;
-	Thu, 11 Dec 2025 11:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 401873090EA;
+	Thu, 11 Dec 2025 11:27:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="j6OasHmT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t2M3FW36"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102CC3074BE
-	for <stable@vger.kernel.org>; Thu, 11 Dec 2025 11:24:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765452290; cv=fail; b=VUly332wifZobVUMwRapwzXgbfDptEPqgZxvLJtWdELOA/SGWKVs97oJ4Gbv6sfGgexIxsWJKvOHQ/q7IjKMR1D9iPVU8100BvOWwwMmndTK7VjuyXbMb4Pb2OUS7DdEr0CI0Pg3bVv+x+eEduMZYRyvYhlD0+xCxwcrynkvhkQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765452290; c=relaxed/simple;
-	bh=L97Z1ZsEO8p3NMSyiIS62t6PtIBJm6xz/HxQKG/7Vb8=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=PFF3rhsqz6beRRSBfYAvc0EAFj0rNVSjzsV4VKYah14cQ95m3WTIsW3CA2yjZ70eMT/8uyqB1peBDE4Ds5BeOu0XQ5HlX+9ysWCoRWkzdKkNM5F/oWCNTnqeAngmi2C3JoNpgg5Jg2CjTUJF8ki6/l7GQKvfWvJ7p+fLwNuASyE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=j6OasHmT; arc=fail smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765452289; x=1796988289;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=L97Z1ZsEO8p3NMSyiIS62t6PtIBJm6xz/HxQKG/7Vb8=;
-  b=j6OasHmTHC6xK20v7S12kCyI16KZtfIU2eEIX9zS8w8Z00zDageLnpwP
-   eHaK62pPHXP98/BCsYtXu80wNka4wLrU4EVoQDqwABdPymwqykbDswAen
-   G2k6vkv5mpeX8wjWbf2R1lectljcRSHr82GKDtvQpuhKfztCTIebp7v5m
-   f4aP1qOiBg0whdSwsNgMM2QeZcyA/rLdF3NabDE+ZAkAQJ5cSnAN1ZcVl
-   Pg9V5zhS6S1uZr44819LWK2+Rwt7RABW4H0RRBGNSfB9G3u3y0njKlwb5
-   JdNi5ccr0i7O9cTV83FofAoSu/h8f4PtLX95ONe0fjwPJG9/lUjbTeJ7w
-   g==;
-X-CSE-ConnectionGUID: VikQaBUuRqSX0kUHYCbAOQ==
-X-CSE-MsgGUID: TDvseZ0pQE+ZmSzS6uOupg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11638"; a="71277578"
-X-IronPort-AV: E=Sophos;i="6.20,265,1758610800"; 
-   d="scan'208";a="71277578"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2025 03:24:48 -0800
-X-CSE-ConnectionGUID: 2pTPHAHJRumYarQyYgA2Tw==
-X-CSE-MsgGUID: q8K49DyTR2W+0wj4G9Wg2Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,265,1758610800"; 
-   d="scan'208";a="220141974"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2025 03:24:48 -0800
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Thu, 11 Dec 2025 03:24:47 -0800
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Thu, 11 Dec 2025 03:24:47 -0800
-Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.67) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Thu, 11 Dec 2025 03:24:47 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Tra2AYrY0FTJ2E/mCwmKzW5HMK7FiDRBxHot/wBv+zj8pmL+/7T0NMpuz1J2qVcq3RLdNzuy1+uxnjUjqroD8x+9AyHIjQYp/IRXpOrfNepDXDgfEIZlMEXRm//L/kWYCM5XLUhruYxIiyXGVEJx33fSoBB7A8ByFw03CiT2GbrzvyMGgF5NM1CKifbLk8/t7ISU6RI601+UMMR3dzsb7jdjIAD04vIpnZWGpjJNj8evWpofD8u5qkgA8Vha+/wk+90L3l8zlVEWH/cVt6rZPnQZwdD0OdCFogFXeyH+RNeiIW0DneNLvAPe3meISbxt4zxap9Zl32yZVJ6YE44nBA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QY97rjXZjIEYivzK8eUULJHOPSpfmHpWHN8axuplIaA=;
- b=dimaknyTMhwFymBNBjJkA24iTKy3pplF3AD1jUQM+h98qL0oDhKjKU6LQfCIVeWUPUeBe5ALAGSOrQNjPSzbi1LpurBKS2ABdVB6SZj1v6va1KRnhcZAbLqc6UDnftWMiOh2Q8CjWx3f0WAfefjl8jku3aJnc52ckIXVzQd0qH5RlVuOmrHsEiTMSQncWFA7sQQScR6oJ2TY89m2NG9vVLz9D/ZWHwoH6hFu7yIDTRVxK7zcajwiHcoNh+PuQYv6eOgCO8HldI7i9xs7E45sIer8Fh2ttWLITQ9/98PKu206Ye3XmczNcN+EmPAEc+TL1NE2Oa1gyMsiZqbJu75XrA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CO1PR11MB5057.namprd11.prod.outlook.com (2603:10b6:303:6c::15)
- by CH2PR11MB8815.namprd11.prod.outlook.com (2603:10b6:610:284::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.10; Thu, 11 Dec
- 2025 11:24:45 +0000
-Received: from CO1PR11MB5057.namprd11.prod.outlook.com
- ([fe80::3b75:a8d2:464e:30cc]) by CO1PR11MB5057.namprd11.prod.outlook.com
- ([fe80::3b75:a8d2:464e:30cc%3]) with mapi id 15.20.9412.005; Thu, 11 Dec 2025
- 11:24:44 +0000
-Date: Thu, 11 Dec 2025 11:24:31 +0000
-From: Krzysztof Karas <krzysztof.karas@intel.com>
-To: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-CC: <dri-devel@lists.freedesktop.org>, <intel-gfx@lists.freedesktop.org>,
-	<stable@vger.kernel.org>, =?utf-8?B?6rmA6rCV66+8?= <km.kim1503@gmail.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>, Chris Wilson
-	<chris.p.wilson@linux.intel.com>, Andi Shyti <andi.shyti@linux.intel.com>,
-	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>, Jani Nikula
-	<jani.nikula@linux.intel.com>, Sebastian Brzezinka
-	<sebastian.brzezinka@intel.com>
-Subject: Re: [PATCH v3] drm/i915/gem: Zero-initialize the eb.vma array in
- i915_gem_do_execbuffer()
-Message-ID: <ezfzff7burfabd2b4ofna5pmue2m64zn3gin2uyefnk7fczizk@f52nhwgfliyh>
-"Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316"
-References: <20251210165659.29349-3-krzysztof.niemiec@intel.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-In-Reply-To: <20251210165659.29349-3-krzysztof.niemiec@intel.com>
-X-ClientProxiedBy: TL2P290CA0002.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:2::12) To CO1PR11MB5057.namprd11.prod.outlook.com
- (2603:10b6:303:6c::15)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F31453081CC
+	for <stable@vger.kernel.org>; Thu, 11 Dec 2025 11:27:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765452440; cv=none; b=tEe5WzAg3SPIGmO1m+WFEBfNGlXZheSYy8YEopSvN6SqZqgLJjhaAT0+GdmTHgs74UOem0lHAZTyliJhJBQrnWvcWFCcys5zziTVRe23if2H0nG03sznx5wd3M/k4dwIVzJsdXd/IIXktDJr0Fb2PioalllYM2PmyjhzlCcKRN4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765452440; c=relaxed/simple;
+	bh=kQAw0IAMRna6jKX/Q2x47HBOf1gpFkKwx0F/nl9ECFs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UhLKCgCOAWQul3xEVauGCgljcQTu/r3z6B+ebq2GvRKzQwU2KKYK+mfq4Ijk2YyXEZojLH9FxcNcHFoSEr6OgX+IfcMKRmc9dkFIWPVxP+paNULDS2ZhxZse1x8wHuw5tSs4mGKuixAPzkO8y1IzsHBlgrW/Fyv4MYCtzFT8Tuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t2M3FW36; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A30D8C4CEF7
+	for <stable@vger.kernel.org>; Thu, 11 Dec 2025 11:27:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765452439;
+	bh=kQAw0IAMRna6jKX/Q2x47HBOf1gpFkKwx0F/nl9ECFs=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=t2M3FW36heDDwTZWjZp7mEq4HzBDD6x+2ridDeBMz+l8Tv3JwsgoTRZmBY6xRvGK2
+	 j6HvnlRtHFSk0+UhC4KLOSW2EdjJjQvM9VrmXccS9WaBkBU2m+1YNXklO4UWaoYDfA
+	 pVxbCbzBxMiL5jpwb0EViCj4/R9bsTjrrrYHQZNmwW8Uy3L0lgkZvyZibwxVC/z/bL
+	 Odoc58h61dR7hHNZELxm8lWMQBzMMhe611d+L7DtfhODryJrQMXfhIES+zWyWtcWDN
+	 svniVDEpUECirmjs1TYj/kvnjYoAK4GkNEsE5Bi9VO7yl7G48OD0Ogz+RJzQsbw3yv
+	 D+9Oiz2CgkyzA==
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b7370698a8eso107569066b.0
+        for <stable@vger.kernel.org>; Thu, 11 Dec 2025 03:27:19 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXuGIoqPbqfu0BiAUhzA2vQy5tDLilFXzPtyBdsZ1jjdO3Os+TFTaQBfIUGd+kTDlMYWmcVNbU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzjxzV82KaGw3ywY07zzi7ZKthfLLBXf6KifPZVE+u9Mvc2jnMu
+	PNzwNIOgIHcqb5VFUN8c+CHkMd0Mzq1jWHCL85pDBwSWLIP8jQ4qVQ3A489wJ6FQLUBvnBZLb0z
+	0VpUVvCxWr8YQMaQhzXsl8Rg9pYSb9LI=
+X-Google-Smtp-Source: AGHT+IHtWAE4eBnNFHTJXayG4mAtiXimCO5w3FF2uYO8JE4iBUAbFnpARxgHTcM1sxRHjNAaRMubRdbyb0u33UR00t0=
+X-Received: by 2002:a17:907:9443:b0:b73:880a:fdb7 with SMTP id
+ a640c23a62f3a-b7ce8414fcfmr675544666b.35.1765452438226; Thu, 11 Dec 2025
+ 03:27:18 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PR11MB5057:EE_|CH2PR11MB8815:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5359104e-f3a8-4727-ee0f-08de38a7e2a4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?YTFLcGtTNWNUZWlRbU5jSUx5Vk1kRWRIbDlHeFp6dkJub2ZJRFptbnBsN3c5?=
- =?utf-8?B?WjJMUXRuVE5wbC9PMmFYUzRjZVJuSUJWLy93cy9TREdnTjRQMk0vSGMxT08v?=
- =?utf-8?B?KzlWNjRub0ZyUnkyODJRZytzSEtJZXlNWWoyeTByYnNQcGI1QW9LUy9acUts?=
- =?utf-8?B?Tk9uaWhqSFRIMzJBU29wOVR0a2NEcE5hMzQvMlp5c1ROclNkTnFpQjNFaTZo?=
- =?utf-8?B?R3JiYnE2RlRzY09YQkd2cU1qZ3NpKzJVaHVDN25QdGJvQVVldFBGRnQwMExn?=
- =?utf-8?B?MTc3VGVieGRERWMwb3NkTWNlSWFBdmJjMFVGWk1oTThPSWZLVWx6eWdrVUxq?=
- =?utf-8?B?a2tJZG1tY0Q0YkxlejkranZOa0VhSXU0L2w0QWcwN0FMajlZc2Rqb1NVY1Fx?=
- =?utf-8?B?YVVOY1ZrT1NKZk1sTWErM2Z6Zk1KcHJIYjRtQitpUjE1emcwM0FwNEh1TGl0?=
- =?utf-8?B?VUdXaVFEeVlRVDNJYXhrakpDbFpDNi8yUldEc05DY25CZklvY2RRcTN2TXVw?=
- =?utf-8?B?MmJsamhxQnZYUVdtd2w0NjNuYm8vQ1Z5Yyt5Q1J6MzRtV2haSm9tWnAwSENl?=
- =?utf-8?B?dVduNjAvZFRtQW9VOUhsT0xBejRWc0pjZXdLYlZxbkpzSEF5RFN2Z2pLaENG?=
- =?utf-8?B?andnOHBoNlB1Y1I1N3lYMS9veGZ0TkNPRWdoQlJBQzFSSWhaUVpSWUgzcnZY?=
- =?utf-8?B?U3ExMlBYMWt4K1czS2VzUVVhVzhlcVF0dlorS2JqbXl6VnFDdkxiMGM0WXZP?=
- =?utf-8?B?UHFYRHFoMjZRalpYMVVoK3VCem13clNpSjJEMzdyeWVTS2tOM1dLckV2RTVI?=
- =?utf-8?B?OEdBeVJFOGozT20zZlRidHhiUVdSUVRpYmM1WUFTUjdydEVLdDFUc1lucU1F?=
- =?utf-8?B?TTBSWUIvS0JyVm41Ulpucy9UNkx1dnpFaDVOaWNOM0pBSUxnTkFiWUFzOEZt?=
- =?utf-8?B?Q24wekZNQTQ2K2pYU1NnQXhPZnRqS1N3UTJLbjJYTnJHSm9mNlRJMlhlbnNN?=
- =?utf-8?B?SnlGME9Pa2hVNmxSQnhoZUozQ2FaanJ0TVRjSjBwaXlzeGZlSWFlM2Q3QnBo?=
- =?utf-8?B?SnRCOFRRS3dOUk9JdDFmTm93Q0V2a0dVeFJOUUxsMU5pdURXcGRacUVTNFdv?=
- =?utf-8?B?d3RFZUdxL3lhd25pV2RiNGlhMHoyOTZmTXNpb05QRVU1di9PR2NtaWdpcEkw?=
- =?utf-8?B?UmdTbXRmZVJpNzM5TzdqZm1rbUNiYXhwS3BVUHRHZG52RXhTODcxRzR5eXZQ?=
- =?utf-8?B?R1VGRi9yLytWNllnVjNWNHRueTkwMmhDT1BpRTk5L2FQVVozaTlkRmppY205?=
- =?utf-8?B?SmtIYzZhVDJjZHZ4cUpxZlFMMlh3aFhaWVdqekJOb0ZUY0VOVCs0cUh0TmV2?=
- =?utf-8?B?OWk4blhKdm9Vby9iV1NsbUc2RDVEcFRZRXhINHY2ZEI0YkhsVDltYUplNjFI?=
- =?utf-8?B?RkZGRzVuaG10R3dKZnZWK1hmTVFNTkFlWTNGWjk0V3h5aTZ2YTVlaXhFdTgw?=
- =?utf-8?B?eU9aZGVBT2ZnR0NTU1pBTlBNTDRvZnp3TzEvb3oxcHhoUTYvV05HM2FKa3Nu?=
- =?utf-8?B?SHFXNXowZkYzWmFrc0dkTE45R0NuQVFLUEtCVEtYL3pVdzVCTEovbjNoUEJE?=
- =?utf-8?B?VUxYaGVoVDdDTTQ5MG1kcnZBN3ZZaXM4MHYvZWhMdnJNUS9PWUd6eGZiWjIv?=
- =?utf-8?B?YTFQRVVFQk9mZXdUeTF1N01TTTV3NjRxTXNHdkFBazFzS25nQWRlSW5YdUtk?=
- =?utf-8?B?T0dqV3pweE1hRXNMak81NTlUU0k5TXQrSDdyK0d5WnpWck4rSm9YQ09saGlo?=
- =?utf-8?B?Qjl0N2JrTzVGR3FsSGhWK1FJdjYwelFUTTRPQUNnUjRxK005RDlQU09wamdZ?=
- =?utf-8?B?Y1Y4enkrVTJQL1BoZUU0Y3d1Mmd4b0JraHFiSFNpUnluVDRXais0Q3hKWWN4?=
- =?utf-8?Q?cTdvmRMGljH8pJYDrlkDro0y7uZ3tPAR?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR11MB5057.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bTJqZWVoOG95aXRjL2hTL0VEUzl1N05uM1loZWFvUW5YaDVWaTN2cHQ2aXBI?=
- =?utf-8?B?TUdRbjFxTjBXVHloNXIwdkgvbHVCdGhjV0JROWNqcmJuR2lWRnJXZldsSlZR?=
- =?utf-8?B?TU10djFEeHZWUHlRSFM5WitoVW1Vb3YweGdmZ1hValA1MlBIUGcyMkFiQkJ3?=
- =?utf-8?B?UzA1OWtHMm1UMkl2MWlnRUpsRFJQZmQ3QzF1RlB3QUVvVFRJcTFFQWFwdkVT?=
- =?utf-8?B?T002VDZaMkY0NHJwallaNTM0SSs5dkkxSEk5ekZ1UmNPLythT1BPTmMvUHhm?=
- =?utf-8?B?aXhlcnR6Ni96YjdTUVl2OFRENm1rSXp6QUhnanI5MUcwR3dMbFZuTGVWWURO?=
- =?utf-8?B?KzNPcnNzZDNGM1hZWXNsVDF0WDM3MW4rc0wzM2N6dHlWaERFWjgwUXl5akZC?=
- =?utf-8?B?NG5DTlNEWVA3dWlWWENKMGpBeXdHYVJhRkdoRDlLQ1d0eTVFNllkTUVZYk1K?=
- =?utf-8?B?RkdKUTQ5aWlhQnVURXVvVEpMT2JQR3BvNXI4R2RLMU9DRzVNcHRoeWw5WkNP?=
- =?utf-8?B?eU1vMFR2MEtndkV1bVE5dHZZbTRWUWYrZVNHM1FjOERkbVo5bk9rS1JNOVJK?=
- =?utf-8?B?YmRMd2l4WUdKWVg5UXNJWjloWDNjOHk1dlRHTVVOVE5OeVhoWjRIMktnUnRu?=
- =?utf-8?B?UXNWdFk4c2dCbSt5bHEwbzRQYXJnZTB3WUFEekR1MzRGRld0bVk0V0lzM2lz?=
- =?utf-8?B?R2JNTGhqK1pmVVhhSkM3MUlGaXRvTHU4MHB1MkpzR0NiVG0rUC9Zd0dNVkYz?=
- =?utf-8?B?YndqNGZDaVJvcnhSaTJ4TU5rc2dqVWRxcU9OZnhpVm5yWFpaMi90UmpZaUJY?=
- =?utf-8?B?UzI3cjZodkJlR3VIVDlqbGxmNGRsZzdHYTdWTUx6czRBcHAra3ZjdU1BNUw3?=
- =?utf-8?B?QmlBNkFGMUF6TXkzUkFYQkgxMUhjaGxKUGFCZS8wMml3NFRrUjJ3OHJQajls?=
- =?utf-8?B?Yi9ZNEJvcFZQUzdFTnFGUGdBU2trdmJ0bTdTSDJTL2EzK1Z5U2UzUDlFSDhj?=
- =?utf-8?B?T0xUMXNMUWFHOCtBYXF2d28xMHd0UmcyVzJZcEdZQkJla3d4OFNBeitGZ05M?=
- =?utf-8?B?WFQ5NUoySGFsZis1L1NKM0VtWXRseXBlVituRkxzNGJpY1BlLy9NUWhtWUNN?=
- =?utf-8?B?V2JuVEZ0NjJmMUVPbkVTUVFrb0NFWFA0d1JYbWttWUZncUxGbmt6bWtNRGQz?=
- =?utf-8?B?aXVxaGNKUWVOcHRNbFc5TlF0cjlDMndIS0FFSnQ1NzdMaDhBbFVCVE1CcGw2?=
- =?utf-8?B?d0J5T0x4YTBlcXNCYzlPT2R3eW9IcGtyUk5va0ZIckx3K1M5N2g4aHNlNHRL?=
- =?utf-8?B?ZGdxQmNrMlpkdklWajZUbXV3UGhQUE1xL1VmTUlWUHdVRG9CNytRbFdpT3B0?=
- =?utf-8?B?dlR1eWYrbEZtdURnS2Q0eEFWZGNjcmZLTzhxSzJiYktDN0czdXpjM0hTZmhw?=
- =?utf-8?B?dzVaaUhrRGFqUWRKc3pIY2tOaSs5aDladUh2aDZzWHYzRzQ0QzRTaTJkSmU3?=
- =?utf-8?B?VjNrUnlUNzhmSnducGQ4WmdFcVg4ejFXNi9tRmI5a2lKMkl0eHB0bXZibTdX?=
- =?utf-8?B?NEI3RXh3aURHUFp0Mm1VSDFVZVNYVmkzbGZqSWZlMzVxdmxKTFE3SXR0V3NZ?=
- =?utf-8?B?TXFGeTJ2c3pNcmUxaEVMZVpJSDhJZ2Q3RGlvbVJYL1ROTHR6Yy9uWjlvWFg2?=
- =?utf-8?B?QW4yRS9sY1VqRGQ4a0d3T1BGeGpGWGxHa0kyVWVML2RheDErUkVUT0lwdTNP?=
- =?utf-8?B?M21SaHlZbGxUQUZCakJvbHRZeUJyRy9rMHQxaFkzS1N2WXNETVByeCtxdXgw?=
- =?utf-8?B?ei9pNG14QUNSTTdZaDQ5TnFjMXhnZE1hZHdqbHZuT09qWkkzWkVkanBCeFBW?=
- =?utf-8?B?MFhITEd3S1ZDYUVwTHN0eXJZd2NYaE51L1VJNEZ5MjNwVEM5SDFINWdvTk5q?=
- =?utf-8?B?SDE5MDFXWlRPczZhUnNiV3Q1Q2FRdFJQWG5ReURWN1A5VmM1MmltemtnQ0dW?=
- =?utf-8?B?eTM4T2dORmNGK1NuVDI5ZSswSEE0STA3V2c3QlFEUUM2MG5PVURhWS8rL0NE?=
- =?utf-8?B?UUYrbTFTUW4wRnhJS3o3RG9nelY0VGc5UFFyc21ZS21xR1MzdWQwMmRZZzhT?=
- =?utf-8?B?L01xODg5Z1pWTmVjWVpFT1h1b1E4NHlEVTA1bzB1NTE4SzAvM3FuenNiV3J4?=
- =?utf-8?B?OXc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5359104e-f3a8-4727-ee0f-08de38a7e2a4
-X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB5057.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Dec 2025 11:24:44.8692
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hRVKp9wnAgws766eF9AW3d+yGfZOyevgx7y5Flx23IoxkDaZ8iBIeywK+2UzzopwwU1ajP9/Gk8wbbzO/XzmggkAArqu2+L/9uHu/x+LIfQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR11MB8815
-X-OriginatorOrg: intel.com
+References: <cover.1765418669.git.wqu@suse.com> <2e646aa21c452f80c2afbbf50ceda081c5c3ed4c.1765418669.git.wqu@suse.com>
+In-Reply-To: <2e646aa21c452f80c2afbbf50ceda081c5c3ed4c.1765418669.git.wqu@suse.com>
+From: Filipe Manana <fdmanana@kernel.org>
+Date: Thu, 11 Dec 2025 11:26:41 +0000
+X-Gmail-Original-Message-ID: <CAL3q7H5_AU-SUacEd8H0Qz8vg8jAq1fmSEkhvwx_qpmQTGvS8w@mail.gmail.com>
+X-Gm-Features: AQt7F2qz1uAnwG4E7VJiOBxNTd2EG0WCb7u-BX7SVZ8399pBt-MY6fTlgpxWW7I
+Message-ID: <CAL3q7H5_AU-SUacEd8H0Qz8vg8jAq1fmSEkhvwx_qpmQTGvS8w@mail.gmail.com>
+Subject: Re: [PATCH 1/2] btrfs: fix beyond-EOF write handling
+To: Qu Wenruo <wqu@suse.com>
+Cc: linux-btrfs@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Krzysztof,
+On Thu, Dec 11, 2025 at 2:15=E2=80=AFAM Qu Wenruo <wqu@suse.com> wrote:
+>
+> [BUG]
+> For the following write sequence with 64K page size and 4K fs block size,
+> it will lead to file extent items to be inserted without any data
+> checksum:
+>
+>   mkfs.btrfs -s 4k -f $dev > /dev/null
+>   mount $dev $mnt
+>   xfs_io -f -c "pwrite 0 16k" -c "pwrite 32k 4k" -c pwrite "60k 64K" \
+>             -c "truncate 16k" $mnt/foobar
+>   umount $mnt
 
-[...]
+If you can, add this to fstests.
 
-> @@ -3375,7 +3360,9 @@ i915_gem_do_execbuffer(struct drm_device *dev,
->  
->  	eb.exec = exec;
->  	eb.vma = (struct eb_vma *)(exec + args->buffer_count + 1);
-> -	eb.vma[0].vma = NULL;
-> +
-> +	memset(eb.vma, 0x00, args->buffer_count * sizeof(struct eb_vma));
-> +
->  	eb.batch_pool = NULL;
->  
->  	eb.invalid_flags = __EXEC_OBJECT_UNKNOWN_FLAGS;
-> @@ -3584,7 +3571,16 @@ i915_gem_execbuffer2_ioctl(struct drm_device *dev, void *data,
->  	if (err)
->  		return err;
->  
-> -	/* Allocate extra slots for use by the command parser */
-> +	/*
-> +	 * Allocate extra slots for use by the command parser.
-> +	 *
-> +	 * Note that this allocation handles two different arrays (the
-> +	 * exec2_list array, and the eventual eb.vma array introduced in
-> +	 * i915_gem_do_execubuffer()), that reside in virtually contiguous
-> +	 * memory. Also note that the allocation doesn't fill the area with
-> +	 * zeros (the first part doesn't need to be), but the second part only
-> +	 * is explicitly zeroed later in i915_gem_do_execbuffer().
-I get the gist of this comment, but I think you could reword the
-last sentence:
-"Also note that the allocation doesn't fill the area with zeros,
-because it is unnecessary for exec2_list array, and eb.vma is
-explicitly zeroed later in i915_gem_do_execbuffer()."
+>
+> This will result the following 2 file extent items to be inserted (extra
+> trace point added to insert_ordered_extent_file_extent()):
+>
+>    btrfs_finish_one_ordered: root=3D5 ino=3D257 file_off=3D61440 num_byte=
+s=3D4096 csum_bytes=3D0
+>    btrfs_finish_one_ordered: root=3D5 ino=3D257 file_off=3D0 num_bytes=3D=
+16384 csum_bytes=3D16384
+>
+> Note for file offset 60K, we're inserting an file extent without any
 
-> +	 */
->  	exec2_list = kvmalloc_array(count + 2, eb_element_size(),
->  				    __GFP_NOWARN | GFP_KERNEL);
->  	if (exec2_list == NULL) {
-> -- 
-> 2.45.2
-> 
+an file -> a file
 
--- 
-Best Regards,
-Krzysztof
+> data checksum.
+>
+> Also note that range [32K, 36K) didn't reach
+> insert_ordered_extent_file_extent(), which is the correct behavior as
+> that OE is fully truncated, should not result any file extent.
+>
+> Although file extent at 60K will be later dropped by btrfs_truncate(),
+> if the transaction got committed after file extent inserted but before
+> the file extent dropping, we will have a small window where we have a
+> file extent beyond EOF and without any data checksum.
+>
+> That will cause "btrfs check" to report error.
+>
+> [CAUSE]
+> The sequence happens like this:
+>
+> - Buffered write dirtied the page cache and updated isize
+>
+>   Now the inode size is 64K, with the following page cache layout:
+>
+>   0             16K             32K              48K           64K
+>   |/////////////|               |//|                        |//|
+>
+> - Truncate the inode to 16K
+>   Which will trigger writeback through:
+>
+>   btrfs_setsize()
+>   |- truncate_setsize()
+>   |  Now the inode size is set to 16K
+>   |
+>   |- btrfs_truncacte()
+
+truncacte -> truncate
+
+It looks good otherwise, so:
+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+
+Thanks.
+
+>      |- btrfs_wait_ordered_range() for [16K, u64(-1)]
+>         |- btrfs_fdatawrite_range() for [16K, u64(-1)}
+>            |- extent_writepage() for folio 0
+>               |- writepage_delalloc()
+>               |  Generated OE for [0, 16K), [32K, 36K] and [60K, 64K)
+>               |
+>               |- extent_writepage_io()
+>
+>   Then inside extent_writepage_io(), the dirty fs blocks are handled
+>   differently:
+>
+>   - Submit write for range [0, 16K)
+>     As they are still inside the inode size (16K).
+>
+>   - Mark OE [32K, 36K) as truncated
+>     Since we only call btrfs_lookup_first_ordered_range() once, which
+>     returned the first OE after file offset 16K.
+>
+>   - Mark all OEs inside range [16K, 64K) as finished
+>     Which will mark OE ranges [32K, 36K) and [60K, 64K) as finished.
+>
+>     For OE [32K, 36K) since it's already marked as truncated, and its
+>     truncated length is 0, no file extent will be inserted.
+>
+>     For OE [60K, 64K) it has never been submitted thus has no data
+>     checksum, and we insert the file extent as usual.
+>     This is the root cause of file extent at 60K to be inserted without
+>     any data checksum.
+>
+>   - Clear dirty flags for range [16K, 64K)
+>     It is the function btrfs_folio_clear_dirty() which search and clear
+>     any dirty blocks inside that range.
+>
+> [FIX]
+> The bug itself is introduced a long time ago, way before subpage and
+> larger folio support.
+>
+> At that time, fs block size must match page size, thus the range
+> [cur, end) is just one fs block.
+>
+> But later with subpage and larger folios, the same range [cur, end)
+> can have multiple blocks and ordered extents.
+>
+> Later commit 18de34daa7c6 ("btrfs: truncate ordered extent when skipping
+> writeback past i_size") is fixing a bug related to subpage/larger
+> folios, but it's still utilizing the old range [cur, end), meaning only
+> the first OE will be marked as truncated.
+>
+> The proper fix here is to make EOF handling block-by-block, not trying
+> to handle the whole range to @end.
+>
+> By this we always locate and truncate the OE for every dirty block.
+>
+> Cc: stable@vger.kernel.org # 5.15+
+> Signed-off-by: Qu Wenruo <wqu@suse.com>
+> ---
+>  fs/btrfs/extent_io.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+> index 629fd5af4286..a4b74023618d 100644
+> --- a/fs/btrfs/extent_io.c
+> +++ b/fs/btrfs/extent_io.c
+> @@ -1728,7 +1728,7 @@ static noinline_for_stack int extent_writepage_io(s=
+truct btrfs_inode *inode,
+>                         struct btrfs_ordered_extent *ordered;
+>
+>                         ordered =3D btrfs_lookup_first_ordered_range(inod=
+e, cur,
+> -                                                                  folio_=
+end - cur);
+> +                                                                  fs_inf=
+o->sectorsize);
+>                         /*
+>                          * We have just run delalloc before getting here,=
+ so
+>                          * there must be an ordered extent.
+> @@ -1742,7 +1742,7 @@ static noinline_for_stack int extent_writepage_io(s=
+truct btrfs_inode *inode,
+>                         btrfs_put_ordered_extent(ordered);
+>
+>                         btrfs_mark_ordered_io_finished(inode, folio, cur,
+> -                                                      end - cur, true);
+> +                                                      fs_info->sectorsiz=
+e, true);
+>                         /*
+>                          * This range is beyond i_size, thus we don't nee=
+d to
+>                          * bother writing back.
+> @@ -1751,8 +1751,8 @@ static noinline_for_stack int extent_writepage_io(s=
+truct btrfs_inode *inode,
+>                          * writeback the sectors with subpage dirty bits,
+>                          * causing writeback without ordered extent.
+>                          */
+> -                       btrfs_folio_clear_dirty(fs_info, folio, cur, end =
+- cur);
+> -                       break;
+> +                       btrfs_folio_clear_dirty(fs_info, folio, cur, fs_i=
+nfo->sectorsize);
+> +                       continue;
+>                 }
+>                 ret =3D submit_one_sector(inode, folio, cur, bio_ctrl, i_=
+size);
+>                 if (unlikely(ret < 0)) {
+> --
+> 2.52.0
+>
+>
 
