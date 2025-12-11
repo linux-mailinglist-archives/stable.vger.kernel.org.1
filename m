@@ -1,121 +1,97 @@
-Return-Path: <stable+bounces-200819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6743CB6EAE
-	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 19:38:02 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B78ECB6EC0
+	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 19:38:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7C7C43026A98
-	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 18:37:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 55CBF3001C2E
+	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 18:38:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C3333161AB;
-	Thu, 11 Dec 2025 18:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26FEB27B349;
+	Thu, 11 Dec 2025 18:38:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="FfCYuedE"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X44xZnwe"
 X-Original-To: stable@vger.kernel.org
-Received: from fra-out-014.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-014.esa.eu-central-1.outbound.mail-perimeter.amazon.com [18.199.210.3])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D4A13161A6;
-	Thu, 11 Dec 2025 18:36:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.199.210.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D7C33064A5
+	for <stable@vger.kernel.org>; Thu, 11 Dec 2025 18:38:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765478224; cv=none; b=XvLG1Oa5FL5Sj7ur4Z+kJ2/m77j/8PZUbZXW77VPo1mlRjeLr1giIfdHJ7deoxCQ5+p6BkHOLDG8LLrQzjwdkk/nQ+XQp6vqbqu+1WumvJUmKhW3u3TRgSVV7+IfQp6PRfLUgxqbdFs42A5ZObl8FTCkptuW3Doe+1wnC5aueRE=
+	t=1765478323; cv=none; b=kRQeMGYuhuJNnujeMSMk86TM+RlzCt/lUWJR7AkEEW742wBbBpEw9XqzugiKB4Gj9WrePdRJRUV9m0xHNtesOYF9taPX5YCWPRX4jdvrKndRQmz2ecJ3aQVOh1dfJqnQ+0Frb3tze6B0IqOqYBOv8G5I5lyUdpt/BauX+HOjD40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765478224; c=relaxed/simple;
-	bh=BLZDrpTLctOjJeBQ7kE6MzOtoDaCfVtSLHJPEeFgVwM=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OTpVvp+Q+JerW9gvXxQLYq6BlE6rYQhek5R2gUDxGffMUkaHjl4iCVB7iHIlsbdWx+1z+gFBMc1BBEqA0a4oH8qGnTOGVw8oH4Ikvs3gng2JQRWM7aF2NB5n+wAaoVJQATPT7+Dre0StBc0CCBlGTO5iqj53HStKYElCgKfWY/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=FfCYuedE; arc=none smtp.client-ip=18.199.210.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1765478220; x=1797014220;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=BLZDrpTLctOjJeBQ7kE6MzOtoDaCfVtSLHJPEeFgVwM=;
-  b=FfCYuedERb3ocuEALDgRbCIYCN+VX+2oy+PvrjdgQQVzz93pTqkV5UBA
-   cqJuS9Js/I72aqL0VdyzfLo+y1o5xAyqcbAqrI+Bwr9qSRecsP0rCAcPY
-   CVY/Pni4vbvU8jO3JM0fCiwTgwiDyP6XzsuyeYRMCQ7FsDS/ohcoqjJJt
-   no5Ai9Dpu6l654hbw/+FOAGULviheXNG33iOdrl5UVqSOpchTONUV3ESA
-   VtC21yuY+N/G/nKR3NSsVFEnG37pEnh/9spPQMmV3XEdChVvRkmHp0ud8
-   aoeEIpzBbtS1eeR5A5GVnumpHwdmvg1qZX4xKqYZxSwBTGY6IAaQOdTFi
+	s=arc-20240116; t=1765478323; c=relaxed/simple;
+	bh=55zxwtNCCQ5okfFDxnkDjPzE6nkcwOJs8l0+79xvA+A=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=rCKLeuF7UBxYK0zElSfCjczBTf8Ve5Igu8iXgU/XOxv0j2fcEf8B0dQTec2IsswHs5/CS3E6sIDh/CpmZuHWVakYJPNdc58WQRZ0AvE+YNrkUzlHHAp38vmJc0SFp1mePjmgtGDHq/+AH2x6Pq9BVHmtm8jBofJR9YHKnv7VwYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X44xZnwe; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765478322; x=1797014322;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=55zxwtNCCQ5okfFDxnkDjPzE6nkcwOJs8l0+79xvA+A=;
+  b=X44xZnweQfHl7+j1xi3GTqMnMfpqR1mzrRNxrfu1ObBTxsjj1cAGDuAF
+   ctkJXqhA1UikxFSoQKFZRklqJExIJfq9+otfzZTExuvZ8EbVwOCKWE26E
+   dsRmAouXFDTn64HF1dyKKqv7XLJk3u1yl3EzYP6GXMjcO0SfC0qWRYH/p
+   FN3V7JAHVvhif+ObEiG8kkYHWcNVuMBCtnm5L9HX8VUPn0/U9TISjRgDg
+   0rttROSncTy0yl6pu5D2dXK777H+V7wGVpjwuIP4piojEjaz5YnktSDqi
+   w2wGUmm/Q+CbJkTOUv29Gj428k4DKsxILmALS2cMKYGe0GxZHHVKG7AJg
    g==;
-X-CSE-ConnectionGUID: SHdbm8raRsiy5x2EVMJI/g==
-X-CSE-MsgGUID: 2+mG77+STLatB1e2eVkzXg==
-X-IronPort-AV: E=Sophos;i="6.21,141,1763424000"; 
-   d="scan'208";a="6480546"
-Received: from ip-10-6-11-83.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.11.83])
-  by internal-fra-out-014.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2025 18:36:40 +0000
-Received: from EX19MTAEUC001.ant.amazon.com [54.240.197.225:31663]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.7.166:2525] with esmtp (Farcaster)
- id 74c1f423-9f86-49eb-b782-e2459c470737; Thu, 11 Dec 2025 18:36:40 +0000 (UTC)
-X-Farcaster-Flow-ID: 74c1f423-9f86-49eb-b782-e2459c470737
-Received: from EX19D003EUB001.ant.amazon.com (10.252.51.97) by
- EX19MTAEUC001.ant.amazon.com (10.252.51.193) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
- Thu, 11 Dec 2025 18:36:32 +0000
-Received: from u5934974a1cdd59.ant.amazon.com (10.146.13.111) by
- EX19D003EUB001.ant.amazon.com (10.252.51.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
- Thu, 11 Dec 2025 18:36:23 +0000
-From: Fernand Sieber <sieberf@amazon.com>
-To: <peterz@infradead.org>
-CC: <abusse@amazon.de>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
-	<dwmw@amazon.co.uk>, <hborghor@amazon.de>, <hpa@zytor.com>,
-	<jschoenh@amazon.de>, <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<mingo@redhat.com>, <nh-open-source@amazon.com>, <nsaenz@amazon.com>,
-	<pbonzini@redhat.com>, <seanjc@google.com>, <sieberf@amazon.com>,
-	<stable@vger.kernel.org>, <tglx@linutronix.de>, <x86@kernel.org>
-Subject: [PATCH v2] perf/x86/intel: Do not enable BTS for guests
-Date: Thu, 11 Dec 2025 20:36:04 +0200
-Message-ID: <20251211183604.868641-1-sieberf@amazon.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251210111655.GB3911114@noisy.programming.kicks-ass.net>
-References: <20251210111655.GB3911114@noisy.programming.kicks-ass.net>
+X-CSE-ConnectionGUID: OnMgXedsSdWVVY0UBpUn8w==
+X-CSE-MsgGUID: SqK2ntUUTK60fi6FUY8LNQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11639"; a="71335338"
+X-IronPort-AV: E=Sophos;i="6.21,141,1763452800"; 
+   d="scan'208";a="71335338"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2025 10:38:41 -0800
+X-CSE-ConnectionGUID: QPpvmz5mRfuB/HqtxXsnZw==
+X-CSE-MsgGUID: ABBCSylSS9Wuq6vy5e9rAQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,141,1763452800"; 
+   d="scan'208";a="227512390"
+Received: from lkp-server01.sh.intel.com (HELO d335e3c6db51) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 11 Dec 2025 10:38:40 -0800
+Received: from kbuild by d335e3c6db51 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vTlYk-000000004yb-2KDZ;
+	Thu, 11 Dec 2025 18:38:38 +0000
+Date: Fri, 12 Dec 2025 02:38:32 +0800
+From: kernel test robot <lkp@intel.com>
+To: Fernand Sieber <sieberf@amazon.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v2] perf/x86/intel: Do not enable BTS for guests
+Message-ID: <aTsPqAjuZDLKLJKN@7da092942895>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ClientProxiedBy: EX19D037UWC004.ant.amazon.com (10.13.139.254) To
- EX19D003EUB001.ant.amazon.com (10.252.51.97)
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251211183604.868641-1-sieberf@amazon.com>
 
-QnkgZGVmYXVsdCB3aGVuIHVzZXJzIHByb2dyYW0gcGVyZiB0byBzYW1wbGUgYnJhbmNoIGluc3Ry
-dWN0aW9ucwooUEVSRl9DT1VOVF9IV19CUkFOQ0hfSU5TVFJVQ1RJT05TKSB3aXRoIGEgc2FtcGxl
-IHBlcmlvZCBvZiAxLCBwZXJmCmludGVycHJldHMgdGhpcyBhcyBhIHNwZWNpYWwgY2FzZSBhbmQg
-ZW5hYmxlcyBCVFMgKEJyYW5jaCBUcmFjZSBTdG9yZSkKYXMgYW4gb3B0aW1pemF0aW9uIHRvIGF2
-b2lkIHRha2luZyBhbiBpbnRlcnJ1cHQgb24gZXZlcnkgYnJhbmNoLgoKU2luY2UgQlRTIGRvZXNu
-J3QgdmlydHVhbGl6ZSwgdGhpcyBvcHRpbWl6YXRpb24gZG9lc24ndCBtYWtlIHNlbnNlIHdoZW4K
-dGhlIHJlcXVlc3Qgb3JpZ2luYXRlcyBmcm9tIGEgZ3Vlc3QuIEFkZCBhbiBhZGRpdGlvbmFsIGNo
-ZWNrIHRoYXQKcHJldmVudHMgdGhpcyBvcHRpbWl6YXRpb24gZm9yIHZpcnR1YWxpemVkIGV2ZW50
-cyAoZXhjbHVkZV9ob3N0KS4KClJlcG9ydGVkLWJ5OiBKYW4gSC4gU2Now7ZuaGVyciA8anNjaG9l
-bmhAYW1hem9uLmRlPgpTdWdnZXN0ZWQtYnk6IFBldGVyIFppamxzdHJhIDxwZXRlcnpAaW5mcmFk
-ZWFkLm9yZz4KU2lnbmVkLW9mZi1ieTogRmVybmFuZCBTaWViZXIgPHNpZWJlcmZAYW1hem9uLmNv
-bT4KLS0tCiBhcmNoL3g4Ni9ldmVudHMvcGVyZl9ldmVudC5oIHwgMTMgKysrKysrKysrKystLQog
-MSBmaWxlIGNoYW5nZWQsIDExIGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pCgpkaWZmIC0t
-Z2l0IGEvYXJjaC94ODYvZXZlbnRzL3BlcmZfZXZlbnQuaCBiL2FyY2gveDg2L2V2ZW50cy9wZXJm
-X2V2ZW50LmgKaW5kZXggMzE2MWVjMGEzNDE2Li5mMmUyZDliMDMzNjcgMTAwNjQ0Ci0tLSBhL2Fy
-Y2gveDg2L2V2ZW50cy9wZXJmX2V2ZW50LmgKKysrIGIvYXJjaC94ODYvZXZlbnRzL3BlcmZfZXZl
-bnQuaApAQCAtMTU3NCwxMyArMTU3NCwyMiBAQCBzdGF0aWMgaW5saW5lIGJvb2wgaW50ZWxfcG11
-X2hhc19idHNfcGVyaW9kKHN0cnVjdCBwZXJmX2V2ZW50ICpldmVudCwgdTY0IHBlcmlvZAogCXN0
-cnVjdCBod19wZXJmX2V2ZW50ICpod2MgPSAmZXZlbnQtPmh3OwogCXVuc2lnbmVkIGludCBod19l
-dmVudCwgYnRzX2V2ZW50OwogCi0JaWYgKGV2ZW50LT5hdHRyLmZyZXEpCisJLyoKKwkgKiBPbmx5
-IHVzZSBCVFMgZm9yIGZpeGVkIHJhdGUgcGVyaW9kPT0xIGV2ZW50cy4KKwkgKi8KKwlpZiAoZXZl
-bnQtPmF0dHIuZnJlcSB8fCBwZXJpb2QgIT0gMSkKKwkJcmV0dXJuIGZhbHNlOworCisJLyoKKwkg
-KiBCVFMgZG9lc24ndCB2aXJ0dWFsaXplLgorCSAqLworCWlmIChldmVudC0+YXR0ci5leGNsdWRl
-X2hvc3QpCiAJCXJldHVybiBmYWxzZTsKIAogCWh3X2V2ZW50ID0gaHdjLT5jb25maWcgJiBJTlRF
-TF9BUkNIX0VWRU5UX01BU0s7CiAJYnRzX2V2ZW50ID0geDg2X3BtdS5ldmVudF9tYXAoUEVSRl9D
-T1VOVF9IV19CUkFOQ0hfSU5TVFJVQ1RJT05TKTsKIAotCXJldHVybiBod19ldmVudCA9PSBidHNf
-ZXZlbnQgJiYgcGVyaW9kID09IDE7CisJcmV0dXJuIGh3X2V2ZW50ID09IGJ0c19ldmVudDsKIH0K
-IAogc3RhdGljIGlubGluZSBib29sIGludGVsX3BtdV9oYXNfYnRzKHN0cnVjdCBwZXJmX2V2ZW50
-ICpldmVudCkKLS0gCjIuNDMuMAoKCgoKQW1hem9uIERldmVsb3BtZW50IENlbnRyZSAoU291dGgg
-QWZyaWNhKSAoUHJvcHJpZXRhcnkpIExpbWl0ZWQKMjkgR29nb3NvYSBTdHJlZXQsIE9ic2VydmF0
-b3J5LCBDYXBlIFRvd24sIFdlc3Rlcm4gQ2FwZSwgNzkyNSwgU291dGggQWZyaWNhClJlZ2lzdHJh
-dGlvbiBOdW1iZXI6IDIwMDQgLyAwMzQ0NjMgLyAwNwo=
+Hi,
+
+Thanks for your patch.
+
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH v2] perf/x86/intel: Do not enable BTS for guests
+Link: https://lore.kernel.org/stable/20251211183604.868641-1-sieberf%40amazon.com
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
