@@ -1,155 +1,208 @@
-Return-Path: <stable+bounces-200808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCFEDCB6926
-	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 17:55:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54531CB6956
+	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 17:57:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AE10B3058E68
-	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 16:51:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 49BF8302AE0B
+	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 16:57:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C8F219C54F;
-	Thu, 11 Dec 2025 16:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDC65309DC4;
+	Thu, 11 Dec 2025 16:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="EK5bYr2r"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="J/p/4xMp"
 X-Original-To: stable@vger.kernel.org
-Received: from pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.34.181.151])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011061.outbound.protection.outlook.com [40.107.130.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D782C314A90;
-	Thu, 11 Dec 2025 16:43:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.34.181.151
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765471391; cv=none; b=rcoNa5ypEjRtYa06s/mPlpyYDNpXJst6lf4Ki/IL5sw/zsfzNnYGmtEjKSYhPlZ7Q/mykX4POg2GY82LED49ycAI4nMhu2dF71O5sJWkrHq0hRZSA75W9rwGjF8+0hHRSWTMmGvsvu/nxTPG1AFJOxtTHy0IXel6bcERlBSO/kM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765471391; c=relaxed/simple;
-	bh=KUvNQ7iAewHmRCa/SKUqtGLe6cvR2GaCE3uIokzBdq8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LXAyzlFJK29nrVZ/mZbbj+p9mrVVSYQVfAf52cnwuv10Nyhbrq9RQBm8Lq6ArLDAWFo8Xvmm2Nj/qS0mHcKaLIY+1xfYl9uEeIsntP2gyi/mz2pKchNTx87n6842cc2aiEbcsEzlS0Ihdikq7VtMy4D8fizHK6Wi8XCDitVkFKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=EK5bYr2r; arc=none smtp.client-ip=52.34.181.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
-  t=1765471388; x=1797007388;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=DKSob5bpQnAeRXMsGtljG7uU7j+ZeakRF856afxzdTE=;
-  b=EK5bYr2rLnJRXNwGr17s43LfwCSAudTW2JtR8rVo4CpaC93eD6yjhb3p
-   RyNFTIl+bN0rjcAP6WnUinE6B7jFLk600+nassc6ieOjTC1VdiqYjoy6m
-   pYqX/algwh3zh/veoar1lPG9UF0NweQG9G3bbRndscqPTYE3lyjqCsyLv
-   lySOf8GLYVpoYKp5krmpZh0MFLW5SUAk5CKmdKdZh22oU2QU+hfuFK4Wa
-   5524Zn2Y2Q4Qww3k8njrjPUSTauS/kYvvIG8Wz2VkZw1nxtj3gVSUFwqP
-   lUtrYrlyl0FvbgUeOGaHECRmeB0O1gvFE1/FB2iu7EZcEJlbb3DRq60m6
-   A==;
-X-CSE-ConnectionGUID: NPXz6eHoTAeecfj7GqVRGA==
-X-CSE-MsgGUID: 44YjqNuoSvOhQQhZYdiAMQ==
-X-IronPort-AV: E=Sophos;i="6.21,141,1763424000"; 
-   d="scan'208";a="8908780"
-Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
-  by internal-pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2025 16:43:04 +0000
-Received: from EX19MTAUWC002.ant.amazon.com [205.251.233.51:28588]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.53.162:2525] with esmtp (Farcaster)
- id ca357886-192b-44c7-bb4e-6b5fecbc811a; Thu, 11 Dec 2025 16:43:03 +0000 (UTC)
-X-Farcaster-Flow-ID: ca357886-192b-44c7-bb4e-6b5fecbc811a
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
- Thu, 11 Dec 2025 16:43:03 +0000
-Received: from dev-dsk-darnshah-1c-a4c7d5e9.eu-west-1.amazon.com (172.19.90.4)
- by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
- Thu, 11 Dec 2025 16:43:01 +0000
-From: Darshit Shah <darnshah@amazon.de>
-To: <lukas@wunner.de>
-CC: <Jonthan.Cameron@huawei.com>, <bhelgaas@google.com>, <darnir@gnu.org>,
-	<darnshah@amazon.de>, <feng.tang@linux.alibaba.com>, <kbusch@kernel.org>,
-	<kwilczynski@kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-pci@vger.kernel.org>, <nh-open-source@amazon.com>, <olof@lixom.net>,
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, <stable@vger.kernel.org>
-Subject: [PATCH v3] drivers/pci: Decouple DPC from AER service
-Date: Thu, 11 Dec 2025 16:42:53 +0000
-Message-ID: <20251211164257.81655-1-darnshah@amazon.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <aTfTiBy1GoJIFqtJ@wunner.de>
-References: <aTfTiBy1GoJIFqtJ@wunner.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41CBE307AF0;
+	Thu, 11 Dec 2025 16:57:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.61
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765472237; cv=fail; b=JYKKA4B4WjYC3GyWgMQDMYJJts0EZbd+NvZszPHlkMkFjt0kOcNNMjlH7mBrDZroWZD5aVO9zXvTc/e7djUU58Vv3C98xHqHPFgvwo6bwU7U5h3o9wh8CnN3Ah+sN/zH7mZu00785Bj7kHG1A+RHqTD3fs4SopWn0hxnwl/SarM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765472237; c=relaxed/simple;
+	bh=OJCdnQ++hIdrpzz+ZI1yKMeiAdsNdK2TrGvPAUV8gAY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=ejww2GkztKIXlE6unQ860ICF+JocEW5xl6oVLbUFe/vOTFPRKWSR+7OZOYB/oumLt1z7qKiyxtccnO1Sj29cObuNXL7SLVV+sTk7P7YfgaN40+3VQkwcx9/4LG4yiQnSIEhxuMnL6LDD4/0gMz/XtDKMrX/rVqhV6WSwA6evCOQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=J/p/4xMp; arc=fail smtp.client-ip=40.107.130.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YUO/xISKEWzBJdH527PkMAnBHvKxPYsZHYfA/DlLRTLj78RTeCTXSRur+rSHz1/4xLS89xtreWw5/M3lpUgT8d2I36BCAhrQacIJr10CTrF9zv5mcnvm9s66TDbejCObvI1dbR5Z8ykv4+GH229p2Toa/CVwpU747E8RNE/pIi9+/TRiWK19iprT/UuyRezpt3J4s58oVEVK9tdM4MmCPy8t3oFZGwTSy8LPCKD5uC23eyUYvOxRsUcuB8FkJTo7wZHd+VNMextn3ytDKmmiMh39CArUZ882Rp598ADXYzE3exuSBLwOvqu/IA6cTmPWqrw0N7PlMdqFVBtx94s1/g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QXobp9gUHWhx1MooJME5Rq99PUBdjI3IYkYdYt8qg+Y=;
+ b=uYrf8wCTMznrO0owhxyZRaWVqcI3GeDvk0WG/ahqt2IYTPQZWSIEo+vKOahcMxFyEkC/nlNACT+1PEV8e0SRASPAF2KaRF+YCgPVOxJIPk1nYgoXtZC+sFEZixKvHUY4QW7W4EUBcEaufcayCuycyIeZFZSlBkg/jnlSseI4GXZTkiLjex5hxnuCrsNwXREYOxJ9U4n4xJvOeF3frU45kwO45NkcTjNyf9Y/TLkP7AJxFAMZ+QeTjkmr/dhYwfycqM1HIiw04IsclLAz+oI8sm494ukjWa7gvoIn0QUEYZZqlOd6CtrzEBfjW5Ha8Kbc0ruFC0Ox3EgemtyXrHLu3g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QXobp9gUHWhx1MooJME5Rq99PUBdjI3IYkYdYt8qg+Y=;
+ b=J/p/4xMp2/HY2KxqAKN6zDq59JnJ3Ae4tBPorxjx57MlLUeohTX5C+/n7m0fISHTI1OaF1o3TUN3KaToULq8JwTFU1qKI0yWO3iLPHDX6OECq6op3wpfHkG8BzHyOBZ5PRRCMvTKOJegpGS7WU3qfK8OxOXNQNcp0vHflVTzjh3Q6d0X+eAPToIEVvps1kcLiem+E2HNh5J/YATyKpUNnjnyxwMGyNVvo4e0PNGMh9BloT9SbLAz4skeBpQHGFVk3V8UOEOTp4WQNqNdzLMp3/8n+XfLbt+KSLBETFyN3ZkeL/9rhzsxLCu0rUOuxABmKlM4J+4/bqy9vkdKNrIEpA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU2PR04MB8951.eurprd04.prod.outlook.com (2603:10a6:10:2e2::22)
+ by PR3PR04MB7449.eurprd04.prod.outlook.com (2603:10a6:102:86::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.10; Thu, 11 Dec
+ 2025 16:57:12 +0000
+Received: from DU2PR04MB8951.eurprd04.prod.outlook.com
+ ([fe80::753c:468d:266:196]) by DU2PR04MB8951.eurprd04.prod.outlook.com
+ ([fe80::753c:468d:266:196%4]) with mapi id 15.20.9412.005; Thu, 11 Dec 2025
+ 16:57:12 +0000
+Date: Thu, 11 Dec 2025 11:57:04 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Wentao Liang <vulab@iscas.ac.cn>
+Cc: ulf.hansson@linaro.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, linux-pm@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v4] pmdomain: imx: Fix reference count leak in
+ imx_gpc_probe()
+Message-ID: <aTr34BiVU+xPvuq9@lizhi-Precision-Tower-5810>
+References: <20251211040252.497759-1-vulab@iscas.ac.cn>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251211040252.497759-1-vulab@iscas.ac.cn>
+X-ClientProxiedBy: BY1P220CA0009.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:a03:59d::7) To DU2PR04MB8951.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e2::22)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ClientProxiedBy: EX19D040UWB003.ant.amazon.com (10.13.138.8) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8951:EE_|PR3PR04MB7449:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1d6b365f-5434-4aac-a0f5-08de38d65421
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|52116014|7416014|376014|366016|1800799024|38350700014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?a/r5yqq9vNqgwglLzRNOIu9ZmtDxl+V5UoWfaDbXOEaEYpy/XYfceMMrnYwm?=
+ =?us-ascii?Q?D7iiL/6HJM0W/Nx9jJb0V7K3Q4uQ0rZkbh8gKuvRQBXoXuS4muEGe0OeVC58?=
+ =?us-ascii?Q?Zd4LBp2spIsLhOn4IUU61htG6143JK7bPlTEP8TA2xGNgod2YMVVyjMj4pHY?=
+ =?us-ascii?Q?WMXrsmMfdxRvlJnmrpbQ2mNOgRLxvDUJTQA1Dkt2Is2MH5CSlKhBiR9YOia3?=
+ =?us-ascii?Q?wC+BoGY723j/Elpm+VBGm6asgTzBzB24L5z3URrtYWBig55D9rC+6hXEW+CW?=
+ =?us-ascii?Q?BiryBuudvCjYdfIbY5oX4OqDQUh0HNJypNdDckQEs1QaJcZ2xHD0dy4br1v+?=
+ =?us-ascii?Q?CJw1VvGkeH/q/MHMI1boxET+eGS5SRf3E4JT+/BbdmMKW+PBWu+ObE4sXw9b?=
+ =?us-ascii?Q?0ppq427zCDVSuSrEqGhSYfGHEypeuLXXKQ4nMjM9qFA8/Mcw0cAY5u8rkX4k?=
+ =?us-ascii?Q?vRrNKsmjJgZUSoJCzEbsx5yxfaEfKp80g2Vfm+6nJQJF39wjmjpbt3Ghscwz?=
+ =?us-ascii?Q?DUwhB9GDzSQWSdO70kWDGPB3HuHd99u3cElAEDymJIL7waSNCe+NA/zy5o/5?=
+ =?us-ascii?Q?b8NqIq00xowJUEniTOFZHeGTFvdQ7+DxeVugLkFES/wtTBbHCEtDxlmpgP1s?=
+ =?us-ascii?Q?U4YjrX1TBOYyyTwtkB9ZOFTDt9osd1CeZHP1AUlJIHrorUlOUh+QeuJ7P5hW?=
+ =?us-ascii?Q?DOaFAZUjTnSOL18CGUDRlpQsxTiPHwFeMnUU3Z6i2ePsbCVazmIKdxuU5CZZ?=
+ =?us-ascii?Q?VLPEYdLeHjhLRByD/28+6rDsISg4Z7ybKFDNESQJeM9+jG5vfdc2kkSwtVv2?=
+ =?us-ascii?Q?Y8TC1EeXxB73sgWhX62Vw8Dzk0qCpaEMFYfiLX8Nk8M8/n9AzrF/+YzS7MWh?=
+ =?us-ascii?Q?rBHxRZpN6vZZttVZwbC2AabXXGzfy+489CJ0xBIbRegojY7YAp0cupykyDk7?=
+ =?us-ascii?Q?5zKZ5+1LBaKT2BWtt7TsIGElK5GYHWkSBcsVnuRfZ6CQZJ56+0HhnTenOKHy?=
+ =?us-ascii?Q?JP7q9b2Z8BMOFslkDvINwl+MEUT9MKQ3EIGkjlDrIH1Z1PffTqCArvQGBzLq?=
+ =?us-ascii?Q?VLILj+9BYmyeQqlvr7ogFdlRgbtNtRjIvmT/vQAVr7/goAOw4YvjFKu8DqIZ?=
+ =?us-ascii?Q?UQvE+9lxr/qPrLP+9jXItSisSjijvo6yc71nKi3k5vVwe5Y8x6UoHwXyE1gE?=
+ =?us-ascii?Q?eiQb2lVhMFZ6RHoZLfR7LZ8gvpU6+ZMGSUt4MAmS9jV2IZODPlESxpEwAH52?=
+ =?us-ascii?Q?x+T3mYkHtQxCV/NDiEDvWp16DSSOXbouim4GqULol1gzBkUU1qDtDRLfgl/m?=
+ =?us-ascii?Q?W3GK8NU8xXfF74IKk6A0GZ4fUS7tAhIUTy3pMjiYKwNY6eURLboFM+GBoT/F?=
+ =?us-ascii?Q?9YFkjt8ok9Q4B5Zgwk3pqIKEQnWD5TT1hoTyhbNOQGtniNzCifuhMbUutRhJ?=
+ =?us-ascii?Q?PMP5Th/1kLLniKx6Dux2+c8w9oer4J9U5HiPft8GLgwEKUaEP9BA2UnWRCTZ?=
+ =?us-ascii?Q?nILqICKay2SHfPITyFPWcmlXe39uuQedIOXo?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8951.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(52116014)(7416014)(376014)(366016)(1800799024)(38350700014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?hVyrHZvaKQWaKTymp+zokItvSjPWCSUzEjwwUiA+mPibcaxQVGi3IHPY6JSU?=
+ =?us-ascii?Q?4VCVYkvK2MuA/oQH3EVu6YHCyJbMXfNAq7U0IwCVEY0+hX4OXa6mL6ta2VEA?=
+ =?us-ascii?Q?aVjQErpX5GaE9HGXzq/X8sfBex1giWweQI1w7T+AABwfCIDyd8jmBEjUcj/P?=
+ =?us-ascii?Q?v1+nQcf147zfz3l0f94Ym4cEoTTw6blHfiJRHW21HWFAoj28fFqbEpCkMVG7?=
+ =?us-ascii?Q?yEOsGb7tHNmc5Ec9YAUYMcz4j7WK4QI43TQpVGkEi5pVepvypcaJFnwwx3t/?=
+ =?us-ascii?Q?eR3VDlNeUUHUFDrHzPr522pIUtRwC68c358D4ceaZ9TWtQqlY8AJoEF0dfSL?=
+ =?us-ascii?Q?hQR5gTFgU8bDcsFLKtY+KF2MJIEvJUZwLlEVFZ0SNoILR+mDoZEaglE/zpVa?=
+ =?us-ascii?Q?eHtbKcznYsHWo9wN5IbJ0Pf/r5D8Yb3naGJcqW9BJKbY45/6j+V9P1OjzQBX?=
+ =?us-ascii?Q?94pw1wWq6qV8w7W60q9fhXXU8g9s5F6QcMyV25AtarhgfO8WgllHusQz8L6D?=
+ =?us-ascii?Q?3efY7DNXzpZlqBOdqE9UxJV7PYQnr3cSw9EzRtlPQv4bUfeJ1wQZBh/qX6xD?=
+ =?us-ascii?Q?M1xJ4Ed5UDzxJv87HL/e/3phus2/fjMh5eHH30uVmeu6Z9+s5tpAdeNmnSDn?=
+ =?us-ascii?Q?bcF7OukOe6nwWICk37DDN8PhU0C1bUzKinWASiwI7ya3UdLoc2cJB4Yg4GFF?=
+ =?us-ascii?Q?wWLljdbcyMYkJgRe/NNcIyel2WgBOIDQ4wXYq6lC5Fvv+RdRTelGG6kxQIpP?=
+ =?us-ascii?Q?cTETYhKqhUEkElHKixIJuepDwOdYWOvBek6w2kIWrgIxwYv1igl/CZBhujSS?=
+ =?us-ascii?Q?9UGzDbvnhMqwan9/j7fn1eKZyhnFYUm2zzIJZOMf6hIDdimgNQa+8xc044Jf?=
+ =?us-ascii?Q?+PlQa+OBk/yc3apqrzzh2yo3r9m/nfxoLtdwdTthA3QYFlpN9F/vFBBNQEFH?=
+ =?us-ascii?Q?uvoQlnKXJtxjF2VTt2l2ufFcdsqz3rUM3bpj1u+WtA8YBsZBucuYYKUIXU15?=
+ =?us-ascii?Q?T8X5Eu8tzMs9+5QIKCrGa0iqrLsq4vYMH7clT7yYAHhnyHGALNo3TOCKNdFh?=
+ =?us-ascii?Q?5549s4BMq/zA6dxk5gWoTmN6QJRhuCL9Gm9P5Mac4KGUJJtXfdV6eCMmBjBz?=
+ =?us-ascii?Q?BIb2rPd65XdAGwdm+dcZSHWbhVr0VlVXRqVydNEfgprKz6Qu7tfjsrTHPSoV?=
+ =?us-ascii?Q?PmqLn/NFcpYOKkqucVDyED19gw3uQFCZ0ap3AYFMaIqQgTksVhdLqF6V1Svv?=
+ =?us-ascii?Q?XVa8ruE3GXqQuh5146Crvz1fXz+UYCYx0SlRS0IQ81fKC+0XujL2qUPNB67w?=
+ =?us-ascii?Q?pji12YyIdpUi8/kccTOD+kPu5t9HpD9WcbECbP2r5rLhjp5FPGZDx9nr0ZKa?=
+ =?us-ascii?Q?teD+WT62cZerAcmUuDqv57qfzRqchuFYwxCeiV6NK2C/T7PFHT1kAJSnMvNg?=
+ =?us-ascii?Q?VBtJLxfr0mwn+T43T79TA+XHZ401G/cvBhcWhi4ydHoykrcj+3NEVb0By0B9?=
+ =?us-ascii?Q?WFNQpU1GxYiskL6ptLEeLYK24Has+DbBMW+yvL1wmwebVc0ZWGvRVnDzGl5l?=
+ =?us-ascii?Q?NpUvPBMX42XOWioJOUHW6jPMtDR8MZ/sPcTKQ9uT?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1d6b365f-5434-4aac-a0f5-08de38d65421
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8951.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Dec 2025 16:57:12.1856
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: PY9VTjXTFU3ncyNb9hxovKqqc592JOjfsplYt2439wSLVtO3BjiJA1tvHNvA2DEN/xO468AnL40WmpKLbCpR5A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR04MB7449
 
-According to PCIe r7.0, sec. 6.2.11, "Implementation Note: Determination
-of DPC Control", it is recommended that the Operating System link the
-enablement of Downstream Port Containment (DPC) to the enablement of
-Advanced Error Reporting (AER).
+On Thu, Dec 11, 2025 at 04:02:52AM +0000, Wentao Liang wrote:
+> of_get_child_by_name() returns a node pointer with refcount incremented.
+> Use the __free() attribute to manage the pgc_node reference, ensuring
+> automatic of_node_put() cleanup when pgc_node goes out of scope.
+>
+> This eliminates the need for explicit error handling paths and avoids
+> reference count leaks.
+>
+> Fixes: 721cabf6c660 ("soc: imx: move PGC handling to a new GPC driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 
-However, AER is advertised only on Root Port (RP) or Root Complex Event
-Collector (RCEC) devices. On the other hand, DPC may be advertised on
-any PCIe device in the hierarchy. In fact, since the main usecase of DPC
-is for the switch upstream of an endpoint device to trigger a signal to
-the host-bridge, it is imperative that it be supported on non-RP,
-non-RCEC devices.
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-Previously portdrv has interpreted the spec to mean that the AER service
-must be available on the same device in order for DPC to be available.
-This is not what the implementation note meant to imply. If the firmware
-hands Linux control of AER via _OSC on the host bridge upstream of the
-device, then Linux should be allowed to assume control of DPC on the device.
-
-The comment above this check alludes to this, by saying:
-  > With dpc-native, allow Linux to use DPC even if it doesn't have
-  > permission to use AER.
-
-However, permission to use AER is negotiated at the host bridge, not
-per-device. So we should not link DPC to enabling AER at the device.
-Instead, DPC should be enabled if the OS has control of AER for the
-host bridge that is upstream of the device in question, or if dpc-native
-was set on the command line.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Darshit Shah <darnshah@amazon.de>
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
----
-Changes from v2:
-  * + stable@vger.kernel.org since moving to v6.2+ breaks DPC on our systems
-  * Minor stylistic changes to commit message
-  * NO functional changes
-
- drivers/pci/pcie/portdrv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/pci/pcie/portdrv.c b/drivers/pci/pcie/portdrv.c
-index 38a41ccf79b9..8db2fa140ae2 100644
---- a/drivers/pci/pcie/portdrv.c
-+++ b/drivers/pci/pcie/portdrv.c
-@@ -264,7 +264,7 @@ static int get_port_device_capability(struct pci_dev *dev)
- 	 */
- 	if (pci_find_ext_capability(dev, PCI_EXT_CAP_ID_DPC) &&
- 	    pci_aer_available() &&
--	    (pcie_ports_dpc_native || (services & PCIE_PORT_SERVICE_AER)))
-+	    (host->native_aer || pcie_ports_dpc_native))
- 		services |= PCIE_PORT_SERVICE_DPC;
- 
- 	/* Enable bandwidth control if more than one speed is supported. */
--- 
-2.47.3
-
-
-
-
-Amazon Web Services Development Center Germany GmbH
-Tamara-Danz-Str. 13
-10243 Berlin
-Geschaeftsfuehrung: Christof Hellmis, Andreas Stieger
-Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
-Sitz: Berlin
-Ust-ID: DE 365 538 597
-
+>
+> ---
+> Change in V4:
+> - Fix typo error in code
+>
+> Change in V3:
+> - Ensure variable is assigned when using cleanup attribute
+>
+> Change in V2:
+> - Use __free() attribute instead of explicit of_node_put() calls
+> ---
+>  drivers/pmdomain/imx/gpc.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/pmdomain/imx/gpc.c b/drivers/pmdomain/imx/gpc.c
+> index f18c7e6e75dd..56a78cc86584 100644
+> --- a/drivers/pmdomain/imx/gpc.c
+> +++ b/drivers/pmdomain/imx/gpc.c
+> @@ -403,13 +403,12 @@ static int imx_gpc_old_dt_init(struct device *dev, struct regmap *regmap,
+>  static int imx_gpc_probe(struct platform_device *pdev)
+>  {
+>  	const struct imx_gpc_dt_data *of_id_data = device_get_match_data(&pdev->dev);
+> -	struct device_node *pgc_node;
+> +	struct device_node *pgc_node __free(device_node)
+> +		= of_get_child_by_name(pdev->dev.of_node, "pgc");
+>  	struct regmap *regmap;
+>  	void __iomem *base;
+>  	int ret;
+>
+> -	pgc_node = of_get_child_by_name(pdev->dev.of_node, "pgc");
+> -
+>  	/* bail out if DT too old and doesn't provide the necessary info */
+>  	if (!of_property_present(pdev->dev.of_node, "#power-domain-cells") &&
+>  	    !pgc_node)
+> --
+> 2.34.1
+>
 
