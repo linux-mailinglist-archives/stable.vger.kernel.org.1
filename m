@@ -1,129 +1,180 @@
-Return-Path: <stable+bounces-200803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7424DCB6594
-	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 16:29:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22BB2CB65D4
+	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 16:41:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8F6823017650
-	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 15:28:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 49C0F3021E79
+	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 15:40:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1CD2304980;
-	Thu, 11 Dec 2025 15:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB4B730F922;
+	Thu, 11 Dec 2025 15:40:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QqTz0iwb"
+	dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b="yerLci8W"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D045305E3A
-	for <stable@vger.kernel.org>; Thu, 11 Dec 2025 15:28:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E775E30F7F8
+	for <stable@vger.kernel.org>; Thu, 11 Dec 2025 15:40:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765466894; cv=none; b=IgmqXABIoUBEUP8sp29poOMx2geFyKFCyoxtr5HMTiz204YI+Ktv8gK49mK+mHKcBTUYPMYfR5K7oMBqameWjni+Xe2J3xie+bx0eFEGzi3M9bj8cxJU+Pn/AUWUpfRnvU8L/HMqx9FplQX/ait6Fi/LICr6+rk/aKTb8wzoqRg=
+	t=1765467632; cv=none; b=oehjkDek6MXTrbhN170OHAeMyfYe9PSr3fjFrPsl1wxvHdjQ5VFgKZJXSQwVGTtPrG0C8quaWzOQnDXRQxtDv+7htRJlyzXaa23doCRTJkFBcvOyfPTUERkuHuSIpt7u3NeyQIHXJ//wfSy7z9e8THnPQdqYa358CTJ8f14v9ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765466894; c=relaxed/simple;
-	bh=xePkpZbrNIejTV+/eBvIF3yGcCY2SKIZ1oKG3VWeink=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=O9rU6NYj1Zotb+BUTlRtAyDz2FLfYF18IB6lRTtAlDMcsP6fKWksa6VLYI6pbbo0nrFSooZTIdP903C9R1SVz938GvpOqFYTMiVsqJBwCeEQAosWKJ1dxc/4RLF9UCExpsjstmK0Lmh0MymgMs9SMTP4PWijO+s+vCNGj3dtY5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QqTz0iwb; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2956d816c10so2663585ad.1
-        for <stable@vger.kernel.org>; Thu, 11 Dec 2025 07:28:12 -0800 (PST)
+	s=arc-20240116; t=1765467632; c=relaxed/simple;
+	bh=xY1BmqLej6LdL8opPSvDdksuAPvCJXAWVUx/9fU7It4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FIR2ElnbXXDbUBA1HYI3j0a+hGQ75Az7bQxUNrzDqA0g/v2DkEW82RJyUKgR/Z1dgg1O6KW5CWZbX6B3I/xXjpxaY/xnO0sjwBB9TDJYrgPLlocg+hmEkfwJONdGSvnxHq1IXqmrJ7hPdP75GWRXYBlANrBK+cAhOuyrZ7bvM7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in; spf=none smtp.mailfrom=rajagiritech.edu.in; dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b=yerLci8W; arc=none smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=rajagiritech.edu.in
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-640a0812658so403978a12.0
+        for <stable@vger.kernel.org>; Thu, 11 Dec 2025 07:40:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765466892; x=1766071692; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=IeE1L9lCPfTWMZGJYdbjvoHvkM1Avioc8h0oyJcvAGA=;
-        b=QqTz0iwb61MlSKbFx/4kTR762hTUDXdSqCkmRnqkT0KyUKujtWV2dLrKKfcmmNyZK9
-         PUP2yjaH4q53WYotfF7kyaT/RLmQiAm3w7BA7dHrOwM8HnKDDOhPOcDFGt2V5y7nvXAh
-         ZeEFrVYLR7WJDvuAbCdMLvfCaIr0RF6x2k1tu691HcPg+eg8AFr6sgKxjcXKVOhfb79Y
-         ovbMWWeocif77diAgfgp5CYXzBLxTfcdF0U+0Rqdl1RDcIcssir7qTv4GSj02JldDj63
-         hH8/a+v725zP0oHnzuCAsjX8KbI6nrfGs1i/etmYTmIEQateK+ZLAU0MVYTDYBcPbFOB
-         3lJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765466892; x=1766071692;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=rajagiritech-edu-in.20230601.gappssmtp.com; s=20230601; t=1765467629; x=1766072429; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=IeE1L9lCPfTWMZGJYdbjvoHvkM1Avioc8h0oyJcvAGA=;
-        b=P3NUZtCkHmYZIs+lM4QymDU8HwvNjblSeIuamtAOxVF0u7RqsrtsN3vlA+5Ba3dFmI
-         Y7ORd+wa0AeTvOKvk2UHcLUwckRngRyARosE7iPiCfERFYGwwlx9JC6ymypNFO3GJdRl
-         5gvmn2xZU7rs2IZ7yeIQo5hTw0kCAtc3FZ7cu1D0dkyFBG+xYJH+ivGlRBZlxMLNGwXB
-         FjeL+MSo3C/QzxzU93yD9utoUpz4dHWfssmNNaaqGu3A0zORk/q4h0+FQ/2CnEe6524r
-         mfnRgR0NstUmbfCcg24eQ/YXRPkB/TBhPzBAxxCPevP/PptkG64LxYpzz8YkMZlqHikF
-         IWbw==
-X-Forwarded-Encrypted: i=1; AJvYcCVSS0bOOEvtL1WyPuRtV/rLGULkEuHggTCoiG5tf4H1Wpcno5fVollD1DfsSWv4t3teARYP/DE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywx8JD9LVwoRgIc1u3YCE2fBY8Li/cOvzVeDbGuJn5cKo+fLyns
-	TuFA52EkKTKZHyKtkwPWqFQsXRJCU7wJfKydC+eYOQB3PAC70IuakAl+
-X-Gm-Gg: AY/fxX7LDdLuLIrc2ZoDIp23b3Sr57V6hq5sZzDPBTSxC10ycXMmuz1E4C20F+Eoe00
-	/WB0xXEdI1gduTdV7U/HAgBRhoACqc8H65q+U6EZ9EvW6181jLFmsVXqa8RxMct93afNDgrpei+
-	ssVWZe89FKmbmvEEicI0d5Iciv+auRSTutQvBAg/xmbawd4lLzYPcj4YBcIGgvENdKvKfDaEzb6
-	RaaPNf9rXz99qeS1T5Udwy1M8FG0RlHxBz95mp5rVkzNMlk4Ro+CG9kdMR6MhcZYJYNovzSxUqX
-	DMS9Y+MpbhXaCkT+r5FhLJrDqGW3lflVp2MvgRwohVFI2rpvOd/Jy7ndQ89dJm7jS+f51Ts2rtF
-	JWW3SGNy0KDhZIVIszwTha18Y0U55qFcp9FljkcZVHh3BOreruw5McHFr176PqPx2N6PXd6aKpr
-	yqzKGaEwIO4ee4ywnhMSICW9A=
-X-Google-Smtp-Source: AGHT+IHlArwVcYz3DUfciqyKswTQ68mcxdpSevFo5EUCuZKAfdt91RYKMdSWdPGZCDeyqbGrwmzkjg==
-X-Received: by 2002:a17:903:2ec7:b0:295:745a:8016 with SMTP id d9443c01a7336-29ec22ca8e0mr60093495ad.11.1765466891603;
-        Thu, 11 Dec 2025 07:28:11 -0800 (PST)
-Received: from c45b92c47440.. ([202.120.234.58])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-29eea0169easm28614045ad.50.2025.12.11.07.28.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Dec 2025 07:28:11 -0800 (PST)
-From: Miaoqian Lin <linmq006@gmail.com>
-To: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Alan Cox <alan@linux.intel.com>,
-	Dave Airlie <airlied@redhat.com>,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org
-Cc: linmq006@gmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH] drm/gma500: Fix refcount leak in oaktrail_hdmi_setup
-Date: Thu, 11 Dec 2025 19:27:59 +0400
-Message-Id: <20251211152759.2421435-1-linmq006@gmail.com>
-X-Mailer: git-send-email 2.25.1
+        bh=ZqPScvJ4WBIuB5P5PUVnKmLK9/PY1poWwXCsEBmV7EQ=;
+        b=yerLci8WSj/BXGW3VM1yyd20wXjY0MJmDbFeSCB88cYZbEBTuHnxM2ma7QBo3VO+OW
+         131Vu2i12uBU6p/ZChhI+j9GPslsvF5flSiZnLQGTFdV9CmxB1h+H7/sLREBEo/VdUfF
+         fpOLNh7Rlg+aJ0Oe0JJb0o25BmD4ZN1FhPH1TtRflLZWVd7paQZp3q1tJimU3VJa2Lly
+         UQr3MD9zn3sVyMGuGSpqVCQdq2nr+l3iA0vi6zb5oyTdhqGU1m4uGBB/M8VJjfDbjAzx
+         3hRX+PwVpKybixL5G10Cam2Nb7tr8fSVXgHvPkp46tcRySDAp8wvgtONfbvKMujag8zd
+         V7IA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765467629; x=1766072429;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ZqPScvJ4WBIuB5P5PUVnKmLK9/PY1poWwXCsEBmV7EQ=;
+        b=Ck/wLER1fX0oTHZjqmeVOV9lFQW2E6DhOm8jVPwmUdw2XoBsjkVOv8mYs+KxsaF1uO
+         tzgdlQlZ3XUsXlI6K/ePr1aNEo+KyRofJ9EL99q7dLss0hP8iGUH10vzJcCg3g45UCPU
+         7T7EJq76d9tOylyWmJpbYCQ9/UPDHcxdIZvq0clc1w33Bhf3sbTylVmQl0y63ZrhJOr1
+         8K8V6K8Su+sPcmGeVJkumPEG+YPLpMvyAJBCfYf9/Jtf8yW6Quw/GtZkj+VqQcG1lwFp
+         pczSLiQHyKUfZut7UTjKNISdCDiG8rOxarVf6MtQ8mGt2NLu379zMxg9ASYSKqSAglUl
+         Ab2A==
+X-Forwarded-Encrypted: i=1; AJvYcCXg55+T15tjdxsa469f0vruNvaxZZnhkLHKJTEYeGqY5wFom8uw7f3W/EBH5brU6HntZGYbIdM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyiczwolCUA5nasHSVL62SfX8SA1lnjAIiHiXYtaMHGpr8azLYm
+	pPrjnY4/Pts3FHfFlvTjdRtCaZ7ZdL0t0cV017qxGMwfgTYo3Qyamv1a5BbhWWYRX3aW6au3eDo
+	t8q0VDFTGi+bPYnpjIGRkPFwYNauT4hq4qCpcNR0E/g==
+X-Gm-Gg: AY/fxX5XZCMTgCchpZRw084M6FpaxDGtAwKOzxP+1EWuBx5PvS9Kn/UNyQ3zo9Na0Q2
+	AyHBXY6o5VKidyMuZjDQOglMN6PJz5yyGjm7JOGZ0vin8GojIEq7eOywTTTEqeU1Hw22yJT06bt
+	bAVmq54zHdR+s+DA8yXb/UZazcPoDGKbQyrpVh0Yih07Qqi0ybaDM6GyZ2mQ1/uB9IHV1gz5p7a
+	HesURwSgspGtLHg5KmuBaSpm32/0FtpkcfneJ1d00nxcnlPCxNgANGIaqDAsg9zN7EEN6bopWMI
+	F3wA64g=
+X-Google-Smtp-Source: AGHT+IFFm/09kODYtVj/jT3L/lBrOy6szLxdTZhvxFXifoxdEQMTCf0vVFebHgTlx3wBbXfRlHweSQTfq5fkyItlL8I=
+X-Received: by 2002:a17:907:7ea8:b0:b77:1166:7d63 with SMTP id
+ a640c23a62f3a-b7ce841c50bmr757021966b.40.1765467628648; Thu, 11 Dec 2025
+ 07:40:28 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251210072947.850479903@linuxfoundation.org> <CAG=yYwm==BjqjJWtgc0+WzbiGTsKsHV3e4Lvk60fcartrrABDw@mail.gmail.com>
+ <2025121046-satchel-concise-1077@gregkh> <CAG=yYwm0bVzYoccKKcdheGOc-exuxVCPeXSftDixS68qZZ7W7w@mail.gmail.com>
+ <aTnET5C2PGiKsW_2@auntie>
+In-Reply-To: <aTnET5C2PGiKsW_2@auntie>
+From: Jeffrin Thalakkottoor <jeffrin@rajagiritech.edu.in>
+Date: Thu, 11 Dec 2025 21:09:51 +0530
+X-Gm-Features: AQt7F2pi6TZXr2dGaZGsLTRBYorVi9P5ROwKyX-pAKDthnXiINq9R-1QmXI1fSA
+Message-ID: <CAG=yYwnYgw-MYea3yEfwSRiLL+PsKPdQdejotyFTpme0LXc-Pg@mail.gmail.com>
+Subject: Re: [PATCH 6.17 00/60] 6.17.12-rc1 review
+To: Brett A C Sheffield <bacs@librecast.net>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, 
+	shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, 
+	pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org, 
+	hargar@microsoft.com, broonie@kernel.org, achill@achill.org, 
+	sr@sladewatkins.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-pci_get_device() increments the reference count on the PCI device.
-Add missing pci_dev_put() in error paths to fix refcount leak.
+On Thu, Dec 11, 2025 at 12:35=E2=80=AFAM Brett A C Sheffield <bacs@librecas=
+t.net> wrote:
+>
+> On 2025-12-10 19:13, Jeffrin Thalakkottoor wrote:
+> > On Wed, Dec 10, 2025 at 6:17=E2=80=AFPM Greg Kroah-Hartman
+> > <gregkh@linuxfoundation.org> wrote:
+> > >
+> > > On Wed, Dec 10, 2025 at 04:22:21PM +0530, Jeffrin Thalakkottoor wrote=
+:
+> > > >  compiled and booted 6.17.12-rc1+
+> > > > Version: AMD A4-4000 APU with Radeon(tm) HD Graphics
+> > > >
+> > > > sudo dmesg -l errr  shows  error
+> > > >
+> > > > j$sudo dmesg -l err
+> > > > [   39.915487] Error: Driver 'pcspkr' is already registered, aborti=
+ng...
+> > > > $
+> > >
+> > > Is ths new?  if so, can you bisect?
+> >
+> > this is new related. Previous stable release err and warn disappeared
+> > (i think i changed  .config)
+> >
+> > can you give me a  step by step tutorial  for git bisect
+>
+> 1) cd to wherever you have your kernel checked out
+>
+> 2) `git bisect start`
+>
+> 3) if you're already on a known-bad commit, then mark it as such:
+>
+>   `git bisect bad`
+>
+> 4) Mark the last known good commit as such:
+>
+>   `git bisect good <commit / tag>`
+>
+> git bisect will choose a commit to test.
+>
+> 5) Build, install and boot your kernel as you usually do
+>
+> 6) Run whatever test you need to determine if the booted kernel is good o=
+r bad
+> (check dmesg in this case)
+>
+> 7) Mark the commit as good or bad. Git will choose another commit for you=
+.
+>
+> 8) Goto 5.
+>
+> `git help bisect` will give you more information.
+>
+> At the end of the process git will tell you the first bad commit found.  =
+You can
+> dump the bisection log with:
+>
+> `git bisect log`
+>
+> which you can reply here with.
+>
+> HTH.
+>
+> Cheers,
+>
+>
+> Brett
+Thnaks for the tutorial  :)
+1. should i start with the bad commit first ?
+2. how to move forward or backward in commits ?
+3. what is the point in re-compiling the kernel  if it cannot narrow
+down and  test news lines of code
 
-Found via static analysis and code review.
 
-Fixes: 1b082ccf5901 ("gma500: Add Oaktrail support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
----
- drivers/gpu/drm/gma500/oaktrail_hdmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/gma500/oaktrail_hdmi.c b/drivers/gpu/drm/gma500/oaktrail_hdmi.c
-index 20d027d552c7..2be12acc93d2 100644
---- a/drivers/gpu/drm/gma500/oaktrail_hdmi.c
-+++ b/drivers/gpu/drm/gma500/oaktrail_hdmi.c
-@@ -712,10 +712,10 @@ void oaktrail_hdmi_setup(struct drm_device *dev)
- 	dev_info(dev->dev, "HDMI hardware present.\n");
- 
- 	return;
--
- free:
- 	kfree(hdmi_dev);
- out:
-+	pci_dev_put(pdev);
- 	return;
- }
- 
--- 
-2.25.1
 
+
+
+
+--=20
+software engineer
+rajagiri school of engineering and technology
 
