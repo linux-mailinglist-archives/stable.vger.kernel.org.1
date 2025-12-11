@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-200813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39EB9CB6CD9
-	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 18:51:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92690CB6BB9
+	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 18:31:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 26EC3301C084
-	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 17:51:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2B0FE3019B89
+	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 17:31:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E363191CF;
-	Thu, 11 Dec 2025 17:23:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F15D32ED5E;
+	Thu, 11 Dec 2025 17:31:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from postmaster.electro-mail.ru (postmaster.electro-mail.ru [109.236.68.122])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B03315D30;
-	Thu, 11 Dec 2025 17:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48FF632ED47;
+	Thu, 11 Dec 2025 17:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.236.68.122
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765473794; cv=none; b=GQUV5CICnlDAS7D49ZldDqIGi/ohcHrkavlZYZLHXPYWJ6l90pNJb3XKcKwpYLMc44cNcL5URh6bEmdSF8169JpCEWvSkr8bJ03Mcvk7jVgbs2gJWIFB2Jv8s0350Cs9rdEujxf4DBiwhB9XUCIVnKSudalucDEFN8C0Jm+hGnU=
+	t=1765474261; cv=none; b=m7W4cNcUFU/Vt2SHQZDzqdTbHWP8JnvswAe8/C6VPSGYIJ6UmVfkQ00D6vx4Ej79+xbXorIvNZJ9xN8JVABItPEt3TSyRP44YSxAJbHyMK6+20DbINZwbYnAeF3B2bNrVYMVLGF0RVTb3e72fU3vszdOynLz1LIyfYBNLQHdx+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765473794; c=relaxed/simple;
-	bh=5kTnzLw9h0nqYQ0Da0jFetKmIps/O1s/hhlFyqbaM2M=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=X7cTirmODMi5Puoyyje7KlBxRLeRlUrQWuuftMAaSxYGbCM0avraA6/9NUeI/mY5+DuUH/nlokJKccZLuASNchkXoX2Mr4vOSYTg5o06h3xlL/rG41ibt926K07Y3ZIbfnvMnTPUmrL4U7Xc7RW6jGKqiaC7PuMCHaol+Zzw0uk=
+	s=arc-20240116; t=1765474261; c=relaxed/simple;
+	bh=ozU9m/XaU3oz5LPCsa3Se6LsM+CvWJ8+mGeve9FvDrQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jChrqBIuuZ2SmQHiGHk3EtHBHkkMfDhGxfoVoOq2TVCgY007gCA0TKaQe4ImKbO4OM5u3mXTmDGtiNGOr+z97G8PZ1bHS/fEHkhJmv8Of5b7nOt8OOODIYOrzKe+j6zRMETP3KI3wLxi4nIJ1WmgvrfhwIQF8hSerpRhFFts26k=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tpz.ru; spf=pass smtp.mailfrom=tpz.ru; arc=none smtp.client-ip=109.236.68.122
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tpz.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tpz.ru
 Received: from localhost (localhost [127.0.0.1])
-	by postmaster.electro-mail.ru (Postfix) with ESMTP id BB4781006D27;
-	Thu, 11 Dec 2025 20:23:05 +0300 (MSK)
+	by postmaster.electro-mail.ru (Postfix) with ESMTP id 7E0451006BA1;
+	Thu, 11 Dec 2025 20:30:57 +0300 (MSK)
 Received: from postmaster.electro-mail.ru ([127.0.0.1])
 	by localhost (postmaster.electro-mail.ru [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id RtWFXYXG8TJ7; Thu, 11 Dec 2025 20:23:01 +0300 (MSK)
+	with ESMTP id FaFmj9ZbOJ-E; Thu, 11 Dec 2025 20:30:56 +0300 (MSK)
 Received: from postmaster.electro-mail.ru (localhost [127.0.0.1])
-	by postmaster.electro-mail.ru (Postfix) with ESMTPS id 8D4251006E44;
-	Thu, 11 Dec 2025 20:23:01 +0300 (MSK)
+	by postmaster.electro-mail.ru (Postfix) with ESMTPS id B9E841006E41;
+	Thu, 11 Dec 2025 20:30:56 +0300 (MSK)
 Received: from email.electro-mail.ru (unknown [10.10.0.10])
-	by postmaster.electro-mail.ru (Postfix) with ESMTPS id 71B4C1006D27;
-	Thu, 11 Dec 2025 20:23:01 +0300 (MSK)
+	by postmaster.electro-mail.ru (Postfix) with ESMTPS id A58621006BA1;
+	Thu, 11 Dec 2025 20:30:56 +0300 (MSK)
 Received: from lvc.d-systems.local (109.236.68.122) by email.electro-mail.ru
  (10.120.0.4) with Microsoft SMTP Server (TLS) id 14.3.487.0; Thu, 11 Dec 2025
- 20:23:00 +0300
+ 20:30:56 +0300
 From: Ilya Krutskih <devsec@tpz.ru>
-To: Mauro Carvalho Chehab <mchehab@kernel.org>
-CC: Ilya Krutskih <devsec@tpz.ru>, <linux-media@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
-	<lvc-project@linuxtesting.org>
-Subject: [PATCH v2] media: dvb-frontends: Fix out of bound for buffer
-Date: Thu, 11 Dec 2025 17:22:49 +0000
-Message-ID: <20251211172251.852254-1-devsec@tpz.ru>
+To: Andrew Lunn <andrew+netdev@lunn.ch>
+CC: Ilya Krutskih <devsec@tpz.ru>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, "Paolo
+ Abeni" <pabeni@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar
+	<mingo@kernel.org>, <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<lvc-project@linuxtesting.org>, <stable@vger.kernel.org>
+Subject: [PATCH v2] net: fealnx: fix possible 'card_idx' integer overflow in
+Date: Thu, 11 Dec 2025 17:30:33 +0000
+Message-ID: <20251211173035.852756-1-devsec@tpz.ru>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,37 +68,34 @@ X-KSE-Attachment-Filter-Scan-Result: Clean
 X-KSE-Attachment-Filter-Scan-Result: skipped
 Content-Transfer-Encoding: quoted-printable
 
-Result of pointer shifting is out of bound for buffer 'prev_swp_freq'
-because of incrementation inside 'while' cycle in case more than
-20 steps of it.
+'card_idx' can be overflowed when fealnx_init_one() will be called more t=
+han
+INT_MAX times. Check before incremention is required.
 
-Add check: prev_freq_num < 20
-
+Fixes: 15c037d6423e ("fealnx: Move the Myson driver")
 Cc: stable@vger.kernel.org # v5.10+
-Fixes: 9a0bf528b4d6 ([media] move the dvb/frontends to drivers/media/dvb-=
-frontends)
 Signed-off-by: Ilya Krutskih <devsec@tpz.ru>
 ---
- drivers/media/dvb-frontends/mb86a16.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/fealnx.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/dvb-frontends/mb86a16.c b/drivers/media/dvb-fr=
-ontends/mb86a16.c
-index 9033e39d75f4..da8985b91475 100644
---- a/drivers/media/dvb-frontends/mb86a16.c
-+++ b/drivers/media/dvb-frontends/mb86a16.c
-@@ -1188,7 +1188,7 @@ static int mb86a16_set_fe(struct mb86a16_state *sta=
-te)
+diff --git a/drivers/net/ethernet/fealnx.c b/drivers/net/ethernet/fealnx.=
+c
+index 6ac8547ef9b8..7eb6e42b4551 100644
+--- a/drivers/net/ethernet/fealnx.c
++++ b/drivers/net/ethernet/fealnx.c
+@@ -489,7 +489,10 @@ static int fealnx_init_one(struct pci_dev *pdev,
+ 	int bar =3D 1;
+ #endif
 =20
- 			signal_dupl =3D 0;
- 			for (j =3D 0; j < prev_freq_num; j++) {
--				if ((abs(prev_swp_freq[j] - swp_freq)) < (swp_ofs * 3 / 2)) {
-+				if ((prev_freq_num < 20) && (abs(prev_swp_freq[j] - swp_freq)) < (sw=
-p_ofs * 3 / 2)) {
- 					signal_dupl =3D 1;
- 					dprintk(verbose, MB86A16_INFO, 1, "Probably Duplicate Signal, j =3D=
- %d", j);
- 				}
+-	card_idx++;
++	if (card_idx =3D=3D INT_MAX)
++		return -EINVAL;
++	else
++		card_idx++;
+ 	sprintf(boardname, "fealnx%d", card_idx);
+=20
+ 	option =3D card_idx < MAX_UNITS ? options[card_idx] : 0;
 --=20
 2.43.0
 
