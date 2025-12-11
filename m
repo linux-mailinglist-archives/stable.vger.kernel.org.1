@@ -1,242 +1,330 @@
-Return-Path: <stable+bounces-200771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91C30CB4DE3
-	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 07:24:39 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97D38CB4E2E
+	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 07:38:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A9941301098C
-	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 06:24:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 74913300CA2D
+	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 06:38:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23385285CA3;
-	Thu, 11 Dec 2025 06:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1287E28FA91;
+	Thu, 11 Dec 2025 06:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Fs3Saqdx"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="uBqqUK1L"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41379279DAF
-	for <stable@vger.kernel.org>; Thu, 11 Dec 2025 06:23:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+Received: from n169-112.mail.139.com (n169-112.mail.139.com [120.232.169.112])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A0DA2773FC
+	for <stable@vger.kernel.org>; Thu, 11 Dec 2025 06:38:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765434238; cv=none; b=Er6S80wiBIZl9ipy7996isUNXTxG52ZXW5N70cuSmFRBOBd2Il3V5EVryKu0Kdy2cqAe4QjE8fBx2iGT8TUuzogJclfxMCf5ML1cbWydRQ6IZrDsHsjXKfpOx4v+/F7/1m3I4LEEmFR/Zl6awIPPcH06dWEdKqrGl9lVjx3x4es=
+	t=1765435117; cv=none; b=jawSPpaelGOBEKkZ7Aos1QKR54seqk/SjZ241G1ybOzzyBPejebHXdEd1wwMcxSozC3w/K8Rd3YD1w72/mBSC6qRw/n9kS8H/SnFNXTp8rAHAtFNuSRwvzFxGv90ejDWjwR8XgK5HU8jI6pfxK9rFzGNJF+Ffth057QiGyH1A6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765434238; c=relaxed/simple;
-	bh=+Ea/t9Gzvkzqy7qyNNB2KfWfIh3PKgywyC9p5zSkt8Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=X2ijadcZADxKYgKx7xKBl+Lnm7+Ri1ixe7QJC251wrenukEaKc7OBDP1HfKABiVG82y08vBGGgJnIXBRhevwplL9UD00uhe5GjsNRLivJs1wcX2wR9kV6/ACT4DtyeBjXScQeFujb1JHGbzGYMQ5AVe6VvSiO759gkT5NAam31c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Fs3Saqdx; arc=none smtp.client-ip=209.85.215.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-bc8ceb76c04so444254a12.1
-        for <stable@vger.kernel.org>; Wed, 10 Dec 2025 22:23:56 -0800 (PST)
+	s=arc-20240116; t=1765435117; c=relaxed/simple;
+	bh=vqmMn3vOOv5eo3qxp6GL3vbR+zC0jx+1o8CtT/ku3dw=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=OKxjOTJgBltiJUnmj/BYBa0GnJ0sYNKuTlpunX5WNWgg5nTrcVG5nDopjWItLj6gIudq+4cfXpsJwR9KcccPngi0dIOVXwCqDnAVFRhYpgtdOOfbFIpACvLfUOnGNGQVSxVhxfP+NkPc5la8ShZmwE+dVuUOGsYvVFrpKyLm/N0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=uBqqUK1L; arc=none smtp.client-ip=120.232.169.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1765434235; x=1766039035; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yNkVbuY3usTKHCsWOGhWZWGyB86GCzXVbCkYK/l5WJc=;
-        b=Fs3SaqdxO40nc17sHxz3L8e4MFXbhyybLgNU7JpjDbxuGPM0Qnp3IYV/BEwV1qEOL8
-         VJbIolLFswz9zBs8m0JwCCGaS/DqYU4wnF7mDU7CHgK8k8Z5ov83exmVTnmK4n6oD5KG
-         zXXpTSC/62ELSBnAOQ/dwiBXu8tYVxxfxvBCie+rVXFnk01hnHUXjveUceZCn28USZnD
-         /h/4CJMIrQmQYJHtxmkV9U0/mbc+w+BCAgguxqgnSoupJ2qmQ6cwtKEPi7NLQBo/e+qx
-         P3GJ/5Wbq0FCF/XYWm904jjU0PIWptw89zPoPgnGsXiC+YYfoZrhIqfujIWdVMvQ8z/7
-         9bBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765434235; x=1766039035;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=yNkVbuY3usTKHCsWOGhWZWGyB86GCzXVbCkYK/l5WJc=;
-        b=CYPZn+JX+bEfmYjuSjXE0W0HaChZOC99hVeJOwKmVQtqKEeYikplXS7rjh0WLqxrjA
-         drDldae30JnarCzIIuZX71IpJDw/SnMzVIu3FPBdKaF9UKH5Z8V0at8QKm/ba+sBmxNn
-         rH3hguQqszJqkSzfS7nQRQm03FC+8KylpJUJCrhh3BVErSonDCkSL+eS4qT6PJ6IEMKe
-         U2mRoxdal1km2XGL/vYuM1yr8EDhXDztBWJYTO6U47gsgj+cwqhgPwJvcRZcxBnz4K+D
-         yp4tb+473J3CDvFonJHf7oCZ25bUWdGFb+IEKKjcbF6bbH9tMALgJbnFjoxseG3ankLx
-         9XCA==
-X-Gm-Message-State: AOJu0YzQ2F2eJJHxPBbYPl/PD78KuRUig+1epcW/TGwd5UMsWekWLUQJ
-	uVqDYALv8PLBSNPaP9tQLbiPMla8AisbSHmKAWm933ztqZRg69JCh9+L7j0l+Q/dOfkF7f8DpFH
-	9+zEEiYhTyUIeux/f3vopSwf/VY4jWk033EhZZQNSmQ==
-X-Gm-Gg: AY/fxX68IeH9G5kt1MiCgHZqgzyNgjnWqWmIYuG+btOf4jUzvGgh+bBIjjgxDi0uFGT
-	lpOKRoD2F/kHihzHswD7AdLXQQnWexSlNEQWhNpYSF8SZVf3rPwzIJYrS9bH/ErEIB8T9buGP/v
-	eQaGyhX+yPt1DWaGptA4oA1kDTCm2F5NJ6Rj9YiE+2ZpeQbN1xLwfuulpdSmDKCjUdmiThgDR45
-	7IAxPzvVoBH5UDupAhtWNcOWe4q7oQZJMZkQyqxmBZzjXAzYhO5z0yPQGY5IDyBYN66lSvjwm8M
-	saekH8BmMyjyVmmk/HjerSctsxSisw==
-X-Google-Smtp-Source: AGHT+IGVxhAUv3cl81I8lkaEMdy/a72TP9vctXDJDJTWxE5FmtXceYhvpxR3BE0Jmi5uzyOFWesP4W0n7csc6GC3IS8=
-X-Received: by 2002:a05:7301:428e:b0:2ac:1c50:f900 with SMTP id
- 5a478bee46e88-2ac1c5101e0mr692552eec.34.1765434235378; Wed, 10 Dec 2025
- 22:23:55 -0800 (PST)
+	d=139.com; s=dkim; l=0;
+	h=from:subject:message-id:to:cc;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=uBqqUK1LVkuaWzCqsd6J1NG7pMOI3kEuYN3DVAEPzKF16NdsUwopDfXOZqkwatMKeumRaFN5nBgiA
+	 islIew0T4ArWtRtAp1CjmTDkJt27vUpaDx5DAOmFNbH3gQCR0dnekK9XshdcrFBig0HuODAKiv4CML
+	 MgPdAOV4i9Zv8veE=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM:                                                                                        
+X-RM-SPAM-FLAG:00000000
+Received:from NTT-kernel-dev (unknown[183.241.245.185])
+	by rmsmtp-lg-appmail-27-12032 (RichMail) with SMTP id 2f00693a6600741-2a994;
+	Thu, 11 Dec 2025 14:34:43 +0800 (CST)
+X-RM-TRANSID:2f00693a6600741-2a994
+From: Rajani Kantha <681739313@139.com>
+To: dvyukov@google.com,
+	fw@strlen.de,
+	steffen.klassert@secunet.com
+Cc: stable@vger.kernel.org
+Subject: [PATCH 6.6.y] xfrm: state: fix out-of-bounds read during lookup
+Date: Thu, 11 Dec 2025 14:34:41 +0800
+Message-Id: <20251211063441.6680-1-681739313@139.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20251210072947.850479903@linuxfoundation.org>
-In-Reply-To: <20251210072947.850479903@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Thu, 11 Dec 2025 11:53:40 +0530
-X-Gm-Features: AQt7F2p22RbIhZwEd5TrSspQvQY1KIbWLmV1jiNB8KMKbUqYqiz3PuuMvzz2x-4
-Message-ID: <CA+G9fYtGdn8Gqy3kWWRF_SrauO6Ax+TXR3hAH_hirjxJCAYdSQ@mail.gmail.com>
-Subject: Re: [PATCH 6.17 00/60] 6.17.12-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org, sr@sladewatkins.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, 10 Dec 2025 at 13:03, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.17.12 release.
-> There are 60 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 12 Dec 2025 07:29:37 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.17.12-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.17.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+From: Florian Westphal <fw@strlen.de>
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+[ Upstream commit e952837f3ddb0ff726d5b582aa1aad9aa38d024d ]
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+lookup and resize can run in parallel.
 
-## Build
-* kernel: 6.17.12-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: e7c0ca6d291c41a8a9648a5016ce9b73e492aa3d
-* git describe: v6.17.10-208-ge7c0ca6d291c
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.17.y/build/v6.17=
-.10-208-ge7c0ca6d291c
+The xfrm_state_hash_generation seqlock ensures a retry, but the hash
+functions can observe a hmask value that is too large for the new hlist
+array.
 
-## Test Regressions (compared to v6.17.10-147-gc434a9350a1d)
+rehash does:
+  rcu_assign_pointer(net->xfrm.state_bydst, ndst) [..]
+  net->xfrm.state_hmask = nhashmask;
 
-## Metric Regressions (compared to v6.17.10-147-gc434a9350a1d)
+While state lookup does:
+  h = xfrm_dst_hash(net, daddr, saddr, tmpl->reqid, encap_family);
+  hlist_for_each_entry_rcu(x, net->xfrm.state_bydst + h, bydst) {
 
-## Test Fixes (compared to v6.17.10-147-gc434a9350a1d)
+This is only safe in case the update to state_bydst is larger than
+net->xfrm.xfrm_state_hmask (or if the lookup function gets
+serialized via state spinlock again).
 
-## Metric Fixes (compared to v6.17.10-147-gc434a9350a1d)
+Fix this by prefetching state_hmask and the associated pointers.
+The xfrm_state_hash_generation seqlock retry will ensure that the pointer
+and the hmask will be consistent.
 
-## Test result summary
-total: 116299, pass: 98676, fail: 3761, skip: 13862, xfail: 0
+The existing helpers, like xfrm_dst_hash(), are now unsafe for RCU side,
+add lockdep assertions to document that they are only safe for insert
+side.
 
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 139 total, 139 passed, 0 failed
-* arm64: 57 total, 54 passed, 3 failed
-* i386: 18 total, 18 passed, 0 failed
-* mips: 34 total, 33 passed, 1 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 40 total, 39 passed, 1 failed
-* riscv: 25 total, 25 passed, 0 failed
-* s390: 22 total, 22 passed, 0 failed
-* sh: 5 total, 5 passed, 0 failed
-* sparc: 4 total, 3 passed, 1 failed
-* x86_64: 49 total, 48 passed, 1 failed
+xfrm_state_lookup_byaddr() uses the spinlock rather than RCU.
+AFAICS this is an oversight from back when state lookup was converted to
+RCU, this lock should be replaced with RCU in a future patch.
 
-## Test suites summary
-* boot
-* commands
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-kvm
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mm
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-rust
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* lava
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-build-clang
-* log-parser-build-gcc
-* log-parser-test
-* ltp-capability
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-* rt-tests-cyclicdeadline
-* rt-tests-pi-stress
-* rt-tests-pmqtest
-* rt-tests-rt-migrate-test
-* rt-tests-signaltest
+Reported-by: syzbot+5f9f31cb7d985f584d8e@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/CACT4Y+azwfrE3uz6A5ZErov5YN2LYBN5KrsymBerT36VU8qzBA@mail.gmail.com/
+Diagnosed-by: Dmitry Vyukov <dvyukov@google.com>
+Fixes: c2f672fc9464 ("xfrm: state lookup can be lockless")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+[ Minor context change fixed ]
+Signed-off-by: Rajani Kantha <681739313@139.com>
+---
+ net/xfrm/xfrm_state.c | 84 +++++++++++++++++++++++++++++++++----------
+ 1 file changed, 66 insertions(+), 18 deletions(-)
 
---
-Linaro LKFT
-https://lkft.linaro.org
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index ded559f55767..6512251d3b7a 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -34,6 +34,8 @@
+ 
+ #define xfrm_state_deref_prot(table, net) \
+ 	rcu_dereference_protected((table), lockdep_is_held(&(net)->xfrm.xfrm_state_lock))
++#define xfrm_state_deref_check(table, net) \
++	rcu_dereference_check((table), lockdep_is_held(&(net)->xfrm.xfrm_state_lock))
+ 
+ static void xfrm_state_gc_task(struct work_struct *work);
+ 
+@@ -62,6 +64,8 @@ static inline unsigned int xfrm_dst_hash(struct net *net,
+ 					 u32 reqid,
+ 					 unsigned short family)
+ {
++	lockdep_assert_held(&net->xfrm.xfrm_state_lock);
++
+ 	return __xfrm_dst_hash(daddr, saddr, reqid, family, net->xfrm.state_hmask);
+ }
+ 
+@@ -70,6 +74,8 @@ static inline unsigned int xfrm_src_hash(struct net *net,
+ 					 const xfrm_address_t *saddr,
+ 					 unsigned short family)
+ {
++	lockdep_assert_held(&net->xfrm.xfrm_state_lock);
++
+ 	return __xfrm_src_hash(daddr, saddr, family, net->xfrm.state_hmask);
+ }
+ 
+@@ -77,11 +83,15 @@ static inline unsigned int
+ xfrm_spi_hash(struct net *net, const xfrm_address_t *daddr,
+ 	      __be32 spi, u8 proto, unsigned short family)
+ {
++	lockdep_assert_held(&net->xfrm.xfrm_state_lock);
++
+ 	return __xfrm_spi_hash(daddr, spi, proto, family, net->xfrm.state_hmask);
+ }
+ 
+ static unsigned int xfrm_seq_hash(struct net *net, u32 seq)
+ {
++	lockdep_assert_held(&net->xfrm.xfrm_state_lock);
++
+ 	return __xfrm_seq_hash(seq, net->xfrm.state_hmask);
+ }
+ 
+@@ -1029,16 +1039,38 @@ xfrm_init_tempstate(struct xfrm_state *x, const struct flowi *fl,
+ 	x->props.family = tmpl->encap_family;
+ }
+ 
+-static struct xfrm_state *__xfrm_state_lookup_all(struct net *net, u32 mark,
++struct xfrm_hash_state_ptrs {
++	const struct hlist_head *bydst;
++	const struct hlist_head *bysrc;
++	const struct hlist_head *byspi;
++	unsigned int hmask;
++};
++
++static void xfrm_hash_ptrs_get(const struct net *net, struct xfrm_hash_state_ptrs *ptrs)
++{
++	unsigned int sequence;
++
++	do {
++		sequence = read_seqcount_begin(&net->xfrm.xfrm_state_hash_generation);
++
++		ptrs->bydst = xfrm_state_deref_check(net->xfrm.state_bydst, net);
++		ptrs->bysrc = xfrm_state_deref_check(net->xfrm.state_bysrc, net);
++		ptrs->byspi = xfrm_state_deref_check(net->xfrm.state_byspi, net);
++		ptrs->hmask = net->xfrm.state_hmask;
++	} while (read_seqcount_retry(&net->xfrm.xfrm_state_hash_generation, sequence));
++}
++
++static struct xfrm_state *__xfrm_state_lookup_all(const struct xfrm_hash_state_ptrs *state_ptrs,
++						  u32 mark,
+ 						  const xfrm_address_t *daddr,
+ 						  __be32 spi, u8 proto,
+ 						  unsigned short family,
+ 						  struct xfrm_dev_offload *xdo)
+ {
+-	unsigned int h = xfrm_spi_hash(net, daddr, spi, proto, family);
++	unsigned int h = __xfrm_spi_hash(daddr, spi, proto, family, state_ptrs->hmask);
+ 	struct xfrm_state *x;
+ 
+-	hlist_for_each_entry_rcu(x, net->xfrm.state_byspi + h, byspi) {
++	hlist_for_each_entry_rcu(x, state_ptrs->byspi + h, byspi) {
+ #ifdef CONFIG_XFRM_OFFLOAD
+ 		if (xdo->type == XFRM_DEV_OFFLOAD_PACKET) {
+ 			if (x->xso.type != XFRM_DEV_OFFLOAD_PACKET)
+@@ -1072,15 +1104,16 @@ static struct xfrm_state *__xfrm_state_lookup_all(struct net *net, u32 mark,
+ 	return NULL;
+ }
+ 
+-static struct xfrm_state *__xfrm_state_lookup(struct net *net, u32 mark,
++static struct xfrm_state *__xfrm_state_lookup(const struct xfrm_hash_state_ptrs *state_ptrs,
++					      u32 mark,
+ 					      const xfrm_address_t *daddr,
+ 					      __be32 spi, u8 proto,
+ 					      unsigned short family)
+ {
+-	unsigned int h = xfrm_spi_hash(net, daddr, spi, proto, family);
++	unsigned int h = __xfrm_spi_hash(daddr, spi, proto, family, state_ptrs->hmask);
+ 	struct xfrm_state *x;
+ 
+-	hlist_for_each_entry_rcu(x, net->xfrm.state_byspi + h, byspi) {
++	hlist_for_each_entry_rcu(x, state_ptrs->byspi + h, byspi) {
+ 		if (x->props.family != family ||
+ 		    x->id.spi       != spi ||
+ 		    x->id.proto     != proto ||
+@@ -1097,15 +1130,16 @@ static struct xfrm_state *__xfrm_state_lookup(struct net *net, u32 mark,
+ 	return NULL;
+ }
+ 
+-static struct xfrm_state *__xfrm_state_lookup_byaddr(struct net *net, u32 mark,
++static struct xfrm_state *__xfrm_state_lookup_byaddr(const struct xfrm_hash_state_ptrs *state_ptrs,
++						     u32 mark,
+ 						     const xfrm_address_t *daddr,
+ 						     const xfrm_address_t *saddr,
+ 						     u8 proto, unsigned short family)
+ {
+-	unsigned int h = xfrm_src_hash(net, daddr, saddr, family);
++	unsigned int h = __xfrm_src_hash(daddr, saddr, family, state_ptrs->hmask);
+ 	struct xfrm_state *x;
+ 
+-	hlist_for_each_entry_rcu(x, net->xfrm.state_bysrc + h, bysrc) {
++	hlist_for_each_entry_rcu(x, state_ptrs->bysrc + h, bysrc) {
+ 		if (x->props.family != family ||
+ 		    x->id.proto     != proto ||
+ 		    !xfrm_addr_equal(&x->id.daddr, daddr, family) ||
+@@ -1125,14 +1159,17 @@ static struct xfrm_state *__xfrm_state_lookup_byaddr(struct net *net, u32 mark,
+ static inline struct xfrm_state *
+ __xfrm_state_locate(struct xfrm_state *x, int use_spi, int family)
+ {
++	struct xfrm_hash_state_ptrs state_ptrs;
+ 	struct net *net = xs_net(x);
+ 	u32 mark = x->mark.v & x->mark.m;
+ 
++	xfrm_hash_ptrs_get(net, &state_ptrs);
++
+ 	if (use_spi)
+-		return __xfrm_state_lookup(net, mark, &x->id.daddr,
++		return __xfrm_state_lookup(&state_ptrs, mark, &x->id.daddr,
+ 					   x->id.spi, x->id.proto, family);
+ 	else
+-		return __xfrm_state_lookup_byaddr(net, mark,
++		return __xfrm_state_lookup_byaddr(&state_ptrs, mark,
+ 						  &x->id.daddr,
+ 						  &x->props.saddr,
+ 						  x->id.proto, family);
+@@ -1195,6 +1232,7 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
+ 		unsigned short family, u32 if_id)
+ {
+ 	static xfrm_address_t saddr_wildcard = { };
++	struct xfrm_hash_state_ptrs state_ptrs;
+ 	struct net *net = xp_net(pol);
+ 	unsigned int h, h_wildcard;
+ 	struct xfrm_state *x, *x0, *to_put;
+@@ -1211,8 +1249,10 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
+ 	sequence = read_seqcount_begin(&net->xfrm.xfrm_state_hash_generation);
+ 
+ 	rcu_read_lock();
+-	h = xfrm_dst_hash(net, daddr, saddr, tmpl->reqid, encap_family);
+-	hlist_for_each_entry_rcu(x, net->xfrm.state_bydst + h, bydst) {
++	xfrm_hash_ptrs_get(net, &state_ptrs);
++
++	h = __xfrm_dst_hash(daddr, saddr, tmpl->reqid, encap_family, state_ptrs.hmask);
++	hlist_for_each_entry_rcu(x, state_ptrs.bydst + h, bydst) {
+ #ifdef CONFIG_XFRM_OFFLOAD
+ 		if (pol->xdo.type == XFRM_DEV_OFFLOAD_PACKET) {
+ 			if (x->xso.type != XFRM_DEV_OFFLOAD_PACKET)
+@@ -1245,8 +1285,9 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
+ 	if (best || acquire_in_progress)
+ 		goto found;
+ 
+-	h_wildcard = xfrm_dst_hash(net, daddr, &saddr_wildcard, tmpl->reqid, encap_family);
+-	hlist_for_each_entry_rcu(x, net->xfrm.state_bydst + h_wildcard, bydst) {
++	h_wildcard = __xfrm_dst_hash(daddr, &saddr_wildcard, tmpl->reqid,
++				     encap_family, state_ptrs.hmask);
++	hlist_for_each_entry_rcu(x, state_ptrs.bydst + h_wildcard, bydst) {
+ #ifdef CONFIG_XFRM_OFFLOAD
+ 		if (pol->xdo.type == XFRM_DEV_OFFLOAD_PACKET) {
+ 			if (x->xso.type != XFRM_DEV_OFFLOAD_PACKET)
+@@ -1281,7 +1322,7 @@ xfrm_state_find(const xfrm_address_t *daddr, const xfrm_address_t *saddr,
+ 	x = best;
+ 	if (!x && !error && !acquire_in_progress) {
+ 		if (tmpl->id.spi &&
+-		    (x0 = __xfrm_state_lookup_all(net, mark, daddr,
++		    (x0 = __xfrm_state_lookup_all(&state_ptrs, mark, daddr,
+ 						  tmpl->id.spi, tmpl->id.proto,
+ 						  encap_family,
+ 						  &pol->xdo)) != NULL) {
+@@ -2036,10 +2077,13 @@ struct xfrm_state *
+ xfrm_state_lookup(struct net *net, u32 mark, const xfrm_address_t *daddr, __be32 spi,
+ 		  u8 proto, unsigned short family)
+ {
++	struct xfrm_hash_state_ptrs state_ptrs;
+ 	struct xfrm_state *x;
+ 
+ 	rcu_read_lock();
+-	x = __xfrm_state_lookup(net, mark, daddr, spi, proto, family);
++	xfrm_hash_ptrs_get(net, &state_ptrs);
++
++	x = __xfrm_state_lookup(&state_ptrs, mark, daddr, spi, proto, family);
+ 	rcu_read_unlock();
+ 	return x;
+ }
+@@ -2050,10 +2094,14 @@ xfrm_state_lookup_byaddr(struct net *net, u32 mark,
+ 			 const xfrm_address_t *daddr, const xfrm_address_t *saddr,
+ 			 u8 proto, unsigned short family)
+ {
++	struct xfrm_hash_state_ptrs state_ptrs;
+ 	struct xfrm_state *x;
+ 
+ 	spin_lock_bh(&net->xfrm.xfrm_state_lock);
+-	x = __xfrm_state_lookup_byaddr(net, mark, daddr, saddr, proto, family);
++
++	xfrm_hash_ptrs_get(net, &state_ptrs);
++
++	x = __xfrm_state_lookup_byaddr(&state_ptrs, mark, daddr, saddr, proto, family);
+ 	spin_unlock_bh(&net->xfrm.xfrm_state_lock);
+ 	return x;
+ }
+-- 
+2.17.1
+
+
 
