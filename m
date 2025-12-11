@@ -1,131 +1,121 @@
-Return-Path: <stable+bounces-200766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6FC1CB4A9D
-	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 05:02:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1043CB4AA3
+	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 05:03:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D2C5E3013956
-	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 04:01:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 29E2430102A2
+	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 04:03:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF53786352;
-	Thu, 11 Dec 2025 04:01:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="j5xh8t2i"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9F4D275844;
+	Thu, 11 Dec 2025 04:03:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from sg-1-102.ptr.blmpb.com (sg-1-102.ptr.blmpb.com [118.26.132.102])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD361F2380
-	for <stable@vger.kernel.org>; Thu, 11 Dec 2025 04:01:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=118.26.132.102
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E32754A23;
+	Thu, 11 Dec 2025 04:03:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765425699; cv=none; b=N2m3AsELKdimPYRGipd4RWkkWzz+6K4F0F0PUbtQR3kTE+lwKhi+T5HK7UFRvP5d61bYN2OsrCrV8XahYskmfXkz1R/j/dGzlQTMvqRLkec9rEagdsaWiU8u7BJ/7Qqa/2VWkEnfO+Tdzjb8zhPqDt4nwzCLcKBExU63MMHFU/M=
+	t=1765425805; cv=none; b=AVhKdZXX8s8GIu+kX7qkwZWmy0dnhFghRvXEPkIA3xUqg3ot+LPgsPJJ+WRvRt+kfUZzmndzlr7OLkN/qc0fHHEC261ET9LPMaU101pHG+uYNBMsOSg5hShew2PdPFAqJ3FC1VMeyNgVqxKGtLYPSCYsKfKwJto+Te77GwtnHdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765425699; c=relaxed/simple;
-	bh=4Q6NgeycfZthGEeAHFhDPjP2yvbchRqZ4whFCZCWnBg=;
-	h=References:To:Cc:Subject:Date:Mime-Version:Message-Id:In-Reply-To:
-	 Content-Type:From; b=UJwCJJexqr9keJfsgbwKaY0UaYGPaWaFsY7hPWPC/E8R4BoY75Mp6aqn5aUqAKbJjqOvXU7Ytn5hL+6jo0RbDRcq/XLFgPtfPob/7wR9oh5bOm4SCEQNgSs9bohBg10anVL6IZSdNTxDE5U3a99elnyBfO9hTw9NacUUvffEV1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=j5xh8t2i; arc=none smtp.client-ip=118.26.132.102
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1765425691; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=9UfJ9VIVOS38iGxyFptQJegd8mcO/MEORiq3nC7/r9Y=;
- b=j5xh8t2iNTYYp1IriO5eV6INcxfxegpTIEQCJ0G8/rfhyMTaZZqoXbpYR0uK1iYPAn2dAZ
- Td7NMVAdd5Jo9epajNyM5uacgDbuZNbi/ezrM/Rq4EWMP0kj0y6yZPpJNeTbbsMtMk0Jey
- ttCwiX6Ze8YGTZXEdw1P8nZtkd/JQDTD3l4XH0wbQzxA/67OTFSQHrbwAgysBbwS8G5LSk
- t1LiZR87/FhdofDjr24Qdjdm3uEidsnvNffXDJ/WdvOn+xVuenhMLNL+w+48Y0iYEYUP8p
- xTcdNBBNxXt8RIXS8x9WIJSNlyieeNIlaafxC39+QfDne2BFNKIQlrc456gurA==
-References: <20251211035946.2071-1-guojinhui.liam@bytedance.com>
-X-Lms-Return-Path: <lba+2693a4219+2db28b+vger.kernel.org+guojinhui.liam@bytedance.com>
-Content-Transfer-Encoding: quoted-printable
-To: <dwmw2@infradead.org>, <baolu.lu@linux.intel.com>, <joro@8bytes.org>, 
-	<will@kernel.org>
-Cc: <guojinhui.liam@bytedance.com>, <iommu@lists.linux.dev>, 
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: [PATCH v2 2/2] iommu/vt-d: Flush dev-IOTLB only when PCIe device is accessible in scalable mode
-Date: Thu, 11 Dec 2025 11:59:46 +0800
+	s=arc-20240116; t=1765425805; c=relaxed/simple;
+	bh=ym5Zf98E+O3li35Q3eae+JPTiuNUaQ3tPxY/mcTQ63o=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dC6iMm3S23WZcX217YKPr9fBFjae7ez263Nu8700BkdUCyEmZiTKEagnqnuzSf+kT/DEnfmrB0b3QszOK4O0lxOMkaYBiLlKpGyvUHrbnFYnxasUNj+sBPg6fePasOAzh3Rkp3a+xxxUQnzuKiPyImsQDMQiU0iAqGxcUaLtwIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from dfae2b116770.home.arpa (unknown [124.16.138.129])
+	by APP-05 (Coremail) with SMTP id zQCowACnOQ1uQjpprjhGAA--.25317S2;
+	Thu, 11 Dec 2025 12:02:55 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: ulf.hansson@linaro.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com
+Cc: linux-pm@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v4] pmdomain: imx: Fix reference count leak in imx_gpc_probe()
+Date: Thu, 11 Dec 2025 04:02:52 +0000
+Message-Id: <20251211040252.497759-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Original-From: Jinhui Guo <guojinhui.liam@bytedance.com>
-Message-Id: <20251211035946.2071-3-guojinhui.liam@bytedance.com>
-In-Reply-To: <20251211035946.2071-1-guojinhui.liam@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-From: "Jinhui Guo" <guojinhui.liam@bytedance.com>
-X-Mailer: git-send-email 2.17.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowACnOQ1uQjpprjhGAA--.25317S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Ww13Kw4fAw45ZFyDZryxKrg_yoW8WF4kpF
+	WxGayakrW7CF47KaykKr4UZFy5K3y5A3y7tF40kay3Zr15tF97JFy5Z34jkrnakry8Ja15
+	trWUKryrXas7CaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
+	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
+	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
+	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
+	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1x
+	MIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIda
+	VFxhVjvjDU0xZFpf9x0JUd-B_UUUUU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAYNA2k6CZbaQgAAsQ
 
-Commit 4fc82cd907ac ("iommu/vt-d: Don't issue ATS Invalidation
-request when device is disconnected") relies on
-pci_dev_is_disconnected() to skip ATS invalidation for
-safely-removed devices, but it does not cover link-down caused
-by faults, which can still hard-lock the system.
+of_get_child_by_name() returns a node pointer with refcount incremented.
+Use the __free() attribute to manage the pgc_node reference, ensuring
+automatic of_node_put() cleanup when pgc_node goes out of scope.
 
-For example, if a VM fails to connect to the PCIe device,
-"virsh destroy" is executed to release resources and isolate
-the fault, but a hard-lockup occurs while releasing the group fd.
+This eliminates the need for explicit error handling paths and avoids
+reference count leaks.
 
-Call Trace:
- qi_submit_sync
- qi_flush_dev_iotlb
- intel_pasid_tear_down_entry
- device_block_translation
- blocking_domain_attach_dev
- __iommu_attach_device
- __iommu_device_set_domain
- __iommu_group_set_domain_internal
- iommu_detach_group
- vfio_iommu_type1_detach_group
- vfio_group_detach_container
- vfio_group_fops_release
- __fput
-
-Although pci_device_is_present() is slower than
-pci_dev_is_disconnected(), it still takes only ~70 =C2=B5s on a
-ConnectX-5 (8 GT/s, x2) and becomes even faster as PCIe speed
-and width increase.
-
-Besides, devtlb_invalidation_with_pasid() is called only in the
-paths below, which are far less frequent than memory map/unmap.
-
-1. mm-struct release
-2. {attach,release}_dev
-3. set/remove PASID
-4. dirty-tracking setup
-
-The gain in system stability far outweighs the negligible cost
-of using pci_device_is_present() instead of pci_dev_is_disconnected()
-to decide when to skip ATS invalidation, especially under GDR
-high-load conditions.
-
-Fixes: 4fc82cd907ac ("iommu/vt-d: Don't issue ATS Invalidation request when=
- device is disconnected")
+Fixes: 721cabf6c660 ("soc: imx: move PGC handling to a new GPC driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
----
- drivers/iommu/intel/pasid.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 
-diff --git a/drivers/iommu/intel/pasid.c b/drivers/iommu/intel/pasid.c
-index a369690f5926..e64d445de964 100644
---- a/drivers/iommu/intel/pasid.c
-+++ b/drivers/iommu/intel/pasid.c
-@@ -218,7 +218,7 @@ devtlb_invalidation_with_pasid(struct intel_iommu *iomm=
-u,
- 	if (!info || !info->ats_enabled)
- 		return;
-=20
--	if (pci_dev_is_disconnected(to_pci_dev(dev)))
-+	if (!pci_device_is_present(to_pci_dev(dev)))
- 		return;
-=20
- 	sid =3D PCI_DEVID(info->bus, info->devfn);
---=20
-2.20.1
+---
+Change in V4:
+- Fix typo error in code
+
+Change in V3:
+- Ensure variable is assigned when using cleanup attribute
+
+Change in V2:
+- Use __free() attribute instead of explicit of_node_put() calls
+---
+ drivers/pmdomain/imx/gpc.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/pmdomain/imx/gpc.c b/drivers/pmdomain/imx/gpc.c
+index f18c7e6e75dd..56a78cc86584 100644
+--- a/drivers/pmdomain/imx/gpc.c
++++ b/drivers/pmdomain/imx/gpc.c
+@@ -403,13 +403,12 @@ static int imx_gpc_old_dt_init(struct device *dev, struct regmap *regmap,
+ static int imx_gpc_probe(struct platform_device *pdev)
+ {
+ 	const struct imx_gpc_dt_data *of_id_data = device_get_match_data(&pdev->dev);
+-	struct device_node *pgc_node;
++	struct device_node *pgc_node __free(device_node)
++		= of_get_child_by_name(pdev->dev.of_node, "pgc");
+ 	struct regmap *regmap;
+ 	void __iomem *base;
+ 	int ret;
+ 
+-	pgc_node = of_get_child_by_name(pdev->dev.of_node, "pgc");
+-
+ 	/* bail out if DT too old and doesn't provide the necessary info */
+ 	if (!of_property_present(pdev->dev.of_node, "#power-domain-cells") &&
+ 	    !pgc_node)
+-- 
+2.34.1
+
 
