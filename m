@@ -1,129 +1,147 @@
-Return-Path: <stable+bounces-200755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D60ACB4228
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 23:12:36 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83113CB3D25
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 20:07:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6C19D30168C4
-	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 22:12:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1F5313008320
+	for <lists+stable@lfdr.de>; Wed, 10 Dec 2025 19:06:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB53F329E6D;
-	Wed, 10 Dec 2025 22:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00EC222B8CB;
+	Wed, 10 Dec 2025 19:06:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="Jia6NHP+"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="dOVR9coe"
 X-Original-To: stable@vger.kernel.org
-Received: from omta40.uswest2.a.cloudfilter.net (omta40.uswest2.a.cloudfilter.net [35.89.44.39])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f97.google.com (mail-pj1-f97.google.com [209.85.216.97])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6348C1B423B
-	for <stable@vger.kernel.org>; Wed, 10 Dec 2025 22:12:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55D4442AA9
+	for <stable@vger.kernel.org>; Wed, 10 Dec 2025 19:06:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765404753; cv=none; b=CTOUr2rj44HIxZjju7VKp6BcGrGVdaoyNjEGl4yXRXNtJ7Wh+gDsrzxEpshLcNK/QDr9ywKMDGL7hZnzVtEuVn8oVMfDCgEl9wiGv2f+vdufKhjVcmD43aQfa/ceY9mEUaDM3euEpstiIV/fWQnnegS5YX/ADyIZoCkvjx1HbLI=
+	t=1765393617; cv=none; b=CQUa7SsBTb5lPw9ExmYbf+2Bd3c/q7WTwEQSjcI/7VgNTaArH05y8cPsiw3GVPu2UpcwbQKMvrv3Fa6KRN6EAGu9pBTfKuxCPLG9kFc4+yfhk9Nq1FVX2zKuIG5LpmWmhRn9rmfEZ15+3IKK8dlV86VnAykM3DwPR5MYb2a2AjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765404753; c=relaxed/simple;
-	bh=3YtcOKY8A31HEq4fRTlcWrzIzVHlAZp8XyxEHvalXWg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BnnS4SmZQ//iVb9fNQcDdVcAHl82EUUd43WY8a/4HKE6oi0Qbr/tr8qRbPck5rHhrwjNBIClx+6Jri4LSOs723ZEadHw/sz4ygEThMlrc11+VyNKjkBL6JJcde7kwbyp3BGMpR9yuKGewSxSQ/T91a68pZ1iOFe4ZaNXY0B2lQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=Jia6NHP+; arc=none smtp.client-ip=35.89.44.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-6004b.ext.cloudfilter.net ([10.0.30.210])
-	by cmsmtp with ESMTPS
-	id TQELvSUaQaPqLTSQAvAAV5; Wed, 10 Dec 2025 22:12:30 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id TSQAvM7OMK8vzTSQAvD4V5; Wed, 10 Dec 2025 22:12:30 +0000
-X-Authority-Analysis: v=2.4 cv=cJDgskeN c=1 sm=1 tr=0 ts=6939f04e
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
- a=nmWuMzfKamIsx3l42hEX:22 a=Wh1V8bzkS9CpCxOpQUxp:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=C3dCAq2CdIGfaK2B9Ymf19bTFQtg6uA8yiJ+ZpzgZgc=; b=Jia6NHP+LA/gsuJHbxrIQme9AD
-	k0TIlO54BgA/vVIkka7U/VkQMbqUjcXJVYoD51l8+nYgQXfVdpBAejRPNv/t+t0i0qheMZzQrwoLt
-	y5Aa6/HWoPjRQyFw5jFoFzaXHJfmI8AbjzThsFLz0GEFtgbVvZ2zF0Belz0CYLOpD/Snj6+0j2XMH
-	wCg4zs19HIpabVroUpLGfoxihQPKXaCXa+44TIupC7HBpkLN50DhT97dtSSv4P6yJbdBUWFoL6Tbc
-	Iv890SMegw2tk0con741zt98slgrOB46JI2z13hlEeXGVLy+f0MPE7S/T+UbHlX+tq2jwFGFcWayb
-	ueA2XzDA==;
-Received: from c-73-92-56-26.hsd1.ca.comcast.net ([73.92.56.26]:46082 helo=[10.0.1.180])
-	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-	(Exim 4.98.2)
-	(envelope-from <re@w6rz.net>)
-	id 1vTSPq-000000011wC-0LRp;
-	Wed, 10 Dec 2025 15:12:10 -0700
-Message-ID: <ccfd3227-c94a-42da-9d53-a9e4f05e4baa@w6rz.net>
-Date: Wed, 10 Dec 2025 14:11:46 -0800
+	s=arc-20240116; t=1765393617; c=relaxed/simple;
+	bh=M910zPYCc8Xj/Y4kIrtPF4owFsRLDo2SrbCALfoImwQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nXf8gsPLNAyWal8RyMnniKQMJ+zDKwKAIKaZP0qewV0jR4U3FgpKNc+AyGuEzkyle9vpnSKkjlWhH/GGVU89A9L1BxicIAMKCmFUBObq1VGxS+FkpkAYWd/imYvfV3VtLjdCYSuvVQT1Pre/DG6aS7UfemYFrB1OXmhd/+H1Bw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=dOVR9coe; arc=none smtp.client-ip=209.85.216.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-pj1-f97.google.com with SMTP id 98e67ed59e1d1-340e525487eso138652a91.3
+        for <stable@vger.kernel.org>; Wed, 10 Dec 2025 11:06:56 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765393615; x=1765998415;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kF0ZTPTh6C8GEz16r9dHrE7VVMeg5FEEbJe17ZjuCwQ=;
+        b=bHzcdHipTpE26tJyqm/JOOOp6RwefSItcIK6RITV10tVGIl/lLgYAyl2qV9S245iuV
+         NMxQ5mWgr/wDxRd+6row2AR98qElGGq3FVjfJrgvnpfafmWXg7lQ6ITLGK92/JBSM7Yt
+         ymCIf8rKPZZ5NefuRe10B9D6GYRZe9YLvAV/DiamXnF19kFTqh6NJ1z8W/NmDLu1u/Y2
+         L8BWxb/RvNz4brVb6XgeYvin77mb0WsFaYEzNp27WXRyv3+soQxhfpNyj5JWqiiM3jOQ
+         euWyMACcGb9Z2W4/uK1OMRqT2wo3fWSPRgLUD65i/KtkeNYPT5AhaqrBRMhkX9i4aIWV
+         7JrQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUvjHXvkC7fRXYbO7ohAZRWXOMFUmZEHcqqoJS/wYaz8WrM5/ly5xL3Hn6C0A1Goz3lo2xGN8o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzH4jJPnnKSu7wNA0Zorjr6cR6UrMtgd0CQIQYjSG83GAgfoKUj
+	nHKanJ1SnNAxLyHt9V6ny6GdSOhFcWvb5nlLJDjMG1LDay7lkXUqQ3Nbm2um0dqzA03ZzWfTPsS
+	/8NmjOqexOUUPhY698fQ+2nBYVF5giN+OvL8WRrLPw/K7Z/bImyxZc8tJuL1IAggCxoDKJIgqey
+	Hf/sfrXvZT9E+YVqoSgMgWqqvStsbWei9AD+Qfig+TZ/UbihdgnTmHx3Q4HOJQTt7rbEWc7FZ3T
+	rRy6Si6lpaVOkXML78=
+X-Gm-Gg: AY/fxX7BnoT6dYsAejK4Toa16loAA3qXLbv+6FeIGZsNAjZcLw1md+4SL9bgf7wUeaJ
+	RbCzf8hVp26oh7Yy2vpOhlXhcTW6Y72ZdL2uAt9MHk5cvjOvY35ne0/SMWb2bzVzYKiF7AFnZp1
+	tcx/Ke2yGrvXtFjYfZNIp35om7pt83GYsDjx109PKWsfcBKsdwg5lNUuu2mcHs6IqN3BM8CdITU
+	8TSmTh1odUfYnyYuUtFFUOD75Hhkp4wwMmV18+f/e50omZpZMS5854ArUrpfp0HF1VcZynTLJNg
+	xXPzC6PVu7D8mh+UECSsFu5F9AZPovsSHhdFVIXAzKoeTSvJehrC9wuci1xOK/6ScQKBwuadVtd
+	7xm/4FINqH6i59XHYTbVNA3+3bHbfFqxnVEItZ/77n8LrDJv0/C6S1knz2swZL18tYsNj3UFeEN
+	uZP6qVfd5Cr5kIEAL/hA6ZUMX8uYxrJ6pXDc+wZkimc56fEWNJH+VcIeM=
+X-Google-Smtp-Source: AGHT+IEPPJfyQAqCVUzD1cRJtM5lgIV+QZ4ljhQPCelIDC3bEMdd1BsjjWlNxoR5EguIU4+//WcX4sFtndun
+X-Received: by 2002:a17:90b:57e6:b0:343:e461:9022 with SMTP id 98e67ed59e1d1-34a7287a489mr2961262a91.24.1765393615531;
+        Wed, 10 Dec 2025 11:06:55 -0800 (PST)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-103.dlp.protect.broadcom.com. [144.49.247.103])
+        by smtp-relay.gmail.com with ESMTPS id 41be03b00d2f7-c0c33ff3467sm27014a12.12.2025.12.10.11.06.55
+        for <stable@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 10 Dec 2025 11:06:55 -0800 (PST)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-7b9090d9f2eso236977b3a.0
+        for <stable@vger.kernel.org>; Wed, 10 Dec 2025 11:06:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1765393614; x=1765998414; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=kF0ZTPTh6C8GEz16r9dHrE7VVMeg5FEEbJe17ZjuCwQ=;
+        b=dOVR9coewYVjoADpQ1WVWYWMhssvEgX2TvDZbSyoJqJPOzDxrZVyAE3g7EGQ+N282b
+         KVpCbzrv73MsLwjcmRVi22Phisk/MRs/bDx0YTCvO/ULEbpbvwylmNSrzAakZTCqo9Fb
+         IRjzfr7SPg+80JXYD99ng8vnB2/nFlwAtfyfg=
+X-Forwarded-Encrypted: i=1; AJvYcCXSR+7ei1Phn2OMrm/H6a72mZSYTeKl9CcEUp5BDxPBlvDRgHO6j3Df+AhEVjnP3REBSSGOhoE=@vger.kernel.org
+X-Received: by 2002:a05:6a20:94c7:b0:34a:f63:59dd with SMTP id adf61e73a8af0-366e2b8df78mr3542719637.51.1765393613945;
+        Wed, 10 Dec 2025 11:06:53 -0800 (PST)
+X-Received: by 2002:a05:6a20:94c7:b0:34a:f63:59dd with SMTP id adf61e73a8af0-366e2b8df78mr3542697637.51.1765393613541;
+        Wed, 10 Dec 2025 11:06:53 -0800 (PST)
+Received: from dhcp-10-123-98-253.dhcp.broadcom.net ([192.19.234.250])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7f4c22842dasm277337b3a.12.2025.12.10.11.06.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Dec 2025 11:06:53 -0800 (PST)
+From: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
+To: linux-scsi@vger.kernel.org
+Cc: sathya.prakash@broadcom.com,
+	ranjan.kumar@broadcom.com,
+	Chandrakanth Patil <chandrakanth.patil@broadcom.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] mpi3mr: Read missing IOCFacts flag for reply queue full overflow
+Date: Thu, 11 Dec 2025 05:59:29 +0530
+Message-ID: <20251211002929.22071-1-chandrakanth.patil@broadcom.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 00/49] 6.12.62-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20251210072948.125620687@linuxfoundation.org>
-Content-Language: en-US
-From: Ron Economos <re@w6rz.net>
-In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.92.56.26
-X-Source-L: No
-X-Exim-ID: 1vTSPq-000000011wC-0LRp
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-92-56-26.hsd1.ca.comcast.net ([10.0.1.180]) [73.92.56.26]:46082
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 39
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfGJn/7Yx5MoixJv9wm0ZXTeh+Dni7+jDU1eOXOPA4aQ/CsP2SZ/4ViOH8RsO1QQRmKOx3Uakf86OgFGIIBsqmyeTIUktrj6yvaFH4SloGKIVaeqxrFs+
- qIMthOpWPhqyosF8nk8HK+w4fzcbf7SzqtUZmhLvPOboAuvOSw8aBuGekRrbAcdRrKTEi2dvrcTjSA==
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-On 12/9/25 23:29, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.62 release.
-> There are 49 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 12 Dec 2025 07:29:38 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.62-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+The driver was not reading the MAX_REQ_PER_REPLY_QUEUE_LIMIT
+IOCFacts flag, so the reply-queue-full handling was never enabled
+even on firmware that supports it. Reading this flag enables the
+feature and prevents reply queue overflow
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+Fixes: f08b24d82749 ("scsi: mpi3mr: Avoid reply queue full condition")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
+---
+ drivers/scsi/mpi3mr/mpi/mpi30_ioc.h | 1 +
+ drivers/scsi/mpi3mr/mpi3mr_fw.c     | 2 ++
+ 2 files changed, 3 insertions(+)
 
-Tested-by: Ron Economos <re@w6rz.net>
+diff --git a/drivers/scsi/mpi3mr/mpi/mpi30_ioc.h b/drivers/scsi/mpi3mr/mpi/mpi30_ioc.h
+index b42933fcd423..6561f98c3cb2 100644
+--- a/drivers/scsi/mpi3mr/mpi/mpi30_ioc.h
++++ b/drivers/scsi/mpi3mr/mpi/mpi30_ioc.h
+@@ -166,6 +166,7 @@ struct mpi3_ioc_facts_data {
+ #define MPI3_IOCFACTS_FLAGS_SIGNED_NVDATA_REQUIRED            (0x00010000)
+ #define MPI3_IOCFACTS_FLAGS_DMA_ADDRESS_WIDTH_MASK            (0x0000ff00)
+ #define MPI3_IOCFACTS_FLAGS_DMA_ADDRESS_WIDTH_SHIFT           (8)
++#define MPI3_IOCFACTS_FLAGS_MAX_REQ_PER_REPLY_QUEUE_LIMIT     (0x00000040)
+ #define MPI3_IOCFACTS_FLAGS_INITIAL_PORT_ENABLE_MASK          (0x00000030)
+ #define MPI3_IOCFACTS_FLAGS_INITIAL_PORT_ENABLE_SHIFT		(4)
+ #define MPI3_IOCFACTS_FLAGS_INITIAL_PORT_ENABLE_NOT_STARTED   (0x00000000)
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_fw.c b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+index 8fe6e0bf342e..8c4bb7169a87 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+@@ -3158,6 +3158,8 @@ static void mpi3mr_process_factsdata(struct mpi3mr_ioc *mrioc,
+ 	mrioc->facts.dma_mask = (facts_flags &
+ 	    MPI3_IOCFACTS_FLAGS_DMA_ADDRESS_WIDTH_MASK) >>
+ 	    MPI3_IOCFACTS_FLAGS_DMA_ADDRESS_WIDTH_SHIFT;
++	mrioc->facts.max_req_limit = (facts_flags &
++			MPI3_IOCFACTS_FLAGS_MAX_REQ_PER_REPLY_QUEUE_LIMIT);
+ 	mrioc->facts.protocol_flags = facts_data->protocol_flags;
+ 	mrioc->facts.mpi_version = le32_to_cpu(facts_data->mpi_version.word);
+ 	mrioc->facts.max_reqs = le16_to_cpu(facts_data->max_outstanding_requests);
+-- 
+2.47.1
 
 
