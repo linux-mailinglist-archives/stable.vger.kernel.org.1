@@ -1,241 +1,130 @@
-Return-Path: <stable+bounces-200775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D19FDCB4F0A
-	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 07:55:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E1F2CB4FF8
+	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 08:39:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6DA713006AAD
-	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 06:55:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 98FFB300A1CE
+	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 07:38:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99ED52BE04C;
-	Thu, 11 Dec 2025 06:55:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="XReTvQvg"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D79742D2496;
+	Thu, 11 Dec 2025 07:38:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D166F28751F
-	for <stable@vger.kernel.org>; Thu, 11 Dec 2025 06:55:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B342D3237;
+	Thu, 11 Dec 2025 07:38:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765436120; cv=none; b=Lq+2lEZhVnRqH/s+6ljkimrKPh/K2TMU0+K+Zqku/uTUJAXxNb8WRjQgOS3EBaTF2GtTi+r4ClXMI9UdULNMdMQkF1Vmj9y6EiR8lA10ha2Xk7Eza3177qQA7rTnELsP9Fel1WXSXNXbZ3TJ5Nh+mdFTYtK8cQY7RgVVUj2DkVs=
+	t=1765438713; cv=none; b=Ij5/0N97vqZfSVepuyEuKHR0/ibe0oCCLGHpEBe/kzU21cr2og3FsZqRFvlWqBF2ds8yMFMnNa2I1WxmyG93zF9l/VLeJt9+xbPogiN+zEp+Yr+te9aC2KVv22RagaTLTlqOyfMjB+OpedhPxuH6aXAAu6PDmnKioVchN/UK8GY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765436120; c=relaxed/simple;
-	bh=zLi29bNPMscrpkND0dGBlbS2YU2Q/WBcwTz5UAK+Vuc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HtsOhnR6yJ3CsP1I7VkiGW7ufPozZrzUkLLN6+EyiT/WEx/rruSSezFoctW7O8KF19m+t4nly4D9ipKYsAklWw/XMQKEYn10aZjFVq+F1a090hH+rC0QHlLED7ucAg4O1Or26Yv2vOmbJR3ebud4R8r8hL3QbhBiFG1Vi60sewg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=XReTvQvg; arc=none smtp.client-ip=209.85.215.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-bfe88eeaa65so431341a12.1
-        for <stable@vger.kernel.org>; Wed, 10 Dec 2025 22:55:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1765436118; x=1766040918; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WRjgoNaFh1qvJHAkZNDs2Z3lEI+Ypa7L//zyHW7li88=;
-        b=XReTvQvgh1liSNCoWBweQvJcAUJtGHaTZqmZXQPzGntgPXQy7lCIblZoTuhNaoPVP7
-         NaNA41ZU8SOucMiqnpv4ufb+1KXNCVlsSksi51BQCTKmlpF+HjKEE2Qg2thBYAMh3Y1f
-         1kLGXJIT8LLZf8Ap1w7qfSzdX9L0KTYUMP33OsK5AbW0mzl0J+oyGYqHldhOiOjxjVde
-         qAAGv+Xkj7yF+aW2Vrk9vhgbk1Qq8bn9DISIyIaNUQAVswwTJFhlwftE3kUeupKnhdVL
-         zSE2ZUvZkEsUO1fYyxUO6f4gf3UfZngu5haiVJqZ9SC++Al4M2S0Bn4gD+X4CngZRpLK
-         hXwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765436118; x=1766040918;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=WRjgoNaFh1qvJHAkZNDs2Z3lEI+Ypa7L//zyHW7li88=;
-        b=TgNfpAjFurivvOB2mY2CnKMyDEHyOcS/ny1WSy+EWViCON6+/PUMl0WQFCm7oHJgjQ
-         yQaoLPYyZtja5zQRxfO97xAyEI/+zjt+tTbeI4DkUY9aXEk/VWeB7Dago7EPY7tNeWmE
-         REpZqcptE1+ey8lzV0G2SGKr6TLLp5rROxWXFh6txlJfQDrxnDgDRZfpzjqt9lZpPwv0
-         rf2n7b9meSuJveIvdbU2BZIwb4fTs8AKNco8HqgpA4TvN4JyCNCZA56ZVOE5Kt5xqk6u
-         QnArhZGCO/zo5h8miLLetHUu8jWipU+kRzNyoaEWZuhzAz9y6vnkPUrFUBa7OhCrBPY5
-         kAVA==
-X-Gm-Message-State: AOJu0Yw8MrbT+6jczX8cvSwLJKaxb2FsvOu98FNMD+1ZOnUVCTXE0Lur
-	LBc45Bdt3TuRwadfJAvNpf4ObV1ccuAwgOZ0B25LaXVISKPQAln6eK4UpRKQBEqFzCtD85ZhSKE
-	dK03MHYovV1I3LrQw8UTwsoFnl/S4JmFm0r6n8UyF+g==
-X-Gm-Gg: AY/fxX7BxMDIGx4DNSwXFip3ZQPTicGDHTC+luTvkZQmqxUuA80lYaW85dQclF6z2W/
-	KXZ4s+PUrgeAOJwLyls4vR+Pp0anZENN1memz8XaT6Om4dYQiqENm6oeYDhtpSPKLWkyHUr50Xy
-	T+d5QEBJUJHQw1d12dFoPc4JhABKcQw9Kt7E9BzymrBKTtY7p4umFgDEpiJZLrATYo7HARGAdTo
-	napO0m9xxQIO6MndMG2YZiVHn+XvmZ3MzDECvVI60105PUmm5Ewy63z6aTjej5zDGp8NuLZaxnz
-	WVXZB4SM83cLLShJMIHVcNB+Zwvyhg==
-X-Google-Smtp-Source: AGHT+IEK9lMZU75iBuRom2ZiQbpD8X35wlwGqwstNR/EfSk9pcL6vP7Kd8Q3/CfsM5+z3Hy3eX3dcxL47A50j3+nOTs=
-X-Received: by 2002:a05:7301:fc02:b0:2a4:3594:72e8 with SMTP id
- 5a478bee46e88-2ac055fe09amr3058131eec.23.1765436117675; Wed, 10 Dec 2025
- 22:55:17 -0800 (PST)
+	s=arc-20240116; t=1765438713; c=relaxed/simple;
+	bh=MyU/EXJW3Oa3f5V78Uft2sD9r17cnuRAzdb3bovzUUY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XXsMjNAh0ZI3nl9BFxYXxo2sW+rgFs3onXLkEz3CTyvB85BOa01HsR3w+XDURsYlKu7mA0TKfojk9BTBGm02wicdU24vpCsKJyakIrRXxXoxw0YBWnv8XXRT5qMip5s5G6bYsG26p0FeYvkrtt6h2SwY2OIQ3krOVC8ZFs357Vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn; spf=pass smtp.mailfrom=isrc.iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isrc.iscas.ac.cn
+Received: from localhost.localdomain (unknown [36.112.3.239])
+	by APP-03 (Coremail) with SMTP id rQCowABnTOPXdDpptCJIAA--.16140S2;
+	Thu, 11 Dec 2025 15:38:00 +0800 (CST)
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	izumi.taku@jp.fujitsu.com
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	stable@vger.kernel.org,
+	Simon Horman <horms@kernel.org>
+Subject: [PATCH v2] fjes: Add missing iounmap in fjes_hw_init()
+Date: Thu, 11 Dec 2025 15:37:56 +0800
+Message-Id: <20251211073756.101824-1-lihaoxiang@isrc.iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251210072948.125620687@linuxfoundation.org>
-In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Thu, 11 Dec 2025 12:25:03 +0530
-X-Gm-Features: AQt7F2rJVFMic4-AFitD_2jlPPFvgeLqMlEXw7fLa5w9eV_te60dn_zVUCuBXBk
-Message-ID: <CA+G9fYs9fLHnhKvoJ3vuEMFqxA4mSuV_55BUEVPpdib70gY=OA@mail.gmail.com>
-Subject: Re: [PATCH 6.12 00/49] 6.12.62-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org, sr@sladewatkins.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowABnTOPXdDpptCJIAA--.16140S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7WrW3ur4fGw13Zr48GFy3urg_yoW8XFW8pF
+	yUu3s3ArZxJF4UXw1xAF4fZFyaya4xGry5C3y7Cw1fJwn0vF1ay3WrCa1IvrZ8KrykXFya
+	9Fn8Aw15uF1DZa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWUWVWUuwAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
+	4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
+	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
+	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
+	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
+	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1x
+	MIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIda
+	VFxhVjvjDU0xZFpf9x0JUd-B_UUUUU=
+X-CM-SenderInfo: 5olkt0x0ld0ww6lv2u4olvutnvoduhdfq/1tbiBwsME2k5OmMfvwABs7
 
-On Wed, 10 Dec 2025 at 13:01, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.12.62 release.
-> There are 49 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 12 Dec 2025 07:29:38 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.12.62-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.12.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+In error paths, add fjes_hw_iounmap() to release the
+resource acquired by fjes_hw_iomap(). Add a goto label
+to do so.
 
+Fixes: 8cdc3f6c5d22 ("fjes: Hardware initialization routine")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Signed-off-by: Simon Horman <horms@kernel.org>
+---
+Changes in v2:
+- Use an idiomatic goto to do the error hanlding.
+- Thanks for pointing out the issues with the patch, Simon!
+---
+ drivers/net/fjes/fjes_hw.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+diff --git a/drivers/net/fjes/fjes_hw.c b/drivers/net/fjes/fjes_hw.c
+index b9b5554ea862..5ad2673f213d 100644
+--- a/drivers/net/fjes/fjes_hw.c
++++ b/drivers/net/fjes/fjes_hw.c
+@@ -334,7 +334,7 @@ int fjes_hw_init(struct fjes_hw *hw)
+ 
+ 	ret = fjes_hw_reset(hw);
+ 	if (ret)
+-		return ret;
++		goto err_iounmap;
+ 
+ 	fjes_hw_set_irqmask(hw, REG_ICTL_MASK_ALL, true);
+ 
+@@ -347,8 +347,10 @@ int fjes_hw_init(struct fjes_hw *hw)
+ 	hw->max_epid = fjes_hw_get_max_epid(hw);
+ 	hw->my_epid = fjes_hw_get_my_epid(hw);
+ 
+-	if ((hw->max_epid == 0) || (hw->my_epid >= hw->max_epid))
+-		return -ENXIO;
++	if ((hw->max_epid == 0) || (hw->my_epid >= hw->max_epid)) {
++		ret = -ENXIO;
++		goto err_iounmap;
++	}
+ 
+ 	ret = fjes_hw_setup(hw);
+ 
+@@ -356,6 +358,10 @@ int fjes_hw_init(struct fjes_hw *hw)
+ 	hw->hw_info.trace_size = FJES_DEBUG_BUFFER_SIZE;
+ 
+ 	return ret;
++
++err_iounmap:
++	fjes_hw_iounmap(hw);
++	return ret;
+ }
+ 
+ void fjes_hw_exit(struct fjes_hw *hw)
+-- 
+2.25.1
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-## Build
-* kernel: 6.12.62-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: 4112049d7836ad4233321c3d2b6853db1627c49c
-* git describe: v6.12.60-182-g4112049d7836
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.12.y/build/v6.12=
-.60-182-g4112049d7836
-
-## Test Regressions (compared to v6.12.60-133-g8402b87f21e8)
-
-## Metric Regressions (compared to v6.12.60-133-g8402b87f21e8)
-
-## Test Fixes (compared to v6.12.60-133-g8402b87f21e8)
-
-## Metric Fixes (compared to v6.12.60-133-g8402b87f21e8)
-
-## Test result summary
-total: 106188, pass: 89612, fail: 3189, skip: 13145, xfail: 242
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 139 total, 137 passed, 2 failed
-* arm64: 57 total, 54 passed, 3 failed
-* i386: 18 total, 18 passed, 0 failed
-* mips: 34 total, 33 passed, 1 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 40 total, 39 passed, 1 failed
-* riscv: 25 total, 25 passed, 0 failed
-* s390: 22 total, 21 passed, 1 failed
-* sh: 5 total, 5 passed, 0 failed
-* sparc: 4 total, 3 passed, 1 failed
-* x86_64: 49 total, 48 passed, 1 failed
-
-## Test suites summary
-* boot
-* commands
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-kvm
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mm
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* lava
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-build-clang
-* log-parser-build-gcc
-* log-parser-test
-* ltp-capability
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-* rt-tests-cyclicdeadline
-* rt-tests-pi-stress
-* rt-tests-pmqtest
-* rt-tests-rt-migrate-test
-* rt-tests-signaltest
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
