@@ -1,247 +1,127 @@
-Return-Path: <stable+bounces-200795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBFFACB5A19
-	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 12:27:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0096CB5E18
+	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 13:35:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4E7693008FA2
-	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 11:27:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 734233011A7A
+	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 12:34:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 401873090EA;
-	Thu, 11 Dec 2025 11:27:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC9D12E6125;
+	Thu, 11 Dec 2025 12:34:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t2M3FW36"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GHka6oOk"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F31453081CC
-	for <stable@vger.kernel.org>; Thu, 11 Dec 2025 11:27:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E705130F953
+	for <stable@vger.kernel.org>; Thu, 11 Dec 2025 12:33:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765452440; cv=none; b=tEe5WzAg3SPIGmO1m+WFEBfNGlXZheSYy8YEopSvN6SqZqgLJjhaAT0+GdmTHgs74UOem0lHAZTyliJhJBQrnWvcWFCcys5zziTVRe23if2H0nG03sznx5wd3M/k4dwIVzJsdXd/IIXktDJr0Fb2PioalllYM2PmyjhzlCcKRN4=
+	t=1765456440; cv=none; b=IbS8jiNKInomVxOZ3QY1XuGW0JoRN4vCduh8ovMm4enRznvN4I53TRnErOhL42ECWOkei7e+nBr9OKzTPIbQTPz0qEnMc7xiXFz67nq6LrLduXBWb3eyItWvPvmz77GTKz+Xb2KKcySmyHNEDoV6gj2yMp65rILlEjsmSBrRqTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765452440; c=relaxed/simple;
-	bh=kQAw0IAMRna6jKX/Q2x47HBOf1gpFkKwx0F/nl9ECFs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UhLKCgCOAWQul3xEVauGCgljcQTu/r3z6B+ebq2GvRKzQwU2KKYK+mfq4Ijk2YyXEZojLH9FxcNcHFoSEr6OgX+IfcMKRmc9dkFIWPVxP+paNULDS2ZhxZse1x8wHuw5tSs4mGKuixAPzkO8y1IzsHBlgrW/Fyv4MYCtzFT8Tuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t2M3FW36; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A30D8C4CEF7
-	for <stable@vger.kernel.org>; Thu, 11 Dec 2025 11:27:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765452439;
-	bh=kQAw0IAMRna6jKX/Q2x47HBOf1gpFkKwx0F/nl9ECFs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=t2M3FW36heDDwTZWjZp7mEq4HzBDD6x+2ridDeBMz+l8Tv3JwsgoTRZmBY6xRvGK2
-	 j6HvnlRtHFSk0+UhC4KLOSW2EdjJjQvM9VrmXccS9WaBkBU2m+1YNXklO4UWaoYDfA
-	 pVxbCbzBxMiL5jpwb0EViCj4/R9bsTjrrrYHQZNmwW8Uy3L0lgkZvyZibwxVC/z/bL
-	 Odoc58h61dR7hHNZELxm8lWMQBzMMhe611d+L7DtfhODryJrQMXfhIES+zWyWtcWDN
-	 svniVDEpUECirmjs1TYj/kvnjYoAK4GkNEsE5Bi9VO7yl7G48OD0Ogz+RJzQsbw3yv
-	 D+9Oiz2CgkyzA==
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b7370698a8eso107569066b.0
-        for <stable@vger.kernel.org>; Thu, 11 Dec 2025 03:27:19 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXuGIoqPbqfu0BiAUhzA2vQy5tDLilFXzPtyBdsZ1jjdO3Os+TFTaQBfIUGd+kTDlMYWmcVNbU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjxzV82KaGw3ywY07zzi7ZKthfLLBXf6KifPZVE+u9Mvc2jnMu
-	PNzwNIOgIHcqb5VFUN8c+CHkMd0Mzq1jWHCL85pDBwSWLIP8jQ4qVQ3A489wJ6FQLUBvnBZLb0z
-	0VpUVvCxWr8YQMaQhzXsl8Rg9pYSb9LI=
-X-Google-Smtp-Source: AGHT+IHtWAE4eBnNFHTJXayG4mAtiXimCO5w3FF2uYO8JE4iBUAbFnpARxgHTcM1sxRHjNAaRMubRdbyb0u33UR00t0=
-X-Received: by 2002:a17:907:9443:b0:b73:880a:fdb7 with SMTP id
- a640c23a62f3a-b7ce8414fcfmr675544666b.35.1765452438226; Thu, 11 Dec 2025
- 03:27:18 -0800 (PST)
+	s=arc-20240116; t=1765456440; c=relaxed/simple;
+	bh=lw0EwoqT+IslF2eir1EkiX1oESNKVQo/Z8AZKR+KMr4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=O38+gMhYrD+j+UdILneDry7I7ZMAYq1jXDYoJk8RSptkJt+lU7LoWMHqMrTNRwqHvEDCpyPQPTdj/xSJVGgTLYQiBxfNW9jLr1e22Lh7PnbTHjHmL9PpjZKGPakiCOjqVLYe/axjiRUwjrHLb5gGFCxSZL+lfuUrHjsNTnCngOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GHka6oOk; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-7f1243792f2so7167b3a.1
+        for <stable@vger.kernel.org>; Thu, 11 Dec 2025 04:33:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765456438; x=1766061238; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=3dXU3GOLINLe9EjEUjPXBDJ3oxRXZRIziVkVY2yv9CM=;
+        b=GHka6oOkfhHWQ8bTpXvYATTeBh+/6xTUlYP1v3AT4P+RZyAuXnZN2k0B50V+TEqiVk
+         176ZvdkKE/woXgNvnA6geFnmluGcwtzCN4PxWnYvhGvZVUVptVjJ+pYDpw3U9prbAG4u
+         akM6eB6+jGL+Bb7ULxERrkYV26wy2pdowUF17Io6yoY7v2QhiqFWckGtjxXJWwFV/G50
+         UGOat+RuHrU2w2VM+K4BjI3GX8W3fU554ixGrxY+nWnnZZySqSe6nkRWa77qc8X9gwn/
+         h6pVrT3HPEEyr6kXOP2vR3HMM05nGOkL3LCDiRWWKFpLcih2hZ+XjlRMdTKNT8bFzhaO
+         +nDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765456438; x=1766061238;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3dXU3GOLINLe9EjEUjPXBDJ3oxRXZRIziVkVY2yv9CM=;
+        b=sA4Sxftp8UJ5jvIPHFqu4cPV83OOHJWF18HBpBZVOlrUIL6ozPrQ9Q6HhBRWV5les2
+         V7YBVJvGxaXH8lBJ6YGRnZddw3uVUiA1JZ/Obfs+k4NSzi76blxu67nrGJWe3Op54CxI
+         Uj5/leTR4GANHniqkvYLzRe9jWNV3y0da8TY3haMHklgRMns9RiVAc6MYiLfeqdN/Uer
+         KIl9o3SH0rYZ3Qib0+ilO/Kyjge7+a8i69wSsh7UjFmrPbcj8b5eYVdjJdxnUErER0ge
+         Gdv1gJ5YnzrtQqBklIeWsaLqtWwS1o5mv36PDj2PDVqjvl++539/N0edHXg6c/X6nEyS
+         eCXw==
+X-Forwarded-Encrypted: i=1; AJvYcCVqHVW6wdo6ik0MeKIl9UBmPLuTkT1K8fGIZij/Pz4t9e/SRc5Dq7Hpk62SxRTtVzxC3hKvzeo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0ubY686zYFZ8VWe7MnW2/lwo5OdMXrc9cJx4C4pG9rFxQJTML
+	tt6atEzJ78k7Ybl7YCOQLOwa1nciKilMAwbNyYxdCf7G18PqrYVIzWJJZPSPrYEpZ7c=
+X-Gm-Gg: AY/fxX6gbjyEHCDfVQ1Fgh9adG5S/f682wUt7brWLmFHvN5U0qR+9q/R9oG6uMQiLjR
+	76E1NjOkt5oZtNsAiB4oNbUBYPQ/W9lEv/2OncXsmYwSm5rdwSF0Ql86k3cbKt/rbIv7YxpUKWi
+	+DjIrgZ1m6hKDVb1dxhoNmB1cmVes8ecAJHSFxD9j8eKCl6vFfLTYtP2CvQrARYpQ5Oj22mpnM1
+	KwsR5owulFACRUMq8g6BjHPNqy6oa9nlZ7RtrRArAPGKZKYXfjosOK/yW3tgIPy0V6UCCzUVHWe
+	G1amR1pPm2IUeoQKCigMzXrEbfUKiy0Rei2aaKdtvWGRtbu9UUp0mLtv4K/ZZL7Lcyqa14rGnAs
+	aNpETC6+vdKmABrFx4m//5nl/NwmL4YHvCVjG9AqPnhrjV+ukO1aGAYoelJpj7rPT51zw8/j/dj
+	z590NYNPBcV6R+RiQ7jVauvVk=
+X-Google-Smtp-Source: AGHT+IHDxSfBltK6rQPgl+NpCNPIOrqOJbDt51JmeLKoJKrrNu4oCo5oerpmzjaZy4g1sKK8owEQ/Q==
+X-Received: by 2002:a05:6a00:18aa:b0:7b8:10b9:9bec with SMTP id d2e1a72fcca58-7f22dcb515cmr5589040b3a.19.1765456437862;
+        Thu, 11 Dec 2025 04:33:57 -0800 (PST)
+Received: from c45b92c47440.. ([202.120.234.58])
+        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-7f4c27771b3sm2471892b3a.27.2025.12.11.04.33.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Dec 2025 04:33:57 -0800 (PST)
+From: Miaoqian Lin <linmq006@gmail.com>
+To: Linus Walleij <linusw@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Tom Cooksey <tom.cooksey@arm.com>,
+	Eric Anholt <eric@anholt.net>,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org
+Cc: linmq006@gmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/pl111: Fix error handling in pl111_amba_probe
+Date: Thu, 11 Dec 2025 16:33:44 +0400
+Message-Id: <20251211123345.2392065-1-linmq006@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1765418669.git.wqu@suse.com> <2e646aa21c452f80c2afbbf50ceda081c5c3ed4c.1765418669.git.wqu@suse.com>
-In-Reply-To: <2e646aa21c452f80c2afbbf50ceda081c5c3ed4c.1765418669.git.wqu@suse.com>
-From: Filipe Manana <fdmanana@kernel.org>
-Date: Thu, 11 Dec 2025 11:26:41 +0000
-X-Gmail-Original-Message-ID: <CAL3q7H5_AU-SUacEd8H0Qz8vg8jAq1fmSEkhvwx_qpmQTGvS8w@mail.gmail.com>
-X-Gm-Features: AQt7F2qz1uAnwG4E7VJiOBxNTd2EG0WCb7u-BX7SVZ8399pBt-MY6fTlgpxWW7I
-Message-ID: <CAL3q7H5_AU-SUacEd8H0Qz8vg8jAq1fmSEkhvwx_qpmQTGvS8w@mail.gmail.com>
-Subject: Re: [PATCH 1/2] btrfs: fix beyond-EOF write handling
-To: Qu Wenruo <wqu@suse.com>
-Cc: linux-btrfs@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Dec 11, 2025 at 2:15=E2=80=AFAM Qu Wenruo <wqu@suse.com> wrote:
->
-> [BUG]
-> For the following write sequence with 64K page size and 4K fs block size,
-> it will lead to file extent items to be inserted without any data
-> checksum:
->
->   mkfs.btrfs -s 4k -f $dev > /dev/null
->   mount $dev $mnt
->   xfs_io -f -c "pwrite 0 16k" -c "pwrite 32k 4k" -c pwrite "60k 64K" \
->             -c "truncate 16k" $mnt/foobar
->   umount $mnt
+Jump to the existing dev_put label when devm_request_irq() fails
+so drm_dev_put() and of_reserved_mem_device_release() run
+instead of returning early and leaking resources.
 
-If you can, add this to fstests.
+Found via static analysis and code review.
 
->
-> This will result the following 2 file extent items to be inserted (extra
-> trace point added to insert_ordered_extent_file_extent()):
->
->    btrfs_finish_one_ordered: root=3D5 ino=3D257 file_off=3D61440 num_byte=
-s=3D4096 csum_bytes=3D0
->    btrfs_finish_one_ordered: root=3D5 ino=3D257 file_off=3D0 num_bytes=3D=
-16384 csum_bytes=3D16384
->
-> Note for file offset 60K, we're inserting an file extent without any
+Fixes: bed41005e617 ("drm/pl111: Initial drm/kms driver for pl111")
+Cc: stable@vger.kernel.org
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+---
+ drivers/gpu/drm/pl111/pl111_drv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-an file -> a file
+diff --git a/drivers/gpu/drm/pl111/pl111_drv.c b/drivers/gpu/drm/pl111/pl111_drv.c
+index 56ff6a3fb483..d7dc83cf7b00 100644
+--- a/drivers/gpu/drm/pl111/pl111_drv.c
++++ b/drivers/gpu/drm/pl111/pl111_drv.c
+@@ -295,7 +295,7 @@ static int pl111_amba_probe(struct amba_device *amba_dev,
+ 			       variant->name, priv);
+ 	if (ret != 0) {
+ 		dev_err(dev, "%s failed irq %d\n", __func__, ret);
+-		return ret;
++		goto dev_put;
+ 	}
+ 
+ 	ret = pl111_modeset_init(drm);
+-- 
+2.25.1
 
-> data checksum.
->
-> Also note that range [32K, 36K) didn't reach
-> insert_ordered_extent_file_extent(), which is the correct behavior as
-> that OE is fully truncated, should not result any file extent.
->
-> Although file extent at 60K will be later dropped by btrfs_truncate(),
-> if the transaction got committed after file extent inserted but before
-> the file extent dropping, we will have a small window where we have a
-> file extent beyond EOF and without any data checksum.
->
-> That will cause "btrfs check" to report error.
->
-> [CAUSE]
-> The sequence happens like this:
->
-> - Buffered write dirtied the page cache and updated isize
->
->   Now the inode size is 64K, with the following page cache layout:
->
->   0             16K             32K              48K           64K
->   |/////////////|               |//|                        |//|
->
-> - Truncate the inode to 16K
->   Which will trigger writeback through:
->
->   btrfs_setsize()
->   |- truncate_setsize()
->   |  Now the inode size is set to 16K
->   |
->   |- btrfs_truncacte()
-
-truncacte -> truncate
-
-It looks good otherwise, so:
-
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-
-Thanks.
-
->      |- btrfs_wait_ordered_range() for [16K, u64(-1)]
->         |- btrfs_fdatawrite_range() for [16K, u64(-1)}
->            |- extent_writepage() for folio 0
->               |- writepage_delalloc()
->               |  Generated OE for [0, 16K), [32K, 36K] and [60K, 64K)
->               |
->               |- extent_writepage_io()
->
->   Then inside extent_writepage_io(), the dirty fs blocks are handled
->   differently:
->
->   - Submit write for range [0, 16K)
->     As they are still inside the inode size (16K).
->
->   - Mark OE [32K, 36K) as truncated
->     Since we only call btrfs_lookup_first_ordered_range() once, which
->     returned the first OE after file offset 16K.
->
->   - Mark all OEs inside range [16K, 64K) as finished
->     Which will mark OE ranges [32K, 36K) and [60K, 64K) as finished.
->
->     For OE [32K, 36K) since it's already marked as truncated, and its
->     truncated length is 0, no file extent will be inserted.
->
->     For OE [60K, 64K) it has never been submitted thus has no data
->     checksum, and we insert the file extent as usual.
->     This is the root cause of file extent at 60K to be inserted without
->     any data checksum.
->
->   - Clear dirty flags for range [16K, 64K)
->     It is the function btrfs_folio_clear_dirty() which search and clear
->     any dirty blocks inside that range.
->
-> [FIX]
-> The bug itself is introduced a long time ago, way before subpage and
-> larger folio support.
->
-> At that time, fs block size must match page size, thus the range
-> [cur, end) is just one fs block.
->
-> But later with subpage and larger folios, the same range [cur, end)
-> can have multiple blocks and ordered extents.
->
-> Later commit 18de34daa7c6 ("btrfs: truncate ordered extent when skipping
-> writeback past i_size") is fixing a bug related to subpage/larger
-> folios, but it's still utilizing the old range [cur, end), meaning only
-> the first OE will be marked as truncated.
->
-> The proper fix here is to make EOF handling block-by-block, not trying
-> to handle the whole range to @end.
->
-> By this we always locate and truncate the OE for every dirty block.
->
-> Cc: stable@vger.kernel.org # 5.15+
-> Signed-off-by: Qu Wenruo <wqu@suse.com>
-> ---
->  fs/btrfs/extent_io.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-> index 629fd5af4286..a4b74023618d 100644
-> --- a/fs/btrfs/extent_io.c
-> +++ b/fs/btrfs/extent_io.c
-> @@ -1728,7 +1728,7 @@ static noinline_for_stack int extent_writepage_io(s=
-truct btrfs_inode *inode,
->                         struct btrfs_ordered_extent *ordered;
->
->                         ordered =3D btrfs_lookup_first_ordered_range(inod=
-e, cur,
-> -                                                                  folio_=
-end - cur);
-> +                                                                  fs_inf=
-o->sectorsize);
->                         /*
->                          * We have just run delalloc before getting here,=
- so
->                          * there must be an ordered extent.
-> @@ -1742,7 +1742,7 @@ static noinline_for_stack int extent_writepage_io(s=
-truct btrfs_inode *inode,
->                         btrfs_put_ordered_extent(ordered);
->
->                         btrfs_mark_ordered_io_finished(inode, folio, cur,
-> -                                                      end - cur, true);
-> +                                                      fs_info->sectorsiz=
-e, true);
->                         /*
->                          * This range is beyond i_size, thus we don't nee=
-d to
->                          * bother writing back.
-> @@ -1751,8 +1751,8 @@ static noinline_for_stack int extent_writepage_io(s=
-truct btrfs_inode *inode,
->                          * writeback the sectors with subpage dirty bits,
->                          * causing writeback without ordered extent.
->                          */
-> -                       btrfs_folio_clear_dirty(fs_info, folio, cur, end =
-- cur);
-> -                       break;
-> +                       btrfs_folio_clear_dirty(fs_info, folio, cur, fs_i=
-nfo->sectorsize);
-> +                       continue;
->                 }
->                 ret =3D submit_one_sector(inode, folio, cur, bio_ctrl, i_=
-size);
->                 if (unlikely(ret < 0)) {
-> --
-> 2.52.0
->
->
 
