@@ -1,84 +1,80 @@
-Return-Path: <stable+bounces-200756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FB83CB4808
-	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 03:01:41 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B03ECB4893
+	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 03:15:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id F271A30014ED
-	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 02:01:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6E09D30014F7
+	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 02:15:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93756296BBB;
-	Thu, 11 Dec 2025 02:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1002BE05A;
+	Thu, 11 Dec 2025 02:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EWUJTTmA"
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="cGyZBPwc";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="W+M6dGml"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f68.google.com (mail-pj1-f68.google.com [209.85.216.68])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A633221282
-	for <stable@vger.kernel.org>; Thu, 11 Dec 2025 02:01:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DC042BE057
+	for <stable@vger.kernel.org>; Thu, 11 Dec 2025 02:15:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765418497; cv=none; b=aC91nEz4uCcwxApuTNf/0fPHTOrtUBQQpqmoJ3Q9h24PMRL/43ox5nBsSuwDQ+Dz9LyLCWPKWYqdlSqEuMuh4G405k2ZvCpidXE0rp37W4nPfnRPL2I/EkR/VW87cVeUB7Xm0EZK7hdFUs0sUQmfVR7C37Nvx98ii5x9NHJ8SRI=
+	t=1765419345; cv=none; b=bmwHp8nbbHEfdogdUXwKy8vakWBE3bPZ7VS+eUicdKcKn5Xsgl3FbcfC+w3kwzyx7HlkpS2ys6kmfYG3YFdCkLJXWZauAxb7pIeNRiHyiOPUxrAh9SpjbGPGVGYpKiP2YRHC7Hx2Z2/do3A29JabxhQGPJft3wlzSv+FhgzmXKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765418497; c=relaxed/simple;
-	bh=jxlquEKWB4ovnxW0dPC9yXeJyMf7Zf/wpG/BjX1DAmE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rFpSCRIBzvw6t053d/U8t8Adw8GOT/M/5qNmXaEZah2WK+8C4D2/+RINoUDYpygx1bNlx0V9QyNB1dZfM65sci+ulcZBJHZOuFcfrXYfZIarVAAw+U3dL/PN/qqa6i6uoJSXEy6r5BgXztg/rh53e4nc7Nyl7A8X3/hnDJsw3eM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EWUJTTmA; arc=none smtp.client-ip=209.85.216.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f68.google.com with SMTP id 98e67ed59e1d1-343806688c5so433654a91.0
-        for <stable@vger.kernel.org>; Wed, 10 Dec 2025 18:01:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765418494; x=1766023294; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=oDLOUoseKDsXrqrK/vpzGFljddjHVxFQ23qh88EWC7A=;
-        b=EWUJTTmAepSwW1MhkSr/1QvvhrV3KKvBa12aQBa1W0/92EPx71rACU9tFKTG5Gfcnf
-         nYRAqJ5EtiWrqRYqdGOrZmoEMS9nFublNuULGUayRhoxkKnuydwrVDbWoLQuRa5I3THa
-         ArRSDmwBoiqvpvU7SRDiGxbeGskPIK2o36+zgI178PlkNwB6o3+e4tS782FIfkyS4+Bn
-         lUTFc1fcRSkEQcZqRDDYe8ix4EQpr1KnrsYnkyEDHxXeSeLW9SpLfbucptzDOSmI3FuB
-         3zOBFJQveGexgmzjSztbW63+t5Tfn6NK3kU6to5mYyjoyfNfHJ10b4evxuDzWtLeZkT5
-         e/4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765418494; x=1766023294;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oDLOUoseKDsXrqrK/vpzGFljddjHVxFQ23qh88EWC7A=;
-        b=HOYrWwCwHSyb4vXJ+IMQ0oE1bZmgxFJJrFXNkYXnCo01krTUIL7ZGRwp4rNtxBwiNP
-         7CvFOl9jnJVIwKXQKoJ8JE2H8njhmZEcdWvB1O/dwEVU2vSaxC1u5AMUUi5izLjLbjdl
-         7dDmGnzf+OtuNyInEY1gjZu0ossYbdlfSCZoU2Smk21sUzIoLt/eRKXcGSFhvLGNwXs5
-         QeuBhhoYhxGGp520A5NySTSZCXs8E/Pk6WsnyTKUSMFFwXFxq8IFGvx8N7OW8xbOck4G
-         AbQBvjS3K0dnPPCCUXhYBrFRbppLTc8muHmOdWmW2ii4VlL4NKNeZ+2VMUsI/tU7R5ku
-         EVwA==
-X-Forwarded-Encrypted: i=1; AJvYcCU1FqJeD6wp0hKvhzclFS4pVv/lLgtNi3+ZOtpDbO53HxsmeJIlPAtYdDBgyLQO7UsXAgQLloE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0M/4hi0HqScZ7fLDvajNbVA2DBDNfp+fuMx6mvWx2aTtG8Czs
-	eyLTpKWPoaL57Jz1mrpQTif7n5Y8m2TvBd88rdtXA1BttrO3tTY88UlQ
-X-Gm-Gg: ASbGncvp5lAI+tVLDouKmka7cnN/d+XCUOVU+yUL+tpm0kBOjWC2FsJdMX97AZUR06p
-	iiYANaKqBXgvnsYWpztYVA0RMaJSvvh8NTeQwPyM8XEPrBR2cRP+VMRYqebV5RWR9RKSWGbpAUO
-	ManSZfuzUCRsBdAh6Gbd2w9WmPBkGqJvP7dDdtRd4EVJUKN8blR1I/BwJHTW7xAnSGA4j53PC4L
-	4sJyE/5TWQzHZnPWu2EEfVW24i5FF/CJg6BUSNFA70/aPno47A4b/9bwClN73kSAnomrBnX6q3z
-	JiuIA3b6KNqnyPTRJnXSppLVK2rMRR+tYNSRtiZkGirO55HoyRiwW78Fwo5n5IyAUWEg/MqdSQC
-	BEmsYie5+jryQtmvdlVzkVvRv3yCFGJ7+o5F3M3ijMMvETHRVyr/EEpdpnxzrjVQfCG+VWUjyfq
-	9pDZ8cZKB1Q2WHL6/r1VvKMMEUc8hKaiUHYuX4KgG6pDw92Xp1Ajno2PPkg3ALRmmql+A47M4UC
-	INttclRNqle6lc=
-X-Google-Smtp-Source: AGHT+IGQ7/gXmCOul/U9YXhnOAApYUABB4NLMUfjzK8VZdz8cwFkkhz18hi9+oy2iOuh5RZ7UzTfnw==
-X-Received: by 2002:a05:7022:78f:b0:119:e55a:9c06 with SMTP id a92af1059eb24-11f296d74cbmr3701500c88.34.1765418493417;
-        Wed, 10 Dec 2025 18:01:33 -0800 (PST)
-Received: from ethan-latitude5420.. (host-127-24.cafrjco.fresno.ca.us.clients.pavlovmedia.net. [68.180.127.24])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11f2e1bb45csm3572116c88.1.2025.12.10.18.01.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Dec 2025 18:01:33 -0800 (PST)
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-To: linux-usb@vger.kernel.org
-Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] USB: serial: ftdi_sio: add support for PICAXE AXE027 cable
-Date: Wed, 10 Dec 2025 18:01:17 -0800
-Message-ID: <20251211020117.45520-1-enelsonmoore@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1765419345; c=relaxed/simple;
+	bh=HnDC7atMnZ92ATMbfY05k2xqe5Jb55riJuhUB1JL2Wg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ZuOh8HOMkvtcq/8og2QF0dw7oLCKR/UGmv3nfXUXSOqvWW+fPBp+rQSg0h2McXNz2YX8ffB4X/WYU8vFCyH9B7UhRpvsZpuQrAL6vD5DQqygW7l/GfZeOl/UkR3IBFApk3QseTonojUEc4XyYY1T7r9UrSHU5NITdny3tzYHhl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=cGyZBPwc; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=W+M6dGml; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 83047336F0;
+	Thu, 11 Dec 2025 02:15:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1765419339; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eqXfHlFZib8cs2VdaxRF22MjV2D5B6NeCgV24uVK5aI=;
+	b=cGyZBPwcLN3QSrwJg0JMj+iaLPrX94G20Rnhzu8zovKvcWvMfgCWjerKAjdicUPefQIS5k
+	SMKHmElCfcFK3zESOfqqeykHNyiDUG0eJA5guc3vRv655fj4Sw6SiSolFjh2Ttdw0IiftJ
+	iv/etNJmVxi86BWKuynfccOMzeREQ7U=
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=W+M6dGml
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1765419338; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eqXfHlFZib8cs2VdaxRF22MjV2D5B6NeCgV24uVK5aI=;
+	b=W+M6dGmlXpiI7TJ3KwiyM0mSjBFV+kJSq6LEebTX7qnrSGBm0WKxtdcfzuqCZ3NJnw7uBU
+	D9/ZqNpHkWJO2hwTYsWh427mwEMxkeXNA7lSduhX3IZuOcJg7tpcXgWwmrvJiKFyCqPo52
+	1wCv3cUAhlZxuRV4egSpLr4eFddAo9Q=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 853653EA65;
+	Thu, 11 Dec 2025 02:15:37 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id oMIIEkkpOmmBAQAAD6G6ig
+	(envelope-from <wqu@suse.com>); Thu, 11 Dec 2025 02:15:37 +0000
+From: Qu Wenruo <wqu@suse.com>
+To: linux-btrfs@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH 1/2] btrfs: fix beyond-EOF write handling
+Date: Thu, 11 Dec 2025 12:45:17 +1030
+Message-ID: <2e646aa21c452f80c2afbbf50ceda081c5c3ed4c.1765418669.git.wqu@suse.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <cover.1765418669.git.wqu@suse.com>
+References: <cover.1765418669.git.wqu@suse.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -86,44 +82,180 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spam-Score: -3.01
+X-Rspamd-Queue-Id: 83047336F0
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.com:mid,suse.com:dkim,suse.com:email];
+	RCPT_COUNT_TWO(0.00)[2];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_TLS_ALL(0.00)[];
+	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.com:+]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Level: 
 
-The vendor provides instructions to write "0403 bd90" to
-/sys/bus/usb-serial/drivers/ftdi_sio/new_id; see:
-https://picaxe.com/docs/picaxe_linux_instructions.pdf
+[BUG]
+For the following write sequence with 64K page size and 4K fs block size,
+it will lead to file extent items to be inserted without any data
+checksum:
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+  mkfs.btrfs -s 4k -f $dev > /dev/null
+  mount $dev $mnt
+  xfs_io -f -c "pwrite 0 16k" -c "pwrite 32k 4k" -c pwrite "60k 64K" \
+            -c "truncate 16k" $mnt/foobar
+  umount $mnt
+
+This will result the following 2 file extent items to be inserted (extra
+trace point added to insert_ordered_extent_file_extent()):
+
+   btrfs_finish_one_ordered: root=5 ino=257 file_off=61440 num_bytes=4096 csum_bytes=0
+   btrfs_finish_one_ordered: root=5 ino=257 file_off=0 num_bytes=16384 csum_bytes=16384
+
+Note for file offset 60K, we're inserting an file extent without any
+data checksum.
+
+Also note that range [32K, 36K) didn't reach
+insert_ordered_extent_file_extent(), which is the correct behavior as
+that OE is fully truncated, should not result any file extent.
+
+Although file extent at 60K will be later dropped by btrfs_truncate(),
+if the transaction got committed after file extent inserted but before
+the file extent dropping, we will have a small window where we have a
+file extent beyond EOF and without any data checksum.
+
+That will cause "btrfs check" to report error.
+
+[CAUSE]
+The sequence happens like this:
+
+- Buffered write dirtied the page cache and updated isize
+
+  Now the inode size is 64K, with the following page cache layout:
+
+  0             16K             32K              48K           64K
+  |/////////////|               |//|                        |//|
+
+- Truncate the inode to 16K
+  Which will trigger writeback through:
+
+  btrfs_setsize()
+  |- truncate_setsize()
+  |  Now the inode size is set to 16K
+  |
+  |- btrfs_truncacte()
+     |- btrfs_wait_ordered_range() for [16K, u64(-1)]
+        |- btrfs_fdatawrite_range() for [16K, u64(-1)}
+	   |- extent_writepage() for folio 0
+	      |- writepage_delalloc()
+	      |  Generated OE for [0, 16K), [32K, 36K] and [60K, 64K)
+	      |
+	      |- extent_writepage_io()
+
+  Then inside extent_writepage_io(), the dirty fs blocks are handled
+  differently:
+
+  - Submit write for range [0, 16K)
+    As they are still inside the inode size (16K).
+
+  - Mark OE [32K, 36K) as truncated
+    Since we only call btrfs_lookup_first_ordered_range() once, which
+    returned the first OE after file offset 16K.
+
+  - Mark all OEs inside range [16K, 64K) as finished
+    Which will mark OE ranges [32K, 36K) and [60K, 64K) as finished.
+
+    For OE [32K, 36K) since it's already marked as truncated, and its
+    truncated length is 0, no file extent will be inserted.
+
+    For OE [60K, 64K) it has never been submitted thus has no data
+    checksum, and we insert the file extent as usual.
+    This is the root cause of file extent at 60K to be inserted without
+    any data checksum.
+
+  - Clear dirty flags for range [16K, 64K)
+    It is the function btrfs_folio_clear_dirty() which search and clear
+    any dirty blocks inside that range.
+
+[FIX]
+The bug itself is introduced a long time ago, way before subpage and
+larger folio support.
+
+At that time, fs block size must match page size, thus the range
+[cur, end) is just one fs block.
+
+But later with subpage and larger folios, the same range [cur, end)
+can have multiple blocks and ordered extents.
+
+Later commit 18de34daa7c6 ("btrfs: truncate ordered extent when skipping
+writeback past i_size") is fixing a bug related to subpage/larger
+folios, but it's still utilizing the old range [cur, end), meaning only
+the first OE will be marked as truncated.
+
+The proper fix here is to make EOF handling block-by-block, not trying
+to handle the whole range to @end.
+
+By this we always locate and truncate the OE for every dirty block.
+
+Cc: stable@vger.kernel.org # 5.15+
+Signed-off-by: Qu Wenruo <wqu@suse.com>
 ---
- drivers/usb/serial/ftdi_sio.c     | 1 +
- drivers/usb/serial/ftdi_sio_ids.h | 2 ++
- 2 files changed, 3 insertions(+)
+ fs/btrfs/extent_io.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/usb/serial/ftdi_sio.c b/drivers/usb/serial/ftdi_sio.c
-index fe2f21d85737..acb48b1c83f7 100644
---- a/drivers/usb/serial/ftdi_sio.c
-+++ b/drivers/usb/serial/ftdi_sio.c
-@@ -848,6 +848,7 @@ static const struct usb_device_id id_table_combined[] = {
- 	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, LMI_LM3S_DEVEL_BOARD_PID, 1) },
- 	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, LMI_LM3S_EVAL_BOARD_PID, 1) },
- 	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, LMI_LM3S_ICDI_BOARD_PID, 1) },
-+	{ USB_DEVICE(FTDI_VID, FTDI_AXE027_PID) },
- 	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, FTDI_TURTELIZER_PID, 1) },
- 	{ USB_DEVICE(RATOC_VENDOR_ID, RATOC_PRODUCT_ID_USB60F) },
- 	{ USB_DEVICE(RATOC_VENDOR_ID, RATOC_PRODUCT_ID_SCU18) },
-diff --git a/drivers/usb/serial/ftdi_sio_ids.h b/drivers/usb/serial/ftdi_sio_ids.h
-index 2539b9e2f712..6c76cfebfd0e 100644
---- a/drivers/usb/serial/ftdi_sio_ids.h
-+++ b/drivers/usb/serial/ftdi_sio_ids.h
-@@ -96,6 +96,8 @@
- #define LMI_LM3S_EVAL_BOARD_PID		0xbcd9
- #define LMI_LM3S_ICDI_BOARD_PID		0xbcda
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index 629fd5af4286..a4b74023618d 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -1728,7 +1728,7 @@ static noinline_for_stack int extent_writepage_io(struct btrfs_inode *inode,
+ 			struct btrfs_ordered_extent *ordered;
  
-+#define FTDI_AXE027_PID		0xBD90 /* PICAXE AXE027 USB download cable */
-+
- #define FTDI_TURTELIZER_PID	0xBDC8 /* JTAG/RS-232 adapter by egnite GmbH */
+ 			ordered = btrfs_lookup_first_ordered_range(inode, cur,
+-								   folio_end - cur);
++								   fs_info->sectorsize);
+ 			/*
+ 			 * We have just run delalloc before getting here, so
+ 			 * there must be an ordered extent.
+@@ -1742,7 +1742,7 @@ static noinline_for_stack int extent_writepage_io(struct btrfs_inode *inode,
+ 			btrfs_put_ordered_extent(ordered);
  
- /* OpenDCC (www.opendcc.de) product id */
+ 			btrfs_mark_ordered_io_finished(inode, folio, cur,
+-						       end - cur, true);
++						       fs_info->sectorsize, true);
+ 			/*
+ 			 * This range is beyond i_size, thus we don't need to
+ 			 * bother writing back.
+@@ -1751,8 +1751,8 @@ static noinline_for_stack int extent_writepage_io(struct btrfs_inode *inode,
+ 			 * writeback the sectors with subpage dirty bits,
+ 			 * causing writeback without ordered extent.
+ 			 */
+-			btrfs_folio_clear_dirty(fs_info, folio, cur, end - cur);
+-			break;
++			btrfs_folio_clear_dirty(fs_info, folio, cur, fs_info->sectorsize);
++			continue;
+ 		}
+ 		ret = submit_one_sector(inode, folio, cur, bio_ctrl, i_size);
+ 		if (unlikely(ret < 0)) {
 -- 
-2.43.0
+2.52.0
 
 
