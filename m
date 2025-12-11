@@ -1,100 +1,108 @@
-Return-Path: <stable+bounces-200782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DCC9CB5566
-	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 10:19:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1B7CCB5623
+	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 10:41:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C28B73003F48
-	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 09:18:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 62346300C29E
+	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 09:41:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E96B2F49F0;
-	Thu, 11 Dec 2025 09:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CF012FB097;
+	Thu, 11 Dec 2025 09:41:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mmc4HqbN"
+	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="aob9AFqO"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from forwardcorp1d.mail.yandex.net (forwardcorp1d.mail.yandex.net [178.154.239.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5DB923817E;
-	Thu, 11 Dec 2025 09:18:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DB752F9DBD;
+	Thu, 11 Dec 2025 09:41:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765444733; cv=none; b=ErzsYyI40EtApwCWqlRWzIv9j7hQgUJij+sOkPOfP7b6nAncLBN/YmOnbDvBK27u/r8aNWakRO5BFFlqacT2riUAnAeSA47FsXIPzkzQTNDFIVY/ucBwrqI/gmKEP4taI1faslZ0k1nO1zkoJ2JyiEPdi7tO7c9ZweY0EMfn1eI=
+	t=1765446076; cv=none; b=AvrIRsuC/QCwkyzxcokGq56srBtjbXJ4iErohWhwCLh9z5euyC+qBuEp/of+r1UFCkEQVUCtkSB1OwX/2xpJJvub9FDKhIsvX4QcWF0MatpkGpblic2chzSuyVPO/THAApbS+EHfPbE1Fsf4shSU5Js2tjL/ONSUDIDtZBmT/T4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765444733; c=relaxed/simple;
-	bh=WE2U7wyVzJcyGyArkxgph0mtkBEOqRv2JkAvIN8bJjc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C+Bp55yXidE/h4Hoct8jrGL1MUbI59t1R+hLqusQIxpwMqUYUqegQ9iPD8vammEEdv34bPk2odxeTJdCVWlbNw0y7CfgJtKxQf+P3PaZnTy2bEnMFLaxwyYSb6KS6N3to3pi3W0Dw2cxwKbQ2QVDRtKlgmUNc3riP2/lXvywuwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mmc4HqbN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B021AC4CEF7;
-	Thu, 11 Dec 2025 09:18:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765444733;
-	bh=WE2U7wyVzJcyGyArkxgph0mtkBEOqRv2JkAvIN8bJjc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Mmc4HqbNS8Y3J38ZInXf63r+bmRZ9tHRW4BRDyXIJfE8rYNliM9tkDiDUy0i6/1nY
-	 diJPf/vZnKS+dOvMqTwOWZ/kXdqhF7YV6yu6BpXyxZ0/Ulf+dNzZhPTt7yfMktoa8q
-	 22F4XJb8qP719+YUPjOhdrrhcOinHOpowANFNO2LDXQoHPhHlKXdVX0FSeE5W1eZVq
-	 GnSU65NfB4gZ6+xe6j28g41B8Zcb/hEDBrF5yMdeb6j/Zp07+0eAFe9UsYfoV+WHe7
-	 ykk2wdX0hwlXOAYe1Gw6V4Lk5qJ7dDAsp9veKcy6cqIw1V5gc0SwQLO7QomViX38yc
-	 8RcIdRZjMD6qQ==
-Date: Thu, 11 Dec 2025 10:18:48 +0100
-From: Carlos Maiolino <cem@kernel.org>
-To: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Cc: darrick.wong@oracle.com, linux-xfs@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH v2] xfs: Fix a memory leak in xfs_buf_item_init()
-Message-ID: <ojskmuuwjgieezp3zrff6ub5ihgr5buk6gtgqrm5gnr2zzcolk@ret4ukkxzcfo>
-References: <JtqOvUhdDjJQGig4S3xReSdQeTJx9dge5OmgMD6FmzXiRntc00kZDqCOczMDCKG0zvW1TWYcDPkxMXDZ2MocWw==@protonmail.internalid>
- <20251210090601.69688-1-lihaoxiang@isrc.iscas.ac.cn>
+	s=arc-20240116; t=1765446076; c=relaxed/simple;
+	bh=Xvy3QCQhVu05fWGElgRnH3OhmTmyPGrNQ+gHP/TBgyg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TyrEZvTYmdGv4Xq1hEVpD4MzKXrkh+VKafavJck7U704JqCw4UPk6qVajqKhdmeh+fSWfOxRhcEDLWxgitUlTUujo2CE2NHI2XzqLyJtABeq/7hrBe4k1nmr/5O40RIwb1lvMeoo8Q19gEepve1h56x64x4m7S3g5rIOLKz40yU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=aob9AFqO; arc=none smtp.client-ip=178.154.239.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex-team.ru
+Received: from mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net (mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:94a9:0:640:a3fa:0])
+	by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 889C5807A3;
+	Thu, 11 Dec 2025 12:39:49 +0300 (MSK)
+Received: from kniv-nix.yandex-team.ru (unknown [2a02:6bf:8080:c5c::1:37])
+	by mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id MdLltr0FqCg0-XKazNBt7;
+	Thu, 11 Dec 2025 12:39:49 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+	s=default; t=1765445989;
+	bh=gZ19bStIXK8ZTYeaIB4Wio3OCyGR20Y3eysM2vFARVU=;
+	h=Message-Id:Date:Cc:Subject:To:From;
+	b=aob9AFqOPibHIQfZ9z38+gzDHxMpxstejtPnTKQO/EzicSIfSGqNyRh6d5m/WF5Nm
+	 oDW7M1xsayyjBm1k9hLOCAkQOIGS1Q0nJ/F3V+ME4C4kYye8VWMq7jRTZYlaC3f2wX
+	 1vjFwfVpduMxoB8mv5sY5U5kF5EcH+VW2qYkNPFY=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-68.klg.yp-c.yandex.net; dkim=pass header.i=@yandex-team.ru
+From: Nikolay Kuratov <kniv@yandex-team.ru>
+To: linux-kernel@vger.kernel.org
+Cc: freedreno@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	linux-arm-msm@vger.kernel.org,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Sean Paul <sean@poorly.run>,
+	Jessica Zhang <jesszhan0024@gmail.com>,
+	Abhinav Kumar <abhinav.kumar@linux.dev>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Nikolay Kuratov <kniv@yandex-team.ru>,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/msm/dpu: Add missing NULL pointer check for pingpong interface
+Date: Thu, 11 Dec 2025 12:36:30 +0300
+Message-Id: <20251211093630.171014-1-kniv@yandex-team.ru>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251210090601.69688-1-lihaoxiang@isrc.iscas.ac.cn>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Dec 10, 2025 at 05:06:01PM +0800, Haoxiang Li wrote:
-> xfs_buf_item_get_format() may allocate memory for bip->bli_formats,
-> free the memory in the error path.
-> 
-> Fixes: c3d5f0c2fb85 ("xfs: complain if anyone tries to create a too-large buffer log item")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-> Reviewed-by: Christoph Hellwig <hch@lst.de>
-> ---
-> Changes in v2:
-> - Modify the patch subject. Thanks, Christoph!
-> ---
->  fs/xfs/xfs_buf_item.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
+It is checked almost always in dpu_encoder_phys_wb_setup_ctl(), but in a
+single place the check is missing.
+Also use convenient locals instead of phys_enc->* where available.
 
-We have a cosmetic 'rule' to not use an Upper case character for the
-subject, I'll fix that during commit time, no need to send it again.
+Cc: stable@vger.kernel.org
+Fixes: d7d0e73f7de33 ("drm/msm/dpu: introduce the dpu_encoder_phys_* for writeback")
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+---
+ drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-for the patch itself:
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c
+index 46f348972a97..6d28f2281c76 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c
+@@ -247,14 +247,12 @@ static void dpu_encoder_phys_wb_setup_ctl(struct dpu_encoder_phys *phys_enc)
+ 		if (hw_cdm)
+ 			intf_cfg.cdm = hw_cdm->idx;
+ 
+-		if (phys_enc->hw_pp->merge_3d && phys_enc->hw_pp->merge_3d->ops.setup_3d_mode)
+-			phys_enc->hw_pp->merge_3d->ops.setup_3d_mode(phys_enc->hw_pp->merge_3d,
+-					mode_3d);
++		if (hw_pp && hw_pp->merge_3d && hw_pp->merge_3d->ops.setup_3d_mode)
++			hw_pp->merge_3d->ops.setup_3d_mode(hw_pp->merge_3d, mode_3d);
+ 
+ 		/* setup which pp blk will connect to this wb */
+-		if (hw_pp && phys_enc->hw_wb->ops.bind_pingpong_blk)
+-			phys_enc->hw_wb->ops.bind_pingpong_blk(phys_enc->hw_wb,
+-					phys_enc->hw_pp->idx);
++		if (hw_pp && hw_wb->ops.bind_pingpong_blk)
++			hw_wb->ops.bind_pingpong_blk(hw_wb, hw_pp->idx);
+ 
+ 		phys_enc->hw_ctl->ops.setup_intf_cfg(phys_enc->hw_ctl, &intf_cfg);
+ 	} else if (phys_enc->hw_ctl && phys_enc->hw_ctl->ops.setup_intf_cfg) {
+-- 
+2.34.1
 
-Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
-
-
-> diff --git a/fs/xfs/xfs_buf_item.c b/fs/xfs/xfs_buf_item.c
-> index 8d85b5eee444..f4c5be67826e 100644
-> --- a/fs/xfs/xfs_buf_item.c
-> +++ b/fs/xfs/xfs_buf_item.c
-> @@ -896,6 +896,7 @@ xfs_buf_item_init(
->  		map_size = DIV_ROUND_UP(chunks, NBWORD);
-> 
->  		if (map_size > XFS_BLF_DATAMAP_SIZE) {
-> +			xfs_buf_item_free_format(bip);
->  			kmem_cache_free(xfs_buf_item_cache, bip);
->  			xfs_err(mp,
->  	"buffer item dirty bitmap (%u uints) too small to reflect %u bytes!",
-> --
-> 2.25.1
-> 
 
