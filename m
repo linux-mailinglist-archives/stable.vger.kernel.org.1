@@ -1,121 +1,144 @@
-Return-Path: <stable+bounces-200800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5EA4CB6113
-	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 14:42:33 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB18ECB622D
+	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 15:04:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3F64B3002150
-	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 13:42:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 49D4C3017861
+	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 14:04:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54FC731328F;
-	Thu, 11 Dec 2025 13:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20CF42C324C;
+	Thu, 11 Dec 2025 14:04:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NhAFrF2V"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CXRN+6cS"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00B2623AE62;
-	Thu, 11 Dec 2025 13:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68F42C3261
+	for <stable@vger.kernel.org>; Thu, 11 Dec 2025 14:04:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765460551; cv=none; b=IFbXO5R7dKbCuPeshJS3fyytGy8VVxc2MemqvgxeLwwqQNfwadVAYCA27to1iuBN1wVC21uFKjra5Q8LfxgIhebCy9eJRAmmB/AO7bamYk5Q8ZHa2k3SAT03rEg7MURNCT+0Z9d2SEEliilcn6oo5Fy6OKAV45Qar5lGsWYuBQA=
+	t=1765461877; cv=none; b=YuvimVYOYSFeUYFWbm/gakh3WAes0u+D83jYJmAk9itig20uX39ezT6qPCU27ReihgZokGo37ctDmsYknQKftPo38DZy6d1f2gKdhVIdhjNWDX3nNcQ8+HraTKNlSUbQ4Zby4QKojVvH2K5KOqQY8sW5800Rp3f/gQS1hjnuKgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765460551; c=relaxed/simple;
-	bh=DXB+albUs7qjZXiSV8szFw0zSiV1oclQ+zF5jpW6srE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kGiDG1a8oqxjqJH+qQpIYviZJb6EZpvVXJiGQleyPVUUUxRxrBcCOHnYwMpdi4xoG/hJUAvktbVQhidtS+YPTJdDqte0cLpgjEeVezhBHtz32Hxmp7IQu13bc2c+MjEPCo9VyKDUJa6m45RKdIncwSGw2jRRz45nLbLhJd6WcMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NhAFrF2V; arc=none smtp.client-ip=198.175.65.20
+	s=arc-20240116; t=1765461877; c=relaxed/simple;
+	bh=8rju0sIOdUgAVxzoAbCeZb5Ok9k0o3hFXh44STEZKGM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LE5XVOpzXBwYdUKluGdxRpH320MO1nzmtBsBw+R/dSLw6asQCNVapoWCXravB+lr0xRazAVnLqrYtaxrR8E3QAV6SEf2bzO1buuLez5ECwPQXSU5FahEUflmYsnMDtIXSDxpgqHIfTQAONl3hmrEEoi2L51HqNWjMxVPVzWJuK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CXRN+6cS; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765460549; x=1796996549;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=DXB+albUs7qjZXiSV8szFw0zSiV1oclQ+zF5jpW6srE=;
-  b=NhAFrF2VLannGNwpgnCUHRPCnTinlQcgNQGdxbXbnR8aSVqlk4cd0Y4K
-   Kv8QOCFS/55f/QltCyBPHsWRY4AV0LU7E1wrgnaoZH4XDnHx5BzWxPl2V
-   l6bi8jn0DW6ijNCFjWoHLM/wyv9YIziIdoZ+NDPKyp/Bv11befcFJei+k
-   gYBB332dusan68oSwbOl8s+omKvGzoY3BtSk60Kg4ghCi2DTjS1A4igjr
-   MZ0pw8uwWf6AOjt/vxQgpjqytQ/7gBCW94G53mncvtXnUl1s7ToSNHxfD
-   8VIctkHpg1jy86z4Vgq8AYgw+llX/9gESIZRSX3MecqKyAsdgBGdD6uJW
+  t=1765461876; x=1796997876;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=8rju0sIOdUgAVxzoAbCeZb5Ok9k0o3hFXh44STEZKGM=;
+  b=CXRN+6cSTH1D+KJe+ukAUlH+LR9AEfhJwjGHyyZvbslibjapaPjfmAXx
+   2uDhR1ANYGJv+jd04NWu8sWrIYIbJlXgPVvNRbpezgD+oIvclQhCXcpoL
+   zzGBrIPRVJmvyvgz6oQpEPsEnx8RsYFpPVA1xI+4LyRo138kKGU5PFQ+/
+   GUSO5/GfSCeev2YlXwY4Rs07xkt2NbSDxVvjz5sxh2zxKt5wQTDXkUywU
+   x90Itwzq4utGZwg+hlqu0mS7gFCN+ocryF5SYCo4zoqm8RiH0MyoZ9GzC
+   dkIiBW7cfj2GHBxBezCSnZNEf6LbEZFVLHVtZFZgqX7wcCu69UKjfRv0u
    w==;
-X-CSE-ConnectionGUID: b7697KP5TdS3bELzInU3dA==
-X-CSE-MsgGUID: FcZg3E+0QF6VLjlLQXCgAw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11639"; a="67174550"
+X-CSE-ConnectionGUID: SOmSFKSDRmKBc6kZM0OPqw==
+X-CSE-MsgGUID: XlUiP9eUQZ+a0qN7A/ZIGQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11639"; a="67176539"
 X-IronPort-AV: E=Sophos;i="6.21,141,1763452800"; 
-   d="scan'208";a="67174550"
+   d="scan'208";a="67176539"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2025 05:42:28 -0800
-X-CSE-ConnectionGUID: 0rjdKFBWRWaoclDO0wy4Nw==
-X-CSE-MsgGUID: cv96XoGNR72fvJCJWc7nFQ==
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2025 06:04:35 -0800
+X-CSE-ConnectionGUID: 0+WJemQkSdSqfEjt8Uhsyw==
+X-CSE-MsgGUID: pK9oDWMoQViNHqcsPOBK5g==
 X-ExtLoop1: 1
-Received: from aschofie-mobl2.amr.corp.intel.com (HELO kuha) ([10.124.222.61])
-  by fmviesa003.fm.intel.com with SMTP; 11 Dec 2025 05:42:25 -0800
-Received: by kuha (sSMTP sendmail emulation); Thu, 11 Dec 2025 15:42:14 +0200
-Date: Thu, 11 Dec 2025 15:42:14 +0200
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Cc: gregkh@linuxfoundation.org, rdbabiera@google.com,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] usb: typec: altmodes/displayport: Drop the device
- reference in dp_altmode_probe()
-Message-ID: <aTrKNrvXX1gZ49cS@kuha>
-References: <20251206070445.190770-1-lihaoxiang@isrc.iscas.ac.cn>
+Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.246.254])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2025 06:04:31 -0800
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
+ Krzysztof Karas <krzysztof.karas@intel.com>
+Cc: dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ stable@vger.kernel.org, =?UTF-8?B?6rmA6rCV66+8?= <km.kim1503@gmail.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>,
+ Chris Wilson <chris.p.wilson@linux.intel.com>,
+ Andi Shyti <andi.shyti@linux.intel.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+Subject:
+ Re: [PATCH v3] drm/i915/gem: Zero-initialize the eb.vma array in
+ i915_gem_do_execbuffer()
+Date: Thu, 11 Dec 2025 15:04:29 +0100
+Message-ID: <2468170.UQZUX1FTLU@jkrzyszt-mobl2.ger.corp.intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
+ 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <ezfzff7burfabd2b4ofna5pmue2m64zn3gin2uyefnk7fczizk@f52nhwgfliyh>
+References:
+ <20251210165659.29349-3-krzysztof.niemiec@intel.com>
+ <ezfzff7burfabd2b4ofna5pmue2m64zn3gin2uyefnk7fczizk@f52nhwgfliyh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251206070445.190770-1-lihaoxiang@isrc.iscas.ac.cn>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
 
-Sat, Dec 06, 2025 at 03:04:45PM +0800, Haoxiang Li kirjoitti:
-> In error paths, call typec_altmode_put_plug() to drop the device reference
-> obtained by typec_altmode_get_plug().
+On Thursday, 11 December 2025 12:24:31 CET Krzysztof Karas wrote:
+> Hi Krzysztof,
 > 
-> Fixes: 71ba4fe56656 ("usb: typec: altmodes/displayport: add SOP' support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-
-> ---
->  drivers/usb/typec/altmodes/displayport.c | 10 +++++++---
->  1 file changed, 7 insertions(+), 3 deletions(-)
+> [...]
 > 
-> diff --git a/drivers/usb/typec/altmodes/displayport.c b/drivers/usb/typec/altmodes/displayport.c
-> index 1dcb77faf85d..5d02c97e256e 100644
-> --- a/drivers/usb/typec/altmodes/displayport.c
-> +++ b/drivers/usb/typec/altmodes/displayport.c
-> @@ -764,12 +764,16 @@ int dp_altmode_probe(struct typec_altmode *alt)
->  	if (!(DP_CAP_PIN_ASSIGN_DFP_D(port->vdo) &
->  	      DP_CAP_PIN_ASSIGN_UFP_D(alt->vdo)) &&
->  	    !(DP_CAP_PIN_ASSIGN_UFP_D(port->vdo) &
-> -	      DP_CAP_PIN_ASSIGN_DFP_D(alt->vdo)))
-> -		return -ENODEV;
-> +	      DP_CAP_PIN_ASSIGN_DFP_D(alt->vdo))) {
-> +		typec_altmode_put_plug(plug);
-> +		return -ENODEV;
-> +	}
->  
->  	dp = devm_kzalloc(&alt->dev, sizeof(*dp), GFP_KERNEL);
-> -	if (!dp)
-> +	if (!dp) {
-> +		typec_altmode_put_plug(plug);
->  		return -ENOMEM;
-> +	}
->  
->  	INIT_WORK(&dp->work, dp_altmode_work);
->  	mutex_init(&dp->lock);
-> -- 
-> 2.25.1
+> > @@ -3375,7 +3360,9 @@ i915_gem_do_execbuffer(struct drm_device *dev,
+> >  
+> >  	eb.exec = exec;
+> >  	eb.vma = (struct eb_vma *)(exec + args->buffer_count + 1);
+> > -	eb.vma[0].vma = NULL;
+> > +
+> > +	memset(eb.vma, 0x00, args->buffer_count * sizeof(struct eb_vma));
+> > +
+> >  	eb.batch_pool = NULL;
+> >  
+> >  	eb.invalid_flags = __EXEC_OBJECT_UNKNOWN_FLAGS;
+> > @@ -3584,7 +3571,16 @@ i915_gem_execbuffer2_ioctl(struct drm_device *dev, void *data,
+> >  	if (err)
+> >  		return err;
+> >  
+> > -	/* Allocate extra slots for use by the command parser */
+> > +	/*
+> > +	 * Allocate extra slots for use by the command parser.
+> > +	 *
+> > +	 * Note that this allocation handles two different arrays (the
+> > +	 * exec2_list array, and the eventual eb.vma array introduced in
+> > +	 * i915_gem_do_execubuffer()), that reside in virtually contiguous
+> > +	 * memory. Also note that the allocation doesn't fill the area with
+> > +	 * zeros (the first part doesn't need to be), but the second part only
+> > +	 * is explicitly zeroed later in i915_gem_do_execbuffer().
+> I get the gist of this comment, but I think you could reword the
+> last sentence:
+> "Also note that the allocation doesn't fill the area with zeros,
+> because it is unnecessary for exec2_list array, and eb.vma is
+> explicitly zeroed later in i915_gem_do_execbuffer()."
 
--- 
-heikki
+My preferred wording would look something like this:
+
+Also note that the allocation intentionally doesn't fill the area with 
+zeros since the exec2_list array part is then fully overwritten with a 
+copy of user data before use.  However, the eb.vma array part is still 
+expected to be initialized as needed by its user.
+
+Thanks,
+Janusz
+
+> 
+> > +	 */
+> >  	exec2_list = kvmalloc_array(count + 2, eb_element_size(),
+> >  				    __GFP_NOWARN | GFP_KERNEL);
+> >  	if (exec2_list == NULL) {
+> 
+> 
+
+
+
+
 
