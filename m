@@ -1,166 +1,155 @@
-Return-Path: <stable+bounces-200807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C4E8CB6903
-	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 17:51:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCFEDCB6926
+	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 17:55:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8E1ED3001C11
-	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 16:51:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AE10B3058E68
+	for <lists+stable@lfdr.de>; Thu, 11 Dec 2025 16:51:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 738E22FF646;
-	Thu, 11 Dec 2025 16:41:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C8F219C54F;
+	Thu, 11 Dec 2025 16:43:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="EK5bYr2r"
 X-Original-To: stable@vger.kernel.org
-Received: from bregans-1.gladserv.net (bregans-1.gladserv.net [185.128.211.58])
+Received: from pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.34.181.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9552C3148BB;
-	Thu, 11 Dec 2025 16:41:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.211.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D782C314A90;
+	Thu, 11 Dec 2025 16:43:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.34.181.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765471313; cv=none; b=OJFJt/ebGwYS4iH5Hg9+esy+gnhqI55zPp7mV2qqeLYJEvwNOX8JtLRcFr47oqHbypHBljtUrRRm3Lq8Hsq/JEMfsOyWbUGuf++k1wdP7CnkOWCVyP94Lvs3nR2qRwjwGZa8teQ2w32PBWh1x6a2I2+H6Sr5ay51UPtSr1MCn9g=
+	t=1765471391; cv=none; b=rcoNa5ypEjRtYa06s/mPlpyYDNpXJst6lf4Ki/IL5sw/zsfzNnYGmtEjKSYhPlZ7Q/mykX4POg2GY82LED49ycAI4nMhu2dF71O5sJWkrHq0hRZSA75W9rwGjF8+0hHRSWTMmGvsvu/nxTPG1AFJOxtTHy0IXel6bcERlBSO/kM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765471313; c=relaxed/simple;
-	bh=F1MgHPSXe7ArSt8Y4Z0t7u6ZAkOmdiXO7hItBD7oNqA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EQ/kI2dh6ktoPIfAfa4rDQj6j5zc4k+yWQNIqOUtfbTGmt6wMSHv5RpA5MU9cnZ7PUhRYhp73i8lqfZiMN1KXWGeJ6BkmXckSNUNCMeVMmE67KLstLfVBvQZ86HB8oY0SpE4wiM5qS67ShPdFnP8DyFP+gTUAv18GmCTx4DxMUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.211.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
-Date: Thu, 11 Dec 2025 16:41:26 +0000
-From: Brett A C Sheffield <bacs@librecast.net>
-To: Jeffrin Thalakkottoor <jeffrin@rajagiritech.edu.in>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
-	achill@achill.org, sr@sladewatkins.com
-Subject: Re: [PATCH 6.17 00/60] 6.17.12-rc1 review
-Message-ID: <aTr0NpEHWSCrGNTS@auntie>
-References: <20251210072947.850479903@linuxfoundation.org>
- <CAG=yYwm==BjqjJWtgc0+WzbiGTsKsHV3e4Lvk60fcartrrABDw@mail.gmail.com>
- <2025121046-satchel-concise-1077@gregkh>
- <CAG=yYwm0bVzYoccKKcdheGOc-exuxVCPeXSftDixS68qZZ7W7w@mail.gmail.com>
- <aTnET5C2PGiKsW_2@auntie>
- <CAG=yYwnYgw-MYea3yEfwSRiLL+PsKPdQdejotyFTpme0LXc-Pg@mail.gmail.com>
+	s=arc-20240116; t=1765471391; c=relaxed/simple;
+	bh=KUvNQ7iAewHmRCa/SKUqtGLe6cvR2GaCE3uIokzBdq8=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LXAyzlFJK29nrVZ/mZbbj+p9mrVVSYQVfAf52cnwuv10Nyhbrq9RQBm8Lq6ArLDAWFo8Xvmm2Nj/qS0mHcKaLIY+1xfYl9uEeIsntP2gyi/mz2pKchNTx87n6842cc2aiEbcsEzlS0Ihdikq7VtMy4D8fizHK6Wi8XCDitVkFKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=EK5bYr2r; arc=none smtp.client-ip=52.34.181.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1765471388; x=1797007388;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=DKSob5bpQnAeRXMsGtljG7uU7j+ZeakRF856afxzdTE=;
+  b=EK5bYr2rLnJRXNwGr17s43LfwCSAudTW2JtR8rVo4CpaC93eD6yjhb3p
+   RyNFTIl+bN0rjcAP6WnUinE6B7jFLk600+nassc6ieOjTC1VdiqYjoy6m
+   pYqX/algwh3zh/veoar1lPG9UF0NweQG9G3bbRndscqPTYE3lyjqCsyLv
+   lySOf8GLYVpoYKp5krmpZh0MFLW5SUAk5CKmdKdZh22oU2QU+hfuFK4Wa
+   5524Zn2Y2Q4Qww3k8njrjPUSTauS/kYvvIG8Wz2VkZw1nxtj3gVSUFwqP
+   lUtrYrlyl0FvbgUeOGaHECRmeB0O1gvFE1/FB2iu7EZcEJlbb3DRq60m6
+   A==;
+X-CSE-ConnectionGUID: NPXz6eHoTAeecfj7GqVRGA==
+X-CSE-MsgGUID: 44YjqNuoSvOhQQhZYdiAMQ==
+X-IronPort-AV: E=Sophos;i="6.21,141,1763424000"; 
+   d="scan'208";a="8908780"
+Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
+  by internal-pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2025 16:43:04 +0000
+Received: from EX19MTAUWC002.ant.amazon.com [205.251.233.51:28588]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.53.162:2525] with esmtp (Farcaster)
+ id ca357886-192b-44c7-bb4e-6b5fecbc811a; Thu, 11 Dec 2025 16:43:03 +0000 (UTC)
+X-Farcaster-Flow-ID: ca357886-192b-44c7-bb4e-6b5fecbc811a
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
+ Thu, 11 Dec 2025 16:43:03 +0000
+Received: from dev-dsk-darnshah-1c-a4c7d5e9.eu-west-1.amazon.com (172.19.90.4)
+ by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
+ Thu, 11 Dec 2025 16:43:01 +0000
+From: Darshit Shah <darnshah@amazon.de>
+To: <lukas@wunner.de>
+CC: <Jonthan.Cameron@huawei.com>, <bhelgaas@google.com>, <darnir@gnu.org>,
+	<darnshah@amazon.de>, <feng.tang@linux.alibaba.com>, <kbusch@kernel.org>,
+	<kwilczynski@kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-pci@vger.kernel.org>, <nh-open-source@amazon.com>, <olof@lixom.net>,
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, <stable@vger.kernel.org>
+Subject: [PATCH v3] drivers/pci: Decouple DPC from AER service
+Date: Thu, 11 Dec 2025 16:42:53 +0000
+Message-ID: <20251211164257.81655-1-darnshah@amazon.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <aTfTiBy1GoJIFqtJ@wunner.de>
+References: <aTfTiBy1GoJIFqtJ@wunner.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAG=yYwnYgw-MYea3yEfwSRiLL+PsKPdQdejotyFTpme0LXc-Pg@mail.gmail.com>
+X-ClientProxiedBy: EX19D040UWB003.ant.amazon.com (10.13.138.8) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-On 2025-12-11 21:09, Jeffrin Thalakkottoor wrote:
-> On Thu, Dec 11, 2025 at 12:35 AM Brett A C Sheffield <bacs@librecast.net> wrote:
-> >
-> > On 2025-12-10 19:13, Jeffrin Thalakkottoor wrote:
-> > > On Wed, Dec 10, 2025 at 6:17 PM Greg Kroah-Hartman
-> > > <gregkh@linuxfoundation.org> wrote:
-> > > >
-> > > > On Wed, Dec 10, 2025 at 04:22:21PM +0530, Jeffrin Thalakkottoor wrote:
-> > > > >  compiled and booted 6.17.12-rc1+
-> > > > > Version: AMD A4-4000 APU with Radeon(tm) HD Graphics
-> > > > >
-> > > > > sudo dmesg -l errr  shows  error
-> > > > >
-> > > > > j$sudo dmesg -l err
-> > > > > [   39.915487] Error: Driver 'pcspkr' is already registered, aborting...
-> > > > > $
-> > > >
-> > > > Is ths new?  if so, can you bisect?
-> > >
-> > > this is new related. Previous stable release err and warn disappeared
-> > > (i think i changed  .config)
-> > >
-> > > can you give me a  step by step tutorial  for git bisect
-> >
-> > 1) cd to wherever you have your kernel checked out
-> >
-> > 2) `git bisect start`
-> >
-> > 3) if you're already on a known-bad commit, then mark it as such:
-> >
-> >   `git bisect bad`
-> >
-> > 4) Mark the last known good commit as such:
-> >
-> >   `git bisect good <commit / tag>`
-> >
-> > git bisect will choose a commit to test.
-> >
-> > 5) Build, install and boot your kernel as you usually do
-> >
-> > 6) Run whatever test you need to determine if the booted kernel is good or bad
-> > (check dmesg in this case)
-> >
-> > 7) Mark the commit as good or bad. Git will choose another commit for you.
-> >
-> > 8) Goto 5.
-> >
-> > `git help bisect` will give you more information.
-> >
-> > At the end of the process git will tell you the first bad commit found.  You can
-> > dump the bisection log with:
-> >
-> > `git bisect log`
-> >
-> > which you can reply here with.
-> >
-> > HTH.
-> >
-> > Cheers,
-> >
-> >
-> > Brett
-> Thnaks for the tutorial  :)
-> 1. should i start with the bad commit first ?
+According to PCIe r7.0, sec. 6.2.11, "Implementation Note: Determination
+of DPC Control", it is recommended that the Operating System link the
+enablement of Downstream Port Containment (DPC) to the enablement of
+Advanced Error Reporting (AER).
 
-You start by marking one good (past) commit and one bad commit. It doesn't
-matter what order.
+However, AER is advertised only on Root Port (RP) or Root Complex Event
+Collector (RCEC) devices. On the other hand, DPC may be advertised on
+any PCIe device in the hierarchy. In fact, since the main usecase of DPC
+is for the switch upstream of an endpoint device to trigger a signal to
+the host-bridge, it is imperative that it be supported on non-RP,
+non-RCEC devices.
 
-You have at least one "bad" commit you know of: 4112049d7836ad4233321c3d2b6853db1627c49c
+Previously portdrv has interpreted the spec to mean that the AER service
+must be available on the same device in order for DPC to be available.
+This is not what the implementation note meant to imply. If the firmware
+hands Linux control of AER via _OSC on the host bridge upstream of the
+device, then Linux should be allowed to assume control of DPC on the device.
 
-This is the 6.12.62-rc1 commit that you reported had the error.
+The comment above this check alludes to this, by saying:
+  > With dpc-native, allow Linux to use DPC even if it doesn't have
+  > permission to use AER.
 
-So, in your kernel worktree:
+However, permission to use AER is negotiated at the host bridge, not
+per-device. So we should not link DPC to enabling AER at the device.
+Instead, DPC should be enabled if the OS has control of AER for the
+host bridge that is upstream of the device in question, or if dpc-native
+was set on the command line.
 
-`git bisect start`
-`git bisect bad 4112049d7836ad4233321c3d2b6853db1627c49c`
+Cc: stable@vger.kernel.org
+Signed-off-by: Darshit Shah <darnshah@amazon.de>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+---
+Changes from v2:
+  * + stable@vger.kernel.org since moving to v6.2+ breaks DPC on our systems
+  * Minor stylistic changes to commit message
+  * NO functional changes
 
-Now we need to tell git bisect the most recent "good" commit we know of (where
-the error didn't occur).
+ drivers/pci/pcie/portdrv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-If you already know the commit or tag of a previous version where you did not get the
-error, mark that as good. If not, pick a previous release, check it out, and go
-to step 5.
-
-> 2. how to move forward or backward in commits ?
-
-git bisect will do that for you as soon as you mark a good and bad commit. If
-you want to manually test a specific commit, just `git checkout <ref>` as usual, and
-continue at step 5 in the instructions I gave you.
-
-> 3. what is the point in re-compiling the kernel  if it cannot narrow
-> down and  test news lines of code
-
-We're narrowing down the error to a specific kernel commit. Once we know which
-specific commit introduced the error, we can look at the lines changed and try
-to understand why.  We need your help to find that commit, because it's
-happening on your system.
-
-Please do read `git help bisect` (man 1 git-bisect). It explains all this better
-than I can.
-
-Thanks for testing and good luck!
+diff --git a/drivers/pci/pcie/portdrv.c b/drivers/pci/pcie/portdrv.c
+index 38a41ccf79b9..8db2fa140ae2 100644
+--- a/drivers/pci/pcie/portdrv.c
++++ b/drivers/pci/pcie/portdrv.c
+@@ -264,7 +264,7 @@ static int get_port_device_capability(struct pci_dev *dev)
+ 	 */
+ 	if (pci_find_ext_capability(dev, PCI_EXT_CAP_ID_DPC) &&
+ 	    pci_aer_available() &&
+-	    (pcie_ports_dpc_native || (services & PCIE_PORT_SERVICE_AER)))
++	    (host->native_aer || pcie_ports_dpc_native))
+ 		services |= PCIE_PORT_SERVICE_DPC;
+ 
+ 	/* Enable bandwidth control if more than one speed is supported. */
+-- 
+2.47.3
 
 
-Brett
+
+
+Amazon Web Services Development Center Germany GmbH
+Tamara-Danz-Str. 13
+10243 Berlin
+Geschaeftsfuehrung: Christof Hellmis, Andreas Stieger
+Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
+Sitz: Berlin
+Ust-ID: DE 365 538 597
 
 
