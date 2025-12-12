@@ -1,158 +1,123 @@
-Return-Path: <stable+bounces-200860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB86ACB7FE2
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 06:58:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2781CB8003
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 07:04:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8AE04305AE62
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 05:57:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4CE393030905
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 06:04:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59FE330E0E5;
-	Fri, 12 Dec 2025 05:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AA8F24728E;
+	Fri, 12 Dec 2025 06:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=etsalapatis-com.20230601.gappssmtp.com header.i=@etsalapatis-com.20230601.gappssmtp.com header.b="fs4ajX5K"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vIDy9x1n"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CDE92D0C84
-	for <stable@vger.kernel.org>; Fri, 12 Dec 2025 05:57:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F358E42A82;
+	Fri, 12 Dec 2025 06:04:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765519068; cv=none; b=rD50quEK+3OQaUm9a4UrugRTRlKeDMbr/SH36M6Npp5paTgqOQLW4YJl4DbvWGmDbyxvG7V7ZHNchOoxTrE59BIPvPEqyk9A39JJ0gB67eK1VsWHSwdEOdOidIDkG4Vu/X5TKj4kGPmkL0CtW3tSNGcalWJKgmze2Q6siW8NcPQ=
+	t=1765519473; cv=none; b=Z+hghZ6hmNA5sWdYXhEiVOyYm4pSAYpAaIUWze0CxLnFf4hfBzkAPK29VJ7FkwBrZiwaGsRYvhhbnYUOgePwybWVSfqRmwBZJEkTPy28Xkv18MVsNe5COtpoUzYiIO12Dv1MKJQ0gB9LQe1vlVNJEnHGoupau5cx4DTMJMG41jc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765519068; c=relaxed/simple;
-	bh=fgsSX3Xvqg0pVTixbgqmuCjN8XlgMkq8rvUKPfF/H5k=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=JmGJ8YMTQ9GsplOS1SzLi5+tDDYjOPwLRGo/T6rizoZdQhtZiz3fOEnSFCEarbemHvi4nNogvw7DFye6V6wmekE1HQew+zhVs8cDpBxvN0U2EB65Xj5GJu6+RK3wSB2WUlW/8WbbtMZQk4SpjYiS3wWvmRGYEHDA5q6Em/1WfBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20230601.gappssmtp.com header.i=@etsalapatis-com.20230601.gappssmtp.com header.b=fs4ajX5K; arc=none smtp.client-ip=209.85.222.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-8b2f0f9e4cbso71270685a.0
-        for <stable@vger.kernel.org>; Thu, 11 Dec 2025 21:57:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=etsalapatis-com.20230601.gappssmtp.com; s=20230601; t=1765519065; x=1766123865; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+obT2GMuFzYEIOMsvhKf6eth8yBNwnM9yUNGgmvY90g=;
-        b=fs4ajX5KzWGM+RerUpncj3pWCJpEVtQEOYnJMRlaaHtS3T5suJInmPan2+FirVW2+a
-         eXEkj/7z00VRlZh9VODVmyprU8cSMxnaI09Nub+dO1Hjg7dgkkMZExIy1eU8z4B+j0TA
-         ebwnwkb4b03k3mDfwzA/ofTwfbEGN83XDOJ5PpahuXWoAKH4sh1Dg3YAClKH1YlAQk3L
-         E6SCvV1mlISyRx95GIqUm468xfOHFHHKCjLjlSy2g79JBq66Bq5YqL/g4HxVJU2JGDGE
-         4AuOAwwBa8IKSCEWGsLrG/k1doKv7e4jipWmkJjJKcsf2cxijtgAO9Icn61/C9iUG/BY
-         sUVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765519065; x=1766123865;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+obT2GMuFzYEIOMsvhKf6eth8yBNwnM9yUNGgmvY90g=;
-        b=H2iOJGRTZstDtC7XYpnfSK48TfxjUR1Bt73smcOheJjEgZY8Ps9qv4xSDKvNt5X0D1
-         IYbs0TPujpPhD1Qm/1gPuBl2l9A9NtgjNVkU5xk5IevuiyZ0isAC2HGqf1P/nXxaLsS0
-         06IbySYSSTRFIDJoTu1pg0O9nqQyixtizCKbVJev8fEEWhPDMRKirIcMKUJvvZ+nSu23
-         9DC5iOLtWb1aCF22duivbA1lCriKy55lg9tk1KudPksqX2vW/TReHu+cyyz7fLLhpjsw
-         InPKoS8ZRrkBkvsL6j/+1xbZ9mAUl4qMAFVbJy9R/B+DRYp8BB+OX5JCfgq3zvSzq9u5
-         TjUg==
-X-Forwarded-Encrypted: i=1; AJvYcCUlWR0DHb5jwCH7damRhTBMnYpfH/VCxMEr2GB0jJUJxUjq5hc0QO+xncpKHqMsXupfHXyDA0Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNdFJL/J5JyfIMDWjG1ygucpr+xd84AfXPnRKLXxwrQC2WVeGy
-	Q3ygaSsbY567CMJoJzLT5lVzd/MaE1cxKOO2u2lBuSw2+q7juEOxx8r7KmjjdmuDHrg=
-X-Gm-Gg: AY/fxX6LFYlFEurFmD9xF3lbq4mmi/33fsTBezexGYRngevyNQhZI4mFDe6u86wjMH8
-	GpUVFIAZ7UeD9VW9mAgFJx+vxGdfPHiSlc4sThBHa3MG8s3rNIYlspZ00529PqL7a0NihL52AX2
-	7WMGOjtC8iMbQymPEKz8Uw0bJ87R1FRYFa4+gbmprIuiX+YcddBT3WuoRkCetswciaDp8tVaRHV
-	vcJpqWCBJ595SXPcPnlfu4ENm1kNfqRVzdE3qgPCKkg/hhsuXicZRRbiFwiE3QuowYoQZ5AXZT9
-	Ij6z3jIG1CjRSFnJTbpIooQn7mfA1KDVoDsjPfB+nFhs/O1DOTPdgN6oXWSD3Zs6ByNi1Q2FLI7
-	zFApOhTveFyhjUTSDVpbYIzmlj9V+kZH8V2oLUKugJA17Ux0rrf5cEJLLtGKgtJAHNrvC4IU1oa
-	Fj/KHew+Y80iK5skgl8UAAlw==
-X-Google-Smtp-Source: AGHT+IFJyCJZmyqnZwBk6jh7An7wM8i4gimml50s/3knWSXiY1rTb4VzoUtzWii88NakKgFz7dRRCQ==
-X-Received: by 2002:a05:620a:2a01:b0:8b2:76c6:a7cb with SMTP id af79cd13be357-8bad3fb038dmr613360885a.16.1765519064974;
-        Thu, 11 Dec 2025 21:57:44 -0800 (PST)
-Received: from localhost ([140.174.219.137])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8bab5d4edbasm381614985a.51.2025.12.11.21.57.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 Dec 2025 21:57:44 -0800 (PST)
+	s=arc-20240116; t=1765519473; c=relaxed/simple;
+	bh=uBearAujaMcBjunA8JWS7rMsKebRWb/wH2rpPK/5zwc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=O7gXRntQoy5GXvjKVAbQIQttEbtwFgj+iJgVN3sCZsgJvUCvHNcF0U6GdWWOx1prhR8hgZfXcCY4T9KdKtJm0EH7HeeYEGj5OvmZURmn3prUIFdwL6qkagq19KYBiPYdk8/LpxRq83336+rqT/K8jd7c2/XEvmBmRdFsESG3Zpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vIDy9x1n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64190C4CEF1;
+	Fri, 12 Dec 2025 06:04:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765519472;
+	bh=uBearAujaMcBjunA8JWS7rMsKebRWb/wH2rpPK/5zwc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vIDy9x1ny4sqq4aszuGeHR1Q6feXRYgePZP6AT0EAoMLkOpi116EjaoTNAkevWb1j
+	 +jg+bsROknQFbc3xMbXi9uRa/07xniUquacZkoPFl7SB/he6zdgiHQy0iXsLZWkxyD
+	 gMvIoT9WTADFb6QjXpsf2HDylRs8FAfpLhP6NMCYcwx0LcNks4vgBEo2X+XiuLTivA
+	 aRLAZQTUpIx6vsrNsXiRtRqoW1+KIvfcNJSzl+RRKo3HHTABCp3y3kZgiOE0zoUA0E
+	 a3ycBT2mwMZrQPlvpfItOtdaS5Qp5CqptajYkAoHsUf1AP7j5IOnvTQgZuwkyi5nj+
+	 WcohCU71Ch4Qg==
+Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
+	id BD3E41AC52A9; Fri, 12 Dec 2025 06:04:29 +0000 (GMT)
+Date: Fri, 12 Dec 2025 15:04:29 +0900
+From: Mark Brown <broonie@kernel.org>
+To: "Dutta, Anurag" <a-dutta@ti.com>
+Cc: Nishanth Menon <nm@ti.com>, Francesco Dolcini <francesco@dolcini.it>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	"Gujulan Elango, Hari Prasath" <gehariprasath@ti.com>,
+	"Kumar, Udit" <u-kumar1@ti.com>
+Subject: Re: [PATCH] spi: cadence-quadspi: Fix clock enable underflows due to
+ runtime PM
+Message-ID: <aTuwbc_2jilukc79@sirena.co.uk>
+References: <555e9f6b-b8b6-4cc5-900b-63aaff8b4e6c@sirena.org.uk>
+ <20251204140530.xax5didvuc7auzcd@problem>
+ <4d6b857e-4bfe-45ef-a428-6e92f218f0c5@sirena.org.uk>
+ <2fcf5235-cc94-4202-9164-4889356c5264@sirena.org.uk>
+ <cd95320b-6852-476e-bc8a-2e8d1ac77a9e@ti.com>
+ <f804d7a7-4ffb-4d2a-bbaf-ca0a076a11ab@sirena.org.uk>
+ <5525272e-7220-4352-bb08-ac66631108e0@ti.com>
+ <cf8e7003-ebca-4817-8350-f29332d75fab@ti.com>
+ <aTf6RRAveRdVnWQZ@sirena.co.uk>
+ <1542ee8a-620b-4349-92fb-ab1f6c5b5eab@ti.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 12 Dec 2025 00:57:42 -0500
-Message-Id: <DEW09WJ1U1FU.IQ9B68XD9VAS@etsalapatis.com>
-Cc: <linux-kernel@vger.kernel.org>, <sched-ext@lists.linux.dev>,
- <stable@vger.kernel.org>
-Subject: Re: [PATCH 2/2] sched_ext: Fix missing post-enqueue handling in
- move_local_task_to_local_dsq()
-From: "Emil Tsalapatis" <emil@etsalapatis.com>
-To: "Tejun Heo" <tj@kernel.org>, "Andrea Righi" <arighi@nvidia.com>,
- "Changwoo Min" <changwoo@igalia.com>, "David Vernet" <void@manifault.com>
-X-Mailer: aerc 0.20.1
-References: <20251211224809.3383633-1-tj@kernel.org>
- <20251212014504.3431169-1-tj@kernel.org>
- <20251212014504.3431169-3-tj@kernel.org>
-In-Reply-To: <20251212014504.3431169-3-tj@kernel.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="pxCf9/4byz5GQjK0"
+Content-Disposition: inline
+In-Reply-To: <1542ee8a-620b-4349-92fb-ab1f6c5b5eab@ti.com>
+X-Cookie: It's clever, but is it art?
 
-On Thu Dec 11, 2025 at 8:45 PM EST, Tejun Heo wrote:
-> move_local_task_to_local_dsq() is used when moving a task from a non-loca=
-l
-> DSQ to a local DSQ on the same CPU. It directly manipulates the local DSQ
-> without going through dispatch_enqueue() and was missing the post-enqueue
-> handling that triggers preemption when SCX_ENQ_PREEMPT is set or the idle
-> task is running.
->
-> The function is used by move_task_between_dsqs() which backs
-> scx_bpf_dsq_move() and may be called while the CPU is busy.
->
-> Add local_dsq_post_enq() call to move_local_task_to_local_dsq(). As the
-> dispatch path doesn't need post-enqueue handling, add SCX_RQ_IN_BALANCE
-> early exit to keep consume_dispatch_q() behavior unchanged and avoid
-> triggering unnecessary resched when scx_bpf_dsq_move() is used from the
-> dispatch path.
->
-> Fixes: 4c30f5ce4f7a ("sched_ext: Implement scx_bpf_dispatch[_vtime]_from_=
-dsq()")
-> Cc: stable@vger.kernel.org # v6.12+
-> Reviewed-by: Andrea Righi <arighi@nvidia.com>
-> Signed-off-by: Tejun Heo <tj@kernel.org>
 
-Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+--pxCf9/4byz5GQjK0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> ---
->  kernel/sched/ext.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
->
-> diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
-> index c78efa99406f..695503a2f7d1 100644
-> --- a/kernel/sched/ext.c
-> +++ b/kernel/sched/ext.c
-> @@ -988,6 +988,14 @@ static void local_dsq_post_enq(struct scx_dispatch_q=
- *dsq, struct task_struct *p
->  	struct rq *rq =3D container_of(dsq, struct rq, scx.local_dsq);
->  	bool preempt =3D false;
-> =20
-> +	/*
-> +	 * If @rq is in balance, the CPU is already vacant and looking for the
-> +	 * next task to run. No need to preempt or trigger resched after moving
-> +	 * @p into its local DSQ.
-> +	 */
-> +	if (rq->scx.flags & SCX_RQ_IN_BALANCE)
-> +		return;
-> +
->  	if ((enq_flags & SCX_ENQ_PREEMPT) && p !=3D rq->curr &&
->  	    rq->curr->sched_class =3D=3D &ext_sched_class) {
->  		rq->curr->scx.slice =3D 0;
-> @@ -1636,6 +1644,8 @@ static void move_local_task_to_local_dsq(struct tas=
-k_struct *p, u64 enq_flags,
-> =20
->  	dsq_mod_nr(dst_dsq, 1);
->  	p->scx.dsq =3D dst_dsq;
-> +
-> +	local_dsq_post_enq(dst_dsq, p, enq_flags);
->  }
-> =20
->  /**
+On Fri, Dec 12, 2025 at 10:04:47AM +0530, Dutta, Anurag wrote:
+> On 09-12-2025 16:00, Mark Brown wrote:
 
+Quoting seems messed up here - your whole mail is quoted.
+
+> > I think we want this, possibly using pm_runtime_force_resume() instead
+> > (not 100% sure on that one, glancing at the documentation there might be
+> > issues though it feels like the intent of what we're doing here).  Can
+> > you send a patch please?
+
+> > Hi Mark
+> > If we use pm_runtime_force_resume(), then for CONFIG_PM_SLEEP, it will work.
+> > But, in case of !CONFIG_PM_SLEEP, pm_runtime_force_resume() returns -ENXIO,
+> > because of which :
+
+Huh, hadn't noticed an interaction with PM_SLEEP.  My thinking was
+partly that this is convenient since it lets you know if runtime PM
+isn't enabled and you need to unwind the clocks separately.  But I don't
+super mind so long as we've got something that works.
+
+> > Let me send a patch with pm_runtime_get_sync(). If changes are required,
+> > please let me know.
+
+Yes, please.
+
+--pxCf9/4byz5GQjK0
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmk7sGkACgkQJNaLcl1U
+h9B7CQf+O6pIEP5y1qvcEQJgAI/5Zw/V1apTLbaLvpfeNl4vgH8T04+YIn1z3TIp
+wibPMw4nMpwvVBCBnmkvsUx4BouedHV/pytULCskr0cyYWJBOxPeZI+gKrwrkBKw
+tdRb5bZPXyOAek1baTeUfVg45px0V4yAHGX8gv96mzbiYOS5RlWLIJQaVmCQ1kry
+62IeixdN9J7EEJGFh2fz0czWYHFAi1v/pL5o0fahekUSkSs9OQAygNU7N+KdoKro
+hq0uz2wT/9qseRUevmPFENjkVxkCq2NyZozV7nuMEJeh8ADFF4bsd0rxONn8hwCi
+jEQvtrVDlSSnfLPTUjxDdV+EVmYSoQ==
+=C4Sd
+-----END PGP SIGNATURE-----
+
+--pxCf9/4byz5GQjK0--
 
