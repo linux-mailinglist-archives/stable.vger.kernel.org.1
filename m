@@ -1,156 +1,97 @@
-Return-Path: <stable+bounces-200907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02EC9CB8E42
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 14:22:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06535CB8E57
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 14:24:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 806773096648
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 13:21:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BBB14300C2B4
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 13:23:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 724A42264D6;
-	Fri, 12 Dec 2025 13:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E204C239085;
+	Fri, 12 Dec 2025 13:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RzkblH/1"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i+QzrCZu"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7520F1D6188;
-	Fri, 12 Dec 2025 13:21:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C55234984
+	for <stable@vger.kernel.org>; Fri, 12 Dec 2025 13:23:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765545687; cv=none; b=beKCVKHP4RQcyufLeY0QhzdeCn7XRSs4dcz5cxuEKeKhf4giq+aGYqrGnM/83p40P2Fhm4iuwKJtxTInksT87L3cOw5kIlVDPv77+fhjx8OhaUqr1KC6AhfMIYwkeCH4PlJwZQ/CJHLwLkQK1+IFisfwuOjH+FYaKNGqtSiHS2I=
+	t=1765545838; cv=none; b=gu+Ke0JC+VkcGhnY3iupUpUpvwdtHsbvgp7B6MoBSh8+DuOxQi/D6DnfFd7aTzhQku2GaTJI428al1uSRIru3jtg2bNCr8XvYVGDE/Jk0pz0CkW5zcWPsPEVZErX40c391YCKV6Qtv8u9bZVG3PUoEGucn8yV5P7K/Xgk5EG7U8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765545687; c=relaxed/simple;
-	bh=sYua/rYNh25DKcJ+3pQtTJfl1kvjZmt5EtEa/b0ggnM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bqcFhPYXJG0WYmkd7kgE0qGaaEuHNe4p2EISEPrRF5sefCrWF/2TYGzJuIxJAm5c2B17G0kmfqo+V62g3MHeVFiSFrrznou5GTqUKhQfJ/doaYMzxz51WK+5cfqh9OtGS7ri36AFiRYoAw43BzSHefyb/GbMLJlKEJChtsiHVEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RzkblH/1; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1765545838; c=relaxed/simple;
+	bh=H0k4SAPYEpMTm3qOAd/GVa+N7spdQ1MjFkz0SQ4YXi0=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=LBwsQAAjZB0VtNB99Wn2pHPSlK/TcYl+3cYVS9X30bXEnAR33tqVK8XB06TV+J6puwLn/QbMMQT/JSB612v+EPVaB9fxhXHOcS7I9myx9URRW8rlQP9y+8r8BDOV4pAAcdcESvlUyYXZ+Vjkf15wQNU/iRarE9nLpgBFaPJO3vc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i+QzrCZu; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765545685; x=1797081685;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=sYua/rYNh25DKcJ+3pQtTJfl1kvjZmt5EtEa/b0ggnM=;
-  b=RzkblH/1tghPt0bTgnqpZO9LqF9ooyCRSD96eKqHwG1d43AUqZRndpOe
-   JIAOhy6UgiUEgZhoauOT8sfjahHPoaPxErcv/IB3sGnU90Owsq74N1SLT
-   DKsPUX70nOy61cB2GldkL0jzOaofaywrmlJq3BcaWrBj6to1GkwLimljq
-   uPnfHperEkWPRF5mp6TRmT38CLdmjy4miZw5JJ2kyD4ZPCk0LpoKKsdd2
-   WC36otuOn3TD1f9GPURtBVDxX65CKpLYG3+Jxl+VWbJwG8CxeC++iVT33
-   1GCFZKlBau7j6bDMyC6XYLnwlX+ZiJ0WFUYz8hVsq29oDUPGUVJs1dNtG
-   Q==;
-X-CSE-ConnectionGUID: Wm1ojw5YRT6OFU7P2ODTmA==
-X-CSE-MsgGUID: OxfSsL3uQESwZ2981PBFCg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11639"; a="67621152"
+  t=1765545837; x=1797081837;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=H0k4SAPYEpMTm3qOAd/GVa+N7spdQ1MjFkz0SQ4YXi0=;
+  b=i+QzrCZuMt1rt8x+UzG37xQWPrKu7P65pW3EPkFL1XYvwBhNdJRA2Kzv
+   K0WkGQozDzZpAK+YLwu56mAeqJt3HNr7rSewJ22yIHF6YY5MGVujv1ewU
+   zxACNRT5GZZorCkgUja1ZTJMxtwt+mMdEcY5aT2ZRlEnUNVlZ11JLJKf7
+   5rgYmETyTlzkLk3LphWEkjBkJJz0z/yiSr9eGrhqauaWN2njBwk/qql75
+   GoWsIGcsEStpG8/eWZOMGR+IY/pIsAYdY8dujC1cZ/rGFKB1T68h/yyJl
+   QZgXlwg/Uf72wVpyufFmNNsZnmP0EYm08jE+Dp3u0osdISeXBiK+VZnjx
+   g==;
+X-CSE-ConnectionGUID: tsWzmmLfQm6AaNGmixYqNQ==
+X-CSE-MsgGUID: aeoUfPsHT2ukSBxJntiGPg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11639"; a="67706883"
 X-IronPort-AV: E=Sophos;i="6.21,143,1763452800"; 
-   d="scan'208";a="67621152"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2025 05:21:24 -0800
-X-CSE-ConnectionGUID: k9kxDZGYSWCemWaxESp70g==
-X-CSE-MsgGUID: Vlnmw+c2QgGJaB+YOy7nuw==
+   d="scan'208";a="67706883"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2025 05:23:57 -0800
+X-CSE-ConnectionGUID: bujPlIRURgOVbquV5Z6gAQ==
+X-CSE-MsgGUID: EP4gDJ9kROGnQHMB1j6OAw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,143,1763452800"; 
-   d="scan'208";a="202009148"
-Received: from kwachows-mobl.ger.corp.intel.com (HELO [10.94.253.106]) ([10.94.253.106])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2025 05:21:21 -0800
-Message-ID: <1022011b-fadf-4cca-afab-25a2a41628ea@linux.intel.com>
-Date: Fri, 12 Dec 2025 14:21:19 +0100
+   d="scan'208";a="196994593"
+Received: from lkp-server01.sh.intel.com (HELO d335e3c6db51) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 12 Dec 2025 05:23:55 -0800
+Received: from kbuild by d335e3c6db51 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vU37h-00000000661-1LNk;
+	Fri, 12 Dec 2025 13:23:53 +0000
+Date: Fri, 12 Dec 2025 21:23:00 +0800
+From: kernel test robot <lkp@intel.com>
+To: Karol Wachowski <karol.wachowski@linux.intel.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v2] drm: Fix object leak in DRM_IOCTL_GEM_CHANGE_HANDLE
+Message-ID: <aTwXNHzmC0SDNFGr@7da092942895>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm: Fix object leak in DRM_IOCTL_GEM_CHANGE_HANDLE
-To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- David.Francis@amd.com
-Cc: felix.kuehling@amd.com, maarten.lankhorst@linux.intel.com,
- mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
- sumit.semwal@linaro.org, andrzej.kacprowski@linux.intel.com,
- maciej.falkowski@linux.intel.com, dri-devel@lists.freedesktop.org,
- linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
- stable@vger.kernel.org
-References: <20251212130238.472833-1-karol.wachowski@linux.intel.com>
- <e35a9c5d-a09c-4716-959b-2720c72bf383@amd.com>
-Content-Language: en-US
-From: Karol Wachowski <karol.wachowski@linux.intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
- Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <e35a9c5d-a09c-4716-959b-2720c72bf383@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251212132052.474096-1-karol.wachowski@linux.intel.com>
 
-On 12/12/2025 2:06 PM, Christian König wrote:
-> On 12/12/25 14:02, Karol Wachowski wrote:
->> Add missing drm_gem_object_put() call when drm_gem_object_lookup()
->> successfully returns an object. This fixes a GEM object reference
->> leak that can prevent driver modules from unloading when using
->> prime buffers.
-> 
-> Good catch.
-> 
->> Fixes: 53096728b891 ("drm: Add DRM prime interface to reassign GEM handle")
->> Signed-off-by: Karol Wachowski <karol.wachowski@linux.intel.com>
-> 
-> CC: stable 6.18?
+Hi,
 
-Good idea - added CC: stable in v2.
+Thanks for your patch.
 
-> 
->> ---
->>  drivers/gpu/drm/drm_gem.c | 6 ++++--
->>  1 file changed, 4 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
->> index ca1956608261..e150bc1ce65a 100644
->> --- a/drivers/gpu/drm/drm_gem.c
->> +++ b/drivers/gpu/drm/drm_gem.c
->> @@ -1001,7 +1001,7 @@ int drm_gem_change_handle_ioctl(struct drm_device *dev, void *data,
->>  {
->>  	struct drm_gem_change_handle *args = data;
->>  	struct drm_gem_object *obj;
->> -	int ret;
->> +	int ret = 0;
-> 
-> Please set ret explicitly in the if branch below.
-> 
-> Always initializing return values is usually considered bad coding style.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Totally agree, moved setting to suggested place in v2.
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-> 
-> Apart from that looks good to me.
-> 
-> Thanks,
-> Christian.
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH v2] drm: Fix object leak in DRM_IOCTL_GEM_CHANGE_HANDLE
+Link: https://lore.kernel.org/stable/20251212132052.474096-1-karol.wachowski%40linux.intel.com
 
-Thanks,
-Karol.>
->>  
->>  	if (!drm_core_check_feature(dev, DRIVER_GEM))
->>  		return -EOPNOTSUPP;
->> @@ -1011,7 +1011,7 @@ int drm_gem_change_handle_ioctl(struct drm_device *dev, void *data,
->>  		return -ENOENT;
->>  
->>  	if (args->handle == args->new_handle)
->> -		return 0;
->> +		goto out;
->>  
->>  	mutex_lock(&file_priv->prime.lock);
->>  
->> @@ -1043,6 +1043,8 @@ int drm_gem_change_handle_ioctl(struct drm_device *dev, void *data,
->>  
->>  out_unlock:
->>  	mutex_unlock(&file_priv->prime.lock);
->> +out:
->> +	drm_gem_object_put(obj);
->>  
->>  	return ret;
->>  }
-> 
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
