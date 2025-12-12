@@ -1,142 +1,150 @@
-Return-Path: <stable+bounces-200835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86436CB79B4
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 03:05:34 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A628CB79EE
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 03:08:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D1E08301A736
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 02:05:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F28BA30039E5
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 02:08:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F42A19309C;
-	Fri, 12 Dec 2025 02:05:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5237F27702E;
+	Fri, 12 Dec 2025 02:08:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QxttZz4S"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mP5r74DD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF5441FDA;
-	Fri, 12 Dec 2025 02:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E901990C7;
+	Fri, 12 Dec 2025 02:08:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765505128; cv=none; b=r1PT2An5s/jz/A3msYR5xwUgFqkUtOq+QYbPHOlmWrMNhJVjVvf3ij4+51XGkJFR5TRuEi0/cnqXRIt9dfDPM5le4Cnrx7Tq4TAn8fiR+ILNGNOrGNGjpczYtGD3Uq+fsn/dk4go6NHK/YO02srZN/qlvB6AJuDNcnIirv5SU1g=
+	t=1765505296; cv=none; b=VBtntxHNP+bEywE6icQx8Gq2G2s3ucSGEiFEUMdVqMoKnSSK3QG8RP1gHxlCwlmVoL2OOhlBEOu2poNWJgJV1JU1Oqyl/IMy8qk+mZ7algfIv/50LS5iSEZZ/nwxtVb1L1AmCuxQ3vNU3YsEqfcXQdLJrED19ZY4Ft2z0Wr9A3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765505128; c=relaxed/simple;
-	bh=MSaHZ5+ju60XWpHl4bnexcxKffgfsNVGW5yUkrEcuh0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sEB2NhHh2lOEQF6mLvJUmjrkeixy1TaqDiIq7ZB03ebelxO4AR5tZPYCazEI04MmTsN7mvInSm2y8xQEVjWpOInETAAtlBq1yY89HBZA84XKp+MyhVOGiMr9wvo9PL62pQFK1KrzB1A5iGie2oCsco0cZitsEsz6rAla8nvTR68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QxttZz4S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61BB1C4CEF7;
-	Fri, 12 Dec 2025 02:05:27 +0000 (UTC)
+	s=arc-20240116; t=1765505296; c=relaxed/simple;
+	bh=a0/1EY4VStKzIBoErYHqrL5pDfaSE0HuDVFh5XOPuhE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=REKBYCqwBtRxSDEduEkao9Y6MtBKPgUOzaqD1+zZUAZyvP+vBUAYPyM3ZRYC6+1IEH2Kpmc/6DZcmFq09khBCs1h4bwcOtZZ8Jbow7iNMMSCeDl6YWTAIFdspfEwpVncgC33R12NpYtr2BkYtuwI/1ofnJkpU038d0yxPkfABTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mP5r74DD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39D6AC4CEF7;
+	Fri, 12 Dec 2025 02:08:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765505127;
-	bh=MSaHZ5+ju60XWpHl4bnexcxKffgfsNVGW5yUkrEcuh0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QxttZz4S/6gCz0A8zKu+BB31Sz15VIqHrBUiCjg4cBf4CF5MEFfgNAaF9UOrnCep/
-	 VfMc7ji/vtUUVS6nufLel4maWPwlAG/CHX3ZhSZxzU86mqqrD9HrOS8FX5JGF1t7nV
-	 fwcbLkGQDHZ0uxthRbX5DDJjTjt+L0XikInxRxn2ybmAD+GzlSabU3a8iUxM/BEDNQ
-	 kRZb8LY3go/Odad8Hya9K6xf6iom0IuRuO7b4v1iGFZXw9UyrQwFehJNn9TK9sMhaC
-	 A4Q5GsFqoggnRLlvc9ItA1u84DT60A2+hQ+doql0unmAOyBSZIivrgsx7kgl1/sTOf
-	 8ahtzXKDCLEXg==
-Received: by venus (Postfix, from userid 1000)
-	id 8914D1802EB; Fri, 12 Dec 2025 11:05:25 +0900 (JST)
-Date: Fri, 12 Dec 2025 11:05:25 +0900
-From: Sebastian Reichel <sre@kernel.org>
-To: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Cc: Hans Verkuil <hverkuil@kernel.org>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Bryan O'Donoghue <bod@kernel.org>, 
-	Heimir Thor Sverrisson <heimir.sverrisson@gmail.com>, linux-media@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/5] media: ov02c10: Fix bayer-pattern change after
- default vflip change
-Message-ID: <c2k57kin4kgabvpmdszcn6smwy3iwxqm5ca563z75fusrun5z7@fe2uzmt2ydri>
-References: <20251210112436.167212-1-johannes.goede@oss.qualcomm.com>
- <20251210112436.167212-2-johannes.goede@oss.qualcomm.com>
+	s=k20201202; t=1765505295;
+	bh=a0/1EY4VStKzIBoErYHqrL5pDfaSE0HuDVFh5XOPuhE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=mP5r74DDRf35AErWYYisduSvezaiQuPRHUPupsL/OTh+ctDZI7reGr/ZezPw+iRfR
+	 3PfgTa1/e/Hgbi9aQR04jXFqE3sFHGUmKXLUuaqfCOSOMDoG90ZQS4NRRgc4dPH8QT
+	 sVD6fWp0ZF8rqqGRRTISMCL3Q7mnlfxpi/WMcvauuWwZID7IDYbXPBv0tZk8fFVdHN
+	 +AKZbQ+hASzE9vFmvUzBBO0leXtDyq73MylLv9EKR0/lNiBWDVOb4rH6fc54lG7nHZ
+	 AGT2gx7zPYVKqsYTb6GYZYDVnABAbtWpvhq4anfmvJCy67ATxDTRpdvtQE4kDeo23l
+	 O7gu+iezCKzyA==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Jens Reidel <adrian@mainlining.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	linux-arm-msm@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.18-6.12] clk: qcom: dispcc-sm7150: Fix dispcc_mdss_pclk0_clk_src
+Date: Thu, 11 Dec 2025 21:08:11 -0500
+Message-ID: <20251212020812.4153432-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="xlrdq3uuncn4wzrq"
-Content-Disposition: inline
-In-Reply-To: <20251210112436.167212-2-johannes.goede@oss.qualcomm.com>
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.18
+Content-Transfer-Encoding: 8bit
 
+From: Jens Reidel <adrian@mainlining.org>
 
---xlrdq3uuncn4wzrq
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v2 1/5] media: ov02c10: Fix bayer-pattern change after
- default vflip change
-MIME-Version: 1.0
+[ Upstream commit e3c13e0caa8ceb7dec1a7c4fcfd9dbef56a69fbe ]
 
-Hi,
+Set CLK_OPS_PARENT_ENABLE to ensure the parent gets prepared and enabled
+when switching to it, fixing an "rcg didn't update its configuration"
+warning.
 
-On Wed, Dec 10, 2025 at 12:24:32PM +0100, Hans de Goede wrote:
-> After commit d5ebe3f7d13d ("media: ov02c10: Fix default vertical flip")
-> the reported bayer-pattern of MEDIA_BUS_FMT_SGRBG10_1X10 is no longer
-> correct.
->=20
-> Change the 16-bit x-win register (0x3810) value from 2 to 1 so that
-> the sensor will generate data in GRBG bayer-order again.
->=20
-> Fixes: d5ebe3f7d13d ("media: ov02c10: Fix default vertical flip")
-> Cc: stable@vger.kernel.org
-> Cc: Sebastian Reichel <sre@kernel.org>
-> Reviewed-by: Bryan O'Donoghue <bod@kernel.org>
-> Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
-> ---
+Signed-off-by: Jens Reidel <adrian@mainlining.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250919-sm7150-dispcc-fixes-v1-3-308ad47c5fce@mainlining.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
 
-I'm not sure it's worth having this change, considering you are
-dropping the whole setting in the next patch, which also has a
-Fixes tag. In any case:
+LLM Generated explanations, may be completely bogus:
 
-Reviewed-by: Sebastian Reichel <sre@kernel.org>
+### 3. Technical Understanding
 
--- Sebastian
+The `CLK_OPS_PARENT_ENABLE` flag (BIT(12) in clk-provider.h) ensures
+that "parents need enable during gate/ungate, set rate and re-parent."
+Without this flag, when the pixel clock source tries to switch to a new
+parent clock, the parent might not be enabled, causing the RCG (Root
+Clock Generator) to fail to update its configuration.
 
->  drivers/media/i2c/ov02c10.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/media/i2c/ov02c10.c b/drivers/media/i2c/ov02c10.c
-> index b1e540eb8326..6369841de88b 100644
-> --- a/drivers/media/i2c/ov02c10.c
-> +++ b/drivers/media/i2c/ov02c10.c
-> @@ -168,7 +168,7 @@ static const struct reg_sequence sensor_1928x1092_30f=
-ps_setting[] =3D {
->  	{0x3810, 0x00},
->  	{0x3811, 0x02},
->  	{0x3812, 0x00},
-> -	{0x3813, 0x02},
-> +	{0x3813, 0x01},
->  	{0x3814, 0x01},
->  	{0x3815, 0x01},
->  	{0x3816, 0x01},
-> --=20
-> 2.52.0
->=20
+This is a well-known pattern in Qualcomm clock drivers - pixel clocks
+dynamically switch parents during display panel initialization, and the
+parent must be running for the configuration switch to complete.
 
---xlrdq3uuncn4wzrq
-Content-Type: application/pgp-signature; name="signature.asc"
+### 4. Scope and Risk Assessment
+- **Lines changed**: 1 line (adding a single flag)
+- **Files touched**: 1 file
+- **Complexity**: Very low
+- **Risk**: Very low - this is an established pattern used across many
+  Qualcomm dispcc/gcc drivers
 
------BEGIN PGP SIGNATURE-----
+### 5. User Impact
+- Affects SM7150-based devices (mobile phones)
+- The warning indicates clock configuration issues that could affect
+  display initialization
+- Limited scope - only SM7150 platform users
 
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmk7eGEACgkQ2O7X88g7
-+prUWxAAic1A57XM+mIl5lyhKCIW7WFSnmEObUTFiUxEJ6A0I1kfZ0AoG9v9GT7Q
-CbIC8eFwiRAlpZ6DHsWd8aZvIaOs6MimzrC5uP2GsBwc9bm6JlqH/hyU3mBKMIma
-ncPbVrMRP/7V/lG6tmrL1Y8nTwcXUAFz9s6uFHp/2prY6Kim/QLtXt95lObkNUp1
-wvrIYZdxsUu/gGD5vgTXeq3oflxupeYJm3CqUDiKS33Js/LUGGUCQkTJVCie7A/X
-UdleG6xzjrAs1J6wo5Azlo4tRqJW3s06Wf/p90dTR16LneTcnHHFE3V93LKcewrg
-vqabJewLDFvUFvNWuttHBuBTNAyS6MaHiYwU+fikYYBEY/QROofuXnCHAB7BjEVB
-krotx3GxFzQM9f8XTayROAWWWio0/o8eemYobhcacLqqeGJMqPCoTA5TdBPB+FZv
-52n1ywUWyq1qKt98R1iNZU7f8RJX3V1Eepfzyxt4EHkOTRicNIcNP89OPlOR+WGh
-jKuiG5jRezCp5ugjIYsjU726saCBcSr3SGqL8dEto/lPfXo6xntgrHGy5bz16Lkd
-SIUcqN6ittJXPO8lftON7f6qC+EfjjfuQSVuJcz44xaEJouwYhQsf3sa23er9QG8
-HiyP7RQhTgsxdSY8589vy3nN3n70f1SLLlYPD+8qEx3mMsvqwoU=
-=/k3u
------END PGP SIGNATURE-----
+### 6. Stable Tree Applicability
+- Driver was added in **v6.11** (commit 3829c412197e1)
+- Only applicable to v6.11.y, v6.12.y, and newer stable trees
+- NOT applicable to LTS kernels: 6.6.y, 6.1.y, 5.15.y (driver doesn't
+  exist)
 
---xlrdq3uuncn4wzrq--
+### 7. Key Observations
+
+**Against backporting:**
+1. **No "Cc: stable@vger.kernel.org" tag** - The maintainers did not
+   request stable backport
+2. **No "Fixes:" tag** - Doesn't reference the original commit where the
+   bug was introduced
+3. **Very new driver** - SM7150 dispcc was added in v6.11, limiting
+   stable applicability
+4. **Not a critical issue** - A warning message, not a crash, panic, or
+   data corruption
+5. **Mobile SoC** - Users running stable kernels rarely use cutting-edge
+   mobile phone support
+
+**For backporting:**
+1. Valid bug fix with proven pattern
+2. Extremely small and low-risk change
+3. Has proper review from Qualcomm clock maintainers
+
+ drivers/clk/qcom/dispcc-sm7150.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/clk/qcom/dispcc-sm7150.c b/drivers/clk/qcom/dispcc-sm7150.c
+index bdfff246ed3fe..ddc7230b8aea7 100644
+--- a/drivers/clk/qcom/dispcc-sm7150.c
++++ b/drivers/clk/qcom/dispcc-sm7150.c
+@@ -356,7 +356,7 @@ static struct clk_rcg2 dispcc_mdss_pclk0_clk_src = {
+ 		.name = "dispcc_mdss_pclk0_clk_src",
+ 		.parent_data = dispcc_parent_data_4,
+ 		.num_parents = ARRAY_SIZE(dispcc_parent_data_4),
+-		.flags = CLK_SET_RATE_PARENT,
++		.flags = CLK_SET_RATE_PARENT | CLK_OPS_PARENT_ENABLE,
+ 		.ops = &clk_pixel_ops,
+ 	},
+ };
+-- 
+2.51.0
+
 
