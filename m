@@ -1,319 +1,364 @@
-Return-Path: <stable+bounces-200897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA2EACB8B76
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 12:31:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16D7ACB8C19
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 12:59:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E7AF03077CCC
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 11:30:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E9F4E305AC42
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 11:59:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D74331A568;
-	Fri, 12 Dec 2025 11:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05C3F3203AF;
+	Fri, 12 Dec 2025 11:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="G+nHw3Uz"
+	dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b="iuVpFeRe"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazon11011023.outbound.protection.outlook.com [40.107.74.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA00C3168E0;
-	Fri, 12 Dec 2025 11:30:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765539057; cv=none; b=BgxvvZu3EyLglCw0m2fzETbiRclorx2wQGaA8KgCp5wcKlbeRy5ObY5R5R22bffRJ03XDGwB8SpBwgb4m0vo1zKdz3rZGHwvEJzvmQQsO2o3ViptvIcK7Xma44HxSMxmJUpJyJQOZlbE6J/F8FdmNXAO6z93e57E4HA5h9Fv6Pc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765539057; c=relaxed/simple;
-	bh=s7N5PsuoGa/vkzrx/uwZeikSw8IgRvpjFlw+5Bfsccc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lJVaGVityB2v9uGJRCzRpkIYGMS76OLZTt3f07O7EBI/N2X5P+VA8RPzaiwTJjX+4Sw3q7zwGOf/2zyiPM8ex6xdeNdczlWT8PukN44pTX0HTPFVe4Ops9/g3RUSlSrwljUyZ7uLBU8lecCt7h78q12vnR/UAYLVbZlamlhuSwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=G+nHw3Uz; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765539055; x=1797075055;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=s7N5PsuoGa/vkzrx/uwZeikSw8IgRvpjFlw+5Bfsccc=;
-  b=G+nHw3Uz+kL3vt7CSEqXgsUACGzU2Hr4gKRxRSEkiiRvTgaxWQU7FVYU
-   aV75hWtwTY4MQ1fiXgyl3BHV6GquQUNb9UswNLVhTqFVLZyWRX51PCZFe
-   ZuZM9lAr66/DnwWMpwnG77QStJoVbg8PGWNCOXJl2kYZth2CdQsUVSNsg
-   X1uWZxgeSXNP6AaH6GInDdcdq2MEpNhOXmpHClSaqVlpYYJWspeMeeMs+
-   D4fHU6Kdrjdu2ms1gmqHY73PVjmJALk78RMhBQnVZutrzlBoqcG8FwR7A
-   Vkq3ZPtHSgnY8i8A7PEQgKsGybN9pWyv9GfE/O9d2xxRZD4zOkccccQze
-   g==;
-X-CSE-ConnectionGUID: /xZxAh3sQ9qIVfT/3WjEhg==
-X-CSE-MsgGUID: c8sZAlgeTvuxH657FoQp7g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11639"; a="71380803"
-X-IronPort-AV: E=Sophos;i="6.21,143,1763452800"; 
-   d="scan'208";a="71380803"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2025 03:30:53 -0800
-X-CSE-ConnectionGUID: Yb/HT7O5RN+NIsS37ktrDw==
-X-CSE-MsgGUID: sil4P7BuRxCEw+1M0tRtdg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,143,1763452800"; 
-   d="scan'208";a="196669182"
-Received: from lkp-server01.sh.intel.com (HELO d335e3c6db51) ([10.239.97.150])
-  by fmviesa007.fm.intel.com with ESMTP; 12 Dec 2025 03:30:50 -0800
-Received: from kbuild by d335e3c6db51 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vU1MF-000000005z3-2orb;
-	Fri, 12 Dec 2025 11:30:47 +0000
-Date: Fri, 12 Dec 2025 19:30:04 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ilya Krutskih <devsec@tpz.ru>, Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: oe-kbuild-all@lists.linux.dev, Ilya Krutskih <devsec@tpz.ru>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3AE2319617;
+	Fri, 12 Dec 2025 11:59:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.74.23
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765540771; cv=fail; b=aEE9ekTlsFt6+y0/z/VpgXCpt2Mt1XS6LprrbEtlVMWEpj11HJzPK2Wo5mxJi3+8l3T07Emd+ffz/ZAEK+QugW9Q+5ZHDiliVnVAuod2iNmr5TlFMEzZbI3yxw8yjoekRd+3BMF8dAMcJVu45CMLJeNX2kaSOl2jK2aDvzUXdlk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765540771; c=relaxed/simple;
+	bh=ayv9ZJ+fNmndPJZUsUpSnqryXo6IKAx2Jn/3xq5m2bE=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=AjmMsqssDk80S3aXk+6zLxEGcIrgJQXb7tkA0Hif8CjnHcc49Uy0siS82NyW2HhpVID+4s0Efk+NG0HvoFnQsmM6XfOEnvAmBUfuUJW37eUzp4sjQsZEVWsL4FAuBl0NHLAD8OGCns8zvgxugQaAF01SLHakCAhptHhWBfaLsQM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b=iuVpFeRe; arc=fail smtp.client-ip=40.107.74.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bp.renesas.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wcw7aLCCI/5bqVkUtE1D1VLgzpF8RGrm1OBEaDPXp72VIO7TiiUUNYuhA2+ty2TByZ4T1JucXzH4AMP4jU2ofX2uEv8oMpyUu4KGBYHSjTmsbod2LoXcamiurUt3h8hO3qo/8nzF8U9dk1hRMoT2iqpzE+7c9gwORzEzoz7MTHBM2cdsIccM/sThMWQC+S8CXn+yMvKljoBygKWd9cEn3Le6SuV91ueggg1qY1i+Lr2M+weUWoIqkn/VmdkqyI/4oANv0+HhrEtk85uG4NftCUiFCbFF5328/qGz8or4/F2Z28z3w9uCqutTwszAtEKwv7pGAn0i/5vr6uoMNzYg6w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=YlZIPy1I6Av2/K1c9//ke9C4/bKvXfyRrREEpUaY90o=;
+ b=hssw4OxV+dZc88fyCpII6KS4MfTGfH8G6pHyxSfpsHITdx2tNwerSRFmVYhWzNMJPkK6EO97U8WWGqD7F0/p9HHwUhxk78rAmR9dfQzdjm0IbKjHtJQ4MGyXnfbW8DK450AxrPv96+f70pnSTfhjYmwF8pqmKOGzzJpkKBn9YWEmA1ens1Bc/qeITmSFB88TNxJ8m23AEJOcRHl3pbzFIH9XEvHsWITVUfErifFU19Q/7Mwze1DiXMrH6FHy7e4oaC27pPTNxGup38/Rmi3lM890LM5/Q2xR2ADWXTtKDVfTR369SEXQP5T5bOXggKjHUK8ayHzD5ObsLsHetVFvWw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=bp.renesas.com; dmarc=pass action=none
+ header.from=bp.renesas.com; dkim=pass header.d=bp.renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bp.renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YlZIPy1I6Av2/K1c9//ke9C4/bKvXfyRrREEpUaY90o=;
+ b=iuVpFeReNoQroSpTLk3hifhc44A+iTKjSeAcJXOpBhM0VLVjTVgT5z/sNnUifbKxhTKnyFzKZ15pQdDBTFWJqvROgxxGG8d2vHD21Siapk782VcoLoRgaoN/XMfk0bfrrrI0N6K3cD+MSHLb+H/4DrbYUk7M4cW/Qi668pkIrqQ=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=bp.renesas.com;
+Received: from TYCPR01MB11947.jpnprd01.prod.outlook.com (2603:1096:400:3e1::6)
+ by OS9PR01MB16294.jpnprd01.prod.outlook.com (2603:1096:604:3f4::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.8; Fri, 12 Dec
+ 2025 11:59:25 +0000
+Received: from TYCPR01MB11947.jpnprd01.prod.outlook.com
+ ([fe80::33f1:f7cd:46be:e4d8]) by TYCPR01MB11947.jpnprd01.prod.outlook.com
+ ([fe80::33f1:f7cd:46be:e4d8%5]) with mapi id 15.20.9412.005; Fri, 12 Dec 2025
+ 11:59:25 +0000
+From: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
+To: tomm.merciai@gmail.com
+Cc: linux-renesas-soc@vger.kernel.org,
+	biju.das.jz@bp.renesas.com,
+	Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>,
+	Chris Brandt <chris.brandt@renesas.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	linux-i2c@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v2] net: fealnx: fix possible 'card_idx' integer overflow
- in
-Message-ID: <202512121907.n3Bzh2zF-lkp@intel.com>
-References: <20251211173035.852756-1-devsec@tpz.ru>
+Subject: [PATCH] i2c: riic: Move suspend handling to NOIRQ phase
+Date: Fri, 12 Dec 2025 12:58:57 +0100
+Message-ID: <05a31af3d6caba51e8237a49853281aa49bed916.1765540678.git.tommaso.merciai.xr@bp.renesas.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: FR3P281CA0136.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:95::9) To TYCPR01MB11947.jpnprd01.prod.outlook.com
+ (2603:1096:400:3e1::6)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251211173035.852756-1-devsec@tpz.ru>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TYCPR01MB11947:EE_|OS9PR01MB16294:EE_
+X-MS-Office365-Filtering-Correlation-Id: 682a385c-fe24-40dc-3823-08de3975e4e1
+X-LD-Processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|366016|376014|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?76rrm/uEUUFefb7MYBFmvqJodNwuKX6Znl+tTvf5L7AwIn/9H+APDcLsMXDX?=
+ =?us-ascii?Q?lHqRIPw/ynDNtDpv/jlt/cFREgTFMQ93noHJj8SCLAq+gPJCL2TNEc8xeyWZ?=
+ =?us-ascii?Q?pLgJDZCkOPPbRNaKq1ztKP+NbPKKi8E2sVH+u9d6CY//5OzmrRYig9cdZUCN?=
+ =?us-ascii?Q?cdwoYlph98AA2/f4EMhAuoIjAwTXZL56WiBjI+YbAMDZ6BLgheiMcwmR2S3i?=
+ =?us-ascii?Q?Vd7oj0yOl1KJbhjMen3MvqJ8z0ct6/pWlRe/d3IubSDo/FZdZt0uBshXQG8i?=
+ =?us-ascii?Q?Vmm4YMJL+uBXpqlaiAKnNkaYoE52b2uq47d2RFt6jeP36LHAh14eE8yhC1sQ?=
+ =?us-ascii?Q?fFTelNm9nA8a115gZDk8znuuw0NOgoDyrk8DzFCpKEXYcRiupj1r9IhFzZSX?=
+ =?us-ascii?Q?s0j5ChvMglXKmrj2TnqJM0r1eS2yfwOssUuBBiuvDcSMekt0tKktpqrcwkgI?=
+ =?us-ascii?Q?Z5rkU+LuvbDqqg/c91NIzncZakw228mCL/tKSbdqOJSKEaai3xeND93zzM01?=
+ =?us-ascii?Q?39dTlAaBzd8xFKbrdtyLy9tn6gLoVZHBD+swFWQuRBFW6uPAI7uLN+hYIX7a?=
+ =?us-ascii?Q?ey8GWKOQaZMgs8oGDYmHAXcUkgqDqswDKd2FLPp3hf8k+dnxY7TbnZEueWN9?=
+ =?us-ascii?Q?jZIeIR5xqyOOFfoNneIB89bo+zvEvm+U2ESNEFFVPS7iCXvFJr31ID7S4s/j?=
+ =?us-ascii?Q?9NHqT9yG871S6UCP2HMSA+mmVADfS8ZVw2G/R7Nvqt3hIQvwM9D6ipGafNG9?=
+ =?us-ascii?Q?RLNxb+KAsgsj90+y942KLoPp/lTSL2ptS1cxzl7IjLeTHviBxZYWZ+GUWTor?=
+ =?us-ascii?Q?U8X+22Fi7Z8ynuVg5rtR4sthWiR91JyA95TBqf8L0KyAKYqVgeRjyhZLOmP8?=
+ =?us-ascii?Q?bDfm0Jz9NkEIV8D0EoQRTe2mWgALkTJ++6cta0Ynxtq/xUJxgaNSKSEOk9sQ?=
+ =?us-ascii?Q?/2F5/ltpnjyaf5lXvzq/nHYlOlkfC4BQFYsxlwvqIWkcf2e4/mIE9tGeBnFq?=
+ =?us-ascii?Q?U80YD6ZSp6nI4W1yxvkQrCUqc+K/HdtSUavfL3SvYSVuMDL70EbMpsHrgNaw?=
+ =?us-ascii?Q?wRGs2d/Lm/1qljwcoCTVTltfQRauIcKmN0Pq8fhvcMnGqNRzjHQ4Po4RqAR/?=
+ =?us-ascii?Q?bhWVu7hEhvwxwtqaSXqB+V5ZEDvAO9vH0+EVRoAxG+MbuTQ2UgPorwLEdN3r?=
+ =?us-ascii?Q?U8I/NJVQKd6Sxks766C+BysMvKKQqguTdhHoSzTz+SDJpdSA4OrwGzQZb/+5?=
+ =?us-ascii?Q?QuZCxzm7EnJlKzM70q4iloatMeXkWVqOj004RNN7ohUMG5NrfcmtxFZnrLJH?=
+ =?us-ascii?Q?6qRw8NDXz9bHoAE+Jb5BPKwfCcbCZcGuK54006W2xBeBXfu003XqsMnWhk5k?=
+ =?us-ascii?Q?pyTpctg3tjRtjYyXs1bVAfOElU6nya63JYv/DdYw5+diFTKr/gHdiCH9jQZl?=
+ =?us-ascii?Q?PJFbT35TuULeBPzaDA8OWdrNMqNNApHJJ8Vtt1M9pdohKszLK2x48tJxcocV?=
+ =?us-ascii?Q?juow8C+1wRI/EzQIVfSN8UYtwzMa4NmFTnQD?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB11947.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(366016)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?42hE9ox9G9ArcYwqM1EnJXu0sZgkpFmSz3ywwcCvTbxbdelOjGINFuApUjU9?=
+ =?us-ascii?Q?vW3il3DLmIutM+jJxpA+YY09v09/Af4pU04fFy2lrEypYPcCkP7KK2QMJa24?=
+ =?us-ascii?Q?3+HgZ5pVcUNuWcWpDjpq6IElLig66mHmfOnMWprt1kcdv55GciV6E45QZjyr?=
+ =?us-ascii?Q?tN1zSkNfEkAauJigb06NzzzDH2d0JRJH7ZaKxnNoK2NQThpuzfVpkOXh39uA?=
+ =?us-ascii?Q?CC2Nufwtxd3PbfUfxjuQEto0nedmy/kxBO0KgdX0E5ol7FIO5jdT23LVXysp?=
+ =?us-ascii?Q?8rTHEZuDxuLEJ6IxHfbrZiM3pqoN//VmYM9kXfDCporCbc5grHI18IKqFGOE?=
+ =?us-ascii?Q?qAYMYfzjMy6ndFWmsTO8cVS1Hsz+0pM2XkdIEkDNCZnMru1MKFAKweZVjXdc?=
+ =?us-ascii?Q?kcggsHFL4EZgfTFTrp13M2jaCM+dbiuuPhxjqkmV80eyJ8W1mdjzP+aNptTF?=
+ =?us-ascii?Q?QdOO0leCc438WPGSI4JVt38faV6VU+YQ8QcW7GSOxbrHnbr8oBSg8WjBPlFq?=
+ =?us-ascii?Q?CrReBKb8xXInS3xKcSMPNwBnGZCBlIOdDCWurzzfpP8g1WtngxgcowsAFvWm?=
+ =?us-ascii?Q?k/AXl/KAdM0I1+A8a8xw21axzfVz/tLcR8YKXUTV3DVfWhnpZdeOLItAGRdK?=
+ =?us-ascii?Q?zh05Oa2HYw3fEpgzgrj4Iwdj4ZW73wJ7J924vH95H10pred+h/GwdbP2pZeu?=
+ =?us-ascii?Q?UDxRAvePEixQE+gIjxltXrIhz7tZF4TsWY5pTGJQBbzfa9MXcp/AAuaWfthR?=
+ =?us-ascii?Q?3EAnRgZGQxtVoeJivZkUf6ufj0ViY2Yn5eJIA3Na5qjwmFLPhUFcFHqj08F+?=
+ =?us-ascii?Q?55Ll0aCtrYZMcogmy6uiKLDvRqb+XKeU/uuc+wer27SECbaFDwgrh66I/Hbt?=
+ =?us-ascii?Q?nDJd93dzp9tMeUvXHBFSbBtlaz0szd+egvYFm3Rd8D7VaP5vIGCodsm/Ofyk?=
+ =?us-ascii?Q?G0H0cNaMzKf7NQBpIuBbSqTB35eH0QqlFc1cZvzsrNgH2IvP2VWt3BMyKFVQ?=
+ =?us-ascii?Q?h/x3up/QJHSrnkgGT6zXLYr8b83g8bSLLXkBWA6iOJyE3ePXDIutMxvzgB9R?=
+ =?us-ascii?Q?BU9rXdLFW6IWcy+ra5dYso6r1hl4aLQn2j+XzvY3kh7QxLjUujo2Ap89LDNL?=
+ =?us-ascii?Q?EsNCxQePOihLMd6/6aqgSwZYGO9PGUxPKavis/8MZ6lI6Gubj45b21+8A3Wk?=
+ =?us-ascii?Q?ivV1KFTzjp3rlLjUoRi8X59oWgHU1K5AN/vcJPEVg6Z2/qSE3vWGqy+WSCQV?=
+ =?us-ascii?Q?xCgoDBB4LpPXdtf8QRMT3EgJjq4EXMlZiI6kF3oLjAMjPmW+NCu7C48TLHjs?=
+ =?us-ascii?Q?/kwHgvmuOWdgWJUuLuhHnOBfuj8HfeuuBVGdh/clJ0DK7Wqxq1U5r+CF6xtp?=
+ =?us-ascii?Q?LuoM9EBi4Z6wauPDq3wk9VvEXVg2hFKCTaOau9otZ2nZj8PRfezywLosBCXl?=
+ =?us-ascii?Q?PK/QPPK/PYZtEb+NZbNKY+est3JzCLHOtuB5xGtDwE9GEZKZNtX6Xr08aRop?=
+ =?us-ascii?Q?FVDN1uCbr1mtZAC7wnaCh+GmKwUdjLaMdWaqpfp/7DUjycfHXUEYb3tc1aRt?=
+ =?us-ascii?Q?44oTcPSHy0IbdiluM00zMjsqNXioHxow/qqEpd+f0o9v5cFeXG6P4lfIz5Jn?=
+ =?us-ascii?Q?RrPHjhWX2x3T/cfCHDjSJk0=3D?=
+X-OriginatorOrg: bp.renesas.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 682a385c-fe24-40dc-3823-08de3975e4e1
+X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB11947.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Dec 2025 11:59:25.1949
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: z0JVHzCjVwTHeHFkXHQPVXi5X6uUq3L/cpywJzAJer64rWCuLCF8VxcAlxOU1mPt6Nlbjb2HI5qCr/J76KbE9F9muLQJDMHGggEkfIbO4Il142vJdzezSrnyyRslLeXB
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS9PR01MB16294
 
-Hi Ilya,
+Commit 53326135d0e0 ("i2c: riic: Add suspend/resume support") added
+suspend support for the Renesas I2C driver and following this change
+on RZ/G3E the following WARNING is seen on entering suspend ...
 
-kernel test robot noticed the following build warnings:
+[  134.275704] Freezing remaining freezable tasks completed (elapsed 0.001 seconds)
+[  134.285536] ------------[ cut here ]------------
+[  134.290298] i2c i2c-2: Transfer while suspended
+[  134.295174] WARNING: drivers/i2c/i2c-core.h:56 at __i2c_smbus_xfer+0x1e4/0x214, CPU#0: systemd-sleep/388
+[  134.365507] Tainted: [W]=WARN
+[  134.368485] Hardware name: Renesas SMARC EVK version 2 based on r9a09g047e57 (DT)
+[  134.375961] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[  134.382935] pc : __i2c_smbus_xfer+0x1e4/0x214
+[  134.387329] lr : __i2c_smbus_xfer+0x1e4/0x214
+[  134.391717] sp : ffff800083f23860
+[  134.395040] x29: ffff800083f23860 x28: 0000000000000000 x27: ffff800082ed5d60
+[  134.402226] x26: 0000001f4395fd74 x25: 0000000000000007 x24: 0000000000000001
+[  134.409408] x23: 0000000000000000 x22: 000000000000006f x21: ffff800083f23936
+[  134.416589] x20: ffff0000c090e140 x19: ffff0000c090e0d0 x18: 0000000000000006
+[  134.423771] x17: 6f63657320313030 x16: 2e30206465737061 x15: ffff800083f23280
+[  134.430953] x14: 0000000000000000 x13: ffff800082b16ce8 x12: 0000000000000f09
+[  134.438134] x11: 0000000000000503 x10: ffff800082b6ece8 x9 : ffff800082b16ce8
+[  134.445315] x8 : 00000000ffffefff x7 : ffff800082b6ece8 x6 : 80000000fffff000
+[  134.452495] x5 : 0000000000000504 x4 : 0000000000000000 x3 : 0000000000000000
+[  134.459672] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000c9ee9e80
+[  134.466851] Call trace:
+[  134.469311]  __i2c_smbus_xfer+0x1e4/0x214 (P)
+[  134.473715]  i2c_smbus_xfer+0xbc/0x120
+[  134.477507]  i2c_smbus_read_byte_data+0x4c/0x84
+[  134.482077]  isl1208_i2c_read_time+0x44/0x178 [rtc_isl1208]
+[  134.487703]  isl1208_rtc_read_time+0x14/0x20 [rtc_isl1208]
+[  134.493226]  __rtc_read_time+0x44/0x88
+[  134.497012]  rtc_read_time+0x3c/0x68
+[  134.500622]  rtc_suspend+0x9c/0x170
 
-[auto build test WARNING on net-next/main]
-[also build test WARNING on net/main linus/master v6.18 next-20251212]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+The warning is triggered because I2C transfers can still be attempted
+while the controller is already suspended, due to inappropriate ordering
+of the system sleep callbacks.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ilya-Krutskih/net-fealnx-fix-possible-card_idx-integer-overflow-in/20251212-013335
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/20251211173035.852756-1-devsec%40tpz.ru
-patch subject: [PATCH v2] net: fealnx: fix possible 'card_idx' integer overflow in
-config: alpha-allyesconfig (https://download.01.org/0day-ci/archive/20251212/202512121907.n3Bzh2zF-lkp@intel.com/config)
-compiler: alpha-linux-gcc (GCC) 15.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251212/202512121907.n3Bzh2zF-lkp@intel.com/reproduce)
+Fix this by moving the system sleep suspend/resume callbacks to the NOIRQ
+phase, ensuring the adapter is fully quiesced after late suspend and
+properly resumed before the early resume phase.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512121907.n3Bzh2zF-lkp@intel.com/
+To support NOIRQ resume, the hardware initialization path must not invoke
+runtime PM APIs. Split the init code so that the low-level hardware setup
+can be executed without pm_runtime_get/put(). This avoids violating the
+constraint introduced by commit 1e2ef05bb8cf ("PM: Limit race conditions
+between runtime PM and system sleep (v2)"), which forbids runtime PM
+calls during early resume.
 
-All warnings (new ones prefixed by >>):
+Cc: stable@vger.kernel.org
+Fixes: 53326135d0e0 ("i2c: riic: Add suspend/resume support")
+Signed-off-by: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
+---
+ drivers/i2c/busses/i2c-riic.c | 65 ++++++++++++++++++++++-------------
+ 1 file changed, 41 insertions(+), 24 deletions(-)
 
-   drivers/net/ethernet/fealnx.c: In function 'fealnx_init_one':
->> drivers/net/ethernet/fealnx.c:496:35: warning: '%d' directive writing between 1 and 11 bytes into a region of size 6 [-Wformat-overflow=]
-     496 |         sprintf(boardname, "fealnx%d", card_idx);
-         |                                   ^~
-   drivers/net/ethernet/fealnx.c:496:28: note: directive argument in the range [-2147483647, 2147483647]
-     496 |         sprintf(boardname, "fealnx%d", card_idx);
-         |                            ^~~~~~~~~~
-   drivers/net/ethernet/fealnx.c:496:9: note: 'sprintf' output between 8 and 18 bytes into a destination of size 12
-     496 |         sprintf(boardname, "fealnx%d", card_idx);
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-vim +496 drivers/net/ethernet/fealnx.c
-
-8f14820801042c Jakub Kicinski 2023-03-07  491  
-8626fa3323cd34 Ilya Krutskih  2025-12-11  492  	if (card_idx == INT_MAX)
-8626fa3323cd34 Ilya Krutskih  2025-12-11  493  		return -EINVAL;
-8626fa3323cd34 Ilya Krutskih  2025-12-11  494  	else
-8f14820801042c Jakub Kicinski 2023-03-07  495  		card_idx++;
-8f14820801042c Jakub Kicinski 2023-03-07 @496  	sprintf(boardname, "fealnx%d", card_idx);
-8f14820801042c Jakub Kicinski 2023-03-07  497  
-8f14820801042c Jakub Kicinski 2023-03-07  498  	option = card_idx < MAX_UNITS ? options[card_idx] : 0;
-8f14820801042c Jakub Kicinski 2023-03-07  499  
-8f14820801042c Jakub Kicinski 2023-03-07  500  	i = pci_enable_device(pdev);
-8f14820801042c Jakub Kicinski 2023-03-07  501  	if (i) return i;
-8f14820801042c Jakub Kicinski 2023-03-07  502  	pci_set_master(pdev);
-8f14820801042c Jakub Kicinski 2023-03-07  503  
-8f14820801042c Jakub Kicinski 2023-03-07  504  	len = pci_resource_len(pdev, bar);
-8f14820801042c Jakub Kicinski 2023-03-07  505  	if (len < MIN_REGION_SIZE) {
-8f14820801042c Jakub Kicinski 2023-03-07  506  		dev_err(&pdev->dev,
-8f14820801042c Jakub Kicinski 2023-03-07  507  			   "region size %ld too small, aborting\n", len);
-8f14820801042c Jakub Kicinski 2023-03-07  508  		return -ENODEV;
-8f14820801042c Jakub Kicinski 2023-03-07  509  	}
-8f14820801042c Jakub Kicinski 2023-03-07  510  
-8f14820801042c Jakub Kicinski 2023-03-07  511  	i = pci_request_regions(pdev, boardname);
-8f14820801042c Jakub Kicinski 2023-03-07  512  	if (i)
-8f14820801042c Jakub Kicinski 2023-03-07  513  		return i;
-8f14820801042c Jakub Kicinski 2023-03-07  514  
-8f14820801042c Jakub Kicinski 2023-03-07  515  	irq = pdev->irq;
-8f14820801042c Jakub Kicinski 2023-03-07  516  
-8f14820801042c Jakub Kicinski 2023-03-07  517  	ioaddr = pci_iomap(pdev, bar, len);
-8f14820801042c Jakub Kicinski 2023-03-07  518  	if (!ioaddr) {
-8f14820801042c Jakub Kicinski 2023-03-07  519  		err = -ENOMEM;
-8f14820801042c Jakub Kicinski 2023-03-07  520  		goto err_out_res;
-8f14820801042c Jakub Kicinski 2023-03-07  521  	}
-8f14820801042c Jakub Kicinski 2023-03-07  522  
-8f14820801042c Jakub Kicinski 2023-03-07  523  	dev = alloc_etherdev(sizeof(struct netdev_private));
-8f14820801042c Jakub Kicinski 2023-03-07  524  	if (!dev) {
-8f14820801042c Jakub Kicinski 2023-03-07  525  		err = -ENOMEM;
-8f14820801042c Jakub Kicinski 2023-03-07  526  		goto err_out_unmap;
-8f14820801042c Jakub Kicinski 2023-03-07  527  	}
-8f14820801042c Jakub Kicinski 2023-03-07  528  	SET_NETDEV_DEV(dev, &pdev->dev);
-8f14820801042c Jakub Kicinski 2023-03-07  529  
-8f14820801042c Jakub Kicinski 2023-03-07  530  	/* read ethernet id */
-8f14820801042c Jakub Kicinski 2023-03-07  531  	for (i = 0; i < 6; ++i)
-8f14820801042c Jakub Kicinski 2023-03-07  532  		addr[i] = ioread8(ioaddr + PAR0 + i);
-8f14820801042c Jakub Kicinski 2023-03-07  533  	eth_hw_addr_set(dev, addr);
-8f14820801042c Jakub Kicinski 2023-03-07  534  
-8f14820801042c Jakub Kicinski 2023-03-07  535  	/* Reset the chip to erase previous misconfiguration. */
-8f14820801042c Jakub Kicinski 2023-03-07  536  	iowrite32(0x00000001, ioaddr + BCR);
-8f14820801042c Jakub Kicinski 2023-03-07  537  
-8f14820801042c Jakub Kicinski 2023-03-07  538  	/* Make certain the descriptor lists are aligned. */
-8f14820801042c Jakub Kicinski 2023-03-07  539  	np = netdev_priv(dev);
-8f14820801042c Jakub Kicinski 2023-03-07  540  	np->mem = ioaddr;
-8f14820801042c Jakub Kicinski 2023-03-07  541  	spin_lock_init(&np->lock);
-8f14820801042c Jakub Kicinski 2023-03-07  542  	np->pci_dev = pdev;
-8f14820801042c Jakub Kicinski 2023-03-07  543  	np->flags = skel_netdrv_tbl[chip_id].flags;
-8f14820801042c Jakub Kicinski 2023-03-07  544  	pci_set_drvdata(pdev, dev);
-8f14820801042c Jakub Kicinski 2023-03-07  545  	np->mii.dev = dev;
-8f14820801042c Jakub Kicinski 2023-03-07  546  	np->mii.mdio_read = mdio_read;
-8f14820801042c Jakub Kicinski 2023-03-07  547  	np->mii.mdio_write = mdio_write;
-8f14820801042c Jakub Kicinski 2023-03-07  548  	np->mii.phy_id_mask = 0x1f;
-8f14820801042c Jakub Kicinski 2023-03-07  549  	np->mii.reg_num_mask = 0x1f;
-8f14820801042c Jakub Kicinski 2023-03-07  550  
-8f14820801042c Jakub Kicinski 2023-03-07  551  	ring_space = dma_alloc_coherent(&pdev->dev, RX_TOTAL_SIZE, &ring_dma,
-8f14820801042c Jakub Kicinski 2023-03-07  552  					GFP_KERNEL);
-8f14820801042c Jakub Kicinski 2023-03-07  553  	if (!ring_space) {
-8f14820801042c Jakub Kicinski 2023-03-07  554  		err = -ENOMEM;
-8f14820801042c Jakub Kicinski 2023-03-07  555  		goto err_out_free_dev;
-8f14820801042c Jakub Kicinski 2023-03-07  556  	}
-8f14820801042c Jakub Kicinski 2023-03-07  557  	np->rx_ring = ring_space;
-8f14820801042c Jakub Kicinski 2023-03-07  558  	np->rx_ring_dma = ring_dma;
-8f14820801042c Jakub Kicinski 2023-03-07  559  
-8f14820801042c Jakub Kicinski 2023-03-07  560  	ring_space = dma_alloc_coherent(&pdev->dev, TX_TOTAL_SIZE, &ring_dma,
-8f14820801042c Jakub Kicinski 2023-03-07  561  					GFP_KERNEL);
-8f14820801042c Jakub Kicinski 2023-03-07  562  	if (!ring_space) {
-8f14820801042c Jakub Kicinski 2023-03-07  563  		err = -ENOMEM;
-8f14820801042c Jakub Kicinski 2023-03-07  564  		goto err_out_free_rx;
-8f14820801042c Jakub Kicinski 2023-03-07  565  	}
-8f14820801042c Jakub Kicinski 2023-03-07  566  	np->tx_ring = ring_space;
-8f14820801042c Jakub Kicinski 2023-03-07  567  	np->tx_ring_dma = ring_dma;
-8f14820801042c Jakub Kicinski 2023-03-07  568  
-8f14820801042c Jakub Kicinski 2023-03-07  569  	/* find the connected MII xcvrs */
-8f14820801042c Jakub Kicinski 2023-03-07  570  	if (np->flags == HAS_MII_XCVR) {
-8f14820801042c Jakub Kicinski 2023-03-07  571  		int phy, phy_idx = 0;
-8f14820801042c Jakub Kicinski 2023-03-07  572  
-8f14820801042c Jakub Kicinski 2023-03-07  573  		for (phy = 1; phy < 32 && phy_idx < ARRAY_SIZE(np->phys);
-8f14820801042c Jakub Kicinski 2023-03-07  574  			       phy++) {
-8f14820801042c Jakub Kicinski 2023-03-07  575  			int mii_status = mdio_read(dev, phy, 1);
-8f14820801042c Jakub Kicinski 2023-03-07  576  
-8f14820801042c Jakub Kicinski 2023-03-07  577  			if (mii_status != 0xffff && mii_status != 0x0000) {
-8f14820801042c Jakub Kicinski 2023-03-07  578  				np->phys[phy_idx++] = phy;
-8f14820801042c Jakub Kicinski 2023-03-07  579  				dev_info(&pdev->dev,
-8f14820801042c Jakub Kicinski 2023-03-07  580  				       "MII PHY found at address %d, status "
-8f14820801042c Jakub Kicinski 2023-03-07  581  				       "0x%4.4x.\n", phy, mii_status);
-8f14820801042c Jakub Kicinski 2023-03-07  582  				/* get phy type */
-8f14820801042c Jakub Kicinski 2023-03-07  583  				{
-8f14820801042c Jakub Kicinski 2023-03-07  584  					unsigned int data;
-8f14820801042c Jakub Kicinski 2023-03-07  585  
-8f14820801042c Jakub Kicinski 2023-03-07  586  					data = mdio_read(dev, np->phys[0], 2);
-8f14820801042c Jakub Kicinski 2023-03-07  587  					if (data == SeeqPHYID0)
-8f14820801042c Jakub Kicinski 2023-03-07  588  						np->PHYType = SeeqPHY;
-8f14820801042c Jakub Kicinski 2023-03-07  589  					else if (data == AhdocPHYID0)
-8f14820801042c Jakub Kicinski 2023-03-07  590  						np->PHYType = AhdocPHY;
-8f14820801042c Jakub Kicinski 2023-03-07  591  					else if (data == MarvellPHYID0)
-8f14820801042c Jakub Kicinski 2023-03-07  592  						np->PHYType = MarvellPHY;
-8f14820801042c Jakub Kicinski 2023-03-07  593  					else if (data == MysonPHYID0)
-8f14820801042c Jakub Kicinski 2023-03-07  594  						np->PHYType = Myson981;
-8f14820801042c Jakub Kicinski 2023-03-07  595  					else if (data == LevelOnePHYID0)
-8f14820801042c Jakub Kicinski 2023-03-07  596  						np->PHYType = LevelOnePHY;
-8f14820801042c Jakub Kicinski 2023-03-07  597  					else
-8f14820801042c Jakub Kicinski 2023-03-07  598  						np->PHYType = OtherPHY;
-8f14820801042c Jakub Kicinski 2023-03-07  599  				}
-8f14820801042c Jakub Kicinski 2023-03-07  600  			}
-8f14820801042c Jakub Kicinski 2023-03-07  601  		}
-8f14820801042c Jakub Kicinski 2023-03-07  602  
-8f14820801042c Jakub Kicinski 2023-03-07  603  		np->mii_cnt = phy_idx;
-8f14820801042c Jakub Kicinski 2023-03-07  604  		if (phy_idx == 0)
-8f14820801042c Jakub Kicinski 2023-03-07  605  			dev_warn(&pdev->dev,
-8f14820801042c Jakub Kicinski 2023-03-07  606  				"MII PHY not found -- this device may "
-8f14820801042c Jakub Kicinski 2023-03-07  607  			       "not operate correctly.\n");
-8f14820801042c Jakub Kicinski 2023-03-07  608  	} else {
-8f14820801042c Jakub Kicinski 2023-03-07  609  		np->phys[0] = 32;
-8f14820801042c Jakub Kicinski 2023-03-07  610  /* 89/6/23 add, (begin) */
-8f14820801042c Jakub Kicinski 2023-03-07  611  		/* get phy type */
-8f14820801042c Jakub Kicinski 2023-03-07  612  		if (ioread32(ioaddr + PHYIDENTIFIER) == MysonPHYID)
-8f14820801042c Jakub Kicinski 2023-03-07  613  			np->PHYType = MysonPHY;
-8f14820801042c Jakub Kicinski 2023-03-07  614  		else
-8f14820801042c Jakub Kicinski 2023-03-07  615  			np->PHYType = OtherPHY;
-8f14820801042c Jakub Kicinski 2023-03-07  616  	}
-8f14820801042c Jakub Kicinski 2023-03-07  617  	np->mii.phy_id = np->phys[0];
-8f14820801042c Jakub Kicinski 2023-03-07  618  
-8f14820801042c Jakub Kicinski 2023-03-07  619  	if (dev->mem_start)
-8f14820801042c Jakub Kicinski 2023-03-07  620  		option = dev->mem_start;
-8f14820801042c Jakub Kicinski 2023-03-07  621  
-8f14820801042c Jakub Kicinski 2023-03-07  622  	/* The lower four bits are the media type. */
-8f14820801042c Jakub Kicinski 2023-03-07  623  	if (option > 0) {
-8f14820801042c Jakub Kicinski 2023-03-07  624  		if (option & 0x200)
-8f14820801042c Jakub Kicinski 2023-03-07  625  			np->mii.full_duplex = 1;
-8f14820801042c Jakub Kicinski 2023-03-07  626  		np->default_port = option & 15;
-8f14820801042c Jakub Kicinski 2023-03-07  627  	}
-8f14820801042c Jakub Kicinski 2023-03-07  628  
-8f14820801042c Jakub Kicinski 2023-03-07  629  	if (card_idx < MAX_UNITS && full_duplex[card_idx] > 0)
-8f14820801042c Jakub Kicinski 2023-03-07  630  		np->mii.full_duplex = full_duplex[card_idx];
-8f14820801042c Jakub Kicinski 2023-03-07  631  
-8f14820801042c Jakub Kicinski 2023-03-07  632  	if (np->mii.full_duplex) {
-8f14820801042c Jakub Kicinski 2023-03-07  633  		dev_info(&pdev->dev, "Media type forced to Full Duplex.\n");
-8f14820801042c Jakub Kicinski 2023-03-07  634  /* 89/6/13 add, (begin) */
-8f14820801042c Jakub Kicinski 2023-03-07  635  //      if (np->PHYType==MarvellPHY)
-8f14820801042c Jakub Kicinski 2023-03-07  636  		if ((np->PHYType == MarvellPHY) || (np->PHYType == LevelOnePHY)) {
-8f14820801042c Jakub Kicinski 2023-03-07  637  			unsigned int data;
-8f14820801042c Jakub Kicinski 2023-03-07  638  
-8f14820801042c Jakub Kicinski 2023-03-07  639  			data = mdio_read(dev, np->phys[0], 9);
-8f14820801042c Jakub Kicinski 2023-03-07  640  			data = (data & 0xfcff) | 0x0200;
-8f14820801042c Jakub Kicinski 2023-03-07  641  			mdio_write(dev, np->phys[0], 9, data);
-8f14820801042c Jakub Kicinski 2023-03-07  642  		}
-8f14820801042c Jakub Kicinski 2023-03-07  643  /* 89/6/13 add, (end) */
-8f14820801042c Jakub Kicinski 2023-03-07  644  		if (np->flags == HAS_MII_XCVR)
-8f14820801042c Jakub Kicinski 2023-03-07  645  			mdio_write(dev, np->phys[0], MII_ADVERTISE, ADVERTISE_FULL);
-8f14820801042c Jakub Kicinski 2023-03-07  646  		else
-8f14820801042c Jakub Kicinski 2023-03-07  647  			iowrite32(ADVERTISE_FULL, ioaddr + ANARANLPAR);
-8f14820801042c Jakub Kicinski 2023-03-07  648  		np->mii.force_media = 1;
-8f14820801042c Jakub Kicinski 2023-03-07  649  	}
-8f14820801042c Jakub Kicinski 2023-03-07  650  
-8f14820801042c Jakub Kicinski 2023-03-07  651  	dev->netdev_ops = &netdev_ops;
-8f14820801042c Jakub Kicinski 2023-03-07  652  	dev->ethtool_ops = &netdev_ethtool_ops;
-8f14820801042c Jakub Kicinski 2023-03-07  653  	dev->watchdog_timeo = TX_TIMEOUT;
-8f14820801042c Jakub Kicinski 2023-03-07  654  
-8f14820801042c Jakub Kicinski 2023-03-07  655  	err = register_netdev(dev);
-8f14820801042c Jakub Kicinski 2023-03-07  656  	if (err)
-8f14820801042c Jakub Kicinski 2023-03-07  657  		goto err_out_free_tx;
-8f14820801042c Jakub Kicinski 2023-03-07  658  
-8f14820801042c Jakub Kicinski 2023-03-07  659  	printk(KERN_INFO "%s: %s at %p, %pM, IRQ %d.\n",
-8f14820801042c Jakub Kicinski 2023-03-07  660  	       dev->name, skel_netdrv_tbl[chip_id].chip_name, ioaddr,
-8f14820801042c Jakub Kicinski 2023-03-07  661  	       dev->dev_addr, irq);
-8f14820801042c Jakub Kicinski 2023-03-07  662  
-8f14820801042c Jakub Kicinski 2023-03-07  663  	return 0;
-8f14820801042c Jakub Kicinski 2023-03-07  664  
-8f14820801042c Jakub Kicinski 2023-03-07  665  err_out_free_tx:
-8f14820801042c Jakub Kicinski 2023-03-07  666  	dma_free_coherent(&pdev->dev, TX_TOTAL_SIZE, np->tx_ring,
-8f14820801042c Jakub Kicinski 2023-03-07  667  			  np->tx_ring_dma);
-8f14820801042c Jakub Kicinski 2023-03-07  668  err_out_free_rx:
-8f14820801042c Jakub Kicinski 2023-03-07  669  	dma_free_coherent(&pdev->dev, RX_TOTAL_SIZE, np->rx_ring,
-8f14820801042c Jakub Kicinski 2023-03-07  670  			  np->rx_ring_dma);
-8f14820801042c Jakub Kicinski 2023-03-07  671  err_out_free_dev:
-8f14820801042c Jakub Kicinski 2023-03-07  672  	free_netdev(dev);
-8f14820801042c Jakub Kicinski 2023-03-07  673  err_out_unmap:
-8f14820801042c Jakub Kicinski 2023-03-07  674  	pci_iounmap(pdev, ioaddr);
-8f14820801042c Jakub Kicinski 2023-03-07  675  err_out_res:
-8f14820801042c Jakub Kicinski 2023-03-07  676  	pci_release_regions(pdev);
-8f14820801042c Jakub Kicinski 2023-03-07  677  	return err;
-8f14820801042c Jakub Kicinski 2023-03-07  678  }
-8f14820801042c Jakub Kicinski 2023-03-07  679  
-
+diff --git a/drivers/i2c/busses/i2c-riic.c b/drivers/i2c/busses/i2c-riic.c
+index 3e8f126cb7f7..9acc8936cdf7 100644
+--- a/drivers/i2c/busses/i2c-riic.c
++++ b/drivers/i2c/busses/i2c-riic.c
+@@ -349,9 +349,8 @@ static const struct i2c_algorithm riic_algo = {
+ 	.functionality = riic_func,
+ };
+ 
+-static int riic_init_hw(struct riic_dev *riic)
++static int __riic_init_hw(struct riic_dev *riic)
+ {
+-	int ret;
+ 	unsigned long rate;
+ 	unsigned long ns_per_tick;
+ 	int total_ticks, cks, brl, brh;
+@@ -431,10 +430,6 @@ static int riic_init_hw(struct riic_dev *riic)
+ 		 rate / total_ticks, ((brl + 3) * 100) / (brl + brh + 6),
+ 		 t->scl_fall_ns / ns_per_tick, t->scl_rise_ns / ns_per_tick, cks, brl, brh);
+ 
+-	ret = pm_runtime_resume_and_get(dev);
+-	if (ret)
+-		return ret;
+-
+ 	/* Changing the order of accessing IICRST and ICE may break things! */
+ 	riic_writeb(riic, ICCR1_IICRST | ICCR1_SOWP, RIIC_ICCR1);
+ 	riic_clear_set_bit(riic, 0, ICCR1_ICE, RIIC_ICCR1);
+@@ -451,10 +446,25 @@ static int riic_init_hw(struct riic_dev *riic)
+ 
+ 	riic_clear_set_bit(riic, ICCR1_IICRST, 0, RIIC_ICCR1);
+ 
+-	pm_runtime_put_autosuspend(dev);
+ 	return 0;
+ }
+ 
++static int riic_init_hw(struct riic_dev *riic)
++{
++	struct device *dev = riic->adapter.dev.parent;
++	int ret;
++
++	ret = pm_runtime_resume_and_get(dev);
++	if (ret)
++		return ret;
++
++	ret = __riic_init_hw(riic);
++
++	pm_runtime_put_autosuspend(dev);
++
++	return ret;
++}
++
+ static int riic_get_scl(struct i2c_adapter *adap)
+ {
+ 	struct riic_dev *riic = i2c_get_adapdata(adap);
+@@ -572,6 +582,8 @@ static int riic_i2c_probe(struct platform_device *pdev)
+ 
+ 	i2c_parse_fw_timings(dev, &riic->i2c_t, true);
+ 
++	platform_set_drvdata(pdev, riic);
++
+ 	/* Default 0 to save power. Can be overridden via sysfs for lower latency. */
+ 	pm_runtime_set_autosuspend_delay(dev, 0);
+ 	pm_runtime_use_autosuspend(dev);
+@@ -585,8 +597,6 @@ static int riic_i2c_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto out;
+ 
+-	platform_set_drvdata(pdev, riic);
+-
+ 	dev_info(dev, "registered with %dHz bus speed\n", riic->i2c_t.bus_freq_hz);
+ 	return 0;
+ 
+@@ -668,27 +678,17 @@ static const struct riic_of_data riic_rz_t2h_info = {
+ 	.num_irqs = ARRAY_SIZE(riic_rzt2h_irqs),
+ };
+ 
+-static int riic_i2c_suspend(struct device *dev)
++static int riic_i2c_runtime_suspend(struct device *dev)
+ {
+ 	struct riic_dev *riic = dev_get_drvdata(dev);
+-	int ret;
+-
+-	ret = pm_runtime_resume_and_get(dev);
+-	if (ret)
+-		return ret;
+-
+-	i2c_mark_adapter_suspended(&riic->adapter);
+ 
+ 	/* Disable output on SDA, SCL pins. */
+ 	riic_clear_set_bit(riic, ICCR1_ICE, 0, RIIC_ICCR1);
+ 
+-	pm_runtime_mark_last_busy(dev);
+-	pm_runtime_put_sync(dev);
+-
+ 	return reset_control_assert(riic->rstc);
+ }
+ 
+-static int riic_i2c_resume(struct device *dev)
++static int riic_i2c_runtime_resume(struct device *dev)
+ {
+ 	struct riic_dev *riic = dev_get_drvdata(dev);
+ 	int ret;
+@@ -697,7 +697,7 @@ static int riic_i2c_resume(struct device *dev)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = riic_init_hw(riic);
++	ret = __riic_init_hw(riic);
+ 	if (ret) {
+ 		/*
+ 		 * In case this happens there is no way to recover from this
+@@ -708,13 +708,30 @@ static int riic_i2c_resume(struct device *dev)
+ 		return ret;
+ 	}
+ 
++	return 0;
++}
++
++static int riic_i2c_suspend(struct device *dev)
++{
++	struct riic_dev *riic = dev_get_drvdata(dev);
++
++	i2c_mark_adapter_suspended(&riic->adapter);
++
++	return pm_runtime_force_suspend(dev);
++}
++
++static int riic_i2c_resume(struct device *dev)
++{
++	struct riic_dev *riic = dev_get_drvdata(dev);
++
+ 	i2c_mark_adapter_resumed(&riic->adapter);
+ 
+-	return 0;
++	return pm_runtime_force_resume(dev);
+ }
+ 
+ static const struct dev_pm_ops riic_i2c_pm_ops = {
+-	SYSTEM_SLEEP_PM_OPS(riic_i2c_suspend, riic_i2c_resume)
++	NOIRQ_SYSTEM_SLEEP_PM_OPS(riic_i2c_suspend, riic_i2c_resume)
++	RUNTIME_PM_OPS(riic_i2c_runtime_suspend, riic_i2c_runtime_resume, NULL)
+ };
+ 
+ static const struct of_device_id riic_i2c_dt_ids[] = {
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.43.0
+
 
