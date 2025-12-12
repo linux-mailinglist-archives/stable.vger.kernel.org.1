@@ -1,221 +1,195 @@
-Return-Path: <stable+bounces-200867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6003ACB8060
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 07:13:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A18ECB80E6
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 07:49:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 33E57306116B
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 06:12:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8D8E8304BDB0
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 06:49:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F276729BDBB;
-	Fri, 12 Dec 2025 06:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A9FC308F00;
+	Fri, 12 Dec 2025 06:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A+thnrQ9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SNywqCtl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF9630E0D2;
-	Fri, 12 Dec 2025 06:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AA611F130B;
+	Fri, 12 Dec 2025 06:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765519961; cv=none; b=t095qjhmz4Lzs6CgxPvcnt6yBJ2J8bWfAT+IaeJ8UlgmWM4GPvQQ4wQh9h9hkLPwuR+Ywiyv8hLMAwidaaWPHagJyBlXb7QVZpUq0QvAeCdHo6zNz0zchb2RgPF1NHriYGJBRYonFtnUQdHHNbcNIqmLzCLuOFixKawoHynwl5U=
+	t=1765522184; cv=none; b=DRRtU0/ZxYkEI66K8iPJTNdd6zhiEHcTLdkmict3BPMINRlF3Dvb+lxn/xJrK0WaW0Bh3mspxjQgCCjIkaSabSoyrh1K29Yj1JhvGrdPvuGqigf4YgDRA3x0sUXYPYBqKNQn0p3/cLZaT3gapCXPbfSpypcITYMvCbDV5CPcInY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765519961; c=relaxed/simple;
-	bh=ljan1ta1tpReQppEriQNMwsDTnAwg7mPLf4iQytvmyg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CSRoBYL2Q/d5V79YA+jKIhIrI0dLk8Vhd2gZtxFPofiqF61TktTsSflTY7BmqFiUmp7S2roH2PU/Tt43oWFeZRkZsOh5259OiCbCLx/1EC54TeBneMdEMhUKDxAVxZMG80paAQQIwXhNE16HRQcLHfIQEEG7paWtdRrOyyScyXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A+thnrQ9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B628C116B1;
-	Fri, 12 Dec 2025 06:12:39 +0000 (UTC)
+	s=arc-20240116; t=1765522184; c=relaxed/simple;
+	bh=CrmDTzoQQxRCJy5+Z9nm+Lb/SZ8a3k90tvdg8i8DU3k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=edQdpUNGRoptc3vv+MUroad5xf5af7d2oDjU1v/XrY5J4F6RwJzS7rGsfKq8wkaQcTW3q8gDsTDfNa2sF4aTjX5SdRuKscBcf1OJiMnB3AdYf0i2g2lJq1X7sitKQ2xRfO5SuDVgy7dfYeUHHikeruFP0SHHH39UDTRiLttoF9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SNywqCtl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 778A4C4CEF1;
+	Fri, 12 Dec 2025 06:49:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765519961;
-	bh=ljan1ta1tpReQppEriQNMwsDTnAwg7mPLf4iQytvmyg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A+thnrQ9LKiG3xUWRcqLYyDZJIx4aCqSGAzMwFc0BwVfha5IiQDarAs/dlzg5jQhW
-	 aqi3NHIneWgKvRWkMhoX6A2hClvpA+EnFjymnLFhPjI6XDZrenN0yeiudiRO408wq7
-	 I+kcYqzxL0eVEONhDpRCYcxCBoGMgvkInQgHdPq1dqENREMqZjuO0Ls67TyHTLyVCL
-	 WAYBjyywkvSBtk4ef8CoQ+WDqV8bxW1//xAKpUnS7oYWZRiqLieozDwg4z6qhbKitF
-	 zSC/VPwmBGaFDvZnVXuxCqFCBnBG5tq/bc4FX4CMhMrfbJ/sz13uhbUsX2An7YxW/H
-	 z/VNGRiQlggDQ==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Mikulas Patocka <mpatocka@redhat.com>,
-	Guangwu Zhang <guazhang@redhat.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	agk@redhat.com,
-	snitzer@kernel.org,
-	bmarzins@redhat.com,
-	dm-devel@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.18-6.17] dm-verity: disable recursive forward error correction
-Date: Fri, 12 Dec 2025 01:12:15 -0500
-Message-ID: <20251212061223.305139-5-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251212061223.305139-1-sashal@kernel.org>
-References: <20251212061223.305139-1-sashal@kernel.org>
+	s=k20201202; t=1765522183;
+	bh=CrmDTzoQQxRCJy5+Z9nm+Lb/SZ8a3k90tvdg8i8DU3k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SNywqCtlcKtwRTKkxXfi1uPMU+u6Sga0XmZrU1Zq9JRBzAHg0jKtZmRrrBIa5o9DH
+	 Jg6ml2y0YYRY1ciZXl5aoIeVix1POyFJ2NT+Gh4iU1T2YsYi0SeOWyBBhE2Xcz2qDQ
+	 uCvYlCXr6/am2D3DW3xZUkAlQq3lWgQtte9r1JFh3o3rBnTHWXm0jBv1GpccQHNCXG
+	 VHPz/5Q1MQa/sxTKgI0mtsrjGnKo503Nnk0I2tVvyqQEMoXOcbU5H3FRORlgP0LrHL
+	 BNZQQAbD+OCP3bse1ho+qoqs9rKCTclCIhpYnZAuG07MhCocFwuoaycdJE6rHrRcAP
+	 IoKFGX2DeUFTA==
+Received: by venus (Postfix, from userid 1000)
+	id DF37D181F29; Fri, 12 Dec 2025 15:49:41 +0900 (JST)
+Date: Fri, 12 Dec 2025 15:49:41 +0900
+From: Sebastian Reichel <sre@kernel.org>
+To: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Cc: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
+	linux-leds@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] leds: led-class: Only Add LED to leds_list when it is
+ fully ready
+Message-ID: <2bbtf7out2t52pge4hezfc7dryu6te2qstfm5kzez7zrw3dvqq@wxvqnjbulxc4>
+References: <20251211163727.366441-1-johannes.goede@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.18
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="uykfwaownruc6xph"
+Content-Disposition: inline
+In-Reply-To: <20251211163727.366441-1-johannes.goede@oss.qualcomm.com>
 
-From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit d9f3e47d3fae0c101d9094bc956ed24e7a0ee801 ]
+--uykfwaownruc6xph
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] leds: led-class: Only Add LED to leds_list when it is
+ fully ready
+MIME-Version: 1.0
 
-There are two problems with the recursive correction:
+Hi,
 
-1. It may cause denial-of-service. In fec_read_bufs, there is a loop that
-has 253 iterations. For each iteration, we may call verity_hash_for_block
-recursively. There is a limit of 4 nested recursions - that means that
-there may be at most 253^4 (4 billion) iterations. Red Hat QE team
-actually created an image that pushes dm-verity to this limit - and this
-image just makes the udev-worker process get stuck in the 'D' state.
+On Thu, Dec 11, 2025 at 05:37:27PM +0100, Hans de Goede wrote:
+> Before this change the LED was added to leds_list before led_init_core()
+> gets called adding it the list before led_classdev.set_brightness_work ge=
+ts
+> initialized.
+>=20
+> This leaves a window where led_trigger_register() of a LED's default
+> trigger will call led_trigger_set() which calls led_set_brightness()
+> which in turn will end up queueing the *uninitialized*
+> led_classdev.set_brightness_work.
+>=20
+> This race gets hit by the lenovo-thinkpad-t14s EC driver which registers
+> 2 LEDs with a default trigger provided by snd_ctl_led.ko in quick
+> succession. The first led_classdev_register() causes an async modprobe of
+> snd_ctl_led to run and that async modprobe manages to exactly hit
+> the window where the second LED is on the leds_list without led_init_core=
+()
+> being called for it, resulting in:
+>=20
+>  ------------[ cut here ]------------
+>  WARNING: CPU: 11 PID: 5608 at kernel/workqueue.c:4234 __flush_work+0x344=
+/0x390
+>  Hardware name: LENOVO 21N2S01F0B/21N2S01F0B, BIOS N42ET93W (2.23 ) 09/01=
+/2025
+>  ...
+>  Call trace:
+>   __flush_work+0x344/0x390 (P)
+>   flush_work+0x2c/0x50
+>   led_trigger_set+0x1c8/0x340
+>   led_trigger_register+0x17c/0x1c0
+>   led_trigger_register_simple+0x84/0xe8
+>   snd_ctl_led_init+0x40/0xf88 [snd_ctl_led]
+>   do_one_initcall+0x5c/0x318
+>   do_init_module+0x9c/0x2b8
+>   load_module+0x7e0/0x998
+>=20
+> Close the race window by moving the adding of the LED to leds_list to
+> after the led_init_core() call.
+>=20
+> Cc: Sebastian Reichel <sre@kernel.org>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+> ---
 
-2. It doesn't work. In fec_read_bufs we store data into the variable
-"fio->bufs", but fio bufs is shared between recursive invocations, if
-"verity_hash_for_block" invoked correction recursively, it would
-overwrite partially filled fio->bufs.
+heh, I've never hit this. But I guess that is not too surprising
+considering it is a race condition. The change looks good to me:
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Reported-by: Guangwu Zhang <guazhang@redhat.com>
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
-Reviewed-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
+Reviewed-by: Sebastian Reichel <sre@kernel.org>
 
-LLM Generated explanations, may be completely bogus:
+> Note no Fixes tag as this problem has been around for a long long time,
+> so I could not really find a good commit for the Fixes tag.
 
-## Summary and Recommendation
+My suggestion would be:
 
-### What Problem This Commit Solves
+Fixes: d23a22a74fde ("leds: delay led_set_brightness if stopping soft-blink=
+")
 
-This commit fixes **two critical bugs** in dm-verity's Forward Error
-Correction (FEC):
+It introduces the set_brightness_work with the INIT_WORK at the
+wrong position (after the list addition).
 
-1. **Denial-of-Service vulnerability**: The recursive FEC allows 4
-   levels of nesting with 253 iterations per level, resulting in up to
-   253^4 (~4 billion) potential iterations. Red Hat QE demonstrated this
-   causes the `udev-worker` process to hang in uninterruptible 'D'
-   state.
+Greetings,
 
-2. **Data corruption bug**: The `fio->bufs` buffer is shared across all
-   recursion levels. When `verity_hash_for_block` triggers nested FEC
-   correction, it corrupts partially-filled buffers from outer levels.
-   The recursive FEC feature fundamentally doesn't work.
+-- Sebastian
 
-### Stable Kernel Criteria Assessment
+>  drivers/leds/led-class.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/drivers/leds/led-class.c b/drivers/leds/led-class.c
+> index f3faf37f9a08..6b9fa060c3a1 100644
+> --- a/drivers/leds/led-class.c
+> +++ b/drivers/leds/led-class.c
+> @@ -560,11 +560,6 @@ int led_classdev_register_ext(struct device *parent,
+>  #ifdef CONFIG_LEDS_BRIGHTNESS_HW_CHANGED
+>  	led_cdev->brightness_hw_changed =3D -1;
+>  #endif
+> -	/* add to the list of leds */
+> -	down_write(&leds_list_lock);
+> -	list_add_tail(&led_cdev->node, &leds_list);
+> -	up_write(&leds_list_lock);
+> -
+>  	if (!led_cdev->max_brightness)
+>  		led_cdev->max_brightness =3D LED_FULL;
+> =20
+> @@ -574,6 +569,11 @@ int led_classdev_register_ext(struct device *parent,
+> =20
+>  	led_init_core(led_cdev);
+> =20
+> +	/* add to the list of leds */
+> +	down_write(&leds_list_lock);
+> +	list_add_tail(&led_cdev->node, &leds_list);
+> +	up_write(&leds_list_lock);
+> +
+>  #ifdef CONFIG_LEDS_TRIGGERS
+>  	led_trigger_set_default(led_cdev);
+>  #endif
+> --=20
+> 2.52.0
+>=20
 
-| Criterion | Assessment |
-|-----------|------------|
-| Obviously correct | ✅ YES - Simple condition change that completely
-disables broken recursion |
-| Fixes real bug | ✅ YES - DoS and data corruption, reproducible by Red
-Hat QE |
-| Important issue | ✅ YES - System hang (DoS), affects
-Android/Chromebook verified boot |
-| Small and contained | ✅ YES - ~20 lines across 3 files, removes code
-rather than adding |
-| No new features | ✅ YES - Removes broken functionality |
+--uykfwaownruc6xph
+Content-Type: application/pgp-signature; name="signature.asc"
 
-### Risk vs Benefit Analysis
+-----BEGIN PGP SIGNATURE-----
 
-**Benefits:**
-- Eliminates a system-hang DoS vulnerability
-- Fixes a data corruption bug in FEC recovery
-- Affects widely-deployed dm-verity users (Android, Chromebooks,
-  verified boot systems)
-- Conservative fix - disables broken feature rather than complex repair
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmk7uwIACgkQ2O7X88g7
++po8rg//d5gOPEOwSFGmAlHdij3xR/FUKgkZ69TkzTLTMkx3VtBPY/LZjzV4rb6P
+JkQpYVZNqF42LbiiDIci63Yx4Li486p3e94+pc8smMv6vN8BlIhdhp/wrFgqr6kl
+PeVxt6EipfC68RynIIPp7LIiIk0Gmaj002l04S/ml7QSd9hCpTCu3505bLm3UguV
++VmnkHsX++VkClOiP8iICTo02tJxqUCrCErLdEEvToKrnslIqF27rWWQIUTzo2C3
+jpM7/aUGmzklWMDR+gaq68H4df0DHZgBNyI65RvxhdhEZarwU2RmQlrHFNvH4HiS
+2UQEGN2ho3xiF7ZtHkOZjXajTPgR5n6gb3mfBO088JLEZikdpU6fLFFvVONeZngA
+FkJoVsV4HUZPuhm+iD+jUWTcmuBObQiJxQjGmCM+EtktLBfV6bcT5SPMbFfU2RQg
+unEl7iK7Wb7eaY4I70a8dFLvtUyO7CGL1GiltXPM5ByZNoXm0DXnRgFCmF0kd0h9
+HW11813pzEwj61Adi9kLyvFfKVs92tQCpUEtqqwBrAahNra2igoFcDgDsTUzVRi5
+9aTblw6GBr4uqYAD3/M9H4I+BI8Dpjs22rRje+BhaC14l+dOCQ43VS5STzhtd1YY
+3tJ4qKOCOZOzVov8F9Jik1NP8cJbhrz6z9Xh1oVqyJUy6ZYjSKc=
+=Z3+n
+-----END PGP SIGNATURE-----
 
-**Risks:**
-- Minimal - the recursive FEC was fundamentally broken anyway
-- Version bump (1.12→1.13) is cosmetic; documents behavioral change
-- Theoretical: some error correction scenarios may not work, but they
-  were already broken
-
-### Additional Considerations
-
-- **Reviewers**: Sami Tolvanen (Google) and Eric Biggers (kernel crypto
-  expert) - strong vetting
-- **Author**: Mikulas Patocka, dm subsystem maintainer
-- **Bug origin**: FEC feature added in 2015 (commit a739ff3f543af), so
-  affects all current LTS kernels
-- **Dependencies**: Self-contained, should apply cleanly to stable trees
-- **No explicit `Cc: stable`**: But severity and fix quality strongly
-  support backporting
-
-### Conclusion
-
-This is an excellent stable candidate. It fixes a proven DoS
-vulnerability and data corruption bug in security-critical dm-verity
-infrastructure. The fix is minimal, conservative (disables rather than
-patches), well-reviewed by domain experts, and authored by the subsystem
-maintainer. The affected FEC recursion feature was broken since
-introduction, so removing it has no practical downside. The user impact
-is high given dm-verity's deployment in Android and other verified boot
-systems.
-
-**YES**
-
- drivers/md/dm-verity-fec.c    | 4 +---
- drivers/md/dm-verity-fec.h    | 3 ---
- drivers/md/dm-verity-target.c | 2 +-
- 3 files changed, 2 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/md/dm-verity-fec.c b/drivers/md/dm-verity-fec.c
-index 72047b47a7a0a..e41bde1d3b15b 100644
---- a/drivers/md/dm-verity-fec.c
-+++ b/drivers/md/dm-verity-fec.c
-@@ -413,10 +413,8 @@ int verity_fec_decode(struct dm_verity *v, struct dm_verity_io *io,
- 	if (!verity_fec_is_enabled(v))
- 		return -EOPNOTSUPP;
- 
--	if (fio->level >= DM_VERITY_FEC_MAX_RECURSION) {
--		DMWARN_LIMIT("%s: FEC: recursion too deep", v->data_dev->name);
-+	if (fio->level)
- 		return -EIO;
--	}
- 
- 	fio->level++;
- 
-diff --git a/drivers/md/dm-verity-fec.h b/drivers/md/dm-verity-fec.h
-index 09123a6129538..ec37e607cb3f0 100644
---- a/drivers/md/dm-verity-fec.h
-+++ b/drivers/md/dm-verity-fec.h
-@@ -23,9 +23,6 @@
- #define DM_VERITY_FEC_BUF_MAX \
- 	(1 << (PAGE_SHIFT - DM_VERITY_FEC_BUF_RS_BITS))
- 
--/* maximum recursion level for verity_fec_decode */
--#define DM_VERITY_FEC_MAX_RECURSION	4
--
- #define DM_VERITY_OPT_FEC_DEV		"use_fec_from_device"
- #define DM_VERITY_OPT_FEC_BLOCKS	"fec_blocks"
- #define DM_VERITY_OPT_FEC_START		"fec_start"
-diff --git a/drivers/md/dm-verity-target.c b/drivers/md/dm-verity-target.c
-index 66a00a8ccb398..c8695c079cfe0 100644
---- a/drivers/md/dm-verity-target.c
-+++ b/drivers/md/dm-verity-target.c
-@@ -1690,7 +1690,7 @@ static struct target_type verity_target = {
- 	.name		= "verity",
- /* Note: the LSMs depend on the singleton and immutable features */
- 	.features	= DM_TARGET_SINGLETON | DM_TARGET_IMMUTABLE,
--	.version	= {1, 12, 0},
-+	.version	= {1, 13, 0},
- 	.module		= THIS_MODULE,
- 	.ctr		= verity_ctr,
- 	.dtr		= verity_dtr,
--- 
-2.51.0
-
+--uykfwaownruc6xph--
 
