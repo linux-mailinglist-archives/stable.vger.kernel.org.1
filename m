@@ -1,190 +1,293 @@
-Return-Path: <stable+bounces-200878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E0B8CB83A0
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 09:19:36 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68A72CB83B1
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 09:20:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 620FC30361E3
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 08:19:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CF977300CEBA
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 08:20:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7163A3081DF;
-	Fri, 12 Dec 2025 08:19:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C485B2EBDFA;
+	Fri, 12 Dec 2025 08:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="FphcND5x"
+	dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b="pEpGvb+1"
 X-Original-To: stable@vger.kernel.org
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from r3-19.sinamail.sina.com.cn (r3-19.sinamail.sina.com.cn [202.108.3.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996C72D0283;
-	Fri, 12 Dec 2025 08:19:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0DB28FFF6
+	for <stable@vger.kernel.org>; Fri, 12 Dec 2025 08:20:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.108.3.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765527571; cv=none; b=YiAAkGY0RSxJUDaqcpduPS7Ku9yW/i5YkVvZ9ZxmWVYTZLxU8FEyLCN21wS4DeHWVZ4i8SlVJeLFbPJXbMBcoOxOWMm9gj71JN4K0Pw2BVq/fchQgWIbMWwxrHeh9FGeNB/+nSEW+Bq92iVfpWcANnMbW1+AC4lRzoYP8T4IvPQ=
+	t=1765527629; cv=none; b=Yam01JH7DktfI55UGm795PcDJPLmg+UQsUew+owpqgUi/eobQhuUFeR+DVnjiFi5aXB/UX3+TdSROAeeJJui3PfVgaEe8s3ztC5epXSKQxbCrcojDnbbQ2TQ9Uu83Keiao+19ryqFGSuBrVh1f9g2OR3BO5geVPS0QBle2EBy70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765527571; c=relaxed/simple;
-	bh=EdTvIEoC+lJcY0AZcqAnQLTz3fbTW/pjfBIDR543XLU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nFK3VPhtkOEhDpsQgufyKSkxuIyoUw1jpK9qtbMtVlCF5k31F1M/ChEy3YDYKG0QXGy09mGi344ZMyqL28X84/BKcv/jqLvucybQIOq2o1mur1ao+Ozv8HY2KSr63bOu+3vom2WUkzixJu8XhIifpKN7/oZvPAGYSoXyH+nSRIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=FphcND5x; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=EdTvIEoC+lJcY0AZcqAnQLTz3fbTW/pjfBIDR543XLU=; b=FphcND5xpgrEVlZpyVr+595no7
-	+AvTNIlfXvwIF8oKG1TgSvdn+K39wqWEHcEJhhUQi98Hni13o7LZUiLYyY9C62WD0seKIww4L4PXp
-	BCZ1AF9zNLFAkxTYjUfeqYqh1xpOmbo97szhf5/fzuTGtX8eji8H7Bz2XYIngP+TRWpveU7e6Zaj/
-	G8PpBiE65sQKeAkLbJs3E0wuPv3Bi0dB1NyvcQMhWo6auZQoDmLx71SC0GKorl6bpaX0UE8zywaRw
-	b3yCg6rgvCKhIgpk83zbbTBCczjXwtrWvMA6SiTzKdbR5a+n1XaIiL+X5HsgAYkv7E3adCgqcu9GF
-	vF2M6kww==;
-Received: from fs96f9c361.tkyc007.ap.nuro.jp ([150.249.195.97] helo=u09cd745991455d.ant.amazon.com)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vTxVT-0000000GI2A-1Bn0;
-	Fri, 12 Dec 2025 07:24:03 +0000
-Message-ID: <b48116fac4723c6884b300a599b39f946f361ef8.camel@infradead.org>
-Subject: Re: [PATCH v4] KVM: x86: Add x2APIC "features" to control EOI
- broadcast suppression
-From: David Woodhouse <dwmw2@infradead.org>
-To: Khushit Shah <khushit.shah@nutanix.com>
-Cc: "seanjc@google.com" <seanjc@google.com>, "pbonzini@redhat.com"
- <pbonzini@redhat.com>, "kai.huang@intel.com" <kai.huang@intel.com>, 
- "mingo@redhat.com" <mingo@redhat.com>, "x86@kernel.org" <x86@kernel.org>,
- "bp@alien8.de" <bp@alien8.de>, "hpa@zytor.com" <hpa@zytor.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,  "dave.hansen@linux.intel.com"
- <dave.hansen@linux.intel.com>, "tglx@linutronix.de" <tglx@linutronix.de>, 
- Jon Kohler <jon@nutanix.com>, Shaju Abraham <shaju.abraham@nutanix.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-Date: Fri, 12 Dec 2025 17:19:12 +0900
-In-Reply-To: <C343BC29-647C-4F60-82DB-2A21B8B21EC2@nutanix.com>
-References: <20251211110024.1409489-1-khushit.shah@nutanix.com>
-	 <83cf40c6168c97670193340b00d0fe71a35a6c1b.camel@infradead.org>
-	 <B45DB519-3B04-46F7-894E-42A44DF2FC8E@nutanix.com>
-	 <e0378e55610bf5431e78a090501948a8c12c73cb.camel@infradead.org>
-	 <C343BC29-647C-4F60-82DB-2A21B8B21EC2@nutanix.com>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-XC1Z46OLeRkdvAey9noF"
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	s=arc-20240116; t=1765527629; c=relaxed/simple;
+	bh=8rccHUfiXvP2tOulXglJjm3LCvvqst1i5+KKiNewQJY=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=jPKGUKZwMG/X/Bfz9rwjE7qzzZebUzcHwI7Iau7CJNmJUN/1upvBMbIKTUOACsiAxKje7oKrQylZiL/Nlrba4mb4WHx8+5IbhjLmfFk8DmBx1rxLt8dzVvUawHEDFgktJqXQsZLNiLSjZUxCQfY7LawosYhx9v5Vegd8YYqmtiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=pEpGvb+1; arc=none smtp.client-ip=202.108.3.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.cn
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1765527622;
+	bh=zipljFZAy8zy0iS6kyy/fHUrDHJeN2WF/6PaPyE70ek=;
+	h=From:Subject:Date:Message-Id;
+	b=pEpGvb+1IOCp8/W7mt27vtTJe4Mp/MQ4De+z+h7aFfMAvLryBh3uaUFxgBJDZFuKx
+	 IE46Gt/rPebhJOo5NtFO0K+HyXzjOEO1NeYHj4I1quV6AYq/poQlQK+DkicCJ6fuOY
+	 rKCQkmOS915Pb2ScBu5T6MQFaws8mij/iM9BDuT8=
+X-SMAIL-HELO: sina-kernel-team
+Received: from unknown (HELO sina-kernel-team)([183.241.245.185])
+	by sina.cn (10.54.253.32) with ESMTP
+	id 693BD03400003B3E; Fri, 12 Dec 2025 16:20:12 +0800 (CST)
+X-Sender: xnguchen@sina.cn
+X-Auth-ID: xnguchen@sina.cn
+Authentication-Results: sina.cn;
+	 spf=none smtp.mailfrom=xnguchen@sina.cn;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=xnguchen@sina.cn
+X-SMAIL-MID: 261514456874
+X-SMAIL-UIID: C639D9B7919F4ED891BD0FD1291918D7-20251212-162012-1
+From: Chen Yu <xnguchen@sina.cn>
+To: s.shtylyov@omp.ru,
+	ulf.hansson@linaro.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH 5.15.y] mmc: core: use sysfs_emit() instead of sprintf()
+Date: Fri, 12 Dec 2025 16:19:59 +0800
+Message-Id: <20251212081959.5633-1-xnguchen@sina.cn>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
 
---=-XC1Z46OLeRkdvAey9noF
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+[ Upstream commit f5d8a5fe77ce933f53eb8f2e22bb7a1a2019ea11 ]
 
-On Fri, 2025-12-12 at 08:16 +0000, Khushit Shah wrote:
-> I thought the earlier discussion preferred
-> kvm_lapic_ignore_suppress_eoi_broadcast(), but
-> I=E2=80=99m not tied to it.
+sprintf() (still used in the MMC core for the sysfs output) is vulnerable
+to the buffer overflow.  Use the new-fangled sysfs_emit() instead.
 
-I think some of that earlier discussion was 'informed' by me typing
-code into my mailer, and managing to type an example whose name implied
-the exact opposite of what the code actually returned. :)
+Found by Linux Verification Center (linuxtesting.org) with the SVACE static
+analysis tool.
 
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/717729b2-d65b-c72e-9fac-471d28d00b5a@omp.ru
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Chen Yu <xnguchen@sina.cn>
+---
+ drivers/mmc/core/bus.c      |  9 +++++----
+ drivers/mmc/core/bus.h      |  3 ++-
+ drivers/mmc/core/mmc.c      | 16 ++++++++--------
+ drivers/mmc/core/sd.c       | 25 ++++++++++++-------------
+ drivers/mmc/core/sdio.c     |  5 +++--
+ drivers/mmc/core/sdio_bus.c |  7 ++++---
+ 6 files changed, 34 insertions(+), 31 deletions(-)
 
---=-XC1Z46OLeRkdvAey9noF
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+diff --git a/drivers/mmc/core/bus.c b/drivers/mmc/core/bus.c
+index c25c58473a91..c80d61780ea9 100644
+--- a/drivers/mmc/core/bus.c
++++ b/drivers/mmc/core/bus.c
+@@ -15,6 +15,7 @@
+ #include <linux/stat.h>
+ #include <linux/of.h>
+ #include <linux/pm_runtime.h>
++#include <linux/sysfs.h>
+ 
+ #include <linux/mmc/card.h>
+ #include <linux/mmc/host.h>
+@@ -34,13 +35,13 @@ static ssize_t type_show(struct device *dev,
+ 
+ 	switch (card->type) {
+ 	case MMC_TYPE_MMC:
+-		return sprintf(buf, "MMC\n");
++		return sysfs_emit(buf, "MMC\n");
+ 	case MMC_TYPE_SD:
+-		return sprintf(buf, "SD\n");
++		return sysfs_emit(buf, "SD\n");
+ 	case MMC_TYPE_SDIO:
+-		return sprintf(buf, "SDIO\n");
++		return sysfs_emit(buf, "SDIO\n");
+ 	case MMC_TYPE_SD_COMBO:
+-		return sprintf(buf, "SDcombo\n");
++		return sysfs_emit(buf, "SDcombo\n");
+ 	default:
+ 		return -EFAULT;
+ 	}
+diff --git a/drivers/mmc/core/bus.h b/drivers/mmc/core/bus.h
+index 8105852c4b62..3996b191b68d 100644
+--- a/drivers/mmc/core/bus.h
++++ b/drivers/mmc/core/bus.h
+@@ -9,6 +9,7 @@
+ #define _MMC_CORE_BUS_H
+ 
+ #include <linux/device.h>
++#include <linux/sysfs.h>
+ 
+ struct mmc_host;
+ struct mmc_card;
+@@ -17,7 +18,7 @@ struct mmc_card;
+ static ssize_t mmc_##name##_show (struct device *dev, struct device_attribute *attr, char *buf)	\
+ {										\
+ 	struct mmc_card *card = mmc_dev_to_card(dev);				\
+-	return sprintf(buf, fmt, args);						\
++	return sysfs_emit(buf, fmt, args);					\
+ }										\
+ static DEVICE_ATTR(name, S_IRUGO, mmc_##name##_show, NULL)
+ 
+diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
+index a56906633ddf..958bd901a136 100644
+--- a/drivers/mmc/core/mmc.c
++++ b/drivers/mmc/core/mmc.c
+@@ -12,6 +12,7 @@
+ #include <linux/slab.h>
+ #include <linux/stat.h>
+ #include <linux/pm_runtime.h>
++#include <linux/sysfs.h>
+ 
+ #include <linux/mmc/host.h>
+ #include <linux/mmc/card.h>
+@@ -812,12 +813,11 @@ static ssize_t mmc_fwrev_show(struct device *dev,
+ {
+ 	struct mmc_card *card = mmc_dev_to_card(dev);
+ 
+-	if (card->ext_csd.rev < 7) {
+-		return sprintf(buf, "0x%x\n", card->cid.fwrev);
+-	} else {
+-		return sprintf(buf, "0x%*phN\n", MMC_FIRMWARE_LEN,
+-			       card->ext_csd.fwrev);
+-	}
++	if (card->ext_csd.rev < 7)
++		return sysfs_emit(buf, "0x%x\n", card->cid.fwrev);
++	else
++		return sysfs_emit(buf, "0x%*phN\n", MMC_FIRMWARE_LEN,
++				  card->ext_csd.fwrev);
+ }
+ 
+ static DEVICE_ATTR(fwrev, S_IRUGO, mmc_fwrev_show, NULL);
+@@ -830,10 +830,10 @@ static ssize_t mmc_dsr_show(struct device *dev,
+ 	struct mmc_host *host = card->host;
+ 
+ 	if (card->csd.dsr_imp && host->dsr_req)
+-		return sprintf(buf, "0x%x\n", host->dsr);
++		return sysfs_emit(buf, "0x%x\n", host->dsr);
+ 	else
+ 		/* return default DSR value */
+-		return sprintf(buf, "0x%x\n", 0x404);
++		return sysfs_emit(buf, "0x%x\n", 0x404);
+ }
+ 
+ static DEVICE_ATTR(dsr, S_IRUGO, mmc_dsr_show, NULL);
+diff --git a/drivers/mmc/core/sd.c b/drivers/mmc/core/sd.c
+index 592166e53dce..46ca73c17c4c 100644
+--- a/drivers/mmc/core/sd.c
++++ b/drivers/mmc/core/sd.c
+@@ -12,6 +12,7 @@
+ #include <linux/slab.h>
+ #include <linux/stat.h>
+ #include <linux/pm_runtime.h>
++#include <linux/sysfs.h>
+ 
+ #include <linux/mmc/host.h>
+ #include <linux/mmc/card.h>
+@@ -707,18 +708,16 @@ MMC_DEV_ATTR(ocr, "0x%08x\n", card->ocr);
+ MMC_DEV_ATTR(rca, "0x%04x\n", card->rca);
+ 
+ 
+-static ssize_t mmc_dsr_show(struct device *dev,
+-                           struct device_attribute *attr,
+-                           char *buf)
++static ssize_t mmc_dsr_show(struct device *dev, struct device_attribute *attr,
++			    char *buf)
+ {
+-       struct mmc_card *card = mmc_dev_to_card(dev);
+-       struct mmc_host *host = card->host;
+-
+-       if (card->csd.dsr_imp && host->dsr_req)
+-               return sprintf(buf, "0x%x\n", host->dsr);
+-       else
+-               /* return default DSR value */
+-               return sprintf(buf, "0x%x\n", 0x404);
++	struct mmc_card *card = mmc_dev_to_card(dev);
++	struct mmc_host *host = card->host;
++
++	if (card->csd.dsr_imp && host->dsr_req)
++		return sysfs_emit(buf, "0x%x\n", host->dsr);
++	/* return default DSR value */
++	return sysfs_emit(buf, "0x%x\n", 0x404);
+ }
+ 
+ static DEVICE_ATTR(dsr, S_IRUGO, mmc_dsr_show, NULL);
+@@ -734,9 +733,9 @@ static ssize_t info##num##_show(struct device *dev, struct device_attribute *att
+ 												\
+ 	if (num > card->num_info)								\
+ 		return -ENODATA;								\
+-	if (!card->info[num-1][0])								\
++	if (!card->info[num - 1][0])								\
+ 		return 0;									\
+-	return sprintf(buf, "%s\n", card->info[num-1]);						\
++	return sysfs_emit(buf, "%s\n", card->info[num - 1]);					\
+ }												\
+ static DEVICE_ATTR_RO(info##num)
+ 
+diff --git a/drivers/mmc/core/sdio.c b/drivers/mmc/core/sdio.c
+index cbc9ca0dd56e..53c8f71af966 100644
+--- a/drivers/mmc/core/sdio.c
++++ b/drivers/mmc/core/sdio.c
+@@ -7,6 +7,7 @@
+ 
+ #include <linux/err.h>
+ #include <linux/pm_runtime.h>
++#include <linux/sysfs.h>
+ 
+ #include <linux/mmc/host.h>
+ #include <linux/mmc/card.h>
+@@ -40,9 +41,9 @@ static ssize_t info##num##_show(struct device *dev, struct device_attribute *att
+ 												\
+ 	if (num > card->num_info)								\
+ 		return -ENODATA;								\
+-	if (!card->info[num-1][0])								\
++	if (!card->info[num - 1][0])								\
+ 		return 0;									\
+-	return sprintf(buf, "%s\n", card->info[num-1]);						\
++	return sysfs_emit(buf, "%s\n", card->info[num - 1]);					\
+ }												\
+ static DEVICE_ATTR_RO(info##num)
+ 
+diff --git a/drivers/mmc/core/sdio_bus.c b/drivers/mmc/core/sdio_bus.c
+index f6cdec00e97e..f191a2a76f3b 100644
+--- a/drivers/mmc/core/sdio_bus.c
++++ b/drivers/mmc/core/sdio_bus.c
+@@ -14,6 +14,7 @@
+ #include <linux/pm_runtime.h>
+ #include <linux/pm_domain.h>
+ #include <linux/acpi.h>
++#include <linux/sysfs.h>
+ 
+ #include <linux/mmc/card.h>
+ #include <linux/mmc/host.h>
+@@ -35,7 +36,7 @@ field##_show(struct device *dev, struct device_attribute *attr, char *buf)				\
+ 	struct sdio_func *func;						\
+ 									\
+ 	func = dev_to_sdio_func (dev);					\
+-	return sprintf(buf, format_string, args);			\
++	return sysfs_emit(buf, format_string, args);			\
+ }									\
+ static DEVICE_ATTR_RO(field)
+ 
+@@ -52,9 +53,9 @@ static ssize_t info##num##_show(struct device *dev, struct device_attribute *att
+ 												\
+ 	if (num > func->num_info)								\
+ 		return -ENODATA;								\
+-	if (!func->info[num-1][0])								\
++	if (!func->info[num - 1][0])								\
+ 		return 0;									\
+-	return sprintf(buf, "%s\n", func->info[num-1]);						\
++	return sysfs_emit(buf, "%s\n", func->info[num - 1]);					\
+ }												\
+ static DEVICE_ATTR_RO(info##num)
+ 
+-- 
+2.17.1
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI1MTIxMjA4MTkx
-MlowLwYJKoZIhvcNAQkEMSIEIP/eM7Nk4Tz97rPEssRI99g8xYdZ2tfxYfuR6k+f/m+vMGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAV/b8vijP7vGq
-H4t5A8TldoMybC/w0xUD/6tgUiWV55ap0vIxki2weTLBaUiheexp+tZRYvDU0AAmEyzDLlHXYJFG
-aZ3jWh+UILhHXnL5y5gy1sj+OXOQTDs97ER8ykUKqDIlC4d8/nxPeZfvUVyavhsYT3v3gzXGgK/m
-jjeG70U5KcfEjPG8PMZGfq6yoaDl4UvVOjswt3KQXiYhJHYj/xkVEHCcNt3gJ6W/imJG73y+hFir
-x5oYeMVZ5quxpo22tyMYxoWyftRnRYoVeJ5gq5HKOT7FjnCdK/TJfxIfFxJYF859KnoPkmFLBmzI
-VZ2MbcwMiAVNiJwSng5e+BD+uOJzEIZNAuARURpgwT1Lpth1nNnUIyzuYmrBfPD/ltbMFcghrpVq
-1nqjezw7qxQMZSter8S+ed/HvC5z5Z52NgzAHGopt6GnO213P8JHmX3z0VZm97kbat5LEKgjHBQv
-L7gts3LRvQPnG9S8FIKOJjzqvT8RSqlX/0oWQUGxAf3RK9+eg2zavdi4rkT/Hwx2kBraSQLZLhlF
-EYLlcaLisdqx6J5iykRb0q5I5pOES3omGxzlkDnBT3BVp/0exQveO85r4vcmGhqbpbHmGLx7qtaT
-e/LC9/Vq8GmBG68EcLwIy+V86TU1WQNCrGswzC3//QZL15lniCyc33k2y88SkVAAAAAAAAA=
-
-
---=-XC1Z46OLeRkdvAey9noF--
 
