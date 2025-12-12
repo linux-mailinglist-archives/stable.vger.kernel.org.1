@@ -1,173 +1,171 @@
-Return-Path: <stable+bounces-200935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A843CB983A
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 19:06:02 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA849CB98D4
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 19:22:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B99E230715D4
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 18:04:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6473D3017329
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 18:22:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41F502F60AC;
-	Fri, 12 Dec 2025 18:03:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 113F93019CF;
+	Fri, 12 Dec 2025 18:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nBRoKT9v"
+	dkim=pass (2048-bit key) header.d=ubuntu.com header.i=@ubuntu.com header.b="EDkeI2Ig"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.forwardemail.net (smtp.forwardemail.net [149.28.215.223])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC2571E86E;
-	Fri, 12 Dec 2025 18:03:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 298DD3019DE
+	for <stable@vger.kernel.org>; Fri, 12 Dec 2025 18:22:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=149.28.215.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765562639; cv=none; b=KuR41ag3zvYEDwBbZoP5EtORa7G07fA0T0QFnrZiYK83gkw13k5zWWmJQw6TByLhq8BF+T82yw/6GzXPz1knQH/DJlvR1IESdF8D14rxx9LuU7NCjRPSrrLH7R9l26i2brZ6Y20UDW3ZMXo+u2n5jWCoCTs8PbAGkroz+o+DqV8=
+	t=1765563725; cv=none; b=fXPD6bknktHPLoqflVjfuQ+zGE2XkerH1QiLfLbqKM+nEACU7ooSQmZOGkFtTgDE/R2PFgLecIrMiZ94gCJVGPm+AUeHnfnr4LHv6uh91W97yW/1Y/8Vh2UTg5WdYmbRiAEsZzYGomleHwFFw0IqSCqq7LnazwJgXD9TOkurK/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765562639; c=relaxed/simple;
-	bh=pJWhkx9GbQrplGxEHBK6mBxjmn795NYQuduoR/LUjkw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=W6yxHBphZlAzGJUZpp9gnYFbE6oI9wJwomFXwURug5/+pWFVbaQBf3HCUU5V9eP8RDWu638LVfPwTfeSuFIEaF/tUdRjnzdMQ0LP/bF8BnUh2ueFOtqYegXo4bhaF3heUyiSpvnO4ERwktKqVr4mPjjv40qPPBPciCJeRYtfcU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nBRoKT9v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 8076DC4CEF1;
-	Fri, 12 Dec 2025 18:03:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765562638;
-	bh=pJWhkx9GbQrplGxEHBK6mBxjmn795NYQuduoR/LUjkw=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=nBRoKT9vt3c7j9Ixg7gwcWbnETX6Gtf+L6MUoMPGE/KcrTEeMk7mSZR8j5n0y5cCY
-	 C71lBAVrnL2rDDjEgSxtYATeKYFs7hj13E6BGNH7C1lCLeS9IPPlRyI/MOKFF9pTta
-	 VNlfPEyX+HLrLjHHz4yrde01CwUTpt8xmDjpxRfGvDcESPZK9IyBVrDWplMTIicbe8
-	 HmtVWki5M4gwmOeVUxitBT38IKnFJHD88dJict1essBBofxy5muVPZpvH9bE2eoJaE
-	 I8y53yIwDY42NK8pjve00MzH20+xSC8SM164obF3jabuceWkkOFq3bVTLWuCyOd+7g
-	 jS894nGAnIXwA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 76596D41C15;
-	Fri, 12 Dec 2025 18:03:58 +0000 (UTC)
-From: Chen Linxuan via B4 Relay <devnull+me.black-desk.cn@kernel.org>
-Date: Sat, 13 Dec 2025 02:03:56 +0800
-Subject: [PATCH] vfs: fix EBUSY on FSCONFIG_CMD_CREATE retry
+	s=arc-20240116; t=1765563725; c=relaxed/simple;
+	bh=nlwWzd8H/QFVfZ9XD9u/sEx2dehXu4fN3B5Rte1Am0I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lRd3D60rKOXfitiO1tsXRH1FhwrUnDVLSHOUfN5ndvhoYXVm5j/Y4I+2KdVCmAP+BpzRbmv8nW5YXECKoq2ftr6YDbbs84ncmjeLzGQClQuq765UbbVRZoxG5DjEnxH8oacruPI+zfR03VljzVWhvlhhCJHIfd188nuHAcasi0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ubuntu.com; spf=pass smtp.mailfrom=fe-bounces.ubuntu.com; dkim=pass (2048-bit key) header.d=ubuntu.com header.i=@ubuntu.com header.b=EDkeI2Ig; arc=none smtp.client-ip=149.28.215.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ubuntu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fe-bounces.ubuntu.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ubuntu.com;
+ h=Content-Transfer-Encoding: Content-Type: In-Reply-To: From: References:
+ Cc: To: Subject: MIME-Version: Date: Message-ID; q=dns/txt;
+ s=fe-953a8a3ca9; t=1765563723;
+ bh=ujl+sTrNhXHxwNX5b2qn7Bp4IFE1VBkaZlKsjfIZgjU=;
+ b=EDkeI2Igx04rpUYW+YMCLRdTW38V39eajGm+Ce8ynDv+8OTmJX+3PpgG/CjcW9pY83Oem+T8R
+ ixCSnU+f74e7po4gPgrMzIAIxJQ0NHqdtJ5MTWgTflkBl2IQ/5UnCVxOrBDF88Z9RQGfGBUaEkx
+ 1wbIt62Ln4k5P313e6qCPDER9EhS8E7jycgDwLJ6/ZLHVZubxjWxeelyd1Yds6/BzH/7T8UOfre
+ GDnfffw7eSPzWfcgc+W0/vMmc7eXNXqwJJViJv7dlHQYU3p2PYZJUdd3ngrhAN0ygOtFRtFUUXC
+ Em32JH+sty9PRCqbjJjYXA/bM6UrGU0ddyfDx/+mCZhg==
+X-Forward-Email-ID: 693c5d44fd4b94c0e94ea407
+X-Forward-Email-Sender: rfc822; fnordahl@ubuntu.com, smtp.forwardemail.net,
+ 149.28.215.223
+X-Forward-Email-Version: 1.6.6
+X-Forward-Email-Website: https://forwardemail.net
+X-Complaints-To: abuse@forwardemail.net
+X-Report-Abuse: abuse@forwardemail.net
+X-Report-Abuse-To: abuse@forwardemail.net
+Message-ID: <bb4f7703-b704-4eb8-942b-d693f64aed63@ubuntu.com>
+Date: Fri, 12 Dec 2025 19:21:49 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] erspan: Initialize options_len before referencing
+ options.
+To: Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
+ "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Gal Pressman <gal@nvidia.com>,
+ Kees Cook <kees@kernel.org>, Cosmin Ratiu <cratiu@nvidia.com>,
+ Tariq Toukan <tariqt@nvidia.com>, linux-kernel@vger.kernel.org
+References: <20251212073202.13153-1-fnordahl@ubuntu.com>
+ <nZEr2jHd7_uGuwbqEiM3iStGK4aQ_EgMoNLBgyJrYmeTlhzT2-qGpuBxKPW6U7k8ZqAr6HExn5ncXLMA5EbRQQ==@protonmail.internalid>
+ <aTwxDBODyDmerGAt@horms.kernel.org>
+Content-Language: en-US
+From: Frode Nordahl <fnordahl@ubuntu.com>
+In-Reply-To: <aTwxDBODyDmerGAt@horms.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251213-mount-ebusy-v1-1-7b2907b7b0b2@black-desk.cn>
-X-B4-Tracking: v=1; b=H4sIAAtZPGkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1NDI0Nj3dz80rwS3dSk0uJKXYvUVGMLC4tE81STNCWgjoKi1LTMCrBp0bG
- 1tQAh9eyyXQAAAA==
-X-Change-ID: 20251213-mount-ebusy-8ee3888a7e4f
-To: Alexander Viro <viro@zeniv.linux.org.uk>, 
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Chen Linxuan <me@black-desk.cn>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2189; i=me@black-desk.cn;
- h=from:subject:message-id;
- bh=XvsMIeYd2rV7bHfMQnljLFRBG0G+Pqcltlcqwj85FJ4=;
- b=owEBbQKS/ZANAwAIAXYe5hQ5ma6LAcsmYgBpPFkMp2MbCTnXsEEnX/RgESPjyj5BJqKwiBcrh
- MU63YkVTe2JAjMEAAEIAB0WIQTO1VElAk6xdvy0ZVp2HuYUOZmuiwUCaTxZDAAKCRB2HuYUOZmu
- i9dND/9g2Ml4ZJnUasI12G14g/xCT+CsCPBsb41Gd37CNx6s0DJHG/zieGFlT6ARgiPfNnW7jWM
- 7qWqPKN5nbnVXg3qMrSCGNMSQqfCyLSwwR4c+b8dUUPfGgQJOR8NeOCWYcf3FmYrHzLtXGwktxY
- meX0K0drxQr77n9SvPb4gAqifLaF4YdB9qTwptLgEwJCbZEZdG5srLP5IbQl8+pwvGsYRKLxPhE
- Bprp6RJTgMsTkbatXJ/KUtXmjLJAmzydGm00AkGJqC0XJHDiSfx6QLnQN37Lk5Q1Fwne1XScvhc
- ljlsdqGpgl/8JgC+rT+W+Q9Ko13UPt/yAKQFzNaSBm7Yly1Y6QC3giwdEf7D38wMPa7Gvo7QpzD
- wNf0zGqTsbbq1nsOYb73PAZAAFlcgKaK4fD/yK7t+xSxWM05jsAIQ7VVaJl1gGjp4EbQ2qM8NEZ
- 56lE1y0ujWOWgIVnsIcYa8+n0+s4kcflTexqpUZA/92AlkJl3uH51we3o+jmqDytTF+dJf142bQ
- AzXWQNf9kK2jHD/vW1HbKo4IBwG5twZIQSr+Xdsp2JI9ki9oRj1gJKN26E10anwewDVGnGkIbER
- 6EwQmfenTSixvCaMVc/IYYGJTVX1pTHOodcR44JNO72pgxnpPdLiZ8tHkCJ+97Q2XG8NBlSDaI+
- Rxvp5oSR0i41mWw==
-X-Developer-Key: i=me@black-desk.cn; a=openpgp;
- fpr=D818ACDD385CAE92D4BAC01A6269794D24791D21
-X-Endpoint-Received: by B4 Relay for me@black-desk.cn/default with
- auth_id=573
-X-Original-From: Chen Linxuan <me@black-desk.cn>
-Reply-To: me@black-desk.cn
 
-From: Chen Linxuan <me@black-desk.cn>
+On 12/12/25 16:13, Simon Horman wrote:
+> On Fri, Dec 12, 2025 at 07:32:01AM +0000, Frode Nordahl wrote:
+>> The struct ip_tunnel_info has a flexible array member named
+>> options that is protected by a counted_by(options_len)
+>> attribute.
+>>
+>> The compiler will use this information to enforce runtime bounds
+>> checking deployed by FORTIFY_SOURCE string helpers.
+>>
+>> As laid out in the GCC documentation, the counter must be
+>> initialized before the first reference to the flexible array
+>> member.
+>>
+>> In the normal case the ip_tunnel_info_opts_set() helper is used
+>> which would initialize options_len properly, however in the GRE
+>> ERSPAN code a partial update is done, preventing the use of the
+>> helper function.
+>>
+>> Before this change the handling of ERSPAN traffic in GRE tunnels
+>> would cause a kernel panic when the kernel is compiled with
+>> GCC 15+ and having FORTIFY_SOURCE configured:
+>>
+>> memcpy: detected buffer overflow: 4 byte write of buffer size 0
+>>
+>> Call Trace:
+>>   <IRQ>
+>>   __fortify_panic+0xd/0xf
+>>   erspan_rcv.cold+0x68/0x83
+>>   ? ip_route_input_slow+0x816/0x9d0
+>>   gre_rcv+0x1b2/0x1c0
+>>   gre_rcv+0x8e/0x100
+>>   ? raw_v4_input+0x2a0/0x2b0
+>>   ip_protocol_deliver_rcu+0x1ea/0x210
+>>   ip_local_deliver_finish+0x86/0x110
+>>   ip_local_deliver+0x65/0x110
+>>   ? ip_rcv_finish_core+0xd6/0x360
+>>   ip_rcv+0x186/0x1a0
+>>
+>> Link: https://gcc.gnu.org/onlinedocs/gcc/Common-Variable-Attributes.html#index-counted_005fby-variable-attribute
+>> Reported-at: https://launchpad.net/bugs/2129580
+>> Fixes: bb5e62f2d547 ("net: Add options as a flexible array to struct ip_tunnel_info")
+>> Signed-off-by: Frode Nordahl <fnordahl@ubuntu.com>
+> 
+> Hi Frode,
+> 
+> Thanks for your patch (and nice to see you recently in Prague :).
 
-When using fsconfig(..., FSCONFIG_CMD_CREATE, ...), the filesystem
-context is retrieved from the file descriptor. Since the file structure
-persists across syscall restarts, the context state is preserved:
+Thank you for taking the time to review, much appreciated (I enjoyed the 
+recent conference in Prague and our exchanges there!).
 
-	// fs/fsopen.c
-	SYSCALL_DEFINE5(fsconfig, ...)
-	{
-		...
-		fc = fd_file(f)->private_data;
-		...
-		ret = vfs_fsconfig_locked(fc, cmd, &param);
-		...
-	}
+> Overall this looks good to me but I have some minor feedback.
+> 
+> 
+> Firstly, the cited patch seems to cover more than erspan.
+> So I'm wondering if you took at look at other cases where
+> this might occur? No problem either way, but if so it might
+> be worth mentioning in the commit message.
 
-In vfs_cmd_create(), the context phase is transitioned to
-FS_CONTEXT_CREATING before calling vfs_get_tree():
+I did some quick searches which formed the basis of the statement of the 
+normal case being to use the ip_tunnel_info_opts_set(), I could expand a 
+bit upon that statement.
 
-	// fs/fsopen.c
-	static int vfs_cmd_create(struct fs_context *fc, bool exclusive)
-	{
-		...
-		fc->phase = FS_CONTEXT_CREATING;
-		...
-		ret = vfs_get_tree(fc);
-		...
-	}
+> Regarding the comments in the code. I am wondering if the are necessary
+> as the information is also contained in the commit message. And if the
+> source documented every such case then things could get rather verbose.
+> 
+> If you do feel strongly about it keeping it then could I ask that
+> (other than the URL) it is line-wrapped trimmed to 80 columns wide or less,
+> as is still preferred for Networking (but confusingly not all Kernel) code.
 
-However, vfs_get_tree() may return -ERESTARTNOINTR if the filesystem
-implementation needs to restart the syscall. For example, cgroup v1 does
-this when it encounters a race condition where the root is dying:
+Yes, I guess it became a bit verbose.  The thought was that it would be 
+very easy to miss this important detail for anyone (including future me) 
+spelunking into this part of the code.
 
-	// kernel/cgroup/cgroup-v1.c
-	int cgroup1_get_tree(struct fs_context *fc)
-	{
-		...
-		if (unlikely(ret > 0)) {
-			msleep(10);
-			return restart_syscall();
-		}
-		return ret;
-	}
+I'll trim it down to a single line, which should be enough to give the 
+urge to look at the commit message.
 
-If the syscall is restarted, fsconfig() is called again and retrieves
-the *same* fs_context. However, vfs_cmd_create() rejects the call
-because the phase was left as FS_CONTEXT_CREATING during the first
-attempt:
+> As a fix for code present in net this should be targeted at that tree.
+> It's best to do so explicitly like this:
+> 
+> Subject: [PATCH net] ...
 
-	if (fc->phase != FS_CONTEXT_CREATE_PARAMS)
-		return -EBUSY;
+Ack.
 
-Fix this by resetting fc->phase back to FS_CONTEXT_CREATE_PARAMS if
-vfs_get_tree() returns -ERESTARTNOINTR.
+> And it's probably also best to CC stable@vger.kernel.org.
+> That practice isn't as widespread as perhaps it should be for Networking code.
+> But it does seem worth mentioning.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Chen Linxuan <me@black-desk.cn>
----
- fs/fsopen.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Ack, the intention was indeed to Cc them, I only put them into the 
+e-mail header and the stable kernel bot pointed out that the Cc also 
+needs to be in the commit message.
 
-diff --git a/fs/fsopen.c b/fs/fsopen.c
-index f645c99204eb..8a7cb031af50 100644
---- a/fs/fsopen.c
-+++ b/fs/fsopen.c
-@@ -229,6 +229,10 @@ static int vfs_cmd_create(struct fs_context *fc, bool exclusive)
- 	fc->exclusive = exclusive;
- 
- 	ret = vfs_get_tree(fc);
-+	if (ret == -ERESTARTNOINTR) {
-+		fc->phase = FS_CONTEXT_CREATE_PARAMS;
-+		return ret;
-+	}
- 	if (ret) {
- 		fc->phase = FS_CONTEXT_FAILED;
- 		return ret;
-
----
-base-commit: 187d0801404f415f22c0b31531982c7ea97fa341
-change-id: 20251213-mount-ebusy-8ee3888a7e4f
-
-Best regards,
 -- 
-Chen Linxuan <me@black-desk.cn>
-
-
+Frode Nordahl
 
