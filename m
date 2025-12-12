@@ -1,140 +1,114 @@
-Return-Path: <stable+bounces-200855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37B4ACB7F3C
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 06:29:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30A0BCB7F5A
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 06:40:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 578903009DA4
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 05:29:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A8A6D3032FDD
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 05:40:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8912F30E0CC;
-	Fri, 12 Dec 2025 05:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20ACE30E0D2;
+	Fri, 12 Dec 2025 05:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hpzvfup8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gU1t6+ZT"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30B327E1DC
-	for <stable@vger.kernel.org>; Fri, 12 Dec 2025 05:29:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5F50248F6A;
+	Fri, 12 Dec 2025 05:40:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765517388; cv=none; b=NjCCBi8oX3noYes5J26/40KJYWJlKI3QHsnriCO+jr1eAdRPCNtbJa05JIkXZ+AKqZmAb0CSTCtylHn7S93+E4s/q7rpzsRbC4V1u6EjgELIPGcB/daphOdGSSGt8v+ugl+r/15nJONFFoBCln9K2j+CnKkioAVX4rhGPQkbrwc=
+	t=1765518027; cv=none; b=HEXlg9V8bBji2nIgULTt5EXvuHy0g7rOczF9qvHcrUTf9Zq/s82U2u0NvOCctaGEgEuYTF7d+z80EBfReus6UHKZuIyq6hGZcm4AO4A9MbC+KfYZnZOEi8lg/Kk/IxhcuFYT6wquzGWm/R5Gw9U1ZOdCFE7tum3F2hYbRYkfUIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765517388; c=relaxed/simple;
-	bh=ncSfG+DQWHiHJ5P/tpjPaAOggTR0P8F+F2Kj1x+1+9I=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dL61tLeWVy3gtqAxL5WBbi8m6ZVoFedNgsGHbQd+oLg8Jt9WPciebvw1+rch5MW5kM5TpR2C9QFIQx8KgQTC5E0y79xM/D4syjlntFEyhNugQ+8F0d9VRyCMgwSYGr4db8qAbm/6U6bTiMCUyn6a2EoMKXudPqzJcBvvqhKCUSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hpzvfup8; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-29ba9249e9dso11663425ad.3
-        for <stable@vger.kernel.org>; Thu, 11 Dec 2025 21:29:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765517386; x=1766122186; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KabGZGJyQG+etjOxlMGCNny58DR5Q6sGGHquVVHLJAc=;
-        b=Hpzvfup8CWjGds18idPq9BC9s9Bk6qVo2VlkxMZZvZ4GIMNEnnk+g5K/Z7XsJrjnZw
-         zO0XY6H0q2BYMBBYH/TS0WnbsyowoDyI3KdjG77YXpHaF6p4RGQFY0qZPkUds8sQ4ypz
-         zvfbtUac52fkeKqLqmGYgLnuN0y65FydnfNrbG2glBLtkbkGq7IwkiXN6Sow0naSr2Dw
-         bxdCdz+ZJq180QzEUkIuoTjbgVDn1FPDmfbEo+zqUkPURk9ZtuU2QT+t/OM6daC7pzg6
-         7BXof9TUEikDhd9UKts9a3XE45HjwV39zu70mMdbjzAdlKd9oFOurKh1s/QPkOVxBT3s
-         gmGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765517386; x=1766122186;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=KabGZGJyQG+etjOxlMGCNny58DR5Q6sGGHquVVHLJAc=;
-        b=H62xj438QcvHmPIqzK83yGHWx00yFu0lbsfY8cUbzl9eBr1lPPAWCy6FHuaBjzJYnm
-         gbaqDFMw41tnjVvFLCb4TfCYycDWHGI+fyvIWJ0/jUyHIk7KuQNHuR+JgrAwriNpS9c2
-         +VolAdbBob20ChWksAnGDKns7u8djgO2ZkPRxlKVWh3yf16ACb7mkYQolFrJTjCoPWc8
-         uNassfhv8uSbCGIGgbKQyqHC3KyAaL47oOeHUoueR9TKXPxFfK6GNKXYIud8LGyGIn0n
-         mDxFvpmYee1spOcYqixQCKhwzLnP7Igg2LCzQMIqtM0/jwHQ9rQy+BDwEzyfxJTlt0N/
-         6xCg==
-X-Forwarded-Encrypted: i=1; AJvYcCXCFO/1LRDLl76Eka9MuHfsH/cBeIsTNg0RZY5KFGw4D3r0G0EaWJIMeLPKswenvvV9vsjc8zk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxvXlkMXMJr6HI6TRtmwqoL3biMPGyCJr3XhbsVW9zjxSMyp07l
-	XIV0S4S0lpCcvXTjSORvF5W3qZ3lgfPA1WDGokhFYzH3VYlNqz3f6pRE
-X-Gm-Gg: AY/fxX5nHBKZAI3+NZt1crgzjDgnD936cXl/RHsQ8CiNKANPbwErc0R7DXovgGj3aCe
-	DWGDrJd8KqZO+AT5m+pEYtRAUoG60esI0CnvHy5fSW2ldpgClvU3++HnIGD9WuyyAlBb8Jhku5f
-	j+AV4GF5HNL0czTs/ejyigpjiUr75fNMes1x8CER3cukjl3Y8FxMCepRYPZLRuo8SZsSCbkzsOa
-	349A6V7tBZGDTwPdrAqp3EynTlMMsuEVWmLARrYK7U8piaT5f4mUGll/m18IdRtGF7KDnHYEvS9
-	hTigjeeUtvA4IxfuHbKWM00u6+XKlRvna3iYdg5kAEDn2P4D7MGVZWvzokiyod0nvUnPuZjd0Ib
-	0BOXjPJuxjSTfqjzeqyFkiUoLWx8/aUh3aCEQhd5Ag4hEZZ4FAjh1VTChiIiChxPsCJnFbhdKik
-	2ZBuqLUrF8mFBw2QYYq4Hd6Iz63L4K
-X-Google-Smtp-Source: AGHT+IEOsPxs15DqmPE193WrrqWLMX9iYaahF/lhuJg5vO7TdIm8fmfokib6VBzwJtZ1UOig832vFw==
-X-Received: by 2002:a17:902:da89:b0:295:275d:21d8 with SMTP id d9443c01a7336-29f237db7damr13746115ad.0.1765517386109;
-        Thu, 11 Dec 2025 21:29:46 -0800 (PST)
-Received: from DESKTOP-6DS2CAQ.localdomain ([211.115.227.244])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29eea06b49csm41486705ad.95.2025.12.11.21.29.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Dec 2025 21:29:45 -0800 (PST)
-From: Minseong Kim <ii4gsp@gmail.com>
-To: dmitry.torokhov@gmail.com
-Cc: linux-input@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2] input: lkkbd: disable pending work before freeing device
-Date: Fri, 12 Dec 2025 14:23:14 +0900
-Message-Id: <20251212052314.16139-1-ii4gsp@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251211031131.27141-1-ii4gsp@gmail.com>
-References: <20251211031131.27141-1-ii4gsp@gmail.com>
+	s=arc-20240116; t=1765518027; c=relaxed/simple;
+	bh=9lv9rkuazkepyHsEe5BLEaVyoz3/43JZv/bu12Tj3Pw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QYLKCPMKOQgfIJ6Xm0sX9H3Mu4jlnWisEJmfJdRxJ+OH3goCS085XTcRjcsaGoRd2jTv3w3VHMJhc3u496dfdy3r03GHH1ylpleAu256vH0735UApM1yffh7njtmvdDILZRJ9bbrThd2NgwAcXu+OsTxD7FfC953u1yVu1YL53Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gU1t6+ZT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CED84C4CEF1;
+	Fri, 12 Dec 2025 05:40:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765518027;
+	bh=9lv9rkuazkepyHsEe5BLEaVyoz3/43JZv/bu12Tj3Pw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gU1t6+ZT6MpXHesyb60y9ESy+M0WLM/LGl+C8zwHBP8gCj7BFHJe8cTFyBDZpOWED
+	 rTZ9xNdh1WZYbH55D6EBrU+HjJF19JicUvKbHRXNrHCxiYra6uzhwNQp++nHMAMpe2
+	 oa3HlQvAug8WzEjKVoW7SqivNTfO6pbnPih/kdLg1Yyr48spmJhC8O2pAJLFkUa8B/
+	 mrfvZl8ZdzAXejidtkcaUhXD2KfUnjOJEFdrBeav3JDFHON3hlbdGZIfozwdz2vD+s
+	 2CDcghZSN3VBQmA1wRBCx7OXYMvDMoZhvX2QlWZlY76RgZtt9ygmsTPyIjTaF2Bj7G
+	 6D9RcMVU5BFTg==
+Date: Thu, 11 Dec 2025 21:40:20 -0800
+From: Eric Biggers <ebiggers@kernel.org>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Diederik de Haas <diederik@cknow-tech.com>,
+	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+	"Jason A . Donenfeld" <Jason@zx2c4.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+Subject: Re: [PATCH] crypto: arm64/ghash - Fix incorrect output from
+ ghash-neon
+Message-ID: <20251212054020.GB4838@sol>
+References: <DETXT7QI62KE.F3CGH2VWX1SC@cknow-tech.com>
+ <20251209223417.112294-1-ebiggers@kernel.org>
+ <DEUFDH7FJURL.3J0FN5I19VV8F@cknow-tech.com>
+ <CAMj1kXEQkB9MWB+PAi4XE_MuBt0ScitxTsKMDo1-7Cp-=xXOpw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXEQkB9MWB+PAi4XE_MuBt0ScitxTsKMDo1-7Cp-=xXOpw@mail.gmail.com>
 
-lkkbd_interrupt() schedules lk->tq via schedule_work(), and the work
-handler lkkbd_reinit() dereferences the lkkbd structure and its
-serio/input_dev fields.
+On Wed, Dec 10, 2025 at 06:31:44PM +0900, Ard Biesheuvel wrote:
+> On Wed, 10 Dec 2025 at 18:22, Diederik de Haas <diederik@cknow-tech.com> wrote:
+> >
+> > On Tue Dec 9, 2025 at 11:34 PM CET, Eric Biggers wrote:
+> > > Commit 9a7c987fb92b ("crypto: arm64/ghash - Use API partial block
+> > > handling") made ghash_finup() pass the wrong buffer to
+> > > ghash_do_simd_update().  As a result, ghash-neon now produces incorrect
+> > > outputs when the message length isn't divisible by 16 bytes.  Fix this.
+> >
+> > I was hoping to not have to do a 'git bisect', but this is much better
+> > :-D I can confirm that this patch fixes the error I was seeing, so
+> >
+> > Tested-by: Diederik de Haas <diederik@cknow-tech.com>
+> >
+> > > (I didn't notice this earlier because this code is reached only on CPUs
+> > > that support NEON but not PMULL.  I haven't yet found a way to get
+> > > qemu-system-aarch64 to emulate that configuration.)
+> >
+> > https://www.qemu.org/docs/master/system/arm/raspi.html indicates it can
+> > emulate various Raspberry Pi models. I've only tested it with RPi 3B+
+> > (bc of its wifi+bt chip), but I wouldn't be surprised if all RPi models
+> > would have this problem? Dunno if QEMU emulates that though.
+> >
+> 
+> All 64-bit RPi models except the RPi5 are affected by this, as those
+> do not implement the crypto extensions. So I would expect QEMU to do
+> the same.
+> 
+> It would be nice, though, if we could emulate this on the mach-virt
+> machine model too. It should be fairly trivial to do, so if there is
+> demand for this I can look into it.
 
-lkkbd_disconnect() and error paths in lkkbd_connect() free the lkkbd
-structure without preventing the reinit work from being queued again
-until serio_close() returns. This can allow the work handler to run
-after the structure has been freed, leading to a potential use-after-free.
+I'm definitely interested in it.  I'm already testing multiple "-cpu"
+options, and it's easy to add more.
 
-Use disable_work_sync() instead of cancel_work_sync() to ensure the
-reinit work cannot be re-queued, and call it both in lkkbd_disconnect()
-and in lkkbd_connect() error paths after serio_open().
+With qemu-system-aarch64 I'm currently only using "-M virt", since the
+other machine models I've tried don't boot with arm64 defconfig,
+including "-M raspi3b" and "-M raspi4b".
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Minseong Kim <ii4gsp@gmail.com>
----
- drivers/input/keyboard/lkkbd.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+There may be some tricks I'm missing.  Regardless, expanding the
+selection of available CPUs for "-M virt" would be helpful.  Either by
+adding "real" CPUs that have "interesting" combinations of features, or
+by just allowing turning features off like
+"-cpu max,aes=off,pmull=off,sha256=off".  (Certain features like sve can
+already be turned off in that way, but not the ones relevant to us.)
 
-diff --git a/drivers/input/keyboard/lkkbd.c b/drivers/input/keyboard/lkkbd.c
-index c035216dd27c..12a467ce00b5 100644
---- a/drivers/input/keyboard/lkkbd.c
-+++ b/drivers/input/keyboard/lkkbd.c
-@@ -670,7 +670,8 @@ static int lkkbd_connect(struct serio *serio, struct serio_driver *drv)
- 
- 	return 0;
- 
-- fail3:	serio_close(serio);
-+ fail3: disable_work_sync(&lk->tq);
-+	serio_close(serio);
-  fail2:	serio_set_drvdata(serio, NULL);
-  fail1:	input_free_device(input_dev);
- 	kfree(lk);
-@@ -684,6 +685,8 @@ static void lkkbd_disconnect(struct serio *serio)
- {
- 	struct lkkbd *lk = serio_get_drvdata(serio);
- 
-+	disable_work_sync(&lk->tq);
-+
- 	input_get_device(lk->dev);
- 	input_unregister_device(lk->dev);
- 	serio_close(serio);
--- 
-2.34.1
-
+- Eric
 
