@@ -1,220 +1,139 @@
-Return-Path: <stable+bounces-200850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4069ACB7DE3
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 05:35:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEC04CB7DEC
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 05:36:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 66BD5302D5FC
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 04:35:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7F3323026AED
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 04:36:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DE9A2F1FC7;
-	Fri, 12 Dec 2025 04:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B82352FB61C;
+	Fri, 12 Dec 2025 04:36:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="gTZjVYEA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OVDQ2cDX"
 X-Original-To: stable@vger.kernel.org
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010024.outbound.protection.outlook.com [52.101.46.24])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C063264F9C;
-	Fri, 12 Dec 2025 04:34:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.24
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765514101; cv=fail; b=cXmnxkhpU8ykWxMEMMLmnHZtpEZ40+zEU/X3NPrfqdUNQ+8U/XeahNn5/JQD6QqYalCSDVlwghGj+Px7OoifDhRDH4/FXBBqBmgcMqAVs/kcqi++BxgLvzk9XYW+a9tipjTmmfZI55rxopqz7G4nOzWEvFXHdsBkzuX+LzH1qdQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765514101; c=relaxed/simple;
-	bh=gv1lrAL7xozzI3C/gyZX0/EFkrsbhs/7JV0eJ3VJPfM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=GgHZh495wU0OvBHJ+G3yFSkL5hN8WLfUthIP90+3k2EauxGBZMkxboI+kg9ULB6bQM5mgYnlFK7WVYxxmicsU4o7j3BS3wXow8jmx94Vb+G2YOQnLrNloX7pCeLwEHpVDs9pIMn3jUfQZZ+ycFKAuBQvIdoD3WDHxqfZNKtgyk0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=gTZjVYEA; arc=fail smtp.client-ip=52.101.46.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LEhYncWJqoh7naRsYvnTpGLrRoBlLA6f5j+2oLGqkVs6826XdizqRwuT7XWr00TThlkepl7BNmqC30/PUaC1G0CFV7AoiRDDPVb8DUznd66MjZm0XKLYJVeIjunQY1hU2+MVWr6GtDOq2qb3e3w5/m47smZ0p48XEtJlvkXNw/xMWSDlRZ27l6bjuwleY0B9P5S5/e/xSugRLBYaQ0n/Iz7B10VStE7DORtneM8FOxcvDNz2x7fa1hSxd8Cw5r53C+VHkyGMaMHbIpaMVzF6t0Gx777qhx5nmrX0DTf9sJDECzJKIbd9K7Z9e3fBDaSrFK5/5mnM6PzSjBj9rCMezQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pPYy/rRk4r+FGANBpiKCe3xm+Wf0SdQRw1WG/15JeKQ=;
- b=rzgttcPJ2JLk9b5OaZ4Xm1G+5F9K7siDggNK1cO6vQmHl6rZDXHwwjxz0KAKxOadSalOfXjUShFFnnuLr7fTTIzyjUSYgcLkxvDc5p7ve1yhtK9RCVuNW4mihLSV0lnIM5mCsGI+QSZy3wmdNc3AwDbnQ/awKf65b/9ebsXCIRnNsduADuaf68E3szqkOiGfo1LMwifYS4kLxdwIKvhkvp4GP4YmrjrPPwoyveSddB22jI3C0QxwCysoDmxCrS8rjBC0yyWvLXAY8WiJEqaV1SCEfmxCUx4HTrFqCaE8bmI1r+APShwdC7Y3835qcJF0KYhYilKt5SQ4es0Yomj9yQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 198.47.21.194) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=ti.com;
- dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pPYy/rRk4r+FGANBpiKCe3xm+Wf0SdQRw1WG/15JeKQ=;
- b=gTZjVYEAGPmop2AOjXtuGaGtUksRbOIuEBP8GimLGoalqUYb0vsClqtf8zbCvY5uepFlQkqqPh6PjDphr7d7Rje2HHfgGL0+UUZqLy3PO8kX8ebQ+oMlR2IU5jst4nXJM6qpX8W96ShkrFtmaUuspY4TVOzRuKkcg0EV+Sc1Ocs=
-Received: from MN0PR04CA0017.namprd04.prod.outlook.com (2603:10b6:208:52d::10)
- by SJ0PR10MB5663.namprd10.prod.outlook.com (2603:10b6:a03:3db::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.10; Fri, 12 Dec
- 2025 04:34:56 +0000
-Received: from BN3PEPF0000B069.namprd21.prod.outlook.com
- (2603:10b6:208:52d:cafe::95) by MN0PR04CA0017.outlook.office365.com
- (2603:10b6:208:52d::10) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9412.10 via Frontend Transport; Fri,
- 12 Dec 2025 04:34:48 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.21.194)
- smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
- action=none header.from=ti.com;
-Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
- 198.47.21.194 as permitted sender) receiver=protection.outlook.com;
- client-ip=198.47.21.194; helo=flwvzet200.ext.ti.com; pr=C
-Received: from flwvzet200.ext.ti.com (198.47.21.194) by
- BN3PEPF0000B069.mail.protection.outlook.com (10.167.243.68) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9434.0 via Frontend Transport; Fri, 12 Dec 2025 04:34:54 +0000
-Received: from DFLE205.ent.ti.com (10.64.6.63) by flwvzet200.ext.ti.com
- (10.248.192.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 11 Dec
- 2025 22:34:51 -0600
-Received: from DFLE212.ent.ti.com (10.64.6.70) by DFLE205.ent.ti.com
- (10.64.6.63) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 11 Dec
- 2025 22:34:51 -0600
-Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DFLE212.ent.ti.com
- (10.64.6.70) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Thu, 11 Dec 2025 22:34:51 -0600
-Received: from [172.24.21.18] (ltpw0bk3wf.dhcp.ti.com [172.24.21.18])
-	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 5BC4YmPi1630956;
-	Thu, 11 Dec 2025 22:34:48 -0600
-Message-ID: <1542ee8a-620b-4349-92fb-ab1f6c5b5eab@ti.com>
-Date: Fri, 12 Dec 2025 10:04:47 +0530
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17680274B40
+	for <stable@vger.kernel.org>; Fri, 12 Dec 2025 04:36:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765514201; cv=none; b=ZtB54Mo/ImttZXjFWEEPT0Aw2nUxvOUZpdHMhg2zl1B9geuM5ysvFjniYmR8SSJBLPEBajb+uuek761PjslxkgTBZL8kZMELmO1wTK/OLtx/E5T/TaR0OIWN3bhsYI+ftA8ZDetGAM8b5lO7aAkiRBGIdYBN2fuzPfJ+aX1BTXM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765514201; c=relaxed/simple;
+	bh=izvC/VTG5SdRufO3rbQ2eu6UnJHz/zUHVfUxXCNHN20=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AH16IIKNT7wsMQhfPNvVv4bcP4gbYk74Jtp3TClCFpu8uTT8446BhOFTnWdvYFVSMvqqqYG9UPsPUXxyJ6bEyuhIultq409gaE1PEm3uVKzWBtVDt2oXWt1Q+hyMwItSVXO6Y7UY68QA61JeG0QHTBH1dIgMkJgNJ7EU5ID5fF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OVDQ2cDX; arc=none smtp.client-ip=74.125.82.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-11beb0a7bd6so1035158c88.1
+        for <stable@vger.kernel.org>; Thu, 11 Dec 2025 20:36:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765514199; x=1766118999; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=s50kvV7cRV3FVuazE9IrYPdEtv6Y/mgFFfoCIbS5VTQ=;
+        b=OVDQ2cDXuLx7VPGYqKo2s/cbqDSqpYTMSwJ8s/SpkukRIrUBI/s8IDzrau0vknFA+G
+         iGbb82aiUYzdHf/HOW+1ZN4j9GfafVxTBcumow/oepWtfxmHeiX9Mi7MOOHd5qvL1YTK
+         7lz6s/UTJ/rwAXpFHXb5ICvAQa+JjXmUTdHh/fxyKDD1j4vXB34zjzJyZkcudPPeDhg3
+         eWW39fvs5SQqtvQdVa/0cdjVJQnwxG9XbwtL2UPv+iHphxXjApfwxqCvVZVJfiOqZoJD
+         emK2KP9p/dZ9FAKhAVtGl+tziKcK4I5ZOkv127lo8rAofw8taZD7AejIdi9lPKTiJfBJ
+         BIFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765514199; x=1766118999;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=s50kvV7cRV3FVuazE9IrYPdEtv6Y/mgFFfoCIbS5VTQ=;
+        b=iLG87QKiqUc3pfQPZ4wtIISLxEAYA6ougYkiWGhpwbZ2Dy6O5MGFwDGyqoc4ARHKok
+         57bvNEEklCZr/lSYpwTZQ/5E3XqYPiuI7y5jZJS4haa8H0unrf5WlGunZHRuwcFUr6Tr
+         lpBQnNi90R77g6jwduHLnldq0PQvr70HogjdVyRD2GFpjWG4Kshc1YVrbxIeo9f9z8nn
+         cNnd1tu40GSM35RcgYbtFbyFLBCGLPe0B0sUQEywcfdRmyeFDNoCpcJuCEG7+QTirsbU
+         r9XirCl1d5f9gb+4eJu5fc/Fmk7Et30xaH7f4FEt2JSCRfgmKrteUQkn7Qyb9g3HhARk
+         k32g==
+X-Forwarded-Encrypted: i=1; AJvYcCVIo3tSCfd5Z5Ya5XAYTfBmZC/cCb2uqQArtK8uximjKxN4GTq+KrD5z/3z9RAJg7jBJ2TTLf4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzwOiZC3mmE4oChXNzNPh0LuNtmf73Q01R6rLKQEP9kf25cPsMm
+	X++YbwMvT5qwJWzxiI9bgpVzozK/HIYUSuue3Tsi/tO45Vl4qwhwuHTSqw1TU3X+
+X-Gm-Gg: AY/fxX6lnkoe0/mL7nfga2v5Z9te3+Y0EZQhztu1y/PubZSeKH11KIUqZjt7Hm5834U
+	UrK4m3EgSEoSA+LXwv/MQ26EwUomlEJj8gDaoSc+rk9JlfwytT2WkSgaX7KbSoCqXGB0UcYIKJI
+	fJ/VA3Gt1bJ88nsQdbj1hRWcnHiICZBCFHC7uto0nRD0pG0Xrgohk4b38ODSO+q4kwAXzJE8j7h
+	42zsa++GsV61ozSbC6D9q5TqXbm+Y7NkMW6QtNS0e4ZQcy+x323ryJUdMvyGUwhmLG/xEOwKVot
+	CTNT+Ju7QruV/VD1JcrvyAGTXr7/BTURc+F3jkXVg7/kDmaD0O7MChKIxwcsyaC3sXZqmuGgSnK
+	rFJTFYRcPvEhPkZHIAF0864d08vDojX7hvV3EkHlNj/h6OAQtTWHY5dyjqUsbb/OuugzkbjdDRh
+	BhS2YqR0U8G1mPS5cwgjF/it1KEayF31kAVG/chyI6TdSJDfMUP2Y=
+X-Google-Smtp-Source: AGHT+IF2xrXTlmdxAYv++ETrOonH3/AQfDDcb9WmTvM1rKqUqIo4CwgeJp/PTyBASgfy/LaNMOPfPQ==
+X-Received: by 2002:a05:7022:201:b0:119:e569:f85b with SMTP id a92af1059eb24-11f2ededce9mr3774417c88.18.1765514198735;
+        Thu, 11 Dec 2025 20:36:38 -0800 (PST)
+Received: from google.com ([2a00:79e0:2ebe:8:fafd:f9bf:2a4:2a0b])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11f2e30491dsm14246263c88.16.2025.12.11.20.36.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Dec 2025 20:36:38 -0800 (PST)
+Date: Thu, 11 Dec 2025 20:36:35 -0800
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Minseong Kim <ii4gsp@gmail.com>
+Cc: linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] input: lkkbd: cancel pending work before freeing device
+Message-ID: <bycvmdyibmuw6dzmjmdonof4fqli6xv2igqnwpw7pxq5uqfvis@oon4iri3wjro>
+References: <20251211031131.27141-1-ii4gsp@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] spi: cadence-quadspi: Fix clock enable underflows due to
- runtime PM
-To: Mark Brown <broonie@kernel.org>
-CC: Nishanth Menon <nm@ti.com>, Francesco Dolcini <francesco@dolcini.it>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>, <linux-spi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, "Gujulan Elango,
- Hari Prasath" <gehariprasath@ti.com>, "Kumar, Udit" <u-kumar1@ti.com>
-References: <20251202-spi-cadence-qspi-runtime-pm-imbalance-v1-1-aee8c7fa21f2@kernel.org>
- <aTFQv157O-wJjVrZ@gaggiata.pivistrello.it>
- <555e9f6b-b8b6-4cc5-900b-63aaff8b4e6c@sirena.org.uk>
- <20251204140530.xax5didvuc7auzcd@problem>
- <4d6b857e-4bfe-45ef-a428-6e92f218f0c5@sirena.org.uk>
- <2fcf5235-cc94-4202-9164-4889356c5264@sirena.org.uk>
- <cd95320b-6852-476e-bc8a-2e8d1ac77a9e@ti.com>
- <f804d7a7-4ffb-4d2a-bbaf-ca0a076a11ab@sirena.org.uk>
- <5525272e-7220-4352-bb08-ac66631108e0@ti.com>
- <cf8e7003-ebca-4817-8350-f29332d75fab@ti.com> <aTf6RRAveRdVnWQZ@sirena.co.uk>
-Content-Language: en-US
-From: "Dutta, Anurag" <a-dutta@ti.com>
-In-Reply-To: <aTf6RRAveRdVnWQZ@sirena.co.uk>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF0000B069:EE_|SJ0PR10MB5663:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3d073ed4-ef9b-46d5-01e4-08de3937cc44
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|36860700013|1800799024|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?TVZtWGFTVU1RYjhON0hKcHFFVDNYOHArMEt6VjdpbjIwalNWZi9PdGs3VHBw?=
- =?utf-8?B?RkdNSlM2NWZTZjU4UmpwVmxER2VMTk96ZUk1Vm90a1N5TTFoSHBER0Jia2VL?=
- =?utf-8?B?Qjc0UHdETXkrMVdsaDB6NU5VTW5zbS8xRmNaeThjYTk5UWxsczJ3d3BQMEpI?=
- =?utf-8?B?TUdiaDI3YklLUnFkV3lTWXVuUzVyTERpNTFEcDZzeW1xb2xNS0lhb25yTktY?=
- =?utf-8?B?blY5ZmJ2QTVEQXVrb1ppS1htR2w1WmRxMEQvbUc1R1dFOTBYNEdZVFdYeVAy?=
- =?utf-8?B?QUk1ZUorYWk4d1VBR3BSQXk3UTE1b29zVHZEQ0sySVBUNHdLdFhMclRvOEJI?=
- =?utf-8?B?Q1o5ZTVoemJqWENEMHBud3IwZS9zVWdHRUxJVlV5cDd1WmlHMFg1SnhKdHds?=
- =?utf-8?B?dnZ5SHN6UXpVUVZUaHovNVZLRnY2c3dDNlE5dGsweDZZbTJMbk56QVRPRHQv?=
- =?utf-8?B?SEhmVHc5YkFYNGM3alliSG1PR3Z6dXRIaFM1VStZQ296cWsvUU8xZEdFcytp?=
- =?utf-8?B?VTllVFBzOGF4SzJncWlLWUNqQ0NZVDVCYVRjQ092MzFCejVYOU51Uy82QXAy?=
- =?utf-8?B?SEcyT0pTS0NFSEZzMzdXRzRYNVc0TndtT2JzdDM1cmZUaldtK0VGUXdaLzFt?=
- =?utf-8?B?ZUdybTAxck9DWWlnWjh6RFBSVFNzNHh5REwvTDRZTEdKYUNvN2hKTTlCTDZE?=
- =?utf-8?B?ZUUxRW92WmdNMTVMVDJMdUFhb2U1bTlGek8yNE5jVkl3cFdja1dMSnlyZlRZ?=
- =?utf-8?B?b2RZSmNlL0QzeHNpaG0yay85UDdCTm1XU2tnOXJ3MlFLazRHaTYrOHZJUUsx?=
- =?utf-8?B?WXpPOVhTaFdZaDFkaUtJLzV4QlFvaWloMUNPVy8vSVlqd29xSExEU1kwS2g1?=
- =?utf-8?B?ZW9LY1RtcHFmV2JyZm5udmZCSnZsOXg1WXV2OHlOTGhTUVNNaHJJMjdCcGl0?=
- =?utf-8?B?UnhuUXc3TlJPNi9NRUZvQzNvZ0szVGd5RW9IaWJsdkdJNGRnekN3OXhUSGVK?=
- =?utf-8?B?UGFqOWVLVFo1TzY5VjZxRFd4a2o1L0lQQysyWENOa1ZrbUZEUVJwdisraFor?=
- =?utf-8?B?c3k5T3RZbWVwQjlLdVJiUHZ6M2g1REZhMlp3eTdYem1NZmZBK2NPcStIeFRD?=
- =?utf-8?B?UVoyeko4Ykd3QmpHbC85OXZ3N0ZHdk9RVTllRWdEbk1Za3VQZ3hqUjIvS1BC?=
- =?utf-8?B?cTAvNlRZdGhkeWhpNE1mQzhMRitlbUxZaE82N0xlT2tLcCsrZjE0ZmE3VTRi?=
- =?utf-8?B?WDk3NTVVb0hCWWNTQjUzelZ2c1hZQ29hcTFjWjZlMlVNQlFQUFRHbkRaaUl6?=
- =?utf-8?B?Qy9QWjluTW04RnUyaUx1QVZIRGlwOWlNL0ZaM05kSktZQWtZMW8wRDVsQXVo?=
- =?utf-8?B?RmtVeHQxTW05QVNJKzIyU0JnbTZZaS9vTnl1cVlhUzlWaFJYbkl4RU1seHdr?=
- =?utf-8?B?REh5cEVpQjVzRCtnelpLbkhUU2N1UmJJTUxVUnFjSUR5ZjhSTUM1UStLREdO?=
- =?utf-8?B?alpJai8ycWRCYXJValM5Y1JRUmFPTTY2MGozK2duTDZveTBhU2FJMUwxUDdH?=
- =?utf-8?B?MlpsUXpJYlcxVGJPM0lFWWIwcTNjUUU2NENUTU9RYzRNNWx6amlQRGJWV004?=
- =?utf-8?B?am1vbW1BSS9DQnpHODFGaWx0UGdFOThrZisvZ21XRU9qR04xZ0tnaHV3djU1?=
- =?utf-8?B?ckV2YzdPU24zVkg5dVhuZ0V3MDVJUXZBK0pCSXUzbGl0eW54MmxHd1JPQk1s?=
- =?utf-8?B?YzhlTXc4VDExSTFCNmxkMEtCNjNjclQvODVIN05kZDRnWFdBWG54aTN2WUdy?=
- =?utf-8?B?NllCK0dyUmdkd2hiRGV0WDNQNnFoZXV1NW45b1o3K2RtdSthMk1PaTUzaXVG?=
- =?utf-8?B?SG1LRFBlc3lRRlo2UXFMVENYNHQ0eDlzaGdnS3pmTW9xMVZNQ1dTZ0VlL3RE?=
- =?utf-8?B?QnVZaTJmNmhLOTY2a3E2QWl1T0J1d2VNOFYwSTNNZG9EaGsrMHRPejU1WTZu?=
- =?utf-8?B?czRoMXZUekl6bUpvUkZlc3A3N0V6MFZ1MTFkSVdyOFovdzBHZ1NWbjZFcC9h?=
- =?utf-8?B?V2VZdlBkRlo4eEdhKzVjUURrd3I1OUJuL0VvU1ltQXdYSGtpVVA3ekk3R0sx?=
- =?utf-8?Q?5usE=3D?=
-X-Forefront-Antispam-Report:
-	CIP:198.47.21.194;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:flwvzet200.ext.ti.com;PTR:ErrorRetry;CAT:NONE;SFS:(13230040)(376014)(36860700013)(1800799024)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: ti.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Dec 2025 04:34:54.5013
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3d073ed4-ef9b-46d5-01e4-08de3937cc44
-X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.21.194];Helo=[flwvzet200.ext.ti.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN3PEPF0000B069.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR10MB5663
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251211031131.27141-1-ii4gsp@gmail.com>
+
+Hi Minseong,
+
+On Thu, Dec 11, 2025 at 12:11:31PM +0900, Minseong Kim wrote:
+> lkkbd_interrupt() schedules lk->tq with schedule_work(), and the work
+> handler lkkbd_reinit() dereferences the lkkbd structure and its
+> serio/input_dev fields.
+> 
+> lkkbd_disconnect() frees the lkkbd structure without cancelling this
+> work, so the work can run after the structure has been freed, leading
+> to a potential use-after-free.
+> 
+> Cancel the pending work in lkkbd_disconnect() before unregistering and
+> freeing the device, following the same pattern as sunkbd.
+
+Thank you for spotting this.
+
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Reported-by: Minseong Kim <ii4gsp@gmail.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Minseong Kim <ii4gsp@gmail.com>
+> ---
+>  drivers/input/keyboard/lkkbd.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/input/keyboard/lkkbd.c b/drivers/input/keyboard/lkkbd.c
+> index c035216dd27c..72c477aab1fc 100644
+> --- a/drivers/input/keyboard/lkkbd.c
+> +++ b/drivers/input/keyboard/lkkbd.c
+> @@ -684,6 +684,8 @@ static void lkkbd_disconnect(struct serio *serio)
+>  {
+>  	struct lkkbd *lk = serio_get_drvdata(serio);
+>  
+> +	cancel_work_sync(&lk->tq);
 
 
-On 09-12-2025 16:00, Mark Brown wrote:
-> On Tue, Dec 09, 2025 at 03:22:43PM +0530, Dutta, Anurag wrote:
->> On 09-12-2025 11:13, Dutta, Anurag wrote:
->> Another solution :
->> diff --git a/drivers/spi/spi-cadence-quadspi.c
->> b/drivers/spi/spi-cadence-quadspi.c
->> index af6d050da1c8..4d298b945f09 100644
->> --- a/drivers/spi/spi-cadence-quadspi.c
->> +++ b/drivers/spi/spi-cadence-quadspi.c
->> @@ -2024,7 +2024,11 @@ static int cqspi_probe(struct platform_device *pdev)
->>   probe_reset_failed:
->>          if (cqspi->is_jh7110)
->>                  cqspi_jh7110_disable_clk(pdev, cqspi);
->> -       clk_disable_unprepare(cqspi->clk);
->> +
->> +       if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
->> +               if (pm_runtime_get_sync(&pdev->dev) >= 0)
->> +                       clk_disable_unprepare(cqspi->clk);
->> +       }
->> pm_runtime_get_sync() will increment the usage count thereby preventing from
->> runtime_suspend()
->> getting invoked, thereby preventing double clock_disable()
->>
->> This will work for !CONFIG_PM as well because pm_runtime_get_sync() will
->> return 1 then.
->> and the runtime_suspend() is never going to be invoked.
-> I think we want this, possibly using pm_runtime_force_resume() instead
-> (not 100% sure on that one, glancing at the documentation there might be
-> issues though it feels like the intent of what we're doing here).  Can
-> you send a patch please?
+We should use disable_work_sync() here because even if we cancel the
+work there is a chance it will be queued again (up until the moment
+serio_close() returns).
 
-> Hi Mark
-> If we use pm_runtime_force_resume(), then for CONFIG_PM_SLEEP, it will work.
-> But, in case of !CONFIG_PM_SLEEP, pm_runtime_force_resume() returns -ENXIO,
-> because of which :
->
-> if (pm_runtime_get_sync(&pdev->dev) >= 0)
->
-> will be become false and clk_disable_unprepare() will never be invoked,
-> which might be an issue.
->
-> Let me send a patch with pm_runtime_get_sync(). If changes are required,
-> please let me know.
->
-> Regards
-> Anurag
+We also need to call disable_work_sync() in lkkbd_connect() in error
+paths once serio_open() has been called.
+
+Thanks.
+
+-- 
+Dmitry
 
