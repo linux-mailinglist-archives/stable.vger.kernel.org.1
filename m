@@ -1,95 +1,131 @@
-Return-Path: <stable+bounces-200905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 729C1CB8E1E
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 14:19:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8B23CB8E3C
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 14:22:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F06473009099
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 13:19:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5AC6E3089738
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 13:21:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3392E1F3BA2;
-	Fri, 12 Dec 2025 13:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A2A022A7F9;
+	Fri, 12 Dec 2025 13:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="P2f+BXYg"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oCP7H1vy"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1325F1AA7A6;
-	Fri, 12 Dec 2025 13:19:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F463221264;
+	Fri, 12 Dec 2025 13:21:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765545578; cv=none; b=jkbGqYZxNFT6VNZSw+zGu0AcTORFux2r6BBVviwD7aaeIkwmorfTz2WK1BymyOQHaz4TpUBccln6361BolMA2C9jMdUztGvgsAfZQ8pRjTbDGFLRKWrs0KhdFV145lVbL105vTb/28+/c2aQHQ8v9Ar+qY2I4wp2t4Jol/Hw3QI=
+	t=1765545672; cv=none; b=OZorhtW4IOE/V0XC/mAQpKPrL96XavSRMioZaEiQvGM5GvcZKbZN/8ke3iTAkYQ6tdFasgWb8XnCX/fytkTZIt8H6SdAiWJnZicYoIlCnO1cuNkHU7vgbYsoSGyIVmK7MBCZyCGWYzDZXKRCnX+sIhkxYwtb4D060tLp7Wyg6tk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765545578; c=relaxed/simple;
-	bh=nDbmUHc2dj5euBkEod+E3WGAYdQOIp/oaUdJcJPX9SI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=lVkIBAQgglJMqiUtUBlEysUSmeCwfyhibXf/bjYUQuahDIxGLVrCQM7bhG+wYzr6fO3rTMt1ZBRDs2UrCzWKTgUhmPhV181Z2i8oSPiJaJoSb8aUpx62EJLdtRP/oAU3HB+ElPyFzVa5kh9T8v/xZ9i1NQ2tFQMriMn0wcZg/U8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=P2f+BXYg; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:To:Subject:MIME-Version:Date:Message-ID:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=nDbmUHc2dj5euBkEod+E3WGAYdQOIp/oaUdJcJPX9SI=; t=1765545576;
-	x=1765977576; b=P2f+BXYgMrw/xkrpwLjREPCWSM6Xk88gYQM6hjzMpD9j5nwGfYxpskWbUEAD4
-	BSO6C0N2ILtD2WcEeqJiBKDG+lqfxiKcfKdC5U67fxpGmM/lBGXIb3tg2AnBRotl3NpnByYnK6kiu
-	wco6VEGpRpTZEXDKxKRBpkTYBi8UAh1yFTl4EOyzTjKDdO42gRW9hIorhnQzByHKEtRGywj5iGnij
-	B9hpTV9SNZHMdc59FI2rpZkcXuR/fAakvuKYuEubVks/72JOE7emaWNl4PY26Ydto1bOMj5VB+mez
-	vjrfY+vFjOZ7zk70VuzHCwxULTJV/PUcVZoNts5haWET0S/YlQ==;
-Received: from [2a02:8108:8984:1d00:a0cf:1912:4be:477f]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128)
-	id 1vU33O-00HLxA-2q;
-	Fri, 12 Dec 2025 14:19:27 +0100
-Message-ID: <ee6e0b89-c3d0-4579-9c26-a9a980775e55@leemhuis.info>
-Date: Fri, 12 Dec 2025 14:19:26 +0100
+	s=arc-20240116; t=1765545672; c=relaxed/simple;
+	bh=Xw4J35AXVe0tIkMKb4FDDQucWVWj6fFu2dpxmn3jH6M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eNkbYcFrBGUmzJHvY4WbCWM3ZMFhCX4GXlfHXTDpqOsLfkgtfSOEKgF1OzlhSv2+ShUg6zDMafC4yNhny6OxOjXRlN+xbN5zbCYcWP6jpCRav03vHWWlbjjur17IKYzGSHdbJuUNArnS0sgBR4QZn4J1NfozBMWqgR3MiMu2ykU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oCP7H1vy; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765545670; x=1797081670;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Xw4J35AXVe0tIkMKb4FDDQucWVWj6fFu2dpxmn3jH6M=;
+  b=oCP7H1vyCRD8Tt5hf5xM+gpsQJ2Dts+ThO3Qz/6XLSALWRMr4lwZ8Nmx
+   DPmMyLkg6cdpelf4HCE+RA/3q0rK+wpUMJ0qP+EnbiQ1gxYHgJ/Ml7t6p
+   FDYtcRk18GvOvSr19pIpCNaKRbf2MCxRwAR5pa47XfiiKcS5ILezPP6+2
+   J/qGFlsEtkbumEbhoYGhCd4n/xepkMZvEdrjkLzvr/oOddYKn8tEhvo60
+   fH39t2UDBfCg4tVEuzmq9a8ijjHuPNlGjqt8WYCRJuwt8RPhYYRYWUhLX
+   ZB5uM7BL98e7PFYyT/hiIB+m9Hj32DVGB9ABAOR+1Pat4G5lvKpbnAzSi
+   Q==;
+X-CSE-ConnectionGUID: D2G7dM6FQ9e79R18Y+1uYw==
+X-CSE-MsgGUID: 2ZE2+m3NSFSDXPX/PrXJNQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11639"; a="67431198"
+X-IronPort-AV: E=Sophos;i="6.21,143,1763452800"; 
+   d="scan'208";a="67431198"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2025 05:21:10 -0800
+X-CSE-ConnectionGUID: 1HmC4w25RVOQZLSEfMTe6A==
+X-CSE-MsgGUID: gWX8bhMzTvedXw/eKlj1pQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,143,1763452800"; 
+   d="scan'208";a="196695487"
+Received: from pl-npu-pc-kwachow.igk.intel.com ([10.91.220.239])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2025 05:21:06 -0800
+From: Karol Wachowski <karol.wachowski@linux.intel.com>
+To: David.Francis@amd.com
+Cc: felix.kuehling@amd.com,
+	christian.koenig@amd.com,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	sumit.semwal@linaro.org,
+	andrzej.kacprowski@linux.intel.com,
+	maciej.falkowski@linux.intel.com,
+	dri-devel@lists.freedesktop.org,
+	linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org,
+	stable@vger.kernel.org,
+	Karol Wachowski <karol.wachowski@linux.intel.com>
+Subject: [PATCH v2] drm: Fix object leak in DRM_IOCTL_GEM_CHANGE_HANDLE
+Date: Fri, 12 Dec 2025 14:20:52 +0100
+Message-ID: <20251212132052.474096-1-karol.wachowski@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [6.12.61 lts] [amdgpu]: regression: broken multi-monitor USB4
- dock on Ryzen 7840U
-To: =?UTF-8?Q?P=C3=A9ter_Bohner?= <peter.bohner@student.kit.edu>,
- Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
- amd-gfx@lists.freedesktop.org, stable@vger.kernel.org,
- regressions@lists.linux.dev, bugs@lists.linux.dev, Jerry.Zuo@amd.com,
- aurabindo.pillai@amd.com, ivan.lipski@amd.com, daniel.wheeler@amd.com,
- alexander.deucher@amd.com, gregkh@linuxfoundation.org,
- Mario Limonciello <mario.limonciello@amd.com>
-References: <9444c2d3-2aaf-4982-9f75-23dc814c3885@student.kit.edu>
- <ea735f1a-04c3-42dc-9e4c-4dc26659834f@oracle.com>
- <b1b8fc3b-6e80-403b-a1a0-726cc935fd2e@student.kit.edu>
- <bfb82a48-ebe3-4dc0-97e2-7cbf9d1e84ed@oracle.com>
- <7817ae7c-72d3-470d-b043-51bcfbee31b1@student.kit.edu>
- <d5664e24-71a1-4d46-96ad-979b15f97df9@student.kit.edu>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: de-DE, en-US
-In-Reply-To: <d5664e24-71a1-4d46-96ad-979b15f97df9@student.kit.edu>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1765545576;d9fe55e7;
-X-HE-SMSGID: 1vU33O-00HLxA-2q
 
-On 12/9/25 16:50, Péter Bohner wrote:
-> note: reverting ded77c1209169bd40996caf5c5dfe1a228a587ab fixes the issue
-> on the latest 6.12.y (6.12.61) tag.
+Add missing drm_gem_object_put() call when drm_gem_object_lookup()
+successfully returns an object. This fixes a GEM object reference
+leak that can prevent driver modules from unloading when using
+prime buffers.
 
-That is 1788ef30725da5 ("drm/amd/display: Fix pbn to kbps Conversion")
-[v6.18-rc7, v6.17.10, v6.12.60 (ded77c1209169b)] – and Mario (now among
-the recipients) submitted a patch to revert in in mainline:
+Fixes: 53096728b891 ("drm: Add DRM prime interface to reassign GEM handle")
+Signed-off-by: Karol Wachowski <karol.wachowski@linux.intel.com>
+---
+Changes between v1 and v2:
+ - move setting ret value under if branch as suggested in review
+ - add Cc: stable 6.18+
+---
+ drivers/gpu/drm/drm_gem.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-[PATCH] Revert "drm/amd/display: Fix pbn to kbps Conversion"
-https://lore.kernel.org/all/20251209171810.2514240-1-mario.limonciello@amd.com/
+diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
+index ca1956608261..bcc08a6aebf8 100644
+--- a/drivers/gpu/drm/drm_gem.c
++++ b/drivers/gpu/drm/drm_gem.c
+@@ -1010,8 +1010,10 @@ int drm_gem_change_handle_ioctl(struct drm_device *dev, void *data,
+ 	if (!obj)
+ 		return -ENOENT;
+ 
+-	if (args->handle == args->new_handle)
+-		return 0;
++	if (args->handle == args->new_handle) {
++		ret = 0;
++		goto out;
++	}
+ 
+ 	mutex_lock(&file_priv->prime.lock);
+ 
+@@ -1043,6 +1045,8 @@ int drm_gem_change_handle_ioctl(struct drm_device *dev, void *data,
+ 
+ out_unlock:
+ 	mutex_unlock(&file_priv->prime.lock);
++out:
++	drm_gem_object_put(obj);
+ 
+ 	return ret;
+ }
+-- 
+2.43.0
 
-But it has "Cc: stable@vger.kernel.org # 6.17+", so that revert won't
-make it to 6.12.y; I wonder if that is just an accident or if there is
-some good reason for that.
-
-Ciao, Thorsten
 
