@@ -1,213 +1,116 @@
-Return-Path: <stable+bounces-200882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2D0DCB84F2
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 09:46:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 877C6CB8510
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 09:48:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D37193029C64
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 08:46:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A91BD30361C7
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 08:46:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CF5F2D77F7;
-	Fri, 12 Dec 2025 08:46:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D97E82D592D;
+	Fri, 12 Dec 2025 08:46:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2ihEAZFP";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mB8f009P"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JHYuCuh1"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B34CA1F151C;
-	Fri, 12 Dec 2025 08:46:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC062868B2
+	for <stable@vger.kernel.org>; Fri, 12 Dec 2025 08:46:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765529194; cv=none; b=Yy+Jdaow2HTLLCzIS6sUT+SpOZQOQsllYvjfX4NiX7nEpy38N8hckUgPWxBQWpw7+g9Ds4uu+raj/wXMVm+o2krI/qn1rxBroOaev5Cbl4BaA/NTgPGhFMdAqVFhKGb2Z5L5HLfhg1ppoOuyHtEeYZuV3yLiwyuNgeVsQjwvJYw=
+	t=1765529213; cv=none; b=Gvpn385HpIxZN+jl+bfCO4HIqAT7srhXR9Xl3slEI/qxHslLhZg+bNsVoRP5pQsGeEE/GT1q+P3pOBZ2IotS3UOe7dipwfQpFhpyF2vhT+/d62DrvVvm3rx7Gn8/vGMbo7DiR9mFPKyKB5AhCRmSwgnv4DD/ArV3YqeJbGjcIUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765529194; c=relaxed/simple;
-	bh=kaygFpEKXYYDG+8/UngONMN6MifrZk7dcXSC2iGWp6k=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=Jpx3pLcTFNekrOyNayb+0hNMegsxivrbK8n8Zu4ugU2ndkQ/c9hhxxwAepLC73Se8GvyWyBJrF4nolzJ72zbO6jCpJFPMXsaaUQ68HHXLrLwbse78yIp7CfdPHmBJ0GzZdCvA0xyNmmKhuLYGwilXjn+t1aPFOU5a9K+zcHvg0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2ihEAZFP; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mB8f009P; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 12 Dec 2025 08:45:17 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1765529190;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=1Kk3NLtioyUgckFe1IfCGVHk3jqy0cosuqQPx1RnTVk=;
-	b=2ihEAZFP9fjGEFelDbc1iZs36vjFM3fHNK2kcetJpULv+9QR6nBegj0gw3y4ZQh1/JHVGH
-	hDWvyFnuJnNcf1IEwfF8vItYWgtOTeiK34FNv3KRDGbqAckeY6kDhRiYK0MEjI7lWlzXiH
-	qxjOwWpTtr2Xk6NgiOXmPrdp05TAzmdtZjCFEFM4AJXyjPbP+TbRtGOuilLB/jBGXXpaWx
-	FCRlsFkT6AvKCzArV0zOFRixAfZqByxwu6EGB4ObN60GwqF2qTKlglxAy1G5RnWySvpaH9
-	w/b73OByVQ7rGDsIUyI7YKb0xe2pfIUPcyUlZNYmrzMoS4BNNU6E1EUtQOLoCw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1765529190;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=1Kk3NLtioyUgckFe1IfCGVHk3jqy0cosuqQPx1RnTVk=;
-	b=mB8f009PBu6mwsa3xfwwnx5u/n97O0wX1qqhe+jShhPmdpC5WxZLp4Aee8D2h2Dq7FF8cX
-	3HFdYkPNbUutTiAw==
-From: "tip-bot2 for Yazen Ghannam" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/acpi/boot: Correct acpi_is_processor_usable()
- check again
-Cc: Michal Pecio <michal.pecio@gmail.com>,
- Yazen Ghannam <yazen.ghannam@amd.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
- Ingo Molnar <mingo@kernel.org>,
- Ricardo Neri <ricardo.neri-calderon@linux.intel.com>, stable@vger.kernel.org,
- x86@kernel.org, linux-kernel@vger.kernel.org
+	s=arc-20240116; t=1765529213; c=relaxed/simple;
+	bh=UUz9FBZ0VjTdrrNvYZ/9wuunSrYYvwDzroYxL8D0MTM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XxkD3b9KJ+/YAe6wUEecn5bqiwH1451FBypJDOGgTdoyU7BOEeL1/oDbHYC4JWGrCI8wzSWGvCT1XyM/RnYefMjQl6GfHKuqNw0tqnkwFId7KoodHSue9Da2ju/M48oPncF87+EhYUTSRzIjShMUfvL59nSQ9XCehuGbR5yw5ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JHYuCuh1; arc=none smtp.client-ip=209.85.215.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c0224fd2a92so930468a12.2
+        for <stable@vger.kernel.org>; Fri, 12 Dec 2025 00:46:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765529211; x=1766134011; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=BOyh7YwZ/fjOnqsi8in+FWH0IHyn2UOzmxthtzGPDGI=;
+        b=JHYuCuh1zc4VZaWVD1HHlKVfYLMThJVsoZ5IDRaXRYmRzFhgT7o1OxwJ9Vx2Ul3Wdy
+         IM8Q/jz1TTBYhWUJaZfw6FbOvaVJEOMhWDVPoOjAG+GAVlnzWsLXij7kP2Stsx8/e9JH
+         q5wUscZRXRf4vFi2bFUOTG3T5syvset9Qdc273XGefIuTo/By6HZ6PuZpJQOp/FrSFzP
+         Sbxf9Wn0hcKoZFoIjntNwd/7O4Xi1Pt77ACu9OIVoZ08RYQgWQSLTvgeFkX+AhoWXV75
+         DYL8fr1svP1l3dXUCXIukKSW1LQnnymyPpPWYZZLGfXkoaK+pi340Kb6/OMEtosV35ll
+         Gpdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765529211; x=1766134011;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BOyh7YwZ/fjOnqsi8in+FWH0IHyn2UOzmxthtzGPDGI=;
+        b=OJBlIU+wcJaO/ko9HhJwRjJXakdBR1poqV+zz97UxGRr4vmYb+JbeXXVXl8ufBojuH
+         hJZxreP7drw6ZhvulmnMLRnluaAv2cCt5azlhBilXtgN0EUMLHncLj1lUSUb4Dtm5QLM
+         8tJxtvJX9zB81u+cLbj7eFOTifRV9C/hATHgDtPXgKXnqbH475AIYvlJTArmIj/2ueZS
+         ofsCgZixnMBa3/LOABxmuViHNSid8GYLEB+RekDovXARLMp13BY30bgjwbf3GBfee+Ad
+         deha/UKzPRgt3HZdrKJPHpQGVxn5aZMSvCQL6d+aXE8Cg0/Q3pcRaX602GoLzdbHrV0s
+         BfDA==
+X-Forwarded-Encrypted: i=1; AJvYcCWqH3i6eE5jfqop32bAu4ddCGJq0Mjm31PclJqbut9uuWM+hoo9DxfsHA7KvgmgSMgp+b2XXNQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHxyXTl9W/zioaznZXJ+gzK9mAdWwBEg2QmumfG0ZWX3Z6JnL6
+	gwbT1mAtQQn7Qrv8DzsfgUTptyRW2oyuu0EaqQBhDJHX8isSEzF/d0a+
+X-Gm-Gg: AY/fxX7+CHJWgpH7DBZV+K0yaGWtpc/kOkhZCwuylLN9h0vOpzv+JM1DVoWZaZNCO/R
+	MUELUxYtk1G+ArRQ40xgy1MIJTpcbUO9jZqo8pfns+cmeSfuPJxEtja7QVGvWIXaP+7suGoYjSq
+	1CKmsslLyqBT1jaAOLGo9u3p2XhlAi+SCekiMn70nC9mkgz5G9wBNIZBBzDnBCcF7kM0iMiZ5Ex
+	BUONO+LogXndQN0iSlDC9gEyT5xsJItScROLeXPL+eWN3cPr5888rLdmVOdLkc214jGpn3eMYnR
+	p184IL8mYZCVgpaMqRsKsGca8c8z6Pjuap3xdjsgusUhLPPA2K2Ku8PVmkSzL9r1DYXgX36jFuc
+	zjex06Azh1OkFMaESJUw9L+tezdPRfkVEVCAvxeKWReSjxbJGaMEYBqozalXjVjozltAFwxstgS
+	l5eGMoPnod1hsb3YCuJ4QA8ch5bFrlTahH2L3S7AJuiF6aLFzqmMw=
+X-Google-Smtp-Source: AGHT+IFxRnn2Hnk3Fy94esqvbow5sOCCjS7YFOHFngABs5YEgFMaD0CbN/JFTsoo+Ygy71nEbS4+iA==
+X-Received: by 2002:a05:7300:d10f:b0:2ac:1bb1:68ed with SMTP id 5a478bee46e88-2ac2f85e863mr1040229eec.9.1765529211350;
+        Fri, 12 Dec 2025 00:46:51 -0800 (PST)
+Received: from google.com ([2a00:79e0:2ebe:8:fafd:f9bf:2a4:2a0b])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11f2e30b799sm14228199c88.17.2025.12.12.00.46.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 12 Dec 2025 00:46:50 -0800 (PST)
+Date: Fri, 12 Dec 2025 00:46:48 -0800
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Minseong Kim <ii4gsp@gmail.com>
+Cc: linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] input: lkkbd: disable pending work before freeing
+ device
+Message-ID: <tquiwnxvffkbxw6o4x66w53cujhkitzlleemwzoidgtjhxwwsr@ojotqpywkfwc>
+References: <20251211031131.27141-1-ii4gsp@gmail.com>
+ <20251212052314.16139-1-ii4gsp@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176552911836.498.14233165896834824768.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251212052314.16139-1-ii4gsp@gmail.com>
 
-The following commit has been merged into the x86/urgent branch of tip:
+On Fri, Dec 12, 2025 at 02:23:14PM +0900, Minseong Kim wrote:
+> lkkbd_interrupt() schedules lk->tq via schedule_work(), and the work
+> handler lkkbd_reinit() dereferences the lkkbd structure and its
+> serio/input_dev fields.
+> 
+> lkkbd_disconnect() and error paths in lkkbd_connect() free the lkkbd
+> structure without preventing the reinit work from being queued again
+> until serio_close() returns. This can allow the work handler to run
+> after the structure has been freed, leading to a potential use-after-free.
+> 
+> Use disable_work_sync() instead of cancel_work_sync() to ensure the
+> reinit work cannot be re-queued, and call it both in lkkbd_disconnect()
+> and in lkkbd_connect() error paths after serio_open().
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Minseong Kim <ii4gsp@gmail.com>
 
-Commit-ID:     4368a3b96c427ea3299be8cedb28684ba4157529
-Gitweb:        https://git.kernel.org/tip/4368a3b96c427ea3299be8cedb28684ba41=
-57529
-Author:        Yazen Ghannam <yazen.ghannam@amd.com>
-AuthorDate:    Tue, 11 Nov 2025 14:53:57=20
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 12 Dec 2025 09:38:30 +01:00
+Applied, thank you.
 
-x86/acpi/boot: Correct acpi_is_processor_usable() check again
-
-ACPI v6.3 defined a new "Online Capable" MADT LAPIC flag. This bit is
-used in conjunction with the "Enabled" MADT LAPIC flag to determine if
-a CPU can be enabled/hotplugged by the OS after boot.
-
-Before the new bit was defined, the "Enabled" bit was explicitly
-described like this (ACPI v6.0 wording provided):
-
-  "If zero, this processor is unusable, and the operating system
-  support will not attempt to use it"
-
-This means that CPU hotplug (based on MADT) is not possible. Many BIOS
-implementations follow this guidance. They may include LAPIC entries in
-MADT for unavailable CPUs, but since these entries are marked with
-"Enabled=3D0" it is expected that the OS will completely ignore these
-entries.
-
-However, QEMU will do the same (include entries with "Enabled=3D0") for
-the purpose of allowing CPU hotplug within the guest.
-
-Comment from QEMU function pc_madt_cpu_entry():
-
-  /* ACPI spec says that LAPIC entry for non present
-   * CPU may be omitted from MADT or it must be marked
-   * as disabled. However omitting non present CPU from
-   * MADT breaks hotplug on linux. So possible CPUs
-   * should be put in MADT but kept disabled.
-   */
-
-Recent Linux topology changes broke the QEMU use case. A following fix
-for the QEMU use case broke bare metal topology enumeration.
-
-Rework the Linux MADT LAPIC flags check to allow the QEMU use case only
-for guests and to maintain the ACPI spec behavior for bare metal.
-
-Remove an unnecessary check added to fix a bare metal case introduced by
-the QEMU "fix".
-
-  [ bp: Change logic as Michal suggested. ]
-
-Fixes: fed8d8773b8e ("x86/acpi/boot: Correct acpi_is_processor_usable() check=
-")
-Fixes: f0551af02130 ("x86/topology: Ignore non-present APIC IDs in a present =
-package")
-Closes: https://lore.kernel.org/r/20251024204658.3da9bf3f.michal.pecio@gmail.=
-com
-Reported-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Michal Pecio <michal.pecio@gmail.com>
-Tested-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20251111145357.4031846-1-yazen.ghannam@amd.com
----
- arch/x86/kernel/acpi/boot.c    | 12 ++++++++----
- arch/x86/kernel/cpu/topology.c | 15 ---------------
- 2 files changed, 8 insertions(+), 19 deletions(-)
-
-diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
-index 9fa321a..d6138b2 100644
---- a/arch/x86/kernel/acpi/boot.c
-+++ b/arch/x86/kernel/acpi/boot.c
-@@ -35,6 +35,7 @@
- #include <asm/smp.h>
- #include <asm/i8259.h>
- #include <asm/setup.h>
-+#include <asm/hypervisor.h>
-=20
- #include "sleep.h" /* To include x86_acpi_suspend_lowlevel */
- static int __initdata acpi_force =3D 0;
-@@ -164,11 +165,14 @@ static bool __init acpi_is_processor_usable(u32 lapic_f=
-lags)
- 	if (lapic_flags & ACPI_MADT_ENABLED)
- 		return true;
-=20
--	if (!acpi_support_online_capable ||
--	    (lapic_flags & ACPI_MADT_ONLINE_CAPABLE))
--		return true;
-+	if (acpi_support_online_capable)
-+		return lapic_flags & ACPI_MADT_ONLINE_CAPABLE;
-=20
--	return false;
-+	/*
-+	 * QEMU expects legacy "Enabled=3D0" LAPIC entries to be counted as usable
-+	 * in order to support CPU hotplug in guests.
-+	 */
-+	return !hypervisor_is_type(X86_HYPER_NATIVE);
- }
-=20
- static int __init
-diff --git a/arch/x86/kernel/cpu/topology.c b/arch/x86/kernel/cpu/topology.c
-index f55ea3c..23190a7 100644
---- a/arch/x86/kernel/cpu/topology.c
-+++ b/arch/x86/kernel/cpu/topology.c
-@@ -27,7 +27,6 @@
- #include <xen/xen.h>
-=20
- #include <asm/apic.h>
--#include <asm/hypervisor.h>
- #include <asm/io_apic.h>
- #include <asm/mpspec.h>
- #include <asm/msr.h>
-@@ -236,20 +235,6 @@ static __init void topo_register_apic(u32 apic_id, u32 a=
-cpi_id, bool present)
- 		cpuid_to_apicid[cpu] =3D apic_id;
- 		topo_set_cpuids(cpu, apic_id, acpi_id);
- 	} else {
--		u32 pkgid =3D topo_apicid(apic_id, TOPO_PKG_DOMAIN);
--
--		/*
--		 * Check for present APICs in the same package when running
--		 * on bare metal. Allow the bogosity in a guest.
--		 */
--		if (hypervisor_is_type(X86_HYPER_NATIVE) &&
--		    topo_unit_count(pkgid, TOPO_PKG_DOMAIN, phys_cpu_present_map)) {
--			pr_info_once("Ignoring hot-pluggable APIC ID %x in present package.\n",
--				     apic_id);
--			topo_info.nr_rejected_cpus++;
--			return;
--		}
--
- 		topo_info.nr_disabled_cpus++;
- 	}
-=20
+-- 
+Dmitry
 
