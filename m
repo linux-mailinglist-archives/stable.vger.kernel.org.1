@@ -1,167 +1,108 @@
-Return-Path: <stable+bounces-200915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50F99CB8F5A
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 15:31:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0F1CCB8FD7
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 15:46:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9CB513012EF5
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 14:31:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DE6E63078E86
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 14:46:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0133B298CD7;
-	Fri, 12 Dec 2025 14:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08C9C275112;
+	Fri, 12 Dec 2025 14:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MLB5DR1R"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gQXY0nFH"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0682D24A7;
-	Fri, 12 Dec 2025 14:31:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE3031A9F87;
+	Fri, 12 Dec 2025 14:46:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765549913; cv=none; b=XASYlNuSKA5SgiVOUpXiiWbzRtX6ABuRBQic8MIDKPErbOxk0uR4VYMfwumdGIoCP2z1EXGAVmMlZTVejgvLJf46kFeAhyftKEN9PDjUrVTEnYqrwdD8TrZrZUIDgizNC82u81wBDYH3jT/01UR5mO6UxcFtXgqGOiQO4c810zM=
+	t=1765550768; cv=none; b=Lm+u+MsPgtHAuSJJKRJxT6qVuJzwDyVN4cYChnwSoX2wvllBuakoDX+rSY9tmQbl4WgGWfwh+ZUl3Q1aKARtHOhjKjFMHLvYwW0+6EI8lyPgs3OiDMgeP7q1G1ONBHJTKy7ZWpCKMoFbnE8HgBrzj+1F6eAXP5k8GgjAwploDY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765549913; c=relaxed/simple;
-	bh=MgxXIa1BDqTTAMf9DtXmVXKosN8yKd7Oo66kn65jge8=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=T2q7YAEY78dOPKGM8Q/HB3pGnDNCCyeriq9DCW0kuq4otcfRsXt6mW7jFWpeee2KCk9+0GK8YfffAEbJ/lP961DbDYBnv2WvIfV08o206eoJtKuoNkQl0IPBMxIZuEI8dx70rp5XwhWbM3nJMFBYEPsX/ido4F26et0+GNPD2/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MLB5DR1R; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765549912; x=1797085912;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version:content-id;
-  bh=MgxXIa1BDqTTAMf9DtXmVXKosN8yKd7Oo66kn65jge8=;
-  b=MLB5DR1RH61CKLH4UJ8lZleyMDI74Qx5YrngbI29Iq8qWnow0vzc8YtB
-   /S7bzDGAZ+sOzAgNojKl3pseOyrzgAYXQOzJE/4FNGSFqGie60ImLgGN8
-   RO/yf/N+nz/dLbaGxEMKrZjBr0ZU8Tx/W4B1BW5WopFTCZcC9vHcy6XUt
-   PbmFI9k82Wph6L6ux2KD7XYz+TSodOYMg1X6K4D9DQC4v2p+PFnfGOg5s
-   JPsR94JjwSF66L9852JjwgCSvfBSmGVVqGPe+MFOEllSGErhEWrkzyKgi
-   lZYYXKloPxUTVhEhQus0p9NE0TZ+1+BkKgdj4MYJu96HGH3UXEYQ3LwI7
-   w==;
-X-CSE-ConnectionGUID: 2dw+PFOJShijMrcZo6qNFg==
-X-CSE-MsgGUID: Nv0kwXqTTxywpKnLj7taLA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11635"; a="67494709"
-X-IronPort-AV: E=Sophos;i="6.20,256,1758610800"; 
-   d="scan'208";a="67494709"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2025 06:31:52 -0800
-X-CSE-ConnectionGUID: mlnkK/wbRW+MGldG/Y9M4A==
-X-CSE-MsgGUID: fC+YLh/6T2+gJyrew5jtZA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,143,1763452800"; 
-   d="scan'208";a="196177881"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.141])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2025 06:31:49 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Fri, 12 Dec 2025 16:31:45 +0200 (EET)
-To: Jinhui Guo <guojinhui.liam@bytedance.com>
-cc: bhelgaas@google.com, kbusch@kernel.org, dave.jiang@intel.com, 
-    dan.j.williams@intel.com, linux-pci@vger.kernel.org, 
-    LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v2] PCI: Fix incorrect unlocking in pci_slot_trylock()
-In-Reply-To: <20251212133737.2367-1-guojinhui.liam@bytedance.com>
-Message-ID: <7bb24dc0-8aac-dc32-8cad-d885282c34ec@linux.intel.com>
-References: <20251212133737.2367-1-guojinhui.liam@bytedance.com>
+	s=arc-20240116; t=1765550768; c=relaxed/simple;
+	bh=189Htd6XXodl8CyrTXDtYKVyhYZKDvKx9AdMlw9EutA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fR8qBv+LgI3wWc7k+jUVU44qOH8SGCpaG91FBWqW7Q3n9oR/jVKQ+1XYdTmu7g/A+8LvsInDL75HHSBv1jIp1WmlRGDImCTepk1ciuvdgAjtZwSgmLSK1fVy30ynsnODw9iZkxGR0cJqK0abfBL9F24ecMRCqoSur5BFzLm/NxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gQXY0nFH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1E4CC4CEF1;
+	Fri, 12 Dec 2025 14:46:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765550768;
+	bh=189Htd6XXodl8CyrTXDtYKVyhYZKDvKx9AdMlw9EutA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gQXY0nFH44CNy2MRqjJHAfB9Zfmt/Owp5CPC708M/g2WTD63oWRVLmTHTTmMQO3Cw
+	 9AJwzrDIq0oZG+o56PYZQwEumhHsH1HOSHICZUF69vsFIBeEt2oPs+Gkg9pdyiV17Y
+	 CUigxXCZwL2WQUs2JV7/xHxcEII6A+egbE0hTT6yAHdJbyGvMVXI7glJe2JSuf7KrD
+	 ztbf76Qkk1p1/unIX8KXogrgM4RQxEFLDeeUqn/iRvLJO/RHuGcVA7qPoLQ2FvHtHL
+	 Z+3nbp26G5Mx126UCb8NDX6C/8HRXucS7mz7+1/BJn3ICxhtv/FrpSqPeTebAH9ZFv
+	 rqUQyg/l/Qvcw==
+Date: Fri, 12 Dec 2025 14:46:03 +0000
+From: Simon Horman <horms@kernel.org>
+To: kernel test robot <lkp@intel.com>
+Cc: Ilya Krutskih <devsec@tpz.ru>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	oe-kbuild-all@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] net: fealnx: fix possible 'card_idx' integer overflow
+ in
+Message-ID: <aTwqqxPgMWG9CqJL@horms.kernel.org>
+References: <20251211173035.852756-1-devsec@tpz.ru>
+ <202512121907.n3Bzh2zF-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323328-41678387-1765549137=:1531"
-Content-ID: <0df7a5f5-7357-4233-e1ee-10137bbdeb00@linux.intel.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202512121907.n3Bzh2zF-lkp@intel.com>
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Fri, Dec 12, 2025 at 07:30:04PM +0800, kernel test robot wrote:
+> Hi Ilya,
+> 
+> kernel test robot noticed the following build warnings:
+> 
+> [auto build test WARNING on net-next/main]
+> [also build test WARNING on net/main linus/master v6.18 next-20251212]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> 
+> url:    https://github.com/intel-lab-lkp/linux/commits/Ilya-Krutskih/net-fealnx-fix-possible-card_idx-integer-overflow-in/20251212-013335
+> base:   net-next/main
+> patch link:    https://lore.kernel.org/r/20251211173035.852756-1-devsec%40tpz.ru
+> patch subject: [PATCH v2] net: fealnx: fix possible 'card_idx' integer overflow in
+> config: alpha-allyesconfig (https://download.01.org/0day-ci/archive/20251212/202512121907.n3Bzh2zF-lkp@intel.com/config)
+> compiler: alpha-linux-gcc (GCC) 15.1.0
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251212/202512121907.n3Bzh2zF-lkp@intel.com/reproduce)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202512121907.n3Bzh2zF-lkp@intel.com/
+> 
+> All warnings (new ones prefixed by >>):
+> 
+>    drivers/net/ethernet/fealnx.c: In function 'fealnx_init_one':
+> >> drivers/net/ethernet/fealnx.c:496:35: warning: '%d' directive writing between 1 and 11 bytes into a region of size 6 [-Wformat-overflow=]
+>      496 |         sprintf(boardname, "fealnx%d", card_idx);
+>          |                                   ^~
+>    drivers/net/ethernet/fealnx.c:496:28: note: directive argument in the range [-2147483647, 2147483647]
+>      496 |         sprintf(boardname, "fealnx%d", card_idx);
+>          |                            ^~~~~~~~~~
+>    drivers/net/ethernet/fealnx.c:496:9: note: 'sprintf' output between 8 and 18 bytes into a destination of size 12
+>      496 |         sprintf(boardname, "fealnx%d", card_idx);
+>          |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
---8323328-41678387-1765549137=:1531
-Content-Type: text/plain; CHARSET=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Content-ID: <e51834d2-2f13-054b-a6db-48fbf78c7904@linux.intel.com>
-
-On Fri, 12 Dec 2025, Jinhui Guo wrote:
-
-> Commit a4e772898f8b ("PCI: Add missing bridge lock to pci_bus_lock()")
-> delegates the bridge device's pci_dev_trylock() to pci_bus_trylock() in
-> pci_slot_trylock(), but it forgets to remove the corresponding
-> pci_dev_unlock() when pci_bus_trylock() fails.
->=20
-> Before the commit, the code did:
->=20
->   if (!pci_dev_trylock(dev)) /* <- lock bridge device */
->     goto unlock;
->   if (dev->subordinate) {
->     if (!pci_bus_trylock(dev->subordinate)) {
->       pci_dev_unlock(dev);   /* <- unlock bridge device */
->       goto unlock;
->     }
->   }
->=20
-> After the commit the bridge-device lock is no longer taken, but the
-> pci_dev_unlock(dev) on the failure path was left in place, leading to
-> the bug.
->=20
-> This yields one of two errors:
-> 1. A warning that the lock is being unlocked when no one holds it.
-> 2. An incorrect unlock of a lock that belongs to another thread.
->=20
-> Fix it by removing the now-redundant pci_dev_unlock(dev) on the failure
-> path.
->=20
-> Fixes: a4e772898f8b ("PCI: Add missing bridge lock to pci_bus_lock()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
-> Acked-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
-
-Please don't make tags like this unless the other people explicitly give=20
-them to the patch.
-
-Other than that, this looks okay to me.
-
---=20
- i.
-
-> ---
->=20
-> Hi, all
->=20
-> v1: https://lore.kernel.org/all/20251211123635.2215-1-guojinhui.liam@byte=
-dance.com/
->=20
-> Changelog in v1 -> v2
->  - The v1 commit message was too brief, so I=E2=80=99ve sent v2 with more=
- detail.
->  - Remove the braces from the if (!pci_bus_trylock(dev->subordinate)) sta=
-tement.
->=20
-> Sorry for the noise.
->=20
-> Best Regards,
-> Jinhui
->=20
->  drivers/pci/pci.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
->=20
-> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> index 13dbb405dc31..59319e08fca6 100644
-> --- a/drivers/pci/pci.c
-> +++ b/drivers/pci/pci.c
-> @@ -5346,10 +5346,8 @@ static int pci_slot_trylock(struct pci_slot *slot)
->  =09=09if (!dev->slot || dev->slot !=3D slot)
->  =09=09=09continue;
->  =09=09if (dev->subordinate) {
-> -=09=09=09if (!pci_bus_trylock(dev->subordinate)) {
-> -=09=09=09=09pci_dev_unlock(dev);
-> +=09=09=09if (!pci_bus_trylock(dev->subordinate))
->  =09=09=09=09goto unlock;
-> -=09=09=09}
->  =09=09} else if (!pci_dev_trylock(dev))
->  =09=09=09goto unlock;
->  =09}
->=20
---8323328-41678387-1765549137=:1531--
+Although I think these new warnings are not strictly for problems
+introduced by this patch. They do make me wonder
+if it would be best to cap card_index MAX_UNITS and
+return an error if that limit is exceeded.
 
