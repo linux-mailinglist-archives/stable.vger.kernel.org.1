@@ -1,135 +1,232 @@
-Return-Path: <stable+bounces-200917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62BA0CB904B
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 15:57:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F90CCB9155
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 16:18:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F000E307B9A8
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 14:56:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 51B7430BD1F2
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 15:16:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A7EA27A93C;
-	Fri, 12 Dec 2025 14:56:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8DA13242A5;
+	Fri, 12 Dec 2025 15:06:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="jOfOv/0+"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IfgY0Z3s"
 X-Original-To: stable@vger.kernel.org
-Received: from sg-1-102.ptr.blmpb.com (sg-1-102.ptr.blmpb.com [118.26.132.102])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C5B284881
-	for <stable@vger.kernel.org>; Fri, 12 Dec 2025 14:56:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=118.26.132.102
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21D673242AD
+	for <stable@vger.kernel.org>; Fri, 12 Dec 2025 15:06:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765551403; cv=none; b=eEV9zuSIXeLiZUr3TV51UfDDw4LHgKx6BV0NSDp+VS/gmfVZuYfD9Lo8PRKw39ErP0PJM9ychyr8CZkR9YqQEk4+d9eoiowDXbFq/rJcO4W2SV43+r+DMA9YUcwi8aqBcg6DasqNlcR4y5bNGuukzDuTwcLhb+zgQlfY48Bmfj4=
+	t=1765552006; cv=none; b=Um6MXCAg14Wvnce89Iz2wKNuRw2cCWbluZjgd5DIdVm/nqOQZqrEfyY7Mq906psLKG6OMfgSFU1U0Vf6pt65NzC5l1d5DBT6iuOjb2XknHyipPrZlDDR3Zn85o7eD6WhXD8N800Z7Mc+9r7x4LMk/zQ2bIC4Y/i3NaT1R/CYQMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765551403; c=relaxed/simple;
-	bh=R3+VFqiY9OxXKrkggbvgi4CpQ3sg8fOv5hi3AHppWCM=;
-	h=To:References:Cc:Message-Id:Content-Type:From:Date:In-Reply-To:
-	 Subject:Mime-Version; b=ZQ+fQXsLNN0XHPScG37JASCDv7xLY4W4jb6IavClmCl3zhJ9s4gpJyD7aGvRxxu5RvwVLE9vu08QSK3ZobURX59l55W5v2Jj1WBZ5G0pkwTn/8Tt1rEp8gA2AB5urEbSSTR0sUq10sKU6hBPPz9O7+49CzY3h7/R7SmFsr5iRKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=jOfOv/0+; arc=none smtp.client-ip=118.26.132.102
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1765551388; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=I9fko49rlyRQO9najQQGMXmxO0V3/iBIPIKXkCh1tPc=;
- b=jOfOv/0+iSc061JoBaq804yldZdcCbmRKiOX6i+MQ6L92sl4arMt1PviqZ2pf17THMiVNo
- qDqCfvriKSARO4x0QqDj7SY1DiXvoNr6K/qiDvI0++cMZdf+095hy5qnyQqlljARs3v8X8
- unDlkCsJgp9RWfEXyXe3rFWiZcd8jWf0A5s7XiSFB/0OvsRK3JkTvfYRvTkNMIgUydVqTJ
- Zh/R6nIaOxFrRfVmS0bGO0Sg9MG+5gDiOfxS/MCVilW+PyBdByQcS0uDWZAom/UvyV/LtS
- f4HxMwXOSGftfnvGU/Sm2kNSAENLIFKZo4D32BKpYqtohJJ9HIydVkxwhjBr0Q==
-To: <bhelgaas@google.com>, <dan.j.williams@intel.com>, 
-	<dave.jiang@intel.com>, <ilpo.jarvinen@linux.intel.com>, 
-	<kbusch@kernel.org>
-Content-Transfer-Encoding: quoted-printable
-References: <20251212133737.2367-1-guojinhui.liam@bytedance.com>
-Cc: <guojinhui.liam@bytedance.com>, <linux-kernel@vger.kernel.org>, 
-	<linux-pci@vger.kernel.org>, <stable@vger.kernel.org>
-Message-Id: <20251212145528.2555-1-guojinhui.liam@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-X-Original-From: Jinhui Guo <guojinhui.liam@bytedance.com>
-From: "Jinhui Guo" <guojinhui.liam@bytedance.com>
-Date: Fri, 12 Dec 2025 22:55:28 +0800
-In-Reply-To: <20251212133737.2367-1-guojinhui.liam@bytedance.com>
-X-Mailer: git-send-email 2.17.1
-X-Lms-Return-Path: <lba+2693c2d1b+d434ae+vger.kernel.org+guojinhui.liam@bytedance.com>
-Subject: [RESEND PATCH v2] PCI: Fix incorrect unlocking in pci_slot_trylock()
+	s=arc-20240116; t=1765552006; c=relaxed/simple;
+	bh=xV3J185BOFawITpmBxVAswdNlzbEbaK9mn97CIyMvQ0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QcrARHvoAQRj/QaO27K8A+TJSFgU/WPu9Edw+8CsR/nu9tzNcEy1mUtTBrk+xzkFlevV/jwyiiTS6e7hLQPeih3glsuR0aqg+K0Q/HJ/uWZ9usL1Um1xBKncnq2nQ/7evp1zaoWRDuh18bEPh+RamyYLctHfqCLWtJ/L3olhe+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=fail smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IfgY0Z3s; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765552005; x=1797088005;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=xV3J185BOFawITpmBxVAswdNlzbEbaK9mn97CIyMvQ0=;
+  b=IfgY0Z3sj2+/TbD5dhHw+aMZRG62yIpLmdrvJ+ZouO3jqiKUR4a37HGD
+   WYT+f9UDXG06dH5z6ahYL8H71ifTKFPoJtlJgSBT4bS4EWhv9XzJHmQH0
+   JiIXSRmcbHlvZnr0r6gvULB5PReLjwkVtK9t8fezZfj+eYP2FphBXA0Iq
+   LgyLlgXpRsUE9ZZ02oEgLTm6/GXN67ZKpfzKySggoseqXxO+EDZH1XZT0
+   BPIstW9o0ceikp6PH10dvFhBfvbbEqRI3zyvdakrYI9QordbohnY9j5Np
+   vCZdK9Yq+NZgLGVF+13Keg2CMQtEnJJDDexRzYsXOmweN2a1s8vXtovCz
+   g==;
+X-CSE-ConnectionGUID: +lXsE3G3TWKIPsId5wU8QA==
+X-CSE-MsgGUID: j/uAaVE4SiCO1JSHxQJu0g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11640"; a="78669592"
+X-IronPort-AV: E=Sophos;i="6.21,144,1763452800"; 
+   d="scan'208";a="78669592"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2025 07:06:44 -0800
+X-CSE-ConnectionGUID: jEUr4DfoT6aHfV6jWCL2nA==
+X-CSE-MsgGUID: ZvjytAk8T8WZfFQF/xqKrA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,144,1763452800"; 
+   d="scan'208";a="234509303"
+Received: from kniemiec-mobl1.ger.corp.intel.com (HELO intel.com) ([10.245.246.69])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2025 07:06:41 -0800
+From: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+To: dri-devel@lists.freedesktop.org,
+	intel-gfx@lists.freedesktop.org
+Cc: stable@vger.kernel.org,
+	=?UTF-8?q?=EA=B9=80=EA=B0=95=EB=AF=BC?= <km.kim1503@gmail.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Chris Wilson <chris.p.wilson@linux.intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+	Krzysztof Karas <krzysztof.karas@intel.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
+	Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+Subject: [PATCH v4] drm/i915/gem: Zero-initialize the eb.vma array in i915_gem_do_execbuffer
+Date: Fri, 12 Dec 2025 16:06:12 +0100
+Message-ID: <20251212150611.18757-2-krzysztof.niemiec@intel.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Commit a4e772898f8b ("PCI: Add missing bridge lock to pci_bus_lock()")
-delegates the bridge device's pci_dev_trylock() to pci_bus_trylock() in
-pci_slot_trylock(), but it forgets to remove the corresponding
-pci_dev_unlock() when pci_bus_trylock() fails.
+Initialize the eb.vma array with values of 0 when the eb structure is
+first set up. In particular, this sets the eb->vma[i].vma pointers to
+NULL, simplifying cleanup and getting rid of the bug described below.
 
-Before the commit, the code did:
+During the execution of eb_lookup_vmas(), the eb->vma array is
+successively filled up with struct eb_vma objects. This process includes
+calling eb_add_vma(), which might fail; however, even in the event of
+failure, eb->vma[i].vma is set for the currently processed buffer.
 
-  if (!pci_dev_trylock(dev)) /* <- lock bridge device */
-    goto unlock;
-  if (dev->subordinate) {
-    if (!pci_bus_trylock(dev->subordinate)) {
-      pci_dev_unlock(dev);   /* <- unlock bridge device */
-      goto unlock;
-    }
-  }
+If eb_add_vma() fails, eb_lookup_vmas() returns with an error, which
+prompts a call to eb_release_vmas() to clean up the mess. Since
+eb_lookup_vmas() might fail during processing any (possibly not first)
+buffer, eb_release_vmas() checks whether a buffer's vma is NULL to know
+at what point did the lookup function fail.
 
-After the commit the bridge-device lock is no longer taken, but the
-pci_dev_unlock(dev) on the failure path was left in place, leading to
-the bug.
+In eb_lookup_vmas(), eb->vma[i].vma is set to NULL if either the helper
+function eb_lookup_vma() or eb_validate_vma() fails. eb->vma[i+1].vma is
+set to NULL in case i915_gem_object_userptr_submit_init() fails; the
+current one needs to be cleaned up by eb_release_vmas() at this point,
+so the next one is set. If eb_add_vma() fails, neither the current nor
+the next vma is nullified, which is a source of a NULL deref bug
+described in [1].
 
-This yields one of two errors:
-1. A warning that the lock is being unlocked when no one holds it.
-2. An incorrect unlock of a lock that belongs to another thread.
+When entering eb_lookup_vmas(), the vma pointers are set to the slab
+poison value, instead of NULL. This doesn't matter for the actual
+lookup, since it gets overwritten anyway, however the eb_release_vmas()
+function only recognizes NULL as the stopping value, hence the pointers
+are being nullified as they go in case of intermediate failure. This
+patch changes the approach to filling them all with NULL at the start
+instead, rather than handling that manually during failure.
 
-Fix it by removing the now-redundant pci_dev_unlock(dev) on the failure
-path.
-
-Fixes: a4e772898f8b ("PCI: Add missing bridge lock to pci_bus_lock()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15062
+Fixes: 544460c33821 ("drm/i915: Multi-BB execbuf")
+Reported-by: Gangmin Kim <km.kim1503@gmail.com>
+Cc: <stable@vger.kernel.org> # 5.16.x
+Signed-off-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
 ---
+I messed up the continuity in previous revisions; the original patch
+was sent as [1], and the first revision (which I didn't mark as v2 due
+to the title change) was sent as [2].
 
-Hi, all
+This is the full current changelog:
 
-Resent v2 to drop the Acked-by tag; no code changes. Sorry for the noise ag=
-ain.
+v4:
+   - delete an empty line (Janusz), reword the comment a bit (Krzysztof,
+     Janusz)
+v3:
+   - use memset() to fill the entire eb.vma array with zeros instead of
+   looping through the elements (Janusz)
+   - add a comment clarifying the mechanism of the initial allocation (Janusz)
+   - change the commit log again, including title
+   - rearrange the tags to keep checkpatch happy
+v2:
+   - set the eb->vma[i].vma pointers to NULL during setup instead of
+     ad-hoc at failure (Janusz)
+   - romanize the reporter's name (Andi, offline)
+   - change the commit log, including title
 
-v1: https://lore.kernel.org/all/20251211123635.2215-1-guojinhui.liam@byteda=
-nce.com/
+[1] https://patchwork.freedesktop.org/series/156832/
+[2] https://patchwork.freedesktop.org/series/158036/
 
-Changelog in v1 -> v2
- - The v1 commit message was too brief, so I=E2=80=99ve sent v2 with more d=
-etail.
- - Remove the braces from the if (!pci_bus_trylock(dev->subordinate)) state=
-ment.
+ .../gpu/drm/i915/gem/i915_gem_execbuffer.c    | 37 +++++++++----------
+ 1 file changed, 17 insertions(+), 20 deletions(-)
 
-Best Regards,
-Jinhui
-
- drivers/pci/pci.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 13dbb405dc31..59319e08fca6 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -5346,10 +5346,8 @@ static int pci_slot_trylock(struct pci_slot *slot)
- 		if (!dev->slot || dev->slot !=3D slot)
- 			continue;
- 		if (dev->subordinate) {
--			if (!pci_bus_trylock(dev->subordinate)) {
--				pci_dev_unlock(dev);
-+			if (!pci_bus_trylock(dev->subordinate))
- 				goto unlock;
+diff --git a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
+index b057c2fa03a4..348023d13668 100644
+--- a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
+@@ -951,13 +951,13 @@ static int eb_lookup_vmas(struct i915_execbuffer *eb)
+ 		vma = eb_lookup_vma(eb, eb->exec[i].handle);
+ 		if (IS_ERR(vma)) {
+ 			err = PTR_ERR(vma);
+-			goto err;
++			return err;
+ 		}
+ 
+ 		err = eb_validate_vma(eb, &eb->exec[i], vma);
+ 		if (unlikely(err)) {
+ 			i915_vma_put(vma);
+-			goto err;
++			return err;
+ 		}
+ 
+ 		err = eb_add_vma(eb, &current_batch, i, vma);
+@@ -966,19 +966,8 @@ static int eb_lookup_vmas(struct i915_execbuffer *eb)
+ 
+ 		if (i915_gem_object_is_userptr(vma->obj)) {
+ 			err = i915_gem_object_userptr_submit_init(vma->obj);
+-			if (err) {
+-				if (i + 1 < eb->buffer_count) {
+-					/*
+-					 * Execbuffer code expects last vma entry to be NULL,
+-					 * since we already initialized this entry,
+-					 * set the next value to NULL or we mess up
+-					 * cleanup handling.
+-					 */
+-					eb->vma[i + 1].vma = NULL;
+-				}
+-
++			if (err)
+ 				return err;
 -			}
- 		} else if (!pci_dev_trylock(dev))
- 			goto unlock;
+ 
+ 			eb->vma[i].flags |= __EXEC_OBJECT_USERPTR_INIT;
+ 			eb->args->flags |= __EXEC_USERPTR_USED;
+@@ -986,10 +975,6 @@ static int eb_lookup_vmas(struct i915_execbuffer *eb)
  	}
---=20
-2.20.1
+ 
+ 	return 0;
+-
+-err:
+-	eb->vma[i].vma = NULL;
+-	return err;
+ }
+ 
+ static int eb_lock_vmas(struct i915_execbuffer *eb)
+@@ -3375,7 +3360,8 @@ i915_gem_do_execbuffer(struct drm_device *dev,
+ 
+ 	eb.exec = exec;
+ 	eb.vma = (struct eb_vma *)(exec + args->buffer_count + 1);
+-	eb.vma[0].vma = NULL;
++	memset(eb.vma, 0x00, args->buffer_count * sizeof(struct eb_vma));
++
+ 	eb.batch_pool = NULL;
+ 
+ 	eb.invalid_flags = __EXEC_OBJECT_UNKNOWN_FLAGS;
+@@ -3584,7 +3570,18 @@ i915_gem_execbuffer2_ioctl(struct drm_device *dev, void *data,
+ 	if (err)
+ 		return err;
+ 
+-	/* Allocate extra slots for use by the command parser */
++	/*
++	 * Allocate extra slots for use by the command parser.
++	 *
++	 * Note that this allocation handles two different arrays (the
++	 * exec2_list array, and the eventual eb.vma array introduced in
++	 * i915_gem_do_execubuffer()), that reside in virtually contiguous
++	 * memory. Also note that the allocation intentionally doesn't fill the
++	 * area with zeros (because the exec2_list part doesn't need to be, as
++	 * it's immediately overwritten by user data a few lines below).
++	 * However, the eb.vma part is explicitly zeroed later in
++	 * i915_gem_do_execbuffer().
++	 */
+ 	exec2_list = kvmalloc_array(count + 2, eb_element_size(),
+ 				    __GFP_NOWARN | GFP_KERNEL);
+ 	if (exec2_list == NULL) {
+-- 
+2.45.2
+
 
