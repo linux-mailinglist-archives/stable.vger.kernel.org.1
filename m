@@ -1,116 +1,387 @@
-Return-Path: <stable+bounces-200883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 877C6CB8510
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 09:48:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D4C6CB856D
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 09:56:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A91BD30361C7
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 08:46:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E9BB9300F8B8
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 08:56:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D97E82D592D;
-	Fri, 12 Dec 2025 08:46:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2BA130DD29;
+	Fri, 12 Dec 2025 08:56:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JHYuCuh1"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ARdSvpnM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC062868B2
-	for <stable@vger.kernel.org>; Fri, 12 Dec 2025 08:46:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B301304BC6
+	for <stable@vger.kernel.org>; Fri, 12 Dec 2025 08:56:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765529213; cv=none; b=Gvpn385HpIxZN+jl+bfCO4HIqAT7srhXR9Xl3slEI/qxHslLhZg+bNsVoRP5pQsGeEE/GT1q+P3pOBZ2IotS3UOe7dipwfQpFhpyF2vhT+/d62DrvVvm3rx7Gn8/vGMbo7DiR9mFPKyKB5AhCRmSwgnv4DD/ArV3YqeJbGjcIUw=
+	t=1765529795; cv=none; b=MKwX5i9l6nsM0qi01FHSTEP9x5OThPWnYRGf7AbYym546qvp+E976ShdaEX5giOvFWkWRDwSxX7TK7rmwZhVPW+G2aczBmlZn4PxfQMqMsqboFa25ypJlSr0dhlYzkPJU+utEL0doprO3pAtdJu95c6zkcbwOm57qW7iqEFKJNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765529213; c=relaxed/simple;
-	bh=UUz9FBZ0VjTdrrNvYZ/9wuunSrYYvwDzroYxL8D0MTM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XxkD3b9KJ+/YAe6wUEecn5bqiwH1451FBypJDOGgTdoyU7BOEeL1/oDbHYC4JWGrCI8wzSWGvCT1XyM/RnYefMjQl6GfHKuqNw0tqnkwFId7KoodHSue9Da2ju/M48oPncF87+EhYUTSRzIjShMUfvL59nSQ9XCehuGbR5yw5ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JHYuCuh1; arc=none smtp.client-ip=209.85.215.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c0224fd2a92so930468a12.2
-        for <stable@vger.kernel.org>; Fri, 12 Dec 2025 00:46:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765529211; x=1766134011; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BOyh7YwZ/fjOnqsi8in+FWH0IHyn2UOzmxthtzGPDGI=;
-        b=JHYuCuh1zc4VZaWVD1HHlKVfYLMThJVsoZ5IDRaXRYmRzFhgT7o1OxwJ9Vx2Ul3Wdy
-         IM8Q/jz1TTBYhWUJaZfw6FbOvaVJEOMhWDVPoOjAG+GAVlnzWsLXij7kP2Stsx8/e9JH
-         q5wUscZRXRf4vFi2bFUOTG3T5syvset9Qdc273XGefIuTo/By6HZ6PuZpJQOp/FrSFzP
-         Sbxf9Wn0hcKoZFoIjntNwd/7O4Xi1Pt77ACu9OIVoZ08RYQgWQSLTvgeFkX+AhoWXV75
-         DYL8fr1svP1l3dXUCXIukKSW1LQnnymyPpPWYZZLGfXkoaK+pi340Kb6/OMEtosV35ll
-         Gpdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765529211; x=1766134011;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BOyh7YwZ/fjOnqsi8in+FWH0IHyn2UOzmxthtzGPDGI=;
-        b=OJBlIU+wcJaO/ko9HhJwRjJXakdBR1poqV+zz97UxGRr4vmYb+JbeXXVXl8ufBojuH
-         hJZxreP7drw6ZhvulmnMLRnluaAv2cCt5azlhBilXtgN0EUMLHncLj1lUSUb4Dtm5QLM
-         8tJxtvJX9zB81u+cLbj7eFOTifRV9C/hATHgDtPXgKXnqbH475AIYvlJTArmIj/2ueZS
-         ofsCgZixnMBa3/LOABxmuViHNSid8GYLEB+RekDovXARLMp13BY30bgjwbf3GBfee+Ad
-         deha/UKzPRgt3HZdrKJPHpQGVxn5aZMSvCQL6d+aXE8Cg0/Q3pcRaX602GoLzdbHrV0s
-         BfDA==
-X-Forwarded-Encrypted: i=1; AJvYcCWqH3i6eE5jfqop32bAu4ddCGJq0Mjm31PclJqbut9uuWM+hoo9DxfsHA7KvgmgSMgp+b2XXNQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHxyXTl9W/zioaznZXJ+gzK9mAdWwBEg2QmumfG0ZWX3Z6JnL6
-	gwbT1mAtQQn7Qrv8DzsfgUTptyRW2oyuu0EaqQBhDJHX8isSEzF/d0a+
-X-Gm-Gg: AY/fxX7+CHJWgpH7DBZV+K0yaGWtpc/kOkhZCwuylLN9h0vOpzv+JM1DVoWZaZNCO/R
-	MUELUxYtk1G+ArRQ40xgy1MIJTpcbUO9jZqo8pfns+cmeSfuPJxEtja7QVGvWIXaP+7suGoYjSq
-	1CKmsslLyqBT1jaAOLGo9u3p2XhlAi+SCekiMn70nC9mkgz5G9wBNIZBBzDnBCcF7kM0iMiZ5Ex
-	BUONO+LogXndQN0iSlDC9gEyT5xsJItScROLeXPL+eWN3cPr5888rLdmVOdLkc214jGpn3eMYnR
-	p184IL8mYZCVgpaMqRsKsGca8c8z6Pjuap3xdjsgusUhLPPA2K2Ku8PVmkSzL9r1DYXgX36jFuc
-	zjex06Azh1OkFMaESJUw9L+tezdPRfkVEVCAvxeKWReSjxbJGaMEYBqozalXjVjozltAFwxstgS
-	l5eGMoPnod1hsb3YCuJ4QA8ch5bFrlTahH2L3S7AJuiF6aLFzqmMw=
-X-Google-Smtp-Source: AGHT+IFxRnn2Hnk3Fy94esqvbow5sOCCjS7YFOHFngABs5YEgFMaD0CbN/JFTsoo+Ygy71nEbS4+iA==
-X-Received: by 2002:a05:7300:d10f:b0:2ac:1bb1:68ed with SMTP id 5a478bee46e88-2ac2f85e863mr1040229eec.9.1765529211350;
-        Fri, 12 Dec 2025 00:46:51 -0800 (PST)
-Received: from google.com ([2a00:79e0:2ebe:8:fafd:f9bf:2a4:2a0b])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11f2e30b799sm14228199c88.17.2025.12.12.00.46.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Dec 2025 00:46:50 -0800 (PST)
-Date: Fri, 12 Dec 2025 00:46:48 -0800
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Minseong Kim <ii4gsp@gmail.com>
-Cc: linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] input: lkkbd: disable pending work before freeing
- device
-Message-ID: <tquiwnxvffkbxw6o4x66w53cujhkitzlleemwzoidgtjhxwwsr@ojotqpywkfwc>
-References: <20251211031131.27141-1-ii4gsp@gmail.com>
- <20251212052314.16139-1-ii4gsp@gmail.com>
+	s=arc-20240116; t=1765529795; c=relaxed/simple;
+	bh=8t/LkegwreyubdEnr0YC6cFjQmJG5vHw2FWlsxeL9LA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HAmVhbt+DXUDWCePgXxcpe8y3wfHyx5dFt4e06avyrUEH4ZvhFPgcoPDVDusSWF5GUS17Dp2SpyGCNlaO5L9JuV5GU+i55QAC4JVJqmyh4+eF3qFskmGhxyluuguXufoQt7z2OnyWtfem4Oe43oUF69zHDKs0rRiAlyEkqx2S3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ARdSvpnM; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765529794; x=1797065794;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=8t/LkegwreyubdEnr0YC6cFjQmJG5vHw2FWlsxeL9LA=;
+  b=ARdSvpnMGCb22TFLj75ZIp9jEGc5OLzCNvB/jI5zCEs1+EvwKrMwhT1H
+   E2WusZsDoPwbhsOHogwUY49H9mH1rSqbJD1KjSciM3VRNvnhU43joz9eh
+   4eiulem0fLQ+hlWaip/uJT13Od4yjLwjrvf40rVfBotshz7eOP2YckpBQ
+   rGJZUbHSpIj/7cXIX0zl2EZdGAll9F6wlBdik+QiZJy8/1/2mvgeTahBm
+   wbhT7jb7qRjk7LQWcs91CaYuDbb5DUhu28k/t/XBKhUr3oi3BM6dZnlYc
+   RFhwFPDnHQom1TZM1FDnI4E0Bs+pOZMoT63oETBjxQt/TgkWH6WCdODQ7
+   A==;
+X-CSE-ConnectionGUID: VmNgK0xmSQOT5dHBFgGwZA==
+X-CSE-MsgGUID: 7uLqlZOLTAmqsmNyCkadPw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11639"; a="92995391"
+X-IronPort-AV: E=Sophos;i="6.21,143,1763452800"; 
+   d="scan'208";a="92995391"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2025 00:56:30 -0800
+X-CSE-ConnectionGUID: xF6Z7c3xS/msLAafrAY/MA==
+X-CSE-MsgGUID: f8bMgmrmTh2KzqDuKeOmLA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,143,1763452800"; 
+   d="scan'208";a="201940861"
+Received: from egrumbac-mobl6.ger.corp.intel.com (HELO [10.245.245.106]) ([10.245.245.106])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2025 00:56:27 -0800
+Message-ID: <108f8133-dbb9-4446-9483-0560f7599a35@linux.intel.com>
+Date: Fri, 12 Dec 2025 09:56:06 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251212052314.16139-1-ii4gsp@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 02/22] drm/pagemap, drm/xe: Ensure that the devmem
+ allocation is idle before use
+To: intel-xe@lists.freedesktop.org
+Cc: Matthew Brost <matthew.brost@intel.com>, stable@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, himal.prasad.ghimiray@intel.com,
+ apopple@nvidia.com, airlied@gmail.com, Simona Vetter
+ <simona.vetter@ffwll.ch>, felix.kuehling@amd.com,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ dakr@kernel.org, "Mrozek, Michal" <michal.mrozek@intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+References: <20251211165909.219710-1-thomas.hellstrom@linux.intel.com>
+ <20251211165909.219710-3-thomas.hellstrom@linux.intel.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+In-Reply-To: <20251211165909.219710-3-thomas.hellstrom@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Fri, Dec 12, 2025 at 02:23:14PM +0900, Minseong Kim wrote:
-> lkkbd_interrupt() schedules lk->tq via schedule_work(), and the work
-> handler lkkbd_reinit() dereferences the lkkbd structure and its
-> serio/input_dev fields.
-> 
-> lkkbd_disconnect() and error paths in lkkbd_connect() free the lkkbd
-> structure without preventing the reinit work from being queued again
-> until serio_close() returns. This can allow the work handler to run
-> after the structure has been freed, leading to a potential use-after-free.
-> 
-> Use disable_work_sync() instead of cancel_work_sync() to ensure the
-> reinit work cannot be re-queued, and call it both in lkkbd_disconnect()
-> and in lkkbd_connect() error paths after serio_open().
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Minseong Kim <ii4gsp@gmail.com>
 
-Applied, thank you.
+On 12/11/25 17:58, Thomas Hellström wrote:
+> In situations where no system memory is migrated to devmem, and in
+> upcoming patches where another GPU is performing the migration to
+> the newly allocated devmem buffer, there is nothing to ensure any
+> ongoing clear to the devmem allocation or async eviction from the
+> devmem allocation is complete.
+>
+> Address that by passing a struct dma_fence down to the copy
+> functions, and ensure it is waited for before migration is marked
+> complete.
+>
+> v3:
+> - New patch.
+> v4:
+> - Update the logic used for determining when to wait for the
+>    pre_migrate_fence.
+> - Update the logic used for determining when to warn for the
+>    pre_migrate_fence since the scheduler fences apparently
+>    can signal out-of-order.
+>
+> Fixes: c5b3eb5a906c ("drm/xe: Add GPUSVM device memory copy vfunc functions")
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: <stable@vger.kernel.org> # v6.15+
+> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+> ---
+>   drivers/gpu/drm/drm_pagemap.c | 13 ++++---
+>   drivers/gpu/drm/xe/xe_svm.c   | 67 ++++++++++++++++++++++++++++++-----
+>   include/drm/drm_pagemap.h     | 17 +++++++--
+>   3 files changed, 81 insertions(+), 16 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/drm_pagemap.c b/drivers/gpu/drm/drm_pagemap.c
+> index 22c44807e3fe..864a73d019ed 100644
+> --- a/drivers/gpu/drm/drm_pagemap.c
+> +++ b/drivers/gpu/drm/drm_pagemap.c
+> @@ -408,7 +408,8 @@ int drm_pagemap_migrate_to_devmem(struct drm_pagemap_devmem *devmem_allocation,
+>   		drm_pagemap_get_devmem_page(page, zdd);
+>   	}
+>   
+> -	err = ops->copy_to_devmem(pages, pagemap_addr, npages);
+> +	err = ops->copy_to_devmem(pages, pagemap_addr, npages,
+> +				  devmem_allocation->pre_migrate_fence);
+>   	if (err)
+>   		goto err_finalize;
+>   
+> @@ -596,7 +597,7 @@ int drm_pagemap_evict_to_ram(struct drm_pagemap_devmem *devmem_allocation)
+>   	for (i = 0; i < npages; ++i)
+>   		pages[i] = migrate_pfn_to_page(src[i]);
+>   
+> -	err = ops->copy_to_ram(pages, pagemap_addr, npages);
+> +	err = ops->copy_to_ram(pages, pagemap_addr, npages, NULL);
+>   	if (err)
+>   		goto err_finalize;
+>   
+> @@ -732,7 +733,7 @@ static int __drm_pagemap_migrate_to_ram(struct vm_area_struct *vas,
+>   	for (i = 0; i < npages; ++i)
+>   		pages[i] = migrate_pfn_to_page(migrate.src[i]);
+>   
+> -	err = ops->copy_to_ram(pages, pagemap_addr, npages);
+> +	err = ops->copy_to_ram(pages, pagemap_addr, npages, NULL);
+>   	if (err)
+>   		goto err_finalize;
+>   
+> @@ -813,11 +814,14 @@ EXPORT_SYMBOL_GPL(drm_pagemap_pagemap_ops_get);
+>    * @ops: Pointer to the operations structure for GPU SVM device memory
+>    * @dpagemap: The struct drm_pagemap we're allocating from.
+>    * @size: Size of device memory allocation
+> + * @pre_migrate_fence: Fence to wait for or pipeline behind before migration starts.
+> + * (May be NULL).
+>    */
+>   void drm_pagemap_devmem_init(struct drm_pagemap_devmem *devmem_allocation,
+>   			     struct device *dev, struct mm_struct *mm,
+>   			     const struct drm_pagemap_devmem_ops *ops,
+> -			     struct drm_pagemap *dpagemap, size_t size)
+> +			     struct drm_pagemap *dpagemap, size_t size,
+> +			     struct dma_fence *pre_migrate_fence)
+>   {
+>   	init_completion(&devmem_allocation->detached);
+>   	devmem_allocation->dev = dev;
+> @@ -825,6 +829,7 @@ void drm_pagemap_devmem_init(struct drm_pagemap_devmem *devmem_allocation,
+>   	devmem_allocation->ops = ops;
+>   	devmem_allocation->dpagemap = dpagemap;
+>   	devmem_allocation->size = size;
+> +	devmem_allocation->pre_migrate_fence = pre_migrate_fence;
+>   }
+>   EXPORT_SYMBOL_GPL(drm_pagemap_devmem_init);
+>   
+> diff --git a/drivers/gpu/drm/xe/xe_svm.c b/drivers/gpu/drm/xe/xe_svm.c
+> index 36634c84d148..2152d20049e4 100644
+> --- a/drivers/gpu/drm/xe/xe_svm.c
+> +++ b/drivers/gpu/drm/xe/xe_svm.c
+> @@ -483,11 +483,12 @@ static void xe_svm_copy_us_stats_incr(struct xe_gt *gt,
+>   
+>   static int xe_svm_copy(struct page **pages,
+>   		       struct drm_pagemap_addr *pagemap_addr,
+> -		       unsigned long npages, const enum xe_svm_copy_dir dir)
+> +		       unsigned long npages, const enum xe_svm_copy_dir dir,
+> +		       struct dma_fence *pre_migrate_fence)
+>   {
+>   	struct xe_vram_region *vr = NULL;
+>   	struct xe_gt *gt = NULL;
+> -	struct xe_device *xe;
+> +	struct xe_device *xe = NULL;
+>   	struct dma_fence *fence = NULL;
+>   	unsigned long i;
+>   #define XE_VRAM_ADDR_INVALID	~0x0ull
+> @@ -496,6 +497,18 @@ static int xe_svm_copy(struct page **pages,
+>   	bool sram = dir == XE_SVM_COPY_TO_SRAM;
+>   	ktime_t start = xe_svm_stats_ktime_get();
+>   
+> +	if (pre_migrate_fence && (sram || dma_fence_is_container(pre_migrate_fence))) {
+> +		/*
+> +		 * This would typically be a p2p migration from source, or
+> +		 * a composite fence operation on the destination memory.
+> +		 * Ensure that any other GPU operation on the destination
+> +		 * is complete.
+> +		 */
+> +		err = dma_fence_wait(pre_migrate_fence, true);
+> +		if (err)
+> +			return err;
+> +	}
+> +
+>   	/*
+>   	 * This flow is complex: it locates physically contiguous device pages,
+>   	 * derives the starting physical address, and performs a single GPU copy
+> @@ -632,10 +645,28 @@ static int xe_svm_copy(struct page **pages,
+>   
+>   err_out:
+>   	/* Wait for all copies to complete */
+> -	if (fence) {
+> +	if (fence)
+>   		dma_fence_wait(fence, false);
+> -		dma_fence_put(fence);
+> +
+> +	/*
+> +	 * If migrating to devmem, we should have pipelined the migration behind
+> +	 * the pre_migrate_fence. Verify that this is indeed likely. If we
+> +	 * didn't perform any copying, just wait for the pre_migrate_fence.
+> +	 */
+> +	if (!sram && pre_migrate_fence && !dma_fence_is_signaled(pre_migrate_fence)) {
+> +		if (xe && fence &&
+> +		    (pre_migrate_fence->context != fence->context ||
+> +		     dma_fence_is_later(pre_migrate_fence, fence))) {
+> +			drm_WARN(&xe->drm, true, "Unsignaled pre-migrate fence");
+> +			drm_warn(&xe->drm, "fence contexts: %llu %llu. container %d\n",
+> +				 (unsigned long long)fence->context,
+> +				 (unsigned long long)pre_migrate_fence->context,
+> +				 dma_fence_is_container(pre_migrate_fence));
+> +		}
+> +
+> +		dma_fence_wait(pre_migrate_fence, false);
+>   	}
+> +	dma_fence_put(fence);
+>   
+>   	/*
+>   	 * XXX: We can't derive the GT here (or anywhere in this functions, but
+> @@ -652,16 +683,20 @@ static int xe_svm_copy(struct page **pages,
+>   
+>   static int xe_svm_copy_to_devmem(struct page **pages,
+>   				 struct drm_pagemap_addr *pagemap_addr,
+> -				 unsigned long npages)
+> +				 unsigned long npages,
+> +				 struct dma_fence *pre_migrate_fence)
+>   {
+> -	return xe_svm_copy(pages, pagemap_addr, npages, XE_SVM_COPY_TO_VRAM);
+> +	return xe_svm_copy(pages, pagemap_addr, npages, XE_SVM_COPY_TO_VRAM,
+> +			   pre_migrate_fence);
+>   }
+>   
+>   static int xe_svm_copy_to_ram(struct page **pages,
+>   			      struct drm_pagemap_addr *pagemap_addr,
+> -			      unsigned long npages)
+> +			      unsigned long npages,
+> +			      struct dma_fence *pre_migrate_fence)
+>   {
+> -	return xe_svm_copy(pages, pagemap_addr, npages, XE_SVM_COPY_TO_SRAM);
+> +	return xe_svm_copy(pages, pagemap_addr, npages, XE_SVM_COPY_TO_SRAM,
+> +			   pre_migrate_fence);
+>   }
+>   
+>   static struct xe_bo *to_xe_bo(struct drm_pagemap_devmem *devmem_allocation)
+> @@ -676,6 +711,7 @@ static void xe_svm_devmem_release(struct drm_pagemap_devmem *devmem_allocation)
+>   
+>   	xe_bo_put_async(bo);
+>   	xe_pm_runtime_put(xe);
+> +	dma_fence_put(devmem_allocation->pre_migrate_fence);
 
--- 
-Dmitry
+Needs to be moved to the start of the function before the bo put. Will 
+otherwise dereference freed memory.
+
+Will update in next revision.
+
+>   }
+>   
+>   static u64 block_offset_to_pfn(struct xe_vram_region *vr, u64 offset)
+> @@ -868,6 +904,7 @@ static int xe_drm_pagemap_populate_mm(struct drm_pagemap *dpagemap,
+>   				      unsigned long timeslice_ms)
+>   {
+>   	struct xe_vram_region *vr = container_of(dpagemap, typeof(*vr), dpagemap);
+> +	struct dma_fence *pre_migrate_fence = NULL;
+>   	struct xe_device *xe = vr->xe;
+>   	struct device *dev = xe->drm.dev;
+>   	struct drm_buddy_block *block;
+> @@ -894,8 +931,20 @@ static int xe_drm_pagemap_populate_mm(struct drm_pagemap *dpagemap,
+>   			break;
+>   		}
+>   
+> +		/* Ensure that any clearing or async eviction will complete before migration. */
+> +		if (!dma_resv_test_signaled(bo->ttm.base.resv, DMA_RESV_USAGE_KERNEL)) {
+> +			err = dma_resv_get_singleton(bo->ttm.base.resv, DMA_RESV_USAGE_KERNEL,
+> +						     &pre_migrate_fence);
+> +			if (err)
+> +				dma_resv_wait_timeout(bo->ttm.base.resv, DMA_RESV_USAGE_KERNEL,
+> +						      false, MAX_SCHEDULE_TIMEOUT);
+> +			else if (pre_migrate_fence)
+> +				dma_fence_enable_sw_signaling(pre_migrate_fence);
+> +		}
+> +
+>   		drm_pagemap_devmem_init(&bo->devmem_allocation, dev, mm,
+> -					&dpagemap_devmem_ops, dpagemap, end - start);
+> +					&dpagemap_devmem_ops, dpagemap, end - start,
+> +					pre_migrate_fence);
+>   
+>   		blocks = &to_xe_ttm_vram_mgr_resource(bo->ttm.resource)->blocks;
+>   		list_for_each_entry(block, blocks, link)
+> diff --git a/include/drm/drm_pagemap.h b/include/drm/drm_pagemap.h
+> index f6e7e234c089..70a7991f784f 100644
+> --- a/include/drm/drm_pagemap.h
+> +++ b/include/drm/drm_pagemap.h
+> @@ -8,6 +8,7 @@
+>   
+>   #define NR_PAGES(order) (1U << (order))
+>   
+> +struct dma_fence;
+>   struct drm_pagemap;
+>   struct drm_pagemap_zdd;
+>   struct device;
+> @@ -174,6 +175,8 @@ struct drm_pagemap_devmem_ops {
+>   	 * @pages: Pointer to array of device memory pages (destination)
+>   	 * @pagemap_addr: Pointer to array of DMA information (source)
+>   	 * @npages: Number of pages to copy
+> +	 * @pre_migrate_fence: dma-fence to wait for before migration start.
+> +	 * May be NULL.
+>   	 *
+>   	 * Copy pages to device memory. If the order of a @pagemap_addr entry
+>   	 * is greater than 0, the entry is populated but subsequent entries
+> @@ -183,13 +186,16 @@ struct drm_pagemap_devmem_ops {
+>   	 */
+>   	int (*copy_to_devmem)(struct page **pages,
+>   			      struct drm_pagemap_addr *pagemap_addr,
+> -			      unsigned long npages);
+> +			      unsigned long npages,
+> +			      struct dma_fence *pre_migrate_fence);
+>   
+>   	/**
+>   	 * @copy_to_ram: Copy to system RAM (required for migration)
+>   	 * @pages: Pointer to array of device memory pages (source)
+>   	 * @pagemap_addr: Pointer to array of DMA information (destination)
+>   	 * @npages: Number of pages to copy
+> +	 * @pre_migrate_fence: dma-fence to wait for before migration start.
+> +	 * May be NULL.
+>   	 *
+>   	 * Copy pages to system RAM. If the order of a @pagemap_addr entry
+>   	 * is greater than 0, the entry is populated but subsequent entries
+> @@ -199,7 +205,8 @@ struct drm_pagemap_devmem_ops {
+>   	 */
+>   	int (*copy_to_ram)(struct page **pages,
+>   			   struct drm_pagemap_addr *pagemap_addr,
+> -			   unsigned long npages);
+> +			   unsigned long npages,
+> +			   struct dma_fence *pre_migrate_fence);
+>   };
+>   
+>   /**
+> @@ -212,6 +219,8 @@ struct drm_pagemap_devmem_ops {
+>    * @dpagemap: The struct drm_pagemap of the pages this allocation belongs to.
+>    * @size: Size of device memory allocation
+>    * @timeslice_expiration: Timeslice expiration in jiffies
+> + * @pre_migrate_fence: Fence to wait for or pipeline behind before migration starts.
+> + * (May be NULL).
+>    */
+>   struct drm_pagemap_devmem {
+>   	struct device *dev;
+> @@ -221,6 +230,7 @@ struct drm_pagemap_devmem {
+>   	struct drm_pagemap *dpagemap;
+>   	size_t size;
+>   	u64 timeslice_expiration;
+> +	struct dma_fence *pre_migrate_fence;
+>   };
+>   
+>   int drm_pagemap_migrate_to_devmem(struct drm_pagemap_devmem *devmem_allocation,
+> @@ -238,7 +248,8 @@ struct drm_pagemap *drm_pagemap_page_to_dpagemap(struct page *page);
+>   void drm_pagemap_devmem_init(struct drm_pagemap_devmem *devmem_allocation,
+>   			     struct device *dev, struct mm_struct *mm,
+>   			     const struct drm_pagemap_devmem_ops *ops,
+> -			     struct drm_pagemap *dpagemap, size_t size);
+> +			     struct drm_pagemap *dpagemap, size_t size,
+> +			     struct dma_fence *pre_migrate_fence);
+>   
+>   int drm_pagemap_populate_mm(struct drm_pagemap *dpagemap,
+>   			    unsigned long start, unsigned long end,
 
