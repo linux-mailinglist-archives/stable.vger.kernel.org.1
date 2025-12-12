@@ -1,234 +1,204 @@
-Return-Path: <stable+bounces-200874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CD7ECB81E8
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 08:32:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FCACCB82BA
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 08:55:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 279B73027DAD
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 07:32:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0EF79309D95A
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 07:52:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE3E4274671;
-	Fri, 12 Dec 2025 07:32:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 956B030F949;
+	Fri, 12 Dec 2025 07:52:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="b4jd5F2e"
+	dkim=pass (2048-bit key) header.d=ubuntu.com header.i=@ubuntu.com header.b="QAJCWwvH"
 X-Original-To: stable@vger.kernel.org
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.forwardemail.net (smtp.forwardemail.net [149.28.215.223])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB8A7261D;
-	Fri, 12 Dec 2025 07:31:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ABED30EF74
+	for <stable@vger.kernel.org>; Fri, 12 Dec 2025 07:52:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=149.28.215.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765524724; cv=none; b=m7ATt7ZU0wbhlb+gZwWyPZkvj+bIY5kkBgon3jB3aPuJEUsfGz1zl5ekreU0bl7DADmTxMjhgsxCmVJP5OFbFE7sFV8xD2r2vkUi2Gzlz/u7AKQqKIph2LyP5bQ8Nds3WuNJXZwOAPlUZPYUtaZTAf3xstnX66bCACU8IkWZYME=
+	t=1765525939; cv=none; b=JfJNsdUujGq5H/Jci4dIeWb2xpHdf9UxSRlC99BSM1f2DITZhe1vpz2drWhCnEOBQRIyXz/2qSA6aYEggvIL17xe/lji4w3v9arzxurFOFK6kM22siVBn6YZCoSayLluifhDHgivWPIwF96Fb8OQzO7EbWFmHk5p3gXdwU5B22Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765524724; c=relaxed/simple;
-	bh=ZjhoeEIAwCIcaue7mpwrhZ8HV1iCQ6jUP4O2TqG6ojM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=fxZUpxfPKOFX93KOMFh61Ny7t85E754Qd7s1crSIq+JDjcgts4XFi3+vrZO/p45BMdgRx8ZTVkqrzOPa/cWdub4uGRkeedTO/l5wYvlZi3yo9dtM3/HnHdPiDrp3jX1iSPoHQmqBQIVNzLxlF5dI/0ovjIwQ2ILYe4rxQTIzLk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=b4jd5F2e; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=ZjhoeEIAwCIcaue7mpwrhZ8HV1iCQ6jUP4O2TqG6ojM=; b=b4jd5F2e/lpw+Av4zMieLj4oIM
-	2eHoZhtMc2lCwb5rPhqyfZk8kz+8+YgHSeO77Ej/WS17IBCYfvP3Ca+QNN5gDsFx30nzTHzISLwSj
-	UMv65UnYnrn+EcJMHVGZP5VV9rEjy6P3vHzTWFpyPxfz/HHazBR7U3rzX5pIuY/4m0IyYbbl41uST
-	ckWh0Bn0KeAKl7ws7DonYTN1ALCkNOVoTEbP4fLaRdLWlZ6NEtWjjVB6+g8eNt7dKA2FJET6cz5wQ
-	KQD14cePPeUFMWNnMuGqh4IbE5W0WDi+T7iIW3kMcYHxfETc09P3dP1GVRYL8c+Pxg8SQAMQPl8IC
-	ndqsua4A==;
-Received: from fs96f9c361.tkyc007.ap.nuro.jp ([150.249.195.97] helo=u09cd745991455d.ant.amazon.com)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vTwlS-0000000GDtP-3Zfy;
-	Fri, 12 Dec 2025 06:36:31 +0000
-Message-ID: <e0378e55610bf5431e78a090501948a8c12c73cb.camel@infradead.org>
-Subject: Re: [PATCH v4] KVM: x86: Add x2APIC "features" to control EOI
- broadcast suppression
-From: David Woodhouse <dwmw2@infradead.org>
-To: Khushit Shah <khushit.shah@nutanix.com>
-Cc: "seanjc@google.com" <seanjc@google.com>, "pbonzini@redhat.com"
- <pbonzini@redhat.com>, "kai.huang@intel.com" <kai.huang@intel.com>, 
- "mingo@redhat.com" <mingo@redhat.com>, "x86@kernel.org" <x86@kernel.org>,
- "bp@alien8.de" <bp@alien8.de>, "hpa@zytor.com" <hpa@zytor.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,  "dave.hansen@linux.intel.com"
- <dave.hansen@linux.intel.com>, "tglx@linutronix.de" <tglx@linutronix.de>, 
- Jon Kohler <jon@nutanix.com>, Shaju Abraham <shaju.abraham@nutanix.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-Date: Fri, 12 Dec 2025 16:31:39 +0900
-In-Reply-To: <B45DB519-3B04-46F7-894E-42A44DF2FC8E@nutanix.com>
-References: <20251211110024.1409489-1-khushit.shah@nutanix.com>
-	 <83cf40c6168c97670193340b00d0fe71a35a6c1b.camel@infradead.org>
-	 <B45DB519-3B04-46F7-894E-42A44DF2FC8E@nutanix.com>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-S9hQYhsdhPgk6ol6fFsL"
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	s=arc-20240116; t=1765525939; c=relaxed/simple;
+	bh=y/bvT8VZdx+5yko665QNlOLFOQbvNzV7Cf31v/zetaQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=vEj6ADnibG5XM9OC6ZuMD4wWbB7jOT0Z4IYvMT2H7HqFJ+d38nJpr5ZDnR9bz2TVkVh7MTCnUArg6ANAaoQLG+WQ9s67ndbQMi07PkKaFXnI5AVgPnVCKV9YTBjifm1MKXjBbP7LX34vfnpM3ISi43KICQR22bDtnHnjipMunWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ubuntu.com; spf=pass smtp.mailfrom=fe-bounces.ubuntu.com; dkim=pass (2048-bit key) header.d=ubuntu.com header.i=@ubuntu.com header.b=QAJCWwvH; arc=none smtp.client-ip=149.28.215.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ubuntu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fe-bounces.ubuntu.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ubuntu.com;
+ h=Content-Transfer-Encoding: MIME-Version: Message-ID: Date: Subject: Cc:
+ To: From; q=dns/txt; s=fe-953a8a3ca9; t=1765525935;
+ bh=5pmJtC2v5HuKgTd8XiTTdyFsEdHnMITFvy/fl8k9hdM=;
+ b=QAJCWwvHP1AWv0Y69Vh9mja+eaWSifpXm4NoENYzU5l8acfnHBQpatr/blCY3W7c+zZm/NIFb
+ NLlF4LYq3X9RZRj/Q9s3JVW2RFEw1WfECa2Z+pA8lW4vXXZsmHvX9eCVbgD5xA7G5zBqg6MhhMm
+ 5Q8jVSeyIiM69m41nKiF9SgdSADZA7Er1SsIldCq1WuPk4B4j6dtecmnZKXCChMcTpyKdn6iObW
+ Z5ywTcdqG1mLncps3d6E04iilAmAns3mp9x8MoLacQJBmLmspScPGC0l5AVCmbvAIYgmF9c4nAF
+ +PX9tPB4ZCko2O+hvYo53GpKDpHgypdWdxWYcrGYqOAQ==
+X-Forward-Email-ID: 693bc4f9bcfd39afaeb67eae
+X-Forward-Email-Sender: rfc822; fnordahl@ubuntu.com, smtp.forwardemail.net,
+ 149.28.215.223
+X-Forward-Email-Version: 1.6.6
+X-Forward-Email-Website: https://forwardemail.net
+X-Complaints-To: abuse@forwardemail.net
+X-Report-Abuse: abuse@forwardemail.net
+X-Report-Abuse-To: abuse@forwardemail.net
+From: Frode Nordahl <fnordahl@ubuntu.com>
+To: netdev@vger.kernel.org
+Cc: fnordahl@ubuntu.com,
+	stable@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	David Ahern <dsahern@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Gal Pressman <gal@nvidia.com>,
+	Kees Cook <kees@kernel.org>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] erspan: Initialize options_len before referencing options.
+Date: Fri, 12 Dec 2025 07:32:01 +0000
+Message-ID: <20251212073202.13153-1-fnordahl@ubuntu.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
+Content-Transfer-Encoding: 8bit
 
+The struct ip_tunnel_info has a flexible array member named
+options that is protected by a counted_by(options_len)
+attribute.
 
---=-S9hQYhsdhPgk6ol6fFsL
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
+The compiler will use this information to enforce runtime bounds
+checking deployed by FORTIFY_SOURCE string helpers.
 
-T24gRnJpLCAyMDI1LTEyLTEyIGF0IDA3OjA4ICswMDAwLCBLaHVzaGl0IFNoYWggd3JvdGU6Cj4g
-Cj4gZGlmZiAtLWdpdCBhL2FyY2gveDg2L2t2bS9sYXBpYy5jIGIvYXJjaC94ODYva3ZtL2xhcGlj
-LmMKPiBpbmRleCAwYWU3ZjkxM2Q3ODIuLjdiMzY4Mjg0ZWMwYiAxMDA2NDQKPiAtLS0gYS9hcmNo
-L3g4Ni9rdm0vbGFwaWMuYwo+ICsrKyBiL2FyY2gveDg2L2t2bS9sYXBpYy5jCgoKU3VyZWx5IHRo
-ZSBwb2ludCBvZiBoZWxwZXIgZnVuY3Rpb25zIGlzIHRoYXQgdGhleSBsaXZlIGluIGEgaGVhZGVy
-IGZpbGUKc29tZXdoZXJlIGFuZCBhcmUgbm90ICpkdXBsaWNhdGVkKiBpbiB0aGUgZGlmZmVyZW50
-IEMgZmlsZXMgdGhhdCB1c2UKdGhlbT8KCj4gQEAgLTEwNSw2ICsxMDUsNDMgQEAgYm9vbCBrdm1f
-YXBpY19wZW5kaW5nX2VvaShzdHJ1Y3Qga3ZtX3ZjcHUgKnZjcHUsIGludCB2ZWN0b3IpCj4gwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGFwaWNfdGVzdF92ZWN0b3IodmVjdG9yLCBhcGlj
-LT5yZWdzICsgQVBJQ19JUlIpOwo+IMKgfQo+IMKgCj4gK3N0YXRpYyBib29sIGt2bV9sYXBpY19h
-ZHZlcnRpc2Vfc3VwcHJlc3NfZW9pX2Jyb2FkY2FzdChzdHJ1Y3Qga3ZtICprdm0pCj4gK3sKPiAr
-wqDCoMKgwqDCoMKgIC8qCj4gK8KgwqDCoMKgwqDCoMKgICogUmV0dXJucyB0cnVlIGlmIEtWTSBz
-aG91bGQgYWR2ZXJ0aXNlIFN1cHByZXNzIEVPSSBicm9hZGNhc3Qgc3VwcG9ydAo+ICvCoMKgwqDC
-oMKgwqDCoCAqIHRvIHRoZSBndWVzdC4KPiArwqDCoMKgwqDCoMKgwqAgKgo+ICvCoMKgwqDCoMKg
-wqDCoCAqIEluIHNwbGl0IElSUUNISVAgbW9kZTogYWR2ZXJ0aXNlIHVubGVzcyB0aGUgVk1NIGV4
-cGxpY2l0bHkgZGlzYWJsZWQKPiArwqDCoMKgwqDCoMKgwqAgKiBpdC4gVGhpcyBwcmVzZXJ2ZXMg
-bGVnYWN5IHF1aXJreSBiZWhhdmlvciB3aGVyZSBLVk0gYWR2ZXJ0aXNlZCB0aGUKPiArwqDCoMKg
-wqDCoMKgwqAgKiBjYXBhYmlsaXR5IGV2ZW4gdGhvdWdoIGl0IGRpZCBub3QgYWN0dWFsbHkgc3Vw
-cHJlc3MgRU9Jcy4KPiArwqDCoMKgwqDCoMKgwqAgKgo+ICvCoMKgwqDCoMKgwqDCoCAqIEluIGtl
-cm5lbCBJUlFDSElQIG1vZGU6IG9ubHkgYWR2ZXJ0aXNlIGlmIHRoZSBWTU0gZXhwbGljaXRseQo+
-ICvCoMKgwqDCoMKgwqDCoCAqIGVuYWJsZWQgaXQgKGFuZCB1c2UgdGhlIElPQVBJQyB2ZXJzaW9u
-IDB4MjApLgo+ICvCoMKgwqDCoMKgwqDCoCAqLwo+ICvCoMKgwqDCoMKgwqDCoCBpZiAoaXJxY2hp
-cF9zcGxpdChrdm0pKSB7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcmV0dXJuIGt2
-bS0+YXJjaC5zdXBwcmVzc19lb2lfYnJvYWRjYXN0X21vZGUgIT0KPiArwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgS1ZNX1NVUFBSRVNTX0VPSV9CUk9BRENBU1Rf
-RElTQUJMRUQ7Cj4gK8KgwqDCoMKgwqDCoCB9IGVsc2Ugewo+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgIHJldHVybiBrdm0tPmFyY2guc3VwcHJlc3NfZW9pX2Jyb2FkY2FzdF9tb2RlID09
-Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIEtWTV9TVVBQ
-UkVTU19FT0lfQlJPQURDQVNUX0VOQUJMRUQ7Cj4gK8KgwqDCoMKgwqDCoCB9CgpJY2ssIHRoYXQg
-bWFrZXMgbXkgYnJhaW4gaHVydCwgYW5kIG9iZnVzY2F0ZXMgdGhlIG5pY2UgY2xlYW4gc2ltcGxl
-CkVOQUJMRUQvRElTQUJMRUQgY2FzZXMuIEhvdyBhYm91dDoKCiAgIHN3aXRjaChrdm0tPmFyY2gu
-c3VwcHJlc3NfZW9pX2Jyb2FkY2FzdF9tb2RlKSB7CiAgICAgIGNhc2UgS1ZNX1NVUFBSRVNTX0VP
-SV9CUk9BRENBU1RfRU5BQkxFRDogcmV0dXJuIHRydWU7CiAgICAgIGNhc2UgS1ZNX1NVUFBSRVNT
-X0VPSV9CUk9BRENBU1RfRElTQUJMRUQ6IHJldHVybiBmYWxzZTsKICAgICAgZGVmYXVsdDogcmV0
-dXJuICFpb2FwaWNfaW5fa2VybmVsKGt2bSk7CiAgIH0KCihZb3UgY2FuIGRvIGl0IHdpdGggaWYv
-ZWxzZSBpZiB5b3UgcHJlZmVyOyB0aGlzIHdhcyBlYXNpZXIgdG8gdHlwZSBpbnRvCmVtYWlsKS4K
-Cj4gK30KPiArCj4gK3N0YXRpYyBib29sIGt2bV9sYXBpY19pZ25vcmVfc3VwcHJlc3NfZW9pX2Jy
-b2FkY2FzdChzdHJ1Y3Qga3ZtICprdm0pCj4gK3sKPiArwqDCoMKgwqDCoMKgIC8qCj4gK8KgwqDC
-oMKgwqDCoMKgICogUmV0dXJucyB0cnVlIGlmIEtWTSBzaG91bGQgaWdub3JlIHRoZSBzdXBwcmVz
-cyBFT0kgYnJvYWRjYXN0IGJpdCBzZXQgYnkKPiArwqDCoMKgwqDCoMKgwqAgKiB0aGUgZ3Vlc3Qg
-YW5kIGJyb2FkY2FzdCBFT0lzIGFueXdheS4KPiArwqDCoMKgwqDCoMKgwqAgKgo+ICvCoMKgwqDC
-oMKgwqDCoCAqIE9ubHkgcmV0dXJucyBmYWxzZSB3aGVuIHRoZSBWTU0gZXhwbGljaXRseSBlbmFi
-bGVkIFN1cHByZXNzIEVPSQo+ICvCoMKgwqDCoMKgwqDCoCAqIGJyb2FkY2FzdC4gSWYgZGlzYWJs
-ZWQgYnkgVk1NLCB0aGUgYml0IHNob3VsZCBiZSBpZ25vcmVkIGFzIGl0IGlzIG5vdAo+ICvCoMKg
-wqDCoMKgwqDCoCAqIHN1cHBvcnRlZC4gTGVnYWN5IGJlaGF2aW9yIHdhcyB0byBpZ25vcmUgdGhl
-IGJpdCBhbmQgYnJvYWRjYXN0IEVPSXMKPiArwqDCoMKgwqDCoMKgwqAgKiBhbnl3YXkuCj4gK8Kg
-wqDCoMKgwqDCoMKgICovCj4gK8KgwqDCoMKgwqDCoCByZXR1cm4ga3ZtLT5hcmNoLnN1cHByZXNz
-X2VvaV9icm9hZGNhc3RfbW9kZSAhPQo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoCBLVk1fU1VQUFJFU1NfRU9JX0JST0FEQ0FTVF9FTkFCTEVEOwo+ICt9CgpT
-dGlsbCBraW5kIG9mIGhhdGUgdGhlIGludmVyc2UgbG9naWMgYW5kIHRoZSBjb25qdW5jdGlvbiBv
-ZiAnaWdub3JlCnN1cHByZXNzJyB3aGljaCBpcyBoYXJkIHRvIHBhcnNlIGFzIGEgZG91YmxlLW5l
-Z2F0aXZlLiBXaGF0IHdhcyB3cm9uZwp3aXRoIGEgJ2t2bV9sYXBpY19pbXBsZW1lbnRfc3VwcHJl
-c3NfZW9pX2Jyb2FkY2FzdCgpIHdoaWNoIHJldHVybnMgdHJ1ZQppZiBzdXBwcmVzc19lb2lfYnJv
-YWRjYXN0X21vZGUgPT0gS1ZNX1NVUFBSRVNTX0VPSV9CUk9BRENBU1RfRU5BQkxFRD8KCgo=
+As laid out in the GCC documentation, the counter must be
+initialized before the first reference to the flexible array
+member.
 
+In the normal case the ip_tunnel_info_opts_set() helper is used
+which would initialize options_len properly, however in the GRE
+ERSPAN code a partial update is done, preventing the use of the
+helper function.
 
---=-S9hQYhsdhPgk6ol6fFsL
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+Before this change the handling of ERSPAN traffic in GRE tunnels
+would cause a kernel panic when the kernel is compiled with
+GCC 15+ and having FORTIFY_SOURCE configured:
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI1MTIxMjA3MzEz
-OVowLwYJKoZIhvcNAQkEMSIEIPdV5R9EN5RXAfDfzHN1oCCPY2W/wcsqbl7XbwZDTbK7MGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAqeeFS8pDy7ds
-OONZLaEvQMILNP65NKWKR6FKF0KOYUoJ/H8tgBLIOMFQ7P9xmoxHJsis507L+r7bn2H9ChzLyAXx
-11Av0cZdV/3N2jTkvdSyd/WG2GRgR69iwGvDrQQk9U8bbmisy3//ejXZYJ49a3+oClkpjjg6TCcV
-ASOSY5/SkfIISZIJVY3Ra4U3WDN0xm+yyOnMVqVFPsHuFqXOlAS+WaaBm02Of5h3OIWssn8SwMaq
-jcQisIXxarzcZj0fxrioJZ6F+8jviZLBZdZN0qL8hbswucChCJBFE3S95lC8PsotvfLPj/Z6isNF
-jGClEi2LW7uGMCF2Cg9BdoLWtzzeaWtG5YRkslouD4iRGJmLlvNLBpLa0qeOQb9/h1m5fr06O8q0
-2RNL+hJAMbp6Dfyb6sTwSnhdTBlNSRWhGqK4YO6wD4K4uUhMvvAEyhIki5qYQvGegnq6Nv2G3TBs
-21w10YImb0LOdfcJX73BoGA7ilersmW0ELVk+RqxTpnBNqinsOJoUk5c/DPeljDbdY3nynzIVw58
-kxjNoSqBfKHoj7klM2VRtPkrN4G536/F+U+lUMs4miGXCzK3RFLu0jQSK6qVsKXbhMS4t5BY6Icj
-lqvoPDqWYwREDb/ZI2x4uArIJV70ciP35N0e6QlA+MnTJFkvRD0sEt2Iqfh+Sw8AAAAAAAA=
+memcpy: detected buffer overflow: 4 byte write of buffer size 0
 
+Call Trace:
+ <IRQ>
+ __fortify_panic+0xd/0xf
+ erspan_rcv.cold+0x68/0x83
+ ? ip_route_input_slow+0x816/0x9d0
+ gre_rcv+0x1b2/0x1c0
+ gre_rcv+0x8e/0x100
+ ? raw_v4_input+0x2a0/0x2b0
+ ip_protocol_deliver_rcu+0x1ea/0x210
+ ip_local_deliver_finish+0x86/0x110
+ ip_local_deliver+0x65/0x110
+ ? ip_rcv_finish_core+0xd6/0x360
+ ip_rcv+0x186/0x1a0
 
---=-S9hQYhsdhPgk6ol6fFsL--
+Link: https://gcc.gnu.org/onlinedocs/gcc/Common-Variable-Attributes.html#index-counted_005fby-variable-attribute
+Reported-at: https://launchpad.net/bugs/2129580
+Fixes: bb5e62f2d547 ("net: Add options as a flexible array to struct ip_tunnel_info")
+Signed-off-by: Frode Nordahl <fnordahl@ubuntu.com>
+---
+ net/ipv4/ip_gre.c  | 18 ++++++++++++++++--
+ net/ipv6/ip6_gre.c | 18 ++++++++++++++++--
+ 2 files changed, 32 insertions(+), 4 deletions(-)
+
+diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
+index 761a53c6a89a..285a656c9e41 100644
+--- a/net/ipv4/ip_gre.c
++++ b/net/ipv4/ip_gre.c
+@@ -330,6 +330,22 @@ static int erspan_rcv(struct sk_buff *skb, struct tnl_ptk_info *tpi,
+ 			if (!tun_dst)
+ 				return PACKET_REJECT;
+ 
++			/* The struct ip_tunnel_info has a flexible array member named
++			 * options that is protected by a counted_by(options_len)
++			 * attribute.
++			 *
++			 * The compiler will use this information to enforce runtime bounds
++			 * checking deployed by FORTIFY_SOURCE string helpers.
++			 *
++			 * As laid out in the GCC documentation, the counter must be
++			 * initialized before the first reference to the flexible array
++			 * member.
++			 *
++			 * Link: https://gcc.gnu.org/onlinedocs/gcc/Common-Variable-Attributes.html#index-counted_005fby-variable-attribute
++			 */
++			info = &tun_dst->u.tun_info;
++			info->options_len = sizeof(*md);
++
+ 			/* skb can be uncloned in __iptunnel_pull_header, so
+ 			 * old pkt_md is no longer valid and we need to reset
+ 			 * it
+@@ -344,10 +360,8 @@ static int erspan_rcv(struct sk_buff *skb, struct tnl_ptk_info *tpi,
+ 			memcpy(md2, pkt_md, ver == 1 ? ERSPAN_V1_MDSIZE :
+ 						       ERSPAN_V2_MDSIZE);
+ 
+-			info = &tun_dst->u.tun_info;
+ 			__set_bit(IP_TUNNEL_ERSPAN_OPT_BIT,
+ 				  info->key.tun_flags);
+-			info->options_len = sizeof(*md);
+ 		}
+ 
+ 		skb_reset_mac_header(skb);
+diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
+index c82a75510c0e..eb840a11b93b 100644
+--- a/net/ipv6/ip6_gre.c
++++ b/net/ipv6/ip6_gre.c
+@@ -535,6 +535,22 @@ static int ip6erspan_rcv(struct sk_buff *skb,
+ 			if (!tun_dst)
+ 				return PACKET_REJECT;
+ 
++			/* The struct ip_tunnel_info has a flexible array member named
++			 * options that is protected by a counted_by(options_len)
++			 * attribute.
++			 *
++			 * The compiler will use this information to enforce runtime bounds
++			 * checking deployed by FORTIFY_SOURCE string helpers.
++			 *
++			 * As laid out in the GCC documentation, the counter must be
++			 * initialized before the first reference to the flexible array
++			 * member.
++			 *
++			 * Link: https://gcc.gnu.org/onlinedocs/gcc/Common-Variable-Attributes.html#index-counted_005fby-variable-attribute
++			 */
++			info = &tun_dst->u.tun_info;
++			info->options_len = sizeof(*md);
++
+ 			/* skb can be uncloned in __iptunnel_pull_header, so
+ 			 * old pkt_md is no longer valid and we need to reset
+ 			 * it
+@@ -543,7 +559,6 @@ static int ip6erspan_rcv(struct sk_buff *skb,
+ 			     skb_network_header_len(skb);
+ 			pkt_md = (struct erspan_metadata *)(gh + gre_hdr_len +
+ 							    sizeof(*ershdr));
+-			info = &tun_dst->u.tun_info;
+ 			md = ip_tunnel_info_opts(info);
+ 			md->version = ver;
+ 			md2 = &md->u.md2;
+@@ -551,7 +566,6 @@ static int ip6erspan_rcv(struct sk_buff *skb,
+ 						       ERSPAN_V2_MDSIZE);
+ 			__set_bit(IP_TUNNEL_ERSPAN_OPT_BIT,
+ 				  info->key.tun_flags);
+-			info->options_len = sizeof(*md);
+ 
+ 			ip6_tnl_rcv(tunnel, skb, tpi, tun_dst, log_ecn_error);
+ 
+-- 
+2.43.0
+
 
