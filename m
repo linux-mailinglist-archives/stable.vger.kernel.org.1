@@ -1,206 +1,154 @@
-Return-Path: <stable+bounces-200836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF6C3CB79CC
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 03:06:59 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C9CDCB7A39
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 03:10:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C66CF3041CE5
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 02:06:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9F6E130057A3
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 02:10:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56E64298CC4;
-	Fri, 12 Dec 2025 02:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 743C2290DBB;
+	Fri, 12 Dec 2025 02:10:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GVWKU+4l"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QHNUY0wn"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0688428B3E7;
-	Fri, 12 Dec 2025 02:06:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3072728B3E2;
+	Fri, 12 Dec 2025 02:10:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765505172; cv=none; b=N7eUG7a4uib+SOvYEt7rPUI84a3R6o5TxvYySNeVUYTZX+aCEX+L2ZhcQRj/inDEDupODvuCa1qd7Wc7IB/0TsM9ofnA+v6ZYriIqQMmh4QUw+ygWiI0m3jKZLGWt4GHGu8gnAJs7FoI9kviLjSY4BawMRmvrOiLu26cVuLMpg0=
+	t=1765505437; cv=none; b=VWDRYXNLVo+fIli6JQRQsDyMqw0K59EnzlYCJuD5Sc1GDKZ6J9Mo1/I3lyqedrR+9Tq30lYNUPZWehJOlzOZVhkM/iW854QhZRBy+TlkP5/O3V06lMwtKGgZb2Q5AODbSBYWSL7DMEF+DE9S4R9KC44mV+YwBcbU+jnVwLshox8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765505172; c=relaxed/simple;
-	bh=zWYSYTi2Ehk5Tt/y3fdV2e1WlZ0xEil7gXV+7es5qx0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=L6Q3on9F5PX7ofzumsA1i/tDBf04VxdqytmFgm8u+jjskcQs+TyeHgZqEtPVKYwsteomoPcZnePj9YECvKkuuHeUE0YYt4NTAuZ9mGNaAsVO8i4XPh3IuLrp+lx9/6OMeOkh2hDfyA3WZsBp0Bq4APe1ewhFZinEYzENl7JFoto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GVWKU+4l; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765505170; x=1797041170;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=zWYSYTi2Ehk5Tt/y3fdV2e1WlZ0xEil7gXV+7es5qx0=;
-  b=GVWKU+4lO9xgytUdtWCzjEmSbQgtWTdmq55K8WrHnoNGDKTWlWuAcCTn
-   K7uOJm6JEucSfB3Oo16Lmpe03l1N14I7zufpxk28NBKaHC6NqUxhK0snM
-   MvDrX9KqntUp/IIhR7UCBjtmANf/F6SMVFxLh13ohPCXJ/HaDu7rkLmBz
-   503CDO51xDSmzb9XrS16I/5cPpJF14OTK8H8ORuDxa1EmZsv6ELBW+lQb
-   TC27XtKcvbfl4m2zhmT6uiWZm4ghLntwQUzljD1USV2cEZVGvK2UVQJkE
-   Dqn/MTsePWcv26Jpc7JEZEKX+nQnTjGAFugfRUY56ZIJmJxagGiYbOLpg
-   g==;
-X-CSE-ConnectionGUID: zEFudGiNRxCgFDj+pPzw0Q==
-X-CSE-MsgGUID: LhAE9XZyT2K4dtkq0PT/wA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11635"; a="67426620"
-X-IronPort-AV: E=Sophos;i="6.20,256,1758610800"; 
-   d="scan'208";a="67426620"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2025 18:06:09 -0800
-X-CSE-ConnectionGUID: N0HMPccjQ16B1lIH6itCpw==
-X-CSE-MsgGUID: +m5jObAeSVyE4l0jvy/4YQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,141,1763452800"; 
-   d="scan'208";a="197768043"
-Received: from ktian1-pkvm.sh.intel.com ([10.239.48.205])
-  by fmviesa010.fm.intel.com with ESMTP; 11 Dec 2025 18:06:06 -0800
-From: Kevin Tian <kevin.tian@intel.com>
-To: Alex Williamson <alex@shazbot.org>,
-	Ankit Agrawal <ankita@nvidia.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Shameer Kolothum <skolothumtho@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Ramesh Thomas <ramesh.thomas@intel.com>,
-	Yunxiang Li <Yunxiang.Li@amd.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Farrah Chen <farrah.chen@intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] vfio/pci: Disable qword access to the PCI ROM bar
-Date: Fri, 12 Dec 2025 02:09:41 +0000
-Message-ID: <20251212020941.338355-1-kevin.tian@intel.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1765505437; c=relaxed/simple;
+	bh=lNlq/Gu4DYaUueJtMsogHDxEJ50BRGn+gkM9qqKE03k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y3rEE97bjF8fWt5KomRkYYRrKZMe9B+3wPGZ7hPqQ9vMY3mkG0/XIqKkWIfNfMpZ4XlasKS+ACYvWFl1X0k4P71g0UqYGH1kpfuA211nlIptKh1Eg5oHomi74pifQn5Rg51LueOSg2RTqu0mXqtLDFJvYDQGVGp9S4QNdkiGglg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QHNUY0wn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EAAFC4CEF7;
+	Fri, 12 Dec 2025 02:10:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765505436;
+	bh=lNlq/Gu4DYaUueJtMsogHDxEJ50BRGn+gkM9qqKE03k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QHNUY0wnt4c5rB0gsyuF5A0k7aZntxAt4mnDo/vokrp45M6otQAXyLplwhR7N9xc0
+	 EzPOI8Hf8gd2xTx9hn7iw+SvYCb2zWLQfLv3WzyoglNhV5CRQ2lefO5HiPEdjDzcPY
+	 tLpszreqfaIZlUZdAnrNy5g1NJuTLPEegphpMiURpcQjHOitdiuwEmwfw+NszYcBSn
+	 oOlRt5IohVlM8dndND3MfcUg+NcXPvDstci0E9S88KJh9b5z+XlE3IEI4/7wI3mUfJ
+	 Yoe3tYIRqXR35cody4nxD+XXmUYg+UZm3hgZNO3ZQgc9J/0klmDWjY2k8C3l6H/9Li
+	 gYPZIHIOdv7uQ==
+Received: by venus (Postfix, from userid 1000)
+	id 1C4841802EB; Fri, 12 Dec 2025 11:10:35 +0900 (JST)
+Date: Fri, 12 Dec 2025 11:10:35 +0900
+From: Sebastian Reichel <sre@kernel.org>
+To: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Cc: Hans Verkuil <hverkuil@kernel.org>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Bryan O'Donoghue <bod@kernel.org>, 
+	Heimir Thor Sverrisson <heimir.sverrisson@gmail.com>, linux-media@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 3/5] media: ov02c10: Fix the horizontal flip control
+Message-ID: <25wwufa4e3dbchloh7ygp7rimdl5fx2cnl4pbjvqjeyf3rq3p4@xwc2lkjm4cxh>
+References: <20251210112436.167212-1-johannes.goede@oss.qualcomm.com>
+ <20251210112436.167212-4-johannes.goede@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="j3mjui3673tqdadx"
+Content-Disposition: inline
+In-Reply-To: <20251210112436.167212-4-johannes.goede@oss.qualcomm.com>
 
-Commit 2b938e3db335 ("vfio/pci: Enable iowrite64 and ioread64 for vfio
-pci") enables qword access to the PCI bar resources. However certain
-devices (e.g. Intel X710) are observed with problem upon qword accesses
-to the rom bar, e.g. triggering PCI aer errors.
 
-Instead of trying to identify all broken devices, universally disable
-qword access to the rom bar i.e. going back to the old way which worked
-reliably for years.
+--j3mjui3673tqdadx
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v2 3/5] media: ov02c10: Fix the horizontal flip control
+MIME-Version: 1.0
 
-Reported-by: Farrah Chen <farrah.chen@intel.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220740
-Fixes: 2b938e3db335 ("vfio/pci: Enable iowrite64 and ioread64 for vfio pci")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kevin Tian <kevin.tian@intel.com>
----
- drivers/vfio/pci/nvgrace-gpu/main.c |  4 ++--
- drivers/vfio/pci/vfio_pci_rdwr.c    | 19 +++++++++++++++----
- include/linux/vfio_pci_core.h       |  2 +-
- 3 files changed, 18 insertions(+), 7 deletions(-)
+Hi,
 
-diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgrace-gpu/main.c
-index e346392b72f6..9b39184f76b7 100644
---- a/drivers/vfio/pci/nvgrace-gpu/main.c
-+++ b/drivers/vfio/pci/nvgrace-gpu/main.c
-@@ -491,7 +491,7 @@ nvgrace_gpu_map_and_read(struct nvgrace_gpu_pci_core_device *nvdev,
- 		ret = vfio_pci_core_do_io_rw(&nvdev->core_device, false,
- 					     nvdev->resmem.ioaddr,
- 					     buf, offset, mem_count,
--					     0, 0, false);
-+					     0, 0, false, true);
- 	}
- 
- 	return ret;
-@@ -609,7 +609,7 @@ nvgrace_gpu_map_and_write(struct nvgrace_gpu_pci_core_device *nvdev,
- 		ret = vfio_pci_core_do_io_rw(&nvdev->core_device, false,
- 					     nvdev->resmem.ioaddr,
- 					     (char __user *)buf, pos, mem_count,
--					     0, 0, true);
-+					     0, 0, true, true);
- 	}
- 
- 	return ret;
-diff --git a/drivers/vfio/pci/vfio_pci_rdwr.c b/drivers/vfio/pci/vfio_pci_rdwr.c
-index 6192788c8ba3..95dc7e04cb08 100644
---- a/drivers/vfio/pci/vfio_pci_rdwr.c
-+++ b/drivers/vfio/pci/vfio_pci_rdwr.c
-@@ -135,7 +135,7 @@ VFIO_IORDWR(64)
- ssize_t vfio_pci_core_do_io_rw(struct vfio_pci_core_device *vdev, bool test_mem,
- 			       void __iomem *io, char __user *buf,
- 			       loff_t off, size_t count, size_t x_start,
--			       size_t x_end, bool iswrite)
-+			       size_t x_end, bool iswrite, bool allow_qword)
- {
- 	ssize_t done = 0;
- 	int ret;
-@@ -150,7 +150,7 @@ ssize_t vfio_pci_core_do_io_rw(struct vfio_pci_core_device *vdev, bool test_mem,
- 		else
- 			fillable = 0;
- 
--		if (fillable >= 8 && !(off % 8)) {
-+		if (allow_qword && fillable >= 8 && !(off % 8)) {
- 			ret = vfio_pci_iordwr64(vdev, iswrite, test_mem,
- 						io, buf, off, &filled);
- 			if (ret)
-@@ -234,6 +234,7 @@ ssize_t vfio_pci_bar_rw(struct vfio_pci_core_device *vdev, char __user *buf,
- 	void __iomem *io;
- 	struct resource *res = &vdev->pdev->resource[bar];
- 	ssize_t done;
-+	bool allow_qword = true;
- 
- 	if (pci_resource_start(pdev, bar))
- 		end = pci_resource_len(pdev, bar);
-@@ -262,6 +263,16 @@ ssize_t vfio_pci_bar_rw(struct vfio_pci_core_device *vdev, char __user *buf,
- 		if (!io)
- 			return -ENOMEM;
- 		x_end = end;
-+
-+		/*
-+		 * Certain devices (e.g. Intel X710) don't support qword
-+		 * access to the ROM bar. Otherwise PCI AER errors might be
-+		 * triggered.
-+		 *
-+		 * Disable qword access to the ROM bar universally, which
-+		 * worked reliably for years before qword access is enabled.
-+		 */
-+		allow_qword = false;
- 	} else {
- 		int ret = vfio_pci_core_setup_barmap(vdev, bar);
- 		if (ret) {
-@@ -278,7 +289,7 @@ ssize_t vfio_pci_bar_rw(struct vfio_pci_core_device *vdev, char __user *buf,
- 	}
- 
- 	done = vfio_pci_core_do_io_rw(vdev, res->flags & IORESOURCE_MEM, io, buf, pos,
--				      count, x_start, x_end, iswrite);
-+				      count, x_start, x_end, iswrite, allow_qword);
- 
- 	if (done >= 0)
- 		*ppos += done;
-@@ -352,7 +363,7 @@ ssize_t vfio_pci_vga_rw(struct vfio_pci_core_device *vdev, char __user *buf,
- 	 * to the memory enable bit in the command register.
- 	 */
- 	done = vfio_pci_core_do_io_rw(vdev, false, iomem, buf, off, count,
--				      0, 0, iswrite);
-+				      0, 0, iswrite, true);
- 
- 	vga_put(vdev->pdev, rsrc);
- 
-diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
-index f541044e42a2..3a75b76eaed3 100644
---- a/include/linux/vfio_pci_core.h
-+++ b/include/linux/vfio_pci_core.h
-@@ -133,7 +133,7 @@ pci_ers_result_t vfio_pci_core_aer_err_detected(struct pci_dev *pdev,
- ssize_t vfio_pci_core_do_io_rw(struct vfio_pci_core_device *vdev, bool test_mem,
- 			       void __iomem *io, char __user *buf,
- 			       loff_t off, size_t count, size_t x_start,
--			       size_t x_end, bool iswrite);
-+			       size_t x_end, bool iswrite, bool allow_qword);
- bool vfio_pci_core_range_intersect_range(loff_t buf_start, size_t buf_cnt,
- 					 loff_t reg_start, size_t reg_cnt,
- 					 loff_t *buf_offset,
--- 
-2.43.0
+On Wed, Dec 10, 2025 at 12:24:34PM +0100, Hans de Goede wrote:
+> During sensor calibration I noticed that with the hflip control set to
+> false/disabled the image was mirrored.
+>=20
+> The horizontal flip control is inverted and needs to be set to 1 to not
+> flip. This is something which seems to be common with various recent
+> Omnivision sensors, the ov01a10 and ov08x40 also have an inverted
+> mirror control.
+>=20
+> Invert the hflip control to fix the sensor mirroring by default.
+>=20
+> Fixes: b7cd2ba3f692 ("media: ov02c10: Support hflip and vflip")
+> Cc: stable@vger.kernel.org
+> Cc: Sebastian Reichel <sre@kernel.org>
+> Reviewed-by: Bryan O'Donoghue <bod@kernel.org>
+> Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+> ---
 
+Reviewed-by: Sebastian Reichel <sre@kernel.org>
+Tested-by: Sebastian Reichel <sre@kernel.org> # T14s Gen6 Snapdragon
+
+Greetings,
+
+-- Sebastian
+
+>  drivers/media/i2c/ov02c10.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/media/i2c/ov02c10.c b/drivers/media/i2c/ov02c10.c
+> index 384c2f0b1608..f912ae142040 100644
+> --- a/drivers/media/i2c/ov02c10.c
+> +++ b/drivers/media/i2c/ov02c10.c
+> @@ -170,7 +170,7 @@ static const struct reg_sequence sensor_1928x1092_30f=
+ps_setting[] =3D {
+>  	{0x3816, 0x01},
+>  	{0x3817, 0x01},
+> =20
+> -	{0x3820, 0xa0},
+> +	{0x3820, 0xa8},
+>  	{0x3821, 0x00},
+>  	{0x3822, 0x80},
+>  	{0x3823, 0x08},
+> @@ -462,9 +462,9 @@ static int ov02c10_set_ctrl(struct v4l2_ctrl *ctrl)
+> =20
+>  	case V4L2_CID_HFLIP:
+>  		cci_write(ov02c10->regmap, OV02C10_ISP_X_WIN_CONTROL,
+> -			  ctrl->val ? 1 : 2, &ret);
+> +			  ctrl->val ? 2 : 1, &ret);
+>  		cci_update_bits(ov02c10->regmap, OV02C10_ROTATE_CONTROL,
+> -				BIT(3), ov02c10->hflip->val << 3, &ret);
+> +				BIT(3), ctrl->val ? 0 : BIT(3), &ret);
+>  		break;
+> =20
+>  	case V4L2_CID_VFLIP:
+> --=20
+> 2.52.0
+>=20
+
+--j3mjui3673tqdadx
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmk7eZoACgkQ2O7X88g7
++poDjhAAqhkUkyxIwviuFPzRGsy0m5wC0dlzwIWZ+/6zYmAhCPKOiRihzy+OZW5E
+/gyvcAbH7jf1k7/SsGFddh86lvPqIr78H4yKYyO+qCELQuRa6ZpLpJ+8ntoCtjXd
+3JoZrPIgpq8OQa5ApMB4AQERbv4ND6XCBWpsr8A6IVSC9/+GiGyXiH7aCKTVx5lr
+mYhJTYu+xUQuo5roXPCEw7mQyuKnw7KpFPi+hoJNCmtIo+lqFaawZSPxHdbIpePH
+eZCEBwUdNK8izjxKdZ6+9lg8qik95EQSrX5ed22fRLbYCEBcTVB2lejjVFnqAnBX
+26/kLRXeD70jkqm6/HEEFi6ZaScDFzFRdsmN9fM2f9nYnRNyCpSucacmPj7y89rp
+P/w5mz/vHyBiCKfdKW3ltUy/K5Ax6np952OF0kS6cOIJ98CArw0zbfhJmLWku2+B
+iSzaIlApv49phCDpKfvHXv7wqRpIJaWemm79NUbCvQ+EVMQUrN37KtxS3Uniefo1
+zEIY5UpJSTbGbJzCXWfveg+wUSzc+ATXfSVZ5qqB6l5hIZfIjqGjfv3rKBB4aDWd
+OCndqjmuPj4etukOkE9WJ4R7bCwV8HzLLiZTg4R9fbsKO5zM2rxuic+aJJcfpBqj
+RoUH3JtDTDu5ZnnNWScBmAdQrNbIEgqMKbArJYpdnS6zmm3hbc8=
+=iycr
+-----END PGP SIGNATURE-----
+
+--j3mjui3673tqdadx--
 
