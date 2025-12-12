@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-200847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C9CDCB7A39
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 03:10:39 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C58C8CB7A5B
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 03:13:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9F6E130057A3
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 02:10:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AFBC73005021
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 02:13:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 743C2290DBB;
-	Fri, 12 Dec 2025 02:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81299298CD7;
+	Fri, 12 Dec 2025 02:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QHNUY0wn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J0YvlCHP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3072728B3E2;
-	Fri, 12 Dec 2025 02:10:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ACB73C38;
+	Fri, 12 Dec 2025 02:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765505437; cv=none; b=VWDRYXNLVo+fIli6JQRQsDyMqw0K59EnzlYCJuD5Sc1GDKZ6J9Mo1/I3lyqedrR+9Tq30lYNUPZWehJOlzOZVhkM/iW854QhZRBy+TlkP5/O3V06lMwtKGgZb2Q5AODbSBYWSL7DMEF+DE9S4R9KC44mV+YwBcbU+jnVwLshox8=
+	t=1765505604; cv=none; b=ctF+rt3ZttjCUlhGeQ8Be+pE/L3ePXkh+uIwt9SptR5O1aVZE3Yx0jO69rIHIa4rYnlyk4oTD7bqDSIdcEIdHh8mgGkm56hEcHbF1wfRQJQdLqp9PBgNqvDz9vpIQvmHbvAnv4zO1O0L6IBBiZUOMbCSTMsm+I78BRyvJSLdsbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765505437; c=relaxed/simple;
-	bh=lNlq/Gu4DYaUueJtMsogHDxEJ50BRGn+gkM9qqKE03k=;
+	s=arc-20240116; t=1765505604; c=relaxed/simple;
+	bh=rxgPOEfcuh5Ieg6axTF/2GRA4++f8LLj1/xU6eOMuqU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y3rEE97bjF8fWt5KomRkYYRrKZMe9B+3wPGZ7hPqQ9vMY3mkG0/XIqKkWIfNfMpZ4XlasKS+ACYvWFl1X0k4P71g0UqYGH1kpfuA211nlIptKh1Eg5oHomi74pifQn5Rg51LueOSg2RTqu0mXqtLDFJvYDQGVGp9S4QNdkiGglg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QHNUY0wn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EAAFC4CEF7;
-	Fri, 12 Dec 2025 02:10:36 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=OXHcRNyIN9iprNhC9NfnAZs8hpNwHKqs/RbooQ9U+3LjeCtfutgL8aVKfKdcthM1jcDy2gQ1BDRkFKIy/aJbzk0LdgoiHEnHVqMbLlQ2mFErG6l81tilKEk2KVj4tk2wKH0w1jOdbRMgF/nRLDM8rkXMwwS7pix4t+w0WS0pYEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J0YvlCHP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A82B9C4CEF7;
+	Fri, 12 Dec 2025 02:13:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765505436;
-	bh=lNlq/Gu4DYaUueJtMsogHDxEJ50BRGn+gkM9qqKE03k=;
+	s=k20201202; t=1765505603;
+	bh=rxgPOEfcuh5Ieg6axTF/2GRA4++f8LLj1/xU6eOMuqU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QHNUY0wnt4c5rB0gsyuF5A0k7aZntxAt4mnDo/vokrp45M6otQAXyLplwhR7N9xc0
-	 EzPOI8Hf8gd2xTx9hn7iw+SvYCb2zWLQfLv3WzyoglNhV5CRQ2lefO5HiPEdjDzcPY
-	 tLpszreqfaIZlUZdAnrNy5g1NJuTLPEegphpMiURpcQjHOitdiuwEmwfw+NszYcBSn
-	 oOlRt5IohVlM8dndND3MfcUg+NcXPvDstci0E9S88KJh9b5z+XlE3IEI4/7wI3mUfJ
-	 Yoe3tYIRqXR35cody4nxD+XXmUYg+UZm3hgZNO3ZQgc9J/0klmDWjY2k8C3l6H/9Li
-	 gYPZIHIOdv7uQ==
+	b=J0YvlCHPKWLg4mY4A0rpOUgjKIwq1Y5/upyKLmgDDQ0594Pnq814GhyjI5SG59Yaf
+	 XXeoVCzwAoIAsPCxSMA72POgzVKkNCC3tHS8g/BTEHb0XvUue9QtkwjeB54eaymKGN
+	 lEGrXmjJ5k7g8Ne3XokaG2I5ce+Eb3lfFEhj/txheNe6xrcaMzxLYBrZuoTP95o80E
+	 mHN6/AtkRqI5jhjC6Ozts633YggcD6VTm3c6qiaOSLPN4945VhGlPOdE3RslGwPOeK
+	 Li5y/kQzMrKIvJzGgLw3DHSnK0llm651/NIIhKZfOU7PanoIdh9mre6U9VN6mk+85W
+	 2Hga0vrsCmZwQ==
 Received: by venus (Postfix, from userid 1000)
-	id 1C4841802EB; Fri, 12 Dec 2025 11:10:35 +0900 (JST)
-Date: Fri, 12 Dec 2025 11:10:35 +0900
+	id EF0AE1802EB; Fri, 12 Dec 2025 11:13:21 +0900 (JST)
+Date: Fri, 12 Dec 2025 11:13:21 +0900
 From: Sebastian Reichel <sre@kernel.org>
 To: Hans de Goede <johannes.goede@oss.qualcomm.com>
 Cc: Hans Verkuil <hverkuil@kernel.org>, 
 	Sakari Ailus <sakari.ailus@linux.intel.com>, Bryan O'Donoghue <bod@kernel.org>, 
 	Heimir Thor Sverrisson <heimir.sverrisson@gmail.com>, linux-media@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 3/5] media: ov02c10: Fix the horizontal flip control
-Message-ID: <25wwufa4e3dbchloh7ygp7rimdl5fx2cnl4pbjvqjeyf3rq3p4@xwc2lkjm4cxh>
+Subject: Re: [PATCH v2 4/5] media: ipu-bridge: Add DMI quirk for Dell XPS
+ laptops with upside down sensors
+Message-ID: <gocvnom2lrvk7wd5dm65picx24qkuudq6nfj4mi53oscx65cet@n6rkdjvcp2tp>
 References: <20251210112436.167212-1-johannes.goede@oss.qualcomm.com>
- <20251210112436.167212-4-johannes.goede@oss.qualcomm.com>
+ <20251210112436.167212-5-johannes.goede@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,97 +59,153 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="j3mjui3673tqdadx"
+	protocol="application/pgp-signature"; boundary="ebywwygo3ofqehqr"
 Content-Disposition: inline
-In-Reply-To: <20251210112436.167212-4-johannes.goede@oss.qualcomm.com>
+In-Reply-To: <20251210112436.167212-5-johannes.goede@oss.qualcomm.com>
 
 
---j3mjui3673tqdadx
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+--ebywwygo3ofqehqr
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v2 3/5] media: ov02c10: Fix the horizontal flip control
+Subject: Re: [PATCH v2 4/5] media: ipu-bridge: Add DMI quirk for Dell XPS
+ laptops with upside down sensors
 MIME-Version: 1.0
 
 Hi,
 
-On Wed, Dec 10, 2025 at 12:24:34PM +0100, Hans de Goede wrote:
-> During sensor calibration I noticed that with the hflip control set to
-> false/disabled the image was mirrored.
+On Wed, Dec 10, 2025 at 12:24:35PM +0100, Hans de Goede wrote:
+> The Dell XPS 13 9350 and XPS 16 9640 both have an upside-down mounted
+> OV02C10 sensor. This rotation of 180=B0 is reported in neither the SSDB n=
+or
+> the _PLD for the sensor (both report a rotation of 0=B0).
 >=20
-> The horizontal flip control is inverted and needs to be set to 1 to not
-> flip. This is something which seems to be common with various recent
-> Omnivision sensors, the ov01a10 and ov08x40 also have an inverted
-> mirror control.
+> Add a DMI quirk mechanism for upside-down sensors and add 2 initial entri=
+es
+> to the DMI quirk list for these 2 laptops.
 >=20
-> Invert the hflip control to fix the sensor mirroring by default.
+> Note the OV02C10 driver was originally developed on a XPS 16 9640 which
+> resulted in inverted vflip + hflip settings making it look like the sensor
+> was upright on the XPS 16 9640 and upside down elsewhere this has been
+> fixed in commit 69fe27173396 ("media: ov02c10: Fix default vertical flip"=
+).
+> This makes this commit a regression fix since now the video is upside down
+> on these Dell XPS models where it was not before.
 >=20
-> Fixes: b7cd2ba3f692 ("media: ov02c10: Support hflip and vflip")
+> Fixes: d5ebe3f7d13d ("media: ov02c10: Fix default vertical flip")
 > Cc: stable@vger.kernel.org
-> Cc: Sebastian Reichel <sre@kernel.org>
 > Reviewed-by: Bryan O'Donoghue <bod@kernel.org>
 > Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
 > ---
+> Changes in v2:
+> - Fix fixes tag to use the correct commit hash
+> - Drop || COMPILE_TEST from Kconfig to fix compile errors when ACPI is di=
+sabled
+> ---
 
 Reviewed-by: Sebastian Reichel <sre@kernel.org>
-Tested-by: Sebastian Reichel <sre@kernel.org> # T14s Gen6 Snapdragon
-
-Greetings,
 
 -- Sebastian
 
->  drivers/media/i2c/ov02c10.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+>  drivers/media/pci/intel/Kconfig      |  2 +-
+>  drivers/media/pci/intel/ipu-bridge.c | 29 ++++++++++++++++++++++++++++
+>  2 files changed, 30 insertions(+), 1 deletion(-)
 >=20
-> diff --git a/drivers/media/i2c/ov02c10.c b/drivers/media/i2c/ov02c10.c
-> index 384c2f0b1608..f912ae142040 100644
-> --- a/drivers/media/i2c/ov02c10.c
-> +++ b/drivers/media/i2c/ov02c10.c
-> @@ -170,7 +170,7 @@ static const struct reg_sequence sensor_1928x1092_30f=
-ps_setting[] =3D {
->  	{0x3816, 0x01},
->  	{0x3817, 0x01},
+> diff --git a/drivers/media/pci/intel/Kconfig b/drivers/media/pci/intel/Kc=
+onfig
+> index d9fcddce028b..3f14ca110d06 100644
+> --- a/drivers/media/pci/intel/Kconfig
+> +++ b/drivers/media/pci/intel/Kconfig
+> @@ -6,7 +6,7 @@ source "drivers/media/pci/intel/ivsc/Kconfig"
 > =20
-> -	{0x3820, 0xa0},
-> +	{0x3820, 0xa8},
->  	{0x3821, 0x00},
->  	{0x3822, 0x80},
->  	{0x3823, 0x08},
-> @@ -462,9 +462,9 @@ static int ov02c10_set_ctrl(struct v4l2_ctrl *ctrl)
+>  config IPU_BRIDGE
+>  	tristate "Intel IPU Bridge"
+> -	depends on ACPI || COMPILE_TEST
+> +	depends on ACPI
+>  	depends on I2C
+>  	help
+>  	  The IPU bridge is a helper library for Intel IPU drivers to
+> diff --git a/drivers/media/pci/intel/ipu-bridge.c b/drivers/media/pci/int=
+el/ipu-bridge.c
+> index 58ea01d40c0d..6463b2a47d78 100644
+> --- a/drivers/media/pci/intel/ipu-bridge.c
+> +++ b/drivers/media/pci/intel/ipu-bridge.c
+> @@ -5,6 +5,7 @@
+>  #include <acpi/acpi_bus.h>
+>  #include <linux/cleanup.h>
+>  #include <linux/device.h>
+> +#include <linux/dmi.h>
+>  #include <linux/i2c.h>
+>  #include <linux/mei_cl_bus.h>
+>  #include <linux/platform_device.h>
+> @@ -99,6 +100,28 @@ static const struct ipu_sensor_config ipu_supported_s=
+ensors[] =3D {
+>  	IPU_SENSOR_CONFIG("XMCC0003", 1, 321468000),
+>  };
 > =20
->  	case V4L2_CID_HFLIP:
->  		cci_write(ov02c10->regmap, OV02C10_ISP_X_WIN_CONTROL,
-> -			  ctrl->val ? 1 : 2, &ret);
-> +			  ctrl->val ? 2 : 1, &ret);
->  		cci_update_bits(ov02c10->regmap, OV02C10_ROTATE_CONTROL,
-> -				BIT(3), ov02c10->hflip->val << 3, &ret);
-> +				BIT(3), ctrl->val ? 0 : BIT(3), &ret);
->  		break;
-> =20
->  	case V4L2_CID_VFLIP:
+> +/*
+> + * DMI matches for laptops which have their sensor mounted upside-down
+> + * without reporting a rotation of 180=B0 in neither the SSDB nor the _P=
+LD.
+> + */
+> +static const struct dmi_system_id upside_down_sensor_dmi_ids[] =3D {
+> +	{
+> +		.matches =3D {
+> +			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+> +			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "XPS 13 9350"),
+> +		},
+> +		.driver_data =3D "OVTI02C1",
+> +	},
+> +	{
+> +		.matches =3D {
+> +			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+> +			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "XPS 16 9640"),
+> +		},
+> +		.driver_data =3D "OVTI02C1",
+> +	},
+> +	{} /* Terminating entry */
+> +};
+> +
+>  static const struct ipu_property_names prop_names =3D {
+>  	.clock_frequency =3D "clock-frequency",
+>  	.rotation =3D "rotation",
+> @@ -249,6 +272,12 @@ static int ipu_bridge_read_acpi_buffer(struct acpi_d=
+evice *adev, char *id,
+>  static u32 ipu_bridge_parse_rotation(struct acpi_device *adev,
+>  				     struct ipu_sensor_ssdb *ssdb)
+>  {
+> +	const struct dmi_system_id *dmi_id;
+> +
+> +	dmi_id =3D dmi_first_match(upside_down_sensor_dmi_ids);
+> +	if (dmi_id && acpi_dev_hid_match(adev, dmi_id->driver_data))
+> +		return 180;
+> +
+>  	switch (ssdb->degree) {
+>  	case IPU_SENSOR_ROTATION_NORMAL:
+>  		return 0;
 > --=20
 > 2.52.0
 >=20
 
---j3mjui3673tqdadx
+--ebywwygo3ofqehqr
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmk7eZoACgkQ2O7X88g7
-+poDjhAAqhkUkyxIwviuFPzRGsy0m5wC0dlzwIWZ+/6zYmAhCPKOiRihzy+OZW5E
-/gyvcAbH7jf1k7/SsGFddh86lvPqIr78H4yKYyO+qCELQuRa6ZpLpJ+8ntoCtjXd
-3JoZrPIgpq8OQa5ApMB4AQERbv4ND6XCBWpsr8A6IVSC9/+GiGyXiH7aCKTVx5lr
-mYhJTYu+xUQuo5roXPCEw7mQyuKnw7KpFPi+hoJNCmtIo+lqFaawZSPxHdbIpePH
-eZCEBwUdNK8izjxKdZ6+9lg8qik95EQSrX5ed22fRLbYCEBcTVB2lejjVFnqAnBX
-26/kLRXeD70jkqm6/HEEFi6ZaScDFzFRdsmN9fM2f9nYnRNyCpSucacmPj7y89rp
-P/w5mz/vHyBiCKfdKW3ltUy/K5Ax6np952OF0kS6cOIJ98CArw0zbfhJmLWku2+B
-iSzaIlApv49phCDpKfvHXv7wqRpIJaWemm79NUbCvQ+EVMQUrN37KtxS3Uniefo1
-zEIY5UpJSTbGbJzCXWfveg+wUSzc+ATXfSVZ5qqB6l5hIZfIjqGjfv3rKBB4aDWd
-OCndqjmuPj4etukOkE9WJ4R7bCwV8HzLLiZTg4R9fbsKO5zM2rxuic+aJJcfpBqj
-RoUH3JtDTDu5ZnnNWScBmAdQrNbIEgqMKbArJYpdnS6zmm3hbc8=
-=iycr
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmk7ekEACgkQ2O7X88g7
++pqIeQ/9H38iE63S2jxsAWn6Qir6DbziFbdPyVmI2HtW8tKDx3IdLyPyyfyDvSUa
+kiLhK++NgLjdx7aHhdmU4gLvDCTyUfwppYZte6rb1QmfODLq9FvYU66mA0j9X3b6
+BhBdZ/v7NwADZtPjbq0ODnHXMUzZdEn7Nc2p+W9kkShOGTfTFNL0s2dwBUNTkUYf
+OlP1aIQzDBZAyGsQM9ZXVF2FjGle7zXmY1qvaJGZml0V4k8I4ZIjxf75vVgvDd+n
+dm2EzvY/gVA4JLZ9FZdU05gknvLqY9LVpf9c9AhWbUhOu3q3K1cz0YKPD9H9k91E
+DDe0L+XopShIzx//BQBuf196zmEXsmg8kYdcdAtzPzQr8FkcIdYC6Vbhw5IcOKkm
+Fy/e5lQ4J6QqSSGzIIUTWRdGtOBvoOomx8YHubvD7C4oj+KRu7VlzftLDASYD5xf
+AMnL+uNYGGKzaozQCbQql9ynpzGrlInYG9odvMWf+ph+7zDnu/vSJyNlvrcp8DX7
+DgX1MFtaCUmfRkGM0znedmFOHyHVhG2BVefCf0AsyZP9UeP3Khd8Rsvqp9DSWSk7
+jnriKASSrnQ9TUG+Yrj2InUAcFp3o4O/gEcofP4P2qd/1M86yJj8favNd//8na+D
+MXOBMPfvW7iVqu2NTpyuAd53gk/sqHwkVlaL7ZDFcVfO8CITQj0=
+=zl8R
 -----END PGP SIGNATURE-----
 
---j3mjui3673tqdadx--
+--ebywwygo3ofqehqr--
 
