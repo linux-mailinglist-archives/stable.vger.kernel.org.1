@@ -1,120 +1,115 @@
-Return-Path: <stable+bounces-200832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8D79CB791B
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 02:46:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3EF2CB7924
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 02:47:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 179A33043549
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 01:45:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 85F313051622
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 01:45:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAC6D22B8CB;
-	Fri, 12 Dec 2025 01:45:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UX66Lzvg"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C3E81DF24F;
+	Fri, 12 Dec 2025 01:45:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2F51CDFCA;
-	Fri, 12 Dec 2025 01:45:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F14C145A1F;
+	Fri, 12 Dec 2025 01:45:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765503908; cv=none; b=dNGE3E1h51ivYzO9DVcKfMQuU5pzBJz4Qw5w+2nIb47YJ6lX832EiPAbYTVy+TJjpq/0iXLcodcAaI/aB9PqiycPDftY98DmJr/bzUV9syMxDPdYCARCODKHuaQJMaA36dKESI00IpiSVniXpg0lKHi2uVs8hZliII83o2f19hM=
+	t=1765503940; cv=none; b=LNUZHkuyL3sPy5RqDqYtqoAOzii7K3JhoUThq0Y9iKOZPQ6uI/HhS6VVQRHO2D9nCQU5VTqxRq/tZpdphXjfz3WGJkbowg0kz1oduTrj6tGScxUNfgnLoixu4ZGsNJTUYOYNpZlEIimA3cSr6r2J/uz53FvjvYyOFAizLF01GCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765503908; c=relaxed/simple;
-	bh=LkKCUbsI960+ONJDHq8t++u5huE72Wv83fqaU8Re8S8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JT9T2A/ZJSAV/J2pBKLxlcIXobW7ge3k+5KBwM/aESuIqa2jiXw0RP601QL/9ctjX2J/iqcTRNVdEvWRm/ujb9O/EDt3R3Ok/VGNg6aJJWYZ9dhMhj+vR75Bt1xGx5kqHsJRac2B1LxCkEgLt5mL2Zt98MpV/75dPG58G90AKzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UX66Lzvg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4F7EC16AAE;
-	Fri, 12 Dec 2025 01:45:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765503907;
-	bh=LkKCUbsI960+ONJDHq8t++u5huE72Wv83fqaU8Re8S8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UX66LzvgrYzkeXzN215fJ9d4xFOKNqZrGiDYe4BoJ1aPtyJ8tdadoVzBxSVneOQkX
-	 w6do5gScJrPMnGV81tXqs7vXDmSVqBQmUZAfUyO5ue3BREKiKZkttYd2seB0qQOXzu
-	 vgAdu0k5/oUyfN7n+GLwZbqmfDTCNcL2O3ER//4NbCvbnmM0jVk6a+ZJ2UlNtLdfH5
-	 x85rfWvYvrNrHoymUW/4Zbly4yzAOya+l92q9gcCcDBOvMXHXyBcp28iz3Izl+vHjg
-	 nbVOMgdHn67rc9o2P2OgO/iYyta41v9ajA+819LIis4944HAKfuPWIiFYhq06l5aBO
-	 kuHHhFPXQN5rg==
-From: Tejun Heo <tj@kernel.org>
-To: Andrea Righi <arighi@nvidia.com>,
-	Changwoo Min <changwoo@igalia.com>,
-	David Vernet <void@manifault.com>
-Cc: Emil Tsalapatis <emil@etsalapatis.com>,
-	linux-kernel@vger.kernel.org,
-	sched-ext@lists.linux.dev,
-	stable@vger.kernel.org,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 2/2] sched_ext: Fix missing post-enqueue handling in move_local_task_to_local_dsq()
-Date: Thu, 11 Dec 2025 15:45:04 -1000
-Message-ID: <20251212014504.3431169-3-tj@kernel.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251212014504.3431169-1-tj@kernel.org>
-References: <20251211224809.3383633-1-tj@kernel.org>
- <20251212014504.3431169-1-tj@kernel.org>
+	s=arc-20240116; t=1765503940; c=relaxed/simple;
+	bh=QfBPUcKT9I+Nw29HxanyALmZIWjPdGzyrsLwGbDbwUA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pCqcUoLdAsQY7kX3jiiWH7xXkfV1NvXXkLQRHbRAGDZ7/G18nIbJ/oa/gEAi35R9uQGw4DUlS+qxvJciMXry3ZhlwT7hNJeQ1kRpRQ8/+9pnupLoa3LuCR46inAxAeWhER+LqtlOqINAi7t58thN3zwpWGsPlgACo1aCW9+mROs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
+Received: from omf13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 64D48C0283;
+	Fri, 12 Dec 2025 01:45:29 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf13.hostedemail.com (Postfix) with ESMTPA id 1CF782000D;
+	Fri, 12 Dec 2025 01:45:25 +0000 (UTC)
+Date: Thu, 11 Dec 2025 20:45:20 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Miaoqian Lin <linmq006@gmail.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Tom Zanussi <zanussi@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] tracing: Fix error handling in event_hist_trigger_parse
+Message-ID: <20251211204520.0f3ba6d1@fedora>
+In-Reply-To: <20251211100058.2381268-1-linmq006@gmail.com>
+References: <20251211100058.2381268-1-linmq006@gmail.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 1CF782000D
+X-Stat-Signature: gj8ajiizoxnubawozm1tbyakyjgfqjtc
+X-Rspamd-Server: rspamout05
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX1+Zglo2jJCielK/en7hEYRkYGWG9/YzCRM=
+X-HE-Tag: 1765503925-69920
+X-HE-Meta: U2FsdGVkX18mgUeQCYOYyseZA9/yuzUD/piInrSmUqpHfr/v1ZEOE06eR5PGSec0r4G+etUn61PyIk8x1ucvE4j8Kzi/KOgOjh9L/78K2N6FYSVXEPq7DtB+JrJMXih34cLd196zyCxMXTqIoBhmcxQNa9BFvARSGox2CNRKGzun9JKF+YTvkdhTXl3nb+s4nYKyLv4vEfsTcJ7lXW2sK0vfDDb7x7Sr3NCAdVtikx4axElp8uGckapstRGcmw9PZyQXT+liwE7GApnvo2I7QQjquOZYdBuaDKmEXwjOYsnius+6mZZFWZqbt3kTKyw57fg0G7ntyJ/bcPx8ugkSMaNxhWFggsBd
 
-move_local_task_to_local_dsq() is used when moving a task from a non-local
-DSQ to a local DSQ on the same CPU. It directly manipulates the local DSQ
-without going through dispatch_enqueue() and was missing the post-enqueue
-handling that triggers preemption when SCX_ENQ_PREEMPT is set or the idle
-task is running.
+On Thu, 11 Dec 2025 14:00:58 +0400
+Miaoqian Lin <linmq006@gmail.com> wrote:
 
-The function is used by move_task_between_dsqs() which backs
-scx_bpf_dsq_move() and may be called while the CPU is busy.
+> @@ -6902,7 +6902,7 @@ static int event_hist_trigger_parse(struct event_command *cmd_ops,
+>  
+>  	remove_hist_vars(hist_data);
+>  
+> -	kfree(trigger_data);
+> +	trigger_data_free(trigger_data);
+>  
+>  	destroy_hist_data(hist_data);
+>  	goto out;
 
-Add local_dsq_post_enq() call to move_local_task_to_local_dsq(). As the
-dispatch path doesn't need post-enqueue handling, add SCX_RQ_IN_BALANCE
-early exit to keep consume_dispatch_q() behavior unchanged and avoid
-triggering unnecessary resched when scx_bpf_dsq_move() is used from the
-dispatch path.
+The above code has this:
 
-Fixes: 4c30f5ce4f7a ("sched_ext: Implement scx_bpf_dispatch[_vtime]_from_dsq()")
-Cc: stable@vger.kernel.org # v6.12+
-Reviewed-by: Andrea Righi <arighi@nvidia.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
----
- kernel/sched/ext.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ out_free:
+	event_trigger_reset_filter(cmd_ops, trigger_data);
 
-diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
-index c78efa99406f..695503a2f7d1 100644
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -988,6 +988,14 @@ static void local_dsq_post_enq(struct scx_dispatch_q *dsq, struct task_struct *p
- 	struct rq *rq = container_of(dsq, struct rq, scx.local_dsq);
- 	bool preempt = false;
- 
-+	/*
-+	 * If @rq is in balance, the CPU is already vacant and looking for the
-+	 * next task to run. No need to preempt or trigger resched after moving
-+	 * @p into its local DSQ.
-+	 */
-+	if (rq->scx.flags & SCX_RQ_IN_BALANCE)
-+		return;
-+
- 	if ((enq_flags & SCX_ENQ_PREEMPT) && p != rq->curr &&
- 	    rq->curr->sched_class == &ext_sched_class) {
- 		rq->curr->scx.slice = 0;
-@@ -1636,6 +1644,8 @@ static void move_local_task_to_local_dsq(struct task_struct *p, u64 enq_flags,
- 
- 	dsq_mod_nr(dst_dsq, 1);
- 	p->scx.dsq = dst_dsq;
-+
-+	local_dsq_post_enq(dst_dsq, p, enq_flags);
- }
- 
- /**
--- 
-2.52.0
+	remove_hist_vars(hist_data);
 
+	kfree(trigger_data);
+
+	destroy_hist_data(hist_data);
+	goto out;
+
+Where we have;
+
+void event_trigger_reset_filter(struct event_command *cmd_ops,
+				struct event_trigger_data *trigger_data)
+{
+	if (cmd_ops->set_filter)
+		cmd_ops->set_filter(NULL, trigger_data, NULL);
+}
+
+And trigger_data_free() starts with:
+
+void trigger_data_free(struct event_trigger_data *data)
+{
+	if (data->cmd_ops->set_filter)
+		data->cmd_ops->set_filter(NULL, data, NULL);
+
+
+thus it looks like the current code is an open coded version of
+trigger_data_free() without synchronization (as it isn't needed here).
+
+Thus, I believe this is more of a clean up and not a fix (something to
+go into the next merge window and not the current -rc release).
+
+And the code can be changed to also remove the event_trigger_reset_filter()
+call.
+
+-- Steve
 
