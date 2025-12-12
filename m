@@ -1,68 +1,83 @@
-Return-Path: <stable+bounces-200926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ACA3CB941D
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 17:28:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75718CB95D6
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 17:53:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0CE2D3008D77
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 16:28:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E81CC30C388B
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 16:51:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B79E62566F5;
-	Fri, 12 Dec 2025 16:28:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CF4C1C8604;
+	Fri, 12 Dec 2025 16:51:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eI6bMfiP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FCr93DE0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CC28126BF7;
-	Fri, 12 Dec 2025 16:28:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2CD823E342
+	for <stable@vger.kernel.org>; Fri, 12 Dec 2025 16:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765556926; cv=none; b=j+HIeY0b79uHlIMDyN2aUtrFMcWLYlWxcI+EwvJ+8POC9H8Fgcmta60gBS9WgMOmznNG9l5yOeCT8aHNRB8RPAw8+tlzTr+lw+WBtqN1isRXq3r/aWmm9tC8phYOuf3cADOnBmE1iybZ2+YXnfjKYx/9zyQEeyZanFtHd6xgqJM=
+	t=1765558292; cv=none; b=RNiBaLZ0uOGsGq5yZyCfgij/DtPCoRFMR60moFJ/NnMdsUVKjo/VtKSlXww2Mvqo4QzJcV6+pPxqN7m2HUAjU+fI4Rfg6XGvRGD2XtXFJFR8pQ3NL60Rll6qfJk8QPRN5Uu3hVJ1GuPBK7Jm0tQRfQCSnCl/+dFJelwTdpj2/Z0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765556926; c=relaxed/simple;
-	bh=fEmhw1h7YJFGHFA68zvlM24xSYIvIkahajauXo3ypsg=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References; b=dAG/KNDgOHOL5j55XwnlMJTv9v2uQZ7jEeTLiWn072iBzdEX/mz7cNwdbc9gk8z1syVbmQY6dvYODyjZSxnBxuyZGVoI9ciyT+bmBxodUOjgh+drsiiMH0hlqiy97lvaMi/i5ooFrtNyoofyE54yMK0Mq1QdNa4/uAvI0MUiC1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eI6bMfiP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE323C4CEF1;
-	Fri, 12 Dec 2025 16:28:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765556926;
-	bh=fEmhw1h7YJFGHFA68zvlM24xSYIvIkahajauXo3ypsg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=eI6bMfiPP4BBLYNT9uDTUDZcBmSW118IG4G+hOhNqpFa2zhUudYnBCczziZSlVXat
-	 co8A+M3W/aZxQK0aHkvWISLS/0VE1o7qpElrqZ+etki2QDxkZDmPgGgpFgTqg+RXYE
-	 dvFaI44cUPvcD8RWf9ecbeXFbZjuLE++e8ipTPSybuUYQocq2BRdnTrL3QL8/bJ2wn
-	 ew4FY9HusH3HVFS9Jri0tug4Tvi92nvp4bL5U2iNAyRfGEBKapXvg/5Np4TeSBqgyp
-	 hewBBLRU9UYinePg8Be+PzEfLJTuo7601gT5YRxLJVLYBsm7DEbLA8VVIHAYIS3jA2
-	 s/veKdUWFR3sA==
-Date: Fri, 12 Dec 2025 06:28:44 -1000
-Message-ID: <7d0d2b42a1e1d1f2afdc67f9bce6a9f1@kernel.org>
-From: Tejun Heo <tj@kernel.org>
-To: Tejun Heo <tj@kernel.org>
-Cc: Andrea Righi <arighi@nvidia.com>, Changwoo Min <changwoo@igalia.com>,
- David Vernet <void@manifault.com>, Emil Tsalapatis <emil@etsalapatis.com>,
- linux-kernel@vger.kernel.org, sched-ext@lists.linux.dev,
- stable@vger.kernel.org
-Subject: Re: [PATCHSET v2 sched_ext/for-6.19-fixes] sched_ext: Fix missing
- post-enqueue handling in move_local_task_to_local_dsq()
-In-Reply-To: <20251212014504.3431169-1-tj@kernel.org>
-References: <20251212014504.3431169-1-tj@kernel.org>
+	s=arc-20240116; t=1765558292; c=relaxed/simple;
+	bh=wj4WZHcDJSlcuZ3Yrj0Tiws2WsFAr/1k7Mv6n1tz1Dg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VQbOytk2+H/aBiNJ7JVmXkP01Zv1I+O1xryw5WLhoWZfg2tfMZLeauzvqU3sFBzlztBDHVG2/kAcOQJyNXRXoClT81jK9WJPcrItvFMH7dEi55EQhcKFZFNEjdJvqEGg7Uxdrta2tOH5yUtoNxvuPSECrYzM3BcQ9WxbH4nUvUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FCr93DE0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82F33C4CEF1;
+	Fri, 12 Dec 2025 16:51:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1765558291;
+	bh=wj4WZHcDJSlcuZ3Yrj0Tiws2WsFAr/1k7Mv6n1tz1Dg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FCr93DE0l5R+gmu1+XpQswYsa6rJIw/jCe6nK9YEXYdUQosLx4FGZfhPugx4M66K2
+	 W87d9aADe0A/AzJ22tHqmHtokHxUc+j5GTO3kRzHsqIrjd6Epxo4CNIPJVlv8yeevk
+	 4XTVtyWIp8cIoGNsheZpXOG590ZCPI4IoMoiywYw=
+Date: Fri, 12 Dec 2025 17:51:25 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Chen Yu <xnguchen@sina.cn>
+Cc: s.shtylyov@omp.ru, ulf.hansson@linaro.org, stable@vger.kernel.org
+Subject: Re: [PATCH 5.15.y] mmc: core: use sysfs_emit() instead of sprintf()
+Message-ID: <2025121205-wool-undesired-0609@gregkh>
+References: <20251212081959.5633-1-xnguchen@sina.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251212081959.5633-1-xnguchen@sina.cn>
 
-> Tejun Heo (2):
->   sched_ext: Factor out local_dsq_post_enq() from dispatch_enqueue()
->   sched_ext: Fix missing post-enqueue handling in move_local_task_to_local_dsq()
+On Fri, Dec 12, 2025 at 04:19:59PM +0800, Chen Yu wrote:
+> From: Sergey Shtylyov <s.shtylyov@omp.ru>
+> 
+> [ Upstream commit f5d8a5fe77ce933f53eb8f2e22bb7a1a2019ea11 ]
+> 
+> sprintf() (still used in the MMC core for the sysfs output) is vulnerable
+> to the buffer overflow.  Use the new-fangled sysfs_emit() instead.
+> 
+> Found by Linux Verification Center (linuxtesting.org) with the SVACE static
+> analysis tool.
+> 
+> Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+> Cc: stable@vger.kernel.org
+> Link: https://lore.kernel.org/r/717729b2-d65b-c72e-9fac-471d28d00b5a@omp.ru
+> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+> Signed-off-by: Chen Yu <xnguchen@sina.cn>
+> ---
+>  drivers/mmc/core/bus.c      |  9 +++++----
+>  drivers/mmc/core/bus.h      |  3 ++-
+>  drivers/mmc/core/mmc.c      | 16 ++++++++--------
+>  drivers/mmc/core/sd.c       | 25 ++++++++++++-------------
+>  drivers/mmc/core/sdio.c     |  5 +++--
+>  drivers/mmc/core/sdio_bus.c |  7 ++++---
+>  6 files changed, 34 insertions(+), 31 deletions(-)
 
-Applied to sched_ext/for-6.19-fixes.
-
-Thanks.
---
-tejun
+Why is this needed for stable kernels?  I see no real bugfix here, do
+you?
 
