@@ -1,251 +1,185 @@
-Return-Path: <stable+bounces-200845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C83F4CB7A17
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 03:09:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 148BDCB7A33
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 03:10:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 952473005695
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 02:09:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 36FA230303B5
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 02:09:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89C6229827E;
-	Fri, 12 Dec 2025 02:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 307DE241690;
+	Fri, 12 Dec 2025 02:09:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hls3buHI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XFgiGffX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 201F9296BC5;
-	Fri, 12 Dec 2025 02:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD58428B3E2;
+	Fri, 12 Dec 2025 02:09:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765505364; cv=none; b=SMKpjIM7mTDoOwmaK97qVfESkQJZB0yg0Jr1JrjaEYs6rQ6uRwsw0KTb5/tVds5FlnFdfsyQacLV8HEKxs4AhC27lCH9XFdS3ISbscPqdtDZ4O1NCwn6JV4G9Z/AkLdTcxDOvPBq3OefZHxfE5IAKj4Z5jx8fs+CXokX0vYT/Yw=
+	t=1765505373; cv=none; b=QmFm/KLRwavgre3TFn0xRx+woe3+VB6d8VnL5M5xc1vTUNlQ3k0ahMqeIh8cQDpFJjIlPvMIAeSIIYrFJ6vXUGJAcmgnyFdKI0cAYtCBxjfVjWgCk95s2eM+X33Ic/zFbrpA2dRoZ36pqkLTCnlWs8jLdmaq6HUz9vC5xOy2ejI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765505364; c=relaxed/simple;
-	bh=cBkruOZltISk9F/8zs8adLrbAEmRXV+aiUsIOUI+9Ao=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cL7TPq7bME/Nr+0RWgmBH+xyzB3Tu7dFPnc5d4N3Nmi2itIx7bNsW9NBLUvRJPWjUtGbx+XAYLpu64yRlJzqKJB4iJkAYTBq+QKGWL696kFV7GvGL2Bh37KW8RpEYIe9VhMH6ICqqfmugEYWTqjasiLQE1h0lMzn1XxyZPQBdj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hls3buHI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB472C19421;
-	Fri, 12 Dec 2025 02:09:21 +0000 (UTC)
+	s=arc-20240116; t=1765505373; c=relaxed/simple;
+	bh=8d/p7Kfe56SAM2NSmBdFM6quJGMXFnDuqMBjoEQ644o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BJ7uOaS37ofhKRF+NNOXHlzkksu+flnZpC1+zBmD0ci+4/EukChCKG+QBxsxJZ/bK/ZQ3Zu7QZIoWr5H/jaLuBRyGgTFnaKEYH1ZVD3e6Bq0I+U8f4NqPbRom/+JYQmhCXyvDLTTsYcIaElfMVo42y3kE221gGi47GWkstln4fE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XFgiGffX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D74BC4CEF7;
+	Fri, 12 Dec 2025 02:09:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765505363;
-	bh=cBkruOZltISk9F/8zs8adLrbAEmRXV+aiUsIOUI+9Ao=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hls3buHI4Dr0Go6AVWFzlD/HNYKvcT5F4C4YbMlDFVpQNsyg3ON0oYYziefvcMfcc
-	 ObzV4guS0evoKStZHRPQkAxr6jQ0XQ304SQ+05xV/F6Ql/nQawYso9EPdDZJULT0RR
-	 UtkpzPyXLlDd4S391owRWx3MYVp1B9eClXwtGpy5sWEfmCRdWbOMUOC84NK4pQjeiw
-	 7CbBF/OKCLH6ltBq8Ca4T841r2V8eyaQDnOmxo7ncuQ0HbZZ565gks6mA07K3R+hsd
-	 ZwkxyWbBqs+RU9TGR027C0zftqa4W9OB22VrCiH5zFZL1Iub9QTC6Ave2kzjk6BVvI
-	 KNwTgKtgUf81w==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Gregory CLEMENT <gregory.clement@bootlin.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Sasha Levin <sashal@kernel.org>,
-	rostedt@goodmis.org,
-	mhiramat@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-6.6] MIPS: ftrace: Fix memory corruption when kernel is located beyond 32 bits
-Date: Thu, 11 Dec 2025 21:09:00 -0500
-Message-ID: <20251212020903.4153935-8-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251212020903.4153935-1-sashal@kernel.org>
-References: <20251212020903.4153935-1-sashal@kernel.org>
+	s=k20201202; t=1765505372;
+	bh=8d/p7Kfe56SAM2NSmBdFM6quJGMXFnDuqMBjoEQ644o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XFgiGffXlLE/4DEqc5AT2hqLXpX87mCEa7at+QcTlA5d2GTiliFhgdeErr4AUAOeR
+	 orZy+UZ81Jqop5QXjunpBaEL82RA6oHA+qx9XypvRX5Gc0ibsXWPo2AH14mfcBNawh
+	 NwCIHX3ly1FNSRRoH5rb2r5/N1iuL5e9qLRcHuVQh91yWR8fUqeILJ6pCSby71YO4Q
+	 CnISHBCNLOAAhgJf3sHXiYcINrH4UjlClXOr7jXreBWrxkoAgYxKWqFOlhJZOdH+oR
+	 A5ynDUl0AfddZynsa7cVEYXJx18a/mUsj+pH3+WMX4+1jqKPHsYQpzT+1leDO8AIYN
+	 t+qLAR2eQMevg==
+Received: by venus (Postfix, from userid 1000)
+	id CC89D1802EB; Fri, 12 Dec 2025 11:09:30 +0900 (JST)
+Date: Fri, 12 Dec 2025 11:09:30 +0900
+From: Sebastian Reichel <sre@kernel.org>
+To: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Cc: Hans Verkuil <hverkuil@kernel.org>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Bryan O'Donoghue <bod@kernel.org>, 
+	Heimir Thor Sverrisson <heimir.sverrisson@gmail.com>, linux-media@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 2/5] media: ov02c10: Adjust x-win/y-win when changing
+ flipping to preserve bayer-pattern
+Message-ID: <cdxybxqubhacovewptwyvbxpemqcco4i5xgd7uzksqnfsubt2n@e5qhrq6xzaz3>
+References: <20251210112436.167212-1-johannes.goede@oss.qualcomm.com>
+ <20251210112436.167212-3-johannes.goede@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.18
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="43vfhpqroxga75lj"
+Content-Disposition: inline
+In-Reply-To: <20251210112436.167212-3-johannes.goede@oss.qualcomm.com>
 
-From: Gregory CLEMENT <gregory.clement@bootlin.com>
 
-[ Upstream commit 36dac9a3dda1f2bae343191bc16b910c603cac25 ]
+--43vfhpqroxga75lj
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v2 2/5] media: ov02c10: Adjust x-win/y-win when changing
+ flipping to preserve bayer-pattern
+MIME-Version: 1.0
 
-Since commit e424054000878 ("MIPS: Tracing: Reduce the overhead of
-dynamic Function Tracer"), the macro UASM_i_LA_mostly has been used,
-and this macro can generate more than 2 instructions. At the same
-time, the code in ftrace assumes that no more than 2 instructions can
-be generated, which is why it stores them in an int[2] array. However,
-as previously noted, the macro UASM_i_LA_mostly (and now UASM_i_LA)
-causes a buffer overflow when _mcount is beyond 32 bits. This leads to
-corruption of the variables located in the __read_mostly section.
+Hi,
 
-This corruption was observed because the variable
-__cpu_primary_thread_mask was corrupted, causing a hang very early
-during boot.
+On Wed, Dec 10, 2025 at 12:24:33PM +0100, Hans de Goede wrote:
+> The ov02c10 is capable of having its (crop) window shifted around with 1
+> pixel precision while streaming.
+>=20
+> This allows changing the x/y window coordinates when changing flipping to
+> preserve the bayer-pattern.
+>=20
+> __v4l2_ctrl_handler_setup() will now write the window coordinates at 0x38=
+10
+> and 0x3812 so these can be dropped from sensor_1928x1092_30fps_setting.
+>=20
+> Since the bayer-pattern is now unchanged, the V4L2_CTRL_FLAG_MODIFY_LAYOUT
+> flag can be dropped from the flip controls.
+>=20
+> Note the original use of the V4L2_CTRL_FLAG_MODIFY_LAYOUT flag was
+> incomplete, besides setting the flag the driver should also have reported
+> a different mbus code when getting the source pad's format depending on
+> the hflip / vflip settings see the ov2680.c driver for example.
+>=20
+> Fixes: b7cd2ba3f692 ("media: ov02c10: Support hflip and vflip")
+> Cc: stable@vger.kernel.org
+> Cc: Sebastian Reichel <sre@kernel.org>
+> Reviewed-by: Bryan O'Donoghue <bod@kernel.org>
+> Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+> ---
 
-This fix prevents the corruption by avoiding the generation of
-instructions if they could exceed 2 instructions in
-length. Fortunately, insn_la_mcount is only used if the instrumented
-code is located outside the kernel code section, so dynamic ftrace can
-still be used, albeit in a more limited scope. This is still
-preferable to corrupting memory and/or crashing the kernel.
+Reviewed-by: Sebastian Reichel <sre@kernel.org>
+Tested-by: Sebastian Reichel <sre@kernel.org> # T14s Gen6 Snapdragon
 
-Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
+Greetings,
 
-LLM Generated explanations, may be completely bogus:
+-- Sebastian
 
-## COMPREHENSIVE ANALYSIS
+>  drivers/media/i2c/ov02c10.c | 12 ++++--------
+>  1 file changed, 4 insertions(+), 8 deletions(-)
+>=20
+> diff --git a/drivers/media/i2c/ov02c10.c b/drivers/media/i2c/ov02c10.c
+> index 6369841de88b..384c2f0b1608 100644
+> --- a/drivers/media/i2c/ov02c10.c
+> +++ b/drivers/media/i2c/ov02c10.c
+> @@ -165,10 +165,6 @@ static const struct reg_sequence sensor_1928x1092_30=
+fps_setting[] =3D {
+>  	{0x3809, 0x88},
+>  	{0x380a, 0x04},
+>  	{0x380b, 0x44},
+> -	{0x3810, 0x00},
+> -	{0x3811, 0x02},
+> -	{0x3812, 0x00},
+> -	{0x3813, 0x01},
+>  	{0x3814, 0x01},
+>  	{0x3815, 0x01},
+>  	{0x3816, 0x01},
+> @@ -465,11 +461,15 @@ static int ov02c10_set_ctrl(struct v4l2_ctrl *ctrl)
+>  		break;
+> =20
+>  	case V4L2_CID_HFLIP:
+> +		cci_write(ov02c10->regmap, OV02C10_ISP_X_WIN_CONTROL,
+> +			  ctrl->val ? 1 : 2, &ret);
+>  		cci_update_bits(ov02c10->regmap, OV02C10_ROTATE_CONTROL,
+>  				BIT(3), ov02c10->hflip->val << 3, &ret);
+>  		break;
+> =20
+>  	case V4L2_CID_VFLIP:
+> +		cci_write(ov02c10->regmap, OV02C10_ISP_Y_WIN_CONTROL,
+> +			  ctrl->val ? 2 : 1, &ret);
+>  		cci_update_bits(ov02c10->regmap, OV02C10_ROTATE_CONTROL,
+>  				BIT(4), ov02c10->vflip->val << 4, &ret);
+>  		break;
+> @@ -551,13 +551,9 @@ static int ov02c10_init_controls(struct ov02c10 *ov0=
+2c10)
+> =20
+>  	ov02c10->hflip =3D v4l2_ctrl_new_std(ctrl_hdlr, &ov02c10_ctrl_ops,
+>  					   V4L2_CID_HFLIP, 0, 1, 1, 0);
+> -	if (ov02c10->hflip)
+> -		ov02c10->hflip->flags |=3D V4L2_CTRL_FLAG_MODIFY_LAYOUT;
+> =20
+>  	ov02c10->vflip =3D v4l2_ctrl_new_std(ctrl_hdlr, &ov02c10_ctrl_ops,
+>  					   V4L2_CID_VFLIP, 0, 1, 1, 0);
+> -	if (ov02c10->vflip)
+> -		ov02c10->vflip->flags |=3D V4L2_CTRL_FLAG_MODIFY_LAYOUT;
+> =20
+>  	v4l2_ctrl_new_std_menu_items(ctrl_hdlr, &ov02c10_ctrl_ops,
+>  				     V4L2_CID_TEST_PATTERN,
+> --=20
+> 2.52.0
+>=20
 
-### 1. COMMIT MESSAGE ANALYSIS
-- **Subject**: Contains "Fix" and "memory corruption" - strong
-  indicators of a serious bug fix
-- **Body**: Clearly explains the buffer overflow mechanism and observed
-  real-world impact
-- **References**: Cites commit e424054000878 as the source of the bug
-  (introduced in 2010, kernel 2.6.35)
-- **No explicit Cc: stable tag**, but the nature of the fix makes it
-  appropriate for stable
+--43vfhpqroxga75lj
+Content-Type: application/pgp-signature; name="signature.asc"
 
-### 2. TECHNICAL ROOT CAUSE
-The bug is in `ftrace_dyn_arch_init_insns()`:
+-----BEGIN PGP SIGNATURE-----
 
-1. **Buffer size**: `insn_la_mcount[2]` is declared as a 2-element array
-   (8 bytes)
-2. **UASM_i_LA behavior**: When address is NOT in 32-bit compat space,
-   it can generate up to 5-6 instructions:
-   - `lui` (always)
-   - `daddiu` (conditional)
-   - `dsll` (conditional)
-   - `daddiu` (conditional)
-   - `dsll` (conditional)
-   - final `daddiu`/`addiu`
-3. **Overflow**: Writing more than 2 instructions overwrites adjacent
-   `__read_mostly` variables
-4. **Observed impact**: Corruption of `__cpu_primary_thread_mask`
-   causing boot hang
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmk7eVoACgkQ2O7X88g7
++ppt7g/+LNEJZMykrW/nke2hJCCSA4H/wBRqR1m9Npgfrftxmt0Cw+XCJ4EczrsV
+xfrXeYMJ0G9oagIWIerrPmWw8DxMYDh6a7wR/slq+msoEhSmoInas0LnueppysTl
+zeqKwJqNLjydvzrxjQPsSa11/MoxYXQVqds6V4607s6fhwMmx8kbmPX3mmW+qRlU
+JhpcpInfUGXZ47+kTZ8qP9iVBDKD9/IBzTi04Thdz/PiBIFYG/BV2o/CR8zyLSs7
+oWyKKZxbUZKVCPZ+Xc1ccXgzBl154eEn6mSw97osfi52rewy9R6g1MsQpZ0Xhx3e
+G+jzGD+VMV+lM5E8HG9KX4LOwD7cVT5PGG0CecQyzb5kWPFDoNpJ0V3DJTWuXTqn
+Th/yQC4DnUFcCG0bMfF6IT4Cufu0NNT/w/zry26m+Ri/M/2oyYIiCDgNCu+H0EQZ
+qTp5XkHXDT+8THhG/4Ifa8N8Mxy0IC9QmR1lzN0F3Chl/jTLJy5dury0/SrW3i6b
+pG+CukCd5VpypsgQHVMxn0LGx+o2JPBcsuhFFPxD4KfzJtUvv4N+TMC/NJHMChwB
+BOvsmuUCbv5CJz60JQ6QkvgJ6YAHawkgTX3BRmaADFD/n7hT4XjpLmyZ3w4CTUOs
+NKeRqKfY4jB3vjo/MqHUrik7OVtN59oCfZhzY+fc96lPztaq19k=
+=5J6e
+-----END PGP SIGNATURE-----
 
-### 3. FIX MECHANISM
-The fix adds two defensive checks:
-1. **In `ftrace_dyn_arch_init_insns()`**: Only generate instructions if
-   `uasm_in_compat_space_p(MCOUNT_ADDR)` - otherwise warn and skip
-2. **In `ftrace_make_call()`**: Return `-EFAULT` if `insn_la_mcount`
-   would be needed but wasn't generated
-
-This gracefully degrades functionality rather than corrupting memory.
-
-### 4. STABLE KERNEL CRITERIA ASSESSMENT
-
-| Criterion | Assessment |
-|-----------|------------|
-| Obviously correct | ✅ Simple defensive check before buffer write |
-| Fixes real bug | ✅ Memory corruption causing boot hang |
-| Important issue | ✅ System crash/hang - very severe |
-| Small and contained | ✅ Single file, ~30 lines changed |
-| No new features | ✅ Actually reduces functionality in edge cases |
-| No new APIs | ✅ Purely internal change |
-
-### 5. DEPENDENCY CHECK
-- **`uasm_in_compat_space_p()`**: Exists since kernel 2.6.x (commit
-  e30ec4525d473)
-- **Bug source commit**: e424054000878 from 2010 (2.6.35)
-- **Dependencies**: None - fix is self-contained
-
-### 6. RISK vs BENEFIT
-
-**Risk**: Very LOW
-- Defensive check - prevents execution rather than changing behavior
-- Worst case: ftrace doesn't work for code outside kernel text on 64-bit
-  MIPS with addresses beyond 32 bits
-- Architecture-specific (MIPS only)
-
-**Benefit**: HIGH
-- Prevents memory corruption that causes boot hangs
-- Bug has existed since 2010 - affects all stable kernels
-- Observable real-world failure
-
-### 7. USER IMPACT
-
-- **Affected users**: MIPS 64-bit users with kernel loaded at addresses
-  beyond 32 bits
-- **Severity**: Critical - boot hang due to memory corruption
-- **Reproducibility**: Deterministic when conditions are met (not a
-  race)
-
-### 8. CONCERNS
-
-- **No explicit Cc: stable@vger.kernel.org tag**: However, the commit
-  clearly fixes a serious memory corruption bug
-- **Partial functionality loss**: Some ftrace capabilities reduced for
-  64-bit addresses, but this is far preferable to memory corruption
-
-### CONCLUSION
-
-This commit is an excellent stable backport candidate:
-1. **Fixes a serious bug**: Memory corruption causing system boot hangs
-2. **Minimal risk**: Defensive check that gracefully degrades
-   functionality
-3. **Self-contained**: Single file change with no dependencies on new
-   code
-4. **Long-standing bug**: Affects all kernels since 2.6.35
-5. **MIPS maintainer signed-off**: Thomas Bogendoerfer approved the fix
-
-The fix is small, surgical, and meets all stable kernel criteria. The
-trade-off (reduced ftrace functionality in edge cases vs memory
-corruption) strongly favors the fix.
-
-**YES**
-
- arch/mips/kernel/ftrace.c | 25 +++++++++++++++++++++----
- 1 file changed, 21 insertions(+), 4 deletions(-)
-
-diff --git a/arch/mips/kernel/ftrace.c b/arch/mips/kernel/ftrace.c
-index f39e85fd58fa9..b15615b285690 100644
---- a/arch/mips/kernel/ftrace.c
-+++ b/arch/mips/kernel/ftrace.c
-@@ -54,10 +54,20 @@ static inline void ftrace_dyn_arch_init_insns(void)
- 	u32 *buf;
- 	unsigned int v1;
- 
--	/* la v1, _mcount */
--	v1 = 3;
--	buf = (u32 *)&insn_la_mcount[0];
--	UASM_i_LA(&buf, v1, MCOUNT_ADDR);
-+	/* If we are not in compat space, the number of generated
-+	 * instructions will exceed the maximum expected limit of 2.
-+	 * To prevent buffer overflow, we avoid generating them.
-+	 * insn_la_mcount will not be used later in ftrace_make_call.
-+	 */
-+	if (uasm_in_compat_space_p(MCOUNT_ADDR)) {
-+		/* la v1, _mcount */
-+		v1 = 3;
-+		buf = (u32 *)&insn_la_mcount[0];
-+		UASM_i_LA(&buf, v1, MCOUNT_ADDR);
-+	} else {
-+		pr_warn("ftrace: mcount address beyond 32 bits is not supported (%lX)\n",
-+			MCOUNT_ADDR);
-+	}
- 
- 	/* jal (ftrace_caller + 8), jump over the first two instruction */
- 	buf = (u32 *)&insn_jal_ftrace_caller;
-@@ -189,6 +199,13 @@ int ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
- 	unsigned int new;
- 	unsigned long ip = rec->ip;
- 
-+	/* When the code to patch does not belong to the kernel code
-+	 * space, we must use insn_la_mcount. However, if MCOUNT_ADDR
-+	 * is not in compat space, insn_la_mcount is not usable.
-+	 */
-+	if (!core_kernel_text(ip) && !uasm_in_compat_space_p(MCOUNT_ADDR))
-+		return -EFAULT;
-+
- 	new = core_kernel_text(ip) ? insn_jal_ftrace_caller : insn_la_mcount[0];
- 
- #ifdef CONFIG_64BIT
--- 
-2.51.0
-
+--43vfhpqroxga75lj--
 
