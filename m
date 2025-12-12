@@ -1,230 +1,220 @@
-Return-Path: <stable+bounces-200852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9D4ECB7E0A
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 05:41:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4069ACB7DE3
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 05:35:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EAB6E30456D2
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 04:41:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 66BD5302D5FC
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 04:35:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E27230DEA9;
-	Fri, 12 Dec 2025 04:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DE9A2F1FC7;
+	Fri, 12 Dec 2025 04:35:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Uzj/D/Hb"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="gTZjVYEA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f228.google.com (mail-oi1-f228.google.com [209.85.167.228])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010024.outbound.protection.outlook.com [52.101.46.24])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809BC2EDD6D
-	for <stable@vger.kernel.org>; Fri, 12 Dec 2025 04:41:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.228
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765514472; cv=none; b=Eh2bU7ekzy724qQva7l1Su0k4ma/Hzq80wj2bf3tYyWdQ3LPw3nJdBSWCW5JgDeJOMkgaxpmLenPyds1SLfNLlt8lWO9q2pU4ljcsdBfi0paPkiTNwnJUUf1QiWocPveVO2nYmMNMrMjSfhjiJQtFNSCHpabPkZS8w7HiAyS518=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765514472; c=relaxed/simple;
-	bh=tKseG5gYSJeCAWspW2ZESEYmrC1AP47UvmldaZPNzNU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZqDZVxXIQVs42Yi0JCOc/MZznotH4obWLpod548wV90ElOHQOwStJ0QopIvmGozOqj4eSUZRpK1AN7Ku6Go70PxQzhPnsL5/rVHDuzYJlhotAehpYJWybJQrxtF/1lbKKOJ1Iy87+eszuKSy6xsRIxOMKyT7LZTHtjwTpeAzhfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Uzj/D/Hb; arc=none smtp.client-ip=209.85.167.228
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-oi1-f228.google.com with SMTP id 5614622812f47-4510974a8cdso409396b6e.0
-        for <stable@vger.kernel.org>; Thu, 11 Dec 2025 20:41:08 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765514467; x=1766119267;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FZSzbAqILqIc0sgDWu53ygkH2B1txzwb9FnKFs2Xg3k=;
-        b=fE//cFOU61u60NNdGENuBgVahqeXb4+PG5wktb28WSsEYuZaz7P/h5cKtFE/GKqCX6
-         oPVArUXBMf7M3vJhJy35xPP2czxOOaEPDXywIzIMA/MdZjpiL4KgZuEk9Zk7JHOle3Tv
-         0ukRByorIVajheaZTKpNgFTpRqGTqrcvH2k9tkRmgWyhm3eyEMrCYhqfTwcsNnM5pPQs
-         4CF5jWWNbtJ9ntSiWRnwZmx17nIPysOpVGy8+YjS+6C0iIYFFDcPDRcYzP5pSWPMdrB3
-         ZQ8tRTf0rXyFmvgjeddg277Ip7pfGlvcUaiuqsYRm1ZIGTVFXHNEB1bCY0xd/0tM26P/
-         aDtQ==
-X-Gm-Message-State: AOJu0Yx3jjywz54TsxsL8tWjhHjyDnkMbjKRv9VUYAB8q/SuGL3ZsTa4
-	8WaFD9cin4BgLvBDT4D1edEvs/GAvKVpPe+R8Xu/7GTAbHva+/ods2oDFhvJmHgG8iAG1+3UjaV
-	Zdyhioxaa9j/DB+b+Oh8xWkptb8ijE48jVcdTdCokhcxYCpkkfa9Db2cmDu1EVo8vU36dTWSkVp
-	0Y6WND0Qt0aGkNetTqBdO6rnw+2VuGJCzif7/HOmjv8prRx0Avlhzq02WPsugGuDla52ZrN6iEc
-	HBrC5B+2ZLot9LuaOBaFg==
-X-Gm-Gg: AY/fxX4a1vGKuUTPU5R9ePCQIqgIyQKhi0xrKpNf4DIUskmeJ99sA7rc5Q5CCwr4QtR
-	ZSMf/E/hLC+lHzO6IeA6tTDWjq4wF+P7YkQvn5Oe1aeomsSUbOqpae3m7o7zqMlq3D8hnUM7o3H
-	46u7EB2+e3vlb++f6GucDRQX9aSyV6kInSuUVhZ5SIo6Sq09Jj/Ht2dsNPZvsjcCtRRhYa703BU
-	L7HdsFqeZrr7XMsHmmEa7jT7OMV+OnaVbzwiEzJqjJ7ZSxeVYq5zeemOUWDxTJhcIEJoKPn0t4/
-	/1iuklibNgx9VEf0IaaYsuTuE21FZbAIqNJABoD8aHN6WgT9MqPNW+gfIaBjAg3ZWHXogiTpn0B
-	vqdWxnrdzOIzoap5Gfkt8QCby3HXSwjHESxGSrgqK+S0HuEiQdu/lBi9p+xXYmHL/1UAaHGkCkt
-	7y7mJJI9cFhsL2m0KKw/houhjGfzafj88z6U6A0mwTNc9HMKoFI9dy
-X-Google-Smtp-Source: AGHT+IHv7IdjphxbihDBHyM0XBXzzzRNAjczBYyxQWwlAY+KKGEjcBwo1UvnddnUq2dsYImpsBev3s37+b63
-X-Received: by 2002:a05:6808:2225:b0:450:b215:8f22 with SMTP id 5614622812f47-455ac965ae1mr376992b6e.55.1765514467455;
-        Thu, 11 Dec 2025 20:41:07 -0800 (PST)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-72.dlp.protect.broadcom.com. [144.49.247.72])
-        by smtp-relay.gmail.com with ESMTPS id 586e51a60fabf-3f601e70fe0sm7135fac.19.2025.12.11.20.41.07
-        for <stable@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 11 Dec 2025 20:41:07 -0800 (PST)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-4ed74e6c468so12386661cf.3
-        for <stable@vger.kernel.org>; Thu, 11 Dec 2025 20:41:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1765514466; x=1766119266; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=FZSzbAqILqIc0sgDWu53ygkH2B1txzwb9FnKFs2Xg3k=;
-        b=Uzj/D/HbJWi2EkH5T6/dgPumnDZDSsyIvSkgPtLb6vPge0pINJKG4i/6dShEJ24Bd5
-         wdrYKk037nxUZfheRSgLhknTcRUb07uZOXv5+EM2JsmSQvkAjzUHtCWUscz+y9UHdUhb
-         4JgaTz4QKpKNO+VTJftI9lTyXJCfS27H/Ue2Q=
-X-Received: by 2002:a05:622a:106:b0:4ee:4a3a:bd08 with SMTP id d75a77b69052e-4f1d066fe70mr9249821cf.80.1765514466108;
-        Thu, 11 Dec 2025 20:41:06 -0800 (PST)
-X-Received: by 2002:a05:622a:106:b0:4ee:4a3a:bd08 with SMTP id d75a77b69052e-4f1d066fe70mr9249471cf.80.1765514465413;
-        Thu, 11 Dec 2025 20:41:05 -0800 (PST)
-Received: from photon-big-dev.. ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8bab5d3da25sm380483285a.44.2025.12.11.20.41.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Dec 2025 20:41:04 -0800 (PST)
-From: HarinadhD <harinadh.dommaraju@broadcom.com>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: john.fastabend@gmail.com,
-	daniel@iogearbox.net,
-	jakub@cloudflare.com,
-	lmb@cloudflare.com,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	ast@kernel.org,
-	andrii@kernel.org,
-	kafai@fb.com,
-	songliubraving@fb.com,
-	yhs@fb.com,
-	kpsingh@kernel.org,
-	netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	ajay.kaher@broadcom.com,
-	alexey.makhalov@broadcom.com,
-	vamsi-krishna.brahmajosyula@broadcom.com,
-	yin.ding@broadcom.com,
-	tapas.kundu@broadcom.com,
-	Eric Dumazet <edumazet@google.com>,
-	Sasha Levin <sashal@kernel.org>,
-	HarinadhD <Harinadh.Dommaraju@broadcom.com>
-Subject: [PATCH v5.10.y] bpf, sockmap: Don't let sock_map_{close,destroy,unhash} call itself
-Date: Fri, 12 Dec 2025 03:54:58 +0000
-Message-ID: <20251212035458.1794979-1-harinadh.dommaraju@broadcom.com>
-X-Mailer: git-send-email 2.43.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C063264F9C;
+	Fri, 12 Dec 2025 04:34:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.24
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765514101; cv=fail; b=cXmnxkhpU8ykWxMEMMLmnHZtpEZ40+zEU/X3NPrfqdUNQ+8U/XeahNn5/JQD6QqYalCSDVlwghGj+Px7OoifDhRDH4/FXBBqBmgcMqAVs/kcqi++BxgLvzk9XYW+a9tipjTmmfZI55rxopqz7G4nOzWEvFXHdsBkzuX+LzH1qdQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765514101; c=relaxed/simple;
+	bh=gv1lrAL7xozzI3C/gyZX0/EFkrsbhs/7JV0eJ3VJPfM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=GgHZh495wU0OvBHJ+G3yFSkL5hN8WLfUthIP90+3k2EauxGBZMkxboI+kg9ULB6bQM5mgYnlFK7WVYxxmicsU4o7j3BS3wXow8jmx94Vb+G2YOQnLrNloX7pCeLwEHpVDs9pIMn3jUfQZZ+ycFKAuBQvIdoD3WDHxqfZNKtgyk0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=gTZjVYEA; arc=fail smtp.client-ip=52.101.46.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LEhYncWJqoh7naRsYvnTpGLrRoBlLA6f5j+2oLGqkVs6826XdizqRwuT7XWr00TThlkepl7BNmqC30/PUaC1G0CFV7AoiRDDPVb8DUznd66MjZm0XKLYJVeIjunQY1hU2+MVWr6GtDOq2qb3e3w5/m47smZ0p48XEtJlvkXNw/xMWSDlRZ27l6bjuwleY0B9P5S5/e/xSugRLBYaQ0n/Iz7B10VStE7DORtneM8FOxcvDNz2x7fa1hSxd8Cw5r53C+VHkyGMaMHbIpaMVzF6t0Gx777qhx5nmrX0DTf9sJDECzJKIbd9K7Z9e3fBDaSrFK5/5mnM6PzSjBj9rCMezQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pPYy/rRk4r+FGANBpiKCe3xm+Wf0SdQRw1WG/15JeKQ=;
+ b=rzgttcPJ2JLk9b5OaZ4Xm1G+5F9K7siDggNK1cO6vQmHl6rZDXHwwjxz0KAKxOadSalOfXjUShFFnnuLr7fTTIzyjUSYgcLkxvDc5p7ve1yhtK9RCVuNW4mihLSV0lnIM5mCsGI+QSZy3wmdNc3AwDbnQ/awKf65b/9ebsXCIRnNsduADuaf68E3szqkOiGfo1LMwifYS4kLxdwIKvhkvp4GP4YmrjrPPwoyveSddB22jI3C0QxwCysoDmxCrS8rjBC0yyWvLXAY8WiJEqaV1SCEfmxCUx4HTrFqCaE8bmI1r+APShwdC7Y3835qcJF0KYhYilKt5SQ4es0Yomj9yQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 198.47.21.194) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=ti.com;
+ dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pPYy/rRk4r+FGANBpiKCe3xm+Wf0SdQRw1WG/15JeKQ=;
+ b=gTZjVYEAGPmop2AOjXtuGaGtUksRbOIuEBP8GimLGoalqUYb0vsClqtf8zbCvY5uepFlQkqqPh6PjDphr7d7Rje2HHfgGL0+UUZqLy3PO8kX8ebQ+oMlR2IU5jst4nXJM6qpX8W96ShkrFtmaUuspY4TVOzRuKkcg0EV+Sc1Ocs=
+Received: from MN0PR04CA0017.namprd04.prod.outlook.com (2603:10b6:208:52d::10)
+ by SJ0PR10MB5663.namprd10.prod.outlook.com (2603:10b6:a03:3db::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.10; Fri, 12 Dec
+ 2025 04:34:56 +0000
+Received: from BN3PEPF0000B069.namprd21.prod.outlook.com
+ (2603:10b6:208:52d:cafe::95) by MN0PR04CA0017.outlook.office365.com
+ (2603:10b6:208:52d::10) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9412.10 via Frontend Transport; Fri,
+ 12 Dec 2025 04:34:48 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.21.194)
+ smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
+ action=none header.from=ti.com;
+Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
+ 198.47.21.194 as permitted sender) receiver=protection.outlook.com;
+ client-ip=198.47.21.194; helo=flwvzet200.ext.ti.com; pr=C
+Received: from flwvzet200.ext.ti.com (198.47.21.194) by
+ BN3PEPF0000B069.mail.protection.outlook.com (10.167.243.68) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9434.0 via Frontend Transport; Fri, 12 Dec 2025 04:34:54 +0000
+Received: from DFLE205.ent.ti.com (10.64.6.63) by flwvzet200.ext.ti.com
+ (10.248.192.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 11 Dec
+ 2025 22:34:51 -0600
+Received: from DFLE212.ent.ti.com (10.64.6.70) by DFLE205.ent.ti.com
+ (10.64.6.63) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 11 Dec
+ 2025 22:34:51 -0600
+Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DFLE212.ent.ti.com
+ (10.64.6.70) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Thu, 11 Dec 2025 22:34:51 -0600
+Received: from [172.24.21.18] (ltpw0bk3wf.dhcp.ti.com [172.24.21.18])
+	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 5BC4YmPi1630956;
+	Thu, 11 Dec 2025 22:34:48 -0600
+Message-ID: <1542ee8a-620b-4349-92fb-ab1f6c5b5eab@ti.com>
+Date: Fri, 12 Dec 2025 10:04:47 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] spi: cadence-quadspi: Fix clock enable underflows due to
+ runtime PM
+To: Mark Brown <broonie@kernel.org>
+CC: Nishanth Menon <nm@ti.com>, Francesco Dolcini <francesco@dolcini.it>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>, <linux-spi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, "Gujulan Elango,
+ Hari Prasath" <gehariprasath@ti.com>, "Kumar, Udit" <u-kumar1@ti.com>
+References: <20251202-spi-cadence-qspi-runtime-pm-imbalance-v1-1-aee8c7fa21f2@kernel.org>
+ <aTFQv157O-wJjVrZ@gaggiata.pivistrello.it>
+ <555e9f6b-b8b6-4cc5-900b-63aaff8b4e6c@sirena.org.uk>
+ <20251204140530.xax5didvuc7auzcd@problem>
+ <4d6b857e-4bfe-45ef-a428-6e92f218f0c5@sirena.org.uk>
+ <2fcf5235-cc94-4202-9164-4889356c5264@sirena.org.uk>
+ <cd95320b-6852-476e-bc8a-2e8d1ac77a9e@ti.com>
+ <f804d7a7-4ffb-4d2a-bbaf-ca0a076a11ab@sirena.org.uk>
+ <5525272e-7220-4352-bb08-ac66631108e0@ti.com>
+ <cf8e7003-ebca-4817-8350-f29332d75fab@ti.com> <aTf6RRAveRdVnWQZ@sirena.co.uk>
+Content-Language: en-US
+From: "Dutta, Anurag" <a-dutta@ti.com>
+In-Reply-To: <aTf6RRAveRdVnWQZ@sirena.co.uk>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN3PEPF0000B069:EE_|SJ0PR10MB5663:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3d073ed4-ef9b-46d5-01e4-08de3937cc44
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|36860700013|1800799024|82310400026;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?TVZtWGFTVU1RYjhON0hKcHFFVDNYOHArMEt6VjdpbjIwalNWZi9PdGs3VHBw?=
+ =?utf-8?B?RkdNSlM2NWZTZjU4UmpwVmxER2VMTk96ZUk1Vm90a1N5TTFoSHBER0Jia2VL?=
+ =?utf-8?B?Qjc0UHdETXkrMVdsaDB6NU5VTW5zbS8xRmNaeThjYTk5UWxsczJ3d3BQMEpI?=
+ =?utf-8?B?TUdiaDI3YklLUnFkV3lTWXVuUzVyTERpNTFEcDZzeW1xb2xNS0lhb25yTktY?=
+ =?utf-8?B?blY5ZmJ2QTVEQXVrb1ppS1htR2w1WmRxMEQvbUc1R1dFOTBYNEdZVFdYeVAy?=
+ =?utf-8?B?QUk1ZUorYWk4d1VBR3BSQXk3UTE1b29zVHZEQ0sySVBUNHdLdFhMclRvOEJI?=
+ =?utf-8?B?Q1o5ZTVoemJqWENEMHBud3IwZS9zVWdHRUxJVlV5cDd1WmlHMFg1SnhKdHds?=
+ =?utf-8?B?dnZ5SHN6UXpVUVZUaHovNVZLRnY2c3dDNlE5dGsweDZZbTJMbk56QVRPRHQv?=
+ =?utf-8?B?SEhmVHc5YkFYNGM3alliSG1PR3Z6dXRIaFM1VStZQ296cWsvUU8xZEdFcytp?=
+ =?utf-8?B?VTllVFBzOGF4SzJncWlLWUNqQ0NZVDVCYVRjQ092MzFCejVYOU51Uy82QXAy?=
+ =?utf-8?B?SEcyT0pTS0NFSEZzMzdXRzRYNVc0TndtT2JzdDM1cmZUaldtK0VGUXdaLzFt?=
+ =?utf-8?B?ZUdybTAxck9DWWlnWjh6RFBSVFNzNHh5REwvTDRZTEdKYUNvN2hKTTlCTDZE?=
+ =?utf-8?B?ZUUxRW92WmdNMTVMVDJMdUFhb2U1bTlGek8yNE5jVkl3cFdja1dMSnlyZlRZ?=
+ =?utf-8?B?b2RZSmNlL0QzeHNpaG0yay85UDdCTm1XU2tnOXJ3MlFLazRHaTYrOHZJUUsx?=
+ =?utf-8?B?WXpPOVhTaFdZaDFkaUtJLzV4QlFvaWloMUNPVy8vSVlqd29xSExEU1kwS2g1?=
+ =?utf-8?B?ZW9LY1RtcHFmV2JyZm5udmZCSnZsOXg1WXV2OHlOTGhTUVNNaHJJMjdCcGl0?=
+ =?utf-8?B?UnhuUXc3TlJPNi9NRUZvQzNvZ0szVGd5RW9IaWJsdkdJNGRnekN3OXhUSGVK?=
+ =?utf-8?B?UGFqOWVLVFo1TzY5VjZxRFd4a2o1L0lQQysyWENOa1ZrbUZEUVJwdisraFor?=
+ =?utf-8?B?c3k5T3RZbWVwQjlLdVJiUHZ6M2g1REZhMlp3eTdYem1NZmZBK2NPcStIeFRD?=
+ =?utf-8?B?UVoyeko4Ykd3QmpHbC85OXZ3N0ZHdk9RVTllRWdEbk1Za3VQZ3hqUjIvS1BC?=
+ =?utf-8?B?cTAvNlRZdGhkeWhpNE1mQzhMRitlbUxZaE82N0xlT2tLcCsrZjE0ZmE3VTRi?=
+ =?utf-8?B?WDk3NTVVb0hCWWNTQjUzelZ2c1hZQ29hcTFjWjZlMlVNQlFQUFRHbkRaaUl6?=
+ =?utf-8?B?Qy9QWjluTW04RnUyaUx1QVZIRGlwOWlNL0ZaM05kSktZQWtZMW8wRDVsQXVo?=
+ =?utf-8?B?RmtVeHQxTW05QVNJKzIyU0JnbTZZaS9vTnl1cVlhUzlWaFJYbkl4RU1seHdr?=
+ =?utf-8?B?REh5cEVpQjVzRCtnelpLbkhUU2N1UmJJTUxVUnFjSUR5ZjhSTUM1UStLREdO?=
+ =?utf-8?B?alpJai8ycWRCYXJValM5Y1JRUmFPTTY2MGozK2duTDZveTBhU2FJMUwxUDdH?=
+ =?utf-8?B?MlpsUXpJYlcxVGJPM0lFWWIwcTNjUUU2NENUTU9RYzRNNWx6amlQRGJWV004?=
+ =?utf-8?B?am1vbW1BSS9DQnpHODFGaWx0UGdFOThrZisvZ21XRU9qR04xZ0tnaHV3djU1?=
+ =?utf-8?B?ckV2YzdPU24zVkg5dVhuZ0V3MDVJUXZBK0pCSXUzbGl0eW54MmxHd1JPQk1s?=
+ =?utf-8?B?YzhlTXc4VDExSTFCNmxkMEtCNjNjclQvODVIN05kZDRnWFdBWG54aTN2WUdy?=
+ =?utf-8?B?NllCK0dyUmdkd2hiRGV0WDNQNnFoZXV1NW45b1o3K2RtdSthMk1PaTUzaXVG?=
+ =?utf-8?B?SG1LRFBlc3lRRlo2UXFMVENYNHQ0eDlzaGdnS3pmTW9xMVZNQ1dTZ0VlL3RE?=
+ =?utf-8?B?QnVZaTJmNmhLOTY2a3E2QWl1T0J1d2VNOFYwSTNNZG9EaGsrMHRPejU1WTZu?=
+ =?utf-8?B?czRoMXZUekl6bUpvUkZlc3A3N0V6MFZ1MTFkSVdyOFovdzBHZ1NWbjZFcC9h?=
+ =?utf-8?B?V2VZdlBkRlo4eEdhKzVjUURrd3I1OUJuL0VvU1ltQXdYSGtpVVA3ekk3R0sx?=
+ =?utf-8?Q?5usE=3D?=
+X-Forefront-Antispam-Report:
+	CIP:198.47.21.194;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:flwvzet200.ext.ti.com;PTR:ErrorRetry;CAT:NONE;SFS:(13230040)(376014)(36860700013)(1800799024)(82310400026);DIR:OUT;SFP:1101;
+X-OriginatorOrg: ti.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Dec 2025 04:34:54.5013
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3d073ed4-ef9b-46d5-01e4-08de3937cc44
+X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.21.194];Helo=[flwvzet200.ext.ti.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN3PEPF0000B069.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR10MB5663
 
-From: Jakub Sitnicki <jakub@cloudflare.com>
 
-[ Upstream commit 5b4a79ba65a1ab479903fff2e604865d229b70a9 ]
+On 09-12-2025 16:00, Mark Brown wrote:
+> On Tue, Dec 09, 2025 at 03:22:43PM +0530, Dutta, Anurag wrote:
+>> On 09-12-2025 11:13, Dutta, Anurag wrote:
+>> Another solution :
+>> diff --git a/drivers/spi/spi-cadence-quadspi.c
+>> b/drivers/spi/spi-cadence-quadspi.c
+>> index af6d050da1c8..4d298b945f09 100644
+>> --- a/drivers/spi/spi-cadence-quadspi.c
+>> +++ b/drivers/spi/spi-cadence-quadspi.c
+>> @@ -2024,7 +2024,11 @@ static int cqspi_probe(struct platform_device *pdev)
+>>   probe_reset_failed:
+>>          if (cqspi->is_jh7110)
+>>                  cqspi_jh7110_disable_clk(pdev, cqspi);
+>> -       clk_disable_unprepare(cqspi->clk);
+>> +
+>> +       if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
+>> +               if (pm_runtime_get_sync(&pdev->dev) >= 0)
+>> +                       clk_disable_unprepare(cqspi->clk);
+>> +       }
+>> pm_runtime_get_sync() will increment the usage count thereby preventing from
+>> runtime_suspend()
+>> getting invoked, thereby preventing double clock_disable()
+>>
+>> This will work for !CONFIG_PM as well because pm_runtime_get_sync() will
+>> return 1 then.
+>> and the runtime_suspend() is never going to be invoked.
+> I think we want this, possibly using pm_runtime_force_resume() instead
+> (not 100% sure on that one, glancing at the documentation there might be
+> issues though it feels like the intent of what we're doing here).  Can
+> you send a patch please?
 
-sock_map proto callbacks should never call themselves by design. Protect
-against bugs like [1] and break out of the recursive loop to avoid a stack
-overflow in favor of a resource leak.
-
-[1] https://lore.kernel.org/all/00000000000073b14905ef2e7401@google.com/
-
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/r/20230113-sockmap-fix-v2-1-1e0ee7ac2f90@cloudflare.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-[ Harinadh: Modified to apply on v5.10.y ]
-Signed-off-by: HarinadhD <Harinadh.Dommaraju@broadcom.com>
----
- net/core/sock_map.c | 53 +++++++++++++++++++++++++--------------------
- 1 file changed, 30 insertions(+), 23 deletions(-)
-
-diff --git a/net/core/sock_map.c b/net/core/sock_map.c
-index 3a9e0046a780..438bbef5ff75 100644
---- a/net/core/sock_map.c
-+++ b/net/core/sock_map.c
-@@ -1558,15 +1558,16 @@ void sock_map_unhash(struct sock *sk)
- 	psock = sk_psock(sk);
- 	if (unlikely(!psock)) {
- 		rcu_read_unlock();
--		if (sk->sk_prot->unhash)
--			sk->sk_prot->unhash(sk);
--		return;
-+		saved_unhash = READ_ONCE(sk->sk_prot)->unhash;
-+	} else {
-+		saved_unhash = psock->saved_unhash;
-+		sock_map_remove_links(sk, psock);
-+		rcu_read_unlock();
- 	}
--
--	saved_unhash = psock->saved_unhash;
--	sock_map_remove_links(sk, psock);
--	rcu_read_unlock();
--	saved_unhash(sk);
-+	if (WARN_ON_ONCE(saved_unhash == sock_map_unhash))
-+		return;
-+	if (saved_unhash)
-+		saved_unhash(sk);
- }
- 
- void sock_map_destroy(struct sock *sk)
-@@ -1578,16 +1579,17 @@ void sock_map_destroy(struct sock *sk)
- 	psock = sk_psock_get(sk);
- 	if (unlikely(!psock)) {
- 		rcu_read_unlock();
--		if (sk->sk_prot->destroy)
--			sk->sk_prot->destroy(sk);
--		return;
-+		saved_destroy = READ_ONCE(sk->sk_prot)->destroy;
-+	} else {
-+		saved_destroy = psock->saved_destroy;
-+		sock_map_remove_links(sk, psock);
-+		rcu_read_unlock();
-+		sk_psock_put(sk, psock);
- 	}
--
--	saved_destroy = psock->saved_destroy;
--	sock_map_remove_links(sk, psock);
--	rcu_read_unlock();
--	sk_psock_put(sk, psock);
--	saved_destroy(sk);
-+	if (WARN_ON_ONCE(saved_destroy == sock_map_destroy))
-+		return;
-+	if (saved_destroy)
-+		saved_destroy(sk);
- }
- EXPORT_SYMBOL_GPL(sock_map_destroy);
- 
-@@ -1602,13 +1604,18 @@ void sock_map_close(struct sock *sk, long timeout)
- 	if (unlikely(!psock)) {
- 		rcu_read_unlock();
- 		release_sock(sk);
--		return sk->sk_prot->close(sk, timeout);
-+		saved_close = READ_ONCE(sk->sk_prot)->close;
-+	} else {
-+		saved_close = psock->saved_close;
-+		sock_map_remove_links(sk, psock);
-+		rcu_read_unlock();
-+		release_sock(sk);
- 	}
--
--	saved_close = psock->saved_close;
--	sock_map_remove_links(sk, psock);
--	rcu_read_unlock();
--	release_sock(sk);
-+	/* Make sure we do not recurse. This is a bug.
-+	 * Leak the socket instead of crashing on a stack overflow.
-+	 */
-+	if (WARN_ON_ONCE(saved_close == sock_map_close))
-+		return;
- 	saved_close(sk, timeout);
- }
- 
--- 
-2.43.7
-
+> Hi Mark
+> If we use pm_runtime_force_resume(), then for CONFIG_PM_SLEEP, it will work.
+> But, in case of !CONFIG_PM_SLEEP, pm_runtime_force_resume() returns -ENXIO,
+> because of which :
+>
+> if (pm_runtime_get_sync(&pdev->dev) >= 0)
+>
+> will be become false and clk_disable_unprepare() will never be invoked,
+> which might be an issue.
+>
+> Let me send a patch with pm_runtime_get_sync(). If changes are required,
+> please let me know.
+>
+> Regards
+> Anurag
 
