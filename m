@@ -1,162 +1,252 @@
-Return-Path: <stable+bounces-200940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59DA8CB9A12
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 20:19:25 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1650ECB979C
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 18:50:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 134E53082379
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 19:19:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 82DFA3015389
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 17:50:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F5BC3002A7;
-	Fri, 12 Dec 2025 19:19:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D36B2F362C;
+	Fri, 12 Dec 2025 17:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="girQEc5o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nCJb9HM8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C2A23BCFF
-	for <stable@vger.kernel.org>; Fri, 12 Dec 2025 19:19:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F039D2F2618;
+	Fri, 12 Dec 2025 17:50:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765567162; cv=none; b=iQqF2VlGaSP0DcNxZR8HHxkUbXz+e8x74Zy6k7adYK3C345LiSgU366qiycKZ30ypv/zGvb5sO6zpDV072mKyWfHD8p7WRFvs0CrEJsp4y01YVJekGwnWuywRs42IQVbk7umjvj9oaOYpzIlMQzIXNzCCg9OoKwBpPPJjbmAO5Q=
+	t=1765561816; cv=none; b=i2fWltYj7tGAS3PMO64NOofopWDaSZx5cu8eEBDt/EllehUzh5HZjQMqQc79oInl3KAXA2OuTT8dVmXcGP8A6UZTvDHE4TG16k07nviHqccoKxYDmOPNC6eKy+SeJRg45hEEv8I2RGsCYICcv6uq8FZPbn8m9op/D4q7Yuz2DX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765567162; c=relaxed/simple;
-	bh=kAJEIijw1h39dwP0oiHddBkEtMnWkioxlFQC1ujPckI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pIlANrbaA4L5FlNm4sfgYU5Ln819rH+/HeCvijNgT6+EkwobvxJdNzttEcDnhIkIkU7f7iH7Q15hkaxv8B3JMu/oDxNKz+TOlK+MczpVRNyOMPiLcDX7GQy+SJhUsV2H68jnqpLfzcRSDe3dOsT2syHR686a+GiQ/wt40gW+qmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=girQEc5o; arc=none smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5957ac0efc2so1922504e87.1
-        for <stable@vger.kernel.org>; Fri, 12 Dec 2025 11:19:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765567159; x=1766171959; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+iAGiWGntUzRzKLCpTz264YmDdwQESuNb3m83qNK0Aw=;
-        b=girQEc5oaDZ3Z2HYVKRKS/ne982qU8tOvhRZQUXgHyd3jZ86IHhqplsIpu8of8pWyY
-         KoisYprCksA9zHzjfC24l/NVBS+UuGX7FJHuQcDgsrIUyvd38DAwq6ucE45bNbWRk5jS
-         uZN8h0gSWzSbwOVa61hw/OCsHByTiZky9coeFj2mVVoQG/5WTNdgcs9AsIkqZ8ruMsi0
-         91NUFTqDKYcAZrFlh1S0YaWg9FQKhvU4AKEaw8/rkBB976uBemRQMi1XyDZilzjZrytv
-         +tbHKEErrdDlQS1E5McT/CdiDi9hEwB1uCYcuWKvHbjF0tM/dnU9craQAPbVJn2MOuFL
-         5tpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765567159; x=1766171959;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=+iAGiWGntUzRzKLCpTz264YmDdwQESuNb3m83qNK0Aw=;
-        b=eY3nMxXrE6KPzwhJLNg7Wkxp49Zt8cRPsNybR23e3fhrbP0l4fsypYNNukbRe7oXgu
-         PjgM2YUJSWBUVUKGedz98FSlr83MTO6FGPuQ1uKqZ0nj3Yxc6sgXB94OPPaUXFqQd30V
-         SgHCDKKINIomnt4O9RHv6GslPn6PhmtDEGt8RtQ7fclUbClgY27TlANLok4zSxIn22M/
-         a8OKIjp6iLIpglryZKnIDXkDOhwEG5KQVLuuM4T1SdwOe9uLWfRP4ohmHez8TVKW3yXn
-         z69vTdCxG6unawRBA2Zc8jPoAYZb+BTD/ZYkosWgvzzKbUeYU07CGvrqgKdWVWjnQdvR
-         56Ew==
-X-Forwarded-Encrypted: i=1; AJvYcCUziITWKY7onFD5xUmID5kErB5XywcUwXJRAIuPm6VUIP5FIJF+mruVPB1WNWpJ/7A4U2Pv3QE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyMWw4ZCmooK7xTuBOAH+2P/T2wBCY0Qnix4QOQSTZErVRglFl1
-	oskQgZU7GcJan8ORP1egzGXJ/W8pM1aiEg95IcOn7dz9QWorSo3jE9/0gqK+oA==
-X-Gm-Gg: AY/fxX6yf3yztIE0Tbc5djHXJFstoxXmMqUtgfkc269wgYuyoUuVjG3GfdvNMobzB9c
-	dR46t5HfVFXeAlpTD383/Pih6gcIuRuso2NXsgeG22h0Vba0xUFi4lcH1t00DdrYoxd+j3TRpPC
-	ns+GYVlX6w2uVZCcB1tq6ObOny/SRrTJQciUtvi7WplfsV6kb38ezo905pNvuBrzVhgSKhObyv6
-	kcHKE3Y/AzKn0vcHzRnYSRmGVoqEhwIgSSX0mslTMDqDgpWCuHSU0aeOdDmuyCyOchcFcThqCB2
-	oHXy8BUE5FGnYoriDpWHI1O84TkHCr8HBA8ZiCXH2HotWlMAqPdNAQbpRYwkR69Yyi1ceDUyW9K
-	QhvhCHkwHMuXDf5Wl2J0ITHw0aCbqiVqXlYRlmyan59I1kiNZQUNoM1dzKphzpIM4ig5Xz9WFko
-	e7fCI6JDaW4A5J0tUqUbDkMoiFyT/1fr1GZFUIbfxJsb4qYUOQVYC0
-X-Google-Smtp-Source: AGHT+IE4SzG9SEUo36H+/RajRuGXQKEqi8PEHCvRAZiuCC+tFu11I+7qLmwsFCnbEjl5dXnaqDhnFA==
-X-Received: by 2002:a05:600c:4451:b0:477:9fcf:3ff9 with SMTP id 5b1f17b1804b1-47a8f90f54bmr26022385e9.27.1765560968089;
-        Fri, 12 Dec 2025 09:36:08 -0800 (PST)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47a8f7676ffsm43676465e9.4.2025.12.12.09.36.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Dec 2025 09:36:07 -0800 (PST)
-Date: Fri, 12 Dec 2025 17:36:03 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: Simon Horman <horms@kernel.org>
-Cc: kernel test robot <lkp@intel.com>, Ilya Krutskih <devsec@tpz.ru>, Andrew
- Lunn <andrew+netdev@lunn.ch>, oe-kbuild-all@lists.linux.dev, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar
- <mingo@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- lvc-project@linuxtesting.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] net: fealnx: fix possible 'card_idx' integer
- overflow in
-Message-ID: <20251212173603.46f27e9b@pumpkin>
-In-Reply-To: <aTwqqxPgMWG9CqJL@horms.kernel.org>
-References: <20251211173035.852756-1-devsec@tpz.ru>
-	<202512121907.n3Bzh2zF-lkp@intel.com>
-	<aTwqqxPgMWG9CqJL@horms.kernel.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	s=arc-20240116; t=1765561816; c=relaxed/simple;
+	bh=Y3+oWTQjgBqGs3L/WKv2qi7++QXg184qCTrbaQMlwrY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=d5Q1al4+VoZoEkqDYg6aPvnzNrtWpWKN1oQKwlKUs83YhFsICHFmOsBfsMb5EHNOs1rUAVjQXfGlNDPF/PPt0ATJDm0KKsUOrjWI7br8x0UZItGohEFNEPZnpHx5GSxjmNPRZUdB9yR3bUrr8Nq+6J+XCjswSubDgCp0j9uzrgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nCJb9HM8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19E47C4CEF1;
+	Fri, 12 Dec 2025 17:50:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1765561815;
+	bh=Y3+oWTQjgBqGs3L/WKv2qi7++QXg184qCTrbaQMlwrY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=nCJb9HM8qHyWTL0RIMqELzJIVQBCUDx2jTTJMl+KN0uGp+35w4lKsYmLk8CKPKQk7
+	 kLYI+fn6BBSD0ddRohvLJtMEzar6jgh26CGYHdfetowiznIUh9aDIRt8tTjg1zYLnR
+	 dXwB87SMOCuGXPsi9TNrfvmAuqPfM0kwIAJCWG8w=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	torvalds@linux-foundation.org,
+	stable@vger.kernel.org
+Cc: lwn@lwn.net,
+	jslaby@suse.cz,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Linux 6.12.62
+Date: Fri, 12 Dec 2025 18:50:10 +0100
+Message-ID: <2025121211-swear-xerox-6418@gregkh>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Fri, 12 Dec 2025 14:46:03 +0000
-Simon Horman <horms@kernel.org> wrote:
+I'm announcing the release of the 6.12.62 kernel.
 
-> On Fri, Dec 12, 2025 at 07:30:04PM +0800, kernel test robot wrote:
-> > Hi Ilya,
-> > 
-> > kernel test robot noticed the following build warnings:
-> > 
-> > [auto build test WARNING on net-next/main]
-> > [also build test WARNING on net/main linus/master v6.18 next-20251212]
-> > [If your patch is applied to the wrong git tree, kindly drop us a note.
-> > And when submitting patch, we suggest to use '--base' as documented in
-> > https://git-scm.com/docs/git-format-patch#_base_tree_information]
-> > 
-> > url:    https://github.com/intel-lab-lkp/linux/commits/Ilya-Krutskih/net-fealnx-fix-possible-card_idx-integer-overflow-in/20251212-013335
-> > base:   net-next/main
-> > patch link:    https://lore.kernel.org/r/20251211173035.852756-1-devsec%40tpz.ru
-> > patch subject: [PATCH v2] net: fealnx: fix possible 'card_idx' integer overflow in
-> > config: alpha-allyesconfig (https://download.01.org/0day-ci/archive/20251212/202512121907.n3Bzh2zF-lkp@intel.com/config)
-> > compiler: alpha-linux-gcc (GCC) 15.1.0
-> > reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251212/202512121907.n3Bzh2zF-lkp@intel.com/reproduce)
-> > 
-> > If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> > the same patch/commit), kindly add following tags
-> > | Reported-by: kernel test robot <lkp@intel.com>
-> > | Closes: https://lore.kernel.org/oe-kbuild-all/202512121907.n3Bzh2zF-lkp@intel.com/
-> > 
-> > All warnings (new ones prefixed by >>):
-> > 
-> >    drivers/net/ethernet/fealnx.c: In function 'fealnx_init_one':  
-> > >> drivers/net/ethernet/fealnx.c:496:35: warning: '%d' directive writing between 1 and 11 bytes into a region of size 6 [-Wformat-overflow=]  
-> >      496 |         sprintf(boardname, "fealnx%d", card_idx);
-> >          |                                   ^~
-> >    drivers/net/ethernet/fealnx.c:496:28: note: directive argument in the range [-2147483647, 2147483647]
-> >      496 |         sprintf(boardname, "fealnx%d", card_idx);
-> >          |                            ^~~~~~~~~~
-> >    drivers/net/ethernet/fealnx.c:496:9: note: 'sprintf' output between 8 and 18 bytes into a destination of size 12
-> >      496 |         sprintf(boardname, "fealnx%d", card_idx);
-> >          |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
-> 
-> Although I think these new warnings are not strictly for problems
-> introduced by this patch. They do make me wonder
-> if it would be best to cap card_index MAX_UNITS and
-> return an error if that limit is exceeded.
+All users of the 6.12 kernel series must upgrade.
 
-The code seems to be written allowing for more than MAX_UNITS 'units'.
+The updated 6.12.y git tree can be found at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-6.12.y
+and can be browsed at the normal kernel.org git web browser:
+	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
 
-Actually it all looks pretty broken to me...
-'card_idx' is incremented by every call to fealnx_init_one().
-That is the pci_driver.probe() function.
-So every card remove and rescan will increment it.
-(Is the .probe() even serialised? I can't remember...)
+thanks,
 
-Then there is the MODULE_PARAM_DESC() that states that bit 17 of 'options'
-is the 'full duplex' flag, but the code checks 'options & 0x200'.
+greg k-h
 
-And I just don't understand the assignment: option = dev->mem_start;
+------------
 
-The code was like this when Linux created git.
+ Documentation/process/2.Process.rst            |    6 +-
+ Makefile                                       |    2 
+ arch/loongarch/kernel/machine_kexec.c          |    2 
+ arch/x86/include/asm/kvm_host.h                |    9 +++
+ arch/x86/kvm/svm/svm.c                         |   24 ++++----
+ arch/x86/kvm/x86.c                             |   21 +++++++
+ drivers/bluetooth/btrtl.c                      |   24 ++++----
+ drivers/bus/mhi/host/pci_generic.c             |   52 ++++++++++++++++++
+ drivers/comedi/comedi_fops.c                   |   42 ++++++++++++--
+ drivers/comedi/drivers/c6xdigio.c              |   46 ++++++++++++---
+ drivers/comedi/drivers/multiq3.c               |    9 +++
+ drivers/comedi/drivers/pcl818.c                |    5 -
+ drivers/gpu/drm/amd/amdkfd/kfd_svm.c           |    2 
+ drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c     |   12 +---
+ drivers/hid/hid-apple.c                        |    1 
+ drivers/hid/hid-elecom.c                       |    6 +-
+ drivers/hid/hid-ids.h                          |    3 -
+ drivers/hid/hid-input.c                        |    5 +
+ drivers/hid/hid-quirks.c                       |    3 -
+ drivers/net/wireless/realtek/rtl8xxxu/core.c   |    3 +
+ drivers/net/wireless/realtek/rtw88/rtw8822cu.c |    2 
+ drivers/nvme/host/core.c                       |    3 -
+ drivers/pinctrl/qcom/pinctrl-msm.c             |    2 
+ drivers/platform/x86/acer-wmi.c                |    4 +
+ drivers/platform/x86/amd/pmc/pmc-quirks.c      |   25 ++++++++
+ drivers/platform/x86/huawei-wmi.c              |    4 +
+ drivers/spi/spi-imx.c                          |   15 +++--
+ drivers/spi/spi-xilinx.c                       |    2 
+ drivers/staging/rtl8723bs/core/rtw_ieee80211.c |   14 ++--
+ drivers/staging/rtl8723bs/core/rtw_mlme_ext.c  |   13 +++-
+ drivers/tty/serial/8250/8250_pci.c             |   37 ++++++++++++
+ drivers/usb/serial/belkin_sa.c                 |   28 +++++----
+ drivers/usb/serial/ftdi_sio.c                  |   72 ++++++++-----------------
+ drivers/usb/serial/kobil_sct.c                 |   18 +++---
+ drivers/usb/serial/option.c                    |   22 ++++++-
+ fs/bfs/inode.c                                 |   19 ++++++
+ fs/ext4/inline.c                               |   14 ++++
+ fs/jbd2/transaction.c                          |   19 ++++--
+ fs/smb/client/fs_context.c                     |    2 
+ fs/smb/server/transport_ipc.c                  |    7 +-
+ include/net/xfrm.h                             |   13 +---
+ kernel/locking/spinlock_debug.c                |    4 -
+ kernel/trace/ftrace.c                          |   40 ++++++++++---
+ net/ipv4/ipcomp.c                              |    2 
+ net/ipv6/ipcomp6.c                             |    2 
+ net/ipv6/xfrm6_tunnel.c                        |    2 
+ net/key/af_key.c                               |    2 
+ net/xfrm/xfrm_ipcomp.c                         |    1 
+ net/xfrm/xfrm_state.c                          |   41 +++++---------
+ net/xfrm/xfrm_user.c                           |    2 
+ samples/vfs/test-statx.c                       |    6 ++
+ samples/watch_queue/watch_test.c               |    6 ++
+ sound/usb/quirks.c                             |    6 ++
+ 53 files changed, 520 insertions(+), 206 deletions(-)
 
-	David
+Alexander Sverdlin (1):
+      locking/spinlock/debug: Fix data-race in do_raw_write_lock
+
+Alexey Nepomnyashih (1):
+      ext4: add i_data_sem protection in ext4_destroy_inline_data_nolock()
+
+Alvaro Gamez Machado (1):
+      spi: xilinx: increase number of retries before declaring stall
+
+Antheas Kapenekakis (2):
+      platform/x86/amd: pmc: Add Lenovo Legion Go 2 to pmc quirk list
+      platform/x86/amd/pmc: Add spurious_8042 to Xbox Ally
+
+April Grimoire (1):
+      HID: apple: Add SONiX AK870 PRO to non_apple_keyboards quirk list
+
+Armin Wolf (1):
+      platform/x86: acer-wmi: Ignore backlight event
+
+Bagas Sanjaya (1):
+      Documentation: process: Also mention Sasha Levin as stable tree maintainer
+
+Daniele Palmas (2):
+      bus: mhi: host: pci_generic: Add Telit FN920C04 modem support
+      bus: mhi: host: pci_generic: Add Telit FN990B40 modem support
+
+Deepanshu Kartikey (1):
+      ext4: refresh inline data size before write operations
+
+Fabio Porcedda (2):
+      USB: serial: option: add Telit Cinterion FE910C04 new compositions
+      USB: serial: option: move Telit 0x10c7 composition in the right place
+
+Greg Kroah-Hartman (1):
+      Linux 6.12.62
+
+Harish Kasiviswanathan (1):
+      drm/amdkfd: Fix GPU mappings for APU after prefetch
+
+Huacai Chen (1):
+      LoongArch: Mask all interrupts during kexec/kdump
+
+Ian Abbott (1):
+      comedi: c6xdigio: Fix invalid PNP driver unregistration
+
+Ian Forbes (1):
+      drm/vmwgfx: Use kref in vmw_bo_dirty
+
+Jia Ston (1):
+      platform/x86: huawei-wmi: add keys for HONOR models
+
+Johan Hovold (3):
+      USB: serial: ftdi_sio: match on interface number for jtag
+      USB: serial: belkin_sa: fix TIOCMBIS and TIOCMBIC
+      USB: serial: kobil_sct: fix TIOCMBIS and TIOCMBIC
+
+Keith Busch (1):
+      nvme: fix admin request_queue lifetime
+
+Linus Torvalds (1):
+      samples: work around glibc redefining some of our defines wrong
+
+Lushih Hsieh (1):
+      ALSA: usb-audio: Add native DSD quirks for PureAudio DAC series
+
+Magne Bruno (1):
+      serial: add support of CPCI cards
+
+Mario Limonciello (AMD) (1):
+      HID: hid-input: Extend Elan ignore battery quirk to USB
+
+Max Chou (1):
+      Bluetooth: btrtl: Avoid loading the config file on security chips
+
+Naoki Ueki (1):
+      HID: elecom: Add support for ELECOM M-XT3URBK (018F)
+
+Navaneeth K (3):
+      staging: rtl8723bs: fix out-of-bounds read in rtw_get_ie() parser
+      staging: rtl8723bs: fix stack buffer overflow in OnAssocReq IE parsing
+      staging: rtl8723bs: fix out-of-bounds read in OnBeacon ESR IE parsing
+
+Nikita Zhandarovich (3):
+      comedi: pcl818: fix null-ptr-deref in pcl818_ai_cancel()
+      comedi: multiq3: sanitize config options in multiq3_attach()
+      comedi: check device's attached status in compat ioctls
+
+Omar Sandoval (1):
+      KVM: SVM: Don't skip unrelated instruction if INT3/INTO is replaced
+
+Praveen Talari (1):
+      pinctrl: qcom: msm: Fix deadlock in pinmux configuration
+
+Qianchang Zhao (1):
+      ksmbd: ipc: fix use-after-free in ipc_msg_send_request
+
+Robin Gong (1):
+      spi: imx: keep dma request disabled before dma transfer setup
+
+Sabrina Dubroca (4):
+      xfrm: delete x->tunnel as we delete x
+      Revert "xfrm: destroy xfrm_state synchronously on net exit path"
+      xfrm: also call xfrm_state_delete_tunnel at destroy time for states that were never added
+      xfrm: flush all states in xfrm_state_fini
+
+Slark Xiao (1):
+      USB: serial: option: add Foxconn T99W760
+
+Song Liu (1):
+      ftrace: bpf: Fix IPMODIFY + DIRECT in modify_ftrace_direct()
+
+Tetsuo Handa (1):
+      bfs: Reconstruct file type when loading from disk
+
+Ye Bin (1):
+      jbd2: avoid bug_on in jbd2_journal_get_create_access() when file system corrupted
+
+Yiqi Sun (1):
+      smb: fix invalid username check in smb3_fs_context_parse_param()
+
+Zenm Chen (2):
+      wifi: rtl8xxxu: Add USB ID 2001:3328 for D-Link AN3U rev. A1
+      wifi: rtw88: Add USB ID 2001:3329 for D-Link AC13U rev. A1
+
 
