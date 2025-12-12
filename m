@@ -1,239 +1,142 @@
-Return-Path: <stable+bounces-200937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04B78CB98FE
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 19:25:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4471CCB9916
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 19:32:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 75CD230A3028
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 18:24:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A5B01301396A
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 18:32:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6F9630217B;
-	Fri, 12 Dec 2025 18:24:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A62493090C6;
+	Fri, 12 Dec 2025 18:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ubuntu.com header.i=@ubuntu.com header.b="BvXsH93X"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="N8xEvMul"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.forwardemail.net (smtp.forwardemail.net [121.127.44.73])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CD3230215C
-	for <stable@vger.kernel.org>; Fri, 12 Dec 2025 18:24:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=121.127.44.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2C3C308F33
+	for <stable@vger.kernel.org>; Fri, 12 Dec 2025 18:32:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765563868; cv=none; b=MnAamNZ/hEKTXGodU8Nr0Gwn/DowAgD7RhWXH/Ekj3v/MtMURd51f7hiuDLjk2SsGO2UAvw/QOiuYFBVM+19E5nZQ9I9775FOo3R9Dpo+PDfoNBZhBQANp6oKlMBALy/dYH3Xr6QD6ycakMmSE6VQ8+WY2cFLI0A0FfXmaVNo2o=
+	t=1765564347; cv=none; b=KQRhwtM98yRFEkueWmb19ULjFc4YgnfAGl4qHTnfoNwUYwN0+xch8HeU99NCPx3iXYHaGVn34G9noL+I8Lt0IZqS8m/yUJFbzkNkcm4xg1pqe5TA5LTP4zhqNWtmMWWyHaAHVARjS0wH7/c/vRBZjLzN+0qCets02a1peQ1RMIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765563868; c=relaxed/simple;
-	bh=hDCn04wMFczg2ZKEtyKI65dUdL8Yy8DTr2U9MbionXw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=STAUFW6hBkyVOiftBJSzOmPxIXdqDcAWZindboApr3g2mXyjDifxkOp1xSAZr4RkTjSeUx6BW5JroTKNhqbdkjw8Ctl0MPVFlPJggaosO1F9zgoC50WwkWESniAeaWHHxevPm32FJbGA77cmi1kamdRXiKTHCWJgL8k9k++Dkic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ubuntu.com; spf=pass smtp.mailfrom=fe-bounces.ubuntu.com; dkim=pass (2048-bit key) header.d=ubuntu.com header.i=@ubuntu.com header.b=BvXsH93X; arc=none smtp.client-ip=121.127.44.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ubuntu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fe-bounces.ubuntu.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ubuntu.com;
- h=Content-Transfer-Encoding: Content-Type: In-Reply-To: From: References:
- Cc: To: Subject: MIME-Version: Date: Message-ID; q=dns/txt;
- s=fe-953a8a3ca9; t=1765563864;
- bh=QWy3lytTR7D0TLdcSjtSydcSonNRc5eH+V2CcyhEwkI=;
- b=BvXsH93X547IL2JWLCuLe3vgPPDy4OIP0u7bS3wbyVTEMfmibqC/0lQ3mNCsGpT7O876kqV86
- SHKnoJ3GrIP2c5zJ198JHaf51eGTVApSDBVpZYnzHNqducd9datIATdzOo6RGn+2TbSI0+EVVQf
- Fpid8ruy2aakXMe9Pb5TRaFzY3JCEe6awKidfi+y+BOdXpmkSQR9Ky+j2bcHiZ9fBglfbl4Uqs0
- KaBXhW75ibz2gOh5MIBmFfk/7F0ksJzpURhrtxRdq7a8oSqFbm0e4jDhUFQ2EX/7hADxOl/PMk5
- 6y7wNMS9TLJWCieSrl3xle/bSgRAb4hblR5kWyP5r95Q==
-X-Forward-Email-ID: 693c5dd3fd4b94c0e94eabae
-X-Forward-Email-Sender: rfc822; fnordahl@ubuntu.com, smtp.forwardemail.net,
- 121.127.44.73
-X-Forward-Email-Version: 1.6.6
-X-Forward-Email-Website: https://forwardemail.net
-X-Complaints-To: abuse@forwardemail.net
-X-Report-Abuse: abuse@forwardemail.net
-X-Report-Abuse-To: abuse@forwardemail.net
-Message-ID: <04d484b3-de7a-414a-9389-a19fac0e0daf@ubuntu.com>
-Date: Fri, 12 Dec 2025 19:24:13 +0100
+	s=arc-20240116; t=1765564347; c=relaxed/simple;
+	bh=sX0TzwrQtYiV3zBkNA0USI+pMzU83oS0G0UzV3jMIQY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=inahc0hhulLS1NHbV0S0FH5rMuaJZF2NPAbFaLM581pPHIBsOpOsoNlNvDESB3qfjEn0KKwZUDqKSivb7fyk3o4glPiZHALouK79EsGILrEpemajYXvy7RdDAirzby7xjFtVj+Xj6S1Jx5/Z0kT6bh7a69q/DrIdPUE/XiDX6vY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=N8xEvMul; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-7dd05696910so1794575b3a.2
+        for <stable@vger.kernel.org>; Fri, 12 Dec 2025 10:32:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1765564345; x=1766169145; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=T/s9FeJOSMjA6/j6jq/9mb0CpNCTtxRCvkbabRq0HCM=;
+        b=N8xEvMul+napNTZR9feP/tTuE6n5zLQbw6Wuon9k5GFWJBvnguGY7UH6OMQagzIAx3
+         lgBkAbMOWkuq4OJEVHd9a4VKDpDH2kJDFARk7PWWPZ4EENyEaZMAm2S8+/wp0qWd7YT+
+         8meFe1K2fctJb2JoPkflB1SOzbQog87ZoqyR0ZysvS1QFSMfP3msr7rL5KEK1hLu/7cz
+         6OVzkQ2TNJ+kW0tKilG2ofm1ohRYgwb/QNKCNFdL/S9OW09H6ioupa31mbN++v49QtC6
+         jQpGDqX10Ab30CSsNGSpnkR+oHs7xKvz7QkA8ekUw9/pCIKC8kkTxF3BgcITEI6PKDjv
+         6LbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765564345; x=1766169145;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=T/s9FeJOSMjA6/j6jq/9mb0CpNCTtxRCvkbabRq0HCM=;
+        b=RcJy9K/3EWro1HOXnDK8IPeaF8+sJUK41zZXtOqkDuRqltRLgi9RCu81m1yasrWyse
+         pOfKmrFvjSdeEtTVa3X/2y6GPRlG0+RATryJdMXPjajaymZnnK/ckrgq5Dnp2+3yaelC
+         IiIxwXf3gZN++NyIS9wyvKY1A3VHzjDfrfL9vMU2tMxQQXUPcBsPQtynXvuLUu1QAqQ4
+         SCnayZqZBDlG+IBvEN4P0Pw5Piu31MkAFFPp9HR9rzAjxQ2zuJdKZMC3r10CV7WWZygq
+         NhN56FLnhULWnxHVM+UbPzgz+aaXJl8oXsIgO0OBn5JQZkPm+eUTYEOn/hj8mhgf+/MU
+         2jGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW+Z5xi7FDA4aX2XKfsRfVfgPhjAHB++hogCi29+q0PG6f432az/xYxOh1EBIfuooIMqUSBMD4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwWC/67lshWfjgbYoF6IFqEqBPnElXlEpAYt261PDY7aSzTAyHs
+	HAR3XkIzhHsX3gkNMORExUjeXp/AKsQ37eHWmsygiJY3sq7ZWK4mL1hjihdPCtmMmr60GZkp4/s
+	l65rwFA==
+X-Google-Smtp-Source: AGHT+IG9IYDkz8u1bbgxa6iFV/lfrltypfsubC45S38kfEVEj3Vh79p38ebTwcVynjMWyR/d6kxZi2LxQRI=
+X-Received: from pjbgn5.prod.google.com ([2002:a17:90a:c785:b0:34a:4a21:bc22])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:9988:b0:35d:5d40:6d78
+ with SMTP id adf61e73a8af0-369b69afd72mr2796296637.46.1765564345243; Fri, 12
+ Dec 2025 10:32:25 -0800 (PST)
+Date: Fri, 12 Dec 2025 10:32:23 -0800
+In-Reply-To: <pit2u5dpjpchsbz3pyujk62smysco5z37i3z3qosdscx6bddqj@i6fjafx5fxlz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] erspan: Initialize options_len before referencing
- options.
-To: "Creeley, Brett" <bcreeley@amd.com>, netdev@vger.kernel.org
-Cc: stable@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
- David Ahern <dsahern@kernel.org>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Gal Pressman <gal@nvidia.com>,
- Kees Cook <kees@kernel.org>, Cosmin Ratiu <cratiu@nvidia.com>,
- Tariq Toukan <tariqt@nvidia.com>, linux-kernel@vger.kernel.org
-References: <20251212073202.13153-1-fnordahl@ubuntu.com>
- <uCkgTf4IONTdT-df6jpwHmRGTBaYtp2vrLaQWzL7kfPxpJrvZarTkx6oNdnYWzNVnDmlNUVpd3iYO36CEYx7Dw==@protonmail.internalid>
- <1735c1c0-e731-4fec-83b1-818012194fc8@amd.com>
-Content-Language: en-US
-From: Frode Nordahl <fnordahl@ubuntu.com>
-In-Reply-To: <1735c1c0-e731-4fec-83b1-818012194fc8@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20251110222922.613224-1-yosry.ahmed@linux.dev>
+ <20251110222922.613224-5-yosry.ahmed@linux.dev> <aThN-xUbQeFSy_F7@google.com>
+ <nyuyxccvnhscbo7qtlbsfl2fgxwood24nn4bvskhfqghgli3jo@xsv4zbdkolij>
+ <aThp19OAXDoZlk3k@google.com> <fg5ipm56ejqp7p2j2lo5i5ouktzqggo3663eu4tna74u6paxpg@lque35ixlzje>
+ <aThtjYG3OZTtdwUA@google.com> <pit2u5dpjpchsbz3pyujk62smysco5z37i3z3qosdscx6bddqj@i6fjafx5fxlz>
+Message-ID: <aTxftw3XcIrwyTzK@google.com>
+Subject: Re: [PATCH v2 04/13] KVM: nSVM: Fix consistency checks for NP_ENABLE
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry.ahmed@linux.dev>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On 12/12/25 18:23, Creeley, Brett wrote:
+On Tue, Dec 09, 2025, Yosry Ahmed wrote:
+> On Tue, Dec 09, 2025 at 10:42:21AM -0800, Sean Christopherson wrote:
+> > On Tue, Dec 09, 2025, Yosry Ahmed wrote:
+> > > On Tue, Dec 09, 2025 at 10:26:31AM -0800, Sean Christopherson wrote:
+> > > > On Tue, Dec 09, 2025, Yosry Ahmed wrote:
+> > > > > > > diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+> > > > > > > index f6fb70ddf7272..3e805a43ffcdb 100644
+> > > > > > > --- a/arch/x86/kvm/svm/svm.h
+> > > > > > > +++ b/arch/x86/kvm/svm/svm.h
+> > > > > > > @@ -552,7 +552,8 @@ static inline bool gif_set(struct vcpu_svm *svm)
+> > > > > > >  
+> > > > > > >  static inline bool nested_npt_enabled(struct vcpu_svm *svm)
+> > > > > > >  {
+> > > > > > > -	return svm->nested.ctl.nested_ctl & SVM_NESTED_CTL_NP_ENABLE;
+> > > > > > > +	return guest_cpu_cap_has(&svm->vcpu, X86_FEATURE_NPT) &&
+> > > > > > > +		svm->nested.ctl.nested_ctl & SVM_NESTED_CTL_NP_ENABLE;
+> > > > > > 
+> > > > > > I would rather rely on Kevin's patch to clear unsupported features.
+> > > > > 
+> > > > > Not sure how Kevin's patch is relevant here, could you please clarify?
+> > > > 
+> > > > Doh, Kevin's patch only touches intercepts.  What I was trying to say is that I
+> > > > would rather sanitize the snapshot (the approach Kevin's patch takes with the
+> > > > intercepts), as opposed to guarding the accessor.  That way we can't have bugs
+> > > > where KVM checks svm->nested.ctl.nested_ctl directly and bypasses the caps check.
+> > > 
+> > > I see, so clear SVM_NESTED_CTL_NP_ENABLE in
+> > > __nested_copy_vmcb_control_to_cache() instead.
+> > > 
+> > > If I drop the guest_cpu_cap_has() check here I will want to leave a
+> > > comment so that it's obvious to readers that SVM_NESTED_CTL_NP_ENABLE is
+> > > sanitized elsewhere if the guest cannot use NPTs. Alternatively, I can
+> > > just keep the guest_cpu_cap_has() check as documentation and a second
+> > > line of defense.
+> > > 
+> > > Any preferences?
+> > 
+> > Honestly, do nothing.  I want to solidify sanitizing the cache as standard behavior,
+> > at which point adding a comment implies that nested_npt_enabled() is somehow special,
+> > i.e. that it _doesn't_ follow the standard.
 > 
-> On 12/11/2025 11:32 PM, Frode Nordahl wrote:
->> Caution: This message originated from an External Source. Use proper caution when opening attachments, clicking links, or responding.
->>
->>
->> The struct ip_tunnel_info has a flexible array member named
->> options that is protected by a counted_by(options_len)
->> attribute.
->>
->> The compiler will use this information to enforce runtime bounds
->> checking deployed by FORTIFY_SOURCE string helpers.
->>
->> As laid out in the GCC documentation, the counter must be
->> initialized before the first reference to the flexible array
->> member.
->>
->> In the normal case the ip_tunnel_info_opts_set() helper is used
->> which would initialize options_len properly, however in the GRE
->> ERSPAN code a partial update is done, preventing the use of the
->> helper function.
->>
->> Before this change the handling of ERSPAN traffic in GRE tunnels
->> would cause a kernel panic when the kernel is compiled with
->> GCC 15+ and having FORTIFY_SOURCE configured:
->>
->> memcpy: detected buffer overflow: 4 byte write of buffer size 0
->>
->> Call Trace:
->>    <IRQ>
->>    __fortify_panic+0xd/0xf
->>    erspan_rcv.cold+0x68/0x83
->>    ? ip_route_input_slow+0x816/0x9d0
->>    gre_rcv+0x1b2/0x1c0
->>    gre_rcv+0x8e/0x100
->>    ? raw_v4_input+0x2a0/0x2b0
->>    ip_protocol_deliver_rcu+0x1ea/0x210
->>    ip_local_deliver_finish+0x86/0x110
->>    ip_local_deliver+0x65/0x110
->>    ? ip_rcv_finish_core+0xd6/0x360
->>    ip_rcv+0x186/0x1a0
->>
->> Link: https://gcc.gnu.org/onlinedocs/gcc/Common-Variable-Attributes.html#index-counted_005fby-variable-attribute
->> Reported-at: https://launchpad.net/bugs/2129580
->> Fixes: bb5e62f2d547 ("net: Add options as a flexible array to struct ip_tunnel_info")
+> Does this apply to patch 12 as well? In that patch I int_vector,
+
+I <something>?
+
+> int_state, and event_inj when copying them to VMCB02 in
+> nested_vmcb02_prepare_control(). Mainly because
+> nested_vmcb02_prepare_control() already kinda filters what to copy from
+> VMCB12 (e.g. int_ctl), so it seemed like a better fit.
 > 
-> Should this be [PATCH net]?
-> 
-> It seems like this should be intended for the net tree.
+> Do I keep that as-is, or do you prefer that I also sanitize these fields
+> when copying to the cache in nested_copy_vmcb_control_to_cache()?
 
-Indeed, thank you for pointing it out!
-
->> Signed-off-by: Frode Nordahl <fnordahl@ubuntu.com>
->> ---
->>    net/ipv4/ip_gre.c  | 18 ++++++++++++++++--
->>    net/ipv6/ip6_gre.c | 18 ++++++++++++++++--
->>    2 files changed, 32 insertions(+), 4 deletions(-)
->>
->> diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
->> index 761a53c6a89a..285a656c9e41 100644
->> --- a/net/ipv4/ip_gre.c
->> +++ b/net/ipv4/ip_gre.c
->> @@ -330,6 +330,22 @@ static int erspan_rcv(struct sk_buff *skb, struct tnl_ptk_info *tpi,
->>                           if (!tun_dst)
->>                                   return PACKET_REJECT;
->>
->> +                       /* The struct ip_tunnel_info has a flexible array member named
->> +                        * options that is protected by a counted_by(options_len)
->> +                        * attribute.
->> +                        *
->> +                        * The compiler will use this information to enforce runtime bounds
->> +                        * checking deployed by FORTIFY_SOURCE string helpers.
->> +                        *
->> +                        * As laid out in the GCC documentation, the counter must be
->> +                        * initialized before the first reference to the flexible array
->> +                        * member.
->> +                        *
->> +                        * Link: https://gcc.gnu.org/onlinedocs/gcc/Common-Variable-Attributes.html#index-counted_005fby-variable-attribute
-> 
-> Nit, but I wonder if the Link in the commit message is good enough? Same
-> comment below.
-
-Yes, in retrospect the comments and links in-line became a bit too 
-verbose, I'll trim them down in the next iteration.
-
-> Thanks,
-
-Thank you for taking the time to review, much appreciated!
-
--- 
-Frode Nordahl
-
-> Brett
-> 
->> +                        */
->> +                       info = &tun_dst->u.tun_info;
->> +                       info->options_len = sizeof(*md);
->> +
->>                           /* skb can be uncloned in __iptunnel_pull_header, so
->>                            * old pkt_md is no longer valid and we need to reset
->>                            * it
->> @@ -344,10 +360,8 @@ static int erspan_rcv(struct sk_buff *skb, struct tnl_ptk_info *tpi,
->>                           memcpy(md2, pkt_md, ver == 1 ? ERSPAN_V1_MDSIZE :
->>                                                          ERSPAN_V2_MDSIZE);
->>
->> -                       info = &tun_dst->u.tun_info;
->>                           __set_bit(IP_TUNNEL_ERSPAN_OPT_BIT,
->>                                     info->key.tun_flags);
->> -                       info->options_len = sizeof(*md);
->>                   }
->>
->>                   skb_reset_mac_header(skb);
->> diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
->> index c82a75510c0e..eb840a11b93b 100644
->> --- a/net/ipv6/ip6_gre.c
->> +++ b/net/ipv6/ip6_gre.c
->> @@ -535,6 +535,22 @@ static int ip6erspan_rcv(struct sk_buff *skb,
->>                           if (!tun_dst)
->>                                   return PACKET_REJECT;
->>
->> +                       /* The struct ip_tunnel_info has a flexible array member named
->> +                        * options that is protected by a counted_by(options_len)
->> +                        * attribute.
->> +                        *
->> +                        * The compiler will use this information to enforce runtime bounds
->> +                        * checking deployed by FORTIFY_SOURCE string helpers.
->> +                        *
->> +                        * As laid out in the GCC documentation, the counter must be
->> +                        * initialized before the first reference to the flexible array
->> +                        * member.
->> +                        *
->> +                        * Link: https://gcc.gnu.org/onlinedocs/gcc/Common-Variable-Attributes.html#index-counted_005fby-variable-attribute
->> +                        */
->> +                       info = &tun_dst->u.tun_info;
->> +                       info->options_len = sizeof(*md);
->> +
->>                           /* skb can be uncloned in __iptunnel_pull_header, so
->>                            * old pkt_md is no longer valid and we need to reset
->>                            * it
->> @@ -543,7 +559,6 @@ static int ip6erspan_rcv(struct sk_buff *skb,
->>                                skb_network_header_len(skb);
->>                           pkt_md = (struct erspan_metadata *)(gh + gre_hdr_len +
->>                                                               sizeof(*ershdr));
->> -                       info = &tun_dst->u.tun_info;
->>                           md = ip_tunnel_info_opts(info);
->>                           md->version = ver;
->>                           md2 = &md->u.md2;
->> @@ -551,7 +566,6 @@ static int ip6erspan_rcv(struct sk_buff *skb,
->>                                                          ERSPAN_V2_MDSIZE);
->>                           __set_bit(IP_TUNNEL_ERSPAN_OPT_BIT,
->>                                     info->key.tun_flags);
->> -                       info->options_len = sizeof(*md);
->>
->>                           ip6_tnl_rcv(tunnel, skb, tpi, tun_dst, log_ecn_error);
->>
->> --
->> 2.43.0
->>
->>
-
-
-
+I don't think I follow.  What would the sanitization look like?  Note, I don't
+think we need to completely sanitize _every_ field.  The key fields are ones
+where KVM consumes and/or acts on the field.
 
