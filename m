@@ -1,232 +1,141 @@
-Return-Path: <stable+bounces-200918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F90CCB9155
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 16:18:37 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF30ACB9139
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 16:13:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 51B7430BD1F2
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 15:16:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3985630141CD
+	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 15:13:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8DA13242A5;
-	Fri, 12 Dec 2025 15:06:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED7923112B0;
+	Fri, 12 Dec 2025 15:13:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IfgY0Z3s"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IJGsAQ3Q"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21D673242AD
-	for <stable@vger.kernel.org>; Fri, 12 Dec 2025 15:06:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A61AF1531F9;
+	Fri, 12 Dec 2025 15:13:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765552006; cv=none; b=Um6MXCAg14Wvnce89Iz2wKNuRw2cCWbluZjgd5DIdVm/nqOQZqrEfyY7Mq906psLKG6OMfgSFU1U0Vf6pt65NzC5l1d5DBT6iuOjb2XknHyipPrZlDDR3Zn85o7eD6WhXD8N800Z7Mc+9r7x4LMk/zQ2bIC4Y/i3NaT1R/CYQMQ=
+	t=1765552402; cv=none; b=EA+KH0xvvH5FTEAWHEhln4iQKKP1Y67qP11/CT5cFZ4yEbDUYpslKquWKrjqAmxx5g2P9Mi0iSUMDIwauIfJxrKBRSkzYpeuIKQbLwRqZJGkwMdPRMWzenkyunJ727l6RveDSarNTTO42qOI5g3xsJZRnzY5Tktw/5KoTA+otO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765552006; c=relaxed/simple;
-	bh=xV3J185BOFawITpmBxVAswdNlzbEbaK9mn97CIyMvQ0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QcrARHvoAQRj/QaO27K8A+TJSFgU/WPu9Edw+8CsR/nu9tzNcEy1mUtTBrk+xzkFlevV/jwyiiTS6e7hLQPeih3glsuR0aqg+K0Q/HJ/uWZ9usL1Um1xBKncnq2nQ/7evp1zaoWRDuh18bEPh+RamyYLctHfqCLWtJ/L3olhe+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=fail smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IfgY0Z3s; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765552005; x=1797088005;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=xV3J185BOFawITpmBxVAswdNlzbEbaK9mn97CIyMvQ0=;
-  b=IfgY0Z3sj2+/TbD5dhHw+aMZRG62yIpLmdrvJ+ZouO3jqiKUR4a37HGD
-   WYT+f9UDXG06dH5z6ahYL8H71ifTKFPoJtlJgSBT4bS4EWhv9XzJHmQH0
-   JiIXSRmcbHlvZnr0r6gvULB5PReLjwkVtK9t8fezZfj+eYP2FphBXA0Iq
-   LgyLlgXpRsUE9ZZ02oEgLTm6/GXN67ZKpfzKySggoseqXxO+EDZH1XZT0
-   BPIstW9o0ceikp6PH10dvFhBfvbbEqRI3zyvdakrYI9QordbohnY9j5Np
-   vCZdK9Yq+NZgLGVF+13Keg2CMQtEnJJDDexRzYsXOmweN2a1s8vXtovCz
-   g==;
-X-CSE-ConnectionGUID: +lXsE3G3TWKIPsId5wU8QA==
-X-CSE-MsgGUID: j/uAaVE4SiCO1JSHxQJu0g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11640"; a="78669592"
-X-IronPort-AV: E=Sophos;i="6.21,144,1763452800"; 
-   d="scan'208";a="78669592"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2025 07:06:44 -0800
-X-CSE-ConnectionGUID: jEUr4DfoT6aHfV6jWCL2nA==
-X-CSE-MsgGUID: ZvjytAk8T8WZfFQF/xqKrA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,144,1763452800"; 
-   d="scan'208";a="234509303"
-Received: from kniemiec-mobl1.ger.corp.intel.com (HELO intel.com) ([10.245.246.69])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2025 07:06:41 -0800
-From: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-To: dri-devel@lists.freedesktop.org,
-	intel-gfx@lists.freedesktop.org
-Cc: stable@vger.kernel.org,
-	=?UTF-8?q?=EA=B9=80=EA=B0=95=EB=AF=BC?= <km.kim1503@gmail.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Chris Wilson <chris.p.wilson@linux.intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
-	Krzysztof Karas <krzysztof.karas@intel.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
-	Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-Subject: [PATCH v4] drm/i915/gem: Zero-initialize the eb.vma array in i915_gem_do_execbuffer
-Date: Fri, 12 Dec 2025 16:06:12 +0100
-Message-ID: <20251212150611.18757-2-krzysztof.niemiec@intel.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1765552402; c=relaxed/simple;
+	bh=UUNgLmg8kTALS3WP6Kh52zkkNjWHrZxSFvJYZHaby3k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QzhJaSmsUcAOOoaWATftAyI+xjSPN0Qjb3gWkZv6I4U2bgqpEOFChK3WARf4JJ2iu9wopQsdunHvRUuj3sgYLcnAj5hfnlkxf5A3AWZgXFkcZ8mA1iYmwJxl5g77MhF0tsJ1y49gWeUtCqTf5Alvpw/jkeaeosaRIU51591E7w0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IJGsAQ3Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60DD8C4CEF1;
+	Fri, 12 Dec 2025 15:13:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765552400;
+	bh=UUNgLmg8kTALS3WP6Kh52zkkNjWHrZxSFvJYZHaby3k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IJGsAQ3QQL6QDhTh4c4OkXjCv4prjEVPM8VY2sUGFIWR8lFzhBv7Or2mcHit4attL
+	 ScZh25edONVuyfsIYm2YsdtjTRIY+sGTcoKOpHhR316BBWGZigAk9rfWQWjlA9rRn1
+	 Z7F8btFKV0H62oF31b93KJnCShgUxLEdgKPUL7l1VQai3sYNWEJrJfg7XkwJ4Nsc/u
+	 ICBdMaCUOX335dLMhcJxDPBed+FqcfwSnZMD7w9YMNeHnoVVJEU7TI45ruAn/N15kU
+	 8coH3HF9swN3Z6GIUto7JvjZxuTg/nFsv4+xD4taMZD1s0T1o9pxsuoJcSX4A4JyXO
+	 c7JM5FBnULBnw==
+Date: Fri, 12 Dec 2025 15:13:16 +0000
+From: Simon Horman <horms@kernel.org>
+To: Frode Nordahl <fnordahl@ubuntu.com>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	David Ahern <dsahern@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Gal Pressman <gal@nvidia.com>, Kees Cook <kees@kernel.org>,
+	Cosmin Ratiu <cratiu@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] erspan: Initialize options_len before referencing
+ options.
+Message-ID: <aTwxDBODyDmerGAt@horms.kernel.org>
+References: <20251212073202.13153-1-fnordahl@ubuntu.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251212073202.13153-1-fnordahl@ubuntu.com>
 
-Initialize the eb.vma array with values of 0 when the eb structure is
-first set up. In particular, this sets the eb->vma[i].vma pointers to
-NULL, simplifying cleanup and getting rid of the bug described below.
+On Fri, Dec 12, 2025 at 07:32:01AM +0000, Frode Nordahl wrote:
+> The struct ip_tunnel_info has a flexible array member named
+> options that is protected by a counted_by(options_len)
+> attribute.
+> 
+> The compiler will use this information to enforce runtime bounds
+> checking deployed by FORTIFY_SOURCE string helpers.
+> 
+> As laid out in the GCC documentation, the counter must be
+> initialized before the first reference to the flexible array
+> member.
+> 
+> In the normal case the ip_tunnel_info_opts_set() helper is used
+> which would initialize options_len properly, however in the GRE
+> ERSPAN code a partial update is done, preventing the use of the
+> helper function.
+> 
+> Before this change the handling of ERSPAN traffic in GRE tunnels
+> would cause a kernel panic when the kernel is compiled with
+> GCC 15+ and having FORTIFY_SOURCE configured:
+> 
+> memcpy: detected buffer overflow: 4 byte write of buffer size 0
+> 
+> Call Trace:
+>  <IRQ>
+>  __fortify_panic+0xd/0xf
+>  erspan_rcv.cold+0x68/0x83
+>  ? ip_route_input_slow+0x816/0x9d0
+>  gre_rcv+0x1b2/0x1c0
+>  gre_rcv+0x8e/0x100
+>  ? raw_v4_input+0x2a0/0x2b0
+>  ip_protocol_deliver_rcu+0x1ea/0x210
+>  ip_local_deliver_finish+0x86/0x110
+>  ip_local_deliver+0x65/0x110
+>  ? ip_rcv_finish_core+0xd6/0x360
+>  ip_rcv+0x186/0x1a0
+> 
+> Link: https://gcc.gnu.org/onlinedocs/gcc/Common-Variable-Attributes.html#index-counted_005fby-variable-attribute
+> Reported-at: https://launchpad.net/bugs/2129580
+> Fixes: bb5e62f2d547 ("net: Add options as a flexible array to struct ip_tunnel_info")
+> Signed-off-by: Frode Nordahl <fnordahl@ubuntu.com>
 
-During the execution of eb_lookup_vmas(), the eb->vma array is
-successively filled up with struct eb_vma objects. This process includes
-calling eb_add_vma(), which might fail; however, even in the event of
-failure, eb->vma[i].vma is set for the currently processed buffer.
+Hi Frode,
 
-If eb_add_vma() fails, eb_lookup_vmas() returns with an error, which
-prompts a call to eb_release_vmas() to clean up the mess. Since
-eb_lookup_vmas() might fail during processing any (possibly not first)
-buffer, eb_release_vmas() checks whether a buffer's vma is NULL to know
-at what point did the lookup function fail.
+Thanks for your patch (and nice to see you recently in Prague :).
 
-In eb_lookup_vmas(), eb->vma[i].vma is set to NULL if either the helper
-function eb_lookup_vma() or eb_validate_vma() fails. eb->vma[i+1].vma is
-set to NULL in case i915_gem_object_userptr_submit_init() fails; the
-current one needs to be cleaned up by eb_release_vmas() at this point,
-so the next one is set. If eb_add_vma() fails, neither the current nor
-the next vma is nullified, which is a source of a NULL deref bug
-described in [1].
+Overall this looks good to me but I have some minor feedback.
 
-When entering eb_lookup_vmas(), the vma pointers are set to the slab
-poison value, instead of NULL. This doesn't matter for the actual
-lookup, since it gets overwritten anyway, however the eb_release_vmas()
-function only recognizes NULL as the stopping value, hence the pointers
-are being nullified as they go in case of intermediate failure. This
-patch changes the approach to filling them all with NULL at the start
-instead, rather than handling that manually during failure.
 
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15062
-Fixes: 544460c33821 ("drm/i915: Multi-BB execbuf")
-Reported-by: Gangmin Kim <km.kim1503@gmail.com>
-Cc: <stable@vger.kernel.org> # 5.16.x
-Signed-off-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
----
-I messed up the continuity in previous revisions; the original patch
-was sent as [1], and the first revision (which I didn't mark as v2 due
-to the title change) was sent as [2].
+Firstly, the cited patch seems to cover more than erspan.
+So I'm wondering if you took at look at other cases where
+this might occur? No problem either way, but if so it might
+be worth mentioning in the commit message.
 
-This is the full current changelog:
 
-v4:
-   - delete an empty line (Janusz), reword the comment a bit (Krzysztof,
-     Janusz)
-v3:
-   - use memset() to fill the entire eb.vma array with zeros instead of
-   looping through the elements (Janusz)
-   - add a comment clarifying the mechanism of the initial allocation (Janusz)
-   - change the commit log again, including title
-   - rearrange the tags to keep checkpatch happy
-v2:
-   - set the eb->vma[i].vma pointers to NULL during setup instead of
-     ad-hoc at failure (Janusz)
-   - romanize the reporter's name (Andi, offline)
-   - change the commit log, including title
+Regarding the comments in the code. I am wondering if the are necessary
+as the information is also contained in the commit message. And if the
+source documented every such case then things could get rather verbose.
 
-[1] https://patchwork.freedesktop.org/series/156832/
-[2] https://patchwork.freedesktop.org/series/158036/
+If you do feel strongly about it keeping it then could I ask that
+(other than the URL) it is line-wrapped trimmed to 80 columns wide or less,
+as is still preferred for Networking (but confusingly not all Kernel) code.
 
- .../gpu/drm/i915/gem/i915_gem_execbuffer.c    | 37 +++++++++----------
- 1 file changed, 17 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-index b057c2fa03a4..348023d13668 100644
---- a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-@@ -951,13 +951,13 @@ static int eb_lookup_vmas(struct i915_execbuffer *eb)
- 		vma = eb_lookup_vma(eb, eb->exec[i].handle);
- 		if (IS_ERR(vma)) {
- 			err = PTR_ERR(vma);
--			goto err;
-+			return err;
- 		}
- 
- 		err = eb_validate_vma(eb, &eb->exec[i], vma);
- 		if (unlikely(err)) {
- 			i915_vma_put(vma);
--			goto err;
-+			return err;
- 		}
- 
- 		err = eb_add_vma(eb, &current_batch, i, vma);
-@@ -966,19 +966,8 @@ static int eb_lookup_vmas(struct i915_execbuffer *eb)
- 
- 		if (i915_gem_object_is_userptr(vma->obj)) {
- 			err = i915_gem_object_userptr_submit_init(vma->obj);
--			if (err) {
--				if (i + 1 < eb->buffer_count) {
--					/*
--					 * Execbuffer code expects last vma entry to be NULL,
--					 * since we already initialized this entry,
--					 * set the next value to NULL or we mess up
--					 * cleanup handling.
--					 */
--					eb->vma[i + 1].vma = NULL;
--				}
--
-+			if (err)
- 				return err;
--			}
- 
- 			eb->vma[i].flags |= __EXEC_OBJECT_USERPTR_INIT;
- 			eb->args->flags |= __EXEC_USERPTR_USED;
-@@ -986,10 +975,6 @@ static int eb_lookup_vmas(struct i915_execbuffer *eb)
- 	}
- 
- 	return 0;
--
--err:
--	eb->vma[i].vma = NULL;
--	return err;
- }
- 
- static int eb_lock_vmas(struct i915_execbuffer *eb)
-@@ -3375,7 +3360,8 @@ i915_gem_do_execbuffer(struct drm_device *dev,
- 
- 	eb.exec = exec;
- 	eb.vma = (struct eb_vma *)(exec + args->buffer_count + 1);
--	eb.vma[0].vma = NULL;
-+	memset(eb.vma, 0x00, args->buffer_count * sizeof(struct eb_vma));
-+
- 	eb.batch_pool = NULL;
- 
- 	eb.invalid_flags = __EXEC_OBJECT_UNKNOWN_FLAGS;
-@@ -3584,7 +3570,18 @@ i915_gem_execbuffer2_ioctl(struct drm_device *dev, void *data,
- 	if (err)
- 		return err;
- 
--	/* Allocate extra slots for use by the command parser */
-+	/*
-+	 * Allocate extra slots for use by the command parser.
-+	 *
-+	 * Note that this allocation handles two different arrays (the
-+	 * exec2_list array, and the eventual eb.vma array introduced in
-+	 * i915_gem_do_execubuffer()), that reside in virtually contiguous
-+	 * memory. Also note that the allocation intentionally doesn't fill the
-+	 * area with zeros (because the exec2_list part doesn't need to be, as
-+	 * it's immediately overwritten by user data a few lines below).
-+	 * However, the eb.vma part is explicitly zeroed later in
-+	 * i915_gem_do_execbuffer().
-+	 */
- 	exec2_list = kvmalloc_array(count + 2, eb_element_size(),
- 				    __GFP_NOWARN | GFP_KERNEL);
- 	if (exec2_list == NULL) {
--- 
-2.45.2
+As a fix for code present in net this should be targeted at that tree.
+It's best to do so explicitly like this:
 
+Subject: [PATCH net] ...
+
+And it's probably also best to CC stable@vger.kernel.org.
+That practice isn't as widespread as perhaps it should be for Networking code.
+But it does seem worth mentioning.
+
+...
 
