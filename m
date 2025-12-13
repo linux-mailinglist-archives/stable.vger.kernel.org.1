@@ -1,170 +1,173 @@
-Return-Path: <stable+bounces-200954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A34ECBB15F
-	for <lists+stable@lfdr.de>; Sat, 13 Dec 2025 17:28:16 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1833CCBB16E
+	for <lists+stable@lfdr.de>; Sat, 13 Dec 2025 17:31:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 07C8930797BB
-	for <lists+stable@lfdr.de>; Sat, 13 Dec 2025 16:27:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4A3493043913
+	for <lists+stable@lfdr.de>; Sat, 13 Dec 2025 16:31:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC4862DC339;
-	Sat, 13 Dec 2025 16:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1221623C4FA;
+	Sat, 13 Dec 2025 16:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nWAWTl/6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jNxPUTiS"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6101B1DF736;
-	Sat, 13 Dec 2025 16:27:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C6DC81AA8
+	for <stable@vger.kernel.org>; Sat, 13 Dec 2025 16:31:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765643226; cv=none; b=nXtqTC3YLD4IDNkbpAl1uQBx99vKewZI/Wd46S66GLKtulGvEf5o7R37MlULu4j39t7GFLJGlRyJXRxzck5CwIe5RhKSTmuOu5uAARMV5NT3HJ//q/WCgEHG5dku92/B4CBE1l9lAFFnRuCJIofnhsv2ti13Hy1S+Y34s0RxKLE=
+	t=1765643493; cv=none; b=aCEfAtpoNaR+yHXtYt0RN9P5sCHXn/hSxA9SY9beHqXjCtkeHBZugrUWRxwVY4OJ/1c2EXmkgfDEjvekJmlDD30SUY9bpgYTqQsohuOj02kpkK8fdXteAnF3OuUxQxz3SCKlIM0NFtQKjccUyxuGn60DG46cAL9PrfjLpij7wnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765643226; c=relaxed/simple;
-	bh=RuSYuEpf2hoURn7aa0FDJJchNpBdFJbBF13tEAR3aAc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pqdxmkb5eP5YQtq4Vw9OF4Y+dR++tm8x+dp3UubNxSKBh4EQMglcJe3f3BPMDLYJ4iGr7kZ91q9OtGnswLjC6zTIbzuOkolnoEQ1j+/gFw+SJAu7+XiBztbwtfDF+eW0GdsSQJiWEcyEIKGGJXjdC3G8wvNIPM9GgWuMjedtNUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nWAWTl/6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EE72C4CEF7;
-	Sat, 13 Dec 2025 16:27:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765643224;
-	bh=RuSYuEpf2hoURn7aa0FDJJchNpBdFJbBF13tEAR3aAc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nWAWTl/6+EjJD0lTBxE+DOOYoKiiWAaaASou11WlGXQaXUV9oljb0MOcL3eRFQdwq
-	 uwXMLnGQPn3YGxDpddDscFhUzYUk0O8cqozSGffVPqjZyssktFPcPg39VUP0+hj33/
-	 VTDgUU8Gqqqy9/HXJP2P9YCwklcajMKmkpj/OMNefHXpFg4jeHF808YZAYRxanC5Mz
-	 Tb/ppvsNFuO5Hv4QPssZKVjBKmYPywbbhBWeM3qGFU8rNFahfXRm/I/t88rYQRRIrW
-	 NYVFmAi+rcNeUVC1W6OmMQ2SAHzCGQW5egbXctsykqWrJrGQUSURO9QyFT3Au1Ab4/
-	 Pvhad2xnPrsQg==
-Date: Sat, 13 Dec 2025 16:27:00 +0000
-From: Simon Horman <horms@kernel.org>
-To: Frode Nordahl <fnordahl@ubuntu.com>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	David Ahern <dsahern@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Gal Pressman <gal@nvidia.com>, Kees Cook <kees@kernel.org>,
-	Cosmin Ratiu <cratiu@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] erspan: Initialize options_len before referencing
- options.
-Message-ID: <aT2T1GQfKJ3Bj1aj@horms.kernel.org>
-References: <20251212073202.13153-1-fnordahl@ubuntu.com>
- <nZEr2jHd7_uGuwbqEiM3iStGK4aQ_EgMoNLBgyJrYmeTlhzT2-qGpuBxKPW6U7k8ZqAr6HExn5ncXLMA5EbRQQ==@protonmail.internalid>
- <aTwxDBODyDmerGAt@horms.kernel.org>
- <bb4f7703-b704-4eb8-942b-d693f64aed63@ubuntu.com>
+	s=arc-20240116; t=1765643493; c=relaxed/simple;
+	bh=VcIMFNYSu/iw4Td8CtM89chcrvq+DwIdezRkAya6ZlY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OeyMt/PsR9ApCd4H0ODERHbdZnBG8cJP3JeHSL3W6cCqHJ9b/oZpbDNefYxrTfy+BKz3UgY+YVZ4Tw5n3KHGk3L3MmYbchTpJEkI0lxBEm1jKoAG5javEDwFO8bTzNJpz89l9E9UWSvH8JqIVgSXBqyFrDHDdQfYKLqeKyuIzf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jNxPUTiS; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2981f9ce15cso25002705ad.1
+        for <stable@vger.kernel.org>; Sat, 13 Dec 2025 08:31:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765643491; x=1766248291; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=YC+xEnBIE6YMPV/nC7GeG2XoJ77JFEf62MbpcVXJSPE=;
+        b=jNxPUTiS223cVsgarvOdCpBe2W6NEwUaDKKJwNBUjuUX0yDAfdukhSbUtojveV/CQs
+         9jPXKIinh3Hb9CLdFcr9/otyAE0g6a0uc8UJiwkN+kx5MYnzC5ugp9c4H2NYXDlU1DFD
+         +g48oD2WSzGpfZgYGNLlAXe7dY/NgVHaK96IOI4XE7pHF9JDmnsukahfhvBMS2xxe82x
+         LloPaYxeqv6w2hbG8K6puw9x0CZWMH4Mpkgw3nL+bdlj4sOLSX7+Oa8BPhr81NH5sD5u
+         w6uyE6IiXmZuovCd21BPmq2dtG7sd2AEg4uQuPWQkQWb21703xDufDAnOnrLQvyPpoEg
+         5s5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765643491; x=1766248291;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YC+xEnBIE6YMPV/nC7GeG2XoJ77JFEf62MbpcVXJSPE=;
+        b=H72nGd01cP/Vjj6sV1z6n3Cg4hG9M8ywrLDNKZuUWDao0rzMLHs69ZLRwpSSG20/LO
+         o5crAOFfHsqViRYsQmtJWEhHEYF7ne0xoJRE2ALg08WNnuXX5ihm/S8OZuJVL35CtOHs
+         ZgGfBxKdguslHCKxVE26aKgVyhESWutNgge8ahUNvGAVVXAN/Hk8w3xUWaxXlqBMHfCv
+         b04H33aSqoaNqr9VKIg6DBKDM4FmIsPvlIKANGVel8dFp21q+PJGg6Jrcx+cWQpluQxp
+         H4dO9LaYkoz+yiQDOg4B33qNTEnj43b6h7OdBy4MzFRB/StSFRpPjEbnLcJm0cdq15AL
+         Kyxg==
+X-Forwarded-Encrypted: i=1; AJvYcCUrobkReOHUrc0CF7M3pzc0eEjSQBRKtLOobun96t6eVRjdxLq5d1nQIneh9SSYr/cCYvMTMcI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxi2vdWDvQikpWH5tr9UnCUkwdwkcnu8CWKT1KyslXPHBYvdQSa
+	FJbqAXdnDUx9bLRX5HEQltzz5zVluxz+3HvipJS6DCnJRGhUcfC6JvSK
+X-Gm-Gg: AY/fxX4xnj1E++nufoGQGqVk3BAPYUmMtvHKZ2cJG5SalPy0IjOObkEKUl87tokaY6v
+	aPr93WYBRH6BPOT1KVMnpgnzbHpdFG8R+ODQzFnQB9hIb/VZ2/gjwBKIc+NsDUpQBW5SiEU0L3W
+	KFOUKYXg4fue6m1UZM8sOGqB40WW09V3HwUXXSY6w7rtyHWYU82i9Y9KfUKmiqcnSGO9IxYCUsh
+	3BQsmYwFFc0Le+luOKL2RBnaoMjRrZ7vAsdaRoHghK1TFJYWqykGUnKet+4vIcZr/Tda2RP9+O1
+	eVe4N7SXG61bRfMP5IV9B9uvTocqPFgbkOtDMKZVWShaP2/U8xY0hhyDgoGjv8eudexbszfHXgO
+	ttrLSB3hf/J8FdT8qjp1mRCOGZpPwyWcSmsPGSdumlLj4TYzYIIpX9MnJk9ULNYftsBXq9mdUBK
+	06z/dJGuldr8AbR536p5AXCGK5foPKH/THZtz3lMhcrDj2cf/91gVrt+2Klcw=
+X-Google-Smtp-Source: AGHT+IEmhUjb0bn9l5sejLQ8WyWRX36n4fd8kPchoVbaI2C9XSS4g5e/5Gzx01/Bcl3r4EWuHbim9Q==
+X-Received: by 2002:a05:7300:3211:b0:2a4:3593:969c with SMTP id 5a478bee46e88-2ac322f9751mr5315625eec.25.1765643491097;
+        Sat, 13 Dec 2025 08:31:31 -0800 (PST)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ac191ba0fesm19570193eec.3.2025.12.13.08.31.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 13 Dec 2025 08:31:30 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <35e3347a-198f-4143-b094-2d0feb8d6d50@roeck-us.net>
+Date: Sat, 13 Dec 2025 08:31:28 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bb4f7703-b704-4eb8-942b-d693f64aed63@ubuntu.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 00/49] 6.12.62-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org, shuah@kernel.org,
+ patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+ jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com, Huacai Chen <chenhuacai@kernel.org>
+References: <20251210072948.125620687@linuxfoundation.org>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
+In-Reply-To: <20251210072948.125620687@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Dec 12, 2025 at 07:21:49PM +0100, Frode Nordahl wrote:
-> On 12/12/25 16:13, Simon Horman wrote:
-> > On Fri, Dec 12, 2025 at 07:32:01AM +0000, Frode Nordahl wrote:
-> > > The struct ip_tunnel_info has a flexible array member named
-> > > options that is protected by a counted_by(options_len)
-> > > attribute.
-> > > 
-> > > The compiler will use this information to enforce runtime bounds
-> > > checking deployed by FORTIFY_SOURCE string helpers.
-> > > 
-> > > As laid out in the GCC documentation, the counter must be
-> > > initialized before the first reference to the flexible array
-> > > member.
-> > > 
-> > > In the normal case the ip_tunnel_info_opts_set() helper is used
-> > > which would initialize options_len properly, however in the GRE
-> > > ERSPAN code a partial update is done, preventing the use of the
-> > > helper function.
-> > > 
-> > > Before this change the handling of ERSPAN traffic in GRE tunnels
-> > > would cause a kernel panic when the kernel is compiled with
-> > > GCC 15+ and having FORTIFY_SOURCE configured:
-> > > 
-> > > memcpy: detected buffer overflow: 4 byte write of buffer size 0
-> > > 
-> > > Call Trace:
-> > >   <IRQ>
-> > >   __fortify_panic+0xd/0xf
-> > >   erspan_rcv.cold+0x68/0x83
-> > >   ? ip_route_input_slow+0x816/0x9d0
-> > >   gre_rcv+0x1b2/0x1c0
-> > >   gre_rcv+0x8e/0x100
-> > >   ? raw_v4_input+0x2a0/0x2b0
-> > >   ip_protocol_deliver_rcu+0x1ea/0x210
-> > >   ip_local_deliver_finish+0x86/0x110
-> > >   ip_local_deliver+0x65/0x110
-> > >   ? ip_rcv_finish_core+0xd6/0x360
-> > >   ip_rcv+0x186/0x1a0
-> > > 
-> > > Link: https://gcc.gnu.org/onlinedocs/gcc/Common-Variable-Attributes.html#index-counted_005fby-variable-attribute
-> > > Reported-at: https://launchpad.net/bugs/2129580
-> > > Fixes: bb5e62f2d547 ("net: Add options as a flexible array to struct ip_tunnel_info")
-> > > Signed-off-by: Frode Nordahl <fnordahl@ubuntu.com>
-> > 
-> > Hi Frode,
-> > 
-> > Thanks for your patch (and nice to see you recently in Prague :).
+On 12/9/25 23:29, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.62 release.
+> There are 49 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Thank you for taking the time to review, much appreciated (I enjoyed the
-> recent conference in Prague and our exchanges there!).
+> Responses should be made by Fri, 12 Dec 2025 07:29:38 +0000.
+> Anything received after that time might be too late.
 > 
-> > Overall this looks good to me but I have some minor feedback.
-> > 
-> > 
-> > Firstly, the cited patch seems to cover more than erspan.
-> > So I'm wondering if you took at look at other cases where
-> > this might occur? No problem either way, but if so it might
-> > be worth mentioning in the commit message.
+...
+> Huacai Chen <chenhuacai@kernel.org>
+>      LoongArch: Mask all interrupts during kexec/kdump
 > 
-> I did some quick searches which formed the basis of the statement of the
-> normal case being to use the ip_tunnel_info_opts_set(), I could expand a bit
-> upon that statement.
 
-Understood. Whichever way you want to go on this is fine by me.
+This results in:
 
-> > Regarding the comments in the code. I am wondering if the are necessary
-> > as the information is also contained in the commit message. And if the
-> > source documented every such case then things could get rather verbose.
-> > 
-> > If you do feel strongly about it keeping it then could I ask that
-> > (other than the URL) it is line-wrapped trimmed to 80 columns wide or less,
-> > as is still preferred for Networking (but confusingly not all Kernel) code.
-> 
-> Yes, I guess it became a bit verbose.  The thought was that it would be very
-> easy to miss this important detail for anyone (including future me)
-> spelunking into this part of the code.
-> 
-> I'll trim it down to a single line, which should be enough to give the urge
-> to look at the commit message.
+Building loongarch:defconfig ... failed
+--------------
+Error log:
+arch/loongarch/kernel/machine_kexec.c: In function 'machine_crash_shutdown':
+arch/loongarch/kernel/machine_kexec.c:252:9: error: implicit declaration of function 'machine_kexec_mask_interrupts' [-Wimplicit-function-declaration]
+   252 |         machine_kexec_mask_interrupts();
 
-Thanks.
+... because  there is no loongarch specific version of machine_kexec_mask_interrupts()
+in v6.12.y, and the function was generalized only with commit bad6722e478f5 ("kexec:
+Consolidate machine_kexec_mask_interrupts() implementation") in v6.14.
 
-> > As a fix for code present in net this should be targeted at that tree.
-> > It's best to do so explicitly like this:
-> > 
-> > Subject: [PATCH net] ...
-> 
-> Ack.
-> 
-> > And it's probably also best to CC stable@vger.kernel.org.
-> > That practice isn't as widespread as perhaps it should be for Networking code.
-> > But it does seem worth mentioning.
-> 
-> Ack, the intention was indeed to Cc them, I only put them into the e-mail
-> header and the stable kernel bot pointed out that the Cc also needs to be in
-> the commit message.
-> 
-> -- 
-> Frode Nordahl
-> 
+Guenter
+
 
