@@ -1,104 +1,153 @@
-Return-Path: <stable+bounces-200944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14D99CBA42B
-	for <lists+stable@lfdr.de>; Sat, 13 Dec 2025 04:26:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63AF4CBA499
+	for <lists+stable@lfdr.de>; Sat, 13 Dec 2025 05:38:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1DFD53012DE0
-	for <lists+stable@lfdr.de>; Sat, 13 Dec 2025 03:25:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9D67E30AECB9
+	for <lists+stable@lfdr.de>; Sat, 13 Dec 2025 04:38:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6C532F2903;
-	Sat, 13 Dec 2025 03:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D46B2749D2;
+	Sat, 13 Dec 2025 04:38:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ogjtvWqP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TRH19TIw"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C36E29A2;
-	Sat, 13 Dec 2025 03:25:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5319E21423C
+	for <stable@vger.kernel.org>; Sat, 13 Dec 2025 04:38:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765596323; cv=none; b=ok0gjPylbsXUuku85kFv+U7ukU/bK7wOUJD5iSjU4p9S63NPLCcbFjbJ0gBBCBllzWlbvwkTM0wNEpcFVyRHlyBXubd16Sx3SnALSuKGoRaFr7Aq1IwW3xey3Zr3txnc2JLOpZVUChJ39cFFH3kyfK5xSMmfL9WJS4d1Y8OjuB8=
+	t=1765600708; cv=none; b=FwyrXuT6iacY+YBvVaTjUv76iK6/BYtWCRFhA4Z0IHlEwgQlsnN4QQOhUV5FRTi9WFiEbh/tllbn6pibTs19EZ+/avBSN9iezw5uwJtjIvSRk6DHhIBojr3Y4syEvPT3AK8qk1vnxPJcSnJ6o5IDu5w03BZPnc6zxdVnrJxOBt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765596323; c=relaxed/simple;
-	bh=EOdGXtchpdfic+rOBoa4glJU7Oaapp5fmsUf6bOes/I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EQMHiW7QXuznj9CdJDZ3Wkl/a6S60i9a696JOhHT02RUlMolVcxwwYAWiuF8s4E0vMyK8Mgis0QRCHeDvPKICwC78LgQe2XS6LX2NyeeYytuHBtgaA50Rmg5NzA/rKXSWmV5oMV/zKbVHAtZLpS0ZtlvLuuzxNTS3BmhHb3XPac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ogjtvWqP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B27B1C113D0;
-	Sat, 13 Dec 2025 03:25:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765596323;
-	bh=EOdGXtchpdfic+rOBoa4glJU7Oaapp5fmsUf6bOes/I=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ogjtvWqPiOoVT4zbq9h0NWUFEArsmucvCjZyLh94oLHrzZnPQc/k8qwVeFMba2eBE
-	 +kJ6CSQ90rzfHAya+hptEZV27eZwNmMQffqkjZxpN4CzG2gFAo43jypiJXL/Qlzcso
-	 EKhkBG3OgmOOZw3IuMram1YEHghswlz3QIP28Djd8XIsjTZR2QuUGgEzqK1CfC2nyz
-	 XxHWrvDj+cTdue071mNORuU/n6Y5ua4x92NZV8vWM6eK/tyZYTxsFJ5W6I2o/q6mPF
-	 NF6rC5X0EGJCRbV/x3GSgSbs7KiIylF7DJQmTj7tyVXyM+OnRkWyfoF116Ol2JRwke
-	 nEePQj3fKuaYg==
-Message-ID: <985ae28e-1547-46a5-bff0-5925b6544a6d@kernel.org>
-Date: Sat, 13 Dec 2025 12:25:18 +0900
+	s=arc-20240116; t=1765600708; c=relaxed/simple;
+	bh=mXt7NY8SPF55gi3cvCwORk+kPEY+sYjEwQyHhrfwWDg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ijsotcfC4YY6dT4ASO8i69BdcX3KZXndn8W9tShgw/Tavkxw+qa9Qu9w/SnhcUA6fr9bpJlX9f5hB8l66YuWKlU8RXNYgcgqX9K+rbbkWdl61IoRVS0SDJAC/eW4jh2APe0NGQCRNkCQyWK9sWf61IRkaMfwGkIWy3Ejn8KQaEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TRH19TIw; arc=none smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-c0bccb8037eso1539388a12.1
+        for <stable@vger.kernel.org>; Fri, 12 Dec 2025 20:38:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765600707; x=1766205507; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=xFIvfMAl9TR6Q9R9Q0HiVq+PzpkLOCN1UWaM5jn2GA8=;
+        b=TRH19TIwi/KJRaUMcXjmF4WpgZYUvttavN48Q7HGUh5ni5Bn5/eHv8VocPb4xzVVyN
+         ddk/IOBNkyMRM9vKk6lDcyWqn4qsHQYTst1dI2Q2XtMCUJI0BrKwWNpt6G606EbvU/VA
+         VY+zZcWKI5N0tKd6k3Px/t11d2r+m/6VcNMxknsXM85jnXU2gY8dDCP/1VUvgPLvWIAg
+         xSvGz41a79GoJ4k8uklTDasMvEr1ppB/D5pBVCAwi5MsU2yb5uSim0Ioa+vxNf6CeLOl
+         j7l1RKmM88bfNkWuCWDZDYRC6DZCg/sHk/hNrHwJW73dizJOXgYBWRmVKK+3XSXJdec5
+         4p/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765600707; x=1766205507;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xFIvfMAl9TR6Q9R9Q0HiVq+PzpkLOCN1UWaM5jn2GA8=;
+        b=rU1jyY/GK5wWalcdotHdo7aGTyZWrmnsAB/knYMpkx/ZhHsEy+7uab4lRmrcPvy96f
+         ODePlPCFOI079FQa9d88vP8J6WOvyoYiHhHkaMIedr1lZ5hap59mNg9GzWfmVewzmIpx
+         PZkNX4bNFS39QeefIEPdpT0HWpsbDmiuaIZNqDdLD+cTwELTs0JnwDDiJiQ4i24PkoG2
+         Qr5RGG82Y9D6v73ADmw5nibSi2gp7BrlssDjzKJd3fK+m3GZvLtti1PTRYtSOOvVKW2h
+         P9/FjazkXQh0rW8efzLix0eUUJGSYyxfZYPaciVOAFzYDp9Zln0pXuPaVjeDo/TyFSYZ
+         TrQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWL3hzQwHk9U07Y2ls1b6IV/P8DGFCjxJ5QLI/KIs2yAGe0MW7TaJK3cAJt/faBD2Ulx3RJ6CM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzpSzqFbxh6F2UC/f61YyJMIf3N+ZjsTj1p1q+cHGxrXwzb1ycd
+	qDq2sKSw5VBmgO1z9wn02KGEulYkErH5mxRN9tYm3Qk3tBLjz00PIl+L
+X-Gm-Gg: AY/fxX5G9c9LrhUqGOJXBZoKFqynmSslgscZFF/Mej7q2taxthA/hgzaMxFfy5iDJBL
+	+A/rVWrQmu80yDk+/nFkzGhVmKRmRzYFx7D3OiTg5VmT8MFddQuGcTpxlu0yQA3IGBjbEPo61rQ
+	I/z7+EqctDQTMYp6hY++EqRxzCS2rGQlxCRNP8BsGAvH/DoL9WHpyysf7R+BN5klo9x/iqmR6Qn
+	jzFcDEH2oJfmUwCWv7yZb1nOUTH/ZI9K7nbESfhx8RjU8DJ/56QqJr+kZQaaJDT7YxCXTFX4ULJ
+	+xNmhv6qubs/xzm71+elva5aMRLSFmqa9Sx1qMW3jsOqCsFoKF34i3dLpVDAq575SjNpE95pDUh
+	TxR6ujpsXqMDMuNYab0BVYh+9OVyPGiup2P0LLB5JdNs1GK8+aeZz+qXzZlSOCzO20L6bX1MqEt
+	8nCW6Qu8ACeBVyy7tJnBVeSMcDT4d7izuyr7BAg9qXTW3lLGxcUdd7
+X-Google-Smtp-Source: AGHT+IGzGbkisr/51ynyU/LrFMOnRRC5im7kh0psh40BLTwx+30e8kNIVF3UeSEBnDmD0Ok6TPXJTg==
+X-Received: by 2002:a05:7301:30ad:b0:2a4:3593:968d with SMTP id 5a478bee46e88-2ac32223ac2mr1923105eec.10.1765600706521;
+        Fri, 12 Dec 2025 20:38:26 -0800 (PST)
+Received: from google.com ([2a00:79e0:2ebe:8:3478:9150:d4be:149f])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ac191ba0fesm17378822eec.3.2025.12.12.20.38.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 12 Dec 2025 20:38:25 -0800 (PST)
+Date: Fri, 12 Dec 2025 20:38:23 -0800
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Mike Rapoport <rppt@kernel.org>, Marek Vasut <marek.vasut@mailbox.org>
+Cc: Minseong Kim <ii4gsp@gmail.com>, linux-input@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] input: synaptics_i2c - cancel delayed work before
+ freeing device
+Message-ID: <py7u3qpp6s4nfdceefufkjpbyhkj7wp2kyetlw54vlhdp4gmwn@6vghr6bqkbxc>
+References: <20251210032027.11700-1-ii4gsp@gmail.com>
+ <xeski4dr32zbxvupofis5azlq2s6fwtnuya7f3kjfz5t7c2wnq@jbvlajechlrd>
+ <aTlmwhOF3zB1UkrI@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] scsi: sd: fix write_same(16/10) to enable sector size
- > PAGE_SIZE
-To: Pankaj Raghav <kernel@pankajraghav.com>, sw.prabhu6@gmail.com,
- James.Bottomley@HansenPartnership.com, martin.petersen@oracle.com,
- linux-scsi@vger.kernel.org
-Cc: bvanassche@acm.org, linux-kernel@vger.kernel.org, mcgrof@kernel.org,
- stable@vger.kernel.org, Swarna Prabhu <s.prabhu@samsung.com>,
- Pankaj Raghav <p.raghav@samsung.com>
-References: <20251210014136.2549405-1-sw.prabhu6@gmail.com>
- <20251210014136.2549405-3-sw.prabhu6@gmail.com>
- <0b3458ab-e419-4ec2-9cba-eb9fd2cd8de9@kernel.org>
- <934c62d1-c800-4b31-9774-1e9dfe661877@pankajraghav.com>
-Content-Language: en-US
-From: Damien Le Moal <dlemoal@kernel.org>
-Organization: Western Digital Research
-In-Reply-To: <934c62d1-c800-4b31-9774-1e9dfe661877@pankajraghav.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aTlmwhOF3zB1UkrI@kernel.org>
 
-On 2025/12/12 8:53, Pankaj Raghav wrote:
->>> Cc: stable@vger.kernel.org Signed-off-by: Swarna Prabhu
->>> <s.prabhu@samsung.com> Co-developed-by: Pankaj Raghav
->>> <p.raghav@samsung.com> Signed-off-by: Pankaj Raghav
->>> <p.raghav@samsung.com> --- Note: We are allocating pages of order
->>> aligned to BLK_MAX_BLOCK_SIZE for the mempool page allocator 
->>> 'sd_page_pool' all the time. This is because we only know that a bigger
->>> sector size device is attached at sd_probe and it might be too late to
->>> reallocate mempool with order >0.
->> 
->> That is a lot heavier on the memory for the vast majority of devices which
->> are 512B or 4K block size... It may be better to have the special "large
->> block" mempool attached to the scsi disk struct and keep the default
->> single page mempool for all other regular devices.
->> 
+On Wed, Dec 10, 2025 at 09:25:38PM +0900, Mike Rapoport wrote:
+> Hi,
 > 
-> We had the same feeling as well and we mentioned it in the 1st RFC.
-> 
-> But when will you initialize the mempool for the large block devices? I
-> don't think it makes sense to unconditionally initialize it in init_sd. Do
-> we do it during the sd_probe() when we first encounter a large block device?
-> That way we may not waste any memory if no large block devices are attached.
+> On Tue, Dec 09, 2025 at 08:40:54PM -0800, Dmitry Torokhov wrote:
+> > Hi Minseong,
+> > 
+> > On Wed, Dec 10, 2025 at 12:20:27PM +0900, Minseong Kim wrote:
+> > > synaptics_i2c_irq() schedules touch->dwork via mod_delayed_work().
+> > > The delayed work performs I2C transactions and may still be running
+> > > (or get queued) when the device is removed.
+> > > 
+> > > synaptics_i2c_remove() currently frees 'touch' without canceling
+> > > touch->dwork. If removal happens while the work is pending/running,
+> > > the work handler may dereference freed memory, leading to a potential
+> > > use-after-free.
+> > > 
+> > > Cancel the delayed work synchronously before unregistering/freeing
+> > > the device.
+> > > 
+> > > Fixes: eef3e4cab72e Input: add driver for Synaptics I2C touchpad
+> > > Reported-by: Minseong Kim <ii4gsp@gmail.com>
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Minseong Kim <ii4gsp@gmail.com>
+> > > ---
+> > >  drivers/input/mouse/synaptics_i2c.c | 2 ++
+> > >  1 file changed, 2 insertions(+)
+> > > 
+> > > diff --git a/drivers/input/mouse/synaptics_i2c.c b/drivers/input/mouse/synaptics_i2c.c
+> > > index a0d707e47d93..fe30bf9aea3a 100644
+> > > --- a/drivers/input/mouse/synaptics_i2c.c
+> > > +++ b/drivers/input/mouse/synaptics_i2c.c
+> > > @@ -593,6 +593,8 @@ static void synaptics_i2c_remove(struct i2c_client *client)
+> > >  	if (!polling_req)
+> > >  		free_irq(client->irq, touch);
+> > >  
+> > > +	cancel_delayed_work_sync(&touch->dwork);
+> > > +
+> > 
+> > The call to cancel_delayed_work_sync() happens in the close() handler
+> > for the device. I see that in resume we restart the polling without
+> > checking if the device is opened, so if we want to fix it we should add
+> > the checks there.
+> > 
+> > However support for the PXA board using in the device with this touch
+> > controller (eXeda) was removed a while ago. Mike, you're one of the
+> > authors, any objections to simply removing the driver? 
+>  
+> No objections from my side.
 
-That sounds reasonable to me. Any system that has a device with a large sector
-size will get this mempool initialized when the first such device is scanned,
-and systems with regular disks (the vast majority of cases for scsi) will not.
-You may want to be careful with that initialization in sd_probe() though: scsi
-device scan is asynchronous and done in parallel for multiple devices, so you
-will need some atomicity for checking the mempool existence and initializing it
-if needed.
+Hmm, it looks like it is still referenced from
+arch/arm/boot/dts/nxp/mxs/imx23-sansa.dts
+
+Marek, is this device still relevant?
+
+Thanks.
 
 -- 
-Damien Le Moal
-Western Digital Research
+Dmitry
 
