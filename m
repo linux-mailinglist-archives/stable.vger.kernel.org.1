@@ -1,60 +1,65 @@
-Return-Path: <stable+bounces-200939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DDBECB994F
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 19:39:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD920CBA1D6
+	for <lists+stable@lfdr.de>; Sat, 13 Dec 2025 01:23:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6D173300A35C
-	for <lists+stable@lfdr.de>; Fri, 12 Dec 2025 18:39:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 52D1230AEEA1
+	for <lists+stable@lfdr.de>; Sat, 13 Dec 2025 00:23:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 201BE3093DD;
-	Fri, 12 Dec 2025 18:39:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B8D120B800;
+	Sat, 13 Dec 2025 00:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="T+Sg+btb"
+	dkim=pass (1024-bit key) header.d=fr.zoreil.com header.i=@fr.zoreil.com header.b="ARMTVkV9"
 X-Original-To: stable@vger.kernel.org
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+Received: from violet.fr.zoreil.com (violet.fr.zoreil.com [92.243.8.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B118E3090C6
-	for <stable@vger.kernel.org>; Fri, 12 Dec 2025 18:39:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34AE73FFD;
+	Sat, 13 Dec 2025 00:23:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.243.8.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765564755; cv=none; b=Wf220p5ZPfVtpXwIWAkHJjNhJZqmgp7Hl6xM62QpX5xMIxHl9YLINTkOec0fETMy71duI5CVNEjdWw5MGP+HWACDnVsyFLDHz86LORa9agA0b0yuyfT/OX95YXFdDb9apNlbYGss4NR5bPk7IuVu/6ONxxfXOtmsoWd1P3lLtiA=
+	t=1765585393; cv=none; b=p34YaDy2dXjYGN4U1poPtCVYI2YUMNgGFlKeayTxuWfiICViA52B53DAPwlN2F1wGsYZBW9J4pm21OqnlkBNB+lbEiRncuxcQU/66mKHSWOuWPw5EMVH+VzyLZw2eJI44KA22kUBbthQuPoohap7uM4/JEkGCCupoM4WiOYtvks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765564755; c=relaxed/simple;
-	bh=ugsAxYUS9SCyFXBF83/tUkvvJ7g1dDLQggQVawaI32Y=;
+	s=arc-20240116; t=1765585393; c=relaxed/simple;
+	bh=eXYZ8fT2wVsXsmSVyrZXf8+T7Hpj+3tRLLQ9MsogmVE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GHH0y7+WsdfOFakIuoTpxZSEfxWEcAkE6AkuF8sum0GwydBkv6IrRtXr+l7F/M391IynQy1p73+4nvnd8XrrSqXCbNHV0VFRmwp0bM8XVmHZEsCpu4fYBblWPS5y3aJjMBK/CgGWfK2oezpfQ1hMSAs015/7ml6bFyS/okDSPK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=T+Sg+btb; arc=none smtp.client-ip=91.218.175.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Fri, 12 Dec 2025 18:38:57 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1765564741;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=B6WpVlTtFAykjN1mH2MObKgqxHP2mRYBhEJpH91B0wU=;
-	b=T+Sg+btbW+HivP2Serg6GSw+CNDcXGuiJpPh6oi9YT9H3Eb+DpUCc0INbrZ6USmlXb83tB
-	vtN6IED80A3Kg7e9tcXEG1S0z9x5fFQQC9Yh2ywpU8b/SCcjVbPCBYuDxUhBSQ282IdgWw
-	/GGs5Tm41bMwl4rTv1L6x8dRgY4MzyE=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 04/13] KVM: nSVM: Fix consistency checks for NP_ENABLE
-Message-ID: <sjxsi4udjj6acl5sm6u7vqxrplo5oshwgaoor2wmm3iza5h5fj@cbnzxcmwliwy>
-References: <20251110222922.613224-1-yosry.ahmed@linux.dev>
- <20251110222922.613224-5-yosry.ahmed@linux.dev>
- <aThN-xUbQeFSy_F7@google.com>
- <nyuyxccvnhscbo7qtlbsfl2fgxwood24nn4bvskhfqghgli3jo@xsv4zbdkolij>
- <aThp19OAXDoZlk3k@google.com>
- <fg5ipm56ejqp7p2j2lo5i5ouktzqggo3663eu4tna74u6paxpg@lque35ixlzje>
- <aThtjYG3OZTtdwUA@google.com>
- <pit2u5dpjpchsbz3pyujk62smysco5z37i3z3qosdscx6bddqj@i6fjafx5fxlz>
- <aTxftw3XcIrwyTzK@google.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=OhOt0ypY11hp+GafskfPgR3GWylT4FQ4CHMazDgk2HfHdc/jJud7nr9ziZRSrtm9uD0mW8c3KttWnBklrEB4Su0bXfbn73v8lvyGR4GLiKh+bqyvJp/6V5kHLu7h5DO0mDPY8/mepY7BVwXbKC9aWDCRnbuX+05sYDrVlz4QRIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fr.zoreil.com; spf=pass smtp.mailfrom=fr.zoreil.com; dkim=pass (1024-bit key) header.d=fr.zoreil.com header.i=@fr.zoreil.com header.b=ARMTVkV9; arc=none smtp.client-ip=92.243.8.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fr.zoreil.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fr.zoreil.com
+Received: from violet.fr.zoreil.com ([127.0.0.1])
+	by violet.fr.zoreil.com (8.17.1/8.17.1) with ESMTP id 5BD0LUHv790219;
+	Sat, 13 Dec 2025 01:21:30 +0100
+DKIM-Filter: OpenDKIM Filter v2.11.0 violet.fr.zoreil.com 5BD0LUHv790219
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fr.zoreil.com;
+	s=v20220413; t=1765585290;
+	bh=h75iuVO7L+TRH0e2OFj132onsNksrZx95PpxfQH85QQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ARMTVkV92BhcsBQtB8G2qv9sfa4xHWV9KZAVVU0MVex0QOUFglfBvo+vx80mgOCFD
+	 6PJZRKKzVYyBMpH3Xu4XGwmKKcnQeYO/6GZ32H+zvOJGQUCmm2kciuq1n3Ny8qUJN4
+	 DLKd/0Z8iri6Zglh3MOm8yko10+ZDRpIaaJ5wG30=
+Received: (from romieu@localhost)
+	by violet.fr.zoreil.com (8.17.1/8.17.1/Submit) id 5BD0LTRF790218;
+	Sat, 13 Dec 2025 01:21:29 +0100
+Date: Sat, 13 Dec 2025 01:21:29 +0100
+From: Francois Romieu <romieu@fr.zoreil.com>
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Simon Horman <horms@kernel.org>, Ilya Krutskih <devsec@tpz.ru>,
+        Andrew Lunn <andrew+netdev@lunn.ch>, oe-kbuild-all@lists.linux.dev,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@kernel.org>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v2] net: fealnx: fix possible 'card_idx' integer overflow
+ in
+Message-ID: <20251213002129.GA790186@electric-eye.fr.zoreil.com>
+References: <20251211173035.852756-1-devsec@tpz.ru>
+ <202512121907.n3Bzh2zF-lkp@intel.com>
+ <aTwqqxPgMWG9CqJL@horms.kernel.org>
+ <20251212173603.46f27e9b@pumpkin>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,95 +68,17 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aTxftw3XcIrwyTzK@google.com>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <20251212173603.46f27e9b@pumpkin>
+X-Organisation: Land of Sunshine Inc.
 
-On Fri, Dec 12, 2025 at 10:32:23AM -0800, Sean Christopherson wrote:
-> On Tue, Dec 09, 2025, Yosry Ahmed wrote:
-> > On Tue, Dec 09, 2025 at 10:42:21AM -0800, Sean Christopherson wrote:
-> > > On Tue, Dec 09, 2025, Yosry Ahmed wrote:
-> > > > On Tue, Dec 09, 2025 at 10:26:31AM -0800, Sean Christopherson wrote:
-> > > > > On Tue, Dec 09, 2025, Yosry Ahmed wrote:
-> > > > > > > > diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-> > > > > > > > index f6fb70ddf7272..3e805a43ffcdb 100644
-> > > > > > > > --- a/arch/x86/kvm/svm/svm.h
-> > > > > > > > +++ b/arch/x86/kvm/svm/svm.h
-> > > > > > > > @@ -552,7 +552,8 @@ static inline bool gif_set(struct vcpu_svm *svm)
-> > > > > > > >  
-> > > > > > > >  static inline bool nested_npt_enabled(struct vcpu_svm *svm)
-> > > > > > > >  {
-> > > > > > > > -	return svm->nested.ctl.nested_ctl & SVM_NESTED_CTL_NP_ENABLE;
-> > > > > > > > +	return guest_cpu_cap_has(&svm->vcpu, X86_FEATURE_NPT) &&
-> > > > > > > > +		svm->nested.ctl.nested_ctl & SVM_NESTED_CTL_NP_ENABLE;
-> > > > > > > 
-> > > > > > > I would rather rely on Kevin's patch to clear unsupported features.
-> > > > > > 
-> > > > > > Not sure how Kevin's patch is relevant here, could you please clarify?
-> > > > > 
-> > > > > Doh, Kevin's patch only touches intercepts.  What I was trying to say is that I
-> > > > > would rather sanitize the snapshot (the approach Kevin's patch takes with the
-> > > > > intercepts), as opposed to guarding the accessor.  That way we can't have bugs
-> > > > > where KVM checks svm->nested.ctl.nested_ctl directly and bypasses the caps check.
-> > > > 
-> > > > I see, so clear SVM_NESTED_CTL_NP_ENABLE in
-> > > > __nested_copy_vmcb_control_to_cache() instead.
-> > > > 
-> > > > If I drop the guest_cpu_cap_has() check here I will want to leave a
-> > > > comment so that it's obvious to readers that SVM_NESTED_CTL_NP_ENABLE is
-> > > > sanitized elsewhere if the guest cannot use NPTs. Alternatively, I can
-> > > > just keep the guest_cpu_cap_has() check as documentation and a second
-> > > > line of defense.
-> > > > 
-> > > > Any preferences?
-> > > 
-> > > Honestly, do nothing.  I want to solidify sanitizing the cache as standard behavior,
-> > > at which point adding a comment implies that nested_npt_enabled() is somehow special,
-> > > i.e. that it _doesn't_ follow the standard.
-> > 
-> > Does this apply to patch 12 as well? In that patch I int_vector,
-> 
-> I <something>?
+David Laight <david.laight.linux@gmail.com> :
+[...]
+> And I just don't understand the assignment: option = dev->mem_start;
 
-I "sanitize" int_vector..
+One can overload the driver 'option' settings through the kernel 'ether'
+option which was typically used in the pre-PCI ISA era for non-modular
+kernels.
 
-Sorry :D
-
-> 
-> > int_state, and event_inj when copying them to VMCB02 in
-> > nested_vmcb02_prepare_control(). Mainly because
-> > nested_vmcb02_prepare_control() already kinda filters what to copy from
-> > VMCB12 (e.g. int_ctl), so it seemed like a better fit.
-> > 
-> > Do I keep that as-is, or do you prefer that I also sanitize these fields
-> > when copying to the cache in nested_copy_vmcb_control_to_cache()?
-> 
-> I don't think I follow.  What would the sanitization look like?  Note, I don't
-> think we need to completely sanitize _every_ field.  The key fields are ones
-> where KVM consumes and/or acts on the field.
-
-Patch 12 currently sanitizes what is copied from VMCB12 to VMCB02 for
-int_vector, int_state, and event_inj in nested_vmcb02_prepare_control():
-
-@@ -890,9 +893,9 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm,
- 		(svm->nested.ctl.int_ctl & int_ctl_vmcb12_bits) |
- 		(vmcb01->control.int_ctl & int_ctl_vmcb01_bits);
-
--	vmcb02->control.int_vector          = svm->nested.ctl.int_vector;
--	vmcb02->control.int_state           = svm->nested.ctl.int_state;
--	vmcb02->control.event_inj           = svm->nested.ctl.event_inj;
-+	vmcb02->control.int_vector          = svm->nested.ctl.int_vector & SVM_INT_VECTOR_MASK;
-+	vmcb02->control.int_state           = svm->nested.ctl.int_state & SVM_INTERRUPT_SHADOW_MASK;
-+	vmcb02->control.event_inj           = svm->nested.ctl.event_inj & ~SVM_EVTINJ_RESERVED_BITS;
- 	vmcb02->control.event_inj_err       = svm->nested.ctl.event_inj_err;
-
-My question was: given this:
-
-> I want to solidify sanitizing the cache as standard behavior
-
-Do you prefer that I move this sanitization when copying from L1's
-VMCB12 to the cached VMCB12 in nested_copy_vmcb_control_to_cache()?
-
-I initially made it part of nested_vmcb02_prepare_control() as it
-already filters what to pick from the VMCB12 for some other related
-fields like int_ctl based on what features are exposed to the guest.
+-- 
+Ueimor
 
