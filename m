@@ -1,133 +1,96 @@
-Return-Path: <stable+bounces-200946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F23B1CBA5F9
-	for <lists+stable@lfdr.de>; Sat, 13 Dec 2025 07:16:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71A33CBA738
+	for <lists+stable@lfdr.de>; Sat, 13 Dec 2025 09:37:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8EC0D305969B
-	for <lists+stable@lfdr.de>; Sat, 13 Dec 2025 06:16:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4B403306A534
+	for <lists+stable@lfdr.de>; Sat, 13 Dec 2025 08:37:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6EC121E091;
-	Sat, 13 Dec 2025 06:16:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BCx/DiFY"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DC762405E7;
+	Sat, 13 Dec 2025 08:37:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1282B2D7;
-	Sat, 13 Dec 2025 06:16:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F3D41C72;
+	Sat, 13 Dec 2025 08:36:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765606615; cv=none; b=I2atECHwt4qKgDNI3lNhkzKV12Klh4PsRO/rXQFf5L0797Ht6COf4XQocvIZ2Pc1ipIZbjgSGzDlic38lwUn62C+k1D/vfXa0zqn1/KwRl0Ph0Erk2Ws1wGFz975ypcRKgLJl0CzSoAx+aJEsKvPai/iUWA3qj8LtLjRoJW2hfc=
+	t=1765615025; cv=none; b=FREN00O3JERugRco39+AwrOyB//BqIrlsbfDNDDwIrJkZQVE+N1F2/6yEOEaCAaTu1WMkL+IuwURvVymQrO9O0Qg9OiqlhmKnnuOR6Wjyd1xQw8wnfVFPFtD2iomTDrP8l6oshxiSlMy70anQWuVD/k8EdPwJqldyk8th9RqbT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765606615; c=relaxed/simple;
-	bh=sTK1YGj6eKx5Gicnu8MwLR39ZdM9m/hCqbZOnP6BLvM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=s8Oja+85iyP7G2fc9NpU4Eyd1Q5713g3SWroX8EjJd602o/lR/lRZ8y4PSqcIq7hx/HXdtle//oYaK54OL49O3424BMUShKLqb1CSQKtAulH/x1PAPHlibno1g92zg44iFlyvkr1ErGYK5Oqe39ne/51GWAPRsgRzwvY8ZWNL4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BCx/DiFY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C77AC4CEF7;
-	Sat, 13 Dec 2025 06:16:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765606615;
-	bh=sTK1YGj6eKx5Gicnu8MwLR39ZdM9m/hCqbZOnP6BLvM=;
-	h=From:Date:Subject:To:Cc:From;
-	b=BCx/DiFYF0Cm+b/S0kXjjRkkvo7nUgLni7sz1Z8q4nAO4dHe4aymGHirPoVsfPcEK
-	 146Wlgo2YKVlbuzIDt50IlKYLStuex/MK15b6StglIhZlmxiuKQ84XDr7ofatk0Ui3
-	 5+gc3Fl7JzOzKJxpTmAKes4J8V015wxnqfUq4WEQDpYCGPHKH8C7nxP6QeDtlM9FsN
-	 voVTajLQs7mjwEUsJIYTrxr5NFzPZQGSH9UdJTmee6tVTYegHEgHaIo5/inzqzFTs9
-	 mSWPWSZW/FdFeWLmZHO7lifEl5MzxtgeZb9KIE5IdjJRFgON/RXn42/0bjyXodpX/o
-	 PsBbsqacRwS/g==
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Sat, 13 Dec 2025 15:16:43 +0900
-Subject: [PATCH] drm/amd/display: Apply e4479aecf658 to dml
+	s=arc-20240116; t=1765615025; c=relaxed/simple;
+	bh=jwy8x0Pv72DV5sOKYODW/uajcNmAczdG5r26stzCySE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mzbSVwEx9ddWTdGzkn7TRbM2ESD+gN+nbEGsHx5oCvC0Zuz25u0Hd3DFLuxk9Mubn4LNY7ahlsBgaD0Ro2jixdL9kwP1W6KfVpIyDoGvQGgk0J383aSuBg8OlsaL3N2R3Q9kuY+0sEbJC+8im3Sq2mKSu4vki/iHFOV0wZqvvik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn; spf=pass smtp.mailfrom=isrc.iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isrc.iscas.ac.cn
+Received: from localhost.localdomain (unknown [36.112.3.239])
+	by APP-03 (Coremail) with SMTP id rQCowABHaN+dJT1pKkCPAA--.46430S2;
+	Sat, 13 Dec 2025 16:36:45 +0800 (CST)
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+To: ketan.mukadam@broadcom.com,
+	James.Bottomley@HansenPartnership.com,
+	martin.petersen@oracle.com,
+	jitendra.bhivare@broadcom.com,
+	hare@suse.com
+Cc: linux-scsi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] scsi: be2iscsi: fix a memory leak in beiscsi_boot_get_sinfo()
+Date: Sat, 13 Dec 2025 16:36:43 +0800
+Message-Id: <20251213083643.301240-1-lihaoxiang@isrc.iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251213-dml-bump-frame-warn-clang-sanitizers-v1-1-0e91608db9eb@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAMoEPWkC/yXN0QrCMAyF4VcZuTawdiroq4gXWZdqZK0j2XRs7
- N2tevnB4T8rGKuwwblaQfklJs9c4HYVhDvlG6N0xeBrf3DeNdilHtspDRiVEuObNGPoyxKNsoy
- ysBrW1OxjOLkjcYCSGpSjzL+by/Vvm9oHh/Hbhm37AH/qiS+IAAAA
-X-Change-ID: 20251213-dml-bump-frame-warn-clang-sanitizers-0a34fc916aec
-To: Austin Zheng <austin.zheng@amd.com>, Jun Lei <jun.lei@amd.com>, 
- Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>, 
- Rodrigo Siqueira <siqueira@igalia.com>, 
- Alex Deucher <alexander.deucher@amd.com>, 
- =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-Cc: Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
- amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
- llvm@lists.linux.dev, patches@lists.linux.dev, stable@vger.kernel.org, 
- Nathan Chancellor <nathan@kernel.org>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2441; i=nathan@kernel.org;
- h=from:subject:message-id; bh=sTK1YGj6eKx5Gicnu8MwLR39ZdM9m/hCqbZOnP6BLvM=;
- b=owGbwMvMwCUmm602sfCA1DTG02pJDJm2LJcNlgga6tv4uJbunheUZOjHWdZe2RBQy2h6XND96
- AG39CsdpSwMYlwMsmKKLNWPVY8bGs45y3jj1CSYOaxMIEMYuDgFYCJLmRgZ1upuvF7lKNurrav6
- erL81lcOC06rLTWp5L9pKKk+/9Xxq4wMvTditv5aGH/ntGScz1xrW7Omm5vCdVokrSzipt+88aK
- THwA=
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowABHaN+dJT1pKkCPAA--.46430S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrtF13WF4DZF4xGFWDWF4fuFg_yoW3tFg_uw
+	4YqwnFg3yUGF4fAF4UWF1a9a90kry8Xws7uF1avryfCryfZr98XF10vr1fZw4kAa18uF1D
+	A34UJ34qyw4kJjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbckFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6r1S6rWUM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Jr0_
+	Gr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Jr0_Gr
+	1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0
+	cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8Jw
+	ACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_Jw0_
+	GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxV
+	WUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI
+	7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r
+	1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI
+	42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x0JUd-B_UUUUU=
+X-CM-SenderInfo: 5olkt0x0ld0ww6lv2u4olvutnvoduhdfq/1tbiBwkPE2k8yQuQYQAAs0
 
-After an innocuous optimization change in clang-22, allmodconfig (which
-enables CONFIG_KASAN and CONFIG_WERROR) breaks with:
+If nonemb_cmd->va fails to be allocated, call free_mcc_wrb()
+to restore the impact caused by alloc_mcc_wrb().
 
-  drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn32/display_mode_vba_32.c:1724:6: error: stack frame size (3144) exceeds limit (3072) in 'dml32_ModeSupportAndSystemConfigurationFull' [-Werror,-Wframe-larger-than]
-   1724 | void dml32_ModeSupportAndSystemConfigurationFull(struct display_mode_lib *mode_lib)
-        |      ^
-
-With clang-21, this function was already pretty close to the existing
-limit of 3072 bytes.
-
-  drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn32/display_mode_vba_32.c:1724:6: error: stack frame size (2904) exceeds limit (2048) in 'dml32_ModeSupportAndSystemConfigurationFull' [-Werror,-Wframe-larger-than]
-   1724 | void dml32_ModeSupportAndSystemConfigurationFull(struct display_mode_lib *mode_lib)
-        |      ^
-
-A similar situation occurred in dml2, which was resolved by
-commit e4479aecf658 ("drm/amd/display: Increase sanitizer frame larger
-than limit when compile testing with clang") by increasing the limit for
-clang when compile testing with certain sanitizer enabled, so that
-allmodconfig (an easy testing target) continues to work.
-
-Apply that same change to the dml folder to clear up the warning for
-allmodconfig, unbreaking the build.
-
+Fixes: 50a4b824be9e ("scsi: be2iscsi: Fix to make boot discovery non-blocking")
 Cc: stable@vger.kernel.org
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2135
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 ---
- drivers/gpu/drm/amd/display/dc/dml/Makefile | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/scsi/be2iscsi/be_mgmt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/Makefile b/drivers/gpu/drm/amd/display/dc/dml/Makefile
-index b357683b4255..268b5fbdb48b 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/Makefile
-+++ b/drivers/gpu/drm/amd/display/dc/dml/Makefile
-@@ -30,7 +30,11 @@ dml_rcflags := $(CC_FLAGS_NO_FPU)
- 
- ifneq ($(CONFIG_FRAME_WARN),0)
-     ifeq ($(filter y,$(CONFIG_KASAN)$(CONFIG_KCSAN)),y)
--        frame_warn_limit := 3072
-+        ifeq ($(CONFIG_CC_IS_CLANG)$(CONFIG_COMPILE_TEST),yy)
-+            frame_warn_limit := 4096
-+        else
-+            frame_warn_limit := 3072
-+        endif
-     else
-         frame_warn_limit := 2048
-     endif
-
----
-base-commit: f24e96d69f5b9eb0f3b9c49e53c385c50729edfd
-change-id: 20251213-dml-bump-frame-warn-clang-sanitizers-0a34fc916aec
-
-Best regards,
---  
-Nathan Chancellor <nathan@kernel.org>
+diff --git a/drivers/scsi/be2iscsi/be_mgmt.c b/drivers/scsi/be2iscsi/be_mgmt.c
+index 4e899ec1477d..b1cba986f0fb 100644
+--- a/drivers/scsi/be2iscsi/be_mgmt.c
++++ b/drivers/scsi/be2iscsi/be_mgmt.c
+@@ -1025,6 +1025,7 @@ unsigned int beiscsi_boot_get_sinfo(struct beiscsi_hba *phba)
+ 					      &nonemb_cmd->dma,
+ 					      GFP_KERNEL);
+ 	if (!nonemb_cmd->va) {
++		free_mcc_wrb(ctrl, tag);
+ 		mutex_unlock(&ctrl->mbox_lock);
+ 		return 0;
+ 	}
+-- 
+2.25.1
 
 
