@@ -1,153 +1,133 @@
-Return-Path: <stable+bounces-200945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63AF4CBA499
-	for <lists+stable@lfdr.de>; Sat, 13 Dec 2025 05:38:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F23B1CBA5F9
+	for <lists+stable@lfdr.de>; Sat, 13 Dec 2025 07:16:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9D67E30AECB9
-	for <lists+stable@lfdr.de>; Sat, 13 Dec 2025 04:38:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8EC0D305969B
+	for <lists+stable@lfdr.de>; Sat, 13 Dec 2025 06:16:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D46B2749D2;
-	Sat, 13 Dec 2025 04:38:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6EC121E091;
+	Sat, 13 Dec 2025 06:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TRH19TIw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BCx/DiFY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5319E21423C
-	for <stable@vger.kernel.org>; Sat, 13 Dec 2025 04:38:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1282B2D7;
+	Sat, 13 Dec 2025 06:16:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765600708; cv=none; b=FwyrXuT6iacY+YBvVaTjUv76iK6/BYtWCRFhA4Z0IHlEwgQlsnN4QQOhUV5FRTi9WFiEbh/tllbn6pibTs19EZ+/avBSN9iezw5uwJtjIvSRk6DHhIBojr3Y4syEvPT3AK8qk1vnxPJcSnJ6o5IDu5w03BZPnc6zxdVnrJxOBt0=
+	t=1765606615; cv=none; b=I2atECHwt4qKgDNI3lNhkzKV12Klh4PsRO/rXQFf5L0797Ht6COf4XQocvIZ2Pc1ipIZbjgSGzDlic38lwUn62C+k1D/vfXa0zqn1/KwRl0Ph0Erk2Ws1wGFz975ypcRKgLJl0CzSoAx+aJEsKvPai/iUWA3qj8LtLjRoJW2hfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765600708; c=relaxed/simple;
-	bh=mXt7NY8SPF55gi3cvCwORk+kPEY+sYjEwQyHhrfwWDg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ijsotcfC4YY6dT4ASO8i69BdcX3KZXndn8W9tShgw/Tavkxw+qa9Qu9w/SnhcUA6fr9bpJlX9f5hB8l66YuWKlU8RXNYgcgqX9K+rbbkWdl61IoRVS0SDJAC/eW4jh2APe0NGQCRNkCQyWK9sWf61IRkaMfwGkIWy3Ejn8KQaEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TRH19TIw; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-c0bccb8037eso1539388a12.1
-        for <stable@vger.kernel.org>; Fri, 12 Dec 2025 20:38:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765600707; x=1766205507; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xFIvfMAl9TR6Q9R9Q0HiVq+PzpkLOCN1UWaM5jn2GA8=;
-        b=TRH19TIwi/KJRaUMcXjmF4WpgZYUvttavN48Q7HGUh5ni5Bn5/eHv8VocPb4xzVVyN
-         ddk/IOBNkyMRM9vKk6lDcyWqn4qsHQYTst1dI2Q2XtMCUJI0BrKwWNpt6G606EbvU/VA
-         VY+zZcWKI5N0tKd6k3Px/t11d2r+m/6VcNMxknsXM85jnXU2gY8dDCP/1VUvgPLvWIAg
-         xSvGz41a79GoJ4k8uklTDasMvEr1ppB/D5pBVCAwi5MsU2yb5uSim0Ioa+vxNf6CeLOl
-         j7l1RKmM88bfNkWuCWDZDYRC6DZCg/sHk/hNrHwJW73dizJOXgYBWRmVKK+3XSXJdec5
-         4p/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765600707; x=1766205507;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xFIvfMAl9TR6Q9R9Q0HiVq+PzpkLOCN1UWaM5jn2GA8=;
-        b=rU1jyY/GK5wWalcdotHdo7aGTyZWrmnsAB/knYMpkx/ZhHsEy+7uab4lRmrcPvy96f
-         ODePlPCFOI079FQa9d88vP8J6WOvyoYiHhHkaMIedr1lZ5hap59mNg9GzWfmVewzmIpx
-         PZkNX4bNFS39QeefIEPdpT0HWpsbDmiuaIZNqDdLD+cTwELTs0JnwDDiJiQ4i24PkoG2
-         Qr5RGG82Y9D6v73ADmw5nibSi2gp7BrlssDjzKJd3fK+m3GZvLtti1PTRYtSOOvVKW2h
-         P9/FjazkXQh0rW8efzLix0eUUJGSYyxfZYPaciVOAFzYDp9Zln0pXuPaVjeDo/TyFSYZ
-         TrQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWL3hzQwHk9U07Y2ls1b6IV/P8DGFCjxJ5QLI/KIs2yAGe0MW7TaJK3cAJt/faBD2Ulx3RJ6CM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzpSzqFbxh6F2UC/f61YyJMIf3N+ZjsTj1p1q+cHGxrXwzb1ycd
-	qDq2sKSw5VBmgO1z9wn02KGEulYkErH5mxRN9tYm3Qk3tBLjz00PIl+L
-X-Gm-Gg: AY/fxX5G9c9LrhUqGOJXBZoKFqynmSslgscZFF/Mej7q2taxthA/hgzaMxFfy5iDJBL
-	+A/rVWrQmu80yDk+/nFkzGhVmKRmRzYFx7D3OiTg5VmT8MFddQuGcTpxlu0yQA3IGBjbEPo61rQ
-	I/z7+EqctDQTMYp6hY++EqRxzCS2rGQlxCRNP8BsGAvH/DoL9WHpyysf7R+BN5klo9x/iqmR6Qn
-	jzFcDEH2oJfmUwCWv7yZb1nOUTH/ZI9K7nbESfhx8RjU8DJ/56QqJr+kZQaaJDT7YxCXTFX4ULJ
-	+xNmhv6qubs/xzm71+elva5aMRLSFmqa9Sx1qMW3jsOqCsFoKF34i3dLpVDAq575SjNpE95pDUh
-	TxR6ujpsXqMDMuNYab0BVYh+9OVyPGiup2P0LLB5JdNs1GK8+aeZz+qXzZlSOCzO20L6bX1MqEt
-	8nCW6Qu8ACeBVyy7tJnBVeSMcDT4d7izuyr7BAg9qXTW3lLGxcUdd7
-X-Google-Smtp-Source: AGHT+IGzGbkisr/51ynyU/LrFMOnRRC5im7kh0psh40BLTwx+30e8kNIVF3UeSEBnDmD0Ok6TPXJTg==
-X-Received: by 2002:a05:7301:30ad:b0:2a4:3593:968d with SMTP id 5a478bee46e88-2ac32223ac2mr1923105eec.10.1765600706521;
-        Fri, 12 Dec 2025 20:38:26 -0800 (PST)
-Received: from google.com ([2a00:79e0:2ebe:8:3478:9150:d4be:149f])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ac191ba0fesm17378822eec.3.2025.12.12.20.38.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Dec 2025 20:38:25 -0800 (PST)
-Date: Fri, 12 Dec 2025 20:38:23 -0800
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Mike Rapoport <rppt@kernel.org>, Marek Vasut <marek.vasut@mailbox.org>
-Cc: Minseong Kim <ii4gsp@gmail.com>, linux-input@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] input: synaptics_i2c - cancel delayed work before
- freeing device
-Message-ID: <py7u3qpp6s4nfdceefufkjpbyhkj7wp2kyetlw54vlhdp4gmwn@6vghr6bqkbxc>
-References: <20251210032027.11700-1-ii4gsp@gmail.com>
- <xeski4dr32zbxvupofis5azlq2s6fwtnuya7f3kjfz5t7c2wnq@jbvlajechlrd>
- <aTlmwhOF3zB1UkrI@kernel.org>
+	s=arc-20240116; t=1765606615; c=relaxed/simple;
+	bh=sTK1YGj6eKx5Gicnu8MwLR39ZdM9m/hCqbZOnP6BLvM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=s8Oja+85iyP7G2fc9NpU4Eyd1Q5713g3SWroX8EjJd602o/lR/lRZ8y4PSqcIq7hx/HXdtle//oYaK54OL49O3424BMUShKLqb1CSQKtAulH/x1PAPHlibno1g92zg44iFlyvkr1ErGYK5Oqe39ne/51GWAPRsgRzwvY8ZWNL4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BCx/DiFY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C77AC4CEF7;
+	Sat, 13 Dec 2025 06:16:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765606615;
+	bh=sTK1YGj6eKx5Gicnu8MwLR39ZdM9m/hCqbZOnP6BLvM=;
+	h=From:Date:Subject:To:Cc:From;
+	b=BCx/DiFYF0Cm+b/S0kXjjRkkvo7nUgLni7sz1Z8q4nAO4dHe4aymGHirPoVsfPcEK
+	 146Wlgo2YKVlbuzIDt50IlKYLStuex/MK15b6StglIhZlmxiuKQ84XDr7ofatk0Ui3
+	 5+gc3Fl7JzOzKJxpTmAKes4J8V015wxnqfUq4WEQDpYCGPHKH8C7nxP6QeDtlM9FsN
+	 voVTajLQs7mjwEUsJIYTrxr5NFzPZQGSH9UdJTmee6tVTYegHEgHaIo5/inzqzFTs9
+	 mSWPWSZW/FdFeWLmZHO7lifEl5MzxtgeZb9KIE5IdjJRFgON/RXn42/0bjyXodpX/o
+	 PsBbsqacRwS/g==
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Sat, 13 Dec 2025 15:16:43 +0900
+Subject: [PATCH] drm/amd/display: Apply e4479aecf658 to dml
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aTlmwhOF3zB1UkrI@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251213-dml-bump-frame-warn-clang-sanitizers-v1-1-0e91608db9eb@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAMoEPWkC/yXN0QrCMAyF4VcZuTawdiroq4gXWZdqZK0j2XRs7
+ N2tevnB4T8rGKuwwblaQfklJs9c4HYVhDvlG6N0xeBrf3DeNdilHtspDRiVEuObNGPoyxKNsoy
+ ysBrW1OxjOLkjcYCSGpSjzL+by/Vvm9oHh/Hbhm37AH/qiS+IAAAA
+X-Change-ID: 20251213-dml-bump-frame-warn-clang-sanitizers-0a34fc916aec
+To: Austin Zheng <austin.zheng@amd.com>, Jun Lei <jun.lei@amd.com>, 
+ Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>, 
+ Rodrigo Siqueira <siqueira@igalia.com>, 
+ Alex Deucher <alexander.deucher@amd.com>, 
+ =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+Cc: Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+ amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+ llvm@lists.linux.dev, patches@lists.linux.dev, stable@vger.kernel.org, 
+ Nathan Chancellor <nathan@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2441; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=sTK1YGj6eKx5Gicnu8MwLR39ZdM9m/hCqbZOnP6BLvM=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDJm2LJcNlgga6tv4uJbunheUZOjHWdZe2RBQy2h6XND96
+ AG39CsdpSwMYlwMsmKKLNWPVY8bGs45y3jj1CSYOaxMIEMYuDgFYCJLmRgZ1upuvF7lKNurrav6
+ erL81lcOC06rLTWp5L9pKKk+/9Xxq4wMvTditv5aGH/ntGScz1xrW7Omm5vCdVokrSzipt+88aK
+ THwA=
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 
-On Wed, Dec 10, 2025 at 09:25:38PM +0900, Mike Rapoport wrote:
-> Hi,
-> 
-> On Tue, Dec 09, 2025 at 08:40:54PM -0800, Dmitry Torokhov wrote:
-> > Hi Minseong,
-> > 
-> > On Wed, Dec 10, 2025 at 12:20:27PM +0900, Minseong Kim wrote:
-> > > synaptics_i2c_irq() schedules touch->dwork via mod_delayed_work().
-> > > The delayed work performs I2C transactions and may still be running
-> > > (or get queued) when the device is removed.
-> > > 
-> > > synaptics_i2c_remove() currently frees 'touch' without canceling
-> > > touch->dwork. If removal happens while the work is pending/running,
-> > > the work handler may dereference freed memory, leading to a potential
-> > > use-after-free.
-> > > 
-> > > Cancel the delayed work synchronously before unregistering/freeing
-> > > the device.
-> > > 
-> > > Fixes: eef3e4cab72e Input: add driver for Synaptics I2C touchpad
-> > > Reported-by: Minseong Kim <ii4gsp@gmail.com>
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Minseong Kim <ii4gsp@gmail.com>
-> > > ---
-> > >  drivers/input/mouse/synaptics_i2c.c | 2 ++
-> > >  1 file changed, 2 insertions(+)
-> > > 
-> > > diff --git a/drivers/input/mouse/synaptics_i2c.c b/drivers/input/mouse/synaptics_i2c.c
-> > > index a0d707e47d93..fe30bf9aea3a 100644
-> > > --- a/drivers/input/mouse/synaptics_i2c.c
-> > > +++ b/drivers/input/mouse/synaptics_i2c.c
-> > > @@ -593,6 +593,8 @@ static void synaptics_i2c_remove(struct i2c_client *client)
-> > >  	if (!polling_req)
-> > >  		free_irq(client->irq, touch);
-> > >  
-> > > +	cancel_delayed_work_sync(&touch->dwork);
-> > > +
-> > 
-> > The call to cancel_delayed_work_sync() happens in the close() handler
-> > for the device. I see that in resume we restart the polling without
-> > checking if the device is opened, so if we want to fix it we should add
-> > the checks there.
-> > 
-> > However support for the PXA board using in the device with this touch
-> > controller (eXeda) was removed a while ago. Mike, you're one of the
-> > authors, any objections to simply removing the driver? 
->  
-> No objections from my side.
+After an innocuous optimization change in clang-22, allmodconfig (which
+enables CONFIG_KASAN and CONFIG_WERROR) breaks with:
 
-Hmm, it looks like it is still referenced from
-arch/arm/boot/dts/nxp/mxs/imx23-sansa.dts
+  drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn32/display_mode_vba_32.c:1724:6: error: stack frame size (3144) exceeds limit (3072) in 'dml32_ModeSupportAndSystemConfigurationFull' [-Werror,-Wframe-larger-than]
+   1724 | void dml32_ModeSupportAndSystemConfigurationFull(struct display_mode_lib *mode_lib)
+        |      ^
 
-Marek, is this device still relevant?
+With clang-21, this function was already pretty close to the existing
+limit of 3072 bytes.
 
-Thanks.
+  drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn32/display_mode_vba_32.c:1724:6: error: stack frame size (2904) exceeds limit (2048) in 'dml32_ModeSupportAndSystemConfigurationFull' [-Werror,-Wframe-larger-than]
+   1724 | void dml32_ModeSupportAndSystemConfigurationFull(struct display_mode_lib *mode_lib)
+        |      ^
 
--- 
-Dmitry
+A similar situation occurred in dml2, which was resolved by
+commit e4479aecf658 ("drm/amd/display: Increase sanitizer frame larger
+than limit when compile testing with clang") by increasing the limit for
+clang when compile testing with certain sanitizer enabled, so that
+allmodconfig (an easy testing target) continues to work.
+
+Apply that same change to the dml folder to clear up the warning for
+allmodconfig, unbreaking the build.
+
+Cc: stable@vger.kernel.org
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2135
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+ drivers/gpu/drm/amd/display/dc/dml/Makefile | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/Makefile b/drivers/gpu/drm/amd/display/dc/dml/Makefile
+index b357683b4255..268b5fbdb48b 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/Makefile
++++ b/drivers/gpu/drm/amd/display/dc/dml/Makefile
+@@ -30,7 +30,11 @@ dml_rcflags := $(CC_FLAGS_NO_FPU)
+ 
+ ifneq ($(CONFIG_FRAME_WARN),0)
+     ifeq ($(filter y,$(CONFIG_KASAN)$(CONFIG_KCSAN)),y)
+-        frame_warn_limit := 3072
++        ifeq ($(CONFIG_CC_IS_CLANG)$(CONFIG_COMPILE_TEST),yy)
++            frame_warn_limit := 4096
++        else
++            frame_warn_limit := 3072
++        endif
+     else
+         frame_warn_limit := 2048
+     endif
+
+---
+base-commit: f24e96d69f5b9eb0f3b9c49e53c385c50729edfd
+change-id: 20251213-dml-bump-frame-warn-clang-sanitizers-0a34fc916aec
+
+Best regards,
+--  
+Nathan Chancellor <nathan@kernel.org>
+
 
