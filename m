@@ -1,122 +1,100 @@
-Return-Path: <stable+bounces-200949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D923CBA7CD
-	for <lists+stable@lfdr.de>; Sat, 13 Dec 2025 10:50:31 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A56A0CBA7D3
+	for <lists+stable@lfdr.de>; Sat, 13 Dec 2025 10:52:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 22BFF30B3271
-	for <lists+stable@lfdr.de>; Sat, 13 Dec 2025 09:50:28 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D71213003139
+	for <lists+stable@lfdr.de>; Sat, 13 Dec 2025 09:52:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 456DE2E92D6;
-	Sat, 13 Dec 2025 09:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C4532EA14E;
+	Sat, 13 Dec 2025 09:52:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k1SMTNDb"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9996535977;
-	Sat, 13 Dec 2025 09:50:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1F035977
+	for <stable@vger.kernel.org>; Sat, 13 Dec 2025 09:52:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765619427; cv=none; b=fEP28/R3/OicJsEjyaI03lg7YniblEh8VcMrhUqX7uIYGRakD3nfegg/ioEg+fckz/YwuQOaMVVDPCxHmuEHMvy+G+mgHgQbPayD96sXXzr3ZOjvdAorTJYZWWuLKtdYY8jPHWHLHRP+pRUClNZUv0LLgz3T/8iNflEJNVcJ50s=
+	t=1765619550; cv=none; b=fB3Puldv9D+Oxm+UDwxBhkYctzWScjsS7YOu5XU+AOHOBzEOWG3e7HUBoMXdHfKrXP/JkLcRuDUB/YOCbR6HKQhr4IuQ1vjMYhoazUpJSjnRZgStuNDROVtn/QMC2p4CKAVubsOyVZtv3VMm1CumBrCqz3MX+0nJFDfzNTM+GNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765619427; c=relaxed/simple;
-	bh=2ENg29drYfVDRv/MVZsEXdNOKm+KWtiWqP5gZulnKss=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=C46m4ep3PgiE5b+P1No/hX18GYa0Po8ACqnQmSa43ILL/dBmSNCGABOxiq0YC5qi2jccvoAe70aLDCCf4rvnHFAPtKxMEeKdo5G2Z4q4meYorD9dJPJz7ozavaoClJFqRg4YlHvLAkRK0FUSPv1o2qhwcWUKf+kjl7PxQkQ4kBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [223.64.68.219])
-	by gateway (Coremail) with SMTP id _____8BxF9HTNj1p69ctAA--.33512S3;
-	Sat, 13 Dec 2025 17:50:11 +0800 (CST)
-Received: from localhost.localdomain (unknown [223.64.68.219])
-	by front1 (Coremail) with SMTP id qMiowJDxscLLNj1pRe5IAQ--.10721S2;
-	Sat, 13 Dec 2025 17:50:10 +0800 (CST)
-From: Huacai Chen <chenhuacai@loongson.cn>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Huacai Chen <chenhuacai@kernel.org>
-Cc: Xuerui Wang <kernel@xen0n.name>,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Tianyang Zhang <zhangtianyang@loongson.cn>
-Subject: [PATCH 6.12] LoongArch: Add machine_kexec_mask_interrupts() implementation
-Date: Sat, 13 Dec 2025 17:49:50 +0800
-Message-ID: <20251213094950.1068951-1-chenhuacai@loongson.cn>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1765619550; c=relaxed/simple;
+	bh=ynqRBUAULXgIMfjECn/ojh+RpXKsaoXJPQx5zKt46tQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=n4cDEQIQ5id7xgXjgU+Q7NW47jdCY8iMQiUD73Fu+8+NDKrWicgWC8Ar4XFX7nl2qlNKfc0M0psVLwgqW7WbVr12sDRvn0EjC7Ry7BPus5AYpzc3qdFIERMxgKNaJls9N9ioKb+TsGweGeYeIpUImx1xNf1RdnAM7hHvafo3YcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k1SMTNDb; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765619548; x=1797155548;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=ynqRBUAULXgIMfjECn/ojh+RpXKsaoXJPQx5zKt46tQ=;
+  b=k1SMTNDbaYMJLTzsXt02XENpW0MsPDx3981cIpfg/OTZcBekLtHS+x+f
+   DdH+3MNlOaSuAi9Foqc0S6GRsQ128TEhm4/1Cc6EY8cCqqR1unEUZoo97
+   MkfWA9JsEHJWBlXDUXe4CWMZsWCe441DYVM+xGvactN8fwAjaVuzexKZc
+   HZx/UssLT1nasMlpY8jARipP2r40n0tAPyHc8TOl8oiaF5YVBi5cdyzV0
+   mqrB3ma5c5FOsH3Ddu+8HZqo7wWPcUr514NIlEMTmTPmrJt1Pzsc8w6z2
+   oz/6M/6NYY7wuoq0M44dTmugqtcs9HDLHZF+iHgg2NzLgddOWj6fWQNOW
+   g==;
+X-CSE-ConnectionGUID: rN0o8UkaSraQZjkUbIj1aA==
+X-CSE-MsgGUID: bQE+XAjCSA+bJ+IIwbIcdQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11640"; a="85200135"
+X-IronPort-AV: E=Sophos;i="6.21,146,1763452800"; 
+   d="scan'208";a="85200135"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2025 01:52:28 -0800
+X-CSE-ConnectionGUID: 9xWtv78VReuHKZOp1GX2PQ==
+X-CSE-MsgGUID: yrZ8Z78ISUCez6Aol1u6iw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,146,1763452800"; 
+   d="scan'208";a="197557145"
+Received: from lkp-server01.sh.intel.com (HELO d335e3c6db51) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 13 Dec 2025 01:52:27 -0800
+Received: from kbuild by d335e3c6db51 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vUMIb-000000007Sb-1O02;
+	Sat, 13 Dec 2025 09:52:25 +0000
+Date: Sat, 13 Dec 2025 17:51:25 +0800
+From: kernel test robot <lkp@intel.com>
+To: Huacai Chen <chenhuacai@loongson.cn>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH 6.12] LoongArch: Add machine_kexec_mask_interrupts()
+ implementation
+Message-ID: <aT03HXCwUdbEftn7@73f44f95d416>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJDxscLLNj1pRe5IAQ--.10721S2
-X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoWxJr48AF15XrykZr43Aw4xGrX_yoW8Xr13pF
-	WUCF1UGr45Ww4SvFn3J3s3WF15Ja4kG3yIqayfCFyfWr1DKwn0gas7JrnFqFyjkr4Yqryf
-	ZrsYq34IgF15A3XCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUkjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
-	8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AK
-	xVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2Ij64
-	vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8G
-	jcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2I
-	x0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK
-	8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I
-	0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j1WlkUUUUU=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251213094950.1068951-1-chenhuacai@loongson.cn>
 
-Commit 863a320dc6fd7c855f47da4b ("LoongArch: Mask all interrupts during
-kexec/kdump") is backported to LTS branches, but they lack a generic
-machine_kexec_mask_interrupts() implementation, so add an arch-specific
-one.
+Hi,
 
-Signed-off-by: Tianyang Zhang <zhangtianyang@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
----
-6.6LTS also need it if commit 863a320dc6fd7c855f47da4b is backported.
+Thanks for your patch.
 
- arch/loongarch/kernel/machine_kexec.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-diff --git a/arch/loongarch/kernel/machine_kexec.c b/arch/loongarch/kernel/machine_kexec.c
-index 8ef4e4595d61..19bd763263d3 100644
---- a/arch/loongarch/kernel/machine_kexec.c
-+++ b/arch/loongarch/kernel/machine_kexec.c
-@@ -136,6 +136,28 @@ void kexec_reboot(void)
- 	BUG();
- }
- 
-+static void machine_kexec_mask_interrupts(void)
-+{
-+	unsigned int i;
-+	struct irq_desc *desc;
-+
-+	for_each_irq_desc(i, desc) {
-+		struct irq_chip *chip;
-+
-+		chip = irq_desc_get_chip(desc);
-+		if (!chip)
-+			continue;
-+
-+		if (chip->irq_eoi && irqd_irq_inprogress(&desc->irq_data))
-+			chip->irq_eoi(&desc->irq_data);
-+
-+		if (chip->irq_mask)
-+			chip->irq_mask(&desc->irq_data);
-+
-+		if (chip->irq_disable && !irqd_irq_disabled(&desc->irq_data))
-+			chip->irq_disable(&desc->irq_data);
-+	}
-+}
- 
- #ifdef CONFIG_SMP
- static void kexec_shutdown_secondary(void *regs)
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
+
+Rule: The upstream commit ID must be specified with a separate line above the commit text.
+Subject: [PATCH 6.12] LoongArch: Add machine_kexec_mask_interrupts() implementation
+Link: https://lore.kernel.org/stable/20251213094950.1068951-1-chenhuacai%40loongson.cn
+
+Please ignore this mail if the patch is not relevant for upstream.
+
 -- 
-2.47.3
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
