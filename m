@@ -1,108 +1,145 @@
-Return-Path: <stable+bounces-200952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F84ACBA815
-	for <lists+stable@lfdr.de>; Sat, 13 Dec 2025 11:14:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B681CBA881
+	for <lists+stable@lfdr.de>; Sat, 13 Dec 2025 12:52:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8905A300444E
-	for <lists+stable@lfdr.de>; Sat, 13 Dec 2025 10:14:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0B64530D7408
+	for <lists+stable@lfdr.de>; Sat, 13 Dec 2025 11:52:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD832F658D;
-	Sat, 13 Dec 2025 10:14:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F29F6308F32;
+	Sat, 13 Dec 2025 11:52:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GVsYd9qj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K6fKe2lp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9CDA2F6599;
-	Sat, 13 Dec 2025 10:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF4E922068F;
+	Sat, 13 Dec 2025 11:52:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765620850; cv=none; b=s55CM1bY0vDWqjFehjDrg1NZUiYIjHyr4H4ZmsbSw967N4va+2TCIU44Ip72a6iuPJjauizm2+2FB0YqWkR1EClKdfaxEuapkVe/oemd+IVGtBH94TyEmRo0WiUNdkRceYnBbSV4Uv2e3JLp1bIzrPQT5a5XtO4z9Z2x1ailTsc=
+	t=1765626730; cv=none; b=tPDaSuVfVjG8kRSFjGkqB81Si86KJ99+b4l9Pq0bnnSMS0sjRyL/MacScDz2wjbJdKHCpsVRuuti2PLUdxLAZys6mEy6FQQKzVyfzXCiYuM5csKEX4HDsNtl4/GM+eSn6MZ9CP31fhwwemt4J/F8LjvDBAB608SnmrNUjO++YAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765620850; c=relaxed/simple;
-	bh=UypVGThd2QMZh1G5BmcptTylVjAolKsHKeCehdTTZMQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jmmdgMu+wQhU+x+PGrNajQ9C+Mga9sb/Lvw9mQWisiQ8AIMJeUZduvaDA+DzLd4byQOVuBuIiqFb6o37yWebt8NS5QJXhpqZQBQSKcerz3Rjx8zMq7Y0JFVjnob8Il9jvTET6KVPrZE0PLp+HZgm5UE+C+XEa4xnR4gD5bzxRt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GVsYd9qj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BB4CC19421;
-	Sat, 13 Dec 2025 10:14:08 +0000 (UTC)
+	s=arc-20240116; t=1765626730; c=relaxed/simple;
+	bh=cRLJRThehTY8h7LofACIaVp0WcRzbpkcc39cOdCg+AQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cv/oR+nSwNSzQ9prNARNwfLi690PZiasruYFYxfn2ydKdQ8A1+8cBp4RvDyeQOwQghBUlaTN+gCotCnMLgO2lnOkTFFao+2i7OMDvNI5U1yRw97OvEyE2qIqsuBgqvTMUBc+mYsfYHRuFHZ7+dVW4T8ZJDHaKK/qT0toQS4F2Kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K6fKe2lp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51D09C4CEF7;
+	Sat, 13 Dec 2025 11:52:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765620850;
-	bh=UypVGThd2QMZh1G5BmcptTylVjAolKsHKeCehdTTZMQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=GVsYd9qjo3oLVFbqIS3iJRGqmfPoVZxyLA3hG2UqatwYN6u0v0zjdlxqAQ2RYOq7M
-	 m2Xy2Po3fjnCnK5Ued8oZctTsy3i+Zyyq6bZKIhqEPCznKi5ocNQD83LfG6covk4lv
-	 gjLzk6YdWptfZWEMfrPWeo49E+UAnU2Y4X8dAs66DzlfRhXxfG1HmfDy7OAeNm8n1Q
-	 2s838XuiUyg62R6xr7v2lcAIQ4hNPCRZqEigGjQ4I3MTBD/sBTsLlwCKGs2XvZxfKi
-	 HIsb/hPNFak2u4uIElAkMa9IoR5pLXuihzaphMTQFWVtvLYKy89rl7b8VQgrcpbu9D
-	 lzlIOzQjsUrTA==
-Date: Sat, 13 Dec 2025 11:14:05 +0100
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
- jason@os.amperecomputing.com, "Rafael J. Wysocki" <rafael@kernel.org>, Tony
- Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>, Hanjun Guo
- <guohanjun@huawei.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, Shuai
- Xue <xueshuai@linux.alibaba.com>, Len Brown <lenb@kernel.org>
-Subject: Re: Patch "RAS: Report all ARM processor CPER information to
- userspace" has been added to the 6.18-stable tree
-Message-ID: <20251213111405.65980c34@foz.lan>
-In-Reply-To: <20251213094943.4133950-1-sashal@kernel.org>
-References: <20251213094943.4133950-1-sashal@kernel.org>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+	s=k20201202; t=1765626730;
+	bh=cRLJRThehTY8h7LofACIaVp0WcRzbpkcc39cOdCg+AQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=K6fKe2lpjNlzN7bt6/NayhMtZvHr3pZec+jhgvK2rmvtUKznviCtnrBn3cKDrJHrA
+	 vmmuvFrccyXG0J92BB7kYo2Oriy8nyyhDwH96N90tf8zczcmsY14ug5+qsp8UUulgp
+	 WjRlSQDIUgP22+hdqbXQv6RGC3ReUYhn7IUI/tSDZRc0K6w+65v9wnjXqpvzcPeyrY
+	 N/i9Mf2sXFeJOs+AtcGC3N+EhwXPQ4irt8lCuxbLt1sBjzozRPKIzqe29iXDU1sqLP
+	 zBY5CdR03DRXJ1ettR/zlRxm6C4GuP9rYyOZlD/deBMZeAxmmJb+t2O/QVTfVasxPt
+	 BGdgGdH6io8bg==
+Message-ID: <bc08a3fe-5b1c-4f19-b1df-fe1b1d5b23e2@kernel.org>
+Date: Sat, 13 Dec 2025 12:52:07 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: Patch "media: ov02c10: Fix default vertical flip" has been added
+ to the 6.18-stable tree
+To: stable@vger.kernel.org, stable-commits@vger.kernel.org, sre@kernel.org
+Cc: Bryan O'Donoghue <bod@kernel.org>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>
+References: <20251213093506.4122377-1-sashal@kernel.org>
+From: Hans de Goede <hansg@kernel.org>
+Content-Language: en-US, nl
+In-Reply-To: <20251213093506.4122377-1-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Hi Sacha,
+Hi Sasha,
 
-Em Sat, 13 Dec 2025 04:49:42 -0500
-Sasha Levin <sashal@kernel.org> escreveu:
-
+On 13-Dec-25 10:35, Sasha Levin wrote:
 > This is a note to let you know that I've just added the patch titled
 > 
->     RAS: Report all ARM processor CPER information to userspace
+>     media: ov02c10: Fix default vertical flip
+
+This fix is incomplete, leading to wrong colors and it causes
+the image to be upside down on some Dell XPS models where it
+currently is the right way up.
+
+There is a series of fixes which applies on top of this to
+fix both issues:
+
+https://lore.kernel.org/linux-media/20251210112436.167212-1-johannes.goede@oss.qualcomm.com/
+
+For now (without the fixes on top) we are better of not adding
+this patch to the stable series. Can you drop this patch
+please?
+
+Same for 6.17 and other stable series.
+
+Regards,
+
+Hans
+
+
+
+
+
+
 > 
 > to the 6.18-stable tree which can be found at:
 >     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 > 
 > The filename of the patch is:
->      ras-report-all-arm-processor-cper-information-to-use.patch
+>      media-ov02c10-fix-default-vertical-flip.patch
 > and it can be found in the queue-6.18 subdirectory.
 > 
 > If you, or anyone else, feels it should not be added to the stable tree,
 > please let <stable@vger.kernel.org> know about it.
+> 
+> 
+> 
+> commit 14cc4474799a595caeccdb8fdf2ca4b867cef972
+> Author: Sebastian Reichel <sre@kernel.org>
+> Date:   Wed Aug 20 02:13:19 2025 +0200
+> 
+>     media: ov02c10: Fix default vertical flip
+>     
+>     [ Upstream commit d5ebe3f7d13d4cee3ff7e718de23564915aaf163 ]
+>     
+>     The driver right now defaults to setting the vertical flip bit. This
+>     conflicts with proper handling of the rotation property defined in
+>     ACPI or device tree, so drop the VFLIP bit. It should be handled via
+>     V4L2_CID_VFLIP instead.
+>     
+>     Reported-by: Frederic Stuyk <fstuyk@runbox.com>
+>     Closes: https://lore.kernel.org/all/b6df9ae7-ea9f-4e5a-8065-5b130f534f37@runbox.com/
+>     Fixes: 44f89010dae0 ("media: i2c: Add Omnivision OV02C10 sensor driver")
+>     Signed-off-by: Sebastian Reichel <sre@kernel.org>
+>     Reviewed-by: Bryan O'Donoghue <bod@kernel.org>
+>     Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+>     Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+>     Signed-off-by: Sasha Levin <sashal@kernel.org>
+> 
 
-You should also backport this patch(*):
+> diff --git a/drivers/media/i2c/ov02c10.c b/drivers/media/i2c/ov02c10.c
+> index 8c4d85dc7922e..8e22ff446b0c4 100644
+> --- a/drivers/media/i2c/ov02c10.c
+> +++ b/drivers/media/i2c/ov02c10.c
+> @@ -174,7 +174,7 @@ static const struct reg_sequence sensor_1928x1092_30fps_setting[] = {
+>  	{0x3816, 0x01},
+>  	{0x3817, 0x01},
+>  
+> -	{0x3820, 0xb0},
+> +	{0x3820, 0xa0},
+>  	{0x3821, 0x00},
+>  	{0x3822, 0x80},
+>  	{0x3823, 0x08},
 
-	96b010536ee0 efi/cper: align ARM CPER type with UEFI 2.9A/2.10 specs
-
-It fixes a bug at the UEFI parser for the ARM Processor Error record:
-basically, the specs were not clear about how the error type should be
-reported. The Kernel implementation were assuming that this was an
-enum, but UEFI errata 2.9A make it clear that the value is a bitmap.
-
-So, basically, all kernels up to 6.18 are not parsing the field the
-expected way: only "Cache error" was properly reported. The other
-3 types were wrong.
-
-(*) You could need to backport those patches as well:
-
-	a976d790f494 efi/cper: Add a new helper function to print bitmasks
-	8ad2c72e21ef efi/cper: Adjust infopfx size to accept an extra space
-
-
-Regards,
-Mauro
-
-Thanks,
-Mauro
 
