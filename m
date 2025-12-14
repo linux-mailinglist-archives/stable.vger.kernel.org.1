@@ -1,122 +1,162 @@
-Return-Path: <stable+bounces-200962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C61E6CBB9E4
-	for <lists+stable@lfdr.de>; Sun, 14 Dec 2025 12:14:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01174CBBAA7
+	for <lists+stable@lfdr.de>; Sun, 14 Dec 2025 13:42:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C46CC300479C
-	for <lists+stable@lfdr.de>; Sun, 14 Dec 2025 11:14:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 570DE3007EC3
+	for <lists+stable@lfdr.de>; Sun, 14 Dec 2025 12:42:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F39802DEA9D;
-	Sun, 14 Dec 2025 11:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CE3B2E975E;
+	Sun, 14 Dec 2025 12:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C1b4A8U5"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="ekidCdUG"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 875782DEA97
-	for <stable@vger.kernel.org>; Sun, 14 Dec 2025 11:14:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C796E221F39;
+	Sun, 14 Dec 2025 12:42:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765710865; cv=none; b=TwGEujk+f/QyTCVKEa6+JhjIs+2/IAoCqY44owljLkGN6+XnmDC0wEURBw9uF/Qz1nlxl9pwDKIln1x2TIxNFZBmv9l7QcPDkTVoqu96dnRfoH2YfJ6e4b9K+W0n8AyemaknFIQb1PGHQYeOfQxZ4VAzNH0BcdWhlZFudmp7DCo=
+	t=1765716142; cv=none; b=MPZ/k7O47XgjhaLYXy+WzYMXDbYL60aMb4e78iIbsjzZFa3z9gk9eN0vynh/gMHX7S6UV2jrKefEKGdUnz4htvZbNWs3FlQ/YsuyfG1zfB/eAIrHBOt11j0x1iGmN+ESGeuHphbuMaZcg5/Q1PoTmMrQYiJDdhTQA1l8o3otQIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765710865; c=relaxed/simple;
-	bh=/QLe5DRA4R5uIxIMYOd08sO2x/axkjdz2V3xzbL3jPA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MGCnhH0V1OIw97jAOjLGcm/S7osrHhZam2SkMwFn6EHhf3e3iuaSNcv0D9pf58scW0EvVpnLzyYMz36iXK2nMDYSMw2fEQBZ7SMFSf42xYlcJAF6zPHPmWLQ3eU+MDRZS7SIUmVnNx+mor9EPreKZGFDM7x8SRZZZheFOgP04KE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C1b4A8U5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3029AC4CEF1
-	for <stable@vger.kernel.org>; Sun, 14 Dec 2025 11:14:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765710865;
-	bh=/QLe5DRA4R5uIxIMYOd08sO2x/axkjdz2V3xzbL3jPA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=C1b4A8U5fahx4NyZEfKzoPiqu+9gVV2oeC57J+y3tq+P6IojjJJMZBvo6ktlOSR9q
-	 zMxcW1JLDgbWSos1qoRwDz9d5VpLa3QpQLc3EAt7JjEAgByTDHG2Mz+ft7QEMtDsms
-	 gbxLjzSe3NrcjbboeecGjHup0a6v93zqiIC2dPkz6FQU2BIrYMbegex6QCl8F7QEg3
-	 dFVvp3DDPBWhwMX9c/9+wmlNOEGUHYo+kzvGObEIhzNHgydlnLhUBlLIAb87a92abh
-	 4rp7v/zfD1T1hRK8tJ0wVnPdp+4O3/a+a8CYpO6qMX4mjvMzdWJOr90Gf4CqbGX/FO
-	 MUKln9xWB1h7A==
-Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-64472c71fc0so2141423d50.0
-        for <stable@vger.kernel.org>; Sun, 14 Dec 2025 03:14:25 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUVvqOWykoseltHbWCeX4uCkT4pDU9TUHHi+ml3MiOZiOR2spFLoP0JncyJHfs0HT3vHyf5Qew=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwtH9m5gGwYqKGLmInX2lEJNUvH3nJ8WdNbn1gLkpoqIZPeN5IG
-	FrH6IkvH7PlrmEEHhMjXJ1N1I+wK9MexOA5boX30/h4I+m+ua8c/UOo+qv5qq0ZzhfHSPdKQQar
-	/6ZecFMSSrxU5YOZMmL5VSghrcIEfMV8=
-X-Google-Smtp-Source: AGHT+IF59cxs2kdU4eDBNHMhmLTNz8MsYKlAx9mrL803Pj47S8lUi3lkvhPPv1HSTCcC+HsFx/YkSG29wQ1pVt26PNc=
-X-Received: by 2002:a05:690e:20a:b0:63f:add1:e6da with SMTP id
- 956f58d0204a3-64555651315mr5936681d50.57.1765710863949; Sun, 14 Dec 2025
- 03:14:23 -0800 (PST)
+	s=arc-20240116; t=1765716142; c=relaxed/simple;
+	bh=RUqeGxGbNR58XqQAmEy1azzZLGmDN8xc/rZvkh5WE0k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DQxF+HWii1G/ojC2x0l30HbrmhO+lInzrdv9urKqJjt690ZHPQX+93HxNl2anWL3TfHmo7iBQ3kindMHCHEAbDSek7Uq8TlBo5Q9gN0K3vzY7P9moDga4D9CprBckTGkyQlyhI0JnpdYTrrI2qnvfVL4ujZ9ze6mwZ44Vw+9a60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=ekidCdUG; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from [192.168.88.20] (91-158-153-178.elisa-laajakaista.fi [91.158.153.178])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 0B828667;
+	Sun, 14 Dec 2025 13:42:02 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1765716124;
+	bh=RUqeGxGbNR58XqQAmEy1azzZLGmDN8xc/rZvkh5WE0k=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ekidCdUGjxIM2y1pzI6YyW+3oMZkybFMCP1t+Pm5bd6JFDiXDWbK+mz734WfiNvdL
+	 DCRcup3XRZSVhj+YeCVb1Fx2TZGPEbWD79mc6e6458VZ0TbBkl/M36KyYYsKQE1xLf
+	 2D0KxO36Vay8GXDBDaXGVUZsh8p1Ll6OYxe5pyM8=
+Message-ID: <817b2358-0920-4b7a-abb1-133103d0f9fe@ideasonboard.com>
+Date: Sun, 14 Dec 2025 14:42:03 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251205-drm-seq-fix-v1-0-fda68fa1b3de@ideasonboard.com> <3b13c7a2-f7e6-49fd-b3bb-3e0a1fe9acf3@ideasonboard.com>
-In-Reply-To: <3b13c7a2-f7e6-49fd-b3bb-3e0a1fe9acf3@ideasonboard.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Sun, 14 Dec 2025 12:14:12 +0100
-X-Gmail-Original-Message-ID: <CAD++jLk8-0Rkh16T+R1dh6=e_f9U1i=AKOk1Y8dLGV4bxzRtFg@mail.gmail.com>
-X-Gm-Features: AQt7F2ocpq33b3u9qnsKC4Ot3iW4zl2olWm7s8rxLgJ7ka5jFZMptEaRqkUdvZI
-Message-ID: <CAD++jLk8-0Rkh16T+R1dh6=e_f9U1i=AKOk1Y8dLGV4bxzRtFg@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 0/4] drm: Revert and fix enable/disable sequence
-To: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Robert Foss <rfoss@kernel.org>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
-	Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Dmitry Baryshkov <lumag@kernel.org>, Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
-	Philipp Zabel <p.zabel@pengutronix.de>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Jyri Sarha <jyri.sarha@iki.fi>, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>, 
-	Aradhya Bhatia <aradhya.bhatia@linux.dev>, Chaoyi Chen <chaoyi.chen@rock-chips.com>, 
-	Vicente Bergas <vicencb@gmail.com>, Marek Vasut <marek.vasut+renesas@mailbox.org>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: Linus Walleij <linusw@kernel.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Dmitry Baryshkov <lumag@kernel.org>, Chun-Kuang Hu
+ <chunkuang.hu@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Jyri Sarha <jyri.sarha@iki.fi>, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
+ Aradhya Bhatia <aradhya.bhatia@linux.dev>,
+ Chaoyi Chen <chaoyi.chen@rock-chips.com>, Vicente Bergas
+ <vicencb@gmail.com>, Marek Vasut <marek.vasut+renesas@mailbox.org>,
+ stable@vger.kernel.org
+References: <20251205-drm-seq-fix-v1-0-fda68fa1b3de@ideasonboard.com>
+ <3b13c7a2-f7e6-49fd-b3bb-3e0a1fe9acf3@ideasonboard.com>
+ <CAD++jLk8-0Rkh16T+R1dh6=e_f9U1i=AKOk1Y8dLGV4bxzRtFg@mail.gmail.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Content-Language: en-US
+Autocrypt: addr=tomi.valkeinen@ideasonboard.com; keydata=
+ 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
+In-Reply-To: <CAD++jLk8-0Rkh16T+R1dh6=e_f9U1i=AKOk1Y8dLGV4bxzRtFg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, Dec 12, 2025 at 3:21=E2=80=AFPM Tomi Valkeinen
-<tomi.valkeinen@ideasonboard.com> wrote:
-> On 05/12/2025 11:51, Tomi Valkeinen wrote:
-> > Changing the enable/disable sequence in commit c9b1150a68d9
-> > ("drm/atomic-helper: Re-order bridge chain pre-enable and post-disable"=
-)
-> > has caused regressions on multiple platforms: R-Car, MCDE, Rockchip.
-> >
-> > This is an alternate series to Linus' series:
-> >
-> > https://lore.kernel.org/all/20251202-mcde-drm-regression-thirdfix-v6-0-=
-f1bffd4ec0fa%40kernel.org/
-> >
-> > This series first reverts the original commit and reverts a fix for
-> > mediatek which is no longer needed. It then exposes helper functions
-> > from DRM core, and finally implements the new sequence only in the tids=
-s
-> > driver.
-> >
-> > There is one more fix in upstream for the original commit, commit
-> > 5d91394f2361 ("drm/exynos: fimd: Guard display clock control with
-> > runtime PM calls"), but I have not reverted that one as it looks like a
-> > valid patch in its own.
-> >
-> > I added Cc stable v6.17+ to all patches, but I didn't add Fixes tags, a=
-s
-> > I wasn't sure what should they point to. But I could perhaps add Fixes:
-> > <original commit> to all of these.
+Hi,
 
-> There has been no comments, so I assume this is the way to go.
->
-> Should we merge this series as a fix for 6.18 rcs?
+On 14/12/2025 13:14, Linus Walleij wrote:
+> On Fri, Dec 12, 2025 at 3:21 PM Tomi Valkeinen
+> <tomi.valkeinen@ideasonboard.com> wrote:
+>> On 05/12/2025 11:51, Tomi Valkeinen wrote:
+>>> Changing the enable/disable sequence in commit c9b1150a68d9
+>>> ("drm/atomic-helper: Re-order bridge chain pre-enable and post-disable")
+>>> has caused regressions on multiple platforms: R-Car, MCDE, Rockchip.
+>>>
+>>> This is an alternate series to Linus' series:
+>>>
+>>> https://lore.kernel.org/all/20251202-mcde-drm-regression-thirdfix-v6-0-f1bffd4ec0fa%40kernel.org/
+>>>
+>>> This series first reverts the original commit and reverts a fix for
+>>> mediatek which is no longer needed. It then exposes helper functions
+>>> from DRM core, and finally implements the new sequence only in the tidss
+>>> driver.
+>>>
+>>> There is one more fix in upstream for the original commit, commit
+>>> 5d91394f2361 ("drm/exynos: fimd: Guard display clock control with
+>>> runtime PM calls"), but I have not reverted that one as it looks like a
+>>> valid patch in its own.
+>>>
+>>> I added Cc stable v6.17+ to all patches, but I didn't add Fixes tags, as
+>>> I wasn't sure what should they point to. But I could perhaps add Fixes:
+>>> <original commit> to all of these.
+> 
+>> There has been no comments, so I assume this is the way to go.
+>>
+>> Should we merge this series as a fix for 6.18 rcs?
+> 
+> Too late now, so let's merge it as a fix for v6.19 rcs!
+Ah, right. Indeed, I meant v6.19 rcs.
 
-Too late now, so let's merge it as a fix for v6.19 rcs!
+ Tomi
 
-Yours,
-Linus Walleij
 
