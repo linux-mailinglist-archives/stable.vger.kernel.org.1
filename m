@@ -1,214 +1,168 @@
-Return-Path: <stable+bounces-200960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29844CBB8AD
-	for <lists+stable@lfdr.de>; Sun, 14 Dec 2025 09:50:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A949FCBB91C
+	for <lists+stable@lfdr.de>; Sun, 14 Dec 2025 10:53:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 855333030FFF
-	for <lists+stable@lfdr.de>; Sun, 14 Dec 2025 08:46:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B0699300760D
+	for <lists+stable@lfdr.de>; Sun, 14 Dec 2025 09:53:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1608E2C0F7C;
-	Sun, 14 Dec 2025 08:37:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A9A54086A;
+	Sun, 14 Dec 2025 09:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="PRoDJkuV";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Z2YS+UzN"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="GCw3f4kI";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Ezi9pN+z"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 218D42D249A;
-	Sun, 14 Dec 2025 08:37:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF203B8D7D
+	for <stable@vger.kernel.org>; Sun, 14 Dec 2025 09:53:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765701475; cv=none; b=jE0VLbf37nU3A4SoDeZmq525LnEiUMlmEJ22rFRPhwtcbQ8Au4Iby6NkcuV5Bg/z48iks6+4ky2x1OvSup2yanWbO+X5uG4vINzgYSLSoIfqpr9e222dS+rdrQgW2SmNcnJShPyr5nb9iOTBCOzRV0sgF964YfoW/284mUi6qrY=
+	t=1765706022; cv=none; b=Pl5Wqq7h+jvMhPfGS4dp6Pz+csyeyIOUM15Jxk37NzLX/6iyejlL4HiEmgMxXG2OgKa6OFZU0sb3YD1TNr4xi/2REmnO9Xx7c/KaB0mx+bWiKpVwb3++kg+dLGX5knc6QuF/nuLiJTQpf0PzLKmP98/mvs3dUV2XmRUZC2SAD+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765701475; c=relaxed/simple;
-	bh=PUrHBUG+KqbvkB69jPkDWi+JJH6g3LcmWiO0jijUr0I=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=p5k0WCYHhs5mXyav4iszx6QF8vbFiNtVqR1d/hdO+pVTlIY4JJNpJ48jpPhXZo+NnyIKb0LBJjh2A5vabViEsbcQwOC7vzDq40Ywp8LcVFCvMkCyb4S0qR9l53a2mahnDL4YTvpciThruwOPhPudKw+CAu7AjIX5puR9tmt8Hmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=PRoDJkuV; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Z2YS+UzN; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sun, 14 Dec 2025 08:37:49 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1765701471;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=KZmKfV756pSzEfgt3VmIwVrp/vlp7pdOUieYOdWI5cY=;
-	b=PRoDJkuVLkiROkz3/F8+OYl6u4GYPnGdGGzqq7BjXutAo5GhdZths8sjSl9kh+QijUfUYD
-	8FIHsRBNiTnGv0rwDpJ7qgiTiw3eJRpZoyLqsqwq1hvo1xCMM4UhpWoD/UYDQmYyMVtAy7
-	8kEHOWQaCnpFvNpWFfANT5ZGOlnpkcpKnn8nSyVuGCkT28+DIl/o9+GHtuk1/faSioXDeI
-	Q5mBExW1MxUaMSujy6jEuY4vURlLoutJ++x8UshblpwEKh4YpGOjvXU++IJXchWAe70NkV
-	hfmW0vkaHrWGmWdt5xAPod1StTpELx/ILJeXQqFWoVgubKnCtVMl6buGj7V2yA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1765701471;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=KZmKfV756pSzEfgt3VmIwVrp/vlp7pdOUieYOdWI5cY=;
-	b=Z2YS+UzNdykw66eTLSq9PDdd7ggFyT+HWg6t3H2NkD8wllhPqQ5acqCdnsz3Vt1ld8xFrl
-	Fr2y/S4KKyqM+TCQ==
-From: "tip-bot2 for Yazen Ghannam" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/boot] x86/acpi/boot: Correct acpi_is_processor_usable() check again
-Cc: Michal Pecio <michal.pecio@gmail.com>,
- Yazen Ghannam <yazen.ghannam@amd.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
- Ingo Molnar <mingo@kernel.org>,
- Ricardo Neri <ricardo.neri-calderon@linux.intel.com>, stable@vger.kernel.org,
- x86@kernel.org, linux-kernel@vger.kernel.org
+	s=arc-20240116; t=1765706022; c=relaxed/simple;
+	bh=yRix4HBV4lwRUVbomVKWdONuc43UaJjNv8M2rHlo9a8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PqDutzyo3cW4X0y726iZUR1hvRk8LLVyx1Kq2PWXXi4sV9sKP9gaglsNbe9Evlb8fG6rDtVeu8lrr6g7dcYkHa11i8MM6RmFcO/j0SzI3wIpkFYz67hxbJaqq/yEFVJU5vcIaL6ZOy4kUbMFAiopB2lUQb8DvpmHNfBGsN2pWQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=GCw3f4kI; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Ezi9pN+z; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BE9FNVM1693682
+	for <stable@vger.kernel.org>; Sun, 14 Dec 2025 09:53:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=5235ls+xPB72WCWspoyqSm
+	Quf3lV5z5gLhJd0B1fNxM=; b=GCw3f4kI/lxljdjDEqrYwU4SfQo8VjDSQsFj3B
+	sFnjBGSr0mMfU5GdYMIDHVhkPg/brdWEYTA+NcjtAAxCHVlemauHabiK7x67QKXT
+	G7Q5yvH5nlj02DcADIa4to7fqEutHCCsagj0xQ201p/McJmTLRbIrHsXDn4PNS2i
+	ioPIuzjzorY/hs0Ng5roWOaUvpAB4AKLcOoy5lkH1LN2oAJqMsGNkxIypMzs55F7
+	rTK8Qng5beOLdkn0FujgYy/j2D3dD/AyuQ7zCcAtZQ+RytebwxFvIRp6UMil/LRj
+	QoxNClJrd9ErjF6qohBRzcV9HqjSmjAlxD9t6oMc++8UZKlQ==
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b11ds9ss4-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Sun, 14 Dec 2025 09:53:39 +0000 (GMT)
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-8b22ab98226so807321385a.2
+        for <stable@vger.kernel.org>; Sun, 14 Dec 2025 01:53:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1765706018; x=1766310818; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5235ls+xPB72WCWspoyqSmQuf3lV5z5gLhJd0B1fNxM=;
+        b=Ezi9pN+zsNYUHumzy+rwVTZ9f6KT6HJFHfFimmDa7ZIKl8lXmSgBGhHS6QPXcE+hGQ
+         j/MXACPxtD6uSpScMIg4wL0dkg7UYJCqGXMzF6LrutJH/aUnu0FLVOKEOAmKPTCnvhaH
+         PNLPUiUE1vDes8QBjY9VOMeRI3Oemaz4oNip3dnNYh96JnsAyFeIC7UOk+92AF5yGV+o
+         /d+PvWTF9QdF82drPeLqaeVYbfbKh0eNo8MJxG3UCfDajhNdBLrnhMBrAiteCVlIubHZ
+         MWCdm9y+hDBbvorfShAkay0iP+wxeCfiPyOWNK3JS2Pq0nZ4V0rLXpQerxAKRrSIcymA
+         3u5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765706018; x=1766310818;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5235ls+xPB72WCWspoyqSmQuf3lV5z5gLhJd0B1fNxM=;
+        b=gtgVJZKmt5Vb1NAIgyUp/hXXclLAG7uPYIiSr1pcvxUw/LXI97TqzKEbp2OvbiaYEX
+         l5lAxspDJyoeLXy/MgxxxHeVBTIoXRrLsLFMroSERoI+K2ptn1X0DwxStgQ/ocDaN0Zn
+         G0muop9siLERAJ8CY2oY4qWZChZwCkQRcBbOsJ2pq3se5HI3v6c6mLYr5438em0sKONM
+         QmyBBmyfTfXaOYZSGhQ8byQ2iyA1M39ss7oIlhEHCbxKLF4pxX6ovwwgxA/HI8zGkoTI
+         GoPrii+v2BLJtRBQQoGRF9Kmto89K0kpWTvISvsTS0rMpL4M2c0GjxfLAtHSae24256F
+         /ocw==
+X-Gm-Message-State: AOJu0Yz3gHrB/XmN5eHfeWdojYT9enGmWwjin9mw038yIWlx4+1cGNaN
+	FL4ql/cU51nx4UxL5h7o4bI54n0S+hydGTz0V2fT5gx2R4UeJBX9uNrwpqPx4hH3iP4osOZKv7l
+	Nk8FIP7KjVnbLErtPvtTJ13KyvSLzHGwGroUMmxFA8ipm3q7MQTrKkVAo/4+HW5zTa80=
+X-Gm-Gg: AY/fxX7+8/0luG702tgb10I/N9L9+shpwZ4suGooshpM8LbSkRFkNK4veAV/2V1ZfSX
+	pMGFknZB9hQBql/i5BGlsF3g/+CwUTHp9s+etA2jPmfHWh//EGBrObWM+auvrX13JXJKr5f3FUD
+	1zJte+2YYc5smEpv/jF/+p1nxv8bIxEhiilGWBuUjFe5bSR/dFozPoqQSE2nP3dHuqX42fJHQGu
+	RiziCwNF6NJBmwhKqO+88fTNdq/wsfIGw7hLaSxLgNVdfHZszgZdNWFLp8esxzLBo4/NBWjsBIL
+	tQaXCvA9lcYEQ6/Xbl0YTexZxkKAZ0AlkZv1eK3Y568U0YubjW3LhntmUoPLP+lUHvbkFIUY7mU
+	G5wJ/DnIdPW5228/D+9wsrc7mtaiI6VsvNunW6DXy9XM6Gxa5p5V+z8xvkGtuj0PSW3QAuPXoxj
+	elXVeMENnmkWepJ80qCOXRY5lI
+X-Received: by 2002:a05:620a:1a08:b0:8b2:f269:f899 with SMTP id af79cd13be357-8bb3a253e9bmr1005324885a.56.1765706018475;
+        Sun, 14 Dec 2025 01:53:38 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHntpjsmUmdvd0VAKVaqxUxrBE4on+pTAkpoLZoJlaY3Z9yA9Ff6/mGJeBY0RfU2ieHlg5tSA==
+X-Received: by 2002:a05:620a:1a08:b0:8b2:f269:f899 with SMTP id af79cd13be357-8bb3a253e9bmr1005323885a.56.1765706018113;
+        Sun, 14 Dec 2025 01:53:38 -0800 (PST)
+Received: from shalem (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7d0dec2a8dsm920625866b.29.2025.12.14.01.53.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 14 Dec 2025 01:53:37 -0800 (PST)
+From: Hans de Goede <johannes.goede@oss.qualcomm.com>
+To: stable@vger.kernel.org
+Cc: Hans de Goede <johannes.goede@oss.qualcomm.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>
+Subject: [PATCH] drm/amdgpu: don't attach the tlb fence for SI
+Date: Sun, 14 Dec 2025 10:53:36 +0100
+Message-ID: <20251214095336.224610-1-johannes.goede@oss.qualcomm.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176570146995.498.6035988538497211042.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: Joqm88dn3bhgLhnsM7JE54lRgrUNfKR-
+X-Proofpoint-ORIG-GUID: Joqm88dn3bhgLhnsM7JE54lRgrUNfKR-
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE0MDA4OSBTYWx0ZWRfX7YrbXZCbPxML
+ Xxz9bff84wg8WV0of2fMaznSeScCduZOpPeuPJ6CiIZJ05I9mlxoT8r4cFda7ZWlvRn/S8Is7fs
+ iYTaqy6EQyMK5ULUjcSetmY7L+MK21jVY9sqg5xzKr0bfOMkGmMRxKZyvZR5kQ4RpDB9niSFw0j
+ +Nk13sNwkVTsZWh0CC5DCUeeWkZZfMdw3ubPBPqL12kiVy8Segfe+5QKh+jP/JlQIjmOSRlrZ1S
+ 7Ve5rQ1Mtc8tGIod25ibazBvJ0Aey8jeJLkA5jQYt476NeizO6rpvlzQn1y1UaomtdUKqVAZSAD
+ 1BtAEWBUxFxZTuWpibqz6TOu+l9UCEveBDynwj2rYsSqSTYOxIaIqidS/1c4WZCqx7tuQLNENhp
+ tRBYCWxOcpPMJ+WLlKN0sPVSWHTLuQ==
+X-Authority-Analysis: v=2.4 cv=cfLfb3DM c=1 sm=1 tr=0 ts=693e8923 cx=c_pps
+ a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=e5mUnYsNAAAA:8 a=zd2uoN0lAAAA:8 a=pGLkceISAAAA:8 a=EUspDBNiAAAA:8
+ a=gMHgr3dq0RqCgoZVo1kA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=PEH46H7Ffwr30OY-TuGO:22 a=Vxmtnl_E_bksehYqCbjh:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-14_02,2025-12-11_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 lowpriorityscore=0 clxscore=1015 adultscore=0 impostorscore=0
+ priorityscore=1501 suspectscore=0 phishscore=0 malwarescore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512140089
 
-The following commit has been merged into the x86/boot branch of tip:
+From: Alex Deucher <alexander.deucher@amd.com>
 
-Commit-ID:     adbf61cc47cb72b102682e690ad323e1eda652c2
-Gitweb:        https://git.kernel.org/tip/adbf61cc47cb72b102682e690ad323e1eda=
-652c2
-Author:        Yazen Ghannam <yazen.ghannam@amd.com>
-AuthorDate:    Tue, 11 Nov 2025 14:53:57=20
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sun, 14 Dec 2025 09:19:03 +01:00
+commit eb296c09805ee37dd4ea520a7fb3ec157c31090f upstream.
 
-x86/acpi/boot: Correct acpi_is_processor_usable() check again
+SI hardware doesn't support pasids, user mode queues, or
+KIQ/MES so there is no need for this.  Doing so results in
+a segfault as these callbacks are non-existent for SI.
 
-ACPI v6.3 defined a new "Online Capable" MADT LAPIC flag. This bit is
-used in conjunction with the "Enabled" MADT LAPIC flag to determine if
-a CPU can be enabled/hotplugged by the OS after boot.
-
-Before the new bit was defined, the "Enabled" bit was explicitly
-described like this (ACPI v6.0 wording provided):
-
-  "If zero, this processor is unusable, and the operating system
-  support will not attempt to use it"
-
-This means that CPU hotplug (based on MADT) is not possible. Many BIOS
-implementations follow this guidance. They may include LAPIC entries in
-MADT for unavailable CPUs, but since these entries are marked with
-"Enabled=3D0" it is expected that the OS will completely ignore these
-entries.
-
-However, QEMU will do the same (include entries with "Enabled=3D0") for
-the purpose of allowing CPU hotplug within the guest.
-
-Comment from QEMU function pc_madt_cpu_entry():
-
-  /* ACPI spec says that LAPIC entry for non present
-   * CPU may be omitted from MADT or it must be marked
-   * as disabled. However omitting non present CPU from
-   * MADT breaks hotplug on linux. So possible CPUs
-   * should be put in MADT but kept disabled.
-   */
-
-Recent Linux topology changes broke the QEMU use case. A following fix
-for the QEMU use case broke bare metal topology enumeration.
-
-Rework the Linux MADT LAPIC flags check to allow the QEMU use case only
-for guests and to maintain the ACPI spec behavior for bare metal.
-
-Remove an unnecessary check added to fix a bare metal case introduced by
-the QEMU "fix".
-
-  [ bp: Change logic as Michal suggested. ]
-  [ mingo: Removed misapplied -stable tag. ]
-
-Fixes: fed8d8773b8e ("x86/acpi/boot: Correct acpi_is_processor_usable() check=
-")
-Fixes: f0551af02130 ("x86/topology: Ignore non-present APIC IDs in a present =
-package")
-Closes: https://lore.kernel.org/r/20251024204658.3da9bf3f.michal.pecio@gmail.=
-com
-Reported-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Michal Pecio <michal.pecio@gmail.com>
-Tested-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-Link: https://lore.kernel.org/20251111145357.4031846-1-yazen.ghannam@amd.com
-Cc: stable@vger.kernel.org
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4744
+Fixes: f3854e04b708 ("drm/amdgpu: attach tlb fence to the PTs update")
+Reviewed-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
 ---
- arch/x86/kernel/acpi/boot.c    | 12 ++++++++----
- arch/x86/kernel/cpu/topology.c | 15 ---------------
- 2 files changed, 8 insertions(+), 19 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
-index 9fa321a..d6138b2 100644
---- a/arch/x86/kernel/acpi/boot.c
-+++ b/arch/x86/kernel/acpi/boot.c
-@@ -35,6 +35,7 @@
- #include <asm/smp.h>
- #include <asm/i8259.h>
- #include <asm/setup.h>
-+#include <asm/hypervisor.h>
-=20
- #include "sleep.h" /* To include x86_acpi_suspend_lowlevel */
- static int __initdata acpi_force =3D 0;
-@@ -164,11 +165,14 @@ static bool __init acpi_is_processor_usable(u32 lapic_f=
-lags)
- 	if (lapic_flags & ACPI_MADT_ENABLED)
- 		return true;
-=20
--	if (!acpi_support_online_capable ||
--	    (lapic_flags & ACPI_MADT_ONLINE_CAPABLE))
--		return true;
-+	if (acpi_support_online_capable)
-+		return lapic_flags & ACPI_MADT_ONLINE_CAPABLE;
-=20
--	return false;
-+	/*
-+	 * QEMU expects legacy "Enabled=3D0" LAPIC entries to be counted as usable
-+	 * in order to support CPU hotplug in guests.
-+	 */
-+	return !hypervisor_is_type(X86_HYPER_NATIVE);
- }
-=20
- static int __init
-diff --git a/arch/x86/kernel/cpu/topology.c b/arch/x86/kernel/cpu/topology.c
-index f55ea3c..23190a7 100644
---- a/arch/x86/kernel/cpu/topology.c
-+++ b/arch/x86/kernel/cpu/topology.c
-@@ -27,7 +27,6 @@
- #include <xen/xen.h>
-=20
- #include <asm/apic.h>
--#include <asm/hypervisor.h>
- #include <asm/io_apic.h>
- #include <asm/mpspec.h>
- #include <asm/msr.h>
-@@ -236,20 +235,6 @@ static __init void topo_register_apic(u32 apic_id, u32 a=
-cpi_id, bool present)
- 		cpuid_to_apicid[cpu] =3D apic_id;
- 		topo_set_cpuids(cpu, apic_id, acpi_id);
- 	} else {
--		u32 pkgid =3D topo_apicid(apic_id, TOPO_PKG_DOMAIN);
--
--		/*
--		 * Check for present APICs in the same package when running
--		 * on bare metal. Allow the bogosity in a guest.
--		 */
--		if (hypervisor_is_type(X86_HYPER_NATIVE) &&
--		    topo_unit_count(pkgid, TOPO_PKG_DOMAIN, phys_cpu_present_map)) {
--			pr_info_once("Ignoring hot-pluggable APIC ID %x in present package.\n",
--				     apic_id);
--			topo_info.nr_rejected_cpus++;
--			return;
--		}
--
- 		topo_info.nr_disabled_cpus++;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+index 676e24fb8864..cdcafde3c71a 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+@@ -1066,7 +1066,9 @@ amdgpu_vm_tlb_flush(struct amdgpu_vm_update_params *params,
  	}
-=20
+ 
+ 	/* Prepare a TLB flush fence to be attached to PTs */
+-	if (!params->unlocked) {
++	if (!params->unlocked &&
++	    /* SI doesn't support pasid or KIQ/MES */
++	    params->adev->family > AMDGPU_FAMILY_SI) {
+ 		amdgpu_vm_tlb_fence_create(params->adev, vm, fence);
+ 
+ 		/* Makes sure no PD/PT is freed before the flush */
+-- 
+2.52.0
+
 
