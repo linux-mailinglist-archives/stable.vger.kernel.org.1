@@ -1,118 +1,134 @@
-Return-Path: <stable+bounces-200957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48289CBB5BF
-	for <lists+stable@lfdr.de>; Sun, 14 Dec 2025 02:24:05 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D009ECBB6C8
+	for <lists+stable@lfdr.de>; Sun, 14 Dec 2025 07:07:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 14AAD300BBB4
-	for <lists+stable@lfdr.de>; Sun, 14 Dec 2025 01:23:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1C89E3002FEB
+	for <lists+stable@lfdr.de>; Sun, 14 Dec 2025 06:07:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3DE12E1EF8;
-	Sun, 14 Dec 2025 01:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D982B246BA7;
+	Sun, 14 Dec 2025 06:07:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OzKELoP3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VcEq3ZEe"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943CD2E1C63
-	for <stable@vger.kernel.org>; Sun, 14 Dec 2025 01:23:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0601FCF41
+	for <stable@vger.kernel.org>; Sun, 14 Dec 2025 06:07:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765675432; cv=none; b=jAlI5lol0Yz7OGcYriJlkAnJcvBJPiA8/f1PLZsjUZ6NS0qcaD0VFfLxEdvnMTN4Ug1P8BRkRzYJK9i1DFiL7iQ5GPhJJVt83nl0K1gF1YKrh7OckhrYwXNYHs2CUruqn9vJ4uOEEZF9FvIpsmt3k2kXgJw3WHOKJ4q3qulQzXc=
+	t=1765692433; cv=none; b=ZTo5mBdXqKdmWrKbfLRiliToQ6OQ/WWmBI1QyBu6+FJ6qC2pGkKSS+u7W0ONZPDGH2RdATcvwVmk0LgKwJ4Kk2zCDQM8OoNXgF+cpeQ79msRP1bj2NFvj1KwZgYBNt/lf/8qud9A0+BMjPQzLxjuRcmDCJALS458h1bnxhiqtSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765675432; c=relaxed/simple;
-	bh=GiyI2wrxHNxbI6dYeRsPW1sazjsvEU0Uazlgs5PB2bo=;
+	s=arc-20240116; t=1765692433; c=relaxed/simple;
+	bh=r92Q2V8e+U0OW5eFV0h+0q8zFYT95BWs+m4he6KpbxM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uVZBK+NAl+UrnTHqlto9FnzSxHcQdW/rcBhOKIeqz/XfVQwJ0WRP/pJQqH7P9PZyKiaU2hW/QL+PZS2GRuKvLaqaIV1CbukwkPco9F42YX+VpBz4JaFjHjprDPk0G06lKKFhvjJCFqAo/mwWmkNBF0cfY6bpY+mg47hVN8Ifmps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OzKELoP3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39D35C2BCB2
-	for <stable@vger.kernel.org>; Sun, 14 Dec 2025 01:23:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765675432;
-	bh=GiyI2wrxHNxbI6dYeRsPW1sazjsvEU0Uazlgs5PB2bo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=OzKELoP3xHH7u1ijLkX3bZC6R/MoqPpQ+9roenpeCXcGYD0LhfZoprBRQyhbwZHFl
-	 NbnK/vQ2qBqT0UYRLYidHP+NCWedgvMGRCJAE2X1b9IlmL6SjgEv+0hZRvlB5KRsU4
-	 y/WLeHw2jaOe0g3dR9alFrcoLT+Z0btG+ATGv3tTyCepGr+smnBSNDeORP2mOg0eVg
-	 K6R7K0y2ecL+nW7+dG5n+IdagJu+8iWLNaJj9iGg8zM18MIq3mr1MQsTKJ7Hn6X1dY
-	 VnqOMLdnZewDSE7piUOWmjecxD0VmE6AGBbR0AEcRXNnn5BfoktH3VNhX+4X2tMCjn
-	 /X3K1gq8qXuKA==
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b7697e8b01aso449201266b.2
-        for <stable@vger.kernel.org>; Sat, 13 Dec 2025 17:23:52 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUkwBnvK+dy6OIKiNg/5+y15UiS91Q4fsON5y/cNGYvIufV11BKcCu4Kv/pF9/1fpYF7RiJe6I=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxne6JsBdgN1SOVYzzooU0bHPPWqoQ/cy9LQi5Lr+erCiRrFhgb
-	e802vhW03BZn6K/1g55FZw+aTbRVcLHvvaesN9pdSSPAp37xqUIz46du65LR4oqu/bMnEFdYcvZ
-	1Un6cBe8sTyS1N4PHJF4D1SGPliGRlKc=
-X-Google-Smtp-Source: AGHT+IFjIQS/7W0XyLT8qXY9tC3vgaxbp8f0nrh+HrLnWZv5ZI+yPJY2JQMQw+URLnV7MzMIgLyLz4bmDVFpi2hpCIc=
-X-Received: by 2002:a17:907:7fa3:b0:b7c:fe7c:e37f with SMTP id
- a640c23a62f3a-b7d23a540d3mr734991266b.18.1765675430495; Sat, 13 Dec 2025
- 17:23:50 -0800 (PST)
+	 To:Cc:Content-Type; b=P/1Obs9StN5sDjZ6SKzgJj8BsDY4Xkc0X+RE3fK2WRSNp8KLfPKHnZsFktAuCXt4/b2EQ/p37BWKMUZ45AnzbY+uwaUOVaCW221ouHkct4J7lrVVJfYDCi8xHzHXfPSJ4wKBPoVH5hX5HggUPrM/BNmZvwfOfdaWRoBx3pM1O60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VcEq3ZEe; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2a0abca9769so1246745ad.1
+        for <stable@vger.kernel.org>; Sat, 13 Dec 2025 22:07:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765692431; x=1766297231; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=r92Q2V8e+U0OW5eFV0h+0q8zFYT95BWs+m4he6KpbxM=;
+        b=VcEq3ZEe2lNcBy66Aaco/nt4c5r6braSBOG7csTn0PJq6fV3hv/2KIQozooas/n9Xt
+         E0F68YHeAR1YZdxbAXorpQ+wx1HQJMB54Tk2FgyTM/NuhLUbltrVFVZ3cCQQ/yZC4ru/
+         NrmKIbg1ngGu2L/mpHAgif3gAdpJDoFg0OofszxcijUVhwCtcP3Mk/DrkhS1Hjurgwmi
+         cgOo+FPdnPFxZ4pw8osSs6B/fEchaY1+Rn1drSbSdvi8rOiZtcab3EqZlkm7bWjpm+Ol
+         sm8yYcywgOV4zZBerLoVAC/Vdd41NXjPjQ62E1P/c7e/0yh4EzAg8BEL9Fl1AFtzm6XV
+         dNyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765692431; x=1766297231;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=r92Q2V8e+U0OW5eFV0h+0q8zFYT95BWs+m4he6KpbxM=;
+        b=dWWgHbd9Z+/z3co2z2gd3ZNGKE1rsbYxXsBbAihq1srKuWRbZ6bpAWoBscYaY+pvj3
+         GvVpV5G7iO4LE+DwdJ6piGb3aEpdmW3Hn0D4nuAgBoft5o1rPpVUeWVtTPIaHDITX0/G
+         WRIPI8GkVQKbb19arIoXlLhLSB9GGmCzdFCS0HWxLgko6B3d4lOy1HcyWFRaoNquTm5N
+         I87XpSu9P1PsRUQd2/8qKXTFxxXYrOw1ooaw1mswnKj9KGA07IQPhvj7BF5Pr2dt/4bC
+         WtLYdPaJZR3UPeciQlvohhjtcF8aOjV0TzPAr6jSrmwJSypFz5kubRYYcofRcb3NghGM
+         vwjQ==
+X-Gm-Message-State: AOJu0Yw9Pyv4kX9jPbmPpw1J2s5uXIjPX67A6cm5eSOr7NVp6IL5PMkZ
+	9ZUYw++ux+TKSkR7bX5ng0c6AjehoKka+LGqzF03K4ITFWCLGofpiuGlifMqK/x776/zVxj20cv
+	43ZZbBdFGA8IfNXZE5m0eV3cMtXQxh90=
+X-Gm-Gg: AY/fxX4UckSiA+Sdsf95W7XcInMY5JAXOoljokCKxiTPsy4ZqlWZk2joixrcknJ7MWC
+	3PRbIWcpfxF/9CHws5AsYfFcfPUEEnNbKqaB1Ug0zUQoH8q3vE/Z/LvngWCfoxV6FWS0pOnJ6rb
+	/pBKlzmnCBpbL13X1vbDDgxIt5b7iUlTXpBkaUcxupjEvdxvMCtRf/nYBUQhy2TNZDXyVVGfduB
+	JBhoSNM10DMC1G4cJsJSikKNNypRNnNoRSpULZFnQ1YA2YvSjcD6jEQxlYbEqwoHLCY3H9riCpe
+	VskEoKpKgY/XHXpC2Ifs3HAk2m+MBR+qUVNMpGJmpyQ/4EdMOMSzWNsZGdQq25jcItxa9SfGGB0
+	X490HoAGicAK0doftjN2Etm8=
+X-Google-Smtp-Source: AGHT+IEjx4XmV7+QKdE4whfVgNEnoL/VMyWdZXt9WX2oOApywhA5AcUs+0KOuqeEhQKcom99245S1CriwR+pNcC4S4A=
+X-Received: by 2002:a05:7300:2405:b0:2a4:3593:2c0a with SMTP id
+ 5a478bee46e88-2ac30185d3cmr2189860eec.3.1765692431485; Sat, 13 Dec 2025
+ 22:07:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251210072948.125620687@linuxfoundation.org> <35e3347a-198f-4143-b094-2d0feb8d6d50@roeck-us.net>
-In-Reply-To: <35e3347a-198f-4143-b094-2d0feb8d6d50@roeck-us.net>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Sun, 14 Dec 2025 09:24:02 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H4tiTBqd7mUphq58KdUtvro9HPxZmComr6ku1Mcw6=+9g@mail.gmail.com>
-X-Gm-Features: AQt7F2qPiIAWNB6dRD6h_fQatP_E57R9qswZPlB9b3pbQHt0xF0aw_U5cacdOVs
-Message-ID: <CAAhV-H4tiTBqd7mUphq58KdUtvro9HPxZmComr6ku1Mcw6=+9g@mail.gmail.com>
-Subject: Re: [PATCH 6.12 00/49] 6.12.62-rc1 review
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	torvalds@linux-foundation.org, akpm@linux-foundation.org, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org, sr@sladewatkins.com
+References: <1286af8e-f908-45db-af7c-d9c5d592abfd@gmail.com>
+In-Reply-To: <1286af8e-f908-45db-af7c-d9c5d592abfd@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 14 Dec 2025 07:06:58 +0100
+X-Gm-Features: AQt7F2qEeevNyJki3CDaXjdPegHadD6h80UJghjzYTaUz_sRuaFZb1Mi4GUBj6c
+Message-ID: <CANiq72kYjNrvyjVs0FOFvrzUf7QYe8i+NpBS6bMEzX8uJbwB+w@mail.gmail.com>
+Subject: Re: ARMv7 Linux + Rust doesn't boot when compiling with only LLVM=1
+To: Rudraksha Gupta <guptarud@gmail.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nsc@kernel.org>
+Cc: stable@vger.kernel.org, regressions@lists.linux.dev, 
+	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Benno Lossin <lossin@kernel.org>, 
+	Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Dec 14, 2025 at 12:31=E2=80=AFAM Guenter Roeck <linux@roeck-us.net>=
- wrote:
+On Sun, Dec 14, 2025 at 12:54=E2=80=AFAM Rudraksha Gupta <guptarud@gmail.co=
+m> wrote:
 >
-> On 12/9/25 23:29, Greg Kroah-Hartman wrote:
-> > This is the start of the stable review cycle for the 6.12.62 release.
-> > There are 49 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >
-> > Responses should be made by Fri, 12 Dec 2025 07:29:38 +0000.
-> > Anything received after that time might be too late.
-> >
-> ...
-> > Huacai Chen <chenhuacai@kernel.org>
-> >      LoongArch: Mask all interrupts during kexec/kdump
-> >
+> - The kernel boots and outputs via UART when I build the kernel with the
+> following:
 >
-> This results in:
+> make LLVM=3D1 ARCH=3D"$arm" CC=3D"${CC:-gcc}"
 >
-> Building loongarch:defconfig ... failed
-> --------------
-> Error log:
-> arch/loongarch/kernel/machine_kexec.c: In function 'machine_crash_shutdow=
-n':
-> arch/loongarch/kernel/machine_kexec.c:252:9: error: implicit declaration =
-of function 'machine_kexec_mask_interrupts' [-Wimplicit-function-declaratio=
-n]
->    252 |         machine_kexec_mask_interrupts();
+> - The kernel doesn't boot and there is no output via UART when I build
+> the kernel with the following:
 >
-> ... because  there is no loongarch specific version of machine_kexec_mask=
-_interrupts()
-> in v6.12.y, and the function was generalized only with commit bad6722e478=
-f5 ("kexec:
-> Consolidate machine_kexec_mask_interrupts() implementation") in v6.14.
-https://lore.kernel.org/loongarch/20251213094950.1068951-1-chenhuacai@loong=
-son.cn/T/#u
+> make LLVM=3D1 ARCH=3D"$arm"
+>
+> The only difference being: CC=3D"${CC:-gcc}". Is this expected?
 
-Huacai
->
-> Guenter
->
+It depends on what that resolves to, i.e. your environment etc., i.e.
+that is resolved before Kbuild is called.
+
+The normal way of calling would be the latter anyway -- with the
+former you are setting a custom `CC` (either whatever you have there
+or the `gcc` default). By default, `LLVM=3D1` means `CC=3Dclang`.
+
+So it could be that you are using a completely different compiler
+(even Clang vs. GCC, or different versions, and so on). Hard to say.
+And depending on that, you may end up with a very different kernel
+image. Even substantial Kconfig options may get changed etc.
+
+I would suggest comparing the kernel configuration of those two ways
+(attaching them here could also be nice to see what compilers you are
+using and so on).
+
+Cc'ing Kbuild too so that they are in the loop.
+
+I hope that helps.
+
+Cheers,
+Miguel
 
