@@ -1,145 +1,276 @@
-Return-Path: <stable+bounces-200968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F12F3CBBB42
-	for <lists+stable@lfdr.de>; Sun, 14 Dec 2025 14:54:51 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EA5ACBBC5E
+	for <lists+stable@lfdr.de>; Sun, 14 Dec 2025 16:14:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 57B18300769F
-	for <lists+stable@lfdr.de>; Sun, 14 Dec 2025 13:54:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 36E973008D52
+	for <lists+stable@lfdr.de>; Sun, 14 Dec 2025 15:14:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B82625A359;
-	Sun, 14 Dec 2025 13:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A6CB28A3FA;
+	Sun, 14 Dec 2025 15:14:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IeU8RZ4j"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="HEyouq6z"
 X-Original-To: stable@vger.kernel.org
 Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 326E01917FB
-	for <stable@vger.kernel.org>; Sun, 14 Dec 2025 13:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8697C28727B
+	for <stable@vger.kernel.org>; Sun, 14 Dec 2025 15:14:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765720485; cv=none; b=Sm3AS1zope2kTmguScoTrx95O3OuXrlaL5TtX2DdtjUVzfi33j+7usIPt93Ut+ITKHlH9oKBY28XmzR/M/K8T1+lGksL0WxVGe3FQ1hzqRLqMEeZMZ1UlbjBs+My4ftninC6uOI93jEXdmOl4oj6nHkWGOjMSCWacghhdzZ3Xeo=
+	t=1765725297; cv=none; b=iR03avjFg2RfhXEbzaBM9LPH8NJsAm8Lv5fZRdbfxZWV2rEoXEJSesfHeevUOFa3kbkX/ZULd7d7kTlvTfKT6RDWpZ1qTxNrb1jdNNUTyi6OBXXjmkoLftZQ7eGE8mI+H95txSgiFj7WchMQY8gNYTawYF6XtGNUYj21+IDmM78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765720485; c=relaxed/simple;
-	bh=PjGrwWZV81DPFzMQNA4x3xriIjb0S8YAsDZbn2pcA6U=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R4HAQFQaD8LiZZr2UlkMwduWQ8oWtn8XeTpL8zPGpzoMp1Ceh20o0SPbx8xTnf3zBK831ZjUEN3hIJsOARL6u8iUHakaPHyvN5DuELL/iasTWxQHDSjH9pDZQazarx2YeoVz0KVqmazXVreGaQ3b4WZ7xcT45dABH2O2mFno0Ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IeU8RZ4j; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-47796a837c7so18788465e9.0
-        for <stable@vger.kernel.org>; Sun, 14 Dec 2025 05:54:43 -0800 (PST)
+	s=arc-20240116; t=1765725297; c=relaxed/simple;
+	bh=fRoN88ddSlH0xWv2ZUrVwnFWoW3YVMNo1QBsVJia53Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rY+D1FCygdUwLJpnUo2EPZnaF0ltvIlrZXwkCMrZm95/myQCifpZtRtuizMnD2IiPQoDx4XcjEH21rGBfELM72A8V/uyMgJvqviUZJACptRltofb/LsZiLy2NfYGvdzsvgMye+WsLLGInehBwjmW3egxF7NMpqzH04g4Ry8SFUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=HEyouq6z; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4775dbde730so2768775e9.3
+        for <stable@vger.kernel.org>; Sun, 14 Dec 2025 07:14:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765720482; x=1766325282; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=A27ILOHpvAtHnE+6lvnDEAst4fggOFaoxUBA4wWZFjE=;
-        b=IeU8RZ4jvC+WmapLF9dlbFIqlZbg18sWO66y0ieYZj/Ak4RFOZjMZhWNhuRjUdEBE0
-         SUBI6M+r1oB70c0wiptn2g9iiEW/9PZBIRigRaWesnU/cYAkj6nG4wnXj7H419j69u1+
-         6FRtAeP+wJl8hOWkUVACQmSTdZDOSUdgkKUAZmkQBRFkzrZznwp5sIUTzchbqcn/mu5X
-         AaeCFBMXGB081ZlOL9cvin/GH683T0R1WuGSTLvpysl4HzHj0566Do0aGkoz+r2xon1V
-         Y1zvl+Z7vbjYpAYVvYYubyiX5SEoYYaP/B69bPN43l6bkZ4yuVAoiKR4GSjZbCGeXQgQ
-         Bpcw==
+        d=suse.com; s=google; t=1765725293; x=1766330093; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=49iQ7lYFnys+Q7zYpktn7ew+7CCFucveN4rLo0rSKLY=;
+        b=HEyouq6zEj5IXsaujhpV19u+zmTp5GKe7BuhWVq1A1vQLOZQjD+qP4vTNymJpTxQ7X
+         kVWOeVRypAZTMiQG+h329Ng3GPunvA8P1918+tNlF/fxflwu85MCej73BQL4fsYvp/7F
+         AyCS5AYxezRVikS6M/N+WPTbZe9W7akxwWTrp5begzff/iYhLGBAow2DP6PCaLJo90wG
+         2v6McHeo7XYV3nKDulE8gBIIGWszx9wcB14CNAgpAFlAJTtxcSkXTP0RqxQDv6cYNOaV
+         DSjor1jFbxy8IrpJpJ7BfxK0HSWU9p8AO4IBBxbllETaKt2Y38v9FCdpJVGSQVJ39EUS
+         u3LQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765720482; x=1766325282;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=A27ILOHpvAtHnE+6lvnDEAst4fggOFaoxUBA4wWZFjE=;
-        b=r4k8AS5OyPRVWT5j7IRTueHPzy89ceaAV67TJyTdCEUbAUwZKqPV3E9sOpFUBxwQPk
-         VOVKnzTtAp3pV2owaCcnHYUC9lJvuUApKo9zV0Rwt1CtHBrsuZHmLvT8vvgn9rkznQfS
-         S1ux0NIq5yS76MYeHLDwot7VEzAQ/tAYrD7/xIpqUpzIqbxzVT+CrQ6KCRPVNC/Q90KF
-         gNVCWtl6Z8HItfrqWCvsXac2apxkdW0w01rPrnTuU5BQ2IxyDsOAmqk8y/jL6+10+o09
-         zPAU8toi2IH+POpSA2z/YUwF/pZt4ciBXc+GP9iT1NsEWLCETaUN0SJYrquFsxDdHbsk
-         +NmA==
-X-Forwarded-Encrypted: i=1; AJvYcCVcifP+5mEZtyIQXqlUUS0rvpNmCleENmsXqgD5TBcymShkdB7zT7F/6NrpL6SSwvFisLamlTI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwBb4Kt5m5Ym/iBeZpJTiky4KSAeFkhB7ngx1KiuiZAhzC53864
-	DZIml0YO0R2wFJNSA+1Oj2XALvtSHKjKUK+OXLOJ0aTS1QNwtfsL6pN/
-X-Gm-Gg: AY/fxX4xwLNI65Ma0J/4Y/5R/8wGmD6/OnsOwQWkICmDveoaDRbSsmrLrZtu6WGB3IG
-	AZfIsKSYY978JD/bsD6nV8RxeSVkHrczsLhfBSmFqrw9BBYEmGc/M3UTsICCX/Kz/cheBcE+vTj
-	MBFjGz6dsizQv150TjuvmELAfBO9fVYhAruDqE/r2DfeNig4oxSuCP0HTiOe5IluN+4xBAL2zXR
-	FpB5+B/qjLDJar8vtPcUf/lfffEOANR7FzojoGbK29bhrU8snmQMAdQ1X4AzPlAH3CJ82+TqiWH
-	RPlvL5PouJI8MisEvknojavHEQyiR+yoMhUH+FJSxluTKBZK3aF61WCJlYD3+3Qvx2dr4tMu474
-	G3bInePpU/3p5CeDSTXVNew4PLs9CTJ2rTStMa/f30txPo01oQoe5RrvqDWTFLk2VRHWYt4RZWD
-	ggdciFlhd2BE+0oY4acF99VnIij9I2rD2lhQCkTHTtRmcU+s8EJv4w
-X-Google-Smtp-Source: AGHT+IHTxNR+ZUDxw8OLVbLKKhDwZuONnZ52bWZfD6ui4ltu6ALafY6AXlfWh7ujj0ZxW5VYZ5/Z9Q==
-X-Received: by 2002:a05:600c:3ace:b0:46f:b32e:5094 with SMTP id 5b1f17b1804b1-47a8f915c57mr66690115e9.32.1765720482446;
-        Sun, 14 Dec 2025 05:54:42 -0800 (PST)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47a957de489sm114389375e9.5.2025.12.14.05.54.41
+        d=1e100.net; s=20230601; t=1765725293; x=1766330093;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=49iQ7lYFnys+Q7zYpktn7ew+7CCFucveN4rLo0rSKLY=;
+        b=tPF1YlGArCqcOoLp2Pb/jTycQKAcG5/5D3zkWam7BJCOnLGO8Ilfxvph9qlf4id5oq
+         vxMA0ZOFqxV5wlALWTFFqDvFcuGffV5k6Pxb5eVs3vPXAqBIDSPF2uank8xxedTJnQfV
+         oU0W4+zSQ3gPVlwA+IUMPGmP4sVVKRleA3OiAUkQENlgnPvAphW2F9ISjiD1nybAPTmP
+         2y8wCEjodqSM8+HSVR/PKuOnoMR/Ow1ek4caz14W6B+sO7v16M2MlEKKx4YDN6R3ACPg
+         r3Co3kYy+GF51Ed2j1PIIkpeRAC45orJJbv2t5mwcu9Y8piIi10OYm5dtLV/g0sGh6GF
+         ZqSg==
+X-Forwarded-Encrypted: i=1; AJvYcCXtmMVHAsR+3ISwJp304a7fH4mnK+HxRwktpnQBA5Xl4bKV39pca1LHqgKNojAOo8wNoIqNZCA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxNcrKUQmpyrODdx8qOr0gByauuzMfjITW2+g5pCwGjxZrkvtN3
+	w4UU62+XeV8dDEMt+XbgmbkpJvVu33zEuJ6DCmYi2E3WxbRrcdSc2LJGOMpVaQvNPME=
+X-Gm-Gg: AY/fxX59MSpO7FwMkv3/JtbInNHDy+e0XxG/JurzEHlE/15P6Hl99VbXK1187Vs5FPz
+	f27pielRVR4LHHvmU96GcR1FfSvaYaCBh9ODLQ1w7+dTEgijgxZsLabacu/oxHda9Oa1y/8stYn
+	G6b1w9O9JsNlILMuKufvfvW8d/AbTBQWpEyDhQFHBhGfJhj+tNETEfTXja6kRjtTx5IOIuuSl6U
+	twdN5xwkVstdeRI+HTw9aMLZE9nz5HyS4GTarfP87jZPO5lnsy5XxJJQG9pImq9GosAU4daQQb5
+	HsTnEH8v1yXQfTiiHEB24j02D+j+ruo9lO1HuwTf+4dhdiilEOUAg7VDGyqeX5PFd/4bs1W5CC3
+	WKeYwrYUWz9H30khHTuOFLZoiWl3g0accfnrChL6shhKp+H7cMwL2hcAK4yk9xVTkcEJmCDaurn
+	lAvon5qmQ9ZJIXntobxlq/
+X-Google-Smtp-Source: AGHT+IH8fDYrv4CBdVSWblZYqizfjog9OVerDZ4SxgNvELSxrCk8F9cJnxyJRITKSy0IE9v3PNryNA==
+X-Received: by 2002:a05:600c:1990:b0:477:7a1c:9cb5 with SMTP id 5b1f17b1804b1-47a8f931529mr50350605e9.7.1765725292806;
+        Sun, 14 Dec 2025 07:14:52 -0800 (PST)
+Received: from localhost ([202.127.77.110])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34abe27d580sm2283334a91.6.2025.12.14.07.14.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Dec 2025 05:54:42 -0800 (PST)
-Date: Sun, 14 Dec 2025 13:54:40 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: krzk@kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- aloisio.almeida@openbossa.org, lauro.venancio@openbossa.org,
- sameo@linux.intel.com, linville@tuxdriver.com, johannes@sipsolutions.net,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- akpm@linux-foundation.org, stable@vger.kernel.org
-Subject: Re: [PATCH] NFC: Fix error handling in nfc_genl_dump_targets
-Message-ID: <20251214135440.51409316@pumpkin>
-In-Reply-To: <20251214131726.5353-1-make24@iscas.ac.cn>
-References: <20251214131726.5353-1-make24@iscas.ac.cn>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        Sun, 14 Dec 2025 07:14:51 -0800 (PST)
+Date: Sun, 14 Dec 2025 23:14:46 +0800
+From: Heming Zhao <heming.zhao@suse.com>
+To: Prithvi <activprithvi@gmail.com>, joseph.qi@linux.alibaba.com
+Cc: mark@fasheh.com, jlbec@evilplan.org, ocfs2-devel@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-kernel-mentees@lists.linux.dev, skhan@linuxfoundation.org, 
+	david.hunter.linux@gmail.com, khalid@kernel.org, 
+	syzbot+c818e5c4559444f88aa0@syzkaller.appspotmail.com, stable@vger.kernel.org
+Subject: Re: [PATCH v2] ocfs2: fix kernel BUG in ocfs2_write_block
+Message-ID: <htz6wcj3y3dhp7jyzgrachhrz6uzi7ytuby6fdtrugm57cik32@2vo56g6wmidb>
+References: <20251210193257.25500-1-activprithvi@gmail.com>
+ <9bad11da-0655-4fb4-b424-8c124b127290@linux.alibaba.com>
+ <neqzjkw3ylaqghldgkl7jzlcl4o3vofbm6aa3a2kojfaakzjhm@ele2brknwzwm>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <neqzjkw3ylaqghldgkl7jzlcl4o3vofbm6aa3a2kojfaakzjhm@ele2brknwzwm>
 
-On Sun, 14 Dec 2025 21:17:26 +0800
-Ma Ke <make24@iscas.ac.cn> wrote:
-
-> nfc_genl_dump_targets() increments the device reference count via
-> nfc_get_device() but fails to decrement it properly. nfc_get_device()
-> calls class_find_device() which internally calls get_device() to
-> increment the reference count. No corresponding put_device() is made
-> to decrement the reference count.
+On Sat, Dec 13, 2025 at 02:25:29PM +0530, Prithvi wrote:
+> On Thu, Dec 11, 2025 at 10:17:21AM +0800, Joseph Qi wrote:
+> > 
+> > 
+> > On 2025/12/11 03:32, Prithvi Tambewagh wrote:
+> > > When the filesystem is being mounted, the kernel panics while the data
+> > > regarding slot map allocation to the local node, is being written to the
+> > > disk. This occurs because the value of slot map buffer head block
+> > > number, which should have been greater than or equal to
+> > > `OCFS2_SUPER_BLOCK_BLKNO` (evaluating to 2) is less than it, indicative
+> > > of disk metadata corruption. This triggers
+> > > BUG_ON(bh->b_blocknr < OCFS2_SUPER_BLOCK_BLKNO) in ocfs2_write_block(),
+> > > causing the kernel to panic.
+> > > 
+> > > This is fixed by introducing an if condition block in
+> > > ocfs2_update_disk_slot(), right before calling ocfs2_write_block(), which
+> > > checks if `bh->b_blocknr` is lesser than `OCFS2_SUPER_BLOCK_BLKNO`; if
+> > > yes, then ocfs2_error is called, which prints the error log, for
+> > > debugging purposes, and the return value of ocfs2_error() is returned
+> > > back to caller of ocfs2_update_disk_slot() i.e. ocfs2_find_slot(). If
+> > > the return value is zero. then error code EIO is returned.
+> > > 
+> > > Reported-by: syzbot+c818e5c4559444f88aa0@syzkaller.appspotmail.com
+> > > Closes: https://syzkaller.appspot.com/bug?extid=c818e5c4559444f88aa0
+> > > Tested-by: syzbot+c818e5c4559444f88aa0@syzkaller.appspotmail.com
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Prithvi Tambewagh <activprithvi@gmail.com>
+> > > ---
+> > > v1->v2:
+> > >  - Remove usage of le16_to_cpu() from ocfs2_error()
+> > >  - Cast bh->b_blocknr to unsigned long long
+> > >  - Remove type casting for OCFS2_SUPER_BLOCK_BLKNO
+> > >  - Fix Sparse warnings reported in v1 by kernel test robot
+> > >  - Update title from 'ocfs2: Fix kernel BUG in ocfs2_write_block' to
+> > >    'ocfs2: fix kernel BUG in ocfs2_write_block'
+> > > 
+> > > v1 link: https://lore.kernel.org/all/20251206154819.175479-1-activprithvi@gmail.com/T/
+> > > 
+> > >  fs/ocfs2/slot_map.c | 10 ++++++++++
+> > >  1 file changed, 10 insertions(+)
+> > > 
+> > > diff --git a/fs/ocfs2/slot_map.c b/fs/ocfs2/slot_map.c
+> > > index e544c704b583..e916a2e8f92d 100644
+> > > --- a/fs/ocfs2/slot_map.c
+> > > +++ b/fs/ocfs2/slot_map.c
+> > > @@ -193,6 +193,16 @@ static int ocfs2_update_disk_slot(struct ocfs2_super *osb,
+> > >  	else
+> > >  		ocfs2_update_disk_slot_old(si, slot_num, &bh);
+> > >  	spin_unlock(&osb->osb_lock);
+> > > +	if (bh->b_blocknr < OCFS2_SUPER_BLOCK_BLKNO) {
+> > > +		status = ocfs2_error(osb->sb,
+> > > +				     "Invalid Slot Map Buffer Head "
+> > > +				     "Block Number : %llu, Should be >= %d",
+> > > +				     (unsigned long long)bh->b_blocknr,
+> > > +				     OCFS2_SUPER_BLOCK_BLKNO);
+> > > +		if (!status)
+> > > +			return -EIO;
+> > > +		return status;
+> > > +	}
+> > >  
+> > >  	status = ocfs2_write_block(osb, bh, INODE_CACHE(si->si_inode));
+> > >  	if (status < 0)
+> > > 
+> > 
+> > Ummm... The 'bh' is from ocfs2_slot_info, which is load from crafted
+> > image during mount.
+> > So IIUC, the root cause is we read slot info without validating, see
+> > ocfs2_refresh_slot_info().
+> > So I'd prefer to implement a validate func and pass it into
+> > ocfs2_read_blocks() to do this job.
+> > 
+> > Thanks,
+> > Joseph
 > 
-> Add proper reference count decrementing using nfc_put_device() when
-> the dump operation completes or encounters an error, ensuring balanced
-> reference counting.
+> I checked using GDB and learnt that ocfs2_refresh_slot() is not called 
+> until the bug is triggered. Checking further, I obtained this backtrace 
+> just before the bug was triggered, with a breakpoint set at 
+> ocfs2_read_blocks():
 > 
-> Found by code review.
+> #0  ocfs2_read_blocks (ci=0xffff88804b6e3cc0, block=0, nr=1, bhs=0xffffc9000f37efe0, 
+>     flags=1, validate=0x0) at fs/ocfs2/buffer_head_io.c:197
+> #1  0xffffffff83a1fb44 in ocfs2_map_slot_buffers (osb=0xffff888028d2c000, 
+>     si=0xffff888027329d00) at fs/ocfs2/slot_map.c:385
+> #2  ocfs2_init_slot_info (osb=0xffff888028d2c000) at fs/ocfs2/slot_map.c:424
+> #3  0xffffffff83a91b93 in ocfs2_initialize_super (sb=0xffff88802912a000, bh=<optimized out>, 
+>     sector_size=<optimized out>, stats=<optimized out>) at fs/ocfs2/super.c:2220
+> #4  ocfs2_fill_super (sb=0xffff88802912a000, fc=<optimized out>) at fs/ocfs2/super.c:993
+> #5  0xffffffff822db16e in get_tree_bdev_flags (fc=0xffff888029dac800, 
+>     fill_super=0xffffffff83a8d5c0 <ocfs2_fill_super>, flags=<optimized out>)
+>     at fs/super.c:1691
+> #6  0xffffffff822db3b2 in vfs_get_tree (fc=0xffff888029dac800) at fs/super.c:1751
+> #7  0xffffffff82366f32 in fc_mount (fc=0xffff888029dac800) at fs/namespace.c:1208
+> #8  do_new_mount_fc (fc=0xffff888029dac800, mountpoint=0xffffc9000f37fe60, mnt_flags=48)
+>     at fs/namespace.c:3651
+> #9  do_new_mount (path=0xffffc9000f37fe60, fstype=<optimized out>, sb_flags=<optimized out>, 
+>     mnt_flags=48, name=0xffff888024bf93a0 "/dev/loop0", data=0xffff888028b54000)
+>     at fs/namespace.c:3727
+> #10 0xffffffff823659c7 in path_mount (
+>     dev_name=0x1 <error: Cannot access memory at address 0x1>, path=0xffff888024bf93a0, 
+>     type_page=0xffff888028b54000 "user_xattr", flags=<optimized out>, 
+>     data_page=0x7fffc7d5cb00) at fs/namespace.c:4037
+> #11 0xffffffff82369253 in do_mount (dev_name=0xffff888024bf93a0 "/dev/loop0", 
+>     dir_name=0x200000000040 "./file1", type_page=<optimized out>, flags=2240, 
+> --Type <RET> for more, q to quit, c to continue without paging--
+>     data_page=0xffff888028b54000) at fs/namespace.c:4050
+> #12 __do_sys_mount (type=<optimized out>, dev_name=<optimized out>, dir_name=<optimized out>, flags=<optimized out>, 
+>     data=<optimized out>) at fs/namespace.c:4238
+> #13 __se_sys_mount (dev_name=<optimized out>, dir_name=35184372088896, type=<optimized out>, flags=2240, 
+>     data=140736546065152) at fs/namespace.c:4215
+> #14 0xffffffff82368f2c in __x64_sys_mount (regs=<optimized out>) at fs/namespace.c:4215
+> #15 0xffffffff81328ced in x64_sys_call (regs=0xffff88804b6e3cc0, nr=0) at arch/x86/entry/syscall_64.c:37
+> #16 0xffffffff8ac0015a in do_syscall_x64 (regs=0xffffc9000f37ff48, nr=165) at arch/x86/entry/syscall_64.c:63
+> #17 do_syscall_64 (regs=0xffffc9000f37ff48, nr=165) at arch/x86/entry/syscall_64.c:94
+> #18 0xffffffff81000130 in entry_SYSCALL_64 () at arch/x86/entry/entry_64.S:121
+> #19 0x0000000000000000 in ?? ()
+> 
+> Hence, I think the function to fix would be ocfs2_map_slot_buffers() i.e.
+> the call to ocfs2_read_blocks() in it. I came up with following changes:
 
-Is that some half-hearted AI code review?
+Why does the syzbot test code never trigger ocfs2_refresh_slot_info()?
+According to the comment for LOCK_TYPE_REQUIRES_REFRESH, we know it requires DLM
+AST callback, but syzbot only mounts & operates the ocfs2 volume in local mode.
 
-Isn't the 'put' done by nfc_genl_dump_targets_done() which it looks
-like the outer code calls sometime later on.
-
-	David
+For this specific bug, adding validation function into ocfs2_map_slot_buffers()
+is correct. However, we should also add a validation action in
+ocfs2_refresh_slot_info(). This is another way to read slot map data.
 
 > 
-> Cc: stable@vger.kernel.org
-> Fixes: 4d12b8b129f1 ("NFC: add nfc generic netlink interface")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
->  net/nfc/netlink.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/net/nfc/netlink.c b/net/nfc/netlink.c
-> index a18e2c503da6..9ae138ee91dd 100644
-> --- a/net/nfc/netlink.c
-> +++ b/net/nfc/netlink.c
-> @@ -159,6 +159,11 @@ static int nfc_genl_dump_targets(struct sk_buff *skb,
->  
->  	cb->args[0] = i;
->  
-> +	if (rc < 0 || i >= dev->n_targets) {
-> +		nfc_put_device(dev);
-> +		cb->args[1] = 0;
-> +	}
-> +
->  	return skb->len;
+> diff --git a/fs/ocfs2/slot_map.c b/fs/ocfs2/slot_map.c
+> index e544c704b583..299751617919 100644
+> --- a/fs/ocfs2/slot_map.c
+> +++ b/fs/ocfs2/slot_map.c
+> @@ -332,6 +332,26 @@ int ocfs2_clear_slot(struct ocfs2_super *osb, int slot_num)
+>         return ocfs2_update_disk_slot(osb, osb->slot_info, slot_num);
 >  }
 >  
+> +static int ocfs2_validate_slot_map_block(struct super_block *sb,
+> +                                     struct buffer_head *bh)
+> +{
+> +       int rc;
+> +
+> +       BUG_ON(!buffer_uptodate(bh));
+> +
+> +       if (bh->b_blocknr < OCFS2_SUPER_BLOCK_BLKNO) {
+> +               rc = ocfs2_error(osb->sb,
+> +                               "Invalid Slot Map Buffer Head "
+> +                               "Block Number : %llu, Should be >= %d",
+> +                               (unsigned long long)bh->b_blocknr,
+> +                               OCFS2_SUPER_BLOCK_BLKNO);
+> +               if (!rc)
+> +                       return -EIO;
+> +               return status;
+> +       }
+> +       return 0;
+> +}
+> +
+>  static int ocfs2_map_slot_buffers(struct ocfs2_super *osb,
+>                                   struct ocfs2_slot_info *si)
+>  {
+> @@ -383,7 +403,8 @@ static int ocfs2_map_slot_buffers(struct ocfs2_super *osb,
+>  
+>                 bh = NULL;  /* Acquire a fresh bh */
+>                 status = ocfs2_read_blocks(INODE_CACHE(si->si_inode), blkno,
+> -                                          1, &bh, OCFS2_BH_IGNORE_CACHE, NULL);
+> +                                          1, &bh, OCFS2_BH_IGNORE_CACHE,
+> +                                          ocfs2_validate_slot_map_block);
+>                 if (status < 0) {
+>                         mlog_errno(status);
+>                         goto bail;
+>   
+> What do you think? Is this the correct approach?
+> 
+> Thank You,
+> Prithvi
 
+Based on my above comments, we should also add ocfs2_validate_slot_map_block()
+in ocfs2_refresh_slot_info().
+
+Thanks,
+Heming
 
