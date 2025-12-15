@@ -1,218 +1,191 @@
-Return-Path: <stable+bounces-201040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E70CCBDF4F
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 14:11:26 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27F9FCBE1A9
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 14:40:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 22828301355F
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 13:04:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C8C75300EA0A
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 13:40:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E201E298987;
-	Mon, 15 Dec 2025 13:04:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4794331A6A;
+	Mon, 15 Dec 2025 13:40:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="HkbO5ons";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="W4iZSwLV";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="EGzgGE1v";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="/zTsccWZ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AUiRiEQx"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19B2D26F476
-	for <stable@vger.kernel.org>; Mon, 15 Dec 2025 13:04:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B172C331A4A
+	for <stable@vger.kernel.org>; Mon, 15 Dec 2025 13:40:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765803884; cv=none; b=oDGG9e4d98y4aHyssL/WERTkr/ByegLt8gujkZPUn9kAKAAKX2Jm+VVDDE9L82s6cKWPUnpqFXjvIncbv74Gsot6Yf8pwkK2618trEtt5nMIGl1ZpQ63eWQPFzTLSHmFzotQnbKyTMjD7JcSgsW7ZoSRTzzmgLDeBf7gEQ1VFao=
+	t=1765806032; cv=none; b=UiSe9lxw0XbI4olIqti/7Y2cT+6I3pbDIMlfrn0TVhzJgPUnaPgIab3tVANjx74s1StmV4lx8pXPzRbP8QO8ze/OgWGhSQjTw3MOSeVpJRg1EmQA2vAnZctpXmaudFqSYw6qIYtf4t5U6xlfo/lxHEau+IzU6k7r5LdqMXTFJ9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765803884; c=relaxed/simple;
-	bh=nhMX7FUupcm7a5FyQELnX4KZUKRLFAdhhl3hYqjy4Ec=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iVv6vv75/Yst8oR68S5FGSc3ClOhje1kN5MwOHr9xOdEUArTzkdIHJaSS8HFagiq0puyzBp1HVexUHaQJXmRPzYqC5arpKFxR4TRJZ/bRSJKTFNTENwunzZRW8IG1ShKgO40wufEBaLCPUfEoa11K8JA1eQBf9fZoOJsYva2p7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=HkbO5ons; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=W4iZSwLV; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=EGzgGE1v; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=/zTsccWZ; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 367FB3369F;
-	Mon, 15 Dec 2025 13:04:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1765803881; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lbmqYZ8jV/3jBHEf3Jr7Ltb+Mv+6trbgX6Q0Ddyw77g=;
-	b=HkbO5ons71dq8TZZ7htB7bKmwS5nI0AWRn5vfMPGnL/tgIZ3xFwhhbaHMXl9nWc7l8/jNT
-	CLsyWkEOd+/ka+JM/aHjAK/QMHqOsCUv3cqgP0SGm2XntBf70eY30IH35asSaXVrbWm6VA
-	xqTbvMHlxIFPezNGA3rjpj2IbrffvUg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1765803881;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lbmqYZ8jV/3jBHEf3Jr7Ltb+Mv+6trbgX6Q0Ddyw77g=;
-	b=W4iZSwLVmAqE3AnslHy37RBamUYOvSukV/FQYDBw4F0OPn/tKavavottlftVS3nJfOffVh
-	Av9D73dUX0ZSqOCw==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=EGzgGE1v;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="/zTsccWZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1765803880; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lbmqYZ8jV/3jBHEf3Jr7Ltb+Mv+6trbgX6Q0Ddyw77g=;
-	b=EGzgGE1v1l17RaABdPyPYn5KjicmhD6jqap/LsnaBaM99bOhI9QQmiZfb9U9v2mjRlU64o
-	R5q7k+dX1pH6E4z+BRqcGziOohhpZ0bL7fp5vKvexmfBY+N942wZf/Jcq8hL3vMsra7DWD
-	88+G/8kS9g61yTT2TPY7cQn2EPIhBQw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1765803880;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lbmqYZ8jV/3jBHEf3Jr7Ltb+Mv+6trbgX6Q0Ddyw77g=;
-	b=/zTsccWZWQpXVA21oY0CLyqBAqXDOpAJEvqP0ExOSMsj5U6PmrfsgZEsDV2SpOCCq1t0eh
-	G+j7w+eazD8K3sBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2D3793EA63;
-	Mon, 15 Dec 2025 13:04:40 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id qXEFC2gHQGnaUgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 15 Dec 2025 13:04:40 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id E453FA0951; Mon, 15 Dec 2025 14:04:31 +0100 (CET)
-Date: Mon, 15 Dec 2025 14:04:31 +0100
-From: Jan Kara <jack@suse.cz>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Jan Kara <jack@suse.cz>, me@black-desk.cn, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] vfs: fix EBUSY on FSCONFIG_CMD_CREATE retry
-Message-ID: <3jqjyw7p4sbnlle7y7qprlcf36siyqykkk6s7hjzfdhypyvwb4@mg6hu54lloff>
-References: <20251213-mount-ebusy-v1-1-7b2907b7b0b2@black-desk.cn>
- <k7kcsc6wljl32mik2qqwij23hjsqtxqbuq6a5gbu7r6z33vq5c@7jeeepio6jkd>
- <20251215-irdisch-aufkochen-d97a7a3ed4a3@brauner>
+	s=arc-20240116; t=1765806032; c=relaxed/simple;
+	bh=ovJ0zyP/g9aXNafbNuG+hd9K81V+Lc2R0S5fghONlE8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=t3LsFafn3TABttbT6axeoiFT21QpsNzrwD+SuD3QCLg8fqvVVCz7pVmzB8Xyuu/7fgYZrY9icO6X6B/yG0xc2UDUaIM+Fl/FMwmR2L1ssOy15fqpkNF5TUxNEtJ6jdEEyni+Bc88poixkgIziQfKWGUsMAwx6kfRc/LAuj+/kvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AUiRiEQx; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-34c3259da34so2017510a91.2
+        for <stable@vger.kernel.org>; Mon, 15 Dec 2025 05:40:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765806030; x=1766410830; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=LaqS3RSpbqvlmpnasR8sVbhgvyTt7K1QiH94F/Yk+ag=;
+        b=AUiRiEQxLuCnCn4UvC6L0IGf4UaG14j0GjMP0840DN3Feo3g+wSu8roOSpybYlZYK2
+         RS4lyRJe2T4PK+vpHXMKORukcVLOaD7Aw/AdE/KO/ihSPMlwtVrJGjpg3lSUKmOZ0MTM
+         J9UNIsj7/5cg9YH6ihQ5MJmnqfLgQmfLl+OZ6EG10+zbYwzKsd0rFVM/K6M090Jh5unq
+         lX/02gAim4mCxLV/NphAIhGYmqKoY6qJO/1S0Z8nG0rTrt1ZeqG7SpYTjYmbnCcOXp4m
+         VzveZmKcHDA5gCbrBGvNGsYcDbus4sSDlwnk4eTrxsrnnqMd5loWmqBWo/y4gDBlmte7
+         8hVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765806030; x=1766410830;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LaqS3RSpbqvlmpnasR8sVbhgvyTt7K1QiH94F/Yk+ag=;
+        b=Zy4GuaLtlOSyqCZUagJed8hGiIJwDyqYvhOsgWweHqJVoQ8z+4p3OTeacYFTCdAACN
+         A7V+KmwZ83z4a0p2f6wYR7aLMt2pSgJe0zsWQKrbSsHO8iD369Eo540x92ZNUsUz3e4+
+         wcTDgGR/SkVg1NXSdyvVA6aItxfJ8PG5WGXj/HG8/t5jcAYOpNtN4PsnyBwRflqOAuSM
+         WGZcgey6meVDYv8oI7r0IcuwX9U4ntEuxLYYY5pwwJ0bWtwMdKWrHQ6TVxH6BaajI2f6
+         x0zB0kyDKGtroQ/nn7WDbiurup2+aOl1Zw6BgWMx2MmGwRzMpmIKaZfulQH+kGw0y6E+
+         8snw==
+X-Gm-Message-State: AOJu0Yw9eVuebDcQ8iMJFJ4+15yRr91fH+EBjr7eCG8kkZMjhKFx8YUv
+	y0tTbF4UnwLTK4d9HdOtCC8YvgP60n0W8rA8iIxl7q6ZxgpcOZK5rdxIVANTwQ==
+X-Gm-Gg: AY/fxX59l4G/NucAzWDcP/U/lsfhufvESv+SDKPMxvaQ0nYOAJYn5HnZ8SY6S17vE1L
+	mCXDjjdp8D09Fv2/LlyFv1/wOI+MF/zPdgmVQD7zBUmShoSNRtk2Yubqc+zqhGOLE6UnLNNRrBU
+	qvRbrf7+7lzVugjJywmQRGCMPgIEI2JUA3ilhoczbuVTqk0JZSm4d+vXefp49ylCg5pwVpmzaXy
+	7GKs3Wn3GrxIET2jseDnYI1RSaIyyG2Vm4wuZB6teOlaDH7mkIlU+ssNt+1j7P5ScAAiqSNAQyL
+	dYzHNM2JeMG8y0hLz67YCxlf1TpzEEyXzBCuG+srx9G306Saw0g/llQY1xJU29b/ViDnrQboCMT
+	a67cQlAvALbCvd8THSmDTruW1VpJ2RqOnJTr2nR2+JpZS2IbMO1YbOHx5YIvSTMIuSRUs0Aw6TM
+	Kgyo8Tqi6S
+X-Google-Smtp-Source: AGHT+IH2HoaWsKGvvyPNwy/LERBF8rplt9/OpANYZBDCCXD3Qj0LMKNYm+cH2U/UH7qnjgbQwYK/ig==
+X-Received: by 2002:a17:90b:3949:b0:32e:a10b:ce33 with SMTP id 98e67ed59e1d1-34abe478148mr9019359a91.21.1765806029815;
+        Mon, 15 Dec 2025 05:40:29 -0800 (PST)
+Received: from fly.nay.do ([49.37.35.199])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34abe3a21d1sm9259498a91.4.2025.12.15.05.40.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Dec 2025 05:40:29 -0800 (PST)
+From: Ankan Biswas <spyjetfayed@gmail.com>
+To: stable@vger.kernel.org
+Cc: gregkh@linuxfoundation.org,
+	sashal@kernel.org,
+	tytso@mit.edu,
+	adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	skhan@linuxfoundation.org,
+	khalid@kernel.org,
+	david.hunter.linux@gmail.com,
+	linux-kernel-mentees@vger.kernel.org,
+	Gabriel Krisman Bertazi <krisman@suse.de>,
+	Ankan Biswas <spyjetfayed@gmail.com>
+Subject: [PATCH 6.6.y] ext4: fix error message when rejecting the default hash
+Date: Mon, 15 Dec 2025 19:09:57 +0530
+Message-ID: <20251215133957.4236-1-spyjetfayed@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251215-irdisch-aufkochen-d97a7a3ed4a3@brauner>
-X-Spamd-Result: default: False [-4.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:dkim,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.com:email];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[suse.cz:+]
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spam-Level: 
-X-Rspamd-Queue-Id: 367FB3369F
-X-Spam-Flag: NO
-X-Spam-Score: -4.01
+Content-Transfer-Encoding: 8bit
 
-On Mon 15-12-25 12:55:12, Christian Brauner wrote:
-> On Mon, Dec 15, 2025 at 09:46:19AM +0100, Jan Kara wrote:
-> > On Sat 13-12-25 02:03:56, Chen Linxuan via B4 Relay wrote:
-> > > From: Chen Linxuan <me@black-desk.cn>
-> > > 
-> > > When using fsconfig(..., FSCONFIG_CMD_CREATE, ...), the filesystem
-> > > context is retrieved from the file descriptor. Since the file structure
-> > > persists across syscall restarts, the context state is preserved:
-> > > 
-> > > 	// fs/fsopen.c
-> > > 	SYSCALL_DEFINE5(fsconfig, ...)
-> > > 	{
-> > > 		...
-> > > 		fc = fd_file(f)->private_data;
-> > > 		...
-> > > 		ret = vfs_fsconfig_locked(fc, cmd, &param);
-> > > 		...
-> > > 	}
-> > > 
-> > > In vfs_cmd_create(), the context phase is transitioned to
-> > > FS_CONTEXT_CREATING before calling vfs_get_tree():
-> > > 
-> > > 	// fs/fsopen.c
-> > > 	static int vfs_cmd_create(struct fs_context *fc, bool exclusive)
-> > > 	{
-> > > 		...
-> > > 		fc->phase = FS_CONTEXT_CREATING;
-> > > 		...
-> > > 		ret = vfs_get_tree(fc);
-> > > 		...
-> > > 	}
-> > > 
-> > > However, vfs_get_tree() may return -ERESTARTNOINTR if the filesystem
-> > > implementation needs to restart the syscall. For example, cgroup v1 does
-> > > this when it encounters a race condition where the root is dying:
-> > > 
-> > > 	// kernel/cgroup/cgroup-v1.c
-> > > 	int cgroup1_get_tree(struct fs_context *fc)
-> > > 	{
-> > > 		...
-> > > 		if (unlikely(ret > 0)) {
-> > > 			msleep(10);
-> > > 			return restart_syscall();
-> > > 		}
-> > > 		return ret;
-> > > 	}
-> > > 
-> > > If the syscall is restarted, fsconfig() is called again and retrieves
-> > > the *same* fs_context. However, vfs_cmd_create() rejects the call
-> > > because the phase was left as FS_CONTEXT_CREATING during the first
-> > > attempt:
-> > 
-> > Well, not quite. The phase is actually set to FS_CONTEXT_FAILED if
-> > vfs_get_tree() returns any error. Still the effect is the same.
-> 
-> Uh, I'm not sure we should do this. If this only affects cgroup v1 then
-> I say we should simply not care at all. It's a deprecated api and anyone
-> using it uses something that is inherently broken and a big portion of
-> userspace has already migrated. The current or upcoming systemd release
-> has dropped all cgroup v1 support.
-> 
-> Generally, making fsconfig() restartable is not as trivial as it looks
-> because once you called into the filesystem the config that was setup
-> might have already been consumed. That's definitely the case for stuff
-> in overlayfs and others. So no, that patch won't work and btw, I
-> remembered that we already had that discussion a few years ago and I was
-> right:
-> 
-> https://lore.kernel.org/20200923201958.b27ecda5a1e788fb5f472bcd@virtuozzo.com
+From: Gabriel Krisman Bertazi <krisman@suse.de>
 
-I see. I was assuming that if the filesystem returns ERESTART* it will make
-sure to not consume the context it wants to restart with. But I can see why
-that might be too errorprone and not really worth the hassle in this case.
-So fine by me if you don't want to go that route.
+[ Upstream commit a2187431c395cdfbf144e3536f25468c64fc7cfa ]
 
-								Honza
+Commit 985b67cd8639 ("ext4: filesystems without casefold feature cannot
+be mounted with siphash") properly rejects volumes where
+s_def_hash_version is set to DX_HASH_SIPHASH, but the check and the
+error message should not look into casefold setup - a filesystem should
+never have DX_HASH_SIPHASH as the default hash.  Fix it and, since we
+are there, move the check to ext4_hash_info_init.
+
+Fixes:985b67cd8639 ("ext4: filesystems without casefold feature cannot
+be mounted with siphash")
+
+Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
+Link: https://patch.msgid.link/87jzg1en6j.fsf_-_@mailhost.krisman.be
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+[ The commit a2187431c395 intended to remove the if-block which was used
+  for an old SIPHASH rejection check. ]
+Signed-off-by: Ankan Biswas <spyjetfayed@gmail.com>
+---
+ fs/ext4/ext4.h  |  1 +
+ fs/ext4/super.c | 20 +++++++++++++++++---
+ 2 files changed, 18 insertions(+), 3 deletions(-)
+
+diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
+index 7afce7b744c0..85ba12a48f26 100644
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -2459,6 +2459,7 @@ static inline __le16 ext4_rec_len_to_disk(unsigned len, unsigned blocksize)
+ #define DX_HASH_HALF_MD4_UNSIGNED	4
+ #define DX_HASH_TEA_UNSIGNED		5
+ #define DX_HASH_SIPHASH			6
++#define DX_HASH_LAST 			DX_HASH_SIPHASH
+ 
+ static inline u32 ext4_chksum(struct ext4_sb_info *sbi, u32 crc,
+ 			      const void *address, unsigned int length)
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index 16a6c249580e..613f2bac439d 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -5138,16 +5138,27 @@ static int ext4_load_super(struct super_block *sb, ext4_fsblk_t *lsb,
+ 	return ret;
+ }
+ 
+-static void ext4_hash_info_init(struct super_block *sb)
++static int ext4_hash_info_init(struct super_block *sb)
+ {
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+ 	struct ext4_super_block *es = sbi->s_es;
+ 	unsigned int i;
+ 
++	sbi->s_def_hash_version = es->s_def_hash_version;
++
++	if (sbi->s_def_hash_version > DX_HASH_LAST) {
++		ext4_msg(sb, KERN_ERR,
++			 "Invalid default hash set in the superblock");
++		return -EINVAL;
++	} else if (sbi->s_def_hash_version == DX_HASH_SIPHASH) {
++		ext4_msg(sb, KERN_ERR,
++			 "SIPHASH is not a valid default hash value");
++		return -EINVAL;
++	}
++
+ 	for (i = 0; i < 4; i++)
+ 		sbi->s_hash_seed[i] = le32_to_cpu(es->s_hash_seed[i]);
+ 
+-	sbi->s_def_hash_version = es->s_def_hash_version;
+ 	if (ext4_has_feature_dir_index(sb)) {
+ 		i = le32_to_cpu(es->s_flags);
+ 		if (i & EXT2_FLAGS_UNSIGNED_HASH)
+@@ -5165,6 +5176,7 @@ static void ext4_hash_info_init(struct super_block *sb)
+ #endif
+ 		}
+ 	}
++	return 0;
+ }
+ 
+ static int ext4_block_group_meta_init(struct super_block *sb, int silent)
+@@ -5309,7 +5321,9 @@ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
+ 	if (err)
+ 		goto failed_mount;
+ 
+-	ext4_hash_info_init(sb);
++	err = ext4_hash_info_init(sb);
++	if (err)
++		goto failed_mount;
+ 
+ 	err = ext4_handle_clustersize(sb);
+ 	if (err)
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+2.52.0
+
 
