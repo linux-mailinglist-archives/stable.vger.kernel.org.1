@@ -1,119 +1,189 @@
-Return-Path: <stable+bounces-200976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E646CBC0CA
-	for <lists+stable@lfdr.de>; Sun, 14 Dec 2025 23:04:48 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E058ACBC262
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 01:41:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 52B2C300EF15
-	for <lists+stable@lfdr.de>; Sun, 14 Dec 2025 22:04:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1C26630101DB
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 00:41:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6100299AB4;
-	Sun, 14 Dec 2025 22:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36D502FD68C;
+	Mon, 15 Dec 2025 00:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=draconx-ca.20230601.gappssmtp.com header.i=@draconx-ca.20230601.gappssmtp.com header.b="POEj1WJ/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pm6Hcbjt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01AA72749EA
-	for <stable@vger.kernel.org>; Sun, 14 Dec 2025 22:04:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E30E22F83B0;
+	Mon, 15 Dec 2025 00:41:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765749885; cv=none; b=ZEawk6voyTYdgnFqWwnknWCqP8hYIiYsUFYPpIh2MzKT7Fe+aUl61Ns8x7BrDJVIUT1AJDopstOrpl071V3qcFrSV5U9z6HuMyxSaaaYisw+8TiGqWH3g6hueUlNKQRo37zznJqGP6Uqf5EnvCPrUGJICq10YCLW9CeFhMjk5iE=
+	t=1765759309; cv=none; b=Ytr7688yc94JFyASxQBN83TkLlvIcTxm8aISTttKU5Rn2+/f8RVB6mHLQ/SSfE56bi7ArbZ+1CQhjJwDCTRQU8F966lhaHPzg70NsE4NvESk5nIk7jiz77Xixj5R5X/XykgM+U/o0R4PgU3Vkur0MfcbU7HYfSCQMThLq6xs/WI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765749885; c=relaxed/simple;
-	bh=OsZtNvC57Q0MTvQ0L0dGnqvyWUsxJxn5my2UaWA/0e0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qAZxX5zrupV/bRsSirUNmIFv2N/38pTyxkS7ldr5e3nECe6yy0WTdSZLo5wRZkU1YN282DKMzZttvCXgBJ73tKGPjKgsbecCeK318jYx3KNo1d9DikRXnuYkvdsTk0G6MfmOmO4Sx53aaZ7bW8AXmFhm0sVOJxOc6eSfE1w+6nU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=draconx.ca; spf=none smtp.mailfrom=draconx.ca; dkim=pass (2048-bit key) header.d=draconx-ca.20230601.gappssmtp.com header.i=@draconx-ca.20230601.gappssmtp.com header.b=POEj1WJ/; arc=none smtp.client-ip=209.85.219.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=draconx.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=draconx.ca
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-88860551e39so25767366d6.3
-        for <stable@vger.kernel.org>; Sun, 14 Dec 2025 14:04:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=draconx-ca.20230601.gappssmtp.com; s=20230601; t=1765749883; x=1766354683; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/cTj72ha+a5XJMJvRmgDZDY2gaP3p8aX5U73ylQ5QC8=;
-        b=POEj1WJ/MCTEcFpJB7A/t/8hB8kN4iW+jypO9pdrCDiMmXktoDW1uimdy/TlbOpWWE
-         Qcj1fyl5Vl3Ba+T9Zv3ByfhWtvlA8GZGEiaR+qRXTJsFVN7Og10c6nr/4evqUM7kmRj4
-         hD9CLYFB+bL5AE7UEGIQ+bkxeKAYcyDIK4lU+nMrYyiNK5OdOHsihUit1U3I9bsgfCE8
-         weriQ36ITho+DB/T/2vf+ai29+0iUK8kIN8lb8qv4XJKOkKUPGmEE4U1RWFSiAWB70Bq
-         zmjzEYGxHURk2Sa3eQXyPLTVuNMxb4Es7hJMJjzhgjCQn2e1PQjwEphvB29OSYF1jGSU
-         EtLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765749883; x=1766354683;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/cTj72ha+a5XJMJvRmgDZDY2gaP3p8aX5U73ylQ5QC8=;
-        b=AuvPMyLEqB8tw6o8U+pSCLQ88Qwzpg/nDArCQv7smYo+2v9oHlPsZLmc/fGWKdc/w1
-         mlD9TjB6xMSsQQesc3mBcM3tAT6Y1yEvh5F/BZtb9ZvYfrBAANAriTmZkEd9X2MITUbn
-         lUaW8FIoCr1yO/hp21o6QF8o6PbJuMKiRysrjFIhyk6TKPv6mUogwtNZVdIFDr5WEY5Y
-         ZWOt8otdqv6IJJ/EhYBOPnu5dyWv8lso6RR1obBR9VLpsxcs+DHRnN0kvDO4oTl2FQG0
-         kFgu2cKs34pHqFc7+NPEyaJkWKPBL2FmeTlKRFzjqK8nH9KHy6gCibLj3peUc7vCmJz+
-         OoIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXA1a8/uFplXtMgfMK2H7Ea9WYOg56Lhj4bK3+voGCcRE5qTv9HN1hTsEdoO+442L7+h6Q5P2Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQnOUeu9wH6RQzYXzxsqwHGJuGEZhVgKMrhxFnzLF3nOfvEeh0
-	Hcu1YAtCkARiSNTWza9hfNvkKuhF+1GYfXrNaClTpsjgw1VIRzB5JMQ66XFf+FqxxDM=
-X-Gm-Gg: AY/fxX4zhZHO7JhL6/K+c7qEvsBNu6c5YU4y34CE7Kc8NvSG913kzC/LToX0PvSjm3n
-	mltBfHDwWcoykjIPoy0FU6XMiupxzc0QFBgCMS/B+LpP2Jrb5GCUakfWo9OMoCecUmrAenrwj5s
-	K8Qsoef+94NYaTPmE3Nt98s5I4nER+8HgqA/HZZlnuJgJaigkw1wF7gebyyfToFyaXBTW/mmH2a
-	ydOFlI6ihOeO75xLWTU1qw9vkKfNs6vtmDASQl7jKH6buVzU5X5HtPuSNqBfDV+t2HJDygne3mF
-	dp1sT3/1/QsyTWSJDB740/spLO1vU4M8Mw5wBcSekW0hNU/x8Qpq1AAt4A3wLR1aNhd3RQPWbGy
-	jHbsP05F56zUj4S92wKkuvNJh10KSXSR3oOv3vl6KW0GSGHq1VRCzUyUruF8knlQX8GaHsjMaHx
-	oaPC2cL/ZJKrCU84m2PINUmF95UoVy0rysjIPQxyTq
-X-Google-Smtp-Source: AGHT+IEDFcxqfAIv8Lzvd0GjECj/WpfJVYeBMCOAIQ4Nzc4ZxKDvXtd5bV1zeaqceaQ7pMz4WHhP1g==
-X-Received: by 2002:ad4:5c48:0:b0:880:5cc1:692c with SMTP id 6a1803df08f44-8887e1957ccmr128935286d6.17.1765749882988;
-        Sun, 14 Dec 2025 14:04:42 -0800 (PST)
-Received: from localhost (ip-24-156-181-135.user.start.ca. [24.156.181.135])
-        by smtp.gmail.com with UTF8SMTPSA id 6a1803df08f44-88993b597f7sm39205576d6.14.2025.12.14.14.04.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Dec 2025 14:04:42 -0800 (PST)
-Date: Sun, 14 Dec 2025 17:04:41 -0500
-From: Nick Bowler <nbowler@draconx.ca>
-To: Thorsten Leemhuis <regressions@leemhuis.info>
-Cc: linux-kernel@vger.kernel.org, regressions@lists.linux.dev, 
-	linux-rtc@vger.kernel.org, Esben Haabendal <esben@geanix.com>, stable@vger.kernel.org, 
-	sparclinux@vger.kernel.org
-Subject: Re: PROBLEM: hwclock busted w/ M48T59 RTC (regression)
-Message-ID: <2t6bhs4udbu55ctbemkhlluchz2exrwown7kmu2gss6zukaxdm@ughygemahmem>
-References: <krmiwpwogrvpehlqdrugb5glcmsu54qpw3mteonqeqymrvzz37@dzt7mes7qgxt>
- <gfwdg244bcmkv7l44fknfi4osd2b23unwaos7rnlirkdy2rrrt@yovd2vewdviv>
- <48db01b1-f4e5-4687-8ffb-472981d153ed@leemhuis.info>
+	s=arc-20240116; t=1765759309; c=relaxed/simple;
+	bh=bZpoNcqV+EuYPAa9lowON2hHYQ4jAVfPjQilz2Ki4ao=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ILNe2EHjEBpi2jS3UcVSPPF0Cxjaq2sD7gdf2uft80YhydzL4Aa/i3vtyMKJbKCv8ZyRmnNwbSz0EZ65YDDMFhB9SmHE18dTiz6okhzgi/YjU/wrngz3YBzjiYEhvGPfNIVgyO2OIpKZqR4PRdicsUWmHUBXvJeSe3AXeP1Y1gU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pm6Hcbjt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88D0FC4CEFB;
+	Mon, 15 Dec 2025 00:41:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765759308;
+	bh=bZpoNcqV+EuYPAa9lowON2hHYQ4jAVfPjQilz2Ki4ao=;
+	h=From:To:Cc:Subject:Date:From;
+	b=pm6HcbjtzWJdPcZ+jsQvrrS4F6MTbsp1o9xBS6FqSQ6Gyc3XZKXshF7vQO2w/KdNQ
+	 o0d2ij0L1cMfbUlsrieOR4ScjCJK6lsAl1uIaKUrPJiSjC85WaV3T1yDwnN/odQ4I0
+	 T1LU6MFeMq57xs1FBwLJbmZ7aCNCnycJ2TXAKgcTg83sDOCKcHK9+nGn5q+wJ49MEm
+	 +gXHPZ8GGagwSdFUWcZWNLpXCTNRqmn6VtjwP8udsX8kO1FtRb9VRA9uSV9Bl7xAvA
+	 YlIJA9GTzga5DAOyiVI8sre1GvHi5RLwOa2X4zaUCAkwKT7A04Yh9eGaYuH1VPbQQN
+	 Q8swDmC871wMQ==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Stefan Binding <sbinding@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>,
+	kailang@realtek.com,
+	chris.chiu@canonical.com,
+	edip@medip.dev
+Subject: [PATCH AUTOSEL 6.18-6.17] ALSA: hda/realtek: Add support for ASUS UM3406GA
+Date: Sun, 14 Dec 2025 19:41:18 -0500
+Message-ID: <20251215004145.2760442-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <48db01b1-f4e5-4687-8ffb-472981d153ed@leemhuis.info>
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.18.1
+Content-Transfer-Encoding: 8bit
 
-On Mon, Dec 08, 2025 at 03:35:42PM +0100, Thorsten Leemhuis wrote:
-> Lo!
-> 
-> On 11/26/25 04:18, Nick Bowler wrote:
-> > Any thoughts?
-> 
-> Not really, just a vague idea (and reminder, this is not my area or
-> expertise, I'm just tracking regressions):
-> 
-> Two fixes were proposed for the culprit, see:
-> 
-> https://lore.kernel.org/all/BN0PR08MB69510928028C933749F4139383D1A@BN0PR08MB6951.namprd08.prod.outlook.com/
-> https://lore.kernel.org/all/BN0PR08MB6951415A751F236375A2945683D1A@BN0PR08MB6951.namprd08.prod.outlook.com/
+From: Stefan Binding <sbinding@opensource.cirrus.com>
 
-The first link is a patch for a totally different driver, as far as I
-know not relevant to any system I have, but I guess that makes at least
-3 different systems which have regressed...
+[ Upstream commit 826c0b1ed09e5335abcae07292440ce72346e578 ]
 
-I can't figure out how to turn the second link into a correctly-
-formatted patch file, but since it is a one-line change I just manually
-applied it on top of 6.19-rc1.  This appears to fix the problem.
+Laptops use 2 CS35L41 Amps with HDA, using External boost, with I2C
 
-Thanks,
-  Nick
+Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+Link: https://patch.msgid.link/20251205150614.49590-3-sbinding@opensource.cirrus.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+
+LLM Generated explanations, may be completely bogus:
+
+## Commit Analysis: ALSA: hda/realtek: Add support for ASUS UM3406GA
+
+### 1. COMMIT MESSAGE ANALYSIS
+
+The commit message is straightforward: it adds support for a specific
+ASUS laptop model (UM3406GA) that uses 2 CS35L41 amplifiers connected
+via I2C with external boost. The message describes the hardware
+configuration, which is standard for such device ID additions.
+
+No Fixes: or Cc: stable tags are present, but as noted, this is expected
+for commits requiring manual review.
+
+### 2. CODE CHANGE ANALYSIS
+
+The entire change is a single line addition:
+```c
+SND_PCI_QUIRK(0x1043, 0x1584, "ASUS UM3406GA ",
+ALC287_FIXUP_CS35L41_I2C_2),
+```
+
+This adds:
+- Vendor ID: 0x1043 (ASUS)
+- Device/Subsystem ID: 0x1584 (ASUS UM3406GA)
+- Fixup: `ALC287_FIXUP_CS35L41_I2C_2` (an **existing** fixup already
+  used by many other ASUS models)
+
+Looking at the surrounding code, multiple other ASUS laptops use the
+same fixup:
+- ASUS PM3406CKA (0x1454)
+- ASUS G513PI/PU/PV (0x14e3)
+- ASUS G733PY/PZ/PZV/PYV (0x1503)
+- ASUS GV302XA/XJ/XQ/XU/XV/XI (0x1533)
+- ASUS UM3402YAR (0x1683)
+
+### 3. CLASSIFICATION
+
+This is a **NEW DEVICE ID** addition - explicitly listed as an exception
+that IS appropriate for stable backporting. The driver infrastructure
+and fixup code already exist; this merely adds an ID to enable the
+existing fix for new hardware.
+
+### 4. SCOPE AND RISK ASSESSMENT
+
+- **Lines changed**: 1 line
+- **Files touched**: 1 file
+- **Complexity**: Zero - table entry addition only
+- **Risk**: Extremely low - this cannot affect any other hardware
+- **No new code paths**: Uses pre-existing `ALC287_FIXUP_CS35L41_I2C_2`
+  fixup
+
+### 5. USER IMPACT
+
+- **Who is affected**: Owners of ASUS UM3406GA laptops
+- **Problem without fix**: Audio (specifically the CS35L41 amplifiers)
+  won't function properly
+- **Severity**: Non-working audio is a significant user-facing issue for
+  laptop users
+
+### 6. STABILITY INDICATORS
+
+- Signed-off by Takashi Iwai (ALSA maintainer at SUSE)
+- Standard quirk addition pattern used extensively throughout this file
+- Follows exact same format as dozens of other ASUS quirk entries
+
+### 7. DEPENDENCY CHECK
+
+- The fixup `ALC287_FIXUP_CS35L41_I2C_2` has been in the kernel for some
+  time, supporting multiple other ASUS models
+- No other commits are required for this to work
+- This should apply cleanly to stable trees that have the CS35L41
+  support infrastructure
+
+### CONCLUSION
+
+This commit is a textbook example of what should be backported to stable
+trees:
+
+1. **Falls under explicit exception**: Adding device IDs to existing
+   drivers is explicitly allowed
+2. **Minimal change**: Single line, single table entry
+3. **Zero regression risk**: Cannot affect any hardware except the
+   targeted laptop
+4. **Uses existing infrastructure**: The fixup is already well-tested on
+   similar ASUS models
+5. **Fixes real user problem**: Enables audio on a production laptop
+6. **Obviously correct**: Identical pattern to surrounding entries
+
+The risk-benefit analysis strongly favors backporting: virtually zero
+risk with clear user benefit (working audio on a specific laptop model).
+
+**YES**
+
+ sound/hda/codecs/realtek/alc269.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
+index b45fcc9a3785e..008bf9d5148e1 100644
+--- a/sound/hda/codecs/realtek/alc269.c
++++ b/sound/hda/codecs/realtek/alc269.c
+@@ -6752,6 +6752,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x1517, "Asus Zenbook UX31A", ALC269VB_FIXUP_ASUS_ZENBOOK_UX31A),
+ 	SND_PCI_QUIRK(0x1043, 0x1533, "ASUS GV302XA/XJ/XQ/XU/XV/XI", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1573, "ASUS GZ301VV/VQ/VU/VJ/VA/VC/VE/VVC/VQC/VUC/VJC/VEC/VCC", ALC285_FIXUP_ASUS_HEADSET_MIC),
++	SND_PCI_QUIRK(0x1043, 0x1584, "ASUS UM3406GA ", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1652, "ASUS ROG Zephyrus Do 15 SE", ALC289_FIXUP_ASUS_ZEPHYRUS_DUAL_SPK),
+ 	SND_PCI_QUIRK(0x1043, 0x1662, "ASUS GV301QH", ALC294_FIXUP_ASUS_DUAL_SPK),
+ 	SND_PCI_QUIRK(0x1043, 0x1663, "ASUS GU603ZI/ZJ/ZQ/ZU/ZV", ALC285_FIXUP_ASUS_HEADSET_MIC),
+-- 
+2.51.0
+
 
