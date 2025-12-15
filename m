@@ -1,231 +1,203 @@
-Return-Path: <stable+bounces-201071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DDAACBF31B
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 18:16:37 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42ADCCBF30F
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 18:16:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 912FD3062E5D
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 17:04:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 900BC30B8E35
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 17:10:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B28133F8A5;
-	Mon, 15 Dec 2025 17:02:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B748133F374;
+	Mon, 15 Dec 2025 17:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hVD84A1r"
+	dkim=pass (2048-bit key) header.d=bsbernd.com header.i=@bsbernd.com header.b="DBmsQD4o";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Z9u8MS08"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0899C33E37B
-	for <stable@vger.kernel.org>; Mon, 15 Dec 2025 17:02:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27BA53376A3;
+	Mon, 15 Dec 2025 17:09:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765818177; cv=none; b=CzYkv2GcpebTUxUV+jVPm0CfTV7GEn2MFgPawlFQCts5pEMPYoNTvsPWedlJqCLOwIYVMc4tkJDKVNaB10cP2xRDFTyLO2fUZW0IcKx83E2C0qz0S+77cN6lyRJpXDu+SihiCRjSdYBFp6zpzss2oN+ONy0+ajv1RdFiv79JPR0=
+	t=1765818570; cv=none; b=te8On8WizBMfpg2luGR/dgj5oBIw9p0D0EEdz/5MO5WwACg5h/SvQrdeflbjvi+RvCMN6fdbUAsp7tlmvrMPY5nRUJ1I6F7wo0GG0/V+RwnLBFhB8PDPht5WHdIP+ww9Hjt4kaVgMvIk0Vb6kd19BSscU911CS51An0DgmOKbKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765818177; c=relaxed/simple;
-	bh=bwZq3pDn45dHMvKwRD/pGpYNsdBTtg1rw7Z6eYR0n6Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aVqdwKoG13JjqMH7zXPGT6mDVwNSqTyjV0XL+DjvjQCmNxDjIu1UicrKqwy41QweEgrFfqgbUK+g+ETyFQ2tK1L0qD7txTbyPl+iZoQM9/hK1pKhPKqbE1Qg93OQcXHuUDPEJEvhVy8I4OZFam9SvdMubtqJ7ccdoBSkuzU/SCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hVD84A1r; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-29f0f875bc5so48411995ad.3
-        for <stable@vger.kernel.org>; Mon, 15 Dec 2025 09:02:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765818174; x=1766422974; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aXgguA2ONOc6Orc1IUAbVwvyBKZhr/2LviXH8dqh3S0=;
-        b=hVD84A1rWfHG6Vl81rMzfhk6eGzkCOMFev+WViDmDn7D1aXvufnKLJ061nm14OjXsj
-         OAclIQUhhYfOk7IrWC01lnE8KTSM8cDjmEHcg2T5fJrclaz8Minq46jMee5TGZaN1b/1
-         WYi+cGYUbJDKlIeK3k2G4IGmI0WeHIGjxRiegId5+6FNkgEgQ83EK/pAfXgrPNpoJJgy
-         rJw3pBPZXuj28g/N1Lelx9EUIDM6CQVyqC6PtfY59EHP/baxjN/5yi5+tMVqa8ZrAL4e
-         2CnUjipIA8SkrcGGo2HJBSKa2q/mO4NpzeZhfwmIB8CH+lzRNsUD+6lBHi7n4iwIJqdx
-         ulsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765818174; x=1766422974;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aXgguA2ONOc6Orc1IUAbVwvyBKZhr/2LviXH8dqh3S0=;
-        b=NNzYEKNEA2FTiMSJ59aDekvUh6Bid5MzM7+d61Gt9GtT04MCt8NNJQEFUaEtMA1Ckm
-         y5GN7SLdmOhnZXYn4xwsLUBmgYVPEsSDAR45Kz+xRkNAq9AElsCcbtHW+JvWTu1GDQtw
-         6SN4C7hCM4BWfPbpx1mGx4SSNSGIrBwblO/Pm+iLi0R3+g69VF4bsaal4ZSXL9yE/6EC
-         u2DDu+DhcEwWoaUvQP4jj/Mkm32qHniNbRY7OX16WhvqU8P8AB8D4Hm37TY1dpOAgfca
-         N6DD04sk0VDPpgneLHNW6bXOdmNJNCMhxOJFu8cu1fN51LdW+aEUz37/NWIgEkca5bPW
-         uE6A==
-X-Forwarded-Encrypted: i=1; AJvYcCWalDaKGGrZa24+d4Zuf/kux0/SWABvP42Y3DCqEEyo/qy0A4VdXFWTu++4cvzTkdCbcsJD4F4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxcvFuRf87YKNpZrq440OYouiwspqz++zdbyd+ESHO5eYZoIQyl
-	kH5/ZLqSa6BBqeR+0hpk6J4NngaQJZSeXpw26+LI+k1j7/j9esKrkZqM
-X-Gm-Gg: AY/fxX6enCrFpSo3mGLxtmJsP72MpaXaTA3P5qe5dAzBYARlRAulJe7Z7z4gho/e0RB
-	hbf0kctASUyDffoqET8poXZmEAReF0Xfarb27ZaCQVEwAYW3C6p3SSjH+p/G3a9KfnI/dJtuEIQ
-	2eJzZ5qx0AqYkJ8/0p7DReY/a2KAVSrmpczTWwOKAwPbRUiDV/0tx1jNigp4SUZYIzPU/mGmWQH
-	T6vrxXnDpMBJWn0hXJOYWfx1qo+o0FM0GdV/Gv6mYCYIJzkdcGG3MpMBh3j2aHgfsT5HyG6EHm2
-	smLaYdg4sZSd8EM+I7hVDylvnLb1zVC15EC8dd0X4geHzNpg/x6YZCy/blHpnQhfmFtbZlhRKhN
-	G31woIAYytvnGjuGBrhsxSt1ASrsy7hqYwdgR93pFgi43800f6QrtjvXJL9Sa8E2WegGWY7hlaH
-	vrozOqlMz6HqIa
-X-Google-Smtp-Source: AGHT+IE4p+UmmUv+Akr7vMEk5JRDk9BgVR4yC6f8f61tsVRIPDIvhHJSvDDX7JBsmMTr5oTAWoShpg==
-X-Received: by 2002:a17:903:1247:b0:29d:9b39:c05f with SMTP id d9443c01a7336-29f23dfe992mr125761275ad.10.1765818173098;
-        Mon, 15 Dec 2025 09:02:53 -0800 (PST)
-Received: from prithvi-HP ([111.125.240.40])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a0ced60fddsm49902845ad.77.2025.12.15.09.02.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Dec 2025 09:02:52 -0800 (PST)
-Date: Mon, 15 Dec 2025 22:32:45 +0530
-From: Prithvi <activprithvi@gmail.com>
-To: Heming Zhao <heming.zhao@suse.com>
-Cc: jlbec@evilplan.org, joseph.qi@linux.alibaba.com, mark@fasheh.com, 
-	linux-kernel@vger.kernel.org, ocfs2-devel@lists.linux.dev, 
-	linux-kernel-mentees@lists.linux.dev, skhan@linuxfoundation.org, david.hunter.linux@gmail.com, 
-	khalid@kernel.org, syzbot+c818e5c4559444f88aa0@syzkaller.appspotmail.com, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3] ocfs2: Add validate function for slot map blocks
-Message-ID: <tagu2npibmto5bgonhorg5krbvqho4zxsv5pulvgbtp53aobas@6qk4twoysbnz>
-References: <20251215052513.18436-1-activprithvi@gmail.com>
- <pbky57xu3cdwtrxieo7y2dicl5vddy7k5ttf32nxypirceoenx@et4o3qg4ifck>
+	s=arc-20240116; t=1765818570; c=relaxed/simple;
+	bh=UpueoY4td8Le9kj70RSd7cpZwl2U2zAl8gIz9iDdiSE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OLQFo5RyP82T0/IpgnZ7pCy8wjimVOOXkUS0LjMXIBqYOnJH66kEBEBLhn/laV0XjCDWsmKpe1CSrJq+gc6jLzuSSHanwXQ+jEj3YpA04YUpHmZHtgiWKGfNkDC5DYUCYfKp04yIb9feTwdNFaTuLvcYsa4Onsk2DK3v3UN3sc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bsbernd.com; spf=pass smtp.mailfrom=bsbernd.com; dkim=pass (2048-bit key) header.d=bsbernd.com header.i=@bsbernd.com header.b=DBmsQD4o; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Z9u8MS08; arc=none smtp.client-ip=103.168.172.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bsbernd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bsbernd.com
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 3EE6614001F1;
+	Mon, 15 Dec 2025 12:09:19 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Mon, 15 Dec 2025 12:09:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bsbernd.com; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1765818559;
+	 x=1765904959; bh=xVWwiXFD+0T8MSjifsQoEy4fskO/HVJ0qZSwyVu4ZIM=; b=
+	DBmsQD4oMM0qgWntCWtu0WtfgCf/MbXQL0FUzxGBYcCdiKwv6Ob824yeOfiSuBdV
+	P1B90i6yCqsvXITHwrN+TSar2UAJcowbupdnIalHEtW8LBAmrSWKUhvHvbIaLJ4k
+	jShsXUCGfXrijIeeaSbeTEJwxU4C/+fWMjhxWYiyvxVvmBUtKRer9/QvmRJQbDQT
+	o1sXVzHHZuS+vFq+ZxmBtaSoS7krHEYHF8xglr2nqgbTh25V9wXTBWmzwb/EEc9d
+	jvGwGI/vlrCEkHUzawnhwuFrN9HUs1ezWODsu0QFVWuuzv2pE/YTZhP/K1KEvjlV
+	Uu2DLXq9S/ln1gdbpSN6FA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1765818559; x=
+	1765904959; bh=xVWwiXFD+0T8MSjifsQoEy4fskO/HVJ0qZSwyVu4ZIM=; b=Z
+	9u8MS08Ik++NoxS3z66EZ0cJMm5KvLl6hGst26/iYdACNhfPrRO94El2ktlKhugD
+	J80UG5N4Pw/OL78tsDsmMjLopfPrabQUp8gS4BbA6YRoReroHKpoYsk2wYnP1iHP
+	p9zpvahy7mx4UjOLQyB2EvDXX88qBCYGxUPif6HJF+r/OAGzb/lfdjlSMXKOfy6U
+	mRbpgHMmpET+yL1BZRMcdDxQZTZzOn0GhNlyI9qszF7/D1VGRTJBX4kqWVrJQJFr
+	kkjlVZbgzkwcbArq2jtbKlhmFPmcfAt/Hqkj/VUV1pF9Fk6BrdGVZK3S/0EfrK2g
+	HHxlroYaIcnqDyYLh3f5w==
+X-ME-Sender: <xms:vkBAaTnfn8IXfsPJTqp0bgHes1h0G7rlhD_tYVLPcp3bB8rXjB16rg>
+    <xme:vkBAaZ5CoOdVNPSImGLGiehDvXAYi3sCtH6QlXkti1K3n__KvgiDuCt9M-2TVYVhK
+    bOoRcfNrs-6NO8MEDNtVoisYmnehpyWjnGQ4ZRqCL1okpioG9w>
+X-ME-Received: <xmr:vkBAaUQp3GQuZa4G6m_Fqs7NASk9Ry4LYiXEKLRDXK2UmQA-9ZTjki3orkKJaWzcnQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefjeefjecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefkffggfgfuvfevfhfhjggtgfesthekredttddvjeenucfhrhhomhepuegvrhhnugcu
+    ufgthhhusggvrhhtuceosggvrhhnugessghssggvrhhnugdrtghomheqnecuggftrfgrth
+    htvghrnhepfeeggeefffekudduleefheelleehgfffhedujedvgfetvedvtdefieehfeel
+    gfdvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsg
+    gvrhhnugessghssggvrhhnugdrtghomhdpnhgspghrtghpthhtohepuddtpdhmohguvgep
+    shhmthhpohhuthdprhgtphhtthhopehjohgrnhhnvghlkhhoohhnghesghhmrghilhdrtg
+    homhdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhg
+    pdhrtghpthhtohepuggrvhhiugesrhgvughhrghtrdgtohhmpdhrtghpthhtohepmhhikh
+    hlohhssehsiigvrhgvughirdhhuhdprhgtphhtthhopehlihhnuhigqdhmmheskhhvrggt
+    khdrohhrghdprhgtphhtthhopegrthhhuhhlrdhkrhhishhhnhgrrdhkrhesphhrohhtoh
+    hnmhgrihhlrdgtohhmpdhrtghpthhtohepjhdrnhgvuhhstghhrggvfhgvrhesghhmgidr
+    nhgvthdprhgtphhtthhopegtrghrnhhilhesuggvsghirghnrdhorhhgpdhrtghpthhtoh
+    eplhhinhhugidqfhhsuggvvhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:vkBAaXwhg5qPoMSFxr2fjFWyNP3WxxYhQ73419jrK3qKUZ2yeX7Ssg>
+    <xmx:vkBAacoS-5NRhIxVYWmGPTFL3D8ol9w16UKMZ8fl7XiWv23-lX1Ccw>
+    <xmx:vkBAaa2MctWN15wgAlH3c4uX1-gQ9Gfl1BgMgTktPpzzX6UX9TGxLw>
+    <xmx:vkBAacwVIAsywd5d6YrAgETJowG17h3I0KHd7Nw_L4SQyMrJOkmY-w>
+    <xmx:v0BAaYs0WBymy6XKlOGtl7jdV99-_OSENo7ShJW2OJY5BD0iRI2jHBFg>
+Feedback-ID: i5c2e48a5:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 15 Dec 2025 12:09:17 -0500 (EST)
+Message-ID: <2410c88d-380a-4aef-898e-857307a57959@bsbernd.com>
+Date: Mon, 15 Dec 2025 18:09:16 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <pbky57xu3cdwtrxieo7y2dicl5vddy7k5ttf32nxypirceoenx@et4o3qg4ifck>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/1] fs/writeback: skip AS_NO_DATA_INTEGRITY mappings
+ in wait_sb_inodes()
+To: Joanne Koong <joannelkoong@gmail.com>, akpm@linux-foundation.org
+Cc: david@redhat.com, miklos@szeredi.hu, linux-mm@kvack.org,
+ athul.krishna.kr@protonmail.com, j.neuschaefer@gmx.net, carnil@debian.org,
+ linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+References: <20251215030043.1431306-1-joannelkoong@gmail.com>
+ <20251215030043.1431306-2-joannelkoong@gmail.com>
+From: Bernd Schubert <bernd@bsbernd.com>
+Content-Language: en-US
+In-Reply-To: <20251215030043.1431306-2-joannelkoong@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, Dec 15, 2025 at 10:21:37PM +0800, Heming Zhao wrote:
-> On Mon, Dec 15, 2025 at 10:55:13AM +0530, Prithvi Tambewagh wrote:
-> > When the filesystem is being mounted, the kernel panics while the data
-> > regarding slot map allocation to the local node, is being written to the
-> > disk. This occurs because the value of slot map buffer head block
-> > number, which should have been greater than or equal to
-> > `OCFS2_SUPER_BLOCK_BLKNO` (evaluating to 2) is less than it, indicative
-> > of disk metadata corruption. This triggers
-> > BUG_ON(bh->b_blocknr < OCFS2_SUPER_BLOCK_BLKNO) in ocfs2_write_block(),
-> > causing the kernel to panic.
-> > 
-> > This is fixed by introducing  function ocfs2_validate_slot_map_block() to
-> > validate slot map blocks. It first checks if the buffer head passed to it
-> > is up to date and valid, else it panics the kernel at that point itself.
-> > Further, it contains an if condition block, which checks if `bh->b_blocknr`
-> > is lesser than `OCFS2_SUPER_BLOCK_BLKNO`; if yes, then ocfs2_error is
-> > called, which prints the error log, for debugging purposes, and the return
-> > value of ocfs2_error() is returned. If the return value is zero. then error
-> > code EIO is returned.
-> > 
-> > This function is used as validate function in calls to ocfs2_read_blocks()
-> > in ocfs2_refresh_slot_info() and ocfs2_map_slot_buffers().
-> > In addition, the function also contains
-> 
-> The last sentence seems incomplete.
-> 
-> > 
-> > Reported-by: syzbot+c818e5c4559444f88aa0@syzkaller.appspotmail.com
-> > Closes: https://syzkaller.appspot.com/bug?extid=c818e5c4559444f88aa0
-> > Tested-by: syzbot+c818e5c4559444f88aa0@syzkaller.appspotmail.com
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Prithvi Tambewagh <activprithvi@gmail.com>
-> > ---
-> > v2->v3:
-> >  - Create new function ocfs2_validate_slot_map_block() to validate block 
-> >    number of slot map blocks, to be greater then or equal to 
-> >    OCFS2_SUPER_BLOCK_BLKNO
-> >  - Use ocfs2_validate_slot_map_block() in calls to ocfs2_read_blocks() in
-> >    ocfs2_refresh_slot_info() and ocfs2_map_slot_buffers()
-> >  - In addition to using previously formulated if block in 
-> >    ocfs2_validate_slot_map_block(), also check if the buffer head passed 
-> >    in this function is up to date; if not, then kernel panics at that point
-> >  - Change title of patch to 'ocfs2: Add validate function for slot map blocks'
-> > 
-> > v2 link: https://lore.kernel.org/ocfs2-devel/nwkfpkm2wlajswykywnpt4sc6gdkesakw2sw7etuw2u2w23hul@6oby33bscwdw/T/#t
-> > 
-> > v1->v2:
-> >  - Remove usage of le16_to_cpu() from ocfs2_error()
-> >  - Cast bh->b_blocknr to unsigned long long
-> >  - Remove type casting for OCFS2_SUPER_BLOCK_BLKNO
-> >  - Fix Sparse warnings reported in v1 by kernel test robot
-> >  - Update title from 'ocfs2: Fix kernel BUG in ocfs2_write_block' to
-> >    'ocfs2: fix kernel BUG in ocfs2_write_block'
-> > 
-> > v1 link: https://lore.kernel.org/all/20251206154819.175479-1-activprithvi@gmail.com/T/
-> >  fs/ocfs2/slot_map.c | 29 +++++++++++++++++++++++++++--
-> >  1 file changed, 27 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/fs/ocfs2/slot_map.c b/fs/ocfs2/slot_map.c
-> > index e544c704b583..50ddd7f50f8f 100644
-> > --- a/fs/ocfs2/slot_map.c
-> > +++ b/fs/ocfs2/slot_map.c
-> > @@ -44,6 +44,9 @@ struct ocfs2_slot_info {
-> >  static int __ocfs2_node_num_to_slot(struct ocfs2_slot_info *si,
-> >  				    unsigned int node_num);
-> >  
-> > +static int ocfs2_validate_slot_map_block(struct super_block *sb,
-> > +					  struct buffer_head *bh);
-> > +
-> >  static void ocfs2_invalidate_slot(struct ocfs2_slot_info *si,
-> >  				  int slot_num)
-> >  {
-> > @@ -132,7 +135,8 @@ int ocfs2_refresh_slot_info(struct ocfs2_super *osb)
-> >  	 * this is not true, the read of -1 (UINT64_MAX) will fail.
-> >  	 */
-> >  	ret = ocfs2_read_blocks(INODE_CACHE(si->si_inode), -1, si->si_blocks,
-> > -				si->si_bh, OCFS2_BH_IGNORE_CACHE, NULL);
-> > +				si->si_bh, OCFS2_BH_IGNORE_CACHE,
-> > +				ocfs2_validate_slot_map_block);
-> >  	if (ret == 0) {
-> >  		spin_lock(&osb->osb_lock);
-> >  		ocfs2_update_slot_info(si);
-> > @@ -332,6 +336,26 @@ int ocfs2_clear_slot(struct ocfs2_super *osb, int slot_num)
-> >  	return ocfs2_update_disk_slot(osb, osb->slot_info, slot_num);
-> >  }
-> >  
-> > +static int ocfs2_validate_slot_map_block(struct super_block *sb,
-> > +					  struct buffer_head *bh)
-> > +{
-> > +	int rc;
-> > +
-> > +	BUG_ON(!buffer_uptodate(bh));
-> > +
-> > +	if (bh->b_blocknr < OCFS2_SUPER_BLOCK_BLKNO) {
-> > +		rc = ocfs2_error(sb,
-> > +				 "Invalid Slot Map Buffer Head "
-> > +				 "Block Number : %llu, Should be >= %d",
-> > +				 (unsigned long long)bh->b_blocknr,
-> > +				 OCFS2_SUPER_BLOCK_BLKNO);
-> > +		if (!rc)
-> > +			return -EIO;
-> 
-> Since ocfs2_error() never returns 0, please remove the above if condition.
-> 
-> Thanks,
-> Heming
-> > +		return rc;
-> > +	}
-> > +	return 0;
-> > +}
-> > +
-> >  static int ocfs2_map_slot_buffers(struct ocfs2_super *osb,
-> >  				  struct ocfs2_slot_info *si)
-> >  {
-> > @@ -383,7 +407,8 @@ static int ocfs2_map_slot_buffers(struct ocfs2_super *osb,
-> >  
-> >  		bh = NULL;  /* Acquire a fresh bh */
-> >  		status = ocfs2_read_blocks(INODE_CACHE(si->si_inode), blkno,
-> > -					   1, &bh, OCFS2_BH_IGNORE_CACHE, NULL);
-> > +					   1, &bh, OCFS2_BH_IGNORE_CACHE,
-> > +					   ocfs2_validate_slot_map_block);
-> >  		if (status < 0) {
-> >  			mlog_errno(status);
-> >  			goto bail;
-> > 
-> > base-commit: 24172e0d79900908cf5ebf366600616d29c9b417
-> > -- 
-> > 2.43.0
-> >
 
-Sure, I will make the corrections and send a v4 patch.
 
-Thanks,
-Prithvi
+On 12/15/25 04:00, Joanne Koong wrote:
+> Skip waiting on writeback for inodes that belong to mappings that do not
+> have data integrity guarantees (denoted by the AS_NO_DATA_INTEGRITY
+> mapping flag).
+> 
+> This restores fuse back to prior behavior where syncs are no-ops. This
+> is needed because otherwise, if a system is running a faulty fuse
+> server that does not reply to issued write requests, this will cause
+> wait_sb_inodes() to wait forever.
+> 
+> Fixes: 0c58a97f919c ("fuse: remove tmp folio for writebacks and internal rb tree")
+> Reported-by: Athul Krishna <athul.krishna.kr@protonmail.com>
+> Reported-by: J. Neuschäfer <j.neuschaefer@gmx.net>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+> ---
+>   fs/fs-writeback.c       |  3 ++-
+>   fs/fuse/file.c          |  4 +++-
+>   include/linux/pagemap.h | 11 +++++++++++
+>   3 files changed, 16 insertions(+), 2 deletions(-)
+> 
+> diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
+> index 6800886c4d10..ab2e279ed3c2 100644
+> --- a/fs/fs-writeback.c
+> +++ b/fs/fs-writeback.c
+> @@ -2751,7 +2751,8 @@ static void wait_sb_inodes(struct super_block *sb)
+>   		 * do not have the mapping lock. Skip it here, wb completion
+>   		 * will remove it.
+>   		 */
+> -		if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK))
+> +		if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK) ||
+> +		    mapping_no_data_integrity(mapping))
+>   			continue;
+>   
+>   		spin_unlock_irq(&sb->s_inode_wblist_lock);
+> diff --git a/fs/fuse/file.c b/fs/fuse/file.c
+> index 01bc894e9c2b..3b2a171e652f 100644
+> --- a/fs/fuse/file.c
+> +++ b/fs/fuse/file.c
+> @@ -3200,8 +3200,10 @@ void fuse_init_file_inode(struct inode *inode, unsigned int flags)
+>   
+>   	inode->i_fop = &fuse_file_operations;
+>   	inode->i_data.a_ops = &fuse_file_aops;
+> -	if (fc->writeback_cache)
+> +	if (fc->writeback_cache) {
+>   		mapping_set_writeback_may_deadlock_on_reclaim(&inode->i_data);
+> +		mapping_set_no_data_integrity(&inode->i_data);
+> +	}
 
+For a future commit, maybe we could add a FUSE_INIT flag that allows privileged
+fuse server to not set this? Maybe even in combination with an enforced request
+timeout?
+
+>   
+>   	INIT_LIST_HEAD(&fi->write_files);
+>   	INIT_LIST_HEAD(&fi->queued_writes);
+> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+> index 31a848485ad9..ec442af3f886 100644
+> --- a/include/linux/pagemap.h
+> +++ b/include/linux/pagemap.h
+> @@ -210,6 +210,7 @@ enum mapping_flags {
+>   	AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM = 9,
+>   	AS_KERNEL_FILE = 10,	/* mapping for a fake kernel file that shouldn't
+>   				   account usage to user cgroups */
+> +	AS_NO_DATA_INTEGRITY = 11, /* no data integrity guarantees */
+>   	/* Bits 16-25 are used for FOLIO_ORDER */
+>   	AS_FOLIO_ORDER_BITS = 5,
+>   	AS_FOLIO_ORDER_MIN = 16,
+> @@ -345,6 +346,16 @@ static inline bool mapping_writeback_may_deadlock_on_reclaim(const struct addres
+>   	return test_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->flags);
+>   }
+>   
+> +static inline void mapping_set_no_data_integrity(struct address_space *mapping)
+> +{
+> +	set_bit(AS_NO_DATA_INTEGRITY, &mapping->flags);
+> +}
+> +
+> +static inline bool mapping_no_data_integrity(const struct address_space *mapping)
+> +{
+> +	return test_bit(AS_NO_DATA_INTEGRITY, &mapping->flags);
+> +}
+> +
+>   static inline gfp_t mapping_gfp_mask(const struct address_space *mapping)
+>   {
+>   	return mapping->gfp_mask;
+
+
+Reviewed-by: Bernd Schubert <bschubert@ddn.com>
 
