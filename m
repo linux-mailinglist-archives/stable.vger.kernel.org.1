@@ -1,243 +1,126 @@
-Return-Path: <stable+bounces-201024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61BD6CBD674
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 11:46:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4424DCBD683
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 11:49:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0518F300E785
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 10:46:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 346963011752
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 10:49:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AF09271468;
-	Mon, 15 Dec 2025 10:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07CDC29E0E5;
+	Mon, 15 Dec 2025 10:49:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PyXsbZRe"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="HtNpMVwy";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="pGUTIuIS"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from flow-b5-smtp.messagingengine.com (flow-b5-smtp.messagingengine.com [202.12.124.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D27246798
-	for <stable@vger.kernel.org>; Mon, 15 Dec 2025 10:46:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C022246798;
+	Mon, 15 Dec 2025 10:49:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765795591; cv=none; b=U/a3Oc/1LmAozMyjaCyr3VGFwTrsr5Ti4kDx4LZVUkYmf7GkOu0Jisj7sKKPVLF/LEVPMhuP4ejKHueCFj28a4DpUmwaqGPmIybTRozDRhJq4Pxxno4s5pOZW28nkSy7XTj4mTUuwOhpoqN2E/WyWUXZONGmYh1SICE8xqaTmgY=
+	t=1765795752; cv=none; b=aUqasgC+2dWQbKOhFP+5ZXcNZP3gTg1aXBmocJruzKDYl628HJ7tINUx/gSXfLkj+NO8ePLFy7PjKBO3+ARh0EF2Mzm32/8XbBPn6ZEOe5A/RnMP4popq1iYHZnpIOp5Tk6s2rNp65s9yur0dDn08OFix2mtNkHWi08ybEZaX+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765795591; c=relaxed/simple;
-	bh=Bk15fFQaaNzeTwIC9795mFTycSNqNCgufGv6rxPBva8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nfUmw3yaa470x3p1oJ05vN93HD3nrZh6sct7tJdTHv+o8utdTPEa7kC8sgjT0VNUeakLm2mH85RwxCjEJro+y5u3cAFW9et7QTdu0QMnTC6AYgTnxdIMkrk6voZlYI93IQ2XLoKj2cBUMeRX64sV0unMEUkmtzrppoi07oDjlZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PyXsbZRe; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765795590; x=1797331590;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Bk15fFQaaNzeTwIC9795mFTycSNqNCgufGv6rxPBva8=;
-  b=PyXsbZRe0wexDDlcF2aWGjndv/eQrSM8Bdfc3Q/GlnEsFqOhocYNZF3u
-   i/2EON2ibTop3s5tzY/wWH4FA9EenOElcrh5Ue3Qps5OgTRGdHp25nGrj
-   i2SFfvHchiKuhowFndVRc9NU7RF0RiX9S9tygy1DROXYsQdx8etCtr2Vv
-   nWMPrDm2xcEJ6Ljy91CZIECxLim+YDuInkjZlmtgLJsyLIdHPHH3tgwMH
-   WjWfVZu72Tu7qaXS4t1ZXYxE0oBtRUGXHdejcNWeu0f5DbU4/Q530UwZk
-   7MIMWpSLnUGV7fOH1H4OStnPvD8HZXLOkgsheNr9UCnFA7HyOa8iDNaAS
-   Q==;
-X-CSE-ConnectionGUID: Li5eORIkSg2oL7k2a9Bi9A==
-X-CSE-MsgGUID: a9VyuPG+QO+cq5FQdR7HFQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11642"; a="55258317"
-X-IronPort-AV: E=Sophos;i="6.21,150,1763452800"; 
-   d="scan'208";a="55258317"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2025 02:46:29 -0800
-X-CSE-ConnectionGUID: VTvqYNBUSx6AZXQyYR1e+A==
-X-CSE-MsgGUID: eyUgr191R++dzMUJ7Zp7cQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,150,1763452800"; 
-   d="scan'208";a="228764455"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.246.107])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2025 02:46:26 -0800
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-Cc: stable@vger.kernel.org, =?UTF-8?B?6rmA6rCV66+8?= <km.kim1503@gmail.com>,
- Tvrtko Ursulin <tursulin@ursulin.net>,
- Chris Wilson <chris.p.wilson@linux.intel.com>,
- Andi Shyti <andi.shyti@linux.intel.com>,
- Krzysztof Karas <krzysztof.karas@intel.com>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
- Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-Subject:
- Re: [PATCH v4] drm/i915/gem: Zero-initialize the eb.vma array in
- i915_gem_do_execbuffer
-Date: Mon, 15 Dec 2025 11:46:24 +0100
-Message-ID: <84087946.yqcDRGjS6z@jkrzyszt-mobl2.ger.corp.intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <20251212150611.18757-2-krzysztof.niemiec@intel.com>
-References: <20251212150611.18757-2-krzysztof.niemiec@intel.com>
+	s=arc-20240116; t=1765795752; c=relaxed/simple;
+	bh=5Wijvsg4uo5ATFCrWc7tXz233rfgrWOUut7UvoQl6QI=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=BbtPvHc3UMz9jAUEy70FPV1D+ImIvkqgwv2e5lDXZpprNzb3cPDrkxw0AVQqqvlhEgPzlRN+OezJJubAhUtd8Lb0qyAHl/tyP1bJueHjSCeoAS2/MU6vASZayTaPLxvdr+EWGMQS14JBXrlxSbZ9fl0OCUph+cbVEHK7Dhsw/Mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=HtNpMVwy; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=pGUTIuIS; arc=none smtp.client-ip=202.12.124.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailflow.stl.internal (Postfix) with ESMTP id 6D5241300369;
+	Mon, 15 Dec 2025 05:49:09 -0500 (EST)
+Received: from phl-imap-17 ([10.202.2.105])
+  by phl-compute-04.internal (MEProxy); Mon, 15 Dec 2025 05:49:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1765795749;
+	 x=1765802949; bh=oiOS6K+FM4QkQHzShPdFmQzy4z6NCmQ77XPIDgp2QCI=; b=
+	HtNpMVwycFP1pZSFteCA/fA1fjLOS8V4mQ15malVayLKhY59QLw8OVk7mh4HhH5z
+	9KtV8edzh0NafgKdvEKp1TYTj2L4MrMimq6iwiIem1TfYfBAXiuTAFkdnE0F8Ik8
+	pAGp8pQ2VI2N4UTiW/nigZboZEAbI8CYQ5rynVtxK+wgbB35ZVVwokpcLfRsJ5BP
+	uxEC2nBmKs522k4uUwz8gidc0tldyzO0Py/mzRZAayjvyBnspJmrSeJK5sB2POAC
+	oSroqDZVPGDNejEI4fSFbNOo1S2P14+3n0N1tlTKELuwSTxnI26f+VIRKPbjYOfY
+	AKlh5e7rDyWxDaXwVdD74A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1765795749; x=
+	1765802949; bh=oiOS6K+FM4QkQHzShPdFmQzy4z6NCmQ77XPIDgp2QCI=; b=p
+	GUTIuIS7RldgeA1VG+z2P9MhmBijd88YjBNmyodxVMAXcRu/g5NFb4Cr4DtUtMst
+	x7TvJEz/izMi5hPtQzAHCDxJok3RhjnH7VFio/uZ3/D8XPLVOCB+fWQ5btvm/42J
+	AWdkG0trsWCKmAaimoZ/emBfxsDiFqSYsWrcRvY5kK8wBphkB6ub8BnO0A2fx9rN
+	ZHDFf4l1snVq+q2D3JeESX5/jMduciZVHd2yqPcvlkBmTm+MIzKlQEcfnvYVE/yg
+	3joVMOZRJr32MP9BPUagZVVJQ9PMEmUGl3uXd90wB4tk///PJdnfUwZvX57bJcJ2
+	OcJA2wgN65X02XH1yZzdw==
+X-ME-Sender: <xms:pec_ad65ji8VEehzKbsxuToA9fOYH41NWeZlb0gK9i5tSLAgjSeiuw>
+    <xme:pec_aVtr-TLfSwwcxt03W6Pt33jYcPvwOF1gGd2Uo9QTKU0GeyZ-_xa2i3St0yVaK
+    2ZIy2nZtRlOY-BxzMVDxMyMYGaeElDHMv7-zXDS9Ndx4IZlqqx2eQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefieeitdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
+    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
+    hnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffgvedugeduveelvdekhfdvieen
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
+    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopeeipdhmohguvgepshhmthhpohhuthdp
+    rhgtphhtthhopehlmhgssehishhovhgrlhgvnhhtrdgtohhmpdhrtghpthhtoheprghmih
+    htsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhu
+    nhgurghtihhonhdrohhrghdprhgtphhtthhopehvihhrthhurghlihiirghtihhonheslh
+    hishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhes
+    vhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrd
+    hkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:pec_aQdbzphfp61Qsz-hq97BOrrwjddBKpSq6XwYQWQAx86-qwQJ3w>
+    <xmx:pec_aUcQ53DB5bAyP9iVo_p7skD-0B2U0XeSPagVAXcQhs5avje2bA>
+    <xmx:pec_aTyUuSmo59uplukyIafrb6yAodljIrY2MmR-Zlr3l2vfxrwmsg>
+    <xmx:pec_ab9zMb3WHQCh91_Ro5-OiM9FB7dQx2zN2rszX7p0bdo1A_OXlw>
+    <xmx:pec_afqsAqo2II064ahz7oppFPZSZ9I7ZxmA3XWNhlG4Cor9j1PxfI3H>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id F1668C40071; Mon, 15 Dec 2025 05:49:08 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+X-ThreadId: ACnozhdV4x1g
+Date: Mon, 15 Dec 2025 11:48:47 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Lorenz Bauer" <lmb@isovalent.com>, "Amit Shah" <amit@kernel.org>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
+Cc: virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Message-Id: <568c03e9-b30d-4655-8771-f8995f5a4ed4@app.fastmail.com>
+In-Reply-To: 
+ <20251215-virtio-console-lost-wakeup-v1-1-79a5c57815e7@isovalent.com>
+References: 
+ <20251215-virtio-console-lost-wakeup-v1-1-79a5c57815e7@isovalent.com>
+Subject: Re: [PATCH] virtio: console: fix lost wakeup when device is written and polled
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On Friday, 12 December 2025 16:06:12 CET Krzysztof Niemiec wrote:
-> Initialize the eb.vma array with values of 0 when the eb structure is
-> first set up. In particular, this sets the eb->vma[i].vma pointers to
-> NULL, simplifying cleanup and getting rid of the bug described below.
-> 
-> During the execution of eb_lookup_vmas(), the eb->vma array is
-> successively filled up with struct eb_vma objects. This process includes
-> calling eb_add_vma(), which might fail; however, even in the event of
-> failure, eb->vma[i].vma is set for the currently processed buffer.
-> 
-> If eb_add_vma() fails, eb_lookup_vmas() returns with an error, which
-> prompts a call to eb_release_vmas() to clean up the mess. Since
-> eb_lookup_vmas() might fail during processing any (possibly not first)
-> buffer, eb_release_vmas() checks whether a buffer's vma is NULL to know
-> at what point did the lookup function fail.
-> 
-> In eb_lookup_vmas(), eb->vma[i].vma is set to NULL if either the helper
-> function eb_lookup_vma() or eb_validate_vma() fails. eb->vma[i+1].vma is
-> set to NULL in case i915_gem_object_userptr_submit_init() fails; the
-> current one needs to be cleaned up by eb_release_vmas() at this point,
-> so the next one is set. If eb_add_vma() fails, neither the current nor
-> the next vma is nullified, which is a source of a NULL deref bug
-> described in [1].
-> 
-> When entering eb_lookup_vmas(), the vma pointers are set to the slab
-> poison value, instead of NULL. This doesn't matter for the actual
-> lookup, since it gets overwritten anyway, however the eb_release_vmas()
-> function only recognizes NULL as the stopping value, hence the pointers
-> are being nullified as they go in case of intermediate failure. This
-> patch changes the approach to filling them all with NULL at the start
-> instead, rather than handling that manually during failure.
-> 
-> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15062
-> Fixes: 544460c33821 ("drm/i915: Multi-BB execbuf")
-> Reported-by: Gangmin Kim <km.kim1503@gmail.com>
-> Cc: <stable@vger.kernel.org> # 5.16.x
-> Signed-off-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-
-Reviewed-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-
-> ---
-> I messed up the continuity in previous revisions; the original patch
-> was sent as [1], and the first revision (which I didn't mark as v2 due
-> to the title change) was sent as [2].
-> 
-> This is the full current changelog:
-> 
-> v4:
->    - delete an empty line (Janusz), reword the comment a bit (Krzysztof,
->      Janusz)
-> v3:
->    - use memset() to fill the entire eb.vma array with zeros instead of
->    looping through the elements (Janusz)
->    - add a comment clarifying the mechanism of the initial allocation (Janusz)
->    - change the commit log again, including title
->    - rearrange the tags to keep checkpatch happy
-> v2:
->    - set the eb->vma[i].vma pointers to NULL during setup instead of
->      ad-hoc at failure (Janusz)
->    - romanize the reporter's name (Andi, offline)
->    - change the commit log, including title
-> 
-> [1] https://patchwork.freedesktop.org/series/156832/
-> [2] https://patchwork.freedesktop.org/series/158036/
-> 
->  .../gpu/drm/i915/gem/i915_gem_execbuffer.c    | 37 +++++++++----------
->  1 file changed, 17 insertions(+), 20 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-> index b057c2fa03a4..348023d13668 100644
-> --- a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-> +++ b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-> @@ -951,13 +951,13 @@ static int eb_lookup_vmas(struct i915_execbuffer *eb)
->  		vma = eb_lookup_vma(eb, eb->exec[i].handle);
->  		if (IS_ERR(vma)) {
->  			err = PTR_ERR(vma);
-> -			goto err;
-> +			return err;
->  		}
->  
->  		err = eb_validate_vma(eb, &eb->exec[i], vma);
->  		if (unlikely(err)) {
->  			i915_vma_put(vma);
-> -			goto err;
-> +			return err;
->  		}
->  
->  		err = eb_add_vma(eb, &current_batch, i, vma);
-> @@ -966,19 +966,8 @@ static int eb_lookup_vmas(struct i915_execbuffer *eb)
->  
->  		if (i915_gem_object_is_userptr(vma->obj)) {
->  			err = i915_gem_object_userptr_submit_init(vma->obj);
-> -			if (err) {
-> -				if (i + 1 < eb->buffer_count) {
-> -					/*
-> -					 * Execbuffer code expects last vma entry to be NULL,
-> -					 * since we already initialized this entry,
-> -					 * set the next value to NULL or we mess up
-> -					 * cleanup handling.
-> -					 */
-> -					eb->vma[i + 1].vma = NULL;
-> -				}
-> -
-> +			if (err)
->  				return err;
-> -			}
->  
->  			eb->vma[i].flags |= __EXEC_OBJECT_USERPTR_INIT;
->  			eb->args->flags |= __EXEC_USERPTR_USED;
-> @@ -986,10 +975,6 @@ static int eb_lookup_vmas(struct i915_execbuffer *eb)
+On Mon, Dec 15, 2025, at 11:40, Lorenz Bauer wrote:
+> +	}
+> +	if (freed) {
+> +		/* We freed all used buffers. Issue a wake up so that other pending
+> +		 * tasks do not get stuck. This is necessary because vring_interrupt()
+> +		 * will drop wakeups from the host if there are no used buffers.
+> +		 */
+>  		port->outvq_full = false;
+> +		wake_up_interruptible(&port->waitqueue);
 >  	}
->  
->  	return 0;
-> -
-> -err:
-> -	eb->vma[i].vma = NULL;
-> -	return err;
->  }
->  
->  static int eb_lock_vmas(struct i915_execbuffer *eb)
-> @@ -3375,7 +3360,8 @@ i915_gem_do_execbuffer(struct drm_device *dev,
->  
->  	eb.exec = exec;
->  	eb.vma = (struct eb_vma *)(exec + args->buffer_count + 1);
-> -	eb.vma[0].vma = NULL;
-> +	memset(eb.vma, 0x00, args->buffer_count * sizeof(struct eb_vma));
-> +
->  	eb.batch_pool = NULL;
->  
->  	eb.invalid_flags = __EXEC_OBJECT_UNKNOWN_FLAGS;
-> @@ -3584,7 +3570,18 @@ i915_gem_execbuffer2_ioctl(struct drm_device *dev, void *data,
->  	if (err)
->  		return err;
->  
-> -	/* Allocate extra slots for use by the command parser */
-> +	/*
-> +	 * Allocate extra slots for use by the command parser.
-> +	 *
-> +	 * Note that this allocation handles two different arrays (the
-> +	 * exec2_list array, and the eventual eb.vma array introduced in
-> +	 * i915_gem_do_execubuffer()), that reside in virtually contiguous
-> +	 * memory. Also note that the allocation intentionally doesn't fill the
-> +	 * area with zeros (because the exec2_list part doesn't need to be, as
-> +	 * it's immediately overwritten by user data a few lines below).
-> +	 * However, the eb.vma part is explicitly zeroed later in
-> +	 * i915_gem_do_execbuffer().
-> +	 */
->  	exec2_list = kvmalloc_array(count + 2, eb_element_size(),
->  				    __GFP_NOWARN | GFP_KERNEL);
->  	if (exec2_list == NULL) {
-> 
 
+Is it always enough to wake up only one waiter? From your
+description it sounds like it might need wake_up_interruptible_all()
+instead, but I may be misunderstanding the issue.
 
-
-
+       Arnd
 
