@@ -1,97 +1,242 @@
-Return-Path: <stable+bounces-201023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75E42CBD65C
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 11:44:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61BD6CBD674
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 11:46:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E65CA30122F6
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 10:44:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0518F300E785
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 10:46:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9E8A3168E4;
-	Mon, 15 Dec 2025 10:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AF09271468;
+	Mon, 15 Dec 2025 10:46:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="htT1UH1i"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PyXsbZRe"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 184892C11F5
-	for <stable@vger.kernel.org>; Mon, 15 Dec 2025 10:44:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D27246798
+	for <stable@vger.kernel.org>; Mon, 15 Dec 2025 10:46:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765795457; cv=none; b=s4M8EBlA1L1JvhlZ0tMow6jGg46pTEMQpdqGSse078+Rj5124dj8tlyVU1kwoX6Tfg1QtoFOi5IxIPSPpe/stIphgxACmpUTlyp4nFBQx/kKW/zW8PqkV7CqwS76Rmbf6Hy/YQLDF+5+s9YPwXkZfQ54IGQ/PYfDddEkTCfwxTI=
+	t=1765795591; cv=none; b=U/a3Oc/1LmAozMyjaCyr3VGFwTrsr5Ti4kDx4LZVUkYmf7GkOu0Jisj7sKKPVLF/LEVPMhuP4ejKHueCFj28a4DpUmwaqGPmIybTRozDRhJq4Pxxno4s5pOZW28nkSy7XTj4mTUuwOhpoqN2E/WyWUXZONGmYh1SICE8xqaTmgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765795457; c=relaxed/simple;
-	bh=5VCpsFBhYZjRqLdOUTJeSj9xiu7RwW4lXKpkshqDwUA=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=irGZdn/eia4PRrsgeQnkKTim9hbvP3yO5OJQxAgxGSXr3VKtZBPSVKEkCmzzINIP49215tEc0VXreaISS1HdWov17RDwzePAmgaGqXmTSGwCbcKIbZGsEdcbLt+9f2tJTxCU2NPjVGt5iExQsFLyO7VmolBPDmGAN2TNj31dxTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=htT1UH1i; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1765795591; c=relaxed/simple;
+	bh=Bk15fFQaaNzeTwIC9795mFTycSNqNCgufGv6rxPBva8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nfUmw3yaa470x3p1oJ05vN93HD3nrZh6sct7tJdTHv+o8utdTPEa7kC8sgjT0VNUeakLm2mH85RwxCjEJro+y5u3cAFW9et7QTdu0QMnTC6AYgTnxdIMkrk6voZlYI93IQ2XLoKj2cBUMeRX64sV0unMEUkmtzrppoi07oDjlZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PyXsbZRe; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765795456; x=1797331456;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=5VCpsFBhYZjRqLdOUTJeSj9xiu7RwW4lXKpkshqDwUA=;
-  b=htT1UH1iDKi2hi9av77w3RE/b5CBsznUAxYt9fkgNEcdzcQL7SomxomV
-   8EhT/AR+sD4DKqgul81BV7sMwwa/Ag16+K1WlPC/8CpNfzd9amQRlebCu
-   hTnr/mXO6AdcAB48Tiszy5CGjF1O+b3f+lnY3UnPphj4GGawzJmAbqjw9
-   MQw+N2vKz2lygS1vfabVchEOdOQuWwz1aPLgdjIZQ6ezRlGsanroWy28K
-   aiCq9r9C0n3ufer0vJ7smXdwggGYSeikZ0/ZVLfowiDPzkS4oIZ1oh0wg
-   btVcrcavjuzlDtQ2lS+O1yKxzkWoufLXzYgIOOrC8teUEo7NTA4INIdlI
-   w==;
-X-CSE-ConnectionGUID: +QDyGQOLStCgqH/spJXTZQ==
-X-CSE-MsgGUID: PY/lQP70Qmisaijy7nEwbA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11642"; a="67763137"
+  t=1765795590; x=1797331590;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Bk15fFQaaNzeTwIC9795mFTycSNqNCgufGv6rxPBva8=;
+  b=PyXsbZRe0wexDDlcF2aWGjndv/eQrSM8Bdfc3Q/GlnEsFqOhocYNZF3u
+   i/2EON2ibTop3s5tzY/wWH4FA9EenOElcrh5Ue3Qps5OgTRGdHp25nGrj
+   i2SFfvHchiKuhowFndVRc9NU7RF0RiX9S9tygy1DROXYsQdx8etCtr2Vv
+   nWMPrDm2xcEJ6Ljy91CZIECxLim+YDuInkjZlmtgLJsyLIdHPHH3tgwMH
+   WjWfVZu72Tu7qaXS4t1ZXYxE0oBtRUGXHdejcNWeu0f5DbU4/Q530UwZk
+   7MIMWpSLnUGV7fOH1H4OStnPvD8HZXLOkgsheNr9UCnFA7HyOa8iDNaAS
+   Q==;
+X-CSE-ConnectionGUID: Li5eORIkSg2oL7k2a9Bi9A==
+X-CSE-MsgGUID: a9VyuPG+QO+cq5FQdR7HFQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11642"; a="55258317"
 X-IronPort-AV: E=Sophos;i="6.21,150,1763452800"; 
-   d="scan'208";a="67763137"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2025 02:44:15 -0800
-X-CSE-ConnectionGUID: sTOBZH1mS3yCEIJUSwq9kA==
-X-CSE-MsgGUID: YxI+CpwoTCap0rBxsoGAjA==
+   d="scan'208";a="55258317"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2025 02:46:29 -0800
+X-CSE-ConnectionGUID: VTvqYNBUSx6AZXQyYR1e+A==
+X-CSE-MsgGUID: eyUgr191R++dzMUJ7Zp7cQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,150,1763452800"; 
-   d="scan'208";a="197580835"
-Received: from lkp-server02.sh.intel.com (HELO 034c7e8e53c3) ([10.239.97.151])
-  by fmviesa006.fm.intel.com with ESMTP; 15 Dec 2025 02:44:13 -0800
-Received: from kbuild by 034c7e8e53c3 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vV631-000000000CD-0Jnl;
-	Mon, 15 Dec 2025 10:43:51 +0000
-Date: Mon, 15 Dec 2025 18:42:46 +0800
-From: kernel test robot <lkp@intel.com>
-To: Lorenz Bauer <lmb@isovalent.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] virtio: console: fix lost wakeup when device is written
- and polled
-Message-ID: <aT_mJshz2YRNsHsH@73f44f95d416>
+   d="scan'208";a="228764455"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.246.107])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2025 02:46:26 -0800
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+Cc: stable@vger.kernel.org, =?UTF-8?B?6rmA6rCV66+8?= <km.kim1503@gmail.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>,
+ Chris Wilson <chris.p.wilson@linux.intel.com>,
+ Andi Shyti <andi.shyti@linux.intel.com>,
+ Krzysztof Karas <krzysztof.karas@intel.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
+ Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+Subject:
+ Re: [PATCH v4] drm/i915/gem: Zero-initialize the eb.vma array in
+ i915_gem_do_execbuffer
+Date: Mon, 15 Dec 2025 11:46:24 +0100
+Message-ID: <84087946.yqcDRGjS6z@jkrzyszt-mobl2.ger.corp.intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
+ 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <20251212150611.18757-2-krzysztof.niemiec@intel.com>
+References: <20251212150611.18757-2-krzysztof.niemiec@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251215-virtio-console-lost-wakeup-v1-1-79a5c57815e7@isovalent.com>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
 
-Hi,
+On Friday, 12 December 2025 16:06:12 CET Krzysztof Niemiec wrote:
+> Initialize the eb.vma array with values of 0 when the eb structure is
+> first set up. In particular, this sets the eb->vma[i].vma pointers to
+> NULL, simplifying cleanup and getting rid of the bug described below.
+> 
+> During the execution of eb_lookup_vmas(), the eb->vma array is
+> successively filled up with struct eb_vma objects. This process includes
+> calling eb_add_vma(), which might fail; however, even in the event of
+> failure, eb->vma[i].vma is set for the currently processed buffer.
+> 
+> If eb_add_vma() fails, eb_lookup_vmas() returns with an error, which
+> prompts a call to eb_release_vmas() to clean up the mess. Since
+> eb_lookup_vmas() might fail during processing any (possibly not first)
+> buffer, eb_release_vmas() checks whether a buffer's vma is NULL to know
+> at what point did the lookup function fail.
+> 
+> In eb_lookup_vmas(), eb->vma[i].vma is set to NULL if either the helper
+> function eb_lookup_vma() or eb_validate_vma() fails. eb->vma[i+1].vma is
+> set to NULL in case i915_gem_object_userptr_submit_init() fails; the
+> current one needs to be cleaned up by eb_release_vmas() at this point,
+> so the next one is set. If eb_add_vma() fails, neither the current nor
+> the next vma is nullified, which is a source of a NULL deref bug
+> described in [1].
+> 
+> When entering eb_lookup_vmas(), the vma pointers are set to the slab
+> poison value, instead of NULL. This doesn't matter for the actual
+> lookup, since it gets overwritten anyway, however the eb_release_vmas()
+> function only recognizes NULL as the stopping value, hence the pointers
+> are being nullified as they go in case of intermediate failure. This
+> patch changes the approach to filling them all with NULL at the start
+> instead, rather than handling that manually during failure.
+> 
+> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15062
+> Fixes: 544460c33821 ("drm/i915: Multi-BB execbuf")
+> Reported-by: Gangmin Kim <km.kim1503@gmail.com>
+> Cc: <stable@vger.kernel.org> # 5.16.x
+> Signed-off-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
 
-Thanks for your patch.
+Reviewed-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+> ---
+> I messed up the continuity in previous revisions; the original patch
+> was sent as [1], and the first revision (which I didn't mark as v2 due
+> to the title change) was sent as [2].
+> 
+> This is the full current changelog:
+> 
+> v4:
+>    - delete an empty line (Janusz), reword the comment a bit (Krzysztof,
+>      Janusz)
+> v3:
+>    - use memset() to fill the entire eb.vma array with zeros instead of
+>    looping through the elements (Janusz)
+>    - add a comment clarifying the mechanism of the initial allocation (Janusz)
+>    - change the commit log again, including title
+>    - rearrange the tags to keep checkpatch happy
+> v2:
+>    - set the eb->vma[i].vma pointers to NULL during setup instead of
+>      ad-hoc at failure (Janusz)
+>    - romanize the reporter's name (Andi, offline)
+>    - change the commit log, including title
+> 
+> [1] https://patchwork.freedesktop.org/series/156832/
+> [2] https://patchwork.freedesktop.org/series/158036/
+> 
+>  .../gpu/drm/i915/gem/i915_gem_execbuffer.c    | 37 +++++++++----------
+>  1 file changed, 17 insertions(+), 20 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
+> index b057c2fa03a4..348023d13668 100644
+> --- a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
+> +++ b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
+> @@ -951,13 +951,13 @@ static int eb_lookup_vmas(struct i915_execbuffer *eb)
+>  		vma = eb_lookup_vma(eb, eb->exec[i].handle);
+>  		if (IS_ERR(vma)) {
+>  			err = PTR_ERR(vma);
+> -			goto err;
+> +			return err;
+>  		}
+>  
+>  		err = eb_validate_vma(eb, &eb->exec[i], vma);
+>  		if (unlikely(err)) {
+>  			i915_vma_put(vma);
+> -			goto err;
+> +			return err;
+>  		}
+>  
+>  		err = eb_add_vma(eb, &current_batch, i, vma);
+> @@ -966,19 +966,8 @@ static int eb_lookup_vmas(struct i915_execbuffer *eb)
+>  
+>  		if (i915_gem_object_is_userptr(vma->obj)) {
+>  			err = i915_gem_object_userptr_submit_init(vma->obj);
+> -			if (err) {
+> -				if (i + 1 < eb->buffer_count) {
+> -					/*
+> -					 * Execbuffer code expects last vma entry to be NULL,
+> -					 * since we already initialized this entry,
+> -					 * set the next value to NULL or we mess up
+> -					 * cleanup handling.
+> -					 */
+> -					eb->vma[i + 1].vma = NULL;
+> -				}
+> -
+> +			if (err)
+>  				return err;
+> -			}
+>  
+>  			eb->vma[i].flags |= __EXEC_OBJECT_USERPTR_INIT;
+>  			eb->args->flags |= __EXEC_USERPTR_USED;
+> @@ -986,10 +975,6 @@ static int eb_lookup_vmas(struct i915_execbuffer *eb)
+>  	}
+>  
+>  	return 0;
+> -
+> -err:
+> -	eb->vma[i].vma = NULL;
+> -	return err;
+>  }
+>  
+>  static int eb_lock_vmas(struct i915_execbuffer *eb)
+> @@ -3375,7 +3360,8 @@ i915_gem_do_execbuffer(struct drm_device *dev,
+>  
+>  	eb.exec = exec;
+>  	eb.vma = (struct eb_vma *)(exec + args->buffer_count + 1);
+> -	eb.vma[0].vma = NULL;
+> +	memset(eb.vma, 0x00, args->buffer_count * sizeof(struct eb_vma));
+> +
+>  	eb.batch_pool = NULL;
+>  
+>  	eb.invalid_flags = __EXEC_OBJECT_UNKNOWN_FLAGS;
+> @@ -3584,7 +3570,18 @@ i915_gem_execbuffer2_ioctl(struct drm_device *dev, void *data,
+>  	if (err)
+>  		return err;
+>  
+> -	/* Allocate extra slots for use by the command parser */
+> +	/*
+> +	 * Allocate extra slots for use by the command parser.
+> +	 *
+> +	 * Note that this allocation handles two different arrays (the
+> +	 * exec2_list array, and the eventual eb.vma array introduced in
+> +	 * i915_gem_do_execubuffer()), that reside in virtually contiguous
+> +	 * memory. Also note that the allocation intentionally doesn't fill the
+> +	 * area with zeros (because the exec2_list part doesn't need to be, as
+> +	 * it's immediately overwritten by user data a few lines below).
+> +	 * However, the eb.vma part is explicitly zeroed later in
+> +	 * i915_gem_do_execbuffer().
+> +	 */
+>  	exec2_list = kvmalloc_array(count + 2, eb_element_size(),
+>  				    __GFP_NOWARN | GFP_KERNEL);
+>  	if (exec2_list == NULL) {
+> 
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH] virtio: console: fix lost wakeup when device is written and polled
-Link: https://lore.kernel.org/stable/20251215-virtio-console-lost-wakeup-v1-1-79a5c57815e7%40isovalent.com
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
 
 
