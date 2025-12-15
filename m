@@ -1,68 +1,64 @@
-Return-Path: <stable+bounces-200995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C80F7CBC409
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 03:27:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59AE2CBC42D
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 03:38:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 447EE3009436
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 02:27:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EED8D3008EB6
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 02:38:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27A023126B7;
-	Mon, 15 Dec 2025 02:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E6C29BD94;
+	Mon, 15 Dec 2025 02:38:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BBD22C0275;
-	Mon, 15 Dec 2025 02:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3D5FBF6;
+	Mon, 15 Dec 2025 02:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765765655; cv=none; b=CQxHIwZjhpnE3+qPZOFff/KkDKSULZvkDdWRy2vY7ZIsQYadZXyXJbV6xHLjcaatEj2fol39Nc3d0e5Bncb4tHO3MKiw3p7fz0ZEG1eJFVgtdQcS+q95djH5s4PSNzdWHvlLEjoNB5lOHNFgURcy+phBOoRHRyaT9gmHzZvMWHg=
+	t=1765766313; cv=none; b=A7SCXgBmyk2/6sR9PoxRzZ1W8QXqerdwAbMKfwDHILnP+ftfSpEAMpAEIjz0fvt6UmZZweiCQZpUmvtQrLapGnLpCGCTi8UQ+pHZaphev7sbZAh6OX1vv7O05bGGbMN/7Est2L0P6C6JhCELroBm2Uaj5UgW2/sn4O6NqrNB1wM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765765655; c=relaxed/simple;
+	s=arc-20240116; t=1765766313; c=relaxed/simple;
 	bh=T/XvcEdUVYNVeTm93A6Iif4eSN3JUJWj5oJaAYyafmE=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=KxUO5SK7HLmol0HAdufPQ3Y92shz0iS8R+Qe9roB+MvpEmlYe41l4PWp1oLVdKlRyUlCTy6asBmmK2sNAX64axxRijuCVTlR73ipnsgbDWNil7S9aevFJ3LOkuRgGS9k6MfOHiyN2IPL64+dTpn1ftg244sHI75evqM146adxns=
+	h=From:To:Cc:Subject:Date:Message-Id; b=JTrYpK3TXqI0JI2Td8pDWb8MbO642tOpQDmq8b+WL7c1UXaqX9eV4BUQ1XEcxgWrStsoYUT6qNHMTU3TtGl1cgQrGUl5riHi7kf6Gr9Tzfnaqo0sHu11QkAH6VcNuZsczHGc7sTXchFZbyF4MF90htxUKXAbpTgH8ZQ2BtKajo0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from localhost.localdomain (unknown [202.112.113.212])
-	by APP-01 (Coremail) with SMTP id qwCowACHL2v+cT9p2CezAA--.45584S2;
-	Mon, 15 Dec 2025 10:27:19 +0800 (CST)
+	by APP-01 (Coremail) with SMTP id qwCowAC3YGyVdD9pq1OzAA--.20973S2;
+	Mon, 15 Dec 2025 10:38:22 +0800 (CST)
 From: Ma Ke <make24@iscas.ac.cn>
-To: suzuki.poulose@arm.com,
-	mike.leach@linaro.org,
-	james.clark@linaro.org,
-	alexander.shishkin@linux.intel.com,
-	mathieu.poirier@linaro.org
-Cc: coresight@lists.linaro.org,
-	linux-arm-kernel@lists.infradead.org,
+To: eajames@linux.ibm.com,
+	ninad@linux.ibm.com,
+	joel@jms.id.au
+Cc: linux-fsi@lists.ozlabs.org,
 	linux-kernel@vger.kernel.org,
 	akpm@linux-foundation.org,
 	Ma Ke <make24@iscas.ac.cn>,
 	stable@vger.kernel.org
 Subject: [PATCH v2 RESEND] coresight: etm-perf: Fix reference count leak in etm_setup_aux
-Date: Mon, 15 Dec 2025 10:27:09 +0800
-Message-Id: <20251215022709.17220-1-make24@iscas.ac.cn>
+Date: Mon, 15 Dec 2025 10:38:12 +0800
+Message-Id: <20251215023812.18446-1-make24@iscas.ac.cn>
 X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID:qwCowACHL2v+cT9p2CezAA--.45584S2
+X-CM-TRANSID:qwCowAC3YGyVdD9pq1OzAA--.20973S2
 X-Coremail-Antispam: 1UD129KBjvJXoW7XryfuFW3XryfKFy5JF1DJrb_yoW8JF18pF
 	4DK39Iyr98GrWvv39rJr1DZFW5Ww1SyayagFy5K395uF4YqF9FvF15KFyFvrs7CrW8GF93
-	Krs7tF48ZFyUXaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUP014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	Krs7tF48ZFyUXaDanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9C14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
 	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
-	0_GcWlnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
-	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
-	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
-	648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFylc2xSY4AK67
-	AK6r4UMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
-	wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc4
-	0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
-	xVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
-	1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUb9NVDUU
-	UUU==
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr
+	1j6rxdM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
+	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJV
+	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
+	0VAGYxC7MxkF7I0En4kS14v26r4a6rW5MxkIecxEwVAFwVW8JwCF04k20xvY0x0EwIxGrw
+	CFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE
+	14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2
+	IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxK
+	x2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI
+	0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0pREzuXUUUUU=
 X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
