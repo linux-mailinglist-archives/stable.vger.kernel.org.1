@@ -1,54 +1,61 @@
-Return-Path: <stable+bounces-201102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7607FCBFB5E
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 21:17:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8375CBFB80
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 21:19:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6007A3049D3C
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 20:11:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 968A5304248B
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 20:16:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D2132ED860;
-	Mon, 15 Dec 2025 20:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B7A4271476;
+	Mon, 15 Dec 2025 20:16:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="k5NAXrya"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gTq7jxl+"
 X-Original-To: stable@vger.kernel.org
-Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 520F925B1C7
-	for <stable@vger.kernel.org>; Mon, 15 Dec 2025 20:11:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.185
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0054B1514F8;
+	Mon, 15 Dec 2025 20:16:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765829473; cv=none; b=VnodSK4XRlnn6lW0DySJpqrAbouVlyXSfZ5OwijhezmVXHSv2C92+3OWXxNYqXLSi9xusGKDYtBnKwQa4g909KxYZ3QZvD5oyxHL9r1ga+UoQHN3fgqe9Gf31b2spCYGZ1ZbIyXuHCW4aJ9Ie6rL2aqqXfaMzCNfT49xROxJEU0=
+	t=1765829774; cv=none; b=tNzdUVoQ6Zlc6KDxyjFU1mRMbSSZkyhU+LMsQUGs4uAz/05p4w+84+FXTjPz9wzAmZl1c/HBXgnueEVYIq+8tEwPGMaqUZo5h0FSKjPBw3oc1IMFmrUPrUuyo1DNueEsxHnu8yJNEgJofeihJtwe1nccXscLzMkSBHq001y9A3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765829473; c=relaxed/simple;
-	bh=q/LYhOuV2YpEyCEmejQf0P7Eu/DntrPAh8/QWUtJ6uo=;
+	s=arc-20240116; t=1765829774; c=relaxed/simple;
+	bh=lF8AfJF90zeVvajpf257VP8+PAS/iA+1OUWO0EJGo4Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JLCeujShxVAR8vaCTnmjGJ3tFE0KntVJTCya8RUtmIe5VsNIDFvySzsD02xePImSmcXEbdHTTsJlxP/9pmFKEWvDUMyO3wriA82UdyYi/zV0ksEQ3e7ydTs3ZQN3xof3hqWVPjR4P9H61qkcfIqi9iPNunA9m4mRVm+INNRv6mg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=k5NAXrya; arc=none smtp.client-ip=91.218.175.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Mon, 15 Dec 2025 20:10:50 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1765829454;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MOqWmgUj0AAwYWJPWLBqrj8UijMveyhjIFurgZUrRlI=;
-	b=k5NAXrya1BV1jaTcgTvgVUHeeDFiTqTQrAYcqMTFLBhOwnRZLwXjQ35P0P7nXrflKf9Idz
-	Mao62By3qkt1n8BujsdCzR6l6riG5Y28wRK5QCqqvKwC38/nlIeYpzZ/P0NF9DLEnmR83/
-	WfJG1K62Dk0Dg2vWLP/Men50+nABFFY=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] KVM: SVM: Fix redundant updates of LBR MSR intercepts
-Message-ID: <rlwgjee2tjf26jyvdwipdwejqgsira63nvn2r3zczehz3argi4@uarbt5af3wv2>
-References: <20251215192722.3654335-1-yosry.ahmed@linux.dev>
- <3rdy3n6phleyz2eltr5fkbsavlpfncgrnee7kep2jkh2air66c@euczg54kpt47>
- <aUBjmHBHx1jsIcWJ@google.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZLyDxKeT+7shhfXJjIHFO1DE1J46PHKBcVQ2uuk2XkTf4By71fwxComCPF/O0v/GWVH0h0Q5fsWG6CZbU1EPydRJufz1iUJ9Fq6K2Y/0o7RtjDARXGTUVxg+aLW2yoRHZ6/K1KeU5fQq1hVwiruJwAReTCIguwY5v1yt1G0r3vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gTq7jxl+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E44DC4CEF5;
+	Mon, 15 Dec 2025 20:16:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765829773;
+	bh=lF8AfJF90zeVvajpf257VP8+PAS/iA+1OUWO0EJGo4Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gTq7jxl+/X4t0clkH+mEIN1Yg389a3M1yJZlum/0+HWjs0BADwL0wGHgJE2yuY56G
+	 BY2dQ0dXnWxEsVWSdJe4hqMGCzyh5sRgqf2VUyDrteCmtp4ljq93GTSPvK9Xp0qqG0
+	 bf39yzzPeKqFVFzbEe8n93pn1mHzt8YQghp1i8rC/fkyWiTHTKTwgBHOaxs9YXV1Zp
+	 KPO9xp0g+xQKuR7S6e9WocY5rOmKO+YSVUbO9i0bH16S+U+Od5e5R5P0w3Zk8WSYmt
+	 FfjLs4qx3LdNpN0VkOuB1gHDxqiW6QUkLG1pTXEbLL2jqub0IYwiviCRP9AZpCe05U
+	 kof8RhLgE7img==
+Date: Mon, 15 Dec 2025 20:16:11 +0000
+From: Eric Biggers <ebiggers@kernel.org>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Diederik de Haas <diederik@cknow-tech.com>,
+	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+	"Jason A . Donenfeld" <Jason@zx2c4.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+Subject: Re: [PATCH] crypto: arm64/ghash - Fix incorrect output from
+ ghash-neon
+Message-ID: <20251215201611.GB10539@google.com>
+References: <DETXT7QI62KE.F3CGH2VWX1SC@cknow-tech.com>
+ <20251209223417.112294-1-ebiggers@kernel.org>
+ <DEUFDH7FJURL.3J0FN5I19VV8F@cknow-tech.com>
+ <CAMj1kXEQkB9MWB+PAi4XE_MuBt0ScitxTsKMDo1-7Cp-=xXOpw@mail.gmail.com>
+ <20251212054020.GB4838@sol>
+ <CAMj1kXHVq1NWA28jKxBrHHi1JOPoGXEamC7uMgTOmFwzmcYxRA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,39 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aUBjmHBHx1jsIcWJ@google.com>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <CAMj1kXHVq1NWA28jKxBrHHi1JOPoGXEamC7uMgTOmFwzmcYxRA@mail.gmail.com>
 
-On Mon, Dec 15, 2025 at 11:38:00AM -0800, Sean Christopherson wrote:
-> On Mon, Dec 15, 2025, Yosry Ahmed wrote:
-> > On Mon, Dec 15, 2025 at 07:26:54PM +0000, Yosry Ahmed wrote:
-> > > svm_update_lbrv() always updates LBR MSRs intercepts, even when they are
-> > > already set correctly. This results in force_msr_bitmap_recalc always
-> > > being set to true on every nested transition, essentially undoing the
-> > > hyperv optimization in nested_svm_merge_msrpm().
-> > > 
-> > > Fix it by keeping track of whether LBR MSRs are intercepted or not and
-> > > only doing the update if needed, similar to x2avic_msrs_intercepted.
-> > > 
-> > > Avoid using svm_test_msr_bitmap_*() to check the status of the
-> > > intercepts, as an arbitrary MSR will need to be chosen as a
-> > > representative of all LBR MSRs, and this could theoretically break if
-> > > some of the MSRs intercepts are handled differently from the rest.
-> > > 
-> > > Also, using svm_test_msr_bitmap_*() makes backports difficult as it was
-> > > only recently introduced with no direct alternatives in older kernels.
-> > > 
-> > > Fixes: fbe5e5f030c2 ("KVM: nSVM: Always recalculate LBR MSR intercepts in svm_update_lbrv()")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-> > 
-> > Sigh.. I had this patch file in my working directory and it was sent by
-> > mistake with the series, as the cover letter nonetheless. Sorry about
-> > that. Let me know if I should resend.
+On Mon, Dec 15, 2025 at 04:54:34PM +0900, Ard Biesheuvel wrote:
+> > > All 64-bit RPi models except the RPi5 are affected by this, as those
+> > > do not implement the crypto extensions. So I would expect QEMU to do
+> > > the same.
+> > >
+> > > It would be nice, though, if we could emulate this on the mach-virt
+> > > machine model too. It should be fairly trivial to do, so if there is
+> > > demand for this I can look into it.
+> >
+> > I'm definitely interested in it.  I'm already testing multiple "-cpu"
+> > options, and it's easy to add more.
+> >
+> > With qemu-system-aarch64 I'm currently only using "-M virt", since the
+> > other machine models I've tried don't boot with arm64 defconfig,
+> > including "-M raspi3b" and "-M raspi4b".
+> >
+> > There may be some tricks I'm missing.  Regardless, expanding the
+> > selection of available CPUs for "-M virt" would be helpful.  Either by
+> > adding "real" CPUs that have "interesting" combinations of features, or
+> > by just allowing turning features off like
+> > "-cpu max,aes=off,pmull=off,sha256=off".  (Certain features like sve can
+> > already be turned off in that way, but not the ones relevant to us.)
+> >
 > 
-> Eh, it's fine for now.  The important part is clarfying that this patch should
-> be ignored, which you've already done.
+> There are some architectural rules around which combinations of crypto
+> extensions are permitted:
+> - PMULL implies AES, and there is no way for the ID registers to
+> describe a CPU that has PMULL but not AES
+> - SHA256 implies SHA1 (but the ID register fields are independent)
+> - SHA3 and SHA512 both imply SHA256+SHA1
+> - SVE versions are not allowed to be implemented unless the plain NEON
+> version is implemented as well
+> -  FEAT_Crypto has different meanings for v8.0, v8.2 and v9.x
+> 
+> So it would be much easier, also in terms of future maintenance, to
+> have a simple 'crypto=off' setting that applies to all emulated CPU
+> models, given that disabling all crypto on any given compliant CPU
+> will never result in something that the architecture does not permit.
+> 
+> Would that work for you?
 
-FWIW that patch is already in Linus's tree so even if someone applies
-it, it should be fine.
+I thought it had been established that the "crypto" grouping of features
+(as implemented by gcc and clang) doesn't reflect the actual hardware
+feature fields and is misleading because additional crypto extensions
+continue to be added.
+
+I'm not sure that applies here, but just something to consider.
+
+There's certainly no need to support emulating combinations of features
+that no hardware actually implements.  So yes, if that means "crypto" is
+the right choice, that sounds fine.
+
+- Eric
 
