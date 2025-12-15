@@ -1,218 +1,140 @@
-Return-Path: <stable+bounces-201001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F8DACBC8F2
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 06:25:45 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5779ACBCDC1
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 08:54:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2E6C2300ACEF
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 05:25:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EFA2030049C3
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 07:54:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15619324B1D;
-	Mon, 15 Dec 2025 05:25:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85D2D32C940;
+	Mon, 15 Dec 2025 07:54:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mvIpY8ux"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jPnTKiDp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA95322C73
-	for <stable@vger.kernel.org>; Mon, 15 Dec 2025 05:25:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF9D328B75
+	for <stable@vger.kernel.org>; Mon, 15 Dec 2025 07:54:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765776325; cv=none; b=rKN0Yte1wSTQbCTpIukd6PppgWEKpg/ApXvCrabh+hbEpsOEPhHVR0jC069fE4KqW4KbxhWlCOsKQPNDK3YA4HiZnMNrCtjy86NZH6okyyQdnn/pBGtxQSdR6EV8dc10VmgHmOcJPzAJ526Rw2XixrovkWv7p0aVT4ALazeIhdM=
+	t=1765785287; cv=none; b=szxynv/O+3VhzPw0pISlK41rR9Cg/LhZhPOrzgQXKLUapNuxm6cfLevRvTYKYLtoQpYk2H/mWo8Sg8XbpMkNB2NIAiqua0l1psAG8xKXweeq4z7OmsQIZHEyhWadP5kYDYRd0vtK4AJFccEIZ9/ZaPNCY9PNZg+Wb5wjews/sA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765776325; c=relaxed/simple;
-	bh=4WohUcn53T/uQEEyf6y7BAhROophdwysksZvlgisaoU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lu+Nhb8BjzCWOgM5b/p/psz17KAzuvEYdkELuT7CK0CSMSBtcVyAOKjhTDWkZEol0lv63cDtt89DO3O3i4njmPT7Vh1MT0RI0vLAoapWXSNlFqgtQRLm/XWEqYH92mLSVW/mZowaMG2n0VWh+DfTu5w07fo2Y6m0F8j7s7DlG/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mvIpY8ux; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-34aa62f9e74so3711913a91.1
-        for <stable@vger.kernel.org>; Sun, 14 Dec 2025 21:25:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765776323; x=1766381123; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=SyeYl+lpYngXeRFB+8S2RI9/QB/GCDHNJHtpaYarljI=;
-        b=mvIpY8uxRiw4PJaXd3njzekzvzLwPRV57xQG+wtf97PTaaumM1YjWKc6OTgtdlb9cd
-         sUbI8PAfELSq86T7nO9P47M3nMu0gBo/5/ZZkOA7FEtOR1d0v8gkqhmkv+aXlMQ34yO/
-         v7jjlao4/BL9IBB0sSHxv70mWaNbpiyPxUk1+3ADcaBeI2RPc6Aht8kYO1NVF6L6Y6D0
-         fVFWQhpC/O7I9AIl34nyXmZ+OcJJJw4kp7Ixphfdd7lnvg9XvEB0EugD5hUMScSqSN0t
-         sNI+Zix2LNMGef0JCHJR1eMU32yZYclGvEDLxxvJRIPMMXU8cilk9wQfvJJLZQ5fPMPw
-         YYwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765776323; x=1766381123;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SyeYl+lpYngXeRFB+8S2RI9/QB/GCDHNJHtpaYarljI=;
-        b=I0pskWIpK5fhADRO3etfuX207BUIa0jbFqqSADDjSahPnQVuaYiJXWRvfend8PqARv
-         NRGOqZpWN24OkO/3+VVxxDAZhAjdr97zgS1gNeDMOdh6v8xnHyOh26SdqrprZVur3arw
-         wS5PH5tINYGoFOXRdO7nxcsAWGGKBege79du53/hOuCMiutWC3uENq5eMz3jkr53QQ0F
-         ywg9XYe6j5oPKORlXMxumZHdk+m6+aKwIE1NFBaglrECeLTC9prXv+NXtKDPG4MADI6c
-         +o5243a7WJ7/ofWO1CV6IhtnKGPXMK6PvfNbtC7MiMNgHPfg7qFlSsONUaSwEI8iYlTF
-         kYrQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW2HxPa3O2QnP/Ny3pHx4iO3csdzInnVm6TJGJjTKSygGQQAOj3Ssfs9u87ArqT1Li0oEUrPZI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz6cC54mY8i3PpPA5qWcmIx3jnDaYr5OpTSaacFTjlU2SzbpjxZ
-	39Rda+fsn3uet3RiAXaTQORaxMqt0QoSWJmXyuTY0jcQOStn2068a99yQ6CJLjNy
-X-Gm-Gg: AY/fxX7gSnNzbSYBTyinFEcltJS5Vl7qPam/RL2NGwNgi1mP/hvCganFfomwBTC2KZ3
-	J+bm1P91ffAvWICi7sVvpgiAchiz/AQ0E5TcjocubZqOYNaU6+K33oCvMDxUrbXyOK+moQ+QySO
-	BbGDX3ngcmBjfYMBbgAJStEmu3zzhLojv0CFgpLigiNf0exTCOrCPRmsUXRskt6pEMk+sLFNlhH
-	M+3uORJOLxNwdMSsarLn9fjPcOdEAQy2K4AH6QePOTO5a2KDhsuF0M7tjdd+i7BKWllJjK/YiFW
-	MEGp66GHYnUsk6W3nBHh9Z8KPQhwIlSn4eMKAQ0uHE2Q8wQAq/yOYILG+KYQdApm+fMrnMHLYfY
-	NZXZAq239m3cr3vPjcF9atMidKL47ijwRt++aupBx+2/E9uyJTHGKt1MHh2VQLzymD+n2rMSdTj
-	nHw+oQGbzOdPLNJylE9UWLCv2P8oi/aXTowA+wkw==
-X-Google-Smtp-Source: AGHT+IGVBhhEJenk45D58KfOANg6YA1gEaTJXYAm9m5FyDU2UPChT5MOuTUtXkkNHjW1zxUFFDj2RQ==
-X-Received: by 2002:a17:90b:5288:b0:343:5f43:933e with SMTP id 98e67ed59e1d1-34abd78fcaemr9259366a91.19.1765776323536;
-        Sun, 14 Dec 2025 21:25:23 -0800 (PST)
-Received: from localhost.localdomain ([111.125.240.40])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c0c2b9d9d6bsm11145324a12.24.2025.12.14.21.25.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Dec 2025 21:25:23 -0800 (PST)
-From: Prithvi Tambewagh <activprithvi@gmail.com>
-To: jlbec@evilplan.org,
-	joseph.qi@linux.alibaba.com,
-	mark@fasheh.com,
-	heming.zhao@suse.com
-Cc: linux-kernel@vger.kernel.org,
-	ocfs2-devel@lists.linux.dev,
-	linux-kernel-mentees@lists.linux.dev,
-	skhan@linuxfoundation.org,
-	david.hunter.linux@gmail.com,
-	khalid@kernel.org,
-	Prithvi Tambewagh <activprithvi@gmail.com>,
-	syzbot+c818e5c4559444f88aa0@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH v3] ocfs2: Add validate function for slot map blocks
-Date: Mon, 15 Dec 2025 10:55:13 +0530
-Message-ID: <20251215052513.18436-1-activprithvi@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1765785287; c=relaxed/simple;
+	bh=E30zbqw/DatD5imenKddlu5X4ygrCVqqajHRtSIb61g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bXikO8Y/G9bQsMrbHKfY+D4ENFbbYzlHQm32VYRA+/LC7BnsyrwSUJy9+4yPrs+MDGKdSJmOpfS6iWv04W9p5ARu6NcwUFgGvXbniBeV28gdgSQdB9W+3bo/49qmAsYRFwS1KDJRrhL62NjbmdVLgSAj/UmZHN0c7a0sfN8kNIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jPnTKiDp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AF43C19422
+	for <stable@vger.kernel.org>; Mon, 15 Dec 2025 07:54:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765785286;
+	bh=E30zbqw/DatD5imenKddlu5X4ygrCVqqajHRtSIb61g=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=jPnTKiDpmMT04qwUki9f7ZwNkdxdveiIWl934aXXv9v2kt+ZTjb8KkNUvtF26rIMh
+	 dTjIXUa4ZgEKjQTIlx3XxuGGvznUxXgL6GaOXuVykxljrSbf4NW8kjD1jagfdAmwpD
+	 o6ooACN3+vhKzSFisW8rQaLryZUP04DAqrHeEH0/77MYMwnwFHwA2iMV6PlAGlgm8H
+	 CU5sw6TVdqQZdGZRcMrJvPvL/nvwM1U3d5eGXwBKkgKOH8doTnDzSrF8TiIYB4nLVq
+	 c+/Dqf8Wk23AU739OvY988mzDDL5T1r/SzUI8QaBJ62wIjsuIFpRp6vZlDdh2Xm+AK
+	 nqGqYMLLaEzjg==
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-34c708702dfso904559a91.1
+        for <stable@vger.kernel.org>; Sun, 14 Dec 2025 23:54:46 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUiDqUa4cFLxNVp0AyGOwaHgrVPa2tk6Cf3hg6FGmvYqSB4pHuun9U9KsEDyLQE7MXnAbS9xw4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPHU3blWHBKR15pFYaj8ZVFi4XgAW64IH8WnfU8Uv7e7gXzsI+
+	Uq075f8CoUUOla+Ah0Nkuomss+1WT/1WnLYvHhms/jx99kNrxR0dhZrydfhJKcXt1Vbe8v37uam
+	GNsyst6VWHqyDt2LND4Orr8pcrbR5AWk=
+X-Google-Smtp-Source: AGHT+IEY9Qcz49LYyQqEAUelrBl+X2gueHl8vQNtIR2vIYjPwsPH+B/0MrnYAD+Kyxfw2b75WsN5vjtnPWGg87QeZBc=
+X-Received: by 2002:a17:90b:3c4f:b0:340:c179:3666 with SMTP id
+ 98e67ed59e1d1-34abd6c02cfmr7983221a91.8.1765785285912; Sun, 14 Dec 2025
+ 23:54:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <DETXT7QI62KE.F3CGH2VWX1SC@cknow-tech.com> <20251209223417.112294-1-ebiggers@kernel.org>
+ <DEUFDH7FJURL.3J0FN5I19VV8F@cknow-tech.com> <CAMj1kXEQkB9MWB+PAi4XE_MuBt0ScitxTsKMDo1-7Cp-=xXOpw@mail.gmail.com>
+ <20251212054020.GB4838@sol>
+In-Reply-To: <20251212054020.GB4838@sol>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Mon, 15 Dec 2025 16:54:34 +0900
+X-Gmail-Original-Message-ID: <CAMj1kXHVq1NWA28jKxBrHHi1JOPoGXEamC7uMgTOmFwzmcYxRA@mail.gmail.com>
+X-Gm-Features: AQt7F2qXhVr5OpktRHt7yVwu384BIXMp0tpqIhhUDEHp0V7UDx3ZjeXmSEiyyJU
+Message-ID: <CAMj1kXHVq1NWA28jKxBrHHi1JOPoGXEamC7uMgTOmFwzmcYxRA@mail.gmail.com>
+Subject: Re: [PATCH] crypto: arm64/ghash - Fix incorrect output from ghash-neon
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: Diederik de Haas <diederik@cknow-tech.com>, linux-crypto@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, "Jason A . Donenfeld" <Jason@zx2c4.com>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, linux-arm-kernel@lists.infradead.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-When the filesystem is being mounted, the kernel panics while the data
-regarding slot map allocation to the local node, is being written to the
-disk. This occurs because the value of slot map buffer head block
-number, which should have been greater than or equal to
-`OCFS2_SUPER_BLOCK_BLKNO` (evaluating to 2) is less than it, indicative
-of disk metadata corruption. This triggers
-BUG_ON(bh->b_blocknr < OCFS2_SUPER_BLOCK_BLKNO) in ocfs2_write_block(),
-causing the kernel to panic.
+On Fri, 12 Dec 2025 at 06:40, Eric Biggers <ebiggers@kernel.org> wrote:
+>
+> On Wed, Dec 10, 2025 at 06:31:44PM +0900, Ard Biesheuvel wrote:
+> > On Wed, 10 Dec 2025 at 18:22, Diederik de Haas <diederik@cknow-tech.com> wrote:
+> > >
+> > > On Tue Dec 9, 2025 at 11:34 PM CET, Eric Biggers wrote:
+> > > > Commit 9a7c987fb92b ("crypto: arm64/ghash - Use API partial block
+> > > > handling") made ghash_finup() pass the wrong buffer to
+> > > > ghash_do_simd_update().  As a result, ghash-neon now produces incorrect
+> > > > outputs when the message length isn't divisible by 16 bytes.  Fix this.
+> > >
+> > > I was hoping to not have to do a 'git bisect', but this is much better
+> > > :-D I can confirm that this patch fixes the error I was seeing, so
+> > >
+> > > Tested-by: Diederik de Haas <diederik@cknow-tech.com>
+> > >
+> > > > (I didn't notice this earlier because this code is reached only on CPUs
+> > > > that support NEON but not PMULL.  I haven't yet found a way to get
+> > > > qemu-system-aarch64 to emulate that configuration.)
+> > >
+> > > https://www.qemu.org/docs/master/system/arm/raspi.html indicates it can
+> > > emulate various Raspberry Pi models. I've only tested it with RPi 3B+
+> > > (bc of its wifi+bt chip), but I wouldn't be surprised if all RPi models
+> > > would have this problem? Dunno if QEMU emulates that though.
+> > >
+> >
+> > All 64-bit RPi models except the RPi5 are affected by this, as those
+> > do not implement the crypto extensions. So I would expect QEMU to do
+> > the same.
+> >
+> > It would be nice, though, if we could emulate this on the mach-virt
+> > machine model too. It should be fairly trivial to do, so if there is
+> > demand for this I can look into it.
+>
+> I'm definitely interested in it.  I'm already testing multiple "-cpu"
+> options, and it's easy to add more.
+>
+> With qemu-system-aarch64 I'm currently only using "-M virt", since the
+> other machine models I've tried don't boot with arm64 defconfig,
+> including "-M raspi3b" and "-M raspi4b".
+>
+> There may be some tricks I'm missing.  Regardless, expanding the
+> selection of available CPUs for "-M virt" would be helpful.  Either by
+> adding "real" CPUs that have "interesting" combinations of features, or
+> by just allowing turning features off like
+> "-cpu max,aes=off,pmull=off,sha256=off".  (Certain features like sve can
+> already be turned off in that way, but not the ones relevant to us.)
+>
 
-This is fixed by introducing  function ocfs2_validate_slot_map_block() to
-validate slot map blocks. It first checks if the buffer head passed to it
-is up to date and valid, else it panics the kernel at that point itself.
-Further, it contains an if condition block, which checks if `bh->b_blocknr`
-is lesser than `OCFS2_SUPER_BLOCK_BLKNO`; if yes, then ocfs2_error is
-called, which prints the error log, for debugging purposes, and the return
-value of ocfs2_error() is returned. If the return value is zero. then error
-code EIO is returned.
+There are some architectural rules around which combinations of crypto
+extensions are permitted:
+- PMULL implies AES, and there is no way for the ID registers to
+describe a CPU that has PMULL but not AES
+- SHA256 implies SHA1 (but the ID register fields are independent)
+- SHA3 and SHA512 both imply SHA256+SHA1
+- SVE versions are not allowed to be implemented unless the plain NEON
+version is implemented as well
+-  FEAT_Crypto has different meanings for v8.0, v8.2 and v9.x
 
-This function is used as validate function in calls to ocfs2_read_blocks()
-in ocfs2_refresh_slot_info() and ocfs2_map_slot_buffers().
-In addition, the function also contains
+So it would be much easier, also in terms of future maintenance, to
+have a simple 'crypto=off' setting that applies to all emulated CPU
+models, given that disabling all crypto on any given compliant CPU
+will never result in something that the architecture does not permit.
 
-Reported-by: syzbot+c818e5c4559444f88aa0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c818e5c4559444f88aa0
-Tested-by: syzbot+c818e5c4559444f88aa0@syzkaller.appspotmail.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Prithvi Tambewagh <activprithvi@gmail.com>
----
-v2->v3:
- - Create new function ocfs2_validate_slot_map_block() to validate block 
-   number of slot map blocks, to be greater then or equal to 
-   OCFS2_SUPER_BLOCK_BLKNO
- - Use ocfs2_validate_slot_map_block() in calls to ocfs2_read_blocks() in
-   ocfs2_refresh_slot_info() and ocfs2_map_slot_buffers()
- - In addition to using previously formulated if block in 
-   ocfs2_validate_slot_map_block(), also check if the buffer head passed 
-   in this function is up to date; if not, then kernel panics at that point
- - Change title of patch to 'ocfs2: Add validate function for slot map blocks'
-
-v2 link: https://lore.kernel.org/ocfs2-devel/nwkfpkm2wlajswykywnpt4sc6gdkesakw2sw7etuw2u2w23hul@6oby33bscwdw/T/#t
-
-v1->v2:
- - Remove usage of le16_to_cpu() from ocfs2_error()
- - Cast bh->b_blocknr to unsigned long long
- - Remove type casting for OCFS2_SUPER_BLOCK_BLKNO
- - Fix Sparse warnings reported in v1 by kernel test robot
- - Update title from 'ocfs2: Fix kernel BUG in ocfs2_write_block' to
-   'ocfs2: fix kernel BUG in ocfs2_write_block'
-
-v1 link: https://lore.kernel.org/all/20251206154819.175479-1-activprithvi@gmail.com/T/
- fs/ocfs2/slot_map.c | 29 +++++++++++++++++++++++++++--
- 1 file changed, 27 insertions(+), 2 deletions(-)
-
-diff --git a/fs/ocfs2/slot_map.c b/fs/ocfs2/slot_map.c
-index e544c704b583..50ddd7f50f8f 100644
---- a/fs/ocfs2/slot_map.c
-+++ b/fs/ocfs2/slot_map.c
-@@ -44,6 +44,9 @@ struct ocfs2_slot_info {
- static int __ocfs2_node_num_to_slot(struct ocfs2_slot_info *si,
- 				    unsigned int node_num);
- 
-+static int ocfs2_validate_slot_map_block(struct super_block *sb,
-+					  struct buffer_head *bh);
-+
- static void ocfs2_invalidate_slot(struct ocfs2_slot_info *si,
- 				  int slot_num)
- {
-@@ -132,7 +135,8 @@ int ocfs2_refresh_slot_info(struct ocfs2_super *osb)
- 	 * this is not true, the read of -1 (UINT64_MAX) will fail.
- 	 */
- 	ret = ocfs2_read_blocks(INODE_CACHE(si->si_inode), -1, si->si_blocks,
--				si->si_bh, OCFS2_BH_IGNORE_CACHE, NULL);
-+				si->si_bh, OCFS2_BH_IGNORE_CACHE,
-+				ocfs2_validate_slot_map_block);
- 	if (ret == 0) {
- 		spin_lock(&osb->osb_lock);
- 		ocfs2_update_slot_info(si);
-@@ -332,6 +336,26 @@ int ocfs2_clear_slot(struct ocfs2_super *osb, int slot_num)
- 	return ocfs2_update_disk_slot(osb, osb->slot_info, slot_num);
- }
- 
-+static int ocfs2_validate_slot_map_block(struct super_block *sb,
-+					  struct buffer_head *bh)
-+{
-+	int rc;
-+
-+	BUG_ON(!buffer_uptodate(bh));
-+
-+	if (bh->b_blocknr < OCFS2_SUPER_BLOCK_BLKNO) {
-+		rc = ocfs2_error(sb,
-+				 "Invalid Slot Map Buffer Head "
-+				 "Block Number : %llu, Should be >= %d",
-+				 (unsigned long long)bh->b_blocknr,
-+				 OCFS2_SUPER_BLOCK_BLKNO);
-+		if (!rc)
-+			return -EIO;
-+		return rc;
-+	}
-+	return 0;
-+}
-+
- static int ocfs2_map_slot_buffers(struct ocfs2_super *osb,
- 				  struct ocfs2_slot_info *si)
- {
-@@ -383,7 +407,8 @@ static int ocfs2_map_slot_buffers(struct ocfs2_super *osb,
- 
- 		bh = NULL;  /* Acquire a fresh bh */
- 		status = ocfs2_read_blocks(INODE_CACHE(si->si_inode), blkno,
--					   1, &bh, OCFS2_BH_IGNORE_CACHE, NULL);
-+					   1, &bh, OCFS2_BH_IGNORE_CACHE,
-+					   ocfs2_validate_slot_map_block);
- 		if (status < 0) {
- 			mlog_errno(status);
- 			goto bail;
-
-base-commit: 24172e0d79900908cf5ebf366600616d29c9b417
--- 
-2.43.0
-
+Would that work for you?
 
