@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-201093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9956FCBF963
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 20:43:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA412CBF984
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 20:47:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C420030142C6
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 19:41:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A472D30985C5
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 19:42:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4102B33A71A;
-	Mon, 15 Dec 2025 19:29:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2682533BBD7;
+	Mon, 15 Dec 2025 19:29:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ixKmQ+ne"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="cQatsWEC"
 X-Original-To: stable@vger.kernel.org
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B3E33B6D3
-	for <stable@vger.kernel.org>; Mon, 15 Dec 2025 19:29:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 562F833506B
+	for <stable@vger.kernel.org>; Mon, 15 Dec 2025 19:29:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765826955; cv=none; b=rS19kXOM9cE6Ez8YrvDqroBioPqR/HCtnLpqC+CA7VuxQ0gZq8VzNyEEl6f9zQ103K1+mvCC/dPK4AS6LlPD+12LgGuAOTUhtZ6S4FE4EHKXFB/3dVOITzr6/a8j0F7WvIXHS17ayALJr2Eut3+SuA6L2bck7duQDAAxpX4KRgs=
+	t=1765826961; cv=none; b=luVn1W+rHgolm62scvJvjr/5p8sfA4K57B/61uuQTt4CdxjrZWWACknlliUM2shcI4o9cPTrYAaKkQZNDKvorBmfhMRGouQXEHMKCmxNZerNu7U1ms/kLjMUO4EnRHzVWXEMcQdDMBm3w0hryj5GkbXDy9vQGmLuYm4sMeRoLzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765826955; c=relaxed/simple;
-	bh=vqmGtyNcxZBUMmzKTGuhJCdCvmt1hUpklV+9z4JMl2U=;
+	s=arc-20240116; t=1765826961; c=relaxed/simple;
+	bh=Y/ktjna45Z6jMiagIfspvK/EyvR8MKSSQL7teOwJMoY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I4PG6sRY6tgyrqtqiwd29flcPcXV9y1LphsFvTms6xN8atYE7l3GiQ8YcWQUaPVaY0iWszjDEXofpHsqHHTykyCwr+cju/IJwLifzQpruO2zGTP69QcMCCtozdLi1tNt2IbWvaeoI3HhI/5eghkTlZ4H0ot1/G3Dl0W6tUgNAs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ixKmQ+ne; arc=none smtp.client-ip=91.218.175.184
+	 MIME-Version; b=WG5ET7SvvRgR5RCYoW8zFhLvWGJxHTeCrHQUWFjZ/y3nlgf8Hwy26fEb9oRiYLLSjWlSidbzVITcIXt2Wj/M996lXkN72KyDV8fZfecJGrS7y6JFDVxIiGD0FaW5im+UkKqPlDSULQ8pKVNRl/LUzm6nEl2lgaB3bJ8k+hVEx2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=cQatsWEC; arc=none smtp.client-ip=91.218.175.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1765826946;
+	t=1765826953;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tGC+3I5jdDiVSdip2yon18Xgyc7ruVlajqlB/AAYT/0=;
-	b=ixKmQ+neE0WHZlXSgpOlFrcv2U/YEMm2Y/eNi0QRIMx2HILg3XFrF2YywYFKuVrG13Cw7G
-	k7DDSh+Z7uVZaUkOBCwDPQhBDeKwNwanq+b5WOf89TO/mo0Iwxh/Bd7wW5p1F377TPIyQB
-	3efAh/5wm1LWNVm0+TvbOABByBUWQD4=
+	bh=LtjzcMLwZKcyHnexb9YdURizd6U7k7zRx7/18UXQh9U=;
+	b=cQatsWECJZDWRfzHXaNslwW9lhhLEB7yw+NXouiXi9ccYKsQs4C9CO77L0AZFzKhRz/Av8
+	VwhzfCvnQjMMCx8XRjaV1AOzUc18JEOEGF4zi2WwWr/cNPDxT2cT+9/hwVEPFYerubgXkO
+	mQ3D4jUxPYMPiSiV0UALYicl5IfaMFo=
 From: Yosry Ahmed <yosry.ahmed@linux.dev>
 To: Paolo Bonzini <pbonzini@redhat.com>,
 	Sean Christopherson <seanjc@google.com>
@@ -47,9 +47,9 @@ Cc: kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry.ahmed@linux.dev>,
 	stable@vger.kernel.org
-Subject: [PATCH v3 14/26] KVM: nSVM: Clear EVENTINJ field in VMCB12 on nested #VMEXIT
-Date: Mon, 15 Dec 2025 19:27:09 +0000
-Message-ID: <20251215192722.3654335-16-yosry.ahmed@linux.dev>
+Subject: [PATCH v3 15/26] KVM: nSVM: Drop the non-architectural consistency check for NP_ENABLE
+Date: Mon, 15 Dec 2025 19:27:10 +0000
+Message-ID: <20251215192722.3654335-17-yosry.ahmed@linux.dev>
 In-Reply-To: <20251215192722.3654335-1-yosry.ahmed@linux.dev>
 References: <20251215192722.3654335-1-yosry.ahmed@linux.dev>
 Precedence: bulk
@@ -61,94 +61,63 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-According to the APM, from the reference of the VMRUN instruction:
+KVM currenty fails a nested VMRUN and injects VMEXIT_INVALID (aka
+SVM_EXIT_ERR) if L1 sets NP_ENABLE and the host does not support NPTs.
+On first glance, it seems like the check should actually be for
+guest_cpu_cap_has(X86_FEATURE_NPT) instead, as it is possible for the
+host to support NPTs but the guest CPUID to not advertise it.
 
-	Upon #VMEXIT, the processor performs the following actions in
-	order to return to the host execution context:
-	...
-	clear EVENTINJ field in VMCB
+However, the consistency check is not architectural to begin with. The
+APM does not mention VMEXIT_INVALID if NP_ENABLE is set on a processor
+that does not have X86_FEATURE_NPT. Hence, NP_ENABLE should be ignored
+if X86_FEATURE_NPT is not available for L1, so sanitize it when copying
+from the VMCB12 to KVM's cache.
 
-KVM correctly cleared EVENTINJ (i.e. event_inj and event_inj_err) on
-nested #VMEXIT before commit 2d8a42be0e2b ("KVM: nSVM: synchronize VMCB
-controls updated by the processor on every vmexit"). That commit made
-sure the fields are synchronized between VMCB02 and KVM's cached VMCB12
-on every L2->L0 #VMEXIT, such that they are serialized correctly on
-save/restore.
+Apart from the consistency check, NP_ENABLE in VMCB12 is currently
+ignored because the bit is actually copied from VMCB01 to VMCB02, not
+from VMCB12.
 
-However, the commit also incorrectly copied the fields from KVM's cached
-VMCB12 to L1's VMCB12 on nested #VMEXIT. Go back to clearing the fields,
-and so in __nested_svm_vmexit() instead of nested_svm_vmexit(), such
-that it also applies to #VMEXITs caused by a failed VMRUN.
-
-Fixes: 2d8a42be0e2b ("KVM: nSVM: synchronize VMCB controls updated by the processor on every vmexit")
+Fixes: 4b16184c1cca ("KVM: SVM: Initialize Nested Nested MMU context on VMRUN")
 Cc: stable@vger.kernel.org
 Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
 ---
- arch/x86/kvm/svm/nested.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ arch/x86/kvm/svm/nested.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
 diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index 632e941febaf..b4074e674c9d 100644
+index b4074e674c9d..24b10188fb91 100644
 --- a/arch/x86/kvm/svm/nested.c
 +++ b/arch/x86/kvm/svm/nested.c
-@@ -937,7 +937,7 @@ int enter_svm_guest_mode(struct kvm_vcpu *vcpu, u64 vmcb12_gpa,
- 	return 0;
- }
+@@ -335,9 +335,6 @@ static bool nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
+ 	if (CC(control->asid == 0))
+ 		return false;
  
--static void __nested_svm_vmexit(struct vcpu_svm *svm)
-+static void __nested_svm_vmexit(struct vcpu_svm *svm, struct vmcb *vmcb12)
- {
- 	struct vmcb *vmcb01 = svm->vmcb01.ptr;
- 	struct kvm_vcpu *vcpu = &svm->vcpu;
-@@ -949,6 +949,10 @@ static void __nested_svm_vmexit(struct vcpu_svm *svm)
- 	svm_set_gif(svm, false);
- 	vmcb01->control.exit_int_info = 0;
- 
-+	/* event_inj is cleared on #VMEXIT */
-+	vmcb12->control.event_inj = 0;
-+	vmcb12->control.event_inj_err = 0;
-+
- 	nested_svm_uninit_mmu_context(vcpu);
- 	if (nested_svm_load_cr3(vcpu, vmcb01->save.cr3, false, true)) {
- 		kvm_make_request(KVM_REQ_TRIPLE_FAULT, vcpu);
-@@ -973,7 +977,7 @@ static void nested_svm_failed_vmrun(struct vcpu_svm *svm, struct vmcb *vmcb12)
- 	vmcb12->control.exit_code_hi = -1u;
- 	vmcb12->control.exit_info_1 = 0;
- 	vmcb12->control.exit_info_2 = 0;
--	__nested_svm_vmexit(svm);
-+	__nested_svm_vmexit(svm, vmcb12);
- }
- 
- int nested_svm_vmrun(struct kvm_vcpu *vcpu)
-@@ -1156,8 +1160,6 @@ void nested_svm_vmexit(struct vcpu_svm *svm)
- 		vmcb12->control.next_rip  = vmcb02->control.next_rip;
- 
- 	vmcb12->control.int_ctl           = svm->nested.ctl.int_ctl;
--	vmcb12->control.event_inj         = svm->nested.ctl.event_inj;
--	vmcb12->control.event_inj_err     = svm->nested.ctl.event_inj_err;
- 
- 	if (!kvm_pause_in_guest(vcpu->kvm)) {
- 		vmcb01->control.pause_filter_count = vmcb02->control.pause_filter_count;
-@@ -1259,8 +1261,6 @@ void nested_svm_vmexit(struct vcpu_svm *svm)
- 				       vmcb12->control.exit_int_info_err,
- 				       KVM_ISA_SVM);
- 
--	kvm_vcpu_unmap(vcpu, &map);
+-	if (CC((control->nested_ctl & SVM_NESTED_CTL_NP_ENABLE) && !npt_enabled))
+-		return false;
 -
- 	nested_svm_transition_tlb_flush(vcpu);
+ 	if (CC(!nested_svm_check_bitmap_pa(vcpu, control->msrpm_base_pa,
+ 					   MSRPM_SIZE)))
+ 		return false;
+@@ -399,6 +396,11 @@ void __nested_copy_vmcb_control_to_cache(struct kvm_vcpu *vcpu,
+ 	for (i = 0; i < MAX_INTERCEPT; i++)
+ 		to->intercepts[i] = from->intercepts[i];
  
- 	/*
-@@ -1282,7 +1282,9 @@ void nested_svm_vmexit(struct vcpu_svm *svm)
- 	 * Potentially queues an exception, so it needs to be after
- 	 * kvm_clear_exception_queue() is called above.
- 	 */
--	__nested_svm_vmexit(svm);
-+	__nested_svm_vmexit(svm, vmcb12);
++	/* Always clear NP_ENABLE if the guest cannot use NPTs */
++	to->nested_ctl          = from->nested_ctl;
++	if (!guest_cpu_cap_has(vcpu, X86_FEATURE_NPT))
++		to->nested_ctl &= ~SVM_NESTED_CTL_NP_ENABLE;
 +
-+	kvm_vcpu_unmap(vcpu, &map);
- }
- 
- static void nested_svm_triple_fault(struct kvm_vcpu *vcpu)
+ 	to->iopm_base_pa        = from->iopm_base_pa;
+ 	to->msrpm_base_pa       = from->msrpm_base_pa;
+ 	to->tsc_offset          = from->tsc_offset;
+@@ -412,7 +414,6 @@ void __nested_copy_vmcb_control_to_cache(struct kvm_vcpu *vcpu,
+ 	to->exit_info_2         = from->exit_info_2;
+ 	to->exit_int_info       = from->exit_int_info;
+ 	to->exit_int_info_err   = from->exit_int_info_err;
+-	to->nested_ctl          = from->nested_ctl;
+ 	to->event_inj           = from->event_inj;
+ 	to->event_inj_err       = from->event_inj_err;
+ 	to->next_rip            = from->next_rip;
 -- 
 2.52.0.239.gd5f0c6e74e-goog
 
