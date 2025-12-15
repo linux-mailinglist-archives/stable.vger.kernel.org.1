@@ -1,77 +1,70 @@
-Return-Path: <stable+bounces-201061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A20EFCBE8A9
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 16:10:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C90BCBEB08
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 16:37:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 82A17300252B
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 15:10:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A244330169AC
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 15:32:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54268145355;
-	Mon, 15 Dec 2025 15:02:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AAD431A7F3;
+	Mon, 15 Dec 2025 15:32:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RjmThYzW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B+4bq+mh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E22F18859B;
-	Mon, 15 Dec 2025 15:02:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE4530FC30;
+	Mon, 15 Dec 2025 15:32:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765810945; cv=none; b=Mch+KsyX4l8Y0hYXPU6eq4H8PUn6LPDrVoLkerx3YA2TjcF6o1qjXZ/985QKjdRYwXwqW8Cim8SSv1OReF/QJZlvZjSQJrEXH/Lib1IgpWw94ebJFLfd9f5e7niz4ck1vpjPF/43GjLPe7Y9T8XuxcoY65mNbgiFVxuahRN8NAg=
+	t=1765812766; cv=none; b=XInqNghAW84gwoOjAz9qaklsMFc4B8laUaQhwGhhqdO/hHeexdCUO7NakO8DAAPqAPgQ5I1UmXoEAzHV0iTnVQFYWUxF7pRn7CwpQrAYoqOJzZxpXNaGyItypepY3DxT0HJMuivn6YOllVsIFrsZMh2L6G9yaxVGDmBLJkN4B+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765810945; c=relaxed/simple;
-	bh=yzBGWhlfCgbfqJjmS6rmGVZtm5XY4PO04yHcw33AvvA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SNvLjOFbmJ0HiXzOQH5HLb8jf8Tl9u6svrEjbqR0+4XFcX+nVFPFEamItvBs5WGu0UIrQqH9fIuMWXsc6ZZf9+wpY6K9i/Ds8ykRyeg1GBhqx7d4Ff+CReMKAaoSge9QMZGfta17aarVPrNOhwMmX9sdPFcZ8M/e4jC8PrLyI2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RjmThYzW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1503C4CEF5;
-	Mon, 15 Dec 2025 15:02:23 +0000 (UTC)
+	s=arc-20240116; t=1765812766; c=relaxed/simple;
+	bh=aEQVMiLbvDRSXHO/8bGJyPa2l7Ci/SRkpraFLP/Lxc8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nOKvnFv5FvvFNpGnst67Yk8hQ3T/WNMH1bf3/cJSgV7dE0G2MnabPZiI/dF4cpb3nU7kR1S2l08q2SVORtWpD9F/kw8VImKqHjCam2VBzwngQMl2McT/S6DEc3YqrFGvTw+NLrOFe5h35yT48zhGRaQq/StQ7z/Sa6BO+YBQ28Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B+4bq+mh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2342C4CEF5;
+	Mon, 15 Dec 2025 15:32:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765810944;
-	bh=yzBGWhlfCgbfqJjmS6rmGVZtm5XY4PO04yHcw33AvvA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=RjmThYzWDVCn4Dz3hlg8qD8CKeCW52CghSJtC0qXTyPQdtbibYm5L40HT8qTUpaK1
-	 veX49DqUy397XU3E+ek4Sch+oizT8xr9PZlA9v8YD+YwiQTsKqvRI0ceKhbK/xauCT
-	 bUHbtGKYEgOZf1lSK3cqv2sJPpekj7u9twoZe4Q5kvZvLn5f0bG5YnRKmIAPn43h55
-	 9Q2g06I7Qcd4n5N6hta6UVxDAjUi7fZ+OS3cla3mGMhWhzjncu2djUyUo4mE0/gAJD
-	 i0qzpOr3VOsg0s7JH4sB3c8g/xuP5tEuWtIkmYGZlF2Vdv9oKnVurSIxpVhCeXSPpn
-	 oz/KkzwezBuWA==
-Date: Mon, 15 Dec 2025 16:02:20 +0100
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org
-Subject: Re: Patch "efi/cper: Add a new helper function to print bitmasks"
- has been added to the 6.18-stable tree
-Message-ID: <20251215160220.50f5d00b@foz.lan>
-In-Reply-To: <CAMj1kXHwuNaY-Z=K2othSEYSQJQUeBdbbmYJs2q6tc_SHUU2JQ@mail.gmail.com>
-References: <20251215110819.3458104-1-sashal@kernel.org>
-	<CAMj1kXHwuNaY-Z=K2othSEYSQJQUeBdbbmYJs2q6tc_SHUU2JQ@mail.gmail.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+	s=k20201202; t=1765812766;
+	bh=aEQVMiLbvDRSXHO/8bGJyPa2l7Ci/SRkpraFLP/Lxc8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=B+4bq+mhKwot8aSJYeW0tdN0x+gxVdcVpZtnse60m5xOxnKjUZatO+dWukN5A1QmI
+	 tqZNR1Hhoe9PYIbd01Quy9sesiTrhd2xtP7sBzB9/mX/2wC2i8aKoZBXRUJV+6l9VP
+	 bczCfpdQAVicEkiL0abzB5MnRzB8Yqnkya/prkgVjPHRScSHKdNU6xezdIba/w/05p
+	 8WUU8fxHM6Wot6VMSok+zL2uYXUAuJCuRpXgp2XINXl8dUMx+uGKrrm/H4KNjVTzMs
+	 e977KYL5eKsAGcwvWzKCx8VX7twfBrnxoRUpY8FJ6x6zzfB5MICaKOUthAGFppHwgV
+	 aIreOqAPniyow==
+Date: Mon, 15 Dec 2025 23:32:40 +0800
+From: Keith Busch <kbusch@kernel.org>
+To: Ilikara Zheng <ilikara@aosc.io>
+Cc: linux-kernel@vger.kernel.org, Wu Haotian <rigoligo03@gmail.com>,
+	Mingcong Bai <jeffbai@aosc.io>, Kexy Biscuit <kexybiscuit@aosc.io>,
+	stable@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
+	Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
+	"open list:NVM EXPRESS DRIVER" <linux-nvme@lists.infradead.org>
+Subject: Re: [PATCH] nvme-pci: add quirk for Wodposit WPBSNM8-256GTP to
+ disable secondary temp thresholds
+Message-ID: <aUAqGO7GXRrTk4Vq@kbusch-mbp>
+References: <20251208132340.1317531-1-ilikara@aosc.io>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251208132340.1317531-1-ilikara@aosc.io>
 
-Hi Ard,
+On Mon, Dec 08, 2025 at 09:23:40PM +0800, Ilikara Zheng wrote:
+> +	{ PCI_DEVICE(0x1fa0, 0x2283),   /* Wodposit WPBSNM8-256GTP */
 
-Em Mon, 15 Dec 2025 12:10:36 +0100
-Ard Biesheuvel <ardb@kernel.org> escreveu:
-
-> Why are these patches being backported?
-
-Those two patches are requirements for this fix:
-
-    96b010536ee0 ("efi/cper: align ARM CPER type with UEFI 2.9A/2.10 specs")
-
-as it uses the helper code added on them.
-
-Thanks,
-Mauro
+I'm not finding vendor 1FA0 registered on the public pci-ids, nor in the
+pcisig.com members list. I just want to make sure the identifier is
+officially registered.
 
