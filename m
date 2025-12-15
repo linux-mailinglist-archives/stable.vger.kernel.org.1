@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-201035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BF6CCBDB18
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 13:06:38 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DDACCBDB84
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 13:11:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D31FB3005D29
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 12:06:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 695C23046143
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 12:06:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BFC32C17B6;
-	Mon, 15 Dec 2025 12:06:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B251D2E62A4;
+	Mon, 15 Dec 2025 12:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ggwr2x02"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="naJGFOsk"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7810223DFB;
-	Mon, 15 Dec 2025 12:06:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B42BB31576C;
+	Mon, 15 Dec 2025 12:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765800391; cv=none; b=t3Lb3UYW7hA/YkIETsO87lBko/P5lUMoslcOrorKWQD4BWB/i3g3uThU4sedT1H5HcG4wN5ga+5hdTV3S6eut3//3GQR3cV7Q0ELt6yQBEp6uuDGiNp/bs8QBqYyKBUNY5Fnsza/mM8irBG0FKoaYbAEbsvqtsZ+pRn7odB/KXU=
+	t=1765800394; cv=none; b=pV4ps26CZ1l00zVYCBxnXL2/ZzDrLzW76aB16h6jFN3LzwhUH/K/Vs70Hs+sO+lNi8G6Ewqj0xZqZ6rwirSTZjayqvQ6WAA7rPwstre25JUXQHcCvE1KUorcBWSfoeeIlJb13Yx+Vco/WAPkdLf3AdLfwPEmkuhC4igAox3bzl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765800391; c=relaxed/simple;
-	bh=OqsQvWnH71Vurs1FIOJkphIS5hZd4oaUD82Xxv9BPWY=;
+	s=arc-20240116; t=1765800394; c=relaxed/simple;
+	bh=3w195lTeA427JhBVpY9W0LlvTXY7Sd19E50zKAalcOg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q5pjHc/zzS0a/maBixGx08ldNNFvYzR6NcbatVh+X8n1TAR0jQRNdJp8v/NYCovfvaX9Jk5Mz0poQbBSOk3oc2pY+EfVAYYJFu1Ovr060WkuLvrM9W/wKZVm/DWOm+cUjMBa8p37PeNQm4Ld4y1TNzvOzIlX/UQJKUzfKfifA9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ggwr2x02; arc=none smtp.client-ip=198.175.65.9
+	 MIME-Version; b=tAjYkeKJ+brzs/EQxw9m4diniGfEgwtb1XpXvyvmFExqm7zIDD/u7UU3mF7FmSTMqWZtBHgD1wBTpFihsLFUrz+FRaEcAXCSbsKOi0UaomwhGqlojqhXdEsnDsrJ4lo2qtGJr31n/ff976+KtmRRsBFUZR9djJAsU7xHashE38Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=naJGFOsk; arc=none smtp.client-ip=198.175.65.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765800390; x=1797336390;
+  t=1765800393; x=1797336393;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=OqsQvWnH71Vurs1FIOJkphIS5hZd4oaUD82Xxv9BPWY=;
-  b=Ggwr2x02WIFSiDCUSLkI5g2NhD3lYTrFkqqduTOytCyt2GgqdeBWprMe
-   uRSH82QApQxHd3ayP18RzXCpsK8+pjRi3BaygLEpXF09ccb1TLGjIbej6
-   KwkYCxn8FaTecJSFp5ab/rkZZO3pG2mRNxlU+qsP2Px57DcfC161f94Eu
-   hc1j05COTQhcovzXGEgpGZ6CWvEUDZhUKbYjoauL/1GMXOLPx/ALph9cG
-   IKgIW7ix5vcItSZFF1R0ZS+C/WyEGGDsoM6zpMuTRyBfZ3mijD99fvWJ2
-   hqfySqJW6LsQF1mx5smojwgfiPnU9kqmzjPTm/1YrKJqQ/H4sAaJt7m51
+  bh=3w195lTeA427JhBVpY9W0LlvTXY7Sd19E50zKAalcOg=;
+  b=naJGFOskMhn1i47yDwHnqcCJANa2mW96tQK8eArlQ3aaA2/pFUHEeLQf
+   Gq9YOTlaN/0DsqC7Irv9hudnZhfzsOw9mtcG4g2/GMwqHjYglb7ced+tp
+   mRrZ9+KzBC4c92RwZAkWSOFM+dwS4TwBJdz5aNfTHtv8LYx/fJsGZ4vZ7
+   3s8Gi8oP7Kl4m/dxDOFojQ1zEgVAQYFTHWSavqIpgMWWEsFQLKhpO82ph
+   m6KiK7nIqejbdpPM8qY96VEIr+j0wgRqXZCaW6EcFzYzFi8gUq7uZzuQ9
+   cU3zoZ0CcjnU1x7I/8i4eyRoMA16bN5zwv8PWbtWzz9o6eOLuPzXOm++l
    g==;
-X-CSE-ConnectionGUID: F9w5Yo93RTOMyDWOImrWuA==
-X-CSE-MsgGUID: iVYLJbvBRXWaI0QFyzt+tA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11642"; a="90354173"
+X-CSE-ConnectionGUID: HdcFOOqQRnm3u/K9bXz3zw==
+X-CSE-MsgGUID: 8DBMCx8wSmi8KfpC8pTGrQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11642"; a="90354182"
 X-IronPort-AV: E=Sophos;i="6.21,150,1763452800"; 
-   d="scan'208";a="90354173"
+   d="scan'208";a="90354182"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2025 04:06:30 -0800
-X-CSE-ConnectionGUID: hmaOun/1QeaduSjUAVz9Cg==
-X-CSE-MsgGUID: wtCKRAMYRN2SuchyRI58GA==
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2025 04:06:33 -0800
+X-CSE-ConnectionGUID: gFw3qecsT66oSbPx/5aYmQ==
+X-CSE-MsgGUID: IEyrhzdLTt6wKdH39UEX8A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,150,1763452800"; 
-   d="scan'208";a="196788233"
+   d="scan'208";a="196788260"
 Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO pujfalus-desk.intel.com) ([10.245.246.95])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2025 04:06:26 -0800
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2025 04:06:29 -0800
 From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 To: lgirdwood@gmail.com,
 	broonie@kernel.org
@@ -66,9 +66,9 @@ Cc: linux-sound@vger.kernel.org,
 	pierre-louis.bossart@linux.dev,
 	seppo.ingalsuo@linux.intel.com,
 	stable@vger.kernel.org
-Subject: [PATCH 1/2] ASoC: SOF: ipc4-topology: Prefer 32-bit DMIC blobs for 8-bit formats as well
-Date: Mon, 15 Dec 2025 14:06:47 +0200
-Message-ID: <20251215120648.4827-2-peter.ujfalusi@linux.intel.com>
+Subject: [PATCH 2/2] ASoC: SOF: ipc4-topology: Convert FLOAT to S32 during blob selection
+Date: Mon, 15 Dec 2025 14:06:48 +0200
+Message-ID: <20251215120648.4827-3-peter.ujfalusi@linux.intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251215120648.4827-1-peter.ujfalusi@linux.intel.com>
 References: <20251215120648.4827-1-peter.ujfalusi@linux.intel.com>
@@ -80,14 +80,15 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-With the introduction of 8-bit formats the DMIC blob lookup also needs to
-be modified to prefer the 32-bit blob when 8-bit format is used on FE.
+SSP/DMIC blobs have no support for FLOAT type, they are using S32 on data
+bus.
 
-At the same time we also need to make sure that in case 8-bit format is
-used, but only 16-bit blob is available for DMIC then we will not try to
-look for 8-bit blob (which is invalid) as fallback, but for a 16-bit one.
+Convert the format from FLOAT_LE to S32_LE to make sure that the correct
+format is used within the path.
 
-Fixes: c04c2e829649 ("ASoC: SOF: ipc4-topology: Add support for 8-bit formats")
+FLOAT conversion will be done on the host side (or within the path).
+
+Fixes: f7c41911ad74 ("ASoC: SOF: ipc4-topology: Add support for float sample type")
 Cc: stable@vger.kernel.org
 Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
@@ -95,50 +96,22 @@ Reviewed-by: Seppo Ingalsuo <seppo.ingalsuo@linux.intel.com>
 Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
 Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
 ---
- sound/soc/sof/ipc4-topology.c | 22 ++++++++++++++--------
- 1 file changed, 14 insertions(+), 8 deletions(-)
+ sound/soc/sof/ipc4-topology.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/sound/soc/sof/ipc4-topology.c b/sound/soc/sof/ipc4-topology.c
-index 221e9d4052b8..47959f182f4b 100644
+index 47959f182f4b..32b628e2fe29 100644
 --- a/sound/soc/sof/ipc4-topology.c
 +++ b/sound/soc/sof/ipc4-topology.c
-@@ -1752,11 +1752,9 @@ snd_sof_get_nhlt_endpoint_data(struct snd_sof_dev *sdev, struct snd_sof_dai *dai
- 		channel_count = params_channels(params);
- 		sample_rate = params_rate(params);
- 		bit_depth = params_width(params);
--		/*
--		 * Look for 32-bit blob first instead of 16-bit if copier
--		 * supports multiple formats
--		 */
--		if (bit_depth == 16 && !single_bitdepth) {
-+
-+		/* Prefer 32-bit blob if copier supports multiple formats */
-+		if (bit_depth <= 16 && !single_bitdepth) {
- 			dev_dbg(sdev->dev, "Looking for 32-bit blob first for DMIC\n");
- 			format_change = true;
- 			bit_depth = 32;
-@@ -1799,10 +1797,18 @@ snd_sof_get_nhlt_endpoint_data(struct snd_sof_dev *sdev, struct snd_sof_dai *dai
- 		if (format_change) {
- 			/*
- 			 * The 32-bit blob was not found in NHLT table, try to
--			 * look for one based on the params
-+			 * look for 16-bit for DMIC or based on the params for
-+			 * SSP
- 			 */
--			bit_depth = params_width(params);
--			format_change = false;
-+			if (linktype == SOF_DAI_INTEL_DMIC) {
-+				bit_depth = 16;
-+				if (params_width(params) == 16)
-+					format_change = false;
-+			} else {
-+				bit_depth = params_width(params);
-+				format_change = false;
-+			}
-+
- 			get_new_blob = true;
- 		} else if (linktype == SOF_DAI_INTEL_DMIC && !single_bitdepth) {
- 			/*
+@@ -1843,7 +1843,7 @@ snd_sof_get_nhlt_endpoint_data(struct snd_sof_dev *sdev, struct snd_sof_dai *dai
+ 	*len = cfg->size >> 2;
+ 	*dst = (u32 *)cfg->caps;
+ 
+-	if (format_change) {
++	if (format_change || params_format(params) == SNDRV_PCM_FORMAT_FLOAT_LE) {
+ 		/*
+ 		 * Update the params to reflect that different blob was loaded
+ 		 * instead of the requested bit depth (16 -> 32 or 32 -> 16).
 -- 
 2.52.0
 
