@@ -1,167 +1,98 @@
-Return-Path: <stable+bounces-201022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57D3DCBD647
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 11:40:58 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75E42CBD65C
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 11:44:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0BD4530102BF
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 10:40:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E65CA30122F6
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 10:44:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51AAD314A8E;
-	Mon, 15 Dec 2025 10:40:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9E8A3168E4;
+	Mon, 15 Dec 2025 10:44:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=isovalent.com header.i=@isovalent.com header.b="Z2siKmbE"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="htT1UH1i"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F7AC3164C8
-	for <stable@vger.kernel.org>; Mon, 15 Dec 2025 10:40:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 184892C11F5
+	for <stable@vger.kernel.org>; Mon, 15 Dec 2025 10:44:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765795245; cv=none; b=K7WhGVYtFvKD3rF1I7xUSZTdHodfhBY1LYLpPyzcx8BpiWCqW7dYleapTRvsnVIR4s4Doi8ZywHsTb94QLa8CH5n/UKJSWV0Xwm5kFyBs1Cheh6jsrC0SJJ79tS0W1UTqFm/Nfu2iUbpZXmjrgB1zxU/Ke3zeX3L0ifalycEteI=
+	t=1765795457; cv=none; b=s4M8EBlA1L1JvhlZ0tMow6jGg46pTEMQpdqGSse078+Rj5124dj8tlyVU1kwoX6Tfg1QtoFOi5IxIPSPpe/stIphgxACmpUTlyp4nFBQx/kKW/zW8PqkV7CqwS76Rmbf6Hy/YQLDF+5+s9YPwXkZfQ54IGQ/PYfDddEkTCfwxTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765795245; c=relaxed/simple;
-	bh=/SxEaFMNo7pFquIiCNEE+7QNb48DDtpf3LMr/IucKtw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=EI+iHrCL7FE9wmY68nam32BqTHmhDFAoigWyPmzTWsFTQqeGnKSGHchfx+jOMEcqelFrjawItRb53/KjqAKE63X1IYifah33HmMs/hMFQ2Xy605W7y1BfiWtzsx515KxYuMFDc1Vvx4AiMH2WV+YVN3sTe9G2CLd3d32qT9YbXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=isovalent.com; spf=pass smtp.mailfrom=isovalent.com; dkim=pass (2048-bit key) header.d=isovalent.com header.i=@isovalent.com header.b=Z2siKmbE; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=isovalent.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isovalent.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-47a80d4a065so20441245e9.2
-        for <stable@vger.kernel.org>; Mon, 15 Dec 2025 02:40:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=isovalent.com; s=google; t=1765795241; x=1766400041; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=XypjIFMPPz3oCrw1uobW8ajykibBtZzwnq44lW9wyhM=;
-        b=Z2siKmbEAovfvAFYb1gQrbvU4mO19Ou658kmAoCobkPDTac3rGsOaCpHp7DJTpUSOP
-         a8qM23r5G46Obvoo7ylHVHKXXjFFMbq+WrrrWbt5wBlhe0AGQankjWehJJ0X6HLL0Plb
-         1Wnf6EeyT/xW6Zqt5y5Ctodl0FrXUoOnbW127bmTV5XEU8JQySh3o6MrkHNMfH8HJ48H
-         VdvLwxdDcsbmdVQ/TnnIze8yEj2CrCqwvSSWgmk2Rd8arVyYLWynuQctGFCcrinfLDFE
-         4V/rc9PmLOtipA/V1NjKghHk/G1dTN7OPNwtBaIRer0WiTZ8fGpPN3ttoWP83o7UNOzw
-         uiew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765795241; x=1766400041;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XypjIFMPPz3oCrw1uobW8ajykibBtZzwnq44lW9wyhM=;
-        b=GyO0TuNJ8ZfyIUtkwKt1PwBc1E2OW0mx4DMrEZwB9K+Ig7hdaDC99YGOtQoh5LDeaq
-         oYOOdjAwbVusPU1VZceEZAZrsW79YQbfMfx0XdaeLcrDC3yFFDLpSv+Kt6+Q2pUwuCMl
-         aC1Y/GVTYz+PAxtz5BzqDpT5ci/lkXbMRVryTh8nsFEBZnEeYyvwqx6GXPGXInkrqc8g
-         KobReJgcIcteli+kILWaECTsj/EaOQJku2Jmru+h9P+00zeaBh/7kJBEhtuh9U6WUifg
-         6MtEFNQGe1PKNHIL02e/yTrN/Us/hbhVrN3/292tECU6M3JHgnxpsSQr7FAjvXdVdhXf
-         JxXw==
-X-Forwarded-Encrypted: i=1; AJvYcCWBSIDhEvia1Fp/gs69E1DbNiM7PxQilsF/j6RmJ2dXz5wyMr+s1p0PYQ6ts4KVTwrjn8+/yW8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwOGb5N4X6RFRxM58pCkkw2zwpprNioh0fm61LHjV4JYiml/C9r
-	0Vis63/nwz5UaDYCDQEXNeUhLKpzCZTR6ADnBKoeDEEbEXjTILAVzFmsBo5AmeUSCMI=
-X-Gm-Gg: AY/fxX7K96JlHNJ17AXFpVZxvYZrSxHtX/Z/vRuNiACIJSR73BJzOXTA/iN6lGclF/1
-	T/ZsktzV5BLh/ZOsGfrvFCIF8BE3J5EJKKYJDLpzXPPMn2a2WaTMQF6YTyIFyQ4vHckQOdle5/a
-	TNA/hGSXN6BEbBxastOtZm4lAZLBXp4B61jQi+rP+jnDAIcYnO3Lvn64yiC/vwCJNgIOTl54JJ8
-	T+Rz1vSvSbdBuRjLxQvaf89uYg3dw30yYK9+PQjpkUqMQVvHd/cWPj4fUR+wprUYwyhOASaV0bd
-	Ne4hocekJU+83JJx4KpmuIyu4J7TVR7MrcVdOemNdjGSlvnTE3aCQM6fxB4qhwDLwZQXCW80Ahc
-	jE1ZzhcmAJ+BioJYLJFag8elqDfu9mXdWo18rqcuKr1ncTcJtgkJyO7r2PRbbA07K4X8L4zIP00
-	FhWqSGR8IuTgmEpkQa0h2lgS4ZsDWeTc5VMD/Ct2x6CRYUjyAI+hKKx7jI43XcvgJR298+4EkQ9
-	n0U/b+XF8A=
-X-Google-Smtp-Source: AGHT+IFKg33PwsCdfmLQrXSGuuWbN6asFRauDAwGkuKbmzIP0FQVXEdLitzX17zXx3ezt3wX8qRQXw==
-X-Received: by 2002:a05:600c:3151:b0:45d:dc85:c009 with SMTP id 5b1f17b1804b1-47a8f8c0a52mr118993485e9.10.1765795241347;
-        Mon, 15 Dec 2025 02:40:41 -0800 (PST)
-Received: from [192.168.1.240] (0.0.6.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.6.2.a.5.a.7.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:7a5a:26ff::600])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47a8f49da20sm178569895e9.5.2025.12.15.02.40.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Dec 2025 02:40:41 -0800 (PST)
-From: Lorenz Bauer <lmb@isovalent.com>
-Date: Mon, 15 Dec 2025 10:40:13 +0000
-Subject: [PATCH] virtio: console: fix lost wakeup when device is written
+	s=arc-20240116; t=1765795457; c=relaxed/simple;
+	bh=5VCpsFBhYZjRqLdOUTJeSj9xiu7RwW4lXKpkshqDwUA=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=irGZdn/eia4PRrsgeQnkKTim9hbvP3yO5OJQxAgxGSXr3VKtZBPSVKEkCmzzINIP49215tEc0VXreaISS1HdWov17RDwzePAmgaGqXmTSGwCbcKIbZGsEdcbLt+9f2tJTxCU2NPjVGt5iExQsFLyO7VmolBPDmGAN2TNj31dxTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=htT1UH1i; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765795456; x=1797331456;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=5VCpsFBhYZjRqLdOUTJeSj9xiu7RwW4lXKpkshqDwUA=;
+  b=htT1UH1iDKi2hi9av77w3RE/b5CBsznUAxYt9fkgNEcdzcQL7SomxomV
+   8EhT/AR+sD4DKqgul81BV7sMwwa/Ag16+K1WlPC/8CpNfzd9amQRlebCu
+   hTnr/mXO6AdcAB48Tiszy5CGjF1O+b3f+lnY3UnPphj4GGawzJmAbqjw9
+   MQw+N2vKz2lygS1vfabVchEOdOQuWwz1aPLgdjIZQ6ezRlGsanroWy28K
+   aiCq9r9C0n3ufer0vJ7smXdwggGYSeikZ0/ZVLfowiDPzkS4oIZ1oh0wg
+   btVcrcavjuzlDtQ2lS+O1yKxzkWoufLXzYgIOOrC8teUEo7NTA4INIdlI
+   w==;
+X-CSE-ConnectionGUID: +QDyGQOLStCgqH/spJXTZQ==
+X-CSE-MsgGUID: PY/lQP70Qmisaijy7nEwbA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11642"; a="67763137"
+X-IronPort-AV: E=Sophos;i="6.21,150,1763452800"; 
+   d="scan'208";a="67763137"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2025 02:44:15 -0800
+X-CSE-ConnectionGUID: sTOBZH1mS3yCEIJUSwq9kA==
+X-CSE-MsgGUID: YxI+CpwoTCap0rBxsoGAjA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,150,1763452800"; 
+   d="scan'208";a="197580835"
+Received: from lkp-server02.sh.intel.com (HELO 034c7e8e53c3) ([10.239.97.151])
+  by fmviesa006.fm.intel.com with ESMTP; 15 Dec 2025 02:44:13 -0800
+Received: from kbuild by 034c7e8e53c3 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vV631-000000000CD-0Jnl;
+	Mon, 15 Dec 2025 10:43:51 +0000
+Date: Mon, 15 Dec 2025 18:42:46 +0800
+From: kernel test robot <lkp@intel.com>
+To: Lorenz Bauer <lmb@isovalent.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH] virtio: console: fix lost wakeup when device is written
  and polled
+Message-ID: <aT_mJshz2YRNsHsH@73f44f95d416>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251215-virtio-console-lost-wakeup-v1-1-79a5c57815e7@isovalent.com>
-X-B4-Tracking: v=1; b=H4sIAIzlP2kC/x3MwQqDMAwA0F+RnBdoO+LBXxk7SE23YGmkcToQ/
- 93i8V3eAcZV2GDoDqi8iYmWBv/oIH7H8mGUqRmCC+SDJ9ykrqIYtZhmxqy24j7O/FvQJer7SHF
- 6UoIWLJWT/O/89T7PC4hn8hBsAAAA
-X-Change-ID: 20251215-virtio-console-lost-wakeup-0f566c5cd35f
-To: Amit Shah <amit@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Lorenz Bauer <lmb@isovalent.com>
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251215-virtio-console-lost-wakeup-v1-1-79a5c57815e7@isovalent.com>
 
-A process issuing blocking writes to a virtio console may get stuck
-indefinitely if another thread polls the device. Here is how to trigger
-the bug:
+Hi,
 
-- Thread A writes to the port until the virtqueue is full.
-- Thread A calls wait_port_writable() and goes to sleep, waiting on
-  port->waitqueue.
-- The host processes some of the write, marks buffers as used and raises
-  an interrupt.
-- Before the interrupt is serviced, thread B executes port_fops_poll().
-  This calls reclaim_consumed_buffers() via will_write_block() and
-  consumes all used buffers.
-- The interrupt is serviced. vring_interrupt() finds no used buffers
-  via more_used() and returns without waking port->waitqueue.
-- Thread A is still in wait_event(port->waitqueue), waiting for a
-  wakeup that never arrives.
+Thanks for your patch.
 
-The crux is that invoking reclaim_consumed_buffers() may cause
-vring_interrupt() to omit wakeups.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Fix this by making reclaim_consumed_buffers() issue an additional wake
-up if it consumed any buffers.
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-Signed-off-by: Lorenz Bauer <lmb@isovalent.com>
----
-As far as I can tell all currently maintained stable series kernels need
-this commit. I've tested that it applies cleanly to 5.10.247, however
-wasn't able to build the kernel due to an unrelated link error. Instead
-I applied it to 5.15.197, which compiled and verified to be fixed.
----
- drivers/char/virtio_console.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH] virtio: console: fix lost wakeup when device is written and polled
+Link: https://lore.kernel.org/stable/20251215-virtio-console-lost-wakeup-v1-1-79a5c57815e7%40isovalent.com
 
-diff --git a/drivers/char/virtio_console.c b/drivers/char/virtio_console.c
-index 088182e54debd6029ea2c2a5542d7a28500e67b8..7cd3ad9da9b53a7a570410f12501acc7fd7e3b9b 100644
---- a/drivers/char/virtio_console.c
-+++ b/drivers/char/virtio_console.c
-@@ -581,6 +581,7 @@ static ssize_t send_control_msg(struct port *port, unsigned int event,
- static void reclaim_consumed_buffers(struct port *port)
- {
- 	struct port_buffer *buf;
-+	bool freed = false;
- 	unsigned int len;
- 
- 	if (!port->portdev) {
-@@ -589,7 +590,15 @@ static void reclaim_consumed_buffers(struct port *port)
- 	}
- 	while ((buf = virtqueue_get_buf(port->out_vq, &len))) {
- 		free_buf(buf, false);
-+		freed = true;
-+	}
-+	if (freed) {
-+		/* We freed all used buffers. Issue a wake up so that other pending
-+		 * tasks do not get stuck. This is necessary because vring_interrupt()
-+		 * will drop wakeups from the host if there are no used buffers.
-+		 */
- 		port->outvq_full = false;
-+		wake_up_interruptible(&port->waitqueue);
- 	}
- }
- 
-
----
-base-commit: d358e5254674b70f34c847715ca509e46eb81e6f
-change-id: 20251215-virtio-console-lost-wakeup-0f566c5cd35f
-
-Best regards,
 -- 
-Lorenz Bauer <lmb@isovalent.com>
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
