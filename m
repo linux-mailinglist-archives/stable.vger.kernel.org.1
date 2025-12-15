@@ -1,265 +1,223 @@
-Return-Path: <stable+bounces-201077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 801D5CBF6C8
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 19:26:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 936D1CBF773
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 19:46:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2F96030495A8
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 18:23:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A45F9300F588
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 18:46:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77A012C026F;
-	Mon, 15 Dec 2025 18:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14573225408;
+	Mon, 15 Dec 2025 18:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="tgcIQDUM"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T87gxSxX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22026268690;
-	Mon, 15 Dec 2025 18:23:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34199218AAD
+	for <stable@vger.kernel.org>; Mon, 15 Dec 2025 18:46:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765823024; cv=none; b=U0eX4SwhKJyfFRZAx2zFRorBoZACe7qd7oPs8izkzkxOV6s0re+jMU67p1pHvvq4IqgQmQGiJrftI4AryEu2FA96GlzQl879Gx+lXhK9D32oWHECELMzI3HZUWOekrlKGlvSUGVaiO4NuSqvhzLP6KZlDtNLDvd2bFiYBqenDis=
+	t=1765824392; cv=none; b=uiibblcpPf7yaj+8xZEy5kf2N6I+A1d9Ws6zELfS+yrqnGOcp4WzwM9CvymmmXT/3sevYw32urKj5oRGYv916Dtm3L8dGTuV9VZYUUj1zAgiGHsO0LIriK8+tYGG3JLIh38WY604erjz8B5Y8gBdu01mItIVMulSdZ9rLcWBcKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765823024; c=relaxed/simple;
-	bh=j8SEOucCA7js+1o2Wwg1Nsvy4KvZJAKCedv7uO+JuXo=;
-	h=Date:To:From:Subject:Message-Id; b=jhMl9/NncNH9eCEiZEO/M6NGGVULLg59c4qXEVHbRO7T/CUHgDLarK0ZzL45Z24Us8d9G5vMRbR+C1LD0mege2nGlPGHI7ZAo4btNqbyan4fuv4tZETM/nEPE+l9BpJUIAtQ3N+RPf3uMe/isPO4z+omOSYImdG/n1FWPvq7wrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=tgcIQDUM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 863B0C4CEF5;
-	Mon, 15 Dec 2025 18:23:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1765823023;
-	bh=j8SEOucCA7js+1o2Wwg1Nsvy4KvZJAKCedv7uO+JuXo=;
-	h=Date:To:From:Subject:From;
-	b=tgcIQDUMesasBz0H2kLW8J+zX4ibmnTKW9tvjdvlEwI5qncXnNHQccwmdYsFeaVEl
-	 lxn5xemAxwGEL6zAF2VASKUs8mKc8jVms5ESRLoPycXdihVOUdSIu7YzQlQQXvlbnr
-	 lg2yMcXm0W/9cWUgcJM8ZtHfCJ66Vpq2xD4Xnmqc=
-Date: Mon, 15 Dec 2025 10:23:42 -0800
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,richard.weiyang@gmail.com,mhartmay@linux.ibm.com,hannes@cmpxchg.org,agordeev@linux.ibm.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-page_alloc-change-all-pageblocks-migrate-type-on-coalescing.patch added to mm-hotfixes-unstable branch
-Message-Id: <20251215182343.863B0C4CEF5@smtp.kernel.org>
+	s=arc-20240116; t=1765824392; c=relaxed/simple;
+	bh=rXKDAwDaGJawhQ8dUhZSGN3gqkdAL1GpjLf21JyUd2Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iUBMlhC8yHK3av1tQDh4/O4l/npbf2ciuhnTx54g+nTHDXXIOL46Vren2Ej9jrTmHjBbtRmf33VIbcmeixz+lqoumrmG06A/n8AQx2LqZWlL3ztP/cxIrrpysP3s2NJiwARzBZHQ0mIJAli+24kDa2IvsChUkjDuBxDLDQcCkdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T87gxSxX; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-7aab7623f42so4475210b3a.2
+        for <stable@vger.kernel.org>; Mon, 15 Dec 2025 10:46:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765824390; x=1766429190; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=so5tlyJR9to0BdTSCEFt4jR4nZcyYj14BTL5CiJJyXw=;
+        b=T87gxSxXVW58NKjWeHFCuw2etvOu66EU6aVSM7eomu4v1lyFSOq05gWTep3z/jTmw1
+         j4yUQ6lWt4DcnHzT6AqR4MvRDgFa5ySfMOi9rmFg8lev5W8aU+D2SmixAOaIOgm+As80
+         PgNOMNXcs/tWzQFCe7ZI8gtMq5fpXcuDcERuRbcfMKr3YIf+0klM7JCLk6mA86guOWaq
+         HKgFFb2bP8fGkIU57Doo/R4KfMXjqcoe07AgSpYBi8krX7ACuPCOewxm8knVfDnGE3+H
+         2m/fsL/pPHwF/iusTVFvAGC0z/fmNPP7iORZVGS+GQD9cxAffhAqSLDVuKwvXBz7ypMw
+         hu1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765824390; x=1766429190;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=so5tlyJR9to0BdTSCEFt4jR4nZcyYj14BTL5CiJJyXw=;
+        b=KooxsfY+GO1ZGSqyZA2TY082W/mAetmCl5FmdAFS+eyiaXgWAlMBQG+EHtv/wBkh0q
+         RCIqibOQT7amDoHC9Bo31or32JlIWbKMZ6t2MojgSEGejgVDT+1iuU0M4xqgUaG9DZ9/
+         joh0ZJrphRu6cdOMxLzNCyal2G0V22rwv7M2WZ/o5nJSJhU3sAwwczXNOROVcUBcwqZt
+         Upq4ehDNPqCCNgIbSWsFfSdnU0PMaDMLoqBDgkNtfmEWQ/K9jNSGSlTO3CR+t/sHt2sm
+         4uQDtwIE9uAkRTkFO9z7j9bQURSMQU59bHDVTKDE51aIhCHZqJD2Ld96KVx/Mkqn72V0
+         /3CA==
+X-Forwarded-Encrypted: i=1; AJvYcCVFYzwqBLdtRMMDTOJ6h7uTRd52ub+QkJIhkxDemQKr28d2H7BMiGb31vDJeNMNSG+NTiRg3x4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxfGJs+C9RtmhJSCq/H1M29EVG6ALlCwYbER6Qc1kC1CTKePl5Q
+	1POBwkJpnuRKKnAAglgKmXQtVXIyFuZN2SFRToXjl7JVVgXBbGweE9Hc
+X-Gm-Gg: AY/fxX7IChEOq3AAakwlu6JGzvkzSH+VIIuXCviA8beyZXuvbdAnGxAPRHYVfCj38Xe
+	YA4Jf9x1Al1iXEgI/hoAcpRKdQIBMlKTpdSdQxNukUzg0GUq0EzxIp9BbFeCFH0QY8u0IAeLyDH
+	0F5saKLvtw1C+ZUo8Z13kMPeO5y6vPIwQrGCG9VAcZFWtO+jbpux7Q85PvP/EuEipwyNzzUdYLI
+	c63oIVrS23wysgZSYWh00H9A6xlLPGp64i0oztKLnTcQWbzFVkb3S0ClcjcidJrbqS3ZMbnlG2a
+	h6S0GWughCAYUT8k0muHYC8hT25pzigu3d1T2uF/OBFhug/o2giNx170ztZxRElapPs6fyHVmLp
+	dxgQGX9u30awxUQlsx/pmgzuCn9LItLvziEf7UVAm0h4MBWtFxqbfb4uZ3r5LRK9iJtgEbSEACn
+	89UhxOsSBiyJFj6JetHNviWRtN5Jk=
+X-Google-Smtp-Source: AGHT+IGu6ea6lc8otFEMzkERQIvMyATBlenq1D78I8JVDiZScI5uemRxzsl4ZB4dFPjwQC5mO4tCcQ==
+X-Received: by 2002:a05:6a00:8c11:b0:783:9b67:e96a with SMTP id d2e1a72fcca58-7f664d05098mr11417784b3a.0.1765824390440;
+        Mon, 15 Dec 2025 10:46:30 -0800 (PST)
+Received: from localhost.localdomain ([111.125.240.40])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7f4c4aa91d0sm13244346b3a.32.2025.12.15.10.46.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Dec 2025 10:46:30 -0800 (PST)
+From: Prithvi Tambewagh <activprithvi@gmail.com>
+To: mark@fasheh.com,
+	jlbec@evilplan.org,
+	joseph.qi@linux.alibaba.com,
+	heming.zhao@suse.com
+Cc: ocfs2-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-kernel-mentees@lists.linux.dev,
+	skhan@linuxfoundation.org,
+	david.hunter.linux@gmail.com,
+	khalid@kernel.org,
+	Prithvi Tambewagh <activprithvi@gmail.com>,
+	syzbot+c818e5c4559444f88aa0@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH v4] ocfs2: Add validate function for slot map blocks
+Date: Tue, 16 Dec 2025 00:15:57 +0530
+Message-ID: <20251215184600.13147-1-activprithvi@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
+When the filesystem is being mounted, the kernel panics while the data
+regarding slot map allocation to the local node, is being written to the
+disk. This occurs because the value of slot map buffer head block
+number, which should have been greater than or equal to
+`OCFS2_SUPER_BLOCK_BLKNO` (evaluating to 2) is less than it, indicative
+of disk metadata corruption. This triggers
+BUG_ON(bh->b_blocknr < OCFS2_SUPER_BLOCK_BLKNO) in ocfs2_write_block(),
+causing the kernel to panic.
 
-The patch titled
-     Subject: mm/page_alloc: change all pageblocks migrate type on coalescing
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-page_alloc-change-all-pageblocks-migrate-type-on-coalescing.patch
+This is fixed by introducing function ocfs2_validate_slot_map_block() to
+validate slot map blocks. It first checks if the buffer head passed to it
+is up to date and valid, else it panics the kernel at that point itself.
+Further, it contains an if condition block, which checks if `bh->b_blocknr`
+is lesser than `OCFS2_SUPER_BLOCK_BLKNO`; if yes, then ocfs2_error is
+called, which prints the error log, for debugging purposes, and the return
+value of ocfs2_error() is returned. If the if condition is false, value 0
+is returned by ocfs2_validate_slot_map_block().
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-page_alloc-change-all-pageblocks-migrate-type-on-coalescing.patch
+This function is used as validate function in calls to ocfs2_read_blocks()
+in ocfs2_refresh_slot_info() and ocfs2_map_slot_buffers().
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-Subject: mm/page_alloc: change all pageblocks migrate type on coalescing
-Date: Fri, 12 Dec 2025 16:14:57 +0100
-
-When a page is freed it coalesces with a buddy into a higher order page
-while possible.  When the buddy page migrate type differs, it is expected
-to be updated to match the one of the page being freed.
-
-However, only the first pageblock of the buddy page is updated, while the
-rest of the pageblocks are left unchanged.
-
-That causes warnings in later expand() and other code paths (like below),
-since an inconsistency between migration type of the list containing the
-page and the page-owned pageblocks migration types is introduced.
-
-[  308.986589] ------------[ cut here ]------------
-[  308.987227] page type is 0, passed migratetype is 1 (nr=256)
-[  308.987275] WARNING: CPU: 1 PID: 5224 at mm/page_alloc.c:812 expand+0x23c/0x270
-[  308.987293] Modules linked in: algif_hash(E) af_alg(E) nft_fib_inet(E) nft_fib_ipv4(E) nft_fib_ipv6(E) nft_fib(E) nft_reject_inet(E) nf_reject_ipv4(E) nf_reject_ipv6(E) nft_reject(E) nft_ct(E) nft_chain_nat(E) nf_nat(E) nf_conntrack(E) nf_defrag_ipv6(E) nf_defrag_ipv4(E) nf_tables(E) s390_trng(E) vfio_ccw(E) mdev(E) vfio_iommu_type1(E) vfio(E) sch_fq_codel(E) drm(E) i2c_core(E) drm_panel_orientation_quirks(E) loop(E) nfnetlink(E) vsock_loopback(E) vmw_vsock_virtio_transport_common(E) vsock(E) ctcm(E) fsm(E) diag288_wdt(E) watchdog(E) zfcp(E) scsi_transport_fc(E) ghash_s390(E) prng(E) aes_s390(E) des_generic(E) des_s390(E) libdes(E) sha3_512_s390(E) sha3_256_s390(E) sha_common(E) paes_s390(E) crypto_engine(E) pkey_cca(E) pkey_ep11(E) zcrypt(E) rng_core(E) pkey_pckmo(E) pkey(E) autofs4(E)
-[  308.987439] Unloaded tainted modules: hmac_s390(E):2
-[  308.987650] CPU: 1 UID: 0 PID: 5224 Comm: mempig_verify Kdump: loaded Tainted: G            E       6.18.0-gcc-bpf-debug #431 PREEMPT
-[  308.987657] Tainted: [E]=UNSIGNED_MODULE
-[  308.987661] Hardware name: IBM 3906 M04 704 (z/VM 7.3.0)
-[  308.987666] Krnl PSW : 0404f00180000000 00000349976fa600 (expand+0x240/0x270)
-[  308.987676]            R:0 T:1 IO:0 EX:0 Key:0 M:1 W:0 P:0 AS:3 CC:3 PM:0 RI:0 EA:3
-[  308.987682] Krnl GPRS: 0000034980000004 0000000000000005 0000000000000030 000003499a0e6d88
-[  308.987688]            0000000000000005 0000034980000005 000002be803ac000 0000023efe6c8300
-[  308.987692]            0000000000000008 0000034998d57290 000002be00000100 0000023e00000008
-[  308.987696]            0000000000000000 0000000000000000 00000349976fa5fc 000002c99b1eb6f0
-[  308.987708] Krnl Code: 00000349976fa5f0: c020008a02f2	larl	%r2,000003499883abd4
-                          00000349976fa5f6: c0e5ffe3f4b5	brasl	%r14,0000034997378f60
-                         #00000349976fa5fc: af000000		mc	0,0
-                         >00000349976fa600: a7f4ff4c		brc	15,00000349976fa498
-                          00000349976fa604: b9040026		lgr	%r2,%r6
-                          00000349976fa608: c0300088317f	larl	%r3,0000034998800906
-                          00000349976fa60e: c0e5fffdb6e1	brasl	%r14,00000349976b13d0
-                          00000349976fa614: af000000		mc	0,0
-[  308.987734] Call Trace:
-[  308.987738]  [<00000349976fa600>] expand+0x240/0x270
-[  308.987744] ([<00000349976fa5fc>] expand+0x23c/0x270)
-[  308.987749]  [<00000349976ff95e>] rmqueue_bulk+0x71e/0x940
-[  308.987754]  [<00000349976ffd7e>] __rmqueue_pcplist+0x1fe/0x2a0
-[  308.987759]  [<0000034997700966>] rmqueue.isra.0+0xb46/0xf40
-[  308.987763]  [<0000034997703ec8>] get_page_from_freelist+0x198/0x8d0
-[  308.987768]  [<0000034997706fa8>] __alloc_frozen_pages_noprof+0x198/0x400
-[  308.987774]  [<00000349977536f8>] alloc_pages_mpol+0xb8/0x220
-[  308.987781]  [<0000034997753bf6>] folio_alloc_mpol_noprof+0x26/0xc0
-[  308.987786]  [<0000034997753e4c>] vma_alloc_folio_noprof+0x6c/0xa0
-[  308.987791]  [<0000034997775b22>] vma_alloc_anon_folio_pmd+0x42/0x240
-[  308.987799]  [<000003499777bfea>] __do_huge_pmd_anonymous_page+0x3a/0x210
-[  308.987804]  [<00000349976cb08e>] __handle_mm_fault+0x4de/0x500
-[  308.987809]  [<00000349976cb14c>] handle_mm_fault+0x9c/0x3a0
-[  308.987813]  [<000003499734d70e>] do_exception+0x1de/0x540
-[  308.987822]  [<0000034998387390>] __do_pgm_check+0x130/0x220
-[  308.987830]  [<000003499839a934>] pgm_check_handler+0x114/0x160
-[  308.987838] 3 locks held by mempig_verify/5224:
-[  308.987842]  #0: 0000023ea44c1e08 (vm_lock){++++}-{0:0}, at: lock_vma_under_rcu+0xb2/0x2a0
-[  308.987859]  #1: 0000023ee4d41b18 (&pcp->lock){+.+.}-{2:2}, at: rmqueue.isra.0+0xad6/0xf40
-[  308.987871]  #2: 0000023efe6c8998 (&zone->lock){..-.}-{2:2}, at: rmqueue_bulk+0x5a/0x940
-[  308.987886] Last Breaking-Event-Address:
-[  308.987890]  [<0000034997379096>] __warn_printk+0x136/0x140
-[  308.987897] irq event stamp: 52330356
-[  308.987901] hardirqs last  enabled at (52330355): [<000003499838742e>] __do_pgm_check+0x1ce/0x220
-[  308.987907] hardirqs last disabled at (52330356): [<000003499839932e>] _raw_spin_lock_irqsave+0x9e/0xe0
-[  308.987913] softirqs last  enabled at (52329882): [<0000034997383786>] handle_softirqs+0x2c6/0x530
-[  308.987922] softirqs last disabled at (52329859): [<0000034997382f86>] __irq_exit_rcu+0x126/0x140
-[  308.987929] ---[ end trace 0000000000000000 ]---
-[  308.987936] ------------[ cut here ]------------
-[  308.987940] page type is 0, passed migratetype is 1 (nr=256)
-[  308.987951] WARNING: CPU: 1 PID: 5224 at mm/page_alloc.c:860 __del_page_from_free_list+0x1be/0x1e0
-[  308.987960] Modules linked in: algif_hash(E) af_alg(E) nft_fib_inet(E) nft_fib_ipv4(E) nft_fib_ipv6(E) nft_fib(E) nft_reject_inet(E) nf_reject_ipv4(E) nf_reject_ipv6(E) nft_reject(E) nft_ct(E) nft_chain_nat(E) nf_nat(E) nf_conntrack(E) nf_defrag_ipv6(E) nf_defrag_ipv4(E) nf_tables(E) s390_trng(E) vfio_ccw(E) mdev(E) vfio_iommu_type1(E) vfio(E) sch_fq_codel(E) drm(E) i2c_core(E) drm_panel_orientation_quirks(E) loop(E) nfnetlink(E) vsock_loopback(E) vmw_vsock_virtio_transport_common(E) vsock(E) ctcm(E) fsm(E) diag288_wdt(E) watchdog(E) zfcp(E) scsi_transport_fc(E) ghash_s390(E) prng(E) aes_s390(E) des_generic(E) des_s390(E) libdes(E) sha3_512_s390(E) sha3_256_s390(E) sha_common(E) paes_s390(E) crypto_engine(E) pkey_cca(E) pkey_ep11(E) zcrypt(E) rng_core(E) pkey_pckmo(E) pkey(E) autofs4(E)
-[  308.988070] Unloaded tainted modules: hmac_s390(E):2
-[  308.988087] CPU: 1 UID: 0 PID: 5224 Comm: mempig_verify Kdump: loaded Tainted: G        W   E       6.18.0-gcc-bpf-debug #431 PREEMPT
-[  308.988095] Tainted: [W]=WARN, [E]=UNSIGNED_MODULE
-[  308.988100] Hardware name: IBM 3906 M04 704 (z/VM 7.3.0)
-[  308.988105] Krnl PSW : 0404f00180000000 00000349976f9e32 (__del_page_from_free_list+0x1c2/0x1e0)
-[  308.988118]            R:0 T:1 IO:0 EX:0 Key:0 M:1 W:0 P:0 AS:3 CC:3 PM:0 RI:0 EA:3
-[  308.988127] Krnl GPRS: 0000034980000004 0000000000000005 0000000000000030 000003499a0e6d88
-[  308.988133]            0000000000000005 0000034980000005 0000034998d57290 0000023efe6c8300
-[  308.988139]            0000000000000001 0000000000000008 000002be00000100 000002be803ac000
-[  308.988144]            0000000000000000 0000000000000001 00000349976f9e2e 000002c99b1eb728
-[  308.988153] Krnl Code: 00000349976f9e22: c020008a06d9	larl	%r2,000003499883abd4
-                          00000349976f9e28: c0e5ffe3f89c	brasl	%r14,0000034997378f60
-                         #00000349976f9e2e: af000000		mc	0,0
-                         >00000349976f9e32: a7f4ff4e		brc	15,00000349976f9cce
-                          00000349976f9e36: b904002b		lgr	%r2,%r11
-                          00000349976f9e3a: c030008a06e7	larl	%r3,000003499883ac08
-                          00000349976f9e40: c0e5fffdbac8	brasl	%r14,00000349976b13d0
-                          00000349976f9e46: af000000		mc	0,0
-[  308.988184] Call Trace:
-[  308.988188]  [<00000349976f9e32>] __del_page_from_free_list+0x1c2/0x1e0
-[  308.988195] ([<00000349976f9e2e>] __del_page_from_free_list+0x1be/0x1e0)
-[  308.988202]  [<00000349976ff946>] rmqueue_bulk+0x706/0x940
-[  308.988208]  [<00000349976ffd7e>] __rmqueue_pcplist+0x1fe/0x2a0
-[  308.988214]  [<0000034997700966>] rmqueue.isra.0+0xb46/0xf40
-[  308.988221]  [<0000034997703ec8>] get_page_from_freelist+0x198/0x8d0
-[  308.988227]  [<0000034997706fa8>] __alloc_frozen_pages_noprof+0x198/0x400
-[  308.988233]  [<00000349977536f8>] alloc_pages_mpol+0xb8/0x220
-[  308.988240]  [<0000034997753bf6>] folio_alloc_mpol_noprof+0x26/0xc0
-[  308.988247]  [<0000034997753e4c>] vma_alloc_folio_noprof+0x6c/0xa0
-[  308.988253]  [<0000034997775b22>] vma_alloc_anon_folio_pmd+0x42/0x240
-[  308.988260]  [<000003499777bfea>] __do_huge_pmd_anonymous_page+0x3a/0x210
-[  308.988267]  [<00000349976cb08e>] __handle_mm_fault+0x4de/0x500
-[  308.988273]  [<00000349976cb14c>] handle_mm_fault+0x9c/0x3a0
-[  308.988279]  [<000003499734d70e>] do_exception+0x1de/0x540
-[  308.988286]  [<0000034998387390>] __do_pgm_check+0x130/0x220
-[  308.988293]  [<000003499839a934>] pgm_check_handler+0x114/0x160
-[  308.988300] 3 locks held by mempig_verify/5224:
-[  308.988305]  #0: 0000023ea44c1e08 (vm_lock){++++}-{0:0}, at: lock_vma_under_rcu+0xb2/0x2a0
-[  308.988322]  #1: 0000023ee4d41b18 (&pcp->lock){+.+.}-{2:2}, at: rmqueue.isra.0+0xad6/0xf40
-[  308.988334]  #2: 0000023efe6c8998 (&zone->lock){..-.}-{2:2}, at: rmqueue_bulk+0x5a/0x940
-[  308.988346] Last Breaking-Event-Address:
-[  308.988350]  [<0000034997379096>] __warn_printk+0x136/0x140
-[  308.988356] irq event stamp: 52330356
-[  308.988360] hardirqs last  enabled at (52330355): [<000003499838742e>] __do_pgm_check+0x1ce/0x220
-[  308.988366] hardirqs last disabled at (52330356): [<000003499839932e>] _raw_spin_lock_irqsave+0x9e/0xe0
-[  308.988373] softirqs last  enabled at (52329882): [<0000034997383786>] handle_softirqs+0x2c6/0x530
-[  308.988380] softirqs last disabled at (52329859): [<0000034997382f86>] __irq_exit_rcu+0x126/0x140
-[  308.988388] ---[ end trace 0000000000000000 ]---
-
-Link: https://lkml.kernel.org/r/20251215081002.3353900A9c-agordeev@linux.ibm.com
-Link: https://lkml.kernel.org/r/20251212151457.3898073Add-agordeev@linux.ibm.com
-Fixes: e6cf9e1c4cde ("mm: page_alloc: fix up block types when merging compatible blocks")
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
-Closes: https://lore.kernel.org/linux-mm/87wmalyktd.fsf@linux.ibm.com/
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-Cc: Marc Hartmayer <mhartmay@linux.ibm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reported-by: syzbot+c818e5c4559444f88aa0@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c818e5c4559444f88aa0
+Tested-by: syzbot+c818e5c4559444f88aa0@syzkaller.appspotmail.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Prithvi Tambewagh <activprithvi@gmail.com>
 ---
+v3->v4:
+ - Remove if condition in ocfs2_validate_slot_map_block() which checks if 
+   `rc` is zero
+ - Update commit log message 
 
- mm/page_alloc.c |   24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+v3 link: https://lore.kernel.org/ocfs2-devel/tagu2npibmto5bgonhorg5krbvqho4zxsv5pulvgbtp53aobas@6qk4twoysbnz/T/#m6f357a93c9426c3d2f0c2d18d71f4c54601089ec
 
---- a/mm/page_alloc.c~mm-page_alloc-change-all-pageblocks-migrate-type-on-coalescing
-+++ a/mm/page_alloc.c
-@@ -914,6 +914,17 @@ buddy_merge_likely(unsigned long pfn, un
- 			NULL) != NULL;
+v2->v3:
+ - Create new function ocfs2_validate_slot_map_block() to validate block 
+   number of slot map blocks, to be greater then or equal to 
+   OCFS2_SUPER_BLOCK_BLKNO
+ - Use ocfs2_validate_slot_map_block() in calls to ocfs2_read_blocks() in
+   ocfs2_refresh_slot_info() and ocfs2_map_slot_buffers()
+ - In addition to using previously formulated if block in 
+   ocfs2_validate_slot_map_block(), also check if the buffer head passed 
+   in this function is up to date; if not, then kernel panics at that point
+ - Update title of patch to 'ocfs2: Add validate function for slot map blocks'
+
+v2 link: https://lore.kernel.org/ocfs2-devel/nwkfpkm2wlajswykywnpt4sc6gdkesakw2sw7etuw2u2w23hul@6oby33bscwdw/T/#m39bc7dbb208e09a78e0913905c6dfdfd666f3a05
+
+v1->v2:
+ - Remove usage of le16_to_cpu() from ocfs2_error()
+ - Cast bh->b_blocknr to unsigned long long
+ - Remove type casting for OCFS2_SUPER_BLOCK_BLKNO
+ - Fix Sparse warnings reported in v1 by kernel test robot
+ - Update title from 'ocfs2: Fix kernel BUG in ocfs2_write_block' to
+   'ocfs2: fix kernel BUG in ocfs2_write_block'
+
+v1 link: https://lore.kernel.org/all/20251206154819.175479-1-activprithvi@gmail.com/T/#mba4a0b092d8c5ba5b390b5d6a5c3ec7bc6caa6ae
+
+ fs/ocfs2/slot_map.c | 27 +++++++++++++++++++++++++--
+ 1 file changed, 25 insertions(+), 2 deletions(-)
+
+diff --git a/fs/ocfs2/slot_map.c b/fs/ocfs2/slot_map.c
+index e544c704b583..ea4a68abc25b 100644
+--- a/fs/ocfs2/slot_map.c
++++ b/fs/ocfs2/slot_map.c
+@@ -44,6 +44,9 @@ struct ocfs2_slot_info {
+ static int __ocfs2_node_num_to_slot(struct ocfs2_slot_info *si,
+ 				    unsigned int node_num);
+ 
++static int ocfs2_validate_slot_map_block(struct super_block *sb,
++					  struct buffer_head *bh);
++
+ static void ocfs2_invalidate_slot(struct ocfs2_slot_info *si,
+ 				  int slot_num)
+ {
+@@ -132,7 +135,8 @@ int ocfs2_refresh_slot_info(struct ocfs2_super *osb)
+ 	 * this is not true, the read of -1 (UINT64_MAX) will fail.
+ 	 */
+ 	ret = ocfs2_read_blocks(INODE_CACHE(si->si_inode), -1, si->si_blocks,
+-				si->si_bh, OCFS2_BH_IGNORE_CACHE, NULL);
++				si->si_bh, OCFS2_BH_IGNORE_CACHE,
++				ocfs2_validate_slot_map_block);
+ 	if (ret == 0) {
+ 		spin_lock(&osb->osb_lock);
+ 		ocfs2_update_slot_info(si);
+@@ -332,6 +336,24 @@ int ocfs2_clear_slot(struct ocfs2_super *osb, int slot_num)
+ 	return ocfs2_update_disk_slot(osb, osb->slot_info, slot_num);
  }
  
-+static void change_pageblock_range(struct page *pageblock_page,
-+				   int start_order, int migratetype)
++static int ocfs2_validate_slot_map_block(struct super_block *sb,
++					  struct buffer_head *bh)
 +{
-+	int nr_pageblocks = 1 << (start_order - pageblock_order);
++	int rc;
 +
-+	while (nr_pageblocks--) {
-+		set_pageblock_migratetype(pageblock_page, migratetype);
-+		pageblock_page += pageblock_nr_pages;
++	BUG_ON(!buffer_uptodate(bh));
++
++	if (bh->b_blocknr < OCFS2_SUPER_BLOCK_BLKNO) {
++		rc = ocfs2_error(sb,
++				 "Invalid Slot Map Buffer Head "
++				 "Block Number : %llu, Should be >= %d",
++				 (unsigned long long)bh->b_blocknr,
++				 OCFS2_SUPER_BLOCK_BLKNO);
++		return rc;
 +	}
++	return 0;
 +}
 +
- /*
-  * Freeing function for a buddy system allocator.
-  *
-@@ -1000,7 +1011,7 @@ static inline void __free_one_page(struc
- 			 * expand() down the line puts the sub-blocks
- 			 * on the right freelists.
- 			 */
--			set_pageblock_migratetype(buddy, migratetype);
-+			change_pageblock_range(buddy, order, migratetype);
- 		}
- 
- 		combined_pfn = buddy_pfn & pfn;
-@@ -2147,17 +2158,6 @@ bool pageblock_unisolate_and_move_free_p
- 
- #endif /* CONFIG_MEMORY_ISOLATION */
- 
--static void change_pageblock_range(struct page *pageblock_page,
--					int start_order, int migratetype)
--{
--	int nr_pageblocks = 1 << (start_order - pageblock_order);
--
--	while (nr_pageblocks--) {
--		set_pageblock_migratetype(pageblock_page, migratetype);
--		pageblock_page += pageblock_nr_pages;
--	}
--}
--
- static inline bool boost_watermark(struct zone *zone)
+ static int ocfs2_map_slot_buffers(struct ocfs2_super *osb,
+ 				  struct ocfs2_slot_info *si)
  {
- 	unsigned long max_boost;
-_
+@@ -383,7 +405,8 @@ static int ocfs2_map_slot_buffers(struct ocfs2_super *osb,
+ 
+ 		bh = NULL;  /* Acquire a fresh bh */
+ 		status = ocfs2_read_blocks(INODE_CACHE(si->si_inode), blkno,
+-					   1, &bh, OCFS2_BH_IGNORE_CACHE, NULL);
++					   1, &bh, OCFS2_BH_IGNORE_CACHE,
++					   ocfs2_validate_slot_map_block);
+ 		if (status < 0) {
+ 			mlog_errno(status);
+ 			goto bail;
 
-Patches currently in -mm which might be from agordeev@linux.ibm.com are
-
-mm-page_alloc-change-all-pageblocks-migrate-type-on-coalescing.patch
-powerpc-64s-do-not-re-activate-batched-tlb-flush.patch
+base-commit: 24172e0d79900908cf5ebf366600616d29c9b417
+-- 
+2.43.0
 
 
