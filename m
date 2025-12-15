@@ -1,182 +1,161 @@
-Return-Path: <stable+bounces-200998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-200999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C90CCBC4A3
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 04:05:34 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BC21CBC896
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 06:07:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C44313011ECE
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 03:05:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E9BA63007AA1
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 05:07:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E0822797B5;
-	Mon, 15 Dec 2025 03:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF7B5315786;
+	Mon, 15 Dec 2025 05:07:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cQbbKKOy"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nzMZ/jBO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B64AC317715
-	for <stable@vger.kernel.org>; Mon, 15 Dec 2025 03:05:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D802D543E
+	for <stable@vger.kernel.org>; Mon, 15 Dec 2025 05:06:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765767919; cv=none; b=ccTY/xGgrUUcRe+e8gsGvyt2z6c0AOVZKD5M3MOF9pETIgYE2GWNfm70qXr7ROqH4FzVQCBu8aGZwIANC/Yv+0WnDG8kFRqVHNN2uT3h+8VQx4FZ3YhO2T0wDJ79SH+3DGkXVU9TQU6I2k9O42N51N3Vwep7DOlFdLUQ3p/JiA8=
+	t=1765775220; cv=none; b=ATWEzM2E+3iZJD3PcfObd0DLlmxs4hIpKNUqU6+L236GF1w1ErvwwC1xBKurXOzwJCp1P8VeWNWqRm+1yncHtwC9WNaSbWljHXnCLIVR7NemciPH98nH1pQ0YVbgkLAO0fvPvxlAd5J+8ylAfnjCPtB1/NycZewHza1oxB3KpFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765767919; c=relaxed/simple;
-	bh=oN767t555H1kIiWjLDwGJZ6hCrsDHha3zysjC6xAxPE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rbsN3XE15qB0AJXu8jdZ4vozHPs432FWLwH41dG/mGyCPmb8WY+dnVJxNf9S1B+7UwqmeWXQ8eFh2pAMQRzq6OVxaZa6BDXpylF2OcS6ceDhtI7/EUHvekqPMLnQBXzz4lWmPF5MGtEjEszH5sUiViXYSZolpmaxYCErej1nkms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cQbbKKOy; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-29f2676bb21so29044945ad.0
-        for <stable@vger.kernel.org>; Sun, 14 Dec 2025 19:05:17 -0800 (PST)
+	s=arc-20240116; t=1765775220; c=relaxed/simple;
+	bh=P1UlgDaSJmzuIGslfcG68oC/62YkhLSGmHGTzg2/0V8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hNA5eUfLP9yNWeG2kcR35G4BQJZi6r8OEXZRVA4b5ePk+W3VX8qs+b4LUT7OL1LpkeBy/sio/6eiRKWRAkqTJALWik31K+zk0PnvBUMCA+eBF4uN0sdWLhoAyiTolVbkrhdpXWX7RgoV2nxQUGTZw4Vc62nIr8zjg4k01LMl8Nk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=nzMZ/jBO; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-29f30233d8aso27965155ad.0
+        for <stable@vger.kernel.org>; Sun, 14 Dec 2025 21:06:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765767917; x=1766372717; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LBRV01n6Z10+Z5Vfi/wD7Tb0wVdvo9mjj3mwV2A1JME=;
-        b=cQbbKKOyjkNEJFJk1UK1+iHp2ve9EfhOTAFivLpqLRO4zMqLhtZF8VxaBkbaPlBQji
-         luKU/Yf2nJMvx/7uj5npSis4vav8tPUMUFAlM+QHZbvO8BSD6goc2aIdaJaTDaK2zr7V
-         d6+ngrYaNXIqyqKlpUE50vLXUMR9uvVvnB4RUmaeifBw0g8Of5c9FfIzgM8GA6x5ufmQ
-         uK+4orquawlS7wl7FAPAP5aIiOd9hyeQl0pQ+ETDZDh3nxlcwrA6ptD9hdYzP0OH4Cdn
-         hdEC57F1APQtKlZw9ite4cbSKHg2qu9HKbvgQGSq+pxsTA7ycgJTqV6zKJAtv/kMB0i/
-         ZeNw==
+        d=linaro.org; s=google; t=1765775218; x=1766380018; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=QD5AfpltJqpI2l+MydX1CftV7t4suDe5EgTpBUwzKkA=;
+        b=nzMZ/jBOtO8WpZnVNPqrlk3XwOKoPQhqAqSKqHWbVuGfeu13Qfe5Xa9it7be5kUYEe
+         Kq6eabc1zK3ZUatwT6UgTndw4rVQJkfTMrGvrlXzQYtJ4L+XsHiXHAqWPmuhkMSIHxfa
+         8SjRxEWDFvx3QRo7+SnH3fUi89d3xvLTRWNYAfvXRkVqUlznSrNx8bvTnXJfH2JHbvlw
+         7eMZ1eUXa8aLqqukF8pwleyoVweJ3TjhbjBQ5XkVCZ3ieUDSCADPkmksrbs24pvdCsb5
+         nSpAhfj5ZUsegEDL90p311VAZY6McV/Vs9zeeWoizUp0797Rvzj6C7aFxP2paatMsLJE
+         IBcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765767917; x=1766372717;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=LBRV01n6Z10+Z5Vfi/wD7Tb0wVdvo9mjj3mwV2A1JME=;
-        b=XSGZ26lA+oe5PO01BPoEuhEBDZB2XnsCCtC27+piixXTQEZX1atlATT7RG8OXrnlGs
-         Sx/BcIiml4z+fZMrPNo+KHBAj7ML/X4qqS1k9RhQCBr8ffk542jk31L1KCcK9TdVmuYF
-         4U7G3P4RFjO4z7PaiCdtgQ/9lxDM0qACJHE5bnrs7LmTYU6XW+fDMeXyFmWDfoLZmcRT
-         5zo6xFmQ3OlOo1tueGAyWytByLul2qMfpRBkI9X7QEKVGqmLDFr8wIbr19IojyVPM7GB
-         59sJTuAgUet98l+iIlmIe7RDiMDN/gePqgJUPj+TtBwX8ALJeBpMmqc2QJRWoFSKJzNm
-         0mQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWw3JkqIdP4rJgHkGp0Adj1aVB+elQ74qo/ehOamoGb8rjZ9gGjCBgp4flL3brBb0KKCnsUJUc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwgBKKzckPI/99igcbAyJC5em5SSXy/ixq2JafjG4tPiecXTsGS
-	0aonSaxAcPYoxZ1wSekx1ixDA3CT9Ojj0l5kT/GOvNrQ7jOqkv6zqSxD
-X-Gm-Gg: AY/fxX5ftPAp7A+p0dy0GeEkUZgjsW2aoNOJHwmRghJQjqiUwzP8HquN7yPGAcWjM89
-	IEYGjkDYf+pREtU2hmwYsevqUgSVAUARWGio142y44TcUWrHzi7pmsh4F/X3LmGeP/RHDn50yGx
-	E7dPxbANo56jAWZbPIH3cj28msVW0TUZlfD56qfi+3Iwqu9wS/6kc5kKxZNJIghfgtoU9JrLN4E
-	DgYpNUWqsjVzR7QEd4Rp1ANK3cS6Ut5ioXt9iPxAd1E6/HPoKEZSr9NwZnS3B4hItfxNtgVtYlr
-	PrYYIcTOS70kKEqAmYMfihxrfddek3PanTa4RTiBDXQJj/rG3qzyPKAe78smakPGUSmG4GaeSX2
-	RMzydSMD3Sfan05eZ4X1aDfqGottwGOyVS/jGj4TcSTY8HYTXDccT6Rf6K+y9VUnYAFzuOqhRR/
-	YSks30S6Ojfad4a/e0og==
-X-Google-Smtp-Source: AGHT+IEn+Y8AE3kEX5AkB/sFeGPR4t6lVQuTq+UDwlWj5SFZcATCZ4c86Jekd4k01WrcvjN481NL6w==
-X-Received: by 2002:a05:6a20:3d8b:b0:364:13c3:3dd0 with SMTP id adf61e73a8af0-369ae58ce09mr8734759637.36.1765767916868;
-        Sun, 14 Dec 2025 19:05:16 -0800 (PST)
-Received: from localhost ([2a03:2880:ff:4a::])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c0c2ad5663dsm11335787a12.17.2025.12.14.19.05.16
+        d=1e100.net; s=20230601; t=1765775218; x=1766380018;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QD5AfpltJqpI2l+MydX1CftV7t4suDe5EgTpBUwzKkA=;
+        b=AJOAk3wKaOmYBEQ3SqiyaR66ihcQEAgY9paxCb/gRUESrdAP8qswpyPQZhB2pZtJAM
+         sSV8kj7KNTXMIGlmS7pTC8VT/k+bWLN785bBMzVVCuyuYQq9UObZPM3Wp4VJvbwmhFmo
+         cn7+1VIYCdka2bGPW8JdXApsxrHsaMfcxJV+MjnonYEeauIn8a24cnoXpDUXDspMUAX5
+         E9Tgz2HKbnobJ4UlZm/c3KODKlzU9AzUvH/vMKZhahkw13jcuwBQ2VtRR7BJ7moekNKa
+         pnD6kP/z93Ckjbb2TOJFaXmOVWk7+Bg6IAGEaDdWBpk7i5NDZlwYUPOn5tQS6eMZtw4c
+         Y0dw==
+X-Forwarded-Encrypted: i=1; AJvYcCVUD9PiLDbN/u5PNY3h8Xs2ZfLD1hS9fOL75SwrFIaSMcOvVK+G4i+Tb2TXKfYhDWLWvyYhLTI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwpnYLwMLN1Vbq068Dd8pcwvLgRYLBIOWKeQ4QgOIzNopxR7FEC
+	xZck3gzA4qDDNIpTbRPrdEvBowqJX0fz1xhuhvuCO2zfzxGmYPgdibi0TPJLXdj0x38=
+X-Gm-Gg: AY/fxX4MwBxfxGEHB8m0hasrmENO3k7WkxRvpfAh7bYaKNcQqNXfKRpBn8fZXTVS9f3
+	3iI/qFWZAlVThvYJncJQCE7eQmjybtegLDOSH1bDegPVZgM9HDJZV9hVse/+g0S1O0fcJKYk+gY
+	Ac1D7OcxJZdW8jwK7qiOtCH4nHqgjgEl9KqymQnKmTmQ+5G2Pr7KiA5bz9W8oqyTbAH9tjaKoBP
+	vMS6AVE8azONbau74w6oOpMlkP/rlIqX6KbbFiQom+86ojOwLl9AOPw4N+PzfxjTK+CK7P6jgL6
+	LE0kSwboxAWqLIp9oxmTDVlA0yd9N4ofSFK7DGTlDXSRBxuY/ktLo6s6sBl7T1T9Se0iSFbJIhn
+	KqvHj7P1JIUw3R7fEbp0lUSH7cD8pyFLJCnHupTrWdTooXoLFPJHTC1WP4RxWnDD9gm0vnY6obK
+	UQEO7n+KW2opSgwYxYCNSbyg==
+X-Google-Smtp-Source: AGHT+IFiq4XBKISuRbg/g/qlo5IAeZxOSRMhCIgvYlrlLa7gHi+mGGd/EpBdbdy1lZD8FGtEp1HENg==
+X-Received: by 2002:a17:902:ec91:b0:2a0:d5b0:dd82 with SMTP id d9443c01a7336-2a0d5b0e0aemr31538545ad.61.1765775218143;
+        Sun, 14 Dec 2025 21:06:58 -0800 (PST)
+Received: from localhost ([122.172.80.63])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29eea016ba9sm119380125ad.52.2025.12.14.21.06.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Dec 2025 19:05:16 -0800 (PST)
-From: Joanne Koong <joannelkoong@gmail.com>
-To: akpm@linux-foundation.org
-Cc: david@redhat.com,
-	miklos@szeredi.hu,
-	linux-mm@kvack.org,
-	athul.krishna.kr@protonmail.com,
-	j.neuschaefer@gmx.net,
-	carnil@debian.org,
-	linux-fsdevel@vger.kernel.org,
+        Sun, 14 Dec 2025 21:06:57 -0800 (PST)
+Date: Mon, 15 Dec 2025 10:36:55 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Gary Guo <gary@garyguo.net>
+Cc: Alexandre Courbot <acourbot@nvidia.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Will Deacon <will@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, 
 	stable@vger.kernel.org
-Subject: [PATCH v2 1/1] fs/writeback: skip AS_NO_DATA_INTEGRITY mappings in wait_sb_inodes()
-Date: Sun, 14 Dec 2025 19:00:43 -0800
-Message-ID: <20251215030043.1431306-2-joannelkoong@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251215030043.1431306-1-joannelkoong@gmail.com>
-References: <20251215030043.1431306-1-joannelkoong@gmail.com>
+Subject: Re: [PATCH v3 3/7] rust: cpufreq: always inline functions using
+ build_assert with arguments
+Message-ID: <fmdoyqoyksspygcjg3wbqxtqqntunk2wfny6vvt3iq6wddwuzr@a4kfi2hcc5x2>
+References: <20251208-io-build-assert-v3-0-98aded02c1ea@nvidia.com>
+ <20251208-io-build-assert-v3-3-98aded02c1ea@nvidia.com>
+ <20251208135521.5d1dd7f6.gary@garyguo.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251208135521.5d1dd7f6.gary@garyguo.net>
 
-Skip waiting on writeback for inodes that belong to mappings that do not
-have data integrity guarantees (denoted by the AS_NO_DATA_INTEGRITY
-mapping flag).
+On Mon, 08 Dec 2025 11:47:01 +0900
+Alexandre Courbot <acourbot@nvidia.com> wrote:
 
-This restores fuse back to prior behavior where syncs are no-ops. This
-is needed because otherwise, if a system is running a faulty fuse
-server that does not reply to issued write requests, this will cause
-wait_sb_inodes() to wait forever.
+> `build_assert` relies on the compiler to optimize out its error path.
+> Functions using it with its arguments must thus always be inlined,
+> otherwise the error path of `build_assert` might not be optimized out,
+> triggering a build error.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: c6af9a1191d0 ("rust: cpufreq: Extend abstractions for driver registration")
+> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+> ---
+>  rust/kernel/cpufreq.rs | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/rust/kernel/cpufreq.rs b/rust/kernel/cpufreq.rs
+> index f968fbd22890..0879a79485f8 100644
+> --- a/rust/kernel/cpufreq.rs
+> +++ b/rust/kernel/cpufreq.rs
+> @@ -1015,6 +1015,8 @@ impl<T: Driver> Registration<T> {
+>          ..pin_init::zeroed()
+>      };
+>  
+> +    // Always inline to optimize out error path of `build_assert`.
+> +    #[inline(always)]
+>      const fn copy_name(name: &'static CStr) -> [c_char; CPUFREQ_NAME_LEN] {
+>          let src = name.to_bytes_with_nul();
+>          let mut dst = [0; CPUFREQ_NAME_LEN];
+> 
+ 
+> This change is not needed as this is a private function only used in
+> const-eval only.
+> 
+> I wonder if I should add another macro to assert that the function is
+> only used in const eval instead? Do you think it might be useful to have
+> something like:
+> 
+> 	#[const_only]
+> 	const fn foo() {}
+> 
+> or
+> 
+> 	const fn foo() {
+> 	    const_only!();
+> 	}
+> 
+> ? If so, I can send a patch that adds this feature. 
+> 
+> Implementation-wise, this will behave similar to build_error, where a
+> function is going to be added that is never-linked but has a body for
+> const eval.
 
-Fixes: 0c58a97f919c ("fuse: remove tmp folio for writebacks and internal rb tree")
-Reported-by: Athul Krishna <athul.krishna.kr@protonmail.com>
-Reported-by: J. Neuschäfer <j.neuschaefer@gmx.net>
-Cc: stable@vger.kernel.org
-Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
----
- fs/fs-writeback.c       |  3 ++-
- fs/fuse/file.c          |  4 +++-
- include/linux/pagemap.h | 11 +++++++++++
- 3 files changed, 16 insertions(+), 2 deletions(-)
+I already applied this from V2, should I drop this change ?
 
-diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-index 6800886c4d10..ab2e279ed3c2 100644
---- a/fs/fs-writeback.c
-+++ b/fs/fs-writeback.c
-@@ -2751,7 +2751,8 @@ static void wait_sb_inodes(struct super_block *sb)
- 		 * do not have the mapping lock. Skip it here, wb completion
- 		 * will remove it.
- 		 */
--		if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK))
-+		if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK) ||
-+		    mapping_no_data_integrity(mapping))
- 			continue;
- 
- 		spin_unlock_irq(&sb->s_inode_wblist_lock);
-diff --git a/fs/fuse/file.c b/fs/fuse/file.c
-index 01bc894e9c2b..3b2a171e652f 100644
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -3200,8 +3200,10 @@ void fuse_init_file_inode(struct inode *inode, unsigned int flags)
- 
- 	inode->i_fop = &fuse_file_operations;
- 	inode->i_data.a_ops = &fuse_file_aops;
--	if (fc->writeback_cache)
-+	if (fc->writeback_cache) {
- 		mapping_set_writeback_may_deadlock_on_reclaim(&inode->i_data);
-+		mapping_set_no_data_integrity(&inode->i_data);
-+	}
- 
- 	INIT_LIST_HEAD(&fi->write_files);
- 	INIT_LIST_HEAD(&fi->queued_writes);
-diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-index 31a848485ad9..ec442af3f886 100644
---- a/include/linux/pagemap.h
-+++ b/include/linux/pagemap.h
-@@ -210,6 +210,7 @@ enum mapping_flags {
- 	AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM = 9,
- 	AS_KERNEL_FILE = 10,	/* mapping for a fake kernel file that shouldn't
- 				   account usage to user cgroups */
-+	AS_NO_DATA_INTEGRITY = 11, /* no data integrity guarantees */
- 	/* Bits 16-25 are used for FOLIO_ORDER */
- 	AS_FOLIO_ORDER_BITS = 5,
- 	AS_FOLIO_ORDER_MIN = 16,
-@@ -345,6 +346,16 @@ static inline bool mapping_writeback_may_deadlock_on_reclaim(const struct addres
- 	return test_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->flags);
- }
- 
-+static inline void mapping_set_no_data_integrity(struct address_space *mapping)
-+{
-+	set_bit(AS_NO_DATA_INTEGRITY, &mapping->flags);
-+}
-+
-+static inline bool mapping_no_data_integrity(const struct address_space *mapping)
-+{
-+	return test_bit(AS_NO_DATA_INTEGRITY, &mapping->flags);
-+}
-+
- static inline gfp_t mapping_gfp_mask(const struct address_space *mapping)
- {
- 	return mapping->gfp_mask;
 -- 
-2.47.3
-
+viresh
 
