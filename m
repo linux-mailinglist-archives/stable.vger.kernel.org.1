@@ -1,46 +1,42 @@
-Return-Path: <stable+bounces-201074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40775CBF349
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 18:17:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD3C1CBF3A3
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 18:26:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D9E55301841F
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 17:13:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A1E5F3033D60
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 17:18:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC419335086;
-	Mon, 15 Dec 2025 17:13:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04E8033554A;
+	Mon, 15 Dec 2025 17:18:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB199336EE4
-	for <stable@vger.kernel.org>; Mon, 15 Dec 2025 17:13:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from elvis.franken.de (elvis.franken.de [193.175.24.41])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B7FB30DD22;
+	Mon, 15 Dec 2025 17:18:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.175.24.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765818797; cv=none; b=Hi1Yod6rKt2nnxULwB5R8l1E0JwjIkLcGzmQfDvfLljFmnHBNmwd1mUhiAXYbQBCX9EuAvTb30caBl59J654/C1G7S/LHDZlip5JGtfijnztEeQ8sRRcxc2iOMIMBGFhaulGaisgccbbVInp8vzGUcmms7p0mR80U7vH+oMTdz4=
+	t=1765819120; cv=none; b=U0fOTSU1xeUkx7s3svLt+7e7KSW2eeLXQqpTahBZHlS5iUxFne4eZ9v73osOvTuVJ3AlnvFT7s4iStFo/dSl6Sl4aysRat65zgap9KMS8doUDt+ZqCqGWiylfYOq4/u24vcH2cOUNJ0Lz5SEILCM1F+YKKVKvZC17TwcbjTtyB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765818797; c=relaxed/simple;
-	bh=TAWulCn+oib69ZQXIQj5+QV3eDI5WkmHr+DtRPr972U=;
+	s=arc-20240116; t=1765819120; c=relaxed/simple;
+	bh=db2VVQs3dRMlF7Uetw6hK9XZa6LQ54LWidtipvEMZp0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Cc80M/nuq3Qf9DRg6SK6rrYcmhVp4aB2Tzodk87Rga2asOOhtueD40lXTQX6WngNk2AWB2jrK6PQ+nqut+rRLXr+27aOPRB/39vbfuaZptQqOrwYIspsJ95P6XHtT4eVtDrh7Tbup3bnyWXMlNQiUXJ3L1PhHkgYZzNhqQt5JWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=none smtp.mailfrom=foss.arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=foss.arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 14023FEC;
-	Mon, 15 Dec 2025 09:13:08 -0800 (PST)
-Received: from bogus (e133711.arm.com [10.1.196.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3ABE03F73B;
-	Mon, 15 Dec 2025 09:13:14 -0800 (PST)
-Date: Mon, 15 Dec 2025 17:13:11 +0000
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Amitai Gottlieb <amitaig@hailo.ai>
-Cc: <stable@vger.kernel.org>, <amitaigottlieb@gmail.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Cristian Marussi <cristian.marussi@arm.com>
-Subject: Re: [PATCH] firmware: arm_scmi: Fix unused notifier-block in
- unregister
-Message-ID: <20251215-glossy-transparent-bullfrog-30fbac@sudeepholla>
-References: <20251215163732.120102-1-amitaig@hailo.ai>
+	 Content-Type:Content-Disposition:In-Reply-To; b=mHoqGPBB39koReObj+aNDJy4+hZ3kJ0ezC8qQ1PAg7QsaMvUy9oWb2eCNJ78CnXBiJfuVtTTJR7jY1pRyw5TnThOm8ksw8VbJ0P/kGsVkD8Oi7ZgsDBaCtvWFxGrBXfW/en5dyC4lYeLr+5FRX2BMvV/FfhGaOZCqiA4N+u7YRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpha.franken.de; spf=pass smtp.mailfrom=alpha.franken.de; arc=none smtp.client-ip=193.175.24.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpha.franken.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alpha.franken.de
+Received: from uucp by elvis.franken.de with local-rmail (Exim 3.36 #1)
+	id 1vVCDP-0007vy-00; Mon, 15 Dec 2025 18:18:31 +0100
+Received: by alpha.franken.de (Postfix, from userid 1000)
+	id 56755C06A7; Mon, 15 Dec 2025 18:17:37 +0100 (CET)
+Date: Mon, 15 Dec 2025 18:17:37 +0100
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To: Haoxiang Li <haoxiang_li2024@163.com>
+Cc: FlorianSchandinat@gmx.de, linux-mips@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] MIPS: Fix a reference leak bug in ip22_check_gio()
+Message-ID: <aUBCsTeplCT6oNO-@alpha.franken.de>
+References: <20251204103618.89502-1-haoxiang_li2024@163.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -49,74 +45,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251215163732.120102-1-amitaig@hailo.ai>
+In-Reply-To: <20251204103618.89502-1-haoxiang_li2024@163.com>
 
-Add [STABLE ONLY] in the subject please along with [PATCH] and repost
-it.
-
-Also add Greg Kroah-Hartman <gregkh@linuxfoundation.org> to cc as well.
-
-On Mon, Dec 15, 2025 at 06:37:32PM +0200, Amitai Gottlieb wrote:
-> In function `scmi_devm_notifier_unregister` the notifier-block parameter
-> was unused and therefore never passed to `devres_release`. This causes
-> the function to always return -ENOENT and fail to unregister the
-> notifier.
+On Thu, Dec 04, 2025 at 06:36:18PM +0800, Haoxiang Li wrote:
+> If gio_device_register fails, gio_dev_put() is required to
+> drop the gio_dev device reference.
 > 
-> In drivers that rely on this function for cleanup this causes
-> unexpected failures including kernel-panic.
-> 
-> This is not needed upstream becaues the bug was fixed
-> in a refactor by commit 264a2c520628 ("firmware: arm_scmi: Simplify
-> scmi_devm_notifier_unregister").  It is needed for the 5.15, 6.1 and
-> 6.6 kernels.
-> 
-
-I would slightly reword the commit message like below.
-
- | In scmi_devm_notifier_unregister(), the notifier-block argument was ignored
- | and never passed to devres_release(). As a result, the function always
- | returned -ENOENT and failed to unregister the notifier.
- |
- | Drivers that depend on this helper for teardown could therefore hit
- | unexpected failures, including kernel panics.
- |
- | Commit 264a2c520628 ("firmware: arm_scmi: Simplify scmi_devm_notifier_unregister")
- | removed the faulty code path during refactoring and hence this fix is not
- | required upstream.
-
-(add a panic log if you have seen one, that would help)
-
-With that you can add,
-
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-
-> Cc: <stable@vger.kernel.org> # 5.15.x, 6.1.x, and 6.6.x
-> Fixes: 5ad3d1cf7d34 ("firmware: arm_scmi: Introduce new devres notification ops")
-> Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-> Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
-> Signed-off-by: Amitai Gottlieb <amitaig@hailo.ai>
+> Fixes: e84de0c61905 ("MIPS: GIO bus support for SGI IP22/28")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
 > ---
+>  arch/mips/sgi-ip22/ip22-gio.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
->  drivers/firmware/arm_scmi/notify.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/firmware/arm_scmi/notify.c b/drivers/firmware/arm_scmi/notify.c
-> index 0efd20cd9d69..4782b115e6ec 100644
-> --- a/drivers/firmware/arm_scmi/notify.c
-> +++ b/drivers/firmware/arm_scmi/notify.c
-> @@ -1539,6 +1539,7 @@ static int scmi_devm_notifier_unregister(struct scmi_device *sdev,
->  	dres.handle = sdev->handle;
->  	dres.proto_id = proto_id;
->  	dres.evt_id = evt_id;
-> +	dres.nb = nb;
->  	if (src_id) {
->  		dres.__src_id = *src_id;
->  		dres.src_id = &dres.__src_id;
+> diff --git a/arch/mips/sgi-ip22/ip22-gio.c b/arch/mips/sgi-ip22/ip22-gio.c
+> index 5893ea4e382c..19b70928d6dc 100644
+> --- a/arch/mips/sgi-ip22/ip22-gio.c
+> +++ b/arch/mips/sgi-ip22/ip22-gio.c
+> @@ -372,7 +372,8 @@ static void ip22_check_gio(int slotno, unsigned long addr, int irq)
+>  		gio_dev->resource.flags = IORESOURCE_MEM;
+>  		gio_dev->irq = irq;
+>  		dev_set_name(&gio_dev->dev, "%d", slotno);
+> -		gio_device_register(gio_dev);
+> +		if (gio_device_register(gio_dev))
+> +			gio_dev_put(gio_dev);
+>  	} else
+>  		printk(KERN_INFO "GIO: slot %d : Empty\n", slotno);
+>  }
 > -- 
-> 2.34.1
-> 
+> 2.25.1
+
+applied to mips-fixes
+
+Thomas.
 
 -- 
-Regards,
-Sudeep
+Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
+good idea.                                                [ RFC1925, 2.3 ]
 
