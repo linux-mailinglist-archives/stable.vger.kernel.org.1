@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-201031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCF71CBD7E2
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 12:28:54 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51972CBDA17
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 12:53:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 07AC6300EA00
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 11:28:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C27903000B37
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 11:53:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3588232FA14;
-	Mon, 15 Dec 2025 11:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EB802F290A;
+	Mon, 15 Dec 2025 11:52:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e3NUkMnd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N02zx08a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE89E3164A1;
-	Mon, 15 Dec 2025 11:28:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D845930DD2E;
+	Mon, 15 Dec 2025 11:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765798130; cv=none; b=PPNeoOr49zEyzBUow9S0kYoXLO9I6drngLAVlQJUtSI8jdQAPe5qFO+L/736be3y1jVa43xSc73k9+dJpKbj8n6woHyFP/kmQQcg/DBi+nwRZm4VEemuXVGYgl3zr/YlGTamcnPnEqW87qe34AzdJU39iuDhlJNhNJ20A+3UdjU=
+	t=1765799557; cv=none; b=i3wyeroqLtX1MdrLASS7Fz2drp6eA3ymkZU1F+xLjN5GNBm3cEVI1n3pDJMMRWqP5TYyezvHKZtp/TtA0Ep/D4DIDzsTvGWBPvnDOrL2M/qJRgc5oBfpIjREQ8qXETHZLM/FKMu4oXSNDo9WrXHBceHrMb4pXWSEYHxFnq0eYO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765798130; c=relaxed/simple;
-	bh=m0V/cnewFtRPozuIbq4jItuR/qlWmFbUG2Zcdn5dQhU=;
+	s=arc-20240116; t=1765799557; c=relaxed/simple;
+	bh=KnFCATkCMOtjoFhWufMOftdH9GhOwKIFqsaIwkG7nII=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BXFOSp4/7iU6QiqAd8oOZSrJo64T0gDT8oDEgXlrTp8ra/B2N3Y23GVb0tjeTRBs7ICX+D1rvE6EaYjnVfvEJkGybAvk2cjFmhpMz54toe8yvagQZoRWu99RtpgYWIiVb3x2tiNtEbA1xyNAPcxl6WZPaTLTzLgUQyubgt0y1iM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e3NUkMnd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15773C4CEF5;
-	Mon, 15 Dec 2025 11:28:41 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=Rt7mqLRYUiFdNbSWRY3TvuuWrn61zW8xCNPd6LSbwFs1cz8nr8nt39VjGuo6YeNlIDWzqYnny6V1XPRJk4nvwfSLIv4y8xYTktbf91IOIC2rmccPm2cQsHaapCbxhlFJMzURhwGzPczCUHjJyYzU5IKkPylu1sbX1xRD5VJ3kCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N02zx08a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D592C4CEF5;
+	Mon, 15 Dec 2025 11:52:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765798127;
-	bh=m0V/cnewFtRPozuIbq4jItuR/qlWmFbUG2Zcdn5dQhU=;
+	s=k20201202; t=1765799556;
+	bh=KnFCATkCMOtjoFhWufMOftdH9GhOwKIFqsaIwkG7nII=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=e3NUkMndJ9WNv2akLYSWu52xv7E4xRF5aRC/pOuhgTXDJfTNwzD+HYT0urPnx8ju/
-	 Xx1gwvbpVnXGP8mY3i6XlBqG06WqZKgdVDy2byhOtaQKSJHWHaBwNBJCksgjH1zNoe
-	 XtAZ2xdj4g5lXO5qQR8sReyk1ilq1VWuojEhPTp4KVtaoBCmlaZBH0eJmdqe4F77rp
-	 Bi4l7YI308aD+J14dr+FyRlalvW1EhSFfcpVxeAQ8cHXlPIy2O1hanhW6aY15M/OEj
-	 oFK4UueP2qaqPrOS/uPGiZ66fMEnVGM0+clQJp8Tv7apJicsXQPBDYeISQEfL6pZii
-	 7eOUYKIAgzYUA==
-Message-ID: <624c7965-54cd-4897-9883-c8f4e79d3ca7@kernel.org>
-Date: Mon, 15 Dec 2025 12:28:39 +0100
+	b=N02zx08anxq3jjbfi5Fx+wSNsL+xS5O73c11TV2WcOrelEb52IS+kXjzL5nfq6VvM
+	 vuUdTS1TR4mGVMlEVmvypEBEHJ3tWC/XnfystARoFw6HtZiPALDMpiK4ANWUUxPDV9
+	 2kekBoPuw43qXKj2xcR0Gzu8myB+d0BT4K8iZESZtgqDYyhn81D3zN1IZt/iNune3x
+	 XIrXATcRUnmE6hz1TkNbPExyC0/n9OzEZgIdCpIlIth98H9Zl3Bm5Q3erxvUjr6nCO
+	 KITdyseU32WGIppjcSneAnglsG4PxrgW0bxrm5d4PxRfUzy/VnAn1BG/211sfK/VTO
+	 UT+BNWe4qRLgA==
+Message-ID: <c0cc4abd-4000-4487-9837-e55c442c4d0d@kernel.org>
+Date: Mon, 15 Dec 2025 12:52:31 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -48,14 +48,12 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] NFC: Fix error handling in nfc_genl_dump_targets
-To: Ma Ke <make24@iscas.ac.cn>, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- aloisio.almeida@openbossa.org, lauro.venancio@openbossa.org,
- sameo@linux.intel.com, linville@tuxdriver.com, johannes@sipsolutions.net
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+Subject: Re: [PATCH RESEND] dmaengine: ti-dma-crossbar: Fix error handling in
+ ti_am335x_xbar_route_allocate
+To: Ma Ke <make24@iscas.ac.cn>, peter.ujfalusi@gmail.com, vkoul@kernel.org
+Cc: dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
  akpm@linux-foundation.org, stable@vger.kernel.org
-References: <20251214131726.5353-1-make24@iscas.ac.cn>
+References: <20251215014249.11495-1-make24@iscas.ac.cn>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -101,26 +99,40 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20251214131726.5353-1-make24@iscas.ac.cn>
+In-Reply-To: <20251215014249.11495-1-make24@iscas.ac.cn>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 14/12/2025 14:17, Ma Ke wrote:
-> nfc_genl_dump_targets() increments the device reference count via
-> nfc_get_device() but fails to decrement it properly. nfc_get_device()
-> calls class_find_device() which internally calls get_device() to
-> increment the reference count. No corresponding put_device() is made
-> to decrement the reference count.
+On 15/12/2025 02:42, Ma Ke wrote:
+> ti_am335x_xbar_route_allocate() calls of_find_device_by_node() which
+> increments the reference count of the platform device, but fails to
+> call put_device() to decrement the reference count before returning.
+> This could cause a reference count leak each time the function is
+> called, preventing the platform device from being properly cleaned up
+> and leading to memory leakage.
 > 
-> Add proper reference count decrementing using nfc_put_device() when
-> the dump operation completes or encounters an error, ensuring balanced
-> reference counting.
+> Add proper put_device() calls in all exit paths to fix the reference
+> count imbalance.
 > 
 > Found by code review.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 42dbdcc6bf96 ("dmaengine: ti-dma-crossbar: Add support for crossbar on AM33xx/AM43xx")
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> ---
+>  drivers/dma/ti/dma-crossbar.c | 24 ++++++++++++++++++------
+>  1 file changed, 18 insertions(+), 6 deletions(-)
+> 
 
 
-NAK, you completely ignore reviewers and send the same. That's not
-acceptable.
+Just a note, author sends and resends same patches without addressing
+feedback. At least one case was very dubious or just incorrect code, and
+author just ignored it and sent it again to hide the previous
+discussion, so I suspect LLM generated content.
+
+I did not review the code here, but please carefully review all patches
+from this author before applying and simply do not trust that this looks
+like a fix.
 
 Best regards,
 Krzysztof
