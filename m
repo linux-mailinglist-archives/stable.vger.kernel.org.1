@@ -1,192 +1,167 @@
-Return-Path: <stable+bounces-201021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E1C4CBD50E
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 11:09:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57D3DCBD647
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 11:40:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 32FF6300BED1
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 10:09:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0BD4530102BF
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 10:40:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CD1232AADC;
-	Mon, 15 Dec 2025 10:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51AAD314A8E;
+	Mon, 15 Dec 2025 10:40:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="QrHKRD3e";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="irfGtO4j"
+	dkim=pass (2048-bit key) header.d=isovalent.com header.i=@isovalent.com header.b="Z2siKmbE"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E51D2459C5
-	for <stable@vger.kernel.org>; Mon, 15 Dec 2025 10:09:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F7AC3164C8
+	for <stable@vger.kernel.org>; Mon, 15 Dec 2025 10:40:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765793395; cv=none; b=gqJ0k0UGsucOdzLoebN2TTj58jdd3ThEK9WmrFhzeOCTUCxby74ZSU1eelOaKt5eZvRbT0cWg2cNnL/X3lxtI+fHm+QvApAbhSGFHuMgJ8oFSVmSThBjx64TKiqSYJwIFMIHeecwUUsZMRxTxf36cnlnpwfJVkLsOSAidUqftpo=
+	t=1765795245; cv=none; b=K7WhGVYtFvKD3rF1I7xUSZTdHodfhBY1LYLpPyzcx8BpiWCqW7dYleapTRvsnVIR4s4Doi8ZywHsTb94QLa8CH5n/UKJSWV0Xwm5kFyBs1Cheh6jsrC0SJJ79tS0W1UTqFm/Nfu2iUbpZXmjrgB1zxU/Ke3zeX3L0ifalycEteI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765793395; c=relaxed/simple;
-	bh=OMSRFXqBtIuJb1Qi4jXiPtLsu7uqZmK1Qg6s3oVNdo0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uc1OjXcHoiJyRpWuXzDWfetsLS/AyftOS0ttpNALfOfpISHc512DWQbFfEwx0ykWRKJHq/zjVQ/mQ/m+plSII9qUitQ+Jh2wSe9QKfnD6qtQ+ZcrUvKGbp1oCO+ihm6Va2wmmwAz48CRwFARaCpRRuE8TCorCel67ZWvDHe0HjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=QrHKRD3e; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=irfGtO4j; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BF8dl242576879
-	for <stable@vger.kernel.org>; Mon, 15 Dec 2025 10:09:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	XQ4DZ1KiE5L590veavXKBgfstDLP94A36MM1K3JZsIU=; b=QrHKRD3e4bkyf4Bl
-	HQYD2hVFW+hmZegehfKomSPZFkTd+kV5h+c7qsyKDcmbhybuqYmpq0lxHH8rFe3m
-	0rkpyW0Be3ZXzl8DIMmOfyQ2H82373ENt9Aqll0Q8w5hMO/YoAHLaGsIUt9gwV4u
-	xlJfU7t7QXU1lnXkv50qJ/i9odvN/ddWNptdwApj4yPoAqX3vqu+ziWo3fqInzCR
-	YUQwP6aQS9jNm0qVnR92f3xZNsPVjgCJrAENE9mwAwVaKyWyyfHSrOqRwse6ucwP
-	BBcg2H7ZhP6vVsNYhKb/94UWABGepjsJYA74ckB8qsWbdpVhbJFTYK6Ht+JHZ2Ns
-	G1xcUA==
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b11c6m4yg-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Mon, 15 Dec 2025 10:09:53 +0000 (GMT)
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-29e6b269686so74092675ad.1
-        for <stable@vger.kernel.org>; Mon, 15 Dec 2025 02:09:53 -0800 (PST)
+	s=arc-20240116; t=1765795245; c=relaxed/simple;
+	bh=/SxEaFMNo7pFquIiCNEE+7QNb48DDtpf3LMr/IucKtw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=EI+iHrCL7FE9wmY68nam32BqTHmhDFAoigWyPmzTWsFTQqeGnKSGHchfx+jOMEcqelFrjawItRb53/KjqAKE63X1IYifah33HmMs/hMFQ2Xy605W7y1BfiWtzsx515KxYuMFDc1Vvx4AiMH2WV+YVN3sTe9G2CLd3d32qT9YbXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=isovalent.com; spf=pass smtp.mailfrom=isovalent.com; dkim=pass (2048-bit key) header.d=isovalent.com header.i=@isovalent.com header.b=Z2siKmbE; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=isovalent.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isovalent.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-47a80d4a065so20441245e9.2
+        for <stable@vger.kernel.org>; Mon, 15 Dec 2025 02:40:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1765793392; x=1766398192; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=XQ4DZ1KiE5L590veavXKBgfstDLP94A36MM1K3JZsIU=;
-        b=irfGtO4jbLj8g4605wyxgqkh88YhjMt4imtZ8oUZTjKCakYFCzNkH7IFdBlmwJ5gb4
-         S4l+xncY5I8S4PFwhn630cR/DJVaRM49EQir62Z+bEkpzIUoWp0FU55WIDrUwn5QvqoL
-         J+6qIxUVYxi+gaPtJwIMCjCihywgdpbkoejsrdQmbCct9ffPufY44StDZiqAITOy9Ip8
-         JN3FQvfsSFK49ao4BrCTUWkp1hMrkegU0q3JaoCSoxk8Kx0APRmMuAqidr/+kqCjVOyy
-         +E3jBamuE9LOQUA9IEOCvtcLujZcmHj+IC60nOktJ4h33NKljg9LfnG8XHlPq78jUvZS
-         ypkw==
+        d=isovalent.com; s=google; t=1765795241; x=1766400041; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XypjIFMPPz3oCrw1uobW8ajykibBtZzwnq44lW9wyhM=;
+        b=Z2siKmbEAovfvAFYb1gQrbvU4mO19Ou658kmAoCobkPDTac3rGsOaCpHp7DJTpUSOP
+         a8qM23r5G46Obvoo7ylHVHKXXjFFMbq+WrrrWbt5wBlhe0AGQankjWehJJ0X6HLL0Plb
+         1Wnf6EeyT/xW6Zqt5y5Ctodl0FrXUoOnbW127bmTV5XEU8JQySh3o6MrkHNMfH8HJ48H
+         VdvLwxdDcsbmdVQ/TnnIze8yEj2CrCqwvSSWgmk2Rd8arVyYLWynuQctGFCcrinfLDFE
+         4V/rc9PmLOtipA/V1NjKghHk/G1dTN7OPNwtBaIRer0WiTZ8fGpPN3ttoWP83o7UNOzw
+         uiew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765793392; x=1766398192;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=XQ4DZ1KiE5L590veavXKBgfstDLP94A36MM1K3JZsIU=;
-        b=Hw4V3Uegj72oE2tSXt3AnFAouQtcNJlpOF/q2JvIeRdPeqOQ5UD8FbChUl3EZNaYHb
-         ek+C9FK4Eo+foT9hgdrSx4adfcIkVRESRmeqdHE9PqY4D/Rj8AIEJmLBjRKvYE8pPtYi
-         S7eAleXrCKI+UXw6w6z+S8KhXRDgoW5RyRLwuAhSiFIVOPkMpsEKxcLzd4FQX6WjCbl7
-         ieOxFEu31vu2SqqLU/Bz6nAOFOszzTcCqQApLfp89uomTihvDOgngfZqRozpGb6QSwAg
-         KR1ceGXpsPI3fLDnEdSTxE+mzkPqGUYuDYqw9c6JWx9y4u1SQdmk0D/m0A9kz+uE5JSZ
-         Fqkg==
-X-Forwarded-Encrypted: i=1; AJvYcCU+nyL1qHiGXT9GCy2WpRw2mLOB4MEUrX2SrFMz/vKZKUmfTD7s/el6SqIoIzvBNGr+KwPTcdM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+GJhSgn/zZ9gVbRmhvXihNteRF0H8dcijCVaW9VnrnKsOcaem
-	vbd9kGZPUEZGZbuphu7S4Lw8l40mgXeGd99dfyQLog1IxBGvM0Nh7aYlJhvH6kwekgNATwfBRH/
-	HaFgrEHqASZcPmf8yYFiV3/npoVC6ZG9nVaPmrXyFBO158bxuXJBdbchYOjCzbXS18nAVaw==
-X-Gm-Gg: AY/fxX4wk9+uN4kJtSx4j4bs5Nt6mhP7CBPYP/saYEnd6ipWC79uhVRb2SXcSvPk0m5
-	uHaokkE+WCGDhlwH4kWfnLV4eKuj9PMA+YfZgjwi5EkpT8PBJLHqohC9iY8QatzT+4KudnEY9JL
-	a+47LlOmSrH5S26XMkbQ8Mx5UE2A3QZy6RdEk7TpCUKgrmb32UlXt11FxCBN2vmNXH6ddmVpmlL
-	584PK2qlCHNDmUlN6RCrcizXqbyFz2RpuK/00ph5BUQzkAxyGe5JDGo0EF5+VI2fPSknXI1jtLm
-	2errG3m80MntgoWY9T4gjNRrTiCXnoj4u25lpcU6FqH4HB50m/CTUCNDPT49sXLGGW2Q+ayMoTe
-	nMZsZhby/pyLVoqxk/94C9XvkCL2rLqUiQdttYSUHy1Rd7iLfIUZDga8Log+R8FvJLCm+x51fac
-	Q=
-X-Received: by 2002:a17:903:2f50:b0:27e:ef96:c153 with SMTP id d9443c01a7336-29f23e6eb35mr103664115ad.19.1765793392224;
-        Mon, 15 Dec 2025 02:09:52 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFWec5hjICjl1sGxg9VkQ5x2vkWQbWzR7eOuDA/Udz/Oy1CGb16uGqInntsurGtyzQXYw3Vgg==
-X-Received: by 2002:a17:903:2f50:b0:27e:ef96:c153 with SMTP id d9443c01a7336-29f23e6eb35mr103663895ad.19.1765793391697;
-        Mon, 15 Dec 2025 02:09:51 -0800 (PST)
-Received: from [10.133.33.126] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29efb3657f0sm115430205ad.72.2025.12.15.02.09.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 Dec 2025 02:09:51 -0800 (PST)
-Message-ID: <f85c7d37-4980-46f0-9136-353a35a8f0ed@oss.qualcomm.com>
-Date: Mon, 15 Dec 2025 18:09:45 +0800
+        d=1e100.net; s=20230601; t=1765795241; x=1766400041;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XypjIFMPPz3oCrw1uobW8ajykibBtZzwnq44lW9wyhM=;
+        b=GyO0TuNJ8ZfyIUtkwKt1PwBc1E2OW0mx4DMrEZwB9K+Ig7hdaDC99YGOtQoh5LDeaq
+         oYOOdjAwbVusPU1VZceEZAZrsW79YQbfMfx0XdaeLcrDC3yFFDLpSv+Kt6+Q2pUwuCMl
+         aC1Y/GVTYz+PAxtz5BzqDpT5ci/lkXbMRVryTh8nsFEBZnEeYyvwqx6GXPGXInkrqc8g
+         KobReJgcIcteli+kILWaECTsj/EaOQJku2Jmru+h9P+00zeaBh/7kJBEhtuh9U6WUifg
+         6MtEFNQGe1PKNHIL02e/yTrN/Us/hbhVrN3/292tECU6M3JHgnxpsSQr7FAjvXdVdhXf
+         JxXw==
+X-Forwarded-Encrypted: i=1; AJvYcCWBSIDhEvia1Fp/gs69E1DbNiM7PxQilsF/j6RmJ2dXz5wyMr+s1p0PYQ6ts4KVTwrjn8+/yW8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwOGb5N4X6RFRxM58pCkkw2zwpprNioh0fm61LHjV4JYiml/C9r
+	0Vis63/nwz5UaDYCDQEXNeUhLKpzCZTR6ADnBKoeDEEbEXjTILAVzFmsBo5AmeUSCMI=
+X-Gm-Gg: AY/fxX7K96JlHNJ17AXFpVZxvYZrSxHtX/Z/vRuNiACIJSR73BJzOXTA/iN6lGclF/1
+	T/ZsktzV5BLh/ZOsGfrvFCIF8BE3J5EJKKYJDLpzXPPMn2a2WaTMQF6YTyIFyQ4vHckQOdle5/a
+	TNA/hGSXN6BEbBxastOtZm4lAZLBXp4B61jQi+rP+jnDAIcYnO3Lvn64yiC/vwCJNgIOTl54JJ8
+	T+Rz1vSvSbdBuRjLxQvaf89uYg3dw30yYK9+PQjpkUqMQVvHd/cWPj4fUR+wprUYwyhOASaV0bd
+	Ne4hocekJU+83JJx4KpmuIyu4J7TVR7MrcVdOemNdjGSlvnTE3aCQM6fxB4qhwDLwZQXCW80Ahc
+	jE1ZzhcmAJ+BioJYLJFag8elqDfu9mXdWo18rqcuKr1ncTcJtgkJyO7r2PRbbA07K4X8L4zIP00
+	FhWqSGR8IuTgmEpkQa0h2lgS4ZsDWeTc5VMD/Ct2x6CRYUjyAI+hKKx7jI43XcvgJR298+4EkQ9
+	n0U/b+XF8A=
+X-Google-Smtp-Source: AGHT+IFKg33PwsCdfmLQrXSGuuWbN6asFRauDAwGkuKbmzIP0FQVXEdLitzX17zXx3ezt3wX8qRQXw==
+X-Received: by 2002:a05:600c:3151:b0:45d:dc85:c009 with SMTP id 5b1f17b1804b1-47a8f8c0a52mr118993485e9.10.1765795241347;
+        Mon, 15 Dec 2025 02:40:41 -0800 (PST)
+Received: from [192.168.1.240] (0.0.6.0.0.0.0.0.0.0.0.0.0.0.0.0.f.f.6.2.a.5.a.7.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:7a5a:26ff::600])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47a8f49da20sm178569895e9.5.2025.12.15.02.40.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Dec 2025 02:40:41 -0800 (PST)
+From: Lorenz Bauer <lmb@isovalent.com>
+Date: Mon, 15 Dec 2025 10:40:13 +0000
+Subject: [PATCH] virtio: console: fix lost wakeup when device is written
+ and polled
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 RESEND] coresight: etm-perf: Fix reference count leak
- in etm_setup_aux
-To: Leo Yan <leo.yan@arm.com>, James Clark <james.clark@linaro.org>
-Cc: Ma Ke <make24@iscas.ac.cn>, coresight@lists.linaro.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        akpm@linux-foundation.org, stable@vger.kernel.org,
-        suzuki.poulose@arm.com, mike.leach@linaro.org,
-        alexander.shishkin@linux.intel.com, mathieu.poirier@linaro.org
-References: <20251215022709.17220-1-make24@iscas.ac.cn>
- <c698d581-da15-42bf-9612-62f1bad66615@linaro.org>
- <20251215095103.GA681384@e132581.arm.com>
-Content-Language: en-US
-From: Jie Gan <jie.gan@oss.qualcomm.com>
-In-Reply-To: <20251215095103.GA681384@e132581.arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=actsXBot c=1 sm=1 tr=0 ts=693fde71 cx=c_pps
- a=IZJwPbhc+fLeJZngyXXI0A==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
- a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=quK4xr9WOROKk1m0v-0A:9
- a=QEXdDO2ut3YA:10 a=uG9DUKGECoFWVXl0Dc02:22
-X-Proofpoint-ORIG-GUID: 7liAV3vjF4ng61eGT8FiAm-zROWgAvTn
-X-Proofpoint-GUID: 7liAV3vjF4ng61eGT8FiAm-zROWgAvTn
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE1MDA4NiBTYWx0ZWRfX2zoksK2L3TCI
- dL3HMd/SQ6F5mw2E+CtSJVW8DDcG1gvyzPNvMPej7pe0L2mSUs3nIMwpxB1j8gVW149OKvyxCGT
- BxsZoNyOLcjDRQqkWEnTnETpEp4i9NGLh6KmonxS2k8xtQrJOB6ck1QBcEk7zcd9zLu0ghlUCtn
- ifBixhoVBnldzM96gy5EIGF9tyjQuTczloLMJC8SItkC3NN9WOD76xb/keZ9osrg1w5/SM9+385
- iavRpl33HBJYMQxZ2/DBJz2Bzijs65CHP8UH4zv7pPxrnM8JnRJeFe/HSZ6WsPKj5tVFipHOgsR
- lNZpFKytN/LCb7zvqeNTsN2+YgaHFZu/4TkVBKH+300pYWZ/GZbhZu1/2mHZI4WBEyoy7eAE6aU
- Nbx7qGzmes8l5zK/plBgM+vee7RD4w==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-15_02,2025-12-15_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 priorityscore=1501 spamscore=0 phishscore=0 lowpriorityscore=0
- impostorscore=0 suspectscore=0 bulkscore=0 malwarescore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512150086
+Message-Id: <20251215-virtio-console-lost-wakeup-v1-1-79a5c57815e7@isovalent.com>
+X-B4-Tracking: v=1; b=H4sIAIzlP2kC/x3MwQqDMAwA0F+RnBdoO+LBXxk7SE23YGmkcToQ/
+ 93i8V3eAcZV2GDoDqi8iYmWBv/oIH7H8mGUqRmCC+SDJ9ykrqIYtZhmxqy24j7O/FvQJer7SHF
+ 6UoIWLJWT/O/89T7PC4hn8hBsAAAA
+X-Change-ID: 20251215-virtio-console-lost-wakeup-0f566c5cd35f
+To: Amit Shah <amit@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Lorenz Bauer <lmb@isovalent.com>
+X-Mailer: b4 0.14.2
 
+A process issuing blocking writes to a virtio console may get stuck
+indefinitely if another thread polls the device. Here is how to trigger
+the bug:
 
+- Thread A writes to the port until the virtqueue is full.
+- Thread A calls wait_port_writable() and goes to sleep, waiting on
+  port->waitqueue.
+- The host processes some of the write, marks buffers as used and raises
+  an interrupt.
+- Before the interrupt is serviced, thread B executes port_fops_poll().
+  This calls reclaim_consumed_buffers() via will_write_block() and
+  consumes all used buffers.
+- The interrupt is serviced. vring_interrupt() finds no used buffers
+  via more_used() and returns without waking port->waitqueue.
+- Thread A is still in wait_event(port->waitqueue), waiting for a
+  wakeup that never arrives.
 
-On 12/15/2025 5:51 PM, Leo Yan wrote:
-> On Mon, Dec 15, 2025 at 11:02:08AM +0200, James Clark wrote:
->>
->>
->> On 15/12/2025 04:27, Ma Ke wrote:
->>> In etm_setup_aux(), when a user sink is obtained via
->>> coresight_get_sink_by_id(), it increments the reference count of the
->>> sink device. However, if the sink is used in path building, the path
->>> holds a reference, but the initial reference from
->>> coresight_get_sink_by_id() is not released, causing a reference count
->>> leak. We should release the initial reference after the path is built.
->>>
->>> Found by code review.
->>>
->>> Cc: stable@vger.kernel.org
->>> Fixes: 0e6c20517596 ("coresight: etm-perf: Allow an event to use different sinks")
->>> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
->>> ---
->>> Changes in v2:
->>> - modified the patch as suggestions.
->>
->> I think Leo's comment on the previous v2 is still unaddressed. But releasing
->> it in coresight_get_sink_by_id() would make it consistent with
->> coresight_find_csdev_by_fwnode() and prevent further mistakes.
-> 
-> The point is the coresight core layer uses coresight_grab_device() to
-> increase the device's refcnt.  This is why we don't need to grab a
-> device when setup AUX.
+The crux is that invoking reclaim_consumed_buffers() may cause
+vring_interrupt() to omit wakeups.
 
-That make sense. We dont need to hold the refcnt for a while and it 
-should be released immediately after locating the required device.
+Fix this by making reclaim_consumed_buffers() issue an additional wake
+up if it consumed any buffers.
 
-Thanks,
-Jie
+Signed-off-by: Lorenz Bauer <lmb@isovalent.com>
+---
+As far as I can tell all currently maintained stable series kernels need
+this commit. I've tested that it applies cleanly to 5.10.247, however
+wasn't able to build the kernel due to an unrelated link error. Instead
+I applied it to 5.15.197, which compiled and verified to be fixed.
+---
+ drivers/char/virtio_console.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-> 
->> It also leads me to see that users of coresight_find_device_by_fwnode()
->> should also release it, but only one out of two appears to.
-> 
-> Good finding!
-> 
-> Thanks,
-> Leo
-> 
+diff --git a/drivers/char/virtio_console.c b/drivers/char/virtio_console.c
+index 088182e54debd6029ea2c2a5542d7a28500e67b8..7cd3ad9da9b53a7a570410f12501acc7fd7e3b9b 100644
+--- a/drivers/char/virtio_console.c
++++ b/drivers/char/virtio_console.c
+@@ -581,6 +581,7 @@ static ssize_t send_control_msg(struct port *port, unsigned int event,
+ static void reclaim_consumed_buffers(struct port *port)
+ {
+ 	struct port_buffer *buf;
++	bool freed = false;
+ 	unsigned int len;
+ 
+ 	if (!port->portdev) {
+@@ -589,7 +590,15 @@ static void reclaim_consumed_buffers(struct port *port)
+ 	}
+ 	while ((buf = virtqueue_get_buf(port->out_vq, &len))) {
+ 		free_buf(buf, false);
++		freed = true;
++	}
++	if (freed) {
++		/* We freed all used buffers. Issue a wake up so that other pending
++		 * tasks do not get stuck. This is necessary because vring_interrupt()
++		 * will drop wakeups from the host if there are no used buffers.
++		 */
+ 		port->outvq_full = false;
++		wake_up_interruptible(&port->waitqueue);
+ 	}
+ }
+ 
+
+---
+base-commit: d358e5254674b70f34c847715ca509e46eb81e6f
+change-id: 20251215-virtio-console-lost-wakeup-0f566c5cd35f
+
+Best regards,
+-- 
+Lorenz Bauer <lmb@isovalent.com>
 
 
