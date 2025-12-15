@@ -1,140 +1,81 @@
-Return-Path: <stable+bounces-201002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5779ACBCDC1
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 08:54:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5242CBCEE6
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 09:14:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EFA2030049C3
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 07:54:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 250913014AFA
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 08:12:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85D2D32C940;
-	Mon, 15 Dec 2025 07:54:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E61228CF6F;
+	Mon, 15 Dec 2025 08:12:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jPnTKiDp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sdRgY4Yy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF9D328B75
-	for <stable@vger.kernel.org>; Mon, 15 Dec 2025 07:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E3CA31AA90
+	for <stable@vger.kernel.org>; Mon, 15 Dec 2025 08:12:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765785287; cv=none; b=szxynv/O+3VhzPw0pISlK41rR9Cg/LhZhPOrzgQXKLUapNuxm6cfLevRvTYKYLtoQpYk2H/mWo8Sg8XbpMkNB2NIAiqua0l1psAG8xKXweeq4z7OmsQIZHEyhWadP5kYDYRd0vtK4AJFccEIZ9/ZaPNCY9PNZg+Wb5wjews/sA4=
+	t=1765786340; cv=none; b=qgl9QGpcArsAfedja6xR8gf9trL0+u7gc82ziqDrgi4pAXxOw0LkBw65Q7ZU19ccm/nr6+WLY4rRkvJ/pmcVhM+mmDu5KPhIm8DCjlYi44L5U3acWk1pxrKkDQ4+aaqqNq7qd2bZXDTQ/HeY+YwPx3jw8BfbZiDgJvN5HzC/w40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765785287; c=relaxed/simple;
-	bh=E30zbqw/DatD5imenKddlu5X4ygrCVqqajHRtSIb61g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bXikO8Y/G9bQsMrbHKfY+D4ENFbbYzlHQm32VYRA+/LC7BnsyrwSUJy9+4yPrs+MDGKdSJmOpfS6iWv04W9p5ARu6NcwUFgGvXbniBeV28gdgSQdB9W+3bo/49qmAsYRFwS1KDJRrhL62NjbmdVLgSAj/UmZHN0c7a0sfN8kNIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jPnTKiDp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AF43C19422
-	for <stable@vger.kernel.org>; Mon, 15 Dec 2025 07:54:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765785286;
-	bh=E30zbqw/DatD5imenKddlu5X4ygrCVqqajHRtSIb61g=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=jPnTKiDpmMT04qwUki9f7ZwNkdxdveiIWl934aXXv9v2kt+ZTjb8KkNUvtF26rIMh
-	 dTjIXUa4ZgEKjQTIlx3XxuGGvznUxXgL6GaOXuVykxljrSbf4NW8kjD1jagfdAmwpD
-	 o6ooACN3+vhKzSFisW8rQaLryZUP04DAqrHeEH0/77MYMwnwFHwA2iMV6PlAGlgm8H
-	 CU5sw6TVdqQZdGZRcMrJvPvL/nvwM1U3d5eGXwBKkgKOH8doTnDzSrF8TiIYB4nLVq
-	 c+/Dqf8Wk23AU739OvY988mzDDL5T1r/SzUI8QaBJ62wIjsuIFpRp6vZlDdh2Xm+AK
-	 nqGqYMLLaEzjg==
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-34c708702dfso904559a91.1
-        for <stable@vger.kernel.org>; Sun, 14 Dec 2025 23:54:46 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUiDqUa4cFLxNVp0AyGOwaHgrVPa2tk6Cf3hg6FGmvYqSB4pHuun9U9KsEDyLQE7MXnAbS9xw4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxPHU3blWHBKR15pFYaj8ZVFi4XgAW64IH8WnfU8Uv7e7gXzsI+
-	Uq075f8CoUUOla+Ah0Nkuomss+1WT/1WnLYvHhms/jx99kNrxR0dhZrydfhJKcXt1Vbe8v37uam
-	GNsyst6VWHqyDt2LND4Orr8pcrbR5AWk=
-X-Google-Smtp-Source: AGHT+IEY9Qcz49LYyQqEAUelrBl+X2gueHl8vQNtIR2vIYjPwsPH+B/0MrnYAD+Kyxfw2b75WsN5vjtnPWGg87QeZBc=
-X-Received: by 2002:a17:90b:3c4f:b0:340:c179:3666 with SMTP id
- 98e67ed59e1d1-34abd6c02cfmr7983221a91.8.1765785285912; Sun, 14 Dec 2025
- 23:54:45 -0800 (PST)
+	s=arc-20240116; t=1765786340; c=relaxed/simple;
+	bh=ndw59aoLe85tnOwISmtIOQssGoBfiSllzwJOyFWoKyo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ofi4CdjSIrtmo2L1bwj5Pkn7voGFCJy5r+K9eJAqFMke+nVQDvgHAzyVA1CWy/NI0A5TKzX4ZNNfFWrylkkhD7JOVYLkNjhbafPlPCfA43dV9l4P9mACFdoCtKAnNkeg9AxACu63iKP1ElufCuh+oJ8ysXPyt90Pl3aJV57AOpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sdRgY4Yy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D79DC4CEF5;
+	Mon, 15 Dec 2025 08:12:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1765786339;
+	bh=ndw59aoLe85tnOwISmtIOQssGoBfiSllzwJOyFWoKyo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sdRgY4YyyFyeHJOsTrTQvW5px8pu395JxHJb9eKLT1v/0AnsOK/1muuqM1YRFmKFR
+	 Tu+jpopVZubIdHMCA5WcsEyLJA0O0ymw4YtrWgsbZj2EuEsv3t2ZVYgVsH0bU5CR5f
+	 zxEec6+ynPbCzE9WZDIxi4EnYv9gPQRH5L5PuR4s=
+Date: Mon, 15 Dec 2025 09:12:16 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Cc: stable@vger.kernel.org, Alex Deucher <alexander.deucher@amd.com>,
+	Timur =?iso-8859-1?Q?Krist=F3f?= <timur.kristof@gmail.com>
+Subject: Re: [PATCH] drm/amdgpu: don't attach the tlb fence for SI
+Message-ID: <2025121502-amenity-ragged-720c@gregkh>
+References: <20251214095336.224610-1-johannes.goede@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <DETXT7QI62KE.F3CGH2VWX1SC@cknow-tech.com> <20251209223417.112294-1-ebiggers@kernel.org>
- <DEUFDH7FJURL.3J0FN5I19VV8F@cknow-tech.com> <CAMj1kXEQkB9MWB+PAi4XE_MuBt0ScitxTsKMDo1-7Cp-=xXOpw@mail.gmail.com>
- <20251212054020.GB4838@sol>
-In-Reply-To: <20251212054020.GB4838@sol>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Mon, 15 Dec 2025 16:54:34 +0900
-X-Gmail-Original-Message-ID: <CAMj1kXHVq1NWA28jKxBrHHi1JOPoGXEamC7uMgTOmFwzmcYxRA@mail.gmail.com>
-X-Gm-Features: AQt7F2qXhVr5OpktRHt7yVwu384BIXMp0tpqIhhUDEHp0V7UDx3ZjeXmSEiyyJU
-Message-ID: <CAMj1kXHVq1NWA28jKxBrHHi1JOPoGXEamC7uMgTOmFwzmcYxRA@mail.gmail.com>
-Subject: Re: [PATCH] crypto: arm64/ghash - Fix incorrect output from ghash-neon
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: Diederik de Haas <diederik@cknow-tech.com>, linux-crypto@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, "Jason A . Donenfeld" <Jason@zx2c4.com>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, linux-arm-kernel@lists.infradead.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251214095336.224610-1-johannes.goede@oss.qualcomm.com>
 
-On Fri, 12 Dec 2025 at 06:40, Eric Biggers <ebiggers@kernel.org> wrote:
->
-> On Wed, Dec 10, 2025 at 06:31:44PM +0900, Ard Biesheuvel wrote:
-> > On Wed, 10 Dec 2025 at 18:22, Diederik de Haas <diederik@cknow-tech.com> wrote:
-> > >
-> > > On Tue Dec 9, 2025 at 11:34 PM CET, Eric Biggers wrote:
-> > > > Commit 9a7c987fb92b ("crypto: arm64/ghash - Use API partial block
-> > > > handling") made ghash_finup() pass the wrong buffer to
-> > > > ghash_do_simd_update().  As a result, ghash-neon now produces incorrect
-> > > > outputs when the message length isn't divisible by 16 bytes.  Fix this.
-> > >
-> > > I was hoping to not have to do a 'git bisect', but this is much better
-> > > :-D I can confirm that this patch fixes the error I was seeing, so
-> > >
-> > > Tested-by: Diederik de Haas <diederik@cknow-tech.com>
-> > >
-> > > > (I didn't notice this earlier because this code is reached only on CPUs
-> > > > that support NEON but not PMULL.  I haven't yet found a way to get
-> > > > qemu-system-aarch64 to emulate that configuration.)
-> > >
-> > > https://www.qemu.org/docs/master/system/arm/raspi.html indicates it can
-> > > emulate various Raspberry Pi models. I've only tested it with RPi 3B+
-> > > (bc of its wifi+bt chip), but I wouldn't be surprised if all RPi models
-> > > would have this problem? Dunno if QEMU emulates that though.
-> > >
-> >
-> > All 64-bit RPi models except the RPi5 are affected by this, as those
-> > do not implement the crypto extensions. So I would expect QEMU to do
-> > the same.
-> >
-> > It would be nice, though, if we could emulate this on the mach-virt
-> > machine model too. It should be fairly trivial to do, so if there is
-> > demand for this I can look into it.
->
-> I'm definitely interested in it.  I'm already testing multiple "-cpu"
-> options, and it's easy to add more.
->
-> With qemu-system-aarch64 I'm currently only using "-M virt", since the
-> other machine models I've tried don't boot with arm64 defconfig,
-> including "-M raspi3b" and "-M raspi4b".
->
-> There may be some tricks I'm missing.  Regardless, expanding the
-> selection of available CPUs for "-M virt" would be helpful.  Either by
-> adding "real" CPUs that have "interesting" combinations of features, or
-> by just allowing turning features off like
-> "-cpu max,aes=off,pmull=off,sha256=off".  (Certain features like sve can
-> already be turned off in that way, but not the ones relevant to us.)
->
+On Sun, Dec 14, 2025 at 10:53:36AM +0100, Hans de Goede wrote:
+> From: Alex Deucher <alexander.deucher@amd.com>
+> 
+> commit eb296c09805ee37dd4ea520a7fb3ec157c31090f upstream.
+> 
+> SI hardware doesn't support pasids, user mode queues, or
+> KIQ/MES so there is no need for this.  Doing so results in
+> a segfault as these callbacks are non-existent for SI.
+> 
+> Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4744
+> Fixes: f3854e04b708 ("drm/amdgpu: attach tlb fence to the PTs update")
+> Reviewed-by: Timur Kristóf <timur.kristof@gmail.com>
+> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+> Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+> ---
+>  drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 
-There are some architectural rules around which combinations of crypto
-extensions are permitted:
-- PMULL implies AES, and there is no way for the ID registers to
-describe a CPU that has PMULL but not AES
-- SHA256 implies SHA1 (but the ID register fields are independent)
-- SHA3 and SHA512 both imply SHA256+SHA1
-- SVE versions are not allowed to be implemented unless the plain NEON
-version is implemented as well
--  FEAT_Crypto has different meanings for v8.0, v8.2 and v9.x
+What kernel tree(s) should this go to?
 
-So it would be much easier, also in terms of future maintenance, to
-have a simple 'crypto=off' setting that applies to all emulated CPU
-models, given that disabling all crypto on any given compliant CPU
-will never result in something that the architecture does not permit.
+thanks,
 
-Would that work for you?
+greg k-jh
 
