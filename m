@@ -1,56 +1,52 @@
-Return-Path: <stable+bounces-201098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97AF9CBFA23
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 21:01:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38FBFCBF94B
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 20:41:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1FC2D3015E03
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 20:00:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 98129303369B
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 19:40:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ABDF33C53C;
-	Mon, 15 Dec 2025 19:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF38D3446B8;
+	Mon, 15 Dec 2025 19:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="B3/Ci1VQ"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="LDrZDkby"
 X-Original-To: stable@vger.kernel.org
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B6193358C6
-	for <stable@vger.kernel.org>; Mon, 15 Dec 2025 19:29:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8A63446A0
+	for <stable@vger.kernel.org>; Mon, 15 Dec 2025 19:33:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765826990; cv=none; b=HrOoQ7Sjv6OfnPP/zGYPApo6A9rocEJ0J0vo84HwjUvwOjhojJzopw1JKTLVLxu9FQbtxqoHpRhJEhDyfD1YBNy+VUG8nDaQ1bCOkyPmQE+nyqVLeDic4qDp8uIXOuUwLXfQHB44UlByJyQt8nZKEZ+t8Nf2ixt5EkznZ0nZgMs=
+	t=1765827207; cv=none; b=XmDodu/xervFn7/n2lKPa/KE7t+Vzku5GEPFK9ODKPj5yOVh5Q8D5c/La/ODXz02qVtNTyQDvYhAvmW3wRXRYlw9O6W+ZRlIobgXRmHWln8W/4J0tMlR1bWkR19lhCjzUCYroPLiGYaoTnxzaXkEAWi46K3/XUg3l+tSKRN/mJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765826990; c=relaxed/simple;
-	bh=UOOFjKUiRVJF+3Zny1BE5+alClzFDyUygp6XzhYBgfo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JmyH/P45S/YpCIU4zZhKBSJN50f4iMD8tNQ3W2rNwaIyVXPNddTYT5KTHXhLThYOcyoQyU8yU9rQRJa4xFTix3f8iettcjzh7sXnal/ulS4x4prUDo3Ql16QSIXZeHYEZy6ojJDj4KnKHU0eavoLek8IO46z+Y9jqsJVwRBrX/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=B3/Ci1VQ; arc=none smtp.client-ip=91.218.175.184
+	s=arc-20240116; t=1765827207; c=relaxed/simple;
+	bh=5K9dVKrFNvq+UztJPA6V6LAXY96BAShfw8hQxFLzPoQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hgszdlgtp9cZqigHBsMAc4PlYJT2EcWTXs+cRpuzZgmbsYwkUkrK5IC6jhwrrUUiWMsoUz3FickotJH/FLNkhUcBdn6sAQyvL71jZTIz73ISWsJzg6ld2bOVyK2iAj6LrId6bpfvCeW/qjdTzL3cjCl5Dhz8b+2GvF5xcVCZ5vs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=LDrZDkby; arc=none smtp.client-ip=95.215.58.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+Date: Mon, 15 Dec 2025 19:33:08 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1765826982;
+	t=1765827193;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2w3PcSuTySue98ugHf9Cvyx7R7WZ7jBJr+z7GT+HOes=;
-	b=B3/Ci1VQbJAk+A/p2+Tc1NEPnel/X/qpMenyuxJSDZYzTfYvB/P1QnfBT5eRMRLuGFyVXi
-	C4Y3g28MHC2aT0J2GbY4BwqFSrDBDyGzwpODH8kqmlWCzzHZ5ujbs0ZpwF38QZWtr/lMeR
-	x6t46qMvjhIhXZN7yCEz0zcKmfDUy5U=
+	bh=asjDZxWNBEJ605HFXpdIR/6Gm2xB5pbkPvRJHQnUY7s=;
+	b=LDrZDkbyG7J8wbnmntGs9ZABQ2nohTqrHCRSjQrw1Gp2I80vkP1s5OvX74IprIOmQHLBA0
+	ElXe0ekzs1tJnmQcmWtONYqMNcVPGEAdpjuuMJAB64SpbuL0Az0Aytox2zDt0vyHNm0h3x
+	2Wb67hTpUt235c642iKRLp8lgB3S91E=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Yosry Ahmed <yosry.ahmed@linux.dev>
-To: Paolo Bonzini <pbonzini@redhat.com>,
+To: Paolo Bonzini <pbonzini@redhat.com>, 
 	Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	stable@vger.kernel.org
-Subject: [PATCH v3 19/26] KVM: nSVM: Add missing consistency check for event_inj
-Date: Mon, 15 Dec 2025 19:27:14 +0000
-Message-ID: <20251215192722.3654335-21-yosry.ahmed@linux.dev>
-In-Reply-To: <20251215192722.3654335-1-yosry.ahmed@linux.dev>
+Subject: Re: [PATCH] KVM: SVM: Fix redundant updates of LBR MSR intercepts
+Message-ID: <3rdy3n6phleyz2eltr5fkbsavlpfncgrnee7kep2jkh2air66c@euczg54kpt47>
 References: <20251215192722.3654335-1-yosry.ahmed@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -58,112 +54,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251215192722.3654335-1-yosry.ahmed@linux.dev>
 X-Migadu-Flow: FLOW_OUT
 
-According to the APM Volume #2, 15.20 (24593—Rev. 3.42—March 2024):
+On Mon, Dec 15, 2025 at 07:26:54PM +0000, Yosry Ahmed wrote:
+> svm_update_lbrv() always updates LBR MSRs intercepts, even when they are
+> already set correctly. This results in force_msr_bitmap_recalc always
+> being set to true on every nested transition, essentially undoing the
+> hyperv optimization in nested_svm_merge_msrpm().
+> 
+> Fix it by keeping track of whether LBR MSRs are intercepted or not and
+> only doing the update if needed, similar to x2avic_msrs_intercepted.
+> 
+> Avoid using svm_test_msr_bitmap_*() to check the status of the
+> intercepts, as an arbitrary MSR will need to be chosen as a
+> representative of all LBR MSRs, and this could theoretically break if
+> some of the MSRs intercepts are handled differently from the rest.
+> 
+> Also, using svm_test_msr_bitmap_*() makes backports difficult as it was
+> only recently introduced with no direct alternatives in older kernels.
+> 
+> Fixes: fbe5e5f030c2 ("KVM: nSVM: Always recalculate LBR MSR intercepts in svm_update_lbrv()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
 
-  VMRUN exits with VMEXIT_INVALID error code if either:
-  • Reserved values of TYPE have been specified, or
-  • TYPE = 3 (exception) has been specified with a vector that does not
-    correspond to an exception (this includes vector 2, which is an NMI,
-    not an exception).
+Sigh.. I had this patch file in my working directory and it was sent by
+mistake with the series, as the cover letter nonetheless. Sorry about
+that. Let me know if I should resend.
 
-Add the missing consistency checks to KVM. For the second point, inject
-VMEXIT_INVALID if the vector is anything but the vectors defined by the
-APM for exceptions. Reserved vectors are also considered invalid, which
-matches the HW behavior. Vector 9 (i.e. #CSO) is considered invalid
-because it is reserved on modern CPUs, and according to LLMs no CPUs
-exist supporting SVM and producing #CSOs.
-
-Defined exceptions could be different between virtual CPUs as new CPUs
-define new vectors. In a best effort to dynamically define the valid
-vectors, make all currently defined vectors as valid except those
-obviously tied to a CPU feature: SHSTK -> #CP and SEV-ES -> #VC. As new
-vectors are defined, they can similarly be tied to corresponding CPU
-features.
-
-Invalid vectors on specific (e.g. old) CPUs that are missed by KVM
-should be rejected by HW anyway.
-
-Fixes: 3d6368ef580a ("KVM: SVM: Add VMRUN handler")
-CC: stable@vger.kernel.org
-Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
----
- arch/x86/kvm/svm/nested.c | 51 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 51 insertions(+)
-
-diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index 47d4316b126d..229903e0ad40 100644
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -326,6 +326,54 @@ static bool nested_svm_check_bitmap_pa(struct kvm_vcpu *vcpu, u64 pa, u32 size)
- 	    kvm_vcpu_is_legal_gpa(vcpu, addr + size - 1);
- }
- 
-+static bool nested_svm_event_inj_valid_exept(struct kvm_vcpu *vcpu, u8 vector)
-+{
-+	/*
-+	 * Vectors that do not correspond to a defined exception are invalid
-+	 * (including #NMI and reserved vectors). In a best effort to define
-+	 * valid exceptions based on the virtual CPU, make all exceptions always
-+	 * valid except those obviously tied to a CPU feature.
-+	 */
-+	switch (vector) {
-+	case DE_VECTOR: case DB_VECTOR: case BP_VECTOR: case OF_VECTOR:
-+	case BR_VECTOR: case UD_VECTOR: case NM_VECTOR: case DF_VECTOR:
-+	case TS_VECTOR: case NP_VECTOR: case SS_VECTOR: case GP_VECTOR:
-+	case PF_VECTOR: case MF_VECTOR: case AC_VECTOR: case MC_VECTOR:
-+	case XM_VECTOR: case HV_VECTOR: case SX_VECTOR:
-+		return true;
-+	case CP_VECTOR:
-+		return guest_cpu_cap_has(vcpu, X86_FEATURE_SHSTK);
-+	case VC_VECTOR:
-+		return guest_cpu_cap_has(vcpu, X86_FEATURE_SEV_ES);
-+	}
-+	return false;
-+}
-+
-+/*
-+ * According to the APM, VMRUN exits with SVM_EXIT_ERR if SVM_EVTINJ_VALID is
-+ * set and:
-+ * - The type of event_inj is not one of the defined values.
-+ * - The type is SVM_EVTINJ_TYPE_EXEPT, but the vector is not a valid exception.
-+ */
-+static bool nested_svm_check_event_inj(struct kvm_vcpu *vcpu, u32 event_inj)
-+{
-+	u32 type = event_inj & SVM_EVTINJ_TYPE_MASK;
-+	u8 vector = event_inj & SVM_EVTINJ_VEC_MASK;
-+
-+	if (!(event_inj & SVM_EVTINJ_VALID))
-+		return true;
-+
-+	if (type != SVM_EVTINJ_TYPE_INTR && type != SVM_EVTINJ_TYPE_NMI &&
-+	    type != SVM_EVTINJ_TYPE_EXEPT && type != SVM_EVTINJ_TYPE_SOFT)
-+		return false;
-+
-+	if (type == SVM_EVTINJ_TYPE_EXEPT &&
-+	    !nested_svm_event_inj_valid_exept(vcpu, vector))
-+		return false;
-+
-+	return true;
-+}
-+
- static bool nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
- 				       struct vmcb_ctrl_area_cached *control,
- 				       unsigned long l1_cr0)
-@@ -355,6 +403,9 @@ static bool nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
- 		return false;
- 	}
- 
-+	if (CC(!nested_svm_check_event_inj(vcpu, control->event_inj)))
-+		return false;
-+
- 	return true;
- }
- 
--- 
-2.52.0.239.gd5f0c6e74e-goog
-
+> ---
+>  arch/x86/kvm/svm/svm.c | 9 ++++++++-
+>  arch/x86/kvm/svm/svm.h | 1 +
+>  2 files changed, 9 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> index 10c21e4c5406f..9d29b2e7e855d 100644
+> --- a/arch/x86/kvm/svm/svm.c
+> +++ b/arch/x86/kvm/svm/svm.c
+> @@ -705,7 +705,11 @@ void *svm_alloc_permissions_map(unsigned long size, gfp_t gfp_mask)
+>  
+>  static void svm_recalc_lbr_msr_intercepts(struct kvm_vcpu *vcpu)
+>  {
+> -	bool intercept = !(to_svm(vcpu)->vmcb->control.virt_ext & LBR_CTL_ENABLE_MASK);
+> +	struct vcpu_svm *svm = to_svm(vcpu);
+> +	bool intercept = !(svm->vmcb->control.virt_ext & LBR_CTL_ENABLE_MASK);
+> +
+> +	if (intercept == svm->lbr_msrs_intercepted)
+> +		return;
+>  
+>  	svm_set_intercept_for_msr(vcpu, MSR_IA32_LASTBRANCHFROMIP, MSR_TYPE_RW, intercept);
+>  	svm_set_intercept_for_msr(vcpu, MSR_IA32_LASTBRANCHTOIP, MSR_TYPE_RW, intercept);
+> @@ -714,6 +718,8 @@ static void svm_recalc_lbr_msr_intercepts(struct kvm_vcpu *vcpu)
+>  
+>  	if (sev_es_guest(vcpu->kvm))
+>  		svm_set_intercept_for_msr(vcpu, MSR_IA32_DEBUGCTLMSR, MSR_TYPE_RW, intercept);
+> +
+> +	svm->lbr_msrs_intercepted = intercept;
+>  }
+>  
+>  void svm_vcpu_free_msrpm(void *msrpm)
+> @@ -1221,6 +1227,7 @@ static int svm_vcpu_create(struct kvm_vcpu *vcpu)
+>  	}
+>  
+>  	svm->x2avic_msrs_intercepted = true;
+> +	svm->lbr_msrs_intercepted = true;
+>  
+>  	svm->vmcb01.ptr = page_address(vmcb01_page);
+>  	svm->vmcb01.pa = __sme_set(page_to_pfn(vmcb01_page) << PAGE_SHIFT);
+> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+> index c856d8e0f95e7..dd78e64023450 100644
+> --- a/arch/x86/kvm/svm/svm.h
+> +++ b/arch/x86/kvm/svm/svm.h
+> @@ -336,6 +336,7 @@ struct vcpu_svm {
+>  	bool guest_state_loaded;
+>  
+>  	bool x2avic_msrs_intercepted;
+> +	bool lbr_msrs_intercepted;
+>  
+>  	/* Guest GIF value, used when vGIF is not enabled */
+>  	bool guest_gif;
+> 
+> base-commit: 8a4821412cf2c1429fffa07c012dd150f2edf78c
+> -- 
+> 2.51.2.1041.gc1ab5b90ca-goog
+> 
 
