@@ -1,147 +1,172 @@
-Return-Path: <stable+bounces-201117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CF36CC00B6
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 22:53:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3859CC00C8
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 22:55:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 19566300252C
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 21:53:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3FDB4300D43C
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 21:52:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 879112DC34B;
-	Mon, 15 Dec 2025 21:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30A993242D4;
+	Mon, 15 Dec 2025 21:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="jp1sm1wP"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="CFR7X5oz"
 X-Original-To: stable@vger.kernel.org
-Received: from pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.83.148.184])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD8D631ED95;
-	Mon, 15 Dec 2025 21:53:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.83.148.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8E4930F80D;
+	Mon, 15 Dec 2025 21:52:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765835599; cv=none; b=q3GDtSKJ5rVsWI02LRB3BJ3Me1d5kRmh1ZgHMkag9E82EWdxrSD8mgLpdT2HaedAMRX3f/Y7j3QA90SyWDediy1U14pM042V+mdqN5Zl40HilCCjrya/P6N4MlIBAEW1EhUUVA4V9BYPfQATYLEryPT+uZNmXD4QJqXG7G5ciEI=
+	t=1765835542; cv=none; b=MH/ueL0Pf47gEAdF7XAXieZirAXprXTBPLnZLtBqXsbF6r0VzDYs8p/OtZpz18pfLYiT1eEN+Defqq0MvnmlkiUooesbwMqi+syNHNtZ1gzz5oms6fMA4aSNpWQnpHy3OnOq6t7YU9oYJr3eCvuaQ/4QqH/qxusr96CTTFcr1ow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765835599; c=relaxed/simple;
-	bh=VdB6pkdFc/o4rj2JtI3OfsfQ2Nfp72KVM68MNHT+X7g=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TBlo/tibzhElWM5h4QVU1Flzqm9eNsHL2WtS5X7txJENX2t6MUi/eeIqzg7hsn8VoW9ZbKvzpXYfCX1PDrA4sHMpgfTBogrSHopIdsnnEYgP1zrGjbr7+AC45czO3MkDbcIM8yZAL8HQstz52wgURlwShyezMQWBkjEzq1Wk/e8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=jp1sm1wP; arc=none smtp.client-ip=35.83.148.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
-  t=1765835597; x=1797371597;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=ivVHRCNPE/AEBGIGPxjAnsXpluPPY8gcWfiHsZIixyI=;
-  b=jp1sm1wPkHfO3GUcVxAVLbO/1FgqupZ1NUNmNTmVPcvQvP+dqpPNywoT
-   TXm4RO5VvCXt3a3oJbNnfjuBZRsQBogdkIEAGCCkdARtdV/TBVZDVPxOf
-   zdL3WdXaFXh3PQnyV1nHLs1/Zf7C6Yxuwzt2NL/T91dqrOoCh7GxBwlxl
-   POFcwUqU/R5kUWOWZ0gU9bBHInmjiroi19pAl75aN5VZN/85WzJf+Y6Mv
-   ohxRz7wF9QurSEdGlLjtzUD1P1K04tcl9oXKwZJ/Gk6kLzRqMFXOk2PeO
-   WKnaSGiQDfHRs1qLbB5imlhSBipJJLlSrIcLBSejM0yZjx1O6W0O73ZlU
-   A==;
-X-CSE-ConnectionGUID: zz+ZhduFSJuLYxGWtvGFdg==
-X-CSE-MsgGUID: 0pJfKiQURGS7C1YWn76q2w==
-X-IronPort-AV: E=Sophos;i="6.21,151,1763424000"; 
-   d="scan'208";a="8923277"
-Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
-  by internal-pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2025 21:52:06 +0000
-Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.51:25859]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.53.162:2525] with esmtp (Farcaster)
- id e26318dd-e345-4cab-93f7-06e4569cea1d; Mon, 15 Dec 2025 21:52:06 +0000 (UTC)
-X-Farcaster-Flow-ID: e26318dd-e345-4cab-93f7-06e4569cea1d
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
- Mon, 15 Dec 2025 21:52:03 +0000
-Received: from dev-dsk-gyokhan-1b-83b48b3c.eu-west-1.amazon.com (10.13.234.1)
- by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
- Mon, 15 Dec 2025 21:52:01 +0000
-From: Gyokhan Kochmarla <gyokhan@amazon.de>
-To: <stable@vger.kernel.org>
-CC: <edumazet@google.com>, <davem@davemloft.net>, <dsahern@kernel.org>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <linux@gyokhan.com>,
-	<netdev@vger.kernel.org>, <horms@kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH 2/2] tcp_metrics: use dst_dev_net_rcu()
-Date: Mon, 15 Dec 2025 21:51:19 +0000
-Message-ID: <20251215215119.63681-3-gyokhan@amazon.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251215215119.63681-1-gyokhan@amazon.de>
-References: <20251215215119.63681-1-gyokhan@amazon.de>
+	s=arc-20240116; t=1765835542; c=relaxed/simple;
+	bh=jzG8MNtuQ827j51+rcVHDOCVMB6YtBBimJxCpJHTBHo=;
+	h=Date:To:From:Subject:Message-Id; b=Y3bcUqkpXVM3kMYW7VWIvbZ8iJw5C+YStS0OsSJoH70MhIlnUg05kUoZzRGTPOSyiMvO8WPjgiHJHPODA1EuojAXgrv9VGK2fPCu3qt0nAHjJEmk/aOrnqbQtNSDP0zjTmN1IGfn6nOpofW/F3nKIgRq29l5qBHf/Kd4eaghaQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=CFR7X5oz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41C07C4CEF5;
+	Mon, 15 Dec 2025 21:52:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1765835541;
+	bh=jzG8MNtuQ827j51+rcVHDOCVMB6YtBBimJxCpJHTBHo=;
+	h=Date:To:From:Subject:From;
+	b=CFR7X5ozHOi6Do0QcxYg2gA9px27mOIfJ/x9gfb5Df+qdFzUWzAEVAt3JKXWKfkLD
+	 xoAcaqs1bi/EXyDTxDHpr2s+VtptvWoeBE9P69w4RjNLOjZoRMTigSgUbXJdA3F2tZ
+	 5iFKA6gE+sEI2vZL3Y4jIE22Fw4wkY7VX0tYcRaE=
+Date: Mon, 15 Dec 2025 13:52:20 -0800
+To: mm-commits@vger.kernel.org,will@kernel.org,vbabka@suse.cz,suschako@amazon.de,stable@vger.kernel.org,riel@surriel.com,prakash.sangappa@oracle.com,peterz@infradead.org,osalvador@suse.de,npiggin@gmail.com,nadav.amit@gmail.com,muchun.song@linux.dev,lorenzo.stoakes@oracle.com,loberman@redhat.com,liushixin2@huawei.com,liam.howlett@oracle.com,lance.yang@linux.dev,jannh@google.com,harry.yoo@oracle.com,arnd@arndb.de,aneesh.kumar@kernel.org,david@kernel.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-hugetlb-fix-hugetlb_pmd_shared.patch added to mm-new branch
+Message-Id: <20251215215221.41C07C4CEF5@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-ClientProxiedBy: EX19D032UWB002.ant.amazon.com (10.13.139.190) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
 
-From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 50c127a69cd6285300931853b352a1918cfa180f ]
+The patch titled
+     Subject: mm/hugetlb: fix hugetlb_pmd_shared()
+has been added to the -mm mm-new branch.  Its filename is
+     mm-hugetlb-fix-hugetlb_pmd_shared.patch
 
-Replace three dst_dev() with a lockdep enabled helper.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-hugetlb-fix-hugetlb_pmd_shared.patch
 
-Fixes: 4a6ce2b6f2ec ("net: introduce a new function dst_dev_put()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250828195823.3958522-7-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Gyokhan Kochmarla <gyokhan@amazon.com>
+This patch will later appear in the mm-new branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Note, mm-new is a provisional staging ground for work-in-progress
+patches, and acceptance into mm-new is a notification for others take
+notice and to finish up reviews.  Please do not hesitate to respond to
+review feedback and post updated versions to replace or incrementally
+fixup patches in mm-new.
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Subject: mm/hugetlb: fix hugetlb_pmd_shared()
+Date: Fri, 12 Dec 2025 08:10:16 +0100
+
+Patch series "mm/hugetlb: fixes for PMD table sharing (incl.  using
+mmu_gather)", v2.
+
+One functional fix, one performance regression fix, and two related
+comment fixes.
+
+The goal of this patch set is to be backported to stable trees "fairly"
+easily. At least patch #1 and #4.
+
+Patch #1 fixes hugetlb_pmd_shared() not detecting any sharing
+Patch #2 + #3 are simple comment fixes that patch #4 interacts with.
+Patch #4 is a fix for the reported performance regression due to excessive
+IPI broadcasts during fork()+exit().
+
+The last patch is all about TLB flushes, IPIs and mmu_gather.
+Read: complicated
+
+
+This patch (of 4):
+
+We switched from (wrongly) using the page count to an independent shared
+count.  Now, shared page tables have a refcount of 1 (excluding
+speculative references) and instead use ptdesc->pt_share_count to identify
+sharing.
+
+We didn't convert hugetlb_pmd_shared(), so right now, we would never
+detect a shared PMD table as such, because sharing/unsharing no longer
+touches the refcount of a PMD table.
+
+Page migration, like mbind() or migrate_pages() would allow for migrating
+folios mapped into such shared PMD tables, even though the folios are not
+exclusive.  In smaps we would account them as "private" although they are
+"shared", and we would be wrongly setting the PM_MMAP_EXCLUSIVE in the
+pagemap interface.
+
+Fix it by properly using ptdesc_pmd_is_shared() in hugetlb_pmd_shared().
+
+Link: https://lkml.kernel.org/r/20251212071019.471146-1-david@kernel.org
+Link: https://lkml.kernel.org/r/20251212071019.471146-2-david@kernel.org
+Fixes: 59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count")
+Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Reviewed-by: Rik van Riel <riel@surriel.com>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Tested-by: Lance Yang <lance.yang@linux.dev>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Tested-by: Laurence Oberman <loberman@redhat.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Acked-by: Oscar Salvador <osalvador@suse.de>
+Cc: Liu Shixin <liushixin2@huawei.com>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Jann Horn <jannh@google.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Nadav Amit <nadav.amit@gmail.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Prakash Sangappa <prakash.sangappa@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Will Deacon <will@kernel.org>
+Cc: Uschakow, Stanislav" <suschako@amazon.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- net/ipv4/tcp_metrics.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
-index 03c068ea27b6..10e86f1008e9 100644
---- a/net/ipv4/tcp_metrics.c
-+++ b/net/ipv4/tcp_metrics.c
-@@ -170,7 +170,7 @@ static struct tcp_metrics_block *tcpm_new(struct dst_entry *dst,
- 	struct net *net;
- 
- 	spin_lock_bh(&tcp_metrics_lock);
--	net = dev_net_rcu(dst_dev(dst));
-+	net = dst_dev_net_rcu(dst);
- 
- 	/* While waiting for the spin-lock the cache might have been populated
- 	 * with this entry and so we have to check again.
-@@ -273,7 +273,7 @@ static struct tcp_metrics_block *__tcp_get_metrics_req(struct request_sock *req,
- 		return NULL;
- 	}
- 
--	net = dev_net_rcu(dst_dev(dst));
-+	net = dst_dev_net_rcu(dst);
- 	hash ^= net_hash_mix(net);
- 	hash = hash_32(hash, tcp_metrics_hash_log);
- 
-@@ -318,7 +318,7 @@ static struct tcp_metrics_block *tcp_get_metrics(struct sock *sk,
- 	else
- 		return NULL;
- 
--	net = dev_net_rcu(dst_dev(dst));
-+	net = dst_dev_net_rcu(dst);
- 	hash ^= net_hash_mix(net);
- 	hash = hash_32(hash, tcp_metrics_hash_log);
- 
--- 
-2.47.3
+ include/linux/hugetlb.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+--- a/include/linux/hugetlb.h~mm-hugetlb-fix-hugetlb_pmd_shared
++++ a/include/linux/hugetlb.h
+@@ -1326,7 +1326,7 @@ static inline __init void hugetlb_cma_re
+ #ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
+ static inline bool hugetlb_pmd_shared(pte_t *pte)
+ {
+-	return page_count(virt_to_page(pte)) > 1;
++	return ptdesc_pmd_is_shared(virt_to_ptdesc(pte));
+ }
+ #else
+ static inline bool hugetlb_pmd_shared(pte_t *pte)
+_
 
+Patches currently in -mm which might be from david@kernel.org are
 
-
-Amazon Web Services Development Center Germany GmbH
-Tamara-Danz-Str. 13
-10243 Berlin
-Geschaeftsfuehrung: Christof Hellmis, Andreas Stieger
-Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
-Sitz: Berlin
-Ust-ID: DE 365 538 597
+mm-hugetlb-fix-hugetlb_pmd_shared.patch
+mm-hugetlb-fix-two-comments-related-to-huge_pmd_unshare.patch
+mm-rmap-fix-two-comments-related-to-huge_pmd_unshare.patch
+mm-hugetlb-fix-excessive-ipi-broadcasts-when-unsharing-pmd-tables-using-mmu_gather.patch
 
 
