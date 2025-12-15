@@ -1,299 +1,114 @@
-Return-Path: <stable+bounces-201013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60D94CBD126
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 09:58:37 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4DA3CBD12C
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 09:59:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5F95B303A72F
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 08:56:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A5FF430285AB
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 08:57:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB571328B67;
-	Mon, 15 Dec 2025 08:55:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JDfN/JAf"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D00B329C5F;
+	Mon, 15 Dec 2025 08:56:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f54.google.com (mail-yx1-f54.google.com [74.125.224.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0A902459FD;
-	Mon, 15 Dec 2025 08:55:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E00329383
+	for <stable@vger.kernel.org>; Mon, 15 Dec 2025 08:55:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765788952; cv=none; b=RX5SFw/MXFTbWCaDlT4Oh6ONtM9X+24LkIkam5HCfxNZM+2ty+URUmhZKwDXZZLSozPwhOv49R0sQ//KYK7dHNiWoIXQZCYe7HvDJRpx6ZOwi7SFaZI8GsJskv6DHBd0LKF7FpA5zEFj0scPEJqtXEvDqoRnwrMke39r8sLIMZU=
+	t=1765788961; cv=none; b=BVEjBqY0n+ySY2qD+y5b+GMWqxYluSU7R9iiWFd9q45lcX7DCQVc8B6eYIJ3Z2oNaxffdBFHPT0p9M1Uib3BV3KPI5OuVPE4YO7UrUdkTWjk3GNRnZJQjaAFVHSixU4STyAbR4JdE9GwDO1wwUgkIDOSIk1iIQ12SK/b/xR25hE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765788952; c=relaxed/simple;
-	bh=6bc0N81lkKTWpXRAEmEShQ78p7g+vGyAdvbMl9nmS8w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sq6eESHHldmKSaoRPKrBrPanVycb/dI+cKmm5Vr9Wo3mc4dznVzfHzdb1TcS+V0XbGojC/OOCD0QYxXHQdgScr85bubwnjlaYTM031nlQtGF54Ope+X7FeOTeJfVSQsKNlMI70O5WbS/93iLtWZyGbBRobbjq1griavYBjAdMvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JDfN/JAf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C61D1C19421;
-	Mon, 15 Dec 2025 08:55:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765788952;
-	bh=6bc0N81lkKTWpXRAEmEShQ78p7g+vGyAdvbMl9nmS8w=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JDfN/JAfcKs9GMAo3QIY633qAO+wvhCfAqMp2qcjcy4b0LvYEGKR3UGZbC7fj4pDe
-	 cgCR3D1P8oyx82z0HDhoGFaBL5RvaZaEGtPBT2QvfD6Xvs4Hnk78qD39CV6BqoUfFs
-	 7YDLaUEH10WnBHdQ6/OOXjXMP2m/gmQgf5R3f/JyHQnsBpLVRJvl4qVc/6xA7PTnIc
-	 I9WxMyBD8I49vNg62+bKlLtre/GRAPZxNKDHbIo88SOtERWOiW17EnfognNOJRzV7R
-	 +tCx4Z6mKmG3bH0myfJvd0Hk8wW8GLuSoJsv23mPOkWbUCEv16kEbuDbo9LArEVQcW
-	 I1QkJ0OngF5GQ==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Wen Xiong <wenxiong@linux.ibm.com>,
-	Kyle Mahlkuch <Kyle.Mahlkuch@ibm.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>,
-	James.Bottomley@HansenPartnership.com,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-5.10] scsi: ipr: Enable/disable IRQD_NO_BALANCING during reset
-Date: Mon, 15 Dec 2025 03:55:27 -0500
-Message-ID: <20251215085533.2931615-4-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251215085533.2931615-1-sashal@kernel.org>
-References: <20251215085533.2931615-1-sashal@kernel.org>
+	s=arc-20240116; t=1765788961; c=relaxed/simple;
+	bh=JZz9JU4z69cVYdUg7URaUVpfzMhnOcFJCKbJFU1XYuA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qAKr5AIsD3p/2UhAMMvKx70YRUDeZ6jXcWWc0H4fGoch5SpfjfbtZv/TP9f2S9U/DGxcZ096qfFN3KkBMxASShMRh6qkWbjoHL89lcISn7dfFiGiy5NZNw2p50SHZRxYj3y2/w0upz/guRgutNcWHd1CKCLPfZJy4EZ/P2uOOyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=black-desk.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.224.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=black-desk.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f54.google.com with SMTP id 956f58d0204a3-64470c64c1bso4334827d50.1
+        for <stable@vger.kernel.org>; Mon, 15 Dec 2025 00:55:59 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765788958; x=1766393758;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=bZmZ392SyRouDGiRBywTbyIPFjYGlT+0xiRyvkmmrxg=;
+        b=mB9Q1BZaX0BV2d39UX6JREYNlIM1BMUJDgjWLfSGfP6nD2JUVXjnXk/9m6Lz6MYb8q
+         oRmupQvvANejz55Nm2HsMyeiHRsu62+U/V0Qhe3c7Qn5adlw27/CEuC5Ok+HKhYJ0Lgj
+         Uv16yrVM9Eumd3rsgY6nmBqV3RuWKXPvD0KJjB4g4fnyuJosynRK1TrB+NF/xB1pYJye
+         kw/p+Abdw+DvEA2hMTO3BbTnO5kMBI89loQYfa8fd54skmSZ1jQiynLohgQ13tE3bn3o
+         sX0hyzufJLVtz8yl0Ki7Em8y7Yvj9MKCQOFfGgqYRGxiEWBHrnneeKbBrOZ/AQWXApco
+         NuEA==
+X-Forwarded-Encrypted: i=1; AJvYcCX3MlzTe0eZ72h7GFC6+uvh1NHcOjUd6bVKqAiSMGWnOZkiH34TmTO49X/3Ctgdf1tCidvGFG4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQ+sg2PdKAM46kpMdffLm/inOpaD0yZ8NvE5vEHRGYszeGX20+
+	VELe93SiQG21RgV5vM+gVyXAVq6G/KTF5oX0YNDt/nF82mCDsQBIoBItd2KG9G23kms=
+X-Gm-Gg: AY/fxX6aFMkuuYRG2E3Yxlbjt2oDmUFu1jHO4D62pTdXBOFnyfZgkoYgY5gFNRm9IjJ
+	F7GThA+lJ+ofh4Taeh3GRaGjONrm8V8uSfU03910QAM9/4tUbGn3/bZ5LfiT6PRC+thqCxGvFQP
+	+WRxTmWX5unUMCn/czbAHeR34+0jyCgyzCek66fByqkG8RO40iMf+s5h8A/UU3wvycAHQBNlzjI
+	CLdMq2mC2nfq4E5K0vDjVJKWnQKcnIGMVWB8QB1E9kpFJZHS8YkMXQ8adr8kG7/nQp0qspNVhHY
+	hzM0v0bJCRFEygwAk2y/E/PIRttRumhCQb+SMAcyPIar5sJ7HWr6AH2+9aYAfAFJCrEPNsTNRI9
+	DOA9b05Hmon/xWjzk74xdgG4nqCs17N9nxbWaIJUBBde4pgMBeX0Ts8c1vA6uyRWcMqqzz7zgoQ
+	JAeridvUsl2t3WQEOx05gSdxDuy2j5RUV267abjjFEusa8CQc=
+X-Google-Smtp-Source: AGHT+IEYcVbneELeFWDWkYB+YsGkRGaNQ6ITKdAZJ0cqUNK+ZBE5VxHp4h18VDpe16sR3R67+SgIeA==
+X-Received: by 2002:a05:690e:400e:b0:644:6c19:8a26 with SMTP id 956f58d0204a3-6455515a83fmr6938627d50.19.1765788958360;
+        Mon, 15 Dec 2025 00:55:58 -0800 (PST)
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com. [209.85.128.170])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-64477dab9fbsm6154778d50.14.2025.12.15.00.55.58
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 15 Dec 2025 00:55:58 -0800 (PST)
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-787eb2d8663so35791937b3.0
+        for <stable@vger.kernel.org>; Mon, 15 Dec 2025 00:55:58 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXaPZh/kucrQ/WxE25pW/cSX3PgcsSf+q7zEy3ePs+CIC7E2TqCkqK8CEKZsgXnHCRs1QD8/mE=@vger.kernel.org
+X-Received: by 2002:a05:690c:dc5:b0:786:a68f:aec7 with SMTP id
+ 00721157ae682-78d6ded488cmr126790657b3.14.1765788957951; Mon, 15 Dec 2025
+ 00:55:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.18.1
-Content-Transfer-Encoding: 8bit
+References: <20251213-mount-ebusy-v1-1-7b2907b7b0b2@black-desk.cn> <k7kcsc6wljl32mik2qqwij23hjsqtxqbuq6a5gbu7r6z33vq5c@7jeeepio6jkd>
+In-Reply-To: <k7kcsc6wljl32mik2qqwij23hjsqtxqbuq6a5gbu7r6z33vq5c@7jeeepio6jkd>
+From: Chen Linxuan <me@black-desk.cn>
+Date: Mon, 15 Dec 2025 16:55:46 +0800
+X-Gmail-Original-Message-ID: <CAC1kPDMrF_vZAbPatzgQP_RDowCwOpBV71V1acv5VpogWuhzXg@mail.gmail.com>
+X-Gm-Features: AQt7F2q8dQ6TO1jnmhgh6xV5sZ0ve5sQZxU4h-8wlLqKz3QYB8QPxcDhRrAZ-k4
+Message-ID: <CAC1kPDMrF_vZAbPatzgQP_RDowCwOpBV71V1acv5VpogWuhzXg@mail.gmail.com>
+Subject: Re: [PATCH] vfs: fix EBUSY on FSCONFIG_CMD_CREATE retry
+To: Jan Kara <jack@suse.cz>
+Cc: me@black-desk.cn, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Wen Xiong <wenxiong@linux.ibm.com>
+On Mon, Dec 15, 2025 at 4:46=E2=80=AFPM Jan Kara <jack@suse.cz> wrote:
+>
+> On Sat 13-12-25 02:03:56, Chen Linxuan via B4 Relay wrote:
+> > If the syscall is restarted, fsconfig() is called again and retrieves
+> > the *same* fs_context. However, vfs_cmd_create() rejects the call
+> > because the phase was left as FS_CONTEXT_CREATING during the first
+> > attempt:
+>
+> Well, not quite. The phase is actually set to FS_CONTEXT_FAILED if
+> vfs_get_tree() returns any error. Still the effect is the same.
 
-[ Upstream commit 6ac3484fb13b2fc7f31cfc7f56093e7d0ce646a5 ]
+Oh, that's a mistake.
 
-A dynamic remove/add storage adapter test hits EEH on PowerPC:
+> Thanks for the patch. It looks good to me. I'd slightly prefer style like=
+:
+>
+>         if (ret) {
+>                 if (ret =3D=3D -ERESTARTNOINTR)
+>                         fc->phase =3D FS_CONTEXT_CREATE_PARAMS;
+>                 else
+>                         fc->phase =3D FS_CONTEXT_FAILED;
+>                 return ret;
+>         }
 
-  EEH: [c00000000004f75c] __eeh_send_failure_event+0x7c/0x160
-  EEH: [c000000000048444] eeh_dev_check_failure.part.0+0x254/0x650
-  EEH: [c008000001650678] eeh_readl+0x60/0x90 [ipr]
-  EEH: [c00800000166746c] ipr_cancel_op+0x2b8/0x524 [ipr]
-  EEH: [c008000001656524] ipr_eh_abort+0x6c/0x130 [ipr]
-  EEH: [c000000000ab0d20] scmd_eh_abort_handler+0x140/0x440
-  EEH: [c00000000017e558] process_one_work+0x298/0x590
-  EEH: [c00000000017eef8] worker_thread+0xa8/0x620
-  EEH: [c00000000018be34] kthread+0x124/0x130
-  EEH: [c00000000000cd64] ret_from_kernel_thread+0x5c/0x64
-
-A PCIe bus trace reveals that a vector of MSI-X is cleared to 0 by
-irqbalance daemon. If we disable irqbalance daemon, we won't see the
-issue.
-
-With debug enabled in ipr driver:
-
-  [   44.103071] ipr: Entering __ipr_remove
-  [   44.103083] ipr: Entering ipr_initiate_ioa_bringdown
-  [   44.103091] ipr: Entering ipr_reset_shutdown_ioa
-  [   44.103099] ipr: Leaving ipr_reset_shutdown_ioa
-  [   44.103105] ipr: Leaving ipr_initiate_ioa_bringdown
-  [   44.149918] ipr: Entering ipr_reset_ucode_download
-  [   44.149935] ipr: Entering ipr_reset_alert
-  [   44.150032] ipr: Entering ipr_reset_start_timer
-  [   44.150038] ipr: Leaving ipr_reset_alert
-  [   44.244343] scsi 1:2:3:0: alua: Detached
-  [   44.254300] ipr: Entering ipr_reset_start_bist
-  [   44.254320] ipr: Entering ipr_reset_start_timer
-  [   44.254325] ipr: Leaving ipr_reset_start_bist
-  [   44.364329] scsi 1:2:4:0: alua: Detached
-  [   45.134341] scsi 1:2:5:0: alua: Detached
-  [   45.860949] ipr: Entering ipr_reset_shutdown_ioa
-  [   45.860962] ipr: Leaving ipr_reset_shutdown_ioa
-  [   45.860966] ipr: Entering ipr_reset_alert
-  [   45.861028] ipr: Entering ipr_reset_start_timer
-  [   45.861035] ipr: Leaving ipr_reset_alert
-  [   45.964302] ipr: Entering ipr_reset_start_bist
-  [   45.964309] ipr: Entering ipr_reset_start_timer
-  [   45.964313] ipr: Leaving ipr_reset_start_bist
-  [   46.264301] ipr: Entering ipr_reset_bist_done
-  [   46.264309] ipr: Leaving ipr_reset_bist_done
-
-During adapter reset, ipr device driver blocks config space access but
-can't block MMIO access for MSI-X entries.  There is very small window:
-irqbalance daemon kicks in during adapter reset before ipr driver calls
-pci_restore_state(pdev) to restore MSI-X table.
-
-irqbalance daemon reads back all 0 for that MSI-X vector in
-__pci_read_msi_msg().
-
-irqbalance daemon:
-
-  msi_domain_set_affinity()
-  ->irq_chip_set_affinity_patent()
-  ->xive_irq_set_affinity()
-  ->irq_chip_compose_msi_msg()
-    ->pseries_msi_compose_msg()
-    ->__pci_read_msi_msg(): read all 0 since didn't call pci_restore_state
-  ->irq_chip_write_msi_msg()
-    -> pci_write_msg_msi(): write 0 to the msix vector entry
-
-When ipr driver calls pci_restore_state(pdev) in
-ipr_reset_restore_cfg_space(), the MSI-X vector entry has been cleared
-by irqbalance daemon in pci_write_msg_msix().
-
-  pci_restore_state()
-  ->__pci_restore_msix_state()
-
-Below is the MSI-X table for ipr adapter after irqbalance daemon kicked
-in during adapter reset:
-
-  Dump MSIx table: index=0 address_lo=c800 address_hi=10000000 msg_data=0
-  Dump MSIx table: index=1 address_lo=c810 address_hi=10000000 msg_data=0
-  Dump MSIx table: index=2 address_lo=c820 address_hi=10000000 msg_data=0
-  Dump MSIx table: index=3 address_lo=c830 address_hi=10000000 msg_data=0
-  Dump MSIx table: index=4 address_lo=c840 address_hi=10000000 msg_data=0
-  Dump MSIx table: index=5 address_lo=c850 address_hi=10000000 msg_data=0
-  Dump MSIx table: index=6 address_lo=c860 address_hi=10000000 msg_data=0
-  Dump MSIx table: index=7 address_lo=c870 address_hi=10000000 msg_data=0
-  Dump MSIx table: index=8 address_lo=0 address_hi=0 msg_data=0
-  ---------> Hit EEH since msix vector of index=8 are 0
-  Dump MSIx table: index=9 address_lo=c890 address_hi=10000000 msg_data=0
-  Dump MSIx table: index=10 address_lo=c8a0 address_hi=10000000 msg_data=0
-  Dump MSIx table: index=11 address_lo=c8b0 address_hi=10000000 msg_data=0
-  Dump MSIx table: index=12 address_lo=c8c0 address_hi=10000000 msg_data=0
-  Dump MSIx table: index=13 address_lo=c8d0 address_hi=10000000 msg_data=0
-  Dump MSIx table: index=14 address_lo=c8e0 address_hi=10000000 msg_data=0
-  Dump MSIx table: index=15 address_lo=c8f0 address_hi=10000000 msg_data=0
-
-  [   46.264312] ipr: Entering ipr_reset_restore_cfg_space
-  [   46.267439] ipr: Entering ipr_fail_all_ops
-  [   46.267447] ipr: Leaving ipr_fail_all_ops
-  [   46.267451] ipr: Leaving ipr_reset_restore_cfg_space
-  [   46.267454] ipr: Entering ipr_ioa_bringdown_done
-  [   46.267458] ipr: Leaving ipr_ioa_bringdown_done
-  [   46.267467] ipr: Entering ipr_worker_thread
-  [   46.267470] ipr: Leaving ipr_worker_thread
-
-IRQ balancing is not required during adapter reset.
-
-Enable "IRQ_NO_BALANCING" flag before starting adapter reset and disable
-it after calling pci_restore_state(). The irqbalance daemon is disabled
-for this short period of time (~2s).
-
-Co-developed-by: Kyle Mahlkuch <Kyle.Mahlkuch@ibm.com>
-Signed-off-by: Kyle Mahlkuch <Kyle.Mahlkuch@ibm.com>
-Signed-off-by: Wen Xiong <wenxiong@linux.ibm.com>
-Link: https://patch.msgid.link/20251028142427.3969819-2-wenxiong@linux.ibm.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-
-LLM Generated explanations, may be completely bogus:
-
-The APIs are well-established with 124 callers for
-`irq_set_status_flags` - this approach is standard practice in the
-kernel.
-
----
-
-## Summary
-
-**Why this should be backported:**
-
-1. **Fixes a real, serious bug**: EEH events on PowerPC are significant
-   hardware errors that can cause system instability and require
-   recovery
-2. **Clear root cause and fix**: Race condition between irqbalance
-   daemon and adapter reset is clearly identified and surgically fixed
-3. **Small, self-contained change**: ~30 lines added to a single driver
-   file
-4. **Uses standard kernel APIs**: `irq_set_status_flags()` and
-   `irq_clear_status_flags()` are used by 124+ other callers - well-
-   tested mechanism
-5. **Low regression risk**: Changes only affect the ipr driver during
-   adapter reset, no impact on other subsystems
-6. **Critical for affected users**: Systems running IBM Power with ipr
-   storage adapters and irqbalance enabled will hit this during hot-plug
-   operations
-7. **No dependencies**: All required APIs have been in the kernel for
-   many years
-
-**Risk Assessment**: LOW
-- The fix is narrowly scoped to the reset path
-- Uses battle-tested IRQ infrastructure
-- Only affects ipr driver users during specific operations
-
-**Benefit**: HIGH for affected users - prevents EEH crashes during
-adapter reset operations
-
-This commit meets all stable kernel criteria: it fixes a real bug, is
-obviously correct, is small and contained, and introduces no new
-features. The mechanism used (temporarily disabling IRQ balancing during
-critical operations) is a standard pattern used throughout the kernel.
-
-**YES**
-
- drivers/scsi/ipr.c | 28 +++++++++++++++++++++++++++-
- 1 file changed, 27 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/scsi/ipr.c b/drivers/scsi/ipr.c
-index 44214884deaf5..d62bb7d0e4164 100644
---- a/drivers/scsi/ipr.c
-+++ b/drivers/scsi/ipr.c
-@@ -61,8 +61,8 @@
- #include <linux/hdreg.h>
- #include <linux/reboot.h>
- #include <linux/stringify.h>
-+#include <linux/irq.h>
- #include <asm/io.h>
--#include <asm/irq.h>
- #include <asm/processor.h>
- #include <scsi/scsi.h>
- #include <scsi/scsi_host.h>
-@@ -7843,6 +7843,30 @@ static int ipr_dump_mailbox_wait(struct ipr_cmnd *ipr_cmd)
- 	return IPR_RC_JOB_RETURN;
- }
- 
-+/**
-+ * ipr_set_affinity_nobalance
-+ * @ioa_cfg:	ipr_ioa_cfg struct for an ipr device
-+ * @flag:	bool
-+ *	true: ensable "IRQ_NO_BALANCING" bit for msix interrupt
-+ *	false: disable "IRQ_NO_BALANCING" bit for msix interrupt
-+ * Description: This function will be called to disable/enable
-+ *	"IRQ_NO_BALANCING" to avoid irqbalance daemon
-+ *	kicking in during adapter reset.
-+ **/
-+static void ipr_set_affinity_nobalance(struct ipr_ioa_cfg *ioa_cfg, bool flag)
-+{
-+	int irq, i;
-+
-+	for (i = 0; i < ioa_cfg->nvectors; i++) {
-+		irq = pci_irq_vector(ioa_cfg->pdev, i);
-+
-+		if (flag)
-+			irq_set_status_flags(irq, IRQ_NO_BALANCING);
-+		else
-+			irq_clear_status_flags(irq, IRQ_NO_BALANCING);
-+	}
-+}
-+
- /**
-  * ipr_reset_restore_cfg_space - Restore PCI config space.
-  * @ipr_cmd:	ipr command struct
-@@ -7867,6 +7891,7 @@ static int ipr_reset_restore_cfg_space(struct ipr_cmnd *ipr_cmd)
- 		return IPR_RC_JOB_CONTINUE;
- 	}
- 
-+	ipr_set_affinity_nobalance(ioa_cfg, false);
- 	ipr_fail_all_ops(ioa_cfg);
- 
- 	if (ioa_cfg->sis64) {
-@@ -7946,6 +7971,7 @@ static int ipr_reset_start_bist(struct ipr_cmnd *ipr_cmd)
- 		rc = pci_write_config_byte(ioa_cfg->pdev, PCI_BIST, PCI_BIST_START);
- 
- 	if (rc == PCIBIOS_SUCCESSFUL) {
-+		ipr_set_affinity_nobalance(ioa_cfg, true);
- 		ipr_cmd->job_step = ipr_reset_bist_done;
- 		ipr_reset_start_timer(ipr_cmd, IPR_WAIT_FOR_BIST_TIMEOUT);
- 		rc = IPR_RC_JOB_RETURN;
--- 
-2.51.0
-
+Will be applied in v2.
 
