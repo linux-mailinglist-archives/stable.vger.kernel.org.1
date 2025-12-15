@@ -1,70 +1,95 @@
-Return-Path: <stable+bounces-201062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-201063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C90BCBEB08
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 16:37:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF5CECBEB17
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 16:38:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A244330169AC
-	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 15:32:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3E03530380FE
+	for <lists+stable@lfdr.de>; Mon, 15 Dec 2025 15:34:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AAD431A7F3;
-	Mon, 15 Dec 2025 15:32:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B+4bq+mh"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3B0B33506D;
+	Mon, 15 Dec 2025 15:34:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE4530FC30;
-	Mon, 15 Dec 2025 15:32:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA6A2957B6;
+	Mon, 15 Dec 2025 15:34:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765812766; cv=none; b=XInqNghAW84gwoOjAz9qaklsMFc4B8laUaQhwGhhqdO/hHeexdCUO7NakO8DAAPqAPgQ5I1UmXoEAzHV0iTnVQFYWUxF7pRn7CwpQrAYoqOJzZxpXNaGyItypepY3DxT0HJMuivn6YOllVsIFrsZMh2L6G9yaxVGDmBLJkN4B+s=
+	t=1765812860; cv=none; b=enPVCdAQJplaA8vL+1yx1mXT12TIf/KoEJpjzA8iywDF41HnXvVNYrHcmLHMciB8LEvmNVph1rxZ/41KRKivVu7wJ8hD6HjokMOvn5EbYxFr8Hy/n7EQRWlaUhk4nc3/3tz28J7itOAWDNpNmBAJDkbkkVCFCYFUA6LmbC7yHbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765812766; c=relaxed/simple;
-	bh=aEQVMiLbvDRSXHO/8bGJyPa2l7Ci/SRkpraFLP/Lxc8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nOKvnFv5FvvFNpGnst67Yk8hQ3T/WNMH1bf3/cJSgV7dE0G2MnabPZiI/dF4cpb3nU7kR1S2l08q2SVORtWpD9F/kw8VImKqHjCam2VBzwngQMl2McT/S6DEc3YqrFGvTw+NLrOFe5h35yT48zhGRaQq/StQ7z/Sa6BO+YBQ28Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B+4bq+mh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2342C4CEF5;
-	Mon, 15 Dec 2025 15:32:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765812766;
-	bh=aEQVMiLbvDRSXHO/8bGJyPa2l7Ci/SRkpraFLP/Lxc8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=B+4bq+mhKwot8aSJYeW0tdN0x+gxVdcVpZtnse60m5xOxnKjUZatO+dWukN5A1QmI
-	 tqZNR1Hhoe9PYIbd01Quy9sesiTrhd2xtP7sBzB9/mX/2wC2i8aKoZBXRUJV+6l9VP
-	 bczCfpdQAVicEkiL0abzB5MnRzB8Yqnkya/prkgVjPHRScSHKdNU6xezdIba/w/05p
-	 8WUU8fxHM6Wot6VMSok+zL2uYXUAuJCuRpXgp2XINXl8dUMx+uGKrrm/H4KNjVTzMs
-	 e977KYL5eKsAGcwvWzKCx8VX7twfBrnxoRUpY8FJ6x6zzfB5MICaKOUthAGFppHwgV
-	 aIreOqAPniyow==
-Date: Mon, 15 Dec 2025 23:32:40 +0800
-From: Keith Busch <kbusch@kernel.org>
-To: Ilikara Zheng <ilikara@aosc.io>
-Cc: linux-kernel@vger.kernel.org, Wu Haotian <rigoligo03@gmail.com>,
-	Mingcong Bai <jeffbai@aosc.io>, Kexy Biscuit <kexybiscuit@aosc.io>,
-	stable@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
-	Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
-	"open list:NVM EXPRESS DRIVER" <linux-nvme@lists.infradead.org>
-Subject: Re: [PATCH] nvme-pci: add quirk for Wodposit WPBSNM8-256GTP to
- disable secondary temp thresholds
-Message-ID: <aUAqGO7GXRrTk4Vq@kbusch-mbp>
-References: <20251208132340.1317531-1-ilikara@aosc.io>
+	s=arc-20240116; t=1765812860; c=relaxed/simple;
+	bh=Hpb5NenCmNYUHqBJsM+HGc63FVYyGgcB/OUDgss2SF4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dMookDl7arG7cv4gqWmFraF2k4IlkD2/yX2UNP7uqLTPBtEwcsIysBCuY+WduB+kdty4yMdpB3yPCcGQNR3SopjXenoh/Am/9nqgJXaVXigHVR4nSkSme89hR7aOIjhl2Bdpna86wVnDB5Hai5nXFpbf2uMGoP0oFMnLpfttHXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from dfae2b116770.home.arpa (unknown [124.16.138.129])
+	by APP-03 (Coremail) with SMTP id rQCowACHquFpKkBpHyLPAA--.57681S2;
+	Mon, 15 Dec 2025 23:34:02 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: bharat@chelsio.com,
+	jgg@ziepe.ca,
+	leon@kernel.org
+Cc: linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] RDMA/cxgb4: fix dst refcount leak in pass_accept_req() error path
+Date: Mon, 15 Dec 2025 15:33:56 +0000
+Message-Id: <20251215153356.1783489-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251208132340.1317531-1-ilikara@aosc.io>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowACHquFpKkBpHyLPAA--.57681S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7XF4kGr18Xr45KFWUXF1UJrb_yoW3trX_Ga
+	yj9FZrXrWjkFnYkw4DKFsxurWqyw4qq3WkJwnFqFy5J34agF1xA3ykuFn5uw17Xw45Grs5
+	GryDGr18CF4xWjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbs8FF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s
+	1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0
+	cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8Jw
+	ACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_JF0_
+	Jw1lc2xSY4AK67AK6ryrMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI
+	8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AK
+	xVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI
+	8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280
+	aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43
+	ZEXa7VUUq2MUUUUUU==
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCQ4RA2lAI5sQ7wAAs7
 
-On Mon, Dec 08, 2025 at 09:23:40PM +0800, Ilikara Zheng wrote:
-> +	{ PCI_DEVICE(0x1fa0, 0x2283),   /* Wodposit WPBSNM8-256GTP */
+Add missing dst_release() when alloc_ep_skb_list() fails to prevent
+reference count leak of the dst obtained from route lookup.
 
-I'm not finding vendor 1FA0 registered on the public pci-ids, nor in the
-pcisig.com members list. I just want to make sure the identifier is
-officially registered.
+Fixes: 4a740838bf44 ("RDMA/iw_cxgb4: Low resource fixes for connection manager")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+ drivers/infiniband/hw/cxgb4/cm.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/infiniband/hw/cxgb4/cm.c b/drivers/infiniband/hw/cxgb4/cm.c
+index b3b45c49077d..3490b8920cf0 100644
+--- a/drivers/infiniband/hw/cxgb4/cm.c
++++ b/drivers/infiniband/hw/cxgb4/cm.c
+@@ -2665,6 +2665,7 @@ static int pass_accept_req(struct c4iw_dev *dev, struct sk_buff *skb)
+ 	}
+ 	goto out;
+ fail:
++	dst_release(dst);
+ 	c4iw_put_ep(&child_ep->com);
+ reject:
+ 	reject_cr(dev, hwtid, skb);
+-- 
+2.34.1
+
 
